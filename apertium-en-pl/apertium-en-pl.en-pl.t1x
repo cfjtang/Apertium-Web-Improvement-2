@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
+
+<transfer default="chunk">
+<section-def-cats>
+    <def-cat n="conj">
+      <cat-item tags="cnjadv"/>
+      <cat-item tags="cnjcoo"/>
+      <cat-item tags="cnjsub"/>
+      <cat-item tags="cnjcoo.*"/>
+      <cat-item tags="cnjadv.*"/>
+      <cat-item tags="cnjsub.*"/>
+    </def-cat>
+    <def-cat n="rel_prn">
+      <cat-item tags="rel.*"/>
+    </def-cat>
+    <def-cat n="adj">
+      <cat-item tags="adj"/>
+      <cat-item tags="adj.*"/>
+      <cat-item tags="adj.sint"/>
+      <cat-item tags="adj.sint.*"/>
+      <cat-item tags="adj.sint.comp"/>
+      <cat-item tags="adj.sint.comp.*"/>
+    </def-cat>
+    <def-cat n="nom">
+      <cat-item tags="n.*"/>
+      <cat-item tags="np.ant.*"/>
+      <cat-item tags="np.top.*"/>
+    </def-cat>
+    <def-cat n="genitive">
+      <cat-item tags="gen"/>
+    </def-cat>
+    <def-cat n="sent">
+      <cat-item tags="sent"/>
+    </def-cat>
+    <def-cat n="det_ignore">
+      <cat-item lemma="a" tags="det.ind.*"/>
+      <cat-item tags="det.def.*"/>
+    </def-cat>
+    <def-cat n="det">
+      <cat-item tags="det.ind.*"/>
+      <cat-item tags="det.dem.*"/>
+    </def-cat>
+    <def-cat n="prpers">
+      <cat-item lemma="prpers" tags="prn.*"/>
+    </def-cat>
+    <def-cat n="verbnm"><!--verb no modal -->
+      <cat-item tags="vblex.*"/>
+      <cat-item tags="vbser.*"/>
+      <cat-item tags="vbhaver.*"/> 
+    </def-cat>
+    <def-cat n="prep"> <!-- preposition -->
+      <cat-item tags="pr"/>
+      <cat-item tags="pr.*"/>
+    </def-cat>
+    <def-cat n="number"> <!-- number -->
+      <cat-item tags="num"/>
+      <cat-item tags="num.*"/>
+    </def-cat>
+    <def-cat n="num_234w">
+      <cat-item lemma="two" tags="num"/>
+      <cat-item lemma="three" tags="num"/>
+      <cat-item lemma="four" tags="num"/>
+    </def-cat>
+    <def-cat n="num_234">
+      <cat-item lemma="2" tags="num"/>
+      <cat-item lemma="3" tags="num"/>
+      <cat-item lemma="4" tags="num"/>
+    </def-cat>
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="nbr">      <!-- Number -->
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+    </def-attr>
+    <def-attr n="gen">      <!-- Gender -->
+      <attr-item tags="m1"/>
+      <attr-item tags="m2"/>
+      <attr-item tags="m3"/>
+      <attr-item tags="f"/>
+      <attr-item tags="nt"/>
+      <attr-item tags="mf"/>
+    </def-attr>
+    <def-attr n="a_conj">
+      <attr-item tags="cnjadv"/>
+      <attr-item tags="cnjsub"/>
+      <attr-item tags="cnjcoo"/>
+    </def-attr>
+    <def-attr n="a_nom">
+      <attr-item tags="n"/>
+      <attr-item tags="n.acr"/>
+      <attr-item tags="n.unc"/>
+      <attr-item tags="np.top"/>
+    </def-attr>
+    <def-attr n="a_adj">
+      <attr-item tags="adj.sint"/>
+      <attr-item tags="adj"/>
+      <attr-item tags="comp"/>
+      <attr-item tags="sup"/>
+    </def-attr>
+    <def-attr n="stress">
+      <attr-item tags="uns"/>
+    </def-attr>
+    <def-attr n="a_det">
+      <attr-item tags="det.ind"/>
+      <attr-item tags="det.def"/>
+    </def-attr>
+    <def-attr n="a_num">
+      <attr-item tags="num"/>
+    </def-attr>
+    <def-attr n="a_rel">
+      <attr-item tags="rel"/>
+      <attr-item tags="rel.nn"/>
+      <attr-item tags="rel.an"/>
+    </def-attr>
+    <def-attr n="tipus_prn">
+      <attr-item tags="prn.subj"/>
+      <attr-item tags="prn.obj"/>
+    </def-attr>
+    <def-attr n="caso">
+      <attr-item tags="nom"/>
+      <attr-item tags="acc"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="gen"/>
+      <attr-item tags="loc"/>
+      <attr-item tags="ins"/>
+      <attr-item tags="voc"/>
+    </def-attr>
+    <def-attr n="m1pl">
+      <attr-item tags="nom"/>
+      <attr-item tags="acc"/>
+      <attr-item tags="voc"/>
+    </def-attr>
+    <def-attr n="pers">      <!-- Person -->
+       <attr-item tags="p1"/>
+       <attr-item tags="p2"/>
+       <attr-item tags="p3"/>
+    </def-attr>
+    <def-attr n="a_verb">
+       <attr-item tags="vblex"/>
+       <attr-item tags="vblex.uns"/>
+       <attr-item tags="vbser"/>
+       <attr-item tags="vbhaver"/>
+       <attr-item tags="vbmod"/>
+       <attr-item tags="vaux"/>
+    </def-attr>
+    <def-attr n="temps">
+       <attr-item tags="pp"/>
+       <attr-item tags="pii"/>
+       <attr-item tags="pis"/>
+       <attr-item tags="pri"/>
+       <attr-item tags="past"/>
+       <attr-item tags="pres"/>
+       <attr-item tags="inf"/>
+     </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="numero"/>
+    <def-var n="caseFirstWord"/>
+    <def-var n="nombre"/>
+    <def-var n="group_gender"/>
+    <def-var n="nn_num"/>
+    <def-var n="nn_nom"/>
+    <def-var n="lastVerb"/>
+  </section-def-vars>
+
+  <section-def-lists>
+    <def-list n="nad_locative">
+      <list-item v="river"/>
+      <list-item v="sea"/>
+      <list-item v="ocean"/>
+    </def-list>
+    <def-list n="months">
+      <list-item v="January"/>
+      <list-item v="February"/>
+      <list-item v="March"/>
+      <list-item v="April"/>
+      <list-item v="May"/>
+      <list-item v="June"/>
+      <list-item v="July"/>
+      <list-item v="August"/>
+      <list-item v="September"/>
+      <list-item v="October"/>
+      <list-item v="November"/>
+      <list-item v="December"/>
+    </def-list>
+    <def-list n="days">
+      <list-item v="Monday"/>
+      <list-item v="Tuesday"/>
+      <list-item v="Wednesday"/>
+      <list-item v="Thursday"/>
+      <list-item v="Friday"/>
+      <list-item v="Saturday"/>
+      <list-item v="Sunday"/>
+    </def-list>
+    <def-list n="titles">
+      <list-item v="Mister"/>
+      <list-item v="Mr."/>
+      <list-item v="Miss"/>
+      <list-item v="Mrs."/>
+      <list-item v="Ms."/>
+      <list-item v="Dr."/>
+    </def-list>
+    <def-list n="na_accusative">
+      <list-item v="concert"/>
+      <list-item v="airport"/>
+    </def-list>
+  </section-def-lists>
+
+  <section-rules>
+  
+  <rule comment="Drop the/a">
+     <pattern>
+       <pattern-item n="det_ignore"/>
+     </pattern>
+     <action>
+       <out>
+         <lu>
+           <lit v=""/>
+         </lu>
+       </out>
+     </action>
+  </rule>
+  
+    <rule comment="REGLA: NOM">
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="nom"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+    <rule comment="REGLA: NOM genitive">
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="genitive"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="nom-gen" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="gen"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <!-- FIXME: there are more complicated cases to be handled with prepositions -->
+    <rule comment="REGLA: PR NOM">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+    <rule comment="REGLA: PR (a/the) NOM">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="det_ignore"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+    
+    <!-- This rule reorders the words so that the word inflected to match the preposition is beside the preposition -->
+    <rule comment="REGLA: PR NOM genitive NOM ~~ e.g. with brother's dog - z psem brata">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="genitive"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="prep-nom" case="Aa">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="gen"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="nom-gen" case="Aa">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="gen"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: PR (a/the) NOM genitive NOM ~~ e.g. with a brother's dog - z psem brata">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="det_ignore"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="genitive"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="prep-nom">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="prep-nom" case="Aa">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_nom"/>
+              <clip pos="5" side="tl" part="gen"/>
+              <clip pos="5" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="caso"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="nom-gen" case="Aa">
+            <tags>
+              <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="gen"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: PR">
+      <pattern>
+        <pattern-item n="prep"/>
+      </pattern>
+      <action>
+            <out>
+              <chunk name="pr">
+                <tags>
+                  <tag><lit-tag v="PR"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit-tag v="pr"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: ADJ">
+      <pattern>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+            <out>
+              <chunk name="adj">
+                <tags>
+                  <tag><lit-tag v="ADJ"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <lit-tag v="nt"/>
+                  <lit-tag v="sg"/>
+                  <lit-tag v="nom"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: NUM NOM">
+      <pattern>
+        <pattern-item n="number"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="one"/>
+                </equal>
+                <not>
+                  <equal>
+                    <clip pos="2" side="tl" part="nbr"/>
+                    <lit-tag v="pl"/>
+                  </equal>
+                </not>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="one"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="tl" part="nbr"/>
+                  <lit-tag v="pl"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="two"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <or>
+                  <equal>
+                    <clip pos="1" side="sl" part="lem"/>
+                    <lit v="three"/>
+                  </equal>
+                  <equal>
+                    <clip pos="1" side="sl" part="lem"/>
+                    <lit v="four"/>
+                  </equal>
+                </or>
+                <equal> 
+                  <clip pos="1" side="sl" part="gen"/>
+                  <lit-tag v="m1"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+          <when>
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <or>
+                  <equal>
+                    <clip pos="1" side="sl" part="lem"/>
+                    <lit v="three"/>
+                  </equal>
+                  <equal>
+                    <clip pos="1" side="sl" part="lem"/>
+                    <lit v="four"/>
+                  </equal>
+                </or>
+                <not>
+                  <equal> 
+                    <clip pos="1" side="sl" part="gen"/>
+                    <lit-tag v="m1"/>
+                  </equal>
+                </not>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+          </when>
+          <when> <!-- 5+ -->
+            <test>
+              <and>
+                <equal> <!-- nom, if no verb yet -->
+                  <var n="lastVerb"/>
+                  <lit v=""/>
+                </equal>
+                <in>
+                  <clip pos="1" side="sl" part="caso"/>
+                  <list n="m1pl"/>
+                </in>
+                <equal> 
+                  <clip pos="1" side="sl" part="gen"/>
+                  <lit-tag v="m1"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="gen"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="gen"/>
+            </append>
+          </when>
+          <otherwise> <!-- 5+ -->
+            <let>
+              <var n="nn_num"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+            <append n="nn_num">
+              <lit-tag v="num"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="nom"/>
+            </append>
+            <let>
+              <var n="nn_nom"/>
+              <clip pos="2" side="tl" part="lem"/>
+            </let>
+            <append n="nn_nom">
+              <lit-tag v="n"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="pl"/>
+              <lit-tag v="gen"/>
+            </append>
+          </otherwise>
+        </choose>
+              
+        <out>
+          <chunk name="num">
+            <tags>
+              <tag><lit-tag v="NUM"/></tag>
+            </tags>
+            <lu>
+              <var n="nn_num"/>
+            </lu>
+          </chunk>
+          <b/>
+          <chunk name="nom">
+            <tags>
+              <tag><lit-tag v="NOM"/></tag>
+            </tags>
+            <lu>
+              <var n="nn_nom"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <rule> <!-- REGLA: reset variables-->
+      <pattern>
+        <pattern-item n="sent"/>
+      </pattern>
+      <action>
+       <let>
+         <var n="nombre"/>
+         <lit-tag v="sg"/>
+       </let>
+       <let>
+         <var n="lastVerb"/>
+         <lit v=""/>
+       </let>
+        <out>
+          <chunk name="punt">
+            <tags>
+              <tag><lit-tag v="sent"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+
+     </action>
+   </rule>
+
+  </section-rules>
+
+</transfer>
