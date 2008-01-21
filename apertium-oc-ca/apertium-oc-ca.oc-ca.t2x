@@ -1361,6 +1361,120 @@
 	</action>
 </rule>
 
+	<rule comment="REGLA: SN SV SN">
+		<pattern>
+			<pattern-item n="SN"/>
+			<pattern-item n="SV"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: SV SN">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="2"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<and>
+							<or>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="ref_verb"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="ref_pro_verb"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="ref_aux_pp"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="ref_pro_aux_pp"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="verb_inf_ref"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="verb_inf_enc_ref"/>
+								</equal>
+							</or>
+							<equal>
+								<clip pos="1" part="nbr"/>
+								<lit-tag v="sg"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="nbr"/>
+								<lit-tag v="pl"/>
+							</equal>
+						</and>
+					</test>
+					<let>
+						<clip pos="1" part="nbr"/>
+						<lit-tag v="pl"/>
+					</let>
+				</when>
+			</choose>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+
 
 <!--???
 <rule comment="REGLA: SN ne SV que pr SN">
