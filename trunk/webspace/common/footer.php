@@ -23,6 +23,17 @@
 
 <td>
 <br/>
+<a href="http://www.prompsit.com/">
+	<img src="images/prompsit150x52.png" alt="Prompsit Language Engineering S.L."/>
+</a>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+<br/>
 <a href="http://www10.gencat.net/dursi/AppJava/home.jsp?area=3">
 	<img src="images/stsi.gif" alt=""/>
 </a>
