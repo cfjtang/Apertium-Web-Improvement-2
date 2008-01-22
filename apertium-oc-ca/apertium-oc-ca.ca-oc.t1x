@@ -1495,6 +1495,33 @@
 				</let>
 			</when>
 		</choose>
+		<choose alt="oc">
+			<when>
+				<test>
+					<equal caseless="yes">
+						<clip pos="1" side="sl" part="lem"/>
+						<lit v="si no"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="1" side="tl" part="lem"/>
+					<lit v="pas"/>
+				</let>
+				<out>
+					<chunk name="cnj" case="caseFirstWord">
+						<tags>
+							<tag><clip pos="1" side="tl" part="tags"/></tag>		
+						</tags>
+						<lu>
+							<lit v="se"/>
+							<lit-tag v="cnjadv"/>
+						</lu>
+					</chunk>
+					<b/>
+				</out>
+			</when>
+				
+		</choose>
 <!--		<choose alt="oc">
 			<when>
 				<test>
@@ -10376,6 +10403,9 @@
 			<call-macro n="tipus_verb">
 				<with-param pos="2"/>
 			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -10604,6 +10634,9 @@
 			<call-macro n="tipus_verb">
 				<with-param pos="4"/>
 			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
@@ -10799,6 +10832,9 @@
 			</call-macro>
 			<call-macro n="tipus_verb">
 				<with-param pos="5"/>
+			</call-macro>
+			<call-macro n="f_lex_adv">
+				<with-param pos="1"/>
 			</call-macro>
 			<out alt="oc">
 				<chunk name="pro_pro_verb" case="caseFirstWord">
