@@ -12,7 +12,6 @@ $subsections = array
    */
    "testdrive"=>array
    (
-   	"link@Engels-Afrikaans"=>"http://interpret.co.za/",
    	"translatetext"=>"Vertaal teks",
    	"translatedoc"=>"Vertaal dokument",
    	"surfandtranslate"=>"Blaai deur die web &amp; vertaal"
