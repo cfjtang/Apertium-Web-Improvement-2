@@ -45,9 +45,10 @@
       <cat-item lemma="mod" tags="SV.*"/><!--MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: sí que és 'haig de'. -->
       <cat-item lemma="auxmod_inf" tags="SV.*"/>
       <cat-item lemma="auxmod_inf_inf" tags="SV.*"/><!--BCN-->
-      <cat-item lemma="be_inf_inf" tags="SV.*"/> <!--BCN-->
+      <cat-item lemma="be_ger_inf" tags="SV.*"/> <!--BCN-->
       <cat-item lemma="verbcj_inf" tags="SV.*"/>
       <cat-item lemma="verbcj_inf_perif" tags="SV.*"/>
+      <cat-item lemma="verbcj_inf_enc" tags="SV.*"/>
       <cat-item lemma="auxmod_mod_inf" tags="SV.*"/>
       <cat-item lemma="do_inf" tags="SV.*"/>
       <cat-item lemma="mod_inf" tags="SV.*"/>
@@ -108,6 +109,7 @@
       <cat-item lemma="verbcj" tags="SV.vbser.*"/>
       <cat-item lemma="auxmod_inf" tags="SV.vbser.*"/>
       <cat-item lemma="auxmod_mod_inf" tags="SV.vbser.*"/>
+      <cat-item lemma="auxmod_have_pp" tags="SV.vbser.*"/>
       <cat-item lemma="mod_inf" tags="SV.vbser.*"/>
       <cat-item lemma="mod_inf_perif" tags="SV.vbser.*"/>
       <cat-item lemma="have_pp" tags="SV.vbser.*"/>
@@ -5188,7 +5190,7 @@ Your mother and you will come - La vostra mare i tu vindran
       </action>
     </rule>
 
-    <rule comment="REGLA: SV (per assignar persona i nombre si hi ha PD i ND que no s'han pogut determinar, escepte per als infinitius ">
+    <rule comment="REGLA: SV (per assignar persona i nombre si hi ha PD i ND que no s'han pogut determinar, escepte per als infinitius i gerundis ">
       <pattern>
 	<pattern-item n="SV"/>
       </pattern>
@@ -5197,10 +5199,16 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <when>
 	    <test>
 	      <not>
-		<equal>
-		  <clip pos="1" part="temps"/>
-		  <lit-tag v="inf"/>
-		</equal>
+		<or>
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="inf"/>
+		  </equal> 
+		  <equal>
+		    <clip pos="1" part="temps"/>
+		    <lit-tag v="ger"/>
+		  </equal>
+		</or>
 	      </not>
 	    </test>
 	    <choose>
