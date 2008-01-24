@@ -1,43 +1,43 @@
 function insertChar(oList){
-	var iSelected = oList.selectedIndex;
-	if(iSelected!=0){
-		var tb = document.getElementById('thetextbox');
-		tb.value = tb.value + oList.options[iSelected].value;
-		oList.selectedIndex=0;
-		tb.focus();
-	}
+    var iSelected = oList.selectedIndex;
+    if(iSelected!=0){
+        var tb = document.getElementById('thetextbox');
+        tb.value = tb.value + oList.options[iSelected].value;
+        oList.selectedIndex=0;
+        tb.focus();
+    }
 }
 
 
 function insertAtCursor(oList) {
-	var iSelected = oList.selectedIndex;
-	myValue = oList.options[iSelected].value;
-	myField = document.getElementById('thetextbox');
-	if(iSelected != 0) {
-		oList.selectedIndex=0;
-		myField.focus();
-	}
-	
-	var isIE = document.all?true:false;
-	var isNS = document.layers?true:false;
-	
-	//IE support 
-	if(isIE) {
-		//if (document.selection) {
-			myField.focus();
-			sel = document.selection.createRange();
-			sel.text = myValue;
-		//}
-	} else {
-		//MOZILLA/NETSCAPE support
-		if (myField.selectionStart || myField.selectionStart == '0') {
-			var startPos = myField.selectionStart;
-			var endPos = myField.selectionEnd;
-			myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-		} else {
-			myField.value += myValue;
-		}
-	}
+    var iSelected = oList.selectedIndex;
+    myValue = oList.options[iSelected].value;
+    myField = document.getElementById('thetextbox');
+    if(iSelected != 0) {
+        oList.selectedIndex=0;
+        myField.focus();
+    }
+    
+    var isIE = document.all?true:false;
+    var isNS = document.layers?true:false;
+    
+    //IE support 
+    if(isIE) {
+        //if (document.selection) {
+        myField.focus();
+        sel = document.selection.createRange();
+        sel.text = myValue;
+        //}
+    } else {
+    //MOZILLA/NETSCAPE support
+    if (myField.selectionStart || myField.selectionStart == '0') {
+        var startPos = myField.selectionStart;
+        var endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+    } else {
+    myField.value += myValue;
+}
+}
 }
 
 document.write('<div id="special-chars">');
