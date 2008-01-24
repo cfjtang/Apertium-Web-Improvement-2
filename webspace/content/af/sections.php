@@ -14,7 +14,8 @@ $subsections = array
    (
    	"translatetext"=>"Vertaal teks",
    	"translatedoc"=>"Vertaal dokument",
-   	"surfandtranslate"=>"Blaai deur die web &amp; vertaal"
+   	"surfandtranslate"=>"Blaai deur die web &amp; vertaal",
+		"lookup"=>"DicLookUp"   	
    ),
 "documentation" =>array
    (

@@ -15,7 +15,7 @@
    	"translatetext"=>"Text translation",
    	"translatedoc"=>"Document translation",
    	"surfandtranslate"=>"Navegar e revirar",   	
-   	"internostrum"=>"interNOSTRUM"   	
+   	"lookup"=>"DicLookUp"   	
    ),
 "documentation" =>array
    (

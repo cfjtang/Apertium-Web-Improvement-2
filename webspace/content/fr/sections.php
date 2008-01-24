@@ -14,7 +14,8 @@
    (
    	"translatetext"=>"Traduction de texte",
    	"translatedoc"=>"Traduction de documents",
-   	"surfandtranslate"=>"Surf &amp; translate"   	   	
+   	"surfandtranslate"=>"Surf &amp; translate",
+   	"lookup"=>"DicLookUp"
    ),
 "documentation" =>array
    (
