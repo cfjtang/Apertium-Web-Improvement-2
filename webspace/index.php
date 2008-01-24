@@ -22,7 +22,15 @@
                 </form>
             </div>
             -->
-				<?php include_once("content/" . $lang . "/header.html") ?>
+            
+				<?php 
+					$headerFile = "content/" . $lang . "/header.html";
+						if( file_exists($headerFile) ) {
+							include_once($headerFile);
+						} else {
+							include_once("content/en/header.html");
+						}
+				?>
 				<?php include_once("php/lang_menu.php") ?>
 				
             <div id="body">
