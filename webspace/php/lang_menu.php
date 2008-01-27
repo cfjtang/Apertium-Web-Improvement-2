@@ -4,7 +4,7 @@ global $langtext;
 /*
 	PRINT LANGUAGE LINK
 */
-function printLanguageLink($code, $text, $url, $newLang) {
+function printLanguageLink_previous($code, $text, $url, $newLang) {
 	if ($newLang==$code) {
 		$code = '&nbsp;<b>' . $text . '</b>&nbsp;';
 		$GLOBALS["langtext"] = $code;
@@ -13,10 +13,21 @@ function printLanguageLink($code, $text, $url, $newLang) {
 	}
 }
 
+function printLanguageLink($code, $text, $url, $newLang) {
+	if ($newLang==$code) {
+		//$text = '&nbsp;<b>' . $text . '</b>&nbsp;';
+		print '<option class="selected" selected="true" value="' . $url . 'lang=' . $code . '">' . $text . '</option>';
+		$GLOBALS["langtext"] = $code;
+	} else {
+	print '<option value="' . $url . 'lang=' . $code . '">' . $text . ' (' . $code . ')</option>';
+	}
+}
+
 ?>
 
 <div id="langselect">
 	<?php
+		print '<select id="langSelection" name="langSelection" class="langSelection" onchange="window.location.href=document.getElementById(\'langSelection\').value">';
 		printLanguageLink("af","afrikaans", $url, $newLang, $currentLang);
 		printLanguageLink("ca","catal&agrave;", $url, $newLang, $currentLang);
 		//printLanguageLink("cy","cymraeg", $url, $newLang, $currentLang);
@@ -38,6 +49,7 @@ function printLanguageLink($code, $text, $url, $newLang) {
 		//printLanguageLink("sv","svenska", $url, $newLang, $currentLang);
 		//printLanguageLink("tg","тоҷикӣ", $url, $newLang, $currentLang);		
 		print '<a title="" href="' . $url . 'lang=' . $newLang . '">-&nbsp;<b>'. $langtext .'</b>&nbsp;</a>';
+		print '</select>';
 	?>
 </div>
 
