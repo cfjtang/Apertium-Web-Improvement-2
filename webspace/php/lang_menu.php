@@ -16,7 +16,7 @@ function printLanguageLink_previous($code, $text, $url, $newLang) {
 function printLanguageLink($code, $text, $url, $newLang) {
 	if ($newLang==$code) {
 		//$text = '&nbsp;<b>' . $text . '</b>&nbsp;';
-		print '<option class="selected" selected="true" value="' . $url . 'lang=' . $code . '">' . $text . '</option>';
+		print '<option class="selected" selected="true" value="' . $url . 'lang=' . $code . '">' . $text . ' (' . $code . ')</option>';
 		$GLOBALS["langtext"] = $code;
 	} else {
 	print '<option value="' . $url . 'lang=' . $code . '">' . $text . ' (' . $code . ')</option>';
