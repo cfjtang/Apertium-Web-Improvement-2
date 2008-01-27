@@ -1,9 +1,15 @@
 var xmlHttp;
+var timerId;
 var direction = document.forms[0].direction.value;
+var dirValue;
 ajaxFunction(direction);
 
+
 function ajaxFunction(dir) {
+	//alert("ajaxFunction('" + dir + "')");
 	cleanResult();
+	//updateOptions(dir);
+
     try {
         // Firefox, Opera 8.0+, Safari
         xmlHttp = new XMLHttpRequest();
@@ -25,8 +31,8 @@ var fileName = "common/xml/" + dir + "-trie.xml";
 xmlHttp.open("GET",fileName,true);
 xmlHttp.send(null);
 showLoadingIndicator();
-}
 
+}
 
 function loadXML() {
     if(xmlHttp.readyState==4) {
@@ -40,6 +46,12 @@ function loadXML() {
     }
 }	
 }  
+
+function delayLookUp(value, showLexicalInfo, dir) {
+   cmd = 'lookUp("' + value + '", ' + showLexicalInfo + ', "' + dir + '")';
+   clearTimeout(timerId);
+   timerId = setTimeout(cmd, 500);
+}
 
 function lookUp(value, showLexicalInfo, dir){
     //var keyID = event.keyCode;
@@ -164,7 +176,6 @@ function getSourceLang(dir) {
 }
 }
 
-
 function getTargetLang(dir) {
     var data = new Array();
     data = dir.split("-");
@@ -234,4 +245,3 @@ function inner_text(node){
         }
     }
 }
-

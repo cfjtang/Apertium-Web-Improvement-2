@@ -14,13 +14,13 @@ function show_form($textbox, $dir) {
 	print '<form class="translation" action="" method="post">';
 	print '<fieldset><legend></legend>';
 	//print _("Translation type:");
-	print ' <select onchange="ajaxFunction(this.value)" id="direction" name="direction" title="' . _("Select the translation type") . '">';
+	print ' <select onchange="ajaxFunction(this.value);" id="direction" name="direction" title="' . _("Select the translation type") . '">';
 
 	//include_once("available_pairs.php");
 	//print "<option class='header' value='' disabled='true'>" . _("Select direction") . "</option>";
 	print "<option class='header' value='' disabled='true'>" . _("Catalan") . "</option>";
 	print "<option value='es-ca-rl' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Spanish") . "</option>";
-	print "<option value'en-ca-rl' " . ($dir == 'ca-en' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("English") . "</option>";
+	print "<option value='en-ca-rl' " . ($dir == 'ca-en' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("English") . "</option>";
 	// ca-eo not working!	
 	//print "<option value='eo-ca-rl' " . ($dir == 'ca-eo' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Esperanto") . "</option>";
 	print "<option value='fr-ca-rl' " . ($dir == 'ca-fr' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("French") . "</option>";
@@ -76,13 +76,11 @@ function show_form($textbox, $dir) {
 	print "<option value='sv-da-lr' " . ($dir == 'sv-da' ? ' selected=true' : '') . ">" . _("Swedish") . " &rarr; " . _("Danish") . "</option>";
 	print "<option value='tg-fa-rl' " . ($dir == 'fa-tg' ? ' selected=true' : '') . ">" . _("Persian") . " &rarr; " . _("Tajik") . "</option>";
 	print "<option value='tg-fa-lr' " . ($dir == 'tg-fa' ? ' selected=true' : '') . ">" . _("Tajik") . " &rarr; " . _("Persian") . "</option>";
-	
 	print '</select><br/><br/>';
-	print '<input id="word" name="word" type="text" onkeyup="lookUp(this.value,true, document.forms[0].direction.value);"/>';
-	print '<br/>';
-	
 	//print _("Show lexical information") . " ";
 	//print '<input onchange="lexicalInfo(this);" id="lexical" value="1" name="lexical" type="checkbox" title="' . _("Check the box to show lexical information") . '"/>';
+	print '<input id="word" name="word" type="text" onkeyup="delayLookUp(this.value,true, document.forms[0].direction.value);"/>';
+	print '<br/>';
 	print '</fieldset></form>';
 	print '<div id="message"></div>';
 	print '<div id="result" style="overflow:auto; width:500px; height:400px;"></div>';
