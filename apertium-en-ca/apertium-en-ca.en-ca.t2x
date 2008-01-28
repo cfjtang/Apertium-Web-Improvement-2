@@ -130,8 +130,8 @@
     </def-cat>
 
     <def-cat n="ADV">
-      <cat-item lemma="adv" tags="adv"/>
-      <cat-item lemma="adv" tags="adv.*"/>
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.*"/>
     </def-cat>
 
    
@@ -1117,9 +1117,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk><!--envio el chunk amb el SN-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!--...i un altre amb un pronom feble (nois els agraden les patates) -->
@@ -1168,15 +1166,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk><!--envio el verb amb la persona i el nombre canviats (he fet els canvis dalt de tot)-->
-	    <clip pos="2" part="lem"/>
-	    <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk><!-- i envio també el segon SN-->
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
 	<call-macro n="determina_nbr_gen_SN">
@@ -1265,9 +1259,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </test>	    
 	    <out>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
@@ -1350,15 +1342,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk><!--envio el chunk amb el SN-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!-- l'adv-->
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      
@@ -1408,19 +1396,254 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk><!--envio el verb amb la persona i el nombre canviats (he fet els canvis dalt de tot)-->
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk><!-- i envio també el segon SN-->
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
 	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="4"/>
+	</call-macro>	
+      </action>
+    </rule>
+
+  <rule comment="REGLA: SN adv adv like SN (igual que l'anterior però amb dos adverbis, per a tractar: 'she really does not like potatoes'">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="vblike"/>
+	<pattern-item n="SNnorel"/>	
+      </pattern>
+      <action>
+	<call-macro n="posadet_SN">
+	  <with-param pos="5"/>
+	</call-macro>
+	<choose> <!-- primer assignem els canvis necessaris al verb-->
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<let>
+	  <clip pos="4" part="pers"/>
+	  <lit-tag v="p3"/>
+	</let>
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <clip pos="5" part="nbr"/>
+	</let>
+	<choose>
+	  <when>
+	    <test><!--quan subjecte és un pronom compost com 'we all' etc., envia 'a tots nosaltres' -->
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj2"/>
+	      </equal>
+	    </test>
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->		
+		<get-case-from pos="2">
+		  <clip pos="1" part="lem"/>
+		</get-case-from>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	</choose>
+	<choose><!-- quan el subjecte és un pronom...-->
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <out>
+	      <chunk>
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+		<lit v="comp_like"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro"/>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="mf"/>
+		<clip pos="1" part="nbr"/>		
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="3"/>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>	    
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      
+	      <chunk><!--...i un altre amb un pronom feble (als nois no els agraden les patates) -->
+		<lit v="comp_like"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="4">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro.p3.mf"/>
+		<var n="nombre"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </otherwise>
+	</choose>
+	<!--Assigna gènere i nombre al segon SN (GD i ND) -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk><!--envio el verb amb la persona i el nombre canviats (he fet els canvis dalt de tot)-->
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk><!-- i envio també el segon SN-->
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="5"/>
 	</call-macro>	
       </action>
     </rule>
@@ -1646,9 +1869,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk><!--envio el chunk amb el SN-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!--...i un altre amb un pronom feble (nois els agraden les patates) -->
@@ -1668,9 +1889,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk><!-- envio el verb al t3x amb uns canvis pendents de fer-->
-	    <clip pos="2" part="lem"/>
-	    <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -1818,9 +2037,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </test>	    
 	    <out>
 	      <chunk><!-- primer envio l'adverbi-->
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
@@ -1904,15 +2121,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk><!--envio el chunk amb el SN-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!-- l'adv-->
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      
@@ -1933,14 +2146,276 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk><!--envio el verb al t3x amb canvis pendents-->
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
-	<call-macro n="determina_nbr_gen_SN">
-	  <with-param pos="4"/>
-	</call-macro>	
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: SN adv adv like-prn (igual que regla anterior però amb dos adverbis)">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="pro_vblike"/>
+      </pattern>
+      <action>
+	<choose> <!-- primer assignem els canvis possibles al verb-->
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose> <!-- canvia el nom del chunk per poder-hi treballar més facilment al t3x-->
+	  <when>
+	    <test>
+	      <equal caseless="yes">		
+		<clip pos="4" part="lem"/>
+		<lit v="pro_verbcj"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="lem"/>
+	      <lit v="pro_vblike"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <choose> 
+	      <when>
+		<test>
+		  <or>
+		    <equal caseless="yes">		
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_verbcj_perif"/>
+		    </equal>
+		    <equal caseless="yes">		
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_auxmod_inf"/>
+		    </equal>
+		    <equal caseless="yes">		
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_mod_inf"/>
+		    </equal>
+		    <equal caseless="yes">		
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_have_pp"/>
+		    </equal>
+		    <equal caseless="yes">		
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_be_ger"/>
+		    </equal>
+		    <equal caseless="yes">		
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_do_inf"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <clip pos="4" part="lem"/>
+		  <lit v="pro_vblike2"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<choose> 
+		  <when>
+		    <test>
+		      <or>
+			<equal caseless="yes">		
+			  <clip pos="4" part="lem"/>
+			  <lit v="pro_mod_inf_perif"/>
+			</equal>
+			<equal caseless="yes">		
+			  <clip pos="4" part="lem"/>
+			  <lit v="pro_auxmod_mod_inf"/>
+			</equal>
+		      </or>
+		    </test>
+		    <let>
+		      <clip pos="4" part="lem"/>
+		      <lit v="pro_vblike3"/>
+		    </let>
+		  </when>
+		</choose>
+	      </otherwise>
+	    </choose>
+	  </otherwise>
+	</choose>
+	<choose>
+	  <when>
+	    <test><!--quan subjecte és un pronom compost com 'we all' etc., envia 'a tots nosaltres' -->
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj2"/>
+	      </equal>
+	    </test>
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->		
+		<get-case-from pos="2">
+		  <clip pos="1" part="lem"/>
+		</get-case-from>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	</choose>
+	<choose><!-- quan el subjecte és un pronom...-->
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <out>
+	      <chunk><!-- primer envio l'adverbi-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk><!-- el segon adverbi-->
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+		<lit v="comp_like"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="3">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro"/>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="mf"/>
+		<clip pos="1" part="nbr"/>		
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="3"/>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>
+	    
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      
+	      <chunk><!--...i un altre amb un pronom feble (als nois no els agraden les patates) -->
+		<lit v="comp_like"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="3">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro.p3.mf"/>
+		<var n="nombre"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </otherwise>
+	</choose>
+	<out>
+	  <chunk><!--envio el verb al t3x amb canvis pendents-->
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>	
       </action>
     </rule>
     
@@ -2099,9 +2574,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk><!--envio el chunk amb el SN-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!--...i un altre amb un pronom feble (nois els agraden les patates) -->
@@ -2121,9 +2594,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk><!-- envio el verb-->
-	    <clip pos="2" part="lem"/>
-	    <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -2205,9 +2676,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </test>	    
 	    <out>
 	      <chunk><!-- envio l'adv-->
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
@@ -2290,15 +2759,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk><!--envio el chunk amb el SN-->
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk><!-- l'adv-->
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk><!--...i un altre amb un pronom feble (nois els agraden les patates) -->
@@ -2318,9 +2783,206 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk><!-- envio el verb-->
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+  <rule comment="REGLA: SN adv adv vblike">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="vblike"/>
+      </pattern>
+      <action>
+	<choose> <!-- primer assignem els canvis que podem al verb-->
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<let>
+	  <clip pos="4" part="pers"/>
+	  <lit-tag v="p3"/>
+	</let>
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+	<choose>
+	  <when>
+	    <test><!--quan subjecte és un pronom compost com 'we all' etc., envia 'a tots nosaltres' -->
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj2"/>
+	      </equal>
+	    </test>
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->		
+		<get-case-from pos="2">
+		  <clip pos="1" part="lem"/>
+		</get-case-from>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	</choose>
+	<choose><!-- quan el subjecte és un pronom...-->
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <out>
+	      <chunk><!-- envio l'adv-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!-- envio l'adv-->
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+		<lit v="comp_like"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="3">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro"/>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="mf"/>
+		<clip pos="1" part="nbr"/>		
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>	    
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      <chunk><!--...i un altre amb un pronom feble (nois els agraden les patates) -->
+		<lit v="comp_like"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="3">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro.p3.mf"/>
+		<var n="nombre"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </otherwise>
+	</choose>
+	<out>
+	  <chunk><!-- envio el verb-->
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -2463,6 +3125,9 @@ Your mother and you will come - La vostra mare i tu vindran
 	    <clip pos="3" part="whole"/>
 	  </chunk>	    
 	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="3"/>
+	</call-macro>	
       </action>
     </rule>
 
@@ -2607,6 +3272,162 @@ Your mother and you will come - La vostra mare i tu vindran
 	    <clip pos="4" part="whole"/>
 	  </chunk>	    
 	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="4"/>
+	</call-macro>	
+      </action>
+    </rule>
+
+
+  <rule comment="REGLA: there ADV ADV BE SN (there really can not be a cat)">
+      <pattern>
+	<pattern-item n="there"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="thereis"/>
+	<pattern-item n="SNnorel"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<let><!--posa-ho com a p3 sg perquè en català 'haver-hi' sempre és en p3 i sg (hi ha cotxes) -->
+	  <clip pos="4" part="pers"/>
+	  <lit-tag v="p3"/>
+	</let>	
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="hi"/>
+	</let>
+	<let>
+	  <clip pos="4" part="a_verb"/>
+	  <lit-tag v="HAVER"/>
+	</let>
+	<!--Quan SN és GD o ND -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="4" part="temps"/>
+		      <lit-tag v="pri"/>
+		    </equal>
+		    <equal>
+		      <clip pos="4" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="5" part="nbr"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="4" part="temps"/>
+		    <lit-tag v="pri"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="5" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="4" part="temps"/>
+		      <lit-tag v="ifip"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="4" part="lem"/>
+		      <lit v="be"/>
+		    </equal>
+		    <equal>
+		      <clip pos="4" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="5" part="nbr"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="5" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>	    
+	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="5"/>
+	</call-macro>	
       </action>
     </rule>
     
@@ -2714,6 +3535,66 @@ Your mother and you will come - La vostra mare i tu vindran
     </rule>
 
 
+   <rule comment="REGLA: there ADV ADV BE (sense SN clar a continuació - There really can not be)">
+      <pattern>
+	<pattern-item n="there"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="thereis"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<let><!--posa-ho com a p3 sg perquè en català 'haver-hi' sempre és en p3 i sg (hi ha cotxes) -->
+	  <clip pos="4" part="pers"/>
+	  <lit-tag v="p3"/>
+	</let>	
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="hi"/>
+	</let>
+	<let>
+	  <clip pos="4" part="a_verb"/>
+	  <lit-tag v="HAVER"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>	    
+	</out>
+      </action>
+    </rule>
+
+
     <!--REGLES GENERALS -->
 
 
@@ -2769,15 +3650,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN-->	    
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	    </out>
 	  </otherwise>
@@ -2903,21 +3780,100 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN o bé prnsubj2 -->	 
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+      </action>
+    </rule>
+
+
+   <rule comment="REGLA: SN ADV ADV SV (We really can not say)" >
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>	      
+	      <chunk>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>	      
+	      <chunk>
+		<clip pos="4" part="whole"/>
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN o bé prnsubj2 -->	 
+	    <out>
+	      <chunk>
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      <chunk>
+		<clip pos="4" part="whole"/>
 	      </chunk>
 	    </out>
 	  </otherwise>
@@ -2991,6 +3947,74 @@ Your mother and you will come - La vostra mare i tu vindran
       </action>
     </rule>
 
+
+
+    <rule comment="REGLA: SN and SN ADV ADV SV (com l'anterior però dos adv: 'You and your father really can not say')">
+      <pattern>
+	<pattern-item n="SNnorel"/>
+	<pattern-item n="and"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+	<call-macro n="concord_SNcoo_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="6"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="6" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="6" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+	    <clip pos="6" part="whole"/>
+	  </chunk>
+	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+      </action>
+    </rule>
+
     <rule comment="REGLA: SN SV SA (they live/are happy - viuen feliços (BCN s'ha modificat)">
       <pattern>
 	<pattern-item n="SN"/>
@@ -3043,15 +4067,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	    </out>
 	  </otherwise>
@@ -3240,15 +4260,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	    
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	    </out>
@@ -3276,9 +4292,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	</let>
 	<out>
 	  <chunk>
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
@@ -3286,9 +4300,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	  </chunk>
 	  <b pos="4"/>
 	  <chunk>
-	    <clip pos="5" part="lem"/>
-	    <clip pos="5" part="tags"/>
-	    <clip pos="5" part="chcontent"/>
+	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out> 
       </action>
@@ -3345,9 +4357,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
 	      </chunk>
 	      <b pos="3"/>
 	    </out>
@@ -3355,21 +4365,15 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	   
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
 	      </chunk>
 	      <b pos="3"/>
 	    </out>
@@ -3389,9 +4393,109 @@ Your mother and you will come - La vostra mare i tu vindran
 	</let>
 	<out>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+  <rule comment="REGLA: SN adv adv SV SA (com l'anterior però amb dos adverbis)">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="SA"/>	
+      </pattern>
+      <action>
+	<call-macro n="concord_SN_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="4" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj"/>
+	      </equal>
+	    </test>
+	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk><!--el pronom no l'envio, només el 2n chunk -->
+		<get-case-from pos="1">
+		  <clip pos="2" part="lem"/>
+		</get-case-from>
+		<clip pos="2" part="tags"/>
+		<clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      <chunk>
+		<clip pos="4" part="whole"/>
+	      </chunk>
+	      <b pos="4"/>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	   
+	    <out>
+	      <chunk>
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+		<clip pos="3" part="whole"/>
+	      </chunk>
+	      <b pos="3"/>
+	      <chunk>
+		<clip pos="4" part="whole"/>
+	      </chunk>
+	      <b pos="4"/>
+	    </out>
+	  </otherwise>
+	</choose>
+	<!--Assigna gènere i nombre a adjectiu (GD i ND) -->
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <var n="nombre"/>
+	</let>
+	<let>
+	  <clip pos="5" part="gen"/>
+	  <var n="genere"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -3511,7 +4615,124 @@ Your mother and you will come - La vostra mare i tu vindran
     </rule>
 
 
- <!-- <rule comment="REGLA: SN SV pr SV (they would like to know - mireia)">
+   <rule comment="REGLA: SN and SN ADV ADV SV SA (com l'anterior però amb dos adv)">
+      <pattern>
+	<pattern-item n="SNnorel"/>
+	<pattern-item n="and"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<call-macro n="concord_SNcoo_SV">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	  <with-param pos="6"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="posadet_SN">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="6" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="6" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+	    <clip pos="6" part="whole"/>
+	  </chunk>
+	</out>
+	<choose> <!-- part del SA per a genere i nombre-->
+	  <when>
+	    <test>
+	      <or>
+		<equal>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</equal>
+		<equal>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="mf"/>
+		</equal>
+		<equal>
+		  <clip pos="3" part="gen"/>
+		  <lit-tag v="m"/>
+		</equal>
+		<equal>
+		  <clip pos="3" part="gen"/>
+		  <lit-tag v="mf"/>
+		</equal>
+	      </or>
+	    </test>
+	    <let>
+	      <clip pos="7" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <clip pos="7" part="gen"/>
+	      <lit-tag v="f"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<let>
+	  <clip pos="7" part="nbr"/><!--sempre serà pl-->
+	  <lit-tag v="pl"/>
+	</let>
+	<out>
+	  <b pos="6"/>
+	  <chunk>
+	    <clip pos="7" part="whole"/>
+	  </chunk>
+	</out>
+
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <var n="nombre"/>
+	  <lit-tag v="pl"/>
+	</let>
+      </action>
+    </rule>
+
+
+ <!-- <rule comment="REGLA: SN SV pr SV (they would like to know - pendent)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV"/>
@@ -3912,15 +5133,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->	 
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b/>
 	      <chunk>
@@ -3937,9 +5154,9 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </out>
 	  </otherwise>
 	</choose>
-	<call-macro n="determina_nbr_gen_SN">
+<!--	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="1"/>
-	</call-macro>
+	</call-macro> ens quedem amb els valors del SN 3(?)-->
 
 	<!-- ara la concordança entre el SN 3 i el SV 4 -->
 
@@ -3988,20 +5205,16 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <otherwise><!--Quan SN no és prnsubj. --> 	    
 	    <out>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
 	      </chunk>
 	      <b pos="3"/>
 	      <chunk>
-		<clip pos="4" part="lem"/>
-		<clip pos="4" part="tags"/>
-		<clip pos="4" part="chcontent"/>
+		<clip pos="4" part="whole"/>
 	      </chunk>
 	    </out>
-<!--	<call-macro n="determina_nbr_gen_SN">
+	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="3"/>
-	</call-macro> -->
+	</call-macro>
 	  </otherwise>
 	</choose>
       </action>
@@ -4111,9 +5324,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </choose>
 	    <out><!--aquí enviem el primer SN tant si és pronom subjecte com si no. -->
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
@@ -4121,15 +5332,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
 	      </chunk>
 	      <b pos="3"/>
 	      <chunk>
-		<clip pos="4" part="lem"/>
-		<clip pos="4" part="tags"/>
-		<clip pos="4" part="chcontent"/>
+		<clip pos="4" part="whole"/>
 	      </chunk>
 	    </out>	
 	<call-macro n="determina_nbr_gen_SN">
@@ -4241,9 +5448,7 @@ Your mother and you will come - La vostra mare i tu vindran
 
 	<out><!--aquí enviem el primer SN tant si és pronom subjecte com si no. -->
 	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
+	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
@@ -4251,15 +5456,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
 	<call-macro n="determina_nbr_gen_SN"><!--Assigna gènere i nombre a l'adjectiu -->
@@ -4389,9 +5590,7 @@ Your mother and you will come - La vostra mare i tu vindran
 
 	<out><!--aquí enviem el primer SN tant si és pronom subjecte com si no. -->
 	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
+	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
@@ -4399,15 +5598,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
-	    <clip pos="4" part="lem"/>
-	    <clip pos="4" part="tags"/>
-	    <clip pos="4" part="chcontent"/>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	  <b pos="4"/>
 	</out>
@@ -4434,9 +5629,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	</let>
 	<out>
 	  <chunk>
-	    <clip pos="5" part="lem"/>
-	    <clip pos="5" part="tags"/>
-	    <clip pos="5" part="chcontent"/>
+	    <clip pos="5" part="whole"/>
 	  </chunk>
 	  <b pos="5"/>
 	  <chunk>
@@ -4444,14 +5637,9 @@ Your mother and you will come - La vostra mare i tu vindran
 	  </chunk>
 	  <b pos="6"/>
 	  <chunk>
-	    <clip pos="7" part="lem"/>
-	    <clip pos="7" part="tags"/>
-	    <clip pos="7" part="chcontent"/>
+	    <clip pos="7" part="whole"/>
 	  </chunk>
-	</out>
-	<call-macro n="determina_nbr_gen_SN">
-	  <with-param pos="1"/>
-	</call-macro>	  
+	</out>  
       </action>
     </rule>
 
@@ -4508,24 +5696,18 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
 	      </chunk>
 	    </out>
 	  </when>
 	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
@@ -4540,21 +5722,17 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	      <b pos="2"/>
 	      <chunk>
-		<clip pos="3" part="lem"/>
-		<clip pos="3" part="tags"/>
-		<clip pos="3" part="chcontent"/>
+		<clip pos="3" part="whole"/>
 	      </chunk>
 	    </out>
 	  </otherwise>
 	</choose>	
 	<call-macro n="determina_nbr_gen_SN">
-	  <with-param pos="1"/>
+	  <with-param pos="3"/>
 	</call-macro>
       </action>
     </rule>
@@ -4617,9 +5795,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </choose>	   
 	    <out>
 	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
+		<clip pos="1" part="whole"/>
 	      </chunk>
 	      <b/>
 	      <chunk>
@@ -4637,9 +5813,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </chunk>
 	      <b pos="1"/>
 	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
+		<clip pos="2" part="whole"/>
 	      </chunk>
 	    </out>
 	<call-macro n="determina_nbr_gen_SN">
@@ -4664,15 +5838,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	</call-macro>
 	<out>
 	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
+	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
-	    <clip pos="2" part="lem"/>
-	    <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
 	<call-macro n="determina_nbr_gen_SN">
@@ -4698,9 +5868,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	</call-macro>
 	<out>
 	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
+	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
@@ -4708,9 +5876,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
-	    <clip pos="3" part="lem"/>
-	    <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
+	    <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
 	<call-macro n="determina_nbr_gen_SN">
@@ -4822,15 +5988,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
+	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
-	    <clip pos="2" part="lem"/>
-	    <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -5059,9 +6221,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <b pos="1"/>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
-	  </chunk>
-	  
+	  </chunk>	  
 	</out>
+	<call-macro n="determina_nbr_gen_SN">
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -5095,9 +6259,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	</choose>
 	<out>
 	  <chunk>
-	    <clip pos="1" part="lem"/>
-	    <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
+	    <clip pos="1" part="whole"/>
 	  </chunk>
 	</out>
       </action>
