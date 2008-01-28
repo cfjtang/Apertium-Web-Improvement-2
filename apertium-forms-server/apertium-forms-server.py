@@ -50,6 +50,13 @@ class form: #{
 	tags = Globals.config.pairs[default_pair].get_tags();
 	default_tag = tags.keys()[0];
 
+	if name != type(None) and name != '' and len(name) > 1: #{
+		print >> sys.stderr , 'Restarting with: ' + name;
+		default_pair = name;
+		tags = Globals.config.pairs[default_pair].get_tags();
+		default_tag = tags.keys()[0];
+	#}
+
 	dictionary_left = Globals.config.pairs[default_pair].dictionary['left'];
 	dictionary_bidix = Globals.config.pairs[default_pair].dictionary['bidix'];
 	dictionary_right = Globals.config.pairs[default_pair].dictionary['right'];
@@ -160,31 +167,37 @@ class add: #{
 #}
 
 if __name__ == "__main__": #{
-#    try: #{
-#        pid = os.fork();
-#        if pid > 0: #{
-#            sys.exit(0);
-#        #}
-#    except OSError, e: #{
-#        print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror); 
-#        sys.exit(1);
-#    #}
-#
-#    #os.chdir("/");
-#    os.setsid();
-#    os.umask(0);
-#
-#    try: #{
-#        pid = os.fork();
-#        if pid > 0: #{
-#            print "Daemon PID %d" % pid;
-#            sys.exit(0);
-#        #}
-#    except OSError, e: #{
-# #       print >>sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror);
-#        sys.exit(1);
-#    #}
-#
-#    sys.stderr = open(Globals.config.log_file, 'a+')
+
+    if len(sys.argv) < 2: #{
+
+        try: #{
+            pid = os.fork();
+            if pid > 0: #{
+                sys.exit(0);
+            #}
+        except OSError, e: #{
+           print >>sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror); 
+           sys.exit(1);
+        #}
+
+        #os.chdir("/");
+        os.setsid();
+        os.umask(0);
+    
+        try: #{
+            pid = os.fork();
+            if pid > 0: #{
+                print "Daemon PID %d" % pid;
+                sys.exit(0);
+	    #}
+        except OSError, e: #{
+            print >>sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror);
+            sys.exit(1);
+        #}
+
+        sys.stderr = open(Globals.config.log_file, 'a+')
+
+    #}
+
     web.run(urls, globals());
 #}

@@ -3,6 +3,7 @@
 # -*- encoding: utf-8 -*-
 
 import sys, string, codecs, xml, re, Ft, md5, cStringIO;
+from Ft.Xml.Domlette import EntityReader;
 from Ft.Xml.Domlette import NonvalidatingReader;
 from Ft.Xml.Domlette import Print, PrettyPrint;
 from Ft.Xml.XPath import Evaluate;
@@ -341,9 +342,10 @@ class Dictionary: #{
 			if section.getAttributeNS(None, 'id') == 'main': #{
 				print >> sys.stderr , 'Appending to section....';
 				insertion_point = section;
-				child_doc = NonvalidatingReader.parseString(_entrada.encode('utf-8'), 'urn:bogus:dummy');
-				child_node = child_doc.xpath('.//e')[0];
-				insertion_point.appendChild(child_node);
+				child_doc = EntityReader.parseString(_entrada.encode('utf-8'), 'urn:bogus:dummy');
+				for child_node in child_doc.xpath('.//e'): #{
+					insertion_point.appendChild(child_node);
+				#}
 				print >> sys.stderr , 'Appended.';
 			#}
 		#}

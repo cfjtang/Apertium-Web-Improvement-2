@@ -37,7 +37,7 @@ class Interface: #{
 			post_data['bidix_dictionary'].append(bidix_entrada);
 			post_data['right_dictionary'].append(right_entrada);
 
-                	print '<a href="http://xixona.dlsi.ua.es:8080/">again!</a>';
+                	print '<a href="http://xixona.dlsi.ua.es:8080/' + post_data['selected_pair'] + '">again!</a>';
 
 			return '';
 		#}
