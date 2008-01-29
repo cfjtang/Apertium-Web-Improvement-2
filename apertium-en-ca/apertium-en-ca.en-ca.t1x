@@ -716,9 +716,7 @@
     <def-var n="nbr_chunk"/>
     <def-var n="gen_chunk"/>
     <def-var n="pronom"/>
-    <def-var n="pronom2"/>
     <def-var n="pronomenc"/>
-    <def-var n="pronomenc2"/>
     <def-var n="paraula1"/>
     <def-var n="paraula2"/>
     <def-var n="tipus_verb"/>
@@ -1309,7 +1307,7 @@
  <def-macro n="pronenc" npar="1"><!-- fa el mateix que la funció 'pron' però crea un enclític reflexiu (per a verbs en formes no personals), que asigna a la variable 'pronomenc'. Funciona només si abans s'ha cridat la macro 'tipus_verbs_imp' per al verb que ha de portar l'enclític. 
 No es crea mlu, per a poder fer canvis de posició en el t3x. En el t3x es crea la mlu i es canvia el pronom de 3a persona a reflexiu si toca. -->
       <let>
-	<var n="pronomenc2"/>
+	<var n="pronomenc"/>
 	<lit v=""/>
       </let>
       <choose><!--envia el pronom en els verbs pronominals -->
@@ -1321,10 +1319,10 @@ No es crea mlu, per a poder fer canvis de posició en el t3x. En el t3x es crea 
 	    </equal>
 	  </test>
 	  <let>
-	    <var n="pronomenc2"/>
+	    <var n="pronomenc"/>
 	    <lit v="$^prpers"/>
 	  </let>
-	  <append n="pronomenc2">
+	  <append n="pronomenc">
 	    <lit-tag v="prn.enc"/>
 	    <lit-tag v="4"/>
 	    <lit-tag v="mf"/>
@@ -12584,7 +12582,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><lit-tag v="inf"/></tag>
 	    </tags>  
-	    <mlu>
+	 <!--   <mlu>-->
 	      <lu>
 		<clip pos="1" side="tl" part="lemh"/> 
 		<clip pos="1" side="tl" part="a_verb"/>
@@ -12599,7 +12597,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		<clip pos="2" side="tl" part="nbr"/>
 		<clip pos="1" side="tl" part="lemq"/>
 	      </lu>
-	    </mlu>	
+<!--	    </mlu>	-->
 	  </chunk>
 	</out>
       </action>
@@ -13754,7 +13752,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="4" side="tl" part="lemh"/>
 	      <clip pos="4" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="4" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -13820,7 +13818,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="3" side="tl" part="lemh"/>
 		  <clip pos="3" side="tl" part="a_verb"/>
 		  <lit-tag v="inf"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		  <clip pos="3" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
@@ -13886,7 +13884,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		<clip pos="3" side="tl" part="lemh"/>
 		<clip pos="3" side="tl" part="a_verb"/>
 		<lit-tag v="inf"/>
-		<var n="pronomenc2"/>
+		<var n="pronomenc"/>
 	      </lu>
 	      <lu>
 		<clip pos="4" side="tl" part="lem"/>
@@ -13971,7 +13969,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="4" side="tl" part="lemh"/>
 	      <clip pos="4" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="4" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -14075,7 +14073,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="5" side="tl" part="lemh"/>
 	      <clip pos="5" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
 	</chunk>
@@ -14141,7 +14139,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="4" side="tl" part="lemh"/>
 	      <clip pos="4" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="4" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -14242,7 +14240,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="5" side="tl" part="lemh"/>
 	      <clip pos="5" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -14333,7 +14331,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_verb"/>
 		  <clip pos="2" side="tl" part="temps"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		  <clip pos="2" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
@@ -14425,7 +14423,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_verb"/>
 		  <clip pos="2" side="tl" part="temps"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		</lu>
 		<lu>
 		  <clip pos="3" side="tl" part="lem"/> 
@@ -14551,7 +14549,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="3" side="tl" part="lemh"/> 
 		  <clip pos="3" side="tl" part="a_verb"/>
 		  <clip pos="3" side="tl" part="temps"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		  <clip pos="3" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
@@ -14677,7 +14675,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="3" side="tl" part="lemh"/> 
 		  <clip pos="3" side="tl" part="a_verb"/>
 		  <clip pos="3" side="tl" part="temps"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		</lu>
 		<lu>
 		  <clip pos="4" side="tl" part="lem"/> 
@@ -14766,7 +14764,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="4" side="tl" part="lemh"/>
 		  <clip pos="4" side="tl" part="a_verb"/>
 		  <lit-tag v="inf"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		  <clip pos="4" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
@@ -14798,7 +14796,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="4" side="tl" part="lemh"/>
 		  <clip pos="4" side="tl" part="a_verb"/>
 		  <lit-tag v="inf"/>
-		  <var n="pronomenc2"/>
+		  <var n="pronomenc"/>
 		  <clip pos="4" side="tl" part="lemq"/>
 		</lu>
 	      </chunk>
@@ -14854,7 +14852,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="2" side="tl" part="lemh"/>
 	      <clip pos="2" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -14913,7 +14911,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="3" side="tl" part="lemh"/>
 	      <clip pos="3" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="3" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -14966,7 +14964,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="3" side="tl" part="lemh"/>
 	      <clip pos="3" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="3" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -16315,7 +16313,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="5" side="tl" part="lemh"/>
 	      <clip pos="5" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -16396,7 +16394,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="5" side="tl" part="lemh"/>
 	      <clip pos="5" side="tl" part="a_verb"/>
 	      <lit-tag v="inf"/>
-	      <var n="pronomenc2"/>
+	      <var n="pronomenc"/>
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>

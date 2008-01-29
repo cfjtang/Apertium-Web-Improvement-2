@@ -390,6 +390,7 @@
     <def-var n="interrogativa"/>
     <def-var n="exclamativa"/>
     <def-var n="caseFirstWord"/> 
+    <def-var n="caseSecondWord"/>
     <def-var n="lema"/>
     <def-var n="EOS" v="true"/>
     <def-var n="paraula1"/>
@@ -7291,11 +7292,20 @@
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
 	    </call-macro>
+	    <let>
+		<var n="caseSecondWord"/>
+		<var n="caseFirstWord"/>
+	    </let>
+	      
 	  </when>
 	  <otherwise>
 	    <let>
 	      <var n="SVnegatiu"/>
 	      <lit-tag v="SV"/>
+	    </let>
+	    <let>
+		<var n="caseSecondWord"/>
+		<case-of pos="2" side="sl" part="lem"/>
 	    </let>
 	    <out>
 	      <chunk name="adv" case="caseFirstWord">
@@ -7357,7 +7367,7 @@
 	      <lit-tag v="past"/>
 	    </let>
 	    <out>
-	      <chunk name="verbcj">
+	      <chunk name="verbcj" case="caseSecondWord">
 		<tags>
 		  <tag><var n="SVnegatiu"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7405,7 +7415,7 @@
 	      </and>
 	    </test>
 	    <out>
-	      <chunk name="verbcj">
+	      <chunk name="verbcj" case="caseSecondWord">
 		<tags>
 		  <tag><var n="SVnegatiu"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7449,7 +7459,7 @@
 	      </and>
 	    </test>
 	    <out>
-	      <chunk name="verbcj">
+	      <chunk name="verbcj" case="caseSecondWord">
 		<tags>
 		  <tag><var n="SVnegatiu"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7491,7 +7501,7 @@
 		  <lit-tag v="inf"/>
 		</let>
 		<out>
-		  <chunk name="aux_verb">
+		  <chunk name="aux_verb" case="caseSecondWord">
 		    <tags>
 		      <tag><var n="SVnegatiu"/></tag>
 		      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7532,7 +7542,7 @@
 		  <lit-tag v="past"/>
 		</let>
 		<out>
-		  <chunk name="verbcj">
+		  <chunk name="verbcj" case="caseSecondWord">
 		    <tags>
 		      <tag><var n="SVnegatiu"/></tag>
 		      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7583,7 +7593,7 @@
 		  </when>
 		</choose>
 		<out>
-		  <chunk name="aux_verb">
+		  <chunk name="aux_verb" case="caseSecondWord">
 		    <tags>
 		      <tag><var n="SVnegatiu"/></tag>
 		      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7629,7 +7639,7 @@
 		  <lit-tag v="pres"/>
 		</let>
 		<out>
-		  <chunk name="verbcj">
+		  <chunk name="verbcj" case="caseSecondWord">
 		    <tags>
 		      <tag><var n="SVnegatiu"/></tag>
 		      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7669,7 +7679,7 @@
 		  <lit-tag v="past"/>
 		</let>
 		<out>
-		  <chunk name="verbcj">
+		  <chunk name="verbcj" case="caseSecondWord">
 		    <tags>
 		      <tag><var n="SVnegatiu"/></tag>
 		      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7689,11 +7699,7 @@
 	      </when>
 	    </choose>
 	  </otherwise>
-	</choose>	 
-<!--	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let> -->
+	</choose>
       </action>
     </rule>
 
