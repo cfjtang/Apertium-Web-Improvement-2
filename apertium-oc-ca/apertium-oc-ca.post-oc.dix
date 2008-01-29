@@ -361,6 +361,26 @@
 		 </e>
 		 <e>
 			 <p>
+				 <l><b/><a/>la</l>
+				 <r><b/>la</r>
+			 </p>
+		 </e>
+		 <e>
+			 <p>
+				 <l><b/><a/>lo<b/></l>
+				 <r><b/>l'</r>
+			 </p>
+				<par n="vocal_general"/>
+		 </e>
+		 <e>
+			 <p>
+				 <l><b/><a/>la<b/></l>
+				 <r><b/>l'</r>
+			 </p>
+				<par n="vocal_general"/>
+		 </e>
+		 <e>
+			 <p>
 				 <l><b/><a/>se</l>
 				 <r>'s</r>
 			 </p>
@@ -593,95 +613,70 @@
 			 <par n="eth"/>
 		 </e>-->
 	 </pardef>
-	<!--  paradigma especial per a la preposició "de" -->
-	<pardef n="de"> 
+
+<!-- paradigma especial per a "me" i "te", que s'apostrofen davant de vocal però fan apostrofar els altres pronoms	 -->
+	<pardef n="li_ac">
 		<e>
 			<p>
-				<l><b/><a/>e</l>
-				<r>de</r>
-			</p>
-			<par n="contrac_det"/>
-		</e>
-		<e>
-			<p>
-				<l><b/><a/>detlo<b/></l>
-				<r>del<b/></r>
+				<l>lo<b/></l>
+				<r>ac<b/></r>
 			</p>
 		</e>
 		<e>
 			<p>
-				<l><b/><a/>detlo<b/></l>
-				<r>de<b/>l'</r>
-			</p>
-			<par n="vocal_general"/>
-		</e>
-		<e>
-			<p>
-				<l><b/><a/>detla<b/></l>
-				<r>de<b/>l'</r>
-			</p>
-			<par n="vocal_general"/>
-		</e>
-		<e>
-			<p>
-				<l><b/><a/>detla<b/></l>
-				<r>de<b/>la<b/></r>
+				<l>la<b/></l>
+				<r>ac<b/></r>
 			</p>
 		</e>
 		<e>
 			<p>
-				<l><b/><a/>detlos<b/></l>
-				<r>dels<b/></r>
+				<l>les<b/></l>
+				<r>ac<b/></r>
 			</p>
+		</e>
+	</pardef>
+
+	<pardef n="les_ac">
+		<e>
+			<par n="li_ac"/>
 		</e>
 		<e>
 			<p>
-				<l><b/><a/>detlas<b/></l>
-				<r>de<b/>las<b/></r>
+				<l>ne</l>
+				<r>ac</r>
 			</p>
 		</e>
-		<e>
+	</pardef>
+	<pardef n="me_te">
+		<!--<e>
 			<p>
-				<l><b/><a/></l>
-				<r>d'</r>
+				<l></l>
+				<r>e</r>
 			</p>
-			<par n="apostrofadors_de"/>
-		</e> 
+			<par n="pronom_aton_apostrofat"/>
+		</e>-->
 		<e>
 			<p>
 				<l><b/></l>
-				<r>d'</r>
+				<r>'</r>
 			</p>
-			<par n="apostrofadors_de"/>
+			<par n="apostrofadors"/>
 		</e>
 		<e>
 			<p>
 				<l/>
-				<r>de</r>
+				<r>e</r>
 			</p>
 			<par n="no_contrac"/>
 		</e>
 		<e>
 			<p>
 				<l><b/></l>
-				<r>de<b/></r>
+				<r>e<b/></r>
 			</p>
 			<par n="no_contrac"/>
 		</e>
-		<e>
-			<p>
-				<l><b/><a/>se<b/></l>
-				<r>de<b/>se<b/></r>
-			</p>
-		</e>
-		<e>
-			<p>
-				<l><b/><a/>se</l>
-				<r>de<b/>se</r>
-			</p>
-			<par n="caracter_general"/>
-		</e>
-	</pardef> 
+	</pardef>
 	<!-- paradigma per quan "en" es contrau amb els determinants, que ho fa diferent que les altres preposicions	 -->
 	<pardef n="contraccio_en">
 		
@@ -795,6 +790,172 @@
 	</pardef>
 
 	
+
+<!-- aquest paradigma serveix per evitar que "non", "que", etc. apostrofin per davant pronoms que s'haurien d'apostrofar per darrere	  -->
+	 
+	<pardef n="apostrofenperdarrere">
+	<!-- <e>
+		 <p>
+			 <l><b/><a/>mos</l>
+			 <r>mo</r>
+		 </p>
+		 <par n="en_apostrofat"/>
+	 </e>-->
+	 <e>
+		 <p>
+			 <l><b/><a/>me</l>
+			 <r>m</r>
+		 </p>
+		 <par n="me_te"/>
+	 </e>
+	 <e>
+		 <p>
+			 <l><b/><a/>te</l>
+			 <r>t</r>
+		 </p>
+		 <par n="me_te"/>
+	 </e>
+<!--	 <e>
+		 <p>
+			 <l><b/><a/>vos</l>
+			 <r>vo</r>
+		 </p>
+		 <par n="en_apostrofat"/>
+	 </e>-->
+	 <e>
+		 <p>
+			 <l><b/><a/>li<b/><a/>ne<b/></l>
+			 <r>li</r>
+		 </p>
+		 <par n="en_apostrofat"/>
+	 </e>
+	 <e>
+		 <p>
+			 <l><b/><a/>li<b/><a/></l>
+			 <r>l'</r>
+		 </p>
+		 <par n="li_ac"/>
+	 </e>
+	 <e>
+		 <p>
+			 <l><b/><a/>les<b/><a/></l>
+			 <r>les<b/></r>
+		 </p>
+		 <par n="les_ac"/>
+		</e> 
+		<e>
+			<p>
+				<l><b/><a/>se</l>
+				<r>s</r>
+			</p>
+			<par n="apostrof_e"/>
+      </e>
+		<e>
+			<p>
+				<l><b/><a/>ne</l>
+				<r/>
+			</p>
+			<par n="apostrof_en"/>
+      </e>
+	</pardef>
+	<!--  paradigma especial per a la preposició "de" -->
+	<pardef n="de"> 
+		<e>
+			<p>
+				<l><b/><a/>e</l>
+				<r>de</r>
+			</p>
+			<par n="contrac_det"/>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>detlo<b/></l>
+				<r>del<b/></r>
+			</p>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>detlo<b/></l>
+				<r>de<b/>l'</r>
+			</p>
+			<par n="vocal_general"/>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>detla<b/></l>
+				<r>de<b/>l'</r>
+			</p>
+			<par n="vocal_general"/>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>detla<b/></l>
+				<r>de<b/>la<b/></r>
+			</p>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>detlos<b/></l>
+				<r>dels<b/></r>
+			</p>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>detlas<b/></l>
+				<r>de<b/>las<b/></r>
+			</p>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/></l>
+				<r>d'</r>
+			</p>
+			<par n="apostrofadors_de"/>
+		</e> 
+		<e>
+			<p>
+				<l><b/></l>
+				<r>d'</r>
+			</p>
+			<par n="apostrofadors_de"/>
+		</e>
+		<e>
+			<p>
+				<l/>
+				<r>de</r>
+			</p>
+			<par n="no_contrac"/>
+		</e>
+		<e>
+			<p>
+				<l><b/></l>
+				<r>de<b/></r>
+			</p>
+			<par n="no_contrac"/>
+		</e>
+		<e>
+			<p>
+				<l></l>
+				<r>de<b/></r>
+			</p>
+			<par n="apostrofenperdarrere"/>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>se<b/></l>
+				<r>de<b/>se<b/></r>
+			</p>
+		</e>
+		<e>
+			<p>
+				<l><b/><a/>se</l>
+				<r>de<b/>se</r>
+			</p>
+			<par n="caracter_general"/>
+		</e>
+	</pardef> 
+
+
 	<pardef n="contraccioenta">
 		<e>
 			<p>
@@ -873,68 +1034,6 @@
 		
 	</pardef>
 
-<!-- paradigma especial per a "me" i "te", que s'apostrofen davant de vocal però fan apostrofar els altres pronoms	 -->
-	<pardef n="me_te">
-		<e>
-			<p>
-				<l></l>
-				<r>e</r>
-			</p>
-			<par n="pronom_aton_apostrofat"/>
-		</e>
-		<e>
-			<p>
-				<l><b/></l>
-				<r>'</r>
-			</p>
-			<par n="apostrofadors"/>
-		</e>
-		<e>
-			<p>
-				<l/>
-				<r>e</r>
-			</p>
-			<par n="no_contrac"/>
-		</e>
-		<e>
-			<p>
-				<l><b/></l>
-				<r>e<b/></r>
-			</p>
-			<par n="no_contrac"/>
-		</e>
-	</pardef>
-	<pardef n="li_ac">
-		<e>
-			<p>
-				<l>lo<b/></l>
-				<r>ac<b/></r>
-			</p>
-		</e>
-		<e>
-			<p>
-				<l>la<b/></l>
-				<r>ac<b/></r>
-			</p>
-		</e>
-		<e>
-			<p>
-				<l>les<b/></l>
-				<r>ac<b/></r>
-			</p>
-		</e>
-	</pardef>
-	<pardef n="les_ac">
-		<e>
-			<par n="li_ac"/>
-		</e>
-		<e>
-			<p>
-				<l>ne</l>
-				<r>ac</r>
-			</p>
-		</e>
-	</pardef>
 	<!-- converteix cada+un en "cadun" -->
 	<pardef n="un" >
 		<e>
@@ -951,73 +1050,7 @@
 		</e>
 	 </pardef>
 	 
-<!-- aquest paradigma serveix per evitar que "non", "que", etc. apostrofin per davant pronoms que s'haurien d'apostrofar per darrere	  -->
-	 
-	<pardef n="apostrofenperdarrere">
-	<!-- <e>
-		 <p>
-			 <l><b/><a/>mos</l>
-			 <r>mo</r>
-		 </p>
-		 <par n="en_apostrofat"/>
-	 </e>-->
-	 <e>
-		 <p>
-			 <l><b/><a/>me</l>
-			 <r>m</r>
-		 </p>
-		 <par n="me_te"/>
-	 </e>
-	 <e>
-		 <p>
-			 <l><b/><a/>te</l>
-			 <r>t</r>
-		 </p>
-		 <par n="me_te"/>
-	 </e>
-<!--	 <e>
-		 <p>
-			 <l><b/><a/>vos</l>
-			 <r>vo</r>
-		 </p>
-		 <par n="en_apostrofat"/>
-	 </e>-->
-	 <e>
-		 <p>
-			 <l><b/><a/>li<b/><a/>ne<b/></l>
-			 <r>li</r>
-		 </p>
-		 <par n="en_apostrofat"/>
-	 </e>
-	 <e>
-		 <p>
-			 <l><b/><a/>li<b/><a/></l>
-			 <r>l'</r>
-		 </p>
-		 <par n="li_ac"/>
-	 </e>
-	 <e>
-		 <p>
-			 <l><b/><a/>les<b/><a/></l>
-			 <r>les<b/></r>
-		 </p>
-		 <par n="les_ac"/>
-		</e> 
-		<e>
-			<p>
-				<l><b/><a/>se</l>
-				<r>s</r>
-			</p>
-			<par n="apostrof_e"/>
-      </e>
-		<e>
-			<p>
-				<l><b/><a/>ne</l>
-				<r/>
-			</p>
-			<par n="apostrof_en"/>
-      </e>
-	</pardef>
+
 	
 	<pardef n="pronoms_aprost_oc">
 	 <e>
@@ -1073,6 +1106,13 @@
 			</p>
 			<par n="me_te"/>
 		</e>
+<!--		<e>
+			<p>
+				<l><a/>me<b/><a/>la<b/></l>
+				<r>me<b/>l'</r>
+			</p>
+			<par n="vocal_general"/>
+		</e>-->
 		<e>
 			<p>
 				<l><a/>te</l>
