@@ -2399,10 +2399,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 	      </chunk>
 	    </out>
-	  <!--  <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/> 
-	    </let> -->
 	  </when> <!-- femenins -->
 
 	  <when>
@@ -2451,10 +2447,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 	      </chunk>
 	    </out>
-	 <!--   <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let> -->
 	  </when>
 	</choose>
       </action>
@@ -2968,10 +2960,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu> 
 	  </chunk>
 	</out>
-<!--	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>-->
       </action>
     </rule>
     
@@ -10243,12 +10231,35 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</call-macro>
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="1"/>
-	</call-macro>    
+	</call-macro>  
+	<!-- nova funcio per a gènere mf, mireia -->
+	<choose>
+	  <when>
+	    <test>
+		<equal>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <lit-tag v="mf"/>
+		</equal>
+	    </test>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <lit-tag v="GD"/>
+	    </let>
+	  </otherwise>
+	</choose>    
+	      
 	<out>   
 	  <chunk name="adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
-	      <tag><lit-tag v="GD"/></tag>
+	      <tag><var n="gen_chunk"/></tag>
+	    <!--  <tag><lit-tag v="GD"/></tag>-->
 	      <tag><lit-tag v="ND"/></tag>
 	    </tags>    	
 	    <lu> 
@@ -10261,10 +10272,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu> 
 	  </chunk>
 	</out>
-<!--	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>-->
       </action>
     </rule> 
 

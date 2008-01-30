@@ -6242,7 +6242,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	<choose>
 	  <when>
 	    <test>
-	      <equal><!--Actualment, si és GD sempre serà també ND -->
+	      <equal>
 		<clip pos="1" part="gen"/>
 		<lit-tag v="GD"/>
 	      </equal>
@@ -6251,12 +6251,25 @@ Your mother and you will come - La vostra mare i tu vindran
 	      <clip pos="1" part="gen"/>
 	      <lit-tag v="m"/>
 	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
 	    <let>
 	      <clip pos="1" part="nbr"/>
 	      <lit-tag v="sg"/>
-	    </let>	    
+	    </let>
 	  </when>
 	</choose>
+
+
+
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
