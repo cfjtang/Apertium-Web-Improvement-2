@@ -61,6 +61,7 @@ function lookUp(value, showLexicalInfo, dir){
         if( value.length >= 1 ) {
             var xmldoc = xmlHttp.responseXML;
             var root = xmldoc.getElementsByTagName('root')[0];
+            value = value.toLowerCase();
             lookUpRecursive(root, value, showLexicalInfo, dir);
         }
         message("");
@@ -83,10 +84,12 @@ function lookUpRecursive(parentNode, value, showLexicalInfo, dir) {
     var attr = node.attributes;
     if(attr != undefined) {
         var nodevalue = node.getAttribute("v");
+        nodevalue = nodevalue.toLowerCase();
         var nodevalueLength = nodevalue.length;
         var valueLength = value.length;
         if( valueLength < nodevalueLength ) {
             var subst = nodevalue.substring(0,valueLength);
+            
             if( value == subst ) {
                 lookUpRecursive(node, value, showLexicalInfo, dir);
             }
