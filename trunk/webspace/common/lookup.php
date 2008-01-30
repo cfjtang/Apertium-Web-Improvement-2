@@ -74,9 +74,8 @@ function show_form($textbox, $dir) {
 	print "<option value='es-pt-rl' " . ($dir == 'pt-es' ? ' selected=true' : '') . ">" . _("Portuguese") . " &rarr; " . _("Spanish") . "</option>";
 	print "<option value='sh-mk-lr' " . ($dir == 'sh-mk' ? ' selected=true' : '') . ">" . _("Serbo-Croatian") . " &rarr; " . _("Macedonian") . "</option>";
 	print "<option value='sv-da-lr' " . ($dir == 'sv-da' ? ' selected=true' : '') . ">" . _("Swedish") . " &rarr; " . _("Danish") . "</option>";
-	print "<option value='tg-fa-rl' " . ($dir == 'fa-tg' ? ' selected=true' : '') . ">" . _("Persian") . " &rarr; " . _("Tajik") . "</option>";
+	print "<option value='tg-fa-rl' " . ($dir == 'fa-	tg' ? ' selected=true' : '') . ">" . _("Persian") . " &rarr; " . _("Tajik") . "</option>";
 	print "<option value='tg-fa-lr' " . ($dir == 'tg-fa' ? ' selected=true' : '') . ">" . _("Tajik") . " &rarr; " . _("Persian") . "</option>";
-
 	//print "<option class='beta' value='de-en-lr' " . ($dir == 'de-en' ? ' selected=true' : '') . ">" . _("German") . " &rarr; " . _("English") . "</option>";
 	//print "<option class='beta' value='de-en-rl' " . ($dir == 'en-de' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("German") . "</option>";
 

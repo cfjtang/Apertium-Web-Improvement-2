@@ -16,8 +16,8 @@ function show_form($textbox, $dir) {
 	//print _("Translation type:");
 	print ' <select onchange="ajaxFunction(this.value);" id="direction" name="direction" title="' . _("Select the translation type") . '">';
 
-	print "<option class='beta' value='es-en-rl' " . ($dir == 'en-es' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Spanish") . " (beta)</option>";
-	print "<option class='beta' value='es-en-lr' " . ($dir == 'es-en' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("English") . " (beta)</option>";	
+	print "<option class='beta' value='es-en-rl' " . ($dir == 'en-es' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Spanish") . "</option>";
+	print "<option class='beta' value='es-en-lr' " . ($dir == 'es-en' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("English") . "</option>";	
 	print "<option class='beta' value='de-en-lr' " . ($dir == 'de-en' ? ' selected=true' : '') . ">" . _("German") . " &rarr; " . _("English") . "</option>";
 	print "<option class='beta' value='de-en-rl' " . ($dir == 'en-de' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("German") . "</option>";
 
