@@ -5,29 +5,53 @@
 		<def-cat n="proverb">
       <cat-item name="proverb"/>
     </def-cat>
+		<def-cat n="pro_verb">
+      <cat-item name="pro_verb"/>
+    </def-cat>
 		<def-cat n="pro_proverb">
       <cat-item name="pro_proverb"/>
+    </def-cat>
+		<def-cat n="pro_pro_verb">
+      <cat-item name="pro_pro_verb"/>
     </def-cat>
 		<def-cat n="proaux_pp">
       <cat-item name="proaux_pp"/>
       <cat-item name="proverb_inf"/>
     </def-cat>
+		<def-cat n="pro_aux_pp">
+      <cat-item name="pro_aux_pp"/>
+      <cat-item name="pro_verb_inf"/>
+    </def-cat>
 		<def-cat n="pro_proaux_pp">
       <cat-item name="pro_proaux_pp"/>
 			<cat-item name="pro_proverb_inf"/>
 		</def-cat>
+		<def-cat n="pro_pro_aux_pp">
+      <cat-item name="pro_pro_aux_pp"/>
+			<cat-item name="pro_pro_verb_inf"/>
+		</def-cat>
 		<def-cat n="proaux_adv_pp">
       <cat-item name="proaux_adv_pp"/>
       <cat-item name="proverb_adv_inf"/>
-      <cat-item name="proverb_de_inf"/>
+      <cat-item name="proverb_de_inf"/><!--aquesta l'esborro quan hagi acabat amb els ger-->
+    </def-cat>
+		<def-cat n="pro_aux_adv_pp">
+      <cat-item name="pro_aux_adv_pp"/>
+      <cat-item name="pro_verb_adv_inf"/>
+      <cat-item name="pro_verb_de_inf"/><!--aquesta l'esborro quan hagi acabat amb els ger-->
     </def-cat>
 		<def-cat n="pro_proaux_adv_pp">
       <cat-item name="pro_proaux_adv_pp"/>
-      <cat-item name="pro_proanar_adv_inf"/>
+<!--       <cat-item name="pro_proanar_adv_inf"/> -->
       <cat-item name="pro_proverb_adv_inf"/>
       <cat-item name="pro_proverb_de_inf"/>
     </def-cat>
-		<def-cat n="proanar_inf">
+		<def-cat n="pro_pro_aux_adv_pp">
+      <cat-item name="pro_pro_aux_adv_pp"/>
+      <cat-item name="pro_pro_verb_adv_inf"/>
+      <cat-item name="pro_pro_verb_de_inf"/>
+    </def-cat>
+<!--		<def-cat n="proanar_inf">
       <cat-item name="proanar_inf"/>
     </def-cat>
 		<def-cat n="proanar_a_inf">
@@ -39,13 +63,28 @@
     </def-cat>
 		<def-cat n="pro_proanar_a_inf">
       <cat-item name="pro_proanar_a_inf"/>
-    </def-cat>
-		<def-cat n="proanar_adv_a_inf">
+    </def-cat>-->
+<!--		<def-cat n="proanar_adv_a_inf">
       <cat-item name="proanar_adv_a_inf"/>
       <cat-item name="proverb_de_pro_inf"/>
-    </def-cat>
-		<def-cat n="pro_proanar_adv_a_inf">
+    </def-cat>-->
+		<!--<def-cat n="pro_proanar_adv_a_inf">
       <cat-item name="pro_proanar_adv_a_inf"/>
+    </def-cat>-->
+		<def-cat n="proverb_de_pro_inf">
+      <cat-item name="proverb_de_pro_inf"/>
+    </def-cat>
+		<def-cat n="verb">
+      <cat-item name="verb"/>
+    </def-cat>
+		<def-cat n="ger">
+      <cat-item name="ger"/>
+    </def-cat>
+		<def-cat n="pro_ger">
+      <cat-item name="pro_ger"/>
+    </def-cat>
+		<def-cat n="pro_pro_ger">
+      <cat-item name="pro_pro_ger"/>
     </def-cat>
 		
 
@@ -144,6 +183,7 @@
 		 
       <def-attr n="temps">
           <attr-item tags="inf"/>
+          <attr-item tags="ifi"/>
           <attr-item tags="pres"/>
           <attr-item tags="past"/>
           <attr-item tags="pri"/>
@@ -151,6 +191,18 @@
           <attr-item tags="ger"/>
           <attr-item tags="pprs"/>
           <attr-item tags="subs"/>
+      </def-attr>
+	  
+			<def-attr n="lema_vb">
+          <attr-item tags="venir"/>
+          <attr-item tags="anar"/>
+          <attr-item tags="seguir"/>
+      </def-attr>
+			<def-attr n="canvi">
+          <attr-item tags="canviam"/>
+      </def-attr>
+			<def-attr n="treure">
+          <attr-item tags="treume"/>
       </def-attr>
 
 <def-attr n="a_SN">
@@ -192,11 +244,28 @@
   </section-def-attrs>
 <section-def-vars>
     <def-var n="paraula"/>
+		<def-var n="quin_verb"/>
   </section-def-vars>
 
 
 <section-def-macros>
-
+ <def-macro n="cv_verb" npar="1">
+	<choose>
+					<when>
+						<test>
+							<equal>
+								<var n="quin_verb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose> 
+			</def-macro>
+			
   <def-macro n="f_bcond" npar="1">
         <choose>
           <when>
@@ -214,8 +283,24 @@
           </when>     
         </choose>
      </def-macro>
-
-		 
+<!--
+	<def-macro n="cv_verb" npar="2">
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="lema_vb"/>
+						<lit-tag v="venir"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="2" part="lem"/>
+					<lit v="venir"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>-->
+	 
 </section-def-macros>
 
   <section-rules>
@@ -236,6 +321,294 @@
 			</action>
 		</rule> 
 
+	<!--	<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
+			<pattern>
+				<pattern-item n="verb"/>
+			</pattern>
+			<action>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+			<call-macro n="cv_verb">
+				<with-param pos="1"/>
+			</call-macro>
+				<choose>
+					<when>
+						<test>
+							<not>
+								<equal>
+									<clip pos="0" part="treure"/>
+									<lit-tag v="treume"/>
+								</equal>
+							</not>
+						</test>
+						<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+					<var n="quin_verb"/>
+					<clip pos="1" part="whole"/>
+						<clip pos="1" part="lemh"/>
+						<clip pos="1" part="a_verb"/>
+						<clip pos="1" part="pers"/>
+						<clip pos="1" part="gen"/>
+						<clip pos="1" part="nbr"/>
+						<clip pos="1" part="lemq"/>
+					</lu>
+				</out> 
+			</when>
+		</choose>
+			</action>
+		</rule> -->
+		
+				<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
+			<pattern>
+				<pattern-item n="verb"/>
+			</pattern>
+			<action>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+			<call-macro n="cv_verb">
+				<with-param pos="1"/>
+			</call-macro>
+	
+				<out>
+					<lu>
+<!-- 					<var n="quin_verb"/> -->
+					<clip pos="1" part="whole"/>
+						
+					</lu>
+				</out> 
+			</action>
+		</rule> 
+		
+		<rule comment="CHUNK: ger (canvia els ger que cal per de+inf)">
+			<pattern>
+				<pattern-item n="ger"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="canvi"/>
+								<lit-tag v="canviam"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="de"/>
+						</let>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="lem"/>
+								<clip pos="2" part="a_verb"/>
+								<lit-tag v="inf"/>
+							</lu>
+						</out>   
+					</when>
+<!-- 					<otherwise> -->
+<!--						<choose>
+							<when>
+								<test>
+									<equal>
+										<clip pos="0" part="lema_vb"/>
+										<lit-tag v="anar"/>
+									</equal>
+								</test>
+						<choose>
+							<when>
+								<test>
+									<or>
+										<equal>
+											<clip pos="0" part="gen"/>
+											<lit-tag v="m"/>
+										</equal>
+										<equal>
+											<clip pos="0" part="gen"/>
+											<lit-tag v="f"/>
+										</equal>
+									</or>
+								</test>
+								<out>
+									<lu>
+										<clip pos="2" part="lemh"/>
+										<lit-tag v="vblex"/>
+										<lit-tag v="pp"/>
+										<clip pos="0" part="gen"/>
+										<clip pos="0" part="nbr"/>
+										<clip pos="2" part="lemq"/>
+									</lu>
+								</out>
+							</when>
+							<otherwise>
+								
+								
+								<out>
+									<lu>
+										<clip pos="2" part="lemh"/>
+										<lit-tag v="vblex"/>
+										<clip pos="0" part="temps"/>
+										<clip pos="0" part="pers"/>
+										<clip pos="0" part="nbr"/>
+										<clip pos="2" part="lemq"/>
+									</lu>
+								</out>
+							</otherwise>
+						</choose>
+								<call-macro n="f_bcond">
+									<with-param pos="1"/>
+								</call-macro>
+							</when>-->
+							<otherwise>
+								<out>
+									<lu>
+										<clip pos="1" part="whole"/>
+									</lu>
+									<b pos="1"/>
+									<lu>
+										<clip pos="2" part="whole"/>
+									</lu>
+								</out>
+							</otherwise>
+						</choose>
+	<!--				</otherwise>
+				</choose>-->
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: pro ger (canvia els ger que cal per de+inf)">
+			<pattern>
+				<pattern-item n="pro_ger"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="canvi"/>
+								<lit-tag v="canviam"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="de"/>
+						</let>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="lem"/>
+								<clip pos="3" part="a_verb"/>
+								<lit-tag v="inf"/>
+							</lu>
+						</out>   
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu>
+						</out>
+					</otherwise>
+				</choose>
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: pro pro ger (canvia els ger que cal per de+inf)">
+			<pattern>
+				<pattern-item n="pro_pro_ger"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="canvi"/>
+								<lit-tag v="canviam"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="de"/>
+						</let>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu>
+							<b pos="3"/>
+							<lu>
+								<clip pos="4" part="lem"/>
+								<clip pos="4" part="a_verb"/>
+								<lit-tag v="inf"/>
+							</lu>
+						</out>   
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu>
+							<b pos="3"/>
+							<lu>
+								<clip pos="4" part="whole"/>
+							</lu>
+						</out>
+					</otherwise>
+				</choose>
+			</action>
+		</rule> 
+
+		
 		<rule comment="CHUNK: canvia _sonque_ per _pas que_">
 			<pattern>
 				<pattern-item n="controla_adv"/>
@@ -272,11 +645,25 @@
 			</action>
 		</rule> 
 
-			<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
 				<pattern-item n="proverb"/>
 			</pattern>
 			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -291,9 +678,54 @@
 
 		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
+				<pattern-item n="pro_verb"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
 				<pattern-item n="pro_proverb"/>
 			</pattern>
 			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="3" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -312,9 +744,58 @@
 
 		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
+				<pattern-item n="pro_pro_verb"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="3" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="3" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
 				<pattern-item n="proaux_pp"/>
 			</pattern>
 			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="3" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -331,11 +812,60 @@
 			</action>
 		</rule> 
 
-				<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
+				<pattern-item n="pro_aux_pp"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="3" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="3" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
 				<pattern-item n="pro_proaux_pp"/>
 			</pattern>
 			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="4" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -358,14 +888,106 @@
 
 		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
+				<pattern-item n="pro_pro_aux_pp"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="4" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="3" part="whole"/>
+					</lu>
+					<b pos="3"/>
+					<lu>
+						<clip pos="4" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
 				<pattern-item n="proaux_adv_pp"/>
 			</pattern>
 			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="4" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
 					</lu>
 					<b/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="3" part="whole"/>
+					</lu>
+					<b pos="3"/>
+					<lu>
+						<clip pos="4" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
+				<pattern-item n="pro_aux_adv_pp"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="4" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
 					<lu>
 						<clip pos="2" part="whole"/>
 					</lu>
@@ -386,6 +1008,20 @@
 				<pattern-item n="pro_proaux_adv_pp"/>
 			</pattern>
 			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="5" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -411,6 +1047,50 @@
 		</rule> 
 
 		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+			<pattern>
+				<pattern-item n="pro_pro_aux_adv_pp"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="venir"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="5" part="lem"/>
+							<lit v="venir"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+					<b pos="2"/>
+					<lu>
+						<clip pos="3" part="whole"/>
+					</lu>
+					<b pos="3"/>
+					<lu>
+						<clip pos="4" part="whole"/>
+					</lu>
+					<b pos="4"/>
+					<lu>
+						<clip pos="5" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+
+		
+	<!--	<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
 				<pattern-item n="proanar_inf"/>
 			</pattern>
@@ -454,10 +1134,10 @@
 					</lu>
 				</out>  
 			</action>
-		</rule> 
+		</rule> -->
 		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
-				<pattern-item n="proanar_adv_a_inf"/>
+				<pattern-item n="proverb_de_pro_inf"/>
 			</pattern>
 			<action>
 				<out>
@@ -484,7 +1164,7 @@
 			</action>
 		</rule> 
 
-		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+<!--		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
 				<pattern-item n="pro_proanar_inf"/>
 			</pattern>
@@ -570,7 +1250,7 @@
 					</lu>
 				</out>  
 			</action>
-		</rule> 
+		</rule> -->
 
 		<rule comment="CHUNK: canvia les prepos que fa falta">
 			<pattern>
