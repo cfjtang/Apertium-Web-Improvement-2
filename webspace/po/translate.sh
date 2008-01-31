@@ -18,5 +18,6 @@ translateLang "af_ZA"
 translateLang "pt_PT"
 translateLang "oc_FR"
 translateLang "gl_ES"
+translateLang "eo_EO"
 
 
