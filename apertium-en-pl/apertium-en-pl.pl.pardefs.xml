@@ -565,6 +565,17 @@
         <par n="tld__suffix"/>
       </e>
     </pardef>
+    <pardef n="ip4__suffix">
+      <e>
+        <re>(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9])(.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))(.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))(.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9]?[0-9]))</re>
+      </e>
+    </pardef>
+    <pardef n="email_address">
+      <e>
+        <re>[A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_.]+([A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_][A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_])*</re>
+      </e>
+    </pardef>
+
     <pardef n="port__suffix">
       <e>
         <i>:</i>
@@ -574,12 +585,38 @@
         <i/>
       </e>
     </pardef>
+    <pardef n="path__suffix">
+      <e>
+        <i>/</i>
+        <re>[A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_.]*[A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_]+</re>
+      </e>
+      <e>
+        <i>/</i>
+      </e>
+      <e>
+        <i/>
+      </e>
+    </pardef>
+
 
     <pardef n="url__sym">
       <e>
         <par n="proto__prefix"/>
         <par n="domain__suffix"/>
         <par n="port__suffix"/>
+        <par n="path__suffix"/>
+        <p>
+          <l></l>
+          <r><s n="sym"/><s n="url"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="url_ip__sym">
+      <e>
+        <par n="proto__prefix"/>
+        <par n="ip4__suffix"/>
+        <par n="port__suffix"/>
+        <par n="path__suffix"/>
         <p>
           <l></l>
           <r><s n="sym"/><s n="url"/></r>
@@ -589,7 +626,7 @@
 
     <pardef n="email_full__sym">
       <e>
-        <re>[A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_.]+([A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_][A-Za-z0-9!#$%\*/\?\|\^{}`~&amp;'\+-=_])*</re>
+        <par n="email_address"/>
         <i>@</i>
         <par n="domain__suffix"/>
         <p>
@@ -604,6 +641,29 @@
         <re>&quot;[^&quot;]*&quot;</re>
         <i>@</i>
         <par n="domain__suffix"/>
+        <p>
+          <l></l>
+          <r><s n="sym"/><s n="email"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="email_full__sym">
+      <e>
+        <par n="email_address"/>
+        <i>@</i>
+        <par n="ip4__suffix"/>
+        <p>
+          <l></l>
+          <r><s n="sym"/><s n="email"/></r>
+        </p>
+      </e>
+    </pardef>
+    <!-- you probably don't want to use this!!! -->
+    <pardef n="email_quoted_ip4__sym">
+      <e>
+        <re>&quot;[^&quot;]*&quot;</re>
+        <i>@</i>
+        <par n="ip4__suffix"/>
         <p>
           <l></l>
           <r><s n="sym"/><s n="email"/></r>
