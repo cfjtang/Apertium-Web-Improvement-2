@@ -249,22 +249,38 @@
 
 
 <section-def-macros>
- <def-macro n="cv_verb" npar="1">
-	<choose>
-					<when>
-						<test>
-							<equal>
-								<var n="quin_verb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="1" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose> 
-			</def-macro>
+	<def-macro n="cv_verb" npar="1">
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<var n="quin_verb"/>
+						<lit-tag v="venir"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="venir"/>
+				</let>
+			</when>
+			<when>
+				<test>
+					<equal>
+						<var n="quin_verb"/>
+						<lit-tag v="continuar"/>
+					</equal>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="contunhar"/>
+				</let>
+			</when>
+		</choose> 
+		<let>
+			<var n="quin_verb"/>
+			<lit-tag v=""/>
+		</let>
+	</def-macro>
 			
   <def-macro n="f_bcond" npar="1">
         <choose>
@@ -374,7 +390,7 @@
 			</action>
 		</rule> -->
 		
-				<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
+		<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
 			<pattern>
 				<pattern-item n="verb"/>
 			</pattern>
@@ -383,9 +399,9 @@
 					<var n="quin_verb"/>
 					<clip pos="0" part="lema_vb"/>
 				</let>
-			<call-macro n="cv_verb">
+		<!--	<call-macro n="cv_verb">
 				<with-param pos="1"/>
-			</call-macro>
+			</call-macro>-->
 	
 				<out>
 					<lu>
@@ -676,7 +692,7 @@
 			</action>
 		</rule> 
 
-		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+		<rule comment="CHUNK: canvia el verb">
 			<pattern>
 				<pattern-item n="pro_verb"/>
 			</pattern>
