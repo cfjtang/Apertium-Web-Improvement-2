@@ -483,7 +483,8 @@
 
   </section-def-attrs>
   <section-def-vars>
-    <def-var n="lema_sv"/>
+		<def-var n="cv_verb"/>
+		<def-var n="lema_sv"/>
     <def-var n="impersonal"/>
      <def-var n="verb"/>
      <def-var n="tipusrel"/>
@@ -1589,6 +1590,56 @@
 					<let>
 						<var n="tipusverb"/>
 						<lit-tag v="nopart"/>
+					</let>
+				</when>
+			</choose>
+			<choose>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lemh"/>
+							<lit v="venir"/>
+						</equal>
+					</test>
+					<let>
+						<var n="cv_verb"/>
+						<lit-tag v="venir"/>
+					</let>
+				</when>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lemh"/>
+							<lit v="contunhar"/>
+						</equal>
+					</test>
+					<let>
+						<var n="cv_verb"/>
+						<lit-tag v="contunhar"/>
+					</let>
+				</when>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lemh"/>
+							<lit v="començar"/>
+						</equal>
+					</test>
+					<let>
+						<var n="cv_verb"/>
+						<lit-tag v="començar"/>
+					</let>
+				</when>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lemh"/>
+							<lit v="estar"/>
+						</equal>
+					</test>
+					<let>
+						<var n="cv_verb"/>
+						<lit-tag v="estar"/>
 					</let>
 				</when>
 			</choose>
@@ -6071,6 +6122,7 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<lu>
 						<var n="verb"/>
@@ -6132,6 +6184,7 @@
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<var n="verb"/>
@@ -6149,6 +6202,7 @@
 								<tag><clip pos="1" side="tl" part="pers"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<var n="verb"/>
@@ -6190,10 +6244,11 @@
 			<out>
 				<chunk name="inf" case="caseFirstWord">
 					<tags>
-						<tag><lit-tag v="SV"/></tag>
+						<tag><lit-tag v="SN"/></tag>
 						<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 						<tag><clip pos="1" side="tl" part="temps"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="lemh"/> 
@@ -6255,6 +6310,7 @@
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
@@ -6275,6 +6331,7 @@
 								<tag><clip pos="1" side="tl" part="a_verb"/></tag>
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
@@ -10951,7 +11008,7 @@
 	</rule>
 
 
-
+<!--
 	<rule comment="REGLA: venir de inf -> acabar de inf">
 		<pattern>
 			<pattern-item n="venir"/>
@@ -11285,7 +11342,7 @@
 				<lit v="aa"/>
 			</let>
 		</action>
-	</rule>
+	</rule>-->
 
 
 <!--<rule comment="REGLA: ne rien INF -> no inf nada">
@@ -11709,7 +11766,7 @@
 </rule>-->
 
 	
-	<rule comment="REGLA: estar a inf -> estar ger">
+	<!--<rule comment="REGLA: estar a inf -> estar ger">
 		<pattern>
 			<pattern-item n="estar"/>
 			<pattern-item n="a"/>
@@ -11755,9 +11812,9 @@
 				<lit v="aa"/>
 			</let>
 		</action>
-	</rule>
+	</rule>-->
 	
-	<rule comment="estar a prnpro inf">
+	<!--<rule comment="estar a prnpro inf">
 		<pattern>
 			<pattern-item n="estar"/>
 			<pattern-item n="a"/>
@@ -11891,7 +11948,7 @@
 				<lit v="aa"/>
 			</let>
 		</action>
-	</rule>
+	</rule>-->
 
 
 	<rule comment="prnpro ger">
@@ -11918,6 +11975,7 @@
 							<tag><clip pos="2" side="tl" part="pers"/></tag>
 							<tag><clip pos="2" side="tl" part="nbr"/></tag>
 							<tag><var n="tipusverb"/></tag>
+							<tag><var n="cv_verb"/></tag>
 						</tags>
 						<mlu>
 							<lu>
@@ -11978,6 +12036,7 @@
 						<tag><clip pos="3" side="tl" part="pers"/></tag>
 						<tag><clip pos="3" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<mlu>
 						<lu>
@@ -12042,6 +12101,7 @@
 							<tag><clip pos="1" side="tl" part="pers"/></tag>
 							<tag><clip pos="1" side="tl" part="nbr"/></tag>
 							<tag><var n="tipusverb"/></tag>
+							<tag><var n="cv_verb"/></tag>
 						</tags>
 						<mlu>
 							<lu>
@@ -12093,6 +12153,7 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<mlu>
 						<lu>
@@ -12144,6 +12205,7 @@
 						<tag><clip pos="3" side="tl" part="pers"/></tag>
 						<tag><clip pos="3" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<mlu>
 						<lu>
@@ -12206,6 +12268,7 @@
 						<tag><clip pos="4" side="tl" part="pers"/></tag>
 						<tag><clip pos="4" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<mlu>
 						<lu>
@@ -12270,6 +12333,7 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<mlu>
 						<lu>
@@ -12321,6 +12385,7 @@
 						<tag><clip pos="1" side="tl" part="pers"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<mlu>
 						<lu>
@@ -12380,6 +12445,7 @@
 						<tag><clip pos="1" side="tl" part="gen"/></tag>
 						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<lu>
 						<var n="verb"/>
@@ -12453,6 +12519,7 @@
 								<tag><clip pos="1" side="tl" part="gen"/></tag>
 								<tag><clip pos="1" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<var n="verb"/>
@@ -12570,6 +12637,7 @@
 						<tag><clip pos="2" side="tl" part="pers"/></tag>
 						<tag><clip pos="2" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="whole"/> 
@@ -12677,6 +12745,7 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<get-case-from pos="2">
@@ -12710,6 +12779,7 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lem"/>
@@ -12812,6 +12882,7 @@
 						<tag><clip pos="3" side="tl" part="pers"/></tag>
 						<tag><clip pos="3" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
+						<tag><var n="cv_verb"/></tag>
 					</tags>
 					<lu>
 						<get-case-from pos="1">
@@ -12934,6 +13005,7 @@
 								<tag><clip pos="3" side="tl" part="pers"/></tag>
 								<tag><clip pos="3" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<get-case-from pos="2">
@@ -12971,6 +13043,7 @@
 								<tag><clip pos="3" side="tl" part="pers"/></tag>
 								<tag><clip pos="3" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lem"/> 
@@ -13045,6 +13118,7 @@
 							<tag><clip pos="2" side="tl" part="pers"/></tag>
 							<tag><clip pos="2" side="tl" part="nbr"/></tag>
 							<tag><var n="tipusverb"/></tag>
+							<tag><var n="cv_verb"/></tag>
 						</tags>
 						<mlu>
 							<lu>
@@ -13135,6 +13209,7 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<mlu>
 								<lu>
@@ -13173,6 +13248,7 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<mlu>
 								<lu>
@@ -13266,7 +13342,8 @@
 						<tag><clip pos="3" side="tl" part="pers"/></tag>
 						<tag><clip pos="3" side="tl" part="nbr"/></tag>
 						<tag><var n="tipusverb"/></tag>
-					</tags>
+						<tag><var n="cv_verb"/></tag>
+				</tags>
 					<mlu>
 						<lu>
 							<get-case-from pos="1">
@@ -13378,6 +13455,7 @@
 								<tag><clip pos="3" side="tl" part="pers"/></tag>
 								<tag><clip pos="3" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<mlu>
 								<lu>
@@ -13421,6 +13499,7 @@
 								<tag><clip pos="3" side="tl" part="pers"/></tag>
 								<tag><clip pos="3" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<mlu>
 								<lu>

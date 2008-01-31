@@ -8,10 +8,18 @@
     <def-cat n="pr">
       <cat-item name="a"/>
     </def-cat>
+   <def-cat n="verb">
+      <cat-item name="verb"/>
+    </def-cat>
+   <def-cat n="pro_verb">
+      <cat-item name="pro_verb"/>
+    </def-cat>
 
    
     <def-cat n="inf">
       <cat-item name="inf"/>
+      <cat-item name="inf_enc"/>
+      <cat-item name="inf_enc_enc"/>
     </def-cat>
  
 	   <def-cat n="acabar">
@@ -52,6 +60,25 @@
   </section-def-cats>
 
   <section-def-attrs>
+ 			<def-attr n="lema_vb">
+          <attr-item tags="acabar"/>
+          <!--<attr-item tags="anar"/>
+          <attr-item tags="seguir"/>-->
+      </def-attr>
+     <def-attr n="temps">
+          <attr-item tags="inf"/>
+          <attr-item tags="ifi"/>
+          <attr-item tags="pres"/>
+          <attr-item tags="past"/>
+          <attr-item tags="pri"/>
+          <attr-item tags="pp"/>
+          <attr-item tags="ger"/>
+          <attr-item tags="pprs"/>
+          <attr-item tags="subs"/>
+      </def-attr>
+			<def-attr n="canvi">
+          <attr-item tags="canviam"/>
+      </def-attr>
 
 		<def-attr n="tprep">
           <attr-item tags="a"/>
@@ -153,8 +180,35 @@
 
   <section-rules>
 		
+		<rule comment="CHUNK: inf (canvia els inf que cal per ger)">
+			<pattern>
+				<pattern-item n="inf"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="canvi"/>
+								<lit-tag v="canviam"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="temps"/>
+							<lit-tag v="ger"/>
+						</let>
+					</when>
+				</choose>
+
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>
+			</action>
+		</rule>
 		
-			<rule comment="CHUNK:">
+		<rule comment="CHUNK:">
 			<pattern>
 				<pattern-item n="nom"/>
 			</pattern>
@@ -239,6 +293,64 @@
 			</action>
 		</rule> -->
 
+		<rule comment="CHUNK: canvia el verb">
+			<pattern>
+				<pattern-item n="verb"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="acabar"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="acabar"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+		
+		<rule comment="CHUNK: canvia el verb">
+			<pattern>
+				<pattern-item n="pro_verb"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="acabar"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="lem"/>
+							<lit v="acabar"/>
+						</let>
+					</when>
+				</choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+				</out>  
+			</action>
+		</rule> 
+		
 		<rule comment="treu el det 2elem">
 			<pattern>
 				<pattern-item n="sn_2e"/>
