@@ -17,7 +17,12 @@ $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix 
            
-apertium_oldca_XXdir=$(prefix)/share/apertium/$(PREFIX1)/
+apertium_oldca_XXdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_oldca_XX_DATA=$(PREFIX1).automorf.bin 
+apertium_oldca_XXmodesdir=$(prefix)/share/apertium/modes/
 
 CLEANFILES = $(TARGETS)
+
+install-data-local:
+	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	$(INSTALL_DATA) $(PREFIX1)-morph.mode $(apertium_oldca_XXmodesdir)
