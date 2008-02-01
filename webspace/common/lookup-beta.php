@@ -18,9 +18,11 @@ function show_form($textbox, $dir) {
 
 	print "<option class='beta' value='es-en-rl' " . ($dir == 'en-es' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Spanish") . "</option>";
 	print "<option class='beta' value='es-en-lr' " . ($dir == 'es-en' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("English") . "</option>";	
-	print "<option class='beta' value='de-en-lr' " . ($dir == 'de-en' ? ' selected=true' : '') . ">" . _("German") . " &rarr; " . _("English") . "</option>";
+        print "<option class='beta' value='de-en-lr' " . ($dir == 'de-en' ? ' selected=true' : '') . ">" . _("German") . " &rarr; " . _("English") . "</option>";
 	print "<option class='beta' value='de-en-rl' " . ($dir == 'en-de' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("German") . "</option>";
-	print "<option class='beta' value='ca-de-lr' " . ($dir == 'ca-de' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("German") . "</option>";
+	print "<option class='beta' value='es-de-lr' " . ($dir == 'es-de' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("German") . "</option>";
+	print "<option class='beta' value='es-de-rl' " . ($dir == 'de-es' ? ' selected=true' : '') . ">" . _("German") . " &rarr; " . _("Spanish") . "</option>";
+        print "<option class='beta' value='ca-de-lr' " . ($dir == 'ca-de' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("German") . "</option>";
 	print "<option class='beta' value='ca-de-rl' " . ($dir == 'de-ca' ? ' selected=true' : '') . ">" . _("German") . " &rarr; " . _("Catalan") . "</option>";
 
 	print '</select><br/><br/>';
