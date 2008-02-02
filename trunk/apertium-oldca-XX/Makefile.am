@@ -1,4 +1,4 @@
-VERSION=1.0
+VERSION=0.7
 LANG1=oldca
 LANG2=XX
 PREFIX1=$(LANG1)-$(LANG2)
@@ -15,7 +15,7 @@ $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	lt-comp lr $(BASENAME).$(LANG1).dix $@
 
 
-EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix 
+EXTRA_DIST=$(BASENAME).$(LANG1).dix 
            
 apertium_oldca_XXdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_oldca_XX_DATA=$(PREFIX1).automorf.bin 
