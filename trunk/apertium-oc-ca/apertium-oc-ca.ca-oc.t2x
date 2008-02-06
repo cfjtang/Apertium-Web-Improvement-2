@@ -78,6 +78,7 @@
       <cat-item tags="adv"/>
       <cat-item tags="adv.*"/>
       <cat-item tags="preadv"/>
+      <cat-item tags="adv_afegit"/>
       
     </def-cat>
 
@@ -152,6 +153,7 @@
 
    <def-attr n="tnom">
           <attr-item tags="loc"/>
+          <attr-item tags="nploc"/>
           <attr-item tags="data"/>
       </def-attr>
 
@@ -228,7 +230,7 @@
 	<def-list n="prde">
 		<list-item v="de"/>
 		<list-item v="a rel de"/>
-		<list-item v="a través de"/>
+		<list-item v="a travèrs de"/>
 		<list-item v="d'ençà de"/>
 		<list-item v="a causa de"/>
 		<list-item v="dins de"/>
@@ -301,7 +303,31 @@
 			</when>
 		</choose>
 	</def-macro>
-	
+
+	<def-macro n="canvia_el_verb_ger" npar="1">
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="lema_vb"/>
+								<lit-tag v="continuar"/>
+							</equal>
+						</test>
+						<let>
+								<clip pos="1" part="lema_vb"/>
+								<lit-tag v="contunhar"/>
+						</let>
+					<let>
+						<var n="ger-inf"/>
+						<lit-tag v="canviam"/>
+					</let>
+				</when>
+</choose>
+
+
+</def-macro>
+
+
 	<def-macro n="canvis_amb_les_pr" npar="3">
 			<choose alt="oc">
 					<when>
@@ -339,6 +365,10 @@
 
 					</when>
 					<otherwise>
+						<call-macro n="cv_prep">
+							<with-param pos="2"/>
+							<with-param pos="3"/>
+						</call-macro>
 						<out>
 							<chunk>
 								<clip pos="2" part="lem"/>
@@ -349,7 +379,7 @@
 						</out>
 				</otherwise>
 			</choose>
-			<call-macro n="cv_prep">
+			<call-macro n="cv_prep" alt="oc@aran">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -380,7 +410,33 @@
 	</def-macro>
 
 	<def-macro n="cv_prep" npar="2">
-		<choose> 
+		<choose alt="oc@aran"> 
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</equal>
+						<or>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="loc"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="nploc"/>
+							</equal>
+						</or>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="en"/>
+				</let>
+			</when>
+		</choose>
+		<choose alt="oc"> 
 			<when>
 				<test>
 					<and>
@@ -392,6 +448,28 @@
 							<clip pos="2" part="tnom"/>
 							<lit-tag v="loc"/>
 						</equal>
+
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="dins"/>
+				</let>
+			</when>
+		</choose>
+		<choose alt="oc"> 
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="tnom"/>
+							<lit-tag v="nploc"/>
+						</equal>
+
 					</and>
 				</test>
 				<let>
@@ -604,10 +682,7 @@
 	</def-macro>
 
 	<def-macro n="modifica_sv" npar="1">
-				<let>
-					<var n="ger-inf"/>
-					<lit v=""/>
-				</let>
+	
 		<choose><!-- si hi ha un quan-->
 			<when>
 				<test>
@@ -684,21 +759,6 @@
 				</let>
 			</when>
 		</choose>
-		<choose><!-- si és un verb que fa canviar el ger en inf, ho marca-->
-			<when>
-				<test>
-						<equal>
-							<clip pos="1" part="lema_vb"/>
-							<lit-tag v="continuar"/>
-						</equal>
-				</test>
-				<let>
-					<var n="ger-inf"/>
-					<lit v="canviam"/>
-				</let>
-			</when>
-		</choose>
-
 	</def-macro>
 
 <def-macro n="envia_pas" npar="1">
@@ -1306,7 +1366,7 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="2"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
@@ -1357,7 +1417,7 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
@@ -1554,7 +1614,7 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -1900,7 +1960,7 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -1982,7 +2042,7 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -2069,7 +2129,7 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -2157,7 +2217,7 @@
 				<with-param pos="1"/>
 				<with-param pos="4"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -2267,7 +2327,7 @@
 		</action>
 	</rule>
 
-<!--	<rule comment="REGLA: SV ger">
+	<rule comment="REGLA: SV ger">
 		<pattern>
 			<pattern-item n="SV"/>
 			<pattern-item n="ger"/>
@@ -2276,77 +2336,29 @@
 			<call-macro n="modifica_sv">
 				<with-param pos="1"/>
 			</call-macro>
-	
-			<choose>
-				<when>
-					<test>
-						<equal>
-							<var n="ger-inf"/>
-							<lit v="canviam"/>
-						</equal>
-					</test>
-
-					<out>
-						<chunk>
-							<clip pos="1" part="lem"/>
-							<clip pos="1" part="tags"/>
-							<clip pos="1" part="chcontent"/>
-						</chunk>
-						<b pos="1"/>
-						<chunk>
-							<clip pos="2" part="lem"/>
-								<lit-tag v="canviam"/>
-							<clip pos="2" part="tags"/>
-							<clip pos="2" part="chcontent"/>
-						</chunk>
-					</out>
-				</when>
-				<otherwise>
-					<choose>
-						<when>
-							<test>
-								<equal>
-									<clip pos="1" part="lema_vb"/>
-									<lit-tag v="anar"/>
-								</equal>
-							</test>
-							<out>
-								<chunk>
-									<clip pos="1" part="lem"/>
-									<lit-tag v="treume"/>
-									<clip pos="1" part="tags"/>
-									<clip pos="1" part="chcontent"/>
-								</chunk>
-								<b pos="1"/>
-								<chunk>
-									<clip pos="2" part="lem"/>
-									<clip pos="1" part="tags"/>
-									<clip pos="2" part="chcontent"/>
-								</chunk>
-							</out>
-						</when>
-						<otherwise>
-
-							<out>
-								<chunk>
-									<clip pos="1" part="lem"/>
-									<clip pos="1" part="tags"/>
-									<clip pos="1" part="chcontent"/>
-								</chunk>
-								<b pos="1"/>
-								<chunk>
-									<clip pos="2" part="lem"/>
-									<clip pos="2" part="tags"/>
-									<clip pos="2" part="chcontent"/>
-								</chunk>
-
-							</out>
-						</otherwise>
-					</choose>
-				</otherwise>
-			</choose>
+			<call-macro n="canvia_el_verb_ger">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<var n="ger-inf"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+			<let>
+				<var n="ger-inf"/>
+				<lit v=""/>
+			</let>
 		</action>
-	</rule>-->
+	</rule>
 
 
 	<rule comment="REGLA: SV adv prep SN">
