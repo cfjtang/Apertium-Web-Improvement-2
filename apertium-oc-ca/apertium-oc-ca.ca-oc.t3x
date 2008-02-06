@@ -96,6 +96,7 @@
     <def-cat n="pr">
       <cat-item name="en"/>
       <cat-item name="ta"/>
+      <cat-item name="dins"/>
 <!--        <cat-item name="a"/> -->
    </def-cat>
 
@@ -197,6 +198,7 @@
           <attr-item tags="venir"/>
           <attr-item tags="anar"/>
           <attr-item tags="seguir"/>
+          <attr-item tags="contunhar"/>
       </def-attr>
 			<def-attr n="canvi">
           <attr-item tags="canviam"/>
@@ -267,7 +269,7 @@
 				<test>
 					<equal>
 						<var n="quin_verb"/>
-						<lit-tag v="continuar"/>
+						<lit-tag v="contunhar"/>
 					</equal>
 				</test>
 				<let>
@@ -399,13 +401,13 @@
 					<var n="quin_verb"/>
 					<clip pos="0" part="lema_vb"/>
 				</let>
-		<!--	<call-macro n="cv_verb">
+			<call-macro n="cv_verb">
 				<with-param pos="1"/>
-			</call-macro>-->
+			</call-macro>
 	
 				<out>
 					<lu>
-<!-- 					<var n="quin_verb"/> -->
+<!--  					<var n="quin_verb"/>  -->
 					<clip pos="1" part="whole"/>
 						
 					</lu>
@@ -1290,6 +1292,24 @@
 						<let>
 							<clip pos="1" part="lem"/>
 							<lit v="en"/>
+						</let>
+					</when>
+					<when>
+						<test>
+							<and>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="a"/>
+								</equal>
+								<equal>
+									<clip pos="0" part="lem"/>
+									<lit v="dins"/>
+								</equal>
+							</and>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="dins"/>
 						</let>
 					</when>
 				</choose>
