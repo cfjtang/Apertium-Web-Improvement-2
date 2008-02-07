@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tagger name="catalan">
 <tagset>
- <!-- <def-label name="QUECNJ" closed="true">únic
+ <!-- <def-label name="QUECNJ" closed="true">Ãºnic
     <tags-item lemma="que" tags="cnjsub"/>
   </def-label> -->
   <def-label name="QUEREL" closed="true">
@@ -94,6 +94,9 @@
   </def-label>
   <def-label name="NOMM">
     <tags-item tags="n.m.*"/>
+  </def-label>
+  <def-label name="NOMMF">
+    <tags-item tags="n.mf.*"/>
   </def-label>
   <def-label name="ANTROPONIM">
     <tags-item tags="np.ant.*"/>
@@ -419,6 +422,10 @@
       <label-item label="NOMM"/>
       <label-item label="NOMF"/>
     </label-sequence>
+    <label-sequence>
+      <label-item label="NOMM"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
     
     <label-sequence>
       <label-item label="NOMF"/>
@@ -429,6 +436,10 @@
       <label-item label="NOMF"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="NOMF"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="NOMM"/>
       <label-item label="ACRONIMOM"/>
     </label-sequence>
@@ -453,12 +464,28 @@
       <label-item label="ACRONIMOMF"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="NOMMF"/>
+      <label-item label="ACRONIMOM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOMMF"/>
+      <label-item label="ACRONIMOF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOMMF"/>
+      <label-item label="ACRONIMOMF"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="ACRONIMOM"/>
       <label-item label="NOMM"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ACRONIMOM"/>
       <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ACRONIMOM"/>
+      <label-item label="NOMMF"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ACRONIMOF"/>
@@ -469,12 +496,20 @@
       <label-item label="NOMF"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="ACRONIMOF"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="ACRONIMOMF"/>
       <label-item label="NOMM"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ACRONIMOMF"/>
       <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ACRONIMOMF"/>
+      <label-item label="NOMMF"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ACRONIMOM"/>
@@ -525,6 +560,10 @@
       <label-item label="NOMF"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="PRNPOS"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="TOPONIM"/>
       <label-item label="VLEXIMP"/>
     </label-sequence>
@@ -639,6 +678,18 @@
     <label-sequence>
       <label-item label="NPALTRES"/>
       <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ANTROPONIM"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="TOPONIM"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NPALTRES"/>
+      <label-item label="NOMMF"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ANTROPONIM"/>
@@ -1179,6 +1230,10 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETNT"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETNT"/>
       <label-item label="ACRONIMOM"/>
     </label-sequence>
     <label-sequence>
@@ -1549,13 +1604,17 @@
       <label-item label="MOLTPREADV"/>
       <label-item label="SENT"/>
     </label-sequence>
-    <label-sequence><!--Afegides les 3 següents 30/11/05 MG -->
+    <label-sequence><!--Afegides les 3 segÃŒents 30/11/05 MG -->
       <label-item label="INTNOM"/>
       <label-item label="NOMF"/>
     </label-sequence>
     <label-sequence>
       <label-item label="INTNOM"/>
       <label-item label="NOMM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTNOM"/>
+      <label-item label="NOMMF"/>
     </label-sequence>
     <label-sequence><!--13/01/06 -->
       <label-item label="MOLTADV"/>
