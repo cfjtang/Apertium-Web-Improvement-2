@@ -47,20 +47,20 @@ class MainWindow:
 
     def load_config(self):
         """Read the configuration data. First read default data from 'defaults.cfg'
-        and then user config data from '~/.apertium-simple-viewer.cfg'. Tell the
+        and then user config data from '~/.apertium-tolk.cfg'. Tell the
         glade object to update stored widget properties based on the config data.
         """
         self.config.readfp(open('defaults.cfg'))
-        self.config.read([os.path.expanduser('~/.apertium-simple-viewer.cfg')])
+        self.config.read([os.path.expanduser('~/.apertium-tolk.cfg')])
         self.glade.load_gtk_state(self.config)
 
     def save_config(self):
-        """Store the configuration data to the user file '~/.apertium-simple-viewer.cfg'.
+        """Store the configuration data to the user file '~/.apertium-tolk.cfg'.
         Before storing, tell the glade object to dump the widget state to the configuration
         object self.config.
         """
         self.glade.dump_gtk_state(self.config)
-        self.config.write(open(os.path.expanduser('~/.apertium-simple-viewer.cfg'), 'w'))
+        self.config.write(open(os.path.expanduser('~/.apertium-tolk.cfg'), 'w'))
     
     def __init__(self, path):
         self.config = ConfigParser() # An object which loads/stores preferences
