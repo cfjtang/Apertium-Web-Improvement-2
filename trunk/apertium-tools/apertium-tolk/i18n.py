@@ -1,7 +1,7 @@
 import gettext
 import gtk.glade
 
-APP='simple-view'
+APP='apertium-tolk'
 DIR='po'
  
 gettext.bindtextdomain(APP, DIR)
