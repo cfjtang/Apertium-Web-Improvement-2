@@ -7,6 +7,8 @@ desktop_in_files	= apertium-tolk.desktop.in
 desktop_DATA		= $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
+man_MANS	= apertium-tolk.1
+
 bin_SCRIPTS	= apertium-tolk 
 apertiumtolkdir	= $(pythondir)/tolk
 apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py __init__.py prefix.py
