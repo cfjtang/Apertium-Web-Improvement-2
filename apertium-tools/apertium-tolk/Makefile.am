@@ -1,15 +1,24 @@
 SUBDIRS = po
 
-distcleancheck_listfiles = find . -type -f print | grep -v 'omf\.out'
-
 desktopdir		= $(datadir)/applications
 desktop_in_files	= apertium-tolk.desktop.in
 desktop_DATA		= $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-apertiumtolkdir	= $(pythondir)/apertium-tolk
-apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py
+bin_SCRIPTS	= apertium-tolk 
+apertiumtolkdir	= $(pythondir)/tolk
+apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py __init__.py prefix.py
 
 gladedir	= $(datadir)/apertium-tolk/glade
 glade_DATA	= tolk.glade
 
+prefix.py: prefix.py.in Makefile
+	sed \
+	-e 's|@pkgpythondir[@]|$(pkgpythondir)|g' \
+	-e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
+	-e 's|@localedir[@]|$(localedir)|g' \
+	-e 's|@datadir[@]|$(datadir)|g' \
+	-e 's|@prefix[@]|$(prefix)|g' \
+	prefix.py.in > $@
+
+CLEANFILES = prefix.py
