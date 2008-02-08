@@ -1457,10 +1457,31 @@
 					<clip pos="3" part="chcontent"/>
 				</chunk>
 				<b pos="3"/>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b/>
 			</out>
-			<call-macro n="partitiu">
+			<choose>
+				<when>
+					<test>
+						<not>
+							<in caseless="yes">
+								<clip pos="1" part="lem"/>
+								<list n="prde"/>
+							</in>
+						</not>
+					</test>
+					<call-macro n="partitiu">
+						<with-param pos="4"/>
+					</call-macro>
+				</when>
+			</choose>
+	<!--		<call-macro n="partitiu">
 				<with-param pos="4"/>
-			</call-macro>
+			</call-macro>-->
 			<out>
 				<chunk>
 					<clip pos="4" part="lem"/>
@@ -2322,6 +2343,71 @@
 					<clip pos="3" part="lem"/>
 					<clip pos="3" part="tags"/>
 					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+
+	<rule comment="REGLA: SV sprep cnjcoo SN">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="pr"/>
+			<pattern-item n="SN"/>
+			<pattern-item n="cnjcoo"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="modifica_sv">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="canvia_el_verb" alt="oc">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+			</out>
+			<call-macro n="canvis_amb_les_pr">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="f_bcond">
+				<with-param pos="2"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+				<b pos="3"/>
+				<chunk>
+					<clip pos="4" part="lem"/>
+					<clip pos="4" part="tags"/>
+					<clip pos="4" part="chcontent"/>
+				</chunk>
+				<b pos="4"/>
+			</out>
+			<call-macro n="canvis_amb_les_pr">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="5"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="5" part="lem"/>
+					<clip pos="5" part="tags"/>
+					<clip pos="5" part="chcontent"/>
 				</chunk>
 			</out>
 		</action>
