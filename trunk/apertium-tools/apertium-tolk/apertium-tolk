@@ -16,9 +16,7 @@ import pygtk
 
 import dbus # Used to connect to the Apertium D-Bus service
 
-from i18n import _
-from glade import GladeXML
-
+import tolk 
 
 class MainWindow:
     def setup_combo(self, modes, combo):
@@ -68,7 +66,7 @@ class MainWindow:
         # Create a proxy object to the D-Bus object org.apertium.info/ using the interface org.apertium.Info
         self.info = dbus.Interface(self.bus.get_object("org.apertium.info", "/"), "org.apertium.Info")
         self.input_queue = Queue()  # Thread communication queue
-        self.glade = GladeXML(path) # Instantiate our custom Glade class which extends the gtk.glade.GladeXML class
+        self.glade = tolk.GladeXML(path) # Instantiate our custom Glade class which extends the gtk.glade.GladeXML class
         self.glade.connect(self);   # Try to connect the signals defined in the glade file to methods defined in self
 
         # Get handles objects of interest in the glade file
