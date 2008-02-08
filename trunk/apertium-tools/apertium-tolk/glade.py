@@ -1,6 +1,18 @@
+import StringIO
 import gtk.glade
 from ConfigParser import DuplicateSectionError, NoSectionError
 from widget_state import dump_state, load_state
+
+default_config = '''
+[wndMain]
+x_size = 635
+y_size = 585
+x_pos = 41
+y_pos = 31
+
+[vpaned1]
+position = 226
+'''
 
 class GladeXML(gtk.glade.XML):
     def get_widgets(self):
@@ -28,6 +40,19 @@ class GladeXML(gtk.glade.XML):
 
             for key, val in dump_state(widget).iteritems():
                 cfg.set(widget_name, key, str(val))
+
+
+    def load_gtk_state_default(self, cfg):
+	cfg_buf = StringIO.StringIO(default_config)
+	cfg.read(cfg_buf)
+
+        for widget_name, widget in self.get_widgets():
+            try:
+                load_state(widget, dict(cfg.items(widget_name)))
+            except KeyError, e:
+                pass
+            except NoSectionError, e:
+                pass
 
 
     def load_gtk_state(self, cfg):

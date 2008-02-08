@@ -48,7 +48,7 @@ class MainWindow:
         and then user config data from '~/.apertium-tolk.cfg'. Tell the
         glade object to update stored widget properties based on the config data.
         """
-        self.config.readfp(open('defaults.cfg'))
+	self.glade.load_gtk_state_default(self.config)
         self.config.read([os.path.expanduser('~/.apertium-tolk.cfg')])
         self.glade.load_gtk_state(self.config)
 
