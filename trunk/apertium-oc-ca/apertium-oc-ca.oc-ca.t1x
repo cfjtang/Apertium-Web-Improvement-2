@@ -96,6 +96,11 @@
 		
 		<def-cat n="anar">
 			<cat-item lemma="anar" tags="vblex.*"/>
+			<cat-item lemma="venir" tags="vblex.*"/>
+			<cat-item lemma="pujar" tags="vblex.*"/>
+			<cat-item lemma="baixar" tags="vblex.*"/>
+			<cat-item lemma="entrar" tags="vblex.*"/>
+			<cat-item lemma="sortir" tags="vblex.*"/>
 		</def-cat>		
 		
 <!--   <def-cat n="verb">
@@ -484,6 +489,7 @@
   </section-def-attrs>
   <section-def-vars>
 		<def-var n="cv_verb"/>
+		<def-var n="cond"/>
 		<def-var n="lema_sv"/>
     <def-var n="impersonal"/>
      <def-var n="verb"/>
@@ -1448,6 +1454,34 @@
 			<choose>
 				<when>
 					<test>
+						<and>
+							<equal alt="oc">
+								<clip pos="1" side="sl" part="lem"/>
+								<lit v="dever"/>
+							</equal>
+							<equal alt="oc@aran">
+								<clip pos="1" side="sl" part="lem"/>
+								<lit v="déuer"/>
+							</equal>
+							<equal>
+								<var n="cond"/>
+								<lit v="yes"/>
+							</equal>
+						</and>
+					</test>
+					<let>
+						<clip pos="1" side="tl" part="lem"/>
+						<lit v="haver# de"/>
+					</let>
+				</when>
+			</choose>
+			<let>
+				<var n="cond"/>
+				<lit v=""/>
+			</let>
+			<choose>
+				<when>
+					<test>
 						<equal>
 							<clip pos="1" side="sl" part="temps"/>
 							<lit-tag v="ifi"/>
@@ -1476,6 +1510,7 @@
 					</append>
 				</otherwise>
 			</choose>
+
 		</def-macro>
 
 		<def-macro n="tipus_verb" npar="1">
@@ -13866,10 +13901,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal caseless="yes">
-							<clip pos="1" side="sl" part="lem"/>
-							<lit v="se"/>
-						</equal>
+						<or>
+							<equal caseless="yes">
+								<clip pos="1" side="sl" part="lem"/>
+								<lit v="se"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="1" side="sl" part="lem"/>
+								<lit v="si"/>
+							</equal>
+						</or>
 					</test>
 					<out>
 						<chunk name="se" case="caseFirstWord">
@@ -13881,6 +13922,10 @@
 							</lu>
 						</chunk>
 					</out>
+					<let>
+						<var n="cond"/>
+						<lit v="yes"/>
+					</let>
 				</when>
 				<otherwise>
 				
