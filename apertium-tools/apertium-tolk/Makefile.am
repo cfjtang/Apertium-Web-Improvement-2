@@ -1,5 +1,7 @@
 SUBDIRS = po
 
+EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in apertium-tolk apertium-tolk.desktop.in tolk.glade prefix.py.in
+
 desktopdir		= $(datadir)/applications
 desktop_in_files	= apertium-tolk.desktop.in
 desktop_DATA		= $(desktop_in_files:.desktop.in=.desktop)
