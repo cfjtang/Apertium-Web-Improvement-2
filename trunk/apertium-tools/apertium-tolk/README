@@ -1,8 +1,11 @@
 
+==Requirements==
+
 You need:
 
 * D-Bus for Python (http://www.freedesktop.org/wiki/Software/dbus) 
- - almost every modern UNIX will have a package for this. You can install this in Debian/Ubuntu Linux by issuing:
+ - almost every modern UNIX will have a package for this. You can install 
+   this in Debian/Ubuntu Linux by issuing:
  
    $ sudo apt-get install python-dbus
 
@@ -13,6 +16,24 @@ You need:
 Restart the daemons:
 
 $ dbus-send / org.apertium.General.QuitSignal
+
+==Notes==
+
+After installing a new language pair you will need to restart the 
+D-Bus service.
+
+  $ sudo /etc/init.d/dbus restart
+
+in order for the pair to become available. If you do not do that, you
+will probably see errors like:
+
+  org.freedesktop.DBus.Error.UnknownMethod: Method "translate" with signature "a{ss}s" on interface "org.apertium.Mode" doesn't exist
+
+or
+
+  ERROR:dbus.connection:Unable to set arguments ({}, 'A') according to signature None: exceptions.ValueError: Unable to guess signature from an empty dict
+  Unable to guess signature from an empty dict
+
 
 ==Licence==
 
