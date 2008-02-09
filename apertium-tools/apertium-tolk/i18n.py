@@ -1,8 +1,9 @@
 import gettext
 import gtk.glade
+import prefix
 
 APP='apertium-tolk'
-DIR='po'
+DIR=prefix.localedir
  
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)

@@ -5,10 +5,10 @@ from widget_state import dump_state, load_state
 
 default_config = '''
 [wndMain]
-x_size = 400
-y_pos = 26
-x_pos = 591
+x_size = 465
 y_size = 300
+x_pos = 551
+y_pos = 26
 
 [vpaned1]
 position = 112
