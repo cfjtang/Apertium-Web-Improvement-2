@@ -164,6 +164,15 @@ class MainWindow:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        print 'apertium-tolk 0.2'
+	print 'Copyright (C) 2006 Wynand Winterbach'
+        print 'This is free software.  You may redistribute copies of it under the terms of'
+        print 'the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.'
+        print 'There is NO WARRANTY, to the extent permitted by law.'
+
+	sys.exit(0)
+    
     gtk.gdk.threads_init()
     wnd = MainWindow(tolk.datadir + "/apertium-tolk/glade/" + "tolk.glade")
     gtk.main();

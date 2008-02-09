@@ -5,13 +5,13 @@ from widget_state import dump_state, load_state
 
 default_config = '''
 [wndMain]
-x_size = 635
-y_size = 585
-x_pos = 41
-y_pos = 31
+x_size = 400
+y_pos = 26
+x_pos = 591
+y_size = 300
 
 [vpaned1]
-position = 226
+position = 112
 '''
 
 class GladeXML(gtk.glade.XML):
