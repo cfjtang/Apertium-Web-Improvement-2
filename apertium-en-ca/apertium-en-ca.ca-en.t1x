@@ -3186,12 +3186,38 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="2" side="sl" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="nbr"/>
+		  <clip pos="2" side="sl" part="nbr"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>		
 	<out>
 	  <chunk name="det_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><clip pos="2" side="sl" part="gen"/></tag>
-	      <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -3245,7 +3271,34 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	  <with-param pos="3"/>
-	</call-macro>	      
+	</call-macro>	 
+
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="3" side="sl" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="nbr"/>
+		  <clip pos="3" side="sl" part="nbr"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>
 	      
 <!--	<choose>
 	  <when>
@@ -3266,12 +3319,12 @@
 		<tags>
 		  <tag><lit-tag v="SA"/></tag>
 		  <tag><clip pos="3" side="sl" part="gen"/></tag>
-		  <tag><clip pos="3" side="sl" part="nbr"/></tag>
+		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags>
 		<lu>   
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_det"/>
-		  <clip pos="1" side="tl" part="nbr"/>
+		  <clip pos="1" side="tl" part="nbr" link-to="3"/>
 		</lu>
 		<b pos="1"/>
 		<lu> 
@@ -3286,7 +3339,7 @@
     </rule> 
 
 
-    <rule comment="REGLA: DETERMINANT (perquè no doni error si va davant de desconegudes i no es pot assignar nombre)">
+    <rule comment="REGLA: DETERMINANT (perquè no doni error si va davant de desconegudes i no es pot assignar nombre. MG: falta regla t2x per al ND)">
       <pattern>
 	<pattern-item n="det"/>
       </pattern>
@@ -3299,12 +3352,12 @@
 	    <tags>
 	      <tag><lit-tag v="DET"/></tag>
 	      <tag><clip pos="1" side="sl" part="gen"/></tag>
-	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_det"/>
-	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
 	    </lu> 
 	  </chunk>
 	</out>  
