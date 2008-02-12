@@ -56,6 +56,9 @@
       <cat-item tags="num"/>
     </def-cat>
 
+    <def-cat n="ij">
+      <cat-item tags="ij"/>
+    </def-cat>
     <def-cat n="prep">
       <cat-item tags="pr"/>
     </def-cat>
@@ -238,7 +241,7 @@
 
     <def-cat n="adv_preadv">
       <cat-item tags="adv"/>
-      <cat-item tags="preadv"/>
+        <cat-item tags="preadv"/>
     </def-cat>
 
     <def-cat n="adv">
@@ -580,6 +583,7 @@
 			<list-item v="principat"/>
 			<list-item v="banc"/>
 			<list-item v="botiga"/>
+			<list-item v="franja"/>
 		</def-list>
 			
 			
@@ -618,9 +622,10 @@
 			<list-item v="èsser"/>
    </def-list>
 		
-<!--		<def-list n="amb_a">
-			<list-item v="parlar"/>
-		</def-list>-->
+		<def-list n="amb_a">
+			<list-item v="relacionar" alt="oc"/>
+			<list-item v="lalà" alt="oc@aran"/>
+		</def-list>
 		
 		<def-list n="per_de">
 			<list-item v="formar" alt="oc"/>
@@ -1116,6 +1121,32 @@
 												</when>
 											</choose>
 										</when>
+									
+										<otherwise>
+											
+											<choose> 
+												<when>
+													<test>
+														<and>
+															<equal>
+																<clip pos="1" side="sl" part="lem"/>
+																<lit v="amb"/>
+															</equal>
+															<equal>
+																<var n="tipusverb"/>
+																<lit v="vbamb_a"/>
+															</equal>
+														</and>
+													</test>
+													<let>
+														<clip pos="1" side="tl" part="lem"/>
+														<lit v="a"/>
+													</let>
+												</when>
+											</choose>
+										</otherwise>
+
+						
 									</choose>
 								</otherwise>
 						
@@ -1292,12 +1323,27 @@
 																	</let>
 																</when>
 																<otherwise>
-	
+																	<choose>
+																		<when>
+																			<test>
+																				<in caseless="yes">
+																					<clip pos="1" side="sl" part="lem"/>
+																					<list n="amb_a"/>
+																				</in>
+																			</test>
+																			<let>
+																				<var n="tipusverb"/>
+																				<lit v="vbamb_a"/>
+																			</let>
+																		</when>
+																		<otherwise>	
 											
-																	<let>
-																		<var n="tipusverb"/>
-																		<lit v="nodef"/>
-																	</let>
+																			<let>
+																				<var n="tipusverb"/>
+																				<lit v="nodef"/>
+																			</let>
+																		</otherwise>
+																	</choose>
 																</otherwise>
 															</choose>
 														</otherwise>
@@ -6335,7 +6381,7 @@
 			<call-macro n="tipus_verb">
 				<with-param pos="2"/>
 			</call-macro>
-						<choose>
+			<choose>
 				<when>
 					<test>
 						<equal caseless="yes">
@@ -24158,7 +24204,7 @@
 		</action>
 	</rule>-->
 
-	<rule comment="REGLA: VERB INF (vol cantar)">
+<!--	<rule comment="REGLA: VERB INF (vol cantar)">
 		<pattern>
 			<pattern-item n="verbpers"/>
 			<pattern-item n="inf"/>
@@ -26550,7 +26596,7 @@
 			</let>
 		</action>
 	</rule>
-	
+	-->
 
     <!--************************************ ALTRES ************************************************ -->
 	<rule comment="ADV">
@@ -26947,6 +26993,56 @@
 						<clip pos="1" side="tl" part="gen_mf"/>	 
 						<clip pos="1" side="tl" part="nbr_sense_sp" link-to="2"/>
 						<clip pos="1" side="tl" part="nbr_sp"/>	 
+					</lu>
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="ij">
+		<pattern>
+			<pattern-item n="ij"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="ij" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="ij"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/> 
+					</lu>
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="advitg">
+		<pattern>
+			<pattern-item n="advitg"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="advitg" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="advitg"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/> 
 					</lu>
 				</chunk>
 			</out>

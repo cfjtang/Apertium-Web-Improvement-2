@@ -282,6 +282,10 @@
       <cat-item tags="sent"/>
     </def-cat>
 		
+     <def-cat n="ij">
+      <cat-item tags="ij"/>
+    </def-cat>
+		
    <def-cat n="coma">
       <cat-item tags="cm"/>
     </def-cat>
@@ -619,6 +623,7 @@
 			<list-item v="principat"/>
 			<list-item v="banc"/>
 			<list-item v="botiga"/>
+			<list-item v="franja"/>
 		</def-list>
 		
 		<def-list n="adv_davant">
@@ -656,6 +661,8 @@
 			<list-item v="sabon"/>
 			<list-item v="sau"/>
 			<list-item v="sal"/>
+			<list-item v="manjar"/>
+			<list-item v="temps"/>
 		</def-list>
 
 		<def-list n="mes">
@@ -1090,6 +1097,18 @@
 								<lit v="reposar"/>
 							</let>
 						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="acordar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="posar# d'acord"/>
+							</let>
+						</when>
 					</choose>
 				</when>
 			</choose>
@@ -1406,6 +1425,18 @@
 											<let>
 												<clip pos="2" side="tl" part="lem"/>
 												<lit v="adonar"/>
+											</let>
+										</when>
+										<when>
+											<test>
+												<equal caseless="yes">
+													<clip pos="2" side="sl" part="lem"/>
+													<lit v="acordar"/>
+												</equal>
+											</test>
+											<let>
+												<clip pos="2" side="tl" part="lem"/>
+												<lit v="posar# d'acord"/>
 											</let>
 										</when>
 									</choose>
@@ -15221,6 +15252,54 @@
 		</action>
 	</rule>
 	
+	<rule comment="ij">
+		<pattern>
+			<pattern-item n="ij"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="ij" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="ij"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/> 
+					</lu>
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	<rule comment="advitg">
+		<pattern>
+			<pattern-item n="advitg"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="advitg" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="advitg"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/> 
+					</lu>
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>	
 	<rule> <!-- REGLA: reset variables-->
 		<pattern>
 			<pattern-item n="sent"/>
