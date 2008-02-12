@@ -125,19 +125,21 @@ function translate($text, $dir, $markUnknown, $trace) {
 	//fclose($fd);
 
 	$DIRECTORY = "/home/ebenimeli/transducens/apertium-es-ca-en/dix";
+
 	
 	if ($trace == 1) {
 		print_trace($text, $dir, $DIRECTORY);
 	}
 
 	//$cmd = "LANG=es_ES.UTF-8 echo \"" . $text . "\" | " . $DIRECTORY . "/translate-pipeline-" . $dir. "-nodesamb.sh";
-	//$trad = shell_exec($cmd);
+	$cmd = "LANG=es_ES.UTF-8 echo \"" . $text . "\" | apertium " . $dir;
+	$trad = shell_exec($cmd);
 	//print "Trad (no desambig.):";
 	//print $trad;	  	
 	
-  	$cmd = "LANG=es_ES.UTF-8 echo \"" . $text . "\" | " . $DIRECTORY . "/translate-pipeline-" . $dir. ".sh";
+  	//$cmd = "LANG=es_ES.UTF-8 echo \"" . $text . "\" | " . $DIRECTORY . "/translate-pipeline-" . $dir. ".sh";
+	//$cmd = "LANG=es_ES.UTF-8 echo \"" . $text . "\"  	
   	//print_HTML($cmd);
-	$trad = shell_exec($cmd);
 	
 	  	
 	//$trad = replaceUnknown($trad);
