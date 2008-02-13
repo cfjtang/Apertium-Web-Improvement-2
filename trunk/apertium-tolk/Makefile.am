@@ -27,4 +27,4 @@ prefix.py: prefix.py.in Makefile
 	-e 's|@prefix[@]|$(prefix)|g' \
 	prefix.py.in > $@
 
-CLEANFILES = prefix.py
+CLEANFILES = prefix.py apertium-tolk.desktop
