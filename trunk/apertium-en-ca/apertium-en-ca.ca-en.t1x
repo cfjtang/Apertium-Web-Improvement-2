@@ -109,6 +109,18 @@
       <cat-item lemma="caldre" tags="vbmod.*"/>
     </def-cat>
 
+
+  <def-cat n="estar">
+      <cat-item lemma="estar" tags="vblex.cni.*"/>
+      <cat-item lemma="estar" tags="vblex.fti.*"/>
+      <cat-item lemma="estar" tags="vblex.ifi.*"/>
+      <cat-item lemma="estar" tags="vblex.imp.*"/>
+      <cat-item lemma="estar" tags="vblex.pii.*"/>
+      <cat-item lemma="estar" tags="vblex.pis.*"/>
+      <cat-item lemma="estar" tags="vblex.pri.*"/>
+      <cat-item lemma="estar" tags="vblex.prs.*"/>
+  </def-cat>
+
     <def-cat n="verbcj">
       <cat-item tags="vblex.cni.*"/>
       <cat-item tags="vblex.fti.*"/>
@@ -4573,6 +4585,9 @@
     </rule>
     
 
+
+
+
     <rule comment="HAVER + PP (han vist - have seen)">
       <pattern>
 	<pattern-item n="haver"/>
@@ -4919,6 +4934,9 @@
       </action>
     </rule>
 	 
+
+
+
 	 
 
     <rule comment="REGLA: PROCLÍTIC VERB conjugat">
@@ -5625,6 +5643,9 @@
       </action>
     </rule>
 
+
+
+ 
 
 
     <rule comment="VERBMOD + ENCL + INF (poder-ho fer - be able to do it)(no he fet res per a pronominals, difícil fer la concordança de persona en frases que no són de 3a persona ('es'): per poder-te enamorar...">
@@ -6419,6 +6440,158 @@
 	</out>  
       </action>
     </rule>
+
+
+
+
+  <rule comment="REGLA: ESTAR + GER (estan estudiant)">
+      <pattern>
+	<pattern-item n="estar"/>
+	<pattern-item n="ger"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="conj_verb1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<append n="lema_SV">
+	  <lit v="_ger"/>
+	</append>
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		<clip pos="2" side="sl" part="lemh"/> 
+		<lit v="poder"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <lit v="be able to"/>
+	    </let>
+	    <let>
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <lit-tag v="vbmod"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk namefrom="lema_SV" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><var n="temps_chunk"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <var n="verbfinal"/> 
+	    </lu>
+	    <b pos="1"/>	    
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="sep"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="lemq"/>    
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
+
+
+
+ <rule comment="REGLA: PROCLÍTIC ESTAR GER (els estan buscant) mireia falta els negatius">
+      <pattern>
+	<pattern-item n="pro"/>
+	<pattern-item n="estar"/>
+	<pattern-item n="ger"/>
+      </pattern>
+      <action>
+	<call-macro n="conj_verb1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<append n="lema_SV">
+	  <lit v="_ger"/>
+	</append>
+	<out>
+	  <chunk namefrom="lema_SV" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><var n="temps_chunk"/></tag>
+	      <tag><clip pos="2" side="tl" part="pers"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <var n="verbfinal"/> 
+	    </lu>
+	    <b pos="1"/>	    
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <clip pos="3" side="tl" part="sep"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="lemq"/>    
+	    </lu>
+	  </chunk>
+	</out>		  
+	<choose><!--després d'imprimir el verb, mirem el proclític -->
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="3" side="sl" part="pron"/>
+		  <lit-tag v="pron"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="pers"/>
+		  <clip pos="3" side="sl" part="pers"/>
+		</equal>
+		<or>
+		  <equal>
+		    <clip pos="1" side="sl" part="nbr"/>
+		    <clip pos="3" side="sl" part="nbr"/>
+		  </equal>
+		  <equal>
+		    <clip pos="1" side="sl" part="lem"/>
+		    <lit v="es"/><!--és 'sp' -->
+		  </equal>
+		</or>
+	      </and>
+	    </test>	
+	    <call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+	      <with-param pos="2"/>
+	    </call-macro>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <b pos="2"/>
+	      <chunk name="pro">
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		  <tag><clip pos="1" side="sl" part="pers"/></tag>
+		  <tag><clip pos="1" side="tl" part="gen"/></tag>
+		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="whole"/>
+		</lu>
+	      </chunk>
+	    </out>		
+	  </otherwise>
+	</choose>
+      </action>
+ </rule>
+
+
 
     <!--**************************** SV precedits d'adverbi (negacions i altres) -->
 
