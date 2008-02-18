@@ -879,7 +879,7 @@
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
-			<choose>
+			<!--<choose alt="oc">
 				<when>
 					<test>
 						<and>
@@ -903,7 +903,6 @@
 						<chunk>
 							<clip pos="2" part="lem"/>
 							<clip pos="2" part="tags"/>
-						<!--	<lit-tag v="treu_det"/>-->
 							<clip pos="2" part="chcontent"/>
 						</chunk>
 					</out>
@@ -926,7 +925,20 @@
 						</chunk>
 					</out>
 				</otherwise>
-			</choose>
+			</choose>-->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
 		</action>
 	</rule>
 
@@ -1226,6 +1238,20 @@
 							</equal>
 							<or>
 								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="inf"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="pro_inf"/>
+								</equal>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="pro_pro_inf"/>
+								</equal>
+							</or>
+							<or>
+								<equal>
 									<clip pos="3" part="nbr"/>
 									<lit-tag v="pl"/>
 								</equal>
@@ -1382,6 +1408,20 @@
 									<clip pos="4" part="lem"/>
 									<lit v="de"/>
 								</equal>
+								<or>
+									<equal>
+										<clip pos="1" part="lem"/>
+										<lit v="inf"/>
+									</equal>
+									<equal>
+										<clip pos="1" part="lem"/>
+										<lit v="pro_inf"/>
+									</equal>
+									<equal>
+										<clip pos="1" part="lem"/>
+										<lit v="pro_pro_inf"/>
+									</equal>
+								</or>
 								<or>
 									<equal>
 										<clip pos="5" part="nbr"/>
