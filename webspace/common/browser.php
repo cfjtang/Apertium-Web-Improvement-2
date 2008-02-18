@@ -80,6 +80,6 @@
   ?>
   </frameset>
   <noframes>
-    <?php print _("Update your browser") ?>
+    <?php print _("Update your browser"); ?>
   </noframes>
 </html>
