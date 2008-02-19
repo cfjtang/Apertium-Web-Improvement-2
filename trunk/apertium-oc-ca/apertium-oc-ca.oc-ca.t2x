@@ -109,6 +109,7 @@
 	</def-attr>
 	<def-attr n="tnom">
         <attr-item tags="loc"/>
+       <attr-item tags="mes"/>
         <attr-item tags="part"/>
 	</def-attr>
 	<!--<def-attr n="tprep">
@@ -649,10 +650,16 @@
 							<clip pos="1" part="lem"/>
 							<lit v="en"/>
 						</equal>
-						<equal>
-							<clip pos="2" part="tnom"/>
-							<lit-tag v="loc"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="loc"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="mes"/>
+							</equal>
+						</or>
 					</and>
 				</test>
 				<let>
@@ -2304,6 +2311,10 @@
 			<let>
 				<var n="nombre"/>
 				<lit-tag v="sg"/>
+			</let>
+			<let>
+				<var n="genere"/>
+				<lit-tag v="m"/>
 			</let>
 			<out>
 				<chunk>
