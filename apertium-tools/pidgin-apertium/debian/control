@@ -1,0 +1,30 @@
+Source: pidgin-apertium
+Section: net
+Priority: optional
+Maintainer: Isaac Clerencia <isaac@debian.org>
+Build-Depends: debhelper (>= 5), cdbs, quilt, libtool, automake,
+ libglib2.0-dev, libgtk2.0-dev, pidgin-dev
+Standards-Version: 3.7.2
+XS-Vcs-Svn: https://bollin.googlecode.com/svn/pidgin-apertium/
+XS-Vcs-Browser: http://bollin.googlecode.com/svn/pidgin-apertium/
+
+Package: pidgin-apertium
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, apertium-dbus
+Conflicts: apertium-gaim (<< 2.0)
+Replaces: apertium-gaim (<< 2.0)
+Description: pidgin plugin to hear incoming messages using voice synthesis
+ A plugin for pidgin that interfaces with the popular program apertium.
+ It allows for instant messages to be spoken by apertium so you can
+ hear it through your speakers.
+ .
+  Homepage: https://sourceforge.net/projects/pidgin-apertium/
+
+Package: apertium-gaim
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, pidgin-apertium
+Description: gaim plugin to hear incoming messages using voice synthesis
+ apertium-gaim is a dummy package that eases the transition to pidgin and
+ depends on pidgin-apertium. It can be removed safely.
+ .
+  Homepage: http://sourceforge.net/projects/apertium-gaim
