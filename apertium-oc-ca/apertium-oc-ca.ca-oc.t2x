@@ -153,6 +153,7 @@
 
    <def-attr n="tnom">
           <attr-item tags="loc"/>
+          <attr-item tags="mes"/>
           <attr-item tags="nploc"/>
           <attr-item tags="data"/>
       </def-attr>
@@ -495,6 +496,26 @@
 				<let>
 					<clip pos="1" part="lem"/>
 					<lit v="ta"/>
+				</let>
+			</when>
+		</choose>
+		<choose> 
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="tnom"/>
+							<lit-tag v="mes"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="en"/>
 				</let>
 			</when>
 		</choose>
@@ -1523,7 +1544,7 @@
 				<b pos="2"/>
 			</out>
 				<call-macro n="partitiu">
-					<with-param pos="1"/>
+					<with-param pos="3"/>
 				</call-macro>
 			<out>
 				<chunk>
@@ -1557,6 +1578,9 @@
 		</pattern>
 		<action>
 			<call-macro n="assigna_gen_nbr">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
@@ -1685,6 +1709,9 @@
 			<call-macro n="partitiu">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="partitiu">
+				<with-param pos="2"/>
+			</call-macro>
 			<call-macro n="concord_pp">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
@@ -1722,6 +1749,9 @@
 			</call-macro>
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="partitiu">
+				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="concord_pp">
 				<with-param pos="3"/>
@@ -1770,6 +1800,9 @@
 			<call-macro n="partitiu">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="partitiu">
+				<with-param pos="4"/>
+			</call-macro>
 			<call-macro n="concord_pp">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
@@ -1810,6 +1843,9 @@
 		<action>
 			<call-macro n="concord_sa">
 				<with-param pos="4"/>
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="partitiu">
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="assigna_gen_nbr">
@@ -1977,6 +2013,9 @@
 			<call-macro n="partitiu">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="partitiu">
+				<with-param pos="5"/>
+			</call-macro>
 			<call-macro n="concord_pp">
 				<with-param pos="1"/>
 				<with-param pos="4"/>
@@ -2058,6 +2097,9 @@
 			</call-macro>
 			<call-macro n="partitiu">
 				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="partitiu">
+				<with-param pos="6"/>
 			</call-macro>
 			<call-macro n="concord_pp">
 				<with-param pos="1"/>
@@ -2521,6 +2563,10 @@
 			<let>
 				<var n="nombre"/>
 				<lit-tag v="sg"/>
+			</let>
+			<let>
+				<var n="genere"/>
+				<lit-tag v="m"/>
 			</let>
 			<let>
 				<var n="nombre_subj"/>
