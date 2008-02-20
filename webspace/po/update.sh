@@ -13,6 +13,7 @@ function updateLang() {
 }                                                                          
 
 updateLang "en_GB"
+updateLang "eo_EO"
 updateLang "ca_ES"
 updateLang "eu_ES"
 updateLang "es_ES"

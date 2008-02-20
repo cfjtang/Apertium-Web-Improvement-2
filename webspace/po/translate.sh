@@ -9,6 +9,7 @@ function translateLang() {
 
 translateLang "es_ES"
 translateLang "en_GB"
+translateLang "eo_EO"
 translateLang "ca_ES"
 translateLang "eu_ES"
 translateLang "es_ES"
