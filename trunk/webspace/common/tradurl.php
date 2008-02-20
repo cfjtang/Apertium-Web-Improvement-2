@@ -18,7 +18,7 @@ if(strlen($inurl)>=500){
 $autorizado = 0;
 error_reporting(E_USER_ERROR);
 
-$tempfile = tempnam("/tmp","URL");
+$tempfile = tempnam("/tmp/", "URL");
 error_reporting(0);  
 
 $resultado = join("",file($inurl));
@@ -44,6 +44,10 @@ if($dir == "ro-es") {
 }
 $str = shell_exec($cmd);
 $str = special_process($dir,$str,$encoding[0]);
+
+$unknownFile = tempnam("/home/ebenimeli/unknown", "$dir-");
+write_file($str, $unknownFile);
+
 echo $str;
 unlink($tempfile);
 
