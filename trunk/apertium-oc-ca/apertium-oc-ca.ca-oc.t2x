@@ -520,6 +520,10 @@
 								</equal>
 								<equal>
 									<clip pos="2" part="lem"/>
+									<lit v="auxinf_pp"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
 									<lit v="auxinf_enc_pp"/>
 								</equal>
 								<equal>
@@ -555,26 +559,6 @@
 				</let>
 			</when>
 		</choose>
-<!--		<choose alt="oc@aran"> 
-			<when>
-				<test>
-					<and>
-						<equal>
-							<clip pos="1" part="lem"/>
-							<lit v="per"/>
-						</equal>
-						<equal>
-							<clip pos="2" part="lem"/>
-							<lit-tag v="inf"/>
-						</equal>
-					</and>
-				</test>
-				<let>
-					<clip pos="1" part="lem"/>
-					<lit v="ta"/>
-				</let>
-			</when>
-		</choose>-->
 	</def-macro>
 
 	<def-macro n="partitiu" npar="1">
@@ -1460,6 +1444,59 @@
 		</action>
 	</rule>
 	
+	<rule comment="REGLA: prep adv SN">
+		<pattern>
+			<pattern-item n="pr"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+			</out>
+			<choose>
+				<when>
+					<test>
+						<not>
+							<in caseless="yes">
+								<clip pos="1" part="lem"/>
+								<list n="prde"/>
+							</in>
+						</not>
+					</test>
+					<call-macro n="partitiu">
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+			</choose>
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+		</action>
+	</rule>
+	
 	<rule comment="REGLA: prep SN cnjcoo SN">
 		<pattern>
 			<pattern-item n="pr"/>
@@ -1549,6 +1586,7 @@
 		</action>
 	</rule>
 
+	
 	<rule comment="REGLA: SN cnjcoo SN">
 		<pattern>
 			<pattern-item n="SN"/>
