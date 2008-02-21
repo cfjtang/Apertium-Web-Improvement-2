@@ -306,27 +306,25 @@
 	</def-macro>
 
 	<def-macro n="canvia_el_verb_ger" npar="1">
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="lema_vb"/>
-								<lit-tag v="continuar"/>
-							</equal>
-						</test>
-						<let>
-								<clip pos="1" part="lema_vb"/>
-								<lit-tag v="contunhar"/>
-						</let>
-					<let>
-						<var n="ger-inf"/>
-						<lit-tag v="canviam"/>
-					</let>
-				</when>
-</choose>
-
-
-</def-macro>
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="lema_vb"/>
+						<lit-tag v="continuar"/>
+					</equal>
+				</test>
+				<let>
+						<clip pos="1" part="lema_vb"/>
+						<lit-tag v="contunhar"/>
+				</let>
+				<let>
+					<var n="ger-inf"/>
+					<lit-tag v="canviam"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
 
 
 	<def-macro n="canvis_amb_les_pr" npar="3">
@@ -499,6 +497,44 @@
 				</let>
 			</when>
 		</choose>
+		<choose alt="oc@aran">
+				<when>
+					<test>
+						<and>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="per"/>
+							</equal>
+							<or>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="inf"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="inf_enc"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="inf_enc_enc"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="auxinf_enc_pp"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="auxinf_enc_pp"/>
+								</equal>
+							</or>
+						</and>
+					</test>
+					<let>
+						<clip pos="1" part="lem"/>
+						<lit v="enta"/>
+					</let>
+				</when>
+			</choose>
 		<choose> 
 			<when>
 				<test>
