@@ -96,6 +96,7 @@
     <def-cat n="pr">
       <cat-item name="en"/>
       <cat-item name="ta"/>
+      <cat-item name="enta"/>
       <cat-item name="dins"/>
 <!--        <cat-item name="a"/> -->
    </def-cat>
@@ -339,7 +340,7 @@
 			</action>
 		</rule> 
 
-	<!--	<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
+		<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
 			<pattern>
 				<pattern-item n="verb"/>
 			</pattern>
@@ -348,62 +349,9 @@
 					<var n="quin_verb"/>
 					<clip pos="0" part="lema_vb"/>
 				</let>
-			<call-macro n="cv_verb">
-				<with-param pos="1"/>
-			</call-macro>
-				<choose>
-					<when>
-						<test>
-							<not>
-								<equal>
-									<clip pos="0" part="treure"/>
-									<lit-tag v="treume"/>
-								</equal>
-							</not>
-						</test>
-						<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="1" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
-				<out>
-					<lu>
-					<var n="quin_verb"/>
-					<clip pos="1" part="whole"/>
-						<clip pos="1" part="lemh"/>
-						<clip pos="1" part="a_verb"/>
-						<clip pos="1" part="pers"/>
-						<clip pos="1" part="gen"/>
-						<clip pos="1" part="nbr"/>
-						<clip pos="1" part="lemq"/>
-					</lu>
-				</out> 
-			</when>
-		</choose>
-			</action>
-		</rule> -->
-		
-	<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
-			<pattern>
-				<pattern-item n="verb"/>
-			</pattern>
-			<action>
-				<let>
-					<var n="quin_verb"/>
-					<clip pos="0" part="lema_vb"/>
-				</let>
-			<call-macro n="cv_verb">
-				<with-param pos="1"/>
-			</call-macro>
+				<call-macro n="cv_verb">
+					<with-param pos="1"/>
+				</call-macro>
 	
 				<out>
 					<lu>
@@ -681,20 +629,13 @@
 				<pattern-item n="proverb"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="1" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="2"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -712,20 +653,13 @@
 				<pattern-item n="pro_verb"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="2" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="2"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -743,20 +677,13 @@
 				<pattern-item n="pro_proverb"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="3" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="3"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -778,20 +705,13 @@
 				<pattern-item n="pro_pro_verb"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="3" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="3"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -813,20 +733,13 @@
 				<pattern-item n="proaux_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="3" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="3"/>
+				</call-macro>		
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -848,20 +761,13 @@
 				<pattern-item n="pro_aux_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="3" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="3"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -883,20 +789,13 @@
 				<pattern-item n="pro_proaux_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="4" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="4"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -922,20 +821,13 @@
 				<pattern-item n="pro_pro_aux_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="4" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="4"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -961,20 +853,13 @@
 				<pattern-item n="proaux_adv_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="4" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="4"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -1000,20 +885,13 @@
 				<pattern-item n="pro_aux_adv_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="4" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="4"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -1039,20 +917,13 @@
 				<pattern-item n="pro_proaux_adv_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="5" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="5"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -1082,20 +953,13 @@
 				<pattern-item n="pro_pro_aux_adv_pp"/>
 			</pattern>
 			<action>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="0" part="lema_vb"/>
-								<lit-tag v="venir"/>
-							</equal>
-						</test>
-						<let>
-							<clip pos="5" part="lem"/>
-							<lit v="venir"/>
-						</let>
-					</when>
-				</choose>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="5"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -1166,11 +1030,18 @@
 				</out>  
 			</action>
 		</rule> -->
-		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
+<!--		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
 				<pattern-item n="proverb_de_pro_inf"/>
 			</pattern>
 			<action>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="1"/>
+				</call-macro>
 				<out>
 					<lu>
 						<clip pos="1" part="whole"/>
@@ -1193,7 +1064,7 @@
 					</lu>
 				</out>  
 			</action>
-		</rule> 
+		</rule> -->
 
 <!--		<rule comment="CHUNK: posa l'espai entre el pro i el verb">
 			<pattern>
@@ -1343,6 +1214,26 @@
 						<let>
 							<clip pos="1" part="lem"/>
 							<lit v="tà"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<and>
+								<equal>
+									<clip pos="1" part="lem"/>
+									<lit v="per"/>
+								</equal>
+								<equal>
+									<clip pos="0" part="lem"/>
+									<lit v="enta"/>
+								</equal>
+							</and>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="enta"/>
 						</let>
 					</when>
 				</choose>
