@@ -19,6 +19,9 @@
 
    <def-cat n="ger">
       <cat-item tags="SV.vblex.ger"/>
+      <cat-item tags="SV.vbhaver.ger"/>
+      <cat-item tags="SV.vbmod.ger"/>
+      <cat-item tags="SV.vbser.ger"/>
     </def-cat>
 
 
@@ -2553,6 +2556,50 @@
 					<var n="ger-inf"/>
 					<clip pos="2" part="tags"/>
 					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+			<let>
+				<var n="ger-inf"/>
+				<lit v=""/>
+			</let>
+		</action>
+	</rule>
+
+
+	<rule comment="REGLA: SV SN ger">
+		<pattern>
+			<pattern-item n="SV"/>
+			<pattern-item n="SN"/>
+			<pattern-item n="ger"/>
+		</pattern>
+		<action>
+			<call-macro n="modifica_sv">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="canvia_el_verb_ger" alt="oc">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<var n="ger-inf"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
 				</chunk>
 			</out>
 			<let>
