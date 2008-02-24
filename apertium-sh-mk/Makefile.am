@@ -1,4 +1,4 @@
-VhahahaERSION=0.1
+VERSION=0.1
 LANG1=sh
 LANG1a=sh_BS
 LANG1b=sh_HR
