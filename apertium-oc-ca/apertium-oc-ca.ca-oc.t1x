@@ -35,6 +35,7 @@
    
     <def-cat n="det">
       <cat-item tags="det.dem.*"/>
+      <cat-item tags="det.pers.*"/>
       <cat-item tags="det.ind.*"/>
       <cat-item tags="det.def.*"/>
       <cat-item tags="det.pos.*"/>
@@ -314,6 +315,7 @@
 
     <def-attr n="a_det">
       <attr-item tags="det.dem"/>
+      <attr-item tags="det.pers"/>
       <attr-item tags="detnt"/>
       <attr-item tags="det.ind"/>
       <attr-item tags="det.def"/>
@@ -674,6 +676,11 @@
 			<list-item v="manifestar" alt="oc@aran"/>
 			
 			<list-item v="lalà" alt="oc"/>
+		</def-list>
+		
+		<def-list n="a_dins">
+			<list-item v="arribar" alt="oc"/>
+			<list-item v="lirolà" alt="oc@aran"/>
 		</def-list>
 		
 		<def-list n="a_ta">
@@ -1071,6 +1078,23 @@
 														<lit v="tà"/>
 													</let>
 												</when>
+												<otherwise>
+													<choose> 
+														<when>
+															<test>
+																<equal>
+																	<var n="tipusverb"/>
+																	<lit v="vba_dins"/>
+																</equal>
+															</test>
+															<let>
+																<clip pos="1" side="tl" part="lem"/>
+																<lit v="dins"/>
+															</let>
+														</when>
+													</choose>
+												</otherwise>
+										
 											</choose>
 											
 										</otherwise>
@@ -1375,12 +1399,29 @@
 																				<lit v="vbamb_a"/>
 																			</let>
 																		</when>
-																		<otherwise>	
+																		<otherwise>
+																			<choose>
+																				<when>
+																					<test>
+																						<in caseless="yes">
+																							<clip pos="1" side="sl" part="lem"/>
+																							<list n="a_dins"/>
+																						</in>
+																					</test>
+																					<let>
+																						<var n="tipusverb"/>
+																						<lit v="vba_dins"/>
+																					</let>
+																				</when>
+																				<otherwise>
+
 											
-																			<let>
-																				<var n="tipusverb"/>
-																				<lit v="nodef"/>
-																			</let>
+																					<let>
+																						<var n="tipusverb"/>
+																						<lit v="nodef"/>
+																					</let>
+																				</otherwise>
+																			</choose>
 																		</otherwise>
 																	</choose>
 																</otherwise>
@@ -4589,11 +4630,15 @@
 			<call-macro n="firstWord">
 				<with-param pos="1"/>
 			</call-macro>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
 			<out>
 				<chunk name="det_ant" case="caseFirstWord" alt="oc">
 					<tags>
 						<tag><lit-tag v="SN"/></tag>
-						<tag><lit-tag v="sg"/></tag>
+						<tag><clip pos="1" side="tl" part="gen"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="whole"/>

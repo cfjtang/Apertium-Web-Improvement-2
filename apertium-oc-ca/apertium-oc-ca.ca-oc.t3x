@@ -69,6 +69,11 @@
 		<cat-item name="pro_pro_ger"/>
 	</def-cat>
 		
+	<def-cat n="ger_enc">
+		<cat-item name="ger_enc"/>
+		<cat-item name="ger_enc_enc"/>
+	</def-cat>
+	
 	<def-cat n="inf">
 		<cat-item name="inf"/>
 	</def-cat>
@@ -284,7 +289,7 @@
 							<clip pos="1" part="lem"/>
 							<lit v="de"/>
 						</let>
-						<out>
+						<out alt="oc">
 							<lu>
 								<clip pos="1" part="whole"/>
 							</lu>
@@ -292,6 +297,17 @@
 							<lu>
 								<clip pos="2" part="lem"/>
 								<clip pos="2" part="a_verb"/>
+								<lit-tag v="inf"/>
+							</lu>
+						</out>   
+						<out alt="oc@aran">
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="3" part="lem"/>
+								<clip pos="3" part="a_verb"/>
 								<lit-tag v="inf"/>
 							</lu>
 						</out>   
@@ -376,6 +392,61 @@
 			</action>
 		</rule> 
 
+		<rule comment="CHUNK: ger enc (canvia els ger que cal per de+inf)">
+			<pattern>
+				<pattern-item n="ger_enc"/>
+			</pattern>
+			<action>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="canvi"/>
+								<lit-tag v="canviam"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="de"/>
+						</let>
+						<let>
+							<clip pos="3" part="temps"/>
+							<lit-tag v="inf"/>
+						</let>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="3" part="whole"/>
+							</lu>
+							
+							
+						</out>   
+						<call-macro n="f_bcond">
+							<with-param pos="2"/>
+						</call-macro>
+					</when>
+					<otherwise>
+						<out>
+							<lu>
+								<clip pos="1" part="whole"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" part="whole"/>
+							</lu>
+							<b pos="2"/>
+								<lu>
+									<clip pos="3" part="whole"/>
+								</lu>
+						</out>
+					</otherwise>
+				</choose>
+			</action>
+		</rule> 
+		
 		<rule comment="CHUNK: pro pro ger (canvia els ger que cal per de+inf)">
 			<pattern>
 				<pattern-item n="pro_pro_ger"/>
@@ -435,7 +506,6 @@
 				</choose>
 			</action>
 		</rule> 
-
 		
 		<rule comment="CHUNK: canvia _sonque_ per _pas que_" alt="oc">
 			<pattern>
