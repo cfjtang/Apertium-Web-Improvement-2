@@ -9,9 +9,13 @@
   </def-label>
   <def-label name="MOLTADV" closed="true">
     <tags-item lemma="molt" tags="adv"/>
-  </def-label>
+    <tags-item lemma="gaire" tags="adv"/>
+    <tags-item lemma="no gaire" tags="adv"/>
+  </def-label> 
   <def-label name="MOLTPREADV" closed="true">
     <tags-item lemma="molt" tags="preadv"/>
+    <tags-item lemma="gaire" tags="preadv"/>
+    <tags-item lemma="no gaire" tags="preadv"/>
   </def-label>
   <def-label name="VOLERMOD" closed="true">
     <tags-item lemma="voler" tags="vbmod.*"/>
@@ -21,8 +25,7 @@
   </def-label>  
   <def-label name="INTNOM" closed="true">
     <tags-item tags="prn.itg.*"/>
-  </def-label>
- 
+  </def-label> 
   <def-label name="INTADV" closed="true">
     <tags-item tags="adv.itg"/>
   </def-label>
@@ -84,8 +87,8 @@
     <tags-item tags="np.al"/>
   </def-label>
   <def-label name="NUM" closed="true">
-	  <tags-item tags="num"/>
-	  <tags-item tags="num.*"/>
+    <tags-item tags="num.*"/>
+    <tags-item tags="num"/>
   </def-label>
   <def-label name="PREDETNT" closed="true">
     <tags-item tags="predet.nt.*"/>
@@ -171,9 +174,6 @@
   </def-label>
   <def-label name="VHABERINF" closed="true">
     <tags-item tags="vbhaver.inf"/>
-  </def-label>
-  <def-label name="VHABERIMP" closed="true">
-	  <tags-item tags="vbhaver.imp.*"/>
   </def-label>
   <def-label name="VHABERGER" closed="true">
     <tags-item tags="vbhaver.ger"/>
@@ -1505,6 +1505,22 @@
       <label-item label="INTNOM"/>
       <label-item label="NOMMF"/>
     </label-sequence>
+    <label-sequence><!--13/01/06 -->
+      <label-item label="MOLTADV"/>
+      <label-item label="INTERJ"/>
+    </label-sequence>
+    <label-sequence><!--01/02/06 (no canvia res)-->
+      <label-item label="ADV"/>
+      <label-item label="INTERJ"/>
+    </label-sequence>
+    <label-sequence><!--11/10/06 -->
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PREP"/>
+    </label-sequence>
+
+
+
+  
   </forbid>
 
   <enforce-rules>
