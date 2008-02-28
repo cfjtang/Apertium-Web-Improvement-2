@@ -146,6 +146,9 @@
   <def-label name="VLEXIMP">
     <tags-item tags="vblex.imp.*"/>
   </def-label>
+  <def-label name="VHAVERIMP">
+    <tags-item tags="vbhaver.imp.*"/>
+  </def-label>
   <def-label name="VSERINF" closed="true">
     <tags-item tags="vbser.inf"/>
   </def-label>
