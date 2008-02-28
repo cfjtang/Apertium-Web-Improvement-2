@@ -17,6 +17,9 @@ $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp lr $(BASENAME).$(LANG1).dix $@
 
+$(PREFIX2).translit.bin: $(BASENAME).translit.dix
+	lt-comp lr $(BASENAME).translit.dix $@
+
 $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	lt-comp lr $(BASENAME).$(PREFIX1).dix $@
@@ -96,7 +99,8 @@ apertium_ca_ro_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
-	            $(PREFIX1).mode $(PREFIX2).mode modes.xml
+		    $(PREFIX2).translit.bin \
+	            $(PREFIX1).mode $(PREFIX2).mode modes.xml 
 		  
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
