@@ -99,6 +99,7 @@
 		
 		<def-cat n="el_qual">
       <cat-item lemma="el qual" tags="rel.*"/>
+      <cat-item lemma="què" tags="rel.*"/>
     </def-cat>
 
 <def-cat n="rel">
@@ -608,6 +609,7 @@
 			<list-item v="segle"/>
 			<list-item v="estat"/>
 			<list-item v="presupost"/>
+			<list-item v="hotel"/>
 		</def-list>
 			
 			
@@ -647,6 +649,7 @@
    </def-list>
 		
 		<def-list n="amb_a">
+			<list-item v="correspondre" alt="oc"/>
 			<list-item v="relacionar" alt="oc"/>
 			<list-item v="lalà" alt="oc@aran"/>
 		</def-list>
@@ -884,6 +887,18 @@
 								<lit v="acordar"/>
 							</let>
 						</when>
+						<when alt="oc">
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="negar# a"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="voler# pas"/>
+							</let>
+						</when>
 					</choose>
 				</when>
 			</choose>
@@ -982,6 +997,19 @@
 								<lit v="acordar"/>
 							</let>
 						</when>
+						<when alt="oc">
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="negar# a"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="voler# pas"/>
+							</let>
+						</when>
+
 					</choose>
 				</when>
 			</choose>
@@ -1226,56 +1254,56 @@
 				</when>
 				<otherwise>
 					<choose>
-				<when>
-					<test>
-						<equal>
-								<clip pos="1" side="sl" part="a_nom"/>
-								<lit-tag v="np.loc"/>
-							</equal>
-					</test>
-					<let>
-						<var n="tipusnom"/>
-						<lit-tag v="nploc"/>
-					</let>
-				</when>
-				<otherwise>
-					<choose>
 						<when>
 							<test>
-								<in caseless="yes">
-									<clip pos="1" side="sl" part="lem"/>
-									<list n="dates"/>
-								</in>
+								<equal>
+										<clip pos="1" side="sl" part="a_nom"/>
+										<lit-tag v="np.loc"/>
+									</equal>
 							</test>
 							<let>
 								<var n="tipusnom"/>
-								<lit-tag v="data"/>
+								<lit-tag v="nploc"/>
 							</let>
 						</when>
-				<otherwise>
-					<choose>
-						<when>
-							<test>
-								<in caseless="yes">
-									<clip pos="1" side="sl" part="lem"/>
-									<list n="mes"/>
-								</in>
-							</test>
-							<let>
-								<var n="tipusnom"/>
-								<lit-tag v="mes"/>
-							</let>
-						</when>
-						
 						<otherwise>
-							<let>
-								<var n="tipusnom"/>
-								<lit-tag v="ndf"/>
-							</let>
-						</otherwise>
-					</choose>
-						</otherwise>
-					</choose>
+							<choose>
+								<when>
+									<test>
+										<in caseless="yes">
+											<clip pos="1" side="sl" part="lem"/>
+											<list n="dates"/>
+										</in>
+									</test>
+									<let>
+										<var n="tipusnom"/>
+										<lit-tag v="data"/>
+									</let>
+								</when>
+								<otherwise>
+									<choose>
+										<when>
+											<test>
+												<in caseless="yes">
+													<clip pos="1" side="sl" part="lem"/>
+													<list n="mes"/>
+												</in>
+											</test>
+											<let>
+												<var n="tipusnom"/>
+												<lit-tag v="mes"/>
+											</let>
+										</when>
+										
+										<otherwise>
+											<let>
+												<var n="tipusnom"/>
+												<lit-tag v="ndf"/>
+											</let>
+										</otherwise>
+									</choose>
+								</otherwise>
+							</choose>
 						</otherwise>
 					</choose>
 				</otherwise>
@@ -4688,10 +4716,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal>
-							<clip pos="2" side="sl" part="lem"/>
-							<lit v="mateix"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="2" side="sl" part="lem"/>
+								<lit v="mateix"/>
+							</equal>
+							<equal>
+								<clip pos="2" side="sl" part="lem"/>
+								<lit v="propi"/>
+							</equal>
+						</or>
 					</test>
 					<let>
 						<clip pos="2" side="tl" part="lem"/> 
@@ -4757,10 +4791,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal>
-							<clip pos="3" side="sl" part="lem"/>
-							<lit v="mateix"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="3" side="sl" part="lem"/>
+								<lit v="mateix"/>
+							</equal>
+							<equal>
+								<clip pos="3" side="sl" part="lem"/>
+								<lit v="propi"/>
+							</equal>
+						</or>
 					</test>
 					<out>
 						<chunk name="det_adj_ant" case="caseFirstWord">
@@ -4887,10 +4927,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal>
-							<clip pos="2" side="sl" part="lem"/>
-							<lit v="mateix"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="2" side="sl" part="lem"/>
+								<lit v="mateix"/>
+							</equal>
+							<equal>
+								<clip pos="2" side="sl" part="lem"/>
+								<lit v="propi"/>
+							</equal>
+						</or>
 					</test>
 					<let>
 						<clip pos="2" side="tl" part="lem"/> 
@@ -4961,10 +5007,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal>
-							<clip pos="4" side="sl" part="lem"/>
-							<lit v="mateix"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="4" side="sl" part="lem"/>
+								<lit v="mateix"/>
+							</equal>
+							<equal>
+								<clip pos="4" side="sl" part="lem"/>
+								<lit v="propi"/>
+							</equal>
+						</or>
 					</test>
 					<out>
 						<chunk name="det_adj_ant_ant" case="caseFirstWord">
@@ -5277,7 +5329,7 @@
 		</action>
 	</rule>
 
-<!--	<rule comment="REGLA: DET NUM">
+	<rule comment="REGLA: DET NUM">
 		<pattern>
 			<pattern-item n="det"/>
 			<pattern-item n="num"/>
@@ -5350,7 +5402,7 @@
 				<lit v="aa"/>
 			</let>
 		</action>
-	</rule>-->
+	</rule>
 
 	<rule comment="REGLA: NUM NOM">
 		<pattern>
@@ -5593,10 +5645,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal>
-							<clip pos="3" side="sl" part="lem"/>
-							<lit v="mateix"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="3" side="sl" part="lem"/>
+								<lit v="mateix"/>
+							</equal>
+							<equal>
+								<clip pos="3" side="sl" part="lem"/>
+								<lit v="propi"/>
+							</equal>
+						</or>
 					</test>
 					<choose>
 						<when>
@@ -5835,10 +5893,16 @@
 			<choose>
 				<when>
 					<test>
-						<equal>
-							<clip pos="3" side="sl" part="lem"/>
-							<lit v="mateix"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="3" side="sl" part="lem"/>
+								<lit v="mateix"/>
+							</equal>
+							<equal>
+								<clip pos="3" side="sl" part="lem"/>
+								<lit v="propi"/>
+							</equal>
+						</or>
 					</test>
 					<out>
 						<chunk name="num_adj_nom" case="caseFirstWord">
@@ -13537,7 +13601,7 @@
 								<tag><clip pos="2" side="tl" part="temps"/></tag>
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="3" side="tl" part="gen"/></tag>
-								<tag><clip pos="3" side="tl" part="nbr"/></tag>
+								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
@@ -14334,7 +14398,7 @@
 								<tag><clip pos="3" side="tl" part="temps"/></tag>
 								<tag><clip pos="3" side="tl" part="pers"/></tag>
 								<tag><clip pos="4" side="tl" part="gen"/></tag>
-								<tag><clip pos="4" side="tl" part="nbr"/></tag>
+								<tag><clip pos="3" side="tl" part="nbr"/></tag>
 								<tag><var n="cv_verb"/></tag>
 							</tags>
 							<lu>
@@ -16331,14 +16395,35 @@
 				<var n="elqual_prep"/>
 				<clip pos="1" side="tl" part="lem"/>
 			</let>
-			<let>
-				<var n="elqual_gen"/>
-				<clip pos="2" side="tl" part="gen"/>
-			</let>
-			<let>
-				<var n="elqual_nbr"/>
-				<clip pos="2" side="tl" part="nbr"/>
-			</let>
+			<choose>
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="2" side="tl" part="lem"/>
+							<lit v="el qual"/>
+						</equal>
+					</test>
+					
+					<let>
+						<var n="elqual_gen"/>
+						<clip pos="2" side="tl" part="gen"/>
+					</let>
+					<let>
+						<var n="elqual_nbr"/>
+						<clip pos="2" side="tl" part="nbr"/>
+					</let>
+				</when>
+				<otherwise>
+					<let>
+						<var n="elqual_gen"/>
+						<lit-tag v="m"/>
+					</let>
+					<let>
+						<var n="elqual_nbr"/>
+						<lit-tag v="sg"/>
+					</let>
+				</otherwise>
+			</choose>
 			<out>
 				<chunk name="el_qual" case="caseFirstWord">
 					<tags>

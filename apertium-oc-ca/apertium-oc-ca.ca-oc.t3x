@@ -912,7 +912,7 @@
 					<when>
 						<test>
 							<and>
-								<equal>
+								<equal caseless="yes">
 									<clip pos="1" part="lem"/>
 									<lit v="a"/>
 								</equal>
@@ -924,16 +924,24 @@
 						</test>
 						<let>
 							<clip pos="1" part="lem"/>
-							<lit v="en"/>
+							<get-case-from pos="1">
+								<lit v="en"/>
+							</get-case-from>
 						</let>
 					</when>
 					<when>
 						<test>
 							<and>
-								<equal>
-									<clip pos="1" part="lem"/>
-									<lit v="a"/>
-								</equal>
+								<or>
+									<equal caseless="yes">
+										<clip pos="1" part="lem"/>
+										<lit v="a"/>
+									</equal>
+									<equal caseless="yes">
+										<clip pos="1" part="lem"/>
+										<lit v="en"/>
+									</equal>
+								</or>
 								<equal>
 									<clip pos="0" part="lem"/>
 									<lit v="dins"/>
@@ -942,7 +950,9 @@
 						</test>
 						<let>
 							<clip pos="1" part="lem"/>
-							<lit v="dins"/>
+							<get-case-from pos="1">
+								<lit v="dins"/>
+							</get-case-from>
 						</let>
 					</when>
 				</choose>

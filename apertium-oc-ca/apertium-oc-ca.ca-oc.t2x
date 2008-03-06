@@ -442,10 +442,16 @@
 			<when>
 				<test>
 					<and>
-						<equal>
-							<clip pos="1" part="lem"/>
-							<lit v="a"/>
-						</equal>
+						<or>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="a"/>
+							</equal>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="en"/>
+							</equal>
+						</or>
 						<equal>
 							<clip pos="2" part="tnom"/>
 							<lit-tag v="loc"/>
@@ -1073,45 +1079,78 @@
 
 	<def-macro n="concord_pp" npar="2">
 		<choose>
-			<when> 
+			<when>
 				<test>
-					<equal>
-						<clip pos="1" part="gen"/>
-						<lit-tag v="f"/>
-					</equal>
+					<or>
+						<equal caseless="yes">
+							<clip pos="2" part="lem"/>
+							<lit v="aux_pp"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" part="lem"/>
+							<lit v="aux_adv_pp"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" part="lem"/>
+							<lit v="pro_aux_pp"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" part="lem"/>
+							<lit v="pro_pro_aux_pp"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" part="lem"/>
+							<lit v="pro_aux_adv_pp"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" part="lem"/>
+							<lit v="pro_pro_aux_adv_pp"/>
+						</equal>
+					</or>
 				</test>
-				<let>
-					<clip pos="2" part="gen_pp"/>
-					<lit-tag v="f"/>
-				</let>
-			</when>
-			<otherwise>
-				<let>
-					<clip pos="2" part="gen_pp"/>
-					<lit-tag v="m"/>
-				</let>
-			</otherwise>
-		</choose>
 
-		<choose>
-			<when> 
-				<test>
-					<equal>
-						<clip pos="1" part="nbr"/>
-						<lit-tag v="pl"/>
-					</equal>
-				</test>
-				<let>
-					<clip pos="2" part="nbr_pp"/>
-					<lit-tag v="pl"/>
-				</let>
+				<choose>
+					<when> 
+						<test>
+							<equal>
+								<clip pos="1" part="gen"/>
+								<lit-tag v="f"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="gen_pp"/>
+							<lit-tag v="f"/>
+						</let>
+					</when>
+					<otherwise>
+						<let>
+							<clip pos="2" part="gen_pp"/>
+							<lit-tag v="m"/>
+						</let>
+					</otherwise>
+				</choose>
+		
+				<choose>
+					<when> 
+						<test>
+							<equal>
+								<clip pos="1" part="nbr"/>
+								<lit-tag v="pl"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="2" part="nbr_pp"/>
+							<lit-tag v="pl"/>
+						</let>
+					</when>
+					<otherwise>
+						<let>
+							<clip pos="2" part="nbr_pp"/>
+							<lit-tag v="sg"/>
+						</let>
+					</otherwise>
+				</choose>
 			</when>
-			<otherwise>
-				<let>
-					<clip pos="2" part="nbr_pp"/>
-					<lit-tag v="sg"/>
-				</let>
-			</otherwise>
 		</choose>
 	</def-macro>
 
@@ -1831,7 +1870,7 @@
 				<with-param pos="1"/>
 			</call-macro>
 			<call-macro n="concord_pp">
-				<with-param pos="3"/>
+				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
 			<out>
@@ -1929,7 +1968,7 @@
 				<with-param pos="4"/>
 			</call-macro>
 			<call-macro n="concord_pp">
-				<with-param pos="4"/>
+				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
 			<out>
@@ -2517,11 +2556,11 @@
 				</chunk>
 				<b pos="4"/>
 			</out>
-			<call-macro n="canvis_amb_les_pr">
+			<!--<call-macro n="canvis_amb_les_pr">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 				<with-param pos="5"/>
-			</call-macro>
+			</call-macro>-->
 			<out>
 				<chunk>
 					<clip pos="5" part="lem"/>
