@@ -83,7 +83,7 @@ Utils::translate(string script, const wstring& s) {
     //write(fd_in[1], (void*)s.c_str(), s.length());
     //close(fd_in[1]);
     FILE *fw=fdopen(fd_in[1], "w");
-    for (int i=0; i<s.length(); i++)
+    for (size_t i=0; i<s.length(); i++)
       fputwc(s[i],fw);
     fclose(fw);
     
@@ -204,7 +204,7 @@ Utils::split_wstring(const wstring& input, const wstring& delimiter) {
   wstring s=L"";
   pos=0;
 
-  while (pos<input.size()) {
+  while (pos<(int)input.size()) {
     new_pos=input.find(delimiter, pos);
     if(new_pos<0)
       new_pos=input.size();
@@ -223,7 +223,7 @@ Utils::split_string(const string& input, const string& delimiter) {
   string s="";
   pos=0;
 
-  while (pos<input.size()) {
+  while (pos<(int)input.size()) {
     new_pos=input.find(delimiter, pos);
     if(new_pos<0)
       new_pos=input.size();

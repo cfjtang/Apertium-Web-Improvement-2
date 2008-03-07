@@ -37,18 +37,18 @@ ARCH=$(/bin/uname -m)
 if test x$ARCH = xppc
 then
   AC_MSG_RESULT([PowerPC])
-  CFLAGS="$CFLAGS -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
-  CXXFLAGS="$CXXFLAGS -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
+  CFLAGS="$CFLAGS -Wall -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
+  CXXFLAGS="$CXXFLAGS -Wall -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
 else
   if test x$ARCH = xi686
   then
     AC_MSG_RESULT([i686])
-    CFLAGS="$CFLAGS -ansi -march=i686 -O3 -fno-pic -fomit-frame-pointer"
-    CXXFLAGS="$CXXFLAGS -ansi -march=i686 -O3 -fno-pic -fomit-frame-pointer"
+    CFLAGS="$CFLAGS -Wall -ansi -march=i686 -O3 -fno-pic -fomit-frame-pointer"
+    CXXFLAGS="$CXXFLAGS -Wall -ansi -march=i686 -O3 -fno-pic -fomit-frame-pointer"
   else
     AC_MSG_RESULT([Other])
-    CFLAGS="$CFLAGS -ansi -O3"
-    CXXFLAGS="$CXXFLAGS -ansi -O3"
+    CFLAGS="$CFLAGS -Wall -ansi -O3"
+    CXXFLAGS="$CXXFLAGS -Wall -ansi -O3"
   fi
 fi
 

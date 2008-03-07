@@ -112,7 +112,7 @@ PathsPruner::compute_paths_ranking() {
   }
 
   //Normalize for better treatment
-  for(int i=0; i<prob_path.size(); i++) 
+  for(size_t i=0; i<prob_path.size(); i++) 
     prob_path[i].second=prob_path[i].second/sum_likelihood;
   
 
@@ -145,7 +145,7 @@ PathsPruner::compute_paths_ranking() {
   
   double sum_prob=0.0;
   k=0;
-  for(int i=0; i<prob_path.size(); i++) {
+  for(size_t i=0; i<prob_path.size(); i++) {
     if (sum_prob<probmass) {
       k++;
       sum_prob+=prob_path[i].second;
@@ -217,7 +217,7 @@ PathsPruner::compute_paths_ranking() {
 int
 PathsPruner::get_next_path() {
   int ret_path=-1;
-  if ((paths_counter<prob_path.size()) && (paths_counter<k))
+  if ((paths_counter<(int)prob_path.size()) && (paths_counter<k))
     ret_path=prob_path[paths_counter].first;   
   
   paths_counter++;
@@ -261,7 +261,7 @@ PathsPruner::a_priori_likelihood(int path) {
   if ((seg->vwords_before.size()==0) || (seg->vwords_after.size()==0)) {
     cerr<<"Error: This segment has no context\n";
     cerr<<"SEGMENT: ";
-    for(int i=0; i<seg->vwords.size(); i++) {
+    for(size_t i=0; i<seg->vwords.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
     exit(EXIT_FAILURE);
@@ -270,11 +270,11 @@ PathsPruner::a_priori_likelihood(int path) {
   if (seg->vwords_before.front().get_tags().size()!=1) {
     cerr<<"Error in PathsPruner::a_priori_likelihood: First word of seg->vwords_before is ambiguous\n";
     cerr<<"SEGMENT: ";
-    for(int i=0; i<seg->vwords.size(); i++) {
+    for(size_t i=0; i<seg->vwords.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
     cerr<<"WORDS BEFORE: ";
-    for(int i=0; i<seg->vwords_before.size(); i++) {
+    for(size_t i=0; i<seg->vwords_before.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords_before[i].get_superficial_form())<<" ";
     }
     exit(EXIT_FAILURE);
@@ -283,11 +283,11 @@ PathsPruner::a_priori_likelihood(int path) {
   if (seg->vwords_after.back().get_tags().size()!=1) {
     cerr<<"Error in PathsPruner::a_priori_likelihood: Last word of seg->vwords_after is ambiguous\n";
     cerr<<"SEGMENT: ";
-    for(int i=0; i<seg->vwords.size(); i++) {
+    for(size_t i=0; i<seg->vwords.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
     cerr<<"WORDS AFTER: ";
-    for(int i=0; i<seg->vwords_after.size(); i++) {
+    for(size_t i=0; i<seg->vwords_after.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords_after[i].get_superficial_form())<<" ";
     }
     exit(EXIT_FAILURE);
@@ -296,7 +296,7 @@ PathsPruner::a_priori_likelihood(int path) {
   if (seg->vwords.size() != tagseq.size()) {
     cerr<<"Error: Number of tags in tagseq differs from number of words in seg->vwords\n";
     cerr<<"SEGMENT: ";
-    for(int i=0; i<seg->vwords.size(); i++) {
+    for(size_t i=0; i<seg->vwords.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
     exit(EXIT_FAILURE);
@@ -313,7 +313,7 @@ PathsPruner::a_priori_likelihood(int path) {
   //Utils::print_debug(alpha[0][tag]);
   //Utils::print_debug("\n");
 
-  for (int i=1; i<seg->vwords_before.size(); i++) {
+  for (size_t i=1; i<seg->vwords_before.size(); i++) {
     tags=seg->vwords_before[i].get_tags();
     if (tags.size()==0)
       tags=tagger_data.getOpenClass();
@@ -353,7 +353,7 @@ PathsPruner::a_priori_likelihood(int path) {
     ret_prob+=alpha[seg->vwords_before.size()-1][*jtag]*tagger_data.getA()[*jtag][tagseq.front()]*tagger_data.getB()[tagseq.front()][k];
 
   //Sequence of tags of the path being evaluated
-  for(int i=1; i<seg->vwords.size(); i++) {
+  for(size_t i=1; i<seg->vwords.size(); i++) {
     tags=seg->vwords[i].get_tags();
     if(tags.size()==0)
       tags=tagger_data.getOpenClass();
@@ -393,7 +393,7 @@ PathsPruner::a_priori_likelihood(int path) {
 
   pretags=tags;
 
-  for (int i=1; i<seg->vwords_after.size(); i++) {
+  for (size_t i=1; i<seg->vwords_after.size(); i++) {
     tags=seg->vwords_after[i].get_tags();
     if (tags.size()==0)
       tags=tagger_data.getOpenClass();
@@ -427,11 +427,11 @@ PathsPruner::a_priori_likelihood(int path) {
   if (ret_prob<=0.0) {
     cerr<<"Warning: a priori likelihood of path "<<path<<" is null, prob: "<<ret_prob<<"\n";
     cerr<<"SEGMENT: ";
-    for(int i=0; i<seg->vwords.size(); i++) {
+    for(size_t i=0; i<seg->vwords.size(); i++) {
       cerr<<UtfConverter::toUtf8(seg->vwords[i].get_superficial_form())<<" ";
     }
     cerr<<"\nPATH: ";      
-    for(int i=0; i<tagseq.size(); i++) {
+    for(size_t i=0; i<tagseq.size(); i++) {
       cerr<<tagseq[i]<<" ";
     }
     cerr<<"\n";
