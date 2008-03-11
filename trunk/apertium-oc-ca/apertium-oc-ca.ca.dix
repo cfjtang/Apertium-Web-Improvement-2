@@ -8,6 +8,7 @@
 
   <sdefs>
     <sdef n="detnt"/>
+   <sdef n="percent"/>
      <sdef n="pers"/>
    <sdef n="predet"/>
     <sdef n="atn"/>
@@ -84,6 +85,13 @@
         <p>
           <l/>
          <r><s n="num"/></r>
+        </p>
+      </e>
+     <e>
+        <re>[0-9]+([.,][0-9]+)?%</re>
+        <p>
+          <l/>
+         <r><s n="num"/><s n="percent"/></r>
         </p>
       </e>
     </pardef>
@@ -72150,6 +72158,10 @@
 		  <i>ajuntament</i>
 		  <par n="abric__n"/>
 	  </e>
+	  <e lm="renaixentista">
+		  <i>renaixentist</i>
+		  <par n="agrícol/a__adj"/>
+	  </e>
 	  
 	  <e lm="ajustar">
 		  <i>ajust</i>
@@ -72865,6 +72877,10 @@
 	  </e>
 	  <e lm="a mida que">
 		  <i>a<b/>mida<b/>que</i>
+		  <par n="a_fe_que__cnjadv"/>
+	  </e>
+	  <e lm="de manera que">
+		  <i>de<b/>manera<b/>que</i>
 		  <par n="a_fe_que__cnjadv"/>
 	  </e>
 	  
@@ -74017,11 +74033,6 @@
 		  <i>assoliment</i>
 		  <par n="abric__n"/>
 	  </e>
-	  <e lm="assolit">
-		  <i>assoli</i>
-		  <par n="afortuna/t__adj"/>
-	  </e>
-	  
 	  <e lm="assumir">
 		  <i>assum</i>
 		  <par n="abarat/ir__vblex"/>
@@ -77677,6 +77688,11 @@
 		  <par n="Sr__n"/>
 	  </e>
 	  
+	  <e lm="parent">
+		  <i>parent</i>
+		  <par n="Sr__n"/>
+	  </e>
+	  
 	  <e lm="conselleria">
 		  <i>conselleri</i>
 		  <par n="abell/a__n"/>
@@ -79475,6 +79491,10 @@
 	  <e lm="dibuix">
 		  <i>dibuix</i>
 		  <par n="abast__n"/>
+	  </e>
+	  <e lm="rentamans">
+		  <i>rentamans</i>
+		  <par n="CV__n"/>
 	  </e>
 	  
 	  <e lm="diccionari">
@@ -88677,7 +88697,7 @@
 	  
 	  <e lm="molt">
 		  <i>molt</i>
-		  <par n="absolut__adj"/>
+		  <par n="algun__det"/>
 	  </e>
 	  
 <!--	  <e lm="moltíssim">
@@ -90584,6 +90604,22 @@
 	  <e lm="part">
 		  <i>part</i>
 		  <par n="accessibilitat__n"/>
+	  </e>
+	  <e lm="clau de volta">
+		  <i>clau</i>
+		  <par n="accessibilitat__n"/>
+		<p>
+			<l><b/>de<b/>volta</l>
+			<r><g><b/>de<b/>volta</g></r>
+		</p>
+	  </e>
+	  <e lm="escala de cargol">
+		  <i>escal</i>
+		  <par n="jornad/a__n"/>
+		<p>
+			<l><b/>de<b/>cargol</l>
+			<r><g><b/>de<b/>cargol</g></r>
+		</p>
 	  </e>
 	  
 	  <e lm="participació">
@@ -93984,6 +94020,10 @@
 	  <e lm="repetició">
 		  <i>repetici</i>
 		  <par n="ablaci/ó__n"/>
+	  </e>
+	  <e lm="en peces">
+		  <i>en<b/>peces</i>
+		  <par n="ahir__adv"/>
 	  </e>
 	  <e lm="repetidor">
 		  <i>repetidor</i>
@@ -99168,15 +99208,19 @@
 		  <i>Urgell</i>
 		  <par n="Afganistan__np"/>
 	  </e>
-	  <e lm="Llenguadoc">
-		  <i>Llenguadoc</i>
+	  <e lm="la Seu d'Urgell">
+		  <i>la<b/>Seu<b/>d'Urgell</i>
 		  <par n="Afganistan__np"/>
-		</e>
+	  </e>
+	<e lm="Llenguadoc">
+		<i>Llenguadoc</i>
+		<par n="Afganistan__np"/>
+	</e>
 
-		<e lm="pròxim">
-			<i>pròxim</i>
-			<par n="absolut__adj"/>
-		</e>
+	<e lm="pròxim">
+		<i>pròxim</i>
+		<par n="absolut__adj"/>
+	</e>
 
 	  <e lm="eclesiàstic" a="mikel">
 		  <i>eclesiàsti</i>
@@ -107205,6 +107249,14 @@
 	</e>
 	<e lm="això no obstant">
 		<i>això<b/>no<b/>obstant</i>
+		<par n="a_fe_que__cnjadv"/>
+	</e>
+	<e lm="no obstant">
+		<i>no<b/>obstant</i>
+		<par n="a_fe_que__cnjadv"/>
+	</e>
+	<e lm="malgrat tot">
+		<i>malgrat<b/>tot</i>
 		<par n="a_fe_que__cnjadv"/>
 	</e>
 	<e lm="ara bé">
@@ -122516,6 +122568,14 @@
   <i>a<b/>principis</i>
   <par n="ahir__adv"/>
 </e>
+<e lm="a primers" a="carmentano">
+  <i>a<b/>primers</i>
+  <par n="ahir__adv"/>
+</e>
+<e lm="a principis d'any" a="carmentano">
+  <i>a<b/>principis<b/>d'any</i>
+  <par n="ahir__adv"/>
+</e>
 <e lm="extensament" a="carmentano">
   <i>extensament</i>
   <par n="ahir__adv"/>
@@ -125236,6 +125296,14 @@
 	</e>
 	<e lm="allà baix">
 		<i>allà<b/>baix</i>
+		<par n="ahir__adv"/>
+	</e>
+	<e lm="dalt de tot">
+		<i>dalt<b/>de<b/>tot</i>
+		<par n="ahir__adv"/>
+	</e>
+	<e lm="des de fa uns anys">
+		<i>des<b/>de<b/>fa<b/>uns<b/>anys</i>
 		<par n="ahir__adv"/>
 	</e>
 	<e lm="a casa">

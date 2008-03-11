@@ -880,6 +880,18 @@
 							<test>
 								<equal caseless="yes">
 									<clip pos="2" side="sl" part="lem"/>
+									<lit v="referir"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="far# referéncia"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
 									<lit v="acordar"/>
 								</equal>
 							</test>
@@ -984,6 +996,18 @@
 							<let>
 								<clip pos="3" side="tl" part="lem"/>
 								<lit v="prepausar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="referir"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="far# referéncia"/>
 							</let>
 						</when>
 						<when>
@@ -5173,34 +5197,70 @@
 					</out>
 				</when>
 				<otherwise>
-					<out>
-						<chunk name="det_nom" case="caseFirstWord">
-							<tags>
-								<tag><lit-tag v="SN"/></tag>
-								<tag><var n="genero"/></tag>
-								<tag><var n="numero"/></tag>
-								<tag><var n="tipusnom"/></tag>
-							</tags>
-							<lu>
-								<clip pos="1" side="tl" part="lem"/> 
-								<clip pos="1" side="tl" part="a_det"/>
-								<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-								<clip pos="1" side="tl" part="gen_mf"/>
-								<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-								<clip pos="1" side="tl" part="nbr_sp"/>
-							</lu> 
-							<b pos="1"/>
-							<lu>
-								<clip pos="2" side="tl" part="lemh"/> 
-								<clip pos="2" side="tl" part="a_nom"/>
-								<clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
-								<clip pos="2" side="tl" part="gen_mf"/>
-								<clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
-								<clip pos="2" side="tl" part="nbr_sp"/>
-								<clip pos="2" side="tl" part="lemq"/>
-							</lu>
-						</chunk>
-					</out>
+					<choose>
+						<when>
+							<test>
+								<in caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<list n="mes"/>
+								</in>
+							</test>
+							<out>
+								<chunk name="nom" case="caseFirstWord">
+									<tags>
+										<tag><lit-tag v="SN"/></tag>
+										<tag><var n="genero"/></tag>
+										<tag><var n="numero"/></tag>
+										<tag><var n="tipusnom"/></tag>
+									</tags>
+									<lu>
+										<clip pos="2" side="tl" part="lemh"/> 
+										<clip pos="2" side="tl" part="a_nom"/>
+										<clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+										<clip pos="2" side="tl" part="gen_mf"/>
+										<clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+										<clip pos="2" side="tl" part="nbr_sp"/>
+										<clip pos="2" side="tl" part="lemq"/>
+									</lu>
+								</chunk>
+							</out>
+							<call-macro n="f_bcond">
+								<with-param pos="1"/>
+							</call-macro>
+		
+						</when>
+						<otherwise>
+									
+							<out>
+								<chunk name="det_nom" case="caseFirstWord">
+									<tags>
+										<tag><lit-tag v="SN"/></tag>
+										<tag><var n="genero"/></tag>
+										<tag><var n="numero"/></tag>
+										<tag><var n="tipusnom"/></tag>
+									</tags>
+									<lu>
+										<clip pos="1" side="tl" part="lem"/> 
+										<clip pos="1" side="tl" part="a_det"/>
+										<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+										<clip pos="1" side="tl" part="gen_mf"/>
+										<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+										<clip pos="1" side="tl" part="nbr_sp"/>
+									</lu> 
+									<b pos="1"/>
+									<lu>
+										<clip pos="2" side="tl" part="lemh"/> 
+										<clip pos="2" side="tl" part="a_nom"/>
+										<clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+										<clip pos="2" side="tl" part="gen_mf"/>
+										<clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+										<clip pos="2" side="tl" part="nbr_sp"/>
+										<clip pos="2" side="tl" part="lemq"/>
+									</lu>
+								</chunk>
+							</out>
+						</otherwise>
+					</choose>
 				</otherwise>
 			</choose>
 			<let>
