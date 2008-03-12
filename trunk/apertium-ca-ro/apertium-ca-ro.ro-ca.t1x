@@ -4067,6 +4067,77 @@
          </action>
     </rule> 
 
+<rule> <!-- REGLA 69 VBTREBUI+ SÄ + VERB : HAVER + DE + INF -->
+  <pattern>
+      <pattern-item n="verbtrebui"/>
+      <pattern-item n="conjsub"/>
+      <pattern-item n="verb"/>
+    </pattern>
+    <action>
+     <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro> 
+    <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="ger"/>
+	    </equal>
+	  </test>
+	  <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+	    <clip pos="3" side="sl" part="persona"/>
+            <clip pos="3" side="sl" part="gen"/>
+            <clip pos="3" side="sl" part="nbr"/>
+	    <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+	   <b pos="1"/>
+	    <lu>
+            <lit v="de"/>
+            <lit-tag v="pr"/>
+          </lu>
+	  <b pos="2"/>
+	  <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <lit-tag v="inf"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out> 
+	</when>
+	<otherwise>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="3" side="tl" part="persona"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+	    <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+	  <b pos="1"/>
+	    <lu>
+            <lit v="de"/>
+            <lit-tag v="pr"/>
+          </lu>
+	  <b pos="2"/>
+	  <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <lit-tag v="inf"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+       </otherwise>
+      </choose>
+    </action>
+</rule> 
+
 
 <!--REGLA 12: NUMERAL NOM NUMERAL, o sigui la fecha 2 aprilie 2007 = 2 de abril de 2007 -->
     <rule>
@@ -10089,75 +10160,8 @@ is not applicable because gender and number can not be taken from previous rules
     </rule>
     
     
-    
-<rule> <!-- REGLA 69 VBTREBUI+ SÄ + VERB : TENER + INF -->
-  <pattern>
-      <pattern-item n="verbtrebui"/>
-      <pattern-item n="conjsub"/>
-      <pattern-item n="verb"/>
-    </pattern>
-    <action>
-     <call-macro n="f_modgen">
-          <with-param pos="1"/>
-        </call-macro> 
-    <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="ger"/>
-	    </equal>
-	  </test>
-	  <out>
-          <lu>
-            <clip pos="1" side="tl" part="lemh"/>
-            <clip pos="1" side="tl" part="a_verb"/>
-            <clip pos="1" side="tl" part="temps"/>
-	    <clip pos="1" side="tl" part="lemq"/>
-          </lu>
-	   <b pos="1"/>
-	    <lu>
-            <lit v="que"/>
-            <lit-tag v="cnjsub"/>
-          </lu>
-	  <b pos="2"/>
-	  <lu>
-            <clip pos="3" side="tl" part="lemh"/>
-            <clip pos="3" side="tl" part="a_verb"/>
-            <lit-tag v="inf"/>
-            <clip pos="3" side="tl" part="lemq"/>
-          </lu>
-        </out> 
-	</when>
-	<otherwise>
-        <out>
-          <lu>
-            <clip pos="1" side="tl" part="lemh"/>
-            <clip pos="1" side="tl" part="a_verb"/>
-            <clip pos="1" side="tl" part="temps"/>
-            <clip pos="3" side="tl" part="persona"/>
-            <clip pos="1" side="tl" part="gen"/>
-            <clip pos="3" side="tl" part="nbr"/>
-	    <clip pos="1" side="tl" part="lemq"/>
-          </lu>
-	  <b pos="1"/>
-	    <lu>
-            <lit v="que"/>
-            <lit-tag v="cnjsub"/>
-          </lu>
-	  <b pos="2"/>
-	  <lu>
-            <clip pos="3" side="tl" part="lemh"/>
-            <clip pos="3" side="tl" part="a_verb"/>
-            <lit-tag v="inf"/>
-            <clip pos="3" side="tl" part="lemq"/>
-          </lu>
-        </out>
-       </otherwise>
-      </choose>
-    </action>
-</rule> 
 
+  
     
 <rule> <!-- REGLA 70 DELIA ADVNU + ADVMAI + VB : YA NO + VB -->
   <pattern>
