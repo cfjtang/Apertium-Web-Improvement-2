@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+        <link rel="stylesheet" type="text/css" href="src/css/style.css" />
+        <title>Apertium DicLookUp</title>
+    </head>
+    
+    <body>            	
+        <div id="main">
+            <h2>Dictionary look up</h2>
+            
+            <p>Start typing a word in the text box and the translation will show up in a flash.</p>
+            
+            <form class="translation" action="" method="post">
+                <fieldset><legend></legend>
+                    <select onchange="ajaxFunction(this.value);" id="direction" name="direction" title="Selecciona el tipo de traducción">
+                        <option class='header' value='' disabled='true'>Catalán</option>
+                        <option value='es-ca-rl' >Catalán &rarr; Español</option>
+                        <option value='en-ca-rl' >Catalán &rarr; Inglés</option>
+                        <option value='fr-ca-rl' >Catalán &rarr; Francés</option>
+                        <option value='oc-ca-rl' >Catalán &rarr; Occitano</option>
+                        <option class='beta' value='ca-ro-lr' >Catalán &rarr; Rumano (beta)</option>
+                        <option class='header' value='' disabled='true'>Inglés</option>
+                        <option value='en-af-lr' >Inglés &rarr; Afrikaans</option>
+                        <option value='en-ca-lr' >Inglés &rarr; Catalán</option>
+                        <option value='cy-en-rl' >Inglés &rarr; Welsh</option>
+                        <option class='beta' value='en-es-lr' >Inglés &rarr; Español (beta)</option>
+                        <option value='en-pl-lr' >Inglés &rarr; Polish</option>
+                        <option class='header' value='' disabled='true'>Esperanto</option>
+                        <option value='eo-es-lr' >Esperanto &rarr; Español</option>
+                        <option value='eo-ca-lr' >Esperanto &rarr; Catalán</option>
+                        <option class='header' value='' disabled='true'>Español</option>
+                        <option value='es-ca-lr'  selected=true>Español &rarr; Catalán</option>
+                        <option class='beta' value='en-es-rl' >Español &rarr; Inglés (beta)</option>
+                        <option value='es-pt-lr' >Español &rarr; Portugués</option>
+                        <option value='oc-es-rl' >Español &rarr; Occitano</option>
+                        <option value='es-gl-lr' >Español &rarr; Gallego</option>
+                        <option value='fr-es-rl' >Español &rarr; Francés</option>
+                        <option value='es-it-lr' >Español &rarr; Italian</option>
+                        <option value='eo-es-rl' >Español &rarr; Esperanto</option>
+                        <option value='es-ro-lr' >Español &rarr; Rumano</option>
+                        <option class='header' value='' disabled='true'>Francés</option>
+                        <option value='fr-ca-lr' >Francés &rarr; Catalán</option>
+                        <option value='fr-es-lr' >Francés &rarr; Español</option>
+                        <option class='header' value='' disabled='true'>Occitano</option>
+                        <option value='oc-ca-lr' >Occitano &rarr; Catalán</option>
+                        <option value='oc-es-lr' >Occitano &rarr; Español</option>
+                        <option class='header' value='' disabled='true'>Rumano</option>
+                        <option value='es-ro-rl' >Rumano &rarr; Español</option>
+                        <option class='beta' value='ca-ro-rl' >Rumano &rarr; Catalán (beta)</option>
+                        <option class='header' value='' disabled='true'>More</option>
+                        <option value='en-af-rl' >Afrikaans &rarr; Inglés</option>
+                        <option value='cy-en-lr' >Welsh &rarr; Inglés</option>
+                        <option value='sv-da-rl' >Danish &rarr; Swedish</option>
+                        <option value='es-gl-rl' >Gallego &rarr; Español</option>
+                        <option value='es-it-rl' >Italian &rarr; Español</option>
+                <option value='sh-mk-rl' >Macedonian &rarr; Serbo-Croatian</option><option value='en-pl-rl' >Polish &rarr; Inglés</option><option value='es-pt-rl' >Portugués &rarr; Español</option><option value='sh-mk-lr' >Serbo-Croatian &rarr; Macedonian</option><option value='sv-da-lr' >Swedish &rarr; Danish</option><option value='tg-fa-rl' >Persian &rarr; Tajik</option><option value='tg-fa-lr' >Tajik &rarr; Persian</option></select><br/><br/><input id="word" name="word" type="text" onkeyup="delayLookUp(this.value,true, document.forms[0].direction.value);"/><br/></fieldset>
+            </form>
+            
+            <div id="message"></div>
+            <br/>
+            <div id="message2"></div>
+            <div id="result" style="overflow:auto; width:500px; height:400px;"></div>
+        </div>
+    </body>
+</html>
+
+<script src="src/js/lookup.js" type="text/javascript"></script>
