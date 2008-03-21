@@ -10,8 +10,7 @@ TARGETS_COMMON = pt-ca.automorf.bin  pt-ca.autobil.bin pt-ca.autogen.bin pt-ca.a
       ca-pt.automorf.bin  ca-pt.autobil.bin ca-pt.autogen.bin ca-pt.autopgen.bin
      
 
-TARGETS = $(TARGETS_COMMON) pt-ca.bin ca-pt.bin \
-          pt-ca.t1x ca-pt.t1x
+TARGETS = $(TARGETS_COMMON) pt-ca.t1x.bin ca-pt.t1x.bin 
 
 all: $(TARGETS)
 
@@ -51,20 +50,14 @@ ca-pt.autopgen.bin: apertium-pt-ca.post-pt.dix
 
 
 # transfers pt-ca
-pt-ca.bin: apertium-pt-ca.pt-ca.t1x
+pt-ca.t1x.bin: apertium-pt-ca.pt-ca.t1x
 	apertium-validate-transfer apertium-pt-ca.pt-ca.t1x
 	apertium-preprocess-transfer apertium-pt-ca.pt-ca.t1x \
-	                             pt-ca.bin
+	                             pt-ca.t1x.bin
 	
-ca-pt.bin: apertium-pt-ca.ca-pt.t1x
+ca-pt.t1x.bin: apertium-pt-ca.ca-pt.t1x
 	apertium-validate-transfer apertium-pt-ca.ca-pt.t1x
 	apertium-preprocess-transfer apertium-pt-ca.ca-pt.t1x \
-	                             ca-pt.bin
+	                             ca-pt.t1x.bin
 
-pt-ca.t1x: apertium-pt-ca.pt-ca.t1x
-	ln -s apertium-pt-ca.pt-ca.t1x pt-ca.t1x
-
-ca-pt.t1x: apertium-pt-ca.ca-pt.t1x
-	ln -s apertium-pt-ca.ca-pt.t1x ca-pt.t1x
-
-CLEANFILES = $(TARGETS)
+CLEANFILES = $(TARGETS) 
