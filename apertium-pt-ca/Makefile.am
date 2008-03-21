@@ -6,21 +6,13 @@ PREFIX2=$(LANG2)-$(LANG1)
 
 BASENAME=apertium-$(PREFIX1)
 
-TARGETS_COMMON = $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1)-$(LANG2).dix \
-     $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
+TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX2).autogen.bin \
      $(PREFIX2).autopgen.bin \
      $(PREFIX1).t1x.bin \
      $(PREFIX2).t1x.bin
 
-$(BASENAME).$(LANG1).dix:
-	xmllint --xinclude $(BASENAME).$(LANG1).dix.xml > $(BASENAME).$(LANG1).dix
-$(BASENAME).$(LANG2).dix:
-	xmllint --xinclude $(BASENAME).$(LANG2).dix.xml > $(BASENAME).$(LANG2).dix
-$(BASENAME).$(LANG1)-$(LANG2).dix:
-	xmllint --xinclude $(BASENAME).$(LANG1)-$(LANG2).dix.xml > $(BASENAME).$(LANG1)-$(LANG2).dix
-     
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp lr $(BASENAME).$(LANG1).dix $@
@@ -71,7 +63,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).t1x \
 	   $(BASENAME).$(PREFIX2).t1x \
 	   $(BASENAME).$(LANG1).tsx \
-	   $(BASENAME).$(LANG2).tsx modes.xml apertium-$(PREFIX1).symbols.xml
+	   $(BASENAME).$(LANG2).tsx modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 
@@ -98,7 +90,7 @@ apertium_pt_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
-	            $(PREFIX1).mode $(PREFIX2).mode modes.xml apertium-$(PREFIX1).symbols.xml
+	            $(PREFIX1).mode $(PREFIX2).mode modes.xml
 		  
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
