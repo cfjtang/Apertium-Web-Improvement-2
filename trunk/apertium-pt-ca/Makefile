@@ -10,8 +10,8 @@ TARGETS_COMMON = pt-ca.automorf.bin  pt-ca.autobil.bin pt-ca.autogen.bin pt-ca.a
       ca-pt.automorf.bin  ca-pt.autobil.bin ca-pt.autogen.bin ca-pt.autopgen.bin
      
 
-TARGETS = $(TARGETS_COMMON) trules-pt-ca.bin trules-ca-pt.bin \
-          trules-pt-ca.xml trules-ca-pt.xml
+TARGETS = $(TARGETS_COMMON) pt-ca.bin ca-pt.bin \
+          pt-ca.t1x ca-pt.t1x
 
 all: $(TARGETS)
 
@@ -51,20 +51,20 @@ ca-pt.autopgen.bin: apertium-pt-ca.post-pt.dix
 
 
 # transfers pt-ca
-trules-pt-ca.bin: apertium-pt-ca.trules-pt-ca.xml
-	apertium-validate-transfer apertium-pt-ca.trules-pt-ca.xml
-	apertium-preprocess-transfer apertium-pt-ca.trules-pt-ca.xml \
-	                             trules-pt-ca.bin
+pt-ca.bin: apertium-pt-ca.pt-ca.t1x
+	apertium-validate-transfer apertium-pt-ca.pt-ca.t1x
+	apertium-preprocess-transfer apertium-pt-ca.pt-ca.t1x \
+	                             pt-ca.bin
 	
-trules-ca-pt.bin: apertium-pt-ca.trules-ca-pt.xml
-	apertium-validate-transfer apertium-pt-ca.trules-ca-pt.xml
-	apertium-preprocess-transfer apertium-pt-ca.trules-ca-pt.xml \
-	                             trules-ca-pt.bin
+ca-pt.bin: apertium-pt-ca.ca-pt.t1x
+	apertium-validate-transfer apertium-pt-ca.ca-pt.t1x
+	apertium-preprocess-transfer apertium-pt-ca.ca-pt.t1x \
+	                             ca-pt.bin
 
-trules-pt-ca.xml: apertium-pt-ca.trules-pt-ca.xml
-	ln -s apertium-pt-ca.trules-pt-ca.xml trules-pt-ca.xml
+pt-ca.t1x: apertium-pt-ca.pt-ca.t1x
+	ln -s apertium-pt-ca.pt-ca.t1x pt-ca.t1x
 
-trules-ca-pt.xml: apertium-pt-ca.trules-ca-pt.xml
-	ln -s apertium-pt-ca.trules-ca-pt.xml trules-ca-pt.xml
+ca-pt.t1x: apertium-pt-ca.ca-pt.t1x
+	ln -s apertium-pt-ca.ca-pt.t1x ca-pt.t1x
 
 CLEANFILES = $(TARGETS)
