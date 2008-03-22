@@ -25,6 +25,7 @@ function show_form($textbox, $dir) {
 	//print "<option value='eo-ca-rl' " . ($dir == 'ca-eo' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Esperanto") . "</option>";
 	print "<option value='fr-ca-rl' " . ($dir == 'ca-fr' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("French") . "</option>";
 	print "<option value='oc-ca-rl' " . ($dir == 'ca-oc' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Occitan") . "</option>";
+	print "<option value='pt-ca-rl' " . ($dir == 'ca-pt' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Portuguese") . "</option>";
 	print "<option class='beta' value='ca-ro-lr' " . ($dir == 'ca-ro' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Romanian") . " (beta)</option>";
 
 	print "<option class='header' value='' disabled='true'>" . _("English") . "</option>";
@@ -71,7 +72,9 @@ function show_form($textbox, $dir) {
 	print "<option value='es-it-rl' " . ($dir == 'it-es' ? ' selected=true' : '') . ">" . _("Italian") . " &rarr; " . _("Spanish") . "</option>";
 	print "<option value='sh-mk-rl' " . ($dir == 'mk-sh' ? ' selected=true' : '') . ">" . _("Macedonian") . " &rarr; " . _("Serbo-Croatian") . "</option>";
 	print "<option value='en-pl-rl' " . ($dir == 'pl-en' ? ' selected=true' : '') . ">" . _("Polish") . " &rarr; " . _("English") . "</option>";
+	print "<option value='pt-ca-lr' " . ($dir == 'pt-ca' ? ' selected=true' : '') . ">" . _("Portuguese") . " &rarr; " . _("Catalan") . "</option>";
 	print "<option value='es-pt-rl' " . ($dir == 'pt-es' ? ' selected=true' : '') . ">" . _("Portuguese") . " &rarr; " . _("Spanish") . "</option>";
+
 	print "<option value='sh-mk-lr' " . ($dir == 'sh-mk' ? ' selected=true' : '') . ">" . _("Serbo-Croatian") . " &rarr; " . _("Macedonian") . "</option>";
 	print "<option value='sv-da-lr' " . ($dir == 'sv-da' ? ' selected=true' : '') . ">" . _("Swedish") . " &rarr; " . _("Danish") . "</option>";
 	print "<option value='tg-fa-rl' " . ($dir == 'fa-	tg' ? ' selected=true' : '') . ">" . _("Persian") . " &rarr; " . _("Tajik") . "</option>";
