@@ -3,25 +3,27 @@
   <alphabet>ABCDEFGHILMNOPRSTUÀÈÌÒÙÁÉÓabcdefghilmnoprstuàèìòùáéó</alphabet> 
 
   <sdefs>
-    <sdef n="n"     c="Noun"/>
-    <sdef n="det"   c="Determiner"/>
+    <sdef n="n"      c="Noun"/>
+    <sdef n="det"    c="Determiner"/>
+ 
+    <sdef n="def"    c="Definite"/>
+    <sdef n="ind"    c="Indefinite"/>
 
-    <sdef n="def"   c="Definite"/>
-    <sdef n="ind"   c="Indefinite"/>
+    <sdef n="f"      c="Feminine"/>
+    <sdef n="m"      c="Masculine"/>
+    <sdef n="mf"     c=""/>
 
-    <sdef n="f"     c="Feminine"/>
-    <sdef n="m"     c="Masculine"/>
-    <sdef n="mf"    c=""/>
+    <sdef n="pl"     c="Plural"/>
+    <sdef n="sg"     c="Singular"/>
+    <sdef n="sp"     c=""/>
 
-    <sdef n="pl"    c="Plural"/>
-    <sdef n="sg"    c="Singular"/>
-    <sdef n="sp"    c=""/>
+    <sdef n="nom"    c="Nominative"/>
+    <sdef n="dat"    c="Dative"/>
+    <sdef n="gen"    c="Genitive"/>
+    <sdef n="voc"    c="Vocative"/>
 
-    <sdef n="nom"   c="Nominative"/>
-    <sdef n="dat"   c="Dative"/>
-    <sdef n="gen"   c="Genitive"/>
-    <sdef n="voc"   c="Vocative"/>
-
+    <sdef n="cnjcoo" c="Co-ordinating conjunction"/>
+    <sdef n="cnjsub" c="Sub-ordinating conjunction"/>
 
   </sdefs>
   <pardefs>
@@ -710,10 +712,40 @@
       </e>
     </pardef>
 
+    <!-- Conjunctions -->
+
+    <pardef n="agus__cnjcoo">
+      <e>
+        <p>
+          <l/>
+          <r><s n="cnjcoo"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="gun__cnjsub">
+      <e>
+        <p>
+          <l/>
+          <r><s n="cnjsub"/></r>
+        </p>
+      </e>
+    </pardef>
+
   </pardefs>
 
   <section id="main" type="standard">
+    <!-- Determiners -->
     <e lm="an"><i/><par n="an__det"/></e>
+
+    <!-- Conjunctions -->
+    <e lm="agus"><i>agus</i><par n="agus__cnjcoo"/></e>
+    <e lm="ach"><i>ach</i><par n="agus__cnjcoo"/></e>
+
+    <e lm="gun"><i>gun</i><par n="gun__cnjsub"/></e>
+
+    <!-- Nouns -->
+
     <e lm="cat"><par n="initial-c"/><i>a</i><par n="ca/t__n"/></e> 
     <e lm="seòmar"><par n="initial-s"/><i>eòm</i><par n="seòm/ar__n"/></e> 
     <e lm="caileag"><par n="initial-c"/><i>aile</i><par n="caile/ag__n"/></e> 
