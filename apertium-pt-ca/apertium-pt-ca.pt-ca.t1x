@@ -75,14 +75,28 @@
 	<def-cat n="prnsub">
 		<cat-item lemma="eu" tags="prn.tn.*"/>
 		<cat-item lemma="tu" tags="prn.tn.*"/>
-		<cat-item lemma="vocÃª" tags="prn.tn.*"/>
+		<cat-item lemma="você" tags="prn.tn.*"/>
 		<cat-item lemma="ele" tags="prn.tn.*"/>
 		<cat-item lemma="ela" tags="prn.tn.*"/>
-		<cat-item lemma="nÃ³s"  tags="prn.tn.*"/>
-		<cat-item lemma="vocÃªs"  tags="prn.tn.*"/>
+		<cat-item lemma="nós"  tags="prn.tn.*"/>
+		<cat-item lemma="vocês"  tags="prn.tn.*"/>
 		<cat-item lemma="eles" tags="prn.tn.*"/>
 		<cat-item lemma="elas" tags="prn.tn.*"/>
 	</def-cat>
+		<def-cat n="mes">
+			<cat-item lemma="gener" tags="n.*"/>
+			<cat-item lemma="febrer" tags="n.*"/>
+			<cat-item lemma="març" tags="n.*"/>
+			<cat-item lemma="abril" tags="n.*"/>
+			<cat-item lemma="maig" tags="n.*"/>
+			<cat-item lemma="juny" tags="n.*"/>
+			<cat-item lemma="juliol" tags="n.*"/>
+			<cat-item lemma="agost" tags="n.*"/>
+			<cat-item lemma="setembre" tags="n.*"/>
+			<cat-item lemma="octubre" tags="n.*"/>
+			<cat-item lemma="novembre" tags="n.*"/>
+			<cat-item lemma="desembre" tags="n.*"/>
+		</def-cat>
 
    <def-cat n="prnenc">   	  	  
    	<cat-item tags="prn.enc.*"/>
@@ -191,6 +205,17 @@
 		<cat-item tags="vbser.ger"/>
 		<cat-item tags="vter.ger"/>
 	</def-cat>
+	<def-cat n="infger">
+		<cat-item tags="vblex.inf"/>
+		<cat-item tags="vbser.inf"/>
+		<cat-item tags="vbhaver.inf"/>
+		<cat-item tags="vbmod.inf"/>
+		<cat-item tags="vbhaver.ger"/>
+		<cat-item tags="vblex.ger"/>
+		<cat-item tags="vbmod.ger"/>
+		<cat-item tags="vbser.ger"/>
+		<cat-item tags="vter.ger"/>
+	</def-cat>
 
 	<def-cat n="infpsfts">
 		<cat-item tags="vblex.infps.*"/>
@@ -244,7 +269,7 @@
 	</def-cat>
 	
 	<def-cat n="ate">
-		<cat-item lemma="atÃ©" tags="pr"/>
+		<cat-item lemma="até" tags="pr"/>
 	</def-cat>
 	
 	<def-cat n="detnt">
@@ -266,24 +291,25 @@
 	</def-cat>
 	
 	<def-cat n="ha">
-		<cat-item lemma="hÃ¡" tags="vblex.*"/>
+		<cat-item lemma="há" tags="vblex.*"/>
+		<cat-item lemma="há" tags="vbhaver.*"/>
 	</def-cat>
 	
 	<def-cat n="nomtempo">
 		<cat-item lemma="segunda-feira" tags="n.*"/>
-		<cat-item lemma="terÃ§a-feira" tags="n.*"/>
+		<cat-item lemma="terça-feira" tags="n.*"/>
 		<cat-item lemma="quarta-feira" tags="n.*"/>
 		<cat-item lemma="quinta-feira" tags="n.*"/>
 		<cat-item lemma="sexta-feira" tags="n.*"/>
-		<cat-item lemma="sï¿½ado" tags="n.*"/>
+		<cat-item lemma="sábado" tags="n.*"/>
 		<cat-item lemma="domingo" tags="n.*"/>
 		<cat-item lemma="semana" tags="n.*"/>
 		<cat-item lemma="dia" tags="n.*"/>
 		<cat-item lemma="ano" tags="n.*"/>
-		<cat-item lemma="mÃªs" tags="n.*"/>
-		<cat-item lemma="sÃ©culo" tags="n.*"/>
-		<cat-item lemma="milÃªnio" tags="n.*"/>
-		<cat-item lemma="milÃ©nio" tags="n.*"/>
+		<cat-item lemma="mês" tags="n.*"/>
+		<cat-item lemma="século" tags="n.*"/>
+		<cat-item lemma="milénio" tags="n.*"/>
+		<cat-item lemma="milênio" tags="n.*"/>
 		<cat-item lemma="lustro" tags="n.*"/>
 		<cat-item lemma="tempo" tags="n.*"/>
 	</def-cat>
@@ -3028,21 +3054,6 @@
 <section-rules>
 <!-- REGLES DE CONCORDï¿½CIA-->	
 
-<!-- no sÃ© quÃ¨ fa aixÃ² aquÃ­ (cat) <rule> <!-#- REGLA 1: relatiu -#->
-	<pattern>
-		<pattern-item n="relat"/>
-	</pattern>
-	<action>
-		<call-macro n="f_concord1">
-			<with-param pos="1"/>
-		</call-macro>     
-		<out> 
-			<lu>    
-				<clip pos="1" side="tl" part="whole"/>
-			</lu> 
-		</out>
-	</action>
-	</rule>-->
 
 	<rule> <!-- REGLA 1: DETERMINANT -->
 		<pattern>
@@ -6268,192 +6279,7 @@
 	</rule>
 	
 
-	<rule> <!--REGLA 35: en + PROCLï¿½IC + VERB -> a verb-enc-->
-		<pattern>
-			<pattern-item n="em"/>
-			<pattern-item n="prnpro"/>
-			<pattern-item n="verb"/>
-		</pattern>
-		<action>
-			<!--<call-macro n="f_pretind">
-				<with-param pos="2"/>
-			</call-macro>-->
-			<out>
-				<lu>
-					<get-case-from pos="1">
-						<lit v="a"/>
-					</get-case-from>
-					<clip pos="1" side="tl" part="a_prep"/>
-				</lu>
-				<b pos="1"/>
-			</out>
-			<choose>
-				<when>
-					<test>
-						<or>
-							<equal>
-								<clip pos="3" side="sl" part="temps"/>
-								<lit-tag v="inf"/>
-							</equal>
-							<equal>
-								<clip pos="3" side="sl" part="temps"/>
-								<lit-tag v="ger"/>
-							</equal>
-							<equal>
-								<clip pos="3" side="sl" part="temps"/>
-								<lit-tag v="imp"/>
-							</equal>
-						</or>
-					</test>
-					<out>
-						<mlu>
-							<lu>
-								<clip pos="3" side="tl" part="lemh"/>
-								<clip pos="3" side="tl" part="a_verb"/>
-								<clip pos="3" side="tl" part="temps"/>
-								<clip pos="3" side="tl" part="persona"/>
-								<clip pos="3" side="tl" part="nbr"/>
-							</lu>
-							<lu>
-								<clip pos="2" side="tl" part="lem"/>
-								<clip pos="2" side="tl" part="tipoenc_pro"/>
-								<clip pos="3" side="tl" part="lemq"/>
-							</lu>  
-						</mlu>
-					</out>
-				</when>
-				<otherwise>
-					<out>
-						<lu>   
-							<clip pos="2" side="tl" part="lem"/>
-							<lit-tag v="prn.pro" />
-							<clip pos="2" side="tl" part="tipoenc_pro"/>
-						</lu>
-						<b pos="2"/> 
-					</out>
-					<choose>
-						<when>
-							<test>
-								<or>
-									<equal>
-										<clip pos="3" side="sl" part="temps"/>
-										<lit-tag v="infps"/>
-									</equal>
-									<equal>
-										<clip pos="3" side="sl" part="temps"/>
-										<lit-tag v="fts"/>
-									</equal>
-								</or>
-							</test>
-							<out>
-								<lu>   
-									<clip pos="3" side="tl" part="lemh"/>
-									<clip pos="3" side="tl" part="a_verb"/>
-									<lit-tag v="prs"/>
-									<clip pos="3" side="tl" part="persona"/>
-									<clip pos="3" side="tl" part="nbr"/>
-									<clip pos="3" side="tl" part="lemq"/>	 
-								</lu>
-							</out>
-						</when>
-						<otherwise>
-							<choose>
-								<when>
-									<test>
-										<equal>
-											<clip pos="3" side="sl" part="temps"/>
-											<lit-tag v="pmp"/>
-										</equal>
-									</test>
-									<out>
-										<lu>
-											<lit v="anar"/>
-											<lit-tag v="vaux"/>
-											<clip pos="1" side="tl" part="persona"/>
-											<clip pos="1" side="tl" part="nbr"/>
-										</lu>
-										<b/>
-										<lu>
-											<lit v="haver"/>
-											<lit-tag v="vaux.inf"/>
-										</lu>
-										<b/>
-										<lu>
-											<clip pos="3" side="tl" part="lemh"/>
-											<clip pos="3" side="tl" part="a_verb"/>
-											<lit-tag v="pp.m.sg"/>
-											<clip pos="3" side="tl" part="lemq"/>	
-										</lu>
-									</out>
-								</when>	
-								<otherwise>
-									
-							<choose>
-								<when>
-									<test>
-										<equal>
-											<clip pos="3" side="sl" part="temps"/>
-											<lit-tag v="ifi"/>
-										</equal>
-									</test>
-									<out>
-										<lu>
-											<get-case-from pos="3">
-												<lit v="anar"/>
-											</get-case-from>
-											<lit-tag v="vaux"/>
-											<clip pos="3" side="sl" part="persona"/>
-											<clip pos="3" side="sl" part="nbr"/>
-										</lu>
-										<b/>
-									</out>
-									<choose>
-										<when>
-											<test>
-												<equal>
-													<case-of pos="3" side="sl" part="lemh"/>
-													<lit v="Aa"/>
-												</equal>
-											</test>
-											<modify-case>
-												<clip pos="3" side="tl" part="lemh"/>
-												<lit v="aa"/>
-											</modify-case>
-										</when>
-									</choose>
-									<out>
-										<lu>
-											<clip pos="3" side="tl" part="lemh"/>
-											<clip pos="3" side="tl" part="a_verb"/>
-											<lit-tag v="inf"/>
-											<clip pos="3" side="tl" part="lemq"/>
-										</lu>
-									</out>
-								</when>
-								<otherwise>
-									
-									<out>
-										<lu>
-											<clip pos="3" side="tl" part="lemh"/>
-											<clip pos="3" side="tl" part="a_verb"/>
-											<clip pos="3" side="tl" part="temps"/>
-											<clip pos="3" side="tl" part="persona"/>
-											<clip pos="3" side="tl" part="gen"/>
-											<clip pos="3" side="tl" part="nbr"/>
-											<clip pos="3" side="tl" part="lemq"/>	 
-										</lu>
-									</out>	
-								</otherwise>
-							</choose>
-								</otherwise>
-							</choose>
-						</otherwise>
-					</choose>
-				</otherwise>		
-			</choose>
-		</action>
-	</rule>
-	
+
 
 	<rule>	 <!-- verb-mesoclï¿½ic-cua -->
 		<pattern>
@@ -6908,6 +6734,7 @@
 		</action>
 	</rule> 
 	
+	
 	 <rule> <!--REGLA: prep "em" + inf = a + inf : "especialistas en investigar -> especialistes a investigar -->
       <pattern>
 	<pattern-item n="em"/>
@@ -7072,6 +6899,79 @@
 			</out>
 		</action>
 	</rule>
+	
+	<rule> <!--REGLA: pro inf/ger -> inf/ger -->
+		<pattern>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="infger"/>
+		</pattern>
+		<action>
+			<out>
+				<mlu>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="2" side="tl" part="lemh"/>
+						</get-case-from>
+						<clip pos="2" side="tl" part="a_verb"/>
+						<clip pos="2" side="tl" part="temps"/>
+					</lu>
+					<lu>  
+						<get-case-from pos="2">
+							<clip pos="1" side="tl" part="lem"/>
+						</get-case-from>
+						<lit-tag v="prn.enc"/>
+						<clip pos="1" side="tl" part="tipoenc_pro"/>
+						<clip pos="2" side="tl" part="lemq"/>
+					</lu>  
+				</mlu>	
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="1"/>
+			</call-macro>
+		</action>
+	</rule>
+	
+	<rule> <!--REGLA: pro pro inf/ger -> inf/ger -->
+		<pattern>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="prnpro"/>
+			<pattern-item n="infger"/>
+		</pattern>
+		<action>
+			<out>
+				<mlu>
+					<lu>
+						<get-case-from pos="1">
+							<clip pos="3" side="tl" part="lemh"/>
+						</get-case-from>
+						<clip pos="3" side="tl" part="a_verb"/>
+						<clip pos="3" side="tl" part="temps"/>
+					</lu>
+					<lu>  
+						<get-case-from pos="2">
+							<clip pos="1" side="tl" part="lem"/>
+						</get-case-from>
+						<lit-tag v="prn.enc"/>
+						<clip pos="1" side="tl" part="tipoenc_pro"/>
+					</lu>  
+					<lu>  
+						<clip pos="2" side="tl" part="lem"/>
+						<lit-tag v="prn.enc"/>
+						<clip pos="2" side="tl" part="tipoenc_pro"/>
+						<clip pos="3" side="tl" part="lemq"/>
+					</lu>  
+				</mlu>	
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="f_bcond">
+				<with-param pos="2"/>
+			</call-macro>
+		</action>
+	</rule>
+	
+
 	
 <!-- 								== v. ir == -->
 
