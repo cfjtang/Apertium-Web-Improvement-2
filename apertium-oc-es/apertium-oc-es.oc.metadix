@@ -11,6 +11,7 @@
   <alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜàáâäçèéêëìíîïñòóôöùúûüABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
   <sdefs>
     <sdef n="detnt" /> 
+    <sdef n="percent" /> 
     <sdef n="predet" /> 
     <sdef n="atn" /> 
     <sdef n="enc" /> 
@@ -88,7 +89,13 @@
         <r><s n="num"/></r> 
       </p>
     </e>
-
+    <e>
+      <re>[0-9]+([.,][0-9]+)?%</re>
+	<p>
+	  <l/>
+          <r><s n="num"/><s n="percent"/></r>
+	</p>
+    </e>
     </pardef>
     <pardef n="separa">
     <e>
@@ -17256,6 +17263,24 @@
     </e>
 
     </pardef>
+    <pardef n="ambed/ós__prn">
+	   
+    <e>
+      <p>
+	<l>ós</l>
+	<r>ós<s n="prn"/><s n="tn"/><s n="m"/><s n="pl"/></r>
+      </p>
+    </e>
+
+    <e>
+      <p>
+	<l>oas</l>
+	<r>ós<s n="prn"/><s n="tn"/><s n="f"/><s n="pl"/></r>
+      </p>
+    </e>
+
+    </pardef>
+    
     <pardef n="aguest__prn">
     <e alt="oc@aran">
       <p>
@@ -17534,9 +17559,15 @@
 
     </pardef>
     <pardef n="cadu/n__prn">
-    <e>
+    <e alt="oc@aran">
       <p>
         <l>a</l> 
+        <r>n<s n="prn"/><s n="tn"/><s n="f"/><s n="sg"/></r> 
+      </p>
+    </e>
+    <e alt="oc">
+      <p>
+        <l>na</l> 
         <r>n<s n="prn"/><s n="tn"/><s n="f"/><s n="sg"/></r> 
       </p>
     </e>
@@ -89161,7 +89192,7 @@
       (adj) group
       ******************************
     -->
-    <e lm="un aute, un autre">
+    <e r="LR" lm="un aute, un autre">
         <i></i> 
         <par n="/un_aute__adj"/> 
     </e>
@@ -89171,12 +89202,12 @@
         <par n="aut/e__adj"/> 
     </e>
 
-    <e lm="d'aute" alt="oc@aran">
+    <e r="LR" lm="d'aute" alt="oc@aran">
         <i>d'aut</i> 
         <par n="aut/e__adj"/> 
     </e>
 
-    <e lm="d'autre" alt="oc">
+    <e r="LR" lm="d'autre" alt="oc">
         <i>d'autr</i> 
         <par n="aut/e__adj"/> 
     </e>
@@ -89254,7 +89285,7 @@
 
     <e r="RL" lm="se">
       <p>
-        <l><a/>se</l> 
+        <l><a/>cnjse</l> 
         <r>se</r> 
       </p>
         <par n="donc__cnjadv"/> 
@@ -89264,6 +89295,18 @@
         <i>alara</i> 
         <par n="donc__cnjadv"/> 
     </e>
+    
+
+	<e lm="atau coma" alt="oc@aran">
+		<i>atau<b/>coma</i>
+		<par n="donc__cnjadv"/>
+	</e>
+
+
+	<e lm="aital coma" alt="oc">
+		<i>aital<b/>coma</i>
+		<par n="donc__cnjadv"/>
+	</e>
 
     <e lm="donc">
         <i>donc</i> 
@@ -89345,6 +89388,17 @@
         <par n="donc__cnjadv"/> 
     </e>
     
+  
+    <e lm="cada còp que" alt="oc">
+      <i>cada<b/>còp<b/>que</i>
+      <par n="donc__cnjadv"/>
+    </e>
+  
+    <e lm="cada viatge que" alt="oc@aran">
+      <i>cada<b/>viatge<b/>que</i>
+      <par n="donc__cnjadv"/>
+    </e>
+   
     
     <e r="LR" lm="a mesura que">
       <p>
@@ -89490,6 +89544,11 @@
         <par n="donc__cnjadv"/> 
     </e>
 
+    <e r="LR" lm="ça que là">
+        <i>ça<b/>que<b/>là</i> 
+        <par n="donc__cnjadv"/> 
+    </e>
+
     <!-- 
       ******************************
       (vbmod) group
@@ -89561,6 +89620,11 @@
 
     <e lm="çò">
         <i>çò</i> 
+        <par n="çòdemès__detnt"/> 
+    </e>
+
+    <e lm="çò de mès">
+        <i>çò<b/>de<b/>mès</i> 
         <par n="çòdemès__detnt"/> 
     </e>
 
@@ -90775,10 +90839,10 @@
         <par n="aguest__prn"/> 
     </e>
 
-    <e r="RL" lm="andús">
+    <e r="RL" lm="ambdús">
       <p>
-        <l><a/>and</l> 
-        <r>and</r> 
+        <l><a/>ambd</l> 
+        <r>ambd</r> 
       </p>
         <par n="and/ús__prn"/> 
     </e>
@@ -90930,10 +90994,30 @@
         <i>aiçò</i> 
         <par n="açò__prn"/> 
     </e>
+    
+
+	<e lm="açò òc" alt="oc@aran">
+		<i>açò<b/>òc</i>
+		<par n="açò__prn"/>
+	</e>
+	<e lm="aquò òc" alt="oc">
+		<i>aquò<b/>òc</i>
+		<par n="açò__prn"/>
+	</e>
 
     <e r="LR" lm="andús">
         <i>and</i> 
         <par n="and/ús__prn"/> 
+    </e>
+      
+    <e r="LR" lm="ambdús" alt="oc@aran">
+        <i>ambd</i> 
+        <par n="and/ús__prn"/> 
+    </e>
+      
+    <e lm="ambedós" alt="oc@aran">
+        <i>ambed</i> 
+        <par n="ambed/ós__prn"/> 
     </e>
 
     <e r="LR" lm="aqueth d'aquiu delà">
@@ -90984,6 +91068,11 @@
     <e r="LR" lm="açò" alt="oc@aran">
         <i>açò</i> 
         <par n="açò__prn"/> 
+    </e>
+    
+    <e lm="bèra causa" r="LR">
+	<i>bèra<b/>causa</i>
+	<par n="açò__prn"/>
     </e>
 
     <e lm="cadun">
@@ -91540,11 +91629,16 @@
         <par n="/entà__pr"/> 
     </e>
 
-    <e r="LR" lm="a causa de">
+    <e lm="a causa de">
         <i>a<b/>causa<b/></i> 
         <par n="/de__pr"/> 
     </e>
 
+    <e lm="a cargue de">
+        <i>a<b/>cargue<b/></i> 
+        <par n="/de__pr"/> 
+    </e>
+    
     <e r="LR" lm="a compdar de" alt="oc@aran">
         <i>a<b/>compdar<b/></i> 
         <par n="/de__pr"/> 
@@ -91606,6 +91700,48 @@
         <i>a<b/>raïtz<b/></i> 
         <par n="/de__pr"/> 
     </e>
+    
+    <e lm="a fauta de">
+        <i>a<b/>fauta<b/></i> 
+        <par n="/de__pr"/> 
+    </e> 
+    
+    
+    <e lm="a l'escasença de">
+        <i>a<b/>l'escasença<b/></i> 
+        <par n="/de__pr"/> 
+    </e> 
+    
+    <e lm="ath costat de" alt="oc@aran">
+        <i>ath<b/>costat<b/></i> 
+        <par n="/de__pr"/> 
+    </e>
+    
+    <e lm="al bòrd de" alt="oc">
+        <i>al<b/>bòrd<b/></i> 
+        <par n="/de__pr"/> 
+    </e>
+ 
+    <e r="LR" lm="al costat de">
+        <i>al<b/>costat<b/></i> 
+        <par n="/de__pr"/> 
+    </e>
+ 
+    <e r="LR" lm="ath cant de">
+        <i>ath<b/>cant<b/></i> 
+        <par n="/de__pr"/> 
+    </e>
+         
+    
+	<e lm="a peticion de" alt="oc@aran">
+		<i>a<b/>peticion<b/></i>
+		<par n="/de__pr"/>
+	</e>
+
+	<e lm="a la demanda de" alt="oc">
+		<i>a<b/>la<b/>demanda<b/></i>
+		<par n="/de__pr"/>
+	</e>
 
     <e lm="a malgrat" alt="oc">
         <i>a<b/>malgrat</i> 
@@ -91616,14 +91752,26 @@
         <i>a<b/>maugrat</i> 
         <par n="a__pr"/> 
     </e>
-
-    <e lm="abans">
-        <i>abans</i> 
-        <par n="a__pr"/> 
+    
+    
+    <e lm="ad" r="LR">
+	<p>
+	  <l>ad</l>
+	  <r>a</r>
+	</p>
+	<par n="a__pr"/>
+    </e>
+    
+    <e lm="ada" r="LR">
+	<p>
+	  <l>ada</l>
+	  <r>a</r>
+	</p>
+	<par n="a__pr"/>
     </e>
 
-    <e lm="al costat de" alt="oc">
-        <i>al<b/>costat<b/></i> 
+    <e lm="abans de">
+        <i>abans<b/></i> 
         <par n="/de__pr"/> 
     </e>
 
@@ -91631,7 +91779,29 @@
         <i>alloc<b/></i> 
         <par n="/de__pr"/> 
     </e>
+    
+    
 
+    <e lm="amassa amb" alt="oc">
+        <i>amassa<b/>amb</i> 
+        <par n="a__pr"/> 
+    </e>
+
+    <e lm="amassa damb" alt="oc@aran">
+        <i>amassa<b/>damb</i> 
+        <par n="a__pr"/> 
+    </e>    
+    
+    
+   <e lm="damb" alt="oc@aran">
+        <i>damb</i> 
+        <par n="a__pr"/> 
+    </e>
+
+    <e r="LR" lm="damb" alt="oc">
+        <i>damb</i> 
+        <par n="a__pr"/> 
+    </e>
     <e r="LR" lm="amb" alt="oc@aran">
         <i>amb</i> 
         <par n="a__pr"/> 
@@ -91647,14 +91817,20 @@
         <par n="a__pr"/> 
     </e>
 
-    <e lm="après" alt="oc">
-        <i>après</i> 
+    <e r="LR" lm="emb">
+        <i>tab</i> 
         <par n="a__pr"/> 
     </e>
 
-    <e lm="ath cant de" alt="oc@aran">
-        <i>ath<b/>cant<b/></i> 
-        <par n="/de__pr"/> 
+
+    <e r="LR" lm="tab">
+        <i>tab</i> 
+        <par n="a__pr"/> 
+    </e>
+
+    <e lm="après" alt="oc">
+        <i>après</i> 
+        <par n="a__pr"/> 
     </e>
 
     <e lm="cap a">
@@ -91689,16 +91865,6 @@
 
     <e r="LR" lm="dab">
         <i>dab</i> 
-        <par n="a__pr"/> 
-    </e>
-
-    <e lm="damb" alt="oc@aran">
-        <i>damb</i> 
-        <par n="a__pr"/> 
-    </e>
-
-    <e r="LR" lm="damb" alt="oc">
-        <i>damb</i> 
         <par n="a__pr"/> 
     </e>
 
@@ -91885,7 +92051,7 @@
         <par n="a__pr"/> 
     </e>
 
-    <e lm="per causa de">
+    <e r="LR" lm="per causa de">
         <i>per<b/>causa<b/></i> 
         <par n="/de__pr"/> 
     </e>
@@ -133314,11 +133480,6 @@
     <par n="ager__adv"/>
     </e>
   
-  <e alt="oc" lm="abans">
-    <i>abans</i>
-    <par n="ager__adv"/>
-    </e>
-  
   <e alt="oc" lm="abans-ièr">
     <i>abans-ièr</i>
     <par n="ager__adv"/>
@@ -136143,8 +136304,13 @@
     <i>alai</i>
     <par n="ager__adv"/>
     </e>
+    
+  <e r="LR" lm="alèra">
+    <i>alèra</i>
+    <par n="ager__adv"/>
+  </e>
   
-  <e lm="alara">
+  <e r="LR" lm="alara">
     <i>alara</i>
     <par n="ager__adv"/>
     </e>
@@ -136279,12 +136445,12 @@
     <par n="ager__adv"/>
     </e>
   
-  <e lm="cada còp">
+  <e lm="cada còp" alt="oc">
     <i>cada<b/>còp</i>
     <par n="ager__adv"/>
     </e>
   
-  <e lm="cada viatge" r="LR">
+  <e lm="cada viatge" alt="oc@aran">
     <i>cada<b/>viatge</i>
     <par n="ager__adv"/>
     </e>
@@ -138007,9 +138173,9 @@
 	    <par n="m/ólzer__vblex"/>
 	  </e>
 
-          <e alt="oc" lm="negar">
-	    <i>ne</i>
-	    <par n="por/gas__vblex"/>
+          <e lm="negar">
+	    <i>n</i>
+	    <par n="moss/egar__vblex"/>
 	  </e>
 
           <e alt="oc" lm="nomenar">
@@ -139252,9 +139418,22 @@
 	    <par n="corresp/ó[N]er__vblex" prm="lh"/>
 	  </e>
 
-          <e alt="oc@aran" lm="negar">
+          <e r="LR" lm="negar a">
 	    <i>n</i>
 	    <par n="moss/egar__vblex"/>
+	    <p>
+	      <l><b/>a</l>
+	      <r><g><b/>a</g></r>
+	    </p>
+	  </e>
+
+          <e r="RL" lm="negar a">
+	    <i>n</i>
+	    <par n="moss/egar__vblex"/>
+	    <p>
+	      <l><b/><a/>a</l>
+	      <r><g><b/>a</g></r>
+	    </p>
 	  </e>
 
           <e alt="oc@aran" lm="nomentar">
@@ -142718,6 +142897,70 @@
 	    <i>encar</i>
 	    <par n="dorm/èrem__vblex"/>
 	  </e>
+	  
+	  <e lm="far referéncia" alt="oc">
+		<i>f</i>
+		<par n="f/ar__vblex"/>
+		<p>
+			<l><b/>referéncia</l>
+			<r><g><b/>referéncia</g></r>
+		</p>
+	  </e>
+	
+	  <e lm="hèr referéncia" alt="oc@aran">
+		<i>h</i>
+		<par n="h/èr__vblex"/>
+		<p>
+			<l><b/>referéncia</l>
+			<r><g><b/>referéncia</g></r>
+		</p>
+	  </e>
+	  
+	  
+	<e lm="voler pas" r="RL">
+		<i>v</i>
+		<par n="v/oler__vblex"/>
+		<p>
+			<l><b/>pas</l>
+			<r><g><b/>pas</g></r>
+		</p>
+	</e>
+	  
+	  <e lm="far montar lo prètz de" alt="oc" r="LR">
+		<i>f</i>
+		<par n="f/ar__vblex"/>
+		<p>
+			<l><b/>montar<b/>lo<b/>prètz<b/>de</l>
+			<r><g><b/>montar<b/>lo<b/>prètz<b/>de</g></r>
+		</p>
+	</e>
+	
+		<e lm="far montar lo prètz de" alt="oc" r="RL">
+		<i>f</i>
+		<par n="f/ar__vblex"/>
+		<p>
+			<l><b/>montar<b/>lo<b/>prètz<b/><a/>de</l>
+			<r><g><b/>montar<b/>lo<b/>prètz<b/>de</g></r>
+		</p>
+	</e>
+
+	  
+	  <e lm="hèr montar eth prètz de" alt="oc@aran" r="LR">
+		<i>h</i>
+		<par n="h/èr__vblex"/>
+		<p>
+			<l><b/>montar<b/>eth<b/>prètz<b/>de</l>
+			<r><g><b/>montar<b/>eth<b/>prètz<b/>de</g></r>
+		</p>
+	</e>
+	<e lm="hèr montar eth prètz de" alt="oc@aran" r="RL">
+		<i>h</i>
+		<par n="h/èr__vblex"/>
+		<p>
+			<l><b/>montar<b/>eth<b/>prètz<b/><a/>de</l>
+			<r><g><b/>montar<b/>eth<b/>prètz<b/>de</g></r>
+		</p>
+	</e>
 
           <e lm="encastrar">
 	    <i>enc</i>
@@ -156933,6 +157176,14 @@
       </p>
         <par n="a__pr"/> 
     </e>
+    
+    <e r="LR" lm="a cargue d'">
+      <p>
+        <l>a<b/>cargue<b/>d'</l> 
+        <r>a<b/>cargue<b/>de</r> 
+      </p>
+        <par n="a__pr"/> 
+    </e>
 
     <e r="LR" lm="per medi d'" alt="oc@aran">
       <p>
@@ -157118,6 +157369,31 @@
         <par n="a__pr"/> 
     </e>
 
+	 <e lm="a l'escasença d'" r="LR">
+		<p>
+			<l>a<b/>l'escasença<b/>d'</l>
+			<r>a<b/>l'escasença<b/>de</r>
+		</p>
+		<par n="a__pr"/>
+	</e>
+
+	 <e lm="a fauta d'" r="LR">
+		<p>
+			<l>a<b/>fauta<b/>d'</l>
+			<r>a<b/>fauta<b/>de</r>
+		</p>
+		<par n="a__pr"/>
+	</e>
+	<e lm="a cargue d'" r="LR">
+		<p>
+			<l>a<b/>cargue<b/>d'</l>
+			<r>a<b/>cargue<b/>de</r>
+		</p>
+		<par n="a__pr"/>
+	</e>
+
+
+
     <e r="LR" lm="auer de" alt="oc@aran">
         <i></i> 
         <par n="/auer__vbmod"/> 
@@ -157241,6 +157517,23 @@
       </p>
         <par n="donc__cnjadv"/> 
     </e>
+    <e lm="far montar lo prètz de" alt="oc" r="LR">
+		<i>f</i>
+		<par n="f/ar__vblex"/>
+		<p>
+			<l><b/>montar<b/>lo<b/>prètz<b/>d'</l>
+			<r><g><b/>montar<b/>lo<b/>prètz<b/>de</g></r>
+		</p>
+	</e> 
+	<e lm="hèr montar eth prètz de" alt="oc@aran" r="LR">
+		<i>h</i>
+		<par n="h/èr__vblex"/>
+		<p>
+			<l><b/>montar<b/>eth<b/>prètz<b/>d'</l>
+			<r><g><b/>montar<b/>eth<b/>prètz<b/>de</g></r>
+		</p>
+	</e>
+
 
     <e r="LR" lm="mos" alt="oc@aran">
       <p>
