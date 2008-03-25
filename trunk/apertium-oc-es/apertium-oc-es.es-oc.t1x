@@ -21986,7 +21986,7 @@
       </action>
     </rule>
     
-    
+<!-- son necessaries aquestes regles, quin és l'ordre dels enclitics?    
     
     <rule comment="REGLA: VERB INF">
       <pattern>
@@ -22339,7 +22339,6 @@
       </action>
     </rule>
 
-
     <rule comment="REGLA: VERB INF ENC">
       <pattern>
         <pattern-item n="verbpers"/>
@@ -22367,10 +22366,6 @@
         <call-macro n="tipus_verb">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <clip pos="3" side="tl" part="tipus_prn"/>
-          <lit-tag v="pro"/>
-        </let>
         <choose>
           <when>
             <test>
@@ -22391,11 +22386,11 @@
             </let>
           </otherwise>
         </choose>
-        <out>
-          <chunk namefrom="lema_sv" case="caseFirstWord">
+	 <out>
+          <chunk name="inf_enc" case="caseFirstWord" alt="oc@aran">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
               <tag>
                 <clip pos="1" side="tl" part="a_verb"/>
@@ -22404,35 +22399,70 @@
                 <clip pos="1" side="tl" part="temps"/>
               </tag>
               <tag>
-                <clip pos="1" side="tl" part="pers"/>
+                <lit-tag v="sg"/>
               </tag>
               <tag>
+                <var n="cv_verb"/>
+            </tags>
+	     <lu>
+                <clip pos="1" side="tl" part="lemh"/>
+                <clip pos="1" side="tl" part="a_verb"/>
+                <clip pos="1" side="tl" part="temps"/>
+                <clip pos="1" side="tl" part="pers"/>
                 <clip pos="1" side="tl" part="nbr"/>
+              </lu>
+            <mlu>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+                <clip pos="2" side="tl" part="a_verb"/>
+                <clip pos="2" side="tl" part="temps"/>
+                <clip pos="2" side="tl" part="pers"/>
+                <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+              <lu>
+                <clip pos="3" side="tl" part="whole"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </lu>
+            </mlu>
+          </chunk>
+          <chunk name="pro_inf" case="caseFirstWord" alt="oc">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
               </tag>
-	      <tag>
+              <tag>
+                <clip pos="1" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <lit-tag v="sg"/>
+              </tag>
+              <tag>
                 <var n="cv_verb"/>
               </tag>
-            </tags>
-            <lu>
-              <clip pos="3" side="tl" part="whole"/>
-            </lu>
-            <b/>
-            <lu>
-              <var n="prnpro_afegit"/>
-            </lu>
-            <lu>
+	      </tags>
+	    <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps" link-to="3"/>
-              <clip pos="1" side="tl" part="pers" link-to="4"/>
-              <clip pos="1" side="tl" part="nbr" link-to="5"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="nbr"/>
               <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="prn.pro"/>
+              <clip pos="3" side="tl" part="tipoenc_pro"/>
             </lu>
-            <b pos="1"/>
+            <b/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
               <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="nbr"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -22454,8 +22484,6 @@
         </let>
       </action>
     </rule>
-
-
     <rule comment="REGLA: ADV VERB INF ENC">
       <pattern>
         <pattern-item n="adv_preadv"/>
@@ -24438,7 +24466,7 @@
           <lit v="aa"/>
         </let>
       </action>
-    </rule>
+    </rule> -->
 <!--************************************ ALTRES ************************************************ -->
     <rule comment="ADV">
       <pattern>
@@ -24462,6 +24490,9 @@
                   <tag>
                     <clip pos="1" side="tl" part="a_adv"/>
                   </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="neg"/>
+                  </tag>
                 </tags>
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
@@ -24476,6 +24507,9 @@
                 <tags>
                   <tag>
                     <clip pos="1" side="tl" part="a_adv"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="neg"/>
                   </tag>
                 </tags>
                 <lu>
@@ -24501,12 +24535,18 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_lex_adv">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="adv_adv" case="caseFirstWord">
             <tags>
               <tag>
                 <clip pos="1" side="tl" part="a_adv"/>
               </tag>
+              <tag>
+                <clip pos="1" side="tl" part="neg"/>
+              </tag><!-- i això?-->
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
@@ -24661,7 +24701,7 @@
         </let>
       </action>
     </rule>
-    <rule comment="prep + PRNREL">
+     <rule comment="PREP REL">
       <pattern>
         <pattern-item n="prep"/>
         <pattern-item n="el_cual"/>
@@ -24673,46 +24713,38 @@
         <call-macro n="cv_prep">
           <with-param pos="1"/>
         </call-macro>
-        <choose>
-          <when>
-            <test>
-              <equal>
-                <clip pos="2" side="tl" part="gen"/>
-                <lit-tag v="mf"/>
-              </equal>
-            </test>
-            <let>
-              <clip pos="2" side="tl" part="gen"/>
-              <var n="genero"/>
-            </let>
-          </when>
-        </choose>
-        <choose>
-          <when>
-            <test>
-              <equal>
-                <clip pos="2" side="tl" part="nbr"/>
-                <lit-tag v="sp"/>
-              </equal>
-            </test>
-            <let>
-              <clip pos="2" side="tl" part="nbr"/>
-              <var n="numero"/>
-            </let>
-          </when>
-        </choose>
         <let>
           <var n="elcual_prep"/>
           <clip pos="1" side="tl" part="lem"/>
         </let>
-        <let>
-          <var n="elcual_gen"/>
-          <clip pos="2" side="tl" part="gen"/>
-        </let>
-        <let>
-          <var n="elcual_nbr"/>
-          <clip pos="2" side="tl" part="nbr"/>
-        </let>
+        <choose>
+          <when>
+            <test>
+              <equal caseless="yes">
+                <clip pos="2" side="tl" part="lem"/>
+                <lit v="el cual"/>
+              </equal>
+            </test>
+            <let>
+              <var n="elcual_gen"/>
+              <clip pos="2" side="tl" part="gen"/>
+            </let>
+            <let>
+              <var n="elcual_nbr"/>
+              <clip pos="2" side="tl" part="nbr"/>
+            </let>
+          </when>
+          <otherwise>
+            <let>
+              <var n="elcual_gen"/>
+              <lit-tag v="m"/>
+            </let>
+            <let>
+              <var n="elcual_nbr"/>
+              <lit-tag v="sg"/>
+            </let>
+          </otherwise>
+        </choose>
         <out>
           <chunk name="el_cual" case="caseFirstWord">
             <tags>
@@ -24854,7 +24886,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="cv_prep">
+        <call-macro n="cv_prep2">
           <with-param pos="1"/>
         </call-macro>
         <let>
@@ -24916,6 +24948,60 @@
         </let>
       </action>
     </rule>
+ <rule comment="ij">
+      <pattern>
+        <pattern-item n="ij"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="ij" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="ij"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+    <rule comment="advitg">
+      <pattern>
+        <pattern-item n="advitg"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="advitg" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="advitg"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
     <rule>
 <!-- REGLA: reset variables-->
       <pattern>
