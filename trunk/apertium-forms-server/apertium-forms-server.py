@@ -28,17 +28,41 @@ class commit: #{
     def GET(self, name): #{
         print >> sys.stderr , 'Commit called for ' + name;
         pairs = Globals.config.get_pairs();
-        if name in pairs: #{
+
+	if name == 'all': #{
+	    print '<html>';
+            print 'Commit called for ' + name + '<br />';
+	    for pair in pairs: #{
+                print '<h3>' + pair + '</h3>';
+		pare = pairs[pair];
+	    	print 'Comitting...<br />';
+            	pare.commit();
+	    	print 'Committed.';
+		print '<p/>';
+		sys.stdout.flush();
+	    #}
+	    print '<p/><a href="http://xixona.dlsi.ua.es:8080/">Return</a>';
+            print '</html>';
+	    return;
+
+        elif name in pairs: #{
 	    print '<html>';
             print 'Commit called for ' + name + '<br />';
             pair = pairs[name];
 	    print 'Comitting...<br />';
             pair.commit();
 	    print 'Committed.</html>';
+	    print '<p/><a href="http://xixona.dlsi.ua.es:8080/">Return</a>';
+	    return;
+
+	else: #{
+	    print '<html><body>Pair does not exist.<p/>';
+	    print 'Error in commit.';
+	    print '<p/><a href="http://xixona.dlsi.ua.es:8080/">Return</a>';
+	    print '</body></html>';
 	    return;
         #}
 
-	print 'Error in commit.';
     #}
 #}
 
@@ -67,6 +91,10 @@ class form: #{
 	glosses_left = Globals.config.pairs[default_pair].dictionary['left'].get_glosses();
 	glosses_right = Globals.config.pairs[default_pair].dictionary['right'].get_glosses();
 
+	alternatives_left = dictionary_left.get_alternatives();
+	alternatives_bidix = dictionary_bidix.get_alternatives();
+	alternatives_right = dictionary_right.get_alternatives();
+
 	post_data = {
 	    'selected_pair': default_pair, 
 	    'selected_tag': default_tag, 
@@ -79,6 +107,12 @@ class form: #{
 	    'right_comment': '',
 	    'left_paradigm': '',
 	    'right_paradigm': '',
+	    'left_alternative': '',
+	    'bidix_alternative': '',
+	    'right_alternative': '',
+	    'left_alternatives': alternatives_left,
+	    'bidix_alternatives': alternatives_bidix,
+	    'right_alternatives': alternatives_right,
 	    'left_glosses': glosses_left,
 	    'right_glosses': glosses_right,
 	    'left_display_mode': dictionary_left.get_display_by_tag(default_tag),
@@ -101,6 +135,9 @@ class add: #{
 
 	current_pair = post_data['selected_pair'];
 	current_tag = post_data['selected_tag'];
+	current_left_alternative = '';
+	current_bidix_alternative = '';
+	current_right_alternative = '';
 	left_paradigm = '';
 	right_paradigm = '';
 
@@ -114,16 +151,37 @@ class add: #{
         except: #{
 	    print >> sys.stderr, 'Error';
         #}
+	try: #{
+	    current_left_alternative = post_data['left_alternative'];
+	except: #{
+	    print >> sys.stderr, 'Error';
+	#}
+	try: #{
+	    current_bidix_alternative = post_data['bidix_alternative'];
+	except: #{
+	    print >> sys.stderr, 'Error';
+	#}
+	try: #{
+	    current_right_alternative = post_data['right_alternative'];
+	except: #{
+	    print >> sys.stderr, 'Error';
+	#}
 
 	dictionary_left = Globals.config.pairs[current_pair].dictionary['left'];
 	dictionary_right = Globals.config.pairs[current_pair].dictionary['right'];
 	dictionary_bidix = Globals.config.pairs[current_pair].dictionary['bidix'];
 
 	tags = Globals.config.pairs[current_pair].get_tags();
+
 	paradigms_left = dictionary_left.get_paradigms_by_tag(current_tag);
 	paradigms_right = dictionary_right.get_paradigms_by_tag(current_tag);
+
 	glosses_left = dictionary_left.get_glosses();
 	glosses_right = dictionary_right.get_glosses();
+
+	alternatives_left = dictionary_left.get_alternatives();
+	alternatives_bidix = dictionary_bidix.get_alternatives();
+	alternatives_right = dictionary_right.get_alternatives();
 
 	committing = 'no';
 	try: #{
@@ -147,9 +205,15 @@ class add: #{
 	    'right_comment': post_data['right_comment'],
 	    'left_lemma': post_data['left_lemma'], 
 	    'right_lemma': post_data['right_lemma'],
+	    'left_alternative': current_left_alternative,
+	    'bidix_alternative': current_bidix_alternative,
+	    'right_alternative': current_right_alternative,
 	    'left_dictionary': dictionary_left,
 	    'bidix_dictionary': dictionary_bidix,
 	    'right_dictionary': dictionary_right,
+	    'left_alternatives': alternatives_left,
+	    'bidix_alternatives': alternatives_bidix,
+	    'right_alternatives': alternatives_right,
 	    'left_paradigm': left_paradigm,
 	    'right_paradigm': right_paradigm,
 	    'left_paradigms': paradigms_left,
@@ -161,6 +225,8 @@ class add: #{
 	    'restriction': post_data['restriction'],
 	    'pairs': pairs
 	};
+
+	print >> sys.stderr , str(post_data);
 
 	print i.display(post_data);
     #}

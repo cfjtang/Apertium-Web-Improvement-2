@@ -124,6 +124,26 @@ class Interface: #{
                 print '          </select>';
 		print '        </div>';
 		print '      </div>';
+		l_alternatives = post_data['left_alternatives'];
+		if l_alternatives is not type(None) and len(l_alternatives) > 0: #{
+
+	                print '    <div class="row">';
+			print '      <div class="left">';
+	                print '        Alternative:<sup><span class="tooltip" title="header=[Comment] body=[Linguistic alternative.]">?</span></sup>';
+			print '      </div>';
+			print '      <div class="left">';
+                	print '        <select name="left_alternative">';
+			for left_a in l_alternatives: #{
+				if left_a == post_data['left_alternative']: #{
+					print '          <option value="' + left_a + '" selected>' + l_alternatives[left_a] + '</option>';
+				else: #{
+					print '          <option value="' + left_a + '">' + l_alternatives[left_a] + '</option>';
+				#}
+			#}
+                	print '        </select>';
+			print '      </div>';
+			print '    </div>';
+		#}
                 print '      <div class="row">';
 		print '        <div class="left">';
                 print '          Comment:<sup><span class="tooltip" title="header=[Comment] body=[Optional comment or gloss.]">?</span></sup>';
@@ -143,6 +163,19 @@ class Interface: #{
 		#################################################################################################
                 print '    <!-- Bidix side -->';
                 print '  <div class="middlem">';
+		bi_alternatives = post_data['bidix_alternatives'];
+		if bi_alternatives is not type(None) and len(bi_alternatives) > 0: #{
+
+	                print '    <div class="row">';
+			print '      <div class="cell">';
+                	print '        <select name="bidix_alternative">';
+			for bidix_a in bi_alternatives: #{
+				print '          <option value="' + bidix_a + '">' + bi_alternatives[bidix_a] + '</option>';
+			#}
+                	print '        </select>';
+			print '      </div>';
+			print '    </div>';
+		#}
 		print '    <div class="row">';
 		print '      <div class="cell">';
                 if post_data['restriction'] != 'LR' and post_data['restriction'] != 'RL': #{
@@ -214,6 +247,26 @@ class Interface: #{
                 print '        </select>';
 		print '      </div>';
 		print '    </div>';
+		r_alternatives = post_data['right_alternatives'];
+		if r_alternatives is not type(None) and len(r_alternatives) > 0: #{
+
+	                print '    <div class="row">';
+			print '      <div class="left">';
+	                print '        Alternative:<sup><span class="tooltip" title="header=[Comment] body=[Linguistic alternative.]">?</span></sup>';
+			print '      </div>';
+			print '      <div class="left">';
+                	print '        <select name="right_alternative">';
+			for right_a in r_alternatives: #{
+				if right_a == post_data['right_alternative']: #{
+					print '          <option value="' + right_a + '" selected>' + r_alternatives[right_a] + '</option>';
+				else: #{
+					print '          <option value="' + right_a + '">' + r_alternatives[right_a] + '</option>';
+				#}
+			#}
+                	print '        </select>';
+			print '      </div>';
+			print '    </div>';
+		#}
                 print '    <div class="row">';
 		print '      <div class="left">';
                 print '        Comment:<sup><span class="tooltip" title="header=[Comment] body=[Optional comment or gloss.]">?</span></sup>';
@@ -307,6 +360,12 @@ class Interface: #{
 				if _lemma1 == '' or _lemma2 == '': #{
 					return '';
 				#}
+
+				if post_data['bidix_alternative'] != None: #{
+					_alt = post_data['bidix_alternative'];
+				else: #{
+					_alt = '';
+				#}
 	
 				if type(dictionary) != None: #{
 					_tag = post_data['selected_tag'];
@@ -316,7 +375,7 @@ class Interface: #{
 					_paradigm1 = post_data['left_dictionary'].get_paradigm(post_data['left_paradigm'], _tag);
 					_paradigm2 = post_data['right_dictionary'].get_paradigm(post_data['right_paradigm'], _tag);
 		
-		        		entrada = dictionary.generate_bidix_entrada(_lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author);
+		        		entrada = dictionary.generate_bidix_entrada(_lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author, _alt);
 	
 					return entrada;
 				#}
@@ -325,20 +384,26 @@ class Interface: #{
 			if _side == 'right' or _side == 'left' and post_data[_side + '_paradigm']: #{
 				dictionary = post_data[_side + '_dictionary'];
 				paradigm = post_data[_side + '_dictionary'].get_paradigm(post_data[_side + '_paradigm'], post_data['selected_tag']);
-	
+
 				if type(paradigm) != type(None): #{
 					_lemma = post_data[_side + '_lemma'];
 					_restriction = post_data['restriction'];
 					_paradigm = paradigm.name;
 					_comment = post_data[_side + '_comment'];
 					_author = 'webform';
+
+					if _side == 'right': #{
+						_alt = post_data['right_alternative'];
+					elif _side == 'left': #{
+						_alt = post_data['left_alternative'];
+					#}
 		
 					if _restriction == 'LR' and _side == 'right': #{
-						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, 'RL', _comment, _author);
+						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, 'RL', _comment, _author, _alt);
 					elif _restriction == 'RL' and _side == 'right': #{
-						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, 'LR', _comment, _author);
+						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, 'LR', _comment, _author, _alt);
 					else: #{
-						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, _restriction, _comment, _author);
+						entrada = dictionary.generate_monodix_entrada(_lemma, _paradigm, _restriction, _comment, _author, _alt);
 					#}
 	
 					return entrada;
