@@ -94,8 +94,10 @@ class Config: #{
 						for gloss in Ft.Xml.XPath.Evaluate('.//paradigm', contextNode=gloss_section): #{
 							name  = gloss.getAttributeNS(None, 'n');
 							comment  = gloss.getAttributeNS(None, 'c');
+							parameters = gloss.getAttributeNS(None, 'prms');
 
 							self.pairs[pair_name].dictionary[current_side].add_gloss(tag_name, name, comment);
+							#self.pairs[pair_name].dictionary[current_side].add_parameter(tag_name, name, parameters);
 						#}
 					#}
 

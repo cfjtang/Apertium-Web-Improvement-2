@@ -30,10 +30,12 @@ class Tag: #{
 
 class Paradigm: #{
 	name = None;
+	parameters = None;
 
 	def __init__(self, _name): #{
 		self.name = _name;
 		self.stems = [];
+		self.parameters = [];
 	#}
 
 	def add_gloss(self, _gloss): #{
@@ -43,6 +45,10 @@ class Paradigm: #{
 	def add_stem(self, _stem, _symlist): #{
 		#print >> sys.stderr, 'add_stem(' + _stem + ', ' + _symlist + ')';
 		self.stems.append((_stem, _symlist));
+	#}
+
+	def add_parameter(self, _parameter): #{
+		self.parameters.append(_parameter);
 	#}
 
 	def get_stems(self): #{
@@ -56,8 +62,9 @@ class Dictionary: #{
 	language = None;
 	file = None;
 	side = None;
+	alternatives = None;
 
-	def __init__(self, _side, _language, _file, _doc, _tags, _templates): #{
+	def __init__(self, _side, _language, _file, _doc, _alternatives, _tags, _templates): #{
 		self.display = {};
 		self.language = _language;
 		self.file = _file;
@@ -65,6 +72,7 @@ class Dictionary: #{
 		self.side = _side;
 		self.paradigms = {};
 		self.glosses = {};
+		self.alternatives = _alternatives;
 		self.tags = _tags;
 		self.hashes = {};
 		self.templates = _templates;
@@ -73,6 +81,14 @@ class Dictionary: #{
 			self.hashes_left = {};
 			self.hashes_right = {};
 		#}
+	#}
+
+	def get_alternatives(self): #{
+		return self.alternatives;
+	#}
+
+	def set_alternatives(self, _alternatives): #{
+		self.alternatives = _alternatives;
 	#}
 
 	def get_tags(self): #{
@@ -227,19 +243,23 @@ class Dictionary: #{
 		self.glosses[_paradigm] = _gloss;
 	#}
 
-        def generate_monodix_entrada(self, _lemma, _paradigm, _restriction, _comment, _author): #{
+        def generate_monodix_entrada(self, _lemma, _paradigm, _restriction, _comment, _author, _alternative): #{
                 incondicional = self.incondicional(_lemma, _paradigm);
 
-		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author;
+		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author, 'alternative: ' + _alternative;
 
 		entrada = '';
-		if _restriction == "none" or _restriction == '': #{
+		if (_restriction == "none" or _restriction == '') and (_alternative == "none" or _alternative == ''): #{
 			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '">' + "\n";
-		else: #{
+		elif (_alternative == "none" or _alternative == '') and (_restriction != "none" or _restriction != ''): #{
 			entrada = entrada + '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n";
+		elif (_restriction == "none" or _restriction == '') and (_alternative != "none" or _alternative != ''): #{
+			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '" alt="' + _alternative + '">' + "\n";
+		else: #{
+			entrada = entrada + '<e alt="' + _alternative + '" r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n";
 		#}
 
-		entrada = entrada + '  <i>' + incondicional + '</i>' + "\n";
+		entrada = entrada + '  <i>' + incondicional.replace(' ', '<b/>') + '</i>' + "\n";
 		entrada = entrada + '  <par n="' + _paradigm + '"/>' + "\n";
 		entrada = entrada + '</e>';
 
@@ -252,22 +272,25 @@ class Dictionary: #{
                 return entrada;
         #}
 
-        def generate_generic_bidix_entrada(self, _lemma1, _lemma2, _tag, _restriction, _comment, _author): #{
+        def generate_generic_bidix_entrada(self, _lemma1, _lemma2, _tag, _restriction, _comment, _author, _alternative): #{
                 entrada = '';
 
-                if _restriction == "none" or _restriction == '': #{
-                        entrada = entrada + '<e a="' + _author + '">' + "\n";
-
+		if (_restriction == "none" or _restriction == '') and (_alternative == "none" or _alternative == ''): #{
+			entrada = entrada + '<e a="' + _author + '">' + "\n";
+		elif (_alternative == "none" or _alternative == '') and (_restriction != "none" or _restriction != ''): #{
+			entrada = entrada + '<e r="' + _restriction + '" a="' + _author + '">' + "\n";
+		elif (_restriction == "none" or _restriction == '') and (_alternative != "none" or _alternative != ''): #{
+			entrada = entrada + '<e a="' + _author + '" alt="' + _alternative + '">' + "\n";
                 else: #{
-                        entrada = entrada + '<e r="' + _restriction + '" a="' + _author + '">' + "\n";
+                        entrada = entrada + '<e alt="' + _alternative + '" r="' + _restriction + '" a="' + _author + '" >' + "\n";
                 #}
 
 		_symbol_list_left = '<s n="' + _tag + '"/>';
 		_symbol_list_right = '<s n="' + _tag + '"/>';
 
                 entrada = entrada + '  <p>' + "\n";
-                entrada = entrada + '    <l>' + _lemma1 + _symbol_list_left + '</l>' + "\n";
-                entrada = entrada + '    <r>' + _lemma2 + _symbol_list_right + '</r>' + "\n";
+                entrada = entrada + '    <l>' + _lemma1.replace(' ', '<b/>') + _symbol_list_left + '</l>' + "\n";
+                entrada = entrada + '    <r>' + _lemma2.replace(' ', '<b/>') + _symbol_list_right + '</r>' + "\n";
                 entrada = entrada + '  </p>' + "\n";
                 entrada = entrada + '</e>' + "\n";
 
@@ -280,7 +303,7 @@ class Dictionary: #{
                 return entrada;
 	#}
 
-        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author): #{
+        def generate_bidix_entrada(self, _lemma1, _lemma2, _paradigm1, _paradigm2, _tag, _restriction, _comment, _author, _alternative): #{
 		print >> sys.stderr,  'generate_bidix_entrada (' + self.side + ')';
 
 		if _lemma1 == '' or _lemma2 == '' or _paradigm1 == None or _paradigm2 == None: #
@@ -294,7 +317,7 @@ class Dictionary: #{
 	
 			if hash_left not in self.templates: #{
 				print >> sys.stderr, 'left hash not found in templates: ' + hash_left;
-				return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author); 
+				return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author, _alternative); 
 			#}
 
 			if hash_right not in self.templates[hash_left]: #{
@@ -302,7 +325,7 @@ class Dictionary: #{
 				for key in self.templates[hash_left]: #{
 					print >>sys.stderr, '* ' + key; 
 				#}
-				return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author); 
+				return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author, _alternative); 
 			#}
 	
 			entrada = self.templates[hash_left][hash_right];
@@ -313,7 +336,7 @@ class Dictionary: #{
 			return entrada;
 		#}
 
-                return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author);
+                return self.generate_generic_bidix_entrada(_lemma1, _lemma2, _tag, _restriction, _comment, _author, _alternative);
         #}
 
         def incondicional(self, _lemma, _paradigm): #{
@@ -385,8 +408,17 @@ class Pair: #{
 			filename = self.working + '/cache/' + self.name + '/' + filename;
 
 			print ' % (' + current_dict + ') ' + side + ', ' + filename;
+
+			alternatives = {};
+
+			for alt in dictionary.xpath('.//alt'): #{
+				alt_n = alt.getAttributeNS(None, 'n');
+				alternatives[alt_n] = alt.getAttributeNS(None, 'c');
+				print '  ++ alternative: ' + alt_n + ' (' + alternatives[alt_n] + ')';
+			#}
+
 			doc = NonvalidatingReader.parseUri('file:///' + filename);
-			self.dictionary[side] = Dictionary(side, current_dict, filename, doc, self.tags, self.templates);
+			self.dictionary[side] = Dictionary(side, current_dict, filename, doc, alternatives, self.tags, self.templates);
 		#}
 		self.dictionary['bidix'].hashes_left = self.dictionary['left'].hashes;
 		self.dictionary['bidix'].hashes_right = self.dictionary['right'].hashes;
