@@ -400,7 +400,7 @@
         </tag>
       </tags>
     </pair>
-    <pair n="apertium-en-ca" enabled="yes">
+    <pair n="apertium-en-ca" enabled="no">
       <templates file="apertium-en-ca.templates.xml"/>
       <dictionaries>
         <dictionary n="English" side="left" format="dix" file="apertium-en-ca.en.cache.metadix"/>
@@ -725,7 +725,7 @@
         </tag>
       </tags>
     </pair>
-    <pair n="apertium-fr-ca" enabled="yes">
+    <pair n="apertium-fr-ca" enabled="no">
       <templates file="apertium-fr-ca.templates.xml"/>
       <dictionaries>
         <dictionary n="French" side="left" format="dix" file="apertium-fr-ca.fr.cache.metadix"/>
@@ -1310,7 +1310,7 @@
               <paradigm n="compl/aire__vblex" c="compl/aire /ais /aisons /u"/>
               <paradigm n="s/avoir__vblex" c="s/avoir /ais /avons /su"/>
               <paradigm n="n/aître__vblex" c="n/aître /ais /aissons /é"/>
-              <paradigm n="d/i[]re__vblex" c="d/ire /is /isons /it"/>
+              <paradigm n="d/i[]re__vblex" c="d/ire /is /isons /it" prms=""/>
               <paradigm n="appar/aître__vblex" c="appar/aître /ais /aissons /u"/>
               <paradigm n="annon/cer__vblex" c="annon/cer /ce /çons /cé"/>
               <paradigm n="aper/cevoir__vblex" c="aper/cevoir /çois /cevons /çu"/>
@@ -1319,9 +1319,9 @@
               <paradigm n="cou/dre__vblex" c="cou/dre /ds /sons /su"/>
               <paradigm n="appr/endre__vblex" c="appr/endre /ends /enons /is"/>
               <paradigm n="déf/aire__vblex" c="déf/aire /ais /aisons /ait"/>
-              <paradigm n="accél/é[R]/er__vblex" c="accél/érer /ére /érons /éré"/>
-              <paradigm n="abr/é[G]er__vblex" c="abr/éger /ège /égeons /égé"/>
-              <paradigm n="ach/e[T]er__vblex" c="ach/eter /ète /etons /eté"/>
+              <paradigm n="accél/é[R]/er__vblex" c="accél/érer /ére /érons /éré" prms=""/>
+              <paradigm n="abr/é[G]er__vblex" c="abr/éger /ège /égeons /égé" prms=""/>
+              <paradigm n="ach/e[T]er__vblex" c="ach/eter /ète /etons /eté" prms=""/>
               <paradigm n="ch/oir__vblex" c="ch/oir /ois /u"/>
               <paradigm n="env/oyer__vblex" c="env/oyer /oie /errons /oyé"/>
               <paradigm n="entrev/oir__vblex" c="entrev/oir /ois /oyons /u"/>
@@ -1407,8 +1407,18 @@
       <templates file="apertium-es-pt.templates.xml"/>
       <dictionaries>
         <dictionary n="Spanish" side="left" format="dix" file="apertium-es-pt.es.cache.dix"/>
-        <dictionary side="bidix" format="dix" file="apertium-es-pt.es-pt.cache.dix"/>
-        <dictionary n="Portuguese" side="right" format="dix" file="apertium-es-pt.pt.cache.dix"/>
+        <dictionary side="bidix" format="dix" file="apertium-es-pt.es-pt.cache.dix">
+	  <alternatives>
+            <alt n="es-pt_BR" c="es-pt_BR"/>
+            <alt n="es-pt" c="es-pt"/>
+	  </alternatives>
+	</dictionary>
+        <dictionary n="Portuguese" side="right" format="dix" file="apertium-es-pt.pt.cache.dix">
+	  <alternatives>
+            <alt n="pt_BR" c="pt_BR"/>
+            <alt n="pt" c="pt"/>
+	  </alternatives>
+	</dictionary>
       </dictionaries>
       <tags>
         <tag n="n">
