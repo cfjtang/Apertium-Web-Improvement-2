@@ -185,6 +185,7 @@ def generate_templates(context, left_entries, right_entries): #{
 		entry.removeAttributeNS(None, 'c');
 		entry.removeAttributeNS(None, 'srl');
 		entry.removeAttributeNS(None, 'slr');
+		entry.removeAttributeNS(None, 'alt');
 		if len(Ft.Xml.XPath.Evaluate('.//i', contextNode=entry)) > 0: #{
 			continue;
 		#}
