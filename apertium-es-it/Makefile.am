@@ -92,6 +92,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 #           $(PREFIX1).prob $(PREFIX2).prob
 
 clean-dicts:
+	touch $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(PREFIX1).dix
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
