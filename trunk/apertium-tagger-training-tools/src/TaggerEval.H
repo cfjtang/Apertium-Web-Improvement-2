@@ -34,6 +34,10 @@
 #include <apertium/tagger_word.h>
 #include <apertium/ttag.h>
 
+#include "TaggerMergingData.H"
+#include "TaggerWordMerging.H"
+#include "MorphoStreamMerging.H"
+
 using namespace std;
 
 class TaggerEval {
@@ -54,11 +58,15 @@ private:
   int evalword(TaggerWord& word, TTag& tag, MorphoStream& ms);
 public:  
  
+  TaggerEval();
+
   TaggerEval(FILE* fprob);
 
   ~TaggerEval();
 
   void eval_tagger(FILE* ftagged, FILE *funtagged);
+
+  int evalwordmerging(TaggerMergingData& tmd, TaggerWordMerging& word, TTag& tag, MorphoStreamMerging& ms);
 
   void print_evaluation();
 };

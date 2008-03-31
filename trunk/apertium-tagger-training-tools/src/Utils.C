@@ -36,6 +36,8 @@
 
 #include <apertium/utf_converter.h>
 
+#include <cmath>
+
 #include "Utils.H"
 
 string Utils::translation_script;
@@ -267,3 +269,8 @@ Utils::print_debug(const int& i) {
 //   return auxws;
 // }
 
+
+double
+Utils::log2(double v) {
+  return (log(v)/log(2));
+}
