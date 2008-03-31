@@ -59,6 +59,8 @@ public:
   static void print_debug(const int& i);
 
   //static wstring string2wstring(const string& s);
+
+  static double log2(double v);
 };
 
 #endif

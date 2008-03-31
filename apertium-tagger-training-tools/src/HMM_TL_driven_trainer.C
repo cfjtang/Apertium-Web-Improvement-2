@@ -80,6 +80,13 @@ HMM_TL_driven_trainer::HMM_TL_driven_trainer(string tsxfile, TransferRules* tr) 
   transfer_rules=tr;  
 
   Segment::set_tag_index(tagger_data.getTagIndex());
+
+  //NEW
+  if (tagger_data.getOpenClass().size()==0) {
+    cerr<<"Inserting TAG_kUNDEF in open_class because it was empty\n";
+    tagger_data.getOpenClass().insert(tagger_data.getTagIndex()[L"TAG_kUNDEF"]);
+  }
+  //
 }
 
 HMM_TL_driven_trainer::~HMM_TL_driven_trainer() {
@@ -112,7 +119,7 @@ HMM_TL_driven_trainer::set_use_tags_rules(bool b) {
 }
 
 void 
-HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike){
+HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords, string filename, ofstream& fpaths, ifstream& ftrans, ifstream& flike, bool savecounts){
   //int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
@@ -528,6 +535,11 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
       tagger_data.write(fprob);
       fclose(fprob);
 
+      if (savecounts) {
+ 	string countsfile = filename+"."+aux+".counts";
+ 	SmoothUtils::save_counts(tagger_data, countsfile, tags_pair, emis, tags_count, ambclass_count, tags_count_for_emis);
+      }
+
       next_save_probs+=save_after_nwords;
     }
 	 
@@ -547,7 +559,7 @@ HMM_TL_driven_trainer::train(FILE *is, int corpus_length, int save_after_nwords,
 }
 
 void 
-HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ifstream& ftrans, ifstream& flike) {
+HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after_nwords, string filename, double mixing_c, ifstream& ftrans, ifstream& flike, bool savecounts) {
   int i, j, k;
 
   map<int, map<int, double> > tags_pair; //NxN
@@ -1037,6 +1049,11 @@ HMM_TL_driven_trainer::train_pruning(FILE *is, int corpus_length, int save_after
       fprob=fopen(probfile.c_str(), "w");	        
       tagger_data.write(fprob);
       fclose(fprob);
+
+      if (savecounts) {
+ 	string countsfile = filename+"."+aux+".counts";
+ 	SmoothUtils::save_counts(tagger_data, countsfile, tags_pair, emis, tags_count, ambclass_count, tags_count_for_emis);
+      }
 
       next_save_probs+=save_after_nwords;
     }
