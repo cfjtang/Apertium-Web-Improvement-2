@@ -103,7 +103,7 @@ apertium_es_modesdir=$(prefix)/share/apertium/modes/
 $(PREFIX1).mode: modes.xml 
 	apertium-gen-modes modes.xml
 
-$(PREFIX2).mode: modes.xml 
+$(PREFIX2).mode: modes.xml clean-dicts
 	apertium-gen-modes modes.xml
 
 apertium_es_it_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
