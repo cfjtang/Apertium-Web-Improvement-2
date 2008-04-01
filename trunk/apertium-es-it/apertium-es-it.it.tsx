@@ -1873,10 +1873,14 @@
   </enforce-rules>
 
   <preferences>
+   <prefer tags="vblex.pri.p3.sg"/>
+   <prefer tags="vbser.pri.p3.sg"/>
+
    <prefer tags="vblex.pii.p3.sg"/>
    <prefer tags="vbser.pii.p3.sg"/>
    <prefer tags="vbhaver.pii.p3.sg"/>
    <prefer tags="vbmod.pii.p3.sg"/>
+
    <prefer tags="vblex.prs.p3.sg"/>
    <prefer tags="vbser.prs.p3.sg"/>
    <prefer tags="vbhaver.prs.p3.sg"/>
