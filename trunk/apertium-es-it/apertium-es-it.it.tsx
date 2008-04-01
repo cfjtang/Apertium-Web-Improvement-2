@@ -11,10 +11,10 @@
     <tags-item lemma="parar" tags="vblex.imp.p2.sg"/>
   </def-label>
   <def-label name="QUECNJ" closed="true">
-    <tags-item lemma="que" tags="cnjsub"/>
+    <tags-item lemma="che" tags="cnjsub"/>
   </def-label>
   <def-label name="QUEREL" closed="true">
-    <tags-item lemma="que" tags="rel.*"/>
+    <tags-item lemma="che" tags="rel.*"/>
   </def-label>
   <def-label name="COMOPR" closed="true">
     <tags-item lemma="como" tags="pr"/>
@@ -26,15 +26,15 @@
     <tags-item lemma="comer" tags="vblex.pri.p1.sg"/>
   </def-label>
   <def-label name="MASADV" closed="true">
-    <tags-item lemma="más" tags="adv"/>
+    <tags-item lemma="mÃ¡s" tags="adv"/>
     <tags-item lemma="menos" tags="adv"/>
   </def-label>
   <def-label name="MASADJ" closed="true">
-    <tags-item lemma="más" tags="adj.*"/>
+    <tags-item lemma="mÃ¡s" tags="adj.*"/>
     <tags-item lemma="menos" tags="adj.*"/>
   </def-label>
   <def-label name="MASNP" closed="true">
-    <tags-item lemma="Más" tags="np.ant"/>
+    <tags-item lemma="MÃ¡s" tags="np.ant"/>
   </def-label>
   <def-label name="ALGOADV" closed="true">
     <tags-item lemma="algo" tags="adv"/>
