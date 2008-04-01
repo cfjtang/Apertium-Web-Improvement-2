@@ -202,6 +202,9 @@
     <tags-item tags="vbhaver.fti.*"/>
     <tags-item tags="vbhaver.cni.*"/>
   </def-label>
+  <def-label name="VHABERIMP" closed="true">
+    <tags-item tags="vbhaver.imp.*"/>
+  </def-label>
   <def-label name="VHABERIPI" closed="true">
     <tags-item tags="vbhaver.pii.*"/>
     <tags-item tags="vbhaver.ifi.*"/>
@@ -267,6 +270,9 @@
   </def-label>
   <def-label name="RELADV" closed="true">
     <tags-item tags="rel.adv"/>
+  </def-label>
+  <def-label name="APOS" closed="true">
+    <tags-item tags="apos"/>
   </def-label>
   <def-mult name="PREPDET" closed="true">
     <sequence>
