@@ -330,6 +330,10 @@ class Dictionary: #{
 	
 			entrada = self.templates[hash_left][hash_right];
 			entrada = entrada.replace('lemma1', _lemma1).replace('lemma2', _lemma2);
+			if len(_alternative) > 0: #{
+				entrada = entrada.replace('<e ', '<e alt="' + _alternative + '" ');
+				entrada = entrada.replace('<e>', '<e alt="' + _alternative + '">');
+			#}
 
                 	print >> sys.stderr, entrada;
 			
