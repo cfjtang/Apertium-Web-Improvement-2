@@ -274,6 +274,7 @@
   <def-label name="APOS" closed="true">
     <tags-item tags="apos"/>
   </def-label>
+
   <def-mult name="PREPDET" closed="true">
     <sequence>
       <label-item label="PREP"/>
@@ -1879,6 +1880,8 @@
   </enforce-rules>
 
   <preferences>
+   <prefer tags="vbmod.pri.p3.sg"/>
+   <prefer tags="vbhaver.pri.p3.sg"/>
    <prefer tags="vblex.pri.p3.sg"/>
    <prefer tags="vbser.pri.p3.sg"/>
 
