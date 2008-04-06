@@ -173,6 +173,7 @@ TaggerMergingData::calculate_parameters_merging(istream& fcounts, int corpus_len
 	  coarse_tags_pair[i][j]+=tags_pair[*iti][*itj];
 	}
       }
+      //cerr<<"coarse_tags_pair["<<i<<"]["<<j<<"]="<<coarse_tags_pair[i][j]<<"\n";
     }
   }
 
@@ -187,6 +188,7 @@ TaggerMergingData::calculate_parameters_merging(istream& fcounts, int corpus_len
 	  }
 	}
       }
+      //cerr<<"coarse_emis["<<*itcoarse<<"]["<<k<<"]="<<coarse_emis[*itcoarse][k]<<"\n";
     }
   }
 
@@ -197,6 +199,8 @@ TaggerMergingData::calculate_parameters_merging(istream& fcounts, int corpus_len
       coarse_tags_count[i]+=tags_count[*iti];
       coarse_tags_count_for_emis[i]+=tags_count_for_emis[*iti];
     }
+    //cerr<<"coarse_tags_count["<<i<<"]="<<coarse_tags_count[i]<<"\n";
+    //cerr<<"coarse_tags_count_for_emis["<<"i"<<"]="<<coarse_tags_count_for_emis[i]<<"\n";
   }
 
   for(int k=0; k<COARSE_M; k++) {
@@ -206,7 +210,7 @@ TaggerMergingData::calculate_parameters_merging(istream& fcounts, int corpus_len
       //cerr<<*itk<<"("<<ambclass_count[*itk]<<") ";
       coarse_ambclass_count[k]+=ambclass_count[*itk];
     }
-    //cerr<<coarse_ambclass_count[k]<<"\n";
+    //cerr<<"coarse_ambclass_count["<<k<<"]="<<coarse_ambclass_count[k]<<"\n";
   }
 
   SmoothUtils::calculate_smoothed_parameters(*this, coarse_tags_count, coarse_tags_pair, 
