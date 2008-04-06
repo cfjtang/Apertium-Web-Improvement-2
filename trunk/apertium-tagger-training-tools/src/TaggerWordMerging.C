@@ -23,6 +23,7 @@
 #include "TaggerWordMerging.H"
 
 #include <apertium/tagger_utils.h>
+#include <apertium/utf_converter.h>
 
 TaggerWordMerging::TaggerWordMerging(const TaggerWord& w):TaggerWord(w) {
 }
@@ -53,18 +54,18 @@ TaggerWordMerging::get_tags() {
   return coarse_tags;
 }
 
-string
+wstring
 TaggerWordMerging::get_string_tags() {
-  string st;
+  wstring st;
   set<TTag>::iterator itag;
   
-  st="{";  
+  st = L"{";  
   for(itag=coarse_tags.begin(); itag!=coarse_tags.end(); itag++) {
     if (itag!=coarse_tags.begin())
-      st+=",";
-    st+=tagger_utils::itoa(*itag);
+      st+=L",";
+    st+=UtfConverter::fromUtf8(tagger_utils::itoa(*itag));
   }
-  st += "}";  
+  st += L"}";  
   
   return st;  
 }

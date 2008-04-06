@@ -45,7 +45,7 @@ public:
 
   set<TTag>& get_tags();
 
-  string get_string_tags();
+  wstring get_string_tags();
 
   wstring get_lexical_form(TTag &t, int const TAG_kEOF); 
 

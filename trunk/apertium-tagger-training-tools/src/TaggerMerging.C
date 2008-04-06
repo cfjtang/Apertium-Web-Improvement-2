@@ -135,7 +135,7 @@ TaggerMerging::tagger (FILE *in, FILE *out) {
       if (prob>0) 
 	loli -= log(prob);
       else {
-	cerr<<"Problem with word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"' "<<word->get_string_tags()<<"\n";
+	cerr<<"Problem with word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"' "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n";
       }
       for (unsigned t=0; t<best[nwpend%2][tag].size(); t++) {
 	wstring const &micad = wpend[t].get_lexical_form(best[nwpend%2][tag][t], tmd.getFineEofTag());
@@ -211,7 +211,7 @@ TaggerMerging::eval_tagger(FILE* ftagged, FILE *funtagged) {
     if (tmd.getOutput().has_not(tags)) {  //An Unknown word was found
       cerr<<"Warning: A new ambiguity class was found. \n";
       cerr<<"Word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"'.\n";
-      cerr<<"New ambiguity class: "<<word->get_string_tags()<<"\n\n";
+      cerr<<"New ambiguity class: "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n\n";
       exit(EXIT_FAILURE);
     } 
          
@@ -244,7 +244,7 @@ TaggerMerging::eval_tagger(FILE* ftagged, FILE *funtagged) {
       if (prob>0) 
 	loli -= log(prob);
       else {
-	cerr<<"Problem with word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"' "<<word->get_string_tags()<<"\n";
+	cerr<<"Problem with word '"<<UtfConverter::toUtf8(word->get_superficial_form())<<"' "<<UtfConverter::toUtf8(word->get_string_tags())<<"\n";
       }
       for (unsigned t=0; t<best[nwpend%2][tag].size(); t++) {
 	if (nleer_sin_evaluar==0)
