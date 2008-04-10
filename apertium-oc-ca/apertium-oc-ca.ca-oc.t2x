@@ -332,53 +332,53 @@
 
 	<def-macro n="canvis_amb_les_pr" npar="3">
 			<choose alt="oc">
-					<when>
-						<test>
-							<and>
-								<equal>
-									<clip pos="1" part="lema_vb"/>
-									<lit-tag v="anar"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="a"/>
-								</equal>
-								<or>
-									<equal>
-										<clip pos="3" part="lem"/>
-										<lit v="inf"/>
-									</equal>
-									<equal>
-										<clip pos="3" part="lem"/>
-										<lit v="pro_inf"/>
-									</equal>
-									<equal>
-										<clip pos="3" part="lem"/>
-										<lit v="pro_pro_inf"/>
-									</equal>
-								</or>
-
-							</and>
-						</test>
-							
-						<call-macro n="f_bcond">
-							<with-param pos="2"/>
-						</call-macro>
-
-					</when>
-					<otherwise>
-						<call-macro n="cv_prep">
-							<with-param pos="2"/>
-							<with-param pos="3"/>
-						</call-macro>
-						<out>
-							<chunk>
+				<when>
+					<test>
+						<and>
+							<equal>
+								<clip pos="1" part="lema_vb"/>
+								<lit-tag v="anar"/>
+							</equal>
+							<equal>
 								<clip pos="2" part="lem"/>
-								<clip pos="2" part="tags"/>
-								<clip pos="2" part="chcontent"/>
-							</chunk>
- 							<b/> 
-						</out>
+								<lit v="a"/>
+							</equal>
+							<or>
+								<equal>
+									<clip pos="3" part="lem"/>
+									<lit v="inf"/>
+								</equal>
+								<equal>
+									<clip pos="3" part="lem"/>
+									<lit v="pro_inf"/>
+								</equal>
+								<equal>
+									<clip pos="3" part="lem"/>
+									<lit v="pro_pro_inf"/>
+								</equal>
+							</or>
+	
+						</and>
+					</test>
+						
+					<call-macro n="f_bcond">
+						<with-param pos="2"/>
+					</call-macro>
+	
+				</when>
+				<otherwise>
+					<call-macro n="cv_prep">
+						<with-param pos="2"/>
+						<with-param pos="3"/>
+					</call-macro>
+					<out>
+						<chunk>
+							<clip pos="2" part="lem"/>
+							<clip pos="2" part="tags"/>
+							<clip pos="2" part="chcontent"/>
+						</chunk>
+						<b/> 
+					</out>
 				</otherwise>
 			</choose>
 			<call-macro n="cv_prep" alt="oc@aran">
@@ -393,22 +393,10 @@
 				</chunk>
 				<b/> 
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="2" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="3"/>
-					</call-macro>
-				</when>
-			</choose>
-
+			<call-macro n="partitiu2elem">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 	</def-macro>
 
 	<def-macro n="cv_prep" npar="2">
@@ -676,8 +664,190 @@
 			</when>
 		</choose>
 
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="tnom"/>
+						<lit v="mes"/>
+					</equal>
+				</test>
+				<out>
+					<chunk>
+						<get-case-from pos="1">
+							<lit v="en"/>
+							</get-case-from>
+						<lit-tag v="PREP"/>
+						<lit v="{^en"/>
+						<lit-tag v="pr"/>
+						<lit v="$}"/>
+					</chunk>
+					<b/>
+				</out>
+			</when>
+		</choose>
 
 	</def-macro>
+
+	<def-macro n="partitiu2elem" npar="2">
+		<choose>
+			<when>
+				<test>
+					<not>
+						<in caseless="yes">
+							<clip pos="1" part="lem"/>
+							<list n="prde"/>
+						</in>
+					</not>
+				</test>
+				<choose alt="oc">
+					<when>
+						<test>
+							<or>
+								<and>
+									<or>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="nom"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="part"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="adj_nom"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="adj_adj_nom"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="nom_adj"/>
+										</equal>
+									</or>
+									<equal>
+										<clip pos="2" part="nbr"/>
+										<lit-tag v="pl"/>
+									</equal>
+								</and>
+								<and>
+									<or>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="part"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="partadj_nom"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="partadj_adj_nom"/>
+										</equal>
+										<equal>
+											<clip pos="2" part="lem"/>
+											<lit v="partnom_adj"/>
+										</equal>
+									</or>
+									<equal>
+										<clip pos="2" part="nbr"/>
+										<lit-tag v="sg"/>
+									</equal>
+								</and>
+							</or>
+						</test>
+						<out>
+							<chunk>
+								<get-case-from pos="2">
+									<lit v="partitiu"/>
+									</get-case-from>
+								<lit-tag v="part"/>
+								<lit v="{^de"/>
+								<lit-tag v="pr"/>
+								<lit v="$}"/>
+							</chunk>
+							<b/>
+						</out>
+					</when>
+				</choose>
+				<choose alt="oc@aran">
+					<when>
+						<test>
+							<or>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="part_aran"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="partadj_nom_aran"/>
+								</equal>
+								<equal>
+									<clip pos="2" part="lem"/>
+									<lit v="partadj_adj_nom_aran"/>
+								</equal>
+							</or>
+						</test>
+						<out>
+							<chunk>
+								<get-case-from pos="2">
+									<lit v="partitiu"/>
+									</get-case-from>
+								<lit-tag v="part"/>
+								<lit v="{^de"/>
+								<lit-tag v="pr"/>
+								<lit v="$}"/>
+							</chunk>
+							<b/>
+						</out>
+					</when>
+				</choose>
+			</when>
+			<otherwise>
+				<choose>
+					<when>
+						<test>
+							<not>
+								<equal caseless="yes">
+									<clip pos="1" part="lem"/>
+									<lit v="en"/>
+								</equal>
+							</not>
+						</test>
+
+						<choose>
+							<when>
+								<test>
+									<equal>
+										<clip pos="2" part="tnom"/>
+										<lit v="mes"/>
+									</equal>
+								</test>
+								<out>
+									<chunk>
+										<get-case-from pos="1">
+											<lit v="en"/>
+											</get-case-from>
+										<lit-tag v="PREP"/>
+										<lit v="{^en"/>
+										<lit-tag v="pr"/>
+										<lit v="$}"/>
+									</chunk>
+									<b/>
+								</out>
+							</when>
+						</choose>
+					</when>
+				</choose>
+			</otherwise>
+		</choose>
+
+
+
+	</def-macro>
+
 
 	<def-macro n="dona_info" npar="1">
 		<let>
@@ -1461,21 +1631,10 @@
 				</chunk>
 				<b pos="1"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="1" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="2"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="2" part="lem"/>
@@ -1508,21 +1667,10 @@
 				</chunk>
 				<b pos="1"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="1" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="2"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="2" part="lem"/>
@@ -1565,21 +1713,10 @@
 				</chunk>
 				<b pos="1"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="1" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="2"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="2" part="lem"/>
@@ -1600,24 +1737,10 @@
 				</chunk>
 				<b/>-->
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="1" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="4"/>
-					</call-macro>
-				</when>
-			</choose>
-	<!--		<call-macro n="partitiu">
+			<call-macro n="partitiu2elem">
+				<with-param pos="1"/>
 				<with-param pos="4"/>
-			</call-macro>-->
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="4" part="lem"/>
@@ -2154,21 +2277,10 @@
 				</chunk>
 				<b pos="2"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="2" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="3"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="3" part="lem"/>
@@ -2239,21 +2351,10 @@
 				</chunk>
 				<b pos="2"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="2" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="3"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="3" part="lem"/>
@@ -2326,21 +2427,10 @@
 				</chunk>
 				<b pos="2"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="2" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="3"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="3" part="lem"/>
@@ -2414,21 +2504,10 @@
 				</chunk>
 				<b pos="2"/>
 			</out>
-			<choose>
-				<when>
-					<test>
-						<not>
-							<in caseless="yes">
-								<clip pos="2" part="lem"/>
-								<list n="prde"/>
-							</in>
-						</not>
-					</test>
-					<call-macro n="partitiu">
-						<with-param pos="3"/>
-					</call-macro>
-				</when>
-			</choose>
+			<call-macro n="partitiu2elem">
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>
 			<out>
 				<chunk>
 					<clip pos="3" part="lem"/>

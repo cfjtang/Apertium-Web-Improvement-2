@@ -667,6 +667,9 @@
 			
 			<list-item v="lalà" alt="oc@aran"/>
 		</def-list>
+		<def-list n="en_per">
+			<list-item v="consultar"/>
+		</def-list>
 
 		<def-list n="de_per">
 			<list-item v="acordar" alt="oc"/>
@@ -683,7 +686,7 @@
 		</def-list>
 		
 		<def-list n="a_dins">
-			<list-item v="arribar" alt="oc"/>
+			<list-item v="lirolà" alt="oc"/>
 			<list-item v="lirolà" alt="oc@aran"/>
 		</def-list>
 		
@@ -696,27 +699,13 @@
 		<def-list n="en_a">
 			<list-item v="participar"/>
 			<list-item v="pensar"/>
+			<list-item v="prendre# part"/>
+			<list-item v="no prendre# part"/>
 		</def-list>
 		
 			<def-list n="a_sus">
 			<list-item v="seure"/>
 			<list-item v="enfilar"/>
-		</def-list>
-
-	 <def-list n="meses">
-			<list-item v="enero"/>
-			<list-item v="febrero"/>
-			<list-item v="marzo"/>
-			<list-item v="abril"/>
-			<list-item v="mayo"/>
-			<list-item v="junio"/>
-			<list-item v="julio"/>
-			<list-item v="agosto"/>
-			<list-item v="septiembre"/>
-			<list-item v="octubre"/>
-			<list-item v="noviembre"/>
-			<list-item v="diciembre"/>
-
 		</def-list>
 
 		<def-list n="adv_neg">
@@ -1242,6 +1231,18 @@
 														<lit v="a"/>
 													</let>
 												</when>
+												<when>
+													<test>
+														<equal>
+															<var n="tipusverb"/>
+															<lit v="vben_per"/>
+														</equal>
+													</test>
+													<let>
+														<clip pos="1" side="tl" part="lem"/>
+														<lit v="per"/>
+													</let>
+												</when>
 											</choose>
 										</when>
 									
@@ -1491,12 +1492,28 @@
 																					</let>
 																				</when>
 																				<otherwise>
-
-											
-																					<let>
-																						<var n="tipusverb"/>
-																						<lit v="nodef"/>
-																					</let>
+																					<choose>
+																						<when>
+																							<test>
+																								<in caseless="yes">
+																									<clip pos="1" side="sl" part="lem"/>
+																									<list n="en_per"/>
+																								</in>
+																							</test>
+																							<let>
+																								<var n="tipusverb"/>
+																								<lit v="vben_per"/>
+																							</let>
+																						</when>
+																						<otherwise>
+		
+													
+																							<let>
+																								<var n="tipusverb"/>
+																								<lit v="nodef"/>
+																							</let>
+																						</otherwise>
+																					</choose>
 																				</otherwise>
 																			</choose>
 																		</otherwise>
