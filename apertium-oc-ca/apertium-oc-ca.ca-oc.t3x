@@ -19,6 +19,10 @@
 		<cat-item name="pro_pro_verb"/>
 		<cat-item name="pro_pro_inf"/>
 	</def-cat>
+	
+	<def-cat n="aux_pp">
+		<cat-item name="aux_pp"/>
+	</def-cat>
 		
 	<def-cat n="proaux_pp">
 		<cat-item name="proaux_pp"/>
@@ -267,6 +271,31 @@
 <!--  					<var n="quin_verb"/>  -->
 					<clip pos="1" part="whole"/>
 						
+					</lu>
+				</out> 
+			</action>
+		</rule> 
+		
+		<rule comment="CHUNK: verb (canvia alguns lemes de verb)">
+			<pattern>
+				<pattern-item n="aux_pp"/>
+			</pattern>
+			<action>
+				<let>
+					<var n="quin_verb"/>
+					<clip pos="0" part="lema_vb"/>
+				</let>
+				<call-macro n="cv_verb">
+					<with-param pos="2"/>
+				</call-macro>
+				
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
 					</lu>
 				</out> 
 			</action>
