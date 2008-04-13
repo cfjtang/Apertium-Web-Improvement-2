@@ -539,6 +539,10 @@
 			
 			<list-item v="lalà" alt="oc@aran"/>
 		</def-list>
+		<def-list n="de_sobre">
+			<list-item v="debatre" alt="oc"/>
+			<list-item v="lalà" alt="oc@aran"/>
+		</def-list>
 
 		<def-list n="per_de">
 			<list-item v="acordar" alt="oc"/>
@@ -657,6 +661,7 @@
 			<list-item v="pas"/>
 			<list-item v="pas mai"/>
 			<list-item v="non solament"/>
+			<list-item v="benlèu"/>
 		</def-list>
 		
 
@@ -789,21 +794,44 @@
 			<choose> 
 				<when>
 					<test>
-						<and>
-							<equal>
-								<clip pos="1" side="sl" part="lem"/>
-								<lit v="de"/>
-							</equal>
-							<equal>
-								<var n="tipusverb"/>
-								<lit-tag v="vbde_per"/>
-							</equal>
-						</and>
+						<equal>
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="de"/>
+						</equal>
 					</test>
+					<choose>
+						<when>
+							<test>
+								<equal>
+									<var n="tipusverb"/>
+									<lit-tag v="vbde_per"/>
+								</equal>
+							</test>
+							
+							<let>
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="per"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal>
+									<var n="tipusverb"/>
+									<lit-tag v="vbde_sobre"/>
+								</equal>
+							</test>
+							
+							<let>
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="sobre"/>
+							</let>
+						</when>
+					</choose>
 					<let>
-						<clip pos="1" side="tl" part="lem"/>
-						<lit v="per"/>
+						<var n="tipusverb"/>
+						<lit-tag v="nodef"/>
 					</let>
+							
 				</when>
 				<otherwise>
 					<choose> 
@@ -924,6 +952,11 @@
 																	</let>
 																</when>
 															</choose>
+															<let>
+																<var n="tipusverb"/>
+																<lit-tag v="nodef"/>
+															</let>
+					
 														</when>
 													</choose>
 												</otherwise>
@@ -1648,11 +1681,27 @@
 															</let>
 														</when>
 														<otherwise>
+															<choose>
+																<when>
+																	<test>
+																		<in caseless="yes">
+																			<clip pos="1" side="tl" part="lem"/>
+																			<list n="de_sobre"/>
+																		</in>
+																	</test>
+																	<let>
+																		<var n="tipusverb"/>
+																		<lit-tag v="vbde_sobre"/>
+																	</let>
+																</when>
+																<otherwise>
 													
-															<let>
-																<var n="tipusverb"/>
-																<lit-tag v="nodef"/>
-															</let>
+																	<let>
+																		<var n="tipusverb"/>
+																		<lit-tag v="nodef"/>
+																	</let>
+																</otherwise>
+															</choose>
 														</otherwise>
 													</choose>
 												</otherwise>
