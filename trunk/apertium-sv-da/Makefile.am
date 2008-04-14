@@ -57,9 +57,11 @@ $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 
 $(PREFIX1).mode: modes.xml 
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
 $(PREFIX2).mode: modes.xml 
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
