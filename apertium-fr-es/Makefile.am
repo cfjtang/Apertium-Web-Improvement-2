@@ -93,12 +93,8 @@ apertium_fr_modesdir=$(prefix)/share/apertium/modes/
 
 $(PREFIX1).mode: modes.xml
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
-$(PREFIX2).mode: modes.xml
-	apertium-gen-modes modes.xml
-
-modes: modes.xml
-	apertium-gen-modes modes.xml
 
 apertium_fr_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
@@ -118,4 +114,4 @@ install-data-local:
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(apertium_fr_esdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(apertium_fr_esdir)
 
-CLEANFILES = -rf $(TARGETS) modes $(BASENAME).$(LANG1).dix
+CLEANFILES = -rf $(TARGETS) modes $(BASENAME).$(LANG1).dix *.mode
