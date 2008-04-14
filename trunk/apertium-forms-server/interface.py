@@ -33,9 +33,9 @@ class Interface: #{
 
 			selected_pair = post_data['selected_pair'];
 			pairs = post_data['pairs'];
-			post_data['left_dictionary'].append(left_entrada);
-			post_data['bidix_dictionary'].append(bidix_entrada);
-			post_data['right_dictionary'].append(right_entrada);
+			post_data['left_dictionary'].append(left_entrada, post_data['left_lemma'], post_data['right_lemma']);
+			post_data['bidix_dictionary'].append(bidix_entrada, post_data['left_lemma'], post_data['right_lemma']);
+			post_data['right_dictionary'].append(right_entrada, post_data['left_lemma'], post_data['right_lemma']);
 
                 	print '<a href="http://xixona.dlsi.ua.es:8080/' + post_data['selected_pair'] + '">again!</a>';
 
