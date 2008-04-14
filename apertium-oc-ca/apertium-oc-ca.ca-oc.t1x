@@ -6,6 +6,13 @@
       <cat-item tags="np.loc"/>
       <cat-item tags="np.al"/>
     </def-cat>
+    <def-cat n="nploc">
+	    <cat-item tags="np.loc"/>
+    </def-cat>
+    <def-cat n="tot">
+	    <cat-item lemma="tot" tags="predet.m.sg"/>
+	    <cat-item lemma="tot" tags="predet.nt.sg"/>
+    </def-cat>
 
      <def-cat n="ant">
       <cat-item tags="np.ant"/>
@@ -4627,7 +4634,43 @@
 
     <!--*************************************** REGLES DE SN ******************************************** -->
 
-	<rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
+	<rule comment="REGLA: tot nploc: tot frança->frança tota">
+		<pattern>
+			<pattern-item n="tot"/>
+			<pattern-item n="nploc"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="nom_adj" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SN"/></tag>
+						<tag><clip pos="1" side="tl" part="gen"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusnom"/></tag>
+					</tags>
+					<lu>
+						<clip pos="2" side="tl" part="whole"/>
+					</lu>
+					<b pos="1"/>
+					<lu>
+						<clip pos="1" side="tl" part="lem"/>
+						<lit-tag v="prn.tn.f.sg"/>
+					</lu>
+						
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+    
+	
+    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
 		<pattern>
 			<pattern-item n="nom"/>
 		</pattern>
@@ -4724,7 +4767,7 @@
 		</action>
 	</rule>
 
-	<rule comment="REGLA: ANTROPÒNIM">
+	<rule comment="REGLA: DET ANTROPÒNIM">
 		<pattern>
 			<pattern-item n="det"/>
 			<pattern-item n="ant"/>
