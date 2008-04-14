@@ -63,6 +63,7 @@ class Dictionary: #{
 	file = None;
 	side = None;
 	alternatives = None;
+	lemmas = None; 
 
 	def __init__(self, _side, _language, _file, _doc, _alternatives, _tags, _templates): #{
 		self.display = {};
@@ -72,6 +73,7 @@ class Dictionary: #{
 		self.side = _side;
 		self.paradigms = {};
 		self.glosses = {};
+		self.lemmas = {};
 		self.alternatives = _alternatives;
 		self.tags = _tags;
 		self.hashes = {};
@@ -81,6 +83,18 @@ class Dictionary: #{
 			self.hashes_left = {};
 			self.hashes_right = {};
 		#}
+	#}
+
+	def get_lemmas(self): #{
+		return self.lemmas;
+	#}
+
+	def set_lemmas(self, _lemmas): #{
+		self.lemmas = _lemmas;
+	#}
+
+	def add_lemma(self, _lemma): #{
+		self.lemmas[_lemma] = _lemma;
 	#}
 
 	def get_alternatives(self): #{
@@ -248,6 +262,10 @@ class Dictionary: #{
 
 		print >> sys.stderr, 'lemma: ' + _lemma + ', paradigm: ' + _paradigm + ', comment: ' + _comment + ', author: ' + _author, 'alternative: ' + _alternative;
 
+		if _lemma in self.lemmas: #{
+			return 'Lemma already exists';
+		#}
+
 		entrada = '';
 		if (_restriction == "none" or _restriction == '') and (_alternative == "none" or _alternative == ''): #{
 			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '">' + "\n";
@@ -358,7 +376,16 @@ class Dictionary: #{
                 return r.encode('utf-8');
         #}
 
-	def append(self, _entrada): #{
+	def append(self, _entrada, _lemma_left, _lemma_right): #{
+		if self.side == 'right': #{
+			print >> sys.stderr, 'Adding right lemma to hash';
+			self.add_lemma(_lemma_right);
+		#}
+		if self.side == 'left': #{
+			print >> sys.stderr, 'Adding left lemma to hash';
+			self.add_lemma(_lemma_left);
+		#}
+
 		print >> sys.stderr, '> ' , self.file;
 		print >> sys.stderr, self.side + ' append(';
 		print >> sys.stderr, _entrada;
@@ -426,10 +453,41 @@ class Pair: #{
 		#}
 		self.dictionary['bidix'].hashes_left = self.dictionary['left'].hashes;
 		self.dictionary['bidix'].hashes_right = self.dictionary['right'].hashes;
+
+		self.get_existent_lemmas(self.dictionary['left'], self.dictionary['right'], self.dictionary['bidix'].doc);
+
+		print 'Lemmas: ' , len(self.dictionary['left'].get_lemmas()) , len(self.dictionary['right'].get_lemmas());
 	#}
 
 	def dictionary(self, _side): #{
 		return self.dictionaries[_side];
+	#}
+
+	#
+	#	Get the lemmas which already exist in the bilingual dictionary
+	#	and assign them to the left and right dictionaries.
+	# 
+	def get_existent_lemmas(self, _left, _right, _bidix_doc): #{
+		print >> sys.stderr, 'get_existent_lemmas()';
+
+		for entrada in _bidix_doc.xpath('/dictionary/section[@id="main"]/e'): #{
+			p = Ft.Xml.XPath.Evaluate('.//p', contextNode=entrada);
+			if len(p) > 0: #{
+				l = Ft.Xml.XPath.Evaluate('.//l', contextNode=p[0]);
+				r = Ft.Xml.XPath.Evaluate('.//r', contextNode=p[0]);
+				lemma_left = l[0].firstChild.nodeValue;
+				lemma_right = r[0].firstChild.nodeValue;
+
+				_left.add_lemma(lemma_left);
+				_right.add_lemma(lemma_right);
+			#}
+			i = Ft.Xml.XPath.Evaluate('.//i', contextNode=entrada);
+			if len(i) > 0: #{
+				lemma = i[0].firstChild.nodeValue;
+				_left.add_lemma(lemma);
+				_right.add_lemma(lemma);
+			#}
+		#}
 	#}
 
 	def set_templates(self, _templates): #{
