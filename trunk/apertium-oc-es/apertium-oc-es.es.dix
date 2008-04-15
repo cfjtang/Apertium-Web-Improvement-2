@@ -87,6 +87,13 @@
         <r><s n="num"/></r> 
       </p>
     </e>
+    <e>
+      <re>[0-9]+([.,][0-9]+)?%</re>
+	<p>
+	  <l/>
+          <r><s n="num"/><s n="percent"/></r>
+	</p>
+    </e>
 
     </pardef>
     <pardef n="separa">
@@ -2759,15 +2766,6 @@
       <p>
         <l></l> 
         <r><s n="det"/><s n="dem"/><s n="m"/><s n="sg"/></r> 
-      </p>
-    </e>
-
-    </pardef>
-    <pardef n="cada__det">
-    <e>
-      <p>
-        <l></l> 
-        <r><s n="det"/><s n="ind"/><s n="mf"/><s n="sg"/></r> 
       </p>
     </e>
 
@@ -79552,6 +79550,78 @@
     </e>
 
     </pardef>
+    <pardef n="/ser_necesario__vbmod">
+    <e>
+      <p>
+        <l>sería<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="cni"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>será<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="fti"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>fuere<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="fts"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>fue<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="ifi"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>era<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="pii"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>fuera<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="pis"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>fuese<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="pis"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>sido<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="pp"/><s n="m"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>es<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="pri"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <p>
+        <l>sea<b/>necesario</l> 
+        <r>ser<b/>necesario<s n="vbmod"/><s n="prs"/><s n="p3"/><s n="sg"/></r> 
+      </p>
+    </e>
+
+    </pardef>
     <pardef n="/ser__vbser">
     <e>
       <p>
@@ -80113,7 +80183,7 @@
 
     <e lm="cada">
         <i>cada</i> 
-        <par n="cada__det"/> 
+        <par n="demás__det"/> 
     </e>
 
     <e lm="cierto">
@@ -80281,7 +80351,7 @@
         <par n="a_fe_que__cnjadv"/> 
     </e>
     
-    <e lm="igual que">
+    <e lm="igual que" r="LR">
         <i>igual<b/>que</i> 
         <par n="a_fe_que__cnjadv"/> 
     </e>
@@ -81831,8 +81901,8 @@
         <par n="a__pr"/> 
     </e>
 
-    <e lm="por intermedio de">
-        <i>por<b/>intermedio<b/></i> 
+    <e lm="por intermediación de">
+        <i>por<b/>intermediación<b/></i> 
         <par n="contde__pr"/> 
     </e>
 
@@ -90838,6 +90908,11 @@
 
     <e lm="Naut Aran">
         <i>Naut<b/>Aran</i> 
+        <par n="Afganistán__np"/> 
+    </e>
+    
+    <e lm="Aran">
+        <i>Arán</i> 
         <par n="Afganistán__np"/> 
     </e>
 
@@ -125848,7 +125923,7 @@
         <par n="h/aber_que__vbmod"/> 
     </e>
 
-    <e r="RL" lm="hacer falta">
+    <e r="LR" lm="hacer falta">
         <i>h</i> 
         <par n="h/acer_falta__vbmod"/> 
     </e>
@@ -125868,8 +125943,12 @@
         <par n="qu/erer__vbmod"/> 
     </e>
 
-    <e lm="ser preciso">
+    <e lm="ser preciso" r="RL">
         <par n="/ser_preciso__vbmod"/> 
+    </e>
+    
+    <e lm="ser necesario" r="RL">
+        <par n="/ser_necesario__vbmod"/> 
     </e>
 <!-- 
       ******************************
@@ -126861,6 +126940,11 @@
         <i>hace<b/>bastante<b/>tiempo</i> 
         <par n="ahora__adv"/> 
     </e>
+    
+    <e lm="en este sentido">
+        <i>en<b/>este<b/>sentido</i> 
+        <par n="ahora__adv"/> 
+    </e>
 
     <e lm="hasta ahora">
         <i>hasta<b/>ahora</i> 
@@ -127294,6 +127378,11 @@
 
     <e lm="por entero">
         <i>por<b/>entero</i> 
+        <par n="ahora__adv"/> 
+    </e>
+    
+    <e lm="por teléfono">
+        <i>por<b/>teléfono</i> 
         <par n="ahora__adv"/> 
     </e>
 
