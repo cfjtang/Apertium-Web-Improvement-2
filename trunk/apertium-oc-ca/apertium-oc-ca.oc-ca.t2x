@@ -96,6 +96,8 @@
           <attr-item tags="començar"/>
           <attr-item tags="contunhar"/>
           <attr-item tags="estar"/>
+          <attr-item tags="ser"/>
+          <attr-item tags="ser_estar"/>
      </def-attr>
 
 	<def-attr n="tipusrel">
@@ -184,6 +186,34 @@
 
 <section-def-macros>
 
+	<def-macro n="ser_estar" npar="2">
+		<choose>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="a_verb"/>
+							<lit-tag v="vbser"/>
+						</equal>
+						<equal>
+								<clip pos="2" part="lema_vb"/>
+								<lit-tag v="ser_estar"/>
+						</equal>
+						<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="ger_enc"/>
+						</equal>
+					</and>
+				</test>
+				<let>
+						<clip pos="1" part="lema_vb"/>
+						<lit-tag v="estar"/>
+	
+				</let>
+			</when>
+		</choose>
+
+	</def-macro>
 
 	<def-macro n="canvia_el_verb" npar="3">
 		<call-macro n="modifica_sv">
@@ -2133,6 +2163,10 @@
 		<call-macro n="assigna_gen_nbr">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="ser_estar">
+			<with-param pos="2"/>
+			<with-param pos="3"/>
+		</call-macro>
 		<choose>
 			<when>
 				<test>
@@ -2264,6 +2298,11 @@
 		<with-param pos="1"/>
 		<with-param pos="5"/>
 	</call-macro>
+	<call-macro n="ser_estar">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
+
 <!--	<call-macro n="cv_prep">
 		<with-param pos="1"/>
 		<with-param pos="2"/>
