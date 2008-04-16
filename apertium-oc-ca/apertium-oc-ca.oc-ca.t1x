@@ -138,10 +138,6 @@
       <cat-item tags="vbmod.ger"/>
     </def-cat>
     		
-		<def-cat n="vbser">
-      <cat-item tags="vbser.*"/>
-    </def-cat>
-
     <def-cat n="haver">
       <cat-item tags="vbhaver.*"/>
     </def-cat>
@@ -540,6 +536,9 @@
 		  <list-item v="contribusir"/>
 		  <list-item v="contribuïr"/>
 		  <list-item v="contribuir"/>
+		  <list-item v="èsser"/>
+		  <list-item v="èster"/>
+		  <list-item v="estar"/>
 	  </def-list>
 		
 		<def-list n="de_per">
@@ -1000,10 +999,16 @@
 				<choose> 
 					<when>
 						<test>
-							<equal>
-								<var n="tipusverb"/>
-								<lit-tag v="vbmante_a"/>
-							</equal>
+							<or>
+								<equal>
+									<var n="tipusverb"/>
+									<lit-tag v="vbmante_a"/>
+								</equal>
+								<equal>
+									<var n="tipusverb"/>
+									<lit-tag v="ser"/>
+								</equal>
+							</or>
 						</test>
 						<let>
 							<clip pos="1" side="tl" part="lem"/>
@@ -6870,6 +6875,7 @@
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><var n="tipusverb"/></tag>
 								<tag><var n="cv_verb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
@@ -6891,6 +6897,7 @@
 								<tag><clip pos="1" side="tl" part="temps"/></tag>
 								<tag><var n="tipusverb"/></tag>
 								<tag><var n="cv_verb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lemh"/> 
@@ -6989,6 +6996,7 @@
 								<tag><clip pos="2" side="tl" part="a_verb"/></tag>
 								<tag><clip pos="2" side="tl" part="temps"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<lu>
 								<clip pos="2" side="tl" part="lemh"/> 
@@ -8911,35 +8919,78 @@
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="3"/>
+			</call-macro>
 			<choose>
 				<when>
 					<test>
-						<and>
-							<equal>
-								<var n="tipusverb"/>
-								<lit-tag v="ser"/>
-							</equal>
-							<equal>
-								<clip pos="2" side="sl" part="lem"/>
-								<lit v="se"/>
-							</equal>
-						</and>
+						<equal caseless="yes">
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="tre"/>
+						</equal>
 					</test>
 					<out>
-						<chunk name="ger_enc" case="caseFirstWord">
+						<chunk name="aux_enc_pp" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SV"/></tag>
+								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
+								<tag><lit-tag v="ger"/></tag>
+								<tag><var n="tipusverb"/></tag>
+							</tags>
+							<mlu>
+								<lu>
+									<get-case-from pos="1">
+										<lit v="haver"/>
+									</get-case-from>
+									<lit-tag v="vbhaver.ger"/>
+								</lu>
+								<lu>
+									<clip pos="2" side="tl" part="lem"/> 
+									<lit-tag v="prn.enc"/>
+									<clip pos="2" side="tl" part="tipoenc_pro"/>
+								</lu>
+							</mlu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="3" side="tl" part="lemh"/> 
+								<clip pos="3" side="tl" part="a_verb"/>
+								<lit-tag v="pp.m.sg"/>
+								<clip pos="3" side="tl" part="lemq"/> 
+							</lu>
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<let>
+						<var n="lema"/>
+						<clip pos="1" side="tl" part="lem"/>
+					</let>
+					<out>
+						<chunk namefrom="lema" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="PREP"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="whole"/>
+							</lu>
+						</chunk>
+						<b pos="1"/>
+						<chunk name="inf_enc" case="caseFirstWord">
 							<tags>
 								<tag><lit-tag v="SN"/></tag>
 								<tag><clip pos="3" side="tl" part="a_verb"/></tag>
-								<tag><lit-tag v="ger"/></tag>
+								<tag><clip pos="3" side="tl" part="temps"/></tag>
 								<tag><clip pos="3" side="tl" part="pers"/></tag>
 								<tag><clip pos="3" side="tl" part="nbr"/></tag>
-								<tag><lit-tag v="ser_estar"/></tag>
+								<tag><var n="tipusverb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<mlu>
 								<lu>
 									<clip pos="3" side="tl" part="lemh"/> 
 									<clip pos="3" side="tl" part="a_verb"/>
-									<lit-tag v="ger"/>
+									<clip pos="3" side="tl" part="temps"/>
 									<clip pos="3" side="tl" part="pers"/>
 									<clip pos="3" side="tl" part="nbr"/>
 								</lu>
@@ -8952,96 +9003,6 @@
 							</mlu>	
 						</chunk>
 					</out>
-					<call-macro n="f_bcond">
-						<with-param pos="1"/>
-					</call-macro>
-				</when>
-				<otherwise>
-					<call-macro n="tipus_verb">
-						<with-param pos="3"/>
-					</call-macro>
-					<choose>
-						<when>
-							<test>
-								<equal caseless="yes">
-									<clip pos="1" side="sl" part="lem"/>
-									<lit v="tre"/>
-								</equal>
-							</test>
-							<out>
-								<chunk name="aux_enc_pp" case="caseFirstWord">
-									<tags>
-										<tag><lit-tag v="SV"/></tag>
-										<tag><clip pos="3" side="tl" part="a_verb"/></tag>
-										<tag><lit-tag v="ger"/></tag>
-										<tag><var n="tipusverb"/></tag>
-									</tags>
-									<mlu>
-										<lu>
-											<get-case-from pos="1">
-												<lit v="haver"/>
-											</get-case-from>
-											<lit-tag v="vbhaver.ger"/>
-										</lu>
-										<lu>
-											<clip pos="2" side="tl" part="lem"/> 
-											<lit-tag v="prn.enc"/>
-											<clip pos="2" side="tl" part="tipoenc_pro"/>
-										</lu>
-									</mlu>
-									<b pos="1"/>
-									<lu>
-										<clip pos="3" side="tl" part="lemh"/> 
-										<clip pos="3" side="tl" part="a_verb"/>
-										<lit-tag v="pp.m.sg"/>
-										<clip pos="3" side="tl" part="lemq"/> 
-									</lu>
-								</chunk>
-							</out>
-						</when>
-						<otherwise>
-							<let>
-								<var n="lema"/>
-								<clip pos="1" side="tl" part="lem"/>
-							</let>
-							<out>
-								<chunk namefrom="lema" case="caseFirstWord">
-									<tags>
-										<tag><lit-tag v="PREP"/></tag>
-									</tags>
-									<lu>
-										<clip pos="1" side="tl" part="whole"/>
-									</lu>
-								</chunk>
-								<b pos="1"/>
-								<chunk name="inf_enc" case="caseFirstWord">
-									<tags>
-										<tag><lit-tag v="SN"/></tag>
-										<tag><clip pos="3" side="tl" part="a_verb"/></tag>
-										<tag><clip pos="3" side="tl" part="temps"/></tag>
-										<tag><clip pos="3" side="tl" part="pers"/></tag>
-										<tag><clip pos="3" side="tl" part="nbr"/></tag>
-										<tag><var n="tipusverb"/></tag>
-									</tags>
-									<mlu>
-										<lu>
-											<clip pos="3" side="tl" part="lemh"/> 
-											<clip pos="3" side="tl" part="a_verb"/>
-											<clip pos="3" side="tl" part="temps"/>
-											<clip pos="3" side="tl" part="pers"/>
-											<clip pos="3" side="tl" part="nbr"/>
-										</lu>
-										<lu>
-											<clip pos="2" side="tl" part="lem"/> 
-											<lit-tag v="prn.enc"/>
-											<clip pos="2" side="tl" part="tipoenc_pro"/>
-											<clip pos="3" side="tl" part="lemq"/> 
-										</lu>
-									</mlu>	
-								</chunk>
-							</out>
-						</otherwise>
-					</choose>
 				</otherwise>
 			</choose>
 			<call-macro n="f_bcond">
@@ -9156,6 +9117,7 @@
 								<tag><clip pos="4" side="tl" part="pers"/></tag>
 								<tag><clip pos="4" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<mlu>
 								<lu>
@@ -9283,6 +9245,7 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<mlu>
 								<lu>
@@ -9412,6 +9375,7 @@
 								<tag><clip pos="2" side="tl" part="pers"/></tag>
 								<tag><clip pos="2" side="tl" part="nbr"/></tag>
 								<tag><var n="tipusverb"/></tag>
+								<tag><lit-tag v="pendent"/></tag>
 							</tags>
 							<mlu>
 								<lu>
