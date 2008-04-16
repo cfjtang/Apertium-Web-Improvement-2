@@ -62,7 +62,8 @@
   <section-def-attrs>
  			<def-attr n="lema_vb">
           <attr-item tags="acabar"/>
-          <!--<attr-item tags="anar"/>
+          <attr-item tags="estar"/>
+         <!--<attr-item tags="anar"/>
           <attr-item tags="seguir"/>-->
       </def-attr>
      <def-attr n="temps">
@@ -199,6 +200,36 @@
 						</let>
 					</when>
 				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="acabar"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="acabar"/>
+						</let>
+					</when>
+					<when>
+						<test>
+							<equal>
+								<clip pos="0" part="lema_vb"/>
+								<lit-tag v="estar"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="estar"/>
+						</let>
+						<let>
+							<clip pos="1" part="a_verb"/>
+							<lit-tag v="vblex"/>
+						</let>
+					</when>
+				</choose>
 
 				<out>
 					<lu>
@@ -319,6 +350,22 @@
 									<lit v="acabar"/>
 								</let>
 							</when>
+							<when>
+								<test>
+									<equal>
+										<clip pos="0" part="lema_vb"/>
+										<lit-tag v="estar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="2" part="lem"/>
+									<lit v="estar"/>
+								</let>
+								<let>
+									<clip pos="2" part="a_verb"/>
+									<lit-tag v="vblex"/>
+								</let>
+							</when>
 						</choose>
 						<out>
 							<lu>
@@ -343,6 +390,22 @@
 								<let>
 									<clip pos="1" part="lem"/>
 									<lit v="acabar"/>
+								</let>
+							</when>
+							<when>
+								<test>
+									<equal>
+										<clip pos="0" part="lema_vb"/>
+										<lit-tag v="estar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="1" part="lem"/>
+									<lit v="estar"/>
+								</let>
+								<let>
+									<clip pos="1" part="a_verb"/>
+									<lit-tag v="vblex"/>
 								</let>
 							</when>
 						</choose>
@@ -382,6 +445,22 @@
 									<lit v="acabar"/>
 								</let>
 							</when>
+							<when>
+								<test>
+									<equal>
+										<clip pos="0" part="lema_vb"/>
+										<lit-tag v="estar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="3" part="lem"/>
+									<lit v="estar"/>
+								</let>
+								<let>
+									<clip pos="3" part="a_verb"/>
+									<lit-tag v="vblex"/>
+								</let>
+							</when>
 						</choose>
 						<out>
 							<lu>
@@ -409,6 +488,22 @@
 								<let>
 									<clip pos="2" part="lem"/>
 									<lit v="acabar"/>
+								</let>
+							</when>
+							<when>
+								<test>
+									<equal>
+										<clip pos="0" part="lema_vb"/>
+										<lit-tag v="estar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="2" part="lem"/>
+									<lit v="estar"/>
+								</let>
+								<let>
+									<clip pos="2" part="a_verb"/>
+									<lit-tag v="vblex"/>
 								</let>
 							</when>
 						</choose>
