@@ -70,6 +70,24 @@ will use that, and if not fall back to a simple
 
 entry.
 
+==Adding a language pair==
+
+You'll need to grab the three dictionaries from the language
+pair, strip out the main section entries from the monolinguals
+and put them in the cache/ dir under the subdirectory that 
+you've defined in the config file.
+
+e.g.
+
+$ ls -1 cache/apertium-en-ca/
+ apertium-en-ca.ca.cache.dix  
+ apertium-en-ca.en-ca.cache.dix 
+ apertium-en-ca.en.cache.metadix
+
+Note the cache.dix is _just a normal dix_ file, only it has the
+entries stripped out of the monolingual dictionaries for speed and
+memory usage.
+
 ==Wishlist==
 
 * The gloss should really be attached to each paradigm,
@@ -81,7 +99,6 @@ entry.
   double checking variables. It was written in a hurry. 
   Probably it would be good to go through each function
   and check for this sort of thing.
-
 
 ==Coding style==
 
