@@ -674,6 +674,8 @@
 		<def-list n="adv_davant">
 			<list-item v="pas"/>
 			<list-item v="pas mai"/>
+			<list-item v="pas encara"/>
+			<list-item v="pas sovent"/>
 			<list-item v="non solament"/>
 			<list-item v="benlèu"/>
 		</def-list>
@@ -965,12 +967,14 @@
 																		<lit v="en"/>
 																	</let>
 																</when>
+															
+																<otherwise>
+																	<let>
+																		<var n="tipusverb"/>
+																		<lit-tag v="nodef"/>
+																	</let>
+																</otherwise>
 															</choose>
-															<let>
-																<var n="tipusverb"/>
-																<lit-tag v="nodef"/>
-															</let>
-					
 														</when>
 													</choose>
 												</otherwise>
@@ -1222,6 +1226,30 @@
 							<test>
 								<equal caseless="yes">
 									<clip pos="2" side="sl" part="lem"/>
+									<lit v="agir"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="tractar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="cargar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="encarregar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
 									<lit v="acordar"/>
 								</equal>
 							</test>
@@ -1332,6 +1360,30 @@
 							<let>
 								<clip pos="3" side="tl" part="lem"/>
 								<lit v="adonar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="agir"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="tractar"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="cargar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="encarregar"/>
 							</let>
 						</when>
 						<when>
@@ -1848,42 +1900,60 @@
 						<lit-tag v="venir"/>
 					</let>
 				</when>
-				<when>
-					<test>
-						<equal caseless="yes">
-							<clip pos="1" side="sl" part="lemh"/>
-							<lit v="contunhar"/>
-						</equal>
-					</test>
-					<let>
-						<var n="cv_verb"/>
-						<lit-tag v="contunhar"/>
-					</let>
-				</when>
-				<when>
-					<test>
-						<equal caseless="yes">
-							<clip pos="1" side="sl" part="lemh"/>
-							<lit v="començar"/>
-						</equal>
-					</test>
-					<let>
-						<var n="cv_verb"/>
-						<lit-tag v="començar"/>
-					</let>
-				</when>
-				<when>
-					<test>
-						<equal caseless="yes">
-							<clip pos="1" side="sl" part="lemh"/>
-							<lit v="estar"/>
-						</equal>
-					</test>
-					<let>
-						<var n="cv_verb"/>
-						<lit-tag v="estar"/>
-					</let>
-				</when>
+				<otherwise>
+					<choose>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="1" side="sl" part="lemh"/>
+									<lit v="contunhar"/>
+								</equal>
+							</test>
+							<let>
+								<var n="cv_verb"/>
+								<lit-tag v="contunhar"/>
+							</let>
+						</when>
+						<otherwise>
+							<choose>
+								<when>
+									<test>
+										<equal caseless="yes">
+											<clip pos="1" side="sl" part="lemh"/>
+											<lit v="començar"/>
+										</equal>
+									</test>
+									<let>
+										<var n="cv_verb"/>
+										<lit-tag v="començar"/>
+									</let>
+								</when>
+								<otherwise>
+									<choose>
+										<when>
+											<test>
+												<equal caseless="yes">
+													<clip pos="1" side="sl" part="lemh"/>
+													<lit v="estar"/>
+												</equal>
+											</test>
+											<let>
+												<var n="cv_verb"/>
+												<lit-tag v="estar"/>
+											</let>
+										</when>
+										<otherwise>
+											<let>
+												<var n="cv_verb"/>
+												<lit-tag v=""/>
+											</let>
+										</otherwise>
+									</choose>
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+				</otherwise>
 			</choose>
 		</def-macro>
 
