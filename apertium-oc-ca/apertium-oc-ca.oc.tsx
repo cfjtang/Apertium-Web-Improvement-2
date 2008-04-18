@@ -44,15 +44,25 @@
     <tags-item tags="detnt"/>
   </def-label>
   <def-label name="DETM" closed="true">
-    <tags-item tags="det.*.m.*"/>
+    <tags-item tags="det.def.m.*"/>
+    <tags-item tags="det.dem.m.*"/>
+    <tags-item tags="det.ind.m.*"/>
+    <tags-item tags="det.pos.m.*"/>
   </def-label>
   <def-label name="DETF" closed="true">
-    <tags-item tags="det.*.f.*"/>
-  </def-label>
+    <tags-item tags="det.def.f.*"/>
+    <tags-item tags="det.dem.f.*"/>
+    <tags-item tags="det.ind.f.*"/>
+    <tags-item tags="det.pos.f.*"/>
+   </def-label>
   <def-label name="DETMF" closed="true">
     <tags-item tags="det.*.mf.*"/>
   </def-label>
-  <def-label name="INTERJ">
+  <def-label name="DETPERS" closed="true">
+    <tags-item tags="det.pers.m.*"/>
+    <tags-item tags="det.pers.f.*"/>
+  </def-label>
+   <def-label name="INTERJ">
     <tags-item tags="ij"/>
   </def-label>
   <def-label name="ACRONIMOM">
@@ -1811,6 +1821,11 @@
 			<label-item label="NOMF"/>
 		</label-set>
 	</enforce-after>-->
+    <enforce-after label="DETPERS">
+      <label-set>
+        <label-item label="ANTROPONIM"/>
+      </label-set>
+    </enforce-after>
 	
 	<enforce-after label="VHABERINF">
 		<label-set>
