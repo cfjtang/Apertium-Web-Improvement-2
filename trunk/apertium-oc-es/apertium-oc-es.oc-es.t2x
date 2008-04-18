@@ -243,10 +243,7 @@
     </def-macro>
 
     <def-macro n="canvis_amb_les_pr" npar="3">
-      <call-macro n="cv_prep" alt="oc@aran">
-        <with-param pos="2"/>
-        <with-param pos="3"/>
-      </call-macro>
+     
       <choose>
         <when>
           <test>
@@ -623,35 +620,7 @@
       </choose>
     </def-macro>
     
-    <def-macro n="cv_prep" npar="2">
-      <choose>
-        <when>
-          <test>
-            <and>
-              <equal>
-                <clip pos="1" part="lem"/>
-                <lit v="en"/>
-              </equal>
-              <or>
-                <equal>
-                  <clip pos="2" part="tnom"/>
-                  <lit-tag v="loc"/>
-                </equal>
-                <equal>
-                  <clip pos="2" part="tnom"/>
-                  <lit-tag v="mes"/>
-                </equal>
-              </or>
-            </and>
-          </test>
-          <let>
-            <clip pos="1" part="lem"/>
-            <lit v="a"/>
-          </let>
-        </when>
-      </choose>
-    </def-macro>
-    
+   
     
     <!-- GR: antiga macro, comprovar. <def-macro n="cv_prep" npar="2">
       <choose> 
@@ -898,10 +867,6 @@
         <call-macro n="assigna_gen_nbr">
           <with-param pos="2"/>
         </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="1"/>
-          <with-param pos="2"/>
-        </call-macro>
         <out>
           <chunk>
             <clip pos="1" part="lem"/>
@@ -926,14 +891,6 @@
       </pattern>
       <action>
         <call-macro n="assigna_gen_nbr">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="1"/>
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="2"/>
           <with-param pos="3"/>
         </call-macro>
         <choose>
@@ -1007,14 +964,6 @@
       </pattern>
         <action>
         <call-macro n="assigna_gen_nbr">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="1"/>
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="2"/>
           <with-param pos="3"/>
         </call-macro>
         <choose>
@@ -1191,10 +1140,6 @@
         <call-macro n="assigna_gen_nbr">
           <with-param pos="3"/>
         </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="2"/>
-          <with-param pos="3"/>
-        </call-macro>
         <choose>
           <when>
             <test>
@@ -1296,14 +1241,6 @@
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="assigna_gen_nbr">
-          <with-param pos="5"/>
-        </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="2"/>
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="cv_prep" alt="oc@aran">
-          <with-param pos="4"/>
           <with-param pos="5"/>
         </call-macro>
         <out>
@@ -1756,11 +1693,6 @@
 	  <with-param pos="1"/>
 	  <with-param pos="5"/>
 	</call-macro>
-	<!--	<call-macro n="cv_prep">
-	    <with-param pos="1"/>
-	    <with-param pos="2"/>
-	    <with-param pos="3"/>
-	    </call-macro>-->
 	<out>
 	  <chunk>
 	    <clip pos="1" part="lem"/>
@@ -1815,11 +1747,6 @@
 	  <with-param pos="1"/>
 	  <with-param pos="5"/>
 	</call-macro>
-	<!--	<call-macro n="cv_prep">
-	    <with-param pos="1"/>
-	    <with-param pos="2"/>
-	    <with-param pos="3"/>
-	    </call-macro>-->
 	<out>
 	  <chunk>
 	    <clip pos="1" part="lem"/>
