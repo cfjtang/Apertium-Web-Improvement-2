@@ -952,6 +952,34 @@
 					</choose>
 				</when>
 			</choose>
+			<choose><!-- aquests no són ref-->
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="pers"/>
+							<lit-tag v="p3"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="nbr"/>
+							<lit-tag v="sg"/>
+						</equal>
+					</test>
+					<choose>
+						<when><!-- m'ha passat-> m'a arribat-->
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="passar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="arribar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
 		</def-macro>
 		
 				<def-macro n="verb_ref_mod" npar="3"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
@@ -1123,6 +1151,35 @@
 					</choose>
 				</when>
 			</choose>
+			<choose><!-- aquests no són ref-->
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="pers"/>
+							<lit-tag v="p3"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="nbr"/>
+							<lit-tag v="sg"/>
+						</equal>
+					</test>
+					<choose>
+						<when><!-- m'ha passat-> m'a arribat-->
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="passar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="arribar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
+
 		</def-macro>
 
 		<def-macro n="cv_prep" npar="1">

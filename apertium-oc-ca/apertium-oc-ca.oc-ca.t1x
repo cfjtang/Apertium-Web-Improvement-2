@@ -1261,6 +1261,34 @@
 					</choose>
 				</when>
 			</choose>
+			<choose><!-- aquests no són ref-->
+				<when>
+					<test>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="pers"/>
+							<lit-tag v="p3"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="2" side="sl" part="nbr"/>
+							<lit-tag v="sg"/>
+						</equal>
+					</test>
+					<choose>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="arribar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="passar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
 <!-- aquí comença el tema del lema sv			 -->
 			<choose>
 				<when>
@@ -1401,6 +1429,40 @@
 					</choose>
 				</when>
 			</choose>
+			<choose><!-- aquests no són ref-->
+				<when>
+					<test>
+						<and>
+							<equal caseless="yes">
+								<clip pos="2" side="sl" part="pers"/>
+								<lit-tag v="p3"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="2" side="sl" part="nbr"/>
+								<lit-tag v="sg"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="2" side="sl" part="a_verb"/>
+								<lit-tag v="vbser"/>
+							</equal>
+						</and>
+					</test>
+					<choose>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="3" side="sl" part="lem"/>
+									<lit v="arribar"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="3" side="tl" part="lem"/>
+								<lit v="passar"/>
+							</let>
+						</when>
+					</choose>
+				</when>
+			</choose>
 <!-- aquí comença el tema del lema sv			 -->
 			<choose>
 				<when>
@@ -1474,6 +1536,11 @@
 		</def-macro>
 
 <def-macro n="comprova_auxiliar_ref" npar="3"> <!--aquesta macro troba l'aux correcte en cat tenint en compte que si el verb és ref i porta l'aux "èsser" en cat ha de ser "haber". de passada, mira també si cal canviar el lema del verb (com la macro "verb_ref")-->
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
 			<choose>
 				<when><!--en cas que l'auxiliar sigui "ser":-->
 					<test>
@@ -1569,52 +1636,7 @@
 										<clip pos="2" side="tl" part="nbr"/>
 										<lit-tag v="sg"/>
 									</let>
-									<choose> <!-- i canvia aquests verbs (els deixo per tenir l'exemple :-P)-->
-										<when>
-											<test>
-												<or>
-													<equal caseless="yes">
-														<clip pos="2" side="sl" part="lem"/>
-														<lit v="sonar"/>
-													</equal>
-													<equal caseless="yes">
-														<clip pos="2" side="sl" part="lem"/>
-														<lit v="apelar"/>
-													</equal>
-												</or>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="dir"/>
-											</let>
-										</when>
-										<when>
-											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="avisar"/>
-												</equal>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="adonar"/>
-											</let>
-										</when>
-										<when>
-											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="acordar"/>
-												</equal>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="posar# d'acord"/>
-											</let>
-										</when>
-									</choose>
 								</when>
-
 							</choose>
 						</otherwise>
 					</choose>
@@ -13330,6 +13352,11 @@
 			<call-macro n="f_concord1">
 				<with-param pos="1"/>
 			</call-macro>
+<!--			<call-macro n="verb_ref_mod">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+				<with-param pos="3"/>
+			</call-macro>-->
 			<call-macro n="comprova_auxiliar_ref">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
@@ -15747,6 +15774,58 @@
 		</action>
 	</rule>
 	
+	<rule> <!-- REGLA: coma adv-->
+		<pattern>
+			<pattern-item n="coma"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="lema_adv">
+				<with-param pos="2"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="2" side="sl" part="lem"/>
+							<lit v="e mai"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="2" side="tl" part="lem"/>
+						<lit v="fins i tot"/>
+					</let>
+				</when>
+			</choose>
+							
+			<out>
+				<chunk name="coma" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="cm"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk namefrom="lema" case="caseFirstWord">
+					<tags>
+						<tag><clip pos="2" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="2" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<clip pos="2" side="tl" part="lem"/>
+						<clip pos="2" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+			</out>
+			
+		</action>
+	</rule>
+
 	<rule comment="ij">
 		<pattern>
 			<pattern-item n="ij"/>
@@ -15844,6 +15923,89 @@
 					</lu>
 				</chunk>
 			</out>
+		</action>
+	</rule>
+
+	<rule> <!-- REGLA: reset variables adv-->
+		<pattern>
+			<pattern-item n="sent"/>
+			<pattern-item n="adv"/>
+		</pattern>
+		<action>
+			<let>
+				<clip pos="1" side="sl" part="nbr"/>
+				<lit-tag v="sg"/>
+			</let>
+			<let>
+				<var n="genero"/>
+				<lit-tag v="m"/>
+			</let>
+			<let>
+				<var n="tipusverb"/>
+				<lit-tag v="nodef"/>
+			</let>
+			<choose>
+				<when>
+					<test>
+						<not>
+							<or>
+								<equal>
+									<clip pos="1" side="sl" part="lem"/>
+									<lit v=";"/>
+								</equal>
+								<equal>
+									<clip pos="1" side="sl" part="lem"/>
+									<lit v=":"/>
+								</equal>
+							</or>
+						</not>
+					</test>
+					<let>
+						<var n="EOS"/>
+						<lit v="true"/>
+					</let>
+				</when>
+			</choose>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<clip pos="2" side="sl" part="lem"/>
+							<lit v="e mai"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="2" side="tl" part="lem"/>
+						<lit v="fins i tot"/>
+					</let>
+				</when>
+			</choose>
+			
+			<out>
+				<chunk name="punt">
+					<tags>
+						<tag><lit-tag v="sent"/></tag>
+					</tags>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/>
+					</lu>
+				</chunk>
+				<b pos="1"/>
+				<chunk namefrom="lema">
+					<tags>
+						<tag><clip pos="2" side="tl" part="a_adv"/></tag>
+						<tag><clip pos="2" side="tl" part="neg"/></tag>		
+					</tags>
+					<lu>
+						<clip pos="2" side="tl" part="lem"/>
+						<clip pos="2" side="tl" part="a_adv"/>
+					</lu>
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
 		</action>
 	</rule>
 
