@@ -210,6 +210,9 @@
     <def-cat n="adv">
       <cat-item tags="adv"/>
     </def-cat>
+    <def-cat n="preadv">
+      <cat-item tags="preadv"/>
+    </def-cat>
     <def-cat n="advitg">
       <cat-item tags="adv.itg"/>
     </def-cat>
@@ -1733,7 +1736,7 @@
           </test>
           <out>
             <b/>
-            <chunk name="adv">
+            <chunk name="adv_afegit">
               <tags>
                 <tag>
                   <lit-tag v="adv"/>
@@ -7550,6 +7553,8 @@
         </let>
       </action>
     </rule>
+
+
       <rule comment="REGLA: ADJ NOM">
       <pattern>
         <pattern-item n="adjec"/>
@@ -7920,7 +7925,81 @@
         </let>
       </action>
     </rule>
+
+ <rule comment="REGLA: PREADV ADJ NOM">
+      <pattern>
+        <pattern-item n="preadv"/>
+        <pattern-item n="adjec"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord2">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_nom">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="tipus_verb">
+          <with-param pos="2"/>
+        </call-macro>       
+            <out>
+              <chunk name="adv_adj_nom" case="caseFirstWord">
+                <tags>
+                  <tag>
+                    <lit-tag v="SN"/>
+                  </tag>
+                  <tag>
+                    <var n="genero"/>
+                  </tag>
+                  <tag>
+                    <var n="numero"/>
+                  </tag>
+                  <tag>
+                    <var n="tipusnom"/>
+                  </tag>
+                </tags>
+		<lu>		  
+                  <clip pos="1" side="tl" part="whole"/>
+		</lu>
+		<b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_adj"/>
+                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="2" side="tl" part="gen_mf"/>
+                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="2" side="tl" part="nbr_sp"/>
+                  <clip pos="2" side="tl" part="lemq"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_nom"/>
+                  <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="3" side="tl" part="gen_mf"/>
+                  <clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="3" side="tl" part="nbr_sp"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+        <let>
+          <var n="lema"/>
+          <lit v=""/>
+        </let>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
     
+    
+       
     
     <rule comment="REGLA: ADV ADJ NOM">
       <pattern>
@@ -13009,7 +13088,7 @@
     
     <rule comment="adv aux + pp">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="auxpers"/>
         <pattern-item n="pp"/>
       </pattern>
@@ -13407,7 +13486,7 @@
       <pattern>
         <pattern-item n="auxpers"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar" alt="oc">
@@ -13912,7 +13991,7 @@
     
     <rule comment="adv prnpro auxpers + pp">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="prnpro"/>
         <pattern-item n="auxpers"/>
         <pattern-item n="pp"/>
@@ -14337,7 +14416,7 @@
         <pattern-item n="prnpro"/>
         <pattern-item n="auxpers"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar_pro" alt="oc">
@@ -14839,7 +14918,7 @@
     
     <rule comment="adv prnpro prnpro auxpers pp">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="prnpro"/>
         <pattern-item n="prnpro"/>
         <pattern-item n="auxpers"/>
@@ -15228,7 +15307,7 @@
         <pattern-item n="prnpro"/>
         <pattern-item n="auxpers"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar_pro" alt="oc">
@@ -15588,7 +15667,7 @@
     
     <rule comment="adv auxinf + pp">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="auxinf"/>
         <pattern-item n="pp"/>
       </pattern>
@@ -15761,7 +15840,7 @@
       <pattern>
         <pattern-item n="auxinf"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar" alt="oc">
@@ -16136,7 +16215,7 @@
 
     <rule comment="adv auxinf-enc pp">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="auxinf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="pp"/>
@@ -16402,7 +16481,7 @@
         <pattern-item n="auxinf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar_pro" alt="oc">
@@ -16661,7 +16740,7 @@
     <rule comment="prep adv auxinf-enc pp">
       <pattern>
         <pattern-item n="prep"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="auxinf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="pp"/>
@@ -16919,7 +16998,7 @@
         <pattern-item n="auxinf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar_pro" alt="oc">
@@ -17156,7 +17235,7 @@
     
     <rule comment="adv auxinf-enc-enc pp">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="auxinf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="prnenc"/>
@@ -17444,7 +17523,7 @@
         <pattern-item n="prnenc"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="vauxiliar_pro" alt="oc">
@@ -17725,7 +17804,7 @@
     <rule comment="prep adv auxinf-enc-enc pp">
       <pattern>
         <pattern-item n="prep"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="auxinf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="prnenc"/>
@@ -18004,7 +18083,7 @@
         <pattern-item n="prnenc"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="pp"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="cv_prep">
@@ -22528,7 +22607,7 @@
 
     <rule comment="REGLA: adv VERB INF">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
       </pattern>
@@ -22923,7 +23002,7 @@
     </rule>
     <rule comment="REGLA: ADV VERB INF ENC">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
         <pattern-item n="prnenc"/>
@@ -23201,7 +23280,7 @@
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
         <pattern-item n="prnenc"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="f_imp">
@@ -23491,7 +23570,7 @@
     </rule>
     <rule comment="REGLA: ADV VERB INF ENC ENC">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
         <pattern-item n="prnenc"/>
@@ -23717,7 +23796,7 @@
         <pattern-item n="inf"/>
         <pattern-item n="prnenc"/>
         <pattern-item n="prnenc"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="f_imp">
@@ -23986,7 +24065,7 @@
     </rule>
     <rule comment="REGLA: ADV PRO VERB INF">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="prnpro"/>
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
@@ -24253,7 +24332,7 @@
         <pattern-item n="prnpro"/>
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="f_imp">
@@ -24539,7 +24618,7 @@
     </rule>
     <rule comment="REGLA: ADV PRO PRO VERB INF">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
         <pattern-item n="prnpro"/>
         <pattern-item n="prnpro"/>
         <pattern-item n="verbpers"/>
@@ -24755,7 +24834,7 @@
         <pattern-item n="prnpro"/>
         <pattern-item n="verbpers"/>
         <pattern-item n="inf"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <call-macro n="f_imp">

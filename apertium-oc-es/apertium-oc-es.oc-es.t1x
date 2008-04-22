@@ -805,6 +805,7 @@
         </when>
       </choose>
     </def-macro>
+
     <def-macro n="f_lexicadj" npar="1">
       <choose>
         <when>
@@ -829,8 +830,83 @@
             <lit v="buen"/>
           </let>
         </when>
+	<when>
+	  <test>
+	    <and>
+	      <equal caseless="yes">
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="grande"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <get-case-from pos="1">
+	      <lit v="gran"/>
+	    </get-case-from>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <and>
+	      <equal caseless="yes" >
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="primero"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="m"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <get-case-from pos="1">
+	      <lit v="primer"/>
+	    </get-case-from>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <and>
+	      <equal caseless="yes" >
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="tercero"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="m"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <get-case-from pos="1">
+	      <lit v="tercer"/>
+	    </get-case-from>
+	  </let>
+	</when>	
       </choose>
     </def-macro>
+
+
+
     <def-macro n="verb_ref" npar="2">
 <!-- aquesta macro canvia el significat de certs verbs reflexius-->
       <choose>
