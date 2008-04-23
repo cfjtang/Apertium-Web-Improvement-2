@@ -559,7 +559,46 @@
 			</when>
 		</choose>
 	</def-macro>
-
+	<def-macro n="marca_desact_part" npar="1">
+		<choose>
+			<when>
+				<test>
+					<or>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="inf"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="pro_inf"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="pro_pro_inf"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="inf_enc"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="inf_enc_enc"/>
+						</equal>
+					</or>
+				</test>
+				<let>
+						<var n="desact_part"/>
+						<lit v=""/>
+				</let>
+			</when>
+			<otherwise>
+				<let>
+						<var n="desact_part"/>
+						<lit v="yes"/>
+				</let>
+			</otherwise>
+		</choose>
+	</def-macro>
 	<def-macro n="partitiu" npar="1">
 		<choose>
 			<when>
@@ -740,7 +779,9 @@
 			<var n="tipusverb"/>
 			<lit v=""/>
 		</let>
-
+		<call-macro n="activa_tipusverb">
+			<with-param pos="1"/>
+		</call-macro>
 	</def-macro>
 
 	<def-macro n="partitiu2elem" npar="2">
@@ -754,154 +795,13 @@
 						</in>
 					</not>
 				</test>
-				<choose alt="oc">
-					<when>
-						<test>
-							<or>
-								<and>
-									<or>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="nom"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="part"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="adj_nom"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="adj_adj_nom"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="nom_adj"/>
-										</equal>
-									</or>
-									<equal>
-										<clip pos="2" part="nbr"/>
-										<lit-tag v="pl"/>
-									</equal>
-								</and>
-								<and>
-									<or>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="part"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="partadj_nom"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="partadj_adj_nom"/>
-										</equal>
-										<equal>
-											<clip pos="2" part="lem"/>
-											<lit v="partnom_adj"/>
-										</equal>
-									</or>
-									<equal>
-										<clip pos="2" part="nbr"/>
-										<lit-tag v="sg"/>
-									</equal>
-								</and>
-							</or>
-						</test>
-						<out>
-							<chunk>
-								<get-case-from pos="2">
-									<lit v="partitiu"/>
-									</get-case-from>
-								<lit-tag v="part"/>
-								<lit v="{^de"/>
-								<lit-tag v="pr"/>
-								<lit v="$}"/>
-							</chunk>
-							<b/>
-						</out>
-					</when>
-				</choose>
-				<choose alt="oc@aran">
-					<when>
-						<test>
-							<or>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="part_aran"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="partadj_nom_aran"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="partadj_adj_nom_aran"/>
-								</equal>
-							</or>
-						</test>
-						<out>
-							<chunk>
-								<get-case-from pos="2">
-									<lit v="partitiu"/>
-									</get-case-from>
-								<lit-tag v="part"/>
-								<lit v="{^de"/>
-								<lit-tag v="pr"/>
-								<lit v="$}"/>
-							</chunk>
-							<b/>
-						</out>
-					</when>
-				</choose>
+				<call-macro n="partitiu">
+					<with-param pos="2"/>
+				</call-macro>
+
 			</when>
-			<otherwise>
-				<choose>
-					<when>
-						<test>
-							<not>
-								<equal caseless="yes">
-									<clip pos="1" part="lem"/>
-									<lit v="en"/>
-								</equal>
-							</not>
-						</test>
-
-						<choose>
-							<when>
-								<test>
-									<equal>
-										<clip pos="2" part="tnom"/>
-										<lit v="mes"/>
-									</equal>
-								</test>
-								<out>
-									<chunk>
-										<get-case-from pos="1">
-											<lit v="en"/>
-											</get-case-from>
-										<lit-tag v="PREP"/>
-										<lit v="{^en"/>
-										<lit-tag v="pr"/>
-										<lit v="$}"/>
-									</chunk>
-									<b/>
-								</out>
-							</when>
-						</choose>
-					</when>
-				</choose>
-			</otherwise>
 		</choose>
-
-
-
 	</def-macro>
-
 
 	<def-macro n="dona_info" npar="1">
 		<let>
@@ -954,7 +854,22 @@
 			</when>
 		</choose>
 	</def-macro>
-
+	<def-macro n="activa_tipusverb" npar="1">
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="lema_vb"/>
+						<lit-tag v="fer"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipusverb"/>
+					<lit v="fer"/>
+				</let>
+			</when>
+		</choose>
+	</def-macro>
 	<def-macro n="modifica_sv" npar="1">
 	
 		<choose><!-- si hi ha un quan-->
@@ -1033,20 +948,10 @@
 				</let>
 			</when>
 		</choose>
-		<choose><!-- si hi ha un tothom-->
-			<when>
-				<test>
-					<equal>
-						<clip pos="1" part="lema_vb"/>
-						<lit-tag v="fer"/>
-					</equal>
-				</test>
-				<let>
-					<var n="tipusverb"/>
-					<lit v="fer"/>
-				</let>
-			</when>
-		</choose>
+		<call-macro n="activa_tipusverb">
+			<with-param pos="1"/>
+		</call-macro>
+		
 	</def-macro>
 
 <def-macro n="envia_pas" npar="1">
@@ -1499,10 +1404,10 @@
 					<clip pos="1" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="1"/>
+			</call-macro>
+<out><chunk><var n="desact_part"/></chunk></out>
 		</action>
 	</rule>
 
@@ -1548,10 +1453,9 @@
 					<clip pos="2" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="2"/>
+			</call-macro>
 		</action>
 	</rule>
 
@@ -1695,10 +1599,9 @@
 					<clip pos="3" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="3"/>
+			</call-macro>
 		</action>
 	</rule>
 	
@@ -1734,10 +1637,9 @@
 					<clip pos="2" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="2"/>
+			</call-macro>
 		</action>
 	</rule>
 	
@@ -1848,10 +1750,9 @@
 					<clip pos="4" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="4"/>
+			</call-macro>
 		</action>
 	</rule>
 
@@ -1896,10 +1797,9 @@
 					<clip pos="3" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="3"/>
+			</call-macro>
 		</action>
 	</rule>
 	
@@ -1941,10 +1841,9 @@
 					<clip pos="1" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="1"/>
+			</call-macro>
 		</action>
 	</rule>
 	
@@ -1963,10 +1862,9 @@
 					<clip pos="1" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="1"/>
+			</call-macro>
 		</action>
 	</rule>
 
@@ -2100,10 +1998,9 @@
 					<clip pos="3" part="whole"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="3"/>
+			</call-macro>
 		</action>
 	</rule>	
 
@@ -2150,10 +2047,9 @@
 					<clip pos="3" part="whole"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="3"/>
+			</call-macro>
 		</action>
 	</rule>	
 
@@ -2205,10 +2101,9 @@
 					<clip pos="4" part="whole"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="4"/>
+			</call-macro>
 		</action>
 	</rule>	
 	
@@ -2264,10 +2159,9 @@
 					<clip pos="4" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="4"/>
+			</call-macro>
 		</action>
 	</rule>	
 	
@@ -2315,10 +2209,9 @@
 					<clip pos="3" part="whole"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="3"/>
+			</call-macro>
 		</action>
 	</rule>	
 		
@@ -2374,10 +2267,9 @@
 					<clip pos="4" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="4"/>
+			</call-macro>
 		</action>
 	</rule>	
 
@@ -2452,10 +2344,9 @@
 					<clip pos="5" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="5"/>
+			</call-macro>
 		</action>
 	</rule> 
 
@@ -2536,10 +2427,9 @@
 					<clip pos="6" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="6"/>
+			</call-macro>
 		</action>
 	</rule> 
 
@@ -2615,10 +2505,9 @@
 					<clip pos="5" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="5"/>
+			</call-macro>
 		</action>
 	</rule> 
 
@@ -2702,10 +2591,9 @@
 					<clip pos="6" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="6"/>
+			</call-macro>
 		</action>
 	</rule> 
 
@@ -2750,10 +2638,9 @@
 					<clip pos="3" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="3"/>
+			</call-macro>
 		</action>
 	</rule>
 
@@ -2819,10 +2706,9 @@
 					<clip pos="5" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="5"/>
+			</call-macro>
 		</action>
 	</rule>
 
@@ -2974,10 +2860,9 @@
 					<clip pos="4" part="chcontent"/>
 				</chunk>
 			</out>
-			<let>
-				<var n="desact_part"/>
-				<lit v="yes"/>
-			</let>
+			<call-macro n="marca_desact_part">
+				<with-param pos="4"/>
+			</call-macro>
 		</action>
 	</rule>
 
