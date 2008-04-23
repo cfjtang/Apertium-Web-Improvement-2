@@ -166,6 +166,7 @@
           <attr-item tags="acabar"/>
           <attr-item tags="continuar"/>
            <attr-item tags="estar"/>
+           <attr-item tags="fer"/>
      </def-attr>
 
 		<def-attr n="tipusrel">
@@ -221,11 +222,11 @@
 		<def-var n="desact_part"/>
 		<def-var n="ger-inf"/>
 		<def-var n="pronom"/>
-    <def-var n="nombre_subj"/>
-    <def-var n="tipus_rel"/>
-    <def-var n="pers_subj"/>
-    <def-var n="uno"/>
-    <def-var n="nombre"/>
+		<def-var n="nombre_subj"/>
+		<def-var n="tipus_rel"/>
+		<def-var n="pers_subj"/>
+		<def-var n="uno"/>
+		<def-var n="nombre"/>
 		<def-var n="genere"/>
 		<def-var n="concord"/>
   </section-def-vars>
@@ -496,47 +497,47 @@
 			</when>
 		</choose>
 		<choose alt="oc@aran">
-				<when>
-					<test>
-						<and>
+			<when>
+				<test>
+					<and>
+						<equal>
+							<clip pos="1" part="lem"/>
+							<lit v="per"/>
+						</equal>
+						<or>
 							<equal>
-								<clip pos="1" part="lem"/>
-								<lit v="per"/>
+								<clip pos="2" part="lem"/>
+								<lit v="inf"/>
 							</equal>
-							<or>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="inf"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="inf_enc"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="inf_enc_enc"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="auxinf_pp"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="auxinf_enc_pp"/>
-								</equal>
-								<equal>
-									<clip pos="2" part="lem"/>
-									<lit v="auxinf_enc_pp"/>
-								</equal>
-							</or>
-						</and>
-					</test>
-					<let>
-						<clip pos="1" part="lem"/>
-						<lit v="enta"/>
-					</let>
-				</when>
-			</choose>
+							<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="inf_enc"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="inf_enc_enc"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="auxinf_pp"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="auxinf_enc_pp"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="lem"/>
+								<lit v="auxinf_enc_pp"/>
+							</equal>
+						</or>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="enta"/>
+				</let>
+			</when>
+		</choose>
 		<choose> 
 			<when>
 				<test>
@@ -697,6 +698,48 @@
 				</out>
 			</when>
 		</choose>
+		<choose alt="oc@aran">
+			<when>
+				<test>
+					<and>
+						<equal>
+							<var n="tipusverb"/>
+							<lit v="fer"/>
+						</equal>
+						<or>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="inf"/>
+							</equal>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="inf_enc"/>
+							</equal>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="inf_enc_enc"/>
+							</equal>
+						</or>
+					</and>
+				</test>
+				<out>
+					<chunk>
+						<get-case-from pos="1">
+							<lit v="a"/>
+							</get-case-from>
+						<lit-tag v="PREP"/>
+						<lit v="{^a"/>
+						<lit-tag v="pr"/>
+						<lit v="$}"/>
+					</chunk>
+					<b/>
+				</out>
+			</when>
+		</choose>
+		<let>
+			<var n="tipusverb"/>
+			<lit v=""/>
+		</let>
 
 	</def-macro>
 
@@ -987,6 +1030,20 @@
 				<let>
 					<clip pos="1" part="nbr"/>
 					<lit-tag v="pl"/>
+				</let>
+			</when>
+		</choose>
+		<choose><!-- si hi ha un tothom-->
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="lema_vb"/>
+						<lit-tag v="fer"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipusverb"/>
+					<lit v="fer"/>
 				</let>
 			</when>
 		</choose>
