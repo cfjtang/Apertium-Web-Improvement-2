@@ -102,7 +102,7 @@
           <attr-item tags="contunhar"/>
           <attr-item tags="estar"/>
           <attr-item tags="ser"/>
-          <attr-item tags="ser_estar"/>
+<!--           <attr-item tags="ser_estar"/> -->
      </def-attr>
 
 	<def-attr n="tipusrel">
@@ -228,7 +228,7 @@
 		</choose>
 	</def-macro>
 
-	<def-macro n="ser_estar" npar="2">
+<!--	<def-macro n="ser_estar" npar="2">
 		<choose>
 			<when>
 				<test>
@@ -241,10 +241,10 @@
 								<clip pos="2" part="lema_vb"/>
 								<lit-tag v="ser_estar"/>
 						</equal>
-						<!--<equal>
+						<equal>
 								<clip pos="2" part="lem"/>
 								<lit v="ger_enc"/>
-						</equal>-->
+						</equal>
 					</and>
 				</test>
 				<let>
@@ -255,7 +255,7 @@
 			</when>
 		</choose>
 
-	</def-macro>
+	</def-macro>-->
 
 	<def-macro n="canvia_el_verb" npar="3">
 		<call-macro n="modifica_sv">
@@ -294,7 +294,7 @@
 						<choose>
 							<when>
 								<test>
-									<equal>
+									<equal caseless="yes">
 										<clip pos="1" part="lema_vb"/>
 										<lit-tag v="venir"/>
 									</equal>
@@ -306,7 +306,7 @@
 							</when>
 							<when>
 								<test>
-									<equal>
+									<equal caseless="yes">
 										<clip pos="1" part="lema_vb"/>
 										<lit-tag v="començar"/>
 									</equal>
@@ -320,7 +320,7 @@
 						</choose>
 					</when>
 				</choose>
-				<choose>
+<!--				<choose>
 					<when>
 						<test>
 							<equal>
@@ -331,7 +331,7 @@
 						<choose>
 							<when>
 								<test>
-									<equal>
+									<equal caseless="yes">
 										<clip pos="1" part="lema_vb"/>
 										<lit-tag v="ser"/>
 									</equal>
@@ -343,7 +343,7 @@
 							</when>
 						</choose>
 					</when>
-				</choose>
+				</choose>-->
 			</when>		
 		</choose>
 	</def-macro>
@@ -472,6 +472,10 @@
 								<clip pos="3" part="inf-ger"/>
 								<lit-tag v="canviam"/>
 							</let>
+							<let>
+								<clip pos="1" part="lema_vb"/>
+								<lit-tag v="estar"/>
+							</let>
 						</when>
 						<otherwise>
 							<out>
@@ -486,10 +490,10 @@
 					</choose>
 				</otherwise>
 			</choose>
-			<let>
+<!--			<let>
 				<var n="kk"/>
 				<lit v=""/>
-			</let>
+			</let>-->
 		</def-macro>
 
 	<def-macro n="dona_info" npar="1">

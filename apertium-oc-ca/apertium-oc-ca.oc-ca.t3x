@@ -215,10 +215,16 @@
 					</when>
 					<when>
 						<test>
+							<and>
 							<equal>
 								<clip pos="0" part="lema_vb"/>
 								<lit-tag v="estar"/>
 							</equal>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit-tag v="ser"/>
+							</equal>
+							</and>
 						</test>
 						<let>
 							<clip pos="1" part="lem"/>
@@ -729,6 +735,20 @@
 							<equal>
 								<clip pos="1" part="lem"/>
 								<lit v="en"/>
+							</equal>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="lem"/>
+								<lit v="de"/>
 							</equal>
 						</test>
 						<let>
