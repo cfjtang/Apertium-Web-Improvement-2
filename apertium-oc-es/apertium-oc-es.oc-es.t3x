@@ -59,6 +59,7 @@ GR -->
   
     <def-attr n="lema_vb">
       <attr-item tags="acabar"/>
+      <attr-item tags="estar"/>
     </def-attr>
     
     <def-attr n="temps">
@@ -195,6 +196,42 @@ GR -->
             </let>
           </when>
         </choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="lema_vb"/>
+		<lit-tag v="acabar"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="lem"/>
+	      <lit v="acabar"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="0" part="lema_vb"/>
+		  <lit-tag v="estar"/>
+		</equal>
+		<equal>
+		  <clip pos="1" part="lem"/>
+		  <lit-tag v="ser"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="1" part="lem"/>
+	      <lit v="estar"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="a_verb"/>
+	      <lit-tag v="vblex"/>
+	    </let>
+	  </when>
+	</choose>
         <out>
           <lu>
             <clip pos="1" part="whole"/>
@@ -273,139 +310,207 @@ GR -->
       </action>
     </rule> -->
     
-    
- <!--   <rule comment="CHUNK: canvia el verb">
+
+   <rule comment="CHUNK: canvia el verb">
       <pattern>
-        <pattern-item n="verb"/>
+	<pattern-item n="verb"/>
       </pattern>
       <action>
-        <choose>
-          <when>
-            <test>
-              <equal>
-                <clip pos="0" part="temps"/>
-                <lit-tag v="ifi"/>
-              </equal>
-            </test>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="0" part="lema_vb"/>
-                    <lit-tag v="acabar"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="2" part="lem"/>
-                  <lit v="acabar"/>
-                </let>
-              </when>
-            </choose>
-            <out>
-              <lu>
-                <clip pos="1" part="whole"/>
-              </lu>
-              <b pos="1"/>
-              <lu>
-                <clip pos="2" part="whole"/>
-              </lu>
-            </out>
-          </when>
-          <otherwise>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="0" part="lema_vb"/>
-                    <lit-tag v="acabar"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="1" part="lem"/>
-                  <lit v="acabar"/>
-                </let>
-              </when>
-            </choose>
-            <out>
-              <lu>
-                <clip pos="1" part="whole"/>
-              </lu>
-            </out>
-          </otherwise>
-        </choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="temps"/>
+		<lit-tag v="ifi"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="acabar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="lem"/>
+		  <lit v="acabar"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="estar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="lem"/>
+		  <lit v="estar"/>
+		</let>
+		<let>
+		  <clip pos="2" part="a_verb"/>
+		  <lit-tag v="vblex"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out>
+	    
+	  </when>
+	  <otherwise>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="acabar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="lem"/>
+		  <lit v="acabar"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="estar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="lem"/>
+		  <lit v="estar"/>
+		</let>
+		<let>
+		  <clip pos="1" part="a_verb"/>
+		  <lit-tag v="vblex"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
       </action>
     </rule>
     
-    
-    <rule comment="CHUNK: canvia el verb">
+   
+       <rule comment="CHUNK: canvia el verb">
       <pattern>
-        <pattern-item n="pro_verb"/>
+	<pattern-item n="pro_verb"/>
       </pattern>
       <action>
-        <choose>
-          <when>
-            <test>
-              <equal>
-                <clip pos="0" part="temps"/>
-                <lit-tag v="ifi"/>
-              </equal>
-            </test>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="0" part="lema_vb"/>
-                    <lit-tag v="acabar"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="3" part="lem"/>
-                  <lit v="acabar"/>
-                </let>
-              </when>
-            </choose>
-            <out>
-              <lu>
-                <clip pos="1" part="whole"/>
-              </lu>
-              <b pos="1"/>
-              <lu>
-                <clip pos="2" part="whole"/>
-              </lu>
-              <b pos="2"/>
-              <lu>
-                <clip pos="3" part="whole"/>
-              </lu>
-            </out>
-          </when>
-          <otherwise>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="0" part="lema_vb"/>
-                    <lit-tag v="acabar"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="2" part="lem"/>
-                  <lit v="acabar"/>
-                </let>
-              </when>
-            </choose>
-            <out>
-              <lu>
-                <clip pos="1" part="whole"/>
-              </lu>
-              <b pos="1"/>
-              <lu>
-                <clip pos="2" part="whole"/>
-              </lu>
-            </out>
-          </otherwise>
-        </choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="temps"/>
+		<lit-tag v="ifi"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="acabar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="3" part="lem"/>
+		  <lit v="acabar"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="estar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="3" part="lem"/>
+		  <lit v="estar"/>
+		</let>
+		<let>
+		  <clip pos="3" part="a_verb"/>
+		  <lit-tag v="vblex"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	      <b pos="2"/>
+	      <lu>
+		<clip pos="3" part="whole"/>
+	      </lu>
+	    </out>
+	  </when>
+	  <otherwise>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="acabar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="lem"/>
+		  <lit v="acabar"/>
+		</let>
+	      </when>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="0" part="lema_vb"/>
+		    <lit-tag v="estar"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="lem"/>
+		  <lit v="estar"/>
+		</let>
+		<let>
+		  <clip pos="2" part="a_verb"/>
+		  <lit-tag v="vblex"/>
+		</let>
+	      </when>
+	    </choose>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
       </action>
-    </rule>-->
+    </rule>
+    
+
+
 
     <rule comment="treu el det 2elem">
       <pattern>
@@ -622,6 +727,20 @@ GR -->
             </let>
           </when>
         </choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="lem"/>
+		<lit v="de"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="lem"/>
+	      <lit v="a"/>
+	    </let>
+	  </when>
+	</choose>
         <out>
           <lu>
             <clip pos="1" part="whole"/>
