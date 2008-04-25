@@ -42,7 +42,9 @@
 			<cat-item tags="vbhaver.pp.*"/>
 			<cat-item tags="vbser.pp.*"/>
     </def-cat>
-   
+    <def-cat n="predet">
+	    <cat-item tags="predet.*"/>
+    </def-cat>  
     <def-cat n="det">
       <cat-item tags="det.dem.*"/>
       <cat-item tags="det.pers.*"/>
@@ -537,6 +539,18 @@
 			<list-item v="pasqua"/>
 			<list-item v="vacances"/>
 		</def-list>
+		<def-list n="estacions">
+			<list-item v="estiu"/>
+			<list-item v="hivern"/>
+			<list-item v="tardor"/>
+			<list-item v="primavera"/>
+		</def-list>
+		
+		<def-list n="temporal">
+			<list-item v="dia"/>
+			<list-item v="hora"/>
+			<list-item v="mes"/>
+		</def-list>
 		
 		<def-list n="mes">
 			<list-item v="gener"/>
@@ -621,6 +635,7 @@
 			<list-item v="estat"/>
 			<list-item v="presupost"/>
 			<list-item v="hotel"/>
+			<list-item v="cinema"/>
 		</def-list>
 			
 			
@@ -658,7 +673,9 @@
 			<list-item v="passar"/>
 			<list-item v="estar"/>
 			<list-item v="èsser"/>
-  		 </def-list>
+			<list-item v="sortir"/>
+			<list-item v="passar"/>
+   		 </def-list>
 		
 		<def-list n="amb_a">
 			<list-item v="correspondre" alt="oc"/>
@@ -1436,9 +1453,9 @@
 						<when>
 							<test>
 								<equal>
-										<clip pos="1" side="sl" part="a_nom"/>
-										<lit-tag v="np.loc"/>
-									</equal>
+									<clip pos="1" side="sl" part="a_nom"/>
+									<lit-tag v="np.loc"/>
+								</equal>
 							</test>
 							<let>
 								<var n="tipusnom"/>
@@ -1475,10 +1492,42 @@
 										</when>
 										
 										<otherwise>
-											<let>
-												<var n="tipusnom"/>
-												<lit-tag v="ndf"/>
-											</let>
+											<choose>
+												<when>
+													<test>
+														<in caseless="yes">
+															<clip pos="1" side="sl" part="lem"/>
+															<list n="temporal"/>
+														</in>
+													</test>
+													<let>
+														<var n="tipusnom"/>
+														<lit-tag v="temporal"/>
+													</let>
+												</when>
+												<otherwise>
+													<choose>
+														<when>
+															<test>
+																<in caseless="yes">
+																	<clip pos="1" side="sl" part="lem"/>
+																	<list n="estacions"/>
+																</in>
+															</test>
+															<let>
+																<var n="tipusnom"/>
+																<lit-tag v="estacions"/>
+															</let>
+														</when>
+														<otherwise>
+															<let>
+																<var n="tipusnom"/>
+																<lit-tag v="ndf"/>
+															</let>
+														</otherwise>
+													</choose>
+												</otherwise>
+											</choose>
 										</otherwise>
 									</choose>
 								</otherwise>
@@ -1677,10 +1726,24 @@
 				</when>
 				<when>
 					<test>
-						<equal caseless="yes">
-							<clip pos="1" side="sl" part="lemh"/>
-							<lit v="fer"/>
-						</equal>
+						<or>
+							<equal caseless="yes">
+								<clip pos="1" side="sl" part="lemh"/>
+								<lit v="fer"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="1" side="sl" part="lemh"/>
+								<lit v="veure"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="1" side="sl" part="lemh"/>
+								<lit v="mirar"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="1" side="sl" part="lemh"/>
+								<lit v="sentir"/>
+							</equal>
+						</or>
 					</test>
 					<let>
 						<var n="cv_verb"/>
@@ -5490,7 +5553,7 @@
 
 	<rule comment="REGLA: PREDET DET NOM">
 		<pattern>
-			<pattern-item n="det"/>
+			<pattern-item n="predet"/>
 			<pattern-item n="det"/>
 			<pattern-item n="nom"/>
 		</pattern>
@@ -6035,6 +6098,111 @@
 								<clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
 								<clip pos="2" side="tl" part="nbr_sp"/>	 
 								<clip pos="2" side="tl" part="lemq"/>
+							</lu> 
+						</chunk>
+					</out>
+				</otherwise>
+			</choose>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="REGLA: NOM ADV ADJ">
+		<pattern>
+			<pattern-item n="nom"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="adjec"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord2">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>	
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="tipus_nom">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="3"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<in caseless="yes">
+							<clip pos="1" side="tl" part="lem"/>
+							<list n="part_sing"/>
+						</in>
+					</test>
+					<out>
+						<chunk name="partnom_adv_adj" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SN"/></tag>
+								<tag><var n="genero"/></tag>
+								<tag><var n="numero"/></tag>
+								<tag><var n="tipusnom"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lemh"/> 
+								<clip pos="1" side="tl" part="a_nom"/>
+								<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+								<clip pos="1" side="tl" part="gen_mf"/>	 
+								<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+								<clip pos="1" side="tl" part="nbr_sp"/>	 
+								<clip pos="1" side="tl" part="lemq"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" side="tl" part="whole"/> 
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" side="tl" part="lemh"/>
+								<clip pos="3" side="tl" part="a_adj"/>
+								<clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+								<clip pos="3" side="tl" part="gen_mf"/>	 
+								<clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+								<clip pos="3" side="tl" part="nbr_sp"/>	 
+								<clip pos="3" side="tl" part="lemq"/>
+							</lu> 
+						</chunk>
+					</out>
+				</when>
+				<otherwise>
+					<out>
+						<chunk name="nom_adv_adj" case="caseFirstWord">
+							<tags>
+								<tag><lit-tag v="SN"/></tag>
+								<tag><var n="genero"/></tag>
+								<tag><var n="numero"/></tag>
+								<tag><var n="tipusnom"/></tag>
+							</tags>
+							<lu>
+								<clip pos="1" side="tl" part="lemh"/> 
+								<clip pos="1" side="tl" part="a_nom"/>
+								<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+								<clip pos="1" side="tl" part="gen_mf"/>	 
+								<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+								<clip pos="1" side="tl" part="nbr_sp"/>	 
+								<clip pos="1" side="tl" part="lemq"/>
+							</lu>
+							<b pos="1"/>
+							<lu>
+								<clip pos="2" side="tl" part="whole"/> 
+							</lu>
+							<b pos="2"/>
+							<lu>
+								<clip pos="3" side="tl" part="lemh"/>
+								<clip pos="3" side="tl" part="a_adj"/>
+								<clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+								<clip pos="3" side="tl" part="gen_mf"/>	 
+								<clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+								<clip pos="3" side="tl" part="nbr_sp"/>	 
+								<clip pos="3" side="tl" part="lemq"/>
 							</lu> 
 						</chunk>
 					</out>

@@ -115,9 +115,10 @@
 		<attr-item tags="nopart"/>
 	</def-attr>
 	<def-attr n="tnom">
-        <attr-item tags="loc"/>
-       <attr-item tags="mes"/>
-        <attr-item tags="part"/>
+		<attr-item tags="loc"/>
+		<attr-item tags="mes"/>
+		<attr-item tags="part"/>
+		<attr-item tags="temporal"/>
 	</def-attr>
 	<!--<def-attr n="tprep">
         <attr-item tags="a"/>
@@ -349,7 +350,7 @@
 	</def-macro>
 
 	<def-macro n="canvis_amb_les_pr" npar="3">
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -474,6 +475,31 @@
 							</let>
 						</when>
 						<otherwise>
+							<choose alt="oc@aran">
+								<when>
+									<test> <!--increïble però cert!-->
+										<and>
+											<equal>
+												<clip pos="1" part="tverb"/>
+												<lit-tag v="nopart"/>
+											</equal>
+											<equal caseless="yes">
+												<clip pos="2" part="lem"/>
+												<lit v="per"/>
+											</equal>
+											<equal>
+												<clip pos="3" part="tnom"/>
+												<lit-tag v="loc"/>
+											</equal>
+										</and>
+									</test>
+									<let>
+										<clip pos="2" part="lem"/>
+										<lit v="cap"/>
+									</let>
+								</when>
+							</choose>
+							
 							<out>
 								<chunk>
 									<clip pos="2" part="lem"/>
@@ -774,7 +800,7 @@
 			<when>
 				<test>
 					<and>
-						<equal>
+						<equal caseless="yes">
 							<clip pos="1" part="lem"/>
 							<lit v="en"/>
 						</equal>
@@ -794,6 +820,48 @@
 					<clip pos="1" part="lem"/>
 					<lit v="a"/>
 				</let>
+			</when>
+			<when alt="oc">
+				<test>
+					<or>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="dins"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</equal>
+					</or>
+				</test>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="loc"/>
+							</equal>
+						</test>
+					
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+					<when>
+						<test>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="temporal"/>
+							</equal>
+						</test>
+					
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
 			</when>
 		</choose>
 	</def-macro>
@@ -1233,7 +1301,7 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="2"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
@@ -1317,11 +1385,11 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
@@ -1401,11 +1469,11 @@
 			<call-macro n="assigna_gen_nbr">
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="1"/>
 				<with-param pos="3"/>
 			</call-macro>
-			<call-macro n="cv_prep" alt="oc@aran">
+			<call-macro n="cv_prep">
 				<with-param pos="2"/>
 				<with-param pos="3"/>
 			</call-macro>
