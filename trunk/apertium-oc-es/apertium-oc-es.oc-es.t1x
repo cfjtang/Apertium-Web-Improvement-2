@@ -513,7 +513,7 @@
       <list-item v="participar"/>
       <list-item v="pensar"/>
       <list-item v="creer"/>	  
-      <list-item v="ser"/> 
+    <!--  <list-item v="ser"/> -->
       <list-item v="estar"/>
     </def-list>
     
@@ -843,6 +843,10 @@
 		  <equal>
 		    <var n="tipusverb"/>
 		    <lit-tag v="vbmante_a"/>
+		  </equal>
+		  <equal>
+		    <var n="tipusverb"/>
+		    <lit-tag v="ser"/>
 		  </equal>
 		  <equal>
 		    <var n="tipusverb"/>
@@ -1912,7 +1916,62 @@
         </when> -->
       </choose>
     </def-macro>
+
+
+
+
     <def-macro n="firstWord" npar="1">
+      <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="a_np_acr"/>
+	      <lit v=""/>
+	    </equal>
+	  </test>
+	  <choose>
+	    <when>
+	      <test>
+		<equal> 
+		  <var n="EOS"/>
+		  <lit v="true"/>
+		</equal> 
+	      </test>
+	      <modify-case>
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="aa"/>
+	      </modify-case>
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="Aa"/>
+	      </let>
+	    </when>
+	    <otherwise> 
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	      </let>
+	    </otherwise>
+	  </choose>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="caseFirstWord"/>
+	    <lit v="aa"/>
+	  </let>
+	</otherwise>
+      </choose>
+      <let>
+	<var n="EOS"/>
+	<lit v="false"/>
+      </let>
+    </def-macro>
+
+
+  <!-- macro antiga , canviada per MG 25-04-08, s'ha tret de totes les regles també <let><var n="caseFirstWord"/><lit v="aa"/></let>
+
+
+       <def-macro n="firstWord" npar="1">
       <choose>
         <when>
           <test>
@@ -1951,7 +2010,7 @@
         <var n="EOS"/>
         <lit v="false"/>
       </let>
-    </def-macro>
+    </def-macro> -->
 
     <def-macro n="f_bcond" npar="1">
 <!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
@@ -4320,10 +4379,6 @@
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -4363,10 +4418,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: ANTROPÒNIM">
@@ -4387,10 +4438,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
    
@@ -4419,10 +4466,6 @@
         <call-macro n="f_bcond">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -4460,10 +4503,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -4501,10 +4540,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -4532,10 +4567,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET 2 ANTROPÒNIMS (px. la maria lópez)">
@@ -4568,10 +4599,6 @@
         <call-macro n="f_bcond">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ADJ 2 ANTROPÒNIMS (px. la pichona maria lópez)">
@@ -4613,10 +4640,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET 2 ANTROPÒNIMS ADJ (px. la maria lópez pichona)">
@@ -4658,10 +4681,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -4709,10 +4728,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: PREDET DET NOM">
@@ -4770,10 +4785,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET NUM">
@@ -4815,10 +4826,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NUM NOM">
@@ -4914,10 +4921,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NOM ADJ">
@@ -4968,10 +4971,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: ADJ NOM">
@@ -5025,10 +5024,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ADJ ADJ NOM">
@@ -5101,10 +5096,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="DET NUMERAL NOM">
@@ -5166,10 +5157,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!-- mirar com és això en oc 
@@ -5239,10 +5226,6 @@
 	 </lu>
 	 </chunk>
 	 </out>
-	 <let>
-	 <var n="caseFirstWord"/>
-	 <lit v="aa"/>
-	 </let>
 	 </action>
 	 </rule>
 
@@ -5549,10 +5532,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET NOM ADJ">
@@ -5614,10 +5593,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ADJ">
@@ -5663,10 +5638,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ADJ NOM">
@@ -5731,10 +5702,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ADJ cnj  ADJ NOM">
@@ -5819,10 +5786,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NUM ADV ADJ NOM">
@@ -5896,10 +5859,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NUM ADJ NOM">
@@ -5968,10 +5927,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NUM ADJ cnj  ADJ NOM">
@@ -6063,10 +6018,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NUM NOM ADJ">
@@ -6132,10 +6083,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET NOM ADV ADJ">
@@ -6202,10 +6149,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!-- això tampoc sé com és en oc
@@ -6274,10 +6217,6 @@
 	 <call-macro n="f_bcond">
 	 <with-param pos="4"/>
 	 </call-macro>
-	 <let>
-	 <var n="caseFirstWord"/>
-	 <lit v="aa"/>
-	 </let>
 	 </action>
 	 </rule>-->
     <rule comment="REGLA: NUM NOM ADV ADJ">
@@ -6348,10 +6287,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: NOM ADJ cnjcoo ADJ">
@@ -6419,10 +6354,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET NOM ADJ cnjcoo ADJ">
@@ -6504,10 +6435,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!--<rule comment="REGLA: prep X% -> prep el X% ">
@@ -6582,10 +6509,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
@@ -6616,10 +6539,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!-- *************************************** REGLES DE SV *********************************************** -->
@@ -6653,10 +6572,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
  <rule comment="REGLA: VERB ADV" alt="oc">
@@ -6745,10 +6660,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -6783,10 +6694,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: INF adv">
@@ -6880,10 +6787,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: PREP INF">
@@ -6968,10 +6871,6 @@
           </otherwise>
         </choose>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="lema"/>
           <lit v=""/>
         </let>
@@ -7006,10 +6905,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: anar INF" alt="oc">
@@ -7056,10 +6951,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -7070,13 +6961,33 @@
 	    <pattern-item n="inf"/>
 	  </pattern>
 	  <action>
-	    <call-macro n="temps_verb">
-	      <with-param pos="1"/>
-	    </call-macro>
 	    <call-macro n="tipus_verb">
 	      <with-param pos="3"/>
 	    </call-macro>
 	    <call-macro n="firstWord">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <choose>
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="1" side="tl" part="a_verb"/>
+		      <lit-tag v="vbser"/>
+		    </equal>
+		    <equal>
+		      <clip pos="1" side="tl" part="a_verb"/>
+		      <lit-tag v="vbhaver"/>
+		    </equal>
+		  </or>
+		</test>
+		<call-macro n="comprova_auxiliar">
+		  <with-param pos="1"/>
+		  <with-param pos="2"/>
+		</call-macro>
+	      </when>
+	    </choose>
+	    <call-macro n="temps_verb">
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
@@ -7098,6 +7009,7 @@
 		  <clip pos="2" side="tl" part="a_verb"/>
 		  <clip pos="2" side="tl" part="temps"/>
 		  <clip pos="2" side="tl" part="pers"/>
+		  <clip pos="2" side="tl" part="gen"/>
 		  <clip pos="2" side="tl" part="nbr"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
@@ -7117,10 +7029,6 @@
 		</lu>
 	      </chunk>
 	    </out>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
 
@@ -7175,10 +7083,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -7190,6 +7094,26 @@
 	    <pattern-item n="inf"/>
 	  </pattern>
 	  <action>
+	    <choose>
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="2" side="tl" part="a_verb"/>
+		      <lit-tag v="vbser"/>
+		    </equal>
+		    <equal>
+		      <clip pos="2" side="tl" part="a_verb"/>
+		      <lit-tag v="vbhaver"/>
+		    </equal>
+		  </or>
+		</test>
+		<call-macro n="comprova_auxiliar">
+		  <with-param pos="2"/>
+		  <with-param pos="3"/>
+		</call-macro>
+	      </when>
+	    </choose>
 	    <call-macro n="temps_verb">
 	      <with-param pos="2"/>
 	    </call-macro>
@@ -7222,6 +7146,7 @@
 		  <clip pos="3" side="tl" part="a_verb"/>
 		  <clip pos="3" side="tl" part="temps"/>
 		  <clip pos="3" side="tl" part="pers"/>
+		  <clip pos="3" side="tl" part="gen"/>
 		  <clip pos="3" side="tl" part="nbr"/>
 		  <clip pos="3" side="tl" part="lemq"/> 
 		</lu>
@@ -7241,10 +7166,6 @@
 		</lu>
 	      </chunk>
 	    </out>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
 
@@ -7303,10 +7224,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -7320,6 +7237,26 @@
 	    <pattern-item n="inf"/>
 	  </pattern>
 	  <action>
+	    <choose>
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="3" side="tl" part="a_verb"/>
+		      <lit-tag v="vbser"/>
+		    </equal>
+		    <equal>
+		      <clip pos="3" side="tl" part="a_verb"/>
+		      <lit-tag v="vbhaver"/>
+		    </equal>
+		  </or>
+		</test>
+		<call-macro n="comprova_auxiliar">
+		  <with-param pos="3"/>
+		  <with-param pos="4"/>
+		</call-macro>
+	      </when>
+	    </choose>
 	    <call-macro n="temps_verb">
 	      <with-param pos="3"/>
 	    </call-macro>
@@ -7327,7 +7264,7 @@
 	      <with-param pos="5"/>
 	    </call-macro>
 	    <call-macro n="firstWord">
-	      <with-param pos="2"/>
+	      <with-param pos="1"/>
 	    </call-macro>
 	    <out>
 	      <chunk name="pro_pro_verb_ir_a_inf" case="caseFirstWord">
@@ -7356,6 +7293,7 @@
 		  <clip pos="4" side="tl" part="a_verb"/>
 		  <clip pos="4" side="tl" part="temps"/>
 		  <clip pos="4" side="tl" part="pers"/>
+		  <clip pos="4" side="tl" part="gen"/>
 		  <clip pos="4" side="tl" part="nbr"/>
 		  <clip pos="4" side="tl" part="lemq"/> 
 		</lu>
@@ -7375,10 +7313,6 @@
 		</lu>
 	      </chunk>
 	    </out>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
 
@@ -7491,10 +7425,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -7623,10 +7553,6 @@
 		</out>
 	      </otherwise>
 	    </choose>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
 
@@ -7760,10 +7686,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -7915,10 +7837,6 @@
 		</out>
 	      </otherwise>
 	    </choose>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
 
@@ -8060,10 +7978,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -8224,10 +8138,6 @@
 		</out>
 	      </otherwise>
 	    </choose>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
 
@@ -8276,10 +8186,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: pro anar a INF" alt="oc@aran">
@@ -8331,10 +8237,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: pro pro anar a INF" alt="oc@aran">
@@ -8353,7 +8255,7 @@
           <with-param pos="4"/>
         </call-macro>
         <call-macro n="firstWord">
-          <with-param pos="2"/>
+          <with-param pos="1"/>
         </call-macro>
         <out>
           <chunk name="pro_pro_ir_a_inf" case="caseFirstWord">
@@ -8391,10 +8293,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -8455,10 +8353,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: pro anar adv a INF" alt="oc@aran">
@@ -8527,10 +8421,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: pro pro anar adv INF" alt="oc@aran">
@@ -8604,10 +8494,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: en ger-&gt; ger">
@@ -8647,10 +8533,6 @@
         <call-macro n="f_bcond">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: en tot inf-&gt; ger">
@@ -8694,10 +8576,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -8748,10 +8626,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -8806,10 +8680,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -8838,10 +8708,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -8854,9 +8720,6 @@
         <call-macro n="f_concord1">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="tipus_verb">
           <with-param pos="2"/>
         </call-macro>
@@ -8866,6 +8729,9 @@
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="2"/>
         </call-macro>
         <choose>
           <when>
@@ -8912,10 +8778,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -8938,15 +8800,15 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="3"/>
-        </call-macro>
         <call-macro n="verb_ref">
           <with-param pos="1"/>
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="verb_ref">
           <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="temps_verb">
           <with-param pos="3"/>
         </call-macro>
         <choose>
@@ -8996,10 +8858,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -9013,9 +8871,6 @@
         <call-macro n="f_concord1">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="tipus_verb">
           <with-param pos="2"/>
         </call-macro>
@@ -9025,6 +8880,9 @@
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="2"/>
         </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="3"/>
@@ -9169,10 +9027,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -9358,10 +9212,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 	
@@ -9418,10 +9268,6 @@
         <call-macro n="f_bcond">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9494,10 +9340,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9611,10 +9453,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
         <let>
           <var n="lema"/>
           <lit v=""/>
@@ -9754,10 +9592,6 @@
           <with-param pos="3"/>
         </call-macro>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="lema"/>
           <lit v=""/>
         </let>
@@ -9870,10 +9704,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
         <let>
           <var n="lema"/>
           <lit v=""/>
@@ -10012,10 +9842,6 @@
           <with-param pos="3"/>
         </call-macro>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="lema"/>
           <lit v=""/>
         </let>
@@ -10028,13 +9854,13 @@
         <pattern-item n="inf"/>
       </pattern>
       <action>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="tipus_verb">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="temps_verb">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10059,10 +9885,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10073,13 +9895,13 @@
         <pattern-item n="adv"/>
       </pattern>
       <action>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="tipus_verb">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="temps_verb">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="lema_adv">
@@ -10163,10 +9985,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10267,10 +10085,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10290,13 +10104,13 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="verb_ref_mod">
           <with-param pos="1"/>
           <with-param pos="2"/>
           <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="2"/>
         </call-macro>
         <choose>
           <when>
@@ -10356,10 +10170,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="vbmod prnpro inf">
@@ -10378,13 +10188,13 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="verb_ref_mod">
           <with-param pos="2"/>
           <with-param pos="1"/>
           <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -10442,10 +10252,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro vbmod inf adv">
@@ -10465,9 +10271,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="4"/>
         </call-macro>
@@ -10475,6 +10278,9 @@
           <with-param pos="1"/>
           <with-param pos="2"/>
           <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="2"/>
         </call-macro>
         <choose>
           <when>
@@ -10597,10 +10403,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro vbmod adv inf">
@@ -10620,9 +10422,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="3"/>
         </call-macro>
@@ -10630,6 +10429,9 @@
           <with-param pos="1"/>
           <with-param pos="2"/>
           <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="2"/>
         </call-macro>
         <choose>
           <when>
@@ -10752,10 +10554,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="vbmod prnpro inf adv">
@@ -10775,9 +10573,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="4"/>
         </call-macro>
@@ -10785,6 +10580,9 @@
           <with-param pos="2"/>
           <with-param pos="1"/>
           <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -10903,10 +10701,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="vbmod adv prnpro inf">
@@ -10926,9 +10720,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="2"/>
         </call-macro>
@@ -10936,6 +10727,9 @@
           <with-param pos="3"/>
           <with-param pos="1"/>
           <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -11058,10 +10852,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro vbmod inf">
@@ -11084,9 +10874,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="3"/>
-        </call-macro>
         <call-macro n="verb_ref_mod">
           <with-param pos="1"/>
           <with-param pos="3"/>
@@ -11096,6 +10883,9 @@
           <with-param pos="2"/>
           <with-param pos="3"/>
           <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="3"/>
         </call-macro>
         <choose>
           <when>
@@ -11163,10 +10953,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="vbmod prnpro prnpro inf">
@@ -11189,9 +10975,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="verb_ref_mod">
           <with-param pos="2"/>
           <with-param pos="1"/>
@@ -11201,6 +10984,9 @@
           <with-param pos="3"/>
           <with-param pos="1"/>
           <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -11266,10 +11052,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro vbmod inf adv">
@@ -11293,9 +11075,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="3"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="5"/>
         </call-macro>
@@ -11308,6 +11087,9 @@
           <with-param pos="2"/>
           <with-param pos="3"/>
           <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="3"/>
         </call-macro>
         <choose>
           <when>
@@ -11447,10 +11229,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro vbmod adv inf">
@@ -11474,9 +11252,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="3"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="4"/>
         </call-macro>
@@ -11489,6 +11264,9 @@
           <with-param pos="2"/>
           <with-param pos="3"/>
           <with-param pos="5"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="3"/>
         </call-macro>
         <choose>
           <when>
@@ -11628,10 +11406,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="vbmod prnpro prnpro inf adv">
@@ -11655,9 +11429,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="5"/>
         </call-macro>
@@ -11670,6 +11441,9 @@
           <with-param pos="3"/>
           <with-param pos="1"/>
           <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -11805,10 +11579,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="vbmod adv prnpro prnpro inf">
@@ -11832,9 +11602,6 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="lema_adv">
           <with-param pos="2"/>
         </call-macro>
@@ -11847,6 +11614,9 @@
           <with-param pos="4"/>
           <with-param pos="1"/>
           <with-param pos="5"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -11982,10 +11752,6 @@
         <call-macro n="f_bcond">
           <with-param pos="5"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="inf prnenc">
@@ -12030,10 +11796,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="inf enc enc">
@@ -12089,10 +11851,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!--
@@ -13210,10 +12968,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="estar a prnpro inf">
@@ -13283,10 +13037,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="estar a prnpro prnpro inf">
@@ -13370,10 +13120,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
     
@@ -13427,10 +13173,6 @@
         <call-macro n="f_bcond">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -13497,10 +13239,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="ger prnenc">
@@ -13544,10 +13282,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="ger-enc-enc">
@@ -13598,10 +13332,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
      
@@ -13657,10 +13387,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -13727,10 +13453,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -13775,10 +13497,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -13834,10 +13552,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -13889,10 +13603,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -13907,11 +13617,11 @@
           <with-param pos="1"/>
           <with-param pos="2"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="tipus_verb">
           <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
@@ -13941,10 +13651,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -13959,11 +13665,11 @@
           <with-param pos="1"/>
           <with-param pos="3"/>
         </call-macro>
-        <call-macro n="temps_verb">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="tipus_verb">
           <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="temps_verb">
+          <with-param pos="1"/>
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
@@ -14054,10 +13760,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -14171,10 +13873,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxpers + pp">
@@ -14258,10 +13956,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxpers auxpp + pp">
@@ -14341,10 +14035,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxpers adv pp">
@@ -14497,10 +14187,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxpers adv auxpp pp">
@@ -14657,10 +14343,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxpers pp">
@@ -14754,10 +14436,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxpers auxpp pp">
@@ -14855,10 +14533,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxpers adv pp">
@@ -15023,10 +14697,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxpers adv auxpp pp">
@@ -15195,10 +14865,6 @@
         <call-macro n="f_bcond">
           <with-param pos="5"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxinf pp">
@@ -15260,10 +14926,6 @@
         <call-macro n="f_bcond">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxinf auxpp pp">
@@ -15329,10 +14991,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxinf adv pp">
@@ -15476,10 +15134,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro auxinf adv auxpp pp">
@@ -15627,10 +15281,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxinf pp">
@@ -15714,10 +15364,6 @@
         <call-macro n="f_bcond">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxinf auxpp pp">
@@ -15805,10 +15451,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxinf adv pp">
@@ -15973,10 +15615,6 @@
         <call-macro n="f_bcond">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxinf adv auxpp pp">
@@ -16145,10 +15783,6 @@
         <call-macro n="f_bcond">
           <with-param pos="5"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!--************************************ ALTRES ************************************************ -->
@@ -16201,10 +15835,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -16238,10 +15868,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -16275,10 +15901,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -16310,10 +15932,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -16399,10 +16017,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -16424,10 +16038,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -16453,10 +16063,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -16510,10 +16116,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16546,10 +16148,6 @@
           <var n="lema"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -16575,10 +16173,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16677,10 +16271,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16702,10 +16292,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16838,12 +16424,7 @@
 		</lu>
 	      </chunk>
 	    </out>
-	    <let>
-	      <var n="caseFirstWord"/>
-	      <lit v="aa"/>
-	    </let>
 	  </action>
 	</rule>
-
   </section-rules>
 </transfer>
