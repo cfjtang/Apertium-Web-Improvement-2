@@ -7,6 +7,8 @@
     </def-cat>-->
     <def-cat n="pr">
       <cat-item name="a"/>
+      <cat-item name="en"/>
+      <cat-item name="cap"/>
     </def-cat>
    <def-cat n="verb">
       <cat-item name="verb"/>
@@ -724,7 +726,7 @@
 			</action>
 		</rule>
 	
-				<rule comment="CHUNK: canvia les prepos que fa falta">
+		<rule comment="CHUNK: canvia les prepos que fa falta">
 			<pattern>
 				<pattern-item n="pr"/>
 			</pattern>
@@ -732,10 +734,16 @@
 				<choose>
 					<when>
 						<test>
-							<equal>
-								<clip pos="1" part="lem"/>
-								<lit v="en"/>
-							</equal>
+							<and>
+								<equal caseless="yes">
+									<clip pos="1" part="lem"/>
+									<lit v="en"/>
+								</equal>
+								<equal caseless="yes">
+									<clip pos="0" part="lem"/>
+									<lit v="a"/>
+								</equal>
+							</and>
 						</test>
 						<let>
 							<clip pos="1" part="lem"/>
@@ -746,14 +754,80 @@
 				<choose>
 					<when>
 						<test>
-							<equal>
-								<clip pos="1" part="lem"/>
-								<lit v="de"/>
-							</equal>
+							<and>
+								<equal caseless="yes">
+									<clip pos="1" part="lem"/>
+									<lit v="de"/>
+								</equal>
+								<equal caseless="yes">
+									<clip pos="0" part="lem"/>
+									<lit v="a"/>
+								</equal>
+							</and>
 						</test>
 						<let>
 							<clip pos="1" part="lem"/>
 							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<and>
+								<equal caseless="yes">
+									<clip pos="1" part="lem"/>
+									<lit v="dins"/>
+								</equal>
+								<equal caseless="yes">
+									<clip pos="0" part="lem"/>
+									<lit v="a"/>
+								</equal>
+							</and>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<and>
+								<equal caseless="yes">
+									<clip pos="1" part="lem"/>
+									<lit v="dins"/>
+								</equal>
+								<equal caseless="yes">
+									<clip pos="0" part="lem"/>
+									<lit v="en"/>
+								</equal>
+							</and>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+				<choose>
+					<when>
+						<test>
+							<and>
+								<equal caseless="yes">
+									<clip pos="1" part="lem"/>
+									<lit v="per"/>
+								</equal>
+								<equal caseless="yes">
+									<clip pos="0" part="lem"/>
+									<lit v="cap"/>
+								</equal>
+							</and>
+						</test>
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="cap a"/>
 						</let>
 					</when>
 				</choose>

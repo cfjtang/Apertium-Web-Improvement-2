@@ -159,6 +159,8 @@
           <attr-item tags="mes"/>
           <attr-item tags="nploc"/>
           <attr-item tags="data"/>
+         <attr-item tags="temporal"/>
+         <attr-item tags="estacions"/>
       </def-attr>
 
 	  <def-attr n="lema_vb">
@@ -406,7 +408,7 @@
 			<when>
 				<test>
 					<and>
-						<equal>
+						<equal caseless="yes">
 							<clip pos="1" part="lem"/>
 							<lit v="a"/>
 						</equal>
@@ -418,6 +420,10 @@
 							<equal>
 								<clip pos="2" part="tnom"/>
 								<lit-tag v="nploc"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="estacions"/>
 							</equal>
 						</or>
 					</and>
@@ -433,11 +439,11 @@
 				<test>
 					<and>
 						<or>
-							<equal>
+							<equal caseless="yes">
 								<clip pos="1" part="lem"/>
 								<lit v="a"/>
 							</equal>
-							<equal>
+							<equal caseless="yes">
 								<clip pos="1" part="lem"/>
 								<lit v="en"/>
 							</equal>
@@ -446,7 +452,24 @@
 							<clip pos="2" part="tnom"/>
 							<lit-tag v="loc"/>
 						</equal>
-
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="dins"/>
+				</let>
+			</when>
+			<when>
+				<test>
+					<and>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</equal>
+						<equal>
+							<clip pos="2" part="tnom"/>
+							<lit-tag v="temporal"/>
+						</equal>
 					</and>
 				</test>
 				<let>
@@ -657,6 +680,10 @@
 										<equal>
 											<clip pos="1" part="lem"/>
 											<lit v="partnom_adj"/>
+										</equal>
+										<equal>
+											<clip pos="1" part="lem"/>
+											<lit v="partnom_adv_adj"/>
 										</equal>
 									</or>
 									<equal>
