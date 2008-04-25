@@ -7214,13 +7214,33 @@
 			<pattern-item n="inf"/>
 		</pattern>
 		<action>
-			<call-macro n="temps_verb">
-				<with-param pos="1"/>
-			</call-macro>
 			<call-macro n="tipus_verb">
 				<with-param pos="3"/>
 			</call-macro>
 			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<or>
+							<equal>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbser"/>
+							</equal>
+							<equal>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbhaver"/>
+							</equal>
+						</or>
+					</test>
+					<call-macro n="comprova_auxiliar">
+						<with-param pos="1"/>
+						<with-param pos="2"/>
+					</call-macro>
+				</when>
+			</choose>
+			<call-macro n="temps_verb">
 				<with-param pos="1"/>
 			</call-macro>
 			<out>
@@ -7242,6 +7262,7 @@
 						<clip pos="2" side="tl" part="a_verb"/>
 						<clip pos="2" side="tl" part="temps"/>
 						<clip pos="2" side="tl" part="pers"/>
+						<clip pos="2" side="tl" part="gen"/>
 						<clip pos="2" side="tl" part="nbr"/>
 						<clip pos="2" side="tl" part="lemq"/> 
 					</lu>
@@ -7333,6 +7354,26 @@
 			<pattern-item n="inf"/>
 		</pattern>
 		<action>
+			<choose>
+				<when>
+					<test>
+						<or>
+							<equal>
+								<clip pos="2" side="tl" part="a_verb"/>
+								<lit-tag v="vbser"/>
+							</equal>
+							<equal>
+								<clip pos="2" side="tl" part="a_verb"/>
+								<lit-tag v="vbhaver"/>
+							</equal>
+						</or>
+					</test>
+					<call-macro n="comprova_auxiliar">
+						<with-param pos="2"/>
+						<with-param pos="3"/>
+					</call-macro>
+				</when>
+			</choose>
 			<call-macro n="temps_verb">
 				<with-param pos="2"/>
 			</call-macro>
@@ -7365,6 +7406,7 @@
 						<clip pos="3" side="tl" part="a_verb"/>
 						<clip pos="3" side="tl" part="temps"/>
 						<clip pos="3" side="tl" part="pers"/>
+						<clip pos="3" side="tl" part="gen"/>
 						<clip pos="3" side="tl" part="nbr"/>
 						<clip pos="3" side="tl" part="lemq"/> 
 					</lu>
@@ -7461,6 +7503,26 @@
 			<pattern-item n="inf"/>
 		</pattern>
 		<action>
+			<choose>
+				<when>
+					<test>
+						<or>
+							<equal>
+								<clip pos="3" side="tl" part="a_verb"/>
+								<lit-tag v="vbser"/>
+							</equal>
+							<equal>
+								<clip pos="3" side="tl" part="a_verb"/>
+								<lit-tag v="vbhaver"/>
+							</equal>
+						</or>
+					</test>
+					<call-macro n="comprova_auxiliar">
+						<with-param pos="3"/>
+						<with-param pos="4"/>
+					</call-macro>
+				</when>
+			</choose>
 			<call-macro n="temps_verb">
 				<with-param pos="3"/>
 			</call-macro>
@@ -7497,6 +7559,7 @@
 						<clip pos="4" side="tl" part="a_verb"/>
 						<clip pos="4" side="tl" part="temps"/>
 						<clip pos="4" side="tl" part="pers"/>
+						<clip pos="4" side="tl" part="gen"/>
 						<clip pos="4" side="tl" part="nbr"/>
 						<clip pos="4" side="tl" part="lemq"/> 
 					</lu>
