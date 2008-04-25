@@ -10,6 +10,10 @@ GR -->
     <def-cat n="pr">
       <cat-item name="a"/>
     </def-cat>
+
+     <def-cat n="en">
+      <cat-item name="en"/>
+    </def-cat>
     
     <def-cat n="verb">
       <cat-item name="verb"/>
@@ -316,56 +320,7 @@ GR -->
 	<pattern-item n="verb"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="0" part="temps"/>
-		<lit-tag v="ifi"/>
-	      </equal>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="0" part="lema_vb"/>
-		    <lit-tag v="acabar"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="lem"/>
-		  <lit v="acabar"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="0" part="lema_vb"/>
-		    <lit-tag v="estar"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="2" part="lem"/>
-		  <lit v="estar"/>
-		</let>
-		<let>
-		  <clip pos="2" part="a_verb"/>
-		  <lit-tag v="vblex"/>
-		</let>
-	      </when>
-	    </choose>
-	    <out>
-	      <lu>
-		<clip pos="1" part="whole"/>
-	      </lu>
-	      <b pos="1"/>
-	      <lu>
-		<clip pos="2" part="whole"/>
-	      </lu>
-	    </out>
-	    
-	  </when>
-	  <otherwise>
+	
 	    <choose>
 	      <when>
 		<test>
@@ -401,8 +356,6 @@ GR -->
 		<clip pos="1" part="whole"/>
 	      </lu>
 	    </out>
-	  </otherwise>
-	</choose>
       </action>
     </rule>
     
@@ -412,59 +365,7 @@ GR -->
 	<pattern-item n="pro_verb"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="0" part="temps"/>
-		<lit-tag v="ifi"/>
-	      </equal>
-	    </test>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="0" part="lema_vb"/>
-		    <lit-tag v="acabar"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="lem"/>
-		  <lit v="acabar"/>
-		</let>
-	      </when>
-	      <when>
-		<test>
-		  <equal>
-		    <clip pos="0" part="lema_vb"/>
-		    <lit-tag v="estar"/>
-		  </equal>
-		</test>
-		<let>
-		  <clip pos="3" part="lem"/>
-		  <lit v="estar"/>
-		</let>
-		<let>
-		  <clip pos="3" part="a_verb"/>
-		  <lit-tag v="vblex"/>
-		</let>
-	      </when>
-	    </choose>
-	    <out>
-	      <lu>
-		<clip pos="1" part="whole"/>
-	      </lu>
-	      <b pos="1"/>
-	      <lu>
-		<clip pos="2" part="whole"/>
-	      </lu>
-	      <b pos="2"/>
-	      <lu>
-		<clip pos="3" part="whole"/>
-	      </lu>
-	    </out>
-	  </when>
-	  <otherwise>
+	
 	    <choose>
 	      <when>
 		<test>
@@ -504,8 +405,6 @@ GR -->
 		<clip pos="2" part="whole"/>
 	      </lu>
 	    </out>
-	  </otherwise>
-	</choose>
       </action>
     </rule>
     
@@ -713,20 +612,6 @@ GR -->
         <pattern-item n="pr"/>
       </pattern>
       <action>
-        <choose>
-          <when>
-            <test>
-              <equal>
-                <clip pos="1" part="lem"/>
-                <lit v="en"/>
-              </equal>
-            </test>
-            <let>
-              <clip pos="1" part="lem"/>
-              <lit v="a"/>
-            </let>
-          </when>
-        </choose>
 	<choose>
 	  <when>
 	    <test>
@@ -749,5 +634,22 @@ GR -->
       </action>
     </rule>
     
+  <rule comment="CHUNK: canvia les prepos que fa falta">
+      <pattern>
+        <pattern-item n="en"/>
+      </pattern>
+      <action>	
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="en"/>
+	</let>
+	<out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+        </out>
+      </action>
+  </rule>
+
   </section-rules>
 </postchunk>

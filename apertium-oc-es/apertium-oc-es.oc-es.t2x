@@ -102,8 +102,8 @@
  
     
     <def-attr n="tnom">
-      <attr-item tags="loc"/>
-      <attr-item tags="mes"/>
+     <!-- <attr-item tags="loc"/>
+      <attr-item tags="mes"/> -->
       <attr-item tags="part"/>
     </def-attr>
 
@@ -272,7 +272,7 @@
               </choose>
             </when>
           </choose>
-        <!--  <choose>
+          <choose>
             <when>
               <test>
                 <equal>
@@ -295,7 +295,7 @@
                 </when>
               </choose>
             </when>
-          </choose> -->
+          </choose> 
         </when>                
       </choose>
     </def-macro>
@@ -426,12 +426,28 @@
 		<clip pos="3" part="inf-ger"/>
 		<lit-tag v="canviam"/>
 	      </let>
-	      <let>
-		<clip pos="1" part="lema_vb"/>
-		<lit-tag v="estar"/>
-	      </let>
 	    </when>
 	    <otherwise>
+	      <choose>
+		<when>
+		  <test> 
+		    <and>
+		      <equal caseless="yes">
+			<clip pos="1" part="lema_vb"/>
+			<lit-tag v="ser"/>
+		      </equal>
+		      <equal caseless="yes">
+			<clip pos="2" part="lem"/>
+			<lit v="a"/>
+		      </equal>
+		    </and>
+		  </test>
+		  <let>
+		    <clip pos="2" part="lem"/>
+		    <lit v="en"/>
+		  </let>
+		</when>
+	      </choose>		      
 	      <out>
 		<chunk>
 		  <clip pos="2" part="lem"/>

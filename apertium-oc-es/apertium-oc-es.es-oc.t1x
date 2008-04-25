@@ -1975,8 +1975,60 @@
         </when>
       </choose>
     </def-macro>
+
+
+
     <def-macro n="firstWord" npar="1">
-<!--MG canviar la macro segons reunio amb Sergio -->
+      <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="a_np_acr"/>
+	      <lit v=""/>
+	    </equal>
+	  </test>
+	  <choose>
+	    <when>
+	      <test>
+		<equal> 
+		  <var n="EOS"/>
+		  <lit v="true"/>
+		</equal> 
+	      </test>
+	      <modify-case>
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="aa"/>
+	      </modify-case>
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="Aa"/>
+	      </let>
+	    </when>
+	    <otherwise> 
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	      </let>
+	    </otherwise>
+	  </choose>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="caseFirstWord"/>
+	    <lit v="aa"/>
+	  </let>
+	</otherwise>
+      </choose>
+      <let>
+	<var n="EOS"/>
+	<lit v="false"/>
+      </let>
+    </def-macro>
+
+
+<!-- macro antiga , canviada per MG 25-04-08, s'ha tret de totes les regles també <let><var n="caseFirstWord"/><lit v="aa"/></let>
+
+    <def-macro n="firstWord" npar="1">
       <choose>
         <when>
           <test>
@@ -2015,7 +2067,12 @@
         <var n="EOS"/>
         <lit v="false"/>
       </let>
-    </def-macro>
+    </def-macro> -->
+
+
+
+
+
     <def-macro n="f_bcond" npar="1">
 <!--Per mirar si el blanc conte o no format. Cal posar aquesta funcio en les regles en que desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conte format cal conservar-lo, si no en conte cal eliminar-lo perque no apareguin dos espais seguits. -->
       <choose>
@@ -4378,10 +4435,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -4408,10 +4461,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -4465,10 +4514,6 @@
         <call-macro n="f_bcond" alt="oc@aran">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>    
     
@@ -4529,10 +4574,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ANTROPÒNIM ADJ">
@@ -4589,10 +4630,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: 2 ANTROPÒNIMS (px. maria lópez)">
@@ -4623,10 +4660,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ADJ ANTROPÒNIM ANTROPÒNIM">
@@ -4691,10 +4724,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DET ANTROPÒNIM ANTROPÒNIM ADJ">
@@ -4756,10 +4785,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -4921,10 +4946,6 @@
             </choose>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5061,10 +5082,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5147,10 +5164,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5206,10 +5219,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5320,10 +5329,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5398,10 +5403,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5670,10 +5671,6 @@
             </choose>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -5802,10 +5799,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -6026,10 +6019,6 @@
         </choose>
 <!--				</otherwise>
 			</choose>-->
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
       <rule comment="REGLA: NUM NOM ADV ADJ">
@@ -6104,10 +6093,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
    
@@ -6184,10 +6169,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -6362,10 +6343,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -6509,10 +6486,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -6664,10 +6637,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -6783,10 +6752,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: DETNT ADJ">
@@ -6872,10 +6837,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -7222,10 +7183,6 @@
             </choose>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>    
     
@@ -7301,10 +7258,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
      <rule comment="REGLA: NUM ADJ NOM">
@@ -7374,10 +7327,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -7547,10 +7496,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -7687,10 +7632,6 @@
         <let>
           <var n="lema"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -7916,10 +7857,6 @@
           </otherwise>
         </choose>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="lema"/>
           <lit v=""/>
         </let>
@@ -7990,10 +7927,6 @@
         <let>
           <var n="lema"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -8148,10 +8081,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
         <let>
           <var n="lema"/>
           <lit v=""/>
@@ -8395,10 +8324,6 @@
           </otherwise>
         </choose>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="lema"/>
           <lit v=""/>
         </let>
@@ -8470,10 +8395,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
         <let>
           <var n="lema"/>
           <lit v=""/>
@@ -8560,10 +8481,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
         <let>
           <var n="lema"/>
           <lit v=""/>
@@ -8660,10 +8577,6 @@
           </chunk>
         </out>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="lema"/>
           <lit v=""/>
         </let>
@@ -8704,10 +8617,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -8741,10 +8650,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 <!-- *************************************** REGLES DE SV *********************************************** --> 
@@ -8905,10 +8810,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -9074,10 +8975,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9166,10 +9063,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -9261,10 +9154,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9342,10 +9231,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9457,10 +9342,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9493,10 +9374,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -9597,10 +9474,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -9780,10 +9653,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -9885,10 +9754,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -10067,10 +9932,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
   
@@ -10171,10 +10032,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -10357,10 +10214,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10428,10 +10281,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10573,10 +10422,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -10649,10 +10494,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10798,10 +10639,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: INF">
@@ -10845,10 +10682,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -10909,10 +10742,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
 
@@ -11005,10 +10834,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -11112,10 +10937,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
     <rule comment="adv inf enc">
@@ -11248,10 +11069,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -11353,10 +11170,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -11474,10 +11287,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
     
@@ -11623,10 +11432,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -11786,10 +11591,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -11942,10 +11743,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
     
@@ -12062,10 +11859,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -12214,10 +12007,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -12352,10 +12141,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -12508,10 +12293,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -12571,10 +12352,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -12701,10 +12478,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="imp prnenc prnenc">
@@ -12768,10 +12541,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="adv imp prnenc prnenc">
@@ -12911,10 +12680,6 @@
             </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -13077,10 +12842,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -13475,10 +13236,6 @@
             </call-macro>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -13798,10 +13555,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -13979,10 +13732,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -14403,10 +14152,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
    
@@ -14760,10 +14505,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="prnpro prnpro auxpers pp">
@@ -14908,10 +14649,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -15293,10 +15030,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -15597,10 +15330,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -15656,10 +15385,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -15828,10 +15553,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -15950,10 +15671,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16074,10 +15791,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16206,10 +15919,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule> -->
 
@@ -16468,10 +16177,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16728,10 +16433,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -16984,10 +16685,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -17225,10 +16922,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule> -->
     
@@ -17509,10 +17202,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -17792,10 +17481,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -18067,10 +17752,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -18328,10 +18009,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
     
@@ -18463,10 +18140,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -18606,10 +18279,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>-->
     
@@ -18765,10 +18434,6 @@
         <call-macro n="f_bcond" alt="oc">
           <with-param pos="2"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -18939,10 +18604,6 @@
         <call-macro n="f_bcond" alt="oc">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -19072,10 +18733,6 @@
         <call-macro n="f_bcond" alt="oc">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -19230,10 +18887,6 @@
 	    </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -19365,10 +19018,6 @@
 	    </mlu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -19696,20 +19345,12 @@
           <with-param pos="3"/>
         </call-macro>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="elcual_prep"/>
           <lit v=""/>
         </let>
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -20018,20 +19659,12 @@
           <with-param pos="2"/>
         </call-macro>
         <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-        <let>
           <var n="elcual_prep"/>
           <lit v=""/>
         </let>
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -20361,10 +19994,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -20670,10 +20299,6 @@
         <call-macro n="f_bcond" alt="oc">
           <with-param pos="3"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -20956,10 +20581,6 @@
         <call-macro n="f_bcond" alt="oc">
           <with-param pos="5"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -21225,10 +20846,6 @@
         <call-macro n="f_bcond" alt="oc">
           <with-param pos="4"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -21586,10 +21203,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -21917,10 +21530,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -22210,10 +21819,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -22495,10 +22100,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     
@@ -22597,10 +22198,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -22848,10 +22445,6 @@
             </call-macro>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
@@ -22993,10 +22586,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -23269,10 +22858,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: VERB INF ENC ADV">
@@ -23476,10 +23061,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: VERB INF ENC ENC">
@@ -23562,10 +23143,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: ADV VERB INF ENC ENC">
@@ -23784,10 +23361,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: VERB INF ENC ENC ADV">
@@ -23947,10 +23520,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: PRO VERB INF">
@@ -24056,10 +23625,6 @@
         <let>
           <var n="prnpro_afegit"/>
           <lit v=""/>
-        </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
         </let>
       </action>
     </rule>
@@ -24321,10 +23886,6 @@
             </call-macro>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: PRO VERB INF ADV">
@@ -24532,10 +24093,6 @@
           <var n="prnpro_afegit"/>
           <lit v=""/>
         </let>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: PRO PRO VERB INF">
@@ -24610,10 +24167,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: ADV PRO PRO VERB INF">
@@ -24822,10 +24375,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="REGLA: PRO PRO VERB INF ADV">
@@ -24977,10 +24526,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule> -->
 <!--************************************ ALTRES ************************************************ -->
@@ -25036,10 +24581,6 @@
             </out>
           </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="ADV ADV">
@@ -25075,10 +24616,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="PRN personal que pot ser subjecte">
@@ -25126,10 +24663,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="PRN no personal que pot ser subjecte">
@@ -25169,10 +24702,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="PRNITG">
@@ -25211,10 +24740,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
      <rule comment="PREP REL">
@@ -25292,10 +24817,6 @@
         <call-macro n="f_bcond">
           <with-param pos="1"/>
         </call-macro>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="PRNREL">
@@ -25336,10 +24857,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="cnjcoo">
@@ -25362,10 +24879,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="CNJ">
@@ -25388,10 +24901,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="PREP">
@@ -25421,10 +24930,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="NUMERAL">
@@ -25458,10 +24963,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
  <rule comment="ij">
@@ -25484,10 +24985,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
     <rule comment="advitg">
@@ -25510,10 +25007,6 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
     </rule>
 
