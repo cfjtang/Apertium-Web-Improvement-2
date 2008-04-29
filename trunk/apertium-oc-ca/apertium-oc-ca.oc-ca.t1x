@@ -10613,6 +10613,178 @@
 		</action>
 	</rule>
 	
+	<rule comment="vbmod inf enc">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="prnenc"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<var n="impersonal"/>
+							<lit v="yes"/>
+						</equal>
+					</test>
+					<let>
+						<var n="lema_sv"/>
+						<lit v="verb_inf_ref"/>
+					</let>
+				</when>
+				<otherwise>
+					<let>
+						<var n="lema_sv"/>
+						<lit v="verb_inf_enc"/>
+					</let>
+				</otherwise>
+			</choose>
+			<let>
+				<var n="impersonal"/>
+				<lit v=""/>
+			</let>
+			<out>
+				<chunk namefrom="lema_sv" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="1"/>
+					<mlu>
+						<lu>
+							<clip pos="2" side="tl" part="lemh"/> 
+							<clip pos="2" side="tl" part="a_verb"/>
+							<clip pos="2" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<clip pos="3" side="tl" part="whole"/> 
+						</lu>
+					</mlu>	
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="2"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
+	<rule comment="vbmod inf enc enc">
+		<pattern>
+			<pattern-item n="verbpers"/>
+			<pattern-item n="inf"/>
+			<pattern-item n="prnenc"/>
+			<pattern-item n="prnenc"/>
+		</pattern>
+		<action>
+			<call-macro n="f_concord1">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="tipus_verb">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<call-macro n="verb_ref_mod">
+				<with-param pos="3"/>
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="temps_verb">
+				<with-param pos="1"/>
+			</call-macro>
+			<choose>
+				<when>
+					<test>
+						<equal>
+							<var n="impersonal"/>
+							<lit v="yes"/>
+						</equal>
+					</test>
+					<let>
+						<var n="lema_sv"/>
+						<lit v="verb_inf_ref"/>
+					</let>
+				</when>
+				<otherwise>
+					<let>
+						<var n="lema_sv"/>
+						<lit v="verb_inf_enc"/>
+					</let>
+				</otherwise>
+			</choose>
+			<let>
+				<var n="impersonal"/>
+				<lit v=""/>
+			</let>
+			<out>
+				<chunk namefrom="lema_sv" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+						<tag><clip pos="2" side="tl" part="a_verb"/></tag>
+						<tag><clip pos="1" side="tl" part="temps"/></tag>
+						<tag><clip pos="1" side="tl" part="pers"/></tag>
+						<tag><clip pos="1" side="tl" part="nbr"/></tag>
+						<tag><var n="tipusverb"/></tag>
+					</tags>
+					<lu>
+						<var n="verb"/>
+					</lu>
+					<b pos="1"/>
+					<mlu>
+						<lu>
+							<clip pos="2" side="tl" part="lemh"/> 
+							<clip pos="2" side="tl" part="a_verb"/>
+							<clip pos="2" side="tl" part="temps"/>
+						</lu>
+						<lu>
+							<clip pos="3" side="tl" part="whole"/> 
+						</lu>
+						<lu>
+							<clip pos="4" side="tl" part="whole"/> 
+						</lu>
+					</mlu>	
+				</chunk>
+			</out>
+			<call-macro n="f_bcond">
+				<with-param pos="2"/>
+			</call-macro>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule>
+	
 	<rule comment="prnpro vbmod inf">
 		<pattern>
 			<pattern-item n="prnpro"/>
@@ -10701,6 +10873,7 @@
 			</let>
 		</action>
 	</rule>
+
 
 	<rule comment="vbmod prnpro inf">
 		<pattern>
