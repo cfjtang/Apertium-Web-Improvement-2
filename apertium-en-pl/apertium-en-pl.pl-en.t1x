@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
+﻿<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 
 <transfer default="chunk">
 <section-def-cats>
@@ -19,7 +19,11 @@
     </def-cat>
     <def-cat n="nom">
       <cat-item tags="n.*"/>
-      <cat-item tags="np.*"/>
+      <cat-item tags="np.hyd"/>
+      <cat-item tags="np.top"/>
+    </def-cat>
+    <def-cat n="nant">
+      <cat-item tags="np.ant"/>
     </def-cat>
     <def-cat n="sent">
       <cat-item tags="sent"/>
@@ -52,6 +56,7 @@
     </def-cat>
     <def-cat n="to">
       <cat-item lemma="to" tags="det.dem"/>
+      <cat-item lemma="to" tags="det.dem.*"/>
     </def-cat>
   </section-def-cats>
 
@@ -62,14 +67,11 @@
       <attr-item tags="sp"/>
     </def-attr>
     <def-attr n="gen">      <!-- Gender -->
-      <attr-item tags="m1"/>
-      <attr-item tags="m2"/>
-      <attr-item tags="m3"/>
-      <attr-item tags="m"/>
+      <attr-item tags="mp"/>
+      <attr-item tags="ma"/>
+      <attr-item tags="mi"/>
       <attr-item tags="f"/>
       <attr-item tags="nt"/>
-      <attr-item tags="nm"/>
-      <attr-item tags="mf"/>
     </def-attr>
     <def-attr n="a_conj">
       <attr-item tags="cnjadv"/>
@@ -82,6 +84,7 @@
       <attr-item tags="n.unc"/>
       <attr-item tags="np.top"/>
       <attr-item tags="np.ant"/>
+      <attr-item tags="np.cog"/>
     </def-attr>
     <def-attr n="a_adj">
       <attr-item tags="adj.sint"/>
@@ -121,7 +124,8 @@
        <attr-item tags="p3"/>
     </def-attr>
     <def-attr n="a_verb">
-       <attr-item tags="vblex"/>
+       <attr-item tags="vblex.imperf"/>
+       <attr-item tags="vblex.perf"/>
        <attr-item tags="vblex.uns"/>
        <attr-item tags="vbser"/>
        <attr-item tags="vbhaver"/>
@@ -134,7 +138,6 @@
        <attr-item tags="pis"/>
        <attr-item tags="pri"/>
        <attr-item tags="past"/>
-       <attr-item tags="pres"/>
        <attr-item tags="fut"/>
        <attr-item tags="inf"/>
        <attr-item tags="cni"/>
@@ -165,18 +168,22 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="NP"/></tag>
+              <tag><clip pos="1" side="tl" part="gen"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><clip pos="1" side="tl" part="caso"/></tag>
             </tags>
             <lu>
-              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_nom"/>
-              <clip pos="1" side="tl" part="gen"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="caso"/>
+              <clip pos="1" side="tl" part="nbr" link-to="3"/>
+              <clip pos="1" side="tl" part="lemq"/>
             </lu>
           </chunk>
         </out>
@@ -188,17 +195,17 @@
         <pattern-item n="prep"/>
       </pattern>
       <action>
-            <out>
-              <chunk name="pr">
-                <tags>
-                  <tag><lit-tag v="PR"/></tag>
-                </tags>
-                <lu>
-                  <clip pos="1" side="tl" part="lem"/>
-                  <lit-tag v="pr"/>
-                </lu>
-              </chunk>
-            </out>
+        <out>
+          <chunk name="pr">
+            <tags>
+              <tag><lit-tag v="PR"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+        </out>
       </action>
     </rule>
 
