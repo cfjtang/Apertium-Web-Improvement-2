@@ -97,6 +97,9 @@
     <def-cat n="prepde">
       <cat-item lemma="de" tags="pr"/>
     </def-cat>
+    <def-cat n="prepîn">
+      <cat-item lemma="în" tags="pr"/>
+    </def-cat>
     <def-cat n="prepdintr-">
       <cat-item lemma="dintr-" tags="pr"/>
     </def-cat>
@@ -239,7 +242,10 @@
       <cat-item tags="num.*"/>
       <cat-item tags="num"/>	
     </def-cat>
-   <!-- <def-cat n="C">
+   <def-cat n="xifra">
+      <cat-item tags="num"/>
+    </def-cat>
+    <!-- <def-cat n="C">
       <cat-item tags="num"/>
     </def-cat> -->
     <def-cat n="anar">
@@ -549,7 +555,7 @@
       </choose>
     </def-macro>
     <def-macro n="f_outverb3" npar="3">
-<!--Comprueba si hay pronombres que se traducen por nada de catalán a espațol según el diccionario ("hi" y "en") y envía el verbo con o sin pronombres de acuerdo con esta comprobación. Esta función es para el caso de verbo + 2 enclíticos.-->
+<!--Comprueba si hay pronombres que se traducen por nada de catalán a espaňol según el diccionario ("hi" y "en") y envía el verbo con o sin pronombres de acuerdo con esta comprobación. Esta función es para el caso de verbo + 2 enclíticos.-->
       <choose>
         <when>
           <test>
@@ -3325,8 +3331,73 @@
   </section-def-macros>
   <section-rules>
 
+<rule>
+<!--REGLA COPY: în 2008: l'any 2008 -->
+      <pattern>
+        <pattern-item n="prepîn"/>
+	<pattern-item n="nom"/>
+        <pattern-item n="xifra"/>
+      </pattern>
+      <action>
+	<choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="sl" part="lem"/>
+                    <lit-tag v="anul"/>
+                  </equal>
+                </test>
+        <out>
+          <lu>
+            <lit v="el"/>
+            <lit-tag v="det.def.m.sg"/>
+          </lu>
+          <b/>
+          <lu>
+            <lit v="any"/>
+            <lit-tag v="n.m.sg"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="3" side="tl" part="whole"/>
+          </lu>
+        </out>
+	</when>
+	      <otherwise>
+		<out>
+          <lu>
+		   <get-case-from pos="1">
+                    <clip pos="1" side="tl" part="lem"/>
+                    </get-case-from>
+                    <clip pos="1" side="tl" part="a_prep"/>
+                   </lu>
+                  <b/>
+                   <lu>
+                    <lit v="el"/> 
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                  <lu>  
+		    <clip pos="2" side="tl" part="lem"/>
+                    <clip pos="2" side="tl" part="a_nom"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+		  <b/>
+		<lu>
+            	<clip pos="3" side="tl" part="whole"/>
+          	</lu>
+        </out>
+	</otherwise>
+	</choose>
+      </action>
+    </rule>
 
-<!--REGLA 1: NUMERAL NOM, o sigui la fecha 2 aprilie = 2 de abril -->
+
+
+<!--REGLA 1: NUMERAL NOM, o sigui la fecha 2 aprilie = 2 d'abril -->
     <rule>
       <pattern>
         <pattern-item n="num"/>
@@ -3508,7 +3579,7 @@
     </rule> 
 
 <rule>
-<!-- REGLA 5 DELIA: DETA + Nom DG a temperaturii medii + ADJ= de la temperatura promedia-->
+<!-- REGLA 5 DELIA: DETA + Nom DG a temperaturii medii + ADJ= de la temperatura mitjana-->
       <pattern>        
         <pattern-item n="deta"/>
         <pattern-item n="nom"/>
@@ -3556,7 +3627,7 @@
     </rule> 
 
 <rule>
-<!-- REGLA 6 DELIA: DETA + Nom DG a temperaturii medii globale+ ADJ= de la temperatura promedia global-->
+<!-- REGLA 6 DELIA: DETA + Nom DG a temperaturii medii globale+ ADJ= de la temperatura mitjana global-->
       <pattern>        
         <pattern-item n="deta"/>
         <pattern-item n="nom"/>
@@ -3619,7 +3690,7 @@
 
 
 <rule>
-<!-- REGLA 7 DELIA: NOM (ind)+ DETA + NP politică a României = política de Rumanía-->
+<!-- REGLA 7 DELIA: NOM (ind)+ DETA + NP politică a României = política de Romania-->
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="deta"/>
@@ -3682,7 +3753,7 @@
     </rule> 
 
 <rule>
-<!-- REGLA 8 DELIA: NOM (ind)+ ADJ + ADJ= instrumente juridice comunitare = instrumentos jurídicos comunitarios-->
+<!-- REGLA 8 DELIA: NOM (ind)+ ADJ + ADJ= caiete juridice comunitare = quaderns jurídics comunitaris-->
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="adj"/>
@@ -3765,7 +3836,7 @@
 
 
 <rule>
-<!-- REGLA 9 simple DELIA: NOM (ind)+ ADJ = relații internaționale-->
+<!-- REGLA 9 simple DELIA: NOM (ind)+ ADJ = relații internaționale = relacions internacionals-->
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="adj"/>
@@ -3828,7 +3899,7 @@
     </rule> 
 
 <rule>
-<!-- REGLA 10 DELIA: NOM + ADJ + DETA + NP oficiile consulare ale României = las oficinas consulares de Rumanía-->
+<!-- REGLA 10 DELIA: NOM + ADJ + DETA + NP oficiile consulare ale României = les oficines consulars de Romania-->
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="adj"/>
@@ -3934,7 +4005,7 @@
 
 
 <rule>
-<!-- REGLA 11 DELIA: NOM (def)+ DETA + Rel Cărui + Nom /cartea a cărei copertă = el libro cuya portada-->
+<!-- REGLA 11 DELIA: NOM (def)+ DETA + Rel Cărui + Nom /cartea a cărei copertă = el llibre la portada del qual-->
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="deta"/>
@@ -3980,15 +4051,15 @@
 	   <lu>
                     <lit v="el"/>
                     <lit-tag v="det.def"/>
-                    <clip pos="2" side="tl" part="gen"/>
-                    <clip pos="2" side="tl" part="nbr"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
                   </lu>
                  <b/>
 	      <lu>
-                    <clip pos="2" side="tl" part="lem"/>
-                    <clip pos="2" side="tl" part="a_nom"/>
-                    <clip pos="2" side="tl" part="gen"/>
-                    <clip pos="2" side="tl" part="nbr"/>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nom"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
                   </lu>
                   <b/>
 	         <lu> 
@@ -4031,15 +4102,15 @@
 	         <lu>
                     <lit v="el"/>
                     <lit-tag v="det.def"/>
-                    <clip pos="2" side="tl" part="gen"/>
-                    <clip pos="2" side="tl" part="nbr"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
                   </lu>
                  <b/>
 	          <lu>
-                    <clip pos="2" side="tl" part="lem"/>
-                    <clip pos="2" side="tl" part="a_nom"/>
-                    <clip pos="2" side="tl" part="gen"/>
-                    <clip pos="2" side="tl" part="nbr"/>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nom"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
                   </lu>
                   <b/>
 	      <lu> 
@@ -4067,7 +4138,105 @@
          </action>
     </rule> 
 
-<rule> <!-- REGLA 69 VBTREBUI+ SÄ + VERB : HAVER + DE + INF -->
+<rule>
+<!--REGLA COPY: prep "în" + nploc = a + nploc: în România -> a Romania -->
+      <pattern>
+        <pattern-item n="prepîn"/>
+        <pattern-item n="nploc"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <get-case-from pos="1">
+              <lit v="a"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="lem"/>
+            <clip pos="2" side="tl" part="a_nploc"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+	
+
+<rule> <!--REGLA 69 VBTREBUI+ SÄ + VERB : HAVER + DE + INF -->
+  <pattern>
+      <pattern-item n="verbtrebui"/>
+      <pattern-item n="conjsub"/>
+      <pattern-item n="verb"/>
+    </pattern>
+    <action>
+     <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro> 
+    <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="ger"/>
+	    </equal>
+	  </test>
+	  <out>
+	   <lu>
+           <get-case-from pos="1">
+              <lit v="haber"/>
+            </get-case-from>
+            <lit-tag v="vbhaver"/>
+            <lit-tag v="ger"/>
+          </lu>          
+	   <b pos="1"/>
+	    <lu>
+            <lit v="de"/>
+            <lit-tag v="pr"/>
+          </lu>
+	  <b pos="2"/>
+	  <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <lit-tag v="inf"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out> 
+	</when>
+	<otherwise>
+        <out>
+          <lu>
+           <get-case-from pos="1">
+              <lit v="haber"/>
+            </get-case-from>
+            <lit-tag v="vbhaver"/>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="3" side="tl" part="persona"/>
+            <clip pos="3" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+	    <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+	  <b pos="1"/>
+	    <lu>
+            <lit v="de"/>
+            <lit-tag v="pr"/>
+          </lu>
+	  <b pos="2"/>
+	  <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <lit-tag v="inf"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+       </otherwise>
+      </choose>
+    </action>
+</rule>
+
+<!-- <rule> REGLA 69 VBTREBUI+ SÄ + VERB : HAVER + DE + INF 
   <pattern>
       <pattern-item n="verbtrebui"/>
       <pattern-item n="conjsub"/>
@@ -4089,7 +4258,7 @@
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_verb"/>
-            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="sl" part="temps"/>
 	    <clip pos="3" side="sl" part="persona"/>
             <clip pos="3" side="sl" part="gen"/>
             <clip pos="3" side="sl" part="nbr"/>
@@ -4136,7 +4305,7 @@
        </otherwise>
       </choose>
     </action>
-</rule> 
+</rule> -->
 
 
 <!--REGLA 12: NUMERAL NOM NUMERAL, o sigui la fecha 2 aprilie 2007 = 2 de abril de 2007 -->
