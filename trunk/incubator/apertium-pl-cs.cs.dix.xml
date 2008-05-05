@@ -3,6 +3,8 @@
   <alphabet>AÁBCČDĎEÉĚFGHIÍJKLMNŇOÓPQRŘSŠTŤUÚŮVWXYÝZŽaábcčdďeéěfghiíjklmnňoópqrřsštťuúůvwxyýzž</alphabet>
   <sdefs>
     <sdef n="n"/>
+    <sdef n="num"/>
+    <sdef n="det"/>
 
     <sdef n="ma"     c="mužský životný"/>
     <sdef n="mi"     c="mužský neživotný"/>
@@ -22,14 +24,24 @@
 
     <sdef n="pr"/>
     
-    <sdef n="det"/>
     <sdef n="dem"/>
     <sdef n="pos"/>
     <sdef n="itg"/>
     <sdef n="ind"/>
     <sdef n="ref"/>
+
   </sdefs>
   <pardefs>
+    <pardef n="numeros">
+      <e>
+        <re>[0-9]+([.,][0-9]+)?</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <!-- Nouns -->
     <pardef n="sí/h__n">
       <e>
@@ -18096,4 +18108,11 @@
     <e lm="epigrafika"><i>epigrafi</i><par n="dý/ka__n"/></e>
     <e lm="stůl"><i>st</i><par n="st/ůl__n"/></e>
   </section>
+
+  <section id="final" type="inconditional">
+    <e>
+      <par n="numeros"/> <!-- Numbers -->
+    </e>
+  </section>
+
 </dictionary>
