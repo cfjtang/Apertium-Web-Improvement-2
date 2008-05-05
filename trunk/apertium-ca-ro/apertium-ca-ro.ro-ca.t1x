@@ -3331,6 +3331,7 @@
   </section-def-macros>
   <section-rules>
 
+
        
 <!--  REGLA 81: PREP NOM NOM ADJ POS per a traduir "pentru cartea prietenei mele" com a "para el libro de mi amiga"  
     <rule>
@@ -3471,6 +3472,79 @@
         </choose>
       </action>
     </rule> -->
+
+<rule>
+ <!--REGLA 90: PRETÈRIT INDEFINIT  Para traducir "vaig fer"/"am făcut" por "vaig fer" -->
+      <pattern>
+        <pattern-item n="vbaveapri"/>
+        <pattern-item n="pp"/>
+      </pattern>
+      <action>
+        <out>
+	  <lu>
+	    <get-case-from pos="1">            
+	      <lit v="anar"/>
+	    </get-case-from>
+	    <lit-tag v="vblex"/>
+	    <clip pos="1" side="tl" part="temps"/>
+	    <clip pos="1" side="tl" part="persona"/>
+	    <clip pos="1" side="tl" part="nbr"/>
+	  </lu>  
+	   <b pos="1"/> 
+	  <lu>  
+	    <clip pos="2" side="tl" part="lem"/>
+	    <clip pos="2" side="tl" part="a_verb"/>                  
+	    <lit-tag v="inf"/>                  
+	    <clip pos="2" side="tl" part="lemq"/>                  
+	  </lu>  
+	</out>  
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
+    
+    <rule>
+    <!-- REGLA 91: PRETÈRIT INDEFINIT + ENC-->
+<!-- Para traducir "la vaig fer"/"am făcut-o" por "la hice" -->
+      <pattern>
+        <pattern-item n="vbaveapri"/>
+        <pattern-item n="pp"/>
+	<pattern-item n="prnenc"/>
+      </pattern>
+      <action>
+        <out>
+	  <lu>
+	  <get-case-from pos="1">
+	    <clip pos="3" side="tl" part="lem"/> 
+	  </get-case-from>  
+	    <lit-tag v="prn.pro"/>
+	    <clip pos="3" side="tl" part="persona"/>
+	    <clip pos="3" side="tl" part="gen"/>
+	    <clip pos="3" side="tl" part="nbr"/>
+	  </lu>
+	  <b/>
+	  <lu>          
+	      <lit v="anar"/>
+	    <lit-tag v="vblex"/>
+	    <clip pos="2" side="tl" part="temps"/>
+	    <clip pos="2" side="tl" part="persona"/>
+	    <clip pos="2" side="tl" part="nbr"/>
+	  </lu>  
+	   <b pos="2"/> 
+	  <lu>  
+	    <clip pos="3" side="tl" part="lem"/>
+	    <clip pos="3" side="tl" part="a_verb"/>                  
+	    <lit-tag v="inf"/>                  
+	    <clip pos="3" side="tl" part="lemq"/>                  
+	  </lu>  
+	</out>  
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
+
 
 <rule>
 <!--REGLA 89 DELIA: DETTOT NOM NOM toate culorile curcubeului = tots els colors del arc de Sant Martí -->
@@ -12535,77 +12609,7 @@ is not applicable because gender and number can not be taken from previous rules
     </rule> 
 
 
- <!--   <rule>
- REGLA 90: PRETÈRIT INDEFINIT -->
-<!-- Para traducir "vaig fer"/"am făcut" por "hice" 
-      <pattern>
-        <pattern-item n="vbaveapri"/>
-        <pattern-item n="pp"/>
-      </pattern>
-      <action>
-        <out>
-          <lu>
-            <get-case-from pos="1">
-              <clip pos="2" side="tl" part="lemh"/>
-            </get-case-from>
-            <get-case-from pos="1">
-              <lit v="anar"/>
-            </get-case-from>           
-            <lit-tag v="vbhaver.pis"/>
-            <clip pos="1" side="tl" part="persona"/>
-            <clip pos="1" side="tl" part="nbr"/>
-            <clip pos="1" side="tl" part="lemq"/>
-          </lu>
-          <b/>
-          <lu>
-            <clip pos="3" side="tl" part="lemh"/>
-            <clip pos="3" side="tl" part="a_verb"/>
-            <lit-tag v="pp.m.sg"/>
-            <clip pos="3" side="tl" part="lemq"/>
-          </lu>
-        </out>
-        </out>
-        <call-macro n="f_bcond">
-          <with-param pos="1"/>
-        </call-macro>
-      </action>
-    </rule>-->
-    
-    <rule>
-    <!-- REGLA 91: PRETÈRIT INDEFINIT + ENC-->
-<!-- Para traducir "la vaig fer"/"am făcut-o" por "la hice" -->
-      <pattern>
-        <pattern-item n="vbaveapri"/>
-        <pattern-item n="pp"/>
-	<pattern-item n="prnenc"/>
-      </pattern>
-      <action>
-        <out>
-	  <lu>
-	  <get-case-from pos="1">
-	    <clip pos="3" side="tl" part="lem"/> 
-	  </get-case-from>  
-	    <lit-tag v="prn.pro"/>
-	    <clip pos="3" side="tl" part="persona"/>
-	    <clip pos="3" side="tl" part="gen"/>
-	    <clip pos="3" side="tl" part="nbr"/>
-	  </lu>
-	  <b/>
-          <lu>
-            <clip pos="2" side="tl" part="lemh"/>
-            <clip pos="2" side="tl" part="a_verb"/>
-            <lit-tag v="ifi"/>
-            <clip pos="1" side="tl" part="persona"/>
-            <clip pos="1" side="tl" part="nbr"/>
-            <clip pos="2" side="tl" part="lemq"/>
-          </lu>
-        </out>
-        <call-macro n="f_bcond">
-          <with-param pos="1"/>
-        </call-macro>
-      </action>
-    </rule>
-
+  
 <rule>
 <!-- REGLA 92: CONDICIONAL PASSAT -->
 <!-- Per a traduir  "aș fi făcut" com a "hubiera hecho" que se usa en vez de "habría hecho" -->
@@ -13793,7 +13797,7 @@ is not applicable because gender and number can not be taken from previous rules
     </rule>
 
  <rule>
- <!--  REGLA 109: PREP + NOM + NOM PROPI LLOC DG  ex. la hotarele Europei = a los confines de Europa -->
+ <!--  REGLA 109: PREP + NOM + NOM PROPI LLOC DG  ex. la hotarele Europei = als confins d'Europa -->
       <pattern>
         <pattern-item n="prep"/>
         <pattern-item n="nom"/>
