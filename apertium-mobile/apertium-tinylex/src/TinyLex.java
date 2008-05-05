@@ -222,6 +222,7 @@ public class TinyLex extends MIDlet implements CommandListener {
             } else if (command == okCommandLookUp) {//GEN-LINE:|7-commandAction|15|42-preAction
                 String src = this.srcWord.getString();
                 String srcLemma = src.toLowerCase();
+                if(srcLemma.length()>0) {
                 String values = null;
                 if (this.currentDic == this.SLTL) {
                     Dictionary subDic = getSubDic(srcLemma, this.SLTL);
@@ -249,6 +250,7 @@ public class TinyLex extends MIDlet implements CommandListener {
                     }
                 } else {
                     switchDisplayable(getWordNotFoundAlert(), getLookUpForm());//GEN-LINE:|7-commandAction|16|42-postAction
+                }
                 }
 
             // write post-action user code here
