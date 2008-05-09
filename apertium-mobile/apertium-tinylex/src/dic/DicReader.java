@@ -55,7 +55,7 @@ public class DicReader {
      * @param fileName
      */
     public DicReader(final String fileName) {
-        this.fileName = "../" + fileName;
+        this.fileName = "/" + fileName;
         properties = new Hashtable();
     }
 
