@@ -42,7 +42,7 @@ public class PropertyReader {
      * @param fileName File Name
      */
     public PropertyReader(String fileName) {
-        this.fileName = "../" + fileName;
+        this.fileName = "/" + fileName;
         properties = new Hashtable();
     }
 
