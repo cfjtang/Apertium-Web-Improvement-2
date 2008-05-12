@@ -45,6 +45,9 @@
     <sdef n="det"    c="Determiner"/>
 
     <sdef n="num"    c="Numeral"/>
+
+    <sdef n="sent"   c="End of sentence marker"/>
+
   </sdefs>
 
   <pardefs>
@@ -54,6 +57,16 @@
         <p>
           <l/>
           <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+          <r><s n="sent"/></r>
         </p>
       </e>
     </pardef>
@@ -11869,6 +11882,9 @@
   <section id="final" type="inconditional">
     <e>
       <par n="numeros"/> <!-- Numbers -->
+    </e>
+    <e>
+      <par n="separa"/> <!-- End of sentence -->
     </e>
   </section>
 </dictionary>
