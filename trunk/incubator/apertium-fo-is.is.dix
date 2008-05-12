@@ -7,7 +7,7 @@
     <sdef n="n"       c="Noun"/>
     <sdef n="np"      c="Proper noun"/>
     <sdef n="ij"      c="Interjection"/>
-    <sdef n="adj"     c="djective"/>
+    <sdef n="adj"     c="Adjective"/>
     <sdef n="det"     c="Determiner"/>
     <sdef n="adv"     c="Adverb"/>
     <sdef n="num"     c="Number"/>
@@ -62,6 +62,8 @@
     <sdef n="pst"     c="Positive"/>
     <sdef n="comp"    c="Comparative"/>
     <sdef n="sup"     c="Superlative"/>
+
+    <sdef n="sent"    c="End of sentence marker"/>
   </sdefs>
 
   <pardefs>
@@ -76,6 +78,17 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+          <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <pardef n="ei/nn__num">
       <e>
@@ -81882,6 +81895,7 @@
     <e lm="jú"><i>jú</i><par n="upp__adv"/></e>
     <e lm="já"><i>já</i><par n="upp__adv"/></e>
 
+    <e lm="rétt"><i>rétt</i><par n="upp__adv"/></e>
     <e lm="einstaklega"><i>einstaklega</i><par n="upp__adv"/></e>
     <e lm="þaðan"><i>þaðan</i><par n="upp__adv"/></e>
     <e lm="neðan"><i>neðan</i><par n="upp__adv"/></e>
@@ -85177,6 +85191,9 @@
   <section id="final" type="inconditional">
     <e>
       <par n="numeros"/> <!-- Numbers -->
+    </e>
+    <e>
+      <par n="separa"/> <!-- End of sentence -->
     </e>
   </section>
 </dictionary>
