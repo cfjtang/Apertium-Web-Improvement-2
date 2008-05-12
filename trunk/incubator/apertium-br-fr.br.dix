@@ -5,6 +5,7 @@
   <sdefs>
     <sdef n="n"      c="Nom"/>
     <sdef n="np"     c="Nom propre"/>
+    <sdef n="num"    c="Numeral"/>
 
     <sdef n="mf"     c="Masculin/feminin"/>
     <sdef n="m"      c="Masculin"/>
@@ -48,9 +49,31 @@
     <sdef n="det"    c="Determiner"/>
     <sdef n="ind"    c="Indefinite"/>
     <sdef n="def"    c="Definite"/>
+
+    <sdef n="sent"   c="End of sentence marker"/>
   </sdefs>
 
   <pardefs>
+    <pardef n="numeros">
+      <e>
+        <re>[0-9]+([.,][0-9]+)?</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+          <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <!-- Initial consonant mutations (Ar c'hemmadurioù) -->
     <pardef n="initial-p">
@@ -6571,4 +6594,14 @@
     <e lm="gouzout"><i/><par n="/gouzout__vblex"/></e>
     <e lm="debriñ"><par n="initial-d"/><i>ebr</i><par n="debr/iñ__vblex"/></e>
   </section>
+
+  <section id="final" type="inconditional">
+    <e>
+      <par n="numeros"/> <!-- Numbers -->
+    </e>
+    <e>
+      <par n="separa"/> <!-- End of sentence -->
+    </e>
+  </section>
+
 </dictionary>
