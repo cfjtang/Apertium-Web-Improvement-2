@@ -40,7 +40,8 @@ $subsections = array
 		"apertium-tagger-training-tools"=>"Etikedigaj trejnadaj iloj",
 		"apertium-transfer-tools"=>"Transdonaj iloj",
 		"lttoolbox"=>"Leksika transformo",
-		"apertium-eval-translator"=>"Takso"
+		"apertium-eval-translator"=>"Takso",
+    		"apertium-tinylex"=>"TinyLex"
 	),
 );
 

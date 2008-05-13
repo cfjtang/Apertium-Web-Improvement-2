@@ -38,7 +38,8 @@
 		"apertium-tagger-training-tools"=>"Tagger training tools",
 		"apertium-transfer-tools"=>"Transfer tools",
 		"lttoolbox"=>"Lexical transformation",
-		"apertium-eval-translator"=>"Evaluation"
+		"apertium-eval-translator"=>"Evaluation",
+    		"apertium-tinylex"=>"TinyLex"
 	),
 );
 
