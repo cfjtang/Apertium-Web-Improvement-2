@@ -1156,7 +1156,147 @@
 						</equal>
 					</test>
 					<choose>
-						<when><!--si és un verb que va amb "être" fes que l'aux sigui "haber"-->
+						<when><!-- si es ref-->
+							<test>
+								<or>
+									<and>
+										<equal>
+											<clip pos="3" side="sl" part="tipoenc_pro"/>
+											<lit-tag v="ref.p3.mf.sp"/>
+										</equal>
+										<or>
+											<equal>
+												<clip pos="1" side="sl" part="pers"/>
+												<lit-tag v="p3"/>
+											</equal>
+											<equal>
+												<clip pos="1" side="sl" part="temps"/>
+												<lit-tag v="inf"/>
+											</equal>
+											<equal>
+												<clip pos="1" side="sl" part="temps"/>
+												<lit-tag v="ger"/>
+											</equal>
+										</or>
+									</and>
+									<and>
+										<equal>
+											<clip pos="3" side="sl" part="pers"/>
+											<lit-tag v="p2"/>
+										</equal>
+										<equal>
+											<clip pos="1" side="sl" part="pers"/>
+											<lit-tag v="p2"/>
+										</equal>
+										<equal>
+											<clip pos="1" side="sl" part="nbr"/>
+											<clip pos="3" side="sl" part="nbr"/>
+										</equal>
+									</and>
+									<and>
+										<equal>
+											<clip pos="3" side="sl" part="pers"/>
+											<lit-tag v="p1"/>
+										</equal>
+										<equal>
+											<clip pos="1" side="sl" part="pers"/>
+											<lit-tag v="p1"/>
+										</equal>
+										<equal>
+											<clip pos="3" side="sl" part="nbr"/>
+											<clip pos="1" side="sl" part="nbr"/>
+										</equal>
+									</and>
+								</or>
+							</test>						
+							<let><!--... fes que l'aux sigui "haber"-->
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="haber"/>
+							</let>
+							<let>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbhaver"/>
+							</let>
+							<let>
+								<clip pos="2" side="tl" part="gen"/>
+								<lit-tag v="m"/>
+							</let>
+							<let>
+								<clip pos="2" side="tl" part="nbr"/>
+								<lit-tag v="sg"/>
+							</let>
+							<choose> <!-- i canvia aquests verbs-->
+								<when>
+									<test>
+										<equal caseless="yes">
+											<clip pos="2" side="sl" part="lem"/>
+											<lit v="refuser"/>
+										</equal>
+									</test>
+									<let>
+										<clip pos="2" side="tl" part="lem"/>
+										<lit v="negar"/>
+									</let>
+								</when>
+								<when>
+									<test>
+										<equal caseless="yes">
+											<clip pos="2" side="sl" part="lem"/>
+											<lit v="demander"/>
+										</equal>
+									</test>
+									<let>
+										<clip pos="2" side="tl" part="lem"/>
+										<lit v="preguntar"/>
+									</let>
+								</when>
+								<when>
+									<test>
+										<equal caseless="yes">
+											<clip pos="2" side="sl" part="lem"/>
+											<lit v="passer"/>
+										</equal>
+									</test>
+									<let>
+										<clip pos="2" side="tl" part="lem"/>
+										<lit v="transcurrir"/>
+									</let>
+								</when>
+								<when>
+									<test>
+										<equal caseless="yes">
+											<clip pos="2" side="sl" part="lem"/>
+											<lit v="occuper"/>
+										</equal>
+									</test>
+									<let>
+										<clip pos="2" side="tl" part="lem"/>
+										<lit v="atender"/>
+									</let>
+								</when>										
+							</choose>
+							<choose> <!-- marca si cal treure el ref-->
+								<when>
+									<test>
+										<in caseless="yes">
+											<clip pos="2" side="sl" part="lem"/>
+											<list n="verbs_ref"/>
+										</in>
+									</test>
+									<let>
+										<var n="treu_ref"/>
+										<lit v="treu"/>
+									</let>
+								</when>
+								<otherwise>
+									<let>
+										<var n="treu_ref"/>
+										<lit v=""/>
+									</let>
+								</otherwise>
+							</choose>
+						</when>
+						<when><!--si és un verb que va amb "être" fes que l'aux sigui "haber" o refel-->
 							<test>
 								<in caseless="yes">
 									<clip pos="2" side="sl" part="lem"/>
@@ -1180,160 +1320,15 @@
 								<lit-tag v="sg"/>
 							</let>
 						</when>
-
-						<otherwise>
-							<choose><!--si és ref...-->
-								<when>
-									<test>
-										<or>
-											<and>
-												<equal>
-													<clip pos="3" side="sl" part="tipoenc_pro"/>
-													<lit-tag v="ref.p3.mf.sp"/>
-												</equal>
-												<or>
-													<equal>
-														<clip pos="1" side="sl" part="pers"/>
-														<lit-tag v="p3"/>
-													</equal>
-													<equal>
-														<clip pos="1" side="sl" part="temps"/>
-														<lit-tag v="inf"/>
-													</equal>
-													<equal>
-														<clip pos="1" side="sl" part="temps"/>
-														<lit-tag v="ger"/>
-													</equal>
-												</or>
-											</and>
-											<and>
-												<equal>
-													<clip pos="3" side="sl" part="pers"/>
-													<lit-tag v="p2"/>
-												</equal>
-												<equal>
-													<clip pos="1" side="sl" part="pers"/>
-													<lit-tag v="p2"/>
-												</equal>
-												<equal>
-													<clip pos="1" side="sl" part="nbr"/>
-													<clip pos="3" side="sl" part="nbr"/>
-												</equal>
-											</and>
-											<and>
-												<equal>
-													<clip pos="3" side="sl" part="pers"/>
-													<lit-tag v="p1"/>
-												</equal>
-												<equal>
-													<clip pos="1" side="sl" part="pers"/>
-													<lit-tag v="p1"/>
-												</equal>
-												<equal>
-													<clip pos="3" side="sl" part="nbr"/>
-													<clip pos="1" side="sl" part="nbr"/>
-												</equal>
-											</and>
-										</or>
-									</test>						
-									<let><!--... fes que l'aux sigui "haber"-->
-										<clip pos="1" side="tl" part="lem"/>
-										<lit v="haber"/>
-									</let>
-									<let>
-										<clip pos="1" side="tl" part="a_verb"/>
-										<lit-tag v="vbhaver"/>
-									</let>
-									<let>
-										<clip pos="2" side="tl" part="gen"/>
-										<lit-tag v="m"/>
-									</let>
-									<let>
-										<clip pos="2" side="tl" part="nbr"/>
-										<lit-tag v="sg"/>
-									</let>
-									<choose> 
-										<when>
-											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="refuser"/>
-												</equal>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="negar"/>
-											</let>
-										</when>
-										<when>
-											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="demander"/>
-												</equal>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="preguntar"/>
-											</let>
-										</when>
-										<when>
-											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="passer"/>
-												</equal>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="transcurrir"/>
-											</let>
-										</when>
-										<when>
-											<test>
-												<equal caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<lit v="occuper"/>
-												</equal>
-											</test>
-											<let>
-												<clip pos="2" side="tl" part="lem"/>
-												<lit v="atender"/>
-											</let>
-										</when>										
-									</choose>
-									<choose> <!-- marca si cal treure el ref-->
-										<when>
-											<test>
-												<in caseless="yes">
-													<clip pos="2" side="sl" part="lem"/>
-													<list n="verbs_ref"/>
-												</in>
-											</test>
-											<let>
-												<var n="treu_ref"/>
-												<lit v="treu"/>
-											</let>
-										</when>
-										<otherwise>
-											<let>
-												<var n="treu_ref"/>
-												<lit v=""/>
-											</let>
-										</otherwise>
-									</choose>
-								</when>
-								<otherwise><!--si no és cap dels casos anteriors, acceptem que és passiva, i deixem el verb "ser"-->
-									<let>
-										<clip pos="1" side="tl" part="lem"/>
-										<lit v="ser"/>
-									</let>
-									<let>
-										<clip pos="1" side="tl" part="a_verb"/>
-										<lit-tag v="vbser"/>
-									</let>
-								</otherwise>
-							</choose>
+						<otherwise><!--si no és cap dels casos anteriors, acceptem que és passiva, i deixem el verb "ser"-->
+							<let>
+								<clip pos="1" side="tl" part="lem"/>
+								<lit v="ser"/>
+							</let>
+							<let>
+								<clip pos="1" side="tl" part="a_verb"/>
+								<lit-tag v="vbser"/>
+							</let>
 						</otherwise>
 					</choose>
 				</when>
@@ -13313,9 +13308,13 @@
 	<call-macro n="tipus_verb">
 		<with-param pos="1"/>
 	</call-macro>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
+	<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="2"/>
+		<with-param pos="1"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -13327,6 +13326,10 @@
 					<equal caseless="yes">
 						<clip pos="2" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -13382,6 +13385,10 @@
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
+		</let>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
 		</let>
 	</action>
 </rule>
