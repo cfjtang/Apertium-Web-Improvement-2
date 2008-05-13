@@ -484,6 +484,7 @@
 
   </section-def-attrs>
   <section-def-vars>
+    <def-var n="treu_ref"/>
     <def-var n="tipusprep"/>
     <def-var n="tipusverb"/>
     <def-var n="tipusnom"/>
@@ -506,6 +507,10 @@
   </section-def-vars>
 
   <section-def-lists>
+	  <def-list n="verbs_ref">
+		  <list-item v="passer"/>
+		  <list-item v="occuper"/>
+	  </def-list>
 		<def-list n="nloc">
 			<list-item v="maison"/>
 			<list-item v="monde"/>
@@ -614,6 +619,224 @@
 
 
   <section-def-macros>
+	  <def-macro n="control_ref" npar="2"><!-- canvia el lema dels verbs ref i elimina el prn si cal-->
+		  <choose> <!-- prn ref?...-->
+			  <when>
+				  <test>
+					  <or>
+						  <and>
+							  <equal>
+								  <clip pos="1" side="sl" part="tipoenc_pro"/>
+								  <lit-tag v="ref.p3.mf.sp"/>
+							  </equal>
+							  <or>
+								  <equal>
+									  <clip pos="2" side="sl" part="pers"/>
+									  <lit-tag v="p3"/>
+								  </equal>
+								  <equal>
+									  <clip pos="2" side="sl" part="temps"/>
+									  <lit-tag v="inf"/>
+								  </equal>
+								  <equal>
+									  <clip pos="2" side="sl" part="temps"/>
+									  <lit-tag v="ger"/>
+								  </equal>
+							  </or>	
+						  </and>
+						  <and>
+							  <equal>
+								  <clip pos="1" side="sl" part="pers"/>
+								  <lit-tag v="p2"/>
+							  </equal>
+							  <equal>
+								  <clip pos="2" side="sl" part="pers"/>
+								  <lit-tag v="p2"/>
+							  </equal>
+							  <equal>
+								  <clip pos="1" side="sl" part="nbr"/>
+								  <clip pos="2" side="sl" part="nbr"/>
+							  </equal>
+						  </and>
+						  <and>
+							  <equal>
+								  <clip pos="1" side="sl" part="pers"/>
+								  <lit-tag v="p1"/>
+							  </equal>
+							  <equal>
+								  <clip pos="2" side="sl" part="pers"/>
+								  <lit-tag v="p1"/>
+							  </equal>
+							  <equal>
+								  <clip pos="1" side="sl" part="nbr"/>
+								  <clip pos="2" side="sl" part="nbr"/>
+							  </equal>
+						  </and>
+					  </or>
+				  </test>
+				  <choose> <!-- canvia aquests verbs-->
+					  <when>
+						  <test>
+							  <in caseless="yes">
+								  <clip pos="2" side="sl" part="lem"/>
+								  <list n="verbs_ref"/>
+							  </in>
+						  </test>
+						  <choose>
+							  <when>
+								  <test>
+									  <equal caseless="yes">
+										<clip pos="2" side="sl" part="lem"/>
+										<lit v="enamorar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="2" side="tl" part="lem"/>
+									<lit v="tomber# amoreux"/>
+								</let>
+							</when>
+						</choose>
+						<let>
+							<var n="treu_ref"/>
+							<lit v="treu"/>
+						</let>
+					</when>
+					<otherwise>
+						<choose>
+							<when>
+								<test>
+									<equal caseless="yes">
+										<clip pos="2" side="sl" part="lem"/>
+										<lit v="accordar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="2" side="tl" part="lem"/>
+									<lit v="rappeler"/>
+								</let>
+							</when>
+						</choose>
+						<let>
+							<var n="treu_ref"/>
+							<lit v=""/>
+						</let>
+						
+					</otherwise>
+				</choose>
+			</when>
+		</choose>
+		
+	</def-macro>
+	
+	<def-macro n="control_ref_aux" npar="3"><!-- canvia el lema dels verbs ref i elimina el prn si cal-->
+		<choose> <!-- prn ref?...-->
+			<when>
+				<test>
+					<or>
+						<and>
+							<equal>
+								<clip pos="1" side="sl" part="tipoenc_pro"/>
+								<lit-tag v="ref.p3.mf.sp"/>
+							</equal>
+							<or>
+								<equal>
+									<clip pos="2" side="sl" part="pers"/>
+									<lit-tag v="p3"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="temps"/>
+									<lit-tag v="inf"/>
+								</equal>
+								<equal>
+									<clip pos="2" side="sl" part="temps"/>
+									<lit-tag v="ger"/>
+								</equal>
+							</or>	
+						</and>
+						<and>
+							<equal>
+								<clip pos="1" side="sl" part="pers"/>
+								<lit-tag v="p2"/>
+							</equal>
+							<equal>
+								<clip pos="2" side="sl" part="pers"/>
+								<lit-tag v="p2"/>
+							</equal>
+							<equal>
+								<clip pos="1" side="sl" part="nbr"/>
+								<clip pos="2" side="sl" part="nbr"/>
+							</equal>
+						</and>
+						<and>
+							<equal>
+								<clip pos="1" side="sl" part="pers"/>
+								<lit-tag v="p1"/>
+							</equal>
+							<equal>
+								<clip pos="2" side="sl" part="pers"/>
+								<lit-tag v="p1"/>
+							</equal>
+							<equal>
+								<clip pos="1" side="sl" part="nbr"/>
+								<clip pos="2" side="sl" part="nbr"/>
+							</equal>
+						</and>
+					</or>
+				</test>
+				<choose> <!-- canvia aquests verbs-->
+					<when>
+						<test>
+							<in caseless="yes">
+								<clip pos="3" side="sl" part="lem"/>
+								<list n="verbs_ref"/>
+							</in>
+						</test>
+						<choose>
+							<when>
+								<test>
+									<equal caseless="yes">
+										<clip pos="3" side="sl" part="lem"/>
+										<lit v="enamorar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="3" side="tl" part="lem"/>
+									<lit v="tomber# amoreux"/>
+								</let>
+							</when>
+						</choose>
+						<let>
+							<var n="treu_ref"/>
+							<lit v="treu"/>
+						</let>
+					</when>
+					<otherwise>
+						<choose>
+							<when>
+								<test>
+									<equal caseless="yes">
+										<clip pos="3" side="sl" part="lem"/>
+										<lit v="acordar"/>
+									</equal>
+								</test>
+								<let>
+									<clip pos="3" side="tl" part="lem"/>
+									<lit v="rappeler"/>
+								</let>
+							</when>
+						</choose>
+						<let>
+							<var n="treu_ref"/>
+							<lit v=""/>
+						</let>
+						
+					</otherwise>
+				</choose>
+			</when>
+		</choose>
+		
+	</def-macro>
+
 <def-macro n="f_lexicadj" npar="1">
 	<choose>
 		<when>
@@ -725,7 +948,7 @@
 	</choose>
 </def-macro>
 
-		<def-macro n="verb_ref" npar="2"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
+		<def-macro n="verb_ref" npar="2"><!-- aquesta macro canvia el significat de certs verbs reflexius i elimina el prn si cal-->
 
 			<choose> <!--si el prn és ref...-->
 				<when>
@@ -736,10 +959,20 @@
 									<clip pos="1" side="sl" part="tipoenc_pro"/>
 									<lit-tag v="ref.p3.mf.sp"/>
 								</equal>
-								<equal>
-									<clip pos="2" side="sl" part="pers"/>
-									<lit-tag v="p3"/>
-								</equal>
+								<or>
+									<equal>
+										<clip pos="2" side="sl" part="pers"/>
+										<lit-tag v="p3"/>
+									</equal>
+									<equal>
+										<clip pos="2" side="sl" part="temps"/>
+										<lit-tag v="inf"/>
+									</equal>
+									<equal>
+										<clip pos="2" side="sl" part="temps"/>
+										<lit-tag v="ger"/>
+									</equal>
+								</or>	
 							</and>
 							<and>
 								<equal>
@@ -796,7 +1029,52 @@
 								<lit v="preguntar"/>
 							</let>
 						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="passer"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="transcurrir"/>
+							</let>
+						</when>
+						<when>
+							<test>
+								<equal caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<lit v="occuper"/>
+								</equal>
+							</test>
+							<let>
+								<clip pos="2" side="tl" part="lem"/>
+								<lit v="atender"/>
+							</let>
+						</when>
 					</choose>
+					<choose> <!-- marca si cal treure el ref-->
+						<when>
+							<test>
+								<in caseless="yes">
+									<clip pos="2" side="sl" part="lem"/>
+									<list n="verbs_ref"/>
+								</in>
+							</test>
+							<let>
+								<var n="treu_ref"/>
+								<lit v="treu"/>
+							</let>
+						</when>
+						<otherwise>
+							<let>
+								<var n="treu_ref"/>
+								<lit v=""/>
+							</let>
+						</otherwise>
+					</choose>
+					
 				</when>
 			</choose>
 		</def-macro>
@@ -913,10 +1191,20 @@
 													<clip pos="3" side="sl" part="tipoenc_pro"/>
 													<lit-tag v="ref.p3.mf.sp"/>
 												</equal>
-												<equal>
-													<clip pos="1" side="sl" part="pers"/>
-													<lit-tag v="p3"/>
-												</equal>
+												<or>
+													<equal>
+														<clip pos="1" side="sl" part="pers"/>
+														<lit-tag v="p3"/>
+													</equal>
+													<equal>
+														<clip pos="1" side="sl" part="temps"/>
+														<lit-tag v="inf"/>
+													</equal>
+													<equal>
+														<clip pos="1" side="sl" part="temps"/>
+														<lit-tag v="ger"/>
+													</equal>
+												</or>
 											</and>
 											<and>
 												<equal>
@@ -964,7 +1252,7 @@
 										<clip pos="2" side="tl" part="nbr"/>
 										<lit-tag v="sg"/>
 									</let>
-									<choose> <!-- i canvia aquests verbs-->
+									<choose> 
 										<when>
 											<test>
 												<equal caseless="yes">
@@ -989,6 +1277,50 @@
 												<lit v="preguntar"/>
 											</let>
 										</when>
+										<when>
+											<test>
+												<equal caseless="yes">
+													<clip pos="2" side="sl" part="lem"/>
+													<lit v="passer"/>
+												</equal>
+											</test>
+											<let>
+												<clip pos="2" side="tl" part="lem"/>
+												<lit v="transcurrir"/>
+											</let>
+										</when>
+										<when>
+											<test>
+												<equal caseless="yes">
+													<clip pos="2" side="sl" part="lem"/>
+													<lit v="occuper"/>
+												</equal>
+											</test>
+											<let>
+												<clip pos="2" side="tl" part="lem"/>
+												<lit v="atender"/>
+											</let>
+										</when>										
+									</choose>
+									<choose> <!-- marca si cal treure el ref-->
+										<when>
+											<test>
+												<in caseless="yes">
+													<clip pos="2" side="sl" part="lem"/>
+													<list n="verbs_ref"/>
+												</in>
+											</test>
+											<let>
+												<var n="treu_ref"/>
+												<lit v="treu"/>
+											</let>
+										</when>
+										<otherwise>
+											<let>
+												<var n="treu_ref"/>
+												<lit v=""/>
+											</let>
+										</otherwise>
 									</choose>
 								</when>
 								<otherwise><!--si no és cap dels casos anteriors, acceptem que és passiva, i deixem el verb "ser"-->
@@ -6934,6 +7266,10 @@
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="y"/>
 					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
+					</equal>
 				</or>
 			</test>
 			<out>
@@ -6994,6 +7330,10 @@
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
 	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
+	</let>
 	</action>
 </rule>
 
@@ -7048,6 +7388,10 @@
 					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -7137,6 +7481,10 @@
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="y"/>
 					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
+					</equal>
 				</or>
 			</test>
 			<out>
@@ -7198,6 +7546,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -7564,6 +7916,10 @@
 	<call-macro n="firstWord">
 		<with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="1"/>
+		<with-param pos="2"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -7575,6 +7931,10 @@
 					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -7644,6 +8004,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -7885,6 +8249,10 @@
 	<call-macro n="firstWord">
 		<with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="2"/>
+		<with-param pos="3"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -7896,6 +8264,10 @@
 					<equal caseless="yes">
 						<clip pos="2" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -7990,6 +8362,10 @@
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
 	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
+	</let>
 	</action>
 </rule>
 
@@ -8013,6 +8389,10 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="verb_ref">
+			<with-param pos="3"/>
+			<with-param pos="4"/>
+		</call-macro>
 		<choose>
 			<when>
 				<test>
@@ -8032,6 +8412,10 @@
 								<equal caseless="yes">
 									<clip pos="3" side="sl" part="lem"/>
 									<lit v="y"/>
+								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
 								</equal>
 							</or>
 						</test>
@@ -8157,6 +8541,10 @@
 						<clip pos="3" side="sl" part="lem"/>
 						<lit v="y"/>
 					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
+					</equal>
 				</or>
 			</test>
 			<out>
@@ -8253,6 +8641,10 @@
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
 	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
+	</let>
 	</action>
 </rule>
 
@@ -8276,6 +8668,10 @@
 	<call-macro n="firstWord">
 		<with-param pos="1"/>
 	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -8287,6 +8683,10 @@
 					<equal caseless="yes">
 						<clip pos="3" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -8414,6 +8814,10 @@
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
 	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
+	</let>
 	</action>
 </rule>
 
@@ -8438,6 +8842,10 @@
 		<call-macro n="f_ppres">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="verb_ref">
+			<with-param pos="4"/>
+			<with-param pos="5"/>
+		</call-macro>
 		<choose>
 			<when>
 				<test>
@@ -8449,6 +8857,10 @@
 						<equal caseless="yes">
 							<clip pos="4" side="sl" part="lem"/>
 							<lit v="y"/>
+						</equal>
+						<equal>
+							<var n="treu_ref"/>
+							<lit v="treu"/>
 						</equal>
 					</or>
 				</test>
@@ -8575,6 +8987,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -9894,9 +10310,13 @@
 	<call-macro n="f_ppres">
 		<with-param pos="1"/>
 	</call-macro>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
+	<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -9908,6 +10328,10 @@
 					<equal caseless="yes">
 						<clip pos="3" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -9994,7 +10418,7 @@
 					</mlu>	
 				</chunk>
 			</out>
-<call-macro n="f_bcond">
+			<call-macro n="f_bcond">
 				<with-param pos="3"/>
 				<with-param pos="4"/>
 			</call-macro>
@@ -10003,6 +10427,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -10028,6 +10456,10 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="verb_ref">
+			<with-param pos="4"/>
+			<with-param pos="5"/>
+		</call-macro>
 
 		<choose>
 			<when>
@@ -10048,6 +10480,10 @@
 								<equal caseless="yes">
 									<clip pos="4" side="sl" part="lem"/>
 									<lit v="y"/>
+								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
 								</equal>
 							</or>
 						</test>
@@ -10171,6 +10607,10 @@
 						<clip pos="4" side="sl" part="lem"/>
 						<lit v="y"/>
 					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
+					</equal>
 				</or>
 			</test>
 			<out>
@@ -10267,6 +10707,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -10893,9 +11337,13 @@
 	<call-macro n="tipus_verb">
 		<with-param pos="4"/>
 	</call-macro>
-		<call-macro n="firstWord">
-			<with-param pos="1"/>
-		</call-macro>
+	<call-macro n="firstWord">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verb_ref">
+		<with-param pos="3"/>
+		<with-param pos="4"/>
+	</call-macro>
 	<out>
 		<chunk name="ne" case="caseFirstWord">
 			<tags>
@@ -10920,6 +11368,10 @@
 					<equal caseless="yes">
 						<clip pos="3" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -10980,7 +11432,7 @@
 					</mlu>	
 				</chunk>
 			</out>
-<call-macro n="f_bcond">
+			<call-macro n="f_bcond">
 				<with-param pos="3"/>
 				<with-param pos="4"/>
 			</call-macro>
@@ -11007,6 +11459,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -11411,6 +11867,10 @@
 		<call-macro n="f_ppres">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="verb_ref">
+			<with-param pos="4"/>
+			<with-param pos="5"/>
+		</call-macro>
 		<choose>
 			<when>
 				<test>
@@ -11430,6 +11890,10 @@
 								<equal caseless="yes">
 									<clip pos="4" side="sl" part="lem"/>
 									<lit v="y"/>
+								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
 								</equal>
 							</or>
 						</test>
@@ -11549,6 +12013,10 @@
 									<clip pos="4" side="sl" part="lem"/>
 									<lit v="y"/>
 								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
+								</equal>
 							</or>
 						</test>
 						<out>
@@ -11637,6 +12105,10 @@
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
+		</let>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
 		</let>
 	</action>
 </rule>
@@ -12165,6 +12637,10 @@
 		<call-macro n="firstWord">
 			<with-param pos="1"/>
 		</call-macro>
+		<call-macro n="verb_ref">
+			<with-param pos="1"/>
+			<with-param pos="2"/>
+		</call-macro>
 	<choose>
 		<when>
 			<test>
@@ -12176,6 +12652,10 @@
 					<equal caseless="yes">
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="y"/>
+					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
 					</equal>
 				</or>
 			</test>
@@ -12238,7 +12718,7 @@
 					</mlu>	
 				</chunk>
 			</out>
-<call-macro n="f_bcond">
+			<call-macro n="f_bcond">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
@@ -12247,6 +12727,10 @@
 	<let>
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
+	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
 	</let>
 	</action>
 </rule>
@@ -12497,6 +12981,10 @@
 						<clip pos="2" side="sl" part="lem"/>
 						<lit v="y"/>
 					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
+					</equal>
 				</or>
 			</test>
 			<out>
@@ -12521,7 +13009,7 @@
 					</lu>
 				</chunk>
 			</out>
-<call-macro n="f_bcond">
+			<call-macro n="f_bcond">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
@@ -12560,7 +13048,7 @@
 					</mlu>	
 				</chunk>
 			</out>
-<call-macro n="f_bcond">
+			<call-macro n="f_bcond">
 				<with-param pos="1"/>
 				<with-param pos="2"/>
 			</call-macro>
@@ -12574,6 +13062,10 @@
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
+		</let>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
 		</let>
 	</action>
 </rule>
@@ -13736,6 +14228,10 @@
 						<clip pos="1" side="sl" part="lem"/>
 						<lit v="y"/>
 					</equal>
+					<equal>
+						<var n="treu_ref"/>
+						<lit v="treu"/>
+					</equal>
 				</or>
 			</test>
 			<out>
@@ -13809,6 +14305,10 @@
 		<var n="caseFirstWord"/>
 		<lit v="aa"/>
 	</let>
+	<let>
+		<var n="treu_ref"/>
+		<lit v=""/>
+	</let>
 	</action>
 </rule>
 
@@ -13865,6 +14365,10 @@
 								<equal caseless="yes">
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="y"/>
+								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
 								</equal>
 							</or>
 						</test>
@@ -13969,6 +14473,10 @@
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="y"/>
 								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
+								</equal>
 							</or>
 						</test>
 						<out>
@@ -14044,6 +14552,10 @@
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
 		</let>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
+		</let>
 	</action>
 </rule>
 
@@ -14083,6 +14595,10 @@
 						<equal caseless="yes">
 							<clip pos="1" side="sl" part="lem"/>
 							<lit v="y"/>
+						</equal>
+						<equal>
+							<var n="treu_ref"/>
+							<lit v="treu"/>
 						</equal>
 					</or>
 				</test>
@@ -14180,6 +14696,10 @@
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
 		</let>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
+		</let>
 	</action>
 </rule>
 
@@ -14236,6 +14756,10 @@
 								<equal caseless="yes">
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="y"/>
+								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
 								</equal>
 							</or>
 						</test>
@@ -14338,6 +14862,10 @@
 									<clip pos="1" side="sl" part="lem"/>
 									<lit v="y"/>
 								</equal>
+								<equal>
+									<var n="treu_ref"/>
+									<lit v="treu"/>
+								</equal>
 							</or>
 						</test>
 						<out>
@@ -14433,6 +14961,10 @@
 			</out>
 			</when>
 		</choose>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
+		</let>
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
@@ -15355,6 +15887,11 @@
 		<pattern-item n="pp"/>
 	</pattern>
 	<action>
+		<call-macro n="comprova_auxiliar_ref">
+			<with-param pos="2"/>
+			<with-param pos="3"/>
+			<with-param pos="1"/>
+		</call-macro>
 		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>
@@ -15375,6 +15912,10 @@
 						<equal caseless="yes">
 							<clip pos="1" side="sl" part="lem"/>
 							<lit v="y"/>
+						</equal>
+						<equal>
+							<var n="treu_ref"/>
+							<lit v="treu"/>
 						</equal>
 					</or>
 				</test>
@@ -15453,6 +15994,10 @@
 			</otherwise>
 		</choose>
 		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
+		</let>
+		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
 		</let>
@@ -15467,6 +16012,11 @@
 		<pattern-item n="pp"/>
 	</pattern>
 	<action>
+		<call-macro n="comprova_auxiliar_ref">
+			<with-param pos="2"/>
+			<with-param pos="4"/>
+			<with-param pos="1"/>
+		</call-macro>
 		<call-macro n="f_concord1">
 			<with-param pos="1"/>
 		</call-macro>
@@ -15487,6 +16037,10 @@
 						<equal caseless="yes">
 							<clip pos="1" side="sl" part="lem"/>
 							<lit v="y"/>
+						</equal>
+						<equal>
+							<var n="treu_ref"/>
+							<lit v="treu"/>
 						</equal>
 					</or>
 				</test>
@@ -15591,6 +16145,10 @@
 		<let>
 			<var n="caseFirstWord"/>
 			<lit v="aa"/>
+		</let>
+		<let>
+			<var n="treu_ref"/>
+			<lit v=""/>
 		</let>
 	</action>
 </rule>
