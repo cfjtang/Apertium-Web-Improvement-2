@@ -38,7 +38,8 @@ $subsections = array
 		"apertium-tagger-training-tools"=>"Opleiding van etiketeerder",
 		"apertium-transfer-tools"=>"Oordragprogramme",
 		"lttoolbox"=>"Leksikale transformasie",
-		"apertium-eval-translator"=>"Evaluasie"
+		"apertium-eval-translator"=>"Evaluasie",
+		"apertium-tinylex"=>"TinyLex"
 	),
 );
 
