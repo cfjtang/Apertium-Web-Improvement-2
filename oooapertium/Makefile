@@ -1,0 +1,21 @@
+UNOPKG=unopkg
+PACKAGE=oooapertium.zip
+all: clean build 
+build:	
+	@echo =============== Building addon file ===========
+	zip $(PACKAGE) addon.xcu busmodes.py description.xml \
+		icons/pairs_16.bmp icons/pairs_16h.bmp icons/pairs_26.bmp \
+		icons/pairs_26h.bmp icons/pairs.bmp icons/translate_16.bmp \
+		icons/translate_16h.bmp icons/translate_26.bmp \
+		icons/translate_26h.bmp icons/translate.bmp \
+		license.txt oooapertium.py
+clean: uninstall
+	echo ============== Removing addon file ============
+	rm -f $(PACKAGE)
+test:
+	echo ============= Installing addon ================
+	unopkg add -v $(PACKAGE)
+uninstall:
+	echo ============ Removing addon ==================
+	unopkg remove -v org.openoffice.Office.addon.apertium || true
+install: clean build test
