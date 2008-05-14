@@ -1,5 +1,9 @@
 UNOPKG=unopkg
-PACKAGE=oooapertium.zip
+PKGNAME=oooapertium
+MAJOR=0
+MINOR=1.1
+VERSION=$(MAJOR).$(MINOR)
+PACKAGE=$(PKGNAME)-$(VERSION).zip
 all: clean build 
 build:	
 	@echo =============== Building addon file ===========
@@ -12,7 +16,7 @@ build:
 clean: uninstall
 	echo ============== Removing addon file ============
 	rm -f $(PACKAGE)
-test:
+test: clean uninstall build
 	echo ============= Installing addon ================
 	unopkg add -v $(PACKAGE)
 uninstall:
