@@ -56,11 +56,35 @@ def _(ctx,msg):
 
 	clocal=aLocale[:2]
 	# language list
-	langlist=("ca","es")
+	langlist=("ca","es","pl","fr","gl","pt")
 	# Translations. Add here new strings for translate
-        trad={'Select mode:':{'ca':'Seleccioneu el mode:','es':'Seleccione el modo:'},
-              'Save':{'ca':'Desa','es':'Guarda'},
-	      'Mark unknown words':{'ca':'Marca les paraules desconegudes','es':'Marca las palabras desconocidas'}}
+        trad={'Select mode:':{'ca':'Seleccioneu el mode:',
+			'es':'Seleccione el modo:',
+			'pl':'Wybierz sposób',
+			'fr':'Sélectionnez un mode',
+			'gl':'Seleccionar modo',
+			'pt':'Seleccionar modo',
+			'eu':'Aukeratu modua:',
+			'hr':'Odaberi način:',
+			'sr':'Odaberi način:'},
+              'Save':{'ca':'Desa',
+	      		'es':'Guarda',
+			'pl':'Zapisz',
+	      		'fr':'Sauvegarder',
+			'gl':'Guardar',
+			'pt':'Guardar',
+			'eu':'Gorde',
+			'hr':'Spremi',
+			'sr':'Spremi'},
+	      'Mark unknown words':{'ca':'Marca les paraules desconegudes',
+	      		'es':'Marca las palabras desconocidas',
+			'pl':'Oznacz nieznane słowa',
+			'fr':'Marque mots inconnus',
+			'gl':'Marcar as palabras decoñecidas',
+			'pt':'Marcar as palavras desconhecidas',
+			'eu':'Markatu hitz ezezagunak',
+			'hr':'Označi nepoznate riječi',
+			'sr':'Označi nepoznate riječi'}}
 	msgstr=trad[msg]
 	if clocal not in langlist:
 		retmsg=msg
