@@ -2276,248 +2276,248 @@
 
 
 
- <def-macro n="f_concord5" npar="5"><!--1 = main parameter (typically noun); 2 = secondary parameter (typically adj); 3 , 4 and 5 = other secondary param. (typically det) -->
-     <let>
-       <var n="gen_chunk"/>
-       <lit v=""/>
-     </let>
-     <let>
-       <var n="nbr_chunk"/>
-       <lit v=""/>
-     </let>
-     <!--PRIMER ASSIGNEM VALORS DE GD I ND SI CAL A LES POSICIONES SECUNDÀRIES -->
-     <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
-       <when>
-         <test>
-           <not>
-             <equal>
-               <clip pos="2" side="tl" part="a_num"/>
-               <lit-tag v="num"/>
-             </equal>
-           </not>
-         </test>
-         <choose>
-           <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
-             <test>
-               <equal>
-                 <clip pos="2" side="tl" part="gen"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="2" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="2" side="tl" part="tags"/>
-               <lit-tag v="GD"/>
-               <lit-tag v="ND"/>
-               <clip pos="2" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="2" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-           <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
-             <test>
-               <equal>
-                 <clip pos="2" side="tl" part="nbr"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="2" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="2" side="tl" part="tags"/>
-               <lit-tag v="ND"/>
-               <clip pos="2" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="2" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-         </choose>
-       </when>
-     </choose>
+    <def-macro n="f_concord5" npar="5"><!--1 = main parameter (typically noun); 2 = secondary parameter (typically adj); 3 , 4 and 5 = other secondary param. (typically det) -->
+      <let>
+        <var n="gen_chunk"/>
+        <lit v=""/>
+      </let>
+      <let>
+        <var n="nbr_chunk"/>
+        <lit v=""/>
+      </let>
+      <!--PRIMER ASSIGNEM VALORS DE GD I ND SI CAL A LES POSICIONES SECUNDÀRIES -->
+      <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
+        <when>
+          <test>
+            <not>
+              <equal>
+                <clip pos="2" side="tl" part="a_num"/>
+                <lit-tag v="num"/>
+              </equal>
+            </not>
+          </test>
+          <choose>
+            <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
+              <test>
+                <equal>
+                  <clip pos="2" side="tl" part="gen"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="2" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="2" side="tl" part="tags"/>
+                <lit-tag v="GD"/>
+                <lit-tag v="ND"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="2" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+            <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
+              <test>
+                <equal>
+                  <clip pos="2" side="tl" part="nbr"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="2" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="2" side="tl" part="tags"/>
+                <lit-tag v="ND"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="2" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+          </choose>
+        </when>
+      </choose>
 
-     <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
-       <when>
-         <test>
-           <not>
-             <equal>
-               <clip pos="3" side="tl" part="a_num"/>
-               <lit-tag v="num"/>
-             </equal>
-           </not>
-         </test>
-         <choose>
-           <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
-             <test>
-               <equal>
-                 <clip pos="3" side="tl" part="gen"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="3" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="3" side="tl" part="tags"/>
-               <lit-tag v="GD"/>
-               <lit-tag v="ND"/>
-               <clip pos="3" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="3" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-           <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
-             <test>
-               <equal>
-                 <clip pos="3" side="tl" part="nbr"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="3" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="3" side="tl" part="tags"/>
-               <lit-tag v="ND"/>
-               <clip pos="3" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="3" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-         </choose>
-       </when>
-     </choose>
+      <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
+        <when>
+          <test>
+            <not>
+              <equal>
+                <clip pos="3" side="tl" part="a_num"/>
+                <lit-tag v="num"/>
+              </equal>
+            </not>
+          </test>
+          <choose>
+            <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
+              <test>
+                <equal>
+                  <clip pos="3" side="tl" part="gen"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="3" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="3" side="tl" part="tags"/>
+                <lit-tag v="GD"/>
+                <lit-tag v="ND"/>
+                <clip pos="3" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="3" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+            <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
+              <test>
+                <equal>
+                  <clip pos="3" side="tl" part="nbr"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="3" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="3" side="tl" part="tags"/>
+                <lit-tag v="ND"/>
+                <clip pos="3" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="3" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+          </choose>
+        </when>
+      </choose>
 
-     <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
-       <when>
-         <test>
-           <not>
-             <equal>
-               <clip pos="4" side="tl" part="a_num"/>
-               <lit-tag v="num"/>
-             </equal>
-           </not>
-         </test>
-         
-         <choose>
-           <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
-             <test>
-               <equal>
-                 <clip pos="4" side="tl" part="gen"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="4" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="4" side="tl" part="tags"/>
-               <lit-tag v="GD"/>
-               <lit-tag v="ND"/>
-               <clip pos="4" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="4" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-           <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
-             <test>
-               <equal>
-                 <clip pos="4" side="tl" part="nbr"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="4" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="4" side="tl" part="tags"/>
-               <lit-tag v="ND"/>
-               <clip pos="4" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="4" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-         </choose>
-       </when>
-     </choose>
-
-     <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
-       <when>
-         <test>
-           <not>
-             <equal>
-               <clip pos="5" side="tl" part="a_num"/>
-               <lit-tag v="num"/>
-             </equal>
-           </not>
-         </test>
-         <choose>
-           <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
-             <test>
-               <equal>
-                 <clip pos="5" side="tl" part="gen"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="5" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="5" side="tl" part="tags"/>
-               <lit-tag v="GD"/>
-               <lit-tag v="ND"/>
-               <clip pos="5" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="5" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-           <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
-             <test>
-               <equal>
-                 <clip pos="5" side="tl" part="nbr"/>
-                 <lit v=""/>
-               </equal>
-             </test>
-             <let>
-               <var n="paraula1"/>
-               <clip pos="5" side="tl" part="lemh"/>
-             </let>
-             <append n="paraula1">
-               <clip pos="5" side="tl" part="tags"/>
-               <lit-tag v="ND"/>
-               <clip pos="5" side="tl" part="lemq"/>
-             </append>
-             <let>
-               <clip pos="5" side="tl" part="whole"/>
-               <var n="paraula1"/>
-             </let>
-           </when>
-         </choose>
-       </when>
-     </choose>
+      <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
+        <when>
+          <test>
+            <not>
+              <equal>
+                <clip pos="4" side="tl" part="a_num"/>
+                <lit-tag v="num"/>
+              </equal>
+            </not>
+          </test>
+        
+          <choose>
+            <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
+              <test>
+                <equal>
+                  <clip pos="4" side="tl" part="gen"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="4" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="4" side="tl" part="tags"/>
+                <lit-tag v="GD"/>
+                <lit-tag v="ND"/>
+                <clip pos="4" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="4" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+            <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
+              <test>
+                <equal>
+                  <clip pos="4" side="tl" part="nbr"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="4" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="4" side="tl" part="tags"/>
+                <lit-tag v="ND"/>
+                <clip pos="4" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="4" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+          </choose>
+        </when>
+      </choose>
+ 
+      <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
+        <when>
+          <test>
+            <not>
+              <equal>
+                <clip pos="5" side="tl" part="a_num"/>
+                <lit-tag v="num"/>
+              </equal>
+            </not>
+          </test>
+          <choose>
+            <when><!--si la paraula no té valor per a gènere (i en aquest cas, tampoc per a nombre) -->
+              <test>
+                <equal>
+                  <clip pos="5" side="tl" part="gen"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="5" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="5" side="tl" part="tags"/>
+                <lit-tag v="GD"/>
+                <lit-tag v="ND"/>
+                <clip pos="5" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="5" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+            <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
+              <test>
+                <equal>
+                  <clip pos="5" side="tl" part="nbr"/>
+                  <lit v=""/>
+                </equal>
+              </test>
+              <let>
+                <var n="paraula1"/>
+                <clip pos="5" side="tl" part="lemh"/>
+              </let>
+              <append n="paraula1">
+                <clip pos="5" side="tl" part="tags"/>
+                <lit-tag v="ND"/>
+                <clip pos="5" side="tl" part="lemq"/>
+              </append>
+              <let>
+                <clip pos="5" side="tl" part="whole"/>
+                <var n="paraula1"/>
+              </let>
+            </when>
+          </choose>
+        </when>
+      </choose>
 
 
 
@@ -2991,36 +2991,6 @@
     </def-macro>
 
 
-    <def-macro n="million" npar="1">
-      <choose>
-        <when>
-          <test>
-            <equal caseless="yes">
-              <clip pos="1" side="tl" part="lem"/>
-              <lit v="milió"/>
-            </equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="lem"/>
-            <lit v="milió de"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal caseless="yes">
-              <clip pos="1" side="tl" part="lem"/>
-              <lit v="un milió"/>
-            </equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="lem"/>
-            <lit v="un milió de"/>
-          </let>
-        </when>
-      </choose>
-      
-    </def-macro>
-
 
     <def-macro n="flexio_numerals" npar="2">
     <!--  <choose>
@@ -3047,7 +3017,7 @@
           </test>
           <let>
             <clip pos="2" side="tl" part="lem"/>
-            <lit v="per cent"/>
+            <lit v="procent"/>
           </let>
         <!--  <let>
             <clip pos="2" side="tl" part="a_nom"/>
@@ -3060,6 +3030,10 @@
           <let>
             <clip pos="2" side="tl" part="nbr"/>
             <lit-tag v="pl"/>
+          </let>
+          <let>
+            <clip pos="2" side="tl" part="caso"/>
+            <lit-tag v="CD"/>
           </let>
         </when>
       </choose>
@@ -4524,9 +4498,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="2"/>
@@ -4629,9 +4600,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="3"/>
@@ -4691,41 +4659,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
+        <call-macro n="flexio_numerals">
+          <with-param pos="1"/>
+          <with-param pos="3"/>
         </call-macro>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <or>
-                  <equal caseless="yes">
-                    <clip pos="2" side="tl" part="lem"/>
-                    <lit v="milió de"/>
-                  </equal>
-                  <equal caseless="yes">
-                    <clip pos="2" side="tl" part="lem"/>
-                    <lit v="un milió de"/>
-                  </equal>
-                </or>
-                <equal>
-                  <clip pos="1" side="tl" part="gen"/>
-                  <lit-tag v="GD"/>
-                </equal>
-              </and>
-            </test>
-            <let>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="m"/>
-            </let>
-          </when>
-          <otherwise>
-            <call-macro n="flexio_numerals">
-              <with-param pos="1"/>
-              <with-param pos="3"/>
-            </call-macro>
-          </otherwise>
-        </choose>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="3"/>
@@ -4786,9 +4723,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="3"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="3"/>
           <with-param pos="4"/>
@@ -4858,41 +4792,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="3"/>
+        <call-macro n="flexio_numerals">
+          <with-param pos="2"/>
+          <with-param pos="4"/>
         </call-macro>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <or>
-                  <equal caseless="yes">
-                    <clip pos="3" side="tl" part="lem"/>
-                    <lit v="milió de"/>
-                  </equal>
-                  <equal caseless="yes">
-                    <clip pos="3" side="tl" part="lem"/>
-                    <lit v="un milió de"/>
-                  </equal>
-                </or>
-                <equal>
-                  <clip pos="2" side="tl" part="gen"/>
-                  <lit-tag v="GD"/>
-                </equal>
-              </and>
-            </test>
-            <let>
-              <clip pos="2" side="tl" part="gen"/>
-              <lit-tag v="m"/>
-            </let>
-          </when>
-          <otherwise>
-            <call-macro n="flexio_numerals">
-              <with-param pos="2"/>
-              <with-param pos="4"/>
-            </call-macro>
-          </otherwise>
-        </choose>
         <call-macro n="flexio_numerals">
           <with-param pos="3"/>
           <with-param pos="4"/>
@@ -5167,9 +5070,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
           <with-param pos="1"/>
           <with-param pos="3"/>
         </call-macro>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="3"/>
@@ -5305,9 +5205,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="4"/>
@@ -5450,9 +5347,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="4"/>
@@ -5654,9 +5548,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="5"/>
@@ -6117,9 +6008,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="4"/>
@@ -6199,9 +6087,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="5"/>
@@ -6356,9 +6241,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="6"/>
@@ -6455,9 +6337,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="6"/>
@@ -7621,9 +7500,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="3"/>
@@ -7763,9 +7639,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="3"/>
@@ -8132,9 +8005,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="5"/>
@@ -8589,9 +8459,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
       </pattern>
       <action>
 
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="6"/>
@@ -8806,9 +8673,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="5"/>
@@ -9096,9 +8960,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="4"/>
@@ -9259,9 +9120,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="4"/>
@@ -11519,9 +11377,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="million">
-          <with-param pos="4"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="4"/>
           <with-param pos="5"/>
@@ -12255,9 +12110,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="3"/>
@@ -12316,9 +12168,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="2"/>
           <with-param pos="4"/>
@@ -12443,9 +12292,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <pattern-item n="ago"/>
       </pattern>
       <action>
-        <call-macro n="million">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="flexio_numerals">
           <with-param pos="1"/>
           <with-param pos="2"/>
