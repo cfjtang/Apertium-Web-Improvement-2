@@ -56,7 +56,7 @@ def _(ctx,msg):
 
 	clocal=aLocale[:2]
 	# language list
-	langlist=("ca","es","pl","fr","gl","pt")
+	langlist=("ca","es","pl","fr","gl","pt","eu","hr","tg","fa","sr")
 	# Translations. Add here new strings for translate
         trad={'Select mode:':{'ca':'Seleccioneu el mode:',
 			'es':'Seleccione el modo:',
@@ -66,6 +66,8 @@ def _(ctx,msg):
 			'pt':'Seleccionar modo',
 			'eu':'Aukeratu modua:',
 			'hr':'Odaberi način:',
+			'tg':'Гузидани ҳолат',
+			'fa':'گﺯیﺪﻧ ﺡﺎﻠﺗ:',
 			'sr':'Odaberi način:'},
               'Save':{'ca':'Desa',
 	      		'es':'Guarda',
@@ -75,6 +77,8 @@ def _(ctx,msg):
 			'pt':'Guardar',
 			'eu':'Gorde',
 			'hr':'Spremi',
+			'tg':'Захира кун',
+			'fa':'ﺬﺧیﺮﻫ کﻥ',
 			'sr':'Spremi'},
 	      'Mark unknown words':{'ca':'Marca les paraules desconegudes',
 	      		'es':'Marca las palabras desconocidas',
@@ -84,6 +88,8 @@ def _(ctx,msg):
 			'pt':'Marcar as palavras desconhecidas',
 			'eu':'Markatu hitz ezezagunak',
 			'hr':'Označi nepoznate riječi',
+			'tg':'луғатҳои ношинос ро аломат безан',
+			'fa':' ﻭﺍژﻩ<200c>ﻫﺍی ﻥﺍﺂﺸﻧﺍ ﺭﺍ ﻉﻼﻤﺗ ﺏﺰﻧ',
 			'sr':'Označi nepoznate riječi'}}
 	msgstr=trad[msg]
 	if clocal not in langlist:
