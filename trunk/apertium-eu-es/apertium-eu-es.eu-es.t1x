@@ -148,6 +148,7 @@
 
 <def-cat n="ezinda">
       <cat-item lemma="ezinda" tags="vblex.inf"/>
+      <cat-item lemma="ezinik" tags="vblex.inf"/>
     </def-cat>
 
     <def-cat n="prnpers">
@@ -483,6 +484,54 @@
     </def-macro>
 
 
+    <def-macro n="firstWord" npar="1">
+      <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="a_np_acr"/>
+	      <lit v=""/>
+	    </equal>
+	  </test>
+	  <choose>
+	    <when>
+	      <test>
+		<equal> 
+		  <var n="EOS"/>
+		  <lit v="true"/>
+		</equal> 
+	      </test>
+	      <modify-case>
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="aa"/>
+	      </modify-case>
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="Aa"/>
+	      </let>
+	    </when>
+	    <otherwise> 
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	      </let>
+	    </otherwise>
+	  </choose>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="caseFirstWord"/>
+	    <lit v="aa"/>
+	  </let>
+	</otherwise>
+      </choose>
+      <let>
+	<var n="EOS"/>
+	<lit v="false"/>
+      </let>
+    </def-macro>
+
+<!-- macro antiga, treure
 
  <def-macro n="firstWord" npar="1">
       <choose>
@@ -523,7 +572,7 @@
 	<var n="EOS"/>
 	<lit v="false"/>
       </let>
-    </def-macro>
+    </def-macro> -->
 
 
 
@@ -2334,10 +2383,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -2370,10 +2415,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2407,10 +2448,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2441,10 +2478,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2492,10 +2525,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2574,10 +2603,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>	    
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2665,10 +2690,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>	    
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2786,10 +2807,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2951,10 +2968,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -2996,10 +3009,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3074,10 +3083,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3135,10 +3140,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3268,10 +3269,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	</out>
 	    </otherwise>
 	  </choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3345,10 +3342,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3451,10 +3444,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>	    
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3483,10 +3472,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -3523,10 +3508,6 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -3579,10 +3560,6 @@ pingui pingui pingui MG
 		</lu>
 	      </chunk>
 	    </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3644,10 +3621,6 @@ pingui pingui pingui MG
 		</lu>
 	      </chunk>
 	    </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3764,10 +3737,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -3927,10 +3896,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4081,10 +4046,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4258,10 +4219,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4392,10 +4349,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4501,10 +4454,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4642,10 +4591,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4796,10 +4741,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4881,10 +4822,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -4974,10 +4911,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -5104,10 +5037,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -5243,10 +5172,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -5406,11 +5331,7 @@ pingui pingui pingui MG
 	  </chunk>
 	</out>
 	  </otherwise>
-	</choose>	    
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+	</choose>
       </action>
  </rule>
 
@@ -5623,10 +5544,6 @@ pingui pingui pingui MG
 	</out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -5850,10 +5767,6 @@ pingui pingui pingui MG
 	</out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -6013,10 +5926,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -6185,10 +6094,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -6396,10 +6301,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -6616,10 +6517,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -6688,10 +6585,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -6797,10 +6690,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -6891,11 +6780,7 @@ pingui pingui pingui MG
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
-	</out>	
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+	</out>
       </action>
 </rule>
 
@@ -7020,11 +6905,7 @@ pingui pingui pingui MG
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	  </chunk>
-	</out>	
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+	</out>
       </action>
 </rule>
 
@@ -7135,10 +7016,6 @@ pingui pingui pingui MG
 	    </lu>	    
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -7183,10 +7060,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -7246,10 +7119,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -7330,10 +7199,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -7443,10 +7308,6 @@ pingui pingui pingui MG
 	    </lu>	
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -7559,10 +7420,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule> 
 
@@ -7731,10 +7588,6 @@ pingui pingui pingui MG
 	</out>	
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -7945,10 +7798,6 @@ pingui pingui pingui MG
 	</out>	
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -8100,10 +7949,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -8295,10 +8140,6 @@ pingui pingui pingui MG
 	    </out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -8602,10 +8443,6 @@ pingui pingui pingui MG
 	</choose>
       </otherwise>
     </choose>
-  <let>
-    <var n="caseFirstWord"/>
-    <lit v="aa"/>
-  </let>
 </action>
 </rule>
 
@@ -8968,10 +8805,6 @@ pingui pingui pingui MG
 	</choose>
       </otherwise>
     </choose>
-  <let>
-    <var n="caseFirstWord"/>
-    <lit v="aa"/>
-  </let>
 </action>
 </rule>
 
@@ -9275,10 +9108,6 @@ pingui pingui pingui MG
 		</choose>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -9639,10 +9468,6 @@ pingui pingui pingui MG
 		</choose>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -9682,10 +9507,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -9801,10 +9622,6 @@ pingui pingui pingui MG
 	    </lu>	    
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -9930,10 +9747,6 @@ pingui pingui pingui MG
 	    
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -9982,10 +9795,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10041,10 +9850,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10164,10 +9969,6 @@ pingui pingui pingui MG
 	</out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10299,10 +10100,6 @@ pingui pingui pingui MG
 	</out>
 	  </otherwise>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10397,10 +10194,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>	
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10505,10 +10298,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10612,10 +10401,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>	
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10729,10 +10514,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10839,10 +10620,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10907,10 +10684,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -10964,10 +10737,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -11127,10 +10896,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11252,10 +11017,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11386,10 +11147,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11404,6 +11161,9 @@ pingui pingui pingui MG
 	<pattern-item n="post"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="SPgenitivo">
 	  <with-param pos="2"/>
 	</call-macro>
@@ -11530,10 +11290,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11581,10 +11337,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11638,10 +11390,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11684,10 +11432,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -11740,10 +11484,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -11781,10 +11521,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11822,10 +11558,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11889,10 +11621,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11928,10 +11656,6 @@ pingui pingui pingui MG
 	    <b/>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -11970,10 +11694,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12072,10 +11792,6 @@ pingui pingui pingui MG
 	    </call-macro>
 	  </when>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12174,10 +11890,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12242,10 +11954,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12314,10 +12022,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12383,10 +12087,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12456,10 +12156,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12495,10 +12191,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -12530,10 +12222,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -12560,10 +12248,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -12590,10 +12274,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -12625,10 +12305,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
     </rule>
 
@@ -12668,10 +12344,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12767,10 +12439,6 @@ pingui pingui pingui MG
 	    </call-macro>
 	  </when>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12835,10 +12503,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12904,10 +12568,6 @@ pingui pingui pingui MG
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12950,10 +12610,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -12997,10 +12653,6 @@ pingui pingui pingui MG
 	  </lu>
 	</chunk>
       </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
     </action>
   </rule>
 
@@ -13034,10 +12686,6 @@ pingui pingui pingui MG
 	  </lu>
 	</chunk>
       </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
     </action>
   </rule>
 
@@ -13074,10 +12722,6 @@ pingui pingui pingui MG
 	  </lu>
 	</chunk>
       </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
     </action>
   </rule>
 
@@ -13118,10 +12762,6 @@ pingui pingui pingui MG
 	  </lu>
 	</chunk>
       </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
     </action>
   </rule>
 
@@ -13154,10 +12794,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13171,7 +12807,7 @@ pingui pingui pingui MG
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="pp_ik"> 
+	  <chunk name="pp_ik" case="caseFirstWord"> 
 	    <tags>
 	      <tag><lit-tag v="SVsub"/></tag>
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -13213,10 +12849,6 @@ pingui pingui pingui MG
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 	      
@@ -13243,10 +12875,6 @@ hil dela esan dute - han muerto *que han dicho">
 	  </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13355,10 +12983,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </call-macro>
 	  </when>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -13429,10 +13053,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -13503,10 +13123,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -13538,10 +13154,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13565,10 +13177,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13612,10 +13220,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13640,10 +13244,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13669,10 +13269,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
  </rule>
 
@@ -13714,10 +13310,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -13823,10 +13415,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </call-macro>
 	  </when>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -13898,10 +13486,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -13971,10 +13555,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -14014,10 +13594,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -14122,10 +13698,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </call-macro>
 	  </when>
 	</choose>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -14195,10 +13767,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -14269,10 +13837,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
 	</call-macro>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -14319,10 +13883,6 @@ hil dela esan dute - han muerto *que han dicho">
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
       </action>
 </rule>
 
@@ -14335,9 +13895,6 @@ hil dela esan dute - han muerto *que han dicho">
 	<pattern-item n="sent"/>
       </pattern>
       <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="nombre"/>
 	  <lit-tag v="sg"/>
