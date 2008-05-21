@@ -24,6 +24,7 @@
 #include <getopt.h>
 #include <ctime>
 #include <clocale>
+#include <apertium/utf_converter.h>
 
 #include "configure.H"
 #include "Alignment.H"
@@ -225,8 +226,8 @@ int main(int argc, char* argv[]) {
 
     if ((al1.length()>0) && (al2.length()>0)) {
       nal++;
-      Alignment alig1(al1);
-      Alignment alig2(al2);
+      Alignment alig1(UtfConverter::fromUtf8(al1));
+      Alignment alig2(UtfConverter::fromUtf8(al2));
 
       bool opok;
       if (operation=="union")

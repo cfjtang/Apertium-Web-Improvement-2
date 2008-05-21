@@ -24,6 +24,7 @@
 #include <ctime>
 #include <clocale>
 
+#include <apertium/utf_converter.h>
 #include "configure.H"
 #include "AlignmentTemplate.H"
 #include "TransferRule.H"
@@ -179,7 +180,7 @@ int main(int argc, char* argv[]) {
   cerr<<"Debug: "<<debug<<"\n";
 
   string oneat;
-  string all_rules="";
+  wstring all_rules=L"";
 
   int ndiscarded=0;
   int nrules=0;
@@ -191,7 +192,7 @@ int main(int argc, char* argv[]) {
   while (!fin->eof()) {
     getline(*fin,oneat);
     if(oneat.length()>0) {
-      AlignmentTemplate at(oneat);
+      AlignmentTemplate at(UtfConverter::fromUtf8(oneat));
 
       double c;
       if (criterion=="prod")
@@ -209,7 +210,7 @@ int main(int argc, char* argv[]) {
 	  delete tr;
 	  tr=new TransferRule;
 	  if (!(tr->add_alignment_template(at))) {
-	    cerr<<"Error when adding an AT to an emty transfer rule\n";
+	    cerr<<"Error when adding an AT to an empty transfer rule\n";
 	    cerr<<"This shoud never happend\n";
 	    exit(EXIT_FAILURE);
 	  }
@@ -227,9 +228,9 @@ int main(int argc, char* argv[]) {
   delete tr;
   delete fin;
 
-  cout<<TransferRule::gen_apertium_transfer_head(debug);
-  cout<<all_rules;
-  cout<<TransferRule::gen_apertium_transfer_foot(debug);
+  cout<<UtfConverter::toUtf8(TransferRule::gen_apertium_transfer_head(debug));
+  cout<<UtfConverter::toUtf8(all_rules);
+  cout<<UtfConverter::toUtf8(TransferRule::gen_apertium_transfer_foot(debug));
 
   cerr<<ndiscarded<<" alignment templates were discarded because their counts were below the minimum allowed\n";
   cerr<<nrules<<" transfer rules were generated\n";

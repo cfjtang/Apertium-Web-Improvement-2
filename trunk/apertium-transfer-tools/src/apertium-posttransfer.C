@@ -26,6 +26,7 @@
 #include <vector>
 #include <deque>
 #include <algorithm>
+#include <wchar.h>
 
 #include "configure.H"
 #include "PTXReader.H"
@@ -35,37 +36,37 @@ using namespace std;
 
 class LUComparer {
 public:
-  bool operator()(const vector<string>& e1, const vector<string>& e2)  const {
+  bool operator()(const vector<wstring>& e1, const vector<wstring>& e2)  const {
     //True if e1>e2
     return (e1.size() > e2.size());
   }
 };
 
 //True if there are more words to read
-bool next_word (string& ignored_string, string& word) {
-  char c, prev_c=' ';
+bool next_word (wstring& ignored_string, wstring& word) {
+  wchar_t c, prev_c=L' ';
   bool finish=false;
   bool reading_word=false;
 
-  ignored_string="";
-  word="";
+  ignored_string=L"";
+  word=L"";
 
   while (!finish) {
-    cin>>c;
+    wcin>>c;
 
-    if (cin.fail()) {
+    if (wcin.fail()) {
       if (reading_word) {
-        cerr<<"Error in apertium-posttransfer::next_word while reading input word\n";
-        cerr<<"Malformed input string, at '"<<c<<"'\n";
+        wcerr<<L"Error in apertium-posttransfer::next_word while reading input word\n";
+        wcerr<<L"Malformed input string, at '"<<c<<"'\n";
         exit(EXIT_FAILURE);
       } else {
 	return false;
       }
     }
 
-    if ((c=='^') && (prev_c!='\\') && (!reading_word)) {
+    if ((c==L'^') && (prev_c!=L'\\') && (!reading_word)) {
       reading_word=true;
-    } else if ((c=='$') && (prev_c!='\\') && (reading_word)) {
+    } else if ((c==L'$') && (prev_c!=L'\\') && (reading_word)) {
       finish=true;
     } else {
       if (reading_word)
@@ -83,29 +84,29 @@ bool next_word (string& ignored_string, string& word) {
 }
 
 //True if there was a merged multilexical unit
-bool merge_and_print_mlu(vector<vector<string> >& mlu, deque<pair<string, string> >& buffer) {
+bool merge_and_print_mlu(vector<vector<wstring> >& mlu, deque<pair<wstring, wstring> >& buffer) {
 
   for(unsigned i=0; i<mlu.size(); i++) {
     if (mlu[i].size() <= buffer.size()) {
 
       bool is_mlu=true;
       for(unsigned j=0; (j<mlu[i].size()) && (is_mlu); j++) {
-	string tags=Utils::get_tags(buffer[j].second);
+	wstring tags=Utils::get_tags(buffer[j].second);
 	if (tags.find(mlu[i][j])!=0)
 	  is_mlu=false;
       }
       if (is_mlu) {
 	for(unsigned j=0; j<mlu[i].size(); j++) {
 	  //Only if format information is present
-	  if ((j==0) || (buffer[j].first.find("[")!=string::npos))
-	    cout<<buffer[j].first;
+	  if ((j==0) || (buffer[j].first.find(L"[")!=wstring::npos))
+	    wcout<<buffer[j].first;
 	}
 
-	cout<<"^";
+	wcout<<L"^";
 	for(unsigned j=0; j<mlu[i].size(); j++) {
 	  if(j>0)
-	    cout<<"+";
-	  cout<<buffer[0].second;
+	    wcout<<L"+";
+	  wcout<<buffer[0].second;
 	  buffer.pop_front();
 	}
 	cout<<"$";
@@ -200,12 +201,12 @@ int main(int argc, char* argv[]) {
 
   reader.read(ptx_file);
 
-  vector<vector<string> > mlu;
+  vector<vector<wstring> > mlu;
   mlu=reader.get_all_mlu();
 
   //Whe reading from the input stream '*all* characters must be
   //processed, including ' ','\n', .....
-  cin.unsetf(ios::skipws);
+  wcin.unsetf(ios::skipws);
 
   //Sort lu for each mlu so that the longest one appears first
   LUComparer comparer;
@@ -224,10 +225,10 @@ int main(int argc, char* argv[]) {
 
   //cerr<<"SIZE: "<<buffer_max_size<<"\n";
 
-  deque<pair<string, string> > buffer;
-  pair<string, string> all;
+  deque<pair<wstring, wstring> > buffer;
+  pair<wstring, wstring> all;
 
-  string word, ignored_string;
+  wstring word, ignored_string;
   while(next_word(ignored_string, word)) {
 
     //cerr<<"w: "<<ignored_string<<"_"<<word<<"\n";
@@ -237,7 +238,7 @@ int main(int argc, char* argv[]) {
     buffer.push_back(all);
 
     if(buffer.size()>buffer_max_size) {
-      cout<<buffer[0].first<<"^"<<buffer[0].second<<"$";
+      wcout<<buffer[0].first<<L"^"<<buffer[0].second<<L"$";
       buffer.pop_front();
     }
 
@@ -251,10 +252,10 @@ int main(int argc, char* argv[]) {
   //Empty the buffer
   while(buffer.size()>0) {
     if (!merge_and_print_mlu(mlu, buffer)) {
-      cout<<buffer[0].first<<"^"<<buffer[0].second<<"$";
+      wcout<<buffer[0].first<<L"^"<<buffer[0].second<<L"$";
       buffer.pop_front();
     }
   }
 
-  cout<<ignored_string;
+  wcout<<ignored_string;
 }

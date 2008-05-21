@@ -23,6 +23,7 @@
 #include <string>
 #include <getopt.h>
 #include <ctime>
+#include <apertium/utf_converter.h>
 
 #include "configure.H"
 #include "Alignment.H"
@@ -188,7 +189,7 @@ int main(int argc, char* argv[]) {
   while (!falg->eof()) {
     getline(*falg,onealg);
     if(onealg.length()>0) {
-      Alignment al(onealg);
+      Alignment al(UtfConverter::fromUtf8(onealg));
       nalig++;
       //if(al.allwords_aligned()) {
       bilingual_phrases=al.extract_bilingual_phrases(min, max);

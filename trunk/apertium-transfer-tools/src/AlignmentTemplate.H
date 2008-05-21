@@ -27,7 +27,7 @@ using namespace std;
 #include <iostream>
 #include <map>
 #include <set>
-#include <lttoolbox/FSTProcessor.H>
+#include <lttoolbox/fst_processor.h>
 
 #include "Alignment.H"
 #include "LexicalizedWords.H"
@@ -35,14 +35,14 @@ using namespace std;
 
 class AlignmentTemplate:public Alignment {
 private:
-  vector<string> restrictions;
+  vector<wstring> restrictions;
   int invalid; //While extracting the AT this flag is modified
 
   static LexicalizedWords source_lexicalized_words;
   static LexicalizedWords target_lexicalized_words;
 
   //Return true if the translation 't' is ok
-  static bool is_translation_ok(string t);
+  static bool is_translation_ok(wstring t);
 
 public: 
 
@@ -58,7 +58,7 @@ public:
 
   AlignmentTemplate();
 
-  AlignmentTemplate(string al);
+  AlignmentTemplate(wstring al);
 
   AlignmentTemplate(const AlignmentTemplate& al);
     
@@ -105,13 +105,15 @@ public:
    */
   bool is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& fstp);
 
-  string to_string();
+  wstring to_wstring();
 
   static void set_lexicalized_words(const LexicalizedWords& scw, const LexicalizedWords& tcw);
 
   static AlignmentTemplate xtract_alignment_template(Alignment& al, FSTProcessor& fstp);
 
   friend ostream& operator << (ostream& os, AlignmentTemplate& at);
+
+  friend wostream& operator << (wostream& os, AlignmentTemplate& at);
 
   friend class TransferRule;
   

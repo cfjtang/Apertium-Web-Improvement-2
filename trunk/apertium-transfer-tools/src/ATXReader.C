@@ -19,7 +19,7 @@
 
 
 #include "ATXReader.H"
-#include <lttoolbox/XMLParseUtil.H>
+#include <lttoolbox/xml_parse_util.h>
 
 void
 ATXReader::copy(ATXReader const &o) {
@@ -47,9 +47,9 @@ ATXReader::step() {
   int retval = xmlTextReaderRead(reader);
   if(retval != 1)
   {
-    parseError("unexpected EOF");
+    parseError(L"unexpected EOF");
   }
-  name = XMLParseUtil::latin1(xmlTextReaderConstName(reader));
+  name = XMLParseUtil::towstring(xmlTextReaderConstName(reader));
   type = xmlTextReaderNodeType(reader);
 
   //cerr<<"In ATXReader::step: name='"<<name<<"', type="<<type<<"\n";
@@ -65,73 +65,73 @@ ATXReader::operator =(ATXReader const &o) {
   return *this;
 }
 
-string
-ATXReader::attrib(string const &name) {
+wstring
+ATXReader::attrib(wstring const &name) {
   return XMLParseUtil::attrib(reader, name);
 } 
 
 void
-ATXReader::parseError(string const &message) {
-  cerr << "Error: (" << xmlTextReaderGetParserLineNumber(reader);
-  cerr << "): " << message << "." << endl;
+ATXReader::parseError(wstring const &message) {
+  wcerr << L"Error: (" << xmlTextReaderGetParserLineNumber(reader);
+  wcerr << L"): " << message << L"." << endl;
   exit(EXIT_FAILURE);
 }
 
 void
 ATXReader::procLexicalizedWord(LexicalizedWords& cw) {
-  string tags=attrib("tags");
+  wstring tags=attrib(L"tags");
   if (tags.length()==0)
-    parseError("mandatory attribute 'tags' cannot be empty");
+    parseError(L"mandatory attribute 'tags' cannot be empty");
   else if (tags[0]=='*')
-    parseError("mandatory attribute 'tags' cannot start with '*'");
+    parseError(L"mandatory attribute 'tags' cannot start with '*'");
 
   //cerr<<attrib("lemma")<<" "<<attrib("tags")<<"\n";
-  cw.insert(attrib("lemma"), attrib("tags"));
+  cw.insert(attrib(L"lemma"), attrib(L"tags"));
 }
 
 void 
 ATXReader::procSource() {
-  if(name == "lexicalized-words") {
+  if(name == L"lexicalized-words") {
     step();
-    while (!((name=="lexicalized-words") && (type==XML_READER_TYPE_END_ELEMENT))) {
-      if (name=="lexicalized-word")
+    while (!((name==L"lexicalized-words") && (type==XML_READER_TYPE_END_ELEMENT))) {
+      if (name==L"lexicalized-word")
 	procLexicalizedWord(source_lexicalized_words);
       step();
     }
   }
 
-  while(name == "#text" || name == "#comment") 
+  while(name == L"#text" || name == L"#comment") 
     step();
   
-  while (!((name=="source") && (type==XML_READER_TYPE_END_ELEMENT))) 
+  while (!((name==L"source") && (type==XML_READER_TYPE_END_ELEMENT))) 
     step();
   
   step();
 
-  while(name == "#text" || name == "#comment") 
+  while(name == L"#text" || name == L"#comment") 
     step();
 }
 
 void 
 ATXReader::procTarget() {
-  if(name == "lexicalized-words") {
+  if(name == L"lexicalized-words") {
     step();
-    while (!((name=="lexicalized-words") && (type==XML_READER_TYPE_END_ELEMENT))) {
-      if (name=="lexicalized-word")
+    while (!((name==L"lexicalized-words") && (type==XML_READER_TYPE_END_ELEMENT))) {
+      if (name==L"lexicalized-word")
 	procLexicalizedWord(target_lexicalized_words);
       step();
     }
   }
 
-  while(name == "#text" || name == "#comment") 
+  while(name == L"#text" || name == L"#comment") 
     step();  
 
-  while (!((name=="target") && (type==XML_READER_TYPE_END_ELEMENT))) 
+  while (!((name==L"target") && (type==XML_READER_TYPE_END_ELEMENT))) 
     step();
   
   step();
 
-  while(name == "#text" || name == "#comment")
+  while(name == L"#text" || name == L"#comment")
     step();  
 }
 
@@ -145,28 +145,28 @@ ATXReader::read(string const &filename) {
 
   step();
 
-  while(name == "#text" || name == "#comment") 
+  while(name == L"#text" || name == L"#comment") 
     step();
   
-  if(name == "transfer-at") {
-    source_lang=attrib("source");
-    target_lang=attrib("target");
+  if(name == L"transfer-at") {
+    source_lang=attrib(L"source");
+    target_lang=attrib(L"target");
     step();
-    while(name == "#text" || name == "#comment") 
+    while(name == L"#text" || name == L"#comment") 
       step();
   }
 
-  if (name == "source") {
+  if (name == L"source") {
     step();
-    while(name == "#text" || name == "#comment") 
+    while(name == L"#text" || name == L"#comment") 
       step();
     
     procSource();
   }
 
-  if (name == "target") {
+  if (name == L"target") {
     step();
-    while(name == "#text" || name == "#comment") 
+    while(name == L"#text" || name == L"#comment") 
       step();
     
     procTarget();
@@ -189,12 +189,12 @@ ATXReader::get_target_lexicalized_words() {
   return target_lexicalized_words;
 }
 
-string 
+wstring 
 ATXReader::get_source_language() {
   return source_lang;
 }
 
-string 
+wstring 
 ATXReader::get_target_language() {
   return target_lang;
 }

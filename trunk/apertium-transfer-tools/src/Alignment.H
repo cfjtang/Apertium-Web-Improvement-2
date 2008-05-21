@@ -31,8 +31,8 @@ using namespace std;
 class Alignment {
 protected:
   double score;
-  vector<string> source;
-  vector<string> target;
+  vector<wstring> source;
+  vector<wstring> target;
 
   //Matrix source.size x target.size with the alignments
   map<int, map<int, bool> > alignment;
@@ -53,7 +53,7 @@ public:
        
   Alignment();
 
-  Alignment(string al, int nfields=4);
+  Alignment(wstring al, int nfields=4);
 
   Alignment(const Alignment& al);
     
@@ -67,7 +67,7 @@ public:
 
   int length();
 
-  string to_string();
+  wstring to_wstring();
 
   //(*this) becomes the intersected alignment
   bool intersection(Alignment& al2);
@@ -87,6 +87,8 @@ public:
   bool all_end_words_aligned();
   
   friend ostream& operator << (ostream& os, Alignment& al);
+
+  friend wostream& operator << (wostream& os, Alignment& al);
 
   friend class AlignmentTemplate;
 };

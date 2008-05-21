@@ -31,10 +31,10 @@ class PTXReader {
 private:
   xmlTextReaderPtr reader;  
 
-  vector<vector<string> > mlu; //multilexical units, a vector of
+  vector<vector<wstring> > mlu; //multilexical units, a vector of
 			       //lexical units
 
-  string name;
+  wstring name;
   int type;
 
   void copy(PTXReader const &o);
@@ -43,12 +43,12 @@ private:
 
   void step();
 
-  string attrib(string const &name);
+  wstring attrib(wstring const &name);
 
-  void parseError(string const &message);
+  void parseError(wstring const &message);
 
   void proc_mlu();
-  void proc_lu(vector<string>& one_mlu);
+  void proc_lu(vector<wstring>& one_mlu);
 
 public:
 
@@ -62,7 +62,7 @@ public:
 
   void read(string const &filename);
 
-  vector<vector<string> > get_all_mlu();
+  vector<vector<wstring> > get_all_mlu();
 };
 
 #endif

@@ -19,10 +19,12 @@
 
 
 #include "LexicalizedWords.H"
-#include <cstring>
+#include <string>
+#include <wchar.h>
+#include <apertium/utf_converter.h>
 
 LexicalizedWords::LexicalizedWords() {
-  global_regexp="";
+  global_regexp=L"";
   regexp_was_compiled=false;
 }
 
@@ -35,7 +37,7 @@ LexicalizedWords::~LexicalizedWords() {
 }
 
 void 
-LexicalizedWords::insert(string lemma, string tags) {
+LexicalizedWords::insert(wstring lemma, wstring tags) {
   //When calling this method, it is supossed that tags is not empty
   //and it does not start with '*'
 
@@ -44,7 +46,7 @@ LexicalizedWords::insert(string lemma, string tags) {
     exit(EXIT_FAILURE);
   }
 
-  pair<string, string> cw;
+  pair<wstring, wstring> cw;
   unsigned pos;
 
   cw.first=lemma;
@@ -52,22 +54,22 @@ LexicalizedWords::insert(string lemma, string tags) {
 
   lexicalized_words.insert(cw);
 
-  string regular_exp=tags;
+  wstring regular_exp=tags;
 
   //cerr<<"REG EXP(0): "<<regular_exp<<"\n";
 
-  regular_exp="<"+regular_exp;
+  regular_exp=L"<"+regular_exp;
 
   //cerr<<"REG EXP(1): "<<regular_exp<<"\n";
 
   //Some dots must be replaced by the corresponding string "><" or ">"
   pos=0;
-  while ((pos=regular_exp.find(".", pos)) != static_cast<unsigned int>(string::npos)) {
+  while ((pos=regular_exp.find(L".", pos)) != static_cast<unsigned int>(wstring::npos)) {
     if (regular_exp[pos+1]!='*') {
-      regular_exp.replace(pos, 1, "><");
+      regular_exp.replace(pos, 1, L"><");
       pos+=2;
     } else {
-      regular_exp.replace(pos, 1, ">");
+      regular_exp.replace(pos, 1, L">");
       pos++;
     }
   }
@@ -75,31 +77,31 @@ LexicalizedWords::insert(string lemma, string tags) {
   //cerr<<"REG EXP(2): "<<regular_exp<<"\n";
 
   if (regular_exp[regular_exp.size()-1]!='*')
-    regular_exp=regular_exp+">";
+    regular_exp=regular_exp+L">";
 
   //cerr<<"REG EXP(3): "<<regular_exp<<"\n";
 
   //All starts must be replaced by the corresponding regular
   //expression
   pos=0;
-  while ((pos=regular_exp.find("*", pos)) != static_cast<unsigned int>(string::npos)) {
+  while ((pos=regular_exp.find(L"*", pos)) != static_cast<unsigned int>(wstring::npos)) {
     regular_exp.replace(pos, 1, TAGS);
-    pos+=strlen(TAGS);
+    pos+=wcslen(TAGS);
   }
 
   //cerr<<"REG EXP(4): "<<regular_exp<<"\n";
 
   if (lemma.length()>0)
-    regular_exp="(^"+lemma+")"+"("+regular_exp+")$";
+    regular_exp=L"(^"+lemma+L")"+L"("+regular_exp+L")$";
   else
-    regular_exp ="[^<]" + regular_exp + "$";
+    regular_exp =L"[^<]" + regular_exp + L"$";
 
-  regular_exp="("+ regular_exp +")";
+  regular_exp=L"("+ regular_exp +L")";
 
   //cerr<<"LexicalizedWords::insert: lemma='"<<lemma<<"', tags='"<<tags<<"', regexp='"<<regular_exp<<"'\n";
 
   if (global_regexp.length()>0)
-    global_regexp+= "|";
+    global_regexp+= L"|";
   global_regexp+=regular_exp;
 
   //cerr<<"Global reg exp: "<<global_regexp<<"\n\n";
@@ -108,13 +110,14 @@ LexicalizedWords::insert(string lemma, string tags) {
 void 
 LexicalizedWords::insert_ends() {
   //Compile the global_regexp
-  int res=regcomp(&compiled_global_regexp, global_regexp.c_str(), 
-		  REG_EXTENDED | REG_ICASE | REG_NOSUB);
+  int res=regcomp(&compiled_global_regexp, 
+		  UtfConverter::toUtf8(global_regexp).c_str(), 
+		  REG_EXTENDED | REG_ICASE | REG_NOSUB | REG_UTF8);
 
   if(res!=0) {
     char errmsg[2048];
     regerror(res, &compiled_global_regexp, errmsg, 2048);
-    cerr<<"Regex '"<<global_regexp<<"' compilation error: "<<errmsg<<"\n";
+    wcerr<<"Regex '"<<global_regexp<<"' compilation error: "<<errmsg<<"\n";
     exit(EXIT_FAILURE);
   }
 
@@ -122,8 +125,9 @@ LexicalizedWords::insert_ends() {
 }
 
 bool 
-LexicalizedWords::is_lexicalized_word(string word) {
-  int res=regexec(&compiled_global_regexp, word.c_str(), 0, NULL, 0);
+LexicalizedWords::is_lexicalized_word(wstring word) {
+  int res=regexec(&compiled_global_regexp, 
+		  UtfConverter::toUtf8(word).c_str(), 0, NULL, REG_UTF8);
 
   //cerr<<"Word: "<<word<<" is lexicalized? "<<(res==0)<<"\n";
 

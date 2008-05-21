@@ -32,20 +32,20 @@ using namespace std;
 class TransferRule {
 private:
   vector<AlignmentTemplate> ats;
-  string source;
+  wstring source;
 
   //To store different categories used by the automatically generated
   //rules. It is update when the add_alignment_template method is
   //called 
   //first=lemma; second=tags;
-  static set<pair<string, string> > categories;
+  static set<pair<wstring, wstring> > categories;
 
   //To store the attributes of the categories used by the
   //automatically generated rules. It is update when the
   //add_alignment_template method is called
-  static set<string> attributes;
+  static set<wstring> attributes;
 
-  static string category_name(const string& lemma, const string& tags);
+  static wstring category_name(const wstring& lemma, const wstring& tags);
 
   static int rule_counter;
   int rule_id;
@@ -63,11 +63,11 @@ public:
   
   int get_number_alignment_templates();
   
-  string gen_apertium_transfer_rule(bool debug=false);
+  wstring gen_apertium_transfer_rule(bool debug=false);
 
-  static string gen_apertium_transfer_head(bool debug=false);
+  static wstring gen_apertium_transfer_head(bool debug=false);
 
-  static string gen_apertium_transfer_foot(bool debug=false);
+  static wstring gen_apertium_transfer_foot(bool debug=false);
 };
 
 #endif

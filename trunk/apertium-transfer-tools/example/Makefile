@@ -1,4 +1,4 @@
-# author Felipe Sánchez Martínez
+# author Felipe SÃ¡nchez MartÃ­nez
 
 DATADIR=~/apertium-es-pt
 GIZADIR=~/GIZA++-v2
