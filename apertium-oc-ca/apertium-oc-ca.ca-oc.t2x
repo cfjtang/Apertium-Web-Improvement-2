@@ -1669,12 +1669,94 @@
 			</call-macro>
 		</action>
 	</rule>
+	<rule comment="REGLA: prep SA">
+		<pattern>
+			<pattern-item n="pr"/>
+			<pattern-item n="SA"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="2"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+			</out>
+			<call-macro n="partitiu2elem">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+			</out>
+			<call-macro n="marca_desact_part">
+				<with-param pos="2"/>
+			</call-macro>
+		</action>
+	</rule>
 	
 	<rule comment="REGLA: prep adv SN">
 		<pattern>
 			<pattern-item n="pr"/>
 			<pattern-item n="adv"/>
 			<pattern-item n="SN"/>
+		</pattern>
+		<action>
+			<call-macro n="assigna_gen_nbr">
+				<with-param pos="3"/>
+			</call-macro>
+			<call-macro n="cv_prep">
+				<with-param pos="1"/>
+				<with-param pos="3"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+				<b pos="1"/>
+			</out>
+			<call-macro n="partitiu2elem">
+				<with-param pos="1"/>
+				<with-param pos="2"/>
+			</call-macro>
+			<out>
+				<chunk>
+					<clip pos="2" part="lem"/>
+					<clip pos="2" part="tags"/>
+					<clip pos="2" part="chcontent"/>
+				</chunk>
+				<b pos="2"/>
+				<chunk>
+					<clip pos="3" part="lem"/>
+					<clip pos="3" part="tags"/>
+					<clip pos="3" part="chcontent"/>
+				</chunk>
+			</out>
+			<let>
+				<var n="desact_part"/>
+				<lit v=""/>
+			</let>
+		</action>
+	</rule>
+	<rule comment="REGLA: prep adv SA">
+		<pattern>
+			<pattern-item n="pr"/>
+			<pattern-item n="adv"/>
+			<pattern-item n="SA"/>
 		</pattern>
 		<action>
 			<call-macro n="assigna_gen_nbr">
