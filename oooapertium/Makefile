@@ -18,7 +18,13 @@ clean: uninstall
 	rm -f $(PACKAGE)
 test: clean uninstall build
 	echo ============= Installing addon ================
+
+	rm -Rf /tmp/log.*
+
 	unopkg add -v $(PACKAGE)
+
+	#exec oowriter in debug mode. The logs are in /tmp/log
+	PYUNO_LOGLEVEL="ARGS" PYUNO_LOGTARGET="/tmp/log" oowriter
 uninstall:
 	echo ============ Removing addon ==================
 	unopkg remove -v org.openoffice.Office.addon.apertium || true
