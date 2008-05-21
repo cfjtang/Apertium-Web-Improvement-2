@@ -30,13 +30,13 @@ class ATXReader {
 private:
   xmlTextReaderPtr reader;  
 
-  string source_lang;
+  wstring source_lang;
   LexicalizedWords source_lexicalized_words;
 
-  string target_lang;
+  wstring target_lang;
   LexicalizedWords target_lexicalized_words;
 
-  string name;
+  wstring name;
   int type;
 
   void copy(ATXReader const &o);
@@ -45,9 +45,9 @@ private:
 
   void step();
 
-  string attrib(string const &name);
+  wstring attrib(wstring const &name);
 
-  void parseError(string const &message);
+  void parseError(wstring const &message);
 
   void procLexicalizedWord(LexicalizedWords& cw);
   void procSource();
@@ -65,9 +65,9 @@ public:
 
   void read(string const &filename);
 
-  string get_source_language();
+  wstring get_source_language();
 
-  string get_target_language();
+  wstring get_target_language();
 
   LexicalizedWords& get_source_lexicalized_words();
 

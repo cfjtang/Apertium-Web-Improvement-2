@@ -20,6 +20,8 @@
 
 #include "AlignmentTemplate.H"
 #include "Utils.H"
+#include <apertium/string_utils.h>
+#include <apertium/utf_converter.h>
 
 #include <cstdlib>
 #include <iostream>
@@ -31,19 +33,19 @@ AlignmentTemplate::AlignmentTemplate() {
   invalid=VALID;
 }
 
-AlignmentTemplate::AlignmentTemplate(string al):Alignment(al,5) {
+AlignmentTemplate::AlignmentTemplate(wstring al):Alignment(al,5) {
   invalid=VALID;
-  vector<string> v;
+  vector<wstring> v;
 
-  v=Utils::split_string(al, " | ");
+  v=StringUtils::split_wstring(al, L" | ");
 
   if (v.size()!=5) {
-    cerr<<"Error in AlignmentTemplate::AlignmentTemplate when reading alignment template from string '"<<al<<"'\n";
-    cerr<<"Unespected number of fields separated by ' | '\n";
+    wcerr<<L"Error in AlignmentTemplate::AlignmentTemplate when reading alignment template from string '"<<al<<L"'\n";
+    wcerr<<L"Unexpected number of fields separated by ' | '\n";
     exit(EXIT_FAILURE); 
   }
 
-  restrictions=Utils::split_string(v[4], " ");
+  restrictions=StringUtils::split_wstring(v[4], L" ");
 }
 
 AlignmentTemplate::AlignmentTemplate(const AlignmentTemplate& al):Alignment(al) {
@@ -74,7 +76,7 @@ AlignmentTemplate::is_valid(bool equalcat, bool noword4word, FSTProcessor& fstp,
 
   //There cannot be INVALID restrictions
   for (unsigned i=0; i<restrictions.size(); i++) {
-    if (restrictions[i]=="__INVALID__") {
+    if (restrictions[i]==L"__INVALID__") {
       invalid=INVALID_RESTRICTIONS;
       return false;
     }
@@ -84,11 +86,11 @@ AlignmentTemplate::is_valid(bool equalcat, bool noword4word, FSTProcessor& fstp,
     //Test that those open words that are aligned have the same
     //category, i. e., the same first tag
     for (unsigned i=0; i<source.size(); i++) {
-      if (source[i][0]=='<') { //It's an open word
+      if (source[i][0]==L'<') { //It's an open word
 	int j=get_open_target_word_pos(i);
 
-	string first_sl_tag=Utils::get_first_tag(source[i]);
-	string first_tl_tag=Utils::get_first_tag(target[j]);
+	wstring first_sl_tag=Utils::get_first_tag(source[i]);
+	wstring first_tl_tag=Utils::get_first_tag(target[j]);
 
 	if (first_sl_tag!=first_tl_tag) {
 	  invalid=INVALID_NO_EQUALCAT;
@@ -114,21 +116,29 @@ AlignmentTemplate::invalid_reason() {
   return invalid;
 }
 
-string
-AlignmentTemplate::to_string() {
+wstring
+AlignmentTemplate::to_wstring() {
   Alignment &al=(*this);
-  string s=al.to_string();
+  wstring s=al.to_wstring();
 
-  s+=" |";
+  s+=L" |";
 
   for(unsigned i=0; i<restrictions.size(); i++) 
-    s+=" "+restrictions[i];
+    s+=L" "+restrictions[i];
 
   return s;
 }
 
 ostream& operator << (ostream& os, AlignmentTemplate& at) {
-  os<<at.to_string();
+  wstring w=at.to_wstring();
+  string s=UtfConverter::toUtf8(w);
+
+  os<<s;
+  return os;
+}
+
+wostream& operator << (wostream& os, AlignmentTemplate& at) {
+  os<<at.to_wstring();
   return os;
   /*
   Alignment &al=at;
@@ -164,11 +174,11 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 
   //Determine the word class for each source word
   for(unsigned i=0; i<al.source.size(); i++) {
-    string w=Utils::remove_begin_and_end_marks(al.source[i]);
-    string wclass;
+    wstring w=Utils::remove_begin_and_end_marks(al.source[i]);
+    wstring wclass;
 
     if (Utils::is_unknown_word(w))
-      wclass="__UNKNOWN__";
+      wclass=L"__UNKNOWN__";
     else if (source_lexicalized_words.is_lexicalized_word(w)) 
       wclass=w;
     else {
@@ -180,11 +190,11 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 
   //Determine the word class for each target word
   for(unsigned i=0; i<al.target.size(); i++) {
-    string w=Utils::remove_begin_and_end_marks(al.target[i]);
-    string wclass;
+    wstring w=Utils::remove_begin_and_end_marks(al.target[i]);
+    wstring wclass;
 
     if (Utils::is_unknown_word(w))
-      wclass="__UNKNOWN__";
+      wclass=L"__UNKNOWN__";
     else if (target_lexicalized_words.is_lexicalized_word(w))
       wclass=w;
     else {
@@ -196,62 +206,62 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 
   if (nopen_source!=nopen_target) {
     at.invalid=INVALID_WRONG_OPEN_WORDS;
-    at.restrictions.push_back("__INVALID__");
+    at.restrictions.push_back(L"__INVALID__");
     return at;
   }
 
   if (!at.are_open_word_aligments_ok()) {
     at.invalid=INVALID_WRONG_OPEN_WORDS;
-    at.restrictions.push_back("__INVALID__");
+    at.restrictions.push_back(L"__INVALID__");
     return at;
   }
 
   //Calculate the restricitions that need to be met
   //before applying this AT
   for(unsigned i=0; i<al.source.size(); i++) {
-    string w=Utils::remove_begin_and_end_marks(al.source[i]);
-    string biltrans, bclass;
+    wstring w=Utils::remove_begin_and_end_marks(al.source[i]);
+    wstring biltrans, bclass;
 
     if (Utils::is_unknown_word(w)) 
-      bclass="__UNKNOWN__";
+      bclass=L"__UNKNOWN__";
     else if (source_lexicalized_words.is_lexicalized_word(w)) 
-      bclass="__CLOSEWORD__";
+      bclass=L"__CLOSEWORD__";
     else {
       //We need to replace each "_" in w by a blank " " before translating
-      w=Utils::substitute(w,"_"," ");
+      w=StringUtils::substitute(w,L"_",L" ");
 
       biltrans=fstp.biltransWithoutQueue(w, false);
 
       if (!is_translation_ok(biltrans)) {
 	at.invalid=INVALID_NO_OK_TRANSLATIONS;
-	cerr<<"Error in AlignmentTemplate::xtract_alignment_template: ";
-	cerr<<"There were no OK translation for source word '"<<w<<"', translation was: '"<<biltrans<<"'\n";
-	at.restrictions.push_back("__INVALID__");
+	wcerr<<L"Error in AlignmentTemplate::xtract_alignment_template: ";
+	wcerr<<L"There were no OK translation for source word '"<<w<<"', translation was: '"<<biltrans<<L"'\n";
+	at.restrictions.push_back(L"__INVALID__");
 	return at;
       } 
 
       //Execution continues only if ALL since this point was OK
       bclass=Utils::get_tags(biltrans);
-      string blemma=Utils::get_lemma(biltrans);
+      wstring blemma=Utils::get_lemma(biltrans);
 
       int tlp=at.get_open_target_word_pos(i);
       if (tlp>=0) {
-	string tlemma=Utils::substitute(Utils::get_lemma(Utils::remove_begin_and_end_marks(al.target[tlp])),"_"," ");
+	wstring tlemma=StringUtils::substitute(Utils::get_lemma(Utils::remove_begin_and_end_marks(al.target[tlp])),L"_",L" ");
 
-	if (Utils::strtolower(blemma) != Utils::strtolower(tlemma)) {
+	if (StringUtils::tolower(blemma) != StringUtils::tolower(tlemma)) {
 	  at.invalid=INVALID_DIFFERENT_TRANSLATIONS;
-	  cerr<<"Warning: The AT extracted from the following alignment cannot be used.\n";
-	  cerr<<al<<"\n";
-	  cerr<<"Cause: translation of '"<<w<<"' is '"<<blemma<<"', but it should be '"<<tlemma<<"'\n";
-	  at.restrictions.push_back("__INVALID__");
+	  wcerr<<L"Warning: The AT extracted from the following alignment cannot be used.\n";
+	  wcerr<<al<<L"\n";
+	  wcerr<<L"Cause: translation of '"<<w<<L"' is '"<<blemma<<L"', but it should be '"<<tlemma<<L"'\n";
+	  at.restrictions.push_back(L"__INVALID__");
 	  return at;
 	}
       } else {
-	cerr<<"Warning: The AT extracted from the following alignment cannot be used.\n";
-	cerr<<al<<"\n";
-	cerr<<"Cause: bug not solved\n";
+	wcerr<<L"Warning: The AT extracted from the following alignment cannot be used.\n";
+	wcerr<<al<<L"\n";
+	wcerr<<"Cause: bug not solved\n";
 	at.invalid=INVALID_OTHERS;
-	at.restrictions.push_back("__INVALID__");
+	at.restrictions.push_back(L"__INVALID__");
 	return at;
       }      
     }
@@ -262,48 +272,48 @@ AlignmentTemplate::xtract_alignment_template(Alignment& al, FSTProcessor& fstp) 
 }
 
 bool
-AlignmentTemplate::is_translation_ok(string t) {
-  return ((t.length()>0)&&(t[0]!='@'));
+AlignmentTemplate::is_translation_ok(wstring t) {
+  return ((t.length()>0)&&(t[0]!=L'@'));
 }
 
 /* OLD, realmente testea que la aplicación del AT proporcione el
 mismo resultado - VER!!!!!!!!!!
 bool 
 AlignmentTemplate::is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& fstp) {
-  string al_target="";
-  string at_translation="";
+  wstring al_target=L"";
+  wstring at_translation=L"";
   //cerr<<"AT: "<<to_string()<<"\n";
   //cerr<<"AL: "<<al<<"\n";
   for(unsigned i=0; i<target.size(); i++) {
     if (at_translation.length()>0)
-      at_translation+=" ";
+      at_translation+=L" ";
 
-    if (target[i]=="__UNKNOWN__") {
+    if (target[i]==L"__UNKNOWN__") {
       at_translation+=target[i];
       //cerr<<"Unknown word: "<<target[i]<<"\n";
-    } else if (target[i][0]!='<') { //It's a close word we copy it as is
-      at_translation+="^"+target[i]+"$";
+    } else if (target[i][0]!=L'<') { //It's a close word we copy it as is
+      at_translation+=L"^"+target[i]+L"$";
       //cerr<<"Close word: "<<target[i]<<"\n";
     }  else {
       int p=get_open_source_word_pos(i);
-      string w=Utils::remove_begin_and_end_marks(al.source[p]);
-      string t=fstp.biltrans(w, false);
+      wstring w=Utils::remove_begin_and_end_marks(al.source[p]);
+      wstring t=fstp.biltrans(w, false);
       //cerr<<"Source: "<<al.source[p]<<" Target: "<<target[i]<<" Translation: "<<t<<"\n";
-      at_translation+="^"+Utils::get_lemma(t)+target[i]+"$";
+      at_translation+=L"^"+Utils::get_lemma(t)+target[i]+L"$";
     }
   }
 
   for(unsigned i=0; i<al.target.size(); i++) {
     if(al_target.length()>0)
-      al_target+=" ";
+      al_target+=L" ";
     if (Utils::is_unknown_word(Utils::remove_begin_and_end_marks(al.target[i])))
-      al_target+="__UNKNOWN__";
+      al_target+=L"__UNKNOWN__";
     else
       al_target+=al.target[i];
   }
 
-  at_translation=Utils::strtolower(at_translation);
-  al_target=Utils::strtolower(al_target);
+  at_translation=StringUtils::tolower(at_translation);
+  al_target=StringUtils::tolower(al_target);
 
   //cerr<<"TRANSLATION: "<<at_translation<<"\n";
   //cerr<<"TL AL SIDE: "<<al_target<<"\n";
@@ -314,8 +324,8 @@ AlignmentTemplate::is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& f
 
 bool 
 AlignmentTemplate::is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& fstp) {
-  string word4word="";
-  string translation="";
+  wstring word4word=L"";
+  wstring translation=L"";
 
   //cerr<<"AT: "<<to_string()<<"\n";
   //cerr<<"AL: "<<al<<"\n";
@@ -323,34 +333,34 @@ AlignmentTemplate::is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& f
   //First compute the translation applying the AT
   for(unsigned i=0; i<target.size(); i++) {
     if (translation.length()>0)
-      translation+=" ";
+      translation+=L" ";
 
-    if (target[i]=="__UNKNOWN__") {
+    if (target[i]==L"__UNKNOWN__") {
       translation+=target[i];
-    } else if (target[i][0]!='<') { //It's a close word we copy it as is
-      translation+="^"+target[i]+"$";
+    } else if (target[i][0]!=L'<') { //It's a close word we copy it as is
+      translation+=L"^"+target[i]+L"$";
     }  else {
       int p=get_open_source_word_pos(i);
-      string w=Utils::remove_begin_and_end_marks(al.source[p]);
-      string t=fstp.biltrans(w, false);
-      translation+="^"+Utils::get_lemma(t)+target[i]+"$";
+      wstring w=Utils::remove_begin_and_end_marks(al.source[p]);
+      wstring t=fstp.biltrans(w, false);
+      translation+=L"^"+Utils::get_lemma(t)+target[i]+L"$";
     }
   }
 
   //Now compute the word for word translation
   for(unsigned i=0; i<al.source.size(); i++) {
     if (word4word.length()>0)
-      word4word+=" ";
-    string w=Utils::remove_begin_and_end_marks(al.source[i]);
+      word4word+=L" ";
+    wstring w=Utils::remove_begin_and_end_marks(al.source[i]);
     if (Utils::is_unknown_word(w))
-      word4word+="__UNKNOWN__";
+      word4word+=L"__UNKNOWN__";
     else
-      word4word+="^"+fstp.biltrans(w, false)+"$";
+      word4word+=L"^"+fstp.biltrans(w, false)+L"$";
   }
 
 
-  translation=Utils::strtolower(translation);
-  word4word=Utils::strtolower(word4word);
+  translation=StringUtils::tolower(translation);
+  word4word=StringUtils::tolower(word4word);
 
   //cerr<<"TRANSLATION: "<<translation<<"\n";
   //cerr<<"WORD4WORD: "<<word4word<<"\n";
@@ -365,14 +375,14 @@ AlignmentTemplate::are_open_word_aligments_ok() {
   bool open_tl[target.size()];
 
   for(unsigned i=0; i<source.size(); i++) {
-    if ((source[i][0]=='<')||(source[i]=="__UNKNOWN__"))
+    if ((source[i][0]==L'<')||(source[i]==L"__UNKNOWN__"))
       open_sl[i]=true;
     else
       open_sl[i]=false;
   }
 
   for(unsigned i=0; i<target.size(); i++) {
-    if ((target[i][0]=='<')||(target[i]=="__UNKNOWN__"))
+    if ((target[i][0]==L'<')||(target[i]==L"__UNKNOWN__"))
       open_tl[i]=true;
     else
       open_tl[i]=false;
@@ -420,12 +430,12 @@ AlignmentTemplate::are_open_word_aligments_ok() {
 int 
 AlignmentTemplate::get_open_source_word_pos(int target_pos) {
   for (unsigned i=0; i<source.size(); i++) {
-    if (((source[i][0]=='<')||(source[i]=="__UNKNOWN__")) && (alignment[i][target_pos]))
+    if (((source[i][0]==L'<')||(source[i]==L"__UNKNOWN__")) && (alignment[i][target_pos]))
       return i;
   }
 
-  cerr<<"Error in AlignmentTemplate::get_open_source_word_pos: No open source word aligned with target word at "<<target_pos<<" was found\n";
-  cerr<<"AT: "<<to_string()<<"\n";
+  wcerr<<L"Error in AlignmentTemplate::get_open_source_word_pos: No open source word aligned with target word at "<<target_pos<<L" was found\n";
+  wcerr<<L"AT: "<<to_wstring()<<L"\n";
   exit(EXIT_FAILURE);
 
   return -1;
@@ -434,12 +444,12 @@ AlignmentTemplate::get_open_source_word_pos(int target_pos) {
 int 
 AlignmentTemplate::get_open_target_word_pos(int source_pos) {
   for (unsigned i=0; i<target.size(); i++) {
-    if (((target[i][0]=='<')||(target[i]=="__UNKNOWN__")) && (alignment[source_pos][i]))
+    if (((target[i][0]==L'<')||(target[i]==L"__UNKNOWN__")) && (alignment[source_pos][i]))
       return i;
   }
 
-  cerr<<"Error in AlignmentTemplate::get_open_target_word_pos: No open target word aligned with source word at "<<source_pos<<" was found\n";
-  cerr<<"AT: "<<to_string()<<"\n";
+  wcerr<<L"Error in AlignmentTemplate::get_open_target_word_pos: No open target word aligned with source word at "<<source_pos<<L" was found\n";
+  wcerr<<L"AT: "<<to_wstring()<<L"\n";
   exit(EXIT_FAILURE);
 
   return -1;

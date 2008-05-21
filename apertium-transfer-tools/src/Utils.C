@@ -20,17 +20,20 @@
 #include "Utils.H"
 
 #include <iostream>
+#include <lttoolbox/xml_parse_util.h>
+#include <apertium/string_utils.h>
+#include <stdio.h>
 
 //Delete white spaces from the end and the begining of the string
-string 
-Utils::trim(string str) { 
-  string::iterator it;
+wstring 
+Utils::trim(wstring str) { 
+  wstring::iterator it;
   
-  while ((str.length()>0)&&((*(it=str.begin()))==' ')) {
+  while ((str.length()>0)&&((*(it=str.begin()))==L' ')) {
      str.erase(it);
   }
   
-  while ((str.length()>0)&&((*(it=(str.end()-1)))==' ')) {
+  while ((str.length()>0)&&((*(it=(str.end()-1)))==L' ')) {
      str.erase(it);
   }
 
@@ -87,123 +90,135 @@ Utils::substitute(const string& source, const string& olds, const string& news) 
 }
 
 
-string 
-Utils::remove_begin_and_end_marks(string word) {
+wstring 
+Utils::remove_begin_and_end_marks(wstring word) {
   return word.substr(1, word.size()-2);
 }
 
-string
-Utils::get_lemma(string word) {
-  string s="";
+wstring
+Utils::get_lemma(wstring word) {
+  wstring s=L"";
 
-  int p=word.find("<",0);
-  if (p!=(int)string::npos)
+  wstring::size_type p=word.find(L"<",0);
+  if (p!=wstring::npos)
     s=word.substr(0, p);
 
   return s;
 }
 
-string 
-Utils::get_lemma_without_queue(string word) {
-  string l=get_lemma(word);
-  string s=l;
+wstring 
+Utils::get_lemma_without_queue(wstring word) {
+  wstring l=get_lemma(word);
+  wstring s=l;
 
-  int p=l.find("#",0);
-  if (p!=(int)string::npos)
+  wstring::size_type p=l.find(L"#",0);
+  if (p!=wstring::npos)
     s=l.substr(0, p);
 
   return s;
 }
 
-string 
-Utils::get_queue(string word) {
-  string l=get_lemma(word);
-  string s="";
+wstring 
+Utils::get_queue(wstring word) {
+  wstring l=get_lemma(word);
+  wstring s=L"";
 
-  int p=l.find("#",0);
-  if (p!=(int)string::npos)
+  wstring::size_type p=l.find(L"#",0);
+  if (p!=wstring::npos)
     s=l.substr(p);
 
   return s;
 }
 
-string
-Utils::get_tags(string word) {
-  int p=word.find("<",0);
-  if (p!=(int)string::npos)
+wstring
+Utils::get_tags(wstring word) {
+  wstring::size_type p=word.find(L"<",0);
+  if (p!=wstring::npos)
     return word.substr(p, word.size()-p);
   else //Unknown word, no tags for it
-    return "";
+    return L"";
 }
 
-string
-Utils::get_first_tag(string tags) {
-  int p=tags.find(">",0);
+wstring
+Utils::get_first_tag(wstring tags) {
+  int p=tags.find(L">",0);
   return tags.substr(0,p+1);
 }
 
 bool 
-Utils::is_unknown_word(string word) {
-  return ((word.length()>0)&&(word[0]=='*'));
+Utils::is_unknown_word(wstring word) {
+  return ((word.length()>0)&&(word[0]==L'*'));
 }
 
-string 
-Utils::tags2transferformat(const string& tags) {
-  string s;
-  s=substitute(tags,"><",".");
-  s=substitute(s,"<","");
-  s=substitute(s,">","");
+wstring 
+Utils::tags2transferformat(const wstring& tags) {
+  wstring s;
+  s=StringUtils::substitute(tags,L"><",L".");
+  s=StringUtils::substitute(s,L"<",L"");
+  s=StringUtils::substitute(s,L">",L"");
 
   return s;
 }
 
-string
+wstring
 Utils::itoa(int n) {
   char str[32];
   sprintf(str, "%d",n);
-  return str;
+  return UtfConverter::fromUtf8(str);
 }
 
-string
+wstring
 Utils::ftoa(double f) {
   char str[32];
   sprintf(str, "%f",f);
-  return str;
+  return UtfConverter::fromUtf8(str);
 }
 
-string 
-Utils::get_tag_value(string tags, string values) {
-  vector<string> pval=split_string(values,"|");
+double
+Utils::wtod(wstring s)
+{
+  return wcstod (s.c_str(), 0);
+}
 
-  for(unsigned i=0; i<pval.size(); i++) {
-    if (tags.find(pval[i]) != string::npos)
+long
+Utils::wtol(wstring s)
+{
+  return wcstol (s.c_str(), 0, 0);
+} 
+
+wstring 
+Utils::get_tag_value(wstring tags, wstring values) {
+  vector<wstring> pval=StringUtils::split_wstring(values,L"|");
+
+  for(wstring::size_type i=0; i<pval.size(); i++) {
+    if (tags.find(pval[i]) != wstring::npos)
       return pval[i];
   }
 
-  return "";
+  return L"";
 }
 
 bool 
-Utils::case_insensitive_equal(const string& a, const string& b) {
-  string alower="";
-  string blower="";
+Utils::case_insensitive_equal(const wstring& a, const wstring& b) {
+  wstring alower=L"";
+  wstring blower=L"";
 
   for(unsigned i=0; i<a.length(); i++) {
-    alower+=tolower(a[i]);
+    alower+=(wchar_t) towlower(a[i]);
   }
 
   for(unsigned i=0; i<b.length(); i++) {
-    blower+=tolower(b[i]);
+    blower+=(wchar_t) towlower(b[i]);
   }
 
   return (alower==blower);
 }
 
-string
-Utils::strtolower(const string& s) {
-  string l="";
+wstring
+Utils::strtolower(const wstring& s) {
+  wstring l=L"";
   for(unsigned i=0; i<s.length(); i++)
-    l+=tolower(s[i]);
+    l+=(wchar_t) towlower(s[i]);
   return l;
 }
 

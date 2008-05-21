@@ -3,18 +3,19 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_lttoolbox_version], [2.0])
-m4_define([required_apertium_version], [2.0])
+m4_define([required_lttoolbox_version], [3.0])
+m4_define([required_apertium_version], [3.0])
 m4_define([required_libxml_version], [2.6.17])
+m4_define([required_libpcre_version], [6.4])
 
-AC_INIT([apertium-transfer-tools], [0.9.1], [fsanchez@dlsi.ua.es])
+AC_INIT([apertium-transfer-tools], [1.0.0], [fsanchez@dlsi.ua.es])
 
 AC_CONFIG_HEADERS([src/configure.H])
 
 # Release versioning
-GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=9
-GENERIC_MICRO_VERSION=1
+GENERIC_MAJOR_VERSION=1
+GENERIC_MINOR_VERSION=0
+GENERIC_MICRO_VERSION=0
 
 GENERIC_API_VERSION=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
 AC_SUBST(GENERIC_API_VERSION)
@@ -101,14 +102,14 @@ fi
 #AC_PATH_PROG(APERTIUM_DESTXT, apertium-destxt, no)
 
 
-AC_PATH_PROG(AWK, awk, no)
+AC_PATH_PROG(AWK, gawk, no)
 if test x$ac_cv_path_AWK = x
 then
-  AC_MSG_ERROR([You don't have awk installed.])
+  AC_MSG_ERROR([You don't have gawk installed.])
 fi
 if test x$ac_cv_path_AWK = xno
 then
-  AC_MSG_ERROR([You don't have awk installed.])
+  AC_MSG_ERROR([You don't have gawk installed.])
 fi
 
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
@@ -138,14 +139,21 @@ AC_CHECK_HEADERS(zlib.h,
 AC_SUBST(Z_CFLAGS)
 AC_SUBST(Z_LIBS)
 
+AC_CHECK_HEADER(pcreposix.h,
+  AC_CHECK_LIB(pcre, pcre_info,[
+  LIBS="$LIBS -lpcreposix -lpcre"
+  no_comp_check=yes],
+  AC_MSG_ERROR([*** unable to locate pcre library ***])),
+  AC_MSG_ERROR([*** unable to locate pcreposix.h include file ***]))
+
 PKG_CHECK_MODULES(LIBXML2, [dnl
   libxml-2.0 >= required_libxml_version])
 
 PKG_CHECK_MODULES(LTTOOLBOX, [dnl
-  lttoolbox-2.0 >= required_lttoolbox_version])
+  lttoolbox-3.0 >= required_lttoolbox_version])
   
 PKG_CHECK_MODULES(APERTIUM, [dnl
-  apertium-2.0 >= required_apertium_version])
+  apertium-3.0 >= required_apertium_version])
 
 AC_PATH_PROG(XMLLINT, xmllint, no)
 
@@ -172,4 +180,4 @@ AC_CHECK_DECLS([getopt_long])
 #AC_CHECK_FUNCS([setlocale strdup])
 #AC_CHECK_FUNCS([setlocale])
 
-AC_OUTPUT([Makefile src/Makefile apertium-transfer-tools-0.9.pc])
+AC_OUTPUT([Makefile src/Makefile apertium-transfer-tools-1.0.pc])

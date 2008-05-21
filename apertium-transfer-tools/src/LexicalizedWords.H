@@ -27,18 +27,18 @@
 #include <iostream>
 #include <map>
 
-#include <regex.h>
+#include <pcreposix.h>
 
-#define TAGS   "((<[a-zA-Z0-9]+>)+)"
+#define TAGS   L"((<[a-zA-Z0-9]+>)+)"
 
 using namespace std;
 
 class LexicalizedWords {
 private:
   //set with all lexicalized words (first is the 'lemma' and second is the 'tags')
-  set<pair<string, string> > lexicalized_words;
+  set<pair<wstring, wstring> > lexicalized_words;
 
-  string global_regexp;
+  wstring global_regexp;
   regex_t compiled_global_regexp;
 
   bool regexp_was_compiled;
@@ -55,9 +55,9 @@ public:
     
   ~LexicalizedWords();
 
-  void insert(string lemma, string tags);
+  void insert(wstring lemma, wstring tags);
 
-  bool is_lexicalized_word(string word);
+  bool is_lexicalized_word(wstring word);
 
   /** The insertion of lexicalized words has finish. No more close
    *  lexicalized will added.

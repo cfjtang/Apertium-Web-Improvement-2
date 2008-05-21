@@ -22,13 +22,14 @@
 
 #include <string>
 #include <vector>
+#include <apertium/utf_converter.h>
 
 using namespace std;
 
 class Utils {
   public:
   
-  static string trim(string str);
+  static wstring trim(wstring str);
 
   static vector<string> split_string(const string& input, const string& delimiter);
 
@@ -38,49 +39,53 @@ class Utils {
   static string substitute(const string& source, const string& olds, const string& news);
 
   //Remove begin (^) and end mark ($)
-  static string remove_begin_and_end_marks(string word);
+  static wstring remove_begin_and_end_marks(wstring word);
 
   //Return the lemma of the word (including queue)
   //Begin (^) and end ($) marks must be removed before calling this method
-  static string get_lemma(string word);
+  static wstring get_lemma(wstring word);
 
   //Return the lemma of the word (without queue)
   //Begin (^) and end ($) marks must be removed before calling this method
-  static string get_lemma_without_queue(string word);
+  static wstring get_lemma_without_queue(wstring word);
 
   //Return the queue of the word (if present)
   //Begin (^) and end ($) marks must be removed before calling this method
-  static string get_queue(string word);
+  static wstring get_queue(wstring word);
 
 
   //Return the tags of the word
   //Begin (^) and end ($) marks must be removed before calling this method
-  static string get_tags(string word);
+  static wstring get_tags(wstring word);
 
   //Return the first tag
   //tags must be obtained through the get_tags function
-  static string get_first_tag(string tags);
+  static wstring get_first_tag(wstring tags);
 
   //Return which value on those given in values is present in string
   //tags, values must be of the form "m|f|mf"
-  static string get_tag_value(string tags, string values);
+  static wstring get_tag_value(wstring tags, wstring values);
 
   //Return true if 'word' is unknown
   //Begin (^) and end ($) marks must be removed before calling this method
-  static bool is_unknown_word(string word);
+  static bool is_unknown_word(wstring word);
 
   //Convert tags into the transfer format. 
   //Ex. of input: <n><m><sg>
   //Ex. of output: n.m.sg
-  static string tags2transferformat(const string& tags);
+  static wstring tags2transferformat(const wstring& tags);
 
-  static string itoa(int n);
+  static wstring itoa(int n);
   
-  static string ftoa(double f);
+  static wstring ftoa(double f);
 
-  static string strtolower(const string& s);
+  static double wtod(wstring s);
 
-  static bool case_insensitive_equal(const string& a, const string& b);
+  static long wtol(wstring s);
+
+  static wstring strtolower(const wstring& s);
+
+  static bool case_insensitive_equal(const wstring& a, const wstring& b);
 };
 
 #endif

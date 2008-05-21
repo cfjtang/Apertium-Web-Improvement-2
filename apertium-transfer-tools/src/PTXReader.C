@@ -18,8 +18,8 @@
  */
 
 #include "PTXReader.H"
-#include <lttoolbox/XMLParseUtil.H>
-#include <apertium/StringUtils.H>
+#include <lttoolbox/xml_parse_util.h>
+#include <apertium/string_utils.h>
 
 void
 PTXReader::copy(PTXReader const &o) {
@@ -47,9 +47,9 @@ PTXReader::step() {
   int retval = xmlTextReaderRead(reader);
   if(retval != 1)
   {
-    parseError("unexpected EOF");
+    parseError(L"unexpected EOF");
   }
-  name = XMLParseUtil::latin1(xmlTextReaderConstName(reader));
+  name = XMLParseUtil::towstring(xmlTextReaderConstName(reader));
   type = xmlTextReaderNodeType(reader);
 
   //cerr<<"In PTXReader::step: name='"<<name<<"', type="<<type<<"\n";
@@ -65,26 +65,26 @@ PTXReader::operator =(PTXReader const &o) {
   return *this;
 }
 
-string
-PTXReader::attrib(string const &name) {
+wstring
+PTXReader::attrib(wstring const &name) {
   return XMLParseUtil::attrib(reader, name);
 } 
 
 void
-PTXReader::parseError(string const &message) {
+PTXReader::parseError(wstring const &message) {
   cerr << "Error: (" << xmlTextReaderGetParserLineNumber(reader);
-  cerr << "): " << message << "." << endl;
+  wcerr << L"): " << message << L"." << endl;
   exit(EXIT_FAILURE);
 }
 
 
 void 
 PTXReader::proc_mlu() {
-  vector<string> one_mlu;
-  if(name == "mlu") {
+  vector<wstring> one_mlu;
+  if(name == L"mlu") {
     step();
-    while (!((name=="mlu") && (type==XML_READER_TYPE_END_ELEMENT))) {
-      if (name=="lu")
+    while (!((name==L"mlu") && (type==XML_READER_TYPE_END_ELEMENT))) {
+      if (name==L"lu")
 	proc_lu(one_mlu);
       step();
     }
@@ -92,25 +92,25 @@ PTXReader::proc_mlu() {
 
   mlu.push_back(one_mlu);
 
-  while(name == "#text" || name == "#comment") 
+  while(name == L"#text" || name == L"#comment") 
     step();
 }
 
 void
-PTXReader::proc_lu(vector<string>& one_mlu) {
-  string tags=attrib("tags");
+PTXReader::proc_lu(vector<wstring>& one_mlu) {
+  wstring tags=attrib(L"tags");
   if (tags.length()==0)
-    parseError("mandatory attribute 'tags' cannot be empty");
+    parseError(L"mandatory attribute 'tags' cannot be empty");
   else if (tags[0]=='*')
-    parseError("mandatory attribute 'tags' cannot start with '*'");
+    parseError(L"mandatory attribute 'tags' cannot start with '*'");
   
-  unsigned p=tags.find("*",0);
-  if ((p!=static_cast<unsigned int>(string::npos)) && (p!=(tags.size()-1)))
-     parseError("mandatory attribute 'tags' cannot cannot have a '*' in the middle");
+  wstring::size_type p=tags.find(L"*",0);
+  if ((p!=wstring::npos) && (p!=(tags.size()-1)))
+     parseError(L"mandatory attribute 'tags' cannot cannot have a '*' in the middle");
 
-  tags=StringUtils::substitute(tags, ".*","");
-  tags=StringUtils::substitute(tags, ".", "><");
-  tags="<"+tags+">";
+  tags=StringUtils::substitute(tags, L".*",L"");
+  tags=StringUtils::substitute(tags, L".", L"><");
+  tags=L"<"+tags+L">";
 
   one_mlu.push_back(tags);
 }
@@ -125,13 +125,13 @@ PTXReader::read(string const &filename) {
 
   step();
 
-  while(name == "#text" || name == "#comment") 
+  while(name == L"#text" || name == L"#comment") 
     step();
   
-  if(name == "posttransfer") {
+  if(name == L"posttransfer") {
     step();
-    while (!((name=="posttransfer") && (type==XML_READER_TYPE_END_ELEMENT))) {
-      if (name=="mlu")
+    while (!((name==L"posttransfer") && (type==XML_READER_TYPE_END_ELEMENT))) {
+      if (name==L"mlu")
 	proc_mlu();
       step();
     }
@@ -142,7 +142,7 @@ PTXReader::read(string const &filename) {
 }
 
 
-vector<vector<string> > 
+vector<vector<wstring> > 
 PTXReader::get_all_mlu() {
   return mlu;
 }
