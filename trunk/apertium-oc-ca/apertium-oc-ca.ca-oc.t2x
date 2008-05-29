@@ -822,10 +822,165 @@
 						</in>
 					</not>
 				</test>
-				<call-macro n="partitiu">
+<!--				<call-macro n="partitiu">
 					<with-param pos="2"/>
-				</call-macro>
-
+				</call-macro>-->
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<var n="desact_part"/>
+								<lit v=""/>
+							</equal>
+						</test>
+						<choose alt="oc">
+							<when>
+								<test>
+									<or>
+										<and>
+											<or>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="nom"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="part"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="adj_nom"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="adj_adj_nom"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="nom_adj"/>
+												</equal>
+											</or>
+											<equal>
+												<clip pos="1" part="nbr"/>
+												<lit-tag v="pl"/>
+											</equal>
+										</and>
+										<and>
+											<or>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="part"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="partadj_nom"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="partadj_adj_nom"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="partnom_adj"/>
+												</equal>
+												<equal>
+													<clip pos="1" part="lem"/>
+													<lit v="partnom_adv_adj"/>
+												</equal>
+											</or>
+											<equal>
+												<clip pos="1" part="nbr"/>
+												<lit-tag v="sg"/>
+											</equal>
+										</and>
+									</or>
+								</test>
+								<out>
+									<chunk>
+										<get-case-from pos="1">
+											<lit v="partitiu"/>
+											</get-case-from>
+										<lit-tag v="part"/>
+										<lit v="{^de"/>
+										<lit-tag v="pr"/>
+										<lit v="$}"/>
+									</chunk>
+									<b/>
+								</out>
+							</when>
+						</choose>
+						<choose alt="oc@aran">
+							<when>
+								<test>
+									<or>
+										<equal>
+											<clip pos="1" part="lem"/>
+											<lit v="part_aran"/>
+										</equal>
+										<equal>
+											<clip pos="1" part="lem"/>
+											<lit v="partadj_nom_aran"/>
+										</equal>
+										<equal>
+											<clip pos="1" part="lem"/>
+											<lit v="partadj_adj_nom_aran"/>
+										</equal>
+									</or>
+								</test>
+								<out>
+									<chunk>
+										<get-case-from pos="1">
+											<lit v="partitiu"/>
+											</get-case-from>
+										<lit-tag v="part"/>
+										<lit v="{^de"/>
+										<lit-tag v="pr"/>
+										<lit v="$}"/>
+									</chunk>
+									<b/>
+								</out>
+							</when>
+						</choose>
+					</when>
+				</choose>
+			</when>
+			<when>
+				<test>
+					<not>
+						<or>
+							<equal caseless="yes">
+								<clip pos="1" part="lem"/>
+								<lit v="en"/>
+							</equal>
+							<equal caseless="yes">
+								<clip pos="1" part="lem"/>
+								<lit v="a"/>
+							</equal>
+						</or>
+					</not>
+				</test>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="tnom"/>
+								<lit-tag v="mes"/>
+							</equal>
+						</test>
+						<out>
+							<chunk>
+								<get-case-from pos="1">
+									<lit v="en"/>
+									</get-case-from>
+								<lit-tag v="PREP"/>
+								<lit v="{^en"/>
+								<lit-tag v="pr"/>
+								<lit v="$}"/>
+							</chunk>
+							<b/>
+						</out>
+					</when>
+				</choose>
 			</when>
 		</choose>
 	</def-macro>
