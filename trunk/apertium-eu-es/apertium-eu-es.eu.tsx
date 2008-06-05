@@ -166,6 +166,9 @@
 <def-label name="ADVGEN">
     <tags-item tags="adv.gen"/>
   </def-label>
+ <def-label name="BA" closed="true"><!--categoria a part, perquè va davant el verb, i les altres cnjsub van darrera -->
+    <tags-item lemma="ba" tags="cnjsub"/>
+  </def-label>
  <def-label name="CNJSUBS" closed="true">
     <tags-item tags="cnjsub"/>
     <tags-item tags="LOT.*"/>
