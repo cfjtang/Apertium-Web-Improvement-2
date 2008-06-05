@@ -31,7 +31,14 @@
 
 <def-cat n="SVconj">
       <cat-item lemma="vbconj" tags="SV.*"/>
-    </def-cat>  
+      <cat-item lemma="vbconj_ukan" tags="SV.*"/>
+      <cat-item lemma="vbconj_izan" tags="SV.*"/>
+    </def-cat> 
+
+<def-cat n="ukan_izan">
+      <cat-item lemma="vbconj_ukan" tags="SV.vblex.pri.*"/>
+      <cat-item lemma="vbconj_izan" tags="SV.vblex.pri.*"/>
+    </def-cat> 
 
  <def-cat n="SVsub">
       <cat-item tags="SVsub.*"/>
@@ -45,6 +52,11 @@
       <cat-item lemma="pp" tags="SV.*"/>
     </def-cat>  
 
+ <def-cat n="formasnopersonales">
+      <cat-item lemma="pfut" tags="SV.*"/>
+      <cat-item lemma="ger" tags="SV.*"/>
+      <cat-item lemma="pp" tags="SV.*"/>
+    </def-cat> 
 
  <def-cat n="Orel">
       <cat-item tags="Orel.*"/>
@@ -53,6 +65,18 @@
 <def-cat n="nez">
       <cat-item lemma="nez" tags="cnjadv"/>
     </def-cat>  
+
+
+<def-cat n="si">
+      <cat-item lemma="si" tags="cnjadv"/>
+    </def-cat>  
+<def-cat n="que">
+      <cat-item lemma="que" tags="cnjsub"/>
+    </def-cat> 
+
+<def-cat n="ez">
+      <cat-item lemma="ez" tags="SADV.adv"/>
+    </def-cat> 
 
 <def-cat n="PADV">
       <cat-item lemma="det_nom_pp" tags="SN.*"/>
@@ -103,6 +127,7 @@
       <attr-item tags="ger"/>
       <attr-item tags="pprs"/>
       <attr-item tags="subs"/>
+      <attr-item tags="pfut"/>
       
     </def-attr>
 
@@ -2151,6 +2176,226 @@
       </action>
 </rule>
 
+<rule comment="Auzitegi Konstituzionalak galarazten badu - el 'si' pasa delante del SN, el verbo no se detecta porque viene siempre después del 'si' y se queda tal como está. Por ahora queda así, estudiar si sería adecuado pasar también el verbo delante del SN en la mayoría de casos (si impide el tribunal constitucional.../ 'hanka sartzen baldin badu' - si la pierna mete / si mete la pierna ">
+  <pattern>
+    <pattern-item n="SN"/>
+    <pattern-item n="si"/>
+  </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+
+ <rule comment="REGLA: SPGEN + SN">
+      <pattern>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="si"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>	
+	<out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<!--********************REGLAS CON SINTAGMAS VERBALES ************************* -->
+
 <rule comment="azaldu duenez">
   <pattern>
     <pattern-item n="SVconj"/>
@@ -2168,6 +2413,326 @@
     </out>
   </action>
 </rule>
+
+	      
+<rule comment="REGLA: ez + izan + SN + PP/GER/PFUT - ez dute ezer aurkitu)">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="4" part="pers"/>
+	  <clip pos="2" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <clip pos="2" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+<!--operaciones para el SN -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>	  
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	</call-macro>
+      </action>
+</rule>
+
+	  
+	      
+<rule comment="REGLA: ez + izan + ADV + PP/GER/PFUT - ez dute oraindik aurkitu) mireia">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="SADV"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="4" part="pers"/>
+	  <clip pos="2" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <clip pos="2" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>	  
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	</call-macro>
+      </action>
+</rule>	  
+
+	      
+<rule comment="REGLA: ez + izan + (e)la + SN + PP/GER/PFUT (ez dutela galdeketa egingo - que no harán el cuestionario)">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="que"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="5" part="pers"/>
+	  <clip pos="2" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <clip pos="2" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+
+	<let>
+	  <clip pos="3" part="lem"/>
+	  <lit v="que_enviar"/>
+	</let>
+<!--operaciones para el SN -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>	  
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+	  
+	  
+
 
 
 

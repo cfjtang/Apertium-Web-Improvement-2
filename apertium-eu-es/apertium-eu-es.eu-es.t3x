@@ -17,6 +17,22 @@
     </def-cat>
 
 
+    <def-cat n="que_enviar">
+      <cat-item name="que_enviar"/>
+    </def-cat>
+
+    <def-cat n="pfut">
+      <cat-item name="pfut"/>
+    </def-cat>
+
+    <def-cat n="ger">
+      <cat-item name="ger"/>
+    </def-cat>
+
+    <def-cat n="posahaver_pp">
+      <cat-item name="posahaver_pp"/>
+    </def-cat>
+
  <def-cat n="SP2">
       <cat-item name="pr_nom"/>
       <cat-item name="pr_prn"/>
@@ -122,6 +138,7 @@
           <attr-item tags="ger"/>
           <attr-item tags="pprs"/>
           <attr-item tags="subs"/>
+          <attr-item tags="fti"/>
       </def-attr>
 
   <def-attr n="tipus_det">          
@@ -129,6 +146,14 @@
       <attr-item tags="def"/>         
       <attr-item tags="ind"/>         
       <attr-item tags="dem"/>  
+    </def-attr>
+
+ <def-attr n="a_verb">          
+      <attr-item tags="vblex"/>  
+      <attr-item tags="vbser"/>  
+      <attr-item tags="vbsint"/>  
+      <attr-item tags="vbhaver"/>    
+      <attr-item tags="vbmod"/> 
     </def-attr>
 
  <def-attr n="a_SP">          
@@ -844,6 +869,136 @@
 	</choose>
       </action>
 </rule>
+
+
+
+<rule>
+      <pattern>
+        <pattern-item n="pfut"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="temps"/>
+		<lit-tag v="fti"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="temps"/>
+	      <clip pos="0" part="temps"/>
+	    </let>
+	    <out>
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="a_verb"/>
+		<clip pos="1" part="temps"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="1" part="lemq"/>
+	      </lu> 
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
+      </action>
+</rule>
+
+
+
+
+<rule>
+      <pattern>
+        <pattern-item n="ger"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="temps"/>
+	      <clip pos="0" part="temps"/>
+	    </let>
+	    <out>
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="a_verb"/>
+		<clip pos="1" part="temps"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="1" part="lemq"/>
+	      </lu> 
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
+      </action>
+</rule>
+	  
+	
+
+<rule>
+      <pattern>
+        <pattern-item n="posahaver_pp"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="temps"/>
+	  <clip pos="0" part="temps"/>
+	</let>
+	<out>
+	  <lu>
+	    <lit v="haber"/>
+	    <lit-tag v="vbhaver.pri"/>
+	    <clip pos="0" part="pers"/>
+	    <clip pos="0" part="nbr"/>
+	  </lu>
+	  <b/>	    
+	  <lu>
+	    <clip pos="1" part="lemh"/>
+	    <clip pos="1" part="a_verb"/>
+	    <lit-tag v="pp.m.sg"/>
+	    <clip pos="1" part="lemq"/>
+	  </lu> 
+	</out>
+      </action>
+</rule>
+	  
+
+
+<rule>
+      <pattern>
+        <pattern-item n="que_enviar"/>
+      </pattern>
+      <action>
+	<out>
+	  <lu>
+	    <lit v="que"/>
+	    <lit-tag v="cnjsub"/>
+	  </lu>
+	</out>
+      </action>
+</rule>
+
+
 
 
   </section-rules>
