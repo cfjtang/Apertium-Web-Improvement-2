@@ -1,8 +1,11 @@
 <dictionary>
-  <alphabet>AaBbCcDdEeFfGgHhIiLlMmNnÑñOoPpRrSsTtUuVvXxYyZz</alphabet>
+  <alphabet>AaBbCcDdEeFfGgHhIiLlMmNnÑñOoPpRrSsTtUuVvXxYyZzÁáÉéÍíÓóÚúÜüḤḥḶḷ</alphabet>
   <sdefs>
     <sdef n="n"       c="Noun"/>
+    <sdef n="np"      c="Nombre proprio"/>
+    <sdef n="pr"      c="Preposition"/>
     <sdef n="det"     c="Determiner"/>
+    <sdef n="adj"     c="Axetivu"/>
 
     <sdef n="sg"      c="Singular"/>
     <sdef n="pl"      c="Plural"/>
@@ -14,9 +17,14 @@
     <sdef n="mf"      c="Masculine+feminine"/>
 
     <sdef n="def"     c="Definite"/>
+
+    <sdef n="top"     c="Toponimo"/>
+    <sdef n="ant"     c="Anthroponym"/>
   </sdefs>
 
   <pardefs>
+
+    <!-- Determiners -->
 
     <pardef n="/el__det">
       <e>
@@ -50,6 +58,49 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="asturian/u__adj">
+      <e>
+        <p>
+          <l>as</l>
+          <r>u<s n="adj"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>a</l>
+          <r>u<s n="adj"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>os</l>
+          <r>u<s n="adj"/><s n="nt"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>o</l>
+          <r>u<s n="adj"/><s n="nt"/><s n="sg"/></r>
+        </p>
+      </e>
+      <!-- Decide if we want to have mn.pl or m.pl + nt.pl -->
+      <e>
+        <p>
+          <l>os</l>
+          <r>u<s n="adj"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>u</l>
+          <r>u<s n="adj"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+    <!-- Noms -->
 
     <pardef n="ciud/á__n">
       <e>
@@ -360,6 +411,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="alfo/z__n">
       <e>
         <p>
@@ -374,6 +426,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="aves/éu__n">
       <e>
         <p>
@@ -388,6 +441,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="dí/a__n">
       <e>
         <p>
@@ -402,6 +456,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="garax__n">
       <e>
         <p>
@@ -416,6 +471,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="mes__n">
       <e>
         <p>
@@ -429,19 +485,8 @@
           <r><s n="n"/><s n="m"/><s n="pl"/></r>
         </p>
       </e>
-      <e>
-        <p>
-          <l></l>
-          <r><s n="n"/><s n="m"/><s n="sg"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>es</l>
-          <r><s n="n"/><s n="m"/><s n="pl"/></r>
-        </p>
-      </e>
     </pardef>
+
     <pardef n="cost/ín__n">
       <e>
         <p>
@@ -456,6 +501,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="patriarc/áu__n">
       <e>
         <p>
@@ -470,6 +516,7 @@
         </p>
       </e>
     </pardef>
+
     <pardef n="refr/án__n">
       <e>
         <p>
@@ -485,6 +532,73 @@
       </e>
     </pardef>
 
+    <!-- Noms propris -->
+
+    <pardef n="Uviéu__np">
+      <e>
+        <p>
+          <l/>
+          <r><s n="np"/><s n="top"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <!-- Prepositions -->
+
+    <pardef n="de__pr">
+      <e>
+        <p>
+          <l/>
+          <r><s n="pr"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="/en__pr">
+      <e r="LR">
+        <p>
+          <l>en</l>
+          <r>en<s n="pr"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>en</l>
+          <r>en<s n="pr"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>nel</l>
+          <r>en<s n="pr"/><j/>el<s n="det"/><s n="def"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>na</l>
+          <r>en<s n="pr"/><j/>el<s n="det"/><s n="def"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>na</l>
+          <r>en<s n="pr"/><j/>el<s n="det"/><s n="def"/><s n="nt"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>nos</l>
+          <r>en<s n="pr"/><j/>el<s n="det"/><s n="def"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>nes</l>
+          <r>en<s n="pr"/><j/>el<s n="det"/><s n="def"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
 
   </pardefs>
@@ -493,6 +607,33 @@
 
     <!-- Determiners -->
     <e lm="el"><i/><par n="/el__det"/></e>
+
+
+    <!-- Prepositions -->
+
+    <e lm="ante"><i>ante</i><par n="de__pr"/></e>
+    <e lm="baxo"><i>baxo</i><par n="de__pr"/></e>
+    <e lm="cabo"><i>cabo</i><par n="de__pr"/></e>
+    <e lm="con"><i>con</i><par n="de__pr"/></e>
+    <e lm="contra"><i>contra</i><par n="de__pr"/></e>
+    <e lm="tra"><i>tra</i><par n="de__pr"/></e>
+    <e lm="de"><i>de</i><par n="de__pr"/></e>
+    <e lm="dende"><i>dende</i><par n="de__pr"/></e>
+    <e lm="en"><i/><par n="/en__pr"/></e>
+    <e lm="ente"><i>ente</i><par n="de__pr"/></e>
+    <e lm="hasta"><i>hasta</i><par n="de__pr"/></e>
+    <e lm="hacia"><i>hacia</i><par n="de__pr"/></e>
+    <e lm="pa"><i>pa</i><par n="de__pr"/></e>
+    <e lm="per"><i>per</i><par n="de__pr"/></e>
+    <e lm="por"><i>por</i><par n="de__pr"/></e>
+    <e lm="según"><i>según</i><par n="de__pr"/></e>
+    <e lm="sin"><i>sin</i><par n="de__pr"/></e>
+    <e lm="so"><i>so</i><par n="de__pr"/></e>
+    <e lm="sobre"><i>sobre</i><par n="de__pr"/></e>
+
+    <!-- Adjectives -->
+
+    <e lm="asturianu"><i>asturian</i><par n="asturian/u__adj"/></e>
 
 
     <!-- Nouns -->
@@ -507,6 +648,7 @@
     <e lm="carne"><i>carne</i><par n="imaxe__n"/></e>
 
     <e lm="páxina"><i>páxin</i><par n="páxin/a__n"/></e>
+    <e lm="academia"><i>academi</i><par n="páxin/a__n"/></e>
 
     <e lm="costín"><i>cost</i><par n="cost/ín__n"/></e>
 
@@ -625,7 +767,15 @@
     <e lm="domingu"><i>doming</i><par n="us/u__n"/></e>
     <e lm="flatu"><i>flat</i><par n="us/u__n"/></e>
 
+   
+    <e lm="Uviéu"><i>Uviéu</i><par n="Uviéu__np"/></e>
   </section>
 
+  <section id="apostrophes" type="postblank">
+    <e lm="n'"><p><l>n'</l><r>en</r></p><par n="de__pr"/></e>
 
+    <e lm="l'"><p><l>l'</l><r>el<s n="det"/><s n="def"/><s n="mf"/><s n="sg"/></r></p></e>
+    <e lm="'l"><p><l>'l</l><r>el<s n="det"/><s n="def"/><s n="mf"/><s n="sg"/></r></p></e>
+
+  </section>
 </dictionary>
