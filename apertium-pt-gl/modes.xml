@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="gl-pt" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="gl-pt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="gl-pt.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-pt-gl.trules-gl-pt.xml"/>
+        <file name="trules-gl-pt.bin"/>
+        <file name="gl-pt.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="gl-pt.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="gl-pt.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="pt-gl" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="pt-gl.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="pt-gl.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-pt-gl.trules-pt-gl.xml"/>
+        <file name="trules-pt-gl.bin"/>
+        <file name="pt-gl.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="pt-gl.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="pt-gl.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="gl-pt-latin1" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="gl-pt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="gl-pt-latin1.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-pt-gl.trules-gl-pt.xml"/>
+        <file name="trules-gl-pt.bin"/>
+        <file name="gl-pt.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="gl-pt.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="gl-pt.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="pt-gl-latin1" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="pt-gl.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="pt-gl-latin1.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-pt-gl.trules-pt-gl.xml"/>
+        <file name="trules-pt-gl.bin"/>
+        <file name="pt-gl.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="pt-gl.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="pt-gl.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+</modes>
