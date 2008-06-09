@@ -96,7 +96,7 @@
     <tags-item lemma="bat" tags="num.sg"/>
     <tags-item tags="det.ind.*"/>
     <tags-item tags="det.dem.*"/>
-    <tags-item tags="det.dem"/>
+    <tags-item tags="det.itg.*"/>
     <tags-item tags="ATZ.DET.BAN"/>
   </def-label>
 
