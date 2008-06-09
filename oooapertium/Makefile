@@ -1,7 +1,7 @@
 UNOPKG=unopkg
 PKGNAME=oooapertium
 MAJOR=0
-MINOR=1.1
+MINOR=1.2
 VERSION=$(MAJOR).$(MINOR)
 PACKAGE=$(PKGNAME)-$(VERSION).zip
 all: clean build 

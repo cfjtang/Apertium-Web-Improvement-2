@@ -275,9 +275,9 @@ class CreateWindow(unohelper.Base, XJobExecutor):
     dbi = dbus.Interface(bus.get_object("org.apertium.info", "/"), "org.apertium.Info")
     index_list=dbi.modes()
     global modos
-    modos=index_list
+    modos=sorted(index_list)
     #index_list.append("testo")
-    list_control.addItems(tuple(index_list), 0)
+    list_control.addItems(tuple(sorted(index_list)), 0)
     list_control.addItemListener( ListItemListener(oWindow, list_control, fixed_text_model, text, cursor) )   
     insert_button_control.addActionListener( InsertButtonListener(list_control,checkbox_control, desktop) )
     checkbox_control.addActionListener(CheckBoxListener(checkbox_control))
