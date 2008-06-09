@@ -10,6 +10,19 @@
       <cat-item lemma="enough" tags="adv"/>
     </def-cat>
 
+    <def-cat n="in">
+      <cat-item lemma="in" tags="adv"/>
+      <cat-item lemma="in" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="terms">
+      <cat-item lemma="term" tags="n.pl"/>
+    </def-cat>
+
+    <def-cat n="of">
+      <cat-item lemma="of" tags="pr"/>
+    </def-cat>
+
     <def-cat n="detquant"><!--BCN-->
       <cat-item tags="det.qnt.*"/>
     </def-cat>
@@ -4859,6 +4872,20 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 
     <!-- SINTAGNES NOMINALS AMB UN ADJ -->
+    
+    <rule comment="in terms of NOM">
+      <pattern>
+        <pattern-item n="in"/>
+        <pattern-item n="terms"/>
+        <pattern-item n="of"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
 
     <rule comment="REGLA: such a ADJ NOM (afegir tb una regla such a ADJ ADJ NOM?. Aquí no he posat funció 'envia_adj' i per tant desapareix el comparatiu/superlatiu: such a bigger field = un camp tan gran. Pensar-hi">
       <pattern>
@@ -4875,47 +4902,22 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
           <with-param pos="2"/>
           <with-param pos="1"/>
         </call-macro>
-        <choose><!--per a donar gènere i nombre a l'article afegit -->
-          <when>
-            <test>
-              <equal>
-                <var n="gen_chunk"/>
-                <lit-tag v="mf"/>
-              </equal>
-            </test>
-            <let>
-              <var n="gen_chunk"/>
-              <lit-tag v="GD"/>
-            </let>
-          </when>
-        </choose>
-        <choose><!--per a donar gènere i nombre a l'article afegit -->
-          <when>
-            <test>
-              <equal>
-                <var n="nbr_chunk"/>
-                <lit-tag v="sp"/>
-              </equal>
-            </test>
-            <let>
-              <var n="nbr_chunk"/>
-              <lit-tag v="ND"/>
-            </let>
-          </when>
-        </choose>
+        <let>
+          <var n="cas_chunk"/>
+          <lit-tag v="CD"/>
+        </let>
 
-
-                
         <out>
           <chunk name="such_a_adj_nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN.DET"/></tag>
               <tag><var n="gen_chunk"/></tag>
               <tag><var n="nbr_chunk"/></tag>
+              <tag><var n="cas_chunk"/></tag>
             </tags>
             <lu>
-              <lit v="un"/>
-              <lit-tag v="det.ind.3.4"/>
+              <lit v="taki"/>
+              <lit-tag v="det.dem.3.4.5"/>
             </lu>
             <b pos="1"/>
             <lu>
@@ -4925,14 +4927,11 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
               <clip pos="3" side="tl" part="gen_mf"/>
               <clip pos="3" side="tl" part="nbr_sense_sp" link-to="4"/>
               <clip pos="3" side="tl" part="nbr_sp"/>
+              <clip pos="3" side="tl" part="cas_sense_sp" link-to="5"/>
+              <clip pos="3" side="tl" part="cas_sp"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
             <b pos="2"/>
-            <lu>
-              <lit v="tan"/>
-              <lit-tag v="preadv"/>
-            </lu>
-            <b/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj"/>
@@ -4940,6 +4939,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
               <clip pos="2" side="tl" part="gen_mf"/>
               <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
               <clip pos="2" side="tl" part="nbr_sp"/>
+              <clip pos="3" side="tl" part="cas_sense_sp" link-to="5"/>
+              <clip pos="3" side="tl" part="cas_sp"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
