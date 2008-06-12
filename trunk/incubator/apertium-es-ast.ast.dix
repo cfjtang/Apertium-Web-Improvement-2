@@ -7,6 +7,8 @@
     <sdef n="det"     c="Determiner"/>
     <sdef n="adj"     c="Axetivu"/>
     <sdef n="cnjcoo"  c="Co-ordinating conjunction"/>
+    <sdef n="cnjsub"  c="Sub-ordinating conjunction"/>
+    <sdef n="rel"     c="Relatiu"/>
 
     <sdef n="sg"      c="Singular"/>
     <sdef n="pl"      c="Plural"/>
@@ -22,6 +24,8 @@
 
     <sdef n="top"     c="Toponimo"/>
     <sdef n="ant"     c="Anthroponym"/>
+
+    <sdef n="an"      c="?"/>
   </sdefs>
 
   <pardefs>
@@ -843,10 +847,28 @@
       </e>
     </pardef>
 
+    <pardef n="que__cnjsub">
+      <e>
+        <p>
+          <l/>
+          <r><s n="cnjsub"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="que__rel">
+      <e>
+        <p>
+          <l/>
+          <r><s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/></r>
+        </p>
+      </e>
+    </pardef>
 
   </pardefs>
 
   <section id="main" type="standard">
+    <e lm="que"><i>que</i><par n="que__rel"/></e>
 
     <!-- Determiners -->
     <e lm="el"><i/><par n="/el__det"/></e>
@@ -856,6 +878,8 @@
     <!-- Conxunciones -->
 
     <e lm="y"><i/><par n="y__cnjcoo"/></e>
+
+    <e lm="que"><i>que</i><par n="que__cnjsub"/></e>
 
     <!-- Prepositions -->
 
@@ -1036,5 +1060,6 @@
     <e lm="l'"><p><l>l'</l><r>el<s n="det"/><s n="def"/><s n="mf"/><s n="sg"/></r></p></e>
     <e lm="'l"><p><l>'l</l><r>el<s n="det"/><s n="def"/><s n="m"/><s n="sg"/></r></p></e>
 
+    <e lm="qu'"><p><l>qu'</l><r>que</r></p><par n="que__cnjsub"/></e>
   </section>
 </dictionary>
