@@ -1,4 +1,4 @@
-VERSION=0.9.1
+VERSION=0.9.0
 LANG1=pt
 LANG2=gl
 PREFIX1=$(LANG1)-$(LANG2)
@@ -92,5 +92,4 @@ install-data-local:
 	$(INSTALL_DATA) $(BASENAME).trules-$(PREFIX1).xml $(apertium_pt_gldir)
 	$(INSTALL_DATA) $(BASENAME).trules-$(PREFIX2).xml $(apertium_pt_gldir)
 
-CLEANFILES = -rf $(TARGETS_COMMON) modes
-
+CLEANFILES = -rf $(TARGETS_COMMON) modes trules-$(PREFIX1).xml trules-$(PREFIX2).xml trules-$(PREFIX1).bin trules-$(PREFIX2).bin
