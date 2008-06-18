@@ -56,9 +56,6 @@ $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).$(LANG2).dix \
-	   $(BASENAME).$(LANG1).dix.xml \
-	   $(BASENAME).$(LANG2).dix.xml \
-	   $(BASENAME).$(PREFIX1).dix.xml \
            $(PREFIX1).prob $(PREFIX2).prob \
 	   $(BASENAME).$(PREFIX1).t1x \
 	   $(BASENAME).$(PREFIX2).t1x \
