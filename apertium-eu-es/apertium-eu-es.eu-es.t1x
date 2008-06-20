@@ -485,6 +485,7 @@
     <def-var n="verbo"/>
     <def-var n="adverbio"/>
     <def-var n="ezta"/>
+    <def-var n="blanco"/>
   </section-def-vars>
 
 
@@ -2515,6 +2516,32 @@ Si el nombre en español es mf, se asigna <m> al determinante. Solución provision
 	    </let>
 	  </otherwise>
 	</choose>
+	<choose><!-- si la postposición es 'k', como la traducción es vacía, se elimina el blanco. El blanco después de la postposición hay que enviarlo con la variable 'blanco'-->
+	  <when>
+	    <test>
+	      <or>
+		<equal>
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="k"/>
+		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="lem"/> 
+		  <lit v="ik"/>
+		</equal>
+	      </or>
+	    </test>
+	    <let>
+	      <var n="blanco"/>
+	      <lit v=""/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="blanco"/>
+	      <lit v=" "/>
+	    </let>
+	  </otherwise>
+	</choose>  
 </def-macro>
 
 
@@ -3340,7 +3367,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <lit-tag v="m"/>
 	    </let>
 	  </when>
-	</choose>	
+	</choose>		
 	<out> 
 	  <chunk name="pr_d_n_pr_n" case="caseFirstWord">
 	    <tags>
@@ -3353,7 +3380,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b/>  
+	    <var n="blanco"/>  
 	    <lu>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_det"/> 
@@ -3607,7 +3634,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="lem"/>
 		  <clip pos="3" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>	
+		<var n="blanco"/>	
 		<lu> 
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_adj"/>
@@ -3617,7 +3644,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="2" side="tl" part="ND" link-to="4"/>
 		  <clip pos="2" side="tl" part="sp"/>
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu> 
 		  <clip pos="1" side="tl" part="lemh"/> 
 		  <clip pos="1" side="tl" part="a_nom"/>
@@ -3644,7 +3671,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -3654,7 +3681,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
@@ -3696,7 +3723,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_prep"/>
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -3758,7 +3785,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="lem"/>
 	      <clip pos="3" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -3818,7 +3845,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/> 
@@ -3828,7 +3855,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="ND" link-to="4"/>
 	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -3891,7 +3918,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_det"/> 
@@ -3901,7 +3928,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="ND" link-to="4"/>
 	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>	    
-	    <b pos="2"/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
@@ -3910,8 +3937,8 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="mf"/>
 	      <clip pos="2" side="tl" part="ND" link-to="4"/>
 	      <clip pos="2" side="tl" part="sp"/>
-	    </lu>
-	    <b/> 
+	    </lu>    
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -3938,7 +3965,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_det"/> 
@@ -3948,7 +3975,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="ND" link-to="4"/>
 	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>	    
-	    <b pos="2"/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -3958,7 +3985,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/> 
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
@@ -4021,7 +4048,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/>
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -4102,7 +4129,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	</choose>
 	<call-macro n="nbr_n1">
 	  <with-param pos="5"/>
-	</call-macro>
+	</call-macro>		
 	<out> 
 	  <chunk name="pr_nom_nom_cj_nom" case="caseFirstWord">
 	    <tags>
@@ -4115,7 +4142,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="lem"/> 
 	      <clip pos="6" side="tl" part="a_prep"/>
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -4130,8 +4157,8 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
-	      <clip pos="1" side="tl" part="gen"/>
-	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
 	    <b pos="3"/>
@@ -4526,8 +4553,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="gen"/>
 	    </let>
 	  </when>
-	</choose>	  
-	      
+	</choose>
 	<out> 
 	  <chunk name="pr_num_n_conj_nom" case="caseFirstWord">
 	    <tags>
@@ -4540,7 +4566,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_prep"/>
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_num"/> 
@@ -4701,7 +4727,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <lit v="ti"/>
 		</let>
 	      </when>
-	    </choose>		    
+	    </choose>  
 	    <out> 
 	      <chunk name="pr_prn" case="caseFirstWord">
 		<tags>
@@ -4714,7 +4740,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_prep"/> 
 		</lu>
-		<b/>
+		<var n="blanco"/>
 		<lu> 
 		  <clip pos="1" side="tl" part="whole"/> 
 		</lu>
@@ -4833,7 +4859,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>	
+		<var n="blanco"/>	
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -4843,7 +4869,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="1" side="tl" part="ND" link-to="4"/>
 		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5172,7 +5198,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <lit-tag v="m"/>
 	    </let>
 	  </when>
-	</choose>
+	</choose>	
 	<choose>
 	  <when>
 	    <test>
@@ -5199,7 +5225,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_prep"/> 
 		</lu>
-		<b/>	
+		<var n="blanco"/>	
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -5248,7 +5274,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="lem"/>
 		  <clip pos="4" side="tl" part="a_prep"/> 
 		</lu>
-		<b/>
+		<var n="blanco"/>
 		<lu> 
 		  <clip pos="3" side="tl" part="lemh"/> 
 		  <clip pos="3" side="tl" part="a_nom"/>
@@ -5354,7 +5380,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="5" side="tl" part="lem"/> 
 		  <clip pos="5" side="tl" part="a_prep"/>
 		</lu>
-		<b/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_det"/> 
@@ -5413,7 +5439,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="5" side="tl" part="lem"/> 
 		  <clip pos="5" side="tl" part="a_prep"/> 
 		</lu>
-		<b/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_det"/> 
@@ -5512,7 +5538,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="lem"/>
 		  <clip pos="4" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_det"/> 
@@ -5522,7 +5548,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="ND" link-to="4"/>
 		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
-		<b pos="2"/>	
+		<b pos="1"/>	
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -5532,7 +5558,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="1" side="tl" part="ND" link-to="4"/>
 		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
-		<b/>
+		<b pos="2"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5558,7 +5584,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_prep"/>
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_det"/> 
@@ -5568,7 +5594,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="ND" link-to="4"/>
 		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
-		<b pos="2"/>
+		<b pos="1"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5578,7 +5604,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
-		<b/>
+		<b pos="2"/>
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -5637,7 +5663,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -5647,7 +5673,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="1" side="tl" part="ND" link-to="4"/>
 		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5673,7 +5699,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5683,7 +5709,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -5889,7 +5915,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="5" side="tl" part="lem"/>
 		  <clip pos="5" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_det"/> 
@@ -5899,7 +5925,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="ND" link-to="4"/>
 		  <clip pos="4" side="tl" part="sp"/>
 		</lu>
-		<b pos="2"/>	
+		<b pos="1"/>	
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -5909,7 +5935,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="1" side="tl" part="ND" link-to="4"/>
 		  <clip pos="1" side="tl" part="sp"/>
 		</lu>
-		<b pos="3"/>
+		<b pos="2"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5919,7 +5945,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
-		<b/>
+		<b pos="3"/>
 		<lu> 
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_adj"/>
@@ -5944,7 +5970,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="5" side="tl" part="lem"/>
 		  <clip pos="5" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_det"/> 
@@ -5954,7 +5980,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="ND" link-to="4"/>
 		  <clip pos="4" side="tl" part="sp"/>
 		</lu>
-		<b pos="2"/>		
+		<b pos="1"/>		
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -5964,7 +5990,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="2" side="tl" part="sp"/>
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
-		<b pos="3"/>
+		<b pos="2"/>
 		<lu> 
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_adj"/>
@@ -5973,7 +5999,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="ND" link-to="4"/>
 		  <clip pos="3" side="tl" part="sp"/>
 		</lu>
-		<b/>
+		<b pos="3"/>
 		<lu> 
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_adj"/>
@@ -6124,7 +6150,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="lem"/>
 	      <clip pos="5" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_det"/> 
@@ -6134,7 +6160,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="ND" link-to="4"/>
 	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -6144,7 +6170,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="whole"/> 
 	    </lu>
@@ -6384,7 +6410,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="lem"/> 
 	      <clip pos="6" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_det"/> 
@@ -6394,7 +6420,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="ND" link-to="4"/>
 	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_nom"/>
@@ -6404,11 +6430,11 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
-	    <b pos="4"/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="whole"/> 
 	    </lu>
-	    <b/>
+	    <b pos="4"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
@@ -6912,7 +6938,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="7" side="tl" part="lem"/> 
 	      <clip pos="7" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="6" side="tl" part="lem"/> 
 	      <clip pos="6" side="tl" part="a_det"/> 
@@ -6922,7 +6948,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="ND" link-to="4"/>
 	      <clip pos="6" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_adj"/>
@@ -6932,7 +6958,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="ND" link-to="4"/>
 	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="4"/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_nom"/>
@@ -6942,15 +6968,15 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
-	    <b pos="5"/>
+	    <b pos="4"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="whole"/> 
 	    </lu>
-	    <b pos="6"/>
+	    <b pos="5"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
-	    <b/>
+	    <b pos="6"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -6974,7 +7000,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="7" side="tl" part="lem"/> 
 	      <clip pos="7" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="6" side="tl" part="lem"/> 
 	      <clip pos="6" side="tl" part="a_det"/> 
@@ -6984,7 +7010,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="ND" link-to="4"/>
 	      <clip pos="6" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>	   
+	    <b pos="1"/>	   
 	    <lu> 
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_nom"/>
@@ -6994,7 +7020,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="sp"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
-	    <b pos="4"/>
+	    <b pos="3"/>
 	     <lu> 
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_adj"/>
@@ -7003,15 +7029,15 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="ND" link-to="4"/>
 	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="5"/>
+	    <b pos="4"/>
 	    <lu>
 	      <clip pos="3" side="tl" part="whole"/> 
 	    </lu>
-	    <b pos="6"/>
+	    <b pos="5"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
-	    <b/>
+	    <b pos="6"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
@@ -7478,7 +7504,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="8" side="tl" part="lem"/> 
 	      <clip pos="8" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="7" side="tl" part="lem"/> 
 	      <clip pos="7" side="tl" part="a_det"/> 
@@ -7488,7 +7514,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="7" side="tl" part="ND" link-to="4"/>
 	      <clip pos="7" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="6" side="tl" part="lemh"/> 
 	      <clip pos="6" side="tl" part="a_nom"/>
@@ -7498,15 +7524,15 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="sp"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu>
-	    <b pos="5"/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="5" side="tl" part="whole"/> 
 	    </lu>
-	    <b pos="6"/>
+	    <b pos="5"/>
 	    <lu>
 	      <clip pos="4" side="tl" part="whole"/> 
 	    </lu>
-	    <b/>
+	    <b pos="6"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -7899,7 +7925,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="9" side="tl" part="lem"/> 
 	      <clip pos="9" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="8" side="tl" part="lem"/> 
 	      <clip pos="8" side="tl" part="a_det"/> 
@@ -7909,7 +7935,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="8" side="tl" part="ND" link-to="4"/>
 	      <clip pos="8" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="7" side="tl" part="lemh"/> 
 	      <clip pos="7" side="tl" part="a_nom"/>
@@ -7919,15 +7945,15 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="7" side="tl" part="sp"/>
 	      <clip pos="7" side="tl" part="lemq"/> 
 	    </lu>
-	    <b pos="4"/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="6" side="tl" part="whole"/> 
 	    </lu>
-	    <b pos="6"/>
+	    <b pos="4"/>
 	    <lu>
 	      <clip pos="5" side="tl" part="whole"/> 
 	    </lu>
-	    <b pos="7"/>
+	    <b pos="6"/>
 	    <lu> 
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_nom"/>
@@ -7935,7 +7961,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="nbr"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/>
+	    <b pos="7"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="whole"/> 
 	    </lu>
@@ -8735,7 +8761,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_num"/> 
@@ -8743,7 +8769,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="1" side="tl" part="mf"/>
 	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -8831,7 +8857,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_num"/> 
@@ -8948,7 +8974,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_num"/> 
@@ -8956,7 +8982,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="1" side="tl" part="mf"/>
 	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu>
-	    <b pos="2"/>
+	    <b pos="1"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/> 
@@ -8964,7 +8990,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="mf"/>
 	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu>
-	    <b/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -9421,7 +9447,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	    </choose>
 	  </when>
 	</choose>
-	<choose>
+	<choose><!--MG: en aquesta regla i les següents, s'envia el chunk diferent segons si post=k o no, potser caldria canviar-ho i fer-ho com en les regles anteriors, sense distingir i enviant la variable 'blanco' per al blanc. Mirar-ho bé -->
 	  <when>
 	    <test>
 	      <equal>
@@ -9445,7 +9471,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="mf"/>
 		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_num"/> 
@@ -9453,7 +9479,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="1" side="tl" part="mf"/>
 		  <clip pos="1" side="tl" part="nbr"/>
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lemh"/> 
 		  <clip pos="2" side="tl" part="a_nom"/>
@@ -9478,7 +9504,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_prep"/> 
 		</lu>
-		<b pos="1"/>
+		<var n="blanco"/>
 		<lu>
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_det"/> 
@@ -9487,7 +9513,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <clip pos="3" side="tl" part="mf"/>
 		  <clip pos="3" side="tl" part="nbr"/>
 		</lu>
-		<b/>
+		<b pos="1"/>
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/> 
 		  <clip pos="1" side="tl" part="a_num"/> 
@@ -10027,7 +10053,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
     <with-param pos="5"/>
   </call-macro>
   <call-macro n="SPgenitivo">
-    <with-param pos="4"/>
+    <with-param pos="6"/>
   </call-macro>
   <let>
     <clip pos="1" side="tl" part="nbr"/>
@@ -11099,6 +11125,9 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	<call-macro n="tipo_det">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="3"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -11112,11 +11141,11 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <lit v="a"/>
 	    </let>
 	  </when>
-	</choose>		
+	</choose>
 	<out> 
 	  <chunk name="pr_d_num" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="chunk"/></tag>
 	      <tag><var n="tipusdet"/></tag>
 	      <tag><lit-tag v="f"/></tag>
 	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
@@ -11124,7 +11153,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	    <lu>
 	      <clip pos="3" side="tl" part="whole"/> 
 	    </lu>
-	    <b/>	      
+	    <var n="blanco"/>	      
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/> 
@@ -11348,7 +11377,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="lem"/> 
 	      <clip pos="6" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_det"/> 
@@ -11356,7 +11385,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <lit-tag v="3"/>
 	      <clip pos="5" side="tl" part="nbr" link-to="4"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu>
 	      <clip pos="4" side="tl" part="whole"/> 
 	    </lu>
@@ -11726,7 +11755,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="lem"/>
 	      <clip pos="5" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="det_pos"/>
@@ -11735,7 +11764,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="ND" link-to="4"/>
 	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
-	    <b/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -11920,7 +11949,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="lem"/>
 	      <clip pos="6" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="det_pos"/>
@@ -11929,7 +11958,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="ND" link-to="4"/>
 	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
@@ -11939,7 +11968,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="ND" link-to="4"/>
 	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
-	    <b/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -11965,7 +11994,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="lem"/>
 	      <clip pos="6" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="det_pos"/>
@@ -11974,7 +12003,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="ND" link-to="4"/>
 	      <clip pos="5" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -11984,7 +12013,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/>
+	    <b pos="3"/>
 	    <lu> 
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
@@ -12259,7 +12288,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="7" side="tl" part="lem"/> 
 	      <clip pos="7" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="6" side="tl" part="lem"/> 
 	      <clip pos="6" side="tl" part="a_det"/> 
@@ -12269,7 +12298,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="ND" link-to="4"/>
 	      <clip pos="6" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="4"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="5" side="tl" part="lemh"/> 
 	      <clip pos="5" side="tl" part="a_nom"/>
@@ -12279,7 +12308,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="sp"/>
 	      <clip pos="5" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/>
+	    <b pos="4"/>
 	    <lu>
 	      <clip pos="4" side="tl" part="whole"/> 
 	    </lu>
@@ -12373,7 +12402,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="8" side="tl" part="lem"/> 
 	      <clip pos="8" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="2"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="7" side="tl" part="lem"/> 
 	      <clip pos="7" side="tl" part="a_det"/> 
@@ -12383,7 +12412,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="7" side="tl" part="ND" link-to="4"/>
 	      <clip pos="7" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="5"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="6" side="tl" part="lemh"/> 
 	      <clip pos="6" side="tl" part="a_nom"/>
@@ -12393,11 +12422,11 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="6" side="tl" part="sp"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu>
-	    <b pos="6"/>
+	    <b pos="5"/>
 	    <lu>
 	      <clip pos="5" side="tl" part="whole"/> 
 	    </lu>
-	    <b/>
+	    <b pos="6"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="det_pos"/>
@@ -13024,7 +13053,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="2"/>	      
+	    <var n="blanco"/>	      
 	    <lu>
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_det"/> 
@@ -13034,7 +13063,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="4" side="tl" part="ND" link-to="4"/>
 	      <clip pos="4" side="tl" part="sp"/>
 	    </lu>
-	    <b pos="3"/>
+	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -13044,7 +13073,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="sp"/>
 	      <clip pos="3" side="tl" part="lemq"/> 
 	    </lu>
-	    <b/>
+	    <b pos="3"/>
 	     <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
@@ -13086,7 +13115,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="lem"/>
 	      <clip pos="2" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="whole"/> 
 	    </lu>
@@ -13143,7 +13172,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="5" side="tl" part="lem"/> 
 	      <clip pos="5" side="tl" part="a_prep"/> 
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu> 
 	      <clip pos="4" side="tl" part="whole"/> 
 	    </lu>
@@ -13287,7 +13316,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="lem"/>
 	      <clip pos="3" side="tl" part="a_prep"/>
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/> 
@@ -13297,7 +13326,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="ND" link-to="4"/>
 	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu> 
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_adj"/>
@@ -13390,7 +13419,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="3" side="tl" part="lem"/>
 	      <clip pos="3" side="tl" part="a_prep"/>  
 	    </lu>
-	    <b pos="1"/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/> 
@@ -13400,7 +13429,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="2" side="tl" part="ND" link-to="4"/>
 	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
@@ -17050,7 +17079,7 @@ MG: no sé com es fa el negatiu de 'prestatzen ari garelako
 	      <clip pos="2" side="tl" part="lem"/>
 	      <clip pos="2" side="tl" part="a_prep"/>
 	    </lu>
-	    <b/>
+	    <var n="blanco"/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_det"/> 
