@@ -1,7 +1,7 @@
 UNOPKG=unopkg
 PKGNAME=oooapertium
 MAJOR=0
-MINOR=1.2
+MINOR=2.0
 VERSION=$(MAJOR).$(MINOR)
 PACKAGE=$(PKGNAME)-$(VERSION).zip
 all: clean build 
@@ -12,7 +12,8 @@ build:
 		icons/pairs_26h.bmp icons/pairs.bmp icons/translate_16.bmp \
 		icons/translate_16h.bmp icons/translate_26.bmp \
 		icons/translate_26h.bmp icons/translate.bmp \
-		license.txt oooapertium.py
+		icons/translatefulldoc*.bmp \
+		license.txt oooapertium.py fulldoc.py
 clean: uninstall
 	echo ============== Removing addon file ============
 	rm -f $(PACKAGE)
@@ -20,7 +21,7 @@ test: clean uninstall build
 	echo ============= Installing addon ================
 
 	rm -Rf /tmp/log.*
-
+	unopkg remove -v $(PACKAGE)
 	unopkg add -v $(PACKAGE)
 
 	#exec oowriter in debug mode. The logs are in /tmp/log
