@@ -71,15 +71,6 @@ class TranslateFullDoc( unohelper.Base, XJobExecutor ):
 			 'controller' : controller,
 			 'viewcursor' : viewCursor }
    
-    def executeSlot(self, ctx, controller, islot ):
-
-        dispatchHelper = ctx.ServiceManager.createInstanceWithContext( 
-                "com.sun.star.frame.DispatchHelper", ctx )
-        frame = controller.getFrame()
-
-        dispatchHelper.executeDispatch( frame, islot, "", 0, () )
-
-
     ####################################################################
     # main procedure. 
     ####################################################################
@@ -87,10 +78,11 @@ class TranslateFullDoc( unohelper.Base, XJobExecutor ):
 	# get the actual context
  	deskDict = self.getDesktopDict(self.ctx)
 	viewCursor=deskDict['viewcursor']
-	textDict=deskDict['document'].Text
-	controller = deskDict['controller']
+	# Go to start of document without select
 	viewCursor.gotoStart(False)
+	#go to endo of document selecting range from start
 	viewCursor.gotoEnd(True)
+	#Translate Selection
 	ap=self.smgr.createInstanceWithContext("es.ua.apertium.transel", self.ctx)
 	ap.trigger("execute");
 
