@@ -162,7 +162,15 @@ class Apertium( unohelper.Base, XJobExecutor ):
 	# get the selected text (used to assure there are anything selected)
 	sel=deskDict['document'].getCurrentSelection()
 	selectedText=sel.getByIndex(0).getString()
-	
+	if (len(selectedText)<=0):
+		textCursor.gotoStartOfParagraph(False)
+		viewCursor.gotoRange(textCursor,False)
+		textCursor.gotoEndOfParagraph(True)
+		viewCursor.gotoRange(textCursor,True)
+
+		sel=deskDict['document'].getCurrentSelection()
+		selectedText=sel.getByIndex(0).getString()
+
 	# only do all work if there are something selected
 	if (len(selectedText)>0):
 		selection=controller.getSelection() 
