@@ -1,39 +1,49 @@
 <?xml version ="1.0" encoding="UTF-8"?>
 <tagger name = "Irish">
   <tagset>
-    <def-label name="ADJ">
-      <tags-item tags="adj.*"/>
-    </def-label>
-    <def-label name="ADV">
-      <tags-item tags="adv.*"/>
-    </def-label>
     <def-label name="CNJCOO" closed="true">
-      <tags-item tags="cnjcoo.*"/>
+      <tags-item tags="cnjcoo"/>
     </def-label>
+
     <def-label name="DET" closed="true">
       <tags-item tags="det.*"/>
     </def-label>
-    <def-label name="N_DAT">
-      <tags-item tags="n.dat.*"/>
+
+    <def-label name="PRNSUBJ" closed="true">
+      <tags-item tags="prn.subj.*"/>
     </def-label>
+    <def-label name="PRNOBJ" closed="true">
+      <tags-item tags="prn.obj.*"/>
+    </def-label>
+    <def-label name="PRNALTRES" closed="true">
+      <tags-item tags="prn.*"/>
+    </def-label>
+
+    <def-label name="PR" closed="true">
+      <tags-item tags="pr"/>
+    </def-label>
+
     <def-label name="N_F">
       <tags-item tags="n.f.*"/>
     </def-label>
     <def-label name="N_M">
       <tags-item tags="n.m.*"/>
     </def-label>
-    <def-label name="N_PL">
-      <tags-item tags="n.pl.*"/>
-    </def-label>
-    <def-label name="N_SG">
-      <tags-item tags="n.sg.*"/>
+    <def-label name="N_MF">
+      <tags-item tags="n.mf.*"/>
     </def-label>
     <def-label name="NP">
       <tags-item tags="np.*"/>
     </def-label>
-    <def-label name="PR" closed="true">
-      <tags-item tags="pr.*"/>
+
+    <def-label name="ADJ">
+      <tags-item tags="adj.*"/>
     </def-label>
+
+    <def-label name="ADV">
+      <tags-item tags="adv"/>
+    </def-label>
+
     <def-label name="VBLEX_CNI">
       <tags-item tags="vblex.cni.*"/>
     </def-label>
