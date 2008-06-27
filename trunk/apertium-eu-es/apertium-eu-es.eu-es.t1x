@@ -37,6 +37,7 @@
 
     <def-cat n="adjizl">
       <cat-item tags="adj.izl"/>
+      <cat-item tags="adj.izl.rom"/>
     </def-cat>
 
     <def-cat n="adjnopp">
@@ -57,6 +58,10 @@
 
     <def-cat n="detart">
       <cat-item tags="det.art.*"/>
+    </def-cat>
+
+    <def-cat n="k">
+      <cat-item lemma="k" tags="post"/>
     </def-cat>
 
      <def-cat n="post">
@@ -172,18 +177,17 @@
       <cat-item lemma="ezinik" tags="vblex.inf"/>
     </def-cat>
 
-    <def-cat n="prnpers">
-      <cat-item tags="prn.pers.*"/>
-    </def-cat>
-
-    <def-cat n="prnpos"><!--pronoms que es transformen en possessius en castellà -->
+    <def-cat n="prnpers"><!--aquests pronoms es poden transformar en possessius en castellà -->
       <cat-item tags="prn.pers.*"/>
       <cat-item lemma="hura" tags="det.dem.*"/>
     </def-cat>
 
-    <def-cat n="prnind">
+
+  <!--  <def-cat n="prnind">
       <cat-item tags="prn.ind.*"/>
-    </def-cat>
+    </def-cat> -->
+
+
    <def-cat n="prn">
       <cat-item tags="prn.*"/>
     </def-cat>
@@ -213,12 +217,18 @@
       <cat-item lemma="en" tags="gra.sup"/>
     </def-cat>
 
-<def-cat n="nez">
+<def-cat n="cnjadv1"><!-- conjuncions adverbials que van amb el verb conjugat--> 
       <cat-item lemma="nez" tags="cnjadv"/>
+      <cat-item lemma="lako" tags="cnjadv"/>
     </def-cat>
 
 <def-cat n="lako"><!--ampliar-ho a més cnjadv per a fer regles unitàries -->
       <cat-item lemma="lako" tags="cnjadv"/>
+    </def-cat>
+
+<def-cat n="cnjadv2"><!-- conjuncions adverbials que van amb el verb sense conjugar--> 
+      <cat-item lemma="ezean" tags="cnjadv"/>
+      <cat-item lemma="ezik" tags="cnjadv"/>
     </def-cat>
 
 <def-cat n="conj">
@@ -269,9 +279,10 @@
       <attr-item tags="np"/>
     </def-attr>
 
-    <def-attr n="a_np_acr">
+    <def-attr n="enmajuscula">
       <attr-item tags="np"/>
       <attr-item tags="acr"/>
+      <attr-item tags="rom"/>
     </def-attr>
 
     <def-attr n="a_adj">          
@@ -279,6 +290,7 @@
       <attr-item tags="adjant"/> 
       <attr-item tags="det"/>
       <attr-item tags="vblex.pp"/>
+      <attr-item tags="vblex.padv"/>
     </def-attr>  
 
     <def-attr n="a_det">          
@@ -333,13 +345,20 @@
       <attr-item tags="adj.pos"/>
     </def-attr>
 
+
+  <def-attr n="det_prn">  
+      <attr-item tags="prn.tn.p3"/>         
+      <attr-item tags="det.dem"/> 
+  </def-attr>
+
  <def-attr n="pers">
       <attr-item tags="p1"/>
       <attr-item tags="p2"/>
       <attr-item tags="p3"/>
       <attr-item tags="PD"/>
  </def-attr>
-  
+
+
     <def-attr n="persnbr">
       <attr-item tags="p1.sg"/>
       <attr-item tags="p1.pl"/>
@@ -484,7 +503,9 @@
     <def-var n="procltags"/>
     <def-var n="verbo"/>
     <def-var n="adverbio"/>
+    <def-var n="lema"/>
     <def-var n="ezta"/>
+    <def-var n="erg"/>
     <def-var n="blanco"/>
   </section-def-vars>
 
@@ -533,7 +554,7 @@
 	<when>
 	  <test>
 	    <equal>
-	      <clip pos="1" side="sl" part="a_np_acr"/>
+	      <clip pos="1" side="sl" part="enmajuscula"/>
 	      <lit v=""/>
 	    </equal>
 	  </test>
@@ -575,48 +596,7 @@
       </let>
     </def-macro>
 
-<!-- macro antiga, treure
 
- <def-macro n="firstWord" npar="1">
-      <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="a_np_acr"/>
-	      <lit v=""/>
-	    </equal>
-	  </test>
-	  <choose>
-	    <when>
-	      <test>
-		<equal> 
-		  <var n="EOS"/>
-		  <lit v="true"/>
-		</equal> 
-	      </test>
-	      <modify-case>
-		<clip pos="1" side="tl" part="lem"/>
-		<lit v="aa"/>
-	      </modify-case>
-	      <let>
-		<var n="caseFirstWord"/>
-		<lit v="Aa"/>
-	      </let>
-	    </when>
-	  </choose>
-	</when>
-	<otherwise>
-	  <let>
-	    <var n="caseFirstWord"/>
-	    <lit v="aa"/>
-	  </let>
-	</otherwise>
-      </choose>
-      <let>
-	<var n="EOS"/>
-	<lit v="false"/>
-      </let>
-    </def-macro> -->
 
 
 
@@ -625,10 +605,16 @@
 <choose><!-- si adj és participio, pónle GD y ND-->
     <when>
       <test>
-	 <equal>
-	   <clip pos="2" side="tl" part="a_adj"/>
-	   <lit-tag v="vblex.pp"/>
-	 </equal>
+	<or>
+	  <equal>
+	    <clip pos="2" side="tl" part="a_adj"/>
+	    <lit-tag v="vblex.pp"/>
+	  </equal>
+	  <equal>
+	    <clip pos="2" side="tl" part="a_adj"/>
+	    <lit-tag v="vblex.padv"/>
+	  </equal>
+	</or>
       </test>
       <let>
 	<var n="palabra"/>
@@ -646,10 +632,16 @@
   <choose><!-- si nombre és un participio (ex.: atxilotu), pónle GD y ND-->
     <when>
       <test>
-	 <equal>
-	   <clip pos="1" side="tl" part="a_adj"/>
-	   <lit-tag v="vblex.pp"/>
-	 </equal>
+	<or>
+	  <equal>
+	    <clip pos="1" side="tl" part="a_adj"/>
+	    <lit-tag v="vblex.pp"/>
+	  </equal>
+	  <equal>
+	    <clip pos="1" side="tl" part="a_adj"/>
+	    <lit-tag v="vblex.padv"/>
+	  </equal>
+	</or>
       </test>
       <let>
 	<var n="palabra"/>
@@ -914,10 +906,16 @@
   <choose>
     <when>
       <test>
+	<or>
 	 <equal>
 	   <clip pos="2" side="tl" part="a_adj"/>
 	   <lit-tag v="vblex.pp"/>
 	 </equal>
+	 <equal>
+	   <clip pos="2" side="tl" part="a_adj"/>
+	   <lit-tag v="vblex.padv"/>
+	 </equal>
+	</or>
       </test>
       <let>
 	<var n="palabra"/>
@@ -1477,10 +1475,16 @@
   <choose>
     <when>
       <test>
+	<or>
 	 <equal>
 	   <clip pos="2" side="tl" part="a_adj"/>
 	   <lit-tag v="vblex.pp"/>
 	 </equal>
+	 <equal>
+	   <clip pos="2" side="tl" part="a_adj"/>
+	   <lit-tag v="vblex.padv"/>
+	 </equal>
+	</or>
       </test>
       <let>
 	<var n="palabra"/>
@@ -1498,10 +1502,16 @@
   <choose>
     <when>
       <test>
+	<or>
 	 <equal>
 	   <clip pos="3" side="tl" part="a_adj"/>
 	   <lit-tag v="vblex.pp"/>
 	 </equal>
+	 <equal>
+	   <clip pos="3" side="tl" part="a_adj"/>
+	   <lit-tag v="vblex.padv"/>
+	 </equal>
+	</or>
       </test>
       <let>
 	<var n="palabra"/>
@@ -2040,10 +2050,16 @@
   <choose>
     <when>
       <test>
+	<or>
 	<equal>
 	  <clip pos="2" side="tl" part="a_adj"/>
 	  <lit-tag v="vblex.pp"/>
 	</equal>
+	<equal>
+	  <clip pos="2" side="tl" part="a_adj"/>
+	  <lit-tag v="vblex.padv"/>
+	</equal>
+	</or>
       </test>
       <let>
 	<var n="palabra"/>
@@ -4599,7 +4615,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
       </action>
  </rule>
 
-   <rule comment="REGLA: PRONOMBRE ( para asignar género a 'nosotros' y 'vosotros'. Por ahora será 'm' por defecto) ">
+   <rule comment="REGLA: PRONOMBREpers ( para asignar género a 'nosotros' y 'vosotros'. Por ahora será 'm' por defecto) ">
       <pattern>
 	<pattern-item n="prnpers"/>
       </pattern>
@@ -4610,12 +4626,32 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	<call-macro n="gen_prn">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	    <equal caseless="yes">
+	      <clip pos="1" side="sl" part="lem"/> 
+	      <lit v="hura"/>
+	    </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <lit v="él"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="det_prn"/> 
+	      <lit-tag v="prn.tn.p3"/>
+	    </let>
+	  </when>
+	</choose>      
+	    
 	<out> 
 	  <chunk name="prnpers" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PRN"/></tag>
 	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu> 
@@ -4626,9 +4662,57 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
       </action>
     </rule>
 
- <rule comment="REGLA: PRONOMBRE + POST(gurekin, norekin - con nosotros, con quién) ">
+ <rule comment="REGLA: PRONOMBREpers + k (nik) ">
       <pattern>
-	<pattern-item n="prn"/>
+	<pattern-item n="prnpers"/>
+	<pattern-item n="k"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_prn">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	    <equal caseless="yes">
+	      <clip pos="1" side="sl" part="lem"/> 
+	      <lit v="hura"/>
+	    </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <lit v="él"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="det_prn"/> 
+	      <lit-tag v="prn.tn.p3"/>
+	    </let>
+	  </when>
+	</choose> 
+	<out> 
+	  <chunk name="prnpers" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PRN"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><lit-tag v="erg"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+  </action>
+ </rule>
+
+ <rule comment="REGLA: PRONOMBREpers + POST(gurekin, norekin - con nosotros, con quién) ">
+      <pattern>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="post"/>
       </pattern>
       <action>
@@ -4688,11 +4772,12 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      </when>
 	    </choose>		  
 	    <out>
-	      <chunk name="prn" case="caseFirstWord">
+	      <chunk name="prnpers_cc" case="caseFirstWord">
 		<tags>
 		  <tag><var n="chunk"/></tag>
 		  <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
+		  <tag><clip pos="1" side="tl" part="gen"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags>
 		<lu>	      
@@ -4727,13 +4812,14 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 		  <lit v="ti"/>
 		</let>
 	      </when>
-	    </choose>  
+	    </choose>    
 	    <out> 
-	      <chunk name="pr_prn" case="caseFirstWord">
+	      <chunk name="pr_prnpers" case="caseFirstWord">
 		<tags>
 		  <tag><var n="chunk"/></tag>
 		  <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
+		  <tag><clip pos="1" side="tl" part="gen"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags>
 		<lu> 
@@ -4750,23 +4836,30 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	</choose>
       </action>
  </rule>
-	
-	
-	<rule comment="REGLA: PRONOMBRE ">
+
+
+
+ <rule comment="REGLA: PRONOMBREind + K (inork - para pronombres no personales) ">
       <pattern>
-	<pattern-item n="prnind"/>
+	<pattern-item n="prn"/>
+	<pattern-item n="k"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="gen_prn">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="prntn" case="caseFirstWord">
+	  <chunk name="prn" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
+	      <tag><lit-tag v="PRN"/></tag>
 	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><lit-tag v="erg"/></tag>
 	    </tags>
 	    <lu> 
 	      <clip pos="1" side="tl" part="whole"/> 
@@ -4774,8 +4867,46 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	  </chunk>
 	</out>
       </action>
-    </rule>
+ </rule>
 
+
+
+ <rule comment="REGLA: PRONOMBREind/itg + POST (inorekin - para pronombres no personales) ">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="gen_prn">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pr_prn" case="caseFirstWord">
+	    <tags>
+	      <tag><var n="chunk"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_prep"/> 
+	    </lu>
+	    <var n="blanco"/>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
 
 
 
@@ -11631,7 +11762,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + DET (nirea - mío)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="detart"/>
       </pattern>
@@ -11672,7 +11803,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + DET (nire etxea - mi casa)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
@@ -11722,7 +11853,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + DET (nire etxean - en mi casa)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
@@ -11783,7 +11914,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + ADJ + DET (nire etxe gorria - mi casa roja)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
@@ -11900,7 +12031,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + ADJ + DET (nire etxe gorrian - en mi casa roja)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
@@ -12033,7 +12164,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + ko/en+ NOM + DET (nire aitaren etxea - la casa de mi padre) (em sembla que no es dóna mai posesiu + nom mugagabe, treure?">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="ko_en"/>
@@ -12126,7 +12257,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + DET + ko/en+ NOM + DET (nire aitaren etxea - la casa de mi padre)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
@@ -12233,7 +12364,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + ko/en+ NOM + DET (nire aitaren etxean - en la casa de mi padre) (em sembla que no es dóna mai posesiu + nom mugagabe, treure?">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="ko_en"/>
@@ -12335,7 +12466,7 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 <rule comment="REGLA: PRON + en + NOM + DET + ko/en+ NOM + DET (nire aitaren etxean - en la casa de mi padre)">
       <pattern>
-	<pattern-item n="prnpos"/>
+	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
@@ -12846,8 +12977,9 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="concord_n2">
+	<call-macro n="concord_n3">
 	  <with-param pos="3"/>
+	  <with-param pos="1"/>
 	  <with-param pos="4"/>
 	</call-macro>
 	<call-macro n="tipo_det">
@@ -12857,46 +12989,6 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	  <clip pos="1" side="tl" part="temps"/>
 	  <lit-tag v="pp"/>
 	</let>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="gen"/>
-		<lit-tag v="f"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <var n="genere"/>
-	      <lit-tag v="f"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	       <var n="genere"/>
-	       <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="nbr"/>
-		<lit-tag v="pl"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <var n="nombre"/>
-	      <lit-tag v="pl"/>
-	    </let>
-	  </when>
-	  <otherwise>
-	    <let>
-	       <var n="nombre"/>
-	       <lit-tag v="sg"/>
-	    </let>
-	  </otherwise>
-	</choose>
 	<choose>
 	  <when>
 	    <test>
@@ -12947,8 +13039,10 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="temps"/>
-	      <var n="genere"/>
-	      <var n="nombre"/>
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -12969,8 +13063,9 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="concord_n2">
+	<call-macro n="concord_n3">
 	  <with-param pos="3"/>
+	  <with-param pos="1"/>
 	  <with-param pos="4"/>
 	</call-macro>
 	<call-macro n="tipo_det">
@@ -12983,46 +13078,91 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	  <clip pos="1" side="tl" part="temps"/>
 	  <lit-tag v="pp"/>
 	</let>
+<!--	<choose><!-*-porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -*->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose> 
 	<choose>
 	  <when>
 	    <test>
 	      <equal>
 		<clip pos="3" side="tl" part="gen"/>
-		<lit-tag v="f"/>
+		<lit-tag v="GD"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <var n="genere"/>
-	      <lit-tag v="f"/>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
 	    </let>
 	  </when>
-	  <otherwise>
-	    <let>
-	       <var n="genere"/>
-	       <lit-tag v="m"/>
-	    </let>
-	  </otherwise>
 	</choose>
 	<choose>
 	  <when>
 	    <test>
 	      <equal>
 		<clip pos="3" side="tl" part="nbr"/>
-		<lit-tag v="pl"/>
+		<lit-tag v="ND"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <var n="nombre"/>
-	      <lit-tag v="pl"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
-	  <otherwise>
+	</choose>  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
 	    <let>
-	       <var n="nombre"/>
-	       <lit-tag v="sg"/>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
 	    </let>
-	  </otherwise>
+	  </when>
 	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose> -->
+
 	<choose>
 	  <when>
 	    <test>
@@ -13078,8 +13218,10 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="temps"/>
-	      <var n="genere"/>
-	      <var n="nombre"/>
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="ND" link-to="4"/>
+	      <clip pos="1" side="tl" part="sp"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -14590,16 +14732,16 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 
 
 
- <rule comment="REGLA: (e)nez">
+ <rule comment="REGLA: cnjadv que va amb verbs conjugats ((e)nez/lako)">
       <pattern>
-	<pattern-item n="nez"/>
+	<pattern-item n="cnjadv1"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="nez" case="caseFirstWord">
+	  <chunk name="cnjadv1" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="cnjadv"/></tag>
 	    </tags>
@@ -14610,6 +14752,32 @@ IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la
 	</out>
       </action>
  </rule>
+
+<rule comment="REGLA: cnjadv que va amb verbs sense conjugar (ezik, ezean)">
+      <pattern>
+	<pattern-item n="cnjadv2"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <var n="lema"/>
+	  <clip pos="1" side="sl" part="lemh"/>
+	</let>	  
+	<out>
+	  <chunk namefrom="lema" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="cnjadv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+	     
 	      
 <rule comment="REGLA: (zituzte)la (de momento se traduce por una coma porque sino el 'que' sin ordenar distorsiona el sentido:
 hil dela esan dute - han muerto *que han dicho">
@@ -16032,7 +16200,7 @@ hil dela esan dute - han muerto *que han dicho">
 <!--afirmacions -->
 
 
-<rule comment="REGLA: VERBO SINTÉTICO (dut, nabil) + lako ">
+<!--<rule comment="REGLA: VERBO SINTÉTICO (dut, nabil) + lako ">
       <pattern>
 	<pattern-item n="vbsint"/>
 	<pattern-item n="lako"/>
@@ -16464,11 +16632,11 @@ hil dela esan dute - han muerto *que han dicho">
 	</out>
       </action>
 </rule>
-
+-->
 
 <!--negacions verb + lako-->
 
-
+<!--
 <rule comment="REGLA: EZ + VERBO SINTÉTICO (dut, nabil) + lako (MG: mirar: jaso ez dutelako, ez dutelako jaso?? caldria marcar el chunk 'ez' per al t2x?">
       <pattern>
 	<pattern-item n="ez"/>
@@ -16590,7 +16758,7 @@ hil dela esan dute - han muerto *que han dicho">
       </action>
 </rule>
 
-
+-->
 
 
 <rule comment="REGLA: PP + EZ +  VERBO SINT + lako ( jaso ez dutelako)">

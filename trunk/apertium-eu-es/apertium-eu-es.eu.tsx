@@ -125,6 +125,7 @@
 
 <def-label name="ADJIZL">
     <tags-item tags="adj.izl"/>
+    <tags-item tags="adj.izl.rom"/>
   </def-label>
 
 <def-label name="PRNTN" closed="true">
