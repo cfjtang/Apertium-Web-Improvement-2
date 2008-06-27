@@ -29,6 +29,9 @@
       <cat-item name="ger"/>
     </def-cat>
 
+    <def-cat n="pp">
+      <cat-item name="pp"/>
+    </def-cat>
     <def-cat n="posahaver_pp">
       <cat-item name="posahaver_pp"/>
     </def-cat>
@@ -134,6 +137,8 @@
           <attr-item tags="pres"/>
           <attr-item tags="past"/>
           <attr-item tags="pri"/>
+          <attr-item tags="prs"/>
+          <attr-item tags="cni"/>
           <attr-item tags="pp"/>
           <attr-item tags="ger"/>
           <attr-item tags="pprs"/>
@@ -982,7 +987,47 @@
       </action>
 </rule>
 	  
-
+<rule>
+      <pattern>
+        <pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <not>
+		<equal>
+		  <clip pos="0" part="temps"/>
+		  <lit-tag v="pp"/>
+		</equal>
+	      </not>
+	    </test>
+	    <let>
+	      <clip pos="1" part="temps"/>
+	      <clip pos="0" part="temps"/>
+	    </let>
+	    <out>
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="1" part="lemq"/>
+	      </lu>
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
+      </action>
+</rule>	
+	      
+  
 
 <rule>
       <pattern>

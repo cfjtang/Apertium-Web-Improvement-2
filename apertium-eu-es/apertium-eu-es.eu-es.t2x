@@ -5,6 +5,9 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>  
+    <def-cat n="prnpers">
+      <cat-item lemma="prnpers"  tags="PRN.*"/>
+    </def-cat>  
     <def-cat n="SPR"><!--sintagma preposicional -->
       <cat-item tags="SPR.*"/>
       <cat-item tags="SPGEN.*"/>
@@ -41,6 +44,10 @@
       <cat-item lemma="vbconj_izan" tags="SV.vblex.pri.*"/>
     </def-cat> 
 
+ <def-cat n="tzeko">
+      <cat-item lemma="tzeko" tags="SVsub.*"/>
+    </def-cat>  
+
  <def-cat n="SVsub">
       <cat-item tags="SVsub.*"/>
     </def-cat>  
@@ -63,10 +70,14 @@
       <cat-item tags="Orel.*"/>
     </def-cat>  
 
-<def-cat n="nez">
-      <cat-item lemma="nez" tags="cnjadv"/>
+<def-cat n="cnjadv1">
+      <cat-item lemma="cnjadv1" tags="cnjadv"/>
     </def-cat>  
 
+<def-cat n="cnjadv2">
+      <cat-item lemma="ezean" tags="cnjadv"/>
+      <cat-item lemma="ezik" tags="cnjadv"/>
+    </def-cat>  
 
 <def-cat n="si">
       <cat-item lemma="si" tags="cnjadv"/>
@@ -1703,6 +1714,9 @@
 </rule>
 
 
+<!--********************REGLAS CON SINTAGMAS VERBALES ************************* -->
+<!--con formas no conjugadas -->
+
  <rule comment="REGLA: PP + PREP (sinatu gabe - sin firmar (MG: por ahora sólo con pp por provar, puede hacerse extensivo a todos los SV))">
       <pattern>
 	<pattern-item n="pp"/>
@@ -1779,7 +1793,7 @@
 
 
 
-<rule comment="afaria prestatzeko">
+<rule comment="SN + SVsub (afaria prestatzeko)">
   <pattern>
     <pattern-item n="SN"/>
     <pattern-item n="SVsub"/>
@@ -1839,7 +1853,7 @@
   </action>
 </rule>
 
- <rule comment="REGLA: SPGEN + SN">
+ <rule comment="REGLA: SPGEN + SN + SVsub">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SN"/>
@@ -2056,6 +2070,408 @@
 </rule>
 
 
+
+<rule comment="tzeko + SN (osatzeko aukera -> opción para componer)">
+  <pattern>
+    <pattern-item n="tzeko"/>
+    <pattern-item n="SN"/>
+  </pattern>
+  <action>
+   
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="2" part="tipus_det"/>
+	    <lit-tag v="art"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="2" part="tipus_det"/>
+	  <lit-tag v="def"/>
+	</let>
+      </when>
+    </choose>
+     <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="2" part="gen"/>
+	    <lit-tag v="GD"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="2" part="gen"/>
+	  <lit-tag v="m"/>
+	</let>
+      </when>
+    </choose>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="2" part="nbr"/>
+	    <lit-tag v="ND"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="2" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+      </when>
+    </choose>
+    <out>
+      <chunk>
+	<get-case-from pos="1">
+	  <clip pos="2" part="lem"/>
+	</get-case-from>
+	<clip pos="2" part="tags"/>
+	<clip pos="2" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<get-case-from pos="2">
+	<clip pos="1" part="lem"/>
+	</get-case-from>
+	<clip pos="1" part="tags"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+    </out>
+  </action>
+</rule>
+
+
+<rule comment="SN + tzeko + SN (gobernua osatzeko aukera -> opción para componer el gobierno)">
+  <pattern>
+    <pattern-item n="SN"/>
+    <pattern-item n="tzeko"/>
+    <pattern-item n="SN"/>
+  </pattern>
+  <action>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="1" part="tipus_det"/>
+	    <lit-tag v="art"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="1" part="tipus_det"/>
+	  <lit-tag v="def"/>
+	</let>
+      </when>
+    </choose>
+    <choose><!--pingui: en aquest cas per al  SN 3 no vull convertir 'art' en 'def': falta arreglar t3x i treure el seg. choose -->
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="3" part="tipus_det"/>
+	    <lit-tag v="art"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="3" part="tipus_det"/>
+	  <lit-tag v="def"/>
+	</let>
+      </when>
+    </choose>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="1" part="gen"/>
+	    <lit-tag v="GD"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="1" part="gen"/>
+	  <lit-tag v="m"/>
+	</let>
+      </when>
+    </choose>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="1" part="nbr"/>
+	    <lit-tag v="ND"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="1" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+      </when>
+    </choose>
+     <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="3" part="gen"/>
+	    <lit-tag v="GD"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="3" part="gen"/>
+	  <lit-tag v="m"/>
+	</let>
+      </when>
+    </choose>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="3" part="nbr"/>
+	    <lit-tag v="ND"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="3" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+      </when>
+    </choose>
+    <out>
+      <chunk>
+	<get-case-from pos="1">
+	  <clip pos="3" part="lem"/>
+	</get-case-from>
+	<clip pos="3" part="tags"/>
+	<clip pos="3" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>
+      <b pos="2"/>
+      <chunk>
+	<get-case-from pos="2">
+	<clip pos="1" part="lem"/>
+	</get-case-from>
+	<clip pos="1" part="tags"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+    </out>
+  </action>
+</rule>
+
+ <rule comment="REGLA: SPGEN + SN + tzeko + SN">
+      <pattern>
+	<pattern-item n="SPGEN"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="tzeko"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose><!--pingui: en aquest cas per al  SN 3 no vull convertir 'art' en 'def': falta arreglar t3x i treure el seg. choose -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="gen"/>
+			<lit-tag v="mf"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="pp"/>
+		    </equal>
+		    <not>
+		      <equal>
+			<clip pos="2" part="nbr"/>
+			<lit-tag v="sp"/>
+		      </equal>
+		    </not>
+		  </and>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	  </when>
+	</choose>	
+	
+     <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="4" part="gen"/>
+	    <lit-tag v="GD"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="4" part="gen"/>
+	  <lit-tag v="m"/>
+	</let>
+      </when>
+    </choose>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="4" part="nbr"/>
+	    <lit-tag v="ND"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="4" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+      </when>
+    </choose>
+	<out>
+	  <chunk>
+	    <get-case-from pos="1">
+	      <clip pos="4" part="lem"/>
+	    </get-case-from>
+	    <clip pos="4" part="tags"/>
+	    <clip pos="4" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <get-case-from pos="2">
+	    <clip pos="1" part="lem"/>
+	    </get-case-from>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+
+<!--con formas conjugadas -->
+
 <rule comment="OREL + SN (datorren urtea)">
   <pattern>
     <pattern-item n="Orel"/>
@@ -2240,7 +2656,7 @@
 
 
 
- <rule comment="REGLA: SPGEN + SN">
+ <rule comment="REGLA: SPGEN + SN + si">
       <pattern>
 	<pattern-item n="SPGEN"/>
 	<pattern-item n="SN"/>
@@ -2395,26 +2811,157 @@
       </action>
 </rule>
 
-<!--********************REGLAS CON SINTAGMAS VERBALES ************************* -->
 
 <rule comment="azaldu duenez">
   <pattern>
     <pattern-item n="SVconj"/>
-    <pattern-item n="nez"/>
+    <pattern-item n="cnjadv1"/>
   </pattern>
   <action>
     <out> 
       <chunk>
-	<clip pos="2" part="whole"/>
+	<get-case-from pos="1">
+	  <clip pos="2" part="lem"/>
+	</get-case-from>
+	<clip pos="2" part="tags"/>
+	<clip pos="2" part="chcontent"/>
       </chunk>
       <b pos="1"/>
       <chunk>
-	<clip pos="1" part="whole"/>
+	<get-case-from pos="2">
+	  <clip pos="1" part="lem"/>
+	</get-case-from>
+	<clip pos="1" part="tags"/>
+	<clip pos="1" part="chcontent"/>
       </chunk>
     </out>
   </action>
 </rule>
 
+<rule comment="ez jaso dutelako">
+  <pattern>
+    <pattern-item n="ez"/>
+    <pattern-item n="SVconj"/>
+    <pattern-item n="cnjadv1"/>
+  </pattern>
+  <action>
+    <out> 
+      <chunk>
+	<get-case-from pos="1">
+	  <clip pos="3" part="lem"/>
+	</get-case-from>
+	<clip pos="3" part="tags"/>
+	<clip pos="3" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<get-case-from pos="2">
+	  <clip pos="1" part="lem"/>
+	</get-case-from>
+	<clip pos="1" part="tags"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+      <b pos="2"/>
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>      
+    </out>
+  </action>
+</rule>
+
+
+<rule comment="PP + cnjadv (egin ezik -> a menos que hacer:-/)">
+  <pattern>
+    <pattern-item n="pp"/>
+    <pattern-item n="cnjadv2"/>
+  </pattern>
+  <action>
+    <out> 
+      <chunk>
+	<get-case-from pos="1">
+	  <clip pos="2" part="lem"/>
+	</get-case-from>
+	<clip pos="2" part="tags"/>
+	<clip pos="2" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<get-case-from pos="2">
+	  <clip pos="1" part="lem"/>
+	</get-case-from>
+	<clip pos="1" part="tags"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+    </out>
+  </action>
+</rule>
+
+
+<rule comment="PP + cnjadv (nik egin ezik -> a menos que yo haga)">
+  <pattern>
+    <pattern-item n="prnpers"/>
+    <pattern-item n="pp"/>
+    <pattern-item n="cnjadv2"/>
+  </pattern>
+  <action>
+    <let>
+      <clip pos="2" part="pers"/>
+      <clip pos="1" part="pers"/>
+    </let>
+    <let>
+      <clip pos="2" part="nbr"/>
+      <clip pos="1" part="nbr"/>
+    </let>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="3" part="lem"/>
+	    <lit v="ezean"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="2" part="temps"/>
+	  <lit-tag v="pri"/>
+	</let>
+      </when>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="3" part="lem"/>
+	    <lit v="ezik"/>
+	  </equal>
+	</test>
+	<let>
+	  <clip pos="2" part="temps"/>
+	  <lit-tag v="prs"/>
+	</let>
+      </when>
+    </choose>     
+      
+    <out> 
+      <chunk>
+	<get-case-from pos="1">
+	  <clip pos="3" part="lem"/>
+	</get-case-from>
+	<clip pos="3" part="tags"/>
+	<clip pos="3" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<get-case-from pos="2">
+	  <clip pos="1" part="lem"/>
+	</get-case-from>
+	<clip pos="1" part="tags"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+      <b pos="2"/>
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>      
+    </out>
+  </action>
+</rule>
 	      
 <rule comment="REGLA: ez + izan + SN + PP/GER/PFUT - ez dute ezer aurkitu)">
       <pattern>
