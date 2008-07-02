@@ -34,6 +34,7 @@ import org.netbeans.microedition.util.SimpleCancellableTask;
  * @author Enrique Benimeli Bofarull
  */
 public class TinyLex extends MIDlet implements CommandListener {
+
     /**
      * 
      */
@@ -78,14 +79,28 @@ public class TinyLex extends MIDlet implements CommandListener {
      * 
      */
     boolean sltlLoaded = false;
+    /**
+     * 
+     */
     int currentDic = -1;
+    /**
+     * 
+     */
     final int SLTL = 0;
+    /**
+     * 
+     */
     final int TLSL = 1;
     /**
      * 
      */
     boolean tlslLoaded = false;
+    /**
+     * 
+     */
     private String currentFileName = "";
+    private String[][] idxLR;
+    private String[][] idxRL;
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private Form aboutForm;
     private StringItem aboutText1;
@@ -434,38 +449,35 @@ public class TinyLex extends MIDlet implements CommandListener {
      * 
      */
     private final void buildSLTL() {
-        sltlIndex = new Hashtable();
         // number of dictionaries (parts) for sltl
         String sndics = (String) properties.get("sltl_n");
         int ndics = Integer.parseInt(sndics);
-
+        this.idxLR = new String[ndics][2];
+        
         for (int i = 1; i <= ndics; i++) {
             String fileName = "sltl_" + i + ".dix";
-            String prefixes = (String) properties.get(fileName);
-            Vector values = this.parsePrefixes(prefixes);
-            for (int j = 0; j < values.size(); j++) {
-                sltlIndex.put(values.elementAt(j), fileName);
-            }
+            String range = (String) properties.get(fileName);
+            Vector values = this.parsePrefixes(range);          
+            idxLR[i-1][0] = (String)values.elementAt(0);
+            idxLR[i-1][1] = (String)values.elementAt(1);
         }
-
     }
 
     /**
      * 
      */
     private final void buildTLSL() {
-        tlslIndex = new Hashtable();
         // number of dictionaries (parts) for sltl
         String sndics = (String) properties.get("tlsl_n");
         int ndics = Integer.parseInt(sndics);
-
+        this.idxRL = new String[ndics][2];
+        
         for (int i = 1; i <= ndics; i++) {
             String fileName = "tlsl_" + i + ".dix";
-            String prefixes = (String) properties.get(fileName);
-            Vector values = this.parsePrefixes(prefixes);
-            for (int j = 0; j < values.size(); j++) {
-                tlslIndex.put(values.elementAt(j), fileName);
-            }
+            String range = (String) properties.get(fileName);
+            Vector values = this.parsePrefixes(range);          
+            idxRL[i-1][0] = (String)values.elementAt(0);
+            idxRL[i-1][1] = (String)values.elementAt(1);
         }
     }
 
@@ -500,15 +512,13 @@ public class TinyLex extends MIDlet implements CommandListener {
     private final Dictionary getSubDic(String srcLemma, int direction) {
         Dictionary dic = null;
         String fileName = null;
-        String firstLetter = srcLemma.substring(0, 1);
         if (direction == this.SLTL) {
-            fileName = (String) this.sltlIndex.get(firstLetter);
+            fileName = (String) this.getBlock(srcLemma, this.SLTL);
         }
         if (direction == this.TLSL) {
-            fileName = (String) this.tlslIndex.get(firstLetter);
+            fileName = (String) this.getBlock(srcLemma, this.TLSL);
         }
 
-        //fileName += ".dix";
         if (loaded.get(fileName) == null) {
             if (loaded.size() > 2) {
                 loaded = new Hashtable();
@@ -522,6 +532,46 @@ public class TinyLex extends MIDlet implements CommandListener {
         }
         this.switchDisplayable(null, this.getLookUpForm());
         return dic;
+    }
+    
+    /**
+     * 
+     * @param srcLemma
+     * @param dir
+     * @return
+     */
+    private final String getBlock(String srcLemma, int dir) {
+        String [][] idx;
+        String fileName = "";
+        if(dir == this.SLTL) {
+            idx = this.idxLR;
+        } else {
+            idx = this.idxRL;
+        }       
+        int max = idx.length;
+        int pt = -1;
+        for(int i=0; i<max; i++) {
+            String first = idx[i][0];
+            String last = idx[i][1];
+            
+            if(first.compareTo(srcLemma) == 0 || (last.compareTo(srcLemma)) == 0) {
+                pt = i+1;
+                
+            } else {
+            if(first.compareTo(srcLemma) < 0 && (last.compareTo(srcLemma)) > 0) {
+                pt = i+1;
+            }
+            }
+            if( pt != -1) {
+                     if(dir == this.SLTL) {
+            fileName = "sltl_" + pt + ".dix";
+            } else {
+            fileName = "tlsl_" + pt + ".dix";
+         }   
+            return fileName;
+            }
+        }
+        return null;        
     }
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lookUpForm ">//GEN-BEGIN:|33-getter|0|33-preInit
@@ -908,7 +958,7 @@ public class TinyLex extends MIDlet implements CommandListener {
     public Form getAboutForm() {
         if (aboutForm == null) {//GEN-END:|132-getter|0|132-preInit
             // write pre-init user code here
-            aboutForm = new Form("TinyLex v0.2", new Item[] { getAboutText1(), getSpacer1(), getStringItem1() });//GEN-BEGIN:|132-getter|1|132-postInit
+            aboutForm = new Form("TinyLex v0.3", new Item[] { getAboutText1(), getSpacer1(), getStringItem1() });//GEN-BEGIN:|132-getter|1|132-postInit
             aboutForm.addCommand(getBackCommandAboutForm());
             aboutForm.addCommand(getOkCommandAboutForm());
             aboutForm.setCommandListener(this);//GEN-END:|132-getter|1|132-postInit
