@@ -432,7 +432,7 @@ public class TinyLex extends MIDlet implements CommandListener {
      */
     private final void readPropertyFile() {
         this.loaded = new Hashtable();
-        PropertyReader propReader = new PropertyReader("meta.inf");
+        PropertyReader propReader = new PropertyReader("meta.inf", this.getClass());
         properties = propReader.readProperties();
         // source language full name
         String slfull = (String) properties.get("sl-full");
@@ -524,7 +524,7 @@ public class TinyLex extends MIDlet implements CommandListener {
                 loaded = new Hashtable();
             }
             this.switchDisplayable(null, this.getDicLoaderForm());
-            DicReader dicReader = new DicReader(fileName);
+            DicReader dicReader = new DicReader(fileName, this.getClass());
             dic = dicReader.read(progressBar);
             loaded.put(fileName, dic);
         } else {
@@ -808,9 +808,9 @@ public class TinyLex extends MIDlet implements CommandListener {
                     }
                     if (direction.equals(tlslString)) {
                         if (!tlslLoaded) {
-                            DicReader dicReader = new DicReader("../tlsl.dix");
+//                            DicReader dicReader = new DicReader("../tlsl.dix", this.getClass());
                             //dic = dicReader.read();
-                            properties = dicReader.getProperties();
+                            //properties = dicReader.getProperties();
                             tlslLoaded = true;
                             sltlLoaded = false;
                         }

@@ -21,6 +21,7 @@ package dic;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
+import javax.microedition.global.ResourceManager;
 
 /**
  *
@@ -36,14 +37,21 @@ public class PropertyReader {
      * Map of properties
      */
     private Hashtable properties;
+    
+    /**
+     * 
+     */
+    private Class midletClass;
 
     /**
      * 
      * @param fileName File Name
      */
-    public PropertyReader(String fileName) {
+    public PropertyReader(String fileName, Class midletClass) {
         this.fileName = "/" + fileName;
         properties = new Hashtable();
+        this.midletClass = midletClass;
+        
     }
 
     /**
@@ -62,8 +70,9 @@ public class PropertyReader {
         InputStream is = null;
         InputStreamReader isr = null;
         try {
-            Class c = this.getClass();
+            Class c = this.midletClass;
             is = c.getResourceAsStream(fileName);
+            
             if (is == null) {
                 throw new Exception("File '" + fileName + "' does not exist");
             }
