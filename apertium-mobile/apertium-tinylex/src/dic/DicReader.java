@@ -20,11 +20,11 @@ package dic;
  */
 import dic.LineReader;
 import dic.Dictionary;
-import dic.Entry;
 import dic.EntryLine;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
+import javax.microedition.global.ResourceManager;
 import javax.microedition.lcdui.Gauge;
 
 /**
@@ -49,14 +49,19 @@ public class DicReader {
      * 
      */
     private Gauge progressBar;
+   /**
+     * 
+     */
+    private Class midletClass;
 
     /**
      * 
      * @param fileName
      */
-    public DicReader(final String fileName) {
+    public DicReader(final String fileName, Class midletClass) {
         this.fileName = "/" + fileName;
         properties = new Hashtable();
+        this.midletClass = midletClass;
     }
 
     /**
@@ -77,9 +82,9 @@ public class DicReader {
         InputStream is = null;
         InputStreamReader isr = null;
         try {
-            Class c = this.getClass();
+            Class c = this.midletClass;
             is = c.getResourceAsStream(fileName);
-            if (is == null) {
+           if (is == null) {
                 throw new Exception("File '" + fileName + "' does not exist");
             }
 
