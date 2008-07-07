@@ -13,6 +13,10 @@
 	
 	$trad = translate($text, $dir, $markUnknown);
 	
+	if(isset($HTTP_GET_VARS['response']) {
+		$trad = $HTTP_GET_VARS['response'] . "('" . str_replace("'","\\'",$trad) . "');";
+	}
+
 	print $trad;
 
 
