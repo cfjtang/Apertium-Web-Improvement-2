@@ -1,9 +1,9 @@
 <?php
 	include_once("../config/apertium-config.php");
 
-	$text = $HTTP_GET_VARS["text"];
-	$dir = $HTTP_GET_VARS["dir"];
-	$mark = $HTTP_GET_VARS["mark"];
+	$text = $_GET["text"];
+	$dir = $_GET["dir"];
+	$mark = $_GET["mark"];
 
 	if($mark == 1) {
 		$markUnknown = "";
@@ -13,8 +13,8 @@
 	
 	$trad = translate($text, $dir, $markUnknown);
 	
-	if(isset($HTTP_GET_VARS['response'])) {
-		$trad = $HTTP_GET_VARS['response'] . "('" . str_replace("'","\\'",$trad) . "');";
+	if(isset($_GET['response'])) {
+		$trad = $_GET['response'] . "('" . str_replace("'","\\'",$trad) . "');";
 	}
 
 	print $trad;
