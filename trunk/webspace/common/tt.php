@@ -11,6 +11,13 @@
 		$markUnknown = "-u";
 	}
 	
+	$enc = mb_detect_encoding($text,'UTF-8,ISO-8859-1,ASCII');
+
+        if(($enc != 'ASCII')||($enc != 'UTF-8')) {
+                $text = mb_convert_encoding($text,'UTF-8',$enc);
+        }
+
+
 	$trad = translate($text, $dir, $markUnknown);
 	
 	if(isset($_GET['response'])) {
