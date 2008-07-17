@@ -39,6 +39,16 @@
     <def-cat n="baino-que">
       <cat-item name="baino-que"/>
     </def-cat>
+    <def-cat n="baino-de">
+      <cat-item name="baino-de"/>
+    </def-cat>
+    <def-cat n="elkar">
+      <cat-item name="elkar-prn"/>
+    </def-cat>
+    <def-cat n="elkar-pr">
+      <cat-item name="elkar-pr-prn"/>
+    </def-cat>
+
  <def-cat n="SP2">
       <cat-item name="pr_nom"/>
       <cat-item name="pr_prn"/>
@@ -148,6 +158,17 @@
           <attr-item tags="subs"/>
           <attr-item tags="fti"/>
       </def-attr>
+
+ <def-attr n="valor_NK">  
+   <attr-item tags="NK_HK"/>
+   <attr-item tags="NK_HU"/>
+   <attr-item tags="NK_NI"/>
+   <attr-item tags="NK_ZK"/>
+   <attr-item tags="NK_GU"/>
+   <attr-item tags="NK_ZU"/>
+   <attr-item tags="NK_HI"/>
+ </def-attr>
+
 
   <def-attr n="tipus_det">          
       <attr-item tags="art"/>         
@@ -1005,9 +1026,171 @@
 </rule>
       
 
+<rule>
+  <pattern>
+    <pattern-item n="baino-de"/>
+  </pattern>
+  <action>
+    <out>
+      <lu>
+	<lit v="de"/>
+	<lit-tag v="pr"/>
+      </lu>
+    </out>
+  </action>
+</rule>
 
 
-	  
+<rule>
+  <pattern>
+    <pattern-item n="elkar"/>
+  </pattern>
+  <action>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="0" part="valor_NK"/>
+	    <lit-tag v="NK_GU"/>
+	  </equal>
+	</test>
+	<let>
+	    <clip pos="1" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="nos"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="1" part="tags"/>
+	    <lit-tag v="prn.pro.p1.mf.pl"/>
+	</let>
+      </when>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="0" part="valor_NK"/>
+	    <lit-tag v="NK_HK"/>
+	  </equal>
+	</test>
+	<let>
+	    <clip pos="1" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="se"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="1" part="tags"/>
+	    <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	</let>
+      </when>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="0" part="valor_NK"/>
+	    <lit-tag v="NK_ZK"/>
+	  </equal>
+	</test>
+	<let>
+	    <clip pos="1" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="os"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="1" part="tags"/>
+	    <lit-tag v="prn.pro.p2.mf.pl"/>
+	</let>
+      </when>
+    </choose>
+    <out>
+      <lu>
+	<clip pos="1" part="whole"/>
+      </lu> 
+    </out>
+
+  </action>
+</rule>	  
+
+
+
+<rule>
+  <pattern>
+    <pattern-item n="elkar-pr"/>
+  </pattern>
+  <action>
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="0" part="valor_NK"/>
+	    <lit-tag v="NK_GU"/>
+	  </equal>
+	</test>
+	<let>
+	    <clip pos="2" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="nos"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="2" part="tags"/>
+	    <lit-tag v="prn.pro.p1.mf.pl"/>
+	</let>
+      </when>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="0" part="valor_NK"/>
+	    <lit-tag v="NK_HK"/>
+	  </equal>
+	</test>
+	<let>
+	    <clip pos="2" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="se"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="2" part="tags"/>
+	    <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	</let>
+      </when>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="0" part="valor_NK"/>
+	    <lit-tag v="NK_ZK"/>
+	  </equal>
+	</test>
+	<let>
+	    <clip pos="2" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="os"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="2" part="tags"/>
+	    <lit-tag v="prn.pro.p2.mf.pl"/>
+	</let>
+      </when>
+    </choose>
+    <out>
+      <lu>
+	<clip pos="2" part="whole"/>
+      </lu> 
+    </out>
+
+  </action>
+</rule>	  
+
+
+
+
+
+
+
+
+
 <rule>
       <pattern>
         <pattern-item n="pp"/>

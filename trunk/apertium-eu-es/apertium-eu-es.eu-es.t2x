@@ -125,6 +125,19 @@
 <def-cat n="ez">
       <cat-item lemma="ez" tags="SADV.adv"/>
     </def-cat> 
+ 
+<def-cat n="elkar">
+      <cat-item lemma="elkar" tags="SADV.rec"/>
+  <!--    <cat-item lemma="pr_elkar" tags="SADV"/>-->
+    </def-cat> 
+<def-cat n="elkar_post">
+      <cat-item tags="SPR.rec"/>
+    </def-cat> 
+
+ 
+<def-cat n="procl">
+      <cat-item lemma="procl" tags="prn.pro.*"/>
+    </def-cat> 
 
 <def-cat n="PADV">
       <cat-item lemma="det_nom_pp" tags="SN.*"/>
@@ -182,7 +195,8 @@
     <def-attr n="tipus_det">          
       <attr-item tags="art"/>         
       <attr-item tags="def"/>         
-      <attr-item tags="ind"/>
+      <attr-item tags="ind"/>         
+      <attr-item tags="num"/>
     </def-attr> 
 
    <def-attr n="a_adv">          
@@ -196,6 +210,18 @@
       <attr-item tags="SPR-SN"/>     
       <attr-item tags="SV"/> 
     </def-attr> 
+
+
+ <def-attr n="valor_NK">  
+   <attr-item tags="NK_HK"/>
+   <attr-item tags="NK_HU"/>
+   <attr-item tags="NK_NI"/>
+   <attr-item tags="NK_ZK"/>
+   <attr-item tags="NK_GU"/>
+   <attr-item tags="NK_ZU"/>
+   <attr-item tags="NK_HI"/>
+ </def-attr>
+
 
   </section-def-attrs>
 
@@ -1084,7 +1110,7 @@
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="1" part="gen"/>
+	      <clip pos="2" part="gen"/>
 	      <lit-tag v="m"/>
 	    </let>
 	  </when>
@@ -1098,7 +1124,7 @@
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="1" part="nbr"/>
+	      <clip pos="2" part="nbr"/>
 	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
@@ -1909,6 +1935,100 @@
 	    </test>
 	    <let>
 	      <clip pos="3" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <get-case-from pos="1">
+	      <clip pos="3" part="lem"/>
+	    </get-case-from>
+	    <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <get-case-from pos="2">
+	      <clip pos="1" part="lem"/>
+	    </get-case-from>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+ <rule comment="REGLA: (400 milioi baino gehiago)  ">
+      <pattern>
+	<pattern-item n="SN_prn"/>
+	<pattern-item n="baino"/>
+	<pattern-item n="SADVcomp"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="num"/>
+	      </equal>
+	    </test>	
+	    <let>
+	      <clip pos="2" part="lem"/>
+	      <lit v="baino-de"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <clip pos="2" part="lem"/>
+	      <lit v="baino-que"/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
 	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
@@ -3650,6 +3770,73 @@
 	</out>
       </action>
 </rule>
+
+
+
+<!--formas de reciprocidad (elkar) -->
+
+
+<rule comment="elkar maite dugu">
+  <pattern>
+    <pattern-item n="elkar"/>
+    <pattern-item n="SVconj"/>
+  </pattern>
+  <action>
+    <let>
+      <clip pos="1" part="lem"/>
+      <get-case-from pos="1">
+	<lit v="elkar-prn"/>
+      </get-case-from>
+    </let>
+    <out>
+      <chunk>
+	<clip pos="1" part="lem"/>
+	<clip pos="2" part="valor_NK"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>     
+    </out>
+  </action>
+</rule>
+      
+    
+<rule comment="elkarri aitortu genion (cuando es elkarri, el verbo es NOR-NORI-NORK, con lo que el t1x envía el pronombre nori en un chunk aparte">
+  <pattern>
+    <pattern-item n="elkar_post"/>
+    <pattern-item n="procl"/>
+    <pattern-item n="SVconj"/>
+  </pattern>
+  <action>
+    <let>
+      <clip pos="1" part="lem"/>
+      <get-case-from pos="1">
+	<lit v="elkar-pr-prn"/>
+      </get-case-from>
+    </let>
+    <out>
+      <chunk>
+	<clip pos="1" part="lem"/>
+	<clip pos="3" part="valor_NK"/>
+	<clip pos="1" part="chcontent"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<clip pos="3" part="whole"/>
+      </chunk>     
+    </out>
+  </action>
+</rule>
+      
+
+
+
+
+
+
+
 
 
 <rule comment="azaldu duenez">

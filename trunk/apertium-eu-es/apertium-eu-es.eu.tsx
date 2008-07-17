@@ -133,7 +133,7 @@
     <tags-item tags="prn.pers.*"/>
     <tags-item tags="prn.ind.*"/>
     <tags-item tags="prn.itg.*"/>
-    <tags-item tags="IOR.ELK"/>
+    <tags-item tags="prn.rec"/>
 
   </def-label>
 
@@ -196,9 +196,6 @@
     <tags-item tags="ij"/>
   </def-label>
 
-  <def-label name="PREP" closed="true">
-    <tags-item tags="pr"/>
-  </def-label>
 
   <def-label name="PART" closed="true">
     <tags-item tags="part"/>
