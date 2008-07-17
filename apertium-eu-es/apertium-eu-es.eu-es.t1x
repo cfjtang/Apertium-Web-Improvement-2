@@ -86,6 +86,9 @@
       <cat-item lemma="bi" tags="num.pl"/>
     </def-cat>
 
+    <def-cat n="milioi">
+      <cat-item lemma="milioi" tags="n"/>
+    </def-cat>
     <def-cat n="bat">
       <cat-item lemma="bat" tags="num.sg"/>
     </def-cat>
@@ -188,6 +191,9 @@
     </def-cat> 
 
 
+    <def-cat n="prnrec">
+      <cat-item tags="prn.rec"/>
+    </def-cat>
     <def-cat n="prn">
       <cat-item tags="prn.*"/>
     </def-cat>
@@ -495,7 +501,8 @@
       <attr-item tags="pers"/>       
       <attr-item tags="tn"/>         
       <attr-item tags="itg"/>          
-      <attr-item tags="ind"/>  
+      <attr-item tags="ind"/>          
+      <attr-item tags="rec"/>  
     </def-attr> 
 
   </section-def-attrs>
@@ -4924,6 +4931,92 @@
 
 
 
+    <rule comment="REGLA: PRONOMBRE recíproco (elkar) ">
+      <pattern>
+	<pattern-item n="prnrec"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="elkar" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>
+	      <tag><clip pos="1" side="sl" part="tipus_prn"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+    
+
+    <rule comment="REGLA: PRONOMBRE recíproco + POST (elkarri) ">
+      <pattern>
+	<pattern-item n="prnrec"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		<clip pos="2" side="sl" part="lem"/>
+		<lit v="en"/>
+	      </equal>
+	    </test>
+	  <out>
+	    <chunk name="elkarren" case="caseFirstWord">  
+	      <tags>
+		  <tag><lit-tag v="SPGEN"/></tag>
+		  <tag><lit-tag v="def"/></tag>
+		  <tag><lit-tag v="mf"/></tag>
+		  <tag><lit-tag v="sp"/></tag>
+		</tags>
+		<lu>
+		  <lit v="el uno del otro"/>
+		  <lit-tag v="adj.mf.sp"/>
+		</lu>
+	    </chunk>
+	  </out>
+	  </when>
+	  <otherwise>
+	<let>
+	  <var n="lema"/>
+	  <concat>
+	    <lit v="elkar_"/>
+	    <clip pos="2" side="sl" part="lem"/>
+	  </concat>
+	</let>
+	  
+	<out>
+	  <chunk namefrom="lema" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SPR"/></tag>
+	      <tag><clip pos="1" side="sl" part="tipus_prn"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	  </otherwise>
+	</choose>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: PRONOMBREind/itg + POST (inorekin - para pronombres no personales) ">
       <pattern>
 	<pattern-item n="prn"/>
@@ -4985,9 +5078,6 @@
       </action>
     </rule>
     
-
-
-
 
     <rule comment="REGLA: DET + NOM  (zenbait etxe - algunas casas / nahiko jende = bastante jende)">
       <pattern>
@@ -8382,6 +8472,91 @@
 	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu>
 	    <b pos="2"/>
+	    <lu> 
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="GD" link-to="3"/>
+	      <clip pos="3" side="tl" part="mf"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+ <rule comment="REGLA: NUM + NUM + NOM (400 milioi euro - 400 millones de euros (pl))">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="milioi"/>
+	<pattern-item n="nom_np"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="3" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<let>
+	  <clip pos="2" side="tl" part="nbr"/>
+	  <lit-tag v="pl"/>
+	</let>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>		      		
+		      <clip pos="3" side="tl" part="gen"/>
+		      <lit-tag v="mf"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>	  
+	<out> 
+	  <chunk name="num_nom_n" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.num"/></tag>
+	      <tag><clip pos="3" side="tl" part="gen"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_num"/> 
+	      <clip pos="1" side="tl" part="GD" link-to="3"/>
+	      <clip pos="1" side="tl" part="mf"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_nom"/> 
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <lit v="de"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	    <b/>
 	    <lu> 
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
