@@ -14,8 +14,13 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      pre-$(LANG2).t1x.bin \
      $(PREFIX1).t1x.bin \
      $(PREFIX2).t1x.bin \
+     $(PREFIX1).cg.bin \
      $(PREFIX1).automut.bin \
      $(PREFIX2).automut.bin
+
+$(PREFIX1).cg.bin: $(BASENAME).$(PREFIX1).rlx
+	cg-comp $(BASENAME).$(PREFIX1).rlx $@
+
 
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -114,6 +119,7 @@ apertium_ga_gd_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
      		    pre-$(LANG2).t1x.bin \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
+     		    $(PREFIX1).cg.bin \
      		    $(PREFIX1).automut.bin \
      		    $(PREFIX2).automut.bin \
 	            $(PREFIX1).mode $(PREFIX2).mode modes.xml

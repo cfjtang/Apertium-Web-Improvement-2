@@ -1,0 +1,19 @@
+DELIMITERS = "<.>" "<!>" "<?>"; # end-of-sentence markers
+
+LIST DetDef = (det def);
+LIST DetPos = (det pos);
+
+LIST NomF = (n f);
+LIST NomM = (n m);
+
+LIST hPro = ("<h.*>"r "a.*"r);
+LIST Len = ("<ph.*>"r "p.*"r);
+
+SET DetPosF = DetPos + (f);
+SET DetPosM = DetPos + (m);
+
+SECTION
+
+SELECT DetPosF IF (1 hPro);
+
+SELECT DetPosM IF (1 Len);
