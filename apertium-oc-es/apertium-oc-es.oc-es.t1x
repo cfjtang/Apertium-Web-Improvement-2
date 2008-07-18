@@ -6118,6 +6118,42 @@
         <call-macro n="tipus_verb">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <or>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lemh"/>
+                  <lit v="aver"/>
+                </equal>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lemh"/>
+                  <lit v="auer"/>
+                </equal>
+               <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lemh"/>
+                  <lit v="èsser"/>
+                </equal>
+               <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lemh"/>
+                  <lit v="èster"/>
+                </equal>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lemh"/>
+                  <lit v="estar"/>
+                </equal>
+              </or>
+            </test>
+            <let>
+              <var n="genero"/>
+              <lit-tag v="m"/>
+            </let>  
+            <let>
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
         <out>
           <chunk name="adj" case="caseFirstWord">
             <tags>
