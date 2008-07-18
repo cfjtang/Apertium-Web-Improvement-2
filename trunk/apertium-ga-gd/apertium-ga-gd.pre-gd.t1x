@@ -63,39 +63,61 @@
 	  <!-- Lenition, e.g. "an bean" ~~> "an bhean" or "an fir" ~~> "an fhir" --> 
           <when>
             <test>
-              <and> <!-- The lemma of the determiner is "an" and 
-	                 the noun is singular -->
-                <equal caseless="yes">
-                  <clip pos="1" side="tl" part="lem"/>
-                  <lit v="an"/>
-                </equal>
-                <equal>
-                  <clip pos="2" side="tl" part="nbr"/>
-                  <lit-tag v="sg"/>
-                </equal>
-	        <or>
-                  <and> <!-- The noun is feminine and nominative -->
-                    <equal>
-                      <clip pos="2" side="tl" part="gen"/>
-                      <lit-tag v="f"/>
+	      <or>
+                <and> <!-- The lemma of the determiner is "an" and 
+  	                   the noun is singular -->
+                  <equal caseless="yes">
+                    <clip pos="1" side="tl" part="lem"/>
+                    <lit v="an"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" side="tl" part="nbr"/>
+                    <lit-tag v="sg"/>
+                  </equal>
+	          <or>
+                    <and> <!-- The noun is feminine and nominative -->
+                      <equal>
+                        <clip pos="2" side="tl" part="gen"/>
+                        <lit-tag v="f"/>
+                      </equal>
+                      <equal>
+                        <clip pos="2" side="tl" part="cas"/>
+                        <lit-tag v="nom"/>
+                     </equal>
+                    </and>
+                    <and> <!-- The noun is masculine and genitive -->
+                      <equal>
+                        <clip pos="2" side="tl" part="gen"/>
+                        <lit-tag v="m"/>
+                      </equal>
+                      <equal>
+                        <clip pos="2" side="tl" part="cas"/>
+                        <lit-tag v="gen"/>
+                     </equal>
+                    </and>
+                  </or>
+                </and>
+                <or> <!-- For the possessive determiners 'mo', 'do' and 'a' (in masculine) -->
+                  <equal caseless="yes">
+                    <clip pos="1" side="tl" part="lem"/>
+                    <lit v="mo"/> 
+                  </equal>
+                  <equal caseless="yes">
+                    <clip pos="1" side="tl" part="lem"/>
+                    <lit v="do"/>
+                  </equal>
+                  <and>
+                    <equal caseless="yes">
+                      <clip pos="1" side="tl" part="lem"/>
+                      <lit v="a"/>
                     </equal>
                     <equal>
-                      <clip pos="2" side="tl" part="cas"/>
-                      <lit-tag v="nom"/>
-                   </equal>
-                  </and>
-		  <and> <!-- The noun is masculine and genitive -->
-                    <equal>
-                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="gen"/>
                       <lit-tag v="m"/>
                     </equal>
-                    <equal>
-                      <clip pos="2" side="tl" part="cas"/>
-                      <lit-tag v="gen"/>
-                   </equal>
                   </and>
-	        </or>
-              </and>
+                </or>
+              </or>
             </test>
             <out>
               <lu>
