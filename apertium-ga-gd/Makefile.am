@@ -13,7 +13,9 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      pre-$(LANG1).t1x.bin \
      pre-$(LANG2).t1x.bin \
      $(PREFIX1).t1x.bin \
-     $(PREFIX2).t1x.bin
+     $(PREFIX2).t1x.bin \
+     $(PREFIX1).automut.bin \
+     $(PREFIX2).automut.bin
 
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -26,6 +28,10 @@ $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp rl $(BASENAME).$(LANG2).dix $@
+
+$(PREFIX1).automut.bin: $(BASENAME).muta-$(LANG2).dix
+	apertium-validate-dictionary $(BASENAME).muta-$(LANG2).dix
+	lt-comp lr $(BASENAME).muta-$(LANG2).dix $@
 
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
@@ -42,6 +48,10 @@ $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp rl $(BASENAME).$(LANG1).dix $@
+
+$(PREFIX2).automut.bin: $(BASENAME).muta-$(LANG1).dix
+	apertium-validate-dictionary $(BASENAME).muta-$(LANG1).dix
+	lt-comp lr $(BASENAME).muta-$(LANG1).dix $@
 
 $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
@@ -104,6 +114,8 @@ apertium_ga_gd_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
      		    pre-$(LANG2).t1x.bin \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
+     		    $(PREFIX1).automut.bin \
+     		    $(PREFIX2).automut.bin \
 	            $(PREFIX1).mode $(PREFIX2).mode modes.xml
 		  
 install-data-local:
