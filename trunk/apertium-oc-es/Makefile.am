@@ -1,4 +1,4 @@
-VERSION=1.0.2
+VERSION=1.0.5
 LANG1=oc
 LANG2=es
 LANG1b=oc@aran
@@ -226,10 +226,14 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx $(PREFIX1).prob $(PREFIX2).prob \
            $(PREFIX1b).prob $(PREFIX2b).prob \
-           buscaPar.xsl principal.xsl apertium-oc-es.oc.metadix modes.xml \
+           alt.xsl buscaPar.xsl principal.xsl apertium-oc-es.oc.metadix modes.xml \
            $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
            $(PREFIX2)-supervised.make $(PREFIX2)-unsupervised.make \
-           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
+           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README \
+	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX2).t1x \
+	   $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX2).t2x \
+	   $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x 
+
                                   
 modes: modes.xml Makefile.am
 	apertium-gen-modes modes.xml
