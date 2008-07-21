@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tagger name="occitan">
 <tagset>
   <def-label name="QUECNJ" closed="true">
@@ -96,7 +96,7 @@
     <tags-item tags="num"/>
 	 <tags-item tags="num.*"/>
   </def-label>
-<!-- això en aranès no te gaire sentit no?  
+<!-- aixÃ² en aranÃ¨s no te gaire sentit no?  
   <def-label name="PREDETNT" closed="true">
     <tags-item tags="predet.nt.*"/>
   </def-label>
@@ -125,7 +125,7 @@
   <def-label name="PRNPRO" closed="true">
     <tags-item tags="prn.pro.*"/>
   </def-label>
-<!--  <def-label name="AVERLEXINF" closed="true">MG: és millor que les probabilitats d'aquest verb es calculin junt amb les dels altres verbs lèxics
+<!--  <def-label name="AVERLEXINF" closed="true">MG: Ã©s millor que les probabilitats d'aquest verb es calculin junt amb les dels altres verbs lÃ¨xics
 	  <tags-item lemma="aver" tags="vblex.inf"/>
   </def-label>
   <def-label name="AVERLEXGER" closed="true">
@@ -329,7 +329,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
    </sequence>
-  </def-mult> en occità, el pronom va davant l'infinitiu-->
+  </def-mult> en occitÃ , el pronom va davant l'infinitiu-->
 <!--  <def-mult name="GERLEXPRNENC">
     <sequence>
       <label-item label="VLEXGER"/>
@@ -340,7 +340,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
    </sequence>
-  </def-mult> en occità, el pronom va davant el gerundi-->
+  </def-mult> en occitÃ , el pronom va davant el gerundi-->
   <def-mult name="IMPLEXPRNENC">
     <sequence>
       <label-item label="VLEXIMP"/>
@@ -362,7 +362,7 @@
 	  <label-item label="PRNENC"/>
 	  <label-item label="PRNENC"/>
   </sequence>
-</def-mult> occità no -->
+</def-mult> occitÃ  no -->
 <!--<def-mult name="AVERGERLEXPRNENC">
 	<sequence>
 		<label-item label="AVERLEXGER"/>
@@ -373,7 +373,7 @@
 		<label-item label="PRNENC"/>
 		<label-item label="PRNENC"/>
 	</sequence>
-</def-mult> occità no -->
+</def-mult> occitÃ  no -->
 <def-mult name="AVERIMPLEXPRNENC">
 	<sequence>
 		<label-item label="AVERLEXIMP"/>
@@ -406,7 +406,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
-  </def-mult> occità no -->
+  </def-mult> occitÃ  no -->
   <def-mult name="IMPSERPRNENC" closed="true">
     <sequence>
       <label-item label="VSERIMP"/>
@@ -439,7 +439,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
-  </def-mult> en occità no-->
+  </def-mult> en occitÃ  no-->
  <!-- <def-mult name="INFMODPRNENC" closed="true">
     <sequence>
       <label-item label="VMODALINF"/>
@@ -461,7 +461,7 @@
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
-  </def-mult> en occità no-->
+  </def-mult> en occitÃ  no-->
   <def-mult name="IMPMODPRNENC" closed="true">
     <sequence>
       <label-item label="VMODALIMP"/>
@@ -1780,7 +1780,7 @@
 		  <label-item label="PREPDET"/>
 		  <label-item label="SENT"/>
 	  </label-sequence>
-	  <label-sequence><!--Afegides les 3 següents 30/11/05 MG -->
+	  <label-sequence><!--Afegides les 3 segÃ¼ents 30/11/05 MG -->
 		  <label-item label="INTNOM"/>
 		  <label-item label="NOMF"/>
 	  </label-sequence>
