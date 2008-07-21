@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tagger name="occitan">
 <tagset>
   <def-label name="QUECNJ" closed="true">
@@ -86,7 +86,7 @@
     <tags-item tags="num"/>
 	 <tags-item tags="num.*"/>
   </def-label>
-<!-- això en aranès no te gaire sentit no?  
+<!-- aixÃ² en aranÃ¨s no te gaire sentit no?  
   <def-label name="PREDETNT" closed="true">
     <tags-item tags="predet.nt.*"/>
   </def-label>
@@ -115,7 +115,7 @@
   <def-label name="PRNPRO" closed="true">
     <tags-item tags="prn.pro.*"/>
   </def-label>
-<!--  <def-label name="AUERLEXINF" closed="true"> MG: és millor que les probabilitats d'aquest verb es calculin junt amb les dels altres verbs lèxics
+<!--  <def-label name="AUERLEXINF" closed="true"> MG: Ã©s millor que les probabilitats d'aquest verb es calculin junt amb les dels altres verbs lÃ¨xics
 	  <tags-item lemma="auer" tags="vblex.inf"/>
   </def-label>
   <def-label name="AUERLEXGER" closed="true">
@@ -1770,7 +1770,7 @@
 		  <label-item label="PREPDET"/>
 		  <label-item label="SENT"/>
 	  </label-sequence>
-	  <label-sequence><!--Afegides les 3 següents 30/11/05 MG -->
+	  <label-sequence><!--Afegides les 3 segÃ¼ents 30/11/05 MG -->
 		  <label-item label="INTNOM"/>
 		  <label-item label="NOMF"/>
 	  </label-sequence>
