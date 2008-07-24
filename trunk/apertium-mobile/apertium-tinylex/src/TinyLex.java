@@ -17,11 +17,6 @@
  * 02111-1307, USA.
  */
 
-import dic.DicReader;
-import dic.PropertyReader;
-import dic.Dictionary;
-import dic.Entry;
-import dic.EntryParser;
 import java.util.Hashtable;
 import java.util.Vector;
 import javax.microedition.midlet.*;
@@ -44,17 +39,9 @@ public class TinyLex extends MIDlet implements CommandListener {
      */
     private Dictionary sltldic;
     /**
-     * 
-     */
-    private Hashtable sltlIndex;
-    /**
      * Current right-to-left dictionary
      */
     private Dictionary tlsldic;
-    /**
-     * 
-     */
-    private Hashtable tlslIndex;
     /**
      * 
      */
@@ -98,8 +85,10 @@ public class TinyLex extends MIDlet implements CommandListener {
     /**
      * 
      */
-    private String currentFileName = "";
     private String[][] idxLR;
+    /**
+     * 
+     */
     private String[][] idxRL;
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private Form aboutForm;
@@ -518,7 +507,6 @@ public class TinyLex extends MIDlet implements CommandListener {
         if (direction == this.TLSL) {
             fileName = (String) this.getBlock(srcLemma, this.TLSL);
         }
-
         if (loaded.get(fileName) == null) {
             if (loaded.size() > 2) {
                 loaded = new Hashtable();
@@ -552,7 +540,9 @@ public class TinyLex extends MIDlet implements CommandListener {
         int pt = -1;
         for(int i=0; i<max; i++) {
             String first = idx[i][0];
+            first = first.toLowerCase();
             String last = idx[i][1];
+            last = last.toLowerCase();
             
             if(first.compareTo(srcLemma) == 0 || (last.compareTo(srcLemma)) == 0) {
                 pt = i+1;
