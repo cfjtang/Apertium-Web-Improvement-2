@@ -436,7 +436,7 @@
       <label-item label="NOMA_DET"/>
       <label-item label="NOMA"/>
     </label-sequence> -->
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="NOMA"/>
       <label-item label="NOMA_DET"/>
     </label-sequence>
@@ -451,7 +451,7 @@
     <label-sequence>
       <label-item label="NOMA"/>
       <label-item label="NOM_POST"/>
-    </label-sequence>
+    </label-sequence> -->
     <label-sequence>
       <label-item label="NOMA"/>
       <label-item label="SENT"/>

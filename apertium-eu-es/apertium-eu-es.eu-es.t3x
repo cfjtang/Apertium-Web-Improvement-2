@@ -479,12 +479,26 @@
 		</equal>
 	      </not>
 	    </test>
-	<out>
-	  <b pos="1"/>
-	  <lu>
-	    <clip pos="2" part="whole"/>
-	  </lu>
-	</out> 
+	    <choose><!--complicacioneta per poder mirar si cal enviar un blanc. No es pot fer d'altra manera perquè si el blanc no existeix no es pot mirar si existeix, dóna error de posició inexistent -->
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="0" part="a_SP"/>
+		      <lit-tag v="SPR-SN"/>
+		    </equal>
+		  </not>
+		</test>
+		<out>
+		  <b pos="1"/>
+		</out>
+	      </when>
+	    </choose>
+	    <out>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out> 
 	  </when>
 	</choose>
       </action>
