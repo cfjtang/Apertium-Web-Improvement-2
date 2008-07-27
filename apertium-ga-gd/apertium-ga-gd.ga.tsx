@@ -4,6 +4,9 @@
     <def-label name="CNJCOO" closed="true">
       <tags-item tags="cnjcoo"/>
     </def-label>
+    <def-label name="CNJADV" closed="true">
+      <tags-item tags="cnjadv"/>
+    </def-label>
 
     <def-label name="DET" closed="true">
       <tags-item tags="det.*"/>
@@ -70,6 +73,19 @@
     </def-label>
     <def-label name="VBLEX_PRS">
       <tags-item tags="vblex.prs.*"/>
+    </def-label>
+
+    <def-label name="AREL" closed="true">
+      <tags-item lemma="a" tags="rel.an.mf.sp"/>
+    </def-label>
+    <def-label name="AROSM" closed="true">
+      <tags-item lemma="a" tags="det.pos.p3.m.sg"/>
+    </def-label>
+    <def-label name="APOSF" closed="true">
+      <tags-item lemma="a" tags="det.pos.p3.f.sg"/>
+    </def-label>
+    <def-label name="APOSPL" closed="true">
+      <tags-item lemma="a" tags="det.pos.p3.mf.pl"/>
     </def-label>
   </tagset>
 </tagger>
