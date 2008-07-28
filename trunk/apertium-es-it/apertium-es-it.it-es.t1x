@@ -51,19 +51,8 @@
       <cat-item tags="pr"/>
     </def-cat>
 
-    <def-cat n="prnperssubj">
-      <cat-item lemma="jo" tags="prn.*"/>
-      <cat-item lemma="ieu" tags="prn.*"/>
-      <cat-item lemma="ièu" tags="prn.*"/>
-      <cat-item lemma="tu" tags="prn.*"/>
-      <cat-item lemma="eth" tags="prn.*"/>
-      <cat-item lemma="el" tags="prn.*"/>
-      <cat-item lemma="nosautres" tags="prn.*"/>
-      <cat-item lemma="nosati" tags="prn.*"/>
-      <cat-item lemma="vosautres" tags="prn.*"/>
-      <cat-item lemma="vosati" tags="prn.*"/>
-      <cat-item lemma="vosté" tags="prn.*"/>
-      <cat-item lemma="vos" tags="prn.*"/>
+    <def-cat n="prn">
+      <cat-item tags="prn.*"/>
     </def-cat>
 		
 		<def-cat n="prnsubj"><!-- prn no personals que poden ser subjecte (completar la llista)-->
@@ -5150,6 +5139,58 @@
 			</let>
 		</action>
 	</rule> 
+
+
+<rule> <!-- REGLA: PRONOM --><!--Special case, macro f_concord1 
+is not applicable because gender and number can not be taken from previous rules -->
+      <pattern>
+	<pattern-item n="prn"/>
+      </pattern>
+      <action>
+	<choose>
+	    <when>
+              <test> 
+                 <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="GD"/>
+                 </equal>
+	      </test>
+	      <let>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="m"/>
+	      </let>
+	    </when>
+	</choose>
+	<choose>
+	    <when>
+	      <test> 
+                 <equal>
+                    <clip pos="1" side="tl" part="nbr"/>
+                    <lit-tag v="ND"/>
+                 </equal>
+	      </test>
+	      <let>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </let>
+	    </when>
+	  </choose>	
+          <out>  
+		  <chunk name="pronom" case="caseFirstWord">
+			  <tags>
+				  <tag><lit-tag v="SN"/></tag>
+				  <tag><clip pos="1" side="tl" part="gen"/></tag>
+				  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+			  </tags>
+	    <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+    </chunk>
+         </out>
+      </action>
+   </rule>
+
+
 
  	
 	<rule> <!-- REGLA: reset variables-->
