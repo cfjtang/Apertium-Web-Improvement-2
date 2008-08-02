@@ -14,6 +14,10 @@
       <cat-item lemma="do" tags="pr"/>
       <cat-item lemma="i" tags="pr"/>
     </def-cat>
+    <def-cat n="prevbl">
+      <cat-item lemma="ar" tags="pverb"/>
+      <cat-item lemma="níor" tags="pverb"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -108,6 +112,38 @@
               </lu>
               <b/>
               <lu>
+                <lit-tag v="l2"/>
+                <!-- Lenition -->
+              </lu>
+              <lu>
+                <clip pos="2" side="tl" part="whole"/>
+              </lu>
+            </out>
+          </when>
+
+          <when>
+            <test>
+              <or> <!-- leniting possessives -->
+                <equal>
+                  <clip pos="1" side="tl" part="tags"/> <!-- mo: my -->
+                  <lit v="det.pos.p1.mf.sg"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="tags"/> <!-- do: your -->
+                  <lit v="det.pos.p2.mf.sg"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="tags"/> <!-- a: his -->
+                  <lit v="det.pos.p3.m.sg"/>
+                </equal>
+              </or>
+            </test>
+            <out>
+              <lu>
+                <clip pos="1" side="tl" part="whole"/>
+              </lu>
+              <b/>
+              <lu>
                 <lit-tag v="l1"/>
                 <!-- Lenition -->
               </lu>
@@ -116,6 +152,7 @@
               </lu>
             </out>
           </when>
+
 
 	  <!-- Do nothing. -->
           <otherwise>
