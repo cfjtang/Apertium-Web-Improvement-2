@@ -126,16 +126,26 @@
               <or> <!-- leniting possessives -->
                 <equal>
                   <clip pos="1" side="tl" part="tags"/> <!-- mo: my -->
-                  <lit v="det.pos.p1.mf.sg"/>
+                  <lit-tag v="det.pos.p1.mf.sg"/>
                 </equal>
                 <equal>
                   <clip pos="1" side="tl" part="tags"/> <!-- do: your -->
-                  <lit v="det.pos.p2.mf.sg"/>
+                  <lit-tag v="det.pos.p2.mf.sg"/>
                 </equal>
                 <equal>
                   <clip pos="1" side="tl" part="tags"/> <!-- a: his -->
-                  <lit v="det.pos.p3.m.sg"/>
+                  <lit-tag v="det.pos.p3.m.sg"/>
                 </equal>
+                <and>
+                  <equal>
+                    <clip pos="1" side="tl" part="tags"/> <!-- céad: first -->
+                    <lit-tag v="det.ord"/>
+                  </equal>
+                  <equal>
+                    <clip pos="1" side="tl" part="lem"/> 
+                    <lit v="céad"/>
+                  </equal>
+                </and>
               </or>
             </test>
             <out>
