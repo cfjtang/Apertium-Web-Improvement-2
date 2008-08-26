@@ -108,6 +108,8 @@
       <cat-item lemma="ezean" tags="cnjadv"/>
       <cat-item lemma="ezik" tags="cnjadv"/>
       <cat-item lemma="ondoren" tags="cnjadv"/>
+      <cat-item lemma="eta gero" tags="cnjadv"/>
+      <cat-item lemma="baino lehen" tags="cnjadv"/>
       <cat-item lemma="advgen" tags="SADV.*"/>
     </def-cat>  
 
@@ -4206,7 +4208,7 @@
 </rule>
 
 
-<rule comment="PP + cnjadv (nik egin ezik -> a menos que yo haga)">
+<rule comment="SUBJ + PP + cnjadv (nik egin ezik -> a menos que yo haga)">
   <pattern>
     <pattern-item n="prnpers"/>
     <pattern-item n="pp"/>
@@ -4271,7 +4273,9 @@
     </out>
   </action>
 </rule>
-	      
+	   
+<!--formas verbales negativas con sintagmas intercalados entre auxiliar y forma no personal -->
+   
 <rule comment="REGLA: ez + izan + SN + PP/GER/PFUT - ez dute ezer aurkitu)">
       <pattern>
 	<pattern-item n="ez"/>
@@ -4846,6 +4850,495 @@
 	  <b pos="5"/>
 	  <chunk>
 	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!--formas verbales negativas con sintagmas intercalados entre auxiliar y forma no personal: ahora con proclítico detrás de 'ez' -->
+
+
+
+
+<rule comment="REGLA: ez + procl + izan + SN + PP/GER/PFUT - ez dute ezer aurkitu)">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="procl"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="5" part="pers"/>
+	  <clip pos="3" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <clip pos="3" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+<!--operaciones para el SN -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>	  
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>	  
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="4"/>
+	</call-macro>
+      </action>
+</rule>
+
+	  
+	      
+<rule comment="REGLA: ez + procl + izan + ADV + PP/GER/PFUT - ez dute oraindik aurkitu) ">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="procl"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="SADV"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="5" part="pers"/>
+	  <clip pos="3" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="5" part="nbr"/>
+	  <clip pos="3" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>	  
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/> 
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="4"/>
+	</call-macro>
+      </action>
+</rule>	  
+
+	      
+<rule comment="REGLA: ez + procl + izan + (e)la + SN + PP/GER/PFUT (ez dutela galdeketa egingo - que no harán el cuestionario)">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="procl"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="que"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="6" part="pers"/>
+	  <clip pos="3" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="6" part="nbr"/>
+	  <clip pos="3" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="6" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="6" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="6" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="6" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="6" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="6" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+
+	<let>
+	  <clip pos="4" part="lem"/>
+	  <lit v="que_enviar"/>
+	</let>
+<!--operaciones para el SN -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <get-case-from pos="1">
+	      <clip pos="4" part="lem"/>
+	    </get-case-from>
+	      <clip pos="4" part="tags"/>
+	      <clip pos="4" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>	  
+	  <chunk>
+	    <get-case-from pos="2">
+	      <clip pos="1" part="lem"/>
+	    </get-case-from>
+	      <clip pos="1" part="tags"/>
+	      <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="6" part="whole"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+	  
+	      
+<rule comment="REGLA: ez + procl + izan + (e)la + SN + PP/GER/PFUT (ez duela Lisboako Ituna berriro negoziatuko) mireia no fet">
+      <pattern>
+	<pattern-item n="ez"/>
+	<pattern-item n="procl"/>
+	<pattern-item n="ukan_izan"/>
+	<pattern-item n="que"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="SADV"/>
+	<pattern-item n="formasnopersonales"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="7" part="pers"/>
+	  <clip pos="3" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="7" part="nbr"/>
+	  <clip pos="3" part="nbr"/>
+	</let>	
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="7" part="temps"/>
+		<lit-tag v="pfut"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="7" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="7" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="7" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="7" part="temps"/>
+		<lit-tag v="pp"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="7" part="lem"/>
+	      <lit v="posahaver_pp"/>
+	    </let>
+	  </when>
+	</choose>
+
+	<let>
+	  <clip pos="4" part="lem"/>
+	  <lit v="que_enviar"/>
+	</let>
+<!--operaciones para el SN -->
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="5" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="5" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <get-case-from pos="1">
+	      <clip pos="4" part="lem"/>
+	    </get-case-from>
+	      <clip pos="4" part="tags"/>
+	      <clip pos="4" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>	  
+	  <chunk>
+	    <get-case-from pos="2">
+	      <clip pos="1" part="lem"/>
+	    </get-case-from>
+	      <clip pos="1" part="tags"/>
+	      <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="7" part="whole"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+	    <clip pos="6" part="whole"/>
+	  </chunk>
+	  <b pos="6"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
       </action>
