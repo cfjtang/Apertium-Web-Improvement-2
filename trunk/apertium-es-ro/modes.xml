@@ -1,6 +1,87 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-15"?>
 <modes>
-  <mode name="es-ro"> 
+  <mode name="ro-es" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ro-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-ro.trules-ro-es.xml"/>
+        <file name="trules-ro-es.bin"/>
+        <file name="ro-es.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ro-es.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ro-es.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="ro-es-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+<mode name="ro-es-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ro-es.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="ro-es-transfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ro-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-ro.trules-ro-es.xml"/>
+        <file name="trules-ro-es.bin"/>
+        <file name="ro-es.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+<mode name="ro-es-gen">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ro-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-ro.trules-ro-es.xml"/>
+        <file name="trules-ro-es.bin"/>
+        <file name="ro-es.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ro-es.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="es-ro" install="yes">
     <pipeline>
       <program name="lt-proc">
         <file name="es-ro.automorf.bin"/>
@@ -23,32 +104,64 @@
     </pipeline>
   </mode>
 
- <mode name="ro-es" install="yes">
+
+  <mode name="es-ro-anmor">
     <pipeline>
-      <program name="lt-proc -t">
-        <file name="ro-es.translit.bin"/>
-      </program>
       <program name="lt-proc">
-        <file name="ro-es.automorf.bin"/>
+        <file name="es-ro.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="es-ro-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-ro.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g">
-        <file name="ro-es.prob"/>
+        <file name="es-ro.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="es-ro-transfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-ro.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="es-ro.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
       <program name="apertium-transfer">
-        <file name="apertium-es-ro.trules-ro-es.xml"/>
-        <file name="trules-ro-es.bin"/>
-        <file name="ro-es.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="ro-es.autogen.bin"/>
-      </program>
-      <program name="lt-proc -p">
-        <file name="ro-es.autopgen.bin"/>
+        <file name="apertium-es-ro.trules-es-ro.xml"/>
+        <file name="trules-es-ro.bin"/>
+        <file name="es-ro.autobil.bin"/>
       </program>
     </pipeline>
-  </mode> 
+  </mode>
 
+
+  <mode name="es-ro-gen">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-ro.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="es-ro.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-ro.trules-es-ro.xml"/>
+        <file name="trules-es-ro.bin"/>
+        <file name="es-ro.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="es-ro.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
 
 </modes>
-

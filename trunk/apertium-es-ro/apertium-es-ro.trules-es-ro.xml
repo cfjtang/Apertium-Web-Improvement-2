@@ -2718,169 +2718,19 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <equal>
-                  <clip pos="1" side="sl" part="a_def"/>
-                  <lit-tag v="def"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="sl" part="a_case"/>
-                  <lit-tag v="nom"/>
-                </equal>
-              </and>
-            </test>
             <call-macro n="f_concord1">
               <with-param pos="1"/>
             </call-macro>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <lit-tag v="mf"/>
-                  </equal>
-                </test>
                 <out>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def"/>
-                    <clip pos="1" side="sl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
                   <lu>
                     <clip pos="1" side="tl" part="lem"/>
                     <clip pos="1" side="tl" part="a_nom"/>
                     <clip pos="1" side="tl" part="gen"/>
                     <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </when>
-              <otherwise>
-                <out>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_nom"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </otherwise>
-            </choose>
-          </when>
-          <otherwise>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="sl" part="a_case"/>
                     <lit-tag v="nom"/>
-                  </equal>
-                </test>
-                <out>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_nom"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
+                    <lit-tag v="ind"/>                    
                   </lu>
                 </out>
-              </when>
-            </choose>
-          </otherwise>
-        </choose>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <equal>
-                  <clip pos="1" side="sl" part="a_def"/>
-                  <lit-tag v="def"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="sl" part="a_case"/>
-                  <lit-tag v="dg"/>
-                </equal>
-              </and>
-            </test>
-            <call-macro n="f_concord1">
-              <with-param pos="1"/>
-            </call-macro>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <lit-tag v="mf"/>
-                  </equal>
-                </test>
-                <out>
-                  <lu>
-                    <lit v="de"/>
-                    <lit-tag v="pr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def"/>
-                    <clip pos="1" side="sl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_nom"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </when>
-              <otherwise>
-                <out>
-                  <lu>
-                    <lit v="de"/>
-                    <lit-tag v="pr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_nom"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </otherwise>
-            </choose>
-          </when>
-<!-- <otherwise>
-	          <out>
-                   <lu>
-                     <lit v="aquí" /> 
-           	     <clip pos="1" side="tl" part="lem"/>
-	      	     <clip pos="1" side="tl" part="a_nom"/>
-	             <clip pos="1" side="tl" part="gen"/>
-	      	     <clip pos="1" side="tl" part="nbr"/>
-       	           </lu>
-         	 </out> 
-	     </otherwise> -->
-        </choose>
       </action>
     </rule>
     <rule>
@@ -2907,178 +2757,58 @@
       <pattern>
         <pattern-item n="adj"/>
       </pattern>
-      <action>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <equal>
-                  <clip pos="1" side="sl" part="a_def"/>
-                  <lit-tag v="def"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="sl" part="a_case"/>
-                  <lit-tag v="nom"/>
-                </equal>
-              </and>
-            </test>
-            <call-macro n="f_modgen">
-              <with-param pos="1"/>
-            </call-macro>
+     <action>
             <call-macro n="f_concord1">
               <with-param pos="1"/>
             </call-macro>
             <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <lit-tag v="mf"/>
-                  </equal>
-                </test>
+             <when>
+               <test>
+               <and>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="f"/>
+                 </equal>                 
+                 <equal>
+                   <clip pos="1" side="tl" part="nbr"/>
+                   <lit-tag v="pl"/>
+                 </equal>
+               </and>
+              </test>
+               <let>
+               <clip pos="1" side="tl" part="gen"/>
+               <lit-tag v="fn"/>
+               </let>
+	     </when>
+	     <when>
+               <test>
+               <and>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="m"/>
+                 </equal>                 
+                 <equal>
+                   <clip pos="1" side="tl" part="nbr"/>
+                   <lit-tag v="sg"/>
+                 </equal>
+               </and>
+              </test>
+               <let>
+               <clip pos="1" side="tl" part="gen"/>
+               <lit-tag v="mn"/>
+               </let>
+	     </when>
+	     </choose>
                 <out>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def.m"/>
-<!--<clip pos="1" side="sl" part="gen"/>-->
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
                   <lu>
                     <clip pos="1" side="tl" part="lem"/>
                     <clip pos="1" side="tl" part="a_adj"/>
                     <clip pos="1" side="tl" part="gen"/>
                     <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </when>
-              <otherwise>
-                <out>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_adj"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </otherwise>
-            </choose>
-          </when>
-          <otherwise>
-            <call-macro n="f_modgen">
-              <with-param pos="1"/>
-            </call-macro>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="sl" part="a_case"/>
                     <lit-tag v="nom"/>
-                  </equal>
-                </test>
-                <out>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_adj"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
+                    <lit-tag v="ind"/>
                   </lu>
                 </out>
-              </when>
-            </choose>
-          </otherwise>
-        </choose>
-        <choose>
-          <when>
-            <test>
-              <and>
-                <equal>
-                  <clip pos="1" side="sl" part="a_def"/>
-                  <lit-tag v="def"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="sl" part="a_case"/>
-                  <lit-tag v="dg"/>
-                </equal>
-              </and>
-            </test>
-            <call-macro n="f_modgen">
-              <with-param pos="1"/>
-            </call-macro>
-            <call-macro n="f_concord1">
-              <with-param pos="1"/>
-            </call-macro>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <lit-tag v="mf"/>
-                  </equal>
-                </test>
-                <out>
-                  <lu>
-                    <lit v="de"/>
-                    <lit-tag v="pr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def.m"/>
-<!--<clip pos="1" side="sl" part="gen"/>-->
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_adj"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </when>
-              <otherwise>
-                <out>
-                  <lu>
-                    <lit v="de"/>
-                    <lit-tag v="pr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <lit v="el"/>
-                    <lit-tag v="det.def"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                  <b/>
-                  <lu>
-                    <clip pos="1" side="tl" part="lem"/>
-                    <clip pos="1" side="tl" part="a_adj"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                  </lu>
-                </out>
-              </otherwise>
-            </choose>
-          </when>
-<!--  <otherwise>
-	          <out>
-                    <lu> 
-           	     <clip pos="1" side="tl" part="lem"/>
-	      	     <clip pos="1" side="tl" part="a_adj"/>
-	             <clip pos="1" side="tl" part="gen"/>
-	      	     <clip pos="1" side="tl" part="nbr"/>
-       	           </lu>
-         	 </out> 
-	     </otherwise> -->
-        </choose>
       </action>
     </rule>
     <rule>

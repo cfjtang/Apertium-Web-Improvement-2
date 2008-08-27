@@ -95,7 +95,7 @@ apertium_es_ro_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 # spanish -> romanian is not currently functional ~fmt
-#	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_es_modesdir)
 	$(INSTALL_DATA) $(BASENAME).trules-$(PREFIX2).xml $(BASENAME).trules-$(PREFIX1).xml $(apertium_es_rodir)
 
