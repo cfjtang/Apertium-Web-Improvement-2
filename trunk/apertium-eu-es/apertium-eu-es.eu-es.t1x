@@ -242,6 +242,7 @@
       <cat-item lemma="ondoren" tags="cnjadv"/>
       <cat-item lemma="eta gero" tags="cnjadv"/>
       <cat-item lemma="baino lehen" tags="cnjadv"/>
+      <cat-item lemma="arren" tags="cnjadv"/>
     </def-cat>
 
     <def-cat n="conj">
@@ -2173,11 +2174,41 @@
 	    </otherwise>
 	  </choose>
 	</when>
-	<otherwise><!--si el 2 no és ND, el 1 pot ser ND o sp o sg o pl. Aquest serà el nbr del chunk perquè el 2 ja no en depèn. -->
-	  <let>
-	    <var n="nbr_chunk"/> 
-	    <clip pos="1" side="tl" part="nbr"/>
-	  </let>
+	<otherwise><!--si el 2 no és ND -->
+	  <choose>
+	    <when>
+	      <test><!--quan el 2 és plural -->
+		<equal>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit-tag v="pl"/>
+		</equal>
+	      </test>
+	      <choose>
+		<when>
+		  <test>
+		    <equal>
+		      <clip pos="1" side="tl" part="nbr"/>
+		      <lit-tag v="ND"/>
+		    </equal>
+		  </test>
+		  <let>
+		    <clip pos="1" side="tl" part="nbr"/>
+		    <clip pos="2" side="tl" part="nbr"/>
+		  </let>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <lit-tag v="pl"/>
+		  </let>
+		</when>
+	      </choose>
+	    </when>
+	    <otherwise><!--quan el 2 no és ni ND ni plural -->	
+	      <let>
+		<var n="nbr_chunk"/> 
+		<clip pos="1" side="tl" part="nbr"/>
+	      </let>
+	    </otherwise>
+	  </choose>
 	</otherwise>
       </choose>
 
@@ -9207,7 +9238,7 @@
       <pattern>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="bat"/>
-	<pattern-item n="det"/>
+	<pattern-item n="detart"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -13684,7 +13715,8 @@
 	    <lu> 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
-	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="GD" link-to="3"/>
+	      <clip pos="2" side="tl" part="mf"/>
 	      <clip pos="2" side="tl" part="ND" link-to="4"/>
 	      <clip pos="2" side="tl" part="sp"/>
 	    </lu>
@@ -13749,7 +13781,8 @@
 	    <lu> 
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
-	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="GD" link-to="3"/>
+	      <clip pos="3" side="tl" part="mf"/>
 	      <clip pos="3" side="tl" part="ND" link-to="4"/>
 	      <clip pos="3" side="tl" part="sp"/>
 	    </lu>
@@ -14624,6 +14657,7 @@
 	    <lu> 
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_adj"/>
+	      <clip pos="1" side="tl" part="tipus_det"/>
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="mf"/>
 	      <lit-tag v="4"/>
