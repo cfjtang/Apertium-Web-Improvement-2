@@ -25,12 +25,59 @@
  <def-label name="hori" closed="true">
     <tags-item lemma="hori" tags="adj.izo"/>
   </def-label> 
+
+ <def-label name="dagoeneko" closed="true"><!-- EXPERIMENT!!!!!!!!!!! Adverbis lexicalitzats, vull que els trii sempre-->
+    <tags-item lemma="dagoeneko" tags="adv"/>
+  </def-label> 
+ 
+ <def-label name="zergatik" closed="true"><!-- EXPERIMENT!!!!!!!!!!!-->
+    <tags-item lemma="zergatik" tags="adv.itg"/>
+  </def-label> 
+ 
+<def-label name="gutxienez" closed="true"><!-- EXPERIMENT!!!!!!!!!!!-->
+    <tags-item lemma="gutxienez" tags="adv"/>
+    <tags-item lemma="horregatik" tags="cnjloc"/>
+    <tags-item lemma="arteraino" tags="spost"/>
+  </def-label> 
+
+
+ <def-label name="dena" closed="true"><!-- EXPERIMENT!!!!!!!!!!!-->
+    <tags-item lemma="dena" tags="prn.ind.sg"/>
+  </def-label> 
+
+
+<def-label name="KO" closed="true">
+    <tags-item lemma="ko" tags="post"/>
+    <tags-item tags="post.ko"/>
+  </def-label> 
+<def-label name="KO_EN" closed="true">
+    <tags-item lemma="ko" tags="post"/>
+    <tags-item tags="post.ko"/>
+    <tags-item lemma="en" tags="post"/>
+  </def-label> 
+
+<def-label name="POST" closed="true">
+    <tags-item tags="post"/>
+</def-label>
+
+<def-label name="SPOST">
+    <tags-item tags="spost"/>
+  </def-label>
+
+
+
+
   <def-label name="PP">
     <tags-item tags="vblex.pp"/>
   </def-label> 
+
+
+
+
  <def-label name="PPper">
     <tags-item tags="vbper.pp"/>
   </def-label>
+
  <def-label name="PADV">
     <tags-item tags="vblex.padv"/>
   </def-label> 
@@ -39,13 +86,20 @@
    <def-label name="GER">
     <tags-item tags="vblex.ger"/>
    </def-label>
-     <def-label name="GERper">
-    <tags-item tags="vbper.ger"/>
+
+
+   <def-label name="GERper">
+     <tags-item tags="vbper.ger"/>
    </def-label>
+
+
    <def-label name="INF">
     <tags-item tags="vblex.inf"/>
-  <!--  <tags-item tags="vblex"/>treure, provisional perquè el tagger ho agafi tot -->
    </def-label>
+
+
+
+
 <!--   <def-label name="INFper">
     <tags-item tags="vbper.inf"/>
    </def-label> -->
@@ -55,9 +109,14 @@
    <def-label name="PFUTper">
     <tags-item tags="vbper.pfut"/>
    </def-label>
+
+
    <def-label name="VBIZEN">
     <tags-item tags="vblex.izen"/>
   </def-label>
+
+
+
 
 <def-label name="VBSINT">
     <tags-item tags="vbsint.*"/>
@@ -74,9 +133,31 @@
   </def-label>
 
 
- <def-label name="NOMA">
+<!-- <def-label name="NOMA">
     <tags-item lemma="*a" tags="n"/>
   </def-label> 
+
+
+<def-mult name="NOMA_DET">
+    <sequence>
+      <label-item label="NOMA"/>
+      <tags-item tags="det.art.sg"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOMA_KOEN">
+    <sequence>
+      <label-item label="NOMA"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOMA_POST">
+    <sequence>
+      <label-item label="NOMA"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult> -->
+
+
 
 
 
@@ -86,16 +167,22 @@
     <tags-item tags="np.*"/> 
   </def-label>
 
-
 <!-- <def-label name="NP">
     <tags-item tags="np.*"/>
   </def-label> -->
 
-<def-label name="DET" closed="true">
+<def-label name="DETART" closed="true">
     <tags-item tags="det.art.*"/>
+  </def-label>
+
+<def-label name="DETDEM" closed="true">
+    <tags-item tags="det.dem.*"/>
+  </def-label>
+
+
+<def-label name="DETI" closed="true">
     <tags-item lemma="bat" tags="num.sg"/>
     <tags-item tags="det.ind.*"/>
-    <tags-item tags="det.dem.*"/>
     <tags-item tags="det.itg.*"/>
     <tags-item tags="ATZ.DET.BAN"/>
   </def-label>
@@ -105,28 +192,37 @@
     <tags-item tags="det.indizl.*"/>
   </def-label>
 
-
-<!--<def-label name="DET_ORD" closed="true">
-    <tags-item tags="DET.ORD"/>
-    <tags-item tags="DET.NOLARR"/>
-  </def-label> -->
-
+<!--
 <def-label name="ADJIZOA">
     <tags-item lemma="*a" tags="adj.izo"/>
-  </def-label>
+  </def-label> -->
+
+<!--<def-label name="ADJIZLA">
+    <tags-item lemma="*a" tags="adj.izl"/>
+  </def-label> -->
+
+<!--
+<def-mult name="ADJIZOA_DET">
+    <sequence>
+      <label-item label="ADJIZOA"/>
+      <tags-item tags="det.art.sg"/>
+    </sequence>
+  </def-mult> -->
+
 
 <def-label name="ADJIZO">
     <tags-item tags="adj.izo"/>
   </def-label>
 
-<def-label name="ADJIZLA">
-    <tags-item lemma="*a" tags="adj.izl"/>
-  </def-label>
+
+
 
 <def-label name="ADJIZL">
     <tags-item tags="adj.izl"/>
     <tags-item tags="adj.izl.rom"/>
   </def-label>
+
+
 
 <def-label name="PRNTN" closed="true">
     <tags-item tags="prn.tn.*"/>
@@ -137,39 +233,38 @@
 
   </def-label>
 
+
+
 <def-label name="NUM" closed="true">
     <tags-item tags="num.*"/>
     <tags-item tags="num"/>
   </def-label>
 
-<def-label name="KO" closed="true">
-    <tags-item lemma="ko" tags="post"/>
-    <tags-item tags="post.ko"/>
-  </def-label> 
-
-<def-label name="POST" closed="true">
-    <tags-item tags="post"/>
-</def-label>
-
-<def-label name="SPOST">
-    <tags-item tags="spost"/>
-  </def-label>
 
 <def-label name="PREADV">
     <tags-item tags="preadv"/>
   </def-label>
+
+
 <def-label name="ADV">
     <tags-item tags="adv"/>
   </def-label>
+
+
+
 <def-label name="ADVITG">
     <tags-item tags="adv.itg"/>
   </def-label>
+
+
 <def-label name="ADVGEN">
     <tags-item tags="adv.gen"/>
   </def-label>
+
  <def-label name="BA" closed="true"><!--categoria a part, perquè va davant el verb, i les altres cnjsub van darrera -->
     <tags-item lemma="ba" tags="cnjsub"/>
   </def-label>
+
  <def-label name="CNJSUBS" closed="true">
     <tags-item tags="cnjsub"/>
     <tags-item tags="LOT.*"/>
@@ -218,21 +313,8 @@
     <tags-item tags="BST"/>
   </def-label>
 
-<def-mult name="NOMA_DET">
-    <sequence>
-      <label-item label="NOMA"/>
-      <tags-item tags="det.art.sg"/>
-    </sequence>
-  </def-mult>
 
-<def-mult name="ADJIZOA_DET">
-    <sequence>
-      <label-item label="ADJIZOA"/>
-      <tags-item tags="det.art.sg"/>
-    </sequence>
-  </def-mult>
-
-<def-mult name="DETERG" closed="true">
+<def-mult name="DETERG" closed="true"><!--amb les noves multis, aquesta ja no s'aplica (28/08/2008) -->
     <sequence>
       <tags-item tags="det.art.sg"/>
       <tags-item lemma="k" tags="post"/>
@@ -262,20 +344,6 @@
     </sequence>
   </def-mult>
 
-<def-mult name="NOMKO"><!--per a casar-lo amb adjectius en -ko? -->
-    <sequence>
-      <tags-item tags="n"/>
-      <label-item label="KO"/>
-    </sequence>
-  </def-mult>
-
-<def-mult name="ADVKO">
-    <sequence>
-      <label-item label="ADV"/>
-      <label-item label="KO"/>
-    </sequence>
-  </def-mult>
-
 <def-mult name="SPOSTKO">
     <sequence>
       <label-item label="SPOST"/>
@@ -289,40 +357,1091 @@
       <label-item label="REL"/>
     </sequence>
   </def-mult>
-
-<def-mult name="PRGEN"><!--perquè 'zuen' = VERBREL/PRGEN  --> 
+<def-mult name="VERBREL_POST">
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="REL"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERBREL_ART"><!-- zena, dena -->
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="REL"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERBREL_ART_KO"><!-- dagoeneko -->
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="REL"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERBREL_ART_POST">
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="REL"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERB_CNJADV"><!--faltaria tb VERB_CNJSUB?????? -->
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="CNJADV"/>
+    </sequence>
+  </def-mult>
+<!--
+<def-mult name="PRGEN"><!-*-perquè 'zuen' = VERBREL/PRGEN  -*-> 
     <sequence>
       <tags-item tags="prn.pers.*"/>
       <tags-item lemma="en" tags="post"/>
     </sequence>
-  </def-mult>
+  </def-mult> -->
 
-<def-mult name="NOM_POST"><!--afegit 28/09/07 -->
+
+
+<!--les noves mults:-->
+
+
+
+<def-mult name="PP_DET">
     <sequence>
-      <tags-item tags="n"/>
-      <label-item label="POST"/>
+      <label-item label="PP"/>
+      <tags-item tags="det.art.*"/>
     </sequence>
   </def-mult>
-
-<def-mult name="ADJIZO_POST"><!--afegit 28/09/07 -->
+<def-mult name="PP_GRA">
     <sequence>
-      <tags-item tags="adj.izo"/>
-      <label-item label="POST"/>
+      <label-item label="PP"/>
+      <tags-item tags="gra.*"/>
     </sequence>
   </def-mult>
-<!--<def-mult name="DETPOST" closed="true">
+<def-mult name="PP_KOEN">
     <sequence>
+      <label-item label="PP"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_POST">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_KO_POST">
+    <sequence>
+      <label-item label="PP"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_KO_POST_DET">
+    <sequence>
+      <label-item label="PP"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_POST_DET">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_POST_DET_POST">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_DET_KOEN">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_DET_KO_POST">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_DET_POST">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_DET_POST_DET">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="PP_DET_POST_DET_POST">
+    <sequence>
+      <label-item label="PP"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
       <tags-item tags="post"/>
     </sequence>
   </def-mult>
 
-<def-mult name="DETKO" closed="true">
+
+
+<def-mult name="PADV_KOEN">
     <sequence>
-      <tags-item tags="det.art.*"/>
-      <tags-item tags="post.*"/>
+      <label-item label="PADV"/>
+      <label-item label="KO_EN"/>
     </sequence>
-  </def-mult>-->
+  </def-mult>
+
+
+   <def-mult name="GER_GRA">
+     <sequence>
+       <tags-item tags="vblex.ger"/>
+       <tags-item tags="gra.comp"/>
+    </sequence>
+   </def-mult>
+
+
+
+<def-mult name="VBIZEN_DET">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_KOEN">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_POST">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_KO_POST">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_KO_POST_DET">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_POST_DET">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_POST_DET_POST">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_DET_KOEN">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_DET_KO_POST">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_DET_POST">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_DET_POST_DET">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VBIZEN_DET_POST_DET_POST">
+    <sequence>
+      <label-item label="VBIZEN"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+
+
+
+<def-mult name="NOM_DET"><!--per a casar-lo amb adjectius en -ko? -->
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOMKOEN"><!--per a casar-lo amb adjectius en -ko? -->
+    <sequence>
+      <label-item label="NOM"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="NOM_POST"><!--afegit 28/09/07 -->
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOMKO_POST"><!--per a casar-lo amb adjectius en -ko? -->
+    <sequence>
+      <label-item label="NOM"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOMKO_POST_DET"><!--per a casar-lo amb adjectius en -ko? -->
+    <sequence>
+      <label-item label="NOM"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOM_POST_DET">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOM_POST_DET_POST">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="NOM_DET_KOEN">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOM_DET_KO_POST">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOM_DET_POST">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOM_DET_POST_DET">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="NOM_DET_POST_DET_POST">
+    <sequence>
+      <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+
+
+
+<def-mult name="ADJIZO_DET">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_KOEN">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_KO_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_KO_POST_DET">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_POST_DET">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_POST_DET_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_DET_KOEN">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_DET_KO_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_DET_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_DET_POST_DET">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_DET_POST_DET_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="ADJIZO_GRA">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="gra.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_GRA_DET">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_GRA_DET_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_GRA_KOEN">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="gra.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZO_GRA_POST">
+    <sequence>
+      <label-item label="ADJIZO"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+
+
+<def-mult name="ADJIZL_DET">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_KOEN">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_KO_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_KO_POST_DET">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_POST_DET">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_POST_DET_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_DET_KOEN">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_DET_KO_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_DET_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_DET_POST_DET">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_DET_POST_DET_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="ADJIZL_GRA">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="gra.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_GRA_DET">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_GRA_DET_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_GRA_KOEN">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="gra.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+<def-mult name="ADJIZL_GRA_POST">
+    <sequence>
+      <label-item label="ADJIZL"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+<def-mult name="PRNTN_KOEN" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_KOEN_DET" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <label-item label="KO_EN"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_POST" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_POST_DET" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_POST_DET_POST" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_POST_DET_POST_DET" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+
+<def-mult name="PRNTN_POST_POST" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_POST_POST_KO" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <label-item label="KO"/>
+    </sequence>
+</def-mult>
+<def-mult name="PRNTN_POST_POST_POST" closed="true">
+    <sequence>
+      <label-item label="PRNTN"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+
+
+
+
+<def-mult name="NUM_DET" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_KOEN" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_POST" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_KO_POST" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_KO_POST_DET" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_DET_KOEN" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_DET_KO_POST" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_DET_POST" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_POST_DET" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_POST_DET_POST" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+
+<def-mult name="NUM_DET_POST_DET" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="NUM_DET_POST_DET_POST" closed="true">
+    <sequence>
+      <label-item label="NUM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+
+
+
+<def-mult name="ADV_KOEN">
+    <sequence>
+      <tags-item tags="adv"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+</def-mult>
+
+<def-mult name="ADV_POST">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADV_POST_DET">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADV_POST_DET_POST">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADV_KO_POST">
+    <sequence>
+      <tags-item tags="adv"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+
+<def-mult name="ADV_GRA">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="gra.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADV_GRA_POST">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="gra.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+
+
+
+
+<def-mult name="ADVITG_KOEN">
+    <sequence>
+      <label-item label="ADVITG"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADVITG_POST">
+    <sequence>
+      <label-item label="ADVITG"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADVITG_POST_DET">
+    <sequence>
+      <label-item label="ADVITG"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADVITG_POST_DET_POST">
+    <sequence>
+      <label-item label="ADVITG"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADVITG_POST_POST">
+    <sequence>
+      <label-item label="ADVITG"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+</def-mult>
+
+
+
+
+<def-mult name="DETART_KOEN" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETART_POST" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETART_POST_ART" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETART_POST_ART_POST" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETART_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETART_POST_POST_KO" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETART_POST_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETART"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+
+
+
+<def-mult name="DETDEM_KOEN" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETDEM_POST" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETDEM_POST_ART" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETDEM_POST_ART_POST" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETDEM_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETDEM_POST_POST_KO" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETDEM_POST_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETDEM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+
+<def-mult name="DETI_KOEN" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETI_POST" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETI_ART_POST" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETI_POST_ART" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETI_POST_ART_POST" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETI_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETI_POST_POST_KO" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETI_POST_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETI"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+
+
+
+<def-mult name="DETINDIZL_KOEN" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="DETINDIZL_POST" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_ART_POST" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_POST_ART" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_POST_ART_POST" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_POST_POST_KO" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <label-item label="KO"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_POST_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
 
 
 </tagset>
@@ -336,34 +1455,50 @@
       <label-item label="DETINDIZL"/>
       <label-item label="INF"/>
     </label-sequence>
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="ADJIZLA"/>
       <label-item label="INF"/>
-    </label-sequence>
+    </label-sequence> -->
     <label-sequence>
       <label-item label="ADJIZL"/>
       <label-item label="INF"/>
     </label-sequence>
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="ADJIZLA"/>
       <label-item label="DET"/>
+    </label-sequence> -->
+    <label-sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="DETART"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ADJIZL"/>
-      <label-item label="DET"/>
+      <label-item label="DETDEM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJIZL"/>
+      <label-item label="DETI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="INF"/>
-      <label-item label="DET"/>
+      <label-item label="DETART"/>
     </label-sequence> 
     <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="DETDEM"/>
+    </label-sequence> 
+    <label-sequence>
+      <label-item label="INF"/>
+      <label-item label="DETI"/>
+    </label-sequence> 
+   <!-- <label-sequence>
       <label-item label="INF"/>
       <label-item label="ADJIZOA"/>
     </label-sequence>  
     <label-sequence>
       <label-item label="INF"/>
       <label-item label="ADJIZOA_DET"/>
-    </label-sequence> 
+    </label-sequence> -->
     <label-sequence>
       <label-item label="INF"/>
       <label-item label="ADJIZO"/>
@@ -420,10 +1555,10 @@
       <label-item label="PP"/>
       <label-item label="PRGEN"/>
     </label-sequence> 
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="SENT"/>
       <label-item label="ADJIZOA"/>
-    </label-sequence>
+    </label-sequence> -->
     <label-sequence><!--. Ezker abertzalea -->
       <label-item label="SENT"/>
       <label-item label="ADJIZO"/>
@@ -456,9 +1591,21 @@
       <label-item label="NOMA"/>
       <label-item label="SENT"/>
     </label-sequence>
-    <label-sequence><!--belagarriak dira -->
+ <!--   <label-sequence><!-*-belagarriak dira -*->
       <label-item label="DETERG"/>
-      <label-item label="izan"/>
+      <label-item label="izan"/> 
+    </label-sequence> -->
+    <label-sequence>
+      <label-item label="NOM_POST"/><!--unerik beroena -->
+      <label-item label="ADJIZO_DET_POST_DET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOM"/><!--ez du erantzun ere -->
+      <label-item label="ADV"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VERBREL_ART_KO"/><!--atxilotuta daude dagoeneko. -->
+      <label-item label="SENT"/>
     </label-sequence>
 
 <!--    <label-sequence>
@@ -488,7 +1635,7 @@
  <enforce-rules>
    <enforce-after label="hori">
       <label-set>
-        <label-item label="DET"/>
+        <label-item label="DETART"/>
       </label-set>
     </enforce-after>
    
