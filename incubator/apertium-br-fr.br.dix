@@ -14,8 +14,8 @@
     <sdef n="pl"     c="Plural"/>
     <sdef n="sp"     c="Singular/plural"/>
 
-    <sdef n="loc"    c="Location"/>
-    <sdef n="ant"    c="Antonym"/>
+    <sdef n="top"    c="Toponym"/>
+    <sdef n="ant"    c="Anthroponym"/>
 
     <sdef n="pr"     c="Preposition"/>
     <sdef n="cnjcoo" c="Conjonction de coordination"/>
@@ -37,18 +37,21 @@
 
     <sdef n="inf"    c="Infinitif"/>
     <sdef n="pri"    c="Present indicative"/>
-    <sdef n="imp"    c="Imperfect"/>
+    <sdef n="pii"    c="Imperfect"/>
+    <sdef n="imp"    c="Imperative"/>
     <sdef n="past"   c="Past definite"/>
     <sdef n="pp"     c="Past participle"/>
-    <sdef n="ffi"    c="Future indicative"/>
+    <sdef n="fti"    c="Future indicative"/>
 
     <sdef n="p1"     c="1st person"/>
     <sdef n="p2"     c="2nd person"/>
     <sdef n="p3"     c="3rd person"/>
+    <sdef n="impers" c="Impersonal"/>
 
     <sdef n="det"    c="Determiner"/>
     <sdef n="ind"    c="Indefinite"/>
     <sdef n="def"    c="Definite"/>
+    <sdef n="pos"    c="Possessive"/>
 
     <sdef n="sent"   c="End of sentence marker"/>
   </sdefs>
@@ -63,6 +66,16 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="div__num">
+      <e>
+        <p>
+          <l/>
+          <r><s n="num"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <pardef n="separa">
       <e>
@@ -211,6 +224,33 @@
       </e>
     </pardef>
 
+
+    <pardef n="initial-K">
+      <e r="LR">
+        <p>
+          <l>K</l>
+          <r>K</r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>G</l>
+          <r>K</r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>C'h</l>
+          <r>K</r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>K</l>
+          <r>K</r>
+        </p>
+      </e>
+    </pardef>
 
 
     <pardef n="initial-d">
@@ -397,6 +437,16 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="e__det">
+      <e>
+        <p>
+          <l/>
+          <r><s n="det"/><s n="pos"/><s n="mf"/><s n="sp"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <!-- Pronoms -->
 
@@ -1183,6 +1233,12 @@
     <pardef n="hep__pr">
       <e>
         <p>
+          <l/>
+          <r><s n="pr"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
           <l>don</l>
           <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
@@ -1226,6 +1282,12 @@
     </pardef>
 
     <pardef n="ou/zh__pr">
+      <e>
+        <p>
+          <l>zh</l>
+          <r>zh<s n="pr"/></r>
+        </p>
+      </e>
       <e>
         <p>
           <l>zhin</l>
@@ -1273,6 +1335,12 @@
     <pardef n="dre__pr">
       <e>
         <p>
+          <l/>
+          <r><s n="pr"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
           <l>zon</l>
           <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
@@ -1318,6 +1386,12 @@
     <pardef n="/eus__pr">
       <e>
         <p>
+          <l>eus</l>
+          <r>eus<s n="pr"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
           <l>ac’hanon</l>
           <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
@@ -1361,6 +1435,12 @@
     </pardef>
 
     <pardef n="/goude__pr">
+      <e>
+        <p>
+          <l>goude</l>
+          <r>goude<s n="pr"/></r>
+        </p>
+      </e>
       <e>
         <p>
           <l>em<b/>goude</l>
@@ -2653,7 +2733,7 @@
       <e>
         <p>
           <l/>
-          <r><s n="np"/><s n="loc"/><s n="sg"/></r>
+          <r><s n="np"/><s n="top"/><s n="sg"/></r>
         </p>
       </e>
     </pardef>
@@ -2726,9 +2806,21 @@
           <r>bezañ<s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r>
         </p>
       </e>
-      <e>
+      <e r="LR">
         <p>
           <l>eo</l>
+          <r>bezañ<s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>eus</l>
+          <r>bezañ<s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>zo</l>
           <r>bezañ<s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r>
         </p>
       </e>
@@ -2789,37 +2881,37 @@
       <e>
         <p>
           <l>oan</l>
-          <r>bezañ<s n="vblex"/><s n="imp"/><s n="p1"/><s n="sg"/></r>
+          <r>bezañ<s n="vblex"/><s n="pii"/><s n="p1"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oas</l>
-          <r>bezañ<s n="vblex"/><s n="imp"/><s n="p2"/><s n="sg"/></r>
+          <r>bezañ<s n="vblex"/><s n="pii"/><s n="p2"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oa</l>
-          <r>bezañ<s n="vblex"/><s n="imp"/><s n="p3"/><s n="sg"/></r>
+          <r>bezañ<s n="vblex"/><s n="pii"/><s n="p3"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oamp</l>
-          <r>bezañ<s n="vblex"/><s n="imp"/><s n="p1"/><s n="pl"/></r>
+          <r>bezañ<s n="vblex"/><s n="pii"/><s n="p1"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oac’h</l>
-          <r>bezañ<s n="vblex"/><s n="imp"/><s n="p2"/><s n="pl"/></r>
+          <r>bezañ<s n="vblex"/><s n="pii"/><s n="p2"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oant</l>
-          <r>bezañ<s n="vblex"/><s n="imp"/><s n="p3"/><s n="pl"/></r>
+          <r>bezañ<s n="vblex"/><s n="pii"/><s n="p3"/><s n="pl"/></r>
         </p>
       </e>
       <e>
@@ -2965,6 +3057,152 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="had/añ__vblex">
+      <e>
+        <p>
+          <l>añ</l>
+          <r>añ<s n="vblex"/><s n="inf"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>an</l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="p1"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ez</l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l></l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>omp</l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="p1"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>it</l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="p2"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ont</l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="p3"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>er</l>
+          <r>añ<s n="vblex"/><s n="pri"/><s n="impers"/><s n="sp"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>en</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="p1"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>es</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="p2"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>e</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="p3"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>emp</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="p1"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ec’h</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="p2"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ent</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="p3"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ed</l>
+          <r>añ<s n="vblex"/><s n="pii"/><s n="impers"/><s n="sp"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>in</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p1"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>i</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p2"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>o</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p3"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>imp</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p1"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ot</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p2"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>oc’h</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p2"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>int</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="p3"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>or</l>
+          <r>añ<s n="vblex"/><s n="fti"/><s n="impers"/><s n="sp"/></r>
+        </p>
+      </e>
+
+
+    </pardef>
+
   </pardefs>
   <section id="main" type="standard">
     <!-- Interjections -->
@@ -3008,6 +3246,15 @@
     <!-- Determinantes -->
     <e lm="an"><i>a</i><par n="a/n__det"/></e>
     <e lm="un"><i>u</i><par n="u/n__det"/></e>
+
+    <e lm="e"><i>e</i><par n="e__det"/></e>
+    <e lm="o"><i>o</i><par n="e__det"/></e>
+    <e lm="va"><i>va</i><par n="e__det"/></e>
+    <e lm="da"><i>da</i><par n="e__det"/></e>
+
+    <!-- Numerals -->
+
+    <e lm="div"><par n="initial-d"/><i>iv</i><par n="div__num"/></e>
 
     <!-- Noms -->
 
@@ -3445,6 +3692,7 @@
     <e lm="treuz"><par n="initial-t"/><i>reuz</i><par n="si__n"/></e>
     <e lm="troad"><par n="initial-t"/><i>r</i><par n="tr/oad__n"/></e>
     <e lm="troidigezh"><par n="initial-t"/><i>roidigezh</i><par n="noz__n"/></e>
+    <e lm="kevredigezh"><par n="initial-k"/><i>evredigezh</i><par n="noz__n"/></e>
     <e lm="trouz"><par n="initial-t"/><i>rouz</i><par n="si__n"/></e>
     <e lm="trubard"><par n="initial-t"/><i>rubard</i><par n="oan__n"/></e>
     <e lm="urzh"><i>urzh</i><par n="noz__n"/></e>
@@ -6489,6 +6737,9 @@
 
     <!-- Noms propres -->
 
+    <e lm="Breizh"><par n="initial-B"/><i>reizh</i><par n="Roazhon__np"/></e>
+    <e lm="Kembre"><par n="initial-K"/><i>embre</i><par n="Roazhon__np"/></e>
+
     <e lm="Brest"><par n="initial-B"/><i>rest</i><par n="Roazhon__np"/></e>
     <e lm="Kemper"><i>Kemper</i><par n="Roazhon__np"/></e>
     <e lm="Roazhon"><i>Roazhon</i><par n="Roazhon__np"/></e>
@@ -6593,6 +6844,11 @@
     <e lm="ober"><i/><par n="/ober__vblex"/></e>
     <e lm="gouzout"><i/><par n="/gouzout__vblex"/></e>
     <e lm="debriñ"><par n="initial-d"/><i>ebr</i><par n="debr/iñ__vblex"/></e>
+
+    <e lm="hadañ"><i>had</i><par n="had/añ__vblex"/></e>
+    <e lm="aozañ"><i>aoz</i><par n="had/añ__vblex"/></e>
+    <e lm="magañ"><par n="initial-m"/><i>ag</i><par n="had/añ__vblex"/></e>
+
   </section>
 
   <section id="final" type="inconditional">
