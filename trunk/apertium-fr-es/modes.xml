@@ -307,6 +307,67 @@
       </program>
     </pipeline>
   </mode>
-    
+
+  <mode name="eco-fr-es" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eco-fr-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="fr-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+         <file name="apertium-fr-es.fr-es.t1x"/>
+        <file name="fr-es.t1x.bin"/>
+        <file name="eco-fr-es.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-fr-es.fr-es.t2x"/>
+        <file name="fr-es.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-fr-es.fr-es.t3x"/>
+        <file name="fr-es.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="eco-fr-es.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="fr-es.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eco-es-fr" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eco-es-fr.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="es-fr.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-fr-es.es-fr.t1x"/>
+        <file name="es-fr.t1x.bin"/>
+        <file name="eco-es-fr.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-fr-es.es-fr.t2x"/>
+        <file name="es-fr.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-fr-es.es-fr.t3x"/>
+        <file name="es-fr.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="eco-es-fr.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="es-fr.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
 
 </modes>
