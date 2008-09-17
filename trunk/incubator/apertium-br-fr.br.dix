@@ -19,10 +19,14 @@
 
     <sdef n="pr"     c="Preposition"/>
     <sdef n="cnjcoo" c="Conjonction de coordination"/>
+    <sdef n="cnjsub" c="Conjonction de subordination"/>
 
     <sdef n="prn"    c="Pronom"/>
+
     <sdef n="subj"   c="Subjet"/>
     <sdef n="obj"    c="Objet"/>
+
+    <sdef n="opt"    c="Optatif"/>
 
     <sdef n="ij"     c="Interjection"/>
     <sdef n="adv"    c="Adverbe"/>
@@ -35,6 +39,7 @@
     <sdef n="itg"    c="Interrogatif"/>
 
     <sdef n="vblex"  c="Verb"/>
+    <sdef n="vpart"  c="Verbal particle"/>
 
     <sdef n="inf"    c="Infinitif"/>
     <sdef n="pri"    c="Present indicative"/>
@@ -1779,6 +1784,60 @@
       </e>
     </pardef>
 
+    <pardef n="/na__cnjcoo">
+      <e r="LR">
+        <p>
+          <l>na</l>
+          <r>na<s n="cnjcoo"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>nag</l>
+          <r>na<s n="cnjcoo"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>na</l>
+          <r>na<s n="cnjcoo"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+    <pardef n="/ha__cnjcoo">
+      <e r="LR">
+        <p>
+          <l>ha</l>
+          <r>ha<s n="cnjcoo"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>hag</l>
+          <r>ha<s n="cnjcoo"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>ha</l>
+          <r>ha<s n="cnjcoo"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="peogwir__cnjsub">
+      <e>
+        <p>
+          <l/>
+          <r><s n="cnjsub"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <!-- Adverbes -->
+
     <pardef n="ouzhpenn__adv">
       <e>
         <p>
@@ -2932,6 +2991,15 @@
       </e>
     </pardef>
 
+    <pardef n="Eost__n">
+      <e>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="m"/><s n="sp"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <pardef n="ro__n">
       <e>
         <p>
@@ -4046,6 +4114,54 @@
 
     <!-- Verbes -->
 
+
+    <pardef n="a__vpart">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="vpart"/><s n="subj"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="ra__vpart">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="vpart"/><s n="opt"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+    <pardef n="/e__vpart">
+      <e r="LR">
+        <p>
+          <l>e</l>
+          <r>e<s n="vpart"/><s n="obj"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ec’h</l>
+          <r>e<s n="vpart"/><s n="obj"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ez</l>
+          <r>e<s n="vpart"/><s n="obj"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>e</l>
+          <r>e<s n="vpart"/><s n="obj"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
     <pardef n="/bezañ__vblex">
       <e>
         <par n="initial-b"/>
@@ -4073,6 +4189,7 @@
           <r>bezañ<s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r>
         </p>
       </e>
+      <!-- zo = aff, eo = general, eus = there be // sec. 154 p. 51 -->
       <e r="LR">
         <p>
           <l>eo</l>
@@ -6006,6 +6123,12 @@
 
   </pardefs>
   <section id="main" type="standard">
+    <!-- Particles -->
+
+    <e lm="a"><i>a</i><par n="a__vpart"/></e>
+    <e lm="e"><i/><par n="/e__vpart"/></e>
+    <e lm="ra"><i>ra</i><par n="ra__vpart"/></e>
+
     <!-- Interjections -->
     <e lm="ac’h"><i>ac’h</i><par n="ac’h__ij"/></e>
 
@@ -6040,10 +6163,16 @@
 
     <!-- Conjonctions -->
     <e lm="eta"><i>eta</i><par n="met__cnjcoo"/></e>
-    <e lm="ha"><i>ha</i><par n="met__cnjcoo"/></e>
-    <e lm="hag"><i>hag</i><par n="met__cnjcoo"/></e>
+    <e lm="hogen"><i>hogen</i><par n="met__cnjcoo"/></e>
+    <e lm="rak"><i>rak</i><par n="met__cnjcoo"/></e>
+    <e lm="na"><i/><par n="/na__cnjcoo"/></e>
+    <e lm="ha"><i/><par n="/ha__cnjcoo"/></e>
     <e lm="met"><par n="initial-m"/><i>et</i><par n="met__cnjcoo"/></e>
-    <e lm="pe"><par n="initial-m"/><i>et</i><par n="met__cnjcoo"/></e>
+    <e lm="pe"><par n="initial-p"/><i>e</i><par n="met__cnjcoo"/></e>
+
+    <e lm="ma"><i>ma</i><par n="peogwir__cnjsub"/></e>
+    <e lm="mar"><i>mar</i><par n="peogwir__cnjsub"/></e>
+    <e lm="peogwir"><par n="initial-p"/><i>eogwir</i><par n="peogwir__cnjsub"/></e>
 
     <!-- Determinantes -->
     <e lm="an"><i>a</i><par n="a/n__det"/></e>
@@ -6103,6 +6232,30 @@
 
 
     <!-- Noms -->
+
+
+    <e lm="lun"><i>lun</i><par n="ro__n"/></e>
+    <e lm="meurzh"><par n="initial-m"/><i>eurzh</i><par n="ro__n"/></e>
+    <e lm="merc'her"><par n="initial-m"/><i>erc'her</i><par n="ro__n"/></e>
+    <e lm="yaou"><i>yaou</i><par n="ro__n"/></e>
+    <e lm="gwener"><par n="initial-gw"/><i>ener</i><par n="ro__n"/></e>
+    <e lm="sadorn"><i>sadorn</i><par n="ro__n"/></e>
+    <e lm="sul"><i>sul</i><par n="ro__n"/></e>
+
+    <e lm="Genver"><par n="initial-G"/><i>enver</i><par n="Eost__n"/></e>
+    <e lm="C'hwevrer"><i>C'hwevrer</i><par n="Eost__n"/></e>
+    <e lm="Meurzh"><par n="initial-M"/><i>eurzh</i><par n="Eost__n"/></e>
+    <e lm="Ebrel"><i>Ebrel</i><par n="Eost__n"/></e>
+    <e lm="Mae"><par n="initial-M"/><i>ae</i><par n="Eost__n"/></e>
+    <e lm="Mezheven"><par n="initial-M"/><i>ezheven</i><par n="Eost__n"/></e>
+    <e lm="Gouere"><par n="initial-G"/><i>ouere</i><par n="Eost__n"/></e>
+    <e lm="Eost"><i>Eost</i><par n="Eost__n"/></e>
+    <e lm="Gwengolo"><par n="initial-Gw"/><i>engolo</i><par n="Eost__n"/></e>
+    <e lm="Here"><i>Here</i><par n="Eost__n"/></e>
+    <e lm="Du"><par n="initial-D"/><i>u</i><par n="Eost__n"/></e>
+    <e lm="Kerzu"><par n="initial-K"/><i>erzu</i><par n="Eost__n"/></e>
+
+
 
     <e lm="abardaez"><i>abardaez</i><par n="ro__n"/></e>
     <e lm="abeg"><i>abeg</i><par n="si__n"/></e>
@@ -9605,6 +9758,17 @@
     <e lm="dilhad"><par n="initial-d"/><i>ilhad</i><par n="si__n"/></e>
     <e lm="frankiz"><i>frankiz</i><par n="sae__n"/></e>
     <e lm="brezhoneg"><par n="initial-b"/><i>rezhoneg</i><par n="si__n"/></e>
+
+    <e lm="esperanteg"><i>esperanteg</i><par n="si__n"/></e>
+    <e lm="galizeg"><par n="initial-g"/><i>alizeg</i><par n="si__n"/></e>
+    <e lm="iwerzhoneg"><i>iwerzhoneg</i><par n="si__n"/></e>
+    <e lm="katalaneg"><par n="initial-k"/><i>atalaneg</i><par n="si__n"/></e>
+    <e lm="kembraeg"><par n="initial-k"/><i>embraeg</i><par n="si__n"/></e>
+    <e lm="kerneveureg"><i>erneveureg</i><par n="si__n"/></e>
+    <e lm="okitaneg"><i>okitaneg</i><par n="si__n"/></e>
+    <e lm="sañskriteg"><i>sañskriteg</i><par n="si__n"/></e>
+    <e lm="saozneg"><i>saozneg</i><par n="si__n"/></e>
+
     <e lm="sailh"><i>sailh</i><par n="si__n"/></e>
     <e lm="fiezenn"><i>fiezenn</i><par n="dam__n"/></e>
     <e lm="kiez"><par n="initial-k"/><i>iez</i><par n="dam__n"/></e>
@@ -12189,6 +12353,7 @@
     <e lm="skrabañ"><i>skrab</i><par n="had/añ__vblex"/></e>
     <e lm="skrijañ"><i>skrij</i><par n="had/añ__vblex"/></e>
     <e lm="skrivañ"><i>skriv</i><par n="had/añ__vblex"/></e>
+    <e lm="enskrivañ"><i>enskriv</i><par n="had/añ__vblex"/></e>
     <e lm="skubañ"><i>skub</i><par n="had/añ__vblex"/></e>
     <e lm="skuilhañ"><i>skuilh</i><par n="had/añ__vblex"/></e>
     <e lm="soubañ"><i>soub</i><par n="had/añ__vblex"/></e>
@@ -12236,6 +12401,15 @@
         <r>da<s n="pr"/><j/>an<s n="det"/><s n="def"/><s n="sp"/></r>
       </p>
     </e>
+
+    <!-- work out what the 'z is -->
+    <e lm="ma’z">
+      <p>
+        <l>ma’z</l>
+        <r>ma<s n="cnjsub"/></r>
+      </p>
+    </e>
+
 
     <e lm="er">
       <p>
