@@ -28,6 +28,8 @@
     <sdef n="obj"    c="Objet"/>
 
     <sdef n="opt"    c="Optatif"/>
+    <sdef n="neg"    c="Negatif"/>
+    <sdef n="ref"    c="Reflexif"/>
 
     <sdef n="ij"     c="Interjection"/>
     <sdef n="adv"    c="Adverbe"/>
@@ -53,6 +55,7 @@
     <sdef n="past"   c="Past definite"/>
     <sdef n="pp"     c="Past participle"/>
     <sdef n="fti"    c="Future indicative"/>
+    <sdef n="ger"    c="Particle for present participle"/>
 
     <sdef n="p1"     c="1st person"/>
     <sdef n="p2"     c="2nd person"/>
@@ -704,7 +707,7 @@
 
     <!-- Pronoms -->
 
-    <pardef n="prsubj__prn">
+    <pardef n="subject__prn">
       <e>
         <p>
           <l>me</l>
@@ -741,6 +744,12 @@
           <r>prpers<s n="prn"/><s n="subj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
+      <e r="LR">
+        <p>
+          <l>i</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
       <e>
         <p>
           <l>int</l>
@@ -748,6 +757,106 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="direct_object__prn">
+      <e r="LR">
+        <p>
+          <l>va</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>va</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+
+      <e r="LR">
+        <p>
+          <l>da</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>da</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+
+      <e r="LR">
+        <p>
+          <l>hen</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>e</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>he</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+
+      <e r="LR">
+        <p>
+          <l>hol</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>hon</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>hor</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>hor</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+
+
+      <e r="LR">
+        <p>
+          <l>hoc’h</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ho</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>ho</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>o</l>
+          <r>direct<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
 
     <pardef n="piv__prn">
       <e>
@@ -833,43 +942,43 @@
       <e>
         <p>
           <l>don</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>dout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>domp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>doc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -884,43 +993,43 @@
       <e>
         <p>
           <l>non</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ni</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>noc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>no</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -935,43 +1044,43 @@
       <e>
         <p>
           <l>nnon</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nnout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nnañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nni</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nnomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nnoc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nno</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -986,43 +1095,43 @@
       <e>
         <p>
           <l>on</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>out</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>añ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>i</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>omp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>o</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1037,43 +1146,43 @@
       <e>
         <p>
           <l>in</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>it</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>imp</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>eoc’h</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1088,43 +1197,43 @@
       <e>
         <p>
           <l>don</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>dout</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>domp</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>doc’h</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1139,43 +1248,43 @@
       <e>
         <p>
           <l>zon</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zi</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zoc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zo</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1190,43 +1299,43 @@
       <e>
         <p>
           <l>zon</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zout</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zañ</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zi</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zomp</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zoc’h</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zo</l>
-          <r>k<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>k<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1241,61 +1350,61 @@
       <e>
         <p>
           <l>diwarnon</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnout</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnañ</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnezhañ</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarni</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnezhi</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnomp</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnoc’h</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarno</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>diwarnezho</l>
-          <r>diwar<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>diwar<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1310,43 +1419,43 @@
       <e>
         <p>
           <l>in</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>it</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ezhañ</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ezhi</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>imp</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>eoc’h</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ezho</l>
-          <r>a<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>a<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1361,43 +1470,43 @@
       <e>
         <p>
           <l><b/>ennon</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>enni</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennoc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>enno</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1412,43 +1521,43 @@
       <e>
         <p>
           <l>don</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>dout</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>domp</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>doc’h</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1463,43 +1572,43 @@
       <e>
         <p>
           <l>don</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>dout</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>domp</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>doc’h</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r>t<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>t<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1514,43 +1623,43 @@
       <e>
         <p>
           <l><b/>ennon</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>enni</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>ennoc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l><b/>enno</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1565,43 +1674,43 @@
       <e>
         <p>
           <l>don</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>dout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>domp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>doc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1616,43 +1725,43 @@
       <e>
         <p>
           <l>zhin</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zhit</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>tañ</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ti</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zhimp</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zhoc’h</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>to</l>
-          <r>zh<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>zh<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1667,43 +1776,43 @@
       <e>
         <p>
           <l>zon</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zi</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zoc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>zo</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1718,43 +1827,43 @@
       <e>
         <p>
           <l>ac’hanon</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ac’hanout</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>anezhañ</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>anezhi</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ac’hanomp</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ac’hanoc’h</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>anezho</l>
-          <r>eus<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>eus<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1769,43 +1878,43 @@
       <e>
         <p>
           <l>em<b/>goude</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ez<b/>koude</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>en<b/>e<b/>c’houde</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>en<b/>he<b/>goude</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>en<b/>hor<b/>goude</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>en<b/>ho<b/>koude</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>en<b/>o<b/>goude</l>
-          <r>goude<s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r>goude<s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -1820,61 +1929,61 @@
       <e>
         <p>
           <l>non</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nout</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nezhañ</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ni</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nezhi</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="f"/><s n="sg"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nomp</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>noc’h</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>no</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>nezho</l>
-          <r><s n="pr"/><j/>prpers<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+          <r><s n="pr"/><j/>indirect<s n="prn"/><s n="obj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
     </pardef>
@@ -3851,9 +3960,10 @@
 
     <pardef n="/brec’h__n">
       <e>
+	<par n="initial-b"/>
         <p>
-          <l>brec’h</l>
-          <r>brec’h<s n="n"/><s n="f"/><s n="sg"/></r>
+          <l>rec’h</l>
+          <r>rec’h<s n="n"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
       <e>
@@ -4339,9 +4449,7 @@
       </e>
     </pardef>
 
-
-
-    <!-- Verbes -->
+    <!-- Verbal particles -->
 
 
     <pardef n="a__vpart">
@@ -4349,6 +4457,27 @@
         <p>
           <l></l>
           <r><s n="vpart"/><s n="subj"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="/o__vpart">
+      <e r="LR">
+        <p>
+          <l>o</l>
+          <r>o<s n="vpart"/><s n="ger"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>oc'h</l>
+          <r>o<s n="vpart"/><s n="ger"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>o</l>
+          <r>o<s n="vpart"/><s n="ger"/></r>
         </p>
       </e>
     </pardef>
@@ -4362,6 +4491,23 @@
       </e>
     </pardef>
 
+    <pardef n="en_em__vpart">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="vpart"/><s n="ref"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="ne__vpart">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="vpart"/><s n="neg"/></r>
+        </p>
+      </e>
+    </pardef>
 
     <pardef n="/e__vpart">
       <e r="LR">
@@ -4390,6 +4536,7 @@
       </e>
     </pardef>
 
+    <!-- Verbes -->
 
     <pardef n="/bezañ__vblex">
       <e>
@@ -4935,9 +5082,10 @@
 
     <pardef n="/mont__vblex">
       <e>
+        <par n="initial-m"/>
         <p>
-          <l>mont</l>
-          <r>mont<s n="vblex"/><s n="inf"/></r>
+          <l>ont</l>
+          <r>ont<s n="vblex"/><s n="inf"/></r>
         </p>
       </e>
       <e>
@@ -17322,13 +17470,18 @@
 
     <e lm="a"><i>a</i><par n="a__vpart"/></e>
     <e lm="e"><i/><par n="/e__vpart"/></e>
+    <e lm="o"><i/><par n="/o__vpart"/></e>
     <e lm="ra"><i>ra</i><par n="ra__vpart"/></e>
+    <e lm="ne"><i>ne</i><par n="ne__vpart"/></e>
+    <e lm="na"><i>na</i><par n="ne__vpart"/></e>
+    <e lm="en em"><i>en<b/>em</i><par n="en_em__vpart"/></e>
 
     <!-- Interjections -->
     <e lm="ac’h"><i>ac’h</i><par n="ac’h__ij"/></e>
 
     <!-- Pronoms -->
-    <e lm="pronoms de subject"><i/><par n="prsubj__prn"/></e>
+    <e lm="pronoms de subject"><i/><par n="subject__prn"/></e>
+    <e lm="pronoms de object direct"><i/><par n="direct_object__prn"/></e>
     
     <e lm="piv"><par n="initial-p"/><i>iv</i><par n="piv__prn"/></e>
     <e lm="petra"><par n="initial-p"/><i>etra</i><par n="piv__prn"/></e>
@@ -23297,9 +23450,7 @@
     <e lm="mod-se"><par n="initial-m"/><i>od-se</i><par n="ouzhpenn__adv"/></e>
     <e lm="mod-se-mañ"><par n="initial-m"/><i>od-se-mañ</i><par n="ouzhpenn__adv"/></e>
     <e lm="mui"><par n="initial-m"/><i>ui</i><par n="ouzhpenn__adv"/></e>
-    <e lm="na"><i>na</i><par n="ouzhpenn__adv"/></e>
     <e lm="nann"><i>nann</i><par n="ouzhpenn__adv"/></e>
-    <e lm="ne"><i>ne</i><par n="ouzhpenn__adv"/></e>
     <e lm="neuze"><i>neuze</i><par n="ouzhpenn__adv"/></e>
     <e lm="ouzhpenn"><i>ouzhpenn</i><par n="ouzhpenn__adv"/></e>
     <e lm="pell"><par n="initial-p"/><i>ell</i><par n="ouzhpenn__adv"/></e>
@@ -23359,6 +23510,7 @@
 
 
     <e lm="debriñ"><par n="initial-d"/><i>ebr</i><par n="debr/iñ__vblex"/></e>
+    <e lm="veuliñ"><i>veul</i><par n="debr/iñ__vblex"/></e>
 
     <e lm="hadañ"><i>had</i><par n="had/añ__vblex"/></e>
 
@@ -23416,6 +23568,10 @@
     <e lm="tañva"><par n="initial-t"/><i>añva</i><par n="ambroug__vblex"/></e>
     <e lm="tremen"><par n="initial-t"/><i>remen</i><par n="ambroug__vblex"/></e>
 
+    <!-- Multiword verbs -->
+
+    <e lm="ober skol"><i/><par n="/ober__vblex"/><p><l><b/>skol</l><r><g><b/>skol</g></r></p></e>
+    <e lm="mont d’ar gêr"><i/><par n="/mont__vblex"/><p><l><b/>d’ar<b/>gêr</l><r><g><b/>d’ar<b/>gêr</g></r></p></e>
 
   </section>
 
@@ -23801,6 +23957,20 @@
       </p>
     </e>
 
+    <e lm="da’m">
+      <p>
+        <l>da’m</l>
+        <r>da<s n="pr"/><j/>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+      </p>
+    </e>
+
+    <e lm="d’am">
+      <p>
+        <l>d’am</l>
+        <r>da<s n="pr"/><j/>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+      </p>
+    </e>
+
     <e lm="da’z">
       <p>
         <l>da’z</l>
@@ -23808,6 +23978,19 @@
       </p>
     </e>
 
+    <e lm="ez">
+      <p>
+        <l>ez</l>
+        <r>e<s n="pr"/><j/>da<s n="det"/><s n="pos"/><s n="mf"/><s n="sp"/></r>
+      </p>
+    </e>
+
+    <e lm="em">
+      <p>
+        <l>em</l>
+        <r>e<s n="pr"/><j/>ma<s n="det"/><s n="pos"/><s n="mf"/><s n="sp"/></r>
+      </p>
+    </e>
 
 
     <!-- work out what the 'z is -->
@@ -23825,9 +24008,6 @@
       </p>
     </e>
 
-
-
-
     <e lm="er">
       <p>
         <l>er</l>
@@ -23865,7 +24045,22 @@
         <r>e<s n="pr"/><j/>an<s n="det"/><s n="def"/><s n="sp"/></r>
       </p>
     </e>
+  </section>
 
+  <section id="apostrophe" type="preblank">
+
+    <e lm="’m">
+      <p>
+        <l>’m</l>
+        <r>direct<s n="prn"/><s n="obj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+      </p>
+    </e>
+    <e lm="’z">
+      <p>
+        <l>’z</l>
+        <r>direct<s n="prn"/><s n="obj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+      </p>
+    </e>
 
   </section>
 
