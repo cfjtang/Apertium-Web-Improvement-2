@@ -461,6 +461,12 @@
     <def-var n="art_np"/>
   </section-def-vars>
   <section-def-lists>
+
+
+   <def-list n="vbpron">
+                  <list-item v="salir# del paso"/>
+   </def-list>
+
 	  <def-list n="verbs_ref">
 		  <list-item v="codear# con"/>
 		  <list-item v="enamorar"/>
@@ -3804,7 +3810,7 @@
         <when>
           <test>
 <!-- Propagate the main parameter gender if it has been modified during the translation  -->
-            <or>
+            <and>
               <not>
                 <equal>
                   <clip pos="1" side="tl" part="nbr"/>
@@ -3823,7 +3829,7 @@
                   <lit-tag v="nt"/>
                 </equal>
               </not>
-            </or>
+            </and>
           </test>
           <let>
             <clip pos="2" side="tl" part="nbr"/>
@@ -3841,7 +3847,7 @@
           </let>          
 	 <let>
             <var n="numero"/>
-            <clip pos="1" side="tl" part="nbr"/>
+            <lit-tag v="sg"/>
           </let> 
         </otherwise>
       </choose>
@@ -7924,8 +7930,28 @@
             <call-macro n="aux_ifi">
               <with-param pos="1"/>
             </call-macro>
+	    <choose>
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <list n="vbpron"/>
+                    </in>
+            	</test>
+                <let>
+                <var n="lema"/>
+                <lit v="pronaux_pp"/>
+		</let>  
+	      </when>
+	      <otherwise>
+		<let>
+		<var n="lema"/>
+		<lit v="aux_pp"/>
+                </let>
+   	      </otherwise>
+	    </choose>
             <out>
-              <chunk name="aux_pp" case="caseFirstWord">
+              <chunk namefrom="lema" case="caseFirstWord">
                 <tags>
                   <tag>
                     <lit-tag v="SV"/>
@@ -7961,8 +7987,28 @@
             </out>
           </when>
           <otherwise>
+           <choose>        
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <list n="vbpron"/>
+                    </in>
+            	</test>
+                <let>
+                <var n="lema"/>
+                <lit v="pronverb"/>
+		</let>  
+	      </when>
+	      <otherwise>
+		<let>
+		<var n="lema"/>
+		<lit v="verb"/>
+                </let>
+   	      </otherwise>
+	    </choose>
             <out>
-              <chunk name="verb" case="caseFirstWord">
+              <chunk namefrom="lema" case="caseFirstWord">
                 <tags>
                   <tag>
                     <lit-tag v="SV"/>
