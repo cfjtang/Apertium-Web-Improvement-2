@@ -3758,7 +3758,7 @@
         <when>
           <test>
 <!-- Propagate the main parameter gender if it has been modified during the translation  -->
-            <or>
+            <and>
               <not>
                 <equal>
                   <clip pos="1" side="tl" part="gen"/>
@@ -3777,25 +3777,25 @@
                   <lit-tag v="GD"/>
                 </equal>
               </not>
-            </or>
+            </and>
           </test>
-<!--          <let>
+          <let>
             <clip pos="2" side="tl" part="gen"/>
             <clip pos="1" side="tl" part="gen"/>
-          </let>           -->
+          </let> 
 	 <let>
             <var n="genero"/>
-            <clip pos="2" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="gen"/>
           </let> 
         </when>
         <otherwise>
-<!--          <let>
+          <let>
             <clip pos="2" side="tl" part="gen"/>
             <lit-tag v="m"/>
-          </let>            -->
+          </let>  
 	 <let>
             <var n="genero"/>
-            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="m"/>
           </let> 
         </otherwise>
       </choose>
