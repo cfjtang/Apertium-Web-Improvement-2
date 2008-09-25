@@ -3752,12 +3752,13 @@
         </otherwise>
       </choose>
     </def-macro>
+
     <def-macro n="f_concord_prn_pp" npar="2">
       <choose>
         <when>
           <test>
 <!-- Propagate the main parameter gender if it has been modified during the translation  -->
-            <and>
+            <or>
               <not>
                 <equal>
                   <clip pos="1" side="tl" part="gen"/>
@@ -3776,25 +3777,34 @@
                   <lit-tag v="GD"/>
                 </equal>
               </not>
-            </and>
+            </or>
           </test>
-          <let>
+<!--          <let>
             <clip pos="2" side="tl" part="gen"/>
             <clip pos="1" side="tl" part="gen"/>
+          </let>           -->
+	 <let>
+            <var n="genero"/>
+            <clip pos="2" side="tl" part="gen"/>
           </let> 
         </when>
         <otherwise>
-          <let>
+<!--          <let>
             <clip pos="2" side="tl" part="gen"/>
             <lit-tag v="m"/>
-          </let>  
+          </let>            -->
+	 <let>
+            <var n="genero"/>
+            <clip pos="1" side="tl" part="gen"/>
+          </let> 
         </otherwise>
       </choose>
+
       <choose>
         <when>
           <test>
 <!-- Propagate the main parameter gender if it has been modified during the translation  -->
-            <and>
+            <or>
               <not>
                 <equal>
                   <clip pos="1" side="tl" part="nbr"/>
@@ -3813,18 +3823,26 @@
                   <lit-tag v="nt"/>
                 </equal>
               </not>
-            </and>
+            </or>
           </test>
           <let>
             <clip pos="2" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="nbr"/>
-          </let>
+          </let>          
+	 <let>
+            <var n="numero"/>
+            <clip pos="1" side="tl" part="nbr"/>
+          </let> 
 	</when>
         <otherwise>
           <let>
             <clip pos="2" side="tl" part="nbr"/>
             <lit-tag v="sg"/>
-          </let>
+          </let>          
+	 <let>
+            <var n="numero"/>
+            <clip pos="1" side="tl" part="nbr"/>
+          </let> 
         </otherwise>
       </choose>
     </def-macro>
