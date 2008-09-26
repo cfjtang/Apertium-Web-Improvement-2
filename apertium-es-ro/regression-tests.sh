@@ -1,14 +1,16 @@
-LIST=`wget -O - -q http://wiki.apertium.org/wiki/Welsh_to_English/Regression_tests | grep '<li>' | sed 's/<.*li>//g' | sed 's/ /_/g'`;
+#!/bin/bash
+
+LIST=`wget -O - -q http://wiki.apertium.org/wiki/Traductor_rumano-español/Pruebas_de_regresión | grep '<li>' | sed 's/<.*li>//g' | sed 's/ /_/g'`;
 
 cp *.mode modes/
 
 for LINE in $LIST; do
 	dir=`echo $LINE | cut -f2 -d'(' | cut -f1 -d')'`;
 
-	if [ $dir = "en" ]; then
-		mode="en-cy";
-	elif [ $dir = "cy" ]; then
-		mode="cy-en";
+	if [ $dir = "es" ]; then
+		mode="es-ro";
+	elif [ $dir = "ro" ]; then
+		mode="ro-es";
 	else 
 		continue;
 	fi
