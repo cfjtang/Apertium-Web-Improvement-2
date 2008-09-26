@@ -570,6 +570,71 @@
     </def-macro>
 
 
+  <def-macro n="mod-gen" npar="1">
+           <choose>
+	     <when>
+               <test>
+               <and>
+                 <or>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="f"/>
+                 </equal>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="nt"/>
+                 </equal>
+		  </or>                 
+                 <equal>
+                   <clip pos="1" side="tl" part="nbr"/>
+                   <lit-tag v="pl"/>
+                 </equal>
+               </and>
+              </test>
+               <let>
+               <clip pos="1" side="tl" part="gen"/>
+               <lit-tag v="fn"/>
+               </let>
+	     </when>
+	     <when>
+               <test>
+               <and>
+		<or>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="m"/>
+                 </equal>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="nt"/>
+                 </equal>
+		</or>                 
+                 <equal>
+                   <clip pos="1" side="tl" part="nbr"/>
+                   <lit-tag v="sg"/>
+                 </equal>
+               </and>
+              </test>
+               <let>
+               <clip pos="1" side="tl" part="gen"/>
+               <lit-tag v="mn"/>
+               </let>
+	     </when>
+	     <when>
+               <test>
+                 <equal>
+                   <clip pos="1" side="tl" part="gen"/>
+                   <lit-tag v="mf"/>
+                 </equal>                 
+              </test>
+               <let>
+               <clip pos="1" side="tl" part="gen"/>
+               <lit-tag v="mfn"/>
+               </let>
+	     </when>
+	     </choose>
+  </def-macro>
+
     <def-macro n="f_concord1" npar="1">
       <choose>
 <!--To determine value of variables of gender and
@@ -603,32 +668,12 @@
           <test>
             <equal>
               <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="mn"/>
+              <lit-tag v="nt"/>
             </equal>
           </test>
           <let>
-            <clip pos="1" side="tl" part="gen"/>
-            <lit-tag v="m"/>
-          </let>
-          <let>
             <var n="genero"/>
-            <lit-tag v="m"/>
-          </let>
-        </when>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit-tag v="fn"/>
-            </equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="gen"/>
-            <lit-tag v="f"/>
-          </let>
-          <let>
-            <var n="genero"/>
-            <lit-tag v="f"/>
+            <lit-tag v="nt"/>
           </let>
         </when>
       </choose>
@@ -683,10 +728,22 @@
                 <lit-tag v="f"/>
               </let>
             </when>
-            <otherwise>
+            <when>
+              <test>
+                <equal>
+                  <var n="genero"/>
+                  <lit-tag v="m"/>
+                </equal>
+              </test>
               <let>
                 <clip pos="1" side="tl" part="gen"/>
                 <lit-tag v="m"/>
+              </let>
+            </when>
+            <otherwise>
+              <let>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="nt"/>
               </let>
             </otherwise>
           </choose>
@@ -723,6 +780,8 @@
         </when>
       </choose>
     </def-macro>
+
+
     <def-macro n="f_concord2" npar="2">
       <choose>
         <when>
@@ -1152,6 +1211,8 @@
         </when>
       </choose>
     </def-macro>
+
+
     <def-macro n="f_concord3" npar="3">
       <choose>
 <!-- Look if in source language there is concordance between first and second element -->
@@ -2584,60 +2645,12 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-            <call-macro n="f_concord1">
-              <with-param pos="1"/>
-            </call-macro>
-            <choose>
-	     <when>
-               <test>
-               <and>
-                 <equal>
-                   <clip pos="1" side="tl" part="gen"/>
-                   <lit-tag v="f"/>
-                 </equal>                 
-                 <equal>
-                   <clip pos="1" side="tl" part="nbr"/>
-                   <lit-tag v="pl"/>
-                 </equal>
-               </and>
-              </test>
-               <let>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="fn"/>
-               </let>
-	     </when>
-	     <when>
-               <test>
-               <and>
-                 <equal>
-                   <clip pos="1" side="tl" part="gen"/>
-                   <lit-tag v="m"/>
-                 </equal>                 
-                 <equal>
-                   <clip pos="1" side="tl" part="nbr"/>
-                   <lit-tag v="sg"/>
-                 </equal>
-               </and>
-              </test>
-               <let>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="mn"/>
-               </let>
-	     </when>
-	     <when>
-               <test>
-                 <equal>
-                   <clip pos="1" side="tl" part="gen"/>
-                   <lit-tag v="mf"/>
-                 </equal>                 
-              </test>
-               <let>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="mfn"/>
-               </let>
-	     </when>
-
-	     </choose> 
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+	<call-macro n="mod-gen">
+	  <with-param pos="1"/>
+	</call-macro>
         <out>
           <chunk name="adj" case="caseFirstWord">
             <tags>
@@ -2678,6 +2691,45 @@
       </action>
     </rule>
     
+
+    <rule comment="NUMERAL">
+      <pattern>
+        <pattern-item n="numeral"/>
+      </pattern>
+      <action>
+       <call-macro n="firstWord">
+          <with-param pos="1"/>
+       </call-macro>
+      <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+
+        <out>
+          <chunk name="num" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+              <tag>
+                <var n="genero"/>
+              </tag>
+              <tag>
+                <var n="numero"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_num"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: DET.def NOM --&gt; NOM.nom.def, det.dem/pos/ind NOM --&gt; det.dem/pos/ind NOM">
       <pattern>
         <pattern-item n="det"/>
@@ -2685,6 +2737,10 @@
       </pattern>
       <action>
         <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
           <with-param pos="1"/>
         </call-macro>
         <choose>
@@ -2722,10 +2778,6 @@
                     </equal>
                     <equal>
                       <clip pos="1" side="sl" part="a_det"/>
-                      <lit-tag v="det.pos"/>
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="a_det"/>
                       <lit-tag v="det.ind"/>
                     </equal>
                   </or>
@@ -2753,6 +2805,44 @@
                   </chunk>
                 </out>
               </when>
+              <otherwise>
+	    <choose>
+              <when>
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="a_det"/>
+                      <lit-tag v="det.pos"/>
+                    </equal>
+                </test>
+		<call-macro n="mod-gen">
+		  <with-param pos="1"/>
+		</call-macro>
+                <out>
+                  <chunk name="nom_adj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_nom"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="nom.def"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="1" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+		      <lit-tag v="nom"/>	
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            </otherwise>
             </choose>
           </otherwise>
         </choose>
@@ -2767,6 +2857,10 @@
       <action>
         <call-macro n="firstWord">
           <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+	  <with-param pos="1"/>
         </call-macro>
 		  <out>
         	    <chunk name="num_nom" case="caseFirstWord">
@@ -2785,6 +2879,7 @@
         	        <clip pos="2" side="tl" part="a_nom"/>
                         <clip pos="2" side="tl" part="gen"/>
                         <clip pos="2" side="tl" part="nbr"/>
+			<lit-tag v="nom.ind"/>
         	        <clip pos="2" side="tl" part="lemq"/>
         	      </lu>
         	    </chunk>
@@ -2809,7 +2904,7 @@
         	<clip pos="1" side="tl" part="lem"/>
         	<lit-tag v="np.ant"/>
                 <clip pos="1" side="tl" part="gen"/>
-<!-- no hay info en los dicos para generar esta información		<lit-tag v="sg.nom.ind"/>-->
+<!--gema: no hay info en los dicos para generar esta información <lit-tag v="sg.nom.ind"/>-->
             </lu>
           </chunk>
         </out>
@@ -2850,6 +2945,13 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="2"/>
+        </call-macro>
         <out>
           <chunk name="nom_adj" case="caseFirstWord">
             <tags>
@@ -2862,6 +2964,7 @@
               <clip pos="1" side="tl" part="a_nom"/>
               <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="nom.ind"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -2870,12 +2973,59 @@
               <clip pos="2" side="tl" part="a_adj"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="nom.ind"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: ADJ NOM">
+      <pattern>
+        <pattern-item n="adjec"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="SA" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_adj"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="nom.ind"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="nom.ind"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: NOM ADJ ADJ">
       <pattern>
@@ -2887,6 +3037,17 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_concord3">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="3"/>
+        </call-macro>
         <out>
           <chunk name="nom_adj_adj" case="caseFirstWord">
             <tags>
@@ -2897,7 +3058,8 @@
               <clip pos="1" side="tl" part="a_nom"/>
               <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
+              <lit-tag v="nom.ind"/>
+	      <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
             <lu>
@@ -2905,6 +3067,7 @@
               <clip pos="2" side="tl" part="a_adj"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="nom.ind"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
             <b pos="2"/>
@@ -2913,6 +3076,7 @@
               <clip pos="3" side="tl" part="a_adj"/>
               <clip pos="3" side="tl" part="gen"/>
               <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="nom.ind"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -2930,8 +3094,15 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="3"/>
+        </call-macro>
         <out>
-          <chunk name="det_nom_adj" case="caseFirstWord">
+          <chunk name="nomdef_adj" case="caseFirstWord">
             <tags>
               <tag>
                 <lit-tag v="SN"/>
@@ -2942,6 +3113,7 @@
               <clip pos="2" side="tl" part="a_nom"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="nom.def"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
             <b pos="2"/>
@@ -2950,6 +3122,7 @@
               <clip pos="3" side="tl" part="a_adj"/>
               <clip pos="3" side="tl" part="gen"/>
               <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="nom.ind"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -2968,8 +3141,21 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_concord3">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+	  <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="2"/>
+        </call-macro>
+
+
         <out>
-          <chunk name="det_nom_adj" case="caseFirstWord">
+          <chunk name="nomdef_det_adj" case="caseFirstWord">
             <tags>
               <tag>
                 <lit-tag v="SN"/>
@@ -2980,14 +3166,24 @@
               <clip pos="3" side="tl" part="a_nom"/>
               <clip pos="3" side="tl" part="gen"/>
               <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="nom.def"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
-            <b pos="2"/>
+            <b pos="1"/>
+	    <lu>
+	     <clip pos="1" side="tl" part="lem"/>
+	     <clip pos="1" side="tl" part="a_det"/>
+  	     <clip pos="1" side="tl" part="gen"/>  
+             <clip pos="1" side="tl" part="nbr"/>
+             <lit-tag v="nom"/>  	
+	    </lu>
+	   <b pos="2"/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="nom.ind"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -3004,6 +3200,17 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+	  <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="2"/>
+        </call-macro>
+
         <out>
           <chunk name="det_adj" case="caseFirstWord">
             <tags>
@@ -3011,47 +3218,20 @@
                 <lit-tag v="SA"/>
               </tag>
             </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lem"/>  
+             <clip pos="1" side="tl" part="a_det"/>
+             <clip pos="1" side="tl" part="gen"/>
+             <clip pos="1" side="tl" part="nbr"/>
+             <lit-tag v="nom"/>
+            </lu>
+           <b pos="1"/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule>
-
-    <rule comment="REGLA: ADJ NOM">
-      <pattern>
-        <pattern-item n="adjec"/>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="SA" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_adj"/>
-              <clip pos="1" side="tl" part="gen"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="nom.ind"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -3076,32 +3256,9 @@
                     <lit-tag v="det.pos"/>
 	        </equal>
 	    </test>
-            <choose>
-	     <when>
-               <test>
-                <equal>
-                   <clip pos="1" side="tl" part="nbr"/>
-                   <lit-tag v="sg"/>
-                 </equal>
-              </test>
-               <let>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="mn"/>
-               </let>
-	     </when>
-	     <when>
-               <test>
-                 <equal>
-                   <clip pos="1" side="tl" part="nbr"/>
-                   <lit-tag v="pl"/>
-                 </equal>
-              </test>
-               <let>
-               <clip pos="1" side="tl" part="gen"/>
-               <lit-tag v="m"/>
-               </let>
-	     </when>
-	     </choose> 
+          <call-macro n="mod-gen">
+            <with-param pos="1"/>
+          </call-macro>
         <out>
           <chunk name="adj" case="caseFirstWord">
             <tags> 
@@ -3611,36 +3768,6 @@
           <var n="caseFirstWord"/>
           <lit v="aa"/>
         </let>
-      </action>
-    </rule>
-
-    <rule comment="NUMERAL">
-      <pattern>
-        <pattern-item n="numeral"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="num" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
-              <tag>
-                <var n="genero"/>
-              </tag>
-              <tag>
-                <var n="numero"/>
-              </tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_num"/>
-            </lu>
-          </chunk>
-        </out>
       </action>
     </rule>
 
