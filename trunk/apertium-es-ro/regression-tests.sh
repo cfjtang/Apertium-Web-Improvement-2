@@ -21,8 +21,10 @@ for LINE in $LIST; do
 
 	TR=`echo $SL | apertium -d . $mode`;
 
-	#if [[ `echo $TR | tr '[A-Z]' '[a-z]'` != `echo $TL | tr '[A-Z]' '[a-z]'` ]]; then 
-		echo -e $mode"\t "$SL"\n\t-$TL\n\t+ "$TR"\n";
-	#fi
+	if [[ `echo $TR | tr '[A-Z]' '[a-z]'` != `echo $TL | tr '[A-Z]' '[a-z]'` ]]; then 
+		echo -e $mode"\t "$SL"\n☔\t-$TL\n\t+ "$TR"\n";
+	else
+		echo -e $mode"\t "$SL"\n☺\t-$TL\n\t+ "$TR"\n";
+	fi
 
 done
