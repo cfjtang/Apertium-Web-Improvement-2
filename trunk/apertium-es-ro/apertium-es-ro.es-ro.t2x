@@ -133,10 +133,49 @@
 
 <section-def-lists>
 
-<def-list n="advcantidad">
-<list-item v="más"/>
-<list-item v="menos"/>
-<list-item v="bastante"/>
+<def-list n="pr_dg">
+<list-item v="asupra"/>
+<list-item v="contra"/>
+<list-item v="împotriva"/>
+<list-item v="înaintea"/>
+<list-item v="dinaintea"/>
+<list-item v="împrejurul"/>
+<list-item v="dinăuntrul"/>
+<list-item v="înapoia"/>
+<list-item v="deasupra"/>
+<list-item v="în fața"/>
+<list-item v="în dosul"/>
+<list-item v="în spatele"/>
+<list-item v="la mijlocul"/>
+<list-item v="în centrul"/>
+<list-item v="în vremea"/>
+<list-item v="pe vremea"/>
+<list-item v="în timpul"/>
+<list-item v="din timpul"/>
+<list-item v="din cauza"/>
+<list-item v="din pricina"/>
+<list-item v="în vederea"/>
+<list-item v="în folosul"/>
+<list-item v="în favoarea"/>
+<list-item v="în defavoarea"/>
+<list-item v="în detrimentul"/>
+<list-item v="în paguba"/>
+<list-item v="în ciuda"/>
+<list-item v="în pofida"/>
+<list-item v="în numele"/>
+<list-item v="la adresa"/>
+<list-item v="cu excepția"/>
+<list-item v="în afara"/>
+<list-item v="datorită"/>
+<list-item v="grație"/>
+<list-item v="mulțumită"/>
+<list-item v="conform"/>
+<list-item v="potrivit"/>
+<list-item v="contrar"/>
+<list-item v="asemenea"/>
+<list-item v="asemeni"/>
+<list-item v="aidoma"/>
+<list-item v="așijderea"/>
 </def-list>
 </section-def-lists>
 
@@ -184,6 +223,86 @@
 	</action>
 </rule>
 
+
+
+<rule comment="REGLA: PREP SN">
+	<pattern>
+		<pattern-item n="pr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	  <choose>
+	   <when>
+	     <test>
+	       <in caseless="yes">
+		<clip pos="1" part="lem"/>
+		<list n="pr_dg"/>
+	       </in>
+	     </test>
+	     <let>
+		<clip pos="2" part="tags"/>
+	        <lit-tag v="SN.dg"/>
+	     </let>
+	    </when>
+	   </choose>		
+		<out>
+		<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+				<clip pos="2" part="lem"/>
+				<clip pos="2" part="tags"/>
+				<clip pos="2" part="chcontent"/>
+		</chunk>
+
+		</out>
+	</action>
+</rule>
+
+
+
+<rule comment="REGLA: PREP SA">
+	<pattern>
+		<pattern-item n="pr"/>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	  <choose>
+	   <when>
+	     <test>
+	       <in caseless="yes">
+		<clip pos="1" part="lem"/>
+		<list n="pr_dg"/>
+	       </in>
+	     </test>
+	     <let>
+		<clip pos="2" part="tags"/>
+	        <lit-tag v="SN.dg"/>
+	     </let>
+	    </when>
+	   </choose>		
+		<out>
+		<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+				<clip pos="2" part="lem"/>
+				<clip pos="2" part="tags"/>
+				<clip pos="2" part="chcontent"/>
+		</chunk>
+
+		</out>
+	</action>
+</rule>
+
+
+
 <rule comment="REGLA: SA">
 	<pattern>
 		<pattern-item n="SA"/>
@@ -214,30 +333,6 @@
 	</action>
 </rule>
 
-
-<rule comment="REGLA: SN vbcop SA">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="vbcop"/>
-		<pattern-item n="SA"/>
-	</pattern>
-	<action>
-	  <out>
-	    <chunk>
-	      <clip pos="1" part="lem"/>
-	      <clip pos="1" part="tags"/>
- 	      <clip pos="1" part="chcontent"/>
-	    </chunk>
-            <b pos="1"/>
-	    <chunk>
-	      <clip pos="3" part="lem"/>
-	      <clip pos="3" part="tags"/>
- 	      <clip pos="3" part="chcontent"/>
-	    </chunk>
-	  </out>
-
-	</action>
-</rule>
 
 
  <rule> <!-- REGLA: reset variables-->
