@@ -6,6 +6,7 @@
     <sdef n="np"     c="Proper noun"/>
     <sdef n="pr"     c="Preposition"/>
     <sdef n="prn"    c="Pronoun"/>
+    <sdef n="num"    c="Numeral"/>
 
     <sdef n="nom"    c="Nominative"/>
     <sdef n="gen"    c="Genitive"/>
@@ -32,9 +33,36 @@
 
     <sdef n="cnjcoo" c="Co-ordinating conjunction"/>
     <sdef n="cnjsub" c="Sub-ordinating conjunction"/>
+
+    <sdef n="enc"    c="Enclitic"/>
+    <sdef n="itg"    c="Interrogative"/>
+
+    <sdef n="sent"   c="Sentence boundary"/>
   </sdefs>
 
   <pardefs>
+    <!-- Punctuation -->
+
+    <pardef n="numeros">
+      <e>
+        <re>[0-9]+([.,][0-9]+)?</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+          <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <!-- Prepositions -->
 
@@ -526,251 +554,350 @@
         </p>
       </e>
     </pardef>
-    <pardef n="personal_pronouns__prn">
+
+    <pardef n="enclitic_pronouns__prn">
+
       <e>
         <p>
-          <l>εγώ</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="nom"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>εμένα</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="gen"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l>εμένα</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l>μένα</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="RL">
-        <p>
-          <l><a/>εμένα</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
+          <l>μου</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>εσύ</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="nom"/></r>
+          <l>με</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p1"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>σου</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>εσένα</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="gen"/></r>
+          <l>σε</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
         </p>
       </e>
-      <e r="LR">
+
+      <e>
         <p>
-          <l>εσένα</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l>σένα</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="RL">
-        <p>
-          <l><a/>εσένα</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="acc"/></r>
+          <l>τος</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="m"/><s n="sg"/><s n="nom"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>εσύ</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="sg"/><s n="voc"/></r>
+          <l>του</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="m"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτός</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="m"/><s n="sg"/><s n="nom"/></r>
+          <l>τον</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="m"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>τη</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="f"/><s n="sg"/><s n="nom"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτόν</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="m"/><s n="sg"/><s n="gen"/></r>
+          <l>της</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="f"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτού</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="m"/><s n="sg"/><s n="acc"/></r>
+          <l>την</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="f"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>το</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="nt"/><s n="sg"/><s n="nom"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτή</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="sg"/><s n="nom"/></r>
+          <l>του</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="nt"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτής</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="sg"/><s n="gen"/></r>
+          <l>το</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="nt"/><s n="sg"/><s n="acc"/></r>
         </p>
       </e>
-      <e r="LR">
-        <p>
-          <l>αυτή</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l>αυτήν</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="RL">
-        <p>
-          <l><a/>αυτή</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
+
       <e>
-        <p>
-          <l>αυτό</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="nt"/><s n="sg"/><s n="nom"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>αυτού</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="nt"/><s n="sg"/><s n="gen"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>αυτό</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="nt"/><s n="sg"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>εμείς</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="nom"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>εμάς</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="gen"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l>εμάς</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="LR">
         <p>
           <l>μας</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="RL">
-        <p>
-          <l>εμάς</l>
-          <r>prpers<s n="prn"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>εσείς</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="nom"/></r>
+          <l>μας</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p1"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
         </p>
       </e>
+
       <e>
-        <p>
-          <l>εσάς</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="gen"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l>εσάς</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
-        </p>
-      </e>
-      <e r="LR">
         <p>
           <l>σας</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>σας</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>τοι</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="m"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>τους</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="m"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>τες</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="f"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>τες</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="f"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>τις</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="f"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>τα</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="nt"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>τα</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="nt"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>τους</l>
+          <r>prenc<s n="prn"/><s n="enc"/><s n="p3"/><s n="mf"/><s n="pl"/><s n="gen"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="ποι/ος__prn">
+      <e>
+        <p>
+          <l>ος</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="sg"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ανού</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="sg"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ου</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="sg"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ον</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>α</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="sg"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ανής</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="sg"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ας</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="sg"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>α</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>αν</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="sg"/><s n="acc"/></r>
         </p>
       </e>
       <e r="RL">
         <p>
-          <l><a/>εσάς</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="acc"/></r>
+          <l><a/>α</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>ο</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="sg"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ανού</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>εσείς</l>
-          <r>prpers<s n="prn"/><s n="p2"/><s n="mf"/><s n="pl"/><s n="voc"/></r>
+          <l>ου</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="sg"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτοί</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="m"/><s n="pl"/><s n="nom"/></r>
+          <l>ο</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="sg"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>οι</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ανών</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτούς</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="m"/><s n="pl"/><s n="acc"/></r>
+          <l>ων</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="pl"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>νούς</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="pl"/><s n="acc"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτές</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="pl"/><s n="nom"/></r>
+          <l>ους</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="m"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>ες</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ανών</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτές</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="f"/><s n="pl"/><s n="acc"/></r>
+          <l>ων</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτά</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="nt"/><s n="pl"/><s n="nom"/></r>
+          <l>ες</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="f"/><s n="pl"/><s n="acc"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>α</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="pl"/><s n="nom"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>ανών</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτά</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="nt"/><s n="pl"/><s n="acc"/></r>
+          <l>ων</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="pl"/><s n="gen"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>αυτών</l>
-          <r>prpers<s n="prn"/><s n="p3"/><s n="mf"/><s n="pl"/><s n="gen"/></r>
+          <l>α</l>
+          <r>ος<s n="prn"/><s n="itg"/><s n="nt"/><s n="pl"/><s n="acc"/></r>
         </p>
       </e>
     </pardef>
 
 
-
+    <pardef n="κάτι__prn">
+      <e>
+        <p>
+          <l/>
+          <r><s n="prn"/><s n="ind"/><s n="mf"/><s n="sp"/><s n="nom"/></r>
+        </p>
+      </e>
+    </pardef>
 
     <!-- Nouns -->
 
@@ -8085,6 +8212,10 @@
     <!-- Pronouns -->
 
     <e lm="personal pronouns"><i/><par n="personal_pronouns__prn"/></e>
+    <e lm="enclitic pronouns"><i/><par n="enclitic_pronouns__prn"/></e>
+
+    <e lm="κάτι"><i>κάτι</i><par n="κάτι__prn"/></e>
+    <e lm="ποιος"><i>ποι</i><par n="ποι/ος__prn"/></e>
 
     <!-- Conjunctions -->
     <e lm="και"><i>και</i><par n="και__cnjcoo"/></e>
@@ -8434,6 +8565,18 @@
         <l>στη</l>
         <r>σε<s n="pr"/><j/>ο<s n="det"/><s n="def"/><s n="f"/><s n="sg"/><s n="acc"/></r>
       </p>
+    </e>
+  </section>  
+  <section id="final" type="inconditional">
+
+    <!-- Numbers / Numerals -->
+    <e>
+      <par n="numeros"/> 
+    </e>
+
+    <!-- End of sentence -->
+    <e>
+      <par n="separa"/> 
     </e>
   </section>
 </dictionary>
