@@ -378,6 +378,9 @@
 
     <def-attr n="a_rel">
       <attr-item tags="rel"/>
+      <attr-item tags="rel.aa"/>
+      <attr-item tags="rel.an"/>
+      <attr-item tags="rel.nn"/>
       <attr-item tags="rel.adv"/>
     </def-attr>
 
@@ -3702,20 +3705,71 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+	<call-macro n="mod-gen">
+          <with-param pos="1"/>
+        </call-macro>
+	<choose>
+	  <when>
+	    <test>
+	    <or>
+              <equal>
+              <clip pos="1" side="sl" part="lem"/>  
+              <lit v="cuyo"/>
+              </equal>
+	      <equal>
+              <clip pos="1" side="sl" part="lem"/>  
+	      <lit v="al cual"/>
+	      </equal>
+	    </or>
+            </test>	
+	      <let>
+		<var n="caso"/>
+		<lit-tag v="dg"/>
+	      </let>
+	  </when>
+	</choose>
+	<choose>
+	<when>
+	  <test>
+	    <not>
+		<equal>
+		  <clip pos="1" side="sl" part="a_rel"/>
+		  <lit-tag v="rel.adv"/>	
+		</equal>
+	    </not>
+	  </test>
         <out>
           <chunk name="rel" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="caso"/></tag>
 	    </tags>	
             <lu>
               <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_prn"/>
-              <clip pos="1" side="tl" part="tipus_prn"/>
+              <clip pos="1" side="tl" part="a_rel"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="2"/>
+            </lu>
+          </chunk>
+        </out>
+	</when>
+	<otherwise>
+        <out>
+          <chunk name="rel" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="ADV"/></tag>
+	    </tags>	
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_rel"/>
               <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
             </lu>
           </chunk>
         </out>
+	</otherwise>
+	</choose>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
