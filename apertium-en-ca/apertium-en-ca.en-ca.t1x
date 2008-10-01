@@ -625,6 +625,7 @@
     <def-attr n="a_num">
       <attr-item tags="num"/>
       <attr-item tags="num.percent"/>
+      <attr-item tags="num.ord"/>
     </def-attr>
 
     <def-attr n="a_verb">
@@ -2996,6 +2997,32 @@
 	  <let>
 	    <clip pos="1" side="tl" part="lem"/>
 	    <lit v="un milió de"/>
+	  </let>
+	</when>
+      </choose> 
+      <choose>
+	<when> 
+	  <test>
+	    <equal caseless="yes">
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="bilió"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <lit v="bilió de"/>
+	  </let>
+	</when>
+	<when> 
+	  <test>
+	    <equal caseless="yes">
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="un bilió"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <lit v="un bilió de"/>
 	  </let>
 	</when>
       </choose>
