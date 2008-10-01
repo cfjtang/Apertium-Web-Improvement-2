@@ -13,8 +13,31 @@ AC_PROG_AWK
 AC_CONFIG_HEADER([config])
 
 
-PKG_CHECK_MODULES(apertium, [dnl
-  apertium-3.0 >= required_apertium_version])
+AC_DEFUN(PKG_CHECK_APERTIUM, [
+  APERTIUM_VER=0
+  PKG_CHECK_MODULES(APERTIUM, apertium-1.0 >= 1.0.0,
+  [
+      APERTIUM_VER=10
+  ],
+  [
+      PKG_CHECK_MODULES(APERTIUM, apertium-2.0 >= 2.0.0,
+      [
+          APERTIUM_VER=20
+      ],
+      [
+          PKG_CHECK_MODULES(APERTIUM, apertium-3.0 >= 3.0.0,
+          [
+              APERTIUM_VER=30
+          ],
+          [
+              PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0)
+              APERTIUM_VER=31
+          ])
+      ])
+  ])
+  AC_SUBST(APERTIUM_VER)
+])
+
 
 AC_PATH_PROG(XSLTPROC, xsltproc, no)
 if test x$ac_cv_path_XSLTPROC = x
