@@ -91,6 +91,8 @@
       <cat-item name="pro_mod_inf_perif"/>
       <cat-item name="pro_auxmod_mod_inf"/>
       <cat-item name="pro_auxmod_have_pp"/>
+      <cat-item name="going_to_inf"/>
+      <cat-item name="pro_going_to_inf"/>
     </def-cat>   
 
 <def-cat n="pottenirenclitic"><!--MG: canviar tot això pel nou mecanisme, sense mlu en el t1x, i aquí fabricar les mlu -->
@@ -100,6 +102,11 @@
       <cat-item name="have_pp_inf"/>
       <cat-item name="be_inf_inf"/>
 </def-cat>
+
+  <def-cat n="reflexiu">
+      <cat-item name="reflexiu"/>
+    </def-cat>
+
 
   <def-cat n="have_pp">
       <cat-item name="have_pp"/>
@@ -2768,6 +2775,10 @@
 		    </equal>
 		    <equal caseless="yes">
 		      <clip pos="0" part="lem"/>
+		      <lit v="going_to_inf"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
 		      <lit v="pro_be_ger"/>
 		    </equal>
 		    <equal caseless="yes">
@@ -2815,6 +2826,10 @@
 		    <equal caseless="yes">
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_auxmod_have_pp"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="pro_going_to_inf"/>
 		    </equal>
 		  </or>
 		</test>
@@ -3008,6 +3023,10 @@
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_do_inf"/>
 		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="going_to_inf"/>
+		    </equal>
 		  </or>
 		</test>
 		<out>
@@ -3037,6 +3056,10 @@
 		    <equal caseless="yes">
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_auxmod_have_pp"/>
+		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="pro_going_to_inf"/>
 		    </equal>
 		  </or>
 		</test>
@@ -3089,6 +3112,48 @@
 
 
 
+
+
+
+    <rule comment="CHUNK: reflexiu (arregla el pronom reflexiu creat en t2x)">
+      <pattern>
+	<pattern-item n="reflexiu"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="pers"/>
+		<lit-tag v="p3"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="lem"/>
+	      <lit v="es"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="mf"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sp"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="a_prnpro"/>
+	      <lit-tag v="prn.pro.ref"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
+	  
 
 
 
