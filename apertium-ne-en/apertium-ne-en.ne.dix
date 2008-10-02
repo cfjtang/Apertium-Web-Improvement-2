@@ -1,355 +1,636 @@
-<dictionary>
-  <alphabet>किपीडियाविविहिनदीकिपीडियापरवागतहैक्तजोकोकारदेताहैहिनदीमेंलेखअआइईउऊएओऐऔऋॠऌॡऍऑपािीुूेोैौृॄॢॣॅॉपापिपीपुपूपेपोपैपौपृपॄपॢपॣपॅपॉ</alphabet>
-
-  <sdefs>
-
-   <sdef n="acr"/> 
-    <sdef n="predet"/> 
-    <sdef n="detnt"/> 
-    <sdef n="top"/> 
-    <sdef n="ant"/> 
-    <sdef n="al"/> 
-    <sdef n="cog"/> 
-    <sdef n="atn"/> 
-    <sdef n="enc"/> 
-    <sdef n="pro"/> 
-    <sdef n="tn"/> 
-    <sdef n="cat:n"/> 
-    <sdef n="cat:pn"/> 
-    <sdef n="cat:adj"/> 
-    <sdef n="f"/> 
-    <sdef n="m"/> 
-    <sdef n="mf"/> 
-    <sdef n="sg"/> 
-    <sdef n="pl"/> 
-    <sdef n="adv"/> 
-    <sdef n="preadv"/> 
-    <sdef n="pr"/> 
-    <sdef n="prn"/> 
-    <sdef n="rel"/> 
-    <sdef n="nn"/> 
-    <sdef n="an"/> 
-    <sdef n="aa"/> 
-    <sdef n="ind"/> 
-    <sdef n="itg"/> 
-    <sdef n="det"/> 
-    <sdef n="dem"/> 
-    <sdef n="def"/> 
-    <sdef n="cnjcoo"/> 
-    <sdef n="cnjsub"/> 
-    <sdef n="cnjadv"/> 
-    <sdef n="nt"/> 
-    <sdef n="vbser"/> 
-    <sdef n="vbhaver"/> 
-    <sdef n="cat:v"/> 
-    <sdef n="vbmod"/> 
-    <sdef n="inf"/> 
-    <sdef n="ger"/> 
-    <sdef n="pp"/> 
-    <sdef n="p1"/> 
-    <sdef n="p2"/> 
-    <sdef n="p3"/> 
-    <sdef n="pii"/> 
-    <sdef n="ifi"/> 
-    <sdef n="fti"/> 
-    <sdef n="cni"/> 
-    <sdef n="prs"/> 
-    <sdef n="pis"/> 
-    <sdef n="fts"/> 
-    <sdef n="imp"/> 
-    <sdef n="pos"/> 
-    <sdef n="sp"/> 
-    <sdef n="ref"/> 
-    <sdef n="sup"/> 
-    <sdef n="ord"/> 
-    <sdef n="qnt"/> 
-    <sdef n="num"/> 
-    <sdef n="pron"/> 
-    <sdef n="ij"/> 
-    <sdef n="sent"/> 
-    <sdef n="cm"/> 
-    <sdef n="lpar"/> 
-    <sdef n="rpar"/> 
-    <sdef n="lquest"/> 
-    <sdef n="web"/> 
-    <sdef n="apos"/> 
-    <sdef n="percent"/> 
-    <sdef n="guio"/> 
-    <sdef n="past"/> 
-    <sdef n="sep"/> 
-    <sdef n="sint"/> 
-    <sdef n="email"/> 
-    <sdef n="obj"/> 
-    <sdef n="subj"/> 
-    <sdef n="subs"/> 
-    <sdef n="pprs"/> 
-    <sdef n="url"/> 
-    <sdef n="gen"/> 
-    <sdef n="vbdo"/> 
-    <sdef n="comp"/> 
-    <sdef n="pres"/> 
-    <sdef n="vaux"/> 
-    <sdef n="sym"/> 
-    <sdef n="ND"/> 
-    <sdef n="GD"/> 
-  </sdefs>
-  <pardefs>
-
-
-<pardef n="one__num">
-    <e>
-      <p>
-        <l/> 
-        <r><s n="num"/><s n="sg"/></r> 
-      </p>
-    </e>
-    </pardef>
-
-
-    <pardef n="two__num">
-    <e>
-      <p>
-        <l/> 
-        <r><s n="num"/><s n="sp"/></r> 
-      </p>
-    </e>
-
-    </pardef>
-
-    <pardef n="घर__n">
-      <e>
-        <p>
-          <l></l>
-          <r><s n="cat:n"/><s n="sg"/></r>
-        </p>
-      </e>
-      <e r="LR">
-        <p>
-          <l></l>
-          <r><s n="cat:n"/><s n="pl"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>हरू</l>
-          <r><s n="cat:n"/><s n="pl"/></r>
-        </p>
-      </e>
-    </pardef>
-
-<!--  not used, all words seems to be like  गाई__n   -->
+<?xml version="1.0"?>
 <!--
-    <pardef n="घर__n">
-      <e>
-        <p>
-          <l></l>
-          <r><s n="cat:n"/><s n="sg"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>हरू</l>
-          <r><s n="cat:n"/><s n="pl"/></r>
-        </p>
-      </e>
-    </pardef>
--->
-
-    <pardef n="चर/ो__n">
+     Nepali symbols and monodix developed by Laxmi Prasad Khatiwada
+ -->
+<dictionary>
+  <alphabet>ँं:अआइईउऊऋएऐओऔािुूेैोौकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह ्</alphabet>
+  <pardefs>
+  <sdefs>
+    <sdef n="cat:n" c="Noun"/>
+    <sdef n="cat:pro" c="Pronoun"/>
+    <sdef n="cat:pn" c="Propernoun"/>
+    <sdef n="cat:v" c="verb"/>
+    <sdef n="cat:adj" c="Adjective"/>
+    <sdef n="gen:m" c="masculine"/>
+    <sdef n="gen:f" c="feminine"/>
+    <sdef n="gen:any" c="any"/>
+    <sdef n="case:d" c="direct"/>
+    <sdef n="case:o" c="oblique"/>
+    <sdef n="case:any" c="any"/>
+    <sdef n="vibhakti:0" c="0"/>
+    <sdef n="vibhakti:ले" c="ले"/>
+    <sdef n="vibhakti:लाई" c="लाई"/>
+    <sdef n="vibhakti:द्वारा" c="द्वारा"/>
+    <sdef n="num:s" c="singular"/>
+    <sdef n="num:p" c="plural"/>
+    <sdef n="num:any" c="any"/>
+    <sdef n="per:p1" c="first"/>
+    <sdef n="per:p2" c="second"/>
+    <sdef n="per:p3" c="third"/>
+    <sdef n="hon:lh" c="low_honorific"/>
+    <sdef n="hon:mh" c="mid_honorific"/>
+    <sdef n="hon:hh" c="high_honorific"/>
+    <sdef n="per:any" c="any"/>
+    <sdef n="tam:subj" c="subjunctive"/>
+    <sdef n="tam:छ" c="छ"/>
+    <sdef n="tam:छन्" c="छन्"/>
+    <sdef n="tam:न्छ" c="न्छ"/>
+    <sdef n="tam:नुहुन्छ" c="नुहुन्छ"/>
+    <sdef n="tam:न्छु" c="न्छु"/>
+    <sdef n="tam:न्छौ" c="न्छौ"/>
+    <sdef n="tam:न्छौँ" c="न्छौँ"/>
+    <sdef n="tam:इछ" c="इछ"/>
+    <sdef n="tam:नेछ" c="नेछ"/>
+    <sdef n="tam:नेछन्" c="नेछन्"/>
+    <sdef n="tam:न्छन्" c="न्छन्"/>
+    <sdef n="tam:छिन्" c="छिन्"/>
+    <sdef n="tam:न्छिन्" c="न्छिन्"/>
+    <sdef n="tam:ला" c="ला"/>
+    <sdef n="tam:लान्" c="लान्"/>
+    <sdef n="tam:लिन्" c="लिन्"/>
+    <sdef n="tam:लास्" c="लास्"/>
+    <sdef n="tam:ली" c="ली"/>
+    <sdef n="tam:यो" c="यो"/>
+    <sdef n="tam:ए" c="ए"/>
+    <sdef n="tam:ई" c="ई"/>
+    <sdef n="tam:नुभयो" c="नुभयो"/>
+    <sdef n="tam:0" c="0"/>
+    
+    
+  </sdefs>
+  
+    <pardef n="काल/ो__adj">
       <e>
         <p>
           <l>ो</l>
-          <r>ो<s n="cat:n"/><s n="sg"/></r>
+          <r>ो<s n="cat:adj"/><s n="case:d"/><s n="num:s"/><s n="gen:m"/></r>
         </p>
       </e>
-      <e r="LR">
+    
+      <e>
         <p>
           <l>ा</l>
-          <r>ो<s n="cat:n"/><s n="pl"/></r>
+          <r>ो<s n="cat:adj"/><s n="case:o"/><s n="num:p"/><s n="gen:any"/></r>
         </p>
       </e>
       <e>
         <p>
-          <l>ाहरू</l>
-          <r>ो<s n="cat:n"/><s n="pl"/></r>
+          <l>ी</l>
+          <r>ो<s n="cat:adj"/><s n="case:o"/><s n="num:any"/><s n="gen:any"/></r>
+        </p>
+      </e>
+     
+    </pardef>
+    <pardef n="सुन्दर__adj">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="cat:adj"/><s n="gen:any"/><s n="num:any"/><s n="case:any"/></r>
+        </p>
+      </e>
+ 
+    
+   
+    </pardef>
+    <pardef n="खा__v">
+      <e>
+        <p>
+          <l>ऊँ</l> 
+          <r><s n="cat:v"/><s n="per:p1"/><s n="hon:mh"/><s n="num:s"/><s n="gen:any"/><s n="tam:0"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>यो</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:lh"/><s n="num:s"/><s n="gen:any"/><s n="tam:यो"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ए</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:mh"/><s n="num:s"/><s n="gen:any"/><s n="tam:ए"/></r>
+        </p>
+      </e>
+      
+      <e>
+        <p>
+          <l>न्छ</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:lh"/><s n="num:s"/><s n="gen:m"/><s n="tam:न्छ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>न्छु</l>
+          <r><s n="cat:v"/><s n="per:p1"/><s n="hon:mh"/><s n="num:s"/><s n="gen:any"/><s n="tam:न्छु"/></r>
+        </p>
+      </e>
+       <e>
+        <p>
+          <l>न्छौ</l>
+          <r><s n="cat:v"/><s n="per:p2"/><s n="hon:mh"/><s n="num:any"/><s n="gen:any"/><s n="tam:न्छौ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>न्छौँ</l>
+          <r><s n="cat:v"/><s n="per:p1"/><s n="hon:mh"/><s n="num:p"/><s n="gen:any"/><s n="tam:न्छौ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>न्छन्</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:mh"/><s n="num:p"/><s n="gen:any"/><s n="tam:न्छन्"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>नुहुन्छ</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:hh"/><s n="num:s"/><s n="gen:any"/><s n="tam:नुहुन्छ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>न्छिन्</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:mh"/><s n="num:s"/><s n="gen:f"/><s n="tam:न्छिन्"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>नुभयो</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:hh"/><s n="num:any"/><s n="gen:any"/><s n="tam:नुभयो"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ला</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:mh"/><s n="num:s"/><s n="gen:m"/><s n="tam:ला"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ली</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:mh"/><s n="num:s"/><s n="gen:f"/><s n="tam:ली"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>नेछन्</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:mh"/><s n="num:p"/><s n="gen:any"/><s n="tam:नेछन्"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ई</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="hon:lh"/><s n="num:s"/><s n="gen:f"/><s n="tam:ई"/></r>
         </p>
       </e>
     </pardef>
 
 
 
-    <pardef n="हेर/्नु__vblex">
-    <e>
-      <p>
-        <l>्नु</l> 
-        <r>्नु<s n="cat:v"/><s n="inf"/></r> 
-      </p>
-    </e>
 
-    <e>
-      <p>
-        <l>्छ</l> 
-        <r>्नु<s n="cat:v"/><s n="pres"/></r> 
-      </p>
-    </e>
+    <pardef n="गर__v">
+      <e>
+        <p>
+          <l>्छ</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="num:s"/><s n="gen:m"/><s n="tam:छ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्नुहुन्छ</l>
+          <r><s n="cat:v"/><s n="per:any"/><s n="num:any"/><s n="gen:any"/><s n="tam:नुहुन्छ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्इछ</l>
+          <r><s n="cat:v"/><s n="per:any"/><s n="num:p"/><s n="gen:f"/><s n="tam:इछ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्ई</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="num:s"/><s n="gen:f"/><s n="tam:ई"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्नेछ</l>
+          <r><s n="cat:v"/><s n="per:any"/><s n="num:s"/><s n="gen:any"/><s n="tam:नेछ"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्नेछन्</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="num:any"/><s n="gen:any"/><s n="tam:नेछन्"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्छिन्</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="num:s"/><s n="gen:f"/><s n="tam:छिन्"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्छन्</l>
+          <r><s n="cat:v"/><s n="per:p3"/><s n="num:p"/><s n="gen:any"/><s n="tam:छन्"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्ला</l>
+          <r><s n="cat:v"/><s n="per:any"/><s n="num:s"/><s n="gen:m"/><s n="tam:ला"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्लान्</l>
+          <r><s n="cat:v"/><s n="per:any"/><s n="num:p"/><s n="gen:any"/><s n="tam:लान्"/></r>
+        </p>
+      </e>
+    
+    </pardef>
 
-    <e>
-      <p>
-        <l>्छ</l> 
-        <r>्नु<s n="cat:v"/><s n="pres"/><s n="p3"/><s n="sg"/></r> 
-      </p>
-    </e>
+  <pardef n="घर__n">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="cat:n"/><s n="num:s"/><s n="case:d"/><s n="gen:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l></l>
+          <r><s n="cat:n"/><s n="num:p"/><s n="case:d"/><s n="gen:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>हरू</l>
+          <r><s n="cat:n"/><s n="num:p"/><s n="case:o"/><s n="gen:any"/></r>
+        </p>
+      </e>
+     
+    </pardef>
 
-    <e>
-      <p>
-        <l>्यो</l> 
-        <r>्नु<s n="cat:v"/><s n="past"/></r> 
-      </p>
-    </e>
 
-    <e>
-      <p>
-        <l>ेकोछ</l> 
-        <r>्नु<s n="cat:v"/><s n="pp"/></r> 
-      </p>
-    </e>
 
-    <e>
-      <p>
-        <l>िरहेकोछ</l> 
-        <r>्नु<s n="cat:v"/><s n="ger"/></r> 
-      </p>
-    </e>
 
-    <e>
-      <p>
-        <l>्दैहुनुहुन्छ</l> 
-        <r>्नु<s n="cat:v"/><s n="pprs"/></r> 
-      </p>
-    </e>
+ <pardef n="राम__pn">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="cat:pn"/><s n="case:o"/><s n="gen:m"/><s n="num:s"/><s n="per:p3"/></r>
+        </p>
+      </e>
+      <e>
+       <p>
+          <l>हरू</l>
+          <r><s n="cat:pn"/><s n="case:d"/><s n="gen:m"/><s n="num:p"/><s n="per:p3"/></r>
+        </p>
+      </e>
+   
+       
+    </pardef>
 
-    <e>
-      <p>
-        <l>्दैहुनुहुन्छ</l> 
-        <r>्नु<s n="cat:v"/><s n="subs"/></r> 
-      </p>
-    </e>
-
+    <pardef n="सीता__pn">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="cat:pn"/><s n="case:o"/><s n="gen:f"/><s n="num:s"/><s n="per:p3"/></r>
+        </p>
+      </e>
+      <e>
+       <p>
+          <l>हरू</l>
+          <r><s n="cat:pn"/><s n="case:o"/><s n="gen:f"/><s n="num:p"/><s n="per:p3"/></r>
+        </p>
+      </e>
+   
+       
     </pardef>
  
 
 
 
 
-    <pardef n="दि/नु__vblex">
-    <e>
-      <p>
-        <l>नु</l> 
-        <r>नु<s n="cat:v"/><s n="inf"/></r> 
-      </p>
-    </e>
+    <pardef n="डोक/ो__n">
+      <e>
+        <p>
+          <l></l>
+          <r>ो<s n="cat:n"/><s n="num:s"/><s n="case:d"/><s n="gen:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ा</l>
+          <r><s n="cat:n"/><s n="num:p"/><s n="case:o"/><s n="gen:any"/></r>
+        </p>
+      </e>
+      
+    </pardef>
+   
+        
+    <pardef n="केट/ो__n">
+      <e>
+        <p>
+          <l>ो</l>
+          <r><s n="cat:n"/><s n="num:s"/><s n="case:d"/><s n="gen:m"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ा</l>
+          <r><s n="cat:n"/><s n="num:p"/><s n="case:o"/><s n="gen:m"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ी</l>
+          <r><s n="cat:n"/><s n="num:s"/><s n="case:o"/><s n="gen:f"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ी</l>
+          <r><s n="cat:n"/><s n="num:p"/><s n="case:o"/><s n="gen:f"/></r>
+        </p>
+      </e>
+     
+        
+    </pardef>
 
-    <e>
-      <p>
-        <l>न्छु</l> 
-        <r>नु<s n="cat:v"/><s n="pres"/></r> 
-      </p>
-    </e>
+    <pardef n="य/ो__pro">
+      <e>
+        <p>
+          <l></l>
+          <r>ो<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:s"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ी</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:p"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>स्तो</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:m"/><s n="num:s"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>स्ती</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:f"/><s n="num:any"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>स्ता</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:p"/><s n="per:any"/></r>
+        </p>
+      </e>
 
-    <e>
-      <p>
-        <l>न्छु</l> 
-        <r>्नु<s n="cat:v"/><s n="pres"/><s n="p3"/><s n="sg"/></r> 
-      </p>
-    </e>
-
-    <e>
-      <p>
-        <l>्यो</l> 
-        <r>्नु<s n="cat:v"/><s n="past"/></r> 
-      </p>
-    </e>
-
-    <e>
-      <p>
-        <l>एकोछ</l> 
-        <r>नु<s n="cat:v"/><s n="pp"/></r> 
-      </p>
-    </e>
-
-    <e>
-      <p>
-        <l>ँदैछ</l> 
-        <r>नु<s n="cat:v"/><s n="ger"/></r> 
-      </p>
-    </e>
-
-    <e>
-      <p>
-        <l>ँदैहुनुहुन्छ</l> 
-        <r>नु<s n="cat:v"/><s n="pprs"/></r> 
-      </p>
-    </e>
-
-    <e>
-      <p>
-        <l>ँदैछु</l> 
-        <r>नु<s n="cat:v"/><s n="subs"/></r> 
-      </p>
-    </e>
+     </pardef>
+     <pardef n="त्य/ो__pro">
+      <e>
+        <p>
+          <l></l>
+          <r>ो<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:s"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ी</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:p"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>स्तो</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:m"/><s n="num:s"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>स्ती</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:f"/><s n="num:any"/><s n="per:any"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>स्ता</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:p"/><s n="per:any"/></r>
+        </p>
+      </e>
 
     </pardef>
- 
-<pardef n="Mark__np">
-    <e>
-      <p>
-        <l/> 
-        <r><s n="cat:pn"/><s n="ant"/><s n="m"/><s n="sg"/></r> 
-      </p>
-    </e>
-
+    <pardef n="ऊ__pro">
+      <e>
+        <p>
+          <l></l>
+          <r>ऊ<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:s"/><s n="per:any"/></r>
+        </p>
+      </e>
+    
+       
     </pardef>
-    <pardef n="James__np">
-    <e>
-      <p>
-        <l/> 
-        <r><s n="cat:pn"/><s n="ant"/><s n="m"/><s n="sg"/></r> 
-      </p>
-    </e>
-
-    <e r="LR">
-      <p>
-        <l>'</l> 
-        <r><s n="cat:pn"/><s n="ant"/><s n="m"/><s n="sg"/><j/>'s<s n="gen"/></r> 
-      </p>
-    </e>
-
+ <pardef n="उहाँ__pro">
+      <e>
+        <p>
+          <l></l>
+          <r>हाँ<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:s"/><s n="per:p3"/></r>
+        </p>
+      </e>
+      <e>
+       <p>
+          <l>हरू</l>
+          <r>हाँ<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:p"/><s n="per:p3"/></r>
+        </p>
+      </e>
+   
+       
     </pardef>
-    <pardef n="Mary__np">
-    <e>
-      <p>
-        <l/> 
-        <r><s n="cat:pn"/><s n="ant"/><s n="f"/><s n="sg"/></r> 
-      </p>
-    </e>
 
+   
+    <pardef n="ई__pro">
+      <e>
+        <p>
+          <l></l>
+          <r>ई<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:any"/><s n="per:p3"/></r>
+        </p>
+      </e>
+      <e>
+    
+        <p>
+          <l></l>
+          <r>नी<s n="cat:pro"/><s n="case:d"/><s n="gen:f"/><s n="num:any"/><s n="per:p3"/></r>
+        </p>
+      </e>
+     
+       
     </pardef>
+
+
+    <pardef n="क/ो__pro">
+      <e>
+        <p>
+          <l></l>
+          <r>ो<s n="cat:pro"/><s n="case:d"/><s n="gen:any"/><s n="num:s"/><s n="per:p3"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>्ुन</l>
+          <r>ो<s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:s"/><s n="per:any"/></r>
+        </p>
+      </e>
+     
+       </pardef>
+
+
+     <pardef n="त/__pro">
+      <e>
+        <p>
+          <l>पाईँ</l>
+          <r><s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:s"/><s n="per:p3"/></r>
+        </p>
+      </e>
+      <e>
+    
+        <p>
+          <l>िमी</l>
+          <r><s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:s"/><s n="per:p2"/></r>
+        </p>
+      </e>
+    
+        
+    </pardef>
+     <pardef n="हामी/__pro">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="cat:pro"/><s n="case:o"/><s n="gen:any"/><s n="num:s"/><s n="per:p3"/></r>
+        </p>
+      </e>
+    
+        
+    </pardef>
+
 
   </pardefs>
+  <section id="main" type="inconditional">
+    
+    
 
-  <section id="main" type="standard">
+   <e lm="अभागी"><i>अभागी</i><par n="सुन्दर__adj"/></e>     
+   <e lm="कालो"><i>काल</i><par n="काल/ो__adj"/></e> 
+    
+    <e lm="अभक्ष्य"><i>अभक्ष्य</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभक्त"><i>अभक्त</i><par n="सुन्दर__adj"/></e>
+    <e lm="अबल"><i>अबल</i><par n="सुन्दर__adj"/></e>
+    <e lm="अबला"><i>अबला</i><par n="सुन्दर__adj"/></e>
+    <e lm="अबला"><i>अबला</i><par n="घर__n"/></e>
+    
+    <e lm="आभार"><i>आभार</i><par n="घर__n"/></e>
+    
+    <e lm="आभास"><i>आभास</i><par n="घर__n"/></e>
+    
+    <e lm="अभावना"><i>अभावना</i><par n="घर__n"/></e>
+    <e lm="अभावपदार्थ"><i>अभावपदार्थ</i><par n="घर__n"/></e>
+   
+    <e lm="अबाध"><i>अबाध</i><par n="सुन्दर__adj"/></e>
+   
+    <e lm="आबाद"><i>आबाद</i><par n="घर__n"/></e>
+   
+    <e lm="अबाधित"><i>अबाधित</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभद्र"><i>अभद्र</i><par n="सुन्दर__adj"/></e>
+    <e lm="आबद्ध"><i>आबद्ध</i><par n="सुन्दर__adj"/></e>
+    
+    
+    <e lm="अभय"><i>अभय</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभयमुद्रा"><i>अभयमुद्रा</i><par n="घर__n"/></e>
+    
+    <e lm="अभयवचन"><i>अभयवचन</i><par n="घर__n"/></e>
+    
+    <e lm="अभयदान"><i>अभयदान</i><par n="घर__n"/></e>
+   
+    <e lm="अभेद्य"><i>अभेद्य</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिभाषण"><i>अभिभाषण</i><par n="घर__n"/></e>
+    <e lm="अभिभव"><i>अभिभव</i><par n="घर__n"/></e>
+    <e lm="अभिभावक"><i>अभिभावक</i><par n="घर__n"/></e>
+    
+    <e lm="अभिचार"><i>अभिचार</i><par n="घर__n"/></e>
+    <e lm="अभिचारक"><i>अभिचारक</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिचारी"><i>अभिचारी</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिगम"><i>अभिगम</i><par n="घर__n"/></e>
+    <e lm="अभिगमन"><i>अभिगमन</i><par n="घर__n"/></e>
+    <e lm="अभिगामी"><i>अभिगामी</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिघात"><i>अभिघात</i><par n="घर__n"/></e>
+    <e lm="अभिगृहीत"><i>अभिगृहीत</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिग्रहण"><i>अभिग्रहण</i><par n="घर__n"/></e>
+    <e lm="अभिहत"><i>अभिहत</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिहित"><i>अभिहित</i><par n="सुन्दर__adj"/></e>
+   
+   
+    <e lm="अभिजन"><i>अभिजन</i><par n="घर__n"/></e>
+    <e lm="अभिजात"><i>अभिजात</i><par n="सुन्दर__adj"/></e>
+    
+    <e lm="अभिज्ञ"><i>अभिज्ञ</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिज्ञा"><i>अभिज्ञा</i><par n="घर__n"/></e>
+    <e lm="अभिज्ञान"><i>अभिज्ञान</i><par n="घर__n"/></e>
+    <e lm="अभिज्ञानपत्र"><i>अभिज्ञानपत्र</i><par n="घर__n"/></e>
+    <e lm="अभिज्ञापक"><i>अभिज्ञापक</i><par n="सुन्दर__adj"/></e>
+    
+    <e lm="अभिकल्पना"><i>अभिकल्पना</i><par n="घर__n"/></e>
+   
+    <e lm="अभिकर्त्ता"><i>अभिकर्त्ता</i><par n="घर__n"/></e>
+    <e lm="अभिकथन"><i>अभिकथन</i><par n="घर__n"/></e>
+  
+   
+    <e lm="अभिख्यान"><i>अभिख्यान</i><par n="घर__n"/></e>
+    <e lm="अभिख्यात"><i>अभिख्यात</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिलक्षित"><i>अभिलक्षित</i><par n="सुन्दर__adj"/></e>
+    
+    <e lm="अभिलाषा"><i>अभिलाषा</i><par n="घर__n"/></e>
+   
+    <e lm="अभिलाषी"><i>अभिलाषी</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिलषित"><i>अभिलषित</i><par n="सुन्दर__adj"/></e>
+    
+    
+    <e lm="अभिलेख"><i>अभिलेख</i><par n="घर__n"/></e>
+    
+    <e lm="अभिरक्षक"><i>अभिरक्षक</i><par n="घर__n"/></e>
+    <e lm="अभिरक्षण"><i>अभिरक्षण</i><par n="घर__n"/></e>
+    <e lm="अबिरल"><i>अबिरल</i><par n="सुन्दर__adj"/></e>
+   
+    <e lm="अभिषेचन"><i>अभिषेचन</i><par n="घर__n"/></e>
+    <e lm="अभिषेक"><i>अभिषेक</i><par n="घर__n"/></e>
+    
+    <e lm="अभीष्ट"><i>अभीष्ट</i><par n="सुन्दर__adj"/></e>
+    
+   
+    <e lm="अभिशाप"><i>अभिशाप</i><par n="घर__n"/></e>
+    <e lm="अभिशप्त"><i>अभिशप्त</i><par n="सुन्दर__adj"/></e>
+ 
+    
+    
+    <e lm="अभिवंदना"><i>अभिवंदना</i><par n="घर__n"/></e>
+    <e lm="अभिवंदन"><i>अभिवंदन</i><par n="घर__n"/></e>
+    <e lm="अभिवंदनीय"><i>अभिवंदनीय</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिवंदित"><i>अभिवंदित</i><par n="सुन्दर__adj"/></e>
+   
+    <e lm="अभिवादन"><i>अभिवादन</i><par n="घर__n"/></e>
+    
+    <e lm="अभिवृद्धि"><i>अभिवृद्धि</i><par n="घर__n"/></e>
+    <e lm="अभिव्यक्त"><i>अभिव्यक्त</i><par n="सुन्दर__adj"/></e>
+    <e lm="अभिव्यक्ति"><i>अभिव्यक्ति</i><par n="घर__n"/></e>
+    
+    <e lm="अभिव्याप्ति"><i>अभिव्याप्ति</i><par n="घर__n"/></e>
 
-
-    <e lm="एक"><i>एक</i><par n="one__num"/></e>
-    <e lm="दुई"><i>दुई</i><par n="two__num"/></e>
-    <e lm="तीन"><i>तीन</i><par n="two__num"/></e>
-    <e lm="चार"><i>चार</i><par n="two__num"/></e>
-    <e lm="पाँच"><i>पाँच</i><par n="two__num"/></e>
-    <e lm="छ"><i>छ</i><par n="two__num"/></e>
-    <e lm="सात"><i>सात</i><par n="two__num"/></e>
-    <e lm="आठ"><i>आठ</i><par n="two__num"/></e>
-    <e lm="नौ"><i>नौ</i><par n="two__num"/></e>
-    <e lm="दस"><i>दस</i><par n="two__num"/></e>
 
 
     <e lm="गाई"><i>गाई</i><par n="घर__n"/></e>
@@ -377,46 +658,51 @@
     <e lm="साथी"><i>साथी</i><par n="घर__n"/></e>
     <e lm="अकर्तव्य"><i>अकर्तव्य</i><par n="घर__n"/></e>
 
-    <e lm="राम"><i>राम</i><par n="Mark__np"/></e>
-    <e lm="गोविन्द"><i>गोविन्द</i><par n="Mark__np"/></e>
-    <e lm="अशोक"><i>अशोक</i><par n="Mark__np"/></e>
-    <e lm="हरि"><i>हरि</i><par n="Mark__np"/></e>
-    <e lm="सीता"><i>सीता</i><par n="Mary__np"/></e>
-    <e lm="रीता"><i>रीता</i><par n="Mary__np"/></e>
-    <e lm="गीता"><i>गीता</i><par n="Mary__np"/></e>
-    <e lm="कमल"><i>कमल</i><par n="Mark__np"/></e>
-    <e lm="गोपाल"><i>गोपाल</i><par n="Mark__np"/></e>
-    <e lm="सुभिक्षा"><i>सुभिक्षा</i><par n="Mary__np"/></e>
-    <e lm="ऋचा"><i>ऋचा</i><par n="Mary__np"/></e>
-    <e lm="शोभा"><i>शोभा</i><par n="Mary__np"/></e>
-    <e lm="योगराज"><i>योगराज</i><par n="Mark__np"/></e>
-    <e lm="हेमराज"><i>हेमराज</i><par n="Mark__np"/></e>
-    <e lm="समीक्षा"><i>समीक्षा</i><par n="Mary__np"/></e>
-<e lm="आधार"><i>आधार</i><par n="घर__n"/></e>
-<e lm="छाती"><i>छाती</i><par n="घर__n"/></e>
-<e lm="कलम"><i>कलम</i><par n="घर__n"/></e>
-<e lm="पेन्सिल"><i>पेन्सिल</i><par n="घर__n"/></e>
-<e lm="टोपी"><i>टोपी</i><par n="घर__n"/></e>
-<e lm="कोठा"><i>कोठा</i><par n="चर/ो__n"/></e>
+    <e lm="राम"><i>राम</i><par n="राम__pn"/></e>
+    <e lm="गोविन्द"><i>गोविन्द</i><par n="राम__pn"/></e>
+    <e lm="अशोक"><i>अशोक</i><par n="राम__pn"/></e>
+    <e lm="हरि"><i>हरि</i><par n="राम__pn"/></e>
+    <e lm="सीता"><i>सीता</i><par n="सीता__pn"/></e>
+    <e lm="रीता"><i>रीता</i><par n="सीता__pn"/></e>
+    <e lm="गीता"><i>गीता</i><par n="सीता__pn"/></e>
+    <e lm="कमल"><i>कमल</i><par n="राम__pn"/></e>
+    <e lm="गोपाल"><i>गोपाल</i><par n="राम__pn"/></e>
+    <e lm="सुभिक्षा"><i>सुभिक्षा</i><par n="सीता__pn"/></e>
+    <e lm="ऋचा"><i>ऋचा</i><par n="सीता__pn"/></e>
+    <e lm="शोभा"><i>शोभा</i><par n="सीता__pn"/></e>
+    <e lm="योगराज"><i>योगराज</i><par n="राम__pn"/></e>
+    <e lm="हेमराज"><i>हेमराज</i><par n="राम__pn"/></e>
+    <e lm="समीक्षा"><i>समीक्षा</i><par n="सीता__pn"/></e>
+    <e lm="आधार"><i>आधार</i><par n="घर__n"/></e>
+    <e lm="छाती"><i>छाती</i><par n="घर__n"/></e>
+    <e lm="कलम"><i>कलम</i><par n="घर__n"/></e>
+    <e lm="पेन्सिल"><i>पेन्सिल</i><par n="घर__n"/></e>
+    <e lm="टोपी"><i>टोपी</i><par n="घर__n"/></e>
+    <e lm="कोठा"><i>कोठा</i><par n="डोको/ो__n"/></e>
 
-<e lm="मुसो"><i>मुसो</i><par n="चर/ो__n"/></e>
+    <e lm="मुसो"><i>मुसो</i><par n="डोको/ो__n"/></e>
 
-    <e lm="केटो"><i>केट</i><par n="चर/ो__n"/></e>
-    <e lm="ब्वाँसो"><i>ब्वाँस</i><par n="चर/ो__n"/></e>
-    <e lm="चरो"><i>चर</i><par n="चर/ो__n"/></e>
-    <e lm="सालो"><i>साल</i><par n="चर/ो__n"/></e>
-    <e lm="हलो"><i>हल</i><par n="चर/ो__n"/></e>
-    <e lm="हलो"><i>हल</i><par n="चर/ो__n"/></e>
-    <e lm="हाँगो"><i>हाँग</i><par n="चर/ो__n"/></e>
-
-
-   <e lm="हेर्नु"><i>हेर</i><par n="हेर/्नु__vblex"/></e>
-   <e lm="मोइखानु"><i>मोइखा</i><par n="दि/नु__vblex"/></e>
-   <e lm="बिगार्नु"><i>बिगार</i><par n="हेर/्नु__vblex"/></e>
-   <e lm="समाप्त पार्नु"><i>समाप्त पार</i><par n="हेर/्नु__vblex"/></e>
-   <e lm="दुख दिनु"><i>दुख दि</i><par n="दि/नु__vblex"/></e>
+    <e lm="केटो"><i>केट</i><par n="केटो/्__n"/></e>
+    <e lm="ब्वाँसो"><i>ब्वाँस</i><par n="डोको/ो__n"/></e>
+    <e lm="चरो"><i>चर</i><par n="डोको/ो__n"/></e>
+    <e lm="सालो"><i>साल</i><par n="डोको/ो__n"/></e>
+    <e lm="हलो"><i>हल</i><par n="डोको/ो__n"/></e>
    
+    <e lm="हाँगो"><i>हाँग</i><par n="डोको/ो__n"/></e>
+    <e lm="अभिधा"><i>अभिधा</i><par n="घर__n"/></e>
+    <e lm="अभिधान"><i>अभिधान</i><par n="घर__n"/></e>
+    <e lm="अभिदर्शन"><i>अभिदर्शन</i><par n="घर__n"/></e>
 
-  </section>
+<e lm="हेर"><i>हेर</i><par n="गर/्__v"/></e>
+<e lm="मोइखा"><i>मोइखा</i><par n="खा__v"/></e>
+<e lm="बिगार"><i>बिगार</i><par n="गर/्__v"/></e>
+<e lm="समाप्त पार"><i>समाप्त पार</i><par n="गर/्__v"/></e>
+<e lm="दुख दि"><i>दुख दि</i><par n="खा__v"/></e>
+<e lm="गर"><i>गर</i><par n="गर/्__v"/></e>
+<e lm="भन"><i>भन</i><par n="गर/्__v"/></e>
+<e lm="खा"><i>खा</i><par n="खा__v"/></e>
 
+
+    
+</section>
 </dictionary>
