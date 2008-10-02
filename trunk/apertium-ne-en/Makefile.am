@@ -6,20 +6,25 @@ PREFIX2=$(LANG2)-$(LANG1)
 
 BASENAME=apertium-$(PREFIX1)
 
-TARGETS_COMMON = $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
+TARGETS_COMMON = $(PREFIX1).automorf.bin \
+     $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX2).autogen.bin  \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
 
+$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
+#	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
+	lt-comp lr $(BASENAME).$(LANG1).dix $@
+
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
+#	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp lr $(BASENAME).$(LANG2).dix $@
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+#	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
+#	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp rl $(BASENAME).$(LANG1).dix $@
 
 $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
@@ -53,7 +58,8 @@ $(PREFIX2).mode: modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
-apertium_ne_en_DATA=$(PREFIX2).automorf.bin \
+apertium_ne_en_DATA=$(PREFIX1).automorf.bin \
+	$(PREFIX2).automorf.bin \
 	$(PREFIX2).autobil.bin \
 	$(PREFIX2).autogen.bin \
 	$(PREFIX2).prob \
