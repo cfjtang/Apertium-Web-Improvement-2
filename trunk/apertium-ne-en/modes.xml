@@ -27,4 +27,33 @@
       </program>
     </pipeline>
   </mode>
+
+  <mode name="ne-en" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ne-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="ne-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-ne-en.ne-en.t1x"/>
+        <file name="ne-en.t1x.bin"/>
+        <file name="ne-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-ne-en.ne-en.t2x"/>
+        <file name="ne-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-ne-en.ne-en.t3x"/>
+        <file name="ne-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ne-en.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
 </modes>
