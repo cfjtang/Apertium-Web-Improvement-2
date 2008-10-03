@@ -12,6 +12,7 @@
     <sdef n="atn"/>
     <sdef n="enc"/>
     <sdef n="cat:pro"/>
+    <sdef n="cat:cc"/>
     <sdef n="tn"/>
     <sdef n="cat:n"/>
     <sdef n="cat:pn"/>
@@ -122,6 +123,27 @@
         <p>
           <l/>
           <r><s n="cat:det"/><s n="def"/><s n="num:any"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="/a__det">
+      <e r="LR">
+        <p>
+          <l>a</l>
+          <r>a<s n="cat:det"/><s n="ind"/><s n="num:s"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>an</l>
+          <r>a<s n="cat:det"/><s n="ind"/><s n="num:s"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>a</l>
+          <r>a<s n="cat:det"/><s n="ind"/><s n="num:s"/></r>
         </p>
       </e>
     </pardef>
@@ -475,8 +497,20 @@
       </e>
     </pardef>
 
+    <pardef n="and__cnjcoo">
+      <e>
+        <p>
+          <l/>
+          <r><s n="cat:cc"/></r>
+        </p>
+      </e>
+    </pardef>
   </pardefs>
   <section id="main" type="standard">
+    <!-- Conjunctions -->
+    <e lm="and"><i>and</i><par n="and__cnjcoo"/></e>
+
+    <!-- Numerals -->
     <e lm="one"><i>one</i><par n="one__num"/></e>
     <e lm="eight"><i>eight</i><par n="two__num"/></e>
     <e lm="five"><i>five</i><par n="two__num"/></e>
@@ -489,6 +523,7 @@
     <e lm="ten"><i>ten</i><par n="two__num"/></e>
 
     <e lm="the"><i>the</i><par n="the__det"/></e>
+    <e lm="a"><i/><par n="/a__det"/></e>
 
     <e lm="bird"><i>bird</i><par n="house__n"/></e>
     <e lm="boy"><i>boy</i><par n="house__n"/></e>
