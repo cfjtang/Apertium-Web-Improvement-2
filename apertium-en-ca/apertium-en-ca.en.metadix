@@ -88,6 +88,7 @@
     <sdef n="pron"/>
     <sdef n="apos"/>
     <sdef n="percent"/>
+    <sdef n="mon"/>
   </sdefs>
 
   <pardefs>
@@ -245,21 +246,21 @@
    <pardef n="ordinals">
     
       <e>
-        <re>[02-9]?1</re>
+        <re>([0-9]*[02-9]1|1)</re>
         <p>
           <l>st</l>
          <r><s n="num"/><s n="ord"/></r>
         </p>
       </e>
       <e>
-        <re>[0-9]?2</re>
+        <re>([0-9]*[02-9]2|2)</re>
         <p>
           <l>nd</l>
          <r><s n="num"/><s n="ord"/></r>
         </p>
       </e>
       <e>
-        <re>[0-9]?3</re>
+        <re>([0-9]*[02-9]3|3)</re>
         <p>
           <l>rd</l>
          <r><s n="num"/><s n="ord"/></r>
@@ -273,7 +274,7 @@
         </p>
       </e>
       <e>
-        <re>[0-9]?[4-90]</re>
+        <re>[0-9]*([4-90]|1[0-9])</re>
         <p>
           <l>th</l>
          <r><s n="num"/><s n="ord"/></r>
@@ -281,6 +282,81 @@
       </e>
     </pardef>
 
+
+
+    <pardef n="acronimos">
+      <e>
+        <re>[A-Z][A-Z]+([A-Z])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="sp"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][A-Z]+([A-Z])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][A-Z]+([A-Z])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="pl"/></r>
+        </p>
+      </e>
+
+      <e>
+        <re>[A-Z][0-9]+([0-9])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="sp"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][0-9]+([0-9])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][0-9]+([0-9])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
+ <pardef n="time">
+      <e>
+        <re>[0-9]+[.:][0-5][0-9](pm|PM|am|AM)</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+    <pardef n="currency">
+      <e>
+        <re>[£$€][0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?</re>
+        <p>
+          <l/>
+          <r><s n="num"/><s n="mon"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[£$€][0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?m</re>
+        <p>
+          <l/>
+          <r><s n="num"/><s n="mon"/></r>
+        </p>
+      </e>
+    </pardef>
 
 
 <!-- Paradigmes ADJ BCN-->
@@ -11432,6 +11508,7 @@
 <e lm="tetartohedral"><i>tetartohedral</i><par n="expensive__adj"/></e>
 
 <e lm="presidential"><i>presidential</i><par n="expensive__adj"/></e>
+<e lm="vice-presidential"><i>vice-presidential</i><par n="expensive__adj"/></e>
 
 <e lm="electoral"><i>electoral</i><par n="expensive__adj"/></e>
 
@@ -40593,6 +40670,15 @@
     </e>
     <e>
       <par n="ordinals"/>
+    </e>
+    <e>
+      <par n="acronimos"/>
+    </e>
+    <e>
+      <par n="time"/>
+    </e>
+    <e>
+      <par n="currency"/>
     </e>
   
   </section>
