@@ -62,12 +62,12 @@
     </def-label>
 
     <def-label name="VBLEX">
-      <tags-item tags="cat:vblex"/>   <!-- entries like this are probably broken -->
-      <tags-item tags="cat:vblex.*"/>
+      <tags-item tags="cat:v"/>   <!-- entries like this are probably broken -->
+      <tags-item tags="cat:v.*"/>
     </def-label>
 
     <def-label name="VBLEXINF">
-      <tags-item tags="cat:vblex.inf"/>
+      <tags-item tags="cat:v.inf"/>
     </def-label>
 
   </tagset>
