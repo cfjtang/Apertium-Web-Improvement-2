@@ -31,6 +31,7 @@
 
   <section-def-vars>
     <def-var n="number"/>
+    <def-var n="case"/>
     <def-var n="genere"/>
   </section-def-vars>
 
@@ -43,13 +44,33 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+	<choose>
+	  <when>
+            <test> <!-- If the number of the noun in English is plural -->
+              <equal> 
+                <clip pos="1" side="tl" part="nbr"/> 
+                <lit-tag v="num:p"/>
+              </equal> 
+            </test>
+            <let> <!-- Set the case to oblique -->
+              <var n="case"/>
+              <lit-tag v="case:o"/>
+            </let>
+          </when>
+          <otherwise> 
+            <let> <!-- Set the case to direct -->
+              <var n="case"/>
+              <lit-tag v="case:d"/>
+            </let>
+          </otherwise>
+        </choose>
         <out>
           <chunk name="nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="1" side="tl" part="gen"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
-              <tag><lit-tag v="case:d"/></tag> <!-- By default we set the case to "direct" -->
+              <tag><var n="case"/></tag> 
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
