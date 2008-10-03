@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tagger name="Norwegian Nynorsk">
+<tagger name="Nepali">
   <tagset>
     <def-label name="NOMF">
-      <tags-item tags="n.f"/>   <!-- probably broken -->
-      <tags-item tags="n.f.*"/>
+      <tags-item tags="cat:cat:n.gen:f"/>   <!-- probably broken -->
+      <tags-item tags="cat:n.f.*"/>
     </def-label>
     <def-label name="NOMM">
-      <tags-item tags="n.m"/>   <!-- probably broken -->
-      <tags-item tags="n.m.*"/>
+      <tags-item tags="cat:n.gen:m"/>   <!-- probably broken -->
+      <tags-item tags="cat:n.m.*"/>
     </def-label>
-    <def-label name="NOMNT">
-      <tags-item tags="n.nt"/>  <!-- probably broken -->
-      <tags-item tags="n.nt.*"/>
-    </def-label>
-    <def-label name="NOMMF">
-      <tags-item tags="n.mf"/>  <!-- probably broken -->
-      <tags-item tags="n.mf.*"/>
+    <def-label name="NOMANY">
+      <tags-item tags="cat:n.gen:any"/>  <!-- probably broken -->
+      <tags-item tags="cat:n.gen:any.*"/>
     </def-label>
 
     <def-label name="PROPN">
-      <tags-item tags="np.*"/>
+      <tags-item tags="cat:pn.*"/>
     </def-label>
 
     <def-label name="NUM">
@@ -36,42 +32,42 @@
     </def-label>
    
     <def-label name="PRNPERS">
-      <tags-item tags="prn.p1.*"/>
-      <tags-item tags="prn.p2.*"/>
-      <tags-item tags="prn.p3.*"/>
+      <tags-item tags="cat:prn.per:p1.*"/>
+      <tags-item tags="cat:prn.per:p2.*"/>
+      <tags-item tags="cat:prn.per:p3.*"/>
     </def-label>
 
     <def-label name="ADJ">
-      <tags-item tags="adj.*"/>
+      <tags-item tags="cat:adj.*"/>
     </def-label>
 
     <def-label name="ADV">
-      <tags-item tags="adv"/>
+      <tags-item tags="cat:adv"/>
     </def-label>
 
     <def-label name="PREP">
-      <tags-item tags="pr"/>
+      <tags-item tags="cat:pr"/>
     </def-label>
 
     <def-label name="CNJSUB">
-      <tags-item tags="cnjsub"/>
+      <tags-item tags="cat:cnjsub"/>
     </def-label>
 
     <def-label name="CNJCOO">
-      <tags-item tags="cnjcoo"/>
+      <tags-item tags="cat:cnjcoo"/>
     </def-label>
 
     <def-label name="VBSER">
-      <tags-item tags="vbser.*"/>
+      <tags-item tags="cat:vbser.*"/>
     </def-label>
 
     <def-label name="VBLEX">
-      <tags-item tags="vblex"/>   <!-- entries like this are probably broken -->
-      <tags-item tags="vblex.*"/>
+      <tags-item tags="cat:vblex"/>   <!-- entries like this are probably broken -->
+      <tags-item tags="cat:vblex.*"/>
     </def-label>
 
     <def-label name="VBLEXINF">
-      <tags-item tags="vblex.inf"/>
+      <tags-item tags="cat:vblex.inf"/>
     </def-label>
 
   </tagset>
