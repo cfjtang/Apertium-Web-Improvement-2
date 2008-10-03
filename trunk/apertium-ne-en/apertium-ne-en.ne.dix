@@ -57,10 +57,30 @@
     <sdef n="tam:नुभयो" c="नुभयो"/>
     <sdef n="tam:0" c="0"/>
     
-    
+    <sdef n="sent"/>    
   </sdefs>
   
   <pardefs>
+    <pardef n="numeros">
+      <e>
+        <re>[0-9]+([.,][0-9]+)?</re>
+        <p>
+          <l/>
+          <r><s n="cat:num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+          <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <pardef n="काल/ो__adj">
       <e>
         <p>
@@ -538,7 +558,7 @@
       <e>
         <p>
           <l></l>
-          <r><s n="cat:n"/><s n="case:o"/><s n="gen:any"/><s n="num:s"/></r>
+          <r><s n="cat:num"/><s n="case:o"/><s n="gen:any"/><s n="num:s"/></r>
         </p>
       </e>
       </pardef>
@@ -547,7 +567,7 @@
       <e>
         <p>
           <l></l>
-          <r><s n="cat:n"/><s n="case:o"/><s n="gen:any"/><s n="num:any"/></r>
+          <r><s n="cat:num"/><s n="case:o"/><s n="gen:any"/><s n="num:any"/></r>
         </p>
       </e>
    
@@ -753,4 +773,12 @@
 
     
 </section>
+  <section id="final" type="inconditional">
+    <e>
+      <par n="numeros"/> <!-- Numbers -->
+    </e>
+    <e>
+      <par n="separa"/> <!-- End of sentence -->
+    </e>
+  </section>
 </dictionary>
