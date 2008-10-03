@@ -11,16 +11,26 @@
     <sdef n="cog"/> 
     <sdef n="atn"/> 
     <sdef n="enc"/> 
-    <sdef n="pro"/> 
+    <sdef n="cat:pro"/> 
     <sdef n="tn"/> 
     <sdef n="cat:n"/> 
     <sdef n="cat:pn"/> 
     <sdef n="cat:adj"/> 
-    <sdef n="f"/> 
-    <sdef n="m"/> 
-    <sdef n="mf"/> 
-    <sdef n="sg"/> 
-    <sdef n="pl"/> 
+    <sdef n="gen:f"/> 
+    <sdef n="gen:m"/>
+    <sdef n="gen:any"/>
+    <sdef n="num:s"/> 
+    <sdef n="num:p"/> 
+    <sdef n="case:d"/>
+    <sdef n="case:o"/>
+    <sdef n="case:any"/>
+    <sdef n="per:p1"/>
+    <sdef n="per:p2"/>
+    <sdef n="per:p3"/>
+    <sdef n="per:any"/>
+    <sdef n="hon:lh"/>
+    <sdef n="hon:mh"/>
+    <sdef n="hon:hh"/>
     <sdef n="adv"/> 
     <sdef n="preadv"/> 
     <sdef n="pr"/> 
@@ -45,9 +55,6 @@
     <sdef n="inf"/> 
     <sdef n="ger"/> 
     <sdef n="pp"/> 
-    <sdef n="p1"/> 
-    <sdef n="p2"/> 
-    <sdef n="p3"/> 
     <sdef n="pii"/> 
     <sdef n="ifi"/> 
     <sdef n="fti"/> 
@@ -99,7 +106,7 @@
     <e>
       <p>
         <l/> 
-        <r><s n="num"/><s n="sg"/></r> 
+        <r><s n="num"/><s n="num:s"/></r> 
       </p>
     </e>
     </pardef>
@@ -118,13 +125,13 @@
       <e>
         <p>
           <l/>
-          <r><s n="cat:n"/><s n="sg"/></r>
+          <r><s n="cat:n"/><s n="num:s"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>s</l>
-          <r><s n="cat:n"/><s n="pl"/></r>
+          <r><s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
     </pardef>
@@ -134,19 +141,19 @@
       <e>
         <p>
           <l>f</l>
-          <r>f<s n="cat:n"/><s n="sg"/></r>
+          <r>f<s n="cat:n"/><s n="num:s"/></r>
         </p>
       </e>
       <e r="LR">
         <p>
           <l>fs</l>
-          <r>f<s n="cat:n"/><s n="pl"/></r>
+          <r>f<s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>ves</l>
-          <r>f<s n="cat:n"/><s n="pl"/></r>
+          <r>f<s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
     </pardef>
@@ -156,21 +163,21 @@
       <e>
         <p>
           <l>fe</l>
-          <r>fe<s n="cat:n"/><s n="sg"/></r>
+          <r>fe<s n="cat:n"/><s n="num:s"/></r>
         </p>
       </e>
 
       <e>
         <p>
         <l>ves</l>
-          <r>fe<s n="cat:n"/><s n="pl"/></r>
+          <r>fe<s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
 
       <e r="LR" c="example of something we should never generate">
         <p>
         <l>fes</l>
-          <r>fe<s n="cat:n"/><s n="pl"/></r>
+          <r>fe<s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
     </pardef>
@@ -179,19 +186,19 @@
       <e>
         <p>
           <l>an</l>
-          <r>an<s n="cat:n"/><s n="sg"/></r>
+          <r>an<s n="cat:n"/><s n="num:s"/></r>
         </p>
       </e>
       <e r="LR" c="example of something we should never generate">
         <p>
           <l>ans</l>
-          <r>an<s n="cat:n"/><s n="pl"/></r>
+          <r>an<s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>en</l>
-          <r>an<s n="cat:n"/><s n="pl"/></r>
+          <r>an<s n="cat:n"/><s n="num:p"/></r>
         </p>
       </e>
     </pardef>
@@ -215,7 +222,7 @@
     <e>
       <p>
         <l>ees</l> 
-        <r>ee<s n="cat:v"/><s n="pres"/><s n="p3"/><s n="sg"/></r> 
+        <r>ee<s n="cat:v"/><s n="pres"/><s n="p3"/><s n="num:s"/></r> 
       </p>
     </e>
 
@@ -260,14 +267,14 @@
     <e>
       <p>
         <l>an</l> 
-        <r>an<s n="cat:n"/><s n="sg"/></r> 
+        <r>an<s n="cat:n"/><s n="num:s"/></r> 
       </p>
     </e>
 
     <e>
       <p>
         <l>en</l> 
-        <r>an<s n="cat:n"/><s n="pl"/></r> 
+        <r>an<s n="cat:n"/><s n="num:p"/></r> 
       </p>
     </e>
 
@@ -276,14 +283,14 @@
     <e>
       <p>
         <l>fe</l> 
-        <r>fe<s n="cat:n"/><s n="sg"/></r> 
+        <r>fe<s n="cat:n"/><s n="num:s"/></r> 
       </p>
     </e>
 
     <e>
       <p>
         <l>ves</l> 
-        <r>fe<s n="cat:n"/><s n="pl"/></r> 
+        <r>fe<s n="cat:n"/><s n="num:p"/></r> 
       </p>
     </e>
 
@@ -292,14 +299,14 @@
     <e>
       <p>
         <l/> 
-        <r><s n="cat:n"/><s n="sg"/></r> 
+        <r><s n="cat:n"/><s n="num:s"/></r> 
       </p>
     </e>
 
     <e>
       <p>
         <l>ren</l> 
-        <r><s n="cat:n"/><s n="pl"/></r> 
+        <r><s n="cat:n"/><s n="num:p"/></r> 
       </p>
     </e>
 
@@ -330,14 +337,14 @@
     <e>
       <p>
         <l>oose</l> 
-        <r>oose<s n="cat:n"/><s n="sg"/></r> 
+        <r>oose<s n="cat:n"/><s n="num:s"/></r> 
       </p>
     </e>
 
     <e>
       <p>
         <l>eese</l> 
-        <r>oose<s n="cat:n"/><s n="pl"/></r> 
+        <r>oose<s n="cat:n"/><s n="num:p"/></r> 
       </p>
     </e>
 
@@ -360,7 +367,7 @@
     <e>
       <p>
         <l>eachs</l> 
-        <r>each<s n="cat:v"/><s n="pres"/><s n="p3"/><s n="sg"/></r> 
+        <r>each<s n="cat:v"/><s n="pres"/><s n="p3"/><s n="num:s"/></r> 
       </p>
     </e>
 
@@ -421,7 +428,7 @@
     <e>
       <p>
         <l>es</l> 
-        <r><s n="cat:v"/><s n="pres"/><s n="p3"/><s n="sg"/></r> 
+        <r><s n="cat:v"/><s n="pres"/><s n="p3"/><s n="num:s"/></r> 
       </p>
     </e>
 
@@ -466,7 +473,7 @@
     <e>
       <p>
         <l/> 
-        <r><s n="cat:pn"/><s n="ant"/><s n="m"/><s n="sg"/></r> 
+        <r><s n="cat:pn"/><s n="ant"/><s n="gen:m"/><s n="num:s"/></r> 
       </p>
     </e>
 
@@ -475,7 +482,7 @@
     <e>
       <p>
         <l/> 
-        <r><s n="cat:pn"/><s n="ant"/><s n="f"/><s n="sg"/></r> 
+        <r><s n="cat:pn"/><s n="ant"/><s n="gen:f"/><s n="num:s"/></r> 
       </p>
     </e>
 
