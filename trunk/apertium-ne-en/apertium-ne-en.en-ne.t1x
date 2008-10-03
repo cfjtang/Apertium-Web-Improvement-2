@@ -1,127 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transfer default="chunk">
+  <section-def-cats>
+    <def-cat n="nom">
+      <cat-item tags="cat:n.*"/>
+      <cat-item tags="cat:pn.*"/>
+    </def-cat>
+  </section-def-cats>
 
-<section-def-cats>
-  <def-cat n="nom">
-     <cat-item tags="cat:n.*"/>
-     <cat-item tags="cat:pn.*"/>
-  </def-cat>
-  <def-cat n="vblex">
-     <cat-item tags="vblex.*"/>
-  </def-cat>
-  <def-cat n="adj">
-     <cat-item tags="cat:adj.*"/>
-  </def-cat>
-  <def-cat n="prn">
-     <cat-item tags="prn.*"/>
-  </def-cat>
-  <def-cat n="pr">
-     <cat-item tags="cat:pr"/>
-  </def-cat>
-  <def-cat n="det">
-     <cat-item tags="det"/>
-     <cat-item tags="det.*"/>
-  </def-cat>
-</section-def-cats>
+  <section-def-attrs>
+    <def-attr n="a_nom">
+      <attr-item tags="cat:n"/>
+      <attr-item tags="cat:pn"/>
+    </def-attr>
+    <def-attr n="gen">
+      <attr-item tags="gen:m"/>
+      <attr-item tags="gen:f"/>
+      <attr-item tags="gen:nt"/>
+      <attr-item tags="gen:any"/>
+    </def-attr>
+    <def-attr n="nbr">
+      <attr-item tags="num:s"/>
+      <attr-item tags="num:p"/>
+      <attr-item tags="num:any"/>
+    </def-attr>
+    <def-attr n="cas">
+      <attr-item tags="case:o"/>
+      <attr-item tags="case:d"/>
+    </def-attr>
+  </section-def-attrs>
 
-<section-def-attrs>
-  <def-attr n="a_nom">
-     <attr-item tags="cat:n"/>
-     <attr-item tags="cat:pn"/>
-  </def-attr>
+  <section-def-vars>
+    <def-var n="number"/>
+    <def-var n="genere"/>
+  </section-def-vars>
 
-  <def-attr n="a_prp">
-     <attr-item tags="cat:pr"/>
-  </def-attr>
+  <section-rules>
 
-  <def-attr n="a_adj">
-     <attr-item tags="cat:adj"/>
-  </def-attr>
+    <!-- Sintagmas nominales -->
 
-  <def-attr n="a_vrb">
-     <attr-item tags="vblex"/>
-  </def-attr>
+    <rule>
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="tl" part="gen"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><lit-tag v="case:d"/></tag> <!-- By default we set the case to "direct" -->
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="gen" link-to="2"/>
+              <clip pos="1" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
-  <def-attr n="a_det">
-     <attr-item tags="det.def"/>
-     <attr-item tags="det.ind"/>
-     <attr-item tags="det.pos"/>
-     <attr-item tags="det.qnt"/>
-  </def-attr>
-
-  <def-attr n="a_prn">
-     <attr-item tags="prn"/>
-     <attr-item tags="prn.itg"/>
-  </def-attr>
-
-  <def-attr n="tns">
-     <attr-item tags="pres"/>
-     <attr-item tags="pri"/>
-     <attr-item tags="imp"/>
-     <attr-item tags="aor"/>
-     <attr-item tags="fti"/>
-     <attr-item tags="past"/>
-  </def-attr>
-
-  <def-attr n="gen">
-     <attr-item tags="gen:m"/>
-     <attr-item tags="gen:f"/>
-     <attr-item tags="gen:nt"/>
-     <attr-item tags="gen:any"/>
-  </def-attr>
-
-  <def-attr n="prs">
-     <attr-item tags="p1"/>
-     <attr-item tags="p2"/>
-     <attr-item tags="p3"/>
-  </def-attr>
-
-  <def-attr n="nbr">
-     <attr-item tags="num:s"/>
-     <attr-item tags="num:p"/>
-     <attr-item tags="num:any"/>
-  </def-attr>
-
-  <def-attr n="cas">
-     <attr-item tags="case:o"/>
-     <attr-item tags="case:d"/>
-  </def-attr>
-
-</section-def-attrs>
-
-<section-def-vars>
-  <def-var n="number"/>
-  <def-var n="genere"/>
-</section-def-vars>
-
-<section-rules>
-<!-- Sintagmas nominales -->
-
-  <rule>
-     <pattern>
-       <pattern-item n="nom"/>
-     </pattern>
-     <action>
-       <out>
-         <chunk name="nom" case="caseFirstWord">
-           <tags>
-             <tag><lit-tag v="SN"/></tag>
-             <tag><clip pos="1" side="tl" part="gen"/></tag>
-             <tag><clip pos="1" side="tl" part="nbr"/></tag>
-	     <tag><lit-tag v="case:d"/></tag>
-           </tags>
-           <lu>
-             <clip pos="1" side="tl" part="lem"/>
-             <clip pos="1" side="tl" part="a_nom"/>
-             <clip pos="1" side="tl" part="gen" link-to="2"/>
-             <clip pos="1" side="tl" part="nbr" link-to="3"/>
-	     <lit-tag v="4"/>
-           </lu>
-         </chunk>
-       </out>
-     </action>
-  </rule>
-
-</section-rules>
-
+  </section-rules>
 </transfer>
