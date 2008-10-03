@@ -3,20 +3,20 @@
 
 <section-def-cats>
   <def-cat n="nom">
-     <cat-item tags="n.*"/>
-     <cat-item tags="np.*"/>
+     <cat-item tags="cat:n.*"/>
+     <cat-item tags="cat:pn.*"/>
   </def-cat>
   <def-cat n="vblex">
      <cat-item tags="vblex.*"/>
   </def-cat>
   <def-cat n="adj">
-     <cat-item tags="adj.*"/>
+     <cat-item tags="cat:adj.*"/>
   </def-cat>
   <def-cat n="prn">
      <cat-item tags="prn.*"/>
   </def-cat>
   <def-cat n="pr">
-     <cat-item tags="pr"/>
+     <cat-item tags="cat:pr"/>
   </def-cat>
   <def-cat n="det">
      <cat-item tags="det"/>
@@ -26,22 +26,16 @@
 
 <section-def-attrs>
   <def-attr n="a_nom">
-     <attr-item tags="n"/>
-     <attr-item tags="np"/>
-     <attr-item tags="np.ant"/>
-     <attr-item tags="np.top"/>
+     <attr-item tags="cat:n"/>
+     <attr-item tags="cat:pn"/>
   </def-attr>
 
   <def-attr n="a_prp">
-     <attr-item tags="pr"/>
+     <attr-item tags="cat:pr"/>
   </def-attr>
 
   <def-attr n="a_adj">
-     <attr-item tags="adj"/>
-     <attr-item tags="adj.pve"/>
-     <attr-item tags="adj.comp"/>
-     <attr-item tags="adj.sup"/>
-     <attr-item tags="adj.itg"/>
+     <attr-item tags="cat:adj"/>
   </def-attr>
 
   <def-attr n="a_vrb">
@@ -70,10 +64,10 @@
   </def-attr>
 
   <def-attr n="gen">
-     <attr-item tags="m"/>
-     <attr-item tags="f"/>
-     <attr-item tags="nt"/>
-     <attr-item tags="mf"/>
+     <attr-item tags="gen:m"/>
+     <attr-item tags="gen:f"/>
+     <attr-item tags="gen:nt"/>
+     <attr-item tags="gen:any"/>
   </def-attr>
 
   <def-attr n="prs">
@@ -83,14 +77,14 @@
   </def-attr>
 
   <def-attr n="nbr">
-     <attr-item tags="sg"/>
-     <attr-item tags="sp"/>
-     <attr-item tags="pl"/>
+     <attr-item tags="num:s"/>
+     <attr-item tags="num:p"/>
+     <attr-item tags="num:any"/>
   </def-attr>
 
   <def-attr n="cas">
-     <attr-item tags="nom"/>
-     <attr-item tags="acc"/>
+     <attr-item tags="case:o"/>
+     <attr-item tags="case:d"/>
   </def-attr>
 
 </section-def-attrs>
@@ -114,11 +108,14 @@
              <tag><lit-tag v="SN"/></tag>
              <tag><clip pos="1" side="tl" part="gen"/></tag>
              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	     <tag><lit-tag v="case:d"/></tag>
            </tags>
            <lu>
              <clip pos="1" side="tl" part="lem"/>
              <clip pos="1" side="tl" part="a_nom"/>
-             <clip pos="1" side="tl" part="nbr" link-to="2"/>
+             <clip pos="1" side="tl" part="gen" link-to="2"/>
+             <clip pos="1" side="tl" part="nbr" link-to="3"/>
+	     <lit-tag v="4"/>
            </lu>
          </chunk>
        </out>
