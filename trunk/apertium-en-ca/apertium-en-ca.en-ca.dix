@@ -90,6 +90,7 @@
     <sdef n="pron"/>
     <sdef n="apos"/>
     <sdef n="percent"/>
+    <sdef n="mon"/>
 
   </sdefs>
 
@@ -1093,7 +1094,7 @@
 
     <e><p>        <l>faithless<s n="adj"/></l>        <r>descregut<s n="adj"/></r></p></e>
 
-    <e><p>        <l>genealogical<s n="adj"/></l>        <r>geneològic<s n="adj"/></r></p></e>
+    <e><p>        <l>genealogical<s n="adj"/></l>        <r>genealògic<s n="adj"/></r></p></e>
 
     <e><p>        <l>metallic<s n="adj"/></l>        <r>metàl·lic<s n="adj"/></r></p></e>
 
@@ -2675,6 +2676,7 @@
     <e><p>        <l>tetartohedral<s n="adj"/></l>        <r>tetartoèdric<s n="adj"/></r></p></e>
 
     <e><p>        <l>presidential<s n="adj"/></l>        <r>presidencial<s n="adj"/><s n="mf"/></r></p></e>
+    <e><p>        <l>vice-presidential<s n="adj"/></l>        <r>vicepresidencial<s n="adj"/><s n="mf"/></r></p></e>
 
     <e><p>        <l>electoral<s n="adj"/></l>        <r>electoral<s n="adj"/><s n="mf"/></r></p></e>
 
@@ -35909,6 +35911,13 @@
 <!--Fi VERBS -->
 
 <!--Números i signes puntuació -->
+
+
+</section>
+
+<section id="regexp" type="standard">
+
+
 <e>  <p><l>-<s n="guio"/></l><r>-<s n="guio"/></r>  </p></e>
 <e><p><l>,<s n="cm"/></l><r>,<s n="cm"/></r></p></e>
 <e><re>[0-9]+([.,][0-9]+)?</re><p><l><s n="num"/></l><r><s n="num"/></r></p></e>
@@ -35934,8 +35943,93 @@
 	</p>
     </e>
 
-<e r="RL"><re>[0-9]+[0-9]?</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/></r></p></e>
-<e r="LR"><re>[0-9]+[0-9]?</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/><s n="GD"/><s n="ND"/></r></p></e>
+<e r="RL"><re>[0-9]+</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r></p></e>
+<e r="RL"><re>[0-9]+</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="RL"><re>[0-9]+</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r></p></e>
+<e r="RL"><re>[0-9]+</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+</re><p><l><s n="num"/><s n="ord"/></l><r><s n="num"/><s n="ord"/><s n="GD"/><s n="ND"/></r></p></e>
+
+<e><re>[A-Z][A-Z]+([A-Z])?</re><p><l><s n="n"/><s n="acr"/></l><r><s n="n"/><s n="acr"/><s n="mf"/></r></p></e>
+<e><re>[A-Z][0-9]+([0-9])?</re><p><l><s n="n"/><s n="acr"/></l><r><s n="n"/><s n="acr"/><s n="mf"/></r></p></e>
+
+
+<e>
+  <p>
+    <l>£</l>
+    <r/>
+  </p>
+  <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?</re>
+  <p>
+    <l><s n="num"/><s n="mon"/></l>
+    <r>£<s n="num"/><s n="mon"/></r>
+  </p> 
+</e>
+
+<e>
+  <p>
+    <l>$</l>
+    <r/>
+  </p>
+  <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?</re>
+  <p>
+    <l><s n="num"/><s n="mon"/></l>
+    <r>$<s n="num"/><s n="mon"/></r>
+  </p> 
+</e>
+<e>
+  <p>
+    <l>€</l>
+    <r/>
+  </p>
+  <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?</re>
+  <p>
+    <l><s n="num"/><s n="mon"/></l>
+    <r>€<s n="num"/><s n="mon"/></r>
+  </p> 
+</e>
+
+
+
+<e>
+  <p>
+    <l>£</l>
+    <r/>
+  </p>
+  <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?m</re>
+  <p>
+    <l><s n="num"/><s n="mon"/></l>
+    <r>£<s n="num"/><s n="mon"/></r>
+  </p> 
+</e>
+
+<e>
+  <p>
+    <l>$</l>
+    <r/>
+  </p>
+  <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?m</re>
+  <p>
+    <l><s n="num"/><s n="mon"/></l>
+    <r>$<s n="num"/><s n="mon"/></r>
+  </p> 
+</e>
+<e>
+  <p>
+    <l>€</l>
+    <r/>
+  </p>
+  <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?m</re>
+  <p>
+    <l><s n="num"/><s n="mon"/></l>
+    <r>€<s n="num"/><s n="mon"/></r>
+  </p> 
+</e>
+
+
+
+
+<e><re>[0-9]+[.:][0-5][0-9](pm|PM|am|AM)</re><p><l><s n="num"/></l><r><s n="num"/></r></p></e>
+
 
 
   </section>

@@ -84,6 +84,7 @@
     <sdef n="pron"/>
     <sdef n="apos"/>
     <sdef n="percent"/>
+    <sdef n="mon"/>
   </sdefs>
 
 
@@ -225,6 +226,20 @@
         </p>
       </e>
       <e>
+        <re>[13]</re>
+        <p>
+          <l>rs</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[13]</re>
+        <p>
+          <l>es</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
         <re>2</re>
         <p>
           <l>n</l>
@@ -236,6 +251,20 @@
         <p>
           <l>a</l>
          <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <re>2</re>
+        <p>
+          <l>ns</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <re>2</re>
+        <p>
+          <l>es</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
         </p>
       </e>
       <e>
@@ -253,6 +282,20 @@
         </p>
       </e>
       <e>
+        <re>4</re>
+        <p>
+          <l>ts</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <re>4</re>
+        <p>
+          <l>es</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
         <re>[5-9]</re>
         <p>
           <l>è</l>
@@ -264,6 +307,20 @@
         <p>
           <l>a</l>
          <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[5-9]</re>
+        <p>
+          <l>ns</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[5-9]</re>
+        <p>
+          <l>es</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
         </p>
       </e>
       <e>
@@ -280,7 +337,100 @@
          <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
+      <e>
+        <re>[1-9]+[0-9]+</re>
+        <p>
+          <l>ns</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[1-9]+[0-9]+</re>
+        <p>
+          <l>es</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
     </pardef>
+
+
+
+    <pardef n="acronimos">
+      <e>
+        <re>[A-Z][A-Z]+([A-Z])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="mf"/><s n="sp"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][A-Z]+([A-Z])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][A-Z]+([A-Z])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+
+      <e>
+        <re>[A-Z][0-9]+([0-9])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="mf"/><s n="sp"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][0-9]+([0-9])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[A-Z][0-9]+([0-9])?</re>
+        <p>
+          <l/>
+          <r><s n="n"/><s n="acr"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
+ <pardef n="time">
+      <e>
+        <re>[0-9]+[.:][0-5][0-9](pm|PM|am|AM)</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+
+    <pardef n="currency">
+      <e>
+        <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?[£$€]</re>
+        <p>
+          <l/>
+          <r><s n="num"/><s n="mon"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[0-9]+([. ,][0-9][0-9][0-9])*([.,][0-9]+)?m[£$€]</re>
+        <p>
+          <l/>
+          <r><s n="num"/><s n="mon"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
 
 <!--Paradigmes ADJECTIUS -->
 
@@ -64879,7 +65029,7 @@
 
 <e lm="descregut"><i>descregu</i><par n="afortuna/t__adj"/></e>
 
-<e lm="geneològic"><i>geneològi</i><par n="acadèmi/c__adj"/></e>
+<e lm="genealògic"><i>genealògi</i><par n="acadèmi/c__adj"/></e>
 
 <e lm="metàl·lic"><i>metàl·li</i><par n="acadèmi/c__adj"/></e>
 
@@ -66436,6 +66586,7 @@
 <e lm="tetartoèdric"><i>tetartoèdri</i><par n="acadèmi/c__adj"/></e>
 
 <e lm="presidencial"><i>presidencial</i><par n="abdominal__adj"/></e>
+<e lm="vicepresidencial"><i>vicepresidencial</i><par n="abdominal__adj"/></e>
 
 <e lm="electoral"><i>electoral</i><par n="abdominal__adj"/></e>
 
@@ -88657,6 +88808,15 @@
     </e> 
     <e>
       <par n="ordinals"/>
+    </e>
+    <e>
+      <par n="acronimos"/>
+    </e>
+    <e>
+      <par n="time"/>
+    </e>
+    <e>
+      <par n="currency"/>
     </e>
    
   </section>
