@@ -168,6 +168,7 @@ public class TextWidget extends javax.swing.JPanel {
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        textEditor.setFont(resourceMap.getFont("textEditor.font")); // NOI18N
         textEditor.setText(resourceMap.getString("textEditor.text")); // NOI18N
         textEditor.setMargin(new java.awt.Insets(0, 3, 0, 3));
         textEditor.setName("textEditor"); // NOI18N
@@ -206,7 +207,7 @@ public class TextWidget extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(freezeCheckBox)
-                        .addComponent(commandTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE))
+                        .addComponent(commandTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, Short.MAX_VALUE))
                     .addComponent(zoomButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))

@@ -5,6 +5,8 @@
 package apertiumview;
 
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -204,6 +206,11 @@ public class ApertiumView extends FrameView {
                 }
             }
 
+            if (textWidgetFont != null) for (TextWidget t : textWidgets) {
+                t.textEditor.setFont(textWidgetFont);        
+            }
+
+
         }
 
         TextWidget firstWithChangedCommand = null;
@@ -262,10 +269,12 @@ public class ApertiumView extends FrameView {
         markUnknownWordsCheckBox = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         loadModeMenuItem = new javax.swing.JMenuItem();
         editModesMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
+        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
+        changeFontMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
 
         mainPanel.setAutoscrolls(true);
@@ -279,8 +288,6 @@ public class ApertiumView extends FrameView {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
         fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
-        fitToTextButton.setMnemonic('I');
-        fitToTextButton.setText("Fit text");
         fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
         textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -297,22 +304,20 @@ public class ApertiumView extends FrameView {
         textWidgetsPanel.setLayout(textWidgetsPanelLayout);
         textWidgetsPanelLayout.setHorizontalGroup(
             textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 530, Short.MAX_VALUE)
+            .addGap(0, 531, Short.MAX_VALUE)
             .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE))
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE))
         );
         textWidgetsPanelLayout.setVerticalGroup(
             textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 412, Short.MAX_VALUE)
+            .addGap(0, 417, Short.MAX_VALUE)
             .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(textWidgetsPanel);
 
         copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
-        copyTextButton.setMnemonic('C');
-        copyTextButton.setText("Copy all");
         copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
         showCommandsCheckBox.setMnemonic('S');
@@ -345,7 +350,7 @@ public class ApertiumView extends FrameView {
                 .addComponent(copyTextButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fitToTextButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
         );
@@ -359,14 +364,11 @@ public class ApertiumView extends FrameView {
                     .addComponent(markUnknownWordsCheckBox)
                     .addComponent(showCommandsCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE))
         );
 
         fileMenu.setMnemonic('F');
         fileMenu.setText("File");
-
-        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
-        fileMenu.add(exitMenuItem);
 
         loadModeMenuItem.setAction(actionMap.get("loadMode")); // NOI18N
         fileMenu.add(loadModeMenuItem);
@@ -378,11 +380,18 @@ public class ApertiumView extends FrameView {
             }
         });
         fileMenu.add(editModesMenuItem);
+        fileMenu.add(jSeparator1);
+
+        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
         helpMenu.setMnemonic('V');
         helpMenu.setText("View");
+
+        changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
+        helpMenu.add(changeFontMenuItem);
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
         helpMenu.add(aboutMenuItem);
@@ -531,10 +540,12 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem changeFontMenuItem;
     private javax.swing.JButton copyTextButton;
     private javax.swing.JMenuItem editModesMenuItem;
     private javax.swing.JButton fitToTextButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JMenuItem loadModeMenuItem;
     javax.swing.JPanel mainPanel;
@@ -600,6 +611,20 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
 		JOptionPane.showMessageDialog(mainPanel,txt,"Warning", JOptionPane.WARNING_MESSAGE);
 		//JOptionPane.showMessageDialog(null,txt,"Warning", JOptionPane.WARNING_MESSAGE);
 	}
+
+    Font textWidgetFont = null;
+    
+    @Action
+    public void changeFont() {
+        FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
+        fd.setInitialFont(textWidget1.textEditor.getFont());
+        fd.setVisible(true);
+        textWidgetFont = fd.getFont();
+        for (TextWidget t : textWidgets) {
+            t.textEditor.setFont(textWidgetFont);        
+        }
+        System.out.println("f = " + textWidgetFont);
+    }
 
 
 
