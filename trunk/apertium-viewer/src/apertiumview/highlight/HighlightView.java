@@ -29,10 +29,9 @@ import javax.swing.text.WrappedPlainView;
 /**
  * Thanks: http://www.boplicity.net/confluence/display/Java/Xml+syntax+highlighting+in+Swing+JTextPane
  * 
- * 
  * Using WrappedPlainView here because we DO want line wrapping to occur.
  * 
- * @author kees
+ * @author Jacob Nordfalk
  * @date 13-jan-2006
  *
  */
