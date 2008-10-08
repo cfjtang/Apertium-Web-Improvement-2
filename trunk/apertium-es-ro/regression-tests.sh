@@ -21,7 +21,10 @@ for LINE in $LIST; do
 
 	TR=`echo $SL | apertium -d . $mode`;
 
-	if [[ `echo $TR | tr '[A-Z]' '[a-z]'` != `echo $TL | tr '[A-Z]' '[a-z]'` ]]; then 
+	UNCASEDA=`echo $TR | python2.4 -c "import sys, codecs; sys.stdout = codecs.getwriter('utf-8')(sys.stdout); sys.stdin = codecs.getreader('utf-8')(sys.stdin); print sys.stdin.read().lower();"`;
+	UNCASEDB=`echo $TL | python2.4 -c "import sys, codecs; sys.stdout = codecs.getwriter('utf-8')(sys.stdout); sys.stdin = codecs.getreader('utf-8')(sys.stdin); print sys.stdin.read().lower();"`;
+
+	if [[ `echo $UNCASEDA` != `echo $UNCASEDB` ]]; then 
 #		echo -e $mode"\t "$SL"\n☔\t-$TL\n\t+ "$TR"\n";
 		echo -e $mode"\t "$SL"\n \t-$TL\n\t+ "$TR"\n";
 	else
