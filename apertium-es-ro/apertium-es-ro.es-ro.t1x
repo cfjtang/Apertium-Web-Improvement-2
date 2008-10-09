@@ -12,14 +12,9 @@
       <cat-item tags="np.ant.*"/>
     </def-cat>
 
-    <!-- Cambios para probar wildcards en lemas -->
     <def-cat n="loc">
-      <cat-item tags="np.loc.rerg.*"/>
+      <cat-item tags="np.loc.*"/>
     </def-cat>
-    <def-cat n="loc-vocal">
-      <cat-item lemma="*a" tags="np.loc.*"/>
-    </def-cat>
-    <!-- fin -->
 
     <def-cat n="adj">
       <cat-item tags="adj.*"/>
@@ -3026,6 +3021,825 @@
     </rule>
 
 
+    <rule comment="REGLA: todo NOM de DET NOM">
+      <pattern>
+        <pattern-item n="todo"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="de"/>
+        <pattern-item n="det"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="4"/>
+          <with-param pos="5"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="mod-gen">
+          <with-param pos="4"/>
+        </call-macro>
+        <choose> <!-- todo conocimiento -->
+              <when>
+                <test>
+                  <!-- ... del niño -->
+                  <equal>
+                    <clip pos="4" side="sl" part="a_det"/>
+                    <lit-tag v="det.def"/>
+                  </equal>
+                </test>
+                <out>
+                  <chunk name="predet_det_nom_det_nomdef" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_nom"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="2.ind"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <lit v="al"/>
+                      <lit-tag v="det.def"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lemh"/>
+                      <clip pos="5" side="tl" part="a_nom"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="5" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de un niño / ...de este niño -->
+                  <or>
+                    <equal>
+                      <clip pos="4" side="sl" part="a_det"/>
+                      <lit-tag v="det.ind"/>
+                    </equal>
+                    <equal>
+                      <clip pos="4" side="sl" part="a_det"/>
+                      <lit-tag v="det.dem"/>
+                    </equal>
+                  </or>
+                </test>
+		<call-macro n="mod-gen">
+		  <with-param pos="4"/>
+		</call-macro>
+                <out>
+                  <chunk name="predet_nom_det_nom" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_nom"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="4" side="tl" part="lem"/>
+                      <clip pos="4" side="tl" part="a_det"/>
+                      <clip pos="4" side="tl" part="gen"/>
+                      <clip pos="4" side="tl" part="nbr"/>
+                      <lit-tag v="dg"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lemh"/>
+                      <clip pos="5" side="tl" part="a_nom"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                      <clip pos="5" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de mi niño -->
+                  <equal>
+                    <clip pos="4" side="sl" part="a_det"/>
+                    <lit-tag v="det.pos"/>
+                  </equal>
+                </test>
+                <call-macro n="mod-gen">
+                  <with-param pos="4"/>
+                </call-macro>
+                <out>
+                  <chunk name="predet_det_nom_adj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_nom"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lemh"/>
+                      <clip pos="5" side="tl" part="a_nom"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="5" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="4" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="4" side="tl" part="gen"/>
+                      <clip pos="4" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+        </choose>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: todo DET NOM de DET NOM">
+      <pattern>
+        <pattern-item n="todo"/>
+        <pattern-item n="det"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="de"/>
+        <pattern-item n="det"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord3">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="5"/>
+          <with-param pos="6"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <!-- los jugetes -->
+              <equal>
+                <clip pos="2" side="sl" part="a_det"/>
+                <lit-tag v="det.def"/>
+              </equal>
+            </test>
+            <call-macro n="mod-gen">
+              <with-param pos="1"/>
+            </call-macro>
+            <choose>
+              <when>
+                <test>
+                  <!-- ... del niño -->
+                  <equal>
+                    <clip pos="5" side="sl" part="a_det"/>
+                    <lit-tag v="det.def"/>
+                  </equal>
+                </test>
+                <out>
+                  <chunk name="predet_nomdef_nomdef" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de un niño / ...de este niño -->
+                  <or>
+                    <equal>
+                      <clip pos="5" side="sl" part="a_det"/>
+                      <lit-tag v="det.ind"/>
+                    </equal>
+                    <equal>
+                      <clip pos="5" side="sl" part="a_det"/>
+                      <lit-tag v="det.dem"/>
+                    </equal>
+                  </or>
+                </test>
+		<call-macro n="mod-gen">
+		  <with-param pos="5"/>
+		</call-macro>
+                <out>
+                  <chunk name="predet_nomdef_det_nom" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lem"/>
+                      <clip pos="5" side="tl" part="a_det"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="dg"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de mi niño -->
+                  <equal>
+                    <clip pos="5" side="sl" part="a_det"/>
+                    <lit-tag v="det.pos"/>
+                  </equal>
+                </test>
+                <call-macro n="mod-gen">
+                  <with-param pos="5"/>
+                </call-macro>
+                <out>
+                  <chunk name="predet_nomdef_nom_adj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+          </when>
+        </choose>
+        <choose>
+          <when>
+            <test>
+              <!-- unos jugetes / estes jugetes -->
+              <or>
+                <equal>
+                  <clip pos="2" side="sl" part="a_det"/>
+                  <lit-tag v="det.ind"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="a_det"/>
+                  <lit-tag v="det.dem"/>
+                </equal>
+              </or>
+            </test>
+            <call-macro n="mod-gen">
+              <with-param pos="1"/>
+            </call-macro>
+            <call-macro n="mod-gen">
+              <with-param pos="2"/>
+            </call-macro>
+            <choose>
+              <when>
+                <test>
+                  <!-- ... del niño -->
+                  <equal>
+                    <clip pos="5" side="sl" part="a_det"/>
+                    <lit-tag v="det.def"/>
+                  </equal>
+                </test>
+                <out>
+                  <chunk name="predet_det_nom_nomdef" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_det"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.ind"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de un niño / ...de este niño -->
+                  <or>
+                    <equal>
+                      <clip pos="5" side="sl" part="a_det"/>
+                      <lit-tag v="det.ind"/>
+                    </equal>
+                    <equal>
+                      <clip pos="5" side="sl" part="a_det"/>
+                      <lit-tag v="det.dem"/>
+                    </equal>
+                  </or>
+                </test>
+		<call-macro n="mod-gen">
+		  <with-param pos="5"/>
+		</call-macro>
+                <out>
+                  <chunk name="predet_det_nom_det_nom" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_det"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lem"/>
+                      <clip pos="5" side="tl" part="a_det"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="dg"/>
+                    </lu>
+                    <b pos="4"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de mi niño -->
+                  <equal>
+                    <clip pos="5" side="sl" part="a_det"/>
+                    <lit-tag v="det.pos"/>
+                  </equal>
+                </test>
+                <call-macro n="mod-gen">
+                  <with-param pos="5"/>
+                </call-macro>
+                <out>
+                  <chunk name="predet_det_nom_nom_adj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_det"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="4"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+          </when>
+        </choose>
+        <choose>
+          <when>
+            <test>
+              <!-- mis jugetes -->
+              <equal>
+                <clip pos="2" side="sl" part="a_det"/>
+                <lit-tag v="det.pos"/>
+              </equal>
+            </test>
+            <call-macro n="mod-gen">
+              <with-param pos="2"/>
+            </call-macro>
+            <call-macro n="mod-gen">
+              <with-param pos="1"/>
+            </call-macro>
+            <choose>
+              <when>
+                <test>
+                  <!-- ... del niño -->
+                  <equal>
+                    <clip pos="5" side="sl" part="a_det"/>
+                    <lit-tag v="det.def"/>
+                  </equal>
+                </test>
+                <out>
+                  <chunk name="predet_nomdef_adj_nomdef" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de un niño / ...de este niño -->
+                  <or>
+                    <equal>
+                      <clip pos="5" side="sl" part="a_det"/>
+                      <lit-tag v="det.ind"/>
+                    </equal>
+                    <equal>
+                      <clip pos="5" side="sl" part="a_det"/>
+                      <lit-tag v="det.dem"/>
+                    </equal>
+                  </or>
+                </test>
+		<call-macro n="mod-gen">
+		  <with-param pos="5"/>
+		</call-macro>
+                <out>
+                  <chunk name="predet_nomdef_adj_det_nom" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lem"/>
+                      <clip pos="5" side="tl" part="a_det"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="dg"/>
+                    </lu>
+                    <b pos="4"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <!-- ...de mi niño -->
+                  <equal>
+                    <clip pos="5" side="sl" part="a_det"/>
+                    <lit-tag v="det.pos"/>
+                  </equal>
+                </test>
+                <call-macro n="mod-gen">
+                  <with-param pos="5"/>
+                </call-macro>
+                <out>
+                  <chunk name="predet_nomdef_adj_nomdef_adj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><var n="caso"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_det"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="2"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_nom"/>
+                      <clip pos="3" side="tl" part="gen"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <lit-tag v="2.def"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <clip pos="2" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                    <b pos="3"/>
+                    <lu>
+                      <clip pos="6" side="tl" part="lemh"/>
+                      <clip pos="6" side="tl" part="a_nom"/>
+                      <clip pos="6" side="tl" part="gen"/>
+                      <clip pos="6" side="tl" part="nbr"/>
+                      <lit-tag v="dg.def"/>
+                      <clip pos="6" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="4"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lem"/>
+                      <lit-tag v="adj.pos"/>
+                      <clip pos="5" side="tl" part="gen"/>
+                      <clip pos="5" side="tl" part="nbr"/>
+                      <lit-tag v="nom.ind"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+            </choose>
+          </when>
+        </choose>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: DET NUM NOM">
       <pattern>
@@ -3791,33 +4605,6 @@
         </out>
       </action>
     </rule>
-
-    <rule comment="REGLA: TOPÒNIM">
-      <pattern>
-        <pattern-item n="loc-vocal"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="loc" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><var n="caso"/></tag>
-            </tags>
-            <lu>
-        	<clip pos="1" side="tl" part="lem"/>
-        	<lit-tag v="np.loc"/>
-                <clip pos="1" side="tl" part="gen"/>
-                <clip pos="1" side="tl" part="nbr"/>
-		<lit-tag v="2.def"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule>
-
 
     <rule comment="REGLA: TOPÒNIM">
       <pattern>
