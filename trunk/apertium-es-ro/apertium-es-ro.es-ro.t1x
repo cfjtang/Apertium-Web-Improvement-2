@@ -12,10 +12,6 @@
       <cat-item tags="np.ant.*"/>
     </def-cat>
 
-    <def-cat n="loc-V">
-      <cat-item lemma="*a" tags="np.loc.*"/>
-    </def-cat>
-
     <def-cat n="loc">
       <cat-item tags="np.loc.*"/>
     </def-cat>
@@ -5330,34 +5326,6 @@
         </out>
       </action>
     </rule>
-
-    <rule comment="REGLA: TOPÒNIM">
-      <pattern>
-        <pattern-item n="loc-V"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="loc" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><var n="caso"/></tag>
-            </tags>
-            <lu>
-        	<clip pos="1" side="tl" part="lem"/>
-        	<lit-tag v="np.loc"/>
-                <clip pos="1" side="tl" part="gen"/>
-                <clip pos="1" side="tl" part="nbr"/>
-		<lit-tag v="2.def"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule>
-
-
 
     <rule comment="REGLA: TOPÒNIM">
       <pattern>
