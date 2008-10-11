@@ -4,6 +4,9 @@ DELIMITERS            = (sent);
 LIST NC               = (n);
 LIST NP               = (np top) (np ant) (np cog) (np al);
 
+# Adjectives
+LIST Adj              = (adj);
+
 # Pronouns
 LIST PrnSubj          = (prn subj);
 LIST PrnDObj          = ("direct" prn obj);
@@ -87,7 +90,9 @@ SELECT Prep IF (-1 Vbloc);
 
 SELECT VpartGer IF (1 VbInf);
 
+# REGLA (B0009): "Geriadur digor ha frank"
 
+SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
 
 
 SECTION
