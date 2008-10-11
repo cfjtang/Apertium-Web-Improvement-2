@@ -4,6 +4,8 @@ DELIMITERS            = (sent);
 LIST NC               = (n);
 LIST NP               = (np top) (np ant) (np cog) (np al);
 
+SET  N                = NC | NP;
+
 # Numerals
 LIST Num              = (num);
 
@@ -44,8 +46,8 @@ LIST Vbloc            = (vbloc);
 LIST Vblex            = (vblex);
 LIST Vbser            = (vbser);
 
-LIST VbImp            = (vblex imp);
-LIST VbInf            = (vblex inf);
+LIST VerbImp          = (vblex imp);
+LIST VerbInf          = (vblex inf);
 
 LIST TempsFin         = (pri) (pii) (past) (fti);
 
@@ -106,7 +108,7 @@ SELECT VpartIDO IF ((-1 PrnIObj) OR (-1 Adv));
 
 # REGLA (B0003): "na ganit ket"
 
-SELECT VpartNegImp IF (1 VbImp);
+SELECT VpartNegImp IF (1 VerbImp);
 
 # REGLA (B0004): "a had"
 
@@ -114,7 +116,7 @@ SELECT Verb IF (-1 Vpart);
 
 # REGLA (B0005): "na ganit ket"
 
-SELECT VbImp IF (-1 VpartNegImp);
+SELECT VerbImp IF (-1 VpartNegImp);
 
 # REGLA (B0006): "emañ e Brest"
 
@@ -122,7 +124,7 @@ SELECT Prep IF (-1 Vbloc);
 
 # REGLA (B0008): "edo o vervel"
 
-SELECT VpartGer IF (1 VbInf);
+SELECT VpartGer IF (1 VerbInf);
 
 # REGLA (B0009): "Geriadur digor ha frank"
 
@@ -135,6 +137,14 @@ REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 # REGLA (B0011): "Stad da lod"
 
 REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
+
+# REGLA (B0012): "An dud a zeu da Roazhon"
+
+REMOVE VerbFin IF (0 Det) (1 NC)
+
+# REGLA (B0013): "Me am eus kanet"
+
+REMOVE VerbImp IF (-1 VerbFin);
 
 SECTION
 
