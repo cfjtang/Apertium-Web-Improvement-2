@@ -18,8 +18,8 @@ LIST Adj              = (adj);
 
 # Pronouns
 LIST PrnSubj          = (prn subj);
-LIST PrnDObj          = ("direct" prn obj);
-LIST PrnIObj          = ("indirect" prn obj) (+indirect);  # Lemmas from sub-readings are expressed as tags and prefixed with '+'
+LIST PrnDObj          = ("direct"ri prn obj);
+LIST PrnIObj          = ("indirect"ri prn obj) (+indirect);  # Lemmas from sub-readings are expressed as tags and prefixed with '+'
 
 SET Prn               = PrnSubj | PrnDObj | PrnIObj;
 
@@ -36,7 +36,7 @@ LIST Vpart            = (vpart);
 LIST VpartSDO         = ("a" vpart);
 LIST VpartIDO         = ("e" vpart);
 LIST VpartNeg         = (vpart neg);
-LIST VpartGer         = (vpart geri);
+LIST VpartGer         = (vpart ger);
 LIST VpartNegImp      = ("na" vpart neg);
 
 # Verbs
@@ -134,7 +134,7 @@ REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
 # REGLA (B0011): "Stad da lod"
 
-REMOVE PrnDObj IF (NOT -1 VerbFin LINK NOT 1 VerbFin)
+REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
 
 SECTION
 
