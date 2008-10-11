@@ -69,6 +69,8 @@ LIST HardMut          = ("<k.*>"ri "g.*"ri) ("<t.*>"ri "d.*"ri) ("<p.*>"ri "b.*"
 LIST MixedMut         = ("<c’h.*>"ri "g.*"ri) ("<w.*>"ri "gw.*"ri) ("<t.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri); 
 
 LIST HardMutTrigger   = ("ho" det pos) ("e" +da det pos);
+LIST AspMutTrigger    = ("o" det pos) ("va" det pos) ("he" det pos) ("peder" num f) ("pevar" num m) ("teir" num f) 
+                        ("tri" num m) ("nav" num) ;
 
 # Orthography
 LIST DroppedG         = ("<[aeiou].*>"r "g[aeiou].*"ri);
@@ -153,3 +155,15 @@ SELECT HardMut IF (-1 HardMutTrigger);
 
 # REGLA (A0006): "ez di"
 SELECT HardMutTrigger IF (1 HardMut);
+
+# REGLA (A0007): "o deus kanet"
+REMOVE HardMut IF (NOT -1 HardMutTrigger);
+
+# REGLA (A0008): "nemet peder flanedenn"
+SELECT AspMut IF (-1 AspMutTrigger);
+
+# REGLA (A0009): "nemet peder flanedenn"
+SELECT AspMutTrigger IF (1 AspMut);
+
+# REGLA (A0009): ""
+REMOVE AspMut IF (NOT -1 AspMutTrigger);
