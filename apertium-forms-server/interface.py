@@ -110,7 +110,7 @@ class Interface: #{
 		reverse_left_paradigms  = [];
 		
 		for comp in post_data['left_paradigms'].keys():
-		  reverse_left_paradigms[comp] = post_data['left_paradigms'][comp];
+		  reverse_left_paradigms[post_data['left_paradigms'][comp]] = comp;
 
 		for paradigm in post_data['left_paradigms']: #{
 			ordered_list_paradigms_left.append(paradigm[::-1]);
