@@ -104,7 +104,18 @@ class Interface: #{
 		print '          </div>';
 		print '          <div class="left">';
                 print '            <select name="left_paradigm">';
-                for left_p in post_data['left_paradigms']: #{
+
+		ordered_list_paradigms_left = [];
+
+		for paradigm in post_data['left_paradigms']: #{
+			ordered_list_paradigms_left.append(paradigm[::-1]);
+		#}
+	
+		ordered_list_paradigms_left.sort();
+
+		for left_p in ordered_list_paradigms_left:
+			left_p = left_p[::-1];
+
                         if post_data['left_display_mode'] == 'list' and left_p not in post_data['left_glosses']: #{
                                 continue;
 			#}
@@ -227,7 +238,17 @@ class Interface: #{
 		print '        </div>';
                 print '        <div class="left">';
                 print '          <select name="right_paradigm">';
-                for right_p in post_data['right_paradigms']: #{
+
+		ordered_list_paradigms_right = [];
+
+		for paradigm in post_data['right_paradigms']: #{
+			ordered_list_paradigms_right.append(paradigm[::-1]);
+		#}
+	
+		ordered_list_paradigms_right.sort();
+
+		for right_p in ordered_list_paradigms_right: #{
+			right_p = right_p[::-1];
                         if post_data['right_display_mode'] == 'list' and right_p not in post_data['right_glosses']: #{
                                 continue;
                         #}
