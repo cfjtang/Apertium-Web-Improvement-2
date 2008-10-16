@@ -1,0 +1,36 @@
+QUICKSTART
+
+0. REQUIREMENTS
+
+0.a. You need Apertium installed on your server (online translation is not yet implemented).
+
+1. INSTALL
+
+1.a. Upload the 'apertium-blog-translation' directory to 'plugins' directory.
+1.b. Log in WordPress and activate the plugin.
+
+2. PHP/HTML CODE
+
+2.a. TITLE ID
+   
+id="theTitle<?php the_ID(); ?>"
+
+<a id="theTitle<?php the_ID(); ?>" href="<?php echo get_permalink() ?>" rel="bookmark" ><?php the_title(); ?></a>
+
+2.b. POST CONTENT ID
+
+Wrap the 'the_content(...)' function with <div id="entry<?php the_ID(); ?>">...</div> as follows:
+
+<?php
+	// the content itself!
+	the_content(__('Read the rest of this entry', 'mandigo') .' &raquo;');
+?>
+</div>
+
+2.c. TRANSLATION FUNCTION
+
+<?php
+	if (function_exists('apertiumPostTranslation')) { 
+		apertiumPostTranslation($post->ID);
+	}
+?>
