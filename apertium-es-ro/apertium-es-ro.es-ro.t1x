@@ -7585,8 +7585,85 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+	<choose>
+          <when>
+            <test>
+	      <or>
+                <equal>
+                  <clip pos="1" side="tl" part="temps"/>
+	          <lit-tag v="pii"/>
+	        </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="temps"/>
+	          <lit-tag v="ifi"/>
+	        </equal>
+	      </or>
+	    </test>
+	    <let>
+              <var n="verbfinal"/>
+	      <concat>
+                <lit v="avea"/>
+		<lit-tag v="vbavea.pri"/>
+		<clip pos="1" side="tl" part="pers"/>
+		<clip pos="1" side="tl" part="nbr"/>
+	        <lit v="$ ^"/>
+	        <lit v="trebui"/>
+	        <lit-tag v="vbmod.pp.mn.sg"/>
+	      </concat>
+	    </let>
+	  </when>
+          <when>
+            <test>
+                <equal>
+                  <clip pos="1" side="tl" part="temps"/>
+	          <lit-tag v="cni"/>
+	        </equal>
+	    </test>
+	    <let>
+              <var n="verbfinal"/>
+	      <concat>
+                <lit v="avea"/>
+		<lit-tag v="vbavea.cni"/>
+		<clip pos="1" side="tl" part="pers"/>
+		<clip pos="1" side="tl" part="nbr"/>
+	        <lit v="$ ^"/>
+	        <lit v="trebui"/>
+	        <lit-tag v="vbmod.pri.p3.sg"/>
+	      </concat>
+	    </let>
+	  </when>
+          <when>
+            <test>
+                <equal>
+                  <clip pos="1" side="tl" part="temps"/>
+	          <lit-tag v="fti"/>
+	        </equal>
+	    </test>
+	    <let>
+              <var n="verbfinal"/>
+	      <concat>
+                <lit v="vrea"/>
+		<lit-tag v="vaux.pri"/>
+		<clip pos="1" side="tl" part="pers"/>
+		<clip pos="1" side="tl" part="nbr"/>
+	        <lit v="$ ^"/>
+	        <lit v="trebui"/>
+	        <lit-tag v="vbmod.pri.p3.sg"/>
+	      </concat>
+	    </let>
+	  </when>
+          <otherwise>
+	    <let>
+              <var n="verbfinal"/>
+	      <concat>
+	        <lit v="trebui"/>
+	        <lit-tag v="vbmod.pri.p3.sg"/>
+	      </concat>
+	    </let>
+	  </otherwise>
+	</choose>
         <out>
-          <chunk name="trebuie_să_verbpers" case="caseFirstWord">
+          <chunk name="trebui_să_verbpers" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="1" side="tl" part="a_verb"/></tag>
@@ -7595,10 +7672,7 @@
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
-	      <lit v="trebui"/>
-	      <lit-tag v="vbmod"/>
-	      <clip pos="1" side="tl" part="temps"/> 
-	      <lit-tag v="p3.sg"/>
+	      <var n="verbfinal"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu>
