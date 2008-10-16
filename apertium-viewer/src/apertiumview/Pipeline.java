@@ -48,7 +48,12 @@ public class Pipeline {
     
     void queueAsyncProcessing(TextWidget sourceWidget, int priority, String input, TextWidget recieverWidget) {
         //System.out.println("q"+priority+" "+sourceWidget.getText());
-        if (nextTask != null && nextTask.priority<priority) return; // too low priority
+        if (nextTask != null) {
+          if (nextTask.startTime>System.currentTimeMillis()+5000) {
+            nextTask.proces.destroy(); // task probably runned amok
+          } else 
+          if (nextTask.priority<priority) return;  // too low priority, ignore new task
+        }
 
         PipelineTask t = new PipelineTask();
         t.priority = priority;
@@ -77,12 +82,19 @@ public class Pipeline {
         private OutputStreamWriter osw;
         private Process proces;
         private TextWidget recieverWidget;
+        public long startTime = System.currentTimeMillis();
         public int priority = Integer.MAX_VALUE;
 
         public void run() {
             try {
             PipelineTask t = this;
             t.proces = Runtime.getRuntime().exec(t.execstr);
+/*
+            t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream(),"UTF-8"));
+            t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream(),"UTF-8"));
+            t.osw = new OutputStreamWriter(t.proces.getOutputStream(),"UTF-8");            
+
+ */
             t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream()));
             t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream()));
             t.osw = new OutputStreamWriter(t.proces.getOutputStream());            
