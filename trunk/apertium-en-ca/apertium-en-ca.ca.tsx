@@ -849,6 +849,10 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETM"/>
       <label-item label="VHABERPFCI"/>
     </label-sequence>
     <label-sequence>
@@ -936,6 +940,10 @@
       <label-item label="VSERGER"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="DETf"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="DETF"/>
       <label-item label="VHABERPFCI"/>
     </label-sequence>
@@ -1022,6 +1030,10 @@
     <label-sequence>
       <label-item label="DETMF"/>
       <label-item label="VSERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERPARTPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETMF"/>
