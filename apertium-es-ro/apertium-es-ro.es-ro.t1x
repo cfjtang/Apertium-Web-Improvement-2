@@ -421,10 +421,14 @@
       <attr-item tags="tn.ref"/>
       <attr-item tags="itg"/>
       <attr-item tags="pos"/>
+      <attr-item tags="ref"/>
+      <attr-item tags="enc"/>
       <attr-item tags="tn.pos"/>
     </def-attr>
 
     <def-attr n="tipoenc_pro">
+      <attr-item tags="ref"/>
+<!--
       <attr-item tags="ref.p3.mf.sp"/>
       <attr-item tags="p1.mf.pl"/>
       <attr-item tags="p1.mf.sg"/>
@@ -439,6 +443,7 @@
       <attr-item tags="p3.nt"/>
       <attr-item tags="mf.sg"/>
       <attr-item tags="adv"/>
+-->
     </def-attr>
 
     <def-attr n="pers">
@@ -7741,6 +7746,94 @@
 
     <!-- **************** AMB PRONOMS ************************* -->
 
+    <rule comment="REGLA: IMP prnenc">
+      <pattern>
+        <pattern-item n="imp"/>
+        <pattern-item n="prnenc"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="inf" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><lit-tag v="sg"/></tag>
+            </tags>
+	    <mlu>
+              <lu>
+                <clip pos="1" side="tl" part="whole"/>
+              </lu>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+		<clip pos="2" side="tl" part="a_prn"/>
+		<clip pos="2" side="tl" part="tipus_prn"/>
+                <clip pos="2" side="tl" part="pers"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+	        <lit-tag v="nom"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </lu>
+	    </mlu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: IMP prnenc prnenc">
+      <pattern>
+        <pattern-item n="imp"/>
+        <pattern-item n="prnenc"/>
+        <pattern-item n="prnenc"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="inf" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><lit-tag v="sg"/></tag>
+            </tags>
+	    <mlu>
+              <lu>
+                <clip pos="1" side="tl" part="whole"/>
+              </lu>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+		<clip pos="2" side="tl" part="a_prn"/>
+		<clip pos="2" side="tl" part="tipus_prn"/>
+                <clip pos="2" side="tl" part="pers"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+	        <lit-tag v="dg"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </lu>
+              <lu>
+                <clip pos="3" side="tl" part="lemh"/>
+		<clip pos="3" side="tl" part="a_prn"/>
+		<clip pos="3" side="tl" part="tipus_prn"/>
+                <clip pos="3" side="tl" part="pers"/>
+                <clip pos="3" side="tl" part="gen"/>
+                <clip pos="3" side="tl" part="nbr"/>
+	        <lit-tag v="nom"/>
+                <clip pos="3" side="tl" part="lemq"/>
+              </lu>
+	    </mlu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: INF prnenc">
       <pattern>
         <pattern-item n="inf"/>
@@ -7769,7 +7862,7 @@
               <clip pos="2" side="tl" part="pers"/>
               <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
-	      <lit-tag v="dg"/>
+	      <lit-tag v="nom"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
 	    <b/>
@@ -7797,12 +7890,14 @@
         <out>
           <chunk name="pro" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="prnpro"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="tipoenc_pro"/>
-              </tag>
+              <tag><lit-tag v="prn.pro"/></tag>
+	      <!--
+              <tag><clip pos="1" side="tl" part="tipoenc_pro"/></tag>
+	      -->
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><lit-tag v="nom"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
@@ -7811,6 +7906,7 @@
               <clip pos="1" side="tl" part="pers"/>
               <clip pos="1" side="tl" part="gen"/>
               <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="6"/>
             </lu>
           </chunk>
         </out>
@@ -7821,7 +7917,46 @@
       </action>
     </rule>
 
-   
+    <rule comment="prnenc">
+<!--per quan va seguit d'un verb desconegut-->
+      <pattern>
+        <pattern-item n="prnenc"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="enc" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="prn.enc"/></tag>
+	      <!--
+              <tag><clip pos="1" side="tl" part="tipoenc_pro"/></tag>
+	      -->
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><lit-tag v="nom"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="prn.enc"/>
+              <clip pos="1" side="tl" part="tipoenc_pro"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="6"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    
 
     <rule comment="PRN personal que pot ser subjecte">
       <pattern>
