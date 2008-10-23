@@ -96,6 +96,7 @@
   <def-label name="NOMSG">
     <tags-item tags="n.sg"/>
     <tags-item tags="n.acr.sg"/>
+    <tags-item tags="n.acr.sp"/>
     <tags-item tags="n.unc.sg"/>
   </def-label>
   <def-label name="NOMPL">
@@ -103,6 +104,7 @@
     <tags-item tags="n.acr.pl"/>
     <tags-item tags="n.unc.pl"/>
   </def-label>
+  
   <def-label name="INTERJ">
     <tags-item tags="ij"/>
   </def-label>
@@ -930,7 +932,10 @@
     </enforce-after> -->
 
 
- 
+ <preferences>
+   <prefer tags="n.acr.sg"/>
+ </preferences>
+
    
 
  </enforce-rules>
