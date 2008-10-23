@@ -1,8 +1,12 @@
 DELIMITERS            = (sent);
 
+LIST BOS              = (>>>);
+LIST EOS              = (<<<);
+
 # Nouns
 LIST NC               = (n);
 LIST NP               = (np top) (np ant) (np cog) (np al);
+LIST Toponim          = (np top);
 
 SET  N                = NC | NP;
 
@@ -74,6 +78,14 @@ LIST HardMutTrigger   = ("ho" det pos) ("e" +da det pos);
 LIST AspMutTrigger    = ("o" det pos) ("va" det pos) ("he" det pos) ("peder" num f) ("pevar" num m) ("teir" num f) 
                         ("tri" num m) ("nav" num) ;
 
+                        # Missing: "tra" (while), "seul" (all the more), "re" (too), "re" (those, ones)
+			# "en em" reflexive particle, "en ur" while, 
+
+LIST SoftMutTrigger   = ("a" vpart) ("a" pr) ("aba" adv) ("da" pr) ("ez" vpart) ("hanter" adj) ("holl" adj)
+                        ("da" det pos) ("daou" num m) ("div" num f) ("dindan" adv) ("diwar" pr) ("dre" pr)
+                        ("e" det pos m) ("na" vpart neg) ("ne" vpart neg) ("pa" cnjsub) ("pe" cnjcoo) 
+                        ("pe" adv itg) ("ra" vpart opt) ("re" adj) ("war" pr); 
+
 # Orthography
 LIST DroppedG         = ("<[aeiou].*>"r "g[aeiou].*"ri);
 
@@ -99,66 +111,80 @@ SET S-BOUNDARY = CS | (sent) ;
 SECTION
 
 # REGLA (B0001): "me a had"
-
 SELECT VpartSDO IF ((-1 PrnSubj) OR (-1 PrnDObj));
 
 # REGLA (B0002): "eviti e laboure"
-
 SELECT VpartIDO IF ((-1 PrnIObj) OR (-1 Adv));
 
 # REGLA (B0003): "na ganit ket"
-
 SELECT VpartNegImp IF (1 VerbImp);
 
 # REGLA (B0004): "a had"
-
-SELECT Verb IF (-1 Vpart);
+#SELECT Verb IF (-1 Vpart);
 
 # REGLA (B0005): "na ganit ket"
-
 SELECT VerbImp IF (-1 VpartNegImp);
 
 # REGLA (B0006): "emañ e Brest"
-
 SELECT Prep IF (-1 Vbloc);
 
 # REGLA (B0008): "edo o vervel"
-
 SELECT VpartGer IF (1 VerbInf);
 
-# REGLA (B0009): "Geriadur digor ha frank"
+# REGLA (B0015): "o chom e Roazhon"
+SELECT VerbInf IF (-1 VpartGer);
 
+# REGLA (B0009): "Geriadur digor ha frank"
 SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
 
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
-
 REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
 # REGLA (B0011): "Stad da lod"
-
 REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
 
 # REGLA (B0012): "An dud a zeu da Roazhon"
-
 REMOVE VerbFin IF (0 Det) (1 NC)
 
 # REGLA (B0013): "Me am eus kanet"
-
 REMOVE VerbImp IF (-1 VerbFin);
 
-SECTION
+# REGLA (B0014): "Yann a zeuy"
+SELECT Vpart IF (1 VerbFin);
 
-# REGLA (A0001): 
-SELECT SoftMut IF (-1 Vpart);
+# REGLA (B0016): >The particle is omitted before every form of 'endevout' and the locative forms of 'bezañ'
+REMOVE Vpart IF (1 ("endevout" vblex));
+REMOVE Vpart IF (1 Vbloc);
+
+# REGLA (B0017): >The particle is omitted before verbal nouns and imperatives
+REMOVE Vpart IF ((1 VerbInf) OR (1 VerbImp));
+
+# REGLA (B0018): 
+REMOVE Vpart IF (*-1 VerbFin BARRIER Vpart);
+
+# REGLA (B0019): "o chom e Roazhon"
+REMOVE PrnDObj IF (-1 VerbInf);
+
+# REGLA (B0020): "Ni a ro al laezh"
+SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj)
+
+# REGLA (B0021): >The particle is omitted before verbal nouns and imperatives
+REMOVE VerbInf IF (-1 Vpart) (0 VerbFin);
+REMOVE VerbImp IF (-1 Vpart) (0 VerbFin);
+
+SECTION
 
 # REGLA (A0002): "hi a oar"
 SELECT DroppedG IF (-1 Vpart);
 
 # REGLA (A0003): "na ganit ket"
-SELECT SoftMut IF (-1 VpartNeg);
+SELECT SoftMut IF (-1 SoftMutTrigger);
 
 # REGLA (A0004): "emañ e Brest"
-REMOVE SoftMut IF (-1 Prep);
+REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
+
+# REGLA (A0006): ""
+SELECT SoftMutTrigger IF (1 SoftMut);
 
 # REGLA (A0005): "ez di"
 SELECT HardMut IF (-1 HardMutTrigger);
@@ -177,3 +203,13 @@ SELECT AspMutTrigger IF (1 AspMut);
 
 # REGLA (A0009): ""
 REMOVE AspMut IF (NOT -1 AspMutTrigger);
+
+SECTION
+
+# REGLA (C0001): "o chom e Roazhon"
+REMOVE DetPos IF (1 Toponim);
+
+# REGLA (C0002): "zeu da Gwengamp"
+REMOVE PrnDObj IF (1 Toponim);
+
+REMOVE (obj) IF (-1 BOS);
