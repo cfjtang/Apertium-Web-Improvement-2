@@ -46,9 +46,12 @@
   <def-label name="CNJADV">
     <tags-item tags="cnjadv"/>
   </def-label>
-  <def-label name="DETQNT_ORD">
+  <def-label name="DETQNT">
     <tags-item tags="det.qnt.*"/>
+  </def-label> 
+  <def-label name="DETORD_ADJANT">
     <tags-item tags="det.ord.*"/>
+    <tags-item tags="adjant.*"/>
   </def-label> 
  <!-- <def-label name="DETNT" closed="true">
     <tags-item tags="detnt"/>
@@ -140,7 +143,7 @@
     <tags-item tags="prn.pro.*"/>
   </def-label>
   <def-label name="VA"><!--Afegit 10/11/05 MG -->
-    <tags-item lemma ="anar" tags="vblex.pri.*"/>
+    <tags-item lemma="anar" tags="vblex.pri.*"/>
   </def-label>
   <def-label name="VLEXINF">
     <tags-item tags="vblex.inf"/>
@@ -1720,6 +1723,116 @@
       <label-item label="VMODALIMP"/>
       <label-item label="QUEREL"/>
     </label-sequence>
+
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="PREP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VOLERMOD"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VOLERLEX"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VA"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VLEXINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VLEXGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VLEXPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VLEXIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VLEXSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VSERINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VHABERINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VHABERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VHABERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VHABERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VHABERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VMODALGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VMODALPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VMODALIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VMODALSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+
 
 
   
