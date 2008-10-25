@@ -176,6 +176,7 @@
 	}
 
 	$body = false;
+	$escaped = false;
 	$line = "";
 
 	// Remove the first SENT symbol
@@ -222,6 +223,7 @@
 		// Superblanks are formatting, just send them on their way
 		if($c == '[') {
 			$end = false;
+			$escaped = false;
 			while($end == false) {
 				$c = fread($fd, 1);
 
@@ -229,15 +231,16 @@
 				// just read past it. Removing this causes problems like
 				// inserting popups inside tags
 				if($c == '\\') {
-					fwrite($fdo, $c);
-					$c = fread($fd, 2);
+					$escaped = true;
+					$c = fread($fd, 1);
 				}
 
-				if($c == ']') {
+				if($c == ']' && $escaped == false) {
 					fwrite($fdo, $c);
 					$end = true;
 				}
 				fwrite($fdo, $c);
+				$escaped = false;
 			}
 		}
 
@@ -247,9 +250,11 @@
 		}
 
 
+		$escaped = false;
 		$c = fread($fd, 1);
 		
 		if($c == '\\') {
+			$escaped = true;
 			$c = fread($fd, 1);
 		}
 	}
@@ -272,5 +277,5 @@
 	fclose($fd);
 
 	unlink($infile);
-	unlink($outfile);
+//	unlink($outfile);
 ?>
