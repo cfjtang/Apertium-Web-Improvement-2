@@ -277,5 +277,5 @@
 	fclose($fd);
 
 	unlink($infile);
-//	unlink($outfile);
+	unlink($outfile);
 ?>
