@@ -1,0 +1,43 @@
+                           Geriaoueg
+
+Browse webpages with hoverover boxes with translations.
+
+==Requirements==
+
+* Apertium (for apertium-deshtml and apertium-rehtml)
+* lttoolbox (for lt-proc)
+* turl (see below)
+
+==Directories==
+
+analysers/	Contains compiled analysers in lt-proc format
+wordlists/	Contains wordlists, tab separated
+styles/		CSS guff
+js/		Contains the javascript
+
+==Files==
+
+cabecera.php: 	Some miscellaneous functions
+index.php: 	The main page
+margen.php: 	The header of each page while browsing
+navegador.php: 	The frameset 
+README: 	This file
+tradurl.php: 	Performs the insertion of hoverboxes
+turl: 		A program for re-writing <a> and <img> links in HTML
+turl.c: 	C++ source for turl, generated from turl.c
+turl.l: 	Lexer for turl.c
+Makefile:	A Makefile for compiling turl
+
+==How it works==
+
+You start off with calling index.php, fills in the data, posts it to
+navegador.php, this then calls margen.php (for the header with the 
+URL box) and tradurl.php. 
+
+The actual page-getting and mangling is done by tradurl.php, with help
+from turl to rewrite the URLs.
+
+==Acknowledgements==
+
+This is heavily based on the "Surf and translate" script in the Apertium
+website.
