@@ -9,7 +9,7 @@
 <body>
  <h1 id="web" style="border-top: none; padding-top: 0;">Geriaoueg</h1>
  <p/>
- <div style="width: 80%; margin-left: 10%; margin-right: 10%;">
+ <div style="width: 60%; margin-left: 20%; margin-right: 20%;">
    <form action="navegador.php" method="post" style="padding: 3px">
      <fieldset>
 <!--
@@ -29,11 +29,12 @@
 					value="br-fr" 
 					title="Breton pages with French glosses"
 					checked/>Breton → French
+<!--
 				<input  type="radio" 
 					name="direccion" 
 					value="br-nl" 
 					title="Breton pages with Dutch glosses"
-					/>Breton → Dutch
+					/>Breton → Dutch -->
 				<input  type="radio" 
 					name="direccion" 
 					value="cy-en"
@@ -57,5 +58,19 @@
       </form>
       </div>
     </div>
+ <div style="width: 60%; margin-left: 20%; margin-right: 20%; text-align: justify">
+ <h3>Acknowledgements</h3>
+ The data for Breton come from Tomaz Jacquet's <a href="http://www.freelang.com/dictionnaire/breton.html">dictionary</a>.
+ For Welsh, the data come from the <a href="http://www.cymraeg.org.uk">apertium-cy</a> machine translation system, with thanks
+ to Kevin Donnelly. The morphological
+ analysers for Breton and Welsh can be found online <a href="http://xixona.dlsi.ua.es/~fran/breton/">here</a> and 
+ <a href="http://xixona.dlsi.ua.es/~fran/welsh/">here</a>. The source code for this site is freely available under the
+ <a href="http://www.gnu.org/licences/gpl.html">GNU GPL</a> and may be downloaded from the Apertium 
+ <a href="http://wiki.apertium.org/wiki/SVN">subversion repository</a> as the module <code>apertium-tools/geriaoueg</code>.
+
+</div>
+ <div style="width: 60%; margin-left: 20%; margin-right: 20%; font-size: 80%; text-align: center; margin-top: 10em; color: #bbbbbb;">
+Copyright &copy; 2007&mdash;2008 Francis Tyers 
+</div>
   </body>
 </html>
