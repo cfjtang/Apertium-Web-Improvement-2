@@ -175,7 +175,7 @@
 				$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[strtolower($lemma)];
 			}
 			if($count < (sizeof($lemmata) - 1)) {
-				$body = $body . " <b>·<\/b> ";
+				$body = $body . " <b>&middot;<\/b> ";
 			}
 			$count++;
 		}
@@ -295,6 +295,6 @@
 	fclose($fdo);
 	fclose($fd);
 
-//	unlink($infile);
-//	unlink($outfile);
+	unlink($infile);
+	unlink($outfile);
 ?>
