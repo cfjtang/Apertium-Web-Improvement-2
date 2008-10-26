@@ -95,7 +95,7 @@
 	$dirbase = $dirbase . $puerto . "/" . $relpath . "/navegador.php?";
 	$dirbase = $dirbase . "&direccion=" . $direccion . "&inurl=";
 
-	$ejecutable = "LANG=es_ES.$encoding apertium-deshtml $archivo | LANG=es_ES.$encoding $proc $transducer > $infile";
+	$ejecutable = "LANG=es_ES.$encoding $ROOT/apertium-deshtml $archivo | LANG=es_ES.$encoding $proc $transducer > $infile";
 
 	// Deformat and analyse the text.
 	shell_exec($ejecutable);
@@ -165,6 +165,10 @@
 		// Some of the lemmata might be duplicates
 		$lemmata = array_unique($lemmata);
 
+		if(sizeof($lemmata) == 0) {
+			return $word . " ";
+		}
+
 		$count = 0;
 		// For each lemma, print out the lemma + what we find in the translation table
 		foreach(array_keys($lemmata) as $lemma) {
@@ -199,12 +203,13 @@
 	$line = "";
 
 	// Remove the first SENT symbol
+/*
 	$c = fread($fd, 1);
 	while($c != '$') {
 		$c = fread($fd, 1);
 	}	
 	$c = "";
-
+*/
 	while(!feof($fd)) {
 		// We don't want to translate stuff in the header of the HTML document
 		// e.g. the title, so we skip the body
