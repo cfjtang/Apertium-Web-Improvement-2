@@ -170,7 +170,8 @@
 		foreach(array_keys($lemmata) as $lemma) {
 			// The wordlists are stored in UTF-8 but we might be trying to look up a word in latin1
 			if($encoding != "utf8") {
-				$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[iconv("latin1","utf-8",strtolower($lemma))];
+				$add = iconv("utf8", "latin1", $lookup[iconv("latin1","utf-8",strtolower($lemma))]);
+				$body = $body . "(<b>" . $lemma . "</b>) " . $add;
 			} else { 
 				$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[strtolower($lemma)];
 			}
