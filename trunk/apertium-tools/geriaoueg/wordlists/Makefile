@@ -8,6 +8,7 @@ all: $(TARGETS)
 cy-en.txt:
 	$(LTEXPAND) $(CYENDIX) | \
 	grep -v REGEXP | \
+	sed 's/ /_/g' | \
 	sed 's/:>:/:/g' | \
 	sed 's/:<:/:/g' | \
 	sed 's/:/\t/g' | \
