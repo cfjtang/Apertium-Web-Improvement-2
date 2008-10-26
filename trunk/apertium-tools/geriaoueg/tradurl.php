@@ -45,6 +45,15 @@
 	ini_set('user_agent', $_SERVER['HTTP_USER_AGENT'] . "\r\n");
 	$pagetext = file_get_contents($inurl);
 
+	// We detect between two encodings, UTF-8 and ISO-8859-15 (latin1),
+	// if the page is in latin1, we use the latin1 locale, if the page
+	// is in UTF-8 we use the UTF-8 locale for external processing.
+	$enc = mb_detect_encoding($pagetext, "UTF-8, ISO-8859-15");
+	if($enc == "UTF-8") {
+		$encoding = "utf8";
+	} else {
+		$encoding = "iso885915@euro";
+	}
 
 /*
 	// This code inserts the Javascript and base url thing
@@ -77,7 +86,6 @@
 	fputs($fd, $pagetext);
 	fclose($fd);
 
-	$encoding = "utf8";
   
 	// Are we running on a weird port?
 	$puerto = getenv("SERVER_PORT") == 80 ? "" : ":" . getenv("SERVER_PORT");
@@ -87,7 +95,7 @@
 	$dirbase = $dirbase . $puerto . "/" . $relpath . "/navegador.php?";
 	$dirbase = $dirbase . "&direccion=" . $direccion . "&inurl=";
 
-	$ejecutable = "LC_ALL=es_ES.utf8 apertium-deshtml $archivo | LC_ALL=es_ES.utf8 $proc $transducer > $infile";
+	$ejecutable = "LANG=es_ES.$encoding apertium-deshtml $archivo | LANG=es_ES.$encoding $proc $transducer > $infile";
 
 	// Deformat and analyse the text.
 	shell_exec($ejecutable);
@@ -160,7 +168,12 @@
 		$count = 0;
 		// For each lemma, print out the lemma + what we find in the translation table
 		foreach(array_keys($lemmata) as $lemma) {
-			$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[strtolower($lemma)];
+			// The wordlists are stored in UTF-8 but we might be trying to look up a word in latin1
+			if($encoding != "utf8") {
+				$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[iconv("latin1","utf-8",strtolower($lemma))];
+			} else { 
+				$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[strtolower($lemma)];
+			}
 			if($count < (sizeof($lemmata) - 1)) {
 				$body = $body . " <b>·<\/b> ";
 			}
@@ -267,9 +280,10 @@
 
 	// Reformat the HTML and insert the hoverover javascript,
 	// Then re-write the links
-	$cmd = "LC_ALL=es_ES.utf8 apertium-rehtml " . $outfile;
-	$cmd = $cmd . ' | LANG=es_ES.UTF-8 ' . $turl . ' "' . $dirbase . '" "' . $inurl . '"';
+	$cmd = "LANG=es_ES.$encoding apertium-rehtml " . $outfile;
+	$cmd = $cmd . ' | LANG=es_ES.$encoding ' . $turl . ' "' . $dirbase . '" "' . $inurl . '"';
 	
+	// Send the page back in the encoding that it came in
 	header("Content-Type: text/html; charset=\"$encoding\"");
 
 	// Print out the mangled page
@@ -281,6 +295,6 @@
 	fclose($fdo);
 	fclose($fd);
 
-	unlink($infile);
-	unlink($outfile);
+//	unlink($infile);
+//	unlink($outfile);
 ?>
