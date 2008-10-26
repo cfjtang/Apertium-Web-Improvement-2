@@ -103,8 +103,8 @@
 		$key = $row[0];
 		$key = str_replace("(", " ", $key);
 		$key = explode(" ", $key);
-		$key = $key[0];
-		$lookup[$key] = $lookup[$key] . " " . trim($row[1]);
+		$key = str_replace("_", " ", $key[0]);
+		$lookup[$key] = $lookup[$key] . " " . trim(str_replace("_", " ", $row[1]));
 	}
 
 	// Open the input file (the analysed/deformatted text)	
@@ -157,9 +157,14 @@
 		// Some of the lemmata might be duplicates
 		$lemmata = array_unique($lemmata);
 
+		$count = 0;
 		// For each lemma, print out the lemma + what we find in the translation table
 		foreach(array_keys($lemmata) as $lemma) {
-			$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[strtolower($lemma)] . " <b>·<\/b> ";
+			$body = $body . "(<b>" . $lemma . "</b>) " . $lookup[strtolower($lemma)];
+			if($count < (sizeof($lemmata) - 1)) {
+				$body = $body . " <b>·<\/b> ";
+			}
+			$count++;
 		}
 
 /*
