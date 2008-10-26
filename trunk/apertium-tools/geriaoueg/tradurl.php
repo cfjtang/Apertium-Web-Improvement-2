@@ -129,7 +129,7 @@
 	// So we read until the first '/' to get the surface form, then we go reading 
 	// until each '/' to get the possible lemmata.
 	//
-	function readWord($_fd, $lookup) {
+	function readWord($_fd, $lookup, $encoding) {
 		$word = "";
 		$lemmata = array();
 
@@ -265,7 +265,7 @@
 
 		// We've reached the start of a word.
 		if($c == '^') {
-			fwrite($fdo, readWord($fd, $lookup));
+			fwrite($fdo, readWord($fd, $lookup, $encoding));
 		}
 
 
