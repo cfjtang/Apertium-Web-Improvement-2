@@ -17,12 +17,13 @@ TARGETS = $(TARGETS_COMMON) \
 	  $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
 	  $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix 
 
-$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).metadix
+$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).metadix $(BASENAME).$(LANG1).acx
 	@xsltproc buscaPar.xsl apertium-en-ca.en.metadix | uniq > tmp1gen.xsl 	 
 	@xsltproc tmp1gen.xsl apertium-en-ca.en.metadix >$(BASENAME).$(LANG1).dixtmp1 
 	@rm tmp1gen.xsl
+	apertium-validate-acx $(BASENAME).$(LANG1).acx
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dixtmp1
-	lt-comp lr $(BASENAME).$(LANG1).dixtmp1 $@
+	lt-comp lr $(BASENAME).$(LANG1).dixtmp1 $@ $(BASENAME).$(LANG1).acx
 #	@rm $(BASENAME).$(LANG1).dixtmp1
 
 $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
@@ -40,9 +41,10 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
 	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
 
-$(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
+$(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG2).acx
+	apertium-validate-acx $(BASENAME).$(LANG2).acx
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp lr $(BASENAME).$(LANG2).dix $@
+	lt-comp lr $(BASENAME).$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
@@ -131,6 +133,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
 	   $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
 	   $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
+           $(BASENAME).$(LANG1).acx $(BASENAME).$(LANG2).acx
 	   modes.xml
 
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
