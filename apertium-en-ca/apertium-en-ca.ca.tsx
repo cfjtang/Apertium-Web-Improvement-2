@@ -11,11 +11,13 @@
     <tags-item lemma="molt" tags="adv"/>
     <tags-item lemma="gaire" tags="adv"/>
     <tags-item lemma="no gaire" tags="adv"/>
+    <tags-item lemma="més" tags="adv"/>
   </def-label> 
   <def-label name="MOLTPREADV" closed="true">
     <tags-item lemma="molt" tags="preadv"/>
     <tags-item lemma="gaire" tags="preadv"/>
     <tags-item lemma="no gaire" tags="preadv"/>
+    <tags-item lemma="més" tags="preadv"/>
   </def-label>
  <def-label name="VOLERMOD" closed="true">
     <tags-item lemma="voler" tags="vbmod.*"/>
