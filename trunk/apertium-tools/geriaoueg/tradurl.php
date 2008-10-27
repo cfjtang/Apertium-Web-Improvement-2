@@ -73,8 +73,19 @@
 		exit;
 	}
 
+/*
+	// Nightmare.
+	if(strstr($pagetext, "charset=windows-1252")) {
+		$encoding = "utf8";
+		$pagetext_new = iconv("windows-1252", "UTF-8", $pagetext);
+		$pagetext_new = str_replace("charset=windows-1252", "charset=utf-8", $pagetext_new);
+		$pagetext_new = str_replace("<![", "<!--[", $pagetext_new);
+		$pagetext_new = str_replace("]>", "]-->", $pagetext_new);
+		$pagetext = $pagetext_new;	
+	}
+*/
 	limite($pagetext, 16384 * 4 * 4 * 4, "Maximum size excedeed");
-	
+
 	// Shove the page in a temporary file.
 	$fd = fopen($archivo, "w");
 

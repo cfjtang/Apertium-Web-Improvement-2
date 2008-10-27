@@ -8,6 +8,16 @@
 </head>
 <body>
  <h1 id="web" style="border-top: none; padding-top: 0;">Geriaoueg</h1>
+ <?
+	if(strstr($_SERVER["HTTP_USER_AGENT"], "MSIE")) {
+		echo '<div style="width: 60%; margin-left: 20%; margin-right: 20%; text-align: justify;">';
+		echo "This site doesn't work in Microsoft Internet Explorer™ and I don't have a computer running Microsoft Windows™ to test it on. Sorry :( ";
+		echo "<p/>";
+		echo 'In the meantime you can always try <a href="http://www.mozilla-europe.org/en/firefox/">Firefox</a>, or submit a patch to Microsoft Internet Explorer™ to make it support CSS2.';
+		echo '</div>';
+	}
+
+ ?>
  <p/>
  <div style="width: 60%; margin-left: 20%; margin-right: 20%;">
    <form action="navegador.php" method="post" style="padding: 3px">
