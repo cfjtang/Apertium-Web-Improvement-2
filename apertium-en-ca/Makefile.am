@@ -13,8 +13,7 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
 
-TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
-	  trules-$(PREFIX1).xml trules-$(PREFIX2).xml \
+TARGETS = $(TARGETS_COMMON) \
 	  $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
 	  $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix 
 
@@ -63,23 +62,6 @@ $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).metadix
 $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
 	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
-
-trules-$(PREFIX1).bin: $(BASENAME).trules-$(PREFIX1).xml
-	apertium-validate-transfer $(BASENAME).trules-$(PREFIX1).xml
-	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX1).xml \
-				     trules-$(PREFIX1).bin
-
-trules-$(PREFIX2).bin: $(BASENAME).trules-$(PREFIX2).xml
-	apertium-validate-transfer $(BASENAME).trules-$(PREFIX2).xml
-	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX2).xml \
-				     trules-$(PREFIX2).bin
-
-trules-$(PREFIX1).xml: $(BASENAME).trules-$(PREFIX1).xml
-	ln -s $(BASENAME).trules-$(PREFIX1).xml trules-$(PREFIX1).xml
-
-trules-$(PREFIX2).xml: $(BASENAME).trules-$(PREFIX2).xml
-	ln -s $(BASENAME).trules-$(PREFIX2).xml trules-$(PREFIX2).xml
-
 
 $(BASENAME).$(LANG1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
@@ -138,8 +120,8 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
-	   $(BASENAME).$(LANG2).tsx $(BASENAME).trules-$(PREFIX1).xml \
-	   $(BASENAME).trules-$(PREFIX2).xml $(PREFIX1).prob $(PREFIX2).prob \
+	   $(BASENAME).$(LANG2).tsx  \
+	   $(PREFIX1).prob $(PREFIX2).prob \
 	   buscaPar.xsl principal.xsl apertium-en-ca.en.metadix \
 	   $(PREFIX1).lextor $(PREFIX2).lextor \
 	   $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
@@ -155,9 +137,7 @@ apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
 		    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
-		    $(PREFIX1).prob $(PREFIX2).prob trules-$(PREFIX1).xml \
-		    trules-$(PREFIX2).xml trules-$(PREFIX1).bin \
-		    trules-$(PREFIX2).bin \
+		    $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).lextormono.bin $(PREFIX2).lextormono.bin \
 		    $(PREFIX1).lextorbil.bin $(PREFIX2).lextorbil.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
