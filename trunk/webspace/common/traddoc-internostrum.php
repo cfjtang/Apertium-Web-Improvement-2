@@ -49,7 +49,13 @@ function translate($doctype, $dir, $markUnknown) {
 	$tempfile = tempnam("/tmp","translate");
 	$tempfile = $tempfile . "." . $doctype;
 
-  $cmd = "PATH=$APERTIUM_PATH:\$PATH " . $APERTIUM_TRANSLATOR . " -d " . $INTERNOSTRUM_LING_DATA . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
+	$encoding = '';
+	if($doctype == 'html' || $doctype == 'txt') {
+		$enc = detect_encoding(file_get_contents($tempfile));
+		$encoding = 'LC_ALL=es_ES'.$enc[1];
+	}
+
+  $cmd = "PATH=$APERTIUM_PATH:\$PATH " . $encoding .' '. $APERTIUM_TRANSLATOR . " -d " . $INTERNOSTRUM_LING_DATA . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
   
   $str = shell_exec($cmd);
 
@@ -104,6 +110,25 @@ function getDownloadFileType($doctype) {
   	$download_filetype = "rtf";
   }
   return $download_filetype;
+}
+
+// Detect encoding
+function detect_encoding($text) {
+   $enc = mb_detect_encoding($text, "UTF-8, ISO-8859-15", "ISO-8859-2");
+   $encoding = "";
+   $e[0] = $enc;
+   if($enc == "UTF-8") {
+         $encoding = "utf8";
+      } else {
+         if($enc == "ISO-8859-2") {
+               $encoding = "iso88592@euro";
+            } else {
+               $encoding = "iso885915@euro";
+            }
+      }
+
+   $e[1] = $encoding;
+   return $e;
 }
 
 ?>
