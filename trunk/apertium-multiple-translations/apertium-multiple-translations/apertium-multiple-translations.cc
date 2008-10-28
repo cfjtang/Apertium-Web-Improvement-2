@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-#include <apertium-multiple-translations/TransferMult.H>
+#include <apertium-multiple-translations/transfer_mult.h>
 #include <lttoolbox/lt_locale.h>
 #include <apertium-multiple-translations/apertium-multiple-translations-config.h>
 
