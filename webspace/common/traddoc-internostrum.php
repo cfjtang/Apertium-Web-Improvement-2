@@ -37,9 +37,7 @@ function translate($doctype, $dir, $markUnknown) {
 	$content_type = getContentType($doctype);
 	$download_filetype = getDownloadFileType($doctype);
 
-  if($markUnknown != 1) {
-    $doctype = $doctype."u";
-  }
+
 
   if($_FILES['userfile']['size']>16384*4*4*4*4){
     print "<p>The file is too big!</p>";
@@ -54,6 +52,10 @@ function translate($doctype, $dir, $markUnknown) {
 		$enc = detect_encoding(file_get_contents($tempfile));
 		$encoding = 'LC_ALL=es_ES'.$enc[1];
 	}
+
+  if($markUnknown != 1) {
+    $doctype = $doctype." -u ";
+  }
 
   $cmd = "PATH=$APERTIUM_PATH:\$PATH " . $encoding .' '. $APERTIUM_TRANSLATOR . " -d " . $INTERNOSTRUM_LING_DATA . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
   
