@@ -40,7 +40,7 @@ function translate($doctype, $dir, $markUnknown) {
 
 	$encoding = '';
 	if($doctype == 'html' || $doctype == 'txt') {
-		$enc = detect_encoding(file_get_contents($tempfile));
+		$enc = detect_encoding(file_get_contents($_FILES['userfile']['tmp_name']));
 		$encoding = 'LC_ALL=es_ES'.$enc[1];
 	}
 
