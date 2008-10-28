@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-#include <apertium-multiple-translations/TransferMult.H>
+#include <apertium-multiple-translations/transfer_mult.h>
 #include <apertium/trx_reader.h>
 #include <lttoolbox/compression.h>
 #include <lttoolbox/xml_parse_util.h>

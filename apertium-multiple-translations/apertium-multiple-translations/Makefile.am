@@ -1,5 +1,5 @@
-h_sources = apertium-multiple-translations-config.h TransferMult.H
-cpp_sources = TransferMult.C
+h_sources = apertium-multiple-translations-config.h transfer_mult.h
+cpp_sources = transfer_mult.cc
 
 library_includedir = $(includedir)/$(GENERIC_LIBRARY_NAME)-$(GENERIC_API_VERSION)/$(GENERIC_LIBRARY_NAME)
 library_include_HEADERS = $(h_sources)
@@ -16,7 +16,7 @@ apertium_multiple_translationsdir = $(prefix)/detlang-$(GENERIC_API_VERSION)
 apertium_multiple_translationsinclude = $(prefix)/include/detlang-$(GENERIC_API_VERSION)
 apertium_multiple_translationslib = $(prefix)/lib 
 
-apertium_multiple_translations_SOURCES = apertium-multiple-translations.C
+apertium_multiple_translations_SOURCES = apertium-multiple-translations.cc
 apertium_multiple_translations_LDADD = $(APERTIUM_MULTIPLE_TRANSLATIONS_LIBS) -lapertium-multiple-translations-$(GENERIC_API_VERSION)
 #apertium_multiple_translations_DATA =
 
