@@ -1834,6 +1834,22 @@
       <label-item label="PREADV"/>
       <label-item label="VMODALIMP"/>
     </label-sequence>
+ <!--   <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETQNT"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETMF"/>
+    </label-sequence> -->
 
 
 
@@ -1875,6 +1891,19 @@
 	<label-item label="PREADV"/>
       </label-set>
      </enforce-after> <!--Afegit 11/11/05 MG -->
+  <enforce-after label="PREADV">
+      <label-set>
+        <label-item label="ADV"/>
+        <label-item label="ADJM"/>
+        <label-item label="ADJF"/>
+	<label-item label="ADJMF"/>
+        <label-item label="VMODALPARTPI"/>
+        <label-item label="VLEXPARTPI"/>
+	<label-item label="VOLERMOD"/>
+	<label-item label="VOLERLEX"/>
+	<label-item label="MOLTPREADV"/>
+      </label-set>
+     </enforce-after>
   </enforce-rules>
 
   <preferences>
