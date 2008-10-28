@@ -17,7 +17,7 @@
  * 02111-1307, USA.
  */
 #include <apertium-multiple-translations/TransferMult.H>
-#include <lttoolbox/LtLocale.H>
+#include <lttoolbox/lt_locale.h>
 #include <apertium-multiple-translations/apertium-multiple-translations-config.h>
 
 #include <cstdlib>

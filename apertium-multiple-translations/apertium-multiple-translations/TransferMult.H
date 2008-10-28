@@ -19,14 +19,14 @@
 #ifndef _TRANSFER_MULT_
 #define _TRANSFER_MULT_
 
-#include <apertium/TransferInstr.H>
-#include <apertium/TransferToken.H>
-#include <apertium/TransferWord.H>
-#include <lttoolbox/Alphabet.H>
-#include <lttoolbox/Buffer.H>
-#include <lttoolbox/FSTProcessor.H>
-#include <lttoolbox/MatchExe.H>
-#include <lttoolbox/MatchState.H>
+#include <apertium/transfer_instr.h>
+#include <apertium/transfer_token.h>
+#include <apertium/transfer_word.h>
+#include <lttoolbox/alphabet.h>
+#include <lttoolbox/buffer.h>
+#include <lttoolbox/fst_processor.h>
+#include <lttoolbox/match_exe.h>
+#include <lttoolbox/match_state.h>
 
 #include <cstdio>
 #include <map>
@@ -42,16 +42,16 @@ private:
   Alphabet alphabet;
   MatchExe *me;
   MatchState ms;
-  map<string, string> attr_items;
-  map<string, string> variables;
-  map<string, int> macros;
-  map<string, set<string> > lists;
-  map<string, set<string> > listslow;
+  map<string, ApertiumRE, Ltstr> attr_items;
+  map<string, string, Ltstr> variables;
+  map<string, int, Ltstr> macros;
+  map<string, set<string, Ltstr>, Ltstr> lists;
+  map<string, set<string, Ltstr>, Ltstr> listslow;
   TransferWord **word;
   string **blank;
   Buffer<TransferToken> input_buffer;
-  vector<string *> tmpword;
-  vector<string *> tmpblank;
+  vector<wstring *> tmpword;
+  vector<wstring *> tmpblank;
   
 
   FSTProcessor fstp;
@@ -78,18 +78,18 @@ private:
   bool endsWith(string const &str1, string const &str2) const;
   string tolower(string const &str) const;
   string tags(string const &str) const;
-  string readWord(FILE *in);
-  string readBlank(FILE *in);
-  string readUntil(FILE *in, int const symbol) const;
-  void applyWord(string const &word_str);
+  wstring readWord(FILE *in);
+  wstring readBlank(FILE *in);
+  wstring readUntil(FILE *in, int const symbol) const;
+  void applyWord(wstring const &word_str);
   void applyRule();
   TransferToken & readToken(FILE *in);
-  void writeMultiple(list<vector<string> >::iterator itwords,
-                     list<string>::iterator itblanks, 
-                     list<vector<string> >::const_iterator limitwords, 
-                     string acum = "", bool multiple = false);
-  vector<string> acceptions(string const &str);
-  bool isDefaultWord(string const &str);
+  void writeMultiple(list<vector<wstring> >::iterator itwords,
+                     list<wstring>::iterator itblanks, 
+                     list<vector<wstring> >::const_iterator limitwords, 
+                     wstring acum = L"", bool multiple = false);
+  vector<wstring> acceptions(wstring const &str);
+  bool isDefaultWord(wstring const &str);
 public:
   TransferMult();
   ~TransferMult();

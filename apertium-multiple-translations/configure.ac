@@ -3,8 +3,8 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_lttoolbox_version], [2.0.0])
-m4_define([required_apertium_version], [2.0.0])
+m4_define([required_lttoolbox_version], [3.1.0])
+m4_define([required_apertium_version], [3.1.0])
 
 #m4_define([required_pkg_config_version], [0.15])
 
@@ -149,8 +149,8 @@ then
 fi
 
 PKG_CHECK_MODULES(APERTIUM_MULTIPLE_TRANSLATIONS, [dnl
-  lttoolbox-2.0 >= required_lttoolbox_version dnl
-  apertium-2.0 >= required_apertium_version])
+  lttoolbox-3.1 >= required_lttoolbox_version dnl
+  apertium-3.1 >= required_apertium_version])
   
 # Checks for header files.
 AC_HEADER_STDC
