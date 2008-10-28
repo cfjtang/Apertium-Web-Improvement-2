@@ -54,7 +54,6 @@
   <head>
 <!--    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  -->
     <title>Geriaoueg</title>
-    <script src="js/boxover.js"></script> 
   </head>
 
   <?php
