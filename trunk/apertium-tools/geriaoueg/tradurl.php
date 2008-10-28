@@ -63,10 +63,16 @@
 	$pagetext = str_replace("<head>", $insertion, $pagetext);
 */
 	// This code inserts the CSS and base url thing
+	$pagetext = str_replace("<HEAD>", "<head>", $pagetext);
 	$insertion = '<head>' . "\n";
 	$insertion = $insertion . '<base href="' . $inurl . '" target="_top"/>' . "\n";
 	$insertion = $insertion . '<link rel="stylesheet" href="http://elx.dlsi.ua.es/geriaoueg/styles/hover.css" type="text/css"/>' . "\n";
 	$pagetext = str_replace("<head>", $insertion, $pagetext);
+
+	// IE has broken support for Javascript, this will hopefully de-break it.
+	if(strstr($_SERVER["HTTP_USER_AGENT"], "MSIE")) {
+		$pagetext = str_replace("<head>", "<head>\n<script type=\"text/javascript\" src=\"http://elx.dlsi.ua.es/geriaoueg/js/broken.js\"></script>", $pagetext);
+	}
 
 	if(strlen($pagetext) == 0) {
 		error("Zero size page returned");
@@ -227,7 +233,7 @@
 		while($body == false) {
 
 			$line = $line . $c;
-			if(strstr($line, "<body>") || strstr($line, "<body ")) {
+			if(stristr($line, "<body>") || stristr($line, "<body ")) {
 				fwrite($fdo, $c);
 				$body = true;
 				while($c != ']') {
