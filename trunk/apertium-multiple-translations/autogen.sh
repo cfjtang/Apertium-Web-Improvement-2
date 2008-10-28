@@ -32,15 +32,15 @@ fi
 rm -f config.cache acconfig.h
 
 echo "- libtoolize."		&& \
-libtoolize --force		&& \
+if test x$(uname -s) = xDarwin; then glibtoolize --force; else libtoolize --force; fi && \
 echo "- aclocal."		&& \
-aclocal-1.9			&& \
+aclocal			&& \
 echo "- autoconf."		&& \
 autoconf			&& \
 echo "- autoheader."		&& \
 autoheader			&& \
 echo "- automake."		&& \
-automake-1.9 --add-missing --gnu	&& \
+automake --add-missing --gnu	&& \
 echo				&& \
 ./configure "$@"		&& exit 0
 
