@@ -1852,6 +1852,96 @@
     </label-sequence> -->
 
 
+    <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXSUBJ"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+
+
+    <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXSUBJ"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALPARTPI"/>
+    </label-sequence>
+
+
+
+    <label-sequence>
+      <label-item label="VLEXINF"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXGER"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPFCI"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIPI"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXSUBJ"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+
 
   
   </forbid>
