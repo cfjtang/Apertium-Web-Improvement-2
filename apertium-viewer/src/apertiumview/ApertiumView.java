@@ -219,6 +219,7 @@ public class ApertiumView extends FrameView {
         for (int i = 0; i < m.commandChain.length; i++) {
             String cmd = m.commandChain[i];            
             cmd = cmd.replaceAll("\\$1", markUnknownWordsCheckBox.isSelected()?"-g":"-n");
+            cmd = cmd.replaceAll("\\$2", ""); // What is this $2 ??!??
             TextWidget tw = textWidgets.get(i+1);
 
             if (!cmd.equals(tw.getCommand()) && firstWithChangedCommand==null) {
