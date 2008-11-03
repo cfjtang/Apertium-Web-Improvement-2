@@ -313,6 +313,7 @@ SELECT Pr IF (0 ("til"))(*1 N OR NPNH OR ("at") BARRIER NPNHA);
 
 SELECT:PPAcc Acc IF (*-1 ACCPREP BARRIER NOTACC);
 SELECT:PPDat Dat IF (*-1 DATPREP BARRIER NOTDAT);
+SELECT:PPGen Gen IF (*-1 GENPREP BARRIER NOTACCDAT);
 
 REMOVE:NotPPNotDat NOTDAT IF (*-1 DATPREP BARRIER NOTDAT);
 #REMOVE Acc IF (*-1 DATPREP BARRIER NOTDAT);
@@ -367,19 +368,6 @@ SELECT (vblex pri p3 sg) IF (-1 (np nom) OR (n sg nom) LINK NOT *-1 CC BARRIER N
 # Present plural
 
 SELECT (vblex pl) IF (-1 (n pl nom) OR (prn pl) OR (1 (n pl nom) OR (prn pl)) ;
-
-# Genitive
-# ========
-
-# Genitive is marginal in faroese. The strategy should be : 
-# 1. Write rules selecting genitive. (such rules are still forthcoming)
-
-SELECT Gen IF (*-1 GENPREP BARRIER NPNHA)(NOT 0 Acc);
-
-# 2. Remove the remaining genitives. 
-
-REMOVE Gen ;
-
 
 # Pronoun disambiguation
 # =======================
