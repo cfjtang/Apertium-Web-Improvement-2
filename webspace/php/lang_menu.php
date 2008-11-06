@@ -36,6 +36,7 @@ function printLanguageLink($code, $text, $url, $newLang) {
 		printLanguageLink("en","english", $url, $newLang, $currentLang);
 		printLanguageLink("eo","esperanto", $url, $newLang, $currentLang);
 		printLanguageLink("es","espa&ntilde;ol", $url, $newLang, $currentLang);
+		printLanguageLink("it","italiano", $url, $newLang, $currentLang);
 		//printLanguageLink("eu","euskara", $url, $newLang, $currentLang);		
 		printLanguageLink("fr","fran&ccedil;ais", $url, $newLang, $currentLang);
 		printLanguageLink("gl","galego", $url, $newLang, $currentLang);
