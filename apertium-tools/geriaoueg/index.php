@@ -51,6 +51,13 @@
 					title="Welsh pages with English glosses"
 					/>Welsh → English
 				</label>
+<!--				<input  type="radio" 
+					name="direccion" 
+					value="is-ca"
+					title="Icelandic pages with Catalan glosses"
+					/>Icelandic → Catalan
+				</label> -->
+
 	  </fieldset>
 	 	<br/>
 	    <div>

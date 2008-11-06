@@ -7,6 +7,7 @@
 	// Where all the files are
 	$ROOT = "/var/www/geriaoueg";
 	$TMP = "/tmp/";
+	$LOG = $ROOT . "/log/access.log";
 
 	$relpath = "/geriaoueg/";
 	$infile = tempnam("/tmp","Geriaoueg.in.");
@@ -74,6 +75,13 @@
 		$pagetext = str_replace("<head>", "<head>\n<script type=\"text/javascript\" src=\"http://elx.dlsi.ua.es/geriaoueg/js/broken.js\"></script>", $pagetext);
 	}
 
+	# Guardar información de uso
+	$today = date("Y-m-d, G:i:s T");               // 2001-10-01, 15:16:08 MST
+	$fd = fopen($LOG, 'a+');
+	fputs($fd, $today . " { " . $_REQUEST['direccion'] . " } { " . $_SERVER["REMOTE_ADDR"] . " } { " . $_SERVER["HTTP_USER_AGENT"] . " } { " . $inurl . " } \n");
+	fclose($fd);
+
+
 	if(strlen($pagetext) == 0) {
 		error("Zero size page returned");
 		exit;
@@ -129,6 +137,7 @@
 		$key = str_replace("(", " ", $key);
 		$key = explode(" ", $key);
 		$key = str_replace("_", " ", $key[0]);
+		$key = str_replace("'", "’", $key);
 		$lookup[$key] = $lookup[$key] . " " . trim(str_replace("_", " ", $row[1]));
 	}
 
@@ -187,8 +196,19 @@
 		}
 
 		$count = 0;
+		$vacio = 0;
 		// For each lemma, print out the lemma + what we find in the translation table
 		foreach(array_keys($lemmata) as $lemma) {
+			if($encoding != "utf8") {
+				if(array_key_exists(iconv("latin1","utf-8",strtolower($lemma)), $lookup)) {
+					$vacio++;
+				}
+			} else {
+				if(array_key_exists(strtolower($lemma), $lookup)) {
+					$vacio++;
+				}
+			}
+
 			// The wordlists are stored in UTF-8 but we might be trying to look up a word in latin1
 			if($encoding != "utf8") {
 				$add = iconv("utf8", "latin1", $lookup[iconv("latin1","utf-8",strtolower($lemma))]);
@@ -201,6 +221,11 @@
 			}
 			$count++;
 		}
+
+		if($vacio == 0) {
+			return $word . " ";
+		}
+
 
 /*
 		// This inserts the Javascript span class and the definition etc.
