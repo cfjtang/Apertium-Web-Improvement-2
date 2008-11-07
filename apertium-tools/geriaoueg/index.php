@@ -76,15 +76,18 @@
       </div>
     </div>
  <div style="width: 60%; margin-left: 20%; margin-right: 20%; text-align: justify">
+ 
  <h3>Acknowledgements</h3>
  The data for Breton come from Tomaz Jacquet's <a href="http://www.freelang.com/dictionnaire/breton.html">dictionary</a>.
  For Welsh, the data come from the <a href="http://www.cymraeg.org.uk">apertium-cy</a> machine translation system, with thanks
  to Kevin Donnelly. The morphological
  analysers for Breton and Welsh can be found online <a href="http://xixona.dlsi.ua.es/~fran/breton/">here</a> and 
- <a href="http://xixona.dlsi.ua.es/~fran/welsh/">here</a>. The source code for this site is freely available under the
+ <a href="http://xixona.dlsi.ua.es/~fran/welsh/">here</a>. 
+ The source code for this site is freely available under the
  <a href="http://www.gnu.org/licences/gpl.html">GNU GPL</a> and may be downloaded from the Apertium 
  <a href="http://wiki.apertium.org/wiki/SVN">subversion repository</a> as the module <code>apertium-tools/geriaoueg</code>.
-
+ <p/>
+ Please report any bugs to <a href="mailto:apertium-stuff@lists.sourceforge.net">apertium-stuff@lists.sourceforge.net</a>.
 </div>
  <div style="width: 60%; margin-left: 20%; margin-right: 20%; font-size: 80%; text-align: center; margin-top: 10em; color: #bbbbbb;">
 Copyright &copy; 2007&mdash;2008 Francis Tyers 

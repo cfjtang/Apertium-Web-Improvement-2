@@ -65,10 +65,21 @@
 */
 	// This code inserts the CSS and base url thing
 	$pagetext = str_replace("<HEAD>", "<head>", $pagetext);
-	$insertion = '<head>' . "\n";
 	$insertion = $insertion . '<base href="' . $inurl . '" target="_top"/>' . "\n";
 	$insertion = $insertion . '<link rel="stylesheet" href="http://elx.dlsi.ua.es/geriaoueg/styles/hover.css" type="text/css"/>' . "\n";
-	$pagetext = str_replace("<head>", $insertion, $pagetext);
+
+	// When you have, e.g. <head profile="http://gmpg.org/xfn/11">
+	if(strstr("<head>", $pagetext)) {
+		$insertion = '<head>' . "\n" . $insertion;
+		$pagetext = str_replace("<head>", $insertion, $pagetext);
+	} else {
+		$insertion = '</title>' . "\n" . $insertion;	
+		$pagetext = str_replace("</title>", $insertion, $pagetext);
+	}
+
+	// hack for ABP
+	$pagetext = str_replace('=">"', '="&gt;"', $pagetext);
+	$pagetext = str_replace('HREF =', 'HREF=', $pagetext);
 
 	// IE has broken support for Javascript, this will hopefully de-break it.
 	if(strstr($_SERVER["HTTP_USER_AGENT"], "MSIE")) {
@@ -321,6 +332,7 @@
 		
 		if($c == '\\') {
 			$escaped = true;
+			$c = fread($fd, 1);
 			$c = fread($fd, 1);
 		}
 	}
