@@ -1940,10 +1940,7 @@
     <label-sequence>
       <label-item label="VLEXIMP"/>
       <label-item label="VMODALIMP"/>
-    </label-sequence>
-
-
-  
+    </label-sequence> 
   </forbid>
 
   <enforce-rules>
@@ -1994,6 +1991,8 @@
 	<label-item label="MOLTPREADV"/>
       </label-set>
      </enforce-after>
+
+
   </enforce-rules>
 
   <preferences>
