@@ -128,17 +128,19 @@ $(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
 
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
-           $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
-           $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
-           $(BASENAME).$(LANG2).tsx \
+	   $(BASENAME).post-$(LANG2).dix \
+           $(BASENAME).$(LANG2).dix \
+           $(BASENAME).$(LANG1).tsx \
            $(PREFIX1).prob \
-           buscaPar.xsl principal.xsl \
-           $(PREFIX1)-supervised.make $(PREFIX1)-unsupervised.make \
-           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
-           $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
-           $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
+           $(BASENAME).$(PREFIX1).t3x \
            modes.xml
+
+#           buscaPar.xsl principal.xsl 
+#           $(BASENAME).post-$(LANG1).dix 
+#	    $(BASENAME).$(PREFIX2).t1x 
+#	    $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x 
+#	    $(BASENAME).$(LANG2).tsx 
            	            	            	            	            	            	  	 
 modes: modes.xml
 	apertium-gen-modes modes.xml
