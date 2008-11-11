@@ -36,6 +36,10 @@
       <!-- <cat-item tags="num.*"/> -->
     </def-cat>
 
+    <def-cat n="detdef">
+      <cat-item tags="det.def.*"/>
+    </def-cat>
+
     <def-cat n="el"><!--afegir-hi tb 'un'? (un 30%). No sé si tb desapareix -->
       <cat-item lemma="el" tags="det.def.m.sg"/>
     </def-cat>
@@ -111,6 +115,9 @@
 
     <def-cat n="haver">
       <cat-item tags="vbhaver.*"/>
+    </def-cat>
+    <def-cat n="haverinf">
+      <cat-item tags="vbhaver.inf"/>
     </def-cat>
 
     <def-cat n="caldre">
@@ -493,7 +500,12 @@
       <list-item v="marxar"/>
     </def-list>
     
-
+<def-list n="np_article"><!--poden portat article en  català i no en porten en anglès -->
+      <list-item v="Afganistan"/>
+      <list-item v="Iraq"/>
+      <list-item v="Zaire"/>
+      <list-item v="Kurdistan"/>
+</def-list>
 
   </section-def-lists>
 
@@ -2743,7 +2755,7 @@
     </rule>
 
 
- <rule comment="REGLA: DET ADJ NOM">
+ <rule comment="REGLA: DET ADJ NOM ADJ">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adj"/>
@@ -2799,6 +2811,65 @@
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="nbr" link-to="3"/>
 	      <clip pos="3" side="tl" part="lemq"/>  
+	    </lu>
+	  </chunk>
+	</out>    
+      </action>
+    </rule>
+
+
+ <rule comment="REGLA: DET NOM ADJ ADJ">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="adj"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="canvia_det">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_concord4">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<out>  
+	  <chunk name="det_adj_adj_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="4" side="tl" part="lem"/> 
+	      <clip pos="4" side="tl" part="a_adj"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <clip pos="3" side="tl" part="a_adj"/>
+	    </lu> 
+	    <b pos="3"/>
+	    <lu>       
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+	      <clip pos="2" side="tl" part="lemq"/>  
 	    </lu>
 	  </chunk>
 	</out>    
@@ -3798,6 +3869,98 @@
 	  </chunk>
 	</out> 
       </action>
+</rule>
+
+
+
+<rule comment="REGLA: a l'Iraq -> in Irak">
+  <pattern>
+    <pattern-item n="a"/>
+    <pattern-item n="detdef"/>
+    <pattern-item n="loc"/>
+  </pattern>
+  <action>    	
+    <call-macro n="firstWord">
+      <with-param pos="1"/>
+    </call-macro>
+  <!--  <call-macro n="f_concord2">
+      <with-param pos="3"/>
+      <with-param pos="2"/>
+    </call-macro> -->
+    <choose>
+      <when>
+	<test>
+	  <not>
+	    <equal>
+	      <var n="tipusverb"/>
+	      <lit v="mov"/>
+	    </equal>
+	  </not>
+	</test>		
+	<let>
+	  <clip pos="1" side="tl" part="lem"/>
+	  <get-case-from pos="1">
+	    <lit v="in"/>
+	  </get-case-from>
+	</let>
+      </when>
+    </choose>
+    <choose>
+      <when>
+	<test>
+	  <not>
+	    <in caseless="yes">
+	      <clip pos="3" side="sl" part="lem"/>
+	      <list n="np_article"/>
+	    </in>
+	  </not>
+	</test>  
+	<out><!--envia l'article (in the United States) -->
+	  <chunk name="loc" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/>   
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>   
+	    </lu>
+	  </chunk>
+	</out> 
+      </when>
+      <otherwise>
+	<out><!--no enviïs l'article -->
+	  <chunk name="loc" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	    </tags>
+	    <lu> 
+	      <clip pos="1" side="tl" part="whole"/>   
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>   
+	    </lu>
+	  </chunk>
+	</out> 
+	<call-macro n="f_bcond">
+	  <with-param pos="2"/>
+	</call-macro>
+      </otherwise>
+    </choose>
+  </action>
 </rule>
 
 
@@ -6394,6 +6557,78 @@
 	    </lu>  
 	  </chunk>
 	</out>   
+      </action>
+    </rule>
+
+
+
+
+
+
+    <rule comment="PREP + HAVER + PP (per haver ajudat)">
+      <pattern>
+	<pattern-item n="prep"/>
+	<pattern-item n="haverinf"/>
+	<pattern-item n="pp"/> 
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>  	
+	<call-macro n="tipus_verb">
+	  <with-param pos="3"/>
+	</call-macro>     	
+<!--	<call-macro n="prep_inf">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>  -->
+	<let>
+	  <clip pos="2" side="tl" part="temps"/> 
+	  <lit-tag v="ger"/><!--posem ger en tots els casos -->
+	</let>	  
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		<clip pos="3" side="sl" part="lem"/> 
+		<lit v="poder"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <lit v="be able to"/>
+	    </let>
+	    <let>
+	      <clip pos="3" side="tl" part="a_pp"/> 
+	      <lit-tag v="vbmod.pp"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk namefrom="per_haver_pp" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="2" side="tl" part="temps"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="whole"/> 
+		</lu>
+		<b pos="1"/>		  
+		<lu>
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_verb"/> 
+		  <clip pos="2" side="tl" part="temps"/> 
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_pp"/>
+		  <clip pos="3" side="tl" part="lemq"/>    
+		</lu> 
+	      </chunk>
+	    </out>
       </action>
     </rule>
 
