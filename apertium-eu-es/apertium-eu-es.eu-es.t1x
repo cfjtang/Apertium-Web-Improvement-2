@@ -311,6 +311,7 @@
       <attr-item tags="adjant"/> 
       <attr-item tags="det"/>
       <attr-item tags="vblex.pp"/>
+      <attr-item tags="vbser.pp"/>
       <attr-item tags="vblex.padv"/>
     </def-attr>  
 
@@ -639,6 +640,10 @@
 		<lit-tag v="vblex.pp"/>
 	      </equal>
 	      <equal>
+		<clip pos="2" side="tl" part="a_adj"/>
+		<lit-tag v="vbser.pp"/>
+	      </equal>
+	      <equal>
 		<clip pos="2" side="sl" part="a_adj"/>
 		<lit-tag v="vblex.padv"/>
 	      </equal>
@@ -938,6 +943,10 @@
 	      <equal>
 		<clip pos="2" side="tl" part="a_adj"/>
 		<lit-tag v="vblex.pp"/>
+	      </equal>
+	      <equal>
+		<clip pos="2" side="tl" part="a_adj"/>
+		<lit-tag v="vbser.pp"/>
 	      </equal>
 	      <equal>
 		<clip pos="2" side="sl" part="a_adj"/>
@@ -1509,6 +1518,10 @@
 		<lit-tag v="vblex.pp"/>
 	      </equal>
 	      <equal>
+		<clip pos="2" side="tl" part="a_adj"/>
+		<lit-tag v="vbser.pp"/>
+	      </equal>
+	      <equal>
 		<clip pos="2" side="sl" part="a_adj"/>
 		<lit-tag v="vblex.padv"/>
 	      </equal>
@@ -1534,6 +1547,10 @@
 	      <equal>
 		<clip pos="3" side="tl" part="a_adj"/>
 		<lit-tag v="vblex.pp"/>
+	      </equal>
+	      <equal>
+		<clip pos="3" side="tl" part="a_adj"/>
+		<lit-tag v="vbser.pp"/>
 	      </equal>
 	      <equal>
 		<clip pos="3" side="sl" part="a_adj"/>
@@ -2082,6 +2099,10 @@
 	      <equal>
 		<clip pos="2" side="tl" part="a_adj"/>
 		<lit-tag v="vblex.pp"/>
+	      </equal>
+	      <equal>
+		<clip pos="2" side="tl" part="a_adj"/>
+		<lit-tag v="vbser.pp"/>
 	      </equal>
 	      <equal>
 		<clip pos="2" side="sl" part="a_adj"/>
@@ -3159,6 +3180,41 @@
       
     </def-macro>
 
+    <def-macro n="ser_tener" npar="2"><!--ser o tener, esta es la cuestión :-)
+                Esta macro mira si el auxiliar es transitivo y si el verbo principal es 'izan' (que se traduce por 'ser' al castellano). En caso afirmativo, cambia la traducción de 'ser' a 'tener' (izango duzue - seréis - tendréis.)
+Podría ampliarse a otros casos, para tratar las diferencias en la traducción de los verbos según si el auxiliar es transitivo o intransitivo.
+
+ -->
+	<choose>
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <lit v="ser"/>
+		</equal>
+		<not>
+		  <equal caseless="yes">
+		    <clip pos="2" side="sl" part="nork"/>
+		    <lit v=""/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <get-case-from pos="1">
+		<lit v="tener"/>
+	      </get-case-from>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <lit-tag v="vblex"/>
+	    </let>
+	  </when>
+	</choose>
+</def-macro>
+
 
   </section-def-macros>
 
@@ -3741,7 +3797,7 @@
 		  <clip pos="3" side="tl" part="lem"/>
 		  <clip pos="3" side="tl" part="a_prep"/> 
 		</lu>
-		<var n="blanco"/>	
+		<var n="blanco"/>
 		<lu> 
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_adj"/>
@@ -14947,6 +15003,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>
 	  <clip pos="2" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -15041,6 +15101,10 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<let>
 	  <clip pos="3" side="tl" part="lem"/>
@@ -15143,6 +15207,10 @@
 	<call-macro n="verbal_flex">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -15206,6 +15274,10 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -15276,6 +15348,10 @@
 	<call-macro n="verbal_flex">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -15301,7 +15377,7 @@
 	      <lit-tag v="cni"/>
 	    </let>
 	  </when>
-	</choose>	    
+	</choose>		
 	<out>
 	  <chunk name="vbconj" case="caseSecondWord">
 	    <tags>
@@ -15340,6 +15416,10 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -15984,6 +16064,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="3"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>
 	  <clip pos="2" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -16097,6 +16181,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="3"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
 	  <chunk name="adv" case="caseFirstWord">
 	    <tags>
@@ -16178,6 +16266,10 @@
       <action>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="3"/>
+	  <with-param pos="2"/>
 	</call-macro>
 	<out>
 	  <chunk name="adv" case="caseFirstWord">
@@ -16261,6 +16353,10 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="4"/>
+	  <with-param pos="2"/>
 	</call-macro>
 	<let>
 	  <clip pos="2" side="tl" part="lem"/>
@@ -16390,6 +16486,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="4"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
 	  <chunk name="adv" case="caseFirstWord">
 	    <tags>
@@ -16484,6 +16584,10 @@
       <action>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="4"/>
+	  <with-param pos="2"/>
 	</call-macro>
 	<out>
 	  <chunk name="adv" case="caseFirstWord">
@@ -16635,6 +16739,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>
 	  <clip pos="3" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -16748,6 +16856,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<out>
 	  <chunk name="si" case="caseFirstWord">
 	    <tags>
@@ -16830,6 +16942,10 @@
       <action>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="4"/>
 	</call-macro>
 	<out>
 	  <chunk name="si" case="caseFirstWord">
@@ -17072,6 +17188,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>
 	  <clip pos="2" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -17181,6 +17301,10 @@
 	<call-macro n="verbal_flex">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -17248,6 +17372,10 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
 	<choose>
@@ -17934,6 +18062,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<let>
 	  <clip pos="3" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -18047,6 +18179,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<out>
 	  <chunk name="adv">
 	    <tags>
@@ -18128,6 +18264,10 @@
       <action>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<out>
 	  <chunk name="adv">
@@ -18213,6 +18353,10 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<let>
 	  <clip pos="3" side="tl" part="lem"/>
@@ -18335,6 +18479,10 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
 	<out>
 	  <chunk name="cnjadv" case="caseFirstWord">
 	    <tags>
@@ -18423,6 +18571,10 @@
       <action>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
 	</call-macro>
 	<out>
 	  <chunk name="cnjadv" case="caseFirstWord">
