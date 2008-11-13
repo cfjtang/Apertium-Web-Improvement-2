@@ -27,6 +27,7 @@
 #include <fstream>
 
 #include <cstdio>
+#include <cstdlib>
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -58,9 +59,9 @@ Utils::translate(string script, const wstring& s) {
   
   if (fork()==0) { //Code for the child
     close(0);
-    dup(fd_in[0]);
+    int retval = dup(fd_in[0]);
     close(1);
-    dup(fd_out[1]);
+    retval = dup(fd_out[1]);
      
     //Those descriptor that will not be use are closed
     close(fd_in[1]); 
@@ -135,9 +136,9 @@ Utils::likelihood(string script, const wstring& s) {
   
   if (fork()==0) { //Code for the child
     close(0);
-    dup(fd_in[0]);
+    int retval = dup(fd_in[0]);
     close(1);
-    dup(fd_out[1]);
+    retval = dup(fd_out[1]);
      
     //Those descriptor that will not be use are closed
     close(fd_in[1]); 
@@ -159,7 +160,7 @@ Utils::likelihood(string script, const wstring& s) {
     close(fd_out[1]);
      
     //Mandamos el texto 
-    write(fd_in[1], (void*)str.c_str(), str.length());
+    int chars = write(fd_in[1], (void*)str.c_str(), str.length());
     close(fd_in[1]);
     wait (&status); //Waiting for the child to finish
     if(status!=0) {

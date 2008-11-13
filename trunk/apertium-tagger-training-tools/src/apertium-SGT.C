@@ -136,7 +136,7 @@ int readValidInput(void)
 		  lineNumber);
 	  return(error);
 	}
-      if (rowNumber > 0 && i <= r[rowNumber - 1])
+      if (rowNumber > 0 &&  (int) i <= r[rowNumber - 1])
 	{
 	  fprintf(stderr, 
 		  "Frequency not in ascending order, line %d\n", 
