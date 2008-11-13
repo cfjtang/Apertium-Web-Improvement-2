@@ -4369,7 +4369,7 @@
 	</action>
 </rule>
 
-<rule comment="REGLA: DET ADJ ADJ NOM">
+<rule comment="REGLA: DET ADV ADJ NOM">
 	<pattern>
 		<pattern-item n="det"/>
 		<pattern-item n="adv_preadv"/>
@@ -4754,7 +4754,7 @@
 	</action>
 </rule>
 
-<rule comment="REGLA: nun adj sur num">
+<rule comment="REGLA: num adj sur num">
 	<pattern>
 		<pattern-item n="num"/>
 		<pattern-item n="adjec"/>
@@ -6036,6 +6036,95 @@
 		</let>
 	</action>
 </rule> 
+
+
+<rule comment="REGLA: PREADV ADJECTIU :très jolie">
+	<pattern>
+	        <pattern-item n="adv_preadv"/>
+		<pattern-item n="adjec"/>
+	</pattern>
+	<action>
+		<call-macro n="f_concord1">
+			<with-param pos="2"/>
+		</call-macro>	
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>
+		<out>
+			<chunk name="adv_adj" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="SA"/></tag>
+					<tag><var n="genero"/></tag>
+					<tag><var n="numero"/></tag>
+				</tags>
+				<lu>
+				<clip pos="1" side="tl" part="whole"/>	
+				</lu>
+				<b pos="1"/>
+				<lu>   
+					<clip pos="2" side="tl" part="lemh"/> 
+					<clip pos="2" side="tl" part="a_adj"/>
+					<clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+					<clip pos="2" side="tl" part="gen_mf"/>	 
+					<clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+					<clip pos="2" side="tl" part="nbr_sp"/>	 
+					<clip pos="2" side="tl" part="lemq"/>
+				</lu> 
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule> 
+
+
+<rule comment="REGLA: (PRE)ADV (PRE)ADV ADJECTIU :très bien placé">
+	<pattern>
+	        <pattern-item n="adv_preadv"/>
+		<pattern-item n="adjec"/>
+	</pattern>
+	<action>
+		<call-macro n="f_concord1">
+			<with-param pos="2"/>
+		</call-macro>	
+		<call-macro n="firstWord">
+			<with-param pos="1"/>
+		</call-macro>
+		<out>
+			<chunk name="adv_adv_adj" case="caseFirstWord">
+				<tags>
+					<tag><lit-tag v="SA"/></tag>
+					<tag><var n="genero"/></tag>
+					<tag><var n="numero"/></tag>
+				</tags>
+				<lu>
+				<clip pos="1" side="tl" part="whole"/>	
+				</lu>
+				<b pos="1"/>
+				<lu>
+				<clip pos="2" side="tl" part="whole"/>	
+				</lu>
+				<b pos="2"/>
+				<lu>   
+					<clip pos="3" side="tl" part="lemh"/> 
+					<clip pos="3" side="tl" part="a_adj"/>
+					<clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+					<clip pos="3" side="tl" part="gen_mf"/>	 
+					<clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+					<clip pos="3" side="tl" part="nbr_sp"/>	 
+					<clip pos="3" side="tl" part="lemq"/>
+				</lu> 
+			</chunk>
+		</out>
+		<let>
+			<var n="caseFirstWord"/>
+			<lit v="aa"/>
+		</let>
+	</action>
+</rule> 
+
 
 <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
 	<pattern>
