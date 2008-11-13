@@ -5,6 +5,11 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
+
+
+    <def-cat n="UNK">
+      <cat-item lemma="unknown" tags=""/>
+    </def-cat>
     
     <def-cat n="negacio"><!-- BCN-->
       <cat-item tags="SN.DET.*.*.negacio"/>
@@ -168,8 +173,9 @@
     <def-var n="pers_subj"/>
     <def-var n="uno"/>
     <def-var n="nombre"/>
-		<def-var n="genere"/>
-		<def-var n="concord"/>
+    <def-var n="genere"/>
+    <def-var n="concord"/>
+    <def-var n="subj_vist"/>
   </section-def-vars>
 
 
@@ -832,7 +838,12 @@
 						<lit-tag v="inf"/>
 					</equal>
 				</not>
-				
+                         	<not>
+                                       <equal>
+						<var n="subj_vist"/>
+                                                <lit v="yes"/>
+                                       </equal>
+                                </not>
 			   </and>	
 			</test>
 
@@ -1266,6 +1277,10 @@
 		<var n="pers_subj"/>
 		<lit-tag v="p3"/>
 	</let>
+	<let>
+		<var n="subj_vist"/>
+                <lit v="no"/>
+	</let>
 </def-macro>
 
 
@@ -1293,6 +1308,25 @@
    
 <!--REGLES GENERALS -->
 
+<rule comment="REGLA: unknown">
+	<pattern>
+		<pattern-item n="UNK"/>
+	</pattern>
+	<action>
+	<let>
+		<var n="subj_vist"/>
+		<lit v="yes"/>
+	</let>
+
+	<out>
+			<chunk>
+				<clip pos="1" part="whole"/>
+			</chunk>
+	</out>
+	</action>
+</rule>
+
+
 <rule comment="REGLA: SN">
 	<pattern>
 		<pattern-item n="SN"/>
@@ -1316,6 +1350,9 @@
 		</out>
 	</action>
 </rule>
+
+
+
 
 <rule comment="REGLA: prep SN">
 	<pattern>
@@ -7627,6 +7664,10 @@
 	<let>
 	      <var n="pers_subj"/>
 	  <lit-tag v="p3"/>
+	</let>
+	<let>
+		<var n="subj_vist"/>
+                <lit v="no"/>
 	</let>
 	<out>
 	  <chunk>

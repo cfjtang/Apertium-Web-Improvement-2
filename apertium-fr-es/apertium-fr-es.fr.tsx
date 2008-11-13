@@ -1719,8 +1719,8 @@
    </enforce-after>
   </enforce-rules>-->
   
-  <preferences>
-   <prefer tags="vblex.pri.p3.sg"/>
+-  <preferences>
+<!--   <prefer tags="vblex.pri.p3.sg"/>
    <prefer tags="vbser.pri.p3.sg"/>
    <prefer tags="vbhaver.pri.p3.sg"/>
    <prefer tags="vbmod.pri.p3.sg"/>  
@@ -1739,7 +1739,7 @@
    <prefer tags="vblex.pis.p3.sg"/>
    <prefer tags="vbser.pis.p3.sg"/>
    <prefer tags="vbhaver.pis.p3.sg"/>
-   <prefer tags="vbmod.pis.p3.sg"/>
+   <prefer tags="vbmod.pis.p3.sg"/>-->
   </preferences>
   
 </tagger>
