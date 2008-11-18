@@ -22,6 +22,8 @@ LIST Dem              = (prn dem) (det dem);
 # Adjectives
 LIST Adj              = (adj);
 
+LIST Itg              = (itg);
+
 # Pronouns
 LIST PrnSubj          = (prn subj);
 LIST PrnDObj          = ("direct"ri prn obj);
@@ -50,6 +52,7 @@ LIST Vbloc            = (vbloc);
 LIST Vblex            = (vblex);
 LIST Vbser            = (vbser);
 
+LIST VerbPP           = (vblex pp);
 LIST VerbImp          = (vblex imp);
 LIST VerbInf          = (vblex inf);
 
@@ -171,6 +174,8 @@ SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj)
 # REGLA (B0021): >The particle is omitted before verbal nouns and imperatives
 REMOVE VerbInf IF (-1 Vpart) (0 VerbFin);
 REMOVE VerbImp IF (-1 Vpart) (0 VerbFin);
+
+REMOVE Itg IF (1 VerbPP);
 
 SECTION
 
