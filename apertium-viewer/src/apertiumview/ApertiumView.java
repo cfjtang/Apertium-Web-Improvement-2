@@ -292,6 +292,7 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
+    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -322,6 +323,7 @@ public class ApertiumView extends FrameView {
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
+    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('S');
@@ -391,6 +393,7 @@ public class ApertiumView extends FrameView {
 
     menuBar.add(fileMenu);
 
+    toolsMenu.setMnemonic('T');
     toolsMenu.setText("Tools");
 
     makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
