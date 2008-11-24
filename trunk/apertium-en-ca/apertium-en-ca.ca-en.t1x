@@ -12,6 +12,12 @@
      <def-cat n="loc">
       <cat-item tags="np.loc.*"/>
     </def-cat>
+     <def-cat n="al">
+      <cat-item tags="np.al.*"/>
+    </def-cat>
+     <def-cat n="cog">
+      <cat-item tags="np.cog.*"/>
+    </def-cat>
 
     <def-cat n="adj">
       <cat-item tags="adj.*"/>
@@ -210,6 +216,9 @@
 
     <def-cat n="adv_preadv">
       <cat-item tags="adv"/>
+      <cat-item tags="preadv"/>
+    </def-cat>
+    <def-cat n="preadv">
       <cat-item tags="preadv"/>
     </def-cat>
 
@@ -505,6 +514,7 @@
       <list-item v="Iraq"/>
       <list-item v="Zaire"/>
       <list-item v="Kurdistan"/>
+      <list-item v="Sudan"/>
 </def-list>
 
   </section-def-lists>
@@ -1296,7 +1306,9 @@
 	  </test>
 	  <let>
 	    <clip pos="1" side="tl" part="lem"/>
-	    <lit v="to"/>
+	      <get-case-from pos="1">
+		<lit v="to"/>
+	      </get-case-from>
 	  </let>
 	</when>
       </choose>
@@ -1388,7 +1400,9 @@
 	    </test>
 	    <let>	      
 	      <clip pos="1" side="tl" part="lem"/> 
+	      <get-case-from pos="1">
 	      <lit v="much"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <var n="adv_adjectiu"/>
@@ -1419,7 +1433,9 @@
 	    <let>
 	      <var n="adv_adjectiu"/>
 		<concat>
-		  <lit v="very"/>
+		  <get-case-from pos="1">
+		    <lit v="very"/>
+		  </get-case-from>
 		  <lit-tag v="preadv"/> 
 		  <lit v="$ ^"/>
 		  <clip pos="2" side="tl" part="lem"/> 
@@ -1505,7 +1521,9 @@
 	    </test>
 	    <let>	      
 	      <clip pos="2" side="tl" part="lem"/> 
-	      <lit v="much"/>
+	      <get-case-from pos="2">
+		<lit v="much"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <var n="adv_adjectiu"/>
@@ -1532,8 +1550,10 @@
 	      </and>
 	    </test>	
 	    <let>  
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <lit v="most"/>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <get-case-from pos="2"> 
+		<lit v="most"/>
+	      </get-case-from>
 	    </let>		    
 	    <let>
 	      <var n="adv_adjectiu"/>
@@ -1563,7 +1583,9 @@
 	    <let>
 	      <var n="adv_adjectiu"/>
 		<concat>
-		  <lit v="very"/>
+		  <get-case-from pos="2">
+		    <lit v="very"/>
+		  </get-case-from>
 		  <lit-tag v="preadv"/> 
 		  <lit v="$ ^"/>
 		  <clip pos="3" side="tl" part="lem"/> 
@@ -1602,11 +1624,11 @@
 		  </equal>
 		</or>
 		<or>
-		  <equal>
+		  <equal caseless="yes">
 		    <clip pos="2" side="sl" part="lem"/>
 		    <lit v="millor"/>
 		  </equal>
-		  <equal>
+		  <equal caseless="yes">
 		    <clip pos="2" side="sl" part="lem"/>
 		    <lit v="pitjor"/>
 		  </equal>
@@ -1645,13 +1667,6 @@
      </otherwise>
    </choose>
  </def-macro>
-
-
-
-
-
-
-
 
 
 
@@ -1846,10 +1861,16 @@
 		  <var n="lema_SV"/>
 		  <lit v="aux_verb"/>
 		</let>
+		<modify-case>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <lit v="aa"/>
+		</modify-case>
 		<let>
 		  <var n="verbfinal"/>
 		  <concat>
+		    <get-case-from pos="1">
 		      <lit v="would"/>
+		    </get-case-from>
 		      <lit-tag v="vaux.inf"/>
 		      <lit v="$ ^"/>
 		      <clip pos="1" side="tl" part="lemh"/>
@@ -1936,10 +1957,16 @@
 		    </let>
 		  </when>
 		</choose>
+		<modify-case>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <lit v="aa"/>
+		</modify-case>
 		<let>
 		  <var n="verbfinal"/>
 		  <concat>
+		    <get-case-from pos="1">
 		      <lit v="will"/>
+		    </get-case-from>
 		      <lit-tag v="vaux.inf"/>
 		      <lit v="$ ^"/>
 		      <clip pos="1" side="tl" part="lemh"/>
@@ -2172,10 +2199,16 @@
 	 <var n="lema_SV"/>
 	 <lit v="aux_haverhi_pp"/>
        </let>
+       <modify-case>
+	 <clip pos="1" side="tl" part="lemh"/>
+	 <lit v="aa"/>
+       </modify-case>
        <let>
 	 <var n="verbfinal"/>
 	 <concat>
-	   <lit v="would"/>
+	   <get-case-from pos="1">	   
+	     <lit v="would"/>
+	   </get-case-from>
 	   <lit-tag v="vaux.inf"/>
 	   <lit v="$ ^"/>
 	   <clip pos="1" side="tl" part="lemh"/>
@@ -2207,10 +2240,16 @@
 	 <var n="lema_SV"/>
 	 <lit v="aux_haverhi_pp"/>
        </let>
+       <modify-case>
+	 <clip pos="1" side="tl" part="lemh"/>
+	 <lit v="aa"/>
+       </modify-case>
        <let>
 	 <var n="verbfinal"/>
 	 <concat>
-	   <lit v="will"/>
+	   <get-case-from pos="1">
+	     <lit v="will"/>
+	   </get-case-from>
 	   <lit-tag v="vaux.inf"/>
 	   <lit v="$ ^"/>
 	   <clip pos="1" side="tl" part="lemh"/>
@@ -2344,10 +2383,16 @@
 	 <var n="lema_SV"/>
 	 <lit v="aux_haverhi"/>
        </let>
+       <modify-case>
+	 <clip pos="1" side="tl" part="lemh"/>
+	 <lit v="aa"/>
+       </modify-case>
        <let>
 	 <var n="verbfinal"/>
 	 <concat>
-	   <lit v="would"/>
+	   <get-case-from pos="1">
+	     <lit v="would"/>
+	   </get-case-from>
 	   <lit-tag v="vaux.inf"/>
 	   <lit v="$ ^"/>
 	   <clip pos="1" side="tl" part="lemh"/>
@@ -2379,10 +2424,16 @@
 	 <var n="lema_SV"/>
 	 <lit v="aux_haverhi"/>
        </let>
+       <modify-case>
+	 <clip pos="1" side="tl" part="lemh"/>
+	 <lit v="aa"/>
+       </modify-case>
        <let>
 	 <var n="verbfinal"/>
 	 <concat>
-	   <lit v="will"/>
+	   <get-case-from pos="1">
+	     <lit v="will"/>
+	   </get-case-from>
 	   <lit-tag v="vaux.inf"/>
 	   <lit v="$ ^"/>
 	   <clip pos="1" side="tl" part="lemh"/>
@@ -3997,7 +4048,9 @@
 		  <tag><lit-tag  v="sg"/></tag>
 		</tags>
 		<lu>   
-		  <lit v="prpers"/>  
+		  <get-case-from pos="1">
+		    <lit v="prpers"/> 
+		  </get-case-from>
 		  <lit-tag v="prn"/>  
 		  <lit-tag v="2"/> 
 		  <lit-tag v="p3"/>
@@ -4114,6 +4167,10 @@
 		  <clip pos="1" side="tl" part="temps"/>		     
 		  <lit-tag v="inf"/>
 		</let>
+		<modify-case>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <lit v="aa"/>
+		</modify-case>
 		<out>
 		  <chunk name="aux_verb" case="caseFirstWord">
 		    <tags>
@@ -4124,7 +4181,9 @@
 		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="would"/>
+		      <get-case-from pos="1">
+			<lit v="would"/>
+		      </get-case-from>
 		      <lit-tag v="vaux.inf"/>
 		    </lu>
 		    <b/>
@@ -4159,7 +4218,9 @@
 		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
+		      <get-case-from pos="1">
 		      <lit v="will"/>
+		      </get-case-from>
 		      <lit-tag v="vaux.inf"/>
 		    </lu>
 		    <b/>
@@ -4380,7 +4441,7 @@
       </action>
     </rule>
 
-    <rule comment="ANAR + INF +enc (vaig comprar-los - bought them)">
+    <rule comment="ANAR + INF +enc (vaig comprar-los - bought them) (MG: falta el mateix amb dos enclítics">
       <pattern>
 	<pattern-item n="anar"/> 
 	<pattern-item n="inf"/> 
@@ -4535,7 +4596,7 @@
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="3" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="3" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -4587,7 +4648,7 @@
 	  <clip pos="3" side="tl" part="temps"/>		     
 	  <lit-tag v="past"/>
 	</let>
-	<choose>    <!--Mira si és 'haver-hi' (hi vaig anar) -->
+	<choose>    <!--Mira si és 'haver-hi' (hi va haver) -->
 	  <when>
 	    <test>
 	      <and>
@@ -4595,7 +4656,7 @@
 		  <clip pos="1" side="sl" part="lem"/>		     
 		  <lit v="hi"/>
 		</equal>
-		<equal>
+		<equal caseless="yes">
 		  <clip pos="3" side="sl" part="lem"/>		     
 		  <lit v="haver"/>
 		</equal>
@@ -4611,7 +4672,9 @@
 	    </test>
 	    <let>
 	      <clip pos="3" side="tl" part="lem"/>
-	      <lit v="be"/>
+	      <get-case-from pos="3">
+		<lit v="be"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="3" side="tl" part="a_verb"/>
@@ -4627,7 +4690,9 @@
 		  <tag><lit-tag v="ND"/></tag>
 		</tags>
 		<lu>
-		  <lit v="there"/> 
+		  <get-case-from pos="1">
+		    <lit v="there"/> 
+		  </get-case-from>
 		  <lit-tag v="adv"/>
 		</lu>
 		<b pos="1"/>
@@ -4779,7 +4844,7 @@
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="2" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="1" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -4813,6 +4878,268 @@
 	</choose>
       </action>
     </rule>
+
+
+    <rule comment="pro + pro + ANAR + INF (m'ho va donar - gave it to me)">
+      <pattern>
+	<pattern-item n="pro"/>
+	<pattern-item n="pro"/>  
+	<pattern-item n="anar"/> 
+	<pattern-item n="inf"/> 
+      </pattern>
+      <action>       	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>  	
+	<call-macro n="tipus_verb">
+	  <with-param pos="4"/>
+	</call-macro>   
+	<let>
+	  <clip pos="4" side="tl" part="temps"/>		     
+	  <lit-tag v="past"/>
+	</let>
+	<choose>
+	  <!--Mira si és 'haver-hi' (n'hi va haver) -->
+	  <when>
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/>		     
+		  <lit v="hi"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="4" side="sl" part="lem"/>		     
+		  <lit v="haver"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="sl" part="pers"/>		     
+		  <lit-tag v="p3"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="sl" part="nbr"/>		     
+		  <lit-tag v="sg"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="lem"/>
+	      <get-case-from pos="4">
+		<lit v="be"/>
+	      </get-case-from>
+	    </let>
+	    <let>
+	      <clip pos="4" side="tl" part="a_verb"/>
+	      <lit-tag v="vbser"/>
+	    </let>
+	    <out>
+	      <chunk name="haverhi" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="4" side="tl" part="temps"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><lit-tag v="ND"/></tag>
+		</tags>
+		<lu>
+		  <get-case-from pos="1">
+		    <lit v="there"/> 
+		  </get-case-from>
+		  <lit-tag v="adv"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="4" side="tl" part="lem"/> 
+		  <clip pos="4" side="tl" part="a_verb"/> 
+		  <clip pos="4" side="tl" part="temps"/> 
+		  <clip pos="3" side="tl" part="pers"/> 		 
+		  <lit-tag v="5"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+
+
+
+	  <when>
+	    <!-- si el verb és separable, posa el 2n clític entre el verb i la cua (me'l va treure -> took it out (...))-->
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="sep"/>
+		<lit-tag v="sep"/>	
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="verbcj_enc" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="4" side="tl" part="temps"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags> 
+		<mlu>
+		  <lu>
+		    <clip pos="4" side="tl" part="lemh"/>
+		    <clip pos="4" side="tl" part="a_verb"/>
+		    <clip pos="4" side="tl" part="sep"/>
+		    <clip pos="4" side="tl" part="temps" link-to="3"/> 
+		  </lu>  
+		  <lu>
+		    <clip pos="2" side="tl" part="lem"/>
+		    <clip pos="2" side="tl" part="a_prn"/>
+		    <clip pos="2" side="tl" part="tipus_prn"/>
+		    <clip pos="2" side="tl" part="pers"/>
+		    <clip pos="2" side="tl" part="gen"/>
+		    <clip pos="2" side="tl" part="nbr"/>		           
+		    <clip pos="4" side="tl" part="lemq"/>
+		  </lu> 
+		</mlu>
+	      </chunk>
+	    </out>
+	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
+	      <with-param pos="1"/>
+	    </call-macro>
+	  </when>
+	  <otherwise> <!--si no és un verb separable, imprimeix primer el verb i despres el pron-->
+	    <out>
+	      <chunk name="verbcj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="4" side="tl" part="temps"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>          
+		  <clip pos="4" side="tl" part="lemh"/>
+		  <clip pos="4" side="tl" part="a_verb"/>
+		  <clip pos="4" side="tl" part="sep"/>
+		  <clip pos="4" side="tl" part="temps"/>
+		  <clip pos="4" side="tl" part="lemq"/>                  
+		</lu> 
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk name="pro"> 
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+		  <tag><clip pos="2" side="sl" part="pers"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>    
+		  <clip pos="2" side="tl" part="whole"/>
+		</lu>
+	      </chunk>
+	    </out> 
+	  </otherwise>
+	</choose>
+	<choose><!--ara mirem el primer pronom  -->
+	  <when>
+	    <test>
+	      <not><!--si no es dóna el cas que... --> 
+		<or>
+		  <and><!--o el verb és pronominal -->
+		    <equal>
+		      <clip pos="4" side="sl" part="pron"/>
+		      <lit-tag v="pron"/>
+		    </equal>
+		    <equal>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="3" side="sl" part="pers"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="1" side="sl" part="nbr"/>
+			<clip pos="3" side="sl" part="nbr"/>
+		      </equal>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/><!--és 'sp' -->
+		      </equal>
+		    </or>
+		  </and><!--o el primer enclític es tradueix per res (en/hi/[se]) -->
+		  <equal>
+		    <clip pos="1" side="tl" part="whole"/>
+		    <lit v=""/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose><!--imprimeix 'to + prn' excepte si el 2n pronom tenia traducció buida i el verb no era separable -->
+	      <when>
+		<test>
+		  <not>
+		    <and>
+		      <equal>
+			<clip pos="2" side="tl" part="whole"/>
+			<lit v=""/>
+		      </equal>
+		      <not>
+			<equal>
+			  <clip pos="4" side="tl" part="sep"/>
+			  <lit-tag v="sep"/>	
+			</equal>
+		      </not>
+		    </and>
+		  </not>
+		</test>
+		<out>
+		  <chunk name="to_prn">
+		    <tags>
+		      <tag><lit-tag v="SP"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="tl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>	
+		    <b pos="2"/>
+		    <lu>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="3"/>
+		    <lu>
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu> 
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise> <!--si el 2n pronom tenia trad buida i el verb no era separable, imprimeix el primer pronom directament sense la prep 'to' -->
+		<out>
+		  <chunk name="pro">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="sl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <b pos="2"/>
+		    <lu>    
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu>
+		  </chunk>
+		</out>
+		<call-macro n="f_bcond"> 
+		  <with-param pos="3"/>
+		</call-macro>
+	      </otherwise>
+	    </choose>
+	  </when>
+	  <otherwise>
+	    <call-macro n="f_bcond"> 
+	      <with-param pos="2"/>
+	    </call-macro>
+	    <call-macro n="f_bcond"> 
+	      <with-param pos="3"/>
+	    </call-macro>
+	  </otherwise>	    
+	</choose>
+      </action>
+    </rule>
     
 
 
@@ -4840,7 +5167,9 @@
 	    </test>
 	    <let>
 	      <clip pos="2" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="2">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="2" side="tl" part="a_pp"/> 
@@ -4922,7 +5251,7 @@
 		  <clip pos="1" side="sl" part="lem"/>		     
 		  <lit v="hi"/>
 		</equal>
-		<equal>
+		<equal caseless="yes">
 		  <clip pos="3" side="sl" part="lem"/>		     
 		  <lit v="haver"/>
 		</equal>
@@ -4938,7 +5267,9 @@
 	    </test>
 	    <let>
 	      <clip pos="3" side="tl" part="lem"/>
-	      <lit v="be"/>
+	      <get-case-from pos="3">
+		<lit v="be"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="3" side="tl" part="a_verb"/>
@@ -4957,7 +5288,9 @@
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
 		<lu>
-		  <lit v="there"/> 
+		  <get-case-from pos="1">
+		    <lit v="there"/> 
+		  </get-case-from>
 		  <lit-tag v="adv"/>
 		</lu>
 		<b pos="1"/>
@@ -4983,7 +5316,9 @@
 		</test>
 		<let>
 		  <clip pos="3" side="tl" part="lem"/> 
-		  <lit v="be able to"/>
+		  <get-case-from pos="3">
+		    <lit v="be able to"/>
+		  </get-case-from>
 		</let>
 		<let>
 		  <clip pos="3" side="tl" part="a_pp"/> 
@@ -5134,7 +5469,7 @@
 			    <clip pos="1" side="sl" part="nbr"/>
 			    <clip pos="2" side="sl" part="nbr"/>
 			  </equal>
-			  <equal>
+			  <equal caseless="yes">
 			    <clip pos="1" side="sl" part="lem"/>
 			    <lit v="es"/><!--és 'sp' -->
 			  </equal>
@@ -5169,8 +5504,349 @@
 	</choose>
       </action>
     </rule>
-	 
 
+
+
+  <rule comment="pro + pro + HAVER + PP (me'ls han donat - have given them to me)">
+      <pattern>
+	<pattern-item n="pro"/>
+	<pattern-item n="pro"/> 
+	<pattern-item n="haver"/> 
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>   	
+	<call-macro n="tipus_verb">
+	  <with-param pos="4"/>
+	</call-macro>   
+	<choose>
+	  <when><!--Mira si és 'haver-hi' (n'hi ha hagut) -->
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/>		     
+		  <lit v="hi"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="4" side="sl" part="lem"/>		     
+		  <lit v="haver"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="sl" part="pers"/>		     
+		  <lit-tag v="p3"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="sl" part="nbr"/>		     
+		  <lit-tag v="sg"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="lem"/>
+	      <get-case-from pos="4">
+		<lit v="be"/>
+	      </get-case-from>
+	    </let>
+	    <let>
+	      <clip pos="4" side="tl" part="a_verb"/>
+	      <lit-tag v="vbser"/>
+	    </let>
+	    <call-macro n="conj_haverhi_pp">
+	      <with-param pos="3"/>
+	    </call-macro> 
+	    <out>
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><var n="pers_chunk"/></tag>
+		  <tag><var n="nbr_chunk"/></tag>
+		</tags>
+		<lu>
+		  <get-case-from pos="1">
+		    <lit v="there"/> 
+		  </get-case-from>
+		  <lit-tag v="adv"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <var n="verbfinal"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>
+		  <clip pos="4" side="tl" part="lem"/>
+		  <clip pos="4" side="tl" part="a_pp"/>
+		</lu> 		  
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise><!--Si no és 'haver-hi' -->
+
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		<clip pos="4" side="sl" part="lem"/> 
+		<lit v="poder"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="4" side="tl" part="lem"/> 
+	      <get-case-from pos="4">
+		<lit v="be able to"/>
+	      </get-case-from>
+	    </let>
+	    <let>
+	      <clip pos="4" side="tl" part="a_pp"/> 
+	      <lit-tag v="vbmod.pp"/>
+	    </let>
+	  </when>
+	</choose>
+	<call-macro n="conj_verb1">
+	  <with-param pos="3"/>
+	</call-macro>
+	<!-- aquí s'ha de mirar la separabilitat-->
+	<choose>
+	  <when>
+	    <!-- si el verb és separable, posa el 2n clític entre el verb i la cua (me l'ha tret -> have taken it out)-->
+	    <test>
+	      <equal>
+		<clip pos="4" side="tl" part="sep"/>
+		<lit-tag v="sep"/>	
+	      </equal>
+	    </test>
+	    <choose><!-- sobrescriu el nom de chunk assignat per la macro 'conj_verb1' -->
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="3" side="sl" part="temps"/>
+		      <lit-tag v="cni"/>
+		    </equal>
+		    <equal>
+		      <clip pos="3" side="sl" part="temps"/>
+		      <lit-tag v="fti"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <var n="lema_SV"/>
+		  <lit v="aux_haver_pp_enc"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="lema_SV"/>
+		  <lit v="haver_pp_enc"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <out>
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <var n="verbfinal"/>
+		</lu>
+		<b pos="1"/>
+		<mlu>
+		  <lu>
+		    <clip pos="4" side="tl" part="lemh"/> 
+		    <clip pos="4" side="tl" part="a_pp"/>
+		  </lu> 
+		  <lu>
+		    <clip pos="2" side="tl" part="lem"/>
+		    <clip pos="2" side="tl" part="a_prn"/>
+		    <clip pos="2" side="tl" part="tipus_prn"/>
+		    <clip pos="2" side="tl" part="pers"/>
+		    <clip pos="2" side="tl" part="gen"/>
+		    <clip pos="2" side="tl" part="nbr"/>		           
+		    <clip pos="4" side="tl" part="lemq"/>
+		  </lu> 
+		</mlu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise> <!-- si no és separable: primer imprimim el verb i després el pronom)-->
+	    
+	    <choose><!-- sobrescriu el nom de chunk assignat per la macro 'conj_verb1' -->
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="3" side="sl" part="temps"/>
+		      <lit-tag v="cni"/>
+		    </equal>
+		    <equal>
+		      <clip pos="3" side="sl" part="temps"/>
+		      <lit-tag v="fti"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <var n="lema_SV"/>
+		  <lit v="aux_haver_pp"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="lema_SV"/>
+		  <lit v="haver_pp"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <out>
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <var n="verbfinal"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <clip pos="4" side="tl" part="lemh"/> 
+		  <clip pos="4" side="tl" part="a_pp"/>
+		  <clip pos="4" side="tl" part="lemq"/>    
+		</lu> 
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk name="pro"> 
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+		  <tag><clip pos="2" side="sl" part="pers"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>    
+		  <clip pos="2" side="tl" part="whole"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+	  </otherwise>
+	</choose>
+	<choose><!--ara mirem el primer pronom  -->
+	  <when>
+	    <test>
+	      <not><!--si no es dóna el cas que... --> 
+		<or>
+		  <and><!--o el verb és pronominal -->
+		    <equal>
+		      <clip pos="4" side="sl" part="pron"/>
+		      <lit-tag v="pron"/>
+		    </equal>
+		    <equal>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="3" side="sl" part="pers"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="1" side="sl" part="nbr"/>
+			<clip pos="3" side="sl" part="nbr"/>
+		      </equal>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/><!--és 'sp' -->
+		      </equal>
+		    </or>
+		  </and><!--o el primer enclític es tradueix per res (en/hi/[se]) -->
+		  <equal>
+		    <clip pos="1" side="tl" part="whole"/>
+		    <lit v=""/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose><!--imprimeix 'to + prn' excepte si el 2n pronom tenia traducció buida i el verb no era separable -->
+	      <when>
+		<test>
+		  <not>
+		    <and>
+		      <equal>
+			<clip pos="2" side="tl" part="whole"/>
+			<lit v=""/>
+		      </equal>
+		      <not>
+			<equal>
+			  <clip pos="4" side="tl" part="sep"/>
+			  <lit-tag v="sep"/>	
+			</equal>
+		      </not>
+		    </and>
+		  </not>
+		</test>
+		<out>
+		  <chunk name="to_prn">
+		    <tags>
+		      <tag><lit-tag v="SP"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="tl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>	
+		    <b pos="2"/>
+		    <lu>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="3"/>
+		    <lu>
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu> 
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise> <!--si el 2n pronom tenia trad buida i el verb no era separable, imprimeix el primer pronom directament sense la prep 'to' -->
+		<out>
+		  <chunk name="pro">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="sl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <b pos="2"/>
+		    <lu>    
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu>
+		  </chunk>
+		</out>
+		<call-macro n="f_bcond"> 
+		  <with-param pos="3"/>
+		</call-macro>
+	      </otherwise>
+	    </choose>
+	  </when>
+	  <otherwise>
+	    <call-macro n="f_bcond"> 
+	      <with-param pos="2"/>
+	    </call-macro>
+	    <call-macro n="f_bcond"> 
+	      <with-param pos="3"/>
+	    </call-macro>
+	  </otherwise>	  
+	</choose>
+      </action>
+    </rule>
+    
 
 
 	 
@@ -5195,7 +5871,7 @@
 		  <clip pos="1" side="sl" part="lem"/>		     
 		  <lit v="hi"/>
 		</equal>
-		<equal>
+		<equal caseless="yes">
 		  <clip pos="2" side="sl" part="lem"/>		     
 		  <lit v="haver"/>
 		</equal>
@@ -5211,7 +5887,9 @@
 	    </test>
 	    <let>
 	      <clip pos="2" side="tl" part="lem"/>
-	      <lit v="be"/>
+	      <get-case-from pos="2">
+		<lit v="be"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="2" side="tl" part="a_verb"/>
@@ -5230,7 +5908,9 @@
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
 		<lu>
-		  <lit v="there"/> 
+		  <get-case-from pos="1">
+		    <lit v="there"/> 
+		  </get-case-from>
 		  <lit-tag v="adv"/>
 		</lu>
 		<b pos="1"/>
@@ -5328,7 +6008,7 @@
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="2" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="1" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -5362,6 +6042,253 @@
       </action>
     </rule>
 
+  <rule comment="REGLA: PROCL + PROCL + VERB conjugat">
+      <pattern>
+	<pattern-item n="pro"/>
+	<pattern-item n="pro"/>
+	<pattern-item n="verbcj"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>  	
+	<call-macro n="tipus_verb">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="conj_verb1">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when><!--Mira si és 'haver-hi'(n'hi ha) -->
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="2" side="sl" part="lem"/>		     
+		  <lit v="hi"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="3" side="sl" part="lem"/>		     
+		  <lit v="haver"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="sl" part="pers"/>		     
+		  <lit-tag v="p3"/>
+		</equal>
+		<equal>
+		  <clip pos="3" side="sl" part="nbr"/>		     
+		  <lit-tag v="sg"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="lem"/>
+	      <get-case-from pos="3">
+		<lit v="be"/>
+	      </get-case-from>
+	    </let>
+	    <let>
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <lit-tag v="vbser"/>
+	    </let>
+	    <call-macro n="conj_haverhi">
+	      <with-param pos="3"/>
+	    </call-macro> 
+	    <out>
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><var n="pers_chunk"/></tag>
+		  <tag><var n="nbr_chunk"/></tag>
+		</tags>
+		<lu>
+		  <get-case-from pos="1">
+		    <lit v="there"/>
+		  </get-case-from>
+		  <lit-tag v="adv"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <var n="verbfinal"/> 
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>		  
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+	    <!-- si el verb és separable posa el 2n clític entre el verb i la cua (m'el treu -> takes it out...)-->
+	    <test>
+		<equal>
+		  <clip pos="3" side="tl" part="sep"/>
+		  <lit-tag v="sep"/>	
+		</equal>
+	    </test>
+	    <append n="lema_SV">
+	      <lit v="_enc"/>
+	    </append>
+	    <out>
+	    <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<mlu>
+		  <lu>
+		    <var n="verbfinal"/> 
+		  </lu>	
+		  <lu>
+		    <clip pos="2" side="tl" part="lem"/>
+		    <clip pos="2" side="tl" part="a_prn"/>
+		    <clip pos="2" side="tl" part="tipus_prn"/>
+		    <clip pos="2" side="tl" part="pers"/>
+		    <clip pos="2" side="tl" part="gen"/>
+		    <clip pos="2" side="tl" part="nbr"/>		           
+		    <clip pos="3" side="tl" part="lemq"/>
+		  </lu>
+		</mlu>
+	      </chunk>
+	    </out>
+	    <call-macro n="f_bcond"> <!-- si cal, enviem el blanc -->
+	      <with-param pos="1"/>
+	    </call-macro>
+	  </when>
+	  <otherwise> <!--si no és un verb separable...-->
+	    
+	    <out>
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="3" side="tl" part="pers"/></tag>
+		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <var n="verbfinal"/> 
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk name="pro">
+		<tags>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+		  <tag><clip pos="2" side="sl" part="pers"/></tag>
+		  <tag><clip pos="2" side="tl" part="gen"/></tag>
+		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="2" side="tl" part="whole"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+	<choose><!--ara mirem el primer pronom -->
+
+	  <when>
+	    <test>
+	      <not><!--si no es dóna el cas que... --> 
+		<or>
+		  <and><!--o el verb és pronominal-->
+		    <equal>
+		      <clip pos="3" side="sl" part="pron"/>
+		      <lit-tag v="pron"/>
+		    </equal>
+		    <equal>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="3" side="sl" part="pers"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="1" side="sl" part="nbr"/>
+			<clip pos="3" side="sl" part="nbr"/>
+		      </equal>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/><!--és 'sp' -->
+		      </equal>
+		    </or>
+		  </and><!--o el primer enclític es tradueix per res (en/hi/[se]) -->
+		  <equal>
+		    <clip pos="1" side="tl" part="whole"/>
+		    <lit v=""/>
+		  </equal>
+		</or>
+	      </not>
+	    </test>
+	    <choose><!--imprimeix 'to + prn' excepte si el 2n pronom tenia traducció buida i el verb no era separable -->
+	      <when>
+		<test>
+		  <not>
+		    <and>
+		      <equal>
+			<clip pos="2" side="tl" part="whole"/>
+			<lit v=""/>
+		      </equal>
+		      <not>
+			<equal>
+			  <clip pos="3" side="tl" part="sep"/>
+			  <lit-tag v="sep"/>	
+			</equal>
+		      </not>
+		    </and>
+		  </not>
+		</test>
+		<out>
+		  <chunk name="to_prn">
+		    <tags>
+		      <tag><lit-tag v="SP"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="tl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>	
+		    <b pos="2"/>
+		    <lu>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b/>
+		    <lu>
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu> 
+		  </chunk>
+		</out>
+	      </when>
+	      <otherwise> <!--si el 2n pronom tenia trad buida i el verb no era separable, imprimeix el primer pronom directament sense la prep 'to' -->
+		<out>
+		  <chunk name="pro">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="sl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <b pos="2"/>
+		    <lu>    
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu>
+		  </chunk>
+		</out>
+	      </otherwise>
+	    </choose>
+	  </when>
+	  <otherwise>
+	    <call-macro n="f_bcond"> 
+	      <with-param pos="2"/>
+	    </call-macro>
+	  </otherwise>
+	</choose>
+      </action>
+  </rule>
 
 
     <rule comment="VERB + ENCL (ajudar-me - help me) mireia vaig per aqui pingui">
@@ -5471,7 +6398,7 @@
 		    <clip pos="1" side="sl" part="nbr"/>
 		    <clip pos="2" side="sl" part="nbr"/>
 		  </equal>
-		  <equal>
+		  <equal caseless="yes">
 		    <clip pos="2" side="sl" part="lem"/>
 		    <lit v="es"/><!--és 'sp' -->
 		  </equal>
@@ -5710,7 +6637,9 @@
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
 		    </tags>		 
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -5762,7 +6691,7 @@
 		    <clip pos="1" side="sl" part="nbr"/>
 		    <clip pos="2" side="sl" part="nbr"/>
 		  </equal>
-		  <equal>
+		  <equal caseless="yes">
 		    <clip pos="2" side="sl" part="lem"/>
 		    <lit v="es"/><!--és 'sp' -->
 		  </equal>
@@ -5931,7 +6860,9 @@
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -6308,7 +7239,9 @@
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -6323,6 +7256,218 @@
 	</choose> 
       </action>
     </rule>
+
+
+
+    <rule comment="REGLA: procl + verb modal + inf (em pot sorprendre -> can surprise me)">
+      <pattern>
+	<pattern-item n="pro"/>
+	<pattern-item n="verbm"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>  	
+	<call-macro n="tipus_verb">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="conj_verb1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose>
+	  <when><!--mira si és 'haver-hi' (hi pot haver) -->
+	    <test>
+	      <and>
+		<equal caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/>		     
+		  <lit v="hi"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="3" side="sl" part="lem"/>		     
+		  <lit v="haver"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="pers"/>		     
+		  <lit-tag v="p3"/>
+		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="nbr"/>		     
+		  <lit-tag v="sg"/>
+		</equal>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="3" side="tl" part="lem"/>
+	      <get-case-from pos="3">
+		<lit v="be"/>
+	      </get-case-from>
+	    </let>
+	    <let>
+	      <clip pos="3" side="tl" part="a_verb"/>
+	      <lit-tag v="vbser"/>
+	    </let>
+	    <append n="lema_SV">
+	      <lit v="_haverhiinf"/>
+	    </append>
+	    <out>
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="2" side="sl" part="pers"/></tag>
+		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <get-case-from pos="1">
+		    <lit v="there"/> 
+		  </get-case-from>
+		  <lit-tag v="adv"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <var n="verbfinal"/> 
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>
+		  <clip pos="3" side="tl" part="whole"/> 
+		</lu>		
+	      </chunk>
+	    </out>
+	  </when>
+
+	  <when><!-- si el verb és separable i no és pronominal, posa el clític entre el verb i la cua (el pot treure -> can take it out)-->
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="3" side="tl" part="sep"/>
+		  <lit-tag v="sep"/>
+		</equal>
+		<not>
+		  <equal>
+		    <clip pos="3" side="sl" part="pron"/>
+		    <lit-tag v="pron"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>   
+	    <out>
+	      <chunk name="mod_inf_enc" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="2" side="sl" part="pers"/></tag>
+		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <var n="verbfinal"/>       
+		  <clip pos="2" side="tl" part="lemq"/>  
+		</lu>  
+		<b pos="1"/>
+		<mlu>
+		  <lu>
+		    <clip pos="3" side="tl" part="lemh"/>      
+		    <clip pos="3" side="tl" part="a_verb"/>    
+		    <clip pos="3" side="tl" part="sep"/>
+		    <clip pos="3" side="tl" part="temps"/>
+		  </lu>
+		  <lu>
+		    <clip pos="1" side="tl" part="lem"/>
+		    <clip pos="1" side="tl" part="a_prn"/>
+		    <clip pos="1" side="tl" part="tipus_prn"/>
+		    <clip pos="1" side="tl" part="pers"/>
+		    <clip pos="1" side="tl" part="gen"/>
+		    <clip pos="1" side="tl" part="nbr"/>      
+		    <clip pos="3" side="tl" part="lemq"/>
+		  </lu> 
+		</mlu>
+	      </chunk>
+	    </out>  
+	    <call-macro n="f_bcond">
+	      <with-param pos="2"/>
+	    </call-macro>
+	  </when>
+	  <otherwise><!--si no és un verb separable...-->
+	    <out>
+	      <chunk name="mod_inf" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+		  <tag><var n="temps_chunk"/></tag>
+		  <tag><clip pos="2" side="sl" part="pers"/></tag>
+		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+		</tags>
+		<lu>
+		  <var n="verbfinal"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>  
+		<b pos="1"/>
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>      
+		  <clip pos="3" side="tl" part="a_verb"/>    
+		  <clip pos="3" side="tl" part="sep"/>
+		  <clip pos="3" side="tl" part="temps"/>      
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out> 
+
+
+	    <choose><!--després d'imprimir el verb, mirem el proclític -->
+	      <when>
+		<test>
+		  <and>
+		    <equal>
+		      <clip pos="3" side="sl" part="pron"/>
+		      <lit-tag v="pron"/>
+		    </equal>
+		    <equal>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="2" side="sl" part="pers"/>
+		    </equal>
+		    <or>
+		      <equal>
+			<clip pos="1" side="sl" part="nbr"/>
+			<clip pos="2" side="sl" part="nbr"/>
+		      </equal>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/><!--és 'sp' -->
+		      </equal>
+		    </or>
+		  </and>
+		</test>	
+		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
+		  <with-param pos="2"/>
+		</call-macro>
+	      </when>
+	      <otherwise>
+		<out>
+		  <b pos="2"/>
+		  <chunk name="pro">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="1" side="sl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <lu>
+		      <clip pos="1" side="tl" part="whole"/>
+		    </lu>
+		  </chunk>
+		</out>		
+	      </otherwise>
+	    </choose>
+	  </otherwise>
+	</choose>
+      </action>
+    </rule>
+
+
 
 
     <rule comment="VERBMOD + ENCL (per quan va davant desconegudes, perquè almenys no peti: poder-ho xxx - be able to it xxx)">
@@ -6489,7 +7634,9 @@
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="1">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="a_pp"/> 
@@ -6596,7 +7743,9 @@
 	    </test>
 	    <let>
 	      <clip pos="3" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="3">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="3" side="tl" part="a_pp"/> 
@@ -6644,8 +7793,10 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<let>
-	  <clip pos="2" side="tl" part="lem"/> 
-	  <lit v="by"/>
+	  <clip pos="2" side="tl" part="lem"/>
+	  <get-case-from pos="2"> 
+	    <lit v="by"/>
+	  </get-case-from>
 	</let>	  
 	<choose>
 	  <when>
@@ -6657,7 +7808,9 @@
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="1">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="a_pp"/> 
@@ -6721,7 +7874,9 @@
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="1">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="a_pp"/> 
@@ -6811,7 +7966,9 @@
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lemh"/>
-	      <lit v="be able to"/>
+	      <get-case-from pos="1">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
@@ -6869,7 +8026,9 @@
 	    </test>
 	    <let>
 	      <clip pos="2" side="tl" part="lemh"/>
-	      <lit v="be able to"/>
+	      <get-case-from pos="2">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="2" side="tl" part="a_verb"/>
@@ -6907,7 +8066,7 @@
 
 
 
- <rule comment="REGLA: PROCLÍTIC ESTAR GER (els estan buscant) mireia falta els negatius pingui">
+ <rule comment="REGLA: PROCLÍTIC ESTAR GER (els estan buscant) mireia falta els negatius pingui i amb dos proclítics">
       <pattern>
 	<pattern-item n="pro"/>
 	<pattern-item n="estar"/>
@@ -7022,7 +8181,7 @@
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="3" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="1" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -7667,7 +8826,7 @@
 		  <clip pos="2" side="sl" part="lem"/>		     
 		  <lit v="hi"/>
 		</equal>
-		<equal>
+		<equal caseless="yes">
 		  <clip pos="4" side="sl" part="lem"/>		     
 		  <lit v="haver"/>
 		</equal>
@@ -7683,7 +8842,9 @@
 	    </test>
 	    <let>
 	      <clip pos="4" side="tl" part="lem"/>
-	      <lit v="be"/>
+	      <get-case-from pos="4">
+		<lit v="be"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="4" side="tl" part="a_verb"/>
@@ -7699,7 +8860,9 @@
 		  <tag><lit-tag v="ND"/></tag>
 		</tags>
 		<lu>
-		  <lit v="there"/> 
+		  <get-case-from pos="2">
+		    <lit v="there"/>
+		  </get-case-from>
 		  <lit-tag v="adv"/>
 		</lu>
 		<b pos="2"/>
@@ -7851,7 +9014,7 @@
 			<clip pos="2" side="sl" part="nbr"/>
 			<clip pos="3" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="2" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -7951,7 +9114,9 @@
 	    </test>
 	    <let>
 	      <clip pos="3" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="3">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="3" side="tl" part="a_pp"/> 
@@ -8079,7 +9244,7 @@
 		  <clip pos="2" side="sl" part="lem"/>		     
 		  <lit v="hi"/>
 		</equal>
-		<equal>
+		<equal caseless="yes">
 		  <clip pos="4" side="sl" part="lem"/>		     
 		  <lit v="haver"/>
 		</equal>
@@ -8095,7 +9260,9 @@
 	    </test>
 	    <let>
 	      <clip pos="4" side="tl" part="lem"/>
-	      <lit v="be"/>
+	      <get-case-from pos="4">
+		<lit v="be"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="4" side="tl" part="a_verb"/>
@@ -8114,7 +9281,9 @@
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
 		<lu>
-		  <lit v="there"/> 
+		  <get-case-from pos="2">
+		    <lit v="there"/>
+		  </get-case-from>
 		  <lit-tag v="adv"/>
 		</lu>
 		<b pos="2"/>
@@ -8140,7 +9309,9 @@
 		</test>
 		<let>
 		  <clip pos="4" side="tl" part="lem"/> 
-		  <lit v="be able to"/>
+		  <get-case-from pos="4">
+		    <lit v="be able to"/>
+		  </get-case-from>
 		</let>
 		<let>
 		  <clip pos="4" side="tl" part="a_pp"/> 
@@ -8293,7 +9464,7 @@
 			    <clip pos="2" side="sl" part="nbr"/>
 			    <clip pos="3" side="sl" part="nbr"/>
 			  </equal>
-			  <equal>
+			  <equal caseless="yes">
 			    <clip pos="2" side="sl" part="lem"/>
 			    <lit v="es"/><!--és 'sp' -->
 			  </equal>
@@ -8348,7 +9519,9 @@
 	      <tag><lit-tag v="adv.NEG"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="not"/>
+	      <get-case-from pos="2">
+		<lit v="not"/>
+	      </get-case-from>
 	      <clip pos="2" side="tl" part="tags"/>
 	    </lu>
 	  </chunk>
@@ -8358,7 +9531,9 @@
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="to"/>
+	      <get-case-from pos="2">
+		<lit v="to"/>
+	      </get-case-from>
 	      <clip pos="1" side="tl" part="tags"/>
 	    </lu>
 	  </chunk>
@@ -8445,7 +9620,7 @@
 		  <clip pos="2" side="sl" part="lem"/>		     
 		  <lit v="hi"/>
 		</equal>
-		<equal>
+		<equal caseless="yes">
 		  <clip pos="3" side="sl" part="lem"/>		     
 		  <lit v="haver"/>
 		</equal>
@@ -8461,7 +9636,9 @@
 	    </test>
 	    <let>
 	      <clip pos="3" side="tl" part="lem"/>
-	      <lit v="be"/>
+	      <get-case-from pos="3">
+		<lit v="be"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="3" side="tl" part="a_verb"/>
@@ -8480,7 +9657,9 @@
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
 		<lu>
-		  <lit v="there"/> 
+		  <get-case-from pos="2">
+		    <lit v="there"/>
+		  </get-case-from>
 		  <lit-tag v="adv"/>
 		</lu>
 		<b pos="2"/>
@@ -8577,7 +9756,7 @@
 			<clip pos="2" side="sl" part="nbr"/>
 			<clip pos="3" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="2" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -8642,12 +9821,16 @@
 		  <tag><clip pos="2" side="tl" part="temps"/></tag>
 		</tags> 
 		<lu>
-		  <lit v="not"/>
+		  <get-case-from pos="1">
+		    <lit v="not"/>
+		  </get-case-from>
 		  <clip pos="1" side="tl" part="tags"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
-		  <lit v="to"/>
+		  <get-case-from pos="2">
+		    <lit v="to"/>
+		  </get-case-from>
 		  <lit-tag v="pr"/>
 		</lu>
 		<b/>
@@ -8680,12 +9863,16 @@
 		  <tag><clip pos="2" side="sl" part="temps"/></tag>
 		</tags> 
 		<lu>
-		  <lit v="not"/>
+		  <get-case-from pos="1">
+		    <lit v="not"/>
+		  </get-case-from>
 		  <clip pos="1" side="tl" part="tags"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
+		  <get-case-from pos="2">
 		  <lit v="to"/>
+		  </get-case-from>
 		  <lit-tag v="pr"/>
 		</lu>
 		<b/>
@@ -8747,12 +9934,16 @@
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
 		    </tags> 
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -8785,12 +9976,16 @@
 		      <tag><clip pos="2" side="sl" part="temps"/></tag>
 		    </tags> 
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -8827,12 +10022,16 @@
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
 		    </tags> 
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -8865,12 +10064,16 @@
 		      <tag><clip pos="2" side="sl" part="temps"/></tag>
 		    </tags> 
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="2">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -8910,7 +10113,9 @@
 		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 		    </tags>		 
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="3">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -8984,7 +10189,9 @@
 		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		</tags>
 		<lu>
-		  <lit v="not"/>
+		  <get-case-from pos="1">
+		    <lit v="not"/>
+		  </get-case-from>
 		  <clip pos="1" side="tl" part="tags"/>
 		</lu>
 		<b pos="1"/>
@@ -9026,7 +10233,9 @@
 		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		</tags>
 		<lu>
-		  <lit v="not"/>
+		  <get-case-from pos="1">
+		    <lit v="not"/>
+		  </get-case-from>
 		  <clip pos="1" side="tl" part="tags"/>
 		</lu>
 		<b pos="1"/>
@@ -9120,7 +10329,9 @@
 		      <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
@@ -9162,7 +10373,9 @@
 		      <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
@@ -9208,7 +10421,9 @@
 		      <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
@@ -9250,7 +10465,9 @@
 		      <tag><clip pos="2" side="sl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="1">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="1" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="1"/>
@@ -9297,7 +10514,9 @@
 		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="3">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -9358,7 +10577,9 @@
 	      <tag><clip pos="2" side="sl" part="nbr"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="not"/>
+	      <get-case-from pos="1">
+		<lit v="not"/>
+	      </get-case-from>
 	      <clip pos="1" side="tl" part="tags"/>
 	    </lu>
 	    <b pos="1"/>
@@ -9423,7 +10644,9 @@
 	      <tag><clip pos="2" side="sl" part="nbr"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="not"/>
+	      <get-case-from pos="1">
+		<lit v="not"/>
+	      </get-case-from>
 	      <clip pos="1" side="tl" part="tags"/>
 	    </lu>
 	    <b pos="1"/>
@@ -9475,7 +10698,9 @@
 	    </test>
 	    <let>
 	      <clip pos="2" side="tl" part="lem"/> 
-	      <lit v="be able to"/>
+	      <get-case-from pos="2">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="2" side="tl" part="a_verb"/> 
@@ -9492,7 +10717,9 @@
 	      <tag><clip pos="2" side="tl" part="temps"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="not"/>
+	      <get-case-from pos="1">
+		<lit v="not"/>
+	      </get-case-from>
 	      <clip pos="1" side="tl" part="tags"/>
 	    </lu>
 	    <b pos="1"/>
@@ -9530,7 +10757,9 @@
 	    </test>
 	    <let>
 	      <clip pos="2" side="tl" part="lemh"/>
-	      <lit v="be able to"/>
+	      <get-case-from pos="2">
+		<lit v="be able to"/>
+	      </get-case-from>
 	    </let>
 	    <let>
 	      <clip pos="2" side="tl" part="a_verb"/>
@@ -9546,7 +10775,9 @@
 	      <tag><clip pos="2" side="tl" part="temps"/></tag>
 	    </tags>
 	    <lu>
-	      <lit v="not"/>
+	      <get-case-from pos="1">
+		<lit v="not"/>
+	      </get-case-from>
 	      <clip pos="1" side="tl" part="tags"/>
 	    </lu>
 	    <b pos="1"/>
@@ -9911,7 +11142,9 @@
 		      <tag><clip pos="4" side="tl" part="nbr"/></tag>
 		    </tags>		 
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="4">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -9965,7 +11198,9 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>
-	      <lit v="not"/>
+	      <get-case-from pos="3">
+		<lit v="not"/>
+	      </get-case-from>
 	      <clip pos="3" side="tl" part="tags"/>
 	    </lu>
 	    <b pos="2"/>	      
@@ -10032,7 +11267,9 @@
 		</lu>
 		<b pos="1"/>
 		<lu>
-		  <lit v="not"/>
+		  <get-case-from pos="3">
+		    <lit v="not"/>
+		  </get-case-from>
 		  <clip pos="3" side="tl" part="tags"/>
 		</lu>
 		<b pos="2"/>
@@ -10073,7 +11310,9 @@
 		</lu>
 		<b pos="1"/>
 		<lu>
-		  <lit v="not"/>
+		  <get-case-from pos="3">
+		    <lit v="not"/>
+		  </get-case-from>
 		  <clip pos="3" side="tl" part="tags"/>
 		</lu>
 		<b pos="2"/>	      
@@ -10152,7 +11391,9 @@
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="3">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="3" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="2"/>
@@ -10193,7 +11434,9 @@
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="3">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="3" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="2"/> 
@@ -10235,7 +11478,9 @@
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="3">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="3" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="2"/>
@@ -10273,7 +11518,9 @@
 		    </lu>
 		    <b pos="1"/>
 		    <lu>
-		      <lit v="not"/>
+		      <get-case-from pos="3">
+			<lit v="not"/>
+		      </get-case-from>
 		      <clip pos="3" side="tl" part="tags"/>
 		    </lu>
 		    <b pos="2"/>
@@ -10313,7 +11560,9 @@
 		      <tag><clip pos="5" side="tl" part="nbr"/></tag>
 		    </tags>		 
 		    <lu>
-		      <lit v="to"/>
+		      <get-case-from pos="5">
+			<lit v="to"/>
+		      </get-case-from>
 		      <lit-tag v="pr"/>
 		    </lu>
 		    <b/>
@@ -10608,6 +11857,104 @@
 	</out>
       </action>
     </rule>
+
+
+  <rule comment="PREADV">
+      <pattern>
+	<pattern-item n="preadv"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="preadv" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NP cognom">
+      <pattern>
+	<pattern-item n="cog"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="cog" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
+<rule comment="REGLA: NP altres">
+      <pattern>
+	<pattern-item n="al"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="al" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: NUM">
+      <pattern>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
+
 
     <rule> <!-- REGLA: reset variables-->
       <pattern>
