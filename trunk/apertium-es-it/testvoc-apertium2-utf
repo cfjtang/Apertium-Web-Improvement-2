@@ -39,14 +39,14 @@ echo "ALTRES ERRADES DE BILINGÜE" >> errors-$1-$2.superficial
 echo "==========================" >> errors-$1-$2.superficial
 echo -n "Expandint diccionari bilingüe... "
 if [ $1-$2 = $LANG1-$LANG2 ]
-then lt-expand $PREFIX.$1-$2.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$(NF-1))}' | grep -v "REGEXP" > $$.expand
-else lt-expand $PREFIX.$1-$2.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' | grep -v "REGEXP" > $$.expand
+then lt-expand $PREFIX.$LANG1-$LANG2.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$(NF-1))}' | grep -v "REGEXP" > $$.expand
+else lt-expand $PREFIX.$LANG1-$LANG2.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' | grep -v "REGEXP" > $$.expand
 fi
 echo " fet."
 echo -n "Compilant diccionari convertit... "
 if [ $1-$2 = $LANG1-$LANG2 ]
-then lt-comp lr $PREFIX.$1-$2.dix $$.bin >/dev/null
-else lt-comp rl $PREFIX.$1-$2.dix $$.bin >/dev/null
+then lt-comp lr $PREFIX.$LANG1-$LANG2.dix $$.bin >/dev/null
+else lt-comp rl $PREFIX.$LANG1-$LANG2.dix $$.bin >/dev/null
 fi
 echo " fet."
 echo -n "Detectant errades i guardant-les en errors-$1-$2.superficial..."
