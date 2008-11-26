@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 <transfer default="chunk">
+<!--
+*********************************************************************************************
+                           PRONOMS FEBLES
+
+La traducció i enxuncació dels pronoms febles (enclítics i proclítics)
+del català a l'anglès és una mica complicada. Consideracions prèvies:
+
+-hi ha pronoms que es tradueixen per res (en/hi)
+-hi ha el pronom reflexiu (es), que també es tradueix per res
+
+El que es fa en el t1x, a grans trets, és
+
+-es mira si el verb és pronominal i el pronom concorda en pers i nbr
+amb el verb, en aquest cas no s'envia cap pronom.
+-si no es compleix el punt anterior: quan el pronom es tradueix per res (en/hi) o és el pronom reflexiu (es):
+        -pronoms enclítics: no s'envia res, perquè el pronom entra en el mateix xunc que
+	el verb (treballar-hi, treballar-se). 
+        -pronoms proclítics: degut a la construcció de la regla, el pronom s'envia en un xunc individual, en què:
+                  -si és pronom 'en' o 'hi', s'envia com a SN però de contingut buit.
+		  -si el pronom és 'es', s'envia com a xunc de lema ref i etiqueta ref, de contingut buit, 
+                   per si cal fer alguna cosa en el t2x (passives reflexives, etc.), cosa que per ara, a nov. 2008, 
+                   no es fa.
+           Excepció: els pronoms proclítics no s'envien en un xunc individual en cas que el verb sigui separable (take it out)
+
+El fet que un pronom de traducció 'buida' no s'enviï si és enclític o està amb un verb separable
+i sí que s'enviï si és proclític i no està amb verb separable, és degut al disseny
+del transfer i les regles. Potser seria necessari redefinir les regles.
+
+*********************************************************************************************
+-->
+
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
@@ -313,6 +344,9 @@
       <attr-item tags="adjant"/>
     </def-attr>  
 
+    <def-attr n="grau">      
+      <attr-item tags="sup"/> 
+    </def-attr>
 
     <def-attr n="a_det">
       <attr-item tags="det.dem"/>
@@ -447,8 +481,11 @@
     <def-var n="pers_chunk"/>
     <def-var n="nbr_chunk"/>
     <def-var n="gen_chunk"/>
+    <def-var n="nom_chunk"/>
     <def-var n="verbfinal"/>
     <def-var n="tipusverb"/>
+    <def-var n="superlatiu1"/>
+    <def-var n="superlatiu2"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -1361,7 +1398,7 @@
 </def-macro>
 
 
-<def-macro n="adv_adj" npar="2"><!-- (per a fer el comparatiu si cal: 'més fosc' = darker; i també per a canviar 'well' per 'very' davant adjectius )" -->
+<def-macro n="adv_adj" npar="2"><!-- (per a fer el comparatiu si cal: 'més fosc' = darker; i també per a canviar 'well' per 'very' davant adjectius )". En les regles, és obligatori que s'executi després de la macro 'f_superlatiu1' aplicada a l'adjectiu. -->
 	<choose>
 	  <when>
 	    <test>
@@ -1449,6 +1486,7 @@
 		<concat>
 		  <clip pos="1" side="tl" part="whole"/> 
 		  <lit v="$ ^"/>
+		  <var n="superlatiu1"/>
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_adj"/>
 		</concat>
@@ -1461,7 +1499,7 @@
 		
 </def-macro>
 
-<def-macro n="det_adv_adj" npar="3"><!-- (per a fer el comparatiu i superlatiu si cal: 'més fosc' = 'darker'; 'el més fosc' = 'the darkest')" -->
+<def-macro n="det_adv_adj" npar="3"><!-- (per a fer el comparatiu i superlatiu si cal: 'més fosc' = 'darker'; 'el més fosc' = 'the darkest')" . En les regles, és obligatori que s'executi després de la macro 'f_superlatiu1' aplicada a l'adjectiu. -->
 	<choose>
 	  <when>
 	    <test>
@@ -1599,6 +1637,7 @@
 		<concat>
 		  <clip pos="2" side="tl" part="whole"/> 
 		  <lit v="$ ^"/>
+		  <var n="superlatiu1"/>
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_adj"/>
 		</concat>
@@ -1644,6 +1683,76 @@
 </def-macro>     
 		
 
+ <def-macro n="f_superlatiu1" npar="1">
+   <choose>
+     <when>
+       <test>
+	 <equal>
+	   <clip pos="1" side="sl" part="grau"/>
+	   <lit-tag v="sup"/>
+	 </equal>
+       </test>
+       <let>
+	 <var n="superlatiu1"/>
+	 <concat>
+	   <get-case-from pos="1">
+	     <lit v="very"/>
+	   </get-case-from>
+	   <lit-tag v="preadv"/>
+	   <lit v="$ ^"/>
+	 </concat>
+       </let>
+       <modify-case>
+	 <clip pos="1" side="tl" part="lem"/>
+	 <lit v="aa"/>
+       </modify-case>
+     </when>
+     <otherwise>
+       <let>
+	 <var n="superlatiu1"/>
+	 <lit v=""/>
+       </let>
+     </otherwise>
+   </choose>
+ </def-macro>
+	 
+
+
+ <def-macro n="f_superlatiu2" npar="1"><!-- Aquesta és per quan hi ha dos adjs en una regla -->
+   <choose>
+     <when>
+       <test>
+	 <equal>
+	   <clip pos="1" side="sl" part="grau"/>
+	   <lit-tag v="sup"/>
+	 </equal>
+       </test>
+       <let>
+	 <var n="superlatiu2"/>
+	 <concat>
+	   <get-case-from pos="1">
+	     <lit v="very"/>
+	   </get-case-from>
+	   <lit-tag v="preadv"/>
+	   <lit v="$ ^"/>
+	 </concat>
+       </let>
+       <modify-case>
+	 <clip pos="1" side="tl" part="lem"/>
+	 <lit v="aa"/>
+       </modify-case>
+     </when>
+     <otherwise>
+       <let>
+	 <var n="superlatiu2"/>
+	 <lit v=""/>
+       </let>
+     </otherwise>
+   </choose>
+ </def-macro>
+	 
+
+
 
  <def-macro n="tipus_verb" npar="1">
    <choose>
@@ -1676,9 +1785,9 @@
 	  <when>
 	    <test><!--Si és verb 'ser' p1 o p3 en present o passat (o subjuntiu) té una conjugació pròpia en anglès. Inclou 'ser' i 'estar', tots dos són 'vbser' en anglès (to be) -->
 	      <and>
-		<equal>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <lit-tag v="vbser"/>
+		<equal caseless="yes">
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <lit v="be"/>
 		</equal>
 		<or>
 		  <equal>
@@ -1741,9 +1850,9 @@
 	  <when>
 	    <test>
 	      <and>
-		<equal>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <lit-tag v="vbser"/>
+		<equal caseless="yes">
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <lit v="be"/>
 		</equal>
 		<equal>
 		  <clip pos="1" side="sl" part="temps"/>
@@ -2628,6 +2737,9 @@
 	<call-macro n="f_concord2">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
 	</call-macro>	
 	<out> 
 	  <chunk name="nom_adj" case="caseFirstWord">
@@ -2637,6 +2749,7 @@
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2662,6 +2775,12 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="3"/>
+	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -2675,11 +2794,13 @@
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
+	      <var n="superlatiu2"/>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
 	    </lu> 
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2713,6 +2834,9 @@
 	<call-macro n="canvia_det">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="3"/>
 	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="2"/>
@@ -2733,6 +2857,7 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2770,6 +2895,9 @@
 	<call-macro n="el_millor_pitjor">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
 	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="3"/>
@@ -2790,6 +2918,7 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2827,6 +2956,12 @@
 	<call-macro n="el_millor_pitjor">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="4"/>
 	</call-macro>
 	<call-macro n="f_concord4">
 	  <with-param pos="3"/>
@@ -2848,11 +2983,13 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>   
+	      <var n="superlatiu2"/>
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2886,6 +3023,12 @@
 	<call-macro n="canvia_det">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="4"/>
 	</call-macro>
 	<call-macro n="f_concord4">
 	  <with-param pos="2"/>
@@ -2907,11 +3050,13 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu2"/>
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2938,6 +3083,9 @@
       <action>		
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="3"/>
 	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="2"/>
@@ -2957,6 +3105,7 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
 	    </lu> 
@@ -2990,6 +3139,9 @@
 	<call-macro n="canvia_det">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_superlatiu1"><!--aquí no envio variable 'superlatiu' perquè s'envia dins de adv_adjectiu -->
+	  <with-param pos="4"/>
 	</call-macro>	
 	<call-macro n="det_adv_adj">
 	  <with-param pos="1"/>
@@ -3045,6 +3197,9 @@
 	</call-macro>	
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_superlatiu1"><!--aquí no envio variable 'superlatiu' perquè s'envia dins de adv_adjectiu -->
+	  <with-param pos="4"/>
 	</call-macro>	
 	<call-macro n="adv_adj">
 	  <with-param pos="3"/>
@@ -3099,6 +3254,12 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="4"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -3132,7 +3293,8 @@
 		  <tag><clip pos="1" side="sl" part="gen"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags>
-		<lu>   
+		<lu> 
+		  <var n="superlatiu1"/>
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_adj"/>
 		</lu> 
@@ -3149,6 +3311,7 @@
 		</lu>
 		<b pos="3"/>
 		<lu>   
+		  <var n="superlatiu2"/>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_adj"/>
 		</lu> 
@@ -3175,7 +3338,8 @@
 		  <tag><clip pos="1" side="sl" part="gen"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags>
-		<lu>   
+		<lu>  
+		  <var n="superlatiu1"/> 
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_adj"/>
 		</lu> 
@@ -3185,6 +3349,7 @@
 		</lu>
 		<b pos="2"/>
 		<lu>   
+		  <var n="superlatiu2"/>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_adj"/>
 		</lu> 
@@ -3229,6 +3394,12 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="4"/>
+	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -3256,6 +3427,7 @@
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		</tags>
 		<lu>   
+		  <var n="superlatiu1"/>
 		  <clip pos="2" side="tl" part="lem"/> 
 		  <clip pos="2" side="tl" part="a_adj"/>
 		</lu> 
@@ -3265,6 +3437,7 @@
 		</lu>
 		<b pos="2"/>
 		<lu>   
+		  <var n="superlatiu2"/>
 		  <clip pos="4" side="tl" part="lem"/> 
 		  <clip pos="4" side="tl" part="a_adj"/>
 		</lu> 
@@ -3337,6 +3510,12 @@
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
 	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="5"/>
+	</call-macro>	
 	<call-macro n="canvia_det">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -3383,6 +3562,7 @@
 		</lu>
 		<b pos="1"/>
 		<lu>   
+		  <var n="superlatiu1"/>
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_adj"/>
 		</lu> 
@@ -3399,6 +3579,7 @@
 		</lu>
 		<b pos="4"/>
 		<lu>   
+		  <var n="superlatiu2"/>
 		  <clip pos="5" side="tl" part="lem"/> 
 		  <clip pos="5" side="tl" part="a_adj"/>
 		</lu> 
@@ -3432,7 +3613,8 @@
 		  <clip pos="1" side="tl" part="nbr"/>
 		</lu>
 		<b pos="1"/>
-		<lu>   
+		<lu>  
+		  <var n="superlatiu1"/> 
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_adj"/>
 		</lu> 
@@ -3442,6 +3624,7 @@
 		</lu>
 		<b pos="3"/>
 		<lu>   
+		  <var n="superlatiu2"/>
 		  <clip pos="5" side="tl" part="lem"/> 
 		  <clip pos="5" side="tl" part="a_adj"/>
 		</lu> 
@@ -3490,6 +3673,12 @@
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
 	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<call-macro n="f_superlatiu2">
+	  <with-param pos="5"/>
+	</call-macro>	
 	<call-macro n="canvia_det">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -3528,6 +3717,7 @@
 		</lu>
 		<b pos="1"/>
 		<lu>   
+		  <var n="superlatiu1"/>
 		  <clip pos="3" side="tl" part="lem"/> 
 		  <clip pos="3" side="tl" part="a_adj"/>
 		</lu> 
@@ -3537,6 +3727,7 @@
 		</lu>
 		<b pos="3"/>
 		<lu>   
+		  <var n="superlatiu2"/>
 		  <clip pos="5" side="tl" part="lem"/> 
 		  <clip pos="5" side="tl" part="a_adj"/>
 		</lu> 
@@ -3606,6 +3797,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="1"/>
+	</call-macro>	
 	<out>
 	  <chunk name="adj" case="caseFirstWord">
 	    <tags>
@@ -3614,6 +3808,7 @@
 	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_adj"/>
 	    </lu> 
@@ -3631,6 +3826,9 @@
       <action>          	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>    	
+	<call-macro n="f_superlatiu1"><!--'sempre boníssim' --><!--aquí no envio variable 'superlatiu' perquè s'envia dins de adv_adjectiu -->
+	  <with-param pos="2"/>
 	</call-macro>	
 	<call-macro n="adv_adj">
 	  <with-param pos="1"/>
@@ -3655,7 +3853,7 @@
     </rule> 
 
 
- <rule comment="REGLA: DET ADV ADJECTIU (el lleig / el millor) ">
+ <rule comment="REGLA: DET ADJECTIU (el lleig / el millor) ">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="adj"/>
@@ -3664,6 +3862,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>	
+	<call-macro n="f_superlatiu1">
+	  <with-param pos="2"/>
+	</call-macro>
 	<call-macro n="el_millor_pitjor">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -3708,6 +3909,7 @@
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
+	      <var n="superlatiu1"/>
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
 	    </lu> 
@@ -4374,9 +4576,9 @@
 	  <when>
 	    <test><!--Si és verb 'ser' p1 o p3  té una conjugació pròpia en anglès -->
 	      <and>
-		<equal>
-		  <clip pos="2" side="tl" part="a_verb"/>
-		  <lit-tag v="vbser"/>
+		<equal caseless="yes">
+		  <clip pos="2" side="tl" part="lemh"/>
+		  <lit v="be"/>
 		</equal>
 		<or>
 		  <equal>
@@ -4515,9 +4717,9 @@
 	      <when>
 		<test><!--mirem si és el verb "ser" -->
 		  <and>
-		    <equal>
-		      <clip pos="2" side="tl" part="a_verb"/>
-		      <lit-tag v="vbser"/>
+		    <equal caseless="yes">
+		      <clip pos="2" side="tl" part="lemh"/>
+		      <lit v="be"/>
 		    </equal>
 		    <or>
 		      <equal>
@@ -4608,12 +4810,39 @@
 		</call-macro>
 	      </when>
 	      <otherwise>
-		
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="3" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>		
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="3" side="sl" part="pers"/></tag>
 		      <tag><clip pos="3" side="tl" part="gen"/></tag>
@@ -4763,9 +4992,9 @@
 	      <when>
 		<test><!--mirem si és el verb "ser" -->
 		  <and>
-		    <equal>
-		      <clip pos="3" side="tl" part="a_verb"/>
-		      <lit-tag v="vbser"/>
+		    <equal caseless="yes">
+		      <clip pos="3" side="tl" part="lemh"/>
+		      <lit v="be"/>
 		    </equal>
 		    <or>
 		      <equal>
@@ -4856,12 +5085,39 @@
 		</call-macro>
 	      </when>
 	      <otherwise>
-		
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>		
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -4957,9 +5213,6 @@
 	      </chunk>
 	    </out>
 	  </when>
-
-
-
 	  <when>
 	    <!-- si el verb és separable, posa el 2n clític entre el verb i la cua (me'l va treure -> took it out (...))-->
 	    <test>
@@ -5107,9 +5360,10 @@
 		  </chunk>
 		</out>
 	      </when>
-	      <otherwise> <!--si el 2n pronom tenia trad buida i el verb no era separable, imprimeix el primer pronom directament sense la prep 'to' -->
+	  <otherwise> <!--si el 2n pronom tenia trad buida i el verb no era separable, imprimeix el primer pronom directament sense la prep 'to' -->
+	
 		<out>
-		  <chunk name="pro">
+		  <chunk namefrom="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -5126,8 +5380,8 @@
 		<call-macro n="f_bcond"> 
 		  <with-param pos="3"/>
 		</call-macro>
-	      </otherwise>
-	    </choose>
+	  </otherwise>
+	</choose>
 	  </when>
 	  <otherwise>
 	    <call-macro n="f_bcond"> 
@@ -5136,9 +5390,12 @@
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="3"/>
 	    </call-macro>
-	  </otherwise>	    
+	  </otherwise>
+	    
 	</choose>
       </action>
+
+	
     </rule>
     
 
@@ -5481,11 +5738,39 @@
 		    </call-macro>
 		  </when>
 		  <otherwise>
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>
 		    <out>
 		      <b pos="2"/>
-		      <chunk name="pro">
+		      <chunk namefrom="lema">
 			<tags>
-			  <tag><lit-tag v="SN"/></tag>
+			  <tag><var n="nom_chunk"/></tag>
 			  <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 			  <tag><clip pos="1" side="sl" part="pers"/></tag>
 			  <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -6020,11 +6305,39 @@
 		</call-macro>
 	      </when>
 	      <otherwise>
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>			
 		<out>
 		  <b pos="1"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -7445,11 +7758,39 @@
 		</call-macro>
 	      </when>
 	      <otherwise>
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>	
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -8193,11 +8534,39 @@
 		</call-macro>
 	      </when>
 	      <otherwise>
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="1" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>	
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -8690,9 +9059,9 @@
 	  <when>
 	    <test><!--Si és verb 'ser' p1 o p3  té una conjugació pròpia en anglès -->
 	      <and>
-		<equal>
-		  <clip pos="3" side="tl" part="a_verb"/>
-		  <lit-tag v="vbser"/>
+		<equal caseless="yes">
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <lit v="be"/>
 		</equal>
 		<or>
 		  <equal>
@@ -8933,9 +9302,9 @@
 	      <when>
 		<test><!--mirem si és el verb "ser" -->
 		  <and>
-		    <equal>
-		      <clip pos="4" side="tl" part="a_verb"/>
-		      <lit-tag v="vbser"/>
+		    <equal caseless="yes">
+		      <clip pos="4" side="tl" part="lemh"/>
+		      <lit v="be"/>
 		    </equal>
 		    <or>
 		      <equal>
@@ -9026,12 +9395,39 @@
 		</call-macro>
 	      </when>
 	      <otherwise>
-		
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="2" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>		
 		<out>
 		  <b pos="3"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="2" side="sl" part="pers"/></tag>
 		      <tag><clip pos="2" side="tl" part="gen"/></tag>
@@ -9476,11 +9872,39 @@
 		    </call-macro>
 		  </when>
 		  <otherwise>
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="2" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>
 		    <out>
 		      <b pos="3"/>
-		      <chunk name="pro">
+		      <chunk namefrom="lema">
 			<tags>
-			  <tag><lit-tag v="SN"/></tag>
+			  <tag><var n="nom_chunk"/></tag>
 			  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
 			  <tag><clip pos="2" side="sl" part="pers"/></tag>
 			  <tag><clip pos="2" side="tl" part="gen"/></tag>
@@ -9767,12 +10191,40 @@
 		  <with-param pos="2"/>
 		</call-macro>
 	      </when>
-	      <otherwise>	
+	      <otherwise>
+		<choose>
+		  <when>
+		    <test>
+		      <equal caseless="yes">
+			<clip pos="2" side="sl" part="lem"/>
+			<lit v="es"/>
+		      </equal>
+		    </test>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="ref"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="ref"/>
+		    </let>
+		  </when>
+		  <otherwise>
+		    <let>
+		      <var n="lema"/>
+		      <lit v="pro"/>
+		    </let>
+		    <let>
+		      <var n="nom_chunk"/>
+		      <lit-tag v="SN"/>
+		    </let>
+		  </otherwise>
+		</choose>	
 		<out>
 		  <b pos="2"/>
-		  <chunk name="pro">
+		  <chunk namefrom="lema">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><var n="nom_chunk"/></tag>
 		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="2" side="sl" part="pers"/></tag>
 		      <tag><clip pos="2" side="tl" part="gen"/></tag>
