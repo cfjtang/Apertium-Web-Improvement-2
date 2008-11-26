@@ -84,10 +84,13 @@
       <def-cat n="PREADV">
       <cat-item tags="preadv"/>
     </def-cat>
+      <def-cat n="REL">
+      <cat-item tags="rel.*"/>
+    </def-cat>
 
 
   <def-cat n="unknown">
-      <cat-item lemma="unknown" tags=""/>
+      <cat-item lemma="unknown" tags="unknown"/>
     </def-cat>
 
 <def-cat n="fi_frase">
@@ -1317,7 +1320,7 @@ No posen la variable =no els xuncs: PREP (
 
 
 
-<rule comment="REGLA: SV">
+<rule comment="REGLA: SV"><!--per aquí entraran els SV que no han entrat per SV_pers -->
       <pattern>
 	<pattern-item n="SV"/>
       </pattern>
@@ -1385,6 +1388,22 @@ No posen la variable =no els xuncs: PREP (
 	</let>
       </action>
 </rule>
+<rule comment="REGLA: REL">
+      <pattern>
+	<pattern-item n="REL"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
 <rule comment="REGLA: DET">
       <pattern>
 	<pattern-item n="DET"/>
@@ -1426,7 +1445,7 @@ No posen la variable =no els xuncs: PREP (
       <pattern>
 	<pattern-item n="unknown"/>
       </pattern>
-      <action>
+      <action>		
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
