@@ -7,6 +7,7 @@
 
 	// Where all the files are
 	$ROOT = "/var/www/geriaoueg";
+	$TRADUCTOR = "/build/local/default/bin/apertium";
 	$TMP = "/tmp/";
 	$LOG = $ROOT . "/log/access.log";
 
@@ -138,6 +139,15 @@
 
 	        // Print out the mangled page
 	        echo shell_exec("cat $archivo");
+
+		exit;
+
+	} else if($funcion == "translate") {
+	        // Send the page back in the encoding that it came in
+	        header("Content-Type: text/html; charset=\"$encoding\"");
+
+	        // Print out the mangled page
+	        echo shell_exec("LANG=es_ES.$encoding $TRADUCTOR -f html $direccion $archivo");
 
 		exit;
 	}
