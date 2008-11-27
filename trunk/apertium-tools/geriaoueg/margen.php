@@ -31,9 +31,12 @@
     <input type="radio" name="funcion" value="off" onChange="nav.submit()" <? if ($funcion == "off") { echo " checked"; } ?> /> Off 
     <input type="radio" name="funcion" value="vocab"  onChange="nav.submit()" <? if ($funcion == "vocab") { echo " checked"; } ?> /> On 
 
-  <!-- Esperando para bretó/francès 
-    <input type="radio" name="funcion" value="translate"  onChange="nav.submit()" <? if ($funcion == "translate") { echo " checked"; } ?> /> Translate
-  -->
+    <? if($direccion == "cy-en") {
+          echo '<input type="radio" name="funcion" value="translate"  onChange="nav.submit()"';
+	if ($funcion == "translate") { echo " checked"; } 
+	echo '/> Translate';
+	}
+     ?>
   </form>
 
 </div>
