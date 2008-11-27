@@ -15,6 +15,13 @@
 		$inurl = $_GET["inurl"];
 	} 
 
+	if($funcion == "") {
+		$funcion = $_POST["funcion"];
+	} 
+	if($funcion == "") {
+		$funcion = $_GET["funcion"];
+	} 
+
 	$inurl = urldecode($inurl);
 
 	if($inurl=="") {
@@ -68,8 +75,8 @@
     <?php 
     }
 /*       if($variante!=2)*/
-         echo("<frame src=\"margen.php?direccion=$direccion&inurl=$inurl\" name=\"_margen\" border=\"0\" frameborder=\"no\" framespacing=\"0\" marginwidth=\"1\" marginheight=\"1\" scrolling=\"no\">");     
-       echo("<frame src=\"tradurl.php?direccion=$direccion&inurl=$inurl\" name=\"_cos\" border=\"0\" frameborder=\"no\" framespacing=\"0\" marginwidth=\"1\" marginheight=\"1\" scrolling=\"auto\">");    
+         echo("<frame src=\"margen.php?funcion=$funcion&direccion=$direccion&inurl=$inurl\" name=\"_margen\" border=\"0\" frameborder=\"no\" framespacing=\"0\" marginwidth=\"1\" marginheight=\"1\" scrolling=\"no\">");     
+       echo("<frame src=\"tradurl.php?funcion=$funcion&direccion=$direccion&inurl=$inurl\" name=\"_cos\" border=\"0\" frameborder=\"no\" framespacing=\"0\" marginwidth=\"1\" marginheight=\"1\" scrolling=\"auto\">");    
   ?>
   </frameset>
   <noframes>

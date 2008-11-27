@@ -58,6 +58,8 @@
 					/>Icelandic → Catalan
 				</label> -->
 
+                <input type="hidden" value="vocab" name="funcion"/>
+
 	  </fieldset>
 	 	<br/>
 	    <div>
@@ -70,6 +72,7 @@
 		       value="Reset"  
 		       class="reset"
 		       title="Click here to reset"/>
+
            </div>
 
       </form>

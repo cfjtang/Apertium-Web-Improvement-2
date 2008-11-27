@@ -2,6 +2,7 @@
 	include("cabecera.php");
 
 	$direccion = $_GET["direccion"];
+	$funcion = $_GET["funcion"];
 	$inurl = urldecode($_GET["inurl"]);
 
 	// Where all the files are
@@ -130,6 +131,17 @@
 	$dirbase = "http://" . getenv("SERVER_NAME"); 
 	$dirbase = $dirbase . $puerto . "/" . $relpath . "/navegador.php?";
 	$dirbase = $dirbase . "&direccion=" . $direccion . "&inurl=";
+
+	if($funcion == "off") {
+	        // Send the page back in the encoding that it came in
+	        header("Content-Type: text/html; charset=\"$encoding\"");
+
+	        // Print out the mangled page
+	        echo shell_exec("cat $archivo");
+
+		exit;
+	}
+
 
 	$ejecutable = "LANG=es_ES.$encoding $ROOT/apertium-deshtml $archivo | LANG=es_ES.$encoding $proc $transducer > $infile";
 

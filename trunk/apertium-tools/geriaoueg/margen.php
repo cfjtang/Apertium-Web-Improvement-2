@@ -1,6 +1,8 @@
 <?
 	$inurl = $_GET["inurl"]; 
 	$inurl = urldecode($inurl); 
+
+	$funcion = $_GET["funcion"];
 ?>
 <base target="_top">
 <html>
@@ -20,11 +22,18 @@
     $inurl = $_GET["inurl"];
     $direccion = $_GET["direccion"];
   ?>
-  <form action="navegador.php" method="post" style="padding: 3px; font-family: Sans, Helvetica;">
+  <form action="navegador.php" method="post" style="padding: 3px; font-family: Sans, Helvetica;" name="nav">
     <b>Page</b>:
     <input title="URL to be translated" name="inurl" type="text" size="70" value="<? echo $inurl; ?>"/>
     <input type="hidden" value="<? echo $direccion; ?>" name="direccion"/>
     <input type="submit" value="Browse" class="submit" title="Click here to browse"/>
+   <br/>
+    <input type="radio" name="funcion" value="off" onChange="nav.submit()" <? if ($funcion == "off") { echo " checked"; } ?> /> Off 
+    <input type="radio" name="funcion" value="vocab"  onChange="nav.submit()" <? if ($funcion == "vocab") { echo " checked"; } ?> /> On 
+
+  <!-- Esperando para bretó/francès 
+    <input type="radio" name="funcion" value="translate"  onChange="nav.submit()" <? if ($funcion == "translate") { echo " checked"; } ?> /> Translate
+  -->
   </form>
 
 </div>
