@@ -43,9 +43,6 @@
 
 	error_reporting(0);
 
-	// We set the user agent of PHP to the same as the user's browser
-	// this fixes some problems with Wikipedia (it doesn't like PHP)
-	ini_set('user_agent', $_SERVER['HTTP_USER_AGENT'] . "\r\n");
 	$pagetext = file_get_contents($_FILES['userfile']['tmp_name']); 
 
 	// We detect between two encodings, UTF-8 and ISO-8859-15 (latin1),
@@ -58,59 +55,17 @@
 		$encoding = "iso885915@euro";
 	}
 
-/*
-	// This code inserts the Javascript and base url thing
-	$insertion = '<head>' . "\n";
-	$insertion = $insertion . '<base href="' . $inurl . '" target="_top"/>' . "\n";
-	$insertion = $insertion . '<script src="http://elx.dlsi.ua.es/geriaoueg/js/boxover.js"></script>' . "\n";
-	$pagetext = str_replace("<head>", $insertion, $pagetext);
-*/
-	// This code inserts the CSS and base url thing
-	$pagetext = str_replace("<HEAD>", "<head>", $pagetext);
-	$insertion = $insertion . '<base href="' . $inurl . '" target="_top"/>' . "\n";
-	$insertion = $insertion . '<link rel="stylesheet" href="http://elx.dlsi.ua.es/geriaoueg/styles/hover.css" type="text/css"/>' . "\n";
-
-	// When you have, e.g. <head profile="http://gmpg.org/xfn/11">
-	if(strstr("<head>", $pagetext)) {
-		$insertion = '<head>' . "\n" . $insertion;
-		$pagetext = str_replace("<head>", $insertion, $pagetext);
-	} else {
-		$insertion = '</title>' . "\n" . $insertion;	
-		$pagetext = str_replace("</title>", $insertion, $pagetext);
-	}
-
-	// hack for ABP
-	$pagetext = str_replace('=">"', '="&gt;"', $pagetext);
-	$pagetext = str_replace('HREF =', 'HREF=', $pagetext);
-
-	// IE has broken support for Javascript, this will hopefully de-break it.
-	if(strstr($_SERVER["HTTP_USER_AGENT"], "MSIE")) {
-		$pagetext = str_replace("<head>", "<head>\n<script type=\"text/javascript\" src=\"http://elx.dlsi.ua.es/geriaoueg/js/broken.js\"></script>", $pagetext);
-	}
-
 	# Guardar información de uso
 	$today = date("Y-m-d, G:i:s T");               // 2001-10-01, 15:16:08 MST
 	$fd = fopen($LOG, 'a+');
-	fputs($fd, $today . " { " . $_REQUEST['direccion'] . "; " . $_REQUEST['funcion'] . " } { " . $_SERVER["REMOTE_ADDR"] . " } { " . $_SERVER["HTTP_USER_AGENT"] . " } { " . $inurl . " } \n");
+	fputs($fd, $today . " { " . $_REQUEST['direccion'] . "; " . $_REQUEST['funcion'] . " } { " . $_SERVER["REMOTE_ADDR"] . " } { WordPress plugin } { " . $_FILES['userfile']['tmp_name'] . " } \n");
 	fclose($fd);
-
 
 	if(strlen($pagetext) == 0) {
 		error("Zero size page returned");
 		exit;
 	}
 
-/*
-	// Nightmare.
-	if(strstr($pagetext, "charset=windows-1252")) {
-		$encoding = "utf8";
-		$pagetext_new = iconv("windows-1252", "UTF-8", $pagetext);
-		$pagetext_new = str_replace("charset=windows-1252", "charset=utf-8", $pagetext_new);
-		$pagetext_new = str_replace("<![", "<!--[", $pagetext_new);
-		$pagetext_new = str_replace("]>", "]-->", $pagetext_new);
-		$pagetext = $pagetext_new;	
-	}
-*/
 	limite($pagetext, 16384 * 4 * 4 * 4, "Maximum size excedeed");
 
 	// Shove the page in a temporary file.
@@ -259,14 +214,6 @@
 			return $word . " ";
 		}
 
-
-/*
-		// This inserts the Javascript span class and the definition etc.
-		$output = '[<span class="tooltip" title="header=\[' . $word . '\] body=\[' . $body . '\]">]';	
-		$output = $output . $word;
-		$output = $output . "[<\/span>] ";
-*/	
-
 		// This inserts the CSS span class and the definition etc.
 		$output = '[<span class="word-H">]' . $word . '[<span class="definition-H">]' . $body . '[<\/span><\/span> ]';
 
@@ -277,47 +224,7 @@
 	$escaped = false;
 	$line = "";
 
-	// Remove the first SENT symbol
-/*
-	$c = fread($fd, 1);
-	while($c != '$') {
-		$c = fread($fd, 1);
-	}	
-	$c = "";
-*/
 	while(!feof($fd)) {
-		// We don't want to translate stuff in the header of the HTML document
-		// e.g. the title, so we skip the body
-		while($body == false) {
-
-			$line = $line . $c;
-			if(stristr($line, "<body>") || stristr($line, "<body ")) {
-				fwrite($fdo, $c);
-				$body = true;
-				while($c != ']') {
-					fwrite($fdo, $c);
-					$c = fread($fd, 1);
-				}
-				break;
-			}
-
-			$c = fread($fd, 1);
-
-			// Although it has been analysed, so we want to remove the analyses
-			if($c == '^') {
-				$c = fread($fd, 1);
-				while($c != '/') {
-					fwrite($fdo, $c);
-					$c = fread($fd, 1);
-				}
-				while($c != '$') {
-					$c = fread($fd, 1);
-				}
-				$c = fread($fd, 1);
-			}
-
-			fwrite($fdo, $c);
-		}	
 		
 		// Superblanks are formatting, just send them on their way
 		if($c == '[') {
@@ -360,7 +267,7 @@
 	}
 
 
-	// Reformat the HTML and insert the hoverover javascript,
+	// Reformat the HTML 
 	// Then re-write the links
 	$cmd = "LANG=es_ES.$encoding apertium-rehtml " . $outfile;
 	$cmd = $cmd . ' | LANG=es_ES.$encoding ' . $turl . ' "' . $dirbase . '" "' . $inurl . '"';
