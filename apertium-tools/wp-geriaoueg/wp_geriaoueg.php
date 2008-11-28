@@ -115,6 +115,34 @@ if(!function_exists('plugins_url')) {
  }
 }
 
+if(!function_exists('content_url')) {
+/** Return the content url
+  *
+  *
+  * @package WordPress
+  * @since 2.6
+  *
+  * Returns the url to the content directory
+  *
+  * @param string $path Optional path relative to the content url
+  * @return string Content url link with optional path appended
+ */
+ function content_url($path = '') {
+     $scheme = ( is_ssl() ? 'https' : 'http' );
+     $url = WP_CONTENT_URL;
+     if ( 0 === strpos($url, 'http') ) {
+         if ( is_ssl() )
+            $url = str_replace( 'http://', "{$scheme}://", $url );
+     }
+
+     if ( !empty($path) && is_string($path) && strpos($path, '..') === false )
+         $url .= '/' . ltrim($path, '/');
+
+     return $url;
+  }
+}
+
+
 	class WP_Geriaoueg {
 
 		// Runtime vars
