@@ -89,7 +89,7 @@ if(!function_exists('is_ssl')) {
 
 }
 
-	class WP_geriaoueg {
+	class WP_Geriaoueg {
 
 		// Runtime vars
 		var $cache_dir;
