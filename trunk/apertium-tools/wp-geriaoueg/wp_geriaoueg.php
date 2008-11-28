@@ -76,6 +76,15 @@ if(!function_exists('is_ssl')) {
 		return ( isset($_SERVER['HTTPS']) && 'on' == strtolower($_SERVER['HTTPS']) ) ? true : false; 
 	}
 
+
+    if ( !defined('WP_PLUGIN_DIR') )
+        define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' ); // full path, no trailing slash
+    if ( !defined('WP_PLUGIN_URL') )
+        define( 'WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins' ); // full url, no trailing slash
+    if ( !defined('PLUGINDIR') )
+        define( 'PLUGINDIR', 'wp-content/plugins' ); // Relative to ABSPATH.  For back compat.
+
+
 }
 
 	class WP_geriaoueg {
