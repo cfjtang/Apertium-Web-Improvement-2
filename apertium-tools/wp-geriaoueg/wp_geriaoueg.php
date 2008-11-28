@@ -76,6 +76,8 @@ if(!function_exists('is_ssl')) {
 		return ( isset($_SERVER['HTTPS']) && 'on' == strtolower($_SERVER['HTTPS']) ) ? true : false; 
 	}
 }
+    if ( !defined('WP_CONTENT_DIR') )
+        define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
 
     if ( !defined('WP_CONTENT_URL') )
         define( 'WP_CONTENT_URL', get_option('siteurl') . '/wp-content'); // full url - WP_CONTENT_DIR is defined further up
