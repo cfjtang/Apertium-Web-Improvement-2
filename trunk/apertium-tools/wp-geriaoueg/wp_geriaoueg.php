@@ -317,7 +317,7 @@ if(!function_exists('is_ssl')) {
 		function get_translations($id) {
 			$this->post_id = $id;
 			$ret = false;
-
+            
 			foreach($this->translation_languages as $lang) {
 				$this->post_translations[$lang] = '';
 			}
@@ -376,16 +376,16 @@ if(!function_exists('is_ssl')) {
 			$this->post_translations[$this->language]=array();
 			$this->post_translations[$this->language]['content'] = @file_get_contents($content_file);
 			$this->post_translations[$this->language]['title'] = @file_get_contents($title_file);
-
+                
 			foreach($this->translation_languages as $lang) {
 				$this->post_translations[$lang] = array();
 
 				$content_file = $cache_folder.$lang.'.content';
 				$title_file = $cache_folder.$lang.'.title';
 
-				$this->post_translations[$lang]['content'] = @file_get_contents($content_file);
-				$this->post_translations[$lang]['title'] = @file_get_contents($title_file);
-
+				$this->post_translations[$lang]['content'] = file_get_contents($content_file);
+				$this->post_translations[$lang]['title'] = file_get_contents($title_file);
+                
 				if(empty($this->post_translations[$lang]['content']) || empty($this->post_translations[$lang]['title'])) {
 					return false;	
 				}
@@ -435,7 +435,7 @@ if(!function_exists('is_ssl')) {
 			$text = str_replace('&apos;',"'",$text);
 			$text = str_replace('’',"'",$text);
 
-			return text;
+			return $text;
 		}		
 
 		/**
@@ -465,9 +465,10 @@ if(!function_exists('is_ssl')) {
 			// curl example: http://es.php.net/manual/es/function.curl-setopt.php#24709
 			$submit_url = "http://elx.dlsi.ua.es/geriaoueg/traddoc.php";
 
-			$formvars = array("direction"=> $this->language.'-'.$dir);
+			$formvars = array("direccion"=> $this->language.'-'.$dir);
 			$fomvars['mark']=($markUnknown)?"1":"0";
 			$formvars['doctype'] = "html";
+            $formvars['funcion'] = "vocab";
 			$formvars['userfile'] = "@$file"; // "@" causes cURL to send as file and not string (I believe)
 
 			$ch = curl_init($submit_url);
@@ -533,7 +534,6 @@ if(!function_exists('is_ssl')) {
 				<!-- WP_Apertium Copyright 2008  Xavier Ivars i Ribes  (http://xavi.infobenissa.com) -->
 				<link type="text/css" rel="stylesheet" href="<?=$this->plugin_url?>/css/wp_apertium.css" media="screen" />
 				<link type="text/css" rel="stylesheet" href="<?=$this->plugin_url?>/css/hover.css" media="screen"/>
-				<script type="text/javascript" src="<?=$this->plugin_url?>/js/wp_apertium.js.php"></script>
 				<script type="text/javascript" src="<?=$this->plugin_url?>/js/wp_apertium.js.php"></script>
 			<?php
 			if(strstr($_SERVER["HTTP_USER_AGENT"], "MSIE")) { ?>
