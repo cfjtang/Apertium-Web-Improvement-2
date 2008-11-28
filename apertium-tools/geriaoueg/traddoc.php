@@ -1,8 +1,8 @@
 <?
 	include("cabecera.php");
 
-	$direccion = $_GET["direccion"];
-	$funcion = $_GET["funcion"];
+	$direccion = $_POST["direccion"];
+	$funcion = $_POST["funcion"];
 	$inurl = urldecode($_GET["inurl"]);
 
 	// Where all the files are
@@ -46,7 +46,7 @@
 	// We set the user agent of PHP to the same as the user's browser
 	// this fixes some problems with Wikipedia (it doesn't like PHP)
 	ini_set('user_agent', $_SERVER['HTTP_USER_AGENT'] . "\r\n");
-	$pagetext = file_get_contents($inurl);
+	$pagetext = file_get_contents($_FILES['userfile']['tmp_name']); 
 
 	// We detect between two encodings, UTF-8 and ISO-8859-15 (latin1),
 	// if the page is in latin1, we use the latin1 locale, if the page
