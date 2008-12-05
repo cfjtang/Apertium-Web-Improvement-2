@@ -33,6 +33,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -107,15 +108,31 @@ public class ApertiumView extends FrameView {
             }
             showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
             showCommandsCheckBoxActionPerformed(null); // is this necesary?
-
+            
+            for (int i=0; i<10; i++) {
+              final String s = prefs.get("storedTexts."+i,"");
+              if (s!=null && s.length()>0) {
+                addStoredText(s);
+              }
+            }
+            
         } catch (Exception e) {
-            warnUser("An error occured during startup:\n\n"+e.getLocalizedMessage());
+           e.printStackTrace();
+            warnUser("An error occured during startup:\n\n"+e);
         }
         
         
         startingUp = false;
         
-        textWidget1.setText(prefs.get("inputText", textWidget1.getText()));
+        String txt = prefs.get("inputText", textWidget1.getText());        
+        System.err.println("startup txt = " + txt);
+        try {
+          textWidget1.setText(txt);
+        } catch (Exception e) {
+           e.printStackTrace();
+            warnUser("An error occured during startup:\n\n"+e);
+        }
+        
         textWidget1.commandTextField.requestFocus();
         textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
 
@@ -149,6 +166,24 @@ public class ApertiumView extends FrameView {
             tw.scrollRectToVisible(b);
         }
     };
+
+  private void addStoredText(final String s) {
+      String menT = s.length()<4000? s : s.substring(0,40)+"...";
+      JMenuItem mi = new JMenuItem(menT,storedTextsMenu.getMenuComponentCount()+1);
+      mi.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        textWidget1.setText(s);
+      }
+        
+      });
+      storedTextsMenu.add(mi);
+  }
+
+  public static String notNull(String text) {
+    if (text==null) return "";
+   return text;
+  }
     
     private void showMode(Mode m) {
         if (m==null) {
@@ -269,6 +304,7 @@ public class ApertiumView extends FrameView {
     copyTextButton = new javax.swing.JButton();
     showCommandsCheckBox = new javax.swing.JCheckBox();
     markUnknownWordsCheckBox = new javax.swing.JCheckBox();
+    storeTextButton = new javax.swing.JButton();
     menuBar = new javax.swing.JMenuBar();
     javax.swing.JMenu fileMenu = new javax.swing.JMenu();
     loadModeMenuItem = new javax.swing.JMenuItem();
@@ -280,6 +316,7 @@ public class ApertiumView extends FrameView {
     javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     changeFontMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
+    storedTextsMenu = new javax.swing.JMenu();
 
     mainPanel.setAutoscrolls(true);
 
@@ -292,7 +329,6 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
-    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -323,7 +359,6 @@ public class ApertiumView extends FrameView {
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
-    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('S');
@@ -344,6 +379,13 @@ public class ApertiumView extends FrameView {
       }
     });
 
+    storeTextButton.setText("Store");
+    storeTextButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        storeTextButtonActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
     mainPanel.setLayout(mainPanelLayout);
     mainPanelLayout.setHorizontalGroup(
@@ -356,7 +398,9 @@ public class ApertiumView extends FrameView {
         .addComponent(fitToTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(copyTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(storeTextButton)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
         .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
       .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
     );
@@ -368,7 +412,8 @@ public class ApertiumView extends FrameView {
           .addComponent(markUnknownWordsCheckBox)
           .addComponent(showCommandsCheckBox)
           .addComponent(fitToTextButton)
-          .addComponent(copyTextButton))
+          .addComponent(copyTextButton)
+          .addComponent(storeTextButton))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
     );
@@ -409,6 +454,10 @@ public class ApertiumView extends FrameView {
 
     aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
     helpMenu.add(aboutMenuItem);
+
+    storedTextsMenu.setMnemonic('S');
+    storedTextsMenu.setText("Stored texts");
+    helpMenu.add(storedTextsMenu);
 
     menuBar.add(helpMenu);
 
@@ -458,6 +507,28 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
     textWidget1.freezeCheckBox.setVisible(false);   
     mainPanel.validate();
 }//GEN-LAST:event_showCommandsCheckBoxActionPerformed
+
+private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeTextButtonActionPerformed
+
+  try {
+  addStoredText(textWidget1.getText());
+
+  // Store last 10 in prefs
+  for (int i=0; i<10; i++) {
+    int n = storedTextsMenu.getMenuComponentCount() - 10 + i;
+    String s = "";
+    if (n>=0) {
+       s = ((JMenuItem) storedTextsMenu.getMenuComponent(n)).getText();
+    }
+    
+    prefs.put("storedTexts."+i,s);
+  }
+    warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
+
+  } catch (Exception e) {
+    warnUser(e.getLocalizedMessage());
+  }
+}//GEN-LAST:event_storeTextButtonActionPerformed
 
 
     private int insetHeight(JComponent c) {
@@ -568,6 +639,8 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
   private javax.swing.JMenuBar menuBar;
   private javax.swing.JComboBox modesComboBox;
   private javax.swing.JCheckBox showCommandsCheckBox;
+  private javax.swing.JButton storeTextButton;
+  private javax.swing.JMenu storedTextsMenu;
   private apertiumview.TextWidget textWidget1;
   private javax.swing.JPanel textWidgetsPanel;
   private javax.swing.JMenu toolsMenu;
