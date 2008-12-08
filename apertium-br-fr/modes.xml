@@ -93,6 +93,34 @@
     </pipeline>
   </mode>
 
+  <mode name="br-fr-postchunk" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="br-fr.automorf.bin"/>
+      </program>
+      <program name="cg-proc">
+        <file name="br-fr.rlx.bin"/> 
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="br-fr.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-br-fr.br-fr.t1x"/>
+        <file name="br-fr.t1x.bin"/>
+        <file name="br-fr.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-br-fr.br-fr.t2x"/>
+        <file name="br-fr.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-br-fr.br-fr.t3x"/>
+        <file name="br-fr.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
 
   <!-- not installed for now -->
   <mode name="fr-br" install="yes">
