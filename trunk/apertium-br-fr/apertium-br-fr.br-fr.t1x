@@ -16,6 +16,9 @@
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
     </def-cat>
+    <def-cat n="verbpart">
+      <cat-item tags="vpart.*"/>
+    </def-cat>
     <def-cat n="querel">
       <cat-item lemma="que" tags="rel.*"/>
     </def-cat>
@@ -337,6 +340,13 @@
     <def-attr n="sep">
       <attr-item tags="sep"/>
     </def-attr>
+    <def-attr n="a_part">
+      <attr-item tags="obj"/>
+      <attr-item tags="subj"/>
+      <attr-item tags="neg"/>
+      <attr-item tags="ger"/>
+      <attr-item tags="ref"/>
+    </def-attr>
     <def-attr n="a_adv">
       <attr-item tags="adv"/>
       <attr-item tags="preadv"/>
@@ -461,6 +471,7 @@
     <def-var n="exclamativa"/>
     <def-var n="caseFirstWord"/>
     <def-var n="lema"/>
+    <def-var n="lema_Vpart"/>
     <def-var n="EOS" v="true"/>
     <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
@@ -7119,6 +7130,37 @@
    </rule>
     
 <!-- *************************************** REGLES DE SV *********************************************** -->
+
+    <rule comment="REGLA: VERB particle">
+      <pattern>
+        <pattern-item n="verbpart"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema_Vpart"/>
+          <clip pos="1" side="sl" part="lem"/>
+        </let>
+        <out>
+          <chunk namefrom="lema_Vpart" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="Vpart"/></tag>
+              <tag><clip pos="1" side="sl" part="a_part"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="sl" part="lemh"/>
+              <lit-tag v="vpart"/>
+              <clip pos="1" side="sl" part="a_part"/>
+              <clip pos="1" side="sl" part="lemq"/>
+            </lu>
+          </chunk>
+	  <b/>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: adv VERB">
       <pattern>
