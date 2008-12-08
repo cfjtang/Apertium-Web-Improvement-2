@@ -132,7 +132,6 @@ install-data-local:
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_br_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_br_frdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_br_frdir)
-	$(INSTALL_DATA) $(BASENAME).pre-$(LANG1).t1x $(apertium_br_frdir)
 	cp *.mode modes/
 
 CLEANFILES = -rf $(TARGETS_COMMON) modes
