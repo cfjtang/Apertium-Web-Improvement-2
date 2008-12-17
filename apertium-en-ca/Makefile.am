@@ -11,6 +11,7 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      $(PREFIX2).autogen.bin $(PREFIX2).autopgen.bin $(PREFIX1).lextormono.bin $(PREFIX2).lextormono.bin \
      $(PREFIX1).lextorbil.bin $(PREFIX2).lextorbil.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+     $(PREFIX1)-poly.autobil.bin $(PREFIX2)-poly.autobil.bin empty.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
 
 TARGETS = $(TARGETS_COMMON) \
@@ -94,6 +95,12 @@ $(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFIX1)-lextor.dix
 $(PREFIX2).lextorbil.bin: $(BASENAME).$(PREFIX2)-lextor.dix
 	lt-comp lr $(BASENAME).$(PREFIX2)-lextor.dix $@
 
+$(PREFIX1)-poly.autobil.bin: $(BASENAME).$(PREFIX1)-poly.dix
+	lt-comp lr $(BASENAME).$(PREFIX1)-poly.dix $@
+
+$(PREFIX2)-poly.autobil.bin: $(BASENAME).$(PREFIX2)-poly.dix
+	lt-comp lr $(BASENAME).$(PREFIX2)-poly.dix $@
+
 $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
@@ -118,6 +125,9 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 	apertium-validate-postchunk $(BASENAME).$(PREFIX2).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
 
+empty.bin: empty.t1x
+	apertium-validate-transfer empty.t1x
+	apertium-preprocess-transfer empty.t1x $@
 
 EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
@@ -140,12 +150,14 @@ apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
 		    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
+		    $(PREFIX1)-poly.autobil.bin $(PREFIX2)-poly.autobil.bin \
+		    empty.bin \
 		    $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).lextormono.bin $(PREFIX2).lextormono.bin \
 		    $(PREFIX1).lextorbil.bin $(PREFIX2).lextorbil.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    $(PREFIX1).mode $(PREFIX2).mode
+		    $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1)-multi.mode $(PREFIX2)-multi.mode
 
 apertium_en_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_en_modesdir=$(prefix)/share/apertium/modes/
@@ -156,6 +168,12 @@ $(PREFIX1).mode: modes.xml
 $(PREFIX2).mode: modes.xml
 	apertium-gen-modes modes.xml
 
+$(PREFIX1)-multi.mode: modes.xml
+	apertium-gen-modes modes.xml
+
+$(PREFIX2)-multi.mode: modes.xml
+	apertium-gen-modes modes.xml
+
 modes: modes.xml
 	apertium-gen-modes modes.xml
 
@@ -163,6 +181,8 @@ install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_en_modesdir)
+	$(INSTALL_DATA) $(PREFIX1)-multi.mode $(apertium_en_modesdir)
+	$(INSTALL_DATA) $(PREFIX2)-multi.mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(apertium_en_cadir)
