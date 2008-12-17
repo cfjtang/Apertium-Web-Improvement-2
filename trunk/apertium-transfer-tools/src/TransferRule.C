@@ -88,7 +88,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
   }
 
   //Sort the AT so as to apply always the most frequent AT that
-  //satifies the restrictions
+  //satisfies the restrictions
   AlignmentTemplateGreaterThanByCount atcomparer;
   sort(ats.begin(), ats.end(), atcomparer);
 
@@ -346,7 +346,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   head+=L"<section-def-macros>\n";
 
   head+=L"<def-macro n=\"f_bcond\" npar=\"1\">\n";
-  head+=L"<!--To test wether a blank contains format information.\n";
+  head+=L"<!--To test whether a blank contains format information.\n";
   head+=L"If no format information is present it is removed. -->\n";
   head+=L"  <choose>\n";
   head+=L"    <when>\n";

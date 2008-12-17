@@ -69,16 +69,16 @@ public:
 
   int get_count();
 
-  /** Test wether this AT is valid, i. e. it is suitable to be used
+  /** Test whether this AT is valid, i. e. it is suitable to be used
    * within the apertium machine translation system.
-   * if 'equalcat' is true the fisrt tag of aligned (open) words must be
+   * if 'equalcat' is true the first tag of aligned (open) words must be
    * the same
    */
   bool is_valid(bool equalcat, bool noword4word, FSTProcessor &fstp, Alignment &bilph);
 
   int invalid_reason();
 
-  /** Test wheter the alignments between open words in source and
+  /** Test whether the alignments between open words in source and
    * target language are ok, i.e., all source open words are aligned
    * with only one target open word, and vice versa.
    */
@@ -86,21 +86,21 @@ public:
 
   /** This method returns the position of the open source word that is
    * aligned with the open target word received as a parameter
-   * NOTE: It is supossed that ONLY one open source word is aligned
+   * NOTE: It is supposed that ONLY one open source word is aligned
    * with each open target word.
    */
   int get_open_source_word_pos(int target_pos);
 
   /** This method returns the position of the open target word that is
    * aligned with the open source word received as a parameter
-   * NOTE: It is supossed that ONLY one open target word is aligned
+   * NOTE: It is supposed that ONLY one open target word is aligned
    * with each open source word.
    */
   int get_open_target_word_pos(int source_pos);
 
   /** Test if the alignment template performs no transformation, i.e.,
    *  it is equivalent to word-for-word translation.
-   *  NOTE: It is supossed that the Alignment received as input
+   *  NOTE: It is supposed that the Alignment received as input
    *  matches the SL part of the AT and the restrictions.
    */
   bool is_equivalent_to_word_for_word(Alignment& al, FSTProcessor& fstp);
