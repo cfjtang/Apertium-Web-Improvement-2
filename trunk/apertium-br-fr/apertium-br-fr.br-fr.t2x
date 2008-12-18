@@ -7770,6 +7770,47 @@
 </rule>
 
 
+ <rule>
+      <pattern>
+	<pattern-item n="VPART"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+		<call-macro n="posa_subj">
+			<with-param pos="2"/>
+		</call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal caseless="yes">
+                <clip pos="1" part="lem"/>
+                <lit v="ne"/>
+              </equal>
+            </test>
+            <out>
+              <chunk>
+              <lit v="adv{^ne"/>
+              <lit-tag v="adv"/>
+              <lit v="$}"/>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+                <clip pos="2" part="whole"/>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk>
+                <clip pos="2" part="whole"/>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+      </action>
+</rule>
+
+
 
 
 
