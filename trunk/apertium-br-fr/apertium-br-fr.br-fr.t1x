@@ -4311,6 +4311,20 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="meur a"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="2" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="nbr"/>
+          </let>
+        </when>
+      </choose>
         <call-macro n="f_concord2">
           <with-param pos="2"/>
           <with-param pos="1"/>
@@ -4738,21 +4752,21 @@
               </tag>
             </tags>
             <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-              <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_det"/>
               <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
               <clip pos="2" side="tl" part="gen_mf"/>
               <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
               <clip pos="2" side="tl" part="nbr_sp"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="1" side="tl" part="gen_mf"/>
+              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="1" side="tl" part="nbr_sp"/>
             </lu>
             <b pos="2"/>
             <lu>
