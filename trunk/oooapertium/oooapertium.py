@@ -163,7 +163,9 @@ class Apertium( unohelper.Base, XJobExecutor ):
 	sel=deskDict['document'].getCurrentSelection()
 	selectedText=sel.getByIndex(0).getString()
 	if (len(selectedText)<=0):
-		textCursor.gotoStartOfParagraph(False)
+		textCursor.gotoPreviousParagraph(False)
+		textCursor.gotoEndOfParagraph(False)
+		textCursor.gotoNextParagraph(False)
 		viewCursor.gotoRange(textCursor,False)
 		textCursor.gotoEndOfParagraph(True)
 		viewCursor.gotoRange(textCursor,True)
