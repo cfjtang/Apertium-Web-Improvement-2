@@ -39,6 +39,7 @@ LIST DetPos           = (det pos);
 # Prepositions
 LIST Prep             = (pr);
 
+
 # Verbal particles 
 LIST Vpart            = (vpart);
 LIST VpartSDO         = ("a" vpart);
@@ -63,6 +64,7 @@ SET VerbFin           = Verb | TempsFin;
 
 # Adverbs
 LIST Adv              = (adv);
+LIST Ket 	      = ("ket" adv);
 
 # Conjunctions
 
@@ -89,6 +91,8 @@ LIST SoftMutTrigger   = ("a" vpart) ("a" pr) ("aba" adv) ("da" pr) ("ez" vpart) 
                         ("e" det pos m) ("na" vpart neg) ("ne" vpart neg) ("pa" cnjsub) ("pe" cnjcoo) 
                         ("pe" adv itg) ("ra" vpart opt) ("re" adj) ("war" pr) ("re" adv); 
 
+LIST MixedMutTrigger  = ("e" vpart);
+
 # Orthography
 LIST DroppedG         = ("<[aeiou].*>"r "g[aeiou].*"ri);
 
@@ -105,7 +109,7 @@ SET NPNHA = WORDMARK - PRE-N - Adv ;
 SET NOT-ADV = WORDMARK - Adv ;
 SET NOT-ADJ = WORDMARK - Adj ;
 
-SET S-BOUNDARY = CS | (sent) ;
+SET S-BOUNDARY = CS | (sent) | VpartIDO;
 
 #
 # Main section
@@ -130,6 +134,9 @@ SELECT VpartNegImp IF (1 VerbImp);
 
 # REGLA (B0004): "a had"
 #SELECT Verb IF (-1 Vpart);
+
+# REGLA (B0022): "ne ... ket"
+SELECT Verb IF (-1 VpartNeg) (1 Ket);
 
 # REGLA (B0005): "na ganit ket"
 SELECT VerbImp IF (-1 VpartNegImp);
@@ -167,9 +174,6 @@ REMOVE Vpart IF (1 Vbloc);
 
 # REGLA (B0017): >The particle is omitted before verbal nouns and imperatives
 REMOVE Vpart IF ((1 VerbInf) OR (1 VerbImp));
-
-# REGLA (B0018): 
-REMOVE Vpart IF (*-1 VerbFin BARRIER Vpart);
 
 # REGLA (B0019): "o chom e Roazhon"
 REMOVE PrnDObj IF (-1 VerbInf);
@@ -216,6 +220,17 @@ SELECT AspMutTrigger IF (1 AspMut);
 
 # REGLA (A0009): ""
 REMOVE AspMut IF (NOT -1 AspMutTrigger);
+
+# REGLA (A0008): ""
+SELECT MixedMut IF (-1 MixedMutTrigger);
+
+# REGLA (A0009): ""
+SELECT MixedMutTrigger IF (1 MixedMut);
+
+# REGLA (A0009): ""
+REMOVE MixedMut IF (NOT -1 MixedMutTrigger);
+
+
 
 SECTION
 

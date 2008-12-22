@@ -117,6 +117,7 @@
   <section-def-attrs>
 
 <def-attr n="pers">
+          <attr-item tags="impers"/>
           <attr-item tags="p1"/>
 	  <attr-item tags="p2"/>
 	  <attr-item tags="p3"/>
@@ -786,6 +787,45 @@
 							</otherwise>
 						</choose>
 					</when>
+					<when>
+						<test>
+							<equal>
+								<clip pos="1" part="pers"/>
+								<lit-tag v="impers"/>
+							</equal>
+						</test>
+						<choose>
+							<when>
+								<test>
+									<equal>
+										<clip pos="1" part="nbr"/>
+										<lit-tag v="sp"/>
+									</equal>
+								</test>
+                                                                <let>
+                                                                  <clip pos="1" part="nbr"/>
+                                                                  <lit-tag v="sg"/>
+                                                                </let>
+                                                                <let>
+                                                                  <clip pos="1" part="pers"/>
+                                                                  <lit-tag v="p3"/>
+                                                                </let>
+								<out>
+									<chunk>
+										<get-case-from pos="1">
+											<lit v="prnperssubj"/>
+										</get-case-from>
+										<lit-tag v="SN"/>
+										<lit v="{^"/>
+										<lit v="on"/>
+										<lit-tag v="prn.pro.ref.p3.mf.sp"/>
+										<lit v="$}"/>
+									</chunk>
+									<b/>
+								</out>
+							</when>
+						</choose>
+					</when>
 					<otherwise>
 						<out>
 						
@@ -826,6 +866,7 @@
 </def-macro>
 
 <def-macro n="posa_subj" npar="1">
+       
 	<choose>
 		<when>
 			<test>
@@ -864,6 +905,78 @@
 			</choose>
 
 			<choose>
+				<when><!-- si el verb estÃ  en impers -->
+					<test>
+						<equal>
+							<clip pos="1" part="pers"/>
+							<lit-tag v="impers"/>
+						</equal>
+					</test>
+                                                                <let>
+                                                                  <clip pos="1" part="nbr"/>
+                                                                  <lit-tag v="sg"/>
+                                                                </let>
+                                                                <let>
+                                                                  <clip pos="1" part="pers"/>
+                                                                  <lit-tag v="p3"/>
+                                                                </let>
+					<choose>
+						<when>
+							<test>
+								<or>
+									<equal caseless="yes">
+									  <clip pos="1" part="lem"/>
+									  <lit v="pronverb"/>
+									</equal>
+									<equal caseless="yes">
+									  <clip pos="1" part="lem"/>
+									  <lit v="pronaux_pp"/>
+									</equal>
+								</or>
+							</test>
+							<out>
+							
+								<chunk>
+									<get-case-from pos="1">
+										<lit v="prnperssubj"/>
+									</get-case-from>
+										<lit-tag v="SN"/>
+										<lit v="{^"/>
+										<lit v="on"/>
+										<lit-tag v="prn.pro.ref.p3.mf.sp"/>
+										<lit v="$}"/>
+											</chunk>
+											<b/>
+											<chunk>
+												<lit v="prnpro"/>
+												<lit-tag v="SN"/>
+												<lit v="{^"/>
+												<lit v="se"/>
+												<lit-tag v="prn.pro.p3.mf.sg"/>
+												<lit v="$}"/>
+							                 		</chunk>
+										        <b/>
+										</out>
+									</when>
+								<otherwise>
+											<out>
+												<chunk>
+												    <get-case-from pos="1">
+													<lit v="prnperssubj"/>
+												    </get-case-from>
+													<lit-tag v="SN"/>
+													<lit v="{^"/>
+													<lit v="on"/>
+													<lit-tag v="prn.pro.ref.p3.mf.sp"/>
+													<lit v="$}"/>
+												</chunk>
+												<b/>
+											</out>
+								</otherwise>
+								</choose>
+						</when>
+
+
 				<when>
 					<test><!--el verb está en primera persona-->
 						<equal>
