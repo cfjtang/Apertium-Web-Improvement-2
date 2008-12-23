@@ -9163,6 +9163,20 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+           <test>
+             <equal>
+               <var n="genero"/>
+               <lit-tag v="mf"/>
+             </equal>
+           </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+           </when>
+        </choose>
             <out>
               <chunk name="pp" case="caseFirstWord">
                 <tags>
