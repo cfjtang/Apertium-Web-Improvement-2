@@ -7,6 +7,7 @@ LIST EOS              = (<<<);
 LIST NC               = (n);
 LIST NP               = (np top) (np ant) (np cog) (np al);
 LIST Toponim          = (np top);
+LIST Acr              = (n acr);
 
 SET  N                = NC | NP;
 
@@ -116,6 +117,9 @@ SET S-BOUNDARY = CS | (sent) | VpartIDO;
 #
 
 SECTION
+
+# REGLA (B0024): "WAR BONT AR NAONED"
+REMOVE Acr IF (0 NC) (0 Acr);
 
 # REGLA (B0022): "ha zo bet skrivet"
 REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
