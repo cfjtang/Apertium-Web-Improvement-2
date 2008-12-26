@@ -33,6 +33,11 @@ if len(sys.argv) < 3: #{
 	sys.exit(-1);
 #}
 
+if commands.getstatusoutput('lt-expand')[0] > 256: #{
+	print 'Please install `lt-expand\' or add it to your $PATH';	
+	sys.exit(-1);
+#}
+
 infile = sys.argv[1];
 tffile = sys.argv[2];
 
