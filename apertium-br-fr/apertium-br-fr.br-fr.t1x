@@ -4319,39 +4319,42 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
       <choose>
         <when>
           <test>
-            <equal caseless="yes">
-              <clip pos="1" side="sl" part="lem"/>
-              <lit v="meur a"/>
-            </equal>
+            <and>
+              <equal caseless="yes">
+                <clip pos="1" side="sl" part="lem"/>
+                <lit v="meur a"/>
+              </equal>
+              <not>
+                <equal>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="sp"/>
+                </equal>
+              </not>
+            </and>
           </test>
           <let>
             <clip pos="2" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="nbr"/>
           </let>
         </when>
+
       </choose>
-        <call-macro n="f_concord2">
-          <with-param pos="2"/>
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
         <out>
           <chunk name="det_nom" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
-              <tag>
-                <var n="genero"/>
-              </tag>
-              <tag>
-                <var n="numero"/>
-              </tag>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="genero"/></tag>
+              <tag><var n="numero"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
