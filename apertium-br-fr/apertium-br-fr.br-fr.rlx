@@ -73,12 +73,12 @@ LIST CC               = (cnjcoo);
 LIST CS               = (cnjsub);
 
 # Mutations
-LIST SoftMut          = ("<g.*>"ri "k.*"ri) ("<d.*>"ri "t.*"ri) ("<b.*>"ri "p.*"ri) ("<c’h.*>"ri "g.*"ri) 
+LIST SoftMut          = ("<g.*>"ri "k.*"ri) ("<d.*>"ri "t.*"ri) ("<b.*>"ri "p.*"ri) ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri)
                         ("<w.*>"ri "gw.*"ri) ("<z.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri);
 
-LIST AspMut           = ("<c’h.*>"ri "k.*"ri) ("<z.*>"ri "t.*"ri) ("<f.*>"ri "p.*"ri); 
+LIST AspMut           = ("<c’h.*>"ri "k.*"ri) ("<c'h.*>"ri "k.*"ri) ("<z.*>"ri "t.*"ri) ("<f.*>"ri "p.*"ri); 
 LIST HardMut          = ("<k.*>"ri "g.*"ri) ("<t.*>"ri "d.*"ri) ("<p.*>"ri "b.*"ri); 
-LIST MixedMut         = ("<c’h.*>"ri "g.*"ri) ("<w.*>"ri "gw.*"ri) ("<t.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri); 
+LIST MixedMut         = ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri) ("<w.*>"ri "gw.*"ri) ("<t.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri); 
 
 LIST HardMutTrigger   = ("ho" det pos) ("e" +da det pos);
 LIST AspMutTrigger    = ("o" det pos) ("va" det pos) ("he" det pos) ("peder" num f) ("pevar" num m) ("teir" num f) 
@@ -193,7 +193,7 @@ REMOVE VerbImp IF (-1 Vpart) (0 VerbFin);
 
 REMOVE Itg IF (1 VerbPP);
 
-SELECT CS IF (1 VerbFin) (0 DetPos);
+SELECT CS IF (1 VerbFin) (NOT 1 NC) (0 DetPos);
 
 SECTION
 
