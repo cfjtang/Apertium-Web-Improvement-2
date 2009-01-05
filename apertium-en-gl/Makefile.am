@@ -93,6 +93,9 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 EXTRA_DIST=$(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).$(LANG1).tsx \
 	   $(BASENAME).$(LANG2).tsx \
+	   $(BASENAME).$(LANG1).metadix \
+	   $(BASENAME).$(LANG2).dix \
+	   $(BASENAME).$(PREFIX1).dix \
 	   $(PREFIX1).prob $(PREFIX2).prob \
 	   buscaPar.xsl principal.xsl \
            translate-to-default-equivalent.xsl \
