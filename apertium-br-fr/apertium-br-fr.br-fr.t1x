@@ -145,6 +145,7 @@
       <cat-item lemma="bezañ" tags="vblex.imp.*"/>
       <cat-item lemma="bezañ" tags="vblex.fti.*"/>
       <cat-item lemma="bezañ" tags="vblex.cni.*"/>
+      <cat-item lemma="bezañ" tags="vblex.cip.*"/>
       <cat-item lemma="bezañ" tags="vblex.pri.*"/>
     </def-cat>
     <def-cat n="imp">
@@ -461,6 +462,7 @@
       <attr-item tags="sp"/>
     </def-attr>
     <def-attr n="temps">
+      <attr-item tags="cip"/>
       <attr-item tags="cni"/>
       <attr-item tags="fts"/>
       <attr-item tags="fti"/>
@@ -1314,7 +1316,7 @@
         </otherwise>
       </choose>
     </def-macro>
-    <def-macro n="prh_past" npar="1">
+    <def-macro n="prh_past_cip" npar="1">
       <choose>
         <when>
           <test>
@@ -1340,6 +1342,19 @@
             <lit-tag v="ifi"/>
           </let>
         </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="temps"/>
+              <lit-tag v="cip"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="cni"/>
+          </let>
+        </when>
+
 
       </choose>
     </def-macro>
@@ -4743,8 +4758,8 @@
               <lit-tag v="det.def"/>
               <clip pos="1" side="tl" part="gen_sense_mf"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
+              <clip pos="1" side="sl" part="nbr_sense_sp"/>
+              <clip pos="1" side="sl" part="nbr_sp"/>
             </lu>
             <b/>
             <lu>
@@ -8795,7 +8810,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -9119,7 +9134,7 @@
         <pattern-item n="adv_preadv"/>
       </pattern>
       <action>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -9568,12 +9583,157 @@
     
  
     
+    <rule comment="REGLA: VERB HAVER">
+      <pattern>
+        <pattern-item n="aux"/>
+      </pattern>
+      <action>
+        <call-macro n="f_imp">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="haber">
+          <with-param pos="1"/>
+        </call-macro> 
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="prh_past_cip">
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="temps"/>
+                <lit-tag v="ifi"/>
+              </equal>
+            </test>
+            <call-macro n="aux_ifi">
+              <with-param pos="1"/>
+            </call-macro>
+	    <choose>
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <list n="vbpron"/>
+                    </in>
+            	</test>
+                <let>
+                <var n="lema"/>
+                <lit v="pronaux_pp"/>
+		</let>  
+	      </when>
+	      <otherwise>
+		<let>
+		<var n="lema"/>
+		<lit v="aux_pp"/>
+                </let>
+   	      </otherwise>
+	    </choose>
+            <out>
+              <chunk namefrom="lema" case="caseFirstWord">
+                <tags>
+                  <tag>
+                    <lit-tag v="SV"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="a_verb"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="sl" part="temps"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="pers" link-to="4"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="nbr" link-to="5"/>
+                  </tag>
+                </tags>
+                <lu>
+                  <var n="auxiliar"/>
+                  <var n="etiq_aux"/>
+                  <lit-tag v="pri"/>
+                  <clip pos="1" side="tl" part="pers"/>
+                  <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="1" side="tl" part="lemh"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <lit-tag v="pp.m.sg"/>
+                  <clip pos="1" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
+           <choose>        
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <list n="vbpron"/>
+                    </in>
+            	</test>
+                <let>
+                <var n="lema"/>
+                <lit v="pronverb"/>
+		</let>  
+	      </when>
+	      <otherwise>
+		<let>
+		<var n="lema"/>
+		<lit v="verb"/>
+                </let>
+   	      </otherwise>
+	    </choose>
+            <out>
+              <chunk namefrom="lema" case="caseFirstWord">
+                <tags>
+                  <tag>
+                    <lit-tag v="SV"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="a_verb"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="temps"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="pers"/>
+                  </tag>
+                  <tag>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lemh"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <clip pos="1" side="tl" part="pers" link-to="4"/>
+                  <clip pos="1" side="tl" part="nbr" link-to="5"/>
+                  <clip pos="1" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+    
+ 
+    
     <rule comment="REGLA: VERB">
       <pattern>
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -9721,7 +9881,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -9783,7 +9943,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<call-macro n="control_ref_aux">
@@ -9914,7 +10074,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -9986,7 +10146,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10047,7 +10207,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -10167,7 +10327,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10242,7 +10402,7 @@
           <var n="lema"/>
           <lit v="etre_en_train_de_inf"/>
         </let>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10313,7 +10473,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -10452,7 +10612,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10534,7 +10694,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10599,7 +10759,7 @@
        <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -10717,7 +10877,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10785,7 +10945,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -10942,7 +11102,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -11007,7 +11167,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -11256,7 +11416,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
 	<call-macro n="control_ref_aux">
@@ -11563,7 +11723,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
 	<call-macro n="control_ref_aux">
@@ -12013,7 +12173,7 @@
        <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -12144,7 +12304,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -12323,7 +12483,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -12398,7 +12558,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -12881,7 +13041,7 @@
 	<call-macro n="haber">
 		<with-param pos="2"/>
 	</call-macro>
-	<call-macro n="prh_past">
+	<call-macro n="prh_past_cip">
 		<with-param pos="2"/>
 	</call-macro>
 	<call-macro n="f_imp">
@@ -13180,7 +13340,7 @@
 		      <with-param pos="2"/>
 		      <with-param pos="3"/>
 	      </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -13680,7 +13840,7 @@
             </choose>
           </when>
           <otherwise>
-            <call-macro n="prh_past">
+            <call-macro n="prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <choose>
@@ -13936,7 +14096,7 @@
 		      <with-param pos="2"/>
 		      <with-param pos="3"/>
 	      </call-macro>
-       <call-macro n="prh_past">
+       <call-macro n="prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -14434,7 +14594,7 @@
             </choose>
           </when>
           <otherwise>
-            <call-macro n="prh_past">
+            <call-macro n="prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <choose>
@@ -14711,7 +14871,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -14828,7 +14988,7 @@
             </out>
           </when>
           <otherwise>
-            <call-macro n="prh_past">
+            <call-macro n="prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <out>
@@ -14885,7 +15045,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="4"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -15169,7 +15329,7 @@
             </choose>
           </when>
           <otherwise>
-            <call-macro n="prh_past">
+            <call-macro n="prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <choose>
@@ -18256,7 +18416,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past">
+        <call-macro n="prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="vauxiliar">
