@@ -179,6 +179,7 @@
       <cat-item lemma="estar" tags="vblex.*"/>
     </def-cat>
     <def-cat n="verbpers">
+      <cat-item tags="vblex.cip.*"/>
       <cat-item tags="vblex.cni.*"/>
       <cat-item tags="vblex.fti.*"/>
       <cat-item tags="vblex.ifi.*"/>
@@ -1354,10 +1355,9 @@
             <lit-tag v="cni"/>
           </let>
         </when>
-
-
       </choose>
     </def-macro>
+
     <def-macro n="f_imp" npar="1">
       <choose>
         <when>
@@ -8023,6 +8023,24 @@
             </out>
           </when>
           <otherwise>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="nbr"/> 
+                    <lit-tag v="ND"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="nbr"/> 
+                  <lit-tag v="sg"/>
+                </let>
+              </when>
+            </choose>
+            <call-macro n="f_concord2">
+              <with-param pos="1"/>
+              <with-param pos="2"/>
+            </call-macro>
             <out>
               <chunk name="adj_adj" case="caseFirstWord">
                 <tags>
