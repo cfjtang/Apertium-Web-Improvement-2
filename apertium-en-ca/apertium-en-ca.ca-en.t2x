@@ -6,6 +6,10 @@
       <cat-item tags="SN.*"/>
     </def-cat>
 
+    <def-cat n="procl">
+      <cat-item lemma="pro" tags="SN.*"/>
+    </def-cat>
+
     <def-cat n="SV">
       <cat-item tags="SV.*"/>
       <cat-item tags="SVneg.*"/>
@@ -49,6 +53,9 @@
       <cat-item tags="SVneg.vbser.*"/>
     </def-cat>
 
+    <def-cat n="sabergreu">
+      <cat-item tags="SV.*.sabergreu"/>
+    </def-cat>
     <def-cat n="cnjsub">
       <cat-item tags="cnjsub"/>
       <cat-item tags="cnjadv"/>
@@ -154,6 +161,17 @@
       <attr-item tags="vbmod"/>
       <attr-item tags="vaux"/>
     </def-attr>
+    <def-attr n="tipus_prn">
+      <attr-item tags="subj"/>
+      <attr-item tags="obj"/>
+      <attr-item tags="tn"/>
+      <attr-item tags="itg"/>
+      <attr-item tags="pos"/>
+    </def-attr>
+    <def-attr n="lemaverb">
+      <attr-item tags="sabergreu"/>
+    </def-attr>
+
 
   </section-def-attrs>
 
@@ -327,6 +345,45 @@
 	</let>
       </action>
 </rule>
+
+
+<rule comment="REGLA: saber greu + pron">
+      <pattern>
+	<pattern-item n="sabergreu"/>
+	<pattern-item n="procl"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="2" part="tipus_prn"/>
+	  <lit-tag v="subj"/>
+	</let>
+	<let>
+	  <clip pos="1" part="pers"/>
+	  <clip pos="2" part="pers"/>
+	</let>
+	<let>
+	  <clip pos="1" part="nbr"/>
+	  <clip pos="2" part="nbr"/>
+	</let>
+	
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+	
+
+
+
+
+
+
 
 <rule comment="REGLA: haverhi SN">
       <pattern>

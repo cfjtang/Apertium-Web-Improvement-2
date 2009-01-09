@@ -33,13 +33,13 @@
     <tags-item lemma="do" tags="vblex.past"/>
   </def-label>
 
-
-  <def-label name="VERBS_DISCURS" closed="true">
+<!--
+  <def-label name="VERBS_DISCURS_PP" closed="true">
     <tags-item lemma="say" tags="vblex.pp"/>
     <tags-item lemma="explain" tags="vblex.pp"/>
     <tags-item lemma="add" tags="vblex.pp"/>
     <tags-item lemma="tell" tags="vblex.pp"/>
-  </def-label>
+  </def-label>-->
 
   <def-label name="INTNOM" closed="true">
     <tags-item tags="prn.itg.*"/>
@@ -317,10 +317,10 @@
       <label-item label="PRNSUBJ"/>
       <label-item label="VLEXPP"/>
     </label-sequence> 
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="PRNSUBJ"/>
-      <label-item label="VERBS_DISCURS"/>
-    </label-sequence>
+      <label-item label="VERBS_DISCURS_PP"/>
+    </label-sequence> -->
     <label-sequence>
       <label-item label="PRNSUBJ"/>
       <label-item label="VSERPP"/>
@@ -427,10 +427,10 @@
       <label-item label="RELAN"/>
       <label-item label="VHAVEPP"/>      
     </label-sequence>
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="RELAN"/>
-      <label-item label="VERBS_DISCURS"/>      
-    </label-sequence>
+      <label-item label="VERBS_DISCURS_PP"/>      
+    </label-sequence> -->
     <label-sequence><!--no estic segura que aquesta prohib sigui adequada per a tots els rel 'nn' -->
       <label-item label="RELNN"/>
       <label-item label="VLEXPP"/>    
@@ -447,10 +447,10 @@
       <label-item label="RELNN"/>
       <label-item label="VHAVEPP"/>      
     </label-sequence>
-    <label-sequence>
+ <!--   <label-sequence>
       <label-item label="RELNN"/>
-      <label-item label="VERBS_DISCURS"/>      
-    </label-sequence>
+      <label-item label="VERBS_DISCURS_PP"/>      
+    </label-sequence> -->
 
  
 
@@ -476,10 +476,10 @@
       <label-item label="ANTROPONIM"/>
       <label-item label="VLEXPP"/>
     </label-sequence>
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="ANTROPONIM"/>
-      <label-item label="VERBS_DISCURS"/>
-    </label-sequence>
+      <label-item label="VERBS_DISCURS_PP"/>
+    </label-sequence> -->
     <label-sequence>
       <label-item label="ANTROPONIM"/>
       <label-item label="VSERPP"/>
@@ -492,10 +492,10 @@
       <label-item label="TOPONIM"/>
       <label-item label="VLEXPP"/>
     </label-sequence> 
-    <label-sequence>
+ <!--   <label-sequence>
       <label-item label="TOPONIM"/>
-      <label-item label="VERBS_DISCURS"/>
-    </label-sequence> 
+      <label-item label="VERBS_DISCURS_PP"/>
+    </label-sequence>  -->
     <label-sequence>
       <label-item label="TOPONIM"/>
       <label-item label="VSERPP"/>
@@ -508,10 +508,10 @@
       <label-item label="NPALTRES"/>
       <label-item label="VLEXPP"/>
     </label-sequence>
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="NPALTRES"/>
-      <label-item label="VERBS_DISCURS"/>
-    </label-sequence>
+      <label-item label="VERBS_DISCURS_PP"/>
+    </label-sequence> -->
     <label-sequence>
       <label-item label="NPALTRES"/>
       <label-item label="VSERPP"/>
@@ -768,25 +768,29 @@
       <label-item label="NOMPL"/>
     </label-sequence>
 
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="VERBS_DISCURS"/>
       <label-item label="NOMPL"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VERBS_DISCURS"/>
       <label-item label="NOMSG"/>
-    </label-sequence>
-    <label-sequence>
+    </label-sequence> -->
+   <!-- <label-sequence>
       <label-item label="CM"/>
-      <label-item label="VERBS_DISCURS"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VERBS_DISCURS"/>
+      <label-item label="VERBS_DISCURS_PP"/>
+    </label-sequence> -->
+   <!-- <label-sequence>
+      <label-item label="VERBS_DISCURS"/>mireia
       <label-item label="DET"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VERBS_DISCURS"/>
       <label-item label="DETQNT_ORD"/>
+    </label-sequence>-->
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="GEN"/>
     </label-sequence>
 
 
@@ -797,7 +801,7 @@
     <enforce-after label="VHAVEPAST">
       <label-set>
         <label-item label="VLEXPP"/>
-        <label-item label="VERBS_DISCURS"/>
+       <!-- <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
@@ -807,7 +811,7 @@
     <enforce-after label="VHAVEINF">
       <label-set>
         <label-item label="VLEXPP"/>
-        <label-item label="VERBS_DISCURS"/>
+      <!--  <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
       </label-set>
@@ -815,7 +819,7 @@
      <enforce-after label="VHAVEPRES">
       <label-set>
         <label-item label="VLEXPP"/>
-        <label-item label="VERBS_DISCURS"/>
+    <!--    <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
@@ -825,7 +829,7 @@
      <enforce-after label="VHAVE">
       <label-set>
         <label-item label="VLEXPP"/>
-        <label-item label="VERBS_DISCURS"/>
+       <!-- <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
 	<label-item label="NOT"/>
@@ -838,6 +842,19 @@
         <label-item label="NOMPL"/>
 	<label-item label="ADJ"/>
 	<label-item label="DET"/>
+      </label-set>
+    </enforce-after>
+
+     <enforce-after label="GEN">
+      <label-set>
+        <label-item label="NOMSG"/>
+        <label-item label="NOMPL"/>
+	<label-item label="ADJ"/>
+	<label-item label="DETQNT_ORD"/>
+	<label-item label="NUM"/>
+	<label-item label="ANTROPONIM"/>
+	<label-item label="TOPONIM"/>
+	<label-item label="NPALTRES"/>
       </label-set>
     </enforce-after>
 
@@ -930,15 +947,14 @@
 	<label-item label="CM"/>
       </label-set>
     </enforce-after> -->
+  
+
+ </enforce-rules>
 
 
  <preferences>
    <prefer tags="n.acr.sg"/>
  </preferences>
-
-   
-
- </enforce-rules>
 
 
 </tagger>

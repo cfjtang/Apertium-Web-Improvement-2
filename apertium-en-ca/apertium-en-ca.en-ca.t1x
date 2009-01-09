@@ -539,6 +539,9 @@
     <def-cat n="be">
       <cat-item lemma="be" tags="vbser.*"/>
     </def-cat>
+    <def-cat n="be_sorry">
+      <cat-item lemma="be# sorry" tags="vblex.*"/>
+    </def-cat>
     <def-cat n="be_past_pres">
       <cat-item lemma="be" tags="vbser.past"/>
       <cat-item lemma="be" tags="vbser.past.*"/>
@@ -594,7 +597,8 @@
       <attr-item tags="adj.pos"/>
       <attr-item tags="vblex.pp"/> <!-- BCN ok--> 
       <attr-item tags="vbmod.pp"/> <!-- BCN ok--> 
-      <attr-item tags="vblex.pron.pp"/> <!-- BCN ok--> 
+      <attr-item tags="vblex.pron.pp"/> <!-- BCN ok-->   
+      <attr-item tags="adjant"/>
     </def-attr>  
 
 
@@ -763,6 +767,7 @@
     <def-var n="lema"/>
     <def-var n="lema_SV"/>
     <def-var n="verbfinal"/>
+    <def-var n="chunk"/>
     <def-var n="temps_chunk"/>
     <def-var n="pers_chunk"/>
     <def-var n="nbr_chunk"/>
@@ -3318,6 +3323,24 @@
 	  <let>
 	    <var n="tipus_verb"/>
 	    <lit-tag v="like"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <or>
+	      <equal caseless="yes">
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="be# sorry"/>
+	      </equal>
+	      <equal caseless="yes">
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="be# very sorry"/>
+	      </equal>
+	    </or>
+	  </test>
+	  <let>
+	    <var n="tipus_verb"/>
+	    <lit-tag v="sorry"/>
 	  </let>
 	</when>
 	<when><!-- (BCN)-->
@@ -13151,7 +13174,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 
     <rule comment="REGLA: DET NOM TO INF (BCN:  Regla que canvia la preposició TO de l'anglès per DE del català per A noms de control i per PER per als altres ('the need to work' - 'la necessitat de treballr' vs. 'a book to read' - 'un llibre per llegir'. Com que és d'aplicació general es codifica via regla i no al lèxic. Els noms de control (o equi nouns) es llisten sota la marca equinouns. Amb això evitem duplicar entrades. Les excepcions que hi pugui haver s'han de codificar al lèxic). 
-		   EN principi la regla es justifica per evitar que la prep TO es tradueixi per A.">
+		   EN principi la regla es justifica per evitar que la prep TO es tradueixi per A/PER.">
 
       <pattern>
 	<pattern-item n="det"/>
@@ -14864,7 +14887,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 
     <!--********************************* REGLES DE SV ***************************************************** -->
-    
+
+
 
     
     <rule comment="REGLA: VERB copulatiu">
@@ -14999,6 +15023,71 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <var n="lema_SV"/><!--fes que el lema del chunk verbal sigui el lema del verb (això es fa amb tots els copulatius) -->
 	  <clip pos="1" side="sl" part="lem"/>
 	</let>
+	    
+	<choose>
+	  <when>
+	    <test>
+	      <in caseless="yes">
+		<clip pos="2" side="sl" part="lem"/>
+		<list n="adv_neg"/>
+	      </in>
+	    </test>
+	    <let>
+	      <var n="neg"/>
+	      <lit-tag v="NEG"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="neg"/>
+	      <lit v=""/>
+	    </let>
+	  </otherwise>
+	</choose>
+	<out>
+	  <chunk name="adv" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	      <tag><var n="neg"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk namefrom="lema_SV">
+	    <tags>
+	      <tag><lit-tag v="Vcop"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="temps_chunk"/></tag>
+	      <tag><var n="pers_chunk"/></tag>
+	      <tag><var n="nbr_chunk"/></tag>
+	    </tags> 		
+	    <lu>
+	      <var n="verbfinal"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
+    <rule comment="REGLA: be sorry ADV">
+      <pattern>
+	<pattern-item n="be_sorry"/>    
+	<pattern-item n="adv_not"/>
+      </pattern>
+      <action>    
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipus_verbs">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="conj_verb1">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -15032,7 +15121,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <b pos="1"/>
 	  <chunk namefrom="lema_SV">
 	    <tags>	       
-	      <tag><lit-tag v="Vcop"/></tag>
+	      <tag><lit-tag v="SV"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><var n="temps_chunk"/></tag>
 	      <tag><var n="pers_chunk"/></tag>
