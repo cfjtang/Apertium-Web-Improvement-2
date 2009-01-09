@@ -93,6 +93,10 @@
       <cat-item tags="SV.like.*"/>
     </def-cat>
     
+    <def-cat n="vbsorry"><!--to be sorry -->
+      <cat-item tags="SV.sorry.*"/>
+    </def-cat>
+    
     <def-cat n="vbreporting"><!-- BCN-->
       <cat-item tags="SV.reporting.*"/>
     </def-cat>
@@ -2997,6 +3001,375 @@ Your mother and you will come - La vostra mare i tu vindran
       </action>
     </rule>
 
+
+ <rule comment="REGLA: SN sorry"><!--mireiasí-->
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="vbsorry"/>
+      </pattern>
+      <action>
+	<choose> <!-- primer assignem els canvis que podem al verb-->
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="2" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<let>
+	  <clip pos="2" part="pers"/>
+	  <lit-tag v="p3"/>
+	</let>
+	<let>
+	  <clip pos="2" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+	<choose>
+	  <when>
+	    <test><!--quan subjecte és un pronom compost com 'we all' etc., envia 'a tots nosaltres' -->
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj2"/>
+	      </equal>
+	    </test>
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->		
+		<get-case-from pos="2">
+		  <clip pos="1" part="lem"/>
+		</get-case-from>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	</choose>
+	<choose><!-- quan el subjecte és un pronom...-->
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <out>
+	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+		<lit v="comp_sorry"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro"/>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="mf"/>
+		<clip pos="1" part="nbr"/>		
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>	    
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk><!--...i un altre amb un pronom feble (nois els sap greu) -->
+		<lit v="comp_sorry"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="2">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro.p3.mf"/>
+		<var n="nombre"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </otherwise>
+	</choose>
+	<out>
+	  <chunk><!-- envio el verb-->
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+    
+    <rule comment="REGLA: SN adv vblike"><!--mireiasí, separar adv i neg-->
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="ADV"/>
+	<pattern-item n="vbsorry"/>
+      </pattern>
+      <action>
+	<choose> <!-- primer assignem els canvis que podem al verb-->
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="3" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<let>
+	  <clip pos="3" part="pers"/>
+	  <lit-tag v="p3"/>
+	</let>
+	<let>
+	  <clip pos="3" part="nbr"/>
+	  <lit-tag v="sg"/>
+	</let>
+	<choose>
+	  <when>
+	    <test><!--quan subjecte és un pronom compost com 'we all' etc., envia 'a tots nosaltres' -->
+	      <equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="prnsubj2"/>
+	      </equal>
+	    </test>
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->		
+		<get-case-from pos="2">
+		  <clip pos="1" part="lem"/>
+		</get-case-from>
+		<clip pos="1" part="tags"/>
+		<clip pos="1" part="chcontent"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	</choose>
+	<choose><!-- quan el subjecte és un pronom...-->
+	  <when>
+	    <test>
+	      <or>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj"/>
+		</equal>
+		<equal caseless="yes">
+		  <clip pos="1" part="lem"/>
+		  <lit v="prnsubj2"/>
+		</equal>
+	      </or>
+	    </test>	    
+	    <out>
+	      <chunk><!-- envio l'adv-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!--...creo un chunk que tindrà un pronom feble -->
+		<lit v="comp_sorry"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="2">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro"/>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="mf"/>
+		<clip pos="1" part="nbr"/>		
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	  </when>
+	  <otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN, li assigno gènere i nombre...-->
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </not>
+		</test>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	      <otherwise>
+		<let>
+		  <var n="nombre"/>
+		  <lit-tag v="pl"/>
+		</let>
+	      </otherwise>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>	    
+	    <out> 
+	      <chunk><!-- envio la preposició "a" -->
+		<lit v="pr"/>
+		<lit-tag v="PREP"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="a"/>
+		</get-case-from>
+		<lit-tag v="pr"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk><!--envio el chunk amb el SN-->
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk><!-- l'adv-->
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk><!--...i un altre amb un pronom feble (nois els agraden les patates) -->
+		<lit v="comp_sorry"/>
+		<lit-tag v="prn.pro"/>
+		<lit v="{^"/>
+		<get-case-from pos="2">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.pro.p3.mf"/>
+		<var n="nombre"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b/>
+	    </out>
+	  </otherwise>
+	</choose>
+	<out>
+	  <chunk><!-- envio el verb-->
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
 
     <rule comment="REGLA: there BE SN"><!--NOTA MG: la millor manera de fer el canvi de 'ser' per 'haver' hauria estat enllaçar la categoria del verb (vbser, vblex, vbhaver, vbmod) en les tags del chunk en el t1x, i aquí canviar l'etiqueta, de manera que el canvia hauria estat automàtic i no hauria fet falta fer operacions complicades en el t3x per a canviar les etiquetes segons el nom de chunk. Tanmateix, en el t1x hem posat la variable 'tipus_verb' com a etiqueta del chunk que pot contenir 'pron' i 'like' a part dels tipus de verb normals (vbser, vbhaver, vbmod, vblex), la qual cosa impossibilita fer l'enllaç correctament. Amb més temps caldria canviar la manera de passar la informació de 'pron' i 'like' en el segon transfer de manera que fos possible fer l'enllaç del tipus de verb. -->
       <pattern>

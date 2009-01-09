@@ -484,6 +484,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
     <def-var n="nom_chunk"/>
     <def-var n="verbfinal"/>
     <def-var n="tipusverb"/>
+    <def-var n="lemaverb"/>
     <def-var n="superlatiu1"/>
     <def-var n="superlatiu2"/>
   </section-def-vars>
@@ -1803,6 +1804,27 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
        </let>
      </otherwise>
    </choose>
+   <choose>
+     <when><!-- la variable 'lemaverb' es posa només en les etiquetes dels chunks en què pot haver-hi el lema 'saber greu', per tant no està posada en tots els chunks verbals perquè no fa falta. Amb aquesta etiqueta es pot fer un tractament de l'estructura en el t2x.-->
+       <test>
+	 <equal caseless="yes">
+	   <clip pos="1" side="sl" part="lem"/>
+	   <lit v="saber# greu"/>
+	 </equal>
+       </test>
+       <let>
+	 <var n="lemaverb"/>
+	 <lit-tag v="sabergreu"/>
+       </let>
+     </when>
+     <otherwise>
+       <let>
+	 <var n="lemaverb"/>
+	 <lit v=""/>
+       </let>
+     </otherwise>	 
+   </choose>
+   
  </def-macro>
 
 
@@ -1870,8 +1892,8 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		<clip pos="1" side="tl" part="a_verb"/>
 		<clip pos="1" side="tl" part="sep"/>
 		<clip pos="1" side="tl" part="temps"/>
-		<clip pos="1" side="tl" part="pers"/>
-		<clip pos="1" side="tl" part="nbr"/>
+		<clip pos="1" side="tl" part="pers" link-to="4"/>
+		<clip pos="1" side="tl" part="nbr" link-to="5"/>
 	      </concat>
 	    </let>
 	  </when>
@@ -1917,8 +1939,8 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		<clip pos="1" side="tl" part="a_verb"/>
 		<clip pos="1" side="tl" part="sep"/>
 		<clip pos="1" side="tl" part="temps"/>
-		<clip pos="1" side="tl" part="pers"/>
-		<clip pos="1" side="tl" part="nbr"/>
+		<clip pos="1" side="tl" part="pers" link-to="4"/>
+		<clip pos="1" side="tl" part="nbr" link-to="5"/>
 	      </concat>
 	    </let>
 	  </when>
@@ -1963,8 +1985,8 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		<clip pos="1" side="tl" part="a_verb"/>
 		<clip pos="1" side="tl" part="sep"/>
 		<clip pos="1" side="tl" part="temps"/>
-		<clip pos="1" side="tl" part="pers"/>
-		<clip pos="1" side="tl" part="nbr"/>
+		<clip pos="1" side="tl" part="pers" link-to="4"/>
+		<clip pos="1" side="tl" part="nbr" link-to="5"/>
 	      </concat>
 	    </let>
 
@@ -4573,6 +4595,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	      <tag><var n="temps_chunk"/></tag>
 	      <tag><clip pos="1" side="tl" part="pers"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 	    </tags>
 	    <lu>
 	      <var n="verbfinal"/> 
@@ -4632,6 +4655,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="2" side="tl" part="temps"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="2" side="tl" part="lemh"/> 
@@ -4653,6 +4677,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="2" side="tl" part="temps"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>          
 		  <clip pos="2" side="tl" part="lemh"/>
@@ -4713,6 +4738,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="2" side="tl" part="temps"/></tag>
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<mlu>
 		  <lu>
@@ -4773,6 +4799,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
 		      <tag><clip pos="1" side="tl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <clip pos="2" side="tl" part="lemh"/> 
@@ -4794,6 +4821,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="2" side="tl" part="temps"/></tag>
 		      <tag><clip pos="1" side="tl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>          
 		      <clip pos="2" side="tl" part="lemh"/>
@@ -4945,6 +4973,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="3" side="tl" part="temps"/></tag>
 		  <tag><clip pos="2" side="tl" part="pers"/></tag>
 		  <tag><lit-tag v="ND"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <get-case-from pos="1">
@@ -4988,6 +5017,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="3" side="tl" part="temps"/></tag>
 		  <tag><clip pos="2" side="tl" part="pers"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	     <tag> <var n="lemaverb"/></tag>
 		</tags> 
 		<mlu>
 		  <lu>
@@ -5048,6 +5078,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="3" side="tl" part="temps"/></tag>
 		      <tag><clip pos="2" side="tl" part="pers"/></tag>
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <clip pos="3" side="tl" part="lemh"/> 
@@ -5069,6 +5100,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="3" side="tl" part="temps"/></tag>
 		      <tag><clip pos="2" side="tl" part="pers"/></tag>
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>          
 		      <clip pos="3" side="tl" part="lemh"/>
@@ -5257,6 +5289,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="4" side="tl" part="temps"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<mlu>
 		  <lu>
@@ -5290,6 +5323,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="4" side="tl" part="temps"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>          
 		  <clip pos="4" side="tl" part="lemh"/>
@@ -5666,6 +5700,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><var n="temps_chunk"/></tag>
 		      <tag><clip pos="2" side="tl" part="pers"/></tag>
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	     <tag> <var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <var n="verbfinal"/>
@@ -5725,6 +5760,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><var n="temps_chunk"/></tag>
 		      <tag><clip pos="2" side="tl" part="pers"/></tag>
 		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <var n="verbfinal"/>
@@ -5965,6 +6001,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/>
@@ -6024,6 +6061,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/>
@@ -6264,6 +6302,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="2" side="tl" part="pers"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<mlu>
 		  <lu>
@@ -6297,6 +6336,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="2" side="tl" part="pers"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/> 
@@ -6372,7 +6412,12 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		    </tags>
 		    <lu>
-		      <clip pos="1" side="tl" part="whole"/>
+		      <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_prn"/>
+		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="1" side="tl" part="gen"/>
+		      <clip pos="1" side="tl" part="nbr"/>
 		    </lu>
 		  </chunk>
 		</out>		
@@ -6476,6 +6521,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<mlu>
 		  <lu>
@@ -6507,6 +6553,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/> 
@@ -6659,6 +6706,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="1" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<mlu>
 		  <lu>
@@ -6687,6 +6735,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="1" side="sl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<lu>
 		  <clip pos="1" side="tl" part="lemh"/>
@@ -7702,6 +7751,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="2" side="sl" part="pers"/></tag>
 		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/>       
@@ -7740,6 +7790,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="2" side="sl" part="pers"/></tag>
 		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/>
@@ -8301,6 +8352,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -8482,6 +8534,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		<tag><var n="temps_chunk"/></tag>
 		<tag><clip pos="2" side="tl" part="pers"/></tag>
 		<tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 	      </tags>
 		  <lu>
 		    <var n="verbfinal"/> 
@@ -8519,6 +8572,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="2" side="tl" part="pers"/></tag>
 		  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/>
@@ -9298,6 +9352,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><clip pos="4" side="tl" part="temps"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<mlu>
 		  <lu>
@@ -9358,6 +9413,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="4" side="tl" part="temps"/></tag>
 		      <tag><clip pos="3" side="tl" part="pers"/></tag>
 		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <clip pos="4" side="tl" part="lemh"/> 
@@ -9379,6 +9435,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><clip pos="4" side="tl" part="temps"/></tag>
 		      <tag><clip pos="3" side="tl" part="pers"/></tag>
 		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>          
 		      <clip pos="4" side="tl" part="lemh"/>
@@ -9799,6 +9856,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><var n="temps_chunk"/></tag>
 		      <tag><clip pos="3" side="tl" part="pers"/></tag>
 		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <var n="verbfinal"/>
@@ -9858,6 +9916,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		      <tag><var n="temps_chunk"/></tag>
 		      <tag><clip pos="3" side="tl" part="pers"/></tag>
 		      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><var n="lemaverb"/></tag>
 		    </tags>
 		    <lu>
 		      <var n="verbfinal"/>
@@ -10151,6 +10210,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<mlu>
 		  <lu>
@@ -10184,6 +10244,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><var n="temps_chunk"/></tag>
 		  <tag><clip pos="3" side="tl" part="pers"/></tag>
 		  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <var n="verbfinal"/>
@@ -10299,6 +10360,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="2" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<lu>
 		  <get-case-from pos="1">
@@ -10341,6 +10403,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="2" side="sl" part="temps"/></tag>
+	     <tag> <var n="lemaverb"/></tag>
 		</tags> 
 		<lu>
 		  <get-case-from pos="1">
@@ -11304,6 +11367,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="3" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -11365,6 +11429,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="3" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/> 
@@ -11401,6 +11466,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="3" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/> 
@@ -11671,6 +11737,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="4" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="4" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -11740,6 +11807,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="4" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
 		</tags> 
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/> 
@@ -11783,6 +11851,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
 		  <tag><clip pos="4" side="tl" part="temps"/></tag>
+		  <tag><var n="lemaverb"/></tag>
 		</tags>
 		<lu>
 		  <clip pos="1" side="tl" part="lem"/> 
