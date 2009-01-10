@@ -5098,14 +5098,31 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="f_concord3">
+        <call-macro n="f_concord2">
+          <with-param pos="4"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
           <with-param pos="1"/>
           <with-param pos="2"/>
-          <with-param pos="3"/>
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
         <out>
           <chunk name="det_nom_adj_de_det_nom" case="caseFirstWord">
             <tags>
@@ -5118,8 +5135,7 @@
               <lit-tag v="det.def"/>
               <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
+              <var n="numero"/>
             </lu>
             <b/>
             <lu>
@@ -5149,10 +5165,10 @@
             <lu>
               <clip pos="3" side="tl" part="lem"/>
               <clip pos="3" side="tl" part="a_det"/>
-              <clip pos="4" side="tl" part="gen_sense_mf"/>
-              <clip pos="4" side="tl" part="gen_mf"/>
-              <clip pos="4" side="tl" part="nbr_sense_sp"/>
-              <clip pos="4" side="tl" part="nbr_sp"/>
+              <clip pos="3" side="tl" part="gen_sense_mf"/>
+              <clip pos="3" side="tl" part="gen_mf"/>
+              <clip pos="3" side="tl" part="nbr_sense_sp"/>
+              <clip pos="3" side="tl" part="nbr_sp"/>
             </lu>
             <b pos="2"/>
             <lu>
@@ -5188,6 +5204,21 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+
         <out>
           <chunk name="det_nom_de_det_nom_de_det_nom" case="caseFirstWord">
             <tags>
@@ -5200,8 +5231,7 @@
               <lit-tag v="det.def"/>
               <clip pos="1" side="tl" part="gen_sense_mf"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
+              <var n="numero"/>
             </lu>
             <b pos="1"/>
             <lu>
@@ -5246,10 +5276,10 @@
             <lu>
               <clip pos="3" side="tl" part="lem"/>
               <clip pos="3" side="tl" part="a_det"/>
-              <clip pos="4" side="tl" part="gen_sense_mf"/>
-              <clip pos="4" side="tl" part="gen_mf"/>
-              <clip pos="4" side="tl" part="nbr_sense_sp"/>
-              <clip pos="4" side="tl" part="nbr_sp"/>
+              <clip pos="3" side="tl" part="gen_sense_mf"/>
+              <clip pos="3" side="tl" part="gen_mf"/>
+              <clip pos="3" side="tl" part="nbr_sense_sp"/>
+              <clip pos="3" side="tl" part="nbr_sp"/>
             </lu>
             <b pos="3"/>
             <lu>
