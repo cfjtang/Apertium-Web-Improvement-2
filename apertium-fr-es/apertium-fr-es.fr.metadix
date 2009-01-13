@@ -34,6 +34,7 @@
     <sdef n="loc"/>
     <sdef n="lpar"/>
     <sdef n="lquest"/>
+    <sdef n="ord"/>
     <sdef n="m"/>
     <sdef n="mf"/>
     <sdef n="n"/>
@@ -77,7 +78,53 @@
   <pardefs>
     
     
-    	  
+     <pardef n="ordinales">
+    
+      <e>
+        <re>([0-9]*[02-9]1|1)</re>
+        <p>
+          <l>er</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>  
+      <e>
+        <re>([0-9]*[02-9]1|1)</re>
+        <p>
+          <l>re</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r>
+        </p>
+	</e>
+      <e>
+        <re>([0-9]*[02-9]2|2)</re>
+        <p>
+          <l>d</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <re>([0-9]*[02-9]2|2)</re>
+        <p>
+          <l>de</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <re>([0-9]*[02-9]3|3)</re>
+        <p>
+          <l>e</l>
+         <r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      
+      <e>
+        <re>([0-9]*[02-9]3|3)</re>
+        <p>
+          <l>e</l>
+         <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+    </pardef>
+	  
 	  
   <pardef n="det2loc__np">
 	<e r="LR"><p><l/><r/></p></e>
@@ -224,6 +271,7 @@
             
 <e><p><l>impératrices</l><r>empereur<s n="n"/><s n="f"/><s n="pl"/></r></p></e>
     </pardef>
+
     <pardef n="/il__prn">
 			<e><p><l>elle</l><r>il<s n="prn"/><s n="tn"/><s n="p3"/><s n="f"/><s n="sg"/></r></p></e>
 			<e><p><l>elles</l><r>il<s n="prn"/><s n="tn"/><s n="p3"/><s n="f"/><s n="pl"/></r></p></e>
@@ -2603,11 +2651,12 @@
             
 <e><p><l></l><r><s n="adj"/><s n="mf"/><s n="sp"/></r></p></e>
     </pardef>
-		<pardef n="XXème__adj">
-            
+
+<pardef n="XXème__adj">
 <e r="LR"><p><l>ème</l><r>ème<s n="adj"/><s n="mf"/><s n="sp"/></r></p></e>
 <e><p><l>e</l><r>ème<s n="adj"/><s n="mf"/><s n="sp"/></r></p></e>
-    </pardef>
+</pardef>
+
     <pardef n="artiste__n">
             
 <e><p><l></l><r><s n="n"/><s n="mf"/><s n="sg"/></r></p></e>
@@ -7137,10 +7186,14 @@
             
 <e><p><l>t</l><r>re<s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
     </pardef>
+
     <pardef n="lui__prn">
             
 <e><p><l></l><r><s n="prn"/><s n="pro"/><s n="p3"/><s n="mf"/><s n="sg"/></r></p></e>
+<e><p><l></l><r><s n="prn"/><s n="tn"/><s n="p3"/><s n="m"/><s n="sg"/></r></p></e>
+
     </pardef>
+
     <pardef n="luî/mes__vblex">
             <e r="LR"><p><l>mes</l><r>re<s n="vblex"/><s n="ifi"/><s n="p1"/><s n="pl"/></r></p></e>
             <e r="LR"><p><l>tes</l><r>re<s n="vblex"/><s n="ifi"/><s n="p2"/><s n="pl"/></r></p></e>
@@ -65766,10 +65819,18 @@
           <e lm="avoir pour objet d'" r="LR"><par n="/avoir__vblex"/><p><l><b/>pour<b/>objet<b/>de</l><r><g><b/>pour<b/>objectif<b/>de</g></r></p></e>
 	  <e lm="avoir pour but d'" r="LR"><par n="/avoir__vblex"/><p><l><b/>pour<b/>but<b/>de</l><r><g><b/>pour<b/>objectif<b/>de</g></r></p></e>
 	  <e lm="avoir pour seul but d'" r="LR"><par n="/avoir__vblex"/><p><l><b/>pour<b/>seul<b/>but<b/>de</l><r><g><b/>pour<b/>objectif<b/>de</g></r></p></e>
-
-
 	       
 </section>
+
+ <section id="regexp" type="standard">
+
+
+    <e>
+      <par n="ordinales"/>
+    </e> 
+   
+  </section>
+
   <section id="final" type="inconditional">
           
 <e><par n="coma"/></e>
@@ -65785,4 +65846,3 @@
 <e><par n="separa"/></e>
   </section>
 </dictionary>
-
