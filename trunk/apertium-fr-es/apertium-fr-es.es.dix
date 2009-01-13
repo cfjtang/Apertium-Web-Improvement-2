@@ -8,7 +8,7 @@
 
 -->
 <dictionary>
-  <alphabet>ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜàáâäçèéêëìíîïñòóôöùúûüABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
+  <alphabet>ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜàáâäçèéêëìíîïñòóôöùúûüABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzº</alphabet>
   <sdefs>
     <sdef n="aa" /> 
     <sdef n="acr" /> 
@@ -23,6 +23,7 @@
     <sdef n="cnjadv" /> 
     <sdef n="cnjcoo" /> 
     <sdef n="cnjsub" /> 
+    <sdef n="ord" />  
     <sdef n="def" /> 
     <sdef n="dem" /> 
     <sdef n="det" /> 
@@ -89,6 +90,38 @@
     </e>
 
     </pardef>
+
+    <pardef n="ordinales">
+      <e>
+        <re>[0-9]+</re>
+        <p>
+          <l>.º</l>
+          <r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[0-9]+</re>
+        <p>
+          <l>.ª</l>
+          <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e> 
+      <e r="RL">
+        <re>[0-9]+</re>
+        <p>
+          <l>.os</l>
+          <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[0-9]+</re>
+        <p>
+          <l>.as</l>
+          <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <pardef n="urls">
     <e>
       <re>((www.)[a-z\-]+[.][a-z]+)</re>
@@ -99,6 +132,78 @@
     </e>
 
     </pardef>
+
+    <pardef n="coma">
+    <e>
+      <re>,</re>
+      <p>
+        <l></l> 
+        <r><s n="cm"/></r> 
+      </p>
+    </e>
+
+    </pardef>
+  <pardef n="numeros">
+    <e>
+      <re>[0-9]+([.,][0-9]+)?%</re>
+      <p>
+        <l></l> 
+        <r><s n="num"/><s n="percent"/></r> 
+      </p>
+    </e>
+
+    <e>
+      <re>[0-9]+([.,][0-9]+)?</re>
+      <p>
+        <l></l> 
+        <r><s n="num"/></r> 
+      </p>
+    </e>
+
+    </pardef>
+
+  <pardef n="pardret">
+    <e>
+      <re>[\)\]]</re>
+      <p>
+        <l></l> 
+        <r><s n="rpar"/></r> 
+      </p>
+    </e>
+
+    </pardef>
+    <pardef n="paresq">
+    <e>
+      <re>[\(\[]</re>
+      <p>
+        <l></l> 
+        <r><s n="lpar"/></r> 
+      </p>
+    </e>
+
+    </pardef>
+
+
+    <pardef n="separ">
+    <e r="LR">
+      <re>[¿¡]</re>
+      <p>
+        <l></l> 
+        <r><s n="lquest"/></r> 
+      </p>
+    </e>
+
+    </pardef>
+    <pardef n="separa">
+    <e>
+      <re>[.\?;:!]</re>
+      <p>
+        <l></l> 
+        <r><s n="sent"/></r> 
+      </p>
+    </e>
+     </pardef>
+
     <pardef n="/el__det">
     <e r="LR">
       <p>
@@ -4550,16 +4655,6 @@
     </e>
 
     </pardef>
-    <pardef n="coma">
-    <e>
-      <re>,</re>
-      <p>
-        <l></l> 
-        <r><s n="cm"/></r> 
-      </p>
-    </e>
-
-    </pardef>
     <pardef n="comp/ás__n">
     <e>
       <p>
@@ -6248,24 +6343,7 @@
     </e>
 
     </pardef>
-    <pardef n="numeros">
-    <e>
-      <re>[0-9]+([.,][0-9]+)?%</re>
-      <p>
-        <l></l> 
-        <r><s n="num"/><s n="percent"/></r> 
-      </p>
-    </e>
-
-    <e>
-      <re>[0-9]+([.,][0-9]+)?</re>
-      <p>
-        <l></l> 
-        <r><s n="num"/></r> 
-      </p>
-    </e>
-
-    </pardef>
+  
     <pardef n="or/igen__n">
     <e>
       <p>
@@ -6369,26 +6447,7 @@
     </e>
 
     </pardef>
-    <pardef n="pardret">
-    <e>
-      <re>[\)\]]</re>
-      <p>
-        <l></l> 
-        <r><s n="rpar"/></r> 
-      </p>
-    </e>
-
-    </pardef>
-    <pardef n="paresq">
-    <e>
-      <re>[\(\[]</re>
-      <p>
-        <l></l> 
-        <r><s n="lpar"/></r> 
-      </p>
-    </e>
-
-    </pardef>
+  
     <pardef n="per/iodo__n">
     <e r="LR">
       <p>
@@ -6747,26 +6806,6 @@
       <p>
         <l>os</l> 
         <r>os<s n="det"/><s n="def"/><s n="m"/><s n="pl"/></r> 
-      </p>
-    </e>
-
-    </pardef>
-    <pardef n="separ">
-    <e r="LR">
-      <re>[¿¡]</re>
-      <p>
-        <l></l> 
-        <r><s n="lquest"/></r> 
-      </p>
-    </e>
-
-    </pardef>
-    <pardef n="separa">
-    <e>
-      <re>[.\?;:!]</re>
-      <p>
-        <l></l> 
-        <r><s n="sent"/></r> 
       </p>
     </e>
 
@@ -133318,6 +133357,18 @@
 
 <e lm="maquinar" a="prompsit2cdl"><i>maquín</i><par n="abandón/ar__vblex"/></e>
   </section>
+
+
+ <section id="regexp" type="standard">
+
+
+    <e>
+      <par n="ordinales"/>
+    </e> 
+   
+  </section>
+
+
   <section  id="final" type="inconditional">
           <e><par n="coma"/></e>
 

@@ -6,7 +6,6 @@
       <cat-item tags="SN.*"/>
     </def-cat>
 
-
     <def-cat n="UNK">
       <cat-item lemma="unknown" tags=""/>
     </def-cat>
@@ -26,32 +25,7 @@
       <cat-item tags="SN.NUM.*"/>
     </def-cat>
 
-    <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
-<!--      <cat-item lemma="verbcj" tags="SV.*"/>
-      <cat-item tags="Vcop.*"/>
-      <cat-item lemma="mod" tags="SV.*"/><!-#-MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: sï¿½que ï¿½ 'haig de'. -#->
-      <cat-item lemma="auxmod_inf" tags="SV.*"/>
-      <cat-item lemma="auxmod_mod_inf" tags="SV.*"/>
-      <cat-item lemma="do_inf" tags="SV.*"/>
-      <cat-item lemma="mod_inf" tags="SV.*"/>
-      <cat-item lemma="mod_perif" tags="SV.*"/>
-      <cat-item lemma="mod_inf_perif" tags="SV.*"/>
-      <cat-item lemma="aux_mod" tags="SV.*"/><!-#-Aquests van davant desconegudes o sent (I will have to.) -#->
-      <cat-item lemma="have_pp" tags="SV.*"/>
-      <cat-item lemma="be_ger" tags="SV.*"/>
-      <cat-item lemma="be_ger_enc" tags="SV.*"/>
-      <cat-item tags="SV.vblex.inf.*"/>
-      <cat-item tags="SV.vbmod.inf.*"/>
-		<cat-item lemma="verbcj_perif" tags="SV.*"/>
-		<cat-item lemma="pro_verbcj" tags="SV.*"/>
-		<cat-item lemma="pro_verbcj_perif" tags="SV.*"/>
-		<cat-item lemma="pro_auxmod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_mod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_mod_inf_perif" tags="SV.*"/>
-		<cat-item lemma="pro_auxmod_mod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_have_pp" tags="SV.*"/>
-		<cat-item lemma="pro_be_ger" tags="SV.*"/>
-		<cat-item lemma="pro_do_inf" tags="SV.*"/>-->
+    <def-cat n="SV">
       <cat-item tags="SV.*"/>
     </def-cat>
 
@@ -80,7 +54,7 @@
 
      <def-cat n="pp">
       <cat-item lemma="pp"  tags="SA.*"/>
-      <cat-item lemma="adj"  tags="SA.*"/><!-- BCN per que agafi bï¿½resolutions adopted -->
+      <cat-item lemma="adj"  tags="SA.*"/>
     </def-cat>
 
      <def-cat n="DET">
@@ -103,7 +77,7 @@
       <cat-item tags="sent"/>
     </def-cat>
 
-    <def-cat n="cnjcoo"> <!-- BCN-->
+    <def-cat n="cnjcoo">
       <cat-item tags="cnjcoo"/>
     </def-cat>
 
@@ -162,7 +136,7 @@
           <attr-item tags="DET"/>
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
-	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaciï¿½que farï¿½el postchunk detectant els PDET. -->
+	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats-->
       </def-attr>
 
   </section-def-attrs>
@@ -285,7 +259,7 @@
 							<let><var n="concord"/><lit-tag v="no"/></let>
 						</otherwise>
 					</choose>
-				</when> <!--no Ã©s 1a pers-->
+				</when> <!--no és 1a pers-->
 				<otherwise>
 					<choose>
 						<when>
@@ -315,8 +289,8 @@
 									<let><var n="concord"/><lit-tag v="no"/></let>
 								</otherwise>
 							</choose>
-						</when> <!--no Ã©s 2a pers-->
-						<otherwise><!--Ã©s 3a pers-->
+						</when> <!--no és 2a pers-->
+						<otherwise><!--és 3a pers-->
 							<choose>
 								<when>
 									<test>
@@ -357,7 +331,7 @@
 					</choose>
 				</otherwise>
 			</choose>
-		</when><!--no Ã©s pl-->
+		</when><!--no és pl-->
 		<otherwise>
 			<let><var n="concord"/><lit-tag v="no"/></let>
 		</otherwise>
@@ -500,7 +474,7 @@
 			</choose>
 		</otherwise>
 	</choose>
-	<choose><!--i aquÃ­ la pers-->
+	<choose><!--i aquí­ la pers-->
 		<when>
 			<test>
 				<or>
@@ -559,7 +533,7 @@
 							</test>
 							<let><var n="pers_subj"/><lit-tag v="p1"/></let>
 						</when>
-<!-- Ã©s p2 -->
+<!-- és p2 -->
 					</choose>
 				</when>
 			</choose>
@@ -568,7 +542,7 @@
 
 </def-macro>
 
-<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tÃ­a es interesante" -> "interesante" concordarÃ  amb "aperÃ§u")-->
+<def-macro n="concord_sa" npar="2"><!--assigna el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tí­a es interesante" -> "interesante" concordará  amb "aperçu")-->
 					<choose>
 						<when> 
 							<test>
@@ -676,7 +650,7 @@
 	</choose>
 </def-macro>
 
-<def-macro n="posa_subj2" npar="1"><!--aquesta Ã©s la funciÃ³ de posar el subjecte vella. com que no hi ha hagut temps d'experimentar bÃ© amb la nova, algunes regles encara la fan servir-->
+<def-macro n="posa_subj2" npar="1"><!--aquesta és la funció de posar el subjecte vella. com que no hi ha hagut temps d'experimentar bé amb la nova, algunes regles encara la fan servir-->
 <choose>
 	<when>
 		<test>
@@ -847,7 +821,7 @@
 			   </and>	
 			</test>
 
-			<choose><!--aposta arriscada: vol dir que hem vist un sn sg i una cnjcoo; i desprès cap altre sn=> suposem que es mantÃ© sg?-->
+			<choose><!--aposta arriscada: vol dir que hem vist un sn sg i una cnjcoo; i desprès cap altre sn=> suposem que es manté sg?-->
 				<when>
 					<test>
 						<equal>
@@ -1017,7 +991,7 @@
 				</when>
 				<otherwise>
 					<choose>
-						<when><!-- si el verb estÃ  en p2 -->
+						<when><!-- si el verb està  en p2 -->
 							<test>
 								<equal>
 									<clip pos="1" part="pers"/>
@@ -1170,7 +1144,7 @@
 							</choose>	
 		
 						</when>
-						<otherwise><!--el verb no Ã©s ni p1 ni p2=> Ã©s p3 ;-)-->
+						<otherwise><!--el verb no és ni p1 ni p2=> és p3 ;-)-->
 							<choose>
 								<when>
 									<test><!--mirem si concorda amb el possible subj-->
@@ -1284,7 +1258,7 @@
 </def-macro>
 
 
-  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contï¿½o no format. Cal posar aquesta funciï¿½en les regles en quï¿½desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contï¿½format cal conservar-la, si no en contï¿½cal eliminar-la perquï¿½no apareguin dos espais seguits. -->
+  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
      	<choose>
      	  <when>
      	    <test>
@@ -1375,18 +1349,18 @@
 		         <lit v="en"/>
 		      </equal>
 		      <equal caseless="yes">
-		         <clip pos="2" part="lem"/>
-		         <lit v="det_nom"/>
+		         <clip pos="2" part="a_SN"/>
+		         <lit-tag v="DET"/>
 		      </equal>
 		    </and>  
 	           </test>
 		    <out>
 			<chunk>
 			        <get-case-from pos="1">
-				  <lit v="à"/>
+				  <lit v="dans"/>
 				</get-case-from>
 				<clip pos="1" part="tags"/>
-				<lit v="{^à"/>
+				<lit v="{^dans"/>
 				<lit-tag v="pr"/>
 				<lit v="$}"/>
 			</chunk>
@@ -1524,6 +1498,64 @@
 
 
 
+<rule comment="REGLA: prep SV">
+	<pattern>
+		<pattern-item n="pr"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="2"/>
+	</call-macro>
+	<call-macro n="assigna_nombre_subj">
+		<with-param pos="2"/>
+	</call-macro>
+	       <choose>
+	         <when>
+		   <test>
+		      <equal caseless="yes">
+		         <clip pos="1" part="lem"/>
+		         <lit v="para"/>
+		      </equal>
+	           </test>
+		    <out>
+			<chunk>
+			        <get-case-from pos="1">
+				  <lit v="pour"/>
+				</get-case-from>
+				<clip pos="1" part="tags"/>
+				<lit v="{^pour"/>
+				<lit-tag v="pr"/>
+				<lit v="$}"/>
+			</chunk>
+			<b pos="1"/>
+			<chunk>
+				<clip pos="2" part="lem"/>
+				<clip pos="2" part="tags"/>
+				<clip pos="2" part="chcontent"/>
+			</chunk>
+		    </out>
+		 </when>  
+		 <otherwise>
+		<out>
+			<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+			</chunk>
+			<b pos="1"/>
+			<chunk>
+				<clip pos="2" part="lem"/>
+				<clip pos="2" part="tags"/>
+				<clip pos="2" part="chcontent"/>
+			</chunk>
+		</out>
+		</otherwise>
+		</choose>
+	</action>
+</rule>
+
+
 <rule comment="REGLA: prep adv SN">
 	<pattern>
 		<pattern-item n="pr"/>
@@ -1546,18 +1578,18 @@
 		         <lit v="en"/>
 		      </equal>
 		      <equal caseless="yes">
-		         <clip pos="3" part="lem"/>
-		         <lit v="det_nom"/>
+		         <clip pos="3" part="a_SN"/>
+		         <lit v="DET"/>
 		      </equal>
 		    </and>  
 	           </test>
 		    <out>
 			<chunk>
 			        <get-case-from pos="1">
-				  <lit v="à"/>
+				  <lit v="dans"/>
 				</get-case-from>
 				<clip pos="1" part="tags"/>
-				<lit v="{^à"/>
+				<lit v="{^dans"/>
 				<lit-tag v="pr"/>
 				<lit v="$}"/>
 			</chunk>
@@ -1666,18 +1698,18 @@
 		         <lit v="en"/>
 		      </equal>
 		      <equal caseless="yes">
-		         <clip pos="3" part="lem"/>
-		         <lit v="det_nom"/>
+		         <clip pos="3" part="a_SN"/>
+		         <lit v="DET"/>
 		      </equal>
 		    </and>  
 	           </test>
 		    <out>
 			<chunk>
 			        <get-case-from pos="1">
-				  <lit v="à"/>
+				  <lit v="dans"/>
 				</get-case-from>
 				<clip pos="1" part="tags"/>
-				<lit v="{^à"/>
+				<lit v="{^dans"/>
 				<lit-tag v="pr"/>
 				<lit v="$}"/>
 			</chunk>
@@ -1830,16 +1862,45 @@
 		</call-macro>
 		<call-macro n="assigna_nombre_subj">
 		<with-param pos="4"/>
-	</call-macro>
-		<out>
+	        </call-macro>  
+		<choose>
+	         <when>
+		   <test>
+		     <and>
+		      <equal caseless="yes">
+		         <clip pos="1" part="lem"/>
+		         <lit v="en"/>
+		      </equal>
+		      <equal caseless="yes">
+		         <clip pos="2" part="a_SN"/>
+		         <lit v="DET"/>
+		      </equal>
+		    </and>  
+	           </test>
+		    <out>
+			<chunk>
+			        <get-case-from pos="1">
+				  <lit v="dans"/>
+				</get-case-from>
+				<clip pos="1" part="tags"/>
+				<lit v="{^dans"/>
+				<lit-tag v="pr"/>
+				<lit v="$}"/>
+			</chunk>
+			<b pos="1"/>			
+		    </out>
+		 </when>  
+		 <otherwise>
+			<out>
 			<chunk>
 				<clip pos="1" part="lem"/>
 				<clip pos="1" part="tags"/>
 				<clip pos="1" part="chcontent"/>
 			</chunk>
 			<b pos="1"/>
-		</out>
-
+			</out>
+		</otherwise>
+		</choose>
 		<choose>
 			<when>
 				<test>
@@ -3312,7 +3373,7 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="3"/>
 	</call-macro>
-	<choose> <!--mirem si el SN Ã©s el subj de la subordinada-->
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
 		<when>
 			<test>
 			<or>
