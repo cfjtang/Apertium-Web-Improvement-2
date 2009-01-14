@@ -143,7 +143,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
 	   $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
 	   $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
-           $(BASENAME).$(LANG1).acx $(BASENAME).$(LANG2).acx
+           $(BASENAME).$(LANG1).acx $(BASENAME).$(LANG2).acx \
 	   modes.xml
 
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \

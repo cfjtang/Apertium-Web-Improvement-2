@@ -78,7 +78,7 @@
     <tags-item tags="det.ind.*"/>
     <tags-item tags="det.def.*"/>
     <tags-item tags="det.pos.*"/>
-    <tags-item tags="det.itg.*"/>
+    <tags-item tags="det.itg.*"/> 
   </def-label>
 <def-label name="DETQNT_ORD" closed="true"><!--Poden anar precedits dels altres tipus de determinant -->
     <tags-item tags="det.qnt.*"/>
@@ -826,6 +826,10 @@
     <label-sequence>
       <label-item label="PRNSUBJ"/>
       <label-item label="GEN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTNOM"/>
+      <label-item label="DETQNT_ORD"/>
     </label-sequence>
 
 
