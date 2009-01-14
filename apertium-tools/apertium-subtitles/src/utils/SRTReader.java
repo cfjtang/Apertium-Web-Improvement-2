@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Enrique Benimeli Bofarull <ebenimeli.dev@gmail.com>
+ * Copyright (C) 2008-2009 Enrique Benimeli Bofarull <ebenimeli.dev@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,8 +19,9 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import subtitles.Subtitle;
 import subtitles.Subtitles;
 
@@ -40,11 +41,15 @@ public class SRTReader {
     public final Subtitles read() {
         Subtitles subtitles = new Subtitles();
         try {
-            BufferedReader input = new BufferedReader(new FileReader(this.fileName));
+            FileInputStream instr = new FileInputStream(this.fileName);
+            InputStreamReader instrR = new InputStreamReader(instr,"UTF-8");
+            BufferedReader input = new BufferedReader(instrR);
+            //BufferedReader input = new BufferedReader(new FileReader(this.fileName));
+            Subtitle subtitle = null;
             try {
                 String line = null;
                 int i = 0;
-                Subtitle subtitle = new Subtitle();
+                subtitle = new Subtitle();
                 while ((line = input.readLine()) != null) {
                     if (line.length() > 0 || line.equals("\n")) {
                         if (i == 0) {
@@ -66,12 +71,15 @@ public class SRTReader {
                     }
                 }
             } finally {
+                subtitles.add(subtitle);
                 input.close();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         this.setBlockList(subtitles);
+
+  
         return subtitles;
     }
 

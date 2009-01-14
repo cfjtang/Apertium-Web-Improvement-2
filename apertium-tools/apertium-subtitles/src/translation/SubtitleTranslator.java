@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Enrique Benimeli Bofarull <ebenimeli.dev@gmail.com>
+ * Copyright (C) 2008-2009 Enrique Benimeli Bofarull <ebenimeli.dev@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,6 +19,7 @@
 package translation;
 
 import javax.swing.JProgressBar;
+import javax.swing.table.TableModel;
 import subtitles.Subtitle;
 import subtitles.Subtitles;
 
@@ -33,7 +34,9 @@ public class SubtitleTranslator {
     private Subtitles subtitles;
     private Subtitles t_subtitles;
     private JProgressBar progressBar;
+    private TableModel tableModel;
     private int nSubtitles;
+    private int j = 1;
 
     public SubtitleTranslator(String sl, String tl, Subtitles subtitles) {
         this.sl = sl;
@@ -47,17 +50,17 @@ public class SubtitleTranslator {
         return this.t_subtitles;
     }
 
-    public Subtitles translateGUI(JProgressBar progressBar) {
+    public Subtitles translateGUI(JProgressBar progressBar, TableModel tableModel) {
         this.progressBar = progressBar;
+        this.tableModel = tableModel;
         this.processSubtitles(subtitles);
-
-
         return this.t_subtitles;
     }
 
     private void processSubtitles(Subtitles blockList) {
         Subtitles toTranslate = new Subtitles();
         double i = 0;
+
         for (Subtitle block : blockList) {
             String take = block.getTake();
             String newTake = take + "<b/>";
@@ -67,6 +70,8 @@ public class SubtitleTranslator {
             String cTake = take.replaceAll("<br/>", "");
             if (this.isEndOfSentence(cTake)) {
                 this.translateBlockList(toTranslate);
+
+
                 this.updateProgress(blockList, i);
 
                 toTranslate = new Subtitles();
@@ -78,15 +83,15 @@ public class SubtitleTranslator {
     private void updateProgress(Subtitles blockList, double i) {
         if (this.progressBar != null) {
 
-            System.out.println(i + "/" + blockList.size());
+            //System.out.println(i + "/" + blockList.size());
             double dSize = (new Double(blockList.size())).doubleValue();
             double progress = (i / dSize) * 100.00;
 
-            
+
             Double dProgress = new Double(progress);
-            System.out.println(dProgress.intValue() + " %");
+            //System.out.println(dProgress.intValue() + " %");
             this.progressBar.setValue(dProgress.intValue());
-         
+
         }
     }
 
@@ -123,6 +128,7 @@ public class SubtitleTranslator {
         int i = 0;
         this.nSubtitles = blockList.size();
 
+
         for (Subtitle block : blockList) {
 
             String id = block.getId();
@@ -135,7 +141,14 @@ public class SubtitleTranslator {
             //blockTrans.setTake(trans);
             blockTrans.addLine(trans);
             t_subtitles.add(blockTrans);
-            blockTrans.print();
+
+            //System.out.println("valueAt( " + j + ", 3 ) = " + trans);
+            String strans = trans.replaceAll("<br/>", " // ");
+            if(this.tableModel != null) {
+            this.tableModel.setValueAt(strans, j, 3);
+            j++;
+            }
+            //blockTrans.print();
             i++;
 
 
