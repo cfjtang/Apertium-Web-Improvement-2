@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Enrique Benimeli Bofarull <ebenimeli.dev@gmail.com>
+ * Copyright (C) 2008-2009 Enrique Benimeli Bofarull <ebenimeli.dev@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -40,7 +40,7 @@ public class ApertiumSubtitles {
     }
 
     public final void processArguments(String[] args) {
-        if (args.length >= 2) {
+        if (args.length >= 3) {
             this.slFileName = args[0];
             this.sltl = args[1];
             this.getSLTLCodes();
@@ -49,7 +49,7 @@ public class ApertiumSubtitles {
             }
 
         } else {
-            System.err.println("Usage: apertium-subtitles <SRT-filename> <language-pair> [<output>]");
+            System.err.println("Usage: apertium-subtitles <SRT-filename> <language-pair> <output>");
             System.exit(-1);
         }
     }
@@ -66,6 +66,7 @@ public class ApertiumSubtitles {
         SubtitleTranslator subTrans = new SubtitleTranslator(this.sl, this.tl, blockList);
         Subtitles translation = subTrans.translate();
         if (this.tlFileName != null) {
+            System.out.println("Translation: '" + this.tlFileName + "'");
             translation.printTo(this.tlFileName, "UTF-8");
         }
     }
