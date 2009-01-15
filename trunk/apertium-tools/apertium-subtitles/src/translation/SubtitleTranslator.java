@@ -38,6 +38,7 @@ public class SubtitleTranslator {
     private int nSubtitles;
     private int j = 1;
 
+
     public SubtitleTranslator(String sl, String tl, Subtitles subtitles) {
         this.sl = sl;
         this.tl = tl;
@@ -55,6 +56,7 @@ public class SubtitleTranslator {
         this.tableModel = tableModel;
         this.processSubtitles(subtitles);
         return this.t_subtitles;
+
     }
 
     private void processSubtitles(Subtitles blockList) {
@@ -62,6 +64,7 @@ public class SubtitleTranslator {
         double i = 0;
 
         for (Subtitle block : blockList) {
+ 
             String take = block.getTake();
             String newTake = take + "<b/>";
             block.setTake(newTake);
@@ -69,14 +72,20 @@ public class SubtitleTranslator {
             //block.print();
             String cTake = take.replaceAll("<br/>", "");
             if (this.isEndOfSentence(cTake)) {
-                this.translateBlockList(toTranslate);
-
+                if(!translateBlockList(toTranslate)) {
+                    return;
+                }
 
                 this.updateProgress(blockList, i);
 
                 toTranslate = new Subtitles();
             }
             i++;
+
+            if(Thread.currentThread().isInterrupted()) {
+                return;
+            }
+       
         }
     }
 
@@ -114,8 +123,10 @@ public class SubtitleTranslator {
         return false;
     }
 
-    public void translateBlockList(Subtitles blockList) {
+    public boolean translateBlockList(Subtitles blockList) {
         String sentence = "";
+
+        try {
         for (Subtitle block : blockList) {
             sentence = sentence + block.getTake();
 
@@ -154,6 +165,11 @@ public class SubtitleTranslator {
 
         }
 
+        } catch(Exception e) {
+            System.err.println("Error: subtitles can't be translated. Please check if Apertium is installed.");
+            return false;
+        }
+        return true;
     }
 
     public String translateSentence(String sentence) {
