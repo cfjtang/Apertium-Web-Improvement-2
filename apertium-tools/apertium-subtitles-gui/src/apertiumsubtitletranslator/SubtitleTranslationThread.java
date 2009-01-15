@@ -38,6 +38,7 @@ public class SubtitleTranslationThread extends Thread {
     private String tl;
     private ThreadListener theListener;
 
+   
     public SubtitleTranslationThread(JProgressBar progressBar, File file, TableModel tableModel, String sl, String tl, ThreadListener threadListener) {
         this.progressBar = progressBar;
         this.file = file;
@@ -49,8 +50,6 @@ public class SubtitleTranslationThread extends Thread {
 
     @Override
     public void run() {
-        Thread thisThread = Thread.currentThread();
-
         try {
             SRTReader srtReader = new SRTReader(this.file.getAbsolutePath());
             Subtitles blockList = srtReader.read();
@@ -66,7 +65,8 @@ public class SubtitleTranslationThread extends Thread {
                 this.theListener.threadComplete(translation);
             }
         } catch (InterruptedException e) {
-            System.err.print(e);
-        }
+            //System.err.print("");
+        }     
     }
+   
 }

@@ -318,7 +318,7 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
 
     private void stopTranslationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopTranslationButtonActionPerformed
         try {
-            stt.stop(); // deprected. This must be replace with interrupt() and probably extra code is needed
+            stt.interrupt();
         } catch (Exception e) {
             System.err.println(e);
         }
