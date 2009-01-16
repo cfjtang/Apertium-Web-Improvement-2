@@ -18,20 +18,31 @@
  */
 package apertiumsubtitletranslator;
 
-import org.jdesktop.application.Action;
-import org.jdesktop.application.ResourceMap;
-import org.jdesktop.application.SingleFrameApplication;
-import org.jdesktop.application.FrameView;
-import org.jdesktop.application.TaskMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDesktopPane;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jdesktop.application.*;
+import org.jdesktop.application.SingleFrameApplication;
+import org.jdesktop.application.FrameView;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.CharBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.prefs.Preferences;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -120,7 +131,96 @@ public class ApertiumsubtitletranslatorView extends FrameView {
         this.getFrame().setContentPane(desktop);
         //Make dragging a little faster but perhaps uglier.
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+        this.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        try {
+            String mpref = prefs.get("modeFiles", null);
+            if (mpref != null) {
+                for (String fn : mpref.split("\n")) {
+                    loadMode(new File(fn));
+                }
+            } else {
+                //warnUser("Welcome to Apertium Subtitles.\nIt seems this is first time you run this program. I will therefore try to search install language pairs ('modes') from standart places. Use the File menu to install others.");
+                LinkedHashSet<File> fal = new LinkedHashSet<File>();
+                try {
+                    fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fal.addAll(Arrays.asList(new File(".").listFiles()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                for (File f : fal) {
+                    if (f.getName().endsWith(".mode")) {
+                        loadMode(f);
+                    }
+                }
+                editModesMenuItemActionPerformed(null);
+            }
+
+
+
+            if (modes.isEmpty()) {
+                warnUser("No language pairs could be loaded. Making a 'fake' mode.\nPlease use the File menu to install others.");
+            //Mode m = new Mode();
+            //modes.add(m);
+
+            //modesComboBox.addItem(m);
+            }
+
+        /*
+        int idx = prefs.getInt("modesComboBox", -1);
+        if (idx >= 0 && idx<modes.size()) {
+        modesComboBox.setSelectedIndex(idx);
+        }
+        showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
+        showCommandsCheckBoxActionPerformed(null); // is this necesary?
+
+        for (int i=0; i<10; i++) {
+        final String s = prefs.get("storedTexts."+i,"");
+        if (s!=null && s.length()>0) {
+        addStoredText(s);
+        }
+        }
+         */
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            warnUser("An error occured during startup:\n\n" + e);
+        }
+
+    }
+
+    public void warnUser(String txt) {
+        System.out.println("warnUser(" + txt);
+        JOptionPane.showMessageDialog(mainPanel, txt, "Warning", JOptionPane.WARNING_MESSAGE);
+    }
+
+    private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        String mpref = "";
+        for (Mode mo : modes) {
+            mpref = mpref + mo.getFile() + "\n";
+        }
+        JTextArea ta = new JTextArea(mpref);
+        int ret = JOptionPane.showConfirmDialog(mainPanel,
+                new JScrollPane(ta), "Edit the list of modes",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (ret == JOptionPane.OK_OPTION) {
+            modes.clear();
+            //modesComboBox.removeAllItems();
+            mpref = ta.getText();
+            for (String fn : mpref.split("\n")) {
+                loadMode(new File(fn));
+            }
+            prefs.put("modeFiles", mpref);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -162,11 +262,11 @@ public class ApertiumsubtitletranslatorView extends FrameView {
 
         menuBar.setName("menuBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(apertiumsubtitletranslator.ApertiumsubtitletranslatorApp.class).getContext().getResourceMap(ApertiumsubtitletranslatorView.class);
-        fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation"); // NOI18N
+        fileMenu.setText(bundle.getString("fileMenu")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setText(bundle.getString("openSubtitlesMenu")); // NOI18N
         jMenuItem1.setName("jMenuItem1"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,15 +277,17 @@ public class ApertiumsubtitletranslatorView extends FrameView {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumsubtitletranslator.ApertiumsubtitletranslatorApp.class).getContext().getActionMap(ApertiumsubtitletranslatorView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        exitMenuItem.setText(bundle.getString("exitMenu")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
 
-        helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
+        helpMenu.setText(bundle.getString("helpMenu")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setText(bundle.getString("aboutMenu")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
@@ -260,7 +362,7 @@ public class ApertiumsubtitletranslatorView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     protected TranslationFrame createFrame() {
-        TranslationFrame frame = new TranslationFrame();
+        TranslationFrame frame = new TranslationFrame(modes);
         frame.setVisible(true);
         desktop.add(frame);
         try {
@@ -283,6 +385,30 @@ public class ApertiumsubtitletranslatorView extends FrameView {
         }
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+    ArrayList<Mode> modes = new ArrayList<Mode>();
+
+    public static String legu(File fil) throws IOException {
+        FileChannel fc = new FileInputStream(fil).getChannel();
+        MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fil.length());
+        //CharBuffer cb = Charset.forName("ISO-8859-1").decode(bb);
+        CharBuffer cb = Charset.forName("UTF-8").decode(bb);
+        return new String(cb.array());
+    }
+
+    private void loadMode(File f) {
+        try {
+            // check this (set value in Mode object)
+            String txt = legu(f).trim();
+
+            Mode m = new Mode(f.getName());
+            m.setFile(f);
+            modes.add(m);
+        } catch (IOException ex) {
+            Logger.getLogger(ApertiumsubtitletranslatorView.class.getName()).log(Level.INFO, null, ex);
+            warnUser("Loading of mode " + f + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
+        }
+    }
+    public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumsubtitletranslatorView.class);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame jFrame1;

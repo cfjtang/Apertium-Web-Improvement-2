@@ -19,6 +19,7 @@
 package apertiumsubtitletranslator;
 
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -40,11 +41,12 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
     private String tl;
     private SubtitleTranslationThread stt;
     private Subtitles translation;
+    ArrayList<Mode> modes;
 
     /** Creates new form TranslationFrame */
-    public TranslationFrame() {
+    public TranslationFrame(ArrayList<Mode> modes) {
 
-        super("Subtitles #" + (++openFrameCount),
+        super(java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("saveAsButton.text") + (++openFrameCount),
                 false, //resizable
                 true, //closable
                 false, //maximizable
@@ -53,98 +55,29 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
         //Set the window's location.
         setLocation(xOffset * openFrameCount, yOffset * openFrameCount);
         initComponents();
+        initMyComponents();
+        this.modes = modes;
 
+    }
+
+    private final void initMyComponents() {
     }
 
     public void setFile(File file) {
         this.file = file;
         subtitleFileNameLabel.setText(file.getName());
+        this.title = file.getName();
         this.saveAsButton.setVisible(false);
         this.fillOutTable();
         this.fillOutLanguagePairs();
     }
 
     private final void fillOutLanguagePairs() {
-        // better: load this info from modes
         this.langPairSelection.removeAllItems();
-
-        LanguagePair eues = new LanguagePair("eu", "es", "Basque", "Spanish");
-        this.langPairSelection.addItem(eues);
-
-        LanguagePair enes = new LanguagePair("en", "es", "English", "Spanish");
-        LanguagePair esen = new LanguagePair("es", "en", "Spanish", "English");
-        this.langPairSelection.addItem(enes);
-        this.langPairSelection.addItem(esen);
-
-        LanguagePair cyen = new LanguagePair("cy", "en", "Welsh", "English");
-        this.langPairSelection.addItem(cyen);
-
-        LanguagePair fres = new LanguagePair("fr", "es", "French", "Spanish");
-        this.langPairSelection.addItem(fres);
-        LanguagePair esfr = new LanguagePair("es", "fr", "Spanish", "French");
-        this.langPairSelection.addItem(esfr);
-
-        LanguagePair eseo = new LanguagePair("es", "eo", "Spanish", "Esperanto");
-        this.langPairSelection.addItem(eseo);
-
-        LanguagePair caeo = new LanguagePair("ca", "eo", "Catalan", "Esperanto");
-        this.langPairSelection.addItem(caeo);
-
-        LanguagePair enca = new LanguagePair("en", "ca", "English", "Catalan");
-        this.langPairSelection.addItem(enca);
-        LanguagePair caen = new LanguagePair("ca", "en", "Catalan", "English");
-        this.langPairSelection.addItem(caen);
-
-        LanguagePair ptca = new LanguagePair("pt", "ca", "Portuguese", "Catalan");
-        this.langPairSelection.addItem(ptca);
-        LanguagePair capt = new LanguagePair("ca", "pt", "Catalan", "Portuguese");
-        this.langPairSelection.addItem(capt);
-
-        LanguagePair ptgl = new LanguagePair("pt", "gl", "Portuguese", "Galician");
-        this.langPairSelection.addItem(ptgl);
-        LanguagePair glpt = new LanguagePair("gl", "pt", "Galician", "Portuguese");
-        this.langPairSelection.addItem(glpt);
-
-        LanguagePair esca = new LanguagePair("es", "ca", "Spanish", "Catalan");
-        this.langPairSelection.addItem(esca);
-        LanguagePair caes = new LanguagePair("ca", "es", "Catalan", "Spanish");
-        this.langPairSelection.addItem(caes);
-
-        LanguagePair esgl = new LanguagePair("es", "gl", "Spanish", "Galician");
-        this.langPairSelection.addItem(esgl);
-        LanguagePair gles = new LanguagePair("gl", "es", "Galician", "Spanish");
-        this.langPairSelection.addItem(gles);
-
-        LanguagePair espt = new LanguagePair("es", "pt", "Spanish", "Portuguese");
-        this.langPairSelection.addItem(espt);
-        LanguagePair ptes = new LanguagePair("pt", "es", "Portuguese", "Spanish");
-        this.langPairSelection.addItem(ptes);
-
-        LanguagePair esro = new LanguagePair("es","ro","Spanish","Romanian");
-        this.langPairSelection.addItem(esro);
-        LanguagePair roes = new LanguagePair("ro","es","Romanian","Spanish");
-        this.langPairSelection.addItem(roes);
-
-        LanguagePair frca = new LanguagePair("fr","ca","French","Catalan");
-        this.langPairSelection.addItem(frca);
-        LanguagePair cafr = new LanguagePair("ca","fr","Catalan","French");
-        this.langPairSelection.addItem(cafr);
-
-        LanguagePair occa = new LanguagePair("oc","ca","Occcitan","Catalan");
-        this.langPairSelection.addItem(occa);
-        LanguagePair caoc = new LanguagePair("ca","oc","Catalan","Occitan");
-        this.langPairSelection.addItem(caoc);
-
-        LanguagePair oces = new LanguagePair("oc","es","Occcitan","Spanish");
-        this.langPairSelection.addItem(oces);
-        LanguagePair esoc = new LanguagePair("es","oc","Spanish","Occitan");
-        this.langPairSelection.addItem(esoc);
-
-        LanguagePair engl = new LanguagePair("en","gl","English","Galician");
-        this.langPairSelection.addItem(engl);
-        LanguagePair glen = new LanguagePair("gl","en","Galician","English");
-        this.langPairSelection.addItem(glen);
-       
+        for (Mode m : modes) {
+            LanguagePair lp = new LanguagePair(m.getSL(), m.getTL(), m.getSlName(), m.getTlName());
+            this.langPairSelection.addItem(lp);
+        }
     }
 
     private final void fillOutTable() {
@@ -161,14 +94,9 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
             data[i][1] = time;
             String ssource = source.replaceAll("<br/>", " // ");
             data[i][2] = ssource;
-
-            // for debugging
-            //System.out.println(i + " de " + blockList.size());
-            //System.out.println("Adding: " + id + " / " + time + " / " + source);
             i++;
-
         }
-        String[] columnNames = {"ID", "Time", "Source", "Translation"};
+        String[] columnNames = {"ID", java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Time"), java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Source"), java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Translation")};
         tm = new DefaultTableModel(data, columnNames);
         table.setModel(tm);
     }
@@ -199,16 +127,17 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
 
         progressBar.setName("progressBar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(apertiumsubtitletranslator.ApertiumsubtitletranslatorApp.class).getContext().getResourceMap(TranslationFrame.class);
-        subtitleFileTitleLabel.setText(resourceMap.getString("subtitleFileTitleLabel.text")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation"); // NOI18N
+        subtitleFileTitleLabel.setText(bundle.getString("subtitlesFileNameLabel")); // NOI18N
         subtitleFileTitleLabel.setName("subtitleFileTitleLabel"); // NOI18N
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(apertiumsubtitletranslator.ApertiumsubtitletranslatorApp.class).getContext().getResourceMap(TranslationFrame.class);
         subtitleFileNameLabel.setText(resourceMap.getString("subFileName.text")); // NOI18N
         subtitleFileNameLabel.setName("subFileName"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumsubtitletranslator.ApertiumsubtitletranslatorApp.class).getContext().getActionMap(TranslationFrame.class, this);
         translationButton.setAction(actionMap.get("translateSubtitles")); // NOI18N
-        translationButton.setText(resourceMap.getString("translationButton.text")); // NOI18N
+        translationButton.setText(bundle.getString("translationButton.text")); // NOI18N
         translationButton.setName("translationButton"); // NOI18N
         translationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +172,7 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
         langPairSelection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         langPairSelection.setName("langPairSelection"); // NOI18N
 
-        stopTranslationButton.setText(resourceMap.getString("stopTranslationButton.text")); // NOI18N
+        stopTranslationButton.setText(bundle.getString("stopTranslationButton.text")); // NOI18N
         stopTranslationButton.setEnabled(false);
         stopTranslationButton.setName("stopTranslationButton"); // NOI18N
         stopTranslationButton.addActionListener(new java.awt.event.ActionListener() {
@@ -252,7 +181,7 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
             }
         });
 
-        saveAsButton.setText(resourceMap.getString("saveAsButton.text")); // NOI18N
+        saveAsButton.setText(bundle.getString("saveAsButton.text")); // NOI18N
         saveAsButton.setName("saveAsButton"); // NOI18N
         saveAsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,18 +198,18 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(layout.createSequentialGroup()
                         .add(langPairSelection, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 199, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 22, Short.MAX_VALUE)
                         .add(saveAsButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(stopTranslationButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(translationButton))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, scrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, scrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(subtitleFileTitleLabel)
                         .add(18, 18, 18)
                         .add(subtitleFileNameLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 291, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, progressBar, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, progressBar, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -348,18 +277,21 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
         this.translation = translation;
     }
 
+    // main class is not needed
     /**
      * @param args the command line arguments
      */
+    /*
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    java.awt.EventQueue.invokeLater(new Runnable() {
 
-            public void run() {
-                new TranslationFrame().setVisible(true);
+    public void run() {
+    new TranslationFrame().setVisible(true);
 
-            }
-        });
     }
+    });
+    }
+     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox langPairSelection;
     private javax.swing.JProgressBar progressBar;
