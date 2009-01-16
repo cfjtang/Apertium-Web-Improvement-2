@@ -38,7 +38,6 @@ public class SubtitleTranslationThread extends Thread {
     private String tl;
     private ThreadListener theListener;
 
-   
     public SubtitleTranslationThread(JProgressBar progressBar, File file, TableModel tableModel, String sl, String tl, ThreadListener threadListener) {
         this.progressBar = progressBar;
         this.file = file;
@@ -66,7 +65,6 @@ public class SubtitleTranslationThread extends Thread {
             }
         } catch (InterruptedException e) {
             //System.err.print("");
-        }     
+        }
     }
-   
 }
