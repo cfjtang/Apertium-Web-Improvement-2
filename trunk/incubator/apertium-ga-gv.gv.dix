@@ -3,6 +3,7 @@
   <sdefs>
     <sdef n="n"      c="Noun"/>
     <sdef n="adj"    c="Adjective"/>
+    <sdef n="det"    c="Determiner"/>
     <sdef n="adv"    c="Adverb"/>
     <sdef n="pr"     c="Preposition"/>
     <sdef n="cnjcoo" c="Co-ordinating conjunction"/>
@@ -10,8 +11,11 @@
 
     <sdef n="m"      c="Masculine"/>
     <sdef n="f"      c="Feminine"/>
+
     <sdef n="sg"     c="Singular"/>
     <sdef n="pl"     c="Plural"/>
+
+    <sdef n="ind"    c="Indefinite"/>
   </sdefs>
   <pardefs>
     <!-- Mutations -->
@@ -266,10 +270,43 @@
       </e>
     </pardef>
 
+    <pardef n="/yn__det">
+      <e r="LR">
+        <p>
+          <l>yn</l>
+          <r>yn<s n="det"/><s n="ind"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>y</l>
+          <r>yn<s n="det"/><s n="ind"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>yn</l>
+          <r>yn<s n="det"/><s n="ind"/><s n="sg"/></r>
+        </p>
+      </e>
+
+      <e>
+        <p>
+          <l>ny</l>
+          <r>yn<s n="det"/><s n="ind"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
   </pardefs>
   <section id="main" type="standard">
     <!-- Prepositions -->
     <e lm="er"><i>er</i><par n="er__pr"/></e>
+    <e lm="da"><i>da</i><par n="er__pr"/></e>
+    <e lm="cur"><i>cur</i><par n="er__pr"/></e>
+
+    <!-- Determiners -->
+    <e lm="yn"><i>yn</i><par n="/yn__det"/></e>
 
     <!-- Conjunctions -->
     <e lm="as"><i>as</i><par n="as__cnjcoo"/></e>
@@ -288,6 +325,16 @@
 
     <!-- Adverbs -->
     <e lm="ass"><i>ass</i><par n="ass__adv"/></e>
+    <e lm="dy-mie"><i>dy-mie</i><par n="ass__adv"/></e>
  
+  </section>
+
+  <section id="apostrophe" type="preblank">
+    <e r="LR">
+      <p>
+        <l>'n</l>
+        <r>yn<s n="det"/><s n="ind"/><s n="sg"/></r>
+      </p>
+    </e>
   </section>
 </dictionary>
