@@ -145,17 +145,17 @@ public class ApertiumsubtitletranslatorView extends FrameView {
                 try {
                     fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 try {
                     fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 try {
                     fal.addAll(Arrays.asList(new File(".").listFiles()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 for (File f : fal) {
                     if (f.getName().endsWith(".mode")) {
@@ -171,25 +171,9 @@ public class ApertiumsubtitletranslatorView extends FrameView {
                 warnUser("No language pairs could be loaded. Making a 'fake' mode.\nPlease use the File menu to install others.");
             //Mode m = new Mode();
             //modes.add(m);
-
-            //modesComboBox.addItem(m);
             }
 
-        /*
-        int idx = prefs.getInt("modesComboBox", -1);
-        if (idx >= 0 && idx<modes.size()) {
-        modesComboBox.setSelectedIndex(idx);
-        }
-        showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
-        showCommandsCheckBoxActionPerformed(null); // is this necesary?
 
-        for (int i=0; i<10; i++) {
-        final String s = prefs.get("storedTexts."+i,"");
-        if (s!=null && s.length()>0) {
-        addStoredText(s);
-        }
-        }
-         */
 
         } catch (Exception e) {
             e.printStackTrace();
