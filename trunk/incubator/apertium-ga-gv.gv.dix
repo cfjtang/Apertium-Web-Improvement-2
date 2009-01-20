@@ -2,6 +2,7 @@
   <alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZÇabcdefghijklmnopqrstuvwxyzç</alphabet>
   <sdefs>
     <sdef n="n"      c="Noun"/>
+    <sdef n="np"     c="Proper noun"/>
     <sdef n="adj"    c="Adjective"/>
     <sdef n="det"    c="Determiner"/>
     <sdef n="adv"    c="Adverb"/>
@@ -9,7 +10,11 @@
     <sdef n="prn"    c="Pronoun"/>
     <sdef n="cnjcoo" c="Co-ordinating conjunction"/>
     <sdef n="cnjsub" c="Sub-ordinating conjunction"/>
+    <sdef n="vblex"  c="Verb"/>
 
+    <sdef n="ant"    c="Anthroponym"/>
+
+    <sdef n="subj"   c="Subject"/>
     <sdef n="obj"    c="Object"/>
 
     <sdef n="p1"     c="First person"/>
@@ -269,6 +274,101 @@
         <p>
           <l><a/>b</l>
           <r>b</r>
+        </p>
+      </e>
+    </pardef>
+
+
+
+
+ 
+    <pardef n="initial-B">
+      <e r="LR">
+        <p>
+          <l>B</l>
+          <r>B</r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>V</l>
+          <r>B</r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>W</l>
+          <r>B</r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>M</l>
+          <r>B</r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l><a/>B</l>
+          <r>B</r>
+        </p>
+      </e>
+    </pardef>
+
+    <!-- Pronouns -->
+
+    <pardef n="prsubj__prn">
+      <e>
+        <p>
+          <l>mee</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p1"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>oo</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p2"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>eh</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p3"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ee</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p3"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>shin</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p1"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>shiu</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p2"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ad</l>
+          <r>prpers<s n="prn"/><s n="subj"/><s n="p3"/><s n="mf"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <!-- Proper nouns -->
+
+    <pardef n="Breeshey__np">
+      <e>
+        <p>
+          <l/>
+          <r><s n="np"/><s n="ant"/><s n="f"/><s n="sg"/></r>
         </p>
       </e>
     </pardef>
@@ -1323,6 +1423,9 @@
 
   </pardefs>
   <section id="main" type="standard">
+    <!-- Pronouns -->
+    <e lm="personal"><i/><par n="prsubj__prn"/></e>
+
     <!-- Prepositions -->
     <e lm="ec"><i/><par n="/ec__pr"/></e>
     <e lm="ass"><i>ass</i><par n="ass__pr"/></e>
@@ -1352,9 +1455,15 @@
 
     <!-- Conjunctions -->
     <e lm="as"><i>as</i><par n="as__cnjcoo"/></e>
+    <e lm="agh"><i>agh</i><par n="as__cnjcoo"/></e>
+    <e lm="ny"><i>ny</i><par n="as__cnjcoo"/></e>
 
     <e lm="ga"><i>ga</i><par n="ga__cnjsub"/></e>
     <e lm="my"><i>my</i><par n="ga__cnjsub"/></e>
+    <e lm="tra"><i>tra</i><par n="ga__cnjsub"/></e>
+    <e lm="derrey"><i>derrey</i><par n="ga__cnjsub"/></e>
+    <e lm="dy"><i>dy</i><par n="ga__cnjsub"/></e>
+    <e lm="nagh"><i>nagh</i><par n="ga__cnjsub"/></e>
 
     <!-- Nouns -->
     <e lm="ben"><i/><par n="/ben__n"/></e>
@@ -1373,14 +1482,31 @@
     <e lm="ree"><i>ree</i><par n="ree__n"/></e>
 
     <e lm="spyrryd"><par n="initial-s"/><i>pyrryd</i><par n="spyrryd__n"/></e>
+    <e lm="ferrish"><par n="initial-f"/><i>errish</i><par n="spyrryd__n"/></e>
     <e lm="saggyrt"><par n="initial-s"/><i>aggyrt</i><par n="spyrryd__n"/></e>
+
     <e lm="thie"><par n="initial-th"/><i>ie</i><par n="spyrryd__n"/></e>
+    <e lm="thie-ollee"><par n="initial-th"/><i>ie</i><par n="spyrryd__n"/><p><l>-ollee</l><r><g>-ollee</g></r></p></e>
+
+    <!-- Proper nouns -->
+
+    <e lm="Breeshey"><par n="initial-B"/><i>reeshey</i><par n="Breeshey__np"/></e>
 
     <!-- Adjectives -->
     <e lm="doo"><par n="initial-d"/><i>oo</i><par n="doo__adj"/></e> 
+    <e lm="deinagh"><par n="initial-d"/><i>einagh</i><par n="doo__adj"/></e> 
+    <e lm="skee"><par n="initial-s"/><i>kee</i><par n="doo__adj"/></e> 
+    
 
     <!-- Adverbs -->
     <e lm="ass"><i>ass</i><par n="ass__adv"/></e>
+    <e lm="çhelleeragh"><i>çhelleeragh</i><par n="ass__adv"/></e>
+    <e lm="doaltattym"><i>doaltattym</i><par n="ass__adv"/></e>
+    <e lm="kiart dy liooar"><i>kiart<b/>dy<b/>liooar</i><par n="ass__adv"/></e>
+    <e lm="mie dy liooar"><i>mie<b/>dy<b/>liooar</i><par n="ass__adv"/></e>
+    <e lm="myr shoh"><i>myr<b/>shoh</i><par n="ass__adv"/></e>
+    <e lm="myr shen"><i>myr<b/>shen</i><par n="ass__adv"/></e>
+
     <e lm="dy-mie"><i>dy-mie</i><par n="ass__adv"/></e>
  
   </section>
