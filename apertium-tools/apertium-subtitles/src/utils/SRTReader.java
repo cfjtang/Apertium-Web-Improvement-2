@@ -32,17 +32,22 @@ import subtitles.Subtitles;
 public class SRTReader {
 
     private String fileName;
+    private String fileEncoding;
     private Subtitles blockList;
 
     public SRTReader(String fileName) {
         this.fileName = fileName;
+        this.fileEncoding = "UTF-8";
     }
 
     public final Subtitles read() {
         Subtitles subtitles = new Subtitles();
         try {
             FileInputStream instr = new FileInputStream(this.fileName);
-            InputStreamReader instrR = new InputStreamReader(instr,"UTF-8");
+            InputStreamReader instrR = new InputStreamReader(instr, this.fileEncoding);
+
+            this.setFileEncoding(instrR.getEncoding());
+            //System.out.println("Encoding: " + this.fileEncoding);
             BufferedReader input = new BufferedReader(instrR);
             //BufferedReader input = new BufferedReader(new FileReader(this.fileName));
             Subtitle subtitle = null;
@@ -79,7 +84,7 @@ public class SRTReader {
         }
         this.setBlockList(subtitles);
 
-  
+
         return subtitles;
     }
 
@@ -89,5 +94,19 @@ public class SRTReader {
 
     public void setBlockList(Subtitles blockList) {
         this.blockList = blockList;
+    }
+
+    /**
+     * @return the fileEncoding
+     */
+    public String getFileEncoding() {
+        return fileEncoding;
+    }
+
+    /**
+     * @param fileEncoding the fileEncoding to set
+     */
+    public void setFileEncoding(String fileEncoding) {
+        this.fileEncoding = fileEncoding;
     }
 }

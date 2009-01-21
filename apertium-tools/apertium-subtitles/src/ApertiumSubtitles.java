@@ -27,12 +27,31 @@ import utils.SRTReader;
  */
 public class ApertiumSubtitles {
 
+    /**
+     * Source language file name
+     */
     private String slFileName = "";
+    /**
+     * Target language file name
+     */
     private String tlFileName;
+    /**
+     * Source language - Target language code
+     */
     private String sltl;
+    /**
+     * Source language code
+     */
     private String sl;
+    /**
+     * Target language code
+     */
     private String tl;
 
+    /**
+     * Main class
+     * @param args The arguments
+     */
     public static void main(String[] args) {
         ApertiumSubtitles apertiumSub = new ApertiumSubtitles();
         apertiumSub.processArguments(args);
@@ -62,6 +81,7 @@ public class ApertiumSubtitles {
 
     private void translate() {
         SRTReader srtReader = new SRTReader(this.slFileName);
+        //String encoding = srtReader.getFileEncoding();
         Subtitles blockList = srtReader.read();
         SubtitleTranslator subTrans = new SubtitleTranslator(this.sl, this.tl, blockList);
         Subtitles translation = subTrans.translate();
