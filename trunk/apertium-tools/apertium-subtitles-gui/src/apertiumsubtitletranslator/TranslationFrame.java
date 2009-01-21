@@ -37,9 +37,8 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
     static int openFrameCount = 0;
     static final int xOffset = 30,  yOffset = 30;
     private TableModel tm;
-    private String sl;
-    private String tl;
     private SubtitleTranslationThread stt;
+    private String fileEncoding;
     private Subtitles translation;
     ArrayList<Mode> modes;
 
@@ -82,6 +81,7 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
 
     private final void fillOutTable() {
         SRTReader srtReader = new SRTReader(this.file.getAbsolutePath());
+        this.fileEncoding = srtReader.getFileEncoding();
         Subtitles blockList = srtReader.read();
         String[][] data = new String[blockList.size() + 1][4];
         int i = 1;

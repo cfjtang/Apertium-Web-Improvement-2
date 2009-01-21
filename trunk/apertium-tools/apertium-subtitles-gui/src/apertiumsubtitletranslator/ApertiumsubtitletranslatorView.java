@@ -134,46 +134,36 @@ public class ApertiumsubtitletranslatorView extends FrameView {
         this.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         try {
-            String mpref = prefs.get("modeFiles", null);
-            if (mpref != null) {
-                for (String fn : mpref.split("\n")) {
-                    loadMode(new File(fn));
+            // Preferences are not stores, nor can be edited yet.
+
+            LinkedHashSet<File> fal = new LinkedHashSet<File>();
+            try {
+                fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
+            } catch (Exception e) {
+                //e.printStackTrace();
                 }
-            } else {
-                //warnUser("Welcome to Apertium Subtitles.\nIt seems this is first time you run this program. I will therefore try to search install language pairs ('modes') from standart places. Use the File menu to install others.");
-                LinkedHashSet<File> fal = new LinkedHashSet<File>();
-                try {
-                    fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
-                } catch (Exception e) {
-                    //e.printStackTrace();
+            try {
+                fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
+            } catch (Exception e) {
+                //e.printStackTrace();
                 }
-                try {
-                    fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
-                } catch (Exception e) {
-                    //e.printStackTrace();
+            try {
+                fal.addAll(Arrays.asList(new File(".").listFiles()));
+            } catch (Exception e) {
+                //e.printStackTrace();
                 }
-                try {
-                    fal.addAll(Arrays.asList(new File(".").listFiles()));
-                } catch (Exception e) {
-                    //e.printStackTrace();
+            for (File f : fal) {
+                if (f.getName().endsWith(".mode")) {
+                    loadMode(f);
                 }
-                for (File f : fal) {
-                    if (f.getName().endsWith(".mode")) {
-                        loadMode(f);
-                    }
-                }
-                editModesMenuItemActionPerformed(null);
             }
-
-
+            //editModesMenuItemActionPerformed(null);
 
             if (modes.isEmpty()) {
                 warnUser("No language pairs could be loaded. Making a 'fake' mode.\nPlease use the File menu to install others.");
             //Mode m = new Mode();
             //modes.add(m);
             }
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

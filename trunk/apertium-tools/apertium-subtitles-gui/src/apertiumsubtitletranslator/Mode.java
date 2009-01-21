@@ -51,9 +51,18 @@ class Mode {
                 sl = sltlStr[0];
                 tl = sltlStr[1];
             } else {
-                // like 'eco-fr-es'
-                sl = sltlStr[0] + "-" + sltlStr[1];
-                tl = sltlStr[2];
+
+                if (this.isVariant(sltlStr[0])) {
+                    // like 'eco-fr-es'
+                    sl = sltlStr[0] + "-" + sltlStr[1];
+                    tl = sltlStr[2];
+                } else {
+                    if (this.isVariant(sltlStr[2])) {
+                        // like 'ca-es-multi'
+                        sl = sltlStr[0];
+                        tl = sltlStr[1] + "-" + sltlStr[2];
+                    }
+                }
             }
             this.slName = this.getFullName(sl);
             this.tlName = this.getFullName(tl);
@@ -62,6 +71,16 @@ class Mode {
         } catch (ArrayIndexOutOfBoundsException aioofe) {
         } catch (Exception e) {
         }
+    }
+
+    private final boolean isVariant(final String code) {
+        if (code.equals("multi")) {
+            return true;
+        }
+        if (code.equals("eco")) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -113,8 +132,20 @@ class Mode {
         if (code.equals("es")) {
             return java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Spanish");
         }
+        if (code.equals("oc_aran")) {
+            return "Occitan (Aranese)";
+        }
         if (code.equals("eco-es")) {
-            return "Spanish (eco)";
+            return "(Eco.) Spanish";
+        }
+        if (code.equals("eco-ca")) {
+            return "(Eco.) Catalan";
+        }
+        if (code.equals("es-multi")) {
+            return "Spanish (multi)";
+        }
+        if (code.equals("ca-multi")) {
+            return "Catalan (multi)";
         }
         if (code.equals("ca")) {
             return java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Catalan");
