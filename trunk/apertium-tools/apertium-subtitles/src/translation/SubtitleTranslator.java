@@ -66,7 +66,7 @@ public class SubtitleTranslator {
         for (Subtitle block : blockList) {
  
             String take = block.getTake();
-            String newTake = take + "<b/>";
+            String newTake = take + "<B/>";
             block.setTake(newTake);
             toTranslate.add(block);
             //block.print();
@@ -75,9 +75,7 @@ public class SubtitleTranslator {
                 if(!translateBlockList(toTranslate)) {
                     return;
                 }
-
                 this.updateProgress(blockList, i);
-
                 toTranslate = new Subtitles();
             }
             i++;
@@ -134,7 +132,7 @@ public class SubtitleTranslator {
         sentence = sentence.replaceAll("\"", "&quot;");
         String translation = translateSentence(sentence);
         translation = translation.replaceAll("&quot;", "\"");
-        String[] parts = translation.split("<b/>");
+        String[] parts = translation.split("<B/>");
 
         int i = 0;
         this.nSubtitles = blockList.size();
