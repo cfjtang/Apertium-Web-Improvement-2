@@ -190,6 +190,7 @@
       <cat-item tags="vblex.pri.*"/>
       <cat-item tags="vblex.prs.*"/>
       <cat-item tags="vblex.prh.*"/>
+      <cat-item tags="vblex.pih.*"/>
       <cat-item tags="vblex.fts.*"/>
       <cat-item tags="vbser.cni.*"/>
       <cat-item tags="vbser.fti.*"/>
@@ -200,6 +201,7 @@
       <cat-item tags="vbser.pri.*"/>
       <cat-item tags="vbser.prs.*"/>
       <cat-item tags="vbser.prh.*"/>
+      <cat-item tags="vbser.pih.*"/>
       <cat-item tags="vbser.fts.*"/>
       <cat-item tags="vbhaver.cni.*"/>
       <cat-item tags="vbhaver.fti.*"/>
@@ -211,6 +213,7 @@
       <cat-item tags="vbhaver.pri.*"/>
       <cat-item tags="vbhaver.prs.*"/>
       <cat-item tags="vbhaver.prh.*"/>
+      <cat-item tags="vbhaver.pih.*"/>
       <cat-item tags="vbhaver.fts.*"/>
       <cat-item tags="vbmod.cni.*"/>
       <cat-item tags="vbmod.fti.*"/>
@@ -222,6 +225,7 @@
       <cat-item tags="vbmod.pri.*"/>
       <cat-item tags="vbmod.prs.*"/>
       <cat-item tags="vbmod.prh.*"/>
+      <cat-item tags="vbmod.pih.*"/>
       <cat-item tags="vbmod.fts.*"/>
       <cat-item tags="vblex.pron.cni.*"/>
       <cat-item tags="vblex.pron.fti.*"/>
@@ -474,6 +478,7 @@
       <attr-item tags="pri"/>
       <attr-item tags="prs"/>
       <attr-item tags="prh"/>
+      <attr-item tags="pih"/>
       <attr-item tags="past"/>
       <attr-item tags="pp"/>
 <!-- ? -->
@@ -1317,8 +1322,20 @@
         </otherwise>
       </choose>
     </def-macro>
-    <def-macro n="prh_past_cip" npar="1">
+    <def-macro n="pih_prh_past_cip" npar="1">
       <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="temps"/>
+              <lit-tag v="pih"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="pii"/>
+          </let>
+        </when>
         <when>
           <test>
             <equal>
@@ -8902,7 +8919,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -9226,7 +9243,7 @@
         <pattern-item n="adv_preadv"/>
       </pattern>
       <action>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -9689,7 +9706,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <choose>
@@ -9825,7 +9842,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -9973,7 +9990,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10035,7 +10052,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<call-macro n="control_ref_aux">
@@ -10166,7 +10183,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10238,7 +10255,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10299,7 +10316,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -10419,7 +10436,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10494,7 +10511,7 @@
           <var n="lema"/>
           <lit v="etre_en_train_de_inf"/>
         </let>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10565,7 +10582,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -10704,7 +10721,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10786,7 +10803,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -10851,7 +10868,7 @@
        <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -10969,7 +10986,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -11037,7 +11054,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -11194,7 +11211,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -11259,7 +11276,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -11508,7 +11525,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
 	<call-macro n="control_ref_aux">
@@ -11815,7 +11832,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
 	<call-macro n="control_ref_aux">
@@ -12265,7 +12282,7 @@
        <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
 	<choose>
@@ -12396,7 +12413,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -12575,7 +12592,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -12650,7 +12667,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
         <choose>
@@ -13133,7 +13150,7 @@
 	<call-macro n="haber">
 		<with-param pos="2"/>
 	</call-macro>
-	<call-macro n="prh_past_cip">
+	<call-macro n="pih_prh_past_cip">
 		<with-param pos="2"/>
 	</call-macro>
 	<call-macro n="f_imp">
@@ -13432,7 +13449,7 @@
 		      <with-param pos="2"/>
 		      <with-param pos="3"/>
 	      </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -13932,7 +13949,7 @@
             </choose>
           </when>
           <otherwise>
-            <call-macro n="prh_past_cip">
+            <call-macro n="pih_prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <choose>
@@ -14188,7 +14205,7 @@
 		      <with-param pos="2"/>
 		      <with-param pos="3"/>
 	      </call-macro>
-       <call-macro n="prh_past_cip">
+       <call-macro n="pih_prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -14686,7 +14703,7 @@
             </choose>
           </when>
           <otherwise>
-            <call-macro n="prh_past_cip">
+            <call-macro n="pih_prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <choose>
@@ -14963,7 +14980,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -15080,7 +15097,7 @@
             </out>
           </when>
           <otherwise>
-            <call-macro n="prh_past_cip">
+            <call-macro n="pih_prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <out>
@@ -15137,7 +15154,7 @@
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="4"/>
         </call-macro>
         <call-macro n="f_imp">
@@ -15421,7 +15438,7 @@
             </choose>
           </when>
           <otherwise>
-            <call-macro n="prh_past_cip">
+            <call-macro n="pih_prh_past_cip">
               <with-param pos="3"/>
             </call-macro>
             <choose>
@@ -18508,7 +18525,7 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="prh_past_cip">
+        <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="vauxiliar">
