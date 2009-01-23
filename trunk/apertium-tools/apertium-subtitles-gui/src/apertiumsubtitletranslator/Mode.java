@@ -26,7 +26,7 @@ import java.io.File;
  */
 class Mode {
 
-    private String name = "en-eo (std)";
+    private String name;
     private File file;
     private String fileName;
     private String sltl;
