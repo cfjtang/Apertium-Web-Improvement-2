@@ -99,7 +99,7 @@
     <tags-item tags="vblex.ger"/>
   </def-label>
   <def-label name="VLEXPPRES">
-    <tags-item tags="vblex.ppres"/>
+    <tags-item tags="vblex.ppres.*"/>
   </def-label>
   <def-label name="VLEXPARTPI">
     <tags-item tags="vblex.pp.*"/>
@@ -128,7 +128,7 @@
     <tags-item tags="vbser.ger"/>
   </def-label>
   <def-label name="VSERPPRES" closed="true">
-    <tags-item tags="vbser.ppres"/>
+    <tags-item tags="vbser.ppres.*"/>
   </def-label>
   <def-label name="VSERPARTPI" closed="true">
     <tags-item tags="vbser.pp.*"/>
@@ -157,7 +157,7 @@
     <tags-item tags="vbhaver.ger"/>
   </def-label>
   <def-label name="VHABERPPRES" closed="true">
-    <tags-item tags="vbhaver.ppres"/>
+    <tags-item tags="vbhaver.ppres.*"/>
   </def-label>
   <def-label name="VHABERPARTPI" closed="true">
     <tags-item tags="vbhaver.pp.*"/>
@@ -183,7 +183,7 @@
     <tags-item tags="vbmod.ger"/>
   </def-label>
   <def-label name="VMODALPPRES" closed="true">
-    <tags-item tags="vbmod.ppres"/>
+    <tags-item tags="vbmod.ppres.*"/>
   </def-label>
   <def-label name="VMODALPARTPI" closed="true">
     <tags-item tags="vbmod.pp.*"/>
@@ -1719,8 +1719,8 @@
    </enforce-after>
   </enforce-rules>-->
   
--  <preferences>
-<!--   <prefer tags="vblex.pri.p3.sg"/>
+ <!-- <preferences>
+  <prefer tags="vblex.pri.p3.sg"/>
    <prefer tags="vbser.pri.p3.sg"/>
    <prefer tags="vbhaver.pri.p3.sg"/>
    <prefer tags="vbmod.pri.p3.sg"/>  
@@ -1739,7 +1739,7 @@
    <prefer tags="vblex.pis.p3.sg"/>
    <prefer tags="vbser.pis.p3.sg"/>
    <prefer tags="vbhaver.pis.p3.sg"/>
-   <prefer tags="vbmod.pis.p3.sg"/>-->
-  </preferences>
+   <prefer tags="vbmod.pis.p3.sg"/>
+  </preferences> -->
   
 </tagger>
