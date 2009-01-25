@@ -1,8 +1,8 @@
 
 # This script reads GIZA++ alignment and proccess them giving
 # as an output a more human (and machine) readable format with the
-# same information. From this new format it easier to construct an
-# aligment matrix between suorce an target sentences.
+# same information. From this new format it's easier to construct an
+# aligment matrix between source and target sentences.
 #
 #
 # Ouput format:
