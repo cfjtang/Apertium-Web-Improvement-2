@@ -89,13 +89,15 @@
 
 	<def-attr n="tverb">
         <attr-item tags="vben"/>
-			  <attr-item tags="vba"/>
-			  <attr-item tags="nopart"/>
+	<attr-item tags="vba"/>
+	<attr-item tags="nopart"/>
 	</def-attr>
+	
 	<def-attr n="tnom">
         <attr-item tags="loc"/>
         <attr-item tags="part"/>
 	</def-attr>
+
 	<def-attr n="tprep">
         <attr-item tags="a"/>
         <attr-item tags="de"/>
@@ -411,7 +413,7 @@
 				</otherwise>
 			</choose>
 		</when>
-		<when><!--canvia SN Ã  inf per SN para inf-->
+		<when><!--canvia SN à inf per SN para inf-->
 			<test>
 				<and>
 					<equal>
@@ -1879,7 +1881,7 @@
 		</action>
 </rule>
 
-<rule comment="REGLA: SN SV pr SN">
+<rule comment="REGLA: SN SV adv SN">
 	<pattern>
 		<pattern-item n="SN"/>
 		<pattern-item n="SV"/>
@@ -1921,7 +1923,7 @@
 				</chunk>
 			</out>
 		</when>
-		<otherwise><!--Quan SN no ï¿½ pronom subjecte, per tant, quan ï¿½ qualsevol altre SN -->
+		<otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -1940,6 +1942,7 @@
 	<choose>
 		<when>
 			<test>
+ 			    <and>
 				<or>
 					<equal>
 						<clip pos="4" part="lem"/>
@@ -1950,6 +1953,13 @@
 						<lit v="inf_enc"/>
 					</equal>
 				</or>
+				<not>	
+					<equal>
+						<clip pos="3" part="lem"/>
+						<lit v="ne"/>
+					</equal>
+				</not>	
+			    </and>	
 			</test>
 			<out>
 				<b pos="2"/>
