@@ -10953,7 +10953,8 @@
         </let>
       </action>
     </rule>
-    <!-- volver a + infinitivo-->
+
+
     <rule comment="REGLA: volver a inf - inf + à nouveau">
       <pattern>
         <pattern-item n="volver"/>
@@ -11478,7 +11479,7 @@
                       <lit-tag v="prn.pro"/>
                       <clip pos="2" side="tl" part="tipoenc_pro"/>
                     </lu>
-                    <b pos="1"/>
+                  <b pos="2"/>
                     <lu>
                       <clip pos="4" side="tl" part="lemh"/>
                       <clip pos="4" side="tl" part="a_verb"/>
@@ -11487,7 +11488,7 @@
                       <clip pos="1" side="tl" part="nbr"/>
                       <clip pos="4" side="tl" part="lemq"/>
                     </lu>
-                    <b pos="2"/>
+                    <b pos="3"/>
                     <lu>
                       <lit v="à nouveau"/>
                       <lit-tag v="adv"/>
@@ -11496,6 +11497,7 @@
                 </out>
         <call-macro n="f_bcond">
           <with-param pos="3"/>
+          <with-param pos="4"/>
         </call-macro>
         <let>
           <var n="caseFirstWord"/>
@@ -11504,11 +11506,75 @@
       </action>
     </rule>
 
+  <rule comment="REGLA: volver enc enc a inf - pro inf à nouveau">
+      <pattern>
+        <pattern-item n="volver"/>
+        <pattern-item n="prnenc"/>
+        <pattern-item n="prnenc"/>
+	<pattern-item n="a"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+                <out>
+                  <chunk name="pro_pro_verb_adv" case="caseFirstWord">
+                    <tags>
+                      <tag>
+                        <lit-tag v="SV"/>
+                      </tag>
+                      <tag>
+                        <clip pos="5" side="tl" part="a_verb"/>
+                      </tag>
+                      <tag>
+                        <clip pos="1" side="tl" part="temps"/>
+                      </tag>
+                      <tag>
+                        <clip pos="1" side="tl" part="pers"/>
+                      </tag>
+                      <tag>
+                        <clip pos="1" side="tl" part="nbr"/>
+                      </tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lem"/>
+                      <lit-tag v="prn.pro"/>
+                      <clip pos="2" side="tl" part="tipoenc_pro"/>
+                    </lu>
+                  <b pos="2"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lem"/>
+                      <lit-tag v="prn.pro"/>
+                      <clip pos="3" side="tl" part="tipoenc_pro"/>
+                    </lu>
+                  <b pos="3"/>
+                    <lu>
+                      <clip pos="5" side="tl" part="lemh"/>
+                      <clip pos="5" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="1" side="tl" part="pers"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <clip pos="5" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="4"/>
+                    <lu>
+                      <lit v="à nouveau"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+                  </chunk>
+                </out>
+        <call-macro n="f_bcond">
+          <with-param pos="4"/>
+          <with-param pos="5"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
 
-
-
-
-     <!-- fin de volver + infinitivo-->
  
    <rule comment="prnpro">
       <!--per quan va seguit d'un verb desconegut-->
