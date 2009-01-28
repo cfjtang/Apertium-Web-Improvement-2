@@ -1719,8 +1719,9 @@
    </enforce-after>
   </enforce-rules>-->
   
+
  <!-- <preferences>
-  <prefer tags="vblex.pri.p3.sg"/>
+   <prefer tags="vblex.pri.p3.sg"/>
    <prefer tags="vbser.pri.p3.sg"/>
    <prefer tags="vbhaver.pri.p3.sg"/>
    <prefer tags="vbmod.pri.p3.sg"/>  
