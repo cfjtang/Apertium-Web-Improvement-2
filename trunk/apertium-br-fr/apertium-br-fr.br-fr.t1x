@@ -4883,6 +4883,22 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+
         <out>
           <chunk name="det_nom_de_det_nom_de_top" case="caseFirstWord">
             <tags>
