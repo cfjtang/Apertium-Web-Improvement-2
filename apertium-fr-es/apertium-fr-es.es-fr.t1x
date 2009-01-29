@@ -477,6 +477,8 @@
       <list-item v="divorciar"/>
       <list-item v="concienciar"/>
       <list-item v="incautar"/>
+      <list-item v="despedir# de"/>
+      <list-item v="despedir"/>
     </def-list>
     <def-list n="vbambser">
       <list-item v="aller"/>
@@ -772,6 +774,19 @@
                     <lit v="saisir"/>
                   </let>
                 </when>
+		<when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="despedir"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="dire# au revoir"/>
+                  </let>
+                </when>
+		
                 <when>
                   <test>
                     <equal caseless="yes">
@@ -849,7 +864,7 @@
                   </test>
                   <let>
                     <clip pos="2" side="tl" part="lem"/>
-                    <lit v="souvenir"/>
+                    <lit v="rappeler"/>
                   </let>
                 </when>
                 <when>
@@ -1005,6 +1020,18 @@
                     <lit v="saisir"/>
                   </let>
                 </when>
+		<when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="despedir"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="dire# au revoir"/>
+                  </let>
+                </when>
                 <when>
                   <test>
                     <equal caseless="yes">
@@ -1070,7 +1097,7 @@
                   </test>
                   <let>
                     <clip pos="3" side="tl" part="lem"/>
-                    <lit v="souvenir"/>
+                    <lit v="rappeler"/>
                   </let>
                 </when>
                 <when>
@@ -3646,6 +3673,12 @@
                   <clip pos="2" side="sl" part="pers"/>
                   <lit-tag v="p3"/>
                 </equal>
+		<not>
+		  <in caseless="yes">
+                    <clip pos="3" side="sl" part="lem"/>
+                    <list n="verbs_ref"/>
+		  </in>
+		  </not>		  
               </and>
               <and>
                 <equal>
@@ -3660,6 +3693,12 @@
                   <clip pos="1" side="sl" part="nbr"/>
                   <clip pos="2" side="sl" part="nbr"/>
                 </equal>
+		<not>
+		  <in caseless="yes">
+                    <clip pos="3" side="sl" part="lem"/>
+                    <list n="verbs_ref"/>
+		  </in>
+		  </not>
               </and>
               <and>
                 <equal>
@@ -3674,6 +3713,12 @@
                   <clip pos="1" side="sl" part="nbr"/>
                   <clip pos="2" side="sl" part="nbr"/>
                 </equal>
+		<not>
+		  <in caseless="yes">
+                    <clip pos="3" side="sl" part="lem"/>
+                    <list n="verbs_ref"/>
+		  </in>
+		  </not>
               </and>
             </or>
           </test>
@@ -3688,6 +3733,8 @@
         </when>
       </choose>
     </def-macro>
+
+
     <def-macro n="aux_ifi" npar="1">
       <choose>
         <when>
@@ -11611,7 +11658,7 @@
         </let>
       </action>
     </rule>
-    <rule comment="prnpro verbpers">
+    <rule comment="prnpro verbpers"><!-- mireia -->
       <pattern>
         <pattern-item n="prnpro"/>
         <pattern-item n="verbpers"/>
