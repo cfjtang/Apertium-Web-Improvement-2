@@ -7,7 +7,6 @@
     </def-cat>
     <def-cat n="ant">
       <cat-item tags="np.ant"/>
-      <cat-item tags="np.ant.*"/>
     </def-cat>
     <def-cat n="loc">
       <cat-item tags="np.loc"/>
@@ -18,7 +17,7 @@
     </def-cat>
     <def-cat n="querel">
       <cat-item lemma="que" tags="rel.*"/>
-    </def-cat>
+    </def-cat>   
     <def-cat n="cuyo">
       <cat-item lemma="cuyo" tags="rel.*"/>
     </def-cat>
@@ -107,7 +106,6 @@
       <cat-item tags="prn.itg.*"/>
     </def-cat>
     <def-cat n="rel">
-      <cat-item tags="prn.rel.*"/>
       <cat-item tags="rel.*"/>
     </def-cat>
     <def-cat n="prnenc">
@@ -538,6 +536,7 @@
       <list-item v="bière"/>
       <list-item v="viande"/>
       <list-item v="pain"/>
+      <list-item v="farine"/>
     </def-list>
     <def-list n="npf">
       <list-item v="Afrique du Sud"/>
@@ -3890,7 +3889,8 @@
   </section-def-macros>
   <section-rules>
     <!--*************************************** REGLES DE SN ******************************************** -->
-    <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
+   
+  <rule comment="REGLA: NOM (per a collocar la cua en les multiparaules amb g">
       <pattern>
         <pattern-item n="nom"/>
       </pattern>
@@ -7360,6 +7360,8 @@
         </let>
       </action>
     </rule>
+
+
     <rule comment="REGLA: adv VERB adv">
       <pattern>
         <pattern-item n="adv_preadv"/>
@@ -22266,14 +22268,13 @@
         </let>
       </action>
     </rule>
+
+
     <rule comment="PRNREL">
       <pattern>
         <pattern-item n="rel"/>
       </pattern>
       <action>
-        <!--		<call-macro n="f_concord1">
-				<with-param pos="1"/>
-			</call-macro>-->
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -22308,6 +22309,86 @@
         </let>
       </action>
     </rule>
+
+
+
+ <rule comment="PREP + PRNREL">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="rel"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="lem"/>
+		<lit v="el que"/>
+		</equal>
+	    </test>
+	    <let>
+              <clip pos="2" side="tl" part="lem"/>
+	      <lit v="lequel"/>
+	    </let>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="1" side="sl" part="lem"/>
+		    <lit v="en"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="1" side="tl" part="lem"/>
+		  <lit v="dans"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>
+
+        <out>
+          <chunk name="prep_rel" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SPREP"/>
+              </tag>
+              <tag>
+                <clip pos="2" side="tl" part="tipus_prn"/>
+              </tag>
+              <tag>
+                <clip pos="2" side="tl" part="gen"/>
+              </tag>
+              <tag>
+                <clip pos="2" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+	    <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_prn"/>
+              <clip pos="2" side="tl" part="tipus_prn"/>
+              <clip pos="2" side="tl" part="gen"/>
+              <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+
+
     <rule comment="cuyo nombre -&gt; dont le nom">
       <pattern>
         <pattern-item n="cuyo"/>
