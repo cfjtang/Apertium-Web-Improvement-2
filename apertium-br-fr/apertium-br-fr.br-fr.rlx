@@ -165,6 +165,10 @@ REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 # REGLA (B0011): "Stad da lod"
 REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
 
+# REGLA (B    ): "diorroet eo o rouedadoù war an dachenn"
+REMOVE PrnDObj IF (1 NC) (NOT 1 VerbFin);
+
+
 # REGLA (B0012): "An dud a zeu da Roazhon"
 REMOVE VerbFin IF (0 Det) (1 NC)
 
