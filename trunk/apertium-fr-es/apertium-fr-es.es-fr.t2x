@@ -139,7 +139,7 @@
           <attr-item tags="DET"/>
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
-	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats-->
+	  <attr-item tags="rel"/>
       </def-attr>
 
   </section-def-attrs>
@@ -473,8 +473,27 @@
 						</equal>
 						</or>
 					</test>
+					<let><var n="nombre_subj"/><lit-tag v="sg"/></let>
+				</when>
+          <!--gema--> <otherwise>
+			<choose>
+				<when>
+					<test>
+						<or>
+						<equal>
+							<var n="nombre_subj"/>
+							<lit-tag v="vist_pl"/>
+						</equal>
+						<equal>
+							<var n="nombre_subj"/>
+							<lit-tag v="pl"/>
+						</equal>
+						</or>
+					</test>
 					<let><var n="nombre_subj"/><lit-tag v="pl"/></let>
 				</when>
+                            </choose>
+			  </otherwise> <!--fi gema-->
 			</choose>
 		</otherwise>
 	</choose>
@@ -1345,6 +1364,7 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="2"/>
 	</call-macro>
+<!--prova gema 	<out> <chunk><var n="pers_subj"/><var n="nombre_subj"/></chunk> 	</out>-->
 	<call-macro n="assigna_nombre_subj">
 		<with-param pos="2"/>
 	</call-macro>
@@ -1362,7 +1382,7 @@
 		         <lit-tag v="DET"/>
 		      </equal>
 		      <equal caseless="yes">
-		         <clip pos="2" part="lem"/>
+		         <clip pos="2" part="a_SN"/>
 		         <lit-tag v="rel"/>
 		      </equal>
 		    </or>
@@ -1505,6 +1525,9 @@
 				<clip pos="2" part="lem"/>
 				<clip pos="2" part="tags"/>
 				<clip pos="2" part="chcontent"/>
+<!--prova gema
+<var n="pers_subj"/> 
+<var n="nombre_subj"/>-->
 			</chunk>
 		</out>
 	</action>
@@ -1521,9 +1544,9 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="2"/>
 	</call-macro>
-	<call-macro n="assigna_nombre_subj">
+<!--gema	<call-macro n="assigna_nombre_subj">
 		<with-param pos="2"/>
-	</call-macro>
+	</call-macro>-->
 	       <choose>
 	         <when>
 		   <test>
