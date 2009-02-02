@@ -1,7 +1,7 @@
 TAGGER_SUPERVISED_ITERATIONS=0
-BASENAME=apertium-en-ca
-LANG1=ca
-LANG2=en
+BASENAME=apertium-fr-es
+LANG1=es
+LANG2=fr
 TAGGER=$(LANG1)-tagger-data
 PREFIX=$(LANG1)-$(LANG2)
 
