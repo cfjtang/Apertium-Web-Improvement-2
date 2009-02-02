@@ -181,6 +181,26 @@
       <cat-item lemma="ezinik" tags="vblex.inf"/>
     </def-cat>
 
+
+    <def-cat n="potencial">
+      <cat-item lemma="ezan" tags="vbsint.potpr.*"/>
+      <cat-item lemma="edin" tags="vbsint.potpr.*"/>
+      <cat-item lemma="ezan" tags="vbsint.potps.*"/>
+      <cat-item lemma="edin" tags="vbsint.potps.*"/>
+      <cat-item lemma="ezan" tags="vbsint.poth.*"/>
+      <cat-item lemma="edin" tags="vbsint.poth.*"/>
+    </def-cat>
+
+    <def-cat n="subjuntivo">
+      <cat-item lemma="ezan" tags="vbsint.prs.*"/>
+      <cat-item lemma="edin" tags="vbsint.prs.*"/>
+      <cat-item lemma="ezan" tags="vbsint.pis.*"/>
+      <cat-item lemma="edin" tags="vbsint.pis.*"/>
+      <cat-item lemma="ezan" tags="vbsint.hs.*"/>
+      <cat-item lemma="edin" tags="vbsint.hs.*"/>
+    </def-cat>
+
+
     <def-cat n="prnpers"><!--aquests pronoms es poden transformar en possessius en castellà -->
       <cat-item tags="prn.pers.*"/>
       <cat-item lemma="hura" tags="det.dem.*"/>
@@ -252,6 +272,10 @@
 
     <def-cat n="reladj">
       <cat-item lemma="n" tags="rel"/>
+    </def-cat>
+    <def-cat n="quesubj"><!-- particules subordinants que apareixen després d'una forma subjuntiva-->
+      <cat-item lemma="n" tags="cnjsub"/>
+      <cat-item lemma="la" tags="cnjsub"/>
     </def-cat>
 
     <def-cat n="cnjsub">
@@ -503,7 +527,15 @@
       <attr-item tags="cni"/>	  
       <attr-item tags="imp"/>	  
       <attr-item tags="izen"/>	  
-      <attr-item tags="ifi"/>
+      <attr-item tags="ifi"/>	  
+      <attr-item tags="potpr"/>  
+      <attr-item tags="potps"/>  
+      <attr-item tags="poth"/>	  
+      <attr-item tags="prs"/>	  
+      <attr-item tags="pis"/>	  
+      <attr-item tags="hs"/>	  
+      <attr-item tags="onpr"/>	  
+      <attr-item tags="bald"/>
     </def-attr>
 
     <def-attr n="tipus_prn">          
@@ -15377,6 +15409,18 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	      <lit-tag v="cni"/>
 	    </let>
 	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="onpr"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
 	</choose>		
 	<out>
 	  <chunk name="vbconj" case="caseSecondWord">
@@ -16685,6 +16729,32 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="hs"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="bald"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk name="si" case="caseFirstWord">
 	    <tags>
@@ -16743,6 +16813,20 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="hs"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	</choose>
 	<let>
 	  <clip pos="3" side="tl" part="lem"/>
 	  <lit v="haber"/>
@@ -16860,6 +16944,20 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="hs"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk name="si" case="caseFirstWord">
 	    <tags>
@@ -16869,7 +16967,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
-	  <b/>
+	  <b pos="1"/>
 	</out>
 	<let>
 	  <var n="caseFirstWord"/>
@@ -16923,9 +17021,6 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    </lu>
 	  </chunk>
 	</out>
-	<call-macro n="f_bcond">
-	  <with-param pos="1"/>
-	</call-macro>
       </action>
     </rule>
 
@@ -16947,6 +17042,20 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="4"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="hs"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk name="si" case="caseFirstWord">
 	    <tags>
@@ -16957,8 +17066,6 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    </lu>
 	  </chunk>
 	  <b pos="1"/>
-	</out>
-	<out>
 	  <chunk name="ez">
 	    <tags>
 	      <tag><lit-tag v="SADV"/></tag>	      
@@ -17022,80 +17129,431 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    </lu>
 	  </chunk>
 	</out>
-	<call-macro n="f_bcond">
+      </action>
+    </rule>
+
+
+<!-- baldintza-->
+    
+
+    <rule comment="REGLA: PFUT + ba-VERBO SINT(baldintza) (egingo balu) - si hiciera ">
+      <pattern>
+	<pattern-item n="pfut"/>
+	<pattern-item n="ba"/>
+	<pattern-item n="vbsint"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<out>
+	  <chunk name="si" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="2" side="tl" part="tags"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="bald"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pis"/>
+	    </let>
+	  </when>
+	 <!-- <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when> -->
+	</choose>	    
+	<out>
+	  <chunk name="vbconj" case="caseSecondWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>	      
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+ <rule comment="REGLA: PFUT + ez + ba-VERBO SINT(baldintza) (egingo ez balu) - si no hiciera ">
+      <pattern>
+	<pattern-item n="pfut"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="ba"/>
+	<pattern-item n="vbsint"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="si" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="3" side="tl" part="tags"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="ez">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="2"/>
+	</out>	
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="4"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="4" side="sl" part="temps"/>
+		<lit-tag v="bald"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pis"/>
+	    </let>
+	  </when>
+	 <!-- <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when> -->
+	</choose>	    
+	<out>
+	  <chunk name="vbconj" case="caseSecondWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="4" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="4" side="sl" part="nor"/></tag>
+	      <tag><clip pos="4" side="sl" part="nori"/></tag>
+	      <tag><clip pos="4" side="sl" part="nork"/></tag>
+	    </tags>	      
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="4" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+    
+
+<!-- modo potencial -->
+
+ <rule comment="REGLA: INF (forma lexemática) + VERBO SINT potencial (etor daiteke - puede venir)">
+      <pattern>
+	<pattern-item n="inf"/>
+	<pattern-item n="potencial"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+	<let>
+	  <clip pos="2" side="tl" part="lem"/>
+	  <lit v="poder"/>
+	</let>
+	<let>
+	  <clip pos="2" side="tl" part="a_verb"/>
+	  <lit-tag v="vbmod"/>
+	</let>	  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="potpr"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="potps"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <lit-tag v="ifi"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="poth"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
+	</choose>		
+	<out>
+	  <chunk name="vbmod_inf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="2" side="sl" part="nor"/></tag>
+	      <tag><clip pos="2" side="sl" part="nori"/></tag>
+	      <tag><clip pos="2" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="persnbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+<!-- modo subjuntivo -->
+
+
+ <rule comment="REGLA: INF (forma lexemática) + VERBO SINT subjuntivo (ikus dezagun - que veamos)">
+      <pattern>
+	<pattern-item n="inf"/>
+	<pattern-item n="subjuntivo"/>
+	<pattern-item n="quesubj"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="sl" part="temps"/>
+		<lit-tag v="hs"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	</choose>	      
+	<out>
+	  <chunk name="que" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="3" side="tl" part="tags"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out>
+	  <chunk name="subjunt" case="caseSecondWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="2" side="sl" part="nor"/></tag>
+	      <tag><clip pos="2" side="sl" part="nori"/></tag>
+	      <tag><clip pos="2" side="sl" part="nork"/></tag>
+	    </tags>      
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="persnbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
       </action>
     </rule>
 
 
 
-    <!--
 
-<rule comment="REGLA: PFUT + VERBO SINT (etorriko banaiz) - si viniera?? ">
-<pattern>
-<pattern-item n="pfut"/>
-<pattern-item n="ba"/>
-<pattern-item n="vbsint"/>
-</pattern>
-<action>	
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<choose>
-<when>
-<test>
-<equal>
-<clip pos="2" side="sl" part="temps"/>
-<lit-tag v="pri"/>
-</equal>
-</test>
-<let>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="fti"/>
-</let>
-</when>
-<when>
-<test>
-<equal>
-<clip pos="2" side="sl" part="temps"/>
-<lit-tag v="pii"/>
-</equal>
-</test>
-<let>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="cni"/>
-</let>
-</when>
-</choose>	    
-<out>
-<chunk name="vbconj" case="caseSecondWord">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-<call-macro n="f_bcond">
-<with-param pos="1"/>
-</call-macro>
-</action>
-</rule>
-    -->
+ <rule comment="REGLA: INF (forma lexemática) + VERBO SINT subjuntivo (baledi - si fuera)">
+      <pattern>
+	<pattern-item n="inf"/>
+	<pattern-item n="ba"/>
+	<pattern-item n="subjuntivo"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="hs"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	</choose>	      
+	<out>
+	  <chunk name="si" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="2" side="tl" part="tags"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out>
+	  <chunk name="subjunt" case="caseSecondWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>      
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
+
+
 
 
     <!--***************************** VERBS AMB RELATIUS  **********************************-->
