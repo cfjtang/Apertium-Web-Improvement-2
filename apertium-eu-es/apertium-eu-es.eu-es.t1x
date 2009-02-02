@@ -535,7 +535,10 @@
       <attr-item tags="pis"/>	  
       <attr-item tags="hs"/>	  
       <attr-item tags="onpr"/>	  
-      <attr-item tags="bald"/>
+      <attr-item tags="bald"/>	  
+      <attr-item tags="prs2"/>	  
+      <attr-item tags="prob1"/>  
+      <attr-item tags="prob2"/>
     </def-attr>
 
     <def-attr n="tipus_prn">          
@@ -2734,11 +2737,137 @@
 
     </def-macro>
 
+<def-macro n="verbal_temps1" npar="1">
+  <choose>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="1" side="sl" part="temps"/>
+	  <lit-tag v="prob1"/>
+	</equal>
+      </test>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="pri"/>
+      </let>
+    </when>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="1" side="sl" part="temps"/>
+	  <lit-tag v="prob2"/>
+	</equal>
+      </test>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="pii"/>
+      </let>
+    </when>
+  </choose>
+</def-macro>
+
+
+
+<def-macro n="verbal_temps2" npar="2">
+  <choose>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="2" side="sl" part="temps"/>
+	  <lit-tag v="prob1"/>
+	</equal>
+      </test>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="pri"/>
+      </let>
+    </when>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="2" side="sl" part="temps"/>
+	  <lit-tag v="prob2"/>
+	</equal>
+      </test>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="pii"/>
+      </let>
+    </when>
+  </choose>
+</def-macro>
+	  
+
+
+
+
+
+
 
 
     <def-macro n="verbal_flex" npar="1"><!--Determina la persona del verbo y la presencia de pronombres proclíticos, y envía los pronombres si es necesario 
-					    IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la macro puede enviar pronombres y éstos tiene que ir justo antes del verbo
+					    IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la macro puede enviar pronombres y éstos tiene que ir justo antes del verbo.
+Además, en 2-febr-2009 se ha añadido la función de enviar 'quizá' si el verbo es de prob1 o prob2 (antiguos A2 y B3), probabilidad presente y pasado respectivamente 
 					-->
+      <choose>
+	<when>
+	  <test>
+	    <or>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="prob1"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="prob2"/>
+	      </equal>
+	    </or>
+	  </test>
+	   <choose>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="1" side="sl" part="temps"/>
+	  <lit-tag v="prob1"/>
+	</equal>
+      </test>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="pri"/>
+      </let>
+    </when>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="1" side="sl" part="temps"/>
+	  <lit-tag v="prob2"/>
+	</equal>
+      </test>
+      <let>
+	<clip pos="1" side="tl" part="temps"/>
+	<lit-tag v="pii"/>
+      </let>
+    </when>
+  </choose>
+	  <out>
+	    <chunk name="quiza" case="caseFirstWord">
+	      <tags>
+		<tag><lit-tag v="SADV"/></tag>
+		<tag><lit-tag v="adv"/></tag>
+	      </tags>
+	      <lu>
+		<lit v="quizá"/>
+		<lit-tag v="adv"/>
+	      </lu>
+	    </chunk>
+	    <b/>
+	  </out>
+	  <let>
+	    <var n="caseFirstWord"/>
+	    <lit v="aa"/>
+	  </let>
+	</when>
+      </choose>
       <choose>
 	<when>
 	  <test><!--si es verbo NOR-NORI o NOR-NORI-NORK, envía pronombre de NORI. -->
@@ -15247,7 +15376,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
+		<clip pos="2" side="tl" part="temps"/>
 		<lit-tag v="pri"/>
 	      </equal>
 	    </test>
@@ -15259,7 +15388,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
+		<clip pos="2" side="tl" part="temps"/>
 		<lit-tag v="pii"/>
 	      </equal>
 	    </test>
@@ -15316,7 +15445,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
+		<clip pos="3" side="tl" part="temps"/>
 		<lit-tag v="pri"/>
 	      </equal>
 	    </test>
@@ -15328,7 +15457,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
+		<clip pos="3" side="tl" part="temps"/>
 		<lit-tag v="pii"/>
 	      </equal>
 	    </test>
@@ -15388,7 +15517,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
+		<clip pos="2" side="tl" part="temps"/>
 		<lit-tag v="pri"/>
 	      </equal>
 	    </test>
@@ -15400,7 +15529,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
+		<clip pos="2" side="tl" part="temps"/>
 		<lit-tag v="pii"/>
 	      </equal>
 	    </test>
@@ -15412,7 +15541,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
+		<clip pos="2" side="tl" part="temps"/>
 		<lit-tag v="onpr"/>
 	      </equal>
 	    </test>
@@ -15470,7 +15599,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
+		<clip pos="3" side="tl" part="temps"/>
 		<lit-tag v="pri"/>
 	      </equal>
 	    </test>
@@ -15482,7 +15611,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
+		<clip pos="3" side="tl" part="temps"/>
 		<lit-tag v="pii"/>
 	      </equal>
 	    </test>
@@ -16817,13 +16946,25 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
+		<clip pos="3" side="sl" part="temps"/>
 		<lit-tag v="hs"/>
 	      </equal>
 	    </test>
 	    <let>
-		<clip pos="2" side="tl" part="temps"/>
+		<clip pos="3" side="tl" part="temps"/>
 		<lit-tag v="pis"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="prs2"/>
+	      </equal>
+	    </test>
+	    <let>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pri"/><!--erantsi badiezaiegu - hemos agregado -->
 	    </let>
 	  </when>
 	</choose>
