@@ -7,6 +7,8 @@
     <tags-item lemma="ezan" tags="ADL.*"/>
     <tags-item lemma="edin" tags="ADL.*"/>
     <tags-item lemma="edin" tags="ADT.*"/>
+    <tags-item lemma="edin" tags="vbsint.*"/>
+    <tags-item lemma="ezan" tags="vbsint.*"/>
   </def-label>
    <def-label name="ukan" closed="true">
     <tags-item lemma="ukan" tags="vbsint.*"/>
@@ -1628,6 +1630,15 @@
       <label-item label="PRT"/>
       <label-item label="NOM_POST"/>
     </label-sequence> -->
+    <label-sequence>
+      <label-item label="PP"/>
+      <label-item label="ezanedin"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PPper"/><!-- ????? eraman dezaten-->
+      <label-item label="ezanedin"/>
+    </label-sequence>
+
 
 
  </forbid>
