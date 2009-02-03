@@ -63,6 +63,8 @@ class commit: #{
 	    return;
         #}
 
+        sys.stderr.flush();
+
     #}
 #}
 
@@ -124,7 +126,9 @@ class form: #{
 	};
 
 	print i.display(post_data);
+        sys.stderr.flush();
     #}
+
 #}
 
 class add: #{
@@ -227,8 +231,10 @@ class add: #{
 	};
 
 	print >> sys.stderr , str(post_data);
+        sys.stderr.flush();
 
 	print i.display(post_data);
+        sys.stderr.flush();
     #}
 #}
 

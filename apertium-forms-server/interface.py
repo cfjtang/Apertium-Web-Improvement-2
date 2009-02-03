@@ -106,35 +106,29 @@ class Interface: #{
                 print '            <select name="left_paradigm">';
 
 		ordered_list_paradigms_left = [];
-		
-		reverse_left_paradigms  = [];
-		
-		for comp in post_data['left_paradigms'].keys():
-		  reverse_left_paradigms[post_data['left_paradigms'][comp]] = comp;
 
 		for paradigm in post_data['left_paradigms']: #{
 			ordered_list_paradigms_left.append(paradigm[::-1]);
 		#}
 	
-#		ordered_list_paradigms_left.sort();
-		
-		reverse_left_paradigms.sort();
+		ordered_list_paradigms_left.sort();
 
-		for left_p in reverse_left_paradigms:
+		for left_p in ordered_list_paradigms_left:
+			left_p = left_p[::-1];
 
-                        if post_data['left_display_mode'] == 'list' and reverse_left_paradigms[left_p] not in post_data['left_glosses']: #{
+                        if post_data['left_display_mode'] == 'list' and left_p not in post_data['left_glosses']: #{
                                 continue;
 			#}
-                        if reverse_left_paradigms[left_p] == post_data['left_paradigm']: #{
-                                if reverse_left_paradigms[left_p] in post_data['left_glosses']: #{
-                                        print '                <option value="' + reverse_left_paradigms[left_p] + '" selected>' + post_data['left_glosses'][reverse_left_paradigms[left_p]] + '</option>';
+                        if left_p == post_data['left_paradigm']: #{
+                                if left_p in post_data['left_glosses']: #{
+                                        print '                <option value="' + left_p + '" selected>' + post_data['left_glosses'][left_p] + '</option>';
                                 else: #{
-                                        print '                <option value="' + reverse_left_paradigms[left_p] + '" selected>' + reverse_left_paradigms[left_p] + '</option>';
+                                        print '                <option value="' + left_p + '" selected>' + left_p + '</option>';
                         else: #{
-                                if reverse_left_paradigms[left_p] in post_data['left_glosses']: #{
-                                        print '                <option value="' + reverse_left_paradigms[left_p] + '">' + post_data['left_glosses'][reverse_left_paradigms[left_p]] + '</option>';
+                                if left_p in post_data['left_glosses']: #{
+                                        print '                <option value="' + left_p + '">' + post_data['left_glosses'][left_p] + '</option>';
                                 else: #{
-                                        print '                <option value="' + reverse_left_paradigms[left_p] + '">' + reverse_left_paradigms[left_p] + '</option>';
+                                        print '                <option value="' + left_p + '">' + left_p + '</option>';
 				#}
 			#}
 		#}
@@ -221,7 +215,7 @@ class Interface: #{
 		print '      </div>';
 		print '    </div>';
 		print '    <div class="row">';
-                print '      <input type="reset" name="clear_box" value="Clear" />';
+                print '      <input type="reset" name="clear_box" value="Reset" />';
                 print '      <input type="submit" name="preview_box" value="Preview" />';
                 print '      <input type="submit" name="commit_box" value="Commit" />';
 		print '    </div>';
