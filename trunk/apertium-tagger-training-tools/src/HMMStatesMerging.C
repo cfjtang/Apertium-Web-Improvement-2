@@ -25,7 +25,7 @@
 #include "HMMStatesMerging.H"
 
 #include <lttoolbox/compression.h>
-#include <lttoolbox/endian_util.h>
+#include <apertium/endian_double_util.h>
 
 #include <apertium/tagger_utils.h>
 
@@ -177,7 +177,7 @@ HMMStatesMerging::calculate_all_divergences() {
     while(!fdiv.eof()) {
       i=(int)Compression::multibyte_read(fdiv);
       j=(int)Compression::multibyte_read(fdiv);
-      d=EndianUtil<double>::read(fdiv);
+      d=EndianDoubleUtil::read(fdiv);
       if (fdiv.good()) {
 	divergence(i, j) = d;
       }
@@ -198,7 +198,7 @@ HMMStatesMerging::calculate_all_divergences() {
 	  if (divergence(i, j)!=0) {
 	    Compression::multibyte_write(i, fdiv);
 	    Compression::multibyte_write(j, fdiv);
-	    EndianUtil<double>::write(fdiv, divergence(i, j));
+	    EndianDoubleUtil::write(fdiv, divergence(i, j));
 	  }
 	}
       }
