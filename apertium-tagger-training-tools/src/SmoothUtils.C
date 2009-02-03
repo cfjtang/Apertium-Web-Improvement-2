@@ -27,7 +27,7 @@
 #include <fstream>
 
 #include <lttoolbox/compression.h>
-#include <lttoolbox/endian_util.h>
+#include <apertium/endian_double_util.h>
 
 #include "SmoothUtils.H"
 #include <cmath>
@@ -193,7 +193,7 @@ SmoothUtils::save_counts(TaggerData& td, const string& filename,
 
   for (int i=0; i<td.getN(); i++) {
     for(int j=0; j<td.getN(); j++) {
-      EndianUtil<double>::write(fcounts, tags_pair[i][j]);
+      EndianDoubleUtil::write(fcounts, tags_pair[i][j]);
     }
   }
 
@@ -202,21 +202,21 @@ SmoothUtils::save_counts(TaggerData& td, const string& filename,
       if (td.getOutput()[k].find(i)!=td.getOutput()[k].end()) {
 	Compression::multibyte_write(i, fcounts);
 	Compression::multibyte_write(k, fcounts);
-	EndianUtil<double>::write(fcounts, emis[i][k]);
+	EndianDoubleUtil::write(fcounts, emis[i][k]);
       }
     }
   }
 
   for (int i=0; i<td.getN(); i++) {
-    EndianUtil<double>::write(fcounts, tags_count[i]);
+    EndianDoubleUtil::write(fcounts, tags_count[i]);
   }
 
   for (int k=0; k<td.getM(); k++) {
-    EndianUtil<double>::write(fcounts, ambclass_count[k]);
+    EndianDoubleUtil::write(fcounts, ambclass_count[k]);
   }
 
   for (int i=0; i<td.getN(); i++) {
-    EndianUtil<double>::write(fcounts, tags_count_for_emis[i]);
+    EndianDoubleUtil::write(fcounts, tags_count_for_emis[i]);
   }
 
   fcounts.close();

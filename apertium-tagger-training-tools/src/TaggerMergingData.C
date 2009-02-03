@@ -24,7 +24,7 @@
 #include "SmoothUtils.H"
 
 #include <lttoolbox/compression.h>
-#include <lttoolbox/endian_util.h>
+#include <apertium/endian_double_util.h>
 
 TaggerMergingData::TaggerMergingData():TaggerData() {
   coarse_a=NULL;
@@ -109,7 +109,7 @@ TaggerMergingData::read_counts(istream& fcounts,
 
   for (int i=0; i<TaggerData::getN(); i++) {
     for(int j=0; j<TaggerData::getN(); j++) {
-      tags_pair[i][j]=EndianUtil<double>::read(fcounts);
+      tags_pair[i][j]=EndianDoubleUtil::read(fcounts);
     }
   }
 
@@ -118,7 +118,7 @@ TaggerMergingData::read_counts(istream& fcounts,
       if (TaggerData::getOutput()[k].find(i)!=TaggerData::getOutput()[k].end()) {
 	int ii=(int)Compression::multibyte_read(fcounts);
 	int kk=(int)Compression::multibyte_read(fcounts);
-	double d=EndianUtil<double>::read(fcounts);
+	double d=EndianDoubleUtil::read(fcounts);
 	if ((ii!=i) || (kk!=k)) {
 	  cerr<<"\nError when reading counts, indexes do not agree\n";
 	  exit(EXIT_FAILURE);
@@ -129,15 +129,15 @@ TaggerMergingData::read_counts(istream& fcounts,
   }
 
   for (int i=0; i<TaggerData::getN(); i++) {
-    tags_count[i]=EndianUtil<double>::read(fcounts);
+    tags_count[i]=EndianDoubleUtil::read(fcounts);
   }
 
   for (int k=0; k<TaggerData::getM(); k++) {
-    ambclass_count[k]=EndianUtil<double>::read(fcounts);
+    ambclass_count[k]=EndianDoubleUtil::read(fcounts);
   }
 
   for (int i=0; i<TaggerData::getN(); i++) {
-    tags_count_for_emis[i]=EndianUtil<double>::read(fcounts);
+    tags_count_for_emis[i]=EndianDoubleUtil::read(fcounts);
   }
 
   cerr<<"done.\n";
