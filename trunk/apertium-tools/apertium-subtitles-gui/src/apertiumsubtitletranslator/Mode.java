@@ -48,24 +48,24 @@ class Mode {
 
             if (sltlStr.length == 2) {
                 // like 'es-ca'
-                sl = sltlStr[0];
-                tl = sltlStr[1];
+                setSl(sltlStr[0]);
+                setTl(sltlStr[1]);
             } else {
 
                 if (this.isVariant(sltlStr[0])) {
                     // like 'eco-fr-es'
-                    sl = sltlStr[0] + "-" + sltlStr[1];
-                    tl = sltlStr[2];
+                    setSl(sltlStr[0] + "-" + sltlStr[1]);
+                    setTl(sltlStr[2]);
                 } else {
                     if (this.isVariant(sltlStr[2])) {
                         // like 'ca-es-multi'
-                        sl = sltlStr[0];
-                        tl = sltlStr[1] + "-" + sltlStr[2];
+                        setSl(sltlStr[0]);
+                        setTl(sltlStr[1] + "-" + sltlStr[2]);
                     }
                 }
             }
-            this.slName = this.getFullName(sl);
-            this.tlName = this.getFullName(tl);
+            this.slName = this.getFullName(getSl());
+            this.tlName = this.getFullName(getTl());
 
 
         } catch (ArrayIndexOutOfBoundsException aioofe) {
@@ -93,11 +93,11 @@ class Mode {
     }
 
     public final String getSL() {
-        return sl;
+        return getSl();
     }
 
     public final String getTL() {
-        return tl;
+        return getTl();
     }
 
     /**
@@ -207,5 +207,33 @@ class Mode {
      */
     public void setFile(File file) {
         this.file = file;
+    }
+
+    /**
+     * @return the sl
+     */
+    public String getSl() {
+        return sl;
+    }
+
+    /**
+     * @param sl the sl to set
+     */
+    public void setSl(String sl) {
+        this.sl = sl;
+    }
+
+    /**
+     * @return the tl
+     */
+    public String getTl() {
+        return tl;
+    }
+
+    /**
+     * @param tl the tl to set
+     */
+    public void setTl(String tl) {
+        this.tl = tl;
     }
 }
