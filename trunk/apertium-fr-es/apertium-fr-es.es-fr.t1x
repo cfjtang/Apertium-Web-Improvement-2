@@ -366,6 +366,7 @@
       <attr-item tags="rel"/>
       <attr-item tags="rel.adv"/>
       <attr-item tags="rel.nn"/>
+      <attr-item tags="rel.an"/>
       <attr-item tags="obj"/>
       <attr-item tags="tn"/>
       <attr-item tags="tn.ref"/>
@@ -22453,6 +22454,180 @@
 </rule>
 
 
+
+<rule comment="PREP + PRNREL">
+  <pattern>
+    <pattern-item n="prep"/>
+    <pattern-item n="rel"/>
+  </pattern>
+  <action>
+    <call-macro n="firstWord">
+      <with-param pos="1"/>
+    </call-macro>
+    <choose>
+      <when>
+        <test>
+          <equal>
+            <clip pos="2" side="sl" part="gen"/>
+            <lit-tag v="nt"/>
+          </equal>
+        </test>
+	<choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="lem"/>
+                <lit v="de"/>
+              </equal>
+            </test>
+	    <let>
+              <clip pos="2" side="tl" part="lem"/>
+	      <lit v="ce dont"/>
+	    </let>       
+	    <out>
+              <chunk name="prn_rel" case="caseFirstWord">
+		<tags>
+		  <tag>
+		    <lit-tag v="SN"/>
+		  </tag>
+		  <tag>
+		    <clip pos="2" side="tl" part="tipus_prn"/>
+		  </tag>
+		  <tag>
+		    <clip pos="2" side="tl" part="gen"/>
+		  </tag>
+		  <tag>
+		    <clip pos="2" side="tl" part="nbr"/>
+		  </tag>
+		</tags>
+		<lu>
+		  <clip pos="2" side="tl" part="whole"/>
+		</lu>
+              </chunk>
+	    </out>
+	</when>
+	<otherwise>
+	  <let>
+            <clip pos="2" side="tl" part="lem"/>
+	    <lit v="ce que"/>
+	  </let>     
+	  <out>
+            <chunk name="prep_prn_rel" case="caseFirstWord">
+	      <tags>
+		<tag>
+		  <lit-tag v="SN"/>
+		</tag>
+		<tag>
+		  <clip pos="2" side="tl" part="tipus_prn"/>
+		</tag>
+		<tag>
+		  <clip pos="2" side="tl" part="gen"/>
+		</tag>
+		<tag>
+		  <clip pos="2" side="tl" part="nbr"/>
+		</tag>
+	      </tags>
+	      <lu>
+		<clip pos="1" side="tl" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" side="tl" part="whole"/>
+	      </lu>
+            </chunk>
+	  </out>
+	</otherwise>
+	</choose>  
+      
+    <otherwise>
+      <choose>
+
+
+	<when>
+	  <test>
+	    <and>
+	      <equal>
+		<clip pos="2" side="sl" part="lem"/>
+		<lit v="el que"/>
+	      </equal>
+	      <equal>
+		<clip pos="2" side="sl" part="tipus_prn"/>
+		<lit-tag v="rel.an"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+            <clip pos="2" side="tl" part="lem"/>
+	    <lit v="lequel"/>
+	  </let>
+	  <choose>
+	    <when>
+	      <test>
+		<equal>
+		  <clip pos="1" side="sl" part="lem"/>
+		  <lit v="en"/>
+		</equal>
+	      </test>
+	      <let>
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="dans"/>
+	      </let>
+	    </when>
+            <when>
+	      <test>
+		<equal>
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="por"/>
+		</equal>
+	      </test>
+	      <let>
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="pour"/>
+	      </let>
+            </when>
+	  </choose>
+	</when>
+      </choose>
+      <out>
+        <chunk name="prep_rel" case="caseFirstWord">
+          <tags>
+            <tag>
+              <lit-tag v="SPREP"/>
+            </tag>
+            <tag>
+              <clip pos="2" side="tl" part="tipus_prn"/>
+            </tag>
+            <tag>
+              <clip pos="2" side="tl" part="gen"/>
+            </tag>
+            <tag>
+              <clip pos="2" side="tl" part="nbr"/>
+            </tag>
+          </tags>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+          </lu>
+	  <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="lem"/>
+            <clip pos="2" side="tl" part="a_prn"/>
+            <clip pos="2" side="tl" part="tipus_prn"/>
+            <clip pos="2" side="tl" part="gen"/>
+            <clip pos="2" side="tl" part="nbr"/>
+          </lu>
+        </chunk>
+      </out>
+      </otherwise>
+    </choose>
+      <let>
+        <var n="caseFirstWord"/>
+        <lit v="aa"/>
+      </let>
+    </action>
+  </rule>
+
+<!--
+
 <rule comment="PREP + PRNREL">
   <pattern>
     <pattern-item n="prep"/>
@@ -22655,7 +22830,7 @@
   </action>
 </rule>
 
-
+-->
 
     <rule comment="cuyo nombre -&gt; dont le nom">
       <pattern>
