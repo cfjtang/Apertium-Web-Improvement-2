@@ -37,14 +37,16 @@ public class SubtitleTranslationThread extends Thread {
     private String sl;
     private String tl;
     private ThreadListener theListener;
+    private int mode;
 
-    public SubtitleTranslationThread(JProgressBar progressBar, File file, TableModel tableModel, String sl, String tl, ThreadListener threadListener) {
+    public SubtitleTranslationThread(JProgressBar progressBar, File file, TableModel tableModel, String sl, String tl, ThreadListener threadListener, int mode) {
         this.progressBar = progressBar;
         this.file = file;
         this.tableModel = tableModel;
         this.sl = sl;
         this.tl = tl;
         this.theListener = threadListener;
+        this.mode = mode;
     }
 
     @Override
@@ -53,6 +55,7 @@ public class SubtitleTranslationThread extends Thread {
             SRTReader srtReader = new SRTReader(this.file.getAbsolutePath());
             Subtitles blockList = srtReader.read();
             SubtitleTranslator subTrans = new SubtitleTranslator(sl, tl, blockList);
+            subTrans.setMode(mode);
 
             progressBar.setMaximum(100);
             progressBar.setMinimum(0);

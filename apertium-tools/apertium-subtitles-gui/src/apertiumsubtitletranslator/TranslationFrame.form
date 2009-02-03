@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="maximizable" type="boolean" value="true"/>
@@ -30,20 +34,24 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="langPairSelection" min="-2" pref="199" max="-2" attributes="0"/>
-                      <EmptySpace pref="22" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="localApertiumOption" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="wsApertiumOption" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="58" max="32767" attributes="0"/>
                       <Component id="saveAsButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="stopTranslationButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="translationButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="scrollPane" alignment="0" pref="706" max="32767" attributes="0"/>
+                  <Component id="scrollPane" alignment="0" pref="1051" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="subtitleFileTitleLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="subtitleFileNameLabel" min="-2" pref="291" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="progressBar" alignment="0" pref="706" max="32767" attributes="0"/>
+                  <Component id="progressBar" alignment="0" pref="1051" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -58,11 +66,17 @@
                   <Component id="subtitleFileNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="translationButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="langPairSelection" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="stopTranslationButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="saveAsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="translationButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="langPairSelection" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="stopTranslationButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="saveAsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                      <Component id="localApertiumOption" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="wsApertiumOption" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="progressBar" min="-2" max="-2" attributes="0"/>
@@ -163,6 +177,32 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="localApertiumOption">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup1"/>
+        </Property>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" resourceKey="localApertiumOption.text"/>
+        <Property name="name" type="java.lang.String" value="localApertiumOption" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="localApertiumOptionActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="wsApertiumOption">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="wsApertiumOption.text"/>
+        <Property name="name" type="java.lang.String" value="wsApertiumOption" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="wsApertiumOptionActionPerformed"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="wsApertiumOptionMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>
