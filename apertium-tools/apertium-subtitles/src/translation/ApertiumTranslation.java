@@ -18,6 +18,7 @@
  */
 package translation;
 
+import utils.ApertiumWS;
 import utils.CommandExec;
 
 /**
@@ -60,7 +61,7 @@ public class ApertiumTranslation {
      * 
      * @return The translation
      */
-    public final String translate(String text) {
+    public final String translate_local(String text) {
         CommandExec command = null;
         String cmdStr;
         String mark = "";
@@ -77,6 +78,11 @@ public class ApertiumTranslation {
         command.exec();
         String result = command.getStdOut();
         return result;
+    }
+
+    public final String translate_ws(String text) {
+        ApertiumWS aWS = new ApertiumWS(this.sl, this.tl, text);
+        return aWS.translate();
     }
 
     /**

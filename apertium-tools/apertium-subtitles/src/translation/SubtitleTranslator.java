@@ -37,7 +37,9 @@ public class SubtitleTranslator {
     private TableModel tableModel;
     private int nSubtitles;
     private int j = 1;
-
+    static int LOCAL = 0;
+    static int WS = 1;
+    private int mode = LOCAL;
 
     public SubtitleTranslator(String sl, String tl, Subtitles subtitles) {
         this.sl = sl;
@@ -64,7 +66,7 @@ public class SubtitleTranslator {
         double i = 0;
 
         for (Subtitle block : blockList) {
- 
+
             String take = block.getTake();
             String newTake = take + "<B/>";
             block.setTake(newTake);
@@ -72,7 +74,7 @@ public class SubtitleTranslator {
             //block.print();
             String cTake = take.replaceAll("<br/>", "");
             if (this.isEndOfSentence(cTake)) {
-                if(!translateBlockList(toTranslate)) {
+                if (!translateBlockList(toTranslate)) {
                     return;
                 }
                 this.updateProgress(blockList, i);
@@ -80,10 +82,10 @@ public class SubtitleTranslator {
             }
             i++;
 
-            if(Thread.currentThread().isInterrupted()) {
+            if (Thread.currentThread().isInterrupted()) {
                 return;
             }
-       
+
         }
     }
 
@@ -125,45 +127,45 @@ public class SubtitleTranslator {
         String sentence = "";
 
         try {
-        for (Subtitle block : blockList) {
-            sentence = sentence + block.getTake();
+            for (Subtitle block : blockList) {
+                sentence = sentence + block.getTake();
 
-        }
-        sentence = sentence.replaceAll("\"", "&quot;");
-        String translation = translateSentence(sentence);
-        translation = translation.replaceAll("&quot;", "\"");
-        String[] parts = translation.split("<B/>");
-
-        int i = 0;
-        this.nSubtitles = blockList.size();
-
-
-        for (Subtitle block : blockList) {
-
-            String id = block.getId();
-            String time = block.getTime();
-            String trans = parts[i];
-
-            Subtitle blockTrans = new Subtitle();
-            blockTrans.setId(id);
-            blockTrans.setTime(time);
-            //blockTrans.setTake(trans);
-            blockTrans.addLine(trans);
-            t_subtitles.add(blockTrans);
-
-            //System.out.println("valueAt( " + j + ", 3 ) = " + trans);
-            String strans = trans.replaceAll("<br/>", " // ");
-            if(this.tableModel != null) {
-            this.tableModel.setValueAt(strans, j, 3);
-            j++;
             }
-            //blockTrans.print();
-            i++;
+            sentence = sentence.replaceAll("\"", "&quot;");
+            String translation = translateSentence(sentence);
+            translation = translation.replaceAll("&quot;", "\"");
+            String[] parts = translation.split("<B/>");
+
+            int i = 0;
+            this.nSubtitles = blockList.size();
 
 
-        }
+            for (Subtitle block : blockList) {
 
-        } catch(Exception e) {
+                String id = block.getId();
+                String time = block.getTime();
+                String trans = parts[i];
+
+                Subtitle blockTrans = new Subtitle();
+                blockTrans.setId(id);
+                blockTrans.setTime(time);
+                //blockTrans.setTake(trans);
+                blockTrans.addLine(trans);
+                t_subtitles.add(blockTrans);
+
+                //System.out.println("valueAt( " + j + ", 3 ) = " + trans);
+                String strans = trans.replaceAll("<br/>", " // ");
+                if (this.tableModel != null) {
+                    this.tableModel.setValueAt(strans, j, 3);
+                    j++;
+                }
+                //blockTrans.print();
+                i++;
+
+
+            }
+
+        } catch (Exception e) {
             System.err.println("Error: subtitles can't be translated. Please check if Apertium is installed.");
             return false;
         }
@@ -172,7 +174,26 @@ public class SubtitleTranslator {
 
     public String translateSentence(String sentence) {
         ApertiumTranslation translation = new ApertiumTranslation(this.sl, this.tl, false);
-        String result = translation.translate(sentence);
+        String result = "";
+        if (this.mode == this.LOCAL) {
+            result = translation.translate_local(sentence);
+        } else {
+            result = translation.translate_ws(sentence);
+        }
         return result;
+    }
+
+    /**
+     * @return the mode
+     */
+    public int getMode() {
+        return mode;
+    }
+
+    /**
+     * @param mode the mode to set
+     */
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 }
