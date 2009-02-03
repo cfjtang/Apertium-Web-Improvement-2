@@ -268,13 +268,13 @@ class Dictionary: #{
 
 		entrada = '';
 		if (_restriction == "none" or _restriction == '') and (_alternative == "none" or _alternative == ''): #{
-			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '">' + "\n";
+			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '" c="">' + "\n";
 		elif (_alternative == "none" or _alternative == '') and (_restriction != "none" or _restriction != ''): #{
-			entrada = entrada + '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n";
+			entrada = entrada + '<e r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '" c="">' + "\n";
 		elif (_restriction == "none" or _restriction == '') and (_alternative != "none" or _alternative != ''): #{
-			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '" alt="' + _alternative + '">' + "\n";
+			entrada = entrada + '<e lm="' + _lemma + '" a="' + _author + '" alt="' + _alternative + '" c="">' + "\n";
 		else: #{
-			entrada = entrada + '<e alt="' + _alternative + '" r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '">' + "\n";
+			entrada = entrada + '<e alt="' + _alternative + '" r="' + _restriction + '" lm="' + _lemma + '" a="' + _author + '" c="">' + "\n";
 		#}
 
 		entrada = entrada + '  <i>' + incondicional.replace(' ', '<b/>') + '</i>' + "\n";
@@ -283,6 +283,7 @@ class Dictionary: #{
 
                 if _comment != '': #{
 			entrada = entrada +  '<!-- ' + _comment + ' -->' + "\n";
+			entrada = entrada.replace('c=""', 'c="' + _comment + '"');
                 #}
 
 		print >> sys.stderr, entrada;
@@ -294,13 +295,13 @@ class Dictionary: #{
                 entrada = '';
 
 		if (_restriction == "none" or _restriction == '') and (_alternative == "none" or _alternative == ''): #{
-			entrada = entrada + '<e a="' + _author + '">' + "\n";
+			entrada = entrada + '<e a="' + _author + '" c="">' + "\n";
 		elif (_alternative == "none" or _alternative == '') and (_restriction != "none" or _restriction != ''): #{
-			entrada = entrada + '<e r="' + _restriction + '" a="' + _author + '">' + "\n";
+			entrada = entrada + '<e r="' + _restriction + '" a="' + _author + '" c="">' + "\n";
 		elif (_restriction == "none" or _restriction == '') and (_alternative != "none" or _alternative != ''): #{
-			entrada = entrada + '<e a="' + _author + '" alt="' + _alternative + '">' + "\n";
+			entrada = entrada + '<e a="' + _author + '" alt="' + _alternative + '" c="">' + "\n";
                 else: #{
-                        entrada = entrada + '<e alt="' + _alternative + '" r="' + _restriction + '" a="' + _author + '" >' + "\n";
+                        entrada = entrada + '<e alt="' + _alternative + '" r="' + _restriction + '" a="' + _author + '" c="">' + "\n";
                 #}
 
 		_symbol_list_left = '<s n="' + _tag + '"/>';
@@ -314,6 +315,7 @@ class Dictionary: #{
 
                 if _comment != '': #{
                         entrada = entrada + '<!-- ' + _comment + ' -->' + "\n";
+			entrada = entrada.replace('c=""', 'c="' + _comment + '"');
                 #}
 
                 print >> sys.stderr, entrada;
@@ -475,8 +477,25 @@ class Pair: #{
 			if len(p) > 0: #{
 				l = Ft.Xml.XPath.Evaluate('.//l', contextNode=p[0]);
 				r = Ft.Xml.XPath.Evaluate('.//r', contextNode=p[0]);
-				lemma_left = l[0].firstChild.nodeValue;
-				lemma_right = r[0].firstChild.nodeValue;
+
+				#print >> sys.stderr , 'l[0]: ' , l[0].firstChild
+				if l[0].firstChild != type(None): #{
+					lemma_left = getattr(l[0], 'nodeValue', '')
+					#lemma_left = l[0].firstChild.nodeValue;	
+				else: #{
+					lemma_left = '';
+				#}
+				#print >> sys.stderr , 'r[0]: ' , r[0].firstChild
+				if r[0].firstChild != type(None): #{
+					lemma_right = getattr(r[0], 'nodeValue', '')
+					#lemma_right = r[0].firstChild.nodeValue;
+				else: #{
+					lemma_right = '';
+				#}
+
+				if lemma_right == '' and lemma_left == '': #{
+					continue;
+				#}
 
 				_left.add_lemma(lemma_left);
 				_right.add_lemma(lemma_right);
