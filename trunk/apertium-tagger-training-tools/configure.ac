@@ -7,7 +7,7 @@ m4_define([required_lttoolbox_version], [3.1])
 m4_define([required_apertium_version], [3.1])
 m4_define([required_libxml_version], [2.6.17])
 
-AC_INIT([apertium-tagger-training-tools], [1.1.0], [fsanchez@dlsi.ua.es])
+AC_INIT([apertium-tagger-training-tools], [1.1.1], [fsanchez@dlsi.ua.es])
 
 AC_CONFIG_HEADERS([src/configure.H])
 
