@@ -239,6 +239,12 @@
       <tags-item tags="det.def.mf.pl"/>
     </sequence>
   </def-mult>
+  <def-mult name="PREPREL" closed="true">
+    <sequence>
+      <label-item label="PREP"/>
+      <label-item label="REL"/>
+    </sequence>
+  </def-mult>
   <def-mult name="IMPLEXPRNENC">
     <sequence>
       <label-item label="VLEXIMP"/>
@@ -968,7 +974,7 @@
     </label-sequence>
     
   <!--prova prohibició verb que no siga être o avoir + participi-->  
-    <label-sequence>
+   <!-- <label-sequence>
       <label-item label="VLEXPFCI"/>
       <label-item label="VLEXPARTPI"/>
     </label-sequence>
@@ -999,7 +1005,7 @@
     <label-sequence>
       <label-item label="VMODALIMP"/>
       <label-item label="VLEXPARTPI"/>
-    </label-sequence>
+    </label-sequence> -->
     
 <!--prova prohibició de nom i adj + ger pq trie ppres-->   
     <label-sequence>
@@ -1137,12 +1143,16 @@
       <label-item label="PREDET"/>
       <label-item label="SENT"/>
     </label-sequence>
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="RELN"/>
       <label-item label="SENT"/>
     </label-sequence>
     <label-sequence>
       <label-item label="RELAA"/>
+      <label-item label="SENT"/>
+    </label-sequence> --> 
+    <label-sequence>
+      <label-item label="REL"/>
       <label-item label="SENT"/>
     </label-sequence>
     <label-sequence>
