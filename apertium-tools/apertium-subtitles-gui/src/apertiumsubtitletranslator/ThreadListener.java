@@ -18,7 +18,8 @@
  */
 package apertiumsubtitletranslator;
 
-import subtitles.Subtitles;
+import engine.subtitles.Subtitles;
+
 
 /**
  *

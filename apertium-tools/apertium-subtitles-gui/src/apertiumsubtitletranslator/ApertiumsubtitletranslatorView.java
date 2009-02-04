@@ -18,6 +18,7 @@
  */
 package apertiumsubtitletranslator;
 
+import java.awt.Dimension;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDesktopPane;
@@ -131,7 +132,8 @@ public class ApertiumsubtitletranslatorView extends FrameView {
         this.getFrame().setContentPane(desktop);
         //Make dragging a little faster but perhaps uglier.
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-        this.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //this.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+        desktop.setPreferredSize(new Dimension(800,600));
 
         try {
             // Preferences are not stores, nor can be edited yet.

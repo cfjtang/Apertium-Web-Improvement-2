@@ -21,9 +21,9 @@ package apertiumsubtitletranslator;
 import java.io.File;
 import javax.swing.JProgressBar;
 import javax.swing.table.TableModel;
-import subtitles.Subtitles;
-import translation.SubtitleTranslator;
-import utils.SRTReader;
+import engine.subtitles.Subtitles;
+import engine.translation.SubtitleTranslator;
+import engine.utils.SRTReader;
 
 /**
  *

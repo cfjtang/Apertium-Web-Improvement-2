@@ -18,14 +18,14 @@
  */
 package apertiumsubtitletranslator;
 
+import engine.subtitles.Subtitle;
+import engine.subtitles.Subtitles;
+import engine.utils.SRTReader;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import subtitles.Subtitle;
-import subtitles.Subtitles;
-import utils.SRTReader;
 
 /**
  *
