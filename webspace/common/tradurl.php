@@ -164,6 +164,7 @@ function detect_encoding($text) {
       }
 
    $e[1] = $encoding;
+   
    return $e;
 }
 

@@ -61,7 +61,7 @@
 <table>
 <tr>
 <td>
-Copyright &copy; 2007 <a href="http://www.ua.es">Universidad de Alicante</a><br/>
+Copyright &copy; 2007&mdash;2008 <a href="http://www.ua.es">Universidad de Alicante</a><br/>
 <?php
 	print _("Original design by");
 ?>
@@ -77,8 +77,8 @@ Copyright &copy; 2007 <a href="http://www.ua.es">Universidad de Alicante</a><br/
 print _("Creative Commons license");
 ?>
 <br/>
-<a alt="This page is subject to a Creative Commons license" href="http://creativecommons.org/licenses/by-sa/3.0/">
-	<img alt="Creative Commons license" src="images/creativecommons.png"/>
+<a alt="This page is subject to a Creative Commons licence" href="http://creativecommons.org/licenses/by-sa/3.0/">
+	<img alt="Creative Commons licence" src="images/creativecommons.png"/>
 </a>
 </td>
 
