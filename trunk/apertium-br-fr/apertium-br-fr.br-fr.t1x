@@ -4036,8 +4036,7 @@
 		</action>
 	</rule>
     
-    
-    
+  
     <rule comment="REGLA: LOCATIUS">
       <pattern>
         <pattern-item n="loc"/>
@@ -4107,6 +4106,48 @@
             </out>
 	  </otherwise>
 	</choose>  
+      </action>
+    </rule>  
+    
+   
+    
+    <rule comment="REGLA: DET TOP">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="loc"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+	   <out>
+              <chunk name="det_nploc" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><lit-tag v="sg"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lemh"/>
+                  <clip pos="1" side="tl" part="a_det"/>
+                  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="1" side="tl" part="gen_mf"/>
+                  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="1" side="tl" part="nbr_sp"/>
+                  <clip pos="1" side="tl" part="lemq"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="2" side="tl" part="gen_mf"/>
+                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="2" side="tl" part="nbr_sp"/>
+                  <clip pos="2" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
       </action>
     </rule>  
     
