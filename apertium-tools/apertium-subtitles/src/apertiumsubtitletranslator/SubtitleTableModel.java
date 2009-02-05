@@ -18,21 +18,32 @@
  */
 package apertiumsubtitletranslator;
 
-import javax.swing.table.AbstractTableModel;
+import engine.subtitles.Subtitles;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Enrique Benimeli Bofarull
  */
-public class SubtitleTableModel extends AbstractTableModel {
+public class SubtitleTableModel extends DefaultTableModel {
 
-    private String[] columnNames = {"ID", "Time", "Source", "Translation"};
+    //private String[] columnNames = {"ID", "Time", "Source", "Translation"};
     private String[][] data;
 
-    public SubtitleTableModel(int rows) {
-        data = new String[rows][4];
+    private Subtitles subtitles;
+
+
+    public SubtitleTableModel(String [][] data, String[] columnNames, Subtitles subtitles) {
+        super(data, columnNames);
+        this.subtitles = subtitles;
+
+        //this.data = data;
+        //this.columnNames = columnNames;
+
     }
 
+
+    /*
     public int getColumnCount() {
         return columnNames.length;
     }
@@ -53,29 +64,24 @@ public class SubtitleTableModel extends AbstractTableModel {
     public Class getColumnClass(int c) {
         return Object.class;
     }
-
-    /*
-     * Don't need to implement this method unless your table's
-     * editable.
      */
+
+
+    @Override
     public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-        if (col < 2) {
+        if (col < 3) {
             return false;
         } else {
             return true;
         }
     }
 
-    /*
-     * Don't need to implement this method unless your table's
-     * data can change.
-     */
     public void setValueAt(String value, int row, int col) {
         data[row][col] = value;
-        System.out.println("data[" + row + "][" + col + "] = " + value);
+        //System.out.println("data[" + row + "][" + col + "] = " + value);
         fireTableCellUpdated(row, col);
     }
+
+   
 }
 

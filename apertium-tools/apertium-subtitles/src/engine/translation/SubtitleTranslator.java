@@ -154,7 +154,7 @@ public class SubtitleTranslator {
                 t_subtitles.add(blockTrans);
 
                 //System.out.println("valueAt( " + j + ", 3 ) = " + trans);
-                String strans = trans.replaceAll("<br/>", " // ");
+                String strans = trans.replaceAll("<br/>", " | ");
                 if (this.tableModel != null) {
                     this.tableModel.setValueAt(strans, j, 3);
                     j++;

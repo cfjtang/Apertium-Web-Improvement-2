@@ -24,7 +24,6 @@ import engine.utils.SRTReader;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -43,6 +42,7 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
     ArrayList<Mode> modes;
     ArrayList<Mode> modesWS = new ArrayList<Mode>();
     private int mode;
+    SubtitleTableModelListener tml;
 
     /** Creates new form TranslationFrame */
     public TranslationFrame(ArrayList<Mode> modes) {
@@ -142,13 +142,18 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
 
             data[i][0] = id;
             data[i][1] = time;
-            String ssource = source.replaceAll("<br/>", " // ");
+            String ssource = source.replaceAll("<br/>", " | ");
             data[i][2] = ssource;
             i++;
         }
         String[] columnNames = {"ID", java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Time"), java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Source"), java.util.ResourceBundle.getBundle("apertiumsubtitletranslator/resources/locale/translation").getString("Translation")};
-        tm = new DefaultTableModel(data, columnNames);
+        //tm = new DefaultTableModel(data, columnNames);
+        tm = new SubtitleTableModel(data, columnNames, blockList);
+        tml = new SubtitleTableModelListener(table, this.translation);
         table.setModel(tm);
+        table.getModel().addTableModelListener(tml);
+
+
     }
 
     /** This method is called from within the constructor to
@@ -376,6 +381,8 @@ public class TranslationFrame extends javax.swing.JInternalFrame implements Thre
         this.translationButton.setEnabled(true);
         this.stopTranslationButton.setEnabled(false);
         this.translation = translation;
+        this.tml.setSubtitles(translation);
+
     }
 
     // main class is not needed
