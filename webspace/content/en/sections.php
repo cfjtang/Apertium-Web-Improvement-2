@@ -15,8 +15,8 @@ $subsections = array
    	"translatetext"=>"Text translation",
    	"translatedoc"=>"Document translation",
    	"surfandtranslate"=>"Surf &amp; translate",
-		"lookup"=>"DicLookUp",   	
-   	"link@Apertium unstable"=>"http://xixona.dlsi.ua.es/apertium-unstable/",
+	"lookup"=>"DicLookUp",   	
+/*   	"link@Apertium unstable"=>"http://xixona.dlsi.ua.es/apertium-unstable/", */
    	"link@Apertium alpha-testing"=>"http://xixona.dlsi.ua.es/testing/"   	
    ),
 /*
