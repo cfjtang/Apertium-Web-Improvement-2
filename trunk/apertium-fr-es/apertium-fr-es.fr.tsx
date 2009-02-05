@@ -1457,7 +1457,43 @@
      <label-sequence>
       <label-item label="PRNPRO"/>
       <label-item label="ADV"/>
+    </label-sequence>   
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="NOMM"/>
+    </label-sequence>   
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="NOMF"/>
+    </label-sequence>   
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>   
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="ACRONIMOM"/>
     </label-sequence>  
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="ACRONIMOF"/>
+    </label-sequence>   
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="ACRONIMOMF"/>
+    </label-sequence>    
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="ANTROPONIM"/>
+    </label-sequence>    
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="TOPONIM"/>
+    </label-sequence>    
+     <label-sequence>
+      <label-item label="PRNPRO"/>
+      <label-item label="NPALTRES"/>
+    </label-sequence> 
     
     <label-sequence>
       <label-item label="PRNTN"/>
@@ -1650,7 +1686,7 @@
       <label-item label="NUM"/>
     </label-sequence> 
 
-    <label-sequence>
+  <!--  <label-sequence>
       <label-item label="VHABERPFCI"/>
       <label-item label="ADV"/>
     </label-sequence>
@@ -1668,7 +1704,7 @@
     <label-sequence>
       <label-item label="VHABERSUBJ"/>
       <label-item label="ADV"/>
-    </label-sequence> 
+    </label-sequence>  -->
    
   </forbid>
 
