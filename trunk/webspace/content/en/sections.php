@@ -1,6 +1,6 @@
 <?php
-	$sections = array("whatisapertium", "whodevelopsit", "downloading", "testdrive", "documentation", "interact", "latestnews", "software", "funding", "users", "contact");
-	$text = array("what is apertium", "who develops it", "downloading", "test drive", "documentation", "interact!", "latest news", "software", "funding", "users", "contact");
+	$sections = array("whatisapertium", "whodevelopsit", "testdrive", "documentation", "interact", "software", "funding", "users", "contact");
+	$text = array("what is apertium", "who develops it", "test drive", "documentation", "interact!", "software", "funding", "users", "contact");
 
 $subsections = array
 (
@@ -19,21 +19,18 @@ $subsections = array
    	"link@Apertium unstable"=>"http://xixona.dlsi.ua.es/apertium-unstable/",
    	"link@Apertium alpha-testing"=>"http://xixona.dlsi.ua.es/testing/"   	
    ),
-"documentation" =>array
+/*
+"documentation" => array
    (
-   /*"documents"=>"Documents",*/
-   "publications"=>"Publications",
-   "link@Wiki" => "http://xixona.dlsi.ua.es/wiki"
-   ),
+   "documents"=>"Documents",
+   "link@publications"=>"http://wiki.apertium.org/wiki/Publications",
+   "link@Wiki" => "http://wiki.apertium.org/"
+   ),*/
 "interact" =>array
 	(
 		"link@cgi::irc"=>"http://xixona.dlsi.ua.es/cgi-bin/cgiirc/irc.cgi",
 		"link@Forum"=>"http://sourceforge.net/forum/forum.php?forum_id=481030",
 		"link@Mailing list"=>"https://lists.sourceforge.net/lists/listinfo/apertium-stuff"
-	),
-"latestnews" =>array
-	(
-		"link@RSS"=>"http://www.sf.net/export/rss2_projnews.php?group_id=143781"
 	),
 "software" =>array
 	(

@@ -32,6 +32,9 @@ function getPair($lang) {
 		case "ro":
 			return "ro-es";
 			break;
+		case "cy":
+			return "cy-en";
+				break;
 		default:
 			return "";
 			break;

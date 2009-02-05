@@ -3,11 +3,25 @@
 ?>
 
 <?php include_once("common/meta.php") ?>
+<div style="width:inherit;background-color:orange;text-align:center;border:0px;padding:4px;">
+
+<?
+    include '/home/fran/public_html/basque/berria/rss_php.php';
+
+    $rss = new rss_php;
+    $rss->load('http://sourceforge.net/export/rss2_projnews.php?group_id=143781');
+
+    $items = $rss->getItems(); #returns all rss items
+
+    print "<b>" . date("d-m-Y", strtotime($items[0]["pubDate"])) . "</b>: " . $items[0]["title"] . ", <a href=\"" . $items[0]["link"] . "\">read more...</a>";
+?>
+</div>
 <body>
 <?php
 	$id = $HTTP_GET_VARS["id"];
 	if ($id == "") {
-		$id = "whatisapertium";
+		$id = "translatetext";
+#		$id = "whatisapertium";
 	} 
 
 ?> 

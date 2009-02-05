@@ -36,4 +36,16 @@ print "<option value='es-eo' " . ($dir == 'es-eo' ? ' selected=true' : '') . ">"
 print "<option disabled='true'></option>";	    
 //print "<option value='es-ro' " . ($dir == 'es-ro' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Romanian") . "</option>";
 print "<option value='ro-es' " . ($dir == 'ro-es' ? ' selected=true' : '') . ">" . _("Romanian") . " &rarr; " . _("Spanish") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='es-en' " . ($dir == 'es-en' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("English") . "</option>";
+print "<option value='en-es' " . ($dir == 'en-es' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Spanish") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='cy-en' " . ($dir == 'cy-en' ? ' selected=true' : '') . ">" . _("Welsh") . " &rarr; " . _("English") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='eu-es' " . ($dir == 'eu-es' ? ' selected=true' : '') . ">" . _("Basque") . " &rarr; " . _("Spanish") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='en-gl' " . ($dir == 'en-gl' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Galician") . "</option>";
+print "<option value='gl-en' " . ($dir == 'gl-en' ? ' selected=true' : '') . ">" . _("Galician") . " &rarr; " . _("English") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='en-eo' " . ($dir == 'en-eo' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Esperanto") . "</option>";
 ?>

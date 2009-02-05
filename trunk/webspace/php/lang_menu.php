@@ -41,7 +41,7 @@ function printLanguageLink($code, $text, $url, $newLang) {
 		printLanguageLink("fr","fran&ccedil;ais", $url, $newLang, $currentLang);
 		printLanguageLink("gl","galego", $url, $newLang, $currentLang);
 		//printLanguageLink("id","indonesian", $url, $newLang, $currentLang);
-		printLanguageLink("mk","македонски", $url, $newLang, $currentLang);		
+		//printLanguageLink("mk","македонски", $url, $newLang, $currentLang);		
 		//printLanguageLink("ms","bahasa Melayu (malay)", $url, $newLang, $currentLang);		
 		//printLanguageLink("nl","nederlands (	dutch)", $url, $newLang, $currentLang);
 		printLanguageLink("oc","occit&agrave;", $url, $newLang, $currentLang);
