@@ -34,10 +34,12 @@ function show_form($textbox, $dir) {
 	print "<option value='cy-en-rl' " . ($dir == 'en-cy' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Welsh") . "</option>";		
 	print "<option class='beta' value='en-es-lr' " . ($dir == 'en-es' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Spanish") . " (beta)</option>";
 	print "<option value='en-pl-lr' " . ($dir == 'en-pl' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Polish") . "</option>";
+	print "<option value='eo-en-rl' " . ($dir == 'en-eo' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Esperanto") . "</option>";
 
 	print "<option class='header' value='' disabled='true'>" . _("Esperanto") . "</option>";
 	print "<option value='eo-es-lr' " . ($dir == 'eo-es' ? ' selected=true' : '') . ">" . _("Esperanto") . " &rarr; " . _("Spanish") . "</option>";
 	print "<option value='eo-ca-lr' " . ($dir == 'eo-ca' ? ' selected=true' : '') . ">" . _("Esperanto") . " &rarr; " . _("Catalan") . "</option>";
+	print "<option value='eo-en-lr' " . ($dir == 'eo-en' ? ' selected=true' : '') . ">" . _("Esperanto") . " &rarr; " . _("English") . "</option>";
 	
 	print "<option class='header' value='' disabled='true'>" . _("Spanish") . "</option>";
 	print "<option value='es-ca-lr' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Catalan") . "</option>";
