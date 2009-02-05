@@ -16847,46 +16847,11 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <call-macro n="tipus_adv">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
-	  <when>
-	    <test>
-	      <equal caseless="no">
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="pas"/>
-	      </equal>
-	    </test>
-	    <!--	<call-macro n="f_bcondfirst">
-		<with-param pos="1"/>
-		</call-macro>-->
-	  </when>
-	  <when>
-	    <test>
-	      <equal caseless="no">
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="Pas"/>
-	      </equal>
-	    </test>
-	    <out>
-	      <chunk name="prn" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SN"/></tag>
-		  <tag><lit-tag v="tn"/></tag>
-		  <tag><lit-tag v="nt"/></tag>
-		  <tag><lit-tag v="sg"/></tag>
-		</tags>
-		<lu>
-		  <lit v="nada"/>
-		  <lit-tag v="prn"/> 
-		  <lit-tag v="tn"/>
-		  <lit-tag v="nt"/>
-		  <lit-tag v="sg"/>
-		</lu>
-	      </chunk>
-	    </out>
-	  </when>
-	  <otherwise>
-	    <choose>
-	      <when>
+            <when>
 		<test>
 		  <equal caseless="yes">
 		    <clip pos="1" side="sl" part="lem"/>
@@ -16913,16 +16878,13 @@
 		      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
 		    </tags>
 		    <lu>
-		      <clip pos="1" side="tl" part="lem"/>
-		      <clip pos="1" side="tl" part="a_adv"/>
+		      <var n="tipusadv"/>
 		    </lu>
 		  </chunk>
 		</out>  
 	      </otherwise>
 	    </choose>
-	  </otherwise>
-	</choose>
-	<let>
+	  <let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
