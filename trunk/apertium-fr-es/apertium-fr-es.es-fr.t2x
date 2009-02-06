@@ -818,7 +818,7 @@
 </choose>
 </def-macro>
 
-<def-macro n="posa_subj" npar="1"><!-- pon sujeto si hace falta -->
+<def-macro n="posa_subj" npar="1"><!-- pon sujeto si hace falta, y envía pronombre proclítico si el verbo es pronominal en francés -->
   <choose>
     <when>
       <test>
@@ -891,45 +891,7 @@
 		    </equal>
 		  </test>
 
-		  <choose>
-		    <when>
-		      <test>
-			<or>
-			  <equal caseless="yes">
-			    <clip pos="1" part="lem"/>
-			    <lit v="pronverb"/>
-			  </equal>
-			  <equal caseless="yes">
-			    <clip pos="1" part="lem"/>
-			    <lit v="pronaux_pp"/>
-			  </equal>
-			</or>
-		      </test>
-		      <out>
-			
-			<chunk>
-			  <lit v="prnperssubj"/>
-			  <lit-tag v="SN"/>
-			  <lit v="{^"/>
-			  <lit v="je"/>
-			  <lit-tag v="prn.tn.p1.mf.sg"/>
-			  <lit v="$}"/>
-			</chunk>
-			<b/>
-			<chunk>
-			  <get-case-from pos="1">
-			    <lit v="prnpro"/>
-			  </get-case-from>
-			  <lit-tag v="SN"/>
-			  <lit v="{^"/>
-			  <lit v="me"/>
-			  <lit-tag v="prn.pro.p1.mf.sg"/>
-			  <lit v="$}"/>
-			</chunk>
-			<b/>
-		      </out>
-		    </when>
-		    <otherwise>
+	
 		      <out>
 			
 			<chunk>
@@ -944,51 +906,8 @@
 			</chunk>
 			<b/>
 		      </out>
-		    </otherwise>
-		  </choose>
-		</when>
+		</when> 
 		<otherwise>
-
-
-		  <choose>
-		    <when>
-		      <test>
-			<or>
-			  <equal caseless="yes">
-			    <clip pos="1" part="lem"/>
-			    <lit v="pronverb"/>
-			  </equal>
-			  <equal caseless="yes">
-			    <clip pos="1" part="lem"/>
-			    <lit v="pronaux_pp"/>
-			  </equal>
-			</or>
-		      </test>
-		      <out>
-			
-			<chunk>
-			  <get-case-from pos="1">
-			    <lit v="prnperssubj"/>
-			  </get-case-from>
-			  <lit-tag v="SN"/>
-			  <lit v="{^"/>
-			  <lit v="nous"/>
-			  <lit-tag v="prn.tn.p1.mf.pl"/>
-			  <lit v="$}"/>
-			</chunk>
-			<b/>
-			<chunk>
-			  <lit v="prnpro"/>
-			  <lit-tag v="SN"/>
-			  <lit v="{^"/>
-			  <lit v="nous"/>
-			  <lit-tag v="prn.pro.p1.mf.pl"/>
-			  <lit v="$}"/>
-			</chunk>
-			<b/>
-		      </out>
-		    </when>
-		    <otherwise>
 
 		      <out>
 			
@@ -1005,8 +924,6 @@
 			</chunk>
 			<b/>
 		      </out>
-		    </otherwise>
-		  </choose>
 		</otherwise>
 	      </choose>
 	    </when>
@@ -1048,45 +965,7 @@
 			</equal>
 		      </test>
 
-		      <choose>
-			<when>
-			  <test>
-			    <or>
-			      <equal caseless="yes">
-				<clip pos="1" part="lem"/>
-				<lit v="pronverb"/>
-			      </equal>
-			      <equal caseless="yes">
-				<clip pos="1" part="lem"/>
-				<lit v="pronaux_pp"/>
-			      </equal>
-			    </or>
-			  </test>
-			  <out>
-			    
-			    <chunk>
-			      <get-case-from pos="1">
-				<lit v="prnperssubj"/>
-			      </get-case-from>
-			      <lit-tag v="SN"/>
-			      <lit v="{^"/>
-			      <lit v="tu"/>
-			      <lit-tag v="prn.tn.p2.mf.sg"/>
-			      <lit v="$}"/>
-			    </chunk>
-			    <b/>
-			    <chunk>
-			      <lit v="prnpro"/>
-			      <lit-tag v="SN"/>
-			      <lit v="{^"/>
-			      <lit v="te"/>
-			      <lit-tag v="prn.pro.p2.mf.sg"/>
-			      <lit v="$}"/>
-			    </chunk>
-			    <b/>
-			  </out>
-			</when>
-			<otherwise>
+		   
 
 			  <out>
 			    <chunk>
@@ -1101,50 +980,10 @@
 			    </chunk>
 			    <b/>
 			  </out>
-			</otherwise>
-		      </choose>
 		    </when>
 		    <otherwise>
 
-		      <choose>
-			<when>
-			  <test>
-			    <or>
-			      <equal caseless="yes">
-				<clip pos="1" part="lem"/>
-				<lit v="pronverb"/>
-			      </equal>
-			      <equal caseless="yes">
-				<clip pos="1" part="lem"/>
-				<lit v="pronaux_pp"/>
-			      </equal>
-			    </or>
-			  </test>
-			  <out>
-			    
-			    <chunk>
-			      <get-case-from pos="1">
-				<lit v="prnperssubj"/>
-			      </get-case-from>
-			      <lit-tag v="SN"/>
-			      <lit v="{^"/>
-			      <lit v="vous"/>
-			      <lit-tag v="prn.tn.p2.mf.pl"/>
-			      <lit v="$}"/>
-			    </chunk>
-			    <b/>
-			    <chunk>
-			      <lit v="prnpro"/>
-			      <lit-tag v="SN"/>
-			      <lit v="{^"/>
-			      <lit v="vous"/>
-			      <lit-tag v="prn.pro.p2.mf.pl"/>
-			      <lit v="$}"/>
-			    </chunk>
-			    <b/>
-			  </out>
-			</when>
-			<otherwise>
+		  
 
 			  <out>
 			    <chunk>
@@ -1159,8 +998,6 @@
 			    </chunk>
 			    <b/>
 			  </out>
-			</otherwise>
-		      </choose>	
 		    </otherwise>
 		  </choose>
 		</when>
@@ -1187,46 +1024,7 @@
 		    </or>
 		  </test>
 
-		  <choose>
-		    <when>
-		      <test>
-			<or>
-			  <equal caseless="yes">
-			    <clip pos="1" part="lem"/>
-			    <lit v="pronverb"/>
-			  </equal>
-			  <equal caseless="yes">
-			    <clip pos="1" part="lem"/>
-			    <lit v="pronaux_pp"/>
-			  </equal>
-			</or>
-		      </test>
-		      <out>
-			
-			<chunk>
-			  <get-case-from pos="1">
-			    <lit v="prnperssubj"/>
-			  </get-case-from>
-			  <lit-tag v="SN"/>
-			  <lit v="{^"/>
-			  <lit v="il"/>
-			  <lit-tag v="prn.tn.p3.m"/>
-			  <clip pos="1" part="nbr"/>
-			  <lit v="$}"/>
-			</chunk>
-			<b/>
-			<chunk>
-			  <lit v="prnpro"/>
-			  <lit-tag v="SN"/>
-			  <lit v="{^"/>
-			  <lit v="se"/>
-			  <lit-tag v="prn.pro.ref.p3.mf.sp"/>
-			  <lit v="$}"/>
-			</chunk>
-			<b/>
-		      </out>
-		    </when>
-		    <otherwise>
+
 		      <out>
 			<chunk>
 			  <get-case-from pos="1">
@@ -1241,8 +1039,6 @@
 			</chunk>
 			<b/>
 		      </out>
-		    </otherwise>
-		  </choose>
 		</when>
 	      </choose>
 	    </otherwise>
@@ -1266,6 +1062,148 @@
 
     </when>
   </choose>
+  <choose><!--miramos si hay que enviar pronombre reflexivo --> 
+    <when>
+      <test>
+	<or>
+	  <equal caseless="yes">
+	    <clip pos="1" part="lem"/>
+	    <lit v="pronverb"/>
+	  </equal>
+	  <equal caseless="yes">
+	    <clip pos="1" part="lem"/>
+	    <lit v="pronaux_pp"/>
+	  </equal>
+	</or>
+      </test>
+       <choose>
+	<when>
+	  <test><!--el verbo está en primera persona sg-->
+	    <and>
+	      <equal>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="p1"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <out>
+	    <chunk>
+	      <get-case-from pos="1">
+		<lit v="prnpro"/>
+	      </get-case-from>
+	      <lit-tag v="SN"/>
+	      <lit v="{^"/>
+	      <lit v="me"/>
+	      <lit-tag v="prn.pro.p1.mf.sg"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>
+	  </out>
+	</when>
+	<when>
+	  <test><!--el verbo está en primera persona sg-->
+	    <and>
+	      <equal>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="p2"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <out>	    
+	    <chunk>
+	      <lit v="prnpro"/>
+	      <lit-tag v="SN"/>
+	      <lit v="{^"/>
+	      <lit v="te"/>
+	      <lit-tag v="prn.pro.p2.mf.sg"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>
+	  </out>
+	</when>
+	<when>
+	  <test><!--el verbo está en primera persona sg-->
+	      <equal>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="p3"/>
+	      </equal>
+	  </test>
+	  <out>
+	    <chunk>
+	      <lit v="prnpro"/>
+	      <lit-tag v="SN"/>
+	      <lit v="{^"/>
+	      <lit v="se"/>
+	      <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>
+	  </out>
+	</when>
+	<when>
+	  <test><!--el verbo está en primera persona sg-->
+	    <and>
+	      <equal>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="p1"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="pl"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <out>
+	    <chunk>
+	      <lit v="prnpro"/>
+	      <lit-tag v="SN"/>
+	      <lit v="{^"/>
+	      <lit v="nous"/>
+	      <lit-tag v="prn.pro.p1.mf.pl"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>
+	  </out>
+	</when>
+	<when>
+	  <test><!--el verbo está en primera persona sg-->
+	    <and>
+	      <equal>
+		<clip pos="1" part="pers"/>
+		<lit-tag v="p2"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="pl"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <out>
+	    <chunk>
+	      <lit v="prnpro"/>
+	      <lit-tag v="SN"/>
+	      <lit v="{^"/>
+	      <lit v="vous"/>
+	      <lit-tag v="prn.pro.p2.mf.pl"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>
+	  </out>
+	</when>	
+       </choose>
+
+
+    </when>
+</choose>
+
   <let>
     <var n="nombre_subj"/>
     <lit v="no_assignat"/>
