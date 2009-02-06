@@ -6,17 +6,14 @@
   <def-label name="ezanedin" closed="true">
     <tags-item lemma="ezan" tags="ADL.*"/>
     <tags-item lemma="edin" tags="ADL.*"/>
-    <tags-item lemma="edin" tags="ADT.*"/>
     <tags-item lemma="edin" tags="vbsint.*"/>
     <tags-item lemma="ezan" tags="vbsint.*"/>
   </def-label>
    <def-label name="ukan" closed="true">
     <tags-item lemma="ukan" tags="vbsint.*"/>
-    <tags-item lemma="ukan" tags="ADT.*"/>
   </def-label> 
   <def-label name="izan" closed="true">
     <tags-item lemma="izan" tags="vbsint.*"/>
-    <tags-item lemma="izan" tags="ADT.*"/>
     <tags-item tags="ADL.*"/> <!--treure, provisional tagger -->
   </def-label>
   <def-label name="egin" closed="true"><!--hil egin da -->
@@ -122,7 +119,6 @@
 
 <def-label name="VBSINT">
     <tags-item tags="vbsint.*"/>
-    <tags-item tags="ADT.*"/>
   </def-label>
 
 <def-label name="VBPER"><!--la resta de temps, per ara tots junts -->
