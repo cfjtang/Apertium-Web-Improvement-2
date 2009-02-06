@@ -182,7 +182,7 @@
     </def-cat>
 
 
-    <def-cat n="potencial">
+    <def-cat n="aux_potencial">
       <cat-item lemma="ezan" tags="vbsint.potpr.*"/>
       <cat-item lemma="edin" tags="vbsint.potpr.*"/>
       <cat-item lemma="ezan" tags="vbsint.potps.*"/>
@@ -191,7 +191,7 @@
       <cat-item lemma="edin" tags="vbsint.poth.*"/>
     </def-cat>
 
-    <def-cat n="subjuntivo">
+    <def-cat n="aux_subjuntivo">
       <cat-item lemma="ezan" tags="vbsint.prs.*"/>
       <cat-item lemma="edin" tags="vbsint.prs.*"/>
       <cat-item lemma="ezan" tags="vbsint.pis.*"/>
@@ -200,6 +200,10 @@
       <cat-item lemma="edin" tags="vbsint.hs.*"/>
     </def-cat>
 
+ <def-cat n="aux_imperativo">
+      <cat-item lemma="edin" tags="vbsint.imp.*"/>
+      <cat-item lemma="ezan" tags="vbsint.imp.*"/>
+ </def-cat>
 
     <def-cat n="prnpers"><!--aquests pronoms es poden transformar en possessius en castellà -->
       <cat-item tags="prn.pers.*"/>
@@ -17471,7 +17475,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
  <rule comment="REGLA: INF (forma lexemática) + VERBO SINT potencial (etor daiteke - puede venir)">
       <pattern>
 	<pattern-item n="inf"/>
-	<pattern-item n="potencial"/>
+	<pattern-item n="aux_potencial"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -17566,7 +17570,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
  <rule comment="REGLA: INF (forma lexemática) + VERBO SINT subjuntivo (ikus dezagun - que veamos)">
       <pattern>
 	<pattern-item n="inf"/>
-	<pattern-item n="subjuntivo"/>
+	<pattern-item n="aux_subjuntivo"/>
 	<pattern-item n="quesubj"/>
       </pattern>
       <action>	
@@ -17634,7 +17638,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       <pattern>
 	<pattern-item n="inf"/>
 	<pattern-item n="ba"/>
-	<pattern-item n="subjuntivo"/>
+	<pattern-item n="aux_subjuntivo"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -17695,6 +17699,56 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule> 
 
 
+<rule comment="REGLA: INF (forma lexemática) + VERBO SINT imperativo (etor zaitezte - venid)">
+      <pattern>
+	<pattern-item n="inf"/>
+	<pattern-item n="aux_imperativo"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verbal_flex">
+	  <with-param pos="2"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="persnbr"/>
+		<lit-tag v="p1.sg"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <lit-tag v="prs"/>
+	    </let>
+	  </when>
+	</choose>	
+	<out>
+	  <chunk name="vbmod_inf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="2" side="sl" part="nor"/></tag>
+	      <tag><clip pos="2" side="sl" part="nori"/></tag>
+	      <tag><clip pos="2" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
+      </action>
+    </rule>
 
 
     <!--***************************** VERBS AMB RELATIUS  **********************************-->
@@ -18002,7 +18056,19 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	      <lit-tag v="cni"/>
 	    </let>
 	  </when>
-	</choose>	    
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="temps"/>
+		<lit-tag v="onpr"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
+	</choose>		    
 	<out>
 	  <chunk name="q_vbconj" case="caseFirstWord">
 	    <tags>
