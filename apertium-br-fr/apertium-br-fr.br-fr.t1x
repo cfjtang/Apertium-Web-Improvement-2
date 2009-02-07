@@ -4,6 +4,7 @@
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/>
+      <cat-item tags="np.al.*"/>
     </def-cat>
     <def-cat n="ant">
       <cat-item tags="np.ant"/>
@@ -327,6 +328,7 @@
       <attr-item tags="n.unc"/>
       <attr-item tags="np.loc"/>
       <attr-item tags="np.ant"/>
+      <attr-item tags="np.al"/>
     </def-attr>
     <def-attr n="a_np_acr">
       <attr-item tags="np"/>
@@ -7907,19 +7909,31 @@
       </pattern>
       <action>
         <call-macro n="f_concord3">
+          <with-param pos="1"/>
           <with-param pos="2"/>
           <with-param pos="3"/>
-          <with-param pos="1"/>
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
         <out>
           <chunk name="num_nom_adj" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
+              <tag><lit-tag v="SN"/></tag>
               <tag>
                 <var n="genero"/>
               </tag>
