@@ -19,8 +19,6 @@ package org.apertium.lttoolbox;/*
 
 
 import org.w3c.dom.Node;
-import org.w3c.dom.traversal.TreeWalker;
-import org.xml.sax.XMLReader;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -31,11 +29,6 @@ import java.util.Map;
  * An expander of dictionaries
  */
 public class Expander extends XMLApp {
-
-  /**
-   *
-   */
-  TreeWalker reader;
 
   /**
    * The paradigm being compiled
@@ -57,15 +50,12 @@ public class Expander extends XMLApp {
 
   Map<String, EntList> paradigm_rl;
 
-  //todo
-  private static final int XML_READER_TYPE_END_ELEMENT = -1;
-
   public Expander() {
 
   }
 
   void expand(String fichero, OutputStreamWriter output) throws IOException, SAXException {
-    reader = xmlReaderForFile(fichero, null, 0);
+    reader = xmlReaderForFile(fichero);
     if (reader == null) {
       throw new RuntimeException("Error: Cannot open '" + fichero + "'.");
 
@@ -79,11 +69,12 @@ public class Expander extends XMLApp {
 
   }
 
-  void procParDef(Node n) {
-    int tipo = xmlTextReaderNodeType(n);
+  void procParDef() {
+    Node n = reader.getCurrentNode();
+    int tipo = n.getNodeType();
 
     if (tipo != XML_READER_TYPE_END_ELEMENT) {
-      current_paradigm = attrib(n, Compiler.COMPILER_N_ATTR);
+      current_paradigm = attrib( Compiler.COMPILER_N_ATTR);
     } else {
       current_paradigm = "";
     }
@@ -121,13 +112,13 @@ public class Expander extends XMLApp {
       requireEmptyError(n, name);
       result += '~';
     } else if (name.equals(Compiler.COMPILER_GROUP_ELEM)) {
-      int tipo = xmlTextReaderNodeType(n);
+      int tipo = n.getNodeType();
       if (tipo != XML_READER_TYPE_END_ELEMENT) {
         result += '#';
       }
     } else if (name.equals(Compiler.COMPILER_S_ELEM)) {
       requireEmptyError(n, name);
-      result += '<' + (attrib(n, Compiler.COMPILER_N_ATTR)) + '>';
+      result += '<' + (attrib( Compiler.COMPILER_N_ATTR)) + '>';
     } else {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Invalid specification of element '<" + name +
@@ -146,11 +137,6 @@ public class Expander extends XMLApp {
       n = n.getFirstChild();
       name = n.getNodeName();
     }
-  }
-
-  private int xmlTextReaderGetParserLineNumber(XMLReader reader) {
-    // todo
-    return -1;
   }
 
   void skip(Node n, String name, String elem) {
@@ -172,11 +158,6 @@ public class Expander extends XMLApp {
               "): Expected '<" + elem + ">'.");
 
     }
-  }
-
-  private String xmlTextReaderConstName(XMLReader reader) {
-    // todo
-    return "";
   }
 
   String procIdentity(Node n) {
@@ -236,9 +217,8 @@ public class Expander extends XMLApp {
     return new SPair(lhs, rhs);
   }
 
-  String procPar(Node n) {
-    EntryToken e;
-    return attrib(n, Compiler.COMPILER_N_ATTR);
+  String procPar() {
+    return attrib( Compiler.COMPILER_N_ATTR);
   }
 
   void requireAttribute(String value, String attrname,
@@ -251,11 +231,11 @@ public class Expander extends XMLApp {
   }
 
   void procEntry(Node n, OutputStreamWriter output) throws IOException {
-    String atributo = this.attrib(n, Compiler.COMPILER_RESTRICTION_ATTR);
-    // String entrname = this.attrib(n, org.apertium.lttoolbox.Compiler.COMPILER_LEMMA_ATTR);
+    String atributo = this.attrib( Compiler.COMPILER_RESTRICTION_ATTR);
+    // String entrname = this.attrib( org.apertium.lttoolbox.Compiler.COMPILER_LEMMA_ATTR);
 
     String myname = "";
-    if (this.attrib(n, Compiler.COMPILER_IGNORE_ATTR).equals("yes")) {
+    if (this.attrib( Compiler.COMPILER_IGNORE_ATTR).equals("yes")) {
       do {
         n = n.getFirstChild();
         if (n == null) {
@@ -289,7 +269,7 @@ public class Expander extends XMLApp {
       String name = n.getNodeName();
       skipBlanks(n, name);
 
-      int tipo = xmlTextReaderNodeType(n);
+      int tipo = n.getNodeType();
       if (name.equals(Compiler.COMPILER_PAIR_ELEM)) {
         SPair p = procTransduction(n);
         items.add(p);
@@ -306,7 +286,7 @@ public class Expander extends XMLApp {
         items_lr.add(new SPair(val, val));
         items_rl.add(new SPair(val, val));
       } else if (name.equals(Compiler.COMPILER_PAR_ELEM)) {
-        String p = procPar(n);
+        String p = procPar();
         // detecci�n del uso de paradigmas no definidos
 
         if (!paradigm.containsKey(p) &&
@@ -390,10 +370,6 @@ public class Expander extends XMLApp {
     }
   }
 
-  private int xmlTextReaderRead(XMLReader XMLReader) {
-    // todo
-    return -1;
-  }
 
   void procNode(Node n, OutputStreamWriter output) throws IOException {
     String nombre = n.getNodeName();
@@ -413,7 +389,7 @@ public class Expander extends XMLApp {
     } else if (nombre.equals(Compiler.COMPILER_PARDEFS_ELEM)) {
       /* ignorar */
     } else if (nombre.equals(Compiler.COMPILER_PARDEF_ELEM)) {
-      procParDef(n);
+      procParDef();
     } else if (nombre.equals(Compiler.COMPILER_ENTRY_ELEM)) {
       procEntry(n, output);
     } else if (nombre.equals(Compiler.COMPILER_SECTION_ELEM)) {
