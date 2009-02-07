@@ -1,4 +1,6 @@
-package org.apertium.lttoolbox;/*
+package org.apertium.lttoolbox;
+
+/*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +26,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+/**
+ * Language compiler
+ * 
+ * Created by Nic Cottrell (nic@transmachina.com) 2009-01-28
+ * 
+ */
 public class LTComp {
 
   private static final String PACKAGE_VERSION = "0.1j";

@@ -18,7 +18,6 @@ package org.apertium.lttoolbox;/*
  */
 
 import org.w3c.dom.Node;
-import org.w3c.dom.traversal.TreeWalker;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -84,11 +83,6 @@ public class Compiler extends XMLApp {
   public static String COMPILER_IGNORE_YES_VAL = "yes";
 
   /**
-   * The libxml2's XML reader
-   */
-  TreeWalker reader;
-
-  /**
    * The paradigm being compiled
    */
   String current_paradigm;
@@ -117,7 +111,7 @@ public class Compiler extends XMLApp {
   /**
    * List of named transducers-paradigms
    */
-  Map<String, Transducer> paradigms = new HashMap<String,Transducer>();
+  Map<String, Transducer> paradigms = new HashMap<String, Transducer>();
 
   /**
    * List of named dictionary sections
@@ -149,54 +143,51 @@ public class Compiler extends XMLApp {
    */
   int acx_current_char;
 
-  // todo
-  private static final int XML_READER_TYPE_END_ELEMENT = -1;
-
   Compiler() {
     // LtLocale.tryToSetLocale();
   }
 
   void parseACX(String fichero, String dir) throws IOException, SAXException {
     if (dir.equals(COMPILER_RESTRICTION_LR_VAL)) {
-      reader = xmlReaderForFile(fichero, null, 0);
+      reader = xmlReaderForFile(fichero);
       if (reader == null) {
         throw new RuntimeException("Error: cannot open '" + fichero + "'.");
       }
-     Node n = reader.getRoot().getFirstChild();
+      Node n = reader.nextNode();
       while (n != null) {
-        procNodeACX(n);
-        n = n.getFirstChild();
+        procNodeACX();
+        n = reader.nextNode();
       }
     }
   }
 
   void parse(String fichero, String dir) throws IOException, SAXException {
     direction = dir;
-    reader = xmlReaderForFile(fichero, null, 0);
+    reader = xmlReaderForFile(fichero);
     if (reader == null) {
       throw new RuntimeException("Error: Cannot open '" + fichero + "'.");
     }
 
-     org.w3c.dom.Node n = null;
-       while ((n=reader.nextNode())!=null){
+    Node n = reader.nextNode();
+    while (n != null) {
+      procNode();
+      n = reader.nextNode();
+    }
 
-         procNode(n);
-       }
-   
     // Minimize transducers
     for (Transducer transducer : sections.values()) {
-
       transducer.minimize(0);
     }
   }
 
-  void procAlphabet(Node n) {
-    int tipo = xmlTextReaderNodeType(n);
+  void procAlphabet() {
+    Node n = reader.getCurrentNode();
+    int tipo = n.getNodeType();
 
     if (tipo != XML_READER_TYPE_END_ELEMENT) {
-      n = n.getFirstChild();
+      n = reader.nextNode();
       if (n != null) {
-        letters = (n.getNodeValue());
+        letters = n.getNodeValue();
       } else {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                 "): Missing alphabet symbols.");
@@ -205,14 +196,15 @@ public class Compiler extends XMLApp {
     }
   }
 
-  void  procSDef(Node n) {
-    alphabet.includeSymbol("<" + attrib(n, COMPILER_N_ATTR) + ">");
+  void procSDef() {
+    alphabet.includeSymbol("<" + attrib(COMPILER_N_ATTR) + ">");
   }
 
-  void procParDef(Node n) {
-    int tipo = xmlTextReaderNodeType(n);
+  void procParDef() {
+    Node n = reader.getCurrentNode();
+    int tipo = n.getNodeType();
     if (tipo != XML_READER_TYPE_END_ELEMENT) {
-      current_paradigm =  attrib(n, COMPILER_N_ATTR);
+      current_paradigm = attrib(COMPILER_N_ATTR);
     } else {
       final Transducer transducer = paradigms.get(current_paradigm);
       if (transducer != null) {
@@ -223,9 +215,7 @@ public class Compiler extends XMLApp {
     }
   }
 
-  int matchTransduction(List<Integer> pi,
-                        List<Integer> pd,
-                        int estado, Transducer t) {
+  int matchTransduction(List<Integer> pi, List<Integer> pd, int estado, Transducer t) {
 
     // indexes in the list
     int izqda, dcha, limizqda, limdcha;
@@ -242,7 +232,6 @@ public class Compiler extends XMLApp {
       limdcha = pi.size();
     }
 
-
     if (pi.size() == 0 && pd.size() == 0) {
 
       estado = t.insertNewSingleTransduction(Alphabet.A.cast(0, 0), estado);
@@ -253,7 +242,6 @@ public class Compiler extends XMLApp {
 
       while (true) {
         int etiqueta;
-
 
         if (izqda == limizqda && dcha == limdcha) {
           break;
@@ -275,71 +263,63 @@ public class Compiler extends XMLApp {
 
         int nuevo_estado = t.insertSingleTransduction(etiqueta, estado);
 
-
         if (acx_map_ptr != null) {
-
           for (Integer integer : acx_map_ptr) {
-
             t.linkStates(estado, nuevo_estado, Alphabet.A.cast(integer, rsymbol));
           }
         }
         estado = nuevo_estado;
       }
     }
-
     return estado;
   }
 
-
-  void requireEmptyError(Node n, String name) {
+  void requireEmptyError(String name) {
+    final Node n = reader.getCurrentNode();
     if (!xmlTextReaderIsEmptyElement(n)) {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Non-empty element '<" + name + ">' should be empty.");
-
     }
   }
 
-  boolean   allBlanks(Node n) {
+  boolean allBlanks() {
     boolean flag = true;
-    String text = (n.getNodeValue());
-
+    String text = reader.getCurrentNode().getNodeValue();
+    if (text == null) return true;
     for (int i = 0, limit = text.length(); i < limit; i++) {
-      flag = flag && Character.isSpace(text.charAt(i));
+      flag = flag && Character.isWhitespace(text.charAt(i));
     }
-
     return flag;
   }
 
-  void readString(Node n, List<Integer> result, String name) {
+  void readString(List<Integer> result, String name) {
+    final Node n = reader.getCurrentNode();
     if (name.equals("#text")) {
-      String value = (n.getNodeValue());
+      String value = n.getNodeValue();
       for (int i = 0, limit = value.length(); i < limit; i++) {
         result.add((int) (value.charAt(i)));
       }
     } else if (name.equals(COMPILER_BLANK_ELEM)) {
-      requireEmptyError(n, name);
+      requireEmptyError(name);
       result.add((int) (' '));
     } else if (name.equals(COMPILER_JOIN_ELEM)) {
-      requireEmptyError(n, name);
+      requireEmptyError(name);
       result.add((int) ('+'));
     } else if (name.equals(COMPILER_POSTGENERATOR_ELEM)) {
-      requireEmptyError(n, name);
+      requireEmptyError(name);
       result.add((int) ('~'));
     } else if (name.equals(COMPILER_GROUP_ELEM)) {
-      int tipo = xmlTextReaderNodeType(n);
+      int tipo = n.getNodeType();
       if (tipo != XML_READER_TYPE_END_ELEMENT) {
         result.add((int) ('#'));
       }
     } else if (name.equals(COMPILER_S_ELEM)) {
-      requireEmptyError(n, name);
-      String symbol = "<" + attrib(n, COMPILER_N_ATTR) + ">";
-
+      requireEmptyError(name);
+      String symbol = "<" + attrib(COMPILER_N_ATTR) + ">";
       if (!alphabet.isSymbolDefined(symbol)) {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader)
                 + "): Undefined symbol '" + symbol + "'.");
-
       }
-
       result.add(Alphabet.A.cast(symbol));
     } else {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
@@ -349,55 +329,51 @@ public class Compiler extends XMLApp {
     }
   }
 
-  void   skipBlanks(Node n, String name) {
+  void skipBlanks(String name) {
     while (name.equals("#text") || name.equals("#comment")) {
       if (!name.equals("#comment")) {
-        if (!allBlanks(n)) {
+        if (!allBlanks()) {
           throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                   "): Invalid construction.");
-
         }
       }
-
-      n = n.getFirstChild();
-      name = (n.getNodeName());
+      Node n = reader.nextNode();
+      name = n.getNodeName();
     }
   }
 
-  void skip(Node n, String name, String elem) {
-    n = n.getFirstChild();
-    name = (n.getNodeName());
-
+  void skip(String name, String elem) {
+    Node n = reader.nextNode();
+    name = n.getNodeName();
     while (name.equals("#text") || name.equals("#comment")) {
       if (!name.equals("#comment")) {
-        if (!allBlanks(n)) {
+        if (!allBlanks()) {
           throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                   "): Invalid construction.");
-
         }
       }
-      n = n.getFirstChild();
-      name = (n.getNodeName());
+      n = reader.nextNode();
+      name = n.getNodeName();
     }
-
     if (!name.equals(elem)) {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Expected '<" + elem + ">'.");
-
     }
   }
 
-  EntryToken procIdentity(Node n) {
+  EntryToken procIdentity() {
     List<Integer> both_sides = new Vector<Integer>();
 
+    Node n = reader.getCurrentNode();
     if (!xmlTextReaderIsEmptyElement(n)) {
-      String name = "";
+      String name;
       while (true) {
-        name = (n.getNodeName());
+        n = reader.nextNode();
+        name = n.getNodeName();
         if (name.equals(COMPILER_IDENTITY_ELEM)) {
           break;
         }
-        readString(n, both_sides, name);
+        readString(both_sides, name);
       }
     }
 
@@ -406,55 +382,53 @@ public class Compiler extends XMLApp {
     return e;
   }
 
-  EntryToken procTransduction(Node n) {
+  EntryToken procTransduction() {
 
     List<Integer> lhs = new Vector<Integer>();
     List<Integer> rhs = new Vector<Integer>();
     String name = "";
 
-    skip(n, name, COMPILER_LEFT_ELEM);
+    skip(name, COMPILER_LEFT_ELEM);
 
+    Node n = reader.getCurrentNode();
     if (!xmlTextReaderIsEmptyElement(n)) {
       name = "";
       while (true) {
-        n = n.getFirstChild();
-        name = (n.getNodeName());
+        n = reader.nextNode();
+        name = n.getNodeName();
         if (name.equals(COMPILER_LEFT_ELEM)) {
           break;
         }
-        readString(n, lhs, name);
+        readString(lhs, name);
       }
     }
 
-    skip(n, name, COMPILER_RIGHT_ELEM);
+    skip(name, COMPILER_RIGHT_ELEM);
 
     if (!xmlTextReaderIsEmptyElement(n)) {
-      name = "";
       while (true) {
-        n = n.getFirstChild();
-        name = (n.getNodeName());
+        n = reader.nextNode();
+        name = n.getNodeName();
         if (name.equals(COMPILER_RIGHT_ELEM)) {
           break;
         }
-        readString(n, rhs, name);
+        readString(rhs, name);
       }
     }
 
-    skip(n,name, COMPILER_PAIR_ELEM);
+    skip(name, COMPILER_PAIR_ELEM);
 
     EntryToken e = new EntryToken();
     e.setSingleTransduction(lhs, rhs);
     return e;
   }
 
-  EntryToken  procPar(Node n) {
+  EntryToken procPar() {
     EntryToken e = new EntryToken();
-    String nomparadigma = attrib(n, COMPILER_N_ATTR);
-
+    String nomparadigma = attrib(COMPILER_N_ATTR);
     if (!paradigms.containsKey(nomparadigma)) {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Undefined paradigm '" + nomparadigma + "'.");
-
     }
     e.setParadigm(nomparadigma);
     return e;
@@ -480,7 +454,6 @@ public class Compiler extends XMLApp {
         } else {
           throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                   "): Invalid entry token.");
-
         }
       }
       t.setFinal(e);
@@ -529,37 +502,37 @@ public class Compiler extends XMLApp {
     }
   }
 
-  void requireAttribute(String value, String attrname,
-                   String elemname) {
+  void requireAttribute(String value, String attrname, String elemname) {
     if (value.equals("")) {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): '<" + elemname +
               "' element must specify non-void '" +
               attrname + "' attribute.");
-
     }
   }
 
-  void procSection(Node n) {
-    int tipo = xmlTextReaderNodeType(n);
+  void procSection() {
+    Node n = reader.getCurrentNode();
+    int tipo = n.getNodeType();
 
     if (tipo != XML_READER_TYPE_END_ELEMENT) {
-      String id = attrib(n, COMPILER_ID_ATTR);
-      String type = attrib(n, COMPILER_TYPE_ATTR);
+      String id = attrib(COMPILER_ID_ATTR);
+      String type = attrib(COMPILER_TYPE_ATTR);
       requireAttribute(id, COMPILER_ID_ATTR, COMPILER_SECTION_ELEM);
       requireAttribute(type, COMPILER_TYPE_ATTR, COMPILER_SECTION_ELEM);
 
-      current_section = id;
-      current_section += "@";
-      current_section += type;
+      current_section = id + "@" + type;
     } else {
       current_section = "";
     }
   }
 
-  void procEntry(Node n) {
-    String atributo = this.attrib(n, COMPILER_RESTRICTION_ATTR);
-    String ignore = this.attrib(n, COMPILER_IGNORE_ATTR);
+  void procEntry() {
+
+    Node n = reader.getCurrentNode();
+
+    String atributo = this.attrib(COMPILER_RESTRICTION_ATTR);
+    String ignore = this.attrib(COMPILER_IGNORE_ATTR);
 
     //�if entry is masked by a restriction of direction or an ignore mark
     if ((!atributo.equals("") && !atributo.equals(direction)) || ignore.equals(COMPILER_IGNORE_YES_VAL)) {
@@ -567,8 +540,8 @@ public class Compiler extends XMLApp {
       String name = "";
 
       while (!name.equals(COMPILER_ENTRY_ELEM)) {
-
-        name = (n.getNodeName());
+        n = reader.nextNode();
+        name = n.getNodeName();
       }
 
       return;
@@ -577,24 +550,23 @@ public class Compiler extends XMLApp {
     Vector<EntryToken> elements = new Vector<EntryToken>();
 
     while (true) {
-      n = n.getFirstChild();
+      n = reader.nextNode();
       if (n == null) {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                 "): Parse error.");
-
       }
-      String name = (n.getNodeName());
-      skipBlanks(n, name);
+      String name = n.getNodeName();
+      skipBlanks(name);
 
-      int tipo = xmlTextReaderNodeType(n);
+      int tipo = n.getNodeType();
       if (name.equals(COMPILER_PAIR_ELEM)) {
-        elements.add(procTransduction(n));
+        elements.add(procTransduction());
       } else if (name.equals(COMPILER_IDENTITY_ELEM)) {
-        elements.add(procIdentity(n));
+        elements.add(procIdentity());
       } else if (name.equals(COMPILER_REGEXP_ELEM)) {
-        elements.add(procRegexp(n));
+        elements.add(procRegexp());
       } else if (name.equals(COMPILER_PAR_ELEM)) {
-        elements.add(procPar(n));
+        elements.add(procPar());
 
         // detecci�n del uso de paradigmas no definidos
 
@@ -609,9 +581,9 @@ public class Compiler extends XMLApp {
         // normalmente
         if (paradigms.get(p).isEmpty()) {
           while (!name.equals(COMPILER_ENTRY_ELEM) || tipo != XML_READER_TYPE_END_ELEMENT) {
-            n = n.getFirstChild();
-            name = (n.getNodeName());
-            tipo = xmlTextReaderNodeType(n);
+            n = reader.nextNode();
+            name = n.getNodeName();
+            tipo = n.getNodeType();
           }
           return;
         }
@@ -619,38 +591,38 @@ public class Compiler extends XMLApp {
         // insertar elements into letter transducer
         insertEntryTokens(elements);
         return;
-      } else if (name.equals("#text") && allBlanks(n)) {
+      } else if (name.equals("#text") && allBlanks()) {
+        // just some blank spaces?
       } else {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                 "): Invalid inclusion of '<" + name + ">' into '<" + COMPILER_ENTRY_ELEM +
                 ">'.");
-
       }
     }
   }
 
-  void procNodeACX(Node n) {
-    String xnombre = n.getNodeName();
-    String nombre = (xnombre);
+  void procNodeACX() {
+    Node n = reader.getCurrentNode();
+    String nombre = (n.getNodeName());
     if (nombre.equals("#text")) {
       /* ignore */
     } else if (nombre.equals("analysis-chars")) {
       /* ignore */
     } else if (nombre.equals("char")) {
-      acx_current_char = (int) (attrib(n, "value").charAt(0));
+      acx_current_char = (int) (attrib("value").charAt(0));
     } else if (nombre.equals("equiv-char")) {
-      acx_map.get(acx_current_char).add((int) (attrib(n, "value").charAt(0)));
+      acx_map.get(acx_current_char).add((int) (attrib("value").charAt(0)));
     } else if (nombre.equals("#comment")) {
       /* ignore */
     } else {
       throw new RuntimeException("Error in ACX file (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Invalid node '<" + nombre + ">'.");
-
     }
   }
 
-  void procNode(org.w3c.dom.Node n) {
-    String xnombre = n.getNodeName();
+  void procNode() {
+
+    Node n = reader.getCurrentNode();
     String nombre = n.getNodeName();
     // HACER: optimizar el orden de ejecuci�n de esta ristra de "ifs"
 
@@ -659,34 +631,33 @@ public class Compiler extends XMLApp {
     } else if (nombre.equals(COMPILER_DICTIONARY_ELEM)) {
       /* ignorar */
     } else if (nombre.equals(COMPILER_ALPHABET_ELEM)) {
-      procAlphabet(n);
+      procAlphabet();
     } else if (nombre.equals(COMPILER_SDEFS_ELEM)) {
       /* ignorar */
     } else if (nombre.equals(COMPILER_SDEF_ELEM)) {
-      procSDef(n);
+      procSDef();
     } else if (nombre.equals(COMPILER_PARDEFS_ELEM)) {
       /* ignorar */
     } else if (nombre.equals(COMPILER_PARDEF_ELEM)) {
-      procParDef(n);
+      procParDef();
     } else if (nombre.equals(COMPILER_ENTRY_ELEM)) {
-      procEntry(n);
+      procEntry();
     } else if (nombre.equals(COMPILER_SECTION_ELEM)) {
-      procSection(n);
+      procSection();
     } else if (nombre.equals("#comment")) {
       /* ignorar */
     } else {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Invalid node '<" + nombre + ">'.");
-
     }
   }
 
-  EntryToken procRegexp(Node n) {
+  EntryToken procRegexp() {
     EntryToken et = new EntryToken();
-    n = n.getFirstChild();
-    String re = (n.getNodeValue());
+    Node n = reader.nextNode();
+    String re = n.getNodeValue();
     et.setRegexp(re);
-    n = n.getFirstChild();
+    n = reader.nextNode();
     return et;
   }
 
@@ -700,11 +671,8 @@ public class Compiler extends XMLApp {
     // transducers
     output.write(sections.size());
 
-    int conta = 0;
     for (String first : sections.keySet()) {
-
       final Transducer second = sections.get(first);
-      conta++;
       output.write(first + " " + second.size() + " " + second.numberOfTransitions());
       output.write(first);
       output.write(second.toString());
