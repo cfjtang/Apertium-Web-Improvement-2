@@ -34,6 +34,12 @@ public class LTExpand {
   }
 
   public static void main(String[] argv) throws IOException, SAXException {
+      
+    // Just for testing
+    if (argv.length==0) {
+        argv = new String[] { "2", "../../apertium-dixtools/test/sample.eo-en.dix" };
+    }
+
 
     InputStreamReader input = null;
     OutputStreamWriter output = null;

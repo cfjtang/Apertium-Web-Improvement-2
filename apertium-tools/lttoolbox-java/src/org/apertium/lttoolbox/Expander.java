@@ -58,14 +58,13 @@ public class Expander extends XMLApp {
     reader = xmlReaderForFile(fichero);
     if (reader == null) {
       throw new RuntimeException("Error: Cannot open '" + fichero + "'.");
-
     }
 
-    Node n = reader.getRoot();
-    while (n != null) {
-      procNode(n, output);
-      n = n.getFirstChild();
-    }
+      Node n = reader.nextNode();
+      while (n != null) {
+        procNode(n, output);
+        n = reader.nextNode();
+      }
 
   }
 
@@ -92,7 +91,7 @@ public class Expander extends XMLApp {
     boolean flag = true;
     String text = n.getNodeValue();
     for (int i = 0, limit = text.length(); i < limit; i++) {
-      flag = flag && Character.isSpaceChar(text.charAt(i));
+      flag = flag && Character.isWhitespace(text.charAt(i));
     }
 
     return flag;
@@ -131,7 +130,7 @@ public class Expander extends XMLApp {
     if (name.equals("#text")) {
       if (!allBlanks(n)) {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
-                "): Invalid construction.");
+                "): Invalid construction:" + n.getTextContent());
 
       }
       n = n.getFirstChild();
@@ -231,6 +230,8 @@ public class Expander extends XMLApp {
   }
 
   void procEntry(Node n, OutputStreamWriter output) throws IOException {
+
+
     String atributo = this.attrib( Compiler.COMPILER_RESTRICTION_ATTR);
     // String entrname = this.attrib( org.apertium.lttoolbox.Compiler.COMPILER_LEMMA_ATTR);
 
@@ -373,6 +374,8 @@ public class Expander extends XMLApp {
 
   void procNode(Node n, OutputStreamWriter output) throws IOException {
     String nombre = n.getNodeName();
+
+          System.err.println("procNode((n = " + nombre);
 
     // HACER: optimizar el orden de ejecuci�n de esta ristra de "ifs"
 
