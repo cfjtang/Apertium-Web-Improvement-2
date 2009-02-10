@@ -1,10 +1,8 @@
 package org.apertium.lttoolbox;
 
-import org.apertium.lttoolbox.Alphabet;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -260,7 +258,7 @@ public class PatternList {
     }
   }
 
-  void write(OutputStreamWriter output) throws IOException {
+  void write(Writer output) throws IOException {
     alphabet.write(output);
     String tagger_name = "tagger";
 

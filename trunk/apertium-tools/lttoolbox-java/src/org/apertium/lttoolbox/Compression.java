@@ -19,11 +19,11 @@ package org.apertium.lttoolbox;/*
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class Compression {
 
-  void multibyte_write(int value, OutputStreamWriter output) throws IOException {
+  void multibyte_write(int value, Writer output) throws IOException {
     if (value < 0x00000040) {
       output.write((char) value);
     } else if (value < 0x00004000) {
@@ -56,7 +56,7 @@ public class Compression {
     }
   }
 
-  void multibyte_write2(int value, OutputStreamWriter output) throws IOException {
+  void multibyte_write2(int value, Writer output) throws IOException {
     if (value < 0x00000040) {
       char b = (char) value;
       output.write((b));
@@ -187,7 +187,7 @@ public class Compression {
     return result;
   }
 
-  void String_write(String str, OutputStreamWriter output) throws IOException {
+  void String_write(String str, Writer output) throws IOException {
     multibyte_write(str.length(), output);
     for (int i = 0, limit = str.length(); i != limit; i++) {
       multibyte_write((int) (str.charAt(i)), output);

@@ -17,8 +17,6 @@ package org.apertium.lttoolbox;/*
  * 02111-1307, USA.
  */
 
-import org.apertium.lttoolbox.Alphabet;
-
 import java.util.Set;
 
 public class RegexpCompiler {
@@ -183,7 +181,6 @@ public class RegexpCompiler {
       } else if (postop.equals("?")) {
         t.optional(Alphabet.A.cast(0, 0));
       }
-
       postop = "";
       state = transducer.insertTransducer(state, t, Alphabet.A.cast(0, 0));
     } else if (token == '(') {

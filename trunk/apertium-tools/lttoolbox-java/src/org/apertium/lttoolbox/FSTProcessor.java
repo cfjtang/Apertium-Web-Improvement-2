@@ -17,12 +17,9 @@ package org.apertium.lttoolbox;/*
  * 02111-1307, USA.
  */
 
-import org.apertium.lttoolbox.Alphabet;
-import org.apertium.lttoolbox.Buffer;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
@@ -256,7 +253,7 @@ public class FSTProcessor {
   }
 
 
-  void skipUntil(InputStreamReader input, OutputStreamWriter output, char character) throws IOException {
+  void skipUntil(InputStreamReader input, Writer output, char character) throws IOException {
     while (true) {
       char val = (char) input.read();
       if (input.read() == -1) {
@@ -278,7 +275,7 @@ public class FSTProcessor {
     }
   }
 
-  int readGeneration(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  int readGeneration(InputStreamReader input, Writer output) throws IOException {
     char val = (char) input.read();
 
     if (input.read() == -1) {
@@ -342,7 +339,7 @@ public class FSTProcessor {
     // return 0x7fffffff;
   }
 
-  void flushBlanks(OutputStreamWriter output) throws IOException {
+  void flushBlanks(Writer output) throws IOException {
     for (int i = blankqueue.size(); i > 0; i--) {
       output.write(blankqueue.peek());
       blankqueue.poll();
@@ -382,7 +379,7 @@ public class FSTProcessor {
     }
   }
 
-  void writeEscaped(String str, OutputStreamWriter output) throws IOException {
+  void writeEscaped(String str, Writer output) throws IOException {
     for (int i = 0, limit = str.length(); i < limit; i++) {
       if (escaped_chars.contains(str.charAt(i))) {
         output.write('\\');
@@ -391,14 +388,14 @@ public class FSTProcessor {
     }
   }
 
-  void printWord(String sf, String lf, OutputStreamWriter output) throws IOException {
+  void printWord(String sf, String lf, Writer output) throws IOException {
     output.write('^');
     writeEscaped(sf, output);
     output.write(lf);
     output.write('$');
   }
 
-  void printUnknownWord(String sf, OutputStreamWriter output) throws IOException {
+  void printUnknownWord(String sf, Writer output) throws IOException {
     output.write('^');
     writeEscaped(sf, output);
     output.write('/');
@@ -416,7 +413,7 @@ public class FSTProcessor {
     return 0;
   }
 
-  void printSpace(Character val, OutputStreamWriter output) throws IOException {
+  void printSpace(Character val, Writer output) throws IOException {
     if (blankqueue.size() > 0) {
       flushBlanks(output);
     } else {
@@ -483,7 +480,7 @@ public class FSTProcessor {
     initGeneration();
   }
 
-  void analysis(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  void analysis(InputStreamReader input, Writer output) throws IOException {
     if (getNullFlush()) {
       analysis_wrapper_null_flush(input, output);
     }
@@ -632,7 +629,7 @@ public class FSTProcessor {
   }
 
   void
-  analysis_wrapper_null_flush(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  analysis_wrapper_null_flush(InputStreamReader input, Writer output) throws IOException {
     setNullFlush(false);
     while (input.read() != -1) {
       analysis(input, output);
@@ -642,7 +639,7 @@ public class FSTProcessor {
   }
 
   void
-  generation_wrapper_null_flush(InputStreamReader input, OutputStreamWriter output,
+  generation_wrapper_null_flush(InputStreamReader input, Writer output,
                                 GenerationMode mode) throws IOException {
     setNullFlush(false);
     while (input.read() != -1) {
@@ -653,7 +650,7 @@ public class FSTProcessor {
   }
 
   void
-  postgeneration_wrapper_null_flush(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  postgeneration_wrapper_null_flush(InputStreamReader input, Writer output) throws IOException {
     setNullFlush(false);
     while (input.read() != -1) {
       postgeneration(input, output);
@@ -662,7 +659,7 @@ public class FSTProcessor {
     }
   }
 
-  void   transliteration_wrapper_null_flush(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  void   transliteration_wrapper_null_flush(InputStreamReader input, Writer output) throws IOException {
     setNullFlush(false);
     while (input.read() != -1) {
       transliteration(input, output);
@@ -672,7 +669,7 @@ public class FSTProcessor {
   }
 
 
-  void generation(InputStreamReader input, OutputStreamWriter output, GenerationMode mode) throws IOException {
+  void generation(InputStreamReader input, Writer output, GenerationMode mode) throws IOException {
     if (getNullFlush()) {
       generation_wrapper_null_flush(input, output, mode);
     }
@@ -739,7 +736,7 @@ public class FSTProcessor {
   }
 
   void
-  postgeneration(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  postgeneration(InputStreamReader input, Writer output) throws IOException {
     if (getNullFlush()) {
       postgeneration_wrapper_null_flush(input, output);
     }
@@ -861,7 +858,7 @@ public class FSTProcessor {
     flushBlanks(output);
   }
 
-  void transliteration(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  void transliteration(InputStreamReader input, Writer output) throws IOException {
     if (getNullFlush()) {
       transliteration_wrapper_null_flush(input, output);
     }
@@ -1284,7 +1281,7 @@ public class FSTProcessor {
     return (val);
   }
 
-  void printSAOWord(String lf, OutputStreamWriter output) throws IOException {
+  void printSAOWord(String lf, Writer output) throws IOException {
     for (int i = 1, limit = lf.length(); i != limit; i++) {
       if (lf.charAt(i) == '/') {
         break;
@@ -1293,7 +1290,7 @@ public class FSTProcessor {
     }
   }
 
-  void SAO(InputStreamReader input, OutputStreamWriter output) throws IOException {
+  void SAO(InputStreamReader input, Writer output) throws IOException {
     boolean last_incond = false;
     boolean last_postblank = false;
     State current_state = initial_state;

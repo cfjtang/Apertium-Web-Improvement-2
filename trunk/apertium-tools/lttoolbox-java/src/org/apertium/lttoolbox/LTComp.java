@@ -21,10 +21,7 @@ package org.apertium.lttoolbox;
 
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 
 /**
  * Language compiler
@@ -78,7 +75,7 @@ public class LTComp {
     }
 
     File textFile = new File(argv[2]);
-    OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(textFile), "UTF-8");
+    Writer output = new OutputStreamWriter(new FileOutputStream(textFile), "UTF-8");
     c.write(output);
     output.close();
     
