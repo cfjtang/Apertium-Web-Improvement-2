@@ -86,10 +86,12 @@ public class Expander extends XMLApp {
     }
   }
 
+
   boolean allBlanks() {
     Node n = reader.getCurrentNode();
     boolean flag = true;
     String text = n.getNodeValue();
+    if (text==null) return true;
     for (int i = 0, limit = text.length(); i < limit; i++) {
       flag = flag && Character.isWhitespace(text.charAt(i));
     }
@@ -98,24 +100,24 @@ public class Expander extends XMLApp {
   }
 
 
-  void readString(String result, String name) {
+  void readString(StringBuilder result, String name) {
     Node n = reader.getCurrentNode();
     if (name.equals("#text")) {
-      result += n.getNodeValue();
+      result.append(n.getNodeValue());
     } else if (name.equals(Compiler.COMPILER_BLANK_ELEM)) {
       requireEmptyError(name);
-      result += ' ';
+      result.append( ' ');
     } else if (name.equals(Compiler.COMPILER_JOIN_ELEM)) {
       requireEmptyError(name);
-      result += '+';
+      result.append( '+');
     } else if (name.equals(Compiler.COMPILER_POSTGENERATOR_ELEM)) {
       requireEmptyError(name);
-      result += '~';
+      result.append( '~');
     } else if (name.equals(Compiler.COMPILER_GROUP_ELEM)) {
-      result += '#';
+      result.append( '#');
     } else if (name.equals(Compiler.COMPILER_S_ELEM)) {
       requireEmptyError(name);
-      result += '<' + (attrib(Compiler.COMPILER_N_ATTR)) + '>';
+      result.append( '<' + (attrib(Compiler.COMPILER_N_ATTR)) + '>');
     } else {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Invalid specification of element '<" + name +
@@ -160,10 +162,10 @@ public class Expander extends XMLApp {
     }
   }
 
-  String procIdentity() {
+  StringBuilder procIdentity() {
 
     Node n = reader.getCurrentNode();
-    String both_sides = "";
+    StringBuilder both_sides = new StringBuilder();
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       String name = "";
@@ -183,7 +185,7 @@ public class Expander extends XMLApp {
   SPair procTransduction() {
     Node n = reader.getCurrentNode();
 
-    String lhs = "", rhs = "";
+    StringBuilder lhs = new StringBuilder(), rhs = new StringBuilder();
     String name = "";
 
     skip(name, Compiler.COMPILER_LEFT_ELEM);
@@ -216,7 +218,7 @@ public class Expander extends XMLApp {
 
     skip(name, Compiler.COMPILER_PAIR_ELEM);
 
-    return new SPair(lhs, rhs);
+    return new SPair(lhs.toString(), rhs.toString());
   }
 
   String procPar() {
@@ -280,7 +282,7 @@ public class Expander extends XMLApp {
         items_lr.add(p);
         items_rl.add(p);
       } else if (name.equals(Compiler.COMPILER_IDENTITY_ELEM)) {
-        String val = procIdentity();
+        String val = procIdentity().toString();
         items.add(new SPair(val, val));
         items_lr.add(new SPair(val, val));
         items_rl.add(new SPair(val, val));
