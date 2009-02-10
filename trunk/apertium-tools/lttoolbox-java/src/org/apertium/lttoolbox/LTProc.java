@@ -84,7 +84,7 @@ public class LTProc {
           if (cmd == 0) {
             cmd = c;
           } else {
-            endProgram(argv[0]);
+            endProgram("LTProc");
           }
           break;
 
@@ -98,7 +98,7 @@ public class LTProc {
 
         case 'h':
         default:
-          endProgram(argv[0]);
+          endProgram("LTProc");
           break;
       }
     }
@@ -109,17 +109,17 @@ public class LTProc {
     if (cmd == (argc - 3)) {
       InputStreamReader in = fopen(argv[cmd]);
       if (in == null) {
-        endProgram(argv[0]);
+        endProgram("LTProc");
       }
 
       input = fopen(argv[cmd + 1]);
       if (input == null) {
-        endProgram(argv[0]);
+        endProgram("LTProc");
       }
 
       output = fout(argv[cmd + 2]);
       if (output == null) {
-        endProgram(argv[0]);
+        endProgram("LTProc");
       }
 
       fstp.load(in);
@@ -127,12 +127,12 @@ public class LTProc {
     } else if (cmd == (argc - 2)) {
       InputStreamReader in = fopen(argv[cmd]);
       if (in == null) {
-        endProgram(argv[0]);
+        endProgram("LTProc");
       }
 
       input = fopen(argv[cmd + 1]);
       if (input == null) {
-        endProgram(argv[0]);
+        endProgram("LTProc");
       }
 
       fstp.load(in);
@@ -141,12 +141,12 @@ public class LTProc {
       final String filename = argv[cmd];
       InputStreamReader in = fopen(filename);
       if (in == null) {
-        endProgram(argv[0]);
+        endProgram("LTProc");
       }
       fstp.load(in);
       in.close();
     } else {
-      endProgram(argv[0]);
+      endProgram("LTProc");
     }
 
     try {

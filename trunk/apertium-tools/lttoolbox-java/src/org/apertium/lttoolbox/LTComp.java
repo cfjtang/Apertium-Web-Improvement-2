@@ -38,20 +38,26 @@ public class LTComp {
 
   static void endProgram(String name) {
     if (name != null) {
-      System.out.println(" v" + PACKAGE_VERSION + ": build a letter transducer from a dictionary" +
-              "USAGE: " + name + " lr | rl dictionary_file output_file [acx_file]" +
-              "Modes:" +
-              "  lr:     left-to-right compilation" +
-              "  rl:     right-to-left compilation");
+      System.out.println(" v" + PACKAGE_VERSION + ": build a letter transducer from a dictionary\n" +
+              "USAGE: " + name + " lr | rl dictionary_file output_file [acx_file]\n" +
+              "Modes:\n" +
+              "  lr:     left-to-right compilation\n" +
+              "  rl:     right-to-left compilation\n");
     }
 
   }
 
   public static void main(String[] argv) throws IOException, SAXException {
 
+    // Just for testing
+    if (argv.length==0) {
+        argv = new String[] { "lr", "../../apertium-dixtools/test/sample.eo-en.dix", "out.bin" };
+    }
+
+
     final int argc = argv.length;
     if (argc != 3 && argc != 4) {
-      endProgram(argv[0]);
+      endProgram("LTComp");
       return;
     }
 
@@ -63,11 +69,11 @@ public class LTComp {
       if (argc == 4) {
         c.parseACX(argv[3], Compiler.COMPILER_RESTRICTION_LR_VAL);
       }
-      c.parse(argv[1], org.apertium.lttoolbox.Compiler.COMPILER_RESTRICTION_LR_VAL);
+      c.parse(argv[1], Compiler.COMPILER_RESTRICTION_LR_VAL);
     } else if (opc.equals("rl")) {
       c.parse(argv[1], Compiler.COMPILER_RESTRICTION_RL_VAL);
     } else {
-      endProgram(argv[0]);
+      endProgram("LTComp");
       return;
     }
 

@@ -54,9 +54,13 @@ public class XMLApp {
   }
 
   protected TreeWalker xmlReaderForFile(String fichero) throws IOException, SAXException {
+    System.err.print("Reading "+fichero);
     DOMParser parser = new DOMParser();
     parser.parse(fichero);
     doc = parser.getDocument();
+
+    System.err.println(" ... done"+doc);
+
     DocumentTraversal docTraversal = (DocumentTraversal) doc;
     return docTraversal.createTreeWalker(doc.getDocumentElement(),
             NodeFilter.SHOW_ALL, null, false);
