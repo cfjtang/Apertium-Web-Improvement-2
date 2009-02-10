@@ -21,7 +21,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.*;
 
 public class Compiler extends XMLApp {
@@ -143,7 +143,7 @@ public class Compiler extends XMLApp {
    */
   int acx_current_char;
 
-  Compiler() {
+  public Compiler() {
     // LtLocale.tryToSetLocale();
   }
 
@@ -161,7 +161,7 @@ public class Compiler extends XMLApp {
     }
   }
 
-  void parse(String fichero, String dir) throws IOException, SAXException {
+  public void parse(String fichero, String dir) throws IOException, SAXException {
     direction = dir;
     reader = xmlReaderForFile(fichero);
     if (reader == null) {
@@ -182,9 +182,7 @@ public class Compiler extends XMLApp {
 
   void procAlphabet() {
     Node n = reader.getCurrentNode();
-    int tipo = n.getNodeType();
-
-    if (tipo != XML_READER_TYPE_END_ELEMENT) {
+    if (n != null) {
       n = reader.nextNode();
       if (n != null) {
         letters = n.getNodeValue();
@@ -202,8 +200,7 @@ public class Compiler extends XMLApp {
 
   void procParDef() {
     Node n = reader.getCurrentNode();
-    int tipo = n.getNodeType();
-    if (tipo != XML_READER_TYPE_END_ELEMENT) {
+    if (n != null) {
       current_paradigm = attrib(COMPILER_N_ATTR);
       System.err.println("current_paradigm = " + current_paradigm);
     } else {
@@ -310,10 +307,7 @@ public class Compiler extends XMLApp {
       requireEmptyError(name);
       result.add((int) ('~'));
     } else if (name.equals(COMPILER_GROUP_ELEM)) {
-      int tipo = n.getNodeType();
-      if (tipo != XML_READER_TYPE_END_ELEMENT) {
-        result.add((int) ('#'));
-      }
+      if ( n !=null)  result.add((int) ('#'));
     } else if (name.equals(COMPILER_S_ELEM)) {
       requireEmptyError(name);
       String symbol = "<" + attrib(COMPILER_N_ATTR) + ">";
@@ -513,10 +507,10 @@ public class Compiler extends XMLApp {
   }
 
   void procSection() {
-    Node n = reader.getCurrentNode();
-    int tipo = n.getNodeType();
-
-    if (tipo != XML_READER_TYPE_END_ELEMENT) {
+    // is n ever null??
+   Node n = reader.getCurrentNode();
+     if (n != null) {
+       // or should we be checking is the there is a nextSibling or childnode??
       String id = attrib(COMPILER_ID_ATTR);
       String type = attrib(COMPILER_TYPE_ATTR);
       requireAttribute(id, COMPILER_ID_ATTR, COMPILER_SECTION_ELEM);
@@ -530,7 +524,7 @@ public class Compiler extends XMLApp {
 
   void procEntry() {
 
-    Node n = reader.getCurrentNode();
+    Node n;
 
     String atributo = this.attrib(COMPILER_RESTRICTION_ATTR);
     String ignore = this.attrib(COMPILER_IGNORE_ATTR);
@@ -559,7 +553,6 @@ public class Compiler extends XMLApp {
       String name = n.getNodeName();
       skipBlanks(name);
 
-      int tipo = n.getNodeType();
       if (name.equals(COMPILER_PAIR_ELEM)) {
         elements.add(procTransduction());
       } else if (name.equals(COMPILER_IDENTITY_ELEM)) {
@@ -581,14 +574,13 @@ public class Compiler extends XMLApp {
         // descartar entradas con paradigms vac�os (por las direciones,
         // normalmente
         if (paradigms.get(p).isEmpty()) {
-          while (!name.equals(COMPILER_ENTRY_ELEM) || tipo != XML_READER_TYPE_END_ELEMENT) {
+          while (!name.equals(COMPILER_ENTRY_ELEM)) {
             n = reader.nextNode();
             name = n.getNodeName();
-            tipo = n.getNodeType();
           }
           return;
         }
-      } else if (name.equals(COMPILER_ENTRY_ELEM) && tipo == XML_READER_TYPE_END_ELEMENT) {
+      } else if (name.equals(COMPILER_ENTRY_ELEM) && n.getNextSibling() == null) {
         // insertar elements into letter transducer
         insertEntryTokens(elements);
         return;
@@ -631,6 +623,7 @@ public class Compiler extends XMLApp {
     // HACER: optimizar el orden de ejecuci�n de esta ristra de "ifs"
 
     if (nombre.equals("#text")) {
+      assert n.getNodeType() == Node.TEXT_NODE;
       /* ignorar */
     } else if (nombre.equals(COMPILER_DICTIONARY_ELEM)) {
       /* ignorar */
@@ -665,7 +658,7 @@ public class Compiler extends XMLApp {
     return et;
   }
 
-  void write(OutputStreamWriter output) throws IOException {
+  public void write(Writer output) throws IOException {
     // letters
     output.write(letters);
 

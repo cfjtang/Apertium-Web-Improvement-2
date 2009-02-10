@@ -22,7 +22,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -54,32 +54,31 @@ public class Expander extends XMLApp {
 
   }
 
-  void expand(String fichero, OutputStreamWriter output) throws IOException, SAXException {
+  void expand(String fichero, Writer output) throws IOException, SAXException {
     reader = xmlReaderForFile(fichero);
     if (reader == null) {
       throw new RuntimeException("Error: Cannot open '" + fichero + "'.");
     }
 
-      Node n = reader.nextNode();
-      while (n != null) {
-        procNode(n, output);
-        n = reader.nextNode();
-      }
+    Node n = reader.nextNode();
+    while (n != null) {
+      procNode(output);
+      n = reader.nextNode();
+    }
 
   }
 
   void procParDef() {
     Node n = reader.getCurrentNode();
-    int tipo = n.getNodeType();
-
-    if (tipo != XML_READER_TYPE_END_ELEMENT) {
-      current_paradigm = attrib( Compiler.COMPILER_N_ATTR);
+    if (n != null) {
+      current_paradigm = attrib(Compiler.COMPILER_N_ATTR);
     } else {
       current_paradigm = "";
     }
   }
 
-  void requireEmptyError(Node n, String name) {
+  void requireEmptyError(String name) {
+    Node n = reader.getCurrentNode();
     if (!xmlTextReaderIsEmptyElement(n)) {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Non-empty element '<" + name + ">' should be empty .");
@@ -87,7 +86,8 @@ public class Expander extends XMLApp {
     }
   }
 
-  boolean allBlanks(Node n) {
+  boolean allBlanks() {
+    Node n = reader.getCurrentNode();
     boolean flag = true;
     String text = n.getNodeValue();
     for (int i = 0, limit = text.length(); i < limit; i++) {
@@ -98,26 +98,24 @@ public class Expander extends XMLApp {
   }
 
 
-  void readString(Node n, String result, String name) {
+  void readString(String result, String name) {
+    Node n = reader.getCurrentNode();
     if (name.equals("#text")) {
       result += n.getNodeValue();
     } else if (name.equals(Compiler.COMPILER_BLANK_ELEM)) {
-      requireEmptyError(n, name);
+      requireEmptyError(name);
       result += ' ';
     } else if (name.equals(Compiler.COMPILER_JOIN_ELEM)) {
-      requireEmptyError(n, name);
+      requireEmptyError(name);
       result += '+';
     } else if (name.equals(Compiler.COMPILER_POSTGENERATOR_ELEM)) {
-      requireEmptyError(n, name);
+      requireEmptyError(name);
       result += '~';
     } else if (name.equals(Compiler.COMPILER_GROUP_ELEM)) {
-      int tipo = n.getNodeType();
-      if (tipo != XML_READER_TYPE_END_ELEMENT) {
-        result += '#';
-      }
+      result += '#';
     } else if (name.equals(Compiler.COMPILER_S_ELEM)) {
-      requireEmptyError(n, name);
-      result += '<' + (attrib( Compiler.COMPILER_N_ATTR)) + '>';
+      requireEmptyError(name);
+      result += '<' + (attrib(Compiler.COMPILER_N_ATTR)) + '>';
     } else {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Invalid specification of element '<" + name +
@@ -126,9 +124,11 @@ public class Expander extends XMLApp {
     }
   }
 
-  void skipBlanks(Node n, String name) {
+  void skipBlanks(String name) {
+
+    Node n = reader.getCurrentNode();
     if (name.equals("#text")) {
-      if (!allBlanks(n)) {
+      if (!allBlanks()) {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                 "): Invalid construction:" + n.getTextContent());
 
@@ -138,12 +138,13 @@ public class Expander extends XMLApp {
     }
   }
 
-  void skip(Node n, String name, String elem) {
+  void skip(String name, String elem) {
+    Node n = reader.getCurrentNode();
     n = n.getFirstChild();
     name = n.getNodeName();
 
     if (name.equals("#text")) {
-      if (!allBlanks(n)) {
+      if (!allBlanks()) {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                 "): Invalid construction.");
 
@@ -159,8 +160,9 @@ public class Expander extends XMLApp {
     }
   }
 
-  String procIdentity(Node n) {
+  String procIdentity() {
 
+    Node n = reader.getCurrentNode();
     String both_sides = "";
 
     if (!xmlTextReaderIsEmptyElement(n)) {
@@ -172,18 +174,19 @@ public class Expander extends XMLApp {
         if (name.equals(Compiler.COMPILER_IDENTITY_ELEM)) {
           break;
         }
-        readString(n, both_sides, name);
+        readString(both_sides, name);
       }
     }
     return both_sides;
   }
 
-  SPair procTransduction(Node n) {
+  SPair procTransduction() {
+    Node n = reader.getCurrentNode();
 
     String lhs = "", rhs = "";
     String name = "";
 
-    skip(n, name, Compiler.COMPILER_LEFT_ELEM);
+    skip(name, Compiler.COMPILER_LEFT_ELEM);
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       name = "";
@@ -193,11 +196,11 @@ public class Expander extends XMLApp {
         if (name.equals(Compiler.COMPILER_LEFT_ELEM)) {
           break;
         }
-        readString(n , lhs, name);
+        readString(lhs, name);
       }
     }
 
-    skip(n, name, Compiler.COMPILER_RIGHT_ELEM);
+    skip(name, Compiler.COMPILER_RIGHT_ELEM);
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       name = "";
@@ -207,17 +210,17 @@ public class Expander extends XMLApp {
         if (name.equals(Compiler.COMPILER_RIGHT_ELEM)) {
           break;
         }
-        readString(n, rhs, name);
+        readString(rhs, name);
       }
     }
 
-    skip(n, name, Compiler.COMPILER_PAIR_ELEM);
+    skip(name, Compiler.COMPILER_PAIR_ELEM);
 
     return new SPair(lhs, rhs);
   }
 
   String procPar() {
-    return attrib( Compiler.COMPILER_N_ATTR);
+    return attrib(Compiler.COMPILER_N_ATTR);
   }
 
   void requireAttribute(String value, String attrname,
@@ -229,14 +232,15 @@ public class Expander extends XMLApp {
     }
   }
 
-  void procEntry(Node n, OutputStreamWriter output) throws IOException {
+  void procEntry(Writer output) throws IOException {
 
+    Node n = reader.getCurrentNode();
 
-    String atributo = this.attrib( Compiler.COMPILER_RESTRICTION_ATTR);
+    String atributo = this.attrib(Compiler.COMPILER_RESTRICTION_ATTR);
     // String entrname = this.attrib( org.apertium.lttoolbox.Compiler.COMPILER_LEMMA_ATTR);
 
     String myname = "";
-    if (this.attrib( Compiler.COMPILER_IGNORE_ATTR).equals("yes")) {
+    if (this.attrib(Compiler.COMPILER_IGNORE_ATTR).equals("yes")) {
       do {
         n = n.getFirstChild();
         if (n == null) {
@@ -268,16 +272,15 @@ public class Expander extends XMLApp {
 
       }
       String name = n.getNodeName();
-      skipBlanks(n, name);
+      skipBlanks(name);
 
-      int tipo = n.getNodeType();
       if (name.equals(Compiler.COMPILER_PAIR_ELEM)) {
-        SPair p = procTransduction(n);
+        SPair p = procTransduction();
         items.add(p);
         items_lr.add(p);
         items_rl.add(p);
       } else if (name.equals(Compiler.COMPILER_IDENTITY_ELEM)) {
-        String val = procIdentity(n);
+        String val = procIdentity();
         items.add(new SPair(val, val));
         items_lr.add(new SPair(val, val));
         items_rl.add(new SPair(val, val));
@@ -299,7 +302,7 @@ public class Expander extends XMLApp {
 
         if (atributo.equals(Compiler.COMPILER_RESTRICTION_LR_VAL)) {
           if (paradigm.get(p).size() == 0 && paradigm_lr.get(p).size() == 0) {
-            skip(n, name, Compiler.COMPILER_ENTRY_ELEM);
+            skip(name, Compiler.COMPILER_ENTRY_ELEM);
             return;
           }
           EntList first = new EntList(items_lr);
@@ -308,7 +311,7 @@ public class Expander extends XMLApp {
           items_lr.addAll(first);
         } else if (atributo.equals(Compiler.COMPILER_RESTRICTION_RL_VAL)) {
           if (paradigm.get(p).size() == 0 && paradigm_rl.get(p).size() == 0) {
-            skip(n, name, Compiler.COMPILER_ENTRY_ELEM);
+            skip(name, Compiler.COMPILER_ENTRY_ELEM);
             return;
           }
 
@@ -333,7 +336,7 @@ public class Expander extends XMLApp {
           items_rl.addAll(aux_rl);
           items_lr.addAll(aux_lr);
         }
-      } else if (name.equals(Compiler.COMPILER_ENTRY_ELEM) && tipo == XML_READER_TYPE_END_ELEMENT) {
+      } else if (name.equals(Compiler.COMPILER_ENTRY_ELEM) && n.getNextSibling() == null) {
         if (current_paradigm.equals("")) {
           for (Pair<String, String> it : items) {
             output.write(it.first);
@@ -360,7 +363,7 @@ public class Expander extends XMLApp {
         }
 
         return;
-      } else if (name.equals("#text") && allBlanks(n)) {
+      } else if (name.equals("#text") && allBlanks()) {
       } else if (name.equals("#comment")) {
       } else {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
@@ -372,10 +375,12 @@ public class Expander extends XMLApp {
   }
 
 
-  void procNode(Node n, OutputStreamWriter output) throws IOException {
+  void procNode(Writer output) throws IOException {
+
+    Node n = reader.getCurrentNode();
     String nombre = n.getNodeName();
 
-          System.err.println("procNode((n = " + nombre);
+    System.err.println("procNode((n = " + nombre);
 
     // HACER: optimizar el orden de ejecuci�n de esta ristra de "ifs"
 
@@ -394,7 +399,7 @@ public class Expander extends XMLApp {
     } else if (nombre.equals(Compiler.COMPILER_PARDEF_ELEM)) {
       procParDef();
     } else if (nombre.equals(Compiler.COMPILER_ENTRY_ELEM)) {
-      procEntry(n, output);
+      procEntry(output);
     } else if (nombre.equals(Compiler.COMPILER_SECTION_ELEM)) {
       /* ignorar */
     } else if (nombre.equals("#comment")) {
@@ -427,7 +432,6 @@ public class Expander extends XMLApp {
 
   void append(EntList result, String endings) {
     for (Pair<String, String> it : result) {
-
       it.first += endings;
       it.second += endings;
     }
@@ -435,7 +439,6 @@ public class Expander extends XMLApp {
 
   void append(EntList result, Pair<String, String> endings) {
     for (Pair<String, String> it : result) {
-
       it.first += endings.first;
       it.second += endings.second;
     }

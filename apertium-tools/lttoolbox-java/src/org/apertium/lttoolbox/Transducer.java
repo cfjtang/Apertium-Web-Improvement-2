@@ -21,7 +21,7 @@ import org.apache.commons.collections15.MultiMap;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.*;
 
 public class Transducer {
@@ -349,7 +349,7 @@ public class Transducer {
     return !(transitions.containsKey(state) && transitions.get(state).size() > 0);
   }
 
-  void write(OutputStreamWriter output, int decalage) throws IOException {
+  void write(Writer output, int decalage) throws IOException {
     output.write(initial);
     output.write(finals.size());
 

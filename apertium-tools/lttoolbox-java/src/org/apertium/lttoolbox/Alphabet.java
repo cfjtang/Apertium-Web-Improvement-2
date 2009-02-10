@@ -3,6 +3,7 @@ package org.apertium.lttoolbox;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class Alphabet {
     return slexic.size();
   }
 
-  void write(OutputStreamWriter output) throws IOException {
+  void write(Writer output) throws IOException {
     // First, we write the taglist
     output.write(slexicinv.size());  // taglist size
     for (int i = 0, limit = slexicinv.size(); i < limit; i++) {
@@ -124,7 +125,7 @@ public class Alphabet {
     return a_new;
   }
 
-  void writeSymbol(int symbol, OutputStreamWriter output) throws IOException {
+  void writeSymbol(int symbol, Writer output) throws IOException {
     if (symbol < 0) {
       output.write(slexicinv.get(-symbol - 1));
     } else {

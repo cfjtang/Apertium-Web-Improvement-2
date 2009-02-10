@@ -23,17 +23,12 @@ public class XMLApp {
    */
   protected TreeWalker reader;
 
-  // todo
-  static final int XML_READER_TYPE_END_ELEMENT = -1;
-
-  private Document doc;
-
   String attrib(String name) {
     Node n = reader.getCurrentNode();
     final NamedNodeMap attributes = n.getAttributes();
     final Node item = attributes.getNamedItem(name);
     if (item == null) {
-      // throw new RuntimeException(MessageFormat.format(      "Error getting attribute {0} from node {1}", name, n));
+      // throw new RuntimeException(MessageFormat.format("Error getting attribute {0} from node {1}", name, n));
       return "";
     }
     return item.getNodeValue();
@@ -57,7 +52,7 @@ public class XMLApp {
     System.err.print("Reading "+fichero);
     DOMParser parser = new DOMParser();
     parser.parse(fichero);
-    doc = parser.getDocument();
+    Document doc = parser.getDocument();
 
     System.err.println(" ... done"+doc);
 

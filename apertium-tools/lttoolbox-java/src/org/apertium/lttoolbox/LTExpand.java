@@ -41,8 +41,8 @@ public class LTExpand {
     }
 
 
-    InputStreamReader input = null;
-    OutputStreamWriter output = null;
+    InputStreamReader input;
+    Writer output = null;
 
     switch ((Integer.parseInt(argv[0]))) {
       case 2:
@@ -71,10 +71,12 @@ public class LTExpand {
         break;
 
       default:
-        endProgram("LTExpand");;
+        endProgram("LTExpand");
         break;
     }
 
+    assert output != null;
+    
     Expander e = new Expander();
     e.expand(argv[1], output);
     output.close();
@@ -86,7 +88,7 @@ public class LTExpand {
     return new InputStreamReader(new FileInputStream(f));
   }
 
-  private static OutputStreamWriter fwrite(String s) throws FileNotFoundException {
+  private static Writer fwrite(String s) throws FileNotFoundException {
     final File f = new File(s);
     return new OutputStreamWriter(new FileOutputStream(f));
   }

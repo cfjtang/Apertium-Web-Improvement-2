@@ -104,7 +104,7 @@ public class LTProc {
     }
 
     InputStreamReader input = new InputStreamReader(System.in);
-    OutputStreamWriter output = new OutputStreamWriter(System.out);
+    Writer output = new OutputStreamWriter(System.out);
 
     if (cmd == (argc - 3)) {
       InputStreamReader in = fopen(argv[cmd]);
@@ -204,7 +204,7 @@ public class LTProc {
     output.close();
   }
 
-  private static OutputStreamWriter fout(String filename) throws FileNotFoundException {
+  private static Writer fout(String filename) throws FileNotFoundException {
     return new OutputStreamWriter(new FileOutputStream(new File(filename)));
   }
 
