@@ -72,6 +72,7 @@ public class Expander extends XMLApp {
     Node n = reader.getCurrentNode();
     if (n != null) {
       current_paradigm = attrib(Compiler.COMPILER_N_ATTR);
+      System.err.println("current_paradigm = " + current_paradigm);
     } else {
       current_paradigm = "";
     }
@@ -126,7 +127,7 @@ public class Expander extends XMLApp {
     }
   }
 
-  void skipBlanks(String name) {
+  String skipBlanksRET(String name) {
 
     Node n = reader.getCurrentNode();
     if (name.equals("#text")) {
@@ -135,14 +136,15 @@ public class Expander extends XMLApp {
                 "): Invalid construction:" + n.getTextContent());
 
       }
-      n = n.getFirstChild();
+      n = reader.nextNode();;
       name = n.getNodeName();
     }
+    return name;
   }
 
-  void skip(String name, String elem) {
+  String skipRET(String name, String elem) {
     Node n = reader.getCurrentNode();
-    n = n.getFirstChild();
+    n = reader.nextNode();
     name = n.getNodeName();
 
     if (name.equals("#text")) {
@@ -151,7 +153,7 @@ public class Expander extends XMLApp {
                 "): Invalid construction.");
 
       }
-      n = n.getFirstChild();
+      n = reader.nextNode();
       name = n.getNodeName();
     }
 
@@ -160,6 +162,7 @@ public class Expander extends XMLApp {
               "): Expected '<" + elem + ">'.");
 
     }
+    return name;
   }
 
   StringBuilder procIdentity() {
@@ -171,7 +174,7 @@ public class Expander extends XMLApp {
       String name = "";
 
       while (true) {
-        n = n.getFirstChild();
+        n = reader.nextNode();
         name = n.getNodeName();
         if (name.equals(Compiler.COMPILER_IDENTITY_ELEM)) {
           break;
@@ -188,12 +191,12 @@ public class Expander extends XMLApp {
     StringBuilder lhs = new StringBuilder(), rhs = new StringBuilder();
     String name = "";
 
-    skip(name, Compiler.COMPILER_LEFT_ELEM);
+    name = skipRET(name, Compiler.COMPILER_LEFT_ELEM);
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       name = "";
       while (true) {
-        n = n.getFirstChild();
+        n = reader.nextNode();
         name = n.getNodeName();
         if (name.equals(Compiler.COMPILER_LEFT_ELEM)) {
           break;
@@ -202,12 +205,12 @@ public class Expander extends XMLApp {
       }
     }
 
-    skip(name, Compiler.COMPILER_RIGHT_ELEM);
+    name = skipRET(name, Compiler.COMPILER_RIGHT_ELEM);
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       name = "";
       while (true) {
-        n = n.getFirstChild();
+        n = reader.nextNode();
         name = n.getNodeName();
         if (name.equals(Compiler.COMPILER_RIGHT_ELEM)) {
           break;
@@ -216,7 +219,7 @@ public class Expander extends XMLApp {
       }
     }
 
-    skip(name, Compiler.COMPILER_PAIR_ELEM);
+    name = skipRET(name, Compiler.COMPILER_PAIR_ELEM);
 
     return new SPair(lhs.toString(), rhs.toString());
   }
@@ -244,7 +247,7 @@ public class Expander extends XMLApp {
     String myname = "";
     if (this.attrib(Compiler.COMPILER_IGNORE_ATTR).equals("yes")) {
       do {
-        n = n.getFirstChild();
+        n = reader.nextNode();
         if (n == null) {
           throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) + "): Parse error.");
         }
@@ -267,14 +270,14 @@ public class Expander extends XMLApp {
     }
 
     while (true) {
-      n = n.getFirstChild();
+      n = reader.nextNode();
       if (n == null) {
         throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
                 "): Parse error.");
 
       }
       String name = n.getNodeName();
-      skipBlanks(name);
+     name = skipBlanksRET(name);
 
       if (name.equals(Compiler.COMPILER_PAIR_ELEM)) {
         SPair p = procTransduction();
@@ -304,7 +307,7 @@ public class Expander extends XMLApp {
 
         if (atributo.equals(Compiler.COMPILER_RESTRICTION_LR_VAL)) {
           if (paradigm.get(p).size() == 0 && paradigm_lr.get(p).size() == 0) {
-            skip(name, Compiler.COMPILER_ENTRY_ELEM);
+            name = skipRET(name, Compiler.COMPILER_ENTRY_ELEM);
             return;
           }
           EntList first = new EntList(items_lr);
@@ -313,7 +316,7 @@ public class Expander extends XMLApp {
           items_lr.addAll(first);
         } else if (atributo.equals(Compiler.COMPILER_RESTRICTION_RL_VAL)) {
           if (paradigm.get(p).size() == 0 && paradigm_rl.get(p).size() == 0) {
-            skip(name, Compiler.COMPILER_ENTRY_ELEM);
+            name = skipRET(name, Compiler.COMPILER_ENTRY_ELEM);
             return;
           }
 
@@ -413,9 +416,9 @@ public class Expander extends XMLApp {
   }
 
   String procRegexp(Node n) {
-    n = n.getFirstChild();
+    n = reader.nextNode();
     String re = n.getNodeValue();
-    n = n.getFirstChild();
+    n = reader.nextNode();
     return re;
   }
 

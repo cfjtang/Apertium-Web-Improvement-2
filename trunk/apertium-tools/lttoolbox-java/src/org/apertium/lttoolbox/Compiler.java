@@ -324,7 +324,7 @@ public class Compiler extends XMLApp {
     }
   }
 
-  void skipBlanks(String name) {
+  String skipBlanksRET(String name) {
     while (name.equals("#text") || name.equals("#comment")) {
       if (!name.equals("#comment")) {
         if (!allBlanks()) {
@@ -335,9 +335,10 @@ public class Compiler extends XMLApp {
       Node n = reader.nextNode();
       name = n.getNodeName();
     }
+    return name;
   }
 
-  void skip(String name, String elem) {
+  String skipRET(String name, String elem) {
     Node n = reader.nextNode();
     name = n.getNodeName();
     while (name.equals("#text") || name.equals("#comment")) {
@@ -354,6 +355,7 @@ public class Compiler extends XMLApp {
       throw new RuntimeException("Error (" + xmlTextReaderGetParserLineNumber(reader) +
               "): Expected '<" + elem + ">'.");
     }
+    return name;
   }
 
   EntryToken procIdentity() {
@@ -383,7 +385,7 @@ public class Compiler extends XMLApp {
     List<Integer> rhs = new Vector<Integer>();
     String name = "";
 
-    skip(name, COMPILER_LEFT_ELEM);
+    name = skipRET(name, COMPILER_LEFT_ELEM);
 
     Node n = reader.getCurrentNode();
     if (!xmlTextReaderIsEmptyElement(n)) {
@@ -398,7 +400,7 @@ public class Compiler extends XMLApp {
       }
     }
 
-    skip(name, COMPILER_RIGHT_ELEM);
+    name = skipRET(name, COMPILER_RIGHT_ELEM);
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       while (true) {
@@ -411,7 +413,7 @@ public class Compiler extends XMLApp {
       }
     }
 
-    skip(name, COMPILER_PAIR_ELEM);
+    name = skipRET(name, COMPILER_PAIR_ELEM);
 
     EntryToken e = new EntryToken();
     e.setSingleTransduction(lhs, rhs);
@@ -551,7 +553,7 @@ public class Compiler extends XMLApp {
                 "): Parse error.");
       }
       String name = n.getNodeName();
-      skipBlanks(name);
+      name = skipBlanksRET(name);
 
       if (name.equals(COMPILER_PAIR_ELEM)) {
         elements.add(procTransduction());

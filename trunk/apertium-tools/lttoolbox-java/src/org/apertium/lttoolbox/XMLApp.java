@@ -45,7 +45,9 @@ public class XMLApp {
   }
 
   protected boolean xmlTextReaderIsEmptyElement(Node n) {
-    return StringUtils.isBlank(n.getNodeValue());
+      return n.getChildNodes().getLength()==0;
+
+      //return StringUtils.isWhitespace(n.getNodeValue());
   }
 
   protected TreeWalker xmlReaderForFile(String fichero) throws IOException, SAXException {
