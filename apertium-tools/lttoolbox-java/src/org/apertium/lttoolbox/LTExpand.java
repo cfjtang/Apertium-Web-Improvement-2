@@ -71,7 +71,7 @@ public class LTExpand {
         break;
 
       default:
-        endProgram(argv[0]);
+        endProgram("LTExpand");;
         break;
     }
 

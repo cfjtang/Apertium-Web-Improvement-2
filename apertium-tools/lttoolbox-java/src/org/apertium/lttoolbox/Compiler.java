@@ -205,6 +205,7 @@ public class Compiler extends XMLApp {
     int tipo = n.getNodeType();
     if (tipo != XML_READER_TYPE_END_ELEMENT) {
       current_paradigm = attrib(COMPILER_N_ATTR);
+      System.err.println("current_paradigm = " + current_paradigm);
     } else {
       final Transducer transducer = paradigms.get(current_paradigm);
       if (transducer != null) {
@@ -624,6 +625,9 @@ public class Compiler extends XMLApp {
 
     Node n = reader.getCurrentNode();
     String nombre = n.getNodeName();
+
+    System.err.println("procNode(n = " + nombre);
+
     // HACER: optimizar el orden de ejecuci�n de esta ristra de "ifs"
 
     if (nombre.equals("#text")) {

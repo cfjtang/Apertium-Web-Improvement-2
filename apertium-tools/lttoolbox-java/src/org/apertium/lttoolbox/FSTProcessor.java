@@ -23,6 +23,7 @@ import org.apertium.lttoolbox.Buffer;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -89,7 +90,7 @@ public class FSTProcessor {
   /**
    * Set of characters to escape with a backslash
    */
-  Set<Character> escaped_chars;
+  Set<Character> escaped_chars = new HashSet<Character>();
 
   /**
    * Alphabet
