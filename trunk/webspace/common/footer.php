@@ -74,7 +74,7 @@ Copyright &copy; 2007&mdash;2008 <a href="http://www.ua.es">Universidad de Alica
 -->
 <td align="right">
 <?php
-print _("Creative Commons license");
+print _("Creative Commons licence");
 ?>
 <br/>
 <a alt="This page is subject to a Creative Commons licence" href="http://creativecommons.org/licenses/by-sa/3.0/">
