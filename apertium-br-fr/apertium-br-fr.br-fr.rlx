@@ -118,6 +118,9 @@ SET S-BOUNDARY = CS | (sent) | VpartIDO;
 
 SECTION
 
+# implijout ar brezhoneg war ar panelloù kelaouiñ elektronek, prenañ ingal levrioù e brezhoneg evit ar vediaoueg, aozañ abadennoù e brezhoneg, stankaat ar c’hentelioù tañva brezhoneg er skolioù, komz brezhoneg e-pad al lidoù ofisiel.
+REMOVE ("komz" n) IF (1 NC);
+
 # REGLA (B0024): "WAR BONT AR NAONED"
 REMOVE Acr IF (0 NC) (0 Acr);
 
@@ -167,6 +170,7 @@ REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
 
 # REGLA (B    ): "diorroet eo o rouedadoù war an dachenn"
 REMOVE PrnDObj IF (1 NC) (NOT 1 VerbFin);
+
 
 
 # REGLA (B0012): "An dud a zeu da Roazhon"
@@ -271,3 +275,4 @@ REMOVE VerbImp IF (0 VerbImp);
 
 # Select 'ober' after determiner
 SELECT ("ober" n) IF ((-1 DetDef) OR (-1 Num));
+
