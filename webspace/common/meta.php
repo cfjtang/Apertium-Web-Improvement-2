@@ -7,8 +7,8 @@
   <head>
 	<link rel="shortcut icon" href="http://xixona.dlsi.ua.es/apertium-www/favicon.ico"/>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-        <link rel="stylesheet" type="text/css" href="style/style.css" />
-        <title>Apertium: an open-source shallow-transfer machine translation engine and toolbox</title>
+        <link rel="stylesheet" type="text/css" href="http://www.apertium.org/style/style.css" />
+        <title>Apertium: an open-source machine translation engine and toolbox</title>
         
     </head>
 
@@ -54,17 +54,16 @@
                 $url = '?' . $newQueryString;
         }
 
-				// Localization
-				$locale = getLocale($lang);
-				
-				//print "Locale: $locale";
+	// Localisation
+	$locale = getLocale($lang);
+	
+	//print "Locale: $locale";
 
-				//setlocale(LC_ALL,0);
-				setlocale(LC_ALL, $locale . ".UTF-8");
-				
-				// Set the text domain as 'messages'
-				$domain = 'messages';
-				bindtextdomain($domain, "./locale"); 
-				textdomain($domain);
-
+	//setlocale(LC_ALL,0);
+	setlocale(LC_ALL, $locale . ".UTF-8");
+	
+	// Set the text domain as 'messages'
+	$domain = 'messages';
+	bindtextdomain($domain, "./locale"); 
+	textdomain($domain);
 ?>

@@ -54,4 +54,3 @@ function printLanguageLink($code, $text, $url, $newLang) {
 		print '</select>';
 	?>
 </div>
-
