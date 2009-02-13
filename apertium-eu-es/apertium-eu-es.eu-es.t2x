@@ -62,7 +62,9 @@
       <cat-item lemma="vbconj" tags="SV.*"/>
       <cat-item lemma="vbconj_ukan" tags="SV.*"/>
       <cat-item lemma="vbconj_izan" tags="SV.*"/>
-    <!--  <cat-item lemma="estar_ger" tags="SV.*"/> ???????????? aquesta aqui? -->
+      <cat-item lemma="subjunt" tags="SV.*"/>
+      <cat-item lemma="vbconj_inf" tags="SV.*"/>
+      <cat-item lemma="estar_ger" tags="SV.*"/>
     </def-cat> 
 
 <def-cat n="ukan_izan">
@@ -96,9 +98,10 @@
       <cat-item lemma="pp" tags="SV.*"/>
     </def-cat> 
 
- <def-cat n="Orel">
-      <cat-item tags="Orel.*"/>
+    <def-cat n="querel">
+      <cat-item tags="rel"/>
     </def-cat>  
+
 
 <def-cat n="cnjadv1">
       <cat-item lemma="cnjadv1" tags="cnjadv"/>
@@ -3636,10 +3639,13 @@
 </rule>
 
 
+<!-- reglas con relativos y oraciones relativas-->
 
-<rule comment="OREL + SN (datorren urtea)">
+
+<rule comment="SV + rel + SN (datorren urtea)">
   <pattern>
-    <pattern-item n="Orel"/>
+    <pattern-item n="SVconj"/>
+    <pattern-item n="querel"/>
     <pattern-item n="SN"/>
   </pattern>
   <action>
@@ -3647,12 +3653,12 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" part="tipus_det"/>
+		<clip pos="3" part="tipus_det"/>
 		<lit-tag v="art"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="2" part="tipus_det"/>
+	      <clip pos="3" part="tipus_det"/>
 	      <lit-tag v="def"/>
 	    </let>
 	  </when>
@@ -3661,12 +3667,12 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" part="gen"/>
+		<clip pos="3" part="gen"/>
 		<lit-tag v="GD"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="2" part="gen"/>
+	      <clip pos="3" part="gen"/>
 	      <lit-tag v="m"/>
 	    </let>
 	  </when>
@@ -3675,12 +3681,12 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" part="nbr"/>
+		<clip pos="3" part="nbr"/>
 		<lit-tag v="ND"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="2" part="nbr"/>
+	      <clip pos="3" part="nbr"/>
 	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
@@ -3688,14 +3694,18 @@
 	<out>
 	  <chunk>
 	    <get-case-from pos="1">
-	      <clip pos="2" part="lem"/>
+	      <clip pos="3" part="lem"/>
 	    </get-case-from>
-	      <clip pos="2" part="tags"/>
-	      <clip pos="2" part="chcontent"/>
+	      <clip pos="3" part="tags"/>
+	      <clip pos="3" part="chcontent"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
-	    <get-case-from pos="2">
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>	    
+	  <chunk>
+	    <get-case-from pos="3">
 	      <clip pos="1" part="lem"/>
 	    </get-case-from>
 	      <clip pos="1" part="tags"/>
@@ -3705,9 +3715,10 @@
   </action>
 </rule>
 
- <rule comment="REGLA: OREL + SPR (datorren urteko martxoan">
+ <rule comment="REGLA: SV + rel + SPR (datorren urteko martxoan">
       <pattern>
-	<pattern-item n="Orel"/>
+	<pattern-item n="SVconj"/>
+	<pattern-item n="querel"/>
 	<pattern-item n="SPR"/>
       </pattern>
       <action>
@@ -3715,12 +3726,12 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" part="tipus_det"/>
+		<clip pos="3" part="tipus_det"/>
 		<lit-tag v="art"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="2" part="tipus_det"/>
+	      <clip pos="3" part="tipus_det"/>
 	      <lit-tag v="def"/>
 	    </let>
 	  </when>
@@ -3730,12 +3741,12 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" part="gen"/>
+		<clip pos="3" part="gen"/>
 		<lit-tag v="GD"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="2" part="gen"/>
+	      <clip pos="3" part="gen"/>
 	      <lit-tag v="m"/>
 	    </let>
 	  </when>
@@ -3744,12 +3755,12 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="2" part="nbr"/>
+		<clip pos="3" part="nbr"/>
 		<lit-tag v="ND"/>
 	      </equal>
 	    </test>
 	    <let>
-	      <clip pos="2" part="nbr"/>
+	      <clip pos="3" part="nbr"/>
 	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
@@ -3757,14 +3768,18 @@
 	<out>
 	  <chunk>
 	    <get-case-from pos="1">
-	      <clip pos="2" part="lem"/>
+	      <clip pos="3" part="lem"/>
 	    </get-case-from>
-	      <clip pos="2" part="tags"/>
-	      <clip pos="2" part="chcontent"/>
+	      <clip pos="3" part="tags"/>
+	      <clip pos="3" part="chcontent"/>
 	  </chunk>
 	  <b pos="1"/>
 	  <chunk>
-	    <get-case-from pos="2">
+	      <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <get-case-from pos="3">
 	      <clip pos="1" part="lem"/>
 	    </get-case-from>
 	      <clip pos="1" part="tags"/>
@@ -3773,6 +3788,83 @@
 	</out>
       </action>
 </rule>
+
+
+
+<rule comment="SV + rel + SN (gure ekonomia )berpiztu dezakeen erakunde bakarra">
+  <pattern>
+    <pattern-item n="SVconj"/>
+    <pattern-item n="querel"/>
+    <pattern-item n="SN"/>
+  </pattern>
+  <action>
+    <choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="tipus_det"/>
+		<lit-tag v="art"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="tipus_det"/>
+	      <lit-tag v="def"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="3" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <get-case-from pos="1">
+	      <clip pos="3" part="lem"/>
+	    </get-case-from>
+	      <clip pos="3" part="tags"/>
+	      <clip pos="3" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	      <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>	    
+	  <chunk>
+	    <get-case-from pos="3">
+	      <clip pos="1" part="lem"/>
+	    </get-case-from>
+	      <clip pos="1" part="tags"/>
+	      <clip pos="1" part="chcontent"/>
+	  </chunk>
+	</out>
+  </action>
+</rule>
+
+
 
 <rule comment="Auzitegi Konstituzionalak galarazten badu - el 'si' pasa delante del SN, el verbo no se detecta porque viene siempre después del 'si' y se queda tal como está. Por ahora queda así, estudiar si sería adecuado pasar también el verbo delante del SN en la mayoría de casos (si impide el tribunal constitucional.../ 'hanka sartzen baldin badu' - si la pierna mete / si mete la pierna ">
   <pattern>

@@ -117,7 +117,7 @@
 
 
 
-<def-label name="VBSINT">
+<def-label name="VBSINT"><!--la resta de verbs sintètics, fora dels que poden ser auxiliars (ukan, izan, ezan, edin) -->
     <tags-item tags="vbsint.*"/>
   </def-label>
 
@@ -158,9 +158,12 @@
 
 
 
-
   <def-label name="NOM">
     <tags-item tags="n"/> 
+ </def-label>
+
+
+ <def-label name="NP">
     <tags-item tags="n.acr"/> 
     <tags-item tags="np.*"/> 
   </def-label>
@@ -349,10 +352,25 @@
     </sequence>
   </def-mult>
 
+<def-mult name="VERBREL_EDIN"><!--esta def-mult antes que la siguiente, para que aquí entren solo ezan/edin + rel -->
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="REL"/>
+    </sequence>
+  </def-mult>
+
 <def-mult name="VERBREL">
     <sequence>
       <label-item label="VBSINT"/>
       <label-item label="REL"/>
+    </sequence>
+  </def-mult>
+
+<def-mult name="VERBREL_POST_EDIN">
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="REL"/>
+      <tags-item tags="post"/>
     </sequence>
   </def-mult>
 <def-mult name="VERBREL_POST">
@@ -362,11 +380,26 @@
       <tags-item tags="post"/>
     </sequence>
   </def-mult>
+<def-mult name="VERBREL_ART_EDIN"><!-- zena, dena -->
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="REL"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
 <def-mult name="VERBREL_ART"><!-- zena, dena -->
     <sequence>
       <label-item label="VBSINT"/>
       <label-item label="REL"/>
       <tags-item tags="det.art.*"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERBREL_ART_KO_EDIN">
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="REL"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
     </sequence>
   </def-mult>
 <def-mult name="VERBREL_ART_KO"><!-- dagoeneko -->
@@ -377,6 +410,14 @@
       <label-item label="KO"/>
     </sequence>
   </def-mult>
+<def-mult name="VERBREL_ART_POST_EDIN">
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="REL"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
 <def-mult name="VERBREL_ART_POST">
     <sequence>
       <label-item label="VBSINT"/>
@@ -385,10 +426,28 @@
       <tags-item tags="post"/>
     </sequence>
   </def-mult>
-<def-mult name="VERB_CNJADV"><!--faltaria tb VERB_CNJSUB?????? -->
+<def-mult name="VERB_CNJADV_EDIN">
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="CNJADV"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERB_CNJADV">
     <sequence>
       <label-item label="VBSINT"/>
       <label-item label="CNJADV"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERB_CNJSUBS_EDIN">
+    <sequence>
+      <label-item label="ezanedin"/>
+      <label-item label="CNJSUBS"/>
+    </sequence>
+  </def-mult>
+<def-mult name="VERB_CNJSUBS">
+    <sequence>
+      <label-item label="VBSINT"/>
+      <label-item label="CNJSUBS"/>
     </sequence>
   </def-mult>
 <!--
@@ -614,10 +673,18 @@
       <label-item label="NOM"/>
       <tags-item tags="det.art.*"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOMKOEN"><!--per a casar-lo amb adjectius en -ko? -->
     <sequence>
       <label-item label="NOM"/>
+      <label-item label="KO_EN"/>
+    </sequence>
+    <sequence>
+      <label-item label="NP"/>
       <label-item label="KO_EN"/>
     </sequence>
   </def-mult>
@@ -627,10 +694,19 @@
       <label-item label="NOM"/>
       <tags-item tags="post"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <tags-item tags="post"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOMKO_POST"><!--per a casar-lo amb adjectius en -ko? -->
     <sequence>
       <label-item label="NOM"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+    <sequence>
+      <label-item label="NP"/>
       <label-item label="KO"/>
       <tags-item tags="post"/>
     </sequence>
@@ -642,6 +718,12 @@
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOM_POST_DET">
     <sequence>
@@ -649,10 +731,21 @@
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOM_POST_DET_POST">
     <sequence>
       <label-item label="NOM"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+    <sequence>
+      <label-item label="NP"/>
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
       <tags-item tags="post"/>
@@ -665,10 +758,21 @@
       <tags-item tags="det.art.*"/>
       <label-item label="KO_EN"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO_EN"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOM_DET_KO_POST">
     <sequence>
       <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <label-item label="KO"/>
+      <tags-item tags="post"/>
+    </sequence>
+    <sequence>
+      <label-item label="NP"/>
       <tags-item tags="det.art.*"/>
       <label-item label="KO"/>
       <tags-item tags="post"/>
@@ -680,6 +784,11 @@
       <tags-item tags="det.art.*"/>
       <tags-item tags="post"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOM_DET_POST_DET">
     <sequence>
@@ -688,10 +797,23 @@
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
     </sequence>
+    <sequence>
+      <label-item label="NP"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
   </def-mult>
 <def-mult name="NOM_DET_POST_DET_POST">
     <sequence>
       <label-item label="NOM"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+    <sequence>
+      <label-item label="NP"/>
       <tags-item tags="det.art.*"/>
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
@@ -1631,10 +1753,33 @@
       <label-item label="ezanedin"/>
     </label-sequence>
     <label-sequence>
+      <label-item label="PP"/>
+      <label-item label="VERBREL_EDIN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PP"/>
+      <label-item label="VERBREL_POST_EDIN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PP"/>
+      <label-item label="VERB_CNJADV_EDIN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PP"/>
+      <label-item label="VERB_CNJSUBS_EDIN"/>
+    </label-sequence>
+    <label-sequence>
       <label-item label="PPper"/><!-- ????? eraman dezaten-->
       <label-item label="ezanedin"/>
     </label-sequence>
-
+    <label-sequence><!-- , izugarrizko arriskuak -->
+      <label-item label="CM"/>
+      <label-item label="ADJIZO_POST"/>
+    </label-sequence>
+    <label-sequence><!-- , izugarrizko arriskuak -->
+      <label-item label="CM"/>
+      <label-item label="ADJIZO_KOEN"/>
+    </label-sequence>
 
 
  </forbid>
@@ -1657,6 +1802,14 @@
      <enforce-after label="INF">
       <label-set>
         <label-item label="ezanedin"/>
+        <label-item label="VERBREL_EDIN"/>
+        <label-item label="VERBREL_POST_EDIN"/>
+        <label-item label="VERBREL_ART_EDIN"/>
+        <label-item label="VERBREL_ART_KO_EDIN"/>
+        <label-item label="VERBREL_ART_POST_EDIN"/>
+        <label-item label="VERB_CNJADV_EDIN"/>
+        <label-item label="VERB_CNJSUBS_EDIN"/>
+        <label-item label=""/>
       </label-set>
     </enforce-after>
 
