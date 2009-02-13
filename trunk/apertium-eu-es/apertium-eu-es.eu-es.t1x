@@ -94,6 +94,10 @@
       <cat-item lemma="bat" tags="num.sg"/>
     </def-cat>
 
+    <def-cat n="vbsint_aux">
+      <cat-item lemma="ukan" tags="vbsint.*"/>
+      <cat-item lemma="izan" tags="vbsint.*"/>
+    </def-cat>
     <def-cat n="vbsint">
       <cat-item tags="vbsint.*"/>
     </def-cat>
@@ -115,9 +119,15 @@
     <def-cat n="lexpp">
       <cat-item tags="vblex.pp"/>
     </def-cat>
-    <def-cat n="eginpp">
+    <def-cat n="egin_izanpp">
       <cat-item lemma="egin" tags="vblex.pp"/>
       <cat-item lemma="egin" tags="vblex.inf"/>
+      <cat-item lemma="izan" tags="vblex.pp"/>
+      <cat-item lemma="izan" tags="vblex.inf"/>
+    </def-cat>
+    <def-cat n="izanpp">
+      <cat-item lemma="izan" tags="vblex.pp"/>
+      <cat-item lemma="izan" tags="vblex.inf"/>
     </def-cat>
 
 
@@ -15021,12 +15031,14 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	      <clip pos="1" side="tl" part="tipus_det"/>
 	    </let>
 	  </otherwise>
-	</choose>      
-		
+	</choose>
+	<call-macro n="SPgenitivo">
+	  <with-param pos="2"/>
+	</call-macro> 		
 	<out> 
 	  <chunk name="pr_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SA"/></tag>
+	      <tag><var n="chunk"/></tag>
 	      <tag><var n="tipusdet"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><lit-tag v="ND"/></tag>
@@ -15054,6 +15066,88 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
     <!--********************************* REGLES DE SV ***************************************************** -->
 
+<rule comment="REGLA:  VERBO SINT potencial (para cuando va después de desconocida - daiteke - puede)">
+      <pattern>
+	<pattern-item n="aux_potencial"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verbal_flex">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="1" side="tl" part="lem"/>
+	  <lit v="poder"/>
+	</let>
+	<let>
+	  <clip pos="1" side="tl" part="a_verb"/>
+	  <lit-tag v="vbmod"/>
+	</let>	  
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="potpr"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="potps"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="ifi"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="temps"/>
+		<lit-tag v="poth"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
+	</choose>		
+	<out>
+	  <chunk name="vbconj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="1" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="1" side="sl" part="nor"/></tag>
+	      <tag><clip pos="1" side="sl" part="nori"/></tag>
+	      <tag><clip pos="1" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
 
     <rule comment="REGLA: VERBO SINTÉTICO (dut, nabil)">
       <pattern>
@@ -15162,7 +15256,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: PP + VERBO SINT (ikusi dut)">
       <pattern>
 	<pattern-item n="pp"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -15257,11 +15351,11 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <rule comment="REGLA: PP + EGIN(PP) + VERBO SINT (ikusi egin dut) - aditza galdegaia">
+    <rule comment="REGLA: PP + EGIN/IZAN(PP) + VERBO SINT (ikusi egin dut - aditza galdegaia) / (ikusi izan dut - pasado habitual)">
       <pattern>
 	<pattern-item n="pp"/>
-	<pattern-item n="eginpp"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="egin_izanpp"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -15363,7 +15457,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: GER + VERBO SINT (etortzen naiz)">
       <pattern>
 	<pattern-item n="ger"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -15432,7 +15526,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       <pattern>
 	<pattern-item n="pp"/>
 	<pattern-item n="eginger"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -15500,11 +15594,80 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
+ <rule comment="REGLA: GER + IZAN + VERBO SINT (etortzen izan naiz - vengo (suelo venir))">
+      <pattern>
+	<pattern-item n="ger"/>
+	<pattern-item n="izanpp"/>
+	<pattern-item n="vbsint_aux"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pii"/>
+	    </let>
+	  </when>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj" case="caseSecondWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
+      </action>
+    </rule>
+
+
 
     <rule comment="REGLA: PFUT + VERBO SINT (etorriko naiz)">
       <pattern>
 	<pattern-item n="pfut"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -15586,7 +15749,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       <pattern>
 	<pattern-item n="pp"/>
 	<pattern-item n="eginpfut"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -16234,7 +16397,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: EZ + VERBO SINT + PP (ez dut ikusi)">
       <pattern>
 	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
 	<pattern-item n="lexpp"/>
       </pattern>
       <action>
@@ -16351,7 +16514,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: EZ + VERBO SINT + GER (ez naiz etortzen)">
       <pattern>
 	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
 	<pattern-item n="lexger"/>
       </pattern>
       <action>	
@@ -16437,7 +16600,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: EZ + VERBO SINT + PFUT (ez dira pasako)">
       <pattern>
 	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
 	<pattern-item n="lexpfut"/>
       </pattern>
       <action>	
@@ -16523,7 +16686,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: EZ + VERBO SINT + (e)la + PP (ez duela ikusi)">
       <pattern>
 	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="lexpp"/>
       </pattern>
@@ -16655,7 +16818,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: EZ + VERBO SINT + (e)la + GER (ez naizela etortzen)">
       <pattern>
 	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="lexger"/>
       </pattern>
@@ -16754,7 +16917,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <rule comment="REGLA: EZ + VERBO SINT + (e)la + PFUT (ez direla pasako)">
       <pattern>
 	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="lexpfut"/>
       </pattern>
@@ -16848,6 +17011,673 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
+ 
+<!--negacions en un altre ordre: es pot dir tant 'ez genuen hartu' com 'hartu ez genuen' (crec) -->
+
+
+    <rule comment="REGLA: PP + EZ +  VERBO SINT ( jaso ez dute)">
+      <pattern>
+	<pattern-item n="lexpp"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="vbsint_aux"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<let>
+	  <clip pos="3" side="tl" part="lem"/>
+	  <lit v="haber"/>
+	</let>
+	<let>
+	  <clip pos="3" side="tl" part="a_verb"/>
+	  <lit-tag v="vbhaver"/>
+	</let>
+	<out>
+	  <chunk name="adv">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	</out>	
+	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="vbconj">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+		  <tag><clip pos="3" side="sl" part="nor"/></tag>
+		  <tag><clip pos="3" side="sl" part="nori"/></tag>
+		  <tag><clip pos="3" side="sl" part="nork"/></tag>
+		</tags>		  
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <clip pos="3" side="tl" part="temps"/>
+		  <clip pos="3" side="tl" part="persnbr"/>
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+		<b pos="2"/>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <lit-tag v="m.sg"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="ifi"/>
+	    </let>
+	    <out>
+	      <chunk name="vbconj">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+		  <tag><clip pos="3" side="sl" part="nor"/></tag>
+		  <tag><clip pos="3" side="sl" part="nori"/></tag>
+		  <tag><clip pos="3" side="sl" part="nork"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <clip pos="3" side="tl" part="persnbr"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	    <call-macro n="f_bcond">
+	      <with-param pos="2"/>
+	    </call-macro>
+	  </when>
+	</choose>	
+      </action>
+    </rule>
+
+
+
+    <rule comment="REGLA: GER + EZ + VERBO SINT (etortzen ez naiz)">
+      <pattern>
+	<pattern-item n="lexger"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="vbsint_aux"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<out>
+	  <chunk name="adv">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>	
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pii"/>
+	    </let>
+	  </when>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="2"/>
+	</call-macro>
+      </action>
+    </rule>
+
+    
+
+    <rule comment="REGLA: PFUT + EZ + VERBO SINT ( pasako ez dira)">
+      <pattern>
+	<pattern-item n="lexpfut"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="vbsint_aux"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<out>
+	  <chunk name="adv">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>	
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="2"/>
+	</call-macro>
+      </action>
+    </rule>
+
+
+<!--negacions amb -lako -->
+
+
+    <rule comment="REGLA: PP + EZ +  VERBO SINT + lako ( jaso ez dutelako)">
+      <pattern>
+	<pattern-item n="lexpp"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="vbsint_aux"/>
+	<pattern-item n="lako"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<let>
+	  <clip pos="3" side="tl" part="lem"/>
+	  <lit v="haber"/>
+	</let>
+	<let>
+	  <clip pos="3" side="tl" part="a_verb"/>
+	  <lit-tag v="vbhaver"/>
+	</let>
+	<out>
+	  <chunk name="cnjadv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="cnjadv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu> 
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="adv">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="2"/>
+	</out>	
+	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="vbconj">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+		  <tag><clip pos="3" side="sl" part="nor"/></tag>
+		  <tag><clip pos="3" side="sl" part="nori"/></tag>
+		  <tag><clip pos="3" side="sl" part="nork"/></tag>
+		</tags>		  
+		<lu>
+		  <clip pos="3" side="tl" part="lemh"/>
+		  <clip pos="3" side="tl" part="a_verb"/>
+		  <clip pos="3" side="tl" part="temps"/>
+		  <clip pos="3" side="tl" part="persnbr"/>
+		  <clip pos="3" side="tl" part="lemq"/>
+		</lu>
+		<b/>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <lit-tag v="m.sg"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="tl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>	      
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="ifi"/>
+	    </let>
+	    <out>
+	      <chunk name="vbconj">
+		<tags>
+		  <tag><lit-tag v="SV"/></tag>
+		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+		  <tag><clip pos="3" side="sl" part="nor"/></tag>
+		  <tag><clip pos="3" side="sl" part="nori"/></tag>
+		  <tag><clip pos="3" side="sl" part="nork"/></tag>
+		</tags>
+		<lu>
+		  <clip pos="1" side="tl" part="lemh"/>
+		  <clip pos="1" side="tl" part="a_verb"/>
+		  <clip pos="1" side="tl" part="temps"/>
+		  <clip pos="3" side="tl" part="persnbr"/>
+		  <clip pos="1" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	</choose>
+	
+      </action>
+    </rule>
+
+
+
+    <rule comment="REGLA: GER + EZ + VERBO SINT + lako (etortzen ez naizelako)">
+      <pattern>
+	<pattern-item n="lexger"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="vbsint_aux"/>
+	<pattern-item n="lako"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<out>
+	  <chunk name="cnjadv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="cnjadv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu> 
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="adv">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="2"/>
+	</out>
+	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>	
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pri"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="pii"/>
+	    </let>
+	  </when>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    
+
+    <rule comment="REGLA: PFUT + EZ + VERBO SINT + lako ( pasako ez direlako)">
+      <pattern>
+	<pattern-item n="lexpfut"/>
+	<pattern-item n="ez"/>
+	<pattern-item n="vbsint_aux"/>
+	<pattern-item n="lako"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="ser_tener">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>
+	<out>
+	  <chunk name="cnjadv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="cnjadv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu> 
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="adv">
+	    <tags>
+	      <tag><lit-tag v="SADV"/></tag>	      
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	  <b pos="2"/>
+	</out>
+	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>	
+	<call-macro n="verbal_flex">
+	  <with-param pos="3"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pri"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="fti"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="3" side="sl" part="temps"/>
+		<lit-tag v="pii"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <lit-tag v="cni"/>
+	    </let>
+	  </when>
+	</choose>	    
+	<out>
+	  <chunk name="vbconj">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
+	      <tag><clip pos="3" side="sl" part="nor"/></tag>
+	      <tag><clip pos="3" side="sl" part="nori"/></tag>
+	      <tag><clip pos="3" side="sl" part="nork"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="persnbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+
+    <!--
+	MG: no sé com es fa el negatiu de 'prestatzen ari garelako: falta fer la forma negativa canviant la regla següent
+
+
+<rule comment="REGLA: GER + ARI IZAN (prestatzen ari gara - estamos preparando) + lako">
+<pattern>
+<pattern-item n="ger"/>
+<pattern-item n="ari_izan"/>
+<pattern-item n="lako"/>
+</pattern>
+<action>	
+<call-macro n="firstWord">
+<with-param pos="1"/>
+</call-macro>
+<out>
+<chunk name="cnjadv" case="caseFirstWord">
+<tags>
+<tag><lit-tag v="cnjadv"/></tag>
+</tags>
+<lu>
+<clip pos="3" side="tl" part="whole"/>
+</lu>
+</chunk>
+</out>
+<let>
+<var n="caseFirstWord"/>
+<lit v="aa"/>
+</let>
+<call-macro n="verbal_flex">
+<with-param pos="2"/>
+</call-macro>
+<out> 
+<chunk name="estar_ger">
+<tags>
+<tag><lit-tag v="SV"/></tag>
+<tag><clip pos="1" side="tl" part="a_verb"/></tag>
+<tag><clip pos="2" side="tl" part="persnbr"/></tag>
+<tag><clip pos="2" side="sl" part="nor"/></tag>
+<tag><clip pos="2" side="sl" part="nori"/></tag>
+<tag><clip pos="2" side="sl" part="nork"/></tag>
+</tags>
+<b/>
+<lu>
+<clip pos="2" side="tl" part="lemh"/>
+<clip pos="2" side="tl" part="a_verb"/>
+<clip pos="2" side="tl" part="temps"/>
+<clip pos="2" side="tl" part="persnbr"/>
+<clip pos="2" side="tl" part="lemq"/>
+</lu>
+<b pos="1"/>
+<lu>
+<clip pos="1" side="tl" part="lemh"/>
+<clip pos="1" side="tl" part="a_verb"/>
+<clip pos="1" side="tl" part="temps"/>
+<clip pos="1" side="tl" part="lemq"/>
+</lu>
+</chunk>
+</out>
+</action>
+</rule>
+    -->
 
     <!-- formas de condicional-->
 
@@ -16936,7 +17766,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       <pattern>
 	<pattern-item n="pp"/>
 	<pattern-item n="ba"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -17079,7 +17909,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       <pattern>
 	<pattern-item n="ger"/>
 	<pattern-item n="ba"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -17177,7 +18007,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<pattern-item n="ger"/>
 	<pattern-item n="ez"/>
 	<pattern-item n="ba"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -17285,7 +18115,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       <pattern>
 	<pattern-item n="pfut"/>
 	<pattern-item n="ba"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -17375,7 +18205,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<pattern-item n="pfut"/>
 	<pattern-item n="ez"/>
 	<pattern-item n="ba"/>
-	<pattern-item n="vbsint"/>
+	<pattern-item n="vbsint_aux"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -17470,7 +18300,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
     
 
-<!-- modo potencial -->
+<!-- modo potencial mireia-->
 
  <rule comment="REGLA: INF (forma lexemática) + VERBO SINT potencial (etor daiteke - puede venir)">
       <pattern>
@@ -17535,7 +18365,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </when>
 	</choose>		
 	<out>
-	  <chunk name="vbmod_inf" case="caseFirstWord">
+	  <chunk name="vbconj_inf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -17563,6 +18393,8 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	</out>
       </action>
     </rule>
+
+ 
 
 <!-- modo subjuntivo -->
 
@@ -17726,7 +18558,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </when>
 	</choose>	
 	<out>
-	  <chunk name="vbmod_inf" case="caseFirstWord">
+	  <chunk name="vbconj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -17751,1635 +18583,32 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <!--***************************** VERBS AMB RELATIUS  **********************************-->
+    <!--***************************** RELATIU  **********************************-->
 
-
-    <rule comment="REGLA: VERBO SINTÉTICO (dut, nabil) + REL">
+ <rule comment="REGLA: REL (regla per al relatiu sol: els canvis d'ordre es fan en el t2x. ">
       <pattern>
-	<pattern-item n="vbsint"/>
 	<pattern-item n="reladj"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="verbal_flex">
-	  <with-param pos="1"/>
-	</call-macro>
 	<out>
-	  <chunk name="q_vbconj" case="caseFirstWord">
+	  <chunk name="querel" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="Orel"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="1" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="1" side="sl" part="nor"/></tag>
-	      <tag><clip pos="1" side="sl" part="nori"/></tag>
-	      <tag><clip pos="1" side="sl" part="nork"/></tag>
+	      <tag><lit-tag v="rel"/></tag>
 	    </tags>
 	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	    <b/>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="1" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
+	      <clip pos="1" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	</out>
       </action>
     </rule>
 
+ 
 
-    <rule comment="REGLA: VERBO SINTÉTICO (nahi dut) + REL">
-      <pattern>
-	<pattern-item n="vbper"/>
-	<pattern-item n="reladj"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="verbal_flex">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="q_vbconj" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="Orel"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="1" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="1" side="sl" part="nor"/></tag>
-	      <tag><clip pos="1" side="sl" part="nori"/></tag>
-	      <tag><clip pos="1" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	    <b/>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="1" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule>
-
-    <rule comment="REGLA: PP + VERBO SINT (ikusi dut) + REL">
-      <pattern>
-	<pattern-item n="pp"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="reladj"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="2"/>
-	</call-macro>
-	<let>
-	  <clip pos="2" side="tl" part="lem"/>
-	  <lit v="haber"/>
-	</let>
-	<let>
-	  <clip pos="2" side="tl" part="a_verb"/>
-	  <lit-tag v="vbhaver"/>
-	</let>
-	<call-macro n="verbal_flex">
-	  <with-param pos="2"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="tl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <out>
-	      <chunk name="q_vbconj" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="Orel"/></tag>
-		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="2" side="sl" part="nor"/></tag>
-		  <tag><clip pos="2" side="sl" part="nori"/></tag>
-		  <tag><clip pos="2" side="sl" part="nork"/></tag>
-		</tags>
-		<lu>
-		  <clip pos="3" side="tl" part="whole"/>
-		</lu>
-		<b/>
-		<lu>
-		  <clip pos="2" side="tl" part="lemh"/>
-		  <clip pos="2" side="tl" part="a_verb"/>
-		  <clip pos="2" side="tl" part="temps"/>
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <clip pos="2" side="tl" part="lemq"/>
-		</lu>
-		<b pos="1"/>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <lit-tag v="m.sg"/>
-		  <clip pos="1" side="tl" part="lemq"/>
-		</lu>
-	      </chunk>
-	    </out>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="tl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>	      
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="ifi"/>
-	    </let>
-	    <out>
-	      <chunk name="q_vbconj" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="Orel"/></tag>
-		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="2" side="sl" part="nor"/></tag>
-		  <tag><clip pos="2" side="sl" part="nori"/></tag>
-		  <tag><clip pos="2" side="sl" part="nork"/></tag>
-		</tags>
-		<lu>
-		  <clip pos="3" side="tl" part="whole"/>
-		</lu>
-		<b/>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <clip pos="2" side="tl" part="persnbr"/>
-		  <clip pos="1" side="tl" part="lemq"/>
-		</lu>
-	      </chunk>
-	    </out>
-	    <call-macro n="f_bcond">
-	      <with-param pos="1"/>
-	    </call-macro>
-	  </when>
-	</choose>
-      </action>
-    </rule>
-
-
-
-
-    <rule comment="REGLA: GER + VERBO SINT (etortzen naiz) + REL">
-      <pattern>
-	<pattern-item n="ger"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="reladj"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="verbal_flex">
-	  <with-param pos="2"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="2"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="pri"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="pii"/>
-	    </let>
-	  </when>
-	</choose>	    
-	<out>
-	  <chunk name="q_vbconj" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="Orel"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="2" side="sl" part="nor"/></tag>
-	      <tag><clip pos="2" side="sl" part="nori"/></tag>
-	      <tag><clip pos="2" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="3" side="tl" part="whole"/>
-	    </lu>
-	    <b/>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<call-macro n="f_bcond">
-	  <with-param pos="1"/>
-	</call-macro>
-      </action>
-    </rule>
-
-
-    <rule comment="REGLA: PFUT + VERBO SINT (etorriko naiz) + REL">
-      <pattern>
-	<pattern-item n="pfut"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="reladj"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="verbal_flex">
-	  <with-param pos="2"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="2"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="fti"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="sl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="cni"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="tl" part="temps"/>
-		<lit-tag v="onpr"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="cni"/>
-	    </let>
-	  </when>
-	</choose>		    
-	<out>
-	  <chunk name="q_vbconj" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="Orel"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="2" side="sl" part="nor"/></tag>
-	      <tag><clip pos="2" side="sl" part="nori"/></tag>
-	      <tag><clip pos="2" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="3" side="tl" part="whole"/>
-	    </lu>
-	    <b/>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<call-macro n="f_bcond">
-	  <with-param pos="1"/>
-	</call-macro>
-      </action>
-    </rule>
-
-
-
-
-
-    <rule comment="REGLA: GER + ARI IZAN (prestatzen ari gara - estamos preparando) + REL">
-      <pattern>
-	<pattern-item n="ger"/>
-	<pattern-item n="ari_izan"/>
-	<pattern-item n="reladj"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="verbal_flex">
-	  <with-param pos="2"/>
-	</call-macro>
-	<out> 
-	  <chunk name="q_estar_ger" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="Orel"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="2" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="2" side="sl" part="nor"/></tag>
-	      <tag><clip pos="2" side="sl" part="nori"/></tag>
-	      <tag><clip pos="2" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="3" side="tl" part="whole"/>
-	    </lu>
-	    <b/>
-	    <lu>
-	      <clip pos="2" side="tl" part="lemh"/>
-	      <clip pos="2" side="tl" part="a_verb"/>
-	      <clip pos="2" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="persnbr"/>
-	      <clip pos="2" side="tl" part="lemq"/>
-	    </lu>
-	    <b pos="1"/>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule>
-
-
-    <!-- ********* VERBS AMB CONJUNCIÓ ADVERBIAL *********************** -->
-
-    <!--afirmacions -->
-
-
-    <!--<rule comment="REGLA: VERBO SINTÉTICO (dut, nabil) + lako ">
-	<pattern>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="lako"/>
-	</pattern>
-	<action>
-	<call-macro n="firstWord">
-	<with-param pos="1"/>
-	</call-macro>
-	<out>
-	<chunk name="cnjadv" case="caseFirstWord">
-	<tags>
-	<tag><lit-tag v="cnjadv"/></tag>
-	</tags>
-	<lu>
-	<clip pos="2" side="tl" part="whole"/>
-	</lu>
-	</chunk>
-	</out>	
-	<let>
-	<var n="caseFirstWord"/>
-	<lit v="aa"/>
-	</let>
-	<call-macro n="verbal_flex">
-	<with-param pos="1"/>
-	</call-macro>
-	<out>
-	<b/>
-	<chunk name="vbconj">
-	<tags>
-	<tag><lit-tag v="SV"/></tag>
-	<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	<tag><clip pos="1" side="tl" part="persnbr"/></tag>
-	<tag><clip pos="1" side="sl" part="nor"/></tag>
-	<tag><clip pos="1" side="sl" part="nori"/></tag>
-	<tag><clip pos="1" side="sl" part="nork"/></tag>
-	</tags>
-	<lu>
-	<clip pos="1" side="tl" part="lemh"/>
-	<clip pos="1" side="tl" part="a_verb"/>
-	<clip pos="1" side="tl" part="temps"/>
-	<clip pos="1" side="tl" part="persnbr"/>
-	<clip pos="1" side="tl" part="lemq"/>
-	</lu>
-	</chunk>
-	</out>
-	</action>
-	</rule>
-
-
-<rule comment="REGLA: VERBO SINTÉTICO (nahi dut) + lako">
-<pattern>
-<pattern-item n="vbper"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="2" side="tl" part="whole"/>
-</lu>
-</chunk>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<b/>
-<chunk name="vbconj">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="1" side="tl" part="persnbr"/></tag>
-<tag><clip pos="1" side="sl" part="nor"/></tag>
-<tag><clip pos="1" side="sl" part="nori"/></tag>
-<tag><clip pos="1" side="sl" part="nork"/></tag>
-</tags>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="1" side="tl" part="persnbr"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-</action>
-</rule>
-
-<rule comment="REGLA: PP + VERBO SINT (ikusi dut) + lako">
-<pattern>
-<pattern-item n="pp"/>
-<pattern-item n="vbsint"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="3" side="tl" part="whole"/>
-</lu>
-</chunk>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<let>
-<clip pos="2" side="tl" part="lem"/>
-<lit v="haber"/>
-</let>
-<let>
-<clip pos="2" side="tl" part="a_verb"/>
-<lit-tag v="vbhaver"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<choose>
-<when>
-<test>
-<equal>
-<clip pos="2" side="tl" part="temps"/>
-<lit-tag v="pri"/>
-</equal>
-</test>
-<out>
-<chunk name="vbconj">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="2" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<b/>
-<lu>
-<clip pos="2" side="tl" part="lemh"/>
-<clip pos="2" side="tl" part="a_verb"/>
-<clip pos="2" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="2" side="tl" part="lemq"/>
-</lu>
-<b pos="1"/>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="m.sg"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-</when>
-<when>
-<test>
-<equal>
-<clip pos="2" side="tl" part="temps"/>
-<lit-tag v="pii"/>
-</equal>
-</test>
-<let>	      
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="ifi"/>
-</let>
-<out>
-<chunk name="vbconj">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<b/>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-<call-macro n="f_bcond">
-<with-param pos="1"/>
-</call-macro>
-</when>
-</choose>
-</action>
-</rule>
-
-
-
-
-<rule comment="REGLA: GER + VERBO SINT (etortzen naiz) + lako">
-<pattern>
-<pattern-item n="ger"/>
-<pattern-item n="vbsint"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>	
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="3" side="tl" part="whole"/>
-</lu>
-</chunk>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<choose>
-<when>
-<test>
-<equal>
-<clip pos="2" side="sl" part="temps"/>
-<lit-tag v="pri"/>
-</equal>
-</test>
-<let>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="pri"/>
-</let>
-</when>
-<when>
-<test>
-<equal>
-<clip pos="2" side="sl" part="temps"/>
-<lit-tag v="pii"/>
-</equal>
-</test>
-<let>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="pii"/>
-</let>
-</when>
-</choose>	    
-<out>
-<chunk name="vbconj">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<b/>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-<call-macro n="f_bcond">
-<with-param pos="1"/>
-</call-macro>
-</action>
-</rule>
-
-
-<rule comment="REGLA: PFUT + VERBO SINT (etorriko naiz) + lako">
-<pattern>
-<pattern-item n="pfut"/>
-<pattern-item n="vbsint"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>	
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="3" side="tl" part="whole"/>
-</lu>
-</chunk>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<choose>
-<when>
-<test>
-<equal>
-<clip pos="2" side="sl" part="temps"/>
-<lit-tag v="pri"/>
-</equal>
-</test>
-<let>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="fti"/>
-</let>
-</when>
-<when>
-<test>
-<equal>
-<clip pos="2" side="sl" part="temps"/>
-<lit-tag v="pii"/>
-</equal>
-</test>
-<let>
-<clip pos="1" side="tl" part="temps"/>
-<lit-tag v="cni"/>
-</let>
-</when>
-</choose>	    
-<out>
-<chunk name="vbconj">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<b/>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-<call-macro n="f_bcond">
-<with-param pos="1"/>
-</call-macro>
-</action>
-</rule>
-
-
-
-
-
-<rule comment="REGLA: GER + ARI IZAN (prestatzen ari gara - estamos preparando) + lako">
-<pattern>
-<pattern-item n="ger"/>
-<pattern-item n="ari_izan"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>	
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="3" side="tl" part="whole"/>
-</lu>
-</chunk>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<out> 
-<chunk name="estar_ger">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<b/>
-<lu>
-<clip pos="2" side="tl" part="lemh"/>
-<clip pos="2" side="tl" part="a_verb"/>
-<clip pos="2" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="2" side="tl" part="lemq"/>
-</lu>
-<b pos="1"/>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-</action>
-</rule>
-    -->
-
-    <!--negacions verb + lako-->
-
-    <!--
-	<rule comment="REGLA: EZ + VERBO SINTÉTICO (dut, nabil) + lako (MG: mirar: jaso ez dutelako, ez dutelako jaso?? caldria marcar el chunk 'ez' per al t2x?">
-	<pattern>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="lako"/>
-	</pattern>
-	<action>
-	<call-macro n="firstWord">
-	<with-param pos="1"/>
-	</call-macro>
-	<out>
-	<chunk name="cnjadv" case="caseFirstWord">
-	<tags>
-	<tag><lit-tag v="cnjadv"/></tag>
-	</tags>
-	<lu>
-	<clip pos="3" side="tl" part="whole"/>
-	</lu>
-	</chunk>
-	<b/>
-	<chunk name="adv">
-	<tags>
-	<tag><lit-tag v="SADV"/></tag>	      
-	<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-	</tags>
-	<lu>
-	<clip pos="1" side="tl" part="whole"/>
-	</lu>
-	</chunk>
-	<b pos="1"/>
-	</out>
-	<let>
-	<var n="caseFirstWord"/>
-	<lit v="aa"/>
-	</let>
-	<call-macro n="verbal_flex">
-	<with-param pos="2"/>
-	</call-macro>
-	<out>
-	<chunk name="vbconj">
-	<tags>
-	<tag><lit-tag v="SV"/></tag>
-	<tag><clip pos="2" side="tl" part="a_verb"/></tag>
-	<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-	<tag><clip pos="2" side="sl" part="nor"/></tag>
-	<tag><clip pos="2" side="sl" part="nori"/></tag>
-	<tag><clip pos="2" side="sl" part="nork"/></tag>
-	</tags>
-	<lu>
-	<clip pos="2" side="tl" part="lemh"/>
-	<clip pos="2" side="tl" part="a_verb"/>
-	<clip pos="2" side="tl" part="temps"/>
-	<clip pos="2" side="tl" part="persnbr"/>
-	<clip pos="2" side="tl" part="lemq"/>
-	</lu>
-	</chunk>
-	</out>
-	</action>
-	</rule>
-
-
-<rule comment="REGLA: EZ + VERBO SINTÉTICO (nahi dut) + lako">
-<pattern>
-<pattern-item n="ez"/>
-<pattern-item n="vbper"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="3" side="tl" part="whole"/>
-</lu>
-</chunk>
-<b/>
-<chunk name="adv">
-<tags>
-<tag><lit-tag v="SADV"/></tag>	      
-<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-</tags>
-<lu>
-<clip pos="1" side="tl" part="whole"/>
-</lu>
-</chunk>
-<b pos="1"/>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<out>
-<chunk name="vbconj">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="2" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<lu>
-<clip pos="2" side="tl" part="lemh"/>
-<clip pos="2" side="tl" part="a_verb"/>
-<clip pos="2" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="2" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-</action>
-</rule>
-
-    -->
-
-<!--negacions en un altre ordre: es pot dir tant 'ez genuen hartu' com 'hartu ez genuen' (crec) -->
-
-
-    <rule comment="REGLA: PP + EZ +  VERBO SINT ( jaso ez dute)">
-      <pattern>
-	<pattern-item n="lexpp"/>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<let>
-	  <clip pos="3" side="tl" part="lem"/>
-	  <lit v="haber"/>
-	</let>
-	<let>
-	  <clip pos="3" side="tl" part="a_verb"/>
-	  <lit-tag v="vbhaver"/>
-	</let>
-	<out>
-	  <chunk name="adv">
-	    <tags>
-	      <tag><lit-tag v="SADV"/></tag>	      
-	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	  <b pos="1"/>
-	</out>	
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-	<call-macro n="verbal_flex">
-	  <with-param pos="3"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <out>
-	      <chunk name="vbconj">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="3" side="sl" part="nor"/></tag>
-		  <tag><clip pos="3" side="sl" part="nori"/></tag>
-		  <tag><clip pos="3" side="sl" part="nork"/></tag>
-		</tags>		  
-		<lu>
-		  <clip pos="3" side="tl" part="lemh"/>
-		  <clip pos="3" side="tl" part="a_verb"/>
-		  <clip pos="3" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="persnbr"/>
-		  <clip pos="3" side="tl" part="lemq"/>
-		</lu>
-		<b pos="2"/>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <lit-tag v="m.sg"/>
-		  <clip pos="1" side="tl" part="lemq"/>
-		</lu>
-	      </chunk>
-	    </out>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>	      
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="ifi"/>
-	    </let>
-	    <out>
-	      <chunk name="vbconj">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="3" side="sl" part="nor"/></tag>
-		  <tag><clip pos="3" side="sl" part="nori"/></tag>
-		  <tag><clip pos="3" side="sl" part="nork"/></tag>
-		</tags>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="persnbr"/>
-		  <clip pos="1" side="tl" part="lemq"/>
-		</lu>
-	      </chunk>
-	    </out>
-	    <call-macro n="f_bcond">
-	      <with-param pos="2"/>
-	    </call-macro>
-	  </when>
-	</choose>	
-      </action>
-    </rule>
-
-
-
-    <rule comment="REGLA: GER + EZ + VERBO SINT (etortzen ez naiz)">
-      <pattern>
-	<pattern-item n="lexger"/>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<out>
-	  <chunk name="adv">
-	    <tags>
-	      <tag><lit-tag v="SADV"/></tag>	      
-	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	  <b pos="1"/>
-	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>	
-	<call-macro n="verbal_flex">
-	  <with-param pos="3"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="pri"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="pii"/>
-	    </let>
-	  </when>
-	</choose>	    
-	<out>
-	  <chunk name="vbconj">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="3" side="sl" part="nor"/></tag>
-	      <tag><clip pos="3" side="sl" part="nori"/></tag>
-	      <tag><clip pos="3" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="3" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<call-macro n="f_bcond">
-	  <with-param pos="2"/>
-	</call-macro>
-      </action>
-    </rule>
-
-    
-
-    <rule comment="REGLA: PFUT + EZ + VERBO SINT ( pasako ez dira)">
-      <pattern>
-	<pattern-item n="lexpfut"/>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<out>
-	  <chunk name="adv">
-	    <tags>
-	      <tag><lit-tag v="SADV"/></tag>	      
-	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	  <b pos="1"/>
-	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>	
-	<call-macro n="verbal_flex">
-	  <with-param pos="3"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="fti"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="cni"/>
-	    </let>
-	  </when>
-	</choose>	    
-	<out>
-	  <chunk name="vbconj">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="3" side="sl" part="nor"/></tag>
-	      <tag><clip pos="3" side="sl" part="nori"/></tag>
-	      <tag><clip pos="3" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="3" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<call-macro n="f_bcond">
-	  <with-param pos="2"/>
-	</call-macro>
-      </action>
-    </rule>
-
-
-
-
-
-    <rule comment="REGLA: PP + EZ +  VERBO SINT + lako ( jaso ez dutelako)">
-      <pattern>
-	<pattern-item n="lexpp"/>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="lako"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<let>
-	  <clip pos="3" side="tl" part="lem"/>
-	  <lit v="haber"/>
-	</let>
-	<let>
-	  <clip pos="3" side="tl" part="a_verb"/>
-	  <lit-tag v="vbhaver"/>
-	</let>
-	<out>
-	  <chunk name="cnjadv" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="cnjadv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="4" side="tl" part="whole"/>
-	    </lu> 
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk name="adv">
-	    <tags>
-	      <tag><lit-tag v="SADV"/></tag>	      
-	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	  <b pos="2"/>
-	</out>	
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-	<call-macro n="verbal_flex">
-	  <with-param pos="3"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <out>
-	      <chunk name="vbconj">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="3" side="sl" part="nor"/></tag>
-		  <tag><clip pos="3" side="sl" part="nori"/></tag>
-		  <tag><clip pos="3" side="sl" part="nork"/></tag>
-		</tags>		  
-		<lu>
-		  <clip pos="3" side="tl" part="lemh"/>
-		  <clip pos="3" side="tl" part="a_verb"/>
-		  <clip pos="3" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="persnbr"/>
-		  <clip pos="3" side="tl" part="lemq"/>
-		</lu>
-		<b/>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <lit-tag v="m.sg"/>
-		  <clip pos="1" side="tl" part="lemq"/>
-		</lu>
-	      </chunk>
-	    </out>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>	      
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="ifi"/>
-	    </let>
-	    <out>
-	      <chunk name="vbconj">
-		<tags>
-		  <tag><lit-tag v="SV"/></tag>
-		  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-		  <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-		  <tag><clip pos="3" side="sl" part="nor"/></tag>
-		  <tag><clip pos="3" side="sl" part="nori"/></tag>
-		  <tag><clip pos="3" side="sl" part="nork"/></tag>
-		</tags>
-		<lu>
-		  <clip pos="1" side="tl" part="lemh"/>
-		  <clip pos="1" side="tl" part="a_verb"/>
-		  <clip pos="1" side="tl" part="temps"/>
-		  <clip pos="3" side="tl" part="persnbr"/>
-		  <clip pos="1" side="tl" part="lemq"/>
-		</lu>
-	      </chunk>
-	    </out>
-	  </when>
-	</choose>
-	
-      </action>
-    </rule>
-
-
-
-    <rule comment="REGLA: GER + EZ + VERBO SINT + lako (etortzen ez naizelako)">
-      <pattern>
-	<pattern-item n="lexger"/>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="lako"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<out>
-	  <chunk name="cnjadv" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="cnjadv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="4" side="tl" part="whole"/>
-	    </lu> 
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk name="adv">
-	    <tags>
-	      <tag><lit-tag v="SADV"/></tag>	      
-	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	  <b pos="2"/>
-	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>	
-	<call-macro n="verbal_flex">
-	  <with-param pos="3"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="pri"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="pii"/>
-	    </let>
-	  </when>
-	</choose>	    
-	<out>
-	  <chunk name="vbconj">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="3" side="sl" part="nor"/></tag>
-	      <tag><clip pos="3" side="sl" part="nori"/></tag>
-	      <tag><clip pos="3" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="3" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule>
-
-    
-
-    <rule comment="REGLA: PFUT + EZ + VERBO SINT + lako ( pasako ez direlako)">
-      <pattern>
-	<pattern-item n="lexpfut"/>
-	<pattern-item n="ez"/>
-	<pattern-item n="vbsint"/>
-	<pattern-item n="lako"/>
-      </pattern>
-      <action>	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="ser_tener">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>
-	<out>
-	  <chunk name="cnjadv" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="cnjadv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="4" side="tl" part="whole"/>
-	    </lu> 
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk name="adv">
-	    <tags>
-	      <tag><lit-tag v="SADV"/></tag>	      
-	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	  <b pos="2"/>
-	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>	
-	<call-macro n="verbal_flex">
-	  <with-param pos="3"/>
-	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pri"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="fti"/>
-	    </let>
-	  </when>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="3" side="sl" part="temps"/>
-		<lit-tag v="pii"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <lit-tag v="cni"/>
-	    </let>
-	  </when>
-	</choose>	    
-	<out>
-	  <chunk name="vbconj">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="3" side="tl" part="persnbr"/></tag>
-	      <tag><clip pos="3" side="sl" part="nor"/></tag>
-	      <tag><clip pos="3" side="sl" part="nori"/></tag>
-	      <tag><clip pos="3" side="sl" part="nork"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="3" side="tl" part="persnbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-    </rule>
-
-
-
-    <!--
-	MG: no sé com es fa el negatiu de 'prestatzen ari garelako
-
-
-<rule comment="REGLA: GER + ARI IZAN (prestatzen ari gara - estamos preparando) + lako">
-<pattern>
-<pattern-item n="ger"/>
-<pattern-item n="ari_izan"/>
-<pattern-item n="lako"/>
-</pattern>
-<action>	
-<call-macro n="firstWord">
-<with-param pos="1"/>
-</call-macro>
-<out>
-<chunk name="cnjadv" case="caseFirstWord">
-<tags>
-<tag><lit-tag v="cnjadv"/></tag>
-</tags>
-<lu>
-<clip pos="3" side="tl" part="whole"/>
-</lu>
-</chunk>
-</out>
-<let>
-<var n="caseFirstWord"/>
-<lit v="aa"/>
-</let>
-<call-macro n="verbal_flex">
-<with-param pos="2"/>
-</call-macro>
-<out> 
-<chunk name="estar_ger">
-<tags>
-<tag><lit-tag v="SV"/></tag>
-<tag><clip pos="1" side="tl" part="a_verb"/></tag>
-<tag><clip pos="2" side="tl" part="persnbr"/></tag>
-<tag><clip pos="2" side="sl" part="nor"/></tag>
-<tag><clip pos="2" side="sl" part="nori"/></tag>
-<tag><clip pos="2" side="sl" part="nork"/></tag>
-</tags>
-<b/>
-<lu>
-<clip pos="2" side="tl" part="lemh"/>
-<clip pos="2" side="tl" part="a_verb"/>
-<clip pos="2" side="tl" part="temps"/>
-<clip pos="2" side="tl" part="persnbr"/>
-<clip pos="2" side="tl" part="lemq"/>
-</lu>
-<b pos="1"/>
-<lu>
-<clip pos="1" side="tl" part="lemh"/>
-<clip pos="1" side="tl" part="a_verb"/>
-<clip pos="1" side="tl" part="temps"/>
-<clip pos="1" side="tl" part="lemq"/>
-</lu>
-</chunk>
-</out>
-</action>
-</rule>
-    -->
+    <!-- ********* *********************** -->
 
     <rule comment="REGLA: adv">
       <pattern>
