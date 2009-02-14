@@ -8651,10 +8651,60 @@
         <choose>
           <when>
             <test>
-              <equal caseless="yes">
-                <clip pos="1" side="sl" part="lem"/>
-                <clip pos="2" side="sl" part="lem"/>
-              </equal>
+              <and>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lem"/>
+                  <clip pos="2" side="sl" part="lem"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="a_adj"/>
+                  <lit-tag v="adj.sint.comp"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="a_adj"/>
+                  <lit-tag v="adj.sint.sup"/>
+                </equal>
+              </and>
+            </test> 
+            <call-macro n="f_concord1">
+              <with-param pos="2"/>
+            </call-macro>
+            <out>
+              <chunk name="preadv_adv" case="caseFirstWord">
+                <tags>
+                  <tag>
+                    <lit-tag v="Adv"/>
+                  </tag>
+                </tags>
+                <lu>
+                  <lit v="de plus en plus"/>
+                  <lit-tag v="preadv"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_adj"/>
+                  <clip pos="2" side="tl" part="gen_sense_mf"/>
+                  <clip pos="2" side="tl" part="gen_mf"/>
+                  <clip pos="2" side="tl" part="nbr_sense_sp"/>
+                  <clip pos="2" side="tl" part="nbr_sp"/>
+                  <clip pos="2" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <when>
+            <test>
+              <and>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lem"/>
+                  <clip pos="2" side="sl" part="lem"/>
+                </equal>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="a_adj"/>
+                  <clip pos="2" side="sl" part="a_adj"/>
+                </equal>
+              </and>
             </test> 
             <out>
               <chunk name="preadv_adj" case="caseFirstWord">
