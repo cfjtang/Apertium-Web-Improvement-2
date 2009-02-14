@@ -513,6 +513,7 @@
     <def-var n="lema"/>
     <def-var n="lema_Vpart"/>
     <def-var n="lema_Prep"/>
+    <def-var n="lu_Prep"/>
     <def-var n="EOS" v="true"/>
     <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
@@ -4533,25 +4534,43 @@
       <choose>
           <when>
             <test>
+              <equal>
+                <clip pos="3" side="sl" part="a_nom"/>
+                <lit-tag v="np.al"/>
+              </equal>
+            </test>
+            <let>
+              <var n="lu_Prep"/>
+              <concat>
+                <lit v=""/>
+              </concat>
+            </let>
+          </when>
+          <when>
+            <test>
               <in caseless="yes">
                 <clip pos="3" side="sl" part="lem"/>
                 <list n="substances"/>
               </in>
             </test>
             <let>
-              <var n="lema_Prep"/>
-              <lit v="en"/>
+              <var n="lu_Prep"/>
+              <concat>
+                <lit v="en"/>
+                <lit-tag v="pr"/>
+              </concat>
             </let>
           </when>
           <otherwise>
             <let>
-              <var n="lema_Prep"/>
-              <lit v="de"/>
+              <var n="lu_Prep"/>
+              <concat>
+                <lit v="de"/>
+                <lit-tag v="pr"/>
+              </concat>
             </let>
           </otherwise>
         </choose>
-
- 
         <call-macro n="f_concord2">
           <with-param pos="2"/>
           <with-param pos="1"/>
@@ -4586,8 +4605,7 @@
             </lu>
             <b pos="2"/>
             <lu>
-              <var n="lema_Prep"/>
-              <lit-tag v="pr"/>
+              <var n="lu_Prep"/>
             </lu>
             <b pos="2"/>
             <lu>
