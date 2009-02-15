@@ -4600,7 +4600,6 @@
             </let>
           </when>
         </choose>
-
       <choose>
         <when>
           <test>
@@ -4670,8 +4669,9 @@
               <clip pos="1" side="tl" part="a_det"/>
               <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-  <!--            <clip pos="1" side="tl" part="nbr_sp"/> -->
+              <var n="numero"/>
+  <!--            <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="1" side="tl" part="nbr_sp"/> -->
             </lu>
             <b pos="1"/>
             <lu>
@@ -4856,10 +4856,16 @@
         <choose>
           <when>
             <test>
-              <equal>
-                <clip pos="1" side="tl" part="nbr"/>
-                <lit-tag v="sp"/>
-              </equal>
+              <or>
+                <equal>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="sp"/>
+                </equal>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="sp"/>
+                </equal>
+              </or>
             </test>
             <let>
               <var n="numero"/>
@@ -4996,7 +5002,7 @@
           <when>
             <test>
               <equal>
-                <clip pos="1" side="tl" part="nbr"/>
+                <var n="numero"/>
                 <lit-tag v="sp"/>
               </equal>
             </test>
