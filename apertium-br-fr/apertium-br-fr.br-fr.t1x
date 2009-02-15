@@ -4582,6 +4582,25 @@
           </let>
         </when>
       </choose>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="2" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+
       <choose>
         <when>
           <test>
@@ -4636,10 +4655,6 @@
             </let>
           </otherwise>
         </choose>
-        <call-macro n="f_concord2">
-          <with-param pos="2"/>
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -4656,7 +4671,7 @@
               <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
               <clip pos="1" side="tl" part="gen_mf"/>
               <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
+  <!--            <clip pos="1" side="tl" part="nbr_sp"/> -->
             </lu>
             <b pos="1"/>
             <lu>
@@ -5024,8 +5039,9 @@
               <lit-tag v="det.def"/>
               <clip pos="1" side="tl" part="gen_sense_mf"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
+              <var n="numero"/>
+<!--              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="1" side="tl" part="nbr_sp"/>  -->
             </lu>
             <b/>
             <lu>
