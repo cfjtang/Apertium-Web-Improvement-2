@@ -334,11 +334,16 @@
       <attr-item tags="np"/>
       <attr-item tags="acr"/>
     </def-attr>
+    <def-attr n="grau_adj">
+      <attr-item tags="comp"/>
+      <attr-item tags="sup"/>
+
+    </def-attr>
     <def-attr n="a_adj">
       <attr-item tags="adj"/>
-      <attr-item tags="adj.sint"/>
+<!--      <attr-item tags="adj.sint"/>
       <attr-item tags="adj.sint.comp"/>
-      <attr-item tags="adj.sint.sup"/>
+      <attr-item tags="adj.sint.sup"/> -->
       <attr-item tags="adj.pos"/>
       <attr-item tags="adj.itg"/>
       <attr-item tags="adj.ind"/>
@@ -507,6 +512,7 @@
     <def-var n="concPrimero"/>
     <def-var n="concSegundo"/>
     <def-var n="concTercero"/>
+    <def-var n="adjectiu1"/>
     <def-var n="interrogativa"/>
     <def-var n="exclamativa"/>
     <def-var n="caseFirstWord"/>
@@ -514,6 +520,8 @@
     <def-var n="lema_Vpart"/>
     <def-var n="lema_Prep"/>
     <def-var n="lu_Prep"/>
+    <def-var n="lu_Adj1"/>
+    <def-var n="lu_Adj2"/>
     <def-var n="EOS" v="true"/>
     <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
@@ -771,6 +779,63 @@
     </def-list>
   </section-def-lists>
   <section-def-macros>
+
+    <def-macro n="comparatiu_adj1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
+      <let>
+        <var n="adjectiu1"/>
+        <lit v=""/>
+      </let>
+<!--      <let>
+        <clip pos="1" side="tl" part="gen"/>
+        <lit-tag v="GD"/>
+      </let>
+      <let>
+        <clip pos="1" side="tl" part="nbr"/>
+        <lit-tag v="ND"/>
+      </let> -->
+      <choose>
+        <when>
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="comp"/>
+              </equal>
+          </test>
+          <append n="adjectiu1">
+            <lit v="plus"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+        </when>
+        <when>
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="sup"/>
+              </equal>
+          </test>
+          <append n="adjectiu1">
+            <lit v="le"/>
+            <lit-tag v="det.def"/>
+            <var n="genero"/>
+            <var n="numero"/>
+            <lit v="$ ^"/>
+          </append>
+          <append n="adjectiu1">
+            <lit v="plus"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+        </when>
+
+        <otherwise>
+          <append n="adjectiu1">
+            <lit v=""/>
+          </append> 
+        </otherwise>
+      </choose>
+    </def-macro>
+
 	  <def-macro n="control_ref" npar="2"><!-- canvia el lema dels verbs ref i elimina el prn si cal-->
 		  <let>
 			  <var n="treu_ref"/>
@@ -8212,6 +8277,9 @@
           <with-param pos="3"/>
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="comparatiu_adj1">
+          <with-param pos="3"/>
+        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -8262,6 +8330,7 @@
             </lu>
             <b pos="2"/>
             <lu>
+              <var n="adjectiu1"/>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_adj"/>
               <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
