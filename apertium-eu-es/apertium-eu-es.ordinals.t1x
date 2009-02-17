@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<transfer>
+  <section-def-cats>
+    <def-cat n="paraula_min">
+      <cat-item lemma="[a-z]+" tags="n.*"/>
+    </def-cat>
+    <def-cat n="num">
+      <cat-item tags="num"/>
+      <cat-item tags="num.*"/>
+    </def-cat>
+    <def-cat n="punt">
+      <cat-item lemma="." tags="sent"/>
+    </def-cat>
+  </section-def-cats>
+  <section-def-attrs>
+    <def-attr n="nbr">
+      <attr-item tags="sp"/>
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+    </def-attr>
+  </section-def-attrs>
+  <section-def-vars>
+    <def-var n="numero"/>
+  </section-def-vars>
+  <section-rules>
+    <rule>
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="punt"/>
+        <pattern-item n="paraula_min"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+  </section-rules>
+</transfer>
