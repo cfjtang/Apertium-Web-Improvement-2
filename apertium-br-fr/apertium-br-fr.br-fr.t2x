@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
 <interchunk>
   <section-def-cats>
+ 
+    <def-cat n="SPRN">
+      <cat-item lemma="prnsubj" tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="PRNS">
+      <cat-item lemma="prnperssubj" tags="SN.*"/>
+      <cat-item tags="PRN.subj.*"/>
+    </def-cat>
 
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="CS">
+      <cat-item lemma="cnj" tags="cnjsub"/>
     </def-cat>
 
 
@@ -26,32 +39,7 @@
       <cat-item tags="SN.NUM.*"/>
     </def-cat>
 
-    <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
-<!--      <cat-item lemma="verbcj" tags="SV.*"/>
-      <cat-item tags="Vcop.*"/>
-      <cat-item lemma="mod" tags="SV.*"/><!-#-MG: I have to <sent> : no deixar-ho penjat (haig de 'fer-ho'). En canvi : 'I have to <desconeguda>: sï¿½que ï¿½ 'haig de'. -#->
-      <cat-item lemma="auxmod_inf" tags="SV.*"/>
-      <cat-item lemma="auxmod_mod_inf" tags="SV.*"/>
-      <cat-item lemma="do_inf" tags="SV.*"/>
-      <cat-item lemma="mod_inf" tags="SV.*"/>
-      <cat-item lemma="mod_perif" tags="SV.*"/>
-      <cat-item lemma="mod_inf_perif" tags="SV.*"/>
-      <cat-item lemma="aux_mod" tags="SV.*"/><!-#-Aquests van davant desconegudes o sent (I will have to.) -#->
-      <cat-item lemma="have_pp" tags="SV.*"/>
-      <cat-item lemma="be_ger" tags="SV.*"/>
-      <cat-item lemma="be_ger_enc" tags="SV.*"/>
-      <cat-item tags="SV.vblex.inf.*"/>
-      <cat-item tags="SV.vbmod.inf.*"/>
-		<cat-item lemma="verbcj_perif" tags="SV.*"/>
-		<cat-item lemma="pro_verbcj" tags="SV.*"/>
-		<cat-item lemma="pro_verbcj_perif" tags="SV.*"/>
-		<cat-item lemma="pro_auxmod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_mod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_mod_inf_perif" tags="SV.*"/>
-		<cat-item lemma="pro_auxmod_mod_inf" tags="SV.*"/>
-		<cat-item lemma="pro_have_pp" tags="SV.*"/>
-		<cat-item lemma="pro_be_ger" tags="SV.*"/>
-		<cat-item lemma="pro_do_inf" tags="SV.*"/>-->
+    <def-cat n="SV">
       <cat-item tags="SV.*"/>
     </def-cat>
 
@@ -71,11 +59,6 @@
       <cat-item tags="adv.*"/>
       <cat-item tags="preadv"/>
       
-    </def-cat>
-
-    <def-cat n="PRNS">
-      <cat-item lemma="prnperssubj" tags="SN.*"/>
-      <cat-item tags="PRN.subj.*"/>
     </def-cat>
 
     <def-cat n="SA">
@@ -866,7 +849,6 @@
 </def-macro>
 
 <def-macro n="posa_subj" npar="1">
-       
 	<choose>
 		<when>
 			<test>
@@ -1474,6 +1456,25 @@
 	</action>
 </rule>
 
+
+<rule comment="REGLA: SPRN"> <!-- after pronouns that can be subject we mark the subject as seen -->
+	<pattern>
+		<pattern-item n="SPRN"/>
+	</pattern>
+	<action>
+        <let>
+          <var n="subj_vist"/>
+          <lit v="yes"/>
+        </let>
+	<out>
+		<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+		</chunk>
+	</out>
+	</action>
+</rule>
 
 <rule comment="REGLA: SN">
 	<pattern>
@@ -2269,10 +2270,13 @@
 				<clip pos="1" part="lem"/>
 				<clip pos="1" part="tags"/>
 				<clip pos="1" part="chcontent"/>
-<!-- <var n="nombre_subj"/> -->
-<!-- <lit v="holahola"/>	 -->
 			</chunk>
 		</out>
+        <let>
+          <var n="subj_vist"/>
+          <lit v="no"/>
+        </let>
+
 
 	</action>
 </rule>
@@ -2316,991 +2320,6 @@
 		</out>
 	</action>
 </rule>
-<!--
-<rule comment="REGLA: SN SV">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="2" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-			</out>
-			<call-macro n="posa_subj">
-				<with-param pos="2"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SA SV">
-	<pattern>
-		<pattern-item n="SA"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="2" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="2" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-			</out>
-			<call-macro n="posa_subj">
-				<with-param pos="2"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SN sprep SV">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="3"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="4" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="4" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="4" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="4" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-			</out>
-			<call-macro n="posa_subj">
-				<with-param pos="4"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SN sprep adv SV">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-		<pattern-item n="adv"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="3"/>
-	</call-macro>
-
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="5" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="5" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="5" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="5" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-				<b pos="4"/>
-				<chunk>
-					<clip pos="5" part="lem"/>
-					<clip pos="5" part="tags"/>
-					<clip pos="5" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-			</out>
-			<call-macro n="posa_subj">
-				<with-param pos="5"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-				<b pos="4"/>
-				<chunk>
-					<clip pos="5" part="lem"/>
-					<clip pos="5" part="tags"/>
-					<clip pos="5" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SN adv SV">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="adv"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="3" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				</out>
-			<call-macro n="posa_subj">
-				<with-param pos="3"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SA sprep SV">
-	<pattern>
-		<pattern-item n="SA"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="3"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="4" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="4" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="4" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="4" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-			</out>
-			<call-macro n="posa_subj">
-				<with-param pos="4"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SA sprep adv SV">
-	<pattern>
-		<pattern-item n="SA"/>
-		<pattern-item n="pr"/>
-		<pattern-item n="SN"/>
-		<pattern-item n="adv"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="3"/>
-	</call-macro>
-
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="5" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="5" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="5" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="5" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-				<b pos="4"/>
-				<chunk>
-					<clip pos="5" part="lem"/>
-					<clip pos="5" part="tags"/>
-					<clip pos="5" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-				<b pos="3"/>
-			</out>
-			<call-macro n="posa_subj">
-				<with-param pos="5"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-				<b pos="4"/>
-				<chunk>
-					<clip pos="5" part="lem"/>
-					<clip pos="5" part="tags"/>
-					<clip pos="5" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SA adv SV">
-	<pattern>
-		<pattern-item n="SA"/>
-		<pattern-item n="adv"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="3" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				</out>
-			<call-macro n="posa_subj">
-				<with-param pos="3"/>
-			</call-macro>
-			<out>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-			</out>
-		</otherwise>
-	</choose>	
-</action>
-</rule>
-
-<rule comment="REGLA: SN adv SV adv">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="adv"/>
-		<pattern-item n="SV"/>
-		<pattern-item n="adv"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<choose>
-		<when>
-			<test>
-			<or>
-			<and>
-				<equal caseless="yes">
-					<clip pos="1" part="lem"/>
-					<lit v="prnperssubj"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="pers"/>
-					<clip pos="1" part="pers"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-			<and>
-				<not>
-					<equal caseless="yes">
-						<clip pos="1" part="lem"/>
-						<lit v="prnperssubj"/>
-					</equal>
-				</not>
-				<equal>
-					<clip pos="3" part="pers"/>
-					<lit-tag v="p3"/>
-				</equal>
-				<equal>
-					<clip pos="3" part="nbr"/>
-					<clip pos="1" part="nbr"/>
-				</equal>
-			</and>
-		</or>
-			</test>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-				<b pos="1"/>
-				</out>
-			<call-macro n="posa_subj">
-				<with-param pos="3"/>
-			</call-macro>
-		</otherwise>
-	</choose>
-				<out>
-				<chunk>
-					<clip pos="2" part="lem"/>
-					<clip pos="2" part="tags"/>
-					<clip pos="2" part="chcontent"/>
-				</chunk>
-				<b pos="2"/>
-				<chunk>
-					<clip pos="3" part="lem"/>
-					<clip pos="3" part="tags"/>
-					<clip pos="3" part="chcontent"/>
-				</chunk>
-		<b pos="3"/>
-		<chunk>
-			<clip pos="4" part="lem"/>
-			<clip pos="4" part="tags"/>
-			<clip pos="4" part="chcontent"/>
-		</chunk>
-	</out>
-</action>
-</rule>
-
-<rule comment="REGLA: SN cnjcoo SN SV">
-	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="cnjcoo"/>
-		<pattern-item n="SN"/>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="3"/>
-	</call-macro>
-	<call-macro n="comprova_concord_2">
-		<with-param pos="1"/>
-		<with-param pos="3"/>
-		<with-param pos="4"/>
-	</call-macro>
-	<out>
-		<chunk>
-			<clip pos="1" part="lem"/>
-			<clip pos="1" part="tags"/>
-			<clip pos="1" part="chcontent"/>
-		</chunk>
-		<b pos="1"/>
-		<chunk>
-			<clip pos="2" part="whole"/>
-		</chunk>
-		<b pos="2"/>
-		<chunk>
-			<clip pos="3" part="lem"/>
-			<clip pos="3" part="tags"/>
-			<clip pos="3" part="chcontent"/>
-		</chunk>
-		<b pos="3"/>
-		</out>
-			<choose><!-#-si no hi ha concordanÃ§a enviem un subj-#->
-				<when>
-					<test>
-						<equal><var n="concord"/><lit-tag v="no"/></equal>
-					</test>
-					<call-macro n="posa_subj">
-						<with-param pos="4"/>
-					</call-macro>
-				</when>
-			</choose>
-			<let><var n="concord"/><lit-tag v="no"/></let>
-			<out>
-				<chunk>
-					<clip pos="4" part="lem"/>
-					<clip pos="4" part="tags"/>
-					<clip pos="4" part="chcontent"/>
-				</chunk>
-			</out>
-
-</action>
-</rule>-->
 
 <rule comment="REGLA: SN QUE SV SV">
 	<pattern>
@@ -7837,7 +6856,7 @@
       </action>
 </rule>
 
- <rule>
+<rule>
       <pattern>
 	<pattern-item n="PRNS"/>
 	<pattern-item n="SV"/>
@@ -7856,6 +6875,10 @@
 	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
       </action>
 </rule>
 
@@ -7880,6 +6903,10 @@
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
       </action>
 </rule>
 
@@ -7921,6 +6948,11 @@
             </out>
           </otherwise>
         </choose>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+
       </action>
 </rule>
 
