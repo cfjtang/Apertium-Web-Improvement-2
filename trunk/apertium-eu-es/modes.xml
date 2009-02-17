@@ -9,6 +9,10 @@
         <file name="eu-es.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-es.ordinals.t1x"/>
+        <file name="eu-es.ordinals.t1x.bin"/>
+      </program>
       <program name="apertium-transfer">
         <file name="apertium-eu-es.eu-es.t1x"/>
         <file name="eu-es.t1x.bin"/>
@@ -63,6 +67,22 @@
     </pipeline>
   </mode>
 
+  <mode name="eu-es-ordinals">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-es.ordinals.t1x"/>
+        <file name="eu-es.ordinals.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
   <mode name="eu-es-chunker">
     <pipeline>
       <program name="lt-proc">
@@ -72,6 +92,10 @@
         <file name="eu-es.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-es.ordinals.t1x"/>
+        <file name="eu-es.ordinals.t1x.bin"/>
+      </program>
       <program name="apertium-transfer">
         <file name="apertium-eu-es.eu-es.t1x"/>
         <file name="eu-es.t1x.bin"/>
