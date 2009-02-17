@@ -7,7 +7,8 @@ PREFIX2=$(LANG2)-$(LANG1)
 BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
-     $(PREFIX1).autopgen.bin $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin $(PREFIX1).ordinals.t1x.bin modes
+	$(PREFIX1).autopgen.bin $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+	$(PREFIX1).ordinals.t1x.bin $(PREFIX1).rlx.bin modes
      
 TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
           trules-$(PREFIX1).xml trules-$(PREFIX2).xml 
@@ -103,6 +104,9 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 ##$(PREFIX2).lextorbil.bin: $(BASENAME).$(PREFIX2)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(PREFIX2)-lextor.dix $@
 
+$(PREFIX1).rlx.bin: $(BASENAME).$(PREFIX1).rlx
+	cg-comp $(BASENAME).$(PREFIX1).rlx $@
+
 $(PREFIX1).ordinals.t1x.bin: $(BASENAME).ordinals.t1x
 	apertium-validate-transfer $(BASENAME).ordinals.t1x
 	apertium-preprocess-transfer $(BASENAME).ordinals.t1x $@
@@ -163,7 +167,7 @@ apertium_eu_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autobil.bin \
                     $(PREFIX1).autogen.bin \
                     $(PREFIX1).autopgen.bin \
-                    $(PREFIX1).prob $(PREFIX1).ordinals.t1x.bin \
+                    $(PREFIX1).prob $(PREFIX1).ordinals.t1x.bin $(PREFIX1).rlx.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX1).mode	  
 
