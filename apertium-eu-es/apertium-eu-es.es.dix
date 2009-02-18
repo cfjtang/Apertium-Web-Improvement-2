@@ -116,6 +116,41 @@
       <e><re>[0-9]+([.,][0-9]+)?\-[0-9]+([.,][0-9]+)?</re><p><l/><r><s n="num"/></r></p></e>
 
     </pardef>
+
+
+
+    <pardef n="ordinals">
+      <e>
+        <re>[0-9]+</re>
+        <p>
+          <l>.º</l>
+          <r><s n="num"/><s n="ord"/><s n="m"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <re>[0-9]+</re>
+        <p>
+          <l>.ª</l>
+          <r><s n="num"/><s n="ord"/><s n="f"/><s n="sg"/></r>
+        </p>
+      </e> 
+      <e r="RL">
+        <re>[0-9]+</re>
+        <p>
+          <l>.os</l>
+          <r><s n="num"/><s n="ord"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <re>[0-9]+</re>
+        <p>
+          <l>.as</l>
+          <r><s n="num"/><s n="ord"/><s n="f"/><s n="pl"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
     <pardef n="separa">
       <e>
         <re>[.\?;:!]</re>
@@ -171,14 +206,14 @@
 	</p>
      </e>
    </pardef>
-   <pardef n="urls">
-     <e>
-	<re>((www.)[a-z\-]+[.][a-z]+)</re>
-	<p>
-	  <l/>
-	  <r><s n="num"/></r>
-	</p>
-     </e>
+    <pardef n="urls">
+      <e>
+	<re>(((www.)|(http://))[a-z\-]+([.][a-z]+)+)</re>
+        <p>
+          <l/>
+          <r><s n="num"/></r>
+        </p>
+      </e>
     </pardef>
 
 
@@ -68563,6 +68598,10 @@
       <i>bonit</i>
       <par n="absolut/o__adj"/>
     </e>
+    <e lm="reflejo">
+      <i>reflex</i>
+      <par n="absolut/o__adj"/>
+    </e>
     <e lm="como eso">
       <i>como<b/>es</i>
       <par n="absolut/o__adj"/>
@@ -81809,6 +81848,10 @@
       <i>banco</i>
       <par n="abismo__n"/>
     </e>
+    <e lm="claro">
+      <i>claro</i>
+      <par n="abismo__n"/>
+    </e>
     <e lm="banda">
       <i>banda</i>
       <par n="abeja__n"/>
@@ -84835,6 +84878,10 @@
       <i>contador</i>
       <par n="abril__n"/>
     </e>
+    <e lm="colonizador">
+      <i>colonizador</i>
+      <par n="abril__n"/>
+    </e>
     <e lm="contaminación">
       <i>contaminaci</i>
       <par n="acci/ón__n"/>
@@ -84861,6 +84908,10 @@
     </e>
     <e lm="contestador">
       <i>contestador</i>
+      <par n="señor__n"/>
+    </e>
+    <e lm="colonizador">
+      <i>colonizador</i>
       <par n="señor__n"/>
     </e>
     <e lm="contexto">
@@ -115973,6 +116024,10 @@
       <i>c</i>
       <par n="ac/ostar__vblex"/>
     </e>
+    <e lm="boicotear"><i>boicote</i><par n="abandon/ar__vblex"/></e>
+
+    <e lm="boicotear"><p><l>boicoté</l><r>boicote</r></p><par n="abandón/ar__vblex"/></e>
+
     <e lm="costear">
       <i>coste</i>
       <par n="abandon/ar__vblex"/>
@@ -125579,6 +125634,39 @@
       </p>
       <par n="abalán/zar__vblex"/>
     </e>
+    <e lm="nacionalizar">
+      <i>nacionali</i>
+      <par n="abalan/zar__vblex"/>
+    </e>
+    <e lm="nacionalizar">
+      <p>
+        <l>nacionalí</l>
+        <r>nacionali</r>
+      </p>
+      <par n="abalán/zar__vblex"/>
+    </e>
+    <e lm="desnacionalizar">
+      <i>desnacionali</i>
+      <par n="abalan/zar__vblex"/>
+    </e>
+    <e lm="desnacionalizar">
+      <p>
+        <l>desnacionalí</l>
+        <r>desnacionali</r>
+      </p>
+      <par n="abalán/zar__vblex"/>
+    </e>
+    <e lm="desnaturalizar">
+      <i>desnaturali</i>
+      <par n="abalan/zar__vblex"/>
+    </e>
+    <e lm="desnaturalizar">
+      <p>
+        <l>desnaturalí</l>
+        <r>desnaturali</r>
+      </p>
+      <par n="abalán/zar__vblex"/>
+    </e>
     <e lm="personar">
       <i>person</i>
       <par n="abandon/ar__vblex"/>
@@ -131612,6 +131700,32 @@
         <r>vía<b/>judicial<s n="n"/><s n="f"/><s n="pl"/></r>
       </p>
     </e>
+    <e lm="camino forestal">
+      <p>
+	<l>camino<b/>forestal</l>
+	<r>camino<b/>forestal<s n="n"/><s n="m"/><s n="sg"/></r>
+      </p>
+    </e>
+    <e lm="camino forestal">
+      <p>
+	<l>caminos<b/>forestales</l>
+	<r>camino<b/>forestal<s n="n"/><s n="m"/><s n="pl"/></r>
+      </p>
+    </e>
+    <e lm="polígono industrial">
+      <p>
+	<l>polígono<b/>industrial</l>
+	<r>polígono<b/>industrial<s n="n"/><s n="m"/><s n="sg"/></r>
+      </p>
+      <par n="abismo__n"/>
+    </e>
+    <e lm="polígono industrial">
+      <p>
+	<l>polígonos<b/>industriales</l>
+	<r>polígono<b/>industrial<s n="n"/><s n="m"/><s n="pl"/></r>
+      </p>
+      <par n="abismo__n"/>
+    </e>
 
     <e lm="Xixona" a="mginesti">
       <i>Xixona</i>
@@ -132303,6 +132417,14 @@
       <p>
 	<l><b/>en<b/>marcha</l>
 	<r><g><b/>en<b/>marcha</g></r>
+      </p>
+    </e> 
+    <e lm="poner en escena">
+      <i>p</i>
+      <par n="p/oner__vblex"/>
+      <p>
+	<l><b/>en<b/>escena</l>
+	<r><g><b/>en<b/>escena</g></r>
       </p>
     </e> 
     <e lm="poner de acuerdo">
@@ -134941,6 +135063,10 @@
   <i>soñador</i>
   <par n="abrumador__adj"/>
 </e>
+<e lm="colonizador">
+  <i>colonizador</i>
+  <par n="abrumador__adj"/>
+</e>
 <e lm="difteria" a=" alseoane@gmail.com">
   <i>difteria</i>
   <par n="abeja__n"/>
@@ -135088,6 +135214,8 @@
   </p>
 <par n="abandón/ar__vblex"/>
 </e>
+<e lm="coeficiente" a="prompsit2adn"><i>coeficiente</i><par n="abismo__n"/></e>
+
 <e lm="psicoemocional" a=" alseoane@gmail.com">
   <i>psicoemocional</i>
   <par n="abdominal__adj"/>
@@ -135503,6 +135631,15 @@
    <l><b/>de<b/>comunicación</l>
    <r><g><b/>de<b/>comunicación</g></r>
 	</p>
+ </e>
+
+ <e lm="hijo de puta">
+   <i>hij</i>
+   <par n="abogad/o__n"/>
+   <p>
+     <l><b/>de<b/>puta</l>
+     <r><g><b/>de<b/>puta</g></r>
+   </p>
  </e>
 
 <e lm="punto de vista">
@@ -137070,36 +137207,19 @@
 
 
 
-<e>
-	<re>[VIXDLMC][VIXDLMC]+[.]?</re> 
-        <par n="multimedia__adj"/>
-      </e>
-
   </section>
-  <section id="final" type="inconditional">
-    <e>
-      <par n="separa"/>
-    </e>
-    <e>
-      <par n="numeros"/>
-    </e>
-    <e>
-      <par n="coma"/>
-    </e>
-    <e>
-      <par n="paresq"/>
-    </e>
-    <e>
-      <par n="pardret"/>
-    </e>
-    <e>
-      <par n="separ"/>
-    </e>
+
+
+ <section id="regexp" type="standard">   
+
      <e>
       <par n="emails"/>
      </e>
     <e>
       <par n="urls"/>
+    </e>
+    <e>
+      <par n="ordinals"/>
     </e>
   
       <e>
@@ -137129,8 +137249,35 @@
       <par n="acronimos"/>
     </e>
 
-<!--    <e>
-        <par n="internet"/>
-      </e> -->
+    <e>
+	<re>[VIXDLMC][VIXDLMC]+[.]?</re> 
+        <par n="multimedia__adj"/>
+      </e>
+
+ </section>
+
+
+
+
+  <section id="final" type="inconditional">
+    <e>
+      <par n="separa"/>
+    </e>
+    <e>
+      <par n="numeros"/>
+    </e>
+    <e>
+      <par n="coma"/>
+    </e>
+    <e>
+      <par n="paresq"/>
+    </e>
+    <e>
+      <par n="pardret"/>
+    </e>
+    <e>
+      <par n="separ"/>
+    </e>
+
   </section>
 </dictionary>
