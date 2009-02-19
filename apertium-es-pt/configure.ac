@@ -37,10 +37,6 @@ AC_DEFUN(PKG_CHECK_APERTIUM, [
                           
 PKG_CHECK_APERTIUM
 
-
-
-APERTIUM_VER=30
-
 AC_SUBST(APERTIUM_VER)
 
 AC_OUTPUT([Makefile])
