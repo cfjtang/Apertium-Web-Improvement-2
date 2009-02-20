@@ -151,6 +151,10 @@
       <cat-item name="hi"/>
     </def-cat>
 
+    <def-cat n="tenir">
+      <cat-item name="tenir"/>
+    </def-cat>
+
   </section-def-cats>
 
   <section-def-attrs>
@@ -3178,6 +3182,30 @@
 	</out>
       </action>
     </rule>
+
+
+ <rule comment="CHUNK: tenir (el chunk 'tenir' és resultat de canviar 'ser' per 'tenir' en el t2x en el patró 'I am 20 years old'">
+      <pattern>
+	<pattern-item n="tenir"/>
+      </pattern>
+      <action>
+	<let>
+	    <clip pos="1" part="lem"/>
+	    <lit v="tenir"/>
+	</let>
+	<let>
+	    <clip pos="1" part="a_verb"/>
+	    <lit-tag v="vblex"/>
+	</let>	  
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+ </rule>
+
+
 
 
   </section-rules>

@@ -1807,10 +1807,16 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
    <choose>
      <when><!-- la variable 'lemaverb' es posa només en les etiquetes dels chunks en què pot haver-hi el lema 'saber greu', per tant no està posada en tots els chunks verbals perquè no fa falta. Amb aquesta etiqueta es pot fer un tractament de l'estructura en el t2x.-->
        <test>
-	 <equal caseless="yes">
-	   <clip pos="1" side="sl" part="lem"/>
-	   <lit v="saber# greu"/>
-	 </equal>
+	 <or>
+	   <equal caseless="yes">
+	     <clip pos="1" side="sl" part="lem"/>
+	     <lit v="saber# greu"/>
+	   </equal>
+	   <equal caseless="yes">
+	     <clip pos="1" side="sl" part="lem"/>
+	     <lit v="saber# molt greu"/>
+	   </equal>
+	 </or>
        </test>
        <let>
 	 <var n="lemaverb"/>
