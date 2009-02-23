@@ -251,6 +251,9 @@
       <attr-item tags="pos"/>
     </def-attr>
 
+ <def-attr n="a_negacio">
+      <attr-item tags="negacio"/>
+ </def-attr>
 
   </section-def-attrs>
 
@@ -3404,10 +3407,11 @@ Your mother and you will come - La vostra mare i tu vindran
 	  <clip pos="2" part="nbr"/>
 	  <lit-tag v="sg"/>
 	</let>
-
 	<let>
 	  <clip pos="1" part="lem"/>
-	  <lit v="hi"/>
+	  <get-case-from pos="1">
+	    <lit v="hi"/>
+	  </get-case-from>
 	</let>
 	<let>
 	  <clip pos="2" part="a_verb"/>
@@ -3497,6 +3501,38 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </otherwise>
 	    </choose>
 	  </when>
+	</choose>
+	<choose>
+	 <when>
+	   <test>
+	     <equal>
+	       <clip pos="3" part="a_negacio"/>
+	       <lit-tag v="negacio"/>
+	     </equal>
+	   </test>
+	   <out>
+	     <chunk>
+	       <get-case-from pos="1">
+		 <lit v="adv"/>
+	       </get-case-from>
+		<lit-tag v="NEG"/>
+		<lit v="{^"/>
+		  <lit v="no"/>
+		<lit-tag v="adv"/>
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="1"/>
+	   </out>
+	   <modify-case>
+	     <clip pos="1" part="lem"/>
+	     <case-of pos="2" part="lem"/>
+	   </modify-case>
+	 </when>
+	 <otherwise>
+	   <call-macro n="f_bcond">
+	     <with-param pos="1"/>
+	   </call-macro>
+	 </otherwise>
 	</choose>
 	<out>
 	  <chunk>
@@ -6956,12 +6992,12 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </call-macro>
 	    <out><!--el pronom no l'envio, només el 2n chunk -->
 	      <chunk>
-		<lit v="adv"/>
+	       <get-case-from pos="1">
+		 <lit v="adv"/>
+	       </get-case-from>
 		<lit-tag v="NEG"/>
 		<lit v="{^"/>
-		<get-case-from pos="1">
 		  <lit v="no"/>
-		</get-case-from>
 		<lit-tag v="adv"/>
 		<lit v="$}"/>
 	      </chunk>
