@@ -144,6 +144,11 @@ SELECT VerbFin IF (-1 VpartNeg);
 # REGLA (B0004): "a had"
 #SELECT Verb IF (-1 Vpart);
 
+# REGLA (     ): "a ra"
+REMOVE Prep IF (0 Prep) (0 Verb) (1 Vpart) (1 VerbFin) (NOT 1 PRE-N);
+
+REMOVE Vpart IF (0 Vpart) (0 VerbFin) (-1 VerbFin) (-1 Vpart) (NOT -1 PRE-N);
+
 # REGLA (B0022): "ne ... ket"
 SELECT Verb IF (-1 VpartNeg) (1 Ket);
 
