@@ -19,6 +19,10 @@
       <cat-item lemma="cnj" tags="cnjsub"/>
     </def-cat>
 
+    <def-cat n="V_en_train">
+      <cat-item lemma="en_train_de_inf" tags="SN"/>
+    </def-cat>
+
 
     <def-cat n="UNK">
       <cat-item lemma="unknown" tags=""/>
@@ -6955,6 +6959,45 @@
 
       </action>
 </rule>
+
+
+ <rule>
+      <pattern>
+	<pattern-item n="SV"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="V_en_train"/>
+      </pattern>
+      <action>
+      <let>
+        <clip pos="1" part="nbr"/>
+        <clip pos="2" part="nbr"/>
+      </let>
+            <out>
+              <chunk>
+              <get-case-from pos="1">
+                <clip pos="2" part="whole"/>
+              </get-case-from>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+              <get-case-from pos="2">
+                <clip pos="1" part="whole"/>
+              </get-case-from>
+              </chunk>
+              <b pos="2"/>
+              <chunk>
+                <clip pos="3" part="whole"/>
+              </chunk>
+            </out>
+
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+
+      </action>
+</rule>
+
 
 
 
