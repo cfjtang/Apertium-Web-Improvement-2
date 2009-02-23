@@ -11051,11 +11051,11 @@
       </action>
    </rule>
         
-    <rule comment="REGLA: bezañ + o + inf → être en train de inf">
+    <rule comment="REGLA: o + inf + bezañ → être en train de inf">
       <pattern>
-        <pattern-item n="aux"/>
         <pattern-item n="verbpart_o"/>
         <pattern-item n="inf"/>
+        <pattern-item n="aux"/>
       </pattern>
       <action>
         <call-macro n="firstWord">
@@ -11066,7 +11066,7 @@
           <lit v="etre_en_train_de_inf"/>
         </let>
         <call-macro n="pih_prh_past_cip">
-          <with-param pos="1"/>
+          <with-param pos="3"/>
         </call-macro>
         <out>
           <chunk namefrom="lema" case="caseFirstWord">
@@ -11075,24 +11075,24 @@
                 <lit-tag v="SV"/>
               </tag>
               <tag>
-                <clip pos="1" side="tl" part="a_verb"/>
+                <clip pos="3" side="tl" part="a_verb"/>
               </tag>
               <tag>
-                <clip pos="1" side="tl" part="temps"/>
+                <clip pos="3" side="tl" part="temps"/>
               </tag>
               <tag>
-                <clip pos="1" side="tl" part="pers"/>
+                <clip pos="3" side="tl" part="pers"/>
               </tag>
               <tag>
-                <clip pos="1" side="tl" part="nbr"/>
+                <clip pos="3" side="tl" part="nbr"/>
               </tag>
             </tags>
             <lu>
               <lit v="être"/>
               <lit-tag v="vbser"/>
-              <clip pos="1" side="tl" part="temps"/>
-              <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="pers"/>
+              <clip pos="3" side="tl" part="nbr"/>
             </lu>
             <b/>
             <lu>
@@ -11110,228 +11110,6 @@
               <lit-tag v="pr"/>
             </lu>
             <b pos="1"/>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_verb"/>
-              <lit-tag v="inf"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-   </rule>
-    
-    <rule comment="REGLA: estar ger enc -&gt; être en train de pro inf">
-      <pattern>
-        <pattern-item n="estar"/>
-        <pattern-item n="ger"/>
-        <pattern-item n="prnenc"/>
-      </pattern>
-      <action>
-	      <call-macro n="control_ref_aux">
-		      <with-param pos="3"/>
-		      <with-param pos="1"/>
-		      <with-param pos="2"/>
-	      </call-macro>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="pih_prh_past_cip">
-          <with-param pos="1"/>
-        </call-macro>
-	<choose>
-		<when>
-			<test>
-				<equal>
-					<var n="treu_ref"/>
-					<lit v="treu"/>
-				</equal>
-			</test>
-			<out>
-				<chunk name="etre_en_train_de_inf" case="caseFirstWord">
-					<tags>
-						<tag>
-							<lit-tag v="SV"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="a_verb"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="temps"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="pers"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="nbr"/>
-						</tag>
-					</tags>
-					<lu>
-						<clip pos="1" side="tl" part="lem"/>
-						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="nbr"/>
-					</lu>
-					<b pos="1"/>
-					<lu>
-						<lit v="en"/>
-						<lit-tag v="pr"/>
-					</lu>
-					<b/>
-					<lu>
-						<lit v="train"/>
-						<lit-tag v="n.m.sg"/>
-					</lu>
-					<b/>
-					<lu>
-						<lit v="de"/>
-						<lit-tag v="pr"/>
-					</lu>
-					<b pos="2"/>
-					<lu>
-						<clip pos="2" side="tl" part="lemh"/>
-						<clip pos="2" side="tl" part="a_verb"/>
-						<lit-tag v="inf"/>
-						<clip pos="2" side="tl" part="lemq"/>
-					</lu>
-				</chunk>
-			</out>
-		</when>
-		<otherwise>
-			<out>
-				<chunk name="etre_en_train_de_pro_inf" case="caseFirstWord">
-					<tags>
-						<tag>
-							<lit-tag v="SV"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="a_verb"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="temps"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="pers"/>
-						</tag>
-						<tag>
-							<clip pos="1" side="tl" part="nbr"/>
-						</tag>
-					</tags>
-					<lu>
-						<clip pos="1" side="tl" part="lem"/>
-						<clip pos="1" side="tl" part="a_verb"/>
-						<clip pos="1" side="tl" part="temps"/>
-						<clip pos="1" side="tl" part="pers"/>
-						<clip pos="1" side="tl" part="nbr"/>
-					</lu>
-					<b/>
-					<lu>
-						<lit v="en"/>
-						<lit-tag v="pr"/>
-					</lu>
-					<b/>
-					<lu>
-						<lit v="train"/>
-						<lit-tag v="n.m.sg"/>
-					</lu>
-					<b/>
-					<lu>
-						<lit v="de"/>
-						<lit-tag v="pr"/>
-					</lu>
-					<b pos="1"/>
-					<lu>
-						<clip pos="3" side="tl" part="lem"/>
-						<lit-tag v="prn.pro"/>
-						<clip pos="3" side="tl" part="tipoenc_pro"/>
-					</lu>
-					<b pos="2"/>
-					<lu>
-						<clip pos="2" side="tl" part="lemh"/>
-						<clip pos="2" side="tl" part="a_verb"/>
-						<lit-tag v="inf"/>
-						<clip pos="2" side="tl" part="lemq"/>
-					</lu>
-				</chunk>
-     			   </out>
-		   </otherwise>
-	   </choose>
-	   <let>
-		   <var n="treu_ref"/>
-		   <lit v=""/>
-	   </let>
-    </action>
-   </rule>
-    
-    <rule comment="REGLA: estar ger enc enc-&gt; être en train de pro pro inf">
-      <pattern>
-        <pattern-item n="estar"/>
-        <pattern-item n="ger"/>
-        <pattern-item n="prnenc"/>
-        <pattern-item n="prnenc"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="pih_prh_past_cip">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="etre_in_train_de_pro_pro_inf" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="SV"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="a_verb"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="temps"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="pers"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="nbr"/>
-              </tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps"/>
-              <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="nbr"/>
-            </lu>
-            <b/>
-            <lu>
-              <lit v="en"/>
-              <lit-tag v="pr"/>
-            </lu>
-            <b/>
-            <lu>
-              <lit v="train"/>
-              <lit-tag v="n.m.sg"/>
-            </lu>
-            <b/>
-            <lu>
-              <lit v="de"/>
-              <lit-tag v="pr"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="3" side="tl" part="lem"/>
-              <lit-tag v="prn.pro"/>
-              <clip pos="3" side="tl" part="tipoenc_pro"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="4" side="tl" part="lem"/>
-              <lit-tag v="prn.pro"/>
-              <clip pos="4" side="tl" part="tipoenc_pro"/>
-            </lu>
-            <b/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -11340,13 +11118,84 @@
             </lu>
           </chunk>
         </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
       </action>
    </rule>
-    
+        
+    <rule comment="REGLA: o + inf + adv + bezañ → être en train de inf adv">
+      <pattern>
+        <pattern-item n="verbpart_o"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="aux"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="etre_en_train_de_inf_adv"/>
+        </let>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="4"/>
+        </call-macro>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+              <tag>
+                <clip pos="4" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="4" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <clip pos="4" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="4" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="être"/>
+              <lit-tag v="vbser"/>
+              <clip pos="4" side="tl" part="temps"/>
+              <clip pos="4" side="tl" part="pers"/>
+              <clip pos="4" side="tl" part="nbr"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="en"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="train"/>
+              <lit-tag v="n.m.sg"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <lit-tag v="inf"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+        
     <rule comment="REGLA: ir a inf -&gt; aller inf">
       <pattern>
         <pattern-item n="ir"/>
