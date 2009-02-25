@@ -16,6 +16,7 @@ LIST Num              = (num);
 
 # Determiners         
 LIST Det              = (det);
+LIST PreDet	      = (predet);
 
 # Demonstratives
 LIST Dem              = (prn dem) (det dem);
@@ -29,6 +30,7 @@ LIST Itg              = (itg);
 LIST PrnSubj          = (prn subj);
 LIST PrnDObj          = ("direct"ri prn obj);
 LIST PrnIObj          = ("indirect"ri prn obj) (+indirect);  # Lemmas from sub-readings are expressed as tags and prefixed with '+'
+LIST PrnInd	      = (prn ind);
 
 SET Prn               = PrnSubj | PrnDObj | PrnIObj;
 
@@ -177,6 +179,9 @@ REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
 REMOVE PrnDObj IF (1 NC) (NOT 1 VerbFin);
 
 
+# REGLA (B    ): "d'ur skoazell digant an holl Vretoned"
+REMOVE PrnInd IF (-1 Det) (1 NC);
+SELECT PreDet IF (-1 Det) (1 NC);
 
 # REGLA (B0012): "An dud a zeu da Roazhon"
 REMOVE VerbFin IF (0 Det) (1 NC)
