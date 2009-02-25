@@ -154,6 +154,10 @@ REMOVE Vpart IF (0 Vpart) (0 VerbFin) (-1 VerbFin) (-1 Vpart) (NOT -1 PRE-N);
 # REGLA (B0022): "ne ... ket"
 SELECT Verb IF (-1 VpartNeg) (1 Ket);
 
+# "Evit ar poent e c’heller ober gant e ijinadenn"
+SELECT VerbInf IF (-1 ("gellout" vblex) OR ("ober" vblex));
+
+
 # REGLA (B0005): "na ganit ket"
 SELECT VerbImp IF (-1 VpartNegImp);
 
@@ -209,6 +213,7 @@ SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj)
 REMOVE VerbInf IF (-1 Vpart) (0 VerbFin);
 REMOVE VerbImp IF (-1 Vpart) (0 VerbFin);
 
+
 REMOVE Itg IF (1 VerbPP);
 
 SELECT CS IF (1 VerbFin) (NOT 1 NC) (0 DetPos);
@@ -228,6 +233,9 @@ REMOVE Verb IF (-1 ("gant" pr));
 
 # REGLA (B    ): "En 2 yezh war"
 REMOVE Adj IF (-1 Num) (0 Adj) (0 NC) (1 Prep);
+
+# REGLA (B    ): "e c’heller ober gant e ijinadenn"
+REMOVE Prep IF (-1 Prep) (NOT -1 PRE-N) (0 Prep) (0 DetPos);
 
 SECTION
 
@@ -291,3 +299,4 @@ SELECT ("ober" n) IF ((-1 DetDef) OR (-1 Num));
 
 # bep pemp munut
 REMOVE Adj IF (0 Adj) (0 NC) (-1 Num);
+

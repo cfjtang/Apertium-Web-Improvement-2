@@ -23,7 +23,6 @@
       <cat-item lemma="en_train_de_inf" tags="SN"/>
     </def-cat>
 
-
     <def-cat n="UNK">
       <cat-item lemma="unknown" tags=""/>
     </def-cat>
@@ -155,7 +154,11 @@
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
 	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaciï¿½que farï¿½el postchunk detectant els PDET. -->
-      </def-attr>
+   </def-attr>
+   <def-attr n="constituent">
+     <attr-item tags="subj"/>
+     <attr-item tags="obj"/>
+   </def-attr>
 
   </section-def-attrs>
 
@@ -6887,6 +6890,8 @@
 </rule>
 
 
+
+
  <rule>
       <pattern>
 	<pattern-item n="PRNS"/>
@@ -7000,6 +7005,56 @@
 
 
 
+
+ <rule>
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="VPART"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+<!--
+        <call-macro n="concord_prnsubj_verb2">
+          <with-param pos="1"/>
+          <with-param pos="3"/>
+        </call-macro>
+-->
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+        </out>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="2" part="constituent"/>
+                <lit-tag v="subj"/>  
+              </equal>
+            </test> 
+            <let>
+              <clip pos="3" part="nbr"/>
+              <clip pos="1" part="nbr"/>
+            </let>
+          </when>
+          <otherwise>
+		<call-macro n="posa_subj">
+			<with-param pos="3"/>
+		</call-macro>
+          </otherwise>
+        </choose> 
+	<out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+      </action>
+</rule>
 
 
 
