@@ -50,6 +50,7 @@ LIST VpartIDO         = ("e" vpart);
 LIST VpartNeg         = (vpart neg);
 LIST VpartGer         = (vpart ger);
 LIST VpartNegImp      = ("na" vpart neg);
+LIST VpartRef         = (vpart ref); # en em
 
 # Verbs
 LIST Vbloc            = (vbloc);
@@ -142,6 +143,9 @@ SELECT VpartIDO IF ((-1 PrnIObj) OR (-1 Adv));
 SELECT VpartNegImp IF (1 VerbImp);
 
 SELECT VerbFin IF (-1 VpartNeg);
+
+# Rankout a ran en em ginnig
+SELECT VerbFin IF (-1 VpartRef);
 
 # REGLA (B0004): "a had"
 #SELECT Verb IF (-1 Vpart);
