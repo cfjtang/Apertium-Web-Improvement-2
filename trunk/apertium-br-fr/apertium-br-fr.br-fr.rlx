@@ -150,6 +150,9 @@ SELECT VerbFin IF (-1 VpartRef);
 # REGLA (B0004): "a had"
 #SELECT Verb IF (-1 Vpart);
 
+# REGLA (     ): "Kerzhet hon eus e-pad 2 eurvezh"
+REMOVE VerbInf IF (1 ("endevout" vblex));
+
 # REGLA (     ): "a ra"
 REMOVE Prep IF (0 Prep) (0 Verb) (1 Vpart) (1 VerbFin) (NOT 1 PRE-N);
 
