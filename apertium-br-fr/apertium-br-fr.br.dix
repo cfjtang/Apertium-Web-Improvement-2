@@ -78,6 +78,9 @@
 
     <sdef n="cm"     c="Coma"/>
     <sdef n="sent"   c="End of sentence marker"/>
+
+    <sdef n="ND"/>
+    <sdef n="GD"/>
   </sdefs>
 
   <pardefs>
@@ -876,6 +879,16 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="nep__det">
+      <e>
+        <p>
+          <l/>
+          <r><s n="det"/><s n="ind"/><s n="mf"/><s n="sp"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
     <pardef n="pep__det">
       <e>
@@ -21846,8 +21859,14 @@
     <e lm="henn"><i>henn</i><par n="henn__prn"/></e>
     <e lm="egile"><i/><par n="/egile__prn"/></e>
 
-    <e lm="an darn vrasañ eus"><i>an<b/>darn<b/>vrasañ<b/>eus</i><par n="netra__prn"/></e> 
+<!--
+    <e lm="an darn vrasañ eus"><i>an<b/>darn<b/>vrasañ<b/></i><par n="netra__prn"/></e> 
     <e lm="an hanter eus"><i>an<b/>hanter<b/>eus</i><par n="netra__prn"/></e> 
+-->
+
+    <e lm="an darn vrasañ eus"><p><l>an<b/>darn<b/>vrasañ<b/></l><r>an<s n="det"/><s n="def"/><s n="sp"/><j/>darn<b/>vrasañ<s n="n"/><s n="f"/><s n="sg"/><j/></r></p><par n="/eus__pr"/></e>
+    <e lm="an darn vrasañ eus"><p><l>an<b/>hanter<b/></l><r>an<s n="det"/><s n="def"/><s n="sp"/><j/>hanter<s n="n"/><s n="f"/><s n="sg"/><j/></r></p><par n="/eus__pr"/></e>
+
     <e lm="netra"><i>netra</i><par n="netra__prn"/></e>
     <e lm="pep tra"><i>pep<b/>tra</i><par n="netra__prn"/></e>	
 	
@@ -22170,6 +22189,7 @@
     <e lm="reter"><i>reter</i><par n="norzh__n"/></e>
     <e lm="silikon"><i>silikon</i><par n="norzh__n"/></e>	
     <e lm="stummañ"><i>stummañ</i><par n="norzh__n"/></e>
+    <e lm="kehentiñ"><par n="initial-k"/><i>ehentiñ</i><par n="norzh__n"/></e>
     <e lm="su"><i>su</i><par n="norzh__n"/></e>
     <e lm="toaz"><par n="initial-t"/><i>oaz</i><par n="norzh__n"/></e>
     <e lm="toaz-dent"><par n="initial-t"/><i>oaz-dent</i><par n="norzh__n"/></e>
@@ -31878,7 +31898,7 @@
 	
     <e lm="arall" r="LR"><i>arall</i><par n="arall__adj"/></e>
     <e lm="all"><i>all</i><par n="arall__adj"/></e>
-    <e lm="nep"><i>nep</i><par n="arall__adj"/></e>
+    <e lm="nep"><i>nep</i><par n="nep__det"/></e>
     <e lm="tout"><par n="initial-t"/><i>out</i><par n="arall__adj"/></e>
 
 
