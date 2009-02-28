@@ -5,6 +5,8 @@ LIST EOS              = (<<<);
 
 # Nouns
 LIST NC               = (n);
+LIST NomF             = (n f);
+LIST NomM             = (n m);
 LIST NP               = (np top) (np ant) (np cog) (np al);
 LIST Toponim          = (np top);
 LIST Acr              = (n acr);
@@ -83,19 +85,19 @@ LIST AspMut           = ("<c’h.*>"ri "k.*"ri) ("<c'h.*>"ri "k.*"ri) ("<z.*>"ri
 LIST HardMut          = ("<k.*>"ri "g.*"ri) ("<t.*>"ri "d.*"ri) ("<p.*>"ri "b.*"ri); 
 LIST MixedMut         = ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri) ("<w.*>"ri "gw.*"ri) ("<t.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri); 
 
-LIST HardMutTrigger   = ("ho" det pos) ("e" +da det pos);
-LIST AspMutTrigger    = ("o" det pos) ("va" det pos) ("he" det pos) ("peder" num f) ("pevar" num m) ("teir" num f) 
-                        ("tri" num m) ("nav" num) ;
+LIST HardMutTrigger   = ("ho"ri det pos) ("e"ri +da det pos);
+LIST AspMutTrigger    = ("o"ri det pos) ("va"ri det pos) ("he"ri det pos) ("peder"ri num f) ("pevar"ri num m) ("teir"ri num f) 
+                        ("tri"ri num m) ("nav"ri num) ;
 
                         # Missing: "tra" (while), "seul" (all the more), "re" (those, ones)
 			# "en em" reflexive particle, "en ur" while, 
 
-LIST SoftMutTrigger   = ("a" vpart) ("a" pr) ("aba" adv) ("da" pr) ("ez" vpart) ("hanter" adj) ("holl" adj)
-                        ("da" det pos) ("daou" num m) ("div" num f) ("dindan" adv) ("diwar" pr) ("dre" pr)
-                        ("e" det pos m) ("na" vpart neg) ("ne" vpart neg) ("pa" cnjsub) ("pe" cnjcoo) 
-                        ("pe" adv itg) ("ra" vpart opt) ("re" adj) ("war" pr) ("re" adv); 
+LIST SoftMutTrigger   = ("a"ri vpart) ("a"ri pr) ("aba"ri adv) ("da"ri pr) ("ez"ri vpart) ("hanter"ri adj) ("holl"ri adj)
+                        ("da"ri det pos) ("daou"ri num m) ("div"ri num f) ("dindan"ri adv) ("diwar"ri pr) ("dre"ri pr)
+                        ("e"ri det pos m) ("na"ri vpart neg) ("ne"ri vpart neg) ("pa"ri cnjsub) ("pe"ri cnjcoo) 
+                        ("pe"ri adv itg) ("ra"ri vpart opt) ("re"ri adj) ("war"ri pr) ("re"ri adv) ("an"ri det def) ("un"ri det ind); 
 
-LIST MixedMutTrigger  = ("e" vpart);
+LIST MixedMutTrigger  = ("e"ri vpart);
 
 # Orthography
 LIST DroppedG         = ("<[aeiou].*>"r "g[aeiou].*"ri);
@@ -120,6 +122,7 @@ SET S-BOUNDARY = CS | (sent) | VpartIDO;
 #
 
 SECTION
+
 
 # implijout ar brezhoneg war ar panelloù kelaouiñ elektronek, prenañ ingal levrioù e brezhoneg evit ar vediaoueg, aozañ abadennoù e brezhoneg, stankaat ar c’hentelioù tañva brezhoneg er skolioù, komz brezhoneg e-pad al lidoù ofisiel.
 REMOVE ("komz" n) IF (1 NC);
@@ -284,6 +287,9 @@ SELECT MixedMutTrigger IF (1 MixedMut);
 
 # REGLA (A0009): ""
 REMOVE MixedMut IF (NOT -1 MixedMutTrigger);
+
+# REGLA (A0010): "un taol, un daol"
+REMOVE NomF IF (-1 SoftMutTrigger) (NOT 0 SoftMut) (0 NomF) (0 NomM);
 
 SECTION
 
