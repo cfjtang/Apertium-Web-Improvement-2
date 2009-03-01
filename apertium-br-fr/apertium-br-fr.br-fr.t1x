@@ -133,7 +133,7 @@
       <cat-item lemma="endevout" tags="vblex.cni.*"/>
       <cat-item lemma="endevout" tags="vblex.cip.*"/>
     </def-cat>
-    <def-cat n="aux">
+    <def-cat n="bezañ">
 <!--verbs que fan d'aux seguits de pp-->
       <cat-item tags="vbhaver.*"/>
       <cat-item tags="vbloc.*"/>
@@ -801,448 +801,6 @@
       </choose>
     </def-macro>
 
-	  <def-macro n="control_ref" npar="2"><!-- canvia el lema dels verbs ref i elimina el prn si cal-->
-		  <let>
-			  <var n="treu_ref"/>
-			  <lit v=""/>
-		  </let>
-		  <choose> <!-- prn ref?...-->
-			  <when>
-				  <test>
-					  <or>
-						  <and>
-							  <equal>
-								  <clip pos="1" side="sl" part="tipoenc_pro"/>
-								  <lit-tag v="ref.p3.mf.sp"/>
-							  </equal>
-							  <or>
-								  <equal>
-									  <clip pos="2" side="sl" part="pers"/>
-									  <lit-tag v="p3"/>
-								  </equal>
-								  <equal>
-									  <clip pos="2" side="sl" part="temps"/>
-									  <lit-tag v="inf"/>
-								  </equal>
-								  <equal>
-									  <clip pos="2" side="sl" part="temps"/>
-									  <lit-tag v="ger"/>
-								  </equal>
-							  </or>	
-						  </and>
-						  <and>
-							  <equal>
-								  <clip pos="1" side="sl" part="pers"/>
-								  <lit-tag v="p2"/>
-							  </equal>
-							  <equal>
-								  <clip pos="2" side="sl" part="pers"/>
-								  <lit-tag v="p2"/>
-							  </equal>
-							  <equal>
-								  <clip pos="1" side="sl" part="nbr"/>
-								  <clip pos="2" side="sl" part="nbr"/>
-							  </equal>
-						  </and>
-						  <and>
-							  <equal>
-								  <clip pos="1" side="sl" part="pers"/>
-								  <lit-tag v="p1"/>
-							  </equal>
-							  <equal>
-								  <clip pos="2" side="sl" part="pers"/>
-								  <lit-tag v="p1"/>
-							  </equal>
-							  <equal>
-								  <clip pos="1" side="sl" part="nbr"/>
-								  <clip pos="2" side="sl" part="nbr"/>
-							  </equal>
-						  </and>
-					  </or>
-				  </test>
-				  <choose> <!-- canvia aquests verbs-->
-					  <when>
-						  <test>
-							  <in caseless="yes">
-								  <clip pos="2" side="sl" part="lem"/>
-								  <list n="verbs_ref"/>
-							  </in>
-						  </test>
-						  <choose>
-							  <when>
-								  <test>
-									  <equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="enamorar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="tomber# amoreux"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="incautar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="saisir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="posicionar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="prendre# posicion"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="codear# con"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="côtoyer"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="estrenar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="débuter"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="concienciar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="prendre# concience"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="aficionar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="prendre# goût"/>
-								</let>
-							</when>
-						</choose>
-						  <let>
-							  <var n="treu_ref"/>
-							  <lit v="treu"/>
-						  </let>
-					  </when>
-					  <otherwise>
-						  <choose>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="acordar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="souvenir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="ilusionar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="réjouir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="agazapar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="tapir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="2" side="sl" part="lem"/>
-										<lit v="apelotonar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="2" side="tl" part="lem"/>
-									<lit v="agglutiner"/>
-								</let>
-							</when>
-						</choose>
-						  <let>
-							  <var n="treu_ref"/>
-							  <lit v=""/>
-						  </let>
-
-					  </otherwise>
-				  </choose>
-			  </when>
-		  </choose>
-
-	  </def-macro>
-	  
-	  <def-macro n="control_ref_aux" npar="3"><!-- canvia el lema dels verbs ref i elimina el prn si cal-->
-		  <let>
-			  <var n="treu_ref"/>
-			  <lit v=""/>
-		  </let>
-		  <choose> <!-- prn ref?...-->
-			  <when>
-				  <test>
-					  <or>
-						  <and>
-							  <equal>
-								  <clip pos="1" side="sl" part="tipoenc_pro"/>
-								  <lit-tag v="ref.p3.mf.sp"/>
-							  </equal>
-							  <or>
-								  <equal>
-									  <clip pos="2" side="sl" part="pers"/>
-									  <lit-tag v="p3"/>
-								  </equal>
-								  <equal>
-									  <clip pos="2" side="sl" part="temps"/>
-									  <lit-tag v="inf"/>
-								  </equal>
-								  <equal>
-									  <clip pos="2" side="sl" part="temps"/>
-									  <lit-tag v="ger"/>
-								  </equal>
-							  </or>	
-						  </and>
-						  <and>
-							  <equal>
-								  <clip pos="1" side="sl" part="pers"/>
-								  <lit-tag v="p2"/>
-							  </equal>
-							  <equal>
-								  <clip pos="2" side="sl" part="pers"/>
-								  <lit-tag v="p2"/>
-							  </equal>
-							  <equal>
-								  <clip pos="1" side="sl" part="nbr"/>
-								  <clip pos="2" side="sl" part="nbr"/>
-							  </equal>
-						  </and>
-						  <and>
-							  <equal>
-								  <clip pos="1" side="sl" part="pers"/>
-								  <lit-tag v="p1"/>
-							  </equal>
-							  <equal>
-								  <clip pos="2" side="sl" part="pers"/>
-								  <lit-tag v="p1"/>
-							  </equal>
-							  <equal>
-								  <clip pos="1" side="sl" part="nbr"/>
-								  <clip pos="2" side="sl" part="nbr"/>
-							  </equal>
-						  </and>
-					  </or>
-				  </test>
-				  <choose> <!-- canvia aquests verbs-->
-					  <when>
-						  <test>
-							  <in caseless="yes">
-								  <clip pos="3" side="sl" part="lem"/>
-								  <list n="verbs_ref"/>
-							  </in>
-						  </test>
-						  <choose>
-							  <when>
-								  <test>
-									  <equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="enamorar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="tomber# amoreux"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="aficionar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="prendre# goût"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="incautar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="saisir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="posicionar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="prendre# posicion"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="estrenar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="débuter"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="concienciar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="prendre# concience"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="codear# con"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="côtoyer"/>
-								</let>
-							</when>
-						</choose>
-						<let>
-							<var n="treu_ref"/>
-							<lit v="treu"/>
-						</let>
-					</when>
-					<otherwise>
-						<choose>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="acordar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="souvenir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="ilusionar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="réjouir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="agazapar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="tapir"/>
-								</let>
-							</when>
-							<when>
-								<test>
-									<equal caseless="yes">
-										<clip pos="3" side="sl" part="lem"/>
-										<lit v="apelotonar"/>
-									</equal>
-								</test>
-								<let>
-									<clip pos="3" side="tl" part="lem"/>
-									<lit v="agglutiner"/>
-								</let>
-							</when>
-						</choose>
-						<let>
-							<var n="treu_ref"/>
-							<lit v=""/>
-						</let>
-						
-					</otherwise>
-				</choose>
-			</when>
-		</choose>
-		
-	</def-macro>
-
     <def-macro n="envia_pas" npar="1">
       <choose>
         <when>
@@ -1370,6 +928,7 @@
         </otherwise>
       </choose>
     </def-macro>
+
     <def-macro n="pih_prh_past_cip" npar="1">
       <choose>
         <when>
@@ -1423,84 +982,6 @@
       </choose>
     </def-macro>
 
-    <def-macro n="f_imp" npar="1">
-      <choose>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="sl" part="temps"/>
-              <lit-tag v="imp"/>
-            </equal>
-          </test>
-          <choose>
-            <when>
-              <test>
-                <equal>
-                  <clip pos="1" side="sl" part="pers"/>
-                  <lit-tag v="p3"/>
-                </equal>
-              </test>
-              <let>
-                <clip pos="1" side="tl" part="pers"/>
-                <lit-tag v="p2"/>
-              </let>
-              <let>
-                <clip pos="1" side="tl" part="nbr"/>
-                <lit-tag v="pl"/>
-              </let>
-            </when>
-          </choose>
-        </when>
-      </choose>
-    </def-macro>
-    <def-macro n="f_imp_enc" npar="2">
-      <choose>
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="sl" part="temps"/>
-              <lit-tag v="imp"/>
-            </equal>
-          </test>
-          <choose>
-            <when>
-              <test>
-                <equal>
-                  <clip pos="1" side="sl" part="pers"/>
-                  <lit-tag v="p3"/>
-                </equal>
-              </test>
-              <let>
-                <clip pos="1" side="tl" part="pers"/>
-                <lit-tag v="p2"/>
-              </let>
-              <let>
-                <clip pos="1" side="tl" part="nbr"/>
-                <lit-tag v="pl"/>
-              </let>
-              <choose>
-                <when>
-                  <test>
-                    <equal>
-                      <clip pos="2" side="sl" part="lem"/>
-                      <lit v="se"/>
-                    </equal>
-                  </test>
-                  <let>
-                    <clip pos="2" side="tl" part="lem"/>
-                    <lit v="vous"/>
-                  </let>
-                  <let>
-                    <clip pos="2" side="tl" part="tipoenc_pro"/>
-                    <lit-tag v="p2.mf.pl"/>
-                  </let>
-                </when>
-              </choose>
-            </when>
-          </choose>
-        </when>
-      </choose>
-    </def-macro>
     <def-macro n="firstWord" npar="1">
       <choose>
         <when>
@@ -4821,6 +4302,9 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+	<call-macro n="f_nploc">
+          <with-param pos="2"/>
+        </call-macro>
         <choose>
           <when>
             <test>
@@ -5159,6 +4643,9 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+	<call-macro n="f_nploc">
+          <with-param pos="3"/>
+        </call-macro>
 
         <choose>
           <when>
@@ -5262,6 +4749,9 @@
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
+        </call-macro>
+	<call-macro n="f_nploc">
+          <with-param pos="3"/>
         </call-macro>
         <out>
           <chunk name="det_nom_de_loc" case="caseFirstWord">
@@ -7952,12 +7442,9 @@
 
     <rule comment="REGLA: VERB HAVER">
        <pattern>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
       </pattern>
       <action>
-        <call-macro n="f_imp">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="haber">
           <with-param pos="1"/>
         </call-macro> 
@@ -8100,9 +7587,6 @@
       </pattern>
       <action>
         <call-macro n="pih_prh_past_cip">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="f_imp">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="haber">
@@ -8496,9 +7980,6 @@
         <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="f_imp">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="haber">
           <with-param pos="1"/>
         </call-macro>
@@ -8687,7 +8168,7 @@
       <pattern>
         <pattern-item n="verbpart_o"/>
         <pattern-item n="inf"/>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
       </pattern>
       <action>
         <call-macro n="firstWord">
@@ -8758,7 +8239,7 @@
         <pattern-item n="verbpart_o"/>
         <pattern-item n="inf"/>
         <pattern-item n="adv"/>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
       </pattern>
       <action>
         <call-macro n="firstWord">
@@ -9313,10 +8794,10 @@
       </action>
    </rule>
           
-    <rule comment="pp + aux">
+    <rule comment="pp + bezañ">
       <pattern>
         <pattern-item n="pp"/>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
       </pattern>
       <action>
         <call-macro n="firstWord">
@@ -9388,7 +8869,7 @@
   
     <rule comment="aux + pp">
       <pattern>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
         <pattern-item n="pp"/>
       </pattern>
       <action>
@@ -9459,10 +8940,10 @@
       </action>
    </rule>
      
-    <rule comment="pp + aux + pp">
+    <rule comment="pp + bezañ + pp">
       <pattern>
         <pattern-item n="pp"/>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
         <pattern-item n="pp"/>
       </pattern>
       <action>
@@ -9541,11 +9022,11 @@
       </action>
    </rule>
       
-    <rule comment="pp + verbpart + aux + pp">
+    <rule comment="pp + verbpart + bezañ + pp">
       <pattern>
         <pattern-item n="pp"/>
         <pattern-item n="verbpart"/>
-        <pattern-item n="aux"/>
+        <pattern-item n="bezañ"/>
         <pattern-item n="pp"/>
       </pattern>
       <action>
