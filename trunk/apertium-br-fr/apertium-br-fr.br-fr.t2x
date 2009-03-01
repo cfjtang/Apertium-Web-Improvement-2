@@ -6968,6 +6968,53 @@
 
  <rule>
       <pattern>
+	<pattern-item n="V_en_train"/>
+	<pattern-item n="SA"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+<!--
+      <let>
+        <clip pos="1" part="nbr"/>
+        <clip pos="2" part="nbr"/>
+      </let>
+-->
+
+		<call-macro n="posa_subj">
+			<with-param pos="2"/>
+		</call-macro>
+            <out>
+              <chunk>
+              <get-case-from pos="3">
+                <clip pos="3" part="whole"/>
+              </get-case-from>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+              <get-case-from pos="3">
+                <clip pos="1" part="whole"/>
+              </get-case-from>
+              </chunk>
+              <b pos="2"/>
+              <chunk>
+                <clip pos="2" part="whole"/>
+              </chunk>
+            </out>
+
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+
+      </action>
+</rule>
+
+
+
+
+
+ <rule>
+      <pattern>
 	<pattern-item n="SV"/>
 	<pattern-item n="SN"/>
 	<pattern-item n="V_en_train"/>
