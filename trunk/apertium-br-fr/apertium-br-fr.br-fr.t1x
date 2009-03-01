@@ -492,6 +492,7 @@
     <def-var n="SVnegatiu"/>
     <def-var n="auxiliar"/>
     <def-var n="art_np"/>
+    <def-var n="art1"/>
   </section-def-vars>
   <section-def-lists>
 
@@ -4587,6 +4588,10 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <let>
+          <var n="art1"/>
+          <lit v=""/>
+        </let>
         <call-macro n="f_concord1">
           <with-param pos="3"/>
         </call-macro>
@@ -4628,26 +4633,28 @@
               <var n="lema_Prep"/>
               <lit v="de"/>
             </let>
+            <let>
+              <var n="art1"/>
+              <concat>
+                <lit v="^le"/>
+                <lit-tag v="det.def"/>
+                <clip pos="1" side="tl" part="gen_sense_mf"/>
+                <clip pos="1" side="tl" part="gen_mf"/>
+                <var n="numero"/>
+                <lit v="$ "/>
+              </concat>
+            </let>
           </otherwise>
         </choose>
 
         <out>
-          <chunk name="det_nom_pr_nom" case="caseFirstWord">
+          <chunk name="nom_pr_nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><var n="genero"/></tag>
               <tag><var n="numero"/></tag>
             </tags>
-            <lu>
-              <lit v="le"/>
-              <lit-tag v="det.def"/>
-              <clip pos="1" side="tl" part="gen_sense_mf"/>
-              <clip pos="1" side="tl" part="gen_mf"/>
-              <var n="numero"/>
-<!--              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>  -->
-            </lu>
-            <b/>
+            <var n="art1"/>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_nom"/>
@@ -4688,6 +4695,10 @@
         <pattern-item n="ant"/>
       </pattern>
       <action>
+        <let>
+          <var n="art1"/>
+          <lit v=""/>
+        </let>
         <call-macro n="f_concord1">
           <with-param pos="3"/>
         </call-macro>
@@ -4697,8 +4708,39 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <in caseless="yes">
+                <clip pos="2" side="sl" part="lem"/>
+                <list n="substances"/>
+              </in>
+            </test>
+            <let>
+              <var n="lema_Prep"/>
+              <lit v="en"/>
+            </let>
+          </when>
+          <otherwise>
+            <let>
+              <var n="lema_Prep"/>
+              <lit v="de"/>
+            </let>
+            <let>
+              <var n="art1"/>
+              <concat>
+                <lit v="^le"/>
+                <lit-tag v="det.def"/>
+                <clip pos="2" side="tl" part="gen_sense_mf"/>
+                <clip pos="2" side="tl" part="gen_mf"/>
+                <var n="numero"/>
+                <lit v="$ "/>
+              </concat>
+            </let>
+          </otherwise>
+        </choose>
         <out>
-          <chunk name="det_nom_de_det_nom_de_ant" case="caseFirstWord">
+          <chunk name="det_nom_prep_det_nom_de_ant" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><var n="genero"/></tag>
@@ -4724,19 +4766,11 @@
             </lu>
             <b pos="1"/>
             <lu>
-              <lit v="de"/>
+              <var n="lema_Prep"/>
               <lit-tag v="pr"/>
             </lu>
             <b/>
-            <lu>
-              <lit v="le"/>
-              <lit-tag v="det.def"/>
-              <clip pos="2" side="tl" part="gen_sense_mf"/>
-              <clip pos="2" side="tl" part="gen_mf"/>
-              <clip pos="2" side="tl" part="nbr_sense_sp"/>
-              <clip pos="2" side="tl" part="nbr_sp"/>
-            </lu>
-            <b/>
+            <var n="art1"/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_nom"/>
@@ -9676,11 +9710,9 @@
         <pattern-item n="numeral"/>
       </pattern>
       <action>
-<!--
         <call-macro n="f_concord1">
           <with-param pos="1"/>
         </call-macro>
--->
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
