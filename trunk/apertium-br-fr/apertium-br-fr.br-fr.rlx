@@ -62,6 +62,7 @@ LIST Vbser            = (vbser);
 LIST VerbPP           = (vblex pp);
 LIST VerbImp          = (vblex imp);
 LIST VerbInf          = (vblex inf);
+LIST VerbImpers       = (vblex impers);
 
 LIST TempsFin         = (pri) (pii) (past) (fti);
 
@@ -183,6 +184,12 @@ SELECT VerbInf IF (-1 VpartGer);
 # REGLA (B0009): "Geriadur digor ha frank"
 SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
 
+# REGLA (B    ): "Katell a zeuio da gomz" 
+# 
+#   We need a list of verbs which come with their own verbal particles
+#
+REMOVE NC IF ((-3 Vpart) OR (-2 ("mont a ober"ri))) (-2 VerbFin) (-1 ("da" pr)) (0 VerbInf) (0 NC);
+
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
 REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
@@ -246,6 +253,10 @@ REMOVE Adj IF (-1 Num) (0 Adj) (0 NC) (1 Prep);
 
 # REGLA (B    ): "e c’heller ober gant e ijinadenn"
 REMOVE Prep IF (-1 Prep) (NOT -1 PRE-N) (0 Prep) (0 DetPos);
+
+# REGLA (B    ): "15 studier" 
+REMOVE VerbImpers IF (NOT -1 Vpart) (-1 Num) (0 VerbImpers) (0 NC);
+
 
 SECTION
 
