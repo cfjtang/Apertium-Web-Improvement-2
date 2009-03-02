@@ -1,4 +1,4 @@
-VERSION=0.8.1
+VERSION=0.9.0
 LANG1=fr
 LANG2=es
 PREFIX1=$(LANG1)-$(LANG2)
@@ -166,7 +166,8 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
-           modes.xml  $(BASENAME).$(LANG1).acx
+           modes.xml  $(BASENAME).$(LANG1).acx alt.xsl translate-to-default-equivalent.xsl \
+	   $(BASENAME).$(LANG2).acx
 
 apertium-fr-es.fr.dix: apertium-fr-es.fr.metadix
 	@xsltproc buscaPar.xsl apertium-fr-es.fr.metadix | uniq > $$gen.xsl
