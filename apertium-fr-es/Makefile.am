@@ -205,5 +205,8 @@ install-data-local:
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(apertium_fr_esdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(apertium_fr_esdir)
 
-CLEANFILES = -rf $(TARGETS) modes $(BASENAME).$(LANG1).dix *.mode
-
+CLEANFILES = -rf $(TARGETS) modes $(BASENAME).$(LANG1).dix *.mode  $(PREFVAR2)$(LANG1).dix \
+		$(PREFVAR2)$(PREFIX1).automorf.bin $(PREFVAR2)$(PREFIX1).autobil.bin $(PREFVAR2)$(PREFIX1).autogen.bin \
+		$(PREFVAR2)$(PREFIX2).automorf.bin $(PREFVAR2)$(PREFIX2).autobil.bin $(PREFVAR2)$(PREFIX2).autogen.bin \
+		$(LANG1).dix $(LANG2).dix $(PREFIX1).dix $(PREFVAR2)-$(LANG1).dix $(PREFVAR2)-$(LANG2).dix \
+		$(PREFVAR2)-$(PREFIX1).dix
