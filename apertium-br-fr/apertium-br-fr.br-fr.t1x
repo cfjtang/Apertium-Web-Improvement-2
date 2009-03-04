@@ -639,6 +639,7 @@
       <list-item v="bière"/>
       <list-item v="viande"/>
       <list-item v="pain"/>
+      <list-item v="plaisir"/>
     </def-list>
     <def-list n="npf">
       <list-item v="Afrique du Sud"/>
@@ -730,6 +731,7 @@
       <list-item v="Danemark"/>
       <list-item v="Elysée"/>
       <list-item v="Guatemala"/>
+      <list-item v="Gabon"/>
       <list-item v="Irak"/>
       <list-item v="Iran"/>
       <list-item v="Japon"/>
@@ -3403,10 +3405,16 @@
       <choose>
         <when>
           <test>
+          <or>
             <in caseless="yes">
               <clip pos="2" side="tl" part="lem"/>
               <list n="vbambser"/>
             </in>
+            <equal>
+              <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="fti"/>
+            </equal> 
+          </or>
           </test>
           <let>
             <clip pos="1" side="tl" part="lem"/>
@@ -9781,6 +9789,83 @@
       </action>
    </rule>
         
+   <rule comment="pp verbpart aux → aux pp">
+      <pattern>
+        <pattern-item n="pp"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="aux"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="vauxiliar">
+          <with-param pos="3"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="numero"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+
+        <out>
+          <chunk name="haver_pp" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag>
+                <clip pos="1" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="gen"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="pers"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_pp"/>
+              <lit-tag v="m"/>
+              <var n="numero"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+         
    <rule comment="pp aux → aux pp">
       <pattern>
         <pattern-item n="pp"/>
