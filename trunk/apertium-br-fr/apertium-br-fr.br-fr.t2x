@@ -673,6 +673,22 @@
 
 <def-macro n="posa_subj2" npar="1"><!--aquesta Ã©s la funciÃ³ de posar el subjecte vella. com que no hi ha hagut temps d'experimentar bÃ© amb la nova, algunes regles encara la fan servir-->
 <choose>
+  <when>
+     <test>
+       <not>
+         <equal>
+           <clip pos="1" part="gen"/>
+           <lit v=""/>
+         </equal>
+       </not>
+     </test>
+     <let>
+       <var n="genere"/>
+       <clip pos="1" part="gen"/>
+     </let>
+   </when>
+</choose>
+<choose>
 	<when>
 		<test>
 			<not>
@@ -826,8 +842,8 @@
 										
 								<lit-tag v="SN"/>
 								<lit v="{^"/>
-								<lit v="il"/>
-								<lit-tag v="prn.tn.p3.m"/>
+								<lit-tag v="prn.tn.p3"/>
+                                                                <var n="genere"/>
 								<clip pos="1" part="nbr"/>
 								<lit v="$}"/>
 							</chunk>
@@ -856,6 +872,29 @@
 </def-macro>
 
 <def-macro n="posa_subj" npar="1">
+<choose>
+  <when>
+     <test>
+       <not>
+         <equal>
+           <clip pos="1" part="gen"/>
+           <lit v=""/>
+         </equal>
+       </not>
+     </test>
+     <let>
+       <var n="genere"/>
+       <clip pos="1" part="gen"/>
+     </let>
+   </when>
+   <otherwise>
+     <let>
+       <var n="genere"/>
+       <lit-tag v="m"/>
+     </let>
+   </otherwise>
+</choose>
+
 	<choose>
 		<when>
 			<test>
@@ -1319,7 +1358,8 @@
 											<lit-tag v="SN"/>
 											<lit v="{^"/>
 											<lit v="il"/>
-											<lit-tag v="prn.tn.p3.m"/>
+											<lit-tag v="prn.tn.p3"/>
+                                                                                        <var n="genere"/>
 											<clip pos="1" part="nbr"/>
 											<lit v="$}"/>
 										</chunk>
@@ -1344,7 +1384,8 @@
 											<lit-tag v="SN"/>
 											<lit v="{^"/>
 											<lit v="il"/>
-											<lit-tag v="prn.tn.p3.m"/>
+											<lit-tag v="prn.tn.p3"/>
+                                                                                        <var n="genere"/>
 											<clip pos="1" part="nbr"/>
 											<lit v="$}"/>
 										</chunk>
@@ -1386,6 +1427,10 @@
 	<let>
 		<var n="subj_vist"/>
                 <lit v="no"/>
+	</let>
+	<let>
+		<var n="genere"/>
+                <lit v=""/>
 	</let>
 </def-macro>
 
