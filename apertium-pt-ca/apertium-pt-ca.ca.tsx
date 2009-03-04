@@ -1493,7 +1493,7 @@
       <label-item label="MOLTPREADV"/>
       <label-item label="SENT"/>
     </label-sequence>
-    <label-sequence><!--Afegides les 3 següents 30/11/05 MG -->
+    <label-sequence><!--Afegides les 3 segÃ¼ents 30/11/05 MG -->
       <label-item label="INTNOM"/>
       <label-item label="NOMF"/>
     </label-sequence>
