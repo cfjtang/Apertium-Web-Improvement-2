@@ -768,6 +768,121 @@
     </def-list>
   </section-def-lists>
   <section-def-macros>
+    <def-macro n="indirect_to_proclitic" npar="1">
+      <choose>
+        <when>
+          <test> 
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="pers"/>
+                <lit-tag v="p2"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+            </and>
+          </test> 
+          <let>
+            <clip pos="1" side="tl" part="whole"/>
+            <concat>
+              <lit v="te"/>
+              <lit-tag v="prn.pro.p2.mf.sg"/>
+            </concat>
+          </let>
+        </when> 
+        <when>
+          <test> 
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="pers"/>
+                <lit-tag v="p3"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </and>
+          </test> 
+          <let>
+            <clip pos="1" side="tl" part="whole"/>
+            <concat>
+              <lit v="leur"/>
+              <lit-tag v="prn.pro.p3.mf.pl"/>
+            </concat>
+          </let>
+        </when>
+        <when>
+          <test> 
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="pers"/>
+                <lit-tag v="p3"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="f"/>
+              </equal>
+            </and>
+          </test> 
+          <let>
+            <clip pos="1" side="tl" part="whole"/>
+            <concat>
+              <lit v="lui"/>
+              <lit-tag v="prn.pro.p3.mf.sg"/>
+            </concat>
+          </let>
+        </when>
+      </choose>
+    </def-macro>
+    <def-macro n="direct_to_proclitic" npar="1">
+      <choose>
+        <when>
+          <test> 
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="pers"/>
+                <lit-tag v="p3"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="f"/>
+              </equal>
+            </and>
+          </test> 
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="le"/>
+          </let>
+        </when>
+        <when>
+          <test> 
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="pers"/>
+                <lit-tag v="p3"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </and>
+          </test> 
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="le"/>
+          </let>
+        </when>
+      </choose>
+    </def-macro>
 
     <def-macro n="comparatiu_adj1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
       <let>
@@ -8833,6 +8948,12 @@
                 </equal>
               </and>
             </test>
+            <call-macro n="direct_to_proclitic">
+              <with-param pos="4"/>
+            </call-macro>
+            <call-macro n="indirect_to_proclitic">
+              <with-param pos="6"/>
+            </call-macro>
             <out>
               <chunk name="aller_dobj_iobj_verb" case="caseFirstWord">
                 <tags>
@@ -8886,6 +9007,12 @@
                 </or>
               </and>
             </test>
+            <call-macro n="direct_to_proclitic">
+              <with-param pos="4"/>
+            </call-macro>
+            <call-macro n="indirect_to_proclitic">
+              <with-param pos="6"/>
+            </call-macro>
             <out>
               <chunk name="aller_iobj_dobj_verb" case="caseFirstWord">
                 <tags>
