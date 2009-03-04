@@ -77,6 +77,9 @@
     <def-cat n="en">
       <cat-item lemma="en" tags="pr"/>
     </def-cat>
+    <def-cat n="eus">
+      <cat-item lemma="eus" tags="pr"/>
+    </def-cat>
     <def-cat n="a">
       <cat-item lemma="a" tags="pr"/>
     </def-cat>
@@ -90,6 +93,12 @@
       <cat-item lemma="ni" tags="prn.*"/>
       <cat-item lemma="c’hwi" tags="prn.*"/>
       <cat-item lemma="int" tags="prn.*"/>
+    </def-cat>
+    <def-cat n="direct">
+      <cat-item lemma="direct" tags="prn.obj.*"/>
+    </def-cat>
+    <def-cat n="indirect">
+      <cat-item lemma="indirect" tags="prn.obj.*"/>
     </def-cat>
     <def-cat n="prnsubj">
       <!-- prn no personals que poden ser subjecte-->
@@ -111,6 +120,16 @@
       <cat-item tags="prn.pro.*"/>
     </def-cat>
     <def-cat n="mont">
+      <cat-item lemma="mont a ober" tags="vblex.prs.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.pri.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.fts.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.pis.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.pii.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.ifi.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.imp.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.fti.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.cni.*"/>
+      <cat-item lemma="mont a ober" tags="vblex.cip.*"/>
       <cat-item lemma="mont" tags="vblex.prs.*"/>
       <cat-item lemma="mont" tags="vblex.pri.*"/>
       <cat-item lemma="mont" tags="vblex.fts.*"/>
@@ -3767,10 +3786,12 @@
 		<lu>
 		  <clip pos="1" side="tl" part="whole"/>
 		</lu>
+<!--
                     <b pos="1"/>
                     <lu>
                       <var n="art_np"/>
                     </lu>
+-->
                 <b/>
                 <lu>
                   <clip pos="2" side="tl" part="whole"/>
@@ -8780,6 +8801,180 @@
         </let>
       </action>
    </rule>
+
+        
+    <rule comment="REGLA: mont da inf dobj enc → aller inf">
+      <pattern>
+        <pattern-item n="mont"/>
+        <pattern-item n="da"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="direct"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="4" side="tl" part="pers"/>
+                  <lit-tag v="p3"/>
+                </equal>
+                <equal>
+                  <clip pos="6" side="tl" part="pers"/>
+                  <lit-tag v="p3"/>
+                </equal>
+              </and>
+            </test>
+            <out>
+              <chunk name="aller_dobj_iobj_verb" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="1" side="tl" part="temps"/></tag>
+                  <tag><clip pos="1" side="tl" part="pers"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <clip pos="1" side="tl" part="pers"/>
+                  <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="6" side="tl" part="whole"/>
+                </lu>
+                <b pos="3"/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="4" side="tl" part="pers"/>
+                  <lit-tag v="p3"/>
+                </equal>
+                <or>
+                  <equal>
+                    <clip pos="6" side="tl" part="pers"/>
+                    <lit-tag v="p1"/>
+                  </equal>
+                  <equal>
+                    <clip pos="6" side="tl" part="pers"/>
+                    <lit-tag v="p2"/>
+                  </equal>
+                </or>
+              </and>
+            </test>
+            <out>
+              <chunk name="aller_iobj_dobj_verb" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="1" side="tl" part="temps"/></tag>
+                  <tag><clip pos="1" side="tl" part="pers"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <clip pos="1" side="tl" part="pers"/>
+                  <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="6" side="tl" part="whole"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+                <b pos="3"/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk name="aller_dobj_verb_iobj" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="1" side="tl" part="temps"/></tag>
+                  <tag><clip pos="1" side="tl" part="pers"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <clip pos="1" side="tl" part="pers"/>
+                  <clip pos="1" side="tl" part="nbr"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+                <b pos="3"/>
+                <lu>
+                  <lit v="à"/>
+                  <lit-tag v="pr"/>
+                </lu>
+                <b pos="4"/> 
+                <lu>
+                  <clip pos="6" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+ 
+
 
    
     <rule comment="prnpro">
