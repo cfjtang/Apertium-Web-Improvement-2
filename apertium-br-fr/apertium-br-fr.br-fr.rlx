@@ -194,12 +194,18 @@ REMOVE NC IF ((-3 Vpart) OR (-2 ("mont a ober"ri))) (-2 VerbFin) (-1 ("da" pr)) 
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
 REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
+#Mont a ran da ginnig anezhi dezhe
+
+SELECT Prep IF (-1 ("mont a ober"ri)) (1 VerbInf);
+
+# Roet em eus anezhi dezhañ. An hanter anezhi .
+SELECT PrnDObj IF (-1 Verb);
+
 # REGLA (B0011): "Stad da lod"
 REMOVE PrnDObj IF (NOT -1 VerbFin) (NOT 1 VerbFin);
 
 # REGLA (B    ): "diorroet eo o rouedadoù war an dachenn"
 REMOVE PrnDObj IF (1 NC) (NOT 1 VerbFin);
-
 
 # REGLA (B    ): "d'ur skoazell digant an holl Vretoned"
 REMOVE PrnInd IF (-1 Det) (1 NC);
@@ -328,4 +334,7 @@ SELECT ("ober" n) IF ((-1 DetDef) OR (-1 Num));
 
 # bep pemp munut
 REMOVE Adj IF (0 Adj) (0 NC) (-1 Num);
+
+# meur a viz
+REMOVE ("biz"ri n) IF (0 ("biz"ri n)) (0 ("miz"ri n)) (-1 ("meur a"ri det ind));
 
