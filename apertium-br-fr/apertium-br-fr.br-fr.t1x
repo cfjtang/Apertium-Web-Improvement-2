@@ -19,6 +19,9 @@
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
     </def-cat>
+    <def-cat n="verbpart_en_ur">
+      <cat-item tags="vpart.ppres"/>
+    </def-cat>
     <def-cat n="verbpart_o">
       <cat-item tags="vpart.ger"/>
     </def-cat>
@@ -321,6 +324,8 @@
       <cat-item tags="cm"/>
     </def-cat>
   </section-def-cats>
+
+
   <section-def-attrs>
     <def-attr n="a_nom">
       <attr-item tags="n"/>
@@ -386,6 +391,7 @@
       <attr-item tags="opt"/>
       <attr-item tags="neg"/>
       <attr-item tags="ger"/>
+      <attr-item tags="ppres"/>
       <attr-item tags="ref"/>
     </def-attr>
     <def-attr n="a_adv">
@@ -643,6 +649,7 @@
       <list-item v="bière"/>
       <list-item v="viande"/>
       <list-item v="pain"/>
+      <list-item v="chance"/>
       <list-item v="plaisir"/>
     </def-list>
     <def-list n="npf">
@@ -8094,7 +8101,7 @@
     
 <!-- *************************************** REGLES DE SV *********************************************** -->
 
-    <rule comment="REGLA: VERB particle">
+    <rule comment="REGLA: verb particle">
       <pattern>
         <pattern-item n="verbpart"/>
       </pattern>
@@ -8133,6 +8140,7 @@
       </action>
     </rule>
 
+<!--
     <rule comment="REGLA: VERB HAVER">
        <pattern>
         <pattern-item n="aux"/>
@@ -8272,6 +8280,7 @@
         </let>
       </action>
    </rule>
+-->
 
     <rule comment="REGLA: adv VERB">
       <pattern>
@@ -8804,7 +8813,46 @@
         </let>
       </action>
    </rule>
-     
+
+
+    <rule comment="REGLA: en ur + inf → en ger ">
+      <pattern>
+        <pattern-item n="verbpart_en_ur"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="en_ger" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="gen"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="en"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <lit-tag v="ger"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+      
     <rule comment="REGLA: o + inf → en train de inf">
       <pattern>
         <pattern-item n="verbpart_o"/>
@@ -9476,9 +9524,9 @@
    </rule>
 
 
-    <rule comment="REGLA: mont da inf → aller inf">
+    <rule comment="REGLA: verbpers da inf → verbcj inf">
       <pattern>
-        <pattern-item n="mont"/>
+        <pattern-item n="verbpers"/>
         <pattern-item n="da"/>
         <pattern-item n="inf"/>
       </pattern>
@@ -9490,7 +9538,7 @@
           <with-param pos="1"/>
         </call-macro>
         <out>
-          <chunk name="aller_verb" case="caseFirstWord">
+          <chunk name="verbcj_inf" case="caseFirstWord">
             <tags>
               <tag>
                 <lit-tag v="SV"/>
@@ -9872,6 +9920,64 @@
           </otherwise>
         </choose>
 
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+
+
+    <rule comment="REGLA: mont_inf da inf → aller inf">
+      <pattern>
+        <pattern-item n="mont_inf"/>
+        <pattern-item n="da"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="inf_inf" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
         <call-macro n="f_bcond">
           <with-param pos="2"/>
           <with-param pos="3"/>
@@ -10761,7 +10867,7 @@
       </action>
    </rule>
          
-   <rule comment="pp aux → aux pp">
+    <rule comment="pp aux → aux pp">
       <pattern>
         <pattern-item n="pp"/>
         <pattern-item n="aux"/>
@@ -10837,7 +10943,7 @@
       </action>
    </rule>
  
-    <rule comment="aux + pp">
+   <rule comment="aux pp → aux pp">
       <pattern>
         <pattern-item n="aux"/>
         <pattern-item n="pp"/>
@@ -10894,6 +11000,88 @@
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_pp"/>
+              <lit-tag v="m"/>
+              <var n="numero"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+ 
+   <rule comment="aux pp iobj → aux iobj pp">
+      <pattern>
+        <pattern-item n="aux"/>
+        <pattern-item n="pp"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="vauxiliar">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="indirect_to_proclitic">
+          <with-param pos="4"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="numero"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+
+        <out>
+          <chunk name="iobj_haver_pp" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag>
+                <clip pos="2" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+             <clip pos="4" side="tl" part="whole"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_pp"/>
