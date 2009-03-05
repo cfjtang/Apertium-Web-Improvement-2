@@ -47,12 +47,13 @@ LIST Prep             = (pr);
 
 # Verbal particles 
 LIST Vpart            = (vpart);
-LIST VpartSDO         = ("a" vpart);
-LIST VpartIDO         = ("e" vpart);
+LIST VpartSDO         = ("a"ri vpart);
+LIST VpartIDO         = ("e"ri vpart);
 LIST VpartNeg         = (vpart neg);
 LIST VpartGer         = (vpart ger);
-LIST VpartNegImp      = ("na" vpart neg);
+LIST VpartNegImp      = ("na"ri vpart neg);
 LIST VpartRef         = (vpart ref); # en em
+LIST VpartPPres       = ("en ur"ri vpart ppres);
 
 # Verbs
 LIST Vbloc            = (vbloc);
@@ -169,7 +170,6 @@ SELECT Verb IF (-1 VpartNeg) (1 Ket);
 # "Evit ar poent e c’heller ober gant e ijinadenn"
 SELECT VerbInf IF (-1 ("gellout" vblex) OR ("ober" vblex));
 
-
 # REGLA (B0005): "na ganit ket"
 SELECT VerbImp IF (-1 VpartNegImp);
 
@@ -197,6 +197,9 @@ REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 #Mont a ran da ginnig anezhi dezhe
 
 SELECT Prep IF (-1 ("mont a ober"ri)) (1 VerbInf);
+
+# REGLA (B    ): "Dalc'het e vo er sal Sten Kidna" 
+REMOVE PrnDObj IF (-1 VerbPP) (0 VpartIDO) (1 ("bezañ"ri vblex));
 
 # Roet em eus anezhi dezhañ. An hanter anezhi .
 SELECT PrnDObj IF (-1 Verb);
@@ -237,7 +240,6 @@ SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj)
 REMOVE VerbInf IF (-1 Vpart) (0 VerbFin);
 REMOVE VerbImp IF (-1 Vpart) (0 VerbFin);
 
-
 REMOVE Itg IF (1 VerbPP);
 
 SELECT CS IF (1 VerbFin) (NOT 1 NC) (0 DetPos);
@@ -246,7 +248,6 @@ SELECT CS IF (1 VerbFin) (NOT 1 NC) (0 DetPos);
 SELECT N IF (-1 Prep) (0 N) (0 Adv);
 
 # REGLA (B    ): "Meur a viz"
-
 SELECT N IF (-1 Det) (0 N) (0 Verb);
 
 # REGLA (B    ): "kuit da gomz e galleg"
@@ -264,10 +265,22 @@ REMOVE Prep IF (-1 Prep) (NOT -1 PRE-N) (0 Prep) (0 DetPos);
 # REGLA (B    ): "15 studier" 
 REMOVE VerbImpers IF (NOT -1 Vpart) ((-1 Num) OR (-1 NC)) (0 VerbImpers) (0 NC);
 
+# REGLA (B    ): "Bet hon eus kalz a draoù" / "Bet bezañ"
 SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (1 ("endevout" vblex));
 SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-1 ("endevout" vblex));
 SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (1 ("bezañ" vblex));
 SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-1 ("bezañ" vblex));
+
+# REGLA (B    ): "Skuizh e vi"
+SELECT SoftMut IF ((-1 ("e" vpart obj) OR (-1 ("e" det pos))) (NOT -1 Prep) (NOT -1 PrnDObj);
+
+# REGLA (B    ): "D'an emgann ez an"
+REMOVE (+da) IF (1 DetDef);
+
+# REGLA (B    ): "Gwelet em eus ar c’hi en ur dreuziñ an hent"
+SELECT VerbInf (-1 VpartPPres);
+
+SELECT VerbPP IF (1 ("bezañ"ri vblex)) (1 VerbFin);
 
 SECTION
 
