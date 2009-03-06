@@ -19,8 +19,16 @@
       <cat-item lemma="cnj" tags="cnjsub"/>
     </def-cat>
 
+    <def-cat n="INF">
+      <cat-item tags="SV.vblex.inf.*"/>
+    </def-cat>
+    
     <def-cat n="V_en_train">
       <cat-item lemma="en_train_de_inf" tags="SN"/>
+    </def-cat>
+
+    <def-cat n="V_falloir_que">
+      <cat-item lemma="falloir_que" tags="SV"/>
     </def-cat>
 
     <def-cat n="UNK">
@@ -34,7 +42,7 @@
     <def-cat n="pr"><!-- BCN-->
       <cat-item tags="PREP"/>
     </def-cat>
-    
+
 
      <def-cat n="SN_nopron">
       <cat-item tags="SN.DET.*"/>
@@ -168,9 +176,11 @@
     <def-var n="pers_subj"/>
     <def-var n="uno"/>
     <def-var n="nombre"/>
+    <def-var n="numero"/>
     <def-var n="genere"/>
     <def-var n="concord"/>
     <def-var n="subj_vist"/>
+    <def-var n="verb_prs"/>
   </section-def-vars>
 
 
@@ -216,6 +226,60 @@
 
 
 <section-def-macros>
+
+<def-macro n="verb_prs_from_prn_inf" npar="2">
+  <let>
+    <var n="numero"/>
+    <clip pos="1" part="nbr"/>
+  </let>
+  <modify-case>
+     <clip pos="2" part="lem"/>
+     <lit v="aa"/>
+  </modify-case>
+  <choose>
+    <when>
+      <test>
+        <equal caseless="yes">
+          <clip pos="1" part="lem"/>
+          <lit v="prnperssubj"/>
+        </equal>
+      </test>
+      <let>
+        <var n="verb_prs"/>
+        <concat>
+          <lit v="verbcj"/>
+          <lit-tag v="SV"/>
+          <lit-tag v="vblex.prs"/>
+          <clip pos="1" part="pers"/>
+          <clip pos="1" part="nbr"/>
+          <lit v="{^"/>
+          <clip pos="2" part="lem"/>
+          <lit-tag v="vblex.prs"/>
+          <clip pos="1" part="pers"/>
+          <clip pos="1" part="nbr"/> 
+          <lit v="$}"/>
+        </concat>
+      </let>
+    </when>
+    <otherwise>
+      <let>
+        <var n="verb_prs"/>
+        <concat>
+          <lit v="verbcj"/>
+          <lit-tag v="SV"/>
+          <lit-tag v="vblex.prs.p3"/>
+          <var n="numero"/>
+          <lit v="{^"/>
+          <clip pos="2" part="lem"/>
+          <lit-tag v="vblex.prs.p3"/>
+          <var n="numero"/>
+          <lit v="$}"/>
+        </concat>
+      </let>
+    </otherwise>
+  </choose>
+</def-macro>
+
 
 <def-macro n="envia_pas" npar="1">
 	<choose>
@@ -7151,6 +7215,41 @@
         </let>
       </action>
 </rule>
+
+
+ <rule>
+      <pattern>
+	<pattern-item n="V_falloir_que"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="INF"/>
+      </pattern>
+      <action>
+        <call-macro n="verb_prs_from_prn_inf">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+            <out>
+              <chunk>
+                <clip pos="1" part="whole"/>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+                <clip pos="2" part="whole"/>
+              </chunk>
+              <b pos="2"/>
+              <chunk>
+                <var n="verb_prs"/>
+              </chunk>
+            </out>
+
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+
+      </action>
+</rule>
+
 
 
 
