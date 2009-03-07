@@ -191,12 +191,19 @@ SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
 #
 REMOVE NC IF ((-3 Vpart) OR (-2 ("mont a ober"ri))) (-2 VerbFin) (-1 ("da" pr)) (0 VerbInf) (0 NC);
 
+# REGLA (B    ): "met dav eo dezho goulenn un aotre evit gallout ober kement-mañ gant ar re OGK"
+SELECT Verb IF (-3 ("dav"ri adj)) (-2 ("<eo>"ri vblex)) (-1 PrnIObj);
+SELECT Verb IF (-2 ("dav"ri adj)) (-1 ("<eo>"ri vblex));
+
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
 REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
 #Mont a ran da ginnig anezhi dezhe
 
 SELECT Prep IF (-1 ("mont a ober"ri)) (1 VerbInf);
+
+# REGLA (B    ): "o chom e oamp en un tiig koant "
+REMOVE PrnDObj IF (-2 VpartGer) (-1 Verb) (1 Verb);
 
 # REGLA (B    ): "Dalc'het e vo er sal Sten Kidna" 
 REMOVE PrnDObj IF (-1 VerbPP) (0 VpartIDO) (1 ("bezañ"ri vblex));
