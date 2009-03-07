@@ -55,6 +55,9 @@
       <cat-item lemma="ret" tags="adj.*"/>
       <cat-item lemma="dav" tags="adj.*"/>
     </def-cat>
+    <def-cat n="instant">
+      <cat-item lemma="poent" tags="n.m.*"/>
+    </def-cat>
     <def-cat n="eo">
       <cat-item lemma="bezañ" tags="vblex.pri.p3.sg"/>
     </def-cat>
@@ -818,6 +821,29 @@
   <section-def-macros>
     <def-macro n="indirect_to_prnpers" npar="1">
       <choose>
+
+        <when>
+          <test> 
+            <and>
+              <equal>
+                <clip pos="1" side="sl" part="pers"/>
+                <lit-tag v="p1"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+            </and>
+          </test> 
+          <let>
+            <clip pos="1" side="tl" part="whole"/>
+            <concat>
+              <lit v="je"/>
+              <lit-tag v="prn.tn.p1.mf.sg"/>
+            </concat>
+          </let>
+        </when> 
+
 
         <when>
           <test> 
@@ -9068,7 +9094,159 @@
         </out>
       </action>
    </rule>
-        
+         
+    <rule comment="REGLA: poent + eo → il est temps de">
+      <pattern>
+        <pattern-item n="instant"/>
+        <pattern-item n="eo"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="être_temps_de"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="il"/>
+              <lit-tag v="prn.tn.p3.m.sg"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="être"/>
+              <lit-tag v="vbser.pri.p3.sg"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="temps"/>
+              <lit-tag v="n.m.sp"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+         
+    <rule comment="REGLA: poent eo da → il est temps que">
+      <pattern>
+        <pattern-item n="instant"/>
+        <pattern-item n="eo"/>
+        <pattern-item n="da"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="être_temps_que"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="il"/>
+              <lit-tag v="prn.tn.p3.m.sg"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="être"/>
+              <lit-tag v="vbser.pri.p3.sg"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="temps"/>
+              <lit-tag v="n.m.sp"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="que"/>
+              <lit-tag v="cnjsub"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+         
+    <rule comment="REGLA: poent eo da indirect → il est temps que prnsubj">
+      <pattern>
+        <pattern-item n="instant"/>
+        <pattern-item n="eo"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="indirect_to_prnpers">
+          <with-param pos="4"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="être_temps_que"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="il"/>
+              <lit-tag v="prn.tn.p3.m.sg"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="être"/>
+              <lit-tag v="vbser.pri.p3.sg"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="temps"/>
+              <lit-tag v="n.m.sp"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="que"/>
+              <lit-tag v="cnjsub"/>
+            </lu>
+          </chunk>
+          <b pos="2"/>
+          <chunk name="prnperssubj" case="aa">
+            <tags>
+              <tag><lit-tag v="SN"/></tag> 
+              <tag><clip pos="4" side="tl" part="a_prn"/></tag>
+              <tag><clip pos="4" side="tl" part="pers"/></tag>
+              <tag><clip pos="4" side="tl" part="gen"/></tag>
+              <tag><clip pos="4" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="4" side="tl" part="whole"/> 
+            </lu>
+          </chunk>
+
+        </out>
+      </action>
+   </rule>
+         
     <rule comment="REGLA: ret/dav + eo → falloir que">
       <pattern>
         <pattern-item n="necesitat"/>
