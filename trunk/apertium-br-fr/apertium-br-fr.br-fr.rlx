@@ -11,7 +11,7 @@ LIST NP               = (np top) (np ant) (np cog) (np al);
 LIST Toponim          = (np top);
 LIST Acr              = (n acr);
 
-SET  N                = NC | NP;
+SET  N                = NC + NP;
 
 # Numerals
 LIST Num              = (num);
@@ -34,7 +34,7 @@ LIST PrnDObj          = ("direct"ri prn obj);
 LIST PrnIObj          = ("indirect"ri prn obj) (+indirect);  # Lemmas from sub-readings are expressed as tags and prefixed with '+'
 LIST PrnInd	      = (prn ind);
 
-SET Prn               = PrnSubj | PrnDObj | PrnIObj;
+SET Prn               = PrnSubj + PrnDObj + PrnIObj;
 
 # Determiners
 LIST DetDef           = (det def);
@@ -200,6 +200,9 @@ REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
 #Mont a ran da ginnig anezhi dezhe
 SELECT Prep IF (-1 ("mont a ober"ri)) (1 VerbInf);
+
+# REGLA (B    ): "Bez' e rankan mont bremañ."
+REMOVE PrnDObj IF (-1 VerbInf) (1 VerbFin);
 
 # REGLA (B    ): "ar Skrivadeg a vo dalc'het e Skol-Veur La Harpe"
 REMOVE PrnDObj IF (-1 Verb) (1 NC);

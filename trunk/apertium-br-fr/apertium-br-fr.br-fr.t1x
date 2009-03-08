@@ -61,6 +61,9 @@
     <def-cat n="eo">
       <cat-item lemma="bezañ" tags="vblex.pri.p3.sg"/>
     </def-cat>
+    <def-cat n="bezañ_inf">
+      <cat-item lemma="bezañ" tags="vblex.inf"/>
+    </def-cat>
     <def-cat n="det">
       <cat-item tags="det.dem.*"/>
       <cat-item tags="det.ind.*"/>
@@ -133,6 +136,19 @@
     <def-cat n="prnpro">
       <cat-item tags="prn.pro.*"/>
     </def-cat>
+    <def-cat n="rankout">
+      <cat-item lemma="rankout" tags="vblex.prs.*"/>
+      <cat-item lemma="rankout" tags="vblex.pri.*"/>
+      <cat-item lemma="rankout" tags="vblex.fts.*"/>
+      <cat-item lemma="rankout" tags="vblex.pis.*"/>
+      <cat-item lemma="rankout" tags="vblex.pii.*"/>
+      <cat-item lemma="rankout" tags="vblex.ifi.*"/>
+      <cat-item lemma="rankout" tags="vblex.imp.*"/>
+      <cat-item lemma="rankout" tags="vblex.fti.*"/>
+      <cat-item lemma="rankout" tags="vblex.cni.*"/>
+      <cat-item lemma="rankout" tags="vblex.cip.*"/>
+    </def-cat>
+
     <def-cat n="mont">
       <cat-item lemma="mont a ober" tags="vblex.prs.*"/>
       <cat-item lemma="mont a ober" tags="vblex.pri.*"/>
@@ -158,6 +174,7 @@
     <def-cat n="mont_inf">
       <cat-item lemma="mont" tags="vblex.inf"/>
     </def-cat>
+
     <def-cat n="aux">
       <cat-item lemma="endevout" tags="vblex.prs.*"/>
       <cat-item lemma="endevout" tags="vblex.pri.*"/>
@@ -9385,6 +9402,63 @@
    </rule>
          
           
+    <rule comment="REGLA: bezañ verbpart rankout inf → devoir inf">
+      <pattern>
+        <pattern-item n="bezañ_inf"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="rankout"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="devoir_inf"/>
+        </let>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="3"/>
+        </call-macro>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="3" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="pers"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+              <lit-tag v="inf"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+           
     <rule comment="REGLA: o + inf + bezañ → être en train de inf">
       <pattern>
         <pattern-item n="verbpart_o"/>
