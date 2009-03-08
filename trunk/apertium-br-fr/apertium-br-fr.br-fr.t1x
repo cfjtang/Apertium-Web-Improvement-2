@@ -701,7 +701,7 @@
       <list-item v="Amérique"/>
       <list-item v="Andalousie"/>
       <list-item v="Andorre"/>
-      <list-item v="Angleterre"/>
+      <list-item v="Angleterre"/> 
       <list-item v="Arabie"/>
       <list-item v="Argentine"/>
       <list-item v="Asie"/>
@@ -712,7 +712,7 @@
       <list-item v="Biélorussie"/>
       <list-item v="Bolivie"/>
       <list-item v="Bosnie"/>
-      <list-item v="Bretagne"/> 
+      <list-item v="Bretagne"/>  
       <list-item v="Bulgarie"/>
       <list-item v="Cantabrie"/>
       <list-item v="Catalogne"/>
@@ -725,7 +725,7 @@
       <list-item v="Europe"/>
       <list-item v="Estrémadure"/>
       <list-item v="Finlande"/>
-      <list-item v="France"/>
+      <list-item v="France"/> 
       <list-item v="Galice"/>
       <list-item v="Grande-Bretagne"/>
       <list-item v="Grenade"/>
@@ -735,7 +735,7 @@
       <list-item v="Hongrie"/>
       <list-item v="Inde"/>
       <list-item v="Indonésie"/>
-<!--      <list-item v="Irlande"/> -->
+      <list-item v="Irlande"/> 
       <list-item v="Islande"/>
       <list-item v="Italie"/>
       <list-item v="Jamaïque"/>
@@ -822,6 +822,8 @@
       <list-item v="Trégor"/>
     </def-list>
     <def-list n="nppl">
+      <list-item v="Açores"/>
+      <list-item v="Antilles"/>
       <list-item v="Alpes"/>
       <list-item v="Alpes-Maritimes"/>
       <list-item v="Amériques"/>
@@ -1450,6 +1452,10 @@
 	        <var n="numero"/> 
 		<lit-tag v="sg"/>
               </let> 
+              <let>
+                <var n="lema_Prep"/>
+                <lit v="en"/>
+              </let>
             </when>
           </choose>
           <choose>
@@ -1475,6 +1481,10 @@
 	        <var n="numero"/> 
 		<lit-tag v="sg"/>
               </let> 
+              <let>
+                <var n="lema_Prep"/>
+                <lit v="à"/>
+              </let>
             </when>
           </choose>
           <choose>
@@ -1500,6 +1510,10 @@
 	        <var n="numero"/> 
 		<lit-tag v="pl"/>
               </let> 
+              <let>
+                <var n="lema_Prep"/>
+                <lit v="à"/>
+              </let>
             </when>
           </choose>
         </when>
@@ -4132,6 +4146,10 @@
         <pattern-item n="loc"/>
       </pattern>
       <action>
+        <let>
+          <var n="lema_Prep"/>
+          <lit v="dans"/>
+        </let>
         <call-macro n="firstWord">
           <with-param pos="2"/>
         </call-macro>
@@ -4142,8 +4160,8 @@
           <when>
             <test> 
 	      <equal caseless="yes">
-		<clip pos="1" side="tl" part="lem"/>
-		<lit v="en"/>
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="e"/>
 	      </equal>
 	    </test>
 	    <choose>
@@ -4162,7 +4180,10 @@
                     <tag><lit-tag v="sg"/></tag>
                   </tags>
                   <lu>
+<!--
                     <lit v="à"/>
+-->
+		    <var n="lema_Prep"/>
                     <lit-tag v="pr"/>
                   </lu>
                   <b pos="1"/>
@@ -4173,7 +4194,22 @@
 	    </out>   
 	   </when>
 	   <otherwise>  
+              <choose>
+                <when>
+                  <test> 
+                    <equal>
+                      <var n="lema_Prep"/>
+                      <lit v="en"/>
+                   </equal>
+                  </test>
+                  <let>
+                    <var n="art_np"/>
+                    <lit v=""/>
+                  </let>
+                </when>
+              </choose>
 	    <out>
+          
               <chunk name="nploc" case="caseFirstWord">
                 <tags>
                   <tag><lit-tag v="SN"/></tag>
@@ -4183,20 +4219,22 @@
                     <var n="numero"/></tag>
                 </tags>
 		<lu>
-		  <clip pos="1" side="tl" part="whole"/>
+<!--		  <clip pos="1" side="tl" part="whole"/> -->
+
+		    <var n="lema_Prep"/>
+                    <lit-tag v="pr"/>
 		</lu>
-<!--
                     <b pos="1"/>
                     <lu>
                       <var n="art_np"/>
                     </lu>
--->
                 <b/>
                 <lu>
                   <clip pos="2" side="tl" part="whole"/>
                 </lu>
               </chunk>
             </out>
+
 	    </otherwise>
 	    </choose>
 	    </when>
