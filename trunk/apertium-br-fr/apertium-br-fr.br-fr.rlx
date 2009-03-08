@@ -130,6 +130,9 @@ SECTION
 # implijout ar brezhoneg war ar panelloù kelaouiñ elektronek, prenañ ingal levrioù e brezhoneg evit ar vediaoueg, aozañ abadennoù e brezhoneg, stankaat ar c’hentelioù tañva brezhoneg er skolioù, komz brezhoneg e-pad al lidoù ofisiel.
 REMOVE ("komz" n) IF (1 NC);
 
+# REGLA (B    ): "Ur bed nevez."
+REMOVE Verb IF (-1 DetInd);
+
 # REGLA (B0024): "WAR BONT AR NAONED"
 REMOVE Acr IF (0 NC) (0 Acr);
 
@@ -213,6 +216,9 @@ REMOVE PrnDObj IF (-2 VpartGer) (-1 Verb) (1 Verb);
 # REGLA (B    ): "Dalc'het e vo er sal Sten Kidna" 
 REMOVE PrnDObj IF (-1 VerbPP) (0 VpartIDO) (1 ("bezañ"ri vblex));
 
+# REGLA (B    ): "D'ar mare ma oan o tigeriñ an nor"
+REMOVE DetPos IF (1 VerbFin);
+
 # Roet em eus anezhi dezhañ. An hanter anezhi .
 SELECT PrnDObj IF (-1 Verb);
 
@@ -293,6 +299,8 @@ REMOVE (+da) IF (1 DetDef);
 SELECT VerbInf (-1 VpartPPres);
 
 SELECT VerbPP IF (1 ("bezañ"ri vblex)) (1 VerbFin);
+
+
 
 SECTION
 
