@@ -184,7 +184,21 @@ public class Expander extends XMLApp {
     }
     return both_sides;
   }
+/*
+   <sdef n="vblex" />
+    <sdef n="adv" />
+    <sdef n="guio" />
+  </sdefs>
 
+  <pardefs>
+    <pardef n="MF_GD">
+    <e r="RL">
+      <p>
+        <l><s n="GD"/></l>
+        <r></r>
+      </p>
+    </e>
+ */
   SPair procTransduction() {
     Node n = reader.getCurrentNode();
 
@@ -192,12 +206,16 @@ public class Expander extends XMLApp {
     String name = "";
 
     name = skipRET(name, Compiler.COMPILER_LEFT_ELEM);
+    n = reader.getCurrentNode();
+        System.err.println("name1 = " + name+ "  val "+n.getNodeValue()) ;
 
     if (!xmlTextReaderIsEmptyElement(n)) {
       name = "";
       while (true) {
         n = reader.nextNode();
         name = n.getNodeName();
+
+        System.err.println("name2 = " + name+ "  val "+n.getNodeValue()) ;
         if (name.equals(Compiler.COMPILER_LEFT_ELEM)) {
           break;
         }
