@@ -71,6 +71,7 @@
     </def-cat>
 
     <def-cat n="vbcop">
+      <cat-item lemma="être" tags="SV.vblex.*"/>
       <cat-item tags="SV.vbser.*"/>
     </def-cat>
 	 
@@ -2869,6 +2870,162 @@
 	</action>
 </rule>
 
+<rule comment="REGLA: SN SV punt"> 
+    <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="punt"/>
+    </pattern>
+    <action>
+        <call-macro n="posa_subj">
+            <with-param pos="2"/>
+        </call-macro>
+        <choose>
+            <when>
+                <test>
+                    <and>
+                        <or>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="nom"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="part"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="adj_nom"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="nom_adj"/>
+                            </equal>
+
+
+                        </or>
+                        <equal>
+                            <clip pos="1" part="nbr"/>
+                            <lit-tag v="pl"/>
+                        </equal>
+                    </and>
+                </test>
+                <out>
+                    <chunk>
+                        <clip pos="2" part="lem"/>
+                        <clip pos="2" part="tags"/>
+                        <clip pos="2" part="chcontent"/>
+                    </chunk>
+                    <b pos="1"/>
+                    <chunk>
+                        <lit v="partitiu"/>
+                            <lit-tag v="part"/>
+                            <lit v="{^"/>
+                            <get-case-from pos="1">
+                                <lit v="de"/>
+                            </get-case-from>
+                            <lit-tag v="pr"/>
+                            <lit v="$ ^"/>
+                            <get-case-from pos="1">
+                                <lit v="le"/>
+                            </get-case-from>
+                            <lit-tag v="det.def.mf.pl"/>
+                        <lit v="$}"/>
+                    </chunk>
+                    <b/>
+
+                    <chunk>
+                        <clip pos="1" part="lem"/>
+                        <clip pos="1" part="tags"/>
+                        <clip pos="1" part="chcontent"/>
+                    </chunk>
+
+
+                </out>
+            </when>
+            <otherwise>
+                <choose>
+                    <when>
+                        <test>
+                            <and>
+                                <or>
+                                    <equal caseless="yes">
+                                        <clip pos="1" part="lem"/>
+                                        <lit v="part"/>
+                                    </equal>
+                                    <equal caseless="yes">
+                                        <clip pos="1" part="lem"/>
+                                        <lit v="partadj_nom"/>
+                                    </equal>
+                                    <equal caseless="yes">
+                                        <clip pos="1" part="lem"/>
+                                        <lit v="partnom_adj"/>
+                                    </equal>
+                                </or>                
+                                <equal caseless="yes">
+                                    <clip pos="1" part="nbr"/>
+                                    <lit-tag v="sg"/>
+                                </equal>                
+                            </and>
+                        </test>
+                        <out>
+                            <chunk>
+                                <clip pos="2" part="lem"/>
+                                <clip pos="2" part="tags"/>
+                                <clip pos="2" part="chcontent"/>
+                            </chunk>
+                            <b pos="1"/>
+                            <chunk>
+                                <lit v="partitiu"/>
+                                    <lit-tag v="part"/>
+                                    <lit v="{^"/>
+                                    <get-case-from pos="1">
+                                        <lit v="de"/>
+                                    </get-case-from>
+                                    <lit-tag v="pr"/>
+                                    <lit v="$ ^"/>
+                                    <get-case-from pos="1">
+                                        <lit v="le"/>
+                                    </get-case-from>
+                                    <lit-tag v="det.def"/>
+                                    <clip pos="1" part="gen"/>
+                                    <lit-tag v="sg"/>
+                                <lit v="$}"/>
+                            </chunk>
+                            <b/>
+
+                            <chunk>
+                                <clip pos="1" part="lem"/>
+                                <clip pos="1" part="tags"/>
+                                <clip pos="1" part="chcontent"/>
+                            </chunk>
+
+
+                        </out>
+                    </when>
+                    <otherwise>
+
+                        <out>
+                            <chunk>
+                                <clip pos="2" part="lem"/>
+                                <clip pos="2" part="tags"/>
+                                <clip pos="2" part="chcontent"/>
+                            </chunk>
+                            <b pos="1"/>
+                            <chunk>
+                                <clip pos="1" part="lem"/>
+                                <clip pos="1" part="tags"/>
+                                <clip pos="1" part="chcontent"/>
+                            </chunk>
+                        </out>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </action>
+</rule>
+
+
 <rule comment="REGLA: SV SN"> 
 	<pattern>
 		<pattern-item n="SV"/>
@@ -4019,11 +4176,12 @@
 	</action>
 </rule>
 
-<rule comment="REGLA: SN vbcop SA">
+<rule comment="REGLA: SA vbcop SN punt">
 	<pattern>
-		<pattern-item n="SN"/>
-		<pattern-item n="vbcop"/>
 		<pattern-item n="SA"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="punt"/>
 	</pattern>
 	<action>
 	<call-macro n="concord_sa">
@@ -4035,19 +4193,26 @@
 	</call-macro>
 	<out>
 		<chunk>
-			<clip pos="1" part="lem"/>
-			<clip pos="1" part="tags"/>
-			<clip pos="1" part="chcontent"/>
+                    <get-case-from pos="1">
+			<clip pos="3" part="lem"/>
+                    </get-case-from>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
 		</chunk>
 		<b pos="1"/>
 		<chunk>
+                    
 			<clip pos="2" part="lem"/>
 			<clip pos="2" part="tags"/>
 			<clip pos="2" part="chcontent"/>
 		</chunk>
 		<b pos="2"/>
 		<chunk>
-			<clip pos="3" part="whole"/>
+                    <get-case-from pos="3">
+			<clip pos="1" part="lem"/>
+                    </get-case-from>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
 		</chunk>
 	</out>
 </action>
@@ -7389,7 +7554,6 @@
 
       </action>
 </rule>
-
 
 
   </section-rules>
