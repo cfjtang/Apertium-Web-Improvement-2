@@ -213,6 +213,9 @@ REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 #Mont a ran da ginnig anezhi dezhe
 SELECT Prep IF (-1 ("mont a ober"ri)) (1 VerbInf);
 
+# REGLA (B    ): ", en he fenn Yannick Jadot rener kozh Greenpeace Bro-C'hall"
+REMOVE PrnDObj IF (-1 ("<en>"ri pr));
+
 # REGLA (B    ): "Bez' e rankan mont bremañ."
 REMOVE PrnDObj IF (-1 VerbInf) (1 VerbFin);
 
@@ -325,6 +328,9 @@ SELECT VerbPP IF (1 ("bezañ"ri vblex)) (1 VerbFin);
 SELECT VerbFin IF (-1 Vpart) (-2 ("ne"ri adv));
 
 
+# REGLA (B    ): "en he fenn "
+REMOVE VerbFin IF (-1 DetPos);
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
@@ -393,6 +399,9 @@ REMOVE Adj IF (0 Adj) (0 NC) (-1 Num);
 
 # meur a viz
 REMOVE ("biz"ri n) IF (0 ("biz"ri n)) (0 ("miz"ri n)) (-1 ("meur a"ri det ind));
+
+# en he fenn
+REMOVE (+an) IF (1 DetPos) (0 ("<en>"ri));
 
 # select proper names if they are in caps
 SELECT NP IF (0 ("Gwalarn" np));
