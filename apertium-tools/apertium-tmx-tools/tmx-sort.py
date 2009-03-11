@@ -111,7 +111,7 @@ def compare_tus(tu1, tu2): #{
 parser = make_parser();
 
 if len(sys.argv) < 2: #{
-	print 'Usage: tmx-uniq.py <file>';
+	print 'Usage: tmx-sort.py <file>';
 	print '';
 	sys.exit(-1);
 #}
