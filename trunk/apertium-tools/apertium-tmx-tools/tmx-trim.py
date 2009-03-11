@@ -3,7 +3,8 @@
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
-import sys;
+import sys, codecs;
+import curses.ascii;
 
 class TMXHandler(ContentHandler):
 	
@@ -16,6 +17,32 @@ class TMXHandler(ContentHandler):
 		self.cur_lang = '';
 		self.seg = {};
 	#} 
+
+	def samePunctuation(self): #{
+		punct = [];
+
+		for lang in self.cur_pair: #{
+			tmp = [];
+			for c in self.seg[lang].strip(): #{
+				try: #{
+					c = c.encode('ascii');
+				except: #{
+					c = 'a';
+				#}	
+
+				if curses.ascii.ispunct(c): #{
+					tmp.append(c);
+				#}
+			#}			
+			punct.append(tmp);
+		#}
+
+		if len(punct[0]) > (len(punct[1]) + 2) or len(punct[0]) < (len(punct[1]) - 1): #{
+			return False;
+		#}
+
+		return True;
+	#}
 	
 	# if either of the segments don't include alphabetic characters, we want to discard the TU
 	def containsAlphabetic(self): #{
@@ -67,7 +94,7 @@ class TMXHandler(ContentHandler):
 	#	the TU is good or not, returns False (bad), True (good)
 	#
 	def goodTU(self): #{
-		return (self.segmentsDifferent() and self.containsAlphabetic() and self.lengthSimilar());
+		return (self.segmentsDifferent() and self.containsAlphabetic() and self.lengthSimilar() and self.samePunctuation());
 	#}
 
 
