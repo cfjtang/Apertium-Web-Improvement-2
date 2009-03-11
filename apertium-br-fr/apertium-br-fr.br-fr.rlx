@@ -133,6 +133,9 @@ REMOVE ("komz" n) IF (1 NC);
 # REGLA (B    ): "Ur bed nevez."
 REMOVE Verb IF (-1 DetInd);
 
+# REGLA (B    ): "Ar pezh a fell deomp ober eo liammañ anezho"
+REMOVE NC IF (-3 ("ar pezh a"ri rel)) (-2 VerbFin) (0 VerbInf) (0 NC);
+
 # REGLA (B    ): "Ne garan ket ac’hanout"
 REMOVE NC IF (-1 ("ne"ri adv)) (1 ("ket"ri adv));
 
@@ -411,3 +414,5 @@ SELECT NP IF (0 ("Emgann" np));
 SELECT NP IF (0 ("Dihun" np));
 SELECT NP IF (0 ("Dastum" np));
 SELECT NP IF (0 ("Goursez" np));
+SELECT NP IF (0 ("Bremaik" np));
+SELECT NP IF (0 ("Bremañ" np));
