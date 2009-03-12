@@ -23,10 +23,10 @@ for LINE in `paste $SRCLIST $TRGLIST $TSTLIST | sed 's/ /%_%/g' | sed 's/\t/!/g'
 
 	SRC=`echo $LINE | sed 's/%_%/ /g' | cut -f1 -d'!' | sed 's/^ *//g' | sed 's/ *$//g'`;
 	TRG=`echo $LINE | sed 's/%_%/ /g' | cut -f2 -d'!' | sed 's/^ *//g' | sed 's/ *$//g'`;
-	TST=`echo $LINE | sed 's/%_%/ /g' | cut -f3 -d'!' | sed 's/^ *//g' | sed 's/ *$//g'`;
+	TST=`echo $LINE | sed 's/%_%/ /g' | cut -f3 -d'!' | sed 's/^ *//g' | sed 's/ *$//g' | sed 's/  / /g'`;
 
-	
-	if [[ $TRG != $TST ]]; then
+	echo $TRG | grep "^$TST$" > /dev/null;	
+	if [ $? -eq 1 ]; then
 		echo -e $mode"\t  "$SRC"\n\t- $TRG\n\t+ "$TST"\n";
 	else
 		echo -e $mode"\t  "$SRC"\nWORKS\t  $TST\n";
