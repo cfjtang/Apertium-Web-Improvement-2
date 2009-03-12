@@ -213,6 +213,10 @@ SELECT VerbInf IF (-1 ("ket" adv)) (-2 VerbFin);
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
 REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
+# REGLA (C0002): "zeu da Gwengamp" "Prezidant Radio France a oa e Kemper d'ar 6 a viz Here"
+REMOVE PrnDObj IF (1 Toponim);
+
+
 #Mont a ran da ginnig anezhi dezhe
 SELECT Prep IF (-1 ("mont a ober"ri)) (1 VerbInf);
 
@@ -386,9 +390,6 @@ REMOVE NP IF (0 NP) (0 NC) (-1 DetDef);
 # REGLA (C0001): "o chom e Roazhon"
 REMOVE DetPos IF (1 Toponim);
 
-# REGLA (C0002): "zeu da Gwengamp"
-REMOVE PrnDObj IF (1 Toponim);
-
 REMOVE (obj) IF (-1 BOS);
 
 # Remove imperatives for now
@@ -416,3 +417,4 @@ SELECT NP IF (0 ("Dastum" np));
 SELECT NP IF (0 ("Goursez" np));
 SELECT NP IF (0 ("Bremaik" np));
 SELECT NP IF (0 ("Bremañ" np));
+SELECT NP IF (0 ("Emsav" np));

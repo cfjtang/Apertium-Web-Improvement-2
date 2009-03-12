@@ -4,7 +4,7 @@
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/>
-<!--      <cat-item tags="np.al.*"/> -->
+      <cat-item tags="np.al.*"/> 
     </def-cat>
     <def-cat n="ant">
       <cat-item tags="np.ant"/>
@@ -54,6 +54,9 @@
     <def-cat n="necesitat">
       <cat-item lemma="ret" tags="adj.*"/>
       <cat-item lemma="dav" tags="adj.*"/>
+    </def-cat>
+    <def-cat n="ma">
+      <cat-item lemma="ma" tags="cnjsub"/>
     </def-cat>
     <def-cat n="instant">
       <cat-item lemma="poent" tags="n.m.*"/>
@@ -177,6 +180,9 @@
     <def-cat n="mont_inf">
       <cat-item lemma="mont" tags="vblex.inf"/>
     </def-cat>
+    <def-cat n="fellout_inf">
+      <cat-item lemma="fellout" tags="vblex.inf"/>
+    </def-cat>
 
     <def-cat n="aux">
       <cat-item lemma="endevout" tags="vblex.prs.*"/>
@@ -204,6 +210,19 @@
       <cat-item lemma="bezañ" tags="vblex.pri.*"/>
     </def-cat>
  
+    <def-cat n="fellout">
+      <cat-item lemma="fellout" tags="vblex.prs.*"/>
+      <cat-item lemma="fellout" tags="vblex.fts.*"/>
+      <cat-item lemma="fellout" tags="vblex.pis.*"/>
+      <cat-item lemma="fellout" tags="vblex.pii.*"/>
+      <cat-item lemma="fellout" tags="vblex.ifi.*"/>
+      <cat-item lemma="fellout" tags="vblex.imp.*"/>
+      <cat-item lemma="fellout" tags="vblex.fti.*"/>
+      <cat-item lemma="fellout" tags="vblex.past.*"/>
+      <cat-item lemma="fellout" tags="vblex.cni.*"/>
+      <cat-item lemma="fellout" tags="vblex.cip.*"/>
+      <cat-item lemma="fellout" tags="vblex.pri.*"/>
+    </def-cat>
     <def-cat n="bezañ">
       <cat-item tags="vbloc.*"/>
 
@@ -716,6 +735,8 @@
       <list-item v="Bolivie"/>
       <list-item v="Bosnie"/>
       <list-item v="Bretagne"/>  
+      <list-item v="Basse-Bretagne"/>  
+      <list-item v="Haut-Bretagne"/>  
       <list-item v="Bulgarie"/>
       <list-item v="Cantabrie"/>
       <list-item v="Catalogne"/>
@@ -828,6 +849,7 @@
       <list-item v="Açores"/>
       <list-item v="Antilles"/>
       <list-item v="Alpes"/>
+      <list-item v="Andes"/>
       <list-item v="Alpes-Maritimes"/>
       <list-item v="Amériques"/>
       <list-item v="Asturies"/>
@@ -838,6 +860,29 @@
       <list-item v="Philippines"/>
       <list-item v="Pyrénées"/>
       <list-item v="Pyrénées-Atlantiques"/>
+    </def-list>
+     <def-list n="menezioù">
+      <list-item v="Alpoù"/>
+      <list-item v="Pireneoù"/>
+      <list-item v="C’haokaz"/>
+      <list-item v="Menezioù Roc’hellek"/>
+      <list-item v="Andoù"/>
+    </def-list>
+    <def-list n="broioùbreizh">
+      <list-item v="bro-Dreger"/>
+      <list-item v="bro-Gwened"/>
+      <list-item v="bro-Gerne"/>
+      <list-item v="bro-Gernev"/>
+      <list-item v="bro-Gemperle"/>
+      <list-item v="bro-Leon"/>
+      <list-item v="bro-Naoned"/>
+      <list-item v="bro-Roazhon"/>
+      <list-item v="bro-Sant-Brieg"/>
+      <list-item v="bro-Sant-Maloù"/>
+      <list-item v="bro-Vrest"/>
+      <list-item v="bro-Vigoudenn"/>
+      <list-item v="bro-Wened"/>
+      <list-item v="bro-Zol"/>
     </def-list>
   </section-def-lists>
   <section-def-macros>
@@ -1157,7 +1202,6 @@
                 <lit-tag v="sup"/>
               </equal>
           </test>
-<!--
           <append n="adjectiu1">
             <lit v="le"/>
             <lit-tag v="det.def"/>
@@ -1165,7 +1209,6 @@
             <var n="numero"/>
             <lit v="$ ^"/>
           </append>
--->
           <append n="adjectiu1">
             <lit v="plus"/>
             <lit-tag v="preadv"/>
@@ -1442,6 +1485,7 @@
                   <list n="npf"/>
                 </in>
               </test>
+<!--
               <let>
                 <var n="art_np"/>
                 <concat>
@@ -1449,6 +1493,7 @@
                   <lit-tag v="det.def.f.sg"/>
                 </concat>
               </let>
+-->
 	      <let>
 	        <var n="genero"/> 
 		<lit-tag v="f"/>
@@ -1520,6 +1565,26 @@
                 <lit v="à"/>
               </let>
             </when>
+          </choose>
+          <choose>
+            <when>
+              <test>
+                <or>
+                  <in caseless="no">
+                    <clip pos="1" side="sl" part="lem"/>
+                    <list n="menezioù"/>
+                  </in>
+                  <in caseless="yes">
+                    <clip pos="1" side="sl" part="lem"/>
+                    <list n="broioùbreizh"/>
+                  </in>
+                </or>
+              </test>
+              <let>
+                <var n="lema_Prep"/>
+                <lit v="dans"/>
+              </let>
+             </when>
           </choose>
         </when>
       </choose>
@@ -4007,7 +4072,7 @@
 			</let>
 		</action>
 	</rule>
-
+     
     <rule comment="REGLA: PREP DET LOCATIU">
       <pattern>
         <pattern-item n="prep"/>
@@ -4015,135 +4080,47 @@
         <pattern-item n="loc"/>
       </pattern>
       <action>
+        <let>
+          <var n="lema_Prep"/>
+          <lit v="à"/>
+        </let>
         <call-macro n="firstWord">
           <with-param pos="3"/>
         </call-macro>
-        <call-macro n="f_nploc">
+	<call-macro n="f_nploc">
           <with-param pos="3"/>
         </call-macro>
-        <choose>
-          <!-- The preposition is "en" -->
-          <when>
-            <test>
-              <equal caseless="yes">
-                <clip pos="1" side="tl" part="lem"/>
-                <lit v="en"/>
-              </equal>
-            </test>
-            <choose>
-              <!-- There is no article -->
-              <when>
-                <test>
-                  <equal>
-                    <var n="art_np"/>
-                    <lit v=""/>
-                  </equal>
-                </test>
-                <out>
-                  <chunk name="nploc" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="SN"/></tag>
-                      <tag><var n="genero"/></tag>
-                      <tag><lit-tag v="sg"/></tag>
-                    </tags>
-                    <lu>
-                      <lit v="à"/>
-                      <lit-tag v="pr"/>
-                    </lu>
-                    <b pos="1"/>
-                    <lu>
-                      <clip pos="3" side="tl" part="whole"/>
-                    </lu>
-                  </chunk>
-                </out>
-              </when>
-              <!-- There is an article -->
-              <otherwise>
-                <out>
-                  <chunk name="nploc" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="SN"/></tag>
-                      <tag><var n="genero"/></tag>
-                      <tag><var n="numero"/></tag>
-                    </tags>
-                    <lu>
-                      <lit v="à"/>
-                      <lit-tag v="pr"/>
+        <out>
+              <chunk name="nploc" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag>
+                    <var n="genero"/></tag>
+                  <tag>
+                    <var n="numero"/></tag>
+                </tags>
+		<lu>
+                  <var n="lema_Prep"/>
+                  <lit-tag v="pr"/>
+		</lu>
+		<b pos="1"/>
+		<lu>
+		  <var n="art_np"/>
+		</lu>
+		<b pos="2"/>
+                <lu>
+                  <clip pos="3" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+       </out>
 
-<!--                      <clip pos="1" side="tl" part="whole"/> -->
-                    </lu>
-                    <b pos="1"/>
-                    <lu>
-                      <var n="art_np"/>
-                    </lu>
-                    <b/>
-                    <lu>
-                      <clip pos="3" side="tl" part="whole"/>
-                    </lu>
-                  </chunk>
-                </out>
-              </otherwise>
-            </choose>
-          </when>
-          <otherwise> <!-- The preposition is not "en" -->
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <var n="art_np"/>
-                    <lit v=""/>
-                  </equal>
-                </test>
-                <out>
-                  <chunk name="nploc" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="SN"/></tag>
-                      <tag><var n="genero"/></tag>
-                      <tag><lit-tag v="sg"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="1" side="tl" part="whole"/>
-                    </lu>
-                    <b pos="1"/>
-                    <lu>
-                      <clip pos="3" side="tl" part="whole"/>
-                    </lu>
-                  </chunk>
-                </out>
-              </when>
-              <otherwise>
-                <out>
-                  <chunk name="nploc" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="SN"/></tag>
-                      <tag><var n="genero"/></tag>
-                      <tag><var n="numero"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="1" side="tl" part="whole"/>
-                    </lu>
-                    <b pos="1"/>
-                    <lu>
-                      <var n="art_np"/>
-                    </lu>
-                    <b/>
-                    <lu>
-                      <clip pos="3" side="tl" part="whole"/>
-                    </lu>
-                  </chunk>
-                </out>
-              </otherwise>
-            </choose>
-          </otherwise>
-        </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+            <let>
+              <var n="caseFirstWord"/>
+              <lit v="aa"/>
+            </let>
       </action>
     </rule>
-
-      
+ 
      
     <rule comment="REGLA: PREP LOCATIU">
       <pattern>
@@ -4153,7 +4130,7 @@
       <action>
         <let>
           <var n="lema_Prep"/>
-          <lit v="dans"/>
+          <lit v="à"/>
         </let>
         <call-macro n="firstWord">
           <with-param pos="2"/>
@@ -4161,60 +4138,7 @@
 	<call-macro n="f_nploc">
           <with-param pos="2"/>
         </call-macro>
-        <choose>
-          <when>
-            <test> 
-	      <equal caseless="yes">
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="e"/>
-	      </equal>
-	    </test>
-	    <choose>
-	    <when>
-	      <test>
-                <equal>
-                  <var n="art_np"/>
-                  <lit v=""/>
-                </equal>
-              </test>
-              <out>
-                <chunk name="nploc" case="caseFirstWord">
-                  <tags>
-                    <tag><lit-tag v="SN"/></tag>
-                    <tag><var n="genero"/></tag>
-                    <tag><lit-tag v="sg"/></tag>
-                  </tags>
-                  <lu>
-<!--
-                    <lit v="à"/>
--->
-		    <var n="lema_Prep"/>
-                    <lit-tag v="pr"/>
-                  </lu>
-                  <b pos="1"/>
-                  <lu>
-                     <clip pos="2" side="tl" part="whole"/>
-                  </lu>
-              </chunk>
-	    </out>   
-	   </when>
-	   <otherwise>  
-              <choose>
-                <when>
-                  <test> 
-                    <equal>
-                      <var n="lema_Prep"/>
-                      <lit v="en"/>
-                   </equal>
-                  </test>
-                  <let>
-                    <var n="art_np"/>
-                    <lit v=""/>
-                  </let>
-                </when>
-              </choose>
-	    <out>
-          
+        <out>
               <chunk name="nploc" case="caseFirstWord">
                 <tags>
                   <tag><lit-tag v="SN"/></tag>
@@ -4224,64 +4148,8 @@
                     <var n="numero"/></tag>
                 </tags>
 		<lu>
-<!--		  <clip pos="1" side="tl" part="whole"/> -->
-
-		    <var n="lema_Prep"/>
-                    <lit-tag v="pr"/>
-		</lu>
-                    <b pos="1"/>
-                    <lu>
-                      <var n="art_np"/>
-                    </lu>
-                <b/>
-                <lu>
-                  <clip pos="2" side="tl" part="whole"/>
-                </lu>
-              </chunk>
-            </out>
-
-	    </otherwise>
-	    </choose>
-	    </when>
-	    <otherwise>
-	    
-	    <choose>
-	    <when>
-	      <test>
-                <equal>
-                  <var n="art_np"/>
-                <lit v=""/>
-                </equal>
-              </test>
-            <out>
-              <chunk name="nploc" case="caseFirstWord">
-                <tags>
-                  <tag><lit-tag v="SN"/></tag>
-                  <tag><var n="genero"/></tag>
-                  <tag><lit-tag v="sg"/></tag>
-                </tags>
-		<lu>
-		   <clip pos="1" side="tl" part="whole"/>
-		</lu>
-                <b pos="1"/>
-                <lu>
-                   <clip pos="2" side="tl" part="whole"/>
-                </lu>
-              </chunk>
-	    </out>   
-	   </when>
-	   <otherwise>  
-	    <out>
-              <chunk name="nploc" case="caseFirstWord">
-                <tags>
-                  <tag><lit-tag v="SN"/></tag>
-                  <tag>
-                    <var n="genero"/></tag>
-                  <tag>
-                    <var n="numero"/></tag>
-                </tags>
-		<lu>
-		  <clip pos="1" side="tl" part="whole"/>
+                  <var n="lema_Prep"/>
+                  <lit-tag v="pr"/>
 		</lu>
 		<b pos="1"/>
 		<lu>
@@ -4292,11 +4160,8 @@
                   <clip pos="2" side="tl" part="whole"/>
                 </lu>
               </chunk>
-            </out>
-	    </otherwise>
-	    </choose>
-	    </otherwise>
-	    </choose>    
+       </out>
+
             <let>
               <var n="caseFirstWord"/>
               <lit v="aa"/>
@@ -4319,13 +4184,20 @@
         <choose>
           <when>
             <test>
-              <not>
-                <equal>
-                  <var n="art_np"/>
-                  <lit v=""/>
-                </equal>
-              </not>
+                <in caseless="no">
+                  <clip pos="1" side="tl" part="lem"/>
+                  <list n="npf"/>
+                </in>
             </test>
+            <let>
+              <var n="art_np"/>
+              <concat>
+                <lit v="le"/>
+                <lit-tag v="det.def.f.sg"/>
+              </concat>
+            </let>
+          </when>
+        </choose>
             <out>
               <chunk name="nploc" case="caseFirstWord">
                 <tags>
@@ -4352,28 +4224,6 @@
               <var n="caseFirstWord"/>
               <lit v="aa"/>
             </let>
-	  </when>
-	  <otherwise>
-	   <out>
-              <chunk name="nploc" case="caseFirstWord">
-                <tags>
-                  <tag><lit-tag v="SN"/></tag>
-                  <tag><var n="genero"/></tag>
-                  <tag><lit-tag v="sg"/></tag>
-                </tags>
-                <lu>
-                  <clip pos="1" side="tl" part="lemh"/>
-                  <clip pos="1" side="tl" part="a_nom"/>
-                  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-                  <clip pos="1" side="tl" part="gen_mf"/>
-                  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-                  <clip pos="1" side="tl" part="nbr_sp"/>
-                  <clip pos="1" side="tl" part="lemq"/>
-                </lu>
-              </chunk>
-            </out>
-	  </otherwise>
-	</choose>  
       </action>
     </rule>  
     
@@ -4915,6 +4765,24 @@
 	<call-macro n="f_nploc">
           <with-param pos="2"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+                <in caseless="no">
+                  <clip pos="2" side="tl" part="lem"/>
+                  <list n="npf"/>
+                </in>
+            </test>
+            <let>
+              <var n="art_np"/>
+              <concat>
+                <lit v="le"/>
+                <lit-tag v="det.def.f.sg"/>
+              </concat>
+            </let>
+          </when>
+        </choose>
+
         <choose>
           <when>
             <test>
@@ -8231,6 +8099,49 @@
       </action>
    </rule>
 
+   <rule comment="REGLA: DET ADJECTIU">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="adjec"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="comparatiu_adj1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="det_adj" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SA"/>
+              </tag>
+              <tag><clip pos="2" side="tl" part="gen"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <var n="adjectiu1"/>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="2" side="tl" part="gen_mf"/>
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="2" side="tl" part="nbr_sp"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
    <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda)">
       <pattern>
         <pattern-item n="adjec"/>
@@ -9756,6 +9667,180 @@
       </action>
    </rule>
          
+    <rule comment="REGLA: fellout verbpart ober da indirect → prnperssubj vouloir">
+      <pattern>
+        <pattern-item n="fellout_inf"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="ober"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="indirect_to_prnpers">
+          <with-param pos="5"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="vouloir"/>
+        </let>
+        <out>
+          <chunk name="prnperssubj" case="aa">
+            <tags>
+              <tag><lit-tag v="SN"/></tag> 
+              <tag><clip pos="5" side="tl" part="a_prn"/></tag>
+              <tag><clip pos="5" side="tl" part="pers"/></tag>
+              <tag><clip pos="5" side="tl" part="gen"/></tag>
+              <tag><clip pos="5" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="5" side="tl" part="whole"/> 
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="vouloir"/>
+              <lit-tag v="vblex"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="5" side="tl" part="pers"/>
+              <clip pos="5" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+
+    <rule comment="REGLA: fellout verbpart ober da indirect ma → prnperssubj vouloir">
+      <pattern>
+        <pattern-item n="fellout_inf"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="ober"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+        <pattern-item n="ma"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="indirect_to_prnpers">
+          <with-param pos="5"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="vouloir_que"/>
+        </let>
+        <out>
+          <chunk name="prnperssubj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag> 
+              <tag><clip pos="5" side="tl" part="a_prn"/></tag>
+              <tag><clip pos="5" side="tl" part="pers"/></tag>
+              <tag><clip pos="5" side="tl" part="gen"/></tag>
+              <tag><clip pos="5" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="5" side="tl" part="whole"/> 
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="lema" case="aa">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="vouloir"/>
+              <lit-tag v="vblex"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="5" side="tl" part="pers"/>
+              <clip pos="5" side="tl" part="nbr"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <lit v="que"/> 
+              <lit-tag v="cnjsub"/> 
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+
+
+
+     <rule comment="REGLA: fellout da indirect inf → prnpersubj vouloir inf">
+      <pattern>
+        <pattern-item n="fellout"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="indirect_to_prnpers">
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="vouloir_inf"/>
+        </let>
+        <out>
+          <chunk name="prnperssubj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag> 
+              <tag><clip pos="3" side="tl" part="a_prn"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="gen"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/> 
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="lema" case="aa">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="vouloir"/>
+              <lit-tag v="vblex"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="pers"/>
+              <clip pos="3" side="tl" part="nbr"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+ 
+         
     <rule comment="REGLA: poent eo da indirect → il est temps que prnsubj">
       <pattern>
         <pattern-item n="instant"/>
@@ -10259,6 +10344,47 @@
         </out>
       </action>
    </rule>
+        
+    <rule comment="REGLA: inf dobj → dobj inf">
+      <pattern>
+        <pattern-item n="inf"/>
+        <pattern-item n="direct"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="direct_to_proclitic">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk name="dobj_inf" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+             </tags>
+             <lu>
+               <clip pos="2" side="tl" part="whole"/>
+             </lu>
+             <b pos="1"/>
+             <lu>
+               <clip pos="1" side="tl" part="whole"/>
+             </lu>
+           </chunk>
+         </out>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+
         
     <rule comment="REGLA: pp bezañ o inf dobj → être pp dobj inf">
       <pattern>

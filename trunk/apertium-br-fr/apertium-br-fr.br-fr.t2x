@@ -11,6 +11,11 @@
       <cat-item tags="PRN.subj.*"/>
     </def-cat>
 
+    <def-cat n="ANT">
+      <cat-item lemma="ant" tags="SN.*"/>
+    </def-cat>
+
+
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
@@ -40,7 +45,9 @@
       <cat-item lemma="falloir" tags="SV.*"/>
     </def-cat>
 
-    <def-cat n="V_falloir_que">
+    <def-cat n="V_que">
+      <cat-item lemma="vouloir_que" tags="SV"/>
+      <cat-item lemma="vouloir_que" tags="SV.*"/>
       <cat-item lemma="falloir_que" tags="SV"/>
       <cat-item lemma="falloir_que" tags="SV.*"/>
     </def-cat>
@@ -68,6 +75,9 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
+<def-cat n="VPART_a">
+      <cat-item lemma="a" tags="Vpart.subj"/>
+    </def-cat>
 <def-cat n="VPART">
       <cat-item tags="Vpart.*"/>
     </def-cat>
@@ -740,7 +750,7 @@
 	</choose>
 </def-macro>
 
-<def-macro n="posa_subj2" npar="1"><!--aquesta Ã©s la funciÃ³ de posar el subjecte vella. com que no hi ha hagut temps d'experimentar bÃ© amb la nova, algunes regles encara la fan servir-->
+<def-macro n="posa_subj2" npar="1"><!--aquesta és la funció de posar el subjecte vella. com que no hi ha hagut temps d'experimentar bé amb la nova, algunes regles encara la fan servir-->
 <choose>
   <when>
      <test>
@@ -758,125 +768,125 @@
    </when>
 </choose>
 <choose>
-	<when>
-		<test>
-			<not>
-				<equal>
-					<clip pos="1" part="temps"/>
-					<lit-tag v="imp"/>
-				</equal>
-			</not>
-		</test>
-		<choose>
-			<when>
-				<test>
-					<equal>
-						<clip pos="1" part="pers"/>
-						<lit-tag v="p1"/>
-					</equal>
-				</test>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="nbr"/>
-								<lit-tag v="sg"/>
-							</equal>
-						</test>
-						<out>
-							<chunk>
-								<get-case-from pos="1">
-								<lit v="prnperssubj"/>
-								</get-case-from>
-								<lit-tag v="SN"/>
-								<lit v="{^"/>
-								<lit v="je"/>
-								<lit-tag v="prn.tn.p1.mf.sg"/>
-								<lit v="$}"/>
-							</chunk>
-							<b/>
-						</out>
-					</when>
-					<otherwise>
-						<out>
-							<chunk>
-								<get-case-from pos="1">
-								  <lit v="prnperssubj"/>
-								</get-case-from>
-								<lit-tag v="SN"/>
-								<lit v="{^"/>
-								<lit v="nous"/>
-								<lit-tag v="prn.tn.p1.mf.pl"/>
-								<lit v="$}"/>
-							</chunk>
-							<b/>
-						</out>
-					</otherwise>
-				</choose>
-			</when>
-			<otherwise>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="pers"/>
-								<lit-tag v="p2"/>
-							</equal>
-						</test>
-						<choose>
-							<when>
-								<test>
-									<equal>
-										<clip pos="1" part="nbr"/>
-										<lit-tag v="sg"/>
-									</equal>
-								</test>
-								<out>
-									<chunk>
-										<get-case-from pos="1">
-											<lit v="prnperssubj"/>
-										</get-case-from>
-										<lit-tag v="SN"/>
-										<lit v="{^"/>
-										<lit v="tu"/>
-										<lit-tag v="prn.tn.p2.mf.sg"/>
-										<lit v="$}"/>
-									</chunk>
-									<b/>
-								</out>
-							</when>
-							<otherwise>
-								<out>
-									<chunk>
-										<get-case-from pos="1">
-											<lit v="prnperssubj"/>
-										</get-case-from>
-										<lit-tag v="SN"/>
-										<lit v="{^"/>
-										<lit v="vous"/>
-										<lit-tag v="prn.tn.p2.mf.pl"/>
-										<lit v="$}"/>
-									</chunk>
-									<b/>
-								</out>
-							</otherwise>
-						</choose>
-					</when>
-					<when>
-						<test>
-							<equal>
-								<clip pos="1" part="pers"/>
-								<lit-tag v="impers"/>
-							</equal>
-						</test>
-						<choose>
-							<when>
-								<test>
-									<equal>
-										<clip pos="1" part="nbr"/>
-										<lit-tag v="sp"/>
-									</equal>
-								</test>
+    <when>
+        <test>
+            <not>
+                <equal>
+                    <clip pos="1" part="temps"/>
+                    <lit-tag v="imp"/>
+                </equal>
+            </not>
+        </test>
+        <choose>
+            <when>
+                <test>
+                    <equal>
+                        <clip pos="1" part="pers"/>
+                        <lit-tag v="p1"/>
+                    </equal>
+                </test>
+                <choose>
+                    <when>
+                        <test>
+                            <equal>
+                                <clip pos="1" part="nbr"/>
+                                <lit-tag v="sg"/>
+                            </equal>
+                        </test>
+                        <out>
+                            <chunk>
+                                <get-case-from pos="1">
+                                <lit v="prnperssubj"/>
+                                </get-case-from>
+                                <lit-tag v="SN"/>
+                                <lit v="{^"/>
+                                <lit v="je"/>
+                                <lit-tag v="prn.tn.p1.mf.sg"/>
+                                <lit v="$}"/>
+                            </chunk>
+                            <b/>
+                        </out>
+                    </when>
+                    <otherwise>
+                        <out>
+                            <chunk>
+                                <get-case-from pos="1">
+                                  <lit v="prnperssubj"/>
+                                </get-case-from>
+                                <lit-tag v="SN"/>
+                                <lit v="{^"/>
+                                <lit v="nous"/>
+                                <lit-tag v="prn.tn.p1.mf.pl"/>
+                                <lit v="$}"/>
+                            </chunk>
+                            <b/>
+                        </out>
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                <choose>
+                    <when>
+                        <test>
+                            <equal>
+                                <clip pos="1" part="pers"/>
+                                <lit-tag v="p2"/>
+                            </equal>
+                        </test>
+                        <choose>
+                            <when>
+                                <test>
+                                    <equal>
+                                        <clip pos="1" part="nbr"/>
+                                        <lit-tag v="sg"/>
+                                    </equal>
+                                </test>
+                                <out>
+                                    <chunk>
+                                        <get-case-from pos="1">
+                                            <lit v="prnperssubj"/>
+                                        </get-case-from>
+                                        <lit-tag v="SN"/>
+                                        <lit v="{^"/>
+                                        <lit v="tu"/>
+                                        <lit-tag v="prn.tn.p2.mf.sg"/>
+                                        <lit v="$}"/>
+                                    </chunk>
+                                    <b/>
+                                </out>
+                            </when>
+                            <otherwise>
+                                <out>
+                                    <chunk>
+                                        <get-case-from pos="1">
+                                            <lit v="prnperssubj"/>
+                                        </get-case-from>
+                                        <lit-tag v="SN"/>
+                                        <lit v="{^"/>
+                                        <lit v="vous"/>
+                                        <lit-tag v="prn.tn.p2.mf.pl"/>
+                                        <lit v="$}"/>
+                                    </chunk>
+                                    <b/>
+                                </out>
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when>
+                        <test>
+                            <equal>
+                                <clip pos="1" part="pers"/>
+                                <lit-tag v="impers"/>
+                            </equal>
+                        </test>
+                        <choose>
+                            <when>
+                                <test>
+                                    <equal>
+                                        <clip pos="1" part="nbr"/>
+                                        <lit-tag v="sp"/>
+                                    </equal>
+                                </test>
                                                                 <let>
                                                                   <clip pos="1" part="nbr"/>
                                                                   <lit-tag v="sg"/>
@@ -885,58 +895,57 @@
                                                                   <clip pos="1" part="pers"/>
                                                                   <lit-tag v="p3"/>
                                                                 </let>
-								<out>
-									<chunk>
-										<get-case-from pos="1">
-											<lit v="prnperssubj"/>
-										</get-case-from>
-										<lit-tag v="SN"/>
-										<lit v="{^"/>
-										<lit v="on"/>
-										<lit-tag v="prn.pro.ref.p3.mf.sp"/>
-										<lit v="$}"/>
-									</chunk>
-									<b/>
-								</out>
-							</when>
-						</choose>
-					</when>
-					<otherwise>
-						<out>
-						
-								<chunk>
-								<get-case-from pos="1">
-								  <lit v="prnperssubj"/>
-								</get-case-from>
-										
-								<lit-tag v="SN"/>
-								<lit v="{^"/>
-								<lit-tag v="prn.tn.p3"/>
+                                <out>
+                                    <chunk>
+                                        <get-case-from pos="1">
+                                            <lit v="prnperssubj"/>
+                                        </get-case-from>
+                                        <lit-tag v="SN"/>
+                                        <lit v="{^"/>
+                                        <lit v="on"/>
+                                        <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+                                        <lit v="$}"/>
+                                    </chunk>
+                                    <b/>
+                                </out>
+                            </when>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <out>
+                            <chunk>
+                                <get-case-from pos="1">
+                                  <lit v="prnperssubj"/>
+                                </get-case-from>
+                                        
+                                <lit-tag v="SN"/>
+                                <lit v="{^"/>
+                                <lit-tag v="prn.tn.p3"/>
                                                                 <var n="genere"/>
-								<clip pos="1" part="nbr"/>
-								<lit v="$}"/>
-							</chunk>
-							<b/>
-						</out>
-					</otherwise>
-				</choose>
-			</otherwise>
-		</choose>
-		<choose>
-			<when>
-				<test>
-					<equal>
-						<case-of pos="1" part="lem"/>
-						<lit v="Aa"/>
-					</equal>
-				</test>
-				<modify-case>
-					<clip pos="1" part="lem"/>
-					<lit v="aa"/>
-				</modify-case>
-			</when>
-		</choose>
-	</when>
+                                <clip pos="1" part="nbr"/>
+                                <lit v="$}"/>
+                            </chunk>
+                            <b/>
+                        </out>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        <choose>
+            <when>
+                <test>
+                    <equal>
+                        <case-of pos="1" part="lem"/>
+                        <lit v="Aa"/>
+                    </equal>
+                </test>
+                <modify-case>
+                    <clip pos="1" part="lem"/>
+                    <lit v="aa"/>
+                </modify-case>
+            </when>
+        </choose>
+    </when>
 </choose>
 </def-macro>
 
@@ -2874,6 +2883,325 @@
 	</action>
 </rule>
 
+<rule>
+      <pattern>
+	<pattern-item n="PRNS"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+        <call-macro n="concord_prnsubj_verb2">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+      </action>
+</rule>
+
+
+
+<rule>
+      <pattern>
+	<pattern-item n="ANT"/>
+	<pattern-item n="VPART_a"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="punt"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+          </chunk>
+	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+      </action>
+</rule>
+
+<rule>
+      <pattern>
+	<pattern-item n="ANT"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="punt"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+          </chunk>
+	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+      </action>
+</rule>
+
+<rule>
+      <pattern>
+	<pattern-item n="PRNS"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="punt"/>
+      </pattern>
+      <action>
+        <call-macro n="concord_prnsubj_verb2">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+          </chunk>
+	</out>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+      </action>
+</rule>
+
+
+
+<rule comment="REGLA: SN VPART_a SV punt"> 
+    <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="VPART_a"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="punt"/>
+    </pattern>
+    <action>
+                        <out>
+                            <chunk>
+                                <clip pos="1" part="lem"/>
+                                <clip pos="1" part="tags"/>
+                                <clip pos="1" part="chcontent"/>
+                            </chunk>
+                            <b pos="1"/>
+                            <chunk>
+                                <clip pos="3" part="lem"/>
+                                <clip pos="3" part="tags"/>
+                                <clip pos="3" part="chcontent"/>
+                            </chunk>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+    </action>
+</rule>
+
+
+
+
+<rule comment="REGLA: SN VPART SV punt"> 
+    <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="VPART"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="punt"/>
+    </pattern>
+    <action>
+        <call-macro n="posa_subj">
+            <with-param pos="3"/>
+        </call-macro>
+        <choose>
+            <when>
+                <test>
+                    <and>
+                        <or>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="nom"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="part"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="adj_nom"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="nom_adj"/>
+                            </equal>
+                        </or>
+                        <equal>
+                            <clip pos="1" part="nbr"/>
+                            <lit-tag v="pl"/>
+                        </equal>
+                    </and>
+                </test>
+                <out>
+                    <chunk>
+                      <get-case-from pos="2">
+                        <clip pos="3" part="lem"/>
+                      </get-case-from>
+                        <clip pos="3" part="tags"/>
+                        <clip pos="3" part="chcontent"/>
+                    </chunk>
+                    <b pos="1"/>
+                    <chunk>
+                        <lit v="partitiu"/>
+                            <lit-tag v="part"/>
+                            <lit v="{^"/>
+                            <get-case-from pos="3">
+                                <lit v="de"/>
+                            </get-case-from>
+                            <lit-tag v="pr"/>
+                            <lit v="$ ^"/>
+                            <get-case-from pos="3">
+                                <lit v="le"/>
+                            </get-case-from>
+                            <lit-tag v="det.def.mf.pl"/>
+                        <lit v="$}"/>
+                    </chunk>
+                    <b/>
+
+                    <chunk>
+                      <get-case-from pos="3">
+                        <clip pos="1" part="lem"/>
+                      </get-case-from>
+                        <clip pos="1" part="tags"/>
+                        <clip pos="1" part="chcontent"/>
+                    </chunk>
+
+
+                </out>
+            </when>
+            <otherwise>
+                <choose>
+                    <when>
+                        <test>
+                            <and>
+                                <or>
+                                    <equal caseless="yes">
+                                        <clip pos="1" part="lem"/>
+                                        <lit v="part"/>
+                                    </equal>
+                                    <equal caseless="yes">
+                                        <clip pos="1" part="lem"/>
+                                        <lit v="partadj_nom"/>
+                                    </equal>
+                                    <equal caseless="yes">
+                                        <clip pos="1" part="lem"/>
+                                        <lit v="partnom_adj"/>
+                                    </equal>
+                                </or>                
+                                <equal caseless="yes">
+                                    <clip pos="1" part="nbr"/>
+                                    <lit-tag v="sg"/>
+                                </equal>                
+                            </and>
+                        </test>
+                        <out>
+                            <chunk>
+                              <get-case-from pos="2">
+                                <clip pos="3" part="lem"/>
+                              </get-case-from>
+                                <clip pos="3" part="tags"/>
+                                <clip pos="3" part="chcontent"/>
+                            </chunk>
+                            <b pos="1"/>
+                            <chunk>
+                                <lit v="partitiu"/>
+                                    <lit-tag v="part"/>
+                                    <lit v="{^"/>
+                                    <get-case-from pos="3">
+                                        <lit v="de"/>
+                                    </get-case-from>
+                                    <lit-tag v="pr"/>
+                                    <lit v="$ ^"/>
+                                    <get-case-from pos="3">
+                                        <lit v="le"/>
+                                    </get-case-from>
+                                    <lit-tag v="det.def"/>
+                                    <clip pos="1" part="gen"/>
+                                    <lit-tag v="sg"/>
+                                <lit v="$}"/>
+                            </chunk>
+                            <b/>
+
+                            <chunk>
+                              <get-case-from pos="3">
+                                <clip pos="1" part="lem"/>
+                              </get-case-from>
+                                <clip pos="1" part="tags"/>
+                                <clip pos="1" part="chcontent"/>
+                            </chunk>
+
+
+                        </out>
+                    </when>
+                    <otherwise>
+
+                        <out>
+                            <chunk>
+                              <get-case-from pos="2">
+                                <clip pos="3" part="lem"/>
+                              </get-case-from>
+                                <clip pos="3" part="tags"/>
+                                <clip pos="3" part="chcontent"/>
+                            </chunk>
+                            <b pos="1"/>
+                            <chunk>
+                              <get-case-from pos="3">
+                                <clip pos="1" part="lem"/>
+                              </get-case-from>
+                                <clip pos="1" part="tags"/>
+                                <clip pos="1" part="chcontent"/>
+                            </chunk>
+                        </out>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        <out>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+    </action>
+</rule>
+
+
+
 <rule comment="REGLA: SN SV punt"> 
     <pattern>
         <pattern-item n="SN"/>
@@ -2905,8 +3233,6 @@
                                 <clip pos="1" part="lem"/>
                                 <lit v="nom_adj"/>
                             </equal>
-
-
                         </or>
                         <equal>
                             <clip pos="1" part="nbr"/>
@@ -2916,7 +3242,7 @@
                 </test>
                 <out>
                     <chunk>
-                      <get-case-from pos="1">
+                      <get-case-from pos="2">
                         <clip pos="2" part="lem"/>
                       </get-case-from>
                         <clip pos="2" part="tags"/>
@@ -2978,7 +3304,7 @@
                         </test>
                         <out>
                             <chunk>
-                              <get-case-from pos="1">
+                              <get-case-from pos="2">
                                 <clip pos="2" part="lem"/>
                               </get-case-from>
                                 <clip pos="2" part="tags"/>
@@ -3019,7 +3345,7 @@
 
                         <out>
                             <chunk>
-                              <get-case-from pos="1">
+                              <get-case-from pos="2">
                                 <clip pos="2" part="lem"/>
                               </get-case-from>
                                 <clip pos="2" part="tags"/>
@@ -3038,6 +3364,11 @@
                 </choose>
             </otherwise>
         </choose>
+        <out>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
     </action>
 </rule>
 
@@ -4190,6 +4521,85 @@
 		</out>
 
 	</action>
+</rule>
+
+<rule comment="REGLA: SA VPART vbcop punt">
+	<pattern>
+		<pattern-item n="SA"/>
+		<pattern-item n="VPART"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="punt"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<call-macro n="posa_subj2">
+				<with-param pos="3"/>
+			</call-macro>
+	<out>
+		<chunk>
+                    <get-case-from pos="2">
+			<clip pos="3" part="lem"/>
+                    </get-case-from>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+                    <get-case-from pos="2">
+			<clip pos="1" part="lem"/>
+                    </get-case-from>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="4" part="lem"/>
+			<clip pos="4" part="tags"/>
+			<clip pos="4" part="chcontent"/>
+		</chunk>
+	</out>
+</action>
+</rule>
+
+<rule comment="REGLA: SA vbcop punt">
+	<pattern>
+		<pattern-item n="SA"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="punt"/>
+	</pattern>
+	<action>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>
+			<call-macro n="posa_subj2">
+				<with-param pos="2"/>
+			</call-macro>
+	<out>
+		<chunk>
+                    <get-case-from pos="2">
+			<clip pos="2" part="lem"/>
+                    </get-case-from>
+			<clip pos="2" part="tags"/>
+			<clip pos="2" part="chcontent"/>
+		</chunk>
+		<b pos="1"/>
+		<chunk>
+                    <get-case-from pos="2">
+			<clip pos="1" part="lem"/>
+                    </get-case-from>
+			<clip pos="1" part="tags"/>
+			<clip pos="1" part="chcontent"/>
+		</chunk>
+		<b pos="2"/>
+		<chunk>
+			<clip pos="3" part="lem"/>
+			<clip pos="3" part="tags"/>
+			<clip pos="3" part="chcontent"/>
+		</chunk>
+	</out>
+</action>
 </rule>
 
 <rule comment="REGLA: SA vbcop SN punt">
@@ -7152,35 +7562,6 @@
       </action>
 </rule>
 
-<rule>
-      <pattern>
-	<pattern-item n="PRNS"/>
-	<pattern-item n="SV"/>
-      </pattern>
-      <action>
-        <call-macro n="concord_prnsubj_verb2">
-          <with-param pos="1"/>
-          <with-param pos="2"/>
-        </call-macro>
-	<out>
-	  <chunk>
-	    <clip pos="1" part="whole"/>
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk>
-	    <clip pos="2" part="whole"/>
-	  </chunk>
-	</out>
-        <let>
-                <var n="subj_vist"/>
-                <lit v="yes"/>
-        </let>
-      </action>
-</rule>
-
-
-
-
  <rule>
       <pattern>
 	<pattern-item n="PRNS"/>
@@ -7355,11 +7736,16 @@
       </let>
             <out>
               <chunk>
+              <get-case-from pos="1">
+                <clip pos="2" part="lem"/>
+              </get-case-from>
+                <clip pos="2" part="tags"/>
+                <clip pos="2" part="chcontent"/>
 <!--
               <get-case-from pos="1">
               </get-case-from>
--->
                 <clip pos="2" part="whole"/>
+-->
               </chunk>
               <b pos="1"/>
               <chunk>
@@ -7470,7 +7856,43 @@
 
  <rule>
       <pattern>
-	<pattern-item n="V_falloir_que"/>
+	<pattern-item n="V_que"/>
+	<pattern-item n="INF"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <call-macro n="verb_prs_from_prn_inf">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+        </call-macro>
+            <out>
+              <chunk>
+                <clip pos="1" part="whole"/>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+                <var n="verb_prs"/>
+              </chunk>
+              <b pos="2"/>
+              <chunk>
+                <clip pos="3" part="lem"/>
+                <clip pos="3" part="tags"/>
+                <clip pos="3" part="chcontent"/>
+              </chunk>
+            </out>
+
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+
+      </action>
+</rule>
+
+
+ <rule>
+      <pattern>
+	<pattern-item n="V_que"/>
 	<pattern-item n="SN"/>
 	<pattern-item n="INF"/>
       </pattern>
