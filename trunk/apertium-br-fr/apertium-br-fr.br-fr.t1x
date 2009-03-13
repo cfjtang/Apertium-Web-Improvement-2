@@ -61,6 +61,10 @@
     <def-cat n="instant">
       <cat-item lemma="poent" tags="n.m.*"/>
     </def-cat>
+    <def-cat n="posibilitat">
+      <cat-item lemma="tu" tags="n.m.*"/>
+      <cat-item lemma="tro" tags="n.f.*"/>
+    </def-cat>
     <def-cat n="eo">
       <cat-item lemma="bezañ" tags="vblex.pri.p3.sg"/>
       <cat-item lemma="bezañ" tags="vblex.fti.p3.sg"/>
@@ -1788,6 +1792,22 @@
               </when>
             </choose>
 
+
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="sl" part="a_pp"/>
+                    <lit-tag v="vblex.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="a_pp"/>
+                  <lit-tag v="vblex.pp.GD.ND"/>
+                </let>
+              </when>
+            </choose>
+
       <choose>
         <when>
           <test>
@@ -2275,6 +2295,51 @@
       </choose>
     </def-macro>
     <def-macro n="f_concord3" npar="3">
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="sl" part="a_pp"/>
+                    <lit-tag v="vblex.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="a_pp"/>
+                  <lit-tag v="vblex.pp.GD.ND"/>
+                </let>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="sl" part="a_pp"/>
+                    <lit-tag v="vblex.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="a_pp"/>
+                  <lit-tag v="vblex.pp.GD.ND"/>
+                </let>
+              </when>
+            </choose>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="sl" part="a_pp"/>
+                    <lit-tag v="vblex.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="3" side="tl" part="a_pp"/>
+                  <lit-tag v="vblex.pp.GD.ND"/>
+                </let>
+              </when>
+            </choose>
+
+
+
       <choose>
 <!-- Look whether in source language there is concordance between first and second element -->
         <when>
@@ -2974,6 +3039,21 @@
       </choose>
     </def-macro>
     <def-macro n="f_concord4" npar="4">
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="sl" part="a_pp"/>
+                    <lit-tag v="vblex.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="a_pp"/>
+                  <lit-tag v="vblex.pp.GD.ND"/>
+                </let>
+              </when>
+            </choose>
+
       <choose>
         <when>
           <test>
@@ -3910,6 +3990,21 @@
     </def-macro>
 
     <def-macro n="f_concord_prn_pp" npar="2">
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="sl" part="a_pp"/>
+                    <lit-tag v="vblex.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="a_pp"/>
+                  <lit-tag v="vblex.pp.GD.ND"/>
+                </let>
+              </when>
+            </choose>
+
       <choose>
         <when>
           <test>
@@ -10041,7 +10136,116 @@
       </action>
    </rule>
          
-          
+    <rule comment="REGLA: tu/tro + verbpart + bezañ → il y a moyen">
+      <pattern>
+        <pattern-item n="posibilitat"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="bezañ"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="y_avoir_moyen"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="il"/>
+              <lit-tag v="prn.tn.p3.m.sg"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="y avoir"/>
+              <lit-tag v="vblex"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <lit-tag v="p3.sg"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <lit v="moyen"/>
+              <lit-tag v="n.m.sg"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+           
+         
+    <rule comment="REGLA: tu/tro + verbpart + bezañ + da + indirect → il y a moyen que prnperssubj">
+      <pattern>
+        <pattern-item n="posibilitat"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="bezañ"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="indirect_to_prnpers">
+          <with-param pos="5"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="y_avoir_moyen_que"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="il"/>
+              <lit-tag v="prn.tn.p3.m.sg"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="y avoir"/>
+              <lit-tag v="vblex"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <lit-tag v="p3.sg"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <lit v="moyen"/>
+              <lit-tag v="n.m.sg"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <lit v="que"/>
+              <lit-tag v="cnjsub"/>
+            </lu>
+          </chunk>
+          <b pos="4"/>
+          <chunk name="prnperssubj" case="aa">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="5" side="tl" part="a_prn"/></tag>
+              <tag><clip pos="5" side="tl" part="pers"/></tag>
+              <tag><clip pos="5" side="tl" part="gen"/></tag>
+              <tag><clip pos="5" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="5" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+
+        </out>
+      </action>
+   </rule>
+ 
+
     <rule comment="REGLA: bezañ verbcj → verbcj">
       <pattern>
         <pattern-item n="bezañ_inf"/>
