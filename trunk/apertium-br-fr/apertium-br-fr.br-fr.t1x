@@ -1206,13 +1206,13 @@
                 <lit-tag v="sup"/>
               </equal>
           </test>
-<!--          <append n="adjectiu1">
+          <append n="adjectiu1">
             <lit v="le"/>
             <lit-tag v="det.def"/>
             <var n="genero"/>
             <var n="numero"/>
             <lit v="$ ^"/>
-          </append> -->
+          </append> 
           <append n="adjectiu1">
             <lit v="plus"/>
             <lit-tag v="preadv"/>
@@ -8265,9 +8265,9 @@
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_adj"/>
               <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-              <clip pos="1" side="tl" part="gen_mf"/>
+<!--              <clip pos="1" side="tl" part="gen_mf"/> -->
               <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="1" side="tl" part="nbr_sp"/>
+<!--              <clip pos="1" side="tl" part="nbr_sp"/> -->
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -9048,6 +9048,16 @@
                 </let>
    	      </otherwise>
 	    </choose>
+            <choose>
+              <when>
+                <test>
+                  <not>
+                    <equal>
+                      <clip pos="2" side="tl" part="gen"/>
+                      <lit v=""/>
+                    </equal>
+                  </not>
+                </test>
             <out>
               <chunk namefrom="lema" case="caseFirstWord">
                 <tags>
@@ -9076,12 +9086,8 @@
                   <clip pos="2" side="tl" part="lemh"/>
                   <clip pos="2" side="tl" part="a_verb"/>
                   <clip pos="2" side="tl" part="temps"/>
-<!--
-                  <clip pos="2" side="tl" part="pers" link-to="4"/>
-                  <clip pos="2" side="tl" part="nbr" link-to="5"/>
--->
-                  <clip pos="2" side="tl" part="pers"/>
-                  <clip pos="2" side="tl" part="nbr"/>
+                  <clip pos="2" side="tl" part="pers" link-to="5"/>
+                  <clip pos="2" side="tl" part="nbr" link-to="6"/>
                   <clip pos="2" side="tl" part="lemq"/>
                 </lu>
                 <b pos="2"/>
@@ -9090,6 +9096,49 @@
                 </lu>
               </chunk>
             </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk namefrom="lema" case="caseFirstWord">
+                <tags>
+                  <tag>
+                    <lit-tag v="SV"/>
+                  </tag>
+                  <tag>
+                    <clip pos="2" side="tl" part="a_verb"/>
+                  </tag>
+                  <tag>
+                    <clip pos="2" side="tl" part="temps"/>
+                  </tag>
+                  <tag>
+                    <clip pos="2" side="tl" part="pers"/>
+                  </tag>
+                  <tag>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="whole"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_verb"/>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <clip pos="2" side="tl" part="pers" link-to="4"/>
+                  <clip pos="2" side="tl" part="nbr" link-to="5"/>
+                  <clip pos="2" side="tl" part="lemq"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="3" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>      
+
+
           </otherwise>
         </choose>
         <let>
@@ -9570,7 +9619,7 @@
                 <lu>
                   <clip pos="1" side="tl" part="lemh"/>
                   <clip pos="1" side="tl" part="a_verb"/>
-                  <clip pos="1" side="tl" part="temps"/>
+                  <clip pos="1" side="tl" part="temps" link-to="3"/>
                   <clip pos="1" side="tl" part="pers" link-to="4"/>
                   <clip pos="1" side="tl" part="nbr" link-to="5"/>
                   <clip pos="1" side="tl" part="lemq"/>
