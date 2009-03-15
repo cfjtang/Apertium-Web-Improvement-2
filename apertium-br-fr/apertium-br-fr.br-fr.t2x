@@ -188,7 +188,7 @@
           <attr-item tags="DET"/>
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
-	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaciï¿½que farï¿½el postchunk detectant els PDET. -->
+	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformació que fará el postchunk detectant els PDET. -->
    </def-attr>
    <def-attr n="constituent">
      <attr-item tags="subj"/>
@@ -253,7 +253,24 @@
 
 
 <section-def-macros>
+  <def-macro n="particle_concord2" npar="2">
 
+  <choose> 
+    <when>
+      <test>
+        <equal caseless="yes">
+          <clip pos="1" part="lem"/>
+          <lit v="en em"/>
+        </equal>
+      </test>
+      <let>
+        <clip pos="2" part="lem"/>
+        <lit v="verbcj_ref"/>
+      </let>
+    </when>
+  </choose>
+    
+  </def-macro>
 
 <def-macro n="verb_prs_from_prn_inf" npar="2">
   <let>
@@ -770,63 +787,63 @@
    </when>
 </choose>
 <choose>
-    <when>
+  <when> <!-- Siempre que no sea un imperativo -->
+    <test>
+      <not>
+        <equal>
+          <clip pos="1" part="temps"/>
+          <lit-tag v="imp"/>
+        </equal>
+      </not>
+    </test>
+    <choose>
+      <when> <!-- La primera persona -->
         <test>
-            <not>
-                <equal>
-                    <clip pos="1" part="temps"/>
-                    <lit-tag v="imp"/>
-                </equal>
-            </not>
+          <equal>
+            <clip pos="1" part="pers"/>
+            <lit-tag v="p1"/>
+          </equal>
         </test>
         <choose>
-            <when>
-                <test>
-                    <equal>
-                        <clip pos="1" part="pers"/>
-                        <lit-tag v="p1"/>
-                    </equal>
-                </test>
-                <choose>
-                    <when>
-                        <test>
-                            <equal>
-                                <clip pos="1" part="nbr"/>
-                                <lit-tag v="sg"/>
-                            </equal>
-                        </test>
-                        <out>
-                            <chunk>
-                                <get-case-from pos="1">
-                                <lit v="prnperssubj"/>
-                                </get-case-from>
-                                <lit-tag v="SN"/>
-                                <lit v="{^"/>
-                                <lit v="je"/>
-                                <lit-tag v="prn.tn.p1.mf.sg"/>
-                                <lit v="$}"/>
-                            </chunk>
-                            <b/>
-                        </out>
-                    </when>
-                    <otherwise>
-                        <out>
-                            <chunk>
-                                <get-case-from pos="1">
-                                  <lit v="prnperssubj"/>
-                                </get-case-from>
-                                <lit-tag v="SN"/>
-                                <lit v="{^"/>
-                                <lit v="nous"/>
-                                <lit-tag v="prn.tn.p1.mf.pl"/>
-                                <lit v="$}"/>
-                            </chunk>
-                            <b/>
-                        </out>
-                    </otherwise>
-                </choose>
+          <when> <!-- En singular -->
+            <test>
+              <equal>
+                <clip pos="1" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+            </test>
+            <out>
+              <chunk>
+                <get-case-from pos="1">
+                  <lit v="prnperssubj"/>
+                </get-case-from>
+                <lit-tag v="SN"/>
+                <lit v="{^"/>
+                <lit v="je"/>
+                <lit-tag v="prn.tn.p1.mf.sg"/>
+                <lit v="$}"/>
+              </chunk>
+              <b/>
+            </out>
             </when>
             <otherwise>
+              <out>
+                <chunk>
+                  <get-case-from pos="1">
+                    <lit v="prnperssubj"/>
+                  </get-case-from>
+                  <lit-tag v="SN"/>
+                  <lit v="{^"/>
+                  <lit v="nous"/>
+                  <lit-tag v="prn.tn.p1.mf.pl"/>
+                  <lit v="$}"/>
+                </chunk>
+                <b/>
+              </out>
+            </otherwise>
+          </choose>
+        </when>
+        <otherwise>
                 <choose>
                     <when>
                         <test>
@@ -952,6 +969,8 @@
 </choose>
 </def-macro>
 
+
+
 <def-macro n="posa_subj" npar="1">
     <choose>
       <when>
@@ -1034,7 +1053,8 @@
                                 <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <lit v="pronverb"/>
+                                      <!-- <lit v="pronverb"/> -->
+                                      <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -1125,7 +1145,8 @@
                                     <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <lit v="pronverb"/>
+                                    <!--  <lit v="pronverb"/> -->
+                                      <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -1184,7 +1205,8 @@
                                     <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <lit v="pronverb"/>
+                                      <!-- <lit v="pronverb"/> -->
+                                      <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -1282,7 +1304,8 @@
                                     <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <lit v="pronverb"/>
+                                      <!-- <lit v="pronverb"/> -->
+                                      <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -1340,7 +1363,8 @@
                                     <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <lit v="pronverb"/>
+                                      <!-- <lit v="pronverb"/> -->
+                                      <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -1421,7 +1445,8 @@
                                     <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <lit v="pronverb"/>
+                                      <lit v="verbcj_ref"/>
+                                      <!-- <lit v="pronverb"/> -->
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -2521,7 +2546,7 @@
 				<b pos="3"/>
 			</out>
 		</when>
-		<otherwise><!--si Ã©s que no, el rel serÃ  "que" i caldrÃ  posar subjecte al verb-->
+		<otherwise><!--si és que no, el rel será  "que" i caldrá  posar subjecte al verb-->
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -2549,7 +2574,7 @@
 			</out>
 		</otherwise>
 	</choose>
-	<choose> <!--desprÃ©s mirem si el SN Ã©s el subj de la principal-->
+	<choose> <!--després mirem si el SN és el subj de la principal-->
 		<when>
 			<test>
 				<not>
@@ -2580,7 +2605,7 @@
 					</and>
 				</or>
 			</not>
-		</test> <!--si no ho Ã©s, li posem un subj-->
+		</test> <!--si no ho és, li posem un subj-->
 		<call-macro n="posa_subj2">
 			<with-param pos="4"/>
 		</call-macro>
@@ -2865,25 +2890,23 @@
 </rule>
 
 <rule comment="REGLA: SV"> 
-	<pattern>
-		<pattern-item n="SV"/>
-	</pattern>
-	<action>
-		<call-macro n="posa_subj">
-			<with-param pos="1"/>
-		</call-macro>
-		<out>
-			<chunk>
-				<clip pos="1" part="lem"/>
-				<clip pos="1" part="tags"/>
-				<clip pos="1" part="chcontent"/>
-<!--  <var n="pers_subj"/>  -->
-<!-- <var n="nombre_subj"/> -->
-			</chunk>
-
-
-		</out>
-	</action>
+  <pattern>
+    <pattern-item n="SV"/>
+  </pattern>
+  <action>
+    <call-macro n="posa_subj">
+      <with-param pos="1"/>
+    </call-macro>
+    <out>
+      <chunk>
+        <clip pos="1" part="lem"/>
+        <clip pos="1" part="tags"/>
+        <clip pos="1" part="chcontent"/>
+        <!--  <var n="pers_subj"/>  -->
+        <!--  <var n="nombre_subj"/> -->
+      </chunk>
+    </out>
+  </action>
 </rule>
 
 <rule>
@@ -7599,6 +7622,10 @@
 	<pattern-item n="SV"/>
       </pattern>
       <action>
+      <call-macro n="particle_concord2">
+			<with-param pos="1"/>
+			<with-param pos="2"/>
+      </call-macro>
 		<call-macro n="posa_subj">
 			<with-param pos="2"/>
 		</call-macro>
