@@ -1188,6 +1188,20 @@
       <choose>
         <when>
           <test>
+            <equal>
+              <var n="genero"/>
+              <lit-tag v="mf"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
               <equal>
                 <clip pos="1" side="sl" part="grau_adj"/>
                 <lit-tag v="comp"/>
@@ -7688,9 +7702,7 @@
         <out>
           <chunk name="det_nom_adj" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
+              <tag><lit-tag v="SN"/></tag>
               <tag>
                 <var n="genero"/>
               </tag>
@@ -7771,15 +7783,9 @@
         <out>
           <chunk name="det_nom_adj" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
-              <tag>
-                <var n="genero"/>
-              </tag>
-              <tag>
-                <var n="numero"/>
-              </tag>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="genero"/></tag>
+              <tag><var n="numero"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
