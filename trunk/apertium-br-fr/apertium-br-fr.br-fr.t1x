@@ -66,6 +66,10 @@
       <cat-item lemma="tro" tags="n.f.*"/>
     </def-cat>
     <def-cat n="eo">
+      <cat-item lemma="bezañ" tags="vblex.prh.p3.sg"/>
+      <cat-item lemma="bezañ" tags="vblex.pih.p3.sg"/>
+      <cat-item lemma="bezañ" tags="vblex.cni.p3.sg"/>
+      <cat-item lemma="bezañ" tags="vblex.cip.p3.sg"/>
       <cat-item lemma="bezañ" tags="vblex.pri.p3.sg"/>
       <cat-item lemma="bezañ" tags="vblex.fti.p3.sg"/>
       <cat-item lemma="bezañ" tags="vblex.pii.p3.sg"/>
@@ -607,19 +611,25 @@
 
 
    <def-list n="vbpron">
-                  <list-item v="salir# del paso"/>
+      <list-item v="salir# del paso"/>
    </def-list>
+ 
+    <!-- Verbs que no són reflexius en bretó però si que són en francès -->
+    <def-list n="verbref_meta">
+      <list-item v="arrêter"/>
+      <list-item v="asseoir"/>
+      <list-item v="connecter# à"/>
+      <list-item v="enorgueillir"/>
+      <list-item v="former# en étang"/>
+      <list-item v="fouler"/>
+      <list-item v="mettre# en relation"/>
+      <list-item v="occuper# de"/>
+      <list-item v="plaindre"/>
+      <list-item v="rendre# compte"/>
+      <list-item v="reposer"/>
+      <list-item v="tromper"/>
+    </def-list>
 
-	  <def-list n="verbs_ref">
-		  <list-item v="codear# con"/>
-		  <list-item v="enamorar"/>
-		  <list-item v="posicionar"/>
-		  <list-item v="aficionar"/>
-		  <list-item v="estrenar"/>
-		  <list-item v="divorciar"/>
-		  <list-item v="concienciar"/>
-		  <list-item v="incautar"/>
-	  </def-list>
     <def-list n="vbambser">
       <list-item v="couper"/>
       <list-item v="aller"/>
@@ -653,6 +663,7 @@
       <list-item v="passer"/>
       <list-item v="apparaître"/>
       <list-item v="imposer"/>
+      <list-item v="rassasier"/>
     </def-list>
     <def-list n="dias">
       <list-item v="Lun"/>
@@ -1268,37 +1279,7 @@
         </when>
       </choose>
     </def-macro>
-<!-- aquesta macro és per si no resolem el problmema haber/hay via tagger -->
-    <def-macro n="haber" npar="1">
-      <choose>
-        <when>
-          <test>
-            <and>
-              <equal caseless="yes">
-                <clip pos="1" side="sl" part="lem"/>
-                <lit v="haber"/>
-              </equal>
-              <equal>
-                <clip pos="1" side="sl" part="pers"/>
-                <lit-tag v="p3"/>
-              </equal>
-              <equal>
-                <clip pos="1" side="sl" part="nbr"/>
-                <lit-tag v="sg"/>
-              </equal>
-            </and>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="lem"/>
-            <lit v="y avoir"/>
-          </let>
-          <let>
-            <clip pos="1" side="tl" part="a_verb"/>
-            <lit-tag v="vblex"/>
-          </let>
-        </when>
-      </choose>
-    </def-macro>
+
     <def-macro n="def_det" npar="2">
       <choose>
         <when>
@@ -8557,9 +8538,6 @@
         <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
-        <call-macro n="haber">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -8951,9 +8929,6 @@
         <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
-        <call-macro n="haber">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -9166,9 +9141,6 @@
         <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
-        <call-macro n="haber">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -9339,9 +9311,6 @@
         <call-macro n="pih_prh_past_cip">
           <with-param pos="3"/>
         </call-macro>
-        <call-macro n="haber">
-          <with-param pos="3"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -9497,93 +9466,10 @@
         <call-macro n="pih_prh_past_cip">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="haber">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
-        <choose>
-          <when>
-            <test>
-              <equal>
-                <clip pos="1" side="sl" part="temps"/>
-                <lit-tag v="ifi"/>
-              </equal>
-            </test>
-            <call-macro n="aux_ifi">
-              <with-param pos="1"/>
-            </call-macro>
-	    <choose>
-	     <when>
-		<test>   
-                   <in caseless="yes">
-                      <clip pos="1" side="sl" part="lem"/>
-                      <list n="vbpron"/>
-                    </in>
-            	</test>
-                <let>
-                <var n="lema"/>
-                <lit v="pronaux_pp"/>
-		</let>  
-	      </when>
-	      <otherwise>
-		<let>
-		<var n="lema"/>
-		<lit v="aux_pp"/>
-                </let>
-   	      </otherwise>
-	    </choose>
-            <out>
-              <chunk namefrom="lema" case="caseFirstWord">
-                <tags>
-                  <tag>
-                    <lit-tag v="SV"/>
-                  </tag>
-                  <tag>
-                    <clip pos="1" side="tl" part="a_verb"/>
-                  </tag>
-                  <tag>
-                    <clip pos="1" side="sl" part="temps"/>
-                  </tag>
-                  <tag>
-                    <clip pos="1" side="tl" part="pers" link-to="4"/>
-                  </tag>
-                  <tag>
-                    <clip pos="1" side="tl" part="nbr" link-to="5"/>
-                  </tag>
-                </tags>
-                <lu>
-                  <var n="auxiliar"/>
-                  <var n="etiq_aux"/>
-                  <lit-tag v="pri"/>
-                  <clip pos="1" side="tl" part="pers"/>
-                  <clip pos="1" side="tl" part="nbr"/>
-                </lu>
-                <b/>
-                <lu>
-                  <clip pos="1" side="tl" part="lemh"/>
-                  <clip pos="1" side="tl" part="a_verb"/>
-                  <lit-tag v="pp.m.sg"/>
-                  <clip pos="1" side="tl" part="lemq"/>
-                </lu>
-              </chunk>
-            </out>
-          </when>
-          <otherwise>
            <choose>        
-	     <when>
-		<test>   
-                   <in caseless="yes">
-                      <clip pos="1" side="sl" part="lem"/>
-                      <list n="vbpron"/>
-                    </in>
-            	</test>
-                <let>
-                <var n="lema"/>
-                <lit v="pronverb"/>
-		</let>  
-	      </when>
 	     <when>
 		<test>   
                    <equal caseless="yes">
@@ -9592,14 +9478,26 @@
                     </equal>
             	</test>
                 <let>
-                <var n="lema"/>
-                <lit v="être"/>
+                  <var n="lema"/>
+                  <lit v="être"/>
+		</let>  
+	      </when>
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="tl" part="lem"/>
+                      <list n="verbref_meta"/>
+                    </in>
+            	</test>
+                <let>
+                  <var n="lema"/>
+                  <lit v="verbcj_ref"/>
 		</let>  
 	      </when>
 	      <otherwise>
 		<let>
-		<var n="lema"/>
-		<lit v="verbcj"/>
+                  <var n="lema"/>
+                  <lit v="verbcj"/>
                 </let>
    	      </otherwise>
 	    </choose>
@@ -9632,8 +9530,6 @@
                 </lu>
               </chunk>
             </out>
-          </otherwise>
-        </choose>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
@@ -10318,6 +10214,20 @@
           <var n="lema"/>
           <lit v="verbcj"/>
         </let>
+        <choose>
+          <when>
+            <test>   
+               <in caseless="yes">
+                  <clip pos="1" side="tl" part="lem"/>
+                  <list n="verbref_meta"/>
+                </in>
+            </test>
+            <let>
+              <var n="lema"/>
+              <lit v="verbcj_ref"/>
+            </let>  
+	  </when>
+        </choose>
         <call-macro n="pih_prh_past_cip">
           <with-param pos="2"/>
         </call-macro>
