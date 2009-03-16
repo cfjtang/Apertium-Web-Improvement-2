@@ -135,6 +135,7 @@
       <!-- prn no personals que poden ser subjecte-->
       <cat-item tags="prn.ind.*"/>
       <cat-item tags="prn.tn.*"/>
+      <cat-item tags="prn.dem.*"/>
       <cat-item lemma="pep tra" tags="prn.def.*"/>
     </def-cat>
     <def-cat n="prnitg">
@@ -1589,12 +1590,24 @@
       </choose>
     </def-macro>
 
-     <def-macro n="f_concord1" npar="1">
+    <def-macro n="genderise_participle1" npar="1">
             <choose>
               <when>
                 <test>
                   <equal>
-                    <clip pos="1" side="sl" part="a_pp"/>
+                    <clip pos="1" side="tl" part="a_pp"/>
+                    <lit-tag v="vbser.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="a_pp"/>
+                  <lit-tag v="vbser.pp.GD.ND"/>
+                </let>
+              </when>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="a_pp"/>
                     <lit-tag v="vblex.pp"/>
                   </equal>
                 </test>
@@ -1603,7 +1616,25 @@
                   <lit-tag v="vblex.pp.GD.ND"/>
                 </let>
               </when>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="a_pp"/>
+                    <lit-tag v="vbmod.pp"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="a_pp"/>
+                  <lit-tag v="vbmod.pp.GD.ND"/>
+                </let>
+              </when>
             </choose>
+     </def-macro>
+
+     <def-macro n="f_concord1" npar="1">
+       <call-macro n="genderise_participle1">
+         <with-param pos="1"/>
+       </call-macro>
 
       <choose>
 <!--To determine value of variables of gender and
@@ -1758,50 +1789,13 @@
     
     
     <def-macro n="f_concord2" npar="2">
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="2" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
 
-
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="2" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
+       <call-macro n="genderise_participle1">
+         <with-param pos="1"/>
+       </call-macro>
+       <call-macro n="genderise_participle1">
+         <with-param pos="2"/>
+       </call-macro>
 
       <choose>
         <when>
@@ -2290,48 +2284,15 @@
       </choose>
     </def-macro>
     <def-macro n="f_concord3" npar="3">
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="2" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="3" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="3" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
+       <call-macro n="genderise_participle1">
+         <with-param pos="1"/>
+       </call-macro>
+       <call-macro n="genderise_participle1">
+         <with-param pos="2"/>
+       </call-macro>
+       <call-macro n="genderise_participle1">
+         <with-param pos="3"/>
+       </call-macro>
 
 
 
@@ -3034,20 +2995,19 @@
       </choose>
     </def-macro>
     <def-macro n="f_concord4" npar="4">
-            <choose>
-              <when>
-                <test>
-                  <equal>
-                    <clip pos="1" side="sl" part="a_pp"/>
-                    <lit-tag v="vblex.pp"/>
-                  </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="a_pp"/>
-                  <lit-tag v="vblex.pp.GD.ND"/>
-                </let>
-              </when>
-            </choose>
+       <call-macro n="genderise_participle1">
+         <with-param pos="1"/>
+       </call-macro>
+       <call-macro n="genderise_participle1">
+         <with-param pos="2"/>
+       </call-macro>
+       <call-macro n="genderise_participle1">
+         <with-param pos="3"/>
+       </call-macro>
+       <call-macro n="genderise_participle1">
+         <with-param pos="4"/>
+       </call-macro>
+
 
       <choose>
         <when>
