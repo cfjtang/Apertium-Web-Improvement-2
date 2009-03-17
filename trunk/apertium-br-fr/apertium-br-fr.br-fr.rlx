@@ -126,6 +126,9 @@ SET S-BOUNDARY = CS | (sent) | VpartIDO;
 
 SECTION
 
+# Remove imperatives for now
+REMOVE VerbImp IF (0 VerbImp);
+
 REMOVE ("ober"ri n) IF (NOT -1 Det);
 
 # REGLA (B    ): "Ur perzh 20€ zo bet goulennet evit kaout e anv engravet war unan eus karrezennigoù ar murlivadur. "
@@ -229,6 +232,9 @@ REMOVE PrnDObj IF (-1 ("<en>"ri pr));
 
 # REGLA (B    ): "Bez' e rankan mont bremañ."
 REMOVE PrnDObj IF (-1 VerbInf) (1 VerbFin);
+
+# REGLA (B    ): "Ha n'on ket gwisket na gwalc’het c’hoazh"
+SELECT CC IF (-1 VerbPP) (1 VerbPP);
 
 # REGLA (B    ): "ar Skrivadeg a vo dalc'het e Skol-Veur La Harpe"
 REMOVE PrnDObj IF (-1 Verb) (1 NC);
@@ -395,9 +401,6 @@ REMOVE NP IF (0 NP) (0 NC) (-1 DetDef);
 REMOVE DetPos IF (1 Toponim);
 
 REMOVE (obj) IF (-1 BOS);
-
-# Remove imperatives for now
-REMOVE VerbImp IF (0 VerbImp);
 
 # Select 'ober' after determiner
 SELECT ("ober" n) IF ((-1 DetDef) OR (-1 Num));
