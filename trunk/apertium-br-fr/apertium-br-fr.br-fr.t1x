@@ -9701,44 +9701,34 @@
                     </equal>
                   </not>
                 </test>
-            <out>
-              <chunk namefrom="lema" case="caseFirstWord">
-                <tags>
-                  <tag>
-                    <lit-tag v="SV"/>
-                  </tag>
-                  <tag>
-                    <clip pos="2" side="tl" part="a_verb"/>
-                  </tag>
-                  <tag>
-                    <clip pos="2" side="tl" part="temps"/>
-                  </tag>
-                  <tag>
-                    <clip pos="2" side="tl" part="pers"/>
-                  </tag>
-              <tag><clip pos="2" side="tl" part="gen"/></tag>
-                  <tag>
-                    <clip pos="2" side="tl" part="nbr"/>
-                  </tag>
-                </tags>
-                <lu>
-                  <clip pos="1" side="tl" part="whole"/>
-                </lu>
-                <b pos="1"/>
-                <lu>
-                  <clip pos="2" side="tl" part="lemh"/>
-                  <clip pos="2" side="tl" part="a_verb"/>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <clip pos="2" side="tl" part="pers" link-to="5"/>
-                  <clip pos="2" side="tl" part="nbr" link-to="6"/>
-                  <clip pos="2" side="tl" part="lemq"/>
-                </lu>
-                <b pos="2"/>
-                <lu>
-                  <clip pos="3" side="tl" part="whole"/>
-                </lu>
-              </chunk>
-            </out>
+                <out>
+                  <chunk namefrom="lema" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
+                      <tag><clip pos="2" side="tl" part="pers"/></tag>
+                      <tag><clip pos="2" side="tl" part="gen"/></tag>
+                      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="whole"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="pers" link-to="4"/>
+                      <clip pos="2" side="tl" part="nbr" link-to="6"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="2"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="whole"/>
+                    </lu>
+                  </chunk>
+                </out>
           </when>
           <otherwise>
             <out>
@@ -14374,9 +14364,12 @@
               <tag>
                 <clip pos="1" side="tl" part="gen"/>
               </tag>
+	      <tag><lit-tag v="sg"/></tag>
+<!--
               <tag>
                 <clip pos="1" side="tl" part="nbr"/>
               </tag>
+-->
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
