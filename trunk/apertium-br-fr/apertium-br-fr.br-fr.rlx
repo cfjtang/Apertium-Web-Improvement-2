@@ -105,6 +105,12 @@ LIST MixedMutTrigger  = ("e"ri vpart);
 # Orthography
 LIST DroppedG         = ("<[aeiou].*>"r "g[aeiou].*"ri);
 
+#
+#	Semantic lists
+#
+
+LIST Language		= ("saozneg"ri n) ("brezhoneg"ri n) ("galleg"ri n);
+
 # Sets
 
 SET PRE-N =  Adj | Det | Dem | NC | Num ; 
@@ -432,5 +438,5 @@ SELECT NP IF (0 ("Emsav" np));
 
 SECTION
 
-REMOVE DetPos (0 ("e"ri pr)) (1 Num);
-ADD (s1) ("e"ri pr) (0 Prep) (1 Num);
+REMOVE DetPos (0 ("e"ri pr)) ((1 Num) OR (1 Language));
+ADD (s1) ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
