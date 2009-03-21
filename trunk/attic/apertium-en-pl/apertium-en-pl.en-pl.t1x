@@ -4230,12 +4230,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
     </when>
   </choose>
 </def-macro>
-          
-
-
-
-
-
 
 <def-macro n="passa_inf_a_pres" npar="1">
         <choose>
@@ -4330,7 +4324,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 <!-- primer les regles lèxiques-->
 
-    <rule comment="REGLA: ALL NOUNplural (BCN: per afegir l'article definit en català 'all students' :: 'tots els estudiants'">
+    <rule comment="REGLA: ALL NOUNplural ('all students' :: 'wszyscy studenci'">
 
       <pattern>
         <pattern-item n="all"/>
@@ -4354,7 +4348,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
                   <tag><lit-tag v="SN.DET"/></tag>
                   <tag><var n="gen_chunk"/></tag>
                   <tag><var n="nbr_chunk"/></tag>
-		  <tag><var n="cas_chunk"/></tag>
+                  <tag><var n="cas_chunk"/></tag>
                 </tags>
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
@@ -4383,7 +4377,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
       </action>
     </rule>
 
-    <rule comment="REGLA: ALL ADJ NOUNplural (BCN: per afegir l'article definit en català 'all legal states' :: 'tots els estats legals'.">
+    <rule comment="REGLA: ALL ADJ NOUNplural ('all young students' :: 'wszyscy młodzi studenci'.">
 
       <pattern>
         <pattern-item n="all"/>
@@ -4408,11 +4402,12 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         </call-macro>
 
             <out>
-              <chunk name="all_noun_plural" case="caseFirstWord">
+              <chunk name="all_adj_noun_plural" case="caseFirstWord">
                 <tags>
                   <tag><lit-tag v="SN.DET"/></tag>
                   <tag><var n="gen_chunk"/></tag>
                   <tag><var n="nbr_chunk"/></tag>
+                  <tag><var n="cas_chunk"/></tag>
                 </tags>
                 <lu>
                   <clip pos="1" side="tl" part="lem"/>
@@ -4421,33 +4416,37 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
                   <clip pos="1" side="tl" part="gen_mf"/>
                   <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
                   <clip pos="1" side="tl" part="nbr_sp"/>
+                  <clip pos="1" side="tl" part="cas_sense_sp" link-to="5"/>
+                  <clip pos="1" side="tl" part="cas_sp"/>
                 </lu>
                 <b pos="2"/>
                 <lu>
-                  <clip pos="3" side="tl" part="lemh"/>
-                  <clip pos="3" side="tl" part="a_nom"/>
-                  <clip pos="3" side="tl" part="gen_sense_mf" link-to="3"/>
-                  <clip pos="3" side="tl" part="gen_mf"/>
-                  <clip pos="3" side="tl" part="nbr_sense_sp" link-to="4"/>
-                  <clip pos="3" side="tl" part="nbr_sp"/>
-                  <clip pos="3" side="tl" part="lemq"/>
+                  <var n="adjectiu1"/>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
+                  <clip pos="2" side="tl" part="gen_mf"/>
+                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
+                  <clip pos="2" side="tl" part="nbr_sp"/>
+                  <clip pos="2" side="tl" part="cas_sense_sp" link-to="5"/>
+                  <clip pos="2" side="tl" part="cas_sp"/>
+                  <clip pos="2" side="tl" part="lemq"/>
                 </lu>
                 <b/>
                 <b pos="3"/>
                 <lu>
-                  <var n="adjectiu1"/>
-                  <clip pos="2" side="tl" part="lemh"/>
-                  <clip pos="2" side="tl" part="a_adj"/>
-                  <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-                  <clip pos="2" side="tl" part="gen_mf"/>
-                  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-                  <clip pos="2" side="tl" part="nbr_sp" link-to="4"/>
-                  <clip pos="2" side="tl" part="lemq"/>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_adj"/>
+                  <clip pos="3" side="tl" part="gen_sense_mf" link-to="3"/>
+                  <clip pos="3" side="tl" part="gen_mf"/>
+                  <clip pos="3" side="tl" part="nbr_sense_sp" link-to="4"/>
+                  <clip pos="3" side="tl" part="nbr_sp" link-to="4"/>
+                  <clip pos="3" side="tl" part="cas_sense_sp" link-to="5"/>
+                  <clip pos="3" side="tl" part="cas_sp"/>
+                  <clip pos="3" side="tl" part="lemq"/>
                 </lu>
-
               </chunk>
             </out>
-          
       </action>
     </rule>
 
@@ -4564,12 +4563,17 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <let>
+          <var n="cas_chunk"/>
+          <lit-tag v="CD"/>
+        </let>
         <out>
           <chunk name="det_det_nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN.DET"/></tag>
               <tag><var n="gen_chunk"/></tag>
               <tag><var n="nbr_chunk"/></tag>
+              <tag><var n="cas_chunk"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
@@ -4622,6 +4626,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <let>
+          <var n="cas_chunk"/>
+          <lit-tag v="CD"/>
+        </let>
         <out>
           <chunk name="det_num_nom" case="caseFirstWord">
             <tags>
@@ -4685,6 +4693,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <let>
+          <var n="cas_chunk"/>
+          <lit-tag v="CD"/>
+        </let>
         <out>
           <chunk name="num_num_nom" case="caseFirstWord">
             <tags>
@@ -4746,6 +4758,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <let>
+          <var n="cas_chunk"/>
+          <lit-tag v="CD"/>
+        </let>
         <out>
           <chunk name="det_det_num_nom" case="caseFirstWord">
             <tags>
@@ -4819,6 +4835,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <let>
+          <var n="cas_chunk"/>
+          <lit-tag v="CD"/>
+        </let>
         <out>
           <chunk name="det_num_num_nom" case="caseFirstWord">
             <tags>
@@ -4918,8 +4938,20 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
             </lu>
             <b pos="1"/>
             <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
+              <clip pos="2" side="tl" part="gen_mf"/>
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
+              <clip pos="2" side="tl" part="nbr_sp"/>
+              <clip pos="2" side="tl" part="cas_sense_sp" link-to="5"/>
+              <clip pos="2" side="tl" part="cas_sp"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
               <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="a_adj"/>
               <clip pos="3" side="tl" part="gen_sense_mf" link-to="3"/>
               <clip pos="3" side="tl" part="gen_mf"/>
               <clip pos="3" side="tl" part="nbr_sense_sp" link-to="4"/>
@@ -4927,18 +4959,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
               <clip pos="3" side="tl" part="cas_sense_sp" link-to="5"/>
               <clip pos="3" side="tl" part="cas_sp"/>
               <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_adj"/>
-              <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-              <clip pos="2" side="tl" part="gen_mf"/>
-              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-              <clip pos="2" side="tl" part="nbr_sp"/>
-              <clip pos="3" side="tl" part="cas_sense_sp" link-to="5"/>
-              <clip pos="3" side="tl" part="cas_sp"/>
-              <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
         </out>
