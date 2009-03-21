@@ -211,7 +211,7 @@ int main(int argc, char* argv[]) {
 	  tr=new TransferRule;
 	  if (!(tr->add_alignment_template(at))) {
 	    cerr<<"Error when adding an AT to an empty transfer rule\n";
-	    cerr<<"This shoud never happend\n";
+	    cerr<<"This should never happen\n";
 	    exit(EXIT_FAILURE);
 	  }
 	}
