@@ -135,7 +135,16 @@ SECTION
 # Remove imperatives for now
 REMOVE VerbImp IF (0 VerbImp);
 
+# tri ober
+SELECT NC IF (-1 Num) (0 NC) (0 VerbInf);
+
 REMOVE ("ober"ri n) IF (NOT -1 Det);
+
+#ar bed
+REMOVE VerbFin IF (-1 ("<ar>"ri det def));
+
+#c'hoari a reont.
+REMOVE NC IF (0 NC) (0 VerbInf) (1 ("a"ri pr)) (2 ("ober" vblex pri));
 
 # REGLA (B    ): "Ur perzh 20€ zo bet goulennet evit kaout e anv engravet war unan eus karrezennigoù ar murlivadur. "
 REMOVE Vpart IF (-1 ("kaout"ri vblex inf)); 
@@ -206,6 +215,7 @@ SELECT VpartGer IF (1 VerbInf);
 
 # REGLA (B0015): "o chom e Roazhon"
 SELECT VerbInf IF (-1 VpartGer);
+
 
 # REGLA (B0009): "Geriadur digor ha frank"
 SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
@@ -289,6 +299,7 @@ REMOVE PrnDObj IF (-1 VerbInf);
 
 # REGLA (B0020): "Ni a ro al laezh"
 SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj)
+
 
 # REGLA (B    ): "Ne implij ket"
 REMOVE VerbInf IF (-1 ("ne"ri)) (1 ("ket"ri));
