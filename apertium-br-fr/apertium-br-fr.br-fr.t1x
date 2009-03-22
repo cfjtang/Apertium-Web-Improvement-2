@@ -78,6 +78,12 @@
     <def-cat n="bezañ_inf">
       <cat-item lemma="bezañ" tags="vblex.inf"/>
     </def-cat>
+    <def-cat n="det_indef">
+      <cat-item lemma="un" tags="det.ind.*"/>
+    </def-cat>
+    <def-cat n="ober_nom">
+      <cat-item lemma="ober" tags="n.m.sg"/>
+    </def-cat>
     <def-cat n="det">
       <cat-item tags="det.dem.*"/>
       <cat-item tags="det.ind.*"/>
@@ -110,6 +116,9 @@
     </def-cat>
     <def-cat n="eus">
       <cat-item lemma="eus" tags="pr"/>
+    </def-cat>
+    <def-cat n="e">
+      <cat-item lemma="e" tags="pr"/>
     </def-cat>
     <def-cat n="a">
       <cat-item lemma="a" tags="pr"/>
@@ -10774,6 +10783,86 @@
    </rule>
          
  
+         
+    <rule comment="REGLA: e un ober → en faisant de">
+      <pattern>
+        <pattern-item n="e"/>
+        <pattern-item n="det_indef"/>
+        <pattern-item n="ober_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="en_faisant_de"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="en"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="faire"/>
+              <lit-tag v="vblex"/>
+              <lit-tag v="ger"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+         
+    <rule comment="REGLA: e un ober num → en num">
+      <pattern>
+        <pattern-item n="e"/>
+        <pattern-item n="det_indef"/>
+        <pattern-item n="ober_nom"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="en" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="PREP"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="en"/>
+              <lit-tag v="pr"/>
+            </lu>
+         </chunk>
+         <b pos="1"/>
+          <chunk name="num" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="4" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+            
          
     <rule comment="REGLA: tu/tro + verbpart + bezañ → il y a moyen">
       <pattern>
