@@ -7834,15 +7834,44 @@
         <choose>
           <when>
             <test>
-              <equal>
-                <clip pos="2" part="constituent"/>
-                <lit-tag v="subj"/>  
-              </equal>
+              <and>
+                <equal>
+                  <clip pos="2" part="constituent"/>
+                  <lit-tag v="subj"/>  
+                </equal>
+                <not>
+                  <equal>
+                    <clip pos="3" part="pers"/>
+                    <lit-tag v="impers"/>
+                  </equal>
+                </not>
+              </and>
             </test> 
             <let>
               <clip pos="3" part="nbr"/>
               <clip pos="1" part="nbr"/>
             </let>
+          </when>
+          <when>
+            <test>
+                  <equal>
+                    <clip pos="3" part="pers"/>
+                    <lit-tag v="impers"/>
+                  </equal>
+            </test>
+            <out>
+              <chunk>
+                <lit v="que"/>
+                <lit-tag v="CS"/>
+                <lit v="{^que"/>
+                <lit-tag v="cnjsub"/>
+                <lit v="$}"/>
+              </chunk>
+              <b/>
+            </out> 
+		<call-macro n="posa_subj">
+			<with-param pos="3"/>
+		</call-macro>
           </when>
           <otherwise>
 		<call-macro n="posa_subj">
