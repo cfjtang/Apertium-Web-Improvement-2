@@ -1,7 +1,8 @@
-DELIMITERS = "<.>" "<!>" "<?>"; # end-of-sentence markers
+DELIMITERS = "<.>" "<!>" "<?>" (sent); # end-of-sentence markers
 
 LIST Verb = vblex;
 
+LIST Conj = cnjcoo cnjsub;
 
 LIST DetDef = (det def);
 LIST DetPos = (det pos);
@@ -23,20 +24,12 @@ LIST CAPITAL = ("<[A-Z]ÁÉÍÓÚ.*>");
 LIST NMFOURSUBJ = (n m sg) (vblex prs pl);
 LIST ECLIPSED = ("<d[Tt].*>"ri "[Tt].*"ri) ("<g[Cc].*>"ri "[Cc].*"ri) ("<b[Pp].*>"ri "[Pp].*"ri) ("<n[DdGg].*>"ri "[DdGg].*"ri)
                 ("<bh[fF].*>"ri "[fF].*"ri) ("<n(?:-[aeiouáéíóú]|[AEIOUÁÉÍÓÚ]).*>"ri "[aeiouáéíóúAEIOUÁÉÍÓÚ].*"ri);
+LIST UNECLIPSED = ("<[Tt].*>"ri "[Tt].*"ri) ("<[Cc].*>"ri "[Cc].*"ri) ("<[Pp].*>"ri "[Pp].*"ri) ("<[DdGg].*>"ri "[DdGg].*"ri)
+                ("<[fF].*>"ri "[fF].*"ri) ("<(?:[aeiouáéíóú]|[AEIOUÁÉÍÓÚ]).*>"ri "[aeiouáéíóúAEIOUÁÉÍÓÚ].*"ri);
+
 LIST LENITED  = ("<[bcdfgmpst]h.*>"r "[bcdfgmpst][^h].*"r);
 LIST ANYCOPULA = (vbcop);
-
-SET DetPosF = DetPos + (f);
-SET DetPosM = DetPos + (m);
-
-
-
-
-SECTION
-
-SELECT DetPosF IF (1 hPro);
-
-SELECT DetPosM IF (1 LENITED);
+LIST PRSO = (prn) (pr) (n);
 
 ##
 ## Here come the rules imported from An Gramadóir
@@ -112,3 +105,71 @@ REMOVE Pronominal IF (0 ("<as>"ri)) (1 ("<an>"));
 REMOVE Pronominal IF (0 ("<as>"ri)) (1 (n));
 
 SELECT Pronominal IF (0 ("<ann>"));
+
+SELECT Vcop IF (0 ("<an>")) (1 ("<cúis>"ri n f sg nom));
+SELECT Vcop IF (0 ("<an>")) (1 Verb);
+SELECT Vcop IF (0 ("<an>")) (1 ("<amhlaidh>"));
+SELECT Vcop IF (0 ("<an>")) (1 ("<mar>"));
+
+SELECT ("<an>" det def) IF (0 ("<an>")) (1 ("té" prn));
+
+SELECT Vcop IF (0 ("<an>")) (1 PRSO);
+SELECT Vcop IF (0 ("<an>")) (1 ("<leis>"));
+SELECT Vcop IF (0 ("<an>")) (1 ("<de>"));
+SELECT Vcop IF (0 ("<an>")) (1 ("<faoi>"));
+
+SELECT Vcop IF (1 ("<leis>") OR ("<de>") OR ("<faoi>"));
+
+SELECT ("<an>" det def) IF (0 ("<an>")) (1 ("<(chuir|mh?aith|ní)>"ri));
+
+SELECT ("<an>" det def) IF (0 ("<an>")) (NOT 1 Verb);
+SELECT ("<an>" det def) IF (-1 (pr)) (0 ("<an>"));
+SELECT ("<anuas>" adv) IF (0 ("<anuas>"));
+
+SELECT (n m sg nom) IF (-1 ("<mar>")) (0 ("<aon>"));
+SELECT (adj sg nom) IF (0 ("<aon>"));
+
+# "ag breathrú ar an ár"  (common form would have "t-")
+SELECT (n m sg nom) IF (-1 ("<an>" det def)) (0 ("<ár>"));
+
+SELECT (n m sg nom) IF (0 ("<ár>"ri)) (1 Conj);
+SELECT (n m sg nom) IF (0 ("<ár>"ri)) (1 (det def));
+SELECT (det pos) IF (0 ("<ár>"ri));
+
+SELECT (vblex pres pl) IF (0 ("<atá>"ri));
+
+# without "h" is handled by unigram
+SELECT (n m sg nom) IF (0 ("<h[Aa]thair>"ri));
+
+SELECT (n f pl nom) IF (-1 ("<na>"ri)) (0 ("<ba>"));
+SELECT Vcop IF (0 ("<ba>"));
+SELECT Vcop IF (-1 ("<([Gg]o|[Nn]ach)>")) (0 ("<mba>"ri));
+SELECT Vcop IF (-1 ("<dh?á>"ri)) (0 ("<mba>"ri));
+
+SELECT (vblex pres pl) IF (0 ("<bhaineann>"ri));
+
+# catch barra here otherwise looks like nm1 gs/pl (really nm4 gs+pl of barr)
+#  and gets disambiguated as the gs after "an"
+
+SELECT (n m sg nom) IF (-1 ("<an>"ri det def)) (0 ("<barra>"ri));
+SELECT (n m sg nom) IF (0 ("<bh?arr>"ri));
+SELECT (adj nom pl) IF (0 ("<bh?eag>"ri));
+SELECT (vblex past pl) IF (0 ("<bhí>"ri));
+
+# verbal particle or copula
+SELECT (vpart itg) IF (0 ("<cá>"ri)) (1 Verb);
+SELECT Vcop IF (0 ("<cá>"ri)) (1 UNECLIPSED);
+
+# friends, not credit
+SELECT (n m pl nom) IF (0 ("<g?[Cc]h?airde>"));
+
+SELECT (vpart itg) IF (0 ("<cár>"ri)) (1 Verb);
+SELECT (vpart itg) IF (0 ("<cár>"ri)) (1 LENITED);
+
+SELECT (n f sg gen) IF (-1 ("<na>" det def)) (0 ("<cé>"ri));
+SELECT (vpart itg) IF (0 ("<cé>"ri));
+
+SELECT (adj sg nom) IF (0 ("<ch?éanna>"ri));
+
+# "dhó" is an exception to next, sometimes means "burning"
+SELECT (n m sg nom) IF (-1 ("<(a|á)>"ri)) (0 ("<dhó>"));
