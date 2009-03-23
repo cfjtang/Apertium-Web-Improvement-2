@@ -190,6 +190,9 @@ SELECT VerbFin IF (-1 VpartRef);
 # REGLA (B0004): "a had"
 #SELECT Verb IF (-1 Vpart);
 
+# REGLA (     ): "ouzhpenn 1000 den deuet a zesk brezhoneg"
+SELECT VerbFin IF (-1 Vpart) (-1 Prep) (0 NC) (0 VerbFin) (1 NC);
+
 # REGLA (     ): "Kerzhet hon eus e-pad 2 eurvezh"
 REMOVE VerbInf IF (1 ("endevout" vblex));
 
@@ -368,10 +371,10 @@ SELECT VerbFin IF (-1 Vpart) (-2 ("ne"ri adv));
 REMOVE VerbFin IF (-1 DetPos);
 
 # REGLA (      ): "ouzhpenn 23"
-SELECT Prep IF (0 ("ouzhpenn")) (1 Num);
+SELECT Prep IF (0 ("ouzhpenn")) ((1 Num) OR (1 NC));
 
 # REGLA (     ): "23 ouzhpenn"
-SELECT Adv IF (0 ("ouzhpenn")) (-1 Num);
+SELECT Adv IF (0 ("ouzhpenn")) ((-1 Num) OR (-1 NC));
 
 SECTION
 
