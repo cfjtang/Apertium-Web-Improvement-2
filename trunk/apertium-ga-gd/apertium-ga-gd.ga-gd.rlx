@@ -1,5 +1,8 @@
 DELIMITERS = "<.>" "<!>" "<?>"; # end-of-sentence markers
 
+LIST Verb = vblex;
+
+
 LIST DetDef = (det def);
 LIST DetPos = (det pos);
 
@@ -8,19 +11,54 @@ LIST NomM = (n m);
 
 LIST hPro = ("<h.*>"r "[aeiouáéíóú].*"r) ("<h.*>"r "[AEIOUÁÉÍÓÚ].*"r);
 LIST tPro = ("<t-.*>"r "[aeiouáéíóú].*"r) ("<t.*>"r "[AEIOUÁÉÍÓÚ].*"r);
-LIST Len = ("<[bcdfgmpst]h.*>"r "[bcdfgmpst][^h].*"r);
 
 # Lists from macra-ga.meta.pl 
 
 LIST CAPITALLENITED = ("<[BCDFGMPST][Hh].*>");
 LIST CAPITAL = ("<[A-Z]ÁÉÍÓÚ.*>");
+LIST NMFOURSUBJ = (n m sg) (vblex prs pl);
+LIST ECLIPSED = ("<d[Tt].*>"ri "[Tt].*"ri) ("<g[Cc].*>"ri "[Cc].*"ri) ("<b[Pp].*>"ri "[Pp].*"ri) ("<n[DdGg].*>"ri "[DdGg].*"ri)
+                ("<bh[fF].*>"ri "[fF].*"ri) ("<n(?:-[aeiouáéíóú]|[AEIOUÁÉÍÓÚ]).*>"ri "[aeiouáéíóúAEIOUÁÉÍÓÚ].*"ri);
+LIST LENITED  = ("<[bcdfgmpst]h.*>"r "[bcdfgmpst][^h].*"r);
+
 
 
 SET DetPosF = DetPos + (f);
 SET DetPosM = DetPos + (m);
+
+
+
 
 SECTION
 
 SELECT DetPosF IF (1 hPro);
 
 SELECT DetPosM IF (1 Len);
+
+##
+## Here come the rules imported from An Gramadóir
+##
+
+SECTION
+
+SELECT (n f sg) IF (-1 ("i"ri pr)) (0 ("<bhfuil>"));
+
+SELECT (vblex pres pl) IF (0 ("<bhfuil>"));
+
+SELECT (pr) IF (0 ("<thar>"ri));
+
+SELECT (adv) IF (0 ("<chan>"ri)) (1 Verb); # 'U' → 'adv'
+
+SELECT (pr) IF (0 ("<faoin>"ri));
+
+SELECT (adv) IF (0 ("<thíos>"ri));
+
+SELECT (adv) IF (0 ("<fiú>"ri));
+
+SELECT (vblex prs pl) IF (-1 ("go"ri)) (0 NMFOURSUBJ) (0 ECLIPSED);
+
+SELECT (adj nom sg) IF (-1 ("<nár>"ri)) (0 ("<chuma>"ri));
+
+SELECT (vblex prs pl) IF (-1 ("<nár>"ri)) (0 (vblex prs pl)) (0 LENITED);
+
+REMOVE (vblex prs pl) IF (0 (vblex prs pl)) (0 LENITED);
