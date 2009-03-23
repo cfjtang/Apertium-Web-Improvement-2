@@ -14,7 +14,7 @@ LIST tPro = ("<t-.*>"r "[aeiouáéíóú].*"r) ("<t.*>"r "[AEIOUÁÉÍÓÚ].*"r)
 
 LIST Vcop = (vbcop);
 
-LIST Pronominal = (pr +prpers);
+LIST Pronominal = (pr +prpers prn obj);
 
 # Lists from macra-ga.meta.pl 
 
@@ -36,7 +36,7 @@ SECTION
 
 SELECT DetPosF IF (1 hPro);
 
-SELECT DetPosM IF (1 Len);
+SELECT DetPosM IF (1 LENITED);
 
 ##
 ## Here come the rules imported from An Gramadóir
@@ -70,11 +70,11 @@ SELECT (adv) IF (0 ("<cheana>"ri));
 
 SELECT Vcop IF (0 ("<más>"ri));
 
-SELECT Vcop IF (0 "<ab>"ri));
+SELECT Vcop IF (0 ("<ab>"ri));
 
 SELECT (n sg nom) IF (0 ("<áil>"ri));
 
-SELECT (adj f sg gen) IF (0 ("<mh?óide>"ri);
+SELECT (adj f sg gen) IF (0 ("<mh?óide>"ri));
 
 #  most of these are the ones REQUIRING a preceding copula so this is important
 #  18 Jan '05 added more needed to disambiguate preceding "ar" as copula
@@ -102,8 +102,13 @@ SELECT (ij) IF (0 ("<haló>"ri));
 SELECT (n m sg nom) IF (0 ("<alt>"ri));
 SELECT (n m sg gen) IF (0 ("<ama>"ri));
 
-SELECT (pr) IF (0 ("<as>"ri)) (1 ("<na>" det def));
-SELECT (pr) IF (0 ("<as>"ri)) (1 ("<an>"));
-SELECT (pr) IF (0 ("<as>"ri)) (1 (n));
+# <B>[Aa]s</B> <T>na</T>:<S>
+REMOVE Pronominal IF (0 ("<as>"ri)) (1 ("<na>" det def));
+
+# <B>[Aa]s</B> an:<S>
+REMOVE Pronominal IF (0 ("<as>"ri)) (1 ("<an>"));
+
+# <B>[Aa]s</B> <N>ANYTHING</N>:<S>
+REMOVE Pronominal IF (0 ("<as>"ri)) (1 (n));
 
 SELECT Pronominal IF (0 ("<ann>"));
