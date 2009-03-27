@@ -1,4 +1,4 @@
-VERSION=0.8.4
+VERSION=0.8.9
 LANG1=en
 LANG2=ca
 PREFIX1=$(LANG1)-$(LANG2)
@@ -132,7 +132,8 @@ empty.bin: empty.t1x
 EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
-	   $(BASENAME).$(LANG2).tsx  \
+	   $(BASENAME).$(LANG2).tsx empty.t1x \
+	   $(BASENAME).$(PREFIX1)-poly.dix $(BASENAME).$(PREFIX2)-poly.dix \
 	   $(PREFIX1).prob $(PREFIX2).prob \
 	   buscaPar.xsl principal.xsl apertium-en-ca.en.metadix \
 	   $(PREFIX1).lextor $(PREFIX2).lextor \

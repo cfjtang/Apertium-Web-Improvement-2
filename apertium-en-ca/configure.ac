@@ -4,10 +4,10 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_apertium_version], [3.0.0])
+m4_define([required_apertium_version], [3.1.0])
 
-AC_INIT([apertium-en-ca], [0.8.4], [mginesti@dlsi.ua.es])
-AM_INIT_AUTOMAKE([apertium-en-ca], [0.8.4], no-define)
+AC_INIT([apertium-en-ca], [0.8.9], [mginesti@dlsi.ua.es])
+AM_INIT_AUTOMAKE([apertium-en-ca], [0.8.9], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
@@ -49,5 +49,4 @@ then
   AC_MSG_ERROR([You don't have xsltproc installed.])
 fi
                      
-  
 AC_OUTPUT([Makefile])
