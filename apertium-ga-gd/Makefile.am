@@ -15,6 +15,7 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      $(PREFIX1).t1x.bin \
      $(PREFIX2).t1x.bin \
      $(PREFIX1).rlx.bin \
+     $(PREFIX1).mode $(PREFIX2).mode \
      $(PREFIX1).automut.bin \
      $(PREFIX2).automut.bin
 
