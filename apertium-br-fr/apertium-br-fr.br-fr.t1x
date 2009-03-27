@@ -55,6 +55,9 @@
       <cat-item lemma="ret" tags="adj.*"/>
       <cat-item lemma="dav" tags="adj.*"/>
     </def-cat>
+    <def-cat n="arabat">
+      <cat-item lemma="arabat" tags="adv"/>
+    </def-cat>
     <def-cat n="ma">
       <cat-item lemma="ma" tags="cnjsub"/>
     </def-cat>
@@ -10714,6 +10717,56 @@
       </action>
    </rule>
          
+    <rule comment="REGLA: arabat inf → ne falloir pas inf">
+      <pattern>
+        <pattern-item n="arabat"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="ne_falloir_pas"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <lit v="il"/>
+              <lit-tag v="prn.tn.p3.m.sg"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="ne"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="falloir"/>
+              <lit-tag v="vbmod.pri"/>
+<!--              <clip pos="2" side="tl" part="temps"/> -->
+              <lit-tag v="p3.sg"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="pas"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b/>
+            <lu>
+               <clip pos="2" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+          
     <rule comment="REGLA: ret/dav + eo → falloir que">
       <pattern>
         <pattern-item n="necesitat"/>
