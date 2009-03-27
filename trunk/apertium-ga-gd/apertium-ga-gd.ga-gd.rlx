@@ -1,14 +1,18 @@
 DELIMITERS = "<.>" "<!>" "<?>" (sent); # end-of-sentence markers
 
-LIST Verb = vblex;
+LIST Verb = vblex vbser;
 
 LIST Conj = cnjcoo cnjsub;
 
 LIST DetDef = (det def);
 LIST DetPos = (det pos);
 
+LIST Nom = (n);
 LIST NomF = (n f);
 LIST NomM = (n m);
+
+LIST NomProp = (np);
+LIST Prep = (pr);
 
 LIST hPro = ("<h.*>"r "[aeiouáéíóú].*"r) ("<h.*>"r "[AEIOUÁÉÍÓÚ].*"r);
 LIST tPro = ("<t-.*>"r "[aeiouáéíóú].*"r) ("<t.*>"r "[AEIOUÁÉÍÓÚ].*"r);
@@ -16,6 +20,8 @@ LIST tPro = ("<t-.*>"r "[aeiouáéíóú].*"r) ("<t.*>"r "[AEIOUÁÉÍÓÚ].*"r)
 LIST Vcop = (vbcop);
 
 LIST Pronominal = (pr +prpers prn obj);
+
+LIST RelDirect = (rel an);
 
 # Lists from macra-ga.meta.pl 
 
@@ -30,6 +36,8 @@ LIST UNECLIPSED = ("<[Tt].*>"ri "[Tt].*"ri) ("<[Cc].*>"ri "[Cc].*"ri) ("<[Pp].*>
 LIST LENITED  = ("<[bcdfgmpst]h.*>"r "[bcdfgmpst][^h].*"r);
 LIST ANYCOPULA = (vbcop);
 LIST PRSO = (prn) (pr) (n);
+LIST FUSEDPREP = ("<[Dd][eo]n|[Ss]an?|[Ff]aoin|[Óó]n>"ri);
+LIST UNLENITED = ("<[BbCcDdFfGgMmPpTt][^Hh']|[Ss][lnraeiouáéíóú]|bh[Ff]>"ri);
 
 ##
 ## Here come the rules imported from An Gramadóir
@@ -173,3 +181,124 @@ SELECT (adj sg nom) IF (0 ("<ch?éanna>"ri));
 
 # "dhó" is an exception to next, sometimes means "burning"
 SELECT (n m sg nom) IF (-1 ("<(a|á)>"ri)) (0 ("<dhó>"));
+
+# "sean" is actually "NUMERICAL" by accident:
+SELECT (n m sg nom) IF (0 ("<[Ss]h?ean>"ri));
+
+SELECT (n m sg nom) IF (-1 ("<an>"ri)) (0 ("<[Ss]h?ean>"ri));
+SELECT (n m sg gen) IF (-1 ("<an>"ri)) (0 ("<[Mm]híle>"ri));
+
+# handles fichiú, etc. by brute force; ceathrú is feminine so get separate rules
+SELECT (n m sg nom) IF (0 ("<[Mm]híle>"));
+
+### <B><Z>NUMERICAL</Z>ANYTHING</B>:<A pl="n" gnt="n">
+
+# now do bliana since numbers are easier to match...
+SELECT (n f pl nom) IF (-1 ("<d?[Tt]h?rí>"ri)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<g?[Cc]h?eithre>"ri adj sg nom)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<g?[Cc]h?úig>"ri adj sg nom)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<[Ss]h?é>"ri)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<[Ss]h?eacht>"ri adj sg nom)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<h?[Oo]cht>"ri adj sg nom)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<[Nn]aoi>"ri adj sg nom)) (0 ("<[Bb]liana>"ri));
+SELECT (n f pl nom) IF (-1 ("<n?[Dd]h?eich>"ri adj sg nom)) (0 ("<[Bb]liana>"ri));
+
+SELECT (n f sg gen) IF (0 ("<[Bb]liana>"ri));
+
+#   beware "An Cheathrú Rua", "an cheathrú dheireanach"
+SELECT (adj sg nom) IF (-1 ("<an>"ri)) (0 ("<[Cc]heathrú>")) (1 Nom);
+SELECT (adj sg nom) IF (-1 FUSEDPREP) (0 ("<[Cc]heathrú>"));
+SELECT (adj sg nom) IF (0 ("<g?[Cc]h?eathrú>"ri)) (1 UNLENITED) (1 Nom);
+SELECT (adj sg nom) IF (0 ("<g?[Cc]h?eathrú>"ri)) (1 hPro) (1 Nom);
+
+# fixes "rith chun síl", "cuir chun siúil"
+REMOVE Verb IF (-1 ("<([Cc]huig|[Cc]hun)>"ri)) (NOT 0 Vcop);
+
+# foilsitheoir, not "kick"
+SELECT NomProp IF (0 ("<CIC>"));
+
+SELECT (n m sg gen) IF (-1 ("<[Cc]hinn>"ri)) (0 (n f sg gen)) (0 ("<[Bb]liana>"ri));
+SELECT (n m pl nom) IF (-1 DetDef) (-1 ("<[Nn]a>"ri)) (0 ("<cinn>"));
+
+# includes "sna"; tá cinn móra aige
+SELECT (n m pl nom) IF ((-1 Verb) OR (-1 Prep)) (0 ("<cinn>"));
+SELECT (n m sg gen) IF (0 ("<cinn>"));
+
+SELECT NomProp IF (0 ("<Colm">));
+SELECT (n m sg nom) IF (0 ("<[Cc]omhalta>"));
+SELECT (n m sg nom) IF (0 ("<g?ch?ónaí>"ri));
+
+# since if it gets nb2, will want lenition on cainte
+SELECT (n m pl nom) IF (0 ("<[Cc]ora>"ri)) (1 (nom f sg gen)) (1 ("<[Cc]ainte>"ri));
+SELECT (n m pl nom) IF (0 ("<[Cc]ora>"ri)) (1 ("<[Cc]rua>"ri));
+
+# lenition => prob not imperative
+# "de réir an chuir síos", etc.
+
+SELECT (n m sg gen) IF (-1 ("<an>"ri)) (0 ("<[Cc]huir>"ri));
+SELECT (vblex past pl) IF (0 ("<[Cc]huir>"ri));
+SELECT (vblex imp pl) IF (0 ("<[Cc]uir>"ri));
+SELECT (n m pl gen) IF (-1 ("<na>"ri)) (0 ("<g[Cc]umann>"ri));
+SELECT (n m sg nom) IF (0 ("<g[Cc]umann>"ri));
+
+# idir an dá linn, Tadhg an dá thaobh
+# OD dhá
+SELECT (adj sg nom) IF (-1 ("<[Aa]o?n>"ri)) (0 ("<[Dd]á>"ri));
+
+# OD dhá
+SELECT (adj sg nom) IF (-1 ("<g?ch?éad>"ri)) (0 ("<dá>"));
+SELECT (adj sg nom) IF (-1 ("<[Ss]a>"ri)) (0 ("<dá>"));
+
+SELECT Conj IF (0 ("<[Dd]á>"ri)) (1 Verb);
+SELECT DetPos IF (0 ("<[Dd]á>"ri)) (1 Nom);
+
+# "dá hóige"
+SELECT DetPos IF (0 ("<[Dd]á>"ri)) (1 hPro);
+
+SELECT (n f sg nom) IF (-1 ("<an>"ri)) (-1 DetDef) (0 ("<dála>"));
+
+#  names of the days of the week in comhshuite so these are "beannacht Dé"
+
+SELECT (n m sg gen) IF (0 ("<Dé>"));
+
+# noun forms in phrases "ó dheas", "i ndeas", etc. always mutated
+# doing this here helps "go+<A>"
+
+SELECT (adj sg nom) IF (0 ("<[Dd]eas>"));
+
+# ok as is; "trí bliana déag", etc.  "trí déag"... in comhshuite
+SELECT (n sg nom) IF (0 ("<n?[Dd]h?éag>"ri));
+SELECT (vblex imp pl) IF (0 ("<n?[Dd]h?éan>"ri));
+SELECT (vblex past pl) IF (0 ("<n?[Dd]h?earna>"ri));
+SELECT (vblex pres pl) IF (0 ("<[Dd]eir>"ri));
+SELECT (vblex pii pl) IF (-1 ("<[Aa]>"ri)) (0 ("<[Dd]eireadh>"ri));
+
+SELECT RelDirect IF (0 ("<[Aa]>"ri)) (1 ("<[Dd]eireadh>"ri)) (1 (vblex pii pl));
+
+SELECT (n m sg nom) IF (0 ("<[Dd]eireadh>"ri));
+SELECT (n m sg gen) IF (0 ("<[Dd]h?eiridh>"ri));
+
+SELECT Pronominal IF (0 ("<díobh>"));
+SELECT Prep IF (0 ("<[Dd]o>"ri)) (1 DetDef) (1 ("<na>"));
+
+SELECT DetPos IF (-1 Prep) (0 ("<do>"));
+SELECT Prep IF (0 ("<do>")) (1 DetPos);
+SELECT Prep IF (0 ("<do>")) (1 NomProp);
+SELECT Prep IF (0 ("<do>")) (1 (adj sg nom)) (1 ("<gach>"));
+
+# fad do shaoil
+SELECT DetPos IF (0 ("<do>")) ((1 RelDirect) OR (1 Nom));
+
+REMOVE Verb IF (-1 ("<[Dd]o>"ri)) (0 Verb);
+
+SELECT (n sg nom) IF (-1 ("<a>")) (0 ("<dó>"));
+SELECT (adj sg nom) IF (-1 DetDef) (-1 ("<an>")) (0 ("<dó>"));
+
+# ag dó na geirbe
+SELECT (n m sg nom) IF (-1 Prep) (-1 ("<[Aa]g>"ri)) (0 ("<[Dd]ó>"ri))
+
+# dó gréine, ~ seaca, etc.
+SELECT (n m sg nom) IF (0 ("<[Dd]ó>"ri)) ((1 Nom) OR (1 RelDirect));
+
+# do it now or else get genitive noun from "tugann litir dó"
+SELECT Pronominal IF (0 ("<[Dd]ó>"ri));
