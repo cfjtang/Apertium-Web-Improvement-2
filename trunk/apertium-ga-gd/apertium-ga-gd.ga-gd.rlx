@@ -21,6 +21,7 @@ LIST NomProp = (np);
 LIST Prep = (pr);
 
 LIST Interr = (itg);
+LIST Interj = (ij);
 
 
 LIST hPro = ("<h.*>"r "[aeiouáéíóú].*"r) ("<h.*>"r "[AEIOUÁÉÍÓÚ].*"r);
@@ -47,8 +48,11 @@ LIST LENITED  = ("<[bcdfgmpst]h.*>"r "[bcdfgmpst][^h].*"r);
 LIST ANYCOPULA = (vbcop);
 LIST PRSO = (prn) (pr) (n);
 LIST FUSEDPREP = ("<[Dd][eo]n|[Ss]an?|[Ff]aoin|[Óó]n>"ri);
+LIST FUSEDPOSS = ("<([Dd]ár?|(?:[Ff]aoi|[Ii]|[Ll]e|[Tt]rí)n(?:a|ár))>"ri);
 LIST UNLENITED = ("<[BbCcDdFfGgMmPpTt][^Hh']|[Ss][lnraeiouáéíóú]|bh[Ff]>"ri);
+
 LIST GENITIVEPREP = ("<([Cc]ois|[Dd]ála|[Ff]earacht|[Tt]impeall|[Tt]rasna)>"ri pr);
+LIST DATIVEPREP = ("<([Aa][grs]|[Cc]huig|[Dd][eo]|[Ff]aoi|[Gg]an|[Gg]o|[Ll]e|[Óó]|[Ii]n?|[Rr]oimh|[Tt]har|[Tt]ríd?|[Uu]m)>"ri pr);
 
 ##
 ## Here come the rules imported from An Gramadóir
@@ -429,3 +433,149 @@ SELECT Conj IF (0 ("<[Nn]á>"ri));
 
 SELECT (n m sg nom) IF (0 NomM) (0 VerbImp);
 SELECT (n f sg nom) IF (0 NomF) (0 VerbImp);
+
+SELECT (adj sg nom) IF (-1 Nom) (-1 ("<Spiorad>")) (0 ("<Naomh>"));
+
+# Comaoin na Naomh
+SELECT (n m pl gen) IF (-1 DetDef) (-1 ("<na>")) (0 ("<[Nn]aomh>"ri));
+SELECT (n m sg nom) IF (0 ("<[Nn]aomh>"ri));
+
+#   "an" not yet disambig?
+SELECT (n m sg nom) IF (-1 DetDef) (-1 ("<[Aa]n>"ri)) (0 ("<[Nn]í>"ri));
+SELECT (n m sg nom) IF (0 ("<[Nn]í>"ri)) (1 ("<nach>"));
+SELECT (n m sg nom) IF (0 ("<[Nn]í>"ri)) (1 ("<a>"));
+
+SELECT (n m sg nom) IF (-1 Adj) (-1 ("<([Aa]on|[Gg]ach)>"ri)) (0 ("<[Nn]í>"ri)) (1 ("<a>"));
+
+# mór done above
+
+SELECT Vcop IF (0 ("<[Nn]í>"ri)) (1 ("<mór>" adj sg nom));
+SELECT Vcop IF (-1 Conj) (0 ("<ní>")) (NOT 1 Verb);
+SELECT Vcop IF (0 ("<[Nn]í>"ri)) (1 Nom);
+SELECT Vcop IF (0 ("<[Nn]í>"ri)) (1 Prn);
+
+# River
+SELECT (n f sg nom) IF (-1 ("<[Aa]n>"ri)) (0 ("<Níl>"));
+
+SELECT (vblex pres pl) IF (0 ("<Níl>"));
+
+SELECT Conj IF (0 ("<[Nn]uair>"ri));
+
+# not "deer"
+SELECT Prep IF (0 ("<os>"));
+
+SELECT (n f sg gen) IF (-1 DetDef) (-1 ("<na>")) (0 ("<[Rr]inne>"ri));
+
+SELECT (vblex pres pl) IF (0 ("<[Rr]inne>"ri));
+
+SELECT (n sg nom) (0 ("<San>")) (1 CAPITAL);
+SELECT Prep (0 ("<San>"));
+
+SELECT (n m sg nom) IF (0 ("<[Ss]cór>"ri));
+
+# gender problem?  - need this tag right or get "BACHOIR{í}" errors
+
+SELECT (n m sg gen) IF (-1 (n f sg nom)) (-1 ("<m?bh?ean>"ri)) (0 ("<[Ss]í>"ri));
+SELECT (n m sg gen) IF (-1 (n f pl gen)) (-1 ("<m?bh?an>"ri)) (0 ("<[Ss]í>"ri));
+SELECT (n m sg gen) IF (-1 (n m sg nom)) (-1 ("<aos>"ri)) (0 ("<[Ss]í>"ri));
+SELECT (n m sg gen) IF (0 ("<[Ss]í>"ri)) (1 (n f sg gen)) (1 ("<gaoithe>"));
+SELECT (n m sg gen) IF (0 ("<[Ss]í>"ri)) (1 (n m sg gen)) (1 ("<deannaigh>"));
+SELECT (n m sg gen) IF (-1 DetDef) (-1 ("<[Nn]a>"ri)) (0 ("<[Ss]í>"ri));
+
+# capital Sí is sometimes the noun; need for sé below
+
+SELECT Prn IF (0 ("<sí>"));
+SELECT NomProp IF (-1 ("<Ó>")) (0 ("<Sé>"));
+
+# Sé Chontae usually if caps; won't catch "beidh sé c_athair thearmainn"!
+SELECT (adj sg nom) IF (0 ("<[Ss]é>"ri)) (1 LENITED);
+SELECT (adj sg nom) IF (-1 ("<a>")) (0 ("<[Ss]é>"ri));
+
+SELECT Prn IF (-2 Prn) (-2 ("<sí>")) (-1 Conj) (-1 ("<nó>")) (0 ("<sé>"));
+
+# like cúig nó sé, buille an sé, na Sé Chontae, etc.
+#  this is slow but gets the job done; other attempts don't
+#  have the same accuracy
+
+SELECT (adj sg nom) IF (NOT -1 Verb) (0 ("<[Ss]é>"));
+
+SELECT Prn IF (0 ("<[Ss]é>"));
+
+#  "they", not "a growth"!
+SELECT Prn IF (0 ("<[Ss]iad>"));
+
+SELECT Prn IF (-1 Prep) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 Interr) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 Verb) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 Conj) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 ("<[Aa]ch>"ri)) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 ("<[Aa][rs]>"ri)) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 ("<[Dd]e>"ri)) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 ("<[Ff]aoi>"ri)) (0 Prn) (0 Adj);
+
+SELECT Prep IF (0 ("<[Dd]e>"ri)) (1 Prn) (1 ("<(seo|sin)>"ri));
+
+SELECT Prn IF (-1 ("<[Gg]ur>"ri)) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 ("<[Mm]ar>"ri)) (0 Prn) (0 Adj);
+SELECT Prn IF (-1 ("<[Óó]>"ri)) (0 Prn) (0 Adj);
+
+SELECT Adj IF (0 Prn) (0 Adj);
+
+# compare with similar le,na rules above
+SELECT (adj sg nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 ("<(haon|hocht)>"ri));
+SELECT (n f pl nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 (n f pl nom));
+SELECT (n m pl nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 (n m pl nom));
+
+# not imperative/past verb
+SELECT (n m sg nom) IF (0 ("<[Ss]námh>"ri));
+
+SELECT Prep IF (0 ("<[Tt]har>"ri));
+SELECT Adv IF (0 ("<[Tt]hart>"ri));
+
+# "east" not genitive of "bush".
+
+SELECT (adj sg nom) IF (-1 Nom) (0 ("<[Tt]hoir>"));
+
+SELECT Adv IF (0 ("<[Tt]hoir>"));
+
+SELECT (n m sg nom) IF (0 ("<theannta>"));
+
+# house, not golf
+SELECT (n m sg gen) IF (0 ("<[Tt]h?í>"ri));
+SELECT (n m sg nom) IF (-1 Prep) (-1 ("<[Aa]g>")) (0 ("<[Tt]rá>"ri));
+
+REMOVE (n m) IF (0 ("<d?[Tt]h?rá>"ri));
+
+SELECT NomProp IF (0 ("<Treasa>"));
+
+# le trí chúilín, an trí chúilín
+SELECT (adj sg nom) IF ((-1 Prep) OR (-1 DetDef)) (0 ("<[Tt]rí>"ri));
+SELECT (adj sg nom) IF (0 ("<[Tt]rí>"ri)) (1 ("<(bliana|cinn|fichid|seachtaine)>"ri));
+
+SELECT Prep IF (0 ("<[Tt]rí>"ri));
+SELECT Prep IF (0 ("<[Tt]ríd>"ri)) (1 DetDef) (1 ("<na>"));
+SELECT Prep IF (0 ("<[Tt]ríd>"ri)) (1 ("<an>"));
+SELECT Pronominal IF (0 ("<[Tt]ríd>"ri));
+
+SELECT NomProp IF (0 ("<Uí>"));
+
+# Aire, aire; first one needs <S> resolved (leis, etc)
+# but do it before the <S> ANYNMC rule below!
+
+SELECT (n m sg nom) IF (-2 ("<[Aa]r>"ri)) (-1 DetDef) (-1 ("<[Aa]n>"ri)) (0 ("<Aire>"));
+SELECT (n m sg gen) IF (-1 DetDef) (-1 ("<[Aa]n>"ri)) (0 ("<Aire>"));
+SELECT (n f sg nom) IF (0 ("<(n-)?aire>"ri));
+
+# agus bhog mé...   a cheannaithe féin...  not adjectives
+#  do this after "the" rules, and NUMERICAL, etc.
+
+REMOVE Adj IF (NOT -1 Adj) (NOT -1 Nom) (NOT -1 Verb) (0 Adj) (0 LENITED);
+
+REMOVE (n gen) IF (-1 (Interj) OR (-1 Pronominal) OR (-1 Interr) OR (-1 Verb)) (0 (n gen));
+REMOVE (n gen) IF (-1 DATIVEPREP) (0 (n gen));
+REMOVE (n gen) IF (-1 Prep) (-1 ("<[Gg]o dtí>"ri)) (0 (n gen));
+REMOVE (n gen) IF (-1 FUSEDPOSS) (0 (n gen));
+REMOVE (n gen) IF (-2 DATIVEPREP) (-1 DetPos) (0 (n gen));
+REMOVE (n gen) IF (NOT -2 Adj) (NOT -2 Conj) (NOT -2 Nom) (NOT -2 Adv) (NOT -2 Prep) (NOT -2 NomProp) (-1 DetPos) (0 (n gen));
+
+
