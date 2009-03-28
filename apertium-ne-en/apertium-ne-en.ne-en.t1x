@@ -2,36 +2,32 @@
 <transfer default="chunk">
   <section-def-cats>
     <def-cat n="nom">
-      <cat-item tags="cat:n.*"/>
-      <cat-item tags="cat:pn.*"/>
+      <cat-item tags="n.*"/>
+      <cat-item tags="np.*"/>
     </def-cat>
     <def-cat n="num">
-      <cat-item tags="cat:num.*"/>
+      <cat-item tags="num.*"/>
     </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
     <def-attr n="a_nom">
-      <attr-item tags="cat:n"/>
-      <attr-item tags="cat:pn"/>
+      <attr-item tags="n"/>
+      <attr-item tags="np"/>
     </def-attr>
     <def-attr n="a_num">
-      <attr-item tags="cat:num"/>
+      <attr-item tags="num"/>
     </def-attr>
     <def-attr n="gen">
-      <attr-item tags="gen:m"/>
-      <attr-item tags="gen:f"/>
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
       <attr-item tags="gen:nt"/>
       <attr-item tags="gen:any"/>
     </def-attr>
     <def-attr n="nbr">
-      <attr-item tags="num:s"/>
-      <attr-item tags="num:p"/>
-      <attr-item tags="num:any"/>
-    </def-attr>
-    <def-attr n="cas">
-      <attr-item tags="case:o"/>
-      <attr-item tags="case:d"/>
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
     </def-attr>
   </section-def-attrs>
 
@@ -56,9 +52,12 @@
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
+              <clip pos="1" side="tl" part="whole"/>
+<!--              
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_num"/>
               <clip pos="1" side="tl" part="nbr" link-to="2"/>
+-->              
             </lu>
           </chunk>
         </out>
@@ -79,9 +78,12 @@
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
+              <clip pos="1" side="tl" part="whole"/>
+<!--              
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="a_nom"/>
               <clip pos="1" side="tl" part="nbr" link-to="2"/>
+-->              
             </lu>
           </chunk>
         </out>
