@@ -26,6 +26,7 @@ LIST Interj = (ij);
 
 LIST hPro = ("<h.*>"r "[aeiouáéíóú].*"r) ("<h.*>"r "[AEIOUÁÉÍÓÚ].*"r);
 LIST tPro = ("<t-.*>"r "[aeiouáéíóú].*"r) ("<t.*>"r "[AEIOUÁÉÍÓÚ].*"r);
+LIST INITIAL-H = ("[Hh].*"ri);
 
 
 LIST Pronominal = (pr +prpers prn obj);
@@ -100,12 +101,12 @@ SELECT (adj f sg gen) IF (0 ("<mh?óide>"ri));
 # only add these unlenited since this disambiguation is not always correct
 
 SELECT Vcop IF (0 Vcop) (1 ("<(áil|ch?uimhin|eol|fh?éidir|oth)>"r n sg nom));
-SELECT Vcop IF (0 Vcop) (1 ("<(háil|heol)>"r n sg nom));
+SELECT Vcop IF (0 Vcop) (1 ("<(háil|heol)>"r n sg nom)) (1 INITIAL-H);
 SELECT Vcop IF (0 Vcop) (1 ("<(aithnid|mian|suim)>"r n f sg nom));
 SELECT Vcop IF (0 Vcop) (1 ("<fuath>" n m sg nom));
 SELECT Vcop IF (0 Vcop) (1 ("<gá>" n));
 SELECT Vcop IF (0 Vcop) (1 ("<(dh?ócha|eagal|fh?oláir|ionann|leor|mh?iste)>"r adj sg nom)); 
-SELECT Vcop IF (0 Vcop) (1 ("<(heagal|hionann)>"r adj sg nom));
+SELECT Vcop IF (0 Vcop) (1 ("<(heagal|hionann)>"r adj sg nom)) (1 INITIAL-H);
 SELECT Vcop IF (0 Vcop) (1 ("<(h?iomaí|léir|náir)>"r adj));
 SELECT Vcop IF (0 Vcop) (1 ("<(cóir|cuma|deacair|dh?éanaí|deimhin|dh?ual|h?ea|éard|fiú|maith|mh?ithid)>"r));
 
@@ -162,7 +163,7 @@ SELECT (det pos) IF (0 ("<ár>"ri));
 SELECT (vblex pres pl) IF (0 ("<atá>"ri));
 
 # without "h" is handled by unigram
-SELECT (n m sg nom) IF (0 ("<h[Aa]thair>"ri));
+SELECT (n m sg nom) IF (0 ("<h[Aa]thair>"ri)) (1 INITIAL-H);
 
 SELECT (n f pl nom) IF (-1 ("<na>"ri)) (0 ("<ba>"));
 SELECT Vcop IF (0 ("<ba>"));
@@ -347,10 +348,10 @@ SELECT (n m pl nom) IF (0 ("<g[Cc]inn>"ri));
 SELECT (n m sg gen) IF (-1 (n f sg nom)) (0 ("<grinn>"));
 
 # see "gur" last resort...
-SELECT (n f sg gen) IF (-1 DetDef) (-1 ("<na>")) (0 ("<huaire>"));
+SELECT (n f sg gen) IF (-1 DetDef) (-1 ("<na>")) (0 ("<huaire>")) (0 INITIAL-H);
 
 # all others are like "ceithre huaire"
-SELECT (n f pl nom) IF (0 ("<huaire>"));
+SELECT (n f pl nom) IF (0 ("<huaire>")) (0 INITIAL-H);
 
 # compare "bheith" above
 REMOVE (n gen) IF (-1 (n f sg nom)) (0 (n gen));
@@ -372,11 +373,11 @@ SELECT (n m sg nom) IF (0 ("<[Ll]án>"ri)) ((1 Nom) OR (1 Prn));
 SELECT (n m sg nom) IF (0 ("<[Ll]án>"ri)) (1 DetPos);
 SELECT (adj sg nom) IF (0 ("<[Ll]án>"ri)) (1 Prep) (1 ("<de>"));
 
-SELECT (adj sg nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 ("<(haon|hocht)>"ri));
-SELECT (n f sg nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n f sg nom));
-SELECT (n m sg nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n m sg nom));
-SELECT (n f pl nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n f pl nom));
-SELECT (n m pl nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n m pl nom));
+SELECT (adj sg nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 ("<(haon|hocht)>"ri)) (0 INITIAL-H);
+SELECT (n f sg nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n f sg nom)) (0 INITIAL-H);
+SELECT (n m sg nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n m sg nom)) (0 INITIAL-H);
+SELECT (n f pl nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n f pl nom)) (0 INITIAL-H);
+SELECT (n m pl nom) IF (-1 Prep) (-1 ("<[Ll]e>"ri)) (0 (n m pl nom)) (0 INITIAL-H);
 SELECT (n m sg gen) IF (0 ("<[Ll]éinn>"ri));
 
 SELECT Prep IF (0 ("<[Ll]eis>"ri)) (1 DetDef) (1 ("<[Nn]a>"ri));
@@ -431,8 +432,8 @@ SELECT Conj IF (0 ("<[Nn]á>"ri));
 # since "ná" verbs are handled in previous batch, now can do next two:
 # e.g.  go hInis, á húsáid, á hól  are nouns...
 
-SELECT (n m sg nom) IF (0 NomM) (0 VerbImp);
-SELECT (n f sg nom) IF (0 NomF) (0 VerbImp);
+SELECT (n m sg nom) IF (0 NomM) (0 VerbImp) (0 INITIAL-H);
+SELECT (n f sg nom) IF (0 NomF) (0 VerbImp) (0 INITIAL-H);
 
 SELECT (adj sg nom) IF (-1 Nom) (-1 ("<Spiorad>")) (0 ("<Naomh>"));
 
@@ -522,7 +523,7 @@ SELECT Prn IF (-1 ("<[Óó]>"ri)) (0 Prn) (0 Adj);
 SELECT Adj IF (0 Prn) (0 Adj);
 
 # compare with similar le,na rules above
-SELECT (adj sg nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 ("<(haon|hocht)>"ri));
+SELECT (adj sg nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 ("<(haon|hocht)>"ri)) (0 INITIAL-H);
 SELECT (n f pl nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 (n f pl nom));
 SELECT (n m pl nom) IF (-1 Prep) (-1 ("<[Ss]na>"ri)) (0 (n m pl nom));
 
