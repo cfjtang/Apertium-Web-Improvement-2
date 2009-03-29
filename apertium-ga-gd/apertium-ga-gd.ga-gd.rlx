@@ -39,7 +39,7 @@ SET VerbImp = Verb + Imp;
 
 LIST CAPITALLENITED = ("<[BCDFGMPST][Hh].*>");
 LIST CAPITAL = ("<[A-Z]ÁÉÍÓÚ.*>");
-LIST NMFOURSUBJ = (n m sg) (vblex prs pl);
+LIST NMFOURSUBJ = (n m sg) (vblex prs);
 LIST ECLIPSED = ("<d[Tt].*>"ri "[Tt].*"ri) ("<g[Cc].*>"ri "[Cc].*"ri) ("<b[Pp].*>"ri "[Pp].*"ri) ("<n[DdGg].*>"ri "[DdGg].*"ri)
                 ("<bh[fF].*>"ri "[fF].*"ri) ("<n(?:-[aeiouáéíóú]|[AEIOUÁÉÍÓÚ]).*>"ri "[aeiouáéíóúAEIOUÁÉÍÓÚ].*"ri);
 LIST UNECLIPSED = ("<[Tt].*>"ri "[Tt].*"ri) ("<[Cc].*>"ri "[Cc].*"ri) ("<[Pp].*>"ri "[Pp].*"ri) ("<[DdGg].*>"ri "[DdGg].*"ri)
@@ -73,7 +73,7 @@ SELECT (pr) IF (0 ("<faoin>"ri));
 SELECT (adv) IF (0 ("<thíos>"ri));
 SELECT (adv) IF (0 ("<fiú>"ri));
 
-SELECT (vblex prs pl) IF (-1 ("go"ri)) (0 NMFOURSUBJ) (0 ECLIPSED);
+SELECT (vblex prs) IF (-1 ("go"ri)) (0 NMFOURSUBJ) (0 ECLIPSED);
 
 SELECT (adj sg nom) IF (-1 ("<nár>"ri)) (0 ("<chuma>"ri));
 
