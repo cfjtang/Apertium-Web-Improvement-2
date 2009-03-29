@@ -23,11 +23,11 @@ LIST Prep = (pr);
 LIST Interr = (itg);
 LIST Interj = (ij);
 
-
 LIST hPro = ("<h.*>"r "[aeiouáéíóú].*"r) ("<h.*>"r "[AEIOUÁÉÍÓÚ].*"r);
 LIST tPro = ("<t-.*>"r "[aeiouáéíóú].*"r) ("<t.*>"r "[AEIOUÁÉÍÓÚ].*"r);
-LIST INITIAL-H = ("[Hh].*"ri);
 
+# won't be there when the lemma begins with "h", and it is added when the "h" is added as an initial mutation
+LIST INITIAL-H = ("<[Hh].*>"ri "[ABCDEFGIJKLMNOPQRSTUVWXYZÁÉÍÓÚabcdefgijklmnopqrstuvwxyzáéíóú].*"ri);
 
 LIST Pronominal = (pr +prpers prn obj);
 
