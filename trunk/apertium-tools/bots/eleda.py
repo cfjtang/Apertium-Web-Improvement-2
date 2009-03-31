@@ -5,6 +5,10 @@ import time;
 import commands;
 from time import strftime, gmtime;
 
+## See http://wiki.apertium.org/wiki/Eleda
+## start with the command
+## python eleda.py
+
 HOST='irc.freenode.net';
 PORT=6667;
 NICK='eleda';
@@ -12,7 +16,7 @@ IDENT='eleda';
 REALNAME='Eleda';
 OWNER='spectie';
 readbuffer='';
-PASS='this_passwd_will_be_used_if_not_specified_from_the_command_line';
+PASS='PUT_YOUR_PASSWORD_HERE';
 
 ## DIR='/home/fran/svnroot/apertium/apertium-'
 
