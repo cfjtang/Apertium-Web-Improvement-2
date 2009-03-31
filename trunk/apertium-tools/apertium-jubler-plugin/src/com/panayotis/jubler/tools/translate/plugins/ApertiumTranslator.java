@@ -1,3 +1,8 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package com.panayotis.jubler.tools.translate.plugins;
 import com.panayotis.jubler.tools.translate.GenericApertiumTranslator;
 import com.panayotis.jubler.tools.translate.Language;
@@ -13,11 +18,12 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author sourcemorph
  */
 public class ApertiumTranslator extends GenericApertiumTranslator {
-    private Vector<Language> sourceLang, destLang;
+    private Vector<Language> sourceLang, destLang, sourceLangNoDup;
 
-    public ApertiumTranslator() {
+    public void checkPairs() {
         sourceLang = new Vector<Language>();
         destLang = new Vector<Language>();
+        sourceLangNoDup = new Vector<Language>();
         try {
             Process Findspace = Runtime.getRuntime().exec("apertium xxx");
             BufferedReader Resultset = new BufferedReader(new InputStreamReader(Findspace.getInputStream()));
@@ -33,6 +39,17 @@ public class ApertiumTranslator extends GenericApertiumTranslator {
                 String fullt1 = findLanguageID(t1);
                 String fullt2 = findLanguageID(t2);
                 sourceLang.add(new Language(t1, _(fullt1)));
+                boolean flag = false;
+                for(Language l : sourceLangNoDup) {
+                    if(l.getID().equals(t1)) {
+                        flag = true;
+                        break;
+                    }
+                }
+
+               if(!flag) {
+                   sourceLangNoDup.add(new Language(t1, _(fullt1)));
+               }
                 destLang.add(new Language(t2, _(fullt2)));
                 //System.out.print(t1+"--"+fullt1);
                 //System.out.println(t2+"--"+fullt2);
@@ -48,26 +65,30 @@ public class ApertiumTranslator extends GenericApertiumTranslator {
     }
 
     public String getDefaultSourceLanguage() {
+        checkPairs();
         System.out.println("default s.language");
         return _(sourceLang.get(0).getName());
     }
 
     public String getDefaultDestinationLanguage() {
+        checkPairs();
         System.out.println("default d.language");
         return _(destLang.get(0).getName());
     }
 
     public String[] getSourceLanguages() {
+        checkPairs();
         System.out.println("Source Lang=");
-        String[] langs = new String[sourceLang.size()];
-        for (int i = 0; i < sourceLang.size(); i++) {
-            langs[i] = sourceLang.get(i).getName();
-            System.out.println(langs[i]);
+        String[] langs = new String[sourceLangNoDup.size()];
+        for (int i = 0; i < sourceLangNoDup.size(); i++) {
+            langs[i] = sourceLangNoDup.get(i).getName();
+            //System.out.println(langs[i]);
         }
         return langs;
     }
 
     public String[] getDestinationLanguagesFor(String from) {
+        checkPairs();
         System.out.println("Dest Lang=");
         Vector<String> temp = new Vector<String>();
         String [] langs;
@@ -81,7 +102,7 @@ public class ApertiumTranslator extends GenericApertiumTranslator {
         int count = 0;
         for(String s : temp) {
             langs[count++] = s;
-            System.out.println(langs[count]);
+            //System.out.println(langs[count]);
         }
         return langs;
     }
@@ -104,4 +125,14 @@ public class ApertiumTranslator extends GenericApertiumTranslator {
             }
         return result;
     }
+
+    /*public static void main(String [] args) {
+        ApertiumTranslator n = new ApertiumTranslator();
+        String [] n1 = n.getSourceLanguages();
+        for(int i=0;i<n1.length;i++)
+            System.out.println(n1[i]);
+        n1 = n.getDestinationLanguagesFor("English");
+        for(int i=0;i<n1.length;i++)
+            System.out.println(n1[i]);
+    }*/
 }
