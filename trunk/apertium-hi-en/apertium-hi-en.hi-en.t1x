@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transfer default="chunk">
+  <section-def-cats>
+    <def-cat n="nom">
+      <cat-item tags="cat:n.*"/>
+      <cat-item tags="cat:pn.*"/>
+    </def-cat>
+    <def-cat n="num">
+      <cat-item tags="cat:num.*"/>
+    </def-cat>
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="a_nom">
+      <attr-item tags="cat:n"/>
+      <attr-item tags="cat:pn"/>
+    </def-attr>
+    <def-attr n="a_num">
+      <attr-item tags="cat:num"/>
+    </def-attr>
+    <def-attr n="gen">
+      <attr-item tags="gen:m"/>
+      <attr-item tags="gen:f"/>
+      <attr-item tags="gen:nt"/>
+      <attr-item tags="gen:any"/>
+    </def-attr>
+    <def-attr n="nbr">
+      <attr-item tags="num:s"/>
+      <attr-item tags="num:p"/>
+      <attr-item tags="num:any"/>
+    </def-attr>
+    <def-attr n="cas">
+      <attr-item tags="case:o"/>
+      <attr-item tags="case:d"/>
+    </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="number"/>
+    <def-var n="genere"/>
+  </section-def-vars>
+
+  <section-rules>
+
+    <!-- Sintagmas nominales -->
+
+    <rule>
+      <pattern>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="num" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_num"/>
+              <clip pos="1" side="tl" part="nbr" link-to="2"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+
+    <rule>
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="nbr" link-to="2"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+  </section-rules>
+</transfer>
