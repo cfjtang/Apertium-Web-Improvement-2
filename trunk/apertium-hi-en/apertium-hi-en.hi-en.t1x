@@ -19,8 +19,11 @@
     <def-cat n="adj_nom">
       <cat-item tags="adj.nom.*"/>
     </def-cat>
-    <def-cat n="nom_cc_adj">
-      <cat-item tags="nom.cc.adj.*"/>
+    <def-cat n="cc">
+      <cat-item tags="cc.*"/>
+    </def-cat>
+    <def-cat n="verb">
+      <cat-item tags="v.*"/>
     </def-cat>
   </section-def-cats>
 
@@ -37,6 +40,15 @@
       <attr-item tags="nt"/>
       <attr-item tags="any"/>
     </def-attr>
+    <def-attr n="pers">
+      <attr-item tags="p1"/>
+      <attr-item tags="p2"/>
+      <attr-item tags="p3"/>
+    </def-attr>
+    <def-attr n="a_verb">
+      <attr-item tags="vblex"/>
+    </def-attr>
+
     <def-attr n="nbr">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
@@ -156,7 +168,9 @@
 
     <rule>
       <pattern>
-        <pattern-item n="nom_cc_adj"/>
+        <pattern-item n="det"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="nom"/>
       </pattern>
       <action>
         <out>
@@ -186,6 +200,25 @@
         </out>
       </action>
     </rule>
-
+    
+    <rule>
+      <pattern>
+        <pattern-item n="verb"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="verb" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+            </tags>
+            <lu>   
+		<clip pos="1" side="tl" part="lemh"/>
+		<clip pos="1" side="tl" part="a_verb"/>
+            </lu> 
+           </chunk>
+        </out>
+      </action>
+    </rule>
   </section-rules>
 </transfer>
