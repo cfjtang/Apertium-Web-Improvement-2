@@ -10,6 +10,7 @@
     <sdef n="m"/>
     <sdef n="f"/>
 
+    <sdef n="sp"/>
     <sdef n="sg"/>
     <sdef n="pl"/>
 
@@ -32,6 +33,11 @@
     <sdef n="prn"/>
     <sdef n="subj"/>
     <sdef n="obj"/>
+    <sdef n="rel"/>
+
+    <sdef n="det"/>
+    <sdef n="def"/>
+    <sdef n="ind"/>
 
     <sdef n="p1"/>
     <sdef n="p2"/>
@@ -40,9 +46,25 @@
     <sdef n="cnjcoo"/>
     <sdef n="cnjsub"/>
     <sdef n="pr"/>
+
+    <sdef n="adv"/>
+
+
   </sdefs>
 
   <pardefs>
+
+    <!-- Conjunctions -->
+
+    <pardef n="ikke__adv">
+      <e>
+        <p>
+          <l/>
+          <r><s n="adv"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <!-- Prepositions -->
 
     <pardef n="på__pr">
@@ -69,7 +91,22 @@
       <e>
         <p>
           <l/>
-          <r><s n="cnjcoo"/></r>
+          <r><s n="cnjsub"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="e/n__det">
+      <e>
+        <p>
+          <l>n</l>
+          <r>n<s n="det"/><s n="ind"/><s n="ut"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>t</l>
+          <r>n<s n="det"/><s n="ind"/><s n="nt"/><s n="sg"/></r>
         </p>
       </e>
     </pardef>
@@ -216,6 +253,18 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="der__prn">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="prn"/><s n="rel"/><s n="un"/><s n="sp"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+
 
     <!-- Nouns -->
 
@@ -967,6 +1016,7 @@
         </p>
       </e>
     </pardef>
+
 
 
     <!-- =============================================================== -->
@@ -3065,6 +3115,9 @@
   </pardefs>
 
   <section id="main" type="standard">
+    <!-- Determiners -->
+
+    <e lm="en"><i>e</i><par n="e/n__det"/></e>
 
     <!-- Prepositions -->
 
@@ -3084,6 +3137,8 @@
     <e lm="under"><i>under</i><par n="på__pr"/></e>
     <e lm="på"><i>på</i><par n="på__pr"/></e>
     <e lm="med"><i>med</i><par n="på__pr"/></e>
+    <e lm="fra"><i>fra</i><par n="på__pr"/></e>
+    <e lm="ved"><i>ved</i><par n="på__pr"/></e>
 
     <!-- Pronouns -->
 
@@ -3104,6 +3159,9 @@
     <e lm="de"><i/><par n="de__prn"/></e>
     <e lm="dem"><i/><par n="dem__prn"/></e>
 
+    <e lm="der"><i>der</i><par n="der__prn"/></e>
+    <e lm="som"><i>som</i><par n="der__prn"/></e>
+
     <!-- Conjunctions -->
 
     <e lm="og"><i>og</i><par n="og__cnjcoo"/></e>
@@ -3116,6 +3174,75 @@
     <e lm="hvis"><i>hvis</i><par n="at__cnjsub"/></e>
     <e lm="når"><i>når</i><par n="at__cnjsub"/></e>
     <e lm="da"><i>da</i><par n="at__cnjsub"/></e>
+
+
+    <!-- Adverbs -->
+
+    <e lm="af"><i>af</i><par n="ikke__adv"/></e>
+    <e lm="akkurat"><i>akkurat</i><par n="ikke__adv"/></e>
+    <e lm="aldrig"><i>aldrig</i><par n="ikke__adv"/></e>
+    <e lm="allerede"><i>allerede</i><par n="ikke__adv"/></e>
+    <e lm="altid"><i>altid</i><par n="ikke__adv"/></e>
+    <e lm="bag"><i>bag</i><par n="ikke__adv"/></e>
+    <e lm="behov"><i>behov</i><par n="ikke__adv"/></e>
+    <e lm="billigt"><i>billigt</i><par n="ikke__adv"/></e>
+    <e lm="bort"><i>bort</i><par n="ikke__adv"/></e>
+    <e lm="da"><i>da</i><par n="ikke__adv"/></e>
+    <e lm="dennelunde"><i>dennelunde</i><par n="ikke__adv"/></e>
+    <e lm="der"><i>der</i><par n="ikke__adv"/></e>
+    <e lm="deraf"><i>deraf</i><par n="ikke__adv"/></e>
+    <e lm="fejl"><i>fejl</i><par n="ikke__adv"/></e>
+    <e lm="fleste"><i>fleste</i><par n="ikke__adv"/></e>
+    <e lm="forbi"><i>forbi</i><par n="ikke__adv"/></e>
+    <e lm="før"><i>før</i><par n="ikke__adv"/></e>
+    <e lm="gratis"><i>gratis</i><par n="ikke__adv"/></e>
+    <e lm="grave"><i>grave</i><par n="ikke__adv"/></e>
+    <e lm="helt"><i>helt</i><par n="ikke__adv"/></e>
+    <e lm="hen"><i>hen</i><par n="ikke__adv"/></e>
+    <e lm="henne"><i>henne</i><par n="ikke__adv"/></e>
+    <e lm="her"><i>her</i><par n="ikke__adv"/></e>
+    <e lm="hid"><i>hid</i><par n="ikke__adv"/></e>
+    <e lm="hvordan"><i>hvordan</i><par n="ikke__adv"/></e>
+    <e lm="hvorfor"><i>hvorfor</i><par n="ikke__adv"/></e>
+    <e lm="højst"><i>højst</i><par n="ikke__adv"/></e>
+    <e lm="igen"><i>igen</i><par n="ikke__adv"/></e>
+    <e lm="ikke"><i>ikke</i><par n="ikke__adv"/></e>
+    <e lm="inde"><i>inde</i><par n="ikke__adv"/></e>
+    <e lm="knagende"><i>knagende</i><par n="ikke__adv"/></e>
+    <e lm="knap"><i>knap</i><par n="ikke__adv"/></e>
+    <e lm="kort"><i>kort</i><par n="ikke__adv"/></e>
+    <e lm="let"><i>let</i><par n="ikke__adv"/></e>
+    <e lm="lidt"><i>lidt</i><par n="ikke__adv"/></e>
+    <e lm="live"><i>live</i><par n="ikke__adv"/></e>
+    <e lm="mindst"><i>mindst</i><par n="ikke__adv"/></e>
+    <e lm="måske"><i>måske</i><par n="ikke__adv"/></e>
+    <e lm="nej"><i>nej</i><par n="ikke__adv"/></e>
+    <e lm="nok"><i>nok</i><par n="ikke__adv"/></e>
+    <e lm="nonchalant"><i>nonchalant</i><par n="ikke__adv"/></e>
+    <e lm="nu"><i>nu</i><par n="ikke__adv"/></e>
+    <e lm="nys"><i>nys</i><par n="ikke__adv"/></e>
+    <e lm="også"><i>også</i><par n="ikke__adv"/></e>
+    <e lm="ost"><i>ost</i><par n="ikke__adv"/></e>
+    <e lm="overalt"><i>overalt</i><par n="ikke__adv"/></e>
+    <e lm="overhovedet"><i>overhovedet</i><par n="ikke__adv"/></e>
+    <e lm="pludselig"><i>pludselig</i><par n="ikke__adv"/></e>
+    <e lm="pludseligt"><i>pludseligt</i><par n="ikke__adv"/></e>
+    <e lm="ret"><i>ret</i><par n="ikke__adv"/></e>
+    <e lm="sen"><i>sen</i><par n="ikke__adv"/></e>
+    <e lm="sjælden"><i>sjælden</i><par n="ikke__adv"/></e>
+    <e lm="skam"><i>skam</i><par n="ikke__adv"/></e>
+    <e lm="slesk"><i>slesk</i><par n="ikke__adv"/></e>
+    <e lm="stadig"><i>stadig</i><par n="ikke__adv"/></e>
+    <e lm="straks"><i>straks</i><par n="ikke__adv"/></e>
+    <e lm="så"><i>så</i><par n="ikke__adv"/></e>
+    <e lm="sådan"><i>sådan</i><par n="ikke__adv"/></e>
+    <e lm="således"><i>således</i><par n="ikke__adv"/></e>
+    <e lm="til"><i>til</i><par n="ikke__adv"/></e>
+    <e lm="tit"><i>tit</i><par n="ikke__adv"/></e>
+    <e lm="tyst"><i>tyst</i><par n="ikke__adv"/></e>
+    <e lm="ud"><i>ud</i><par n="ikke__adv"/></e>
+    <e lm="øst"><i>øst</i><par n="ikke__adv"/></e>
+
 
     <!-- Nouns -->
 
