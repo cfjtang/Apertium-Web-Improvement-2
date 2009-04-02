@@ -129,32 +129,11 @@
       </action>
     </rule>
 
-    <rule>
-      <pattern>
-        <pattern-item n="det_nom"/>
-      </pattern>
-      <action>
-        <out>
-          <chunk name="nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="tl" part="gen"/></tag>
-              <tag><clip pos="2" side="tl" part="nbr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen" link-to="2"/>
-              <clip pos="2" side="tl" part="nbr" link-to="3"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule>
     
     <rule>
       <pattern>
-        <pattern-item n="det_adj_nom"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="nom"/>
       </pattern>
       <action>
         <out>
@@ -182,7 +161,7 @@
 
     <rule>
       <pattern>
-        <pattern-item n="cc"/>
+        <pattern-item n="cnjcoo"/>
       </pattern>
       <action>
         <out>
