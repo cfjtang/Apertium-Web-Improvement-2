@@ -126,7 +126,7 @@ public class ApertiumTranslator extends GenericApertiumTranslator {
         return result;
     }
 
-    /*public static void main(String [] args) {
+    public static void main(String [] args) {
         ApertiumTranslator n = new ApertiumTranslator();
         String [] n1 = n.getSourceLanguages();
         for(int i=0;i<n1.length;i++)
@@ -134,5 +134,5 @@ public class ApertiumTranslator extends GenericApertiumTranslator {
         n1 = n.getDestinationLanguagesFor("English");
         for(int i=0;i<n1.length;i++)
             System.out.println(n1[i]);
-    }*/
+    }
 }
