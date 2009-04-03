@@ -13,18 +13,15 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class ApertiumTranslator extends GenericApertiumTranslator {
     private static BufferedReader processReader;
 
-    static {
+    public BufferedReader initStream() {
         try {
             Process Findspace = Runtime.getRuntime().exec("apertium xxx");
             processReader = new BufferedReader(new InputStreamReader(Findspace.getInputStream()));
-
+            return processReader;
         } catch(IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public ApertiumTranslator() {
-        super(processReader);
+        return null;
     }
 
     public String getDefinition() {

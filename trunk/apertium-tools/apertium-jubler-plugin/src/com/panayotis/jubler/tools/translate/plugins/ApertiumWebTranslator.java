@@ -15,23 +15,21 @@ import java.util.Properties;
 public class ApertiumWebTranslator extends GenericApertiumTranslator {
 
     private static BufferedReader webReader;
-    static {
+    public BufferedReader initStream() {
         /*Properties systemSettings = System.getProperties();
         systemSettings.put("http.proxyHost", "10.1.2.21");
         systemSettings.put("http.proxyPort", "9090");
-        System.setProperties(systemSettings);*/
-        String theURL = "http://xixona.dlsi.ua.es/webservice/ws.php?";
+        System.setProperties(systemSettings);
+        String theURL = "http://xixona.dlsi.ua.es/webservice/ws.php?";*/
         try {
             URL url = new URL(theURL);
             URLConnection urlConn = url.openConnection();
             webReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream(),"UTF-8"));
+            return webReader;
         } catch(Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public ApertiumWebTranslator() {
-        super(webReader);
+        return null;
     }
 
     public String getDefinition() {
