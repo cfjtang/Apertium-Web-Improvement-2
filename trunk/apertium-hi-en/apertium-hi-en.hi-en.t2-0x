@@ -10,6 +10,14 @@
       <cat-item tags="SV"/>
       <cat-item tags="SV.*"/>
     </def-cat>
+    <def-cat n="CC">
+      <cat-item tags="CC"/>
+      <cat-item tags="CC.*"/>
+    </def-cat>
+    <def-cat n="ADJ">
+      <cat-item tags="ADJ"/>
+      <cat-item tags="ADJ.*"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -25,6 +33,9 @@
       <attr-item tags="any"/>
       <attr-item tags="ND"/>
     </def-attr>
+    <def-attr n="misc">
+      <attr-item tags="adj"/>
+    </def-attr>
   </section-def-attrs>
 
   <section-def-vars>
@@ -34,16 +45,21 @@
 
   <section-rules>
 
-    <rule comment="REGLA: SN">
+    <rule comment="COMBINE: ADJ CC ADJ">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="ADJ"/>
+	<pattern-item n="CC"/>
+	<pattern-item n="ADJ"/>
       </pattern>
       <action>
         <out>
-          <chunk>
-            <clip pos="1" part="lem"/>
-            <clip pos="1" part="tags"/>
-            <clip pos="1" part="chcontent"/>
+         <chunk name="pseudo-sn" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+            <clip pos="1" part="whole"/>        	
+            <clip pos="2" part="whole"/>
+            <clip pos="3" part="whole"/>
           </chunk>
         </out>
       </action>

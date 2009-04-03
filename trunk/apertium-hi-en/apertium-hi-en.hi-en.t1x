@@ -10,17 +10,11 @@
     <def-cat n="adj">
       <cat-item tags="adj.*"/>
     </def-cat>
-    <def-cat n="det_nom">
-      <cat-item tags="det.nom.*"/>
-    </def-cat>
-    <def-cat n="det_adj_nom">
-      <cat-item tags="det.adj.nom.*"/>
-    </def-cat>
     <def-cat n="adj_nom">
       <cat-item tags="adj.nom.*"/>
     </def-cat>
-    <def-cat n="cc">
-      <cat-item tags="cc.*"/>
+    <def-cat n="cnjcoo">
+      <cat-item tags="cnjcoo.*"/>
     </def-cat>
 <def-cat n="vrb">
    <cat-item tags="vblex.*"/>
@@ -65,14 +59,6 @@
     <def-attr n="cc">
       <attr-item tags="cc"/>
     </def-attr>
-   <def-attr n="pers">
-	<attr-item tags="p1"/>
-	<attr-item tags="p2"/>
-	<attr-item tags="p3"/>
-   </def-attr>
-   <def-attr n="a_verb">
-	<attr-item tags="vblex"/>
-   </def-attr>
 
   </section-def-attrs>
 
@@ -129,9 +115,9 @@
       </action>
     </rule>
 
-    
+
     <rule>
-      <pattern>
+     <pattern>
 	<pattern-item n="adj"/>
 	<pattern-item n="nom"/>
       </pattern>
@@ -139,20 +125,17 @@
         <out>
           <chunk name="adj_nom" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+              <tag><lit-tag v="ADJ"/></tag>
             </tags>
             <lu>   
-              <clip pos="2" side="tl" part="lem"/> 
-              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="1" side="tl" part="lem"/> 
+              <clip pos="1" side="tl" part="a_adj"/>
             </lu> 
-            <lu>
-              <clip pos="3" side="tl" part="lem"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen" link-to="2"/>
-              <clip pos="3" side="tl" part="nbr" link-to="3"/>
-            </lu>
+	    <lu>   
+              <clip pos="2" side="tl" part="lem"/> 
+              <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="2"/>
+            </lu> 
           </chunk>
         </out>
       </action>
@@ -165,7 +148,10 @@
       </pattern>
       <action>
         <out>
-          <chunk name="cc_o" case="caseFirstWord">
+          <chunk name="cc_of" case="caseFirstWord">
+        <tags>
+          <tag><lit-tag v="CC"/></tag>
+        </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
               <clip pos="1" side="tl" part="cc_of"/>
