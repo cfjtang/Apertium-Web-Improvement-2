@@ -1,5 +1,8 @@
 package com.panayotis.jubler.tools.translate;
 import com.panayotis.jubler.subs.SubEntry;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -11,31 +14,94 @@ import static com.panayotis.jubler.i18n.I18N._;
 public abstract class GenericApertiumTranslator implements com.panayotis.jubler.tools.translate.Translator {
 
     protected static Vector<Language> lang;
+    ArrayList<String> sourceLang;
+    ArrayList<ArrayList<String>> destLang;
+
     static {
         lang = new Vector<Language>();
-        lang.add(new Language("ar", _("Arabic")));
-        lang.add(new Language("bg", _("Bulgarian")));
-        lang.add(new Language("zh-CN", _("Chinese")));
-        lang.add(new Language("hr", _("Croatian")));
-        lang.add(new Language("cs", _("Czech")));
-        lang.add(new Language("da", _("Danish")));
-        lang.add(new Language("nl", _("Dutch")));
+        lang.add(new Language("ca", _("Catalan")));
         lang.add(new Language("en", _("English")));
-        lang.add(new Language("fi", _("Finnish")));
-        lang.add(new Language("fr", _("French")));
-        lang.add(new Language("de", _("German")));
-        lang.add(new Language("el", _("Greek")));
-        lang.add(new Language("hi", _("Hindi")));
-        lang.add(new Language("it", _("Italian")));
-        lang.add(new Language("ja", _("Japanese")));
-        lang.add(new Language("ko", _("Korean")));
-        lang.add(new Language("no", _("Norwegian")));
-        lang.add(new Language("pl", _("Polish")));
-        lang.add(new Language("pt", _("Portuguese")));
-        lang.add(new Language("ro", _("Romanian")));
-        lang.add(new Language("ru", _("Russian")));
+        lang.add(new Language("eo", _("Esparanto")));
         lang.add(new Language("es", _("Spanish")));
-        lang.add(new Language("sv", _("Swedish")));
+        lang.add(new Language("oc", _("Occitan")));
+        lang.add(new Language("gl", _("Galician")));
+        lang.add(new Language("ro", _("Romanian")));
+        lang.add(new Language("pt", _("Portuguese")));
+        lang.add(new Language("fr", _("French")));
+        lang.add(new Language("cy", _("Welsh")));
+        lang.add(new Language("eu", _("Basque")));
+        lang.add(new Language("hi", _("Hindi")));
+    }
+
+    public GenericApertiumTranslator(BufferedReader r) {
+        sourceLang = new ArrayList<String>();
+        destLang = new ArrayList<ArrayList<String>>();
+        String result = "";
+        try {
+            result = r.readLine();
+            //System.out.println(result);
+            result = r.readLine();
+            //System.out.println(result);
+            int hyphenIndex;
+            do {
+                result.trim();
+                hyphenIndex = result.indexOf("-");
+                if(result.indexOf("-", hyphenIndex+1) == -1) {
+                    if(result.contains("<br/>")) {
+                        result = result.substring(0,result.length()-5);
+                        //System.out.println(result);
+                    }
+                    String t1 = result.substring(hyphenIndex-2, hyphenIndex);
+                    String t2 = result.substring(hyphenIndex+1);
+                    //System.out.println(t1+"-"+t2);
+                    if(t2.length() == 2) {
+                        String fullt1 = findLanguageID(t1);
+                        String fullt2 = findLanguageID(t2);
+                        //System.out.println(fullt1+"-"+fullt2);
+                        if(fullt1 != null && fullt2 != null) {
+                            if(!sourceLang.contains(fullt1)) {
+                                sourceLang.add(fullt1);
+                                destLang.add(new ArrayList<String>());
+                            }
+                            destLang.get(sourceLang.indexOf(fullt1)).add(fullt2);
+                        }
+                    }
+                }
+                result = r.readLine();
+            } while(result != null && result.equals("<br />") == false);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public String[] getSourceLanguages() {
+        String [] temp = new String[sourceLang.size()];
+        int count = 0;
+        for(String s : sourceLang) {
+            temp[count++] = s;
+            //System.out.println(s);
+        }
+        return temp;
+    }
+
+    public String[] getDestinationLanguagesFor(String from) {
+        int current = sourceLang.indexOf(from);
+        String [] temp = new String[destLang.get(current).size()];
+        int count = 0;
+        //System.out.println("dest:"+from);
+        for(String s : destLang.get(current)) {
+            temp[count++] = s;
+            //System.out.println(s);
+        }
+        return temp;
+    }
+
+    public String getDefaultSourceLanguage() {
+        return _(sourceLang.get(0));
+    }
+
+    public String getDefaultDestinationLanguage() {
+        return _(destLang.get(0).get(0));
     }
 
     public String findLanguage(String language) {
@@ -53,7 +119,7 @@ public abstract class GenericApertiumTranslator implements com.panayotis.jubler.
                 return l.getName();
             }
         }
-        return "";
+        return null;
     }
 
     protected Vector<Language> getLanguages() {
