@@ -16,10 +16,10 @@ public class ApertiumWebTranslator extends GenericApertiumTranslator {
 
     private static BufferedReader webReader;
     static {
-        Properties systemSettings = System.getProperties();
+        /*Properties systemSettings = System.getProperties();
         systemSettings.put("http.proxyHost", "10.1.2.21");
         systemSettings.put("http.proxyPort", "9090");
-        System.setProperties(systemSettings);
+        System.setProperties(systemSettings);*/
         String theURL = "http://xixona.dlsi.ua.es/webservice/ws.php?";
         try {
             URL url = new URL(theURL);
