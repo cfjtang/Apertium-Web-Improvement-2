@@ -33,7 +33,11 @@ public abstract class GenericApertiumTranslator implements com.panayotis.jubler.
         lang.add(new Language("hi", _("Hindi")));
     }
 
-    public GenericApertiumTranslator(BufferedReader r) {
+    public void initialize() {
+        checkPairs(initStream());
+    }
+
+    public void checkPairs(BufferedReader r) {
         sourceLang = new ArrayList<String>();
         destLang = new ArrayList<ArrayList<String>>();
         String result = "";
@@ -74,7 +78,12 @@ public abstract class GenericApertiumTranslator implements com.panayotis.jubler.
         }
     }
 
+    public abstract BufferedReader initStream();
+
     public String[] getSourceLanguages() {
+        if(sourceLang == null) {
+            initialize();
+        }
         String [] temp = new String[sourceLang.size()];
         int count = 0;
         for(String s : sourceLang) {
@@ -85,6 +94,9 @@ public abstract class GenericApertiumTranslator implements com.panayotis.jubler.
     }
 
     public String[] getDestinationLanguagesFor(String from) {
+        if(destLang == null) {
+            initialize();
+        }
         int current = sourceLang.indexOf(from);
         String [] temp = new String[destLang.get(current).size()];
         int count = 0;
@@ -97,10 +109,16 @@ public abstract class GenericApertiumTranslator implements com.panayotis.jubler.
     }
 
     public String getDefaultSourceLanguage() {
+        if(sourceLang == null) {
+            initialize();
+        }
         return _(sourceLang.get(0));
     }
 
     public String getDefaultDestinationLanguage() {
+        if(destLang == null) {
+            initialize();
+        }
         return _(destLang.get(0).get(0));
     }
 
