@@ -6,23 +6,20 @@
 	  <cat-item tags="n.*"/>
      </def-cat>
      
-      <def-cat n="detdem">          
+     <def-cat n="detdem">          
 	  <cat-item tags="det.dem.*"/>
-      </def-cat>
+     </def-cat>
       
   
      <def-cat n="adj">          
 	  <cat-item tags="adj.*"/>
-      </def-cat>
+     </def-cat>
 
      <def-cat n="adjec">          
 	  <cat-item tags="adj.*"/>
 	  <cat-item tags="vblex.pret.*"/>
-      </def-cat>
-
+     </def-cat>
       
-      
-         
 </section-def-cats>
 
 <section-def-attrs>
@@ -48,9 +45,9 @@
      </def-attr>
       
        <def-attr n="persona">
-          <attr-item tags="1"/>
-	  <attr-item tags="2"/>
-	  <attr-item tags="3"/>
+          <attr-item tags="p1"/>
+	  <attr-item tags="p2"/>
+	  <attr-item tags="p3"/>
       </def-attr>
 
      <def-attr n="a_verb">
@@ -97,7 +94,7 @@
 
      <def-attr n="defnes">
           <attr-item tags="def"/>
-          <attr-item tags="indef"/>
+          <attr-item tags="ind"/>
      </def-attr>
     
 </section-def-attrs>
@@ -113,7 +110,6 @@
       <def-var n="concTercero"/>
       <def-var n="interrogativa"/>
       <def-var n="exclamativa"/>
-   
 </section-def-vars>
 
 
@@ -143,6 +139,26 @@
    
 
 
+   <rule> <!-- REGLA: NOM -->
+      <pattern>
+	<pattern-item n="navn"/>
+      </pattern>
+      <action>
+	  <out>    
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="defnes"/>
+	      <clip pos="1" side="tl" part="cas"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+         </out>       
+     </action>
+   </rule>
+
+
    <rule> <!-- REGLA: DETERMINANT NOM -->
       <pattern>
 	<pattern-item n="detdem"/>
@@ -151,19 +167,21 @@
       <action>
 	  <out>    
 	    <lu>        
-	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_detdem"/>
 	      <clip pos="2" side="tl" part="gen"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu> 
 	    <b pos="1"/>	   
 	    <lu>
-	      <clip pos="2" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="2" side="tl" part="a_nom"/>
 	      <clip pos="2" side="tl" part="gen"/>
 	      <clip pos="2" side="tl" part="nbr"/>
-	      <lit-tag v="indef"/>
+	      <clip pos="2" side="tl" part="defnes"/>
 	      <clip pos="2" side="tl" part="cas"/>
+	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
          </out>       
      </action>
@@ -189,19 +207,18 @@
 	    </lu>
 	    <b pos="2"/>
             <lu>
-	      <clip pos="3" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="3" side="tl" part="a_nom"/>
 	      <clip pos="3" side="tl" part="gen"/>
 	      <clip pos="3" side="tl" part="nbr"/>
-	      <lit-tag v="indef"/>
+	      <clip pos="3" side="tl" part="defnes"/>
 	      <clip pos="3" side="tl" part="cas"/>
+	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
          </out>
        
      </action>
    </rule>
-
-
 
 </section-rules>
 
