@@ -23,21 +23,20 @@
       <cat-item name="verbcj_enc"/>
     </def-cat>
 
-  <def-cat n="inf_enc_enc">
+    <def-cat n="inf_enc_enc">
       <cat-item name="inf_enc_enc"/>
       <cat-item name="subs_enc_enc"/>
     </def-cat>
 
- <def-cat n="have_enc_pp">
+    <def-cat n="have_enc_pp">
       <cat-item name="have_enc_pp"/>
     </def-cat>
 
- <def-cat n="have_enc_enc_pp">
+    <def-cat n="have_enc_enc_pp">
       <cat-item name="have_enc_enc_pp"/>
     </def-cat>
 
-
-    <def-cat n="ger"> <!-- BCN -->
+    <def-cat n="ger"> 
       <cat-item name="ger"/>
     </def-cat>
 
@@ -45,7 +44,7 @@
       <cat-item name="ger_enc"/>
     </def-cat>
 
-<def-cat n="ger_enc_enc"> 
+    <def-cat n="ger_enc_enc"> 
       <cat-item name="ger_enc_enc"/>
     </def-cat>
 
@@ -73,8 +72,6 @@
       <cat-item name="nom_conj_nom"/>
     </def-cat>
 
- 
-
     <def-cat n="pottenirpronom">
       <cat-item name="verbcj"/>
       <cat-item name="pro_verbcj"/>
@@ -91,27 +88,34 @@
       <cat-item name="pro_do_inf"/> 
       <cat-item name="pro_auxmod_mod_inf"/>
       <cat-item name="pro_auxmod_have_pp"/>
+      <!-- <cat-item name="going_to_inf"/> -->
+      <!-- <cat-item name="pro_going_to_inf"/> -->
     </def-cat>   
 
-<def-cat n="pottenirenclitic"><!--MG: canviar tot això pel nou mecanisme, sense mlu en el t1x, i aquí fabricar les mlu -->
+  <def-cat n="pottenirenclitic"><!-- para o novo mecanismo, sen mlu no t1x, que se pasan a construír aquí -->
       <cat-item name="verbcj_inf"/>
       <cat-item name="auxmod_inf_inf"/>
       <cat-item name="have_pp_inf"/>
       <cat-item name="be_inf_inf"/>
-</def-cat>
+  </def-cat>
+
+  <def-cat n="reflexiu">
+      <cat-item name="reflexiu"/>
+   </def-cat>
 
   <def-cat n="have_pp">
       <cat-item name="have_pp"/>
-    </def-cat>
+   </def-cat>
 
- <def-cat n="be_ger">
+  <def-cat n="be_ger">
       <cat-item name="be_ger"/>
-    </def-cat>
-<def-cat n="be_ger_enc">
+   </def-cat>
+  
+  <def-cat n="be_ger_enc">
       <cat-item name="be_ger_enc"/>
     </def-cat>
 
-<def-cat n="be_ger_inf">
+  <def-cat n="be_ger_inf">
       <cat-item name="be_ger_inf"/>
       <cat-item name="auxmod_inf_inf"/>
       <cat-item name="have_pp_inf"/>
@@ -145,13 +149,17 @@
       <cat-item name="hi"/>
     </def-cat>
 
-<!--    <def-cat n="verbcj">
+    <def-cat n="verbcj">
       <cat-item name="verbcj"/>
+    </def-cat>
+
+    <def-cat n="ter">
+      <cat-item name="ter"/>
     </def-cat>
 
     <def-cat n="comp_like_enc">
       <cat-item name="comp_like_enc"/>
-    </def-cat>-->
+    </def-cat>
 
   </section-def-cats>
 
@@ -211,7 +219,7 @@
     </def-attr>
 
 
-    <def-attr n="a_preadv"><!--BCN (per generar bé els adj_nom quan hi ha comparatius/superlatius-->
+    <def-attr n="a_preadv"><!--por xerar ben os adj_nom cando hai comparativos/superlativos-->
       <attr-item tags="preadv"/>	  
     </def-attr>
 
@@ -253,6 +261,11 @@
       <attr-item tags="prn.enc.ref"/>
     </def-attr>
 
+    <def-attr n="tipusprn">
+      <attr-item tags="pro"/>
+      <attr-item tags="enc"/>
+    </def-attr>
+
   <def-attr n="a_ref">
       <attr-item tags="ref"/>
     </def-attr> 
@@ -285,6 +298,7 @@
       </choose>
     </def-macro>
 
+   
     <def-macro n="gen_nbr_determinante" npar="1">
       <choose>
 	<when>
@@ -338,26 +352,6 @@
 
   <section-rules>
 
-
-<!--    <rule comment="CHUNK: Verbcj + comp_like_enc">
-      <pattern>
-	<pattern-item n="verbcj"/>
-	<pattern-item n="comp_like_enc"/>
-      </pattern>
-      <action>
-	    <out>
-<mlu>
-	      <lu>
-		<clip pos="1" part="whole"/>
-		     </lu>
-<lu>
-	      <clip pos="2" part="whole"/>
-	    </lu>
-	  </mlu>
-	    </out>
-      </action>
-    </rule>-->
-
     <rule comment="CHUNK: nom">
       <pattern>
 	<pattern-item n="nom"/>
@@ -382,10 +376,6 @@
 		</not>
 	      </and>
 	    </test>
-<!--	      <modify-case>
-		<clip pos="1" part="lem"/>
-		<lit v="aa"/>
-	      </modify-case>    Daba erro cando se trataba dun acrónimo: NC becomes.... #acr -->
 	    <out>
 	      <lu>
 		<get-case-from pos="0">
@@ -445,7 +435,7 @@
 	    <clip pos="2" part="whole"/>
 	  </lu>
 	</out> 
-	<choose> <!-- BCN si s'ha afegit l'adverbi 'més' no genera l'adjectiu-->
+	<choose> <!-- se se acrecentou o adverbio 'máis' non xera o adxectivo-->
 	  <when>
 	    <test>
 	      <equal>
@@ -692,57 +682,11 @@
       </action>
     </rule>
 
-<rule>
+   <rule comment="CHUNK: INF + enc">
       <pattern>
 	<pattern-item n="inf_enc"/>
       </pattern>
       <action>
-<choose>
-	  <when>
-	    <test> <!--Mira se deixou de ser 'inf' e recibiu persoa e número. Se non é PD tampouco será ND, en principio. PARA O CASO INF_ENC,POR AGORA NON SE DÁ O CASO QUE DEIXE DE SER INF-->
-	      <and>
-		<not>
-		  <equal>
-		    <clip pos="0" part="pers"/>
-		    <lit-tag v="PD"/>
-		  </equal>
-		</not>
-		<not>
-		  <equal>
-		    <clip pos="0" part="temps"/>
-		    <lit-tag v="inf"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>      
-	    <out>
-<mlu>
-	      <lu>
-		<clip pos="1" part="lemh"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="0" part="pers"/>
-		<clip pos="0" part="nbr"/>
-		     </lu>
-<lu>
-	      <clip pos="2" part="whole"/>
-<clip pos="1" part="lemq"/>
-	    </lu>
-	  </mlu>
-	    </out>  
-	  </when>
-	  <otherwise>
-	    <out>
-	  <mlu>
-	    <lu>
-	      <clip pos="1" part="whole"/>
-	    </lu>
-	    <lu>
-	      <clip pos="2" part="whole"/>
-	    </lu>
-	  </mlu>
-	    </out>
-	  </otherwise>
-	</choose>
         <choose>
 	  <when>
 	    <test>
@@ -751,7 +695,7 @@
 		<lit-tag v="SV.pron"/>
 	      </equal>
 	    </test>
-	    <choose><!--Se non recibiu persoa e número, o pronome faise reflexivo. Se recibiu persoa e nbr, enlazará automaticamente pers e nbr dentro do pronome -->
+	    <choose><!--Se non recibiu persoa e número, o pronome vira reflexivo. Se recibiu persoa e nbr, ligaranse automaticamente a pers e o nbr do verbo con pers e nbr do pronome (pronome acrecentado no t1x ao ver que o verbo era pronominal) -->
 	      <when>
 		<test>
 		  <equal>
@@ -775,35 +719,79 @@
 		  <clip pos="2" part="nbr"/>
 		  <lit-tag v="sp"/>
 		</let> 
+		<out><!--créase unha mlu co verbo e o enclítico -->
+		  <mlu>
+		    <lu>
+		      <clip pos="1" part="whole"/>
+		    </lu>
+		    <lu>
+		      <clip pos="2" part="whole"/>
+		    </lu>
+		  </mlu>
+		</out>
 	      </when>
-	  <otherwise>
-	    <out>
-	  <mlu>
-	    <lu>
-	      <clip pos="1" part="whole"/>
-	    </lu>
-	    <lu>
-	      <clip pos="2" part="whole"/>
-	    </lu>
-	  </mlu>
-	    </out>
-	  </otherwise>
+	      <otherwise><!--se recibiu pers e nbr e por tanto xa non é infinitivo -->
+		<choose>
+		  <when>
+		    <test>
+		      <equal>
+			<clip pos="0" part="pers"/>
+			<lit-tag v="p3"/>
+		      </equal>
+		    </test>	
+		    <let>
+		      <clip pos="2" part="lem"/>
+		      <lit v="se"/>
+		    </let>  
+		    <let>
+		      <clip pos="2" part="a_prn"/>
+		      <lit-tag v="prn.pro.ref"/>
+		    </let>
+		    <let>
+		      <clip pos="2" part="pers"/>
+		      <lit-tag v="p3"/>
+		    </let> 
+		    <let>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </let> 
+		  </when>
+		  <otherwise>
+		    <let> 
+		      <clip pos="2" part="a_prn"/>
+		      <lit-tag v="prn.pro"/>
+		    </let>
+		  <!--  <let>
+		      <clip pos="2" part="pers"/>
+		      <clip pos="0" part="pers"/>
+		    </let> 
+		    <let>
+		      <clip pos="2" part="nbr"/>
+		      <clip pos="0" part="nbr"/>
+		    </let>  -->
+		  </otherwise>
+		</choose>
+		<out>
+		  <lu>
+		    <clip pos="2" part="whole"/>
+		  </lu>
+		  <b/>		
+		  <lu>
+		    <clip pos="1" part="lemh"/>
+		    <clip pos="1" part="tags"/>
+		    <clip pos="0" part="pers"/>
+		    <clip pos="0" part="nbr"/>
+		    <clip pos="1" part="lemq"/>
+		  </lu> 
+		</out>
+	      </otherwise>
 	    </choose>
 	  </when>
-	</choose>
-      </action>
-</rule>
+	  <otherwise><!--se non é un verbo pronominal -->
 
-
-<rule>
-      <pattern>
-	<pattern-item n="inf_enc_enc"/>
-      </pattern>
-      <action>
-<!--	<choose>
+	<choose>
 	  <when>
-	    <test><!-*-Mirem si ha deixat de ser 'inf' i ha rebut persona i nombre. Si no és PD tampoc serà ND, en principi 
-	    PER AL CAS DE INF_ENC, PER ARA NO ES DÓNA EL CAS QUE DEIXI DE SER INF-*->
+	    <test><!--Mírase se deixou de ser 'inf' e recibiu persona e número. Se non é PD tampouco será ND, en principio -->	    
 	      <and>
 		<not>
 		  <equal>
@@ -818,8 +806,16 @@
 		  </equal>
 		</not>
 	      </and>
-	    </test>      
+	    </test>  
+	    <let>
+	      <clip pos="2" part="tipusprn"/>
+	      <lit-tag v="pro"/>
+	    </let>    
 	    <out>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	      <b/>		
 	      <lu>
 		<clip pos="1" part="lemh"/>
 		<clip pos="1" part="tags"/>
@@ -829,14 +825,31 @@
 	      </lu> 
 	    </out>  
 	  </when>
-	  <otherwise>
-	    <out>
-	      <lu>
-		<clip pos="1" part="whole"/>
-	      </lu>
+	  <otherwise><!--se é inf sen pers nin nbr -->
+	    <out><!--créase unha mlu co verbo e o enclítico -->
+	      <mlu>
+		<lu>
+		  <clip pos="1" part="whole"/>
+		</lu>
+		<lu>
+		  <clip pos="2" part="whole"/>
+		</lu>
+	      </mlu>
 	    </out>
+	  </otherwise>	    
+	</choose>
 	  </otherwise>
-	</choose> -->
+	</choose>
+	    
+      </action>
+</rule>
+
+
+<rule>
+      <pattern>
+	<pattern-item n="inf_enc_enc"/>
+      </pattern>
+      <action>
         <choose>
 	  <when>
 	    <test>
@@ -845,7 +858,7 @@
 		<lit-tag v="SV.pron"/>
 	      </equal>
 	    </test>
-	    <choose><!--Si no ha rebut persona i nombre, el pronom es torna reflexiu. Si ha rebut persona i nbr, s'enllaçarà automàticament pers i nbr cap a dins del pronom -->
+	    <choose><!--Se non recibiu persoa e número, o pronome vira reflexivo. Se recibiu persoa e nbr, ligaranse automaticamente a pers e o nbr do verbo con pers e nbr do pronome (pronome acrecentado no t1x ao ver que o verbo era pronominal) -->
 	      <when>
 		<test>
 		  <equal>
@@ -868,24 +881,150 @@
 		<let>
 		  <clip pos="2" part="nbr"/>
 		  <lit-tag v="sp"/>
-		</let> 
+		</let>
+		<out><!--creem una mlu amb el verb i l'enclític -->
+		  <mlu>
+		    <lu>
+		      <clip pos="1" part="whole"/>
+		    </lu>
+		    <lu>
+		      <clip pos="2" part="whole"/>
+		    </lu>
+		    <lu>
+		      <clip pos="3" part="whole"/>
+		    </lu>
+		  </mlu>
+		</out>
 	      </when>
+	      <otherwise><!--si ha rebut pers i nbr i per tant ja no és infinitiu -->
+		<choose>
+		  <when>
+		    <test>
+		      <equal>
+			<clip pos="0" part="pers"/>
+			<lit-tag v="p3"/>
+		      </equal>
+		    </test>	
+		    <let>
+		      <clip pos="2" part="lem"/>
+		      <lit v="se"/>
+		    </let>  
+		    <let>
+		      <clip pos="2" part="a_prn"/>
+		      <lit-tag v="prn.pro.ref"/>
+		    </let>
+		    <let>
+		      <clip pos="2" part="pers"/>
+		      <lit-tag v="p3"/>
+		    </let> 
+		    <let>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </let> 
+		  </when>
+		  <otherwise> 
+		    <let> 
+		      <clip pos="2" part="a_prn"/>
+		      <lit-tag v="prn.pro"/>
+		    </let>
+		  <!--  <let>
+		      <clip pos="2" part="pers"/>
+		      <clip pos="0" part="pers"/>
+		    </let> 
+		    <let>
+		      <clip pos="2" part="nbr"/>
+		      <clip pos="0" part="nbr"/>
+		    </let>  -->
+		  </otherwise>
+		</choose>
+		<let>
+		  <clip pos="3" part="tipusprn"/>
+		  <lit-tag v="pro"/>
+		</let>  
+		<out>
+		  <lu>
+		    <clip pos="2" part="whole"/>
+		  </lu>
+		  <b/>
+		  <lu>
+		    <clip pos="3" part="whole"/>
+		  </lu>
+		  <b/>	
+		  <lu>
+		    <clip pos="1" part="lemh"/>
+		    <clip pos="1" part="tags"/>
+		    <clip pos="0" part="pers"/>
+		    <clip pos="0" part="nbr"/>
+		    <clip pos="1" part="lemq"/>
+		  </lu> 
+		</out>
+	      </otherwise>
 	    </choose>
 	  </when>
+	  <otherwise><!--si no és un verb pronominal -->
+	    <choose>
+	  <when>
+	    <test><!--Mirem si ha deixat de ser 'inf' i ha rebut persona i nombre. Si no és PD tampoc serà ND, en principi -->
+	    
+	      <and>
+		<not>
+		  <equal>
+		    <clip pos="0" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		</not>
+		<not>
+		  <equal>
+		    <clip pos="0" part="temps"/>
+		    <lit-tag v="inf"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>  
+	    <let>
+	      <clip pos="2" part="tipusprn"/>
+	      <lit-tag v="pro"/>
+	    </let>  
+	    <let>
+	      <clip pos="3" part="tipusprn"/>
+	      <lit-tag v="pro"/>
+	    </let>    
+	    <out>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	      <b/>
+	      <lu>
+		<clip pos="3" part="whole"/>
+	      </lu>
+	      <b/>		
+	      <lu>
+		<clip pos="1" part="lemh"/>
+		<clip pos="1" part="tags"/>
+		<clip pos="0" part="pers"/>
+		<clip pos="0" part="nbr"/>
+		<clip pos="1" part="lemq"/>
+	      </lu> 
+	    </out>  
+	  </when>
+	  <otherwise><!--si és inf sense pers ni nbr -->
+	    <out><!--creem una mlu amb el verb i els enclítics -->
+	      <mlu>
+		<lu>
+		  <clip pos="1" part="whole"/>
+		</lu>
+		<lu>
+		  <clip pos="2" part="whole"/>
+		</lu>
+		<lu>
+		  <clip pos="3" part="whole"/>
+		</lu>
+	      </mlu>
+	    </out>
+	  </otherwise>	    
 	</choose>
-	<out><!--creem una mlu amb el verb i l'enclític -->
-	  <mlu>
-	    <lu>
-	      <clip pos="1" part="whole"/>
-	    </lu>
-	    <lu>
-	      <clip pos="2" part="whole"/>
-	    </lu>
-	    <lu>
-	      <clip pos="3" part="whole"/>
-	    </lu>
-	  </mlu>
-	</out>
+	  </otherwise>
+	</choose>
       </action>
 </rule>
 
@@ -940,7 +1079,7 @@
 		<lit-tag v="SV.pron"/>
 	      </equal>
 	    </test>
-	    <choose><!--Si no ha rebut persona i nombre, el pronom es torna reflexiu. Si ha rebut persona i nbr, s'enllaçarà automàticament pers i nbr cap a dins del pronom -->
+	    <choose><!--Se non recibiu persoa e número, o pronome convértese en reflexivo. Se recibiu persoa e número, ligaranse automaticamente pers e nbr no pronome -->
 	      <when>
 		<test>
 		  <equal>
@@ -1037,7 +1176,7 @@
 		<lit-tag v="SV.pron"/>
 	      </equal>
 	    </test>
-	    <choose><!--Si no ha rebut persona i nombre, el pronom es torna reflexiu. Si ha rebut persona i nbr, s'enllaçarà automàticament pers i nbr cap a dins del pronom -->
+	    <choose><!--Se non recibiu persoa e número, o pronome convértese en reflexivo. Se recibiu persoa e número, ligaranse automaticamente pers e nbr no pronome -->
 	      <when>
 		<test>
 		  <equal>
@@ -1096,7 +1235,7 @@
       <action>
 	<choose>
 	  <when>
-	    <test><!--Si no és PD tampoc serà ND, en principi -->
+	    <test><!--Se non é PD tampouco será ND, en principio -->
 	      <and>
 		<not>
 		  <equal>
@@ -1140,7 +1279,7 @@
       <action>
 	<choose>
 	  <when>
-	    <test><!--. Mira si ha deixat de ser ger i ha rebut pers i nbr. Si no és PD tampoc serà ND, en principi -->
+	    <test><!--. Mira se deixou de ser ger e recibiu pers e nbr. Se non é PD tampouco será ND, en principio -->
 	      <and>
 		<not>
 		  <equal>
@@ -1157,7 +1296,7 @@
 	      </and>
 	    </test>  
 	    <choose>
-	      <when><!--si és verb pronominal, el pronom serà reflexiu. -->
+	      <when><!--se é verbo pronominal, o pronome será reflexivo. -->
 		<test>
 		  <equal>
 		    <clip pos="0" part="tipus_verb"/>
@@ -1186,7 +1325,7 @@
 	      <lu>
 		<clip pos="2" part="lem"/>
 		<lit-tag v="prn.pro"/>
-		<clip pos="2" part="a_ref"/><!--només tindrà valor si el pronom és reflexiu -->
+		<clip pos="2" part="a_ref"/><!--só terá valor se o pronome é reflexivo -->
 		<clip pos="2" part="pers"/>
 		<clip pos="2" part="gen"/>
 		<clip pos="2" part="nbr"/>
@@ -1197,11 +1336,11 @@
 		<clip pos="1" part="tags"/>
 		<clip pos="0" part="pers"/>
 		<clip pos="0" part="nbr"/>
-		<clip pos="2" part="lemq"/><!--atenció: lemq de posició 2, tot i que ho és del verb, perquè per les operacions del t1x ha passat a ser cua del pronom i no del verb, aquí cal recolocar-la -->
+		<clip pos="2" part="lemq"/><!--atención: lemq de posición 2, a pesar de que é o do verbo, porque polas operacións do t1x pasou a ser cola do pronome e non do verb, aquí hai que recolocala -->
 	      </lu> 
 	    </out> 
 	  </when>
-	  <otherwise><!--Si és ger, i si és PD i ND... -->
+	  <otherwise><!--Se é ger, e se é PD e ND... -->
 	    <choose>
 	      <when>
 		<test>
@@ -1217,7 +1356,7 @@
 		  </and>
 		</test>	
 		<choose>
-		  <when><!--si és verb pronominal, el pronom serà reflexiu. -->
+		  <when><!--se é verbo pronominal, o pronome será reflexivo. -->
 		    <test>
 		      <equal>
 			<clip pos="0" part="tipus_verb"/>
@@ -1270,7 +1409,7 @@
       <action>
 	<choose>
 	  <when>
-	    <test><!--Si no és PD tampoc serà ND, en principi -->
+	    <test><!--Se non é PD tampouco será ND, en principio -->
 	      <and>
 		<not>
 		  <equal>
@@ -1287,7 +1426,7 @@
 	      </and>
 	    </test> 
 	    <choose>
-	      <when><!--si és verb pronominal, el pronom serà reflexiu. -->
+	      <when><!--se é verbo pronominal, o pronome será reflexivo. -->
 		<test>
 		  <equal>
 		    <clip pos="0" part="tipus_verb"/>
@@ -1317,7 +1456,7 @@
 	      <lu>
 		<clip pos="2" part="lem"/>
 		<lit-tag v="prn.pro"/>
-		<clip pos="2" part="a_ref"/><!--només tindrà valor si el pronom és reflexiu -->
+		<clip pos="2" part="a_ref"/><!--só terá valor se o pronome é reflexivo -->
 		<clip pos="2" part="pers"/>
 		<clip pos="2" part="gen"/>
 		<clip pos="2" part="nbr"/>
@@ -1336,7 +1475,7 @@
 		<clip pos="1" part="tags"/>
 		<clip pos="0" part="pers"/>
 		<clip pos="0" part="nbr"/>
-		<clip pos="2" part="lemq"/><!--atenció: lemq de posició 2, tot i que ho és del verb, perquè per les operacions del t1x ha passat a ser cua del pronom i no del verb, aquí cal recolocar-la -->
+		<clip pos="2" part="lemq"/><!--atención: lemq de posición 2, a pesar de que é o do verbo, porque polas operacións do t1x pasou a ser cola do pronome e non do verb, aquí hai que recolocala -->
 	      </lu> 
 	    </out>  
 	  </when>
@@ -1356,7 +1495,7 @@
 		  </and>
 		</test>	
 		<choose>
-		  <when><!--si és verb pronominal, el primer pronom serà reflexiu. -->
+		  <when><!--se é verbo pronominal, o primeiro pronome será reflexivo. -->
 		    <test>
 		      <equal>
 			<clip pos="0" part="tipus_verb"/>
@@ -1428,7 +1567,9 @@
 		</test>		    
 		<let>
 		  <clip pos="1" part="lem"/>
+		  <get-case-from pos="0">
 		  <lit v="hai"/>
+		  </get-case-from>
 		</let>
 		<let>
 		  <clip pos="1" part="a_verb"/>
@@ -1438,7 +1579,9 @@
 	      <otherwise>
 		<let>
 		  <clip pos="1" part="lem"/>
+		  <get-case-from pos="0">
 		  <lit v="haber"/>
+		  </get-case-from>  
 		</let>
 		<let>
 		  <clip pos="1" part="a_verb"/>
@@ -1482,7 +1625,7 @@
       </action>
     </rule>
     
-    <rule comment="assigna persona i nombre als verbs tipus LIKE amb pronom">
+    <rule comment="atribúe persoa e número aos verbos tipo LIKE con pronome">
       <pattern>
 	<pattern-item n="pro_vblike2"/>
       </pattern>
@@ -1510,7 +1653,7 @@
       </action>
     </rule>
     
-    <rule comment="assigna persona i nombre als verbs tipus LIKE amb pronom">
+    <rule comment="atribúe persoa e número aos verbos tipo LIKE con pronome">
       <pattern>
 	<pattern-item n="pro_vblike3"/>
       </pattern>
@@ -1542,7 +1685,7 @@
       </action>
     </rule>
     
-    <!-- regles per arreglar el pronom reflexiu de tercera persona (li-> se)-->
+    <!-- regres para arranxar o pronome reflexivo de terceira persoa (li-> se)-->
     
 
 
@@ -1671,7 +1814,9 @@
 		</test>
 		<let>
 		  <clip pos="2" part="lem"/>
-		  <lit v="haber"/>
+		  <get-case-from pos="0">
+		    <lit v="haber"/>
+		  </get-case-from>
 		</let>
 		<let>
 		  <clip pos="2" part="a_verb"/>
@@ -1759,7 +1904,7 @@
  </rule>
 		
 
-<rule comment="arregla el pron reflexiu de tercera persona, enclític: si és p3 fes que sigui 'es' (reflexiu)">
+<rule comment="arranxa o pron reflexivo de terceira persoa, enclítico: se é p3 fai que o siga 'se' (reflexivo)">
       <pattern>
 	<pattern-item n="be_ger_enc"/>
       </pattern>
@@ -1991,13 +2136,13 @@
       </action>
  </rule>
 
- <rule comment="arregla el pron reflexiu de tercera persona, enclític">
+ <rule comment="arranxa o pron reflexivo de terceira persoa, enclítico">
 	    <pattern>
 	      <pattern-item n="verbcj_inf"/>
 	    </pattern>
 	    <action>
 	      <choose>
-		<when><!--en cas que no sigui la forma perifràstica -->
+		<when><!--en caso de que non siga a forma perifrástica -->
 		  <test>
 		    <not>
 		      <equal>
@@ -2116,7 +2261,7 @@
 			</otherwise>
 		      </choose>
 		     </when>
-		     <otherwise><!--si el primer no era pron, les formes que cal comprovar són les posicions 2 i 3 -->
+		     <otherwise><!--se o primeiro non era pron, as formas que hai que comprobar son es posicións 2 e 3 -->
 		       <choose>
 			<when>
 			  <test>
@@ -2171,7 +2316,7 @@
 		     </otherwise>
 		  </choose>
 		</when>
-		<otherwise><!--si és ifip, serà el mateix que més amunt, però els números de posició seran diferents -->
+		<otherwise><!--se é ifip, será o mesmo que máis arriba, mais os números de posición serán diferentes -->
 		 
 		  <choose>
 		    <when>
@@ -2354,13 +2499,13 @@
 
 
 
-	  <rule comment="arregla el pron reflexiu de tercera persona, enclític">
+	  <rule comment="arranxa o pron reflexivo de terceira persona, enclítico">
 	    <pattern>
 	      <pattern-item n="verbcj_inf_enc"/>
 	    </pattern>
 	    <action>
 	      <choose>
-		<when><!--en cas que no sigui la forma perifràstica -->
+		<when><!--en caso de que non siga a forma perifrástica -->
 		  <test>
 		    <not>
 		      <equal>
@@ -2435,7 +2580,7 @@
 		    </otherwise>
 		  </choose>
 		</when>
-		<otherwise><!-- si és la forma perifràstica, serà la tercera forma la que és pronominal-->
+		<otherwise><!-- se é a forma perifrástica, será a terceira forma a que é pronominal-->
 
 		  <choose>
 		    <when>
@@ -2630,6 +2775,10 @@
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_do_inf"/>
 		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="going_to_inf"/>
+		    </equal>
 		  </or>
 		</test>
 		<out>
@@ -2656,6 +2805,10 @@
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_auxmod_have_pp"/>
 		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="pro_going_to_inf"/>
+		    </equal>
 		  </or>
 		</test>
 		<out>
@@ -2676,7 +2829,7 @@
 	    </choose>
 	  </when>
 	  <otherwise>
-	    <choose><!--Mira si hi ha algun verb que sigui HAVER (d'haver-hi), en tal cas cal canviar lemes i etiquetes del verb principal ('ser' passa a 'haver') -->		   
+	    <choose><!--Mira se hai algún verbo após HABER, en tal caso envíanse os lemas e etiquetes do verbo principal ('ser' pasa a 'haber') -->		   
 	      <when>
 		<test>
 		  <equal>
@@ -2702,7 +2855,9 @@
 			</test>		    
 			<let>
 			  <clip pos="1" part="lem"/>
+			  <get-case-from pos="0">
 			  <lit v="hai"/>
+			   </get-case-from>
 			</let>
 			<let>
 			  <clip pos="1" part="a_verb"/>
@@ -2712,7 +2867,9 @@
 		      <otherwise>
 			<let>
 			  <clip pos="1" part="lem"/>
+			   <get-case-from pos="0">
 			  <lit v="haber"/>
+			   </get-case-from>
 			</let>
 			<let>
 			  <clip pos="1" part="a_verb"/>
@@ -2863,6 +3020,10 @@
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_do_inf"/>
 		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="going_to_inf"/>
+		    </equal>
 		  </or>
 		</test>
 		<out>
@@ -2889,6 +3050,10 @@
 		      <clip pos="0" part="lem"/>
 		      <lit v="pro_auxmod_have_pp"/>
 		    </equal>
+		    <equal caseless="yes">
+		      <clip pos="0" part="lem"/>
+		      <lit v="pro_going_to_inf"/>
+		    </equal>
 		  </or>
 		</test>
 		<out>
@@ -2912,38 +3077,46 @@
       </action>
     </rule> 
     
-
-<!--<rule comment="arregla el pron reflexiu de tercera persona quan és enclític. No es pot accedir el lema del pronom enclític i per ara no es pot fer la regla">
+    <rule comment="CHUNK: reflexivo proclítico (arranxa o pronome reflexivo creado en t2x)">
       <pattern>
-	<pattern-item n="pottenirenclitic"/>
+	<pattern-item n="reflexiu"/>
       </pattern>
       <action>
 	<choose>
 	  <when>
 	    <test>
-		<equal>
-		  <clip pos="3" part="a_prnenc"/>
-		  <lit-tag v="prn.enc"/>
-		</equal>
+	      <equal>
+		<clip pos="0" part="pers"/>
+		<lit-tag v="p3"/>
+	      </equal>
 	    </test>
-	    <out>
-	      <lu>
-		<lit v="ola"/>
-	      </lu>
-	    </out>
+	    <let>
+	      <clip pos="1" part="lem"/>
+	      <lit v="se"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="mf"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sp"/>
+	    </let>
+	    <let>
+	      <clip pos="1" part="a_prnpro"/>
+	      <lit-tag v="prn.pro.ref"/>
+	    </let>
 	  </when>
 	</choose>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+	</out>
       </action>
-</rule>-->
-		
+    </rule>
 
-
-
-
-
-
-
-
+     
     <rule comment="CHUNK: HI">
       <pattern>
 	<pattern-item n="hi"/>
@@ -2964,7 +3137,30 @@
 	</out>
       </action>
     </rule>
-
+    
+    
+ <rule comment="CHUNK: ter (o chunk 'ter' é resultado de mudar 'ser' por 'ter' no t2x no patrón 'I am 20 years old'">
+      <pattern>
+	<pattern-item n="ter"/>
+      </pattern>
+      <action>
+	<let>
+	    <clip pos="1" part="lem"/>
+	    <get-case-from pos="0">
+	      <lit v="ter"/>
+	    </get-case-from>
+	</let>
+	<let>
+	    <clip pos="1" part="a_verb"/>
+	    <lit-tag v="vblex"/>
+	</let>	  
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+ </rule>
 
 
   </section-rules>
