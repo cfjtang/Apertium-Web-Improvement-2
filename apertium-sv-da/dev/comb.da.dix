@@ -63,21 +63,70 @@
     <sdef n="adj" c="Adjective"/>
 
     <sdef n="pas" c="Passive"/>
+    
+    <sdef n="sent" c="End of sentence"/>
+    <sdef n="cm" c="Comma"/>
+    <sdef n="lpar" c="Left parenthesis ("/>
+    <sdef n="rpar" c="Right parenthesis )"/>
   </sdefs>
 
   <pardefs>
 
-	  <!-- Numbers -->
+    <!-- Punctuation -->
 
     <pardef n="numeros">
-    <e>
+      <e>
         <re>[0-9]+([.,][0-9]+)?(%)?</re>
         <p>
           <l/>
-         <r><s n="num"/></r>
+          <r><s n="num"/></r>
         </p>
       </e>
     </pardef>
+
+    <pardef n="separa">
+    <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+         <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="coma">
+    <e>
+        <re>,</re>
+        <p>
+          <l/>
+         <r><s n="cm"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="paresq">
+    <e>
+        <re>[\(\[]</re>
+        <p>
+          <l/>
+         <r><s n="lpar"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="pardret">
+    <e>
+        <re>[\)\]]</re>
+        <p>
+          <l/>
+         <r><s n="rpar"/></r>
+        </p>
+      </e>
+    </pardef>
+
+
+
+    <!-- Numerals -->
 
     <pardef n="en__num">
       <e>
@@ -4759,6 +4808,10 @@
     <e lm="imod"><i>imod</i><par n="på__pr"/></e>
     <e lm="mod"><i>mod</i><par n="på__pr"/></e>
     <e lm="ud"><i>ud</i><par n="på__pr"/></e>
+    <e lm="ovenover"><i>ovenover</i><par n="på__pr"/></e>
+    <e lm="siden"><i>siden</i><par n="på__pr"/></e>
+    <e lm="ovenpå"><i>ovenpå</i><par n="på__pr"/></e>
+    <e lm="per"><i>per</i><par n="på__pr"/></e>
 
     <!-- Interjections -->
 
@@ -32701,5 +32754,24 @@
     <e lm="vurderingsgrundlag"><i>vurderingsgrundlag</i><par n="år__n"/></e>
     <e lm="ynglingehold"><i>ynglingehold</i><par n="år__n"/></e>
   </section>
+
+  <section id="final" type="inconditional">
+      <e>
+        <par n="separa"/>
+      </e>
+      <e>
+        <par n="numeros"/>
+      </e>
+      <e>
+        <par n="coma"/>
+      </e>
+      <e>
+        <par n="paresq"/>
+      </e>
+      <e>
+        <par n="pardret"/>
+      </e>
+  </section>
+
 
 </dictionary>
