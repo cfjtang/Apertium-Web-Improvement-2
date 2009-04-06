@@ -260,12 +260,18 @@
     <def-cat n="o_que">
       <cat-item lemma="o que" tags="rel.nn.*"/>
     </def-cat>
+    
     <def-cat n="sent">
       <cat-item tags="sent"/>
     </def-cat>
 
-  <def-cat n="coma">
+    <def-cat n="coma">
       <cat-item tags="cm"/>
+    </def-cat>
+    
+    <def-cat n="dona">
+      <cat-item lemma="don" tags="n.m.sg"/>
+      <cat-item lemma="dono" tags="n.f.sg"/>
     </def-cat>
 
   </section-def-cats>
@@ -2502,7 +2508,62 @@
       </action>
     </rule>
 
-
+<rule comment="REGRA: Don/a + ANTROPÓNIMO">
+      <pattern>
+	<pattern-item n="dona"/>
+	<pattern-item n="ant"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		   <clip pos="1" side="sl" part="lem"/> 
+		   <lit v="don"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="Mr."/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal caseless="yes">
+		   <clip pos="1" side="sl" part="lem"/> 
+		   <lit v="dono"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="Ms."/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk name="dona_ant" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>     
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
 
     <rule comment="REGRA: DET NOM">
       <pattern>
