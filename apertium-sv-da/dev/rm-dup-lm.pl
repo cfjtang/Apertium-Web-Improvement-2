@@ -1,33 +1,16 @@
 #!/usr/bin/perl
 
-@dups;
+%seen;
 
-#open(COMB, "comb.da.dix");
-
-$found = 0;
-while ($comb = <STDIN>)
+while ($line = <STDIN>)
 {
-	if ($comb =~ /<e lm=/)
-	{
-		chomp $comb;
-		foreach $dup (@dups)
-		{
-			if ($dup eq $comb)
-			{
-				$found = 1;
-			}
-		}
-		if ($found == 1) {
-			#print $comb . "\n";
-			$found = 0;
-		}
-		else 
-		{
-			push(@dups, $comb);
-			print $comb . "\n";
+	if ($line =~ /<e lm=/) {
+		unless ($seen{$line} == 1) {
+			$seen{$line} = 1;
+			print $line;
 		}
 	}
-	else { print $comb; }
+	else { 
+		print $line; 
+	}
 }
-
-close(COMB);
