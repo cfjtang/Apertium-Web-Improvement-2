@@ -42,8 +42,26 @@
           <attr-item tags="ut"/>
           <attr-item tags="nt"/>
 	  <attr-item tags="ea"/>
+	  <attr-item tags="GD"/>
      </def-attr>
-      
+
+     <def-attr n="nbr">
+          <attr-item tags="sg"/>
+	  <attr-item tags="pl"/>
+	  <attr-item tags="sp"/>
+	  <attr-item tags="ND"/>
+      </def-attr>
+
+      <def-attr n="cas">
+          <attr-item tags="nom"/>
+          <attr-item tags="gen"/>
+     </def-attr>
+
+     <def-attr n="defnes">
+          <attr-item tags="def"/>
+          <attr-item tags="ind"/>
+     </def-attr>
+       
        <def-attr n="persona">
           <attr-item tags="p1"/>
 	  <attr-item tags="p2"/>
@@ -69,7 +87,9 @@
 	  <attr-item tags="vbaux.prs"/>
 	  <attr-item tags="vbs.prs"/>
      </def-attr>
+
      <def-attr n="temps">
+	  <attr-item tags="pres"/>
 	  <attr-item tags="inf"/>
 	  <attr-item tags="prs"/>
 	  <attr-item tags="da"/>
@@ -80,29 +100,13 @@
        <attr-item tags="prn.enc"/>
        <attr-item tags="prn.enc.ref"/>
      </def-attr>
-
-     <def-attr n="nbr">
-          <attr-item tags="sg"/>
-	  <attr-item tags="pl"/>
-	  <attr-item tags="sp"/>
-      </def-attr>
-
-      <def-attr n="cas">
-          <attr-item tags="nom"/>
-          <attr-item tags="gen"/>
-     </def-attr>
-
-     <def-attr n="defnes">
-          <attr-item tags="def"/>
-          <attr-item tags="ind"/>
-     </def-attr>
-    
+   
 </section-def-attrs>
 
 <section-def-vars>
       <def-var n="uno"/>
       <def-var n="genero"/>
-      <def-var n="numero"/>
+      <def-var n="numero" />
       <def-var n="concDet"/>
       <def-var n="concAdj"/>
       <def-var n="concPrimero"/>
@@ -132,18 +136,116 @@
       </when>     	    
     </choose>
   </def-macro>
+
+    <def-macro n="f_concord1" npar="1">
+
+      <choose><!--To determine value of variables of gender and
+                  number and propagate to other rules.  Variables are
+                  not used again in this rule -->
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="ut"/>
+            </equal>
+          </test>
+          <let><var n="genero"/><lit-tag v="ut"/></let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="nt"/>
+            </equal>
+          </test>
+          <let><var n="genero"/><lit-tag v="nt"/></let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="sg"/>
+            </equal>
+          </test>
+          <let><var n="numero"/><lit-tag v="sg"/></let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let><var n="numero"/><lit-tag v="pl"/></let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test> <!-- If word has GD or ND, we try to assign the
+                      gender or number of the previous rule. If there is no
+                      value for the gender or number variable from previous
+                      rules, gender will be common (utrum) and number singular.-->
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="GD"/>
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <var n="genero"/>
+                  <lit-tag v="nt"/>
+                </equal>
+              </test>
+              <let><clip pos="1" side="tl" part="gen"/><lit-tag v="nt"/></let>
+            </when>
+            <otherwise>
+              <let><clip pos="1" side="tl" part="gen"/><lit-tag v="ut"/></let>
+            </otherwise>
+          </choose>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="ND"/>
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="pl"/>
+                </equal>
+              </test>
+              <let><clip pos="1" side="tl" part="nbr"/><lit-tag v="pl"/></let>
+            </when>
+            <otherwise>
+              <let><clip pos="1" side="tl" part="nbr"/><lit-tag v="sg"/></let>
+            </otherwise>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
   
 </section-def-macros>
 
 <section-rules>
-   
-
 
    <rule> <!-- REGLA: NOM -->
       <pattern>
 	<pattern-item n="navn"/>
       </pattern>
       <action>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
 	  <out>    
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
@@ -155,68 +257,6 @@
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
          </out>       
-     </action>
-   </rule>
-
-
-   <rule> <!-- REGLA: DETERMINANT NOM -->
-      <pattern>
-	<pattern-item n="detdem"/>
-	<pattern-item n="navn"/>
-      </pattern>
-      <action>
-	  <out>    
-	    <lu>        
-	      <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_detdem"/>
-	      <clip pos="2" side="tl" part="gen"/>
-	      <clip pos="2" side="tl" part="nbr"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu> 
-	    <b pos="1"/>	   
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="2" side="tl" part="a_nom"/>
-	      <clip pos="2" side="tl" part="gen"/>
-	      <clip pos="2" side="tl" part="nbr"/>
-	      <clip pos="2" side="tl" part="defnes"/>
-	      <clip pos="2" side="tl" part="cas"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-         </out>       
-     </action>
-   </rule>
-
-
-
-   <rule> <!-- REGLA: DET ADJECTIU NOM-->
-      <pattern>
-	<pattern-item n="detdem"/>
-	<pattern-item n="adjec"/>
-	<pattern-item n="navn"/>
-	
-      </pattern>
-      <action>
-         <out>    
-	    <lu>  
-              <clip pos="1" side="tl" part="whole"/>
-	    </lu> 
-	    <b pos="1"/>	   
-	    <lu>
-       	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	    <b pos="2"/>
-            <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="3" side="tl" part="a_nom"/>
-	      <clip pos="3" side="tl" part="gen"/>
-	      <clip pos="3" side="tl" part="nbr"/>
-	      <clip pos="3" side="tl" part="defnes"/>
-	      <clip pos="3" side="tl" part="cas"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-         </out>
-       
      </action>
    </rule>
 
