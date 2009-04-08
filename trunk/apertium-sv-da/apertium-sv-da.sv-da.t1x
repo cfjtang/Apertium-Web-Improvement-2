@@ -6,6 +6,9 @@
     <def-cat n="navn">
       <cat-item tags="n.*"/>
     </def-cat>
+    <def-cat n="verb">
+      <cat-item tags="vblex.*"/>
+    </def-cat>
     <def-cat n="detdem">
       <cat-item tags="det.dem.*"/>
     </def-cat>
@@ -35,21 +38,11 @@
     </def-attr>
     <def-attr n="a_verb">
       <attr-item tags="vblex"/>
-      <attr-item tags="vber"/>
-      <attr-item tags="vbhar"/>
+      <attr-item tags="vbser"/>
+      <attr-item tags="vbhaver"/>
       <attr-item tags="vbmod"/>
       <attr-item tags="vbaux"/>
-      <attr-item tags="vbs"/>
     </def-attr>
-    <def-attr n="a_inf">
-      <attr-item tags="vblex.prs"/>
-      <attr-item tags="vber.prs"/>
-      <attr-item tags="vbhar.prs"/>
-      <attr-item tags="vbmod.prs"/>
-      <attr-item tags="vbaux.prs"/>
-      <attr-item tags="vbs.prs"/>
-    </def-attr>
-
     <def-attr n="gen">
       <attr-item tags="ut"/>
       <attr-item tags="nt"/>
@@ -76,11 +69,17 @@
       <attr-item tags="p3"/>
     </def-attr>
     <def-attr n="temps">
-      <attr-item tags="pres"/>
       <attr-item tags="inf"/>
-      <attr-item tags="prs"/>
+      <attr-item tags="pres"/>
       <attr-item tags="past"/>
-      <attr-item tags="part"/>
+      <attr-item tags="supn"/>
+      <attr-item tags="imp"/>
+      <attr-item tags="ppres"/>
+      <attr-item tags="pp"/>
+    </def-attr>
+    <def-attr n="voz">
+      <attr-item tags="actv"/>
+      <attr-item tags="pasv"/>
     </def-attr>
   </section-def-attrs>
 
@@ -118,6 +117,26 @@
       </choose>
     </def-macro>
 
+    <def-macro n="f_conjugar1" npar="1">
+      <choose>
+        <when> <!-- Change the supine in Swedish to the perfect participle in Danish -->
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="temps"/>
+                <lit-tag v="supn"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="voz"/>
+            <lit v=""/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="pp"/>
+          </let>
+        </when>
+      </choose>
+    </def-macro>
 
     <def-macro n="f_concord1" npar="1">
       <choose>
@@ -245,6 +264,26 @@
 
   <section-rules>
 
+    <rule comment="REGLA: VERB">
+      <pattern>
+        <pattern-item n="verb"/>
+      </pattern>
+      <action>
+        <call-macro n="f_conjugar1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="voz"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
     <rule comment="REGLA: NAVN">
       <pattern>
         <pattern-item n="navn"/>
@@ -267,6 +306,7 @@
       </action>
     </rule>
 
+ 
   </section-rules>
 
 </transfer>

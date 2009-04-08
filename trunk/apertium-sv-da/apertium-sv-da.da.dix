@@ -28,12 +28,16 @@
     <sdef n="vbmod" c="Modal verb"/>
     <sdef n="vbser" c="'To be' verb"/>
     <sdef n="vbhaver" c="'To have' verb"/>
-
+    
+    <sdef n="actv" c="Active voice"/>
+    <sdef n="pasv" c="Passive voice"/>
+  
     <sdef n="pres" c="Present"/>
     <sdef n="past" c="Past"/>
     <sdef n="imp" c="Imperfect"/>
     <sdef n="inf" c="Infinitive"/>
-    <sdef n="pp"/>
+    <sdef n="pp"  c="Past participle"/>
+    <sdef n="ppres"  c="Present participle"/>
 
     <sdef n="prn" c="Pronoun"/>
     <sdef n="rel" c="Relative pronoun"/>
@@ -2498,6 +2502,21 @@
 
     <!-- Verbs -->
 
+    <pardef n="S__voice">
+      <e>
+        <p>
+          <l/>
+          <r><s n="actv"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>s</l>
+          <r><s n="pasv"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <pardef n="/være__vbser">
       <e>
         <p>
@@ -2567,26 +2586,40 @@
     <pardef n="tal/e__vblex">
       <e>
         <p>
-          <l></l>
-          <r>e<s n="vblex"/><s n="imp"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
           <l>e</l>
           <r>e<s n="vblex"/><s n="inf"/></r>
         </p>
+        <par n="S__voice"/>
       </e>
       <e>
         <p>
           <l>er</l>
-          <r>e<s n="vblex"/><s n="pres"/></r>
+          <r>e<s n="vblex"/><s n="pres"/><s n="actv"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>es</l>
+          <r>e<s n="vblex"/><s n="pres"/><s n="pasv"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>te</l>
           <r>e<s n="vblex"/><s n="past"/></r>
+        </p>
+        <par n="S__voice"/>
+      </e>
+      <e>
+        <p>
+          <l></l>
+          <r>e<s n="vblex"/><s n="imp"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>ende</l>
+          <r>e<s n="vblex"/><s n="ppres"/></r>
         </p>
       </e>
       <e>
@@ -14014,6 +14047,7 @@
     <e lm="node"><i>node</i><par n="abe__n"/></e>
     <e lm="nodestativ"><i>nodestativ</i><par n="alibi__n"/></e>
     <e lm="mad"><i>mad</i><par n="mad__n"/></e>
+<!--    <e lm="mad"><i>mad</i><par n="ateist__n"/></e> -->
     <e lm="nød"><i>nød</i><par n="nød__n"/></e>
     <e lm="nødløgn"><i>nødløgn</i><par n="bold__n"/></e>
     <e lm="nødløsning"><i>nødløsning</i><par n="ateist__n"/></e>
@@ -32636,7 +32670,6 @@
     <e lm="kvittering"><p><l>kvitteringer</l><r>kvittering</r></p><par n="ateist__n"/></e>
     <e lm="lov"><i>lov</i><par n="ateist__n"/></e>
     <e lm="lugt"><i>lugt</i><par n="ateist__n"/></e>
-    <e lm="mad"><i>mad</i><par n="ateist__n"/></e>
     <e lm="mund"><i>mund</i><par n="ateist__n"/></e>
     <e lm="onsdag"><i>onsdag</i><par n="ateist__n"/></e>
     <e lm="ost"><i>ost</i><par n="ateist__n"/></e>
