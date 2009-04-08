@@ -12,7 +12,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
           <tbody>
             <tr>
-              <td width="1%"><a href="http://apertium.org"><img src="images/Apertium_logo_225x48.png" alt="Apertium"/></a> surf and translate</td>
+              <td><a href="http://apertium.org"><img src="/images/Apertium_logo_225x48.png" alt="Apertium"/></a>&nbsp;surf&nbsp;and&nbsp;translate</td>
               <td align="center">
               <b>
 <?php
