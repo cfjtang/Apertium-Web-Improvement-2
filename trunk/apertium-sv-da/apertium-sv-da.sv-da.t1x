@@ -1,145 +1,127 @@
-<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -*- nxml -*- -->
+
 <transfer>
-<section-def-cats>
+  <section-def-cats>
+    <def-cat n="navn">
+      <cat-item tags="n.*"/>
+    </def-cat>
+    <def-cat n="detdem">
+      <cat-item tags="det.dem.*"/>
+    </def-cat>
+    <def-cat n="adj">
+      <cat-item tags="adj.*"/>
+    </def-cat>
+    <def-cat n="adjec">
+      <cat-item tags="adj.*"/>
+      <cat-item tags="vblex.pret.*"/>
+    </def-cat>
+  </section-def-cats>
 
-     <def-cat n="navn">
-	  <cat-item tags="n.*"/>
-     </def-cat>
-     
-     <def-cat n="detdem">          
-	  <cat-item tags="det.dem.*"/>
-     </def-cat>
-      
-  
-     <def-cat n="adj">          
-	  <cat-item tags="adj.*"/>
-     </def-cat>
+  <section-def-attrs>
+    <def-attr n="a_nom">
+      <attr-item tags="n"/>
+    </def-attr>
+    <def-attr n="a_adj">
+      <attr-item tags="adj.pst"/>
+      <attr-item tags="adj.comp"/>
+      <attr-item tags="adj.sup"/>
+      <attr-item tags="adj.ssup"/>
+    </def-attr>
+    <def-attr n="a_det">
+      <attr-item tags="det"/>
+      <attr-item tags="det.pos"/>
+      <attr-item tags="det.dem"/>
+    </def-attr>
+    <def-attr n="a_verb">
+      <attr-item tags="vblex"/>
+      <attr-item tags="vber"/>
+      <attr-item tags="vbhar"/>
+      <attr-item tags="vbmod"/>
+      <attr-item tags="vbaux"/>
+      <attr-item tags="vbs"/>
+    </def-attr>
+    <def-attr n="a_inf">
+      <attr-item tags="vblex.prs"/>
+      <attr-item tags="vber.prs"/>
+      <attr-item tags="vbhar.prs"/>
+      <attr-item tags="vbmod.prs"/>
+      <attr-item tags="vbaux.prs"/>
+      <attr-item tags="vbs.prs"/>
+    </def-attr>
 
-     <def-cat n="adjec">          
-	  <cat-item tags="adj.*"/>
-	  <cat-item tags="vblex.pret.*"/>
-     </def-cat>
-      
-</section-def-cats>
+    <def-attr n="gen">
+      <attr-item tags="ut"/>
+      <attr-item tags="nt"/>
+      <attr-item tags="un"/>
+      <attr-item tags="GD"/>
+    </def-attr>
+    <def-attr n="nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+      <attr-item tags="ND"/>
+    </def-attr>
+    <def-attr n="cas">
+      <attr-item tags="nom"/>
+      <attr-item tags="gen"/>
+    </def-attr>
+    <def-attr n="defnes">
+      <attr-item tags="def"/>
+      <attr-item tags="ind"/>
+    </def-attr>
+    <def-attr n="persona">
+      <attr-item tags="p1"/>
+      <attr-item tags="p2"/>
+      <attr-item tags="p3"/>
+    </def-attr>
+    <def-attr n="temps">
+      <attr-item tags="pres"/>
+      <attr-item tags="inf"/>
+      <attr-item tags="prs"/>
+      <attr-item tags="past"/>
+      <attr-item tags="part"/>
+    </def-attr>
+  </section-def-attrs>
 
-<section-def-attrs>
-     <def-attr n="a_nom">
-	  <attr-item tags="n"/>
-     </def-attr>
+  <section-def-vars>
+    <def-var n="uno"/>
+    <def-var n="genero"/>
+    <def-var n="numero"/>
+    <def-var n="concDet"/>
+    <def-var n="concAdj"/>
+    <def-var n="concPrimero"/>
+    <def-var n="concSegundo"/>
+    <def-var n="concTercero"/>
+    <def-var n="interrogativa"/>
+    <def-var n="exclamativa"/>
+  </section-def-vars>
 
-     <def-attr n="a_adj">
-	  <attr-item tags="adj.pst"/>
-	  <attr-item tags="adj.comp"/>
-	  <attr-item tags="adj.sup"/>
-	  <attr-item tags="adj.ssup"/>
-     </def-attr>
+  <section-def-macros>
 
-     <def-attr n="a_detdem">          
-	  <attr-item tags="det.dem"/>
-      </def-attr>
-          
-     <def-attr n="gen">
-          <attr-item tags="ut"/>
-          <attr-item tags="nt"/>
-	  <attr-item tags="ea"/>
-	  <attr-item tags="GD"/>
-     </def-attr>
+    <def-macro n="f_bcond" npar="1">
+      <!--Per mirar si el blanc conté o no format -->
+      <choose>
+        <when>
+          <test>
+            <not>
+              <equal>
+                <b pos="1"/>
+                <lit v=" "/>
+              </equal>
+            </not>
+          </test>
+          <out>
+            <b pos="1"/>
+          </out>
+        </when>
+      </choose>
+    </def-macro>
 
-     <def-attr n="nbr">
-          <attr-item tags="sg"/>
-	  <attr-item tags="pl"/>
-	  <attr-item tags="sp"/>
-	  <attr-item tags="ND"/>
-      </def-attr>
-
-      <def-attr n="cas">
-          <attr-item tags="nom"/>
-          <attr-item tags="gen"/>
-     </def-attr>
-
-     <def-attr n="defnes">
-          <attr-item tags="def"/>
-          <attr-item tags="ind"/>
-     </def-attr>
-       
-       <def-attr n="persona">
-          <attr-item tags="p1"/>
-	  <attr-item tags="p2"/>
-	  <attr-item tags="p3"/>
-      </def-attr>
-
-     <def-attr n="a_verb">
-          <attr-item tags="vblex"/>
-	  <attr-item tags="vber"/>
-	  <attr-item tags="vbhar"/>
-	  <attr-item tags="vbmod"/>
-	  <attr-item tags="vbaux"/>
-	  <attr-item tags="vbs"/>
-     </def-attr>
-
-   
-     
-      <def-attr n="a_inf">
-          <attr-item tags="vblex.prs"/>
-	  <attr-item tags="vber.prs"/>
-	  <attr-item tags="vbhar.prs"/>
-	  <attr-item tags="vbmod.prs"/>
-	  <attr-item tags="vbaux.prs"/>
-	  <attr-item tags="vbs.prs"/>
-     </def-attr>
-
-     <def-attr n="temps">
-	  <attr-item tags="pres"/>
-	  <attr-item tags="inf"/>
-	  <attr-item tags="prs"/>
-	  <attr-item tags="da"/>
-	  <attr-item tags="part"/>
-       </def-attr>   
-
-     <def-attr n="a_prn">
-       <attr-item tags="prn.enc"/>
-       <attr-item tags="prn.enc.ref"/>
-     </def-attr>
-   
-</section-def-attrs>
-
-<section-def-vars>
-      <def-var n="uno"/>
-      <def-var n="genero"/>
-      <def-var n="numero" />
-      <def-var n="concDet"/>
-      <def-var n="concAdj"/>
-      <def-var n="concPrimero"/>
-      <def-var n="concSegundo"/>
-      <def-var n="concTercero"/>
-      <def-var n="interrogativa"/>
-      <def-var n="exclamativa"/>
-</section-def-vars>
-
-
-<section-def-macros>
-
-  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format -->
-    <choose>
-      <when>
-	<test>
-	  <not>
-	    <equal>
-	      <b pos="1"/>
-	      <lit v=" "/>
-	    </equal>
-	  </not>
-	</test>
-	<out>
-	  <b pos="1"/>
-	</out>
-      </when>     	    
-    </choose>
-  </def-macro>
 
     <def-macro n="f_concord1" npar="1">
-
-      <choose><!--To determine value of variables of gender and
+      <choose>
+        <!--To determine value of variables of gender and
                   number and propagate to other rules.  Variables are
                   not used again in this rule -->
         <when>
@@ -149,7 +131,10 @@
               <lit-tag v="ut"/>
             </equal>
           </test>
-          <let><var n="genero"/><lit-tag v="ut"/></let>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="ut"/>
+          </let>
         </when>
         <when>
           <test>
@@ -158,7 +143,10 @@
               <lit-tag v="nt"/>
             </equal>
           </test>
-          <let><var n="genero"/><lit-tag v="nt"/></let>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="nt"/>
+          </let>
         </when>
       </choose>
       <choose>
@@ -169,7 +157,10 @@
               <lit-tag v="sg"/>
             </equal>
           </test>
-          <let><var n="numero"/><lit-tag v="sg"/></let>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
         </when>
         <when>
           <test>
@@ -178,12 +169,16 @@
               <lit-tag v="pl"/>
             </equal>
           </test>
-          <let><var n="numero"/><lit-tag v="pl"/></let>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="pl"/>
+          </let>
         </when>
       </choose>
       <choose>
         <when>
-          <test> <!-- If word has GD or ND, we try to assign the
+          <test>
+            <!-- If word has GD or ND, we try to assign the
                       gender or number of the previous rule. If there is no
                       value for the gender or number variable from previous
                       rules, gender will be common (utrum) and number singular.-->
@@ -200,10 +195,16 @@
                   <lit-tag v="nt"/>
                 </equal>
               </test>
-              <let><clip pos="1" side="tl" part="gen"/><lit-tag v="nt"/></let>
+              <let>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="nt"/>
+              </let>
             </when>
             <otherwise>
-              <let><clip pos="1" side="tl" part="gen"/><lit-tag v="ut"/></let>
+              <let>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="ut"/>
+              </let>
             </otherwise>
           </choose>
         </when>
@@ -224,42 +225,48 @@
                   <lit-tag v="pl"/>
                 </equal>
               </test>
-              <let><clip pos="1" side="tl" part="nbr"/><lit-tag v="pl"/></let>
+              <let>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </let>
             </when>
             <otherwise>
-              <let><clip pos="1" side="tl" part="nbr"/><lit-tag v="sg"/></let>
+              <let>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </let>
             </otherwise>
           </choose>
         </when>
       </choose>
     </def-macro>
-  
-</section-def-macros>
 
-<section-rules>
+  </section-def-macros>
 
-   <rule> <!-- REGLA: NOM -->
+  <section-rules>
+
+    <rule comment="REGLA: NAVN">
       <pattern>
-	<pattern-item n="navn"/>
+        <pattern-item n="navn"/>
       </pattern>
       <action>
         <call-macro n="f_concord1">
           <with-param pos="1"/>
         </call-macro>
-	  <out>    
-	    <lu>
-	      <clip pos="1" side="tl" part="lemh"/>
-	      <clip pos="1" side="tl" part="a_nom"/>
-	      <clip pos="1" side="tl" part="gen"/>
-	      <clip pos="1" side="tl" part="nbr"/>
-	      <clip pos="1" side="tl" part="defnes"/>
-	      <clip pos="1" side="tl" part="cas"/>
-	      <clip pos="1" side="tl" part="lemq"/>
-	    </lu>
-         </out>       
-     </action>
-   </rule>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_nom"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="defnes"/>
+            <clip pos="1" side="tl" part="cas"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
 
-</section-rules>
+  </section-rules>
 
 </transfer>
