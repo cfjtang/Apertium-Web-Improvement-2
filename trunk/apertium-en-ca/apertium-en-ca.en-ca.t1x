@@ -146,14 +146,12 @@
 
 
     <def-cat n="verbcjnoser"> <!-- BCN -->
-      <cat-item tags="vblex.inf"/>
       <cat-item tags="vblex.pres"/>
       <cat-item tags="vblex.past"/>
       <cat-item tags="vblex.pri.*"/>
 
       <cat-item tags="vblex.sep.pres"/>
       <cat-item tags="vblex.sep.past"/>
-      <cat-item tags="vblex.sep.past.*"/>
       <cat-item tags="vblex.sep.pri.*"/>
     </def-cat>
 
@@ -829,7 +827,8 @@
     <def-var n="paraula2"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb_imp"/>
-    <def-var n="tipus_det"/> <!-- BCN-->
+    <def-var n="negative"/> <!-- BCN-->
+    <def-var n="tipus_det"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -1080,78 +1079,78 @@
 
     <def-macro n="f_concord2" npar="2"><!--1 = main parameter (typically noun); 2 = secondary parameter (typically adj or det) -->
       <let>
-       <var n="gen_chunk"/>
-       <lit v=""/>
-     </let>
-     <let>
-       <var n="nbr_chunk"/>
-       <lit v=""/>
-     </let>
-     <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
-       <when>
-	 <test>
-	   <equal>
-	     <clip pos="2" side="tl" part="a_num"/>
-	     <lit v=""/>
-	   </equal>
-	 </test>
-	 <choose><!--si no te valor per a gènere i , per tant, tampoc per a nombre: -->
-	   <when>
-	     <test>
-	       <equal>
-		 <clip pos="2" side="tl" part="gen"/>
-		 <lit v=""/>
-	       </equal>
-	     </test>
-	     <let>
-	       <var n="paraula1"/>
-	       <clip pos="2" side="tl" part="lemh"/>
-	     </let>
-	     <append n="paraula1">
-	       <clip pos="2" side="tl" part="tags"/>
-	       <lit-tag v="GD"/>
-	       <lit-tag v="ND"/>
-	       <clip pos="2" side="tl" part="lemq"/>
-	     </append>
-	     <let>
-	       <clip pos="2" side="tl" part="whole"/>
-	       <var n="paraula1"/>
-	     </let>
-	   </when>
-	   <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
-	     <test>
-	       <equal>
-		 <clip pos="2" side="tl" part="nbr"/>
-		 <lit v=""/>
-	       </equal>
-	     </test>
-	     <let>
-	       <var n="paraula1"/>
-	       <clip pos="2" side="tl" part="lemh"/>
-	     </let>
-	     <append n="paraula1">
-	       <clip pos="2" side="tl" part="tags"/>
-	       <lit-tag v="ND"/>
-	       <clip pos="2" side="tl" part="lemq"/>
-	     </append>
-	     <let>
-	       <clip pos="2" side="tl" part="whole"/>
-	       <var n="paraula1"/>
-	     </let>
-	   </when>
-	 </choose>
-       </when>
-     </choose>
+	<var n="gen_chunk"/>
+	<lit v=""/>
+      </let>
+      <let>
+	<var n="nbr_chunk"/>
+	<lit v=""/>
+      </let>
+      <choose><!--posa GD i ND a la paraula si no té valor per a gènere o per a nombre (excepte números) -->
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="2" side="tl" part="a_num"/>
+	      <lit v=""/>
+	    </equal>
+	  </test>
+	  <choose><!--si no te valor per a gènere i , per tant, tampoc per a nombre: -->
+	    <when>
+	      <test>
+		<equal>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <lit v=""/>
+		</equal>
+	      </test>
+	      <let>
+		<var n="paraula1"/>
+		<clip pos="2" side="tl" part="lemh"/>
+	      </let>
+	      <append n="paraula1">
+		<clip pos="2" side="tl" part="tags"/>
+		<lit-tag v="GD"/>
+		<lit-tag v="ND"/>
+		<clip pos="2" side="tl" part="lemq"/>
+	      </append>
+	      <let>
+		<clip pos="2" side="tl" part="whole"/>
+		<var n="paraula1"/>
+	      </let>
+	    </when>
+	    <when><!--si la paraula no té valor per a nombre (però sí per a gènere, ja que sinó hauria entrat pel when anterior) -->
+	      <test>
+		<equal>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit v=""/>
+		</equal>
+	      </test>
+	      <let>
+		<var n="paraula1"/>
+		<clip pos="2" side="tl" part="lemh"/>
+	      </let>
+	      <append n="paraula1">
+		<clip pos="2" side="tl" part="tags"/>
+		<lit-tag v="ND"/>
+		<clip pos="2" side="tl" part="lemq"/>
+	      </append>
+	      <let>
+		<clip pos="2" side="tl" part="whole"/>
+		<var n="paraula1"/>
+	      </let>
+	    </when>
+	  </choose>
+	</when>
+      </choose>
 
 
-<!--OPERACIONS DE GÈNERE -->
+      <!--OPERACIONS DE GÈNERE -->
       <choose>
 	<when>
 	  <test>
-	      <equal>
-		<clip pos="2" side="tl" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
+	    <equal>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="GD"/>
+	    </equal>
 	  </test>
 	  <choose>
 	    <when>
@@ -1202,10 +1201,10 @@
       <choose>
 	<when>
 	  <test>
-	      <equal>
-		<clip pos="1" side="tl" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
+	    <equal>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="GD"/>
+	    </equal>
 	  </test>
 	  <let>
 	    <var n="gen_chunk"/>
@@ -1251,15 +1250,15 @@
 	  </choose>
 	</otherwise>
       </choose>
-<!--OPERACIONS DE NOMBRE -->
+      <!--OPERACIONS DE NOMBRE -->
 
-  <choose>
+      <choose>
 	<when>
 	  <test>
-	      <equal>
-		<clip pos="2" side="tl" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
+	    <equal>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="ND"/>
+	    </equal>
 	  </test>
 	  <choose>
 	    <when>
@@ -1310,10 +1309,10 @@
       <choose>
 	<when>
 	  <test>
-	      <equal>
-		<clip pos="1" side="tl" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
+	    <equal>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="ND"/>
+	    </equal>
 	  </test>
 	  <let>
 	    <var n="nbr_chunk"/>
@@ -1343,15 +1342,43 @@
 	<otherwise><!--si nombre de pos 1 és sp -->
 	  <choose>
 	    <when>
-	      <test><!--si el nombre de pos 2 és ND, el nombre del chunk serà tb ND (deixant pos 1 com a sp) per si es pot assignar nombre a pos 2  -->
-		<not>
+	      <test>
+		<or>
 		  <equal>
 		    <clip pos="2" side="tl" part="nbr"/>
-		    <lit-tag v="ND"/>
+		    <lit-tag v="sg"/>
 		  </equal>
-		</not>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="pl"/>
+		  </equal>
+		</or>
 	      </test>
 	      <let>
+		<var n="nbr_chunk"/>
+		<clip pos="2" side="tl" part="nbr"/>
+	      </let>
+	    </when>
+	    <when>
+	      <test><!--si pos 2 és també sp-->
+		<equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="sp"/>
+		  </equal>
+	      </test>	      
+	      <let>
+		<var n="nbr_chunk"/>
+		<clip pos="1" side="tl" part="nbr"/>
+	      </let>
+	    </when>
+	    <when>
+	      <test><!--si pos 2 no té nombre (ex: xifres) -->
+		<equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit v=""/>
+		  </equal>
+	      </test>
+	      <let> <!-- el nombre del chunk serà sp, que no estarà enllaçat amb la posició 2 (pq no té valor per a l'atribut nbr"-->
 		<var n="nbr_chunk"/>
 		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
@@ -1359,7 +1386,7 @@
 	  </choose>
 	</otherwise>
       </choose>
-</def-macro>
+    </def-macro>
 
 
 
@@ -1684,7 +1711,7 @@
 		<clip pos="1" side="tl" part="nbr"/>
 	      </let>
 	    </when>
-	    <otherwise><!--si nombre pos 1 és sp -->
+	    <otherwise><!--si nombre pos 1 és sp o no té nombre -->
 	      <let>
 		<var n="nbr_chunk"/>
 		<lit-tag v="ND"/>
@@ -1729,26 +1756,84 @@
 	<otherwise><!--si nombre de pos 1 és sp -->
 	  <choose>
 	    <when>
-	      <test><!--si el nombre de pos 2 és ND, el nombre del chunk serà tb ND (deixant pos 1 com a sp) per si es pot assignar nombre a pos 2  -->
-		<and>		  
-		  <not>
-		    <equal>
-		      <clip pos="2" side="tl" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </not>		  
-		  <not>
-		    <equal>
-		      <clip pos="3" side="tl" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </not>
-		</and>
+	      <test>
+		<or>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="sg"/>
+		  </equal>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="pl"/>
+		  </equal>
+		</or>
 	      </test>
 	      <let>
 		<var n="nbr_chunk"/>
-		<clip pos="1" side="tl" part="nbr"/>
+		<clip pos="2" side="tl" part="nbr"/>
 	      </let>
+	    </when>
+	    <when>
+	      <test><!--si pos 2 és també sp-->
+		<equal>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit-tag v="sp"/>
+		</equal>
+	      </test>	 
+	      <choose><!--si pos 3 no és sp o ND, assigna gènere de pos 3 al chunk-->
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="3" side="tl" part="nbr"/>
+		  </let>
+		</when>
+	      </choose>
+	    </when>
+	    <when>
+	      <test><!--si pos 2 no té nombre (ex: xifres) -->
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit v=""/>
+		  </equal>
+	      </test>
+	      <choose>
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="3" side="tl" part="nbr"/>
+		  </let>
+		</when>
+		<otherwise>
+		  <let> <!-- el nombre del chunk serà sp, que no estarà enllaçat amb la posició 2 (pq no té valor per a l'atribut nbr"-->
+		    <var n="nbr_chunk"/>
+		    <clip pos="1" side="tl" part="nbr"/>
+		  </let>
+		</otherwise>
+	      </choose>
 	    </when>
 	  </choose>
 	</otherwise>
@@ -2243,38 +2328,138 @@
 	</let>
       </when>
       <otherwise><!--si nombre de pos 1 és sp -->
-	<choose>
-	  <when>
-	    <test><!--si el nombre de pos 2 és ND, el nombre del chunk serà tb ND (deixant pos 1 com a sp) per si es pot assignar nombre a pos 2  -->
-	      <and>		  
-		<not>
+      <choose>
+	    <when>
+	      <test>
+		<or>
 		  <equal>
 		    <clip pos="2" side="tl" part="nbr"/>
-		    <lit-tag v="ND"/>
+		    <lit-tag v="sg"/>
 		  </equal>
-		</not>		  
-		<not>
 		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="pl"/>
+		  </equal>
+		</or>
+	      </test>
+	      <let>
+		<var n="nbr_chunk"/>
+		<clip pos="2" side="tl" part="nbr"/>
+	      </let>
+	    </when>
+	    <when>
+	      <test><!--si pos 2 és també sp-->
+		<equal>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit-tag v="sp"/>
+		</equal>
+	      </test>	 
+	      <choose><!--si pos 3 no és sp o ND, assigna gènere de pos 3 al chunk-->
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
 		    <clip pos="3" side="tl" part="nbr"/>
-		    <lit-tag v="ND"/>
-		  </equal>
-		</not>		  
-		<not>
+		  </let>
+		</when>		
+		<when>
+		  <test><!--si pos 3 és també sp-->
+		    <equal>
+		      <clip pos="3" side="tl" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </test>	 
+		  <choose><!--si pos 4 no és sp o ND, assigna gènere de pos 4 al chunk-->
+		    <when>
+		      <test>
+			<or>
+			  <equal>
+			    <clip pos="4" side="tl" part="nbr"/>
+			    <lit-tag v="sg"/>
+			  </equal>
+			  <equal>
+			    <clip pos="4" side="tl" part="nbr"/>
+			    <lit-tag v="pl"/>
+			  </equal>
+			</or>
+		      </test>
+		      <let>
+			<var n="nbr_chunk"/>
+			<clip pos="4" side="tl" part="nbr"/>
+		      </let>
+		    </when>
+		  </choose>
+		</when>
+	      </choose>
+	    </when>
+
+	    <when>
+	      <test><!--si pos 2 no té nombre (ex: xifres) -->
 		  <equal>
-		    <clip pos="4" side="tl" part="nbr"/>
-		    <lit-tag v="ND"/>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit v=""/>
 		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <var n="nbr_chunk"/>
-	      <clip pos="1" side="tl" part="nbr"/>
-	    </let>
-	  </when>
-	</choose>
-      </otherwise>
-    </choose>
+	      </test>
+	      <choose>
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="3" side="tl" part="nbr"/>
+		  </let>
+		</when>
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="4" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="4" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="4" side="tl" part="nbr"/>
+		  </let>
+		</when>
+		<otherwise>
+		  <let> <!-- el nombre del chunk serà sp, que no estarà enllaçat amb la posició 2 (pq no té valor per a l'atribut nbr"-->
+		    <var n="nbr_chunk"/>
+		    <clip pos="1" side="tl" part="nbr"/>
+		  </let>
+		</otherwise>
+	      </choose>
+	    </when>
+	  </choose>
+	</otherwise>
+      </choose>
+
     <choose><!--i aquí les operacions per a posició 3. -->
       <when>
 	<test>
@@ -2896,34 +3081,181 @@
 	  </let>
 	</when>
 	<otherwise><!--si nombre de pos 1 és sp -->
-	  <choose>
+	<choose>
 	    <when>
-	      <test><!--si el nombre de pos 2 és ND, el nombre del chunk serà tb ND (deixant pos 1 com a sp) per si es pot assignar nombre a pos 2  -->
-		<and>		  
-		  <not>
-		    <equal>
-		      <clip pos="2" side="tl" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </not>		  
-		  <not>
-		    <equal>
-		      <clip pos="3" side="tl" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </not>		  
-		  <not>
-		    <equal>
-		      <clip pos="4" side="tl" part="nbr"/>
-		      <lit-tag v="ND"/>
-		    </equal>
-		  </not>
-		</and>
+	      <test>
+		<or>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="sg"/>
+		  </equal>
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit-tag v="pl"/>
+		  </equal>
+		</or>
 	      </test>
 	      <let>
 		<var n="nbr_chunk"/>
-		<clip pos="1" side="tl" part="nbr"/>
+		<clip pos="2" side="tl" part="nbr"/>
 	      </let>
+	    </when>
+	    <when>
+	      <test><!--si pos 2 és també sp-->
+		<equal>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit-tag v="sp"/>
+		</equal>
+	      </test>	 
+	      <choose><!--si pos 3 no és sp o ND, assigna gènere de pos 3 al chunk-->
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="3" side="tl" part="nbr"/>
+		  </let>
+		</when>		
+		<when>
+		  <test><!--si pos 3 és també sp-->
+		    <equal>
+		      <clip pos="3" side="tl" part="nbr"/>
+		      <lit-tag v="sp"/>
+		    </equal>
+		  </test>	 
+		  <choose><!--si pos 4 no és sp o ND, assigna gènere de pos 4 al chunk-->
+		    <when>
+		      <test>
+			<or>
+			  <equal>
+			    <clip pos="4" side="tl" part="nbr"/>
+			    <lit-tag v="sg"/>
+			  </equal>
+			  <equal>
+			    <clip pos="4" side="tl" part="nbr"/>
+			    <lit-tag v="pl"/>
+			  </equal>
+			</or>
+		      </test>
+		      <let>
+			<var n="nbr_chunk"/>
+			<clip pos="4" side="tl" part="nbr"/>
+		      </let>
+		    </when>
+
+		    <when>
+		      <test><!--si pos 4 és també sp-->
+			<equal>
+			  <clip pos="4" side="tl" part="nbr"/>
+			  <lit-tag v="sp"/>
+			</equal>
+		      </test>	 
+		      <choose><!--si pos 5 no és sp o ND, assigna gènere de pos 5 al chunk-->
+			<when>
+			  <test>
+			    <or>
+			      <equal>
+				<clip pos="5" side="tl" part="nbr"/>
+				<lit-tag v="sg"/>
+			      </equal>
+			      <equal>
+				<clip pos="5" side="tl" part="nbr"/>
+				<lit-tag v="pl"/>
+			      </equal>
+			    </or>
+			  </test>
+			  <let>
+			    <var n="nbr_chunk"/>
+			    <clip pos="5" side="tl" part="nbr"/>
+			  </let>
+			</when>
+		      </choose>
+		    </when>		
+			
+		  </choose>
+		</when>
+	      </choose>
+	    </when>
+
+	    <when>
+	      <test><!--si pos 2 no té nombre (ex: xifres) -->
+		  <equal>
+		    <clip pos="2" side="tl" part="nbr"/>
+		    <lit v=""/>
+		  </equal>
+	      </test>
+	      <choose>
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="3" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="3" side="tl" part="nbr"/>
+		  </let>
+		</when>
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="4" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="4" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="4" side="tl" part="nbr"/>
+		  </let>
+		</when>
+		<when>
+		  <test>
+		    <or>
+		      <equal>
+			<clip pos="5" side="tl" part="nbr"/>
+			<lit-tag v="sg"/>
+		      </equal>
+		      <equal>
+			<clip pos="5" side="tl" part="nbr"/>
+			<lit-tag v="pl"/>
+		      </equal>
+		    </or>
+		  </test>
+		  <let>
+		    <var n="nbr_chunk"/>
+		    <clip pos="5" side="tl" part="nbr"/>
+		  </let>
+		</when>
+		<otherwise>
+		  <let> <!-- el nombre del chunk serà sp, que no estarà enllaçat amb la posició 2 (pq no té valor per a l'atribut nbr"-->
+		    <var n="nbr_chunk"/>
+		    <clip pos="1" side="tl" part="nbr"/>
+		  </let>
+		</otherwise>
+	      </choose>
 	    </when>
 	  </choose>
 	</otherwise>
@@ -3176,7 +3508,7 @@
 	    <lit-tag v="sg"/>
 	  </let>
 	  <let> <!-- BCN -->
-	    <var n="tipus_det"/>
+	    <var n="negative"/>
 	    <lit-tag v="negacio"/>
 	  </let>
 	</when>
@@ -3196,13 +3528,13 @@
 	    </and>
 	  </test>
 	  <let> <!-- BCN -->
-	    <var n="tipus_det"/>
+	    <var n="negative"/>
 	    <lit-tag v="negacio"/>
 	  </let>
 	</when>
 	<otherwise>
 	  <let>
-	    <var n="tipus_det"/>
+	    <var n="negative"/>
 	    <lit v=""/>
 	  </let>
 	</otherwise>
@@ -3210,7 +3542,41 @@
 
     </def-macro>
 
-
+    <def-macro n="determiner" npar="1"><!-- to put in rules beginning with a determiner -->
+      <choose>
+	<when>
+	  <test>
+	      <equal>
+		<clip pos="1" side="tl" part="a_det"/>
+		<lit-tag v="det.ord"/>
+	      </equal>
+	  </test>
+	  <let>
+	    <var n="tipus_det"/>
+	    <lit-tag v="UNDET"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	      <equal>
+		<clip pos="1" side="tl" part="a_det"/>
+		<lit-tag v="det.qnt"/>
+	      </equal>
+	  </test>
+	  <let>
+	    <var n="tipus_det"/>
+	    <lit-tag v="UNDEF"/>
+	  </let>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="tipus_det"/>
+	    <lit-tag v="DET"/>
+	  </let>
+	</otherwise>
+      </choose>
+    </def-macro>
+	  
 
     <def-macro n="comparatiu_adj1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
       <let>
@@ -4617,10 +4983,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	    <out>
-	      <chunk name="all_noun_plural" case="caseFirstWord">
+	      <chunk name="det_det_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -4678,11 +5048,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	    <out>
-	      <chunk name="all_noun_plural" case="caseFirstWord">
+	      <chunk name="det_det_nom_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -4748,13 +5122,17 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
-	      <tag><var n="tipus_det"/></tag> <!-- BCN per recollir si es negacio-->
+	      <tag><var n="negative"/></tag> <!-- BCN per recollir si es negacio-->
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -4846,10 +5224,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
 	  <chunk name="det_det_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -4907,10 +5289,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
 	  <chunk name="det_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5065,10 +5451,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
 	  <chunk name="det_det_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5124,6 +5514,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -5172,7 +5565,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="det_num_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5230,6 +5624,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="3"/>
 	  <with-param pos="2"/>
@@ -5262,14 +5659,12 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <lit-tag v="ND"/>
 	    </let>
 	  </when>
-	</choose>
-
-
-		
+	</choose>		
 	<out> 
-	  <chunk name="such_a_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5324,7 +5719,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -5378,10 +5773,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro>  
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5449,7 +5848,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>  
 	<out> 
-	  <chunk name="num_adj_nom" case="caseFirstWord">
+	  <chunk name="num_nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -5511,10 +5910,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_det_adj_nom" case="caseFirstWord">
+	  <chunk name="det_det_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5587,16 +5990,96 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_num_adj_nom" case="caseFirstWord">
+	  <chunk name="det_num_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
+	      <clip pos="1" side="tl" part="gen_mf"/>
+	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
+	      <clip pos="1" side="tl" part="nbr_sp"/>
+	    </lu> 
+	    <b pos="1"/>
+	    <lu> 
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_num"/>
+	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
+	      <clip pos="2" side="tl" part="gen_mf"/>
+	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
+	      <clip pos="2" side="tl" part="nbr_sp"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>   
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_nom"/>
+	      <clip pos="4" side="tl" part="gen_sense_mf" link-to="3"/>
+	      <clip pos="4" side="tl" part="gen_mf"/>
+	      <clip pos="4" side="tl" part="nbr_sense_sp" link-to="4"/>
+	      <clip pos="4" side="tl" part="nbr_sp"/>
+	      <clip pos="4" side="tl" part="lemq"/> 
+	    </lu>
+	    <b pos="3"/>
+	    <lu> 
+	      <var n="adjectiu1"/>   
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_adj"/>
+	      <clip pos="3" side="tl" part="gen_sense_mf" link-to="3"/>
+	      <clip pos="3" side="tl" part="gen_mf"/>
+	      <clip pos="3" side="tl" part="nbr_sense_sp" link-to="4"/>
+	      <clip pos="3" side="tl" part="nbr_sp"/>
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+  <rule comment="REGLA: ADJ NUM ADJ NOM (top 100 listed companies)">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="num"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<call-macro n="million">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="flexio_numerals">
+	  <with-param pos="2"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="f_concord4">
+	  <with-param pos="4"/>
+	  <with-param pos="3"/>
+	  <with-param pos="2"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="comparatiu_adj1">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adj_num_nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><var n="gen_chunk"/></tag>
+	      <tag><var n="nbr_chunk"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_adj"/>
 	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
 	      <clip pos="1" side="tl" part="gen_mf"/>
 	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
@@ -5659,11 +6142,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</call-macro>
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="3"/>
-	</call-macro>  
+	</call-macro> 
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro> 
 	<out> 
-	  <chunk name="det_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5732,7 +6219,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro> 
 	<out> 
-	  <chunk name="num_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="num_nom_adv_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -5795,7 +6282,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>  
 	<out> 
-	  <chunk name="adv_adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adv_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -5854,10 +6341,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="4"/>
 	</call-macro>  
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_detquant_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="det_det_nom_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -5871,6 +6362,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu> 
 	    <b pos="1"/>	    
 	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/>
+	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
+	      <clip pos="2" side="tl" part="gen_mf"/>
+	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
+	      <clip pos="2" side="tl" part="nbr_sp"/>
+	    </lu> 
+	    <b pos="2"/>	    
+	    <lu>   
 	      <clip pos="5" side="tl" part="lemh"/> 
 	      <clip pos="5" side="tl" part="a_nom"/>
 	      <clip pos="5" side="tl" part="gen_sense_mf" link-to="3"/>
@@ -5878,15 +6378,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="5" side="tl" part="nbr_sense_sp" link-to="4"/>
 	      <clip pos="5" side="tl" part="nbr_sp"/>
 	      <clip pos="5" side="tl" part="lemq"/> 
-	    </lu> 
-	    <b pos="2"/>	    
-	    <lu>   
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_det"/>
-	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="2" side="tl" part="gen_mf"/>
-	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="2" side="tl" part="nbr_sp"/>
 	    </lu> 
 	    <b pos="3"/>
 	    <lu>   
@@ -5936,10 +6427,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="4"/>
 	</call-macro>  
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_num_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="det_num_nom_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.NUM"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6008,7 +6503,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="adv_adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adj_adv" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -6071,10 +6566,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="3"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adj_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6151,10 +6650,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_det_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_det_nom_adj_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6239,10 +6742,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_adv_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adj_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6319,9 +6826,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="4"/>
 	</call-macro>
 	<out> 
-	  <chunk name="det_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="num_nom_adj_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6403,7 +6910,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro>
 	<out> 
-	  <chunk name="num_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="num_nom_adj_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -6485,10 +6992,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_num_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_num_nom_adj_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.NUM"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6566,7 +7077,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>  
 	<out> 
-	  <chunk name="adj_adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adj_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -6642,10 +7153,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_num_adv_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_num_nom_adj_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.NUM"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6741,10 +7256,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_num_adv_adj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_det_nom_adj_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.NUM"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6759,7 +7278,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <b pos="1"/>
 	    <lu>   
 	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_num"/>
+	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
 	      <clip pos="2" side="tl" part="gen_mf"/>
 	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
@@ -6831,11 +7350,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="3"/>
 	</call-macro>
-
 	<out>
-	  <chunk name="adj_conj_adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adj_conj_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6883,7 +7401,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
       <pattern>
 	<pattern-item n="adj"/>
 	<pattern-item n="cnjcoo"/>
-	<pattern-item n="adv"/>
+	<pattern-item n="adv_preadv"/>
 	<pattern-item n="adj"/>
 	<pattern-item n="nom"/>
       </pattern>
@@ -6904,9 +7422,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</call-macro>
 
 	<out>
-	  <chunk name="adj_conj_adj_adv_nom" case="caseFirstWord">
+	  <chunk name="nom_adj_conj_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -6936,6 +7454,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	    <b pos="3"/>
 	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="4"/>
+	    <lu>
 	      <var n="adjectiu2"/>
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
@@ -6944,10 +7466,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <clip pos="4" side="tl" part="nbr_sense_sp" link-to="4"/>
 	      <clip pos="4" side="tl" part="nbr_sp"/>
 	      <clip pos="4" side="tl" part="lemq"/>  
-	    </lu>
-	    <b pos="4"/>
-	    <lu>
-	      <clip pos="3" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -6982,11 +7500,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	<out>
-	  <chunk name="det_adj_conj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adj_conj_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -7069,11 +7591,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	<out>
-	  <chunk name="det_adj_conj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adj_conj_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -7159,11 +7685,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	<out>
-	  <chunk name="det_adv_adj_conj_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adv_adj_conj_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -7252,10 +7782,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj2">
 	  <with-param pos="4"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_adj_cm_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adj_cm_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -7331,7 +7865,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro>  
 	<out> 
-	  <chunk name="adj_cm_adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adj_cm_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -7397,7 +7931,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>
 	<out>
-	  <chunk name="adj_nom" case="caseFirstWord">
+	  <chunk name="nom_'adj'" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -7455,7 +7989,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="adj_nom" case="caseFirstWord">
+	  <chunk name="'nom'_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -7517,10 +8051,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro>  
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_adj_nom" case="caseFirstWord">
+	  <chunk name="det_'nom'_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -7590,10 +8128,14 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="3"/>
 	</call-macro>  
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out> 
-	  <chunk name="det_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_'adj'" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -7689,7 +8231,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out> 
-	      <chunk name="nom_de_nom" case="caseFirstWord">
+	      <chunk name="nom_pr_nom" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SN.UNDET"/></tag>
 		  <tag><clip pos="2" side="tl" part="gen"/></tag>
@@ -7761,6 +8303,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -7805,9 +8350,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>
 	    <out> 
-	      <chunk name="det_nom_nom" case="caseFirstWord">
+	      <chunk name="det_nom_pr_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -7856,7 +8402,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <out> 
 	      <chunk name="det_nom_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -7954,7 +8501,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>
 	<out> 
-	  <chunk name="num_nom_nom" case="caseFirstWord">
+	  <chunk name="num_nom_pr_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -8098,7 +8645,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </when>
 	</choose>
 	<out> 
-	  <chunk name="num_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_num_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><clip pos="4" side="tl" part="gen"/></tag>
@@ -8224,7 +8771,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</when>
 	</choose>
 	<out> 
-	  <chunk name="adj_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="4" side="tl" part="gen"/></tag>
@@ -8275,6 +8822,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="det_no">
 	  <with-param pos="1"/>
 	  <with-param pos="5"/>
+	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="f_concord2">
 	  <with-param pos="5"/>
@@ -8359,9 +8909,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</choose>
 
 	<out> 
-	  <chunk name="det_adj_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>	
@@ -8510,9 +9061,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</choose>
 
 	<out> 
-	  <chunk name="num_adj_nom_nom" case="caseFirstWord">
+	  <chunk name="num_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>	
@@ -8650,7 +9201,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</when>
 	</choose>
 	<out> 
-	  <chunk name="adj_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="5" side="tl" part="gen"/></tag>
@@ -8718,6 +9269,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="det_no">
 	  <with-param pos="1"/>
 	  <with-param pos="6"/>
+	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="f_concord2">
 	  <with-param pos="6"/>
@@ -8802,9 +9356,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</choose>
 
 	<out> 
-	  <chunk name="adj_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -8969,9 +9524,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</choose>
 
 	<out> 
-	  <chunk name="adj_nom_nom" case="caseFirstWord">
+	  <chunk name="num_nom_pr_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>	
@@ -9050,7 +9605,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="adv_adj_nom" case="caseFirstWord">
+	  <chunk name="nom_adv_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -9109,9 +9664,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="num_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="num_nom_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>	
@@ -9166,6 +9721,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	  <with-param pos="5"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="f_concord3">
 	  <with-param pos="5"/>
 	  <with-param pos="4"/>
@@ -9175,9 +9733,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="det_adv_adj_nom" case="caseFirstWord">
+	  <chunk name="det_nom_adv_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>	
@@ -9231,6 +9790,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -9276,9 +9838,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro>	    
 	    <out> 
-	      <chunk name="det_det_nom_nom" case="caseFirstWord">
+	      <chunk name="det_det_nom_pr_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -9337,7 +9900,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <out> 
 	      <chunk name="det_det_nom_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -9394,6 +9958,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="flexio_numerals">
 	  <with-param pos="2"/>
 	  <with-param pos="4"/>
@@ -9446,9 +10013,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro>
 	    <out> 
-	      <chunk name="det_num_nom_nom" case="caseFirstWord">
+	      <chunk name="det_num_nom_pr_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -9507,7 +10075,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <out> 
 	      <chunk name="det_num_nom_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -9565,6 +10134,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="flexio_numerals">
 	  <with-param pos="2"/>
 	  <with-param pos="4"/>
@@ -9614,9 +10186,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </when>
 	</choose>
 	<out> 
-	  <chunk name="det_num_guio_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -9783,7 +10356,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      </when>
 	    </choose>	  
 	    <out> 
-	      <chunk name="adj_nom_nom" case="caseFirstWord">
+	      <chunk name="nom_pr_nom_adj" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SN.UNDET"/></tag>
 		  <tag><clip pos="3" side="tl" part="gen"/></tag>
@@ -9830,7 +10403,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro>   
 	    <out> <!--'beautiful son James' -->
-	      <chunk name="adj_nom_nom" case="caseFirstWord">
+	      <chunk name="nom_adj_nom" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SN.UNDET"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
@@ -9882,6 +10455,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro>  
@@ -9931,9 +10507,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro> 
 	    <out> 
-	      <chunk name="det_adj_nom_nom" case="caseFirstWord">
+	      <chunk name="det_nom_pr_nom_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -9992,9 +10569,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="4"/>
 	    </call-macro>
 	    <out> 
-	      <chunk name="det_adj_nom_nom" case="caseFirstWord">
+	      <chunk name="det_nom_adj_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -10105,9 +10683,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro> 
 	    <out> 
-	      <chunk name="adj_adj_nom_nom" case="caseFirstWord">
+	      <chunk name="nom_pr_nom_adj_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN.UNDET"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -10167,9 +10745,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="4"/>
 	    </call-macro>
 	    <out> 
-	      <chunk name="adj_adj_nom_nom" case="caseFirstWord">
+	      <chunk name="nom_adj_adj_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN.UNDET"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -10231,6 +10809,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro>  
@@ -10284,9 +10865,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="4"/>
 	    </call-macro> 
 	    <out> 
-	      <chunk name="adj_adj_nom_nom" case="caseFirstWord">
+	      <chunk name="det_nom_pr_nom_adj_adj" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -10356,9 +10938,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="5"/>
 	    </call-macro>
 	    <out> 
-	      <chunk name="adj_adj_nom_nom" case="caseFirstWord">
+	      <chunk name="det_nom_adj_adj_nom" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -10395,7 +10978,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		<lu>   
 		  <var n="adjectiu1"/> 
 		  <clip pos="2" side="tl" part="lem"/> 
-		  <clip pos="2" side="tl" part="a_det"/>
+		  <clip pos="2" side="tl" part="a_adj"/>
 		  <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
 		  <clip pos="2" side="tl" part="gen_mf"/>
 		  <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
@@ -10456,7 +11039,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </call-macro>
 
 	<out> 
-	  <chunk name="nom_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_nom_pr_det_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="3" side="tl" part="gen"/></tag>
@@ -10516,7 +11099,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="1"/>
 	    </call-macro>
 	    <out> 
-	  <chunk name="nom_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_det_nom_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="2" side="tl" part="gen"/></tag>
@@ -10627,6 +11210,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	<choose>
 	  <when>
@@ -10658,9 +11244,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="2"/>
 	    </call-macro>
 	<out> 
-	  <chunk name="det_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_pr_det_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -10735,9 +11322,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </call-macro>
 	    
 	    <out> 
-	  <chunk name="det_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_det_nom_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -10836,7 +11424,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro>
 	<out> 
-	  <chunk name="adj_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -10903,7 +11491,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="4"/>
 	    </call-macro>
 	<out> 
-	  <chunk name="adj_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_nom_adj_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -10973,6 +11561,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro> 
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -11001,9 +11592,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro>
 	<out> 
-	  <chunk name="det_adj_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_pr_nom_adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -11078,9 +11670,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="3"/>
 	    </call-macro>
 	    <out> 
-	  <chunk name="det_adj_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_adj_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -11162,7 +11755,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro>
 	<out> 
-	  <chunk name="nom_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_pr_nom_pr_nom_pr_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="4" side="tl" part="gen"/></tag>
@@ -11231,6 +11824,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -11262,9 +11858,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="4"/>
 	</call-macro>
 	<out> 
-	  <chunk name="det_nom_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_pr_nom_pr_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -11343,9 +11940,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <with-param pos="5"/>
 	    </call-macro>
 	<out> 
-	  <chunk name="det_nom_nom_nom_nom" case="caseFirstWord">
+	  <chunk name="det_nom_pr_nom_pr_nom_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -11517,7 +12115,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="nom_conj_nom_nom" case="caseFirstWord">
+	  <chunk name="nom_conj_nom_pr_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="genere"/></tag>
@@ -11607,7 +12205,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
-	  <chunk name="adj_nom_conj_nom" case="caseFirstWord">
+	  <chunk name="nom_conj_nom_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="genere"/></tag>
@@ -11650,7 +12248,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
     <!-- SINTAGMES NOMINALS AMB GENITIU-->
 
-    <rule comment="REGLA: NOM1 GENITIU NOM2 (Mexico's history)">
+ <!--   <rule comment="REGLA: NOM1 GENITIU NOM2 (Mexico's history)">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="genitiu"/>
@@ -11688,7 +12286,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="nom_genitiu_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -11721,9 +12320,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
-    <rule comment="REGLA: DET NOM1 GENITIU NOM2 (my mother's house)">
+   <!-- <rule comment="REGLA: DET NOM1 GENITIU NOM2 (my mother's house)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -11737,7 +12336,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="elimina_GDND">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-->
+	<choose><!-s-  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-s->
 	  <when>
 	    <test>
 	      <not>
@@ -11782,7 +12381,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose> 
 
-	<choose><!-- concordança nom4 amb det afegit-->
+	<choose><!-s- concordança nom4 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -11808,7 +12407,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="det_nom_genitiu_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -11848,9 +12448,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
-    <rule comment="REGLA: NOM1 GENITIU ADJ NOM2 (Mexico's long history)">
+   <!-- <rule comment="REGLA: NOM1 GENITIU ADJ NOM2 (Mexico's long history)">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="genitiu"/>
@@ -11872,7 +12472,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro> 
 
-	<choose><!-- concordança nom4 amb det afegit-->
+	<choose><!-s- concordança nom4 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -11897,7 +12497,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="nom_genitiu_adj_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -11941,9 +12542,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
-    <rule comment="REGLA: DET NOM GENITIU DET NOM (my mother's first house)">
+ <!--   <rule comment="REGLA: DET NOM GENITIU DET NOM (my mother's first house)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -11962,7 +12563,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="elimina_GDND">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-->
+	<choose><!-s-  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12006,7 +12607,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </let>
 	  </otherwise>
 	</choose> 
-	<choose><!-- concordança nom5 amb det afegit-->
+	<choose><!-s- concordança nom5 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12031,7 +12632,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="det_nom_genitiu_det_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -12081,9 +12683,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
-    <rule comment="REGLA: DET NOM1 GENITIU ADJ NOM2 (my mother's big house)">
+   <!-- <rule comment="REGLA: DET NOM1 GENITIU ADJ NOM2 (my mother's big house)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -12105,7 +12707,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="elimina_GDND">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-->
+	<choose><!-s-  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12149,7 +12751,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </let>
 	  </otherwise>
 	</choose> 
-	<choose><!-- concordança nom5 amb det afegit-->
+	<choose><!-s- concordança nom5 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12174,7 +12776,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="det_nom_genitiu_adj_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -12225,9 +12828,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
-    <rule comment="REGLA: DET NOM1 GENITIU NUM NOM2 (my mother's two houses)">
+  <!--  <rule comment="REGLA: DET NOM1 GENITIU NUM NOM2 (my mother's two houses)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -12253,7 +12856,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="elimina_GDND">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-->
+	<choose><!-s-  concordança det pos1 i nom pos2 (no es pot deixar GD ni ND-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12297,7 +12900,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </let>
 	  </otherwise>
 	</choose> 
-	<choose><!-- concordança nom5 amb det afegit-->
+	<choose><!-s- concordança nom5 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12322,7 +12925,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="det_nom_genitiu_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -12370,9 +12974,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
-    <rule comment="REGLA: ADJ NOM GENITIU NOM">
+   <!-- <rule comment="REGLA: ADJ NOM GENITIU NOM">
       <pattern>
 	<pattern-item n="adj2"/>
 	<pattern-item n="nom"/>
@@ -12389,7 +12993,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="1"/>
 	</call-macro>  	
-	<call-macro n="elimina_GDND"><!--concordança adj1 i nom2 -->
+	<call-macro n="elimina_GDND"><!-s-concordança adj1 i nom2 -s->
 	  <with-param pos="2"/>
 	</call-macro>   
 	<call-macro n="posa_GDND">
@@ -12459,7 +13063,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </choose>
 	  </when>
 	</choose>
-	<choose><!-- concordança nom4 amb det afegit-->
+	<choose><!-s- concordança nom4 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12484,7 +13088,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="adj_nom_genitiu_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -12509,7 +13114,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	    <b/>
 	    <lu>
-	      <lit v="el"/><!--Està bé posar l'article davant el primer nom? -->
+	      <lit v="el"/><!-s-Està bé posar l'article davant el primer nom? -s->
 	      <lit-tag v="det.def"/>
 	      <var n="genere"/>
 	      <var n="nombre"/>
@@ -12533,8 +13138,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
-
+    </rule> -->
+<!--
     <rule comment="REGLA: NOM GENITIU NOM NOM (Mexico's emergencies ministry)">
       <pattern>
 	<pattern-item n="nom"/>
@@ -12552,7 +13157,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!-- concordança nom4 amb det afegit-->
+	<choose><!-s- concordança nom4 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12577,7 +13182,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="nom_genitiu_nom_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -12623,8 +13229,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
-
+    </rule> -->
+<!--
 
    <rule comment="REGLA: NOM GENITIU NOM NOM NOM (Colombia's child welfare agency)">
       <pattern>
@@ -12647,7 +13253,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!-- concordança nom5 amb det afegit-->
+	<choose><!-s- concordança nom5 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12672,7 +13278,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="nom_genitiu_nom_nom_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><clip pos="5" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -12731,10 +13338,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
 
-
+<!--
     <rule comment="REGLA: DET ADJ NOM GENITIU NOM (the American public's imagination)">
       <pattern>
 	<pattern-item n="det"/>
@@ -12750,7 +13357,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="comparatiu_adj1">
 	  <with-param pos="2"/>
 	</call-macro> 
-	<call-macro n="elimina_GDND"><!--concordança det1, adj2 i nom3 -->
+	<call-macro n="elimina_GDND"><!-s-concordança det1, adj2 i nom3 -s->
 	  <with-param pos="3"/>
 	</call-macro> 
 	<call-macro n="posa_GDND">
@@ -12886,7 +13493,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</when>
 	</choose>
 
-	<choose><!-- concordança nom5 amb det afegit-->
+	<choose><!-s- concordança nom5 amb det afegit-s->
 	  <when>
 	    <test>
 	      <not>
@@ -12912,7 +13519,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out> 
 	  <chunk name="det_adj_nom_genitiu_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><clip pos="5" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -12960,7 +13568,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
       </action>
-    </rule>
+    </rule> -->
 
 
     <!-- SINTAGMES NOMINALS ALTRES-->
@@ -13056,7 +13664,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose>
 	<out> 
-	  <chunk name="num_yearold_nom" case="caseFirstWord">
+	  <chunk name="nom_num_yearold" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="6" side="tl" part="gen"/></tag>
@@ -13136,7 +13744,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose>
 	<out> 
-	  <chunk name="num_yearold_nom" case="caseFirstWord">
+	  <chunk name="nom_num_yearold" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><clip pos="4" side="tl" part="gen"/></tag>
@@ -13196,6 +13804,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -13223,9 +13834,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose>
 	<out> 
-	  <chunk name="det_num_yearold_nom" case="caseFirstWord">
+	  <chunk name="det_nom_num_yearold" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -13282,6 +13894,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="f_concord2">
 	  <with-param pos="3"/>
 	  <with-param pos="2"/>
@@ -13320,9 +13935,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose>
 	<out> 
-	  <chunk name="det_num_yearold_nom" case="caseFirstWord">
+	  <chunk name="det_nom_num_yearold" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -13456,7 +14072,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose> 
 	<out> 
-	  <chunk name="n_num_yearold" case="caseFirstWord">
+	  <chunk name="nom_num_yearold" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.UNDET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -13536,7 +14152,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose> 
 	<out> 
-	  <chunk name="num_yearold" case="caseFirstWord">
+	  <chunk name="pr_num_yearold" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA.mf.sp"/></tag>
 	    </tags>
@@ -13582,6 +14198,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
       <action>
 	<call-macro n="million">
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="f_concord2">
 	  <with-param pos="4"/>
@@ -13659,9 +14278,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose> 
 	<out> 
-	  <chunk name="det_n_num_yearold" case="caseFirstWord">
+	  <chunk name="det_nom_num_yearold" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -13714,6 +14334,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="f_concord2">
 	  <with-param pos="4"/>
 	  <with-param pos="2"/>
@@ -13748,9 +14371,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose> 
 	<out> 
-	  <chunk name="det_n_num_yearold" case="caseFirstWord">
+	  <chunk name="pr_num_yearold" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -13797,20 +14421,30 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="2"/>
+	</call-macro> 
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="1"/>
+	</call-macro> 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
 	  <chunk name="fa_det_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SP"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
-	      <tag><var n="tipus_det"/></tag> <!-- BCN per recollir si es negacio-->
+	      <tag><var n="negative"/></tag> <!-- BCN per recollir si es negacio-->
 	    </tags>
 	    <lu>	      
 	      <clip pos="3" side="tl" part="whole"/>
@@ -13819,19 +14453,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_det"/>
-	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="1" side="tl" part="gen_mf"/>
-	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="1" side="tl" part="nbr_sp"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
-	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="2" side="tl" part="gen_mf"/>
-	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="2" side="tl" part="nbr_sp"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu> 
 	  </chunk>
@@ -13849,21 +14479,27 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="2"/>
+	</call-macro> 
 	<call-macro n="flexio_numerals">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
-	</call-macro> 
+	</call-macro>
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="1"/>
+	</call-macro> 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
 	  <chunk name="fa_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.NUM"/></tag>
+	      <tag><lit-tag v="SP.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -13874,19 +14510,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <lu>   
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_num"/> 
-	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="1" side="tl" part="gen_mf"/> 
-	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="1" side="tl" part="nbr_sp"/>
+	      <clip pos="1" side="tl" part="gen"/> 
+	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/> 
-	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="2" side="tl" part="gen_mf"/>  
-	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="2" side="tl" part="nbr_sp"/>
+	      <clip pos="2" side="tl" part="gen"/>  
+	      <clip pos="2" side="tl" part="nbr"/>
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu> 
 	  </chunk>
@@ -13905,10 +14537,13 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="1"/>
+	</call-macro> 
 	<out>
 	  <chunk name="fa_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SADV"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
@@ -13919,8 +14554,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <lu> 
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_nom"/>
-	      <clip pos="1" side="tl" part="gen" link-to="3"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu> 
 	  </chunk>
@@ -13940,20 +14575,26 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="2"/>
+	</call-macro> 
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="1"/>
+	</call-macro> 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
 	  <chunk name="pr_det_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.DET"/></tag>
+	      <tag><lit-tag v="SP.UNDEF"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
-	      <tag><var n="tipus_det"/></tag> 
+	      <tag><var n="negative"/></tag> 
 	    </tags>
 	    <lu>	      
 	      <lit v="d'aquí a"/>
@@ -13963,19 +14604,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_det"/>
-	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="1" side="tl" part="gen_mf"/>
-	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="1" side="tl" part="nbr_sp"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
-	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="2" side="tl" part="gen_mf"/>
-	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="2" side="tl" part="nbr_sp"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu> 
 	  </chunk>
@@ -13993,17 +14630,23 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="million">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="2"/>
+	</call-macro> 
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="elimina_GDND">
+	  <with-param pos="1"/>
+	</call-macro> 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out> 
 	  <chunk name="pr_num_nom" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SN.NUM"/></tag>
+	      <tag><lit-tag v="SP.NUM"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
 	    </tags>
@@ -14015,19 +14658,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <lu>   
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_num"/> 
-	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="1" side="tl" part="gen_mf"/> 
-	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="1" side="tl" part="nbr_sp"/>
+	      <clip pos="1" side="tl" part="gen"/> 
+	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu> 
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/> 
-	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
-	      <clip pos="2" side="tl" part="gen_mf"/>  
-	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
-	      <clip pos="2" side="tl" part="nbr_sp"/>
+	      <clip pos="2" side="tl" part="gen"/>  
+	      <clip pos="2" side="tl" part="nbr"/>
 	      <clip pos="2" side="tl" part="lemq"/> 
 	    </lu> 
 	  </chunk>
@@ -14310,11 +14949,15 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	    <out>
 	      <chunk name="det_num" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		</tags>
@@ -14380,6 +15023,12 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		  <clip pos="2" side="sl" part="nbr"/> 
 		  <lit-tag v="sg"/>
 		</equal>
+		<not>
+		  <equal>
+		    <clip pos="2" side="sl" part="gen"/>
+		    <lit-tag v="nt"/>
+		  </equal>
+		</not>		  
 	      </and>
 	    </test>
 	    <let>
@@ -14457,6 +15106,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="det_no">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -14501,7 +15153,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 
 	      <chunk name="det_nom_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -14549,7 +15202,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <out>
 	      <chunk name="det_nom_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -14603,6 +15257,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="det_no">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
@@ -14646,7 +15303,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <out>
 	      <chunk name="det_nom_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -14700,7 +15358,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    <out>
 	      <chunk name="det_nom_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -15015,6 +15674,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="det_no">
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
@@ -15059,9 +15721,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      </equal>
 	    </test>
 	    <out>
-	      <chunk name="det_adj_nom_to_inf" case="caseFirstWord">
+	      <chunk name="det_nom_adj_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -15118,9 +15781,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </when>
 	  <otherwise>
 	    <out>
-	      <chunk name="det_adj_nom_to_inf" case="caseFirstWord">
+	      <chunk name="det_nom_adj_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -15187,6 +15851,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="genere_nombre">
 	  <with-param pos="3"/>
 	</call-macro>
@@ -15234,9 +15901,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      </equal>
 	    </test>
 	    <out>
-	      <chunk name="det_adj_nom_to_inf" case="caseFirstWord">
+	      <chunk name="det_nom_adj_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -15300,9 +15968,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </when>
 	  <otherwise>
 	    <out>
-	      <chunk name="det_adj_nom_to_inf" case="caseFirstWord">
+	      <chunk name="det_nom_adj_to_inf" case="caseFirstWord">
 		<tags>
-		  <tag><lit-tag v="SN.DET"/></tag>
+		  <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 		  <tag><var n="gen_chunk"/></tag>
 		  <tag><var n="nbr_chunk"/></tag>
 		  <tag><lit-tag v="inf"/></tag> <!-- posat a mà-->
@@ -15369,7 +16038,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 <!--sintagma nominal amb relatiu -->
 
 
- <rule comment="REGLA: whose NOM"> 
+ <rule comment="REGLA: whose NOM">
       <pattern>
 	<pattern-item n="relaa"/>
 	<pattern-item n="nom"/>
@@ -16093,7 +16762,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="2"/>
 	</call-macro>  
 	<out> 
-	  <chunk name="det_adj_nom_qual" case="caseFirstWord">
+	  <chunk name="det_nom_adj_qual" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.DET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -16218,7 +16887,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro>
 	<out> 
-	  <chunk name="det_det_adj_nom_qual" case="caseFirstWord">
+	  <chunk name="det_det_nom_adj_qual" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.DET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -16357,7 +17026,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="3"/>
 	</call-macro>
 	<out> 
-	  <chunk name="det_num_adj_nom_qual" case="caseFirstWord">
+	  <chunk name="det_num_nom_adj_qual" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.DET"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -16449,7 +17118,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </otherwise>
 	</choose>   
 	<out>   
-	  <chunk name="adj_adv" case="caseFirstWord">
+	  <chunk name="adv_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
@@ -16593,7 +17262,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<out>
-	  <chunk name="np_pp" case="caseFirstWord">
+	  <chunk name="pp_pr_np" case="caseFirstWord">
 	    <tags>	
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><lit-tag v="GD"/></tag>
@@ -16647,7 +17316,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>	
 	  </chunk>
 	  <b pos="1"/>
-	  <chunk name="np_pp">
+	  <chunk name="pp_pr_np">
 	    <tags>	
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><lit-tag v="GD"/></tag>
@@ -17057,7 +17726,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
     </rule>
 
 
-   <rule comment="REGLA: ADV ADJ TO INF (BCN: canviem la prep TO per DE; els adjectius que no compleixin la regla s'han de codificar al lèxic. Queda com a GD i ND fins al interchunk)">
+   <rule comment="REGLA: ADV ADJ TO INF ENC (BCN: canviem la prep TO per DE; els adjectius que no compleixin la regla s'han de codificar al lèxic. Queda com a GD i ND fins al interchunk)">
       <pattern>
 	<pattern-item n="preadv"/> 
 	<pattern-item n="adj2"/> <!-- BCN només volem adjs 'reals' no PPs-->
@@ -18866,6 +19535,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="determiner">
+	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="det_no">
 	  <with-param pos="1"/>
@@ -18885,11 +19557,12 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out>
 	  <chunk name="det_ger_nom" case="caseFirstWord">
 	    <tags>	       
-	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><lit-tag v="SN"/></tag>
+		  <tag><var n="tipus_det"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><var n="gen_chunk"/></tag>
 	      <tag><var n="nbr_chunk"/></tag>
-	      <tag><var n="tipus_det"/></tag>
+	      <tag><var n="negative"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/> 
@@ -18946,7 +19619,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<out>
 	  <chunk name="pr_ger_nom" case="caseFirstWord">
 	    <tags>	       
-	      <tag><lit-tag v="SN.UNDET"/></tag>
+	      <tag><lit-tag v="SP.UNDET"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><clip pos="3" side="tl" part="gen"/></tag>
 	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
@@ -19088,15 +19761,35 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<let>
 	  <clip pos="3" side="tl" part="temps"/>
 	  <lit-tag v="pri"/>
-	</let>
+	</let>			
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <lit-tag v="GD"/>
+	    </let>
+	  </otherwise>
+	</choose> 
 	<out>
 	  <chunk name="adj_ger" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><clip pos="3" side="tl" part="temps"/></tag>
-	      <tag><lit-tag v="p3"/></tag>  
-	      <tag><lit-tag v="GD"/></tag> 
+	      <tag><lit-tag v="p3"/></tag> 
+	      <tag><var n="gen_chunk"/></tag> 
 	      <tag><lit-tag v="ND"/></tag>
 	    </tags>  
 	    <lu>
@@ -19266,7 +19959,27 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<let>
 	  <clip pos="4" side="tl" part="temps"/>
 	  <lit-tag v="pri"/>
-	</let>
+	</let>		
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <lit-tag v="GD"/>
+	    </let>
+	  </otherwise>
+	</choose> 
 	<out>
 	  <chunk name="det" case="caseFirstWord">
 	    <tags>
@@ -19287,8 +20000,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><clip pos="4" side="tl" part="temps"/></tag>
-	      <tag><lit-tag v="p3"/></tag>  
-	      <tag><lit-tag v="GD"/></tag> 
+	      <tag><lit-tag v="p3"/></tag>
+	      <tag><var n="gen_chunk"/></tag>  
 	      <tag><lit-tag v="ND"/></tag>
 	    </tags>  
 	    <lu>
@@ -20722,8 +21435,40 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="conj_verb1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="lema_SV"/>
+	      <lit v="inf_inf"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="lema_SV"/>
+	      <lit v="ger_inf"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="lema_SV"/>
+	      <lit v="verbcj_inf"/>
+	    </let>
+	  </otherwise>
+	</choose> 
 	    <out><!--definitivament decidit, si és 'perif' no canvio el nom del lema sinó que ja se sap pq temps=ifip -->
-	      <chunk name="verbcj_inf" case="caseFirstWord">
+	      <chunk namefrom="lema_SV" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
@@ -20788,8 +21533,40 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="conj_verb1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="temps"/>
+		<lit-tag v="inf"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="lema_SV"/>
+	      <lit v="inf_inf_enc"/>
+	    </let>
+	  </when>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="tl" part="temps"/>
+		<lit-tag v="ger"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <var n="lema_SV"/>
+	      <lit v="ger_inf_enc"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="lema_SV"/>
+	      <lit v="verbcj_inf_enc"/>
+	    </let>
+	  </otherwise>
+	</choose>
 	<out><!--definitivament decidit, si és 'perif' no canvio el nom del lema sinó que ja se sap pq temps=ifip -->
-	  <chunk name="verbcj_inf_enc" case="caseFirstWord">
+	  <chunk namefrom="lema_SV" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
@@ -24129,6 +24906,27 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
     </rule>
     
 
+    <rule comment="genitiu">
+      <pattern>
+	<pattern-item n="genitiu"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="GEN"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+    
  <rule comment="THERE">
       <pattern>
 	<pattern-item n="there"/>

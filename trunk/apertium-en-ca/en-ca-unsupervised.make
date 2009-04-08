@@ -34,13 +34,21 @@ $(TAGGER)/$(LANG1).dic: $(BASENAME).$(LANG1).dixtmp1 $(PREFIX).automorf.bin
 	@echo ")" >>$(LANG1).dic.expanded
 	@echo "\\]" >>$(LANG1).dic.expanded
 	@echo "¿" >>$(LANG1).dic.expanded
-	@echo "¡" >>$(LANG1).dic.expanded
+	@echo "¡" >>$(LANG1).dic.expanded   
+	@echo "JKL" >>$(LANG1).dic.expanded
 	lt-proc -a $(PREFIX).automorf.bin <$(LANG1).dic.expanded | \
+	# awk '{gsub(/\/([^< ]+)<n><acr><sp>/,""); print;}' | \
+	sed -r 's/\/[A-Z]+<n><acr><sp>//g' | \
+	sed -r 's/\^([^$$/\\ ]+)\$$/^\1\/\1<n><acr><sp>$$/g' | \
 	apertium-filter-ambiguity $(BASENAME).$(LANG1).tsx > $@
 	rm $(LANG1).dic.expanded;
 
 $(TAGGER)/$(LANG1).crp: $(PREFIX).automorf.bin $(TAGGER)/$(LANG1).crp.txt
-	apertium-destxt < $(TAGGER)/$(LANG1).crp.txt | lt-proc $(PREFIX).automorf.bin > $(TAGGER)/$(LANG1).crp
+	apertium-destxt < $(TAGGER)/$(LANG1).crp.txt | \
+	lt-proc $(PREFIX).automorf.bin | \
+	# awk '{gsub(/\/([^< ]+)<n><acr><sp>/,""); print;}' | \
+	sed -r 's/\/[A-Z]+<n><acr><sp>//g' | \
+	sed -r 's/\^([^$$/\\ ]+)\$$/^\1\/\1<n><acr><sp>$$/g' > $(TAGGER)/$(LANG1).crp
 
 clean:
 	rm -f $(PREFIX).prob
