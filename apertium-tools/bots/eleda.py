@@ -13,7 +13,7 @@ HOST='irc.freenode.net';
 PORT=6667;
 NICK='eleda';
 IDENT='eleda';
-REALNAME='Eleda';
+REALNAME='Eleda a robot translator - type @help for help';
 OWNER='spectie';
 readbuffer='';
 PASS='PUT_YOUR_PASSWORD_HERE';
@@ -57,7 +57,7 @@ def translate(string, direction): #{
 #}
 
 def send_help(user): #{
- 	mesg = 'NOTICE ' + user + ' :' + 'Apertium translation bot' + '\n';
+ 	mesg = 'NOTICE ' + user + ' :' + 'Apertium translation bot. See http://wiki.apertium.org/wiki/Eleda' + '\n';
 	s.send(mesg);
  	mesg = 'NOTICE ' + user + ' :' + '@follow <nick> <direction> - Translate a user.' + '\n';
 	s.send(mesg);
@@ -227,6 +227,7 @@ if __name__ == "__main__": #{
 		if line.find('Welcome to the freenode IRC Network')!=-1: #{
 			for channel in channel_list: #{
 				s.send('JOIN ' + channel + '\n'); #Join a channel
+				s.send('I am a robot translator. Type @help for info on how to use me\n');  Francis, OK??
 			#}
 		#}
 
