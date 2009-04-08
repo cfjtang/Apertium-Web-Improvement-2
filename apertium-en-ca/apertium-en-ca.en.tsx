@@ -95,14 +95,17 @@
   </def-label>
   <def-label name="NOMSG">
     <tags-item tags="n.sg"/>
-    <tags-item tags="n.acr.sg"/>
-    <tags-item tags="n.acr.sp"/>
     <tags-item tags="n.unc.sg"/>
   </def-label>
   <def-label name="NOMPL">
     <tags-item tags="n.pl"/>
-    <tags-item tags="n.acr.pl"/>
     <tags-item tags="n.unc.pl"/>
+  </def-label>
+
+ <def-label name="ACR">
+    <tags-item tags="n.acr.sg"/>
+    <tags-item tags="n.acr.sp"/>
+    <tags-item tags="n.acr.pl"/>
   </def-label>
   
   <def-label name="INTERJ">
@@ -277,6 +280,10 @@
     </label-sequence>
     <label-sequence>
       <label-item label="PRNALTRES"/>
+      <label-item label="ACR"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNALTRES"/>
       <label-item label="CANNOM"/>
     </label-sequence>
     <label-sequence>
@@ -356,6 +363,10 @@
     <label-sequence>
       <label-item label="PRNSUBJ"/>
       <label-item label="NOMPL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PRNSUBJ"/>
+      <label-item label="ACR"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PRNSUBJ"/>
@@ -489,6 +500,10 @@
     </label-sequence> 
     <label-sequence>
       <label-item label="NOMPL"/>
+      <label-item label="PRNOBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DET"/><!--the US -->
       <label-item label="PRNOBJ"/>
     </label-sequence>
     <label-sequence>
@@ -796,6 +811,10 @@
     </label-sequence>
     <label-sequence>
       <label-item label="NOADV"/>
+      <label-item label="ACR"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
       <label-item label="CANNOM"/>
     </label-sequence>
     <label-sequence>
@@ -893,6 +912,7 @@
         <label-item label="CANNOM"/>
         <label-item label="WILLNOM"/>
 	<label-item label="ADJ"/>
+	<label-item label="PREADV"/>
 	<label-item label="DETQNT_ORD"/>
 	<label-item label="NUM"/>
 	<label-item label="ANTROPONIM"/>
@@ -1005,10 +1025,9 @@
 
  </enforce-rules>
 
-
- <preferences>
-   <prefer tags="n.acr.sg"/>
- </preferences>
-
+ 
+ <discard-on-ambiguity>
+   <discard tags="n.acr.sp"/>
+ </discard-on-ambiguity>
 
 </tagger>
