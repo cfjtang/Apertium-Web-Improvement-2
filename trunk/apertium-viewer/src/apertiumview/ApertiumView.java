@@ -376,8 +376,8 @@ public class ApertiumView extends FrameView {
     toolsMenu = new javax.swing.JMenu();
     makeTestCaseMenuItem = new javax.swing.JMenuItem();
     importTestCaseMenuItem = new javax.swing.JMenuItem();
-    javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     storedTextsMenu = new javax.swing.JMenu();
+    javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     changeFontMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -392,7 +392,6 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
-    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -423,7 +422,6 @@ public class ApertiumView extends FrameView {
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
-    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('S');
@@ -515,20 +513,23 @@ public class ApertiumView extends FrameView {
     toolsMenu.setText("Tools");
 
     makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
+    makeTestCaseMenuItem.setMnemonic('t');
+    makeTestCaseMenuItem.setText("Make test Case");
     toolsMenu.add(makeTestCaseMenuItem);
 
     importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
-    importTestCaseMenuItem.setText("Import Test Case");
+    importTestCaseMenuItem.setMnemonic('i');
+    importTestCaseMenuItem.setText("Import test case");
     toolsMenu.add(importTestCaseMenuItem);
+
+    storedTextsMenu.setMnemonic('S');
+    storedTextsMenu.setText("Stored texts");
+    toolsMenu.add(storedTextsMenu);
 
     menuBar.add(toolsMenu);
 
     helpMenu.setMnemonic('V');
     helpMenu.setText("View");
-
-    storedTextsMenu.setMnemonic('S');
-    storedTextsMenu.setText("Stored texts");
-    helpMenu.add(storedTextsMenu);
 
     changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
     helpMenu.add(changeFontMenuItem);
