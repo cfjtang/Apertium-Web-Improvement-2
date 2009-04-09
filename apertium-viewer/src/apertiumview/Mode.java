@@ -28,7 +28,8 @@ class Mode {
     
     public String toString()  
     {
-         return name; 
+        if (name.endsWith(".mode")) return name.substring(0,name.length()-5);
+        else return name;
     }
     
 
