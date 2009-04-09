@@ -4,11 +4,17 @@
 
 package apertiumview;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
@@ -69,7 +75,7 @@ public class ApertiumView extends FrameView {
                     loadMode(new File(fn));
                 }
             } else {
-                warnUser("Welcome to Apertium - JView.\nIt seems this is first time you run this program. I will therefore try to search install language pairs ('modes') from standart places. Use the File menu to install others.");
+                warnUser("Welcome to Apertium-viewer.\nIt seems this is first time you run this program. I will therefore try to search install language pairs ('modes') from standart places. Use the File menu to install others.");
                 LinkedHashSet<File> fal = new LinkedHashSet<File>();
                 try {
                     fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
@@ -133,8 +139,10 @@ public class ApertiumView extends FrameView {
             warnUser("An error occured during startup:\n\n"+e);
         }
         
-        textWidget1.commandTextField.requestFocus();
+        textWidget1.commandTextField.requestFocusInWindow();
         textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
+        textWidget1.textEditor.addKeyListener(switchFocus);
+
 
     }
     
@@ -155,7 +163,7 @@ public class ApertiumView extends FrameView {
         public void focusGained(FocusEvent e) {
             JComponent comp = (JComponent) e.getSource();
             // Ugly hack to get the enclosing TextWidget
-            TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
+            final TextWidget tw = (TextWidget) ((JComponent) e.getSource()).getParent().getParent().getParent();
             // Scroll so that the TextWidget's scoll pane (containing the text area) is fully visible
             Rectangle b = tw.jScrollPane1.getBounds();
             Rectangle b2 = tw.getBounds();
@@ -164,6 +172,23 @@ public class ApertiumView extends FrameView {
             b.x += b2.x;
             b.y += b2.y;
             tw.scrollRectToVisible(b);
+            
+            // Make it blink for a short while
+            Graphics2D g = (Graphics2D) tw.getGraphics();
+            //g.setColor(new Color(255,0,0,32));
+            //g.setStroke(new BasicStroke(5));
+            g.setColor(Color.RED);
+            g.drawRect(1, 1, tw.getWidth()-2, tw.getHeight()-2);
+            //tw.repaint(100); // behaves as 0, but the blink is visible for me
+            // this is a waste of threads,but who cares, this is a GUI program!
+            new Thread() { public void run() {
+                    try {
+                        Thread.sleep(100);
+                        tw.repaint(0);
+                    } catch (InterruptedException ex) {
+                    }
+            }
+            }.start();
         }
     };
 
@@ -184,7 +209,40 @@ public class ApertiumView extends FrameView {
     if (text==null) return "";
    return text;
   }
-    
+
+    KeyListener switchFocus = new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+            if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown() || e.getKeyCode() !=  e.VK_PAGE_UP && e.getKeyCode() !=  e.VK_PAGE_DOWN) return;
+            
+            int nowFocus=-1;
+            for (int i=0; i<textWidgets.size(); i++) {
+                TextWidget tw = textWidgets.get(i);
+                if (SwingUtilities.findFocusOwner(tw)!=null) nowFocus = i;
+
+//                                if (tw.isF tw.textEditor.hasFocus())
+//                ​KeyboardFocusManager.getCurrentKeyboardFocusManager().
+            }
+
+            if (nowFocus!=-1) {
+                if (e.getKeyCode() ==  e.VK_PAGE_UP) {
+                    nowFocus = (nowFocus-1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
+                } else  {
+                    nowFocus = (nowFocus+1) % textWidgets.size(); // cycle downwards
+                }
+            } else {
+                System.err.println("Hm! No widget has focus!" );
+                if (e.getKeyCode() ==  e.VK_PAGE_UP) {
+                    nowFocus = 0; // cycle upwards
+                } else  {
+                    nowFocus = textWidgets.size()-1; // cycle downwards
+                }
+            }
+
+
+            textWidgets.get(nowFocus).textEditor.requestFocusInWindow();
+        }
+    };
+
     private void showMode(Mode m) {
         if (m==null) {
             return;
@@ -196,10 +254,12 @@ public class ApertiumView extends FrameView {
             jSplitPane1.setBottomComponent(null);
 
             TextWidget lastTextWidget = textWidget1;
-            lastTextWidget.textEditor.setFocusAccelerator('0');
+            lastTextWidget.textEditor.setFocusAccelerator('1');
             textWidget1.setCommand("");
             textWidget1.priority = 0;
 
+            // should dispose old GUI components here...
+            //for (TextWidget tw : textWidgets) tw.removeKeyListener(switchFocus);
             textWidgets.clear();
             splitPanes.clear();
 
@@ -214,11 +274,12 @@ public class ApertiumView extends FrameView {
 
             for (int i = 0; i < m.commandChain.length; i++) {
                 TextWidget tw = new TextWidget();
+                tw.textEditor.addKeyListener(switchFocus);
                 textWidgets.add(tw);
                 tw.priority = i+1;
                 lastTextWidget.next = tw;
                 lastTextWidget = tw;
-                lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+1));
+                lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
                 lastTextWidget.textEditor.addFocusListener(scrollToVisibleFocusListener);
 
                 if (i < m.commandChain.length - 1) {
@@ -305,6 +366,7 @@ public class ApertiumView extends FrameView {
     showCommandsCheckBox = new javax.swing.JCheckBox();
     markUnknownWordsCheckBox = new javax.swing.JCheckBox();
     storeTextButton = new javax.swing.JButton();
+    jLabel1 = new javax.swing.JLabel();
     menuBar = new javax.swing.JMenuBar();
     javax.swing.JMenu fileMenu = new javax.swing.JMenu();
     loadModeMenuItem = new javax.swing.JMenuItem();
@@ -313,10 +375,11 @@ public class ApertiumView extends FrameView {
     javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
     toolsMenu = new javax.swing.JMenu();
     makeTestCaseMenuItem = new javax.swing.JMenuItem();
+    importTestCaseMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenu helpMenu = new javax.swing.JMenu();
+    storedTextsMenu = new javax.swing.JMenu();
     changeFontMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
-    storedTextsMenu = new javax.swing.JMenu();
 
     mainPanel.setAutoscrolls(true);
 
@@ -329,6 +392,7 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
+    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -345,20 +409,21 @@ public class ApertiumView extends FrameView {
     textWidgetsPanel.setLayout(textWidgetsPanelLayout);
     textWidgetsPanelLayout.setHorizontalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 662, Short.MAX_VALUE)
+      .addGap(0, 980, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE))
     );
     textWidgetsPanelLayout.setVerticalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 414, Short.MAX_VALUE)
+      .addGap(0, 398, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
     );
 
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
+    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('S');
@@ -370,7 +435,7 @@ public class ApertiumView extends FrameView {
       }
     });
 
-    markUnknownWordsCheckBox.setMnemonic('M');
+    markUnknownWordsCheckBox.setMnemonic('U');
     markUnknownWordsCheckBox.setSelected(true);
     markUnknownWordsCheckBox.setText("Mark unknown words");
     markUnknownWordsCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -380,11 +445,16 @@ public class ApertiumView extends FrameView {
     });
 
     storeTextButton.setText("Store");
+    storeTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
     storeTextButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         storeTextButtonActionPerformed(evt);
       }
     });
+
+    jLabel1.setDisplayedMnemonic('M');
+    jLabel1.setLabelFor(modesComboBox);
+    jLabel1.setText("Mode");
 
     javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
     mainPanel.setLayout(mainPanelLayout);
@@ -400,9 +470,11 @@ public class ApertiumView extends FrameView {
         .addComponent(copyTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(storeTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+        .addComponent(jLabel1)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
+      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 982, Short.MAX_VALUE)
     );
     mainPanelLayout.setVerticalGroup(
       mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -413,9 +485,10 @@ public class ApertiumView extends FrameView {
           .addComponent(showCommandsCheckBox)
           .addComponent(fitToTextButton)
           .addComponent(copyTextButton)
-          .addComponent(storeTextButton))
+          .addComponent(storeTextButton)
+          .addComponent(jLabel1))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
     );
 
     fileMenu.setMnemonic('F');
@@ -444,20 +517,24 @@ public class ApertiumView extends FrameView {
     makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
     toolsMenu.add(makeTestCaseMenuItem);
 
+    importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
+    importTestCaseMenuItem.setText("Import Test Case");
+    toolsMenu.add(importTestCaseMenuItem);
+
     menuBar.add(toolsMenu);
 
     helpMenu.setMnemonic('V');
     helpMenu.setText("View");
+
+    storedTextsMenu.setMnemonic('S');
+    storedTextsMenu.setText("Stored texts");
+    helpMenu.add(storedTextsMenu);
 
     changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
     helpMenu.add(changeFontMenuItem);
 
     aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
     helpMenu.add(aboutMenuItem);
-
-    storedTextsMenu.setMnemonic('S');
-    storedTextsMenu.setText("Stored texts");
-    helpMenu.add(storedTextsMenu);
 
     menuBar.add(helpMenu);
 
@@ -629,6 +706,8 @@ private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
   private javax.swing.JButton copyTextButton;
   private javax.swing.JMenuItem editModesMenuItem;
   private javax.swing.JButton fitToTextButton;
+  private javax.swing.JMenuItem importTestCaseMenuItem;
+  private javax.swing.JLabel jLabel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JSeparator jSeparator1;
   private javax.swing.JSplitPane jSplitPane1;
@@ -737,6 +816,38 @@ private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt.trim()),"Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
   }
 
+
+   @Action
+    public void importTestCase() {
+       String text = "Here you can import input sentences you want to test.\n"+
+           "For example, go to http://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"+
+           "# (en) My dog → Mia hundo\n"+
+           "# (en) My big dogs → Miaj grandaj hundoj\n"+
+           "# (en) Your big dogs → Viaj grandaj hundoj\n"+
+           "# (en) Her cat → Ŝia kato\n"+
+           "# (en) Her small cats → Ŝiaj malgrandaj katoj \n"+
+           "# (en) The fastest snails -> La plej rapidaj helikoj \n\n"+
+           "All souce text will be extracted.";
+      JTextArea ta = new JTextArea(text);
+      String res = "";
+      int ret = JOptionPane.showConfirmDialog(mainPanel, ta,"Past test cases from a Wiki page", JOptionPane.OK_CANCEL_OPTION);
+      if (ret == JOptionPane.OK_OPTION) {
+            for (String s : ta.getText().split("\n")) {
+                int x1 = s.indexOf(')');
+                if (x1==-1) continue; // no ), so skip line
+                int x2 = s.indexOf('→');
+                if (x2==-1) x2 = s.indexOf("->");
+                if (x2==-1) x2 = s.indexOf("=>");
+                if (x2<x1) continue; // no → found after ), so skip line
+                res = res + "\n" + s.substring(x1+1, x2).trim();
+            }
+            if (res.trim().length()==0) {
+                JOptionPane.showMessageDialog(mainPanel, "You didn't enter any test cases with text between a ) and a →. \nTry again.");
+            } else {
+              textWidget1.setText(res.trim());
+            }
+      }
+    }
 
 
 }
