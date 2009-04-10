@@ -1,39 +1,34 @@
-<?php $inurl = $_GET["inurl"]; $inurl=urldecode($inurl); ?>
+<?
+	$inurl = $_GET["inurl"]; 
+	$inurl = urldecode($inurl); 
 
-  <base target="_top">
+	$funcion = $_GET["funcion"];
+?>
+<base target="_top">
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <title>apertium</title>
-    <link rel="stylesheet" href="/styles/gila-screen.css" type="text/css">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF" link="#990000" vlink="#550000" alink="#FFCC00">
-  <table border="1">
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-          <tbody>
-            <tr>
-              <td><a href="http://apertium.org"><img src="/images/Apertium_logo_225x48.png" alt="Apertium"/></a>&nbsp;surf&nbsp;and&nbsp;translate</td>
-              <td align="center">
-              <b>
-<?php
-  $inurl = $_GET["inurl"];
-  $direccion = $_GET["direccion"];
-  if(strstr($inurl,"http://")==false)
-    $inurl="http://$inurl";
-  else if(strstr($inurl,"?inurl")!=false){
-    $inurl=str_replace("direccion=es-ca","direccion=null",$inurl);
-    $inurl=str_replace("direccion=ca-es","direccion=null",$inurl);
-  }
+<head>
+  <title>Apertium</title>
+</head>
+<body style="border-bottom: black 2px solid; margin: 0px; padding: 2px; background-color: #bbbbff;">
 
-echo("<a href='$inurl' target='_blank'>");
-echo("Original page");
-?></a></b></font></td>
-            </tr>
-<!--            <tr>
-              <td colspan="2" bgcolor="#000000" valign="top" height="5">
-          </td>
-            </tr> -->
-  </table>
-  </body>
+<div style="text-align: center; background-color: #bbbbff; margin: 0px; padding: 0px;">
+  <div style="float: left; font-family: Sans, Helvetica;">
+    <a href="http://www.apertium.org/">
+      <img src="http://www.apertium.org/apertium-www/images/Apertium_logo_225x48.png" height="44" border="0"/>
+    </a>
+  </div>
+  <?
+    $inurl = $_GET["inurl"];
+    $direccion = $_GET["dir"];
+  ?>
+  <form action="browser.php" method="post" style="padding: 12px; font-family: Sans, Helvetica;" name="nav">
+    <b>Page</b>:
+    <input title="URL to be translated" name="inurl" type="text" size="60" value="<? echo $inurl; ?>"/>
+    <input type="hidden" value="<? echo $direccion; ?>" name="dir"/>
+    <input type="submit" value="<? echo _('Translate'); ?>" class="submit" title="Click here to browse"/>
+   <br/>
+  </form>
+
+</div>
+</body>
 </html>
-
