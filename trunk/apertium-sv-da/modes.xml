@@ -75,10 +75,22 @@
     </pipeline>
   </mode>
 
-  <mode name="da-sv-new" install="yes">
+  <mode name="da-sv-tagger" install="no">
     <pipeline>
       <program name="lt-proc">
-        <file name="dev/da.bin"/>
+        <file name="da-sv.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="da-sv.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="da-sv-transfer" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="da-sv.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="da-sv.prob"/>
@@ -88,12 +100,6 @@
         <file name="apertium-sv-da.da-sv.t1x"/>
         <file name="da-sv.t1x.bin"/>
         <file name="da-sv.autobil.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="da-sv.autogen.bin"/>
-      </program>
-      <program name="lt-proc -p">
-        <file name="da-sv.autopgen.bin"/>
       </program>
     </pipeline>
   </mode>
