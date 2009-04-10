@@ -545,8 +545,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "prompsit-turl.l"
-#line 2 "prompsit-turl.l"
+#line 1 "turl.l"
+#line 2 "turl.l"
 /*
  * Archivos de cabecera
  */
@@ -835,7 +835,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 146 "prompsit-turl.l"
+#line 146 "turl.l"
 
 #line 841 "lex.yy.c"
 
@@ -923,63 +923,63 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 147 "prompsit-turl.l"
+#line 147 "turl.l"
 {prefijo=false; /*comentario=true;*/ cout<<yytext;}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 148 "prompsit-turl.l"
+#line 148 "turl.l"
 {prefijo=false; cout<<yytext;}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 149 "prompsit-turl.l"
+#line 149 "turl.l"
 {if(comentario) cout<<yytext; else{prefijo=false; cout<<yytext; if(tagR==A) prefijo=true;}}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 150 "prompsit-turl.l"
+#line 150 "turl.l"
 {if(comentario) cout<<yytext; else{prefijo=false; cout<<yytext; if(tagR==FRAME&&!comentario) prefijo=true;}}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 151 "prompsit-turl.l"
+#line 151 "turl.l"
 {if(comentario) cout<<yytext; else{if(prefijo){yytext[strlen(yytext)-1]=0; cout<<"\""<<transformar(yytext+1)<<"\"";} else cout<<yytext; if(!comentario) prefijo=false;}}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 152 "prompsit-turl.l"
+#line 152 "turl.l"
 {if(comentario) cout<<yytext; else{prefijo=false; cout<<yytext; tagR=A;}}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 153 "prompsit-turl.l"
+#line 153 "turl.l"
 {if(comentario) cout<<yytext; else{prefijo=false; cout<<yytext; tagR=FRAME;}}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 154 "prompsit-turl.l"
+#line 154 "turl.l"
 {if(comentario) cout<<yytext; else{prefijo=false; cout<<yytext; tagR=ninguno;}}
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 155 "prompsit-turl.l"
+#line 155 "turl.l"
 {if(comentario) cout<<yytext; else{if(prefijo) cout<<"\""<<transformar(yytext)<<"\""; else cout<<yytext; prefijo=false;}}
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 156 "prompsit-turl.l"
+#line 156 "turl.l"
 {cout<<yytext;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 157 "prompsit-turl.l"
+#line 157 "turl.l"
 ECHO;
 	YY_BREAK
 #line 986 "lex.yy.c"
@@ -1948,7 +1948,7 @@ void yyfree (void * ptr )
 #undef YY_DECL_IS_OURS
 #undef YY_DECL
 #endif
-#line 157 "prompsit-turl.l"
+#line 157 "turl.l"
 
 
 
