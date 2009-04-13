@@ -6659,7 +6659,7 @@ section is intended for Linux users.
 
 
 To run the translator, you have to use the
-\texttt{apertium-translator} tool referring to the directory where
+\texttt{apertium} tool referring to the directory where
 linguistic data are saved, and specifying the translation direction
 (\texttt{es-ca}, \texttt{ca-es}, \texttt{es-gl}, etc.), the file
 format (\texttt{txt}, \texttt{html}, \texttt{rtf}), the name of the
@@ -6669,7 +6669,7 @@ structure is as follows:
 
 \begin{small}
 \begin{alltt} 
-\$ apertium-translator <directory> <translation> <format> \\ 
+\$ apertium -d <directory> <translation> <format> \\ 
                            < input_file > output_file
 \end{alltt}
 \end{small}
@@ -6681,7 +6681,7 @@ format from Spanish to Catalan:
 
 \begin{small}
 \begin{alltt} 
-\$ apertium-translator /home/maria/apertium-es-ca es-ca \\txt <file_sp >file_ca
+\$ apertium -d /home/maria/apertium-es-ca es-ca \\txt <file_sp >file_ca
 \end{alltt}
 \end{small}
 
@@ -6691,7 +6691,7 @@ current directory:
 
 \begin{small}
 \begin{alltt} 
-\$ apertium-translator . es-ca txt <file_sp >file_ca
+\$ apertium -d . es-ca txt <file_sp >file_ca
 \end{alltt}
 \end{small}
 
@@ -6719,13 +6719,13 @@ and errors
 \end{itemize}
 
 If you do not wish to translate a file but just a sentence or a
-paragraph in the screen, you can run the \texttt{apertium-translator}
+paragraph in the screen, you can run the \texttt{apertium}
 tool without specifying any file name. The command, if you are in the
 directory where linguistic data are saved, would be the following:
 
 \begin{small}
 \begin{alltt} 
-\$ apertium-translator . es-ca
+\$ apertium -d . es-ca
 \end{alltt}
 \end{small}
 
@@ -6738,7 +6738,7 @@ command to send text through the translator:
 
 \begin{small}
 \begin{alltt} 
-\$ echo "text to be translated" | apertium-translator . es-ca
+\$ echo "text to be translated" | apertium . es-ca
 \end{alltt}
 \end{small}
 
@@ -8391,12 +8391,12 @@ echo "sabates" | apertium-destxt | lt-proc ca-es.automorf.bin \\|apertium-tagger
 \end{alltt}
 \end{small}
 
-This is the same as using the \texttt{apertium-translator} shell
+This is the same as using the \texttt{apertium} shell
 script provided by the Apertium package:
 
 \begin{small}
 \begin{alltt} 
-echo "sabates" | apertium-translator . ca-es
+echo "sabates" | apertium . ca-es
 \end{alltt}
 \end{small}
 
@@ -8417,7 +8417,7 @@ action and use them to test the output of each module.
 
 \begin{small}
 \begin{alltt} 
-\$ echo "nord" | apertium-translator . ca-es 
+\$ echo "nord" | apertium . ca-es 
 \$ #norte<n><m><sg>
 \end{alltt}
 \end{small}
@@ -8447,7 +8447,7 @@ account the gender change between \emph{adhesiu} (masculine) and
 
 \begin{small}
 \begin{alltt} 
-\$ echo "adhesiu" | apertium-translator . ca-es 
+\$ echo "adhesiu" | apertium . ca-es 
 \$ #pegatina<n><m><sg>
 \end{alltt}
 \end{small}
@@ -8473,7 +8473,7 @@ symbols received from the analyser:
 
 \begin{small}
 \begin{alltt} 
-\$ echo "illot" | apertium-translator . ca-es 
+\$ echo "illot" | apertium . ca-es 
 \$ @illot<n><m><sg>
 \end{alltt}
 \end{small}
@@ -8483,7 +8483,7 @@ bilingual dictionary, the translator output is like the following one:
 
 \begin{small}
 \begin{alltt} 
-\$ echo "llavor" | apertium-translator . ca-es 
+\$ echo "llavor" | apertium . ca-es 
 \$ #pepita<n>/semilla<n><m><sg>
 \end{alltt}
 \end{small}
@@ -8546,7 +8546,7 @@ Spanish tagger in the es-ca translator) \texttt{make -f
 es-ca-unsupervised.make} for unsupervised training or \texttt{make -f
 es-ca-supervised.make} for supervised training.
 
-After compilation, \texttt{apertium-translator} will already use the
+After compilation, \texttt{apertium} will already use the
 new data.
 
 \newpage
