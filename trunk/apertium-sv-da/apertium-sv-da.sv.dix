@@ -41,6 +41,7 @@
 
     <sdef n="ant"         c=""/>
     <sdef n="top"         c=""/>
+    <sdef n="al"          c=""/>
 
     <sdef n="obj"/>
     <sdef n="subj"/>
@@ -660,6 +661,23 @@
 	<p>
           <l/>
           <r><s n="prn"/><s n="def"/><s n="ut"/><s n="sg"/></r>
+	</p>
+        <par n="S__case"/>
+      </e>	  
+    </pardef>
+
+    <pardef n="samm/a__prn">
+      <e>
+	<p>
+          <l>a</l>
+          <r>a<s n="prn"/><s n="def"/><s n="ut"/><s n="sg"/></r>
+	</p>
+        <par n="S__case"/>
+      </e>	  
+      <e>
+	<p>
+          <l>e</l>
+          <r>a<s n="prn"/><s n="def"/><s n="m"/><s n="sg"/></r>
 	</p>
         <par n="S__case"/>
       </e>	  
@@ -4749,6 +4767,21 @@
       </e>
     </pardef>
 
+    <pardef n="Wikipedia__np">
+      <e>
+        <p>
+          <l>s</l>
+          <r><s n="np"/><s n="al"/><s n="sg"/><s n="gen"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l/>
+          <r><s n="np"/><s n="al"/><s n="sg"/><s n="nom"/></r>
+        </p>
+      </e>
+    </pardef>
+
     <!-- Numerals -->
 
     <pardef n="arton__num">
@@ -8317,6 +8350,7 @@
     <e lm="ingenting"><i>ingenting</i><par n="ingenting__prn"/></e>
     <e lm="många"><i>många</i><par n="mång/a__prn"/></e>
     <e lm="sådan"><i>så</i><par n="så/dan__prn"/></e>
+    <e lm="samma"><i>samm</i><par n="samm/a__prn"/></e>
     <e lm="varandra"><i>varan</i><par n="varan/dra__prn"/></e>
     <e lm="varannan"><i>var</i><par n="var/annan__prn"/></e>
     <e lm="vardera"><i>var</i><par n="var/dera__prn"/></e>
@@ -8361,12 +8395,16 @@
     <e lm="enligt"><i>enligt</i><par n="på__pr"/></e>
     <e lm="bland"><i>bland</i><par n="på__pr"/></e>
     <e lm="angående"><i>angående</i><par n="på__pr"/></e>
+    <e lm="utan"><i>utan</i><par n="på__pr"/></e>
+    <e lm="ifrån"><i>ifrån</i><par n="på__pr"/></e>
 
     <!-- Conjunctions -->
 
     <e lm="eller"><i>eller</i><par n="eller__cnjcoo"/></e>
     <e lm="men"><i>men</i><par n="eller__cnjcoo"/></e>
     <e lm="och"><i>och</i><par n="eller__cnjcoo"/></e>
+    <e lm="samt"><i>samt</i><par n="eller__cnjcoo"/></e>
+    <e lm="utan"><i>utan</i><par n="eller__cnjcoo"/></e>
 
     <e lm="att"><i>att</i><par n="att__cnjsub"/></e>
     <e lm="som"><i>som</i><par n="att__cnjsub"/></e>
@@ -8408,7 +8446,9 @@
     <e lm="arton"><i>arton</i><par n="arton__num"/></e>
     <e lm="artonde"><i>artonde</i><par n="arton__num"/></e>
     <e lm="elva"><i>elva</i><par n="arton__num"/></e>
-    <e lm="en"><i>e</i><par n="e/n__num"/></e>
+
+<!--    <e lm="en"><i>e</i><par n="e/n__num"/></e> --> <!-- Commented out until tagger retraining -->
+
     <e lm="fem"><i>fem</i><par n="arton__num"/></e>
     <e lm="femtio"><i>femtio</i><par n="arton__num"/></e>
     <e lm="femtionde"><i>femtionde</i><par n="arton__num"/></e>
@@ -8692,6 +8732,7 @@
     <e lm="få"><i>f</i><par n="f/å__adv"/></e>
     <e lm="på"><i>på</i><par n="var__adv"/></e>
     <e lm="var"><i>var</i><par n="var__adv"/></e>
+    <e lm="igen"><i>igen</i><par n="var__adv"/></e>
 
     <!-- Nouns -->
 
@@ -12439,6 +12480,9 @@
 
     <e lm="Afrika"><i>Afrika</i><par n="Afrika__np"/></e>
     <e lm="Amerika"><i>Amerika</i><par n="Afrika__np"/></e>
+
+    <e lm="EU"><i>EU</i><par n="Afrika__np"/></e>
+
     <e lm="Armenien"><i>Armenien</i><par n="Afrika__np"/></e>
     <e lm="Asien"><i>Asien</i><par n="Afrika__np"/></e>
     <e lm="Australien"><i>Australien</i><par n="Afrika__np"/></e>
@@ -12507,6 +12551,14 @@
     <e lm="Eva"><i>Eva</i><par n="Eva__np"/></e>
     <e lm="Maria"><i>Maria</i><par n="Eva__np"/></e>
 
+
+
+
+
+    <e lm="Wikipedia"><i>Wikipedia</i><par n="Wikipedia__np"/></e>
+    <e lm="Wiktionary"><i>Wiktionary</i><par n="Wikipedia__np"/></e>
+    <e lm="Wikimedia"><i>Wikimedia</i><par n="Wikipedia__np"/></e>
+
     <!-- Verbs -->
 
     <e lm="vara"><i/><par n="/vara__vbser"/></e>
@@ -12522,11 +12574,13 @@
     <e lm="bli"><i>bl</i><par n="bl/i__vblex"/></e>
     <e lm="ätä"><i/><par n="/äta__vblex"/></e>
     <e lm="gå"><i>g</i><par n="g/å__vblex"/></e>
+    <e lm="ingå"><i>ing</i><par n="g/å__vblex"/></e>
     <e lm="spisa"><i>spisa</i><par n="adressera__vblex"/></e>
     <e lm="adressera"><i>adressera</i><par n="adressera__vblex"/></e>
     <e lm="anfalla"><i>anf</i><par n="anf/alla__vblex"/></e>
     <e lm="ankomma"><i>ankom</i><par n="ankom/ma__vblex"/></e>
     <e lm="anta"><i>ant</i><par n="ant/a__vblex"/></e>
+    <e lm="ta"><i>t</i><par n="ant/a__vblex"/></e>
     <e lm="avbetala"><i>avbetala</i><par n="adressera__vblex"/></e>
     <e lm="avbryta"><i>avbr</i><par n="avbr/yta__vblex"/></e>
     <e lm="avsky"><i>avsky</i><par n="avsky__vblex"/></e>
@@ -12550,6 +12604,7 @@
     <e lm="borra"><i>borra</i><par n="adressera__vblex"/></e>
     <e lm="borsta"><i>borsta</i><par n="adressera__vblex"/></e>
     <e lm="brinna"><i>br</i><par n="br/inna__vblex"/></e>
+    <e lm="vinna"><i>v</i><par n="br/inna__vblex"/></e>
     <e lm="bruka"><i>bruka</i><par n="adressera__vblex"/></e>
     <e lm="bryta"><i>br</i><par n="avbr/yta__vblex"/></e>
     <e lm="bygga"><i>bygg</i><par n="bygg/a__vblex"/></e>
