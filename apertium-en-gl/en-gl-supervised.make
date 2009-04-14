@@ -17,6 +17,11 @@ $(PREFIX).prob: $(BASENAME).$(LANG1).tsx $(TAGGER)/$(LANG1).dic $(TAGGER)/$(LANG
                            $(TAGGER)/$(LANG1).tagged \
                            $(TAGGER)/$(LANG1).untagged;
 
+$(BASENAME).$(LANG1).dix: $(BASENAME).$(LANG1).metadix
+	@xsltproc buscaPar.xsl apertium-en-gl.en.metadix | uniq > tmp1gen.xsl 	 
+	@xsltproc tmp1gen.xsl apertium-en-gl.en.metadix >$(BASENAME).$(LANG1).dix
+	@rm tmp1gen.xsl
+						   
 $(TAGGER)/$(LANG1).dic: $(BASENAME).$(LANG1).dix $(PREFIX).automorf.bin
 	@echo "Generating $@";
 	@echo "This may take some time. Please, take a cup of coffee and come back later.";
