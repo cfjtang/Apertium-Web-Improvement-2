@@ -15,13 +15,15 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
 
 TARGETS = $(TARGETS_COMMON) 
 
-$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).metadix
+$(BASENAME).$(LANG1).dix: $(BASENAME).$(LANG1).metadix
 	@xsltproc buscaPar.xsl apertium-en-gl.en.metadix | uniq > tmp1gen.xsl 	 
-	@xsltproc tmp1gen.xsl apertium-en-gl.en.metadix >$(BASENAME).$(LANG1).dixtmp1 
+	@xsltproc tmp1gen.xsl apertium-en-gl.en.metadix >$(BASENAME).$(LANG1).dix
 	@rm tmp1gen.xsl
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dixtmp1
-	lt-comp lr $(BASENAME).$(LANG1).dixtmp1 $@
-#	@rm $(BASENAME).$(LANG1).dixtmp1
+
+$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
+	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
+	lt-comp lr $(BASENAME).$(LANG1).dix $@
+#	@rm $(BASENAME).$(LANG1).dix
 
 $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
