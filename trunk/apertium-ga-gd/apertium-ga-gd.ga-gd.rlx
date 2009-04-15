@@ -31,7 +31,7 @@ LIST INITIAL-H = ("<[Hh].*>"ri "[ABCDEFGIJKLMNOPQRSTUVWXYZÁÉÍÓÚabcdefgijklm
 
 LIST Pronominal = (pr +prpers prn obj);
 
-LIST RelDirect = (rel an);
+LIST RelDirect = (rel);
 
 SET VerbImp = Verb + Imp;
 
@@ -62,7 +62,7 @@ LIST DATIVEPREP = ("<([Aa][grs]|[Cc]huig|[Dd][eo]|[Ff]aoi|[Gg]an|[Gg]o|[Ll]e|[Ó
 SECTION
 
 SELECT (n f sg) IF (-1 ("i"ri pr)) (0 ("<bhfuil>"));
-SELECT (vblex pres pl) IF (0 ("<bhfuil>"));
+SELECT (vbser pres) IF (0 ("<bhfuil>"));
 
 SELECT (pr) IF (0 ("<thar>"ri));
 
@@ -77,8 +77,8 @@ SELECT (vblex prs) IF (-1 ("go"ri)) (0 NMFOURSUBJ) (0 ECLIPSED);
 
 SELECT (adj sg nom) IF (-1 ("<nár>"ri)) (0 ("<chuma>"ri));
 
-SELECT (vblex prs pl) IF (-1 ("<nár>"ri)) (0 (vblex prs pl)) (0 LENITED);
-REMOVE (vblex prs pl) IF (0 (vblex prs pl)) (0 LENITED);
+SELECT (vblex prs) IF (-1 ("<nár>"ri)) (0 (vblex prs)) (0 LENITED);
+REMOVE (vblex prs) IF (0 (vblex prs)) (0 LENITED);
 
 SELECT (n m sg nom) IF (0 ("<g?[Cc]h?éad>"ri)) (1 ("<seo>"));
 SELECT (adj sg nom) IF (0 ("<g?[Cc]h?éad>"ri))
@@ -126,7 +126,7 @@ REMOVE Pronominal IF (0 ("<as>"ri)) (1 ("<na>" det def));
 REMOVE Pronominal IF (0 ("<as>"ri)) (1 ("<an>"));
 
 # <B>[Aa]s</B> <N>ANYTHING</N>:<S>
-REMOVE Pronominal IF (0 ("<as>"ri)) (1 (n));
+REMOVE Pronominal IF (0 ("<as>"ri)) (1 Nom);
 
 SELECT Pronominal IF (0 ("<ann>"));
 
@@ -135,7 +135,7 @@ SELECT Vcop IF (0 ("<an>")) (1 Verb);
 SELECT Vcop IF (0 ("<an>")) (1 ("<amhlaidh>"));
 SELECT Vcop IF (0 ("<an>")) (1 ("<mar>"));
 
-SELECT ("<an>" det def) IF (0 ("<an>")) (1 ("té" prn));
+SELECT (det def) IF (0 ("<an>")) (1 ("té" prn));
 
 SELECT Vcop IF (0 ("<an>")) (1 PRSO);
 SELECT Vcop IF (0 ("<an>")) (1 ("<leis>"));
@@ -144,11 +144,11 @@ SELECT Vcop IF (0 ("<an>")) (1 ("<faoi>"));
 
 SELECT Vcop IF (1 ("<leis>") OR ("<de>") OR ("<faoi>"));
 
-SELECT ("<an>" det def) IF (0 ("<an>")) (1 ("<(chuir|mh?aith|ní)>"ri));
+SELECT (det def) IF (0 ("<an>")) (1 ("<(chuir|mh?aith|ní)>"ri));
 
-SELECT ("<an>" det def) IF (0 ("<an>")) (NOT 1 Verb);
-SELECT ("<an>" det def) IF (-1 (pr)) (0 ("<an>"));
-SELECT ("<anuas>" adv) IF (0 ("<anuas>"));
+SELECT (det def) IF (0 ("<an>"ri)) (NOT 1 Verb);
+SELECT (det def) IF (-1 (pr)) (0 ("<an>"));
+SELECT (adv) IF (0 ("<anuas>"));
 
 SELECT (n m sg nom) IF (-1 ("<mar>")) (0 ("<aon>"));
 SELECT (adj sg nom) IF (0 ("<aon>"));
@@ -160,7 +160,7 @@ SELECT (n m sg nom) IF (0 ("<ár>"ri)) (1 Conj);
 SELECT (n m sg nom) IF (0 ("<ár>"ri)) (1 (det def));
 SELECT (det pos) IF (0 ("<ár>"ri));
 
-SELECT (vblex pres pl) IF (0 ("<atá>"ri));
+SELECT (vblex pres) IF (0 ("<atá>"ri));
 
 # without "h" is handled by unigram
 SELECT (n m sg nom) IF (0 ("<h[Aa]thair>"ri)) (1 INITIAL-H);
@@ -170,7 +170,7 @@ SELECT Vcop IF (0 ("<ba>"));
 SELECT Vcop IF (-1 ("<([Gg]o|[Nn]ach)>")) (0 ("<mba>"ri));
 SELECT Vcop IF (-1 ("<dh?á>"ri)) (0 ("<mba>"ri));
 
-SELECT (vblex pres pl) IF (0 ("<bhaineann>"ri));
+SELECT (vblex pres) IF (0 ("<bhaineann>"ri));
 
 # catch barra here otherwise looks like nm1 gs/pl (really nm4 gs+pl of barr)
 #  and gets disambiguated as the gs after "an"
@@ -178,7 +178,7 @@ SELECT (vblex pres pl) IF (0 ("<bhaineann>"ri));
 SELECT (n m sg nom) IF (-1 ("<an>"ri det def)) (0 ("<barra>"ri));
 SELECT (n m sg nom) IF (0 ("<bh?arr>"ri));
 SELECT (adj nom pl) IF (0 ("<bh?eag>"ri));
-SELECT (vblex past pl) IF (0 ("<bhí>"ri));
+SELECT (vblex past) IF (0 ("<bhí>"ri));
 
 # verbal particle or copula
 SELECT (vpart itg) IF (0 ("<cá>"ri)) (1 Verb);
@@ -284,10 +284,10 @@ SELECT (adj sg nom) IF (0 ("<[Dd]eas>"));
 
 # ok as is; "trí bliana déag", etc.  "trí déag"... in comhshuite
 SELECT (n sg nom) IF (0 ("<n?[Dd]h?éag>"ri));
-SELECT (vblex imp pl) IF (0 ("<n?[Dd]h?éan>"ri));
-SELECT (vblex past pl) IF (0 ("<n?[Dd]h?earna>"ri));
-SELECT (vblex pres pl) IF (0 ("<[Dd]eir>"ri));
-SELECT (vblex pii pl) IF (-1 ("<[Aa]>"ri)) (0 ("<[Dd]eireadh>"ri));
+SELECT (vblex imp) IF (0 ("<n?[Dd]h?éan>"ri));
+SELECT (vblex past) IF (0 ("<n?[Dd]h?earna>"ri));
+SELECT (vblex pres) IF (0 ("<[Dd]eir>"ri));
+SELECT (vblex pii) IF (-1 ("<[Aa]>"ri)) (0 ("<[Dd]eireadh>"ri));
 
 SELECT RelDirect IF (0 ("<[Aa]>"ri)) (1 ("<[Dd]eireadh>"ri)) (1 (vblex pii pl));
 
@@ -338,9 +338,9 @@ SELECT Adv IF (0 ("<[Ff]éin>"ri));
 
 # grass, not gsm "fiar"
 SELECT (n m sg gen) IF (0 ("<[Ff]h?éir>"ri));
-SELECT (vblex past pl) IF (0 ("<(bh)?[Ff]uair>"ri));
+SELECT (vblex past) IF (0 ("<(bh)?[Ff]uair>"ri));
 SELECT NomProp IF (-1 CAPITAL) (0 ("<Gabhann>"));
-SELECT (vblex pres pl) IF (0 ("<Gabhann>"));
+SELECT (vblex pres) IF (0 ("<Gabhann>"));
 
 SELECT (n m pl nom) IF (0 ("<g[Cc]inn>"ri));
 
@@ -425,7 +425,7 @@ SELECT (adj sg nom) IF (-1 DetDef) (-1 ("<[Nn]a>"ri));
 
 # note that next rule is disjoint from previous (so don't put <U> in next one)
 
-SELECT (vblex imp pl)  IF (-1 ("<[Nn]á>"ri)) (0 VerbImp);
+SELECT (vblex imp)  IF (-1 ("<[Nn]á>"ri)) (0 VerbImp);
 
 SELECT Conj IF (0 ("<[Nn]á>"ri));
 
@@ -467,7 +467,7 @@ SELECT Prep IF (0 ("<os>"));
 
 SELECT (n f sg gen) IF (-1 DetDef) (-1 ("<na>")) (0 ("<[Rr]inne>"ri));
 
-SELECT (vblex pres pl) IF (0 ("<[Rr]inne>"ri));
+SELECT (vblex pres) IF (0 ("<[Rr]inne>"ri));
 
 SELECT (n sg nom) (0 ("<San>")) (1 CAPITAL);
 SELECT Prep (0 ("<San>"));
@@ -584,3 +584,4 @@ REMOVE (n gen) IF (NOT -2 Adj) (NOT -2 Conj) (NOT -2 Nom) (NOT -2 Adv) (NOT -2 P
 ##
 
 REMOVE Verb IF (-1C Vcop);
+SELECT (vpart) IF (0 ("<an>"ri)) (NOT 1 Nom);
