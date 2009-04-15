@@ -24,7 +24,6 @@
     <sdef n="dep"/> <!-- Dependent -->
 
     <sdef n="rel"/>
-    <sdef n="an"/>
 
     <sdef n="subj"/>
     <sdef n="obj"/>
@@ -79,7 +78,6 @@
     <sdef n="sent"/>
     <sdef n="guio"/>
     <sdef n="num"/>
-    <sdef n="lquest"/>
   </sdefs>
 
   <pardefs>
@@ -140,15 +138,6 @@
         <p>
           <l/>
           <r><s n="sent"/></r>
-        </p>
-      </e>
-    </pardef>
-    <pardef n="separ">
-      <e>
-        <re>[¿¡]</re>
-        <p>
-          <l/>
-          <r><s n="lquest"/></r>
         </p>
       </e>
     </pardef>
@@ -328,6 +317,26 @@
         <p>
           <l>bhf</l>
           <r>f</r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="initial-f_nullout">
+      <e>
+        <p>
+          <l>f</l>
+          <r></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>fh</l>
+          <r></r>
+        </p>
+      </e>
+      <e r="LR">
+        <p>
+          <l>bhf</l>
+          <r></r>
         </p>
       </e>
     </pardef>
@@ -1055,13 +1064,13 @@
       <e r="LR">
         <p>
           <l>a</l>
-          <r>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/></r>
+          <r>a<s n="rel"/><s n="sp"/></r>
         </p>
       </e>
       <e r="RL">
         <p>
           <l><a/>a</l>
-          <r>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/></r>
+          <r>a<s n="rel"/><s n="sp"/></r>
         </p>
       </e>
     </pardef>
@@ -1767,6 +1776,24 @@
           <r>i<s n="pr"/></r>
         </p>
       </e>
+      <e r="LR">
+        <p>
+	  <l>sa</l>
+	  <r>i<s n="pr"/><j/>an<s n="det"/><s n="def"/><s n="sg"/><s n="nom"/></r>
+	</p>
+      </e>
+      <e r="LR">
+        <p>
+	  <l>san</l>
+	  <r>i<s n="pr"/><j/>an<s n="det"/><s n="def"/><s n="sg"/><s n="nom"/></r>
+	</p>
+      </e>
+      <e r="LR">
+        <p>
+	  <l>sna</l>
+	  <r>i<s n="pr"/><j/>na<s n="det"/><s n="def"/><s n="pl"/><s n="nom"/></r>
+	</p>
+      </e>
       <!-- Possessives -->
       <e r="LR">
         <p>
@@ -1796,13 +1823,13 @@
       <e r="LR">
         <p>
           <l>ina</l>
-          <r>i<s n="pr"/><j/>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/></r>
+          <r>i<s n="pr"/><j/>a<s n="rel"/><s n="sp"/></r>
         </p>
       </e>
       <e r="LR">
         <p>
           <l>inar</l>
-          <r>i<s n="pr"/><j/>ar<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/></r>
+          <r>i<s n="pr"/><j/>ar<s n="rel"/><s n="sp"/></r>
         </p>
       </e>
       <!-- FIXME: gotta check these
@@ -2451,33 +2478,34 @@
         </p>
       </e>
       <e>
+        <par n="initial-f_nullout"/>
         <p>
-	  <l>fuil</l>
+	  <l>uil</l>
 	  <r>bí<s n="vbser"/><s n="pres"/><s n="dep"/></r>
 	</p>
       </e>
       <e r="LR">
         <p>
           <l>atáim</l>
-          <r>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/><s n="p1"/><s n="sg"/></r>
+          <r>a<s n="rel"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/><s n="p1"/><s n="sg"/></r>
         </p>
       </e>
       <e r="LR">
         <p>
           <l>atáimid</l>
-          <r>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/><s n="p1"/><s n="pl"/></r>
+          <r>a<s n="rel"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/><s n="p1"/><s n="pl"/></r>
         </p>
       </e>
       <e r="LR">
         <p>
           <l>atá</l>
-          <r>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/></r>
+          <r>a<s n="rel"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/></r>
         </p>
       </e>
       <e r="LR">
         <p>
           <l>atáthar</l>
-          <r>a<s n="rel"/><s n="an"/><s n="mf"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/><s n="impers"/><s n="sp"/></r>
+          <r>a<s n="rel"/><s n="sp"/><j/>bí<s n="vbser"/><s n="pres"/><s n="impers"/><s n="sp"/></r>
         </p>
       </e>
       <!-- Future -->
@@ -33340,6 +33368,12 @@
       </e>
       <e>
         <p>
+          <l>igh</l>
+          <r>each<s n="n"/><s n="m"/><s n="sg"/><s n="dat"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
           <l>ithe</l>
           <r>each<s n="n"/><s n="m"/><s n="pl"/><s n="gen"/></r>
         </p>
@@ -62834,7 +62868,6 @@
     <e lm="crích"><par n="initial-c"/><i>rích</i><par n="cois__n"/></e>
     <e lm="niúdar"><i>niúdar</i><par n="Eo__n"/></e>
     <e lm="son"><par n="initial-s"/><i>on</i><par n="Eo__n"/></e>
-    <e lm="tigh"><par n="initial-t"/><i>igh</i><par n="cois__n"/></e>
     <e lm="tromach"><par n="initial-t"/><i>romach</i><par n="Eo__n"/></e>
     <e lm="San"><par n="initial-S"/><i>an</i><par n="Eo__n"/></e>
     <e lm="Uíbh"><i>Uíbh</i><par n="Uíbh__n"/></e>
