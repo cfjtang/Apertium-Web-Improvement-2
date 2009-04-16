@@ -585,3 +585,8 @@ REMOVE (n gen) IF (NOT -2 Adj) (NOT -2 Conj) (NOT -2 Nom) (NOT -2 Adv) (NOT -2 P
 
 REMOVE Verb IF (-1C Vcop);
 SELECT (vpart) IF (0 ("<an>"ri)) (NOT 1 Nom);
+REMOVE (gen) IF (-1C Verb) ((0 (n gen)) OR (0 (det def gen)));
+REMOVE (n gen) IF (-1C DetDef) (NOT -1 (det def gen)) (0 (n gen));
+REMOVE (adj gen) IF (-1C Nom) (NOT -1 (n gen)) (0 (adj gen));
+REMOVE (adj pl) IF (-1C Nom) (NOT -1 (n pl)) (0 (adj pl));
+REMOVE (adj sg) IF (-1C Nom) (NOT -1 (n sg)) (0 (adj sg));
