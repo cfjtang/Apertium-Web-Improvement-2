@@ -4,19 +4,19 @@ LANG2=it
 FILTERTAG="<prn><enc>"
 
 # FASE PRELIMINAR
-echo "==================================";
-echo "Calculant nombre de lemes i regles";
-echo "==================================";
-echo -n "El nombre de lemes de '$1' és de: ";
-lt-expand $PREFIX.$1.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("%s$\n",$NF)}'| awk 'BEGIN{FS=">"}{print $1}'|uniq |wc -l 
-echo -n "El nombre de lemes de '$2' és de: ";
-lt-expand $PREFIX.$2.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("%s$\n",$NF)}'| awk 'BEGIN{FS=">"}{print $1}'|uniq |wc -l  
-echo -n "El nombre de correspondències al bilingüe es de: ";
-grep "</e>" $PREFIX.$LANG1-$LANG2.dix | wc -l
-echo -n "El nombre de regles de '$1' a '$2' és de: ";
-grep "</rule>" $PREFIX.$1-$2.t?x | wc -l
-echo -n "El nombre de regles de '$2' a '$1' és de: ";
-grep "</rule>" $PREFIX.$2-$1.t?x | wc -l
+#echo "==================================";
+#echo "Calculant nombre de lemes i regles";
+#echo "==================================";
+#echo -n "El nombre de lemes de '$1' és de: ";
+#lt-expand $PREFIX.$1.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("%s$\n",$NF)}'| awk 'BEGIN{FS=">"}{print $1}'|uniq |wc -l 
+#echo -n "El nombre de lemes de '$2' és de: ";
+#lt-expand $PREFIX.$2.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("%s$\n",$NF)}'| awk 'BEGIN{FS=">"}{print $1}'|uniq |wc -l  
+#echo -n "El nombre de correspondències al bilingüe es de: ";
+#grep "</e>" $PREFIX.$LANG1-$LANG2.dix | wc -l
+#echo -n "El nombre de regles de '$1' a '$2' és de: ";
+#grep "</rule>" $PREFIX.$1-$2.t?x | wc -l
+#echo -n "El nombre de regles de '$2' a '$1' és de: ";
+#grep "</rule>" $PREFIX.$2-$1.t?x | wc -l
 # FASE 1
 echo "=======================";
 echo "Comprovació superficial";
