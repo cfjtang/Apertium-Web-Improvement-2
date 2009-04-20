@@ -55,7 +55,13 @@ echo " fet."a
 rm $$.bin
 rm $$.expand
 echo "";
-echo "Comprovació superficial finalitzada. Mireu en 'errors-$1-$2.superficial'"
+echo "Me quedo sólo con los infinitivos"
+egrep -v "(<vb|<np>)" errors-$1-$2.superficial > errors-$1-$2.superficial-convb
+egrep "<inf>" errors-$1-$2.superficial >> errors-$1-$2.superficial-convb
+
+echo "Comprovació superficial finalitzada. Mireu en 'errors-$1-$2.superficial-convb'"
+
+
 
 # echo ""
 # echo "===================="
