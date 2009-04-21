@@ -21,6 +21,7 @@
 #include <fstream>
 #include <cstdio>
 #include <string>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
