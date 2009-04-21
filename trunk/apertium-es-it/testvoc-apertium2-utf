@@ -55,9 +55,9 @@ echo " fet."a
 rm $$.bin
 rm $$.expand
 echo "";
-echo "Me quedo sólo con los infinitivos"
+echo "Dels verbs vull només els infinitius i els que  te"
 egrep -v "(<vb|<np>)" errors-$1-$2.superficial > errors-$1-$2.superficial-convb
-egrep "<inf>" errors-$1-$2.superficial >> errors-$1-$2.superficial-convb
+egrep "(<vblex>/|<inf>)" errors-$1-$2.superficial >> errors-$1-$2.superficial-convb
 
 echo "Comprovació superficial finalitzada. Mireu en 'errors-$1-$2.superficial-convb'"
 
