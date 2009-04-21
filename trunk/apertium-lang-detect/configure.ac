@@ -3,9 +3,6 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_lttoolbox_version], [2.0.0])
-m4_define([required_apertium_version], [2.0.0])
-
 #m4_define([required_pkg_config_version], [0.15])
 
 AC_INIT([apertium-lang-detect], [1.0.0], [sortiz@dlsi.ua.es])
@@ -85,39 +82,6 @@ AC_ARG_ENABLE(profile,
               [  --enable-profile  Enable "-pg -g -Wall" compiler options],
               [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
 
-AC_PATH_PROG(XMLLINT, xmllint, no)
-if test x$ac_cv_path_XMLLINT = x
-then
-  AC_MSG_ERROR([You don't have xmllint installed.])
-fi
-if test x$ac_cv_path_XMLLINT = xno
-then
-  AC_MSG_ERROR([You don't have xmllint installed.])
-fi
-
-if test x$ARCH = xppc
-then
-  AC_PATH_PROG(XSLTPROC, sabcmd, no)
-  if test x$ac_cv_path_XSLTPROC = x
-  then
-    AC_MSG_ERROR([You don't have sablotron installed.])
-  fi
-  if test x$ac_cv_path_XSLTPROC = xno
-  then
-    AC_MSG_ERROR([You don't have sablotron installed.])
-  fi
-else 
-  AC_PATH_PROG(XSLTPROC, xsltproc, no)
-  if test x$ac_cv_path_XSLTPROC = x
-  then
-    AC_MSG_ERROR([You don't have xsltproc installed.])
-  fi
-  if test x$ac_cv_path_XSLTPROC = xno
-  then
-    AC_MSG_ERROR([You don't have xsltproc installed.])
-  fi
-fi
-
 AC_PATH_PROG(BASH, bash, no)
 if test x$ac_cv_path_BASH = x
 then
@@ -148,10 +112,6 @@ then
   AC_MSG_ERROR([You don't have pkg-config installed.])
 fi
 
-PKG_CHECK_MODULES(DETLANG, [dnl
-  lttoolbox-2.0 >= required_lttoolbox_version dnl
-  apertium-2.0 >= required_apertium_version])
-  
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h stddef.h])
