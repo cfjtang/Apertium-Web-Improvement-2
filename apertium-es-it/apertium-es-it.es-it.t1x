@@ -432,7 +432,8 @@
 
     <def-attr n="temps">
       <attr-item tags="cni"/>
-      <attr-item tags="fti"/>  
+      <attr-item tags="fti"/>
+      <attr-item tags="fts"/>
       <attr-item tags="ifi"/>
       <attr-item tags="imp"/>
       <attr-item tags="pii"/>
@@ -5192,7 +5193,38 @@
 		</action>
 	</rule>
 
-	
+		<rule comment="REGLA: VERB ">
+		<pattern>
+			<pattern-item n="verb"/>
+		</pattern>
+		<action>
+			
+			<call-macro n="firstWord">
+				<with-param pos="1"/>
+			</call-macro>
+			<out>
+				<chunk name="verb" case="caseFirstWord">
+					<tags>
+						<tag><lit-tag v="SV"/></tag>
+							
+					</tags>
+					<lu>   
+						<clip pos="1" side="tl" part="lemh"/> 
+						<clip pos="1" side="tl" part="a_verb"/>
+						<clip pos="1" side="tl" part="temps"/>
+						<clip pos="1" side="tl" part="pers"/>
+						<clip pos="1" side="tl" part="gen"/>	 
+						<clip pos="1" side="tl" part="nbr"/>
+						<clip pos="1" side="tl" part="lemq"/>
+					</lu> 
+				</chunk>
+			</out>
+			<let>
+				<var n="caseFirstWord"/>
+				<lit v="aa"/>
+			</let>
+		</action>
+	</rule> 
 	
 
  	
