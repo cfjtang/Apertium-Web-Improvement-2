@@ -2459,6 +2459,9 @@
       </action>
     </rule>
 
+<!--
+x- feia més mal que bé x-
+x- canvio els comentaris interiors per x- en comptes de doble guió per qüestions sintàctiques x-
 <rule comment="REGLA: DET NOM DE NOM (EO)(pertany a les regles de formació de compostos a partir de  N+de+N, ex. un llibre de consulta -> konsultolibro)">
       <pattern>
 	<pattern-item n="det"/>
@@ -2470,7 +2473,7 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	 <call-macro n="nom_cas"> <!x- assigna cas nominatiu per defecte x-> 
 	  <with-param pos="1"/>
 	</call-macro> 
 	<call-macro n="nombre_nom">
@@ -2478,7 +2481,7 @@
 	</call-macro>
 
    <choose>
-     <when>   <!-- article indefinit s'elimina -->
+     <when>   <!x- article indefinit s'elimina x->
       <test>
        <or>
        <equal caseless="yes">
@@ -2507,11 +2510,11 @@
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_nom"/>
               <clip pos="4" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
               <clip pos="4" side="tl" part="lemq"/>
             </lu>
-            <!--<b pos="1"/> de fet formem un compost--> 
+            <!x-<b pos="1"/> de fet formem un compostx-> 
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_nom"/>
@@ -2524,7 +2527,7 @@
         </out>
     </when>
 
-<otherwise>           <!-- altres (amb cas)-->
+<otherwise>           <!x- altres (amb cas)x->
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2546,11 +2549,11 @@
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_nom"/>
               <clip pos="4" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
               <clip pos="4" side="tl" part="lemq"/>
             </lu>
- <!--           <b pos="2"/>-->
+ <!x-           <b pos="2"/>x->
 	    <lu>     
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -2569,6 +2572,7 @@
 	</let>
       </action>
     </rule>
+-->
 
 
 <rule comment="REGLA: DET NUM NOM DE NOM ADJ (EO)(pertany a les regles de formació de compostos a partir de  N+de+N, en aquest cas NO volem que faci el compost)">
