@@ -2375,7 +2375,9 @@
     </rule>
 
 
-
+<!--
+x- feia més mal que bé x-
+x- canvio els comentaris interiors per x- en comptes de doble guió per qüestions sintàctiques x-
 <rule comment="REGLA: DET NOM DE NOM ADJ (EOes)(pertenece a las sreglas de formación de compuestos, en este caso queremos evitar la formación del compuesto ya que tenemos un adjetivo ex. los animales de zonas cálidas -> la besto de varmaj zonoj)">
       <pattern>
 	<pattern-item n="det"/>
@@ -2388,7 +2390,7 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	 <call-macro n="nom_cas"> <!x- assigna cas nominatiu per defecte x-> 
 	  <with-param pos="1"/>
 	</call-macro> 
 	<call-macro n="nombre_nom">
@@ -2396,7 +2398,7 @@
 	</call-macro>
 
    <choose>
-     <when>   <!-- article indefinit s'elimina -->
+     <when>   <!x- article indefinit s'elimina x->
       <test>
        <or>
        <equal caseless="yes">
@@ -2466,7 +2468,7 @@
         </out>
     </when>
 
-<otherwise>           <!-- altres (amb cas)-->
+<otherwise>           <!x- altres (amb cas)x->
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2548,7 +2550,7 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	 <call-macro n="nom_cas"> <!x- assigna cas nominatiu per defecte x-> 
 	  <with-param pos="1"/>
 	</call-macro> 
 	<call-macro n="nombre_nom">
@@ -2556,7 +2558,7 @@
 	</call-macro>
 
    <choose>
-     <when>   <!-- article indefinit s'elimina -->
+     <when>   <!x- article indefinit s'elimina x->
       <test>
        <or>
        <equal caseless="yes">
@@ -2585,11 +2587,11 @@
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_nom"/>
               <clip pos="4" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
               <clip pos="4" side="tl" part="lemq"/>
             </lu>
-            <!--<b pos="1"/> de fet formem un compost--> 
+            <!x-<b pos="1"/> de fet formem un compostx-> 
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_nom"/>
@@ -2602,7 +2604,7 @@
         </out>
     </when>
 
-<otherwise>           <!-- altres (amb cas)-->
+<otherwise>           <!x- altres (amb cas)x->
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2624,11 +2626,11 @@
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_nom"/>
               <clip pos="4" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
               <clip pos="4" side="tl" part="lemq"/>
             </lu>
- <!--           <b pos="2"/>-->
+ <!x-           <b pos="2"/>x->
 	    <lu>     
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_nom"/>
@@ -2669,7 +2671,7 @@
 	  <with-param pos="3"/>
 	</call-macro>
 
-   <!-- article indefinit s'elimina-->
+   <!x- article indefinit s'eliminax->
    <choose>
      <when>
       <test>
@@ -2736,7 +2738,7 @@
           </chunk>
         </out>
     </when>
-<otherwise>           <!-- article definit-->
+<otherwise>           <!x- article definitx->
 	<out>
 	  <chunk name="det_num_nom" case="caseFirstWord">
 	    <tags>
@@ -2830,7 +2832,7 @@
 	  <with-param pos="3"/>
 	</call-macro>
 
-   <!-- article indefinit s'elimina-->
+   <!x- article indefinit s'eliminax->
    <choose>
      <when>
       <test>
@@ -2857,11 +2859,11 @@
               <clip pos="5" side="tl" part="lemh"/>
               <clip pos="5" side="tl" part="a_nom"/>
               <clip pos="5" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
               <clip pos="5" side="tl" part="lemq"/>
             </lu>
-	    <!--<b pos="2"/>-->
+	    <!x-<b pos="2"/>x->
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_nom"/>
@@ -2873,7 +2875,7 @@
           </chunk>
         </out>
     </when>
-<otherwise>           <!-- article definit-->
+<otherwise>           <!x- article definitx->
 	<out>
 	  <chunk name="det_num_nom" case="caseFirstWord">
 	    <tags>
@@ -2900,11 +2902,11 @@
 	      <clip pos="5" side="tl" part="lemh"/> 
 	      <clip pos="5" side="tl" part="a_nom"/>
               <clip pos="5" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
-	    <!--<b pos="3"/>-->
+	    <!x-<b pos="3"/>x->
 	    <lu>     
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -2945,7 +2947,7 @@
 	  <with-param pos="3"/>
 	</call-macro>
 
-   <!-- article definit s'elimina i es 'genera' cas: 'totes les nenes : ĉiuj knabinoj-->
+   <!x- article definit s'elimina i es 'genera' cas: 'totes les nenes : ĉiuj knabinojx->
    <choose>
      <when>
       <test>
@@ -3014,7 +3016,7 @@
           </chunk>
         </out>
     </when>
-<otherwise>           <!-- demostratius i altres -->
+<otherwise>           <!x- demostratius i altres x->
 	<out>
 	  <chunk name="ĉiunom" case="caseFirstWord">
 	    <tags>
@@ -3109,7 +3111,7 @@
 	  <with-param pos="3"/>
 	</call-macro>
 
-   <!-- article definit s'elimina i es 'genera' cas: 'totes les nenes : ĉiuj knabinoj-->
+   <!x- article definit s'elimina i es 'genera' cas: 'totes les nenes : ĉiuj knabinojx->
    <choose>
      <when>
       <test>
@@ -3138,11 +3140,11 @@
               <clip pos="5" side="tl" part="lemh"/>
               <clip pos="5" side="tl" part="a_nom"/>
               <clip pos="5" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
               <clip pos="5" side="tl" part="lemq"/>
             </lu>
-	    <!--<b pos="2"/>-->
+	    <!x-<b pos="2"/>x->
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_nom"/>
@@ -3154,7 +3156,7 @@
           </chunk>
         </out>
     </when>
-<otherwise>           <!-- demostratius i altres -->
+<otherwise>           <!x- demostratius i altres x->
 	<out>
 	  <chunk name="ĉiunom" case="caseFirstWord">
 	    <tags>
@@ -3182,11 +3184,11 @@
 	      <clip pos="5" side="tl" part="lemh"/> 
 	      <clip pos="5" side="tl" part="a_nom"/>
               <clip pos="5" side="tl" part="gen"/>
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
-	    <!--<b pos="3"/>-->
+	    <!x-<b pos="3"/>x->
 	    <lu>     
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -3225,7 +3227,7 @@
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
-   <!-- article indefinit s'elimina-->
+   <!x- article indefinit s'eliminax->
    <choose>
      <when>
       <test>
@@ -3253,11 +3255,11 @@
 	      <clip pos="5" side="tl" part="lemh"/> 
 	      <clip pos="5" side="tl" part="a_nom"/>
 	      <clip pos="5" side="tl" part="gen"/> 
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
-	    <!--<b pos="2"/>-->
+	    <!x-<b pos="2"/>x->
 	    <lu>       
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -3269,7 +3271,7 @@
 	  </chunk>
 	</out>       
     </when>
-<otherwise>           <!-- article definit-->
+<otherwise>           <!x- article definitx->
 	<out>  
 	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -3297,11 +3299,11 @@
 	      <clip pos="5" side="tl" part="lemh"/> 
 	      <clip pos="5" side="tl" part="a_nom"/>
 	      <clip pos="5" side="tl" part="gen"/> 
-	      <lit-tag v="sg"/> <!-- no volem que canvii el nbr, de fet passa a formar part d'un compost-->
-	      <lit-tag v="nomi"/> <!-- no volem que canvii el cas, de fet passa a formar part d'un compost-->
+	      <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
+	      <lit-tag v="nomi"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
-	    <!--<b pos="3"/>-->
+	    <!x-<b pos="3"/>x->
 	    <lu>       
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -3320,7 +3322,7 @@
 	</let>
       </action>
     </rule>
-
+-->
 
 <rule comment="REGLA: NOM (per a col·locar la cua en les multiparaules amb g (EO)">
       <pattern>
