@@ -4,8 +4,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-eu-es], [0.3.0], [sortiz@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-eu-es], [0.3.0], no-define)
+AC_INIT([apertium-eu-es], [0.3.1], [sortiz@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-eu-es], [0.3.1], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
@@ -36,7 +36,6 @@ AC_DEFUN([PKG_CHECK_APERTIUM], [
 ])
                           
 PKG_CHECK_APERTIUM
-
 
 
 AC_PATH_PROG(XSLTPROC, xsltproc, no)
