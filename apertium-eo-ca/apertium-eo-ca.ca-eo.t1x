@@ -8424,6 +8424,48 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
+    <rule comment="REGLA: PARTICIPI + PER -> estimat per -> amata de">
+      <pattern>
+	<pattern-item n="pp"/> 
+	<pattern-item n="per"/> 
+      </pattern>
+      <action>       	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="1"/>
+        </call-macro>
+	<out>
+	  <chunk name="pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SA"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="case"/></tag>
+	    </tags> 	
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <lit-tag v="vblex.pp"/>
+	      <clip pos="1" side="sl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/>    
+	    </lu>
+            <b pos="1"/> <!-- ŝanĝo al DE-->
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+	  </chunk>
+	</out>  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: PARTICIPI (perquè no enviï gènere ni nombre quan va sol (per tal que no doni error). Caldrà posar-lo tb en les regles d'adjectiu">
       <pattern>
 	<pattern-item n="pp"/> 
