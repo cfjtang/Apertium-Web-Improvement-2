@@ -80,7 +80,10 @@
     <tags-item tags="det.pos.*"/>
     <tags-item tags="det.itg.*"/> 
   </def-label>
-<def-label name="DETQNT_ORD" closed="true"><!--Poden anar precedits dels altres tipus de determinant -->
+  <def-label name="ADET" closed="true">
+    <tags-item lemma="a" tags="det.ind.sg"/>
+  </def-label> 
+  <def-label name="DETQNT_ORD" closed="true"><!--Poden anar precedits dels altres tipus de determinant -->
     <tags-item tags="det.qnt.*"/>
     <tags-item tags="det.ord.*"/>
   </def-label> 
@@ -863,9 +866,22 @@
       <label-item label="PAST"/>
       <label-item label="GEN"/>
     </label-sequence>
-
-
-
+    <label-sequence>
+      <label-item label="ADET"/>
+      <label-item label="PRES"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADET"/>
+      <label-item label="PAST"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADET"/>
+      <label-item label="VAUX"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADET"/>
+      <label-item label="INF"/>
+    </label-sequence>
  </forbid>
 
  <enforce-rules>
