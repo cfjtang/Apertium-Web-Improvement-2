@@ -116,7 +116,7 @@
     <tags-item tags="np.cog.*"/>
   </def-label>
   <def-label name="TOPONIM">
-    <tags-item tags="np.loc.*"/>
+    <tags-item tags="np.top.*"/>
   </def-label>
   <def-label name="NPALTRES">
     <tags-item tags="np.al.*"/>
@@ -555,11 +555,11 @@
       <label-item label="VMODPP"/>
     </label-sequence> 
     <label-sequence>
-      <label-item label="DOVBLEX"/>
+      <label-item label="DAEVBLEX"/>
       <label-item label="PRNSUBJ"/>
     </label-sequence> 
     <label-sequence>
-      <label-item label="DOVBLEX"/>
+      <label-item label="DAEVBLEX"/>
       <label-item label="PRNOBJ"/>
     </label-sequence> 
     <label-sequence>
@@ -567,8 +567,8 @@
       <label-item label="PRNOBJ"/>
     </label-sequence> 
     <label-sequence>
-      <label-item label="DOVBLEX"/>
-      <label-item label="NOT"/>
+      <label-item label="DAEVBLEX"/>
+      <label-item label="NA"/>
     </label-sequence> 
     <label-sequence>
       <label-item label="ADJPOS"/>
@@ -612,11 +612,11 @@
     </label-sequence>
     <label-sequence>
       <label-item label="CANNOM"/>
-      <label-item label="NOT"/>
+      <label-item label="NA"/>
     </label-sequence>
     <label-sequence>
       <label-item label="CANNOM"/>
-      <label-item label="DOVBLEX"/>
+      <label-item label="DAEVBLEX"/>
     </label-sequence>
     <label-sequence>
       <label-item label="CANNOM"/>
@@ -705,11 +705,11 @@
     </label-sequence>
     <label-sequence>
       <label-item label="WILLNOM"/>
-      <label-item label="NOT"/>
+      <label-item label="NA"/>
     </label-sequence>
     <label-sequence>
       <label-item label="WILLNOM"/>
-      <label-item label="DOVBLEX"/>
+      <label-item label="DAEVBLEX"/>
     </label-sequence>
     <label-sequence>
       <label-item label="WILLNOM"/>
@@ -850,6 +850,19 @@
       <label-item label="INTNOM"/>
       <label-item label="DETQNT_ORD"/>
     </label-sequence>
+    <!-- Extra ambiguities in Scots: 's in place of "us"  -->
+    <label-sequence>
+      <label-item label="PRES"/>
+      <label-item label="GEN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPP"/>
+      <label-item label="GEN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PAST"/>
+      <label-item label="GEN"/>
+    </label-sequence>
 
 
 
@@ -862,7 +875,7 @@
        <!-- <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
 	<label-item label="PRNSUBJ"/><!--per a interrogatives i altres inversions. Llavors caldria afegir més categories aquí o fer canvis en el transfer (had the man finished vs. they had the book) -->
       </label-set>
     </enforce-after>
@@ -880,7 +893,7 @@
     <!--    <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
 	<label-item label="PRNSUBJ"/><!--ídem més amunt -->
       </label-set>
     </enforce-after>
@@ -890,7 +903,7 @@
        <!-- <label-item label="VERBS_DISCURS_PP"/>-->
         <label-item label="VSERPP"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
       </label-set>
     </enforce-after>
 
@@ -936,7 +949,7 @@
       <label-set>
         <label-item label="PRNSUBJ"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
         <label-item label="SENT"/>
 	<label-item label="CM"/>
 	<label-item label="INF"/>
@@ -949,7 +962,7 @@
       <label-set>
         <label-item label="PRNSUBJ"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
         <label-item label="SENT"/>
 	<label-item label="CM"/>
 	<label-item label="INF"/>
@@ -973,7 +986,7 @@
         <label-item label="INF"/>
         <label-item label="VMODINF"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
 	<label-item label="PRNSUBJ"/>
 	<label-item label="PRNALTRES"/>
 	<label-item label="DET"/>
@@ -996,7 +1009,7 @@
         <label-item label="INF"/>
         <label-item label="VMODINF"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
 	<label-item label="SENT"/>
 	<label-item label="CM"/>
       </label-set>
@@ -1006,7 +1019,7 @@
         <label-item label="INF"/>
         <label-item label="VMODINF"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
 	<label-item label="SENT"/>
 	<label-item label="CM"/>
       </label-set>
@@ -1016,7 +1029,7 @@
         <label-item label="INF"/>
         <label-item label="VMODINF"/>
 	<label-item label="ADV"/>
-	<label-item label="NOT"/>
+	<label-item label="NA"/>
 	<label-item label="SENT"/>
 	<label-item label="CM"/>
       </label-set>
