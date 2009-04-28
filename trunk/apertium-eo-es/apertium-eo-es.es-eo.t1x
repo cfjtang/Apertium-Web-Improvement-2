@@ -10,6 +10,10 @@
       <cat-item tags="np.ant.*"/>
     </def-cat>
 
+    <def-cat n="prnpro">
+      <cat-item tags="prn.pro.*"/>
+    </def-cat>
+
  <def-cat n="sent">
        <cat-item tags="sent"/>
      </def-cat>
@@ -427,7 +431,7 @@
       <attr-item tags="vbser"/>
       <attr-item tags="vbhaver"/>
       <attr-item tags="vbmod"/>
-      <attr-item tags="vaŭ"/>
+      <attr-item tags="vaux"/>
     </def-attr>
 
     <def-attr n="a_verb">
@@ -435,7 +439,7 @@
       <attr-item tags="vbser"/>
       <attr-item tags="vbhaver"/>
       <attr-item tags="vbmod"/>
-      <attr-item tags="vaŭ"/>
+      <attr-item tags="vaux"/>
     </def-attr>
 
     <def-attr n="pron">
@@ -460,7 +464,7 @@
       <attr-item tags="vblex.sep.pp"/>
       <attr-item tags="vbser.sep.pp"/>
       <attr-item tags="vbmod.sep.pp"/>
-      <attr-item tags="vaŭ.pp"/>
+      <attr-item tags="vaux.pp"/>
       <attr-item tags="vbhaver.pp"/>
     </def-attr>
 
@@ -480,6 +484,22 @@
       <attr-item tags="rel"/><!--EO-->
       <attr-item tags="nn"/><!--EO-->
       <attr-item tags="adv"/><!--EO-->
+    </def-attr>
+    <def-attr n="tipoenc_pro">
+      <attr-item tags="ref.p3.mf.sp"/>
+      <attr-item tags="p1.mf.pl"/>
+      <attr-item tags="p1.mf.sg"/>
+      <attr-item tags="p2.mf.pl"/>
+      <attr-item tags="p2.mf.sg"/>
+      <attr-item tags="p3.f.pl"/>
+      <attr-item tags="p3.f.sg"/>
+      <attr-item tags="p3.mf.pl"/>
+      <attr-item tags="p3.mf.sg"/>
+      <attr-item tags="p3.m.pl"/>
+      <attr-item tags="p3.m.sg"/>
+      <attr-item tags="p3.nt"/>
+      <attr-item tags="mf.sg"/>
+      <attr-item tags="adv"/>
     </def-attr>
     <def-attr n="pers">
       <attr-item tags="p1"/>
@@ -543,6 +563,7 @@
 
   </section-def-attrs>
   <section-def-vars>
+    <def-var n="treu_ref"/>
     <def-var n="case"/>
     <def-var n="changecase"/>
     <def-var n="lemapos"/>
@@ -564,6 +585,9 @@
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
+<!-- variables només per depurar i veure per on es passa en executar -->
+    <def-var n="debug1"/>
+    <def-var n="debug2"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -643,7 +667,7 @@
     <list-item v="prometer"/>
     <list-item v="recomendar"/>
     <list-item v="sugerir"/>
-    <list-item v="mencianar"/>
+    <list-item v="mencionar"/>
     <list-item v="pensar"/>
     <list-item v="creer"/>
     <list-item v="esperar"/>
@@ -652,6 +676,28 @@
     <list-item v="significar"/>
   </def-list>
 
+	<!-- PROVISIONAL -->
+    <def-list n="verbs_ref"><!-- se elimina el pronombre reflexivo o se cambia la traducción del verbo al traducir -->
+      <list-item v="casar"/>
+      <list-item v="enamorar"/>
+      <list-item v="caracterizar"/>
+      <list-item v="acostumbrar"/>
+      <list-item v="volver"/>
+      <list-item v="aprovechar"/>
+      <list-item v="acordar"/>
+      <list-item v="tratar# de"/>
+<!--
+      <list-item v="codear# con"/>
+      <list-item v="posicionar"/>
+      <list-item v="aficionar"/>
+      <list-item v="estrenar"/>
+      <list-item v="divorciar"/>
+      <list-item v="concienciar"/>
+      <list-item v="incautar"/>
+      <list-item v="despedir# de"/>
+      <list-item v="despedir"/>
+-->
+    </def-list>
   </section-def-lists>
 
 
@@ -695,7 +741,7 @@
      <var n="tipus_verb"/>
      <lit-tag v="volition"/>
      </let>
-</when>
+    </when>
 
 	<when>
     	<test>
@@ -704,10 +750,10 @@
         <list n="reportingverb"/>
       	</in>
     	</test>
- 		<let>
-               <var n="tipus_verb"/>
-               <lit-tag v="reportingverb"/>
-                </let>
+	<let>
+        <var n="tipus_verb"/>
+        <lit-tag v="reportingverb"/>
+        </let>
 	</when>
 
         <when>
@@ -726,7 +772,7 @@
         <otherwise>
           <let>
             <var n="tipus_verb"/>
-                        <lit-tag v="res"/>
+            <lit-tag v="res"/>
           </let>
         </otherwise>
       </choose>
@@ -754,7 +800,598 @@
     </def-macro>
 
 
-    <def-macro n="nom_cas" npar="1"> <!-- EO: marca els SN que si són objecte estaran en accusatiu (les regles del t2x s'encarreguen; també marca els dets interrogatius 'quin' per a tractaclor al t2x)-->
+	<!-- PROVISIONAL -->
+    <def-macro n="control_ref" npar="2"> <!-- macro original de es->fr -->
+      <!-- canvia el lema dels verbs ref i elimina el prn si cal-->
+      <let>
+        <var n="treu_ref"/>
+        <lit v=""/>
+      </let>
+<let>
+<var n="debug1"/>
+<lit v="entro"/>
+</let>
+      <choose>
+        <!-- prn ref?...-->
+        <when>
+          <test>
+            <or>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="tipoenc_pro"/>
+                  <lit-tag v="ref.p3.mf.sp"/>
+                </equal>
+                <or>
+                  <equal>
+                    <clip pos="2" side="sl" part="pers"/>
+                    <lit-tag v="p3"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" side="sl" part="temps"/>
+                    <lit-tag v="inf"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" side="sl" part="temps"/>
+                    <lit-tag v="ger"/>
+                  </equal>
+                </or>
+              </and>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="pers"/>
+                  <lit-tag v="p2"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="pers"/>
+                  <lit-tag v="p2"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="nbr"/>
+                  <clip pos="2" side="sl" part="nbr"/>
+                </equal>
+              </and>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="pers"/>
+                  <lit-tag v="p1"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="pers"/>
+                  <lit-tag v="p1"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="nbr"/>
+                  <clip pos="2" side="sl" part="nbr"/>
+                </equal>
+              </and>
+            </or>
+          </test>
+          <choose>
+            <!-- canvia aquests verbs-->
+            <when>
+              <test>
+                <in caseless="yes">
+                  <clip pos="2" side="sl" part="lem"/>
+                  <list n="verbs_ref"/>
+                </in>
+              </test>
+              <choose>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="casar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lemh"/> <!-- lem -> lemh -->
+                    <lit v="geedziĝi"/>
+                  </let>
+<let>
+<var n="debug1"/>
+<lit v="hola"/>
+</let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="enamorar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="enamiĝi"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="acostumbrar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="kutimiĝi"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="caracterizar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="karakteriziĝi"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="volver"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="fariĝi"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="aprovechar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="profiti"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="acordar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="rememori"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="tratar# de"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="temi# pri"/>
+                  </let>
+                </when>
+<!--
+		<when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="despedir"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="dire# au revoir"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="posicionar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="prendre# position"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="codear# con"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="côtoyer"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="estrenar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="débuter"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="concienciar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="prendre# conscience"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="aficionar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="prendre# goût"/>
+                  </let>
+                </when>
+-->
+            <otherwise>
+<let>
+<var n="debug1"/>
+<lit v="otherwise1"/>
+</let>
+            </otherwise>
+              </choose>
+              <let>
+                <var n="treu_ref"/>
+                <lit v="treu"/>
+              </let>
+<let>
+<var n="debug2"/>
+<lit v="hola"/>
+</let>
+            </when>
+            <otherwise><!--se cambia la traducción sin quitar el pronombre reflexivo -->
+<let>
+<var n="debug1"/>
+<lit v="otherwise2"/>
+</let>
+              <choose>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="acordarXXX"/> 	<!-- es tracta a dalt -->
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="rememoriXXX"/>
+                  </let>
+<let>
+<var n="debug1"/>
+<lit v="hola-2-1"/>
+</let>
+                </when>
+<!--
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="ilusionar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="réjouir"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="agazapar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="tapir"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="2" side="sl" part="lem"/>
+                      <lit v="apelotonar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="2" side="tl" part="lem"/>
+                    <lit v="agglutiner"/>
+                  </let>
+                </when>
+-->
+<otherwise>
+<let>
+<var n="debug1"/>
+<lit v="otherwise3"/>
+</let>
+</otherwise>
+              </choose>
+              <let>
+                <var n="treu_ref"/>
+                <lit v=""/>
+              </let>
+<let>
+<var n="debug2"/>
+<lit v="hola-2-2"/>
+</let>
+<let>
+<var n="debug1"/>
+<lit v="otherwise4"/>
+</let>
+            </otherwise>
+          </choose>
+        </when>
+<otherwise>
+<let>
+<var n="debug1"/>
+<lit v="otherwise5"/>
+</let>
+</otherwise>
+      </choose>
+    </def-macro>
+
+    <def-macro n="control_ref_aux" npar="3">
+      <!-- canvia el lema dels verbs ref i elimina el prn si cal-->
+      <let>
+        <var n="treu_ref"/>
+        <lit v=""/>
+      </let>
+      <choose>
+        <!-- prn ref?...-->
+        <when>
+          <test>
+            <or>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="tipoenc_pro"/>
+                  <lit-tag v="ref.p3.mf.sp"/>
+                </equal>
+                <or>
+                  <equal>
+                    <clip pos="2" side="sl" part="pers"/>
+                    <lit-tag v="p3"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" side="sl" part="temps"/>
+                    <lit-tag v="inf"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" side="sl" part="temps"/>
+                    <lit-tag v="ger"/>
+                  </equal>
+                </or>
+              </and>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="pers"/>
+                  <lit-tag v="p2"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="pers"/>
+                  <lit-tag v="p2"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="nbr"/>
+                  <clip pos="2" side="sl" part="nbr"/>
+                </equal>
+              </and>
+              <and>
+                <equal>
+                  <clip pos="1" side="sl" part="pers"/>
+                  <lit-tag v="p1"/>
+                </equal>
+                <equal>
+                  <clip pos="2" side="sl" part="pers"/>
+                  <lit-tag v="p1"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="nbr"/>
+                  <clip pos="2" side="sl" part="nbr"/>
+                </equal>
+              </and>
+            </or>
+          </test>
+          <choose>
+            <!-- canvia aquests verbs-->
+            <when>
+              <test>
+                <in caseless="yes">
+                  <clip pos="3" side="sl" part="lem"/>
+                  <list n="verbs_ref"/>
+                </in>
+              </test>
+              <choose>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="enamorar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="tomber# amoureux"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="aficionar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="prendre# goût"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="incautar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="saisir"/>
+                  </let>
+                </when>
+		<when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="despedir"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="dire# au revoir"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="posicionar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="prendre# position"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="estrenar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="débuter"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="concienciar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="prendre# conscience"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="codear# con"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="côtoyer"/>
+                  </let>
+                </when>
+              </choose>
+              <let>
+                <var n="treu_ref"/>
+                <lit v="treu"/>
+              </let>
+            </when>
+            <otherwise>
+              <choose>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="acordar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="rappeler"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="ilusionar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="réjouir"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="agazapar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="tapir"/>
+                  </let>
+                </when>
+                <when>
+                  <test>
+                    <equal caseless="yes">
+                      <clip pos="3" side="sl" part="lem"/>
+                      <lit v="apelotonar"/>
+                    </equal>
+                  </test>
+                  <let>
+                    <clip pos="3" side="tl" part="lem"/>
+                    <lit v="agglutiner"/>
+                  </let>
+                </when>
+              </choose>
+              <let>
+                <var n="treu_ref"/>
+                <lit v=""/>
+              </let>
+            </otherwise>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+    <def-macro n="nom_cas" npar="1"> <!-- EO: marca els SN que si són objecte estaran en acusatiu (les regles del t2x s'encarreguen; també marca els dets interrogatius 'quin' per a tractaclor al t2x)-->
 	<choose>
   	<when>
     	<test>
@@ -5243,7 +5880,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
-
                     </tags>
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
@@ -8033,6 +8669,167 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="PRON VERB reflexiu ( me caso ) (EO)">
+	<!-- de moment també entren coses com "le caso" com si fossin reflexives -->
+      <pattern>
+<!-- Perquè no entri ni en broma -->
+<pattern-item n="prnpro"/>
+<pattern-item n="prnpro"/>
+<pattern-item n="prnpro"/>
+<pattern-item n="prnpro"/>
+	<pattern-item n="prnpro"/>
+	<pattern-item n="verbcj"/>
+      </pattern>
+      <action>    	
+<let>
+<var n="debug1"/>
+<lit v="en regla"/>
+</let>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="control_ref">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+
+	<choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pres"/> <!-- present -->
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="fts"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="2" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+
+<!--
+              <when> 
+                <test>
+                    <equal>
+                      <var n="treu_ref"/>
+                      <lit-tag v=""/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+-->
+
+            </choose>
+                <out>
+<b pos="1"/>		<!-- PROVIZORE, ĉar en la malnova versio aperis blanko kaj tiel evidentiĝas kio ŝanĝiĝas kaj kio ne ŝanĝiĝas per ĉi tiu nova regulo -->
+                  <chunk name="verbcj" case="caseFirstWord"> <!-- PROVA: verbcj1!! -->
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="2" side="sl" part="temps"/></tag>
+                      <tag><clip pos="2" side="tl" part="pers"/></tag>
+                      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
+<!--
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
+-->
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="2" side="tl" part="sep"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+<!--
+No sé com, però això fa que la segona paraula de la frase no surti en majúscula
+-->
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
