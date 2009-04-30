@@ -143,7 +143,12 @@ public class ApertiumView extends FrameView {
         textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
         textWidget1.textEditor.addKeyListener(switchFocus);
 
-
+        menuBar.addKeyListener(switchFocus);
+        markUnknownWordsCheckBox.addKeyListener(switchFocus);
+        showCommandsCheckBox.addKeyListener(switchFocus);        
+        storeTextButton.addKeyListener(switchFocus);
+        copyTextButton.addKeyListener(switchFocus);
+        fitToTextButton.addKeyListener(switchFocus);
     }
     
     
@@ -172,18 +177,37 @@ public class ApertiumView extends FrameView {
             b.x += b2.x;
             b.y += b2.y;
             tw.scrollRectToVisible(b);
+
             
             // Make it blink for a short while
             Graphics2D g = (Graphics2D) tw.getGraphics();
-            //g.setColor(new Color(255,0,0,32));
-            //g.setStroke(new BasicStroke(5));
             g.setColor(Color.RED);
             g.drawRect(1, 1, tw.getWidth()-2, tw.getHeight()-2);
+
+            /*
+            // Make it blink for a short while
+            comp = (JComponent) (comp.getParent());
+            b = comp.getBounds(b);
+            comp = (JComponent) (comp.getParent());
+            Graphics2D g = (Graphics2D) comp.getGraphics();
+            g.setColor(Color.RED);
+            g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
+
+            
+            b = comp.getBounds(b);
+            comp = (JComponent) (comp.getParent().getParent());
+            g = (Graphics2D) comp.getGraphics();
+            g.setColor(Color.BLUE);
+            g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
+            g.setColor(Color.CYAN);
+            g.drawRect(b.x, b.y-5, b.width, b.height+10);
+             */
+
             //tw.repaint(100); // behaves as 0, but the blink is visible for me
             // this is a waste of threads,but who cares, this is a GUI program!
             new Thread() { public void run() {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(200);
                         tw.repaint(0);
                     } catch (InterruptedException ex) {
                     }
@@ -212,33 +236,45 @@ public class ApertiumView extends FrameView {
 
     KeyListener switchFocus = new KeyAdapter() {
         public void keyPressed(KeyEvent e) {
-            if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown() || e.getKeyCode() !=  e.VK_PAGE_UP && e.getKeyCode() !=  e.VK_PAGE_DOWN) return;
-            
+            if (!e.isControlDown() && !e.isAltDown() && !e.isAltGraphDown()) return;
+            int keyCode =   e.getKeyCode();
+
+
+
             int nowFocus=-1;
-            for (int i=0; i<textWidgets.size(); i++) {
-                TextWidget tw = textWidgets.get(i);
-                if (SwingUtilities.findFocusOwner(tw)!=null) nowFocus = i;
 
-//                                if (tw.isF tw.textEditor.hasFocus())
-//                ​KeyboardFocusManager.getCurrentKeyboardFocusManager().
-            }
+            if (keyCode >=  e.VK_0 && keyCode <=  e.VK_9) {
+                nowFocus = Math.max(0, keyCode -  e.VK_1);  // Alt-0 and Alt-1 gives first widget
+                nowFocus = Math.min(nowFocus, textWidgets.size()-1); // Alt-9 gives last widget
 
-            if (nowFocus!=-1) {
-                if (e.getKeyCode() ==  e.VK_PAGE_UP) {
-                    nowFocus = (nowFocus-1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
-                } else  {
-                    nowFocus = (nowFocus+1) % textWidgets.size(); // cycle downwards
+            } else if (keyCode ==  e.VK_PAGE_UP || keyCode ==  e.VK_PAGE_DOWN)  {
+
+                for (int i=0; i<textWidgets.size(); i++) { // find widget which has the focus
+                    TextWidget tw = textWidgets.get(i);
+                    if (SwingUtilities.findFocusOwner(tw)!=null) nowFocus = i;
                 }
-            } else {
-                System.err.println("Hm! No widget has focus!" );
-                if (e.getKeyCode() ==  e.VK_PAGE_UP) {
-                    nowFocus = 0; // cycle upwards
-                } else  {
-                    nowFocus = textWidgets.size()-1; // cycle downwards
+
+                if (nowFocus!=-1) {
+                    if (keyCode ==  e.VK_PAGE_UP) {
+                        do
+                            nowFocus = (nowFocus-1 + textWidgets.size()) % textWidgets.size(); // cycle upwards
+                        while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
+                    } else  {
+                        do
+                            nowFocus = (nowFocus+1) % textWidgets.size(); // cycle downwards
+                        while (textWidgets.get(nowFocus).getVisibleRect().isEmpty());
+                    }
+                } else {
+                    System.err.println("Hm! No widget has focus!" );
+                    if (keyCode ==  e.VK_PAGE_UP) {
+                        nowFocus = 0; // cycle upwards
+                    } else  {
+                        nowFocus = textWidgets.size()-1; // cycle downwards
+                    }
                 }
-            }
+            } else return;
 
-
+            menuBar.requestFocusInWindow(); // crude way to force focus notify
             textWidgets.get(nowFocus).textEditor.requestFocusInWindow();
         }
     };
@@ -254,7 +290,7 @@ public class ApertiumView extends FrameView {
             jSplitPane1.setBottomComponent(null);
 
             TextWidget lastTextWidget = textWidget1;
-            lastTextWidget.textEditor.setFocusAccelerator('1');
+            //lastTextWidget.textEditor.setFocusAccelerator('1');
             textWidget1.setCommand("");
             textWidget1.priority = 0;
 
@@ -279,7 +315,7 @@ public class ApertiumView extends FrameView {
                 tw.priority = i+1;
                 lastTextWidget.next = tw;
                 lastTextWidget = tw;
-                lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
+                //lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
                 lastTextWidget.textEditor.addFocusListener(scrollToVisibleFocusListener);
 
                 if (i < m.commandChain.length - 1) {
@@ -298,7 +334,7 @@ public class ApertiumView extends FrameView {
                        else sp.setDividerLocation(60);
                 } else {
                     lastSplitPane.setBottomComponent(tw);
-                    lastTextWidget.textEditor.setFocusAccelerator('9');
+                    //lastTextWidget.textEditor.setFocusAccelerator('9');
                 }
             }
 
@@ -392,6 +428,7 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
+    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -422,6 +459,7 @@ public class ApertiumView extends FrameView {
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
+    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('S');
@@ -442,6 +480,7 @@ public class ApertiumView extends FrameView {
       }
     });
 
+    storeTextButton.setMnemonic('S');
     storeTextButton.setText("Store");
     storeTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
     storeTextButton.addActionListener(new java.awt.event.ActionListener() {
@@ -513,13 +552,11 @@ public class ApertiumView extends FrameView {
     toolsMenu.setText("Tools");
 
     makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
-    makeTestCaseMenuItem.setMnemonic('t');
-    makeTestCaseMenuItem.setText("Make test Case");
+    makeTestCaseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
     toolsMenu.add(makeTestCaseMenuItem);
 
     importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
-    importTestCaseMenuItem.setMnemonic('i');
-    importTestCaseMenuItem.setText("Import test case");
+    importTestCaseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
     toolsMenu.add(importTestCaseMenuItem);
 
     storedTextsMenu.setMnemonic('S');
@@ -532,6 +569,7 @@ public class ApertiumView extends FrameView {
     helpMenu.setText("View");
 
     changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
+    changeFontMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
     helpMenu.add(changeFontMenuItem);
 
     aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
