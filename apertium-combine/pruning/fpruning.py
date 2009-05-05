@@ -3,10 +3,14 @@
 An implementation of:
 Improving Translation Quality by Discarding Most of the Phrasetable (Johnson, Martin, Foster, Kuhn 2007)
 
+If you run python with the optimize options (-O and -OO), 
+the assertion test is not performed. 
+
 Usage: 
     -d debug symbols
     -i input file
     -o ouput file
+    -c use the C version of Fisher Exact Test
 """
 # Copyright (C) 2009 
 # Authors: Gabriel Synnaeve (& Nicolas Dumazet)
@@ -15,18 +19,17 @@ Usage:
 import sys, getopt, math #, guppy
 #h = guppy.hpy()
 
-import enrichment 
-
 def Usage():
-    print "./pruning.py phrase-table [-d][-h][-o outputfile]"
+    print "./pruning.py phrase-table [-d][-h][-o outputfile][-c]"
     sys.exit(0)
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:],'di:o:h')
+    opts, args = getopt.getopt(sys.argv[1:],'di:o:hc')
 except getopt.GetoptError:
     Usage()
     sys.exit(2)
 debug = 0
+enrich = 0
 for o, a in opts:
     if o == '-h':
         Usage()
@@ -36,8 +39,16 @@ for o, a in opts:
         inputname = a
     elif o == '-o':
         outputname = a
+    elif o == '-c':
+        enrich = 1
     else:
         assert False, "unhandled option"
+
+if enrich:
+    import enrichment 
+else:
+    from fisher import FisherExactTest
+    fish = FisherExactTest()
 
 #file = open(sys.argv[1])
 file = open(inputname)
@@ -50,23 +61,25 @@ lines = {}
 def count(line):
     table = line.replace('#','').replace('[','').replace(']','')\
             .replace('?','').replace('!','').replace(',','')\
-            .replace("'",'').replace('&quo','').replace(';','')\
-            .replace('--','')\
-            .replace('  ',' ').strip().split('|||') 
+            .replace('--','').replace('  ',' ').split('|||') 
             # seems to be faster than with the RE '#\[\]?!'
-    table[0] = ' '+table[0]+' '
-    table[1] = ' '+table[1]+' '
+    table[0] = ' '+table[0].strip()+' ' # for the word at the extremities
+    table[1] = ' '+table[1].strip()+' ' # because ' ' is our world delimiter
     source = table[0]
     target = table[1]
-    if not source == '' and not target == '':
+    # Strong assumption that could be (very) false: 
+    # <= 3 char (3 char + 2 spaces) LONG SEntences == noise
+    if len(source) > 5 and len(target) > 5:
         if source in count_s:
             count_s[source] +=  1
         else: 
             count_s[source] =  1
+
         if target in count_t:
             count_t[target] +=  1
         else:
             count_t[target] =  1
+
         if source in dict_st:
             d = dict_st[source]
             if target in d:
@@ -94,7 +107,8 @@ for k in count_s.iterkeys():
     tmp = 0
     dico = {}
     for (s, v) in count_s.iteritems():
-        if ' '+k+' ' in s and k != s:
+        ### if ' '+k+' ' in s and k != s:
+        if k in s and k != s:
             tmp += v
             dico[s] = True
             if not s in sets:
@@ -106,7 +120,8 @@ for k in count_t.iterkeys():
     tmp = 0
     dico = {}
     for (t, v) in count_t.iteritems():
-        if ' '+k+' ' in t and k != t:
+        ### if ' '+k+' ' in t and k != t:
+        if k in t and k != t:
             tmp += v
             dico[t] = True
     included_in_t[k] = dico
@@ -139,7 +154,7 @@ if debug:
     print '============================'
 
 delete = []
-threshold = math.log(N) - 0.01
+threshold = math.log(N) - 0.02
 if debug:
     print ">>> Threshold :", 
     print threshold
@@ -158,8 +173,13 @@ for ks, kdic in dict_st.iteritems():
                 print 'debut|'+kt+'|fin'
                 print "N ", 
                 print N
-            if -math.log( enrichment.fisher_exact_test(dict_st[ks][kt], \
-                    count_s[ks], count_t[kt], N)[1] ) > threshold:
+            if enrich:
+                val = enrichment.fisher_exact_test(dict_st[ks][kt], \
+                        count_s[ks], count_t[kt], N)[1]
+            else:
+                val = fish.pvalue(dict_st[ks][kt], count_s[ks],\
+                        count_t[kt], N)[1]
+            if -math.log(val) > threshold:
                 for l in lines[(ks, kt)]:
                     delete.append(l)
         except OverflowError:
@@ -183,3 +203,4 @@ for line in file:
         outputfile.write(line)
 outputfile.close()
 
+#if __name__ == '__main__':

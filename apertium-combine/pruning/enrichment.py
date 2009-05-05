@@ -8,7 +8,11 @@ import enrichment_
 # Adapted from WordHoard project - http://wordhoard.northwestern.edu
 # (edu.northwestern.at.utils.math.statistics.FishersExactTest)
 def fisher_exact_test (b, n, B, N):
-	assert (b <= n) and (n <= N) and (B <= N) and (b <= B)
+	#assert (b <= n) and (n <= N) and (B <= N) and (b <= B)
+	assert (b <= n) 
+	assert (n <= N)
+	assert (B <= N)
+	assert (b <= B)
 	um, lm = min(n, B), max(0, n + B - N)
 
 	if (um == lm):
