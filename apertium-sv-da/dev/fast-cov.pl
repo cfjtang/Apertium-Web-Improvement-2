@@ -22,26 +22,24 @@ unless (-e $analyser) {
 	exit 3;
 }
 
+$command = "cat $hitparade | apertium-destxt | lt-proc $analyser | apertium-retxt |";
 
-$commandKnw = "cat $hitparade | apertium-destxt | lt-proc $analyser | apertium-retxt | grep -v '*' | awk '{ print \$1 }' | sed 's;\\^\\([0-9]\\+\\)/.*;\\1;' |";
-$commandTot = "cat $hitparade | apertium-destxt | lt-proc $analyser | apertium-retxt | awk '{ print \$1 }' | sed 's;\\^\\([0-9]\\+\\)/.*;\\1;' |";
-
-open(COMMANDKNW, $commandKnw);
+open(COMMAND, $command);
 
 $known=0;
-while ($line = <COMMANDKNW>) {
-	chomp;
-	$known+=$line;
-}
-close(COMMANDKNW);
-
-open(COMMANDTOT, $commandTot);
-
 $total=0;
-while ($line = <COMMANDTOT>) {
-	chomp;
-	$total+=$line;
+while ($line = <COMMAND>) {
+    chomp;
+
+    if ($line =~ m/^[^0-9]*([0-9]+)/) {
+        $total += $1;
+        }
+
+        if ($line =~ m/^[^0-9]*([0-9]+)[^\*]+$/) {
+        $known += $1;
+    }
+
 }
-close(COMMANDTOT);
+close(COMMAND);
 
 print "Coverage: $known/$total*100 = " . $known/$total*100 . "\n";
