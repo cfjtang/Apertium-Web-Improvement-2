@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- nxml -*- -->
+<interchunk>
+  <section-def-cats>
+
+    <def-cat n="SN">
+      <cat-item tags="SN"/>
+      <cat-item tags="SN.*"/>
+    </def-cat>
+    
+      
+    <def-cat n="pr">
+      <cat-item tags="PREP"/>
+    </def-cat>
+    
+      
+    <def-cat n="depr">
+      <cat-item lemma="de" tags="PREP"/>
+    </def-cat>
+
+<def-cat n="SN_relcuan">
+      <cat-item lemma="cuando" tags="SN.rel.*"/>
+    </def-cat>
+
+
+
+     <def-cat n="SN_nopron">
+      <cat-item tags="SN.DET.*"/>
+      <cat-item tags="SN.UNDET.*"/>
+      <cat-item tags="SN.NUM.*"/>
+    </def-cat>
+
+    <def-cat n="SV"><!--Verb conjugat, i tb infinitiu per quan el tagger s'equivoca. -->
+      <cat-item tags="SV"/>
+      <cat-item tags="SV.*"/>
+    </def-cat>
+
+<def-cat n="vbcop">
+      <cat-item tags="SV.vbser.*"/>
+      <cat-item lemma="estar" tags="SV.vblex.*"/>
+    </def-cat>
+	 
+     <def-cat n="adv">
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.*"/>
+      <cat-item tags="preadv"/>
+      
+    </def-cat>
+
+    <def-cat n="PRNS">
+      <cat-item tags="PRN.subj.*"/>
+    </def-cat>
+
+    <def-cat n="SA">
+      <cat-item tags="SA"/>
+      <cat-item tags="SA.*"/>
+    </def-cat>
+
+    <def-cat n="DET">
+      <cat-item tags="DET.*"/>
+    </def-cat>
+
+    <def-cat n="NUM">
+      <cat-item tags="NUM.*"/>
+    </def-cat>
+
+     <def-cat n="punt">
+      <cat-item tags="sent"/>
+    </def-cat>
+
+    <def-cat n="cnjcoo">
+      <cat-item tags="cnjcoo"/>
+    </def-cat>
+
+
+  </section-def-cats>
+
+  <section-def-attrs>
+
+<def-attr n="pers">
+          <attr-item tags="p1"/>
+	  <attr-item tags="p2"/>
+	  <attr-item tags="p3"/>
+	  <attr-item tags="PD"/>
+</def-attr>
+
+      <def-attr n="gen">
+          <attr-item tags="m"/>
+          <attr-item tags="f"/>
+	  <attr-item tags="mf"/>
+	  <attr-item tags="GD"/>
+	  <attr-item tags="nt"/>
+      </def-attr>
+
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+	  <attr-item tags="pl"/>
+	  <attr-item tags="sp"/>
+	  <attr-item tags="ND"/>
+      </def-attr>
+
+      <def-attr n="temps">
+          <attr-item tags="inf"/>
+	  <attr-item tags="pri"/>
+	  <attr-item tags="prs"/>
+	  <attr-item tags="ifi"/>
+	  <attr-item tags="pii"/>
+	  <attr-item tags="pis"/>
+	  <attr-item tags="cni"/>
+	  <attr-item tags="fti"/>
+	  <attr-item tags="pp"/>
+	  <attr-item tags="ger"/>
+	  <attr-item tags="imp"/>
+	  
+      </def-attr>
+
+       <def-attr n="a_verb">
+      <attr-item tags="vblex"/>	  
+      <attr-item tags="vblex.pron"/>
+      <attr-item tags="vbhaver"/>
+      <attr-item tags="vbser"/>
+      <attr-item tags="vbmod"/>
+      <attr-item tags="HAVER"/>
+    </def-attr>
+      
+  <def-attr n="a_SN">
+          <attr-item tags="DET"/>
+	  <attr-item tags="UNDET"/>
+	  <attr-item tags="NUM"/>
+	  <attr-item tags="PDET"/>
+      </def-attr>
+
+  </section-def-attrs>
+
+
+  <section-def-vars>
+    <def-var n="nombre_subj"/>
+    <def-var n="pers_subj"/>
+    <def-var n="uno"/>
+    <def-var n="nombre"/>
+    <def-var n="genere"/>
+    <def-var n="concord"/>
+  </section-def-vars>
+
+
+<section-def-lists>
+
+<def-list n="advcantidad">
+<list-item v="más"/>
+<list-item v="menos"/>
+<list-item v="bastante"/>
+</def-list>
+</section-def-lists>
+
+
+<section-def-macros>
+
+
+
+  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+     	<choose>
+     	  <when>
+     	    <test>
+     	      <not>
+     	        <equal>
+     	          <b pos="1"/>
+     	          <lit v=" "/>
+     	        </equal>
+              </not>
+     	    </test>
+            <out>
+              <b pos="1"/>
+            </out>
+          </when>     	    
+     	</choose>
+     </def-macro>
+
+</section-def-macros>
+
+  <section-rules>
+   
+<!--REGLES GENERALS -->
+
+<rule comment="REGLA: SN">
+	<pattern>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+		<out>
+		<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule comment="REGLA: SA">
+	<pattern>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
+
+<rule comment="REGLA: det">
+	<pattern>
+		<pattern-item n="DET"/>
+	</pattern>
+	<action>
+		<out>
+			<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+			</chunk>
+		</out>
+	</action>
+</rule>
+
+<rule comment="REGLA: SN prepde SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="depr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+      <choose>
+	<when>
+	 <test>
+	   <equal>
+	     <clip pos="3" part="lem"/>
+             <lit v="ant"/>
+	   </equal>
+	 </test>
+         <out>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+          </out>     
+        </when> 
+        <otherwise>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+	  </out>
+	</otherwise>
+      </choose>
+    </action>
+</rule>
+
+<rule comment="REGLA: SN vbcop SN">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+	  </out>
+
+	</action>
+</rule>
+
+
+
+
+<rule comment="REGLA: SN vbcop SA">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+	  </out>
+
+	</action>
+</rule>
+
+
+
+<rule comment="REGLA: vbcop SN -> SN">
+	<pattern>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+	  </out>
+
+	</action>
+</rule>
+
+
+<rule comment="REGLA: vbcop SA -> SA">
+	<pattern>
+		<pattern-item n="vbcop"/>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+	  </out>
+
+	</action>
+</rule>
+
+<rule comment="REGLA: SV SN -> SN SV">
+	<pattern>
+		<pattern-item n="SV"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+	  </out>
+
+	</action>
+</rule>
+
+
+
+<rule comment="REGLA: SN_cuando SV -> SV">
+	<pattern>
+		<pattern-item n="SN_relcuan"/>
+		<pattern-item n="SV"/>
+	</pattern>
+	<action>
+	  <out>
+	      <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+	  </out>
+	</action>
+</rule>
+
+
+
+<rule comment="REGLA: SV SN deprep SN -> SN SN SV">
+	<pattern>
+		<pattern-item n="SV"/>
+		<pattern-item n="SN"/>
+                <pattern-item n="depr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+      <choose>
+	<when>
+	 <test>
+	   <equal>
+	     <clip pos="4" part="lem"/>
+             <lit v="ant"/>
+	   </equal>
+	 </test>
+         <out>
+	    <chunk>
+	      <clip pos="4" part="lem"/>
+	      <clip pos="4" part="tags"/>
+ 	      <clip pos="4" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+            <b pos="2"/>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+          </out>     
+        </when> 
+        <otherwise>
+	  <out>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="4" part="lem"/>
+	      <clip pos="4" part="tags"/>
+ 	      <clip pos="4" part="chcontent"/>
+	    </chunk>
+            <b pos="2"/>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+	  </out>
+         </otherwise>
+        </choose>
+	</action>
+</rule>
+
+
+
+<rule comment="REGLA: SN SV SN deprep SN -> SN SN SN SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="SN"/>
+                <pattern-item n="depr"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+      <choose>
+	<when>
+	 <test>
+	   <equal>
+	     <clip pos="5" part="lem"/>
+             <lit v="ant"/>
+	   </equal>
+	 </test>
+         <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="5" part="lem"/>
+	      <clip pos="5" part="tags"/>
+ 	      <clip pos="5" part="chcontent"/>
+	    </chunk>
+            <b pos="2"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+            <b pos="3"/>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+          </out>     
+        </when> 
+        <otherwise>
+         <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+            <b pos="2"/>
+	    <chunk>
+	      <clip pos="5" part="lem"/>
+	      <clip pos="5" part="tags"/>
+ 	      <clip pos="5" part="chcontent"/>
+	    </chunk>
+            <b pos="3"/>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+	  </out>
+         </otherwise>
+        </choose>
+	</action>
+</rule>
+
+<rule comment="REGLA: SN SV SN -> SN SN SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+            <b pos="2"/>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+	  </out>
+	</action>
+</rule>
+
+
+<rule comment="REGLA: SN SV SA -> SN SA SV">
+	<pattern>
+		<pattern-item n="SN"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="SA"/>
+	</pattern>
+	<action>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="3" part="lem"/>
+	      <clip pos="3" part="tags"/>
+ 	      <clip pos="3" part="chcontent"/>
+	    </chunk>
+            <b pos="2"/>
+	    <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+	  </out>
+
+	</action>
+</rule>
+
+ <rule> <!-- REGLA: reset variables-->
+      <pattern>
+	<pattern-item n="punt"/>
+      </pattern>
+      <action>
+	<let>
+	  <var n="nombre"/>
+	  <lit-tag v="sg"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+  </section-rules>
+</interchunk>
