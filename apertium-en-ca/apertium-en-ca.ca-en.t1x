@@ -10111,7 +10111,50 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
       </action>
     </rule>
 
-    <rule comment="PER + INF (per no oblidar - not to forget">
+    <rule comment="PER + INF (per a poder - to be able to">
+      <pattern>
+	<pattern-item n="per_pera"/> 
+	<pattern-item n="inf"/> 
+      </pattern>
+      <action>       	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>    	
+	<call-macro n="tipus_verb">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out>
+	  <chunk name="to">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <get-case-from pos="2">
+		<lit v="to"/>
+	      </get-case-from>
+	      <clip pos="1" side="tl" part="tags"/>
+	    </lu>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk name="inf">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="sl" part="temps"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="sep"/>
+	      <clip pos="2" side="tl" part="temps" link-to="3"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>  
+	  </chunk>
+	</out>   
+      </action>
+    </rule>
+
+    <rule comment="PER + NO + INF (per no oblidar - not to forget">
       <pattern>
 	<pattern-item n="per_pera"/> 
 	<pattern-item n="no"/> 
