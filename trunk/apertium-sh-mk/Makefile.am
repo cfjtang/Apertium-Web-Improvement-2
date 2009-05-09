@@ -149,8 +149,6 @@ clean-dicts:
 	rm $(BASENAME).$(LANG1a).dix
 	rm $(BASENAME).$(LANG1b).dix
 	rm $(BASENAME).$(LANG1c).dix
-	rm $(BASENAME).$(LANG2).dix
-	rm $(BASENAME).$(PREFIX1).dix
 	
 apertium_sh_mkmodesdir=$(prefix)/share/apertium/modes/
 apertium_sh_mkdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
