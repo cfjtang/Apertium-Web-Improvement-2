@@ -6,6 +6,15 @@
     <def-cat n="navn">
       <cat-item tags="n.*"/>
     </def-cat>
+    <def-cat n="aux">
+      <cat-item tags="vbser.*"/>
+      <cat-item tags="vbhaver.*"/>
+    </def-cat>
+    <def-cat n="supn">
+      <cat-item tags="vbser.supn.*"/>
+      <cat-item tags="vbhaver.supn.*"/>
+      <cat-item tags="vblex.supn.*"/>
+    </def-cat>
     <def-cat n="verb">
       <cat-item tags="vblex.*"/>
     </def-cat>
@@ -93,6 +102,14 @@
     <def-var n="exclamativa"/>
   </section-def-vars>
 
+  <section-def-lists>
+    <!-- Verbs que s'usen amb 'være' en danès -->
+    <def-list n="vbambser">
+      <list-item v="tage"/>
+      <list-item v="føre"/>
+    </def-list>
+  </section-def-lists>
+
   <section-def-macros>
 
     <def-macro n="f_bcond" npar="1">
@@ -114,7 +131,28 @@
       </choose>
     </def-macro>
 
-    <def-macro n="f_conjugar1" npar="1">
+    <def-macro n="f_conj_auxiliar2" npar="2">
+      <choose>
+        <when> <!-- Change auxiliary verb depending on lemma -->
+          <test>
+              <in caseless="yes">
+                <clip pos="2" side="tl" part="lem"/>
+                <list n="vbambser"/>
+              </in>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="være"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <lit-tag v="vbser"/>
+          </let>
+        </when>
+      </choose>
+    </def-macro>
+
+    <def-macro n="f_conj_supn1" npar="1">
       <choose>
         <when> <!-- Change the supine in Swedish to the perfect participle in Danish -->
           <test>
@@ -1502,7 +1540,7 @@
         <pattern-item n="verb"/>
       </pattern>
       <action>
-        <call-macro n="f_conjugar1">
+        <call-macro n="f_conj_supn1">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -1516,6 +1554,39 @@
         </out>
       </action>
     </rule>
- 
+
+    <rule comment="REGLA: AUX SUPN ">
+      <pattern>
+        <pattern-item n="aux"/>
+        <pattern-item n="supn"/>
+      </pattern>
+      <action>
+        <call-macro n="f_conj_auxiliar2">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_conj_supn1">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="voz"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="lemh"/>
+            <clip pos="2" side="tl" part="a_verb"/>
+            <clip pos="2" side="tl" part="temps"/>
+            <clip pos="2" side="tl" part="voz"/>
+            <clip pos="2" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+  
   </section-rules>
 </transfer>
