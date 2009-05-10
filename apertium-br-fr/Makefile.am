@@ -9,7 +9,7 @@ BASENAME=apertium-$(PREFIX1)
 TARGETS_COMMON = $(BASENAME).$(LANG2).dix  \
      $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
-     $(PREFIX1).rlx.bin \
+     $(PREFIX1).rlx.bin $(PREFIX1).pre-xfer.t1x.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin pre-$(LANG1).t1x.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin $(PREFIX1).mode $(PREFIX2).mode
 
@@ -62,6 +62,10 @@ $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
 $(PREFIX1).rlx.bin: $(BASENAME).$(PREFIX1).rlx
 	cg-comp $(BASENAME).$(PREFIX1).rlx $@
 
+$(PREFIX1).pre-xfer.t1x.bin: $(BASENAME).pre-xfer-br.t1x
+	apertium-validate-transfer $(BASENAME).pre-xfer-br.t1x
+	apertium-preprocess-transfer $(BASENAME).pre-xfer-br.t1x $@
+
 $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
@@ -98,6 +102,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(PREFIX1).prob $(PREFIX2).prob \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x \
+           $(BASENAME).pre-xfer-br.t1x \
            modes.xml $(BASENAME).$(LANG1).acx
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
@@ -122,6 +127,7 @@ apertium_br_fr_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).rlx.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+		    $(PREFIX1).pre-xfer.t1x.bin \
 		    $(PREFIX1).mode $(PREFIX2).mode
 		    
 		  
@@ -132,6 +138,7 @@ install-data-local:
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_br_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_br_frdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_br_frdir)
+	$(INSTALL_DATA) $(BASENAME).pre-xfer-br.t1x $(apertium_br_frdir)
 	cp *.mode modes/
 
 CLEANFILES = -rf $(TARGETS_COMMON) modes
