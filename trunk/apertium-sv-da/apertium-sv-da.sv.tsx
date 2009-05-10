@@ -8,6 +8,9 @@
   <def-label name="PRNTONIC" closed="true">
     <tags-item tags="prn.tn.*"/>
   </def-label>
+  <def-label name="PRNSUBJ" closed="true">
+    <tags-item tags="prn.subj.*"/>
+  </def-label>
   <def-label name="PRNOBJ" closed="true">
     <tags-item tags="prn.obj.*"/>
   </def-label>
@@ -149,6 +152,10 @@
 </tagset>
 
   <forbid>
+    <label-sequence>
+      <label-item label="DETIND"/>
+      <label-item label="PRNSUBJ"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="NOMNEUTRE"/>
