@@ -14055,10 +14055,16 @@
         <choose>
           <when>
             <test>
-              <equal>
-                <var n="numero"/>
-                <lit-tag v="sp"/>
-              </equal>
+              <or>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="ND"/>
+                </equal>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="sp"/>
+                </equal>
+              </or>
             </test>
             <let>
               <var n="numero"/>
