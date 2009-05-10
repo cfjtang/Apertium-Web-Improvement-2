@@ -20,6 +20,7 @@
 
     <sdef n="def" c="Definite"/>
     <sdef n="ind" c="Indefinite"/>
+    <sdef n="qnt" c="Quantifier"/>
 
     <sdef n="nom" c="Nominative"/>
     <sdef n="gen" c="Genitive"/>
@@ -850,39 +851,7 @@
         </p>
       </e>
     </pardef>
-
-    <pardef n="/mange__adj">
-      <e>
-        <p>
-          <l>flere</l>
-          <r>mange<s n="adj"/><s n="comp"/><s n="nt"/><s n="sg"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>manges</l>
-          <r>mange<s n="adj"/><s n="gen"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>mange</l>
-          <r>mange<s n="adj"/><s n="sp"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>fleste</l>
-          <r>mange<s n="adj"/><s n="sup"/><s n="nt"/><s n="pl"/><s n="def"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>flest</l>
-          <r>mange<s n="adj"/><s n="sup"/><s n="nt"/><s n="sg"/><s n="def"/></r>
-        </p>
-      </e>
-    </pardef>
+ 
 
     <pardef n="/stor__adj"> <!-- Changed to follow model adjective 'rund__adj' -->
       <e>
@@ -1177,6 +1146,31 @@
         </p>
       </e>
     </pardef>
+
+    <pardef n="mange__det">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="det"/><s n="qnt"/><s n="un"/><s n="sp"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="fler__det">
+      <e>
+        <p>
+          <l></l>
+          <r><s n="det"/><s n="qnt"/><s n="un"/><s n="pl"/><s n="ind"/></r>
+        </p>
+      </e>
+      <e>
+        <p>
+          <l>e</l>
+          <r><s n="det"/><s n="qnt"/><s n="un"/><s n="pl"/><s n="def"/></r>
+        </p>
+      </e>
+    </pardef>
+ 
 
     <!-- Is this a determiner?!
     <pardef n="selv__det">
@@ -3812,6 +3806,24 @@
       </e>
     </pardef>
 
+    <pardef n="politi__n"> <!-- Neuter; ~ / ~et / # / #; uncountable -->
+      <e>
+        <p>
+          <l></l>
+          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r>
+        </p>
+	<par n="S__case"/>
+      </e>
+      <e>
+        <p>
+          <l>et</l>
+          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="def"/></r>
+        </p>
+	<par n="S__case"/>
+      </e>
+    </pardef>
+
+
     <!-- Verbs -->
 
     <pardef n="S__voice">
@@ -5083,6 +5095,10 @@
     <e lm="jeres"><i>jeres</i><par n="vores__det"/></e>
     <e lm="deres"><i>deres</i><par n="vores__det"/></e> <!-- @@@ check -->
 
+    <e lm="mange"><i>mange</i><par n="mange__det"/></e> 
+    <e lm="fler"><i>fler</i><par n="fler__det"/></e> 
+    <e lm="flest"><i>flest</i><par n="fler__det"/></e> 
+
     <!--<e lm="selv"><i>selv</i><par n="selv__det"/></e>-->
 
     <!-- Prepositions -->
@@ -5367,7 +5383,6 @@
     <e lm="lykkelig"><i>lykkelig</i><par n="lykkelig__adj"/></e>
     <e lm="lys"><i>lys</i><par n="mild__adj"/></e>
     <e lm="mandlig"><i>mandlig</i><par n="amerikansk__adj"/></e>
-    <e lm="mange"><i></i><par n="/mange__adj"/></e>
     <e lm="materiel"><p><l>materielle</l><r>materiel</r></p><par n="amerikansk__adj"/></e>
     <e lm="menneskelig"><i>menneskelig</i><par n="amerikansk__adj"/></e>
     <e lm="mild"><i>mild</i><par n="mild__adj"/></e>
@@ -14325,7 +14340,7 @@
     <e lm="behov"><i>behov</i><par n="vand__n"/></e>
     <e lm="bevis"><i>bevis</i><par n="hus__n"/></e>
     <e lm="blod"><i>blod</i><par n="blod__n"/></e>
-    <e lm="politi"><i>politi</i><par n="blod__n"/></e>
+    <e lm="politi"><i>politi</i><par n="politi__n"/></e>
     <e lm="bryst"><i>bryst</i><par n="vand__n"/></e>
     <e lm="demokrati"><i>demokrati</i><par n="vand__n"/></e>
     <e lm="dusin"><i>dusin</i><par n="vand__n"/></e>
