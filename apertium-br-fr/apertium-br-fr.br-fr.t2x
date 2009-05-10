@@ -2395,6 +2395,53 @@
 	</action>
 </rule>
 
+<rule comment="REGLA: CS">
+	<pattern>
+		<pattern-item n="CS"/>
+	</pattern>
+	<action>
+		<choose>
+			<when>
+				<test>
+					<not>
+						<equal>
+							<var n="nombre_subj"/>
+							<lit v="no_assignat"/>
+						</equal>
+					</not>
+				</test>
+
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<var n="nombre_subj"/>
+								<lit-tag v="sg"/>
+							</equal>
+						</test>
+						<let><var n="nombre_subj"/><lit-tag v="vist_sg"/></let>
+					</when>
+				</choose>
+			</when>
+		</choose>
+		<out>
+			<chunk>
+				<clip pos="1" part="lem"/>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+			</chunk>
+		</out>
+        <let>
+          <var n="subj_vist"/>
+          <lit v="no"/>
+        </let>
+
+
+	</action>
+</rule>
+
+
+
 <rule comment="REGLA: cnjcoo">
 	<pattern>
 		<pattern-item n="cnjcoo"/>
@@ -2410,6 +2457,7 @@
 						</equal>
 					</not>
 				</test>
+
 				<choose>
 					<when>
 						<test>
