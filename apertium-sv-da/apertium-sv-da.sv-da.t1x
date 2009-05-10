@@ -10,10 +10,13 @@
       <cat-item tags="vbser.*"/>
       <cat-item tags="vbhaver.*"/>
     </def-cat>
-    <def-cat n="supn">
+    <def-cat n="supn_pp">
       <cat-item tags="vbser.supn.*"/>
       <cat-item tags="vbhaver.supn.*"/>
       <cat-item tags="vblex.supn.*"/>
+      <cat-item tags="vbser.pp.*"/>
+      <cat-item tags="vbhaver.pp.*"/>
+      <cat-item tags="vblex.pp.*"/>
     </def-cat>
     <def-cat n="verb">
       <cat-item tags="vblex.*"/>
@@ -103,10 +106,13 @@
   </section-def-vars>
 
   <section-def-lists>
-    <!-- Verbs que s'usen amb 'være' en danès -->
+    <!-- Verbs de moviment que s'usen amb 'være' en danès -->
     <def-list n="vbambser">
       <list-item v="tage"/>
       <list-item v="føre"/>
+      <list-item v="komme"/>
+      <list-item v="ske"/>
+      <list-item v="holde# op"/>
     </def-list>
   </section-def-lists>
 
@@ -1555,10 +1561,10 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: AUX SUPN ">
+    <rule comment="REGLA: AUX SUPN_PP // Två personer har förts → To personer er ført ">
       <pattern>
         <pattern-item n="aux"/>
-        <pattern-item n="supn"/>
+        <pattern-item n="supn_pp"/>
       </pattern>
       <action>
         <call-macro n="f_conj_auxiliar2">
