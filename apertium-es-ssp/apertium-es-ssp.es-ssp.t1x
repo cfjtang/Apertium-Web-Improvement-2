@@ -111,6 +111,30 @@
       <cat-item lemma="terminar" tags="vblex.prs.*"/>
     </def-cat>
 
+<def-cat n="acabarfti">
+      <cat-item lemma="acabar" tags="vblex.fti.*"/>
+      <cat-item lemma="terminar" tags="vblex.fti.*"/>
+    </def-cat>
+
+<def-cat n="acabarpii">
+      <cat-item lemma="acabar" tags="vblex.pii.*"/>
+    </def-cat>
+
+<def-cat n="acabarifi">
+      <cat-item lemma="acabar" tags="vblex.ifi.*"/>
+      <cat-item lemma="terminar" tags="vblex.ifi.*"/>
+    </def-cat>
+
+<def-cat n="acabarcni">
+      <cat-item lemma="acabar" tags="vblex.cni.*"/>
+      <cat-item lemma="terminar" tags="vblex.cni.*"/>
+    </def-cat>
+
+<def-cat n="acabarger">
+      <cat-item lemma="acabar" tags="vblex.ger"/>
+      <cat-item lemma="terminar" tags="vblex.ger"/>
+    </def-cat>
+
     <def-cat n="ser">
       <cat-item tags="vbser.prs.*"/>
       <cat-item tags="vbser.fts.*"/>
@@ -4775,7 +4799,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: ACABAR.pri DE + INF
+<rule comment="REGLA: ACABAR.prs DE + INF
 		Acabo de comer= Ye v.ôpob hm.òamifeheb ">
       <pattern>
         <pattern-item n="acabarpri"/>
@@ -4816,7 +4840,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: ACABAR.pri DE + INF
+<rule comment="REGLA: ACABAR.prs DE + INF
 		Acabes de comer= Ele v.ôpob s:ãeimumafahold ">
       <pattern>
         <pattern-item n="acabarprs"/>
@@ -4831,7 +4855,7 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_pri" case="caseFirstWord">
+          <chunk name="acabar_prs" case="caseFirstWord">
             <tags>
               <tag>
                 <lit-tag v="SV"/>
@@ -4900,6 +4924,233 @@
       </action>
     </rule>
 
+
+<rule comment="REGLA: ACABAR.fti DE + INF
+		Acabarás de comer= hm.õamewe ele v.ôpob s:ãeimumafahold ">
+      <pattern>
+        <pattern-item n="acabarfti"/>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="choose_prn2">
+              <with-param pos="1"/>
+            </call-macro>
+        <out>
+          <chunk name="acabar_fti" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+		<lit v="hm.õamewe"/>
+	       <lit-tag v="adv"/>
+	    </lu>
+		<b pos="1"/>
+		<lu>              
+		<var n="prn_pers"/>            
+		</lu>
+		<b/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+		<b/>
+            <lu>
+		<lit v="s:ãeimumafahold"/>
+	       <lit-tag v="n.sg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ACABAR.pii DE + INF
+		Acababa de comer= hm.õamewe ele v.ôpob s:ãeimumafahold hm.òamifehob">
+      <pattern>
+        <pattern-item n="acabarpii"/>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="choose_prn2">
+              <with-param pos="1"/>
+            </call-macro>
+        <out>
+          <chunk name="acabar_pii" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+		<lit v="hm.õamewe"/>
+	       <lit-tag v="adv"/>
+	    </lu>
+		<b pos="1"/>
+		<lu>              
+		<var n="prn_pers"/>            
+		</lu>
+		<b/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+		<b/>
+            <lu>
+		<lit v="s:ãeimumafahold"/>
+	       <lit-tag v="n.sg"/>
+	    </lu>
+		<b/>
+            <lu>
+		<lit v="hm.òamifehob"/>
+	       <lit-tag v="adv"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ACABAR.ifi DE + INF
+		Acabaste de comer= hm.õamewe ele v.ôpob s:ãeimumafahold">
+      <pattern>
+        <pattern-item n="acabarifi"/>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="choose_prn2">
+              <with-param pos="1"/>
+            </call-macro>
+        <out>
+          <chunk name="acabar_ifi" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+		<lit v="hm.õamewe"/>
+	       <lit-tag v="adv"/>
+	    </lu>
+		<b pos="1"/>
+		<lu>              
+		<var n="prn_pers"/>            
+		</lu>
+		<b/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+		<b/>
+            <lu>
+		<lit v="s:ãeimumafahold"/>
+	       <lit-tag v="n.sg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ACABAR.cni DE + INF
+		Acabarías de comer= ele v.ôpob s:ãeimumafahold">
+      <pattern>
+        <pattern-item n="acabarcni"/>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="choose_prn2">
+              <with-param pos="1"/>
+            </call-macro>
+        <out>
+          <chunk name="acabar_cni" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+		<lu>              
+		<var n="prn_pers"/>            
+		</lu>
+		<b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+		<b/>
+            <lu>
+		<lit v="s:ãeimumafahold"/>
+	       <lit-tag v="n.sg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ACABAR.ger DE + INF
+		Acabando de comer= v.ôpob sch.õazpeb s:ãeimumafahold">
+      <pattern>
+        <pattern-item n="acabarger"/>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+             <out>
+          <chunk name="acabar_ger" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+		<b pos="1"/>
+            <lu>
+		<lit v="sch.õazpeb"/>
+	       <lit-tag v="adv"/>
+	    </lu>
+		<b/>
+            <lu>
+		<lit v="s:ãeimumafahold"/>
+	       <lit-tag v="n.sg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
     <rule comment="REGLA: VERBOS SIMPLES EN PRESENTE
 		   Vendo: ye sl:aëmiwraho , vendes: ele sl:aëmiwraho, vende: eyle sl:aëmiwraho, vendemos: olemumawraho sl:aëmiwraho, vendéis: elememuwraho sl:aëmiwraho,  venden: eyledahb sl:aëmiwraho	TENGO QUE AÑADIR LOS EJEMPLOS DE TODOS LOS TIEMPOS VERBALES QUE PASAN POR ESTA REGLA">
       <pattern>
@@ -6224,109 +6475,6 @@
     </choose>
       </action>
     </rule>
-
-
-<rule comment="REGLA: IMP pro ">
-<pattern>
-        <pattern-item n="imp"/>
-        <pattern-item n="prnpro"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
- <call-macro n="choose_prn2">
-              <with-param pos="1"/>
-         </call-macro>  
-         <call-macro n="choose_prn2">
-              <with-param pos="2"/>
-         </call-macro>
-<choose>
-    <when>
-      <test> 
-        <in caseless="yes">
-                  <clip pos="1" side="tl" part="lem"/>
-                  <list n="verbosqueflexionan"/>
-        </in>
-      </test>
-      <out>
-          <chunk name="impprovbflx" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="SV"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="a_verb"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="temps"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="pers"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="nbr"/>
-              </tag>
-            </tags>
-		<lu>
-		<var n="prn_pers_verb"/>
-            </lu>
-		<b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_verb"/>
-              <clip pos="2" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-    <otherwise>
-        <out>
-          <chunk name="imppro" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="SV"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="a_verb"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="temps"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="pers"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="nbr"/>
-              </tag>
-            </tags>
-		<lu>
-		<var n="prn_pers_verb"/>
-            </lu>
-	    <b pos="1"/>
-		<lu>
-		<var n="prn_pers_pro"/>
-            </lu>
-		<b/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_verb"/> 
-              <clip pos="2" side="tl" part="nbr"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </otherwise>
-    </choose>
-      </action>
-    </rule>
-
-
-
-
 
 
 
