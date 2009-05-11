@@ -140,6 +140,9 @@ REMOVE VerbImp IF (0 VerbImp);
 # tri ober
 SELECT NC IF (-1 Num) (0 NC) (0 VerbInf);
 
+#an treiñ emgefre
+SELECT NC IF (-1 ("an"ri det def)) (0 NC) (0 VerbInf);
+
 REMOVE ("ober"ri n) IF (NOT -1 Det);
 
 #ar bed
@@ -159,6 +162,10 @@ REMOVE Verb IF (-1 DetInd);
 
 # REGLA (B    ): "Ar pezh a fell deomp ober eo liammañ anezho"
 REMOVE NC IF (-3 ("ar pezh a"ri rel)) (-2 VerbFin) (0 VerbInf) (0 NC);
+
+#REGLA "Ar pezh a c’hall an treiñ emgefre ober "
+REMOVE Adj IF (-1 ("ar pezh a"ri)) (0 Verb) (0 Adj);
+
 
 # REGLA (B    ): "Ne garan ket ac’hanout"
 REMOVE NC IF (-1 ("ne"ri adv)) (1 ("ket"ri adv));
