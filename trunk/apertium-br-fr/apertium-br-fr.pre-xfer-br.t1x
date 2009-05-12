@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<transfer>
+  <section-def-cats>
+    <def-cat n="e">
+      <cat-item lemma="e" tags="vpart.obj"/>
+      <cat-item lemma="e" tags="pr"/>
+      <cat-item lemma="e" tags="*"/>
+    </def-cat>
+    <def-cat n="penn">
+      <cat-item lemma="pennãn" tags="vblex.pri.p3.sg"/>
+      <cat-item lemma="penn" tags="n.m.sg"/>
+    </def-cat>
+  </section-def-cats>
+  <section-def-attrs>
+    <def-attr n="nbr">
+      <attr-item tags="sp"/>
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+    </def-attr>
+  </section-def-attrs>
+  <section-def-vars>
+    <def-var n="numero"/>
+  </section-def-vars>
+
+<section-def-macros>
+
+   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+      <choose>
+	<when>
+	  <test>
+	    <not>
+	      <equal>
+		<b pos="1"/>
+		<lit v=" "/>
+	      </equal>
+	    </not>
+	  </test>
+	  <out>
+	    <b pos="1"/>
+	  </out>
+	</when>     	    
+      </choose>
+    </def-macro>
+</section-def-macros>
+
+  <section-rules>
+    <rule>
+      <pattern>
+        <pattern-item n="e"/>
+        <pattern-item n="penn"/>
+      </pattern>
+      <action>
+	    <out>
+	      <lu>
+                <get-case-from pos="1">
+                  <lit v="e penn"/>
+                </get-case-from>
+                <lit-tag v="pr"/>
+	      </lu>
+	    </out>
+      </action>
+    </rule>
+  </section-rules>
+</transfer>
