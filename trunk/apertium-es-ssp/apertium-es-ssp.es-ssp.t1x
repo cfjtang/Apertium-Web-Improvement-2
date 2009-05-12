@@ -305,7 +305,6 @@
       <cat-item tags="vbmod.fti.*"/>
       <cat-item tags="vblex.pron.fti.*"/>
    </def-cat>
-
 <def-cat n="verbperspas">
       <cat-item tags="vblex.ifi.*"/>
       <cat-item tags="vblex.pii.*"/>
@@ -323,9 +322,6 @@
       <cat-item tags="vblex.pron.pii.*"/>
       <cat-item tags="vblex.pron.pis.*"/>
     </def-cat>
-
-
-
    <def-cat n="verbperspr">
       	<cat-item tags="vblex.cni.*"/>
 	<cat-item tags="vblex.pri.*"/>
@@ -347,7 +343,31 @@
 	<cat-item tags="vblex.pron.pri.*"/>
       	<cat-item tags="vblex.pron.prs.*"/>
     </def-cat>
-
+ <def-cat n="verbcuándofut">
+      	<cat-item tags="vblex.fti.*"/>
+      	<cat-item tags="vbser.fti.*"/>
+      	<cat-item tags="vbhaver.fti.*"/>
+      	<cat-item tags="vbmod.fti.*"/>
+      	<cat-item tags="vblex.fts.*"/>
+      	<cat-item tags="vbser.fts.*"/>
+      	<cat-item tags="vbhaver.fts.*"/>
+      	<cat-item tags="vbmod.fts.*"/>
+	<cat-item tags="vblex.pri.*"/>
+	<cat-item tags="vbser.pri.*"/>
+	<cat-item tags="vbhaver.pri.*"/>
+	<cat-item tags="vbmod.pri.*"/>
+	<cat-item tags="vblex.pron.pri.*"/>
+	<cat-item tags="vblex.prs.*"/>
+      	<cat-item tags="vbser.prs.*"/>
+      	<cat-item tags="vbhaver.prs.*"/>
+      	<cat-item tags="vbmod.prs.*"/>
+      	<cat-item tags="vblex.pron.prs.*"/>
+      	<cat-item tags="vblex.cni.*"/>
+      	<cat-item tags="vbser.cni.*"/>
+      	<cat-item tags="vbhaver.cni.*"/>
+      	<cat-item tags="vbmod.cni.*"/>
+      	<cat-item tags="vblex.pron.cni.*"/>
+    </def-cat>
     <def-cat n="auxpers">
       <cat-item tags="vbser.cni.*"/>
       <cat-item tags="vbser.fti.*"/>
@@ -407,6 +427,9 @@
 
     <def-cat n="estar">
       <cat-item lemma="estar" tags="vbser.*"/>
+    </def-cat>
+    <def-cat n="cuándo">
+      <cat-item lemma="cuándo" tags="adv.itg"/>
     </def-cat>
 <def-cat n="haverpas_que">
       <cat-item lemma="haber# que" tags="vbmod.pii.*"/>
@@ -6060,6 +6083,128 @@
         </out>
       </action>
     </rule>
+
+
+
+
+<rule comment="REGLA: CUÁNDO FUTURO
+		Cuándo + fti, fts, pri, prs, cni= pro.per + verbo + õamewe
+		Cuándo vendrás= ele abéímamuwui õamewe">
+      <pattern>
+        <pattern-item n="cuándo"/>
+        <pattern-item n="verbcuándofut"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+<call-macro n="choose_prn2">
+              <with-param pos="2"/>
+            </call-macro>
+        <out>
+          <chunk name="cuándo_fut" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <var n="prn_pers"/>
+            </lu>
+          	    <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          	    <b/>
+            <lu>
+	      <lit v="õamewe"/>
+	      <lit-tag v="adv.itg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: CUÁNDO PASADO
+		Cuándo + pii, pis, ifi= pro.per + verbo + hm.òamamafahecb
+		Cuándo viniste= ele abéímamuwui hm.òamamafahecb">
+      <pattern>
+        <pattern-item n="cuándo"/>
+        <pattern-item n="verbperspas"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+<call-macro n="choose_prn2">
+              <with-param pos="2"/>
+            </call-macro>
+        <out>
+          <chunk name="cuándo_pas" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <var n="prn_pers"/>
+            </lu>
+          	    <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          	    <b/>
+            <lu>
+	      <lit v="hm.òamamafahecb"/>
+	      <lit-tag v="adv.itg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: CUÁNDO INFINITIVO
+		Cuándo + inf=  verbo + õamewe
+		Cuándo empezar= s:amedahe õamewe">
+      <pattern>
+        <pattern-item n="cuándo"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="cuándo_inf" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          	    <b pos="1"/>
+            <lu>
+	      <lit v="õamewe"/>
+	      <lit-tag v="adv.itg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
 <rule comment="REGLA: ger
 			durmiendo: kõã
