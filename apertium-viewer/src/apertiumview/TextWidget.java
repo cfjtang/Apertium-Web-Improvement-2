@@ -251,7 +251,18 @@ public class TextWidget extends javax.swing.JPanel {
             Pipeline.getPipeline().queueAsyncProcessing(this, this.priority, newTxt, next);
         }
         changing = true;
-        textEditor.setText(newTxt);
+        try {
+            textEditor.setText(newTxt);
+        } catch (Exception e) {
+            // For some reason this sometimes fails. Try again and then give up
+            e.printStackTrace();
+            try {
+                Thread.sleep(50);
+                textEditor.setText(newTxt);
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
         lastSetTxt = newTxt;
         changing = false;
     }
