@@ -18,9 +18,21 @@
       <cat-item tags="vbhaver.pp.*"/>
       <cat-item tags="vblex.pp.*"/>
     </def-cat>
+    
     <def-cat n="verb">
       <cat-item tags="vblex.*"/>
     </def-cat>
+
+    <def-cat n="få">
+      <cat-item lemma="få" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="inte">
+      <cat-item lemma="inte" tags="adv"/>
+    </def-cat>
+
+
+
     <def-cat n="det">
       <cat-item tags="det.*"/>
     </def-cat>
@@ -1573,6 +1585,42 @@
         </out>
       </action>
     </rule>
+
+ 
+    <rule comment="REGLA: får inte VERB  -   må ikke VERB">
+      <pattern>
+        <pattern-item n="få"/>
+        <pattern-item n="inte"/>
+        <pattern-item n="verb"/>
+      </pattern>
+      <action>
+        <call-macro n="f_conj_supn1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <lit v="måtte"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="voz"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <clip pos="3" side="tl" part="temps"/>
+            <clip pos="3" side="tl" part="voz"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
 
     <rule comment="REGLA: AUX SUPN_PP // Två personer har förts → To personer er ført ">
       <pattern>
