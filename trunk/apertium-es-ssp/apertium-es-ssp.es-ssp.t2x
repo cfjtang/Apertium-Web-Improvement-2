@@ -45,6 +45,9 @@
       <cat-item tags="preadv"/>
       
     </def-cat>
+ <def-cat n="inf">
+      <cat-item tags="inf.*"/>
+    </def-cat>
 
     <def-cat n="PRNS">
       <cat-item tags="PRN.subj.*"/>
@@ -384,7 +387,27 @@
 	</action>
 </rule>
 
-
+<rule comment="REGLA: SV + INF -> INF + SV">
+	<pattern>
+		<pattern-item n="SV"/>
+		<pattern-item n="inf"/>
+	</pattern>
+	<action>
+	  <out>
+	      <chunk>
+	      <clip pos="2" part="lem"/>
+	      <clip pos="2" part="tags"/>
+ 	      <clip pos="2" part="chcontent"/>
+	    </chunk>
+            <b pos="1"/>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+ 	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+	  </out>
+	</action>
+</rule>
 
 <rule comment="REGLA: SN_cuando SV -> SV">
 	<pattern>
