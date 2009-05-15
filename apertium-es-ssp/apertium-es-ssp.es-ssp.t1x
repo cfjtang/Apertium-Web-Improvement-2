@@ -125,6 +125,11 @@
       <cat-item lemma="terminar" tags="vblex.ifi.*"/>
     </def-cat>
 
+<def-cat n="acabarinf">
+      <cat-item lemma="acabar" tags="vblex.inf"/>
+      <cat-item lemma="terminar" tags="vblex.inf"/>
+    </def-cat>
+
 <def-cat n="acabarcni">
       <cat-item lemma="acabar" tags="vblex.cni.*"/>
       <cat-item lemma="terminar" tags="vblex.cni.*"/>
@@ -4822,7 +4827,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: ACABAR.prs DE + INF
+<rule comment="REGLA: ACABAR.pri DE + INF
 		Acabo de comer= Ye v.ôpob hm.òamifeheb ">
       <pattern>
         <pattern-item n="acabarpri"/>
@@ -4837,16 +4842,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_pri" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="acabar_pri">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
@@ -4878,7 +4890,7 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_prs" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
                 <lit-tag v="SV"/>
@@ -4887,7 +4899,14 @@
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="acabar_prs">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
@@ -4921,16 +4940,23 @@
               <with-param pos="2"/>
             </call-macro>
         <out>
-          <chunk name="acabar_pri" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="cd_acabar_pri">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_verb"/>
@@ -4963,21 +4989,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_fti" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="hm.õamewe"/>
 	       <lit-tag v="adv"/>
 	    </lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
+          </chunk>
 		<b/>
+          <chunk name="acabar_fti">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
@@ -5010,21 +5050,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_pii" case="caseFirstWord">
+          <chunk name="advpasado" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="hm.òmamafahocb"/>
 	       <lit-tag v="adv"/>
 	    </lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
+          </chunk>
 		<b/>
+          <chunk name="acabar_pii">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
@@ -5048,7 +5102,7 @@
 
 
 <rule comment="REGLA: ACABAR.ifi DE + INF
-		Acabaste de comer= hm.õamewe ele v.ôpob s:ãeimumafahold">
+		Acabaste de comer= hm.òmamafahocb ele v.ôpob s:ãeimumafahold">
       <pattern>
         <pattern-item n="acabarifi"/>
         <pattern-item n="de"/>
@@ -5062,21 +5116,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_ifi" case="caseFirstWord">
+          <chunk name="advpasado" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="adv"/>
+              </tag>
+            </tags>
+            <lu>
+		<lit v="hm.òmamafahocb"/>
+	       <lit-tag v="adv"/>
+	    </lu>
+          </chunk>
+		<b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>             
+		<lu>           
+		<var n="prn_pers"/>            
+		</lu>
+          </chunk>
+		<b/>
+          <chunk name="acabar_ifi">
             <tags>
               <tag>
                 <lit-tag v="SV"/>
               </tag>
             </tags>
-            <lu>
-		<lit v="hm.õamewe"/>
-	       <lit-tag v="adv"/>
-	    </lu>
-		<b pos="1"/>
-		<lu>              
-		<var n="prn_pers"/>            
-		</lu>
-		<b/>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
@@ -5109,16 +5177,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="acabar_cni" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="acabar_cni">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
@@ -5135,6 +5210,40 @@
       </action>
     </rule>
 
+
+<rule comment="REGLA: ACABAR.inf DE + INF
+		Acabar de comer= v.ôpob s:ãeimumafahold">
+      <pattern>
+        <pattern-item n="acabarinf"/>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+             <out>
+          <chunk name="acabar_inf" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+		<b pos="1"/>
+            <lu>
+		<lit v="s:ãeimumafahold"/>
+	       <lit-tag v="n.sg"/>
+	    </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
 <rule comment="REGLA: ACABAR.ger DE + INF
 		Acabando de comer= v.ôpob sch.õazpeb s:ãeimumafahold">
@@ -5196,16 +5305,23 @@
         	</in>
 		</test>
 		<out>
-          <chunk name="verbprflx" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
+          </chunk>
 		<b/>
+          <chunk name="verbprflx">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
@@ -5218,16 +5334,23 @@
 		</when>
 		<otherwise>
         <out>
-          <chunk name="verbpr" case="caseFirstWord">
+          <chunk name="prnpers">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
 		<lu>              
 		<var n="prn_pers"/>            
 		</lu>
+          </chunk>
 		<b/>
+          <chunk name="verbpr">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
@@ -5256,16 +5379,23 @@
               <with-param pos="1"/>
             </call-macro>
 				<out>
+          <chunk name="prnpers" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
+		<lu>              
+		<var n="prn_pers"/>            
+		</lu>
+          </chunk>
+		<b/>
           <chunk name="verbimp" case="caseFirstWord">
             <tags>
               <tag>
                 <lit-tag v="SV"/>
               </tag>
             </tags>
-		<lu>              
-		<var n="prn_pers"/>            
-		</lu>
-		<b/>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
@@ -5293,22 +5423,36 @@
         <call-macro n="choose_prn2">
               <with-param pos="1"/>
             </call-macro>
-        <out>
-          <chunk name="verbps" case="caseFirstWord">
+        <out> 
+        <chunk name="advpasado" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="hm.òmamafahocb"/>
 	       <lit-tag v="adv"/>
 	    </lu>
-	    <b/>
+          </chunk>
+            <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
-	    <b/>
+          </chunk>
+            <b/>
+          <chunk name="verbps">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
@@ -5338,21 +5482,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="verbft" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="hm.õamewe"/>
 	        <lit-tag v="adv"/>
 	    </lu>
+          </chunk>
 	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 	    <b/>
+          <chunk name="verbft">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
@@ -5379,16 +5537,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="verbcnd" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
             <b/>
+          <chunk name="verb_cond">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
@@ -5419,16 +5584,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haver_pp" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="haver_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5460,21 +5632,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haverfti_pp" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
 	    <lu>
 		<lit v="hm.õamewe"/>
 	        <lit-tag v="adv"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
 	    <lu>
               <var n="prn_pers"/>
 	    </lu>
+          </chunk>
 	    <b/>
+          <chunk name="haverfti_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5506,16 +5692,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="havercond_pp" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 		<b/>
+          <chunk name="havercond_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5541,21 +5734,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haverifi_pp" case="caseFirstWord">
+          <chunk name="advpasado" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.òmamafahocb"/>
 	      <lit-tag v="adv"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 	    <b/>
+          <chunk name="haverifi_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5582,21 +5789,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haverfts_pp" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.õamewe"/>
 	      <lit-tag v="adv"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
 	    </lu>
+          </chunk>
 	    <b/>
+          <chunk name="haverfts_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5704,17 +5925,24 @@
           <with-param pos="1"/>
         </call-macro>
         <out>
-          <chunk name="haberpasque" case="caseFirstWord">
+          <chunk name="advpasado" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.òmamafahocb"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="haberpasque">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5746,17 +5974,24 @@
           <with-param pos="1"/>
         </call-macro>
         <out>
-          <chunk name="haberfutque" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.õamewe"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="haberfutque">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5795,16 +6030,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haberde" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="haberde">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5839,21 +6081,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haberfutde" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.õamewe"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 	    <b/>
+          <chunk name="haberfutde">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5889,21 +6145,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="haberpasde" case="caseFirstWord">
+          <chunk name="advpasado" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.òmamafahocb"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 	    <b/>
+          <chunk name="haberpasde">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -5945,16 +6215,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estar_adj_pp" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="estar_adj_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj__pp"/>
@@ -6015,21 +6292,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estarpas_adj_pp" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.òmamafahocb"/>
 	      <lit-tag v="adv"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prn_pers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 	    <b/>
+          <chunk name="estarpas_adj_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj__pp"/>
@@ -6059,21 +6350,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estarfut_adj_pp" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 	      <lit v="hm.õamewe"/>
 	      <lit-tag v="adv"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
+          </chunk>
 	    <b/>
+          <chunk name="estarfut_adj_pp">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj__pp"/>
@@ -6103,16 +6408,23 @@
               <with-param pos="2"/>
             </call-macro>
         <out>
-          <chunk name="cuándo_fut" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
-          	    <b pos="1"/>
+          </chunk>
+          	    <b/>
+          <chunk name="cuándo_fut">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -6145,16 +6457,23 @@
               <with-param pos="2"/>
             </call-macro>
         <out>
-          <chunk name="cuándo_pas" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
             <lu>
               <var n="prn_pers"/>
             </lu>
-          	    <b pos="1"/>
+          </chunk>
+          	    <b/>
+          <chunk name="cuándo_pas">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -6299,21 +6618,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estarpri_ger" case="caseFirstWord">
+          <chunk name="advpresente" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="chomaq"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
 		<var n="prn_pers"/>
             </lu>
+          </chunk>
 		<b/>
+          <chunk name="estarpri_ger">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_ger"/>
@@ -6326,46 +6659,7 @@
     </rule>
 
  
-    <rule comment="REGLA: ESTARpri + GER
-		Estoy, estás , está, estamos, estáis, están + vendiendo: chomaq (pr_pers: ye,ele,eyle,olemumawraho,elememuwraho,eyledahb) sl:aëmiwraho
-	       					">
-      <pattern>
-        <pattern-item n="estarpri"/>
-        <pattern-item n="ger"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-<call-macro n="choose_prn2">
-              <with-param pos="1"/>
-            </call-macro>
-        <out>
-          <chunk name="estarpri_ger" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="SV"/>
-              </tag>
-            </tags>
-            <lu>
-		<lit v="chomaq"/>
-	      <lit-tag v="adv"/>
-            </lu>
-	    <b pos="1"/>
-            <lu>
-		<var n="prn_pers"/>
-            </lu>
-		<b/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_ger"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule>
+    
 
 
 <rule comment="REGLA: ESTARinfger + GER
@@ -6415,21 +6709,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estarpas_ger" case="caseFirstWord">
+          <chunk name="advpasado" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="hm.òmamafahocb"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
 		<var n="prn_pers"/>
             </lu>
+          </chunk>
 		<b/>
+          <chunk name="estarpas_ger" case="caseFirstWord">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_ger"/>
@@ -6457,21 +6765,35 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estarfut_ger" case="caseFirstWord">
+          <chunk name="advfuturo" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="adv"/>
               </tag>
             </tags>
             <lu>
 		<lit v="hm.õamewe"/>
 	      <lit-tag v="adv"/>
             </lu>
-	    <b pos="1"/>
+          </chunk>
+	    <b/>
+          <chunk name="prnpers">
+            <tags>
+              <tag>
+                <lit-tag v="SN"/>
+              </tag>
+            </tags>
             <lu>
 		<var n="prn_pers"/>
             </lu>
+          </chunk>
 		<b/>
+          <chunk name="estarfut_ger">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_ger"/>
@@ -6500,16 +6822,23 @@
               <with-param pos="1"/>
             </call-macro>
         <out>
-          <chunk name="estarcn_ger" case="caseFirstWord">
+          <chunk name="prnpers" case="caseFirstWord">
             <tags>
               <tag>
-                <lit-tag v="SV"/>
+                <lit-tag v="SN"/>
               </tag>
             </tags>
 		<lu>
 		<var n="prn_pers"/>
             </lu>
-		<b pos="1"/>
+          </chunk>
+		<b/>
+          <chunk name="estarcn_ger">
+            <tags>
+              <tag>
+                <lit-tag v="SV"/>
+              </tag>
+            </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_ger"/>
