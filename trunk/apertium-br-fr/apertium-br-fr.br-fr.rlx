@@ -72,6 +72,7 @@ SET VerbFin           = Verb | TempsFin;
 
 # Adverbs
 LIST Adv              = (adv);
+LIST PreAdv           = (preadv);
 LIST Ket 	      = ("ket" adv);
 
 # Conjunctions
@@ -231,6 +232,9 @@ SELECT VerbInf IF (-1 VpartGer);
 
 # REGLA (B0009): "Geriadur digor ha frank"
 SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
+
+# REGLA (B    ): "seul fonnusoc'h, seul welloc'h"
+SELECT PreAdv IF (1 (adj sint comp));
 
 # REGLA (B    ): "Katell a zeuio da gomz" 
 # 
