@@ -255,6 +255,9 @@ SELECT Verb IF (-2 ("dav"ri adj)) (-1 ("<eo>"ri vblex));
 # REGLA (B    ): "Ne c’hallan ket ober an dra-se"
 SELECT VerbInf IF (-1 ("ket" adv)) (-2 VerbFin);
 
+# REGLA (B0012): "An dud a zeu da Roazhon"
+REMOVE VerbFin IF (0 Det) (1 NC)
+
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
 REMOVE VerbFin IF (*-1 VerbFin BARRIER S-BOUNDARY)
 
@@ -301,9 +304,6 @@ REMOVE PrnDObj IF (1 NC) (NOT 1 VerbFin);
 # REGLA (B    ): "d'ur skoazell digant an holl Vretoned"
 REMOVE PrnInd IF (-1 Det) (1 NC);
 SELECT PreDet IF (-1 Det) (1 NC);
-
-# REGLA (B0012): "An dud a zeu da Roazhon"
-REMOVE VerbFin IF (0 Det) (1 NC)
 
 # REGLA (B0013): "Me am eus kanet"
 REMOVE VerbImp IF (-1 VerbFin);
