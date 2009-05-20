@@ -79,6 +79,8 @@ LIST Ket 	      = ("ket" adv);
 
 LIST CC               = (cnjcoo);
 LIST CS               = (cnjsub);
+LIST CA               = (cnjadv);
+LIST Conj             = CC + CA + CS;
 
 # Mutations
 LIST SoftMut          = ("<g.*>"ri "k.*"ri) ("<d.*>"ri "t.*"ri) ("<b.*>"ri "p.*"ri) ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri)
@@ -462,8 +464,10 @@ REMOVE ("biz"ri n) IF (0 ("biz"ri n)) (0 ("miz"ri n)) (-1 ("meur a"ri det ind));
 REMOVE (+an) IF (1 DetPos) (0 ("<en>"ri));
 
 # raktres sindikad bro Dinan
+REMOVE VerbFin IF (NOT (-1 Vpart) OR (-1 Conj)) ;
 
-REMOVE VerbFin IF (NOT -1 Vpart);
+#D'ar mare ma oan o tigeriñ an nor
+SELECT VerbFin IF (-1C* Conj) (NOT 1C* VerbFin);
 
 # select proper names if they are in caps
 SELECT NP IF (0 ("Gwalarn" np));
