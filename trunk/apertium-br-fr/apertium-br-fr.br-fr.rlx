@@ -311,7 +311,7 @@ SELECT PreDet IF (-1 Det) (1 NC);
 REMOVE VerbImp IF (-1 VerbFin);
 
 # REGLA (B0014): "Yann a zeuy"
-SELECT Vpart IF (1 VerbFin);
+SELECT Vpart IF (1 VerbFin) (NOT 1 Toponim);
 
 # REGLA (B0016): >The particle is omitted before every form of 'endevout' and the locative forms of 'bezañ'
 REMOVE Vpart IF (1 ("endevout" vblex));
@@ -369,8 +369,6 @@ SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (2 ("endev
 SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-2 ("endevout" vblex));
 SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (2 ("bezañ" vblex));
 SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-2 ("bezañ" vblex));
-
-
 
 # REGLA (B    ): "Skuizh e vi"
 SELECT SoftMut IF ((-1 ("e" vpart obj) OR (-1 ("e" det pos))) (NOT -1 Prep) (NOT -1 PrnDObj);
