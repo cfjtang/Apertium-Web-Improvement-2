@@ -1,11 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-cy-en], [0.1.0], [ftyers@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-cy-en], [0.1.0], no-define)
+AC_INIT([apertium-br-fr], [0.1.0], [ftyers@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-br-fr], [0.1.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
@@ -46,6 +45,5 @@ if test x$ac_cv_path_CGPROC = xno
 then
   AC_MSG_ERROR([You don't have cg-proc installed.])
 fi
-
 
 AC_OUTPUT([Makefile])
