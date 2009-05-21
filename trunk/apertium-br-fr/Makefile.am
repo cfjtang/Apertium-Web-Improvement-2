@@ -10,8 +10,10 @@ TARGETS_COMMON = $(BASENAME).$(LANG2).dix  \
      $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX1).rlx.bin $(PREFIX1).pre-xfer.t1x.bin \
-     $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin pre-$(LANG1).t1x.bin \
+     $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin $(PREFIX1).mode $(PREFIX2).mode
+
+# pre-$(LANG1).t1x.bin 
 
 $(BASENAME).$(LANG2).dix: $(BASENAME).$(LANG2).metadix
 	@xsltproc buscaPar.xsl $(BASENAME).$(LANG2).metadix | uniq > $$gen.xsl
@@ -92,22 +94,23 @@ $(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
 
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
-           $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
-	   $(BASENAME).orth-$(LANG1).dix \
+           $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).$(LANG2).metadix \
 	   $(BASENAME).$(LANG1).dix \
 	   $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).rlx \
-	   $(BASENAME).pre-$(LANG1).t1x \
            $(PREFIX1).prob $(PREFIX2).prob \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x \
-           $(BASENAME).pre-xfer-br.t1x \
+           $(BASENAME).pre-xfer-br.t1x buscaPar.xsl principal.xsl \
            modes.xml $(BASENAME).$(LANG1).acx
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 #           $(BASENAME).$(LANG1).tsx 
 #           $(BASENAME).$(LANG2).tsx  
+#           $(BASENAME).post-$(LANG1).dix 
+#	   $(BASENAME).orth-$(LANG1).dix 
+#	   $(BASENAME).pre-$(LANG1).t1x 
 
 apertium_br_frdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_br_modesdir=$(prefix)/share/apertium/modes/
