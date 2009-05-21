@@ -1,4 +1,5 @@
 DELIMITERS            = (sent) (".");
+SOFT-DELIMITERS       = "<,>" ;
 
 LIST BOS              = (>>>);
 LIST EOS              = (<<<);
@@ -493,4 +494,4 @@ SELECT (np cog) IF (-1 (np ant)) (0 (np cog)) (-1 UPPER) (0 UPPER);
 SECTION
 
 REMOVE DetPos (0 ("e"ri pr)) ((1 Num) OR (1 Language));
-ADD (s1) ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
+SUBSTITUTE (pr) (pr s1) ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
