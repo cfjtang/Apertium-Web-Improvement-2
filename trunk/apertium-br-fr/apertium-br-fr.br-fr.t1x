@@ -1203,14 +1203,20 @@
         <var n="adjectiu1"/>
         <lit v=""/>
       </let>
-<!--      <let>
-        <clip pos="1" side="tl" part="gen"/>
-        <lit-tag v="GD"/>
-      </let>
-      <let>
-        <clip pos="1" side="tl" part="nbr"/>
-        <lit-tag v="ND"/>
-      </let> -->
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <var n="numero"/>
+              <lit-tag v="sp"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+      </choose>
       <choose>
         <when>
           <test>
@@ -1249,8 +1255,8 @@
           <append n="adjectiu1">
             <lit v="le"/>
             <lit-tag v="det.def"/>
-            <var n="genero"/>
-            <var n="numero"/>
+            <var n="genero"/> 
+            <var n="numero"/> 
             <lit v="$ ^"/>
           </append> 
           <append n="adjectiu1">
@@ -9099,9 +9105,7 @@
         <out>
           <chunk name="preadv_adj" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SA"/>
-              </tag>
+              <tag><lit-tag v="SA"/></tag>
               <tag><clip pos="1" side="tl" part="gen"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
