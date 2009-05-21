@@ -102,7 +102,7 @@ LIST SoftMutTrigger   = ("a"ri vpart) ("a"ri pr) ("aba"ri adv) ("da"ri pr) ("ez"
                         ("da"ri det pos) ("daou"ri num m) ("div"ri num f) ("dindan"ri adv) ("diwar"ri pr) ("dre"ri pr)
                         ("e"ri det pos m) ("na"ri vpart neg) ("ne"ri vpart neg) ("pa"ri cnjsub) ("pe"ri cnjcoo) 
                         ("pe"ri adv itg) ("ra"ri vpart opt) ("re"ri adj) ("war"ri pr) ("re"ri adv) ("an"ri det def) ("un"ri det ind)
-			("meur a"ri det ind);
+			("meur a"ri det ind) ("kalz a"ri pr);
 
 LIST MixedMutTrigger  = ("e"ri vpart);
 
@@ -187,7 +187,7 @@ SELECT NC IF (-1 ("<al>"ri det def));
 REMOVE Acr IF (0 NC) (0 Acr);
 
 # REGLA (B0022): "ha zo bet skrivet"
-REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
+REMOVE:Remove_SoftMut SoftMut IF (NOT -1 SoftMutTrigger);
 
 # REGLA (B0023):  "te a had"
 SELECT PrnSubj IF (1 VpartSDO) (2 VerbFin);
@@ -401,6 +401,9 @@ SELECT Prep IF (0 ("tremen")) (1C Num) (2 NC);
 
 # betek an trec'h
 SELECT NC IF (-2C Prep) (-1 DetDef) (0 NC) (0 VerbFin);
+
+# kalz a dud
+SELECT NC IF (-1C Prep) (-1C SoftMutTrigger) (0 NC) (0 VerbFin);
 
 SECTION
 
