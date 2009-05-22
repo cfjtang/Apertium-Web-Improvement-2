@@ -105,6 +105,9 @@
       <cat-item tags="num.*"/>
       <cat-item tags="num"/>
     </def-cat>
+    <def-cat n="ord">
+      <cat-item tags="num.ord.*"/>
+    </def-cat>
     <def-cat n="numeral">
       <cat-item tags="num.*"/>
     </def-cat>
@@ -5885,6 +5888,115 @@
       </action>
    </rule>
  
+    <rule comment="REGLA: ORDINAL NOM DET NOM">
+      <pattern>
+        <pattern-item n="ord"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="det"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord2">
+          <with-param pos="4"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="2" side="tl" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="2" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+
+        </choose>
+
+        <out>
+          <chunk name="det_ord_nom_de_det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="genero"/></tag>
+              <tag><var n="numero"/></tag>
+            </tags>
+            <lu>
+              <lit v="le"/>
+              <lit-tag v="det.def.2.3"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="2" side="tl" part="gen_mf"/>
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="2" side="tl" part="nbr_sp"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_det"/>
+              <clip pos="3" side="tl" part="gen_sense_mf"/>
+              <clip pos="3" side="tl" part="gen_mf"/>
+              <clip pos="3" side="tl" part="nbr_sense_sp"/>
+              <clip pos="3" side="tl" part="nbr_sp"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="gen_sense_mf"/>
+              <clip pos="4" side="tl" part="gen_mf"/>
+              <clip pos="4" side="tl" part="nbr_sense_sp"/>
+              <clip pos="4" side="tl" part="nbr_sp"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+ 
+
+ 
     <rule comment="REGLA: NUM NOM DET NOM">
       <pattern>
         <pattern-item n="num"/>
@@ -5896,6 +6008,9 @@
         <call-macro n="f_concord2">
           <with-param pos="4"/>
           <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
         </call-macro>
         <call-macro n="f_concord1">
           <with-param pos="2"/>

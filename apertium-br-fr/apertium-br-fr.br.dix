@@ -76,6 +76,7 @@
     <sdef n="def"    c="Definite"/>
     <sdef n="dem"    c="Demonstratif"/>
     <sdef n="pos"    c="Possessive"/>
+    <sdef n="ord"    c="Ordinal"/>
 
     <sdef n="cm"     c="Coma"/>
     <sdef n="sent"   c="End of sentence marker"/>
@@ -277,6 +278,26 @@
       </e>
     </pardef>
 
+    <pardef n="coma">
+      <e>
+        <re>,</re>
+        <p>
+          <l/>
+          <r><s n="cm"/></r>
+        </p>
+      </e>
+    </pardef>
+
+    <pardef n="separa">
+      <e>
+        <re>[.\?;:!]</re>
+        <p>
+          <l/>
+          <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+
 
 
     <pardef n="KM__n">
@@ -346,7 +367,6 @@
       </e>
     </pardef>
 
-
     <pardef n="pemp__num">
       <e>
         <p>
@@ -356,26 +376,14 @@
       </e>
     </pardef>
 
-    <pardef n="coma">
+    <pardef n="trede__num">
       <e>
-        <re>,</re>
         <p>
           <l/>
-          <r><s n="cm"/></r>
+          <r><s n="num"/><s n="ord"/><s n="mf"/><s n="sp"/></r>
         </p>
       </e>
     </pardef>
-
-    <pardef n="separa">
-      <e>
-        <re>[.\?;:!]</re>
-        <p>
-          <l/>
-          <r><s n="sent"/></r>
-        </p>
-      </e>
-    </pardef>
-
 
     <!-- Initial consonant mutations (Ar c’hemmadurioù) -->
     <pardef n="initial-p">
@@ -6770,7 +6778,7 @@
       </e>
     </pardef>
 
-	    <pardef n="neve/z__adj">
+    <pardef n="neve/z__adj">
       <e>
         <p>
           <l>z</l>
@@ -22750,6 +22758,9 @@
     <e lm="nav c’hant"><i>nav<b/>c’hant</i><par n="pemp__num"/></e>
 
     <e lm="mil"><par n="initial-m"/><i>il</i><par n="pemp__num"/></e>
+
+    <e lm="eil"><i>eil</i><par n="trede__num"/></e>
+    <e lm="trede"><par n="initial-t"/><i>rede</i><par n="trede__num"/></e>
 
     <e lm="kentañ"><par n="initial-k"/><i>entañ</i><par n="aner__adj"/></e>
     <e lm="eilvet"><i>eilvet</i><par n="aner__adj"/></e>
