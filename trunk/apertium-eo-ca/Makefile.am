@@ -16,7 +16,7 @@ TARGETS = $(TARGETS_COMMON)
 
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp lr $(BASENAME).$(LANG2).dix $@
+	lt-comp lr $(BASENAME).$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
 
 $(PREFIX1).autobil.bin: $(BILNAME)
 	apertium-validate-dictionary $(BILNAME)
