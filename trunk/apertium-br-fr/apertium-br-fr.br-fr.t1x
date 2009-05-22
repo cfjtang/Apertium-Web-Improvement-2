@@ -604,6 +604,7 @@
     <def-var n="concSegundo"/>
     <def-var n="concTercero"/>
     <def-var n="adjectiu1"/>
+    <def-var n="adjectiu2"/>
     <def-var n="interrogativa"/>
     <def-var n="exclamativa"/>
     <def-var n="caseFirstWord"/>
@@ -1267,6 +1268,83 @@
         </when>
         <otherwise>
           <append n="adjectiu1">
+            <lit v=""/>
+          </append> 
+        </otherwise>
+      </choose>
+    </def-macro>
+
+
+
+    <def-macro n="comparatiu_adj1-2" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
+      <let>
+        <var n="adjectiu2"/>
+        <lit v=""/>
+      </let>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <var n="numero"/>
+              <lit-tag v="sp"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <var n="genero"/>
+              <lit-tag v="mf"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="comp"/>
+              </equal>
+          </test>
+          <append n="adjectiu2">
+            <lit v="plus"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+        </when>
+        <when>
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="sup"/>
+              </equal>
+          </test>
+          <append n="adjectiu2">
+            <lit v="le"/>
+            <lit-tag v="det.def"/>
+            <var n="genero"/> 
+            <var n="numero"/> 
+            <lit v="$ ^"/>
+          </append> 
+          <append n="adjectiu2">
+            <lit v="plus"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+        </when>
+        <otherwise>
+          <append n="adjectiu2">
             <lit v=""/>
           </append> 
         </otherwise>
@@ -8776,12 +8854,21 @@
         <pattern-item n="adjec"/>
       </pattern>
       <action>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
         <call-macro n="f_concord2">
           <with-param pos="1"/>
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="comparatiu_adj1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="comparatiu_adj1-2">
+          <with-param pos="3"/>
         </call-macro>
             <choose>
               <when>
@@ -8804,17 +8891,12 @@
             <out>
               <chunk name="adj_cnjcoo_adj" case="caseFirstWord">
                 <tags>
-                  <tag>
-                    <lit-tag v="SA"/>
-                  </tag>
-                  <tag>
-                    <var n="genero"/>
-                  </tag>
-                  <tag>
-                    <var n="numero"/>
-                  </tag>
+                  <tag><lit-tag v="SA"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
                 </tags>
                 <lu>
+                  <var n="adjectiu1"/>
                   <clip pos="1" side="tl" part="lemh"/>
                   <clip pos="1" side="tl" part="a_adj"/>
                   <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
@@ -8829,6 +8911,7 @@
                 </lu>
                 <b pos="2"/>
                 <lu>
+                  <var n="adjectiu2"/>
                   <clip pos="3" side="tl" part="lemh"/>
                   <clip pos="3" side="tl" part="a_adj"/>
                   <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
