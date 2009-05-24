@@ -78,6 +78,9 @@
       <cat-item lemma="bezañ" tags="vblex.pii.p3.sg"/>
       <cat-item lemma="bezañ" tags="vblex.past.p3.sg"/>
     </def-cat>
+    <def-cat n="klask">
+      <cat-item lemma="klask" tags="vblex.inf"/>
+    </def-cat>
     <def-cat n="bezañ_inf">
       <cat-item lemma="bezañ" tags="vblex.inf"/>
     </def-cat>
@@ -1546,6 +1549,7 @@
         <lit v="false"/>
       </let>
     </def-macro>
+
     
  <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
       <choose>
@@ -11009,6 +11013,49 @@
         </out>
       </action>
    </rule>
+
+    <rule comment="REGLA: klask inf → chercher à inf">
+      <pattern>
+        <pattern-item n="klask"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <clip pos="2" side="tl" part="lem"/>
+        </let>
+        <out>
+          <chunk name="chercher_à" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="à"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="lema">
+            <tags> 
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+ 
          
     <rule comment="REGLA: arabat inf → ne falloir pas inf">
       <pattern>
