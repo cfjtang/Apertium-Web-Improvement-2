@@ -1,0 +1,118 @@
+/*
+ * Copyright (C) 2009  Pasquale Minervini <p.minervini@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "Modes.h"
+
+#include <fstream>
+#include <list>
+#include <vector>
+#include <algorithm>
+
+#include <cstring>
+
+#include <boost/filesystem/fstream.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/tokenizer.hpp>
+
+using namespace std;
+namespace fs = boost::filesystem;
+
+Modes::Modes(string apertiumModesDir) {
+	string suffix = ".mode";
+	fs::path apertiumModesPath(apertiumModesDir);
+
+	list<fs::path> modeFiles = findModeFiles(apertiumModesPath, suffix);
+
+	for (list<fs::path>::iterator it = modeFiles.begin(); it != modeFiles.end(); it++) {
+		fs::path curPath = (*it);
+		string fileName = curPath.filename();
+
+		string modeName = fileName.substr(0, fileName.length() - suffix.length());
+
+		fs::ifstream inFile;
+		inFile.open(curPath);
+
+		string line, fileContent = "";
+
+		while (getline(inFile, line)) {
+		      fileContent += line + " ";
+		}
+
+		vector<string> commands;
+
+		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+		boost::char_separator<char> sepp("|");
+
+		tokenizer tokensp(fileContent, sepp);
+
+		for (tokenizer::iterator tit = tokensp.begin(); tit != tokensp.end(); ++tit) {
+			commands.push_back(*tit);
+		}
+
+		boost::char_separator<char> seps(" \t\n\r");
+
+		ModeType a;
+		for (vector<string>::iterator vit = commands.begin(); vit != commands.end(); vit++) {
+			CommandType b;
+			tokenizer tokenss(*vit, seps);
+			for (tokenizer::iterator tit2 = tokenss.begin(); tit2 != tokenss.end(); ++tit2) {
+				b.push_back(*tit2);
+			}
+
+			fs::path path(b[0]);
+			b[0] = fs::basename(path);
+
+			a.push_back(b);
+		}
+
+		modes[modeName] = a;
+
+		inFile.close();
+	}
+}
+
+Modes::~Modes() { }
+
+std::list<std::string> Modes::getModeNames() {
+	std::list<std::string> ret;
+	ModeMapType::iterator it = modes.begin();
+	while (it != modes.end()) {
+		ret.push_back((*(it++)).first);
+	}
+	return(ret);
+}
+
+std::list<fs::path> Modes::findModeFiles(fs::path p, std::string suffix) {
+	std::list<fs::path> ret;
+	fs::directory_iterator endItr;
+	for (fs::directory_iterator itr(p); itr != endItr; ++itr) {
+		if (is_directory(itr->status())) {
+			std::list<fs::path> a = findModeFiles(itr->path(), suffix);
+			a.sort();
+			ret.sort();
+			ret.merge(a);
+			} else {
+				string fileName = itr->leaf();
+				if (fileName.length() > suffix.length()) {
+					if (fileName.substr(fileName.length() - suffix.length(), suffix.length()) == suffix) {
+						ret.push_back(itr->path());
+					}
+				}
+			}
+	}
+	return(ret);
+}
