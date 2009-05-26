@@ -34,7 +34,9 @@ of2 = open(on2, 'w')
 num = re.compile('[0-9]')
 empty = re.compile('^$')
 ######## <<< The replacement list to be edited >>> ########
-rep_list = ['&quo','&am','&nbs',';','###']
+rep_list = ['&quo','&am','&nbs','</s>','<s>','*',';','`','###','--',
+        '!','?','.',':',',','[',']','(',')','- ',' -','  ']
+avoid_quote = re.compile("'[^s|ch]")
 
 try:
     for l1 in f1:
@@ -44,11 +46,13 @@ try:
         for item in rep_list:
             l1 = l1.replace(item,'')
             l2 = l2.replace(item,'')
+        l1 = avoid_quote.sub('', l1)
+        l2 = avoid_quote.sub('', l2)
         if re.search(empty, l1) or re.search(empty, l2) or\
-                len(l1.split()) == 1 or len(l2.split()) == 1:
+                len(l1.split()) <= 1 or len(l2.split()) <= 1:
             continue
-        of1.write(l1)
-        of2.write(l2)
+        of1.write(l1.replace('  ',' '))
+        of2.write(l2.replace('  ',' '))
 
 finally:
     f1.close()
