@@ -15,6 +15,8 @@ Usage:
 # Copyright (C) 2009 
 # Authors: Gabriel Synnaeve (& Nicolas Dumazet)
 # License: http://www.opensource.org/licenses/PythonSoftFoundation.php
+########## /!\ /!\ /!\ DON'T USE (USE pruning.py instead)
+########## /!\ /!\ /!\ GIVE BIASED RESULT
 
 import sys, getopt, math #, guppy
 #h = guppy.hpy()
@@ -59,9 +61,7 @@ dict_st = {}
 lines = {}
 
 def count(line):
-    table = line.replace('#','').replace('[','').replace(']','')\
-            .replace('?','').replace('!','').replace(',','')\
-            .replace('--','').replace('  ',' ').split('|||') 
+    table = line.split('|||') 
             # seems to be faster than with the RE '#\[\]?!'
     table[0] = ' '+table[0].strip()+' ' # for the word at the extremities
     table[1] = ' '+table[1].strip()+' ' # because ' ' is our world delimiter
@@ -98,6 +98,8 @@ N = 0
 for line in file:
     N += 1
     count(line)
+
+file.close()
 
 included_in_s = {}
 included_in_t = {}
@@ -141,20 +143,24 @@ for ks, kdic in dict_st.iteritems():
                 tmp += dict_st[s][e]
             kdic[kt] += tmp
 
-file.close()
-
 if debug:
     #print h.heap()
     print '===========count_s============='
-    print count_s
+    for k,v in count_s.iteritems():
+        print str(k) + ' --> ' + str(v)
+    #print count_s
     print '===========count_t============='
-    print count_t
+    for k,v in count_t.iteritems():
+        print str(k) + ' --> ' + str(v)
+    #print count_t
     print '===========dict_st============='
-    print dict_st
+    for k,v in dict_st.iteritems():
+        print str(k) + ' --> ' + str(v)
+    #print dict_st
     print '============================'
 
 delete = []
-threshold = math.log(N) - 0.02
+threshold = math.log(N) - 0.01
 if debug:
     print ">>> Threshold :", 
     print threshold
@@ -162,17 +168,17 @@ if debug:
 for ks, kdic in dict_st.iteritems():
     for kt in kdic.iterkeys():
         try:
-            if debug:
-                print "dict_st[ks][kt] ", 
-                print dict_st[ks][kt]
-                print "count_s[ks] ", 
-                print count_s[ks]
-                print 'debut|'+ks+'|fin'
-                print "count_t[kt] ", 
-                print count_t[kt]
-                print 'debut|'+kt+'|fin'
-                print "N ", 
-                print N
+            #if debug:
+            #    print "dict_st[ks][kt] ", 
+            #    print dict_st[ks][kt]
+            #    print "count_s[ks] ", 
+            #    print count_s[ks]
+            #    print 'debut|'+ks+'|fin'
+            #    print "count_t[kt] ", 
+            #    print count_t[kt]
+            #    print 'debut|'+kt+'|fin'
+            #    print "N ", 
+            #    print N
             if enrich:
                 val = enrichment.fisher_exact_test(dict_st[ks][kt], \
                         count_s[ks], count_t[kt], N)[1]
