@@ -1,0 +1,58 @@
+/*
+ * Copyright (C) 2009  Pasquale Minervini <p.minervini@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef MODES_H_
+#define MODES_H_
+
+#include <errno.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include <iostream>
+#include <vector>
+#include <list>
+
+#include <boost/unordered/unordered_map.hpp>
+#include <boost/filesystem.hpp>
+
+using namespace std;
+namespace fs = boost::filesystem;
+
+typedef std::vector<std::string> CommandType;
+typedef std::vector<CommandType> ModeType;
+typedef boost::unordered_map<std::string, ModeType> ModeMapType;
+
+class Modes {
+public:
+	Modes(std::string);
+	virtual ~Modes();
+
+	std::list<std::string> getModeNames();
+
+	ModeType getMode(std::string mode) {
+		return modes[mode];
+	}
+
+private:
+	std::list<fs::path> findModeFiles(fs::path, std::string);
+
+	ModeMapType modes;
+};
+
+#endif /* MODES_H_ */
