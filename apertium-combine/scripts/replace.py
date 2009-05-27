@@ -35,7 +35,7 @@ num = re.compile('[0-9]')
 empty = re.compile('^$')
 ######## <<< The replacement list to be edited >>> ########
 rep_list = ['&quo','&am','&nbs','</s>','<s>','*',';','`','###','--',
-        '!','?','.',':',',','[',']','(',')','- ',' -','  ']
+        '!','?','.',':',',','[',']','(',')','- ',' -']
 avoid_quote = re.compile("'[^s|ch]")
 
 try:
