@@ -472,7 +472,7 @@
 
 
   <section-def-macros>
-    <def-macro n="f_lexicadj" npar="1">
+  <!--  <def-macro n="f_lexicadj" npar="1">
       <choose>
 	<when>
 	  <test>
@@ -581,308 +581,10 @@
 	  </let>
 	</when>
       </choose>
-    </def-macro>
+    </def-macro> -->
 
-    <def-macro n="verb_ref" npar="2"><!-- aquesta macro canvia el significat de certs verbs reflexius-->
+  
 
-      <choose> <!--si el prn és ref...-->
-	<when>
-	  <test>
-	    <or>
-	      <and>
-		<equal>
-		  <clip pos="1" side="sl" part="tipoenc_pro"/>
-		  <lit-tag v="ref.p3.mf.sp"/>
-		</equal>
-		<equal>
-		  <clip pos="2" side="sl" part="pers"/>
-		  <lit-tag v="p3"/>
-		</equal>
-	      </and>
-	      <and>
-		<equal>
-		  <clip pos="1" side="sl" part="pers"/>
-		  <lit-tag v="p2"/>
-		</equal>
-		<equal>
-		  <clip pos="2" side="sl" part="pers"/>
-		  <lit-tag v="p2"/>
-		</equal>
-		<equal>
-		  <clip pos="1" side="sl" part="nbr"/>
-		  <clip pos="2" side="sl" part="nbr"/>
-		</equal>
-	      </and>
-	      <and>
-		<equal>
-		  <clip pos="1" side="sl" part="pers"/>
-		  <lit-tag v="p1"/>
-		</equal>
-		<equal>
-		  <clip pos="2" side="sl" part="pers"/>
-		  <lit-tag v="p1"/>
-		</equal>
-		<equal>
-		  <clip pos="1" side="sl" part="nbr"/>
-		  <clip pos="2" side="sl" part="nbr"/>
-		</equal>
-	      </and>
-	    </or>
-	  </test>
-	  <choose> <!-- canvia aquests verbs-->
-	    <when>
-	      <test>
-		<equal caseless="yes">
-		  <clip pos="2" side="sl" part="lem"/>
-		  <lit v="refuser"/>
-		</equal>
-	      </test>
-	      <let>
-		<clip pos="2" side="tl" part="lem"/>
-		<lit v="negar"/>
-	      </let>
-	    </when>
-	    <when>
-	      <test>
-		<equal caseless="yes">
-		  <clip pos="2" side="sl" part="lem"/>
-		  <lit v="demander"/>
-		</equal>
-	      </test>
-	      <let>
-		<clip pos="2" side="tl" part="lem"/>
-		<lit v="preguntar"/>
-	      </let>
-	    </when>
-	  </choose>
-	</when>
-      </choose>
-    </def-macro>
-
-    <def-macro n="comprova_auxiliar" npar="2">
-      <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="tl" part="lem"/>
-	      <lit v="ser"/>
-	    </equal>
-	  </test>
-	  <choose>
-	    <when>
-	      <test>
-		<in caseless="yes">
-		  <clip pos="2" side="sl" part="lem"/>
-		  <list n="vbambser"/>
-		</in>
-	      </test>
-	      <let>
-		<clip pos="1" side="tl" part="lem"/>
-		<lit v="haver"/>
-	      </let>
-	      <let>
-		<clip pos="1" side="tl" part="a_verb"/>
-		<lit-tag v="vbhaver"/>
-	      </let>
-	      <let>
-		<clip pos="2" side="tl" part="gen"/>
-		<lit-tag v="m"/>
-	      </let>
-	      <let>
-		<clip pos="2" side="tl" part="nbr"/>
-		<lit-tag v="sg"/>
-	      </let>
-	    </when>
-	    <otherwise>
-	      <let>
-		<clip pos="1" side="tl" part="lem"/>
-		<lit v="ser"/>
-	      </let>
-	      <let>
-		<clip pos="1" side="tl" part="a_verb"/>
-		<lit-tag v="vbser"/>
-	      </let>
-	    </otherwise>
-	  </choose>
-	</when>
-	<otherwise>
-	  <let>
-	    <clip pos="1" side="tl" part="lem"/>
-	    <lit v="haver"/>
-	  </let>
-	  <let>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <lit-tag v="vbhaver"/>
-	  </let>
-	  <let>
-	    <clip pos="2" side="tl" part="gen"/>
-	    <lit-tag v="m"/>
-	  </let>
-	  <let>
-	    <clip pos="2" side="tl" part="nbr"/>
-	    <lit-tag v="sg"/>
-	  </let>
-	</otherwise>
-      </choose>
-    </def-macro>
-
-    <def-macro n="comprova_auxiliar_ref" npar="3"> <!--aquesta macro troba l'aux correcte en cat tenint en compte que si el verb és ref i porta l'aux "èsser" en cat ha de ser "haber". de passada, mira també si cal canviar el lema del verb (com la macro "verb_ref")-->
-      <choose>
-	<when><!--en cas que l'auxiliar sigui "ser":-->
-	  <test>
-	    <equal>
-	      <clip pos="1" side="tl" part="lem"/>
-	      <lit v="ser"/>
-	    </equal>
-	  </test>
-	  <choose>
-	    <when><!--si és un verb que va amb "être" fes que l'aux sigui "haber"-->
-	      <test>
-		<in caseless="yes">
-		  <clip pos="2" side="sl" part="lem"/>
-		  <list n="vbambser"/>
-		</in>
-	      </test>
-	      <let>
-		<clip pos="1" side="tl" part="lem"/>
-		<lit v="haver"/>
-	      </let>
-	      <let>
-		<clip pos="1" side="tl" part="a_verb"/>
-		<lit-tag v="vbhaver"/>
-	      </let>
-	      <let>
-		<clip pos="2" side="tl" part="gen"/>
-		<lit-tag v="m"/>
-	      </let>
-	      <let>
-		<clip pos="2" side="tl" part="nbr"/>
-		<lit-tag v="sg"/>
-	      </let>
-	    </when>
-
-	    <otherwise>
-	      <choose><!--si és ref...-->
-		<when>
-		  <test>
-		    <or>
-		      <and>
-			<equal>
-			  <clip pos="3" side="sl" part="tipoenc_pro"/>
-			  <lit-tag v="ref.p3.mf.sp"/>
-			</equal>
-			<equal>
-			  <clip pos="1" side="sl" part="pers"/>
-			  <lit-tag v="p3"/>
-			</equal>
-		      </and>
-		      <and>
-			<equal>
-			  <clip pos="3" side="sl" part="pers"/>
-			  <lit-tag v="p2"/>
-			</equal>
-			<equal>
-			  <clip pos="1" side="sl" part="pers"/>
-			  <lit-tag v="p2"/>
-			</equal>
-			<equal>
-			  <clip pos="1" side="sl" part="nbr"/>
-			  <clip pos="3" side="sl" part="nbr"/>
-			</equal>
-		      </and>
-		      <and>
-			<equal>
-			  <clip pos="3" side="sl" part="pers"/>
-			  <lit-tag v="p1"/>
-			</equal>
-			<equal>
-			  <clip pos="1" side="sl" part="pers"/>
-			  <lit-tag v="p1"/>
-			</equal>
-			<equal>
-			  <clip pos="3" side="sl" part="nbr"/>
-			  <clip pos="1" side="sl" part="nbr"/>
-			</equal>
-		      </and>
-		    </or>
-		  </test>						
-		  <let><!--... fes que l'aux sigui "haber"-->
-		    <clip pos="1" side="tl" part="lem"/>
-		    <lit v="haver"/>
-		  </let>
-		  <let>
-		    <clip pos="1" side="tl" part="a_verb"/>
-		    <lit-tag v="vbhaver"/>
-		  </let>
-		  <let>
-		    <clip pos="2" side="tl" part="gen"/>
-		    <lit-tag v="m"/>
-		  </let>
-		  <let>
-		    <clip pos="2" side="tl" part="nbr"/>
-		    <lit-tag v="sg"/>
-		  </let>
-		  <choose> <!-- i canvia aquests verbs (els deixo per tenir l'exemple :-P)-->
-		    <when>
-		      <test>
-			<equal caseless="yes">
-			  <clip pos="2" side="sl" part="lem"/>
-			  <lit v="refuser"/>
-			</equal>
-		      </test>
-		      <let>
-			<clip pos="2" side="tl" part="lem"/>
-			<lit v="negar"/>
-		      </let>
-		    </when>
-		    <when>
-		      <test>
-			<equal caseless="yes">
-			  <clip pos="2" side="sl" part="lem"/>
-			  <lit v="demander"/>
-			</equal>
-		      </test>
-		      <let>
-			<clip pos="2" side="tl" part="lem"/>
-			<lit v="preguntar"/>
-		      </let>
-		    </when>
-		  </choose>
-		</when>
-		<otherwise><!--si no és cap dels casos anteriors, acceptem que és passiva, i deixem el verb "ser"-->
-		  <let>
-		    <clip pos="1" side="tl" part="lem"/>
-		    <lit v="ser"/>
-		  </let>
-		  <let>
-		    <clip pos="1" side="tl" part="a_verb"/>
-		    <lit-tag v="vbser"/>
-		  </let>
-		</otherwise>
-	      </choose>
-	    </otherwise>
-	  </choose>
-	</when>
-	<otherwise><!--si l'orig és "avoir" deixem "haber" en cat-->
-	  <let>
-	    <clip pos="1" side="tl" part="lem"/>
-	    <lit v="haver"/>
-	  </let>
-	  <let>
-	    <clip pos="1" side="tl" part="a_verb"/>
-	    <lit-tag v="vbhaver"/>
-	  </let>
-	  <let>
-	    <clip pos="2" side="tl" part="gen"/>
-	    <lit-tag v="m"/>
-	  </let>
-	  <let>
-	    <clip pos="2" side="tl" part="nbr"/>
-	    <lit-tag v="sg"/>
-	  </let>
-	</otherwise>
-      </choose>
-    </def-macro>
 
     <def-macro n="f_prep" npar="1">
       <choose>
@@ -898,48 +600,40 @@
 	    <lit-tag v="a"/>
 	  </let>
 	</when>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="lem"/>
+	      <lit v="en"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="tipusprep"/>
+	    <lit-tag v="en"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="lem"/>
+	      <lit v="de"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="tipusprep"/>
+	    <lit-tag v="de"/>
+	  </let>
+	</when>
 	<otherwise>
-	  <choose>
-	    <when>
-	      <test>
-		<equal>
-		  <clip pos="1" side="sl" part="lem"/>
-		  <lit v="en"/>
-		</equal>
-	      </test>
-	      <let>
-		<var n="tipusprep"/>
-		<lit-tag v="en"/>
-	      </let>
-	    </when>
-	    <otherwise>
-	      <choose>
-		<when>
-		  <test>
-		    <equal>
-		      <clip pos="1" side="sl" part="lem"/>
-		      <lit v="de"/>
-		    </equal>
-		  </test>
-		  <let>
-		    <var n="tipusprep"/>
-		    <lit-tag v="de"/>
-		  </let>
-		</when>
-		<otherwise>
-		  <let>
-		    <var n="tipusprep"/>
-		    <lit-tag v=""/>
-		  </let>
-		</otherwise>
-	      </choose>
-	    </otherwise>
-	  </choose>
+	  <let>
+	    <var n="tipusprep"/>
+	    <lit-tag v=""/>
+	  </let>
 	</otherwise>
       </choose>
     </def-macro>
 
-    <def-macro n="temps_verb" npar="1">
+   <!-- <def-macro n="temps_verb" npar="1">
       <let>
 	<var n="verb"/>
 	<lit v=""/>
@@ -953,9 +647,7 @@
 	    </equal>
 	  </test>
 	  <append n="verb">
-	    <!-- 						<get-case-from pos="2"> -->
 	    <lit v="anar"/>
-	    <!-- 						</get-case-from> -->
 	    <lit-tag v="vaux"/>
 	    <clip pos="1" side="tl" part="pers"/>
 	    <clip pos="1" side="tl" part="nbr"/>
@@ -967,9 +659,7 @@
 	</when>
 	<otherwise>
 	  <append n="verb">
-	    <!-- 						<get-case-from pos="2"> -->
 	    <clip pos="1" side="tl" part="lemh"/>
-	    <!-- 						</get-case-from> -->
 	    <clip pos="1" side="tl" part="a_verb"/>
 	    <clip pos="1" side="tl" part="temps"/>
 	    <clip pos="1" side="tl" part="pers"/>
@@ -977,7 +667,7 @@
 	  </append>
 	</otherwise>
       </choose>
-    </def-macro>
+    </def-macro> -->
 
     <def-macro n="tipus_verb" npar="1">
       <choose>
@@ -993,48 +683,39 @@
 	    <lit-tag v="vba"/>
 	  </let>
 	</when>
+	<when>
+	  <test>
+	    <in caseless="yes">
+	      <clip pos="1" side="sl" part="lem"/>
+	      <list n="v_amb_en"/>
+	    </in>
+	  </test>
+	  <let>
+	    <var n="tipusverb"/>
+	    <lit-tag v="vben"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <in caseless="yes">
+	      <clip pos="1" side="sl" part="lem"/>
+	      <list n="v_no_part"/>
+	    </in>
+	  </test>
+	  <let>
+	    <var n="tipusverb"/>
+	    <lit-tag v="nopart"/>
+	  </let>	  
+	</when>
 	<otherwise>
-	  <choose>
-	    <when>
-	      <test>
-		<in caseless="yes">
-		  <clip pos="1" side="sl" part="lem"/>
-		  <list n="v_amb_en"/>
-		</in>
-	      </test>
-	      <let>
-		<var n="tipusverb"/>
-		<lit-tag v="vben"/>
-	      </let>
-	    </when>
-	    <otherwise>
-	      <choose>
-		<when>
-		  <test>
-		    <in caseless="yes">
-		      <clip pos="1" side="sl" part="lem"/>
-		      <list n="v_no_part"/>
-		    </in>
-		  </test>
-		  <let>
-		    <var n="tipusverb"/>
-		    <lit-tag v="nopart"/>
-		  </let>
-
-		</when>
-		<otherwise>
-		  <let>
-		    <var n="tipusverb"/>
-		    <lit-tag v="nodef"/>
-		  </let>
-		</otherwise>
-	      </choose>
-	    </otherwise>
-	  </choose>
+	  <let>
+	    <var n="tipusverb"/>
+	    <lit-tag v="nodef"/>
+	  </let>
 	</otherwise>
       </choose>
-      <!--			<choose>
-	  <when>
+<!--			<choose>
+    <when>
 	  <test>
 	  <in caseless="yes">
 	  <clip pos="1" side="sl" part="lem"/>
@@ -3757,10 +3438,6 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	
-	<call-macro n="f_lexicadj">
-	  <with-param pos="1"/>
-	</call-macro>	
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
@@ -3806,12 +3483,6 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="f_lexicadj">
-	  <with-param pos="2"/>
-	</call-macro>	
-	<call-macro n="f_lexicadj">
-	  <with-param pos="3"/>
 	</call-macro>	
 	<call-macro n="f_concord3">
 	  <with-param pos="4"/>
@@ -4136,9 +3807,6 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="f_lexicadj">
-	  <with-param pos="2"/>
 	</call-macro>	
 	<call-macro n="f_concord3">
 	  <with-param pos="3"/>
@@ -4196,9 +3864,6 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="f_lexicadj">
-	  <with-param pos="4"/>
 	</call-macro>	
 	<call-macro n="f_concord4">
 	  <with-param pos="5"/>
@@ -4270,9 +3935,6 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="f_lexicadj">
-	  <with-param pos="3"/>
 	</call-macro>	
 	<call-macro n="f_concord3">
 	  <with-param pos="4"/>
@@ -4332,9 +3994,6 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="f_lexicadj">
-	  <with-param pos="2"/>
 	</call-macro>	
 	<call-macro n="f_concord3">
 	  <with-param pos="3"/>
@@ -4395,9 +4054,6 @@
 	  <with-param pos="2"/>
 	  <with-param pos="4"/>
 	  <with-param pos="1"/>
-	</call-macro>	
-	<call-macro n="f_lexicadj">
-	  <with-param pos="4"/>
 	</call-macro>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
