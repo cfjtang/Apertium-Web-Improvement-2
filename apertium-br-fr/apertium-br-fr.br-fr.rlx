@@ -138,6 +138,13 @@ SET S-BOUNDARY = CS | (sent) | VpartIDO | Vpart;
 
 SECTION
 
+#pet eur eo 
+# bet (pp) no muta nunca.
+REMOVE VerbPP IF (0 ("<pet>"ri "bezañ" pp));
+
+# kouezhet oc’h
+REMOVE Vpart IF (0 ("<oc’h>"ri) OR ("<oc'h>"ri)) (NOT 1 ("<[aeiou].*>"ri)) (NOT 1 Verb);
+
 # ne'z a ket mat. ne ya ket mat. 
 SELECT VerbFin IF (-1C ("ne" adv)) (0 VerbFin) (1C ("ket" adv));
 
@@ -421,7 +428,7 @@ REMOVE VerbFin IF (-1 BOS);
 SELECT ("re a" pr) IF (0 ("<re a>"ri)) (1C NC); 
 
 # re a Roazhon. re a Varcelona.
-SELECT ("re" prn) IF (0 ("<re a>"ri)) (1C Toponim); 
+SELECT ("re" prn) IF (0 ("<re>"ri)) (1C Toponim); 
 
 SECTION
 
@@ -516,3 +523,5 @@ SECTION
 
 REMOVE DetPos (0 ("e"ri pr)) ((1 Num) OR (1 Language));
 SUBSTITUTE (pr) (pr s1) ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
+
+SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
