@@ -996,6 +996,35 @@
        </otherwise>
     </choose>
     <choose>
+      <when>
+        <test>
+          <and>
+            <equal>
+              <var n="subj_vist"/>
+              <lit v="yes"/>
+            </equal>
+            <equal>
+              <clip pos="1" part="pers"/>
+              <lit-tag v="impers"/>
+            </equal>
+            <equal>
+              <clip pos="1" part="nbr"/>
+              <lit-tag v="sp"/>
+            </equal>
+          </and>
+        </test>
+        <let>
+          <clip pos="1" part="pers"/>
+          <lit-tag v="p3"/>
+        </let>
+        <let>
+          <clip pos="1" part="nbr"/>
+          <lit-tag v="sg"/>
+        </let>
+      </when>
+    </choose>
+
+    <choose>
         <when>
             <test>
                <and>
@@ -1011,12 +1040,12 @@
                         <lit-tag v="inf"/>
                     </equal>
                 </not>
-                             <not>
-                                       <equal>
-                        <var n="subj_vist"/>
-                                                <lit v="yes"/>
-                                       </equal>
-                                </not>
+                <not>
+                  <equal>
+                    <var n="subj_vist"/>
+                    <lit v="yes"/>
+                  </equal>
+                </not>
                </and>    
             </test>
 
@@ -1054,7 +1083,6 @@
                                 <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <!-- <lit v="pronverb"/> -->
                                       <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
@@ -1064,7 +1092,6 @@
                                 </or>
                             </test>
                             <out>
-                            
                                 <chunk>
                                     <get-case-from pos="1">
                                         <lit v="prnperssubj"/>
@@ -1104,8 +1131,6 @@
                                 </otherwise>
                                 </choose>
                         </when>
-
-
                 <when>
                     <test><!--el verb está en primera persona-->
                         <equal>
@@ -1299,46 +1324,45 @@
                                                 </equal>
                                             </test>
 
-                                    <choose>
-                                    <when>
-                                    <test>
-                                    <or>
-                                    <equal caseless="yes">
-                                      <clip pos="1" part="lem"/>
-                                      <!-- <lit v="pronverb"/> -->
-                                      <lit v="verbcj_ref"/>
-                                    </equal>
-                                    <equal caseless="yes">
-                                      <clip pos="1" part="lem"/>
-                                      <lit v="pronaux_pp"/>
-                                    </equal>
-                                    </or>
-                                    </test>
-                                    <out>
+                                            <choose>
+                                              <when>
+                                                <test>
+                                                  <or>
+                                                    <equal caseless="yes">
+                                                      <clip pos="1" part="lem"/>
+                                                      <lit v="verbcj_ref"/>
+                                                    </equal>
+                                                    <equal caseless="yes">
+                                                      <clip pos="1" part="lem"/>
+                                                      <lit v="pronaux_pp"/>
+                                                    </equal>
+                                                  </or>
+                                                </test>
+                                                <out>
                                         
-                                        <chunk>
-                                        <get-case-from pos="1">
-                                            <lit v="prnperssubj"/>
-                                        </get-case-from>
-                                            <lit-tag v="SN"/>
-                                            <lit v="{^"/>
-                                            <lit v="tu"/>
-                                            <lit-tag v="prn.tn.p2.mf.sg"/>
-                                            <lit v="$}"/>
-                                        </chunk>
-                                        <b/>
-                                        <chunk>
-                                            <lit v="prnpro"/>
-                                            <lit-tag v="SN"/>
-                                            <lit v="{^"/>
-                                            <lit v="te"/>
-                                            <lit-tag v="prn.pro.p2.mf.sg"/>
-                                            <lit v="$}"/>
-                                                 </chunk>
-                                            <b/>
-                                    </out>
-                                    </when>
-                                    <otherwise>
+                                                  <chunk>
+                                                    <get-case-from pos="1">
+                                                      <lit v="prnperssubj"/>
+                                                    </get-case-from>
+                                                    <lit-tag v="SN"/>
+                                                    <lit v="{^"/>
+                                                    <lit v="tu"/>
+                                                    <lit-tag v="prn.tn.p2.mf.sg"/>
+                                                    <lit v="$}"/>
+                                                  </chunk>
+                                                  <b/>
+                                                  <chunk>
+                                                    <lit v="prnpro"/>
+                                                    <lit-tag v="SN"/>
+                                                    <lit v="{^"/>
+                                                    <lit v="te"/>
+                                                    <lit-tag v="prn.pro.p2.mf.sg"/>
+                                                    <lit v="$}"/>
+                                                  </chunk>
+                                                  <b/>
+                                                </out>
+                                              </when>
+                                              <otherwise>
 
                                             <out>
                                                 <chunk>
@@ -1364,7 +1388,6 @@
                                     <or>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
-                                      <!-- <lit v="pronverb"/> -->
                                       <lit v="verbcj_ref"/>
                                     </equal>
                                     <equal caseless="yes">
@@ -1420,7 +1443,7 @@
                             </choose>    
         
                         </when>
-                        <otherwise><!--el verb no Ã©s ni p1 ni p2=> Ã©s p3 ;-)-->
+                        <otherwise> <!--el verb no és ni p1 ni p2 => és p3 ;-) -->
                             <choose>
                                 <when>
                                     <test><!--mirem si concorda amb el possible subj-->
@@ -1447,7 +1470,6 @@
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
                                       <lit v="verbcj_ref"/>
-                                      <!-- <lit v="pronverb"/> -->
                                     </equal>
                                     <equal caseless="yes">
                                       <clip pos="1" part="lem"/>
@@ -1491,7 +1513,7 @@
                                             <lit v="{^"/>
                                             <lit v="il"/>
                                             <lit-tag v="prn.tn.p3"/>
-                                                                                        <var n="genere"/>
+                                            <var n="genere"/>
                                             <clip pos="1" part="nbr"/>
                                             <lit v="$}"/>
                                         </chunk>
@@ -1519,7 +1541,6 @@
                     </modify-case>
                 </when>
             </choose>
-
         </when>
     </choose>
     <let>
@@ -2538,7 +2559,7 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
-	<choose> <!--mirem si el SN Ã©s el subj de la subordinada-->
+	<choose> <!--mirem si el SN és el subj de la subordinada-->
 		<when>
 		  <test>
 		    <or>
@@ -2574,7 +2595,7 @@
 		      </and>
 		    </or>
 		  </test>
-			<out> <!--si Ã©s que sÃ­, el rel serÃ  "qui" i no "que"-->
+			<out> <!--si és que sí, el rel será  "qui" i no "que"-->
 				<chunk>
 					<clip pos="1" part="lem"/>
 					<clip pos="1" part="tags"/>
@@ -2669,6 +2690,8 @@
 	</out>
 </action>
 </rule>
+
+
 
 <rule comment="REGLA: SN sprep QUE SV SV">
 	<pattern>
@@ -7856,7 +7879,7 @@
 
 
 
- <rule>
+ <rule comment="REGLA: SN VPART SV">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="VPART"/>
@@ -7870,8 +7893,8 @@
         </call-macro>
 -->
       <call-macro n="particle_concord2">
-                        <with-param pos="2"/>
-                        <with-param pos="3"/>
+          <with-param pos="2"/>
+          <with-param pos="3"/>
       </call-macro>
 	<out>
 	  <chunk>
@@ -7902,10 +7925,10 @@
           </when>
           <when>
             <test>
-                  <equal>
-                    <clip pos="3" part="pers"/>
-                    <lit-tag v="impers"/>
-                  </equal>
+                <equal>
+                  <clip pos="3" part="pers"/>
+                  <lit-tag v="impers"/>
+                </equal>
             </test>
             <out>
               <chunk>
@@ -7917,14 +7940,14 @@
               </chunk>
               <b/>
             </out> 
-		<call-macro n="posa_subj">
-			<with-param pos="3"/>
-		</call-macro>
+            <call-macro n="posa_subj">
+              <with-param pos="3"/>
+            </call-macro>
           </when>
           <otherwise>
-		<call-macro n="posa_subj">
-			<with-param pos="3"/>
-		</call-macro>
+	    <call-macro n="posa_subj">
+	      <with-param pos="3"/>
+	    </call-macro>
           </otherwise>
         </choose> 
 	<out>
@@ -7933,13 +7956,13 @@
 	  </chunk>
 	</out>
         <let>
-                <var n="subj_vist"/>
-                <lit v="yes"/>
+          <var n="subj_vist"/>
+          <lit v="yes"/>
         </let>
       </action>
-</rule>
+    </rule>
 
- <rule>
+    <rule comment="REGLA: falloir INF">
       <pattern>
 	<pattern-item n="V_falloir"/>
 	<pattern-item n="INF"/>
