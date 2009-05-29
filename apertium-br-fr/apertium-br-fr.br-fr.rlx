@@ -4,6 +4,8 @@ SOFT-DELIMITERS       = ("<,>") ;
 LIST BOS              = (>>>);
 LIST EOS              = (<<<);
 
+LIST Coma             = (cm);
+
 # Nouns
 LIST NC               = (n);
 LIST NomF             = (n f);
@@ -82,6 +84,10 @@ LIST CC               = (cnjcoo);
 LIST CS               = (cnjsub);
 LIST CA               = (cnjadv);
 LIST Conj             = CC + CA + CS;
+
+# Interjections 
+
+LIST Interj           = (ij);
 
 # Mutations
 LIST SoftMut          = ("<g.*>"ri "k.*"ri) ("<d.*>"ri "t.*"ri) ("<b.*>"ri "p.*"ri) ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri)
@@ -473,6 +479,12 @@ REMOVE MixedMut IF (NOT -1 MixedMutTrigger);
 
 # REGLA (A0010): "un taol, un daol"
 REMOVE NomF IF (-1 SoftMutTrigger) (NOT 0 SoftMut) (0 NomF) (0 NomM);
+
+# Interyecciones 
+# ma, mont a ran kuit
+REMOVE Interj IF (NOT 1 Coma);
+
+SELECT Interj IF (-1 BOS) (1 Coma);
 
 SECTION
 
