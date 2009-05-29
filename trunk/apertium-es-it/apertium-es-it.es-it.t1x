@@ -82,6 +82,15 @@
     <def-cat n="hacer">
       <cat-item lemma="hacer" tags="vblex.pri.p3.sg"/>
     </def-cat>
+
+    <def-cat n="haber">
+      <cat-item lemma="haber" tags="vbhaver.*"/>
+    </def-cat>
+
+    <def-cat n="pp">
+      <cat-item tags="vblex.pp.m.sg"/>
+     </def-cat>
+
     <def-cat n="detnum">
       <cat-item tags="det.ind.*"/>
       <cat-item tags="num.*"/>
@@ -216,6 +225,12 @@
       <attr-item tags="vbmod"/>
       <attr-item tags="vaux"/>
     </def-attr>
+
+    <def-attr n="auxiliar">
+      <attr-item tags="auxser"/>
+    </def-attr>
+
+
 
     <def-attr n="pron">
       <attr-item tags="pron"/>
@@ -4565,6 +4580,54 @@
       </action>
     </rule> 
     
+
+
+ <rule comment="REGLA: HABER PP ">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="2" side="tl" part="auxiliar"/>
+		<lit-tag v="auxser"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="essere"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <lit-tag v="vbser"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk name="verbaux-pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="gen"/>	 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
 
 
 
