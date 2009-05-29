@@ -36,6 +36,7 @@ LIST PrnSubj          = (prn subj);
 LIST PrnDObj          = ("direct"ri prn obj);
 LIST PrnIObj          = ("indirect"ri prn obj) (+indirect);  # Lemmas from sub-readings are expressed as tags and prefixed with '+'
 LIST PrnInd	      = (prn ind);
+LIST PrnItg	      = (prn itg);
 
 SET Prn               = PrnSubj + PrnDObj + PrnIObj;
 
@@ -145,7 +146,7 @@ SET S-BOUNDARY = CS | (sent) | VpartIDO | Vpart;
 SECTION
 
 #pet eur eo 
-SELECT VerbPP IF (0 ("<pet>"ri "bezañ" pp)) (1 VerbImpers);
+SELECT PrnItg IF (1 VerbImpers);
 
 # bet (pp) no muta nunca.
 REMOVE VerbPP IF (0 ("<pet>"ri "bezañ" pp));
