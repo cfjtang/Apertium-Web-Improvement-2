@@ -4293,6 +4293,20 @@
 	<call-macro n="f_nploc">
           <with-param pos="2"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="numero"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let> 
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
         <out>
               <chunk name="nploc" case="caseFirstWord">
                 <tags>
@@ -4336,6 +4350,20 @@
 	<call-macro n="f_nploc">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="numero"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let> 
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
         <choose>
           <when>
             <test>
