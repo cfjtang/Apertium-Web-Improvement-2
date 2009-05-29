@@ -436,6 +436,16 @@ SELECT ("re a" pr) IF (0 ("<re a>"ri)) (1C NC);
 # re a Roazhon. re a Varcelona.
 SELECT ("re" prn) IF (0 ("<re>"ri)) (1C Toponim); 
 
+
+# Interyecciones 
+# ma, mont a ran kuit
+REMOVE Interj IF (NOT 1 Coma);
+
+SELECT Interj IF (-1 BOS) (1 Coma);
+
+# ar staj-se, an hini kentañ evel-se
+SELECT DetDef IF (1 ("hini"));
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
@@ -479,12 +489,6 @@ REMOVE MixedMut IF (NOT -1 MixedMutTrigger);
 
 # REGLA (A0010): "un taol, un daol"
 REMOVE NomF IF (-1 SoftMutTrigger) (NOT 0 SoftMut) (0 NomF) (0 NomM);
-
-# Interyecciones 
-# ma, mont a ran kuit
-REMOVE Interj IF (NOT 1 Coma);
-
-SELECT Interj IF (-1 BOS) (1 Coma);
 
 SECTION
 
