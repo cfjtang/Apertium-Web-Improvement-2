@@ -4285,7 +4285,7 @@
       <action>
         <let>
           <var n="lema_Prep"/>
-          <lit v="à"/>
+          <lit v="à"/> 
         </let>
         <call-macro n="firstWord">
           <with-param pos="2"/>
@@ -4293,6 +4293,22 @@
 	<call-macro n="f_nploc">
           <with-param pos="2"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <not>
+                <equal caseless="yes">
+                  <clip pos="1" side="sl" part="lem"/>
+                  <lit v="e"/>
+                </equal>
+              </not>
+            </test>
+            <let> 
+              <var n="lema_Prep"/>
+              <clip pos="1" side="tl" part="lem"/>
+            </let>
+          </when>
+        </choose>
         <choose>
           <when>
             <test>
@@ -4308,7 +4324,7 @@
           </when>
         </choose>
         <out>
-              <chunk name="nploc" case="caseFirstWord">
+              <chunk name="pr_nploc" case="caseFirstWord">
                 <tags>
                   <tag><lit-tag v="SN"/></tag>
                   <tag>
