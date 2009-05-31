@@ -34,6 +34,14 @@
 
 using namespace std;
 
+void analyze(const char *ptr, size_t size) {
+	fprintf(stderr, "ptr: %p, size: %d\n", ptr, size);
+	for (size_t i = 0; i < size; i++) {
+		fprintf(stderr, "%.2x ", (ptr[i] & 0xff));
+	}
+	fprintf(stderr, "\n");
+}
+
 void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		iqxmlrpc::Value &retval) {
 	//cout << "ApertiumTranslate::execute() invoked;" << endl;
@@ -44,15 +52,21 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 	} else {
 		string uin = params[0];
 
-		//cout << "UIN IS: " << uin << endl;
+		cout << "printing UIN:" << endl;
+		cout << "UIN IS: " << uin << endl;
+		analyze(uin.data(), uin.size());
 
 		wstring win = utf8ToWstring(uin);
 
-		//wcerr << L"WIN IS: " << win << endl;
+		wcerr << L"printing WIN:" << endl;
+		wcerr << L"WIN IS: " << win << endl;
+		analyze((const char *)win.data(), win.size() * sizeof(wchar_t));
 
 		wstring ret = deformat(win);
 
-		//wcerr << L"DWIN IS: " << ret << endl;
+		wcerr << L"printing DWIN:" << endl;
+		wcerr << L"DWIN IS: " << ret << endl;
+		analyze((const char *)ret.data(), ret.size() * sizeof(wchar_t));
 
 		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
 
@@ -74,13 +88,23 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 
 		delete fm;
 
-		//wcerr << L"WDOUT IS: " << ret << endl;
+		wcerr << L"printing WDOUT:" << endl;
+		wcerr << L"WDOUT IS: " << ret << endl;
+		analyze((const char *)ret.data(), ret.size() * sizeof(wchar_t));
 
 		wstring wout = reformat(ret);
 
-		//wcerr << L"WROUT IS: " << ret << endl;
+		wcerr << L"printing WROUT:" << endl;
+		wcerr << L"WROUT IS: " << wout << endl;
+		analyze((const char *)wout.data(), wout.size() * sizeof(wchar_t));
 
-		retval = wstringToUtf8(wout);
+		string rval = wstringToUtf8(wout);
+
+		cout << "printing RVAL:" << endl;
+		cout << "RVAL IS:" << rval << endl;
+		analyze(rval.data(), rval.size());
+
+		retval = rval;
 	}
 }
 
