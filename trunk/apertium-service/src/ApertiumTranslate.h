@@ -23,6 +23,9 @@
 class ApertiumTranslate: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
+
+private:
+
 };
 
 #endif /* APERTIUMTRANSLATE_H_ */
