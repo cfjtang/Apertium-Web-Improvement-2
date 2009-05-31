@@ -18,7 +18,9 @@
 #include "ApertiumTranslate.h"
 
 #include <iostream>
+
 #include <glibmm/convert.h>
+#include <glibmm/ustring.h>
 
 #include "format/Deformat.h"
 #include "format/Reformat.h"
@@ -41,7 +43,12 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		//retval = 0;
 	} else {
 		string uin = params[0];
+
+		cout << "UIN IS: " << uin << endl;
+
 		wstring win = utf8ToWstring(uin);
+
+		wcerr << L"WIN IS: " << win << endl;
 
 		wstring ret = win;
 
@@ -88,15 +95,13 @@ std::wstring ApertiumTranslate::reformat(std::wstring in) {
 }
 
 std::string ApertiumTranslate::wstringToUtf8(std::wstring in) {
-	const wchar_t *buf = in.data();
-	string str((char *)buf, in.size() * sizeof(wchar_t));
-	string ret = Glib::convert(str, "WCHAR_T", "UTF-8");
+	string ret = Glib::convert(std::string(reinterpret_cast<const char *>(in.data()), in.size() * sizeof(wchar_t)), "UTF-8", "WCHAR_T");
 	return ret;
 }
 
 std::wstring ApertiumTranslate::utf8ToWstring(std::string in) {
-	string wstr = Glib::convert(in, "UTF-8", "WCHAR_T");
-	wchar_t *buf = (wchar_t *)wstr.data();
-	wstring ret(buf, in.size());
+	string str = Glib::convert(in, "WCHAR_T", "UTF-8");
+	const wchar_t *wbuf = (const wchar_t *)str.c_str();
+	wstring ret(wbuf, in.size());
 	return ret;
 }
