@@ -75,7 +75,9 @@ void ApertiumServer::init() {
 		iqxmlrpc::register_method<ApertiumTranslate>(*server, "translate");
 		iqxmlrpc::register_method<ApertiumListLanguagePairs>(*server, "listLanguagePairs");
 
-		//iqxmlrpc::register_method<ApertiumTest>(*server, "test");
+		//
+		iqxmlrpc::register_method<ApertiumTest>(*server, "test");
+		//
 
 		ApertiumAuthPlugin apertiumAuthPlugin;
 

@@ -19,16 +19,8 @@
 
 #include <iostream>
 
-#undef yyFlexLexer
-#define yyFlexLexer TXTDeformatFlexLexer
-#include <FlexLexer.h>
-
-#undef yyFlexLexer
-#define yyFlexLexer TXTReformatFlexLexer
-#include <FlexLexer.h>
-
-#include "format/TXTDeformat.h"
-#include "format/TXTReformat.h"
+#include "format/Deformat.h"
+#include "format/Reformat.h"
 
 #include "core/ObjectBroker.h"
 #include "core/FunctionMapper.h"
@@ -39,18 +31,6 @@
 
 using namespace std;
 
-string wstring2string(wstring wstr) {
-	string str(wstr.length(), ' ');
-	copy(wstr.begin(), wstr.end(), str.begin());
-	return (str);
-}
-
-wstring string2wstring(string str) {
-	wstring wstr(str.length(), L' ');
-	copy(str.begin(), str.end(), wstr.begin());
-	return (wstr);
-}
-
 void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		iqxmlrpc::Value &retval) {
 	//cout << "ApertiumTranslate::execute() invoked;" << endl;
@@ -59,10 +39,10 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		throw ApertiumRuntimeException("Too few arguments");
 		//retval = 0;
 	} else {
-		stringstream xin(params[0]);
-		stringstream xout;
+		wstring xin(params[0]);
+		wstringstream xout;
 
-		TXTDeformat *tx = new TXTDeformat(&xin, &xout);
+		Deformat *d = new Deformat(&xin, &xout);
 
 		int x = 1;
 		while (x != 0) {
