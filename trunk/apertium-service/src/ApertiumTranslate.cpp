@@ -44,13 +44,15 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 	} else {
 		string uin = params[0];
 
-		cout << "UIN IS: " << uin << endl;
+		//cout << "UIN IS: " << uin << endl;
 
 		wstring win = utf8ToWstring(uin);
 
-		wcerr << L"WIN IS: " << win << endl;
+		//wcerr << L"WIN IS: " << win << endl;
 
-		wstring ret = win;
+		wstring ret = deformat(win);
+
+		//wcerr << L"DWIN IS: " << ret << endl;
 
 		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
 
@@ -72,7 +74,11 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 
 		delete fm;
 
+		//wcerr << L"WDOUT IS: " << ret << endl;
+
 		wstring wout = reformat(ret);
+
+		//wcerr << L"WROUT IS: " << ret << endl;
 
 		retval = wstringToUtf8(wout);
 	}
