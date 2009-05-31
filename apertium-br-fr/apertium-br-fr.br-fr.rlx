@@ -153,8 +153,10 @@ SELECT NC IF (-1 PrnItg) (0 ("<eur>" n)) (0 VerbImpers) (1 VerbFin);
 REMOVE VerbPP IF (0 ("<pet>"ri "bezañ" pp));
 
 # kouezhet oc’h
+# kouezhet oc'h bet izel-tre
 REMOVE Vpart IF (0 ("<oc’h>"ri) OR ("<oc'h>"ri)) (NOT 1 ("<[aeiou].*>"ri)) (NOT 1 Verb OR Adv);
 REMOVE Vpart IF (0 ("<oc’h>"ri) OR ("<oc'h>"ri)) (1 Adv);
+REMOVE Vpart IF (0 ("<oc’h>"ri) OR ("<oc'h>"ri)) (NOT 1 VerbInf);
 
 # ne'z a ket mat. ne ya ket mat. 
 SELECT VerbFin IF (-1C ("ne" adv)) (0 VerbFin) (1C ("ket" adv));
