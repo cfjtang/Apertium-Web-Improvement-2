@@ -91,6 +91,8 @@ LIST Conj             = CC + CA + CS;
 LIST Interj           = (ij);
 
 # Mutations
+LIST SoftMutCons      = ("k.*"ri) ("t.*"ri) ("p.*"ri) ("g.*"ri) ("gw.*"ri) ("d.*"ri) ("b.*"ri) ("m.*"ri);
+
 LIST SoftMut          = ("<g.*>"ri "k.*"ri) ("<d.*>"ri "t.*"ri) ("<b.*>"ri "p.*"ri) ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri)
                         ("<w.*>"ri "gw.*"ri) ("<z.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri);
 
@@ -455,6 +457,10 @@ SELECT DetDef IF (1 ("hini"));
 
 #an eil priz
 REMOVE Verb IF (-1C DetDef) (1C NC);
+
+#Prezidant Kevre Gouren Aodoù-an-Arvor
+REMOVE VerbFin IF (NOT -1 Vpart);
+REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut);
 
 SECTION
 
