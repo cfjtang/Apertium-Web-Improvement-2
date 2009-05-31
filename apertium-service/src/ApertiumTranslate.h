@@ -18,6 +18,9 @@
 #ifndef APERTIUMTRANSLATE_H_
 #define APERTIUMTRANSLATE_H_
 
+#include <iostream>
+
+#include <wchar.h>
 #include <libiqxmlrpc/libiqxmlrpc.h>
 
 class ApertiumTranslate: public iqxmlrpc::Method {
@@ -25,7 +28,11 @@ public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
 
 private:
+	std::wstring deformat(std::wstring);
+	std::wstring reformat(std::wstring);
 
+	std::string wstringToUtf8(std::wstring);
+	std::wstring utf8ToWstring(std::string);
 };
 
 #endif /* APERTIUMTRANSLATE_H_ */

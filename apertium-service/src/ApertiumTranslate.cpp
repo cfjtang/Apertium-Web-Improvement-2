@@ -18,6 +18,7 @@
 #include "ApertiumTranslate.h"
 
 #include <iostream>
+#include <glibmm/convert.h>
 
 #include "format/Deformat.h"
 #include "format/Reformat.h"
@@ -39,19 +40,10 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		throw ApertiumRuntimeException("Too few arguments");
 		//retval = 0;
 	} else {
-		wstring xin(params[0]);
-		wstringstream xout;
+		string uin = params[0];
+		wstring win = utf8ToWstring(uin);
 
-		Deformat *d = new Deformat(&xin, &xout);
-
-		int x = 1;
-		while (x != 0) {
-			x = tx->lex();
-		}
-
-		delete tx;
-
-		wstring ret = string2wstring(xout.str());
+		wstring ret = win;
 
 		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
 
@@ -73,20 +65,38 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 
 		delete fm;
 
-		string yret = wstring2string(ret);
+		wstring wout = reformat(ret);
 
-		stringstream yin(yret);
-		stringstream yout;
-
-		TXTReformat *ty = new TXTReformat(&yin, &yout);
-
-		int y = 1;
-		while (y != 0) {
-			y = ty->lex();
-		}
-
-		delete ty;
-
-		retval = yout.str();
+		retval = wstringToUtf8(wout);
 	}
+}
+
+std::wstring ApertiumTranslate::deformat(std::wstring in) {
+	wstringstream wss;
+	Deformat *d = new Deformat(in, &wss);
+	d->lex();
+	delete d;
+	return(wss.str());
+}
+
+std::wstring ApertiumTranslate::reformat(std::wstring in) {
+	wstringstream wss;
+	Reformat *r = new Reformat(in, &wss);
+	r->lex();
+	delete r;
+	return(wss.str());
+}
+
+std::string ApertiumTranslate::wstringToUtf8(std::wstring in) {
+	const wchar_t *buf = in.data();
+	string str((char *)buf, in.size() * sizeof(wchar_t));
+	string ret = Glib::convert(str, "WCHAR_T", "UTF-8");
+	return ret;
+}
+
+std::wstring ApertiumTranslate::utf8ToWstring(std::string in) {
+	string wstr = Glib::convert(in, "UTF-8", "WCHAR_T");
+	wchar_t *buf = (wchar_t *)wstr.data();
+	wstring ret(buf, in.size());
+	return ret;
 }
