@@ -101,7 +101,7 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		string rval = wstringToUtf8(wout);
 
 //		cout << "printing RVAL:" << endl;
-//		cout << "RVAL IS:" << rval << endl;
+//		cout << "RVAL IS: " << rval << endl;
 //		analyze(rval.data(), rval.size());
 
 		retval = rval;
