@@ -99,6 +99,6 @@ std::string ApertiumTranslate::wstringToUtf8(std::wstring in) {
 
 std::wstring ApertiumTranslate::utf8ToWstring(std::string in) {
 	string str = Glib::convert(in, "WCHAR_T", "UTF-8");
-	wstring ret((const wchar_t *)str.data(), str.size() / sizeof(wchar_t));
+	wstring ret(reinterpret_cast<const wchar_t *>(str.data()), str.size() / sizeof(wchar_t));
 	return ret;
 }
