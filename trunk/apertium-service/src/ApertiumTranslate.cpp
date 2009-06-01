@@ -34,13 +34,13 @@
 
 using namespace std;
 
-void analyze(const char *ptr, size_t size) {
-	fprintf(stderr, "ptr: %p, size: %d\n", ptr, size);
-	for (size_t i = 0; i < size; i++) {
-		fprintf(stderr, "%.2x ", (ptr[i] & 0xff));
-	}
-	fprintf(stderr, "\n");
-}
+//void analyze(const char *ptr, size_t size) {
+//	fprintf(stderr, "ptr: %p, size: %d\n", ptr, size);
+//	for (size_t i = 0; i < size; i++) {
+//		fprintf(stderr, "%.2x ", (ptr[i] & 0xff));
+//	}
+//	fprintf(stderr, "\n");
+//}
 
 void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		iqxmlrpc::Value &retval) {
@@ -52,21 +52,21 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 	} else {
 		string uin = params[0];
 
-		cout << "printing UIN:" << endl;
-		cout << "UIN IS: " << uin << endl;
-		analyze(uin.data(), uin.size());
+		//cout << "printing UIN:" << endl;
+		//cout << "UIN IS: " << uin << endl;
+		//analyze(uin.data(), uin.size());
 
 		wstring win = utf8ToWstring(uin);
 
-		wcerr << L"printing WIN:" << endl;
-		wcerr << L"WIN IS: " << win << endl;
-		analyze((const char *)win.data(), win.size() * sizeof(wchar_t));
+//		wcerr << L"printing WIN:" << endl;
+//		wcerr << L"WIN IS: " << win << endl;
+//		analyze((const char *)win.data(), win.size() * sizeof(wchar_t));
 
 		wstring ret = deformat(win);
 
-		wcerr << L"printing DWIN:" << endl;
-		wcerr << L"DWIN IS: " << ret << endl;
-		analyze((const char *)ret.data(), ret.size() * sizeof(wchar_t));
+//		wcerr << L"printing DWIN:" << endl;
+//		wcerr << L"DWIN IS: " << ret << endl;
+//		analyze((const char *)ret.data(), ret.size() * sizeof(wchar_t));
 
 		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
 
@@ -88,21 +88,21 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 
 		delete fm;
 
-		wcerr << L"printing WDOUT:" << endl;
-		wcerr << L"WDOUT IS: " << ret << endl;
-		analyze((const char *)ret.data(), ret.size() * sizeof(wchar_t));
+//		wcerr << L"printing WDOUT:" << endl;
+//		wcerr << L"WDOUT IS: " << ret << endl;
+//		analyze((const char *)ret.data(), ret.size() * sizeof(wchar_t));
 
 		wstring wout = reformat(ret);
 
-		wcerr << L"printing WROUT:" << endl;
-		wcerr << L"WROUT IS: " << wout << endl;
-		analyze((const char *)wout.data(), wout.size() * sizeof(wchar_t));
+//		wcerr << L"printing WROUT:" << endl;
+//		wcerr << L"WROUT IS: " << wout << endl;
+//		analyze((const char *)wout.data(), wout.size() * sizeof(wchar_t));
 
 		string rval = wstringToUtf8(wout);
 
-		cout << "printing RVAL:" << endl;
-		cout << "RVAL IS:" << rval << endl;
-		analyze(rval.data(), rval.size());
+//		cout << "printing RVAL:" << endl;
+//		cout << "RVAL IS:" << rval << endl;
+//		analyze(rval.data(), rval.size());
 
 		retval = rval;
 	}
@@ -131,7 +131,6 @@ std::string ApertiumTranslate::wstringToUtf8(std::wstring in) {
 
 std::wstring ApertiumTranslate::utf8ToWstring(std::string in) {
 	string str = Glib::convert(in, "WCHAR_T", "UTF-8");
-	const wchar_t *wbuf = (const wchar_t *)str.c_str();
-	wstring ret(wbuf, in.size());
+	wstring ret((const wchar_t *)str.data(), str.size() / sizeof(wchar_t));
 	return ret;
 }
