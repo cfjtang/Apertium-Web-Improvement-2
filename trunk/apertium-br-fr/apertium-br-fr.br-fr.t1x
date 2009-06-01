@@ -385,6 +385,10 @@
       <cat-item tags="adv"/>
       <cat-item tags="preadv"/>
     </def-cat>
+    <def-cat n="adv_neg">
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.neg"/>
+    </def-cat>
     <def-cat n="adv">
       <cat-item tags="adv"/>
     </def-cat>
@@ -741,7 +745,7 @@
       <list-item v="miz Du"/>
       <list-item v="miz Kerzu"/>
     </def-list>
-    <def-list n="adv_neg">
+    <def-list n="advneg">
       <list-item v="jamais"/>
     </def-list>
     <def-list n="part_sing">
@@ -10077,7 +10081,7 @@
 
     <rule comment="REGLA: adv VERB">
       <pattern>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="verbpers"/>
       </pattern>
       <action>
@@ -10103,7 +10107,7 @@
                 <test>
                   <in caseless="yes">
                     <clip pos="1" side="tl" part="lem"/>
-                    <list n="adv_neg"/>
+                    <list n="advneg"/>
                   </in>
                 </test>
                 <out>
@@ -10279,7 +10283,7 @@
                 <test>
                   <in caseless="yes">
                     <clip pos="1" side="tl" part="lem"/>
-                    <list n="adv_neg"/>
+                    <list n="advneg"/>
                   </in>
                 </test>
                 <out>
@@ -10467,9 +10471,9 @@
     
     <rule comment="REGLA: adv verbcj adv → adv verbcj adv">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="verbpers"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
       </pattern>
       <action>
         <call-macro n="pih_prh_past_cip">
@@ -10668,9 +10672,9 @@
     
     <rule comment="REGLA: adv verbcj adv dobj → adv dobj verbcj adv">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="verbpers"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="direct"/>
       </pattern>
       <action>
@@ -10838,10 +10842,10 @@
 
     <rule comment="REGLA: adv verbpart verbcj adv → adv verbcj adv">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="verbpart"/>
         <pattern-item n="verbpers"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
       </pattern>
       <action>
         <call-macro n="pih_prh_past_cip">
@@ -12164,7 +12168,7 @@
       <pattern>
         <pattern-item n="verbpart_o"/>
         <pattern-item n="inf"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="bezañ"/>
       </pattern>
       <action>
@@ -12482,9 +12486,9 @@
         
     <rule comment="REGLA: adv bezañ adv pp o inf da iobj → adv être adv pp iobj inf">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="bezañ"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="pp"/>
         <pattern-item n="verbpart_o"/>
         <pattern-item n="inf"/>
@@ -12769,9 +12773,9 @@
          
     <rule comment="REGLA: adv bezañ adv pp o inf dobj iobj → inf">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="bezañ"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="pp"/>
         <pattern-item n="verbpart_o"/>
         <pattern-item n="inf"/>
@@ -13282,9 +13286,9 @@
         
    <rule comment="REGLA: adv aux adv pp dobj iobj → adv haver adv pp">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="aux"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="pp"/>
         <pattern-item n="direct"/>
         <pattern-item n="da"/>
@@ -13868,10 +13872,10 @@
         
     <rule comment="REGLA: adv verbpart mont adv da inf → adv aller adv inf">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="verbpart"/>
         <pattern-item n="mont"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="da"/>
         <pattern-item n="inf"/>
       </pattern>
@@ -14837,9 +14841,9 @@
  
    <rule comment="adv aux adv pp → adv aux adv pp">
       <pattern>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="aux"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_neg"/>
         <pattern-item n="pp"/>
       </pattern>
       <action>
@@ -15246,7 +15250,7 @@
             <test>
               <in caseless="yes">
                 <clip pos="1" side="tl" part="lem"/>
-                <list n="adv_neg"/>
+                <list n="advneg"/>
               </in>
             </test>
             <choose>
