@@ -20,6 +20,10 @@
       <cat-item tags="SN.*"/>
     </def-cat>
 
+    <def-cat n="CNJADV">
+      <cat-item lemma="cnj" tags="cnjadv"/>
+    </def-cat>
+
     <def-cat n="CS">
       <cat-item lemma="cnj" tags="cnjsub"/>
     </def-cat>
@@ -988,6 +992,18 @@
            <clip pos="1" part="gen"/>
          </let>
        </when>
+       <when>
+         <test>
+             <equal>
+               <var n="genere"/>
+               <lit-tag v="f"/>
+             </equal>
+         </test>
+         <let>
+           <var n="genere"/>
+           <lit-tag v="f"/>
+         </let>
+       </when>
        <otherwise>
          <let>
            <var n="genere"/>
@@ -1487,7 +1503,7 @@
                                             <lit v="{^"/>
                                             <lit v="il"/>
                                             <lit-tag v="prn.tn.p3"/>
-                                                                                        <var n="genere"/>
+                                                    <var n="genere"/>
                                             <clip pos="1" part="nbr"/>
                                             <lit v="$}"/>
                                         </chunk>
@@ -1660,11 +1676,11 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
 <!-- 	<out> <chunk><var n="pers_subj"/></chunk> 	</out> -->
 	<call-macro n="assigna_nombre_subj">
+		<with-param pos="1"/>
+	</call-macro>
+	<call-macro n="assigna_gen_nbr">
 		<with-param pos="1"/>
 	</call-macro>
 		<out>
@@ -2415,6 +2431,22 @@
 		</out>
 	</action>
 </rule>
+
+<rule comment="REGLA: CNJADV">
+    <pattern>
+        <pattern-item n="CNJADV"/>
+    </pattern>
+    <action>
+        <out>
+            <chunk>
+                <clip pos="1" part="lem"/>
+                <clip pos="1" part="tags"/>
+                <clip pos="1" part="chcontent"/>
+            </chunk>
+        </out>
+    </action>
+</rule>
+
 
 <rule comment="REGLA: CS">
 	<pattern>
@@ -3656,6 +3688,9 @@
 				</choose>
 			</otherwise>
 		</choose>
+	<call-macro n="assigna_gen_nbr">
+		<with-param pos="2"/>
+	</call-macro>
 	</action>
 </rule>
 
