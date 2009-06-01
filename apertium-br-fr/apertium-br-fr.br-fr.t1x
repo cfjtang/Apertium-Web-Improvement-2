@@ -756,6 +756,7 @@
       <list-item v="bière"/>
       <list-item v="viande"/>
       <list-item v="pain"/>
+      <list-item v="sucre"/>
       <list-item v="chance"/>
       <list-item v="plaisir"/>
     </def-list>
@@ -7334,6 +7335,9 @@
           <with-param pos="4"/>
           <with-param pos="3"/>
         </call-macro>
+        <call-macro n="f_concord1"> <!-- @@ -->
+          <with-param pos="1"/>
+        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -8423,18 +8427,16 @@
                   <list n="meses"/>
                 </in>
             </test>
+            <let>
+              <clip pos="2" side="tl" part="gen"/>
+              <lit-tag v="m"/>
+            </let>
             <out>
               <chunk name="det_num_nom" case="caseFirstWord">
                 <tags>
-                  <tag>
-                    <lit-tag v="SN"/>
-                  </tag>
-                  <tag>
-                    <var n="genero"/>
-                  </tag>
-                  <tag>
-                    <var n="numero"/>
-                  </tag>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
                 </tags>
                 <lu>
                   <clip pos="2" side="tl" part="whole"/>
@@ -8506,6 +8508,128 @@
         </let>
       </action>
    </rule>
+       
+    <rule comment="REGLA: DA DET NUM CC NUM A NOM">
+      <pattern>
+        <pattern-item n="da"/>
+        <pattern-item n="det"/>
+        <pattern-item n="num"/>
+        <pattern-item n="cnjcoo"/>
+        <pattern-item n="num"/>
+        <pattern-item n="a"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord1">
+          <with-param pos="2"/>
+        </call-macro>
+<!--
+        <call-macro n="f_concord1">
+          <with-param pos="2"/>
+        </call-macro>
+-->
+        <call-macro n="f_concord1">
+          <with-param pos="7"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+                <in caseless="yes">
+                  <clip pos="7" side="sl" part="lem"/>
+                  <list n="meses"/>
+                </in>
+            </test>
+            <out>
+              <chunk name="det_num_cnjcoo_num_nom" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="2" side="tl" part="whole"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="3" side="tl" part="whole"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+                <b pos="3"/>
+                <lu>
+                  <clip pos="5" side="tl" part="whole"/>
+                </lu>
+                <b pos="4"/>
+                <lu>
+                  <clip pos="7" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+            </out>
+            <call-macro n="f_bcond">
+              <with-param pos="3"/>
+	      <with-param pos="4"/>
+            </call-macro>
+          </when>
+          <otherwise>
+            <call-macro n="f_concord1">
+              <with-param pos="2"/>
+            </call-macro>
+            <out>
+              <chunk name="prep_det_num_cnjcoo_num_prep_nom" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="whole"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="whole"/>
+                </lu>
+                <b pos="2"/>
+                <lu>
+                  <clip pos="3" side="tl" part="whole"/>
+                </lu>
+                <b pos="3"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+                <b pos="4"/>
+                <lu>
+                  <clip pos="5" side="tl" part="whole"/>
+                </lu>
+                <b pos="5"/>
+                <lu>
+                  <clip pos="6" side="tl" part="whole"/>
+                </lu>
+                <b pos="6"/>
+                <lu>
+                  <clip pos="7" side="tl" part="lemh"/>
+                  <clip pos="7" side="tl" part="a_nom"/>
+                  <clip pos="7" side="tl" part="gen_sense_mf"/>
+                  <clip pos="7" side="tl" part="gen_mf"/>
+                  <clip pos="7" side="tl" part="nbr_sense_sp"/>
+                  <clip pos="7" side="tl" part="nbr_sp"/>
+                  <clip pos="7" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+ 
       
     <rule comment="REGLA: DA DET NOM NUM NOM">
       <pattern>
@@ -8810,15 +8934,9 @@
             <out>
               <chunk name="det_num_nom" case="caseFirstWord">
                 <tags>
-                  <tag>
-                    <lit-tag v="SN"/>
-                  </tag>
-                  <tag>
-                    <var n="genero"/>
-                  </tag>
-                  <tag>
-                    <var n="numero"/>
-                  </tag>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
                 </tags>
                 <lu>
                   <clip pos="1" side="tl" part="whole"/>
@@ -9323,6 +9441,9 @@
           <with-param pos="2"/>
           <with-param pos="3"/>
         </call-macro>
+        <call-macro n="comparatiu_adj1">
+          <with-param pos="3"/>
+        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -9371,6 +9492,7 @@
             </lu>
             <b pos="2"/>
             <lu>
+              <var n="adjectiu1"/>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_adj"/>
               <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
@@ -9541,10 +9663,18 @@
         <choose>
           <when>
             <test>
-              <equal>
-                <var n="numero"/>
-                <lit-tag v="pl"/>
-              </equal>
+              <and>
+                <not>
+                  <equal>
+                    <clip pos="1" side="tl" part="nbr"/>
+                    <lit-tag v="sp"/>
+                  </equal>
+                </not>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="pl"/>
+                </equal>
+              </and>
             </test>
             <let>
               <clip pos="1" side="tl" part="nbr"/>
