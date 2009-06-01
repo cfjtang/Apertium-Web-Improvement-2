@@ -72,7 +72,7 @@ LIST VerbImpers       = (vblex impers);
 LIST TempsFin         = (pri) (pii) (past) (fti);
 
 SET Verb              = Vbloc | Vblex | Vbser;
-SET VerbFin           = Verb | TempsFin;
+SET VerbFin           = Verb + TempsFin;
 
 # Adverbs
 LIST Adv              = (adv);
@@ -437,7 +437,7 @@ SELECT NC IF (-1C Prep) (-1C SoftMutTrigger) (0 NC) (0 VerbFin);
 SELECT NC IF (-1C Num) (0 NC) (0 VerbFin);
 
 # eil gwreg ma zad
-REMOVE VerbFin IF (-1 BOS);
+REMOVE:Remove_VerbFin_BOS VerbFin IF (-1 BOS);
 
 # re a dud
 SELECT ("re a" pr) IF (0 ("<re a>"ri)) (1C NC); 
