@@ -241,7 +241,7 @@ SELECT VerbFin IF (-1 VpartRef);
 SELECT VerbFin IF (-1 Vpart) (-1 Prep) (0 NC) (0 VerbFin) (1 NC);
 
 # REGLA (     ): "Kerzhet hon eus e-pad 2 eurvezh"
-REMOVE VerbInf IF (1 ("endevout" vblex));
+REMOVE VerbInf IF (1 ("kaout" vblex));
 
 # REGLA (     ): "a ra"
 REMOVE Prep IF (0 Prep) (0 Verb) (1 Vpart) (1 VerbFin) (NOT 1 PRE-N);
@@ -347,8 +347,8 @@ REMOVE VerbImp IF (-1 VerbFin);
 # REGLA (B0014): "Yann a zeuy" / "tud zo e Brest"
 SELECT:Vpart_if_Vfin Vpart IF (1 VerbFin) (NOT 1 NP);
 
-# REGLA (B0016): >The particle is omitted before every form of 'endevout' and the locative forms of 'bezañ'
-REMOVE Vpart IF (1 ("endevout" vblex));
+# REGLA (B0016): >The particle is omitted before every form of 'kaout' and the locative forms of 'bezañ'
+REMOVE Vpart IF (1 ("kaout" vblex));
 REMOVE Vpart IF (1 Vbloc);
 
 # REGLA (B0017): >The particle is omitted before verbal nouns and imperatives
@@ -394,15 +394,15 @@ REMOVE Prep IF (-1 Prep) (NOT -1 PRE-N) (0 Prep) (0 DetPos);
 REMOVE VerbImpers IF (NOT -1 Vpart) ((-1 Num) OR (-1 NC) OR (-1 Det)) (0 VerbImpers) (0 NC);
 
 # REGLA (B    ): "Bet hon eus kalz a draoù" / "Bet bezañ"
-SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (1 ("endevout" vblex));
-SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-1 ("endevout" vblex));
-SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (1 ("bezañ" vblex));
-SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-1 ("bezañ" vblex));
+SELECT ("kaout"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (1 ("kaout" vblex));
+SELECT ("kaout"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (-1 ("kaout" vblex));
+SELECT ("bezañ"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (1 ("bezañ" vblex));
+SELECT ("bezañ"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (-1 ("bezañ" vblex));
 
-SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (2 ("endevout" vblex));
-SELECT ("endevout"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-2 ("endevout" vblex));
-SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (2 ("bezañ" vblex));
-SELECT ("bezañ"ri pp) IF (0 ("endevout"ri pp)) (0 ("bezañ"ri pp)) (-2 ("bezañ" vblex));
+SELECT ("kaout"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (2 ("kaout" vblex));
+SELECT ("kaout"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (-2 ("kaout" vblex));
+SELECT ("bezañ"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (2 ("bezañ" vblex));
+SELECT ("bezañ"ri pp) IF (0 ("kaout"ri pp)) (0 ("bezañ"ri pp)) (-2 ("bezañ" vblex));
 
 # REGLA (B    ): "Skuizh e vi"
 SELECT SoftMut IF ((-1 ("e" vpart obj) OR (-1 ("e" det pos))) (NOT -1 Prep) (NOT -1 PrnDObj);
