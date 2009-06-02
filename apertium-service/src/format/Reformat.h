@@ -74,9 +74,7 @@ public:
 		}
 	};
 
-	void handleSquares(wstring yytext) {
-
-	}
+	void handleSquares(wstring yytext) { }
 
 	void handleSquared(wstring yytext) {
 		 string filename(yytext.length(), ' ');
@@ -109,9 +107,7 @@ public:
 		 *yyout << L'@';
 	}
 
-	void handleDotSquares(wstring yytext) {
-
-	}
+	void handleDotSquares(wstring yytext) { }
 
 	void handleSpecial(wstring yytext) {
 		 *yyout << yytext.substr(1, yytext.size() - 1);
@@ -134,40 +130,22 @@ public:
 
 			switch (t.id()) {
 			case ID_SQUARES:
-				//wcout << "ID_SQUARES" << endl;
-
 				r->handleSquares(yytext);
-
 				break;
 			case ID_SQUARED:
-				//wcout << "ID_SQUARED" << endl;
-
 				r->handleSquared(yytext);
-
 				break;
 			case ID_SQUAREAT:
-				//wcout << "ID_SQUAREAT" << endl;
-
 				r->handleSquareAt(yytext);
-
 				break;
 			case ID_DOTSQUARES:
-				//wcout << "ID_DOTSQUARES" << endl;
-
 				r->handleDotSquares(yytext);
-
 				break;
 			case ID_SPECIAL:
-				//wcout << "ID_SPECIAL" << endl;
-
 				r->handleSpecial(yytext);
-
 				break;
 			case ID_CHARORNEWLINE:
-				//wcout << "ID_CHARORNEWLINE" << endl;
-
 				r->handleCharOrNewLine(yytext);
-
 				break;
 			}
 

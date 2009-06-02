@@ -62,8 +62,10 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		for (vector<Program>::iterator it = programs.begin(); it
 				!= programs.end(); ++it) {
 			Program program = *it;
+			cerr << program << endl;
 			wstring tmp = fm->execute(program, ret);
 			ret = tmp;
+			wcout << ret << endl;
 		}
 
 		delete fm;

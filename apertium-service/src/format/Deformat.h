@@ -96,16 +96,10 @@ public:
 	}
 
 	void handleWhiteSpace(wstring yytext) {
-
-		//string str(yytext.length(), ' ');
-		//copy(yytext.begin(), yytext.end(), str.begin());
-
 		if (last == "open_tag") {
-			//bufferAppend(tags.back(), str);
 			tags.back() += yytext;
 		} else {
 			buffer += yytext;
-			//bufferAppend(buffer, str);
 		}
 	}
 
@@ -129,28 +123,16 @@ public:
 
 			switch (t.id()) {
 			case ID_NEWLINES:
-				//wcout << L"ID_NEWLINES" << endl;
-
 				d->handleNewLines(yytext);
-
 				break;
 			case ID_SPECIAL:
-				//wcout << L"ID_SPECIAL" << endl;
-
 				d->handleSpecial(yytext);
-
 				break;
 			case ID_WHITESPACE:
-				//wcout << L"ID_WHITESPACE" << endl;
-
 				d->handleWhiteSpace(yytext);
-
 				break;
 			case ID_CHAR:
-				//wcout << L"ID_CHAR" << endl;
-
 				d->handleChar(yytext);
-
 				break;
 			}
 
@@ -278,7 +260,6 @@ private:
 		bufferAppend(result, str.substr(base));
 		return result;
 	}
-
 
 	wstring escape(wstring const &str) {
 		string dest = "";
