@@ -3,7 +3,7 @@
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
-      <cat-item tags="np.top"/>
+      <cat-item tags="np.loc"/>
     </def-cat>
 
     <def-cat n="ant">
@@ -176,7 +176,6 @@
       <attr-item tags="n.acr"/>
       <attr-item tags="n.unc"/>
       <attr-item tags="np.loc"/>
-      <attr-item tags="np.top"/>
       <attr-item tags="np.ant"/>
     </def-attr>
 
@@ -368,6 +367,7 @@
     <def-var n="interrogativa"/>
     <def-var n="caseFirstWord"/> 
     <def-var n="lema"/>
+    <def-var n="lemachunk"/>
     <def-var n="EOS"/>
   </section-def-vars>
 
@@ -4604,12 +4604,26 @@
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <lit-tag v="vbser"/>
 	    </let>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="essere_pp"/>
+	    </let>
 	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="lemachunk"/>
+	      <lit v="avere_pp"/>
+	    </let>
+	  </otherwise>
 	</choose>
 	<out>
-	  <chunk name="verbaux-pp" case="caseFirstWord">
+	  <chunk namefrom="lemachunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	      
 	    </tags>
 	    <lu>   
@@ -4653,8 +4667,7 @@
 	    <out>
 	      <chunk name="hacer_det_temp" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      
+	      <tag><lit-tag v="SADV"/></tag>	      
 	    </tags>
 	    <lu>    
 	      <clip pos="2" side="tl" part="whole"/>
@@ -4686,6 +4699,10 @@
 	  <chunk name="hacer_det_nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="lemh"/> 
