@@ -136,5 +136,6 @@ install-data-local:
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(apertium_ga_gddir)
 	$(INSTALL_DATA) $(BASENAME).pre-$(LANG1).t1x $(apertium_ga_gddir)
 	$(INSTALL_DATA) $(BASENAME).pre-$(LANG2).t1x $(apertium_ga_gddir)
+	cp *.mode modes/
 
 CLEANFILES = -rf $(TARGETS_COMMON) modes
