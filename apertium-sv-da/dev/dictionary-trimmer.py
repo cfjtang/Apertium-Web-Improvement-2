@@ -81,7 +81,7 @@ for line in file(dict).read().split('\n'): #{
 		print '  </section>';
 	#}	
 
-	if line.count('<e lm') < 1 or line.count('__n"') < 1: #{
+	if line.count('<e lm') < 1 or (line.count('__n"') < 1 and line.count('__vblex"') < 1 and line.count('__adj"') < 1 and line.count('__n_') < 1): #{
 		print line;
 		continue;
 	#}
