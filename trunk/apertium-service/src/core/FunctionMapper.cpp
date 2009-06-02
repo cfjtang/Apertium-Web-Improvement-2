@@ -127,8 +127,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 	case LT_PROC: {
 		FSTProcessorTask task = ANALYSIS;
 
-		cerr << "fase 1" << endl;
-
 		for (vector<string>::iterator it = params.begin(); it != params.end(); ++it) {
 			string param = *it;
 			if (param[0] == '-') {
@@ -151,18 +149,12 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 			}
 		}
 
-		cerr << "fase 2" << endl;
-
 		FSTProcessorIndexType index = make_pair(task, files[0]);
-
-		cerr << "fase 3" << endl;
 
 		FSTProcessor *i = NULL;
 		{
 		//boost::mutex::scoped_lock lock(mutexlt);
 		i = objectBroker->FSTProcessorPool.request(index);
-
-		cerr << "fase 4" << endl;
 
 		switch (task) {
 		case ANALYSIS:
@@ -179,11 +171,8 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 		}
 		}
 
-		cerr << "fase 5" << endl;
-
 		objectBroker->FSTProcessorPool.release(i, index);
 
-		cerr << "fase 6" << endl;
 	}
 		break;
 
