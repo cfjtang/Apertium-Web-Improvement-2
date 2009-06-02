@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transfer>
+<transfer default="chunk">
 
   <section-def-cats>
     <def-cat n="nom">
@@ -67,9 +67,28 @@
   </section-def-attrs>
 
   <section-def-vars>
+    <def-var n="case"/>
     <def-var n="number"/>
     <def-var n="genere"/>
   </section-def-vars>
+
+  <section-def-macros>
+
+    <def-macro n="setvars" npar="1"> <!-- Replace this with a proper concordance macro -->
+      <let>
+        <var n="genere"/>
+        <clip pos="1" side="tl" part="gen"/>
+      </let>
+      <let>
+        <var n="number"/>
+        <clip pos="1" side="tl" part="nbr"/>
+      </let>
+      <let>
+        <var n="case"/>
+        <clip pos="1" side="tl" part="cas"/>
+      </let>
+    </def-macro>
+  </section-def-macros>
 
   <section-rules>
 
@@ -78,14 +97,25 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="setvars">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
-          <lu>
-            <clip pos="1" side="tl" part="lem"/>
-            <clip pos="1" side="tl" part="a_nom"/>
-            <clip pos="1" side="tl" part="gen"/>
-            <clip pos="1" side="tl" part="nbr"/>
-            <clip pos="1" side="tl" part="cas"/>
-          </lu>
+          <chunk name="nom">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="genere"/></tag>
+              <tag><var n="number"/></tag>
+              <tag><var n="case"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="cas"/>
+            </lu>
+          </chunk>
         </out>
       </action>
     </rule>
@@ -104,32 +134,42 @@
               </equal>
             </test>
             <out>
-              <lu>
-                <lit v="bi"/>
-                <lit-tag v="vblex"/>
-                <lit-tag v="pres"/>
-              </lu>
-              <b/>
-              <lu>
-                <lit v="ag"/>
-                <lit-tag v="pr"/>
-              </lu>
-	      <b/>
-              <lu>
-                <clip pos="1" side="tl" part="lem"/>
-                <clip pos="1" side="tl" part="a_verb"/>
-                <lit-tag v="ger"/>
-                <lit-tag v="m"/>
-                <clip pos="1" side="tl" part="nbr"/>
-                <lit-tag v="nom"/>
-              </lu>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                </tags>
+                <lu>
+                  <lit v="bi"/>
+                  <lit-tag v="vblex"/>
+                  <lit-tag v="pres"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="ag"/>
+                  <lit-tag v="pr"/>
+                </lu>
+  	      <b/>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_verb"/>
+                  <lit-tag v="ger"/>
+                  <lit-tag v="m"/>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="nom"/>
+                </lu>
+              </chunk>
             </out>
           </when>
           <otherwise> <!-- Just output as is -->
 	    <out>
-	      <lu>
-                <clip pos="1" side="tl" part="whole"/>
-	      </lu>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                </tags>
+	        <lu>
+                  <clip pos="1" side="tl" part="whole"/>
+	        </lu>
+              </chunk>
 	    </out>
           </otherwise>
         </choose>
