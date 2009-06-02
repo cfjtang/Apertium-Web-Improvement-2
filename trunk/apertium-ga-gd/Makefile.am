@@ -13,6 +13,8 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      pre-$(LANG1).t1x.bin \
      pre-$(LANG2).t1x.bin \
      $(PREFIX1).t1x.bin \
+     $(PREFIX1).t2x.bin \
+     $(PREFIX1).t3x.bin \
      $(PREFIX2).t1x.bin \
      $(PREFIX1).rlx.bin \
      $(PREFIX1).mode $(PREFIX2).mode \
@@ -75,6 +77,14 @@ $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
 
+$(PREFIX1).t2x.bin: $(BASENAME).$(PREFIX1).t2x
+	apertium-validate-interchunk $(BASENAME).$(PREFIX1).t2x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t2x $@
+
+$(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
+	apertium-validate-postchunk $(BASENAME).$(PREFIX1).t3x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t3x $@
+
 $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x $@
@@ -122,6 +132,8 @@ apertium_ga_gd_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
      		    pre-$(LANG1).t1x.bin \
      		    pre-$(LANG2).t1x.bin \
 		    $(PREFIX1).t1x.bin \
+		    $(PREFIX1).t2x.bin \
+		    $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin \
      		    $(PREFIX1).rlx.bin \
      		    $(PREFIX1).automut.bin \
@@ -133,6 +145,8 @@ install-data-local:
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_ga_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_ga_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(apertium_ga_gddir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(apertium_ga_gddir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_ga_gddir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(apertium_ga_gddir)
 	$(INSTALL_DATA) $(BASENAME).pre-$(LANG1).t1x $(apertium_ga_gddir)
 	$(INSTALL_DATA) $(BASENAME).pre-$(LANG2).t1x $(apertium_ga_gddir)
