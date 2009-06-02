@@ -54,6 +54,7 @@ template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNe
 		ret->initGeneration();
 		break;
 	case POSTGENERATION:
+	case TRANSLITERATION:
 		ret->initPostgeneration();
 		break;
 	}
