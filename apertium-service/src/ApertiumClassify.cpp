@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ApertiumCategorize.h"
+#include "ApertiumClassify.h"
 
 #include <iostream>
-#include "TextCategorizer.h"
+#include "TextClassifier.h"
 
 using namespace std;
 
@@ -26,6 +26,6 @@ void ApertiumCategorize::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::V
 	if (params.size() < 1) {
 		retval = 0;
 	} else {
-		retval = TextCategorizer::Instance()->classify(params[0]);
+		retval = TextClassifier::Instance()->classify(params[0]);
 	}
 }

@@ -23,7 +23,7 @@
 #include "ApertiumServer.h"
 #include "ConfigurationReader.h"
 #include "AuthenticationManager.h"
-#include "TextCategorizer.h"
+#include "TextClassifier.h"
 
 #include "Modes.h"
 
@@ -57,7 +57,7 @@ int main(int ac, char *av[]) {
 
 		ConfigurationReader *conf = ConfigurationReader::Instance();
 		AuthenticationManager::Instance("users.xml");
-		TextCategorizer::Instance("tc.conf");
+		TextClassifier::Instance("tc.conf");
 
 	    if (vm.count("help")) {
 	        cout << desc << endl;
