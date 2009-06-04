@@ -10,6 +10,10 @@
       <cat-item tags="np.ant.*"/>
     </def-cat>
 
+     <def-cat n="loc">
+      <cat-item tags="np.loc.*"/>
+    </def-cat>
+
  <def-cat n="sent">
        <cat-item tags="sent"/>
      </def-cat>
@@ -45,7 +49,6 @@
       <cat-item tags="predet.*"/>
       <cat-item tags="num.*"/> 
     </def-cat>
-
 
    <def-cat n="dem">
       <cat-item tags="det.dem.*"/>
@@ -293,7 +296,6 @@
       <cat-item lemma="més" tags="preadv"/>
       <cat-item lemma="més" tags="det.*"/><!-- pel tagger-->
     </def-cat>
-
 
     <def-cat n="no">
       <cat-item lemma="no" tags="adv"/>
@@ -871,6 +873,18 @@
     </def-macro>
 
 
+    <!-- Sxangxas la genron de vorto: Se la genro estas nekonata "GD" gxi estas sxangxata al vira genro -->
+    <def-macro n="ordigu_genron" npar="1">
+      <choose>
+        <when>
+          <test>
+            <equal caseless="yes"><clip pos="1" side="tl" part="a_gen"/><lit-tag v="GD"/></equal>
+          </test>
+          <let><clip pos="1" side="tl" part="a_gen"/><lit-tag v="m"/></let> 
+        </when>
+      </choose>
+    </def-macro>
+
   </section-def-macros> 
 
   <section-rules>
@@ -982,6 +996,181 @@
 	</let>
       </action>
     </rule>
+
+
+<rule comment="REGLA: DET TOPÒNIM (Els Pirineus - Pireneoj; s'elimina l'article)">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="loc"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <var n="nombre"/>
+	  <clip pos="2" side="tl" part="nbr"/>
+	</let>
+	<out>
+	  <chunk name="nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><lit-tag v="nomi"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <lit-tag v="np"/>
+	      <lit-tag v="loc"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: A TOPÒNIM (a Barcelona - en Barcelono; s'elimina l'article)">
+      <pattern>
+	<pattern-item n="a"/>
+	<pattern-item n="loc"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<let>
+	  <var n="nombre"/>
+	  <clip pos="2" side="tl" part="nbr"/>
+	</let>
+	<out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="en"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+ 	    <b/>
+	  <chunk name="nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><lit-tag v="m"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><lit-tag v="nomi"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <lit-tag v="np"/>
+	      <lit-tag v="loc"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: DET TOPÒNIM (als Pirineus - en Pireneoj; es canvia la preposició i s'elimina l'article)">
+      <pattern>
+	<pattern-item n="a"/>
+	<pattern-item n="det"/>
+	<pattern-item n="loc"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <var n="nombre"/>
+	  <clip pos="3" side="tl" part="nbr"/>
+	</let>
+	<out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="en"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+ 	    <b/>
+	  <chunk name="nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><lit-tag v="nomi"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lem"/> 
+	      <lit-tag v="np"/>
+	      <lit-tag v="loc"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+<!-- no activo perquè caldria fer el tractament dels adjectius "més cases boniques"
+    <rule comment="REGLA: més NOM, 'més cases' -> 'pli da domoj'">
+      <pattern>
+        <pattern-item n="mes"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="ordigu_genron"><with-param pos="2"/></call-macro>
+            <out>
+              <chunk name="more_nom" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN.nom"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="whole"/>
+                  <lit v="pli da"/>
+                  <lit-tag v="det"/>
+                  <lit-tag v="qnt"/>
+                  <lit-tag v="sg"/>
+                  <lit-tag v="nomi"/>
+                </lu>
+            <b pos="2"/>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="whole"/>
+                  <lit-tag v="nomi"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+-->
+
+
 
 
 <rule comment="REGLA: ART NOM més ADJ (EO, més -> plej ex: la casa més gran -> la plej granda domo)">
