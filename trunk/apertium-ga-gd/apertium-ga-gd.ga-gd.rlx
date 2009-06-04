@@ -131,7 +131,7 @@ REMOVE Pronominal IF (0 ("<as>"ri)) (1 Nom);
 SELECT Pronominal IF (0 ("<ann>"));
 
 SELECT Vcop IF (0 ("<an>")) (1 ("<cúis>"ri n f sg nom));
-SELECT Vcop IF (0 ("<an>")) (1 Verb);
+SELECT:Vcop_if_Verb Vcop IF (0 ("<an>")) (1C Verb);        #  an fear scór
 SELECT Vcop IF (0 ("<an>")) (1 ("<amhlaidh>"));
 SELECT Vcop IF (0 ("<an>")) (1 ("<mar>"));
 
@@ -590,3 +590,6 @@ REMOVE (n gen) IF (-1C DetDef) (NOT -1 (det def gen)) (0 (n gen));
 REMOVE (adj gen) IF (-1C Nom) (NOT -1 (n gen)) (0 (adj gen));
 REMOVE (adj pl) IF (-1C Nom) (NOT -1 (n pl)) (0 (adj pl));
 REMOVE (adj sg) IF (-1C Nom) (NOT -1 (n sg)) (0 (adj sg));
+
+# i gcathair na Gaillimhe
+SELECT:ArtGen_if_NPGen (det def sg gen) IF (1C (np gen)); 
