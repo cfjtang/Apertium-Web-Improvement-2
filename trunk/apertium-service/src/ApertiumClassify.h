@@ -15,19 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef APERTIUMCATEGORIZE_H_
-#define APERTIUMCATEGORIZE_H_
+#ifndef APERTIUMCLASSIFY_H_
+#define APERTIUMCLASSIFY_H_
 
 #include <libiqxmlrpc/libiqxmlrpc.h>
 
 #include <iostream>
 #include <string>
 
-class ApertiumCategorize: public iqxmlrpc::Method {
+class ApertiumClassify: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
 private:
 
 };
 
-#endif /* APERTIUMCATEGORIZE_H_ */
+#endif /* APERTIUMCLASSIFY_H_ */
