@@ -22,7 +22,7 @@
 
 using namespace std;
 
-void ApertiumCategorize::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
+void ApertiumClassify::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 	if (params.size() < 1) {
 		retval = 0;
 	} else {

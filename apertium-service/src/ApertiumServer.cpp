@@ -32,7 +32,7 @@
 #include "ApertiumAuthPlugin.h"
 #include "ApertiumLogInterceptor.h"
 
-#include "ApertiumCategorize.h"
+#include "ApertiumClassify.h"
 
 using namespace std;
 
@@ -77,7 +77,7 @@ void ApertiumServer::init() {
 		iqxmlrpc::register_method<ApertiumTranslate>(*server, "translate");
 		iqxmlrpc::register_method<ApertiumListLanguagePairs>(*server, "listLanguagePairs");
 
-		iqxmlrpc::register_method<ApertiumCategorize>(*server, "categorize");
+		iqxmlrpc::register_method<ApertiumClassify>(*server, "classify");
 
 		//
 		iqxmlrpc::register_method<ApertiumTest>(*server, "test");
