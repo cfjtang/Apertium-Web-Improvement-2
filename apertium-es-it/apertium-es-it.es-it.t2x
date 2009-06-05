@@ -17,6 +17,9 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
+    <def-cat n="pasiva">
+      <cat-item lemma="haber_sido_pp" tags="SV.*"/>
+    </def-cat>
  
     <def-cat n="vbcop">
       <cat-item tags="SV.vbcop.*"/>
@@ -424,38 +427,89 @@
 <!--REGLES GENERALS -->
 <rule comment="REGLA: SN">
 	<pattern>
-		<pattern-item n="SN"/>
+	  <pattern-item n="SN"/>
 	</pattern>
 	<action>
-	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
-	</call-macro>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-			</out>
-</action>
+	  <call-macro n="assigna_gen_nbr">
+	    <with-param pos="1"/>
+	  </call-macro>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="lem"/>
+	      <clip pos="1" part="tags"/>
+	      <clip pos="1" part="chcontent"/>
+	    </chunk>
+	  </out>
+	</action>
 </rule>
 <rule comment="REGLA: SA">
-	<pattern>
-		<pattern-item n="SA"/>
-	</pattern>
-	<action>
+  <pattern>
+    <pattern-item n="SA"/>
+  </pattern>
+  <action>
 	<call-macro n="assigna_gen_nbr">
-		<with-param pos="1"/>
+	  <with-param pos="1"/>
 	</call-macro>
-			<out>
-				<chunk>
-					<clip pos="1" part="lem"/>
-					<clip pos="1" part="tags"/>
-					<clip pos="1" part="chcontent"/>
-				</chunk>
-			</out>
-</action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	</out>
+  </action>
 </rule>
+
+
+<rule comment="REGLA: SN pasiva">
+  <pattern>
+    <pattern-item n="SN"/>
+    <pattern-item n="pasiva"/>
+  </pattern>
+  <action>
+    <choose>
+      <when>
+	<test>
+	  <and>
+	    <not>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<clip pos="2" part="gen"/>
+	      </equal>
+	    </not>
+	    <not>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	    </not>
+	  </and>
+	</test>
+	<let>
+	  <clip pos="2" part="gen"/>
+	  <clip pos="1" part="gen"/>
+	</let>
+      </when>
+    </choose>
+    <out>
+      <chunk>
+	<clip pos="1" part="whole"/>
+      </chunk>
+      <b pos="1"/>
+      <chunk>
+	<clip pos="2" part="whole"/>
+      </chunk>
+    </out>
+  </action>
+</rule>
+
+
+
+
+
+
+
+
 <rule comment="REGLA: SV">
 	<pattern>
 		<pattern-item n="SV"/>
