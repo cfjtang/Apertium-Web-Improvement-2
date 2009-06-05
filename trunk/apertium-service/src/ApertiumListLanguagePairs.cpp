@@ -19,7 +19,6 @@
 
 #include "ApertiumServer.h"
 
-#include "ConfigurationReader.h"
 #include "ApertiumRuntimeException.h"
 #include "Modes.h"
 

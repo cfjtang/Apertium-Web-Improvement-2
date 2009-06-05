@@ -22,7 +22,7 @@
 
 #include "ApertiumServer.h"
 
-#include "ConfigurationReader.h"
+#include "ConfigurationManager.h"
 
 #include "ApertiumTranslate.h"
 #include "ApertiumListLanguagePairs.h"
@@ -58,7 +58,7 @@ iqxmlrpc::Executor_factory_base* ApertiumServer::buildExecutorFactory(unsigned i
 }
 
 void ApertiumServer::init() {
-	ConfigurationReader *conf = ConfigurationReader::Instance();
+	ConfigurationManager *conf = ConfigurationManager::Instance();
 
 	if (!executorFactory) {
 		executorFactory = buildExecutorFactory(conf->getMaxThreads());

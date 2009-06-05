@@ -21,7 +21,7 @@
 #include <boost/program_options.hpp>
 
 #include "ApertiumServer.h"
-#include "ConfigurationReader.h"
+#include "ConfigurationManager.h"
 #include "AuthenticationManager.h"
 #include "TextClassifier.h"
 
@@ -49,15 +49,15 @@ int main(int ac, char *av[]) {
 		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
 		("serverPort", po::value<int>(), "(int) set server port")
 		("modesDir", po::value<string>(), "(string) set modes' directory")
-		("useSSL", po::value<bool>(), "(bool) enable or disable SSL");
+		("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
+		("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
+		("confUsers", po::value<string>(), "(string) set users list file");
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(ac, av, desc), vm);
 		po::notify(vm);
 
-		ConfigurationReader *conf = ConfigurationReader::Instance();
-		AuthenticationManager::Instance("users.xml");
-		TextClassifier::Instance("tc.conf");
+		ConfigurationManager *conf = ConfigurationManager::Instance();
 
 	    if (vm.count("help")) {
 	        cout << desc << endl;
@@ -84,9 +84,22 @@ int main(int ac, char *av[]) {
 	        conf->setUseSsl(vm["useSSL"].as<bool>());
 	    }
 
+	    if (vm.count("confTextClassifier")) {
+	        cout << "Text Classifier's configuration file was " << conf->getConfTextClassifier() <<  ", setting it to " << vm["confTextClassifier"].as<string>() << endl;
+	        conf->setConfTextClassifier(vm["confTextClassifier"].as<string>());
+	    }
+
+	    if (vm.count("confUsers")) {
+	        cout << "Users' list file was " << conf->getConfUsers() <<  ", setting it to " << vm["confUsers"].as<string>() << endl;
+	        conf->setConfUsers(vm["confUsers"].as<string>());
+	    }
+
+		AuthenticationManager::Instance(conf->getConfUsers());
+		TextClassifier::Instance(conf->getConfTextClassifier());
+
 	    ::signal(SIGINT, &apertiumServerSignalHandler);
 
-	    Modes::Instance()->initPipe(ConfigurationReader::Instance()->getApertiumBase());
+	    Modes::Instance()->initPipe(ConfigurationManager::Instance()->getApertiumBase());
 
 	    ApertiumServer s;
 
