@@ -165,6 +165,13 @@
       <cat-item lemma="caldre" tags="vbmod.*"/>
     </def-cat>
 
+    <def-cat n="copula">
+      <cat-item lemma="ser" tags="vbser.*"/>
+      <cat-item lemma="estar" tags="vblex.*"/>
+      <cat-item lemma="semblar" tags="vblex.*"/>
+      <cat-item lemma="parèixer" tags="vblex.*"/>
+    </def-cat>
+
     <def-cat n="verbcj">
       <cat-item tags="vblex.cni.*"/>
       <cat-item tags="vblex.fti.*"/>
@@ -236,6 +243,55 @@
       <cat-item tags="vblex.pron.prs.*"/>
     </def-cat>
 
+    <def-cat n="verbcjger"> 		<!-- verbcj + ger -->
+      <cat-item tags="vblex.cni.*"/>
+      <cat-item tags="vblex.fti.*"/>
+      <cat-item tags="vblex.ifi.*"/>
+      <cat-item tags="vblex.imp.*"/>
+      <cat-item tags="vblex.pii.*"/>
+      <cat-item tags="vblex.pis.*"/>
+      <cat-item tags="vblex.pri.*"/>
+      <cat-item tags="vblex.prs.*"/>
+      <cat-item tags="vbser.cni.*"/>
+      <cat-item tags="vbser.fti.*"/>
+      <cat-item tags="vbser.ifi.*"/>
+      <cat-item tags="vbser.imp.*"/>
+      <cat-item tags="vbser.pii.*"/>
+      <cat-item tags="vbser.pis.*"/>
+      <cat-item tags="vbser.pri.*"/>
+      <cat-item tags="vbser.prs.*"/>
+      <cat-item tags="vbhaver.cni.*"/>
+      <cat-item tags="vbhaver.fti.*"/>
+      <cat-item tags="vbhaver.ifi.*"/>
+      <cat-item tags="vbhaver.imp.*"/>
+      <cat-item tags="vbhaver.pii.*"/>
+      <cat-item tags="vbhaver.pis.*"/>
+      <cat-item tags="vbhaver.pri.*"/>
+      <cat-item tags="vbhaver.prs.*"/>
+      <cat-item tags="vbmod.cni.*"/>
+      <cat-item tags="vbmod.fti.*"/>
+      <cat-item tags="vbmod.ifi.*"/>
+      <cat-item tags="vbmod.imp.*"/>
+      <cat-item tags="vbmod.pii.*"/>
+      <cat-item tags="vbmod.pis.*"/>
+      <cat-item tags="vbmod.pri.*"/>
+      <cat-item tags="vbmod.prs.*"/>
+      <cat-item tags="vblex.pron.cni.*"/>
+      <cat-item tags="vblex.pron.fti.*"/>
+      <cat-item tags="vblex.pron.ifi.*"/>
+      <cat-item tags="vblex.pron.imp.*"/>
+      <cat-item tags="vblex.pron.pii.*"/>
+      <cat-item tags="vblex.pron.pis.*"/>
+      <cat-item tags="vblex.pron.pri.*"/>
+      <cat-item tags="vblex.pron.prs.*"/>
+
+      <cat-item tags="vblex.ger"/>
+      <cat-item tags="vblex.pron.ger"/>
+      <cat-item tags="vbser.ger"/>
+      <cat-item tags="vbhaver.ger"/>
+      <cat-item tags="vbmod.ger"/>
+    </def-cat>
+
     <def-cat n="pp">
       <cat-item tags="vblex.pp.*"/>
       <cat-item tags="vblex.pron.pp.*"/>
@@ -283,6 +339,10 @@
       <cat-item tags="adv"/>
     </def-cat>
 
+    <def-cat n="preadv">
+      <cat-item tags="preadv"/>
+    </def-cat>
+
     <def-cat n="advment">
       <cat-item tags="adv.ment"/>
     </def-cat>
@@ -295,6 +355,13 @@
       <cat-item lemma="més" tags="adv"/>
       <cat-item lemma="més" tags="preadv"/>
       <cat-item lemma="més" tags="det.*"/><!-- pel tagger-->
+      <cat-item lemma="menys" tags="adv"/>
+      <cat-item lemma="menys" tags="preadv"/>
+      <cat-item lemma="menys" tags="det.*"/><!-- pel tagger-->
+    </def-cat>
+
+    <def-cat n="tan">
+      <cat-item lemma="tan" tags="adv"/>
     </def-cat>
 
     <def-cat n="no">
@@ -347,6 +414,10 @@
 
     <def-cat n="estar"> <!--EO per a la perifrasi estar +  gerundi-->
       <cat-item lemma="estar" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="continuar"> <!--EO per a la perifrasi continuar +  gerundi-->
+      <cat-item lemma="continuar" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="deure"> <!--EO per a la perifrasi deure +  infinitiu-->
@@ -1063,7 +1134,7 @@
 	    </lu>
 	  </chunk>
  	    <b/>
-	  <chunk name="nom" case="caseFirstWord">
+	  <chunk name="nom">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><lit-tag v="m"/></tag>
@@ -1112,7 +1183,7 @@
 	    </lu>
 	  </chunk>
  	    <b/>
-	  <chunk name="nom" case="caseFirstWord">
+	  <chunk name="nom">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="3" side="sl" part="gen"/></tag>
@@ -1207,7 +1278,7 @@
 	    </lu>
 	  </chunk>
  	    <b/>
-	  <chunk name="det_nom" case="caseFirstWord">
+	  <chunk name="det_nom">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="3" side="sl" part="gen"/></tag>
@@ -1688,6 +1759,55 @@
     </rule>
 
 
+<rule comment="REGLA: ADJ NOM (EO) grans persones -> grandaj homoj">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<out>  
+	  <chunk name="nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_adj"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="1"/>
+	    <lu>       
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/> 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>       
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: DET ADJ NOM (EO) el mateix noi; una gran persona -> la sama knabo, granda homo">
       <pattern>
 	<pattern-item n="det"/>
@@ -2080,7 +2200,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="le" case="caseFirstWord">
+	  <chunk name="le">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -2090,7 +2210,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    </lu>
 	  </chunk>
  	    <b/>
-	  <chunk name="det_nom_adj" case="caseFirstWord">
+	  <chunk name="det_nom_adj">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="3" side="sl" part="gen"/></tag>
@@ -2804,7 +2924,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             </lu>
 	 </chunk>
 	    <b pos="1"/>
-         <chunk name="de" case="caseFirstWord">
+         <chunk name="de">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -2813,7 +2933,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             </lu>
 	  </chunk>
 	    <b pos="2"/>
-         <chunk name="nom_adj" case="caseFirstWord">
+         <chunk name="nom_adj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="2" side="sl" part="gen"/></tag>
@@ -2869,7 +2989,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             </lu>
 	    </chunk>
 	    <b pos="2"/>
-            <chunk name="de" case="caseFirstWord">
+            <chunk name="de">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -2878,7 +2998,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             </lu>
 	    </chunk>
 	    <b pos="3"/>
-         <chunk name="nom_adj" case="caseFirstWord">
+         <chunk name="nom_adj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="2" side="sl" part="gen"/></tag>
@@ -3080,7 +3200,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
 	    </chunk>
 	    <b pos="1"/>
-         <chunk name="de" case="caseFirstWord">
+         <chunk name="de">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -3089,7 +3209,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
           </chunk>
             <b pos="2"/>
-         <chunk name="nom_adj" case="caseFirstWord">
+         <chunk name="nom_adj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="5" side="sl" part="gen"/></tag>
@@ -3148,7 +3268,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	    </chunk>
 	    <b pos="1"/>
-         <chunk name="de" case="caseFirstWord">
+         <chunk name="de">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -3157,7 +3277,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
           </chunk>
             <b pos="2"/>
-         <chunk name="nom_adj" case="caseFirstWord">
+         <chunk name="nom_adj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="5" side="sl" part="gen"/></tag>
@@ -3360,7 +3480,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
 	    </chunk>
 	    <b pos="1"/>
-         <chunk name="de" case="caseFirstWord">
+         <chunk name="de">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -3369,7 +3489,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
           </chunk>
             <b pos="2"/>
-         <chunk name="nom_adj" case="caseFirstWord">
+         <chunk name="nom_adj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="5" side="sl" part="gen"/></tag>
@@ -3429,7 +3549,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	    </chunk>
             <b pos="1"/>
-         <chunk name="de" case="caseFirstWord">
+         <chunk name="de">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -3438,7 +3558,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
           </chunk>
             <b pos="2"/>
-         <chunk name="nom_adj" case="caseFirstWord">
+         <chunk name="nom_adj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="5" side="sl" part="gen"/></tag>
@@ -5487,7 +5607,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="le" case="caseFirstWord">
+	  <chunk name="le">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -5497,7 +5617,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
  	    <b/>
-	  <chunk name="det_nom_adj" case="caseFirstWord">
+	  <chunk name="det_nom_adj">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="3" side="sl" part="gen"/></tag>
@@ -5559,7 +5679,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
-	<pattern-item n="adv_preadv"/>
+	<pattern-item n="preadv"/>
 	<pattern-item n="adj"/>
 	<pattern-item n="cnjcoopercorregir"/>
       </pattern>
@@ -5688,7 +5808,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<pattern-item n="det"/>
 	<pattern-item n="num"/>
 	<pattern-item n="nom"/>
-        <pattern-item n="adv_preadv"/>
+        <pattern-item n="preadv"/>
 	<pattern-item n="adj"/>
 	<pattern-item n="cnjcoopercorregir"/>
       </pattern>
@@ -6150,9 +6270,49 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule> 
 
 
-<rule comment="REGLA: ADV ADJECTIU QUE ('més/menys gran que - ') (EO)">
+    <rule comment="REGLA: ADV ADJECTIU ('molt/poc/gens/bastant/força/increïblement gran - ') (EO)">
       <pattern>
 	<pattern-item n="adv_preadv"/>
+	<pattern-item n="adj"/>
+      </pattern>
+      <action>          	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>	
+	    <out>
+	      <chunk name="adv_adj" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SA"/></tag>
+		  <tag><clip pos="2" side="sl" part="gen"/></tag>
+		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	          <tag><var n="case"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="whole"/> 
+		</lu> 
+		<b pos="1"/>
+		<lu>   
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+	          <clip pos="2" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+<rule comment="REGLA: MES ADJECTIU QUE ('més/menys gran que - ') (EO)">
+      <pattern>
+	<pattern-item n="mes"/> 
 	<pattern-item n="adj"/>
 	<pattern-item n="cnjcomp"/>
       </pattern>
@@ -6183,8 +6343,63 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b pos="2"/>
-		<lu>   
+		<lu>
+<!--
 		  <clip pos="3" side="tl" part="whole"/> 
+-->
+              		<lit v="ol"/>
+			<lit-tag v="cnjcoo"/>
+		</lu>   
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+<rule comment="REGLA: TAN ADJECTIU QUE (tan gran que -> tiel granda ke) (EO)">
+      <pattern>
+	<pattern-item n="tan"/> 
+	<pattern-item n="adj"/>
+	<pattern-item n="cnjcomp"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="adj_comparatiu" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="SA"/></tag>
+		  <tag><clip pos="2" side="sl" part="gen"/></tag>
+		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	          <tag><var n="case"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="whole"/> 
+		</lu> 
+		<b pos="1"/>
+		<lu>   
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+	          <clip pos="2" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+		<b pos="2"/>
+		 <chunk name="cnjsub">
+            		<tags>
+            	  	<tag><lit-tag v="cnjsub"/></tag>
+            		</tags>
+		<lu>
+	          <lit v="ke"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>   
 	      </chunk>
 	    </out>
@@ -6239,7 +6454,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="VERB QUE ( únicament per corregir al tagger quan s'equivoca amb el KE) (EO)">
       <pattern>
-	<pattern-item n="verbcj"/>
+	<pattern-item n="verbcjger"/>
 	<pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>    	
@@ -6373,7 +6588,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="VERB ADV QUE ( únicament per corregir al tagger quan s'equivoca amb el KE) (EO)">
       <pattern>
-	<pattern-item n="verbcj"/>
+	<pattern-item n="verbcjger"/>
 	<pattern-item n="adv"/>
 	<pattern-item n="cnjcoopercorregir"/>
       </pattern>
@@ -6493,6 +6708,290 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu>
 		  </chunk>
 		<b pos="2"/>
+		 <chunk name="cnjsub" >
+            		<tags>
+            	  	<tag><lit-tag v="CNJCSUB"/></tag>
+            		</tags>
+            		<lu>
+              		<lit v="ke"/>
+			<lit-tag v="cnjsub"/>
+            		</lu>
+          		</chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+<rule comment="VERB ADJ QUE ( el ADJ passa a ADV (i es correix OL -> KE): sembla bé que -> ŝajnas bone ke )">
+      <pattern>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="adjADJ"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+
+	<choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pres"/> <!-- present -->
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+            </choose>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="sep"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+		<b pos="1"/>
+                <chunk name="adv">
+                    <tags>
+                      <tag><lit-tag v="adv"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lem"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="2"/>
+		 <chunk name="cnjsub" >
+            		<tags>
+            	  	<tag><lit-tag v="CNJCSUB"/></tag>
+            		</tags>
+            		<lu>
+              		<lit v="ke"/>
+			<lit-tag v="cnjsub"/>
+            		</lu>
+          		</chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+<rule comment="VERB ADV ADJ QUE ( el ADJ passa a ADV (i es correix OL -> KE): sembla molt bé que -> ŝajnas molt bone ke )">
+      <pattern>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="preadv"/>
+	<pattern-item n="adjADJ"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+
+	<choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pres"/> <!-- present -->
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+            </choose>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lemh"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="sep"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="1" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+		<b pos="1"/>
+                <chunk name="adv">
+                    <tags>
+                      <tag><lit-tag v="adv"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="whole"/>
+                    </lu>
+		    <b pos="2"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lem"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="3"/>
 		 <chunk name="cnjsub" >
             		<tags>
             	  	<tag><lit-tag v="CNJCSUB"/></tag>
@@ -7415,7 +7914,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
  	          <b pos="1"/>
-                  <chunk name="verbcj" case="caseFirstWord">
+                  <chunk name="verbcj">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -7440,6 +7939,265 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </let>
       </action>
     </rule>
+
+<rule comment="VERBestar + GERUNDI (continuar cantant EO)">
+      <pattern>
+	<pattern-item n="continuar"/>
+	<pattern-item n="ger"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+
+	<choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pres"/> <!-- present -->
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+            </choose>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                       <lit v="plu"/>
+                       <lit-tag v="adv"/>
+                    </lu>
+                    <b/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="sep"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+<rule comment="VERBestar + GERUNDI QUE (continuar pensant EO)">
+      <pattern>
+	<pattern-item n="continuar"/>
+	<pattern-item n="ger"/>
+        <pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+
+	<choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pres"/> <!-- present -->
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+            </choose>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                       <lit v="plu"/>
+                       <lit-tag v="adv"/>
+                    </lu>
+                    <b/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="sep"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                  <b/>
+                  <chunk name="cnjsub" >
+                    <tags>
+                      <tag><lit-tag v="cnjsub"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="ke"/>
+                      <lit-tag v="cnjsub"/>
+                    </lu>
+                  </chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
 <rule comment="VERBestar_a_punt_de + INF (estar a punt de EO)">
       <pattern>
@@ -7615,7 +8373,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b/>
 
 
-                  <chunk name="verb_perif" case="caseFirstWord">
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7677,7 +8435,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b/>
 
 
-                  <chunk name="verb_perif" case="caseFirstWord">
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7793,7 +8551,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b/>
 
 
-                  <chunk name="verb_perif" case="caseFirstWord">
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7927,7 +8685,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b/>
 
 
-                  <chunk name="verb_perif" case="caseFirstWord">
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -7981,7 +8739,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 	  </chunk>
 	  <b/>
-	  <chunk name="verbcj" case="caseFirstWord">
+	  <chunk name="verbcj">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -8118,7 +8876,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
 	        <b pos="1"/>
-                <chunk name="adv" case="caseFirstWord">
+                <chunk name="adv">
                         <tags>
                         <tag><lit-tag v="adv"/></tag>
                         </tags>
@@ -8130,7 +8888,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
                 <b pos="2"/>
 
-	    <chunk name="inf" case="caseFirstWord">
+	    <chunk name="inf">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -8152,7 +8910,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule>
 
-<rule comment="VERB + ADV + ADJ + INF (el ADJ passa a ADV: sempre és interessant llegir -> ĉiam estas interese legi EO)">
+<rule comment="VERB + ADV + ADJ + INF (el ADJ passa a ADV: és sempre interessant llegir -> estas ĉiam interese legi EO)">
       <pattern>
 	<pattern-item n="verbcj2"/>
 	<pattern-item n="adv_preadv"/>
@@ -8268,7 +9026,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	        <b pos="1"/>
 
 
-                <chunk name="adv" case="caseFirstWord">
+                <chunk name="adv">
                         <tags>
                         <tag><lit-tag v="adv"/></tag>
                         </tags>
@@ -8285,7 +9043,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
                 <b pos="2"/>
 
-	    <chunk name="inf" case="caseFirstWord">
+	    <chunk name="inf">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="4" side="tl" part="a_verb"/></tag>
@@ -8307,46 +9065,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule>
 
-
-    <rule comment="REGLA: ADV ADJECTIU ('molt/poc/gens/bastant/força/increïblement gran - ') (EO)">
-      <pattern>
-	<pattern-item n="adv_preadv"/>
-	<pattern-item n="adj"/>
-      </pattern>
-      <action>          	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="nom_cas">
-	  <with-param pos="1"/>
-	</call-macro>	
-	    <out>
-	      <chunk name="adv_adj" case="caseFirstWord">
-		<tags>
-		  <tag><lit-tag v="SA"/></tag>
-		  <tag><clip pos="2" side="sl" part="gen"/></tag>
-		  <tag><clip pos="2" side="sl" part="nbr"/></tag>
-	          <tag><var n="case"/></tag>
-		</tags>
-		<lu>   
-		  <clip pos="1" side="tl" part="whole"/> 
-		</lu> 
-		<b pos="1"/>
-		<lu>   
-		  <clip pos="2" side="tl" part="lemh"/> 
-		  <clip pos="2" side="tl" part="a_adj"/>
-	          <clip pos="2" side="sl" part="nbr"/>
-	          <lit-tag v="4"/>
-		  <clip pos="2" side="tl" part="lemq"/> 
-		</lu>
-	      </chunk>
-	    </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-      </action>
-    </rule> 
 
     <rule comment="VERB conjugat ( pinto ) (EO)">
       <pattern>
@@ -9032,7 +9750,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" case="caseFirstWord">
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -9361,6 +10079,51 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
+    <rule comment="de + INF (de venir) EO">
+      <pattern>
+        <pattern-item n="de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+
+        <let>
+          <clip pos="2" side="tl" part="temps"/>
+          <lit-tag v="inf"/>
+        </let>
+            <out>
+              <chunk name="verbcj" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="2" side="tl" part="temps"/></tag>
+                  <tag><clip pos="1" side="tl" part="pers"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_verb"/>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <clip pos="2" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
 
     <rule comment="PROCLITIC PROCLITIC (me'ls EO)">
@@ -9404,7 +10167,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                 </let>
 		<out>
 		  <b pos="1"/>
-		  <chunk name="pro_indirecte" case="caseFirstWord">
+		  <chunk name="pro_indirecte">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -9726,7 +10489,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                 </let>
                 <out>
                   <b pos="1"/>
-                  <chunk name="pro_indirecte" case="caseFirstWord">
+                  <chunk name="pro_indirecte">
                     <tags>
                       <tag><lit-tag v="SN"/></tag>
                       <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
@@ -10105,7 +10868,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </lu>
           </chunk>
 	  <b pos="1"/>
-	  <chunk name="prn" case="caseFirstWord">
+	  <chunk name="prn">
 	    <tags>
 	      <tag><lit-tag v="SNrelatiu"/></tag>
               <tag><lit-tag v="rel"/></tag>
