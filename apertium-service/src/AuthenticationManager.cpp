@@ -22,19 +22,14 @@
 AuthenticationManager *AuthenticationManager::instance = NULL;
 
 AuthenticationManager *AuthenticationManager::Instance() {
-	return Instance("users.xml");
+	return instance;
 }
 
 AuthenticationManager *AuthenticationManager::Instance(std::string confPath) {
-	AuthenticationManager *ret = NULL;
-
 	if (!instance) {
 		instance = new AuthenticationManager(confPath);
 	}
-
-	ret = instance;
-
-	return ret;
+	return instance;
 }
 
 AuthenticationManager::AuthenticationManager(std::string confPath) {

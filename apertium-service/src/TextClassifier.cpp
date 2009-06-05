@@ -7,9 +7,6 @@ extern "C" {
 TextClassifier *TextClassifier::instance = NULL;
 
 TextClassifier *TextClassifier::Instance() {
-	if (!instance) {
-		instance = TextClassifier::Instance("tc.conf");
-	}
 	return(instance);
 }
 

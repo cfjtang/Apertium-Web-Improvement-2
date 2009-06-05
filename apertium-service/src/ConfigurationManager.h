@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATIONREADER_H_
-#define CONFIGURATIONREADER_H_
+#ifndef CONFIGURATIONMANAGER_H_
+#define CONFIGURATIONMANAGER_H_
 
 #include <iostream>
 #include <libxml++/libxml++.h>
 
-class ConfigurationReader {
+class ConfigurationManager {
 public:
-	static ConfigurationReader* Instance();
-	static ConfigurationReader* Instance(std::string);
+	static ConfigurationManager* Instance();
+	static ConfigurationManager* Instance(std::string);
 
 	int getServerPort();
 	void setServerPort(int);
@@ -38,16 +38,24 @@ public:
 	bool getUseSsl();
 	void setUseSsl(bool);
 
+	std::string getConfTextClassifier();
+	void setConfTextClassifier(std::string);
+
+	std::string getConfUsers();
+	void setConfUsers(std::string);
+
 private:
-	ConfigurationReader(std::string);
-	virtual ~ConfigurationReader();
+	ConfigurationManager(std::string);
+	virtual ~ConfigurationManager();
 
 	int serverPort;
 	std::string apertiumBase;
 	int maxThreads;
 	bool useSsl;
+	std::string confTextClassifier;
+	std::string confUsers;
 
-	static ConfigurationReader *instance;
+	static ConfigurationManager *instance;
 };
 
-#endif /* CONFIGURATIONREADER_H_ */
+#endif /* CONFIGURATIONMANAGER_H_ */
