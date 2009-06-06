@@ -97,9 +97,10 @@ int main(int ac, char *av[]) {
 		AuthenticationManager::Instance(conf->getConfUsers());
 		TextClassifier::Instance(conf->getConfTextClassifier());
 
-	    ::signal(SIGINT, &apertiumServerSignalHandler);
+	    Modes::Instance()->initPipe(conf->getApertiumBase());
+	    Modes::Instance()->initXML(conf->getApertiumBase());
 
-	    Modes::Instance()->initPipe(ConfigurationManager::Instance()->getApertiumBase());
+	    ::signal(SIGINT, &apertiumServerSignalHandler);
 
 	    ApertiumServer s;
 

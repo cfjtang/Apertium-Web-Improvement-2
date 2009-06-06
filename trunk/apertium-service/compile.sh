@@ -1,4 +1,4 @@
-g++ -L/usr/local/lib -o ApertiumServer src/*.cpp src/core/*.cpp -I/usr/include/libxml++-2.6/ \
+g++ -L/usr/local/lib -o apertium-service src/*.cpp src/core/*.cpp -I/usr/include/libxml++-2.6/ \
 -I/usr/local/include/lttoolbox-3.1/ -I/usr/local/include/apertium-3.1/ -I/usr/lib/libxml++-2.6/include/ \
 -I/usr/include/libxml2 -I/usr/include/glibmm-2.4 -I/usr/lib/glibmm-2.4/include -I/usr/include/sigc++-2.0 \
 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/local/include/ -liqxmlrpc \
