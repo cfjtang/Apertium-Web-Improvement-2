@@ -162,7 +162,7 @@ void Modes::parseXML(const fs::path path) {
 					for(xmlpp::NodeSet::iterator itb = fileNodeSet.begin(); itb != fileNodeSet.end(); ++itb) {
 						xmlpp::NodeSet fileNameAttributeSet = (*itb)->find("@name");
 
-						for (xmlpp::NodeSet::iterator itc = fileNameAttributeSet.begin(); itc != programNameAttributeSet.end(); ++itc) {
+						for (xmlpp::NodeSet::iterator itc = fileNameAttributeSet.begin(); itc != fileNameAttributeSet.end(); ++itc) {
 							xmlpp::Attribute *fileNameAttribute = dynamic_cast<xmlpp::Attribute *>(*itc);
 							fileNames.push_back(fileNameAttribute->get_value());
 						}
