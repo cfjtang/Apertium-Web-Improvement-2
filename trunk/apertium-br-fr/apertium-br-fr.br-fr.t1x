@@ -165,6 +165,9 @@
       <cat-item tags="prn.dem.*"/>
       <cat-item lemma="pep tra" tags="prn.def.*"/>
     </def-cat>
+    <def-cat n="prnref">
+      <cat-item tags="prn.ref.*"/>
+    </def-cat>
     <def-cat n="prnitg">
       <cat-item tags="prn.itg.*"/>
     </def-cat>
@@ -528,6 +531,7 @@
       <attr-item tags="rel.nn"/>
       <attr-item tags="obj"/>
       <attr-item tags="ind"/>
+      <attr-item tags="ref"/>
       <attr-item tags="tn"/>
       <attr-item tags="tn.ref"/>
       <attr-item tags="itg"/>
@@ -15714,6 +15718,52 @@
         </let>
       </action>
    </rule>
+    
+    <rule comment="PRNREF">
+      <pattern>
+        <pattern-item n="prnref"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="prnref" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag>
+                <clip pos="1" side="tl" part="tipus_prn"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="gen"/>
+              </tag>
+              <tag>
+                <clip pos="1" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_prn"/>
+              <clip pos="1" side="tl" part="tipus_prn"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="gen_sense_mf" link-to="4"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+ 
     
     <rule comment="PRNITG">
       <pattern>
