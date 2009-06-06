@@ -123,6 +123,9 @@
     <def-cat n="prep">
       <cat-item tags="pr"/>
     </def-cat>
+    <def-cat n="a-raok">
+      <cat-item lemma="a-raok" tags="pr"/>
+    </def-cat>
     <def-cat n="ouzhpenn">
       <cat-item lemma="ouzhpenn" tags="pr"/>
     </def-cat>
@@ -12212,7 +12215,42 @@
         </out>
       </action>
    </rule>
-        
+         
+    <rule comment="REGLA: a-raok inf → avant de inf">
+      <pattern>
+        <pattern-item n="a-raok"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="pr_inf" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+             </tags>
+             <lu>
+               <lit v="avant de"/>
+               <lit-tag v="pr"/>
+             </lu>
+             <b pos="1"/>
+             <lu>
+               <clip pos="2" side="tl" part="whole"/>
+             </lu>
+           </chunk>
+         </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+       
+
     <rule comment="REGLA: ouzhpenn inf → en plus de inf">
       <pattern>
         <pattern-item n="ouzhpenn"/>
