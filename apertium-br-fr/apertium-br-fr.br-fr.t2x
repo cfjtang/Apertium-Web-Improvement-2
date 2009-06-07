@@ -96,6 +96,11 @@
       <cat-item tags="SV.vbser.*"/>
     </def-cat>
 	 
+     <def-cat n="adv_neg">
+      <cat-item lemma="adv_neg" tags="adv"/>
+    </def-cat>
+
+	 
      <def-cat n="adv">
       <cat-item tags="adv"/>
       <cat-item tags="adv.*"/>
@@ -4557,6 +4562,149 @@
 
 	</action>
 </rule>
+
+<rule comment="REGLA: ADV SV SN ADV_neg"> 
+	<pattern>
+		<pattern-item n="adv"/>
+		<pattern-item n="SV"/>
+		<pattern-item n="SN"/>
+		<pattern-item n="adv"/>
+	</pattern>
+	<action>
+		<call-macro n="posa_subj">
+			<with-param pos="2"/>
+		</call-macro>
+		<out>
+			<chunk>
+				<get-case-from pos="2">
+				<clip pos="1" part="lem"/>
+				</get-case-from>
+				<clip pos="1" part="tags"/>
+				<clip pos="1" part="chcontent"/>
+			</chunk>
+			<b pos="1"/>
+			<chunk>
+				<clip pos="2" part="lem"/>
+				<clip pos="2" part="tags"/>
+				<clip pos="2" part="chcontent"/>
+			</chunk>
+			<b pos="2"/>
+			<chunk>
+				<clip pos="4" part="lem"/>
+				<clip pos="4" part="tags"/>
+				<clip pos="4" part="chcontent"/>
+			</chunk>
+			<b pos="3"/>
+		</out>
+		<choose>
+			<when>
+				<test>
+					<and>
+						<or>
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="nom"/>
+							</equal>
+
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="part"/>
+							</equal>
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="adj_nom"/>
+							</equal>
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="nom_adj"/>
+							</equal>
+
+
+						</or>
+						<equal>
+							<clip pos="3" part="nbr"/>
+							<lit-tag v="pl"/>
+						</equal>
+					</and>
+				</test>
+				<out>
+					<chunk>
+						<lit v="partitiu"/>
+							<lit-tag v="part"/>
+							<lit v="{^"/>
+							<get-case-from pos="3">
+								<lit v="de"/>
+							</get-case-from>
+							<lit-tag v="pr"/>
+							<lit v="$ ^"/>
+							<get-case-from pos="3">
+								<lit v="le"/>
+							</get-case-from>
+							<lit-tag v="det.def.mf.pl"/>
+						<lit v="$}"/>
+					</chunk>
+					<b/>
+				</out>
+			</when>
+		</choose>
+		<choose>
+			<when>
+				<test>
+					<and>
+						<or>
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="part"/>
+							</equal>
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="partadj_nom"/>
+							</equal>
+							<equal>
+								<clip pos="3" part="lem"/>
+								<lit v="partnom_adj"/>
+							</equal>
+						</or>
+						<equal>
+							<clip pos="3" part="nbr"/>
+							<lit-tag v="sg"/>
+						</equal>
+					</and>
+				</test>
+				<out>
+					<chunk>
+					
+						<lit v="partitiu"/>
+							<lit-tag v="part"/>
+							<lit v="{^"/>
+							<get-case-from pos="3">
+								<lit v="de"/>
+							</get-case-from>
+							<lit-tag v="pr"/>
+							<lit v="$ ^"/>
+							<get-case-from pos="3">
+								<lit v="le"/>
+							</get-case-from>
+							<lit-tag v="det.def"/>
+							<clip pos="3" part="gen"/>
+							<lit-tag v="sg"/>
+						<lit v="$}"/>
+					</chunk>
+					<b/>
+				</out>
+			</when>
+		</choose>
+		<out>
+			<chunk>
+				<clip pos="3" part="lem"/>
+				<clip pos="3" part="tags"/>
+				<clip pos="3" part="chcontent"/>
+			</chunk>
+		</out>
+
+	</action>
+</rule>
+
 
 <rule comment="REGLA: ADV SV ADV SN"> 
 	<pattern>
