@@ -4197,10 +4197,16 @@
 			<choose>
 				<when>
 					<test>
+                                            <or>
+                                                <equal>
+                                                  <clip pos="1" side="tl" part="nbr"/> 
+                                                  <lit-tag v="pl"/>
+                                                </equal>
 						<in caseless="yes">
 							<clip pos="1" side="tl" part="lem"/>
 							<list n="part_sing"/>
 						</in>
+                                          </or>
 					</test>
 					<out>
 						<chunk name="part" case="caseFirstWord">
