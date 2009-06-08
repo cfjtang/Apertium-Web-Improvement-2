@@ -28,7 +28,7 @@
 #include "core/ObjectBroker.h"
 #include "core/FunctionMapper.h"
 
-#include "Modes.h"
+#include "core/Modes.h"
 
 #include "ApertiumRuntimeException.h"
 

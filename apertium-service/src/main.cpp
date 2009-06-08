@@ -23,9 +23,9 @@
 #include "ApertiumServer.h"
 #include "ConfigurationManager.h"
 #include "AuthenticationManager.h"
-#include "core/TextClassifier.h"
 
-#include "Modes.h"
+#include "core/TextClassifier.h"
+#include "core/Modes.h"
 
 using namespace std;
 namespace po = boost::program_options;
