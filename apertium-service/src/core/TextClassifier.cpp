@@ -27,6 +27,7 @@ TextClassifier::TextClassifier(void *p) {
 
 TextClassifier::~TextClassifier() {
 	textcat_Done(h);
+	instance = NULL;
 }
 
 std::string TextClassifier::classify(std::string str) {

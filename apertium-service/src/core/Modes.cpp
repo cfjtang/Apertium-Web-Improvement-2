@@ -110,12 +110,10 @@ Modes *Modes::Instance() {
 	return(instance);
 }
 
-Modes::Modes() {
-	//initPipe(path);
-}
+Modes::Modes() { }
 
 Modes::~Modes() {
-
+	instance = NULL;
 }
 
 void Modes::parseXML(const fs::path path) {

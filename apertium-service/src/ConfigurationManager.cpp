@@ -93,7 +93,7 @@ ConfigurationManager::ConfigurationManager(std::string confPath) {
 }
 
 ConfigurationManager::~ConfigurationManager() {
-
+	instance = NULL;
 }
 
 int ConfigurationManager::getServerPort() {

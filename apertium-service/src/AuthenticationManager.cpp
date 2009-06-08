@@ -65,7 +65,7 @@ AuthenticationManager::AuthenticationManager(std::string confPath) {
 }
 
 AuthenticationManager::~AuthenticationManager() {
-
+	instance = NULL;
 }
 
 bool AuthenticationManager::authenticateUser(std::string username,
