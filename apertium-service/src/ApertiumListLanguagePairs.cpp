@@ -27,8 +27,6 @@
 using namespace std;
 
 void ApertiumListLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
-	//cout << "ApertiumListLanguagePairs::execute() invoked;" << endl;
-
 	Modes *m = Modes::Instance();
 
 	list<string> modes = m->getModeNames();
