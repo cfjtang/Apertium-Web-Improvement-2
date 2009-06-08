@@ -23,7 +23,7 @@
 #include "ApertiumServer.h"
 #include "ConfigurationManager.h"
 #include "AuthenticationManager.h"
-#include "TextClassifier.h"
+#include "core/TextClassifier.h"
 
 #include "Modes.h"
 

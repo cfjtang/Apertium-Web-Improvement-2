@@ -18,7 +18,7 @@
 #include "ApertiumClassify.h"
 
 #include <iostream>
-#include "TextClassifier.h"
+#include "core/TextClassifier.h"
 
 using namespace std;
 
