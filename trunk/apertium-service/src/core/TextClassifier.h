@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+#include <boost/thread.hpp>
+
 class TextClassifier {
 public:
 	static TextClassifier *Instance(std::string);
@@ -14,9 +16,11 @@ public:
 	std::string classify(std::string);
 
 private:
-	TextClassifier(void*);
+	TextClassifier(void *);
 
 	static TextClassifier *instance;
+
+	static boost::mutex instanceMutex;
 
 	void *h;
 };

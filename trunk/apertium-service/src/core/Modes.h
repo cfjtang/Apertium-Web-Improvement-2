@@ -29,9 +29,9 @@
 #include <list>
 #include <map>
 
+#include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/filesystem.hpp>
-
 #include <boost/regex.hpp>
 
 #include <libxml++/libxml++.h>
@@ -98,6 +98,8 @@ private:
 	void parseXML(fs::path);
 
 	static Modes *instance;
+
+	static boost::mutex instanceMutex;
 
 	typedef boost::unordered_map<string, Mode> ModeMapType;
 	//typedef map<string, Mode> ModeMapType;

@@ -30,8 +30,10 @@
 #include <syslog.h>
 
 Logger *Logger::instance = NULL;
+boost::mutex Logger::instanceMutex;
 
 Logger *Logger::Instance() {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (!instance)
 		instance = new Logger();
 	return (instance);
@@ -41,13 +43,14 @@ Logger::Logger() {
 }
 
 Logger::~Logger() {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	instance = NULL;
 }
 
 using namespace std;
 
 void Logger::trace(MessageType messageType, const std::string msg) {
-	boost::mutex::scoped_lock Lock(logmutex);
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (destType == CONSOLE || destType == FILE) {
 		struct tm* pTime;
 
@@ -72,14 +75,14 @@ void Logger::trace(MessageType messageType, const std::string msg) {
 		int prio;
 
 		switch (messageType) {
-		case INFO:
-			prio = LOG_INFO;
 		case NOTICE:
 			prio = LOG_NOTICE;
 		case WARNING:
 			prio = LOG_WARNING;
 		case ERR:
 			prio = LOG_ERR;
+		case INFO:
+			prio = LOG_INFO;
 		}
 
 		syslog(prio, "%s", msg.c_str());

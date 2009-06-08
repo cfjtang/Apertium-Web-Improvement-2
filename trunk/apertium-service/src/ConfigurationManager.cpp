@@ -19,12 +19,16 @@
 #include <sstream>
 
 ConfigurationManager *ConfigurationManager::instance = NULL;
+boost::mutex ConfigurationManager::instanceMutex;
 
 ConfigurationManager *ConfigurationManager::Instance() {
-	return instance;
+	boost::mutex::scoped_lock Lock(instanceMutex);
+	ConfigurationManager *ret = instance;
+	return(ret);
 }
 
 ConfigurationManager *ConfigurationManager::Instance(std::string confPath) {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	ConfigurationManager *ret = NULL;
 	if (!instance) {
 		instance = new ConfigurationManager(confPath);

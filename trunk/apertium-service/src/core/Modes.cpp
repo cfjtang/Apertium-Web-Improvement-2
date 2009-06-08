@@ -103,8 +103,10 @@ void Mode::setPrograms(const vector<Program> p) {
 }
 
 Modes *Modes::instance = NULL;
+boost::mutex Modes::instanceMutex;
 
 Modes *Modes::Instance() {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (!instance)
 		instance = new Modes();
 	return(instance);
@@ -113,6 +115,7 @@ Modes *Modes::Instance() {
 Modes::Modes() { }
 
 Modes::~Modes() {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	instance = NULL;
 }
 

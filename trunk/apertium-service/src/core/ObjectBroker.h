@@ -170,6 +170,8 @@ private:
 	ObjectBroker();
 
 	static ObjectBroker *instance;
+
+	static boost::mutex instanceMutex;
 };
 
 #endif /* OBJECTBROKER_H_ */

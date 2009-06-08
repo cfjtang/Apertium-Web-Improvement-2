@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <libxml++/libxml++.h>
+#include <boost/thread.hpp>
 
 class ConfigurationManager {
 public:
@@ -47,6 +48,9 @@ public:
 
 private:
 	ConfigurationManager(std::string);
+	static ConfigurationManager *instance;
+
+	static boost::mutex instanceMutex;
 
 	int serverPort;
 	std::string apertiumBase;
@@ -54,8 +58,6 @@ private:
 	bool useSsl;
 	std::string confTextClassifier;
 	std::string confUsers;
-
-	static ConfigurationManager *instance;
 };
 
 #endif /* CONFIGURATIONMANAGER_H_ */
