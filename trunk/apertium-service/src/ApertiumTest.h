@@ -26,8 +26,6 @@
 class ApertiumTest: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
-private:
-	//static time_t lastCacheTime = 0;
 };
 
 #endif /* APERTIUMTEST_H_ */

@@ -21,7 +21,7 @@
 ConfigurationManager *ConfigurationManager::instance = NULL;
 
 ConfigurationManager *ConfigurationManager::Instance() {
-	return Instance("configuration.xml");
+	return instance;
 }
 
 ConfigurationManager *ConfigurationManager::Instance(std::string confPath) {
@@ -47,12 +47,9 @@ ConfigurationManager::ConfigurationManager(std::string confPath) {
 		confUsers = "users.xml";
 
 		if (rootNode) {
-			xmlpp::NodeSet serverPortNodeSet = rootNode->find(
-					"/ApertiumServerConfiguration/ServerPort/text()");
+			xmlpp::NodeSet serverPortNodeSet = rootNode->find("/ApertiumServerConfiguration/ServerPort/text()");
 			if (serverPortNodeSet.begin() != serverPortNodeSet.end()) {
-				xmlpp::TextNode
-						*node =
-								dynamic_cast<xmlpp::TextNode*> (*serverPortNodeSet.begin());
+				xmlpp::TextNode *node = dynamic_cast<xmlpp::TextNode*> (*serverPortNodeSet.begin());
 				std::stringstream strStream(node->get_content());
 				strStream >> serverPort;
 			}
@@ -60,48 +57,34 @@ ConfigurationManager::ConfigurationManager(std::string confPath) {
 			xmlpp::NodeSet apertiumBaseNodeSet = rootNode->find(
 					"/ApertiumServerConfiguration/ApertiumBase/text()");
 			if (apertiumBaseNodeSet.begin() != apertiumBaseNodeSet.end()) {
-				xmlpp::TextNode
-						*node =
-								dynamic_cast<xmlpp::TextNode*> (*apertiumBaseNodeSet.begin());
+				xmlpp::TextNode *node = dynamic_cast<xmlpp::TextNode*> (*apertiumBaseNodeSet.begin());
 				apertiumBase = node->get_content();
 			}
 
-			xmlpp::NodeSet maxThreadsNodeSet = rootNode->find(
-					"/ApertiumServerConfiguration/MaxThreads/text()");
+			xmlpp::NodeSet maxThreadsNodeSet = rootNode->find("/ApertiumServerConfiguration/MaxThreads/text()");
 			if (maxThreadsNodeSet.begin() != maxThreadsNodeSet.end()) {
-				xmlpp::TextNode
-						*node =
-								dynamic_cast<xmlpp::TextNode*> (*maxThreadsNodeSet.begin());
+				xmlpp::TextNode	*node = dynamic_cast<xmlpp::TextNode*> (*maxThreadsNodeSet.begin());
 				std::stringstream strStream(node->get_content());
 				strStream >> maxThreads;
 			}
 
-			xmlpp::NodeSet useSslNodeSet = rootNode->find(
-					"/ApertiumServerConfiguration/UseSsl/text()");
+			xmlpp::NodeSet useSslNodeSet = rootNode->find("/ApertiumServerConfiguration/UseSsl/text()");
 			if (useSslNodeSet.begin() != useSslNodeSet.end()) {
-				xmlpp::TextNode *node =
-						dynamic_cast<xmlpp::TextNode*> (*useSslNodeSet.begin());
+				xmlpp::TextNode *node =	dynamic_cast<xmlpp::TextNode*> (*useSslNodeSet.begin());
 				if (node->get_content() == "true") {
 					useSsl = true;
 				}
 			}
 
-			xmlpp::NodeSet confTextClassifierNodeSet = rootNode->find(
-					"/ApertiumServerConfiguration/ConfTextClassifier/text()");
-			if (confTextClassifierNodeSet.begin()
-					!= confTextClassifierNodeSet.end()) {
-				xmlpp::TextNode
-						*node =
-								dynamic_cast<xmlpp::TextNode*> (*confTextClassifierNodeSet.begin());
+			xmlpp::NodeSet confTextClassifierNodeSet = rootNode->find("/ApertiumServerConfiguration/ConfTextClassifier/text()");
+			if (confTextClassifierNodeSet.begin() != confTextClassifierNodeSet.end()) {
+				xmlpp::TextNode	*node = dynamic_cast<xmlpp::TextNode*> (*confTextClassifierNodeSet.begin());
 				confTextClassifier = node->get_content();
 			}
 
-			xmlpp::NodeSet confUsersNodeSet = rootNode->find(
-					"/ApertiumServerConfiguration/ConfUsers/text()");
+			xmlpp::NodeSet confUsersNodeSet = rootNode->find("/ApertiumServerConfiguration/ConfUsers/text()");
 			if (confUsersNodeSet.begin() != confUsersNodeSet.end()) {
-				xmlpp::TextNode
-						*node =
-								dynamic_cast<xmlpp::TextNode*> (*confUsersNodeSet.begin());
+				xmlpp::TextNode *node = dynamic_cast<xmlpp::TextNode*> (*confUsersNodeSet.begin());
 				confUsers = node->get_content();
 			}
 

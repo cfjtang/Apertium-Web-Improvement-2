@@ -34,18 +34,13 @@
 
 using namespace std;
 
-void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
-		iqxmlrpc::Value &retval) {
-	//cout << "ApertiumTranslate::execute() invoked;" << endl;
-
+void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 	if (params.size() < 2) {
 		throw ApertiumRuntimeException("Too few arguments");
 		//retval = 0;
 	} else {
 		string uin = params[0];
-
 		wstring win = utf8ToWstring(uin);
-
 		wstring ret = deformat(win);
 
 		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
@@ -68,9 +63,7 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params,
 		delete fm;
 
 		wstring wout = reformat(ret);
-
 		string rval = wstringToUtf8(wout);
-
 		retval = rval;
 	}
 }

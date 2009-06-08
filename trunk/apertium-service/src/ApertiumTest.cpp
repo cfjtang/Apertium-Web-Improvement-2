@@ -24,13 +24,8 @@
 using namespace std;
 
 void ApertiumTest::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
-	//cout << "ApertiumTest::execute() invoked;" << endl;
-
 	wstring ws = L"Cómo te es?";
-
 	string in((const char *)ws.data(), ws.size() * sizeof(wchar_t));
-
 	string out = Glib::convert(in, "UTF-8", "WCHAR_T");
-
 	retval = out;
 }

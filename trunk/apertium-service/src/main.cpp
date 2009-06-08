@@ -46,6 +46,7 @@ int main(int ac, char *av[]) {
 	try {
 		po::options_description desc("Allowed options");
 		desc.add_options()("help", "produce this help message")
+		("confFile", po::value<string>(), "(string) set configuration file")
 		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
 		("serverPort", po::value<int>(), "(int) set server port")
 		("modesDir", po::value<string>(), "(string) set modes' directory")
@@ -57,12 +58,19 @@ int main(int ac, char *av[]) {
 		po::store(po::parse_command_line(ac, av, desc), vm);
 		po::notify(vm);
 
-		ConfigurationManager *conf = ConfigurationManager::Instance();
-
 	    if (vm.count("help")) {
 	        cout << desc << endl;
 	        return(1);
 	    }
+
+	    string confFile = "configuration.xml";
+
+	    if (vm.count("confFile")) {
+	        cout << "Configuration file was " << confFile <<  ", setting it to " << vm["confFile"].as<string>() << endl;
+	        confFile = vm["confUsers"].as<string>();
+	    }
+
+		ConfigurationManager *conf = ConfigurationManager::Instance(confFile);
 
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << conf->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
