@@ -18,18 +18,27 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
 
+#include <iostream>
+#include <boost/thread.hpp>
+
 class Logger {
 public:
 	static Logger *Instance();
 	virtual ~Logger();
 
     enum DestType { CONSOLE, FILE, SYSLOG };
+    enum MessageType { INFO, NOTICE, WARNING, ERR };
+
+    void trace(MessageType, const std::string);
 
 private:
 	Logger();
 	static Logger *instance;
 
+	boost::mutex logmutex;
+
     DestType destType;
+    std::ostream *destStream;
 };
 
 #endif /* LOGGER_H_ */
