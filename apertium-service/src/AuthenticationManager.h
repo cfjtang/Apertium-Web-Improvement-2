@@ -24,6 +24,7 @@
 #include <map>
 
 #include <libxml++/libxml++.h>
+#include <boost/thread.hpp>
 
 class AuthenticationManager {
 public:
@@ -35,10 +36,11 @@ public:
 
 private:
 	AuthenticationManager(std::string);
+	static AuthenticationManager *instance;
+
+	static boost::mutex instanceMutex;
 
 	std::map<std::string, std::string> users;
-
-	static AuthenticationManager *instance;
 };
 
 #endif /* AUTHENTICATIONMANAGER_H_ */

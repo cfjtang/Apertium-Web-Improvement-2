@@ -20,6 +20,7 @@
 #include <openssl/md5.h>
 
 AuthenticationManager *AuthenticationManager::instance = NULL;
+boost::mutex AuthenticationManager::instanceMutex;
 
 AuthenticationManager *AuthenticationManager::Instance() {
 	return instance;

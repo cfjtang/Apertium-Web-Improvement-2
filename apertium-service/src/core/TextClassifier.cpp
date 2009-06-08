@@ -5,12 +5,16 @@ extern "C" {
 }
 
 TextClassifier *TextClassifier::instance = NULL;
+boost::mutex TextClassifier::instanceMutex;
 
 TextClassifier *TextClassifier::Instance() {
-	return(instance);
+	boost::mutex::scoped_lock Lock(instanceMutex);
+	TextClassifier *ret = instance;
+	return(ret);
 }
 
 TextClassifier *TextClassifier::Instance(std::string path) {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (!instance) {
 		void *h = textcat_Init(path.data());
 		if (h != NULL)
@@ -26,6 +30,7 @@ TextClassifier::TextClassifier(void *p) {
 }
 
 TextClassifier::~TextClassifier() {
+	boost::mutex::scoped_lock Lock(instanceMutex);
 	textcat_Done(h);
 	instance = NULL;
 }

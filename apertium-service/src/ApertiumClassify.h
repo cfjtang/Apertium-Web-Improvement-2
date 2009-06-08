@@ -18,16 +18,14 @@
 #ifndef APERTIUMCLASSIFY_H_
 #define APERTIUMCLASSIFY_H_
 
-#include <libiqxmlrpc/libiqxmlrpc.h>
-
 #include <iostream>
 #include <string>
+
+#include <libiqxmlrpc/libiqxmlrpc.h>
 
 class ApertiumClassify: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
-private:
-
 };
 
 #endif /* APERTIUMCLASSIFY_H_ */

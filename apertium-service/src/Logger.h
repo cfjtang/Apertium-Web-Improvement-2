@@ -35,7 +35,7 @@ private:
 	Logger();
 	static Logger *instance;
 
-	boost::mutex logmutex;
+	static boost::mutex instanceMutex;
 
     DestType destType;
     std::ostream *destStream;
