@@ -16,18 +16,72 @@
  */
 
 #include "Logger.h"
+
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <iomanip>
+
 #include <stdio.h>
+
+#include <sys/time.h>
+#include <time.h>
+
+#include <syslog.h>
 
 Logger *Logger::instance = NULL;
 
 Logger *Logger::Instance() {
 	if (!instance)
 		instance = new Logger();
-	return(instance);
+	return (instance);
 }
 
-Logger::Logger() { }
+Logger::Logger() {
+}
 
 Logger::~Logger() {
 	instance = NULL;
+}
+
+using namespace std;
+
+void Logger::trace(MessageType messageType, const std::string msg) {
+	boost::mutex::scoped_lock Lock(logmutex);
+	if (destType == CONSOLE || destType == FILE) {
+		struct tm* pTime;
+
+#ifdef _WIN32
+		__int64 now;
+		_time64(&now);
+		pTime = _localtime64(&now);
+		unsigned millis = unsigned((now / 1000) % 1000);
+#else
+		struct timeval time;
+		gettimeofday(&time, NULL);
+		pTime = localtime(&time.tv_sec);
+		unsigned millis = time.tv_usec / 1000;
+#endif
+
+		char timeString[256];
+		strftime(timeString, sizeof(timeString), "%y-%m-%d %H:%M:%S", pTime);
+		(*destStream) << "[" << timeString << "." << setw(3) << setfill('0') << millis << setw(0) << "]: ";
+		(*destStream) << msg << endl;
+		destStream->flush();
+	} else {
+		int prio;
+
+		switch (messageType) {
+		case INFO:
+			prio = LOG_INFO;
+		case NOTICE:
+			prio = LOG_NOTICE;
+		case WARNING:
+			prio = LOG_WARNING;
+		case ERR:
+			prio = LOG_ERR;
+		}
+
+		syslog(prio, "%s", msg.c_str());
+	}
 }
