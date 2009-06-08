@@ -20,7 +20,7 @@
 #include "ApertiumServer.h"
 
 #include "ApertiumRuntimeException.h"
-#include "Modes.h"
+#include "core/Modes.h"
 
 #include <iostream>
 
