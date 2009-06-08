@@ -9,11 +9,12 @@ public:
 	static TextClassifier *Instance(std::string);
 	static TextClassifier *Instance();
 
+	virtual ~TextClassifier();
+
 	std::string classify(std::string);
 
 private:
 	TextClassifier(void*);
-	virtual ~TextClassifier();
 
 	static TextClassifier *instance;
 

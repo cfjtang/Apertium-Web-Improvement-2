@@ -25,6 +25,7 @@ class ConfigurationManager {
 public:
 	static ConfigurationManager* Instance();
 	static ConfigurationManager* Instance(std::string);
+	virtual ~ConfigurationManager();
 
 	int getServerPort();
 	void setServerPort(int);
@@ -46,7 +47,6 @@ public:
 
 private:
 	ConfigurationManager(std::string);
-	virtual ~ConfigurationManager();
 
 	int serverPort;
 	std::string apertiumBase;

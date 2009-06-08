@@ -77,6 +77,7 @@ private:
 class Modes {
 public:
 	static Modes *Instance();
+	virtual ~Modes();
 
 	list<string> getModeNames();
 
@@ -93,7 +94,6 @@ public:
 
 private:
 	Modes();
-	virtual ~Modes();
 
 	void parseXML(fs::path);
 

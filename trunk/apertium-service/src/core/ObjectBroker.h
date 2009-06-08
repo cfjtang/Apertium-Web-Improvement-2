@@ -103,7 +103,6 @@ private:
 template <class T, class I> class ObjectPool {
 public:
 	ObjectPool() { }
-
 	virtual ~ObjectPool() { }
 
 	typedef boost::unordered_map<I, queue<T*> > PoolMapType;
@@ -156,6 +155,7 @@ private:
 class ObjectBroker {
 public:
 	static ObjectBroker *Instance();
+	virtual ~ObjectBroker();
 
 	NonIndexedObjectPool<PreTransfer> PreTransferPool;
 
@@ -168,7 +168,6 @@ public:
 
 private:
 	ObjectBroker();
-	virtual ~ObjectBroker();
 
 	static ObjectBroker *instance;
 };
