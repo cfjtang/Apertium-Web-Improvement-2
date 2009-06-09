@@ -412,6 +412,10 @@
       <cat-item lemma="acabar# de" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="estar_pp">
+      <cat-item lemma="estar" tags="vblex.pp"/>
+    </def-cat>
+
     <def-cat n="estar"> <!--EO per a la perifrasi estar +  gerundi-->
       <cat-item lemma="estar" tags="vblex.*"/>
     </def-cat>
@@ -603,6 +607,7 @@
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
+    <def-var n="test"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -6231,10 +6236,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
-
-
-
 <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda) (EO)">
+<!-- tracto el verb estar (pp) diferents perquè altrament tenim problemes -->
       <pattern>
 	<pattern-item n="adj"/>
       </pattern>
@@ -6245,6 +6248,47 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
+
+      <choose>
+              <when>
+                <test>
+<!--
+                  <and>
+                    <equal>
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit-tag v="estar"/>
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pp"/>
+                    </equal>
+                  </and>
+-->
+                    <equal>
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="estar"/>
+                    </equal>
+                </test>
+	<out>
+	  <chunk name="pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SA"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <lit-tag v="vblex"/>
+	      <lit-tag v="pp"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu> 
+	  </chunk>
+	</out>  
+             </when>
+      <otherwise>
 	<out>
 	  <chunk name="adj" case="caseFirstWord">
 	    <tags>
@@ -6262,12 +6306,15 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu> 
 	  </chunk>
 	</out>  
+        </otherwise>
+      </choose>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
       </action>
     </rule> 
+
 
 
     <rule comment="REGLA: ADV ADJECTIU ('molt/poc/gens/bastant/força/increïblement gran - ') (EO)">
@@ -10146,7 +10193,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu>
 		  </chunk>
 		</out>
-     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefacctius, etc...-->
+     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefactius, etc...-->
 
           <choose>
               <when>  <!-- mirem si és SE per no fer res-->
@@ -10468,7 +10515,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 </out>
-     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefacctius, etc...-->
+     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefactius, etc...-->
 
           <choose>
               <when>  <!-- mirem si és SE per no fer res-->
