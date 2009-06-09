@@ -21,7 +21,6 @@
 #include <boost/program_options.hpp>
 
 #include "ApertiumServer.h"
-#include "ConfigurationManager.h"
 #include "AuthenticationManager.h"
 
 #include "core/TextClassifier.h"
