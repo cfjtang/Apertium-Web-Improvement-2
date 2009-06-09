@@ -34,9 +34,10 @@
 
 using namespace std;
 
-ApertiumServer::ApertiumServer() {
+ApertiumServer::ApertiumServer(ConfigurationManager *c) {
 	executorFactory = NULL;
 	server = NULL;
+	cm = c;
 }
 
 ApertiumServer::~ApertiumServer() {
@@ -56,20 +57,18 @@ iqxmlrpc::Executor_factory_base* ApertiumServer::buildExecutorFactory(unsigned i
 }
 
 void ApertiumServer::init() {
-	ConfigurationManager *conf = ConfigurationManager::Instance();
-
 	if (!executorFactory) {
-		executorFactory = buildExecutorFactory(conf->getMaxThreads());
+		executorFactory = buildExecutorFactory(cm->getMaxThreads());
 	}
 
 	if (!server) {
-		cout << "Starting server on port: " << conf->getServerPort() << endl;
+		cout << "Starting server on port: " << cm->getServerPort() << endl;
 
-		if (conf->getUseSsl()) {
+		if (cm->getUseSsl()) {
 			iqnet::ssl::ctx = iqnet::ssl::Ctx::server_only("data/cert.pem",	"data/pk.pem");
-			server = new iqxmlrpc::Https_server(conf->getServerPort(), executorFactory);
+			server = new iqxmlrpc::Https_server(cm->getServerPort(), executorFactory);
 		} else {
-			server = new iqxmlrpc::Http_server(conf->getServerPort(), executorFactory);
+			server = new iqxmlrpc::Http_server(cm->getServerPort(), executorFactory);
 		}
 
 		iqxmlrpc::register_method<ApertiumTranslate>(*server, "translate");

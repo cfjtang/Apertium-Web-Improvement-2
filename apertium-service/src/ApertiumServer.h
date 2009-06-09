@@ -30,7 +30,7 @@
 
 class ApertiumServer {
 public:
-	ApertiumServer();
+	ApertiumServer(ConfigurationManager *);
 	virtual ~ApertiumServer();
 
 	void init();
@@ -40,6 +40,8 @@ private:
 	iqxmlrpc::Executor_factory_base* buildExecutorFactory(unsigned int);
 	iqxmlrpc::Executor_factory_base *executorFactory;
 	iqxmlrpc::Server *server;
+
+	ConfigurationManager *cm;
 };
 
 #endif /* APERTIUMSERVER_H_ */

@@ -18,24 +18,24 @@
 #include "ConfigurationManager.h"
 #include <sstream>
 
-ConfigurationManager *ConfigurationManager::instance = NULL;
-boost::mutex ConfigurationManager::instanceMutex;
+//ConfigurationManager *ConfigurationManager::instance = NULL;
+//boost::mutex ConfigurationManager::instanceMutex;
 
-ConfigurationManager *ConfigurationManager::Instance() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	ConfigurationManager *ret = instance;
-	return(ret);
-}
+//ConfigurationManager *ConfigurationManager::Instance() {
+//	boost::mutex::scoped_lock Lock(instanceMutex);
+//	ConfigurationManager *ret = instance;
+//	return(ret);
+//}
 
-ConfigurationManager *ConfigurationManager::Instance(std::string confPath) {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	ConfigurationManager *ret = NULL;
-	if (!instance) {
-		instance = new ConfigurationManager(confPath);
-	}
-	ret = instance;
-	return (ret);
-}
+//ConfigurationManager *ConfigurationManager::Instance(std::string confPath) {
+//	boost::mutex::scoped_lock Lock(instanceMutex);
+//	ConfigurationManager *ret = NULL;
+//	if (!instance) {
+//		instance = new ConfigurationManager(confPath);
+//	}
+//	ret = instance;
+//	return (ret);
+//}
 
 ConfigurationManager::ConfigurationManager(std::string confPath) {
 	xmlpp::DomParser parser(confPath);
@@ -97,7 +97,7 @@ ConfigurationManager::ConfigurationManager(std::string confPath) {
 }
 
 ConfigurationManager::~ConfigurationManager() {
-	instance = NULL;
+	//instance = NULL;
 }
 
 int ConfigurationManager::getServerPort() {

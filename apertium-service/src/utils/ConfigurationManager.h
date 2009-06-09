@@ -24,8 +24,9 @@
 
 class ConfigurationManager {
 public:
-	static ConfigurationManager* Instance();
-	static ConfigurationManager* Instance(std::string);
+	ConfigurationManager(std::string);
+	//static ConfigurationManager* Instance();
+	//static ConfigurationManager* Instance(std::string);
 	virtual ~ConfigurationManager();
 
 	int getServerPort();
@@ -47,10 +48,10 @@ public:
 	void setConfUsers(std::string);
 
 private:
-	ConfigurationManager(std::string);
-	static ConfigurationManager *instance;
+	//ConfigurationManager(std::string);
+	//static ConfigurationManager *instance;
 
-	static boost::mutex instanceMutex;
+	//static boost::mutex instanceMutex;
 
 	int serverPort;
 	std::string apertiumBase;

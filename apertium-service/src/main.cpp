@@ -69,7 +69,8 @@ int main(int ac, char *av[]) {
 	        confFile = vm["confUsers"].as<string>();
 	    }
 
-		ConfigurationManager *conf = ConfigurationManager::Instance(confFile);
+		//ConfigurationManager *conf = ConfigurationManager::Instance(confFile);
+	    ConfigurationManager *conf = new ConfigurationManager(confFile);
 
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << conf->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
@@ -109,7 +110,7 @@ int main(int ac, char *av[]) {
 
 	    ::signal(SIGINT, &apertiumServerSignalHandler);
 
-	    ApertiumServer s;
+	    ApertiumServer s(conf);
 
 		server = &s;
 		server->init();
