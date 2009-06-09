@@ -26,7 +26,7 @@
 
 #include <libiqxmlrpc/https_server.h>
 
-#include "ConfigurationManager.h"
+#include "utils/ConfigurationManager.h"
 
 class ApertiumServer {
 public:

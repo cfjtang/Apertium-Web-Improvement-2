@@ -22,8 +22,6 @@
 
 #include "ApertiumServer.h"
 
-#include "ConfigurationManager.h"
-
 #include "ApertiumTranslate.h"
 #include "ApertiumListLanguagePairs.h"
 
