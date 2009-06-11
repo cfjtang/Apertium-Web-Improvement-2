@@ -471,13 +471,22 @@ REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut);
 # Aet e vefen a-walc’h eus
 SELECT Vpart IF (-1 VerbPP) (1C VerbFin);
 
+#emañ da vragoù pe war an daol pe war ar gador
+SELECT ("war" pr) IF (-1 ("pe" cnjcoo)) ;
+
+#  no mutan los sustantivos masculinas (excepto k que muta en c'h)
+# ki (perro) --> ar c'hi, taol (golpe) --> an taol, perzh (qualidad) --> ar perzh, 
+# berzh (suceso) --> ar berzh, taol (mesa) --> an daol
+
+REMOVE NomM + SoftMut IF (0 SoftMutCons) (0 SoftMut) (-1C DetDef) (NOT 0 ("k.*"ri)); 
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
 SELECT DroppedG IF (-1 Vpart);
 
 # REGLA (A0003): "na ganit ket"
-SELECT SoftMut IF (-1 SoftMutTrigger);
+SELECT SoftMut IF (-1 SoftMutTrigger) (0 SoftMutCons);
 
 # REGLA (A0004): "emañ e Brest"
 REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
