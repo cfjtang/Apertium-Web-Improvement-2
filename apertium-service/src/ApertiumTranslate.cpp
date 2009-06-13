@@ -19,8 +19,7 @@
 
 #include <iostream>
 
-#include <glibmm/convert.h>
-#include <glibmm/ustring.h>
+#include "format/Encoding.h"
 
 #include "format/Deformat.h"
 #include "format/Reformat.h"
@@ -40,7 +39,7 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 		//retval = 0;
 	} else {
 		string uin = params[0];
-		wstring win = utf8ToWstring(uin);
+		wstring win = Encoding::utf8ToWstring(uin);
 		wstring ret = deformat(win);
 
 		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
@@ -63,7 +62,7 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 		delete fm;
 
 		wstring wout = reformat(ret);
-		string rval = wstringToUtf8(wout);
+		string rval = Encoding::wstringToUtf8(wout);
 		retval = rval;
 	}
 }
@@ -84,13 +83,3 @@ std::wstring ApertiumTranslate::reformat(std::wstring in) {
 	return(wss.str());
 }
 
-std::string ApertiumTranslate::wstringToUtf8(std::wstring in) {
-	string ret = Glib::convert(std::string(reinterpret_cast<const char *>(in.data()), in.size() * sizeof(wchar_t)), "UTF-8", "WCHAR_T");
-	return ret;
-}
-
-std::wstring ApertiumTranslate::utf8ToWstring(std::string in) {
-	string str = Glib::convert(in, "WCHAR_T", "UTF-8");
-	wstring ret(reinterpret_cast<const wchar_t *>(str.data()), str.size() / sizeof(wchar_t));
-	return ret;
-}
