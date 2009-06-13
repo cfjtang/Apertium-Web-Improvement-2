@@ -30,9 +30,6 @@ public:
 private:
 	std::wstring deformat(std::wstring);
 	std::wstring reformat(std::wstring);
-
-	std::string wstringToUtf8(std::wstring);
-	std::wstring utf8ToWstring(std::string);
 };
 
 #endif /* APERTIUMTRANSLATE_H_ */
