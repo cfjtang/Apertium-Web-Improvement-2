@@ -49,6 +49,12 @@
 #include "PreTransfer.h"
 #include "ThreadSafeObjectPool.h"
 
+#include "cg/stdafx.h"
+#include "cg/icu_uoptions.h"
+#include "cg/Grammar.h"
+#include "cg/BinaryGrammar.h"
+#include "cg/ApertiumApplicator.h"
+
 using namespace std;
 
 enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
@@ -63,6 +69,7 @@ typedef std::vector<string> TransferIndexType;
 typedef pair<string, string> InterchunkIndexType;
 typedef pair<string, string> PostchunkIndexType;
 typedef pair<string, string> TransferMultIndexType;
+typedef string GrammarIndexType;
 
 template <class T> class NonIndexedObjectPool {
 public:
@@ -165,6 +172,7 @@ public:
 	ObjectPool<Interchunk, InterchunkIndexType> InterchunkPool;
 	ObjectPool<Postchunk, PostchunkIndexType> PostchunkPool;
 	ObjectPool<TransferMult, TransferMultIndexType> TransferMultPool;
+	ObjectPool<CG3::Grammar, GrammarIndexType> GrammarPool;
 
 private:
 	ObjectBroker();

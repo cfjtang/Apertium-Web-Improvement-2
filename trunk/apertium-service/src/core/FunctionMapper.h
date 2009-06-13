@@ -17,18 +17,10 @@ private:
 	ObjectBroker *objectBroker;
 
 	enum TaskType { APERTIUM_INTERCHUNK, APERTIUM_MULTIPLE_TRANSLATIONS, APERTIUM_POSTCHUNK, APERTIUM_PRETRANSFER,
-		APERTIUM_TAGGER, APERTIUM_TRANSFER, LT_PROC };
+		APERTIUM_TAGGER, APERTIUM_TRANSFER, LT_PROC, CG_PROC };
 
 	typedef boost::unordered_map<string, TaskType> TaskMapType;
 	TaskMapType task;
-
-	//boost::mutex mutexin;
-	//boost::mutex mutexmt;
-	//boost::mutex mutexpo;
-	//boost::mutex mutexpr;
-	//boost::mutex mutexta;
-	//boost::mutex mutextr;
-	//boost::mutex mutexlt;
 };
 
 #endif /* FUNCTIONMAPPER_H_ */
