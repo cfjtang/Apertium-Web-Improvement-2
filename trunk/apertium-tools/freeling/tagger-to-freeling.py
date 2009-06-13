@@ -64,7 +64,9 @@ def processWord(c): #{
 	#}
 
 	if unknown == True: #{
-	        print superficial + ' ' + lemma + ' UNK';
+	        print superficial + ' ' + superficial + ' UNK';
+#		c = sys.stdin.read(1);
+		return;
 	#}
 
 	if '+' in analysis: #{
