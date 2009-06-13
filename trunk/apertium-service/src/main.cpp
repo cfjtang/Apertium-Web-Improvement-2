@@ -26,6 +26,13 @@
 #include "core/TextClassifier.h"
 #include "core/Modes.h"
 
+#include "cg/stdafx.h"
+#include "cg/icu_uoptions.h"
+#include "cg/Recycler.h"
+#include "cg/Grammar.h"
+#include "cg/BinaryGrammar.h"
+#include "cg/ApertiumApplicator.h"
+
 using namespace std;
 namespace po = boost::program_options;
 
@@ -41,6 +48,13 @@ void apertiumServerSignalHandler(int) {
 int main(int ac, char *av[]) {
 
 	LtLocale::tryToSetLocale();
+
+	ucnv_setDefaultName("UTF-8");
+
+	CG3::Recycler::instance();
+	init_gbuffers();
+	init_strings();
+	init_keywords();
 
 	try {
 		po::options_description desc("Allowed options");
@@ -106,7 +120,7 @@ int main(int ac, char *av[]) {
 		TextClassifier::Instance(conf->getConfTextClassifier());
 
 	    Modes::Instance()->initPipe(conf->getApertiumBase());
-	    Modes::Instance()->initXML(conf->getApertiumBase());
+	    //Modes::Instance()->initXML(conf->getApertiumBase());
 
 	    ::signal(SIGINT, &apertiumServerSignalHandler);
 
