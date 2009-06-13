@@ -13,6 +13,14 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
 
+#include "format/Encoding.h"
+
+#include "cg/stdafx.h"
+#include "cg/icu_uoptions.h"
+#include "cg/Grammar.h"
+#include "cg/BinaryGrammar.h"
+#include "cg/ApertiumApplicator.h"
+
 using namespace std;
 
 FunctionMapper::FunctionMapper(ObjectBroker *o) {
@@ -25,26 +33,12 @@ FunctionMapper::FunctionMapper(ObjectBroker *o) {
 	task["apertium-tagger"] = APERTIUM_TAGGER;
 	task["apertium-transfer"] = APERTIUM_TRANSFER;
 	task["lt-proc"] = LT_PROC;
-
+	task["cg-proc"] = CG_PROC;
 }
 
-FunctionMapper::~FunctionMapper() {
-
-}
+FunctionMapper::~FunctionMapper() { }
 
 wstring FunctionMapper::execute(Program p, wstring d) {
-
-	FILE *in = tmpfile();
-
-	for (size_t i = 0; i < d.size(); i++)
-		fputwc(d[i], in);
-
-	rewind(in);
-
-	wchar_t *outptr;
-	size_t outsize;
-	FILE *out = open_wmemstream(&outptr, &outsize);
-	//FILE *out = tmpfile();
 
 	vector<string> params;
 	const string commandLine = p.getProgramName();
@@ -53,10 +47,37 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 	string program = params[0];
 	vector<string> files = p.getFileNames();
 
+	TaskType taskType = task[program];
+
+	FILE *in = tmpfile();
+
+	if (taskType == CG_PROC) {
+		string sd = Encoding::wstringToUtf8(d);
+		for (size_t i = 0; i < sd.size(); ++i) {
+			fputc(sd[i], in);
+		}
+	} else {
+		for (size_t i = 0; i < d.size(); ++i) {
+			fputwc(d[i], in);
+		}
+	}
+
+	rewind(in);
+
+	void *outptr;
+	size_t outsize;
+
+	FILE *out = NULL;
+
+	if (taskType == CG_PROC) {
+		out = open_memstream(reinterpret_cast<char **>(&outptr), &outsize);
+	} else {
+		out = open_wmemstream(reinterpret_cast<wchar_t **>(&outptr), &outsize);
+	}
+
 	switch (task[program]) {
 	case APERTIUM_INTERCHUNK: {
 		InterchunkIndexType index = make_pair(files[0], files[1]);
-		//boost::mutex::scoped_lock lock(mutexin);
 		Interchunk *i = objectBroker->InterchunkPool.request(index);
 		i->interchunk(in, out);
 		objectBroker->InterchunkPool.release(i, index);
@@ -65,7 +86,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	case APERTIUM_MULTIPLE_TRANSLATIONS: {
 		TransferMultIndexType index = make_pair(files[0], files[1]);
-		//boost::mutex::scoped_lock lock(mutexmt);
 		TransferMult *i = objectBroker->TransferMultPool.request(index);
 		i->transfer(in, out);
 		objectBroker->TransferMultPool.release(i, index);
@@ -73,7 +93,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 		break;
 	case APERTIUM_POSTCHUNK: {
 		PostchunkIndexType index = make_pair(files[0], files[1]);
-		//boost::mutex::scoped_lock lock(mutexpo);
 		Postchunk *i = objectBroker->PostchunkPool.request(index);
 		i->postchunk(in, out);
 		objectBroker->PostchunkPool.release(i, index);
@@ -82,7 +101,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	case APERTIUM_PRETRANSFER: {
 		PreTransfer *i = objectBroker->PreTransferPool.request();
-		//boost::mutex::scoped_lock lock(mutexpr);
 		i->processStream(in, out);
 		objectBroker->PreTransferPool.release(i);
 	}
@@ -90,7 +108,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	case APERTIUM_TAGGER: {
 		HMMIndexType index = files[0];
-		//boost::mutex::scoped_lock lock(mutexta);
 		HMM *i = objectBroker->HMMPool.request(index);
 		i->tagger(in, out, false);
 		objectBroker->HMMPool.release(i, index);
@@ -101,7 +118,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 		TransferIndexType index = files;
 		Transfer *i = NULL;
 		{
-		//boost::mutex::scoped_lock lock(mutexlt);
 		i = objectBroker->TransferPool.request(index);
 
 		bool useBilingual = true;
@@ -153,7 +169,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 		FSTProcessor *i = NULL;
 		{
-		//boost::mutex::scoped_lock lock(mutexlt);
 		i = objectBroker->FSTProcessorPool.request(index);
 
 		switch (task) {
@@ -176,12 +191,45 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 	}
 		break;
 
+	case CG_PROC:
+	{
+		const char *codepage_default = ucnv_getDefaultName();
+		const char *locale_default = "en_US_POSIX"; //uloc_getDefault();
+
+		UFILE *ux_in = u_finit(in, locale_default, codepage_default);
+		UFILE *ux_out = u_finit(out, locale_default, codepage_default);
+		UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
+
+		GrammarIndexType index = files[0];
+
+		CG3::Grammar *grammar = objectBroker->GrammarPool.request(index);
+
+		CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_in, ux_out, ux_err);
+
+		applicator->setGrammar(grammar);
+		applicator->runGrammarOnText(ux_in, ux_out);
+
+		delete applicator;
+
+		objectBroker->GrammarPool.release(grammar, index);
+	}
+		break;
+
 	default:
-		cerr << "unknown code for " << program << endl;
+		cout << "unknown code for " << program << endl;
 	}
 
 	fclose(out);
-	wstring ret(outptr, outsize);
+
+	wstring ret;
+
+	if (taskType == CG_PROC) {
+		string sret(reinterpret_cast<char *>(outptr), outsize);
+		ret = Encoding::utf8ToWstring(sret);
+	} else {
+		wstring wret(reinterpret_cast<wchar_t *>(outptr), outsize);
+		ret = wret;
+	}
 
 	fclose(in);
 

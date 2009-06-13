@@ -15,43 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATIONMANAGER_H_
-#define CONFIGURATIONMANAGER_H_
+#ifndef ENCODING_H_
+#define ENCODING_H_
 
 #include <iostream>
-#include <libxml++/libxml++.h>
-#include <boost/thread.hpp>
 
-class ConfigurationManager {
+class Encoding {
 public:
-	ConfigurationManager(std::string);
-	virtual ~ConfigurationManager();
+	Encoding();
+	virtual ~Encoding();
 
-	int getServerPort();
-	void setServerPort(int);
-
-	std::string getApertiumBase();
-	void setApertiumBase(std::string);
-
-	int getMaxThreads();
-	void setMaxThreads(int);
-
-	bool getUseSsl();
-	void setUseSsl(bool);
-
-	std::string getConfTextClassifier();
-	void setConfTextClassifier(std::string);
-
-	std::string getConfUsers();
-	void setConfUsers(std::string);
-
-private:
-	int serverPort;
-	std::string apertiumBase;
-	int maxThreads;
-	bool useSsl;
-	std::string confTextClassifier;
-	std::string confUsers;
+	static std::string wstringToUtf8(std::wstring);
+	static std::wstring utf8ToWstring(std::string);
 };
 
-#endif /* CONFIGURATIONMANAGER_H_ */
+#endif /* ENCODING_H_ */

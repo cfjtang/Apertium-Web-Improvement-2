@@ -109,3 +109,31 @@ template <> TransferMult *ObjectPool<TransferMult, TransferMultIndexType>::getNe
 	ret->read(index.first, index.second);
 	return(ret);
 }
+
+template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index) {
+
+	const char *codepage_default = ucnv_getDefaultName();
+	const char *locale_default = "en_US_POSIX"; //uloc_getDefault();
+
+	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
+
+	CG3::Grammar *ret = pool.construct();
+
+	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*ret, ux_err);
+
+	(*ret).ux_stderr = ux_err;
+	CG3::Tag *tag_any = ret->allocateTag(stringbits[S_ASTERIK]);
+	(*ret).tag_any = tag_any->hash;
+
+	if (parser->parse_grammar_from_file(index.data(), locale_default, codepage_default)) {
+		std::cerr << "Error: Grammar could not be parsed - exiting!" << std::endl;
+		CG3Quit(1);
+	}
+
+	ret->reindex();
+
+	delete parser;
+
+	return(ret);
+}
+
