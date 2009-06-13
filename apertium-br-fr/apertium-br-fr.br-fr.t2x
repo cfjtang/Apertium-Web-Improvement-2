@@ -263,6 +263,24 @@
 
 
 <section-def-macros>
+  <def-macro n="f_concord1" npar="1">
+
+  <choose> 
+    <when>
+      <test>
+        <equal>
+          <clip pos="1" part="gen"/>
+          <lit-tag v="GD"/>
+        </equal>
+      </test>
+      <let>
+        <clip pos="1" part="gen"/>
+        <lit-tag v="m"/>
+      </let>
+    </when>
+  </choose>
+  </def-macro>
+ 
   <def-macro n="particle_concord2" npar="2">
 
   <choose> 
@@ -280,7 +298,7 @@
     </when>
   </choose>
     
-  </def-macro>
+</def-macro>
 
 <def-macro n="verb_prs_from_prn_inf" npar="2">
   <let>
@@ -8114,7 +8132,7 @@
       </pattern>
       <action>
 <!--
-        <call-macro n="concord_prnsubj_verb2">
+        <call-macro n="concord_prnsubj_verb2"> 
           <with-param pos="1"/>
           <with-param pos="3"/>
         </call-macro>
@@ -8122,6 +8140,9 @@
       <call-macro n="particle_concord2">
           <with-param pos="2"/>
           <with-param pos="3"/>
+      </call-macro>
+      <call-macro n="f_concord1"> <!-- This should not be necessary "ar serc’hed en em starde" -->
+        <with-param pos="1"/>
       </call-macro>
 	<out>
 	  <chunk>
