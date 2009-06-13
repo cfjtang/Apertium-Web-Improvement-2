@@ -325,7 +325,7 @@ REMOVE PrnDObj IF (-2 VpartGer) (-1 Verb) (1 Verb);
 REMOVE PrnDObj IF (-1 VerbPP) (0 VpartIDO) (1 ("bezañ"ri vblex));
 
 # REGLA (B    ): "D'ar mare ma oan o tigeriñ an nor"
-REMOVE DetPos IF (1 VerbFin);
+REMOVE DetPos IF (1C VerbFin);
 
 # Roet em eus anezhi dezhañ. An hanter anezhi .
 # Ne welin ket ac'hanoc'h
@@ -344,8 +344,8 @@ SELECT PreDet IF (-1 Det) (1 NC);
 # REGLA (B0013): "Me am eus kanet"
 REMOVE VerbImp IF (-1 VerbFin);
 
-# REGLA (B0014): "Yann a zeuy" / "tud zo e Brest"
-SELECT:Vpart_if_Vfin Vpart IF (1 VerbFin) (NOT 1 NP);
+# REGLA (B0014): "Yann a zeuy" / "tud zo e Brest" / "e buhez ur yezh"
+SELECT:Vpart_if_Vfin Vpart IF (1 VerbFin) (NOT 1 NP) (NOT 1 NC);
 
 # REGLA (B0016): >The particle is omitted before every form of 'kaout' and the locative forms of 'bezañ'
 REMOVE Vpart IF (1 ("kaout" vblex));
