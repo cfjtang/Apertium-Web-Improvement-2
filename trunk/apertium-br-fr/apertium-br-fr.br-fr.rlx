@@ -387,6 +387,9 @@ REMOVE Verb IF (-1 ("gant" pr));
 # REGLA (B    ): "En 2 yezh war"
 REMOVE Adj IF (-1 Num) (0 Adj) (0 NC) (1 Prep);
 
+# a vo staliet goude e ti an dud
+REMOVE ("e" det pos) IF (1 NomM) (1 SoftMutCons) (NOT 1 SoftMut);
+
 # REGLA (B    ): "e c’heller ober gant e ijinadenn"
 REMOVE Prep IF (-1 Prep) (NOT -1 PRE-N) (0 Prep) (0 DetPos);
 
