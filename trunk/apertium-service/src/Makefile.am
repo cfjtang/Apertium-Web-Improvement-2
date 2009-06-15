@@ -2,8 +2,8 @@ h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumCla
 
 cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumListLanguagePairs.cpp ./ApertiumClassify.cpp ./core/PreTransfer.cpp ./core/Modes.cpp ./core/FunctionMapper.cpp ./core/ObjectBroker.cpp ./core/TextClassifier.cpp ./ApertiumLogInterceptor.cpp ./ApertiumAuthPlugin.cpp ./ApertiumTest.cpp ./ApertiumTranslate.cpp ./ApertiumRuntimeException.cpp ./cg/Rule.cpp ./cg/ApertiumApplicator.cpp ./cg/Recycler.cpp ./cg/Window.cpp ./cg/GrammarApplicator_runContextualTest.cpp ./cg/uextras.cpp ./cg/Cohort.cpp ./cg/GrammarApplicator_reflow.cpp ./cg/CompositeTag.cpp ./cg/Strings.cpp ./cg/GrammarApplicator_matchSet.cpp ./cg/TextualParser.cpp ./cg/BinaryGrammar_write.cpp ./cg/GrammarApplicator_runGrammar.cpp ./cg/Reading.cpp ./cg/Grammar.cpp ./cg/BinaryGrammar.cpp ./cg/Set.cpp ./cg/ContextualTest.cpp ./cg/Tag.cpp ./cg/icu_uoptions.cpp ./cg/GrammarWriter.cpp ./cg/Anchor.cpp ./cg/GrammarApplicator_runRules.cpp ./cg/GrammarApplicator.cpp ./cg/SingleWindow.cpp ./cg/BinaryGrammar_read.cpp ./AuthenticationManager.cpp ./utils/ConfigurationManager.cpp ./utils/Logger.cpp ./main.cpp
 
-bin_PROGRAMS = apertium-service
+bin_PROGRAMS = apertium_service
 
-apertium-service_SOURCES = $(cpp_sources)
+apertium_service_SOURCES = $(cpp_sources)
 
 EXTRA_DIST = $(h_sources)
