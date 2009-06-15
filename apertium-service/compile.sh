@@ -4,4 +4,4 @@ g++ -L/usr/local/lib -o Debug/apertium-service src/*.cpp src/core/*.cpp src/util
 -I/usr/lib/sigc++-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/local/include/ -liqxmlrpc \
 -llttoolbox3 -lapertium3 -lboost_regex-mt -lglib -lboost_program_options-mt -lboost_filesystem-mt -lxml2 \
 -lgobject-2.0 -lboost_thread-mt -lsigc-2.0 -lglib-2.0 -lxml++-2.6 -liqxmlrpc-server -Isrc/ -Isrc/core/ -Isrc/format/ \
--ltextcat -liconv -licui18n -licudata -licuuc -lm -licuio -Isrc/cg/ -Wno-deprecated
+-ltextcat -licui18n -licudata -licuuc -lm -licuio -Isrc/cg/ -Wno-deprecated # -liconv
