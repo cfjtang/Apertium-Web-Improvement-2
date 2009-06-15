@@ -1,5 +1,5 @@
-INCLUDES = @XMLPP_CFLAGS@
-LDADD = @XMLPP_LIBS@
+INCLUDES = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@
+LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@
 
 h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumClassify.h ./format/Deformat.h ./format/Encoding.h ./format/Base64.h ./format/Reformat.h ./ApertiumAuthPlugin.h ./ApertiumListLanguagePairs.h ./core/FunctionMapper.h ./core/PreTransfer.h ./core/ThreadSafeQueue.h ./core/ObjectBroker.h ./core/ThreadSafeObjectPool.h ./core/Modes.h ./core/TextClassifier.h ./ApertiumLogInterceptor.h ./ApertiumServer.h ./ApertiumTest.h ./ApertiumTranslate.h ./cg/version.h ./cg/Grammar.h ./cg/GrammarWriter.h ./cg/Window.h ./cg/inlines.h ./cg/Rule.h ./cg/TextualParser.h ./cg/Reading.h ./cg/cycle.h ./cg/ApertiumApplicator.h ./cg/Anchor.h ./cg/stdafx.h ./cg/IGrammarParser.h ./cg/Recycler.h ./cg/Strings.h ./cg/Set.h ./cg/options.h ./cg/macros.h ./cg/BinaryGrammar.h ./cg/GrammarApplicator.h ./cg/CompositeTag.h ./cg/icu_uoptions.h ./cg/uextras.h ./cg/Cohort.h ./cg/ContextualTest.h ./cg/Tag.h ./cg/SingleWindow.h ./utils/ConfigurationManager.h ./utils/Logger.h
 
