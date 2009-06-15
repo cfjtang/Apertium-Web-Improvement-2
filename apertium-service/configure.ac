@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.63])
+AC_PREREQ([2.61])
 AC_INIT([apertium-service], [0.8], [p.minervini@gmail.com])
 AC_CONFIG_SRCDIR([src/AuthenticationManager.h])
 AC_CONFIG_HEADERS([config.h])
@@ -30,6 +30,6 @@ AC_TYPE_UINT8_T
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([clock_gettime getpagesize gettimeofday memset regcomp])
 
-AC_CONFIG_FILES([Debug/makefile
-                 Release/makefile])
+AC_CONFIG_FILES([Debug/Makefile
+                 Release/Makefile])
 AC_OUTPUT
