@@ -38,6 +38,11 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 
+PKG_CHECK_MODULES(XMLPP, libxml++-2.6 >= 2.8.1)
+
+AC_SUBST(XMLPP_CFLAGS)
+AC_SUBST(XMLPP_LIBS)
+
 ICU_LIBS=`icu-config --ldflags`
 ICUIO_LIBS=`icu-config --ldflags-icuio`
 
