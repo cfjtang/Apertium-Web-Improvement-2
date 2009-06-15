@@ -54,7 +54,6 @@ PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0)
 AC_SUBST(APERTIUM_CFLAGS)
 AC_SUBST(APERTIUM_LIBS)
 
-
 ICU_LIBS=`icu-config --ldflags`
 ICUIO_LIBS=`icu-config --ldflags-icuio`
 
