@@ -1,3 +1,3 @@
 SUBDIRS = src
 
-DIST_SUBDIRS = src m4
+DIST_SUBDIRS = src

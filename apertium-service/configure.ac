@@ -3,14 +3,18 @@
 
 AC_PREREQ([2.61])
 AC_INIT([apertium-service], [0.1.0], [p.minervini@gmail.com])
+
+PACKAGE=apertium-service
+VERSION=0.1.0
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+ICU_VERSION=3.6.0
+
 AC_CONFIG_HEADERS([src/config.h])
 
-GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=1
-GENERIC_MICRO_VERSION=0
-
-GENERIC_VERSION=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION.$GENERIC_MICRO_VERSION
-GENERIC_RELEASE=$GENERIC_MAJOR_VERSION.$GENERIC_MINOR_VERSION
+ICUCPPFLAGS=`icu-config --cppflags`
+CXXFLAGS="-Wno-deprecated $ICUCPPFLAGS $CXXFLAGS"
 
 # Checks for programs.
 AC_PROG_CXX
@@ -33,10 +37,13 @@ AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
 
 # Checks for library functions.
+
+ICU_LIBS=`icu-config --ldflags`
+ICUIO_LIBS=`icu-config --ldflags-icuio`
+
+LIBS="$ICU_LIBS $ICUIO_LIBS $LIBS"
+
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([open_memstream open_wmemstream])
-
-AC_CONFIG_FILES([Debug/Makefile
-                 Release/Makefile])
 
 AC_OUTPUT([Makefile src/Makefile])
