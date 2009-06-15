@@ -638,6 +638,8 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIB@&t@OBJS
+LIBIQXMLRPC_LIBS
+LIBIQXMLRPC_CFLAGS
 APERTIUM_LIBS
 APERTIUM_CFLAGS
 LTTOOLBOX_LIBS
@@ -753,7 +755,9 @@ XMLPP_LIBS
 LTTOOLBOX_CFLAGS
 LTTOOLBOX_LIBS
 APERTIUM_CFLAGS
-APERTIUM_LIBS'
+APERTIUM_LIBS
+LIBIQXMLRPC_CFLAGS
+LIBIQXMLRPC_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1407,6 +1411,10 @@ Some influential environment variables:
               C compiler flags for APERTIUM, overriding pkg-config
   APERTIUM_LIBS 
               linker flags for APERTIUM, overriding pkg-config
+  LIBIQXMLRPC_CFLAGS 
+              C compiler flags for LIBIQXMLRPC, overriding pkg-config
+  LIBIQXMLRPC_LIBS 
+              linker flags for LIBIQXMLRPC, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -5543,7 +5551,6 @@ _ACEOF
 # Checks for library functions.
 
 
-
 if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
 	if test -n "$ac_tool_prefix"; then
   # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
@@ -5776,7 +5783,6 @@ fi
 
 
 
-
 pkg_failed=no
 { $as_echo "$as_me:$LINENO: checking for LTTOOLBOX" >&5
 $as_echo_n "checking for LTTOOLBOX... " >&6; }
@@ -6002,6 +6008,123 @@ See \`config.log' for more details." >&2;}
 else
 	APERTIUM_CFLAGS=$pkg_cv_APERTIUM_CFLAGS
 	APERTIUM_LIBS=$pkg_cv_APERTIUM_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	:
+fi
+
+
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for LIBIQXMLRPC" >&5
+$as_echo_n "checking for LIBIQXMLRPC... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBIQXMLRPC_CFLAGS"; then
+        pkg_cv_LIBIQXMLRPC_CFLAGS="$LIBIQXMLRPC_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libiqxmlrpc-server >= 0.8.9\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libiqxmlrpc-server >= 0.8.9") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBIQXMLRPC_CFLAGS=`$PKG_CONFIG --cflags "libiqxmlrpc-server >= 0.8.9" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBIQXMLRPC_LIBS"; then
+        pkg_cv_LIBIQXMLRPC_LIBS="$LIBIQXMLRPC_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libiqxmlrpc-server >= 0.8.9\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libiqxmlrpc-server >= 0.8.9") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBIQXMLRPC_LIBS=`$PKG_CONFIG --libs "libiqxmlrpc-server >= 0.8.9" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+        
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBIQXMLRPC_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libiqxmlrpc-server >= 0.8.9"`
+        else 
+	        LIBIQXMLRPC_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libiqxmlrpc-server >= 0.8.9"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBIQXMLRPC_PKG_ERRORS" >&5
+
+	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libiqxmlrpc-server >= 0.8.9) were not met:
+
+$LIBIQXMLRPC_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables LIBIQXMLRPC_CFLAGS
+and LIBIQXMLRPC_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+" >&5
+$as_echo "$as_me: error: Package requirements (libiqxmlrpc-server >= 0.8.9) were not met:
+
+$LIBIQXMLRPC_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables LIBIQXMLRPC_CFLAGS
+and LIBIQXMLRPC_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+" >&2;}
+   { (exit 1); exit 1; }; }
+elif test $pkg_failed = untried; then
+	{ { $as_echo "$as_me:$LINENO: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+{ { $as_echo "$as_me:$LINENO: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables LIBIQXMLRPC_CFLAGS
+and LIBIQXMLRPC_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details." >&5
+$as_echo "$as_me: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables LIBIQXMLRPC_CFLAGS
+and LIBIQXMLRPC_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }; }
+else
+	LIBIQXMLRPC_CFLAGS=$pkg_cv_LIBIQXMLRPC_CFLAGS
+	LIBIQXMLRPC_LIBS=$pkg_cv_LIBIQXMLRPC_LIBS
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 	:
