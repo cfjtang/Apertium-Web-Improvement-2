@@ -1,6 +1,5 @@
 #! /bin/sh
 
-# $Id: autogen.sh,v 1.2 2006/02/07 18:05:01 sortiz Exp $
 #
 # Copyright (c) 2002  Daniel Elstner  <daniel.elstner@gmx.net>
 #
@@ -19,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+# Added a -I m4 flag to aclocal - Pasquale Minervini <p.minervini@gmail.com>
 
 dir=`echo "$0" | sed 's,[^/]*$,,'`
 test "x${dir}" = "x" && dir='.'
@@ -34,7 +34,7 @@ rm -f config.cache acconfig.h
 #echo "- libtoolize."		&& \
 #if test x$(uname -s) = xDarwin; then glibtoolize --force; else libtoolize --force; fi && \
 echo "- aclocal."		&& \
-aclocal			&& \
+aclocal	-I m4			&& \
 echo "- autoconf."		&& \
 autoconf			&& \
 echo "- autoheader."		&& \
