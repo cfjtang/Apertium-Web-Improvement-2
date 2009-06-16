@@ -44,6 +44,51 @@ AX_BOOST_UNIT_TEST_FRAMEWORK
 
 AC_CHECK_LIB(iconv, libiconv_open, LIBS="$LIBS -liconv")
 
+# Test for libtextcat 2.1 or better
+
+AC_LANG_C
+LIBTEXTCAT_CFLAGS=""
+LIBTEXTCAT_LIBS="-ltextcat"
+
+CXXFLAGS_cache=$CXXFLAGS
+CXXFLAGS=" $LIBTEXTCAT_CFLAGS "
+CFLAGS_cache=$CFLAGS
+CFLAGS=" $LIBTEXTCAT_CFLAGS "
+LDFLAGS_cache=$LDFLAGS
+LDFLAGS=" $LIBTEXTCAT_LIBS "
+
+AC_TRY_COMPILE([
+#include <textcat.h>
+#include <string.h>
+        ],
+        [
+    char* buf = "The createfp program allows you to easily create your own document"
+        "fingerprints. Just feed it an example document on standard input, and"
+        "store the standard output:";
+
+    void* h = textcat_Init( "tc.conf" );
+    printf( "Language: %s\n", textcat_Classify(h, buf, strlen(buf)) );
+    textcat_Done(h);
+        ],
+        [have_libtextcat=yes],[have_libtextcat=no])
+LDFLAGS=$LDFLAGS_cache
+CXXFLAGS=$CXXFLAGS_cache
+CFLAGS=$CFLAGS_cache
+
+if test x"$have_libtextcat" = xno; then
+  LIBTEXTCAT_CFLAGS=" "
+  LIBTEXTCAT_LIBS=" "
+  echo " libtextcat 2.1 or greater not found... no text language guessing for you."
+else
+  echo "libtextcat 2.1 or greater found, text language guessing support being built..."
+  AC_DEFINE(HAVE_LIBTEXTCAT, [], [define if the libtextcat library is available])
+fi;
+
+AM_CONDITIONAL(HAVE_LIBTEXTCAT, test x"$have_libtextcat" = xyes)
+AC_SUBST(LIBTEXTCAT_CFLAGS)
+AC_SUBST(LIBTEXTCAT_LIBS)
+
+
 PKG_CHECK_MODULES(XMLPP, libxml++-2.6 >= 2.8.1)
 
 AC_SUBST(XMLPP_CFLAGS)
