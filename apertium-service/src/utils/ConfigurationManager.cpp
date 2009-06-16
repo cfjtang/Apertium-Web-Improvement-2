@@ -18,8 +18,10 @@
 #include "ConfigurationManager.h"
 #include <sstream>
 
-ConfigurationManager::ConfigurationManager(std::string confPath) {
-	xmlpp::DomParser parser(confPath);
+namespace fs = boost::filesystem;
+
+ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPath) {
+	xmlpp::DomParser parser(confPath.string());
 
 	if (parser) {
 		const xmlpp::Node* rootNode = parser.get_document()->get_root_node();
@@ -28,8 +30,8 @@ ConfigurationManager::ConfigurationManager(std::string confPath) {
 		apertiumBase = "/usr/local/share/apertium";
 		maxThreads = 100;
 		useSsl = false;
-		confTextClassifier = "tc.conf";
-		confUsers = "users.xml";
+		confTextClassifier = confDirPath / "tc.conf";
+		confUsers = confDirPath / "users.xml";
 
 		if (rootNode) {
 			xmlpp::NodeSet serverPortNodeSet = rootNode->find("/ApertiumServerConfiguration/ServerPort/text()");
@@ -87,11 +89,11 @@ void ConfigurationManager::setServerPort(int s) {
 	serverPort = s;
 }
 
-std::string ConfigurationManager::getApertiumBase() {
+fs::path ConfigurationManager::getApertiumBase() {
 	return apertiumBase;
 }
 
-void ConfigurationManager::setApertiumBase(std::string a) {
+void ConfigurationManager::setApertiumBase(fs::path a) {
 	apertiumBase = a;
 }
 
@@ -111,18 +113,18 @@ void ConfigurationManager::setUseSsl(bool u) {
 	useSsl = u;
 }
 
-std::string ConfigurationManager::getConfTextClassifier() {
+fs::path ConfigurationManager::getConfTextClassifier() {
 	return confTextClassifier;
 }
 
-void ConfigurationManager::setConfTextClassifier(std::string c) {
+void ConfigurationManager::setConfTextClassifier(fs::path c) {
 	confTextClassifier = c;
 }
 
-std::string ConfigurationManager::getConfUsers() {
+fs::path ConfigurationManager::getConfUsers() {
 	return confUsers;
 }
 
-void ConfigurationManager::setConfUsers(std::string c) {
+void ConfigurationManager::setConfUsers(fs::path c) {
 	confUsers = c;
 }

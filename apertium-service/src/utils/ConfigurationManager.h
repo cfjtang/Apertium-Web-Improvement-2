@@ -19,19 +19,24 @@
 #define CONFIGURATIONMANAGER_H_
 
 #include <iostream>
-#include <libxml++/libxml++.h>
+
 #include <boost/thread.hpp>
+#include <boost/filesystem.hpp>
+
+#include <libxml++/libxml++.h>
+
+namespace fs = boost::filesystem;
 
 class ConfigurationManager {
 public:
-	ConfigurationManager(std::string);
+	ConfigurationManager(fs::path, fs::path);
 	virtual ~ConfigurationManager();
 
 	int getServerPort();
 	void setServerPort(int);
 
-	std::string getApertiumBase();
-	void setApertiumBase(std::string);
+	fs::path getApertiumBase();
+	void setApertiumBase(fs::path);
 
 	int getMaxThreads();
 	void setMaxThreads(int);
@@ -39,19 +44,19 @@ public:
 	bool getUseSsl();
 	void setUseSsl(bool);
 
-	std::string getConfTextClassifier();
-	void setConfTextClassifier(std::string);
+	fs::path getConfTextClassifier();
+	void setConfTextClassifier(fs::path);
 
-	std::string getConfUsers();
-	void setConfUsers(std::string);
+	fs::path getConfUsers();
+	void setConfUsers(fs::path);
 
 private:
 	int serverPort;
-	std::string apertiumBase;
+	fs::path apertiumBase;
 	int maxThreads;
 	bool useSsl;
-	std::string confTextClassifier;
-	std::string confUsers;
+	fs::path confTextClassifier;
+	fs::path confUsers;
 };
 
 #endif /* CONFIGURATIONMANAGER_H_ */
