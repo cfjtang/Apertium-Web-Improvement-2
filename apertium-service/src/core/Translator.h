@@ -15,28 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ApertiumListLanguagePairs.h"
-
-#include "ApertiumServer.h"
-
-#include "ApertiumRuntimeException.h"
-#include "core/Modes.h"
+#ifndef TRANSLATOR_H_
+#define TRANSLATOR_H_
 
 #include <iostream>
+#include <wchar.h>
 
-using namespace std;
+#include "Modes.h"
 
-void ApertiumListLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
-	Modes *m = Modes::Instance();
+class Translator {
+public:
+	static std::wstring translate(std::wstring, Mode *);
 
-	list<string> modes = m->getModeNames();
-	modes.sort();
+private:
+	std::wstring deformat(std::wstring);
+	std::wstring reformat(std::wstring);
+};
 
-	retval = iqxmlrpc::Array();
-
-	for (list<string>::iterator it = modes.begin(); it != modes.end(); it++) {
-		iqxmlrpc::Value v = iqxmlrpc::Value(*it);
-		retval.push_back(v);
-	}
-
-}
+#endif /* TRANSLATOR_H_ */
