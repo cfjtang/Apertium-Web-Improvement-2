@@ -28,8 +28,8 @@ public:
 	static std::wstring translate(std::wstring, Mode *);
 
 private:
-	std::wstring deformat(std::wstring);
-	std::wstring reformat(std::wstring);
+	static std::wstring deformat(std::wstring);
+	static std::wstring reformat(std::wstring);
 };
 
 #endif /* TRANSLATOR_H_ */

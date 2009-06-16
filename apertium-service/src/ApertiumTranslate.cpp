@@ -20,13 +20,7 @@
 #include <iostream>
 
 #include "format/Encoding.h"
-
-#include "format/Deformat.h"
-#include "format/Reformat.h"
-
-#include "core/ObjectBroker.h"
-#include "core/FunctionMapper.h"
-
+#include "core/Translator.h"
 #include "core/Modes.h"
 
 #include "ApertiumRuntimeException.h"
@@ -36,13 +30,9 @@ using namespace std;
 void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 	if (params.size() < 2) {
 		throw ApertiumRuntimeException("Too few arguments");
-		//retval = 0;
 	} else {
-		string uin = params[0];
-		wstring win = Encoding::utf8ToWstring(uin);
-		wstring ret = deformat(win);
-
-		FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
+		string in = params[0];
+		wstring toTranslate = Encoding::utf8ToWstring(in);
 
 		string modeName = params[1];
 		Mode *mode = Modes::Instance()->getMode(modeName);
@@ -51,35 +41,9 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 			throw ApertiumRuntimeException("Mode not found: " + modeName);
 		}
 
-		vector<Program> programs = mode->getPrograms();
-
-		for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
-			Program program = *it;
-			wstring tmp = fm->execute(program, ret);
-			ret = tmp;
-		}
-
-		delete fm;
-
-		wstring wout = reformat(ret);
-		string rval = Encoding::wstringToUtf8(wout);
-		retval = rval;
+		wstring translated = Translator::translate(toTranslate, mode);
+		string out = Encoding::wstringToUtf8(translated);
+		retval = out;
 	}
-}
-
-std::wstring ApertiumTranslate::deformat(std::wstring in) {
-	wstringstream wss;
-	Deformat *d = new Deformat(in, &wss);
-	d->lex();
-	delete d;
-	return(wss.str());
-}
-
-std::wstring ApertiumTranslate::reformat(std::wstring in) {
-	wstringstream wss;
-	Reformat *r = new Reformat(in, &wss);
-	r->lex();
-	delete r;
-	return(wss.str());
 }
 
