@@ -28,7 +28,7 @@ std::wstring Translator::translate(std::wstring text, Mode *mode) {
 
 	vector<Program> programs = mode->getPrograms();
 
-	wstring ret = text;
+	wstring ret = deformat(text);
 
 	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
@@ -38,7 +38,7 @@ std::wstring Translator::translate(std::wstring text, Mode *mode) {
 
 	delete fm;
 
-	return ret;
+	return reformat(ret);
 }
 
 std::wstring Translator::deformat(std::wstring in) {

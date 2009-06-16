@@ -26,10 +26,6 @@
 class ApertiumTranslate: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
-
-private:
-	std::wstring deformat(std::wstring);
-	std::wstring reformat(std::wstring);
 };
 
 #endif /* APERTIUMTRANSLATE_H_ */
