@@ -19,6 +19,7 @@
 
 #include <lttoolbox/lt_locale.h>
 #include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
 
 #include "ApertiumServer.h"
 #include "AuthenticationManager.h"
@@ -35,6 +36,7 @@
 
 using namespace std;
 namespace po = boost::program_options;
+namespace fs = boost::filesystem;
 
 ApertiumServer *server = NULL;
 
@@ -59,6 +61,7 @@ int main(int ac, char *av[]) {
 	try {
 		po::options_description desc("Allowed options");
 		desc.add_options()("help", "produce this help message")
+		("confDir", po::value<string>(), "(string) set configuration directory")
 		("confFile", po::value<string>(), "(string) set configuration file")
 		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
 		("serverPort", po::value<int>(), "(int) set server port")
@@ -76,15 +79,21 @@ int main(int ac, char *av[]) {
 	        return(1);
 	    }
 
-	    string confFile = "configuration.xml";
+	    fs::path confDir = "conf";
+
+	    if (vm.count("confDir")) {
+	        cout << "Configuration directory was " << confDir <<  ", setting it to " << vm["confDir"].as<string>() << endl;
+	        confDir = vm["confDir"].as<string>();
+	    }
+
+	    fs::path confFile = confDir / "configuration.xml";
 
 	    if (vm.count("confFile")) {
 	        cout << "Configuration file was " << confFile <<  ", setting it to " << vm["confFile"].as<string>() << endl;
-	        confFile = vm["confUsers"].as<string>();
+	        confFile = vm["confFile"].as<string>();
 	    }
 
-		//ConfigurationManager *conf = ConfigurationManager::Instance(confFile);
-	    ConfigurationManager *conf = new ConfigurationManager(confFile);
+	    ConfigurationManager *conf = new ConfigurationManager(confFile, confDir);
 
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << conf->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
@@ -116,8 +125,8 @@ int main(int ac, char *av[]) {
 	        conf->setConfUsers(vm["confUsers"].as<string>());
 	    }
 
-		AuthenticationManager::Instance(conf->getConfUsers());
-		TextClassifier::Instance(conf->getConfTextClassifier());
+		AuthenticationManager::Instance(conf->getConfUsers().string());
+		TextClassifier::Instance(conf->getConfTextClassifier().string());
 
 	    Modes::Instance()->initPipe(conf->getApertiumBase());
 	    //Modes::Instance()->initXML(conf->getApertiumBase());
