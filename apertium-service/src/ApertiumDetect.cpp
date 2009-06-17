@@ -26,7 +26,6 @@ void ApertiumDetect::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value
 	if (params.size() < 1) {
 		retval = 0;
 	} else {
-		string ret = TextClassifier::Instance()->classify(params[0]);
-		retval = (ret == "SHORT" ? "" : ret.substr(1, ret.size() - 1));
+		retval = TextClassifier::Instance()->classify(params[0]);
 	}
 }
