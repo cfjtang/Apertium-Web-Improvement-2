@@ -25,12 +25,10 @@
 #include "ApertiumTranslate.h"
 #include "ApertiumListLanguagePairs.h"
 
-#include "ApertiumTest.h"
-
 #include "ApertiumAuthPlugin.h"
 #include "ApertiumLogInterceptor.h"
 
-#include "ApertiumClassify.h"
+#include "ApertiumDetect.h"
 
 using namespace std;
 
@@ -74,11 +72,7 @@ void ApertiumServer::init() {
 		iqxmlrpc::register_method<ApertiumTranslate>(*server, "translate");
 		iqxmlrpc::register_method<ApertiumListLanguagePairs>(*server, "listLanguagePairs");
 
-		iqxmlrpc::register_method<ApertiumClassify>(*server, "classify");
-
-		//
-		iqxmlrpc::register_method<ApertiumTest>(*server, "test");
-		//
+		iqxmlrpc::register_method<ApertiumDetect>(*server, "detect");
 
 		ApertiumAuthPlugin apertiumAuthPlugin;
 
