@@ -40,7 +40,7 @@ void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc
 		string mode = *it;
 		size_t sep = mode.find("-", 0);
 
-		string srcLang = mode.substr(0, sep - 1);
+		string srcLang = mode.substr(0, sep);
 		string destLang = mode.substr(sep + 1, mode.size());
 
 		iqxmlrpc::Struct pair;
