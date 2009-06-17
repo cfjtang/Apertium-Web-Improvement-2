@@ -2,7 +2,7 @@ INCLUDES = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@ @LIBIQXMLRPC_CFLA
 LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @LIBIQXMLRPC_LIBS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @LIBTEXTCAT_LIBS@
 
 h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDetect.h ./format/Deformat.h ./format/Encoding.h \
-./format/Base64.h ./format/Reformat.h ./ApertiumAuthPlugin.h ./ApertiumListLanguagePairs.h ./core/FunctionMapper.h \
+./format/Base64.h ./format/Reformat.h ./ApertiumAuthPlugin.h ./ApertiumLanguagePairs.h ./core/FunctionMapper.h \
 ./core/PreTransfer.h ./core/ThreadSafeQueue.h ./core/ObjectBroker.h ./core/ThreadSafeObjectPool.h ./core/Modes.h \
 ./core/TextClassifier.h ./core/Translator.h ./ApertiumLogInterceptor.h ./ApertiumServer.h \
 ./ApertiumTranslate.h ./cg/version.h ./cg/Grammar.h ./cg/GrammarWriter.h ./cg/Window.h ./cg/inlines.h ./cg/Rule.h \
@@ -11,7 +11,7 @@ h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDet
 ./cg/CompositeTag.h ./cg/icu_uoptions.h ./cg/uextras.h ./cg/Cohort.h ./cg/ContextualTest.h ./cg/Tag.h ./cg/SingleWindow.h \
 ./utils/ConfigurationManager.h ./utils/Logger.h
 
-cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumListLanguagePairs.cpp ./ApertiumDetect.cpp \
+cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumLanguagePairs.cpp ./ApertiumDetect.cpp \
 ./core/PreTransfer.cpp ./core/Modes.cpp ./core/FunctionMapper.cpp ./core/ObjectBroker.cpp ./core/TextClassifier.cpp \
 ./core/Translator.cpp ./ApertiumLogInterceptor.cpp ./ApertiumAuthPlugin.cpp ./ApertiumTranslate.cpp \
 ./ApertiumRuntimeException.cpp ./cg/Rule.cpp ./cg/ApertiumApplicator.cpp ./cg/Recycler.cpp ./cg/Window.cpp \

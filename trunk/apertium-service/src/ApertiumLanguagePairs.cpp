@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ApertiumListLanguagePairs.h"
+#include "ApertiumLanguagePairs.h"
 
 #include "ApertiumServer.h"
 
@@ -23,10 +23,11 @@
 #include "core/Modes.h"
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-void ApertiumListLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
+void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 	Modes *m = Modes::Instance();
 
 	list<string> modes = m->getModeNames();
@@ -35,7 +36,19 @@ void ApertiumListLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxm
 	retval = iqxmlrpc::Array();
 
 	for (list<string>::iterator it = modes.begin(); it != modes.end(); it++) {
-		iqxmlrpc::Value v = iqxmlrpc::Value(*it);
+		//iqxmlrpc::Value v = iqxmlrpc::Value(*it);
+		string mode = *it;
+		size_t sep = mode.find("-", 0);
+
+		string srcLang = mode.substr(0, sep - 1);
+		string destLang = mode.substr(sep + 1, mode.size());
+
+		iqxmlrpc::Struct pair;
+		pair.insert("srcLang", srcLang);
+		pair.insert("destLang", destLang);
+
+		iqxmlrpc::Value v = pair;
+
 		retval.push_back(v);
 	}
 
