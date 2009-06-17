@@ -20,9 +20,7 @@
 #include <iostream>
 #include <string>
 
-#include "format/Encoding.h"
 #include "core/Translator.h"
-#include "core/Modes.h"
 
 #include "ApertiumRuntimeException.h"
 
@@ -30,35 +28,28 @@ using namespace std;
 
 void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 
-	string modeName;
+	string out;
 
 	switch (params.size()) {
 	case 0:
 	case 1:
 		throw ApertiumRuntimeException("Too few arguments");
 		break;
-	case 2:
-		modeName = string(params[1]);
+	case 2: {
+		string in = params[0];
+		out = Translator::translate(in, params[1]);
+	}
 		break;
-	case 3:
-		modeName = string(params[1] + "-" + params[2]);
+	case 3: {
+		string in = params[0];
+		out = Translator::translate(in, params[1], params[2]);
+	}
 		break;
 	default:
 		throw ApertiumRuntimeException("Wrong number of arguments");
 		break;
 	}
 
-	Mode *mode = Modes::Instance()->getMode(modeName);
-
-	if (!mode) {
-		throw ApertiumRuntimeException("Mode not found: " + modeName);
-	}
-
-	string in = params[0];
-	wstring toTranslate = Encoding::utf8ToWstring(in);
-
-	wstring translated = Translator::translate(toTranslate, mode);
-	string out = Encoding::wstringToUtf8(translated);
 	retval = out;
 }
 
