@@ -43,18 +43,12 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 		string srcLang = params[1];
 		string destLang = params[2];
 
-		bool detected = false;
-
 		if (srcLang.empty()) {
-			detected = true;
 			srcLang = TextClassifier::Instance()->classify(text);
+			s.insert("detectedSourceLanguage", srcLang);
 		}
 
 		s.insert("translation", Translator::translate(text, srcLang, destLang));
-
-		if (detected) {
-			s.insert("detectedSourceLanguage", srcLang);
-		}
 	}
 		break;
 	default:
