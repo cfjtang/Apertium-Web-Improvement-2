@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef APERTIUMLISTLANGUAGEPAIRS_H_
-#define APERTIUMLISTLANGUAGEPAIRS_H_
+#ifndef APERTIUMLANGUAGEPAIRS_H_
+#define APERTIUMLANGUAGEPAIRS_H_
 
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
@@ -27,11 +27,11 @@
 #include <string>
 #include <list>
 
-class ApertiumListLanguagePairs: public iqxmlrpc::Method {
+class ApertiumLanguagePairs: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
 private:
 	//static time_t lastCacheTime = 0;
 };
 
-#endif /* APERTIUMLISTLANGUAGEPAIRS_H_ */
+#endif /* APERTIUMLANGUAGEPAIRS_H_ */
