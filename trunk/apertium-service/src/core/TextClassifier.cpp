@@ -54,5 +54,5 @@ TextClassifier::~TextClassifier() {
 
 std::string TextClassifier::classify(std::string str) {
 	std::string ret = textcat_Classify(h, str.data(), str.size());
-	return(ret == "SHORT" ? "" : ret.substr(1, ret.size() - 1));
+	return(ret == "SHORT" ? "" : ret.substr(1, ret.size() - 2));
 }
