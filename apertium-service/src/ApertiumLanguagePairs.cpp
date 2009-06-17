@@ -44,8 +44,9 @@ void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc
 		string destLang = mode.substr(sep + 1, mode.size());
 
 		iqxmlrpc::Struct pair;
-		pair.insert("srcLang", srcLang);
+
 		pair.insert("destLang", destLang);
+		pair.insert("srcLang", srcLang);
 
 		iqxmlrpc::Value v = pair;
 
