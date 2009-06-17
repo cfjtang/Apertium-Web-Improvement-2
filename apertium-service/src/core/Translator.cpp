@@ -31,16 +31,8 @@
 #include "ApertiumRuntimeException.h"
 
 std::string Translator::translate(std::string text, std::string srcLang, std::string destLang) {
-	return translate(text, srcLang + "-" + destLang);
-}
 
-std::string Translator::translate(std::string text, std::string pair) {
-
-	if (pair.size() > 0) {
-		if (pair[0] == '-') {
-			pair = TextClassifier::Instance()->classify(text) + pair;
-		}
-	}
+	string pair = srcLang + "-" + destLang;
 
 	wstring wtext = Encoding::utf8ToWstring(text);
 
