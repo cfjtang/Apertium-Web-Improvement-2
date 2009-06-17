@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef APERTIUMTEST_H_
-#define APERTIUMTEST_H_
-
-#include <libiqxmlrpc/libiqxmlrpc.h>
+#ifndef APERTIUMDETECT_H_
+#define APERTIUMDETECT_H_
 
 #include <iostream>
 #include <string>
 
-class ApertiumTest: public iqxmlrpc::Method {
+#include <libiqxmlrpc/libiqxmlrpc.h>
+
+class ApertiumDetect: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
 };
 
-#endif /* APERTIUMTEST_H_ */
+#endif /* APERTIUMDETECT_H_ */

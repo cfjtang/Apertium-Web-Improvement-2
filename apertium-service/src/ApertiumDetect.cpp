@@ -15,17 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef APERTIUMCLASSIFY_H_
-#define APERTIUMCLASSIFY_H_
+#include "ApertiumDetect.h"
 
 #include <iostream>
-#include <string>
+#include "core/TextClassifier.h"
 
-#include <libiqxmlrpc/libiqxmlrpc.h>
+using namespace std;
 
-class ApertiumClassify: public iqxmlrpc::Method {
-public:
-	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
-};
-
-#endif /* APERTIUMCLASSIFY_H_ */
+void ApertiumDetect::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
+	if (params.size() < 1) {
+		retval = 0;
+	} else {
+		string ret = TextClassifier::Instance()->classify(params[0]);
+		retval = (ret == "SHORT" ? "" : ret.substr(1, ret.size() - 1));
+	}
+}
