@@ -35,7 +35,8 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 	case 0:
 	case 1:
 	case 2:
-		throw ApertiumRuntimeException("Too few arguments");
+	default:
+		throw ApertiumRuntimeException("Wrong number of arguments");
 		break;
 	case 3: {
 		string text = params[0];
@@ -50,9 +51,6 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 
 		s.insert("translation", Translator::translate(text, srcLang, destLang));
 	}
-		break;
-	default:
-		throw ApertiumRuntimeException("Wrong number of arguments");
 		break;
 	}
 
