@@ -25,7 +25,8 @@
 
 class Translator {
 public:
-	static std::wstring translate(std::wstring, Mode *);
+	static std::string translate(std::string, std::string, std::string);
+	static std::string translate(std::string, std::string);
 
 private:
 	static std::wstring deformat(std::wstring);

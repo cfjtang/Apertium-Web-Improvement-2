@@ -23,12 +23,38 @@
 #include "format/Deformat.h"
 #include "format/Reformat.h"
 
-std::wstring Translator::translate(std::wstring text, Mode *mode) {
+#include "format/Encoding.h"
+
+#include "Modes.h"
+#include "TextClassifier.h"
+
+#include "ApertiumRuntimeException.h"
+
+std::string Translator::translate(std::string text, std::string srcLang, std::string destLang) {
+	return translate(text, srcLang + "-" + destLang);
+}
+
+std::string Translator::translate(std::string text, std::string pair) {
+
+	if (pair.size() > 0) {
+		if (pair[0] == '-') {
+			pair = TextClassifier::Instance()->classify(text) + pair;
+		}
+	}
+
+	wstring wtext = Encoding::utf8ToWstring(text);
+
+	Mode *mode = Modes::Instance()->getMode(pair);
+
+	if (!mode) {
+		throw ApertiumRuntimeException("Mode not found: " + pair);
+	}
+
 	FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
 
 	vector<Program> programs = mode->getPrograms();
 
-	wstring ret = deformat(text);
+	wstring ret = deformat(wtext);
 
 	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
@@ -38,7 +64,7 @@ std::wstring Translator::translate(std::wstring text, Mode *mode) {
 
 	delete fm;
 
-	return reformat(ret);
+	return Encoding::wstringToUtf8(reformat(ret));
 }
 
 std::wstring Translator::deformat(std::wstring in) {
