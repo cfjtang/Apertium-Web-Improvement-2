@@ -24,6 +24,7 @@
 #include "ApertiumServer.h"
 #include "AuthenticationManager.h"
 
+#include "core/ObjectBroker.h"
 #include "core/TextClassifier.h"
 #include "core/Modes.h"
 
@@ -42,9 +43,14 @@ ApertiumServer *server = NULL;
 
 void apertiumServerSignalHandler(int) {
 	cerr << "SIGINT: Cleaning things up.." << endl;
+
 	if (server) {
 		server->stop();
 	}
+
+	delete TextClassifier::Instance();
+	delete ObjectBroker::Instance();
+	delete Modes::Instance();
 }
 
 int main(int ac, char *av[]) {
@@ -54,6 +60,7 @@ int main(int ac, char *av[]) {
 	ucnv_setDefaultName("UTF-8");
 
 	CG3::Recycler::instance();
+
 	init_gbuffers();
 	init_strings();
 	init_keywords();
