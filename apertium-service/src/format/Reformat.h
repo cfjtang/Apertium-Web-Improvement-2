@@ -48,19 +48,6 @@ using namespace boost::spirit::lex;
 class Reformat {
 public:
 
-	Reformat(wstring in, wostream* out = NULL) {
-		yyin = in;
-		yyout = out;
-	}
-
-	virtual ~Reformat() {
-
-	}
-
-	enum token_ids {
-		ID_SQUARES = lex::min_token_id + 1, ID_SQUARED, ID_SQUAREAT, ID_DOTSQUARES, ID_SPECIAL, ID_CHARORNEWLINE
-	};
-
 	template <typename Lexer> struct reformat_tokens: lexer_def<Lexer> {
 		template<typename Self>
 		void def(Self& self) {
@@ -72,6 +59,31 @@ public:
 			(L"\"\\\\\"[\\]\\[\\\\/@<>^$]", ID_SPECIAL)
 			(L".|\\n", ID_CHARORNEWLINE);
 		}
+	};
+
+	Reformat(wstring in = L"", wostream* out = NULL) {
+		yyin = in;
+		yyout = out;
+
+		def = new reformat_tokens<lexer_type>();
+		l = new lexer<reformat_tokens<lexer_type> >(*def);
+	}
+
+	virtual ~Reformat() {
+		delete l;
+		delete def;
+	}
+
+	void setYyin(wstring in) {
+		yyin = in;
+	}
+
+	void setYyout(wostream* out) {
+		yyout = out;
+	}
+
+	enum token_ids {
+		ID_SQUARES = lex::min_token_id + 1, ID_SQUARED, ID_SQUAREAT, ID_DOTSQUARES, ID_SPECIAL, ID_CHARORNEWLINE
 	};
 
 	void handleSquares(wstring yytext) { }
@@ -154,18 +166,21 @@ public:
 	};
 
 	virtual bool lex() {
-		typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-		typedef lexertl_lexer<token_type> lexer_type;
-		typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
+		//typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+		//typedef lexertl_lexer<token_type> lexer_type;
+		//typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
 
-		reformat_tokens<lexer_type> def;
+		//reformat_tokens<lexer_type> def;
+		//lexer<reformat_tokens<lexer_type> > l(def);
 
 		wchar_t const* first = yyin.data();
 		wchar_t const* last = &first[yyin.size()];
 
 		bool ret = tokenize(first,
 				last,
-				make_lexer(def),
+				//make_lexer(def),
+				//lexer<reformat_tokens<lexer_type> >(def),
+				*l,
 				boost::bind(func(), _1, boost::ref(this), boost::ref(*yyout))
 		);
 
@@ -173,9 +188,15 @@ public:
 	}
 
 private:
-
 	wstring yyin;
 	wostream *yyout;
+
+	typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+	typedef lexertl_lexer<token_type> lexer_type;
+	typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
+
+	reformat_tokens<lexer_type> *def;
+	lexer<reformat_tokens<lexer_type> > *l;
 };
 
 #endif /* DEFORMAT_H_ */

@@ -61,16 +61,21 @@ std::string Translator::translate(std::string text, std::string srcLang, std::st
 
 std::wstring Translator::deformat(std::wstring in) {
 	wstringstream wss;
-	Deformat *d = new Deformat(in, &wss);
+	Deformat *d = ObjectBroker::Instance()->DeformatPool.request();
+	d->reset();
+	d->setYyin(in);
+	d->setYyout(&wss);
 	d->lex();
-	delete d;
+	ObjectBroker::Instance()->DeformatPool.release(d);
 	return(wss.str());
 }
 
 std::wstring Translator::reformat(std::wstring in) {
 	wstringstream wss;
-	Reformat *r = new Reformat(in, &wss);
+	Reformat *r = ObjectBroker::Instance()->ReformatPool.request();
+	r->setYyin(in);
+	r->setYyout(&wss);
 	r->lex();
-	delete r;
+	ObjectBroker::Instance()->ReformatPool.release(r);
 	return(wss.str());
 }

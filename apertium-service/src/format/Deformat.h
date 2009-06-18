@@ -48,7 +48,18 @@ using namespace boost::spirit::lex;
 class Deformat {
 public:
 
-	Deformat(wstring in, wostream* out = NULL) {
+	template <typename Lexer> struct deformat_tokens: lexer_def<Lexer> {
+		template<typename Self>
+		void def(Self& self) {
+			self.add
+			(L"((\"\\n\\n\")|(\"\\r\\n\\r\\n\"))+", ID_NEWLINES)
+			(L"[ \\n\\t\\r]", ID_WHITESPACE)
+			(L"[\\]\\[\\\\/@<>^$]", ID_SPECIAL)
+			(L".", ID_CHAR);
+		}
+	};
+
+	Deformat(wstring in = L"", wostream* out = NULL) {
 		yyin = in;
 		yyout = out;
 
@@ -59,25 +70,34 @@ public:
 		offset = 0;
 		init_escape();
 		init_tagNames();
+
+		def = new deformat_tokens<lexer_type>();
+		l = new lexer<deformat_tokens<lexer_type> >(*def);
 	}
 
 	virtual ~Deformat() {
+		delete l;
+		delete def;
+	}
 
+	void reset() {
+		last = "";
+		buffer = L"";
+		isDot = hasWrite_dot = hasWrite_white = false;
+		current=0;
+		offset = 0;
+	}
+
+	void setYyin(wstring in) {
+		yyin = in;
+	}
+
+	void setYyout(wostream* out) {
+		yyout = out;
 	}
 
 	enum token_ids {
 		ID_NEWLINES = lex::min_token_id + 1, ID_WHITESPACE, ID_SPECIAL, ID_CHAR
-	};
-
-	template <typename Lexer> struct deformat_tokens: lexer_def<Lexer> {
-		template<typename Self>
-		void def(Self& self) {
-			self.add
-			(L"((\"\\n\\n\")|(\"\\r\\n\\r\\n\"))+", ID_NEWLINES)
-			(L"[ \\n\\t\\r]", ID_WHITESPACE)
-			(L"[\\]\\[\\\\/@<>^$]", ID_SPECIAL)
-			(L".", ID_CHAR);
-		}
 	};
 
 	void handleNewLines(wstring yytext) {
@@ -141,18 +161,21 @@ public:
 	};
 
 	virtual bool lex() {
-		typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-		typedef lexertl_lexer<token_type> lexer_type;
-		typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
+		//typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+		//typedef lexertl_lexer<token_type> lexer_type;
+		//typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
 
-		deformat_tokens<lexer_type> def;
+		//deformat_tokens<lexer_type> def;
+		//lexer<deformat_tokens<lexer_type> > l(def);
 
 		wchar_t const* first = yyin.data();
 		wchar_t const* last = &first[yyin.size()];
 
 		bool ret = tokenize(first,
 				last,
-				make_lexer(def),
+				//make_lexer(def),
+				//lexer<deformat_tokens<lexer_type> >(def),
+				*l,
 				boost::bind(func(), _1, boost::ref(this), boost::ref(*yyout))
 		);
 
@@ -165,6 +188,13 @@ public:
 private:
 	wstring yyin;
 	wostream *yyout;
+
+	typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+	typedef lexertl_lexer<token_type> lexer_type;
+	typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
+
+	deformat_tokens<lexer_type> *def;
+	lexer<deformat_tokens<lexer_type> > *l;
 
 	wstring buffer;
 	string symbuf;
