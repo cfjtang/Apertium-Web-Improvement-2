@@ -391,7 +391,8 @@ REMOVE Adj IF (-1 Num) (0 Adj) (0 NC) (1 Prep);
 REMOVE ("e" det pos) IF (1 NomM) (1 SoftMutCons) (NOT 1 SoftMut);
 
 # REGLA (B    ): "e c’heller ober gant e ijinadenn"
-REMOVE Prep IF (-1 Prep) (NOT -1 PRE-N) (0 Prep) (0 DetPos);
+#   "ouzhpenn da verañ savadurioù ar skolaj. "
+REMOVE:Remove_prep_for_poss Prep IF (-1 Prep) (NOT -1 PRE-N) (NOT 1 Verb) (0 Prep) (0 DetPos);
 
 # REGLA (B    ): "15 studier" 
 REMOVE VerbImpers IF (NOT -1 Vpart) ((-1 Num) OR (-1 NC) OR (-1 Det)) (0 VerbImpers) (0 NC);
@@ -430,7 +431,8 @@ REMOVE VerbFin IF (-1 DetPos);
 SELECT Prep IF (0 ("ouzhpenn")) ((1 Num) OR (1 NC));
 
 # REGLA (     ): "23 ouzhpenn"
-SELECT Adv IF (0 ("ouzhpenn")) ((-1 Num) OR (-1 NC));
+# "ouzhpenn da verañ savadurioù ar skolaj. "
+SELECT Adv IF (0 ("ouzhpenn")) ((-1 Num) OR (-1 NC) OR (1 Prep));
 
 # tremen 50 skoliad
 SELECT Prep IF (0 ("tremen")) (1C Num) (2 NC);
