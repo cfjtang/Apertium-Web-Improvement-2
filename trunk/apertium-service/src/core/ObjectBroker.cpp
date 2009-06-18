@@ -48,8 +48,13 @@ HMMWrapper::~HMMWrapper() {
 void HMMWrapper::read(string index) {
 	td = new TaggerData();
 	FILE *ftemp = fopen(index.c_str(), "rb");
+
+	if (ftemp == NULL)
+		throw ApertiumRuntimeException(::strerror(errno));
+
 	td->read(ftemp);
 	fclose(ftemp);
+
 	hmm = new HMM(td);
 }
 
@@ -76,6 +81,10 @@ template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNe
 	FSTProcessor *ret = pool.construct();
 
 	FILE *fp = fopen((index.second).c_str(), "r");
+
+	if (fp == NULL)
+		throw ApertiumRuntimeException(::strerror(errno));
+
 	ret->load(fp);
 	fclose(fp);
 
@@ -153,8 +162,9 @@ template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInst
 	(*ret).tag_any = tag_any->hash;
 
 	if (parser->parse_grammar_from_file(index.data(), locale_default, codepage_default)) {
-		std::cerr << "Error: Grammar could not be parsed - exiting!" << std::endl;
-		CG3Quit(1);
+		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
+		//std::cerr << "Error: Grammar could not be parsed - exiting!" << std::endl;
+		//CG3Quit(1);
 	}
 
 	ret->reindex();

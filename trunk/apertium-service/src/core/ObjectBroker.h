@@ -58,6 +58,8 @@
 #include "format/Deformat.h"
 #include "format/Reformat.h"
 
+#include "ApertiumRuntimeException.h"
+
 using namespace std;
 
 enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
@@ -92,7 +94,6 @@ public:
 		}
 		lock.unlock();
 		if (isNew) {
-			cout << "getNewInstance()" << endl;
 			ret = getNewInstance();
 		}
 		return(ret);
@@ -137,7 +138,6 @@ public:
 		}
 		lock.unlock();
 		if (isNew) {
-			cout << "getNewInstance(index)" << endl;
 			ret = getNewInstance(index);
 		}
 		return(ret);
