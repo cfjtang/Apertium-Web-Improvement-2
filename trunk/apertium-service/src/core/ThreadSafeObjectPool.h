@@ -52,7 +52,6 @@ public:
 	virtual ~ThreadSafeObjectPool<T>();
 
 	T *construct();
-	HMM* construct(TaggerData *);
 
 private:
 	ThreadSafeQueue<T*> queue;
@@ -71,13 +70,6 @@ template <class T> ThreadSafeObjectPool<T>::~ThreadSafeObjectPool() {
 template <class T> T* ThreadSafeObjectPool<T>::construct() {
 	T* ret = NULL;
     ret = new T();
-    queue.push(ret);
-    return ret;
-}
-
-template <class T> HMM* ThreadSafeObjectPool<T>::construct(TaggerData *ptr) {
-	T* ret = NULL;
-    ret = new T(ptr);
     queue.push(ret);
     return ret;
 }

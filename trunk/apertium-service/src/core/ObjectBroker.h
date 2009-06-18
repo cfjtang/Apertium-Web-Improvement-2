@@ -55,6 +55,9 @@
 #include "cg/BinaryGrammar.h"
 #include "cg/ApertiumApplicator.h"
 
+#include "format/Deformat.h"
+#include "format/Reformat.h"
+
 using namespace std;
 
 enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
@@ -89,7 +92,8 @@ public:
 		}
 		lock.unlock();
 		if (isNew) {
-			ret = pool.construct();
+			cout << "getNewInstance()" << endl;
+			ret = getNewInstance();
 		}
 		return(ret);
 	}
@@ -133,6 +137,7 @@ public:
 		}
 		lock.unlock();
 		if (isNew) {
+			cout << "getNewInstance(index)" << endl;
 			ret = getNewInstance(index);
 		}
 		return(ret);
@@ -159,15 +164,29 @@ private:
 	boost::mutex mutex;
 };
 
+class HMMWrapper {
+public:
+	HMMWrapper();
+	~HMMWrapper();
+
+	void read(string);
+	HMM *getHmm();
+private:
+	HMM *hmm;
+	TaggerData *td;
+};
+
 class ObjectBroker {
 public:
 	static ObjectBroker *Instance();
 	virtual ~ObjectBroker();
 
 	NonIndexedObjectPool<PreTransfer> PreTransferPool;
+	NonIndexedObjectPool<Deformat> DeformatPool;
+	NonIndexedObjectPool<Reformat> ReformatPool;
 
 	ObjectPool<FSTProcessor, FSTProcessorIndexType> FSTProcessorPool;
-	ObjectPool<HMM, HMMIndexType> HMMPool;
+	ObjectPool<HMMWrapper, HMMIndexType> HMMPool;
 	ObjectPool<Transfer, TransferIndexType> TransferPool;
 	ObjectPool<Interchunk, InterchunkIndexType> InterchunkPool;
 	ObjectPool<Postchunk, PostchunkIndexType> PostchunkPool;
@@ -178,7 +197,6 @@ private:
 	ObjectBroker();
 
 	static ObjectBroker *instance;
-
 	static boost::mutex instanceMutex;
 };
 

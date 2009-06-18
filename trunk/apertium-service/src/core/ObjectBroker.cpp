@@ -35,8 +35,40 @@ ObjectBroker::~ObjectBroker() {
 	instance = NULL;
 }
 
+HMMWrapper::HMMWrapper() {
+	td = NULL;
+	hmm = NULL;
+}
+
+HMMWrapper::~HMMWrapper() {
+	delete hmm;
+	delete td;
+}
+
+void HMMWrapper::read(string index) {
+	td = new TaggerData();
+	FILE *ftemp = fopen(index.c_str(), "rb");
+	td->read(ftemp);
+	fclose(ftemp);
+	hmm = new HMM(td);
+}
+
+HMM *HMMWrapper::getHmm() {
+	return hmm;
+}
+
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance() {
 	PreTransfer *ret = pool.construct();
+	return(ret);
+}
+
+template <> Deformat *NonIndexedObjectPool<Deformat>::getNewInstance() {
+	Deformat *ret = pool.construct();
+	return(ret);
+}
+
+template <> Reformat *NonIndexedObjectPool<Reformat>::getNewInstance() {
+	Reformat *ret = pool.construct();
 	return(ret);
 }
 
@@ -64,16 +96,11 @@ template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNe
 	return(ret);
 }
 
-template <> HMM *ObjectPool<HMM, HMMIndexType>::getNewInstance(HMMIndexType index) {
-	HMM *ret = NULL;
+template <> HMMWrapper *ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index) {
+	HMMWrapper *ret = NULL;
 
-	// XXX: MUST HANDLE THIS OBJECT TOO
-	TaggerData *td = new TaggerData();
-	FILE *ftemp = fopen(index.c_str(), "rb");
-	td->read(ftemp);
-	fclose(ftemp);
-
-	ret = pool.construct(td);
+	ret = pool.construct();
+	ret->read(index);
 
 	return(ret);
 }

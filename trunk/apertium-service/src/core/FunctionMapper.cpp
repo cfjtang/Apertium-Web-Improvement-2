@@ -26,6 +26,9 @@ using namespace std;
 FunctionMapper::FunctionMapper(ObjectBroker *o) {
 	objectBroker = o;
 
+	//task["deformat"] = DEFORMAT;
+	//task["reformat"] = REFORMAT;
+
 	task["apertium-interchunk"] = APERTIUM_INTERCHUNK;
 	task["apertium-multiple-translations"] = APERTIUM_MULTIPLE_TRANSLATIONS;
 	task["apertium-postchunk"] = APERTIUM_POSTCHUNK;
@@ -108,8 +111,8 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	case APERTIUM_TAGGER: {
 		HMMIndexType index = files[0];
-		HMM *i = objectBroker->HMMPool.request(index);
-		i->tagger(in, out, false);
+		HMMWrapper *i = objectBroker->HMMPool.request(index);
+		i->getHmm()->tagger(in, out, false);
 		objectBroker->HMMPool.release(i, index);
 	}
 		break;
