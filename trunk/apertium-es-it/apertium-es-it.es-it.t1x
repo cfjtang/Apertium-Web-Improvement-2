@@ -4642,6 +4642,9 @@
 	<pattern-item n="inf"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -4716,7 +4719,13 @@
 		    <clip pos="3" side="tl" part="lemq"/>
 		  </lu>
 		</chunk>
-	      </out>
+	      </out>	      
+	      <call-macro n="f_bcond">
+		<with-param pos="1"/>
+	      </call-macro> 
+	      <call-macro n="f_bcond">
+		<with-param pos="2"/>
+	      </call-macro>
 	  </when>
 	  <otherwise>
 	    <choose>
@@ -4757,8 +4766,10 @@
 		    <clip pos="3" side="tl" part="lemq"/>
 		  </lu>
 		</chunk>
-	      </out>
-
+	      </out> 
+	      <call-macro n="f_bcond">
+		<with-param pos="2"/>
+	      </call-macro>
 	      </when>
 	      <otherwise>
 	      <out>
@@ -4848,6 +4859,9 @@
 	<pattern-item n="ppmsg"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -4909,6 +4923,9 @@
 	<pattern-item n="pp"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	  <clip pos="1" side="tl" part="lem"/>
 	  <lit v="essere"/>
@@ -4952,6 +4969,9 @@
 	<pattern-item n="pp"/>
       </pattern>
       <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	  <clip pos="1" side="tl" part="lem"/>
 	  <lit v="essere"/>
@@ -5008,6 +5028,9 @@
 	  <with-param pos="3"/>
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -5046,7 +5069,6 @@
 	</out>
 	  </when>
 	  <otherwise>
-
 	<out>
 	  <chunk name="hacer_det_nom" case="caseFirstWord">
 	    <tags>
@@ -5095,6 +5117,9 @@
 	<call-macro n="f_concord1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -5121,7 +5146,6 @@
 		  </equal>
 		  <equal>
 		    <clip pos="1" side="sl" part="nbr"/>
-
 		    <clip pos="2" side="sl" part="nbr"/>
 		  </equal>
 		</and>
@@ -5179,7 +5203,7 @@
     </rule>
 
 
-<rule> <!-- REGLA: procl verbo-->
+<rule> <!-- REGLA: verbo encl-->
       <pattern>
 	<pattern-item n="verb"/>
 	<pattern-item n="prnenc"/>
@@ -5187,6 +5211,9 @@
       <action>
 	<call-macro n="f_concord1">
 	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
 	  <when>
