@@ -27,21 +27,19 @@
 #include <libiqxmlrpc/https_server.h>
 
 #include "utils/ConfigurationManager.h"
+#include "ApertiumLogInterceptor.h"
 
 class ApertiumServer {
 public:
 	ApertiumServer(ConfigurationManager *);
 	virtual ~ApertiumServer();
 
-	void init();
-	void stop();
-
 private:
 	iqxmlrpc::Executor_factory_base* buildExecutorFactory(unsigned int);
 	iqxmlrpc::Executor_factory_base *executorFactory;
 	iqxmlrpc::Server *server;
 
-	ConfigurationManager *cm;
+	ApertiumLogInterceptor *logInterceptor;
 };
 
 #endif /* APERTIUMSERVER_H_ */

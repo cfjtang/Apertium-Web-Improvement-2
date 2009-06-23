@@ -17,6 +17,8 @@
 
 #include <iostream>
 
+#include <stdlib.h>
+
 #include <lttoolbox/lt_locale.h>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
@@ -41,16 +43,38 @@ namespace fs = boost::filesystem;
 
 ApertiumServer *server = NULL;
 
-void apertiumServerSignalHandler(int) {
-	cerr << "SIGINT: Cleaning things up.." << endl;
-
-	if (server) {
-		server->stop();
+void cleanup() {
+	if (server != NULL) {
+		cerr << "Deleting server.." << endl;
+		delete server;
 	}
 
+	cerr << "Deleting TextClassifier::Instance().." << endl;
 	delete TextClassifier::Instance();
+
+	cerr << "Deleting ObjectBroker::Instance().." << endl;
 	delete ObjectBroker::Instance();
+
+	cerr << "Deleting Modes::Instance().." << endl;
 	delete Modes::Instance();
+
+	cerr << "Freeing resources allocated by vislcg3.." << endl;
+
+	free_strings();
+	free_keywords();
+	free_gbuffers();
+	free_flags();
+
+	CG3::Recycler::cleanup();
+
+	u_cleanup();
+
+	exit(EXIT_SUCCESS);
+}
+
+void apertiumServerSignalHandler(int) {
+	cerr << "SIGINT: Cleaning things up.." << endl;
+	cleanup();
 }
 
 int main(int ac, char *av[]) {
@@ -64,6 +88,7 @@ int main(int ac, char *av[]) {
 	init_gbuffers();
 	init_strings();
 	init_keywords();
+	init_flags();
 
 	try {
 		po::options_description desc("Allowed options");
@@ -140,10 +165,9 @@ int main(int ac, char *av[]) {
 
 	    ::signal(SIGINT, &apertiumServerSignalHandler);
 
-	    ApertiumServer s(conf);
+	    server = new ApertiumServer(conf);
 
-		server = &s;
-		server->init();
+	    cleanup();
 
 	} catch (exception& e) {
 		cerr << "error: " << e.what() << endl;

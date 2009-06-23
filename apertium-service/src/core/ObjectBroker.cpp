@@ -32,7 +32,10 @@ ObjectBroker::ObjectBroker() {
 }
 
 ObjectBroker::~ObjectBroker() {
-	instance = NULL;
+	boost::mutex::scoped_lock Lock(instanceMutex);
+	if (instance != NULL) {
+		instance = NULL;
+	}
 }
 
 HMMWrapper::HMMWrapper() {
@@ -146,6 +149,8 @@ template <> TransferMult *ObjectPool<TransferMult, TransferMultIndexType>::getNe
 	return(ret);
 }
 
+boost::mutex ObjectBroker::cgMutex;
+
 template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index) {
 
 	const char *codepage_default = ucnv_getDefaultName();
@@ -161,7 +166,14 @@ template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInst
 	CG3::Tag *tag_any = ret->allocateTag(stringbits[S_ASTERIK]);
 	(*ret).tag_any = tag_any->hash;
 
-	if (parser->parse_grammar_from_file(index.data(), locale_default, codepage_default)) {
+	int pret = 0;
+
+	{ // XXX
+	boost::mutex::scoped_lock Lock(ObjectBroker::cgMutex);
+	pret = parser->parse_grammar_from_file(index.data(), locale_default, codepage_default);
+	} // XXX
+
+	if (pret) {
 		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
 		//std::cerr << "Error: Grammar could not be parsed - exiting!" << std::endl;
 		//CG3Quit(1);

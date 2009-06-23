@@ -116,7 +116,9 @@ Modes::Modes() { }
 
 Modes::~Modes() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
-	instance = NULL;
+	if (instance != NULL) {
+		instance = NULL;
+	}
 }
 
 void Modes::parseXML(const fs::path path) {

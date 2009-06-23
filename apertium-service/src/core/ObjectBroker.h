@@ -193,6 +193,8 @@ public:
 	ObjectPool<TransferMult, TransferMultIndexType> TransferMultPool;
 	ObjectPool<CG3::Grammar, GrammarIndexType> GrammarPool;
 
+	static boost::mutex cgMutex;
+
 private:
 	ObjectBroker();
 
