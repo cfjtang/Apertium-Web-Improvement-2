@@ -27,6 +27,7 @@ import org.jdesktop.application.FrameView;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URI;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -415,6 +416,7 @@ public class ApertiumView extends FrameView {
     storedTextsMenu = new javax.swing.JMenu();
     javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     changeFontMenuItem = new javax.swing.JMenuItem();
+    helpMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
 
     mainPanel.setAutoscrolls(true);
@@ -428,7 +430,6 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
-    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -459,7 +460,6 @@ public class ApertiumView extends FrameView {
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
-    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('S');
@@ -552,11 +552,9 @@ public class ApertiumView extends FrameView {
     toolsMenu.setText("Tools");
 
     makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
-    makeTestCaseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
     toolsMenu.add(makeTestCaseMenuItem);
 
     importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
-    importTestCaseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
     toolsMenu.add(importTestCaseMenuItem);
 
     storedTextsMenu.setMnemonic('S');
@@ -569,8 +567,15 @@ public class ApertiumView extends FrameView {
     helpMenu.setText("View");
 
     changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
-    changeFontMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
     helpMenu.add(changeFontMenuItem);
+
+    helpMenuItem.setText("Help");
+    helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        helpMenuItemActionPerformed(evt);
+      }
+    });
+    helpMenu.add(helpMenuItem);
 
     aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
     helpMenu.add(aboutMenuItem);
@@ -645,6 +650,18 @@ private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     warnUser(e.getLocalizedMessage());
   }
 }//GEN-LAST:event_storeTextButtonActionPerformed
+
+private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
+        try {
+            // TODO add your handling code here:
+            java.awt.Desktop.getDesktop().browse(new URI("http://wiki.apertium.org/wiki/Apertium-viewer#Features"));
+        } catch (Exception ex) {
+            Logger.getLogger(ApertiumView.class.getName()).log(Level.SEVERE, null, ex);
+            warnUser(ex.toString());
+        }
+
+
+}//GEN-LAST:event_helpMenuItemActionPerformed
 
 
     private int insetHeight(JComponent c) {
@@ -745,6 +762,7 @@ private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
   private javax.swing.JButton copyTextButton;
   private javax.swing.JMenuItem editModesMenuItem;
   private javax.swing.JButton fitToTextButton;
+  private javax.swing.JMenuItem helpMenuItem;
   private javax.swing.JMenuItem importTestCaseMenuItem;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JScrollPane jScrollPane1;
