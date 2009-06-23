@@ -17,10 +17,6 @@ To run the software you will need to install Java Runtime Environment (JRE6).
 To compile the software from you will need Java Development Kit 6 (JDK6)
 Recommended is to use Netbeans, downloadable from http://netbeans.org.
 
-Uncompress the package
-
-$ tar xvfz apertium-viewer.tar.gz
-
 COMPILING
 
 $ cd apertium-viewer
@@ -29,6 +25,7 @@ $ ant
 INSTALLING
 
 
+$ sudo rm -rf /usr/local/apertium-viewer
 $ sudo cp -r dist /usr/local/apertium-viewer
 $ sudo echo "java -jar /usr/local/apertium-viewer/apertium-viewer.jar" > /usr/local/bin/apertium-viewer
 $ sudo chmod a+x /usr/local/bin/apertium-viewer
@@ -37,4 +34,6 @@ Installing is actually optional. The program can also be execute using only the 
 $ java -jar dist/apertium-dixtools.jar
 or just make a shortcut to apertium-viewer.jar on your desktop.
 
-
+PACK AS WAR FILE AND SEND (Jacob)
+cd dist
+zip -9r ../apertium-viewer.war .
