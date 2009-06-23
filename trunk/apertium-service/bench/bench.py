@@ -17,7 +17,7 @@ def timing(func):
 def bench():
     proxy = xmlrpclib.ServerProxy("http://localhost:1234/ApertiumServer")
     for i in range(1, 1000):
-        proxy.translate("This is a test for the machine translation program", "en-es")
+        proxy.translate("This is a test for the machine translation program", "en", "es")
     
 if __name__ == "__main__":
     bench()

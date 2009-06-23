@@ -209,8 +209,11 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 		CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_in, ux_out, ux_err);
 
+		{ // XXX
+		boost::mutex::scoped_lock Lock(ObjectBroker::cgMutex);
 		applicator->setGrammar(grammar);
 		applicator->runGrammarOnText(ux_in, ux_out);
+		}
 
 		delete applicator;
 

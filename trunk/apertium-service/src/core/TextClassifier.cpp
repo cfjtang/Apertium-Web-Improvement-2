@@ -49,7 +49,9 @@ TextClassifier::TextClassifier(void *p) {
 TextClassifier::~TextClassifier() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
 	textcat_Done(h);
-	instance = NULL;
+	if (instance != NULL) {
+		instance = NULL;
+	}
 }
 
 std::string TextClassifier::classify(std::string str) {

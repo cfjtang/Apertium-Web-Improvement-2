@@ -44,7 +44,9 @@ Logger::Logger() {
 
 Logger::~Logger() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
-	instance = NULL;
+	if (instance != NULL) {
+		instance = NULL;
+	}
 }
 
 using namespace std;

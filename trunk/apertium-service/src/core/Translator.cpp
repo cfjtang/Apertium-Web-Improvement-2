@@ -50,6 +50,7 @@ std::string Translator::translate(std::string text, std::string srcLang, std::st
 
 	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
+
 		wstring tmp = fm->execute(program, ret);
 		ret = tmp;
 	}

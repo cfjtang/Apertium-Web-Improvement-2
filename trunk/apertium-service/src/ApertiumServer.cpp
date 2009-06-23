@@ -26,20 +26,49 @@
 #include "ApertiumLanguagePairs.h"
 
 #include "ApertiumAuthPlugin.h"
-#include "ApertiumLogInterceptor.h"
 
 #include "ApertiumDetect.h"
 
 using namespace std;
 
-ApertiumServer::ApertiumServer(ConfigurationManager *c) {
-	executorFactory = NULL;
-	server = NULL;
-	cm = c;
+ApertiumServer::ApertiumServer(ConfigurationManager *cm) {
+	this->executorFactory = buildExecutorFactory(cm->getMaxThreads());
+
+	cout << "Starting server on port: " << cm->getServerPort() << endl;
+
+	if (cm->getUseSsl()) {
+		iqnet::ssl::ctx = iqnet::ssl::Ctx::server_only("data/cert.pem",	"data/pk.pem");
+		this->server = new iqxmlrpc::Https_server(cm->getServerPort(), this->executorFactory);
+	} else {
+		this->server = new iqxmlrpc::Http_server(cm->getServerPort(), this->executorFactory);
+	}
+
+	iqxmlrpc::register_method<ApertiumTranslate>(*(this->server), "translate");
+	iqxmlrpc::register_method<ApertiumLanguagePairs>(*(this->server), "languagePairs");
+
+	iqxmlrpc::register_method<ApertiumDetect>(*(this->server), "detect");
+
+	ApertiumAuthPlugin apertiumAuthPlugin;
+
+	this->logInterceptor = new ApertiumLogInterceptor();
+
+	this->server->push_interceptor(logInterceptor);
+	this->server->set_auth_plugin(apertiumAuthPlugin);
+
+	this->server->log_errors(&std::cerr);
+	this->server->enable_introspection();
+
+	this->server->set_verification_level(iqxmlrpc::http::HTTP_CHECK_WEAK);
+
+	this->server->work();
 }
 
 ApertiumServer::~ApertiumServer() {
-	stop();
+	this->server->set_exit_flag();
+
+	delete this->server;
+	delete this->logInterceptor;
+	delete this->executorFactory;
 }
 
 iqxmlrpc::Executor_factory_base* ApertiumServer::buildExecutorFactory(unsigned int nThreads) {
@@ -52,51 +81,4 @@ iqxmlrpc::Executor_factory_base* ApertiumServer::buildExecutorFactory(unsigned i
     	ret = new iqxmlrpc::Serial_executor_factory();
     }
     return(ret);
-}
-
-void ApertiumServer::init() {
-	if (!executorFactory) {
-		executorFactory = buildExecutorFactory(cm->getMaxThreads());
-	}
-
-	if (!server) {
-		cout << "Starting server on port: " << cm->getServerPort() << endl;
-
-		if (cm->getUseSsl()) {
-			iqnet::ssl::ctx = iqnet::ssl::Ctx::server_only("data/cert.pem",	"data/pk.pem");
-			server = new iqxmlrpc::Https_server(cm->getServerPort(), executorFactory);
-		} else {
-			server = new iqxmlrpc::Http_server(cm->getServerPort(), executorFactory);
-		}
-
-		iqxmlrpc::register_method<ApertiumTranslate>(*server, "translate");
-		iqxmlrpc::register_method<ApertiumLanguagePairs>(*server, "languagePairs");
-
-		iqxmlrpc::register_method<ApertiumDetect>(*server, "detect");
-
-		ApertiumAuthPlugin apertiumAuthPlugin;
-
-		server->push_interceptor(new ApertiumLogInterceptor());
-		server->set_auth_plugin(apertiumAuthPlugin);
-
-		server->log_errors(&std::cerr);
-		server->enable_introspection();
-
-		server->set_verification_level(iqxmlrpc::http::HTTP_CHECK_WEAK);
-
-		server->work();
-	}
-}
-
-void ApertiumServer::stop() {
-	if (server) {
-		server->set_exit_flag();
-		//delete server;
-		server = NULL;
-	}
-
-	if (executorFactory) {
-		//delete executorFactory;
-		executorFactory = NULL;
-	}
 }
