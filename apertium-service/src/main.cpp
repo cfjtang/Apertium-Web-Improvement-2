@@ -42,23 +42,23 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
 ApertiumServer *server = NULL;
+ConfigurationManager *conf = NULL;
 
-void cleanup() {
-	if (server != NULL) {
-		cerr << "Deleting server.." << endl;
-		delete server;
-	}
+AuthenticationManager *authenticationManager = NULL;
+ObjectBroker *objectBroker = NULL;
+TextClassifier *textClassifier = NULL;
+Modes *modes = NULL;
 
-	cerr << "Deleting TextClassifier::Instance().." << endl;
-	delete TextClassifier::Instance();
+void cleanup(void) {
+	cerr << "Cleaning things up.." << endl;
 
-	cerr << "Deleting ObjectBroker::Instance().." << endl;
-	delete ObjectBroker::Instance();
+	delete server;
 
-	cerr << "Deleting Modes::Instance().." << endl;
-	delete Modes::Instance();
-
-	cerr << "Freeing resources allocated by vislcg3.." << endl;
+	delete conf;
+	delete authenticationManager;
+	delete objectBroker;
+	delete textClassifier;
+	delete modes;
 
 	free_strings();
 	free_keywords();
@@ -68,40 +68,26 @@ void cleanup() {
 	CG3::Recycler::cleanup();
 
 	u_cleanup();
-
-	exit(EXIT_SUCCESS);
 }
 
 void apertiumServerSignalHandler(int) {
-	cerr << "SIGINT: Cleaning things up.." << endl;
-	cleanup();
+	cerr << "SIGINT received." << endl;
+	exit(EXIT_SUCCESS);
 }
 
 int main(int ac, char *av[]) {
-
-	LtLocale::tryToSetLocale();
-
-	ucnv_setDefaultName("UTF-8");
-
-	CG3::Recycler::instance();
-
-	init_gbuffers();
-	init_strings();
-	init_keywords();
-	init_flags();
+	po::options_description desc("Allowed options");
+	desc.add_options()("help", "produce this help message")
+	("confDir", po::value<string>(), "(string) set configuration directory")
+	("confFile", po::value<string>(), "(string) set configuration file")
+	("maxThreads", po::value<int>(), "(int) set maximum number of threads")
+	("serverPort", po::value<int>(), "(int) set server port")
+	("modesDir", po::value<string>(), "(string) set modes' directory")
+	("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
+	("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
+	("confUsers", po::value<string>(), "(string) set users list file");
 
 	try {
-		po::options_description desc("Allowed options");
-		desc.add_options()("help", "produce this help message")
-		("confDir", po::value<string>(), "(string) set configuration directory")
-		("confFile", po::value<string>(), "(string) set configuration file")
-		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
-		("serverPort", po::value<int>(), "(int) set server port")
-		("modesDir", po::value<string>(), "(string) set modes' directory")
-		("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
-		("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
-		("confUsers", po::value<string>(), "(string) set users list file");
-
 		po::variables_map vm;
 		po::store(po::parse_command_line(ac, av, desc), vm);
 		po::notify(vm);
@@ -110,6 +96,20 @@ int main(int ac, char *av[]) {
 	        cout << desc << endl;
 	        return(1);
 	    }
+
+		LtLocale::tryToSetLocale();
+
+		ucnv_setDefaultName("UTF-8");
+
+		CG3::Recycler::instance();
+
+		init_gbuffers();
+		init_strings();
+		init_keywords();
+		init_flags();
+
+	    ::atexit(cleanup);
+	    ::signal(SIGINT, &apertiumServerSignalHandler);
 
 	    fs::path confDir = "conf";
 
@@ -125,8 +125,17 @@ int main(int ac, char *av[]) {
 	        confFile = vm["confFile"].as<string>();
 	    }
 
-	    ConfigurationManager *conf = new ConfigurationManager(confFile, confDir);
-
+	    conf = new ConfigurationManager(confFile, confDir);
+		po::options_description desc("Allowed options");
+		desc.add_options()("help", "produce this help message")
+		("confDir", po::value<string>(), "(string) set configuration directory")
+		("confFile", po::value<string>(), "(string) set configuration file")
+		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
+		("serverPort", po::value<int>(), "(int) set server port")
+		("modesDir", po::value<string>(), "(string) set modes' directory")
+		("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
+		("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
+		("confUsers", po::value<string>(), "(string) set users list file");
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << conf->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
 	        conf->setMaxThreads(vm["maxThreads"].as<int>());
@@ -157,17 +166,15 @@ int main(int ac, char *av[]) {
 	        conf->setConfUsers(vm["confUsers"].as<string>());
 	    }
 
-		AuthenticationManager::Instance(conf->getConfUsers().string());
-		TextClassifier::Instance(conf->getConfTextClassifier().string());
+		authenticationManager = AuthenticationManager::Instance(conf->getConfUsers().string());
+		textClassifier = TextClassifier::Instance(conf->getConfTextClassifier().string());
+		objectBroker = ObjectBroker::Instance();
+		modes = Modes::Instance();
 
-	    Modes::Instance()->initPipe(conf->getApertiumBase());
+	    modes->initPipe(conf->getApertiumBase());
 	    //Modes::Instance()->initXML(conf->getApertiumBase());
 
-	    ::signal(SIGINT, &apertiumServerSignalHandler);
-
 	    server = new ApertiumServer(conf);
-
-	    cleanup();
 
 	} catch (exception& e) {
 		cerr << "error: " << e.what() << endl;
