@@ -25,8 +25,6 @@
 #include "ApertiumTranslate.h"
 #include "ApertiumLanguagePairs.h"
 
-#include "ApertiumAuthPlugin.h"
-
 #include "ApertiumDetect.h"
 
 using namespace std;
@@ -48,12 +46,12 @@ ApertiumServer::ApertiumServer(ConfigurationManager *cm) {
 
 	iqxmlrpc::register_method<ApertiumDetect>(*(this->server), "detect");
 
-	ApertiumAuthPlugin apertiumAuthPlugin;
+	authPlugin = new ApertiumAuthPlugin();
 
 	this->logInterceptor = new ApertiumLogInterceptor();
 
 	this->server->push_interceptor(logInterceptor);
-	this->server->set_auth_plugin(apertiumAuthPlugin);
+	this->server->set_auth_plugin(*authPlugin);
 
 	this->server->log_errors(&std::cerr);
 	this->server->enable_introspection();
@@ -67,8 +65,16 @@ ApertiumServer::~ApertiumServer() {
 	this->server->set_exit_flag();
 
 	delete this->server;
+	this->server = NULL;
+
 	delete this->logInterceptor;
+	this->logInterceptor = NULL;
+
+	delete this->authPlugin;
+	this->authPlugin = NULL;
+
 	delete this->executorFactory;
+	this->executorFactory = NULL;
 }
 
 iqxmlrpc::Executor_factory_base* ApertiumServer::buildExecutorFactory(unsigned int nThreads) {

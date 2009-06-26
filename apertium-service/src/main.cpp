@@ -53,12 +53,22 @@ void cleanup(void) {
 	cerr << "Cleaning things up.." << endl;
 
 	delete server;
+	server = NULL;
 
 	delete conf;
+	conf = NULL;
+
 	delete authenticationManager;
+	authenticationManager = NULL;
+
 	delete objectBroker;
+	objectBroker = NULL;
+
 	delete textClassifier;
+	textClassifier = NULL;
+
 	delete modes;
+	modes = NULL;
 
 	free_strings();
 	free_keywords();
@@ -167,8 +177,11 @@ int main(int ac, char *av[]) {
 	    }
 
 		authenticationManager = AuthenticationManager::Instance(conf->getConfUsers().string());
+
 		textClassifier = TextClassifier::Instance(conf->getConfTextClassifier().string());
+
 		objectBroker = ObjectBroker::Instance();
+
 		modes = Modes::Instance();
 
 	    modes->initPipe(conf->getApertiumBase());

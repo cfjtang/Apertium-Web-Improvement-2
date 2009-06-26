@@ -27,7 +27,9 @@
 #include <libiqxmlrpc/https_server.h>
 
 #include "utils/ConfigurationManager.h"
+
 #include "ApertiumLogInterceptor.h"
+#include "ApertiumAuthPlugin.h"
 
 class ApertiumServer {
 public:
@@ -40,6 +42,7 @@ private:
 	iqxmlrpc::Server *server;
 
 	ApertiumLogInterceptor *logInterceptor;
+	ApertiumAuthPlugin *authPlugin;
 };
 
 #endif /* APERTIUMSERVER_H_ */
