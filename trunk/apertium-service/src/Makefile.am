@@ -4,7 +4,7 @@ LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @LIBIQXMLRPC_LIBS@ @BOOST_
 
 h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDetect.h ./format/Deformat.h ./format/Encoding.h \
 ./format/Base64.h ./format/Reformat.h ./ApertiumAuthPlugin.h ./ApertiumLanguagePairs.h ./core/FunctionMapper.h \
-./core/PreTransfer.h ./core/ThreadSafeQueue.h ./core/ObjectBroker.h ./core/ThreadSafeObjectPool.h ./core/Modes.h \
+./core/PreTransfer.h ./core/ThreadSafeQueue.h ./core/ObjectBroker.h ./core/ThreadSafeObjectPool.h ./core/ModesManager.h \
 ./core/TextClassifier.h ./core/Translator.h ./ApertiumLogInterceptor.h ./ApertiumServer.h \
 ./ApertiumTranslate.h ./cg/version.h ./cg/Grammar.h ./cg/GrammarWriter.h ./cg/Window.h ./cg/inlines.h ./cg/Rule.h \
 ./cg/TextualParser.h ./cg/Reading.h ./cg/cycle.h ./cg/ApertiumApplicator.h ./cg/Anchor.h ./cg/stdafx.h ./cg/IGrammarParser.h \
@@ -13,7 +13,7 @@ h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDet
 ./utils/ConfigurationManager.h ./utils/Logger.h
 
 cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumLanguagePairs.cpp ./ApertiumDetect.cpp \
-./core/PreTransfer.cpp ./core/Modes.cpp ./core/FunctionMapper.cpp ./core/ObjectBroker.cpp ./core/TextClassifier.cpp \
+./core/PreTransfer.cpp ./core/ModesManager.cpp ./core/FunctionMapper.cpp ./core/ObjectBroker.cpp ./core/TextClassifier.cpp \
 ./core/Translator.cpp ./ApertiumLogInterceptor.cpp ./ApertiumAuthPlugin.cpp ./ApertiumTranslate.cpp \
 ./ApertiumRuntimeException.cpp ./cg/Rule.cpp ./cg/ApertiumApplicator.cpp ./cg/Recycler.cpp ./cg/Window.cpp \
 ./cg/GrammarApplicator_runContextualTest.cpp ./cg/uextras.cpp ./cg/Cohort.cpp ./cg/GrammarApplicator_reflow.cpp \

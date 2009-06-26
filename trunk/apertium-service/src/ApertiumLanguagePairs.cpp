@@ -20,7 +20,7 @@
 #include "ApertiumServer.h"
 
 #include "ApertiumRuntimeException.h"
-#include "core/Modes.h"
+#include "core/ModesManager.h"
 
 #include <iostream>
 #include <string>
@@ -28,7 +28,7 @@
 using namespace std;
 
 void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
-	Modes *m = Modes::Instance();
+	ModesManager *m = ModesManager::Instance();
 
 	list<string> modes = m->getModeNames();
 	modes.sort();

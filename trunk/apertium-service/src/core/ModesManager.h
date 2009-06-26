@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODES_H_
-#define MODES_H_
+#ifndef MODESMANAGER_H_
+#define MODESMANAGER_H_
 
 #include <errno.h>
 #include <dirent.h>
@@ -74,10 +74,10 @@ private:
 	vector<Program> programs;
 };
 
-class Modes {
+class ModesManager {
 public:
-	static Modes *Instance();
-	virtual ~Modes();
+	static ModesManager *Instance();
+	virtual ~ModesManager();
 
 	list<string> getModeNames();
 
@@ -93,11 +93,11 @@ public:
 	void initXML(const fs::path);
 
 private:
-	Modes();
+	ModesManager();
 
 	void parseXML(fs::path);
 
-	static Modes *instance;
+	static ModesManager *instance;
 
 	static boost::mutex instanceMutex;
 
@@ -110,4 +110,4 @@ private:
 	ModeMapType modes;
 };
 
-#endif /* MODES_H_ */
+#endif /* MODESMANAGER_H_ */
