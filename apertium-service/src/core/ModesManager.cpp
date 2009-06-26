@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Modes.h"
+#include "ModesManager.h"
 
 #include <fstream>
 #include <sstream>
@@ -102,26 +102,26 @@ void Mode::setPrograms(const vector<Program> p) {
 	programs = p;
 }
 
-Modes *Modes::instance = NULL;
-boost::mutex Modes::instanceMutex;
+ModesManager *ModesManager::instance = NULL;
+boost::mutex ModesManager::instanceMutex;
 
-Modes *Modes::Instance() {
+ModesManager *ModesManager::Instance() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (!instance)
-		instance = new Modes();
+		instance = new ModesManager();
 	return(instance);
 }
 
-Modes::Modes() { }
+ModesManager::ModesManager() { }
 
-Modes::~Modes() {
+ModesManager::~ModesManager() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (instance != NULL) {
 		instance = NULL;
 	}
 }
 
-void Modes::parseXML(const fs::path path) {
+void ModesManager::parseXML(const fs::path path) {
 	xmlpp::DomParser parser(path.string());
 
 	if (parser) {
@@ -182,7 +182,7 @@ void Modes::parseXML(const fs::path path) {
 	}
 }
 
-void Modes::initXML(const fs::path path) {
+void ModesManager::initXML(const fs::path path) {
 	boost::regex e("modes\\.xml$");
 	list<fs::path> modeFiles = findFilesByRegex(path, e);
 	for (list<fs::path>::iterator it = modeFiles.begin(); it != modeFiles.end(); ++it) {
@@ -191,7 +191,7 @@ void Modes::initXML(const fs::path path) {
 	}
 }
 
-void Modes::initPipe(const fs::path path) {
+void ModesManager::initPipe(const fs::path path) {
 	string suffix = ".mode";
 
 	//boost::regex e(".*\\.mode$")
@@ -264,7 +264,7 @@ void Modes::initPipe(const fs::path path) {
 	}
 }
 
-std::list<std::string> Modes::getModeNames() {
+std::list<std::string> ModesManager::getModeNames() {
 	std::list<std::string> ret;	string suffix = ".mode";
 	ModeMapType::iterator it = modes.begin();
 	while (it != modes.end()) {
@@ -274,7 +274,7 @@ std::list<std::string> Modes::getModeNames() {
 	return(ret);
 }
 
-std::list<fs::path> Modes::findFilesBySuffix(const fs::path p, const std::string suffix) {
+std::list<fs::path> ModesManager::findFilesBySuffix(const fs::path p, const std::string suffix) {
 	std::list<fs::path> ret;
 	fs::directory_iterator endItr;
 	for (fs::directory_iterator itr(p); itr != endItr; ++itr) {
@@ -295,7 +295,7 @@ std::list<fs::path> Modes::findFilesBySuffix(const fs::path p, const std::string
 	return(ret);
 }
 
-std::list<fs::path> Modes::findFilesByRegex(const fs::path p, const boost::regex e) {
+std::list<fs::path> ModesManager::findFilesByRegex(const fs::path p, const boost::regex e) {
 	std::list<fs::path> ret;
 	fs::directory_iterator endItr;
 	for (fs::directory_iterator itr(p); itr != endItr; ++itr) {

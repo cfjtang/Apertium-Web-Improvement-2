@@ -2,7 +2,7 @@
 #define FUNCTIONMAPPER_H_
 
 #include "ObjectBroker.h"
-#include "Modes.h"
+#include "ModesManager.h"
 
 #include <boost/unordered/unordered_map.hpp>
 

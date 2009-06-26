@@ -25,7 +25,7 @@
 
 #include "format/Encoding.h"
 
-#include "Modes.h"
+#include "ModesManager.h"
 #include "TextClassifier.h"
 
 #include "ApertiumRuntimeException.h"
@@ -36,7 +36,7 @@ std::string Translator::translate(std::string text, std::string srcLang, std::st
 
 	wstring wtext = Encoding::utf8ToWstring(text);
 
-	Mode *mode = Modes::Instance()->getMode(pair);
+	Mode *mode = ModesManager::Instance()->getMode(pair);
 
 	if (!mode) {
 		throw ApertiumRuntimeException("Mode not found: " + pair);

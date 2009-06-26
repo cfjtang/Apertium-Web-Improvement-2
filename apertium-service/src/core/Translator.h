@@ -21,8 +21,6 @@
 #include <iostream>
 #include <wchar.h>
 
-#include "Modes.h"
-
 class Translator {
 public:
 	static std::string translate(std::string, std::string, std::string);

@@ -28,7 +28,7 @@
 
 #include "core/ObjectBroker.h"
 #include "core/TextClassifier.h"
-#include "core/Modes.h"
+#include "core/ModesManager.h"
 
 #include "cg/stdafx.h"
 #include "cg/icu_uoptions.h"
@@ -47,7 +47,7 @@ ConfigurationManager *conf = NULL;
 AuthenticationManager *authenticationManager = NULL;
 ObjectBroker *objectBroker = NULL;
 TextClassifier *textClassifier = NULL;
-Modes *modes = NULL;
+ModesManager *modesManager = NULL;
 
 void cleanup(void) {
 	cerr << "Cleaning things up.." << endl;
@@ -67,8 +67,8 @@ void cleanup(void) {
 	delete textClassifier;
 	textClassifier = NULL;
 
-	delete modes;
-	modes = NULL;
+	delete modesManager;
+	modesManager = NULL;
 
 	free_strings();
 	free_keywords();
@@ -182,10 +182,10 @@ int main(int ac, char *av[]) {
 
 		objectBroker = ObjectBroker::Instance();
 
-		modes = Modes::Instance();
+		modesManager = ModesManager::Instance();
 
-	    modes->initPipe(conf->getApertiumBase());
-	    //Modes::Instance()->initXML(conf->getApertiumBase());
+	    modesManager->initPipe(conf->getApertiumBase());
+	    //modesManager->initXML(conf->getApertiumBase());
 
 	    server = new ApertiumServer(conf);
 
