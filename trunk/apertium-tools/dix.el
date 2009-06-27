@@ -57,6 +57,7 @@
 ;;; - Function for creating a prelimenary list of bidix entries from
 ;;;   monodix entries, and preferably from two such lists which
 ;;;   we "paste" side-by-side.
+;;; - `dix-LR-restriction-copy' could add a="author"
 
 (defconst dix-version "2009-06-24") 
 
@@ -117,6 +118,22 @@ which we're looking at."
       (nxml-token-after)
       (setq tok (xmltok-start-tag-qname)))))
 
+(defun dix-lemma-at-point ()
+  (save-excursion
+    (dix-up-to "e")
+    (re-search-forward "lm=\"" nil t)
+    (word-at-point)))
+
+(defun dix-split-root-suffix ()
+  (save-excursion
+    (dix-up-to "e")
+    (nxml-down-element 2)
+    (cons (word-at-point)
+	  (progn
+	    (nxml-up-element)
+	    (re-search-forward "n=[^/]*/" nil t)
+	    (word-at-point)))))
+
 ;;;============================================================================
 ;;;
 ;;; Interactive functions
@@ -137,13 +154,9 @@ restriction."
       (forward-word) (insert (concat " r=\"" dir "\"")))
     ;; formatting, remove whitespace:
     (forward-char) (just-one-space) (delete-backward-char 1))
-  (if RL ;; move point to relevant word:
-      (progn
-	(nxml-forward-element) (nxml-backward-down-element 2)
-	(nxml-backward-element) (nxml-down-element))
-    (progn ; LR:
-      (nxml-down-element 2) (nxml-forward-element)
-      (nxml-backward-down-element))))
+  ;; move point to end of relevant word:
+  (nxml-down-element 2) (when RL (nxml-forward-element))
+  (nxml-down-element) (nxml-forward-element) (nxml-backward-element))
 
 
 (defun dix-RL-restriction-copy ()
@@ -235,7 +248,6 @@ can go back with C-u \\[set-mark-command]."
     (replace-match "n=\"f\"/></r>" t nil))
   (dix-up-to "e")
   (dix-with-sexp (backward-sexp)))
-
 
 ;;; Alignment ----------------------------------------------------------------
 (defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'"
