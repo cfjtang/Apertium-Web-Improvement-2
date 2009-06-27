@@ -167,7 +167,13 @@ void ModesManager::parseXML(const fs::path path) {
 
 						for (xmlpp::NodeSet::iterator itc = fileNameAttributeSet.begin(); itc != fileNameAttributeSet.end(); ++itc) {
 							xmlpp::Attribute *fileNameAttribute = dynamic_cast<xmlpp::Attribute *>(*itc);
-							fileNames.push_back(fileNameAttribute->get_value());
+							string fileName = fileNameAttribute->get_value();
+
+							if (!fs::exists(fileName)){
+								cout << "WARNING: " << fileName << " used by " << modeName << " but it doesn't exist." << endl;
+							}
+
+							fileNames.push_back(fileName);
 						}
 					}
 
