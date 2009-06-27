@@ -84,7 +84,7 @@ LIST Ket 	      = ("ket" adv);
 LIST CC               = (cnjcoo);
 LIST CS               = (cnjsub);
 LIST CA               = (cnjadv);
-LIST Conj             = CC + CA + CS;
+LIST Conj             = CC | CA | CS;
 
 # Interjections 
 
@@ -499,6 +499,9 @@ SELECT Adj IF (0 Adj) (0 Num) (-1 Adj OR VerbPP) (NOT 1 NC);
 
 # farsal a rez
 SELECT Vpart IF (-1C VerbInf) (0 ("a"ri)) (1 ("ober"ri vblex));
+
+#ma ne bign ket an dud war an daol 
+SELECT:CSub_if_neg CS IF (0 ("ma"ri cnjsub)) (1 ("ne"ri neg)) (3 ("ket"ri adv));
 
 SECTION
 
