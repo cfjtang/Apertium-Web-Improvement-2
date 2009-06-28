@@ -10,7 +10,7 @@
 # that will be filtered versions of file1 and file2 without:
 #  - numbers
 #  - empty phrases
-#  - the content of "rep_list[]"
+#  - the content of "rep_empty_list[]" and "rep_space_list[]"
 
 import sys, re
 
@@ -33,9 +33,10 @@ of1 = open(on1, 'w')
 of2 = open(on2, 'w')
 num = re.compile('[0-9]')
 empty = re.compile('^$')
-######## <<< The replacement list to be edited >>> ########
-rep_list = ['&quo','&am','&nbs','</s>','<s>','*',';','`','###','--',
-        '!','?','.',':',',','[',']','(',')','- ',' -']
+######## <<< The replacement lists to be edited >>> ########
+rep_empty_list = ['&quo','&am','&nbs','</s>','<s>','*',';','`','###','--',
+        '!','?','.',':',',','[',']','(',')']
+rep_space_list = ['- ',' -', '  '] # '  ' should stay the last one
 avoid_quote = re.compile("'[^s|ch]")
 
 try:
@@ -43,16 +44,19 @@ try:
         l2 = f2.next()
         if re.search(num, l1) or re.search(num, l2):
             continue
-        for item in rep_list:
+        for item in rep_empty_list:
             l1 = l1.replace(item,'')
             l2 = l2.replace(item,'')
         l1 = avoid_quote.sub('', l1)
         l2 = avoid_quote.sub('', l2)
+        for item in rep_space_list:
+            l1 = l1.replace(item,' ')
+            l2 = l2.replace(item,' ')
         if re.search(empty, l1) or re.search(empty, l2) or\
                 len(l1.split()) <= 1 or len(l2.split()) <= 1:
             continue
-        of1.write(l1.replace('  ',' '))
-        of2.write(l2.replace('  ',' '))
+        of1.write(l1)
+        of2.write(l2)
 
 finally:
     f1.close()
