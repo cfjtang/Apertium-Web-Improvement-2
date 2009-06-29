@@ -22,12 +22,12 @@
 #include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
+enum MessageType { INFO, NOTICE, WARNING, ERR };
+
 class Logger {
 public:
 	static Logger *Instance();
 	virtual ~Logger();
-
-    enum MessageType { INFO, NOTICE, WARNING, ERR };
 
     void trace(MessageType, const std::string);
 

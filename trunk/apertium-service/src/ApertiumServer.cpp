@@ -16,11 +16,13 @@
  */
 
 #include <iostream>
+#include <string>
 #include <signal.h>
 
 #include <libiqxmlrpc/libiqxmlrpc.h>
 
 #include "ApertiumServer.h"
+#include "utils/Logger.h"
 
 #include "ApertiumTranslate.h"
 #include "ApertiumLanguagePairs.h"
@@ -32,7 +34,9 @@ using namespace std;
 ApertiumServer::ApertiumServer(ConfigurationManager *cm) {
 	this->executorFactory = buildExecutorFactory(cm->getMaxThreads());
 
-	cout << "Starting server on port: " << cm->getServerPort() << endl;
+	stringstream ssmsg;
+	ssmsg << "Starting server on port " << (cm->getServerPort());
+	Logger::Instance()->trace(INFO, ssmsg.str());
 
 	if (cm->getUseSsl()) {
 		iqnet::ssl::ctx = iqnet::ssl::Ctx::server_only("data/cert.pem",	"data/pk.pem");

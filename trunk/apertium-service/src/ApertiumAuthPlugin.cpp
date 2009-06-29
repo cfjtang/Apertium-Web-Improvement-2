@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "AuthenticationManager.h"
+#include "utils/Logger.h"
 
 using namespace std;
 
@@ -34,15 +35,15 @@ bool ApertiumAuthPlugin::do_authenticate(const std::string& username, const std:
 	ret = am->authenticateUser(username, pw);
 
 	if (ret)
-		cout << "Authentication granted for user " << username << endl;
+		Logger::Instance()->trace(NOTICE, "Authentication granted for user " + username);
 	else
-		cout << "Authentication not granted for user " << username << endl;
+		Logger::Instance()->trace(WARNING, "Authentication not granted for user " + username);
 
 	return ret;
 }
 
 bool ApertiumAuthPlugin::do_authenticate_anonymous() const {
 	bool ret = true;
-	cout << "Authentication granted for anonymous user" << endl;
+	Logger::Instance()->trace(INFO, "Authentication granted for anonymous user");
 	return ret;
 }
