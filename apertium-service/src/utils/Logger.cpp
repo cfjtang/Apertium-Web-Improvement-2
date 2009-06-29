@@ -27,8 +27,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-#include <syslog.h>
-
 Logger *Logger::instance = NULL;
 boost::mutex Logger::instanceMutex;
 
@@ -49,44 +47,24 @@ Logger::~Logger() {
 	}
 }
 
-using namespace std;
-
 void Logger::trace(MessageType messageType, const std::string msg) {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (destType == CONSOLE || destType == FILE) {
-		struct tm* pTime;
+	std::stringstream ss;
 
-#ifdef _WIN32
-		__int64 now;
-		_time64(&now);
-		pTime = _localtime64(&now);
-		unsigned millis = unsigned((now / 1000) % 1000);
-#else
-		struct timeval time;
-		gettimeofday(&time, NULL);
-		pTime = localtime(&time.tv_sec);
-		unsigned millis = time.tv_usec / 1000;
-#endif
+	switch (messageType) {
+	case NOTICE:
+		ss << "[NOTICE] ";
+	case WARNING:
+		ss << "[WARNING] ";
+	case ERR:
+		ss << "[ERROR] ";
+	case INFO:
+		ss << "[INFO] ";
+	}
 
-		char timeString[256];
-		strftime(timeString, sizeof(timeString), "%y-%m-%d %H:%M:%S", pTime);
-		(*destStream) << "[" << timeString << "." << setw(3) << setfill('0') << millis << setw(0) << "]: ";
-		(*destStream) << msg << endl;
-		destStream->flush();
-	} else {
-		int prio;
+	ss << msg << std::endl;
 
-		switch (messageType) {
-		case NOTICE:
-			prio = LOG_NOTICE;
-		case WARNING:
-			prio = LOG_WARNING;
-		case ERR:
-			prio = LOG_ERR;
-		case INFO:
-			prio = LOG_INFO;
-		}
-
-		syslog(prio, "%s", msg.c_str());
+	{
+		boost::mutex::scoped_lock Lock(instanceMutex);
+		std::cout << ss;
 	}
 }

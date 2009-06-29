@@ -26,7 +26,6 @@ public:
 	static Logger *Instance();
 	virtual ~Logger();
 
-    enum DestType { CONSOLE, FILE, SYSLOG };
     enum MessageType { INFO, NOTICE, WARNING, ERR };
 
     void trace(MessageType, const std::string);
@@ -36,9 +35,6 @@ private:
 	static Logger *instance;
 
 	static boost::mutex instanceMutex;
-
-    DestType destType;
-    std::ostream *destStream;
 };
 
 #endif /* LOGGER_H_ */
