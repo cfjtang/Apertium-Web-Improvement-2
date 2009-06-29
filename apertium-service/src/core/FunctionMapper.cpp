@@ -54,7 +54,12 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	FILE *in = tmpfile();
 
-	if (taskType == CG_PROC) {
+	bool useUtf8 = false;
+
+	if (taskType == CG_PROC)
+		useUtf8 = true;
+
+	if (useUtf8) {
 		string sd = Encoding::wstringToUtf8(d);
 		for (size_t i = 0; i < sd.size(); ++i) {
 			fputc(sd[i], in);
@@ -72,7 +77,7 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	FILE *out = NULL;
 
-	if (taskType == CG_PROC) {
+	if (useUtf8) {
 		out = open_memstream(reinterpret_cast<char **>(&outptr), &outsize);
 	} else {
 		out = open_wmemstream(reinterpret_cast<wchar_t **>(&outptr), &outsize);
@@ -119,9 +124,7 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	case APERTIUM_TRANSFER: {
 		TransferIndexType index = files;
-		Transfer *i = NULL;
-		{
-		i = objectBroker->TransferPool.request(index);
+		Transfer *i = objectBroker->TransferPool.request(index);
 
 		bool useBilingual = true;
 
@@ -138,7 +141,7 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 			i->setUseBilingual(false);
 
 		i->transfer(in, out);
-		}
+
 		objectBroker->TransferPool.release(i, index);
 	}
 		break;
@@ -170,9 +173,7 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 		FSTProcessorIndexType index = make_pair(task, files[0]);
 
-		FSTProcessor *i = NULL;
-		{
-		i = objectBroker->FSTProcessorPool.request(index);
+		FSTProcessor *i = objectBroker->FSTProcessorPool.request(index);
 
 		switch (task) {
 		case ANALYSIS:
@@ -186,7 +187,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 			break;
 		case TRANSLITERATION:
 			i->transliteration(in, out);
-		}
 		}
 
 		objectBroker->FSTProcessorPool.release(i, index);
@@ -209,7 +209,7 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 		CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_in, ux_out, ux_err);
 
-		{ // XXX
+		{
 		boost::mutex::scoped_lock Lock(ObjectBroker::cgMutex);
 		applicator->setGrammar(grammar);
 		applicator->runGrammarOnText(ux_in, ux_out);
@@ -229,7 +229,7 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 
 	wstring ret;
 
-	if (taskType == CG_PROC) {
+	if (useUtf8) {
 		string sret(reinterpret_cast<char *>(outptr), outsize);
 		ret = Encoding::utf8ToWstring(sret);
 	} else {
