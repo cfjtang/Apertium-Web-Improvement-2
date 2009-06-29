@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <boost/thread.hpp>
+#include <boost/unordered/unordered_map.hpp>
 
 class Logger {
 public:
@@ -35,6 +36,9 @@ private:
 	static Logger *instance;
 
 	static boost::mutex instanceMutex;
+
+	typedef boost::unordered_map<MessageType, int32_t> ColorMapType;
+	ColorMapType color;
 };
 
 #endif /* LOGGER_H_ */
