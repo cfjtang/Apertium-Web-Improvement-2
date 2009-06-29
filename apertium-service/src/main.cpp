@@ -30,6 +30,8 @@
 #include "core/TextClassifier.h"
 #include "core/ModesManager.h"
 
+#include "utils/Logger.h"
+
 #include "cg/stdafx.h"
 #include "cg/icu_uoptions.h"
 #include "cg/Recycler.h"
@@ -40,6 +42,8 @@
 using namespace std;
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
+
+Logger *logger = NULL;
 
 ApertiumServer *server = NULL;
 ConfigurationManager *conf = NULL;
@@ -69,6 +73,9 @@ void cleanup(void) {
 
 	delete modesManager;
 	modesManager = NULL;
+
+	delete logger;
+	logger = NULL;
 
 	free_strings();
 	free_keywords();
@@ -175,6 +182,8 @@ int main(int ac, char *av[]) {
 	        cout << "Users' list file was " << conf->getConfUsers() <<  ", setting it to " << vm["confUsers"].as<string>() << endl;
 	        conf->setConfUsers(vm["confUsers"].as<string>());
 	    }
+
+	    logger = Logger::Instance();
 
 		authenticationManager = AuthenticationManager::Instance(conf->getConfUsers().string());
 

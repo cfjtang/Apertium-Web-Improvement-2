@@ -35,8 +35,8 @@ Logger *Logger::Instance() {
 }
 
 Logger::Logger() {
-	color[INFO] = 33;
-	color[NOTICE] = 32;
+	color[INFO] = 32;
+	color[NOTICE] = 33;
 	color[WARNING] = 35;
 	color[ERR] = 31;
 }
@@ -53,20 +53,24 @@ void Logger::trace(MessageType messageType, const std::string msg) {
 
 	switch (messageType) {
 	case INFO:
-		ss << "[\033[" << color[INFO] << ";1mNOTICE\033[0m] ";
+		ss << "[\033[" << color[INFO] << ";1mINFO\033[0m]";
+		break;
 	case NOTICE:
-		ss << "[\033[" << color[NOTICE] << ";1mNOTICE\033[0m] ";
+		ss << "[\033[" << color[NOTICE] << ";1mNOTICE\033[0m]";
+		break;
 	case WARNING:
-		ss << "[\033[" << color[WARNING] << ";1mNOTICE\033[0m] ";
+		ss << "[\033[" << color[WARNING] << ";1mWARNING\033[0m]";
+		break;
 	case ERR:
-		ss << "[\033[" << color[ERR] << ";1mNOTICE\033[0m] ";
+		ss << "[\033[" << color[ERR] << ";1mERR\033[0m]";
+		break;
 	}
 
 	ptime now = second_clock::local_time();
-	ss << " - " << now << " - " << msg << std::endl;
+	ss << ": " << now << " - " << msg;
 
 	{
 		boost::mutex::scoped_lock Lock(instanceMutex);
-		std::cout << ss;
+		std::cout << ss.str() << std::endl;
 	}
 }

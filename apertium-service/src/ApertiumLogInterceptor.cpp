@@ -22,7 +22,9 @@
 #include <libiqxmlrpc/http_server.h>
 #include <libiqxmlrpc/http_errors.h>
 
+#include "utils/Logger.h"
+
 void ApertiumLogInterceptor::process(iqxmlrpc::Method* m, const iqxmlrpc::Param_list& p, iqxmlrpc::Value& r) {
-	std::cout << "LogInterceptor: " << m->name() << " invoked:" << std::endl;
+	Logger::Instance()->trace(INFO, "LogInterceptor: " + m->name() + " invoked");
 	yield(m, p, r);
 }
