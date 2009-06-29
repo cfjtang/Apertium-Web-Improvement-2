@@ -19,13 +19,10 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <iomanip>
 
-#include <stdio.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
-#include <sys/time.h>
-#include <time.h>
+using namespace boost::posix_time;
 
 Logger *Logger::instance = NULL;
 boost::mutex Logger::instanceMutex;
@@ -38,6 +35,10 @@ Logger *Logger::Instance() {
 }
 
 Logger::Logger() {
+	color[INFO] = 33;
+	color[NOTICE] = 32;
+	color[WARNING] = 35;
+	color[ERR] = 31;
 }
 
 Logger::~Logger() {
@@ -51,17 +52,18 @@ void Logger::trace(MessageType messageType, const std::string msg) {
 	std::stringstream ss;
 
 	switch (messageType) {
-	case NOTICE:
-		ss << "[NOTICE] ";
-	case WARNING:
-		ss << "[WARNING] ";
-	case ERR:
-		ss << "[ERROR] ";
 	case INFO:
-		ss << "[INFO] ";
+		ss << "[\033[" << color[INFO] << ";1mNOTICE\033[0m] ";
+	case NOTICE:
+		ss << "[\033[" << color[NOTICE] << ";1mNOTICE\033[0m] ";
+	case WARNING:
+		ss << "[\033[" << color[WARNING] << ";1mNOTICE\033[0m] ";
+	case ERR:
+		ss << "[\033[" << color[ERR] << ";1mNOTICE\033[0m] ";
 	}
 
-	ss << msg << std::endl;
+	ptime now = second_clock::local_time();
+	ss << " - " << now << " - " << msg << std::endl;
 
 	{
 		boost::mutex::scoped_lock Lock(instanceMutex);
