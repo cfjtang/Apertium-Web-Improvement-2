@@ -3,17 +3,23 @@
 
 <transfer>
   <section-def-cats>
+    <def-cat n="sent"> 
+      <cat-item tags="sent"/>
+    </def-cat>
     <def-cat n="pronavn">
       <cat-item tags="prn.def.*"/>
       <cat-item tags="prn.ind.*"/>
     </def-cat>
+
     <def-cat n="navn">
       <cat-item tags="n.*"/>
     </def-cat>
+
     <def-cat n="aux">
       <cat-item tags="vbser.*"/>
       <cat-item tags="vbhaver.*"/>
     </def-cat>
+
     <def-cat n="supn_pp">
       <cat-item tags="vbser.supn.*"/>
       <cat-item tags="vbhaver.supn.*"/>
@@ -61,6 +67,7 @@
       <attr-item tags="adj.ssup"/>
     </def-attr>
     <def-attr n="a_det">
+      <attr-item tags="det.def"/>
       <attr-item tags="det.ind"/>
       <attr-item tags="det.pos"/>
       <attr-item tags="det.dem"/>
@@ -116,6 +123,7 @@
   <section-def-vars>
     <def-var n="uno"/>
     <def-var n="genero"/>
+    <def-var n="definite"/>
     <def-var n="numero"/>
     <def-var n="concDet"/>
     <def-var n="concAdj"/>
@@ -1540,14 +1548,14 @@
         <choose>
           <when>
             <test>
-              <equal>
-                <clip pos="1" side="sl" part="defnes"/>
-                <lit-tag v="det.def"/>
-              </equal>
+                <equal>
+                  <clip pos="1" side="tl" part="a_det"/>
+                  <lit-tag v="det.qnt"/>
+                </equal>
             </test>
             <let>
-              <clip pos="1" side="sl" part="defnes"/>
-              <lit v=""/>
+              <var n="definite"/>
+              <clip pos="1" side="tl" part="defnes"/>
             </let>
           </when>
         </choose>
@@ -1557,7 +1565,7 @@
             <clip pos="1" side="tl" part="a_det"/>
             <clip pos="1" side="tl" part="gen"/>
             <clip pos="1" side="tl" part="nbr"/>
-            <clip pos="1" side="tl" part="defnes"/> 
+            <var n="definite"/>
             <clip pos="1" side="tl" part="lemq"/>
           </lu>
           <b pos="1"/>
@@ -1699,6 +1707,33 @@
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: SENT // . → .">
+      <pattern>
+	<pattern-item n="sent"/>
+      </pattern>
+      <action>
+	<let>
+	  <var n="numero"/>
+	  <lit-tag v="sg"/>
+	</let>
+	<let>
+	  <var n="genero"/>
+	  <lit-tag v="m"/>
+	</let>
+	<let>
+	  <var n="definite"/>
+	  <lit v=""/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" side="tl" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
+
+    
   
   </section-rules>
 </transfer>
