@@ -15,6 +15,8 @@
 
 #include "format/Encoding.h"
 
+#include "utils/Logger.h"
+
 #include "cg/stdafx.h"
 #include "cg/icu_uoptions.h"
 #include "cg/Grammar.h"
@@ -82,6 +84,8 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 	} else {
 		out = open_wmemstream(reinterpret_cast<wchar_t **>(&outptr), &outsize);
 	}
+
+	Logger::Instance()->trace(DEBUG, "executing " + program);
 
 	switch (task[program]) {
 	case APERTIUM_INTERCHUNK: {
@@ -190,12 +194,10 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 		}
 
 		objectBroker->FSTProcessorPool.release(i, index);
-
 	}
 		break;
 
-	case CG_PROC:
-	{
+	case CG_PROC: {
 		const char *codepage_default = ucnv_getDefaultName();
 		const char *locale_default = "en_US_POSIX"; //uloc_getDefault();
 
@@ -220,9 +222,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 		objectBroker->GrammarPool.release(grammar, index);
 	}
 		break;
-
-	default:
-		cout << "unknown code for " << program << endl;
 	}
 
 	fclose(out);

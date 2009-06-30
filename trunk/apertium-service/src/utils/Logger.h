@@ -22,7 +22,7 @@
 #include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
-enum MessageType { INFO, NOTICE, WARNING, ERR };
+enum MessageType { DEBUG, INFO, NOTICE, WARNING, ERR };
 
 class Logger {
 public:
