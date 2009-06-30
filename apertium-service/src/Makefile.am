@@ -10,7 +10,7 @@ h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDet
 ./cg/TextualParser.h ./cg/Reading.h ./cg/cycle.h ./cg/ApertiumApplicator.h ./cg/Anchor.h ./cg/stdafx.h ./cg/IGrammarParser.h \
 ./cg/Recycler.h ./cg/Strings.h ./cg/Set.h ./cg/options.h ./cg/macros.h ./cg/BinaryGrammar.h ./cg/GrammarApplicator.h \
 ./cg/CompositeTag.h ./cg/icu_uoptions.h ./cg/uextras.h ./cg/Cohort.h ./cg/ContextualTest.h ./cg/Tag.h ./cg/SingleWindow.h \
-./utils/ConfigurationManager.h ./utils/Logger.h
+./utils/ConfigurationManager.h ./utils/Logger.h ./utils/Statistics.h
 
 cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumLanguagePairs.cpp ./ApertiumDetect.cpp \
 ./core/PreTransfer.cpp ./core/ModesManager.cpp ./core/FunctionMapper.cpp ./core/ObjectBroker.cpp ./core/TextClassifier.cpp \
@@ -21,7 +21,7 @@ cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumLanguagePairs
 ./cg/GrammarApplicator_runGrammar.cpp ./cg/Reading.cpp ./cg/Grammar.cpp ./cg/BinaryGrammar.cpp ./cg/Set.cpp ./cg/ContextualTest.cpp \
 ./cg/Tag.cpp ./cg/icu_uoptions.cpp ./cg/GrammarWriter.cpp ./cg/Anchor.cpp ./cg/GrammarApplicator_runRules.cpp \
 ./cg/GrammarApplicator.cpp ./cg/SingleWindow.cpp ./cg/BinaryGrammar_read.cpp ./AuthenticationManager.cpp \
-./utils/ConfigurationManager.cpp ./utils/Logger.cpp ./main.cpp
+./utils/ConfigurationManager.cpp ./utils/Logger.cpp ./utils/Statistics.cpp ./main.cpp
 
 bin_PROGRAMS = apertium_service
 
