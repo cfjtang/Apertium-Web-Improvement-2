@@ -763,6 +763,16 @@
       <list-item v="pas"/>
       <list-item v="jamais"/>
     </def-list>
+    <def-list n="advmod">
+      <list-item v="fin"/>
+      <list-item v="kenañ"/>
+      <list-item v="tre"/>
+      <list-item v="bras"/>
+      <list-item v="eston"/>
+      <list-item v="espar"/>
+      <list-item v="ken-ha-ken"/>
+    </def-list>
+
     <def-list n="part_sing">
 
       <list-item v="beurre"/>
@@ -10175,29 +10185,69 @@
         <call-macro n="comparatiu_adj1">
           <with-param pos="1"/>
         </call-macro>
-        <out>
-          <chunk name="preadv_adj" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SA"/></tag>
-              <tag><clip pos="1" side="tl" part="gen"/></tag>
-              <tag><clip pos="1" side="tl" part="nbr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="whole"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <var n="adjectiu1"/>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_adj"/>
-              <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-              <clip pos="1" side="tl" part="gen_mf"/> 
-              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-              <clip pos="1" side="tl" part="nbr_sp"/> 
-              <clip pos="1" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
+        <choose>
+          <when>
+            <test>
+              <in caseless="yes">
+                <clip pos="2" side="sl" part="lem"/>
+                <list n="advmod"/>
+              </in>
+            </test> 
+            <out>
+              <chunk name="preadv_adj" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SA"/></tag>
+                  <tag><clip pos="1" side="tl" part="gen"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="2" side="tl" part="whole"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <var n="adjectiu1"/>
+                  <clip pos="1" side="tl" part="lemh"/>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="1" side="tl" part="gen_mf"/> 
+                  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="1" side="tl" part="nbr_sp"/> 
+                  <clip pos="1" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk name="adj" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SA"/></tag>
+                  <tag><clip pos="1" side="tl" part="gen"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <var n="adjectiu1"/>
+                  <clip pos="1" side="tl" part="lemh"/>
+                  <clip pos="1" side="tl" part="a_adj"/>
+                  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="1" side="tl" part="gen_mf"/> 
+                  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="1" side="tl" part="nbr_sp"/> 
+                  <clip pos="1" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+              <b pos="1"/>
+              <chunk name="adv" case="caseFirstWord">
+                <tags>
+                  <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="2" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
