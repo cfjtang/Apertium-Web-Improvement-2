@@ -143,6 +143,10 @@ int main(int ac, char *av[]) {
 	    }
 
 	    conf = new ConfigurationManager(confFile, confDir);
+
+	    logger = Logger::Instance();
+	    logger->setVerbosity(2);
+
 		po::options_description desc("Allowed options");
 		desc.add_options()("help", "produce this help message")
 		("confDir", po::value<string>(), "(string) set configuration directory")
@@ -152,7 +156,10 @@ int main(int ac, char *av[]) {
 		("modesDir", po::value<string>(), "(string) set modes' directory")
 		("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
 		("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
-		("confUsers", po::value<string>(), "(string) set users list file");
+		("confUsers", po::value<string>(), "(string) set users list file")
+		("verbosity", po::value<int>(), "(int) set verbosity");
+
+
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << conf->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
 	        conf->setMaxThreads(vm["maxThreads"].as<int>());
@@ -183,7 +190,10 @@ int main(int ac, char *av[]) {
 	        conf->setConfUsers(vm["confUsers"].as<string>());
 	    }
 
-	    logger = Logger::Instance();
+	    if (vm.count("verbosity")) {
+	        cout << "Verbosity was " << logger->getVerbosity() <<  ", setting it to " << vm["verbosity"].as<int>() << endl;
+	        logger->setVerbosity(vm["confUsers"].as<int>());
+	    }
 
 		authenticationManager = AuthenticationManager::Instance(conf->getConfUsers().string());
 

@@ -31,11 +31,16 @@ public:
 
     void trace(MessageType, const std::string);
 
+    void setVerbosity(int);
+    int getVerbosity();
+
 private:
 	Logger();
 	static Logger *instance;
 
 	static boost::mutex instanceMutex;
+
+	int verbosity;
 
 	typedef boost::unordered_map<MessageType, int32_t> ColorMapType;
 	ColorMapType color;

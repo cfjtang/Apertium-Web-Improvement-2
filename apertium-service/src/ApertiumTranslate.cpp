@@ -23,6 +23,8 @@
 #include "core/Translator.h"
 #include "core/TextClassifier.h"
 
+#include "utils/Logger.h"
+
 #include "ApertiumRuntimeException.h"
 
 using namespace std;
@@ -43,6 +45,8 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 
 		string srcLang = params[1];
 		string destLang = params[2];
+
+		Logger::Instance()->trace(DEBUG, "Invoking translate(\"" + text + "\", \"" + srcLang + "\", \"" + destLang + "\");");
 
 		if (srcLang.empty()) {
 			srcLang = TextClassifier::Instance()->classify(text);
