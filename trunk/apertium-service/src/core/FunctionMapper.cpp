@@ -15,8 +15,6 @@
 
 #include "format/Encoding.h"
 
-#include "utils/Logger.h"
-
 #include "cg/stdafx.h"
 #include "cg/icu_uoptions.h"
 #include "cg/Grammar.h"
@@ -84,8 +82,6 @@ wstring FunctionMapper::execute(Program p, wstring d) {
 	} else {
 		out = open_wmemstream(reinterpret_cast<wchar_t **>(&outptr), &outsize);
 	}
-
-	Logger::Instance()->trace(DEBUG, "executing " + program);
 
 	switch (task[program]) {
 	case APERTIUM_INTERCHUNK: {

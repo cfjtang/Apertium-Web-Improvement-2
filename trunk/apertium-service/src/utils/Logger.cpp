@@ -73,8 +73,16 @@ void Logger::trace(MessageType messageType, const std::string msg) {
 	ptime now = second_clock::local_time();
 	ss << ": " << now << " - " << msg;
 
-	{
+	if (verbosity > 1 || messageType != DEBUG){
 		boost::mutex::scoped_lock Lock(instanceMutex);
 		std::cout << ss.str() << std::endl;
 	}
+}
+
+void Logger::setVerbosity(int v) {
+	verbosity = v;
+}
+
+int Logger::getVerbosity() {
+	return verbosity;
 }

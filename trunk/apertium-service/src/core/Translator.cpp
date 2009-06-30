@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+#include <string>
+
 #include "Translator.h"
 
 #include "ObjectBroker.h"
@@ -24,6 +27,8 @@
 #include "format/Reformat.h"
 
 #include "format/Encoding.h"
+
+#include "utils/Logger.h"
 
 #include "ModesManager.h"
 #include "TextClassifier.h"
@@ -50,7 +55,9 @@ std::string Translator::translate(std::string text, std::string srcLang, std::st
 
 	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
-
+		std::stringstream ss;
+		ss << "Translator::translate(): Executing " << program;
+		Logger::Instance()->trace(DEBUG, ss.str());
 		wstring tmp = fm->execute(program, ret);
 		ret = tmp;
 	}
