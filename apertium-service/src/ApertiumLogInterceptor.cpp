@@ -25,6 +25,9 @@
 #include "utils/Logger.h"
 
 void ApertiumLogInterceptor::process(iqxmlrpc::Method* m, const iqxmlrpc::Param_list& p, iqxmlrpc::Value& r) {
-	Logger::Instance()->trace(INFO, "LogInterceptor: " + m->name() + " invoked");
+	std::string user = "anonymous";
+	if (m->authenticated())
+		user = m->authname();
+	Logger::Instance()->trace(INFO, "User " + user + " invoked method " + m->name());
 	yield(m, p, r);
 }

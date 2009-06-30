@@ -35,10 +35,11 @@ Logger *Logger::Instance() {
 }
 
 Logger::Logger() {
+	color[ERR] = 31;
 	color[INFO] = 32;
 	color[NOTICE] = 33;
 	color[WARNING] = 35;
-	color[ERR] = 31;
+	color[DEBUG] = 36;
 }
 
 Logger::~Logger() {
@@ -63,6 +64,9 @@ void Logger::trace(MessageType messageType, const std::string msg) {
 		break;
 	case ERR:
 		ss << "[\033[" << color[ERR] << ";1mERR\033[0m]";
+		break;
+	case DEBUG:
+		ss << "[\033[" << color[DEBUG] << ";1mDEBUG\033[0m]";
 		break;
 	}
 

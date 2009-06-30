@@ -175,8 +175,6 @@ template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInst
 
 	if (pret) {
 		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
-		//std::cerr << "Error: Grammar could not be parsed - exiting!" << std::endl;
-		//CG3Quit(1);
 	}
 
 	ret->reindex();
