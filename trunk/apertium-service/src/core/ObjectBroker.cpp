@@ -17,6 +17,8 @@
 
 #include "ObjectBroker.h"
 
+#include "utils/Logger.h"
+
 ObjectBroker *ObjectBroker::instance = NULL;
 boost::mutex ObjectBroker::instanceMutex;
 
@@ -66,21 +68,33 @@ HMM *HMMWrapper::getHmm() {
 }
 
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance() {
+
+	Logger::Instance()->trace(DEBUG, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
+
 	PreTransfer *ret = pool.construct();
 	return(ret);
 }
 
 template <> Deformat *NonIndexedObjectPool<Deformat>::getNewInstance() {
+
+	Logger::Instance()->trace(DEBUG, "NonIndexedObjectPool<Deformat>::getNewInstance();");
+
 	Deformat *ret = pool.construct();
 	return(ret);
 }
 
 template <> Reformat *NonIndexedObjectPool<Reformat>::getNewInstance() {
+
+	Logger::Instance()->trace(DEBUG, "NonIndexedObjectPool<Reformat>::getNewInstance();");
+
 	Reformat *ret = pool.construct();
 	return(ret);
 }
 
 template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNewInstance(FSTProcessorIndexType index) {
+
+	Logger::Instance()->trace(DEBUG, "ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNewInstance(FSTProcessorIndexType index);");
+
 	FSTProcessor *ret = pool.construct();
 
 	FILE *fp = fopen((index.second).c_str(), "r");
@@ -109,15 +123,19 @@ template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNe
 }
 
 template <> HMMWrapper *ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index) {
-	HMMWrapper *ret = NULL;
 
-	ret = pool.construct();
+	Logger::Instance()->trace(DEBUG, "ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index);");
+
+	HMMWrapper *ret = pool.construct();
 	ret->read(index);
 
 	return(ret);
 }
 
 template <> Transfer *ObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index) {
+
+	Logger::Instance()->trace(DEBUG, "ObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index);");
+
 	Transfer *ret = pool.construct();
 	switch (index.size()) {
 	case 3:
@@ -132,18 +150,27 @@ template <> Transfer *ObjectPool<Transfer, TransferIndexType>::getNewInstance(Tr
 }
 
 template <> Interchunk *ObjectPool<Interchunk, InterchunkIndexType>::getNewInstance(InterchunkIndexType index) {
+
+	Logger::Instance()->trace(DEBUG, "ObjectPool<Interchunk, InterchunkIndexType>::getNewInstance(InterchunkIndexType index);");
+
 	Interchunk *ret = pool.construct();
 	ret->read(index.first, index.second);
 	return(ret);
 }
 
 template <> Postchunk *ObjectPool<Postchunk, PostchunkIndexType>::getNewInstance(PostchunkIndexType index) {
+
+	Logger::Instance()->trace(DEBUG, "ObjectPool<Postchunk, PostchunkIndexType>::getNewInstance(PostchunkIndexType index);");
+
 	Postchunk *ret = pool.construct();
 	ret->read(index.first, index.second);
 	return(ret);
 }
 
 template <> TransferMult *ObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index) {
+
+	Logger::Instance()->trace(DEBUG, "ObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index);");
+
 	TransferMult *ret = pool.construct();
 	ret->read(index.first, index.second);
 	return(ret);
@@ -152,6 +179,8 @@ template <> TransferMult *ObjectPool<TransferMult, TransferMultIndexType>::getNe
 boost::mutex ObjectBroker::cgMutex;
 
 template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index) {
+
+	Logger::Instance()->trace(DEBUG, "ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index);");
 
 	const char *codepage_default = ucnv_getDefaultName();
 	const char *locale_default = "en_US_POSIX"; //uloc_getDefault();

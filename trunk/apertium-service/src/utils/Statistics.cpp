@@ -26,13 +26,13 @@ boost::mutex Statistics::instanceMutex;
 Statistics *Statistics::Instance() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (!instance)
-		instance = new Logger();
+		instance = new Statistics();
 	return (instance);
 }
 
-Logger::Logger() { }
+Statistics::Statistics() { }
 
-Logger::~Logger() {
+Statistics::~Statistics() {
 	boost::mutex::scoped_lock Lock(instanceMutex);
 	if (instance != NULL) {
 		instance = NULL;
