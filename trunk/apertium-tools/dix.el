@@ -58,8 +58,9 @@
 ;;;   monodix entries, and preferably from two such lists which
 ;;;   we "paste" side-by-side.
 ;;; - `dix-LR-restriction-copy' could add a="author"
+;;; - generalise to `dix-copy' with LR/RL options instead.
 
-(defconst dix-version "2009-06-24") 
+(defconst dix-version "2009-07-01") 
 
 ;;;============================================================================
 ;;;
@@ -144,8 +145,8 @@ which we're looking at."
 an LR restriction to the copy. A prefix argument makes it an RL
 restriction."
   (interactive "P")
+  (dix-up-to "e")
   (save-excursion
-    (dix-up-to "e")
     (dix-with-sexp (kill-sexp))		; todo: don't modify kill-ring
     (yank) (newline-and-indent) (yank)
     (goto-char (mark t))
@@ -156,7 +157,7 @@ restriction."
     (forward-char) (just-one-space) (delete-backward-char 1))
   ;; move point to end of relevant word:
   (nxml-down-element 2) (when RL (nxml-forward-element))
-  (nxml-down-element) (nxml-forward-element) (nxml-backward-element))
+  (nxml-down-element 1) (goto-char (nxml-token-after)))
 
 
 (defun dix-RL-restriction-copy ()
@@ -226,7 +227,7 @@ can go back with C-u \\[set-mark-command]."
 	     (goto-char pos))))
 
 
-;;; The following is rather nn-nb-specific stuff. Todo: generalize or remove.
+;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
   (interactive)
   (dix-up-to "e")
