@@ -21,20 +21,27 @@
 #include <string>
 
 Statistics *Statistics::instance = NULL;
-boost::mutex Statistics::instanceMutex;
+boost::shared_mutex Statistics::instanceMutex;
 
 Statistics *Statistics::Instance() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (!instance)
+	instanceMutex.lock_shared();
+	if (!instance) {
+		instanceMutex.unlock_and_lock_upgrade();
 		instance = new Statistics();
-	return (instance);
+		instanceMutex.unlock_and_lock_shared();
+	}
+	Statistics *ret = instance;
+	instanceMutex.unlock_shared();
+	return ret;
 }
 
 Statistics::Statistics() { }
 
 Statistics::~Statistics() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
+	instanceMutex.lock_shared();
 	if (instance != NULL) {
+		instanceMutex.unlock_and_lock_upgrade();
 		instance = NULL;
+		instanceMutex.unlock();
 	}
 }
