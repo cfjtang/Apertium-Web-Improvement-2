@@ -18,6 +18,7 @@
 #include "ApertiumLogInterceptor.h"
 
 #include <iostream>
+#include <string>
 #include <libiqxmlrpc/http.h>
 #include <libiqxmlrpc/http_server.h>
 #include <libiqxmlrpc/http_errors.h>
@@ -25,9 +26,22 @@
 #include "utils/Logger.h"
 
 void ApertiumLogInterceptor::process(iqxmlrpc::Method* m, const iqxmlrpc::Param_list& p, iqxmlrpc::Value& r) {
-	std::string user = "anonymous";
+	std::string user;
 	if (m->authenticated())
 		user = m->authname();
-	Logger::Instance()->trace(INFO, "User " + user + " invoked method " + m->name());
+	else
+		user = "anonymous";
+
+	std::stringstream ss;
+	ss << m->name() << "(\"";
+	for (size_t i = 0; i < p.size(); ++i) {
+		if (i != 0)
+			ss << "\", \"";
+		std::string str = p[i];
+		ss << str;
+	}
+	ss << "\");";
+
+	Logger::Instance()->trace(INFO, "User \"" + user + "\" invoked " + ss.str());
 	yield(m, p, r);
 }

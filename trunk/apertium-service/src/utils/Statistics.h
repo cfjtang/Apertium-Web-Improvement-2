@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <boost/thread.hpp>
+#include <boost/unordered/unordered_map.hpp>
 
 class Statistics {
 public:
@@ -30,8 +31,10 @@ private:
 	Statistics();
 	static Statistics *instance;
 
-	static boost::mutex instanceMutex;
+	static boost::shared_mutex instanceMutex;
 
+	typedef boost::unordered_map<std::string, unsigned int> PairInvocationsMapType;
+	PairInvocationsMapType pairInvocationsMap;
 };
 
 #endif /* STATISTICS_H_ */
