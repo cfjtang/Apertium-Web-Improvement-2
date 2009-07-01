@@ -103,42 +103,46 @@ void apertiumServerSignalHandler(int) {
 }
 
 int main(int ac, char *av[]) {
-	po::options_description desc("Allowed options");
-	desc.add_options()("help", "produce this help message")
-	("confDir", po::value<string>(), "(string) set configuration directory")
-	("confFile", po::value<string>(), "(string) set configuration file")
-	("maxThreads", po::value<int>(), "(int) set maximum number of threads")
-	("serverPort", po::value<int>(), "(int) set server port")
-	("modesDir", po::value<string>(), "(string) set modes' directory")
-	("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
-	("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
-	("confUsers", po::value<string>(), "(string) set users list file");
+
+	LtLocale::tryToSetLocale();
+
+	ucnv_setDefaultName("UTF-8");
+
+	CG3::Recycler::instance();
+
+	init_gbuffers();
+	init_strings();
+	init_keywords();
+	init_flags();
+
+	::atexit(cleanup);
+	::signal(SIGINT, &apertiumServerSignalHandler);
 
 	try {
+		po::options_description desc("Allowed options");
+
+		desc.add_options()
+		("help", "produce this help message")
+		("confDir",	po::value<string>(), "(string) set configuration directory")
+		("confFile", po::value<string>(), "(string) set configuration file")
+		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
+		("serverPort", po::value<int>(), "(int) set server port")
+		("modesDir", po::value<string>(), "(string) set modes' directory")
+		("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
+		("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
+		("confUsers", po::value<string>(), "(string) set users list file")
+		("verbosity", po::value<int>(),	"(int) set verbosity");
+
 		po::variables_map vm;
 		po::store(po::parse_command_line(ac, av, desc), vm);
 		po::notify(vm);
 
-	    if (vm.count("help")) {
-	        cout << desc << endl;
-	        return(1);
-	    }
+		if (vm.count("help")) {
+			cout << desc << endl;
+			return (1);
+		}
 
-		LtLocale::tryToSetLocale();
-
-		ucnv_setDefaultName("UTF-8");
-
-		CG3::Recycler::instance();
-
-		init_gbuffers();
-		init_strings();
-		init_keywords();
-		init_flags();
-
-	    ::atexit(cleanup);
-	    ::signal(SIGINT, &apertiumServerSignalHandler);
-
-	    fs::path confDir = "conf";
+		fs::path confDir = "conf";
 
 	    if (vm.count("confDir")) {
 	        cout << "Configuration directory was " << confDir <<  ", setting it to " << vm["confDir"].as<string>() << endl;
@@ -158,19 +162,6 @@ int main(int ac, char *av[]) {
 	    logger->setVerbosity(2);
 
 	    statistics = Statistics::Instance();
-
-		po::options_description desc("Allowed options");
-		desc.add_options()("help", "produce this help message")
-		("confDir", po::value<string>(), "(string) set configuration directory")
-		("confFile", po::value<string>(), "(string) set configuration file")
-		("maxThreads", po::value<int>(), "(int) set maximum number of threads")
-		("serverPort", po::value<int>(), "(int) set server port")
-		("modesDir", po::value<string>(), "(string) set modes' directory")
-		("useSSL", po::value<bool>(), "(bool) enable or disable SSL")
-		("confTextClassifier", po::value<string>(), "(string) set text classifier's configuration file")
-		("confUsers", po::value<string>(), "(string) set users list file")
-		("verbosity", po::value<int>(), "(int) set verbosity");
-
 
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << configurationManager->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
