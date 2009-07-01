@@ -108,6 +108,12 @@
 
     <def-cat n="sido">
       <cat-item lemma="ser" tags="vbser.pp.m.sg"/>
+      <cat-item lemma="ser" tags="vblex.pp.m.sg"/>
+    </def-cat>
+
+    <def-cat n="siendo">
+      <cat-item lemma="ser" tags="vbser.ger"/>
+      <cat-item lemma="ser" tags="vblex.ger"/>
     </def-cat>
 
     <def-cat n="pp">
@@ -180,8 +186,8 @@
     </def-cat>
 
     
-    <def-cat n="per">
-      <cat-item lemma="per" tags="pr"/>
+    <def-cat n="por">
+      <cat-item lemma="por" tags="pr"/>
     </def-cat>
 
     <def-cat n="de">
@@ -4504,7 +4510,7 @@
 
     <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda)">
       <pattern>
-	<pattern-item n="adjec"/>
+	<pattern-item n="adj"/>
       </pattern>
       <action>
 	<call-macro n="f_concord1">
@@ -4535,6 +4541,58 @@
       </action>
     </rule> 
     
+ <rule comment="REGLA: PARTICIPIO">
+      <pattern>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="f_concord1">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SA"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_adj"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="1" side="tl" part="nbr"/>	 
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+ <rule comment="REGLA: POR">
+      <pattern>
+	<pattern-item n="por"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="por" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
     <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
       <pattern>
 	<pattern-item n="det"/>
@@ -4948,6 +5006,44 @@
 	</out>
       </action>
     </rule> 
+    
+    <rule comment="REGLA: ESTAR SIENDO ">
+      <pattern>
+	<pattern-item n="estar"/>
+	<pattern-item n="siendo"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	   <clip pos="1" side="tl" part="lem"/>
+	   <lit v="essere"/>
+	</let>
+	<let>
+	  <clip pos="1" side="tl" part="a_verb"/>
+	  <lit-tag v="vbser"/>
+	</let>
+	<out>
+	  <chunk name="verb" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	</call-macro>
+      </action>
+    </rule> 
+
 
  <rule comment="REGLA: HABER PP ">
       <pattern>

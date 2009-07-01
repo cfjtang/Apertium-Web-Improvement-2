@@ -34,6 +34,10 @@
       <cat-item name="det_adj_cnjcoo_adj_nom"/>
       <cat-item name="det_nom_adj_cnjcoo_adj"/>
     </def-cat>
+
+    <def-cat n="por-da">
+      <cat-item name="por-da"/>
+    </def-cat>
     
   </section-def-cats>
 
@@ -153,7 +157,22 @@
       </action>
     </rule> 
     
-    
+   <rule comment="POR-DA">
+      <pattern>
+	<pattern-item n="por-da"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="da"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
     
     <rule comment="fa els canvis de prepo">
       <pattern>
