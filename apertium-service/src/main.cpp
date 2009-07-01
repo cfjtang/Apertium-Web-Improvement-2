@@ -20,6 +20,7 @@
 #include <stdlib.h>
 
 #include <lttoolbox/lt_locale.h>
+#include <boost/thread.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
@@ -31,6 +32,7 @@
 #include "core/ModesManager.h"
 
 #include "utils/Logger.h"
+#include "utils/Statistics.h"
 
 #include "cg/stdafx.h"
 #include "cg/icu_uoptions.h"
@@ -44,23 +46,28 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
 Logger *logger = NULL;
+Statistics *statistics = NULL;
 
-ApertiumServer *server = NULL;
-ConfigurationManager *conf = NULL;
+ApertiumServer *apertiumServer = NULL;
+ConfigurationManager *configurationManager = NULL;
 
 AuthenticationManager *authenticationManager = NULL;
 ObjectBroker *objectBroker = NULL;
 TextClassifier *textClassifier = NULL;
 ModesManager *modesManager = NULL;
 
+boost::mutex cleanupMutex;
+
 void cleanup(void) {
+	boost::mutex::scoped_lock Lock(cleanupMutex);
+
 	cerr << "Cleaning things up.." << endl;
 
-	delete server;
-	server = NULL;
+	delete apertiumServer;
+	apertiumServer = NULL;
 
-	delete conf;
-	conf = NULL;
+	delete configurationManager;
+	configurationManager = NULL;
 
 	delete authenticationManager;
 	authenticationManager = NULL;
@@ -73,6 +80,9 @@ void cleanup(void) {
 
 	delete modesManager;
 	modesManager = NULL;
+
+	delete statistics;
+	statistics = NULL;
 
 	delete logger;
 	logger = NULL;
@@ -142,10 +152,12 @@ int main(int ac, char *av[]) {
 	        confFile = vm["confFile"].as<string>();
 	    }
 
-	    conf = new ConfigurationManager(confFile, confDir);
+	    configurationManager = new ConfigurationManager(confFile, confDir);
 
 	    logger = Logger::Instance();
 	    logger->setVerbosity(2);
+
+	    statistics = Statistics::Instance();
 
 		po::options_description desc("Allowed options");
 		desc.add_options()("help", "produce this help message")
@@ -161,33 +173,33 @@ int main(int ac, char *av[]) {
 
 
 	    if (vm.count("maxThreads")) {
-	        cout << "Maximum number of threads was " << conf->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
-	        conf->setMaxThreads(vm["maxThreads"].as<int>());
+	        cout << "Maximum number of threads was " << configurationManager->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;
+	        configurationManager->setMaxThreads(vm["maxThreads"].as<int>());
 	    }
 
 	    if (vm.count("serverPort")) {
-	        cout << "Server port was " << conf->getServerPort() <<  ", setting it to " << vm["serverPort"].as<int>() << endl;
-	        conf->setMaxThreads(vm["serverPort"].as<int>());
+	        cout << "Server port was " << configurationManager->getServerPort() <<  ", setting it to " << vm["serverPort"].as<int>() << endl;
+	        configurationManager->setMaxThreads(vm["serverPort"].as<int>());
 	    }
 
 	    if (vm.count("modesDir")) {
-	        cout << "Modes directory was " << conf->getApertiumBase() <<  ", setting it to " << vm["modesDir"].as<string>() << endl;
-	        conf->setApertiumBase(vm["modesDir"].as<string>());
+	        cout << "Modes directory was " << configurationManager->getApertiumBase() <<  ", setting it to " << vm["modesDir"].as<string>() << endl;
+	        configurationManager->setApertiumBase(vm["modesDir"].as<string>());
 	    }
 
 	    if (vm.count("useSSL")) {
-	        cout << "UseSSL flag was " << conf->getUseSsl() <<  ", setting it to " << vm["useSSL"].as<bool>() << endl;
-	        conf->setUseSsl(vm["useSSL"].as<bool>());
+	        cout << "UseSSL flag was " << configurationManager->getUseSsl() <<  ", setting it to " << vm["useSSL"].as<bool>() << endl;
+	        configurationManager->setUseSsl(vm["useSSL"].as<bool>());
 	    }
 
 	    if (vm.count("confTextClassifier")) {
-	        cout << "Text Classifier's configuration file was " << conf->getConfTextClassifier() <<  ", setting it to " << vm["confTextClassifier"].as<string>() << endl;
-	        conf->setConfTextClassifier(vm["confTextClassifier"].as<string>());
+	        cout << "Text Classifier's configuration file was " << configurationManager->getConfTextClassifier() <<  ", setting it to " << vm["confTextClassifier"].as<string>() << endl;
+	        configurationManager->setConfTextClassifier(vm["confTextClassifier"].as<string>());
 	    }
 
 	    if (vm.count("confUsers")) {
-	        cout << "Users' list file was " << conf->getConfUsers() <<  ", setting it to " << vm["confUsers"].as<string>() << endl;
-	        conf->setConfUsers(vm["confUsers"].as<string>());
+	        cout << "Users' list file was " << configurationManager->getConfUsers() <<  ", setting it to " << vm["confUsers"].as<string>() << endl;
+	        configurationManager->setConfUsers(vm["confUsers"].as<string>());
 	    }
 
 	    if (vm.count("verbosity")) {
@@ -195,18 +207,18 @@ int main(int ac, char *av[]) {
 	        logger->setVerbosity(vm["confUsers"].as<int>());
 	    }
 
-		authenticationManager = AuthenticationManager::Instance(conf->getConfUsers().string());
+		authenticationManager = AuthenticationManager::Instance(configurationManager->getConfUsers().string());
 
-		textClassifier = TextClassifier::Instance(conf->getConfTextClassifier().string());
+		textClassifier = TextClassifier::Instance(configurationManager->getConfTextClassifier().string());
 
 		objectBroker = ObjectBroker::Instance();
 
 		modesManager = ModesManager::Instance();
 
-	    modesManager->initPipe(conf->getApertiumBase());
-	    //modesManager->initXML(conf->getApertiumBase());
+	    modesManager->initPipe(configurationManager->getApertiumBase());
+	    //modesManager->initXML(configurationManager->getApertiumBase());
 
-	    server = new ApertiumServer(conf);
+	    apertiumServer = new ApertiumServer(configurationManager);
 
 	} catch (exception& e) {
 		cerr << "error: " << e.what() << endl;
