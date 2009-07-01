@@ -108,16 +108,6 @@ int main(int ac, char *av[]) {
 
 	ucnv_setDefaultName("UTF-8");
 
-	CG3::Recycler::instance();
-
-	init_gbuffers();
-	init_strings();
-	init_keywords();
-	init_flags();
-
-	::atexit(cleanup);
-	::signal(SIGINT, &apertiumServerSignalHandler);
-
 	try {
 		po::options_description desc("Allowed options");
 
@@ -141,6 +131,16 @@ int main(int ac, char *av[]) {
 			cout << desc << endl;
 			return (1);
 		}
+
+		CG3::Recycler::instance();
+
+		init_gbuffers();
+		init_strings();
+		init_keywords();
+		init_flags();
+
+		::atexit(cleanup);
+		::signal(SIGINT, &apertiumServerSignalHandler);
 
 		fs::path confDir = "conf";
 
