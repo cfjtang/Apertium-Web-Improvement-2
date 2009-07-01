@@ -9,26 +9,26 @@
 #include <vector>
 // TODO #include <unicode/unistr.h>
 
-
 using namespace std;
 class Alignment 
 {
     public: 
-        std::vector<string> _words_left;
-        std::vector<string> _words_right;
+        std::vector<wstring> _words_left;
+        std::vector<wstring> _words_right;
         std::vector<int> _final_alignment; // result of align()
         int _consecutive_alignments;
         int _total_matches;
-        Alignment(string& left, string& right);
-        Alignment(const char* left, const char* right);
+        Alignment(wstring& left, wstring& right);
+        Alignment(const wchar_t* left, const wchar_t* right);
         ~Alignment();
         void initialize();
         void align();
+        void print();
     private:
-        void toVec(string& line, std::vector<string>& words);
-        void toLower(string& to_lower);
-        int exactMatch(const string& left, 
-                const string& right);
-        int caseInsensitiveMatch(const string& left, 
-                const string& right);
+        void toVec(wstring& line, std::vector<wstring>& words);
+        void toLower(wstring& to_lower);
+        int exactMatch(const wstring& left, 
+                const wstring& right);
+        int caseInsensitiveMatch(const wstring& left, 
+                const wstring& right);
 };
