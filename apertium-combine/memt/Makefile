@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-Wall
+CFLAGS=-Wall -DDEBUG
 
 all: aligner
 
