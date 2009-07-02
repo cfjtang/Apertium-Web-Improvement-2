@@ -25,7 +25,9 @@
 ;;; `C-c L' now creates an LR-restricted copy of the <e>-element at
 ;;; point, `C-c R' an RL-restricted one. `C-c S' sorts a pardef, while
 ;;; `C-c G' moves point to the pardef of the entry at point, leaving
-;;; mark where you left from.
+;;; mark where you left from. Inside a pardef, `C-c A' shows all
+;;; usages of that pardef within the dictionaries represented by the
+;;; string `dix-dixfiles'
 ;;; 
 ;;; 
 ;;; I like having the following set too:
@@ -59,6 +61,7 @@
 ;;;   we "paste" side-by-side.
 ;;; - `dix-LR-restriction-copy' could add a="author"
 ;;; - generalise to `dix-copy' with LR/RL options instead.
+;;; - `dix-dixfiles' should be a list of strings instead.
 
 (defconst dix-version "2009-07-01") 
 
@@ -118,6 +121,12 @@ which we're looking at."
       (nxml-backward-up-element)
       (nxml-token-after)
       (setq tok (xmltok-start-tag-qname)))))
+
+(defun dix-pardef-at-point ()
+  (save-excursion
+    (dix-up-to "pardef")
+    (re-search-forward "n=\"" nil t)
+    (symbol-name (symbol-at-point))))
 
 (defun dix-lemma-at-point ()
   (save-excursion
@@ -250,6 +259,16 @@ can go back with C-u \\[set-mark-command]."
   (dix-up-to "e")
   (dix-with-sexp (backward-sexp)))
 
+(defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'"
+  :type 'string
+  :group 'dix)
+
+(defun dix-grep-all ()
+  "Show all usages of this pardef in the dictionaries represented
+by the (customizable) string `dix-dixfiles'"
+  (interactive)
+  (grep (concat "grep -nH -e 'par n=\"" (dix-pardef-at-point) "' " dix-dixfiles)))
+
 ;;; Alignment ----------------------------------------------------------------
 (defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'"
   :type 'integer
@@ -294,6 +313,7 @@ can go back with C-u \\[set-mark-command]."
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
+(define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
