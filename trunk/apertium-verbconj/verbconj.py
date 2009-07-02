@@ -38,10 +38,10 @@ _ = gettext.gettext # For internationalisation, to be implemented
 # Standard definitions of verb definitions
 sdefs = {
 		'vbaux': 'Auxiliary verb',
-		'vblex': 'Lexical verb',
+		'vblex': 'Verb',
 		'vbmod': 'Modal verb',
-		'vbser': 'Lexical verb (to be)',
-		'vbhaver': 'Lexical verb (to have)',
+		'vbser': 'Verb (to be)',
+		'vbhaver': 'Verb (to have)',
 		
 		'actv': 'Active voice',
 		'pasv': 'Passive voice',
@@ -52,7 +52,7 @@ sdefs = {
 		'inf': 'Infinitive',
 		'pp': 'Past participle',
 		'ger': 'Gerund',
-		'imp': 'Imperitive',
+		'imp': 'Imperative',
 
 		'sg': 'Singular',
 		'pl': 'Plural',
