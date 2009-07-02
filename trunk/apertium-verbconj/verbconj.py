@@ -37,38 +37,38 @@ _ = gettext.gettext # For internationalisation, to be implemented
 
 # Standard definitions of verb definitions
 sdefs = {
-		'vbaux': 'Auxiliary verb',
-		'vblex': 'Verb',
-		'vbmod': 'Modal verb',
-		'vbser': 'Verb (to be)',
-		'vbhaver': 'Verb (to have)',
+		'vbaux': _('Auxiliary verb'),
+		'vblex': _('Verb'),
+		'vbmod': _('Modal verb'),
+		'vbser': _('Verb (to be)'),
+		'vbhaver': _('Verb (to have)'),
 		
-		'actv': 'Active voice',
-		'pasv': 'Passive voice',
+		'actv': _('Active voice'),
+		'pasv': _('Passive voice'),
 
-		'pres': 'Present tense',
-		'pri': 'Present indicative',
-		'prs': 'Present subjunctive',
-		'past': 'Past tense',
+		'pres': _('Present tense'),
+		'pri': _('Present indicative'),
+		'prs': _('Present subjunctive'),
+		'past': _('Past tense'),
 		
-		'inf': 'Infinitive',
-		'pp': 'Past participle',
-		'ger': 'Gerund',
-		'imp': 'Imperative',
+		'inf': _('Infinitive'),
+		'pp': _('Past participle'),
+		'ger': _('Gerund'),
+		'imp': _('Imperative'),
 
-		'sg': 'Singular',
-		'pl': 'Plural',
-		'sp': 'Singular/Plural',
+		'sg': _('Singular'),
+		'pl': _('Plural'),
+		'sp': _('Singular/Plural'),
 
-		'p1': 'First person',
-		'p2': 'Second person',
-		'p3': 'Third person',
+		'p1': _('First person'),
+		'p2': _('Second person'),
+		'p3': _('Third person'),
 		
-		'gen': 'Genitive',
-		'nom': 'Nominative',
+		'gen': _('Genitive'),
+		'nom': _('Nominative'),
 		
-		'ind': 'Indefinite',
-		'def': 'Definite'#,
+		'ind': _('Indefinite'),
+		'def': _('Definite')#,
 }
 
 # Definitions of verbs
@@ -237,7 +237,7 @@ class userInterface:
 			temp = (objects.saveVer, objects.pardefDict, objects.mainDict, objects.citationList)
 			cPickle.dump(temp, dumpto) # Dump tuple to file
 			dumpto.close() # Close file handle
-			print "File dumped successfully." # Debug
+			print _('File dumped successfully.') # Debug
 		
 		def pickle_import(self, dumpfile):
 			temp = cPickle.load(dumpfile) # Dumps tuple from file to variable
@@ -261,7 +261,7 @@ class userInterface:
 			thepardef = objects.mainDict[verb][0].replace('/', '').split('_')[0] # The inflection rule verb
 			self.textbuffer.insert_with_tags_by_name(iter, "%s\n" % verb, "heading", "center") # Insert heading verb name
 			if verb != thepardef:
-				self.textbuffer.insert_with_tags_by_name(iter, "Inflects like %s\n" % thepardef,  "center") # If the verb inflects like another one, display which verb
+				self.textbuffer.insert_with_tags_by_name(iter, _("Inflects like %s\n") % thepardef,  "center") # If the verb inflects like another one, display which verb
 			
 			for i in range(len(objects.pardefDict[pverb])):
 				# Takes the stem of the verb, and adds conjugates
@@ -295,13 +295,13 @@ class userInterface:
 
 		def on_export_clicked(self, widget, data=None):
 			"""Exports dictionary as strdix"""
-			self.exportdialog = gtk.FileChooserDialog("Export...", 
+			self.exportdialog = gtk.FileChooserDialog(_("Export..."), 
 								None, 
 								gtk.FILE_CHOOSER_ACTION_SAVE,
 								(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
 								gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 			filter = gtk.FileFilter()
-			filter.set_name("String Dictionary") # Sets filter name
+			filter.set_name(_("String Dictionary")) # Sets filter name
 			filter.add_pattern("*.strdix") # Sets filter mask
 			
 			self.exportdialog.add_filter(filter) # Adds filter to dialog object
@@ -316,7 +316,7 @@ class userInterface:
 
 		def show_preferences_dialog(self, widget=None, data=None):
 			dialog = gtk.MessageDialog(self.window, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-			dialog.set_markup('Preferences to be implemented.')
+			dialog.set_markup(_('Preferences to be implemented.'))
 			response = dialog.run()
 			if response:
 				dialog.destroy()
@@ -325,7 +325,7 @@ class userInterface:
 			"""Shows help dialog with usage instructions"""
 			dialog = gtk.MessageDialog(self.window, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO, gtk.BUTTONS_OK) 
 			# Distorted tabbing required for formatting reasons
-			dialog.set_markup('''
+			dialog.set_markup(_('''
 <span size="x-large"><b>Help</b></span>\n
 <big>To load a dictionary:</big>
 Click File→Open. Choose a .dix, .dix.gz or .strdix file.\n\n
@@ -333,14 +333,14 @@ Click File→Open. Choose a .dix, .dix.gz or .strdix file.\n\n
 Select a citation word from the citation list and click Conjugate. Alternatively, you may double click the citation word.\n\n
 <big>To export a dictionary as a string dictionary:</big>
 You may want to do this if your dictionary takes quite a while to parse. Open the dictionary, then select File→Export. Name your dictionary and press Save.\n\n
-''')
+'''))
 			response = dialog.run()
 			if response:
 				dialog.destroy()
 
 		def on_open_clicked(self, widget, data=None):
 			"""Loads the dictionary for use"""
-			self.opendialog = gtk.FileChooserDialog("Open...",
+			self.opendialog = gtk.FileChooserDialog(_("Open..."),
 								None,
 								gtk.FILE_CHOOSER_ACTION_OPEN,
 								(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
@@ -401,19 +401,19 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 		def load_standard_file(self, x):
 			"""Loads a file."""
 			self.build_buffers() # Clears variables to avoid conflicts
-			processBegin = "Processing begins: %s" % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
+			processBegin = _("Processing begins: %s") % strftime(_("%a, %d %b %Y %H:%M:%S AEST"), localtime())
 			parser.parse(x) # Parses the file with the verbHandler class
 			x.close() # Closes file handle
-			processEnd = "Processing ends: %s" % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
+			processEnd = _("Processing ends: %s") % strftime(_("%a, %d %b %Y %H:%M:%S AEST"), localtime())
 			print processBegin # Only seen when run from the command line, for debugging purposes
 			print processEnd
 
 
 		def load_strdix_file(self, x):
 			self.build_buffers() # Clears build variables
-			processBegin = "Processing begins: %s" % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
+			processBegin = _("Processing begins: %s") % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
 			self.pickle_import(x) # Loads string dictionary objects
-			processEnd = "Processing ends: %s" % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
+			processEnd = _("Processing ends: %s") % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
 			print processBegin
 			print processEnd
 
@@ -427,8 +427,8 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 			self.treeview.set_model(self.liststore)
 			
 			# Finds amount of citation words and puts it in statusbar
-			context_id = self.statusbar.get_context_id("Status")
-			msg_id = self.statusbar.push(context_id, "Citation words: %s" % len(self.liststore))
+			context_id = self.statusbar.get_context_id(_("Status"))
+			msg_id = self.statusbar.push(context_id, _("Citation words: %s") % len(self.liststore))
 
 		def conjugate_button_clicked(self, button=None):
 			self.on_citationword_click() # Required to workaround inbuilt GTK parameter requirements
@@ -455,7 +455,7 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 			# INITIALISATION #
 			# These are prebuilt element in the .glade file
 			self.window = builder.get_object("window") # Creates main window
-			self.window.set_title("Apertium Verb Conjugator")
+			self.window.set_title(_("Apertium Verb Conjugator"))
 			self.window.set_default_size(450, 450) # Force window to not be little and insignificant
 			self.window.set_icon_from_file(os.path.join(app_path(), "apertium-logo.png")) # makes the icon work with awesome relative functions
 			# Below assigns window elements from the glade file
@@ -473,7 +473,7 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 			self.textview.set_buffer(self.textbuffer) # sets the text buffer to be used
 			self.treeselection = self.treeview.get_selection() # enables selections
 			self.treeselection.set_mode(gtk.SELECTION_SINGLE) # only allows a single word to be selected
-			self.tvcolumn = gtk.TreeViewColumn("Citation Words") # sets title of list to Citation Words
+			self.tvcolumn = gtk.TreeViewColumn(_("Citation Words")) # sets title of list to Citation Words
 			self.treeview.append_column(self.tvcolumn) # shows the column data
 			self.cell = gtk.CellRendererText() # sets the cell renderer
 			self.tvcolumn.pack_start(self.cell, True) # starts to fill the cell
@@ -491,4 +491,4 @@ if __name__ == "__main__":
 	gtk.main() # Begins event-loop
 
 else:
-	raw_input("Press ENTER.") # This is displayed if this file is imported as a module. You can't.
+	raw_input(_("Press ENTER.")) # This is displayed if this file is imported as a module. You can't.
