@@ -22,6 +22,10 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
+    <def-cat n="hay">
+      <cat-item tags="SV.vblex.pri.p3.ND"/>
+    </def-cat>
+
     <def-cat n="copulativa">
       <cat-item lemma="haber_sido_pp" tags="SV.*"/>
       <cat-item lemma="estar_pp" tags="SV.*"/>
@@ -54,6 +58,7 @@
       <cat-item lemma="pp" tags="SA.*"/>
       <cat-item lemma="haber_sido_pp" tags="SV.*"/>
       <cat-item lemma="estar_pp" tags="SV.*"/>
+      <cat-item lemma="det_pp" tags="SN.*"/>
     </def-cat>
 
     <def-cat n="POR">
@@ -622,8 +627,28 @@
       </action>
     </rule>
 
-
-
+ <rule comment="REGLA: SV SN">
+      <pattern>
+	<pattern-item n="hay"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="nbr"/>
+	  <clip pos="2" part="nbr"/>
+	</let>
+	  <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  </out>
+      </action>
+ </rule>
+ 
 
     <rule comment="REGLA: SV sprep">
       <pattern>
@@ -883,35 +908,7 @@
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<equal caseless="yes">
-		  <clip pos="1" part="lem"/>
-		  <lit v="prnperssubj"/>
-		</equal>
-		<equal>
-		  <clip pos="2" part="pers"/>
-		  <clip pos="1" part="pers"/>
-		</equal>
-		<equal>
-		  <clip pos="2" part="nbr"/>
-		  <clip pos="1" part="nbr"/>
-		</equal>
-	      </and>
-	    </test>
-	    <out>
-	      <chunk><!--el pronom no l'envio, nom� el 2n chunk -->
-		<get-case-from pos="1">
-		  <clip pos="2" part="lem"/>
-		</get-case-from>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
-	      </chunk>
-	    </out>
-	  </when>
-	  <otherwise><!--Quan SN no � pronom subjecte, per tant, quan � qualsevol altre SN -->
+	
 	    <out>
 	      <chunk>
 		<clip pos="1" part="lem"/>
@@ -924,9 +921,7 @@
 		<clip pos="2" part="tags"/>
 		<clip pos="2" part="chcontent"/>
 	      </chunk>
-	    </out>
-	  </otherwise>
-	</choose>	
+	    </out>	
       </action>
     </rule>
 
