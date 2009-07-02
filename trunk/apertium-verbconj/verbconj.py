@@ -47,6 +47,8 @@ sdefs = {
 		'pasv': 'Passive voice',
 
 		'pres': 'Present tense',
+		'pri': 'Present indicative',
+		'prs': 'Present subjunctive',
 		'past': 'Past tense',
 		
 		'inf': 'Infinitive',
