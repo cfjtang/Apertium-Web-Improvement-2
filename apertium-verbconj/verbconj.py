@@ -55,6 +55,8 @@ sdefs = {
 		'pp': _('Past participle'),
 		'ger': _('Gerund'),
 		'imp': _('Imperative'),
+		'cni': _('Conditional'),
+		'pprs': _('Present participle'),
 
 		'sg': _('Singular'),
 		'pl': _('Plural'),
@@ -401,10 +403,10 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 		def load_standard_file(self, x):
 			"""Loads a file."""
 			self.build_buffers() # Clears variables to avoid conflicts
-			processBegin = _("Processing begins: %s") % strftime(_("%a, %d %b %Y %H:%M:%S AEST"), localtime())
+			processBegin = _("Processing begins: %s") % strftime(_("%a, %d %b %Y %H:%M:%S %z"), localtime())
 			parser.parse(x) # Parses the file with the verbHandler class
 			x.close() # Closes file handle
-			processEnd = _("Processing ends: %s") % strftime(_("%a, %d %b %Y %H:%M:%S AEST"), localtime())
+			processEnd = _("Processing ends: %s") % strftime(_("%a, %d %b %Y %H:%M:%S %z"), localtime())
 			print processBegin # Only seen when run from the command line, for debugging purposes
 			print processEnd
 
