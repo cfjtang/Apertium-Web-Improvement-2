@@ -35,6 +35,7 @@ from xml.sax import make_parser # XML parser
 
 # FIXME!!! Hardcoding this for now...
 # How could this be implemented in a non-hardcoded way? -- Brendan
+# We can use automake to generate a config.py -- Jimmy
 APP = "verbconj"
 DIR = "po"
 gettext.bindtextdomain(APP, DIR)
