@@ -35,6 +35,9 @@ from time import strftime, localtime # For benchmarking
 from xml.sax.handler import ContentHandler # XML parsing modules
 from xml.sax import make_parser # XML parser
 
+APP = 'apertium-verbconj'
+DIR = config.localedir
+
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 gettext.install(APP,localedir=DIR)
