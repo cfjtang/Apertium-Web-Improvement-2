@@ -28,8 +28,16 @@ import cPickle # Serialisation of objects
 import pango # Used for formatting 
 import types # Used for checking for blanks NoneType
 
-import verbconj.config
-config = verbconj.config # Generated configuration
+gladedir = ''
+DIR = ''
+
+if os.name != 'nt':
+	import verbconj.config
+	DIR = verbconj.config.localedir # Generated configuration
+	gladedir = verbconj.config.gladedir
+else: # win32? maybe :)
+	gladedir = app_path() 
+	DIR = app_path() 
 
 from time import strftime, localtime # For benchmarking
 
@@ -37,7 +45,6 @@ from xml.sax.handler import ContentHandler # XML parsing modules
 from xml.sax import make_parser # XML parser
 
 APP = 'apertium-verbconj'
-DIR = config.localedir
 
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
@@ -471,14 +478,14 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 			'''Welcome to the initialiser. Prepare for a rough ride.'''
 			builder = gtk.Builder()
 			builder.set_translation_domain(APP)
-			builder.add_from_file(os.path.join(app_path(), "verbconj.glade"))
+			builder.add_from_file(os.path.join(gladedir, "verbconj.glade"))
 			
 			# INITIALISATION #
 			# These are prebuilt element in the .glade file
 			self.window = builder.get_object("window") # Creates main window
 			self.window.set_title(_("Apertium Verb Conjugator"))
 			self.window.set_default_size(450, 450) # Force window to not be little and insignificant
-			self.window.set_icon_from_file(os.path.join(app_path(), "apertium-logo.png")) # makes the icon work with awesome relative functions
+			self.window.set_icon_from_file(os.path.join(gladedir, "apertium-logo.png")) # makes the icon work with awesome relative functions
 			# Below assigns window elements from the glade file
 			self.aboutbox = builder.get_object("aboutdialog")
 			self.treeview = builder.get_object("treeview")
