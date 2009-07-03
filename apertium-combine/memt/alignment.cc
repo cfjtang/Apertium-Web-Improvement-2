@@ -1,5 +1,5 @@
 #include "alignment.hh"
-#include <set>
+#include <algorithm>
 // TODO #include <unicode/unistr.h>
 
 /** Indice of the maximum in a vector of positive integers
@@ -14,6 +14,22 @@ int ind_max(std::vector<int>& v)
     return ind;
 }
 
+void strip(wstring& s) 
+{
+    wchar_t space = L' ';
+    std::wstring::iterator it = s.begin();
+    if ((*it) == space) {
+        while((*it) == space)
+            it++;
+        s.erase(s.begin(), it);
+    }
+    it = s.end();
+    if ((*it) == space) {
+        while((*it) == space)
+            it--;
+        s.erase(it, s.end());
+    }
+}
 
 Alignment::Alignment(wstring& left, wstring& right) 
 {
@@ -47,69 +63,63 @@ void Alignment::initialize()
  */
 void Alignment::align()
 {
-    std::vector<int> scores;
-    std::vector<std::vector<int> > alignments;
-    unsigned int size_end = _words_right.size() - 1;
-
-    //for (indices) {
-        std::vector<int> temp_alignment;
-        int score = 0;
-        int tmp_score = 0;
-        bool consecutive = false;
-        std::set<int> to_align_left;
-        std::set<int> to_align_right;
-        for (unsigned int i = 0; i < _words_left.size(); ++i) 
-            to_align_left.insert(i);
-        for (unsigned int i = 0; i < _words_right.size(); ++i) 
-            to_align_right.insert(i);
-        //temp_alignment.reserve(_words_right.size());
-        temp_alignment.insert(temp_alignment.begin(), size_end + 1, -1);
-        // align matching words
-        for (unsigned int i = 0; i < _words_left.size(); ++i) {
-            unsigned int j_begin = 0;
-            unsigned int j_end = size_end;
-            for (unsigned int j = j_begin; j <= j_end; ++j) {
-                // here we can use another matching
-                if (exactMatch(_words_left[i], _words_right[j])) {
-                    temp_alignment[j] = i;
-                    to_align_left.erase(i);
-                    to_align_right.erase(j);
-                    if (consecutive)
-                        tmp_score++;
-                    else {
-                        if (tmp_score > score) 
-                            score = tmp_score;
-                        tmp_score = 1;
+    unsigned int size_end_left = _words_left.size() - 1;
+    unsigned int size_end_right = _words_right.size() - 1;
+    std::vector<int> temp_alignment;
+    std::vector<int> best_alignment;
+    best_alignment.reserve(_words_right.size());
+    int best_score = 0;
+    int tmp_score = 0;
+    // align matching words
+    unsigned int i = 0;
+    while (i <= size_end_left) {
+        unsigned int j = 0;
+        while (j <= size_end_right) {
+            // here we can use another matching
+            if (exactMatch(_words_left[i], _words_right[j])) {
+                tmp_score = 1;
+                temp_alignment.clear();
+                temp_alignment.insert(temp_alignment.begin(), 
+                        _words_right.size(), -1);
+                temp_alignment[j] = i;
+                if (i < size_end_left || j < size_end_right) {
+                    unsigned int t_i = i + 1;
+                    unsigned int t_j = j + 1;
+                    while (t_i <= size_end_left 
+                            && t_j <= size_end_right
+                            // here we can use another matching
+                            && exactMatch(_words_left[t_i], 
+                                _words_right[t_j])) {
+                        temp_alignment[t_j] = t_i;
+                        ++t_i;
+                        ++t_j;
+                        ++tmp_score;
                     }
-                    consecutive = true;
-                    j_begin = j + 1;
-                    j_end = j + 1;
-                    ++i;
-                    break;
-                } else { 
-                    if (consecutive)
-                        --i;
-                    consecutive = false;
+                }
+                if (tmp_score > best_score) {
+                    best_score = tmp_score;
+                    best_alignment.clear();
+                    copy(temp_alignment.begin(), 
+                            temp_alignment.end(),
+                            best_alignment.begin());
+                    //copy(temp_alignment.begin(), temp_alignment.end(),
+                    //        best_alignment.begin());
+                    for (std::vector<int>::iterator it = temp_alignment.begin();
+                            it < temp_alignment.end();
+                            it++)
+                        best_alignment.push_back(*it);
                 }
             }
+            ++j;
         }
-        // align non matching words that are left (still not aligned)
-        if (!to_align_left.empty() || !to_align_right.empty()) {
-        }
+        ++i;
+    }
 #ifdef DEBUG
-        // TODO should be done with exception
-        for (std::vector<int>::iterator it = temp_alignment.begin(); 
-                it != temp_alignment.end();
-                it++) {
-            if (*it == -1) 
-                wcout << "Error: Alignments are unfinished" << endl;
-        }
+    wcout << ">>> best score: " << best_score << endl;
+    wcout << best_alignment.size() << endl;
+    wcout << _final_alignment.size() << endl;
 #endif
-        alignments.push_back(temp_alignment);
-        scores.push_back(score);
-    //}
-    int indmax = ind_max(scores);
-    copy(alignments[indmax].begin(), alignments[indmax].end(),
+    copy(best_alignment.begin(), best_alignment.end(),
             _final_alignment.begin());
     return;
 }
@@ -117,15 +127,18 @@ void Alignment::align()
 void Alignment::print() 
 {
     for (unsigned int i = 0; i < _final_alignment.size(); ++i) {
-        wcout << _words_left[_final_alignment[i]] << " --> " 
-            << _words_right[i] << endl;
+        if (_final_alignment[i] != -1) {
+            wcout << _words_left[_final_alignment[i]] << " --> " 
+                << _words_right[i] << endl;
+        } else {
+            wcout << "unaligned" << endl;
+        }
     }
 }
 
 void Alignment::toVec(wstring& line, 
         std::vector<wstring>& words) 
 {
-    // UChar space = ' ';
     wchar_t space = L' ';
     int index = -1;
     int offset = 0;
@@ -133,7 +146,11 @@ void Alignment::toVec(wstring& line,
     while ((index = line.find(space, offset)) != -1) { 
         length = index - offset;
         if (length > 0) { 
-            words.push_back(wstring(line, offset, length));
+            // words.push_back(wstring(line, offset, length));
+            // shouldn't this stripping be done beforehand?
+            wstring raw_word = wstring(line, offset, length);
+            strip(raw_word);
+            words.push_back(raw_word);
         }
         offset = index + 1;
     }
@@ -152,7 +169,7 @@ void Alignment::toLower(wstring& to_lower)
 int Alignment::exactMatch(const wstring& left, 
         const wstring& right) 
 { 
-   return left.compare(right);
+    return !left.compare(right);
 }
 
 int Alignment::caseInsensitiveMatch(const wstring& left,
