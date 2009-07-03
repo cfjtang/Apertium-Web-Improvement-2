@@ -23,6 +23,7 @@ import re # Regular expressions
 import gettext # Localisation
 import sys # System functions
 import gtk # GIMP Toolkit (the GUI)
+import gtk.glade
 import gzip # GNU zip, for compression
 import cPickle # Serialisation of objects
 import pango # Used for formatting 
@@ -49,6 +50,8 @@ APP = 'apertium-verbconj'
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 gettext.install(APP,localedir=DIR)
+gtk.glade.bindtextdomain(APP, DIR)
+gtk.glade.textdomain(APP)
 
 _ = gettext.gettext # For internationalisation
 
