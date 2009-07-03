@@ -1,6 +1,6 @@
 SUBDIRS = po
 
-EXTRA_DIST = apertium-verbconj apertium-verbconj.desktop.in.in verbconj.glade config.py.in\  
+EXTRA_DIST = apertium-verbconj apertium-verbconj.desktop.in.in verbconj.glade config.py.in\
 	     apertium-logo.png
 
 desktopdir		= $(datadir)/applications
