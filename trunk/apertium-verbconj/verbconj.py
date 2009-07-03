@@ -33,9 +33,9 @@ gladedir = ''
 DIR = ''
 
 if os.name != 'nt':
-	import verbconj.config
-	DIR = verbconj.config.localedir # Generated configuration
-	gladedir = verbconj.config.gladedir
+	import config
+	DIR = config.localedir # Generated configuration
+	gladedir = config.gladedir
 else: # win32? maybe :)
 	gladedir = app_path() 
 	DIR = app_path() 
