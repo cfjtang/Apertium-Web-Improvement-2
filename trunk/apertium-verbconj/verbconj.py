@@ -28,7 +28,8 @@ import cPickle # Serialisation of objects
 import pango # Used for formatting 
 import types # Used for checking for blanks NoneType
 
-import config # Generated configuration
+import verbconj.config
+config = verbconj.config # Generated configuration
 
 from time import strftime, localtime # For benchmarking
 
