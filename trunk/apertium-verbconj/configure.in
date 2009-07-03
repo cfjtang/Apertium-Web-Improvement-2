@@ -14,6 +14,16 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Define the gettext package to be used])
 AM_GLIB_GNU_GETTEXT
 
+AC_PATH_PROG(BASH, bash, no)
+if test x$ac_cv_path_BASH = x
+then
+  AC_MSG_ERROR([You don't have bash installed.])
+fi
+if test x$ac_cv_path_BASH = xno
+then
+  AC_MSG_ERROR([You don't have bash installed.])
+fi
+
 PKG_CHECK_MODULES(PYGTK, pygtk-2.0 >= 2.10.0, PYGTK="yes", AC_MSG_ERROR([*** unable to locate python-gtk2! Run: apt-get install python-gtk2-dev ***]))
 
 AC_SUBST(PYGTK_CFLAGS)

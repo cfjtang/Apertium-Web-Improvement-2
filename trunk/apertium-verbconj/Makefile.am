@@ -33,14 +33,15 @@ apertium-verbconj.desktop.in: apertium-verbconj.desktop.in.in
 	./intltool-merge -d po/ apertium-verbconj.desktop.in.in apertium-verbconj.desktop.in	
 
 apertium-verbconj.desktop: apertium-verbconj.desktop.in
-	cat apertium-verbconj.desktop.in \
+	@cat apertium-verbconj.desktop.in \
 	| sed -e s/$$\(datadir\)/`echo $(datadir) | sed -e 's/\//\\\\\\//g'`/g \
 	> apertium-verbconj.desktop
 
 #This is temporary, honest!
 apertium-verbconj: verbconj.py config.py
-	cp verbconj.py $@
-	chmod a+x $@
+	@echo "#!$(BASH)" > $@
+	@echo $(PYTHON) $(verbconjdir)/verbconj.py >> $@
+	@chmod a+x $@
 
 CLEANFILES = config.py apertium-verbconj.desktop apertium-verbconj.desktop.in apertium-verbconj
 
