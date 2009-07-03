@@ -62,6 +62,9 @@
 ;;; - `dix-LR-restriction-copy' could add a="author"
 ;;; - generalise to `dix-copy' with LR/RL options instead.
 ;;; - `dix-dixfiles' should be a list of strings instead.
+;;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
+;;;   the <r>.
+
 
 (defconst dix-version "2009-07-01") 
 
@@ -122,11 +125,16 @@ which we're looking at."
       (nxml-token-after)
       (setq tok (xmltok-start-tag-qname)))))
 
-(defun dix-pardef-at-point ()
+(defun dix-pardef-at-point (&optional clean)
   (save-excursion
     (dix-up-to "pardef")
     (re-search-forward "n=\"" nil t)
-    (symbol-name (symbol-at-point))))
+    (let ((pardef (symbol-name (symbol-at-point))))
+      (if clean (replace-regexp-in-string
+		 "\\([^/_]*\\)/?\\([^/_]*\\)__vblex"
+		 "\\1\\2"
+		 pardef)
+	pardef))))
 
 (defun dix-lemma-at-point ()
   (save-excursion
