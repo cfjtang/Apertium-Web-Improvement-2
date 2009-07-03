@@ -1,0 +1,27 @@
+AC_PREREQ([2.56])
+
+AC_INIT([apertium-verbconj], [0.1], [brendan@bbqsrc.net])
+AM_INIT_AUTOMAKE([apertium-verbconj], [0.1], no-define)
+
+AM_MAINTAINER_MODE
+
+AC_PROG_INTLTOOL([0.35.0])
+
+AM_PATH_PYTHON
+
+GETTEXT_PACKAGE=apertium-verbconj
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Define the gettext package to be used])
+AM_GLIB_GNU_GETTEXT
+
+PKG_CHECK_MODULES(PYGTK, pygtk-2.0 >= 2.10.0, PYGTK="yes", AC_MSG_ERROR([*** unable to locate python-gtk2! Run: apt-get install python-gtk2-dev ***]))
+
+AC_SUBST(PYGTK_CFLAGS)
+AC_SUBST(PYGTK_LIBS)
+
+ac_config_commands="$ac_config_commands po/stamp-it"
+
+AC_OUTPUT([
+Makefile
+po/Makefile.in
+])
