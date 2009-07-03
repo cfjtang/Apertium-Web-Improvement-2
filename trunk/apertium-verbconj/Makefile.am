@@ -7,6 +7,7 @@ EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in \
 desktopdir		= $(datadir)/applications
 desktop_in_files	= apertium-verbconj.desktop.in.in
 desktop_DATA		= $(desktop_in_files:.desktop.in.in=.desktop)
+
 @INTLTOOL_DESKTOP_RULE@
 
 man_MANS	= apertium-verbconj.1
@@ -38,5 +39,8 @@ apertium-verbconj.desktop: apertium-verbconj.desktop.in
 #This is temporary, honest!
 apertium-verbconj: verbconj.py
 	cp verbconj.py $@
+	chmod a+x $@
 
-CLEANFILES = config.py apertium-verbconj.desktop apertium-verbconj.desktop.in
+CLEANFILES = config.py apertium-verbconj.desktop apertium-verbconj.desktop.in apertium-verbconj
+
+DISTCLEANFILES = intltool-extract intltool-merge intltool-update
