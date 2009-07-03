@@ -1,6 +1,6 @@
 SUBDIRS = po
 
-EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in \ 
+EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in \
              apertium-verbconj apertium-verbconj.desktop.in.in verbconj.glade config.py.in\
 	     $(man_MANS) apertium-logo.png
 
