@@ -23,6 +23,7 @@ import re # Regular expressions
 import gettext # Localisation
 import sys # System functions
 import gtk # GIMP Toolkit (the GUI)
+import gtk.glade # Glade
 import gzip # GNU zip, for compression
 import cPickle # Serialisation of objects
 import pango # Used for formatting 
@@ -32,6 +33,14 @@ from time import strftime, localtime # For benchmarking
 
 from xml.sax.handler import ContentHandler # XML parsing modules
 from xml.sax import make_parser # XML parser
+
+# FIXME!!! Hardcoding this for now...
+APP = "verbconj"
+DIR = "po"
+gettext.bindtextdomain(APP, DIR)
+gettext.textdomain(APP)
+gtk.glade.bindtextdomain(APP, DIR)
+gtk.glade.textdomain(APP)
 
 _ = gettext.gettext # For internationalisation, to be implemented
 
