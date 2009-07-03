@@ -35,12 +35,15 @@ from xml.sax import make_parser # XML parser
 
 # FIXME!!! Hardcoding this for now...
 # How could this be implemented in a non-hardcoded way? -- Brendan
-# We can use automake to generate a config.py -- Jimmy
 APP = "verbconj"
 DIR = "po"
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
+gettext.install(APP,localedir=DIR)
+
 _ = gettext.gettext # For internationalisation
+
+
 
 # Standard definitions of verb definitions
 sdefs = {
@@ -464,7 +467,8 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 
 		def __init__(self):
 			'''Welcome to the initialiser. Prepare for a rough ride.'''
-			builder = gtk.Builder() 
+			builder = gtk.Builder()
+			builder.set_translation_domain(APP)
 			builder.add_from_file(os.path.join(app_path(), "verbconj.glade"))
 			
 			# INITIALISATION #
