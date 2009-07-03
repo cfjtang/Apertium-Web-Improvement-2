@@ -11,12 +11,8 @@ desktop_DATA		= $(desktop_in_files:.desktop.in.in=.desktop)
 man_MANS	= apertium-verbconj.1
 
 bin_SCRIPTS	= apertium-verbconj
-<<<<<<< HEAD:trunk/apertium-verbconj/Makefile.am
-apertiumtolk_PYTHON = verbconj.py config.py 
-=======
 verbconjdir     = $(pythondir)/verbconj
 verbconj_PYTHON = verbconj.py config.py 
->>>>>>> Makefile.am:trunk/apertium-verbconj/Makefile.am
 
 gladedir	= $(datadir)/
 glade_DATA	= verbconj.glade apertium-logo.png
