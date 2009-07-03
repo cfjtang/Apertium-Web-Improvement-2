@@ -131,7 +131,7 @@ which we're looking at."
     (re-search-forward "n=\"" nil t)
     (let ((pardef (symbol-name (symbol-at-point))))
       (if clean (replace-regexp-in-string
-		 "\\([^/_]*\\)/?\\([^/_]*\\)__vblex"
+		 "\\([^/_]*\\)/?\\([^/_]*\\)__.*"
 		 "\\1\\2"
 		 pardef)
 	pardef))))
