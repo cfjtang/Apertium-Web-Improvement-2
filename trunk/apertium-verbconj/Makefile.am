@@ -1,8 +1,8 @@
 SUBDIRS = po
 
-EXTRA_DIST = apertium-verbconj apertium-verbconj.desktop.in.in verbconj.glade config.py.in\
-	     intltool-extract.in intltool-merge.in intltool-update.in \
-	     apertium-logo.png
+EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in \ 
+             apertium-verbconj apertium-verbconj.desktop.in.in verbconj.glade config.py.in\
+	     $(man_MANS) apertium-logo.png
 
 desktopdir		= $(datadir)/applications
 desktop_in_files	= apertium-verbconj.desktop.in.in
