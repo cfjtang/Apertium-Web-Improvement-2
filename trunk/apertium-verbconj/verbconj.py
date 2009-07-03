@@ -28,15 +28,13 @@ import cPickle # Serialisation of objects
 import pango # Used for formatting 
 import types # Used for checking for blanks NoneType
 
+import config # Generated configuration
+
 from time import strftime, localtime # For benchmarking
 
 from xml.sax.handler import ContentHandler # XML parsing modules
 from xml.sax import make_parser # XML parser
 
-# FIXME!!! Hardcoding this for now...
-# How could this be implemented in a non-hardcoded way? -- Brendan
-APP = "verbconj"
-DIR = "po"
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 gettext.install(APP,localedir=DIR)
