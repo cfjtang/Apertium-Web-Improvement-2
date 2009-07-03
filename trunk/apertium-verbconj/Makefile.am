@@ -37,7 +37,7 @@ apertium-verbconj.desktop: apertium-verbconj.desktop.in
 	> apertium-verbconj.desktop
 
 #This is temporary, honest!
-apertium-verbconj: verbconj.py
+apertium-verbconj: verbconj.py config.py
 	cp verbconj.py $@
 	chmod a+x $@
 
