@@ -2,7 +2,7 @@ SUBDIRS = po
 
 EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in \
              apertium-verbconj apertium-verbconj.desktop.in.in verbconj.glade config.py.in\
-	     $(man_MANS) apertium-logo.png
+	     $(man_MANS) apertium-logo.png __init__.py
 
 desktopdir		= $(datadir)/applications
 desktop_in_files	= apertium-verbconj.desktop.in.in
@@ -14,9 +14,9 @@ man_MANS	= apertium-verbconj.1
 
 bin_SCRIPTS	= apertium-verbconj
 verbconjdir     = $(pythondir)/verbconj
-verbconj_PYTHON = verbconj.py config.py 
+verbconj_PYTHON = verbconj.py config.py __init__.py 
 
-gladedir	= $(datadir)/
+gladedir	= $(datadir)/verbconj/
 glade_DATA	= verbconj.glade apertium-logo.png
 
 config.py: config.py.in Makefile
