@@ -61,6 +61,7 @@ sdefs = {
 		'sg': _('Singular'),
 		'pl': _('Plural'),
 		'sp': _('Singular/Plural'),
+		'du': _('Dual'),
 
 		'p1': _('First person'),
 		'p2': _('Second person'),
@@ -68,6 +69,11 @@ sdefs = {
 		
 		'gen': _('Genitive'),
 		'nom': _('Nominative'),
+		'dat': _('Dative'),
+		'acc': _('Accusative'),
+		'loc': _('Locative'),
+		'voc': _('Vocative'),
+		'ins': _('Instrumental'),
 		
 		'ind': _('Indefinite'),
 		'def': _('Definite')#,
