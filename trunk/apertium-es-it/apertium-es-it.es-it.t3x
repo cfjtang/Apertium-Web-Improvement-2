@@ -39,6 +39,10 @@
       <cat-item name="por-da"/>
     </def-cat>
     
+    <def-cat n="loro">
+      <cat-item name="loro"/>
+    </def-cat>
+    
   </section-def-cats>
 
   <section-def-attrs>
@@ -104,6 +108,7 @@
 
     <def-attr n="a_prnpro">
       <attr-item tags="prn.pro"/>
+      <attr-item tags="prn.tn"/>
     </def-attr>
     
     <def-attr n="a_pr">
@@ -174,6 +179,27 @@
       </action>
     </rule>   
     
+ <rule comment="LORO">
+      <pattern>
+	<pattern-item n="loro"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="lem"/>
+	  <lit v="lui"/>
+	</let>
+	<let>
+	  <clip pos="1" part="a_prnpro"/>
+	  <lit-tag v="prn.tn"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule>   
+
     <rule comment="fa els canvis de prepo">
       <pattern>
 	<pattern-item n="prep"/>
