@@ -413,9 +413,9 @@ You may want to do this if your dictionary takes quite a while to parse. Open th
 
 		def load_strdix_file(self, x):
 			self.build_buffers() # Clears build variables
-			processBegin = _("Processing begins: %s") % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
+			processBegin = _("Processing begins: %s") % strftime("%a, %d %b %Y %H:%M:%S %z", localtime())
 			self.pickle_import(x) # Loads string dictionary objects
-			processEnd = _("Processing ends: %s") % strftime("%a, %d %b %Y %H:%M:%S AEST", localtime())
+			processEnd = _("Processing ends: %s") % strftime("%a, %d %b %Y %H:%M:%S %z", localtime())
 			print processBegin
 			print processEnd
 
