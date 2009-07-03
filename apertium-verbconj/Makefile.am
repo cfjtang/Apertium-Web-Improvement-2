@@ -34,4 +34,8 @@ apertium-verbconj.desktop: apertium-verbconj.desktop.in
 	| sed -e s/$$\(datadir\)/`echo $(datadir) | sed -e 's/\//\\\\\\//g'`/g \
 	> apertium-verbconj.desktop
 
+#This is temporary, honest!
+apertium-verbconj: verbconj.py
+	cp verbconj.py $@
+
 CLEANFILES = config.py apertium-verbconj.desktop apertium-verbconj.desktop.in
