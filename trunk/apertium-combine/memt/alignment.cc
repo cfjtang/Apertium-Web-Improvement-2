@@ -1,5 +1,6 @@
 #include "alignment.hh"
 #include <algorithm>
+#include <set>
 // TODO #include <unicode/unistr.h>
 
 /** Indice of the maximum in a vector of positive integers
@@ -67,16 +68,30 @@ void Alignment::align()
     unsigned int size_end_right = _words_right.size() - 1;
     std::vector<int> temp_alignment;
     std::vector<int> best_alignment;
-    best_alignment.reserve(_words_right.size());
+    best_alignment.resize(_words_right.size());
     int best_score = 0;
     int tmp_score = 0;
-    // align matching words
+    // search for matching words
+    std::vector<std::vector<bool> > matching;
+    matching.resize(_words_right.size());
+    for (unsigned int j = 0; j <= size_end_right; ++j) {
+        matching[j].resize(_words_left.size());
+        for (unsigned int i = 0; i <= size_end_left; ++i) {
+            // here we can use another matching
+            if (exactMatch(_words_left[i], _words_right[j])) {
+                matching[j][i] = true;
+            } else { 
+                matching[j][i] = false;
+            }
+        }
+    }
+    // align longuest sequence of matching words
     unsigned int i = 0;
     while (i <= size_end_left) {
         unsigned int j = 0;
         while (j <= size_end_right) {
             // here we can use another matching
-            if (exactMatch(_words_left[i], _words_right[j])) {
+            if (matching[j][i]) {
                 tmp_score = 1;
                 temp_alignment.clear();
                 temp_alignment.insert(temp_alignment.begin(), 
@@ -87,9 +102,7 @@ void Alignment::align()
                     unsigned int t_j = j + 1;
                     while (t_i <= size_end_left 
                             && t_j <= size_end_right
-                            // here we can use another matching
-                            && exactMatch(_words_left[t_i], 
-                                _words_right[t_j])) {
+                            && matching[t_j][t_i]) {
                         temp_alignment[t_j] = t_i;
                         ++t_i;
                         ++t_j;
@@ -99,15 +112,7 @@ void Alignment::align()
                 if (tmp_score > best_score) {
                     best_score = tmp_score;
                     best_alignment.clear();
-                    copy(temp_alignment.begin(), 
-                            temp_alignment.end(),
-                            best_alignment.begin());
-                    //copy(temp_alignment.begin(), temp_alignment.end(),
-                    //        best_alignment.begin());
-                    for (std::vector<int>::iterator it = temp_alignment.begin();
-                            it < temp_alignment.end();
-                            it++)
-                        best_alignment.push_back(*it);
+                    temp_alignment.swap(best_alignment);
                 }
             }
             ++j;
