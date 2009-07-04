@@ -45,7 +45,7 @@ def app_path():
 	
 	return os.path.dirname(__file__)
 
-APP = 'verbconj'
+APP = 'apertium-verbconj'
 
 if os.name == 'posix':
 	import config
