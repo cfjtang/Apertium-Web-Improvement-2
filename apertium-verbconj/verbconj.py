@@ -23,39 +23,47 @@ import re # Regular expressions
 import gettext # Localisation
 import sys # System functions
 import gtk # GIMP Toolkit (the GUI)
-import gtk.glade
+import ctypes # C Types
 import gzip # GNU zip, for compression
 import cPickle # Serialisation of objects
 import pango # Used for formatting 
 import types # Used for checking for blanks NoneType
-
-gladedir = ''
-DIR = ''
-
-if os.name != 'nt':
-	import config
-	DIR = config.localedir # Generated configuration
-	gladedir = config.gladedir
-else: # win32? maybe :)
-	gladedir = app_path() 
-	DIR = app_path() 
 
 from time import strftime, localtime # For benchmarking
 
 from xml.sax.handler import ContentHandler # XML parsing modules
 from xml.sax import make_parser # XML parser
 
-APP = 'apertium-verbconj'
+def frozen():
+	'''Checks if file is frozen, for py2exe'''
+	return hasattr(sys, "frozen")
+
+def app_path():
+	'''Get directory even if frozen by .exe'''
+	if frozen():
+		return os.path.dirname(sys.executable)
+	
+	return os.path.dirname(__file__)
+
+APP = 'verbconj'
+
+if os.name == 'posix':
+	import config
+	DIR = config.localedir # Generated configuration
+	gladedir = config.gladedir
+	lib = ctypes.CDLL("libc.so.6")
+elif os.name == 'nt':
+	gladedir = app_path()
+	DIR = os.path.join(app_path(), "po")
+	lib = ctypes.cdll.intl
 
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 gettext.install(APP,localedir=DIR)
-gtk.glade.bindtextdomain(APP, DIR)
-gtk.glade.textdomain(APP)
+lib.bind_textdomain_codeset(APP, "UTF-8")
+lib.libintl_bindtextdomain(APP, DIR)
 
 _ = gettext.gettext # For internationalisation
-
-
 
 # Standard definitions of verb definitions
 sdefs = {
@@ -106,16 +114,6 @@ sdefs = {
 verbDefs = ['V', 'TV', 'IV', 'vblex', 'vbser', 'vbhaver', 'vbaux', 'vaux', 
 			'vbmod', 'vbper', 'vbsint', 'voice', 'case']
 
-def frozen():
-	'''Checks if file is frozen, for py2exe'''
-	return hasattr(sys, "frozen")
-
-def app_path():
-	'''Get directory even if frozen by .exe'''
-	if frozen():
-		return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding( )))
-	
-	return os.path.dirname(unicode(__file__, sys.getfilesystemencoding( )))
 
 class verbObjects:
 	'''Class for collection of dictionaries of paradigms and main words'''
