@@ -61,7 +61,7 @@ gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
 gettext.install(APP,localedir=DIR)
 lib.bind_textdomain_codeset(APP, "UTF-8")
-lib.libintl_bindtextdomain(APP, DIR)
+lib.bindtextdomain(APP, DIR)
 
 _ = gettext.gettext # For internationalisation
 
