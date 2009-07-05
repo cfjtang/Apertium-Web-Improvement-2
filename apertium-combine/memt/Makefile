@@ -3,7 +3,7 @@ CFLAGS=-Wall -DDEBUG -g
 
 all: aligner
 
-aligner: aligner.o alignment.o
+aligner: aligner.o alignment.o hypotheses.o
 	$(CXX) -o aligner $^
 
 %.o: %.cc
@@ -12,4 +12,4 @@ aligner: aligner.o alignment.o
 .PHONY: aligner clean
 
 clean:
-	rm -rf *.dSYM *~ *.o
+	rm -rf aligner *.dSYM *~ *.o
