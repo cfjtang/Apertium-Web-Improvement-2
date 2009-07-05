@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
-// TODO #include <unicode/unistr.h> 
 #include "alignment.hh"
+#include "hypotheses.hh"
 
 using namespace std;
 
@@ -22,6 +22,9 @@ int main(int argc, char** argv)
         Alignment a = Alignment(input_line1, input_line2);
         a.align();
         a.print();
+        //Hypotheses h = Hypotheses(a);
+        //h.rank();
+        //h.print();
         getline(file_in1, input_line1);
         getline(file_in2, input_line2);
     }

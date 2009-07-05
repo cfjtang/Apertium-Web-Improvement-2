@@ -1,7 +1,5 @@
 #include "alignment.hh"
 #include <algorithm>
-#include <set>
-// TODO #include <unicode/unistr.h>
 
 /** Indice of the maximum in a vector of positive integers
  */
@@ -55,9 +53,55 @@ Alignment::~Alignment()
 void Alignment::initialize() 
 { 
     _final_alignment.insert(_final_alignment.begin(), _words_right.size(), -1);
-    _consecutive_alignments = 0;
+    _matching.resize(_words_right.size());
     _total_matches = 0;
     return;   
+}
+
+/*** search for matching words
+ */
+void inline Alignment::match()
+{
+    for (unsigned int j = 0; j < _words_right.size(); ++j) {
+        _matching[j].resize(_words_left.size());
+        for (unsigned int i = 0; i < _words_left.size(); ++i) {
+            // here we can use another matching
+            if (exactMatch(_words_left[i], _words_right[j])) {
+                _matching[j][i] = true;
+            } else { 
+                _matching[j][i] = false;
+            }
+        }
+    }
+}
+
+/*** unmatch already aligned words
+ */
+void inline Alignment::unmatch()
+{
+    for (unsigned int j = 0; j < _words_right.size(); ++j) {
+        if (_final_alignment[j] != -1)
+            _matching[j][_final_alignment[j]] = false;
+    }
+}
+
+void inline Alignment::complete()
+{
+    for (unsigned int j = 0; j < _words_right.size(); ++j) {
+        if (_final_alignment[j] == -1) {
+            unsigned int i = j;
+            unsigned int count = 0;
+            while (count < _words_left.size()) {
+                if (_matching[j][i]) {
+                    _matching[j][i] = false; // unmatch j and i as we "used" it
+                    _final_alignment[j] = i;
+                    break;
+                }
+                i = (i + 1) % _words_left.size();
+                ++count;
+            }
+        }
+    }
 }
 
 /*** maximal consecutive alignments
@@ -71,27 +115,14 @@ void Alignment::align()
     best_alignment.resize(_words_right.size());
     int best_score = 0;
     int tmp_score = 0;
-    // search for matching words
-    std::vector<std::vector<bool> > matching;
-    matching.resize(_words_right.size());
-    for (unsigned int j = 0; j <= size_end_right; ++j) {
-        matching[j].resize(_words_left.size());
-        for (unsigned int i = 0; i <= size_end_left; ++i) {
-            // here we can use another matching
-            if (exactMatch(_words_left[i], _words_right[j])) {
-                matching[j][i] = true;
-            } else { 
-                matching[j][i] = false;
-            }
-        }
-    }
+    match();
     // align longuest sequence of matching words
     unsigned int i = 0;
     while (i <= size_end_left) {
         unsigned int j = 0;
         while (j <= size_end_right) {
             // here we can use another matching
-            if (matching[j][i]) {
+            if (_matching[j][i]) {
                 tmp_score = 1;
                 temp_alignment.clear();
                 temp_alignment.insert(temp_alignment.begin(), 
@@ -102,7 +133,7 @@ void Alignment::align()
                     unsigned int t_j = j + 1;
                     while (t_i <= size_end_left 
                             && t_j <= size_end_right
-                            && matching[t_j][t_i]) {
+                            && _matching[t_j][t_i]) {
                         temp_alignment[t_j] = t_i;
                         ++t_i;
                         ++t_j;
@@ -126,7 +157,19 @@ void Alignment::align()
 #endif
     copy(best_alignment.begin(), best_alignment.end(),
             _final_alignment.begin());
+    _total_matches = best_score;
+    unmatch();
+    complete();
     return;
+}
+
+void Alignment::align(std::list<pair<int, int> >& leftright) 
+{
+    for (std::list<pair<int, int> >::iterator it = leftright.begin();
+            it != leftright.end();
+            ++it) {
+        _final_alignment[it->second] = it->first;
+    }
 }
 
 void Alignment::print() 

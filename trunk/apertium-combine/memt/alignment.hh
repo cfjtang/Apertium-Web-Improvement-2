@@ -4,27 +4,35 @@
  * - one that comes from tmp buffer, from Moses
  */
 
+#ifndef ALIGNMENT_HH
+#define ALIGNMENT_HH
 #include <iostream>
-#include <streambuf>
 #include <vector>
-// TODO #include <unicode/unistr.h>
+#include <list>
+#include <utility>
 
 using namespace std;
-class Alignment 
+
+
+class Alignment
 {
     public: 
         std::vector<wstring> _words_left;
         std::vector<wstring> _words_right;
-        std::vector<int> _final_alignment; // result of align()
-        int _consecutive_alignments;
-        int _total_matches;
         Alignment(wstring& left, wstring& right);
         Alignment(const wchar_t* left, const wchar_t* right);
         ~Alignment();
-        void initialize();
         void align();
+        void align(std::list<pair<int, int> >& leftright);
         void print();
     private:
+        void initialize();
+        void inline match();
+        void inline unmatch();
+        void inline complete();
+        std::vector<int> _final_alignment; // result of align()
+        std::vector<std::vector<bool> > _matching;
+        int _total_matches;
         void toVec(wstring& line, std::vector<wstring>& words);
         void toLower(wstring& to_lower);
         int exactMatch(const wstring& left, 
@@ -32,3 +40,4 @@ class Alignment
         int caseInsensitiveMatch(const wstring& left, 
                 const wstring& right);
 };
+#endif
