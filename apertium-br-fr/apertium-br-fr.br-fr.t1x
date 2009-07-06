@@ -5986,7 +5986,11 @@
               <lit-tag v="det.def"/>
               <clip pos="1" side="tl" part="gen_sense_mf"/>
               <clip pos="1" side="tl" part="gen_mf"/>
+              <clip pos="1" side="tl" part="nbr_sense_sp"/>
+              <clip pos="1" side="tl" part="nbr_sp"/>
+<!--
               <var n="numero"/>
+-->
             </lu>
             <b/>
             <lu>
@@ -7940,12 +7944,10 @@
         <pattern-item n="num"/>
       </pattern>
       <action>
-<!--
         <call-macro n="f_concord2">
           <with-param pos="2"/>
           <with-param pos="1"/>
         </call-macro>
--->
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -8181,9 +8183,9 @@
           </when>
           <otherwise>
             <call-macro n="f_concord3">
+              <with-param pos="2"/> 
               <with-param pos="3"/>
               <with-param pos="1"/>
-              <with-param pos="2"/> 
             </call-macro>
             <choose>
               <when> 
