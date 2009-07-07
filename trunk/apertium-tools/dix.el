@@ -23,11 +23,12 @@
 ;; 	  (lambda () (if (string-match "\\.dix$" buffer-file-name) (dix-mode 1))))
 ;;; 
 ;;; `C-c L' now creates an LR-restricted copy of the <e>-element at
-;;; point, `C-c R' an RL-restricted one. `C-c S' sorts a pardef, while
-;;; `C-c G' moves point to the pardef of the entry at point, leaving
-;;; mark where you left from. Inside a pardef, `C-c A' shows all
-;;; usages of that pardef within the dictionaries represented by the
-;;; string `dix-dixfiles'
+;;; point, `C-c R' an RL-restricted one. `C-TAB' cycles through the
+;;; restriction possibilities (LR, RL, none). `C-c S' sorts a pardef,
+;;; while `C-c G' moves point to the pardef of the entry at point,
+;;; leaving mark where you left from. Inside a pardef, `C-c A' shows
+;;; all usages of that pardef within the dictionaries represented by
+;;; the string `dix-dixfiles'
 ;;; 
 ;;; 
 ;;; I like having the following set too:
@@ -157,6 +158,29 @@ which we're looking at."
 ;;; Interactive functions
 ;;;
 
+(defun dix-restriction-cycle ()
+  "Cycle through possible values of the `r' attribute of the <e>
+element at point."
+  (interactive)
+  (save-excursion
+    (dix-up-to "e")
+    (let* ((old		     ; find what, if any, restriction we have:
+	    (save-excursion
+	      (if (re-search-forward "r=\"\\(..\\)\"" (nxml-token-after) 'noerror 1)
+		  (match-string 1))))
+	   (new (if old			; find our new restriction:
+		    (if (equal old "LR")
+			" r=\"RL\""	; "LR" => "RL"
+		      "")		; "RL" =>  ""
+		  " r=\"LR\"")))	;  ""  => "LR"
+      ;; restrict:
+      (forward-word)
+      (if old (dix-with-sexp (kill-sexp)))
+      (insert new)
+      ;; formatting, remove whitespace:
+      (forward-char) (just-one-space) (delete-backward-char 1)
+      (if (equal new "") (insert "       ")))))
+
 (defun dix-LR-restriction-copy (&optional RL)
   "Make a copy of the Apertium element we're looking at, and add
 an LR restriction to the copy. A prefix argument makes it an RL
@@ -175,7 +199,6 @@ restriction."
   ;; move point to end of relevant word:
   (nxml-down-element 2) (when RL (nxml-forward-element))
   (nxml-down-element 1) (goto-char (nxml-token-after)))
-
 
 (defun dix-RL-restriction-copy ()
   "Make a copy of the Apertium element we're looking at, and
@@ -319,6 +342,7 @@ by the (customizable) string `dix-dixfiles'"
 ;;; Keybindings --------------------------------------------------------------
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
+(define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
