@@ -112,10 +112,10 @@ private:
 	boost::mutex mutex;
 };
 
-template <class T, class I> class ObjectPool {
+template <class T, class I> class IndexedObjectPool {
 public:
-	ObjectPool() { }
-	virtual ~ObjectPool() { }
+	IndexedObjectPool() { }
+	virtual ~IndexedObjectPool() { }
 
 	typedef boost::unordered_map<I, queue<T*> > PoolMapType;
 
@@ -185,13 +185,13 @@ public:
 	NonIndexedObjectPool<Deformat> DeformatPool;
 	NonIndexedObjectPool<Reformat> ReformatPool;
 
-	ObjectPool<FSTProcessor, FSTProcessorIndexType> FSTProcessorPool;
-	ObjectPool<HMMWrapper, HMMIndexType> HMMPool;
-	ObjectPool<Transfer, TransferIndexType> TransferPool;
-	ObjectPool<Interchunk, InterchunkIndexType> InterchunkPool;
-	ObjectPool<Postchunk, PostchunkIndexType> PostchunkPool;
-	ObjectPool<TransferMult, TransferMultIndexType> TransferMultPool;
-	ObjectPool<CG3::Grammar, GrammarIndexType> GrammarPool;
+	IndexedObjectPool<FSTProcessor, FSTProcessorIndexType> FSTProcessorPool;
+	IndexedObjectPool<HMMWrapper, HMMIndexType> HMMPool;
+	IndexedObjectPool<Transfer, TransferIndexType> TransferPool;
+	IndexedObjectPool<Interchunk, InterchunkIndexType> InterchunkPool;
+	IndexedObjectPool<Postchunk, PostchunkIndexType> PostchunkPool;
+	IndexedObjectPool<TransferMult, TransferMultIndexType> TransferMultPool;
+	IndexedObjectPool<CG3::Grammar, GrammarIndexType> GrammarPool;
 
 	static boost::mutex cgMutex;
 
