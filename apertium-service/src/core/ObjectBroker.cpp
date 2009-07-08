@@ -91,7 +91,7 @@ template <> Reformat *NonIndexedObjectPool<Reformat>::getNewInstance() {
 	return(ret);
 }
 
-template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNewInstance(FSTProcessorIndexType index) {
+template <> FSTProcessor *IndexedObjectPool<FSTProcessor, FSTProcessorIndexType>::getNewInstance(FSTProcessorIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNewInstance(FSTProcessorIndexType index);");
 
@@ -122,7 +122,7 @@ template <> FSTProcessor *ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNe
 	return(ret);
 }
 
-template <> HMMWrapper *ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index) {
+template <> HMMWrapper *IndexedObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index);");
 
@@ -132,7 +132,7 @@ template <> HMMWrapper *ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMM
 	return(ret);
 }
 
-template <> Transfer *ObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index) {
+template <> Transfer *IndexedObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index);");
 
@@ -149,7 +149,7 @@ template <> Transfer *ObjectPool<Transfer, TransferIndexType>::getNewInstance(Tr
 	return(ret);
 }
 
-template <> Interchunk *ObjectPool<Interchunk, InterchunkIndexType>::getNewInstance(InterchunkIndexType index) {
+template <> Interchunk *IndexedObjectPool<Interchunk, InterchunkIndexType>::getNewInstance(InterchunkIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<Interchunk, InterchunkIndexType>::getNewInstance(InterchunkIndexType index);");
 
@@ -158,7 +158,7 @@ template <> Interchunk *ObjectPool<Interchunk, InterchunkIndexType>::getNewInsta
 	return(ret);
 }
 
-template <> Postchunk *ObjectPool<Postchunk, PostchunkIndexType>::getNewInstance(PostchunkIndexType index) {
+template <> Postchunk *IndexedObjectPool<Postchunk, PostchunkIndexType>::getNewInstance(PostchunkIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<Postchunk, PostchunkIndexType>::getNewInstance(PostchunkIndexType index);");
 
@@ -167,7 +167,7 @@ template <> Postchunk *ObjectPool<Postchunk, PostchunkIndexType>::getNewInstance
 	return(ret);
 }
 
-template <> TransferMult *ObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index) {
+template <> TransferMult *IndexedObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index);");
 
@@ -178,7 +178,7 @@ template <> TransferMult *ObjectPool<TransferMult, TransferMultIndexType>::getNe
 
 boost::mutex ObjectBroker::cgMutex;
 
-template <> CG3::Grammar *ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index) {
+template <> CG3::Grammar *IndexedObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index);");
 
