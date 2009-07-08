@@ -40,6 +40,14 @@ ObjectBroker::~ObjectBroker() {
 	}
 }
 
+void ObjectPool::checkFile(fs::path p) {
+	if (!fs::exists(p)) {
+		string msg = "File " + p.string() + " requested but doesn't exist.";
+		Logger::Instance()->trace(ERR, msg);
+		throw ApertiumRuntimeException(msg);
+	}
+}
+
 HMMWrapper::HMMWrapper() {
 	td = NULL;
 	hmm = NULL;
@@ -95,6 +103,8 @@ template <> FSTProcessor *IndexedObjectPool<FSTProcessor, FSTProcessorIndexType>
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<FSTProcessor, FSTProcessorIndexType>::getNewInstance(FSTProcessorIndexType index);");
 
+	checkFile(index.second);
+
 	FSTProcessor *ret = pool.construct();
 
 	FILE *fp = fopen((index.second).c_str(), "r");
@@ -126,6 +136,8 @@ template <> HMMWrapper *IndexedObjectPool<HMMWrapper, HMMIndexType>::getNewInsta
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<HMMWrapper, HMMIndexType>::getNewInstance(HMMIndexType index);");
 
+	checkFile(index);
+
 	HMMWrapper *ret = pool.construct();
 	ret->read(index);
 
@@ -135,6 +147,9 @@ template <> HMMWrapper *IndexedObjectPool<HMMWrapper, HMMIndexType>::getNewInsta
 template <> Transfer *IndexedObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<Transfer, TransferIndexType>::getNewInstance(TransferIndexType index);");
+
+	for (TransferIndexType::iterator it = index.begin(); it != index.end(); ++it)
+		checkFile(*it);
 
 	Transfer *ret = pool.construct();
 	switch (index.size()) {
@@ -153,6 +168,9 @@ template <> Interchunk *IndexedObjectPool<Interchunk, InterchunkIndexType>::getN
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<Interchunk, InterchunkIndexType>::getNewInstance(InterchunkIndexType index);");
 
+	checkFile(index.first);
+	checkFile(index.second);
+
 	Interchunk *ret = pool.construct();
 	ret->read(index.first, index.second);
 	return(ret);
@@ -162,6 +180,9 @@ template <> Postchunk *IndexedObjectPool<Postchunk, PostchunkIndexType>::getNewI
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<Postchunk, PostchunkIndexType>::getNewInstance(PostchunkIndexType index);");
 
+	checkFile(index.first);
+	checkFile(index.second);
+
 	Postchunk *ret = pool.construct();
 	ret->read(index.first, index.second);
 	return(ret);
@@ -170,6 +191,9 @@ template <> Postchunk *IndexedObjectPool<Postchunk, PostchunkIndexType>::getNewI
 template <> TransferMult *IndexedObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<TransferMult, TransferMultIndexType>::getNewInstance(TransferMultIndexType index);");
+
+	checkFile(index.first);
+	checkFile(index.second);
 
 	TransferMult *ret = pool.construct();
 	ret->read(index.first, index.second);
@@ -181,6 +205,8 @@ boost::mutex ObjectBroker::cgMutex;
 template <> CG3::Grammar *IndexedObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index) {
 
 	Logger::Instance()->trace(DEBUG, "ObjectPool<CG3::Grammar, GrammarIndexType>::getNewInstance(GrammarIndexType index);");
+
+	checkFile(index);
 
 	const char *codepage_default = ucnv_getDefaultName();
 	const char *locale_default = "en_US_POSIX"; //uloc_getDefault();

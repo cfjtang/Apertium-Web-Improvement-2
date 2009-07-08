@@ -43,6 +43,7 @@
 #include <boost/thread/condition.hpp>
 
 #include <boost/unordered/unordered_map.hpp>
+#include <boost/filesystem.hpp>
 
 #include <iostream>
 
@@ -61,6 +62,7 @@
 #include "ApertiumRuntimeException.h"
 
 using namespace std;
+namespace fs = boost::filesystem;
 
 enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
 
@@ -76,7 +78,12 @@ typedef pair<string, string> PostchunkIndexType;
 typedef pair<string, string> TransferMultIndexType;
 typedef string GrammarIndexType;
 
-template <class T> class NonIndexedObjectPool {
+class ObjectPool {
+protected:
+	void checkFile(fs::path);
+};
+
+template <class T> class NonIndexedObjectPool : public ObjectPool {
 public:
 	NonIndexedObjectPool() { }
 
@@ -112,7 +119,7 @@ private:
 	boost::mutex mutex;
 };
 
-template <class T, class I> class IndexedObjectPool {
+template <class T, class I> class IndexedObjectPool : public ObjectPool {
 public:
 	IndexedObjectPool() { }
 	virtual ~IndexedObjectPool() { }
