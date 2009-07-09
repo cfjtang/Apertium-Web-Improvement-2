@@ -14,7 +14,13 @@ using namespace std;
 struct Hypothesis
 {
     unsigned int score;
-    std::list<wstring*> words;
+    std::list<wstring> words;
+    Hypothesis(unsigned int s, std::list<wstring>& l) 
+    {
+        score = s;
+        words = l;
+    }
+    ~Hypothesis() { }
 };
 
 struct Word

@@ -2,6 +2,17 @@
 
 using namespace std;
 
+unsigned int max_length(std::vector<std::vector<Word> >& wv) 
+{
+    unsigned int max = 0;
+    for (std::vector<std::vector<Word> >::iterator it = wv.begin();
+            it != wv.end(); ++it) {
+        if (it->size() > max)
+            max = it->size();
+    } 
+    return max;
+}
+
 /*** Very basic hypothesis generator.
  * TODO:
  *   Should take in account the fact that alignment won't alws be exactMatching
@@ -15,7 +26,7 @@ Hypotheses::Hypotheses(Alignment& a)
     fill_words(words, a, length);
     wv.push_back(words);
 #ifdef DEBUG
-    wcout << "WORDS: " << endl;
+    wcout << "WORDS: ";
     for (std::vector<Word>::iterator w = wv[0].begin();
             w != wv[0].end(); ++w) {
         wcout << w->word << " ";
@@ -24,15 +35,17 @@ Hypotheses::Hypotheses(Alignment& a)
 #endif
     for (unsigned int j = 0; j < length; ++j) { 
         expand(wv, a, j);
+        length = max_length(wv);
     }
     for (std::vector<std::vector<Word> >::iterator it = wv.begin();
             it != wv.end(); ++it) {
+        std::list<wstring> temp;
         for (std::vector<Word>::iterator w = it->begin();
                 w != it->end(); ++w) {
             if (w->used) 
-                wcout << w->word << " ";
+                temp.push_back(w->word);
         }
-        wcout << endl;
+        _hypotheses.push_back(Hypothesis(0, temp));
     } 
 
 
@@ -55,16 +68,17 @@ void Hypotheses::rank()
 
 void Hypotheses::print()
 {
+    wcout << ">>> Hypotheses: " << endl;
     const wchar_t wc = L' ';
     for (std::list<Hypothesis>::iterator it = _hypotheses.begin();
             it != _hypotheses.end();
             ++it) {
         wstring s;
-        for (std::list<wstring*>::iterator w = it->words.begin();
-                w != it->words.end();
-                ++w) {
-            s.append(*(*w));
-            s.append(1, wc);
+        for (std::list<wstring>::iterator w = it->words.begin();
+                w != it->words.end(); ) {
+            s.append(*w);
+            if (++w != it->words.end())
+                s.append(1, wc);
         }
         wcout << s << endl;
     }
@@ -101,22 +115,14 @@ void inline Hypotheses::expand(std::vector<std::vector<Word> >& wv,
         Alignment& a, unsigned int j)
 {
     unsigned int wvsize = wv.size();
-    wcout << "WVSIZE: " << wvsize << endl;
     for (unsigned int i = 0; i < wvsize; ++i)
     {
-        // wcout << "i: " << i << endl;
-        if (j >= wv[i].size()) { 
-            wcout << "SUP" << endl;
+        if (j >= wv[i].size()) 
             continue; // finished to expand this "words"
-        }
-        /// if (j > 0 && wv[i][j].word.compare(wv[i][j-1].word))
-            /// continue;
         if (wv[i][j].side == 0) {
-            wcout << "0 ";
             if (a._final_alignment_left[wv[i][j].ind] != -1) {
                 if (!a._words_right[a._final_alignment_left[wv[i][j].ind]]
                         .compare(wv[i][j].word)) {
-                    wcout << "same " << endl;
                     wv[i][j].used = true;
                 } else { 
                     wv.push_back(wv[i]);
@@ -130,11 +136,9 @@ void inline Hypotheses::expand(std::vector<std::vector<Word> >& wv,
                 wv[i][j].used = true;
             }
         } else if (wv[i][j].side == 1) {
-            wcout << "1 ";
             if (a._final_alignment[wv[i][j].ind] != -1) {
                 if (!a._words_right[a._final_alignment[wv[i][j].ind]]
                         .compare(wv[i][j].word)) {
-                    wcout << "same " << endl;
                     wv[i][j].used = true;
                 } else { 
                     wv.push_back(wv[i]);
@@ -158,8 +162,8 @@ void inline Hypotheses::fill_words(std::vector<Word>& words, Alignment& a,
         if (i < a._words_right.size())
                 words.push_back(Word(false, 1, i, a._words_right[i]));
         if (i < a._words_left.size()) {
-            if (i >= a._words_right.size()
-                    || a._final_alignment_left[i] == -1)
+            if (i >= a._words_right.size()               // put it only if
+                    || a._final_alignment_left[i] == -1) // it is not aligned
                 words.push_back(Word(false, 0, i, a._words_left[i]));
         }
     }
