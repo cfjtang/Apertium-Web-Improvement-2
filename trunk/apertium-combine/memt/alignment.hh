@@ -19,6 +19,8 @@ class Alignment
     public: 
         std::vector<wstring> _words_left;
         std::vector<wstring> _words_right;
+        std::vector<int> _final_alignment; // result of align()
+        std::vector<int> _final_alignment_left; // result of align()
         Alignment(wstring& left, wstring& right);
         Alignment(const wchar_t* left, const wchar_t* right);
         ~Alignment();
@@ -30,7 +32,6 @@ class Alignment
         void inline match();
         void inline unmatch();
         void inline complete();
-        std::vector<int> _final_alignment; // result of align()
         std::vector<std::vector<bool> > _matching;
         int _total_matches;
         void toVec(wstring& line, std::vector<wstring>& words);

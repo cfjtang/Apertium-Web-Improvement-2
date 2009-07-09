@@ -5,10 +5,33 @@
  */
 
 #include <iostream>
+#include <list>
 #include <vector>
 #include "alignment.hh"
 
 using namespace std;
+
+struct Hypothesis
+{
+    unsigned int score;
+    std::list<wstring*> words;
+};
+
+struct Word
+{
+    bool used;
+    int side;
+    unsigned int ind;
+    wstring word;
+    Word(bool u, int s, unsigned int i, wstring w) 
+    {
+        used = u;
+        side = s;
+        ind = i;
+        word = w;
+    }
+    ~Word() { }
+};
 
 class Hypotheses
 {
@@ -18,5 +41,11 @@ class Hypotheses
         void rank();
         void print();
     private:
-        std::vector<std::wstring> _hypotheses;
+        std::list<Hypothesis> _hypotheses;
+        //void generate(unsigned int begin, unsigned int end, Alignment& a, 
+        //        std::vector<Hypothesis>&  vh);
+        void inline expand(std::vector<std::vector<Word> >& wv,
+                Alignment& a, unsigned int j);      
+        void inline fill_words(std::vector<Word>& words, Alignment& a,
+                unsigned int length);
 };
