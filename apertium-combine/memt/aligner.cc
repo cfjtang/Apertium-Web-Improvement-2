@@ -18,13 +18,14 @@ int main(int argc, char** argv)
     getline(file_in1, input_line1);
     getline(file_in2, input_line2);
     while(file_in1 && file_in2) {
-        wcout << "Align: " << input_line1 << " <with> " << input_line2 << endl;
+        wcout << "### Align: " << input_line1 << " <with> " << input_line2 << endl;
         Alignment a = Alignment(input_line1, input_line2);
         a.align();
         a.print();
-        //Hypotheses h = Hypotheses(a);
-        //h.rank();
-        //h.print();
+        wcout << "### Making hypotheses" << endl;
+        Hypotheses h = Hypotheses(a);
+        h.rank();
+        h.print();
         getline(file_in1, input_line1);
         getline(file_in2, input_line2);
     }
