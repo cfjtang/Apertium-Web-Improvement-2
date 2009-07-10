@@ -45,10 +45,22 @@
       <cat-item tags="prn.*"/>
     </def-cat>
     
-    
+    <def-cat n="compar">
+      <cat-item lemma="mayor" tags="adj.*"/>
+      <cat-item lemma="menor" tags="adj.*"/>
+      <cat-item lemma="igual" tags="adj.*"/>
+      <cat-item lemma="más"   tags="adv"/>
+      <cat-item lemma="menos" tags="adv"/>
+    </def-cat>
+
     <def-cat n="rel">
       <cat-item tags="prn.rel.*"/>
       <cat-item tags="rel.*"/>
+    </def-cat>
+
+    <def-cat n="que_compar">
+      <cat-item lemma="que" tags="cnjsub"/>
+      <cat-item lemma="que" tags="rel"/>
     </def-cat>
     
     <def-cat n="prnenc">
@@ -172,10 +184,6 @@
       <cat-item lemma="reír" tags="vblex.*"/>
       <cat-item lemma="ruborizar" tags="vblex.*"/>
     </def-cat>
-
-
-
-
 
 
     <def-cat n="adv_preadv">
@@ -4791,6 +4799,102 @@
       </action>
     </rule> 
     
+    <rule comment="REGLA: COMPAR ADJ QUE">
+      <pattern>
+	<pattern-item n="compar"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="que_compar"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="comp_adj_que" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="comp"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_adj"/>
+	      <clip pos="2" side="tl" part="gen"/> 
+	      <clip pos="2" side="tl" part="nbr" />
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <lit v="di"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+  
+<!-- <rule comment="REGLA: SV COMPAR QUE">
+      <pattern>
+	<pattern-item n="verb"/>
+	<pattern-item n="compar"/>
+	<pattern-item n="que_compar"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="comp_que" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV_comp_que"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <lit v="di"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>-->
+  
+   <rule comment="REGLA: COMPAR QUE">
+      <pattern>
+	<pattern-item n="compar"/>
+	<pattern-item n="que_compar"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="comp_que" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="comp_que"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <lit v="di"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+    
+
     <rule comment="REGLA: IR A INF">
       <pattern>
 	<pattern-item n="ir"/>
