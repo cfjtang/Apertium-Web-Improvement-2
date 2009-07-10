@@ -28,7 +28,9 @@
 ;;; while `C-c G' moves point to the pardef of the entry at point,
 ;;; leaving mark where you left from. Inside a pardef, `C-c A' shows
 ;;; all usages of that pardef within the dictionaries represented by
-;;; the string `dix-dixfiles'
+;;; the string `dix-dixfiles', while `C-c D' gives you a list of all
+;;; pardefs which use these suffixes (where a suffix is the contents
+;;; of an <l>-element).
 ;;; 
 ;;; 
 ;;; I like having the following set too:
@@ -160,7 +162,8 @@ the pardef names containing these suffixes.
 
 Argument `partype' is eg. adj, vblex, vblex_adj, ..., and is the
 string following \"__\", thus assumes you keep to the Apertium
-standard."
+standard. Also assumes there is no \"_\" before \"__\" in pardef
+names."
   (let ((suffmap (make-hash-table :test 'equal)))
     (save-excursion
       (goto-char (point-min))
@@ -193,10 +196,57 @@ and `dix-get-pardefs'."
 	    (setq sufflist (cons (match-string-no-properties 1) sufflist)))))
       (sort sufflist 'string-lessp))))
 
+(defvar dix-suffix-maps nil
+  "Internal association list used to store compiled suffix maps;
+keys are symbols formed from the string `partype' (see
+`dix-compile-suffix-map' and interactive function
+`dix-find-duplicate-pardefs').")
+(make-variable-buffer-local 'dix-suffix-maps)
+
+(defun assoc-delete-all (key alist)
+  (if alist
+      (if (equal (caar alist) key)
+	  (assoc-delete-all key (cdr alist))
+	(cons (car alist)
+	      (assoc-delete-all key (cdr alist))))))
+
 ;;;============================================================================
 ;;;
 ;;; Interactive functions
 ;;;
+
+(defun dix-find-duplicate-pardefs (&optional recompile)
+  "Find all pardefs with this list of suffixes (contents of <l>
+elements); if there are several of them they might be
+duplicates. Optional prefix argument `recompile' forces a
+re-check of all pardefs.
+
+Uses internal function `dix-compile-suffix-map' which assumes
+that pardefs are named according to the regular Apertium scheme,
+eg. \"lik/e__vblex\" (ie. all pardefs of the same group have
+\"__\" before the group name, and there are no \"_\" before
+\"__\").
+
+Returns the list of pardef names."
+  (interactive "P")
+  (let* ((partype
+	  (save-excursion
+	    (dix-up-to "pardef")
+	    (re-search-forward
+	     (concat "pardef[^n>]*n=\"[^_]*__\\([^\"]*\\)" ) nil 'noerror)
+	    (match-string-no-properties 1)))
+	 (foundmap (cdr (assoc-string partype dix-suffix-maps))))
+    (let* ((suffmap
+	    (if (or recompile (not foundmap))
+		(dix-compile-suffix-map partype)
+	      foundmap))
+	   (pardefs (dix-get-pardefs (dix-compile-sorted-suffix-list)
+				     suffmap)))
+      (when (or recompile (not foundmap))
+	(setq dix-suffix-maps (assoc-delete-all partype dix-suffix-maps))
+	(add-to-list 'dix-suffix-maps (cons partype suffmap) 'append))
+      (message (prin1-to-string pardefs))
+      pardefs)))
 
 (defun dix-restriction-cycle ()
   "Cycle through possible values of the `r' attribute of the <e>
@@ -386,6 +436,7 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
+(define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
 
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
