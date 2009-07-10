@@ -444,6 +444,264 @@
 </tagset>
 
   <forbid>
+
+
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VLEXPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VLEXIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VLEXINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VLEXSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="IMPLEXPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VSERINF"/>
+    </label-sequence>
+   <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="IMPSERPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VHABERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VHABERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VHABERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="IMPMODPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VLEXPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VLEXIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VLEXINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VLEXSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="IMPLEXPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VSERINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="IMPSERPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VHABERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VHABERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VHABERINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VHABERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VMODALPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VMODALIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VMODALSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERIMP"/>
+      <label-item label="IMPMODPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VLEXPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VLEXIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VLEXINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VLEXSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="IMPLEXPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VSERINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="IMPSERPRNENC"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VHABERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VHABERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VHABERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VMODALPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VMODALIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VMODALINF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VMODALSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VMODALIMP"/>
+      <label-item label="IMPMODPRNENC"/>
+    </label-sequence>
     <label-sequence>
       <label-item label="ALGOADV"/>
       <label-item label="QUECNJ"/>
@@ -909,222 +1167,6 @@
       <label-item label="DETMF"/>
     </label-sequence>
 
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VLEXPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VLEXIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VLEXSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VLEXIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="IMPLEXPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VSERPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VSERIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VSERSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VSERIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="IMPSERPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VHABERPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VHABERIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VHABERSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VMODALPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VMODALIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VMODALSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="VMODALIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VLEXIMP"/>
-      <label-item label="IMPMODPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VLEXPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VLEXIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VLEXSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VLEXIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="IMPLEXPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VSERPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VSERIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VSERSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VSERIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="IMPSERPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VHABERPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VHABERIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VHABERSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VMODALPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VMODALIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VMODALSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="VMODALIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VSERIMP"/>
-      <label-item label="IMPMODPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VLEXPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VLEXIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VLEXSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VLEXIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="IMPLEXPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VSERPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VSERIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VSERSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VSERIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="IMPSERPRNENC"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VHABERPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VHABERIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VHABERSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VMODALPFCI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VMODALIPI"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VMODALSUBJ"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="VMODALIMP"/>
-    </label-sequence>
-    <label-sequence>
-      <label-item label="VMODALIMP"/>
-      <label-item label="IMPMODPRNENC"/>
-    </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
       <label-item label="SENT"/>
@@ -1897,7 +1939,7 @@
       <label-item label="ADV"/>
       <label-item label="VSERIMP"/>
     </label-sequence>
-    <label-sequence>
+<!--    <label-sequence>
       <label-item label="PARAVBPRI"/>
       <label-item label="VSERINF"/>
     </label-sequence>
@@ -1962,7 +2004,7 @@
       <label-item label="INFMODPRNENC"/>
     </label-sequence>
 
-
+-->
     <label-sequence>
       <label-item label="VMODALINF"/>
       <label-item label="CNJSUBS"/><!--no incluye 'que' -->
