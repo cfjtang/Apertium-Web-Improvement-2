@@ -153,6 +153,46 @@ which we're looking at."
 	    (re-search-forward "n=[^/]*/" nil t)
 	    (word-at-point)))))
 
+(defun dix-compile-suffix-map (partype)
+  "Build a hash map where keys are sorted lists of suffixes in
+pardefs, eg. '(\"en\" \"ing\" \"s\"), and the value is a list of
+the pardef names containing these suffixes.
+
+Argument `partype' is eg. adj, vblex, vblex_adj, ..., and is the
+string following \"__\", thus assumes you keep to the Apertium
+standard."
+  (let ((suffmap (make-hash-table :test 'equal)))
+    (save-excursion
+      (goto-char (point-min))
+      ;; find all pardefs of `partype' in the file:
+      (while (re-search-forward
+	      (concat "pardef[^n>]*n=\"\\([^_]*__" partype "\\)\"") nil 'noerror)
+	(let ((pardef (match-string-no-properties 1))
+	      (sufflist (dix-compile-sorted-suffix-list)))
+	  (puthash sufflist
+		   (cons pardef (gethash sufflist suffmap)) suffmap))))
+    suffmap))
+
+(defun dix-get-pardefs (sufflist suffmap)
+  "Get the list of pardefs in `suffmap' which have the list of
+suffixes `sufflist'. See `dix-compile-suffix-map' for more
+information."
+  (gethash (sort sufflist 'string-lessp) suffmap))
+
+(defun dix-compile-sorted-suffix-list ()
+  "Used for generating lookup keys for `dix-compile-suffix-map'
+and `dix-get-pardefs'."
+  (save-excursion
+    (let (sufflist)
+      (dix-up-to "pardef")
+      ;; find all suffixes within this pardef:
+      (let ((end (save-excursion (dix-with-sexp (forward-sexp))
+				 (point))))
+	(while (re-search-forward "<l>\\([^<]*\\)</l>" end 'noerror)
+	  (when (match-string 1)
+	    (setq sufflist (cons (match-string-no-properties 1) sufflist)))))
+      (sort sufflist 'string-lessp))))
+
 ;;;============================================================================
 ;;;
 ;;; Interactive functions
