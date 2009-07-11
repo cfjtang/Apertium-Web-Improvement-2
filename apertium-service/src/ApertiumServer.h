@@ -30,6 +30,7 @@
 #include <libiqxmlrpc/https_server.h>
 
 #include "utils/ConfigurationManager.h"
+#include "utils/AuthenticationManager.h"
 
 #include "ApertiumLogInterceptor.h"
 #include "ApertiumAuthPlugin.h"
@@ -40,7 +41,7 @@
 
 class ApertiumServer {
 public:
-	ApertiumServer(ConfigurationManager*, ModesManager*, ObjectBroker*, TextClassifier *tc);
+	ApertiumServer(ConfigurationManager*, ModesManager*, ObjectBroker*, TextClassifier*, AuthenticationManager*);
 	virtual ~ApertiumServer();
 
 	//static void test(iqxmlrpc::Method *method, const iqxmlrpc::Param_list& params, iqxmlrpc::Value& retval) {
@@ -58,10 +59,6 @@ private:
 
 	ApertiumLogInterceptor *logInterceptor;
 	ApertiumAuthPlugin *authPlugin;
-
-	ObjectBroker *objectBroker;
-	ModesManager *modesManager;
-	TextClassifier *textClassifier;
 };
 
 #endif /* APERTIUMSERVER_H_ */

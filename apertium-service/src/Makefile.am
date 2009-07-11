@@ -2,7 +2,7 @@ INCLUDES = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@ @LIBIQXMLRPC_CFLA
 LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @LIBIQXMLRPC_LIBS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ \
 @BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @BOOST_DATE_TIME_LIB@ @LIBTEXTCAT_LIBS@
 
-h_sources = ./AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDetect.h ./format/Deformat.h ./format/Encoding.h \
+h_sources = ./utils/AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDetect.h ./format/Deformat.h ./format/Encoding.h \
 ./format/Base64.h ./format/Reformat.h ./ApertiumAuthPlugin.h ./ApertiumLanguagePairs.h ./core/FunctionMapper.h \
 ./core/PreTransfer.h ./core/ThreadSafeQueue.h ./core/ObjectBroker.h ./core/ThreadSafeObjectPool.h ./core/ModesManager.h \
 ./core/TextClassifier.h ./core/Translator.h ./ApertiumLogInterceptor.h ./ApertiumServer.h \
@@ -20,7 +20,7 @@ cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumLanguagePairs
 ./cg/CompositeTag.cpp ./cg/Strings.cpp ./cg/GrammarApplicator_matchSet.cpp ./cg/TextualParser.cpp ./cg/BinaryGrammar_write.cpp \
 ./cg/GrammarApplicator_runGrammar.cpp ./cg/Reading.cpp ./cg/Grammar.cpp ./cg/BinaryGrammar.cpp ./cg/Set.cpp ./cg/ContextualTest.cpp \
 ./cg/Tag.cpp ./cg/icu_uoptions.cpp ./cg/GrammarWriter.cpp ./cg/Anchor.cpp ./cg/GrammarApplicator_runRules.cpp \
-./cg/GrammarApplicator.cpp ./cg/SingleWindow.cpp ./cg/BinaryGrammar_read.cpp ./AuthenticationManager.cpp \
+./cg/GrammarApplicator.cpp ./cg/SingleWindow.cpp ./cg/BinaryGrammar_read.cpp ./utils/AuthenticationManager.cpp \
 ./utils/ConfigurationManager.cpp ./utils/Logger.cpp ./utils/Statistics.cpp ./main.cpp
 
 bin_PROGRAMS = apertium_service

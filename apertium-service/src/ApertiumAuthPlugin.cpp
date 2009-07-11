@@ -19,20 +19,20 @@
 
 #include <iostream>
 
-#include "AuthenticationManager.h"
 #include "utils/Logger.h"
 
 using namespace std;
 
-ApertiumAuthPlugin::ApertiumAuthPlugin() { }
+ApertiumAuthPlugin::ApertiumAuthPlugin(AuthenticationManager *am) {
+	this->authenticationManager = am;
+}
 
 ApertiumAuthPlugin::~ApertiumAuthPlugin() { }
 
 bool ApertiumAuthPlugin::do_authenticate(const std::string& username, const std::string& pw) const {
 	bool ret = false;
 
-	AuthenticationManager *am = AuthenticationManager::Instance();
-	ret = am->authenticateUser(username, pw);
+	ret = this->authenticationManager->authenticateUser(username, pw);
 
 	if (ret)
 		Logger::Instance()->trace(NOTICE, "Authentication granted for user " + username);
