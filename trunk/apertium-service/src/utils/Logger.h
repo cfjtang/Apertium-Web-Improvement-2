@@ -21,6 +21,9 @@
 #include <iostream>
 #include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>
+#include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/locks.hpp>
+
 
 enum MessageType { DEBUG, INFO, NOTICE, WARNING, ERR };
 
@@ -38,7 +41,7 @@ private:
 	Logger();
 	static Logger *instance;
 
-	static boost::mutex instanceMutex;
+	static boost::shared_mutex instanceMutex;
 
 	int verbosity;
 
