@@ -25,12 +25,14 @@
 using namespace boost::posix_time;
 
 Logger *Logger::instance = NULL;
-boost::mutex Logger::instanceMutex;
+boost::shared_mutex Logger::instanceMutex;
 
 Logger *Logger::Instance() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (!instance)
+	boost::upgrade_lock<boost::shared_mutex> lock(instanceMutex);
+	if (!instance) {
+		boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
 		instance = new Logger();
+	}
 	return (instance);
 }
 
@@ -43,13 +45,14 @@ Logger::Logger() {
 }
 
 Logger::~Logger() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
+	boost::unique_lock<boost::shared_mutex> uniqueLock(instanceMutex);
 	if (instance != NULL) {
 		instance = NULL;
 	}
 }
 
 void Logger::trace(MessageType messageType, const std::string msg) {
+	boost::upgrade_lock<boost::shared_mutex> lock(instanceMutex);
 	std::stringstream ss;
 
 	switch (messageType) {
@@ -74,7 +77,7 @@ void Logger::trace(MessageType messageType, const std::string msg) {
 	ss << ": " << now << " - " << msg;
 
 	if (verbosity > 1 || messageType != DEBUG){
-		boost::mutex::scoped_lock Lock(instanceMutex);
+		boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
 		std::cout << ss.str() << std::endl;
 	}
 }
