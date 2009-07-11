@@ -19,20 +19,6 @@
 
 #include <openssl/md5.h>
 
-AuthenticationManager *AuthenticationManager::instance = NULL;
-boost::mutex AuthenticationManager::instanceMutex;
-
-AuthenticationManager *AuthenticationManager::Instance() {
-	return instance;
-}
-
-AuthenticationManager *AuthenticationManager::Instance(std::string confPath) {
-	if (!instance) {
-		instance = new AuthenticationManager(confPath);
-	}
-	return instance;
-}
-
 AuthenticationManager::AuthenticationManager(std::string confPath) {
 	xmlpp::DomParser parser(confPath);
 
@@ -65,9 +51,7 @@ AuthenticationManager::AuthenticationManager(std::string confPath) {
 	}
 }
 
-AuthenticationManager::~AuthenticationManager() {
-	instance = NULL;
-}
+AuthenticationManager::~AuthenticationManager() { }
 
 bool AuthenticationManager::authenticateUser(std::string username,
 		std::string password) {

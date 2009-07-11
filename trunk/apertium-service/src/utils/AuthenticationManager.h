@@ -28,18 +28,12 @@
 
 class AuthenticationManager {
 public:
-	static AuthenticationManager* Instance();
-	static AuthenticationManager* Instance(std::string);
+	AuthenticationManager(std::string);
 	virtual ~AuthenticationManager();
 
 	bool authenticateUser(std::string, std::string);
 
 private:
-	AuthenticationManager(std::string);
-	static AuthenticationManager *instance;
-
-	static boost::mutex instanceMutex;
-
 	std::map<std::string, std::string> users;
 };
 

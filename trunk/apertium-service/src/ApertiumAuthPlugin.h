@@ -21,13 +21,18 @@
 #include <libiqxmlrpc/libiqxmlrpc.h>
 #include <libiqxmlrpc/auth_plugin.h>
 
+#include "utils/AuthenticationManager.h"
+
 class ApertiumAuthPlugin: public iqxmlrpc::Auth_Plugin_base {
 public:
-	ApertiumAuthPlugin();
+	ApertiumAuthPlugin(AuthenticationManager*);
 	virtual ~ApertiumAuthPlugin();
 
 	bool do_authenticate(const std::string& username, const std::string& pw) const;
 	bool do_authenticate_anonymous() const;
+
+private:
+	AuthenticationManager *authenticationManager;
 };
 
 #endif /* APERTIUMAUTHPLUGIN_H_ */

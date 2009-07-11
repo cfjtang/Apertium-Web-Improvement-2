@@ -31,10 +31,7 @@
 
 using namespace std;
 
-ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, ObjectBroker *ob, TextClassifier *tc) {
-	this->modesManager = mm;
-	this->objectBroker = ob;
-	this->textClassifier = tc;
+ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, ObjectBroker *ob, TextClassifier *tc, AuthenticationManager *am) {
 
 	this->executorFactory = buildExecutorFactory(cm->getMaxThreads());
 
@@ -61,7 +58,7 @@ ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, Objec
 
 	//iqxmlrpc::register_method(*(this->server), "test", ApertiumServer::test);
 
-	authPlugin = new ApertiumAuthPlugin();
+	authPlugin = new ApertiumAuthPlugin(am);
 
 	this->logInterceptor = new ApertiumLogInterceptor();
 

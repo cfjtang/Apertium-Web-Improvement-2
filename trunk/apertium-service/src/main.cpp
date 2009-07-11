@@ -25,7 +25,7 @@
 #include <boost/filesystem.hpp>
 
 #include "ApertiumServer.h"
-#include "AuthenticationManager.h"
+#include "utils/AuthenticationManager.h"
 
 #include "core/ObjectBroker.h"
 #include "core/TextClassifier.h"
@@ -198,7 +198,7 @@ int main(int ac, char *av[]) {
 	        logger->setVerbosity(vm["confUsers"].as<int>());
 	    }
 
-		authenticationManager = AuthenticationManager::Instance(configurationManager->getConfUsers().string());
+		authenticationManager = new AuthenticationManager(configurationManager->getConfUsers().string());
 
 		textClassifier = new TextClassifier(configurationManager->getConfTextClassifier().string());
 
@@ -208,7 +208,8 @@ int main(int ac, char *av[]) {
 	    modesManager->initPipe(configurationManager->getApertiumBase());
 	    //modesManager->initXML(configurationManager->getApertiumBase());
 
-	    apertiumServer = new ApertiumServer(configurationManager, modesManager, objectBroker, textClassifier);
+	    apertiumServer = new ApertiumServer(configurationManager, modesManager,
+	    		objectBroker, textClassifier, authenticationManager);
 
 	} catch (exception& e) {
 		cerr << "error: " << e.what() << endl;
