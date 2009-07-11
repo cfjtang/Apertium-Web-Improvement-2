@@ -26,9 +26,13 @@
 #include <libxml++/libxml++.h>
 #include <boost/thread.hpp>
 
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
+
 class AuthenticationManager {
 public:
-	AuthenticationManager(std::string);
+	AuthenticationManager(fs::path);
 	virtual ~AuthenticationManager();
 
 	bool authenticateUser(std::string, std::string);

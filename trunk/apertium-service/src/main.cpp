@@ -16,6 +16,7 @@
  */
 
 #include <iostream>
+#include <exception>
 
 #include <stdlib.h>
 
@@ -198,9 +199,9 @@ int main(int ac, char *av[]) {
 	        logger->setVerbosity(vm["confUsers"].as<int>());
 	    }
 
-		authenticationManager = new AuthenticationManager(configurationManager->getConfUsers().string());
+		authenticationManager = new AuthenticationManager(configurationManager->getConfUsers());
 
-		textClassifier = new TextClassifier(configurationManager->getConfTextClassifier().string());
+		textClassifier = new TextClassifier(configurationManager->getConfTextClassifier());
 
 		objectBroker = new ObjectBroker();
 		modesManager = new ModesManager();
@@ -211,8 +212,8 @@ int main(int ac, char *av[]) {
 	    apertiumServer = new ApertiumServer(configurationManager, modesManager,
 	    		objectBroker, textClassifier, authenticationManager);
 
-	} catch (exception& e) {
-		cerr << "error: " << e.what() << endl;
+	} catch (const std::exception& e) {
+		cerr << "Exception: " << e.what() << endl;
 		return 1;
 	} catch (...) {
 		cerr << "Exception." << endl;

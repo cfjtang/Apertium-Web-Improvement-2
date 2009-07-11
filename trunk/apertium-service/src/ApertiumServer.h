@@ -55,6 +55,7 @@ public:
 private:
 	iqxmlrpc::Executor_factory_base* buildExecutorFactory(unsigned int);
 	iqxmlrpc::Executor_factory_base *executorFactory;
+
 	iqxmlrpc::Server *server;
 
 	ApertiumLogInterceptor *logInterceptor;
