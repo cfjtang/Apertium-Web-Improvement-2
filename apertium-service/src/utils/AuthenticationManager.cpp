@@ -19,8 +19,8 @@
 
 #include <openssl/md5.h>
 
-AuthenticationManager::AuthenticationManager(std::string confPath) {
-	xmlpp::DomParser parser(confPath);
+AuthenticationManager::AuthenticationManager(fs::path p) {
+	xmlpp::DomParser parser(p.string());
 
 	if (parser) {
 		const xmlpp::Node* rootNode = parser.get_document()->get_root_node();

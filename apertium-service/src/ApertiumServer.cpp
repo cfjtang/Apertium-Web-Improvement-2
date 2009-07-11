@@ -75,7 +75,9 @@ ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, Objec
 
 ApertiumServer::~ApertiumServer() {
 	this->server->set_exit_flag();
+
 	delete this->server;
+
 	delete this->logInterceptor;
 	delete this->authPlugin;
 	delete this->executorFactory;
