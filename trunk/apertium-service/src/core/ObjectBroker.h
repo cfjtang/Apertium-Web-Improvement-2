@@ -94,15 +94,15 @@ public:
 	T *request() {
 		T *ret = NULL;
 		bool isNew = false;
-		boost::upgrade_lock<boost::shared_mutex> lock(mutex);
+		//boost::upgrade_lock<boost::shared_mutex> lock(mutex);
 		if (poolQueue.empty()) {
 			isNew = true;
 		} else {
-			boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
-			ret = poolQueue.front();
+			//boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
+			ret = poolQueue.pop();
 			poolQueue.pop();
 		}
-		lock.unlock();
+		//lock.unlock();
 		if (isNew) {
 			ret = getNewInstance();
 		}
@@ -110,7 +110,7 @@ public:
 	}
 
 	void release(T *i) {
-		boost::unique_lock<boost::shared_mutex> lock(mutex);
+		//boost::unique_lock<boost::shared_mutex> lock(mutex);
 		poolQueue.push(i);
 	}
 
@@ -118,8 +118,9 @@ private:
 	T *getNewInstance();
 
 	ThreadSafeObjectPool<T> pool;
-	queue<T*> poolQueue;
-	boost::shared_mutex mutex;
+	//queue<T*> poolQueue;
+	ThreadSafeQueue<T*> poolQueue;
+	//boost::shared_mutex mutex;
 };
 
 template <class T, class I> class IndexedObjectPool : public ObjectPool {
