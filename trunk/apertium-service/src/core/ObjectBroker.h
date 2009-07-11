@@ -68,9 +68,6 @@ namespace fs = boost::filesystem;
 
 enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
 
-// enum TaggerMode { UNKNOWN_MODE, TRAIN_MODE, TAGGER_MODE, RETRAIN_MODE, TAGGER_SUPERVISED_MODE,
-//	TRAIN_SUPERVISED_MODE, RETRAIN_SUPERVISED_MODE, TAGGER_EVAL_MODE, TAGGER_FIRST_MODE };
-
 typedef pair<FSTProcessorTask, string> FSTProcessorIndexType;
 typedef string HMMIndexType;
 typedef std::vector<string> TaggerIndexType;

@@ -20,28 +20,6 @@
 #include <iostream>
 #include <string>
 
-Statistics *Statistics::instance = NULL;
-boost::shared_mutex Statistics::instanceMutex;
-
-Statistics *Statistics::Instance() {
-	instanceMutex.lock_shared();
-	if (!instance) {
-		instanceMutex.unlock_and_lock_upgrade();
-		instance = new Statistics();
-		instanceMutex.unlock_and_lock_shared();
-	}
-	Statistics *ret = instance;
-	instanceMutex.unlock_shared();
-	return ret;
-}
-
 Statistics::Statistics() { }
 
-Statistics::~Statistics() {
-	instanceMutex.lock_shared();
-	if (instance != NULL) {
-		instanceMutex.unlock_and_lock_upgrade();
-		instance = NULL;
-		instanceMutex.unlock();
-	}
-}
+Statistics::~Statistics() { }

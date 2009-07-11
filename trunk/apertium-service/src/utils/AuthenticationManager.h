@@ -19,13 +19,9 @@
 #define AUTHENTICATIONMANAGER_H_
 
 #include <iostream>
-#include <vector>
-#include <list>
 #include <map>
 
 #include <libxml++/libxml++.h>
-#include <boost/thread.hpp>
-
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;

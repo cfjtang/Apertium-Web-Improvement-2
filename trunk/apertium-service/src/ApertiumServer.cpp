@@ -56,8 +56,6 @@ ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, Objec
 	ApertiumDetect::textClassifier = tc;
 	iqxmlrpc::register_method<ApertiumDetect>(*(this->server), "detect");
 
-	//iqxmlrpc::register_method(*(this->server), "test", ApertiumServer::test);
-
 	authPlugin = new ApertiumAuthPlugin(am);
 
 	this->logInterceptor = new ApertiumLogInterceptor();
