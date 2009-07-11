@@ -35,23 +35,23 @@
 
 #include "ApertiumRuntimeException.h"
 
-std::string Translator::translate(std::string text, std::string srcLang, std::string destLang) {
+std::string Translator::translate(ObjectBroker *ob, ModesManager *mm, std::string text, std::string srcLang, std::string destLang) {
 
 	string pair = srcLang + "-" + destLang;
 
 	wstring wtext = Encoding::utf8ToWstring(text);
 
-	Mode *mode = ModesManager::Instance()->getMode(pair);
+	Mode *mode = mm->getMode(pair);
 
 	if (!mode) {
 		throw ApertiumRuntimeException("Mode not found: " + pair);
 	}
 
-	FunctionMapper *fm = new FunctionMapper(ObjectBroker::Instance());
+	FunctionMapper *fm = new FunctionMapper(ob);
 
 	vector<Program> programs = mode->getPrograms();
 
-	wstring ret = deformat(wtext);
+	wstring ret = deformat(ob, wtext);
 
 	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
@@ -64,26 +64,26 @@ std::string Translator::translate(std::string text, std::string srcLang, std::st
 
 	delete fm;
 
-	return Encoding::wstringToUtf8(reformat(ret));
+	return Encoding::wstringToUtf8(reformat(ob, ret));
 }
 
-std::wstring Translator::deformat(std::wstring in) {
+std::wstring Translator::deformat(ObjectBroker *ob, std::wstring in) {
 	wstringstream wss;
-	Deformat *d = ObjectBroker::Instance()->DeformatPool.request();
+	Deformat *d = ob->DeformatPool.request();
 	d->reset();
 	d->setYyin(in);
 	d->setYyout(&wss);
 	d->lex();
-	ObjectBroker::Instance()->DeformatPool.release(d);
+	ob->DeformatPool.release(d);
 	return(wss.str());
 }
 
-std::wstring Translator::reformat(std::wstring in) {
+std::wstring Translator::reformat(ObjectBroker *ob, std::wstring in) {
 	wstringstream wss;
-	Reformat *r = ObjectBroker::Instance()->ReformatPool.request();
+	Reformat *r = ob->ReformatPool.request();
 	r->setYyin(in);
 	r->setYyout(&wss);
 	r->lex();
-	ObjectBroker::Instance()->ReformatPool.release(r);
+	ob->ReformatPool.release(r);
 	return(wss.str());
 }

@@ -21,13 +21,16 @@
 #include <iostream>
 #include <wchar.h>
 
+#include "core/ObjectBroker.h"
+#include "core/ModesManager.h"
+
 class Translator {
 public:
-	static std::string translate(std::string, std::string, std::string);
+	static std::string translate(ObjectBroker *, ModesManager *, std::string, std::string, std::string);
 
 private:
-	static std::wstring deformat(std::wstring);
-	static std::wstring reformat(std::wstring);
+	static std::wstring deformat(ObjectBroker *, std::wstring);
+	static std::wstring reformat(ObjectBroker *, std::wstring);
 };
 
 #endif /* TRANSLATOR_H_ */

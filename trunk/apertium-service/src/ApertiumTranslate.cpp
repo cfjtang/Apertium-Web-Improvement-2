@@ -21,16 +21,17 @@
 #include <string>
 
 #include "core/Translator.h"
-#include "core/TextClassifier.h"
-
 #include "utils/Logger.h"
 
 #include "ApertiumRuntimeException.h"
 
 using namespace std;
 
-void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
+ObjectBroker *ApertiumTranslate::objectBroker = NULL;
+ModesManager *ApertiumTranslate::modesManager = NULL;
+TextClassifier *ApertiumTranslate::textClassifier = NULL;
 
+void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 	iqxmlrpc::Struct s;
 
 	switch (params.size()) {
@@ -49,11 +50,11 @@ void ApertiumTranslate::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Va
 		Logger::Instance()->trace(DEBUG, "Invoking translate(\"" + text + "\", \"" + srcLang + "\", \"" + destLang + "\");");
 
 		if (srcLang.empty()) {
-			srcLang = TextClassifier::Instance()->classify(text);
+			srcLang = textClassifier->classify(text);
 			s.insert("detectedSourceLanguage", srcLang);
 		}
 
-		s.insert("translation", Translator::translate(text, srcLang, destLang));
+		s.insert("translation", Translator::translate(objectBroker, modesManager, text, srcLang, destLang));
 	}
 		break;
 	}

@@ -23,6 +23,8 @@
 #include <libiqxmlrpc/libiqxmlrpc.h>
 #include <time.h>
 
+#include "core/ModesManager.h"
+
 #include <iostream>
 #include <string>
 #include <list>
@@ -30,8 +32,7 @@
 class ApertiumLanguagePairs: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
-private:
-	//static time_t lastCacheTime = 0;
+	static ModesManager *modesManager;
 };
 
 #endif /* APERTIUMLANGUAGEPAIRS_H_ */

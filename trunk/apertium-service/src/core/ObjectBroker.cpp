@@ -16,28 +16,14 @@
  */
 
 #include "ObjectBroker.h"
-
 #include "utils/Logger.h"
-
-ObjectBroker *ObjectBroker::instance = NULL;
-boost::mutex ObjectBroker::instanceMutex;
-
-ObjectBroker *ObjectBroker::Instance() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (!instance)
-		instance = new ObjectBroker();
-	return(instance);
-}
 
 ObjectBroker::ObjectBroker() {
 
 }
 
 ObjectBroker::~ObjectBroker() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (instance != NULL) {
-		instance = NULL;
-	}
+
 }
 
 void ObjectPool::checkFile(fs::path p) {

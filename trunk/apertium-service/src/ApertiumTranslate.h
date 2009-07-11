@@ -19,13 +19,20 @@
 #define APERTIUMTRANSLATE_H_
 
 #include <iostream>
-
 #include <wchar.h>
+
 #include <libiqxmlrpc/libiqxmlrpc.h>
+
+#include "core/ObjectBroker.h"
+#include "core/ModesManager.h"
+#include "core/TextClassifier.h"
 
 class ApertiumTranslate: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
+	static ObjectBroker *objectBroker;
+	static ModesManager *modesManager;
+	static TextClassifier *textClassifier;
 };
 
 #endif /* APERTIUMTRANSLATE_H_ */

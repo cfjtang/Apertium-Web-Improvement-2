@@ -21,24 +21,18 @@
 #include <iostream>
 #include <string>
 
-#include <boost/thread.hpp>
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 
 class TextClassifier {
 public:
-	static TextClassifier *Instance(std::string);
-	static TextClassifier *Instance();
-
+	TextClassifier(fs::path);
 	virtual ~TextClassifier();
 
 	std::string classify(std::string);
 
 private:
-	TextClassifier(void *);
-
-	static TextClassifier *instance;
-
-	static boost::mutex instanceMutex;
-
 	void *h;
 };
 

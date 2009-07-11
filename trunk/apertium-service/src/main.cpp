@@ -200,16 +200,15 @@ int main(int ac, char *av[]) {
 
 		authenticationManager = AuthenticationManager::Instance(configurationManager->getConfUsers().string());
 
-		textClassifier = TextClassifier::Instance(configurationManager->getConfTextClassifier().string());
+		textClassifier = new TextClassifier(configurationManager->getConfTextClassifier().string());
 
-		objectBroker = ObjectBroker::Instance();
-
-		modesManager = ModesManager::Instance();
+		objectBroker = new ObjectBroker();
+		modesManager = new ModesManager();
 
 	    modesManager->initPipe(configurationManager->getApertiumBase());
 	    //modesManager->initXML(configurationManager->getApertiumBase());
 
-	    apertiumServer = new ApertiumServer(configurationManager);
+	    apertiumServer = new ApertiumServer(configurationManager, modesManager, objectBroker, textClassifier);
 
 	} catch (exception& e) {
 		cerr << "error: " << e.what() << endl;

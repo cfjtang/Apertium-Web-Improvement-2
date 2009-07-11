@@ -19,6 +19,9 @@
 #define APERTIUMLSERVER_H_
 
 #include <libiqxmlrpc/libiqxmlrpc.h>
+#include <libiqxmlrpc/method.h>
+#include <libiqxmlrpc/server.h>
+#include <libiqxmlrpc/dispatcher_manager.h>
 
 #include <libiqxmlrpc/http.h>
 #include <libiqxmlrpc/http_server.h>
@@ -31,10 +34,22 @@
 #include "ApertiumLogInterceptor.h"
 #include "ApertiumAuthPlugin.h"
 
+#include "core/ObjectBroker.h"
+#include "core/ModesManager.h"
+#include "core/TextClassifier.h"
+
 class ApertiumServer {
 public:
-	ApertiumServer(ConfigurationManager *);
+	ApertiumServer(ConfigurationManager*, ModesManager*, ObjectBroker*, TextClassifier *tc);
 	virtual ~ApertiumServer();
+
+	//static void test(iqxmlrpc::Method *method, const iqxmlrpc::Param_list& params, iqxmlrpc::Value& retval) {
+	//	if (params.empty()) {
+	//		retval = 0;
+	//	} else {
+	//		retval = params[0];
+	//	}
+	//};
 
 private:
 	iqxmlrpc::Executor_factory_base* buildExecutorFactory(unsigned int);
@@ -43,6 +58,10 @@ private:
 
 	ApertiumLogInterceptor *logInterceptor;
 	ApertiumAuthPlugin *authPlugin;
+
+	ObjectBroker *objectBroker;
+	ModesManager *modesManager;
+	TextClassifier *textClassifier;
 };
 
 #endif /* APERTIUMSERVER_H_ */

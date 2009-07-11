@@ -19,8 +19,6 @@
 #include <string>
 #include <signal.h>
 
-#include <libiqxmlrpc/libiqxmlrpc.h>
-
 #include "ApertiumServer.h"
 #include "utils/Logger.h"
 
@@ -29,9 +27,15 @@
 
 #include "ApertiumDetect.h"
 
+#include <boost/bind.hpp>
+
 using namespace std;
 
-ApertiumServer::ApertiumServer(ConfigurationManager *cm) {
+ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, ObjectBroker *ob, TextClassifier *tc) {
+	this->modesManager = mm;
+	this->objectBroker = ob;
+	this->textClassifier = tc;
+
 	this->executorFactory = buildExecutorFactory(cm->getMaxThreads());
 
 	stringstream ssmsg;
@@ -45,10 +49,17 @@ ApertiumServer::ApertiumServer(ConfigurationManager *cm) {
 		this->server = new iqxmlrpc::Http_server(cm->getServerPort(), this->executorFactory);
 	}
 
+	ApertiumTranslate::objectBroker = ob;
+	ApertiumTranslate::modesManager = mm;
 	iqxmlrpc::register_method<ApertiumTranslate>(*(this->server), "translate");
+
+	ApertiumLanguagePairs::modesManager = mm;
 	iqxmlrpc::register_method<ApertiumLanguagePairs>(*(this->server), "languagePairs");
 
+	ApertiumDetect::textClassifier = tc;
 	iqxmlrpc::register_method<ApertiumDetect>(*(this->server), "detect");
+
+	//iqxmlrpc::register_method(*(this->server), "test", ApertiumServer::test);
 
 	authPlugin = new ApertiumAuthPlugin();
 
@@ -67,25 +78,15 @@ ApertiumServer::ApertiumServer(ConfigurationManager *cm) {
 
 ApertiumServer::~ApertiumServer() {
 	this->server->set_exit_flag();
-
 	delete this->server;
-	this->server = NULL;
-
 	delete this->logInterceptor;
-	this->logInterceptor = NULL;
-
 	delete this->authPlugin;
-	this->authPlugin = NULL;
-
 	delete this->executorFactory;
-	this->executorFactory = NULL;
 }
 
 iqxmlrpc::Executor_factory_base* ApertiumServer::buildExecutorFactory(unsigned int nThreads) {
 	iqxmlrpc::Executor_factory_base *ret = NULL;
     if (nThreads > 1) {
-    	// I will probably have to implement my own iqxmlrpc::Executor_factory_base
-    	// to manage in my own way scheduling, priorities etc.
         ret = new iqxmlrpc::Pool_executor_factory(nThreads);
     } else {
     	ret = new iqxmlrpc::Serial_executor_factory();

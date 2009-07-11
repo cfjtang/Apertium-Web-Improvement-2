@@ -20,23 +20,21 @@
 #include "ApertiumServer.h"
 
 #include "ApertiumRuntimeException.h"
-#include "core/ModesManager.h"
 
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
-	ModesManager *m = ModesManager::Instance();
+ModesManager *ApertiumLanguagePairs::modesManager = NULL;
 
-	list<string> modes = m->getModeNames();
+void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
+	list<string> modes = modesManager->getModeNames();
 	modes.sort();
 
 	retval = iqxmlrpc::Array();
 
 	for (list<string>::iterator it = modes.begin(); it != modes.end(); it++) {
-		//iqxmlrpc::Value v = iqxmlrpc::Value(*it);
 		string mode = *it;
 		size_t sep = mode.find("-", 0);
 
@@ -52,5 +50,4 @@ void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc
 
 		retval.push_back(v);
 	}
-
 }
