@@ -102,23 +102,10 @@ void Mode::setPrograms(const vector<Program> p) {
 	programs = p;
 }
 
-ModesManager *ModesManager::instance = NULL;
-boost::mutex ModesManager::instanceMutex;
-
-ModesManager *ModesManager::Instance() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (!instance)
-		instance = new ModesManager();
-	return(instance);
-}
-
 ModesManager::ModesManager() { }
 
 ModesManager::~ModesManager() {
-	boost::mutex::scoped_lock Lock(instanceMutex);
-	if (instance != NULL) {
-		instance = NULL;
-	}
+
 }
 
 void ModesManager::parseXML(const fs::path path) {

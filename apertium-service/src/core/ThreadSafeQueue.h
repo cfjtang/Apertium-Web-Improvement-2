@@ -4,6 +4,9 @@
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
+#include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/locks.hpp>
+
 #include <queue>
 
 template <typename T> class ThreadSafeQueue {
@@ -19,7 +22,7 @@ public:
     bool empty();
 
 private:
-    boost::mutex mutex;
+    boost::shared_mutex mutex;
     std::queue<T> q;
 };
 
@@ -28,25 +31,26 @@ template <class T> ThreadSafeQueue<T>::ThreadSafeQueue() { }
 template <class T> ThreadSafeQueue<T>::~ThreadSafeQueue() { }
 
 template <class T> void ThreadSafeQueue<T>::push(T e) {
-        boost::mutex::scoped_lock lock(mutex);
+        boost::unique_lock<boost::shared_mutex> uniqueLock(mutex);
         q.push(e);
 }
 
 template <class T> T ThreadSafeQueue<T>::pop() {
-        boost::mutex::scoped_lock lock(mutex);
+        boost::upgrade_lock<boost::shared_mutex> lock(mutex);
         T ret = q.front();
+        boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
         q.pop();
         return(ret);
 }
 
 template <class T> T ThreadSafeQueue<T>::front() {
-        boost::mutex::scoped_lock lock(mutex);
+        boost::shared_lock<boost::shared_mutex> lock(mutex);
         T ret = q.front();
         return(ret);
 }
 
 template <class T> bool ThreadSafeQueue<T>::empty() {
-        boost::mutex::scoped_lock lock(mutex);
+        boost::shared_lock<boost::shared_mutex> lock(mutex);
         bool ret = q.empty();
         return(ret);
 }

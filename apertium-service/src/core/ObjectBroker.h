@@ -41,6 +41,8 @@
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
+#include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/locks.hpp>
 
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/filesystem.hpp>
@@ -92,10 +94,11 @@ public:
 	T *request() {
 		T *ret = NULL;
 		bool isNew = false;
-		boost::mutex::scoped_lock lock(mutex);
+		boost::upgrade_lock<boost::shared_mutex> lock(mutex);
 		if (poolQueue.empty()) {
 			isNew = true;
 		} else {
+			boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
 			ret = poolQueue.front();
 			poolQueue.pop();
 		}
@@ -107,7 +110,7 @@ public:
 	}
 
 	void release(T *i) {
-		boost::mutex::scoped_lock lock(mutex);
+		boost::unique_lock<boost::shared_mutex> lock(mutex);
 		poolQueue.push(i);
 	}
 
@@ -116,7 +119,7 @@ private:
 
 	ThreadSafeObjectPool<T> pool;
 	queue<T*> poolQueue;
-	boost::mutex mutex;
+	boost::shared_mutex mutex;
 };
 
 template <class T, class I> class IndexedObjectPool : public ObjectPool {
@@ -129,12 +132,12 @@ public:
 	T *request(I index) {
 		T *ret = NULL;
 		bool isNew = false;
-		boost::mutex::scoped_lock lock(mutex);
-
+		boost::upgrade_lock<boost::shared_mutex> lock(mutex);
 		typename PoolMapType::iterator it = poolMap.find(index);
 		if (it == poolMap.end()) {
 			isNew = true;
 		} else {
+			//boost::upgrade_to_unique_lock uniqueLock(mutex);
 			queue<T*> *q = &(it->second);
 			if (q->empty()) {
 				isNew = true;
@@ -151,11 +154,12 @@ public:
 	}
 
 	void release(T *i, I index) {
-		boost::mutex::scoped_lock lock(mutex);
+		boost::upgrade_lock<boost::shared_mutex> lock(mutex);
 		typename PoolMapType::iterator it = poolMap.find(index);;
 		if (it == poolMap.end()) {
 			queue<T*> q;
 			q.push(i);
+			boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
 			poolMap[index] = q;
 		} else {
 			queue<T*> *q = &(it->second);
@@ -168,7 +172,7 @@ private:
 
 	ThreadSafeObjectPool<T> pool;
 	PoolMapType poolMap;
-	boost::mutex mutex;
+	boost::shared_mutex mutex;
 };
 
 class HMMWrapper {
@@ -185,7 +189,7 @@ private:
 
 class ObjectBroker {
 public:
-	static ObjectBroker *Instance();
+	ObjectBroker();
 	virtual ~ObjectBroker();
 
 	NonIndexedObjectPool<PreTransfer> PreTransferPool;
@@ -201,12 +205,8 @@ public:
 	IndexedObjectPool<CG3::Grammar, GrammarIndexType> GrammarPool;
 
 	static boost::mutex cgMutex;
-
 private:
-	ObjectBroker();
 
-	static ObjectBroker *instance;
-	static boost::mutex instanceMutex;
 };
 
 #endif /* OBJECTBROKER_H_ */

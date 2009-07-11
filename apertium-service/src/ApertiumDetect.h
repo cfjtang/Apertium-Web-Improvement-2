@@ -23,9 +23,12 @@
 
 #include <libiqxmlrpc/libiqxmlrpc.h>
 
+#include "core/TextClassifier.h"
+
 class ApertiumDetect: public iqxmlrpc::Method {
 public:
 	void execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval);
+	static TextClassifier *textClassifier;
 };
 
 #endif /* APERTIUMDETECT_H_ */

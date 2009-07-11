@@ -76,7 +76,7 @@ private:
 
 class ModesManager {
 public:
-	static ModesManager *Instance();
+	ModesManager();
 	virtual ~ModesManager();
 
 	list<string> getModeNames();
@@ -93,13 +93,7 @@ public:
 	void initXML(const fs::path);
 
 private:
-	ModesManager();
-
 	void parseXML(fs::path);
-
-	static ModesManager *instance;
-
-	static boost::mutex instanceMutex;
 
 	typedef boost::unordered_map<string, Mode> ModeMapType;
 	//typedef map<string, Mode> ModeMapType;

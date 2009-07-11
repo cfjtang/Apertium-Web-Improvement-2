@@ -22,10 +22,12 @@
 
 using namespace std;
 
+TextClassifier *ApertiumDetect::textClassifier = NULL;
+
 void ApertiumDetect::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
 	if (params.size() < 1) {
 		retval = 0;
 	} else {
-		retval = TextClassifier::Instance()->classify(params[0]);
+		retval = textClassifier->classify(params[0]);
 	}
 }
