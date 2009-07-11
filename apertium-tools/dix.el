@@ -340,6 +340,39 @@ determines whether alphabetic case affects the sort order."
       (if (nxml-scan-element-forward (nxml-token-before))
 	  (dix-sort-e-by-r reverse beg xmltok-start)))))
 
+(defun dix-get-attrib (attributes name)
+  "Find attribute with attribute name `name' (a string) in the
+list `attributes' (of the same format as `xmltok-attributes'."
+  (if (equal name
+	     (buffer-substring-no-properties
+	      (xmltok-attribute-name-start (car attributes))
+	      (xmltok-attribute-name-end (car attributes))))
+      (car attributes)
+    (dix-get-attrib (cdr attributes) name)))
+
+(defun dix-forward ()
+  "Moves forward in <e> elements between the three important
+places (lm attribute, <i> data, n attribute; and then onto the lm
+of the next <e> element)."
+  (interactive)
+  (defun move (spot)
+    (if (< (point) spot)
+	(goto-char spot)
+      (progn (xmltok-forward) (forward-char)
+	     (dix-forward))))
+  (let* ((token-end (nxml-token-before))
+	 (fname (nxml-token-type-friendly-name xmltok-type)))
+    (if (memq xmltok-type '(space data end-tag))
+	(and (goto-char (1+ token-end))
+	     (dix-forward))
+      (let ((qname (xmltok-start-tag-qname)))
+	(cond ((equal qname "par")
+	       (move (xmltok-attribute-value-start
+		      (dix-get-attrib xmltok-attributes "n"))))	      
+	      ((equal qname "e")
+	       (move (xmltok-attribute-value-start
+		      (dix-get-attrib xmltok-attributes "lm"))))
+	      ((equal qname "i") (move token-end)))))))
 
 (defun dix-goto-pardef ()
   "Call from an entry to go to its pardef. Mark is pushed so you
@@ -433,6 +466,7 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
+(define-key dix-mode-map (kbd "M-n") 'dix-forward)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
