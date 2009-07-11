@@ -24,15 +24,10 @@
 
 class Statistics {
 public:
-	static Statistics *Instance();
+	Statistics();
 	virtual ~Statistics();
 
 private:
-	Statistics();
-	static Statistics *instance;
-
-	static boost::shared_mutex instanceMutex;
-
 	typedef boost::unordered_map<std::string, unsigned int> PairInvocationsMapType;
 	PairInvocationsMapType pairInvocationsMap;
 };

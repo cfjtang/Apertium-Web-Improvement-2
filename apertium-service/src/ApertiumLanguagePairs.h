@@ -18,16 +18,12 @@
 #ifndef APERTIUMLANGUAGEPAIRS_H_
 #define APERTIUMLANGUAGEPAIRS_H_
 
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
 #include <libiqxmlrpc/libiqxmlrpc.h>
-#include <time.h>
 
 #include "core/ModesManager.h"
 
 #include <iostream>
 #include <string>
-#include <list>
 
 class ApertiumLanguagePairs: public iqxmlrpc::Method {
 public:

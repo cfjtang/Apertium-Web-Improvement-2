@@ -33,7 +33,6 @@
 #include "core/ModesManager.h"
 
 #include "utils/Logger.h"
-#include "utils/Statistics.h"
 
 #include "cg/stdafx.h"
 #include "cg/icu_uoptions.h"
@@ -47,7 +46,6 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
 Logger *logger = NULL;
-Statistics *statistics = NULL;
 
 ApertiumServer *apertiumServer = NULL;
 ConfigurationManager *configurationManager = NULL;
@@ -81,9 +79,6 @@ void cleanup(void) {
 
 	delete modesManager;
 	modesManager = NULL;
-
-	delete statistics;
-	statistics = NULL;
 
 	delete logger;
 	logger = NULL;
@@ -161,8 +156,6 @@ int main(int ac, char *av[]) {
 
 	    logger = Logger::Instance();
 	    logger->setVerbosity(2);
-
-	    statistics = Statistics::Instance();
 
 	    if (vm.count("maxThreads")) {
 	        cout << "Maximum number of threads was " << configurationManager->getMaxThreads() << ", setting it to " << vm["maxThreads"].as<int>() << endl;

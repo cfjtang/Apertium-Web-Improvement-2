@@ -19,9 +19,6 @@
 
 #include <iostream>
 #include <string>
-#include <libiqxmlrpc/http.h>
-#include <libiqxmlrpc/http_server.h>
-#include <libiqxmlrpc/http_errors.h>
 
 #include "utils/Logger.h"
 

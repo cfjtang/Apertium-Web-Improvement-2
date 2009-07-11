@@ -20,10 +20,8 @@
 
 #include <iostream>
 
-#include <boost/thread.hpp>
-#include <boost/filesystem.hpp>
-
 #include <libxml++/libxml++.h>
+#include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
 
