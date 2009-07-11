@@ -78,14 +78,23 @@ typedef pair<string, string> TransferMultIndexType;
 typedef string GrammarIndexType;
 
 class ObjectPool {
+public:
+	ObjectPool();
+	virtual ~ObjectPool();
+
+	unsigned int getCountObjects();
+
 protected:
+	unsigned int countObjects;
+	boost::shared_mutex countMutex;
+
 	void checkFile(fs::path);
+	void incCountObjects();
 };
 
 template <class T> class NonIndexedObjectPool : public ObjectPool {
 public:
 	NonIndexedObjectPool() { }
-
 	virtual ~NonIndexedObjectPool() { }
 
 	T *request() {
@@ -102,6 +111,7 @@ public:
 		lock.unlock();
 		if (isNew) {
 			ret = getNewInstance();
+			incCountObjects();
 		}
 		return(ret);
 	}
@@ -147,6 +157,7 @@ public:
 		lock.unlock();
 		if (isNew) {
 			ret = getNewInstance(index);
+			incCountObjects();
 		}
 		return(ret);
 	}

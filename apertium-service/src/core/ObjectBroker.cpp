@@ -18,12 +18,24 @@
 #include "ObjectBroker.h"
 #include "utils/Logger.h"
 
-ObjectBroker::ObjectBroker() {
+ObjectBroker::ObjectBroker() { }
 
+ObjectBroker::~ObjectBroker() { }
+
+ObjectPool::ObjectPool() {
+	countObjects = 0;
 }
 
-ObjectBroker::~ObjectBroker() {
+ObjectPool::~ObjectPool() { }
 
+unsigned int ObjectPool::getCountObjects() {
+	boost::shared_lock<boost::shared_mutex> lock(countMutex);
+	return (countObjects);
+}
+
+void ObjectPool::incCountObjects() {
+	boost::unique_lock<boost::shared_mutex> lock(countMutex);
+	++countObjects;
 }
 
 void ObjectPool::checkFile(fs::path p) {
