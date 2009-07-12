@@ -24,13 +24,14 @@
 ;;; 
 ;;; `C-c L' now creates an LR-restricted copy of the <e>-element at
 ;;; point, `C-c R' an RL-restricted one. `C-TAB' cycles through the
-;;; restriction possibilities (LR, RL, none). `C-c S' sorts a pardef,
-;;; while `C-c G' moves point to the pardef of the entry at point,
-;;; leaving mark where you left from. Inside a pardef, `C-c A' shows
-;;; all usages of that pardef within the dictionaries represented by
-;;; the string `dix-dixfiles', while `C-c D' gives you a list of all
-;;; pardefs which use these suffixes (where a suffix is the contents
-;;; of an <l>-element).
+;;; restriction possibilities (LR, RL, none), while `M-n' and `M-p'
+;;; move to the next and previous "important bits" of <e>-elements
+;;; (just try it!). `C-c S' sorts a pardef, while `C-c G' moves point
+;;; to the pardef of the entry at point, leaving mark where you left
+;;; from. Inside a pardef, `C-c A' shows all usages of that pardef
+;;; within the dictionaries represented by the string `dix-dixfiles',
+;;; while `C-c D' gives you a list of all pardefs which use these
+;;; suffixes (where a suffix is the contents of an <l>-element).
 ;;; 
 ;;; 
 ;;; I like having the following set too:
@@ -116,21 +117,30 @@ Entering dix-mode calls the hook dix-mode-hook.
      (setq nxml-sexp-element-flag old-sexp-element-flag)))
 (put 'dix-with-sexp 'lisp-indent-function 0)
 
-(defun dix-up-to (eltname)
-  "Move point before the element `eltname' (a string, eg. \"e\")
-which we're looking at."
+(defun dix-up-to (eltname &optional barrier)
+  "Move point to start of element `eltname' (a string, eg. \"e\")
+which we're looking at. Optional `barrier' is the outer element,
+so we don't go all the way through the file looking for our
+element. Ideally `nxml-backward-up-element' should stop on
+finding another `eltname' element."
   (nxml-token-after)
+  (when (eq xmltok-type 'space)
+    (goto-char (1+ (nxml-token-after)))
+    (nxml-token-after))
   (goto-char xmltok-start)
   (let ((tok (xmltok-start-tag-qname)))
     (while (not (or (equal tok eltname)
+		    (equal tok barrier)
 		    (equal tok (concat "<" eltname))))
       (nxml-backward-up-element)
       (nxml-token-after)
-      (setq tok (xmltok-start-tag-qname)))))
+      (setq tok (xmltok-start-tag-qname)))
+    (if (equal tok barrier)
+	(error "Didn't find %s" eltname))))
 
 (defun dix-pardef-at-point (&optional clean)
   (save-excursion
-    (dix-up-to "pardef")
+    (dix-up-to "pardef" "pardefs")
     (re-search-forward "n=\"" nil t)
     (let ((pardef (symbol-name (symbol-at-point))))
       (if clean (replace-regexp-in-string
@@ -141,19 +151,72 @@ which we're looking at."
 
 (defun dix-lemma-at-point ()
   (save-excursion
-    (dix-up-to "e")
+    (dix-up-to "e" "section")
     (re-search-forward "lm=\"" nil t)
     (word-at-point)))
 
 (defun dix-split-root-suffix ()
   (save-excursion
-    (dix-up-to "e")
+    (dix-up-to "e" "section")
     (nxml-down-element 2)
     (cons (word-at-point)
 	  (progn
 	    (nxml-up-element)
 	    (re-search-forward "n=[^/]*/" nil t)
 	    (word-at-point)))))
+
+(defun dix-get-attrib (attributes name)
+  "Find attribute with attribute name `name' (a string) in the
+list `attributes' (of the same format as
+`xmltok-attributes'. Return nil if no such attribute is found."
+  (if attributes
+      (if (equal name (buffer-substring-no-properties
+		       (xmltok-attribute-name-start (car attributes))
+		       (xmltok-attribute-name-end (car attributes))))
+	  (car attributes)
+	(dix-get-attrib (cdr attributes) name))))
+
+(defun dix-next-one (&optional backward)
+  "Helper for `dix-next'. Todo: handle pardef entries too."
+
+  (defun attrib-start (attributes name)
+    (let ((attrib (dix-get-attrib attributes name)))
+      (if attrib (xmltok-attribute-value-start attrib))))
+
+  (defun move (spot)
+    (if (if backward (< spot (point)) (> spot (point)))
+	(goto-char spot)
+      (progn (forward-char (if backward -1 1))
+	     (dix-next-one backward))))
+  
+  (let* ((token-end (nxml-token-before))
+	 (token-next (if backward
+			 xmltok-start
+		       (1+ token-end)))
+	 (qname (xmltok-start-tag-qname)))
+    (cond ((eq xmltok-type 'comment)
+	   (goto-char token-next))
+
+	  ((member qname '("par" "s"))
+	   (move (or (attrib-start xmltok-attributes "n")
+		     token-next)))
+
+	  ((and (equal qname "e")	; monodix <e> with lm
+		(attrib-start xmltok-attributes "lm"))
+	   (move (attrib-start xmltok-attributes "lm")))
+	  
+	  ((member qname '("p" "e")) 	; bidix/pardef <e>
+	   (move (point)))
+
+	  ((memq xmltok-type '(space data end-tag))
+	   (and (goto-char token-next)
+		(not (and backward ; need to goto these elts from data
+			  (nxml-token-before) ; before looping on:
+			  (member (xmltok-start-tag-qname) '("r" "l" "i"))))
+		(dix-next-one backward)))
+
+ 	  (t (move token-end)))))
+
 
 (defun dix-compile-suffix-map (partype)
   "Build a hash map where keys are sorted lists of suffixes in
@@ -176,6 +239,13 @@ names."
 		   (cons pardef (gethash sufflist suffmap)) suffmap))))
     suffmap))
 
+(defvar dix-suffix-maps nil
+  "Internal association list used to store compiled suffix maps;
+keys are symbols formed from the string `partype' (see
+`dix-compile-suffix-map' and interactive function
+`dix-find-duplicate-pardefs').")
+(make-variable-buffer-local 'dix-suffix-maps)
+
 (defun dix-get-pardefs (sufflist suffmap)
   "Get the list of pardefs in `suffmap' which have the list of
 suffixes `sufflist'. See `dix-compile-suffix-map' for more
@@ -187,7 +257,7 @@ information."
 and `dix-get-pardefs'."
   (save-excursion
     (let (sufflist)
-      (dix-up-to "pardef")
+      (dix-up-to "pardef" "pardefs")
       ;; find all suffixes within this pardef:
       (let ((end (save-excursion (dix-with-sexp (forward-sexp))
 				 (point))))
@@ -195,13 +265,6 @@ and `dix-get-pardefs'."
 	  (when (match-string 1)
 	    (setq sufflist (cons (match-string-no-properties 1) sufflist)))))
       (sort sufflist 'string-lessp))))
-
-(defvar dix-suffix-maps nil
-  "Internal association list used to store compiled suffix maps;
-keys are symbols formed from the string `partype' (see
-`dix-compile-suffix-map' and interactive function
-`dix-find-duplicate-pardefs').")
-(make-variable-buffer-local 'dix-suffix-maps)
 
 (defun assoc-delete-all (key alist)
   (if alist
@@ -231,7 +294,7 @@ Returns the list of pardef names."
   (interactive "P")
   (let* ((partype
 	  (save-excursion
-	    (dix-up-to "pardef")
+	    (dix-up-to "pardef" "pardefs")
 	    (re-search-forward
 	     (concat "pardef[^n>]*n=\"[^_]*__\\([^\"]*\\)" ) nil 'noerror)
 	    (match-string-no-properties 1)))
@@ -253,7 +316,7 @@ Returns the list of pardef names."
 element at point."
   (interactive)
   (save-excursion
-    (dix-up-to "e")
+    (dix-up-to "e" "pardef")
     (let* ((old		     ; find what, if any, restriction we have:
 	    (save-excursion
 	      (if (re-search-forward "r=\"\\(..\\)\"" (nxml-token-after) 'noerror 1)
@@ -276,7 +339,7 @@ element at point."
 an LR restriction to the copy. A prefix argument makes it an RL
 restriction."
   (interactive "P")
-  (dix-up-to "e")
+  (dix-up-to "e" "pardef")
   (save-excursion
     (dix-with-sexp (kill-sexp))		; todo: don't modify kill-ring
     (yank) (newline-and-indent) (yank)
@@ -331,7 +394,7 @@ determines whether alphabetic case affects the sort order."
   (interactive "P")
   (save-excursion
     (let (beg end)
-      (dix-up-to "pardef")
+      (dix-up-to "pardef" "pardefs")
       ;; get beginning of first elt within pardef:
       (setq beg (save-excursion (goto-char (nxml-token-after))
 				(nxml-token-after)))
@@ -340,39 +403,23 @@ determines whether alphabetic case affects the sort order."
       (if (nxml-scan-element-forward (nxml-token-before))
 	  (dix-sort-e-by-r reverse beg xmltok-start)))))
 
-(defun dix-get-attrib (attributes name)
-  "Find attribute with attribute name `name' (a string) in the
-list `attributes' (of the same format as `xmltok-attributes'."
-  (if (equal name
-	     (buffer-substring-no-properties
-	      (xmltok-attribute-name-start (car attributes))
-	      (xmltok-attribute-name-end (car attributes))))
-      (car attributes)
-    (dix-get-attrib (cdr attributes) name)))
+(defun dix-next (&optional step)
+  "Moves forward `step' steps (default 1) in <e> elements between
+the important places (lm attribute, <i>/<r>/<l> data, n attribute
+of <par>/<s>; and then onto the next <e> element). See also
+`dix-previous'."
+  (interactive "p")
+  (let* ((step (if step step 1))
+	 (backward (< step 0)))
+    (when (> (abs step) 0)
+	(dix-next-one backward)
+	(dix-next (if backward (1+ step) (1- step))))))
 
-(defun dix-forward ()
-  "Moves forward in <e> elements between the three important
-places (lm attribute, <i> data, n attribute; and then onto the lm
-of the next <e> element)."
-  (interactive)
-  (defun move (spot)
-    (if (< (point) spot)
-	(goto-char spot)
-      (progn (xmltok-forward) (forward-char)
-	     (dix-forward))))
-  (let* ((token-end (nxml-token-before))
-	 (fname (nxml-token-type-friendly-name xmltok-type)))
-    (if (memq xmltok-type '(space data end-tag))
-	(and (goto-char (1+ token-end))
-	     (dix-forward))
-      (let ((qname (xmltok-start-tag-qname)))
-	(cond ((equal qname "par")
-	       (move (xmltok-attribute-value-start
-		      (dix-get-attrib xmltok-attributes "n"))))	      
-	      ((equal qname "e")
-	       (move (xmltok-attribute-value-start
-		      (dix-get-attrib xmltok-attributes "lm"))))
-	      ((equal qname "i") (move token-end)))))))
+(defun dix-previous (&optional step)
+  "Moves backward `step' steps (default 1) in <e> elements. See
+also `dix-next'."
+  (interactive "p")
+  (dix-next (- (if step step 1))))
 
 (defun dix-goto-pardef ()
   "Call from an entry to go to its pardef. Mark is pushed so you
@@ -466,7 +513,8 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
-(define-key dix-mode-map (kbd "M-n") 'dix-forward)
+(define-key dix-mode-map (kbd "M-n") 'dix-next)
+(define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
