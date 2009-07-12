@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <transfer>
 
 <section-def-cats>
@@ -10,6 +10,17 @@
      <cat-item tags="adj"/>
      <cat-item tags="adj.*"/>
   </def-cat>
+    <def-cat n="pr_cont">
+      <cat-item lemma="do" tags="pr"/>
+      <cat-item lemma="le" tags="pr"/>
+      <cat-item lemma="ann" tags="pr"/>
+      <cat-item lemma="ar" tags="pr"/>
+      <cat-item lemma="ag" tags="pr"/>
+    </def-cat>
+    <def-cat n="prn_cont">
+      <cat-item tags="prn.obj"/>
+      <cat-item tags="prn.obj.emph"/>
+    </def-cat>
 </section-def-cats>
 
 <section-def-attrs>
@@ -38,6 +49,15 @@
   <def-attr n="a_adj">
      <attr-item tags="adj"/>
   </def-attr>
+  <def-attr n="a_prnobj">
+    <attr-item tags="prn.obj"/>
+    <attr-item tags="prn.obj.emph"/>
+  </def-attr>
+  <def-attr n="pers">
+    <attr-item tags="p1"/>
+    <attr-item tags="p2"/>
+    <attr-item tags="p3"/>
+  </def-attr>
 </section-def-attrs>
 
 <section-def-vars>
@@ -63,6 +83,36 @@
        </out>
      </action>
   </rule>
+    <rule comment="REGLA: PR + PRN (leam → liom)">
+      <pattern>
+        <pattern-item n="pr_cont"/>
+	<pattern-item n="prn_cont"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="pr+prn">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="gen"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+            </tags>
+	    <mlu>
+              <lu>
+                <clip pos="1" side="tl" part="whole"/>
+	      </lu>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+                <clip pos="2" side="tl" part="a_prnobj"/>
+                <clip pos="2" side="tl" part="pers"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+	    </mlu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
 
 </section-rules>
