@@ -13,6 +13,15 @@
     <def-cat n="verb">
       <cat-item tags="vblex.*"/>
     </def-cat>
+    <def-cat n="pr_cont">
+      <cat-item lemma="do" tags="pr"/>
+      <cat-item lemma="le" tags="pr"/>
+      <cat-item lemma="i" tags="pr"/>
+    </def-cat>
+    <def-cat n="prn_cont">
+      <cat-item tags="prn.obj"/>
+      <cat-item tags="prn.obj.emph"/>
+    </def-cat>
   </section-def-cats>
 
   <section-def-attrs>
@@ -33,6 +42,10 @@
       <attr-item tags="det.def"/>
       <attr-item tags="det.dem"/>
       <attr-item tags="det.pos"/>
+    </def-attr>
+    <def-attr n="a_prnobj">
+      <attr-item tags="prn.obj"/>
+      <attr-item tags="prn.obj.emph"/>
     </def-attr>
 
 
@@ -182,6 +195,39 @@
 	    </out>
           </otherwise>
         </choose>
+      </action>
+    </rule>
+    <rule comment="REGLA: PR + PRN (liom → leam)">
+      <pattern>
+        <pattern-item n="pr_cont"/>
+	<pattern-item n="prn_cont"/>
+      </pattern>
+      <action>
+        <call-macro n="setvars">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="pr+prn">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><var n="genere"/></tag>
+              <tag><var n="number"/></tag>
+            </tags>
+	    <mlu>
+              <lu>
+                <clip pos="1" side="tl" part="whole"/>
+	      </lu>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+                <clip pos="2" side="tl" part="a_prnobj"/>
+                <clip pos="2" side="tl" part="pers"/>
+                <clip pos="2" side="tl" part="gen"/>
+                <clip pos="2" side="tl" part="nbr"/>
+              </lu>
+	    </mlu>
+          </chunk>
+        </out>
       </action>
     </rule>
 
