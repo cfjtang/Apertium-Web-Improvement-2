@@ -82,14 +82,15 @@ public:
 	ObjectPool();
 	virtual ~ObjectPool();
 
-	unsigned int getCountObjects();
+	unsigned int getObjectsCount();
 
 protected:
-	unsigned int countObjects;
+	unsigned int objectsCount;
 	boost::shared_mutex countMutex;
 
 	void checkFile(fs::path);
-	void incCountObjects();
+	void incObjectsCount();
+	void decObjectsCount();
 };
 
 template <class T> class NonIndexedObjectPool : public ObjectPool {
@@ -111,7 +112,7 @@ public:
 		lock.unlock();
 		if (isNew) {
 			ret = getNewInstance();
-			incCountObjects();
+			incObjectsCount();
 		}
 		return(ret);
 	}
@@ -157,7 +158,7 @@ public:
 		lock.unlock();
 		if (isNew) {
 			ret = getNewInstance(index);
-			incCountObjects();
+			incObjectsCount();
 		}
 		return(ret);
 	}
