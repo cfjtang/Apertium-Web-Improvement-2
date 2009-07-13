@@ -23,19 +23,24 @@ ObjectBroker::ObjectBroker() { }
 ObjectBroker::~ObjectBroker() { }
 
 ObjectPool::ObjectPool() {
-	countObjects = 0;
+	objectsCount = 0;
 }
 
 ObjectPool::~ObjectPool() { }
 
-unsigned int ObjectPool::getCountObjects() {
+unsigned int ObjectPool::getObjectsCount() {
 	boost::shared_lock<boost::shared_mutex> lock(countMutex);
-	return (countObjects);
+	return (objectsCount);
 }
 
-void ObjectPool::incCountObjects() {
+void ObjectPool::incObjectsCount() {
 	boost::unique_lock<boost::shared_mutex> lock(countMutex);
-	++countObjects;
+	++objectsCount;
+}
+
+void ObjectPool::decObjectsCount() {
+	boost::unique_lock<boost::shared_mutex> lock(countMutex);
+	--objectsCount;
 }
 
 void ObjectPool::checkFile(fs::path p) {
