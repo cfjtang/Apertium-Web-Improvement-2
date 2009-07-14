@@ -5036,39 +5036,75 @@
 		</action>
 	</rule> 
 	
-	<rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
-		<pattern>
-			<pattern-item n="det"/>
-		</pattern>
-		<action>
-			<call-macro n="f_concord1">
-				<with-param pos="1"/>
-			</call-macro>
-			<call-macro n="firstWord">
-				<with-param pos="1"/>
-			</call-macro>
-			<out>
-				<chunk name="det" case="caseFirstWord">
-					<tags>
-						<tag><lit-tag v="DET"/></tag>
-						<tag><clip pos="1" side="tl" part="gen"/></tag>
-						<tag><clip pos="1" side="tl" part="nbr"/></tag>
-					</tags>
-					<lu>   
-						<clip pos="1" side="tl" part="lem"/> 
-						<clip pos="1" side="tl" part="a_det"/>
-						<clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
-						<clip pos="1" side="tl" part="gen_mf"/>	 
-						<clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
-						<clip pos="1" side="tl" part="nbr_sp"/>	 
-					</lu> 
-				</chunk>
-			</out>
-			<let>
-				<var n="caseFirstWord"/>
-				<lit v="aa"/>
-			</let>
-		</action>
+	<rule comment="REGLA: DET (quan no acompanya res o va amb desconeguda)">
+	  <pattern>
+	    <pattern-item n="det"/>
+	  </pattern>
+	  <action>
+	    <call-macro n="f_concord1">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <call-macro n="firstWord">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk name="det" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="DET"/></tag>
+		  <tag><clip pos="1" side="tl" part="gen"/></tag>
+		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_det"/>
+		  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+		  <clip pos="1" side="tl" part="gen_mf"/>	 
+		  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+		  <clip pos="1" side="tl" part="nbr_sp"/>	 
+		</lu> 
+	      </chunk>
+	    </out>
+	    <let>
+	      <var n="caseFirstWord"/>
+	      <lit v="aa"/>
+	    </let>
+	  </action>
+	</rule>
+
+
+	<rule comment="REGLA: NUM (quan no acompanya res o va amb desconeguda)">
+	  <pattern>
+	    <pattern-item n="num"/>
+	  </pattern>
+	  <action>
+	    <call-macro n="f_concord1">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <call-macro n="firstWord">
+	      <with-param pos="1"/>
+	    </call-macro>
+	    <out>
+	      <chunk name="num" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="NUM"/></tag>
+		  <tag><clip pos="1" side="tl" part="gen"/></tag>
+		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="lem"/> 
+		  <clip pos="1" side="tl" part="a_det"/>
+		  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+		  <clip pos="1" side="tl" part="gen_mf"/>	 
+		  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+		  <clip pos="1" side="tl" part="nbr_sp"/>	 
+		</lu> 
+	      </chunk>
+	    </out>
+	    <let>
+	      <var n="caseFirstWord"/>
+	      <lit v="aa"/>
+	    </let>
+	  </action>
 	</rule> 
 
 
