@@ -257,14 +257,9 @@ void ModesManager::initPipe(const fs::path path) {
 	}
 }
 
-std::list<std::string> ModesManager::getModeNames() {
-	std::list<std::string> ret;	string suffix = ".mode";
-	ModeMapType::iterator it = modes.begin();
-	while (it != modes.end()) {
-		Mode mode = (*(it++)).second;
-		ret.push_back(mode.getModeName());
-	}
-	return(ret);
+ModeMapType ModesManager::getModes() {
+	ModeMapType ret = modes;
+	return ret;
 }
 
 std::list<fs::path> ModesManager::findFilesBySuffix(const fs::path p, const std::string suffix) {
