@@ -20,7 +20,9 @@
 ;; (add-to-list 'load-path "/path/to/dix.el")
 ;; (require 'dix)
 ;; (add-hook 'nxml-mode-hook
-;; 	  (lambda () (if (string-match "\\.dix$" buffer-file-name) (dix-mode 1))))
+;; 	  (lambda () (and buffer-file-name
+;; 			  (string-match "\\.dix$" buffer-file-name)
+;; 			  (dix-mode 1))))
 ;;; 
 ;;; `C-c L' now creates an LR-restricted copy of the <e>-element at
 ;;; point, `C-c R' an RL-restricted one. `C-TAB' cycles through the
@@ -384,10 +386,13 @@ determines whether alphabetic case affects the sort order."
 	   (dix-up-to "e")
 	   (nxml-forward-element))
 	 (lambda ()			; startkey
-	   (nxml-forward-element)
-	   (nxml-backward-down-element 2)
-	   (nxml-backward-element)))))))
-
+	   (nxml-down-element 2)
+	   (let ((lstart (point))
+		 (lend (progn (nxml-forward-element) (point)))
+		 (rstart (nxml-token-after))
+		 (rend (progn (nxml-forward-element) (point))))
+	     (concat (buffer-substring-no-properties rstart rend)
+		     (buffer-substring-no-properties lstart lend)))))))))
 
 (defun dix-sort-pardef (reverse)
   "Sort a pardef using `dix-sort-e-by-r'."
@@ -436,6 +441,37 @@ can go back with C-u \\[set-mark-command]."
       (progn (push-mark)
 	     (goto-char pos))))
 
+(defvar dix-path-morf "lt-proc /l/n/nn-nb.automorf.bin"
+  "The command you use for lt-proc, morphological analysis.")
+(defvar dix-path-gen "lt-proc -g /l/n/nn-nb.autogen.bin"
+  "The command you use for lt-proc, morphological generation.")
+(defvar dix-path-transfer "apertium-transfer /l/n/apertium-nn-nb.nn-nb.t1x /l/n/nn-nb.t1x.bin /l/n/nn-nb.autobil.bin"
+  "The command you use for apertium-transfer.")
+(defun dix-analyse-all ()
+  "Very bare-bones at the moment. 
+
+Todo: read modes.xml instead of those using those dix-path*
+variables, and allow both directions (although should have some
+option to override the modes.xml reading).
+
+Todo: word-at-point function which ignores xml stuff."
+  (interactive)
+  (save-selected-window
+    (let* ((word (word-at-point))
+	   (buf (pop-to-buffer "*dix-analysis*"))
+	   (morf (shell-command-to-string
+		  (concat "echo '" word "' | " dix-path-morf)))
+	   (sep (replace-regexp-in-string
+		 "/" "$ ^" (replace-regexp-in-string "^[^/]*/" "^" morf)))
+	   (transfer (shell-command-to-string
+		      (concat "echo '" sep "' | " dix-path-transfer)))
+	   (gen (shell-command-to-string
+		 (concat "echo '" transfer "' | " dix-path-gen))))    
+      (with-output-to-temp-buffer "*dix-analysis*"
+	(insert (concat "SL morphology:\n" morf
+			"\nTransfer:\n" transfer
+			"\nTL generation:\n" gen))
+	(nxml-mode)))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
@@ -519,7 +555,7 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
-
+(define-key dix-mode-map (kbd "C-c C") 'dix-analyse-all)
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
 
