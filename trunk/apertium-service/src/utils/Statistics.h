@@ -21,15 +21,24 @@
 #include <iostream>
 #include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>
+#include <boost/thread/shared_mutex.hpp>
+#include <boost/thread/locks.hpp>
+
+using namespace std;
+
+typedef boost::unordered_map<std::string, unsigned int> PairInvocationsMapType;
 
 class Statistics {
 public:
 	Statistics();
 	virtual ~Statistics();
 
+	void notifyTranslationRequest(string);
+	PairInvocationsMapType getPairInvocationsMap();
+
 private:
-	typedef boost::unordered_map<std::string, unsigned int> PairInvocationsMapType;
 	PairInvocationsMapType pairInvocationsMap;
+	boost::shared_mutex pairInvocationsMapMutex;
 };
 
 #endif /* STATISTICS_H_ */

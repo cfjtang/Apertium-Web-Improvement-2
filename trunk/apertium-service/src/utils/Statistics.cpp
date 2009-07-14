@@ -23,3 +23,18 @@
 Statistics::Statistics() { }
 
 Statistics::~Statistics() { }
+
+void Statistics::notifyTranslationRequest(string pair) {
+	boost::unique_lock<boost::shared_mutex> uniqueLock(pairInvocationsMapMutex);
+	if (pairInvocationsMap.find(pair) == pairInvocationsMap.end()) {
+		pairInvocationsMap[pair] = 1;
+	} else {
+		++pairInvocationsMap[pair];
+	}
+}
+
+PairInvocationsMapType Statistics::getPairInvocationsMap() {
+	boost::shared_lock<boost::shared_mutex> lock(pairInvocationsMapMutex);
+	PairInvocationsMapType ret = pairInvocationsMap;
+	return ret;
+}

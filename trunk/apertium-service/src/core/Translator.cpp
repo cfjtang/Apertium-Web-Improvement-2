@@ -41,15 +41,18 @@ std::string Translator::translate(ObjectBroker *ob, ModesManager *mm, std::strin
 
 	wstring wtext = Encoding::utf8ToWstring(text);
 
-	Mode *mode = mm->getMode(pair);
+	ModeMapType modes = mm->getModes();
+	ModeMapType::iterator modeit = modes.find(pair);
 
-	if (!mode) {
+	if (modeit == modes.end()) {
 		throw ApertiumRuntimeException("Mode not found: " + pair);
 	}
 
+	Mode mode = (*modeit).second;
+
 	FunctionMapper *fm = new FunctionMapper(ob);
 
-	vector<Program> programs = mode->getPrograms();
+	vector<Program> programs = mode.getPrograms();
 
 	wstring ret = deformat(ob, wtext);
 

@@ -30,13 +30,12 @@ using namespace std;
 ModesManager *ApertiumLanguagePairs::modesManager = NULL;
 
 void ApertiumLanguagePairs::execute(const iqxmlrpc::Param_list &params, iqxmlrpc::Value &retval) {
-	list<string> modes = modesManager->getModeNames();
-	modes.sort();
+	ModeMapType modes = modesManager->getModes();
 
 	retval = iqxmlrpc::Array();
 
-	for (list<string>::iterator it = modes.begin(); it != modes.end(); it++) {
-		string mode = *it;
+	for (ModeMapType::iterator it = modes.begin(); it != modes.end(); it++) {
+		string mode = (*it).first;
 		size_t sep = mode.find("-", 0);
 
 		string srcLang = mode.substr(0, sep);

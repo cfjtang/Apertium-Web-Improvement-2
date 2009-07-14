@@ -74,29 +74,20 @@ private:
 	vector<Program> programs;
 };
 
+typedef boost::unordered_map<string, Mode> ModeMapType;
+
 class ModesManager {
 public:
 	ModesManager();
 	virtual ~ModesManager();
 
-	list<string> getModeNames();
-
-	Mode *getMode(const string mode) {
-		Mode *ret = NULL;
-		ModeMapType::iterator it = modes.find(mode);
-		if (it != modes.end())
-			ret = &(it->second);
-		return(ret);
-	}
+	ModeMapType getModes();
 
 	void initPipe(const fs::path);
 	void initXML(const fs::path);
 
 private:
 	void parseXML(fs::path);
-
-	typedef boost::unordered_map<string, Mode> ModeMapType;
-	//typedef map<string, Mode> ModeMapType;
 
 	list<fs::path> findFilesBySuffix(const fs::path, const string);
 	list<fs::path> findFilesByRegex(const fs::path, const boost::regex);
