@@ -31,7 +31,8 @@
 
 using namespace std;
 
-ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, ObjectBroker *ob, TextClassifier *tc, AuthenticationManager *am) {
+ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, ObjectBroker *ob,
+		TextClassifier *tc, AuthenticationManager *am, Statistics *s) {
 
 	this->executorFactory = buildExecutorFactory(cm->getMaxThreads());
 

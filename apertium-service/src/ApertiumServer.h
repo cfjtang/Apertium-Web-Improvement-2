@@ -28,6 +28,7 @@
 #include <libiqxmlrpc/https_server.h>
 
 #include "utils/ConfigurationManager.h"
+#include "utils/Statistics.h"
 #include "utils/AuthenticationManager.h"
 
 #include "ApertiumLogInterceptor.h"
@@ -39,7 +40,8 @@
 
 class ApertiumServer {
 public:
-	ApertiumServer(ConfigurationManager*, ModesManager*, ObjectBroker*, TextClassifier*, AuthenticationManager*);
+	ApertiumServer(ConfigurationManager*, ModesManager*, ObjectBroker*, TextClassifier*,
+			AuthenticationManager*, Statistics*);
 	virtual ~ApertiumServer();
 
 private:
