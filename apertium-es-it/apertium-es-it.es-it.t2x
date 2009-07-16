@@ -240,52 +240,9 @@
 
     </def-macro>
 
-    <def-macro n="concord_sa" npar="2"><!--assinga el gen i el nbr del sn en els sa en les frases amb verb copulatiu (p.ex "la perspectiva de tu tÃ­a es interesante" -> "interesante" concordarÃ  amb "aperÃ§u")-->
-      <choose>
-	<when> 
-	  <test>
-	    <equal>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="f"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <clip pos="2" part="gen"/>
-	    <lit-tag v="f"/>
-	  </let>
-	</when>
-	<otherwise>
-	  <let>
-	    <clip pos="2" part="gen"/>
-	    <lit-tag v="m"/>
-	  </let>
-	</otherwise>
-      </choose>
-      
-      <choose>
-	<when> 
-	  <test>
-	    <equal>
-	      <clip pos="1" part="nbr"/>
-	      <lit-tag v="pl"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <clip pos="2" part="nbr"/>
-	    <lit-tag v="pl"/>
-	  </let>
-	</when>
-	<otherwise>
-	  <let>
-	    <clip pos="2" part="nbr"/>
-	    <lit-tag v="sg"/>
-	  </let>
-	</otherwise>
-      </choose>
-      
-    </def-macro>
+  
 
-    <def-macro n="concord_sn" npar="2"> <!--asgina gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
+    <def-macro n="concord_sn" npar="2"> <!--asigna gen i nbr en els sn GD o ND quan van seguits de vcop. (p.ex. "esta chica es mi ayudante)-->
       <choose>
 	<when> 
 	  <test>
@@ -442,6 +399,65 @@
       </choose>
     </def-macro>
 
+
+    <def-macro n="concorda_SN_SA" npar="2">
+	<choose><!--si SN és GD, assigna-li el gen de 2 (del participi, adjectiu...) -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="2" part="gen"/>
+		      <lit-tag v="m"/>
+		    </equal>
+		    <equal>
+		      <clip pos="2" part="gen"/>
+		      <lit-tag v="f"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <clip pos="1" part="gen"/>
+		  <clip pos="2" part="gen"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>    		
+	<choose><!--si el gènere no coincideix, és que hi ha hagut canvi de gènere: propaga gen de 2 a 1. Si 2 és GD, prendrà el gènere de 1 -->
+	  <when>
+	    <test>
+	      <and>
+		<not>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <clip pos="2" part="gen"/>
+		  </equal>
+		</not>
+		<not>
+		  <equal>
+		    <clip pos="1" part="gen"/>
+		    <lit-tag v="mf"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="2" part="gen"/>
+	      <clip pos="1" part="gen"/>
+	    </let>
+	  </when>
+	</choose>
+    </def-macro>
+
+
   </section-def-macros>
 
   <section-rules>
@@ -490,30 +506,10 @@
 	<pattern-item n="copulativa"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<not>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <clip pos="2" part="gen"/>
-		  </equal>
-		</not>
-		<not>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <clip pos="2" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	</choose>
+	<call-macro n="concorda_SN_SA">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
@@ -534,36 +530,10 @@
 	<pattern-item n="SA"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <and>
-		<not>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <clip pos="3" part="gen"/>
-		  </equal>
-		</not>
-		<not>
-		  <equal>
-		    <clip pos="1" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		</not>
-		<not>
-		  <equal>
-		    <clip pos="3" part="gen"/>
-		    <lit-tag v="mf"/>
-		  </equal>
-		</not>
-	      </and>
-	    </test>
-	    <let>
-	      <clip pos="3" part="gen"/>
-	      <clip pos="1" part="gen"/>
-	    </let>
-	  </when>
-	</choose>
+	<call-macro n="concorda_SN_SA">
+	  <with-param pos="1"/>
+	  <with-param pos="3"/>
+	</call-macro>	
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
@@ -666,6 +636,9 @@
 	<pattern-item n="SN"/>
       </pattern>
       <action>
+	<call-macro n="assigna_gen_nbr">
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>
 	  <clip pos="1" part="nbr"/>
 	  <clip pos="2" part="nbr"/>
@@ -704,36 +677,7 @@
     </rule>
 
  
-    <rule comment="REGLA: SN SV">
-      <pattern>
-	<pattern-item n="SN"/>
-	<pattern-item n="SV"/>
-      </pattern>
-      <action>
-	<call-macro n="assigna_gen_nbr">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="concord_sn">
-	  <with-param pos="1"/>
-	  <with-param pos="2"/>
-	</call-macro>	
-	    <out>
-	      <chunk>
-		<clip pos="1" part="lem"/>
-		<clip pos="1" part="tags"/>
-		<clip pos="1" part="chcontent"/>
-	      </chunk>
-	      <b pos="1"/>
-	      <chunk>
-		<clip pos="2" part="lem"/>
-		<clip pos="2" part="tags"/>
-		<clip pos="2" part="chcontent"/>
-	      </chunk>
-	    </out>	
-      </action>
-    </rule>
-
-
+ 
 <!--
     <rule comment="REGLA: SN vbcop SA">
       <pattern>
