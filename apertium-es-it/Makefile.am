@@ -22,17 +22,17 @@ $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 	lt-comp lr $(BASENAME).$(PREFIX1).dix $@
 
-$(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp rl $(BASENAME).$(LANG2).dix $@
+$(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix 
+	apertium-validate-dictionary $(BASENAME).$(LANG2).dix 
+	lt-comp rl $(BASENAME).$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
 
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
-	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
+	lt-comp lr $(BASENAME).post-$(LANG2).dix $@ 
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp lr $(BASENAME).$(LANG2).dix $@
+	lt-comp lr $(BASENAME).$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
@@ -72,10 +72,11 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 
 
 EXTRA_DIST = $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
-           $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
+	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
-           $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
-           modes.xml
+	   $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
+	   $(BASENAME).$(LANG2).acx \
+	   modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 #           $(BASENAME).$(LANG1).tsx 
