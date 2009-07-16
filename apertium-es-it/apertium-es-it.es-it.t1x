@@ -662,7 +662,23 @@
       </choose>
     </def-macro> -->
 
-  
+   <def-macro n="canvia_fts" npar="1">
+     <choose>
+       <when>
+	 <test>
+	   <equal>
+	     <clip pos="1" side="sl" part="temps"/>
+	     <lit-tag v="fts"/>
+	   </equal>
+	 </test>
+	 <let>
+	   <clip pos="1" side="tl" part="temps"/>
+	   <lit-tag v="pis"/>
+	 </let>
+       </when>
+     </choose>
+   </def-macro>
+	   
 
 
     <def-macro n="f_prep" npar="1">
@@ -4785,6 +4801,9 @@
       <action>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
 	</call-macro>	
 	<choose>
 	  <when>
@@ -4860,6 +4879,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -4923,6 +4945,9 @@
       </pattern>
       <action>
 	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -4995,6 +5020,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	  <clip pos="1" side="tl" part="lem"/>
 	  <lit v="essere"/>
@@ -5039,6 +5067,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
 	<let>
 	   <clip pos="1" side="tl" part="lem"/>
 	   <lit v="essere"/>
@@ -5075,6 +5106,9 @@
       </pattern>
       <action>
 	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
 	  <with-param pos="1"/>
 	</call-macro>
 	<let>
@@ -5130,6 +5164,9 @@
       </pattern>
       <action>
 	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -5303,6 +5340,9 @@
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="2"/>
 	</call-macro>
 	<out>  
 	  <chunk name="pronom" case="caseFirstWord">
@@ -5494,6 +5534,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -5582,6 +5625,9 @@
 	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="2"/>
 	</call-macro>
 	<choose>
 	  <when>
@@ -5678,6 +5724,9 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -5749,6 +5798,9 @@
 	</call-macro>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="3"/>
 	</call-macro>
 	<out>
 	  <chunk name="ref_pro_vb" case="caseFirstWord">
