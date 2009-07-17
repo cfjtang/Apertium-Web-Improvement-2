@@ -128,6 +128,10 @@
       <cat-item lemma="ser" tags="vblex.ger"/>
     </def-cat>
 
+    <def-cat n="caber">
+      <cat-item lemma="caber" tags="vblex.*"/>
+    </def-cat>
+
     <def-cat n="pp">
       <cat-item tags="vblex.pp.*"/>
      </def-cat>
@@ -4940,7 +4944,6 @@
       </action>
     </rule> 
 
-
 <rule comment="REGLA: HABER MOD INF ">
       <pattern>
 	<pattern-item n="haber"/>
@@ -5062,6 +5065,60 @@
       </action>
     </rule> 
     
+    <rule comment="REGLA: CABER INF"> <!--luca-->
+      <pattern>
+	<pattern-item n="caber"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="canvia_fts">
+	  <with-param pos="1"/>
+	</call-macro>
+	<let>
+	  <clip pos="1" side="tl" part="lem"/>
+	  <lit v="essere# possibile"/>
+	</let>
+	<let>
+	  <clip pos="1" side="tl" part="a_verb"/>
+	  <lit-tag v="vblex"/>
+	</let>
+	<out>
+	  <chunk name="caber_inf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>  
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="pers"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="lemq"/>  
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
+   
   <rule comment="REGLA: ESTAR SIENDO ">
       <pattern>
 	<pattern-item n="estar"/>
