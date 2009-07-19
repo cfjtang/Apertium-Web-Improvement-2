@@ -130,21 +130,21 @@ int main(int ac, char *av[]) {
 		::atexit(cleanup);
 		::signal(SIGINT, &apertiumServerSignalHandler);
 
-		fs::path confDir = "conf";
+		fs::path cd = "conf";
 
 	    if (vm.count("confDir")) {
-	        cout << "Configuration directory was " << confDir <<  ", setting it to " << vm["confDir"].as<string>() << endl;
-	        confDir = vm["confDir"].as<string>();
+	        cout << "Configuration directory was " << cd <<  ", setting it to " << vm["confDir"].as<string>() << endl;
+	        cd = vm["confDir"].as<string>();
 	    }
 
-	    fs::path confFile = confDir / "configuration.xml";
+	    fs::path cf = cd / "configuration.xml";
 
 	    if (vm.count("confFile")) {
-	        cout << "Configuration file was " << confFile <<  ", setting it to " << vm["confFile"].as<string>() << endl;
-	        confFile = vm["confFile"].as<string>();
+	        cout << "Configuration file was " << cf <<  ", setting it to " << vm["confFile"].as<string>() << endl;
+	        cf = vm["confFile"].as<string>();
 	    }
 
-	    cm = new ConfigurationManager(confFile, confDir);
+	    cm = new ConfigurationManager(cf, cd);
 
 	    logger = Logger::Instance();
 	    logger->setVerbosity(2);
