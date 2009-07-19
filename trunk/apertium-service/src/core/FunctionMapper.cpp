@@ -15,11 +15,11 @@
 
 #include "format/Encoding.h"
 
-#include "cg/stdafx.h"
-#include "cg/icu_uoptions.h"
-#include "cg/Grammar.h"
-#include "cg/BinaryGrammar.h"
-#include "cg/ApertiumApplicator.h"
+#include "core/cg/stdafx.h"
+#include "core/cg/icu_uoptions.h"
+#include "core/cg/Grammar.h"
+#include "core/cg/BinaryGrammar.h"
+#include "core/cg/ApertiumApplicator.h"
 
 using namespace std;
 
