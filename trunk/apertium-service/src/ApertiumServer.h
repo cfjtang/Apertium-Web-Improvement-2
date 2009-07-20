@@ -34,6 +34,8 @@
 #include "ApertiumLogInterceptor.h"
 #include "ApertiumAuthPlugin.h"
 
+#include "core/ApertiumRuntimeException.h"
+
 #include "core/ObjectBroker.h"
 #include "core/ModesManager.h"
 #include "core/TextClassifier.h"

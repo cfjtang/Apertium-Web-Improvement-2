@@ -2,7 +2,7 @@ INCLUDES = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@ @LIBIQXMLRPC_CFLA
 LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @LIBIQXMLRPC_LIBS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ \
 @BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @BOOST_DATE_TIME_LIB@ @LIBTEXTCAT_LIBS@
 
-h_sources = ./utils/AuthenticationManager.h ./ApertiumRuntimeException.h ./ApertiumDetect.h ./format/Deformat.h ./format/Encoding.h \
+h_sources = ./utils/AuthenticationManager.h ./core/ApertiumRuntimeException.h ./ApertiumDetect.h ./format/Deformat.h ./format/Encoding.h \
 ./format/Base64.h ./format/Reformat.h ./ApertiumAuthPlugin.h ./ApertiumLanguagePairs.h ./core/FunctionMapper.h \
 ./core/PreTransfer.h ./core/ThreadSafeQueue.h ./core/ObjectBroker.h ./core/ThreadSafeObjectPool.h ./core/ModesManager.h \
 ./core/TextClassifier.h ./core/Translator.h ./ApertiumLogInterceptor.h ./ApertiumServer.h \
@@ -15,7 +15,7 @@ h_sources = ./utils/AuthenticationManager.h ./ApertiumRuntimeException.h ./Apert
 cpp_sources = ./ApertiumServer.cpp ./format/Encoding.cpp ./ApertiumLanguagePairs.cpp ./ApertiumDetect.cpp \
 ./core/PreTransfer.cpp ./core/ModesManager.cpp ./core/FunctionMapper.cpp ./core/ObjectBroker.cpp ./core/TextClassifier.cpp \
 ./core/Translator.cpp ./ApertiumLogInterceptor.cpp ./ApertiumAuthPlugin.cpp ./ApertiumTranslate.cpp \
-./ApertiumRuntimeException.cpp ./core/cg/Rule.cpp ./core/cg/ApertiumApplicator.cpp ./core/cg/Recycler.cpp ./core/cg/Window.cpp \
+./core/ApertiumRuntimeException.cpp ./core/cg/Rule.cpp ./core/cg/ApertiumApplicator.cpp ./core/cg/Recycler.cpp ./core/cg/Window.cpp \
 ./core/cg/GrammarApplicator_runContextualTest.cpp ./core/cg/uextras.cpp ./core/cg/Cohort.cpp ./core/cg/GrammarApplicator_reflow.cpp \
 ./core/cg/CompositeTag.cpp ./core/cg/Strings.cpp ./core/cg/GrammarApplicator_matchSet.cpp ./core/cg/TextualParser.cpp ./core/cg/BinaryGrammar_write.cpp \
 ./core/cg/GrammarApplicator_runGrammar.cpp ./core/cg/Reading.cpp ./core/cg/Grammar.cpp ./core/cg/BinaryGrammar.cpp ./core/cg/Set.cpp ./core/cg/ContextualTest.cpp \

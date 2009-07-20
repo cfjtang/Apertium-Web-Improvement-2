@@ -27,8 +27,6 @@
 
 #include "ApertiumDetect.h"
 
-#include <boost/bind.hpp>
-
 using namespace std;
 
 ApertiumServer::ApertiumServer(ConfigurationManager *cm, ModesManager *mm, ObjectBroker *ob,
