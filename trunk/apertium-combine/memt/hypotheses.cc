@@ -2,13 +2,13 @@
 
 using namespace std;
 
-unsigned int max_length(std::vector<std::vector<Word> >& wv) 
+unsigned int max_length(scored_phrases& wv) 
 {
     unsigned int max = 0;
-    for (std::vector<std::vector<Word> >::iterator it = wv.begin();
+    for (scored_phrases::iterator it = wv.begin();
             it != wv.end(); ++it) {
-        if (it->size() > max)
-            max = it->size();
+        if (it->second.size() > max)
+            max = it->second.size();
     } 
     return max;
 }
@@ -21,14 +21,14 @@ Hypotheses::Hypotheses(Alignment& a)
 {
     unsigned int length = a._words_right.size() > a._words_left.size() ? 
         a._words_right.size() : a._words_left.size();
-    std::vector<std::vector<Word> > wv;
-    std::vector<Word> words;
+    scored_phrases wv;
+    std::pair<unsigned int, std::vector<Word> > words;
     fill_words(words, a, length);
     wv.push_back(words);
 #ifdef DEBUG
     wcout << "WORDS: ";
-    for (std::vector<Word>::iterator w = wv[0].begin();
-            w != wv[0].end(); ++w) {
+    for (std::vector<Word>::iterator w = wv[0].second.begin();
+            w != wv[0].second.end(); ++w) {
         wcout << w->word << " ";
     }
     wcout << endl;
@@ -37,15 +37,16 @@ Hypotheses::Hypotheses(Alignment& a)
         expand(wv, a, j);
         length = max_length(wv);
     }
-    for (std::vector<std::vector<Word> >::iterator it = wv.begin();
+    /// filling of the "_hypotheses"
+    for (scored_phrases::iterator it = wv.begin();
             it != wv.end(); ++it) {
         std::list<wstring> temp;
-        for (std::vector<Word>::iterator w = it->begin();
-                w != it->end(); ++w) {
+        for (std::vector<Word>::iterator w = it->second.begin();
+                w != it->second.end(); ++w) {
             if (w->used) 
                 temp.push_back(w->word);
         }
-        _hypotheses.push_back(Hypothesis(0, temp));
+        _hypotheses.push_back(Hypothesis(it->first, temp));
     } 
 
 
@@ -111,60 +112,68 @@ unsigned int inline find_ind(int side, unsigned int ind, std::vector<Word>& w)
     return 0;
 }
 
-void inline Hypotheses::expand(std::vector<std::vector<Word> >& wv,
-        Alignment& a, unsigned int j)
+void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
 {
     unsigned int wvsize = wv.size();
     for (unsigned int i = 0; i < wvsize; ++i)
     {
-        if (j >= wv[i].size()) 
+        if (j >= wv[i].second.size()) 
             continue; // finished to expand this "words"
-        if (wv[i][j].side == 0) {
-            if (a._final_alignment_left[wv[i][j].ind] != -1) {
-                if (!a._words_right[a._final_alignment_left[wv[i][j].ind]]
-                        .compare(wv[i][j].word)) {
-                    wv[i][j].used = true;
+        if (wv[i].second[j].side == 0) {
+            if (a._final_alignment_left[wv[i].second[j].ind] != -1) {
+                if (!a._words_right[a._final_alignment_left[wv[i].second[j].ind]]
+                        .compare(wv[i].second[j].word)) {
+                    wv[i].second[j].used = true;
                 } else { 
                     wv.push_back(wv[i]);
-                    wv[i][j].used = true;
-                    wv[wv.size() - 1][
-                        find_ind(1, a._final_alignment_left[wv[i][j].ind], 
-                                wv[i])] ;
+                    wv[i].second[j].used = true;
+                    wv[wv.size() - 1].second[
+                        find_ind(1, a._final_alignment_left[
+                                wv[i].second[j].ind], wv[i].second)] ;
                 }
             } else {
                 wv.push_back(wv[i]);
-                wv[i][j].used = true;
+                wv[i].second[j].used = true;
             }
-        } else if (wv[i][j].side == 1) {
-            if (a._final_alignment[wv[i][j].ind] != -1) {
-                if (!a._words_right[a._final_alignment[wv[i][j].ind]]
-                        .compare(wv[i][j].word)) {
-                    wv[i][j].used = true;
+        } else if (wv[i].second[j].side == 1) {
+            if (a._final_alignment[wv[i].second[j].ind] != -1) {
+                if (!a._words_right[a._final_alignment[wv[i].second[j].ind]]
+                        .compare(wv[i].second[j].word)) {
+                    wv[i].second[j].used = true;
                 } else { 
                     wv.push_back(wv[i]);
-                    wv[i][j].used = true;
-                    wv[wv.size() - 1][
-                        find_ind(0, a._final_alignment[wv[i][j].ind], 
-                                wv[i])] ;
+                    wv[i].second[j].used = true;
+                    wv[wv.size() - 1].second[
+                        find_ind(0, a._final_alignment[wv[i].second[j].ind], 
+                                wv[i].second)] ;
                 }
             } else {
                 wv.push_back(wv[i]);
-                wv[i][j].used = true;
+                wv[i].second[j].used = true;
             }
         }
     }
+#ifdef DEBUG
+    wcout << "expanded the: " << j << " with wv size of: " << wvsize << endl;
+#endif
 }
 
-void inline Hypotheses::fill_words(std::vector<Word>& words, Alignment& a,
-        unsigned int length)
+void inline Hypotheses::fill_words(std::pair<unsigned int, std::vector<Word> >
+        & words, Alignment& a, unsigned int length)
 {
     for (unsigned int i = 0; i < length; ++i) {
         if (i < a._words_right.size())
-                words.push_back(Word(false, 1, i, a._words_right[i]));
+            if (a._final_alignment[i] != -1)
+                words.second.push_back(
+                        Word(false, true, 1, i, a._words_right[i]));
+            else
+                words.second.push_back(
+                        Word(false, false, 1, i, a._words_right[i]));
         if (i < a._words_left.size()) {
             if (i >= a._words_right.size()               // put it only if
                     || a._final_alignment_left[i] == -1) // it is not aligned
-                words.push_back(Word(false, 0, i, a._words_left[i]));
+                words.second.push_back(
+                        Word(false, false, 0, i, a._words_left[i]));
         }
     }
 }
