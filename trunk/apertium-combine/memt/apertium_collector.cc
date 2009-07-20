@@ -18,7 +18,7 @@ main(int argc, char **argv)
 		setlocale(LC_ALL, "C");
 	}
 
-	c.collect(output, input);
+	c.collect(input, output);
 
 	return 0;
 }
