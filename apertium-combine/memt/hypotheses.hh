@@ -11,6 +11,7 @@
 #include <utility>
 
 using namespace std;
+enum side {LEFT, RIGHT};
 
 struct Hypothesis
 {
@@ -28,10 +29,10 @@ struct Word
 {
     bool used;
     bool aligned;
-    int side;
+    enum side side;
     unsigned int ind;
     wstring word;
-    Word(bool u, bool a, int s, unsigned int i, wstring w) 
+    Word(bool u, bool a, enum side s, unsigned int i, wstring w) 
     {
         used = u;
         aligned = a;

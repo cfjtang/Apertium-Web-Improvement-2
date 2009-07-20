@@ -14,6 +14,9 @@ int ind_max(std::vector<int>& v)
     return ind;
 }
 
+/** Erase all the blank/spaces before the first word 
+ * and after the last in a (w)string
+ */ 
 void strip(wstring& s) 
 {
     wchar_t space = L' ';
@@ -119,7 +122,7 @@ void inline Alignment::complete()
 #endif
 }
 
-/*** maximal consecutive alignments
+/** maximal consecutive alignments
  */
 void Alignment::align()
 {
