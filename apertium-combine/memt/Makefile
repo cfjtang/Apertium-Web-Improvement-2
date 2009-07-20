@@ -1,7 +1,10 @@
 CXX=g++
 CFLAGS=-Wall -DDEBUG -g
 
-all: aligner
+all: aligner collector
+
+collector: collector.o
+	$(CXX) -o collector $^
 
 aligner: aligner.o alignment.o hypotheses.o
 	$(CXX) -o aligner $^
