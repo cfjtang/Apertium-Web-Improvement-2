@@ -455,6 +455,63 @@
 	    </let>
 	  </when>
 	</choose>
+
+
+
+	<choose><!--si SN és ND, assigna-li el nbr de 2 (del participi, adjectiu...) -->
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <choose>
+	      <when>
+		<test>
+		  <or>
+		    <equal>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="sg"/>
+		    </equal>
+		    <equal>
+		      <clip pos="2" part="nbr"/>
+		      <lit-tag v="pl"/>
+		    </equal>
+		  </or>
+		</test>
+		<let>
+		  <clip pos="1" part="nbr"/>
+		  <clip pos="2" part="nbr"/>
+		</let>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>    		
+	<choose><!--si el nombre no coincideix, és que hi ha hagut canvi de nombre: propaga nbr de 2 a 1. Si 2 és ND, prendrà el gènere de 1 -->
+	  <when>
+	    <test>
+	      <and>
+		<not>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <clip pos="2" part="nbr"/>
+		  </equal>
+		</not>
+		<not>
+		  <equal>
+		    <clip pos="1" part="nbr"/>
+		    <lit-tag v="sp"/>
+		  </equal>
+		</not>
+	      </and>
+	    </test>
+	    <let>
+	      <clip pos="2" part="nbr"/>
+	      <clip pos="1" part="nbr"/>
+	    </let>
+	  </when>
+	</choose>
     </def-macro>
 
 

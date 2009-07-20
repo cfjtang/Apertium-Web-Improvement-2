@@ -933,7 +933,7 @@
     </def-macro>
 
 
-    <def-macro n="f_concord1" npar="1">
+    <def-macro n="f_treuGDND" npar="1">
       <choose>
 	<!--To determine value of variables of gender and
 	    number and propagate to other rules.  Variables are
@@ -1073,6 +1073,242 @@
 	  </choose>
 	</when>
       </choose>
+    </def-macro>
+
+    <def-macro n="f_concord1" npar="1">
+      <choose>
+	<!--To determine value of variables of gender and
+	    number , and put in chunk tags -->
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="genero"/>
+	    <lit-tag v="m"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="f"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="genero"/>
+	    <lit-tag v="f"/>
+	  </let>
+	</when>
+
+	<when>
+	  <test>
+	    <and>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	      <not>
+		<equal>
+		  <clip pos="1" side="sl" part="gen"/>
+		  <lit-tag v="mf"/>
+		</equal>
+	      </not>
+	    </and>
+	  </test>
+	  <let>
+	    <var n="genero"/>
+	    <clip pos="1" side="sl" part="gen"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <and>
+	      <equal>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="sl" part="gen"/>
+		<lit-tag v="mf"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+	    <var n="genero"/>
+	    <lit-tag v="mf"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="GD"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="genero"/>
+	    <lit-tag v="GD"/>
+	  </let>
+	</when>
+      </choose>
+      <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="numero"/>
+	    <lit-tag v="sg"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="pl"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="numero"/>
+	    <lit-tag v="pl"/>
+	  </let>
+	</when>
+
+
+	<when>
+	  <test>
+	    <and>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sp"/>
+	      </equal>
+	      <not>
+		<equal>
+		  <clip pos="1" side="sl" part="nbr"/>
+		  <lit-tag v="sp"/>
+		</equal>
+	      </not>
+	    </and>
+	  </test>
+	  <let>
+	    <var n="numero"/>
+	    <clip pos="1" side="sl" part="nbr"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <and>
+	      <equal>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sp"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="sl" part="nbr"/>
+		<lit-tag v="sp"/>
+	      </equal>
+	    </and>
+	  </test>
+	  <let>
+	    <var n="numero"/>
+	    <lit-tag v="sp"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="ND"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="numero"/>
+	    <lit-tag v="ND"/>
+	  </let>
+	</when>
+      </choose>
+
+
+
+
+   <!--   <choose>
+	<when>
+	  <test>
+	    <!-+- If word has GD or ND, we try to assign the
+		 gender or number of the previous rule. If there is no
+		 value for the gender or number variable from previous
+		 rules, gender will be masculine and number singular.-+->
+	    <equal>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <lit-tag v="GD"/>
+	    </equal>
+	  </test>
+	  <choose>
+	    <when>
+	      <test>
+		<equal>
+		  <var n="genero"/>
+		  <lit-tag v="f"/>
+		</equal>
+	      </test>
+	      <let>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="f"/>
+	      </let>
+	    </when>
+	    <otherwise>
+	      <let>
+		<clip pos="1" side="tl" part="gen"/>
+		<lit-tag v="m"/>
+	      </let>
+	      <let>
+		<var n="genero"/>
+		<lit-tag v="m"/>
+	      </let>
+	    </otherwise>
+	  </choose>
+	</when>
+      </choose>
+      <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="ND"/>
+	    </equal>
+	  </test>
+	  <choose>
+	    <when>
+	      <test>
+		<equal>
+		  <var n="numero"/>
+		  <lit-tag v="pl"/>
+		</equal>
+	      </test>
+	      <let>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="pl"/>
+	      </let>
+	    </when>
+	    <otherwise>
+	      <let>
+		<clip pos="1" side="tl" part="nbr"/>
+		<lit-tag v="sg"/>
+	      </let>
+	      <let>
+		<var n="numero"/>
+		<lit-tag v="sg"/>
+	      </let>
+	    </otherwise>
+	  </choose>
+	</when>
+      </choose> -->
     </def-macro>
     
 
@@ -3252,12 +3488,17 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="f_concord1">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk name="nom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
-	      <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	  <!--    <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="sl" part="nbr"/></tag> -->
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -4572,12 +4813,17 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="f_concord1">
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
 	  <chunk name="comp_adj_que" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
-	      <tag><clip pos="2" side="tl" part="gen"/></tag>
-	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+<!--	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag> -->
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/> 
@@ -4640,12 +4886,17 @@
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="f_concord1">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk name="adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
-	      <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	     <!-- <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag> -->
 	    </tags>
 	    <lu>   
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -4681,8 +4932,8 @@
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_adj"/>
 	      <clip pos="1" side="tl" part="temps"/>
-	      <clip pos="1" side="tl" part="gen"/>	 
-	      <clip pos="1" side="tl" part="nbr"/>	 
+	      <clip pos="1" side="tl" part="gen" link-to="2"/>	 
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>	 
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu> 
 	  </chunk>
@@ -4740,8 +4991,7 @@
     </rule> 
     
     
-    <rule> <!-- REGLA: PRONOM --><!--Special case, macro f_concord1 
-				     is not applicable because gender and number can not be taken from previous rules -->
+    <rule> <!-- REGLA: PRONOM -->
       <pattern>
 	<pattern-item n="prn"/>
       </pattern>
@@ -5092,7 +5342,6 @@
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="1" side="tl" part="temps"/></tag>
 	      <tag><clip pos="1" side="tl" part="pers"/></tag>
-	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <lu>
@@ -5109,9 +5358,6 @@
 	      <clip pos="2" side="tl" part="lemh"/>
 	      <clip pos="2" side="tl" part="a_verb"/>
 	      <clip pos="2" side="tl" part="temps"/>
-	      <clip pos="2" side="tl" part="pers"/>
-	      <clip pos="2" side="tl" part="gen"/>
-	      <clip pos="2" side="tl" part="nbr"/>
 	      <clip pos="2" side="tl" part="lemq"/>  
 	    </lu>
 	  </chunk>
@@ -5191,7 +5437,12 @@
               <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
 	    </tags>
 	    <lu>   
-	      <clip pos="1" side="tl" part="whole"/> 
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="1" side="tl" part="nbr" link-to="6"/>
 	    </lu>
 	    <b pos="1"/>
 	    <lu>   
@@ -5199,7 +5450,7 @@
 	      <clip pos="2" side="tl" part="a_verb"/>
 	      <clip pos="2" side="tl" part="temps"/>
 	      <clip pos="3" side="tl" part="gen" link-to="5"/>	 
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="6"/>
 	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu>
 	    <b pos="2"/>
@@ -5208,7 +5459,7 @@
 	      <clip pos="3" side="tl" part="a_verb"/>
 	      <clip pos="3" side="tl" part="temps"/>
 	      <clip pos="3" side="tl" part="gen" link-to="5"/>	 
-	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="6"/>
 	      <clip pos="3" side="tl" part="lemq"/>
 	    </lu> 
 	  </chunk>
@@ -5681,7 +5932,7 @@
 	<pattern-item n="verbnoref"/>
       </pattern>
       <action>
-	<call-macro n="f_concord1">
+	<call-macro n="f_treuGDND">
 	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="firstWord">
@@ -5779,7 +6030,7 @@
 	<pattern-item n="prnenc"/>
       </pattern>
       <action>
-	<call-macro n="f_concord1">
+	<call-macro n="f_treuGDND">
 	  <with-param pos="2"/>
 	</call-macro>
 	<call-macro n="firstWord">
@@ -5854,7 +6105,7 @@
 	<pattern-item n="verb"/>
       </pattern>
       <action>
-	<call-macro n="f_concord1">
+	<call-macro n="f_treuGDND">
 	  <with-param pos="2"/>
 	</call-macro>
 	<call-macro n="firstWord">
@@ -5909,10 +6160,6 @@
 	<let>
 	  <var n="genero"/>
 	  <lit-tag v="m"/>
-	</let>
-	<let>
-	  <var n="tipusverb"/>
-	  <lit-tag v="nodef"/>
 	</let>
 	<choose>
 	  <when>
