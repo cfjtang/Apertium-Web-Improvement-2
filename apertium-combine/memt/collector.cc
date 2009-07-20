@@ -23,6 +23,9 @@ Collector::collect(FILE *input, FILE *output)
 	int seen = 0;
 
 	while(wchar_t val = static_cast<wchar_t>(fgetwc_unlocked(input))) {
+		if(feof(input)) {
+			return;
+		}	
 
 		if(seen == 0 && val == L'[') {
 			seen++;
@@ -38,6 +41,7 @@ Collector::collect(FILE *input, FILE *output)
 			fputwc_unlocked(L'@', output);
 			seen = 0;
 		}
+
 	}
 	
 	return;
