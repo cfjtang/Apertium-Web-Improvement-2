@@ -2,6 +2,8 @@
 #include <cwchar>
 #include <string>
 
+#include "Parameter.h"
+
 #include "moses_collector.hh"
 
 using namespace std;
