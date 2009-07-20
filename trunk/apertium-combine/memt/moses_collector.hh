@@ -4,6 +4,7 @@
 #include <cwchar>
 #include <string>
 
+#include "Parameter.h"
 #include "TypeDef.h"
 #include "Sentence.h"
 #include "FactorTypeSet.h"
@@ -16,15 +17,19 @@
 #include "collector.hh"
 
 using namespace std;
+using namespace Moses;
 
 class MosesCollector : public Collector {
+
 	
 public:
+	Parameter *parameter;
 
         MosesCollector();
         ~MosesCollector();
 
-	wchar_t* translate(wchar_t *block);
+	void collect(FILE *input, FILE *output);
+	wchar_t* translate(const wchar_t *block);
 
 };
 
