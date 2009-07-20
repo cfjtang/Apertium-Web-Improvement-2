@@ -1,0 +1,33 @@
+#ifndef __APERTIUM_IDL__
+#define __APERTIUM_IDL__
+
+module ApertiumService {  
+  typedef sequence<string> LanguagePairsType;
+  
+  struct TranslationWithDetectionType {
+  	string detectedSourceLanguage;
+  	string translation;
+  };
+  
+  union TranslationType switch (boolean) {
+    case TRUE: TranslationWithDetectionType translationWithDetection;
+    case FALSE: string translation;
+  };
+  
+  interface Apertium {
+	exception ApertiumRuntimeException {
+      string reason;
+    };
+    
+	TranslationType translate(in string text, in string srcLang, in string destLang)
+	  raises (ApertiumRuntimeException);
+	  
+	string detect(in string mesg)
+	  raises (ApertiumRuntimeException);
+	  
+	LanguagePairsType languagePairs()
+	  raises (ApertiumRuntimeException);
+  };
+};
+
+#endif  // __APERTIUM_IDL__
