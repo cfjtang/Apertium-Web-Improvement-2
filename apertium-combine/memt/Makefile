@@ -1,10 +1,10 @@
 CXX=g++
 CFLAGS=-Wall -DDEBUG -g
 
-all: aligner collector
+all: aligner apertium-collector
 
-collector: collector.o
-	$(CXX) -o collector $^
+apertium-collector: collector.o apertium_collector.o
+	$(CXX) -Wall -o apertium-collector $^
 
 aligner: aligner.o alignment.o hypotheses.o
 	$(CXX) -o aligner $^
