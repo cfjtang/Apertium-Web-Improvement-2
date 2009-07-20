@@ -19,8 +19,6 @@
 
 #include "ApertiumServer.h"
 
-#include "ApertiumRuntimeException.h"
-
 #include <iostream>
 #include <string>
 #include <list>

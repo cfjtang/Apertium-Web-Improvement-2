@@ -20,10 +20,10 @@
 #include <iostream>
 #include <string>
 
+#include "ApertiumServer.h"
+
 #include "core/Translator.h"
 #include "utils/Logger.h"
-
-#include "ApertiumRuntimeException.h"
 
 using namespace std;
 
