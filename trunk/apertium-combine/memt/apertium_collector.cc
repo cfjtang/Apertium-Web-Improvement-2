@@ -3,6 +3,7 @@
 #include <string>
 
 #include "collector.hh"
+#include "moses_collector.hh"
 
 using namespace std;
 
@@ -11,13 +12,14 @@ main(int argc, char **argv)
 {
 	FILE *input = stdin;
 	FILE *output = stdout;		
-	Collector c;
+	MosesCollector c;
 
 	if(setlocale(LC_CTYPE, "") == NULL) {
 		wcerr << L"Warning: unsupported locale, fallback to \"C\"" << endl;
 		setlocale(LC_ALL, "C");
 	}
 
+	
 	c.collect(input, output);
 
 	return 0;
