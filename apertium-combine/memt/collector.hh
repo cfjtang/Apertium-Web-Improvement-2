@@ -14,6 +14,7 @@ public:
 	~Collector();
 
 	void collect(FILE *input, FILE *output);
+	wchar_t* translate(const wchar_t* block);
 };
 
 #endif /* __COLLECTOR_H__ */

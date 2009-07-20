@@ -2,7 +2,6 @@
 #include <cwchar>
 #include <string>
 
-#include "collector.hh"
 #include "moses_collector.hh"
 
 using namespace std;
