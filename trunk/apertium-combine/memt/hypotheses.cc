@@ -103,7 +103,7 @@ void Hypotheses::print()
     }
 }*/
 
-unsigned int inline find_ind(int side, unsigned int ind, std::vector<Word>& w) 
+unsigned int inline find_ind(enum side side, unsigned int ind, std::vector<Word>& w) 
 {
     for (unsigned int k = 0; k < w.size(); ++k) {
         if (w[k].ind == ind && w[k].side == side)
@@ -119,42 +119,50 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
     {
         if (j >= wv[i].second.size()) 
             continue; // finished to expand this "words"
-        if (wv[i].second[j].side == 0) {
-            if (a._final_alignment_left[wv[i].second[j].ind] != -1) {
-                if (!a._words_right[a._final_alignment_left[wv[i].second[j].ind]]
-                        .compare(wv[i].second[j].word)) {
+        if (wv[i].second[j].side == LEFT) { 
+            if (a._final_alignment_left[wv[i].second[j].ind] != -1) { //aligned
+                ++wv[i].first;
+                /// wcout << "here, comparing: " << wv[i].second[j].word << " with " << a._words_right[a._final_alignment_left[wv[i].second[j].ind]] << endl;
+                if (!a._words_right[a._final_alignment_left[
+                        wv[i].second[j].ind]]
+                        .compare(wv[i].second[j].word)) { //aligned, same words
                     wv[i].second[j].used = true;
-                } else { 
+                } else { //aligned, not the same words: 1 hyp. with and 1 w/o
                     wv.push_back(wv[i]);
                     wv[i].second[j].used = true;
                     wv[wv.size() - 1].second[
-                        find_ind(1, a._final_alignment_left[
-                                wv[i].second[j].ind], wv[i].second)] ;
+                        find_ind(RIGHT, a._final_alignment_left[
+                                wv[i].second[j].ind], wv[i].second)];
                 }
-            } else {
+            } else { // not aligned: construct one hyp. with and one without
+                /// wcout << "examining: " << wv[i].second[j].word << endl;
                 wv.push_back(wv[i]);
                 wv[i].second[j].used = true;
             }
-        } else if (wv[i].second[j].side == 1) {
-            if (a._final_alignment[wv[i].second[j].ind] != -1) {
-                if (!a._words_right[a._final_alignment[wv[i].second[j].ind]]
-                        .compare(wv[i].second[j].word)) {
+        } else if (wv[i].second[j].side == RIGHT) { 
+            if (a._final_alignment[wv[i].second[j].ind] != -1) { //aligned
+                ++wv[i].first;
+                /// wcout << "here, comparing: " << wv[i].second[j].word << " with " << a._words_left[a._final_alignment[wv[i].second[j].ind]] << endl;
+                if (!a._words_left[a._final_alignment[wv[i].second[j].ind]]
+                        .compare(wv[i].second[j].word)) { //aligned, same words
                     wv[i].second[j].used = true;
-                } else { 
+                } else { //aligned, not the same words: 1 hyp. with and 1 w/o
                     wv.push_back(wv[i]);
                     wv[i].second[j].used = true;
                     wv[wv.size() - 1].second[
-                        find_ind(0, a._final_alignment[wv[i].second[j].ind], 
+                        find_ind(LEFT, a._final_alignment[wv[i].second[j].ind], 
                                 wv[i].second)] ;
                 }
-            } else {
+            } else { // not aligned: construct one hyp. with and one without
+                /// wcout << "examining: " << wv[i].second[j].word << endl;
                 wv.push_back(wv[i]);
                 wv[i].second[j].used = true;
             }
         }
     }
 #ifdef DEBUG
-    wcout << "expanded the: " << j << " with wv size of: " << wvsize << endl;
+    wcout << "expanded the: " << j << " (word: " 
+        << wv[0].second[j].word<< ") with wv size of: " << wvsize << endl;
 #endif
 }
 
@@ -165,15 +173,14 @@ void inline Hypotheses::fill_words(std::pair<unsigned int, std::vector<Word> >
         if (i < a._words_right.size())
             if (a._final_alignment[i] != -1)
                 words.second.push_back(
-                        Word(false, true, 1, i, a._words_right[i]));
+                        Word(false, true, RIGHT, i, a._words_right[i]));
             else
                 words.second.push_back(
-                        Word(false, false, 1, i, a._words_right[i]));
+                        Word(false, false, RIGHT, i, a._words_right[i]));
         if (i < a._words_left.size()) {
-            if (i >= a._words_right.size()               // put it only if
-                    || a._final_alignment_left[i] == -1) // it is not aligned
+            if (a._final_alignment_left[i] == -1) // add if it is not aligned
                 words.second.push_back(
-                        Word(false, false, 0, i, a._words_left[i]));
+                        Word(false, false, LEFT, i, a._words_left[i]));
         }
     }
 }
