@@ -28,19 +28,19 @@ class Alignment
         void align();
         void align(std::list<pair<int, int> >& leftright);
         void print();
-        void generateGraphviz();
+        void generate_graphviz();
     private:
         void initialize();
         void inline match();
         void inline unmatch();
         void inline complete();
-        std::vector<std::vector<bool> > _matching;
-        int _total_matches;
-        void toVec(wstring& line, std::vector<wstring>& words);
-        void toLower(wstring& to_lower);
-        int exactMatch(const wstring& left, 
+        std::vector<std::vector<bool> > matching;
+        int total_matches;
+        void to_vec(wstring& line, std::vector<wstring>& words);
+        void to_lower(wstring& to_lower);
+        int exact_match(const wstring& left, 
                 const wstring& right);
-        int caseInsensitiveMatch(const wstring& left, 
+        int case_insensitive_match(const wstring& left, 
                 const wstring& right);
 };
 #endif

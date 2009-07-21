@@ -36,8 +36,8 @@ void strip(wstring& s)
 
 Alignment::Alignment(wstring& left, wstring& right) 
 {
-    toVec(left, _words_left);
-    toVec(right, _words_right);
+    to_vec(left, _words_left);
+    to_vec(right, _words_right);
     initialize();
 }
 
@@ -45,8 +45,8 @@ Alignment::Alignment(const wchar_t* left, const wchar_t* right)
 {
     wstring l = wstring(left);
     wstring r = wstring(right);
-    toVec(l, _words_left);
-    toVec(r, _words_right);
+    to_vec(l, _words_left);
+    to_vec(r, _words_right);
     initialize();
 }
 
@@ -57,8 +57,8 @@ Alignment::~Alignment()
 void Alignment::initialize() 
 { 
     _final_alignment.insert(_final_alignment.begin(), _words_right.size(), -1);
-    _matching.resize(_words_right.size());
-    _total_matches = 0;
+    matching.resize(_words_right.size());
+    total_matches = 0;
     return;   
 }
 
@@ -67,13 +67,13 @@ void Alignment::initialize()
 void inline Alignment::match()
 {
     for (unsigned int j = 0; j < _words_right.size(); ++j) {
-        _matching[j].resize(_words_left.size());
+        matching[j].resize(_words_left.size());
         for (unsigned int i = 0; i < _words_left.size(); ++i) {
             // here we can use another matching
-            if (exactMatch(_words_left[i], _words_right[j])) {
-                _matching[j][i] = true;
+            if (exact_match(_words_left[i], _words_right[j])) {
+                matching[j][i] = true;
             } else { 
-                _matching[j][i] = false;
+                matching[j][i] = false;
             }
         }
     }
@@ -85,7 +85,7 @@ void inline Alignment::unmatch()
 {
     for (unsigned int j = 0; j < _words_right.size(); ++j) {
         if (_final_alignment[j] != -1)
-            _matching[j][_final_alignment[j]] = false;
+            matching[j][_final_alignment[j]] = false;
     }
 }
 
@@ -96,10 +96,10 @@ void inline Alignment::complete()
             unsigned int i = j;
             unsigned int count = 0;
             while (count < _words_left.size()) {
-                if (_matching[j][i]) {
-                    _matching[j][i] = false; // unmatch j and i as we "used" it
+                if (matching[j][i]) {
+                    matching[j][i] = false; // unmatch j and i as we "used" it
                     _final_alignment[j] = i;
-                    _total_matches++;
+                    total_matches++;
                     break;
                 }
                 i = (i + 1) % _words_left.size();
@@ -118,7 +118,7 @@ void inline Alignment::complete()
         }
     }
 #ifdef DEBUG
-    wcout << ">>> number of aligned words: " << _total_matches << endl;
+    wcout << ">>> number of aligned words: " << total_matches << endl;
 #endif
 }
 
@@ -140,7 +140,7 @@ void Alignment::align()
         unsigned int j = 0;
         while (j <= size_end_right) {
             // here we can use another matching
-            if (_matching[j][i]) {
+            if (matching[j][i]) {
                 tmp_score = 1;
                 temp_alignment.clear();
                 temp_alignment.insert(temp_alignment.begin(), 
@@ -151,7 +151,7 @@ void Alignment::align()
                     unsigned int t_j = j + 1;
                     while (t_i <= size_end_left 
                             && t_j <= size_end_right
-                            && _matching[t_j][t_i]) {
+                            && matching[t_j][t_i]) {
                         temp_alignment[t_j] = t_i;
                         ++t_i;
                         ++t_j;
@@ -173,7 +173,7 @@ void Alignment::align()
 #endif
     copy(best_alignment.begin(), best_alignment.end(),
             _final_alignment.begin());
-    _total_matches = best_score;
+    total_matches = best_score;
     unmatch();
     complete();
     return;
@@ -223,13 +223,16 @@ void Alignment::print()
     }
 }
 
-void Alignment::generateGraphviz()
+void Alignment::generate_graphviz()
 {
     wfstream graph_out("graph.viz", ios::out);
     // graph_out << "digraph Alignment {" << endl;
     graph_out << "graph Alignment {" << endl;
     graph_out << "    rankdir=LR;" << endl;
-    graph_out << "    subgraph left {" << endl;
+    graph_out << "    ranksep=.5;" << endl;
+    graph_out << "    compound=true;" << endl;
+    graph_out << "    subgraph cluster_0 {" << endl;
+    graph_out << "        node[style=filled];" << endl;
     graph_out << "        ";
     for (unsigned int i = 0; i < (_words_left.size() - 1); ++i)
         graph_out << "\"L" << i <<  "_" << _words_left[i] << "\" -- ";
@@ -238,7 +241,8 @@ void Alignment::generateGraphviz()
     graph_out << "        " << endl;
     graph_out << "        label = \"Left\";" << endl;
     graph_out << "    }" << endl;
-    graph_out << "    subgraph right {" << endl;
+    graph_out << "    subgraph cluster_1 {" << endl;
+    graph_out << "        node[style=filled];" << endl;
     graph_out << "        ";
     for (unsigned int i = 0; i < (_words_right.size() - 1); ++i)
         graph_out << "\"R" << i <<  "_" << _words_right[i] << "\" -- ";
@@ -249,7 +253,7 @@ void Alignment::generateGraphviz()
     graph_out << "    }" << endl;
     for (unsigned int i = 0; i < _final_alignment.size(); ++i) {
         if (_final_alignment[i] != -1) {
-            graph_out << "        \"R" << i << "_" << _words_right[i]
+            graph_out << "    \"R" << i << "_" << _words_right[i]
                 << "\" -- \"L" << _final_alignment[i] << "_" 
                 << _words_left[_final_alignment[i]] << "\" ;" << endl;
         }
@@ -258,7 +262,7 @@ void Alignment::generateGraphviz()
     graph_out.close();
 }
 
-void Alignment::toVec(wstring& line, 
+void Alignment::to_vec(wstring& line, 
         std::vector<wstring>& words) 
 {
     wchar_t space = L' ';
@@ -281,7 +285,7 @@ void Alignment::toVec(wstring& line,
         words.push_back(last);
 }
 
-void Alignment::toLower(wstring& to_lower)
+void Alignment::to_lower(wstring& to_lower)
 {
     /// TODO
     for (std::wstring::iterator it = to_lower.begin();
@@ -292,20 +296,20 @@ void Alignment::toLower(wstring& to_lower)
     return;
 }
 
-int Alignment::exactMatch(const wstring& left, 
+int Alignment::exact_match(const wstring& left, 
         const wstring& right) 
 { 
     return !left.compare(right);
 }
 
-int Alignment::caseInsensitiveMatch(const wstring& left,
+int Alignment::case_insensitive_match(const wstring& left,
         const wstring& right)
 {
     /// TODO 
     wstring l = wstring(left);
     wstring r = wstring(right);
-    toLower(l);
-    toLower(r);
+    to_lower(l);
+    to_lower(r);
     return l.compare(r);
 }
 
