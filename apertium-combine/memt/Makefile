@@ -1,7 +1,7 @@
 CXX=g++
-INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src
-LDADD=-lmoses -lz
-LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src $(LDADD)
+#INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src
+#LDADD=-lmoses -lz
+#LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src $(LDADD)
 CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
 
 all: aligner apertium-collector
