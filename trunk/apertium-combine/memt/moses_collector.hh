@@ -25,7 +25,7 @@ class MosesCollector : public Collector {
 public:
 	Parameter *parameter;
 
-        MosesCollector();
+        MosesCollector(const string &filePath);
         ~MosesCollector();
 
 	void collect(FILE *input, FILE *output);

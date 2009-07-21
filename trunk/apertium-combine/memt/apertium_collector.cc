@@ -11,14 +11,13 @@ main(int argc, char **argv)
 {
 	FILE *input = stdin;
 	FILE *output = stdout;		
-	MosesCollector c;
+	MosesCollector c("/home/fran/statmt/corpora4/model/moses.ini");
 
 	if(setlocale(LC_CTYPE, "") == NULL) {
 		wcerr << L"Warning: unsupported locale, fallback to \"C\"" << endl;
 		setlocale(LC_ALL, "C");
 	}
 
-	
 	c.collect(input, output);
 
 	return 0;
