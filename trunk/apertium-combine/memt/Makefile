@@ -15,7 +15,10 @@ aligner: aligner.o alignment.o hypotheses.o
 %.o: %.cc
 	$(CXX) $(LDFLAGS) -c $< $(CFLAGS) -o $@
 
-.PHONY: aligner apertium-collector clean 
+.PHONY: aligner apertium-collector clean graph
 
 clean:
 	rm -rf aligner apertium-collector *.dSYM *~ *.o
+
+graph:
+	dot -Tpdf graph.viz > graph.pdf

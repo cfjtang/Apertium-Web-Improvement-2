@@ -23,6 +23,7 @@ int main(int argc, char** argv)
         Alignment a = Alignment(input_line1, input_line2);
         a.align();
         a.print();
+        a.generateGraphviz();
         wcout << "### Making hypotheses" << endl;
         Hypotheses h = Hypotheses(a);
         h.rank();

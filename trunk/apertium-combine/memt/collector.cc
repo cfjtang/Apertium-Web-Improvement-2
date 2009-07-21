@@ -23,7 +23,7 @@ Collector::collect(FILE *input, FILE *output)
 	wstring buf = L"";
 	int seen = 0;
 
-	while(wchar_t val = static_cast<wchar_t>(fgetwc_unlocked(input))) {
+	while(wchar_t val = static_cast<wchar_t>(fgetwc(input))) {
 
 		if(feof(input)) {
 			return;
@@ -38,10 +38,10 @@ Collector::collect(FILE *input, FILE *output)
 			seen++;
 		}
 
-		//fputwc_unlocked(val, output);
+		//fputwc(val, output);
 
 		if(seen == 2) {
-			fputwc_unlocked(L'@', output);
+			fputwc(L'@', output);
 			translate(buf.c_str());
 			seen = 0;
 			buf = L"";

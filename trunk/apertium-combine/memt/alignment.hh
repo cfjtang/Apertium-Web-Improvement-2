@@ -10,6 +10,7 @@
 #include <vector>
 #include <list>
 #include <utility>
+#include <fstream>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ class Alignment
         void align();
         void align(std::list<pair<int, int> >& leftright);
         void print();
+        void generateGraphviz();
     private:
         void initialize();
         void inline match();

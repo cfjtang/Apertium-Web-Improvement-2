@@ -223,6 +223,41 @@ void Alignment::print()
     }
 }
 
+void Alignment::generateGraphviz()
+{
+    wfstream graph_out("graph.viz", ios::out);
+    // graph_out << "digraph Alignment {" << endl;
+    graph_out << "graph Alignment {" << endl;
+    graph_out << "    rankdir=LR;" << endl;
+    graph_out << "    subgraph left {" << endl;
+    graph_out << "        ";
+    for (unsigned int i = 0; i < (_words_left.size() - 1); ++i)
+        graph_out << "\"L" << i <<  "_" << _words_left[i] << "\" -- ";
+    graph_out << "\"L" << (_words_left.size() - 1) << "_" 
+        << _words_left[_words_left.size() - 1] << "\" ;" << endl;
+    graph_out << "        " << endl;
+    graph_out << "        label = \"Left\";" << endl;
+    graph_out << "    }" << endl;
+    graph_out << "    subgraph right {" << endl;
+    graph_out << "        ";
+    for (unsigned int i = 0; i < (_words_right.size() - 1); ++i)
+        graph_out << "\"R" << i <<  "_" << _words_right[i] << "\" -- ";
+    graph_out << "\"R" << (_words_right.size() - 1) << "_" 
+        << _words_right[_words_right.size() - 1] << "\" ;" << endl;
+    graph_out << "        " << endl;
+    graph_out << "        label = \"Right\";" << endl;
+    graph_out << "    }" << endl;
+    for (unsigned int i = 0; i < _final_alignment.size(); ++i) {
+        if (_final_alignment[i] != -1) {
+            graph_out << "        \"R" << i << "_" << _words_right[i]
+                << "\" -- \"L" << _final_alignment[i] << "_" 
+                << _words_left[_final_alignment[i]] << "\" ;" << endl;
+        }
+    }
+    graph_out << "}" << endl;
+    graph_out.close();
+}
+
 void Alignment::toVec(wstring& line, 
         std::vector<wstring>& words) 
 {

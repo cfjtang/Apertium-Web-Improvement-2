@@ -122,7 +122,6 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
         if (wv[i].second[j].side == LEFT) { 
             if (a._final_alignment_left[wv[i].second[j].ind] != -1) { //aligned
                 ++wv[i].first;
-                /// wcout << "here, comparing: " << wv[i].second[j].word << " with " << a._words_right[a._final_alignment_left[wv[i].second[j].ind]] << endl;
                 if (!a._words_right[a._final_alignment_left[
                         wv[i].second[j].ind]]
                         .compare(wv[i].second[j].word)) { //aligned, same words
@@ -134,15 +133,18 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
                         find_ind(RIGHT, a._final_alignment_left[
                                 wv[i].second[j].ind], wv[i].second)];
                 }
-            } else { // not aligned: construct one hyp. with and one without
-                /// wcout << "examining: " << wv[i].second[j].word << endl;
-                wv.push_back(wv[i]);
-                wv[i].second[j].used = true;
+            } else { // not aligned
+                unsigned int minimum_score = j / 1.5;
+                if (wv[i].first >= minimum_score) { 
+                    // construct one hyp. with and one without
+                    wv.push_back(wv[i]);
+                    wv[i].second[j].used = true;
+                }
+                // no need for else, word in not used by default
             }
         } else if (wv[i].second[j].side == RIGHT) { 
             if (a._final_alignment[wv[i].second[j].ind] != -1) { //aligned
                 ++wv[i].first;
-                /// wcout << "here, comparing: " << wv[i].second[j].word << " with " << a._words_left[a._final_alignment[wv[i].second[j].ind]] << endl;
                 if (!a._words_left[a._final_alignment[wv[i].second[j].ind]]
                         .compare(wv[i].second[j].word)) { //aligned, same words
                     wv[i].second[j].used = true;
@@ -153,10 +155,14 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
                         find_ind(LEFT, a._final_alignment[wv[i].second[j].ind], 
                                 wv[i].second)] ;
                 }
-            } else { // not aligned: construct one hyp. with and one without
-                /// wcout << "examining: " << wv[i].second[j].word << endl;
-                wv.push_back(wv[i]);
-                wv[i].second[j].used = true;
+            } else { // not aligned: 
+                unsigned int minimum_score = j / 1.5;
+                if (wv[i].first >= minimum_score) { 
+                    // construct one hyp. with and one without
+                    wv.push_back(wv[i]);
+                    wv[i].second[j].used = true;
+                }
+                // no need for else, word in not used by default
             }
         }
     }
