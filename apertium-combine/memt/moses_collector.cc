@@ -3,20 +3,35 @@
 #include <string>
 
 #include "Parameter.h"
+#include "StaticData.h"
 
 #include "moses_collector.hh"
 
 using namespace std;
 using namespace Moses;
 
-MosesCollector::MosesCollector()
+MosesCollector::MosesCollector(const string &filePath)
 {
 	parameter = new Moses::Parameter();
+
+        if (!parameter->LoadParam(filePath))
+        {
+                parameter->Explain();
+                delete parameter;
+		wcerr << "Failed to load parameters" << endl;
+        }
+
+        const StaticData &staticData = StaticData::Instance();
+        if (!StaticData::LoadDataStatic(parameter)) {
+		wcerr << "Failed to load static data" << endl;
+	}
+
+        vector<float> weights = staticData.GetAllWeights();
 }
 
 MosesCollector::~MosesCollector()
 {
-
+	delete parameter;
 }
 
 void
@@ -58,6 +73,10 @@ wchar_t*
 MosesCollector::translate(const wchar_t* block)
 {
 	wcout << L"MosesCollector: " << block << endl;
+
+        InputType *source=0;
+        size_t lineCount = 0;
+
 	return (wchar_t *)block; // Dummy function returns original
 }
 
