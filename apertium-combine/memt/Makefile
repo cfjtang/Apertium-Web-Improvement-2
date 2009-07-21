@@ -1,13 +1,13 @@
 CXX=g++
 INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src
-LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src 
-LDADD=-lmoses
+LDADD=-lmoses -lz
+LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src $(LDADD)
 CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
 
 all: aligner apertium-collector
 
 apertium-collector: collector.o apertium_collector.o moses_collector.o
-	$(CXX) $(LDFLAGS) $(LDADD) -Wall -o apertium-collector $^
+	$(CXX) -Wall -o apertium-collector $^ $(LDFLAGS)
 
 aligner: aligner.o alignment.o hypotheses.o
 	$(CXX) -o aligner $^
