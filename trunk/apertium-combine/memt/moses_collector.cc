@@ -49,7 +49,6 @@ MosesCollector::collect(FILE *input, FILE *output)
 		if(feof(input)) {
 			return;
 		}	
-		buf = buf + val;
 
 		if(seen == 0 && val == L'[') {
 			seen++;
@@ -59,16 +58,20 @@ MosesCollector::collect(FILE *input, FILE *output)
 			seen++;
 		}
 
-		//fputwc_unlocked(val, output);
+		buf = buf + val;
 
 		if(seen == 2) {
-			fputwc_unlocked(L'@', output);
-			wstring *translation = translate(&buf);
-			fputws_unlocked(translation->c_str(), output);
+			fputws_unlocked(L".[]", output);
+			unsigned int len = buf.length() - 1;
+			if(buf[0] == L'[' && buf[len] == ']') {
+				fputws_unlocked(buf.c_str(), output);
+			} else {
+				wstring *translation = translate(&buf);
+				fputws_unlocked(translation->c_str(), output);
+			}
 			seen = 0;
 			buf = L"";
 		}
-
 	}
 	
 	return;
