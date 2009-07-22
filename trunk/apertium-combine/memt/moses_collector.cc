@@ -63,7 +63,8 @@ MosesCollector::collect(FILE *input, FILE *output)
 
 		if(seen == 2) {
 			fputwc_unlocked(L'@', output);
-			translate(buf.c_str());
+			wstring *translation = translate(&buf);
+			fputws_unlocked(translation->c_str(), output);
 			seen = 0;
 			buf = L"";
 		}
@@ -73,29 +74,26 @@ MosesCollector::collect(FILE *input, FILE *output)
 	return;
 }
 
-wchar_t*
-MosesCollector::translate(const wchar_t* block) /* Best code ever */
+wstring*
+MosesCollector::translate(wstring *wsblock) /* Best code ever */
 {
-	wcout << L"MosesCollector: " << block << endl;
+	wstring *final_translation = new wstring();
 
 	const vector<string> &inputFactorVector = parameter->GetParam("input-factors");
         std::vector<Moses::FactorType>    m_inputFactorOrder;
 
-        for(size_t i=0; i<inputFactorVector.size(); i++)
-        {
+        for(size_t i=0; i<inputFactorVector.size(); i++) {
                 m_inputFactorOrder.push_back(Scan<FactorType>(inputFactorVector[i]));
         }
 
-        if(m_inputFactorOrder.empty())
-        {
+        if(m_inputFactorOrder.empty()) {
                 wcout << L"no input factor specified in config file";
         }
 
         const StaticData &staticData = StaticData::Instance();
 
-	wstring wsblock(block);
-	string *in = new string(wsblock.begin(), wsblock.end());
-	in->assign(wsblock.begin(), wsblock.end());
+	string *in = new string(wsblock->begin(), wsblock->end());
+	in->assign(wsblock->begin(), wsblock->end());
 
         Sentence *s = new Sentence(Input);
 	s->CreateFromString(m_inputFactorOrder , *in, string(" "));
@@ -124,11 +122,10 @@ MosesCollector::translate(const wchar_t* block) /* Best code ever */
 
 	while(!bounce.empty()) {
 		
-		wcout << bounce.top();
+		final_translation->append(bounce.top());
 		bounce.pop();
 	}
-	wcout << endl;
 
-	return (wchar_t *)block; // Dummy function returns original
+	return final_translation;
 }
 

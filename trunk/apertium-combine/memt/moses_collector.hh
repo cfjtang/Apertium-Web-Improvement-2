@@ -29,7 +29,7 @@ public:
         ~MosesCollector();
 
 	void collect(FILE *input, FILE *output);
-	wchar_t* translate(const wchar_t *block);
+	wstring* translate(wstring *block);
 
 };
 
