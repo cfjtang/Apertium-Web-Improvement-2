@@ -11,7 +11,7 @@ main(int argc, char **argv)
 {
 	FILE *input = stdin;
 	FILE *output = stdout;		
-	MosesCollector c("/home/fran/statmt/corpora4/model/moses.ini");
+	MosesCollector c("/home/fran/statmt/corpora5/model/moses.ini");
 
 	if(setlocale(LC_CTYPE, "") == NULL) {
 		wcerr << L"Warning: unsupported locale, fallback to \"C\"" << endl;
