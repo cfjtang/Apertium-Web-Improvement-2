@@ -55,7 +55,6 @@ std::wstring FromUtf8(const std::string& utf8string)
 std::string ToUtf8(const std::wstring& widestring)
 {
     size_t widesize = widestring.length();
-    wcout << widestring << endl;
     if (sizeof(wchar_t) == 2)
     {
         size_t utf8size = 3 * widesize + 1;
@@ -77,7 +76,7 @@ std::string ToUtf8(const std::wstring& widestring)
     else if (sizeof(wchar_t) == 4)
     {
         size_t utf8size = 4 * widesize + 1;
-        std::string resultstring = "";
+        std::string resultstring;
         resultstring.resize(utf8size, '\0');
         const UTF32* sourcestart = reinterpret_cast<const UTF32*>(widestring.c_str());
         const UTF32* sourceend = sourcestart + widesize;
