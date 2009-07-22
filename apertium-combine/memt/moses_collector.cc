@@ -34,7 +34,7 @@ MosesCollector::MosesCollector(const string &filePath)
 
 MosesCollector::~MosesCollector()
 {
-	delete parameter;
+//	delete parameter;
 }
 
 void
@@ -73,12 +73,9 @@ MosesCollector::collect(FILE *input, FILE *output)
 }
 
 wchar_t*
-MosesCollector::translate(const wchar_t* block)
+MosesCollector::translate(const wchar_t* block) /* Best code ever */
 {
 	wcout << L"MosesCollector: " << block << endl;
-
-        InputType *source=0;
-        size_t lineCount = 0;
 
 	const vector<string> &inputFactorVector = parameter->GetParam("input-factors");
         std::vector<Moses::FactorType>    m_inputFactorOrder;
@@ -93,23 +90,37 @@ MosesCollector::translate(const wchar_t* block)
                 wcout << L"no input factor specified in config file";
         }
 
-
-        std::istream            *m_inputStream;
         const StaticData &staticData = StaticData::Instance();
-        bool m_surpressSingleBestOutput = false;
-        std::ostream *m_nBestStream = &std::cout;
 
 	wstring wsblock(block);
 	string *in = new string(wsblock.begin(), wsblock.end());
 	in->assign(wsblock.begin(), wsblock.end());
 
         Sentence *s = new Sentence(Input);
-	s->CreateFromString(m_inputFactorOrder , *in, string("|"));
+	s->CreateFromString(m_inputFactorOrder , *in, string(" "));
 
         Manager manager(*s, staticData.GetSearchAlgorithm());
         manager.ProcessSentence();
+
 	const Hypothesis *hypo  = manager.GetBestHypothesis();
-	cout << *hypo << endl;
+	if(hypo != NULL) {
+		string sout = (hypo->GetCurrTargetPhrase()).ToString();
+		string s2out = hypo->GetTargetPhraseStringRep();
+	
+		wstring wsout, ws2out;
+		wsout.resize(sout.size());
+		ws2out.resize(s2out.size());
+
+		std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
+		std::transform(s2out.begin(), s2out.end(), ws2out.begin(), btowc);
+
+		wcout << L"sLen: " << sout.length() << L", " << s2out.length() << L" ! wsLen: " << wsout.length() << L", " << ws2out.length() << endl;
+		wcout << L"S  :" << wsout << endl;
+		wcout << L"S2 :" << ws2out << endl;
+		
+	} else {
+		wcout << L"No best translation" << endl;	
+	}
 
 	return (wchar_t *)block; // Dummy function returns original
 }
