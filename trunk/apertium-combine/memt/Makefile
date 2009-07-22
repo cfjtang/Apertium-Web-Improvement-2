@@ -1,7 +1,10 @@
 CXX=g++
-INCLUDE=-I/Users/snippy/apertium/include
+INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src -I/home/fran/statmt/irstlm/include
 LDADD=-lmoses -lz -lirstlm
-LDFLAGS=-L/Users/snippy/apertium/lib
+LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src -L/home/fran/statmt/irstlm/lib/x86_64-pc-linux-gnu 
+#INCLUDE=-I/Users/snippy/apertium/include
+#LDADD=-lmoses -lz -lirstlm
+#LDFLAGS=-L/Users/snippy/apertium/lib
 CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
 
 all: apertium-combiner apertium-collector
