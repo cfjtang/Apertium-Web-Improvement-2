@@ -63,12 +63,14 @@ Hypotheses_Naive_Beam::~Hypotheses_Naive_Beam()
 {
 }
 
-void Hypotheses_Naive_Beam::rank() 
+void Hypotheses_Naive_Beam::rank(Ranker* r) 
 {
-    //TODO
+    r->rank(_hypotheses);
     return;
 }
 
+
+/// for drawkcab compatibility, with scores.
 void Hypotheses_Naive_Beam::print()
 {
     wcout << ">>> Hypotheses_Naive_Beam: " << endl;
@@ -83,8 +85,34 @@ void Hypotheses_Naive_Beam::print()
             if (++w != it->words.end())
                 s.append(1, wc);
         }
-        wcout << s << endl;
+        wcout << "score: " << it->score << " == " << s << endl;
     }
+}
+
+void Hypotheses_Naive_Beam::print(wfstream* where)
+{
+    const wchar_t wc = L' ';
+    std::list<Hypothesis>::iterator it = _hypotheses.begin();
+    wstring s;
+    for (std::list<wstring>::iterator w = it->words.begin();
+            w != it->words.end(); ) {
+        s.append(*w);
+        if (++w != it->words.end())
+            s.append(1, wc);
+    }
+    (*where) << "{" << s;
+    ++it;
+    for(; it != _hypotheses.end(); ++it) {
+        s.clear();
+        for (std::list<wstring>::iterator w = it->words.begin();
+                w != it->words.end(); ) {
+            s.append(*w);
+            if (++w != it->words.end())
+                s.append(1, wc);
+        }
+        (*where) << "|" << s ;
+    }
+    (*where) << "}" << endl;
 }
 
 /* void Hypotheses_Naive_Beam::generate(unsigned int begin, unsigned int end, Alignment& a, 
