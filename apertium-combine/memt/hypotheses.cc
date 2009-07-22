@@ -90,7 +90,9 @@ void Hypotheses_Naive_Beam::print()
             if (++w != it->words.end())
                 s.append(1, wc);
         }
+#ifdef DEBUG
         wcout << "score: " << it->score << " == " << s << endl;
+#endif
     }
 }
 
