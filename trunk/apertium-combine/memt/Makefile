@@ -1,15 +1,16 @@
 CXX=g++
-#INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src -I/home/fran/statmt/irstlm/include
+INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src -I/home/fran/statmt/irstlm/include
+LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src -L/home/fran/statmt/irstlm/lib/x86_64-pc-linux-gnu 
+LDADD=-lmoses -lz -lirstlm
+#INCLUDE=-I/Users/snippy/apertium/include
 #LDADD=-lz -lirstlm
-#LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src -L/home/fran/statmt/irstlm/lib/x86_64-pc-linux-gnu 
-INCLUDE=-I/Users/snippy/apertium/include
-LDADD=-lz -lirstlm
-LDFLAGS=-L/Users/snippy/apertium/lib
+#LDFLAGS=-L/Users/snippy/apertium/lib
 CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
 
-all: apertium-combiner apertium-collector
+#all: apertium-combiner apertium-collector
+all: apertium-collector
 
-apertium-collector: collector.o apertium_collector.o moses_collector.o
+apertium-collector: collector.o apertium_collector.o moses_collector.o ConvertUTF.o UtfConverter.o
 	$(CXX) -Wall -o apertium-collector $^ $(LDFLAGS) $(LDADD)
 
 apertium-combiner: apertium_combiner.o alignment.o hypotheses.o ranker.o ConvertUTF.o UtfConverter.o
