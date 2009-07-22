@@ -61,7 +61,7 @@ MosesCollector::collect(FILE *input, FILE *output)
 		buf = buf + val;
 
 		if(seen == 2) {
-			fputws_unlocked(L".[]", output);
+			fputws_unlocked(L".[]", output); // This is a hack because I can't work out how to get .[] output.
 			unsigned int len = buf.length() - 1;
 			if(buf[0] == L'[' && buf[len] == ']') {
 				fputws_unlocked(buf.c_str(), output);
@@ -120,7 +120,7 @@ MosesCollector::translate(wstring *wsblock) /* Best code ever */
 			hypo = hypo->GetPrevHypo();
 		} 
 	} else {
-		wcout << L"No best translation" << endl;	
+		return wsblock; // if there is no decent translation return the original.
 	}
 
 	while(!bounce.empty()) {
@@ -131,4 +131,3 @@ MosesCollector::translate(wstring *wsblock) /* Best code ever */
 
 	return final_translation;
 }
-
