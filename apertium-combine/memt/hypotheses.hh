@@ -46,11 +46,11 @@ struct Word
 typedef std::vector<std::pair<unsigned int, std::vector<Word> > > 
     scored_phrases;
 
-class Hypotheses
+class Hypotheses_Naive_Beam
 {
     public: 
-        Hypotheses(Alignment& a);
-        ~Hypotheses();
+        Hypotheses_Naive_Beam(Alignment& a);
+        ~Hypotheses_Naive_Beam();
         void rank();
         void print();
     private:

@@ -22,10 +22,12 @@ int main(int argc, char** argv)
         wcout << "### Align: " << input_line1 << " <with> " << input_line2 << endl;
         Alignment a = Alignment(input_line1, input_line2);
         a.align();
+#ifdef DEBUG
         a.print();
         a.generate_graphviz();
+#endif
         wcout << "### Making hypotheses" << endl;
-        Hypotheses h = Hypotheses(a);
+        Hypotheses_Naive_Beam h = Hypotheses_Naive_Beam(a);
         h.rank();
         h.print();
         getline(file_in1, input_line1);
