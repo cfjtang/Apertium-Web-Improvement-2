@@ -11,6 +11,7 @@
 #include <list>
 #include <utility>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
