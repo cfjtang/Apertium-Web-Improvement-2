@@ -29,6 +29,7 @@ struct Hypothesis
         words = l;
     }
     ~Hypothesis() { }
+    bool operator<(const Hypothesis& h);
 };
 
 struct Word

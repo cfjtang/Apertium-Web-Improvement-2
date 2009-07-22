@@ -14,7 +14,7 @@ Ranker::Ranker(const string& file_path)
         lmtb->load(inputstream, file_path.c_str(), NULL, 1);
     } else {
         lmtb->load(inputstream, file_path.c_str(), NULL, 0);
-    }*/
+    } */
 }
 
 Ranker::~Ranker() 
@@ -23,5 +23,7 @@ Ranker::~Ranker()
 
 void Ranker::rank(std::list<Hypothesis>& hypotheses)
 {
+    // TODO
+    hypotheses.sort();
     return;
 }

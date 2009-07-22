@@ -15,6 +15,11 @@ unsigned int max_length(scored_phrases& wv)
     return max;
 }
 
+bool Hypothesis::operator<(const Hypothesis& h) 
+{
+    return (score > h.score);
+}
+
 /*** Very basic hypothesis generator.
  * TODO:
  *   Should take in account the fact that alignment won't alws be exactMatching
