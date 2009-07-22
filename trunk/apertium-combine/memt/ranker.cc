@@ -28,21 +28,23 @@ Ranker::~Ranker()
 
 void Ranker::rank(std::list<Hypothesis>& hypotheses)
 {
-    /// TODO
-    const wstring ws = L"this is é à ï test";
-    string s = ToUtf8(ws);
-
-    for(std::list<Hypothesis>::iterator it = hypotheses.begin();
+    for (std::list<Hypothesis>::iterator it = hypotheses.begin();
             it != hypotheses.end(); ++it) {
+        int n = 0;
+        ngram* lmtb_ngram = new ngram(lmtb->getDict());
+        for (std::list<wstring>::iterator i = it->words.begin();
+                i != it->words.end(); ++i) {
+            string s = ToUtf8(*i);
+            n = lmtb->getDict()->encode(s.c_str());
+            lmtb_ngram->pushc(n);
+        } 
+        float lmscore = lmtb->clprob(*lmtb_ngram);
+        cout << lmscore << endl;
+        float sc = 100000 * lmscore;
+        it->score = sc; // WRONG := (TODO)
+        delete lmtb_ngram;
     }
         
-    // std::list<wstring> words;
-    // Hypothesis(unsigned int s, std::list<wstring>& l)
-    // {
-    //     score = s;
-    //     words = l;
-    // }
-
     hypotheses.sort();
     return;
 }

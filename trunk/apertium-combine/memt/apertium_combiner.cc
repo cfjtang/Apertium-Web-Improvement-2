@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char** argv) 
 { 
-    Ranker* r = new Ranker("/home/snippy/apertium/EN-LM");
+    Ranker* r = new Ranker("/Users/snippy/apertium/EN-LM");
 
     char* input_file1 = argv[1];
     char* input_file2 = argv[2];
