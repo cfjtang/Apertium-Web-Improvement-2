@@ -4,13 +4,19 @@
  * - hypothesis ranking
  */
 
+#ifndef HYPOTHESES_HH
+#define HYPOTHESES_HH
 #include <iostream>
 #include <list>
+#include <utility>
 #include <vector>
 #include "alignment.hh"
-#include <utility>
+#include "ranker.hh"
+
+class Ranker;
 
 using namespace std;
+
 enum side {LEFT, RIGHT};
 
 struct Hypothesis
@@ -51,8 +57,9 @@ class Hypotheses_Naive_Beam
     public: 
         Hypotheses_Naive_Beam(Alignment& a);
         ~Hypotheses_Naive_Beam();
-        void rank();
+        void rank(Ranker* r);
         void print();
+        void print(wfstream* where);
     private:
         std::list<Hypothesis> _hypotheses;
         //void generate(unsigned int begin, unsigned int end, Alignment& a, 
@@ -62,3 +69,4 @@ class Hypotheses_Naive_Beam
         void inline fill_words(std::pair<unsigned int, std::vector<Word> >
                 & words, Alignment& a, unsigned int length);
 };
+#endif
