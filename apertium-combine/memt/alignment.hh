@@ -34,7 +34,7 @@ class Alignment
         void inline match();
         void inline unmatch();
         void inline complete();
-        std::vector<std::vector<bool> > matching;
+        std::vector<std::vector<bool> > matching; // matching[right][left]
         int total_matches;
         void to_vec(wstring& line, std::vector<wstring>& words);
         void to_lower(wstring& to_lower);

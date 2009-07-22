@@ -1,7 +1,7 @@
 CXX=g++
-INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src -I/home/fran/statmt/irstlm/include
-LDADD=-lmoses -lz -lirstlm
-LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src -L/home/fran/statmt/irstlm/lib/x86_64-pc-linux-gnu 
+#INCLUDE=-I/home/fran/statmt/mosesdecoder/moses/src -I/home/fran/statmt/irstlm/include
+#LDADD=-lmoses -lz -lirstlm
+#LDFLAGS=-L/home/fran/statmt/mosesdecoder/moses/src -L/home/fran/statmt/irstlm/lib/x86_64-pc-linux-gnu 
 CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
 
 all: aligner apertium-collector
@@ -15,7 +15,10 @@ aligner: aligner.o alignment.o hypotheses.o
 %.o: %.cc
 	$(CXX) -c $< $(CFLAGS) -o $@
 
-.PHONY: aligner apertium-collector clean 
+.PHONY: aligner apertium-collector clean graph
 
 clean:
 	rm -rf aligner apertium-collector *.dSYM *~ *.o
+
+graph: 
+	dot -Tpdf graph.viz > graph.pdf

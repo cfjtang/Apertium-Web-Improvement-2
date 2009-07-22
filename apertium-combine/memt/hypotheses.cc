@@ -134,7 +134,10 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
                                 wv[i].second[j].ind], wv[i].second)];
                 }
             } else { // not aligned
-                unsigned int minimum_score = j / 1.5;
+                // unsigned int minimum_score = j/1.7;
+                unsigned int minimum_score = j/1.4;
+                wcout << "j: " << j << " score: " << wv[i].first 
+                    << " minimum_score: " << minimum_score << endl;
                 if (wv[i].first >= minimum_score) { 
                     // construct one hyp. with and one without
                     wv.push_back(wv[i]);
@@ -156,7 +159,10 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
                                 wv[i].second)] ;
                 }
             } else { // not aligned: 
-                unsigned int minimum_score = j / 1.5;
+                // unsigned int minimum_score = j/1.7;
+                unsigned int minimum_score = j/1.4;
+                wcout << "j: " << j << " score: " << wv[i].first 
+                    << " minimum_score: " << minimum_score << endl;
                 if (wv[i].first >= minimum_score) { 
                     // construct one hyp. with and one without
                     wv.push_back(wv[i]);
