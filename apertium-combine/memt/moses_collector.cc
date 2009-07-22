@@ -3,7 +3,10 @@
 #include <string>
 
 #include "Parameter.h"
+#include "Manager.h"
+#include "Hypothesis.h"
 #include "StaticData.h"
+#include "InputType.h"
 
 #include "moses_collector.hh"
 
@@ -76,6 +79,37 @@ MosesCollector::translate(const wchar_t* block)
 
         InputType *source=0;
         size_t lineCount = 0;
+
+	const vector<string> &inputFactorVector = parameter->GetParam("input-factors");
+        std::vector<Moses::FactorType>    m_inputFactorOrder;
+
+        for(size_t i=0; i<inputFactorVector.size(); i++)
+        {
+                m_inputFactorOrder.push_back(Scan<FactorType>(inputFactorVector[i]));
+        }
+
+        if(m_inputFactorOrder.empty())
+        {
+                wcout << L"no input factor specified in config file";
+        }
+
+
+        std::istream            *m_inputStream;
+        const StaticData &staticData = StaticData::Instance();
+        bool m_surpressSingleBestOutput = false;
+        std::ostream *m_nBestStream = &std::cout;
+
+	wstring wsblock(block);
+	string *in = new string(wsblock.begin(), wsblock.end());
+	in->assign(wsblock.begin(), wsblock.end());
+
+        Sentence *s = new Sentence(Input);
+	s->CreateFromString(m_inputFactorOrder , *in, string("|"));
+
+        Manager manager(*s, staticData.GetSearchAlgorithm());
+        manager.ProcessSentence();
+	const Hypothesis *hypo  = manager.GetBestHypothesis();
+	cout << *hypo << endl;
 
 	return (wchar_t *)block; // Dummy function returns original
 }
