@@ -1,5 +1,6 @@
 // mangled from http://www.codeproject.com/KB/string/UtfConverter.aspx
 //#include "stdafx.h"
+#include <iostream>
 #include <string>
 #include <stdexcept>
 #include "UtfConverter.h"
@@ -22,7 +23,7 @@ std::wstring FromUtf8(const std::string& utf8string)
             (&sourcestart, sourceend, &targetstart, targetend, strictConversion);
         if (res != conversionOK)
         {
-            throw std::range_error("La falla!");
+            throw std::range_error("La falla! (#2)");
         }
         *targetstart = 0;
         return resultstring;
@@ -39,14 +40,14 @@ std::wstring FromUtf8(const std::string& utf8string)
             (&sourcestart, sourceend, &targetstart, targetend, strictConversion);
         if (res != conversionOK)
         {
-            throw std::range_error("La falla!");
+            throw std::range_error("La falla! (#4)");
         }
         *targetstart = 0;
         return resultstring;
     }
     else
     {
-        throw std::range_error("La falla!");
+        throw std::range_error("La falla! (#0)");
     }
     return L"";
 }
@@ -54,14 +55,13 @@ std::wstring FromUtf8(const std::string& utf8string)
 std::string ToUtf8(const std::wstring& widestring)
 {
     size_t widesize = widestring.length();
-
+    wcout << widestring << endl;
     if (sizeof(wchar_t) == 2)
     {
         size_t utf8size = 3 * widesize + 1;
         std::string resultstring;
         resultstring.resize(utf8size, '\0');
-        const UTF16* sourcestart = 
-            reinterpret_cast<const UTF16*>(widestring.c_str());
+        const UTF16* sourcestart = reinterpret_cast<const UTF16*>(widestring.c_str());
         const UTF16* sourceend = sourcestart + widesize;
         UTF8* targetstart = reinterpret_cast<UTF8*>(&resultstring[0]);
         UTF8* targetend = targetstart + utf8size;
@@ -69,7 +69,7 @@ std::string ToUtf8(const std::wstring& widestring)
             (&sourcestart, sourceend, &targetstart, targetend, strictConversion);
         if (res != conversionOK)
         {
-            throw std::range_error("La falla!");
+            throw std::range_error("ToUtf8: La falla! (#2): " + resultstring);
         }
         *targetstart = 0;
         return resultstring;
@@ -77,25 +77,23 @@ std::string ToUtf8(const std::wstring& widestring)
     else if (sizeof(wchar_t) == 4)
     {
         size_t utf8size = 4 * widesize + 1;
-        std::string resultstring;
+        std::string resultstring = "";
         resultstring.resize(utf8size, '\0');
-        const UTF32* sourcestart = 
-            reinterpret_cast<const UTF32*>(widestring.c_str());
+        const UTF32* sourcestart = reinterpret_cast<const UTF32*>(widestring.c_str());
         const UTF32* sourceend = sourcestart + widesize;
         UTF8* targetstart = reinterpret_cast<UTF8*>(&resultstring[0]);
         UTF8* targetend = targetstart + utf8size;
-        ConversionResult res = ConvertUTF32toUTF8
-            (&sourcestart, sourceend, &targetstart, targetend, strictConversion);
+        ConversionResult res = ConvertUTF32toUTF8(&sourcestart, sourceend, &targetstart, targetend, strictConversion);
         if (res != conversionOK)
         {
-            throw std::range_error("La falla!");
+            throw std::range_error("ToUtf8: La falla! (#4): " + resultstring);
         }
         *targetstart = 0;
         return resultstring;
     }
     else
     {
-        throw std::range_error("La falla!");
+        throw std::range_error("ToUtf8: La falla! (#0)");
     }
     return "";
 }

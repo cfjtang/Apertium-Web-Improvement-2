@@ -1,3 +1,7 @@
+#include "lmtable.h"
+#include "lmmacro.h"
+#include "hypotheses.hh"
+
 #include "ranker.hh"
 #include "UtfConverter.h"
 

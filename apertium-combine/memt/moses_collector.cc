@@ -9,6 +9,7 @@
 #include "StaticData.h"
 #include "InputType.h"
 
+#include "UtfConverter.h"
 #include "moses_collector.hh"
 
 using namespace std;
@@ -78,7 +79,7 @@ MosesCollector::collect(FILE *input, FILE *output)
 }
 
 wstring*
-MosesCollector::translate(wstring *wsblock) /* Best code ever */
+MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 {
 	wstring *final_translation = new wstring();
 
@@ -95,11 +96,10 @@ MosesCollector::translate(wstring *wsblock) /* Best code ever */
 
         const StaticData &staticData = StaticData::Instance();
 
-	string *in = new string(wsblock->begin(), wsblock->end());
-	in->assign(wsblock->begin(), wsblock->end());
+	string in = ToUtf8(*wsblock);
 
         Sentence *s = new Sentence(Input);
-	s->CreateFromString(m_inputFactorOrder , *in, string(" "));
+	s->CreateFromString(m_inputFactorOrder , in, string(" "));
 
         Manager manager(*s, staticData.GetSearchAlgorithm());
         manager.ProcessSentence();
@@ -111,16 +111,18 @@ MosesCollector::translate(wstring *wsblock) /* Best code ever */
 		while(hypo != NULL) {
 			string sout = hypo->GetTargetPhraseStringRep();
 		
-			wstring wsout;
-			wsout.resize(sout.size());
-			std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
+			//wstring wsout;
+			//wsout.resize(sout.size());
+			//std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
+			wstring wsout = FromUtf8(sout);
 	
 			bounce.push(wsout);
-	//		bounce.push(wstring(L" "));
+			bounce.push(wstring(L" "));
 			hypo = hypo->GetPrevHypo();
 		} 
 	} else {
-		return wsblock; // if there is no decent translation return the original.
+		wstring *val = new wstring(wsblock->c_str());
+		return val; // if there is no decent translation return the original.
 	}
 
 	while(!bounce.empty()) {
