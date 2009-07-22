@@ -84,8 +84,14 @@ void inline Alignment::match()
 void inline Alignment::unmatch()
 {
     for (unsigned int j = 0; j < _words_right.size(); ++j) {
-        if (_final_alignment[j] != -1)
-            matching[j][_final_alignment[j]] = false;
+        if (_final_alignment[j] != -1) {
+            for (unsigned int i = 0; i < _words_left.size(); ++i) {
+                matching[j][i] = false;
+            }
+            for (unsigned int k = 0; k < _words_right.size(); ++k){
+                matching[k][_final_alignment[j]] = false;
+            }
+        }
     }
 }
 
@@ -97,7 +103,11 @@ void inline Alignment::complete()
             unsigned int count = 0;
             while (count < _words_left.size()) {
                 if (matching[j][i]) {
-                    matching[j][i] = false; // unmatch j and i as we "used" it
+                    // unmatch j and i as we "used" it
+                    for (unsigned int ki = 0; ki < _words_left.size(); ++ki)
+                        matching[j][ki] = false;
+                    for (unsigned int kj = 0; kj < _words_right.size(); ++kj)
+                        matching[kj][i] = false;
                     _final_alignment[j] = i;
                     total_matches++;
                     break;
@@ -139,7 +149,6 @@ void Alignment::align()
     while (i <= size_end_left) {
         unsigned int j = 0;
         while (j <= size_end_right) {
-            // here we can use another matching
             if (matching[j][i]) {
                 tmp_score = 1;
                 temp_alignment.clear();
