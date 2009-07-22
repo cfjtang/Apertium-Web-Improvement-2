@@ -1,6 +1,6 @@
 #include "hypotheses.hh"
 
-#define PARAM_BEAM 1.7 // parameter for the minimum_score for the beam search
+#define PARAM_BEAM 1.6 // parameter for the minimum_score for the beam search
 
 using namespace std;
 
@@ -137,8 +137,10 @@ void inline Hypotheses_Naive_Beam::expand(scored_phrases& wv,Alignment& a, unsig
                 }
             } else { // not aligned
                 unsigned int minimum_score = j/PARAM_BEAM;
-                wcout << "j: " << j << " score: " << wv[i].first 
-                    << " minimum_score: " << minimum_score << endl;
+#ifdef DEBUG
+                // wcout << "j: " << j << " score: " << wv[i].first 
+                //    << " minimum_score: " << minimum_score << endl;
+#endif
                 if (wv[i].first >= minimum_score) { 
                     // construct one hyp. with and one without
                     wv.push_back(wv[i]);
@@ -161,8 +163,10 @@ void inline Hypotheses_Naive_Beam::expand(scored_phrases& wv,Alignment& a, unsig
                 }
             } else { // not aligned: 
                 unsigned int minimum_score = j/PARAM_BEAM;
-                wcout << "j: " << j << " score: " << wv[i].first 
-                    << " minimum_score: " << minimum_score << endl;
+#ifdef DEBUG
+                // wcout << "j: " << j << " score: " << wv[i].first 
+                //    << " minimum_score: " << minimum_score << endl;
+#endif
                 if (wv[i].first >= minimum_score) { 
                     // construct one hyp. with and one without
                     wv.push_back(wv[i]);

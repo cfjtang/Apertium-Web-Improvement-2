@@ -1,6 +1,8 @@
 #include "alignment.hh"
 #include <algorithm>
 #include <utility>
+#include <cctype>
+
 
 /** Indice of the maximum in a vector of positive integers
  */
@@ -70,13 +72,19 @@ void inline Alignment::match()
         matching[j].resize(_words_left.size());
         for (unsigned int i = 0; i < _words_left.size(); ++i) {
             // here we can use another matching
-            if (exact_match(_words_left[i], _words_right[j])) {
+            /// if (exact_match(_words_left[i], _words_right[j])) {
+            if (case_insensitive_match(_words_left[i], _words_right[j])) {
                 matching[j][i] = true;
             } else { 
                 matching[j][i] = false;
             }
         }
     }
+    wfstream oute("out", ios::out);
+    for (unsigned int j = 0; j < _words_right.size(); ++j) 
+        for (unsigned int i = 0; i < _words_left.size(); ++i) 
+            oute << matching[j][i] << endl;
+    oute.close();
 }
 
 /*** unmatch already aligned words
@@ -282,7 +290,7 @@ void Alignment::to_vec(wstring& line,
         length = index - offset;
         if (length > 0) { 
             // words.push_back(wstring(line, offset, length));
-            // shouldn't this stripping be done beforehand?
+            // shouldn't this stripping be done beforehand? TODO
             wstring raw_word = wstring(line, offset, length);
             strip(raw_word);
             words.push_back(raw_word);
@@ -296,12 +304,8 @@ void Alignment::to_vec(wstring& line,
 
 void Alignment::to_lower(wstring& to_lower)
 {
-    /// TODO
-    for (std::wstring::iterator it = to_lower.begin();
-            it != to_lower.end(); ++it) {
-        if (*it > 100 && *it < 133)
-            *it = *it - 40;
-    }
+    transform(to_lower.begin(), to_lower.end(),
+      to_lower.begin(), towlower);
     return;
 }
 
@@ -314,11 +318,10 @@ int Alignment::exact_match(const wstring& left,
 int Alignment::case_insensitive_match(const wstring& left,
         const wstring& right)
 {
-    /// TODO 
     wstring l = wstring(left);
     wstring r = wstring(right);
     to_lower(l);
     to_lower(r);
-    return l.compare(r);
+    return !l.compare(r);
 }
 
