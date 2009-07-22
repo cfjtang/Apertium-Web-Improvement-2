@@ -1,5 +1,7 @@
 #include "hypotheses.hh"
 
+#define PARAM_BEAM 1.7 // parameter for the minimum_score for the beam search
+
 using namespace std;
 
 unsigned int max_length(scored_phrases& wv) 
@@ -17,7 +19,7 @@ unsigned int max_length(scored_phrases& wv)
  * TODO:
  *   Should take in account the fact that alignment won't alws be exactMatching
  */
-Hypotheses::Hypotheses(Alignment& a) 
+Hypotheses_Naive_Beam::Hypotheses_Naive_Beam(Alignment& a) 
 {
     unsigned int length = a._words_right.size() > a._words_left.size() ? 
         a._words_right.size() : a._words_left.size();
@@ -57,19 +59,19 @@ Hypotheses::Hypotheses(Alignment& a)
     generate(begin, end, a, vs);*/
 }
 
-Hypotheses::~Hypotheses() 
+Hypotheses_Naive_Beam::~Hypotheses_Naive_Beam() 
 {
 }
 
-void Hypotheses::rank() 
+void Hypotheses_Naive_Beam::rank() 
 {
     //TODO
     return;
 }
 
-void Hypotheses::print()
+void Hypotheses_Naive_Beam::print()
 {
-    wcout << ">>> Hypotheses: " << endl;
+    wcout << ">>> Hypotheses_Naive_Beam: " << endl;
     const wchar_t wc = L' ';
     for (std::list<Hypothesis>::iterator it = _hypotheses.begin();
             it != _hypotheses.end();
@@ -85,7 +87,7 @@ void Hypotheses::print()
     }
 }
 
-/* void Hypotheses::generate(unsigned int begin, unsigned int end, Alignment& a, 
+/* void Hypotheses_Naive_Beam::generate(unsigned int begin, unsigned int end, Alignment& a, 
         std::vector<Hypothesis>& vh)
 {
     std::wstring current;
@@ -112,7 +114,7 @@ unsigned int inline find_ind(enum side side, unsigned int ind, std::vector<Word>
     return 0;
 }
 
-void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
+void inline Hypotheses_Naive_Beam::expand(scored_phrases& wv,Alignment& a, unsigned int j)
 {
     unsigned int wvsize = wv.size();
     for (unsigned int i = 0; i < wvsize; ++i)
@@ -134,8 +136,7 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
                                 wv[i].second[j].ind], wv[i].second)];
                 }
             } else { // not aligned
-                // unsigned int minimum_score = j/1.7;
-                unsigned int minimum_score = j/1.4;
+                unsigned int minimum_score = j/PARAM_BEAM;
                 wcout << "j: " << j << " score: " << wv[i].first 
                     << " minimum_score: " << minimum_score << endl;
                 if (wv[i].first >= minimum_score) { 
@@ -159,8 +160,7 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
                                 wv[i].second)] ;
                 }
             } else { // not aligned: 
-                // unsigned int minimum_score = j/1.7;
-                unsigned int minimum_score = j/1.4;
+                unsigned int minimum_score = j/PARAM_BEAM;
                 wcout << "j: " << j << " score: " << wv[i].first 
                     << " minimum_score: " << minimum_score << endl;
                 if (wv[i].first >= minimum_score) { 
@@ -178,7 +178,7 @@ void inline Hypotheses::expand(scored_phrases& wv,Alignment& a, unsigned int j)
 #endif
 }
 
-void inline Hypotheses::fill_words(std::pair<unsigned int, std::vector<Word> >
+void inline Hypotheses_Naive_Beam::fill_words(std::pair<unsigned int, std::vector<Word> >
         & words, Alignment& a, unsigned int length)
 {
     for (unsigned int i = 0; i < length; ++i) {
