@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cwchar>
 #include <string>
+#include <stack>
 
 #include "Parameter.h"
 #include "Manager.h"
@@ -103,24 +104,30 @@ MosesCollector::translate(const wchar_t* block) /* Best code ever */
         manager.ProcessSentence();
 
 	const Hypothesis *hypo  = manager.GetBestHypothesis();
-	if(hypo != NULL) {
-		string sout = (hypo->GetCurrTargetPhrase()).ToString();
-		string s2out = hypo->GetTargetPhraseStringRep();
-	
-		wstring wsout, ws2out;
-		wsout.resize(sout.size());
-		ws2out.resize(s2out.size());
-
-		std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
-		std::transform(s2out.begin(), s2out.end(), ws2out.begin(), btowc);
-
-		wcout << L"sLen: " << sout.length() << L", " << s2out.length() << L" ! wsLen: " << wsout.length() << L", " << ws2out.length() << endl;
-		wcout << L"S  :" << wsout << endl;
-		wcout << L"S2 :" << ws2out << endl;
+	std::stack<wstring> bounce;
+	hypo = hypo->GetPrevHypo();
+	if(hypo!=NULL){
+		while(hypo != NULL) {
+			string sout = hypo->GetTargetPhraseStringRep();
 		
+			wstring wsout;
+			wsout.resize(sout.size());
+			std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
+	
+			bounce.push(wsout);
+	//		bounce.push(wstring(L" "));
+			hypo = hypo->GetPrevHypo();
+		} 
 	} else {
 		wcout << L"No best translation" << endl;	
 	}
+
+	while(!bounce.empty()) {
+		
+		wcout << bounce.top();
+		bounce.pop();
+	}
+	wcout << endl;
 
 	return (wchar_t *)block; // Dummy function returns original
 }
