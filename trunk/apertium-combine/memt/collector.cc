@@ -77,14 +77,3 @@ Collector::collect(FILE *input, FILE *output)
 	
 	return;
 }
-
-/*
- *	A dummy function which returns the original text as a 'translation',
- *	this is overridden.
- */
-
-wstring*
-Collector::translate(wstring *block)
-{
-	return block; // Dummy function returns original
-}
