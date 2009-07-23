@@ -9,7 +9,7 @@
 #include "StaticData.h"
 #include "InputType.h"
 
-#include "UtfConverter.h"
+#include "utf_converter.h"
 #include "moses_collector.hh"
 
 using namespace std;
@@ -96,7 +96,7 @@ MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 
         const StaticData &staticData = StaticData::Instance();
 
-	string in = ToUtf8(*wsblock);
+	string in = UtfConverter::toUtf8(*wsblock);
 
         Sentence *s = new Sentence(Input);
 	s->CreateFromString(m_inputFactorOrder , in, string(" "));
@@ -114,7 +114,7 @@ MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 			//wstring wsout;
 			//wsout.resize(sout.size());
 			//std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
-			wstring wsout = FromUtf8(sout);
+			wstring wsout = UtfConverter::fromUtf8(sout);
 	
 			bounce.push(wsout);
 			bounce.push(wstring(L" "));
