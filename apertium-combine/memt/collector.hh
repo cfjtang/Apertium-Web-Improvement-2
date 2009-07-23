@@ -32,7 +32,7 @@ public:
 	Collector();
 	virtual ~Collector();
 
-	void collect(FILE *input, FILE *output);
+	void collect(FILE *input, FILE *output, FILE *buffer);
 	virtual wstring* translate(const wstring *block) = 0 ;
 };
 

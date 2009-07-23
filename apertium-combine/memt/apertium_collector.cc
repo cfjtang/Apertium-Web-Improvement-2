@@ -22,7 +22,6 @@
 #include <string>
 #include <getopt.h>
 
-
 #include "moses_collector.hh"
 
 using namespace std;
@@ -41,19 +40,21 @@ main(int argc, char **argv)
 {
 	FILE *input = stdin;
 	FILE *output = stdout;		
+	FILE *buffer = 0;
 
 	if(argc < 1) {
 		usage(argv[0]);
 	}
 
-	MosesCollector c(argc, argv);
+	MosesCollector c(argc, argv, buffer);
+        buffer = fopen("/tmp/moses.out", "w+");
 
 	if(setlocale(LC_CTYPE, "") == NULL) {
 		wcerr << L"Warning: unsupported locale, fallback to \"C\"" << endl;
 		setlocale(LC_ALL, "C");
 	}
 
-	c.collect(input, output);
+	c.collect(input, output, buffer);
 
 	return 0;
 }
