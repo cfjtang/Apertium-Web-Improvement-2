@@ -7,8 +7,8 @@ LDADD=-lmoses -lz -lirstlm -lapertium3
 #LDFLAGS=-L/Users/snippy/apertium/lib
 CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
 
-#all: apertium-combiner apertium-collector
-all: apertium-collector
+all: apertium-combiner apertium-collector
+#all: apertium-collector
 
 apertium-collector: collector.o apertium_collector.o moses_collector.o 
 	$(CXX) -Wall -o apertium-collector $^ $(LDFLAGS) $(LDADD)
