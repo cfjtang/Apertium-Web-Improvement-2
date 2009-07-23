@@ -13,7 +13,7 @@ apertium-collector: collector.o apertium_collector.o moses_collector.o
 	$(CXX) -Wall -o apertium-collector $^ $(LDFLAGS) $(LDADD)
 
 apertium-combiner: apertium_combiner.o alignment.o hypotheses.o irstlm_ranker.o 
-	$(CXX) -o combiner $(LDFLAGS) $^ $(LDFLAGS) $(LDADD)
+	$(CXX) -o apertium-combiner $(LDFLAGS) $^ $(LDFLAGS) $(LDADD)
 
 %.o: %.cc
 	$(CXX) -c $< $(CFLAGS) -o $@
