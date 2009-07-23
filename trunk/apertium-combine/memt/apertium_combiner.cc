@@ -40,8 +40,9 @@ int main(int argc, char** argv)
 #else
         h.best();
 #endif
-        wfstream hypotheses_file("input_ranker.txt", ios::out);
-        h.print(&hypotheses_file);
+        // Example of how to print the hypotheses in a file:
+        /// wfstream hypotheses_file("input_ranker.txt", ios::out);
+        /// h.print(&hypotheses_file);
         getline(file_in1, input_line1);
         getline(file_in2, input_line2);
     }

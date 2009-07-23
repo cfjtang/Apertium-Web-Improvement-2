@@ -62,16 +62,16 @@ Collector::collect(FILE *input, FILE *output, FILE *buffer)
 		}
 
                 if(seen == 2) {
-                        fputws_unlocked(L".[]", output); // This is a hack because I can't work out how to get .[] output.
-                        fputws_unlocked(L".[]", buffer); // This is a hack because I can't work out how to get .[] output.
+                        fputws(L".[]", output); // This is a hack because I can't work out how to get .[] output.
+                        fputws(L".[]", buffer); // This is a hack because I can't work out how to get .[] output.
                         unsigned int len = buf.length() - 1;
                         if(buf[0] == L'[' && buf[len] == ']') {
-                                fputws_unlocked(buf.c_str(), buffer);
-                                fputws_unlocked(buf.c_str(), output);
+                                fputws(buf.c_str(), buffer);
+                                fputws(buf.c_str(), output);
                         } else {
                                 wstring *translation = translate(&buf);
-                                fputws_unlocked(buf.c_str(), output);
-                                fputws_unlocked(translation->c_str(), buffer);
+                                fputws(buf.c_str(), output);
+                                fputws(translation->c_str(), buffer);
                         }
                         seen = 0;
                         buf = L"";
