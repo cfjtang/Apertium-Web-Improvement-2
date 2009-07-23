@@ -266,6 +266,18 @@
       <label-item label="PREADV"/>
     </sequence>
 </def-mult>
+<def-mult name="NOMPREPSG" closed="true">  
+    <sequence>
+      <label-item label="NOMSG"/>
+      <label-item label="PREP"/>
+    </sequence>
+</def-mult>
+  <def-mult name="NOMPREPPL" closed="true">  
+    <sequence>
+      <label-item label="NOMPL"/>
+      <label-item label="PREP"/>
+    </sequence>
+</def-mult>
 
 </tagset>
 
