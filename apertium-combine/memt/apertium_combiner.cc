@@ -33,9 +33,12 @@ int main(int argc, char** argv)
 #endif
         wcout << "### Making hypotheses" << endl;
         Hypotheses_Naive_Beam h = Hypotheses_Naive_Beam(a);
+        wcout << "### Ranking hypotheses" << endl;
         h.rank(r);
 #ifdef DEBUG
         h.print();
+#else
+        h.best();
 #endif
         wfstream hypotheses_file("input_ranker.txt", ios::out);
         h.print(&hypotheses_file);

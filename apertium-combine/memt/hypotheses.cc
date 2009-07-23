@@ -56,12 +56,6 @@ Hypotheses_Naive_Beam::Hypotheses_Naive_Beam(Alignment& a)
         _hypotheses.push_back(Hypothesis(it->first, temp));
     } 
 
-
-    /* unsigned int begin = j;
-    unsigned int end = j;
-    while (a._final_alignment[end] == -1)
-        ++end;
-    generate(begin, end, a, vs);*/
 }
 
 Hypotheses_Naive_Beam::~Hypotheses_Naive_Beam() 
@@ -79,17 +73,11 @@ void Hypotheses_Naive_Beam::rank(Ranker* r)
 void Hypotheses_Naive_Beam::print()
 {
     wcout << ">>> Hypotheses_Naive_Beam: " << endl;
-    const wchar_t wc = L' ';
     for (std::list<Hypothesis>::iterator it = _hypotheses.begin();
             it != _hypotheses.end();
             ++it) {
         wstring s;
-        for (std::list<wstring>::iterator w = it->words.begin();
-                w != it->words.end(); ) {
-            s.append(*w);
-            if (++w != it->words.end())
-                s.append(1, wc);
-        }
+        concatenate(it->words, s);
 #ifdef DEBUG
         wcout << "score: " << it->score << " == " << s << endl;
 #endif
@@ -98,47 +86,25 @@ void Hypotheses_Naive_Beam::print()
 
 void Hypotheses_Naive_Beam::print(wfstream* where)
 {
-    const wchar_t wc = L' ';
     std::list<Hypothesis>::iterator it = _hypotheses.begin();
     wstring s;
-    for (std::list<wstring>::iterator w = it->words.begin();
-            w != it->words.end(); ) {
-        s.append(*w);
-        if (++w != it->words.end())
-            s.append(1, wc);
-    }
+    concatenate(it->words, s);
     (*where) << "{" << s;
-    ++it;
     for(; it != _hypotheses.end(); ++it) {
         s.clear();
-        for (std::list<wstring>::iterator w = it->words.begin();
-                w != it->words.end(); ) {
-            s.append(*w);
-            if (++w != it->words.end())
-                s.append(1, wc);
-        }
+        concatenate(it->words, s);
         (*where) << "|" << s ;
     }
     (*where) << "}" << endl;
 }
 
-/* void Hypotheses_Naive_Beam::generate(unsigned int begin, unsigned int end, Alignment& a, 
-        std::vector<Hypothesis>& vh)
+void Hypotheses_Naive_Beam::best()
 {
-    std::wstring current;
-    for (unsigned int i = begin; i <= end; ++i) {
-        if (i >= a._words_left.size()) {
-            if (i < a._words_right.size()) {
-                current.append(a._words_right[i]);
-            }
-        } else if (i >= a._words_right.size()) {
-            if (i < a._words_left.size()) {
-                current.append(a._words_left[i]);
-            }
-        } else {
-        }
-    }
-}*/
+    wstring s = L"";
+    concatenate(_hypotheses.front().words, s);
+    wcout << s << endl;
+    return;
+}
 
 unsigned int inline find_ind(enum side side, unsigned int ind, std::vector<Word>& w) 
 {
@@ -236,3 +202,13 @@ void inline Hypotheses_Naive_Beam::fill_words(std::pair<unsigned int, std::vecto
     }
 }
 
+void inline Hypotheses_Naive_Beam::concatenate(std::list<wstring>& ls, wstring& s) 
+{
+    const wchar_t wc = L' ';
+    for (std::list<wstring>::iterator w = ls.begin();
+            w != ls.end(); ) {
+        s.append(*w);
+        if (++w != ls.end())
+            s.append(1, wc);
+    }
+}

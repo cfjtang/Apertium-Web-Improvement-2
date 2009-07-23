@@ -5,7 +5,7 @@ CXX=g++
 INCLUDE=-I/Users/snippy/apertium/include -I/Users/snippy/apertium/svn/apertium/trunk/apertium/apertium
 LDADD=-lz -lirstlm -lapertium3
 LDFLAGS=-L/Users/snippy/apertium/lib
-CFLAGS=-Wall -DDEBUG -g $(INCLUDE)
+CFLAGS=-Wall -g $(INCLUDE)
 
 all: apertium-combiner apertium-collector
 
@@ -13,7 +13,7 @@ apertium-collector: collector.o apertium_collector.o moses_collector.o
 	$(CXX) -Wall -o apertium-collector $^ $(LDFLAGS) $(LDADD)
 
 apertium-combiner: apertium_combiner.o alignment.o hypotheses.o irstlm_ranker.o 
-	$(CXX) -o apertium-combiner $(LDFLAGS) $^ $(LDFLAGS) $(LDADD)
+	$(CXX) -o combiner $(LDFLAGS) $^ $(LDFLAGS) $(LDADD)
 
 %.o: %.cc
 	$(CXX) -c $< $(CFLAGS) -o $@
