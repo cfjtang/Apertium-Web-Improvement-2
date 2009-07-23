@@ -61,6 +61,7 @@ class Hypotheses_Naive_Beam
         void rank(Ranker* r);
         void print();
         void print(wfstream* where);
+        void best();
     private:
         std::list<Hypothesis> _hypotheses;
         //void generate(unsigned int begin, unsigned int end, Alignment& a, 
@@ -69,5 +70,6 @@ class Hypotheses_Naive_Beam
                 Alignment& a, unsigned int j);      
         void inline fill_words(std::pair<unsigned int, std::vector<Word> >
                 & words, Alignment& a, unsigned int length);
+        void inline concatenate(std::list<wstring>& ls, wstring& s);
 };
 #endif
