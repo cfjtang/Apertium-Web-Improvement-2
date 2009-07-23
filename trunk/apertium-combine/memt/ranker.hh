@@ -19,8 +19,8 @@ class Ranker
 {
     public:
         // Ranker(const string& file_path) {} 
-        Ranker() {} 
-        virtual ~Ranker();
+        Ranker() {};
+        virtual ~Ranker() {};
         virtual void score(Hypothesis& h) = 0;
         virtual void rank(std::list<Hypothesis>& hypotheses)
         {

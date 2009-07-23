@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 { 
     // You can instantiate another derivation of Ranker here, 
     // that should be the only change for switching the ranker
-    IRSTLM_Ranker* r = new IRSTLM_Ranker("/Users/snippy/apertium/EN-LM");
+    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
 
     char* input_file1 = argv[1];
     char* input_file2 = argv[2];

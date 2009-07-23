@@ -11,11 +11,12 @@
 class lmtable;
 class lmmacro;
 
-class IRSTLM_Ranker: public Ranker
+class IRSTLMRanker: public Ranker
 {
     public:
-        IRSTLM_Ranker(const string& file_path);
-        ~IRSTLM_Ranker();
+	IRSTLMRanker();
+        IRSTLMRanker(const string& file_path);
+        ~IRSTLMRanker();
         void inline score(Hypothesis& h);
         // void rank(std::list<Hypothesis>& hypotheses);
     private:
