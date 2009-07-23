@@ -3,7 +3,7 @@
 #include "hypotheses.hh"
 
 #include "ranker.hh"
-#include "UtfConverter.h"
+#include <utf_converter.h>
 
 Ranker::Ranker(const string& file_path)
 {
@@ -34,14 +34,16 @@ void Ranker::rank(std::list<Hypothesis>& hypotheses)
         ngram* lmtb_ngram = new ngram(lmtb->getDict());
         for (std::list<wstring>::iterator i = it->words.begin();
                 i != it->words.end(); ++i) {
-            string s = ToUtf8(*i);
+            string s = UtfConverter::toUtf8(*i);
             n = lmtb->getDict()->encode(s.c_str());
             lmtb_ngram->pushc(n);
         } 
         float lmscore = lmtb->clprob(*lmtb_ngram);
+#ifdef DEBUG
         cout << lmscore << endl;
-        float sc = 100000 * lmscore;
-        it->score = sc; // WRONG := (TODO)
+#endif
+        float sc = -100 / (lmscore);
+        it->score += sc; // WRONG := (TODO)
         delete lmtb_ngram;
     }
         
