@@ -30,10 +30,10 @@ class Collector {
 
 public:
 	Collector();
-	~Collector();
+	virtual ~Collector();
 
 	void collect(FILE *input, FILE *output);
-	wstring* translate(wstring *block);
+	virtual wstring* translate(const wstring *block) = 0 ;
 };
 
 #endif /* __COLLECTOR_H__ */

@@ -20,10 +20,21 @@
 #include <iostream>
 #include <cwchar>
 #include <string>
+#include <getopt.h>
+
 
 #include "moses_collector.hh"
 
 using namespace std;
+
+void
+usage(char *name) 
+{
+	cout << basename(name) << ": process an apertium stream with another MT system" << endl;
+	cout << "USAGE: " << basename(name) << " " << endl;
+
+	exit(EXIT_FAILURE);
+}
 
 int 
 main(int argc, char **argv) 
@@ -31,7 +42,11 @@ main(int argc, char **argv)
 	FILE *input = stdin;
 	FILE *output = stdout;		
 
-	MosesCollector c("/home/fran/statmt/corpora5/model/moses.ini");
+	if(argc < 1) {
+		usage(argv[0]);
+	}
+
+	MosesCollector c(argc, argv);
 
 	if(setlocale(LC_CTYPE, "") == NULL) {
 		wcerr << L"Warning: unsupported locale, fallback to \"C\"" << endl;
