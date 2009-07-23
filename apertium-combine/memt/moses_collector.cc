@@ -117,7 +117,6 @@ MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 			wstring wsout = UtfConverter::fromUtf8(sout);
 	
 			bounce.push(wsout);
-			bounce.push(wstring(L" "));
 			hypo = hypo->GetPrevHypo();
 		} 
 	} else {
