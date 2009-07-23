@@ -14,7 +14,7 @@ all: apertium-combiner
 apertium-collector: collector.o apertium_collector.o moses_collector.o 
 	$(CXX) -Wall -o apertium-collector $^ $(LDFLAGS) $(LDADD)
 
-apertium-combiner: apertium_combiner.o alignment.o hypotheses.o ranker.o utf_converter.o
+apertium-combiner: apertium_combiner.o alignment.o hypotheses.o irstlm_ranker.o utf_converter.o
 	$(CXX) -o combiner $(LDFLAGS) $(LDADD) $^
 
 utf_converter.o:
