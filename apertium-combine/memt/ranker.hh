@@ -1,5 +1,5 @@
 /*
- * The ranker using IRST language model
+ * The ranker 
  */
 
 #ifndef RANKER_HH
@@ -10,8 +10,6 @@
 #include "lmmacro.h"
 #include "hypotheses.hh"
 
-class lmtable;
-class lmmacro;
 class Ranker;
 struct Hypothesis;
 
@@ -20,11 +18,20 @@ using namespace std;
 class Ranker
 {
     public:
-        Ranker(const string& file_path);
-        ~Ranker();
-        void rank(std::list<Hypothesis>& hypotheses);
-    private:
-        lmtable *lmtb;
+        // Ranker(const string& file_path) {} 
+        Ranker() {} 
+        virtual ~Ranker();
+        virtual void score(Hypothesis& h) = 0;
+        virtual void rank(std::list<Hypothesis>& hypotheses)
+        {
+            for (std::list<Hypothesis>::iterator it = hypotheses.begin();
+                    it != hypotheses.end(); ++it) {
+                score(*it);
+            }
+                
+            hypotheses.sort();
+            return;
+        }
 };
 
 #endif

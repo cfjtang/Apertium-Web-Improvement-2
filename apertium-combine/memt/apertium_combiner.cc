@@ -2,13 +2,15 @@
 #include <iostream>
 #include "alignment.hh"
 #include "hypotheses.hh"
-#include "ranker.hh"
+#include "irstlm_ranker.hh"
 
 using namespace std;
 
 int main(int argc, char** argv) 
 { 
-    Ranker* r = new Ranker("/Users/snippy/apertium/EN-LM");
+    // You can instantiate another derivation of Ranker here, 
+    // that should be the only change for switching the ranker
+    IRSTLM_Ranker* r = new IRSTLM_Ranker("/Users/snippy/apertium/EN-LM");
 
     char* input_file1 = argv[1];
     char* input_file2 = argv[2];
