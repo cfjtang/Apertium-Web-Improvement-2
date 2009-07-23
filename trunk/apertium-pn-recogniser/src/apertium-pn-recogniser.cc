@@ -208,7 +208,7 @@ ner::ner(const std::string &npFile) {
       wistringstream sin; sin.str(line);
       wstring key; int type;
       sin>>key>>type;
-      if (iswupper(key[0])) ignore_tags.insert(make_pair(key,type));
+      if (iswupper(key[0])) ignore_tags.insert(make_pair(lowercase(key),type));
       else ignore_words.insert(make_pair(key,type));
     }
     else if (reading==7) {
@@ -292,7 +292,7 @@ int ner::ComputeToken(int state, sentence::iterator &j, sentence &se)
     ignore=iw->second+1;
   else {
     // check if any of word tags are ignorable
-    it = ignore_tags.find(lowercase(tag));
+    it = ignore_tags.find(tag);
     if (it!=ignore_tags.end()) ignore=it->second+1;
   }
   
@@ -631,7 +631,7 @@ void outputSentence(const sentence &se, const vector<wstring> &blanks) {
       list<word>::iterator mw;
       for(mw=mwlist.begin();mw!=mwlist.end();mw++) {
         wcout<<blanks[posb++];
-        wcout<<L'^'<<PROPER_NOUN_MARK<<mw->get_lemma()<<L'$';
+        wcout<<L'^'<<PROPER_NOUN_MARK<<mw->get_form()<<L'$';
       }
     }
     else {
