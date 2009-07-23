@@ -1,7 +1,8 @@
+#include "ranker.hh"
 #include "irstlm_ranker.hh"
-#include <utf_converter.h>
+#include <apertium/utf_converter.h>
 
-IRSTLM_Ranker::IRSTLM_Ranker(const string& file_path)
+IRSTLMRanker::IRSTLMRanker(const string& file_path)
 {
     // open the LM file
     std::filebuf* fb = new std::filebuf();
@@ -18,11 +19,17 @@ IRSTLM_Ranker::IRSTLM_Ranker(const string& file_path)
     } 
 }
 
-IRSTLM_Ranker::~IRSTLM_Ranker() 
+IRSTLMRanker::IRSTLMRanker()
 {
+
 }
 
-void inline IRSTLM_Ranker::score(Hypothesis& h)
+IRSTLMRanker::~IRSTLMRanker() 
+{
+
+}
+
+void inline IRSTLMRanker::score(Hypothesis& h)
 {
     int n = 0;
     ngram* lmtb_ngram = new ngram(lmtb->getDict());
