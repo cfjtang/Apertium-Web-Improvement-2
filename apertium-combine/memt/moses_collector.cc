@@ -111,9 +111,6 @@ MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 		while(hypo != NULL) {
 			string sout = hypo->GetTargetPhraseStringRep();
 		
-			//wstring wsout;
-			//wsout.resize(sout.size());
-			//std::transform(sout.begin(), sout.end(), wsout.begin(), btowc);
 			wstring wsout = UtfConverter::fromUtf8(sout);
 	
 			bounce.push(wsout);
