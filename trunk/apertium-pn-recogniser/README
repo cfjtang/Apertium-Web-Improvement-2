@@ -1,25 +1,232 @@
+
 REQUIREMENTS
 
-* This package needs apertium-3.1 and lttoolbox-3.1 packages installed in the
-system.
+* This package needs apertium-3.1 and lttoolbox-3.1 packages installed in the system.
+
 
 DESCRIPTION
 
-THis program is mainly based on the ER found in Freeling...
+This program is a new module for the Apertium pipeline which detects proper nouns in the input and marks them as unknown words so that the rest of the modules in the pipeline do not process them. This avoids the common case of wrong translations of source-language proper nouns which are also common nouns according to the dictionaries. The proper noun recogniser is mainly based on the one already included in the Freeling project.
+
+The proper noun recogniser must be invoked between the tagger and the transfer modules. Option -p is needed in the tagger, so a version from Apertium greater or equal to 3.1.0 is needed.
+
+When building, this package generates the following programs:
+
+* apertium-pn-recogniser:
+  Detects proper nouns in the input and marks them as unknown words in the form "*_Added_by_Proper_Noun_Detector_ORIGINALWORD". A file with language-dependent data is required as an argument to the program.
+ 
+* apertium-pn-recogniser-final:
+  Removes the string "*_Added_by_Proper_Noun_Detector_". It must be executed at the end of the pipeline.
 
 
-When building, this package generates the following modules:
+QUICK START FOR DEVELOPERS
 
-* apertium-pn-recogniser
-  Deformatters for html, rtf and txt document formats. Execute without parameters to see the usage.
+1) Download apertium-pn-recogniser
 
-* apertium-pn-recogniser-final
+2) Exec "autogen.sh", "make", "make install" as usual
 
-QUICK START
+3) Get the linguistic package for your favourite language pair
 
-1) Download
+4) Add a new mode, add the configuration files for proper noun recognition and modify the Makefile.am (see next).
 
-2) Unpack
+5) Install the language pair
+
+6) Translate with the new mode and see proper nouns not being translated!
 
 
-SAMPLE FILES
+
+SAMPLE MODE FOR modes.xml
+
+This is an example of code to be included in the modes.xml file in order to use the proper noun recogniser:
+
+  <mode name="es-gl-pn" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-gl.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -p -g $2">
+        <file name="es-gl.prob"/>
+      </program>
+
+      <!-- Proper noun recogniser: -->
+      <program name="apertium-pn-recogniser">
+        <file name="es-pn.dat"/>
+      </program>
+
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-gl.es-gl.t1x"/>
+        <file name="es-gl.t1x.bin"/>
+        <file name="es-gl.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="es-gl.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="es-gl.autopgen.bin"/>
+      </program>
+
+      <!-- Removes special mark: -->
+      <program name="apertium-pn-recogniser-final"/>
+    </pipeline>
+  </mode>
+
+
+CONFIGURATION FILES FOR LINGUISTIC DATA PACKAGES
+
+A directory named conf-samples is included in this package with configuration files for Spanish, Galician, Catalan and English. These configuration files should be included in the package for a particular language pair (for example, es-pn.dat and gl-pn.dat for the es-gl pair). A new mode should be included as well as stated before. Besides that, it is necessary to modify the file Makefile.am so that the new configuration files are taken into account; these changes are very simple (note: these instructions might change depending on your installation):
+
+1) Add "$(LANG1)-pn.dat" and "$(LANG2)-pn.dat" to the variables "EXTRA_DIST" and "apertium_es_gl_DATA".
+2) Add the following two lines to the "install_data_local" target:
+
+	$(INSTALL_DATA) $(PREFIX1)-pn.mode $(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX2)-pn.mode $(apertium_es_modesdir)
+
+
+FORMAT OF THE CONFIGURATION FILES
+
+The file that controls the behaviour of the simple NE recognizer consists of the following sections:
+
+** Section <FunctionWords> lists the function words that can be embeeded inside a proper noun (e.g. preposisions and articles such as those in "Banco de España" or "Foundation for the Eradication of Poverty"). For instance:
+
+<FunctionWords>
+el
+la
+los
+las
+de
+del
+para
+</FunctionWords>
+
+
+** Section <SpecialPunct> lists the punctuation symbols after which a capitalized word may be indicating just a sentence or clause beginning and not necessarily a named entity. Typical cases are colon, open parenthesis, dot, hyphen..
+
+<SpecialPunct>
+(
+)
+{
+.
+...
+:
+¿
+?
+¡
+!
+</SpecialPunct>
+
+** Section <Ignore> contains a list of forms (lowercased) or PoS tags (uppercased) that are not to be considered a named entity even when they appear capitalized in the middle of a sentence.  For instance, the word "Spanish" in the sentence "He started studying Spanish two years ago" is not a named entity. If the words in the list appear with other capitalized words, they are considered to form a named entity (e.g. "An announcement of the Spanish Bank of Commerce was issued yesterday"). The same distinction applies to the word "I" in the sentences "whatever you say, I don't believe", and "That was the death of Henry I".
+
+  Each word or tag is followed by a 0 or 1 indicating whether
+  the ignore condition is strict (0: non-strict, 1:
+  strict).  The entries marked as non-strict will have the
+  behaviour described above.  The entries marked as strict will
+  never be considered named entities or NE parts.
+
+  For instance, the following <Ignore> section states that
+  the word ``I'' is not to be a proper noun ("whatever you say,
+  I don't believe") unless some of its neighbour words are ("That 
+  was the death of Henry I·). 
+  It also states that any word with the NP tag must never be 
+  considered as possible NEs, so that words that have been
+  found in Apertium dictionary as <np> will not be prevented
+  from beig translated.
+
+<Ignore>
+i  0
+NP 1
+</Ignore>
+
+
+** Section <Names> contains a list of lemmas that may be names, even
+   if they conflict with some of the heuristic criteria used by the NE
+   recognizer. This is useful when they appear capitalized at sentence
+   beggining. For instance, the basque name "Miren" (Mary) or the
+   nickname "Pelé" may appear at the beggining of a Spanish
+   sentence. Since both of them are verbal forms in Spanish, they
+   would not be considered candidates to form named entities.
+ 
+   Including the form in the <Names> section, causes them to be
+   considered as if they had a noun or adjective PoS, and thus,
+   to be marked as a proper noun.
+<Names>
+miren
+pelé
+</Names>
+
+
+** Sections <NounAdj>, <ClosedCats> and <DateNumPunct> control
+  the lists of Part-of-Speech tags that are used to determine
+  whether a sentence-beginning word has some tag that behaves as Noun or Adj
+  (meaning that is a possible proper noun),
+  or any tag that is a closed category (meaning that will never be 
+  considered a proper noun), or one of
+  date/punctuation/number (also indicating not a proper noun)
+
+  For instance:
+
+<NounAdj>
+n
+adj
+</NounAdj>
+
+<ClosedCats>
+predet
+preadv
+def
+det
+dem
+pr
+cnjadv
+cnjcoo
+cnjsub
+</ClosedCats>
+
+<DateNumPunct>
+num
+sent
+cm
+lquest
+lpar
+rpar
+</DateNumPunct>
+
+  
+** Section <TitleLimit> contains only one line with an integer
+  value stating the length beyond which a sentence written 
+  entirely in uppercase will be considered a title and not a 
+  proper noun. Example:
+
+<TitleLimit>
+3
+</TitleLimit>
+
+  If TitleLimit=0 (the default) title detection is deactivated (i.e,
+  all-uppercase sentences are always marked as named entities).
+
+  The idea of this heuristic is that newspaper titles are usually
+  written in uppercase, and tend to have at least two or three
+  words, while named entities written in this way tend to be acronyms
+  (e.g. IBM, DARPA, ...) and usually have at most one or two words.
+
+  For instance, if TitleLimit=3 the headline
+  "FREELING ENTERS NASDAC UNDER CLOSE OBSERVATION OF MARKET ANALYSTS"
+  will not be recognized as a named entity, and will have its words analyzed
+  independently. On the other hand, the sentence "IBM INC.", having less than
+  3 words, will be considered a proper noun.
+
+  Obviously this heuristic is not 100% accurate, but in some cases
+  (e.g. if you are analyzing newspapers) it may be preferrable to the
+  default behaviour (which is not 100% accurate, either).
+  
+
+CONTACT
+
+Lluis Padro (padro@lsi.upc.es), Universitat Politècnica de Catalunya
+Juan Antonio Pérez-Ortiz (japerez@dlsi.ua.es), Universitat d'Alacant
+
+
+ACKNOWLEDGEMENTS
+
+Authors thank imaxin|software (http://www.imaxin.com) and Xunta de Galicia for supporting this project.
+
