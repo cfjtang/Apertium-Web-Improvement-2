@@ -17,7 +17,7 @@ class IRSTLMRanker: public Ranker
 	IRSTLMRanker();
         IRSTLMRanker(const string& file_path);
         ~IRSTLMRanker();
-        void inline score(Hypothesis& h);
+        inline void score(Hypothesis& h);
         // void rank(std::list<Hypothesis>& hypotheses);
     private:
         lmtable *lmtb;

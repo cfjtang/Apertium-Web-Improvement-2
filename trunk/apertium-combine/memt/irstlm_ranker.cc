@@ -1,6 +1,6 @@
 #include "ranker.hh"
 #include "irstlm_ranker.hh"
-#include <apertium/utf_converter.h>
+#include <utf_converter.h>
 
 IRSTLMRanker::IRSTLMRanker(const string& file_path)
 {
