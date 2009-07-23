@@ -80,11 +80,6 @@ void inline Alignment::match()
             }
         }
     }
-    wfstream oute("out", ios::out);
-    for (unsigned int j = 0; j < _words_right.size(); ++j) 
-        for (unsigned int i = 0; i < _words_left.size(); ++i) 
-            oute << matching[j][i] << endl;
-    oute.close();
 }
 
 /*** unmatch already aligned words
