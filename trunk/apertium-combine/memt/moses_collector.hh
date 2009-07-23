@@ -45,7 +45,7 @@ class MosesCollector : public Collector {
 public:
 	Parameter *parameter;
 
-        MosesCollector(int argc, char **argv);
+        MosesCollector(int argc, char **argv, FILE *buffer);
 	~MosesCollector();
 
 	wstring* translate(const wstring *block);

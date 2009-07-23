@@ -34,7 +34,7 @@
 using namespace std;
 using namespace Moses;
 
-MosesCollector::MosesCollector(int argc, char **argv)
+MosesCollector::MosesCollector(int argc, char **argv, FILE *buffer)
 {
 	const string filePath = "/home/fran/statmt/corpora5/model/moses.ini";
 	parameter = new Moses::Parameter();
