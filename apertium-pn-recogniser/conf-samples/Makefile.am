@@ -1,0 +1,5 @@
+
+CLEANFILES = *~
+
+EXTRA_DIST = *
+
