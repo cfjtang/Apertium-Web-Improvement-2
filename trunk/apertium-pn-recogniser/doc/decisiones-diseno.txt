@@ -1,0 +1,45 @@
+
+This document is in Spanish. It presents the motivations for the current implementation of the proper noun recogniser and shows possible alternatives.
+
+
+Decisiones de diseño de apertium-pn-recogniser
+----------------------------------------------
+
+Ubicación del detector de nombres propios
+-----------------------------------------
+
+Para más información sobre los distintos módulos y programas de Apertium, puede consultarse la documentación de Apertium.
+
+El módulo de detección de nombres propios necesita conocer para alguna de sus heurísticas información sobre la categoría léxica de los candidatos. Dado que con los programas actuales la obtención aislada del análisis morfológico de una palabra concreta implicaría lanzar cada vez una instancia del proceso lt-proc, parece aconsejable aprovecharse de la información morfológica obtenida en la fase de análisis de Apertium durante el propio proceso de traducción. Por otro lado, dado que el detector de nombres propios trabaja sobre la lengua origen, no puede ubicarse después del módulo de transferencia. Por tanto, existen, en definitiva, dos posibles ubicaciones razonables del sistema de detección de nombres propios: antes o después del desambiguador categorial (tagger).
+
+En esta implementación, se ha decidido ubicar el sistema de detección de nombres propios inmediatamente a continuación del tagger para reducir la complejidad del tratamiento de entradas ambigüas con más de un análisis morfológico. 
+Cabría también estudiar en otro proyecto el comportamiento del sistema cuando el detector de nombres propios se ubica antes del tagger y trabaja con posiblemente más de un análisis morfológico para algunas entradas; de hecho, marcar los nombres propios detectados con la categoría correspondiente podría ayudar al tagger a mejorar sus estimaciones.
+En esta segunda opción, se deberían distinguir los nombres propios detectados por el reconocedor de los encontrados en el diccionario de Apertium, ya que los primeros no deben ser buscados en el diccionario bilingüe.
+
+
+Qué hacer con los nombres propios detectados
+--------------------------------------------
+
+* Encapsularlos dentro de un superblanco especial, que se eliminaría al final de la tubería de Apertium. En este caso, el resto de módulos de Apertium ignorarían el nombre propio, pero la solución plantea un problema en el módulo de transferencia: al estar encapsulado el nombre propio, el módulo de transferencia lo ignora, lo que puede provocar que se active una regla de transferencia que involucre las palabras anterior y posterior al nombre propio; esto podría producir traducciones desconcertantes, además de que el nombre propio podría cambiar de lugar en el sintagma en función de las manipulaciones de la regla de transferencia.
+
+* Marcarlos con la etiqueta <np> y dejar que el resto de módulos de Apertium lo traten como una palabra más, con la idea de que el módulo de transferencia pueda incluso aplicar alguna regla que involucre al nombre propio. Sin embargo, el módulo de transferencia considera una situación anómala el hecho de encontrar una forma analizada que no aparece en el diccionario bilingüe. Actualmente se marca de forma especial esta situación (con el carácter @) por lo que podría detectarse la situación para eliminar dicha marca; aun así, esto haría el sistema dependiente del mecanismo de gestión de errores de Apertium, lo que no parece muy aconsejable. Queda también por ver si el módulo de transferencia es capaz de emparejar un sintagma con un nombre propio que no aparece en el bilingüe con alguna de las reglas definidas porque podría darse el caso de que no se active (pruebas preliminares parecen apuntar a que sí lo hace).
+
+Hay, por otro lado, dos circunstancias más que desaconsejan seguir esta aproximación. El módulo de transferencia del par es-gl no incluye actualmente ninguna regla en la que estén implicados nombres propios. Pero si algún día la incluyera, esta posiblemente necesitaría diferenciar el caso de los nombres propios de lugar (np.loc) de los de personas (np.ant), pero el sistema actual de detección de nombres propios no puede diferenciarlos.
+
+* Opción elegida. Marcar los nombres propios detectados con la marca de palabra desconocida (*) y con una marca adicional especial que permita diferenciarlos del resto de palabras desconocidas. De esta manera, se evita el problema de que el módulo de transferencia dispare una regla que incluya a las palabras anterior y posterior al nombre propio. La marca adicional especial se elimina al final de la tubería de Apertium.
+
+
+Tratamiento de las unidades multipalabra
+----------------------------------------
+
+El detector de nombres propios no debe tratar las multipalabras detectadas por el analizador morfológico. Aislar y marcar como nombre propio un constituyente de una multipalabra dejaría el resto de la multipalabra sin posibilidad de ser tratada adecuamente por el resto de módulos de Apertium. Por ello, las unidades multipalabra son ignoradas directamente por el detector de nombres propios como sigue:
+
+El detector de nombres propios usa la función processWord sobre todas las entradas, pero no intenta marcar como nombre propio aquellas en las que la función detecta al menos un espacio en blanco en la forma superficial (es decir, las multipalabras). En cualquier caso, el detector sí sabe que están ahí, por ejemplo, para no considerar que la palabra inmediatamente posterior está al principio de una frase.
+
+
+Estadísticas del detector de nombres propios
+--------------------------------------------
+
+Dado que el detector de nombres propios trabaja con heurísticas, la mejor forma de tratarlos adecuadamente es insertándolos explícitamente en los diferentes diccionarios de Apertium. Para ayudar a esta tarea se podría añadir al detector de nombres propios un método que vuelque en un fichero los nombres propios detectados (o incluso los candidatos rechazados con poco margen si el detector manejara probabilidades, lo cual nos el caso actualmente) y recoger, posteriormente, los más frecuentes para añadirlos a los diccionarios (tras filtrarlos e identificar si son nombres de lugar o de persona). Nótese que el hecho de que el detector de nombres de propios detecte adecuadamente un determinado nombre propio no implica que lo vaya a hacer siempre (por ejemplo, puede detectarlo a mitad de frase, pero no a comienzo), por lo que añadirlo a los diccionarios no puede hacer sino mejorar la calidad de las traducciones automáticas.
+
+
