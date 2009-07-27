@@ -3,7 +3,7 @@
 <tagger name="swedish">
 <tagset>
    <def-label name="PREP" closed="true">
-    <tags-item tags="pr.*"/>
+    <tags-item tags="pr"/>
   </def-label>
   <def-label name="PRNTONIC" closed="true">
     <tags-item tags="prn.tn.*"/>
@@ -44,6 +44,12 @@
   <def-label name="DETPOS" closed="true">
     <tags-item tags="det.pos.*"/>
   </def-label>
+  <def-label name="DETORD" closed="true">
+    <tags-item tags="det.ord.*"/>
+  </def-label>
+  <def-label name="DETQNT" closed="true">
+    <tags-item tags="det.qnt.*"/>
+  </def-label>
   <def-label name="INTERJECCIONS" closed="true">
     <tags-item tags="ij"/>
   </def-label>
@@ -54,7 +60,7 @@
     <tags-item tags="np.*"/>
   </def-label>
   <def-label name="NOMSNEUTREUTRE">
-    <tags-item tags="n.nu.*"/>
+    <tags-item tags="n.un.*"/>
   </def-label>
   <def-label name="NOMSNEUTRE">
     <tags-item tags="n.nt.*"/>
@@ -64,6 +70,9 @@
   </def-label>
   <def-label name="ADV">
     <tags-item tags="adv"/>
+  </def-label>
+  <def-label name="ADVS">
+    <tags-item tags="adv.*"/>
   </def-label>
   <def-label name="ADVPOS">
     <tags-item tags="adv.pos"/>
@@ -77,32 +86,8 @@
   <def-label name="NUM">
     <tags-item tags="num"/>
   </def-label>
-  <def-label name="VBHARINF" closed="true">
-    <tags-item tags="vbhar.inf"/>
-  </def-label>
-  <def-label name="VBHARPRS" closed="true">
-    <tags-item tags="vbhar.prs"/>
-  </def-label>
-  <def-label name="VBHARDA" closed="true">
-    <tags-item tags="vbhar.da"/>
-  </def-label>
-  <def-label name="VBHARPRET" closed="true">
-    <tags-item tags="vbhar.part"/>
-  </def-label>
-  <def-label name="VBERINF" closed="true">
-    <tags-item tags="vber.inf"/>
-  </def-label>
-  <def-label name="VBERPRS" closed="true">
-    <tags-item tags="vber.prs"/>
-  </def-label>
-  <def-label name="VBERDA" closed="true">
-    <tags-item tags="vber.da"/>
-  </def-label>
-  <def-label name="VBERPRET" closed="true">
-    <tags-item tags="vber.part"/>
-  </def-label>  
-   <def-label name="VBMODPRS" closed="true">
-    <tags-item tags="vbmod.prs"/>
+  <def-label name="NUMS">
+    <tags-item tags="num.*"/>
   </def-label>
   <def-label name="VBMODDA" closed="true">
     <tags-item tags="vbmod.da"/>
@@ -112,6 +97,27 @@
   </def-label>
   <def-label name="VBMODINF" closed="true">
     <tags-item tags="vbmod.inf"/>
+  </def-label>
+  <def-label name="VBMODINFS" closed="true">
+    <tags-item tags="vbmod.inf.*"/>
+  </def-label>
+  <def-label name="VBMODPRES" closed="true">
+    <tags-item tags="vbmod.pres"/>
+  </def-label>
+  <def-label name="VBMODPRESS" closed="true">
+    <tags-item tags="vbmod.pres.*"/>
+  </def-label>
+  <def-label name="VBMODPAST" closed="true">
+    <tags-item tags="vbmod.past"/>
+  </def-label>
+  <def-label name="VBMODPASTS" closed="true">
+    <tags-item tags="vbmod.past.*"/>
+  </def-label>
+  <def-label name="VBMODSUPN" closed="true">
+    <tags-item tags="vbmod.supn.*"/>
+  </def-label>
+  <def-label name="VBMODPPRES" closed="true">
+    <tags-item tags="vbmod.ppres"/>
   </def-label>
    <def-label name="VBAUXPRS" closed="true">
     <tags-item tags="vbaux.prs"/>
@@ -138,16 +144,88 @@
     <tags-item tags="vbs.inf"/>
   </def-label>  
    <def-label name="VBLEXPRS" closed="true">
-    <tags-item tags="vblex.prs"/>
+    <tags-item tags="vblex.pres.*"/>
   </def-label>
   <def-label name="VBLEXDA" closed="true">
-    <tags-item tags="vblex.da"/>
+    <tags-item tags="vblex.past.*"/>
   </def-label>
   <def-label name="VBLEXPART" closed="true">
-    <tags-item tags="vblex.part"/>
+    <tags-item tags="vblex.pp.*"/>
+  </def-label>
+  <def-label name="VBLEXPPRES" closed="true">
+    <tags-item tags="vblex.ppres"/>
   </def-label>
   <def-label name="VBLEXINF" closed="true">
-    <tags-item tags="vblex.inf"/>
+    <tags-item tags="vblex.inf.*"/>
+  </def-label>
+  <def-label name="VBLEXIMP" closed="true">
+    <tags-item tags="vblex.imp"/>
+  </def-label>
+  <def-label name="VBLEXSUPN" closed="true">
+    <tags-item tags="vblex.supn"/>
+  </def-label>
+  <def-label name="VBLEXSUPNS" closed="true">
+    <tags-item tags="vblex.supn.*"/>
+  </def-label>
+  <def-label name="VBSERIMP" closed="true">
+    <tags-item tags="vbser.imp"/>
+  </def-label>
+  <def-label name="VBSERINF" closed="true">
+    <tags-item tags="vbser.inf.*"/>
+  </def-label>
+  <def-label name="VBSERPAST" closed="true">
+    <tags-item tags="vbser.past.*"/>
+  </def-label>
+  <def-label name="VBSERPRES" closed="true">
+    <tags-item tags="vbser.pres.*"/>
+  </def-label>
+  <def-label name="VBSERSUPN" closed="true">
+    <tags-item tags="vbser.supn.*"/>
+  </def-label>
+  <def-label name="VBSERPPRES" closed="true">
+    <tags-item tags="vbser.ppres"/>
+  </def-label>
+  <def-label name="VBSERPPRESS" closed="true">
+    <tags-item tags="vbser.ppres.*"/>
+  </def-label>
+  <def-label name="VBHAVERPRES" closed="true">
+    <tags-item tags="vbhaver.pres.*"/>
+  </def-label>
+  <def-label name="VBHAVERPAST" closed="true">
+    <tags-item tags="vbhaver.past.*"/>
+  </def-label>
+  <def-label name="VBHAVERPPRES" closed="true">
+    <tags-item tags="vbhaver.ppres"/>
+  </def-label>
+  <def-label name="VBHAVERIMP" closed="true">
+    <tags-item tags="vbhaver.imp"/>
+  </def-label>
+  <def-label name="VBHAVERINF" closed="true">
+    <tags-item tags="vbhaver.inf.*"/>
+  </def-label>
+  <def-label name="VBHAVERSUPN" closed="true">
+    <tags-item tags="vbhaver.supn.*"/>
+  </def-label>
+  <def-label name="VBHAVERPP" closed="true">
+    <tags-item tags="vbhaver.pp.*"/>
+  </def-label>
+  <def-label name="VAUXINF" closed="true">
+    <tags-item tags="vaux.inf"/>
+  </def-label>
+  <def-label name="VAUXPRES" closed="true">
+    <tags-item tags="vaux.pres"/>
+  </def-label>
+  <def-label name="VAUXPAST" closed="true">
+    <tags-item tags="vaux.past"/>
+  </def-label>
+  <def-label name="VAUXPASTS" closed="true">
+    <tags-item tags="vaux.past.*"/>
+  </def-label>
+  <def-label name="VAUXSUPN" closed="true">
+    <tags-item tags="vaux.supn"/>
+  </def-label>
+  <def-label name="VAUXSUPNS" closed="true">
+    <tags-item tags="vaux.supn.*"/>
   </def-label>
 </tagset>
 
