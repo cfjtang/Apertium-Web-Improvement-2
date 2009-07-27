@@ -14,7 +14,9 @@ lines = {};
 
 for line in sys.stdin.read().split('\n'): #{
 
-	if  line.count('<section') > 0: #{
+	#if line.count('<section') > 0: #{
+
+	if line.count('<section id="unchecked" type="standard">') >0:#{
 		o = 1;
 	elif line.count('</section') > 0: #{
 		o = 0;
