@@ -200,6 +200,11 @@
   <def-label name="VBHAVERIMP" closed="true">
     <tags-item tags="vbhaver.imp"/>
   </def-label>
+  <def-label name="IMP" closed="true">
+    <tags-item tags="vblex.imp"/>
+    <tags-item tags="vbser.imp"/>
+    <tags-item tags="vbhaver.imp"/>
+  </def-label>
   <def-label name="VBHAVERINF" closed="true">
     <tags-item tags="vbhaver.inf.*"/>
   </def-label>
@@ -227,6 +232,13 @@
   <def-label name="VAUXSUPNS" closed="true">
     <tags-item tags="vaux.supn.*"/>
   </def-label>
+
+   <def-label name="VB" closed="true">
+    <tags-item tags="vblex.*"/>
+    <tags-item tags="vbser.*"/>
+    <tags-item tags="vbhaver.*"/>
+  </def-label>
+
 </tagset>
 
   <forbid>
@@ -996,6 +1008,24 @@
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBS"/>
+    </label-sequence>	
+
+    <label-sequence>
+      <label-item label="NOMSNEUTREUTRE"/>
+      <label-item label="IMP"/>
+    </label-sequence>	
+    <label-sequence>
+      <label-item label="NOMSNEUTRE"/>
+      <label-item label="IMP"/>
+    </label-sequence>	
+    <label-sequence>
+      <label-item label="NOMSUTRE"/>
+      <label-item label="IMP"/>
+    </label-sequence>	
+
+    <label-sequence>
+      <label-item label="VB"/>
+      <label-item label="IMP"/>
     </label-sequence>	
     </forbid>
 </tagger>
