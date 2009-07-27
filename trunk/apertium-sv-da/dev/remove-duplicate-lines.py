@@ -25,11 +25,18 @@ for line in sys.stdin.read().split('\n'): #{
 		continue;
 	#}	
 
-	if line not in lines: #{
-		lines[line] = 1;
+	l = '';
+	if line.count('<e lm') > 0: #{
+		l = line.split('">')[0].replace(' ', '');
+	#}
+
+	#}
+	if l not in lines: #{
+		lines[l] = 1;
 		print line;
 	else: #{
-		lines[line] = lines[line] + 1;
+		lines[l] + 1;
+		#print '-', line;
 	#}
 
 #}
