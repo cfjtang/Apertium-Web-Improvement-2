@@ -27,7 +27,10 @@ for line in sys.stdin.read().split('\n'): #{
 
 	l = '';
 	if line.count('<e lm') > 0: #{
+		r = line.split('__')[1].split('"')[0];
 		l = line.split('">')[0].replace(' ', '');
+
+		l = l + r;
 	#}
 
 	#}
