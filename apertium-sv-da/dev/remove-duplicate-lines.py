@@ -22,11 +22,6 @@ for line in sys.stdin.read().split('\n'): #{
 		o = 0;
 	#}
 	
-	if o == 0 or line.count('<e lm') < 1: #{
-		print line;
-		continue;
-	#}	
-
 	l = '';
 	if line.count('<e lm') > 0: #{
 		r = line.split('__')[1].split('"')[0];
@@ -34,6 +29,12 @@ for line in sys.stdin.read().split('\n'): #{
 
 		l = l + r;
 	#}
+
+	if o == 0 or line.count('<e lm') < 1: #{
+		print line;
+		lines[l] = 1;
+		continue;
+	#}	
 
 	#}
 	if l not in lines: #{
