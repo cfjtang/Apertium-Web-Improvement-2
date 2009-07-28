@@ -158,17 +158,11 @@
   <def-label name="VBLEXINF" closed="true">
     <tags-item tags="vblex.inf.*"/>
   </def-label>
-  <def-label name="VBLEXIMP" closed="true">
-    <tags-item tags="vblex.imp"/>
-  </def-label>
   <def-label name="VBLEXSUPN" closed="true">
     <tags-item tags="vblex.supn"/>
   </def-label>
   <def-label name="VBLEXSUPNS" closed="true">
     <tags-item tags="vblex.supn.*"/>
-  </def-label>
-  <def-label name="VBSERIMP" closed="true">
-    <tags-item tags="vbser.imp"/>
   </def-label>
   <def-label name="VBSERINF" closed="true">
     <tags-item tags="vbser.inf.*"/>
@@ -197,10 +191,7 @@
   <def-label name="VBHAVERPPRES" closed="true">
     <tags-item tags="vbhaver.ppres"/>
   </def-label>
-  <def-label name="VBHAVERIMP" closed="true">
-    <tags-item tags="vbhaver.imp"/>
-  </def-label>
-  <def-label name="IMP" closed="true">
+  <def-label name="IMP">
     <tags-item tags="vblex.imp"/>
     <tags-item tags="vbser.imp"/>
     <tags-item tags="vbhaver.imp"/>
@@ -233,7 +224,7 @@
     <tags-item tags="vaux.supn.*"/>
   </def-label>
 
-   <def-label name="VB" closed="true">
+   <def-label name="VB">
     <tags-item tags="vblex.*"/>
     <tags-item tags="vbser.*"/>
     <tags-item tags="vbhaver.*"/>
