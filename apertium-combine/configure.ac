@@ -1,12 +1,12 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.52)
+AC_PREREQ(2.61)
 
 m4_define([required_lttoolbox_version], [3.1])
 m4_define([required_apertium_version], [3.1])
 
-AC_INIT([apertium-tagger-training-tools], [0.5.0], [ftyers@prompsit.com])
+AC_INIT([apertium-combine], [0.5.0], [ftyers@prompsit.com])
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -31,8 +31,8 @@ AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 
 # Checks for programs.
 
-AC_MSG_CHECKING([Compilation architecture: PPC, i686, Other])
 ARCH=$(/bin/uname -m)
+AC_MSG_CHECKING([Compilation architecture: PPC, i686, Other])
 if test x$ARCH = xppc
 then
   AC_MSG_RESULT([PowerPC])
@@ -56,6 +56,23 @@ AC_PROG_CXX
 AM_SANITY_CHECK
 AC_LANG_CPLUSPLUS
 
+
+
+AC_ARG_WITH(irstlm,
+            [AC_HELP_STRING([--with-irstlm=PATH], [(optional) path to IRST's LM toolkit])],
+            [with_irstlm=$withval],
+            [with_irstlm=no]
+           )
+
+
+AC_ARG_WITH(moses,
+            [AC_HELP_STRING([--with-moses=PATH], [(optional) path to Moses SMT toolkit])],
+            [with_moses=$withval],
+            [with_moses=no]
+           )
+
+
+
 AC_ARG_ENABLE(debug,
               [  --enable-debug    Enable "-g -Wall" compiler options], 
               [CXXFLAGS="-g -Wall"; CFLAGS="-g -Wall"])
@@ -74,8 +91,6 @@ then
   AC_MSG_ERROR([You don't have bash installed.])
 fi
 
-AC_PATH_PROG(APERTIUM_DESTXT, apertium-destxt, no)
-
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test x$ac_cv_path_PKG_CONFIG = x
 then
@@ -88,6 +103,8 @@ fi
 
 PKG_CHECK_MODULES(LTTOOLBOX, [lttoolbox-3.1 >= required_lttoolbox_version], CPPFLAGS="$CPPFLAGS $LTTOOLBOX_CFLAGS"; LIBS="$LIBS $LTTOOLBOX_LIBS")
 PKG_CHECK_MODULES(APERTIUM, [apertium-3.1 >= required_apertium_version], CPPFLAGS="$CPPFLAGS $APERTIUM_CFLAGS"; LIBS="$LIBS $APERTIUM_LIBS")
+
+AC_PATH_PROG(APERTIUM_DESTXT, apertium-destxt, no)
 
 if test "x$with_irstlm" != 'xno'
 then
