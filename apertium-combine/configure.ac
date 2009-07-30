@@ -56,22 +56,20 @@ AC_PROG_CXX
 AM_SANITY_CHECK
 AC_LANG_CPLUSPLUS
 
-
+AM_CONDITIONAL([IRSTLM], true)
+AM_CONDITIONAL([MOSES], true)
 
 AC_ARG_WITH(irstlm,
-            [AC_HELP_STRING([--with-irstlm=PATH], [(optional) path to IRST's LM toolkit])],
+            [AC_HELP_STRING([--with-irstlm=PATH], [(mandatory) path to IRST's LM toolkit])],
             [with_irstlm=$withval],
             [with_irstlm=no]
            )
 
-
 AC_ARG_WITH(moses,
-            [AC_HELP_STRING([--with-moses=PATH], [(optional) path to Moses SMT toolkit])],
+            [AC_HELP_STRING([--with-moses=PATH], [(mandatory) path to Moses SMT toolkit])],
             [with_moses=$withval],
             [with_moses=no]
            )
-
-
 
 AC_ARG_ENABLE(debug,
               [  --enable-debug    Enable "-g -Wall" compiler options], 
@@ -129,7 +127,7 @@ then
   LDFLAGS="$LDFLAGS -L${with_irstlm}/lib/${MY_ARCH}"
   LIBS="$LIBS $LIB_IRSTLM"
   FMTLIBS="$FMTLIBS libirstlm.a"
-  AM_CONDITIONAL([IRST_LM], true)
+  AM_CONDITIONAL([IRSTLM], true)
 fi
 
 if test "x$with_moses" != 'xno'
