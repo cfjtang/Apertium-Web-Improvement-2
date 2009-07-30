@@ -110,6 +110,11 @@
       <cat-item lemma="haber" tags="vbhaver.*"/>
     </def-cat>
 
+    <def-cat n="essere">
+      <cat-item lemma="essere" tags="vblex.*"/>
+      <cat-item lemma="essere" tags="vbser.*"/>
+    </def-cat>
+
     <def-cat n="estar">
       <cat-item lemma="estar" tags="vblex.*"/>
     </def-cat>
@@ -428,7 +433,19 @@
 
   <section-def-lists>
 
-
+ <def-list n="auxser">
+      <list-item v="andare"/>
+      <list-item v="arrivare"/>
+      <list-item v="partire"/>
+      <list-item v="stare"/>
+      <list-item v="cadere"/>
+      <list-item v="bastare"/>
+      <list-item v="diventare"/>
+      <list-item v="divenire"/>
+      <list-item v="morire"/>
+      <list-item v="piacere"/>
+      <list-item v="tornare"/>
+    </def-list>
 
 
     <def-list n="temporales">
@@ -5073,44 +5090,49 @@
    
     
   
- <!--  
- <rule comment="REGLA: HABER PP ">
+  
+ <rule comment="REGLA: ESSERE PP ">
       <pattern>
-	<pattern-item n="haber"/>
-	<pattern-item n="ppmsg"/>
+	<pattern-item n="essere"/>
+	<pattern-item n="pp"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="canvia_fts">
-	  <with-param pos="1"/>
-	</call-macro>
 	<choose>
 	  <when>
 	    <test>
-	      <equal>
-		<clip pos="2" side="tl" part="auxiliar"/>
-		<lit-tag v="auxser"/>
-	      </equal>
+	    <in caseless="yes">
+	      <clip pos="2" side="sl" part="lem"/>
+	      <list n="auxser"/>
+	    </in>
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/>
-	      <lit v="essere"/>
+	      <lit v="haber"/>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <lit-tag v="vbser"/>
+	      <lit-tag v="vbhaver"/>
 	    </let>
 	    <let>
 	      <var n="lemachunk"/>
-	      <lit v="essere_pp"/>
+	      <lit v="haber_pp"/>
+	    </let>
+	    <let>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	    <let>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
 	  <otherwise>
 	    <let>
 	      <var n="lemachunk"/>
-	      <lit v="avere_pp"/>
+	      <lit v="ser_pp"/>
 	    </let>
 	  </otherwise>
 	</choose>
@@ -5140,6 +5162,7 @@
       </action>
     </rule>  
 
+<!--
 <rule comment="REGLA: HABER MOD INF ">
       <pattern>
 	<pattern-item n="haber"/>
