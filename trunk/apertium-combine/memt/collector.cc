@@ -44,25 +44,61 @@ void
 Collector::collect(FILE *input, FILE *output, FILE *buffer)
 {
 	wstring buf = L"";
-	int seen = 0;
+	bool escape = false;
+	bool superblank = false;
 
 	while(wchar_t val = static_cast<wchar_t>(fgetwc(input))) {
 
 		if(feof(input)) {
 			return;
 		}	
-		buf = buf + val;
 
-		if(seen == 0 && val == L'[') {
-			seen++;
+		if(val == L'\\') {
+			escape = true;
+		}
+		
+		if(!superblank && val != L'[') {
+			buf = buf + val;
 		}
 
-		if(seen == 1 && val == L']') {
-			seen++;
-		}
+		if(!escape && val == L'[') {
+			superblank = true;
 
-                if(seen == 2) {
-			wcerr << L"BUF: " << buf << endl;
+			wstring *translation = translate(&buf);
+			wcerr << L"TRA: " << *translation << endl;
+			fputws(buf.c_str(), output);
+			fputws(translation->c_str(), buffer);
+
+			buf = L"";
+			buf = buf + val;
+
+			while(wchar_t inval = static_cast<wchar_t>(fgetwc(input))) {
+				if(val == L'\\') {
+					escape = true;
+				}
+
+				if(!escape && inval == L']') {
+					buf = buf + inval;
+					if(buf == L"[]") {
+						fputws(L".[]", buffer);
+						fputws(L".[]", output);
+					} else {
+	                                	fputws(buf.c_str(), buffer);
+						fputws(buf.c_str(), output);
+					}
+					buf = L"";
+					superblank = false;
+	
+					break;
+				}
+
+				buf = buf + inval;
+
+			}
+		} 
+		
+		
+/*
                         unsigned int len = buf.length() - 1;
                         if(buf[0] == L'[' && buf[len] == ']') {
                                 fputws(buf.c_str(), buffer);
@@ -71,11 +107,6 @@ Collector::collect(FILE *input, FILE *output, FILE *buffer)
                                 fputws(buf.c_str(), buffer);
                                 fputws(buf.c_str(), output);
                         } else {
-                                wstring *translation = translate(&buf);
-				wcerr << L"TRA: " << *translation << endl;
-					
-                                fputws(buf.c_str(), output);
-                                fputws(translation->c_str(), buffer);
 
 				wstring top = buf.substr(buf.length()-3, buf.length());
 
@@ -86,6 +117,7 @@ Collector::collect(FILE *input, FILE *output, FILE *buffer)
                         seen = 0;
                         buf = L"";
                 }
+*/
 	}
 	
 	return;
