@@ -142,8 +142,11 @@
   <def-label name="VLEXGER">
     <tags-item tags="vblex.ger"/>
   </def-label>
-  <def-label name="VLEXPARTPI">
-    <tags-item tags="vblex.pp.*"/>
+  <def-label name="VLEXPARTPI_SG">
+    <tags-item tags="vblex.pp.*.sg"/>
+  </def-label>
+  <def-label name="VLEXPARTPI_PL">
+    <tags-item tags="vblex.pp.*.pl"/>
   </def-label>
   <def-label name="VLEXPFCI">
     <tags-item tags="vblex.pri.*"/>
@@ -171,10 +174,15 @@
   <def-label name="VSERPARTPI" closed="true">
     <tags-item tags="vbser.pp.*"/>
   </def-label>
-  <def-label name="VSERPFCI" closed="true">
-    <tags-item tags="vbser.pri.*"/>
-    <tags-item tags="vbser.fti.*"/>
-    <tags-item tags="vbser.cni.*"/>
+  <def-label name="VSERPFCI_SG" closed="true">
+    <tags-item tags="vbser.pri.*.sg"/>
+    <tags-item tags="vbser.fti.*.sg"/>
+    <tags-item tags="vbser.cni.*.sg"/>
+  </def-label>
+  <def-label name="VSERPFCI_PL" closed="true">
+    <tags-item tags="vbser.pri.*.pl"/>
+    <tags-item tags="vbser.fti.*.pl"/>
+    <tags-item tags="vbser.cni.*.pl"/>
   </def-label>
   <def-label name="VSERIPI" closed="true">
     <tags-item tags="vbser.pii.*"/>
@@ -1499,7 +1507,11 @@
       <label-item label="PRREL"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="VLEXPARTPI"/>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="PRREL"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VLEXPARTPI_PL"/>
       <label-item label="PRREL"/>
     </label-sequence>
     <label-sequence>
@@ -1853,6 +1865,14 @@
     <label-sequence>
       <label-item label="VMODALIMP"/>
       <label-item label="ADJPOS"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERPFCI_PL"/>
+      <label-item label="VLEXPARTPI_SG"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VSERPFCI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
     </label-sequence>
 
   </forbid>
