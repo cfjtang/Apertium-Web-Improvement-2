@@ -1,0 +1,15 @@
+
+
+Things to be implemented in version 0.2.0:
+
+1. Add a parameter to apertium-pn-recogniser which allows it to be used _before_ the tagger (when some words could have more than one lexical form).
+
+2. Tag detected proper names as <np> instead of marking them as unknown. A regular expression should be added in this case to the bilingual and generation dictionaries to process these automatically tagged proper names. This could be interesting if, for example, there are transfer rules which involve proper nouns. However, the current recogniser is not able to differentiate, for example, between anthroponyms <ant> and toponyms <loc>, which could introduce new problems.
+
+3. Group detected multiword proper nouns as a single item. Currently (check 'outputSentence' function in the code), the input "King of Gondor" is tagged as follows:
+
+  ^*_Added_by_Proper_Noun_Detector_King$ ^*_Added_by_Proper_Noun_Detector_of$ ^*_Added_by_Proper_Noun_Detector_Gondor$
+
+In the case of grouping words, superblanks (and other symbols) between these words should be concatenated at the end of the multiword, which could produce bad formatting in the output.
+
+
