@@ -62,16 +62,26 @@ Collector::collect(FILE *input, FILE *output, FILE *buffer)
 		}
 
                 if(seen == 2) {
-                        fputws(L".[]", output); // This is a hack because I can't work out how to get .[] output.
-                        fputws(L".[]", buffer); // This is a hack because I can't work out how to get .[] output.
+			wcerr << L"BUF: " << buf << endl;
                         unsigned int len = buf.length() - 1;
                         if(buf[0] == L'[' && buf[len] == ']') {
                                 fputws(buf.c_str(), buffer);
                                 fputws(buf.c_str(), output);
+			} else if(buf == L".[]") {
+                                fputws(buf.c_str(), buffer);
+                                fputws(buf.c_str(), output);
                         } else {
                                 wstring *translation = translate(&buf);
+				wcerr << L"TRA: " << *translation << endl;
+					
                                 fputws(buf.c_str(), output);
                                 fputws(translation->c_str(), buffer);
+
+				wstring top = buf.substr(buf.length()-3, buf.length());
+
+				if(top == L".[]") {	
+                                	fputws(buf.c_str(), buffer);
+				}
                         }
                         seen = 0;
                         buf = L"";

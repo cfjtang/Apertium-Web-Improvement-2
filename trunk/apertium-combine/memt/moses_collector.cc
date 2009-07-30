@@ -72,6 +72,8 @@ MosesCollector::tokenise(string &sentence)
 	ApertiumRE my_re;
 	
 	// This doesn't work yet 
+	my_re.compile("[']");
+	my_re.replace(sentence, " '");
 /*
 	my_re.compile("([^[[:alnum:]]\\s\\.\\'\\`\\,\\-])");
 	my_re.replace(sentence, " $1 ");
