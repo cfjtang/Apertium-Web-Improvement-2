@@ -136,6 +136,13 @@
       <cat-item tags="vblex.pp.*"/>
      </def-cat>
 
+    <def-cat n="pptot">
+      <cat-item tags="vblex.pp.*"/>
+      <cat-item tags="vbmod.pp.*"/>
+      <cat-item tags="vbhaver.pp.*"/>
+      <cat-item tags="vbser.pp.*"/>
+     </def-cat>
+
     <def-cat n="ppmsg">
       <cat-item tags="vblex.pp.m.sg"/>
       <cat-item tags="vbser.pp.m.sg"/>
@@ -4915,7 +4922,7 @@
     
  <rule comment="REGLA: PARTICIPIO">
       <pattern>
-	<pattern-item n="pp"/>
+	<pattern-item n="pptot"/>
       </pattern>
       <action>	
 	<call-macro n="firstWord">
@@ -5547,15 +5554,25 @@
 		  <clip pos="1" side="sl" part="temps"/>
 		  <lit-tag v="imp"/>
 		</equal>
+		<equal>
+		  <clip pos="1" side="sl" part="temps"/>
+		  <lit-tag v="prs"/>
+		</equal>
 	      </or>
 	    </test>
 	    <choose>
 	      <when>
 		<test>
+		  <or>
 		  <equal>
 		    <clip pos="1" side="sl" part="temps"/>
 		    <lit-tag v="pri"/>
 		  </equal>
+		  <equal>
+		    <clip pos="1" side="sl" part="temps"/>
+		    <lit-tag v="prs"/>
+		  </equal>
+		  </or>
 		</test>
 		<let>
 		  <clip pos="3" side="tl" part="temps"/>
@@ -5668,7 +5685,13 @@
 		    <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
 		  </tags> 
 		  <lu>
-		    <clip pos="1" side="tl" part="whole"/> 
+		    <clip pos="1" side="tl" part="lemh"/> 
+		    <clip pos="1" side="tl" part="a_verb"/>
+		    <clip pos="1" side="tl" part="temps"/>
+		    <clip pos="1" side="tl" part="pers"/>
+		    <clip pos="1" side="tl" part="gen"/>	 
+		    <clip pos="1" side="tl" part="nbr" />
+		    <clip pos="1" side="tl" part="lemq"/>
 		  </lu>
 		  <b pos="1"/>
 		  <lu>
@@ -5735,15 +5758,25 @@
 		  <clip pos="2" side="sl" part="temps"/>
 		  <lit-tag v="imp"/>
 		</equal>
+		<equal>
+		  <clip pos="2" side="sl" part="temps"/>
+		  <lit-tag v="prs"/>
+		</equal>
 	      </or>
 	    </test>
 	    <choose>
 	      <when>
 		<test>
+		  <or>
 		  <equal>
 		    <clip pos="2" side="sl" part="temps"/>
 		    <lit-tag v="pri"/>
 		  </equal>
+		  <equal>
+		    <clip pos="2" side="sl" part="temps"/>
+		    <lit-tag v="prs"/>
+		  </equal>
+		  </or>
 		</test>
 		<let>
 		  <clip pos="4" side="tl" part="temps"/>
@@ -5856,7 +5889,13 @@
 		    <tag><clip pos="2" side="tl" part="nbr"/></tag>	      
 		  </tags> 
 		  <lu>
-		    <clip pos="2" side="tl" part="whole"/> 
+		    <clip pos="2" side="tl" part="lemh"/> 
+		    <clip pos="2" side="tl" part="a_verb"/>
+		    <clip pos="2" side="tl" part="temps"/>
+		    <clip pos="2" side="tl" part="pers"/>
+		    <clip pos="2" side="tl" part="gen"/>	 
+		    <clip pos="2" side="tl" part="nbr" />
+		    <clip pos="2" side="tl" part="lemq"/>
 		  </lu>
 		  <b pos="2"/>
 		  <lu>

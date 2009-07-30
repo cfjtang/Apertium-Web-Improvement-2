@@ -7,15 +7,6 @@
   <def-label name="QUEREL" closed="true">
     <tags-item lemma="che" tags="rel.*"/>
   </def-label>
-  <def-label name="COMOPR" closed="true">
-    <tags-item lemma="como" tags="pr"/>
-  </def-label>
-  <def-label name="COMOREL" closed="true">
-    <tags-item lemma="como" tags="rel.adv"/>
-  </def-label>
-  <def-label name="COMOVB" closed="true">
-    <tags-item lemma="comer" tags="vblex.pri.p1.sg"/>
-  </def-label>
   <def-label name="ACRONIMOM">
     <tags-item tags="n.acr.m.*"/>
   </def-label>
