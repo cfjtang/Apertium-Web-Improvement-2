@@ -21,6 +21,7 @@
 #include <cwchar>
 #include <string>
 #include <getopt.h>
+#include <libgen.h>
 
 #include "moses_collector.hh"
 

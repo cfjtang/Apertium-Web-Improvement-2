@@ -28,7 +28,7 @@
 #include "StaticData.h"
 #include "InputType.h"
 
-#include "apertium/utf_converter.h"
+#include "utf_converter.h"
 #include "moses_collector.hh"
 
 using namespace std;
