@@ -21,6 +21,7 @@
 #include <cwchar>
 #include <string>
 #include <stack>
+#include <pcre.h> // For tokenisation
 
 #include "Parameter.h"
 #include "Manager.h"
@@ -28,7 +29,12 @@
 #include "StaticData.h"
 #include "InputType.h"
 
+<<<<<<< .mine
+#include "apertium/apertium_re.h" // Also tokenisation
+#include "apertium/utf_converter.h"
+=======
 #include "utf_converter.h"
+>>>>>>> .r13447
 #include "moses_collector.hh"
 
 using namespace std;
@@ -36,7 +42,8 @@ using namespace Moses;
 
 MosesCollector::MosesCollector(int argc, char **argv, FILE *buffer)
 {
-	const string filePath = "/home/fran/statmt/corpora5/model/moses.ini";
+//	const string filePath = "/home/fran/statmt/corpora5/model/moses.ini";
+	const string filePath = "/home/fran/statmt/corpora-cy-en/model/moses.ini";
 	parameter = new Moses::Parameter();
 
         if (!parameter->LoadParam(filePath))
@@ -59,6 +66,42 @@ MosesCollector::~MosesCollector()
 //	delete parameter;
 }
 
+/*
+ *	This function replaces tokenizer.perl in the Moses scripts
+ */
+
+void
+MosesCollector::tokenise(string &sentence)
+{
+	ApertiumRE my_re;
+	
+	// This doesn't work yet 
+/*
+	my_re.compile("([^[[:alnum:]]\\s\\.\\'\\`\\,\\-])");
+	my_re.replace(sentence, " $1 ");
+
+	my_re.compile("([^\\p{N}])[,]([^\\p{N}])");
+	my_re.replace(sentence, "$1 , $2");
+	my_re.compile("([\\p{N}])[,]([^\\p{N}])");
+	my_re.replace(sentence, "$1 , $2");
+	my_re.compile("([\\p{N}])[,]([^\\p{N}])");
+	my_re.replace(sentence, "$1 , $2");
+
+	//my_re.compile("([^\\p{IsAlpha}])[']([^\\p{IsAlpha}])");
+	my_re.compile("([^[[:alpha:]]])['](^[[:alpha:]]])");
+	my_re.replace(sentence, "$1 ' $2");
+	my_re.compile("([^\\p{IsAlpha}\\p{IsN}])[']([\\p{IsAlpha}])");
+	my_re.replace(sentence, "$1 ' $2");
+	my_re.compile("([\\p{IsAlpha}])[']([^\\p{IsAlpha}])");
+	my_re.replace(sentence, "$1 ' $2");
+	//my_re.compile("([\\p{IsAlpha}])[']([\\p{IsAlpha}])");
+	my_re.compile("([[:alpha:]])[']([[:alpha:]])");
+	my_re.replace(sentence, "$1 '$2");
+*/
+
+	return;
+}
+
 wstring*
 MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 {
@@ -77,7 +120,10 @@ MosesCollector::translate(const wstring *wsblock) /* Best code ever */
 
         const StaticData &staticData = StaticData::Instance();
 
-	string in = UtfConverter::toUtf8(*wsblock);
+	wstring twsblock(*wsblock);
+	transform(twsblock.begin(), twsblock.end(), twsblock.begin(),towlower); 
+	string in = UtfConverter::toUtf8(twsblock);
+	tokenise(in);
 
         Sentence *s = new Sentence(Input);
 	s->CreateFromString(m_inputFactorOrder , in, string(" "));

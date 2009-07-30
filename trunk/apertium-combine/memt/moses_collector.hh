@@ -40,7 +40,8 @@ using namespace std;
 using namespace Moses;
 
 class MosesCollector : public Collector {
-
+private:
+	void tokenise(string &sentence);
 	
 public:
 	Parameter *parameter;
