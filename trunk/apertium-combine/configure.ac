@@ -52,7 +52,7 @@ else
 fi
 
 AC_PROG_CXX
-AC_PROG_LIBTOOL
+#AC_PROG_LIBTOOL
 AM_SANITY_CHECK
 AC_LANG_CPLUSPLUS
 
@@ -86,9 +86,61 @@ then
   AC_MSG_ERROR([You don't have pkg-config installed.])
 fi
 
-PKG_CHECK_MODULES(LTTOOLBOX, [lttoolbox-3.1 >= required_lttoolbox_version])
-  
-PKG_CHECK_MODULES(APERTIUM, [apertium-3.1 >= required_apertium_version])
+PKG_CHECK_MODULES(LTTOOLBOX, [lttoolbox-3.1 >= required_lttoolbox_version], CPPFLAGS="$CPPFLAGS $LTTOOLBOX_CFLAGS"; LIBS="$LIBS $LTTOOLBOX_LIBS")
+PKG_CHECK_MODULES(APERTIUM, [apertium-3.1 >= required_apertium_version], CPPFLAGS="$CPPFLAGS $APERTIUM_CFLAGS"; LIBS="$LIBS $APERTIUM_LIBS")
+
+if test "x$with_irstlm" != 'xno'
+then
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I${with_irstlm}/include"
+
+  AC_CHECK_HEADER(n_gram.h,
+                 [AC_DEFINE([HAVE_IRSTLM], [], [flag for IRSTLM])],
+                 [AC_MSG_ERROR([Cannot find IRSTLM!])])
+
+  if test $MACHTYPE
+  then
+    MY_ARCH=$MACHTYPE
+    echo $ECHO_N "THEN -> MY_ARCH=$MY_ARCH" >&6
+  else
+    MY_ARCH=`uname -m`
+    echo $ECHO_N "ELSE -> MY_ARCH=$MY_ARCH\n" >&6
+  fi
+
+  #MY_ARCH=`uname -m`
+  LIB_IRSTLM="-lirstlm"
+  LDFLAGS="$LDFLAGS -L${with_irstlm}/lib/${MY_ARCH}"
+  LIBS="$LIBS $LIB_IRSTLM"
+  FMTLIBS="$FMTLIBS libirstlm.a"
+  AM_CONDITIONAL([IRST_LM], true)
+fi
+
+if test "x$with_moses" != 'xno'
+then
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I${with_moses}/moses/src"
+
+  AC_CHECK_HEADER(Hypothesis.h,
+                 [AC_DEFINE([HAVE_MOSES], [], [flag for MOSES])],
+                 [AC_MSG_ERROR([Cannot find Moses!])])
+
+  if test $MACHTYPE
+  then
+    MY_ARCH=$MACHTYPE
+    echo $ECHO_N "THEN -> MY_ARCH=$MY_ARCH" >&6
+  else
+    MY_ARCH=`uname -m`
+    echo $ECHO_N "ELSE -> MY_ARCH=$MY_ARCH\n" >&6
+  fi
+
+  #MY_ARCH=`uname -m`
+  LIB_MOSES="-lmoses"
+  LDFLAGS="$LDFLAGS -L${with_moses}/moses/src"
+  LIBS="$LIBS $LIB_MOSES"
+  FMTLIBS="$FMTLIBS libmoses.a"
+  AM_CONDITIONAL([MOSES], true)
+fi
+
 
 # Checks for header files.
 AC_HEADER_STDC

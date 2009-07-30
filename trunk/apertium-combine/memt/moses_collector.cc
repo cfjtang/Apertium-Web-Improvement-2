@@ -29,12 +29,8 @@
 #include "StaticData.h"
 #include "InputType.h"
 
-<<<<<<< .mine
 #include "apertium/apertium_re.h" // Also tokenisation
 #include "apertium/utf_converter.h"
-=======
-#include "utf_converter.h"
->>>>>>> .r13447
 #include "moses_collector.hh"
 
 using namespace std;
