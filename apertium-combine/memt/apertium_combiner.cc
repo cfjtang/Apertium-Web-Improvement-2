@@ -3,6 +3,8 @@
 #include "alignment.hh"
 #include "hypotheses.hh"
 #include "irstlm_ranker.hh"
+#include "max_conseq_aligner.hh"
+#include "case_insensitive_matcher.hh"
 
 using namespace std;
 
@@ -25,20 +27,23 @@ int main(int argc, char** argv)
     while(file_in1 && file_in2) {
         wcout << endl;
         wcout << "### Align: " << input_line1 << " <with> " << input_line2 << endl;
-        Alignment a = Alignment(input_line1, input_line2);
-        a.align();
+        Alignment alignment = Alignment(input_line1, input_line2);
+        Case_Insensitive_Matcher matcher;
+        alignment.match(matcher);
+        Max_Conseq_Aligner aligner;
+        aligner.align(alignment);
 #ifdef DEBUG
-        a.print();
-        a.generate_graphviz();
+        alignment.print();
+        alignment.generate_graphviz();
 #endif
         wcout << "### Making hypotheses" << endl;
-        Hypotheses_Naive_Beam h = Hypotheses_Naive_Beam(a);
+        Hypotheses_Naive_Beam hypotheses = Hypotheses_Naive_Beam(alignment);
         wcout << "### Ranking hypotheses" << endl;
-        h.rank(r);
+        hypotheses.rank(r);
 #ifdef DEBUG
-        h.print();
+        hypotheses.print();
 #else
-        h.best();
+        hypotheses.best();
 #endif
         // Example of how to print the hypotheses in a file:
         /// wfstream hypotheses_file("input_ranker.txt", ios::out);
