@@ -164,6 +164,7 @@ AC_CHECK_HEADERS([regex.h sys/types.h sys/times.h sys/wait.h sys/resource.h loca
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
 AC_C_CONST
+AC_C_INLINE 
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
@@ -177,4 +178,10 @@ AC_CHECK_DECLS([getopt_long])
 #AC_CHECK_FUNCS([setlocale strdup])
 AC_CHECK_FUNCS([setlocale])
 
-AC_OUTPUT([Makefile memt/Makefile])
+AC_CONFIG_FILES([
+                 Makefile
+                 memt/Makefile
+                 ])
+
+#AC_OUTPUT([Makefile memt/Makefile])
+AC_OUTPUT

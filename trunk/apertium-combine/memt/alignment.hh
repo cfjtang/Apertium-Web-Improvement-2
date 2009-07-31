@@ -12,6 +12,7 @@
 #include <utility>
 #include <fstream>
 #include <string>
+#include "matcher.hh"
 
 using namespace std;
 
@@ -26,22 +27,17 @@ class Alignment
         Alignment(wstring& left, wstring& right);
         Alignment(const wchar_t* left, const wchar_t* right);
         ~Alignment();
+        int _score;
+        std::vector<std::vector<bool> > _matching; // _matching[right][left]
         void align();
         void align(std::list<pair<int, int> >& leftright);
         void print();
         void generate_graphviz();
+        void match(Matcher& m);
+        void unmatch();
     private:
         void initialize();
-        void inline match();
-        void inline unmatch();
         void inline complete();
-        std::vector<std::vector<bool> > matching; // matching[right][left]
-        int total_matches;
         void to_vec(wstring& line, std::vector<wstring>& words);
-        void to_lower(wstring& to_lower);
-        int exact_match(const wstring& left, 
-                const wstring& right);
-        int case_insensitive_match(const wstring& left, 
-                const wstring& right);
 };
 #endif
