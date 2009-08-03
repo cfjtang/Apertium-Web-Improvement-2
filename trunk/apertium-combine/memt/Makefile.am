@@ -10,7 +10,8 @@ AM_CXXFLAGS=-Wall -g $(MEMT_CFLAGS)
 
 bin_PROGRAMS = combiner collector
 
-combiner_SOURCES = apertium_combiner.cc alignment.cc hypotheses.cc irstlm_ranker.cc case_insensitive_matcher.cc exact_matcher.cc max_conseq_aligner.cc
+combiner_SOURCES = apertium_combiner.cc alignment.cc hypotheses.cc irstlm_ranker.cc case_insensitive_matcher.cc exact_matcher.cc max_conseq_aligner.cc naive_beam_generator.cc
 collector_SOURCES = collector.cc apertium_collector.cc moses_collector.cc 
 
+CLEANFILES = *~
 

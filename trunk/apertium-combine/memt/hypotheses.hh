@@ -1,7 +1,8 @@
 /*
  * A bag of hypotheses that provides the following:
- * - hypothesis generation
- * - hypothesis ranking
+ * - hypothesis creation by invoking a generator
+ * - basic services on hypotheses
+ * - hypothesis ranking by invoking a ranker
  */
 
 #ifndef HYPOTHESES_HH
@@ -12,8 +13,10 @@
 #include <vector>
 #include "alignment.hh"
 #include "ranker.hh"
+#include "generator.hh"
 
 class Ranker;
+class Generator;
 
 using namespace std;
 
@@ -30,6 +33,7 @@ struct Hypothesis
     }
     ~Hypothesis() { }
     bool operator<(const Hypothesis& h);
+    /// bool inline operator<(const Hypothesis& h); TODO inline it
 };
 
 struct Word
@@ -53,23 +57,22 @@ struct Word
 typedef std::vector<std::pair<unsigned int, std::vector<Word> > > 
     scored_phrases;
 
-class Hypotheses_Naive_Beam
+unsigned int max_length(scored_phrases& wv);
+
+void fill_words(std::pair<unsigned int, std::vector<Word> >
+        & words, Alignment& a, unsigned int length);
+
+class Hypotheses
 {
     public: 
-        Hypotheses_Naive_Beam(Alignment& a);
-        ~Hypotheses_Naive_Beam();
+        Hypotheses(Alignment& a, Generator& g);
+        ~Hypotheses();
         void rank(Ranker* r);
         void print();
         void print(wfstream* where);
         void best();
     private:
         std::list<Hypothesis> _hypotheses;
-        //void generate(unsigned int begin, unsigned int end, Alignment& a, 
-        //        std::vector<Hypothesis>&  vh);
-        void inline expand(scored_phrases& wv,
-                Alignment& a, unsigned int j);      
-        void inline fill_words(std::pair<unsigned int, std::vector<Word> >
-                & words, Alignment& a, unsigned int length);
         void inline concatenate(std::list<wstring>& ls, wstring& s);
 };
 #endif
