@@ -436,7 +436,22 @@
   <section-def-lists>
 
 
-
+    <def-list n="auxser">
+      <list-item v="andare"/>
+      <list-item v="arrivare"/>
+      <list-item v="essere"/>
+      <list-item v="decedere"/>
+      <list-item v="partire"/>
+      <list-item v="venire"/>
+      <list-item v="stare"/>
+      <list-item v="cadere"/>
+      <list-item v="bastare"/>
+      <list-item v="diventare"/>
+      <list-item v="divenire"/>
+      <list-item v="morire"/>
+      <list-item v="piacere"/>
+      <list-item v="tornare"/>
+    </def-list>
 
     <def-list n="temporales">
       <list-item v="mes"/>
@@ -5149,11 +5164,11 @@
 	</call-macro>
 	<choose>
 	  <when>
-	    <test>
-	      <equal>
-		<clip pos="2" side="tl" part="auxiliar"/>
-		<lit-tag v="auxser"/>
-	      </equal>
+	     <test>
+	       <in caseless="yes">
+		 <clip pos="2" side="tl" part="lem"/>
+		 <list n="auxser"/>
+	       </in>
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/>
@@ -5217,10 +5232,10 @@
 	<choose>
 	  <when>
 	    <test>
-	      <equal>
-		<clip pos="3" side="tl" part="auxiliar"/>
-		<lit-tag v="auxser"/>
-	      </equal>
+	       <in caseless="yes">
+		 <clip pos="3" side="tl" part="lem"/>
+		 <list n="auxser"/>
+	       </in>
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/>
