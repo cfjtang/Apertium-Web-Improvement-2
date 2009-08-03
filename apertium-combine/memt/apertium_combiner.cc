@@ -1,9 +1,11 @@
+// including art
 #include <fstream>
 #include <iostream>
 #include "alignment.hh"
 #include "hypotheses.hh"
 #include "irstlm_ranker.hh"
 #include "max_conseq_aligner.hh"
+#include "naive_beam_generator.hh"
 #include "case_insensitive_matcher.hh"
 
 using namespace std;
@@ -37,7 +39,8 @@ int main(int argc, char** argv)
         alignment.generate_graphviz();
 #endif
         wcout << "### Making hypotheses" << endl;
-        Hypotheses_Naive_Beam hypotheses = Hypotheses_Naive_Beam(alignment);
+        Naive_Beam_Generator generator;
+        Hypotheses hypotheses = Hypotheses(alignment, generator);
         wcout << "### Ranking hypotheses" << endl;
         hypotheses.rank(r);
 #ifdef DEBUG
