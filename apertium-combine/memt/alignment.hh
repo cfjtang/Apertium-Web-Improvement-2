@@ -25,6 +25,7 @@ class Alignment
         std::vector<int> _final_alignment; // result of align()
         std::vector<int> _final_alignment_left; // result of align()
         Alignment(wstring& left, wstring& right);
+        Alignment(std::vector<wstring>& input_lines);
         Alignment(const wchar_t* left, const wchar_t* right);
         ~Alignment();
         int _score;

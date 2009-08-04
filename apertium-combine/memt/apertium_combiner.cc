@@ -1,4 +1,5 @@
 // including art
+#include <vector>
 #include <fstream>
 #include <iostream>
 #include "alignment.hh"
@@ -10,28 +11,67 @@
 
 using namespace std;
 
+void usage() 
+{
+    wcout << 
+        "./combiner first_input second_input [third_input [fourth input [...]]]" 
+        << endl;
+}
+
 int main(int argc, char** argv) 
 { 
-    // You can instantiate another derivation of Ranker here, 
-    // that should be the only change for switching the ranker
+    /// You can instantiate another derivation of Ranker here, 
+    /// that should be the only change for switching the ranker
     IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
 
-    char* input_file1 = argv[1];
-    char* input_file2 = argv[2];
-    wfstream file_in1(input_file1); 
-    wfstream file_in2(input_file2); 
-    wstring input_line1;
-    wstring input_line2;
-    cout << "Reading from " << input_file1 << " and " << input_file2 << endl;
-    // ugly hack to avoid eating the ending line
-    getline(file_in1, input_line1);
-    getline(file_in2, input_line2);
-    while(file_in1 && file_in2) {
+    std::vector<char*> input_files;
+    unsigned int k = 1;
+    while (argv[k] != NULL) {
+        input_files.push_back(argv[k]);
+        ++k;
+    }
+    if (input_files[1] == NULL) {
+        usage();
+        return -1;
+    }
+    std::vector<wfstream*> files_in;
+    cout << "Reading from";
+    for (std::vector<char*>::iterator it = input_files.begin(); 
+            it != input_files.end(); ++it) {
+        wfstream* file_in = new wfstream(*it);
+        files_in.push_back(file_in);
+        cout << " " << *it;
+    }
+    cout << endl;
+    std::vector<wstring> input_lines;
+    for (std::vector<wfstream*>::iterator it = files_in.begin();
+            it != files_in.end(); ++it) {
+        wstring tmp;
+        getline(**it, tmp);
+        input_lines.push_back(tmp);
+    }
+
+    bool condition = true;
+    for (std::vector<wfstream*>::iterator it = files_in.begin();
+            it != files_in.end(); ++it) {
+        if (!**it) { 
+            condition = false;
+            break;
+        }
+    }
+    while(condition) {
         wcout << endl;
-        wcout << "### Align: " << input_line1 << " <with> " << input_line2 << endl;
-        Alignment alignment = Alignment(input_line1, input_line2);
+#ifdef DEBUG
+        wcout << "### Align: " << input_lines[0];
+        for (unsigned int i = 1; i < input_lines.size(); ++i)
+            wcout << " <with> " << input_lines[i];
+        wcout << endl;
+#endif
+        Alignment alignment = Alignment(input_lines);
+        /// This is where you can change the Matcher
         Case_Insensitive_Matcher matcher;
         alignment.match(matcher);
+        /// This is where you can change the Aligner
         Max_Conseq_Aligner aligner;
         aligner.align(alignment);
 #ifdef DEBUG
@@ -39,6 +79,7 @@ int main(int argc, char** argv)
         alignment.generate_graphviz();
 #endif
         wcout << "### Making hypotheses" << endl;
+        /// This is where you can change the (hyp) Generator
         Naive_Beam_Generator generator;
         Hypotheses hypotheses = Hypotheses(alignment, generator);
         wcout << "### Ranking hypotheses" << endl;
@@ -49,10 +90,21 @@ int main(int argc, char** argv)
         hypotheses.best();
 #endif
         // Example of how to print the hypotheses in a file:
-        /// wfstream hypotheses_file("input_ranker.txt", ios::out);
-        /// h.print(&hypotheses_file);
-        getline(file_in1, input_line1);
-        getline(file_in2, input_line2);
+        // wfstream hypotheses_file("input_ranker.txt", ios::out);
+        // h.print(&hypotheses_file);
+        for (unsigned int i = 0; i < files_in.size(); ++i) {
+            getline(*files_in[i], input_lines[i]);
+        }
+        for (std::vector<wfstream*>::iterator it = files_in.begin();
+                it != files_in.end(); ++it) {
+            if (!**it) { 
+                condition = false;
+                break;
+            }
+        }
     }
+    for (std::vector<wfstream*>::iterator it = files_in.begin();
+            it != files_in.end(); ++it) 
+        delete *it;
     return 0;
 }
