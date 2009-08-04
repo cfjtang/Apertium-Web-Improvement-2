@@ -52,6 +52,14 @@ Alignment::Alignment(const wchar_t* left, const wchar_t* right)
     initialize();
 }
 
+Alignment::Alignment(std::vector<wstring>& input_lines) 
+{
+    // TODO change that
+    to_vec(input_lines[0], _words_left);
+    to_vec(input_lines[1], _words_right);
+    initialize();
+}
+
 Alignment::~Alignment() 
 {
 }
