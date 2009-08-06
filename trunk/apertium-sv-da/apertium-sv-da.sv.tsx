@@ -1018,6 +1018,12 @@
     </label-sequence>	
 
     <label-sequence>
+      <label-item label="IMP"/>
+      <label-item label="IMP"/>
+    </label-sequence>	
+
+
+    <label-sequence>
       <label-item label="VB"/>
       <label-item label="IMP"/>
     </label-sequence>	

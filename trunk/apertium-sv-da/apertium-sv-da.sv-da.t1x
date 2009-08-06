@@ -3,9 +3,6 @@
 
 <transfer>
   <section-def-cats>
-    <def-cat n="sent"> 
-      <cat-item tags="sent"/>
-    </def-cat>
     <def-cat n="pronavn">
       <cat-item tags="prn.def.*"/>
       <cat-item tags="prn.ind.*"/>
@@ -13,6 +10,18 @@
 
     <def-cat n="navn">
       <cat-item tags="n.*"/>
+    </def-cat>
+
+    <def-cat n="num">
+      <cat-item tags="num.*"/>
+    </def-cat>
+
+    <def-cat n="verb_pasv">
+      <cat-item tags="vblex.*.pasv"/>
+    </def-cat>
+
+    <def-cat n="verb_inf">
+      <cat-item tags="vblex.inf.*"/>
     </def-cat>
 
     <def-cat n="aux">
@@ -34,29 +43,53 @@
       <cat-item tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="det">
+      <cat-item tags="det.*"/>
+    </def-cat>
+
+    <def-cat n="adjec">
+      <cat-item tags="adj.*"/>
+      <cat-item tags="vblex.pp.*"/>
+    </def-cat>
+
+    <def-cat n="adv">
+      <cat-item tags="adv.*"/>
+      <cat-item tags="adv"/>
+    </def-cat>
+
+
+    <!-- Lexicalised categories -->
+
+    <def-cat n="komme">
+      <cat-item lemma="komma" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="haver">
+      <cat-item tags="vbhaver.inf.actv"/>
+    </def-cat>
+
+
     <def-cat n="få">
       <cat-item lemma="få" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="att">
+      <cat-item lemma="att" tags="*"/>
     </def-cat>
 
     <def-cat n="inte">
       <cat-item lemma="inte" tags="adv"/>
     </def-cat>
 
+    <!-- Punctuation -->
 
-
-    <def-cat n="det">
-      <cat-item tags="det.*"/>
-    </def-cat>
-    <def-cat n="adv">
-      <cat-item tags="adv.*"/>
-    </def-cat>
-    <def-cat n="adjec">
-      <cat-item tags="adj.*"/>
-      <cat-item tags="vblex.pp.*"/>
+    <def-cat n="sent"> 
+      <cat-item tags="sent"/>
     </def-cat>
     <def-cat n="cm">
       <cat-item tags="cm"/>
     </def-cat>
+
   </section-def-cats>
 
   <section-def-attrs>
@@ -201,10 +234,11 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       <list-item v="ligge"/>
       <list-item v="lade"/>
       <list-item v="træffe"/>
-      <list-item v="bære "/>
-      <list-item v="skære "/>
-      <list-item v="tillade "/>
-      <list-item v="publicere  "/>
+      <list-item v="bære"/>
+      <list-item v="skære"/>
+      <list-item v="tillade"/>
+      <list-item v="publicere"/>
+      <list-item v="flytte"/>
       <list-item v="gøre"/>
       <list-item v="adlyde"/>
       <list-item v="afbryde"/>
@@ -2507,6 +2541,65 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       </action>
     </rule>
 
+    <rule comment="REGLA: DET NUM NAVN">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="num"/>
+        <pattern-item n="navn"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord3">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="1" side="tl" part="defnes"/>
+                  <lit-tag v="def"/>
+                </equal>
+                <equal>
+                  <clip pos="3" side="tl" part="defnes"/>
+                  <lit-tag v="def"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <clip pos="3" side="tl" part="defnes"/>
+              <lit-tag v="ind"/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_det"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_nom"/>
+            <clip pos="3" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+            <clip pos="3" side="tl" part="defnes"/>
+            <clip pos="3" side="tl" part="cas"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: DET ADJEC NAVN">
       <pattern>
         <pattern-item n="det"/>
@@ -2868,6 +2961,83 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: VERB_PASV HA SUPN_PP // Tros ha dödat → Menes at have dræbt">
+      <pattern>
+        <pattern-item n="verb_pasv"/>
+        <pattern-item n="haver"/>
+        <pattern-item n="supn_pp"/>
+      </pattern>
+      <action>
+        <call-macro n="f_conj_supn1">
+          <with-param pos="3"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="voz"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <lit v="at"/>
+            <lit-tag v="cnjadv"/>
+          </lu>
+          <b/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <clip pos="3" side="tl" part="temps"/>
+<!--            <clip pos="3" side="tl" part="voz"/> -->
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: KOMMA ATT INF // kommer att bli → kommer til at blive">
+      <pattern>
+        <pattern-item n="komme"/>
+        <pattern-item n="att"/>
+        <pattern-item n="verb_inf"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="voz"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <lit v="til"/>
+            <lit-tag v="pr"/>
+          </lu>
+          <b/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <clip pos="3" side="tl" part="temps"/>
+            <clip pos="3" side="tl" part="voz"/> 
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: SENT // . → .">
       <pattern>
