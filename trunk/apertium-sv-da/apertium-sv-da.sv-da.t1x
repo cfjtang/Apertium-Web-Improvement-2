@@ -1790,6 +1790,26 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
           <with-param pos="3"/>
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="1" side="tl" part="defnes"/>
+                  <lit-tag v="def"/>
+                </equal>
+                <equal>
+                  <clip pos="3" side="tl" part="defnes"/>
+                  <lit-tag v="def"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <clip pos="3" side="tl" part="defnes"/>
+              <lit-tag v="ind"/>
+            </let>
+          </when>
+        </choose>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
