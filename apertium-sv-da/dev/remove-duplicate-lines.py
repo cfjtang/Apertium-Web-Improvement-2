@@ -38,7 +38,7 @@ for line in sys.stdin.read().split('\n'): #{
 
 	#}
 	if l not in lines: #{
-		lines[l] = 1;
+	#	lines[l] = 1;
 		print line;
 	else: #{
 		lines[l] + 1;
