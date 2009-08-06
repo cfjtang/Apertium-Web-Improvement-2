@@ -47,6 +47,9 @@
     <def-cat n="det">
       <cat-item tags="det.*"/>
     </def-cat>
+    <def-cat n="adv">
+      <cat-item tags="adv.*"/>
+    </def-cat>
     <def-cat n="adjec">
       <cat-item tags="adj.*"/>
       <cat-item tags="vblex.pp.*"/>
@@ -2688,6 +2691,64 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
             <clip pos="5" side="tl" part="defnes"/>
             <clip pos="5" side="tl" part="cas"/>
             <clip pos="5" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: DET ADV NAVN"> <!-- Is this correct -->
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="navn"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord3">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="1" side="tl" part="defnes"/>
+                  <lit-tag v="def"/>
+                </equal>
+                <equal>
+                  <clip pos="3" side="tl" part="defnes"/>
+                  <lit-tag v="def"/>
+                </equal>
+              </and>
+            </test>
+            <let>
+              <clip pos="3" side="tl" part="defnes"/>
+              <lit-tag v="ind"/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_det"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_nom"/>
+            <clip pos="3" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+            <clip pos="3" side="tl" part="defnes"/>
+            <clip pos="3" side="tl" part="cas"/>
+            <clip pos="3" side="tl" part="lemq"/>
           </lu>
         </out>
       </action>
