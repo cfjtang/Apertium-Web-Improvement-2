@@ -9,8 +9,7 @@ class Max_Conseq_Aligner: public Aligner
 {
     public: 
         ~Max_Conseq_Aligner() {}
-        void align(Alignment& alignment);
-        void inline complete(Alignment& alignment);
-
+        void inline complete(Pairwise_Alignment& alignment);
+        void align(Pairwise_Alignment& alignment);
 };
 #endif

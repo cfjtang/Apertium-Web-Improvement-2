@@ -2,7 +2,7 @@
 
 #define PARAM_BEAM 1.6 // parameter for the minimum_score for the beam search
 
-unsigned int inline find_ind(enum side side, unsigned int ind, std::vector<Word>& w) 
+unsigned int inline find_ind(unsigned int side, unsigned int ind, std::vector<Word>& w) 
 {
     for (unsigned int k = 0; k < w.size(); ++k) {
         if (w[k].ind == ind && w[k].side == side)
@@ -12,6 +12,17 @@ unsigned int inline find_ind(enum side side, unsigned int ind, std::vector<Word>
 }
 
 void Naive_Beam_Generator::generate(Alignment& a,
+        std::list<Hypothesis>& h)
+{
+    if (a._pw_alignments.size() == 1) 
+        generate_pairwise(a._pw_alignments[0], h);
+    else {
+        // TODO
+        return;
+    }
+}
+
+void inline Naive_Beam_Generator::generate_pairwise(Pairwise_Alignment& a,
         std::list<Hypothesis>& h)
 {
     unsigned int length = a._words_right.size() > a._words_left.size() ? 
@@ -46,14 +57,14 @@ void Naive_Beam_Generator::generate(Alignment& a,
 }
 
 void inline Naive_Beam_Generator::expand(scored_phrases& wv,
-        Alignment& a, unsigned int j)
+        Pairwise_Alignment& a, unsigned int j)
 {
     unsigned int wvsize = wv.size();
     for (unsigned int i = 0; i < wvsize; ++i)
     {
         if (j >= wv[i].second.size()) 
             continue; // finished to expand this "words"
-        if (wv[i].second[j].side == LEFT) { 
+        if (wv[i].second[j].side == 0) { 
             if (a._final_alignment_left[wv[i].second[j].ind] != -1) { //aligned
                 ++wv[i].first;
                 if (!a._words_right[a._final_alignment_left[
@@ -64,7 +75,7 @@ void inline Naive_Beam_Generator::expand(scored_phrases& wv,
                     wv.push_back(wv[i]);
                     wv[i].second[j].used = true;
                     wv[wv.size() - 1].second[
-                        find_ind(RIGHT, a._final_alignment_left[
+                        find_ind(1, a._final_alignment_left[
                                 wv[i].second[j].ind], wv[i].second)];
                 }
             } else { // not aligned
@@ -80,7 +91,7 @@ void inline Naive_Beam_Generator::expand(scored_phrases& wv,
                 }
                 // no need for else, word in not used by default
             }
-        } else if (wv[i].second[j].side == RIGHT) { 
+        } else if (wv[i].second[j].side == 1) { 
             if (a._final_alignment[wv[i].second[j].ind] != -1) { //aligned
                 ++wv[i].first;
                 if (!a._words_left[a._final_alignment[wv[i].second[j].ind]]
@@ -90,7 +101,7 @@ void inline Naive_Beam_Generator::expand(scored_phrases& wv,
                     wv.push_back(wv[i]);
                     wv[i].second[j].used = true;
                     wv[wv.size() - 1].second[
-                        find_ind(LEFT, a._final_alignment[wv[i].second[j].ind], 
+                        find_ind(0, a._final_alignment[wv[i].second[j].ind], 
                                 wv[i].second)] ;
                 }
             } else { // not aligned: 

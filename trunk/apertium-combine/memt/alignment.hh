@@ -13,32 +13,23 @@
 #include <fstream>
 #include <string>
 #include "matcher.hh"
+#include "aligner.hh"
+#include "pairwise_alignment.hh"
 
 using namespace std;
 
 
+class Pairwise_Alignment;
+
 class Alignment
 {
-    public: 
-        std::vector<wstring> _words_left;
-        std::vector<wstring> _words_right;
-        std::vector<int> _final_alignment; // result of align()
-        std::vector<int> _final_alignment_left; // result of align()
-        Alignment(wstring& left, wstring& right);
+    public:
+        std::vector<Pairwise_Alignment> _pw_alignments;
         Alignment(std::vector<wstring>& input_lines);
-        Alignment(const wchar_t* left, const wchar_t* right);
         ~Alignment();
-        int _score;
-        std::vector<std::vector<bool> > _matching; // _matching[right][left]
-        void align();
-        void align(std::list<pair<int, int> >& leftright);
+        void match(Matcher& m);
+        void align(Aligner& aligner);
         void print();
         void generate_graphviz();
-        void match(Matcher& m);
-        void unmatch();
-    private:
-        void initialize();
-        void inline complete();
-        void to_vec(wstring& line, std::vector<wstring>& words);
 };
 #endif

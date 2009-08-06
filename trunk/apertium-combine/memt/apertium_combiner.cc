@@ -20,10 +20,6 @@ void usage()
 
 int main(int argc, char** argv) 
 { 
-    /// You can instantiate another derivation of Ranker here, 
-    /// that should be the only change for switching the ranker
-    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
-
     std::vector<char*> input_files;
     unsigned int k = 1;
     while (argv[k] != NULL) {
@@ -59,6 +55,11 @@ int main(int argc, char** argv)
             break;
         }
     }
+    
+    /// You can instantiate another derivation of Ranker here, 
+    /// that should be the only change for switching the ranker
+    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+
     while(condition) {
         wcout << endl;
 #ifdef DEBUG
@@ -73,7 +74,7 @@ int main(int argc, char** argv)
         alignment.match(matcher);
         /// This is where you can change the Aligner
         Max_Conseq_Aligner aligner;
-        aligner.align(alignment);
+        alignment.align(aligner);
 #ifdef DEBUG
         alignment.print();
         alignment.generate_graphviz();
