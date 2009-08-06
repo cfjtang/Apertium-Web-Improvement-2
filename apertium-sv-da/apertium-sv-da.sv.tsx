@@ -223,6 +223,9 @@
   <def-label name="VAUXSUPNS" closed="true">
     <tags-item tags="vaux.supn.*"/>
   </def-label>
+  <def-label name="ADVHÄR" closed="true">
+    <tags-item lemma="här" tags="adv"/>
+  </def-label>
 
    <def-label name="VB">
     <tags-item tags="vblex.*"/>
@@ -1018,5 +1021,23 @@
       <label-item label="VB"/>
       <label-item label="IMP"/>
     </label-sequence>	
+
+    <label-sequence>
+	<label-item label="PRNSUBJ"/>
+	<label-item label="ADVHÄR"/>
+    </label-sequence>
+
     </forbid>
+
+    <!--
+    <enforce-rules>
+      <enforce-after label="DETDEF">
+        <label-set>
+        <label-item label="ADVHÄR"/>
+      </label-set>	
+     </enforce-after>
+
+    </enforce-rules>
+    -->
+
 </tagger>
