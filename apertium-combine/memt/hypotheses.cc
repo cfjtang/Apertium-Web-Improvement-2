@@ -14,20 +14,20 @@ unsigned int max_length(scored_phrases& wv)
 }
 
 void fill_words(std::pair<unsigned int, std::vector<Word> >
-        & words, Alignment& a, unsigned int length)
+        & words, Pairwise_Alignment& a, unsigned int length)
 {
     for (unsigned int i = 0; i < length; ++i) {
         if (i < a._words_right.size())
             if (a._final_alignment[i] != -1)
                 words.second.push_back(
-                        Word(false, true, RIGHT, i, a._words_right[i]));
+                        Word(false, true, 1, i, a._words_right[i]));
             else
                 words.second.push_back(
-                        Word(false, false, RIGHT, i, a._words_right[i]));
+                        Word(false, false, 1, i, a._words_right[i]));
         if (i < a._words_left.size()) {
             if (a._final_alignment_left[i] == -1) // add if it is not aligned
                 words.second.push_back(
-                        Word(false, false, LEFT, i, a._words_left[i]));
+                        Word(false, false, 0, i, a._words_left[i]));
         }
     }
 }

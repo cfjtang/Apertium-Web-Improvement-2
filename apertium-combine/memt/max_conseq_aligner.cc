@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void inline Max_Conseq_Aligner::complete(Alignment& alignment)
+void inline Max_Conseq_Aligner::complete(Pairwise_Alignment& alignment)
 {
     for (unsigned int j = 0; j < alignment._words_right.size(); ++j) {
         if (alignment._final_alignment[j] == -1) {
@@ -42,7 +42,7 @@ void inline Max_Conseq_Aligner::complete(Alignment& alignment)
 #endif
 }
 
-void Max_Conseq_Aligner::align(Alignment& alignment)
+void Max_Conseq_Aligner::align(Pairwise_Alignment& alignment)
 {
     unsigned int size_end_left = alignment._words_left.size() - 1;
     unsigned int size_end_right = alignment._words_right.size() - 1;

@@ -20,8 +20,6 @@ class Generator;
 
 using namespace std;
 
-enum side {LEFT, RIGHT};
-
 struct Hypothesis
 {
     unsigned int score;
@@ -40,10 +38,10 @@ struct Word
 {
     bool used;
     bool aligned;
-    enum side side;
+    unsigned int side;
     unsigned int ind;
     wstring word;
-    Word(bool u, bool a, enum side s, unsigned int i, wstring w) 
+    Word(bool u, bool a, unsigned int s, unsigned int i, wstring w) 
     {
         used = u;
         aligned = a;
@@ -59,8 +57,9 @@ typedef std::vector<std::pair<unsigned int, std::vector<Word> > >
 
 unsigned int max_length(scored_phrases& wv);
 
+// for drawkcab compatibility
 void fill_words(std::pair<unsigned int, std::vector<Word> >
-        & words, Alignment& a, unsigned int length);
+        & words, Pairwise_Alignment& a, unsigned int length);
 
 class Hypotheses
 {
