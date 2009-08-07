@@ -109,6 +109,9 @@
       <attr-item tags="adj.comp"/>
       <attr-item tags="adj.sup"/>
       <attr-item tags="adj.ssup"/>
+
+      <attr-item tags="adj.sint"/>
+      <attr-item tags="adj.unsint"/>
     </def-attr>
     <def-attr n="a_det">
       <attr-item tags="det.def"/>
@@ -164,6 +167,13 @@
       <attr-item tags="actv"/>
       <attr-item tags="pasv"/>
     </def-attr>
+    <def-attr n="grau_adj">
+      <attr-item tags="pst"/>
+      <attr-item tags="comp"/>
+      <attr-item tags="sup"/>
+      <attr-item tags="ssup"/>
+    </def-attr>
+
   </section-def-attrs>
 
   <section-def-vars>
@@ -171,6 +181,7 @@
     <def-var n="uno"/>
     <def-var n="genero"/>
     <def-var n="definite"/>
+    <def-var n="adjectiu1"/>
     <def-var n="numero"/>
     <def-var n="concDet"/>
     <def-var n="concAdj"/>
@@ -2417,6 +2428,99 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
       </choose>      
     </def-macro>      
 
+    <def-macro n="f_comparatiu1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
+      <let>
+        <var n="adjectiu1"/>
+        <lit v=""/>
+      </let>
+      <choose>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.unsint"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="pst"/>
+              </equal>
+            </and>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <lit-tag v="adj.pst"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.unsint"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="comp"/>
+              </equal>
+            </and>
+          </test>
+          <append n="adjectiu1">
+            <lit v="mere"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+          <let>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <lit-tag v="adj.pst"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="nbr"/>
+            <concat>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="ind"/>
+            </concat>
+          </let>
+        </when>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.unsint"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="sup"/>
+              </equal>
+            </and>
+          </test>
+          <append n="adjectiu1">
+            <lit v="mest"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+          <let>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <lit-tag v="adj.pst"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="nbr"/>
+            <concat>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="ind"/>
+            </concat>
+          </let>
+        </when>
+        <otherwise>
+          <append n="adjectiu1">
+            <lit v=""/>
+          </append> 
+        </otherwise>
+      </choose>
+    </def-macro>
+
+
   </section-def-macros>
 
   <section-rules>
@@ -2474,8 +2578,12 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <call-macro n="f_concord1">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="f_comparatiu1">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <lu>
+            <var n="adjectiu1"/>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_adj"/>
             <clip pos="1" side="tl" part="gen"/>
