@@ -5,8 +5,27 @@
 
 Alignment::Alignment(std::vector<wstring>& input_lines) 
 {
-    Pairwise_Alignment pw_a(input_lines[0], input_lines[1]);
-    _pw_alignments.push_back(pw_a);
+    // fill the MT translations matrix, [translation][words_for_this_one]
+    for (std::vector<wstring>::iterator it = input_lines.begin();
+            it != input_lines.end(); ++it) {
+        std::vector<wstring> temp;
+        to_vec(*it, temp);
+        _mt_translations.push_back(temp);
+    }
+    
+    // align each MT translation with each other(s)
+    for (unsigned int i = 0; i < _mt_translations.size(); ++i) {
+        for (unsigned int j = 0; j < _mt_translations.size(); ++j) {
+            if (j > i)
+                _pw_alignments.push_back(Pairwise_Alignment(
+                            _mt_translations[i], _mt_translations[j], i, j));
+        }
+    }
+
+    // use this result for fullfilling _aligned
+
+
+    // complete _aligned by transitivity
 }   
 
 Alignment::~Alignment() 
