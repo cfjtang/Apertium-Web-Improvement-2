@@ -3,6 +3,8 @@
 #include <utility>
 #include <cctype>
 
+#define TRANSITIVITY_DEPTH 4
+
 Alignment::Alignment(std::vector<wstring>& input_lines) 
 {
     // fill the MT translations matrix, [translation][words_for_this_one]
@@ -22,7 +24,29 @@ Alignment::Alignment(std::vector<wstring>& input_lines)
         }
     }
 
-    // use this result for fullfilling _aligned
+    // use this results for fullfilling _aligned
+    for (std::vector<Pairwise_Alignment>::iterator it = _pw_alignments.begin();
+            it != _pw_alignments.end(); ++it) {
+        // 2 loops for readability
+        for (unsigned int iright = 0; 
+                iright < it->_final_alignment.size(); ++iright) {
+            if (it->_final_alignment[iright] != -1) {
+                _aligned[it->_index_mte_right][iright].push_back(
+                        std::pair<unsigned int, int>
+                        (it->_index_mte_left, 
+                            it->_final_alignment[iright]));
+            }
+        }
+        for (unsigned int ileft = 0; 
+                ileft < it->_final_alignment_left.size(); ++ileft) {
+            if (it->_final_alignment_left[ileft] != -1) {
+                _aligned[it->_index_mte_left][ileft].push_back(
+                        std::pair<unsigned int, int>
+                        (it->_index_mte_right, 
+                            it->_final_alignment_left[ileft]));
+            }
+        }
+    }
 
 
     // complete _aligned by transitivity
