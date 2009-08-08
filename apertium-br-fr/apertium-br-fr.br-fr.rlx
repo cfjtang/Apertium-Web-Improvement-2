@@ -69,10 +69,13 @@ LIST VerbImp          = (vblex imp);
 LIST VerbInf          = (vblex inf);
 LIST VerbImpers       = (vblex impers);
 
-LIST TempsFin         = (pri) (pii) (past) (fti) (cni) (prh);  
+LIST TempsFin         = (pri) (pii) (past) (fti) (cni) (prh) (cip);  
+
+LIST VerbAux          = ("bezañ"ri vblex) ("kaout"ri vblex);
 
 SET Verb              = Vbloc | Vblex | Vbser;
 SET VerbFin           = Verb + TempsFin;
+
 
 # Adverbs
 LIST Adv              = (adv);
@@ -171,6 +174,9 @@ REMOVE Vpart IF (-1C Vpart);
 
 # "pell ez a an dud"
 SELECT Verb IF (-1C Vpart);
+
+# "dav e vije"
+SELECT:Vpart_if_only_Vfin Vpart IF (1C VerbFin);
 
 # Remove imperatives for now
 REMOVE VerbImp IF (0 VerbImp);
@@ -289,13 +295,13 @@ SELECT Verb IF (-2 ("dav"ri adj)) (-1 ("<eo>"ri vblex));
 SELECT VerbInf IF (-1 ("ket" adv)) (-2 VerbFin);
 
 # REGLA (B0012): "An dud a zeu da Roazhon"
-REMOVE VerbFin IF (0 Det) (1 NC)
+REMOVE VerbFin IF (0 Det) (1 NC);
 
 #Meur a bal zo gant an dud a fell dezho deskiÃ± ar yezh
 REMOVE Adj IF (-1 ("a")) (0 VerbFin) (0 Adj) (1C (prn obj));
 
 # REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
-REMOVE:Rem_Vfin VerbFin IF (*-1C VerbFin BARRIER S-BOUNDARY)
+REMOVE:Rem_Vfin VerbFin IF (*-1C VerbFin BARRIER S-BOUNDARY);
 
 # REGLA (C0002): "zeu da Gwengamp" "Prezidant Radio France a oa e Kemper d'ar 6 a viz Here"
 REMOVE PrnDObj IF (1 Toponim);
@@ -395,7 +401,7 @@ REMOVE ("e" det pos) IF (1 NomM) (1 SoftMutCons) (NOT 1 SoftMut);
 REMOVE:Remove_prep_for_poss Prep IF (-1 Prep) (NOT -1 PRE-N) (NOT 1 Verb) (0 Prep) (0 DetPos);
 
 #  "ouzhpenn da verañ savadurioù ar skolaj. "
-SELECT:Prep_for_poss_if_verb Prep IF (0 Prep) (0 DetPos) (1C Verb);
+SELECT:Prep_for_poss_if_verb Prep IF (0 Prep) (0 DetPos) (1C Verb) (NOT 0 Vpart);
 
 # REGLA (B    ): "15 studier" 
 REMOVE VerbImpers IF (NOT -1 Vpart) ((-1 Num) OR (-1 NC) OR (-1 Det)) (0 VerbImpers) (0 NC);
@@ -512,7 +518,9 @@ SELECT:p3_after_pa (vblex p3) IF (-1 ("pa"ri cnjsub)) (0 VerbInf) (0 VerbFin);
 # ademas, en una serie Nombre Propio + a + verbo/sustantivo : hay que escoger al verbo
 SELECT VerbFin IF (-2 NP) (-1 ("a"ri)) (0 Verb) (0 NC); 
 
-
+# PART VERB + bezañ/kaout (auxiliares) + verbo que termina en -et --> participio not infinitivo
+# "peur e vo gwelet"
+SELECT:pp_if_verbaux_pp_or_inf VerbPP IF (-2 Vpart) (-1C VerbAux) (0 VerbPP) (0 VerbInf);
 
 SECTION
 
@@ -520,13 +528,13 @@ SECTION
 SELECT DroppedG IF (-1 Vpart);
 
 # REGLA (A0003): "na ganit ket"
-SELECT SoftMut IF (-1 SoftMutTrigger) (0 SoftMutCons);
+SELECT SoftMut IF (-1C SoftMutTrigger) (0 SoftMutCons) (NOT -1 ("da"ri pr)) (NOT -1 (indirect)) ; 
 
 # REGLA (A0004): "emañ e Brest"
 REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
 
 # REGLA (A0006): ""
-SELECT SoftMutTrigger IF (1 SoftMut);
+SELECT SoftMutTrigger IF (1C SoftMut) (1C SoftMutCons) ;
 
 # REGLA (A0005): "ez di"
 SELECT HardMut IF (-1 HardMutTrigger);
@@ -601,6 +609,8 @@ SELECT NP IF (0 ("Goursez" np));
 SELECT NP IF (0 ("Gwalarn" np));
 SELECT NP IF (0 ("Mervent" np));
 
+SELECT NP IF (0 UPPER) (0C (NP OR NC));
+
 #gant Kristen Nikolaz e Kemper
 SELECT (np ant) IF (0 (np ant)) (1 (np cog)) (0 UPPER) (1 UPPER);
 # Alan Stivell
@@ -613,3 +623,9 @@ SUBSTITUTE (pr) (pr s1) ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
 
 # KSB / OAB 
 SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
+
+##
+## TRANSITIVE / INTRANSITIVE VERBS
+##
+
+SUBSTITUTE (vblex) (vblex tv) ("pediñ" vblex) (1C NC);
