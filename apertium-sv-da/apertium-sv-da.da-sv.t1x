@@ -45,7 +45,9 @@
      <def-attr n="gen">
           <attr-item tags="ut"/>
           <attr-item tags="nt"/>
-	  <attr-item tags="ea"/>
+	  <attr-item tags="un"/>
+
+	  <attr-item tags="GD"/>
      </def-attr>
       
        <def-attr n="persona">
@@ -89,6 +91,8 @@
           <attr-item tags="sg"/>
 	  <attr-item tags="pl"/>
 	  <attr-item tags="sp"/>
+
+	  <attr-item tags="ND"/>
       </def-attr>
 
       <def-attr n="cas">
@@ -114,6 +118,7 @@
       <def-var n="concTercero"/>
       <def-var n="interrogativa"/>
       <def-var n="exclamativa"/>
+      <def-var n="adjectiu1"/>
    
 </section-def-vars>
 
@@ -137,27 +142,252 @@
       </when>     	    
     </choose>
   </def-macro>
+
+    <def-macro n="f_comparatiu1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
+      <let>
+        <var n="adjectiu1"/>
+        <lit v=""/>
+      </let>
+      <choose>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.unsint"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="pst"/>
+              </equal>
+            </and>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <lit-tag v="adj.pst"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.unsint"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="comp"/>
+              </equal>
+            </and>
+          </test>
+          <append n="adjectiu1">
+            <lit v="mere"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+          <let>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <lit-tag v="adj.pst"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="nbr"/>
+            <concat>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="ind"/>
+            </concat>
+          </let>
+        </when>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" side="tl" part="a_adj"/>
+                <lit-tag v="adj.unsint"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="sup"/>
+              </equal>
+            </and>
+          </test>
+          <append n="adjectiu1">
+            <lit v="mest"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+          <let>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <lit-tag v="adj.pst"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="nbr"/>
+            <concat>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="ind"/>
+            </concat>
+          </let>
+        </when>
+        <otherwise>
+          <append n="adjectiu1">
+            <lit v=""/>
+          </append> 
+        </otherwise>
+      </choose>
+    </def-macro>
+
+
+    <def-macro n="f_concord1" npar="1">
+      <choose>
+        <!--To determine value of variables of gender and
+                  number and propagate to other rules.  Variables are
+                  not used again in this rule -->
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="ut"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="ut"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="nt"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="nt"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="sg"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="pl"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <!-- If word has GD or ND, we try to assign the
+                      gender or number of the previous rule. If there is no
+                      value for the gender or number variable from previous
+                      rules, gender will be common (utrum) and number singular.-->
+            <equal>
+              <clip pos="1" side="tl" part="gen"/>
+              <lit-tag v="GD"/>
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <var n="genero"/>
+                  <lit-tag v="nt"/>
+                </equal>
+              </test>
+              <let>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="nt"/>
+              </let>
+            </when>
+            <otherwise>
+              <let>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="ut"/>
+              </let>
+            </otherwise>
+          </choose>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="ND"/>
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="pl"/>
+                </equal>
+              </test>
+              <let>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </let>
+            </when>
+            <otherwise>
+              <let>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </let>
+            </otherwise>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+
   
 </section-def-macros>
 
 <section-rules>
-  <rule>
-     <pattern>
-       <pattern-item n="adj"/>
-     </pattern>
-     <action>
-       <out>
-         <lu>
-           <clip pos="1" side="tl" part="lem"/>
-           <clip pos="1" side="tl" part="a_adj"/>
-           <clip pos="1" side="tl" part="gen"/>
-           <clip pos="1" side="tl" part="nbr"/>
-           <clip pos="1" side="tl" part="defnes"/>
-         </lu>
-       </out>
-     </action>
-  </rule>
 
+    <rule comment="REGLA: ADJEC">
+      <pattern>
+        <pattern-item n="adjec"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_comparatiu1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <var n="adjectiu1"/>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_adj"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="defnes"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
    
 
 
