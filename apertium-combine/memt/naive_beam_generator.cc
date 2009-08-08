@@ -17,6 +17,7 @@ void Naive_Beam_Generator::generate(Alignment& a,
     if (a._pw_alignments.size() == 1) 
         generate_pairwise(a._pw_alignments[0], h);
     else {
+        
         // TODO
         return;
     }

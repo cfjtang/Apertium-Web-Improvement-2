@@ -24,7 +24,11 @@ class Pairwise_Alignment;
 class Alignment
 {
     public:
-        std::vector<Pairwise_Alignment> _pw_alignments;
+        std::vector<Pairwise_Alignment> _pw_alignments; // for drawkcab compat
+        std::vector<std::vector<wstring> > _mt_translations; //[transl][word]
+        std::vector<std::vector<std::list<std::pair<unsigned int, 
+            unsigned int> > > > _aligned;
+            // _aligned[transl][word] = list of aligned words: (transl, word)
         Alignment(std::vector<wstring>& input_lines);
         ~Alignment();
         void match(Matcher& m);
