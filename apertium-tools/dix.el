@@ -69,10 +69,13 @@
 ;;; - generalise to `dix-copy' with LR/RL options instead.
 ;;; - `dix-dixfiles' should be a list of strings instead.
 ;;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
-;;;   the <r>.
+;;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
+;;;   do with spaces
 
 
 (defconst dix-version "2009-07-01") 
+
+(require 'nxml-mode)
 
 ;;;============================================================================
 ;;;
@@ -343,12 +346,14 @@ restriction."
   (interactive "P")
   (dix-up-to "e" "pardef")
   (save-excursion
-    (dix-with-sexp (kill-sexp))		; todo: don't modify kill-ring
-    (yank) (newline-and-indent) (yank)
-    (goto-char (mark t))
+    (let ((beg (point))
+	  (end (1+ (nxml-scan-element-forward (point)))))
+      (goto-char end)
+      (insert (concat) (buffer-substring-no-properties beg end))
+      (goto-char (mark t)))
     ;; restrict:
     (let ((dir (if RL "RL" "LR")))
-      (forward-word) (insert (concat " r=\"" dir "\"")))
+      (forward-word) (insert " r=\"" dir "\""))
     ;; formatting, remove whitespace:
     (forward-char) (just-one-space) (delete-backward-char 1))
   ;; move point to end of relevant word:
@@ -430,24 +435,33 @@ also `dix-next'."
   "Call from an entry to go to its pardef. Mark is pushed so you
 can go back with C-u \\[set-mark-command]."
   (interactive)
-  (if (save-excursion
-	(dix-up-to "e")
-	(re-search-forward "n=\"\\([^\"]*\\)\"")
-	(let ((pdname (match-string 1)))
-	  (goto-char (point-min))
-	  (if (re-search-forward
-	       (concat "<pardef *n=\"" pdname "\"") nil t)
-	      (setq pos (match-beginning 0)))))
-      (progn (push-mark)
-	     (goto-char pos))))
+  (let (pos)
+    (if (save-excursion
+	  (dix-up-to "e")
+	  (re-search-forward "n=\"\\([^\"]*\\)\"")
+	  (let ((pdname (match-string 1)))
+	    (goto-char (point-min))
+	    (if (re-search-forward
+		 (concat "<pardef *n=\"" pdname "\"") nil t)
+		(setq pos (match-beginning 0)))))
+	(progn (push-mark)
+	       (goto-char pos)))))
 
-(defvar dix-path-morf "lt-proc /l/n/nn-nb.automorf.bin"
-  "The command you use for lt-proc, morphological analysis.")
-(defvar dix-path-gen "lt-proc -g /l/n/nn-nb.autogen.bin"
-  "The command you use for lt-proc, morphological generation.")
-(defvar dix-path-transfer "apertium-transfer /l/n/apertium-nn-nb.nn-nb.t1x /l/n/nn-nb.t1x.bin /l/n/nn-nb.autobil.bin"
-  "The command you use for apertium-transfer.")
-(defun dix-analyse-all ()
+(defvar dix-modes
+  '((nn-nb ("lt-proc"    "/l/n/nn-nb.automorf.bin")
+	   ("cg-proc" "/l/n/nn-nb.rlx.bin")
+	   ("apertium-tagger -g" "/l/n/nn-nb.prob")
+	   ("apertium-pretransfer")
+	   ("apertium-transfer" "/l/n/apertium-nn-nb.nn-nb.t1x" "/l/n/nn-nb.t1x.bin" "/l/n/nn-nb.autobil.bin")
+	   ("lt-proc -g" "/l/n/nn-nb.autogen.bin"))
+    (nb-nn ("lt-proc"    "/l/n/nb-nn.automorf.bin")
+	   ("cg-proc" "/l/n/nb-nn.rlx.bin")
+	   ("apertium-tagger -g" "/l/n/nb-nn.prob")
+	   ("apertium-pretransfer")
+	   ("apertium-transfer" "/l/n/apertium-nn-nb.nb-nn.t1x" "/l/n/nb-nn.t1x.bin" "/l/n/nb-nn.autobil.bin")
+	   ("lt-proc -g" "/l/n/nb-nn.autogen.bin"))))
+
+(defun dix-analyse (&optional no-disambiguate)
   "Very bare-bones at the moment. 
 
 Todo: read modes.xml instead of those using those dix-path*
@@ -455,23 +469,37 @@ variables, and allow both directions (although should have some
 option to override the modes.xml reading).
 
 Todo: word-at-point function which ignores xml stuff."
-  (interactive)
+  (interactive "P")
   (save-selected-window
-    (let* ((word (word-at-point))
-	   (buf (pop-to-buffer "*dix-analysis*"))
-	   (morf (shell-command-to-string
-		  (concat "echo '" word "' | " dix-path-morf)))
-	   (sep (replace-regexp-in-string
-		 "/" "$ ^" (replace-regexp-in-string "^[^/]*/" "^" morf)))
-	   (transfer (shell-command-to-string
-		      (concat "echo '" sep "' | " dix-path-transfer)))
-	   (gen (shell-command-to-string
-		 (concat "echo '" transfer "' | " dix-path-gen))))    
-      (with-output-to-temp-buffer "*dix-analysis*"
-	(insert (concat "SL morphology:\n" morf
-			"\nTransfer:\n" transfer
-			"\nTL generation:\n" gen))
-	(nxml-mode)))))
+    (let ((word (word-at-point))
+	  last-output)
+      (pop-to-buffer "*dix-analysis*")
+      (dolist (mode dix-modes)
+	(insert "==> " (symbol-name (car mode)) " <==\n")
+	(setq last-output word)
+	(dolist (cmd (cdr mode))
+	  (let ((cmdstr (mapconcat 'concat cmd " ")))
+	    (insert " " cmdstr ":\n")
+	    (setq last-output
+		  (substring		; trim off final newline
+		   (shell-command-to-string
+		    (concat "echo '" last-output "' | " cmdstr))
+		   0 -1))
+ 	    (insert last-output "\n\n")
+	    (when (and no-disambiguate (or (string= "lt-proc" (car cmd))
+					   (string= "lt-proc -w" (car cmd))))
+	      (insert (setq last-output (dix-analysis-split last-output)) "\n"))))))
+    (nxml-mode)
+    (toggle-truncate-lines 0)
+    (end-of-buffer)))
+
+(defun dix-analysis-split (ambig)
+  (let* ((first (string-match "/" ambig))
+	 (surface (substring ambig (string-match "\\^" ambig) first))
+	 (analyses (substring ambig first (string-match "\\$" ambig))))
+    (mapconcat (lambda (analysis) (concat surface "/" analysis "$"))
+	       (split-string analyses "/" 'omitnulls) " "))) 
+
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
@@ -555,7 +583,7 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
-(define-key dix-mode-map (kbd "C-c C") 'dix-analyse-all)
+(define-key dix-mode-map (kbd "C-c C") 'dix-analyse)
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
 
