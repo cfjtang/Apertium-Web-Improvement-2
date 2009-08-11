@@ -350,12 +350,12 @@ restriction."
 	  (end (1+ (nxml-scan-element-forward (point)))))
       (goto-char end)
       (insert (concat) (buffer-substring-no-properties beg end))
-      (goto-char (mark t)))
-    ;; restrict:
-    (let ((dir (if RL "RL" "LR")))
-      (forward-word) (insert " r=\"" dir "\""))
-    ;; formatting, remove whitespace:
-    (forward-char) (just-one-space) (delete-backward-char 1))
+      (goto-char end)
+      ;; restrict:
+      (let ((dir (if RL "RL" "LR")))
+	(forward-word) (insert " r=\"" dir "\""))
+      ;; formatting, remove whitespace:
+      (forward-char) (just-one-space) (delete-backward-char 1)))
   ;; move point to end of relevant word:
   (nxml-down-element 2) (when RL (nxml-forward-element))
   (nxml-down-element 1) (goto-char (nxml-token-after)))
