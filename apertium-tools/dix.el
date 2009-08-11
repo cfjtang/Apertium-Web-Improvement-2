@@ -491,7 +491,7 @@ Todo: word-at-point function which ignores xml stuff."
 	      (insert (setq last-output (dix-analysis-split last-output)) "\n"))))))
     (nxml-mode)
     (toggle-truncate-lines 0)
-    (end-of-buffer)))
+    (goto-char (point-max))))
 
 (defun dix-analysis-split (ambig)
   (let* ((first (string-match "/" ambig))
