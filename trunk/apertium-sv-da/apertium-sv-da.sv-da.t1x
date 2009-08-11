@@ -333,7 +333,20 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
   </section-def-lists>
 
   <section-def-macros>
-
+    <def-macro n="resetvars" npar="1">
+	<let>
+	  <var n="numero"/>
+	  <lit-tag v="sg"/>
+	</let>
+	<let>
+	  <var n="genero"/>
+	  <lit-tag v="m"/>
+	</let>
+	<let>
+	  <var n="definite"/>
+	  <lit v=""/>
+	</let>
+    </def-macro>
     <def-macro n="f_bcond" npar="1">
       <!--Per mirar si el blanc conté o no format -->
       <choose>
@@ -3109,6 +3122,9 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
             <clip pos="2" side="tl" part="lemq"/>
           </lu>
         </out>
+        <call-macro n="resetvars">
+          <with-param pos="1"/>
+        </call-macro>
       </action>
     </rule>
 
@@ -3194,18 +3210,9 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
 	<pattern-item n="sent"/>
       </pattern>
       <action>
-	<let>
-	  <var n="numero"/>
-	  <lit-tag v="sg"/>
-	</let>
-	<let>
-	  <var n="genero"/>
-	  <lit-tag v="m"/>
-	</let>
-	<let>
-	  <var n="definite"/>
-	  <lit v=""/>
-	</let>
+        <call-macro n="resetvars">
+          <with-param pos="1"/>
+        </call-macro>
 	<out>
 	  <lu>
 	    <clip pos="1" side="tl" part="whole"/>
