@@ -12,4 +12,8 @@ Things to be implemented in version 0.2.0:
 
 In the case of grouping words, superblanks (and other symbols) between these words should be concatenated at the end of the multiword, which could produce bad formatting in the output.
 
+More future work:
+
+1. Currently, words already tagged as <np> by the tagger are ignored by the apertium-pn-recogniser module, even in the automaton which considers sequences as "PROPER_NOUN1 de la PROPER_NOUN2" (example in Spanish). As a result of that, this sequence is not detected when PROPER_NOUN1 has been tagged as <np> and "de la" will be wrongly translated by posterior modules in the Apertium pipeline. This should be fixed.
+
 
