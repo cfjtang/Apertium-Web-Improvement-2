@@ -17,10 +17,48 @@ void Naive_Beam_Generator::generate(Alignment& a,
     if (a._pw_alignments.size() == 1) 
         generate_pairwise(a._pw_alignments[0], h);
     else {
-        
-        // TODO
-        return;
+        // generate_all(a, h);
     }
+}
+
+void inline Naive_Beam_Generator::generate_all(Alignment& a,
+        std::list<Hypothesis>& h)
+{
+    /*
+    unsigned int length = 0;
+    for (unsigned int i = 0; i < a._aligned.size(); ++i) {
+        if (a._aligned[i] > length) {
+            length = a._aligned[i];
+        }
+    }
+    scored_phrases wv;
+    std::pair<unsigned int, std::vector<Word> > words;
+    fill_words(words, a, length);
+    wv.push_back(words);
+#ifdef DEBUG
+    wcout << "WORDS: ";
+    for (std::vector<Word>::iterator w = wv[0].second.begin();
+            w != wv[0].second.end(); ++w) {
+        wcout << w->word << " ";
+    }
+    wcout << endl;
+#endif
+    for (unsigned int j = 0; j < length; ++j) {
+        expand(wv, a, j);
+        length = max_length(wv);
+    }
+    /// filling of the "h"
+    for (scored_phrases::iterator it = wv.begin();
+            it != wv.end(); ++it) {
+        std::list<wstring> temp;
+        for (std::vector<Word>::iterator w = it->second.begin();
+                w != it->second.end(); ++w) {
+            if (w->used) 
+                temp.push_back(w->word);
+        }
+        h.push_back(Hypothesis(it->first, temp));
+    } 
+    */
 }
 
 void inline Naive_Beam_Generator::generate_pairwise(Pairwise_Alignment& a,
@@ -125,5 +163,7 @@ void inline Naive_Beam_Generator::expand(scored_phrases& wv,
         << wv[0].second[j].word<< ") with wv size of: " << wvsize << endl;
 #endif
 }
+
+
 
         
