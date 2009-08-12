@@ -25,9 +25,35 @@ void fill_words(std::pair<unsigned int, std::vector<Word> >
                 words.second.push_back(
                         Word(false, false, 1, i, a._words_right[i]));
         if (i < a._words_left.size()) {
-            if (a._final_alignment_left[i] == -1) // add if it is not aligned
+            if (a._final_alignment_left[i] != -1) {
+                if (!a._words_left[i].compare(a._words_right[
+                            a._final_alignment_left[i]])) {
+                    ; // do not add if aligned and exactmatching
+                } else { 
+                    words.second.push_back(
+                            Word(false, true, 0, i, a._words_left[i]));
+                }
+            } else {
                 words.second.push_back(
                         Word(false, false, 0, i, a._words_left[i]));
+            }
+        }
+    }
+}
+
+void fill_word(std::pair<unsigned int, std::vector<Word> >
+        & words, Alignment& a, unsigned int length)
+{
+    for (unsigned int k = 0; k < a._aligned.size(); ++k) {
+        for (unsigned int i = 0; i < length; ++i) {
+            if (i < a._aligned[k].size()) {
+                if (a._aligned[k][i].empty())
+                    words.second.push_back(
+                            Word(false, false, k, i,
+                                a._mt_translations[k][i]));
+                else {
+                }
+            }
         }
     }
 }
