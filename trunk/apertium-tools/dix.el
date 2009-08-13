@@ -35,6 +35,10 @@
 ;;; while `C-c D' gives you a list of all pardefs which use these
 ;;; suffixes (where a suffix is the contents of an <l>-element).
 ;;; 
+;;; `M-x dix-suffix-sort' is a general function, useful outside of dix
+;;; XML files too, that just reverses each line, sorts them, and
+;;; reverses them back.
+;;; 
 ;;; 
 ;;; I like having the following set too:
 ;; (setq nxml-sexp-element-flag t 		; treat <e>...</e> as a sexp
@@ -280,12 +284,6 @@ and `dix-get-pardefs'."
 	(cons (car alist)
 	      (assoc-delete-all key (cdr alist))))))
 
-(defun query-replace-read-args (prompt regexp-flag &optional noerror)
-  (let* ((from)
-	 (to (if (consp from) (prog1 (cdr from) (setq from (car from)))
-	       (query-replace-read-to from prompt regexp-flag))))
-    (list from to current-prefix-arg)))
-
 ;;;============================================================================
 ;;;
 ;;; Interactive functions
@@ -454,6 +452,49 @@ finding compound words which could have the same paradigm."
   (dix-reverse-lines beg end)
   (sort-lines nil beg end)
   (dix-reverse-lines beg end))
+
+(defun dix-replace-regexp-within-elt (regexp to-string eltname &optional delimited start end)
+  "Does exactly what `query-replace-regexp' does, except it
+restricts `regexp' and `to-string' to text within `eltname'
+elements. Note: this function does not ensure that `to-string' is
+free from instances of the end `eltname', so it's easy to break
+if you so wish."
+  (interactive
+   (let ((common (query-replace-read-args
+		  (if (and transient-mark-mode mark-active)
+		      "Query replace regexp in region within elements" "Query replace regexp within elements")
+		  t))
+	 (eltname (read-from-minibuffer "Element name: ")))
+     (list (nth 0 common) (nth 1 common) eltname (nth 2 common)
+	   (if (and transient-mark-mode mark-active) (region-beginning))
+	   (if (and transient-mark-mode mark-active) (region-end)))))
+  (perform-replace (concat "\\(<" eltname ">.*\\)" regexp "\\(.*</" eltname ">\\)")
+		   (concat "\\1" to-string "\\2")
+		   t t delimited nil nil start end))
+
+(defun dix-replace-regexp-within-l (regexp to-string &optional delimited start end)
+  "Call `dix-replace-regexp-within-elt' on <l> elements."
+  (interactive
+   (let ((common (query-replace-read-args
+		  (if (and transient-mark-mode mark-active)
+		      "Query replace regexp in region within <l>'s" "Query replace regexp within <l>'s")
+		  t)))
+     (list (nth 0 common) (nth 1 common) (nth 2 common)
+	   (if (and transient-mark-mode mark-active) (region-beginning))
+	   (if (and transient-mark-mode mark-active) (region-end)))))
+  (dix-replace-regexp-within-elt regexp to-string "l" delimited start end))
+
+(defun dix-replace-regexp-within-r (regexp to-string &optional delimited start end)
+  "Call `dix-replace-regexp-within-elt' on <r> elements."
+  (interactive
+   (let ((common (query-replace-read-args
+		  (if (and transient-mark-mode mark-active)
+		      "Query replace regexp in region within <r>'s" "Query replace regexp within <r>'s")
+		  t)))
+     (list (nth 0 common) (nth 1 common) (nth 2 common)
+	   (if (and transient-mark-mode mark-active) (region-beginning))
+	   (if (and transient-mark-mode mark-active) (region-end)))))
+  (dix-replace-regexp-within-elt regexp to-string "r" delimited start end))
 
 (defun dix-next (&optional step)
   "Moves forward `step' steps (default 1) in <e> elements between
@@ -627,6 +668,9 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
 (define-key dix-mode-map (kbd "C-c C") 'dix-analyse)
+(define-key dix-mode-map (kbd "C-c %") 'dix-replace-regexp-within-elt)
+(define-key dix-mode-map (kbd "C-c l %") 'dix-replace-regexp-within-l)
+(define-key dix-mode-map (kbd "C-c r %") 'dix-replace-regexp-within-r)
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
 
