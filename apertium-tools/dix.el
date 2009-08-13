@@ -71,6 +71,8 @@
 ;;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
 ;;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
 ;;;   do with spaces
+;;; - `dix-reverse' should be able to reverse on a regexp match, so
+;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
 
 (defconst dix-version "2009-07-01") 
@@ -278,6 +280,12 @@ and `dix-get-pardefs'."
 	(cons (car alist)
 	      (assoc-delete-all key (cdr alist))))))
 
+(defun query-replace-read-args (prompt regexp-flag &optional noerror)
+  (let* ((from)
+	 (to (if (consp from) (prog1 (cdr from) (setq from (car from)))
+	       (query-replace-read-to from prompt regexp-flag))))
+    (list from to current-prefix-arg)))
+
 ;;;============================================================================
 ;;;
 ;;; Interactive functions
@@ -413,6 +421,40 @@ determines whether alphabetic case affects the sort order."
       (if (nxml-scan-element-forward (nxml-token-before))
 	  (dix-sort-e-by-r reverse beg xmltok-start)))))
 
+(defun dix-reverse-lines (beg end)
+  "Reverse each line in the region. Used by `dix-suffix-sort'. If
+called non-interactively, reverse each full line from `beg' to
+`end' (inclusive, never reverses part of a line)."
+  (interactive "r")
+  (save-excursion
+    (if (and (>= beg (line-beginning-position))
+	     (<= end (line-end-position)))
+	(dix-reverse (line-beginning-position)
+		     (line-end-position))
+      (save-restriction
+	(narrow-to-region beg end)
+	(goto-char (point-min))
+	(while (< (point) (point-max))
+	  (dix-reverse (line-beginning-position)
+		       (line-end-position))
+	  (forward-line))))))
+
+(defun dix-reverse-region (beg end)
+  "Reverse the text between positions `beg' and `end' in the
+buffer. Used by `dix-reverse-lines'."
+  (interactive "r")
+  (let ((line (buffer-substring beg end)))
+    (delete-region beg end)
+    (insert (apply 'string (reverse (string-to-list line))))))
+
+(defun dix-suffix-sort (beg end)
+  "Sort the region by the reverse of each line, useful for
+finding compound words which could have the same paradigm."
+  (interactive "r")
+  (dix-reverse-lines beg end)
+  (sort-lines nil beg end)
+  (dix-reverse-lines beg end))
+
 (defun dix-next (&optional step)
   "Moves forward `step' steps (default 1) in <e> elements between
 the important places (lm attribute, <i>/<r>/<l> data, n attribute
@@ -491,7 +533,8 @@ Todo: word-at-point function which ignores xml stuff."
 	      (insert (setq last-output (dix-analysis-split last-output)) "\n"))))))
     (nxml-mode)
     (toggle-truncate-lines 0)
-    (goto-char (point-max))))
+    ;; ignore compiler warning, we wan to scroll here:
+    (end-of-buffer)))
 
 (defun dix-analysis-split (ambig)
   (let* ((first (string-match "/" ambig))
