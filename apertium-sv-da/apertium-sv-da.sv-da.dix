@@ -6,9 +6,6 @@
 	Sdefs: 66
 	Paradigms: 25
 	Last processed by: apertium-dixtools format -alignBidix apertium-sv-da.sv-da.dix -
-
-apertium-dixtools sort -group n,n_symbol -alignBidix -bil apertium-sv-da.sv-da.dix
-
 -->
 <dictionary>
 	<alphabet></alphabet>
@@ -79,8 +76,16 @@ apertium-dixtools sort -group n,n_symbol -alignBidix -bil apertium-sv-da.sv-da.d
 		<sdef n="cm" 	c="Comma"/> 
 		<sdef n="ND" 	c="Número por determinar"/> 
 		<sdef n="GD" 	c="Género por determinar"/> 
+		<sdef n="nom" 	c=""/> 
+		<sdef n="gen" 	c=""/> 
 	</sdefs>
 	<pardefs>
+<!--
+apertium-dixtools sort -group n,n_symbol -alignBidix -bil apertium-sv-da.sv-da.dix
+
+for i in `grep stik__n apertium-sv-da.da.dix | cut -d '"' -f 2 | sort -u`; do echo $i; sed -i -r "s/(<r>$i<.*)<par n=\"sp_sgpl__n\"\/>/\1/g" apertium-sv-da.sv-da.dix; done
+-->
+
 
 <pardef n="sp_sgpl__n">
   <e r="LR"><p><l><s n="sp"/><s n="ind"/></l><r><s n="ND"/><s n="ind"/></r></p></e>
@@ -108,6 +113,13 @@ jordbær  jordbær
   <e r="RL"><p><l><s n="ND"/><s n="ind"/></l><r><s n="sp"/><s n="ind"/></r></p></e>
   <e r="LR"><p><l><s n="sg"/><s n="ind"/></l><r><s n="sp"/><s n="ind"/></r></p></e>
   <e r="LR"><p><l><s n="pl"/><s n="ind"/></l><r><s n="sp"/><s n="ind"/></r></p></e>
+  <e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
+  <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
+</pardef>
+
+<pardef n="sgpl_sgpl__n">
+  <e><p><l><s n="sg"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
+  <e><p><l><s n="pl"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
   <e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
   <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
 </pardef>
@@ -2579,10 +2591,21 @@ jordbær  jordbær
 <e>       <p><l>hud<s n="n"/><s n="ut"/></l>           <r>hud<s n="n"/><s n="ut"/></r></p></e>
 
 <e>       <p><l>slag<s n="n"/><s n="nt"/></l>          <r>slag<s n="n"/><s n="nt"/></r></p><par n="sp_sgpl__n"/></e>
-<e>       <p><l>slag<s n="n"/><s n="nt"/></l>          <r>slag<s n="n"/><s n="ut"/></r></p><par n="sp_sgpl__n"/></e>
-<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>slag<s n="n"/><s n="ut"/></r></p></e>
+<!--
+<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>slags<s n="n"/><s n="ut"/></r></p><par n="sgpl_sp__n"/></e>
+-->
+<e><p><l>sort<s n="n"/><s n="ut"/></l><r>sort<s n="n"/><s n="ut"/></r></p><par n="sgpl_sgpl__n"/><p><l><s n="nom"/></l><r><s n="nom"/></r></p></e>
+<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>slags<s n="n"/><s n="ut"/></r></p><par n="sgpl_sp__n"/><p><l><s n="gen"/></l><r><s n="nom"/></r></p></e>
+
+<!--
+<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>art<s n="n"/><s n="ut"/></r></p></e>
+-->
+
+
+
+
 <e>       <p><l>fältslag<s n="n"/><s n="nt"/></l>      <r>slag<s n="n"/><s n="nt"/></r></p><par n="sp_sgpl__n"/></e>
-<e>       <p><l>hugg<s n="n"/><s n="nt"/></l>          <r>slag<s n="n"/><s n="ut"/></r></p><par n="sp_sgpl__n"/></e>
+<e>       <p><l>hugg<s n="n"/><s n="nt"/></l>          <r>slag<s n="n"/><s n="nt"/></r></p><par n="sp_sgpl__n"/></e>
 
 <e>       <p><l>humla<s n="n"/><s n="ut"/></l>         <r>brumbasse<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>hummer<s n="n"/><s n="ut"/></l>        <r>hummer<s n="n"/><s n="nt"/></r></p></e>
@@ -4872,9 +4895,6 @@ jordbær  jordbær
 <e>       <p><l>soppa<s n="n"/><s n="ut"/></l>         <r>suppe<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>soptipp<s n="n"/><s n="ut"/></l>       <r>losseplads<s n="n"/><s n="ut"/></r></p></e>
 <e>       <p><l>sorg<s n="n"/><s n="ut"/></l>          <r>sorg<s n="n"/><s n="ut"/></r></p></e>
-<!--
-<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>art<s n="n"/><s n="ut"/></r></p></e>
--->
 
 <e>       <p><l>sortiment<s n="n"/><s n="nt"/></l>     <r>sortiment<s n="n"/><s n="nt"/></r></p><par n="sp_sgpl__n"/></e>
 <e>       <p><l>sovsal<s n="n"/><s n="ut"/></l>        <r>sovesal<s n="n"/><s n="ut"/></r></p></e>
@@ -5217,7 +5237,6 @@ jordbær  jordbær
 <e><p><l>smula<s n="n"/><s n="ut"/></l><r>krumme<s n="n"/><s n="ut"/></r></p></e>
 <e><p><l>solsystem<s n="n"/><s n="nt"/></l><r>solsystem<s n="n"/><s n="nt"/></r></p><par n="sp_sgpl__n"/></e>
 <e><p><l>soluppgång<s n="n"/><s n="ut"/></l><r>solopgang<s n="n"/><s n="ut"/></r></p></e>
-<e><p><l>sort<s n="n"/><s n="ut"/></l><r>sort<s n="n"/><s n="ut"/></r></p></e>
 <e><p><l>spade<s n="n"/><s n="ut"/></l><r>spade<s n="n"/><s n="ut"/></r></p></e>
 <e><p><l>sponsor<s n="n"/><s n="ut"/></l><r>sponsor<s n="n"/><s n="nt"/></r></p></e>
 <e><p><l>sponsor<s n="n"/><s n="ut"/></l><r>sponsor<s n="n"/><s n="ut"/></r></p></e>
