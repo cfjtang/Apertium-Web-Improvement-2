@@ -37,7 +37,10 @@
 ;;; 
 ;;; `M-x dix-suffix-sort' is a general function, useful outside of dix
 ;;; XML files too, that just reverses each line, sorts them, and
-;;; reverses them back.
+;;; reverses them back. `C-c % %' is a convenience function for
+;;; regexp-replacing text within certain XML elements, eg. all <e>
+;;; elements; `C-c % r' and `C-c % l' are specifically for <r> and <l>
+;;; elements, respectively.
 ;;; 
 ;;; 
 ;;; I like having the following set too:
@@ -178,7 +181,7 @@ finding another `eltname' element."
 
 (defun dix-get-attrib (attributes name)
   "Find attribute with attribute name `name' (a string) in the
-list `attributes' (of the same format as
+list `attributes' of the same format as
 `xmltok-attributes'. Return nil if no such attribute is found."
   (if attributes
       (if (equal name (buffer-substring-no-properties
@@ -288,6 +291,19 @@ and `dix-get-pardefs'."
 ;;;
 ;;; Interactive functions
 ;;;
+
+(defun dix-toggle-syntax-highlighting ()
+  "Toggle nXML syntax highlighting. Runs `normal-mode' to make
+sure syntax highlighting gets turned on afterwards, but you'll
+have to reopen the file if you want to completely clear all
+syntax highlighting."
+  (interactive)
+  (setq nxml-syntax-highlight-flag (not nxml-syntax-highlight-flag))
+  (normal-mode)
+  (dix-mode 1)
+  (if nxml-syntax-highlight-flag
+      (message "Syntax highlighting is on")
+    (message "Syntax highlighting is off")))
 
 (defun dix-find-duplicate-pardefs (&optional recompile)
   "Find all pardefs with this list of suffixes (contents of <l>
@@ -668,9 +684,14 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
 (define-key dix-mode-map (kbd "C-c C") 'dix-analyse)
-(define-key dix-mode-map (kbd "C-c %") 'dix-replace-regexp-within-elt)
-(define-key dix-mode-map (kbd "C-c l %") 'dix-replace-regexp-within-l)
-(define-key dix-mode-map (kbd "C-c r %") 'dix-replace-regexp-within-r)
+(define-key dix-mode-map (kbd "C-c H") 'dix-toggle-syntax-highlighting)
+(define-prefix-command 'dix-replace-prefix)
+(define-key dix-mode-map (kbd "C-c %") 'dix-replace-prefix)
+(define-key dix-mode-map (kbd "C-c % RET") 'dix-replace-regexp-within-elt)
+(define-key dix-mode-map (kbd "C-c % %") 'dix-replace-regexp-within-elt)
+(define-key dix-mode-map (kbd "C-c % l") 'dix-replace-regexp-within-l)
+(define-key dix-mode-map (kbd "C-c % r") 'dix-replace-regexp-within-r)
+
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
 
