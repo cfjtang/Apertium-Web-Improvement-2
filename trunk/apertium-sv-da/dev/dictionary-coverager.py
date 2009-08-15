@@ -4,7 +4,7 @@
 
 import sys, codecs, copy;
 
-sys.stdin  = codecs.getreader('utf-8')(sys.stdin);
+sys.stdin = codecs.getreader('utf-8')(sys.stdin);
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
