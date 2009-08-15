@@ -416,7 +416,7 @@ determines whether alphabetic case affects the sort order."
 	   (nxml-down-element 2)
 	   (let ((lstart (point))
 		 (lend (progn (nxml-forward-element) (point)))
-		 (rstart (nxml-token-after))
+		 (rstart (if (looking-at "<") (point) (nxml-token-after)))
 		 (rend (progn (nxml-forward-element) (point))))
 	     (concat (buffer-substring-no-properties rstart rend)
 		     (buffer-substring-no-properties lstart lend)))))))))
@@ -546,6 +546,31 @@ can go back with C-u \\[set-mark-command]."
 	(progn (push-mark)
 	       (goto-char pos)))))
 
+(defun dix-view-pardef ()
+  "Show pardef in other window. Unfortunately, I haven't found
+out how to have two different buffer restrictions going at once,
+the pardef is just inserted into a new buffer where you can
+eg. edit at will and then paste back. The nice thing is that for
+each call of this function, the pardef is added to the
+*dix-view-pardef* buffer, so you get a temp buffer where you can
+eg. collapse pardefs."
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (widen)
+      (dix-goto-pardef)
+      (let* ((beg (point))
+	     (end (1+ (nxml-scan-element-forward beg)))
+	     (pardef (buffer-substring beg end)))
+	(save-selected-window
+	  (pop-to-buffer "*dix-view-pardef*")
+	  (insert pardef)    
+	  (nxml-mode)
+	  (dix-mode 1)
+	  (goto-char (point-max))	; from `end-of-buffer'
+	  (overlay-recenter (point))
+	  (recenter -3))))))  
+
 (defvar dix-modes
   '((nn-nb ("lt-proc"    "/l/n/nn-nb.automorf.bin")
 	   ("cg-proc" "/l/n/nn-nb.rlx.bin")
@@ -590,8 +615,9 @@ Todo: word-at-point function which ignores xml stuff."
 	      (insert (setq last-output (dix-analysis-split last-output)) "\n"))))))
     (nxml-mode)
     (toggle-truncate-lines 0)
-    ;; ignore compiler warning, we wan to scroll here:
-    (end-of-buffer)))
+    (goto-char (point-max))		; from `end-of-buffer'
+    (overlay-recenter (point))
+    (recenter -3)))
 
 (defun dix-analysis-split (ambig)
   (let* ((first (string-match "/" ambig))
