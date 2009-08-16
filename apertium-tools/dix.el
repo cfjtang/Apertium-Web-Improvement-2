@@ -512,6 +512,38 @@ if you so wish."
 	   (if (and transient-mark-mode mark-active) (region-end)))))
   (dix-replace-regexp-within-elt regexp to-string "r" delimited start end))
 
+
+(defvar dix-search-substring nil
+  "Set by `dix-word-search-forward'.")
+
+(defun dix-word-search-forward (&optional substring)
+  "Incremental word-search for dix files. In monodix, searches
+only within lm attributes, in bidix, searches only between > and
+< symbols. Optional prefix argument `substring' lets you search
+for parts of words, otherwise you have to type the whole word in
+to get a (correct) hit.
+
+Todo: 
+- make some way of searching for prefixes or suffixes (ie. so
+  that the .* is only put at the end or beginning)
+- on failing search, don't mark anything (currently, it marks
+  until end-of-buffer...)"
+  (interactive "P")
+  (setq dix-search-substring substring)
+  (isearch-mode
+   'forward 'regexp 
+   (lambda ()
+     (let* ((bidix (string-match "\\...*-..*\\.dix" (buffer-file-name)))
+	    (l (if bidix ">" "lm=\""))
+	    (r (if bidix "<" "\""))
+	    (affix (if dix-search-substring (concat "[^" r "]*"))))
+       (setq isearch-string
+	     (concat l affix isearch-message affix r))
+       (goto-char isearch-opoint)
+       (setq isearch-forward t)	; o/w the first C-s goes backward, for some reason
+       (isearch-search)
+       (isearch-update)))))
+
 (defun dix-next (&optional step)
   "Moves forward `step' steps (default 1) in <e> elements between
 the important places (lm attribute, <i>/<r>/<l> data, n attribute
@@ -707,6 +739,8 @@ by the (customizable) string `dix-dixfiles'"
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
+(define-key dix-mode-map (kbd "C-c V") 'dix-view-pardef)
+(define-key dix-mode-map (kbd "C-c W") 'dix-word-search-forward)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
 (define-key dix-mode-map (kbd "C-c C") 'dix-analyse)
