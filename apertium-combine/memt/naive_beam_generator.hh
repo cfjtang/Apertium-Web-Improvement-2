@@ -44,11 +44,13 @@ struct Chained_Word
 struct Chained_Word_Sentinel
 {
     std::vector<Chained_Word*> firsts;
-    std::vector<std::pair<bool, Chained_Word*> > lasts; // expanded or not
+    // std::vector<std::pair<bool, Chained_Word*> > lasts; // expanded or not
+    std::vector<Chained_Word*> lasts;         // expanded
+    std::vector<Chained_Word*> clean_roots;   // not expanded
 
     Chained_Word_Sentinel() { 
         Chained_Word* tmp = new Chained_Word(false, NULL);
-        lasts.push_back(std::pair<bool, Chained_Word*>(false, tmp));
+        lasts.push_back(tmp);
         firsts.push_back(tmp);
     }
     ~Chained_Word_Sentinel() 
