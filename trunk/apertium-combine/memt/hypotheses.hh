@@ -29,6 +29,15 @@ struct Hypothesis
         score = s;
         words = l;
     }
+    Hypothesis(unsigned int s, std::list<wstring*>& l) 
+    {
+        score = s;
+        for (std::list<wstring*>::iterator it = l.begin();
+                it != l.end(); ++it) {
+            if (*it != NULL)    // because of the sentinel
+                words.push_back(**it);
+        }
+    }
     ~Hypothesis() { }
     bool operator<(const Hypothesis& h);
     /// bool inline operator<(const Hypothesis& h); TODO inline it
@@ -60,6 +69,9 @@ unsigned int max_length(scored_phrases& wv);
 // for drawkcab compatibility
 void fill_words(std::pair<unsigned int, std::vector<Word> >
         & words, Pairwise_Alignment& a, unsigned int length);
+
+void fill_words(std::vector<std::vector<Word> >& words_vector, 
+        Alignment& a);
 
 class Hypotheses
 {
