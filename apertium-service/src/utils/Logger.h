@@ -40,7 +40,7 @@ public:
 	static Logger *Instance();
 	virtual ~Logger();
 
-	enum MessageType { DEBUG, INFO, NOTICE, WARNING, ERR };
+	enum MessageType { Debug, Info, Notice, Warning, Err };
 
     void trace(MessageType, const std::string);
 

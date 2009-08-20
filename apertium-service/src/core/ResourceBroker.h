@@ -110,7 +110,7 @@ protected:
 	static void checkFile(fs::path p) {
 		if (!fs::exists(p)) {
 			string msg = "File " + p.string() + " requested but doesn't exist.";
-			Logger::Instance()->trace(Logger::ERR, msg);
+			Logger::Instance()->trace(Logger::Err, msg);
 			throw ApertiumRuntimeException(msg);
 		}
 	}

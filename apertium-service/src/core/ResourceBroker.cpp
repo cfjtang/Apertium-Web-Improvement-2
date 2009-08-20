@@ -69,28 +69,28 @@ HMM *HMMWrapper::getHmm() {
 }
 
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
 
 	PreTransfer *ret = pool.construct();
 	return(ret);
 }
 
 template <> Deformat *NonIndexedObjectPool<Deformat>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "NonIndexedObjectPool<Deformat>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<Deformat>::getNewInstance();");
 
 	Deformat *ret = pool.construct();
 	return(ret);
 }
 
 template <> Reformat *NonIndexedObjectPool<Reformat>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "NonIndexedObjectPool<Reformat>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<Reformat>::getNewInstance();");
 
 	Reformat *ret = pool.construct();
 	return(ret);
 }
 
 template <> FSTProcessor *NonIndexedObjectPool<FSTProcessor>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<FSTProcessor>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<FSTProcessor>::getNewInstance();");
 
 	enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
 
@@ -154,7 +154,7 @@ template <> FSTProcessor *NonIndexedObjectPool<FSTProcessor>::getNewInstance(Pro
 }
 
 template <> HMMWrapper *NonIndexedObjectPool<HMMWrapper>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<HMMWrapper>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<HMMWrapper>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
@@ -167,7 +167,7 @@ template <> HMMWrapper *NonIndexedObjectPool<HMMWrapper>::getNewInstance(Program
 }
 
 template <> Transfer *NonIndexedObjectPool<Transfer>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<Transfer>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<Transfer>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
@@ -188,7 +188,7 @@ template <> Transfer *NonIndexedObjectPool<Transfer>::getNewInstance(Program &p)
 }
 
 template <> Interchunk *NonIndexedObjectPool<Interchunk>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<Interchunk>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<Interchunk>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
@@ -202,7 +202,7 @@ template <> Interchunk *NonIndexedObjectPool<Interchunk>::getNewInstance(Program
 
 
 template <> Postchunk *NonIndexedObjectPool<Postchunk>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<Postchunk>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<Postchunk>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
@@ -216,7 +216,7 @@ template <> Postchunk *NonIndexedObjectPool<Postchunk>::getNewInstance(Program &
 
 
 template <> TransferMult *NonIndexedObjectPool<TransferMult>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<TransferMult>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<TransferMult>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
@@ -231,7 +231,7 @@ template <> TransferMult *NonIndexedObjectPool<TransferMult>::getNewInstance(Pro
 boost::mutex ResourceBroker::cgMutex;
 
 template <> CG3::Grammar *NonIndexedObjectPool<CG3::Grammar>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::DEBUG, "ObjectPool<CG3::Grammar>::getNewInstance();");
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<CG3::Grammar>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
