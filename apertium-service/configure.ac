@@ -65,11 +65,36 @@ fi
 # Checks for libraries.
 AX_BOOST_BASE([1.37.0])
 AX_BOOST_THREAD
+
+if test -z "$BOOST_THREAD_LIB"; then
+   AC_MSG_ERROR([unable to find Boost.Thread library, currently this is required.])
+fi
+
 AX_BOOST_FILESYSTEM
+
+if test -z "$BOOST_FILESYSTEM_LIB"; then
+   AC_MSG_ERROR([unable to find Boost.Filesystem library, currently this is required.])
+fi
+
 AX_BOOST_PROGRAM_OPTIONS
+
+if test -z "$BOOST_PROGRAM_OPTIONS_LIB"; then
+   AC_MSG_RESULT([unable to find Boost.Program_options library, example test_client will not be build.])
+   BUILD_TESTCLIENT=no;
+fi
+
 AX_BOOST_REGEX
+
+if test -z "$BOOST_REGEX_LIB"; then
+   AC_MSG_RESULT([unable to find Boost.Regex library, example test_client will not be build.])
+   BUILD_TESTCLIENT=no;
+fi
+
 AX_BOOST_DATE_TIME
-AX_BOOST_UNIT_TEST_FRAMEWORK
+
+if test -z "$BOOST_DATE_TIME_LIB"; then
+   AC_MSG_ERROR([unable to find Boost.DateTime library, currently this is required.])
+fi
 
 AC_CHECK_LIB(iconv, libiconv_open, LIBS="$LIBS -liconv")
 
