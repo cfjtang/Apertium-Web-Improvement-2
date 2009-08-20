@@ -31,7 +31,9 @@
 
 #include "config.h"
 
+#include <string>
 #include <iostream>
+#include <cstdlib>
 
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>

@@ -28,12 +28,10 @@
 
 #include "config.h"
 
-#include <iostream>
+#include "ApertiumXMLRPCService.h"
 
 #include <vector>
 #include <map>
-
-#include "ApertiumXMLRPCService.h"
 
 #include "utils/Logger.h"
 
