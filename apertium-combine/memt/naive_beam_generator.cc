@@ -16,7 +16,8 @@ void Naive_Beam_Generator::generate(Alignment& a,
         std::list<Hypothesis>& h)
 {
     if (a._pw_alignments.size() == 1) 
-        generate_pairwise(a._pw_alignments[0], h);
+        // generate_pairwise(a._pw_alignments[0], h);
+        generate_all(a, h);
     else {
         generate_all(a, h);
     }
@@ -39,51 +40,48 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
         for (unsigned int i = 0; i < a._mt_translations.size(); ++i) {
             if (j < a._mt_translations[i].size()) {
                 if (a._aligned[i][j].empty()) {
-                /// copy and extend half of the hypotheses with and half w/o
+                    /// extend half of the hypotheses with and half w/o
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
+                        if (sentinel->clean_roots[k]->nexts.size() > 5)
+                            continue;
                         // w/o
                         sentinel->lasts.push_back(sentinel->clean_roots[k]); 
+                        // with
                         Chained_Word* tmp = new Chained_Word(false, 
                                 &a._mt_translations[i][j]);
-                        // with
                         sentinel->lasts.push_back(tmp);                       
                         sentinel->clean_roots[k]->nexts.push_back(tmp);
                     }
                 } else { // aligned
-                /// copy and extend the hypotheses with and w/o != but aligned
-                    for (std::list<std::pair<unsigned int, int> >::iterator 
-                            al = a._aligned[i][j].begin(); 
-                            al != a._aligned[i][j].end(); ++al) {
-                        for (unsigned int k = 0; 
-                                k < sentinel->clean_roots.size(); ++k) {
+                    /// extend the hypotheses with and w/o != but aligned
+                    for (unsigned int k = 0; 
+                            k < sentinel->clean_roots.size(); ++k) {
+                        bool place_current = true;
+                        for (std::list<std::pair<unsigned int, int> >::iterator 
+                                al = a._aligned[i][j].begin(); 
+                                al != a._aligned[i][j].end(); ++al) {
                             /// determine if we have to add the [i][j]
-                            /// and/or its aligned word 
-                            bool place_current = true;
+                            /// and/or its aligned word to the [k] root
                             bool place_aligned = true;
+                            if (a._mt_translations[i][j].compare(
+                                        a._mt_translations[al->first]
+                                        [al->second]) == 0) {
+                                place_aligned = false;
+                            }
                             for (std::vector<Chained_Word*>::iterator it = 
                                     sentinel->clean_roots[k]->nexts.begin();
                                     it != sentinel->clean_roots[k]
                                     ->nexts.end(); ++it) {
-                                if ((*it)->word == 
-                                        &a._mt_translations[i][j]) 
+                                if (place_current && !(*it)->word->compare(
+                                            a._mt_translations[i][j])) {
                                     place_current = false;
-                                if ((*it)->word == 
-                                        &a._mt_translations[al->first]
-                                        [al->second]) 
+                                } // redundant
+                                if (place_aligned && !(*it)->word->compare(
+                                            a._mt_translations[al->first]
+                                            [al->second])) {
                                     place_aligned = false;
-                            }
-                            if (a._mt_translations[i][j].compare(
-                                        a._mt_translations[al->first]
-                                        [al->second]) == 0)
-                                place_aligned = false;
-
-                            if (place_current) { 
-                                Chained_Word* tmp = new Chained_Word(
-                                        true, &a._mt_translations[i][j]);
-                                sentinel->lasts.push_back(tmp);
-                                sentinel->clean_roots[k]->nexts.push_back(
-                                        tmp);
+                                }
                             }
                             if (place_aligned) { 
                                 Chained_Word* tmp = new Chained_Word(
@@ -93,6 +91,13 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                                 sentinel->clean_roots[k]->nexts.push_back(
                                         tmp);
                             }
+                        }
+                        if (place_current) { 
+                            Chained_Word* tmp = new Chained_Word(
+                                    true, &a._mt_translations[i][j]);
+                            sentinel->lasts.push_back(tmp);
+                            sentinel->clean_roots[k]->nexts.push_back(
+                                    tmp);
                         }
                     }
                 }

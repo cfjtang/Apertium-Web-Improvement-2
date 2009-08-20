@@ -29,8 +29,13 @@ struct Chained_Word
                 nexts[k]->read_all(tmp, h);
             }
         } else {
-            h.push_back(Hypothesis(chain_of_words.first, 
-                        chain_of_words.second));
+            std::pair<unsigned int, std::list<wstring*> > tmp = 
+                std::pair<unsigned int, std::list<wstring*> >
+                (chain_of_words);
+            tmp.first += aligned ? 1 : 0;
+            tmp.second.push_back(word);
+            h.push_back(Hypothesis(tmp.first, 
+                        tmp.second));
             /* std::list<wstring> tmp;
             for (std::list<wstring*>::iterator it = 
                     chain_of_words.second.begin();
