@@ -2,6 +2,16 @@
 <transfer>
 <section-def-cats>
 
+     <def-cat n="sent">
+	  <cat-item tags="sent"/>
+     </def-cat>
+  
+     <def-cat n="pp">          
+	  <cat-item tags="vblex.pp"/>
+      </def-cat>
+     <def-cat n="verb">
+	  <cat-item tags="vblex.*"/>
+     </def-cat>
      <def-cat n="navn">
 	  <cat-item tags="n.*"/>
      </def-cat>
@@ -10,7 +20,7 @@
 	  <cat-item tags="det.dem.*"/>
       </def-cat>
       
-  
+
      <def-cat n="adj">          
 	  <cat-item tags="adj.*"/>
       </def-cat>
@@ -19,9 +29,6 @@
 	  <cat-item tags="adj.*"/>
 	  <cat-item tags="vblex.pret.*"/>
       </def-cat>
-
-      
-      
          
 </section-def-cats>
 
@@ -77,6 +84,10 @@
      </def-attr>
      <def-attr n="temps">
 	  <attr-item tags="inf"/>
+	  <attr-item tags="pp"/>
+	  <attr-item tags="past"/>
+	  <attr-item tags="pres"/>
+	  <attr-item tags="ppres"/>
 	  <attr-item tags="prs"/>
 	  <attr-item tags="da"/>
 	  <attr-item tags="part"/>
@@ -95,6 +106,11 @@
 	  <attr-item tags="ND"/>
       </def-attr>
 
+      <def-attr n="voz">
+          <attr-item tags="pasv"/>
+          <attr-item tags="actv"/>
+      </def-attr>
+
       <def-attr n="cas">
           <attr-item tags="nom"/>
           <attr-item tags="gen"/>
@@ -110,6 +126,7 @@
 <section-def-vars>
       <def-var n="uno"/>
       <def-var n="genero"/>
+      <def-var n="definite"/>
       <def-var n="numero"/>
       <def-var n="concDet"/>
       <def-var n="concAdj"/>
@@ -358,6 +375,21 @@
       </choose>
     </def-macro>
 
+    <def-macro n="resetvars" npar="1">
+        <let>
+          <var n="numero"/>
+          <lit-tag v="sg"/>
+        </let>
+        <let>
+          <var n="genero"/>
+          <lit-tag v="m"/>
+        </let>
+        <let>
+          <var n="definite"/>
+          <lit v=""/>
+        </let>
+    </def-macro>
+
 
   
 </section-def-macros>
@@ -449,6 +481,74 @@
      </action>
    </rule>
 
+
+    <rule comment="REGLA: PP // fört → ført ">
+      <pattern>
+        <pattern-item n="pp"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="1" side="tl" part="temps"/>
+          <concat>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="GD.ND"/>
+          </concat>
+        </let>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: VERB">
+      <pattern>
+        <pattern-item n="verb"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="voz"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+        <call-macro n="resetvars">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
+
+
+
+    <rule comment="REGLA: SENT // . → .">
+      <pattern>
+	<pattern-item n="sent"/>
+      </pattern>
+      <action>
+        <call-macro n="resetvars">
+          <with-param pos="1"/>
+        </call-macro>
+	<out>
+	  <lu>
+	    <clip pos="1" side="tl" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
 
 
 </section-rules>
