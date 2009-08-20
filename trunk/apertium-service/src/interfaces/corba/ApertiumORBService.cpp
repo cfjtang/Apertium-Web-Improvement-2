@@ -94,7 +94,7 @@ ApertiumORBService::ApertiumORBService(int argc, char** argv, ConfigurationManag
 
 		stringstream ssmsg;
 		ssmsg << "Starting the Apertium CORBA service: IDL object ApertiumService::Apertium IOR = '" << (char*) sior << "'";
-		Logger::Instance()->trace(Logger::INFO, ssmsg.str());
+		Logger::Instance()->trace(Logger::Info, ssmsg.str());
 	}
 
 	//if (!ApertiumORBService::bindObjectToName(orb, obj))

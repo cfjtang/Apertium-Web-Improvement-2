@@ -32,6 +32,7 @@ namespace fs = boost::filesystem;
 const fs::path ConfigurationManager::APERTIUMBASE_DEF = "/usr/local/share/apertium";
 
 const unsigned int ConfigurationManager::SERVERPORT_DEF = 6173;
+
 const unsigned int ConfigurationManager::KEEPALIVETIMEOUT_DEF = 15;
 const unsigned int ConfigurationManager::KEEPALIVEMAXCONN_DEF = 30;
 const unsigned int ConfigurationManager::TIMEOUT_DEF = 15;
@@ -47,8 +48,9 @@ const unsigned int ConfigurationManager::HIGHWATERMARK_DEF = 0;
  */
 ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPath)
 	: apertiumBase(APERTIUMBASE_DEF),
-	serverPort(SERVERPORT_DEF), keepaliveTimeout(KEEPALIVETIMEOUT_DEF), keepaliveMaxConn(KEEPALIVEMAXCONN_DEF),
-	timeout(TIMEOUT_DEF), highWaterMark(HIGHWATERMARK_DEF) {
+	serverPort(SERVERPORT_DEF),
+	keepaliveTimeout(KEEPALIVETIMEOUT_DEF), keepaliveMaxConn(KEEPALIVEMAXCONN_DEF), timeout(TIMEOUT_DEF),
+	highWaterMark(HIGHWATERMARK_DEF) {
 	xmlpp::DomParser parser(confPath.string());
 
 	if (parser) {

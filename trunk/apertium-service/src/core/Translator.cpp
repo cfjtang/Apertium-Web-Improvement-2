@@ -72,7 +72,7 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 
 		std::stringstream ss;
 		ss << "Translator::translate(): Executing " << program;
-		Logger::Instance()->trace(Logger::DEBUG, ss.str());
+		Logger::Instance()->trace(Logger::Debug, ss.str());
 
 		wstring tmp = fm.execute(program, ret);
 		ret = tmp;

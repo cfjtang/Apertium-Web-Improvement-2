@@ -178,6 +178,8 @@ int main(int ac, char *av[]) {
 	        cf = vm["conf"].as<string>();
 	    }
 
+	    cout << "Using the configuration file located in " << cf << endl;
+
 	    cm = new ConfigurationManager(cf, cd);
 
 #if defined(HAVE_LIBTEXTCAT)

@@ -52,11 +52,11 @@ Logger *Logger::Instance() {
 }
 
 Logger::Logger() : verbosity(0) {
-	color[ERR] = 31;
-	color[INFO] = 32;
-	color[NOTICE] = 33;
-	color[WARNING] = 35;
-	color[DEBUG] = 36;
+	color[Err] = 31;
+	color[Info] = 32;
+	color[Notice] = 33;
+	color[Warning] = 35;
+	color[Debug] = 36;
 }
 
 Logger::~Logger() {
@@ -77,27 +77,27 @@ void Logger::trace(MessageType messageType ///< Type of message
 	std::stringstream ss;
 
 	switch (messageType) {
-	case INFO:
-		ss << "[\033[" << color[INFO] << ";1mINFO\033[0m]";
+	case Info:
+		ss << "[\033[" << color[Info] << ";1mINFO\033[0m]";
 		break;
-	case NOTICE:
-		ss << "[\033[" << color[NOTICE] << ";1mNOTICE\033[0m]";
+	case Notice:
+		ss << "[\033[" << color[Notice] << ";1mNOTICE\033[0m]";
 		break;
-	case WARNING:
-		ss << "[\033[" << color[WARNING] << ";1mWARNING\033[0m]";
+	case Warning:
+		ss << "[\033[" << color[Warning] << ";1mWARNING\033[0m]";
 		break;
-	case ERR:
-		ss << "[\033[" << color[ERR] << ";1mERR\033[0m]";
+	case Err:
+		ss << "[\033[" << color[Err] << ";1mERR\033[0m]";
 		break;
-	case DEBUG:
-		ss << "[\033[" << color[DEBUG] << ";1mDEBUG\033[0m]";
+	case Debug:
+		ss << "[\033[" << color[Debug] << ";1mDEBUG\033[0m]";
 		break;
 	}
 
 	ptime now = second_clock::local_time();
 	ss << ": " << now << " - " << msg;
 
-	if (verbosity > 1 || messageType != DEBUG) {
+	if (verbosity > 1 || messageType != Debug) {
 		boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
 		std::cout << ss.str() << std::endl;
 	}
