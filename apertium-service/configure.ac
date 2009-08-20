@@ -79,14 +79,14 @@ fi
 AX_BOOST_PROGRAM_OPTIONS
 
 if test -z "$BOOST_PROGRAM_OPTIONS_LIB"; then
-   AC_MSG_RESULT([unable to find Boost.Program_options library, example test_client will not be build.])
+   AC_MSG_ERROR(([unable to find Boost.Program_options library, currently this is required.])
    BUILD_TESTCLIENT=no;
 fi
 
 AX_BOOST_REGEX
 
 if test -z "$BOOST_REGEX_LIB"; then
-   AC_MSG_RESULT([unable to find Boost.Regex library, example test_client will not be build.])
+   AC_MSG_ERROR([unable to find Boost.Regex library, currently this is required.])
    BUILD_TESTCLIENT=no;
 fi
 
