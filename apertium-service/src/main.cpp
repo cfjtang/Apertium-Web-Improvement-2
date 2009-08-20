@@ -132,9 +132,9 @@ int main(int ac, char *av[]) {
 		("modes,m", po::value<string>(), "(string) set modes' directory")
 
 		("port,p", po::value<unsigned int>(), "(uint) set XML-RPC service's port")
-		("keepalivetimeout,k", po::value<unsigned int>(), "(uint) Keep Alive Timeout")
-		("keepalivemaxconn,K", po::value<unsigned int>(), "(uint) Keep Alive Max Conn")
-		("timeout,T", po::value<unsigned int>(), "(uint) Timeout")
+		("keepalivetimeout,k", po::value<unsigned int>(), "(uint) set maximum time in seconds that the server allows a connection to be open between RPCs.")
+		("keepalivemaxconn,K", po::value<unsigned int>(), "(uint) set maximum number of RPCs that the server will execute on a single connection.")
+		("timeout,T", po::value<unsigned int>(), "(uint) set maximum time in seconds the server will wait for the client to do anything while processing an RPC.")
 
 		("highwatermark,w", po::value<unsigned int>(), "(uint) set high water mark");
 
@@ -200,17 +200,17 @@ int main(int ac, char *av[]) {
 	    }
 
 	    if (vm.count("keepalivetimeout")) {
-	        cout << "Keep Alive Timeout was " << cm->getKeepaliveTimeout() << ", setting it to " << vm["keepalivetimeout"].as<unsigned int>() << endl;
+	        cout << "Maximum time in seconds that the server allows a connection to be open between RPCs was " << cm->getKeepaliveTimeout() << ", setting it to " << vm["keepalivetimeout"].as<unsigned int>() << endl;
 	        cm->setKeepaliveTimeout(vm["keepalivetimeout"].as<unsigned int>());
 	    }
 
 	    if (vm.count("keepalivemaxconn")) {
-	        cout << "Keep Alive Max Conn was " << cm->getKeepaliveMaxConn() << ", setting it to " << vm["keepalivemaxconn"].as<unsigned int>() << endl;
+	        cout << "Maximum number of RPCs that the server will execute on a single connection was " << cm->getKeepaliveMaxConn() << ", setting it to " << vm["keepalivemaxconn"].as<unsigned int>() << endl;
 	        cm->setKeepaliveMaxConn(vm["keepalivemaxconn"].as<unsigned int>());
 	    }
 
 	    if (vm.count("timeout")) {
-	        cout << "Timeout was " << cm->getTimeout() << ", setting it to " << vm["timeout"].as<unsigned int>() << endl;
+	        cout << "Maximum time in seconds the server will wait for the client to do anything while processing an RPC was " << cm->getTimeout() << ", setting it to " << vm["timeout"].as<unsigned int>() << endl;
 	        cm->setTimeout(vm["timeout"].as<unsigned int>());
 	    }
 
