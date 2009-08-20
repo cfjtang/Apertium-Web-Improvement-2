@@ -151,7 +151,7 @@ fi
 XMLRPC_CFLAGS=`$XMLRPC_CONFIG c++ c++2 abyss-server --cflags`
 XMLRPC_LIBS=`$XMLRPC_CONFIG c++ c++2 abyss-server --libs`
 
-XMLRPC_VERSION="$(xmlrpc-c-config --version)"
+XMLRPC_VERSION=`$XMLRPC_CONFIG --version`
 
 AC_SUBST(XMLRPC_CFLAGS)
 AC_SUBST(XMLRPC_LIBS)
