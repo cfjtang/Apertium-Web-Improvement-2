@@ -79,7 +79,7 @@ fi
 AX_BOOST_PROGRAM_OPTIONS
 
 if test -z "$BOOST_PROGRAM_OPTIONS_LIB"; then
-   AC_MSG_ERROR(([unable to find Boost.Program_options library, currently this is required.])
+   AC_MSG_ERROR([unable to find Boost.Program_options library, currently this is required.])
    BUILD_TESTCLIENT=no;
 fi
 
