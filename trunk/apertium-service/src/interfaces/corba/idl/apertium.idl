@@ -1,0 +1,66 @@
+/**
+ * @file
+ * @author  Pasquale Minervini <p.minervini@gmail.com>
+ * @version 1.0
+ *
+ * @section LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @section DESCRIPTION
+ *
+ * The ApertiumService IDL interface describes apertium-service's interface
+ * in a language-neutral way, enabling communication between software components 
+ * that do not share a language
+ */
+
+#ifndef __APERTIUM_IDL__
+#define __APERTIUM_IDL__
+
+module ApertiumService {
+
+  struct LanguagePairType {
+  	string srcLang;
+  	string destLang;
+  };
+
+  typedef sequence<LanguagePairType> LanguagePairsType;
+  
+  struct TranslationWithDetectionType {
+  	string detectedSourceLanguage;
+  	string translation;
+  };
+  
+  union TranslationType switch (boolean) {
+    case TRUE: TranslationWithDetectionType translationWithDetection;
+    case FALSE: string translation;
+  };
+  
+  interface Apertium {
+	exception ApertiumRuntimeException {
+      string reason;
+    };
+    
+	TranslationType translate(in string text, in string srcLang, in string destLang)
+	  raises (ApertiumRuntimeException);
+	  
+	string detect(in string mesg)
+	  raises (ApertiumRuntimeException);
+	  
+	LanguagePairsType languagePairs()
+	  raises (ApertiumRuntimeException);
+  };
+};
+
+#endif  // __APERTIUM_IDL__
