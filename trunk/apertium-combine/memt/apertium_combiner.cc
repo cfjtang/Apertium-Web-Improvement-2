@@ -4,6 +4,7 @@
 #include <iostream>
 #include "alignment.hh"
 #include "hypotheses.hh"
+#include "dummy_ranker.hh"
 #include "irstlm_ranker.hh"
 #include "max_conseq_aligner.hh"
 #include "naive_beam_generator.hh"
@@ -58,7 +59,8 @@ int main(int argc, char** argv)
     
     /// You can instantiate another derivation of Ranker here, 
     /// that should be the only change for switching the ranker
-    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+    //IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+    Dummy_Ranker* r = new Dummy_Ranker();
 
     while(condition) {
         wcout << endl;

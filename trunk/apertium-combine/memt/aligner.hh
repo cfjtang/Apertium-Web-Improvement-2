@@ -11,6 +11,9 @@ class Aligner
 {
     public: 
         virtual ~Aligner() {}
+        /** fills alignment._final_alignment & alignment._final_alignment_left
+         *  and alignment._score, using alignement._matching 
+         */
         virtual void align(Pairwise_Alignment& alignment)=0; 
 
 };
