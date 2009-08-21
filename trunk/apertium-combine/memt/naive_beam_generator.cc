@@ -17,7 +17,7 @@ void Naive_Beam_Generator::generate(Alignment& a,
 {
     if (a._pw_alignments.size() == 1) 
         // generate_pairwise(a._pw_alignments[0], h);
-        generate_all(a, h);
+        generate_all(a, h); // TODO beamize
     else {
         generate_all(a, h);
     }
@@ -43,8 +43,8 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                     /// extend half of the hypotheses with and half w/o
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
-                        if (sentinel->clean_roots[k]->nexts.size() > 5)
-                            continue;
+//                        if (sentinel->clean_roots[k]->nexts.size() > 2)
+//                            continue; // TODO
                         // w/o
                         sentinel->lasts.push_back(sentinel->clean_roots[k]); 
                         // with

@@ -74,7 +74,7 @@ int main(int argc, char** argv)
         alignment.match(matcher);
         /// This is where you can change the Aligner
         Max_Conseq_Aligner aligner;
-        alignment.align(aligner);
+        alignment.align(aligner, 3);
 #ifdef DEBUG
         alignment.print();
         alignment.generate_graphviz();
