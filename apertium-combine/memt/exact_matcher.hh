@@ -11,6 +11,5 @@ class Exact_Matcher: public Matcher
     public: 
         ~Exact_Matcher() {}
         int match(const wstring& left, const wstring& right);
-
 };
 #endif

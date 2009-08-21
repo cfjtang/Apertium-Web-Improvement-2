@@ -41,7 +41,7 @@ void Alignment::match(Matcher& m)
         it->match(m);
 }
 
-void Alignment::align(Aligner& aligner)
+void Alignment::align(Aligner& aligner, unsigned int ngram_level)
 {
     for (std::vector<Pairwise_Alignment>::iterator it = _pw_alignments.begin();
             it != _pw_alignments.end(); ++it)
@@ -102,15 +102,54 @@ void Alignment::align(Aligner& aligner)
             }
         }
     }
+
+    if (!ngram_level) return;
+    _ngrams_aligned.resize(ngram_level - 1);
+    for (unsigned int ngram = 0; ngram < ngram_level - 1; ++ngram) {
+        _ngrams_aligned[ngram].resize(_aligned.size());
+        for (unsigned int mt = 0; mt < _aligned.size(); ++mt) {
+            _ngrams_aligned[ngram][mt].resize(_aligned[mt].size());
+            /* for (int nword = 0; nword < static_cast<int>(_aligned[mt].size());
+                    ++nword) {
+                _ngrams_aligned[ngram][mt][nword].push_back(
+                        std::list<std::pair<unsigned int, int> >());
+            }*/
+        }
+    }
+    // ngram alignment to the ngram_level
+    for (unsigned int mt = 0; mt < _aligned.size(); ++mt) {
+        for (int nword = 0; nword < static_cast<int>(_aligned[mt].size());
+                ++nword) {
+            // for every word aligned with the current
+            for (list<pair<unsigned int, int> >::iterator 
+                    al = _aligned[mt][nword].begin(); 
+                    al != _aligned[mt][nword].end(); ++al) {
+                // we check for the followings
+                for (unsigned int ngram = 1; ngram < ngram_level; ++ngram) {
+                    if (al->second < static_cast<int>(
+                                _aligned[al->first].size()) - 1 && 
+                            nword + ngram < _aligned[mt].size()) {
+                        int ind_word = nword + ngram;
+                        pair<unsigned int, int> to_find 
+                            = pair<unsigned int, int>(
+                                    al->first, al->second + ngram);
+                        list<pair<unsigned int, int> >::iterator f
+                            = find(_aligned[mt][ind_word].begin(),
+                                    _aligned[mt][ind_word].end(), to_find);
+                        if (f != _aligned[mt][ind_word].end()) {
+                            _ngrams_aligned[ngram - 1][mt][nword].push_back(
+                                    pair<unsigned int, int>(
+                                        al->first, al->second));
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void Alignment::print()
 {
-    /* 
-    for (std::vector<Pairwise_Alignment>::iterator it = _pw_alignments.begin();
-            it != _pw_alignments.end(); ++it)
-        it->print();
-    */
     for (std::vector<Pairwise_Alignment>::iterator it = _pw_alignments.begin();
             it != _pw_alignments.end(); ++it) {
         wcout << "printing a _final_alignment: [ ";
@@ -122,6 +161,7 @@ void Alignment::print()
     }
     print_mt_translations();
     print_aligned();
+    print_ngrams_aligned();
 }
 
 void Alignment::generate_graphviz()
@@ -148,6 +188,27 @@ void Alignment::print_aligned()
             wcout << "} | ";
         }
         wcout << endl;
+    }
+}
+
+void Alignment::print_ngrams_aligned() 
+{
+    for (unsigned int ngram = 0; ngram < _ngrams_aligned.size(); ++ngram) {
+        wcout << "ngram = " << ngram << endl;
+        for (unsigned int mt = 0; mt < _aligned.size(); ++mt) {
+             for (int nword = 0; nword < static_cast<int>(_aligned[mt].size());
+                     ++nword) {
+                 wcout << "{ ";
+                 for (list<pair<unsigned int, int> >::iterator it = 
+                         _ngrams_aligned[ngram][mt][nword].begin();
+                         it != _ngrams_aligned[ngram][mt][nword].end(); ++it) {
+                     wcout << "( " << it->first << ", " << it->second 
+                         << ") ";
+                 }
+                wcout << "} | ";
+             }
+             wcout << endl;
+        }
     }
 }
 
