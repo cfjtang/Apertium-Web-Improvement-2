@@ -62,6 +62,7 @@ namespace fs = boost::filesystem;
 
 Logger *logger = NULL;
 
+/*
 ConfigurationManager *cm = NULL;
 ResourceBroker *rb = NULL;
 
@@ -72,6 +73,7 @@ TextClassifier *tc = NULL;
 Statistics *s = NULL;
 ModesManager *mm = NULL;
 ApertiumXMLRPCService *axs = NULL;
+*/
 
 boost::mutex cleanupMutex;
 
@@ -79,6 +81,8 @@ void cleanup(void) {
 	boost::mutex::scoped_lock Lock(cleanupMutex);
 
 	cerr << "Cleaning things up.." << endl;
+
+	/*
 
 	delete axs;
 	delete mm;
@@ -90,6 +94,9 @@ void cleanup(void) {
 
 	delete rb;
 	delete cm;
+
+	*/
+
 	delete logger;
 
 	free_strings();
@@ -180,7 +187,8 @@ int main(int ac, char *av[]) {
 
 	    cout << "Using the configuration file located in " << cf << endl;
 
-	    cm = new ConfigurationManager(cf, cd);
+	    ConfigurationManager _cm(cf, cd);
+	    ConfigurationManager *cm = &_cm;
 
 #if defined(HAVE_LIBTEXTCAT)
 	    if (vm.count("conftc")) {
@@ -234,35 +242,37 @@ int main(int ac, char *av[]) {
 			}
 				break;
 
+			case 0: {
+				// child
+			}
+				break;
+
 			default: {
 				// parent
 				_exit(0);
 				return 0;
 			}
 				break;
+			}
 
-			case 0: {
-				// child
-			}
-				break;
-			}
+			logger->setVerbosity(0);
 		}
 
 #if defined(HAVE_LIBTEXTCAT)
-		tc = new TextClassifier(cm->getConfTextClassifier());
+		TextClassifier tc(cm->getConfTextClassifier());
 #endif
 
-		rb = new ResourceBroker(cm->getHighWaterMark());
+		ResourceBroker rb(cm->getHighWaterMark());
 
-		s = new Statistics(*rb);
+		Statistics s(rb);
 
-		mm = new ModesManager();
-	    mm->initPipe(cm->getApertiumBase());
+		ModesManager mm;
+	    mm.initPipe(cm->getApertiumBase());
 
 #if defined(HAVE_LIBTEXTCAT)
-	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, *tc, s);
+	    ApertiumXMLRPCService axs(_cm, mm, rb, tc, &s);
 #else
-	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, s);
+	    ApertiumXMLRPCService axs(_cm, mm, rb, &s);
 #endif
 
 	    //ApertiumORBService aos(ac, av, cm, mm, rb, tc, &s);
@@ -273,7 +283,7 @@ int main(int ac, char *av[]) {
 	    //xmlrpcThread.join();
 	    //orbThread.join();
 
-	    axs->start();
+	    axs.start();
 
 	    /*
 	} catch (CORBA::NO_RESOURCES&) {
