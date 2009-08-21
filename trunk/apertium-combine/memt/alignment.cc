@@ -109,11 +109,6 @@ void Alignment::align(Aligner& aligner, unsigned int ngram_level)
         _ngrams_aligned[ngram].resize(_aligned.size());
         for (unsigned int mt = 0; mt < _aligned.size(); ++mt) {
             _ngrams_aligned[ngram][mt].resize(_aligned[mt].size());
-            /* for (int nword = 0; nword < static_cast<int>(_aligned[mt].size());
-                    ++nword) {
-                _ngrams_aligned[ngram][mt][nword].push_back(
-                        std::list<std::pair<unsigned int, int> >());
-            }*/
         }
     }
     // ngram alignment to the ngram_level
@@ -194,7 +189,7 @@ void Alignment::print_aligned()
 void Alignment::print_ngrams_aligned() 
 {
     for (unsigned int ngram = 0; ngram < _ngrams_aligned.size(); ++ngram) {
-        wcout << "ngram = " << ngram << endl;
+        wcout << "ngram = " << ngram << " (" << ngram + 2 << "-grams)" << endl;
         for (unsigned int mt = 0; mt < _aligned.size(); ++mt) {
              for (int nword = 0; nword < static_cast<int>(_aligned[mt].size());
                      ++nword) {
