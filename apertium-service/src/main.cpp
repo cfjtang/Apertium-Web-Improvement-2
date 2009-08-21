@@ -100,12 +100,10 @@ void cleanup(void) {
 	u_cleanup();
 }
 
-/*
 void signalHandler(int) {
 	cerr << "SIGINT received." << endl;
 	exit(EXIT_SUCCESS);
 }
-*/
 
 int main(int ac, char *av[]) {
 	LtLocale::tryToSetLocale();
@@ -136,7 +134,9 @@ int main(int ac, char *av[]) {
 		("keepalivemaxconn,K", po::value<unsigned int>(), "(uint) set maximum number of RPCs that the server will execute on a single connection.")
 		("timeout,T", po::value<unsigned int>(), "(uint) set maximum time in seconds the server will wait for the client to do anything while processing an RPC.")
 
-		("highwatermark,w", po::value<unsigned int>(), "(uint) set high water mark");
+		("highwatermark,w", po::value<unsigned int>(), "(uint) set high water mark")
+
+		("daemon,D", "run the service as a daemon");
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(ac, av, desc), vm);
@@ -158,7 +158,7 @@ int main(int ac, char *av[]) {
 		init_flags();
 
 		::atexit(cleanup);
-		//::signal(SIGINT, &signalHandler);
+		::signal(SIGINT, &signalHandler);
 
 #if defined(ASCONFDIR)
 		fs::path cd = ASCONFDIR;
@@ -225,6 +225,28 @@ int main(int ac, char *av[]) {
 	        cout << "Verbosity was " << logger->getVerbosity() <<  ", setting it to " << vm["verbosity"].as<unsigned int>() << endl;
 	        logger->setVerbosity(vm["verbosity"].as<unsigned int>());
 	    }
+
+		if (vm.count("daemon")) {
+			switch (::fork()) {
+
+			case -1: {
+				throw ApertiumRuntimeException(::strerror(errno));
+			}
+				break;
+
+			default: {
+				// parent
+				_exit(0);
+				return 0;
+			}
+				break;
+
+			case 0: {
+				// child
+			}
+				break;
+			}
+		}
 
 #if defined(HAVE_LIBTEXTCAT)
 		tc = new TextClassifier(cm->getConfTextClassifier());
