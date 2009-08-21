@@ -14,7 +14,7 @@ class lmmacro;
 class IRSTLMRanker: public Ranker
 {
     public:
-	IRSTLMRanker();
+        IRSTLMRanker();
         IRSTLMRanker(const string& file_path);
         ~IRSTLMRanker();
         inline void score(Hypothesis& h);
