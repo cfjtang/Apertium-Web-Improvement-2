@@ -47,12 +47,21 @@ public:
     void setVerbosity(int);
     int getVerbosity();
 
+    void setConsoleUsage(bool);
+    void setSyslogUsage(bool);
+
 private:
 	Logger();
 	static Logger *instance;
 	static boost::shared_mutex instanceMutex;
 
+	void traceConsole(MessageType, const std::string);
+	void traceSyslog(MessageType, const std::string);
+
 	int verbosity;
+
+	bool useSyslog;
+	bool useConsole;
 
 	typedef boost::unordered_map<MessageType, int32_t> ColorMapType;
 	ColorMapType color;

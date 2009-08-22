@@ -23,10 +23,13 @@
  * The Logger class is used for logging purposes.
  */
 
+#include "config.h"
+
 #include "Logger.h"
 
 #include <iostream>
 #include <string>
+#include <syslog.h>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -51,18 +54,22 @@ Logger *Logger::Instance() {
 	return (ret);
 }
 
-Logger::Logger() : verbosity(0) {
+Logger::Logger() : verbosity(0), useSyslog(false), useConsole(true) {
 	color[Err] = 31;
 	color[Info] = 32;
 	color[Notice] = 33;
 	color[Warning] = 35;
 	color[Debug] = 36;
+
+	::setlogmask(LOG_UPTO(LOG_DEBUG));
+	::openlog(PACKAGE_NAME, LOG_PID|LOG_CONS|LOG_ODELAY, LOG_USER);
 }
 
 Logger::~Logger() {
 	boost::upgrade_lock<boost::shared_mutex> lock(instanceMutex);
 	if (instance) {
 		boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
+		closelog();
 		instance = NULL;
 	}
 }
@@ -71,36 +78,75 @@ Logger::~Logger() {
  * Writes the diagnostic message.
  */
 void Logger::trace(MessageType messageType ///< Type of message
-		, const std::string msg /// Message
+		, const std::string msg ///< Message
 		) {
-	boost::upgrade_lock<boost::shared_mutex> lock(instanceMutex);
-	std::stringstream ss;
+	if (useConsole) {
+
+	}
+
+	if (useSyslog) {
+
+	}
+}
+
+void Logger::traceConsole(MessageType messageType, const std::string msg) {
+	if (verbosity > 0) {
+		std::stringstream ss;
+
+		switch (messageType) {
+		case Info:
+			ss << "[\033[" << color[Info] << ";1mInfo\033[0m]";
+			break;
+		case Notice:
+			ss << "[\033[" << color[Notice] << ";1mNotice\033[0m]";
+			break;
+		case Warning:
+			ss << "[\033[" << color[Warning] << ";1mWarning\033[0m]";
+			break;
+		case Err:
+			ss << "[\033[" << color[Err] << ";1mErr\033[0m]";
+			break;
+		case Debug:
+			ss << "[\033[" << color[Debug] << ";1mDebug\033[0m]";
+			break;
+		}
+
+		ptime now = second_clock::local_time();
+		ss << ": " << now << " - " << msg;
+
+		if (verbosity > 1 || messageType != Debug) {
+			boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
+			std::cout << ss.str() << std::endl;
+		}
+	}
+}
+
+void Logger::traceSyslog(MessageType messageType, const std::string msg) {
+	int severity;
 
 	switch (messageType) {
-	case Info:
-		ss << "[\033[" << color[Info] << ";1mINFO\033[0m]";
+	case Logger::Debug:
+		severity = LOG_DEBUG;
 		break;
-	case Notice:
-		ss << "[\033[" << color[Notice] << ";1mNOTICE\033[0m]";
+	case Logger::Info:
+		severity = LOG_INFO;
 		break;
-	case Warning:
-		ss << "[\033[" << color[Warning] << ";1mWARNING\033[0m]";
+	case Logger::Notice:
+		severity = LOG_INFO;
 		break;
-	case Err:
-		ss << "[\033[" << color[Err] << ";1mERR\033[0m]";
+	case Logger::Warning:
+		severity = LOG_WARNING;
 		break;
-	case Debug:
-		ss << "[\033[" << color[Debug] << ";1mDEBUG\033[0m]";
+	case Logger::Err:
+		severity = LOG_ERR;
+		break;
+	default:
+		severity = LOG_INFO;
 		break;
 	}
 
-	ptime now = second_clock::local_time();
-	ss << ": " << now << " - " << msg;
-
-	if (verbosity > 1 || messageType != Debug) {
-		boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
-		std::cout << ss.str() << std::endl;
-	}
+	boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
+	::syslog(LOG_USER | severity, "[PACKAGE_NAME] %s", msg.data());
 }
 
 void Logger::setVerbosity(int v) {
@@ -109,4 +155,12 @@ void Logger::setVerbosity(int v) {
 
 int Logger::getVerbosity() {
 	return verbosity;
+}
+
+void Logger::setConsoleUsage(bool u) {
+	useConsole = u;
+}
+
+void Logger::setSyslogUsage(bool u) {
+	useSyslog = u;
 }
