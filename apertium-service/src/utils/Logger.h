@@ -26,6 +26,8 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
 
+#include "config.h"
+
 #include <iostream>
 #include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>
@@ -48,7 +50,10 @@ public:
     int getVerbosity();
 
     void setConsoleUsage(bool);
+
+#if defined(HAVE_SYSLOG)
     void setSyslogUsage(bool);
+#endif
 
 private:
 	Logger();
@@ -56,7 +61,10 @@ private:
 	static boost::shared_mutex instanceMutex;
 
 	void traceConsole(MessageType, const std::string);
+
+#if defined(HAVE_SYSLOG)
 	void traceSyslog(MessageType, const std::string);
+#endif
 
 	int verbosity;
 
