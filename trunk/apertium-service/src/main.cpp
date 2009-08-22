@@ -127,6 +127,11 @@ int main(int ac, char *av[]) {
 
 		("verbosity,v", po::value<unsigned int>(),	"(uint) set verbosity")
 
+
+#if defined(HAVE_SYSLOG)
+		("syslog,s", "send messages to the system logger")
+#endif
+
 		("directory,d",	po::value<string>(), "(string) set configuration directory")
 		("conf,c", po::value<string>(), "(string) set configuration file")
 
