@@ -20,15 +20,15 @@
  *
  * @section DESCRIPTION
  *
- * The Reformat class implements a text format processor. It restores the
+ * The TXTReformat class implements a text format processor. It restores the
  * original formatting the text had before being passed through the Deformat
  * processor.
  */
 
 // XXX: still hacky
 
-#ifndef REFORMAT_H_
-#define REFORMAT_H_
+#ifndef TXTREFORMAT_H_
+#define TXTREFORMAT_H_
 
 #include <cstdlib>
 #include <iostream>
@@ -56,11 +56,11 @@ using namespace boost::spirit;
 using namespace boost::spirit::lex;
 
 /**
- * The Reformat class implements a text format processor. It restores the
+ * The TXTReformat class implements a text format processor. It restores the
  * original formatting the text had before being passed through the Deformat
  * processor.
  */
-class Reformat {
+class TXTReformat {
 public:
 
 	template <typename Lexer> struct reformat_tokens: lexer_def<Lexer> {
@@ -76,12 +76,12 @@ public:
 		}
 	};
 
-	Reformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
+	TXTReformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
 		def = new reformat_tokens<lexer_type>();
 		l = new lexer<reformat_tokens<lexer_type> >(*def);
 	}
 
-	virtual ~Reformat() {
+	virtual ~TXTReformat() {
 		delete l;
 		delete def;
 	}
@@ -143,7 +143,7 @@ public:
 
 	struct func {
 		typedef bool result_type;
-		template<typename Token> bool operator()(Token const& t, Reformat *r, std::wostream &o) const {
+		template<typename Token> bool operator()(Token const& t, TXTReformat *r, std::wostream &o) const {
 			//wcout << L"id is: " << t.id() << endl;
 			//wcout << L"value is: " << t.value() << endl;
 
