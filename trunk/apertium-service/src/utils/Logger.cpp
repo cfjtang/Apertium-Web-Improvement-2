@@ -87,18 +87,20 @@ Logger::~Logger() {
 void Logger::trace(MessageType messageType ///< Type of message
 		, const std::string msg ///< Message
 		) {
-	if (useConsole) {
 
+	if (useConsole) {
+		traceConsole(messageType, msg);
 	}
+
 #if defined(HAVE_SYSLOG)
 	if (useSyslog) {
-
+		traceSyslog(messageType, msg);
 	}
 #endif
+
 }
 
 void Logger::traceConsole(MessageType messageType, const std::string msg) {
-	if (verbosity > 0) {
 		std::stringstream ss;
 
 		switch (messageType) {
@@ -122,11 +124,8 @@ void Logger::traceConsole(MessageType messageType, const std::string msg) {
 		ptime now = second_clock::local_time();
 		ss << ": " << now << " - " << msg;
 
-		if (verbosity > 1 || messageType != Debug) {
-			boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
-			std::cout << ss.str() << std::endl;
-		}
-	}
+		boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
+		std::cout << ss.str() << std::endl;
 }
 
 #if defined(HAVE_SYSLOG)
@@ -155,7 +154,7 @@ void Logger::traceSyslog(MessageType messageType, const std::string msg) {
 	}
 
 	boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
-	::syslog(LOG_USER | severity, "[PACKAGE_NAME] %s", msg.data());
+	::syslog(LOG_USER | severity, "[%s] %s", PACKAGE_NAME, msg.data());
 }
 #endif
 
