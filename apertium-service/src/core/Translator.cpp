@@ -36,8 +36,8 @@
 
 #include "ApertiumRuntimeException.h"
 
-#include "format/Deformat.h"
-#include "format/Reformat.h"
+#include "format/TXTDeformat.h"
+#include "format/TXTReformat.h"
 #include "format/Encoding.h"
 
 #include "utils/Logger.h"
@@ -84,22 +84,22 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in) {
 	wstringstream wss;
 	Program p("apertium-destxt");
-	Deformat *d = rb.DeformatPool.acquire(p);
+	TXTDeformat *d = rb.TXTDeformatPool.acquire(p);
 	d->reset();
 	d->setYyin(in);
 	d->setYyout(&wss);
 	d->lex();
-	rb.DeformatPool.release(d, p);
+	rb.TXTDeformatPool.release(d, p);
 	return(wss.str());
 }
 
 std::wstring Translator::reformat(ResourceBroker &rb, std::wstring &in) {
 	wstringstream wss;
 	Program p("apertium-retxt");
-	Reformat *r = rb.ReformatPool.acquire(p);
+	TXTReformat *r = rb.TXTReformatPool.acquire(p);
 	r->setYyin(in);
 	r->setYyout(&wss);
 	r->lex();
-	rb.ReformatPool.release(r, p);
+	rb.TXTReformatPool.release(r, p);
 	return(wss.str());
 }

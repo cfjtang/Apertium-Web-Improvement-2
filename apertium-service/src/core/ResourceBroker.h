@@ -76,8 +76,8 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
-#include "format/Deformat.h"
-#include "format/Reformat.h"
+#include "format/TXTDeformat.h"
+#include "format/TXTReformat.h"
 
 #include "utils/Logger.h"
 
@@ -286,8 +286,8 @@ public:
 	virtual ~ResourceBroker();
 
 	NonIndexedObjectPool<PreTransfer> PreTransferPool;
-	NonIndexedObjectPool<Deformat> DeformatPool;
-	NonIndexedObjectPool<Reformat> ReformatPool;
+	NonIndexedObjectPool<TXTDeformat> TXTDeformatPool;
+	NonIndexedObjectPool<TXTReformat> TXTReformatPool;
 
 	IndexedObjectPool<FSTProcessor> FSTProcessorPool;
 	IndexedObjectPool<HMMWrapper> HMMPool;

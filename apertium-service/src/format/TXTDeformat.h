@@ -20,14 +20,14 @@
  *
  * @section DESCRIPTION
  *
- * The Deformat class implements a text format processor. Data should be
+ * The TXTDeformat class implements a text format processor. Data should be
  * passed through this processor before beign processed by Apertium.
  */
 
 // XXX: still hacky
 
-#ifndef DEFORMAT_H_
-#define DEFORMAT_H_
+#ifndef TXTDEFORMAT_H_
+#define TXTDEFORMAT_H_
 
 #include <cstdlib>
 #include <iostream>
@@ -55,10 +55,10 @@ using namespace boost::spirit;
 using namespace boost::spirit::lex;
 
 /**
- * The Deformat class implements a text format processor. Data should be
+ * The TXTDeformat class implements a text format processor. Data should be
  * passed through this processor before beign processed by Apertium.
  */
-class Deformat {
+class TXTDeformat {
 public:
 
 	template <typename Lexer> struct deformat_tokens: lexer_def<Lexer> {
@@ -72,7 +72,7 @@ public:
 		}
 	};
 
-	Deformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
+	TXTDeformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
 		last = "";
 		buffer = L"";
 		isDot = hasWrite_dot = hasWrite_white = false;
@@ -85,7 +85,7 @@ public:
 		l = new lexer<deformat_tokens<lexer_type> >(*def);
 	}
 
-	virtual ~Deformat() {
+	virtual ~TXTDeformat() {
 		delete l;
 		delete def;
 
@@ -145,7 +145,7 @@ public:
 
 	struct func {
 		typedef bool result_type;
-		template<typename Token> bool operator()(Token const& t, Deformat *d, std::wostream &o) const {
+		template<typename Token> bool operator()(Token const& t, TXTDeformat *d, std::wostream &o) const {
 			//wcout << L"id is: " << t.id() << endl;
 			//wcout << L"value is: " << t.value() << endl;
 
@@ -376,4 +376,4 @@ private:
 	}
 };
 
-#endif /* DEFORMAT_H_ */
+#endif /* TXTDEFORMAT_H_ */

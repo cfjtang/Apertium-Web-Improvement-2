@@ -33,8 +33,8 @@
 #include "ResourceBroker.h"
 #include "utils/Logger.h"
 
-ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), DeformatPool(ub),
-	ReformatPool(ub), FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
+ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), TXTDeformatPool(ub),
+	TXTReformatPool(ub), FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
 	PostchunkPool(ub), TransferMultPool(ub), GrammarPool(ub) {
 	upperBound = ub;
 }
@@ -75,17 +75,17 @@ template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Progr
 	return(ret);
 }
 
-template <> Deformat *NonIndexedObjectPool<Deformat>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<Deformat>::getNewInstance();");
+template <> TXTDeformat *NonIndexedObjectPool<TXTDeformat>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<TXTDeformat>::getNewInstance();");
 
-	Deformat *ret = pool.construct();
+	TXTDeformat *ret = pool.construct();
 	return(ret);
 }
 
-template <> Reformat *NonIndexedObjectPool<Reformat>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<Reformat>::getNewInstance();");
+template <> TXTReformat *NonIndexedObjectPool<TXTReformat>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<TXTReformat>::getNewInstance();");
 
-	Reformat *ret = pool.construct();
+	TXTReformat *ret = pool.construct();
 	return(ret);
 }
 
