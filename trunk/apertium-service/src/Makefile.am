@@ -20,8 +20,7 @@
 #
 
 INCLUDES = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@ @XMLRPC_CFLAGS@ @LIBTEXTCAT_CFLAGS@
-LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @XMLRPC_LIBS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ \
-@BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @BOOST_DATE_TIME_LIB@ @LIBTEXTCAT_LIBS@
+LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @XMLRPC_LIBS@ @XMLRPC_LDFLAGS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @BOOST_DATE_TIME_LIB@ @LIBTEXTCAT_LIBS@
 
 h_sources = ./format/Deformat.h ./format/Encoding.h ./format/Base64.h ./format/Reformat.h ./interfaces/xmlrpc/ApertiumXMLRPCService.h ./core/FunctionMapper.h ./core/ApertiumRuntimeException.h ./core/ModesManager.h ./core/PreTransfer.h ./core/ResourceBroker.h ./core/ThreadSafeQueue.h ./core/Translator.h ./core/ThreadSafeObjectPool.h ./core/cg/version.h ./core/cg/Grammar.h ./core/cg/GrammarWriter.h ./core/cg/Window.h ./core/cg/inlines.h ./core/cg/Rule.h ./core/cg/TextualParser.h ./core/cg/Reading.h ./core/cg/cycle.h ./core/cg/ApertiumApplicator.h ./core/cg/Anchor.h ./core/cg/stdafx.h ./core/cg/IGrammarParser.h ./core/cg/Strings.h ./core/cg/Set.h ./core/cg/options.h ./core/cg/macros.h ./core/cg/BinaryGrammar.h ./core/cg/GrammarApplicator.h ./core/cg/CompositeTag.h ./core/cg/icu_uoptions.h ./core/cg/uextras.h ./core/cg/Cohort.h ./core/cg/ContextualTest.h ./core/cg/Tag.h ./core/cg/SingleWindow.h ./core/TextClassifier.h ./utils/ConfigurationManager.h ./utils/Statistics.h ./utils/Logger.h
 

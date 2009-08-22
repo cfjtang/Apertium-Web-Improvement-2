@@ -173,13 +173,17 @@ if test x$XMLRPC_CONFIG = xno; then
   AC_MSG_ERROR(Couldn't find xmlrpc-c-config -- please install the xmlrpc-c library)
 fi
 
-XMLRPC_CFLAGS=`$XMLRPC_CONFIG c++ c++2 abyss-server --cflags`
-XMLRPC_LIBS=`$XMLRPC_CONFIG c++ c++2 abyss-server --libs`
+XMLRPC_CFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 --cflags`
+XMLRPC_LIBS=`$XMLRPC_CONFIG abyss-server c++ c++2 --libs`
+XMLRPC_LDFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 --ldadd`
+
+XMLRPC_LDFLAGS+=" -lxmlrpc_server++ -lxmlrpc_server_abyss++ "
 
 XMLRPC_VERSION=`$XMLRPC_CONFIG --version`
 
 AC_SUBST(XMLRPC_CFLAGS)
 AC_SUBST(XMLRPC_LIBS)
+AC_SUBST(XMLRPC_LDFLAGS)
 
 AC_SUBST(XMLRPC_VERSION)
 
@@ -214,7 +218,7 @@ ICUIO_LIBS=`icu-config --ldflags-icuio`
 
 LIBS="$ICU_LIBS $ICUIO_LIBS $LIBS"
 
-AC_CHECK_FUNCS([open_memstream open_wmemstream])
+AC_CHECK_FUNCS([syslog open_memstream open_wmemstream])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -224,7 +228,15 @@ AC_SUBST(LDFLAGS)
 AC_SUBST(BOOST_THREAD_LIB)
 AC_SUBST(MAKEDOCS)
 
-ASCONFDIR="${sysconfdir}/${PACKAGE_NAME}"
+if test "$sysconfdir" = '${prefix}/etc'; then
+  if test "x$prefix" = xNONE; then
+    ASCONFDIR="$ac_default_prefix/etc/${PACKAGE_NAME}"
+  else
+    ASCONFDIR="$prefix/etc/${PACKAGE_NAME}"
+  fi
+else
+  ASCONFDIR="$sysconfdir/${PACKAGE_NAME}"
+fi
 AC_SUBST(ASCONFDIR)
 
 asconfdir_e=`eval "echo ${ASCONFDIR}"`
@@ -237,7 +249,6 @@ echo             "| CXX :                    $CXX"
 echo             "| CXXFLAGS :               $CXXFLAGS"
 echo             "| XMLRPC-C Version :       $XMLRPC_VERSION"
 echo             "| Source directory:        ${srcdir}"
-echo             "| Installation directory:  ${prefix}"
 echo             "| Configuration directory: ${asconfdir_e}"
 
 #case "$CORBA_ORB" in
