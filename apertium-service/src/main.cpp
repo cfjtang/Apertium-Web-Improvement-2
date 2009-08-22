@@ -61,6 +61,7 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
 Logger *logger = NULL;
+ApertiumXMLRPCService *axs = NULL;
 
 /*
 ConfigurationManager *cm = NULL;
@@ -81,6 +82,8 @@ void cleanup(void) {
 	boost::mutex::scoped_lock Lock(cleanupMutex);
 
 	cerr << "Cleaning things up.." << endl;
+
+	delete axs;
 
 	/*
 
@@ -129,7 +132,7 @@ int main(int ac, char *av[]) {
 
 
 #if defined(HAVE_SYSLOG)
-		("syslog,s", "send messages to the system logger")
+		("syslog,s", "enable sending messages to the system logger")
 #endif
 
 		("directory,d",	po::value<string>(), "(string) set configuration directory")
@@ -155,6 +158,7 @@ int main(int ac, char *av[]) {
 		po::notify(vm);
 
 		if (vm.count("help")) {
+			cout << "Usage: " << PACKAGE_NAME << " [options]" << endl;
 			cout << desc << endl;
 			return (1);
 		}
@@ -241,26 +245,21 @@ int main(int ac, char *av[]) {
 
 		if (vm.count("daemon")) {
 			switch (::fork()) {
-
-			case -1: {
+			case -1:
 				throw ApertiumRuntimeException(::strerror(errno));
-			}
 				break;
-
-			case 0: {
-				// child
-			}
+			case 0:
 				break;
-
-			default: {
-				// parent
+			default:
 				_exit(0);
 				return 0;
-			}
 				break;
 			}
+			logger->setConsoleUsage(false);
+		}
 
-			logger->setVerbosity(0);
+		if (vm.count("syslog")) {
+			logger->setSyslogUsage(true);
 		}
 
 #if defined(HAVE_LIBTEXTCAT)
@@ -275,10 +274,25 @@ int main(int ac, char *av[]) {
 	    mm.initPipe(cm->getApertiumBase());
 
 #if defined(HAVE_LIBTEXTCAT)
-	    ApertiumXMLRPCService axs(_cm, mm, rb, tc, &s);
+	    axs = new ApertiumXMLRPCService(_cm, mm, rb, tc, &s);
 #else
-	    ApertiumXMLRPCService axs(_cm, mm, rb, &s);
+	    axs = new ApertiumXMLRPCService(_cm, mm, rb, &s);
 #endif
+
+	    /*
+	    ApertiumXMLRPCService *axs = new ApertiumXMLRPCService(_cm, mm, rb, tc, &s);
+
+	    boost::thread xmlrpcThread(boost::bind(&ApertiumXMLRPCService::start, axs));
+	    //xmlrpcThread.join();
+
+	    sleep(1);
+
+	    cout << "deleting.." << endl;
+	    delete axs;
+	    cout << "deleted." << endl;
+
+	    sleep(1);
+	    */
 
 	    //ApertiumORBService aos(ac, av, cm, mm, rb, tc, &s);
 
@@ -288,7 +302,7 @@ int main(int ac, char *av[]) {
 	    //xmlrpcThread.join();
 	    //orbThread.join();
 
-	    axs.start();
+	    axs->start();
 
 	    /*
 	} catch (CORBA::NO_RESOURCES&) {
