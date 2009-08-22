@@ -29,7 +29,10 @@
 
 #include <iostream>
 #include <string>
+
+#if defined(HAVE_SYSLOG)
 #include <syslog.h>
+#endif
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -61,15 +64,19 @@ Logger::Logger() : verbosity(0), useSyslog(false), useConsole(true) {
 	color[Warning] = 35;
 	color[Debug] = 36;
 
+#if defined(HAVE_SYSLOG)
 	::setlogmask(LOG_UPTO(LOG_DEBUG));
 	::openlog(PACKAGE_NAME, LOG_PID|LOG_CONS|LOG_ODELAY, LOG_USER);
+#endif
 }
 
 Logger::~Logger() {
 	boost::upgrade_lock<boost::shared_mutex> lock(instanceMutex);
 	if (instance) {
 		boost::upgrade_to_unique_lock<boost::shared_mutex> uniqueLock(lock);
-		closelog();
+#if defined(HAVE_SYSLOG)
+		::closelog();
+#endif
 		instance = NULL;
 	}
 }
@@ -83,10 +90,11 @@ void Logger::trace(MessageType messageType ///< Type of message
 	if (useConsole) {
 
 	}
-
+#if defined(HAVE_SYSLOG)
 	if (useSyslog) {
 
 	}
+#endif
 }
 
 void Logger::traceConsole(MessageType messageType, const std::string msg) {
@@ -121,6 +129,7 @@ void Logger::traceConsole(MessageType messageType, const std::string msg) {
 	}
 }
 
+#if defined(HAVE_SYSLOG)
 void Logger::traceSyslog(MessageType messageType, const std::string msg) {
 	int severity;
 
@@ -148,6 +157,7 @@ void Logger::traceSyslog(MessageType messageType, const std::string msg) {
 	boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
 	::syslog(LOG_USER | severity, "[PACKAGE_NAME] %s", msg.data());
 }
+#endif
 
 void Logger::setVerbosity(int v) {
 	verbosity = v;
@@ -161,6 +171,8 @@ void Logger::setConsoleUsage(bool u) {
 	useConsole = u;
 }
 
+#if defined(HAVE_SYSLOG)
 void Logger::setSyslogUsage(bool u) {
 	useSyslog = u;
 }
+#endif
