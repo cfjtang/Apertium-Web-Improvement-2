@@ -68,7 +68,9 @@ private:
 
 	int verbosity;
 
+#if defined(HAVE_SYSLOG)
 	bool useSyslog;
+#endif
 	bool useConsole;
 
 	typedef boost::unordered_map<MessageType, int32_t> ColorMapType;

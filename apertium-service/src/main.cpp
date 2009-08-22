@@ -61,9 +61,7 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
 Logger *logger = NULL;
-ApertiumXMLRPCService *axs = NULL;
 
-/*
 ConfigurationManager *cm = NULL;
 ResourceBroker *rb = NULL;
 
@@ -74,7 +72,6 @@ TextClassifier *tc = NULL;
 Statistics *s = NULL;
 ModesManager *mm = NULL;
 ApertiumXMLRPCService *axs = NULL;
-*/
 
 boost::mutex cleanupMutex;
 
@@ -82,10 +79,6 @@ void cleanup(void) {
 	boost::mutex::scoped_lock Lock(cleanupMutex);
 
 	cerr << "Cleaning things up.." << endl;
-
-	delete axs;
-
-	/*
 
 	delete axs;
 	delete mm;
@@ -97,8 +90,6 @@ void cleanup(void) {
 
 	delete rb;
 	delete cm;
-
-	*/
 
 	delete logger;
 
@@ -196,8 +187,7 @@ int main(int ac, char *av[]) {
 
 	    cout << "Using the configuration file located in " << cf << endl;
 
-	    ConfigurationManager _cm(cf, cd);
-	    ConfigurationManager *cm = &_cm;
+	    cm = new ConfigurationManager(cf, cd);
 
 #if defined(HAVE_LIBTEXTCAT)
 	    if (vm.count("conftc")) {
@@ -263,20 +253,20 @@ int main(int ac, char *av[]) {
 		}
 
 #if defined(HAVE_LIBTEXTCAT)
-		TextClassifier tc(cm->getConfTextClassifier());
+		tc = new TextClassifier(cm->getConfTextClassifier());
 #endif
 
-		ResourceBroker rb(cm->getHighWaterMark());
+		rb = new ResourceBroker(cm->getHighWaterMark());
 
-		Statistics s(rb);
+		s = new Statistics(*rb);
 
-		ModesManager mm;
-	    mm.initPipe(cm->getApertiumBase());
+		mm = new ModesManager;
+	    mm->initPipe(cm->getApertiumBase());
 
 #if defined(HAVE_LIBTEXTCAT)
-	    axs = new ApertiumXMLRPCService(_cm, mm, rb, tc, &s);
+	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, *tc, s);
 #else
-	    axs = new ApertiumXMLRPCService(_cm, mm, rb, &s);
+	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, s);
 #endif
 
 	    /*
