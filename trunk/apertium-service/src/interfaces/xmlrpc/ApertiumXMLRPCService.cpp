@@ -168,12 +168,14 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 	xmlrpcRegistry->addMethod(LANGUAGEPAIRS_NAME, LanguagePairsMethodP);
 
 	abyssServer = new xmlrpc_c::serverAbyss(xmlrpc_c::serverAbyss::constrOpt()
-		.registryPtr(xmlrpcRegistry)
+		.registryP(xmlrpcRegistry)
 		.portNumber(cm.getServerPort())
-		//.keepaliveTimeout(cm.getKeepaliveTimeout())
-		//.keepaliveMaxConn(cm.getKeepaliveMaxConn())
-		//.timeout(cm.getTimeout())
+		.keepaliveTimeout(cm.getKeepaliveTimeout())
+		.keepaliveMaxConn(cm.getKeepaliveMaxConn())
+		.timeout(cm.getTimeout())
 		);
+
+    //abyssServer = new xmlrpc_c::serverAbyss(*xmlrpcRegistry, cm.getServerPort(), "/dev/null");
 
 	stringstream ssmsg;
 	ssmsg << "Apertium XML-RPC service set up to run on port " << (cm.getServerPort());
@@ -185,7 +187,7 @@ ApertiumXMLRPCService::~ApertiumXMLRPCService() {
 	ssmsg << "Terminating the Apertium XML-RPC service..";
 	Logger::Instance()->trace(Logger::Info, ssmsg.str());
 
-	//abyssServer->terminate();
+	abyssServer->terminate();
 
 	delete abyssServer;
 	delete xmlrpcRegistry;
