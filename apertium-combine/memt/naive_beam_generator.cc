@@ -45,6 +45,9 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                     /// extend half of the hypotheses with and half w/o
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
+                        /* if (sentinel->clean_roots[k].first->nmt != i
+                                && sentinel->clean_roots[k].first->word != NULL)
+                            continue; */
                         // w/o
                         sentinel->lasts.push_back(std::pair<Chained_Word*, 
                                 std::vector<std::set<int> > >(
@@ -55,8 +58,7 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                             Chained_Word* tmp = new Chained_Word(false, 
                                     &a._mt_translations[i][j], i, j);
                             sentinel->lasts.push_back(std::pair<Chained_Word*,
-                                    std::vector<std::set<int> > >(
-                                        tmp,
+                                    std::vector<std::set<int> > >(tmp,
                                         sentinel->clean_roots[k].second));
                             sentinel->lasts[sentinel->lasts.size() - 1]
                                 .second[i].insert(j);
@@ -68,10 +70,9 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                     /// extend the hypotheses with and w/o != but aligned
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
-                        bool truc = false;
-                        if (j == 5) {
-                            truc = true;
-                        }
+                        if (sentinel->clean_roots[k].first->nmt != i
+                                && sentinel->clean_roots[k].first->word != NULL)
+                            continue; // TODO ...
                         bool place_current = true;
                         for (std::list<std::pair<unsigned int, int> >::iterator 
                                 al = a._aligned[i][j].begin(); 
@@ -123,8 +124,6 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                         }
                         if (place_current && 
                                 !sentinel->clean_roots[k].second[i].count(j)) {
-                            if (truc)
-                                wcout << "current: [" << i << "][" << j << "] " << a._mt_translations[i][j] << endl;
                             Chained_Word* tmp = new Chained_Word(
                                     true, &a._mt_translations[i][j], i, j);
                             sentinel->lasts.push_back(std::pair<Chained_Word*,
