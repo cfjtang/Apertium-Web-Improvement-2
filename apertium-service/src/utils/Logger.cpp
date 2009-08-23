@@ -124,7 +124,7 @@ void Logger::traceConsole(MessageType messageType, const std::string msg) {
 		ptime now = second_clock::local_time();
 		ss << ": " << now << " - " << msg;
 
-		boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
+		boost::unique_lock<boost::shared_mutex> lock(consoleMutex);
 		std::cout << ss.str() << std::endl;
 }
 
@@ -153,7 +153,7 @@ void Logger::traceSyslog(MessageType messageType, const std::string msg) {
 		break;
 	}
 
-	boost::unique_lock<boost::shared_mutex> lock(instanceMutex);
+	boost::unique_lock<boost::shared_mutex> lock(syslogMutex);
 	::syslog(LOG_USER | severity, "[%s] %s", PACKAGE_NAME, msg.data());
 }
 #endif

@@ -70,8 +70,10 @@ private:
 
 #if defined(HAVE_SYSLOG)
 	bool useSyslog;
+	boost::shared_mutex syslogMutex;
 #endif
 	bool useConsole;
+	boost::shared_mutex consoleMutex;
 
 	typedef boost::unordered_map<MessageType, int32_t> ColorMapType;
 	ColorMapType color;
