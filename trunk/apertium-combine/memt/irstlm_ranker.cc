@@ -41,7 +41,7 @@ void inline IRSTLMRanker::score(Hypothesis& h)
     } 
     float lmscore = lmtb->clprob(*lmtb_ngram);
 #ifdef DEBUG
-    cout << lmscore << endl;
+    // cout << lmscore << endl;
 #endif
     float sc = -100 / (lmscore);
     h.score += sc; /// TODO
