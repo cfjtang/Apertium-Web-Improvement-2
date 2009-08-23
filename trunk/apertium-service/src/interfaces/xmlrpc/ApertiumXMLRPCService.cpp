@@ -149,12 +149,12 @@ private:
 
 #if defined(HAVE_LIBTEXTCAT)
 ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesManager &mm, ResourceBroker &rb,
-		TextClassifier &tc, Statistics *s) {
+		TextClassifier &tc, Statistics *s) : configurationManager(&cm) {
 #else
 ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesManager &mm, ResourceBroker &rb, Statistics *s) {
 #endif
 
-	xmlrpcRegistry = new xmlrpc_c::registry();
+	xmlrpcRegistry = new xmlrpc_c::registry;
 
 	xmlrpc_c::methodPtr const TranslateMethodP(new TranslateMethod(rb, mm, tc, s));
 	xmlrpcRegistry->addMethod(TRANSLATE_NAME, TranslateMethodP);
@@ -169,34 +169,34 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 
 	abyssServer = new xmlrpc_c::serverAbyss(xmlrpc_c::serverAbyss::constrOpt()
 		.registryP(xmlrpcRegistry)
-		.portNumber(cm.getServerPort())
-		.keepaliveTimeout(cm.getKeepaliveTimeout())
-		.keepaliveMaxConn(cm.getKeepaliveMaxConn())
-		.timeout(cm.getTimeout())
+		.portNumber(configurationManager->getServerPort())
+		.keepaliveTimeout(configurationManager->getKeepaliveTimeout())
+		.keepaliveMaxConn(configurationManager->getKeepaliveMaxConn())
+		.timeout(configurationManager->getTimeout())
 		);
 
     //abyssServer = new xmlrpc_c::serverAbyss(*xmlrpcRegistry, cm.getServerPort(), "/dev/null");
-
-	stringstream ssmsg;
-	ssmsg << "Apertium XML-RPC service set up to run on port " << (cm.getServerPort());
-	Logger::Instance()->trace(Logger::Info, ssmsg.str());
 }
 
 ApertiumXMLRPCService::~ApertiumXMLRPCService() {
-	stringstream ssmsg;
-	ssmsg << "Terminating the Apertium XML-RPC service..";
-	Logger::Instance()->trace(Logger::Info, ssmsg.str());
-
-	abyssServer->terminate();
-
 	delete abyssServer;
 	delete xmlrpcRegistry;
 }
 
 void ApertiumXMLRPCService::start() {
-	stringstream ssmsg;
-	ssmsg << "Starting the Apertium XML-RPC service..";
-	Logger::Instance()->trace(Logger::Info, ssmsg.str());
+	{
+		stringstream ssmsg;
+		ssmsg << "Starting Apertium XML-RPC service set up to run on port " << (configurationManager->getServerPort());
+		Logger::Instance()->trace(Logger::Info, ssmsg.str());
+	}
 
 	abyssServer->run();
+}
+
+void ApertiumXMLRPCService::stop() {
+	stringstream ssmsg;
+	ssmsg << "Terminating the Apertium XML-RPC service..";
+	Logger::Instance()->trace(Logger::Info, ssmsg.str());
+
+	abyssServer->terminate();
 }

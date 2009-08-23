@@ -78,6 +78,7 @@ public:
 	virtual ~ApertiumXMLRPCService();
 
 	void start();
+	void stop();
 
 private:
     static const string TRANSLATE_NAME;
@@ -90,6 +91,8 @@ private:
 
 	xmlrpc_c::registry* xmlrpcRegistry;
 	xmlrpc_c::serverAbyss* abyssServer;
+
+    ConfigurationManager *configurationManager;
 };
 
 #endif /* APERTIUMXMLRPCSERVICE_H_ */

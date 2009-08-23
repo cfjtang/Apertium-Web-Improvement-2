@@ -80,6 +80,8 @@ void cleanup(void) {
 
 	cerr << "Cleaning things up.." << endl;
 
+	axs->stop();
+
 	delete axs;
 	delete mm;
 	delete s;
@@ -101,10 +103,12 @@ void cleanup(void) {
 	u_cleanup();
 }
 
+/*
 void signalHandler(int) {
 	cerr << "SIGINT received." << endl;
 	exit(EXIT_SUCCESS);
 }
+*/
 
 int main(int ac, char *av[]) {
 	LtLocale::tryToSetLocale();
@@ -165,7 +169,7 @@ int main(int ac, char *av[]) {
 		init_flags();
 
 		::atexit(cleanup);
-		::signal(SIGINT, &signalHandler);
+		//::signal(SIGINT, &signalHandler);
 
 #if defined(ASCONFDIR)
 		fs::path cd = ASCONFDIR;
@@ -233,7 +237,14 @@ int main(int ac, char *av[]) {
 	        logger->setVerbosity(vm["verbosity"].as<unsigned int>());
 	    }
 
+		if (vm.count("syslog")) {
+			cout << "Sending messages to the system logger." << endl;
+			logger->setSyslogUsage(true);
+		}
+
 		if (vm.count("daemon")) {
+			cout << "Running the service as a daemon.." << endl;
+
 			switch (::fork()) {
 			case -1:
 				throw ApertiumRuntimeException(::strerror(errno));
@@ -248,9 +259,14 @@ int main(int ac, char *av[]) {
 			logger->setConsoleUsage(false);
 		}
 
-		if (vm.count("syslog")) {
-			logger->setSyslogUsage(true);
-		}
+	} catch (const std::exception& e) {
+		cerr << "Exception: " << e.what() << endl;
+		return(1);
+	} catch (...) {
+		cerr << "Exception." << endl;
+	}
+
+	try {
 
 #if defined(HAVE_LIBTEXTCAT)
 		tc = new TextClassifier(cm->getConfTextClassifier());
@@ -269,50 +285,10 @@ int main(int ac, char *av[]) {
 	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, s);
 #endif
 
-	    /*
-	    ApertiumXMLRPCService *axs = new ApertiumXMLRPCService(_cm, mm, rb, tc, &s);
-
-	    boost::thread xmlrpcThread(boost::bind(&ApertiumXMLRPCService::start, axs));
-	    //xmlrpcThread.join();
-
-	    sleep(1);
-
-	    cout << "deleting.." << endl;
-	    delete axs;
-	    cout << "deleted." << endl;
-
-	    sleep(1);
-	    */
-
-	    //ApertiumORBService aos(ac, av, cm, mm, rb, tc, &s);
-
-	    //boost::thread xmlrpcThread(boost::bind(&ApertiumXMLRPCService::start, axs));
-	    //boost::thread orbThread(boost::bind(&ApertiumORBService::start, &aos));
-
-	    //xmlrpcThread.join();
-	    //orbThread.join();
-
 	    axs->start();
 
-	    /*
-	} catch (CORBA::NO_RESOURCES&) {
-		cerr << "Caught NO_RESOURCES exception. You must configure omniORB with the location of the naming service." << endl;
-		return 0;
-	} catch (CORBA::ORB::InvalidName&) {
-		cerr << "Service required is invalid [does not exist]." << endl;
-		return 0;
-	} catch (CORBA::TRANSIENT&) {
-		cerr << "Caught system exception TRANSIENT -- unable to contact the server." << endl;
-	} catch (CORBA::SystemException& ex) {
-		cerr << "Caught a CORBA::" << ex._name() << endl;
-	} catch (CORBA::Exception& ex) {
-		cerr << "Caught CORBA::Exception: " << ex._name() << endl;
-	} catch (omniORB::fatalException& fe) {
-		cerr << "Caught omniORB::fatalException:" << endl;
-		cerr << "  file: " << fe.file() << endl;
-		cerr << "  line: " << fe.line() << endl;
-		cerr << "  mesg: " << fe.errmsg() << endl;
-		*/
+	    //boost::thread xmlrpcThread(boost::bind(&ApertiumXMLRPCService::start, axs));
+	    //xmlrpcThread.join();
 
 	} catch (const std::exception& e) {
 		cerr << "Exception: " << e.what() << endl;
