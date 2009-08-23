@@ -8,7 +8,7 @@ using namespace std;
 struct Chained_Word
 {
     bool aligned;
-    wstring* word;
+    wstring* word; // easy transition to comparing pointers instead of strings
     unsigned int nmt;
     unsigned int nword;
     std::vector<Chained_Word*> nexts;
