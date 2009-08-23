@@ -166,7 +166,7 @@ void Alignment::generate_graphviz()
     for (std::vector<Pairwise_Alignment>::iterator it = _pw_alignments.begin();
             it != _pw_alignments.end(); ++it)
         it->generate_graphviz();
-    // TODO it generates only one, the last. 
+    // TODO it saves only one, the last. 
     // should be one big or many as theses
 }
 

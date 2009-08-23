@@ -60,8 +60,8 @@ int main(int argc, char** argv)
     
     /// You can instantiate another derivation of Ranker here, 
     /// that should be the only change for switching the ranker
-    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
-    // Dummy_Ranker* r = new Dummy_Ranker();
+    //IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+    Dummy_Ranker* r = new Dummy_Ranker();
 
     while(condition) {
         wcout << endl;
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
         alignment.align(aligner, 0);
 #ifdef DEBUG
         alignment.print();
-        alignment.generate_graphviz();
+        // alignment.generate_graphviz();
 #endif
         wcout << "### Making hypotheses" << endl;
         /// This is where you can change the (hyp) Generator
