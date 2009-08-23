@@ -31,6 +31,7 @@
     </def-cat>
 
     <def-cat n="supn_pp">
+      <cat-item lemma="komma" tags="vblex.supn.*"/>
       <cat-item tags="vbser.supn.*"/>
       <cat-item tags="vbhaver.supn.*"/>
       <cat-item tags="vblex.supn.*"/>
@@ -3058,7 +3059,6 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         </call-macro>
       </action>
     </rule>
-
  
     <rule comment="REGLA: får inte VERB  -   må ikke VERB">
       <pattern>
@@ -3183,6 +3183,9 @@ Avoid these in <vblex><inf><pasv>  Make them blive<inf><pres><actv> verb<pp>
         <pattern-item n="verb_inf"/>
       </pattern>
       <action>
+        <call-macro n="f_conj_supn1">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
