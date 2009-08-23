@@ -147,12 +147,14 @@ void Alignment::print()
 {
     for (std::vector<Pairwise_Alignment>::iterator it = _pw_alignments.begin();
             it != _pw_alignments.end(); ++it) {
+        /* 
         wcout << "printing a _final_alignment: [ ";
         for (std::vector<int>::iterator i = it->_final_alignment.begin();
                 i != it->_final_alignment.end(); ++i) {
             wcout << *i << " ";
         }
         wcout << "]" << endl;
+        */
     }
     print_mt_translations();
     print_aligned();

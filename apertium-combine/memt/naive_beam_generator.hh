@@ -1,6 +1,7 @@
 #ifndef NAIVE_BEAM_GENERATOR_HH
 #define NAIVE_BEAM_GENERATOR_HH
 #include "generator.hh"
+#include <set>
 
 using namespace std;
 
@@ -50,12 +51,17 @@ struct Chained_Word_Sentinel
 {
     std::vector<Chained_Word*> firsts;
     // std::vector<std::pair<bool, Chained_Word*> > lasts; // expanded or not
-    std::vector<Chained_Word*> lasts;         // expanded
-    std::vector<Chained_Word*> clean_roots;   // not expanded
+    std::vector<std::pair<Chained_Word*, std::vector<std::set<int> > > >
+        lasts; // expanded, [#mt] = used_set = DUMMY>
+    std::vector<std::pair<Chained_Word*, std::vector<std::set<int> > > >
+        clean_roots; // <not expanded, [#mt] = used_set>
 
-    Chained_Word_Sentinel() { 
+    Chained_Word_Sentinel(unsigned int mt_size) { 
         Chained_Word* tmp = new Chained_Word(false, NULL);
-        lasts.push_back(tmp);
+        std::vector<std::set<int> > tmp_vect_used;
+        tmp_vect_used.resize(mt_size);
+        lasts.push_back(std::pair<Chained_Word*, std::vector<std::set<int >
+                > >(tmp, tmp_vect_used));
         firsts.push_back(tmp);
     }
     ~Chained_Word_Sentinel() 

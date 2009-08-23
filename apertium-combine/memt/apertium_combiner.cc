@@ -8,6 +8,7 @@
 #include "irstlm_ranker.hh"
 #include "max_conseq_aligner.hh"
 #include "naive_beam_generator.hh"
+#include "minimal_crossing_aligner.hh"
 #include "case_insensitive_matcher.hh"
 
 using namespace std;
@@ -59,8 +60,8 @@ int main(int argc, char** argv)
     
     /// You can instantiate another derivation of Ranker here, 
     /// that should be the only change for switching the ranker
-    //IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
-    Dummy_Ranker* r = new Dummy_Ranker();
+    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+    // Dummy_Ranker* r = new Dummy_Ranker();
 
     while(condition) {
         wcout << endl;
@@ -76,7 +77,8 @@ int main(int argc, char** argv)
         alignment.match(matcher);
         /// This is where you can change the Aligner
         Max_Conseq_Aligner aligner;
-        alignment.align(aligner, 5);
+        // Minimal_Crossing_Aligner aligner;
+        alignment.align(aligner, 0);
 #ifdef DEBUG
         alignment.print();
         alignment.generate_graphviz();
@@ -89,9 +91,9 @@ int main(int argc, char** argv)
         hypotheses.rank(r);
 #ifdef DEBUG
         hypotheses.print();
-#else
-        hypotheses.best();
 #endif
+        wcout << "Best hypothesis: ";
+        hypotheses.best();
         // Example of how to print the hypotheses in a file:
         // wfstream hypotheses_file("input_ranker.txt", ios::out);
         // h.print(&hypotheses_file);

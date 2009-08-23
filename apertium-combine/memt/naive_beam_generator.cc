@@ -17,7 +17,7 @@ void Naive_Beam_Generator::generate(Alignment& a,
 {
     if (a._pw_alignments.size() == 1) 
         // generate_pairwise(a._pw_alignments[0], h);
-        generate_all(a, h); // TODO beamize
+        generate_all(a, h); 
     else {
         generate_all(a, h);
     }
@@ -25,6 +25,7 @@ void Naive_Beam_Generator::generate(Alignment& a,
 
 void inline Naive_Beam_Generator::generate_all(Alignment& a,
         std::list<Hypothesis>& h)
+// TODO beamize
 {
     unsigned int length = 0;
     for (unsigned int i = 0; i < a._aligned.size(); ++i) {
@@ -33,7 +34,8 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
         }
     }
 
-    Chained_Word_Sentinel* sentinel = new Chained_Word_Sentinel();
+    Chained_Word_Sentinel* sentinel = new Chained_Word_Sentinel(
+            a._mt_translations.size());
     for (unsigned int j = 0; j < length; ++j) {
         sentinel->lasts.swap(sentinel->clean_roots);
         sentinel->lasts.clear();
@@ -43,15 +45,24 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                     /// extend half of the hypotheses with and half w/o
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
-//                        if (sentinel->clean_roots[k]->nexts.size() > 2)
-//                            continue; // TODO
                         // w/o
-                        sentinel->lasts.push_back(sentinel->clean_roots[k]); 
-                        // with
-                        Chained_Word* tmp = new Chained_Word(false, 
-                                &a._mt_translations[i][j]);
-                        sentinel->lasts.push_back(tmp);                       
-                        sentinel->clean_roots[k]->nexts.push_back(tmp);
+                        sentinel->lasts.push_back(std::pair<Chained_Word*, 
+                                std::vector<std::set<int> > >(
+                                    sentinel->clean_roots[k].first,
+                                    sentinel->clean_roots[k].second)); 
+                        // with, if the word hasn't already been used
+                        if (!sentinel->clean_roots[k].second[i].count(j)) {
+                            Chained_Word* tmp = new Chained_Word(false, 
+                                    &a._mt_translations[i][j]);
+                            sentinel->lasts.push_back(std::pair<Chained_Word*,
+                                    std::vector<std::set<int> > >(
+                                        tmp,
+                                        sentinel->clean_roots[k].second));
+                            sentinel->lasts[sentinel->lasts.size() - 1]
+                                .second[i].insert(j);
+                            sentinel->clean_roots[k].first->nexts
+                                .push_back(tmp);
+                        }
                     }
                 } else { // aligned
                     /// extend the hypotheses with and w/o != but aligned
@@ -70,34 +81,56 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                                 place_aligned = false;
                             }
                             for (std::vector<Chained_Word*>::iterator it = 
-                                    sentinel->clean_roots[k]->nexts.begin();
-                                    it != sentinel->clean_roots[k]
-                                    ->nexts.end(); ++it) {
+                                    sentinel->clean_roots[k].first->nexts
+                                    .begin(); it != sentinel->clean_roots[k]
+                                    .first->nexts.end(); ++it) {
                                 if (place_current && !(*it)->word->compare(
                                             a._mt_translations[i][j])) {
                                     place_current = false;
-                                } // redundant
+                                } // this previous "if" is redundant
                                 if (place_aligned && !(*it)->word->compare(
                                             a._mt_translations[al->first]
                                             [al->second])) {
                                     place_aligned = false;
                                 }
                             }
-                            if (place_aligned) { 
+                            if (place_aligned && 
+                                    !sentinel->clean_roots[k]
+                                    .second[al->first].count(al->second)) { 
                                 Chained_Word* tmp = new Chained_Word(
                                         true, &a._mt_translations
                                         [al->first][al->second]);
-                                sentinel->lasts.push_back(tmp);
-                                sentinel->clean_roots[k]->nexts.push_back(
-                                        tmp);
+                                sentinel->lasts.push_back(
+                                        std::pair<Chained_Word*, std::vector<
+                                        std::set<int> > >(tmp, sentinel->
+                                            clean_roots[k].second));
+                                for (std::list<std::pair<unsigned int, int> >::
+                                        iterator x = a._aligned[al->first]
+                                        [al->second].begin(); 
+                                        x != a._aligned[al->first]
+                                        [al->second].end(); ++x) {
+                                    sentinel->lasts[sentinel->lasts.size() - 1]
+                                        .second[x->first].insert(x->second);
+                                }
+                                sentinel->clean_roots[k].first->nexts
+                                    .push_back(tmp);
                             }
                         }
-                        if (place_current) { 
+                        if (place_current && 
+                                !sentinel->clean_roots[k].second[i].count(j)) {
                             Chained_Word* tmp = new Chained_Word(
                                     true, &a._mt_translations[i][j]);
-                            sentinel->lasts.push_back(tmp);
-                            sentinel->clean_roots[k]->nexts.push_back(
-                                    tmp);
+                            sentinel->lasts.push_back(std::pair<Chained_Word*,
+                                    std::vector<std::set<int> > >(tmp,
+                                        sentinel->clean_roots[k].second));
+                            for (std::list<std::pair<unsigned int, int> >::
+                                    iterator x = a._aligned[i][j].begin(); 
+                                    x != a._aligned[i][j].end(); ++x) {
+                                sentinel->lasts[sentinel->lasts.size() - 1]
+                                    .second[x->first].insert(x->second);
+                            }
+                            sentinel->clean_roots[k].first->nexts
+                                .push_back(tmp);
                         }
                     }
                 }
