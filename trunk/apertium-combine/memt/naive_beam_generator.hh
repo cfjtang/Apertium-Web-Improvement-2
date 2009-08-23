@@ -9,9 +9,11 @@ struct Chained_Word
 {
     bool aligned;
     wstring* word;
+    unsigned int nmt;
+    unsigned int nword;
     std::vector<Chained_Word*> nexts;
-    Chained_Word(bool a, wstring* w): 
-        aligned(a), word(w) { } 
+    Chained_Word(bool a, wstring* w, unsigned int mt, unsigned int word): 
+        aligned(a), word(w), nmt(mt), nword(word) { } 
     ~Chained_Word() { 
         while (!nexts.empty()) {
             delete nexts.back();
@@ -57,7 +59,7 @@ struct Chained_Word_Sentinel
         clean_roots; // <not expanded, [#mt] = used_set>
 
     Chained_Word_Sentinel(unsigned int mt_size) { 
-        Chained_Word* tmp = new Chained_Word(false, NULL);
+        Chained_Word* tmp = new Chained_Word(false, NULL, 0, 0);
         std::vector<std::set<int> > tmp_vect_used;
         tmp_vect_used.resize(mt_size);
         lasts.push_back(std::pair<Chained_Word*, std::vector<std::set<int >

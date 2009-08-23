@@ -1,5 +1,9 @@
 #include "hypotheses.hh"
 
+#ifdef DEBUG
+#define HYP_PRINT_NUMBER_LIMIT 15
+#endif
+
 using namespace std;
 
 unsigned int max_length(scored_phrases& wv) 
@@ -79,15 +83,20 @@ void Hypotheses::rank(Ranker* r)
 void Hypotheses::print()
 {
     wcout << ">>> Hypotheses: " << endl;
+    unsigned int count = 0;
     for (std::list<Hypothesis>::iterator it = _hypotheses.begin();
             it != _hypotheses.end();
             ++it) {
         wstring s;
         concatenate(it->words, s);
 #ifdef DEBUG
-        wcout << "score: " << it->score << " == " << s << endl;
+        if (count < HYP_PRINT_NUMBER_LIMIT) {
+            wcout << "score: " << it->score << " == " << s << endl;
+        }
 #endif
+        ++count;
     }
+    wcout << "truncated because #hyp >= " << HYP_PRINT_NUMBER_LIMIT << endl;
 }
 
 void Hypotheses::print(wfstream* where)
