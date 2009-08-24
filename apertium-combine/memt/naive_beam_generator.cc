@@ -45,24 +45,20 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                     /// extend half of the hypotheses with and half w/o
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
-                        /* if (sentinel->clean_roots[k].first->nmt != i
-                                && sentinel->clean_roots[k].first->word != NULL)
-                            continue; */
                         // w/o
-                        sentinel->lasts.push_back(std::pair<Chained_Word*, 
-                                std::vector<std::set<int> > >(
-                                    sentinel->clean_roots[k].first,
-                                    sentinel->clean_roots[k].second)); 
+                        sentinel->lasts.push_back(CW_S_VUsed(sentinel->
+                                    clean_roots[k].cw, sentinel->clean_roots
+                                    [k].score, sentinel->clean_roots[k].used));
                         // with, if the word hasn't already been used
-                        if (!sentinel->clean_roots[k].second[i].count(j)) {
+                        if (!sentinel->clean_roots[k].used[i].count(j)) {
                             Chained_Word* tmp = new Chained_Word(false, 
                                     &a._mt_translations[i][j], i, j);
-                            sentinel->lasts.push_back(std::pair<Chained_Word*,
-                                    std::vector<std::set<int> > >(tmp,
-                                        sentinel->clean_roots[k].second));
+                            sentinel->lasts.push_back(CW_S_VUsed(tmp,
+                                        sentinel->clean_roots[k].score,
+                                        sentinel->clean_roots[k].used));
                             sentinel->lasts[sentinel->lasts.size() - 1]
-                                .second[i].insert(j);
-                            sentinel->clean_roots[k].first->nexts
+                                .used[i].insert(j);
+                            sentinel->clean_roots[k].cw->nexts
                                 .push_back(tmp);
                         }
                     }
@@ -70,9 +66,9 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                     /// extend the hypotheses with and w/o != but aligned
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
-                        if (sentinel->clean_roots[k].first->nmt != i
-                                && sentinel->clean_roots[k].first->word != NULL)
-                            continue; // TODO ...
+                        if (sentinel->clean_roots[k].cw->nmt != i
+                                && sentinel->clean_roots[k].cw->word != NULL)
+                            continue; // TODO unhack that
                         bool place_current = true;
                         for (std::list<std::pair<unsigned int, int> >::iterator 
                                 al = a._aligned[i][j].begin(); 
@@ -86,9 +82,9 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                                 place_aligned = false;
                             }
                             for (std::vector<Chained_Word*>::iterator it = 
-                                    sentinel->clean_roots[k].first->nexts
+                                    sentinel->clean_roots[k].cw->nexts
                                     .begin(); it != sentinel->clean_roots[k]
-                                    .first->nexts.end(); ++it) {
+                                    .cw->nexts.end(); ++it) {
                                 if (place_current && (*it)->nmt == i &&
                                         (*it)->nword == j) {
                                     place_current = false;
@@ -101,41 +97,44 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
                             }
                             if (place_aligned && 
                                     !sentinel->clean_roots[k]
-                                    .second[al->first].count(al->second)) { 
+                                    .used[al->first].count(al->second)) { 
                                 Chained_Word* tmp = new Chained_Word(
                                         true, &a._mt_translations
                                         [al->first][al->second], 
                                         al->first, al->second);
-                                sentinel->lasts.push_back(
-                                        std::pair<Chained_Word*, std::vector<
-                                        std::set<int> > >(tmp, sentinel->
-                                            clean_roots[k].second));
+                                sentinel->lasts.push_back(CW_S_VUsed(tmp,
+                                            sentinel->clean_roots[k].score + 1,
+                                            sentinel->clean_roots[k].used));
                                 for (std::list<std::pair<unsigned int, int> >::
                                         iterator x = a._aligned[al->first]
                                         [al->second].begin(); 
                                         x != a._aligned[al->first]
                                         [al->second].end(); ++x) {
                                     sentinel->lasts[sentinel->lasts.size() - 1]
-                                        .second[x->first].insert(x->second);
+                                        .used[x->first].insert(x->second);
                                 }
-                                sentinel->clean_roots[k].first->nexts
+                                sentinel->lasts[sentinel->lasts.size() - 1]
+                                    .used[al->first].insert(al->second);
+                                sentinel->clean_roots[k].cw->nexts
                                     .push_back(tmp);
                             }
                         }
                         if (place_current && 
-                                !sentinel->clean_roots[k].second[i].count(j)) {
+                                !sentinel->clean_roots[k].used[i].count(j)) {
                             Chained_Word* tmp = new Chained_Word(
                                     true, &a._mt_translations[i][j], i, j);
-                            sentinel->lasts.push_back(std::pair<Chained_Word*,
-                                    std::vector<std::set<int> > >(tmp,
-                                        sentinel->clean_roots[k].second));
+                            sentinel->lasts.push_back(CW_S_VUsed(tmp,
+                                        sentinel->clean_roots[k].score + 1,
+                                        sentinel->clean_roots[k].used));
                             for (std::list<std::pair<unsigned int, int> >::
                                     iterator x = a._aligned[i][j].begin(); 
                                     x != a._aligned[i][j].end(); ++x) {
                                 sentinel->lasts[sentinel->lasts.size() - 1]
-                                    .second[x->first].insert(x->second);
+                                    .used[x->first].insert(x->second);
                             }
-                            sentinel->clean_roots[k].first->nexts
+                            sentinel->lasts[sentinel->lasts.size() - 1]
+                                .used[i].insert(j);
+                            sentinel->clean_roots[k].cw->nexts
                                 .push_back(tmp);
                         } 
                     }
@@ -144,6 +143,9 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
         }
     }
     sentinel->fill_hypotheses(h);
+#ifdef DEBUG
+    wcout << "number of hypotheses: " << h.size() << endl;
+#endif
     delete sentinel;
 }
 

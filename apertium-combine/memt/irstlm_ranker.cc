@@ -43,8 +43,9 @@ void inline IRSTLMRanker::score(Hypothesis& h)
 #ifdef DEBUG
     // cout << lmscore << endl;
 #endif
-    float sc = -100 / (lmscore);
+    double sc = -1000 / (lmscore);
     h.score += sc; /// TODO
+    // h.score -= (maximal_size - h.words.size()) * a_big_number; TODO
     delete lmtb_ngram;
     return;
 }
