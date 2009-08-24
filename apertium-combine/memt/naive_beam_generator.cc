@@ -41,10 +41,18 @@ void inline Naive_Beam_Generator::generate_all(Alignment& a,
         sentinel->lasts.clear();
         for (unsigned int i = 0; i < a._mt_translations.size(); ++i) {
             if (j < a._mt_translations[i].size()) {
-                if (a._aligned[i][j].empty()) {
+                if (a._aligned[i][j].empty()) { // not aligned
+                    ////unsigned int minimum_score = j/PARAM_BEAM;
                     /// extend half of the hypotheses with and half w/o
                     for (unsigned int k = 0; 
                             k < sentinel->clean_roots.size(); ++k) {
+#ifdef DEBUG
+                        ////wcout << "j: " << j << " score: " << sentinel->
+                        ////    clean_roots[k].score << " minimum_score: " 
+                        ////    << minimum_score << endl;
+#endif
+                        ////if (sentinel->clean_roots[k].score < minimum_score)
+                        ////    continue;
                         // w/o
                         sentinel->lasts.push_back(CW_S_VUsed(sentinel->
                                     clean_roots[k].cw, sentinel->clean_roots
