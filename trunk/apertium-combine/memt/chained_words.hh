@@ -82,6 +82,11 @@ struct Chained_Word_Sentinel
             (*it)->read_all(starter, h);
         }
     }
+    void inline swap_clear_lasts() 
+    {
+        lasts.swap(clean_roots);
+        lasts.clear();
+    }
 };
 
 #endif

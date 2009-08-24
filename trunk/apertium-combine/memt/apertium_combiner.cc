@@ -8,6 +8,7 @@
 #include "irstlm_ranker.hh"
 #include "max_conseq_aligner.hh"
 #include "naive_beam_generator.hh"
+#include "parallel_scan_generator.hh"
 #include "minimal_crossing_aligner.hh"
 #include "case_insensitive_matcher.hh"
 
@@ -85,7 +86,8 @@ int main(int argc, char** argv)
 #endif
         wcout << "### Making hypotheses" << endl;
         /// This is where you can change the (hyp) Generator
-        Naive_Beam_Generator generator;
+        //Naive_Beam_Generator generator;
+        Parallel_Scan_Generator generator;
         Hypotheses hypotheses = Hypotheses(alignment, generator);
         wcout << "### Ranking hypotheses" << endl;
         hypotheses.rank(r);

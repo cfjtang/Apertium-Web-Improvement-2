@@ -90,13 +90,13 @@ void Hypotheses::print()
         wstring s;
         concatenate(it->words, s);
 #ifdef DEBUG
-        if (count < HYP_PRINT_NUMBER_LIMIT) {
+        //if (count < HYP_PRINT_NUMBER_LIMIT) {
             wcout << "score: " << it->score << " == " << s << endl;
-        }
+        //}
 #endif
         ++count;
     }
-    wcout << "truncated because #hyp >= " << HYP_PRINT_NUMBER_LIMIT << endl;
+    //wcout << "truncated because #hyp >= " << HYP_PRINT_NUMBER_LIMIT << endl;
 }
 
 void Hypotheses::print(wfstream* where)

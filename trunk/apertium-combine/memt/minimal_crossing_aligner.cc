@@ -38,7 +38,9 @@ void Minimal_Crossing_Aligner::basic_alignment(Pairwise_Alignment& alignment,
 void Minimal_Crossing_Aligner::fill_finals(Pairwise_Alignment& alignment,
         std::vector<std::pair<int, int> >& tmp)
 {
+#ifdef DEBUG
     assert(tmp.size() == alignment._final_alignment.size());
+#endif
     for (unsigned int j = 0; j < tmp.size(); ++j) {
         alignment._final_alignment[j] = tmp[j].second;
     }
@@ -55,8 +57,8 @@ void Minimal_Crossing_Aligner::fill_finals(Pairwise_Alignment& alignment,
 
 void Minimal_Crossing_Aligner::align(Pairwise_Alignment& alignment) 
 {
-    unsigned int size_end_left = alignment._words_left.size() - 1;
-    unsigned int size_end_right = alignment._words_right.size() - 1;
+    //unsigned int size_end_left = alignment._words_left.size() - 1;
+    //unsigned int size_end_right = alignment._words_right.size() - 1;
     std::vector<std::pair<int, int> > tmp; 
     // pair<crossings, aligned[right] = left>
     basic_alignment(alignment, tmp);
