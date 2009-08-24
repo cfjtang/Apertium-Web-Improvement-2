@@ -1,6 +1,8 @@
 This module contains experimental software for doing multi-engine machine
 translation with Apertium and Moses.
 
+=== Setup ===
+
 You will need:
 
 * Apertium 
@@ -14,4 +16,9 @@ Example:
 or
 
 ./configure --with-irstlm=/path/to/irstlm/ --with-moses=/path/to/mosesdecoder/
+
+=== Use ===
+
+echo "Fe fyddai un o bob <b>pedwar</b> o rieni Cymru yn ..." | apertium-destxt | memt/collector -e moses | lt-proc ... | cg-proc ...rest of pipeline... | lt-proc -g ... | combiner
+
 
