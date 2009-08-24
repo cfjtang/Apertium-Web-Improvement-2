@@ -21,6 +21,7 @@ bool inline find_aligned(std::list<std::pair<unsigned int, int> >& l,
  *  not aligned: we put the following
  */
 void Parallel_Scan_Generator::generate(Alignment& a, std::list<Hypothesis>& h)
+    // TODO: better gen., discriminate same words following each other
 {
     for (unsigned int mt = 0; mt < a._mt_translations.size(); ++mt) {
         Chained_Word_Sentinel* sentinel = new Chained_Word_Sentinel(
