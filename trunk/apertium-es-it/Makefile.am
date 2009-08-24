@@ -105,6 +105,7 @@ apertium_es_it_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).prob $(PREFIX2).prob 
 		  
 install-data-local: 
+	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_es_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_es_itdir)
