@@ -338,28 +338,40 @@ Returns the list of pardef names."
       (message (prin1-to-string pardefs))
       pardefs)))
 
-(defun dix-restriction-cycle ()
+(defun dix-restriction-cycle (&optional dir)
   "Cycle through possible values of the `r' attribute of the <e>
-element at point."
+element at point. Optional argument `dir' is a string, either
+\"\", \"LR\" or \"RL\"."
   (interactive)
   (save-excursion
     (dix-up-to "e" "pardef")
     (let* ((old		     ; find what, if any, restriction we have:
 	    (save-excursion
-	      (if (re-search-forward "r=\"\\(..\\)\"" (nxml-token-after) 'noerror 1)
+	      (if (re-search-forward " r=\"\\(..\\)\"" (nxml-token-after) 'noerror 1)
 		  (match-string 1))))
-	   (new (if old			; find our new restriction:
-		    (if (equal old "LR")
-			" r=\"RL\""	; "LR" => "RL"
-		      "")		; "RL" =>  ""
-		  " r=\"LR\"")))	;  ""  => "LR"
+	   (dir (if dir dir
+		  (if old		; find our new restriction:
+		      (if (equal old "LR")
+			  "RL"	; "LR" => "RL"
+			"")	; "RL" =>  ""
+		    "LR")))	;  ""  => "LR"
+	   (new (if (equal dir "") ""
+		  (concat " r=\"" dir "\""))))
       ;; restrict:
       (forward-word)
-      (if old (dix-with-sexp (kill-sexp)))
+      (if old (delete-region (match-beginning 0)
+			     (match-end 0)))
       (insert new)
+      (unless (looking-at ">") (just-one-space))
       ;; formatting, remove whitespace:
-      (forward-char) (just-one-space) (delete-backward-char 1)
-      (if (equal new "") (insert "       ")))))
+      (goto-char (nxml-token-after))
+      (unless (looking-at "<")
+	(goto-char (nxml-token-after)))
+      (delete-horizontal-space)
+      (cond  ((looking-at "<i") (indent-to dix-i-align-column))
+	     ((save-excursion (search-forward "</pardef>" nil 'noerror 1))
+	      (indent-to dix-pp-align-column))
+	     ((looking-at "<p") (indent-to dix-pb-align-column))))))
 
 (defun dix-LR-restriction-copy (&optional RL)
   "Make a copy of the Apertium element we're looking at, and add
@@ -373,11 +385,10 @@ restriction."
       (goto-char end)
       (insert (concat) (buffer-substring-no-properties beg end))
       (goto-char end)
-      ;; restrict:
+      (if (save-excursion (search-forward "</pardef>" nil 'noerror 1))
+	  (indent-to dix-ep-align-column)))
       (let ((dir (if RL "RL" "LR")))
-	(forward-word) (insert " r=\"" dir "\""))
-      ;; formatting, remove whitespace:
-      (forward-char) (just-one-space) (delete-backward-char 1)))
+	(dix-restriction-cycle dir)))
   ;; move point to end of relevant word:
   (nxml-down-element 2) (when RL (nxml-forward-element))
   (nxml-down-element 1) (goto-char (nxml-token-after)))
@@ -544,6 +555,32 @@ Todo:
        (isearch-search)
        (isearch-update)))))
 
+(defun dix-find-rhs-mismatch ()
+  "Find possible mismatches in <r> elements (ie. a pardef where
+two <e>'s have different suffixes in their <r>'s)."
+  (interactive)
+  (defun next-pardef ()
+    (and (search-forward "pardef" nil t) (next)))
+  (defun next-rhs ()
+    (re-search-forward "<r>\\([^<]*\\)<\\|\\(</pardef>\\)" nil t))
+  ;; Find first hit:
+  (setq keep-looking (next-pardef)
+	last-rhs (match-string 1))
+  ;; Check next ones for mismatches:
+  (while keep-looking
+    (if (equal (match-string 2) "</pardef>")
+	(setq keep-looking (next-pardef) ; skip to next <pardef>
+	      last-rhs (match-string 1))
+      (if (equal (match-string 1) last-rhs)
+	  (next-rhs)			; skip to next <e>
+	(setq keep-looking nil))))
+  ;; Echo results:
+  (if (match-string 1)
+      (and (goto-char (match-end 1))
+	   (message
+	    (concat "Possible mismatch in <r>: " last-rhs " vs " (match-string 1))))
+    (message "No mismatches discovered.")))
+
 (defun dix-next (&optional step)
   "Moves forward `step' steps (default 1) in <e> elements between
 the important places (lm attribute, <i>/<r>/<l> data, n attribute
@@ -700,6 +737,10 @@ by the (customizable) string `dix-dixfiles'"
   :type 'integer
   :group 'dix)
 (defcustom dix-i-align-column 25 "Column to align <i> elements to with `align'"
+  :type 'integer
+  :group 'dix)
+(defcustom dix-ep-align-column 2 "Column to align pardef <e> elements to with `align'.
+Not yet implemented, only used by `dix-LR-restriction-copy'."
   :type 'integer
   :group 'dix)
 (defcustom dix-pp-align-column 12 "Column to align pardef <p> elements to with `align'"
