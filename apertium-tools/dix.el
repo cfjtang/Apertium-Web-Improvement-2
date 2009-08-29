@@ -700,6 +700,10 @@ Todo: word-at-point function which ignores xml stuff."
     (mapconcat (lambda (analysis) (concat surface "/" analysis "$"))
 	       (split-string analyses "/" 'omitnulls) " "))) 
 
+(defun dix-point-after-> ()
+  (equal (buffer-substring-no-properties (1- (point)) (point))
+	 ">"))
+
 (defun dix-space ()
   "This should insert a space, unless we're inside the data area
 of <r>, <l> or <i>, in which case we want a <b/>.
@@ -712,7 +716,7 @@ too much work for this."
        (nxml-token-before)
        (or (eq xmltok-type 'data)
 	   (and (memq xmltok-type '(start-tag empty-element))
-		(save-excursion (backward-char) (looking-at ">"))))
+		(dix-point-after->)))
        (let ((eltname (save-excursion
 			(nxml-token-before)
 			(goto-char xmltok-start)
@@ -743,7 +747,8 @@ to the regular `delete-backward-char'."
 	   (or
 	    (and (eq xmltok-type 'empty-element)
 		 (equal (xmltok-start-tag-qname) "b"))
-	    (eq xmltok-type 'comment)))
+	    (and (eq xmltok-type 'comment)
+		 (dix-point-after->))))
       (delete-region (point) xmltok-start)
     (call-interactively 'delete-backward-char)))
 
