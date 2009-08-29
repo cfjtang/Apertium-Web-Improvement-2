@@ -760,22 +760,6 @@ to the regular `delete-backward-char'."
   (dix-with-sexp
    (execute-kbd-macro [?\C-\M-b ?\C-\M-f ?\C-\M-k ?\M-< ?\C-e ?\C-y ?\C-u ?\C-  ?\C-  ?\C-f])))
 
-(defun dix-n-f-copy ()
-  (interactive)
-  (dix-up-to "e")
-  (dix-with-sexp (mark-sexp))
-  (while (re-search-forward "n=\"[mf]\"/></l>" (mark) t)
-    (replace-match "n=\"f\"/></l>" t nil))
-  (while (re-search-forward "n=\"[mf]\"/></r>" (mark) t)
-    (replace-match "n=\"m\"/></r>" t nil))
-  (dix-RL-restriction-copy)
-  (dix-up-to "e")
-  (dix-with-sexp (mark-sexp))
-  (while (re-search-forward "n=\"[mf]\"/></r>" (mark) t)
-    (replace-match "n=\"f\"/></r>" t nil))
-  (dix-up-to "e")
-  (dix-with-sexp (backward-sexp)))
-
 (defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'"
   :type 'string
   :group 'dix)
@@ -842,7 +826,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c W") 'dix-word-search-forward)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
-(define-key dix-mode-map (kbd "C-c C") 'dix-analyse)
+(define-key dix-mode-map (kbd "C-c C-c") 'dix-analyse)
 (define-key dix-mode-map (kbd "C-c H") 'dix-toggle-syntax-highlighting)
 (define-prefix-command 'dix-replace-prefix)
 (define-key dix-mode-map (kbd "C-c %") 'dix-replace-prefix)
