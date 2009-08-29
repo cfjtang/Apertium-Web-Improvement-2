@@ -82,7 +82,7 @@
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
 
-(defconst dix-version "2009-07-01") 
+(defconst dix-version "2009-08-29") 
 
 (require 'nxml-mode)
 
@@ -378,18 +378,12 @@ element at point. Optional argument `dir' is a string, either
 an LR restriction to the copy. A prefix argument makes it an RL
 restriction."
   (interactive "P")
-  (dix-up-to "e" "pardef")
   (save-excursion
-    (let ((beg (point))
-	  (end (1+ (nxml-scan-element-forward (point)))))
-      (goto-char end)
-      (insert (concat) (buffer-substring-no-properties beg end))
-      (goto-char end)
-      (if (save-excursion (search-forward "</pardef>" nil 'noerror 1))
-	  (indent-to dix-ep-align-column)))
-      (let ((dir (if RL "RL" "LR")))
-	(dix-restriction-cycle dir)))
+    (dix-copy)
+    (let ((dir (if RL "RL" "LR")))
+      (dix-restriction-cycle dir)))
   ;; move point to end of relevant word:
+  (dix-up-to "e" "pardef")
   (nxml-down-element 2) (when RL (nxml-forward-element))
   (nxml-down-element 1) (goto-char (nxml-token-after)))
 
@@ -399,6 +393,17 @@ add an RL restriction to the copy."
     (interactive)
     (dix-LR-restriction-copy 'RL))
 
+(defun dix-copy ()
+  "Make a copy of the Apertium element we're looking at."
+  (interactive)
+  (dix-up-to "e" "pardef")
+  (let ((beg (point))
+	(end (1+ (nxml-scan-element-forward (point)))))
+    (goto-char end)
+    (insert (concat) (buffer-substring-no-properties beg end))
+    (goto-char end)
+    (if (save-excursion (search-forward "</pardef>" nil 'noerror 1))
+	(indent-to dix-ep-align-column))))
 
 (defun dix-sort-e-by-r (reverse beg end)
   "Sort region alphabetically by contents of <r> element;
@@ -695,6 +700,29 @@ Todo: word-at-point function which ignores xml stuff."
     (mapconcat (lambda (analysis) (concat surface "/" analysis "$"))
 	       (split-string analyses "/" 'omitnulls) " "))) 
 
+(defun dix-space ()
+  "This should insert a space, unless we're inside the data area
+of <r>, <l> or <i>, in which case we want a <b/>.
+
+A bit hacky I guess, but I don't want to require nxhtml just to
+get nxml-where-path, and reimplementing an XML Path seems rather
+too much work for this."
+  (interactive)
+  (if (and
+       (nxml-token-before)
+       (or (eq xmltok-type 'data)
+	   (and (memq xmltok-type '(start-tag empty-element))
+		(save-excursion (backward-char) (looking-at ">"))))
+       (let ((eltname (save-excursion
+			(nxml-token-before)
+			(goto-char xmltok-start)
+			(when (equal xmltok-type 'data)
+			  (nxml-token-before)
+			  (goto-char xmltok-start))
+			(xmltok-start-tag-qname))))
+	 (and eltname (member eltname '("b" "r" "l" "i")))))      
+      (insert "<b/>")
+    (insert " ")))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
@@ -775,6 +803,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 ;;; Keybindings --------------------------------------------------------------
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
+(define-key dix-mode-map (kbd "C-c C") 'dix-copy)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
 (define-key dix-mode-map (kbd "M-n") 'dix-next)
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
@@ -788,6 +817,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c H") 'dix-toggle-syntax-highlighting)
 (define-prefix-command 'dix-replace-prefix)
 (define-key dix-mode-map (kbd "C-c %") 'dix-replace-prefix)
+(define-key dix-mode-map (kbd "<SPC>") 'dix-space)
 (define-key dix-mode-map (kbd "C-c % RET") 'dix-replace-regexp-within-elt)
 (define-key dix-mode-map (kbd "C-c % %") 'dix-replace-regexp-within-elt)
 (define-key dix-mode-map (kbd "C-c % l") 'dix-replace-regexp-within-l)
