@@ -82,7 +82,7 @@
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
 
-(defconst dix-version "2009-08y-29") 
+(defconst dix-version "2009-08-29") 
 
 (require 'nxml-mode)
 
@@ -724,17 +724,29 @@ too much work for this."
       (insert "<b/>")
     (insert " ")))
 
-(defun dix-backspace (n)
-  "Delete a character backward, unless we're looking at <b/>, in
-which case we delete the whole element."
-  (interactive "p")
-  (let ((n (or n 1)))
-    (if (and
-	 (nxml-token-before)
-	 (eq xmltok-type 'empty-element)
-	 (equal (xmltok-start-tag-qname) "b"))
-	(delete-region (point) xmltok-start)
-      (delete-backward-char n))))
+(defcustom dix-hungry-backspace t
+  "Delete whole XML elements (<b/>, comments) with a single press
+of the backspace key. Set to nil if you don't want this behaviour."
+  :type 'boolean
+  :group 'dix)
+
+(defun dix-backspace ()
+  "Delete a character backward, unless we're looking at the end
+of <b/> or a comment, in which case we delete the whole element.
+
+Note: if we're looking at the relevant elements, prefix arguments
+are ignored, while if we're not, a prefix argument will be passed
+to the regular `delete-backward-char'."
+  (interactive)
+  (if (and dix-hungry-backspace
+	   (nxml-token-before)
+	   (or
+	    (and (eq xmltok-type 'empty-element)
+		 (equal (xmltok-start-tag-qname) "b"))
+	    (eq xmltok-type 'comment)))
+      (delete-region (point) xmltok-start)
+    (call-interactively 'delete-backward-char)))
+
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
