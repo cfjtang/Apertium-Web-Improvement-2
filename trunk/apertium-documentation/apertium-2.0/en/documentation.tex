@@ -1348,7 +1348,7 @@ bilingual dictionaries. You can find its description in section
 transformations (orthographic changes, contractions, apostrophation,
 etc.) required after surface forms in the target language have been
 generated and come into contact with each other.  Since this kind of
-operations can be expressed as a translation of character strings, it
+operation can be expressed as a translation of character strings, it
 has been decided to use the same type of dictionaries. It is
 implicitly assumed that the parts of the text whose processing has not
 been specified are copied just as they arrive. In these dictionaries,
@@ -1387,7 +1387,7 @@ Post-generation & left--right & post-generation for \texttt{ca}, \texttt{es} and
 
 \subsubsection{Description of the dictionary format}
 \label{formatodics} This section presents the main elements of the
-format in which dictionaries are build. The formal definition (a DTD)
+format in which dictionaries are built. The formal definition (a DTD)
 can be found in Appendix ~\ref{ss:dtd_dics}.  Section \ref{dic_lextor}
 describes the characteristics of a bilingual dictionary that works in
 an Apertium system with lexical selection module.  Finally, from pages
@@ -1411,7 +1411,7 @@ basic block structure of a generic dictionary.
 \begin{figure}
 \begin{small}
 \begin{alltt}
-<?\textbf{xml} \textsl{version}="1.0" \textsl{encoding}="iso-8859-15"?>
+<?\textbf{xml} \textsl{version}="1.0" \textsl{encoding}="utf-8"?>
 <\textbf{dictionary}>
   <\textbf{alphabet}>abcdefghijk ... ABCDEFGH ... ηραινσϊ</\textbf{alphabet}>
   <\textbf{sdefs}>
@@ -1685,14 +1685,14 @@ readable.
   <\textbf{p}>
     <\textbf{l}>perr</\textbf{l}><\textbf{r}>perr</\textbf{r}>
   </\textbf{p}>
-  <\textbf{par} \textsl{n}="abuel_o__n"/>
+  <\textbf{par} \textsl{n}="abuel/o__n"/>
 </\textbf{e}>
 
 [2]
 
 <\textbf{e} \textsl{lm}="perro">
   <\textbf{i}>perr</\textbf{i}>
-  <\textbf{par} \textsl{n}="abuel_o__n"/>
+  <\textbf{par} \textsl{n}="abuel/o__n"/>
 </\textbf{e}>
 \end{alltt}
 \end{small}
@@ -1713,7 +1713,7 @@ Figure \ref{fig:pardefs}.
 \begin{small}
 \begin{alltt}
 <\textbf{pardefs}>
-  <\textbf{pardef} \textsl{n}="abuel_o__n"> 
+  <\textbf{pardef} \textsl{n}="abuel/o__n"> 
     <!-- ... -->
   </\textbf{pardef}> 
   <!-- ... -->
@@ -1770,7 +1770,7 @@ Root (SF and LF) & Ending (SF) & Analysis (LF) \\
 \begin{figure}
 \begin{small}
 \begin{alltt}
-<\textbf{pardef} \textsl{n}="abuel_o__n">
+<\textbf{pardef} \textsl{n}="abuel/o__n">
   <\textbf{e}>
     <\textbf{p}>
       <\textbf{l}>o</\textbf{l}>
@@ -1871,7 +1871,7 @@ of the paradigm we want to refer to.
 The result of inserting a reference to a paradigm in an entry is the
 creation of so many string pairs as cases specified in the
 paradigm. For example, the entry in Figure \ref{fig:par}, with a
-reference to the paradigm "\texttt{abuel\_o\_\_n}" (defined in Figure
+reference to the paradigm "\texttt{abuel/o\_\_n}" (defined in Figure
 \ref{fig:pardef}), is equivalent to an entry where each string pair of
 the paradigm is concatenated to the lemma (that is, an entry with
 every inflected form of the lemma), as shown in Figure
@@ -1893,7 +1893,7 @@ to create a single data structure for each one of most paradigms
 \begin{alltt}
 <\textbf{e} \textsl{lm}="perro">
   <\textbf{i}>perr</\textbf{i}>
-  <\textbf{par} \textsl{n}="abuel_o__n"/>
+  <\textbf{par} \textsl{n}="abuel/o__n"/>
 </\textbf{e}>
 \end{alltt}
 \end{small}
