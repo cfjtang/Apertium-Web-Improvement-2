@@ -459,14 +459,14 @@ called non-interactively, reverse each full line from `beg' to
   (save-excursion
     (if (and (>= beg (line-beginning-position))
 	     (<= end (line-end-position)))
-	(dix-reverse (line-beginning-position)
-		     (line-end-position))
+	(dix-reverse-region (line-beginning-position)
+			    (line-end-position))
       (save-restriction
 	(narrow-to-region beg end)
 	(goto-char (point-min))
 	(while (< (point) (point-max))
-	  (dix-reverse (line-beginning-position)
-		       (line-end-position))
+	  (dix-reverse-region (line-beginning-position)
+			      (line-end-position))
 	  (forward-line))))))
 
 (defun dix-reverse-region (beg end)
@@ -543,7 +543,12 @@ Todo:
 - make some way of searching for prefixes or suffixes (ie. so
   that the .* is only put at the end or beginning)
 - on failing search, don't mark anything (currently, it marks
-  until end-of-buffer...)"
+  until end-of-buffer...)
+- unless we're doing a substring search, we should probably not
+  do an incremental search (that is, not search until user
+  presses enter), but word-search-forward isn't good
+  enough (doesn't highlight, no way to C-s to the next hit...)
+- turn spaces into <b/> (or space|<b/> in monodix)"
   (interactive "P")
   (setq dix-search-substring substring)
   (isearch-mode
@@ -560,31 +565,33 @@ Todo:
        (isearch-search)
        (isearch-update)))))
 
+
 (defun dix-find-rhs-mismatch ()
   "Find possible mismatches in <r> elements (ie. a pardef where
-two <e>'s have different suffixes in their <r>'s)."
+two <e>'s have different suffixes in their <r>'s).
+
+Only stops at the first mismatch within one pardef."
   (interactive)
   (defun next-pardef ()
-    (and (search-forward "pardef" nil t) (next)))
+    (and (search-forward "pardef" nil t) (next-rhs)))
   (defun next-rhs ()
     (re-search-forward "<r>\\([^<]*\\)<\\|\\(</pardef>\\)" nil t))
-  ;; Find first hit:
-  (setq keep-looking (next-pardef)
-	last-rhs (match-string 1))
-  ;; Check next ones for mismatches:
-  (while keep-looking
-    (if (equal (match-string 2) "</pardef>")
-	(setq keep-looking (next-pardef) ; skip to next <pardef>
-	      last-rhs (match-string 1))
-      (if (equal (match-string 1) last-rhs)
-	  (next-rhs)			; skip to next <e>
-	(setq keep-looking nil))))
-  ;; Echo results:
-  (if (match-string 1)
-      (and (goto-char (match-end 1))
-	   (message
-	    (concat "Possible mismatch in <r>: " last-rhs " vs " (match-string 1))))
-    (message "No mismatches discovered.")))
+  (let ((keep-looking (next-pardef))	; find first hit
+	(last-rhs (match-string 1)))
+    ;; Check next ones for mismatches:
+    (while keep-looking
+      (if (equal (match-string 2) "</pardef>")
+	  (setq keep-looking (next-pardef) ; skip to next <pardef>
+		last-rhs (match-string 1))
+	(if (equal (match-string 1) last-rhs)
+	    (next-rhs)			; skip to next <e>
+	  (setq keep-looking nil))))
+    ;; Echo results:
+    (if (match-string 1)
+	(and (goto-char (match-end 1))
+	     (message
+	      (concat "Possible mismatch in <r>: " last-rhs " vs " (match-string 1))))
+      (message "No mismatches discovered."))))
 
 (defun dix-next (&optional step)
   "Moves forward `step' steps (default 1) in <e> elements between
