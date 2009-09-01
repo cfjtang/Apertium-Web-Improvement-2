@@ -2991,6 +2991,38 @@ changing or deleting entries or paradigms), since the file
 linguistic data are compiled and, therefore, any changes made in the
 latter will be overwritten during compilation.
 
+\subsubsection{Analysis characters}
+\label{acx}
+
+Version 3 of the Apertium platform includes Unicode support; however,
+this lead to a new problem: alternate characters. Unicode supports
+several characters set, which include several characters that look
+identical or almost identical, but which have a different numeric value.
+
+As a solution, equivalent characters can be specified in a file that
+complements the morphological dictionary. As the morphological 
+dictionary is compiled, whenever a character mentioned in the 
+analysis character specification is encountered, its equivalents are
+included as though they had been specified using entries specified with
+the \texttt{LR} restriction within the dictionary. 
+
+\begin{figure}
+\begin{small}
+\begin{alltt}
+<?\textbf{xml} \textsl{version}="1.0"?>
+<\textbf{analysis-chars}>
+  <\textbf{char} \textsl{value}="'">
+    <\textbf{equiv-char} \textsl{value}="\&#x2019;"/>
+    <\textbf{equiv-char} \textsl{value}="\&#x2BC;"/>
+  </\textbf{char}>
+  <\textbf{char} \textsl{value}="\&#183;">
+    <\textbf{equiv-char} \textsl{value}="."/>
+  </\textbf{char}>
+</\textbf{analysis-chars}>
+\end{alltt}
+\end{small}
+\caption{Analysis character specification file}
+\end{figure}
 
 
 \subsection[Automatic generation of the modules]{Automatic generation
@@ -6271,13 +6303,11 @@ number).
   text.
 
 \item \textbf{Replacement rules}. Allow to replace special characters
-in the text. A regular expression will recognize \nota{MG: HELP: in
-Spanish, "recogerá", I don't know how to translate this:
-include/detect/group/recognize???} a set of special characters, and
-will replace it with the specified characters.  For example, in HTML,
-the characters specified in hexadecimal have to be replaced with the
-corresponding entity or ASCII character. For example,
-\texttt{cami\&oacute;n} corresponds to \texttt{camión}.
+in the text. A regular expression will match a set of special 
+characters, and will replace it with the specified characters. For 
+example, in HTML, the characters specified in hexadecimal have to 
+be replaced with the corresponding entity or ASCII character. For 
+example, \texttt{cami\&oacute;n} corresponds to \texttt{camión}.
 \end{itemize}
 
 Rules are described in more detail next.
