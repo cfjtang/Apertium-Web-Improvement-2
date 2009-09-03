@@ -141,6 +141,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(LANG2).dix \
            $(BASENAME).$(LANG1).tsx \
+	   $(BASENAME).ordinals.t1x \
            $(PREFIX1).prob \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x \
