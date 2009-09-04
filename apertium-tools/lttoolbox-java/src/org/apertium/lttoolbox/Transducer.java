@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;/*
  * 02111-1307, USA.
  */
 
+import java.io.FileInputStream;
 import org.apache.commons.collections15.MultiMap;
 
 import java.io.IOException;
@@ -384,7 +385,7 @@ public class Transducer {
     }
   }
 
-  public static Transducer read(InputStreamReader input, int decalage) throws IOException {
+  public static Transducer read(FileInputStream input, int decalage) throws IOException {
     Transducer new_t = new Transducer();
 
     new_t.initial = input.read();
