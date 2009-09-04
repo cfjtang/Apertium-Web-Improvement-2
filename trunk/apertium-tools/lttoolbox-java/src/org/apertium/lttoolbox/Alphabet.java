@@ -1,8 +1,7 @@
 package org.apertium.lttoolbox;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
@@ -80,9 +79,9 @@ public class Alphabet {
 
   void write(Writer output) throws IOException {
     // First, we write the taglist
-    output.write(slexicinv.size());  // taglist size
+   Compression.multibyte_write(slexicinv.size(), output);  // taglist size
     for (int i = 0, limit = slexicinv.size(); i < limit; i++) {
-      output.write(slexicinv.get(i).substring(1, slexicinv.get(i).length() - 2));
+      Compression.String_write(slexicinv.get(i).substring(1, slexicinv.get(i).length() - 2), output);
     }
 
     // Then we write the list of pairs
@@ -90,32 +89,32 @@ public class Alphabet {
     int bias = slexicinv.size();
     output.write(spairinv.size());
     for (int i = 0, limit = spairinv.size(); i != limit; i++) {
-      output.write(spairinv.get(i).first + bias);
-      output.write(spairinv.get(i).second + bias);
+      Compression.multibyte_write(spairinv.get(i).first + bias, output);
+      Compression.multibyte_write(spairinv.get(i).second + bias, output);
     }
   }
 
-  public Alphabet read(InputStreamReader input) throws IOException {
+  public Alphabet read(FileInputStream input) throws IOException {
     Alphabet a_new = new Alphabet();
     a_new.spairinv.clear();
     a_new.spair.clear();
 
     // Reading of taglist
-    int tam = input.read();
+    int tam = Compression.multibyte_read(input);
     while (tam > 0) {
       tam--;
-      String mytag = "<" + (char) input.read() + ">";
+      String mytag = "<" + (char)  Compression.multibyte_read(input) + ">";
       a_new.slexicinv.add(mytag);
       a_new.slexic.put(mytag, -a_new.slexicinv.size());
     }
 
     // Reading of pairlist
     int bias = a_new.slexicinv.size();
-    tam = input.read();
+    tam =  Compression.multibyte_read(input);
     while (tam > 0) {
       tam--;
-      int first = input.read();
-      int second = input.read();
+      int first =  Compression.multibyte_read(input);
+      int second =  Compression.multibyte_read(input);
       Pair<Integer, Integer> tmp2 = new Pair<Integer, Integer>(first - bias, second - bias);
       int spair_size = a_new.spair.size();
       a_new.spair.put(tmp2, spair_size);

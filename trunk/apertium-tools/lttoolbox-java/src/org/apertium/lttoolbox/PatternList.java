@@ -1,7 +1,7 @@
 package org.apertium.lttoolbox;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
@@ -274,7 +274,7 @@ public class PatternList {
     }
   }
 
-  void read(InputStreamReader input) throws IOException {
+  void read(FileInputStream input) throws IOException {
     sequence = false;
     final_type.clear();
 
