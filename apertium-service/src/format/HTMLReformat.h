@@ -27,8 +27,8 @@
 
 // XXX: still hacky
 
-#ifndef TXTREFORMAT_H_
-#define TXTREFORMAT_H_
+#ifndef HTMLREFORMAT_H_
+#define HTMLREFORMAT_H_
 
 #include <cstdlib>
 #include <iostream>
@@ -58,11 +58,11 @@ using namespace boost::spirit;
 using namespace boost::spirit::lex;
 
 /**
- * The TXTReformat class implements a text format processor. It restores the
- * original formatting the text had before being passed through the TXTDeformat
+ * The HTMLReformat class implements a HTML format processor. It restores the
+ * original formatting the text had before being passed through the HTMLDeformat
  * processor.
  */
-class TXTReformat : public Format {
+class HTMLReformat : public Format {
 public:
 
 	template <typename Lexer> struct reformat_tokens: lexer_def<Lexer> {
@@ -78,12 +78,14 @@ public:
 		}
 	};
 
-	TXTReformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
+	HTMLReformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
+		S1_init();
+
 		def = new reformat_tokens<lexer_type>();
 		l = new lexer<reformat_tokens<lexer_type> >(*def);
 	}
 
-	virtual ~TXTReformat() {
+	virtual ~HTMLReformat() {
 		delete l;
 		delete def;
 	}
@@ -140,12 +142,16 @@ public:
 	}
 
 	void handleCharOrNewLine(wstring &yytext) {
-		 *yyout << yytext;
+		if (S1_substitution.find(yytext) != S1_substitution.end()) {
+			*yyout << S1_substitution[yytext];
+		} else {
+			*yyout << yytext;
+		}
 	}
 
 	struct func {
 		typedef bool result_type;
-		template<typename Token> bool operator()(Token const& t, TXTReformat *r, std::wostream &o) const {
+		template<typename Token> bool operator()(Token const& t, HTMLReformat *r, std::wostream &o) const {
 			//wcout << L"id is: " << t.id() << endl;
 			//wcout << L"value is: " << t.value() << endl;
 
@@ -202,6 +208,8 @@ public:
 	}
 
 private:
+	map<wstring, wstring, Ltstr> S1_substitution;
+
 	wstring yyin;
 	wostream *yyout;
 
@@ -211,6 +219,75 @@ private:
 
 	reformat_tokens<lexer_type> *def;
 	lexer<reformat_tokens<lexer_type> > *l;
+
+	void S1_init() {
+	  S1_substitution[L"À"] = L"&Agrave;";
+	  S1_substitution[L"Á"] = L"&Aacute;";
+	  S1_substitution[L"Â"] = L"&Acirc;";
+	  S1_substitution[L"Ã"] = L"&Atilde;";
+	  S1_substitution[L"Ä"] = L"&Auml;";
+	  S1_substitution[L"Å"] = L"&Aring;";
+	  S1_substitution[L"Æ"] = L"&AElig;";
+	  S1_substitution[L"Ç"] = L"&Ccedil;";
+	  S1_substitution[L"È"] = L"&Egrave;";
+	  S1_substitution[L"É"] = L"&Eacute;";
+	  S1_substitution[L"Ê"] = L"&Ecirc;";
+	  S1_substitution[L"Ë"] = L"&Euml;";
+	  S1_substitution[L"Ì"] = L"&Igrave;";
+	  S1_substitution[L"Í"] = L"&Iacute;";
+	  S1_substitution[L"Î"] = L"&Icirc;";
+	  S1_substitution[L"Ï"] = L"&Iuml;";
+	  S1_substitution[L"Ð"] = L"&ETH;";
+	  S1_substitution[L"Ñ"] = L"&Ntilde;";
+	  S1_substitution[L"Ò"] = L"&Ograve;";
+	  S1_substitution[L"Ó"] = L"&Oacute;";
+	  S1_substitution[L"Ô"] = L"&Ocirc;";
+	  S1_substitution[L"Õ"] = L"&Otilde;";
+	  S1_substitution[L"Ö"] = L"&Ouml;";
+	  S1_substitution[L"Ø"] = L"&Oslash;";
+	  S1_substitution[L"Ù"] = L"&Ugrave;";
+	  S1_substitution[L"Ú"] = L"&Uacute;";
+	  S1_substitution[L"Û"] = L"&Ucirc;";
+	  S1_substitution[L"Ü"] = L"&Uuml;";
+	  S1_substitution[L"Ý"] = L"&Yacute;";
+	  S1_substitution[L"Þ"] = L"&THORN;";
+	  S1_substitution[L"ß"] = L"&szlig;";
+	  S1_substitution[L"à"] = L"&agrave;";
+	  S1_substitution[L"á"] = L"&aacute;";
+	  S1_substitution[L"â"] = L"&acirc;";
+	  S1_substitution[L"ã"] = L"&atilde;";
+	  S1_substitution[L"ä"] = L"&auml;";
+	  S1_substitution[L"å"] = L"&aring;";
+	  S1_substitution[L"æ"] = L"&aelig;";
+	  S1_substitution[L"ç"] = L"&ccedil;";
+	  S1_substitution[L"è"] = L"&egrave;";
+	  S1_substitution[L"é"] = L"&eacute;";
+	  S1_substitution[L"ê"] = L"&ecirc;";
+	  S1_substitution[L"ë"] = L"&euml;";
+	  S1_substitution[L"ì"] = L"&igrave;";
+	  S1_substitution[L"í"] = L"&iacute;";
+	  S1_substitution[L"î"] = L"&icirc;";
+	  S1_substitution[L"ï"] = L"&iuml;";
+	  S1_substitution[L"ð"] = L"&eth;";
+	  S1_substitution[L"ñ"] = L"&ntilde;";
+	  S1_substitution[L"ò"] = L"&ograve;";
+	  S1_substitution[L"ó"] = L"&oacute;";
+	  S1_substitution[L"ô"] = L"&ocirc;";
+	  S1_substitution[L"õ"] = L"&otilde;";
+	  S1_substitution[L"ö"] = L"&ouml;";
+	  S1_substitution[L"ø"] = L"&oslash;";
+	  S1_substitution[L"ù"] = L"&ugrave;";
+	  S1_substitution[L"ú"] = L"&uacute;";
+	  S1_substitution[L"û"] = L"&ucirc;";
+	  S1_substitution[L"ü"] = L"&uuml;";
+	  S1_substitution[L"ý"] = L"&yacute;";
+	  S1_substitution[L"þ"] = L"&thorn;";
+	  S1_substitution[L"ÿ"] = L"&yuml;";
+	  S1_substitution[L"·"] = L"&middot;";
+	  S1_substitution[L"«"] = L"&laquo;";
+	  S1_substitution[L"»"] = L"&raquo;";
+	}
+
 };
 
-#endif /* TXTREFORMAT_H_ */
+#endif /* HTMLREFORMAT_H_ */

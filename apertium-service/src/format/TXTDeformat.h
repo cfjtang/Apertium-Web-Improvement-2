@@ -50,6 +50,8 @@
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
 
+#include "format/Format.h"
+
 using namespace std;
 using namespace boost::spirit;
 using namespace boost::spirit::lex;
@@ -58,7 +60,7 @@ using namespace boost::spirit::lex;
  * The TXTDeformat class implements a text format processor. Data should be
  * passed through this processor before beign processed by Apertium.
  */
-class TXTDeformat {
+class TXTDeformat : public Format {
 public:
 
 	template <typename Lexer> struct deformat_tokens: lexer_def<Lexer> {
@@ -73,11 +75,7 @@ public:
 	};
 
 	TXTDeformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
-		last = "";
-		buffer = L"";
-		isDot = hasWrite_dot = hasWrite_white = false;
-		current=0;
-		offset = 0;
+		reset();
 		init_escape();
 		init_tagNames();
 
@@ -93,14 +91,6 @@ public:
 		regfree(&names_regexp);
 	}
 
-	void reset() {
-		last = "";
-		buffer = L"";
-		isDot = hasWrite_dot = hasWrite_white = false;
-		current=0;
-		offset = 0;
-	}
-
 	void setYyin(wstring in) {
 		yyin = in;
 	}
@@ -113,12 +103,12 @@ public:
 		ID_NEWLINES = lex::min_token_id + 1, ID_WHITESPACE, ID_SPECIAL, ID_CHAR
 	};
 
-	void handleNewLines(wstring yytext) {
+	void handleNewLines(wstring &yytext) {
 		isDot = true;
 		buffer += yytext;
 	}
 
-	void handleSpecial(wstring yytext) {
+	void handleSpecial(wstring &yytext) {
 		printBuffer();
 		*yyout << L'\\';
 		offset++;
@@ -128,7 +118,7 @@ public:
 		hasWrite_dot = hasWrite_white = true;
 	}
 
-	void handleWhiteSpace(wstring yytext) {
+	void handleWhiteSpace(wstring &yytext) {
 		if (last == "open_tag") {
 			tags.back() += yytext;
 		} else {
@@ -136,7 +126,7 @@ public:
 		}
 	}
 
-	void handleChar(wstring yytext) {
+	void handleChar(wstring &yytext) {
 		printBuffer();
 		*yyout << yytext;
 		offset++;
@@ -195,6 +185,8 @@ public:
 		isDot = true;
 		printBuffer();
 
+		reset();
+
 		return(ret);
 	}
 
@@ -223,6 +215,14 @@ private:
 
 	regex_t escape_chars;
 	regex_t names_regexp;
+
+	void reset() {
+		last = "";
+		buffer = L"";
+		isDot = hasWrite_dot = hasWrite_white = false;
+		current = 0;
+		offset = 0;
+	}
 
 	void bufferAppend(wstring &buf, string const &str) {
 		symbuf.append(str);

@@ -33,6 +33,8 @@
 
 #include <iostream>
 
+#include <list>
+
 #include <lttoolbox/compiler.h>
 #include <lttoolbox/fst_processor.h>
 #include <lttoolbox/my_stdio.h>
@@ -76,8 +78,13 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
+#include "format/Format.h"
+
 #include "format/TXTDeformat.h"
 #include "format/TXTReformat.h"
+
+#include "format/HTMLDeformat.h"
+#include "format/HTMLReformat.h"
 
 #include "utils/Logger.h"
 
@@ -183,7 +190,7 @@ private:
 
 	ThreadSafeObjectPool<T> pool;
 
-	list<T*> poolQueue;
+	std::list<T*> poolQueue;
 	boost::shared_mutex queueMutex;
 
 	unsigned int objectsCount;
@@ -272,6 +279,17 @@ private:
 	TaggerData *td;
 };
 
+class FormatWrapper {
+public:
+	FormatWrapper();
+	~FormatWrapper();
+
+	void init(string);
+	Format *getFormatter();
+private:
+	Format *formatter;
+};
+
 /**
  * The ResourceBroker class is an implementation of the Object Pool design pattern.
  * An object pool is a set of initialised objects that are kept ready to use,
@@ -286,8 +304,8 @@ public:
 	virtual ~ResourceBroker();
 
 	NonIndexedObjectPool<PreTransfer> PreTransferPool;
-	NonIndexedObjectPool<TXTDeformat> TXTDeformatPool;
-	NonIndexedObjectPool<TXTReformat> TXTReformatPool;
+
+	IndexedObjectPool<FormatWrapper> FormatPool;
 
 	IndexedObjectPool<FSTProcessor> FSTProcessorPool;
 	IndexedObjectPool<HMMWrapper> HMMPool;
