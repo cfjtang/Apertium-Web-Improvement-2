@@ -36,8 +36,6 @@
 
 #include "ApertiumRuntimeException.h"
 
-#include "format/TXTDeformat.h"
-#include "format/TXTReformat.h"
 #include "format/Encoding.h"
 
 #include "utils/Logger.h"
@@ -46,7 +44,7 @@
  * Translate a given text from a source language to a destination language, by using the resources present inside a specific
  * Resource Pool and the informations present inside a given mode.
  */
-std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::string &text, std::string srcLang, std::string destLang,
+std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::string &text, ContentType type, std::string srcLang, std::string destLang,
 		Statistics *s) {
 	string pair = srcLang + "-" + destLang;
 
@@ -65,7 +63,7 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 
 	vector<Program> programs = mode.getPrograms();
 
-	wstring ret = deformat(rb, wtext);
+	wstring ret = deformat(rb, wtext, type);
 
 	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
@@ -78,28 +76,48 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 		ret = tmp;
 	}
 
-	return Encoding::wstringToUtf8(reformat(rb, ret));
+	return Encoding::wstringToUtf8(reformat(rb, ret, type));
 }
 
-std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in) {
-	wstringstream wss;
-	Program p("apertium-destxt");
-	TXTDeformat *d = rb.TXTDeformatPool.acquire(p);
-	d->reset();
-	d->setYyin(in);
-	d->setYyout(&wss);
-	d->lex();
-	rb.TXTDeformatPool.release(d, p);
-	return(wss.str());
+std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in, ContentType type) {
+	Program *p = NULL;
+
+	switch (type) {
+	case TEXT:
+		p = new Program("apertium-destxt");
+		break;
+	case HTML:
+		p = new Program("apertium-deshtml");
+		break;
+	}
+
+	FormatWrapper *d = rb.FormatPool.acquire(*p);
+	std::wstring ret = d->getFormatter()->process(in);
+	rb.FormatPool.release(d, *p);
+
+	delete p;
+
+	return(ret);
 }
 
-std::wstring Translator::reformat(ResourceBroker &rb, std::wstring &in) {
-	wstringstream wss;
-	Program p("apertium-retxt");
-	TXTReformat *r = rb.TXTReformatPool.acquire(p);
-	r->setYyin(in);
-	r->setYyout(&wss);
-	r->lex();
-	rb.TXTReformatPool.release(r, p);
-	return(wss.str());
+std::wstring Translator::reformat(ResourceBroker &rb, std::wstring &in, ContentType type) {
+
+	Program *p = NULL;
+
+	switch (type) {
+	case TEXT:
+		p = new Program("apertium-retxt");
+		break;
+	case HTML:
+		p = new Program("apertium-rehtml");
+		break;
+	}
+
+	FormatWrapper *r = rb.FormatPool.acquire(*p);
+	std::wstring ret = r->getFormatter()->process(in);
+	rb.FormatPool.release(r, *p);
+
+	delete p;
+
+	return(ret);
 }

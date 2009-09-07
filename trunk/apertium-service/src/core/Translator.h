@@ -41,11 +41,13 @@
  */
 class Translator {
 public:
-	static std::string translate(ResourceBroker&, ModesManager&, std::string&, std::string, std::string, Statistics* = NULL);
+	enum ContentType { TEXT, HTML };
+
+	static std::string translate(ResourceBroker&, ModesManager&, std::string&, ContentType, std::string, std::string, Statistics* = NULL);
 
 private:
-	static std::wstring deformat(ResourceBroker&, std::wstring&);
-	static std::wstring reformat(ResourceBroker&, std::wstring&);
+	static std::wstring deformat(ResourceBroker&, std::wstring&, ContentType);
+	static std::wstring reformat(ResourceBroker&, std::wstring&, ContentType);
 };
 
 #endif /* TRANSLATOR_H_ */

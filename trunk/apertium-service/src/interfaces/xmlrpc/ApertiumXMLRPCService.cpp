@@ -65,6 +65,14 @@ public:
 
 		string const destLang(paramList.getString(2));
 
+		Translator::ContentType contentType = Translator::TEXT;
+		if (paramList.size() > 3) {
+			string const type(paramList.getString(3));
+			if (type == "html") {
+				contentType = Translator::HTML;
+			}
+		}
+
 	    map<string, xmlrpc_c::value> ret;
 
 #if defined(HAVE_LIBTEXTCAT)
@@ -76,7 +84,8 @@ public:
 #endif
 
 	    pair<string, xmlrpc_c::value> translation("translation",
-	    		xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, srcLang, destLang, statistics)));
+	    		xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType,
+	    				srcLang, destLang, statistics)));
 	    ret.insert(translation);
 
 		*retvalP = xmlrpc_c::value_struct(ret);

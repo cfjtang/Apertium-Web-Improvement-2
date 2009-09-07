@@ -33,8 +33,8 @@
 #include "ResourceBroker.h"
 #include "utils/Logger.h"
 
-ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), TXTDeformatPool(ub),
-	TXTReformatPool(ub), FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
+ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPool(ub),
+	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
 	PostchunkPool(ub), TransferMultPool(ub), GrammarPool(ub) {
 	upperBound = ub;
 }
@@ -68,6 +68,33 @@ HMM *HMMWrapper::getHmm() {
 	return hmm;
 }
 
+FormatWrapper::FormatWrapper() {
+	formatter = NULL;
+}
+
+FormatWrapper::~FormatWrapper() {
+	delete formatter;
+}
+
+void FormatWrapper::init(string index) {
+	if (index == "apertium-destxt") {
+		formatter = new TXTDeformat();
+	}
+	if (index == "apertium-retxt") {
+		formatter = new TXTReformat();
+	}
+	if (index == "apertium-deshtml") {
+		formatter = new HTMLDeformat();
+	}
+	if (index == "apertium-rehtml") {
+		formatter = new HTMLReformat();
+	}
+}
+
+Format *FormatWrapper::getFormatter() {
+	return formatter;
+}
+
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
 
@@ -75,17 +102,12 @@ template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Progr
 	return(ret);
 }
 
-template <> TXTDeformat *NonIndexedObjectPool<TXTDeformat>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<TXTDeformat>::getNewInstance();");
+template <> FormatWrapper *NonIndexedObjectPool<FormatWrapper>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<FormatWrapper>::getNewInstance();");
 
-	TXTDeformat *ret = pool.construct();
-	return(ret);
-}
+	FormatWrapper *ret = pool.construct();
+	ret->init(p.getProgramName());
 
-template <> TXTReformat *NonIndexedObjectPool<TXTReformat>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<TXTReformat>::getNewInstance();");
-
-	TXTReformat *ret = pool.construct();
 	return(ret);
 }
 
