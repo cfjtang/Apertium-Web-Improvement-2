@@ -69,7 +69,7 @@ using namespace std;
 class ApertiumXMLRPCService {
 public:
 
-	//enum FaultCodes { INVALID_NUMBER_OF_PARAMS = 3 };
+	enum FaultCodes { INVALID_PARAMS = 3 };
 
 #if defined(HAVE_LIBTEXTCAT)
 	ApertiumXMLRPCService(ConfigurationManager&, ModesManager&, ResourceBroker&, TextClassifier&, Statistics* = NULL);
