@@ -55,7 +55,7 @@ public:
 	TranslateMethod(ResourceBroker &rb, ModesManager &mm, Statistics *s) : resourceBroker(&rb), modesManager(&mm), statistics(s) {
 #endif
 
-		this->_signature = "S:sss";
+		this->_signature = "S:sss,S:ssss";
 		this->_help = "Translate method";
 	}
 
@@ -66,9 +66,12 @@ public:
 		string const destLang(paramList.getString(2));
 
 		Translator::ContentType contentType = Translator::TEXT;
+
 		if (paramList.size() > 3) {
 			string const type(paramList.getString(3));
-			if (type == "html") {
+			if (type == "text") {
+				contentType = Translator::TEXT;
+			} else if (type == "html") {
 				contentType = Translator::HTML;
 			}
 		}
