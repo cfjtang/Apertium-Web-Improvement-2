@@ -266,7 +266,7 @@ echo             "| Configuration directory: ${asconfdir_e}"
 #    echo         "| NOTE: omniORB search restricted by --with-omniorb=$OMNIORBBASE"
 #  fi
 #fi
-echo             "+-------------------------------------------------------------------+"
+echo              "+-------------------------------------------------------------------+"
 
 
 AC_OUTPUT([Makefile src/Makefile])
