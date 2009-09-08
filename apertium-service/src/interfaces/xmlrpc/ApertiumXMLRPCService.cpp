@@ -73,6 +73,8 @@ public:
 				contentType = Translator::TEXT;
 			} else if (type == "html") {
 				contentType = Translator::HTML;
+			} else {
+				throw xmlrpc_c::fault("Invalid parameter: Content Type unknown or not supported");
 			}
 		}
 
@@ -187,7 +189,6 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 		.timeout(configurationManager->getTimeout())
 		);
 
-    //abyssServer = new xmlrpc_c::serverAbyss(*xmlrpcRegistry, cm.getServerPort(), "/dev/null");
 }
 
 ApertiumXMLRPCService::~ApertiumXMLRPCService() {
