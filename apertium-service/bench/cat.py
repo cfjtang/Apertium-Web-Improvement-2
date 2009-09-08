@@ -3,7 +3,6 @@
 import time
 import xmlrpclib
 
-#
 def timing(func):
     def wrapper(*arg):
         t1 = time.time()
@@ -15,10 +14,9 @@ def timing(func):
 
 @timing
 def bench():
-    proxy = xmlrpclib.ServerProxy("http://localhost:1234/ApertiumServer")
+    proxy = xmlrpclib.ServerProxy("http://localhost:6173/RPC2")
     for i in range(1, 1000):
         proxy.detect("This is a test for the machine translation program")
     
 if __name__ == "__main__":
     bench()
-
