@@ -645,6 +645,8 @@ void outputSentence(const sentence &se, const vector<wstring> &blanks) {
 
 int main(int argc, char* argv[]) {
 
+  if (argc!=1) ABORT ("ERROR - One file name  (no more, no less) is expected as a parameter");
+
   ios::sync_with_stdio(false);
   wcout.imbue(locale(""));
   wcerr.imbue(locale(""));
