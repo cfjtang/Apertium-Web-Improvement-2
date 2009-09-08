@@ -218,7 +218,7 @@ ICUIO_LIBS=`icu-config --ldflags-icuio`
 
 LIBS="$ICU_LIBS $ICUIO_LIBS $LIBS"
 
-AC_CHECK_FUNCS([syslog open_memstream open_wmemstream])
+AC_CHECK_FUNCS([fork syslog open_memstream open_wmemstream])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -243,7 +243,7 @@ asconfdir_e=`eval "echo ${ASCONFDIR}"`
 AC_DEFINE_UNQUOTED(ASCONFDIR, "${asconfdir_e}", "Apertium Service's configuration directory")
 
 # write a summary
-echo             "+-----------------------------------------------------------------------------+"
+echo             "+-------------------------------------------------------------------+"
 echo             "| Package:                 ${PACKAGE_NAME}"
 echo             "| CXX :                    $CXX"
 echo             "| CXXFLAGS :               $CXXFLAGS"
@@ -258,7 +258,7 @@ echo             "| Configuration directory: ${asconfdir_e}"
 #esac
 #echo             "| omniidl   : $IDL"
 #if test "x$OMNIORBBASE" != x; then
-#echo             "+-----------------------------------------------------------------------------+"
+#echo             "+-------------------------------------------------------------------+"
 #  if test "x$OMNIORBBASE" = "x$ac_omniorbbase"; then
 #    echo         "| NOTE: omniORB search restricted by OMNIORBBASE=$ac_omniorbbase"
 #    echo         "| To override, try 'unset OMNIORBBASE' or option '--with-omniorb'"
@@ -266,7 +266,7 @@ echo             "| Configuration directory: ${asconfdir_e}"
 #    echo         "| NOTE: omniORB search restricted by --with-omniorb=$OMNIORBBASE"
 #  fi
 #fi
-echo             "+-----------------------------------------------------------------------------+"
+echo             "+-------------------------------------------------------------------+"
 
 
 AC_OUTPUT([Makefile src/Makefile])
