@@ -88,15 +88,37 @@ void Logger::trace(MessageType messageType ///< Type of message
 		, const std::string msg ///< Message
 		) {
 
-	if (useConsole) {
-		traceConsole(messageType, msg);
+	bool print = false;
+
+	switch (messageType) {
+	case Debug:
+		if (verbosity > 2)
+			print = true;
+		break;
+
+	case Info:
+	case Notice:
+		if (verbosity > 1)
+			print = true;
+		break;
+
+	case Warning:
+	case Err:
+		if (verbosity > 0)
+			print = true;
+		break;
 	}
 
+	if (print) {
+		if (useConsole) {
+			traceConsole(messageType, msg);
+		}
 #if defined(HAVE_SYSLOG)
-	if (useSyslog) {
-		traceSyslog(messageType, msg);
-	}
+		if (useSyslog) {
+			traceSyslog(messageType, msg);
+		}
 #endif
+	}
 
 }
 
