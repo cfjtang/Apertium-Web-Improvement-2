@@ -183,10 +183,10 @@ int main(int ac, char *av[]) {
 		if (fs::exists(ASCONFDIR)) {
 			cd = ASCONFDIR;
 		} else {
-			cd = "./configuration";
+			cd = "configuration";
 		}
 #else
-		cd = "./configuration";
+		cd = "configuration";
 #endif
 
 		cd = fs::system_complete(cd);
