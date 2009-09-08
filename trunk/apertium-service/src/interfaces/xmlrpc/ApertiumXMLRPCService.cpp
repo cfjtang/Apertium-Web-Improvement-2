@@ -170,7 +170,11 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 
 	xmlrpcRegistry = new xmlrpc_c::registry;
 
+#if defined(HAVE_LIBTEXTCAT)
 	xmlrpc_c::methodPtr const TranslateMethodP(new TranslateMethod(rb, mm, tc, s));
+#else
+	xmlrpc_c::methodPtr const TranslateMethodP(new TranslateMethod(rb, mm, s));
+#endif
 	xmlrpcRegistry->addMethod(TRANSLATE_NAME, TranslateMethodP);
 
 #if defined(HAVE_LIBTEXTCAT)
@@ -211,5 +215,5 @@ void ApertiumXMLRPCService::stop() {
 	ssmsg << "Terminating the Apertium XML-RPC service..";
 	Logger::Instance()->trace(Logger::Info, ssmsg.str());
 
-	abyssServer->terminate();
+	//abyssServer->terminate();
 }
