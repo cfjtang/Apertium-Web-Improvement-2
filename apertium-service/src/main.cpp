@@ -177,11 +177,19 @@ int main(int ac, char *av[]) {
 		::atexit(cleanup);
 		//::signal(SIGINT, &signalHandler);
 
+		fs::path cd;
+
 #if defined(ASCONFDIR)
-		fs::path cd = ASCONFDIR;
+		if (fs::exists(ASCONFDIR)) {
+			cd = ASCONFDIR;
+		} else {
+			cd = "./configuration";
+		}
 #else
-		fs::path cd = "configuration";
+		cd = "./configuration";
 #endif
+
+		cd = fs::system_complete(cd);
 
 	    if (vm.count("directory")) {
 	        cout << "Configuration directory was " << cd <<  ", setting it to " << vm["directory"].as<string>() << endl;
