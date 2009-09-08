@@ -31,6 +31,7 @@
 #include <exception>
 
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <lttoolbox/lt_locale.h>
 #include <boost/thread.hpp>
@@ -149,8 +150,9 @@ int main(int ac, char *av[]) {
 		("highwatermark,w", po::value<unsigned int>(), "(uint) set high water mark")
 
 #if defined(HAVE_FORK)
-		("daemon,D", "run the service as a daemon");
+		("daemon,D", "run the service as a daemon")
 #endif
+		;
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(ac, av, desc), vm);
@@ -187,6 +189,7 @@ int main(int ac, char *av[]) {
 	    }
 
 	    fs::path cf = cd / "configuration.xml";
+		::chdir(cd.string().c_str());
 
 	    if (vm.count("conf")) {
 	        cout << "Configuration file was " << cf <<  ", setting it to " << vm["conf"].as<string>() << endl;
