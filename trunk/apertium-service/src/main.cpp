@@ -148,7 +148,9 @@ int main(int ac, char *av[]) {
 
 		("highwatermark,w", po::value<unsigned int>(), "(uint) set high water mark")
 
+#if defined(HAVE_FORK)
 		("daemon,D", "run the service as a daemon");
+#endif
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(ac, av, desc), vm);
@@ -239,11 +241,14 @@ int main(int ac, char *av[]) {
 	        logger->setVerbosity(vm["verbosity"].as<unsigned int>());
 	    }
 
+#if defined(HAVE_SYSLOG)
 		if (vm.count("syslog")) {
 			cout << "Sending messages to the system logger." << endl;
 			logger->setSyslogUsage(true);
 		}
+#endif
 
+#if defined(HAVE_FORK)
 		if (vm.count("daemon")) {
 			cout << "Running the service as a daemon.." << endl;
 
@@ -260,6 +265,7 @@ int main(int ac, char *av[]) {
 			}
 			logger->setConsoleUsage(false);
 		}
+#endif
 
 	} catch (const std::exception& e) {
 		cerr << "Exception: " << e.what() << endl;
