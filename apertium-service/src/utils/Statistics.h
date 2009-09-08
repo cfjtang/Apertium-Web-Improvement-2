@@ -26,6 +26,8 @@
 #ifndef STATISTICS_H_
 #define STATISTICS_H_
 
+#include <sys/types.h>
+
 #include <iostream>
 #include <boost/thread.hpp>
 #include <boost/unordered/unordered_map.hpp>

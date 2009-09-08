@@ -25,6 +25,8 @@
 
 #include "config.h"
 
+#include <sys/types.h>
+
 #include <iostream>
 #include <exception>
 
@@ -34,6 +36,9 @@
 #include <boost/thread.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+
+#include "interfaces/xmlrpc/ApertiumXMLRPCService.h"
+//#include "interfaces/corba/ApertiumORBService.h"
 
 #include "core/ResourceBroker.h"
 
@@ -52,9 +57,6 @@
 #include "core/cg/Grammar.h"
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
-
-#include "interfaces/xmlrpc/ApertiumXMLRPCService.h"
-//#include "interfaces/corba/ApertiumORBService.h"
 
 using namespace std;
 namespace po = boost::program_options;
