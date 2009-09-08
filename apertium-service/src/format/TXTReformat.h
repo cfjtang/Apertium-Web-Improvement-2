@@ -39,10 +39,7 @@
 #include <string>
 #include <lttoolbox/lt_locale.h>
 #include <lttoolbox/ltstr.h>
-#ifdef WIN32
-#if defined(__MINGW32__)
-#define __MSVCRT_VERSION__  0x0800
-#endif
+#ifdef _MSC_VER
 #include <io.h>
 #include <fcntl.h>
 #endif

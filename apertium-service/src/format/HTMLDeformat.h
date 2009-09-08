@@ -42,10 +42,7 @@
 #include <string>
 #include <lttoolbox/lt_locale.h>
 #include <lttoolbox/ltstr.h>
-#ifdef WIN32
-#if defined(__MINGW32__)
-#define __MSVCRT_VERSION__  0x0800
-#endif
+#ifdef _MSC_VER
 #include <io.h>
 #include <fcntl.h>
 #endif
@@ -70,7 +67,7 @@ using namespace boost::spirit::lex;
 
 /**
  * The HTMLDeformat class implements a HTML format processor. Data should be
- * passed through this processor before beign processed by Apertium.
+ * passed through this processor before being processed by Apertium.
  */
 class HTMLDeformat : public Format {
 public:
