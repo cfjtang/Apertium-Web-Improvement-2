@@ -57,7 +57,7 @@ Logger *Logger::Instance() {
 	return (ret);
 }
 
-Logger::Logger() : verbosity(0), useSyslog(false), useConsole(true) {
+Logger::Logger() : verbosity(1), useSyslog(false), useConsole(true) {
 	color[Err] = 31;
 	color[Info] = 32;
 	color[Notice] = 33;
