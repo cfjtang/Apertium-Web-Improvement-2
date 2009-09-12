@@ -202,7 +202,7 @@ int main(int ac, char *av[]) {
 	    }
 
 	    if (::chdir(cd.string().c_str()) < 0) {
-	    	cerr << "Error: cannot ::chdir(" << cd << ": " << ::strerror(errno) << endl;
+	    	cerr << "Error: cannot change directory to " << cd << ": " << ::strerror(errno) << endl;
 	    	::exit(EXIT_FAILURE);
 	    }
 
