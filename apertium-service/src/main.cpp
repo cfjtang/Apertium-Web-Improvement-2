@@ -180,7 +180,7 @@ int main(int ac, char *av[]) {
 		fs::path cd;
 
 #if defined(ASCONFDIR)
-		if (fs::exists(ASCONFDIR)) {
+		if (fs::is_directory(ASCONFDIR)) {
 			cd = ASCONFDIR;
 		} else {
 			cd = "configuration";
@@ -196,13 +196,18 @@ int main(int ac, char *av[]) {
 	        cd = vm["directory"].as<string>();
 	    }
 
-	    if (!fs::exists(cd)) {
-	    	cerr << "Error: " << cd << " does not exist." << endl;
+	    if (!fs::is_directory(cd)) {
+	    	cerr << "Error: " << cd << " doesn't exist or it isn't a directory." << endl;
+	    	::exit(EXIT_FAILURE);
+	    }
+
+	    if (::chdir(cd.string().c_str()) < 0) {
+	    	cerr << "Error: cannot ::chdir(" << cd << ": " << ::strerror(errno) << endl;
 	    	::exit(EXIT_FAILURE);
 	    }
 
 	    fs::path cf = cd / "configuration.xml";
-		::chdir(cd.string().c_str());
+
 
 	    if (vm.count("conf")) {
 	        cout << "Configuration file was " << cf <<  ", setting it to " << vm["conf"].as<string>() << endl;
