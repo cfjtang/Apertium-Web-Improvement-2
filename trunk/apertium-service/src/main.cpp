@@ -196,7 +196,7 @@ int main(int ac, char *av[]) {
 	        cd = vm["directory"].as<string>();
 	    }
 
-	    if (fs::exists(cd)) {
+	    if (!fs::exists(cd)) {
 	    	cerr << "Error: " << cd << " does not exist." << endl;
 	    	::exit(EXIT_FAILURE);
 	    }
