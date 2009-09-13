@@ -28,16 +28,15 @@
 
 %\newcommand{\com}[1]{}
 
-
 \title{Shallow-transfer rule-based machine translation for Swedish to Danish}
 
 \author{Michael Kristensen\\
-  Department of Computer Science, \\
+  Dept. Computer Science, \\
   Bangladesh University of Eng. and Tech.,\\
   Bangladesh, NS 12345 \\
   {\tt jane.doe@cs.buet.ac.bd} \And
   Francis M. Tyers\\
-  Dept. Llenguatges i Sist. Informàtics, \\
+  Dept. Lleng. i Sist. Informàtics, \\
   Universitat d'Alacant,\\
   Alacant. E-03070\\  
   {\tt ftyers@dlsi.ua.es} \And
@@ -57,15 +56,72 @@
 
 \section{Introduction}
 
-\citep{Dasgupta2005}
-
 \section{Design}
 
 \section{Development}
 
+\subsection{Resources}
+
+\subsection{Analysis and generation}
+
+\subsection{Disambiguation}
+
+%% Train tagger using target language training
+
+\subsection{Lexical transfer}
+
+Despite the closeness of the languages, one of the most labour intensive parts of 
+the work on this pair was the creation of the bilingual dictionary (transfer 
+lexicon). Swedish and Danish are largely mutually intelligible, so there is not 
+much demand for general purposes bilingual dictionaries between the two.
+
+In order to create a dictionary we used several methods. The closed categories, 
+for example pronouns, determiners, prepositions were added by hand, along with some 
+of the open categories. Then, the following semi-automatic methods were used:
+
+\begin{itemize} 
+  \item Cognates --
+  \item Wordlists --
+  \item Wiktionary --
+  \item Wikipedia --
+  \item Probabilistic dictionary --
+\end{itemize}
+
+\subsection{Syntactic transfer}
+
 \section{Evaluation}
 
+The evaluation was split into four parts, the first is an evaluation of the coverage
+of the system with respect to a number of available corpora of Swedish. The second
+provides a quantitative evaluation using post-edition word error rate (WER) which 
+gives an indication as to how much work a post-editor needs to do in order to 
+achieve an adequate target language translation. The third is a qualitative evaluation
+which looks at some of the major deficiencies of the system with respect to disambiguation,
+and lexical and syntactic transfer. Finally we provide a short comparative evaluation of
+our system against two proprietary systems.
+
+\subsection{Coverage}
+
+%% Lexical coverage over Wikipedia / General corpus of Swedish.
+
+\subsection{Quantitative}
+
+\subsection{Qualitative}
+
+%% Principle downfalls -- treatment of supine when not written with auxilliary
+
+\subsection{Comparative}
+
+%% Google, Gramtrans, Apertium -- 100 sentences each
+
 \section{Discussion}
+
+%% Future work: Reverse the direction, more scandinavian pairs, 
+%% increase vocabulary coverage, improve disambiguation -- possibly try and convert OB tagger for nb to Danish
+%% Perhaps incorporate info from SALDO (cite) -- wasn't known about until after development over
+%% Compound handling
+
+\cite{hagen2000cbt}
 
 \section*{Acknowledgements}
 
