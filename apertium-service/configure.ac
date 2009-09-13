@@ -63,7 +63,7 @@ if test "${enable_debug}" = "yes"; then
 fi
 
 # Checks for libraries.
-AX_BOOST_BASE([1.37.0])
+AX_BOOST_BASE([1.34.0])
 AX_BOOST_THREAD
 
 if test -z "$BOOST_THREAD_LIB"; then
