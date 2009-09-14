@@ -1,0 +1,56 @@
+apertium-morph: example of use
+
+---------------------------------------------------------------------
+
+In this folder you can find the following files:
+
+* 'renametags'         contains two string per line, the first one will 
+                       be replaced by the second one
+* 'stoptags'           contains tags to be ignored while indexing
+* 'tagsfound.spanish'  contains the set of tags found after indexing
+* 'tags-spanish.html'  contains the set of tags found after indexing with 
+                       an explanation (in Spanish, translation pending :()
+* 'README'             this file
+
+---------------------------------------------------------------------
+
+To use apertium-morph, you need to have installed apertium and
+lttoolbox, they can be downloaded from http://sf.net/projects/apertium/
+
+To index a new document you have to:
+
+1. Download the linguistic package that contains the language you are
+interested in. For this example I have indexed Spanish documents and
+used the linguistic package apertium-es-ca which can be downloaded
+from http://sf.net/projects/apertium/
+
+2. The Spanish morphological dictionary must be preprocessed in
+advance to remove multiword expressions:
+
+$ java -classpath lucene-apertium-morph-2.4-dev.jar \
+  org.apache.lucene.apertium.tools.RemoveMultiWordsFromDix \
+  --dix apertium-es-ca.es.dix  > apertium-es-ca.es-nomw.dix
+
+3. Then, the new dictionary is compiled:
+
+$ lt-comp lr apertium-es-ca.es-nomw.dix es-ca-nomw.automorf.bin
+
+4. Each file to be indexed must be preprocessed using the Apertium
+tools:
+
+$ cat file.txt | apertium-destxt | lt-proc -a es-ca-nomw.automorf.bin |\
+  apertium-tagger -g -f es-ca.prob > file.pos.txt
+
+5. After that, the file to be indexed by Lucene is 'file.pos.txt'
+
+The class org.apache.lucene.apertium.tools.Indexer will give you an
+idea of how to use the Java classes that come with apertium-morph to
+index the file 'file.pos.txt'.
+
+The class org.apache.lucene.apertium.tools.Searcher will give you an
+idea of how to use the analyzer LinguisticQueryAnalyzer to analyze
+queries in the standard Lucene query language.
+
+---------------------------------------------------------------------
+
+Good luck!

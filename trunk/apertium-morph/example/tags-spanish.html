@@ -1,0 +1,66 @@
+<html>
+<body>
+<strong>Cómo escribir una petición de búsqueda</strong>
+<p>Lea acerca de la <a href="http://lucene.apache.org/java/docs/queryparsersyntax.html">
+sintaxis del lenguaje definido por Lucene para especificar búsquedas</a></p>
+<p><u>Utilice los siguiente prefijos para especificar términos de búsqueda:</u>
+<lu><li><tt>lem#</tt>: para lemas (todos los posibles lemas de una palabra)</li>
+<li><tt>lemt#</tt>: para lemas (sólo aquellos seleccionados por el desambiguador léxico categorial)</li>
+<li><tt>tags#</tt>: para las etiquetas morfológicas (todas las posibles de una palabra)</li>
+<li><tt>tagst#</tt>: para las etiquetas morfológicas (sólo aquellas seleccionados por el desambiguador léxico categorial)</li></lu></p>
+<p><u>Ejemplo de búsqueda:</u> "lemt#deber de tagst#verbo.infinitivo"</p>
+<p><u>Etiquetas morfológicas reconocidas:</u></p>
+<table border="1">
+<tr><td><strong>Etiqueta</strong></td><td><strong>Descripción</strong></td><td><strong>Ejemplo</strong></td></tr>
+<tr><td><tt>adjetivo</tt></td><td>Adjetivos de cualquier tipo</td><td>blanco</td></tr>
+<tr><td><tt>adjetivo.indefinido</tt></td><td>Adjetivos indefinidos</td><td>otro</td></tr>
+<tr><td><tt>adjetivo.interrogativo</tt></td><td>Adjetivos interrogativos</td><td>cuánto</td></tr>
+<tr><td><tt>adjetivo.posesivo</tt></td><td>Adjetivos posesivos</td><td>mío</td></tr>
+<tr><td><tt>adjetivo.superlativo</tt></td><td>Adjetivos en forma superlativa</td><td>pesadísimo</td></tr>
+<tr><td><tt>adverbio</tt></td><td>Adverbios de cualquier tipo</td><td>mañana</td></tr>
+<tr><td><tt>adverbio.interrogativo</tt></td><td>Adverbios interrogativos</td><td>dónde</td></tr>
+<tr><td><tt>conj</tt></td><td>Conjunciones</td><td>y</td></tr>
+<tr><td><tt>conj.adv</tt></td><td>Conjunciones adverbiales</td><td>entonces</td></tr>
+<tr><td><tt>conj.coord</tt></td><td>Conjunciones coordinadas</td><td>pero</td></tr>
+<tr><td><tt>conj.sub</tt></td><td>Conjunciones subordinadas</td><td>que</td></tr>
+<tr><td><tt>determinante</tt></td><td>Determinantes de cualquier tipo</td><td>la</td></tr>
+<tr><td><tt>determinante.definido</tt></td><td>Determinantes definidos</td><td>el</td></tr>
+<tr><td><tt>determinante.demostrativo</tt></td><td>Determinantes demostrativos</td><td>aquel</td></tr>
+<tr><td><tt>determinante.indefinido</tt></td><td>Determinantes indefinidos</td><td> uno</td></tr>
+<tr><td><tt>determinante.neutro</tt></td><td>Determinantes neutros</td><td> lo</td></tr>
+<tr><td><tt>determinante.posesivo</tt></td><td>Determinantes posesivos</td><td> mío</td></tr>
+<tr><td><tt>interjeccion</tt></td><td>Interjecciones</td><td>adiós</td></tr>
+<tr><td><tt>nombre</tt></td><td>Nombres de cualquier tipo</td><td>casa</td></tr>
+<tr><td><tt>nombre.acronimo</tt></td><td>Acrónimos</td><td>IRPF</td></tr>
+<tr><td><tt>nompropio</tt></td><td>Nombres propios</td><td>Soria</td></tr>
+<tr><td><tt>num</tt></td><td>Números</td><td>cien</td></tr>
+<tr><td><tt>preadverbio</tt></td><td>Adverbios que pueden preceder a otros adverbios</td><td>bien, casi</td></tr>
+<tr><td><tt>predeterminante</tt></td><td>Determinantes que pueden preceder a otros determinantes</td><td>todo</td></tr>
+<tr><td><tt>prep</tt></td><td>Preposiciones</td><td>hacia</td></tr>
+<tr><td><tt>prn</tt></td><td>Pronombres de cualquier tipo</td><td>nosotros</td></tr>
+<tr><td><tt>prn.enclitico</tt></td><td>Pronombre enclíticos</td><td>lo (cógelo)</td></tr>
+<tr><td><tt>prn.interrogativo</tt></td><td>Pronombres interrogativos</td><td>cuál</td></tr>
+<tr><td><tt>prn.proclitico</tt></td><td>Pronombre proclíticos</td><td>se (se come)</td></tr>
+<tr><td><tt>prn.tonico</tt></td><td>Pronombre tónicos</td><td> conmigo</td></tr>
+<tr><td><tt>relativo</tt></td><td>Relativos de cualquier tipo</td><td>cual</td></tr>
+<tr><td><tt>relativo.adverbio</tt></td><td>Adverbios de relativo</td><td> adonde</td></tr>
+<tr><td><tt>verbo</tt></td><td>Verbos en cualquier tiempo verbal</td><td>caminó</td></tr>
+<tr><td><tt>verbo.infinitivo</tt></td><td>Verbos en infinitivo</td><td>cantar</td></tr>
+<tr><td><tt>verbo.participio</tt></td><td>Verbos en participio</td><td>cantado</td></tr>
+<tr><td><tt>verbo.gerundio</tt></td><td>Verbos en gerundio</td><td>cantando</td></tr>
+<tr><td><tt>verbo.indicativo</tt></td><td>Verbos en modo indicativo</td><td>canta</td></tr>
+<tr><td><tt>verbo.indicativo.presente</tt></td><td>Verbos en presente de indicativo</td><td> canto</td></tr>
+<tr><td><tt>verbo.indicativo.pret</tt></td><td>Verbos en pretérito de indicativo </td><td> cantaba, cantó</td></tr>
+<tr><td><tt>verbo.indicativo.pret.imperfecto</tt></td><td>Verbos en pretérito imperfecto de indicativo</td><td>cantaba</td></tr>
+<tr><td><tt>verbo.indicativo.pret.perfecto</tt></td><td>Verbos en pretérito perfecto de indicativo</td><td> cantó</td></tr>
+<tr><td><tt>verbo.indicativo.futuro</tt></td><td>Verbos es futuro de indicativo</td><td>cantaré</td></tr>
+<tr><td><tt>verbo.condicional</tt></td><td>Verbos en forma condicional</td><td>cantaría</td></tr>
+<tr><td><tt>verbo.imperativo</tt></td><td>Verbos en imperativo</td><td>canta</td></tr>
+<tr><td><tt>verbo.subjuntivo</tt></td><td>Verbos en modo subjuntivo</td><td>entendieren</td></tr>
+<tr><td><tt>verbo.subjuntivo.presente</tt></td><td>Verbos en presente de subjuntivo</td><td>cantemos</td></tr>
+<tr><td><tt>verbo.subjuntivo.pret</tt></td><td>Verbos en pretérito de subjuntivo</td><td>cantáramos</td></tr>
+<tr><td><tt>verbo.subjuntivo.pret.imperfecto</tt></td><td>Verbos en pretérito imperfecto de subjuntivo</td><td>cantáramos</td></tr>
+<tr><td><tt>verbo.subjuntivo.futuro</tt></td><td>Verbos en futuro de subjuntivo</td><td>entendieren</td></tr>
+</table>
+</body>
+</html>
