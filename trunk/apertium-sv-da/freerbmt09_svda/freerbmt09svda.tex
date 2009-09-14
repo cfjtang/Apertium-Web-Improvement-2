@@ -40,9 +40,9 @@
   Alacant. E-03070\\  
   {\tt ftyers@dlsi.ua.es} \And
   Jacob Nordfalk\\
+  Copenhagen Technical University,\\
   {\tt foo@bar}}
   
-
 \date{}
 
 \begin{document}
@@ -50,7 +50,10 @@
 \maketitle
 
 \begin{abstract}
-  This article ...
+  This article describes the development of a shallow-transfer machine translation
+  system from Swedish to Danish in the Apertium platform. It gives details of the 
+  resources used, the methods for constructing the system and an evaluation of the 
+  translation quality.
 \end{abstract}
 
 \section{Introduction}
@@ -97,7 +100,9 @@ the same tools such that for each paradigm, any duplicates were removed. %% mayb
 For disambiguation we first chose to train a basic unsupervised bigram part-of-speech tagger
 using the {\tt\small apertium-tagger}. Although both tagged corpora and constraint
 grammars exist for both Swedish and Danish, neither the constraint grammars
-nor the corpora are free.
+nor the corpora are free. The training corpora used were the 
+Danish\footnote{\url{http://da.wikipedia.org}} and Swedish\footnote{\url{http://sv.wikipedia.org}} 
+Wikipedias respectively.
 
 Later, we used the target language training module in Apertium (as described in \cite{sanchez2008})
 to train a Swedish tagger.
@@ -114,12 +119,28 @@ for example pronouns, determiners, prepositions were added by hand, along with s
 of the open categories. Then, the following semi-automatic methods were used:
 
 \begin{itemize} 
-  \item Cognates --
-  \item Wordlists --
-  \item Wiktionary --
-  \item Wikipedia -- 
-  \item Probabilistic dictionary --
+  \item Cognates -- The most obvious method for creating bilingual dictionary entries
+     was to look at words which were the same in the two languages, or the same with
+     different orthography. Frequent changes from Swedish to Danish include \emph{ö $\rightarrow$ ø}
+     and \emph{ä $\rightarrow$ æ}. But also, non-orthographic changes such as verb endings
+     in \emph{-a} in Swedish changing to \emph{-e} in Danish.
+  \item Wordlists -- We came across a number of free untagged Swedish--Danish wordlists. In order
+     to reuse this information, we first tagged both sides, and created new bilingual
+     dictionary entries where both the part-of-speech and (in the case of nouns) the gender
+     matched up. 
+  \item Wiktionary -- Along with the previously mentioned inflection tables, the Swedish and 
+     English Wiktionaries both have translations from Swedish to Danish. These were mined and 
+     treated in a similar way to the wordlists above.
+  \item Wikipedia -- For proper names, toponyms etc., we used the method described in \cite{tyers2008}
+     to extract translations from Wikipedia.
+  \item Probabilistic dictionary -- Finally we trained a statistical machine translation system
+     using Moses \citep{Koehn2007} on the Europarl \cite{Koehn2005} corpus. From this we took
+     the probabilistic lexicon, and performed the same operation as with the wordlists above. In doing
+     this we simply took the most probable translation that was in both the Swedish and Danish 
+     monolingual dictionaries.
 \end{itemize}
+
+All bilingual dictionary entries were manually checked and bad entries altered or discarded.
 
 \subsection{Syntactic transfer}
 
