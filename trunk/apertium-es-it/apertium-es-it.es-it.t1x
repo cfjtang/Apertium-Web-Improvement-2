@@ -5146,6 +5146,85 @@
 	  </chunk>
 	</out>
       </action>
+    </rule>
+
+
+  <rule comment="REGLA: VERB ENC">
+      <pattern>
+	<pattern-item n="verb"/>
+	<pattern-item n="prnenc"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="verb_enc" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <mlu>
+	      <lu>   
+		<clip pos="1" side="tl" part="lemh"/> 
+		<clip pos="1" side="tl" part="a_verb"/>
+		<clip pos="1" side="tl" part="temps"/>
+		<clip pos="1" side="tl" part="pers"/>
+		<clip pos="1" side="tl" part="gen"/>	 
+		<clip pos="1" side="tl" part="nbr" link-to="5"/>
+	      </lu> 
+	      <lu>
+		<clip pos="2" side="tl" part="whole"/> 
+		<clip pos="1" side="tl" part="lemq"/>
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+    </rule> 
+    
+  <rule comment="REGLA: VERB ENC ENC">
+      <pattern>
+	<pattern-item n="verb"/>
+	<pattern-item n="prnenc"/>
+	<pattern-item n="prnenc"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="verb_enc_enc" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <mlu>
+	      <lu>   
+		<clip pos="1" side="tl" part="lemh"/> 
+		<clip pos="1" side="tl" part="a_verb"/>
+		<clip pos="1" side="tl" part="temps"/>
+		<clip pos="1" side="tl" part="pers"/>
+		<clip pos="1" side="tl" part="gen"/>	 
+		<clip pos="1" side="tl" part="nbr" link-to="5"/>
+	      </lu> 
+	      <lu>
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu>
+		<clip pos="3" side="tl" part="whole"/> 
+		<clip pos="1" side="tl" part="lemq"/>
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
     </rule> 
     
   
