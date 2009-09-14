@@ -67,6 +67,14 @@
 
 %% Apertium translation model
 
+The Apertium platform follows a transfer-based machine translation model. A source
+language text is first morphologically analysed using finite-state transducers. It is 
+then disambiguated for part of speech by a bigram HMM part-of-speech tagger. Subsequently
+lexical transfer is performed by the same module that performs syntactic transfer. Syntactic
+transfer consists of matching fixed-length patterns of lexical units\footnote{A lexical unit 
+is a lemma and its part of speech and morphological information.} and performing operations
+such as insertions, removals and substitutions, along with concordancing.
+
 \section{Development}
 
 \subsection{Resources}
@@ -101,8 +109,8 @@ For disambiguation we first chose to train a basic unsupervised bigram part-of-s
 using the {\tt\small apertium-tagger}. Although both tagged corpora and constraint
 grammars exist for both Swedish and Danish, neither the constraint grammars
 nor the corpora are free. The training corpora used were the 
-Danish\footnote{\url{http://da.wikipedia.org}} and Swedish\footnote{\url{http://sv.wikipedia.org}} 
-Wikipedias respectively.
+Danish\footnote{\url{http://da.wikipedia.org}} and Swedish\footnote{\url{http://sv.wikipedia.org}; 
+Access date: 8th February 2009} Wikipedias respectively.
 
 Later, we used the target language training module in Apertium (as described in \cite{sanchez2008})
 to train a Swedish tagger.
@@ -181,7 +189,28 @@ our system against two proprietary systems.
 
 \subsection{Coverage}
 
-%% Lexical coverage over Wikipedia / General corpus of Swedish.
+%% Lexical coverage over Wikipedia / General corpora of Swedish.
+
+The vocabulary coverage of the system is calculated over two available corpora. Here coverage
+is defined as \emph{na\"ive coverage}, that is for any given surface form at least one analysis
+is returned. This may not be complete. The first corpus is a database dump of the Swedish 
+Wikipedia, the second is the Swedish sentences from the EuroParl corpus \cite{Koehn2005}. The 
+results are presented in table~\ref{table:coverage}
+
+
+\begin{table*}
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+Corpus & Running tokens & Known tokens & Coverage \\
+\hline
+Wikipedia  & 30,662,861 & 22,030,690 & 71.84\%\\
+EuroParl   & 15,531,107 & 12,499,971 & 80.48\%\\
+\hline
+\end{tabular}
+    \caption{Naïve coverage for two corpora}
+    \label{table:coverage}
+\end{table*}
 
 \subsection{Quantitative}
 
