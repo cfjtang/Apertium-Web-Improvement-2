@@ -13,5 +13,5 @@ apertium-transfer -n  apertium-sl-mk.postprocessrules_n_-mk-sl_2.xml postprocess
 apertium-transfer -n  apertium-sl-mk.postprocessrules_adj_-mk-sl_2.xml postprocessrules-sl-mk_adj_2.bin | \
 apertium-transfer -n  apertium-sl-mk.postprocessrules_adv_-mk-sl_2.xml postprocessrules-sl-mk_adv_2.bin | \
 apertium-transfer -n  apertium-sl-mk.postprocessrules_vblex_-mk-sl_2.xml postprocessrules-sl-mk_vblex_2.bin | \
-apertium-transfer -n  apertium-sl-mk.postprocessrules_vbser_-mk-sl_2.xml postprocessrules-sl-mk_vbser_2.bin | \
-lt-proc -g sl-mk.autogen.bin
+apertium-transfer -n  apertium-sl-mk.postprocessrules_vbser_-mk-sl_2.xml postprocessrules-sl-mk_vbser_2.bin 
+#lt-proc -g sl-mk.autogen.bin
