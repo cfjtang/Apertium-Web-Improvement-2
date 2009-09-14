@@ -69,14 +69,14 @@ echo "Comprovació superficial finalitzada. Mireu en 'errors-$1-$2.superficial-c
 # echo "===================="
 
 # FASE 2
-#echo "Continuant comprovació completa, ^C per a cancelar"
-#echo -n "Calculant expansió filtrada..."
-#grep "$FILTERTAG" comp-$1-$2.expand >comp-$1-$2.filtered
-#echo " fet."
-#echo -n "Executant el traductor..."
-#apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$1-$2.filtered | apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | lt-proc -d $1-$2.autogen.bin > comp-$1-$2.trans
-#echo " fet."
-#echo -n "Detectant errades i guardant-les en errors-$1-$2"
-#paste comp-$1-$2.filtered comp-$1-$2.trans > comprovacio-$1-$2
-#egrep "(@|/|. #)" comprovacio-$1-$2 > errors-$1-$2
-#echo " fet."
+echo "Continuant comprovació completa, ^C per a cancelar"
+echo -n "Calculant expansió filtrada..."
+grep "$FILTERTAG" comp-$1-$2.expand >comp-$1-$2.filtered
+echo " fet."
+echo -n "Executant el traductor..."
+apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$1-$2.filtered | apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | lt-proc -d $1-$2.autogen.bin > comp-$1-$2.trans
+echo " fet."
+echo -n "Detectant errades i guardant-les en errors-$1-$2"
+paste comp-$1-$2.filtered comp-$1-$2.trans > comprovacio-$1-$2
+egrep "(@|/|. #)" comprovacio-$1-$2 > errors-$1-$2
+echo " fet."
