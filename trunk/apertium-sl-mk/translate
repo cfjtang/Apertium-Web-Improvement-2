@@ -1,0 +1,158 @@
+#!/bin/sh
+APERTIUM_PATH="/usr/local/bin"
+LTTOOLBOX_PATH="/usr/local/bin"
+TOTALE_BIN="totale/ttl/totale"
+case $# in
+  2)
+    DATOS=$1
+    PREFIJO=$2
+    FORMATADOR=txt
+    FICHERO=input_file
+    ;;
+  3)
+    DATOS=$1
+    PREFIJO=$2
+    FORMATADOR=$3
+    FICHERO=input_file
+    ;;
+  4)
+    DATOS=$1
+    PREFIJO=$2
+    FORMATADOR=$3
+    FICHERO=$4
+    ;;
+  5)  
+    DATOS=$1
+    PREFIJO=$2
+    FORMATADOR=$3
+    FICHERO=$4
+    SALIDA=$5
+    ;;
+  *)
+    echo "USAGE: $(basename $0) <datadir> <translation> [format [infile [outfile]]]"
+    echo " datadir          Directory of linguistic data"
+    echo " translation      LANG1-LANG2"
+    echo " format           one of: txt (default), txtu, html, htmlu, rtf, rtfu"
+    echo " infile           input file (stdin by default)"
+    echo " outfile          output file (stdout by default)"
+    exit 1;
+esac
+
+#Par�etros obligatorios
+PREFIJO=$2    #Direcci� traducci� Ejm.- es-ca
+FORMATADOR=$3 #Fuente a traducir Ejm.- txt
+
+DATOS=$1
+
+#Parametro opcional, de no estar, lee de la entrada estandar (stdin)
+
+PATH=.:/usr/local/bin:$PATH
+AUTOMORF=$DATOS/$PREFIJO.automorf.bin
+AUTOBIL=$DATOS/$PREFIJO.autobil.bin
+AUTOBILPOSTPROCESSRULES=$DATOS/$PREFIJO.autobil.empty_for_postprocessrules.bin
+AUTOBILPOSTPROCESSRULES_N=$DATOS/$PREFIJO.autobil.empty_for_postprocessrules_n.bin
+AUTOGEN=$DATOS/$PREFIJO.autogen.bin
+AUTOPGEN=$DATOS/$PREFIJO.autopgen.bin
+
+DEP="dep"
+
+TURL="cat" #No hace nada, se introduce para no tener
+           #que cambiar la l�ea de montaje, pues en algunos
+	   #casos se usa como ultimo eslab� de la cadena el
+	   #programa turl o ext-turl.
+REF=
+	      
+case "$FORMATADOR" in 
+	txt)
+		FORMATADOR="txt"
+		GENERADOR="lt-proc -g"		
+		;;
+	txtu)
+		FORMATADOR="txt"
+		GENERADOR="lt-proc -n"
+		;;
+	rtf)
+		FORMATADOR="rtf"
+		GENERADOR="lt-proc -g"		
+		;;
+	rtfu)
+		FORMATADOR="rtf"		
+		GENERADOR="lt-proc -n"
+		;;
+	html)
+		FORMATADOR="html"
+		GENERADOR="lt-proc -g"	
+		;;
+	htmlu)
+		FORMATADOR="html"
+		GENERADOR="lt-proc -n"		
+		;;
+	*) # Por defecto asumimos txt
+		FORMATADOR="txt"
+		GENERADOR="lt-proc -g"
+		;;	
+esac
+case "$FICHERO" in
+        input_file)
+                cat > input_file
+                ;;
+esac
+
+if [ -z $REF ]
+then 
+        REF=$FORMATADOR
+fi
+
+
+if [ -e $DATOS/.old ]
+then
+  $APERTIUM_PATH/apertium-des$FORMATADOR $FICHERO | \
+  $LTTOOLBOX_PATH/lt-proc $AUTOMORF | \
+  $DATOS/$PREFIJO.tagger --tagger $DATOS/$PREFIJO |\
+  $APERTIUM_PATH/apertium-pretransfer | \
+  $DATOS/$PREFIJO.transfer $AUTOBIL |\
+  $LTTOOLBOX_PATH/$GENERADOR $AUTOGEN  | \
+  $LTTOOLBOX_PATH/lt-proc -p $AUTOPGEN | \
+  if [ x$SALIDA = x ]
+  then $APERTIUM_PATH/apertium-re$FORMATADOR 
+  else
+    $APERTIUM_PATH/apertium-re$FORMATADOR >$SALIDA
+  fi
+else
+  $APERTIUM_PATH/apertium-des$FORMATADOR $FICHERO   > output1;cat $FICHERO > output0; cat output1| \
+  $LTTOOLBOX_PATH/lt-proc $AUTOMORF  >output2;\
+	cat $FICHERO|$TOTALE_BIN -l sl -f t >totale.orig ;
+	cat totale.orig|sed -e "s/\t/ /g" > tmp;
+	cat tmp|sed -e "s/  / /g" > tmp_end;
+	cp tmp_end totale.in;
+	#cat output2|tr -d "$$"> tmp;
+	#cat output2|sed -e "s/\[  ]. //g" > tmp; 
+	#cat tmp|tr -d "[]"> apertium.in;
+	cp output2 apertium.in
+	java TotaleToApertium totale.in apertium.in TotaleToApertiumTranslationTable > output_java.tmp;
+  cat output_java.tmp|sed -e "s/<du>/<pl>/g" > output_java;
+  cat output_java|\
+  $APERTIUM_PATH/apertium-pretransfer >output4;cat output4| \
+  $APERTIUM_PATH/apertium-transfer $DATOS/trules-$PREFIJO.xml $DATOS/trules-$PREFIJO.bin $AUTOBIL >output5;cat output5|\
+  $APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-mk.postprocessrules_n_-${PREFIJO}".xml $DATOS/postprocessrules-${PREFIJO}_n.bin $AUTOBILPOSTPROCESSRULES_N >output6;cat output6|\
+  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.1;cat output6.1|\
+ $APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-mk.postprocessrules_adj_-${PREFIJO}".xml $DATOS/postprocessrules-${PREFIJO}_adj.bin $AUTOBILPOSTPROCESSRULES_N >output6.2;cat output6.2|\
+  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.3;cat output6.3|\
+$APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-mk.postprocessrules_adv_-${PREFIJO}".xml $DATOS/postprocessrules-${PREFIJO}_adv.bin $AUTOBILPOSTPROCESSRULES_N >output6.4;cat output6.4|\
+  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.5;cat output6.5|\
+# $APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_vblex_-${PREFIJO}".xml $DATOS/postprocessrules-${PREFIJO}_vblex.bin $AUTOBILPOSTPROCESSRULES_N >output6.8;cat output6.8|\
+#  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.9.0;cat output6.9.0|\
+#$APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_vbser_-${PREFIJO}".xml $DATOS/postprocessrules-${PREFIJO}_vbser.bin $AUTOBILPOSTPROCESSRULES_N >output6.8;cat output6.8|\
+#  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.9.1;cat output6.9.1|\
+#  $APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_n_-${PREFIJO}_2".xml $DATOS/postprocessrules-${PREFIJO}_n_2.bin $AUTOBILPOSTPROCESSRULES_N >output6;cat output6|\
+#  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.1;cat output6.1|\
+#$APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_adj_-${PREFIJO}_2".xml $DATOS/postprocessrules-${PREFIJO}_adj_2.bin $AUTOBILPOSTPROCESSRULES_N >output6.2;cat output6.2|\
+#  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.3;cat output6.3|\
+#$APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_adv_-${PREFIJO}_2".xml $DATOS/postprocessrules-${PREFIJO}_adv_2.bin $AUTOBILPOSTPROCESSRULES_N >output6.4;cat output6.4|\
+#  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.5;cat output6.5|\
+# $APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_vblex_-${PREFIJO}_2".xml $DATOS/postprocessrules-${PREFIJO}_vblex_2.bin $AUTOBILPOSTPROCESSRULES_N >output6.8;cat output6.8|\
+# sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.9;cat output6.9|\
+#$APERTIUM_PATH/apertium-transfer "$DATOS/apertium-sl-sr.postprocessrules_vbser_-${PREFIJO}_2".xml $DATOS/postprocessrules-${PREFIJO}_vbser_2.bin $AUTOBILPOSTPROCESSRULES_N >output6.8;cat output6.8|\
+#  sed -e "s/@@/KKK/g"|sed -e "s/@//g"|sed -e "s/KKK/@/g" >output6.9;cat output6.9|\
+ $LTTOOLBOX_PATH/$GENERADOR $AUTOGEN  >output7;cat output7|sed -e "s/\./ \. /g" -e "s/\,/ \, /g" -e "s/\?/ \? /g" -e "s/\!/ \! /g" -e "s/\:/ \: /g" -e "s/\;/ \; /g" > output7.1;cat output7.1|java CleanTranslate t.vcb |sed -e "s/ \. /\./g" -e "s/ \, /\,/g" -e "s/ \! /\!/g" -e "s/ \: /\:/g" -e "s/ \; /\;/g" -e "s/\? \./\?/g"> rezultat;cat rezultat|recode-sr-latin > rezultat_latin;cat rezultat_latin
+fi
