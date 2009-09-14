@@ -71,16 +71,36 @@
 % aspell-da and aspell-sv (for full-form lists)
 % Extract (Cite)
 % Mention the corpora ? 
+% For Swedish mention Wiktionary.
 % DSSO
-% 
 
 \subsection{Analysis and generation}
 
 %% Transducers built from scratch using above resources
 
+The morphological dictionaries for the two languages were built in slightly 
+different ways due to the differing amounts of information available. In both
+cases however the closed categories were described manually. 
+
+For Swedish, the Swedish Wiktionary\footnote{\url{http://sv.wiktionary.org}} has
+inflectional tables for many of the words. In order to make use of these, all of 
+the pages in a particular category (for example Nouns) were downloaded in HTML
+form. The inflectional information was extracted using a variety of scripts and 
+then all the possible paradigms were generated using the {\tt\small speling-tools}.\footnote{\url{...}}
+That is, for each word, one paradigm was created. These were then merged using
+the same tools such that for each paradigm, any duplicates were removed. %% maybe improve this
+
 \subsection{Disambiguation}
 
 %% Train tagger using target language training
+
+For disambiguation we first chose to train a basic unsupervised bigram part-of-speech tagger
+using the {\tt\small apertium-tagger}. Although both tagged corpora and constraint
+grammars exist for both Swedish and Danish, neither the constraint grammars
+nor the corpora are free.
+
+Later, we used the target language training module in Apertium (as described in \cite{sanchez2008})
+to train a Swedish tagger.
 
 \subsection{Lexical transfer}
 
@@ -104,8 +124,10 @@ of the open categories. Then, the following semi-automatic methods were used:
 \subsection{Syntactic transfer}
 
 %% Double definiteness
-%% Supine
+%% Supine (just convert to a pp.-- förts → ført )
 %% Passives -- blive etc.
+%% Some auxiliaries are different. (Två personer har förts → To personer er ført )
+%%   Done using a list
 
 \subsection{Status}
 
@@ -115,10 +137,10 @@ of the open categories. Then, the following semi-automatic methods were used:
 \hline
                                            & Number entries\\
 \hline
-Monolingual dict. ({\tt sv})               & -\\
-Bilingual dict.                            & -\\
-Monolingual dict. ({\tt da})               & -\\
-Transfer rules ({\tt sv $\rightarrow$ da}) & -\\
+Monolingual dict. ({\tt sv})               & 5,230 lemmas \\
+Bilingual dict.                            & 6,854 lemmas \\
+Monolingual dict. ({\tt da})               & 10,694 lemmas \\
+Transfer rules ({\tt sv $\rightarrow$ da}) & 17 rules \\
 \hline
 \end{tabular}
     \caption{Status of pair as of ...}
@@ -179,8 +201,6 @@ Gramtrans & -   & -    & -\\
     \caption{Comparative evaluation results for 100 sentences}
     \label{table:compeval}
 \end{table}
-
-
 
 \section{Discussion}
 
