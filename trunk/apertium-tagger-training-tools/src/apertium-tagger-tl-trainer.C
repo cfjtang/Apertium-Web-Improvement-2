@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 
   Utils::debug=false;
 
-  TaggerWord::show_ingnored_string=false;
+  TaggerWord::show_ignored_string=false;
   TransferRules transfer_rules;
 
   cerr<<"LOCALE: "<<setlocale(LC_ALL,"")<<"\n";
