@@ -12,7 +12,6 @@
 \usepackage{latexsym}
 \usepackage[small,bf]{caption}
 
-
 %\bibpunct{(}{)}{;}{A}{,}{,}
 %\bibdata{mybib.bib}
 
@@ -32,8 +31,8 @@
 
 \author{Michael Kristensen\\
   Dept. Computer Science, \\
-  Bangladesh University of Eng. and Tech.,\\
-  Bangladesh, NS 12345 \\
+  University of Eng. and Tech.,\\
+  Denmark, NS 12345 \\
   {\tt jane.doe@cs.buet.ac.bd} \And
   Francis M. Tyers\\
   Dept. Lleng. i Sist. Informàtics, \\
@@ -56,13 +55,28 @@
 
 \section{Introduction}
 
+%% Some history of sv and da
+%% previous research -- e.g. other sv->da systems
+%% why it is desirable (need for publications in different standards, e.g. norden.org)
+%% wide knowledge of English, less impulse to translate
+
 \section{Design}
+
+%% Apertium translation model
 
 \section{Development}
 
 \subsection{Resources}
 
+% aspell-da and aspell-sv (for full-form lists)
+% Extract (Cite)
+% Mention the corpora ? 
+% DSSO
+% 
+
 \subsection{Analysis and generation}
+
+%% Transducers built from scratch using above resources
 
 \subsection{Disambiguation}
 
@@ -83,11 +97,33 @@ of the open categories. Then, the following semi-automatic methods were used:
   \item Cognates --
   \item Wordlists --
   \item Wiktionary --
-  \item Wikipedia --
+  \item Wikipedia -- 
   \item Probabilistic dictionary --
 \end{itemize}
 
 \subsection{Syntactic transfer}
+
+%% Double definiteness
+%% Supine
+%% Passives -- blive etc.
+
+\subsection{Status}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|c|}
+\hline
+                                           & Number entries\\
+\hline
+Monolingual dict. ({\tt sv})               & -\\
+Bilingual dict.                            & -\\
+Monolingual dict. ({\tt da})               & -\\
+Transfer rules ({\tt sv $\rightarrow$ da}) & -\\
+\hline
+\end{tabular}
+    \caption{Status of pair as of ...}
+    \label{table:status}
+\end{table}
 
 \section{Evaluation}
 
@@ -106,13 +142,45 @@ our system against two proprietary systems.
 
 \subsection{Quantitative}
 
+\begin{table}
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+Corpus    & WER & PWER & Free rides\\
+\hline
+Wikipedia & -   & -    & -\\
+\hline
+\end{tabular}
+    \caption{Evaluation results for the post-edition task}
+    \label{table:quanteval}
+\end{table}
+
+
 \subsection{Qualitative}
 
 %% Principle downfalls -- treatment of supine when not written with auxilliary
+%% No support for compounds -- even if both words in the compound are in the dict.
 
 \subsection{Comparative}
 
 %% Google, Gramtrans, Apertium -- 100 sentences each
+
+\begin{table}
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+System & WER & PWER & Free rides\\
+\hline
+Apertium  & -   & -    & -\\
+Google    & -   & -    & -\\
+Gramtrans & -   & -    & -\\
+\hline
+\end{tabular}
+    \caption{Comparative evaluation results for 100 sentences}
+    \label{table:compeval}
+\end{table}
+
+
 
 \section{Discussion}
 
@@ -129,6 +197,5 @@ Development was funded as part of the Google Summer of Code\footnote{\url{http:/
 
 \bibliographystyle{apalike}
 \bibliography{freerbmt09svda}
-
 
 \end{document}
