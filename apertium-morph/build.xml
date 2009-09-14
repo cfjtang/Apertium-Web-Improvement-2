@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+ 
+        http://www.apache.org/licenses/LICENSE-2.0
+ 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ -->
+
+<project name="apertium-morph" default="buildApertium-morph">
+
+  <description> 
+    Set of Java classes that allow the Lucene search engine to use
+    morphological information developed for the Apertium open-source
+    machine translation platform. Morpgological information is used to
+    index new documents and to process smarter queries in which
+    morphological attributes can be used to specify query terms.
+  </description>
+                
+  <property name="javac.source" value="1.5"/>
+  <property name="javac.target" value="1.5"/>
+  <property name="javac.unchecked" value="on"/>
+  <property name="javac.unsafe" value="on"/>
+  <property name="javac.deprecation" value="off"/>
+  
+  <import file="../contrib-build.xml"/>
+
+  <property name="memory.jar" location="${common.dir}/build/contrib/memory/lucene-memory-${version}.jar"/>
+  <available property="memory.jar.present" type="file"  file="${memory.jar}"/> 
+
+  <property name="highlighter.jar" location="${common.dir}/build/contrib/highlighter/lucene-highlighter-${version}.jar"/>
+  <available property="highlighter.jar.present" type="file" file="${highlighter.jar}"/>
+
+  <property name="benchmark.jar" location="${common.dir}/build/contrib/benchmark/lucene-benchmark-${version}.jar"/>
+  <available property="benchmark.jar.present" type="file" file="${benchmark.jar}"/>
+  
+<!--  
+  <property name="snowball.jar" location="${common.dir}/build/contrib/snowball/lucene-snowball-${version}.jar"/>
+  <available property="snowball.jar.present" type="file" file="${snowball.jar}"/>
+-->
+  
+  <path id="classpath">
+    <pathelement path="${lucene.jar}"/>
+    <pathelement path="${highlighter.jar}"/>
+    <pathelement path="${benchmark.jar}"/>
+    <pathelement path="${snowball.jar}"/>    
+    <pathelement path="${project.classpath}"/>
+  </path>
+
+<!--
+   <target name="buildApertium-morph" depends="buildMemory,buildHighlighter,buildBenchmark,buildSnowball,default" />
+-->
+
+ <target name="compile" depends="buildApertium-morph, common.compile-core" />
+ 
+  <target name="buildApertium-morph" depends="buildMemory,buildHighlighter,buildBenchmark,default" />
+   <target name="buildMemory" >
+     <echo>Apertium-morph building dependency ${memory.jar}</echo>
+     <ant antfile="${common.dir}/contrib/memory/build.xml" target="default" inheritall="false"/>
+   </target>
+   
+   <target name="buildHighlighter" >
+     <echo>Apertium-morph building dependency ${highlighter.jar}</echo>
+     <ant antfile="${common.dir}/contrib/highlighter/build.xml" target="default" inheritall="false"/>
+   </target>
+   
+   <target name="buildBenchmark" >
+     <echo>Apertium-morph building dependency ${benchmark.jar}</echo>
+     <ant antfile="${common.dir}/contrib/benchmark/build.xml" target="default" inheritall="false"/>
+   </target>
+
+<!--
+   <target name="buildSnowball" >
+     <echo>Apertium-morph building dependency ${snowball.jar}</echo>
+     <ant antfile="${common.dir}/contrib/snowball/build.xml" target="default" inheritall="false"/>
+   </target>
+-->
+</project>
