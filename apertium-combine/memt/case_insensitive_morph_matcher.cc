@@ -32,8 +32,6 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
 {
     wstring l = wstring(left);
     wstring r = wstring(right);
-    to_lower(l);
-    to_lower(r);
     if (!l.compare(r))
         return 0;
 
@@ -41,6 +39,9 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
     wstring tr_right, tr_left;
     tr_right = fstp.biltrans(r, false);
     tr_left = fstp.biltrans(l, false);
+
+    to_lower(l);
+    to_lower(r);
 
     wcout << L"r: " << tr_right << endl;
     wcout << L"l: " << tr_left << endl;
