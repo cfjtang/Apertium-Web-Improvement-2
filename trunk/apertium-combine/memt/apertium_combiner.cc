@@ -12,6 +12,7 @@
 #include "minimal_crossing_aligner.hh"
 #include "case_insensitive_matcher.hh"
 #include "case_insensitive_stemmer_matcher.hh"
+#include "case_insensitive_morph_matcher.hh"
 
 using namespace std;
 
@@ -75,8 +76,9 @@ int main(int argc, char** argv)
 #endif
         Alignment alignment = Alignment(input_lines);
         /// This is where you can change the Matcher
-        Case_Insensitive_Matcher matcher;
+        //Case_Insensitive_Matcher matcher;
         //Case_Insensitive_Stemmer_Matcher matcher;
+        Case_Insensitive_Morph_Matcher matcher;
         alignment.match(matcher);
         /// This is where you can change the Aligner
         Max_Conseq_Aligner aligner;
