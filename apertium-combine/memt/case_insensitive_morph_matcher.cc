@@ -24,32 +24,18 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
     if (!l.compare(r))
         return 0;
 
+    readBil("/build/svnroot/apertium/trunk/apertium-cy-en/en-cy.automorf.bin");                                 
 
-    readBil("/home/fran/Source/apertium/trunk/apertium-cy-en/cy-en.automorf.bin");                                 
+    pair<wstring, int> tr_right;
+    pair<wstring, int> tr_left;
+    tr_right = fstp.biltransWithQueue(right, false);
+    tr_left = fstp.biltransWithQueue(left, false);
 
-    pair<wstring, int> tr;
-    tr = fstp.biltransWithQueue(*tmpword[0], false);
+    wcout << L"r: " << tr_right.first[0] << endl;
+    wcout << L"l: " << tr_left.first[0] << endl;
 
     
 
-    wstring sl;
-    if (l.size() > 5) {
-        sl = l.substr(0, l.size() - 3);
-        if (!sl.compare(r)) {
-            wcout << sl << " ** " << r << endl;
-            return 0;
-        }
-    }
-    if (r.size() > 5) {
-        wstring sr = r.substr(0, r.size() - 3);
-        if (!sr.compare(l)) {
-            wcout << sr << " ** " << l << endl;
-            return 0;
-        }
-        if (l.size() > 5)
-            if (!sr.compare(sl))
-                return 0;
-    }
     return 42;
 }
 
@@ -65,5 +51,7 @@ Case_Insensitive_Morph_Matcher::readBil(string const &fstfile)
   fstp.load(in);
   fstp.initBiltrans();
   fclose(in);
+
+  cerr << "Loaded transducer from " << fstfile << endl;
 }
 
