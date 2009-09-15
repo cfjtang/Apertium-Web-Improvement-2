@@ -26,15 +26,12 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
 
     readBil("/build/svnroot/apertium/trunk/apertium-cy-en/en-cy.automorf.bin");                                 
 
-    pair<wstring, int> tr_right;
-    pair<wstring, int> tr_left;
-    tr_right = fstp.biltransWithQueue(right, false);
-    tr_left = fstp.biltransWithQueue(left, false);
+    wstring tr_right, tr_left;
+    tr_right = fstp.biltrans(r, false);
+    tr_left = fstp.biltrans(l, false);
 
-    wcout << L"r: " << tr_right.first[0] << endl;
-    wcout << L"l: " << tr_left.first[0] << endl;
-
-    
+    wcout << L"r: " << tr_right << endl;
+    wcout << L"l: " << tr_left << endl;
 
     return 42;
 }
