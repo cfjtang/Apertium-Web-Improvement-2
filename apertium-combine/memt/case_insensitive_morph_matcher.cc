@@ -15,6 +15,19 @@ void inline to_lower(wstring& to_lower)
     return;
 }
 
+Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher()
+{
+
+    readBil("/build/svnroot/apertium/trunk/apertium-cy-en/en-cy.automorf.bin");                                 
+}
+
+Case_Insensitive_Morph_Matcher::~Case_Insensitive_Morph_Matcher()
+{
+
+}
+
+
+
 int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& right)
 {
     wstring l = wstring(left);
@@ -24,7 +37,6 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
     if (!l.compare(r))
         return 0;
 
-    readBil("/build/svnroot/apertium/trunk/apertium-cy-en/en-cy.automorf.bin");                                 
 
     wstring tr_right, tr_left;
     tr_right = fstp.biltrans(r, false);
