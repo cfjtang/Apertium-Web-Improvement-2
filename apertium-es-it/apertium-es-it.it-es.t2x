@@ -17,6 +17,9 @@
       <cat-item tags="PREP.*"/>
     </def-cat>
     
+    <def-cat n="rel">
+      <cat-item tags="rel.*"/>
+    </def-cat>
 
     <def-cat n="SV">
       <cat-item tags="SV.*"/>
@@ -118,7 +121,6 @@
       <attr-item tags="pl"/>
       <attr-item tags="sp"/>
       <attr-item tags="ND"/>
-      <attr-item tags="NN"/>
     </def-attr>
 
     <def-attr n="temps">
@@ -734,6 +736,33 @@
     </rule>
 
  
+  <rule comment="REGLA: rel"><!--de momento se pone en sg si es ND, luego lo refinaremos -->
+      <pattern>
+	<pattern-item n="rel"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
  
 <!--
     <rule comment="REGLA: SN vbcop SA">

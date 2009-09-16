@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tagger name="italian">
+
 <tagset>
   <def-label name="QUECNJ" closed="true">
     <tags-item lemma="che" tags="cnjsub"/>
@@ -165,28 +166,29 @@
   <def-label name="VSERIMP" closed="true">
     <tags-item tags="vbser.imp.*"/>
   </def-label>
-  <def-label name="VHABERINF" closed="true">
+
+  <def-label name="AVEREINF" closed="true">
     <tags-item tags="vbhaver.inf"/>
   </def-label>
-  <def-label name="VHABERGER" closed="true">
+  <def-label name="AVEREGER" closed="true">
     <tags-item tags="vbhaver.ger"/>
   </def-label>
-  <def-label name="VHABERPARTPI" closed="true">
+  <def-label name="AVEREPARTPI" closed="true">
     <tags-item tags="vbhaver.pp.*"/>
   </def-label>
-  <def-label name="VHABERPFCI" closed="true">
+  <def-label name="AVEREPFCI" closed="true">
     <tags-item tags="vbhaver.pri.*"/>
     <tags-item tags="vbhaver.fti.*"/>
     <tags-item tags="vbhaver.cni.*"/>
   </def-label>
-  <def-label name="VHABERIMP" closed="true">
+  <def-label name="AVEREIMP" closed="true">
     <tags-item tags="vbhaver.imp.*"/>
   </def-label>
-  <def-label name="VHABERIPI" closed="true">
+  <def-label name="AVEREIPI" closed="true">
     <tags-item tags="vbhaver.pii.*"/>
     <tags-item tags="vbhaver.ifi.*"/>
   </def-label>
-  <def-label name="VHABERSUBJ" closed="true">
+  <def-label name="AVERESUBJ" closed="true">
     <tags-item tags="vbhaver.prs.*"/>
     <tags-item tags="vbhaver.pis.*"/>
     <tags-item tags="vbhaver.fts.*"/>
@@ -346,22 +348,22 @@
   </def-mult>
   <def-mult name="INFHABERPRNENC" closed="true">
     <sequence>
-      <label-item label="VHABERINF"/>
+      <label-item label="AVEREINF"/>
       <label-item label="PRNENC"/>
     </sequence>
     <sequence>
-      <label-item label="VHABERINF"/>
+      <label-item label="AVEREINF"/>
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
   </def-mult>
   <def-mult name="GERHABERPRNENC" closed="true">
     <sequence>
-      <label-item label="VHABERGER"/>
+      <label-item label="AVEREGER"/>
       <label-item label="PRNENC"/>
     </sequence>
     <sequence>
-      <label-item label="VHABERGER"/>
+      <label-item label="AVEREGER"/>
       <label-item label="PRNENC"/>
       <label-item label="PRNENC"/>
     </sequence>
@@ -452,15 +454,15 @@
     </label-sequence>
     <label-sequence>
       <label-item label="PREP"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PREP"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PREP"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PREP"/>
@@ -524,19 +526,19 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
-      <label-item label="VHABERGER"/>
+      <label-item label="AVEREGER"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETM"/>
@@ -600,19 +602,19 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETF"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETF"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETF"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETF"/>
-      <label-item label="VHABERGER"/>
+      <label-item label="AVEREGER"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETF"/>
@@ -676,19 +678,19 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETMF"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETMF"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETMF"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETMF"/>
-      <label-item label="VHABERGER"/>
+      <label-item label="AVEREGER"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETMF"/>
@@ -736,11 +738,11 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETNT"/>
-      <label-item label="VHABERGER"/>
+      <label-item label="AVEREGER"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETNT"/>
-      <label-item label="VHABERINF"/>
+      <label-item label="AVEREINF"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETNT"/>
@@ -885,15 +887,15 @@
     </label-sequence>
     <label-sequence>
       <label-item label="VLEXIMP"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VLEXIMP"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VLEXIMP"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VLEXIMP"/>
@@ -957,15 +959,15 @@
     </label-sequence>
     <label-sequence>
       <label-item label="VSERIMP"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VSERIMP"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VSERIMP"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VSERIMP"/>
@@ -1029,15 +1031,15 @@
     </label-sequence>
     <label-sequence>
       <label-item label="VMODALIMP"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VMODALIMP"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VMODALIMP"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VMODALIMP"/>
@@ -1433,15 +1435,15 @@
     </label-sequence>
     <label-sequence>
       <label-item label="IMPLEXPRNENC"/>
-      <label-item label="VHABERPFCI"/>
+      <label-item label="AVEREPFCI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="IMPLEXPRNENC"/>
-      <label-item label="VHABERIPI"/>
+      <label-item label="AVEREIPI"/>
     </label-sequence>
     <label-sequence>
       <label-item label="IMPLEXPRNENC"/>
-      <label-item label="VHABERSUBJ"/>
+      <label-item label="AVERESUBJ"/>
     </label-sequence>
     <label-sequence>
       <label-item label="IMPLEXPRNENC"/>
@@ -1816,9 +1818,9 @@
         <label-item label="VSERPFCI"/>
         <label-item label="VSERIPI"/>
         <label-item label="VSERSUBJ"/>
-        <label-item label="VHABERPFCI"/>
-        <label-item label="VHABERIPI"/>
-        <label-item label="VHABERSUBJ"/>
+        <label-item label="AVEREPFCI"/>
+        <label-item label="AVEREIPI"/>
+        <label-item label="AVERESUBJ"/>
         <label-item label="VMODALPFCI"/>
         <label-item label="VMODALIPI"/>
         <label-item label="VMODALSUBJ"/>
@@ -1826,6 +1828,85 @@
     </enforce-after>
 
 
+    <enforce-after label="AVEREINF">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
+
+    <enforce-after label="AVEREGER">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
+    <enforce-after label="AVEREPARTPI">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
+
+    <enforce-after label="AVEREPFCI">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
+    <enforce-after label="AVEREIMP">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
+    <enforce-after label="AVEREIPI">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
+    <enforce-after label="AVERESUBJ">
+      <label-set>
+      <label-item label="VLEXPARTPI_SG"/>
+      <label-item label="VLEXPARTPI_PL"/>
+      <label-item label="VSERPARTPI"/>
+      <label-item label="AVEREPARTPI"/>
+      <label-item label="VMODALPARTPI"/>
+      <label-item label="PRNENCREF"/>
+      <label-item label="PRNENC"/>
+      </label-set>
+    </enforce-after>
   </enforce-rules>
 
   <preferences>
