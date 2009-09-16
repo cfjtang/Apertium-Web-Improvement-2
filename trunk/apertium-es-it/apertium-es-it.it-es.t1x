@@ -323,6 +323,7 @@
       <attr-item tags="rel"/>
       <attr-item tags="rel.nn"/>
       <attr-item tags="rel.aa"/>
+      <attr-item tags="rel.an"/>
       <attr-item tags="rel.adv"/>
       <attr-item tags="rel.adv"/>
       <attr-item tags="obj"/>
@@ -5511,8 +5512,31 @@
       </action>
     </rule>  -->
 
-
-  
+ <rule> <!-- REGLA: RELATIVO-->
+      <pattern>
+	<pattern-item n="rel"/>
+      </pattern>
+      <action> 
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="rel" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>	      
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="tipus_prn"/>
+	      <clip pos="1" side="tl" part="gen" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
  
   
 
