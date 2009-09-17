@@ -93,7 +93,34 @@ then disambiguated for part of speech by a bigram HMM part-of-speech tagger. Sub
 lexical transfer is performed by the same module that performs syntactic transfer. Syntactic
 transfer consists of matching fixed-length patterns of lexical units\footnote{A lexical unit 
 is a lemma and its part of speech and morphological information.} and performing operations
-such as insertions, removals and substitutions, along with concordancing.
+such as insertions, removals and substitutions, along with concordancing. Figure~\ref{fig:apertium}
+shows the main modules of the a given system built upon the platform.
+
+Two models of syntactic transfer are supported by the platform, both single-stage, where only
+one set of transfer rules is used, and three-stage where transfer rules are also used to 
+group words into \emph{chunks}, on which later operations can be performed. The Swedish--Danish
+pair uses the original, single stage transfer as a result of the closeness of the languages.
+
+
+\begin{figure*} {\small \setlength{\tabcolsep}{0.5mm}
+\begin{center}
+\begin{tabular}{cccccccc}
+\\
+\parbox{1.2cm}{SL text} $\rightarrow$ & \framebox{\parbox{1.7cm}{deformatter}} \\ 
+& $\downarrow$ \\
+& \framebox{\parbox{1.3cm}{morph. analyser}}  $\rightarrow$ & \framebox{\parbox{1.1cm}{POS tagger}} $\rightarrow$ & \framebox{\parbox{1.3cm}{structural\ transfer}} $\rightarrow$ & \framebox{\parbox{1.5cm}{morph. generator}}  $\rightarrow$ & \framebox{\parbox{1.3cm}{post\-generator}} & & \\
+& \parbox{1.3cm}{~} & \parbox{1.1cm}{~}  & $\updownarrow$ & & $\downarrow$ & &   \\
+& \parbox{1.3cm}{~} & \parbox{1.1cm}{~}  & \framebox{\parbox{1.3cm}{lexical\ transfer}} & & \framebox{\parbox{1.6cm}{reformatter}} \\
+& & & & &  $\downarrow$ \\
+& & & & &  \parbox{1.2cm}{TL text}\\\\
+\end{tabular}
+\end{center} }
+\caption{The eight modules of the shallow-transfer machine translation system}
+\label{fig:apertium}
+\end{figure*}
+
+
+
 
 \section{Development}
 
@@ -104,6 +131,16 @@ such as insertions, removals and substitutions, along with concordancing.
 % Mention the corpora ? 
 % For Swedish mention Wiktionary.
 % DSSO
+
+We were able to make use of a number of freely available sources of information for 
+constructing the system. Both Swedish and Danish have free, high coverage spell-checkers
+available in the \emph{aspell}\footnote{\url{http://aspell.net/}} project. These were used
+to provide lists of valid word forms for input into the \emph{Extract} \citep{Forsberg2006} 
+program, which attempts to generate matches between lemmas and inflectional paradigms
+based on full-form lists and extraction paradigms. 
+
+The Swedish, Danish and English Wiktionaries have a fair amount of information regarding
+both inflectional forms and translations between the two languages. 
 
 \subsection{Analysis and generation}
 
@@ -123,7 +160,7 @@ the same tools such that for each paradigm, any duplicates were removed. %% mayb
 
 Along with this, we also used \emph{Den stora svenska ordlistan} (DSSO),\footnote{\url{http://dsso.se}} 
 a free full-form lexicon of Swedish, and entries extracted from a the {\tt\small aspell} spelling
-dictionary of Swedish using the \emph{extract} tool \citep{forsberg2006}.
+dictionary of Swedish using the \emph{extract} tool \citep{Forsberg2006}.
 
 \subsection{Disambiguation}
 
