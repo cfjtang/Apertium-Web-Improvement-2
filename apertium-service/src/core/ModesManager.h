@@ -48,24 +48,23 @@
 
 #include <libxml++/libxml++.h>
 
-using namespace std;
 namespace fs = boost::filesystem;
 
 /**
  * The class Program is used to handle informations regarding a specific program present in the Apertium pipeline.
  */
 class Program {
-	friend ostream& operator<<(ostream& output, Program& p);
+	friend std::ostream& operator<<(std::ostream& output, Program& p);
 public:
 	Program();
-	Program(const string);
+	Program(const std::string);
 	virtual ~Program();
 
-	string getProgramName();
-	void setProgramName(const string);
+	std::string getProgramName();
+	void setProgramName(const std::string);
 
-	vector<string> getFileNames();
-	void setFileNames(const vector<string>);
+	std::vector<std::string> getFileNames();
+	void setFileNames(const std::vector<std::string>);
 
 	bool operator==(Program const& other) const {
         return programName == other.programName && fileNames == other.fileNames;
@@ -79,8 +78,8 @@ public:
 	}
 
 private:
-	string programName;
-	vector<string> fileNames;
+	std::string programName;
+	std::vector<std::string> fileNames;
 };
 
 /**
@@ -89,18 +88,18 @@ private:
 class Mode {
 public:
 	Mode();
-	Mode(const string);
+	Mode(const std::string);
 	virtual ~Mode();
 
-	string getModeName();
-	void setModeName(const string);
+	std::string getModeName();
+	void setModeName(const std::string);
 
-	vector<Program> getPrograms();
-	void setPrograms(const vector<Program>);
+	std::vector<Program> getPrograms();
+	void setPrograms(const std::vector<Program>);
 
 private:
-	string modeName;
-	vector<Program> programs;
+	std::string modeName;
+	std::vector<Program> programs;
 };
 
 /**
@@ -115,7 +114,7 @@ public:
 	ModesManager();
 	virtual ~ModesManager();
 
-	typedef boost::unordered_map<string, Mode> ModeMapType;
+	typedef boost::unordered_map<std::string, Mode> ModeMapType;
 
 	ModeMapType getModes();
 
@@ -125,8 +124,8 @@ public:
 private:
 	void parseXML(fs::path);
 
-	list<fs::path> findFilesBySuffix(const fs::path, const string);
-	list<fs::path> findFilesByRegex(const fs::path, const boost::regex);
+	std::list<fs::path> findFilesBySuffix(const fs::path, const std::string);
+	std::list<fs::path> findFilesByRegex(const fs::path, const boost::regex);
 
 	ModeMapType modes;
 };
