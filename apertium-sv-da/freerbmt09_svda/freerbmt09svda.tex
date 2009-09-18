@@ -1,8 +1,8 @@
-<spectie> PWER is position-independent word error rate
-<spectie> 3--4 is for you please :)
-<spectie> we need to make the evaluation
-<CIA-20> apertium: unhammer * r15394 /trunk/apertium-nn-nb/freerbmt09_nnnb/ (freerbmt09_nnnb.tex notes.org freerbmt09_nnnb.org): rename so I don't inadvertently overwrite anything
-<spectie> could you do that?
+%%<spectie> PWER is position-independent word error rate
+%%<spectie> 3--4 is for you please :)
+%%<spectie> we need to make the evaluation
+%%<CIA-20> apertium: unhammer * r15394 /trunk/apertium-nn-nb/freerbmt09_nnnb/ (freerbmt09_nnnb.tex notes.org freerbmt09_nnnb.org): rename so I don't inadvertently overwrite anything
+%%<spectie> could you do that?
 
 % File freebmt09.tex
 % July 23rd 2009
@@ -297,29 +297,55 @@ EuroParl   & 15,531,107 & 12,499,971 & 80.48\%\\
 
 \subsection{Quantitative}
 
+The quantitative evaluation involved the post-edition of 000 machine translated
+sentences from the Swedish Wikipedia. The sentences were selected from an 
+article on history, run through the machine translation system and then a human
+post-editor corrected the resulting Danish translation.
+
+%% See http://wiki.apertium.org/wiki/Category:Swedish_and_Danish/Evaluation
 \begin{table}
 \centering
 \begin{tabular}{|l|c|c|c|}
 \hline
 Corpus    & WER & PWER & Free rides\\
 \hline
-%% See http://wiki.apertium.org/wiki/Category:Swedish_and_Danish/Evaluation
-Wikipedia & 30 \pct & 28 \ptc  & 38 \pct \\
+Wikipedia & 30 \% & 28 \%  & 38 \% \\
 \hline
 \end{tabular}
     \caption{Evaluation results for the post-edition task}
     \label{table:quanteval}
 \end{table}
 
+Both word error rate (WER) and position-independent error rate (PWER) were 
+calculated by counting the number of insertions, substitutions and deletions
+between the post-editted text and the original translation.
+
+The results of this evaluation are shown in table~\ref{table:quanteval} and 
+indicate that the system is still not ready for being used in a post-edition 
+environment, where to correct a text with a word error rate of over 15\% takes
+longer than translation from scratch.
 
 \subsection{Qualitative}
 
+
+
 %% Principle downfalls -- treatment of supine when not written with auxilliary
 %% No support for compounds -- even if both words in the compound are in the dict.
+%% Low coverage -- what percentage of errors are due to unknown words ?
+%% NEED EXAMPLES FOR THESE
 
 \subsection{Comparative}
 
 %% Google, Gramtrans, Apertium -- 100 sentences each
+
+There are two existing proprietary machine translation systems online which translate 
+between Swedish and Danish, Gramtrans\footnote{\url{http://www.gramtrans.com}} and Google
+Translate\footnote{\url{http://translate.google.com}}. Gramtrans is a rule-based system
+built on top of constraint grammar, and Google Translate is a statistical machine translation
+system. To compare the results of the three systems, we selected 100 sentences and translated
+them with all of the systems, they were then post-editted and the WER and PWER calculated
+as in the quantitative evaluation. The results of this evaluation are shown in table~\ref{table:compeval}
+and show that FILL IN HERE
 
 \begin{table}
 \centering
@@ -354,7 +380,8 @@ words could be implemented.
 
 \section*{Acknowledgements}
 
-Development was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme.
+Development was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} 
+programme. Many thanks to Thyge Larsen for his assistance with post-edition and evaluation.
 
 \bibliographystyle{apalike}
 \bibliography{freerbmt09svda}
