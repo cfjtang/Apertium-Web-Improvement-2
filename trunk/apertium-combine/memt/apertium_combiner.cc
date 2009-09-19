@@ -11,15 +11,15 @@
 #include "parallel_scan_generator.hh"
 #include "minimal_crossing_aligner.hh"
 #include "case_insensitive_matcher.hh"
-#include "case_insensitive_stemmer_matcher.hh"
 #include "case_insensitive_morph_matcher.hh"
+#include "case_insensitive_stemmer_matcher.hh"
 
 using namespace std;
 
 void usage() 
 {
     wcout << 
-        "./combiner first_input second_input [third_input [fourth input [...]]]" 
+        "./combiner first_input second_input [third_input [...]]" 
         << endl;
 }
 

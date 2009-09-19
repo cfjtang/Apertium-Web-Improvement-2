@@ -8,7 +8,8 @@ bool inline find_aligned(std::list<std::pair<unsigned int, int> >& l,
 {
     for (std::list<std::pair<unsigned int, int> >::iterator it =
             l.begin(); it != l.end(); ++it) {
-        if (it->second == w && it->first == mt)
+// reads 0x000000c
+        if (it->second == w && it->first == mt) // BUS ERROR TODO
             return true;
     }
     return false;
