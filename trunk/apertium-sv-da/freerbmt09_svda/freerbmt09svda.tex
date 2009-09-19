@@ -1,7 +1,6 @@
 %%<spectie> PWER is position-independent word error rate
 %%<spectie> 3--4 is for you please :)
 %%<spectie> we need to make the evaluation
-%%<CIA-20> apertium: unhammer * r15394 /trunk/apertium-nn-nb/freerbmt09_nnnb/ (freerbmt09_nnnb.tex notes.org freerbmt09_nnnb.org): rename so I don't inadvertently overwrite anything
 %%<spectie> could you do that?
 
 % File freebmt09.tex
@@ -297,19 +296,19 @@ EuroParl   & 15,531,107 & 12,499,971 & 80.48\%\\
 
 \subsection{Quantitative}
 
-The quantitative evaluation involved the post-edition of 000 machine translated
-sentences from the Swedish Wikipedia. The sentences were selected from an 
-article on history, run through the machine translation system and then a human
+The quantitative evaluation involved the post-edition of 65 machine translated
+sentences (1151 words) from the Swedish Wikipedia. The sentences were selected from an 
+article on history, run through the Apertium machine translation system and then a human
 post-editor corrected the resulting Danish translation.
 
-%% See http://wiki.apertium.org/wiki/Category:Swedish_and_Danish/Evaluation
+%% See http://wiki.apertium.org/wiki/Swedish_and_Danish/Evaluation
 \begin{table}
 \centering
 \begin{tabular}{|l|c|c|c|}
 \hline
 Corpus    & WER & PWER & Free rides\\
 \hline
-Wikipedia & 30 \% & 28 \%  & 38 \% \\
+Wikipedia & 31 \% & 28 \%  & 38 \% \\
 \hline
 \end{tabular}
     \caption{Evaluation results for the post-edition task}
@@ -324,6 +323,7 @@ The results of this evaluation are shown in table~\ref{table:quanteval} and
 indicate that the system is still not ready for being used in a post-edition 
 environment, where to correct a text with a word error rate of over 15\% takes
 longer than translation from scratch.
+%% Francis: 15% ? How do you know? Reference.
 
 \subsection{Qualitative}
 
@@ -342,23 +342,53 @@ There are two existing proprietary machine translation systems online which tran
 between Swedish and Danish, Gramtrans\footnote{\url{http://www.gramtrans.com}} and Google
 Translate\footnote{\url{http://translate.google.com}}. Gramtrans is a rule-based system
 built on top of constraint grammar, and Google Translate is a statistical machine translation
-system. To compare the results of the three systems, we selected 100 sentences and translated
-them with all of the systems, they were then post-editted and the WER and PWER calculated
-as in the quantitative evaluation. The results of this evaluation are shown in table~\ref{table:compeval}
-and show that FILL IN HERE
+system. To compare the results of the three systems, we used the post-edited Danish text as a
+reference and compared translations for all of the systems as in the quantitative evaluation.
+This gives a small bias in favor of Apertium which must be taken into account when making conclusions.
+
+%% system. To compare the results of the three systems, we used the selected 100 sentences and translated
+%% them with all of the systems, they were then post-editted and the WER and PWER calculated
+%% as in the quantitative evaluation. The results of this evaluation are shown in table~\ref{table:compeval}
+%% and show that FILL IN HERE
+
+The results of this evaluation are shown in table~\ref{table:compeval} and show that, in spite 
+of the natural bias favoring the Apertium translation, Gramtrans scores better and Google 
+Translate does much worse than Apertium.
+
+Here is an example of the translations
+
+Original:
+"Det finns en kort överfart vid det baltiska havet vid Helsingborg, på vilket ställe Själland kan ses från Skåne, ett vanligt tillhåll för vikingar."
+
+Apertium:
+"Det findes en kort *överfart ved det *baltiska havet ved Helsingborg, på hvilket *ställe *Själland kan ses fra Skåne, et *vanligt tilhold før vikinger."
+
+Postedited:
+"Der findes en kort overfart ved det baltiske hav ved Helsingborg, på hvilket sted Sjælland kan ses fra Skåne, et sædvanligt tilholdssted for vikinger."
+
+Gramtrans:
+"Der findes en kort overfart ved det baltiske hav ved Helsingborg, på hvilket sted Själland kan ses fra Skåne, et sædvanligt tilhold for vikinger."
+
+Google:
+"Der er en kort passage i Østersøen i Helsingborg, i hvilken plads Zealand kan ses fra Scania, en regelmæssig tilholdssted for vikingerne."
+
+
+Google Translate is using English as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. But worse the meaning of the text is sometimes harder to percieve in Google Translate than in the original text.
+
+
 
 \begin{table}
 \centering
 \begin{tabular}{|l|c|c|c|}
 \hline
-System & WER & PWER & Free rides\\
+System & Edit distance & WER & PWER\\
 \hline
-Apertium  & -   & -    & -\\
-Google    & -   & -    & -\\
-Gramtrans & -   & -    & -\\
+Apertium  & 353   & 31    & 28 \\
+Gramtrans & 308   & 26    & 20 \\
+Google    & 557   & 48    & 33 \\
 \hline
 \end{tabular}
-    \caption{Comparative evaluation results for 100 sentences}
+    \caption{Comparative evaluation results for 65 sentences}
     \label{table:compeval}
 \end{table}
 
