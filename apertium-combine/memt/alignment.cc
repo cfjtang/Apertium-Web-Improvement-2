@@ -185,6 +185,7 @@ void Alignment::print_aligned()
             wcout << "} | ";
         }
         wcout << endl;
+        wcout << endl;
     }
 }
 
