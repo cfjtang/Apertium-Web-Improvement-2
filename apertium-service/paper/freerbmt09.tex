@@ -56,15 +56,11 @@ A possible solution to this problem consists in using a Machine
 Translation service (eventually using domain-specific dictionaries, rules etc.) to translate the free text from a language to
 another with an high accuracy, so that it's then possible to start extracting knowledge from it.\\
 
-{\bf Example:} The UMLS\textregistered Metathesaurus\textregistered, the largest thesaurus in the biomedical domain, provides a 
+{\bf Example:} MetaMap~\cite{metamap} is an application that allows mapping text to UMLS\textregistered 
+Metathesaurus\textregistered\footnote{The UMLS\textregistered Metathesaurus\textregistered, the largest thesaurus in the biomedical domain, provides a 
 representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-
-hierarchical relationships among the concepts. MetaMap~\cite{metamap} is an application that allows mapping text to UMLS\textregistered 
-Metathesaurus\textregistered~\cite{umls} concepts, which have proved to be useful for many applications, including decision support systems, 
-management of patient records, information retrieval and data mining within the biomedical domain. 
-
-Currently MetaMap is only available for English free text, which makes difficult the use of UMLS Metathesaurus to extract concepts from 
-biomedical texts written in languages different than English.
-
+hierarchical relationships among the concepts. ~\cite{umls}} concepts, which have proved to be useful for many applications, including decision support systems, 
+management of patient records, information retrieval and data mining within the biomedical domain.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -73,6 +69,11 @@ biomedical texts written in languages different than English.
 \caption{Business Process Model}
 \label{fig:mtsoa}
 \end{figure}
+
+Currently MetaMap is only available for English free text, which makes difficult the use of UMLS Metathesaurus to extract concepts from 
+biomedical texts written in languages different than English. A possible way to overcome this limitation consists in using Machine Translation
+techniques (possibly with dictionaries, rules, lexical selection techniques etc. specific for the biomedical domain) to translate the free text
+from its original language to English, and then process it as in \ref{fig:mtsoa}.
 
 \section{Service's Interface}
 
