@@ -57,7 +57,7 @@ Logger *Logger::Instance() {
 	return (ret);
 }
 
-Logger::Logger() : verbosity(1), useSyslog(false), useConsole(true) {
+Logger::Logger() : verbosity(1), useConsole(true) {
 	color[Err] = 31;
 	color[Info] = 32;
 	color[Notice] = 33;
@@ -65,6 +65,9 @@ Logger::Logger() : verbosity(1), useSyslog(false), useConsole(true) {
 	color[Debug] = 36;
 
 #if defined(HAVE_SYSLOG)
+
+	useSyslog = false;
+
 	::setlogmask(LOG_UPTO(LOG_DEBUG));
 	::openlog(PACKAGE_NAME, LOG_PID|LOG_CONS|LOG_ODELAY, LOG_USER);
 #endif
