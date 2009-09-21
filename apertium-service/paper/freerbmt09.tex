@@ -10,7 +10,7 @@
 \usepackage{url}
 \usepackage{latexsym}
 
-\title{Implementing an efficient and scalable RBMT service}
+\title{Implementing an efficient and scalable Machine Translation service}
 
 \author{Pasquale Minervini\\
   Department of Computer Science \\
@@ -40,9 +40,9 @@ in new and existing business processes RBMT service.
 \section{Introduction}
 
 Service Oriented Architecture is an architectural paradigm providing  a set of principles of governing concepts used during phases 
-of systems development and integration. In such an architecture functionalities are packaged as interoperable services that may be 
-used to build infrastructures enabling those with needs (consumers) and those with capabilities (providers) to interact across 
-different domains of technology and ownership.
+of systems development and integration. In such an architecture functionalities are packaged as interoperable, loosely coupled
+services that may be used to build infrastructures enabling those with needs (consumers) and those with capabilities (providers) 
+to interact across different domains of technology and ownership.
 
 Several new trends in the computer industry rely upon SOA as the enabling foundation, including the automation of Business Process 
 Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web 2.0~\cite{web20}.\\
@@ -57,10 +57,10 @@ Translation service (eventually using domain-specific dictionaries, rules etc.) 
 another with an high accuracy, so that it's then possible to start extracting knowledge from it.\\
 
 {\bf Example:} MetaMap~\cite{metamap} is an application that allows mapping text to UMLS\textregistered 
-Metathesaurus\textregistered\footnote{The UMLS\textregistered Metathesaurus\textregistered, the largest thesaurus in the biomedical domain, provides a 
-representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-
-hierarchical relationships among the concepts. ~\cite{umls}} concepts, which have proved to be useful for many applications, including decision support systems, 
-management of patient records, information retrieval and data mining within the biomedical domain.
+Metathesaurus\textregistered\footnote{The UMLS\textregistered Metathesaurus\textregistered, the largest thesaurus in the biomedical domain, 
+provides a representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-hierarchical 
+relationships among the concepts. ~\cite{umls}} concepts, which have proved to be useful for many applications, including decision support 
+systems, management of patient records, information retrieval and data mining within the biomedical domain.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -70,12 +70,35 @@ management of patient records, information retrieval and data mining within the 
 \label{fig:mtsoa}
 \end{figure}
 
-Currently MetaMap is only available for English free text, which makes difficult the use of UMLS Metathesaurus to extract concepts from 
-biomedical texts written in languages different than English. A possible way to overcome this limitation consists in using Machine Translation
-techniques (possibly with dictionaries, rules, lexical selection techniques etc. specific for the biomedical domain) to translate the free text
-from its original language to English, and then process it as in \ref{fig:mtsoa}.
+Currently MetaMap is only available for English free text, which makes difficult the use of UMLS\textregistered 
+Metathesaurus\textregistered to represent concepts from biomedical texts written in languages different than English.
+A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, 
+lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
+to English, and then process it as in Figure \ref{fig:mtsoa}.
 
-\section{Service's Interface}
+
+\section{Exposing the Service}
+
+Service's interface should allow to access to the following capabilities:
+
+\begin{description}
+  \item[translate], for the automatic translation of free text from a source language to a destination language;
+  \item[detect], for automatic language guessing;
+\end{description}
+
+In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications
+among services. A widely accepted technology for implementing SOA consists in using a technology called Web Services~\cite{soa}, defined by the W3C
+as defined by the W3C as ``a software system designed to support interoperable machine-to-machine interaction over a network. It has an interface 
+described in a machine-processable format (specifically WSDL). Other systems interact with the Web service in a manner prescribed by its description 
+using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\cite{wsgloss}. An
+alternative to SOAP is XML-RPC~\cite{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport mechanism.\\
+
+
+
+
+
+
+
 
 
 \section{Service's Internals}
@@ -88,8 +111,9 @@ from its original language to English, and then process it as in \ref{fig:mtsoa}
 \label{fig:rp}
 \end{figure}
 
-\section{Acknowledgements}
+\section*{Acknowledgements}
 
+Development was funded as part of the Google Summer of Code\footnote{\href{http://code.google.com/soc/}{http://code.google.com/soc/}} programme.
 
 
 \bibliographystyle{apalike}
