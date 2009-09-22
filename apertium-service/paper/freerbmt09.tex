@@ -10,18 +10,13 @@
 \usepackage{url}
 \usepackage{latexsym}
 
-\title{Implementing an efficient and scalable Machine Translation service}
+\title{Leveraging Service-Oriented Architectures through efficient and scalable Machine Translation services}
 
 \author{Pasquale Minervini\\
-  Department of Computer Science \\
-  Nonesuch State University \\
-  Utopia, NS 12345 \\
-  {\tt jane.doe@cs.nsu.edu} \And
-  John Smith \\
-  Department of Linguistics \\
-  Another State University \\
-  Collegetown, AS 98765 \\  
-  {\tt jsmith@ling.asu.edu}}
+  Dipartimento di Informatica \\
+  Università degli Studi di Bari \\
+  Via E. Orabona 4, 70125 Bari, Italy \\
+  {\tt p.minervini@gmail.com}}
 
 \date{}
 
@@ -32,9 +27,9 @@
 \begin{abstract}
 Service Oriented Architecture (SOA) is a paradigm for organizing and utilizing distributed services that may be under the 
 control of different ownership domains and implemented using various technology stacks. In some contexts, an organization
-using an IT infrastructure implementing the SOA paradigm can take a great benefit from an efficient Rule-Based Machine 
-Translation (RBMT) service. This paper describes the architecture used to develop an efficient, scalable and easy to integrate
-in new and existing business processes RBMT service; the service is based on Apertium, a free/open-source machine translation platform.
+using an IT infrastructure implementing the SOA paradigm can take a great benefit from an efficient Machine Translation (MT) service. 
+This paper describes the architecture used to develop a Machine Translation service that is efficient, scalable and easy to 
+integrate in new and existing business processes; our service relies on Apertium, a Free/Open-Source Rule-Based Machine Translation Platform.
 \end{abstract}
 
 \section{Introduction}
@@ -45,7 +40,7 @@ services that may be used to build infrastructures enabling those with needs (co
 to interact across different domains of technology and ownership.
 
 Several new trends in the computer industry rely upon SOA as the enabling foundation, including the automation of Business Process 
-Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web 2.0~\cite{web20}.\\
+Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web 2.0~\citep{web20}.\\
 
 In some contexts, an organization could take a great benefit by integrating a MT service in its IT infrastructure to overcome 
 language barriers; for example, a common problem arising when building a Knowledge Base starting from a corpus of free text for
@@ -56,10 +51,10 @@ A possible solution to this problem consists in using a Machine
 Translation service (eventually using domain-specific dictionaries, rules etc.) to translate the free text from a language to
 another with an high accuracy, so that it's then possible to start extracting knowledge from it.\\
 
-{\bf Example:} MetaMap~\cite{metamap} is an application that allows mapping text to UMLS\textregistered 
-Metathesaurus\textregistered\footnote{The UMLS\textregistered Metathesaurus\textregistered, the largest thesaurus in the biomedical domain, 
+{\bf Example:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS\textregistered 
+Metathesaurus\textregistered\footnote{The UMLS\textregistered Metathesaurus\textregistered~\citep{umls}, the largest thesaurus in the biomedical domain, 
 provides a representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-hierarchical 
-relationships among the concepts. ~\cite{umls}} concepts, which have proved to be useful for many applications, including decision support 
+relationships among the concepts.} concepts, which have proved to be useful for many applications, including decision support 
 systems, management of patient records, information retrieval and data mining within the biomedical domain.
 
 \begin{figure}[!ht]
@@ -76,9 +71,9 @@ A possible way to overcome this limitation consists in using RBMT techniques (po
 lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
 to English, and then process it as in Figure \ref{fig:mtsoa}.\\
 
-We realized a prototype service relying on Apertium~\cite{armentano05p}, a free/open-source machine translation platform being 
+We realized a prototype service relying on Apertium~\citep{armentano05p}, a free/open-source machine translation platform being 
 developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
-for its translation capabilities, and on N-Gram Based Text Categorization~\cite{textcat} for language detection.
+for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection.
 
 \section{Exposing the Service}
 
@@ -90,14 +85,49 @@ Service's interface should allow to access to the following capabilities:
 \end{description}
 
 In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications
-among services. A widely accepted technology for implementing SOA consists in using a technology called Web Services~\cite{soa}, defined by the W3C
+among services. A widely accepted technology for implementing SOA consists in using a technology called Web Services~\citep{soa}, defined by the W3C
 as defined by the W3C as ``a software system designed to support interoperable machine-to-machine interaction over a network. It has an interface 
 described in a machine-processable format (specifically WSDL). Other systems interact with the Web service in a manner prescribed by its description 
-using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\cite{wsgloss}. An
-alternative to SOAP is XML-RPC~\cite{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport mechanism.\\
+using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\citep{wsgloss}. An
+alternative to SOAP is XML-RPC~\citep{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport 
+mechanism.\\
 
 \section{Service's Internals}
 
+A \emph{Translation Process} can be considered as the following sequence of steps:
+
+\begin{itemize}
+ \item \emph{Decoding} the meaning of the source text;
+ \item \emph{Re-Encoding} this meaning in the destination language.
+\end{itemize}
+
+Behind this apparently simple procedure, there's a complex cognitive operation: to decode the meaning of some free text in its entirety, the translator
+needs to interpret and analyse all the features present in the text, which requires in-depth knowledge of \emph{grammar}, \emph{semantics}, \emph{syntax},
+\emph{idioms} etc. of both source and destination languages and the culture of their speakers.\\
+
+For this reason, according to \citep{arnoldea} often Machine Translation engines make use, during the translation process, of 
+\emph{intermediate representations} (such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the 
+correct translation. 
+In general, systems following those criteria, apply a set of \emph{linguistic rules} during the translation process, which are defined as correspondances 
+between the structure of the source language and the structure of the destination language. Therefore, the translation is obtained by analysing the source 
+text for morphology and syntax (and eventually semantics) to create an intermediate representation, and then by using bilingual dictionaries and grammatical
+rules.\\
+
+
+Specifically, Apertium uses Finite-State Transducers for lexical processing, Hidden Markov Models for Part-of-Speech tagging and Finite-State-Based Chunking
+for structural transfer. Its translation engine consists of an \emph{assembly line}, composed by the following modules: 
+
+\begin{itemize}
+ \item[Formatters], which handles format-specific information respect to text to be translated;
+ \item[Morphological Analyser], which tokenizes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms}
+  consisting of lemma, lexical category and informations about morphological inflection;
+ \item[Part-of-Speech Tagger], which chooses one of the analyses of an ambiguous word, according to its context;
+ \item[Lexical Transfer Module], which reads each lexical form of the surface form and delivers the corrisponding destination language lexical form;
+ \item[Structural Transfer Module], which detects and processes patterns of words that need special processing due to grammatical divergences between two
+  languages;
+ \item[Morphological Generator] that, from a lexical form in the destination language, generates a suitably inflected surface form;
+ \item[Post-Generator], that performs some orthographic operations in the destination language such as contractions;
+\end{itemize}
 
 
 \begin{figure}[!ht]
@@ -110,9 +140,8 @@ alternative to SOAP is XML-RPC~\cite{xmlrpcspec}, a remote procedure call protoc
 
 \section*{Acknowledgements}
 
-Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme. In addition, I'm
-grateful to Jimmy O'Regan, Francis Tyers and others in The Apertium Project for constant help.
-
+Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme. 
+In addition, many greetings go to Jimmy O'Regan, Francis Tyers and others involved in The Apertium Project, for their constant help.
 
 \bibliographystyle{apalike}
 \bibliography{freerbmt09}
