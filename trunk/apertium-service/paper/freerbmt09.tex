@@ -34,7 +34,7 @@ Service Oriented Architecture (SOA) is a paradigm for organizing and utilizing d
 control of different ownership domains and implemented using various technology stacks. In some contexts, an organization
 using an IT infrastructure implementing the SOA paradigm can take a great benefit from an efficient Rule-Based Machine 
 Translation (RBMT) service. This paper describes the architecture used to develop an efficient, scalable and easy to integrate
-in new and existing business processes RBMT service.
+in new and existing business processes RBMT service; the service is based on Apertium, a free/open-source machine translation platform.
 \end{abstract}
 
 \section{Introduction}
@@ -74,8 +74,11 @@ Currently MetaMap is only available for English free text, which makes difficult
 Metathesaurus\textregistered to represent concepts from biomedical texts written in languages different than English.
 A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, 
 lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
-to English, and then process it as in Figure \ref{fig:mtsoa}.
+to English, and then process it as in Figure \ref{fig:mtsoa}.\\
 
+We realized a prototype service relying on Apertium~\cite{armentano05p}, a free/open-source machine translation platform being 
+developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
+for its translation capabilities, and on N-Gram Based Text Categorization~\cite{textcat} for language detection.
 
 \section{Exposing the Service}
 
@@ -93,15 +96,9 @@ described in a machine-processable format (specifically WSDL). Other systems int
 using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\cite{wsgloss}. An
 alternative to SOAP is XML-RPC~\cite{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport mechanism.\\
 
-
-
-
-
-
-
-
-
 \section{Service's Internals}
+
+
 
 \begin{figure}[!ht]
 \begin{center}
@@ -113,7 +110,8 @@ alternative to SOAP is XML-RPC~\cite{xmlrpcspec}, a remote procedure call protoc
 
 \section*{Acknowledgements}
 
-Development was funded as part of the Google Summer of Code\footnote{\href{http://code.google.com/soc/}{http://code.google.com/soc/}} programme.
+Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme. In addition, I'm
+grateful to Jimmy O'Regan, Francis Tyers and others in The Apertium Project for constant help.
 
 
 \bibliographystyle{apalike}
