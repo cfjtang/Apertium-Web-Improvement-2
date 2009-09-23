@@ -63,8 +63,8 @@ int main(int argc, char** argv)
     
     /// You can instantiate another derivation of Ranker here, 
     /// that should be the only change for switching the ranker
-    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
-    //Dummy_Ranker* r = new Dummy_Ranker();
+    //IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+    Dummy_Ranker* r = new Dummy_Ranker();
 
     while(condition) {
         wcout << endl;

@@ -3,11 +3,17 @@
 
 using namespace std;
 
+/**
+ * Find in the [mtarg][wordarg]._aligned list passed as l if a word is [mt][w]
+ */
 bool inline find_aligned(std::list<std::pair<unsigned int, int> >& l, 
         const unsigned int mt, const int w)
 {
+    if (l.empty()) return false;
     for (std::list<std::pair<unsigned int, int> >::iterator it =
             l.begin(); it != l.end(); ++it) {
+        //wcout << it->first 
+        //    << it->second << endl;
 // reads 0x000000c
         if (it->second == w && it->first == mt) // BUS ERROR TODO
             return true;
