@@ -2756,7 +2756,7 @@
 		<action>
 			<let>
 				<clip pos="1" side="tl" part="lemh"/>
-				<lit v="biti"/>
+				<lit v="b\iti"/>
 			</let>
 			
 			<out>
@@ -2776,7 +2776,7 @@
 		<action>
 			<let>
 				<clip pos="1" side="tl" part="lemh"/>
-				<lit v="biti"/>
+				<lit v="b\iti"/>
 			</let>
 			
 			<out>
@@ -2821,7 +2821,7 @@
 	
 	
 	
-	<!-- REGLA: passato 1 --> 
+	<!-- REGLA: passato 1 bil sem--> 
 	<rule> 
 		<pattern>
 			<pattern-item n="vbserpast"/>
@@ -2848,7 +2848,7 @@
 		</action>
 	</rule>
 	
-	<!-- REGLA: passato 2 --> 
+	<!-- REGLA: passato 2 sem bil--> 
 	<rule> 
 		<pattern>
 			<pattern-item n="vbserpres"/>
@@ -3006,6 +3006,32 @@
 		</action>
 	</rule>
 	
+	<!-- REGLA: futuro 4 jutri bo lep dan-->
+	<rule> 
+		<pattern>
+			<pattern-item n="vbserfti"/>
+		</pattern>
+		<action>
+			<let>
+				<clip pos="1" side="tl" part="temps"/>
+				<lit-tag v="pres"/>
+			</let>
+			<out>
+				<lu>
+					<lit v="ќе"/>
+					<lit-tag v="part"/>
+				</lu>
+				<b pos="1"/>
+				<lu> 
+					<clip pos="1" side="tl" part="lemh"/>
+					<clip pos="1" side="tl" part="a_vbser"/>
+					<clip pos="1" side="tl" part="temps"/>
+					<clip pos="1" side="tl" part="persona"/>
+					<clip pos="1" side="tl" part="nbr"/>
+				</lu>
+			</out>
+		</action>
+	</rule>
 	<!-- OK REGLA: futuro 1 bom si kupil from error-->
 	<rule> 
 		<pattern>
@@ -3116,7 +3142,7 @@
 			</out>
 		     </action>
 	     </rule>
-	     
+	     <!-- REGLA: ???-->
 	     <rule> 
 		     <pattern>
 			     <pattern-item n="prn_se"/>
@@ -3135,6 +3161,7 @@
 			     </out>
 		     </action>
 	     </rule>
+	     <!-- REGLA: ???-->
 	     <rule> 
 		     <pattern>
 			     <pattern-item n="vblex"/>
