@@ -51,25 +51,26 @@ A possible solution to this problem consists in using a Machine
 Translation service (eventually using domain-specific dictionaries, rules etc.) to translate the free text from a language to
 another with an high accuracy, so that it's then possible to start extracting knowledge from it.\\
 
-{\bf Example:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS\textregistered 
-Metathesaurus\textregistered\footnote{The UMLS\textregistered Metathesaurus\textregistered~\citep{umls}, the largest thesaurus in the biomedical domain, 
-provides a representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-hierarchical 
-relationships among the concepts.} concepts, which have proved to be useful for many applications, including decision support 
-systems, management of patient records, information retrieval and data mining within the biomedical domain.
+{\bf Example:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mbox{\small\textregistered}}$ 
+Metathesaurus$^{\mbox{\small\textregistered}}$\footnote{The UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$~\citep{umls}, 
+the largest thesaurus in the biomedical domain, provides a representation of biomedical knowledge consisting of concepts classified by semantic 
+type and both hierarchical and non-hierarchical relationships among the concepts.} concepts, which have proved to be useful for many applications, 
+including decision support systems, management of patient records, information retrieval and data mining within the biomedical domain.
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=7.5cm]{mtsoa}
 \end{center}
-\caption{Business Process Model}
+\caption{Representation of a business process in which a clinical document, if written in a language different than English, is fist translated
+  to English and then processed using MetaMap to extract UMLS$^{\mbox{\small\textregistered}}$ concepts.}
 \label{fig:mtsoa}
 \end{figure}
 
-Currently MetaMap is only available for English free text, which makes difficult the use of UMLS\textregistered 
-Metathesaurus\textregistered to represent concepts from biomedical texts written in languages different than English.
+Currently MetaMap is only available for English free text, which makes difficult the use of UMLS$^{\mbox{\small\textregistered}}$ 
+Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages different than English.
 A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, 
 lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
-to English, and then process it as in Figure \ref{fig:mtsoa}.\\
+to English, and then process it as in Figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.\\
 
 We realized a prototype service relying on Apertium~\citep{armentano05p}, a free/open-source machine translation platform being 
 developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
@@ -77,11 +78,11 @@ for its translation capabilities, and on N-Gram Based Text Categorization~\citep
 
 \section{Exposing the Service}
 
-Service's interface should allow to access to the following capabilities:
+Service's interface should provide access to the following capabilities:
 
 \begin{description}
-  \item[translate], for the automatic translation of free text from a source language to a destination language;
-  \item[detect], for automatic language guessing;
+  \item[Translation], for automatic translation of free text from a source language to a destination language;
+  \item[Language Detection], for automatic language guessing of free text;
 \end{description}
 
 In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications
@@ -92,14 +93,16 @@ using SOAP-messages, typically conveyed using HTTP with an XML serialization in 
 alternative to SOAP is XML-RPC~\citep{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport 
 mechanism.\\
 
+For our service, we decided to provide XML-RPC, SOAP and REST interfaces.
+
 \section{Service's Internals}
 
 A \emph{Translation Process} can be considered as the following sequence of steps:
 
-\begin{itemize}
- \item \emph{Decoding} the meaning of the source text;
- \item \emph{Re-Encoding} this meaning in the destination language.
-\end{itemize}
+\begin{description}
+ \item[Decoding] the meaning of the source text;
+ \item[Re-Encoding] this meaning in the destination language.
+\end{description}
 
 Behind this apparently simple procedure, there's a complex cognitive operation: to decode the meaning of some free text in its entirety, the translator
 needs to interpret and analyse all the features present in the text, which requires in-depth knowledge of \emph{grammar}, \emph{semantics}, \emph{syntax},
@@ -113,11 +116,10 @@ between the structure of the source language and the structure of the destinatio
 text for morphology and syntax (and eventually semantics) to create an intermediate representation, and then by using bilingual dictionaries and grammatical
 rules.\\
 
-
 Specifically, Apertium uses Finite-State Transducers for lexical processing, Hidden Markov Models for Part-of-Speech tagging and Finite-State-Based Chunking
 for structural transfer. Its translation engine consists of an \emph{assembly line}, composed by the following modules: 
 
-\begin{itemize}
+\begin{description}
  \item[Formatters], which handles format-specific information respect to text to be translated;
  \item[Morphological Analyser], which tokenizes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms}
   consisting of lemma, lexical category and informations about morphological inflection;
@@ -127,7 +129,7 @@ for structural transfer. Its translation engine consists of an \emph{assembly li
   languages;
  \item[Morphological Generator] that, from a lexical form in the destination language, generates a suitably inflected surface form;
  \item[Post-Generator], that performs some orthographic operations in the destination language such as contractions;
-\end{itemize}
+\end{description}
 
 
 \begin{figure}[!ht]
