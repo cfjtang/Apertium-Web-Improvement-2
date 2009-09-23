@@ -34,13 +34,14 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
     wstring r = wstring(right);
     to_lower(l);
     to_lower(r);
-    if (!l.compare(r))
-        return 0;
+    if (!l.compare(r)) {
+        return 1;
+    }
 
     wstring tr_right, tr_left;
     tr_right = fstp.biltrans(r, false);
     tr_left = fstp.biltrans(l, false);
-    wstring::size_type first = tr_left.find(L"<");
+    /* wstring::size_type first = tr_left.find(L"<");
     wstring::size_type end = tr_left.find(L">");
     while (first != string::npos) {
         end = tr_left.find(L">");
@@ -52,14 +53,30 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
         end = tr_right.find(L">");
         tr_right.erase(first, end-first+1);
         first = tr_right.find(L"<");
+    }*/
+    // TODO HAVE TO FIX IT
+    // TODO HAVE TO FIX IT
+    // TODO HAVE TO FIX IT
+    wstring::size_type lasts = wstring::npos;
+    lasts = tr_left.find_first_of(L"<vblex>");
+    bool lleft = false;
+    if (lasts != wstring::npos) {
+        tr_left.erase(lasts, tr_left.size() - 1);
+        lleft = true;
+        lasts = tr_right.find_first_of(L"<vblex>");
+        if (lasts != wstring::npos)
+            tr_right.erase(lasts, tr_right.size() - 1);
+
+        wcout << L"r: " << tr_right << endl;
+        wcout << L"l: " << tr_left << endl;
+        if (lleft && lasts != wstring::npos) { 
+           if (!tr_left.compare(tr_right)) {
+                wcout << "00000000000000000000000000" << endl;
+                return 1;
+           }
+        }
     }
-
-    wcout << L"r: " << tr_right << endl;
-    wcout << L"l: " << tr_left << endl;
-    if (!tr_left.compare(tr_right))
-        return 0;
-
-    return 42;
+    return 0;
 }
 
 void Case_Insensitive_Morph_Matcher::readBil(string const &fstfile)
