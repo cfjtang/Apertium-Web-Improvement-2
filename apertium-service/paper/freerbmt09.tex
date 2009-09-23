@@ -32,6 +32,7 @@ This paper describes the architecture used to develop a Machine Translation serv
 integrate in new and existing business processes; our service relies on Apertium, a Free/Open-Source Rule-Based Machine Translation Platform.
 \end{abstract}
 
+
 \section{Introduction}
 
 Service Oriented Architecture is an architectural paradigm providing  a set of principles of governing concepts used during phases 
@@ -76,6 +77,7 @@ We realized a prototype service relying on Apertium~\citep{armentano05p}, a free
 developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
 for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection.
 
+
 \section{Exposing the Service}
 
 Service's interface should provide access to the following capabilities:
@@ -94,6 +96,7 @@ alternative to SOAP is XML-RPC~\citep{xmlrpcspec}, a remote procedure call proto
 mechanism.\\
 
 For our service, we decided to provide XML-RPC, SOAP and REST interfaces.
+
 
 \section{Service's Internals}
 
@@ -130,6 +133,15 @@ for structural transfer. Its translation engine consists of an \emph{assembly li
  \item[Morphological Generator] that, from a lexical form in the destination language, generates a suitably inflected surface form;
  \item[Post-Generator], that performs some orthographic operations in the destination language such as contractions;
 \end{description}
+
+In general, those modules often rely on resources whose acquisition and release is expensive: for example, production rule systems relying on \emph{RETE}-like 
+pattern matching algorithms~\citep{forgy} build a network of nodes during the acquisition of a set of rules, and this process has usually a relatively
+elevated computational cost; in addition, resources as dictionaries are often mapped, during their acquisition, to hash tables, to reduce the
+computational complexity of lookup operations, which also are computationally expensive, in time, to create (because of the repeated use of
+the hashing functions, collision handling etc.).\\
+
+To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001},
+
 
 
 \begin{figure}[!ht]
