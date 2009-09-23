@@ -137,10 +137,6 @@
       <cat-item lemma="caber" tags="vblex.*"/>
     </def-cat>
 
-    <def-cat n="pplex">
-      <cat-item tags="vblex.pp.*"/>
-     </def-cat>
-
     <def-cat n="pp">
       <cat-item tags="vblex.pp.*"/>
       <cat-item tags="vbser.pp.*"/>
@@ -583,38 +579,15 @@
 
 
   <section-def-macros>
-  <!--  <def-macro n="f_lexicadj" npar="1">  MG: adaptar a it-es
+    <def-macro n="f_lexicadj" npar="1">  
+     
       <choose>
 	<when>
 	  <test>
 	    <and>
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
-		<lit v="bon"/>
-	      </equal>
-	      <equal>
-		<clip pos="1" side="tl" part="gen"/>
-		<lit-tag v="m"/>
-	      </equal>
-	      <equal>
-		<clip pos="1" side="tl" part="nbr"/>
-		<lit-tag v="sg"/>
-	      </equal>
-	    </and>
-	  </test>
-	  <let>
-	    <clip pos="1" side="tl" part="lem"/>
-	    <lit v="buen"/>
-	  </let>
-	</when>
-      </choose>
-      <choose>
-	<when>
-	  <test>
-	    <and>
-	      <equal caseless="yes">
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="grand"/>
+		<lit v="grande"/>
 	      </equal>
 	      <equal>
 		<clip pos="1" side="tl" part="nbr"/>
@@ -634,7 +607,7 @@
 	    <and>
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
-		<lit v="premier"/>
+		<lit v="primo"/>
 	      </equal>
 	      <equal>
 		<clip pos="1" side="tl" part="gen"/>
@@ -658,27 +631,7 @@
 	    <and>
 	      <equal caseless="yes">
 		<clip pos="1" side="sl" part="lem"/>
-		<lit v="mauvais"/>
-	      </equal>
-	      <equal> 
-		<clip pos="1" side="tl" part="gen"/>
-		<lit-tag v="m"/>
-	      </equal>
-	    </and>
-	  </test>
-	  <let>
-	    <clip pos="1" side="tl" part="lem"/>
-	    <lit v="mal"/>
-	  </let>
-	</when>
-      </choose>
-      <choose>
-	<when>
-	  <test>
-	    <and>
-	      <equal caseless="yes">
-		<clip pos="1" side="sl" part="lem"/>
-		<lit v="troisième"/>
+		<lit v="terzo"/>
 	      </equal>
 	      <equal> 
 		<clip pos="1" side="tl" part="nbr"/>
@@ -692,7 +645,7 @@
 	  </let>
 	</when>
       </choose>
-    </def-macro> -->
+    </def-macro>
 
  
 	   
@@ -3792,6 +3745,9 @@
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="1"/>
 	</call-macro>
 	<out>
 	  <chunk name="adj_nom" case="caseFirstWord">
@@ -3840,6 +3796,9 @@
 	  <with-param pos="4"/>
 	  <with-param pos="3"/>
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="3"/>
 	</call-macro>
 	<out>
 	  <chunk name="det_adv_adj_nom" case="caseFirstWord">
@@ -4190,6 +4149,9 @@
 	  <with-param pos="3"/>
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="2"/>
 	</call-macro>
 	<out>
 	  <chunk name="det_adj_nom" case="caseFirstWord">
@@ -4249,6 +4211,12 @@
 	  <with-param pos="2"/>
 	  <with-param pos="4"/>
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="4"/>
 	</call-macro>
 	<out>
 	  <chunk name="det_adj_cnjcoo_adj_nom" case="caseFirstWord">
@@ -4321,6 +4289,9 @@
 	  <with-param pos="4"/>
 	  <with-param pos="3"/>
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="3"/>
 	</call-macro>
 	<out>
 	  <chunk name="num_adv_adj_nom" case="caseFirstWord">
@@ -4381,6 +4352,9 @@
 	  <with-param pos="3"/>
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="2"/>
 	</call-macro>
 	<out>
 	  <chunk name="num_adj_nom" case="caseFirstWord">
@@ -4440,6 +4414,12 @@
 	</call-macro>	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="f_lexicadj">
+	  <with-param pos="4"/>
 	</call-macro>
 	<out>
 	  <chunk name="num_adj_cnjcoo_adj_nom" case="caseFirstWord">
@@ -5215,7 +5195,7 @@
  <rule comment="REGLA: ESSERE PP ">
       <pattern>
 	<pattern-item n="essere"/>
-	<pattern-item n="pplex"/>
+	<pattern-item n="pp"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -5253,7 +5233,11 @@
 	  <otherwise>
 	    <let>
 	      <var n="lemachunk"/>
-	      <lit v="ser_pp"/>
+	      <lit v="estar_pp"/>
+	    </let>
+	    <let>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <lit v="estar"/>
 	    </let>
 	  </otherwise>
 	</choose>
