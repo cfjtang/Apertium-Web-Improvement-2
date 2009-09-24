@@ -351,36 +351,56 @@ This gives a small bias in favour of Apertium which must be taken into account w
 
 The results of this evaluation are shown in table~\ref{table:compeval} and show that, in spite 
 of the natural bias favouring the Apertium translation, Gramtrans scores better and Google 
-Translate does much worse than Apertium.
+Translate does much worse than Apertium. 
 
-Here is an example of the translations
+As can be seen from table~\ref{table:extranslations}, Gramtrans has a much higher coverage lexicon 
+than the Apertium system, and this leads to less errors overall. That being said, the Gramtrans
+and the Apertium output is very similar, and seem to be following a similar \emph{direct} translation strategy. The 
+Google Translate output, however, is quite different from the other two, and contains English 
+artefacts \emph{överfart} translated as `passage'. 
 
-Original:
-"Det finns en kort överfart vid det baltiska havet vid Helsingborg, 
-på vilket ställe Själland kan ses från Skåne, ett vanligt tillhåll för vikingar."
+%%While Gramtrans and Apertium is translating directly, Google Translate is using English 
+%%as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. 
+%%For most Danes the meaning of the text would be harder to percieve in Google Translate than in the original text.
 
-Apertium:
-"Det findes en kort *överfart ved det *baltiska havet ved Helsingborg, 
-på hvilket *ställe *Själland kan ses fra Skåne, et *vanligt tilhold før vikinger."
-(unknown words marked with a *)
-
-Postedited:
-"Der findes en kort overfart ved det baltiske hav ved Helsingborg, 
-på hvilket sted Sjælland kan ses fra Skåne, et sædvanligt tilholdssted for vikinger."
-
-Gramtrans:
-"Der findes en kort overfart ved det baltiske hav ved Helsingborg, 
-på hvilket sted Själland kan ses fra Skåne, et sædvanligt tilhold for vikinger."
-
-Google:
-"Der er en kort passage i Østersøen i Helsingborg, i hvilken plads 
-Zealand kan ses fra Scania, en regelmæssig tilholdssted for vikingerne."
-
-While Gramtrans and Apertium is translating directly, Google Translate is using English 
-as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. 
-For most Danes the meaning of the text would be harder to percieve in Google Translate than in the original text.
-
-
+%% With this table I would like to show the original, each of the three translations (with a gloss)
+%% and the post-editions. This will hopefully illustrate how different Google -- e.g. paraphrasing -- is from the rest.
+\begin{table*}
+ \begin{tabular}{|c|l|l|}
+\hline
+           & Translation                                & Gloss \\
+\hline
+Original   & \emph{Det finns en kort överfart vid}      & There is a short passage by \\
+~          & \emph{det baltiska havet vid Helsingborg,} & the Baltic Sea by Helsingborg  \\
+~          & \emph{på vilket ställe Själland kan ses }  & from which Själland is visible \\ 
+~          & \emph{från Skåne, ett vanligt tillhåll }   & from Skåne, a place commonly frequented \\ 
+~          & \emph{för vikingar.}                       & by Vikings.\\
+\hline
+Apertium   & Det findes en kort \emph{överfart} ved           & A short \emph{överfart} is found by \\
+~          & det \emph{baltiska} havet ved Helsingborg,       & the \emph{baltiska} Sea by Helsinborg, \\
+~          & på hvilket \emph{ställe} \emph{Själland} kan ses & from which \emph{Själland} is visible \\
+~          & fra Skåne, et \emph{vanligt} tilhold             & from Skåne, a \emph{vanligt} place frequented \\
+~          & før vikinger.                                    & by Vikings.\\               
+\hline
+Gramtrans  & Der findes en kort overfart ved                  & A short passage is found by \\
+~          & det baltiske hav ved Helsingborg,                & the Baltic Sea by Helsingborg, \\
+~          & på hvilket sted \emph{Själland} kan ses          & from which \emph{Själland} is visible \\
+~          & fra Skåne, et sædvanligt tilhold                 & from Skåne, a place commonly frequented \\
+~          & for vikinger.                                    & by Vikings. \\
+\hline
+Google     & Der er en kort \emph{passage} i                  & There is a short \emph{passage} in \\
+~          & Østersøen i Helsingborg,                         & Baltic Sea in Helsingborg, \\
+~          & i hvilken plads \emph{Zealand} kan ses           & - - - \emph{Zealand} is visible \\
+~          & fra \emph{Scania}, en regelmæssig tilholdssted   & from \emph{Scania}, a - - \\
+~          & for vikingerne.                                  & for the Vikings. \\
+\hline 
+%%Postedited & Der findes en kort overfart ved det baltiske hav ved Helsingborg,  \\
+%%~          & på hvilket sted Sjælland kan ses fra Skåne, et sædvanligt tilholdssted for vikinger.\\
+%%\hline  
+\end{tabular}
+ \label{table:extranslations}
+ \caption{Comparison of the three systems for a single sentence.}
+\end{table*}
 
 \begin{table}
 \centering
@@ -401,7 +421,8 @@ Google    & 557   & 48    & 33 \\
 
 We have presented results from the first free-software translator of Swedish to Danish. This
 is also the first translator between two Germanic languages to be released as part of the 
-Apertium platform. 
+Apertium platform. The performance of the system for the postedition task is somewhere in between 
+two commercial competitors. 
 
 In terms of future work, we intend to reverse the direction to also translate from Danish to 
 Swedish, to improve the vocabulary coverage, and to improve part-of-speech disambiguation. There
