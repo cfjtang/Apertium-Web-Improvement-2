@@ -99,7 +99,7 @@ lexical transfer is performed by the same module that performs syntactic transfe
 transfer consists of matching fixed-length patterns of lexical units\footnote{A lexical unit 
 is a lemma and its part of speech and morphological information.} and performing operations
 such as insertions, removals and substitutions, along with concordancing. Figure~\ref{fig:apertium}
-shows the main modules of the a given system built upon the platform.
+shows the main modules of a given system built upon the platform.
 
 Two models of syntactic transfer are supported by the platform, both single-stage, where only
 one set of transfer rules is used, and three-stage where transfer rules are also used to 
@@ -162,7 +162,7 @@ the same tools such that for each paradigm, any duplicates were removed. %% mayb
 
 Along with this, we also used \emph{Den stora svenska ordlistan} (DSSO),\footnote{\url{http://dsso.se}} 
 a free full-form lexicon of Swedish, and entries extracted from a the {\tt\small aspell} spelling
-dictionary of Swedish using the \emph{extract} tool \citep{Forsberg2006}.
+dictionary of Swedish using the \emph{extract} tool.
 
 \subsection{Disambiguation}
 
@@ -235,6 +235,8 @@ between the two languages. These were principally motivated by:
     auxiliary verb in forming periphrastic verb forms as in Danish, for example in Swedish \emph{Två 
     personer har förts} `Two people have been' translated to Danish \emph{To personer er ført} `Two people 
     have been' (literally, `Two people are been') 
+%%XXX better example than  Två personer har förts needed
+
   \item  Changes in passive formation -- In Swedish certain verbs in the passive (\emph{slå} `hit', 
     \emph{ligga} `lie', \emph{anta} `suppose', \ldots) must be translated in Danish using an inflected 
     form of the verb \emph{blive} `become' in the active voice and the past participle.
@@ -331,12 +333,12 @@ longer than translation from scratch.
 
 \subsection{Qualitative}
 
-
-
 %% Principle downfalls -- treatment of supine when not written with auxilliary
 %% No support for compounds -- even if both words in the compound are in the dict.
 %% Low coverage -- what percentage of errors are due to unknown words ?
 %% NEED EXAMPLES FOR THESE
+
+
 
 \subsection{Comparative}
 
@@ -368,6 +370,7 @@ på vilket ställe Själland kan ses från Skåne, ett vanligt tillhåll för vi
 Apertium:
 "Det findes en kort *överfart ved det *baltiska havet ved Helsingborg, 
 på hvilket *ställe *Själland kan ses fra Skåne, et *vanligt tilhold før vikinger."
+(unknown words marked with a *)
 
 Postedited:
 "Der findes en kort overfart ved det baltiske hav ved Helsingborg, 
@@ -381,8 +384,9 @@ Google:
 "Der er en kort passage i Østersøen i Helsingborg, i hvilken plads 
 Zealand kan ses fra Scania, en regelmæssig tilholdssted for vikingerne."
 
-
-Google Translate is using English as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. But worse the meaning of the text is sometimes harder to percieve in Google Translate than in the original text.
+While Gramtrans and Apertium is translating directly, Google Translate is using English 
+as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. 
+For most Danes the meaning of the text would be harder to percieve in Google Translate than in the original text.
 
 
 
