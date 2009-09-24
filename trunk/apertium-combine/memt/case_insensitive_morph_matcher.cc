@@ -35,7 +35,7 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
     to_lower(l);
     to_lower(r);
     if (!l.compare(r)) {
-        return 1;
+        return 100;
     }
 
     wstring tr_right, tr_left;
@@ -54,28 +54,26 @@ int Case_Insensitive_Morph_Matcher::match(const wstring& left, const wstring& ri
         tr_right.erase(first, end-first+1);
         first = tr_right.find(L"<");
     }*/
-    // TODO HAVE TO FIX IT
-    // TODO HAVE TO FIX IT
-    // TODO HAVE TO FIX IT
+
+    /// Align verbs even if conjugation is different.
     wstring::size_type lasts = wstring::npos;
-    lasts = tr_left.find_first_of(L"<vblex>");
+    lasts = tr_left.find(L"<vblex>");
     bool lleft = false;
     if (lasts != wstring::npos) {
         tr_left.erase(lasts, tr_left.size() - 1);
         lleft = true;
-        lasts = tr_right.find_first_of(L"<vblex>");
+        lasts = tr_right.find(L"<vblex>");
         if (lasts != wstring::npos)
             tr_right.erase(lasts, tr_right.size() - 1);
-
-        wcout << L"r: " << tr_right << endl;
-        wcout << L"l: " << tr_left << endl;
+        // wcout << L"r: " << tr_right << endl;
+        // wcout << L"l: " << tr_left << endl;
         if (lleft && lasts != wstring::npos) { 
            if (!tr_left.compare(tr_right)) {
-                wcout << "00000000000000000000000000" << endl;
-                return 1;
+                return 10;
            }
         }
     }
+
     return 0;
 }
 
