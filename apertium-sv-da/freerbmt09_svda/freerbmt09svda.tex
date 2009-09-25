@@ -336,7 +336,15 @@ correct \emph{Han er blevet troet}.
 There is not yet any support for compounding in {\tt {\small lttoolbox}} and as
 both Swedish and Danish are compounding languages this causes problems for 
 coverage -- even if both constituent parts of the compound are in the dictionary they
-will not be analysed. 
+will not be analysed. For example, the word \emph{universitetsbibliotek} `university library' is 
+not found, but both \emph{universitet} `university' and \emph{bibliotek} `library'
+are in the dictionaries.
+
+A large part of the errors in the Apertium output are due to the coverage of the 
+dictionaries. This is either directly a result of a word not being translated, or indirectly
+as in the case of an unknown word causing a transfer rule not to apply, for example
+\emph{det baltiska havet} `the Baltic Sea+{\sc def}' being translated as \emph{det *baltiska havet}
+instead of \emph{det baltiske hav}, with the double definiteness being removed.
 
 \subsection{Comparative}
 
