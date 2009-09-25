@@ -213,21 +213,12 @@
     </def-cat>
 
     
-    <def-cat n="por">
-      <cat-item lemma="por" tags="pr"/>
+    <def-cat n="prep">
+      <cat-item tags="pr"/>
     </def-cat>
 
-    <def-cat n="de">
-      <cat-item lemma="de" tags="pr"/>
-    </def-cat>
 
-    <def-cat n="en">
-      <cat-item lemma="en" tags="pr"/>
-    </def-cat>
 
-    <def-cat n="a">
-      <cat-item lemma="a" tags="pr"/>
-    </def-cat>
     
     <def-cat n="sent">
       <cat-item tags="sent"/>
@@ -648,55 +639,6 @@
     </def-macro>
 
  
-	   
-
-
-    <def-macro n="f_prep" npar="1">
-      <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="à"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="a"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="en"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="en"/>
-	  </let>
-	</when>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="lem"/>
-	      <lit v="de"/>
-	    </equal>
-	  </test>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v="de"/>
-	  </let>
-	</when>
-	<otherwise>
-	  <let>
-	    <var n="tipusprep"/>
-	    <lit-tag v=""/>
-	  </let>
-	</otherwise>
-      </choose>
-    </def-macro>
 
    <!-- <def-macro n="temps_verb" npar="1">
       <let>
@@ -4905,16 +4847,18 @@
     </rule> 
     
  
- <rule comment="REGLA: POR">
+
+
+<rule comment="REGLA: PREP ">
       <pattern>
-	<pattern-item n="por"/>
+	<pattern-item n="prep"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="por" case="caseFirstWord">
+	  <chunk name="prep" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -4925,6 +4869,7 @@
 	</out>
       </action>
     </rule>
+
 
     <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
       <pattern>

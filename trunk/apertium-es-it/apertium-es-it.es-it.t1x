@@ -217,6 +217,10 @@
     </def-cat>
 
     
+    <def-cat n="prep">
+      <cat-item tags="pr"/>
+    </def-cat>
+
     <def-cat n="por">
       <cat-item lemma="por" tags="pr"/>
     </def-cat>
@@ -4990,6 +4994,29 @@
 	</out>
       </action>
     </rule>
+
+
+<rule comment="REGLA: PREP (todas las prep excepto 'por', que entra por la regla anterior)">
+      <pattern>
+	<pattern-item n="prep"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="prep" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="whole"/> 
+	    </lu> 
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: DET(quan no acompanya res o va amb desconeguda)">
       <pattern>
