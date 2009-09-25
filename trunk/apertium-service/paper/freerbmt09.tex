@@ -10,7 +10,9 @@
 \usepackage{url}
 \usepackage{latexsym}
 
-\title{Leveraging Service-Oriented Architectures through efficient and scalable Machine Translation services}
+\usepackage[small,bf]{caption}
+
+\title{Leveraging service-oriented architectures through efficient and scalable machine translation services}
 
 \author{Pasquale Minervini\\
   Dipartimento di Informatica \\
@@ -45,12 +47,12 @@ Management (BPM) and the multitude of new architecture and design patterns gener
 
 In some contexts, an organization could take a great benefit by integrating a MT service in its IT infrastructure to overcome 
 language barriers; for example, a common problem arising when building a Knowledge Base starting from a corpus of free text for
-a certain domain (like biomedical, financial etc.) is that the text isn't always in a language that can be comprehended by the
+a certain domain (like biomedical, financial etc.) is that the text is not always in a language that can be comprehended by the
 domain experts and/or the knowledge extraction tools beign used.
 
 A possible solution to this problem consists in using a Machine
 Translation service (eventually using domain-specific dictionaries, rules etc.) to translate the free text from a language to
-another with an high accuracy, so that it's then possible to start extracting knowledge from it.\\
+another with an high accuracy, so that it is then possible to start extracting knowledge from it.\\
 
 {\bf Example:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mbox{\small\textregistered}}$ 
 Metathesaurus$^{\mbox{\small\textregistered}}$\footnote{The UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$~\citep{umls}, 
@@ -78,7 +80,7 @@ developed with funding from the Spanish government and the government of Catalon
 for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection.
 
 
-\section{Exposing the Service}
+\section{Exposing the service}
 
 Service's interface should provide access to the following capabilities:
 
@@ -98,7 +100,7 @@ mechanism.\\
 For our service, we decided to provide XML-RPC, SOAP and REST interfaces.
 
 
-\section{Service's Internals}
+\section{Service internals}
 
 A \emph{Translation Process} can be considered as the following sequence of steps:
 
@@ -152,7 +154,7 @@ they no longer need: the released resources are put back into the pool and can b
 \includegraphics[width=7.5cm]{resource_pool}
 \end{center}
 \caption{Sequence Diagram describing how acquisition and release of resources works in a system implementing the Pooling Pattern: recycled objects are
-managed in a pool of resources, which allows pool clients to acquire them, and release them back to the pool when they're no longer needed.}
+managed in a pool of resources, which allows pool clients to acquire them, and release them back to the pool when they are no longer needed.}
 \label{fig:rp}
 \end{figure}
 
@@ -161,6 +163,7 @@ managed in a pool of resources, which allows pool clients to acquire them, and r
 
 Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme. 
 In addition, many thanks go to Jimmy O'Regan, Francis Tyers and others involved in The Apertium Project, for their constant help.
+
 
 \bibliographystyle{apalike}
 \bibliography{freerbmt09}
