@@ -41,6 +41,11 @@
       <cat-item tags="num"/>
     </def-cat>
 
+
+    <def-cat n="time">
+      <cat-item tags="time"/>
+    </def-cat>
+
     <def-cat n="prn">
       <cat-item tags="prn.*"/>
     </def-cat>
@@ -430,6 +435,8 @@
     <def-var n="caseFirstWord"/> 
     <def-var n="lema"/>
     <def-var n="lemachunk"/>
+    <def-var n="articulo1"/>
+    <def-var n="articulo2"/>
     <def-var n="EOS" v="true"/>
   </section-def-vars>
 
@@ -6142,6 +6149,122 @@
 	</choose>
       </action>
     </rule>
+
+    <rule> <!-- hora -->
+      <pattern>
+	<pattern-item n="de"/>
+	<pattern-item n="time"/>
+	<pattern-item n="a"/>
+	<pattern-item n="time"/>
+      </pattern>
+      <action>
+      <call-macro n="firstWord">
+	<with-param pos="1"/>
+      </call-macro>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <lit v="da"/>
+	  </let>
+      <choose>
+	<when>
+	  <test>
+	    <or>
+	      <begins-with>
+		<clip pos="2" side="sl" part="lem"/>
+		<lit v="01:"/>
+	      </begins-with>
+	      <begins-with>
+		<clip pos="2" side="sl" part="lem"/>
+		<lit v="1:"/>
+	      </begins-with>
+	    </or>
+	  </test>
+	  <let>
+	    <var n="articulo1"/>
+	    <lit v="il"/>
+	  </let>
+	  <append n="articulo1">
+	    <lit-tag v="det.def.f.sg"/>
+	  </append>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="articulo1"/>
+	    <lit v="il"/>
+	  </let>
+	  <append n="articulo1">
+	    <lit-tag v="det.def.f.pl"/>
+	  </append>
+	</otherwise>
+      </choose>
+      <choose>
+	<when>
+	  <test>
+	    <or>
+	      <begins-with>
+		<clip pos="4" side="sl" part="lem"/>
+		<lit v="01:"/>
+	      </begins-with>
+	      <begins-with>
+		<clip pos="4" side="sl" part="lem"/>
+		<lit v="1:"/>
+	      </begins-with>
+	    </or>
+	  </test>
+	  <let>
+	    <var n="articulo2"/>
+	    <lit v="il"/>
+	  </let>
+	  <append n="articulo2">
+	    <lit-tag v="det.def.f.sg"/>
+	  </append>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="articulo2"/>
+	    <lit v="il"/>
+	  </let>
+	  <append n="articulo2">
+	    <lit-tag v="det.def.f.pl"/>
+	  </append>
+	</otherwise>	  
+	</choose>
+	<out>
+	  <chunk name="de_time_a_time" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>	      
+	    </tags> 
+	    <lu>    
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu> 
+	      <var n="articulo1"/>
+	    </lu>
+	    <b/>
+	    <lu>    
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="2"/>  
+	    <lu>    
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="3"/> 
+	    <lu> 
+	      <var n="articulo2"/>
+	    </lu>
+	    <b/> 
+	    <lu>    
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+      </rule>
+      
+
+	    
+
 
 
     <rule> <!-- REGLA: procl verbo-->
