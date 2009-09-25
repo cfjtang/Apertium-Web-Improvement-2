@@ -134,23 +134,28 @@ for structural transfer. Its translation engine consists of an \emph{assembly li
  \item[Post-Generator], that performs some orthographic operations in the destination language such as contractions;
 \end{description}
 
-In general, those modules often rely on resources whose acquisition and release is expensive: for example, production rule systems relying on \emph{RETE}-like 
-pattern matching algorithms~\citep{forgy} build a network of nodes during the acquisition of a set of rules, and this process has usually a relatively
-elevated computational cost; in addition, resources as dictionaries are often mapped, during their acquisition, to reduce the
-computational complexity of lookup operations,  to hash tables, which also are computationally expensive, in time, to create (because of the repeated use of
-the hashing functions, collision handling etc.).\\
+In general, those modules often rely on resources whose acquisition and release is computationally expensive, since they require access to data sources 
+and further elaborations; for example:
 
-To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001},
+\begin{itemize}
+ \item Production rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes
+  to reduce the time complexity of many-to-many pattern matching operations;
+ \item Resources as dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations; 
+\end{itemize}
 
-
+To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, 
+in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources
+they no longer need: the released resources are put back into the pool and can be acquired by other resource clients need them.
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=7.5cm]{resource_pool}
 \end{center}
-\caption{Object Pool}
+\caption{Sequence Diagram describing how acquisition and release of resources works in a system implementing the Pooling Pattern: recycled objects are
+managed in a pool of resources, which allows pool clients to acquire them, and release them back to the pool when they're no longer needed.}
 \label{fig:rp}
 \end{figure}
+
 
 \section*{Acknowledgements}
 
