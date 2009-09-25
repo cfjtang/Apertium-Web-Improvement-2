@@ -57,7 +57,8 @@
   This article describes the development of a shallow-transfer machine translation
   system from Swedish to Danish in the Apertium platform. It gives details of the 
   resources used, the methods for constructing the system and an evaluation of the 
-  translation quality.
+  translation quality. The quality is found to be comparable with that of current
+  commercial systems, despite a particularly low coverage of the lexicons.
 \end{abstract}
 
 \section{Introduction}
@@ -293,7 +294,7 @@ EuroParl   & 15,531,107 & 12,499,971 & 80.48\%\\
 \subsection{Quantitative}
 
 The quantitative evaluation involved the post-edition of 65 machine translated
-sentences (1151 words) from the Swedish Wikipedia. The sentences were selected from an 
+sentences (1,151 words) from the Swedish Wikipedia. The sentences were selected from an 
 article on history, run through the Apertium machine translation system and then a human
 post-editor corrected the resulting Danish translation.
 
@@ -317,8 +318,9 @@ between the post-editted text and the original translation.
 
 The results of this evaluation are shown in table~\ref{table:quanteval} and 
 indicate that the system is still not ready for being used in a post-edition 
-environment, where to correct a text with a word error rate of over 15\% takes
-longer than translation from scratch.
+environment.
+%% , where to correct a text with a word error rate of over 15\% takes
+%% longer than translation from scratch.
 %% Francis: 15% ? How do you know? Reference.
 
 \subsection{Qualitative}
@@ -384,28 +386,28 @@ artefacts \emph{överfart} translated as `passage'.
 \hline
            & Translation                                & Gloss \\
 \hline
-Original   & \emph{Det finns en kort överfart vid}      & There exists a short passage by \\
+~          & \emph{Det finns en kort överfart vid}      & There exists a short passage by \\
 ~          & \emph{det baltiska havet vid Helsingborg,} & the Baltic Sea by Helsingborg, \\
-~          & \emph{på vilket ställe Själland kan ses }  & on which place Sjælland can be seen \\ 
+Original   & \emph{på vilket ställe Själland kan ses }  & on which place Sjælland can be seen \\ 
 ~          & \emph{från Skåne, ett vanligt tillhåll }   & from Skåne, a common hangout \\ 
 ~          & \emph{för vikingar.}                       & for Vikings.\\
 \hline
-Apertium   & \underline{Det} findes en kort \emph{överfart} ved    & \underline{It} exists a short \emph{överfart} by \\
+~          & \underline{Det} findes en kort \emph{överfart} ved    & \underline{It} exists a short \emph{överfart} by \\
 ~          & det \emph{baltiska} havet ved Helsingborg,            & the \emph{baltiska} Sea by Helsinborg, \\
-~          & på hvilket \emph{ställe} \emph{Själland} kan ses      & on which \emph{ställe} \emph{Själland} can be seen \\
+Apertium   & på hvilket \emph{ställe} \emph{Själland} kan ses      & on which \emph{ställe} \emph{Själland} can be seen \\
 ~          & fra Skåne, et \emph{vanligt} \underline{tilhold}      & from Skåne, a \emph{vanligt} \underline{order} \\
 ~          & \underline{før} vikinger.                             & \underline{before} Vikings.\\
 \hline
-Gramtrans  & Der findes en kort overfart ved                  & There exists a short passage by \\
+~          & Der findes en kort overfart ved                  & There exists a short passage by \\
 ~          & det baltiske hav ved Helsingborg,                & the Baltic Sea by Helsingborg, \\
-~          & på hvilket sted \emph{Själland} kan ses          & on which place \emph{Själland} can be seen \\ 
+Gramtrans  & på hvilket sted \emph{Själland} kan ses          & on which place \emph{Själland} can be seen \\ 
 ~          & fra Skåne, et sædvanligt \underline{tilhold}     & from Skåne, a common \underline{order} \\
 ~          & for vikinger.                                    & for Vikings. \\
 \hline
-Google     & Der \underline{er} en kort \underline{passage} i & There \underline{is} a short \underline{passage} in \\
+~          & Der \underline{er} en kort \emph{passage} i      & There \underline{is} a short \emph{passage} in \\
 ~          & Østersøen \underline{i} Helsingborg,             & the Baltic Sea \underline{in} Helsingborg, \\
-~          & i hvilken plads \emph{Zealand} kan ses           & \underline{in} which \underline{space/place/seat} \emph{Zealand} can be seen \\ 
-~          & fra \emph{Scania}, \underline{en regelmæssig} tilholdssted   & from \underline{Scania}, \underline{a regular} hangout \\
+Google     & i hvilken plads \emph{Zealand} kan ses           & \underline{in} which \underline{space/place/seat} \emph{Zealand} can be seen \\ 
+~          & fra \emph{Scania}, \underline{en regelmæssig} tilholdssted   & from \emph{Scania}, \underline{a regular} hangout \\
 ~          & for vikingerne.                                  & for \underline{the} Vikings. \\
 \hline 
 %%Postedited & Der findes en kort overfart ved det baltiske hav ved Helsingborg,  \\
@@ -413,7 +415,8 @@ Google     & Der \underline{er} en kort \underline{passage} i & There \underline
 %%\hline  
 \end{tabular}
  \label{table:extranslations}
- \caption{Comparison of the three systems for a single sentence.}
+ \caption{Comparison of the three systems for a single sentence. Unknown words are marked with \emph{emphasis} and
+     incorrect translations are \underline{underlined}.}
 \end{table*}
 
 \begin{table}
