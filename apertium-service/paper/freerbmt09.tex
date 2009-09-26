@@ -12,12 +12,12 @@
 
 \usepackage[small,bf]{caption}
 
-\title{Leveraging Service-Oriented Architectures through efficient and scalable Machine Translation services}
+\title{Leveraging Service-Oriented Architectures through efficient and scalable Rule-Based Machine Translation services}
 
 \author{Pasquale Minervini\\
-  Dipartimento di Informatica \\
-  Università degli Studi di Bari \\
-  Via E. Orabona 4, 70125 Bari, Italy \\
+  Dipartimento di Informatica\\
+  Università degli Studi di Bari\\
+  Via E. Orabona 4, 70125 Bari, Italy\\
   {\tt p.minervini@gmail.com}}
 
 \date{}
@@ -31,7 +31,7 @@ Service Oriented Architecture (SOA) is a paradigm for organizing and utilizing d
 control of different ownership domains and implemented using various technology stacks. In some contexts, an organization
 using an IT infrastructure implementing the SOA paradigm can benefit greatly from an efficient Machine Translation (MT) service. 
 This paper describes the architecture used to develop a Machine Translation service that is efficient, scalable and easy to 
-integrate in new and existing business processes; our service relies on Apertium, a Free/Open-Source Rule-Based Machine Translation Platform.
+integrate in new and existing business processes; our service relies on Apertium, a Free/Open-Source Rule-Based Machine Translation platform.
 \end{abstract}
 
 
@@ -51,7 +51,7 @@ a certain domain (like biomedical, financial etc.) is that the text is not alway
 domain experts and/or the knowledge extraction tools being used.
 
 A possible solution to this problem consists in using a Machine Translation service to translate the free text from a language to another with 
-an high accuracy and eventually using domain-specific linguistic knowledge.\\%, so that it is then possible to start extracting knowledge from it.\\
+an high accuracy and eventually using domain-specific linguistic knowledge.\\
 
 {\bf Example:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mbox{\small\textregistered}}$ 
 Metathesaurus$^{\mbox{\small\textregistered}}$\footnote{The UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$~\citep{umls}, 
@@ -74,9 +74,27 @@ A possible way to overcome this limitation consists in using RBMT techniques (po
 lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
 to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.\\
 
-We realized a prototype service relying on Apertium~\citep{armentano05p}, a free/open-source machine translation platform being 
+We realized a prototype service relying on Apertium~\citep{armentano05p}, a Free/Open-Source Rule Based Machine Translation platform being 
 developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
-for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection.
+for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection. Our decision to use a
+Rule-Based Machine Translation system was motivated by the following reasons:
+
+\begin{itemize}
+ %% in SMT la ``fluency'' può andare a discapito della ``fidelity''
+ \item Statistical Machine Translation systems tend to produce text that appears more ``natural'' than that produced by Rule-Based ones, with
+  the result that ``fluency'' can outweight ``fidelity'': a natural and fluent translation is not necessairly completely faithful to the original;
+
+ %% conoscenza linguistica codificata esplicitamente
+ \item Linguistic knowledge is encoded explicitly in the form of linguistic data, so that both humans and automatic systems can process 
+  it (this can a great benefit in presence of domain-specific linguistic knowledge);
+
+ %% traduzioni più meccaniche, quindi errori più semplici da correggere
+ \item Rule-Based systems tend to produce more ``mechanical'' translations, so their errors tend also to be more evident;
+
+ %% il lavoro degli esperti é più semplice
+ \item Experts who have designed a system based on rules find it much easier to diagnose and repair the source of translation error, like
+  a wrong rule in a module or a wrong entry in a dictionary;
+\end{itemize}
 
 
 \section{Exposing the service}
@@ -142,7 +160,7 @@ and further elaborations; for example:
 \begin{itemize}
  \item Production rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes
   to reduce the time complexity of many-to-many pattern matching operations;
- \item Resources as dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations; 
+ \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations; 
 \end{itemize}
 
 To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, 
@@ -157,6 +175,11 @@ they no longer need: the released resources are put back into the pool and can b
 managed in a pool of resources, which allows pool clients to acquire them, and release them back to the pool when they are no longer needed.}
 \label{fig:rp}
 \end{figure}
+
+
+\section{Results}
+
+
 
 
 \section*{Acknowledgements}
