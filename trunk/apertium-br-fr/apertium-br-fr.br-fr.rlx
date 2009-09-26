@@ -101,6 +101,9 @@ LIST SoftMut          = ("<g.*>"ri "k.*"ri) ("<d.*>"ri "t.*"ri) ("<b.*>"ri "p.*"
 
 LIST AspMut           = ("<c’h.*>"ri "k.*"ri) ("<c'h.*>"ri "k.*"ri) ("<z.*>"ri "t.*"ri) ("<f.*>"ri "p.*"ri); 
 LIST HardMut          = ("<k.*>"ri "g.*"ri) ("<t.*>"ri "d.*"ri) ("<p.*>"ri "b.*"ri); 
+
+LIST MixedMutCons     = ("g.*"ri) ("g.*"ri) ("gw.*"ri) ("d.*"ri) ("b.*"ri) ("m.*"ri); 
+
 LIST MixedMut         = ("<c’h.*>"ri "g.*"ri) ("<c'h.*>"ri "g.*"ri) ("<w.*>"ri "gw.*"ri) ("<t.*>"ri "d.*"ri) ("<v.*>"ri "b.*"ri) ("<v.*>"ri "m.*"ri); 
 
 LIST HardMutTrigger   = ("ho"ri det pos) ("e"ri +da det pos);
@@ -522,6 +525,18 @@ SELECT VerbFin IF (-2 NP) (-1 ("a"ri)) (0 Verb) (0 NC);
 # "peur e vo gwelet"
 SELECT:pp_if_verbaux_pp_or_inf VerbPP IF (-2 Vpart) (-1C VerbAux) (0 VerbPP) (0 VerbInf);
 
+# Pegen kriz eo ar vuhez / qué crual es la vida
+SELECT Adj IF (-1C ("pegen"ri adv));
+
+# ma zud
+REMOVE CS IF (1C NC);
+
+# an dud am boa gwelet disadorn
+REMOVE VerbInf IF (-1C ("kaout"ri)) (-1C VerbFin);
+
+# diwar-benn stad ar c’hleweled e brezhoneg
+SELECT NC IF (-1C ("diwar-benn"ri pr));
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
@@ -555,18 +570,25 @@ SELECT AspMutTrigger IF (1 AspMut);
 REMOVE AspMut IF (NOT -1 AspMutTrigger);
 
 # REGLA (A0008): ""
-SELECT MixedMut IF (-1 MixedMutTrigger);
+#SELECT MixedMut IF (-1 MixedMutTrigger) (0 MixedMutCons);
 
 # REGLA (A0009): ""
-SELECT MixedMutTrigger IF (1 MixedMut);
+#SELECT MixedMutTrigger IF (1 MixedMut) (1 MixedMutCons);
 
 # REGLA (A0009): ""
-REMOVE MixedMut IF (NOT -1 MixedMutTrigger);
+#REMOVE MixedMut IF (NOT -1 MixedMutTrigger);
 
 # REGLA (A0010): "un taol, un daol"
 REMOVE NomF IF (-1 SoftMutTrigger) (NOT 0 SoftMut) (0 NomF) (0 NomM);
 
 SECTION
+
+# por el momento escoge a berzañ, mejor que le digas que escoja a merzout (berzañ no se conjuga mucho)
+SELECT ("merzout" vblex) IF (0 ("merzout" vblex)) (0 ("berzañ" vblex));
+
+# 'sa soeur' far more likely than 'dans soeur' or 'son loisir'
+SELECT ("e"ri det pos) IF (1 ("c’hoar"ri n f));
+SELECT ("c’hoar"ri n f) IF (-1 ("e"ri det pos));
 
 # REGLA (C0003): "al Louarn"
 REMOVE NP IF (0 NP) (0 NC) (-1 DetDef);
@@ -620,6 +642,8 @@ SECTION
 
 REMOVE DetPos (0 ("e"ri pr)) ((1 Num) OR (1 Language));
 SUBSTITUTE (pr) (pr s1) ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
+
+SUBSTITUTE (n) (n s1) ("den"ri n m pl) (-1C DetPos);
 
 # KSB / OAB 
 SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
