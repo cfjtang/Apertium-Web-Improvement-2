@@ -76,25 +76,22 @@ to English, and then process it as in figure \ref{fig:mtsoa}. This approach is a
 
 We realized a prototype service relying on Apertium~\citep{armentano05p}, a Free/Open-Source Rule Based Machine Translation platform being 
 developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
-for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection. Our decision to use a
+for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection. Our decision to rely on a
 Rule-Based Machine Translation system was motivated by the following reasons:
 
 \begin{itemize}
- %% in SMT la ``fluency'' può andare a discapito della ``fidelity''
  \item Statistical Machine Translation systems tend to produce text that appears more ``natural'' than that produced by Rule-Based ones, with
   the result that ``fluency'' can outweight ``fidelity'': a natural and fluent translation is not necessairly completely faithful to the original;
-
- %% conoscenza linguistica codificata esplicitamente
  \item Linguistic knowledge is encoded explicitly in the form of linguistic data, so that both humans and automatic systems can process 
   it (this can a great benefit in presence of domain-specific linguistic knowledge);
-
- %% traduzioni più meccaniche, quindi errori più semplici da correggere
  \item Rule-Based systems tend to produce more ``mechanical'' translations, so their errors tend also to be more evident;
-
- %% il lavoro degli esperti é più semplice
  \item Experts who have designed a system based on rules find it much easier to diagnose and repair the source of translation error, like
-  a wrong rule in a module or a wrong entry in a dictionary;
+  a wrong rule in a module or a wrong entry in a dictionary.
 \end{itemize}
+
+Efficiency and scalability are also a fundamental characteristic for our service since, especially in collaborative enviroment, it should be able
+to sustain an heavy load of traffic. In this paper, we will describe what techniques and design patterns we used to implement an efficient and
+scalable machine translation service, and we will compare it to other systems.
 
 
 \section{Exposing the service}
@@ -131,9 +128,9 @@ Behind this apparently simple procedure, there's a complex cognitive operation: 
 needs to interpret and analyse all the features present in the text, which requires in-depth knowledge of \emph{grammar}, \emph{semantics}, \emph{syntax},
 \emph{idioms} etc. of both source and destination languages and the culture of their speakers.\\
 
-For this reason, according to \citep{arnoldea} often Machine Translation engines make use, during the translation process, of 
-\emph{intermediate representations} (such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the 
-correct translation. 
+For this reason, according to \citep{arnoldea} often Machine Translation engines make use, during the translation process, of \emph{intermediate representations} 
+(such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the  correct translation.
+
 In general, systems following those criteria, apply a set of \emph{linguistic rules} during the translation process, which are defined as correspondances 
 between the structure of the source language and the structure of the destination language. Therefore, the translation is obtained by analysing the source 
 text for morphology and syntax (and eventually semantics) to create an intermediate representation, and then by using bilingual dictionaries and grammatical
@@ -178,6 +175,11 @@ managed in a pool of resources, which allows pool clients to acquire them, and r
 
 
 \section{Results}
+
+We compared the efficiency of our service with  .. Moses~\citep{moses}.\\
+
+Moses was trained on the \emph{News Commentary} corpus provided on \emph{Fourth Workshop on Statistical Machine Translation}'s website\footnote{\url{http://www.statmt.org/wmt09/}}.\\
+
 
 
 
