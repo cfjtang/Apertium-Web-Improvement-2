@@ -361,7 +361,7 @@ REMOVE Vpart IF (1 ("kaout" vblex));
 REMOVE Vpart IF (1 Vbloc);
 
 # REGLA (B0017): >The particle is omitted before verbal nouns and imperatives
-REMOVE Vpart IF ((1 VerbInf) OR (1 VerbImp));
+REMOVE Vpart IF ((1C VerbInf) OR (1C VerbImp));
 
 # REGLA (B0019): "o chom e Roazhon"
 REMOVE PrnDObj IF (-1 VerbInf);
@@ -450,7 +450,7 @@ SELECT Adv IF (0 ("ouzhpenn")) ((-1 Num) OR (-1 NC) OR (1 Prep));
 SELECT Prep IF (0 ("tremen")) (1C Num) (2 NC);
 
 # betek an trec'h
-SELECT NC IF (-2C Prep) (-1 DetDef) (0 NC) (0 VerbFin);
+SELECT NC IF (-2C Prep) (-1C DetDef) (0 NC) (0 VerbFin);
 
 # kalz a dud
 SELECT NC IF (-1C Prep) (-1C SoftMutTrigger) (0 NC) (0 VerbFin);
@@ -614,7 +614,7 @@ REMOVE ("biz"ri n) IF (0 ("biz"ri n)) (0 ("miz"ri n)) (-1 ("meur a"ri det ind));
 REMOVE (+an) IF (1 DetPos) (0 ("<en>"ri));
 
 # raktres sindikad bro Dinan
-REMOVE VerbFin IF (NOT (-1 Vpart) OR (-1 Conj)) ;
+REMOVE VerbFin IF (NOT (-1 Vpart) LINK (-1 Conj)) ;
 
 #D'ar mare ma oan o tigeriñ an nor
 SELECT VerbFin IF (-1C* Conj) (NOT 1C* VerbFin);
