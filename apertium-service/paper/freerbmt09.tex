@@ -160,10 +160,6 @@ and further elaborations; for example:
  \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations; 
 \end{itemize}
 
-To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, 
-in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources
-they no longer need: the released resources are put back into the pool and can be acquired by other resource clients need them, as shown in figure \ref{fig:rp}.
-
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=7.5cm]{resource_pool}
@@ -173,12 +169,19 @@ managed in a pool of resources, which allows pool clients to acquire them, and r
 \label{fig:rp}
 \end{figure}
 
+To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, 
+in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources
+they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in figure \ref{fig:rp}.
+
+To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in
+pool, more resources can be lazily acquired.
+
+There are various valid approaches to free unused resources, like those consisting on monitoring the use of a resource and control its lifecycle using some form of 
+strategy like ``Least Recently Used'' or ``Least Frequently Used'', or on introducing a \emph{lease} for every resource that specifies a time duration for which
+a resource can remain in the pool.
+
 
 \section{Results}
-
-We compared the efficiency of our service with  .. Moses~\citep{moses}.\\
-
-Moses was trained on the \emph{News Commentary} corpus provided on \emph{Fourth Workshop on Statistical Machine Translation}'s website\footnote{\url{http://www.statmt.org/wmt09/}}.\\
 
 \begin{figure}[!ht]
 \begin{center}
@@ -187,6 +190,10 @@ Moses was trained on the \emph{News Commentary} corpus provided on \emph{Fourth 
 \caption{Comparison between apertium-service and moses-service.}
 \label{fig:comp}
 \end{figure}
+
+We compared the efficiency of our service with  .. Moses~\citep{moses}.\\
+
+Moses was trained on the \emph{News Commentary} corpus provided on \emph{Fourth Workshop on Statistical Machine Translation}'s website\footnote{\url{http://www.statmt.org/wmt09/}}.\\
 
 
 \section*{Acknowledgements}
