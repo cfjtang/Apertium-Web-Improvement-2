@@ -75,8 +75,8 @@ including decision support systems, management of patient records, information r
 \label{fig:mtsoa}
 \end{figure}
 
-Currently MetaMap is only available for English free text, which makes difficult the use of UMLS$^{\mbox{\small\textregistered}}$ 
-Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages different than English.
+Currently MetaMap is only available for English free text, which makes it difficult the use of UMLS$^{\mbox{\small\textregistered}}$ 
+Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages other than English.
 A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, 
 lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
 to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.
@@ -141,10 +141,11 @@ Service's interface should provide access to the following capabilities:
 \end{description}
 
 In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications
-among services. A widely accepted technology for implementing SOA consists in using a technology called Web Services~\citep{soa}, defined by the W3C
-as defined by the W3C as ``a software system designed to support interoperable machine-to-machine interaction over a network. It has an interface 
-described in a machine-processable format (specifically WSDL). Other systems interact with the Web service in a manner prescribed by its description 
-using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\citep{wsgloss}. 
+among services. A widely accepted technology for implementing SOA consists in using a technology called Web Services~\citep{soa}, defined by the W3C as 
+``a software system designed to support interoperable machine-to-machine interaction over a network. 
+It has an interface described in a machine-processable format (specifically WSDL). 
+Other systems interact with the Web service in a manner prescribed by its description using SOAP-messages, typically conveyed using HTTP with an 
+XML serialization in conjunction with other Web-related standards.''~\citep{wsgloss}. 
 Alternatives to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport 
 mechanism, and Representational State Transfer (REST)~\citep{rest}, a style of software architecture for distributed hypermedia systems such as 
 the World Wide Web.\\
@@ -174,10 +175,10 @@ text for morphology and syntax (and eventually semantics) to create an intermedi
 rules.\\
 
 Specifically, Apertium uses Finite-State Transducers for lexical processing, Hidden Markov Models for Part-of-Speech tagging and Finite-State-Based Chunking
-for structural transfer. Its translation engine consists of an \emph{assembly line}, composed by the following modules: 
+for structural transfer. Its translation engine consists of an \emph{assembly line}, composed of the following modules: 
 
 \begin{description}
- \item[Formatters], which handles format-specific information respect to text to be translated;
+ \item[Formatters], which handle format-specific information with respect to text to be translated;
  \item[Morphological Analyser], which tokenizes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms}
   consisting of lemma, lexical category and informations about morphological inflection;
  \item[Part-of-Speech Tagger], which chooses one of the analyses of an ambiguous word, according to its context;
@@ -206,15 +207,15 @@ managed in a pool of resources, which allows pool clients to acquire them, and r
 \label{fig:rp}
 \end{figure}
 
-To prevent the frequent acquisition and release of the just cited resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, 
+To prevent the frequent acquisition and release of the aforementioned resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, 
 in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources
 they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in figure \ref{fig:rp}.
 
 To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in
 pool, more resources can be lazily acquired.
 
-There are various valid approaches to free unused resources, like those consisting on monitoring the use of a resource and control its lifecycle using some form of 
-strategy like ``Least Recently Used'' or ``Least Frequently Used'', or on introducing a \emph{lease} for every resource that specifies a time duration for which
+There are various valid approaches to free unused resources, like those consisting oF monitoring the use of a resource and controlLING its lifecycle by using 
+strategies such as ``Least Recently Used'' or ``Least Frequently Used'', or introducing a \emph{lease} for every resource that specifies a time duration for which
 a resource can remain in the pool.
 
 
@@ -233,10 +234,10 @@ request with the time required by a service relying on Moses~\citep{moses} which
 to translate free text from the Spanish language to the English language.\\
 
 The translation model used by {\tt moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, 
-a toolkit for building and applying statistical language models; the language models were then compiled in binary format using IRSTLM~\citep{irstlm} and 
+a toolkit for building and applying statistical language models. the language models were then compiled inTO binary format using IRSTLM~\citep{irstlm} and 
 trained to minimize the error rate on a set of sentences from the same corpus. 
 
-Both {\tt apertium-service} and {\tt moses-service}, was accepting translation requests in XML-RPC format and the free text used for timing was also 
+Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format and the free text used for timing was also 
 taken from Europarl corpus. Results are shown in figure ~\ref{fig:comp}.
 
 
@@ -249,7 +250,7 @@ It was shown to be competitive, in efficiency and scalability, with other system
 \section*{Acknowledgements}
 
 Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme. 
-In addition, many thanks go to Jimmy O'Regan, Francis Tyers and others involved in The Apertium Project, for their constant help.
+Additionally, many thanks go to Jimmy O'Regan, Francis Tyers and others involved in The Apertium Project, for their constant help.
 
 
 \bibliographystyle{apalike}
