@@ -191,14 +191,13 @@ a resource can remain in the pool.
 \label{fig:comp}
 \end{figure}
 
-To evaluate the efficiency of the service we realized, we compared the time it requires to compute and answer to a translation request with the time require by Moses~\citep{moses}, 
-a Statistical Machine Translation system. The translation model used by Moses has been trained on the well-known Europarl~\citep{europarl} corpus on the Spanish to English
-pair using SRILM~\citep{srilm}, compiled in binary format using IRSTLM~\citep{irstlm} and then trained to minimize the error rate on a set of sentences from the same corpus.
+To evaluate the efficiency of the service we realized, we compared the average time it requires to compute and answer to a translation request with the average time required 
+by Moses~\citep{moses}, a Statistical Machine Translation system.\\
 
-We compared the efficiency of our service with  .. Moses~\citep{moses}.\\
-
-Moses was trained on the \emph{News Commentary} corpus provided on \emph{Fourth Workshop on Statistical Machine Translation}'s website\footnote{\url{http://www.statmt.org/wmt09/}}.\\
-
+The translation model used by Moses has been trained to translate from the Spanish language to the English language on the well-known Europarl~\citep{europarl} corpus 
+by using SRILM~\citep{srilm}, compiled in binary format using IRSTLM~\citep{irstlm} and then trained to minimize the error rate on a set of sentences from the same corpus; 
+Moses was run as a service accepting translation requests in XML-RPC format. The free text used for timing was also taken from Europarl corpus.
+Results are shown in figure ~\ref{fig:comp}.
 
 \section*{Acknowledgements}
 
