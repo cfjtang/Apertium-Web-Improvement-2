@@ -13,6 +13,9 @@
 
 \usepackage[small,bf]{caption}
 
+\newtheorem{theo}{Theorem}[section]
+\newtheorem{ex}[theo]{Example}
+
 \title{Leveraging Service-Oriented Architectures through efficient and scalable Rule-Based Machine Translation services}
 
 \author{Pasquale Minervini\\
@@ -54,7 +57,8 @@ domain experts and/or the knowledge extraction tools being used.
 A possible solution to this problem consists in using a Machine Translation service to translate the free text from a language to another with 
 an high accuracy and eventually using domain-specific linguistic knowledge.\\
 
-{\bf Example 1:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mbox{\small\textregistered}}$ 
+\begin{ex}
+MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mbox{\small\textregistered}}$ 
 Metathesaurus$^{\mbox{\small\textregistered}}$\footnote{The UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$~\citep{umls}, 
 the largest thesaurus in the biomedical domain, provides a representation of biomedical knowledge consisting of concepts classified by semantic 
 type and both hierarchical and non-hierarchical relationships among the concepts.} concepts, which have proved to be useful for many applications, 
@@ -73,9 +77,11 @@ Currently MetaMap is only available for English free text, which makes difficult
 Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages different than English.
 A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, 
 lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
-to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.\\
+to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.
+\end{ex}
 
-{\bf Example 2:} Wikipedia is an online, multilingual, volunteer-edited 
+\begin{ex}
+Wikipedia is an online, multilingual, volunteer-edited 
 encyclopedia. ``There are currently 262 language editions of Wikipedia; of 
 these, 24 have over 100,000 articles and 81 have over 1,000 articles.''~\citep{wikipedia}
 Although access to technology is also an important factor, the number of 
@@ -100,8 +106,8 @@ quality, by incorporating user feedback~\citep{google}, in the form of
 corrections to the MT output. Small corrections to Wikipedia articles have
 been used in the construction of error corpora~\citep{milek08}, which can
 then be used to augment translation rules, or in the creation of statistical
-post-correction systems~\citep{dugast07}.\\
- 
+post-correction systems~\citep{dugast07}.
+\end{ex}
 
 We realized a prototype service relying on Apertium~\citep{armentano05p}, a Free/Open-Source Rule Based Machine Translation platform being 
 developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), 
@@ -226,6 +232,7 @@ by Moses~\citep{moses}, a Statistical Machine Translation system.\\
 The translation model used by Moses has been trained to translate from the Spanish language to the English language on the well-known Europarl~\citep{europarl} corpus 
 by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models; it was them compiled in binary format using IRSTLM~\citep{irstlm} and trained 
 to minimize the error rate on a set of sentences from the same corpus. 
+
 Moses was run as a service accepting translation requests in XML-RPC format and the free text used for timing was also taken from Europarl corpus.
 Results are shown in figure ~\ref{fig:comp}.
 
