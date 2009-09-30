@@ -136,8 +136,8 @@ scalable machine translation service, and we will compare it to other systems.
 Service's interface should provide access to the following capabilities:
 
 \begin{description}
-  \item[Translation], for automatic translation of free text from a source language to a destination language;
-  \item[Language Detection], for automatic language guessing of free text;
+  \item[Translation] - for automatic translation of free text from a source language to a destination language;
+  \item[Language Detection] - for automatic language guessing of free text;
 \end{description}
 
 In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications
@@ -157,10 +157,10 @@ The service we developed provides XML-RPC, SOAP and REST interfaces.
 
 A \emph{Translation Process} can be considered as the following sequence of steps:
 
-\begin{description}
- \item[Decoding] the meaning of the source text;
- \item[Re-Encoding] this meaning in the destination language.
-\end{description}
+\begin{itemize}
+ \item {\bf Decoding} the meaning of the source text;
+ \item {\bf Re-Encoding} this meaning in the destination language.
+\end{itemize}
 
 Behind this apparently simple procedure, there's a complex cognitive operation: to decode the meaning of some free text in its entirety, the translator
 needs to interpret and analyse all the features present in the text, which requires in-depth knowledge of \emph{grammar}, \emph{semantics}, \emph{syntax},
@@ -178,15 +178,15 @@ Specifically, Apertium uses Finite-State Transducers for lexical processing, Hid
 for structural transfer. Its translation engine consists of an \emph{assembly line}, composed of the following modules: 
 
 \begin{description}
- \item[Formatters], which handle format-specific information with respect to text to be translated;
- \item[Morphological Analyser], which tokenizes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms}
+ \item[Formatters] - which handle format-specific information with respect to text to be translated;
+ \item[Morphological Analyser] - which tokenizes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms}
   consisting of lemma, lexical category and informations about morphological inflection;
- \item[Part-of-Speech Tagger], which chooses one of the analyses of an ambiguous word, according to its context;
- \item[Lexical Transfer Module], which reads each lexical form of the surface form and delivers the corrisponding destination language lexical form;
- \item[Structural Transfer Module], which detects and processes patterns of words that need special processing due to grammatical divergences between two
+ \item[Part-of-Speech Tagger] - which chooses one of the analyses of an ambiguous word, according to its context;
+ \item[Lexical Transfer Module] - which reads each lexical form of the surface form and delivers the corrisponding destination language lexical form;
+ \item[Structural Transfer Module] - which detects and processes patterns of words that need special processing due to grammatical divergences between two
   languages;
- \item[Morphological Generator] that, from a lexical form in the destination language, generates a suitably inflected surface form;
- \item[Post-Generator], that performs some orthographic operations in the destination language such as contractions;
+ \item[Morphological Generator] - that, from a lexical form in the destination language, generates a suitably inflected surface form;
+ \item[Post-Generator] - that performs some orthographic operations in the destination language such as contractions;
 \end{description}
 
 In general, those modules often rely on resources whose acquisition and release is computationally expensive, since they require access to data sources 
@@ -214,7 +214,7 @@ they no longer need: released resources are put back into the pool and made avai
 To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in
 pool, more resources can be lazily acquired.
 
-There are various valid approaches to free unused resources, like those consisting oF monitoring the use of a resource and controlLING its lifecycle by using 
+There are various valid approaches to free unused resources, like those consisting of monitoring the use of a resource and controlling its lifecycle by using 
 strategies such as ``Least Recently Used'' or ``Least Frequently Used'', or introducing a \emph{lease} for every resource that specifies a time duration for which
 a resource can remain in the pool.
 
@@ -225,7 +225,7 @@ a resource can remain in the pool.
 \begin{center}
 \includegraphics[width=7.5cm]{comp}
 \end{center}
-\caption{Comparison between {\tt apertium-service} and {\tt moses-service}.}
+\caption{Comparison between {\tt apertium-service} and {\tt moses-service} in the Text Length - Time space.}
 \label{fig:comp}
 \end{figure}
 
