@@ -58,22 +58,17 @@ MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mb
 \label{fig:mtsoa}
 \end{figure}
 
-Currently MetaMap is only available for English free text, which makes it difficult the use of UMLS$^{\mbox{\small\textregistered}}$ 
-Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages other than English.
-A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, 
-lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language 
-to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.
+Currently MetaMap is only available for English free text, which makes it difficult the use of UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages other than English.A possible way to overcome this limitation consists in using RBMT techniques (possibly with dictionaries, translation rules, lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.
 \end{ex}
 
 \begin{ex}
-Wikipedia is an online, multilingual, volunteer-edited encyclopedia. ``There are currently 262 language editions of Wikipedia; of these, 24 have over 100,000 articles and 81 have over 1,000 articles''~\citep{wikipedia}. Although access to technology is also an important factor, the number of available articles in a particular language's Wikipedia corresponds somewhat to the number of available speakers of that language. 
+Wikipedia is an online, multilingual, volunteer-edited encyclopedia. ``There are currently 262 language editions of Wikipedia; of these, 24 have over 100,000 articles and 81 have over 1,000 articles''~\citep{wikipedia}. Although access to technology is also an important factor, the number of available articles in a particular language's Wikipedia corresponds somewhat to the number of available speakers of that language. \\
 
-In many cases, closely related languages are mutually intelligible~\citep{tyers09a}, and even a prototype MT system can produce accurate translations~\citep{oller06}. This seems to be the case with Nynorsk and Bokmål~\citep{unhammer09}, where users of the Nynorsk Wikipedia have made contributions to the system's lexicon, to assist in their translation of articles from the larger Bokmål  Wikipedia to the Nynorsk Wikipedia.
+In many cases, closely related languages are mutually intelligible~\citep{tyers09a}, and even a prototype MT system can produce accurate translations~\citep{oller06}. This seems to be the case with Nynorsk and Bokmål~\citep{unhammer09}, where users of the Nynorsk Wikipedia have made contributions to the system's lexicon, to assist in their translation of articles from the larger Bokmål  Wikipedia to the Nynorsk Wikipedia.\\
 
-However, the current use of MT on the Wikipedias of marginalized languages is a somewhat error-prone process, where the original text is manually copied from the source Wikipedia, translated off-line, and pasted as a new article to the target Wikipedia. By providing an efficient, easily integrated service, we hope to remove some of the accidental errors inherent to this process.
+However, the current use of MT on the Wikipedias of marginalized languages is a somewhat error-prone process, where the original text is manually copied from the source Wikipedia, translated off-line, and pasted as a new article to the target Wikipedia. By providing an efficient, easily integrated service, we hope to remove some of the accidental errors inherent to this process.\\
 
-In addition, the service's logging facilities may be used to improve MT quality, by incorporating user feedback~\citep{google}, in the form of corrections to the MT output. Small corrections to Wikipedia articles have been used in the construction of error corpora~\citep{milek08}, which can then be used to augment translation rules, or in the creation of statistical
-post-correction systems~\citep{dugast07}.
+In addition, the service's logging facilities may be used to improve MT quality, by incorporating user feedback~\citep{google}, in the form of corrections to the MT output. Small corrections to Wikipedia articles have been used in the construction of error corpora~\citep{milek08}, which can then be used to augment translation rules, or in the creation of statistical post-correction systems~\citep{dugast07}.
 \end{ex}
 
 We realized a prototype service relying on Apertium~\citep{armentano05p}, a Free/Open-Source Rule Based Machine Translation platform being developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection. Our decision to rely on a Rule-Based Machine Translation system was motivated by the following reasons:
@@ -113,8 +108,7 @@ A \emph{Translation Process} can be considered as the following sequence of step
 
 Behind this apparently simple procedure, there's a complex cognitive operation: to decode the meaning of some free text in its entirety, the translator needs to interpret and analyse all the features present in the text, which requires in-depth knowledge of \emph{grammar}, \emph{semantics}, \emph{syntax}, \emph{idioms} etc. of both source and destination languages and the culture of their speakers.\\
 
-For this reason, according to \citep{arnoldea} often Machine Translation engines make use, during the translation process, of \emph{intermediate representations} 
-(such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the  correct translation.
+For this reason, according to \citep{arnoldea} often Machine Translation engines make use, during the translation process, of \emph{intermediate representations} (such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the  correct translation.
 
 In general, systems following those criteria, apply a set of \emph{linguistic rules} during the translation process, which are defined as correspondances between the structure of the source language and the structure of the destination language. Therefore, the translation is obtained by analysing the source text for morphology and syntax (and eventually semantics) to create an intermediate representation, and then by using bilingual dictionaries and grammatical rules.\\
 
