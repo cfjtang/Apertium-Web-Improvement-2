@@ -301,7 +301,10 @@ SELECT Verb IF (-3 ("dav"ri adj)) (-2 ("<eo>"ri vblex)) (-1 PrnIObj);
 SELECT Verb IF (-2 ("dav"ri adj)) (-1 ("<eo>"ri vblex));
 
 # REGLA (B    ): "Ne c’hallan ket ober an dra-se"
-SELECT VerbInf IF (-1 ("ket" adv)) (-2 VerbFin);
+SELECT VerbInf IF (-1 ("ket" adv)) (-2 VerbFin) (NOT -2 ("kaout"ri));
+
+# n'en doa ket gwelet 
+SELECT VerbPP IF (-1 ("ket" adv)) (-2 VerbFin) (-2 ("kaout"ri));
 
 # REGLA (B0012): "An dud a zeu da Roazhon"
 REMOVE VerbFin IF (0 Det) (1 NC);
