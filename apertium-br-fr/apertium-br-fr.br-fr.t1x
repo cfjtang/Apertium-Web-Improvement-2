@@ -16741,12 +16741,14 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <let>
+          <var n="lema"/>
+          <clip pos="1" side="tl" part="lem"/>
+        </let>
         <out>
-          <chunk name="cnj" case="caseFirstWord">
+          <chunk namefrom="lema" case="caseFirstWord">
             <tags>
-              <tag>
-                <clip pos="1" side="tl" part="tags"/>
-              </tag>
+              <tag><clip pos="1" side="tl" part="tags"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="whole"/>
@@ -16930,7 +16932,7 @@
       </pattern>
       <action>
         <out>
-          <chunk name="coma">
+          <chunk namefrom="coma">
             <tags>
               <tag>
                 <lit-tag v="cm"/>

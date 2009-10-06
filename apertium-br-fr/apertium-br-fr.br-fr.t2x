@@ -21,11 +21,11 @@
     </def-cat>
 
     <def-cat n="CNJADV">
-      <cat-item lemma="cnj" tags="cnjadv"/>
+      <cat-item tags="cnjadv"/>
     </def-cat>
 
     <def-cat n="CS">
-      <cat-item lemma="cnj" tags="cnjsub"/>
+      <cat-item tags="cnjsub"/>
     </def-cat>
 
     <def-cat n="INF">
@@ -218,6 +218,7 @@
     <def-var n="concord"/>
     <def-var n="subj_vist"/>
     <def-var n="verb_prs"/>
+    <def-var n="last_cnjadv"/>
   </section-def-vars>
 
 
@@ -263,6 +264,29 @@
 
 
 <section-def-macros>
+  <def-macro n="convert_tense" npar="1">
+  <choose>
+    <when>
+      <test>
+        <and>
+          <equal caseless="yes">
+            <var n="last_cnjadv"/>
+            <lit v="pour que"/>
+          </equal>
+          <equal>
+            <clip pos="1" part="temps"/>
+            <lit-tag v="cni"/>
+          </equal>
+        </and>
+      </test>
+      <let>
+        <clip pos="1" part="temps"/>
+        <lit-tag v="prs"/>
+      </let>
+    </when>
+  </choose>
+  </def-macro>
+
   <def-macro n="f_concord1" npar="1">
 
   <choose> 
@@ -2475,6 +2499,10 @@
         <pattern-item n="CNJADV"/>
     </pattern>
     <action>
+    <let>
+      <var n="last_cnjadv"/>
+      <clip pos="1" part="lem"/>
+    </let>
         <out>
             <chunk>
                 <clip pos="1" part="lem"/>
@@ -3037,6 +3065,9 @@
   </pattern>
   <action>
     <call-macro n="posa_subj">
+      <with-param pos="1"/>
+    </call-macro>
+    <call-macro n="convert_tense">
       <with-param pos="1"/>
     </call-macro>
     <out>
