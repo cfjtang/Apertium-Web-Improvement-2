@@ -156,8 +156,8 @@ SECTION
 #Ma vez klasket sevel abadennoù
 REMOVE DetPos IF (-1 BOS) (1C Verb);
 
-#ne goust netra
-SELECT VerbFin IF (-1C ("ne"ri adv));
+#ne goust netra / n'eus redi ebet
+SELECT VerbFin IF (-1C ("ne"ri adv)) (NOT -1C (+kaout));
 
 #deuet e oan
 SELECT Vpart IF (-1C VerbPP) (1 VerbFin);
@@ -551,6 +551,9 @@ SELECT Conj IF (0 ("<gant ma>"ri)) (1C VerbFin);
 
 # evit kempouez plas ar yezh
 REMOVE Adj IF (-1C Prep);
+
+# n'eus redi ebet
+SELECT (p3 impers) IF (0 ("<n'eus>"ri) OR ("<n’eus>"ri));
 
 SECTION
 
