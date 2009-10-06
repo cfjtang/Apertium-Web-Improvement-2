@@ -4404,11 +4404,21 @@
         </p>
       </e>
     </pardef>
+<!--
+Hèctor Alòs i Font: 2009.10.06
+En "Voy a Navarra" o "El Amazonas es un río" el lexer escoge los nombres comunes
+al parecer por la longitud de los tags. Probamos de acortarlos tal como están en es-fr, que funciona,
+tal como recomienda Spectie.
+Pero entonces tenemos problemas con las reglas, que esperan género y número, como en los nombres comunes.
+Abortamos el cambio.
+Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "això és Alemanya")
+-->
     <pardef n="Afganistán__np">
       <e>
         <p>
           <l/>
           <r><s n="np"/><s n="loc"/><s n="m"/><s n="sg"/></r>
+<!--      <r><s n="np"/><s n="loc"/></r> -->
         </p>
       </e>
     </pardef>
@@ -4417,6 +4427,7 @@
         <p>
           <l/>
           <r><s n="np"/><s n="loc"/><s n="f"/><s n="sg"/></r>
+<!--      <r><s n="np"/><s n="loc"/></r> -->
         </p>
       </e>
     </pardef>
@@ -5365,12 +5376,14 @@
       </e>
     </pardef>
     <pardef n="un/o__prn">
+<!--
       <e r="RL">
         <p>
           <l>o</l>
           <r>o<s n="prn"/><s n="pro"/><s n="ref"/><s n="p3"/><s n="mf"/><s n="sp"/></r>
         </p>
       </e>
+-->
       <e>
         <p>
           <l>as</l>
@@ -71335,6 +71348,7 @@
 <e lm="borroso"><i>borros</i><par n="absolut/o__adj"/></e>
 <e lm="boyante"><i>boyante</i><par n="abundante__adj"/></e>
 <e lm="brasileño"><i>brasileñ</i><par n="absolut/o__adj"/></e>
+<e lm="brasileño"><i>brasileñ</i><par n="abogad/o__n"/></e>
 <e lm="breve"><i>breve</i><par n="abundante__adj"/></e>
 <e lm="brillante"><i>brillante</i><par n="abundante__adj"/></e>
 <e lm="británico"><i>británic</i><par n="abogad/o__n"/></e>
@@ -71888,6 +71902,7 @@
 <e lm="futuro"><i>futur</i><par n="absolut/o__adj"/></e>
 <e lm="galante"><i>galante</i><par n="abundante__adj"/></e>
 <e lm="gallego"><i>galleg</i><par n="absolut/o__adj"/></e>
+<e lm="gallego"><i>galleg</i><par n="abogad/o__n"/></e>
 <e lm="gastado"><i>gastad</i><par n="absolut/o__adj"/></e>
 <e lm="gay"><i>gay</i><par n="abundante__adj"/></e>
 <e lm="general"><i>general</i><par n="abdominal__adj"/></e>
@@ -71897,6 +71912,9 @@
 <e lm="gentil"><i>gentil</i><par n="abdominal__adj"/></e>
 <e lm="genuino"><i>genuin</i><par n="absolut/o__adj"/></e>
 <e lm="geométrico"><i>geométric</i><par n="absolut/o__adj"/></e>
+<e lm="germánico"><i>germánic</i><par n="absolut/o__adj"/></e>
+<e lm="germano"><i>german</i><par n="absolut/o__adj"/></e>
+<e lm="germano"><i>german</i><par n="abogad/o__n"/></e>
 <e lm="glacial"><i>glacial</i><par n="abundante__adj"/></e>
 <e lm="global"><i>global</i><par n="abdominal__adj"/></e>
 <e lm="glorioso"><i>glorios</i><par n="abstract/o__adj"/></e>
@@ -71949,6 +71967,8 @@
 <e lm="vietnamita"><i>vietnamita</i><par n="accionista__n"/></e>
 <e lm="hirsuto"><i>hirsut</i><par n="absolut/o__adj"/></e>
 <e lm="hispánico"><i>hispánic</i><par n="absolut/o__adj"/></e>
+<e lm="geográfico"><i>geográfic</i><par n="absolut/o__adj"/></e>
+<e lm="demográfico"><i>demográfic</i><par n="absolut/o__adj"/></e>
 <e lm="histórico"><i>históric</i><par n="absolut/o__adj"/></e>
 <e lm="prehistórico"><i>prehistóric</i><par n="absolut/o__adj"/></e>
 <e lm="holgado"><i>holgad</i><par n="absolut/o__adj"/></e>
@@ -72091,6 +72111,8 @@
 <e lm="indolente"><i>indolente</i><par n="abundante__adj"/></e>
 <e lm="indonésico"><i>indonésic</i><par n="absolut/o__adj"/></e>
 <e lm="indonesio"><i>indonesi</i><par n="absolut/o__adj"/></e>
+<e lm="indoeuropeo"><i>indoeurope</i><par n="absolut/o__adj"/></e>
+<e lm="protoindoeuropeo"><i>protoindoeurope</i><par n="absolut/o__adj"/></e>
 <e lm="indudable"><i>indudable</i><par n="abundante__adj"/></e>
 <e lm="industrial"><i>industrial</i><par n="abdominal__adj"/></e>
 <e lm="industrializado"><i>industrializad</i><par n="absolut/o__adj"/></e>
@@ -72221,6 +72243,7 @@
 <e lm="involuntario"><i>involuntari</i><par n="absolut/o__adj"/></e>
 <e lm="invulnerable"><i>invulnerable</i><par n="abundante__adj"/></e>
 <e lm="irlandés"><i>irland</i><par n="aragon/és__adj"/></e>
+<e lm="islandés"><i>island</i><par n="aragon/és__adj"/></e>
 <e lm="irónico"><i>irónic</i><par n="absolut/o__adj"/></e>
 <e lm="irracional"><i>irracional</i><par n="abdominal__adj"/></e>
 <e lm="irreal"><i>irreal</i><par n="abdominal__adj"/></e>
@@ -72386,6 +72409,7 @@
 <e lm="metódico"><i>metódic</i><par n="absolut/o__adj"/></e>
 <e lm="metropolitano"><i>metropolitan</i><par n="absolut/o__adj"/></e>
 <e lm="mexicano"><i>mexican</i><par n="absolut/o__adj"/></e>
+<e lm="texano"><i>texan</i><par n="absolut/o__adj"/></e>
 <e lm="nicaragüense"><i>nicaragüense</i><par n="abundante__adj"/></e>
 <e lm="panameño"><i>panameñ</i><par n="absolut/o__adj"/></e>
 <e lm="costarricense"><i>costarricense</i><par n="abundante__adj"/></e>
@@ -72479,6 +72503,7 @@
 <e lm="normalizado"><i>normalizad</i><par n="absolut/o__adj"/></e>
 <e lm="norteamericano"><i>norteamerican</i><par n="absolut/o__adj"/></e>
 <e lm="noruego"><i>norueg</i><par n="absolut/o__adj"/></e>
+<e lm="noruego"><i>norueg</i><par n="abogad/o__n"/></e>
 <e lm="notable"><i>notable</i><par n="abundante__adj"/></e>
 <e lm="notarial"><i>notarial</i><par n="abdominal__adj"/></e>
 <e lm="notorio"><i>notori</i><par n="absolut/o__adj"/></e>
@@ -72873,6 +72898,11 @@
 <e lm="sentimental"><i>sentimental</i><par n="abdominal__adj"/></e>
 <e lm="separado"><i>separad</i><par n="absolut/o__adj"/></e>
 <e lm="septentrional"><i>septentrional</i><par n="abundante__adj"/></e>
+<e lm="meridional"><i>meridional</i><par n="abundante__adj"/></e>
+<e lm="norteño"><i>norteñ</i><par n="abogad/o__n"/></e>
+<e lm="norteño"><i>norteñ</i><par n="absolut/o__adj"/></e>
+<e lm="sureño"><i>sureñ</i><par n="abogad/o__n"/></e>
+<e lm="sureño"><i>sureñ</i><par n="absolut/o__adj"/></e>
 <e lm="séptico"><i>séptic</i><par n="absolut/o__adj"/></e>
 <e lm="séptimo"><i>séptim</i><par n="absolut/o__adj"/></e>
 <e lm="sereno"><i>seren</i><par n="absolut/o__adj"/></e>
@@ -73762,6 +73792,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="arteria"><i>arteria</i><par n="abeja__n"/></e>
 <e lm="artesanía"><i>artesanía</i><par n="abeja__n"/></e>
 <e lm="artesano"><i>artesan</i><par n="abogad/o__n"/></e>
+<e lm="artesano"><i>artesan</i><par n="absolut/o__adj"/></e>
+<e lm="artesanal"><i>artesanal</i><par n="abdominal__adj"/></e>
 <e lm="articulación"><i>articulaci</i><par n="acci/ón__n"/></e>
 <e lm="artículo"><i>artículo</i><par n="abismo__n"/></e>
 <e lm="artificio"><i>artificio</i><par n="abismo__n"/></e>
@@ -73852,6 +73884,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="atraco"><i>atraco</i><par n="abismo__n"/></e>
 <e lm="atraso"><i>atraso</i><par n="abismo__n"/></e>
 <e lm="atributo"><i>atributo</i><par n="abismo__n"/></e>
+<e lm="atribución"><i>atribuci</i><par n="acci/ón__n"/></e>
 <e lm="atril"><i>atril</i><par n="abril__n"/></e>
 <e lm="atrofia"><i>atrofia</i><par n="abeja__n"/></e>
 <e lm="atuendo"><i>atuendo</i><par n="abismo__n"/></e>
@@ -73871,6 +73904,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="ausencia"><i>ausencia</i><par n="abeja__n"/></e>
 <e lm="auspicio"><i>auspicio</i><par n="abismo__n"/></e>
 <e lm="australiano"><i>australian</i><par n="abogad/o__n"/></e>
+<e lm="australiano"><i>australian</i><par n="absolut/o__adj"/></e>
 <e lm="autismo"><i>autismo</i><par n="abismo__n"/></e>
 <e lm="autobús"><i>autob</i><par n="autob/ús__n"/></e>
 <e lm="autocar"><i>autocar</i><par n="abril__n"/></e>
@@ -73893,6 +73927,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="autopsia"><i>autopsia</i><par n="abeja__n"/></e>
 <e lm="autor"><i>autor</i><par n="señor__n"/></e>
 <e lm="autoridad"><i>autoridad</i><par n="accesibilidad__n"/></e>
+<e lm="autoritario"><i>autoritari</i><par n="absolut/o__adj"/></e>
 <e lm="autorización"><i>autorizaci</i><par n="acci/ón__n"/></e>
 <e lm="autorretrato"><i>autorretrato</i><par n="abismo__n"/></e>
 <e lm="autoservicio" a="gema"><i>autoservicio</i><par n="abismo__n"/></e>
@@ -76339,6 +76374,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="feto"><i>feto</i><par n="abismo__n"/></e>
 <e lm="feudalismo"><i>feudalismo</i><par n="abismo__n"/></e>
 <e lm="feudo"><i>feudo</i><par n="abismo__n"/></e>
+<e lm="feudal"><i>feudal</i><par n="abdominal__adj"/></e>
 <e lm="fiambre"><i>fiambre</i><par n="abismo__n"/></e>
 <e lm="fianza"><i>fianza</i><par n="abeja__n"/></e>
 <e lm="fiasco"><i>fiasco</i><par n="abismo__n"/></e>
@@ -76508,6 +76544,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="funcionamiento"><i>funcionamiento</i><par n="abismo__n"/></e>
 <e lm="funcionario"><i>funcionari</i><par n="abogad/o__n"/></e>
 <e lm="función"><i>funci</i><par n="acci/ón__n"/></e>
+<e lm="funcional"><i>funcional</i><par n="abdominal__adj"/></e>
 <e lm="fundación"><i>fundaci</i><par n="acci/ón__n"/></e>
 <e lm="fundador"><i>fundador</i><par n="señor__n"/></e>
 <e lm="fundamentalismo"><i>fundamentalismo</i><par n="abismo__n"/></e>
@@ -76620,6 +76657,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="geodesia"><i>geodesia</i><par n="abeja__n"/></e>
 <e lm="geografía"><i>geografía</i><par n="abeja__n"/></e>
 <e lm="geógrafo"><i>geógraf</i><par n="abogad/o__n"/></e>
+<e lm="demografía"><i>demografía</i><par n="abeja__n"/></e>
+<e lm="demógrafo"><i>demógraf</i><par n="abogad/o__n"/></e>
 <e lm="geología"><i>geología</i><par n="abeja__n"/></e>
 <e lm="geólogo"><i>geólog</i><par n="abogad/o__n"/></e>
 <e lm="geometría"><i>geometría</i><par n="abeja__n"/></e>
@@ -77394,6 +77433,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="iridio"><i>iridio</i><par n="abismo__n"/></e>
 <e lm="iris"><i>iris</i><par n="campus__n"/></e>
 <e lm="irlandés"><i>irland</i><par n="aragon/és__n"/></e>
+<e lm="islandés"><i>island</i><par n="aragon/és__n"/></e>
 <e lm="ironía"><i>ironía</i><par n="abeja__n"/></e>
 <e lm="irradiación"><i>irradiaci</i><par n="acci/ón__n"/></e>
 <e lm="irritación"><i>irritaci</i><par n="acci/ón__n"/></e>
@@ -77448,6 +77488,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="jaspe"><i>jaspe</i><par n="abismo__n"/></e>
 <e lm="jaula"><i>jaula</i><par n="abeja__n"/></e>
 <e lm="javanés"><i>javan</i><par n="aragon/és__n"/></e>
+<e lm="javanés"><i>javan</i><par n="aragon/és__adj"/></e>
 <e lm="jazmín"><i>jazm</i><par n="bot/ín__n"/></e>
 <e lm="jazz"><i>jazz</i><par n="atletismo__n"/></e>
 <e lm="jefatura"><i>jefatura</i><par n="abeja__n"/></e>
@@ -77630,6 +77671,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="leño"><i>leño</i><par n="abismo__n"/></e>
 <e lm="leona"><i>leona</i><par n="abeja__n"/></e>
 <e lm="león"><i>le</i><par n="anfitri/ón__n"/></e>
+<e lm="leonés"><i>leon</i><par n="aragon/és__n"/></e>
+<e lm="leonés"><i>leon</i><par n="aragon/és__adj"/></e>
 <e lm="leopardo"><i>leopardo</i><par n="abismo__n"/></e>
 <e lm="lepra"><i>lepra</i><par n="abeja__n"/></e>
 <e lm="lesbiana"><i>lesbiana</i><par n="abeja__n"/></e>
@@ -77792,6 +77835,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="lutecio"><i>lutecio</i><par n="abismo__n"/></e>
 <e lm="luto"><i>luto</i><par n="abismo__n"/></e>
 <e lm="luxemburgués"><i>luxemburgu</i><par n="aragon/és__n"/></e>
+<e lm="luxemburgués"><i>luxemburgu</i><par n="aragon/és__adj"/></e>
 <e lm="lux"><i>lux</i><par n="abismo__n"/></e>
 <e lm="luz"><i>lu</i><par n="actri/z__n"/></e>
 <e lm="macaco"><i>macaco</i><par n="abismo__n"/></e>
@@ -78081,6 +78125,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="métrica"><i>métrica</i><par n="abeja__n"/></e>
 <e lm="metro"><i>metro</i><par n="abismo__n"/></e>
 <e lm="mexicano"><i>mexican</i><par n="abogad/o__n"/></e>
+<e lm="texano"><i>texan</i><par n="abogad/o__n"/></e>
 <e lm="nicaragüense"><i>nicaragüense</i><par n="accionista__n"/></e>
 <e lm="panameño"><i>panameñ</i><par n="abogad/o__n"/></e>
 <e lm="costarricense"><i>costarricense</i><par n="accionista__n"/></e>
@@ -78201,7 +78246,6 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="monedero"><i>monedero</i><par n="abismo__n"/></e>
 <e lm="monema"><i>monema</i><par n="abismo__n"/></e>
 <e lm="monitor"><i>monitor</i><par n="abril__n"/></e>
-<e lm="monja"><i>monja</i><par n="abeja__n"/></e>
 <e lm="monje"><i>monj</i><par n="asistent/e__n"/></e>
 <e lm="monogamia"><i>monogamia</i><par n="abeja__n"/></e>
 <e lm="mono"><i>mon</i><par n="abogad/o__n"/></e>
@@ -78338,6 +78382,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="náutica"><i>náutica</i><par n="abeja__n"/></e>
 <e lm="navaja"><i>navaja</i><par n="abeja__n"/></e>
 <e lm="navarro"><i>navarr</i><par n="abogad/o__n"/></e>
+<e lm="navarro"><i>navarr</i><par n="absolut/o__adj"/></e>
 <e lm="navegación"><i>navegaci</i><par n="acci/ón__n"/></e>
 <e lm="nave"><i>nave</i><par n="abeja__n"/></e>
 <e lm="navidad"><i>navidad</i><par n="accesibilidad__n"/></e>
@@ -78416,6 +78461,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="nombre"><i>nombre</i><par n="abismo__n"/></e>
 <e lm="nómina"><i>nómina</i><par n="abeja__n"/></e>
 <e lm="nordeste"><i>nordeste</i><par n="atletismo__n"/></e>
+<e lm="noreste"><i>noreste</i><par n="atletismo__n"/></e>
 <e lm="norma"><i>norma</i><par n="abeja__n"/></e>
 <e lm="normalidad"><i>normalidad</i><par n="accesibilidad__n"/></e>
 <e lm="noroeste"><i>noroeste</i><par n="atletismo__n"/></e>
@@ -80830,6 +80876,11 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="vainilla"><i>vainilla</i><par n="abeja__n"/></e>
 <e lm="vajilla"><i>vajilla</i><par n="abeja__n"/></e>
 <e lm="valenciano"><i>valencian</i><par n="abogad/o__n"/></e>
+<e lm="valenciano"><i>valencian</i><par n="absolut/o__adj"/></e>
+<e lm="murciano"><i>murcian</i><par n="abogad/o__n"/></e>
+<e lm="murciano"><i>murcian</i><par n="absolut/o__adj"/></e>
+<e lm="extremeño"><i>extremeñ</i><par n="abogad/o__n"/></e>
+<e lm="extremeño"><i>extremeñ</i><par n="absolut/o__adj"/></e>
 <e lm="valentía"><i>valentía</i><par n="abeja__n"/></e>
 <e lm="validez"><i>valide</i><par n="actri/z__n"/></e>
 <e lm="valija"><i>valija</i><par n="abeja__n"/></e>
@@ -81105,6 +81156,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 
 <e lm="Partido Socialista Obrero Español"><i>Partido Socialista Obrero Español</i><par n="atletismo__n"/></e>
 
+
 <!-- NOMS PROPIS-->
 
 <e lm="Alá"><i>Alá</i><par n="Abad__np"/></e>
@@ -81169,6 +81221,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="carolingio"><i>carolingi</i><par n="absolut/o__adj"/></e>
 <e lm="merovingio"><i>merovingio</i><par n="abismo__n"/></e>
 <e lm="merovingio"><i>merovingi</i><par n="absolut/o__adj"/></e>
+
+<!-- TOPÓNIMOS -->
 
 <e lm="Abisinia"><i>Abisinia</i><par n="Barcelona__np"/></e>
 <e lm="Abu Dabi"><i>Abu<b/>Dabi</i><par n="Barcelona__np"/></e>
@@ -81246,6 +81300,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="Caracas"><i>Caracas</i><par n="Barcelona__np"/></e>
 <e lm="Caribe"><i>Caribe</i><par n="Afganistán__np"/></e>
 <e lm="Castilla"><i>Castilla</i><par n="Barcelona__np"/></e>
+<e lm="León"><i>León</i><par n="Afganistán__np"/></e>
 <e lm="Castilla La Mancha"><i>Castilla<b/>La<b/>Mancha</i><par n="Barcelona__np"/></e>
 <e lm="Castilla y León" a="mginesti"><i>Castilla<b/>y<b/>León</i><par n="Barcelona__np"/></e>
 <e lm="Ceuta"><i>Ceuta</i><par n="Barcelona__np"/></e>
@@ -81386,6 +81441,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="Mediterráneo"><i>Mediterráneo</i><par n="Afganistán__np"/></e>
 <e lm="Méjico" r="LR"><i>Méjico</i><par n="Afganistán__np"/></e>
 <e lm="México"><i>México</i><par n="Afganistán__np"/></e>
+<e lm="Texas"><i>Texas</i><par n="Afganistán__np"/></e>
+<e lm="Tejas"><i>Tejas</i><par n="Afganistán__np"/></e>
 <e lm="Micronesia"><i>Micronesia</i><par n="Barcelona__np"/></e>
 <e lm="Moldavia"><i>Moldavia</i><par n="Barcelona__np"/></e>
 <e lm="Mónaco"><i>Mónaco</i><par n="Afganistán__np"/></e>
@@ -85691,6 +85748,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="eficazmente"><i>eficazmente</i><par n="ahora__adv"/></e>
 <e lm="emocionalmente"><i>emocionalmente</i><par n="ahora__adv"/></e>
 <e lm="en absoluto"><i>en<b/>absoluto</i><par n="ahora__adv"/></e>
+<e lm="en modo alguno"><i>en<b/>modo<b/>alguno</i><par n="ahora__adv"/></e>
 <e lm="en apuros" r="LR"><i>en<b/>apuros</i><par n="ahora__adv"/></e>
 <e lm="en Babia" r="LR"><i>en<b/>Babia</i><par n="ahora__adv"/></e>
 <e lm="en breve"><i>en<b/>breve</i><par n="ahora__adv"/></e>
@@ -86452,7 +86510,9 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <!--<e lm="le" r="RL"><p><l/><r>le</r></p><par n="~/le__prn"/></e>-->
 <e lm="lo demás"><i>lo<b/>demás</i><par n="algo__prn"/></e>
 <e lm="los dos" r="RL"><i>l</i><par n="l/os_dos__prn"/></e>
-<!--<e lm="mí"><i>mí</i><par n="conmigo__prn"/></e>-->
+<e lm="mí"><i>mí</i><par n="conmigo__prn"/></e>
+<e lm="ti"><i>ti</i><par n="contigo__prn"/></e>
+<e lm="sí"><i>sí</i><par n="sí__prn"/></e>
 <e lm="nada"><i>nada</i><par n="aquello__prn"/></e>
 <e lm="nadie"><i>nadie</i><par n="alguien__prn"/></e>
 <e lm="ninguno"><i>ningun</i><par n="algun/o__prn"/></e>
@@ -86470,8 +86530,6 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="quienquiera"><i>quien</i><par n="cual/quiera__prn"/></e>
 <e lm="quién"><i>quién</i><par n="cuál__prn"/></e>
 <e lm="qué"><i>qué</i><par n="qué__prn"/></e>
-<e lm="sí"><i>sí</i><par n="sí__prn"/></e>
-<e lm="ti"><i>ti</i><par n="contigo__prn"/></e>
 <e lm="todo"><i>tod</i><par n="algun/o__prn"/></e>
 <e lm="todo ello"><i>todo<b/>ello</i><par n="aquello__prn"/></e>
 <e lm="todo el mundo" ><i>todo<b/>el<b/>mundo</i><par n="todo_el_mundo__prn"/></e>
