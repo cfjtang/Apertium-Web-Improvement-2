@@ -1290,6 +1290,78 @@
       </choose>
     </def-macro>
 
+
+    <def-macro n="comparatiu_nodet_adj1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
+      <let>
+        <var n="adjectiu1"/>
+        <lit v=""/>
+      </let>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <var n="numero"/>
+              <lit-tag v="sp"/>
+            </equal>
+          </test>
+          <let>
+            <var n="numero"/>
+            <lit-tag v="sg"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <var n="genero"/>
+              <lit-tag v="mf"/>
+            </equal>
+          </test>
+          <let>
+            <var n="genero"/>
+            <lit-tag v="m"/>
+          </let>
+        </when>
+      </choose>
+      <choose>
+        <when>
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="comp"/>
+              </equal>
+          </test>
+          <append n="adjectiu1">
+            <lit v="plus"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+        </when>
+        <when>
+          <test>
+              <equal>
+                <clip pos="1" side="sl" part="grau_adj"/>
+                <lit-tag v="sup"/>
+              </equal>
+          </test>
+          <append n="adjectiu1">
+            <lit v="plus"/>
+            <lit-tag v="preadv"/>
+            <lit v="$ ^"/>
+          </append>
+        </when>
+        <otherwise>
+          <append n="adjectiu1">
+            <lit v=""/>
+          </append> 
+        </otherwise>
+      </choose>
+    </def-macro>
+
+
+
+
     <def-macro n="comparatiu_adj1" npar="1"><!--per a afegir adverbi 'més' en adjs comparatius. -->
       <let>
         <var n="adjectiu1"/>
@@ -7396,9 +7468,6 @@
         <call-macro n="f_nploc">
           <with-param pos="3"/>
         </call-macro>
-        <call-macro n="comparatiu_adj1">
-          <with-param pos="2"/>
-        </call-macro>
         <call-macro n="f_concord2">
           <with-param pos="1"/>
           <with-param pos="2"/>
@@ -7428,6 +7497,9 @@
                 <list n="adj_colloc_abans"/>
               </in>
             </test>
+            <call-macro n="comparatiu_nodet_adj1">
+              <with-param pos="2"/>
+            </call-macro>
             <out>
               <chunk name="det_adj_nom_de_top" case="caseFirstWord">
                 <tags>
@@ -7485,6 +7557,9 @@
             </out>
           </when>
           <otherwise>
+            <call-macro n="comparatiu_adj1">
+              <with-param pos="2"/>
+            </call-macro>
             <out>
               <chunk name="det_nom_adj_de_top" case="caseFirstWord">
                 <tags>
