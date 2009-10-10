@@ -6,20 +6,18 @@ m = [1883 1856 1859 1869 1861 1859 1853 1855 1949 1860 1864 1846 1858 1864 1862 
 x = [46 62 76 90 101 111 120 130 140 153 163 178 192 207 226 247 275 309 364 679];
 
 plot(log2(x), log2(as), "-*;apertium-service;", 
-	log2(x), log2(a), "-+;apertium;",
-	log2(x), log2(ms), "-o;moses-service;",
-	log2(x), log2(m), "-x;moses;");
+	log2(x), log2(a), "-+;apertium;");
+#	log2(x), log2(ms), "-o;moses-service;",
+#	log2(x), log2(m), "-x;moses;");
 
 title ('Comparison in the "Sentence Length - Time" space', "fontsize", 30);
-xlabel ("Sentence Length (log_{2}(string length))", "fontsize", 30);
-ylabel ("Time (log_{2}(ms))", "fontsize", 30);
+xlabel ("Sentence Length (string length)", "fontsize", 30);
+ylabel ("Time (ms)", "fontsize", 30);
 legend ("location", "northwest");
 legend ("boxon");
 grid ("on");
-ylim ([0, 20]);
+# ylim ([0, 20]);
 
-print comp.png -dpng -mono -solid -F:30;
+print compap.png -dpng -mono -solid -F:30;
 
 replot;
-
-myplotap
