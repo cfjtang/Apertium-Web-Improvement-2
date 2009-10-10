@@ -147,7 +147,7 @@ PREFIX2 = $(LANG2)-$(LANG1)
 BASENAME = apertium-$(PREFIX1)
 TARGETS_COMMON = \
      $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
-     $(PREFIX1).autopgen.bin $(PREFIX1).t1x.bin   $(PREFIX1).mode
+     $(PREFIX1).t1x.bin   $(PREFIX1).mode
 
 EXTRA_DIST = $(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(LANG2).dix \
@@ -165,7 +165,6 @@ apertium_sl_modesdir = $(prefix)/share/apertium/modes/
 apertium_sl_mk_DATA = $(PREFIX1).automorf.bin \
                     $(PREFIX1).autobil.bin  \
                     $(PREFIX1).autogen.bin \
-                    $(PREFIX1).autopgen.bin \
 		    $(PREFIX1).t1x.bin \
                     $(PREFIX1).prob \
 	            $(PREFIX1).mode modes.xml
@@ -471,7 +470,7 @@ uninstall-am: uninstall-apertium_sl_mkDATA
 	uninstall-apertium_sl_mkDATA
 
 
-# $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin $(PREFIX1).lex.bin 
+# $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin $(PREFIX1).lex.bin $(PREFIX1).autopgen.bin
 
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -508,6 +507,7 @@ $(PREFIX1).mode: modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
+#                   $(PREFIX1).autopgen.bin 
 #		    $(PREFIX1).lex.bin 
 #		    $(PREFIX1).t2x.bin 
 #		    $(PREFIX1).t3x.bin 
