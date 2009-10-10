@@ -211,32 +211,6 @@
 	  <cat-item tags="vbmod.pp.*"/>
      </def-cat>
  
-    
-     <def-cat n="llamar">
-       <cat-item lemma="llamar" tags="vblex.pri.*"/>
-       <cat-item lemma="llamar" tags="vblex.pii.*"/>
-       <cat-item lemma="llamar" tags="vblex.fti.*"/>
-     </def-cat>
-
-     <def-cat n="caer">
-       <cat-item lemma="caer" tags="vblex.*"/>
-     </def-cat>
-
-     <def-cat n="verbospron">
-       <cat-item lemma="caer" tags="vblex.*"/>
-       <cat-item lemma="re�" tags="vblex.*"/>
-       <cat-item lemma="callar" tags="vblex.*"/>
-       <cat-item lemma="asomarse" tags="vblex.*"/> 
-     </def-cat>
-
-     <def-cat n="verbospron_pp">
-       <cat-item lemma="caer" tags="vblex.pp.*"/>
-       <cat-item lemma="re�" tags="vblex.pp.*"/>
-       <cat-item lemma="callar" tags="vblex.pp.*"/>
-       <cat-item lemma="asomarse" tags="vblex.pp.*"/>
-     </def-cat>
-
-     
      <def-cat n="sent">
        <cat-item tags="sent"/>
      </def-cat>
@@ -478,6 +452,22 @@
 
 
 <section-def-macros>
+  <def-macro n="f_du_to_pl1" npar="1">
+    <choose>
+      <when>
+        <test>
+          <equal>
+            <clip pos="1" side="sl" part="nbr"/>
+            <lit-tag v="du"/>
+          </equal>
+        </test>
+        <let>
+          <clip pos="1" side="tl" part="nbr"/>
+          <lit-tag v="pl"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
 
   <def-macro n="f_bcond" npar="1"><!--Para mirar si el blanco contiene o no formato. Hay que poner esta funci� en las reglas en que desaparezca alguna palabra, con tal de decidir si el blanco de la palabra eliminada debe eliminarse tambi� o conservarse. Si contiene formato hay que conservarla, si no contiene formato hay que eliminarla para que no aparezcan dos espacios seguidos. -->
     <choose>
@@ -2585,6 +2575,9 @@
 		     <pattern-item n="prn_pos"/>
 	     </pattern>
 	     <action>
+               <call-macro n="f_du_to_pl1">
+                 <with-param pos="1"/>
+               </call-macro>
 		     <out>  
 			     <lu> 
 				     <clip pos="1" side="tl" part="lemh"/>
