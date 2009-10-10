@@ -92,9 +92,13 @@
 	  <cat-item tags="prn.itg.*"/>
      </def-cat>
 -->
+     <def-cat n="prn_pos">   	  	  
+	     <cat-item tags="prn.pos.*"/>
+     </def-cat>
      <def-cat n="prn">   	  	  
 	     <cat-item tags="prn.*"/>
      </def-cat>
+
      <def-cat n="prn_se">   	 
 	     <cat-item lemma="se" tags="prn"/>
      </def-cat>
@@ -313,7 +317,7 @@
 	  <attr-item tags="prn.tn.ref.p3"/>	 
 	  <attr-item tags="prn.tn.pos"/>	     
 	  <attr-item tags="prn.itg"/>
-	  <attr-item tags="prn"/>
+	  <attr-item tags="prn.pos"/>
      </def-attr>
 
      <def-attr n="a_verb">
@@ -2575,6 +2579,27 @@
          </out>
        </action>
      </rule>
+
+     <rule comment="REGLA: PRNPOS → PRNPOS">
+	     <pattern>
+		     <pattern-item n="prn_pos"/>
+	     </pattern>
+	     <action>
+		     <out>  
+			     <lu> 
+				     <clip pos="1" side="tl" part="lemh"/>
+				     <clip pos="1" side="tl" part="a_prn"/>
+				     <clip pos="1" side="tl" part="gen"/>
+				     <clip pos="1" side="tl" part="nbr"/>
+				     <lit-tag v="ind"/>
+				     <clip pos="1" side="tl" part="lemq"/>
+			     </lu>
+		     </out>
+		     
+	     </action>
+	 </rule>
+
+
      <rule> <!-- REGLA:  NOM mk has no tenses, nom into nominative-->
 	     <pattern>
 		     <pattern-item n="nom"/>
@@ -2597,6 +2622,7 @@
 		     
 	     </action>
 	 </rule>
+
 	<rule> <!-- REGLA: ADJECTIU NOM mk has no tenses, nom into nominative, adj lose tense-->
 		<pattern>
 			<pattern-item n="adj"/>
