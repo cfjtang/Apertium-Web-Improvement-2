@@ -55,7 +55,7 @@ MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mb
 \label{fig:mtsoa}
 \end{figure}
 
-Currently MetaMap is only available for English free text, which makes it difficult the use of UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages other than English. A possible way to overcome this limitation consists in using Machine Translation techniques (possibly with dictionaries, translation rules, lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language to English, and then process it as in figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.
+Currently MetaMap is only available for English free text, which makes it difficult the use of UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$ to represent concepts from biomedical texts written in languages other than English. A possible way to overcome this limitation consists in using Machine Translation techniques (possibly with dictionaries, translation rules, lexical selection techniques etc. specific for the biomedical domain) to translate the free text from its original language to English, and then process it as in Figure \ref{fig:mtsoa}. This approach is also discussed in \shortcite{metamapes}.
 \end{cs}
 
 \begin{cs}{\bf - Supporting creation of user-generated content:}
@@ -138,7 +138,7 @@ In general, those modules often rely on resources whose acquisition and release 
 \label{fig:rp}
 \end{figure}
 
-To prevent the frequent acquisition and release of the aforementioned resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in figure \ref{fig:rp}.
+To prevent the frequent acquisition and release of the aforementioned resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in Figure \ref{fig:rp}.
 
 To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in pool, more resources can be lazily acquired.
 
@@ -160,15 +160,23 @@ Relying on a resource pool results in the following improvements for our RBMT se
 \begin{center}
 \includegraphics[width=7.75cm]{comp}
 \end{center}
-\caption{Comparison between {\tt apertium-service} and {\tt moses-service} in the ``Text Length - Time'' space; Time measurements are represented on a logarithmic scale.}
+\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium}, {\tt apertium-service}, {\tt moses} and {\tt moses-service}; measurements are in $log_{2}(string\ length)$ for Sentence Length and in $log_{2}(ms)$ for Time.}
 \label{fig:comp}
 \end{figure}
 
-To evaluate the efficiency of our service (which we will refer to as {\tt apertium-service}), we compared the time it requires to compute and answer to a translation request with the time required by a service relying on Moses~\citep{moses} which we will refer to as {\tt moses-service}), a Statistical Machine Translation system, to translate free text from the Spanish language to the English language.
+%To evaluate the efficiency of our service (which we will refer to as {\tt apertium-service}), we compared the time it requires to compute and answer to a translation request for the following systems:
 
-The translation model used by {\tt moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. the language models were then compiled into binary format using IRSTLM~\citep{irstlm} and trained to minimize the error rate on a set of sentences from the same corpus. 
+To evaluate the efficiency of our service, which we will refer to as {\tt apertium-service}, we compared the time it requires to compute and answer to a translation request from the Spanish language to the English language with the time required by the following systems:
 
-Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format and the free text used for timing was also taken from Europarl corpus. Results are shown in figure ~\ref{fig:comp}.
+\begin{itemize}
+ \item {\tt apertium}, a console application implemented as a part of the Apertium project;
+ \item {\tt moses}~\citep{moses}, a Statistical Machine Translation system;
+ \item {\tt moses-service}, a service relying on {\tt moses}.
+\end{itemize}
+
+The translation model used by {\tt moses} and {\tt moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. Language models have been then compiled into binary format using IRSTLM~\citep{irstlm}, and trained to minimize the error rate on a set of sentences from the same corpus. 
+
+Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Results are shown in Figure ~\ref{fig:comp}.
 
 
 \section{Conclusions and Future Work}
