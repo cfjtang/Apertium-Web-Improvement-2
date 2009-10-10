@@ -2727,6 +2727,28 @@
       </action>
     </rule>
 
+    <rule> <!-- REGLA: ADJECTIU mk has no tenses, nom into nominative, adj lose tense-->
+      <pattern>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="1" side="tl" part="adj_definitness"/>
+          <lit-tag v="ind"/>
+        </let>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_adjec"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="adj_degree"/>
+            <clip pos="1" side="tl" part="adj_definitness"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
     <!-- REGLA: presente -->
     <rule>
       <pattern>
