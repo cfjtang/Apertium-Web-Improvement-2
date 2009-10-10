@@ -282,9 +282,9 @@
     <def-attr n="gen">
       <attr-item tags="m"/>
       <attr-item tags="f"/>
+      <attr-item tags="nt"/>
       <attr-item tags="mf"/>
       <attr-item tags="GD"/>
-      <attr-item tags="nt"/>
     </def-attr>
     <def-attr n="nbr">
       <attr-item tags="sg"/>
@@ -334,11 +334,12 @@
       <attr-item tags="ins"/>
     </def-attr>
     <def-attr n="adj_degree">
+      <attr-item tags="pst"/>
       <attr-item tags="pos"/>
       <attr-item tags="comp"/>
       <attr-item tags="sup"/>
     </def-attr>
-    <def-attr n="adj_definitness">
+    <def-attr n="adj_definiteness">
       <attr-item tags="def"/>
       <attr-item tags="ind"/>
       <attr-item tags="prx"/>
@@ -370,7 +371,41 @@
   </section-def-vars>
 
   <section-def-macros>
+    <def-macro n="f_conj_adjec1" npar="1">
+      <let>
+        <clip pos="1" side="tl" part="gen"/>
+        <var n="genero"/>
+      </let>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="adj_degree"/>
+              <lit-tag v="pos"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="adj_degree"/>
+            <lit-tag v="pst"/>
+          </let>
+        </when>
+      </choose>
+      <choose> <!-- By default Macedonian adjectives do not show gender in plural -->
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="mf"/>
+          </let>
+        </when>
+      </choose>
 
+    </def-macro> 
     <def-macro n="f_du_to_pl_mfn1" npar="1">
       <choose>
         <when>
@@ -585,6 +620,12 @@
           </let>
         </when>
       </choose>
+    </def-macro>
+    <def-macro n="f_set_gender_head1" npar="1">
+      <let>
+        <var n="genero"/>
+        <clip pos="1" side="tl" part="gen"/>
+      </let>
     </def-macro>
     <def-macro n="f_concord1" npar="1">
       <choose>
@@ -2595,22 +2636,24 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="f_set_gender_head1">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="1"/>
+        </call-macro> 
         <let>
           <clip pos="2" side="tl" part="sklon"/>
           <lit-tag v="nom"/>
-        </let>
-        <let>
-          <clip pos="1" side="tl" part="adj_definitness"/>
-          <lit-tag v="ind"/>
         </let>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_adjec"/>
-            <clip pos="2" side="tl" part="gen"/>
-            <clip pos="2" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="adj_degree"/>
-            <clip pos="1" side="tl" part="adj_definitness"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="2" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
           </lu>
           <b pos="1"/>
           <lu>
@@ -2625,38 +2668,43 @@
       </action>
     </rule>
 
-    <rule> <!-- REGLA: ADJECTIU ADJECTIU NOM -->
+    <rule comment="REGLA: ADJECTIU ADJECTIU NOM">
       <pattern>
         <pattern-item n="adj"/>
         <pattern-item n="adj"/>
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="f_set_gender_head1">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="1"/>
+        </call-macro> 
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="2"/>
+        </call-macro> 
         <let>
           <clip pos="3" side="tl" part="sklon"/>
           <lit-tag v="nom"/>
-        </let>
-        <let>
-          <clip pos="2" side="tl" part="adj_definitness"/>
-          <lit-tag v="ind"/>
         </let>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_adjec"/>
-            <clip pos="3" side="tl" part="gen"/>
-            <clip pos="3" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="adj_degree"/>
-            <clip pos="2" side="tl" part="adj_definitness"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
           </lu>
           <b pos="1"/>
           <lu>
             <clip pos="2" side="tl" part="lemh"/>
             <clip pos="2" side="tl" part="a_adjec"/>
-            <clip pos="3" side="tl" part="gen"/>
-            <clip pos="3" side="tl" part="nbr"/>
             <clip pos="2" side="tl" part="adj_degree"/>
-            <clip pos="2" side="tl" part="adj_definitness"/>
+            <clip pos="2" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
           </lu>
           <b pos="2"/>
           <lu>
@@ -2671,7 +2719,7 @@
       </action>
     </rule>
 
-    <rule> <!-- REGLA: ADJECTIU ADJECTIU NOM -->
+    <rule> <!-- REGLA: ADJECTIU ADJECTIU ADJECTIU NOM -->
       <pattern>
         <pattern-item n="adj"/>
         <pattern-item n="adj"/>
@@ -2679,40 +2727,48 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
+        <call-macro n="f_set_gender_head1">
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="1"/>
+        </call-macro> 
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="2"/>
+        </call-macro> 
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="3"/>
+        </call-macro> 
         <let>
           <clip pos="4" side="tl" part="sklon"/>
           <lit-tag v="nom"/>
-        </let>
-        <let>
-          <clip pos="3" side="tl" part="adj_definitness"/>
-          <lit-tag v="ind"/>
         </let>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_adjec"/>
-            <clip pos="4" side="tl" part="gen"/>
-            <clip pos="4" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="adj_degree"/>
-            <clip pos="3" side="tl" part="adj_definitness"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="4" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
           </lu>
           <b pos="1"/>
           <lu>
             <clip pos="2" side="tl" part="lemh"/>
             <clip pos="2" side="tl" part="a_adjec"/>
-            <clip pos="4" side="tl" part="gen"/>
-            <clip pos="4" side="tl" part="nbr"/>
             <clip pos="2" side="tl" part="adj_degree"/>
-            <clip pos="3" side="tl" part="adj_definitness"/>
+            <clip pos="2" side="tl" part="gen"/>
+            <clip pos="4" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
           </lu>
           <b pos="2"/>
           <lu>
             <clip pos="3" side="tl" part="lemh"/>
             <clip pos="3" side="tl" part="a_adjec"/>
-            <clip pos="4" side="tl" part="gen"/>
-            <clip pos="4" side="tl" part="nbr"/>
             <clip pos="3" side="tl" part="adj_degree"/>
-            <clip pos="3" side="tl" part="adj_definitness"/>
+            <clip pos="3" side="tl" part="gen"/>
+            <clip pos="4" side="tl" part="nbr"/>
+            <lit-tag v="ind"/>
           </lu>
           <b pos="3"/>
           <lu>
@@ -2732,18 +2788,20 @@
         <pattern-item n="adj"/>
       </pattern>
       <action>
-        <let>
-          <clip pos="1" side="tl" part="adj_definitness"/>
-          <lit-tag v="ind"/>
-        </let>
+        <call-macro n="f_set_gender_head1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_conj_adjec1">
+          <with-param pos="1"/>
+        </call-macro> 
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_adjec"/>
+            <clip pos="1" side="tl" part="adj_degree"/>
             <clip pos="1" side="tl" part="gen"/>
             <clip pos="1" side="tl" part="nbr"/>
-            <clip pos="1" side="tl" part="adj_degree"/>
-            <clip pos="1" side="tl" part="adj_definitness"/>
+            <lit-tag v="ind"/>
           </lu>
         </out>
       </action>
