@@ -39,4 +39,40 @@
       </program>
     </pipeline>
   </mode>
+
+  <mode name="sl-mk-transfer" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="sl-mk.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="sl-mk.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sl-mk.sl-mk.t1x"/>
+        <file name="sl-mk.t1x.bin"/>
+        <file name="sl-mk.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="sl-mk-tagger" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="sl-mk.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="sl-mk.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+
+
 </modes>
+
+
+
