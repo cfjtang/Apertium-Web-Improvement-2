@@ -367,8 +367,10 @@
     <def-var n="auxg"/>
     <def-var n="auxn"/>
   </section-def-vars>
+
   <section-def-macros>
-    <def-macro n="f_du_to_pl1" npar="1">
+
+    <def-macro n="f_du_to_pl_mfn1" npar="1">
       <choose>
         <when>
           <test>
@@ -383,7 +385,23 @@
           </let>
         </when>
       </choose>
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="mf"/>
+          </let>
+        </when>
+      </choose>
+
     </def-macro>
+
     <def-macro n="f_bcond" npar="1">
       <!--Para mirar si el blanco contiene o no formato. Hay que poner esta funci� en las reglas en que desaparezca alguna palabra, con tal de decidir si el blanco de la palabra eliminada debe eliminarse tambi� o conservarse. Si contiene formato hay que conservarla, si no contiene formato hay que eliminarla para que no aparezcan dos espacios seguidos. -->
       <choose>
@@ -2532,7 +2550,7 @@
         <pattern-item n="prn_pos"/>
       </pattern>
       <action>
-        <call-macro n="f_du_to_pl1">
+        <call-macro n="f_du_to_pl_mfn1">
           <with-param pos="1"/>
         </call-macro>
         <out>
