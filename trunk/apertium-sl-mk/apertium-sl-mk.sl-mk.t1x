@@ -373,6 +373,10 @@
   <section-def-macros>
     <def-macro n="f_conj_adjec1" npar="1">
       <let>
+        <clip pos="1" side="tl" part="nbr"/>
+        <var n="numero"/>
+      </let>
+      <let>
         <clip pos="1" side="tl" part="gen"/>
         <var n="genero"/>
       </let>
@@ -394,7 +398,7 @@
         <when>
           <test>
             <equal>
-              <clip pos="1" side="sl" part="nbr"/>
+              <clip pos="1" side="tl" part="nbr"/>
               <lit-tag v="pl"/>
             </equal>
           </test>
@@ -621,7 +625,11 @@
         </when>
       </choose>
     </def-macro>
-    <def-macro n="f_set_gender_head1" npar="1">
+    <def-macro n="f_set_gen_num_head1" npar="1">
+      <let>
+        <var n="numero"/>
+        <clip pos="1" side="tl" part="nbr"/>
+      </let>
       <let>
         <var n="genero"/>
         <clip pos="1" side="tl" part="gen"/>
@@ -2636,7 +2644,7 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="f_set_gender_head1">
+        <call-macro n="f_set_gen_num_head1">
           <with-param pos="2"/>
         </call-macro>
         <call-macro n="f_conj_adjec1">
@@ -2675,7 +2683,7 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="f_set_gender_head1">
+        <call-macro n="f_set_gen_num_head1">
           <with-param pos="3"/>
         </call-macro>
         <call-macro n="f_conj_adjec1">
@@ -2727,7 +2735,7 @@
         <pattern-item n="nom"/>
       </pattern>
       <action>
-        <call-macro n="f_set_gender_head1">
+        <call-macro n="f_set_gen_num_head1">
           <with-param pos="4"/>
         </call-macro>
         <call-macro n="f_conj_adjec1">
@@ -2788,7 +2796,7 @@
         <pattern-item n="adj"/>
       </pattern>
       <action>
-        <call-macro n="f_set_gender_head1">
+        <call-macro n="f_set_gen_num_head1">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="f_conj_adjec1">
