@@ -144,7 +144,7 @@ To improve efficiency, the resource pool can eagerly acquire a number of resourc
 
 There are various valid approaches to free unused resources, like those consisting of monitoring the use of a resource and controlling its lifecycle by using  strategies such as ``Least Recently Used'' or ``Least Frequently Used'', or introducing a \emph{lease} for every resource that specifies a time duration for which a resource can remain in the pool.
 
-Relying on a resource pool results in the following improvements for our RBMT service:
+Relying on a resource pool results in the following improvements for our Rule-Based Machine Translation service:
 
 \begin{description}
  \item[Performance] - by preventing repetitious acquisition and release of resources;
@@ -156,22 +156,6 @@ Relying on a resource pool results in the following improvements for our RBMT se
 
 \section{Results}
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=7.75cm]{comp}
-\end{center}
-\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium}, {\tt apertium-service}, {\tt moses} and {\tt moses-service}; measurements are in $log_{2}(string\ length)$ for Sentence Length and in $log_{2}(ms)$ for Time.}
-\label{fig:comp}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=7.75cm]{compap}
-\end{center}
-\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium} and {\tt apertium-service}; measurements are in $string\ length$ for Sentence Length and in $ms$ for Time.}
-\label{fig:compap}
-\end{figure}
-
 To evaluate the efficiency of our service, which we will refer to as {\tt apertium-service}, we compared the time it requires to compute and answer to a translation request from the Spanish language to the English language with the time required by the following systems:
 
 \begin{itemize}
@@ -182,7 +166,24 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 
 The translation model used by {\tt moses} and {\tt moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. Language models have been then compiled into binary format using IRSTLM~\citep{irstlm}, and trained to minimize the error rate on a set of sentences from the same corpus. 
 
-Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Results are shown in Figure ~\ref{fig:comp}.
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=7.75cm]{comp}
+\end{center}
+\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium}, {\tt apertium-service}, {\tt moses} and {\tt moses-service}; measurements are in $log_{2}(string\ length)$ for the Sentence Length dimension and in $log_{2}(ms)$ for the Time dimension.}
+\label{fig:comp}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=7.75cm]{compap}
+\end{center}
+\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium} and {\tt apertium-service}; measurements are in $string\ length$ for the Sentence Length dimension and in $ms$ for the Time dimension.}
+\label{fig:compap}
+\end{figure}
+
+
+Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Figure \ref{fig:comp} shows the time required to translate increasingly longer sentences for all systems (values in the Time dimension are shown on a logarithmic scale), and Figure \ref{fig:compap} only for {\tt apertium-service} and {\tt apertium}.
 
 
 \section{Conclusions and Future Work}
