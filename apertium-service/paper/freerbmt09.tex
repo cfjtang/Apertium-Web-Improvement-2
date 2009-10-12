@@ -1,12 +1,11 @@
 \documentclass[11pt]{article}
+\usepackage{freerbmt09}
 
 \usepackage[pdftex]{graphicx}
-
 \usepackage{graphics}
 \usepackage{rotating}
-
-\usepackage{freerbmt09}
 \usepackage{ucs}
+
 \usepackage[utf8x]{inputenc}
 \usepackage{times}
 \usepackage{natbib}
@@ -93,8 +92,6 @@ In SOA, interoperability between services is achieved by using standard language
 
 Other systems interact with the Web service in a manner prescribed by its description using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\citep{wsgloss}. Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport mechanism, and Representational State Transfer (REST)~\citep{rest}, a style of software architecture for distributed hypermedia systems such as the World Wide Web.
 
-The service we developed provides XML-RPC, SOAP and REST interfaces.
-
 \begin{table}[!ht]
 \begin{center}
  \begin{tabular}{|r|l|}
@@ -130,6 +127,8 @@ The service we developed provides XML-RPC, SOAP and REST interfaces.
 \caption{Parameters and return value(s) for the Detect method;}
 \label{tab:detect}
 \end{table}
+
+The service we developed provides XML-RPC, SOAP and REST interfaces to the Translation and Language Detection functionalities. All the interfaces follow the schema outlined in Table \ref{tab:translate} and Table \ref{tab:detect} to expose, respectively, the Translation and the Language Detection functionality. Languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
 
 
 \section{Service internals}
