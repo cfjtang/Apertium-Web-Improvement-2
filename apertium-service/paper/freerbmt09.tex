@@ -16,7 +16,7 @@
 
 \newtheorem{cs}{Case Study}
 
-\title{Leveraging Service-Oriented Architectures through efficient and scalable Rule-Based Machine Translation services}
+\title{Implementing an efficient and scalable Service-Oriented Architecture for the Apertium Rule-Based Machine Translation platform}
 
 \author{Pasquale Minervini\\
   Dipartimento di Informatica\\
@@ -162,7 +162,8 @@ In general, those modules often rely on resources whose acquisition and release 
 
 \begin{itemize}
  \item Production rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes to reduce the time complexity of many-to-many pattern matching operations;
- \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations; 
+ \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations;
+ \item Modules dedicated to handling format-related information can make use of regular expression, that often need to compiled into, for example, the corrisponding Finite State Automatas, before they can be effectively used.
 \end{itemize}
 
 \begin{figure}[!ht]
