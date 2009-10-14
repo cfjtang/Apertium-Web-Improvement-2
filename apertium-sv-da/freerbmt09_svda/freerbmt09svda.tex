@@ -307,7 +307,7 @@ post-editor corrected the resulting Danish translation.
 \hline
 Corpus    & WER & PWER & Free rides\\
 \hline
-Wikipedia & 31 \% & 28 \%  & 38 \% \\
+Wikipedia & 30 \% & 28 \%  & 38 \% \\
 \hline
 \end{tabular}
     \caption{Evaluation results for the post-edition task}
@@ -352,30 +352,27 @@ instead of \emph{det baltiske hav}, with the double definiteness being removed.
 
 \subsection{Comparative}
 
-%% Google, Gramtrans, Apertium -- 100 sentences each
-
 There are two existing proprietary machine translation systems online which translate 
 between Swedish and Danish, Gramtrans\footnote{\url{http://www.gramtrans.com}} and Google
 Translate\footnote{\url{http://translate.google.com}}. Gramtrans is a rule-based system
 built on top of constraint grammar, and Google Translate is a statistical machine translation
-system. To compare the results of the three systems, we used the post-edited Danish text as a
-reference and compared translations for all of the systems as in the quantitative evaluation.
-This gives a small bias in favour of Apertium which must be taken into account when making conclusions.
-
-%% system. To compare the results of the three systems, we used the selected 100 sentences and translated
-%% them with all of the systems, they were then post-editted and the WER and PWER calculated
-%% as in the quantitative evaluation. The results of this evaluation are shown in table~\ref{table:compeval}
-%% and show that FILL IN HERE
+system. To compare the results of the three systems, we used the selected 65 sentences and translated
+them with all of the systems, they were then post-editted and the WER and PWER calculated
+as in the quantitative evaluation.
+Because of time constraints, and because GramTrans and Apertium translations were very similar, 
+we considered the post-edited Apertium text to be valid also as post-edited GramTrans text.
+This gives a small bias in disfavour of GramTrans which must be taken into account when making 
+conclusions.
 
 The results of this evaluation are shown in table~\ref{table:compeval} and show that, in spite 
-of the natural bias favouring the Apertium translation, Gramtrans scores better and Google 
-Translate does much worse than Apertium. 
+of the small disfavour to Gramtrans, it scores better than Apertium and Google 
+Translate scores does much worse than Apertium. 
 
 As can be seen from table~\ref{table:extranslations}, Gramtrans has a much higher coverage lexicon 
 than the Apertium system, and this leads to less errors overall. That being said, the Gramtrans
 and the Apertium output is very similar, and seem to be following a similar \emph{direct} translation strategy. The 
 Google Translate output, however, is quite different from the other two, and contains English 
-artefacts \emph{överfart} translated as `passage'. 
+artefacts such as \emph{överfart} translated as `passage'. 
 
 %%While Gramtrans and Apertium is translating directly, Google Translate is using English 
 %%as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. 
@@ -433,9 +430,9 @@ Google     & i hvilken \underline{plads} \emph{Zealand} kan ses           & \und
 \hline
 System & Edit distance & WER & PWER\\
 \hline
-Apertium  & 353   & 31    & 28 \\
-Gramtrans & 308   & 26    & 20 \\
-Google    & 557   & 48    & 33 \\
+Apertium  & 350   & 30    & 28 \\
+Gramtrans & 304   & 26    & 20 \\
+Google    & 415   & 35    & 22 \\
 \hline
 \end{tabular}
     \caption{Comparative evaluation results for 65 sentences}
