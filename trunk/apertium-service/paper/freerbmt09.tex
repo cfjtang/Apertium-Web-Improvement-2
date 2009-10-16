@@ -31,7 +31,7 @@
 \maketitle
 
 \begin{abstract}
-Service Oriented Architecture (SOA) is a paradigm for organizing and utilizing distributed services that may be under the  control of different ownership domains and implemented using various technology stacksp. In some contexts, an organization using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of efficient Machine Translation services to overcome language barriers. This paper describes the architecture used to develop a Machine Translation service that is efficient, scalable and easy to integrate in new and existing business processes; our service relies on Apertium, a Free/Open-Source Rule-Based Machine Translation platform.
+Service Oriented Architecture (SOA) is a paradigm for organizing and utilizing distributed services that may be under the  control of different ownership domains and implemented using various technology stacks. In some contexts, an organization using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of efficient Machine Translation services to overcome language barriers. This paper describes the architecture and the design patterns used to develop a Machine Translation service that is efficient, scalable and easy to integrate in new and existing business processes; our service relies on Apertium, a Free/Open-Source Rule-Based Machine Translation platform.
 \end{abstract}
 
 
@@ -39,7 +39,7 @@ Service Oriented Architecture (SOA) is a paradigm for organizing and utilizing d
 
 Service Oriented Architecture is an architectural paradigm providing a set of principles of governing concepts used during phases of systems development and integration. In such an architecture, functionalities are packaged as interoperable, loosely coupled services that may be used to build infrastructures enabling those with needs (consumers) and those with capabilities (providers) to interact across different domains of technology and ownership.
 
-Several new trends in the computer industry rely upon SOA as the enabling foundation, including the automation of Business Process Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web 2.0~\citep{web20}.\\
+Several new trends in the computer industry rely upon SOA as their enabling foundation, including the automation of Business Process Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web 2.0~\citep{web20}.\\
 
 In some contexts, an organization using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient Machine Translation service to overcome language barriers; for instance, it could be integrated in collaborative enviroments where people, who have no language in common, attempt to communicate with each other, or in knowledge extraction processes, where data is not available in a language that can be comprehended by the domain experts or the knowledge extraction tools beign used.
 
@@ -68,30 +68,30 @@ However, the current use of Machine Translation on the Wikipedias of marginalize
 In addition, the service's logging facilities may be used to improve Machine Translation quality, by incorporating user feedback~\citep{google}, in the form of corrections to the translated text. Small corrections to Wikipedia articles have been used in the construction of error corpora~\citep{milek08}, which can then be used to augment translation rules, or in the creation of statistical post-correction systems~\citep{dugast07}.
 \end{cs}
 
-We realized a prototype service relying on Apertium~\citep{armentano05p}, a Free/Open-Source Rule-Based Machine Translation platform being developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language detection. Our decision to prefer a Rule-Based Machine Translation system to a Statistical or an Example-based Machine Translation system was motivated by the following reasons:
+We realized a prototype Machine Translation service relying on Apertium~\citep{armentano05p}, a Free/Open-Source Rule-Based Machine Translation platform being developed with funding from the Spanish government and the government of Catalonia at the Universitat d'Alacant (University of Alicante), for its translation capabilities, and on N-Gram Based Text Categorization~\citep{textcat} for language recognition. Our decision to prefer a Rule-Based Machine Translation system to a Statistical or an Example-based Machine Translation system was motivated by the following reasons:
 
 \begin{itemize}
- \item Statistical Machine Translation systems tend to produce text that appears more ``natural'' than that produced by Rule-Based ones, with the result that ``fluency'' can outweight ``fidelity'': a natural and fluent translation is not necessairly completely faithful to the original text;
- \item In Rule-Based Machine Translation systems, linguistic knowledge is encoded explicitly in the form of linguistic data, so that both humans and automatic systems can process it (this feature can be a great benefit when using domain-specific linguistic knowledge);
+ \item Statistical Machine Translation systems tend to produce text that appears more ``natural'' than that produced by Rule-Based ones, with the result that ``fluency'' can outweight ``fidelity'', but a natural and fluent translation is not necessairly completely faithful to the original text;
+ \item In Rule-Based Machine Translation systems, linguistic knowledge can be encoded explicitly in the form of linguistic data, so that both humans and automatic systems can process it (this feature can be a great benefit when using domain-specific linguistic knowledge);
  \item Rule-Based Machine Translation systems tend to produce more ``mechanical'' translations, so their errors tend also to be more evident;
  \item Experts who have designed a Rule-Based Machine Translation system find it much easier to diagnose and repair sources of translation errors, like wrong rules in modules or wrong entries in dictionaries.
 \end{itemize}
 
-Efficiency and scalability are also a critical for our service since, especially in collaborative enviroments, it should be able to sustain an heavy load of traffic. In this paper, we will describe what techniques and design patterns we used to implement an efficient and scalable machine translation service, and we will compare it to other systems.
+Efficiency and scalability are also a critical for our service since, especially in collaborative enviroments, it should be able to sustain an heavy load of traffic. In this paper, we will describe what techniques and design patterns we used to implement an efficient and scalable machine translation service, and we will compare it to other existing systems.
 
 
-\section{Exposing the service}
+\section{Service's APIs}
 
-Service's interface should provide access to the following capabilities:
+Our service provides the following capabilities:
 
 \begin{description}
   \item[Translation] - for automatic translation of free text from a source language to a destination language;
-  \item[Language Detection] - for automatic language guessing of free text;
+  \item[Language Recognition] - for automatic language guessing of free text;
 \end{description}
 
-In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications among services. A widely accepted technique for implementing SOA consists in making use of Web Services~\citep{soa}; a Web Service is defined by the W3C as ``a software system designed to support interoperable machine-to-machine interaction over a network. It has an interface described in a machine-processable format (specifically WSDL).
+In SOA, interoperability between services is achieved by using standard languages for the description of service interfaces and the communications among services. A widely accepted technique for implementing SOA consists in making use of Web Services~\citep{soa}; a Web Service is defined by the W3C as ``a software system designed to support interoperable machine-to-machine interaction over a network. It has an interface described in a machine-processable format (specifically WSDL). Other systems interact with the Web service in a manner prescribed by its description using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\citep{wsgloss}. 
 
-Other systems interact with the Web service in a manner prescribed by its description using SOAP-messages, typically conveyed using HTTP with an XML serialization in conjunction with other Web-related standards.''~\citep{wsgloss}. Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport mechanism, and Representational State Transfer (REST)~\citep{rest}, a style of software architecture for distributed hypermedia systems such as the World Wide Web.
+Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure call protocol which uses XML to encode its calls and HTTP as a transport mechanism, and Representational State Transfer (REST)~\citep{rest}, a style of software architecture for distributed hypermedia systems such as the World Wide Web.
 
 \begin{table}[!ht]
 \begin{center}
@@ -129,12 +129,12 @@ Other systems interact with the Web service in a manner prescribed by its descri
 \label{tab:detect}
 \end{table}
 
-The service we developed provides XML-RPC, SOAP and REST interfaces to the Translation and Language Detection functionalities. All the interfaces follow the schema outlined in Table \ref{tab:translate} and Table \ref{tab:detect} to expose, respectively, the Translation and the Language Detection functionalities. Languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
+Our service provides XML-RPC, SOAP and REST interfaces to the Translation and Language Recognition functionalities. All the interfaces follow the schema outlined in Table \ref{tab:translate} and Table \ref{tab:detect} to expose, respectively, the Translation and the Language Detection functionalities. Languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
 
 
-\section{Service internals}
+\section{Service's Internal Architecture}
 
-A \emph{Translation Process} can be considered as the following sequence of steps:
+Generally speaking, a translation process can be considered as the following sequence of steps:
 
 \begin{itemize}
  \item {\bf Decoding} the meaning of the source text;
@@ -143,7 +143,7 @@ A \emph{Translation Process} can be considered as the following sequence of step
 
 Behind this apparently simple procedure, there is a complex cognitive operation: to decode the meaning of some free text in its entirety, the translator needs to interpret and analyse all the features present in the text, which requires in-depth knowledge of \emph{grammar}, \emph{semantics}, \emph{syntax}, \emph{idioms} etc. of both source and destination languages and the culture of their speakers.
 
-For this reason, according to \cite{arnoldea}, Rule-Based Machine Translation systems make use, during the translation process, of \emph{intermediate representations} (such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the  correct translation. A Rule-Base Machine Translation system, according to the nature of its intermediary representation, is described as \emph{Interlingual} if the original text is transformed into an interlingua (i.e. an abstract language-independent reoresentation), or as \emph{Transfer-based} if the intermediate representation has some dependences on the language pair involved.
+For this reason, according to \cite{arnoldea}, Rule-Based Machine Translation systems make use, during the translation process, of \emph{intermediate representations} (such as an \emph{interlingua}) trying to capture the ``meaning'' of the original sentence in order to generate the  correct translation. A Rule-Base Machine Translation system, according to the nature of its intermediary representation, is described as \emph{Interlingual} if the original text is transformed into an interlingua (i.e. an abstract language-independent representation), or \emph{Transfer-based} if the intermediate representation has some dependences on the language pair involved.
 
 In general, Rule-Based Machine Translation systems apply a set of \emph{linguistic rules} during the translation process, which are defined as correspondances between the structure of the source language and the structure of the destination language. Therefore, the translation is obtained by analysing the source text for morphology and syntax (and eventually semantics) to create an intermediate representation, and then by using bilingual dictionaries and grammatical rules.
 
@@ -164,7 +164,7 @@ In general, those modules often rely on resources whose acquisition and release 
 \begin{itemize}
  \item Production rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes to reduce the time complexity of many-to-many pattern matching operations;
  \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations;
- \item Modules dedicated to handling format-related information can make use of regular expression, that often need to compiled into, for example, the corrisponding Finite State Automatas, before they can be effectively used.
+ \item Modules dedicated to handling format-related information can make use of regular expression that often need to compiled into, for example, the corrisponding Finite State Automatas, before they can be effectively used.
 \end{itemize}
 
 \begin{figure}[!ht]
@@ -229,7 +229,7 @@ We presented {\tt apertium-service}, a Rule-Based Machine Translation service ba
 
 \section*{Acknowledgements}
 
-Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme. 
+Development for this project was funded as part of the Google Summer of Code\footnote{\url{http://code.google.com/soc/}} programme.
 Additionally, many thanks go to Jimmy O'Regan, Francis Tyers and others involved in The Apertium Project, for their constant help.
 
 
