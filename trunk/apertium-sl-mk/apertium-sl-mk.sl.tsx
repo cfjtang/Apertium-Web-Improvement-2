@@ -33,6 +33,9 @@
     <def-label name="IJ">
       <tags-item tags="ij"/>
     </def-label>
+    <def-label name="ABBREV">
+      <tags-item tags="abb.*"/>
+    </def-label>
     <def-label name="NOMM">
       <tags-item tags="n.m.*"/>
     </def-label>
@@ -42,11 +45,14 @@
     <def-label name="NOMNT">
       <tags-item tags="n.nt.*"/>
     </def-label>
-    <def-label name="ABBREV">
-      <tags-item tags="abb.*"/>
+    <def-label name="ADJF">
+      <tags-item tags="adj.*.f.*.*"/>
     </def-label>
-    <def-label name="ADJ">
-      <tags-item tags="adj.*"/>
+    <def-label name="ADJM">
+      <tags-item tags="adj.*.m.*.*"/>
+    </def-label>
+    <def-label name="ADJNT">
+      <tags-item tags="adj.*.nt.*.*"/>
     </def-label>
     <def-label name="ADV">
       <tags-item tags="adv.*"/>
@@ -57,8 +63,28 @@
   </tagset>
   <forbid>
     <label-sequence>
-      <label-item label="CNJCOO"/>
-      <label-item label="CNJCOO"/>
+      <label-item label="ADJNT"/>
+      <label-item label="NOMM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJF"/>
+      <label-item label="NOMM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJNT"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJM"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJM"/>
+      <label-item label="NOMNT"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="ADJF"/>
+      <label-item label="NOMNT"/>
     </label-sequence>
   </forbid>
 </tagger>
