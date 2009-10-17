@@ -154,10 +154,19 @@
     </label-sequence>
 
 
-    <!-- Vi ste glavni -->
+    <!-- We cannot have two finite verbs in the same sentence. Ex.: Vi ste glavni -->
     <label-sequence>
       <label-item label="VBLEXFIN"/>
       <label-item label="VBSERFIN"/>
     </label-sequence>
+    <label-sequence>
+      <label-item label="VBLEXFIN"/>
+      <label-item label="VBLEXFIN"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="VBSERFIN"/>
+      <label-item label="VBSERFIN"/>
+    </label-sequence>
+
   </forbid>
 </tagger>
