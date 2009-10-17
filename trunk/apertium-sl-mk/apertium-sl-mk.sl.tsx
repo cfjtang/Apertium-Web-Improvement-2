@@ -11,29 +11,30 @@
       <tags-item tags="part"/>
     </def-label>
     <def-label name="PRN" closed="true">
+      <tags-item tags="prn"/>
       <tags-item tags="prn.*"/>
     </def-label>
-    <def-label name="SENT" closed="true">
-      <tags-item tags="sent"/>
-    </def-label>
     <def-label name="VBSER" closed="true">
+      <tags-item tags="vbser"/>
       <tags-item tags="vbser.*"/>
     </def-label>
     <def-label name="PAREN" closed="true">
-      <tags-item tags="rpar.*"/>
-      <tags-item tags="lpar.*"/>
+      <tags-item tags="rpar"/>
+      <tags-item tags="lpar"/>
     </def-label>
     <def-label name="NUM">
       <tags-item tags="num"/>
       <tags-item tags="num.*"/>
     </def-label>
     <def-label name="VBLEX">
+      <tags-item tags="vblex"/>
       <tags-item tags="vblex.*"/>
     </def-label>
     <def-label name="IJ">
       <tags-item tags="ij"/>
     </def-label>
     <def-label name="ABBREV">
+      <tags-item tags="abb"/>
       <tags-item tags="abb.*"/>
     </def-label>
     <def-label name="NOMS">
@@ -73,10 +74,8 @@
       <tags-item tags="adj.*.nt.*.*"/>
     </def-label>
     <def-label name="ADV">
+      <tags-item tags="adv"/>
       <tags-item tags="adv.*"/>
-    </def-label>
-    <def-label name="CM">
-      <tags-item tags="cm.*"/>
     </def-label>
   </tagset>
   <forbid>
