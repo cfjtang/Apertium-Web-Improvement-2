@@ -84,7 +84,7 @@
     <def-cat n="prnproref3">
       <cat-item lemma="se" tags="prn.pro.ref.p3.mf.sp"/>
     </def-cat>
-    <def-cat n="prpers">
+    <def-cat n="prn_pers">
       <cat-item lemma="prpers" tags="prn.*"/>
     </def-cat>
     <def-cat n="verb">
@@ -207,6 +207,8 @@
       <attr-item tags="prn.tn.pos"/>
       <attr-item tags="prn.itg"/>
       <attr-item tags="prn.pos"/>
+      <attr-item tags="prn.subj"/>
+      <attr-item tags="prn.obj"/>
     </def-attr>
     <def-attr n="a_verb">
       <attr-item tags="vblex"/>
@@ -258,8 +260,9 @@
     <def-attr n="nbr">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
-      <attr-item tags="sp"/>
       <attr-item tags="du"/>
+      <attr-item tags="sp"/>
+
       <attr-item tags="ND"/>
     </def-attr>
     <def-attr n="persona">
@@ -379,7 +382,7 @@
       </choose>
 
     </def-macro> 
-    <def-macro n="f_du_to_pl_mfn1" npar="1">
+    <def-macro n="f_du_to_pl1" npar="1">
       <choose>
         <when>
           <test>
@@ -394,6 +397,13 @@
           </let>
         </when>
       </choose>
+    </def-macro>
+
+
+    <def-macro n="f_du_to_pl_mfn1" npar="1">
+      <call-macro n="f_du_to_pl1">
+        <with-param pos="1"/>
+      </call-macro>
       <choose>
         <when>
           <test>
@@ -2569,7 +2579,7 @@
         <pattern-item n="prn_pos"/>
       </pattern>
       <action>
-        <call-macro n="f_du_to_pl_mfn1">
+        <call-macro n="f_du_to_pl1">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -2585,6 +2595,29 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: PRNPERS → PRNPERS">
+      <pattern>
+        <pattern-item n="prn_pers"/>
+      </pattern>
+      <action>
+        <call-macro n="f_du_to_pl_mfn1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_prn"/>
+            <clip pos="1" side="tl" part="persona"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="sklon"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
     <rule> <!-- REGLA:  NOM mk has no tenses, nom into nominative-->
       <pattern>
         <pattern-item n="nom"/>
@@ -2594,6 +2627,9 @@
           <clip pos="1" side="tl" part="sklon"/>
           <lit-tag v="nom"/>
         </let>
+        <call-macro n="f_du_to_pl1">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
@@ -2606,6 +2642,7 @@
         </out>
       </action>
     </rule>
+
     <rule> <!-- REGLA: ADJECTIU NOM mk has no tenses, nom into nominative, adj lose tense-->
       <pattern>
         <pattern-item n="adj"/>
