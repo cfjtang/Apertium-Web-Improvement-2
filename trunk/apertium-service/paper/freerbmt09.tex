@@ -159,12 +159,12 @@ Specifically, Apertium is a Transfer-based Machine Translation system which uses
  \item[Post-Generator] - that performs some orthographic operations in the destination language such as contractions;
 \end{description}
 
-In general, those modules often rely on resources whose acquisition and release is computationally expensive, since they require access to data sources and further elaborations; for example:
+In general, those modules often rely on resources whose acquisition and release can be computationally expensive, since they may require access to external data sources and further elaborations; for example:
 
 \begin{itemize}
  \item Production rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes to reduce the time complexity of many-to-many pattern matching operations;
  \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations;
- \item Modules dedicated to handling format-related information can make use of regular expression that often need to compiled into, for example, the corrisponding Finite State Automatas, before they can be effectively used.
+ \item Modules dedicated to handling format-related informations can make use of regular expression that often need to compiled into, for example, the corrisponding Finite State Automatas, before they can be effectively used.
 \end{itemize}
 
 \begin{figure}[!ht]
