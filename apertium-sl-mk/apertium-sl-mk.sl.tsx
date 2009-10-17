@@ -14,6 +14,11 @@
       <tags-item tags="prn"/>
       <tags-item tags="prn.*"/>
     </def-label>
+    <def-label name="VBSERFIN" closed="true">
+      <tags-item tags="vbser.pres.*"/>
+      <tags-item tags="vbser.fti.*"/>
+      <tags-item tags="vbser.past.*"/>
+    </def-label>
     <def-label name="VBSER" closed="true">
       <tags-item tags="vbser"/>
       <tags-item tags="vbser.*"/>
@@ -26,6 +31,10 @@
       <tags-item tags="num"/>
       <tags-item tags="num.*"/>
     </def-label>
+    <def-label name="VBLEXFIN"> 
+      <tags-item tags="vblex.pres.*"/>
+      <tags-item tags="vblex.pii.*"/>
+    </def-label>
     <def-label name="VBLEX">
       <tags-item tags="vblex"/>
       <tags-item tags="vblex.*"/>
@@ -37,14 +46,14 @@
       <tags-item tags="abb"/>
       <tags-item tags="abb.*"/>
     </def-label>
-    <def-label name="NOMS">
-      <tags-item tags="n.*.s.*"/>
+    <def-label name="NOMSG">
+      <tags-item tags="n.*.sg.*"/>
     </def-label>
-    <def-label name="NOMP">
-      <tags-item tags="n.*.p.*"/>
+    <def-label name="NOMPL">
+      <tags-item tags="n.*.pl.*"/>
     </def-label>
-    <def-label name="NOMD">
-      <tags-item tags="n.*.d.*"/>
+    <def-label name="NOMDU">
+      <tags-item tags="n.*.du.*"/>
     </def-label>
     <def-label name="NOMM">
       <tags-item tags="n.m.*"/>
@@ -55,14 +64,14 @@
     <def-label name="NOMNT">
       <tags-item tags="n.nt.*"/>
     </def-label>
-    <def-label name="ADJS">
-      <tags-item tags="adj.*.*.s.*"/>
+    <def-label name="ADJSG">
+      <tags-item tags="adj.*.*.sg.*"/>
     </def-label>
-    <def-label name="ADJP">
-      <tags-item tags="adj.*.*.p.*"/>
+    <def-label name="ADJPL">
+      <tags-item tags="adj.*.*.pl.*"/>
     </def-label>
-    <def-label name="ADJD">
-      <tags-item tags="adj.*.*.d.*"/>
+    <def-label name="ADJDU">
+      <tags-item tags="adj.*.*.du.*"/>
     </def-label>
     <def-label name="ADJF">
       <tags-item tags="adj.*.f.*.*"/>
@@ -80,28 +89,28 @@
   </tagset>
   <forbid>
     <label-sequence>
-      <label-item label="ADJS"/>
-      <label-item label="NOMD"/>
+      <label-item label="ADJSG"/>
+      <label-item label="NOMDU"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="ADJS"/>
-      <label-item label="NOMP"/>
+      <label-item label="ADJSG"/>
+      <label-item label="NOMPL"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="ADJD"/>
-      <label-item label="NOMS"/>
+      <label-item label="ADJDU"/>
+      <label-item label="NOMSG"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="ADJD"/>
-      <label-item label="NOMP"/>
+      <label-item label="ADJDU"/>
+      <label-item label="NOMPL"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="ADJP"/>
-      <label-item label="NOMS"/>
+      <label-item label="ADJPL"/>
+      <label-item label="NOMSG"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="ADJP"/>
-      <label-item label="NOMD"/>
+      <label-item label="ADJPL"/>
+      <label-item label="NOMDU"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ADJF"/>
@@ -142,6 +151,13 @@
     <label-sequence>
       <label-item label="ADJF"/>
       <label-item label="NOMNT"/>
+    </label-sequence>
+
+
+    <!-- Vi ste glavni -->
+    <label-sequence>
+      <label-item label="VBLEXFIN"/>
+      <label-item label="VBSERFIN"/>
     </label-sequence>
   </forbid>
 </tagger>
