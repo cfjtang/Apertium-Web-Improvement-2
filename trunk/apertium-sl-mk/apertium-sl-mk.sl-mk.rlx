@@ -7,6 +7,7 @@ LIST EOS = (<<<) (</s>) (sent) ;
 
 LIST N = n;
 LIST V = vblex vbser;
+LIST Vbser = vbser;
 LIST A = adj;
 LIST Pr = pr;
 LIST Pron = prn;
@@ -67,3 +68,6 @@ REMOVE:r4 Dem + Nom IF (NOT 1 V + P3);
 REMOVE:r5 Dem + Acc IF (1 V + P2) (NOT 2 L-part);
 
 SELECT:r6 V + P2 IF (-1C P2);
+
+# si dal
+SELECT:r7 Vbser IF (1C L-part);

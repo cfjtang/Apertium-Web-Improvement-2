@@ -12,7 +12,7 @@ BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON =  \
      $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
-     $(PREFIX1).t1x.bin   $(PREFIX1).mode
+     $(PREFIX1).t1x.bin $(PREFIX).rlx.bin  $(PREFIX1).mode
 
 # $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin $(PREFIX1).lex.bin $(PREFIX1).autopgen.bin
 
@@ -31,6 +31,14 @@ $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp rl $(BASENAME).$(LANG2).dix $@
+
+##
+##	CONSTRAINT GRAMMAR
+##
+
+$(PREFIX1).rlx.bin: $(BASENAME).$(PREFIX1).rlx
+	cg-comp $(BASENAME).$(PREFIX1).rlx $@
+
 
 ##
 ##	LEXICAL SELECTION
@@ -74,6 +82,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
 	   $(BASENAME).$(PREFIX1).t3x\
 	   $(BASENAME).$(LANG1).tsx \
+	   $(BASENAME).$(LANG1).rlx \
 	   modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
@@ -85,6 +94,7 @@ apertium_sl_mk_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autobil.bin  \
                     $(PREFIX1).autogen.bin \
 		    $(PREFIX1).t1x.bin \
+		    $(PREFIX1).rlx.bin \
                     $(PREFIX1).prob \
 	            $(PREFIX1).mode modes.xml
 		  
