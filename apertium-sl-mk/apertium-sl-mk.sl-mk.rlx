@@ -11,11 +11,16 @@ LIST A = adj;
 LIST Pr = pr;
 LIST Pron = prn;
 LIST Det = det;
+LIST Dem = dem;
 LIST Adv = adv;
 LIST CC = cnjcoo;
 LIST CS = cnjsub;
 LIST Interj = ij;
 LIST Num = num;
+
+LIST P1 = p1;
+LIST P2 = p2;
+LIST P3 = p3;
 
 LIST Fem = (f);
 LIST Msc = (m);
@@ -27,6 +32,8 @@ LIST Acc = (acc);
 LIST Dat = (dat);
 LIST Loc = (loc);
 LIST Ins = (ins);
+
+LIST L-part = (vblex past);
 
 LIST NAGDLI = nom acc gen dat loc ins;
 LIST GENDER = m f nt;
@@ -53,3 +60,10 @@ REMOVE:r1 A + Fem IF (0  $$NAGDLI) (*1 NounMscNeu + $$NAGDLI BARRIER NPNHA LINK 
 REMOVE:r2 A + Msc IF (0  $$NAGDLI) (*1 NounFemNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Msc);
 REMOVE:r3 A + Neu IF (0  $$NAGDLI) (*1 NounMscFem + $$NAGDLI BARRIER NPNHA LINK NOT 0 Neu);
 
+
+# ti si 
+REMOVE:r4 Dem + Nom IF (NOT 1 V + P3);
+
+REMOVE:r5 Dem + Acc IF (1 V + P2) (NOT 1 L-part);
+
+SELECT:r6 V + P2 IF (-1C P2);
