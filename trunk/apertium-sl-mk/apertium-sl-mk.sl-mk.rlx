@@ -1,0 +1,55 @@
+
+SOFT-DELIMITERS = "<,>" ;
+DELIMITERS = "<.>"ri "<:>"ri "<!>"ri "<?>"ri ;
+
+LIST BOS = (>>>) (<s>) (sent) ; 
+LIST EOS = (<<<) (</s>) (sent) ; 
+
+LIST N = n;
+LIST V = vblex vbser;
+LIST A = adj;
+LIST Pr = pr;
+LIST Pron = prn;
+LIST Det = det;
+LIST Adv = adv;
+LIST CC = cnjcoo;
+LIST CS = cnjsub;
+LIST Interj = ij;
+LIST Num = num;
+
+LIST Fem = (f);
+LIST Msc = (m);
+LIST Neu = (nt);
+
+LIST Nom = (nom);
+LIST Gen = (gen);
+LIST Acc = (acc);
+LIST Dat = (dat);
+LIST Loc = (loc);
+LIST Ins = (ins);
+
+LIST NAGDLI = nom acc gen dat loc ins;
+LIST GENDER = m f nt;
+LIST NUMBER = sg du pl;
+
+LIST COMMA = (",") ;
+
+SET NounMscFem = (n m) OR (n f) ;
+SET NounMscNeu = (n m) OR (n nt) ;
+SET NounFemNeu = (n f) OR (n nt) ;
+
+SET PRE-N =  A | Det | (N Gen) | Num | (Pron Gen) | CC ; # Det???
+
+SET WORD = N | V | A | Pr | Pron | Det | Adv | CC | CS | Interj | Num | ("\?") ;
+SET MARK =  COMMA | ("\") | ("\;") ; #"
+SET WORDMARK = WORD | MARK ;
+
+SET NPNHA = WORDMARK - PRE-N - Adv ;
+
+SECTION
+
+
+REMOVE:r1 A + Fem IF (0  $$NAGDLI) (*1 NounMscNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Fem);
+REMOVE:r2 A + Msc IF (0  $$NAGDLI) (*1 NounFemNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Msc);
+REMOVE:r3 A + Neu IF (0  $$NAGDLI) (*1 NounMscFem + $$NAGDLI BARRIER NPNHA LINK NOT 0 Neu);
+
