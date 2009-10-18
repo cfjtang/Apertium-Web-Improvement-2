@@ -70,6 +70,7 @@ LIST VerbInf          = (vblex inf);
 LIST VerbImpers       = (vblex impers);
 
 LIST TempsFin         = (pri) (pii) (past) (fti) (cni) (prh) (cip);  
+LIST Cond             = (cni) (cip);
 
 LIST VerbAux          = ("bezañ"ri vblex) ("kaout"ri vblex);
 
@@ -554,6 +555,8 @@ REMOVE Adj IF (-1C Prep);
 
 # n'eus redi ebet
 SELECT (p3 impers) IF (0 ("<n'eus>"ri) OR ("<n’eus>"ri));
+
+SELECT ("ha pa"ri) IF (1 VerbFin + Cond);
 
 SECTION
 
