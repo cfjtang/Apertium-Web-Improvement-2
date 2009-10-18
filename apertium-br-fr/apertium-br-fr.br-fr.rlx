@@ -492,8 +492,9 @@ REMOVE Verb IF (-1C DetDef) (1C NC);
 
 #Prezidant Kevre Gouren Aodoù-an-Arvor
 #Ma c’hall
+# hag a ya da stummañ
 REMOVE VerbFin IF (NOT -1 Vpart) (0 SoftMutCons) (NOT 0 SoftMut);
-REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut);
+REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut) (NOT 0 ("ya"ri adv));
 
 # Aet e vefen a-walc’h eus
 SELECT Vpart IF (-1 VerbPP) (1C VerbFin);
@@ -555,6 +556,9 @@ REMOVE Adj IF (-1C Prep);
 
 # n'eus redi ebet
 SELECT (p3 impers) IF (0 ("<n'eus>"ri) OR ("<n’eus>"ri));
+
+#ar perc’henn a implij ur micherour 
+SELECT VerbFin IF (-3 Det) (-2 NC) (-1 ("a"ri)) (0 NC) (0 VerbFin) (1 Det) (2 NC);
 
 SELECT ("ha pa"ri) IF (1 VerbFin + Cond);
 
