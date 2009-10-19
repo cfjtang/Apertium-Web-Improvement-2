@@ -19,3 +19,6 @@ ylim ([0, 350]);
 print compap.png -dpng -mono -solid -F:30;
 
 replot;
+
+myplotmt2
+

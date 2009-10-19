@@ -12,9 +12,11 @@
 \usepackage{url}
 \usepackage{latexsym}
 
+%\usepackage{tabularx}
 \usepackage[small,bf]{caption}
 
 \newtheorem{cs}{Case Study}
+
 
 \title{Implementing an efficient and scalable Service-Oriented Architecture for the Apertium Rule-Based Machine Translation platform}
 
@@ -109,7 +111,9 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
   \hline
  \end{tabular}
 \end{center}
-\caption{Parameters and return value(s) for the Translate method; if the {\bf Source Language} parameter is omitted, automatic language detection is applied to recognize the language used in the text to be translated, and the corresponding language code is then returned in the {\bf Detected Source Language} return value; otherwise {\bf Detected Source Language} is not set.}
+\caption{Parameters and return value(s) for the Translate method.}
+%if the {\bf Source Language} parameter is omitted, automatic language detection is applied to recognize the language used in the text to be translated, and the corresponding language code is then returned in the {\bf Detected Source Language} return value; otherwise {\bf Detected Source Language} is not set.}
+
 \label{tab:translate}
 \end{table}
 
@@ -196,7 +200,7 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 
 \begin{itemize}
  \item {\tt apertium}, a console application implemented as a part of the Apertium project;
- \item {\tt moses}~\citep{moses}, a Statistical Machine Translation system;
+ \item {\tt moses}~\citep{moses}, a Open Source Statistical Machine Translation system;
  \item {\tt moses-service}, a service relying on {\tt moses}.
 \end{itemize}
 
@@ -219,13 +223,16 @@ The translation model used by {\tt moses} and {\tt moses-service} has been train
 \end{figure}
 
 
-Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Figure \ref{fig:comp} shows the time required to translate increasingly longer sentences for all systems (values in the Time dimension are shown on a logarithmic scale), and Figure \ref{fig:compap} only for {\tt apertium-service} and {\tt apertium}.
+All the experiments were run on a server with 4 2GHz Dual-Core AMD Opteron${\mbox{\small\texttrademark}}$\ processors and 4GB of main memory, using the GNU/Linux operating system. Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Figure \ref{fig:comp} shows the time required to translate increasingly longer sentences for all systems (values in the Time dimension are shown on a logarithmic scale), and Figure \ref{fig:compap} only for {\tt apertium-service} and {\tt apertium}.
 
 
 \section{Conclusions and Future Work}
 
-We presented {\tt apertium-service}, a Rule-Based Machine Translation service based on Apertium, a Free/Open-Source Rule-Based Machine Translation platform. It was shown to be competitive, in efficiency and scalability, with other systems based on different Machine Translation paradigms. In addition, it would be interesting to compare the results produced by {\tt apertium-service} to those produced by other Machine Translation systems and platforms also by evaluating the results they produce, for example by using some automatic evaluation metric like \emph{BLEU}~\citep{bleu} or \emph{METEOR}~\citep{meteor}, in different domains of application.
+We presented {\tt apertium-service}, a Rule-Based Machine Translation service based on Apertium, a Free/Open-Source Rule-Based Machine Translation platform. It was shown to be competitive, in efficiency and scalability, with other systems based on various Machine Translation paradigms. 
 
+%In addition, it would be interesting to compare the results produced by {\tt apertium-service} to those produced by other Machine Translation systems and platforms also by evaluating the results they produce, for example by using some automatic evaluation metric like \emph{BLEU}~\citep{bleu} or \emph{METEOR}~\citep{meteor}, in different domains of application.
+
+Source code for our service is released under the GNU General Public License and its available on the Apertium SVN repository at the following address: \url{http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/apertium-service}.
 
 \section*{Acknowledgements}
 
