@@ -72,7 +72,18 @@ extraction tools being used.
 A machine translation service was creating using Apertium~\citep{armentano05p}, 
 a free/open-source rule-based machine translation platform for its translation 
 capabilities, and on n-gram based text categorisation~\citep{textcat} for language 
-recognition. %Our decision to prefer a rule-based
+recognition. 
+
+%% REVIEWER #1: "In section 1, authors claim that their system includes 
+%%   a language detector, but there is no later mention to it in the 
+%%   paper." What is the error rate of the new system? 
+%%           Where is it used? 
+%%           Have experiments been conducted on it?
+%%
+%%  DESCRIBE WHY TEXTCAT WAS USED (IT IS THE BEST -- GIVE SOME NUMBERS ETC.) -FMT
+
+
+%Our decision to prefer a rule-based
 %machine translation system to a statistical or an example-based machine translation system was 
 %motivated by the following reasons:
 
@@ -217,6 +228,13 @@ composed of the following modules:
        such as contractions;
 \end{description}
 
+%%  REVIEWER #1: "There is an obvious lack of information about the specific details of 
+%%      the implementation of the translation web service, which is the real contribution of the 
+%%      paper. In particular, 
+%%          how Apertium has been adapted to the pooling pattern? 
+%%          Can Apertium be used "as is" or does it need modifications? 
+%%          Which ones?
+
 %% HERE YOU DESCRIBE HOW THESE ARE IMPLEMENTED IN APERTIUM (e.g. as separate programs which communicate 
 %% in text and are managed by scripts, modes file etc. -FMT
 
@@ -265,11 +283,25 @@ rule-based machine translation service:
 
 \begin{description}
  \item[Performance] -- By preventing repetitious acquisition and release of resources;
- \item[Predictability] -- Because direct acquisition of a resource from the resource 
-        enviroment can lead to unpredictable results;
  \item[Stability] -- Because repetitious acquisition and release of resource can 
         increase the risk of system instability (for example, repetitious acquisition and 
         release of memory can lead to fragmentation problems); %% SHOULD YOU PUT A REF HERE ? -FMT
+%% If you want examples for "instability" (see comments by reviewer #2), then you can mention
+%% that on at least one server using standard Apertium over a long-term period (one year), 
+%% there have been numerous problems with run-away processes. For example:
+
+%% http://bugs.apertium.org/cgi-bin/bugzilla/show_bug.cgi?id=37
+%% http://bugs.apertium.org/cgi-bin/bugzilla/show_bug.cgi?id=31
+
+%% and put (Tyers, p.c.); 
+%% BEFORE you do this you should CHECK to see if the apertium-service would fix this. E.g. if 
+%% lt-proc or apertium-tagger went awol, would the service kill them, or would it just bring
+%% down the whole service ?
+
+%% You can also mention security problems in scripts:
+%%   http://bugs.apertium.org/cgi-bin/bugzilla/show_bug.cgi?id=76
+%% Not that a service might not introduce new security problems!
+
  \item[Scalability] -- As resources can be used also in different types of translation tasks, 
         avoiding the allocation of a complete set of resources for each different translation 
         task (for example, translation tasks on different language pairs using different 
@@ -283,6 +315,12 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 compared the time it requires to compute and answer to a translation request from Spanish 
 to English with the {\tt\small apertium-en-es} language pair\footnote{PUT THE VERSION OR SVN 
 REVISION HERE} with the time required by the following systems:
+
+%% REVIEWER #1: "I cannot see a reason for comparing the translation times for the 
+%%      Apertium-based SOA system with those of a Moses SMT translator in the experiments. They 
+%%      are completely heterogeneous machine translation systems and, most important, authors 
+%%      are not responsible for the translation times. What does figure 3 show? The fact that 
+%%      currently Apertium is faster than Moses is something we all know"
 
 \begin{itemize}
  \item {\tt apertium}, a console application implemented as a part of the Apertium project;
@@ -334,6 +372,8 @@ this comparison.
 
 
 \section{Future work}
+
+%% Here you should describe the case study, but in terms of future work. 
 
 \paragraph{UMLS concept identification in non-English medical documents:} 
 MetaMap~\citep{metamap} is an application that allows mapping text to UMLS 
