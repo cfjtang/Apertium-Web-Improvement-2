@@ -103,8 +103,8 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
   \hline \hline
    parameters	& {\bf Text} \\ \cline{2-2}
    				& {\bf Source Language} \\ \cline{2-2}
-   				& {\bf Destination Language} \\ \cline{2-2}
-   				& {\bf Encoding } \\
+   				& {\bf Destination Language} \\ %\cline{2-2}
+   				%& {\bf Encoding } \\
   \hline \hline
    returns 	& {\bf Translation} \\ \cline{2-2}
    			& {\bf Detected Source Language} \\
@@ -112,8 +112,6 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
  \end{tabular}
 \end{center}
 \caption{Parameters and return value(s) for the Translate method.}
-%if the {\bf Source Language} parameter is omitted, automatic language detection is applied to recognize the language used in the text to be translated, and the corresponding language code is then returned in the {\bf Detected Source Language} return value; otherwise {\bf Detected Source Language} is not set.}
-
 \label{tab:translate}
 \end{table}
 
@@ -133,8 +131,14 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 \label{tab:detect}
 \end{table}
 
-Our service provides XML-RPC, SOAP and REST interfaces to the Translation and Language Recognition functionalities. All the interfaces follow the schema outlined in Table \ref{tab:translate} and Table \ref{tab:detect} to expose, respectively, the Translation and the Language Detection functionalities. Languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
+Our service provides XML-RPC, SOAP and REST interfaces to the Translation and Language Recognition functionalities. All the interfaces follow the schema outlined in Table \ref{tab:translate} and Table \ref{tab:detect} to expose, respectively, the Translation and the Language Detection functionalities; those can be subsumed by the following methods:
 
+\begin{description}
+ \item[Translate:] receives three parameters called {\bf Text}, {\bf Source Language} and {\bf Destination Language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\bf Translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\bf Detected Source Language} value.
+ \item[Detect:] receives three parameters called {\bf Text} containing free text, and returns a {\bf Detected Language} value containing the language used by the text.
+\end{description}
+
+In both methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
 
 \section{Service's Internal Architecture}
 
@@ -222,8 +226,17 @@ The translation model used by {\tt moses} and {\tt moses-service} has been train
 \label{fig:compap}
 \end{figure}
 
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=7.75cm]{compmt}
+\end{center}
+\caption{Comparison in the ``Number of Threads- Time'' space between {\tt apertium} and {\tt apertium-service}.}
+\label{fig:compmt}
+\end{figure}
 
 All the experiments were run on a server with 4 2GHz Dual-Core AMD Opteron${\mbox{\small\texttrademark}}$\ processors and 4GB of main memory, using the GNU/Linux operating system. Both {\tt apertium-service} and {\tt moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Figure \ref{fig:comp} shows the time required to translate increasingly longer sentences for all systems (values in the Time dimension are shown on a logarithmic scale), and Figure \ref{fig:compap} only for {\tt apertium-service} and {\tt apertium}.
+
+Scalability for {\tt apertium} and {\tt apertium-service} have been evaluated by calculating the average time required by the two systems to answer to $1024$ translations requests sequentially sent by a variable number of clients. Figure \ref{fig:compmt} shows the results of this comparison.
 
 
 \section{Conclusions and Future Work}
