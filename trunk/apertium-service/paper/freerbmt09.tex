@@ -189,7 +189,7 @@ To improve efficiency, the resource pool can eagerly acquire a number of resourc
 
 There are various valid approaches to free unused resources, like those consisting of monitoring the use of a resource and controlling its lifecycle by using  strategies such as ``Least Recently Used'' or ``Least Frequently Used'', or introducing a \emph{lease} for every resource that specifies a time duration for which a resource can remain in the pool.
 
-In our service, default policy is to allocate new resources from the resources enviroment if there aren't resources of the requested type available in the pool; the service also allows to set an \emph{high water mark}, i.e. a maximum number of allocated objects: if the number of allocated objects is equal to the high water mark, the requesting client has to wait in a queue until a resource of the requested type is available in the pool. In addition, since we made no prior assumptions about the service's usage, the service doesn't apply any garbage collecting policy by default.
+In our service, default policy is to allocate new resources from the resources enviroment if there are no resources of the requested type available in the pool; the service also allows to set an \emph{high water mark}, i.e. a maximum number of allocated objects: if the number of allocated objects is equal to the high water mark, the requesting client has to wait in a queue until a resource of the requested type is available in the pool. In addition, since we made no prior assumptions about the service's usage, the service does not apply any garbage collecting policy by default.
 
 Relying on a resource pool results in the following improvements for our Rule-Based Machine Translation service:
 
