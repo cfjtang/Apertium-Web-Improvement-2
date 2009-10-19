@@ -45,7 +45,7 @@ Several new trends in the computer industry rely upon SOA as their enabling foun
 
 In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient machine translation service to overcome language barriers; for instance, it could be integrated in collaborative enviroments where people, who have no language in common, attempt to communicate with each other, or in knowledge extraction processes, where data is not available in a language that can be understood by the domain experts or the knowledge extraction tools being used.
 
-A machine translation service was creating using Apertium~\citep{armentano05p}, a free/open-source rule-based machine translation platform for its translation capabilities, and on n-gram based text categorisation~\citep{textcat} for language recognition. 
+A machine translation service was creating using Apertium\footnote{\url{http://www.apertium.org/}}~\citep{armentano05p}, a free/open-source rule-based machine translation platform for its translation capabilities, and on libTextCat\footnote{\url{http://software.wise-guys.nl/libtextcat/}}, a library implementing n-gram based text categorisation~\citep{textcat} for language recognition. 
 
 %% REVIEWER #1: "In section 1, authors claim that their system includes 
 %%   a language detector, but there is no later mention to it in the 
@@ -90,13 +90,12 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 \begin{center}
  \begin{tabular}{|r|l|}
   \hline
-   parameters	& {\bf Text} \\ \cline{2-2}
-   				& {\bf Source Language} \\ \cline{2-2}
-   				& {\bf Destination Language} \\ %\cline{2-2}
-   				%& {\bf Encoding } \\
+   parameters	& {\tt\small Text} \\ \cline{2-2}
+   				& {\tt\small Source Language} \\ \cline{2-2}
+   				& {\tt\small Destination Language} \\
   \hline \hline
-   returns 	& {\bf Translation} \\ \cline{2-2}
-   			& {\bf Detected Source Language} \\
+   returns 	& {\tt\small Translation} \\ \cline{2-2}
+   			& {\tt\small Detected Source Language} \\
   \hline
  \end{tabular}
 \end{center}
@@ -108,32 +107,15 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 \begin{center}
  \begin{tabular}{|r|l|}
   \hline
-   parameters	& {\bf Text} \\
+   parameters	& {\tt\small Text} \\
   \hline \hline
-   returns 	& {\bf Detected Language}\\
+   returns 	& {\tt\small Detected Language}\\
   \hline
  \end{tabular}
 \end{center}
 \caption{Parameters and return value(s) for the Detect method.}
 \label{tab:detect}
 \end{table}
-
-% \begin{table}[!ht]
-% \begin{center}
-%  \begin{tabular}{|r|l|}
-%   \hline
-%   \multicolumn{2}{c}{{\bf Language Pairs}} \\
-%   \hline \hline
-%    returns 	& {\bf (Language Pair$_1$, $\ldots$, Language Pair$_n$)} \\
-%   \hline
-%    {\bf Language Pair}	& {\bf Source Language} \\ \cline{2-2}
-%    						& {\bf Destination Language} \\
-%   \hline
-%  \end{tabular}
-% \end{center}
-% \caption{Parameters and return value(s) for the Detect method.}
-% \label{tab:languagepairs}
-% \end{table}
 
 Our service provides XML-RPC, SOAP and REST interfaces to the translation and language recognition functionalities. All the interfaces follow the schema outlined in tables~\ref{tab:translate}~and~\ref{tab:detect} to expose, respectively, the translation and the language detection functionalities; those can be subsumed by the following methods:
 
