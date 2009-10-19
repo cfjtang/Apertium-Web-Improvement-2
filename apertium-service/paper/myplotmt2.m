@@ -12,7 +12,7 @@ ylabel ("Time (ms)", "fontsize", 30);
 legend ("location", "northwest");
 legend ("boxon");
 grid ("on");
-ylim ([0, 350]);
+# ylim ([0, 350]);
 
 print compmt.png -dpng -mono -solid -F:30;
 
