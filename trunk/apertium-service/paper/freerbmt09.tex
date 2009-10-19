@@ -170,7 +170,7 @@ Specifically, Apertium is a Transfer-based Machine Translation system which uses
 In general, those modules often rely on resources whose acquisition and release can be computationally expensive, since they may require access to external data sources and further elaborations; for example:
 
 \begin{itemize}
- \item Production rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes to reduce the time complexity of many-to-many pattern matching operations;
+ \item Production rule systems often need to save rules in an intermediate format in order to process them efficiently: for example, rule systems relying on \emph{RETE}-like pattern matching algorithms~\citep{forgy}, during the acquisition of a set of rules, build a network of nodes to reduce the time complexity of many-to-many pattern matching operations;
  \item Resources as bilingual dictionaries are often mapped to hash tables during their acquisition, to reduce the computational complexity of lookup operations;
  \item Modules dedicated to handling format-related informations can make use of regular expression that often need to compiled into, for example, the corrisponding Finite State Automatas, before they can be effectively used.
 \end{itemize}
@@ -183,11 +183,13 @@ In general, those modules often rely on resources whose acquisition and release 
 \label{fig:rp}
 \end{figure}
 
-To prevent the frequent acquisition and release of the aforementioned resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool.  This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in Figure \ref{fig:rp}.
+To prevent the frequent acquisition and release of the aforementioned resources, our service makes use of the \emph{Pooling Pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool. This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in Figure \ref{fig:rp}.
 
 To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in pool, more resources can be lazily acquired.
 
 There are various valid approaches to free unused resources, like those consisting of monitoring the use of a resource and controlling its lifecycle by using  strategies such as ``Least Recently Used'' or ``Least Frequently Used'', or introducing a \emph{lease} for every resource that specifies a time duration for which a resource can remain in the pool.
+
+In our service, default policy is to allocate new resources from the resources enviroment if there aren't resources of the requested type available in the pool; the service also allows to set an \emph{high water mark}, i.e. a maximum number of allocated objects: if the number of allocated objects is equal to the high water mark, the requesting client has to wait in a queue until a resource of the requested type is available in the pool. In addition, since we made no prior assumptions about the service's usage, the service doesn't apply any garbage collecting policy by default.
 
 Relying on a resource pool results in the following improvements for our Rule-Based Machine Translation service:
 
