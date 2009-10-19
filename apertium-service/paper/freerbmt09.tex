@@ -48,7 +48,6 @@ In some contexts, an organization using an IT infrastructure implementing the SO
 \begin{cs}{\bf - UMLS$^{\mbox{\small\textregistered}}$ concepts identification in non-English medical documents:}
 MetaMap~\citep{metamap} is an application that allows mapping text to UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$\footnote{The UMLS$^{\mbox{\small\textregistered}}$ Metathesaurus$^{\mbox{\small\textregistered}}$~\citep{umls} provides a representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-hierarchical relationships among the concepts.} concepts, which have proved to be useful for many applications, including decision support systems, management of patient records, information retrieval and data mining within the biomedical domain.
 
-
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=7.75cm]{mtsoa}
@@ -131,6 +130,23 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 \label{tab:detect}
 \end{table}
 
+% \begin{table}[!ht]
+% \begin{center}
+%  \begin{tabular}{|r|l|}
+%   \hline
+%   \multicolumn{2}{c}{{\bf Language Pairs}} \\
+%   \hline \hline
+%    returns 	& {\bf (Language Pair$_1$, $\ldots$, Language Pair$_n$)} \\
+%   \hline
+%    {\bf Language Pair}	& {\bf Source Language} \\ \cline{2-2}
+%    						& {\bf Destination Language} \\
+%   \hline
+%  \end{tabular}
+% \end{center}
+% \caption{Parameters and return value(s) for the Detect method.}
+% \label{tab:languagepairs}
+% \end{table}
+
 Our service provides XML-RPC, SOAP and REST interfaces to the Translation and Language Recognition functionalities. All the interfaces follow the schema outlined in Table \ref{tab:translate} and Table \ref{tab:detect} to expose, respectively, the Translation and the Language Detection functionalities; those can be subsumed by the following methods:
 
 \begin{description}
@@ -138,7 +154,10 @@ Our service provides XML-RPC, SOAP and REST interfaces to the Translation and La
  \item[Detect:] receives three parameters called {\bf Text} containing free text, and returns a {\bf Detected Language} value containing the language used by the text.
 \end{description}
 
-In both methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
+In addition, our service provides a {\bf Language Pairs} method that returns a sequence of all the language pairs supported by the translation system, each represented by a pair containing the corresponding {\bf Source Language} and the {\bf Destination Language}.
+
+In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
+
 
 \section{Service's Internal Architecture}
 
@@ -199,6 +218,7 @@ Relying on a resource pool results in the following improvements for our Rule-Ba
  \item[Stability] - because repetitious acquisition and release of resource can increase the risk of system instability (for example, repetitious acquisition and release of memory can lead to fragmentation problems);
  \item[Scalability] - since resources can be used also in different types of translation tasks, avoiding the allocation of a complete set of resources for each different translation task (for example, translation tasks on different language pairs using different dictionaries can make use of the same transfer rules and lexical selectors);
 \end{description}
+
 
 \section{Results}
 
