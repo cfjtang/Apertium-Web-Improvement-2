@@ -90,12 +90,12 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 \begin{center}
  \begin{tabular}{|r|l|}
   \hline
-   parameters	& {\tt\small Text} \\ \cline{2-2}
-   				& {\tt\small Source Language} \\ \cline{2-2}
-   				& {\tt\small Destination Language} \\
+   parameters	& {\tt\small text} \\ \cline{2-2}
+   				& {\tt\small source language} \\ \cline{2-2}
+   				& {\tt\small destination language} \\
   \hline \hline
-   returns 	& {\tt\small Translation} \\ \cline{2-2}
-   			& {\tt\small Detected Source Language} \\
+   returns 	& {\tt\small translation} \\ \cline{2-2}
+   			& {\tt\small detected source language} \\
   \hline
  \end{tabular}
 \end{center}
@@ -120,7 +120,7 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 Our service provides XML-RPC, SOAP and REST interfaces to the translation and language recognition functionalities. All the interfaces follow the schema outlined in tables~\ref{tab:translate}~and~\ref{tab:detect} to expose, respectively, the translation and the language detection functionalities; those can be subsumed by the following methods:
 
 \begin{itemize}
- \item Translate: receives three parameters called {\tt\small text}, {\tt\small source~language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
+ \item Translate: receives three parameters called {\tt\small text}, {\tt\small source language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
  \item Detect: receives three parameters called {\tt\small text} containing free text, and returns a {\tt\small detected language} value containing the language used by the text.
 \end{itemize}
 
