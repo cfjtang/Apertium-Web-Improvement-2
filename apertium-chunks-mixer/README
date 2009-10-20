@@ -1,0 +1,98 @@
+*-* apertium-chunks-mixer *-*
+
+This software is GPL. It is provided as is, WITHOUT any guarantee, in
+the hope that it will be useful.
+
+(c) 2009 Universidad de Alicante / Universitat d'Alacant
+---------------------------------------------------------------------
+This packages implements a hybrid machine translation approach that
+consists in integrating bilingual chunks (sub-sentential translation
+units) into a translator built using the Apertium free/open-source
+rule-based machine translation platform.
+
+The integration of bilingual chunks in an Apertium-based machine
+translation system implies: (i) the application of a
+dynamic-programming algorithm to compute the best coverage of the
+input sentence to translate given the collection of bilingual chunks
+provided; (ii) the translation of the input sentence as usual by
+Apertium; and (iii) the application of a language model to choose one
+of the possible translations for each of the bilingual chunks
+detected.
+
+This approach ensures that the application of Apertium structural
+transfer rules is preserved.
+
+If you use this software for research or any other particular purpose
+please cite the following paper:
+
+@InProceedings{sanchez-martinez09,
+  author = {Felipe S\'{a}nchez-Mart\'{i}nez and Mikel L. Forcada and
+           Andy Way},
+  title = {Hybrid Rule-Based -‒ Example-Based MT: Feeding Apertium
+           with Sub-sentential Translation Units},
+  booktitle = {Proceedings of the 3rd Workshop on Example-Based
+               Machine Translation},
+  pages =     {?--?},
+  year =      {2009},
+  address =   {Dublin, Ireland},
+  month =     {November},
+  note =      {To appear},
+}
+
+For an up-to-date reference please visit
+http://www.dlsi.ua.es/~fsanchez
+
+
+Contact information:
+---------------------------------------------------------------------
+
+Felipe Sánchez Martínez
+
+Departament de Llenguatges i Sistemes Informàtics
+Universitat d'Alacant
+E-03071 Alacant (Spain)
+
+fsanchez@dlsi.ua.es
+http://www.dlsi.ua.es/~fsanchez
+
+
+Installation
+---------------------------------------------------------------------
+To install apertium-chunks-mixer you need to have installed the SRI
+Language Modeling Toolkit (http://www.speech.sri.com/projects/srilm/)
+
+Once you have it installed, compile apertium-chunks-mixer in the
+common way:
+
+$ ./configure --with-srilm=/path/to/srilm && make
+
+Tools are supposed to be run directly from the folder after
+installation. If you have problems running
+apertium-chunsk-mixer-wrapper because some tools are not found, please
+edit the script and modify it accordingly (it should be easy).
+
+For more information on each program execute it without parameters.
+
+Good luck!
+
+Execution
+---------------------------------------------------------------------
+Running this tool usually implies:
+
+1. Prepraring the collection of chunks: 
+
+Programs sort-uniq-chunks, filter-chunks, score-chunks, and
+total-count-chunks help on this task
+
+2. Running apertium-chunsk-mixer-wrapper
+
+Acknowledgements
+---------------------------------------------------------------------
+Funded by Generalitat Valenciana through grant BEST/2009/057 and by
+the Spanish Ministry of Science and Innovation through project
+TIN2009-14009-C02-01.
+
+References
+---------------------------------------------------------------------
+Please visit http://www.dlsi.ua.es/~fsanchez
+
