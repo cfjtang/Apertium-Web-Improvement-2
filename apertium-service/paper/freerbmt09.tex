@@ -119,7 +119,7 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 \label{tab:detect}
 \end{table}
 
-Our service provides XML-RPC, SOAP and REST interfaces to the translation and language recognition functionalities. All the interfaces follow the schema outlined in tables~\ref{tab:translate}~and~\ref{tab:detect} to expose, respectively, the translation and the language detection functionalities; those can be subsumed by the following methods:
+Our service natively provides a XML-RPC interface to the translation and language recognition functionalities, and we also provided SOAP and REST wrappers to it. All the interfaces follow the schema outlined in tables~\ref{tab:translate}~and~\ref{tab:detect} to expose, respectively, the translation and the language detection functionalities; those can be subsumed by the following methods:
 
 \begin{itemize}
  \item Translate: receives three parameters called {\tt\small text}, {\tt\small source language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
