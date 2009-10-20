@@ -45,7 +45,7 @@ Several new trends in the computer industry rely upon SOA as their enabling foun
 
 In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient machine translation service to overcome language barriers; for instance, it could be integrated in collaborative enviroments where people, who have no language in common, attempt to communicate with each other, or in knowledge extraction processes, where data is not available in a language that can be understood by the domain experts or the knowledge extraction tools being used.
 
-A machine translation service was creating using Apertium\footnote{\url{http://www.apertium.org/}}~\citep{armentano05p}, a free/open-source rule-based machine translation platform for its translation capabilities, and on libTextCat\footnote{\url{http://software.wise-guys.nl/libtextcat/}}, a library implementing n-gram based text categorisation~\citep{textcat} for language recognition, which provides an inexpensive and highly effective way of recognising the language used in documents; this result is reached by using small-sized (about $10K$) fingerprints of the desired languages rather than resorting to more complicated and costly methods such as natural language parsing or assembling detailed lexicons. The libTextCat library is also used by Bitextor~\citep{espla-gomis2009bfs}, a system to harvest translation memories from multilingual websites.
+A machine translation service was creating using Apertium\footnote{\url{http://www.apertium.org/}}~\citep{armentano05p}, a free/open-source rule-based machine translation platform for its translation capabilities, and on libTextCat\footnote{\url{http://software.wise-guys.nl/libtextcat/}}, a library implementing n-gram based text categorisation~\citep{textcat} for language recognition, which provides an inexpensive and highly effective way of recognising the language used in documents; this result is reached by using small-sized (about $4KB$) fingerprints of the desired languages rather than resorting to more complicated and costly methods such as natural language parsing or assembling detailed lexicons. The libTextCat library is also used by Bitextor~\citep{espla-gomis2009bfs}, a system to harvest translation memories from multilingual websites.
 
 %% REVIEWER #1: "In section 1, authors claim that their system includes 
 %%   a language detector, but there is no later mention to it in the 
@@ -131,8 +131,15 @@ In addition, our service provides a {\tt\small language pairs} method that retur
 
 In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code.
 
-
 %% Here you should describe how the service is used!!! Section 4 of Víctor's paper.
+
+\begin{verbatim}
+>>> import xmlrpclib
+>>> proxy = xmlrpclib.ServerProxy('http://xixona.dlsi.ua.es:8080/RPC2')
+>>> print proxy.translate("Test for the machine translation service", "en", "es")["translation"]
+Prueba para el servicio de traducción de la máquina
+\end{verbatim}
+
 
 \section{Internal architecture of the service}
 
@@ -206,7 +213,7 @@ Relying on a resource pool is designed to result in the following improvements f
 
 \section{Results}
 
-To evaluate the efficiency of our service, which we will refer to as {\tt apertium-service}, we compared the time it requires to compute and answer to a translation request from Spanish to English with the {\tt\small apertium-en-es} language pair\footnote{PUT THE VERSION OR SVN REVISION HERE} with the time required by the following systems:
+To evaluate the efficiency of our service, which we will refer to as {\tt apertium-service}, we compared the time it requires to compute and answer to a translation request from Spanish to English with the {\tt\small apertium-en-es} language pair\footnote{SVN Revision 16218} with the time required by the following systems:
 
 %% REVIEWER #1: "I cannot see a reason for comparing the translation times for the 
 %%      Apertium-based SOA system with those of a Moses SMT translator in the experiments. They 
