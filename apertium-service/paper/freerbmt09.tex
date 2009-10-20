@@ -13,6 +13,8 @@
 \usepackage{latexsym}
 
 %\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
 \usepackage[small,bf]{caption}
 
 %%\newtheorem{cs}{Case Study}
@@ -134,12 +136,16 @@ In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} c
 %% Here you should describe how the service is used!!! Section 4 of Víctor's paper.
 
 \begin{figure}
- \begin{verbatim}[frame=single, fontfamily=courier, fontsize=\scriptsize]
+ \begin{Verbatim}[frame=single, fontfamily=courier, fontsize=\scriptsize]
 >>> import xmlrpclib
->>> proxy = xmlrpclib.ServerProxy('http://xixona.dlsi.ua.es:8080/RPC2')
->>> print proxy.translate("Test for the machine translation service", "en", "es")["translation"]
-Prueba para el servicio de traducción de la máquina
- \end{verbatim}
+>>> proxy = xmlrpclib.ServerProxy
+	('http://xixona.dlsi.ua.es:8080/RPC2')
+>>> print proxy.translate("Test for the machine 
+	translation service", "en", "es")
+	["translation"]
+Prueba para el servicio de traducción de la 
+	máquina
+ \end{Verbatim}
  \caption{Example -- invoking our service from the Python shell.}
  \label{fig:pythoninv}
 \end{figure}
