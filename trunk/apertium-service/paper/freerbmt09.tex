@@ -45,7 +45,7 @@ Service Oriented Architecture is an architectural paradigm providing a set of pr
 
 Several new trends in the computer industry rely upon SOA as their enabling foundation, including the automation of Business Process Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web~2.0~\citep{web20}.
 
-In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient machine translation service to overcome language barriers; for instance, it could be integrated in collaborative enviroments where people, who have no language in common, attempt to communicate with each other; or in knowledge extraction processes, where data is not available in a language that can be understood by the domain experts or the knowledge extraction tools being used.
+In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient machine translation service to overcome language barriers; for instance, it could be integrated in collaborative environments where people, who have no language in common, attempt to communicate with each other; or in knowledge extraction processes, where data is not available in a language that can be understood by the domain experts or the knowledge extraction tools being used.
 
 A machine translation service was creating using Apertium\footnote{\url{http://www.apertium.org/}}~\citep{armentano05p}, a free/open-source rule-based machine translation platform for its translation capabilities, and on libTextCat\footnote{\url{http://software.wise-guys.nl/libtextcat/}}, a library implementing n-gram based text categorisation~\citep{textcat} for language recognition, which provides an inexpensive and highly effective way of recognising the language used in documents; this result is reached by using small-sized (about $4KB$) fingerprints of the desired languages rather than resorting to more complicated and costly methods such as natural language parsing or assembling detailed lexicons. The libTextCat library is also used by Bitextor~\citep{espla-gomis2009bfs}, a system to harvest translation memories from multilingual websites.
 
@@ -70,7 +70,7 @@ A machine translation service was creating using Apertium\footnote{\url{http://w
 % \item Experts who have designed a Rule-Based Machine Translation system find it much easier to diagnose and repair sources of translation errors, like wrong rules in modules or wrong entries in dictionaries.
 %\end{itemize}
 
-Efficiency and scalability are critical for the service since, especially in collaborative enviroments, it should be able to sustain a heavy load of traffic. In this paper, the techniques and design patterns used to implement the machine translation service will be described and it will be compared to the standalone system.
+Efficiency and scalability are critical for the service since, especially in collaborative environments, it should be able to sustain a heavy load of traffic. In this paper, the techniques and design patterns used to implement the machine translation service will be described and it will be compared to the standalone system.
 
 %% You should probably put some note about the alternative (Víctor's service here) p.2 of his paper
 
@@ -193,13 +193,13 @@ To improve efficiency, the resource pool can eagerly acquire a number of resourc
 
 There are various valid approaches to free unused resources, like those consisting of monitoring the use of a resource and controlling its lifecycle by using  strategies such as ``least recently used'' (LRU) or ``least frequently used'' (LFU), or introducing a \emph{lease} for every resource that specifies a time duration for which a resource can remain in the pool.
 
-In our service, the default policy is to allocate new resources from the resource enviroment if there are no resources of the requested type available in the pool; the service also allows the setting of a \emph{high water mark}, i.e. a maximum number of allocated objects: if the number of allocated objects is equal to the high water mark, the requesting client has to wait in a queue until a resource of the requested type is available in the pool. In addition, as we made no prior assumptions about how the service would be used, it does not apply any garbage collection policy by default.
+In our service, the default policy is to allocate new resources from the resource environment if there are no resources of the requested type available in the pool; the service also allows the setting of a \emph{high water mark}, i.e. a maximum number of allocated objects: if the number of allocated objects is equal to the high water mark, the requesting client has to wait in a queue until a resource of the requested type is available in the pool. In addition, as we made no prior assumptions about how the service would be used, it does not apply any garbage collection policy by default.
 
 Relying on a resource pool is designed to result in the following improvements for our rule-based machine translation service:
 
 \begin{description}
  \item[Performance] -- By preventing repetitious acquisition and release of resources;
- \item[Predictability] -- Because direct acquisition of a resource from an external resource enviroment (for example, a filesystem or a DBMS) can lead, in some cases, to unpredictable results and dynamic memory allocation can be characterised by non-deterministic timing when in presence of memory fragmentation~\citep{realtime};
+ \item[Predictability] -- Because direct acquisition of a resource from an external resource environment (for example, a filesystem or a DBMS) can lead, in some cases, to unpredictable results and dynamic memory allocation can be characterised by non-deterministic timing when in presence of memory fragmentation~\citep{realtime};
  \item[Stability] -- Because repetitious acquisition and release of resources can increase the risk of system instability because of, for example, memory fragmentation problems typical of heap-based allocation~\citep{robust, realtime}); %% SHOULD YOU PUT A REF HERE ? -FMT
 %% If you want examples for "instability" (see comments by reviewer #2), then you can mention
 %% that on at least one server using standard Apertium over a long-term period (one year), 
