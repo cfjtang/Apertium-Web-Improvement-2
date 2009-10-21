@@ -45,7 +45,7 @@ Service Oriented Architecture is an architectural paradigm providing a set of pr
 
 Several new trends in the computer industry rely upon SOA as their enabling foundation, including the automation of Business Process Management (BPM) and the multitude of new architecture and design patterns generally referred to as Web~2.0~\citep{web20}.
 
-In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient machine translation service to overcome language barriers; for instance, it could be integrated in collaborative enviroments where people, who have no language in common, attempt to communicate with each other, or in knowledge extraction processes, where data is not available in a language that can be understood by the domain experts or the knowledge extraction tools being used.
+In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of an efficient machine translation service to overcome language barriers; for instance, it could be integrated in collaborative enviroments where people, who have no language in common, attempt to communicate with each other; or in knowledge extraction processes, where data is not available in a language that can be understood by the domain experts or the knowledge extraction tools being used.
 
 A machine translation service was creating using Apertium\footnote{\url{http://www.apertium.org/}}~\citep{armentano05p}, a free/open-source rule-based machine translation platform for its translation capabilities, and on libTextCat\footnote{\url{http://software.wise-guys.nl/libtextcat/}}, a library implementing n-gram based text categorisation~\citep{textcat} for language recognition, which provides an inexpensive and highly effective way of recognising the language used in documents; this result is reached by using small-sized (about $4KB$) fingerprints of the desired languages rather than resorting to more complicated and costly methods such as natural language parsing or assembling detailed lexicons. The libTextCat library is also used by Bitextor~\citep{espla-gomis2009bfs}, a system to harvest translation memories from multilingual websites.
 
@@ -131,7 +131,7 @@ In addition, our service provides a {\tt\small language pairs} method that retur
 %% It might be worth explaining in this section, why an existing API, e.g. Google wasn't used 
 %% as a model? -FMT
 
-In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code. Figure \ref{fig:pythoninv} shows a short example on how our service's XML-RPC interface can be invoked by the Python\footnote{\url{http://www.python.org/}} shell.
+In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code. Figure \ref{fig:pythoninv} shows a short example of how our service's XML-RPC interface can be invoked by the Python\footnote{\url{http://www.python.org/}} shell.
 
 %% Here you should describe how the service is used!!! Section 4 of Víctor's paper.
 
@@ -156,7 +156,7 @@ Apertium is a transfer-based machine translation system which uses finite-state 
 
 \begin{description}
  \item[Formatters] - which handle format-specific information with respect to text to be translated;
- \item[Morphological analyser] - which tokenszes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms} consisting of lemma, lexical category and informations about morphological inflection;
+ \item[Morphological analyser] - which tokenizes the text in \emph{surface forms} and delivers, for each surface form, one or more \emph{lexical forms} consisting of lemma, lexical category and informations about morphological inflection;
  \item[Part-of-speech tagger] - which chooses one of the analyses of an ambiguous word, according to its context;
  \item[Lexical transfer module] - which reads each lexical form of the surface form and delivers the corresponding destination language lexical form;
  \item[Structural transfer module] - which detects and processes patterns of words that need special processing due to grammatical divergences between two languages;
@@ -200,8 +200,8 @@ Relying on a resource pool is designed to result in the following improvements f
 
 \begin{description}
  \item[Performance] -- By preventing repetitious acquisition and release of resources;
- \item[Predictability] -- because direct acquisition of a resource from an external resource enviroment (for example, a filesystem or a DBMS) can be characterised by nondeterministic timing~\citep{realtime};
- \item[Stability] -- Because repetitious acquisition and release of resource can increase the risk of system instability because of, for example, memory fragmentation problems typical of heap-based allocation~\citep{robust, realtime}); %% SHOULD YOU PUT A REF HERE ? -FMT
+ \item[Predictability] -- because direct acquisition of a resource from an external resource environment (for example, a filesystem or a DBMS) can be characterised by nondeterministic timing~\citep{realtime};
+ \item[Stability] -- Because repetitious acquisition and release of resources can increase the risk of system instability because of, for example, memory fragmentation problems typical of heap-based allocation~\citep{robust, realtime}); %% SHOULD YOU PUT A REF HERE ? -FMT
 %% If you want examples for "instability" (see comments by reviewer #2), then you can mention
 %% that on at least one server using standard Apertium over a long-term period (one year), 
 %% there have been numerous problems with run-away processes. For example:
@@ -259,7 +259,7 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 \begin{center}
 \includegraphics[width=7.75cm]{compmt}
 \end{center}
-\caption{Comparison in the ``Number of Threads- Time'' space between {\tt apertium} and {\tt apertium-service}.}
+\caption{Comparison in the ``Number of Threads - Time'' space between {\tt apertium} and {\tt apertium-service}.}
 \label{fig:compmt}
 \end{figure}
 
