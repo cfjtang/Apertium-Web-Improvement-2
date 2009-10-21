@@ -12,6 +12,7 @@
 \usepackage{url}
 \usepackage{latexsym}
 
+\usepackage{hyperref}
 %\usepackage{tabularx}
 \usepackage{verbatim}
 \usepackage{fancyvrb}
@@ -26,7 +27,7 @@
   Dipartimento di Informatica\\
   Università degli Studi di Bari\\
   Via E. Orabona 4, 70125 Bari, Italy\\
-  {\tt p.minervini@gmail.com}}
+  \href{mailto:p.minervini@gmail.com}{\nolinkurl{p.minervini@gmail.com}}}
 
 \date{}
 
@@ -227,7 +228,7 @@ Relying on a resource pool is designed to result in the following improvements f
 
 \section{Results}
 
-To evaluate the efficiency of our service, which we will refer to as {\tt apertium-service}, we compared the time it requires to compute and answer to a translation request from Spanish to English with the {\tt\small apertium-en-es} language pair\footnote{SVN Revision 16218} with the time required by the following systems:
+To evaluate the efficiency of our service, which we will refer to as {\tt\small apertium-service}, we compared the time it requires to compute and answer to a translation request from Spanish to English with the {\tt\small apertium-en-es} language pair\footnote{SVN Revision 16218} with the time required by the following systems:
 
 %% REVIEWER #1: "I cannot see a reason for comparing the translation times for the 
 %%      Apertium-based SOA system with those of a Moses SMT translator in the experiments. They 
@@ -236,18 +237,18 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 %%      currently Apertium is faster than Moses is something we all know"
 
 \begin{itemize}
- \item {\tt apertium}, a console application implemented as a part of the Apertium project;
-% \item {\tt moses}~\citep{moses}, a Open Source Statistical Machine Translation system;
-% \item {\tt moses-service}, a service relying on {\tt moses}.
+ \item {\tt\small apertium}, a console application implemented as a part of the Apertium project;
+% \item {\tt\small moses}, a console application implemented as a part of Moses~\citep{moses}, a Open Source Statistical Machine Translation system;
+% \item {\tt\small moses-service}, a service relying on {\tt\small moses}.
 \end{itemize}
 
-%The translation model used by {\tt moses} and {\tt moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. Language models have been then compiled into binary format using IRSTLM~\citep{irstlm}, and trained to minimize the error rate on a set of sentences from the same corpus. 
+%The translation model used by {\tt\small moses} and {\tt\small moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. Language models have been then compiled into binary format using IRSTLM~\citep{irstlm}, and trained to minimize the error rate on a set of sentences from the same corpus. 
 %
 %\begin{figure}[!ht]
 %\begin{center}
 %\includegraphics[width=7.75cm]{comp}
 %\end{center}
-%\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium}, {\tt apertium-service}, {\tt moses} and {\tt moses-service}; measurements are in $log_{2}(string\ length)$ for the Sentence Length dimension and in $log_{2}(ms)$ for the Time dimension.}
+%\caption{Comparison in the ``Sentence Length - Time'' space between {\tt\small apertium}, {\tt\small apertium-service}, {\tt\small moses} and {\tt\small moses-service}; measurements are in $log_{2}(string\ length)$ for the Sentence Length dimension and in $log_{2}(ms)$ for the Time dimension.}
 %\label{fig:comp}
 %\end{figure}
 
@@ -255,7 +256,7 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 \begin{center}
 \includegraphics[width=7.75cm]{compap}
 \end{center}
-\caption{Comparison in the ``Sentence Length - Time'' space between {\tt apertium} and {\tt apertium-service}; measurements are in $string\ length$ for the Sentence Length dimension and in $ms$ for the Time dimension.}
+\caption{Comparison in the ``Sentence Length - Time'' space between {\tt\small apertium} and {\tt\small apertium-service}; measurements are in $string\ length$ for the Sentence Length dimension and in $ms$ for the Time dimension.}
 \label{fig:compap}
 \end{figure}
 
@@ -263,7 +264,7 @@ To evaluate the efficiency of our service, which we will refer to as {\tt aperti
 \begin{center}
 \includegraphics[width=7.75cm]{compmt}
 \end{center}
-\caption{Comparison in the ``Number of Threads - Time'' space between {\tt apertium} and {\tt apertium-service}.}
+\caption{Comparison in the ``Number of Threads - Time'' space between {\tt\small apertium} and {\tt\small apertium-service}.}
 \label{fig:compmt}
 \end{figure}
 
