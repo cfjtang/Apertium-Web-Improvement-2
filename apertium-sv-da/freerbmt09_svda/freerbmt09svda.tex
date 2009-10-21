@@ -29,13 +29,6 @@
 
 \title{Shallow-transfer rule-based machine translation for Swedish to Danish}
 
-%%Michael Kristensen\\
-%%  Faculty of Pharm. Sci., \\
-%%  University of Copenhagen,\\
-%%  DK-2100 København, Denmark \\
-%%  {\tt mkrist88@gmail.com} \And
-  
-
 \author{Francis M. Tyers\\
   Dept. Lleng. i Sist. Informàtics, \\
   Universitat d'Alacant,\\
@@ -45,9 +38,8 @@
   Center for Videreuddannelse\\
   Ingeniørhøjskolen i København,\\
   DK-2750 Ballerup, Denmark\\
-  {\tt jano@ihk.dk}}
-%%  Ingeniørhøjskolen i København\\
-%%  {\tt jacob.nordfalk@gmail.com}}
+  {\tt jano@ihk.dk}
+}
   
 \date{}
 
@@ -60,14 +52,14 @@
   system from Swedish to Danish in the Apertium platform. It gives details of the 
   resources used, the methods for constructing the system and an evaluation of the 
   translation quality. The quality is found to be comparable with that of current
-  commercial systems, despite a particularly low coverage of the lexicons.
+  commercial systems, despite the particularly low coverage of the lexicons.
 \end{abstract}
 
 \section{Introduction}
 
 Both Swedish and Danish languages were standardised in the 12th to 15th centuries out
 of the Old Norse which was spoken across Scandinavia. Swedish was standardised on the 
-speech of the zone around Stockholm, where Danish was standardised on the speech of 
+speech of the zone around Stockholm, whereas Danish was standardised on the speech of  %% 'where' is ok here
 Copenhagen and surrounding areas. The languages are largely mutually intelligible \citep{Haugen1990}.
 
 Given this, a machine translation system between the two languages should largely
@@ -75,8 +67,8 @@ focus on \emph{dissemination}, that is the production of text to be post-editted
 published, rather than the production of text for \emph{assimilation}, or understanding.
 
 This paper is laid out as follows, first a brief review is given of the design of a 
-shallow transfer based machine translation system in the Apertium platform, we then 
-dedicate a section to describing how the data for this system was created. Following this, 
+shallow-transfer rule-based machine-translation system in the Apertium platform. We then 
+present a section describing how the data for this system was created. Following this, % 'to describing' is fine here
 an evaluation is given of the quality of the output of the system and its suitability 
 for the post-edition task, and finally we finish with a discussion and prospectives 
 for future work.
@@ -92,15 +84,19 @@ for future work.
 
 The Apertium platform follows a transfer-based machine translation model. A source
 language text is first morphologically analysed using finite-state transducers. It is 
-then disambiguated for part of speech by a bigram HMM part-of-speech tagger. Subsequently
-lexical transfer is performed by the same module that performs syntactic transfer. Syntactic
+then disambiguated for part of speech by a bigram HMM part-of-speech tagger.\footnote{The part-of-speech
+tagger outputs a single disambiguated word, along with both part of speech and any extended
+morphological information.} Subsequently,
+lexical transfer is performed by the same module that performs structural transfer. Syntactic
 transfer consists of matching fixed-length patterns of lexical units\footnote{A lexical unit 
 is a lemma and its part of speech and morphological information.} and performing operations
-such as insertions, removals and substitutions, along with concordancing. Figure~\ref{fig:apertium}
-shows the main modules of a given system built upon the platform.
+such as insertions, removals and substitutions, along with concordancing. Finally, generation
+is performed by the same module that performs analysis. Figure~\ref{fig:apertium}
+shows the main modules of a given system built upon the platform. A more complete description
+of the platform may be found in \citet{armentano06p}.
 
-Two models of syntactic transfer are supported by the platform, both single-stage, where only
-one set of transfer rules is used, and three-stage where transfer rules are also used to 
+Two models of structural transfer are supported by the platform: a single-stage transfer, where only
+one set of transfer rules is used, and a three-stage transfer where transfer rules are also used to 
 group words into \emph{chunks}, on which later operations can be performed. The Swedish--Danish
 pair uses the original, single stage transfer as a result of the closeness of the languages.
 
@@ -146,9 +142,10 @@ both inflectional forms and translations between the two languages.
 
 %% Transducers built from scratch using above resources
 
-The morphological dictionaries for the two languages were built in slightly 
-different ways due to the differing amounts of information available. In both
-cases however the closed categories were described manually. 
+For analysis and generation of Swedish and Danish, two morphological dictionaries
+are used, one for each language. Each dictionary was built in a slightly 
+different way due to the differing amounts of information available. In both
+cases however, the closed categories were described manually. 
 
 For Swedish, the Swedish Wiktionary\footnote{\url{http://sv.wiktionary.org}} has
 inflectional tables for many of the words. In order to make use of these, all of 
@@ -167,14 +164,15 @@ dictionary of Swedish using the \emph{extract} tool.
 %% Train tagger using target language training
 
 For disambiguation we first chose to train a basic unsupervised bigram part-of-speech tagger
-using the {\tt\small apertium-tagger}. Although both tagged corpora and constraint
-grammars exist for both Swedish and Danish, neither the constraint grammars
+using the {\tt\small apertium-tagger}.\footnote{A bigram tagger was chosen as during development
+there was no support for trigram tagging in the {\tt\small apertium-tagger}.} Although both tagged corpora and constraint
+grammars (see \citet{karlsson1995}) exist for both Swedish and Danish, neither the constraint grammars
 nor the corpora are free. The training corpora used were the 
 Danish\footnote{\url{http://da.wikipedia.org}} and Swedish\footnote{\url{http://sv.wikipedia.org}; 
 Access date: 8th February 2009} Wikipedias respectively.
 
-Later, we used the target language training module in Apertium (as described in \cite{sanchez2008})
-to train a Swedish tagger.
+%Later, we used the target language training module in Apertium (as described in \cite{sanchez2008})
+%to train a Swedish tagger.
 
 \subsection{Lexical transfer}
 
@@ -202,14 +200,18 @@ of the open categories. Then, the following semi-automatic methods were used:
      treated in a similar way to the wordlists above.
   \item Wikipedia -- For proper names, toponyms etc., we used the method described in \cite{tyers2008}
      to extract translations from Wikipedia.
-  \item Probabilistic dictionary -- Finally we trained a statistical machine translation system
-     using Moses \citep{Koehn2007} on the Europarl \citep{Koehn2005} corpus. From this we took
+  \item Probabilistic dictionary -- Finally, we trained a statistical machine translation system
+     using Moses \citep{Koehn2007} on the Europarl \citep{Koehn2005} parallel corpus. From this we took
      the probabilistic lexicon, and performed the same operation as with the wordlists above. In doing
      this we simply took the most probable translation that was in both the Swedish and Danish 
      monolingual dictionaries.
 \end{itemize}
 
-All bilingual dictionary entries were manually checked and bad entries altered or discarded.
+All bilingual dictionary entries were manually checked and bad entries altered or discarded. It is worth 
+noting that although many more entries were generated than eventually were included in the bilingual 
+dictionary. This was motivated by the low number of entries that we were able to include in the morphological
+dictionary of Swedish. Bilingual entries which did not have corresponding entries in the Swedish and 
+Danish dictionaries were not included.
 
 \subsection{Syntactic transfer}
 
@@ -231,7 +233,7 @@ between the two languages. These were principally motivated by:
     auxiliary verb in forming periphrastic verb forms as in Danish, for example in Swedish \emph{Två 
     personer har börjat} `Two people has begun' translated to Danish \emph{To personer er begyndt} 
     `Two people has begun' (literally, `Two people are begun').
-  \item  Changes in passive formation -- In Swedish certain verbs in the passive (\emph{slå} `hit', 
+  \item  Changes in passive formation -- In Swedish, certain verbs in the passive (\emph{slå} `hit', 
     \emph{ligga} `lie', \emph{anta} `suppose', \ldots) must be translated in Danish using an inflected 
     form of the verb \emph{blive} `become' in the active voice and the past participle.
 \end{itemize}
@@ -241,8 +243,12 @@ to passive followed by full infinitive in Danish, for example in Swedish \emph{T
 
 \subsection{Status}
 
-The table in table~\ref{table:status} gives details of the current status of the system
-in terms of the number of lemmas in each of the dictionaries and the number of transfer rules.
+Table~\ref{table:status} gives details of the current status of the system
+in terms of the number of lemmas in each of the dictionaries and the number 
+of transfer rules. The number of lemmas in the Danish dictionary is greater 
+than the number of lemmas in the Swedish dictionary as a result of a more 
+lax process taken to adding automatically generated entries. It can be 
+expected that some will be erroneous.
 
 \begin{table}
 \centering
@@ -256,9 +262,10 @@ Monolingual dict. ({\tt da})               & 10,694 lemmas \\
 Transfer rules ({\tt sv $\rightarrow$ da}) & 17 rules \\
 \hline
 \end{tabular}
-    \caption{Status of pair as of ...}
+    \caption{Status of pair as of version 0.5.0, 9th October 2009}
     \label{table:status}
 \end{table}
+
 
 \section{Evaluation}
 
@@ -268,7 +275,7 @@ provides a quantitative evaluation using post-edition word error rate (WER) whic
 gives an indication as to how much work a post-editor needs to do in order to 
 achieve an adequate target language translation. The third is a qualitative evaluation
 which looks at some of the major deficiencies of the system with respect to disambiguation,
-and lexical and syntactic transfer. Finally we provide a short comparative evaluation of
+and lexical and structural transfer. Finally we provide a short comparative evaluation of
 our system against two proprietary systems.
 
 \subsection{Coverage}
@@ -310,13 +317,18 @@ Corpus    & WER & PWER & Free rides\\
 Wikipedia & 30 \% & 28 \%  & 38 \% \\
 \hline
 \end{tabular}
-    \caption{Evaluation results for the post-edition task}
+    \caption{Evaluation results for the post-edition task. Free rides are those words which
+       are identical in both the source and target language. Thus although they do not cause
+       a degradation in translation quality, it is relevant to take them into account when
+       evaluating the system.}
     \label{table:quanteval}
 \end{table}
 
 Both word error rate (WER) and position-independent error rate (PWER) were 
 calculated by counting the number of insertions, substitutions and deletions
-between the post-editted text and the original translation.
+between the post-editted text and the original translation. The tool used for
+calculating both WER and PWER was the freely available {\tt\small apertium-eval-translator}.\footnote{The
+package can be downloaded from Apertium SVN, for details see {\small \url{http://www.apertium.org/}}.}
 
 The results of this evaluation are shown in table~\ref{table:quanteval} and 
 indicate that the system is still not ready for being used in a post-edition 
@@ -337,7 +349,8 @@ verb form is not being added. Thus \emph{Han blivit trott} `He had been believed
 is incorrectly being translated to \emph{Han blevet troet} instead of the 
 correct \emph{Han er blevet troet}.
 
-There is not yet any support for compounding in {\tt {\small lttoolbox}} and as
+The pair currently uses {\tt\small lttoolbox} \citep{ortiz2005} for both morphological 
+analysis and generation. The package does not currently support productive compounding and as
 both Swedish and Danish are compounding languages this causes problems for 
 coverage -- even if both constituent parts of the compound are in the dictionary they
 will not be analysed. For example, the word \emph{universitetsbibliotek} `university library' is 
@@ -350,7 +363,7 @@ as in the case of an unknown word causing a transfer rule not to apply, for exam
 \emph{det baltiska havet} `the Baltic Sea+{\sc def}' being translated as \emph{det *baltiska havet}
 instead of \emph{det baltiske hav}, with the double definiteness being removed.
 
-\subsection{Comparative}
+\subsection{Comparative} % 'Comparative' as in 'Comparative evaluation'
 
 There are two existing proprietary machine translation systems online which translate 
 between Swedish and Danish, Gramtrans\footnote{\url{http://www.gramtrans.com}} and Google
@@ -359,20 +372,23 @@ built on top of constraint grammar, and Google Translate is a statistical machin
 system. To compare the results of the three systems, we used the selected 65 sentences and translated
 them with all of the systems, they were then post-editted and the WER and PWER calculated
 as in the quantitative evaluation.
-Because of time constraints, and because GramTrans and Apertium translations were very similar, 
-we considered the post-edited Apertium text to be valid also as post-edited GramTrans text.
-This gives a small bias in disfavour of GramTrans which must be taken into account when making 
+
+Because of time constraints, and because both the Gramtrans and the Apertium translations were very similar, 
+we considered the post-edited Apertium text to be valid also as post-edited Gramtrans text.
+This gives a small bias against Gramtrans which must be taken into account when making 
 conclusions.
 
 The results of this evaluation are shown in table~\ref{table:compeval} and show that, in spite 
-of the small disfavour to Gramtrans, it scores better than Apertium and Google 
-Translate scores does much worse than Apertium. 
+of the small bias against Gramtrans, it scores better than Apertium and Google Translate 
+scores produces worse translations than Apertium in terms of WER, but offers a slight improvement
+in terms of PWER. 
 
-As can be seen from table~\ref{table:extranslations}, Gramtrans has a much higher coverage lexicon 
-than the Apertium system, and this leads to less errors overall. That being said, the Gramtrans
-and the Apertium output is very similar, and seem to be following a similar \emph{direct} translation strategy. The 
-Google Translate output, however, is quite different from the other two, and contains English 
-artefacts such as \emph{överfart} translated as `passage'. 
+As can be seen from table~\ref{table:extranslations}, Gramtrans has a much higher-coverage lexicon 
+than the Apertium system, as can be seen from the lower number of unknown words. This leads to fewer errors overall. That being said, the Gramtrans
+and the Apertium output is very similar, and seem to be following a similar \emph{direct} translation 
+strategy. The Google Translate output, however, is quite different from the other two, and contains 
+artefacts from English in the translation, such as the Swedish word \emph{överfart} translated as 
+the English word `passage'. 
 
 %%While Gramtrans and Apertium is translating directly, Google Translate is using English 
 %%as inter-language and therefore some English artifacts are present, mostly proper nouns and time indications. 
@@ -419,9 +435,9 @@ Google     & i hvilken \underline{plads} \emph{Zealand} kan ses           & \und
 %%~          & på hvilket sted Sjælland kan ses fra Skåne, et sædvanligt tilholdssted for vikinger.\\
 %%\hline  
 \end{tabular}
- \label{table:extranslations}
  \caption{Comparison of the three systems for a single sentence. Unknown words are marked with \emph{emphasis} and
      incorrect translations are \underline{underlined}.}
+ \label{table:extranslations}
 \end{table*}
 
 \begin{table}
@@ -448,7 +464,7 @@ two commercial competitors.
 
 In terms of future work, we intend to reverse the direction to also translate from Danish to 
 Swedish, to improve the vocabulary coverage, and to improve part-of-speech disambiguation. There
-is a free constraint grammar for Norwegian \citep{hagen2000cbt} available, that could, with some
+is a free constraint grammar for Norwegian \citep{hagen2000cbt} available, that could with some
 conversion work be altered to work as a constraint grammar for Danish (Norwegian Bokmål is even
 closer to Danish than Swedish is to Danish). Finally, the transfer rules could be expanded to 
 deal with the cases where a supine is used without auxiliary, and a method of handling compound
