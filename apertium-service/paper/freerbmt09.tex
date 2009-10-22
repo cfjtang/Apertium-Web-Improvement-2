@@ -229,7 +229,7 @@ Another approach to implement a service based on Apertium by \cite{sanchez-carta
 Our approach has a series of pros and cons with respect to the one followed by \cite{sanchez-cartagena2009scalable}; advantages can be summarized by the following:
 
 \begin{description}
- \item[Efficiency] -- Threads usually require less resources when compared to processes, and Inter-Process Communication (IPC) between multiple processes tend to be more complex than IPC between multiple threads belonging to the same process~\citep{tanenbaum};
+ \item[Efficiency] -- Threads usually require less resources when compared to processes, and Inter-Process Communication (IPC) between multiple processes tend to be more complex and expensive than IPC between multiple threads belonging to the same process~\citep{tanenbaum};
  \item[Efficiency (2)] -- Resources can be shared between multiple translation tasks (even belonging to different language pairs) without the need of allocating them for each translation process;
  \item[Portability] -- Our service relies on the Boost C++ libraries\footnote{\url{http://www.boost.org}} for portable multithreading, regular expressions, filesystem operations and so on, making it capable to run in enviroments still not supported by the {\tt\small apertium} application;
 \end{description}
