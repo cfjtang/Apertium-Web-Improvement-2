@@ -178,8 +178,6 @@ Actually, in Apertium those functionalities in two libraries, called {\tt\small 
 
 Our service has been realized in the form of a multithreaded program, which relies on {\tt\small liblttoolbox} and {\tt\small libapertium} to execute each step of a translation process.
 
-Another approach to implement a service based on Apertium by \cite{sanchez-cartagena2009scalable} consists in making use of a pool of {\tt\small apertium} processes: each translation request is routed to a process making use of the required language pair, and then its output is returned back to the service client.
-
 %% THEN HERE YOU DESCRIBE HOW YOU GOT AROUND THESE PROBLEMS, AND OTHER PROSPECTIVE WAYS OF GETTING 
 %% AROUND THEM (e.g. NULL FLUSH). -FMT
 
@@ -194,7 +192,7 @@ Another approach to implement a service based on Apertium by \cite{sanchez-carta
 \label{fig:rp}
 \end{figure}
 
-To prevent the frequent acquisition and release of the aforementioned resources, our service makes use of the \emph{pooling pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool. This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in figure~\ref{fig:rp}.
+To prevent the frequent acquisition and release of the resources required to execute each step of the aforementioned assembly line, our service makes use of the \emph{pooling pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool. This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in figure~\ref{fig:rp}.
 
 To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in pool, more resources can be \emph{lazily} acquired.
 
@@ -205,13 +203,9 @@ In our service, the default policy is to allocate new resources from the resourc
 Relying on a resource pool is designed to result in the following improvements for our rule-based machine translation service:
 
 \begin{description}
-
  \item[Performance] -- By preventing repetitious acquisition, elaboration and release of resources;
-
  \item[Predictability] -- Because direct acquisition of a resource from an external resource enviroment (for example, a filesystem or a DBMS) can lead, in some cases, to unpredictable results and dynamic memory allocation and deallocation can be non-deterministic with respect to time~\citep{realtime};
-
  \item[Stability] -- Because repetitious acquisition and release of resources can increase the risk of system instability due, for example, to memory fragmentation problems~\citep{robust, realtime};  %% SHOULD YOU PUT A REF HERE ? -FMT
-
 %% If you want examples for "instability" (see comments by reviewer #2), then you can mention
 %% that on at least one server using standard Apertium over a long-term period (one year), 
 %% there have been numerous problems with run-away processes. For example:
@@ -227,10 +221,19 @@ Relying on a resource pool is designed to result in the following improvements f
 %% You can also mention security problems in scripts:
 %%   http://bugs.apertium.org/cgi-bin/bugzilla/show_bug.cgi?id=76
 %% Not that a service might not introduce new security problems!
-
  \item[Scalability] -- As resources can be used also in different types of translation tasks, avoiding the allocation of a complete set of resources for each different translation task (for example, translation tasks on different language pairs using different dictionaries can make use of the same resource for managing the removal and restoration of formatting).
-
 \end{description}
+
+Another approach to implement a service based on Apertium by \cite{sanchez-cartagena2009scalable} consists in making use of a pool of {\tt\small apertium} processes: each translation request is routed to a process making use of the required language pair, and then its output is returned back to the service client.
+
+Our approach has a series of pros and cons with respect to the one followed by \cite{sanchez-cartagena2009scalable}; advantages can be summarized by the following:
+
+\begin{description}
+ \item[Efficiency] -- Threads usually require less resources when compared to processes, and Inter-Process Communication (IPC) between multiple processes tend to be more complex than IPC between multiple threads belonging to the same process~\citep{tanenbaum};
+ \item[Efficiency (2)] -- Resources can be shared between multiple translation tasks (even belonging to different language pairs) without the need of allocating them for each translation process;
+ \item[Portability] -- Our service relies on the Boost C++ libraries\footnote{\url{http://www.boost.org}} for portable multithreading, regular expressions, filesystem operations and so on, making it capable to run in enviroments still not supported by the {\tt\small apertium} application;
+\end{description}
+
 
 \section{Results}
 
@@ -319,7 +322,7 @@ Currently MetaMap is only available for English free text, which makes it diffic
 
 We presented {\tt\small apertium-service}, a machine translation service based on Apertium, a free/open-source rule-based machine translation platform. It has been shown to be competitive compared to the baseline system in both efficiency and scalability.
 
-Source code for our service is released under the GNU General Public Licence version 3\footnote{\url{http://www.gnu.org/licenses/gpl.html}} and is available on the Apertium SVN repository.\footnote{{\small\url{http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/apertium-service}}}
+Source code for our service is released under the GNU General Public Licence version 3\footnote{\small\url{http://www.gnu.org/licenses/gpl.html}} and is available on the Apertium SVN repository.\footnote{{\small\url{http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/apertium-service}}}
 
 \section*{Acknowledgements}
 
