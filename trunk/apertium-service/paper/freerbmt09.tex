@@ -176,9 +176,9 @@ Apertium is a transfer-based machine translation system which uses finite-state 
 
 Actually, in Apertium those functionalities in two libraries, called {\tt\small liblttoolbox} and {\tt\small libapertium}, and uses them to implement a set of \emph{console programs} managing their input and output in the form of \emph{text streams}; the console programs are then assembled by using a \emph{UNIX pipeline} to implement a final console program, called {\tt\small apertium}, which, given a language pair, handles a translation process in its entirety. All the informations required to execute a translation task associated to a language pair are contained in a \emph{mode file}, which specifies which modules should be run, their parameters and order.
 
+Our service has been realized in the form of a multithreaded program, which relies on {\tt\small liblttoolbox} and {\tt\small libapertium} to execute each step of a translation process.
 
-
-Another approach used to implement a service based on Apertium by \cite{sanchez-cartagena2009scalable} makes use of a pool of {\tt\small apertium} processes: each translation request is routed to a process making use of the required language pair, and then its output is returned back to the service client.
+Another approach to implement a service based on Apertium by \cite{sanchez-cartagena2009scalable} consists in making use of a pool of {\tt\small apertium} processes: each translation request is routed to a process making use of the required language pair, and then its output is returned back to the service client.
 
 %% THEN HERE YOU DESCRIBE HOW YOU GOT AROUND THESE PROBLEMS, AND OTHER PROSPECTIVE WAYS OF GETTING 
 %% AROUND THEM (e.g. NULL FLUSH). -FMT
