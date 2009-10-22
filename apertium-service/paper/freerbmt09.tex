@@ -152,7 +152,7 @@ Prueba para el servicio de traducción automática
 
 \section{Internal architecture of the service}
 
-Apertium is a transfer-based machine translation system which uses finite-state transducers for lexical processing, hidden Markov models (HMMs) for part-of-speech tagging and finite-state-based chunking for structural transfer. Its translation engine consists of an \emph{assembly line}, composed of the following modules:
+Apertium is a transfer-based machine translation system which uses finite-state transducers for lexical processing, hidden Markov models (HMMs) for part-of-speech tagging and finite-state-based chunking for structural transfer. Its translation engine consists of an \emph{assembly line}, composed by the following modules:
 
 \begin{description}
  \item[Formatters] -- which handle format-specific information with respect to text to be translated;
@@ -173,6 +173,8 @@ Apertium is a transfer-based machine translation system which uses finite-state 
 
 %% HERE YOU DESCRIBE HOW THESE ARE IMPLEMENTED IN APERTIUM (e.g. as separate programs which communicate 
 %% in text and are managed by scripts, modes file etc. -FMT
+
+Actually, in Apertium those functionalities in two libraries, called {\tt\small liblttoolbox} and {\tt\small libapertium}, and uses them to implement a set of \emph{console programs} managing their input and output in the form of \emph{text streams}; the console programs are then assembled by using a \emph{UNIX pipeline} to implement a final console program, called {\tt\small apertium}, which handles a translation process in its entirety.
 
 %% THEN HERE YOU DESCRIBE HOW YOU GOT AROUND THESE PROBLEMS, AND OTHER PROSPECTIVE WAYS OF GETTING 
 %% AROUND THEM (e.g. NULL FLUSH). -FMT
