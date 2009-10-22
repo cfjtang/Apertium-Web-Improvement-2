@@ -253,19 +253,19 @@ To evaluate the efficiency of our service, which we will refer to as {\tt\small 
 
 \begin{itemize}
  \item {\tt\small apertium}, a console application implemented as a part of the Apertium project;
-% \item {\tt\small moses}, a console application implemented as a part of Moses~\citep{moses}, a Open Source Statistical Machine Translation system;
-% \item {\tt\small moses-service}, a service relying on {\tt\small moses}.
+ \item {\tt\small moses}, a console application implemented as a part of Moses~\citep{moses}, a Open Source Statistical Machine Translation system;
+ \item {\tt\small moses-service}, a service relying on {\tt\small moses}.
 \end{itemize}
 
-%The translation model used by {\tt\small moses} and {\tt\small moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. Language models have been then compiled into binary format using IRSTLM~\citep{irstlm}, and trained to minimize the error rate on a set of sentences from the same corpus. 
-%
-%\begin{figure}[!ht]
-%\begin{center}
-%\includegraphics[width=7.75cm]{comp}
-%\end{center}
-%\caption{Comparison in the ``Sentence Length - Time'' space between {\tt\small apertium}, {\tt\small apertium-service}, {\tt\small moses} and {\tt\small moses-service}; measurements are in $log_{2}(string\ length)$ for the Sentence Length dimension and in $log_{2}(ms)$ for the Time dimension.}
-%\label{fig:comp}
-%\end{figure}
+The translation model used by {\tt\small moses} and {\tt\small moses-service} has been trained on the well-known Europarl~\citep{europarl} corpus by using SRILM~\citep{srilm}, a toolkit for building and applying statistical language models. Language models have been then compiled into binary format using IRSTLM~\citep{irstlm}, and trained to minimize the error rate on a set of sentences from the same corpus. 
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=7.75cm]{comp}
+\end{center}
+\caption{Comparison in the ``Sentence Length - Time'' space between {\tt\small apertium}, {\tt\small apertium-service}, {\tt\small moses} and {\tt\small moses-service}; measurements are in $log_{2}(string\ length)$ for the Sentence Length dimension and in $log_{2}(ms)$ for the Time dimension.}
+\label{fig:comp}
+\end{figure}
 
 \begin{figure}[!ht]
 \begin{center}
@@ -285,7 +285,7 @@ To evaluate the efficiency of our service, which we will refer to as {\tt\small 
 
 All the experiments were run on a server with four 2GHz Dual-Core AMD Opteron processors and 4GB of main memory, using the GNU/Linux operating system. Both {\tt\small apertium-service} and {\tt\small moses-service} were accepting translation requests in XML-RPC format, and the free text used for timing all the systems was also taken from Europarl corpus. Figure \ref{fig:comp} shows the time required to translate increasingly longer sentences for all systems (values in the time dimension are shown on a logarithmic scale), and figure~\ref{fig:compap} only for {\tt\small apertium-service} and {\tt\small apertium}.
 
-Scalability for {\tt\small apertium} and {\tt\small apertium-service} have been evaluated by calculating the average time required by the two systems to answer to 1,024 translations requests sequentially sent by a variable number of clients; the requests consisted to translating the longest sentence from the Europarl evaluation corpus (679 characters) from Spanish to English. Figure \ref{fig:compmt} shows the results of this comparison.
+Scalability for {\tt\small apertium} and {\tt\small apertium-service} have been evaluated by calculating the average time required by the two systems to answer to 1,024 translations requests sequentially sent by a variable number of clients; the requests consisted to translating the longest sentence from the Europarl evaluation corpus (679 characters), so to obtain a worst case score, from Spanish to English. Figure \ref{fig:compmt} shows the results of this comparison.
 
 %% Why did you choose the _longest_ sentence ? Wouldn't it have made sense to try different lengths of 
 %% sentences ? If you did it so you could give a "worst case score" say so. -FMT
