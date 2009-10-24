@@ -299,18 +299,18 @@ Our service lends to a series of potentially useful applications:
 \paragraph{UMLS concept identification in non-English medical documents:} MetaMap~\citep{metamap} is an application that allows mapping text to UMLS Metathesaurus\footnote{The UMLS Metathesaurus~\citep{umls} provides a representation of biomedical knowledge consisting of concepts classified by semantic type and both hierarchical and non-hierarchical relationships among the concepts.} concepts, which have proved to be useful for many applications, including decision support systems, management of patient records, information retrieval and data mining within the biomedical domain.
 
 %% Fix this figure -- remake it in Graphviz or something -FMT
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=7.75cm]{mtsoa}
-\end{center}
-\caption{Representation of a business process in which a clinical document, if written in a language different than English, is fist translated to English and then processed using MetaMap to extract UMLS concepts.}
-\label{fig:mtsoa}
-\end{figure}
+%\begin{figure}[!ht]
+%\begin{center}
+%\includegraphics[width=7.75cm]{mtsoa}
+%\end{center}
+%\caption{Representation of a business process in which a clinical document, if written in a language different than English, is fist translated to English and then processed using MetaMap to extract UMLS concepts.}
+%\label{fig:mtsoa}
+%\end{figure}
 
-Actually, MetaMap is only available for English free text, which makes it difficult the use of UMLS Metathesaurus to represent concepts from biomedical documents written in languages other than English. To enable cross-lingual text classification, \cite{metamapes} proposes to make use of general pourpose statistical machine translation tools, such as Google Translate\footnote{\small\url{http://translate.google.com/}}, to translate the documents from their source language to English, and then process them as illustrated in Figure \ref{fig:mtsoa}; unluckily, this approach presents some important mistakes when translating terms specific for the biomedical domain.
+Actually, MetaMap is only available for English free text, which makes it difficult the use of UMLS Metathesaurus to represent concepts from biomedical documents written in languages other than English. To enable cross-lingual text classification, \cite{metamapes} proposes to make use of general pourpose statistical machine translation tools, such as Google %Translate\footnote{\small\url{http://translate.google.com/}}, to translate the documents from their source language to English, and then process them as illustrated in Figure \ref{fig:mtsoa}; unluckily, this approach presents some important mistakes when translating terms specific for the biomedical domain.
+Translate\footnote{\small\url{http://translate.google.com/}}, to translate the documents from their source language to English, and then process them through the traditional English MetaMap; unluckily, this approach presents some important mistakes when translating terms specific for the biomedical domain.
 
-To overcome this limitation, it should be possible to employ our Apertium-based service, in conjunction with bilingual dictionaries, transfer rules etc. specific for the biomedical domain, to obtain an accurate translation of biomedical documents and then process them with a traditional English version of MetaMap.
-
+To overcome this limitation, it should be possible to employ our Apertium-based service, in conjunction with bilingual dictionaries, transfer rules etc. specific for the biomedical domain, to obtain an accurate translation of biomedical documents before profitably processing them.
 
 \paragraph{Supporting creation of user-generated content:} Wikipedia is an online, multilingual, volunteer-edited encyclopedia. ``There are currently 262 language editions of Wikipedia; of these, 24 have over 100,000 articles and 81 have over 1,000 articles''~\citep{wikipedia}. Although access to technology is also an important factor, the number of available articles in a particular language's Wikipedia corresponds somewhat to the number of available speakers of that language.
 
