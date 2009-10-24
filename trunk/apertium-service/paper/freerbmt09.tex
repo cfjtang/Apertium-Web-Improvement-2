@@ -119,12 +119,12 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
 
 Our service natively provides a XML-RPC interface to the translation and language recognition functionalities, and we also implemented SOAP and REST wrappers to it. All the interfaces follow the schema outlined in tables~\ref{tab:translate}~and~\ref{tab:detect} to expose, respectively, the translation and the language detection functionalities; those can be subsumed by the following methods:
 
-\begin{itemize}
- \item {\bf Translate:} receives three parameters called {\tt\small text}, {\tt\small source language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
- \item {\bf Detect:} receives three parameters called {\tt\small text} containing free text, and returns a {\tt\small detected language} value containing the language used by the text.
-\end{itemize}
+\begin{description}
+ \item[Translate] -- which receives three parameters called {\tt\small text}, {\tt\small source language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
+ \item[Detect] -- which receives three parameters called {\tt\small text} containing free text, and returns a {\tt\small detected language} value containing the language used by the text.
+\end{description}
 
-In addition, our service provides a {\bf language pairs} method that returns a sequence of all the language pairs supported by the translation system, each represented by a pair containing the corresponding {\tt\small source language} and the {\tt\small destination language}.
+In addition, our service provides a {\bf Language Pairs} method that returns a sequence of all the language pairs supported by the translation system, each represented by a pair containing the corresponding {\tt\small source language} and the {\tt\small destination language}.
 
 %% It might be worth explaining in this section, why an existing API, e.g. Google wasn't used 
 %% as a model? -FMT
