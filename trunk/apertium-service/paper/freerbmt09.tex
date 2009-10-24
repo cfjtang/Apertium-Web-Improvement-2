@@ -21,7 +21,7 @@
 %%\newtheorem{cs}{Case Study}
 
 
-\title{Implementing an efficient and scalable service-oriented architecture for the Apertium machine translation platform}
+\title{An efficient and scalable service-oriented architecture for the Apertium rule-based machine translation platform}
 
 \author{Pasquale Minervini\\
   Dipartimento di Informatica\\
@@ -99,7 +99,7 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
   \hline
  \end{tabular}
 \end{center}
-\caption{Parameters and return value(s) for the Translate method.}
+\caption{Parameters and return value(s) for the {\bf Translate} method.}
 \label{tab:translate}
 \end{table}
 
@@ -113,15 +113,15 @@ Alternative standards to SOAP are XML-RPC~\citep{xmlrpcspec}, a remote procedure
   \hline
  \end{tabular}
 \end{center}
-\caption{Parameters and return value(s) for the Detect method.}
+\caption{Parameters and return value(s) for the {\bf Detect} method.}
 \label{tab:detect}
 \end{table}
 
 Our service natively provides a XML-RPC interface to the translation and language recognition functionalities, and we also implemented SOAP and REST wrappers to it. All the interfaces follow the schema outlined in tables~\ref{tab:translate}~and~\ref{tab:detect} to expose, respectively, the translation and the language detection functionalities; those can be subsumed by the following methods:
 
 \begin{itemize}
- \item Translate: receives three parameters called {\tt\small text}, {\tt\small source language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
- \item Detect: receives three parameters called {\tt\small text} containing free text, and returns a {\tt\small detected language} value containing the language used by the text.
+ \item {\bf Translate:} receives three parameters called {\tt\small text}, {\tt\small source language} and {\tt\small destination language} containing, respectively the text to be translated, the source language and the destination language, and returns a {\tt\small translation} value containing the translated text; if the source language is omitted, then language recognition is used to guess it, and the guessed language is returned in the {\tt\small detected source language} value.
+ \item {\bf Detect:} receives three parameters called {\tt\small text} containing free text, and returns a {\tt\small detected language} value containing the language used by the text.
 \end{itemize}
 
 In addition, our service provides a {\tt\small language pairs} method that returns a sequence of all the language pairs supported by the translation system, each represented by a pair containing the corresponding {\tt\small source language} and the {\tt\small destination language}.
@@ -129,7 +129,7 @@ In addition, our service provides a {\tt\small language pairs} method that retur
 %% It might be worth explaining in this section, why an existing API, e.g. Google wasn't used 
 %% as a model? -FMT
 
-In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code. Figure \ref{fig:pythoninv} shows a short example of how our service's XML-RPC interface can be invoked by the Python\footnote{\small\url{http://www.python.org/}} shell.
+In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code. Figure \ref{fig:pythoninv} shows a short example of how our service's XML-RPC interface can be invoked from the Python\footnote{\small\url{http://www.python.org/}} shell.
 
 %% Here you should describe how the service is used!!! Section 4 of Víctor's paper.
 
@@ -143,7 +143,7 @@ In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} c
 	["translation"]
 Prueba para el servicio de traducción automática
  \end{Verbatim}
- \caption{Example -- invoking our service from the Python shell by XML-RPC.}
+ \caption{Example -- invoking our service from the Python shell using XML-RPC.}
  \label{fig:pythoninv}
 \end{figure}
 
