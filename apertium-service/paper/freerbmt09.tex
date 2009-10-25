@@ -191,7 +191,8 @@ Our service has been realized in the form of a multithreaded program, which reli
 \label{fig:rp}
 \end{figure}
 
-To prevent the frequent acquisition and release of the resources required to execute each step of the aforementioned assembly line, our service makes use of the \emph{pooling pattern}~\citep{kircher2001}, in which multiple instances of one type of resource are managed in a pool. This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in Figure \ref{fig:rp}.
+To prevent the frequent acquisition and release of the resources required to execute each step of the Apertium assembly line, our service has been implemented by making use of the \emph{pooling pattern}~\citep{kircher2001}; according to this design pattern, it is desirable to keep all reusable, not currently in use resources in the same resource pool so that they can be managed by a coherent policy.
+This pool of resources allows for reuse when resource clients release resources they no longer need: released resources are put back into the pool and made available to resource clients needing them, as shown in Figure \ref{fig:rp}.
 
 To improve efficiency, the resource pool can eagerly acquire a number of resources after its creation; then, if demand exceeds the number of available resources in pool, more resources can be \emph{lazily} acquired.
 
