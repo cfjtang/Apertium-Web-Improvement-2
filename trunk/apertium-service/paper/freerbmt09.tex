@@ -58,10 +58,11 @@ We implemented a machine translation and language recognition service by relying
 Our decision to prefer a rule-based machine translation system like Apertium to a statistical or an example-based machine translation system was  motivated by the following reasons:
 
 \begin{itemize}
- \item Statistical Machine Translation systems tend to produce text that appears more ``natural'' than that produced by Rule-Based ones, with the result that ``fluency'' can outweight ``fidelity'', but a natural and fluent translation is not necessairly completely faithful to the original text;
- \item In Rule-Based Machine Translation systems, linguistic knowledge can be encoded explicitly in the form of linguistic data, so that both humans and automatic systems can process it (this feature can be a great benefit when using domain-specific linguistic knowledge);
- \item Rule-Based Machine Translation systems tend to produce more ``mechanical'' translations, so their errors tend also to be more evident;
- \item Experts who have designed a Rule-Based Machine Translation system find it much easier to diagnose and repair sources of translation errors, like wrong rules in modules or wrong entries in dictionaries.
+% \item Statistical Machine Translation systems tend to produce text that appears more ``natural'' than that produced by Rule-Based ones, with the result that ``fluency'' can outweight ``fidelity'', but a natural and fluent translation is not necessairly completely faithful to the original text;
+ \item Statistical Machine Translation systems tend to produce translations that appears more ``fluent'' when compared with translation produced by Rule-Based systems (which often appear more ``mechanical''), but not necessairly faithful to the meaning of the original text and translation errors tend also to be less evident;
+ \item In Rule-Based Machine Translation systems, linguistic knowledge can be encoded explicitly in the form of linguistic data, so that both humans and automatic systems can process it -- a great advantage when in presence of domain-specific and proprietary linguistic knowledge;
+%\item Rule-Based Machine Translation systems tend to produce more ``mechanical'' translations, so their errors tend also to be more evident;
+ \item Experts who have designed a Rule-Based Machine Translation system tend to find it easier to diagnose and repair sources of translation errors, like wrong rules in modules or wrong entries in dictionaries.
 \end{itemize}
 
 Efficiency and scalability are critical for the service since, especially in collaborative enviroments, it should be able to sustain a heavy load of traffic. In this paper, the techniques and design patterns used to implement the machine translation service will be described and it will be compared to other existing machine translation systems.
