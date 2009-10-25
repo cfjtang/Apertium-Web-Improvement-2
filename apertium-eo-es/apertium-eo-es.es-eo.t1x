@@ -1478,7 +1478,7 @@
       </choose>
     </def-macro>
 
-    <def-macro n="nom_cas" npar="1"> <!-- EO: marca els SN que si són objecte estaran en acusatiu (les regles del t2x s'encarreguen; també marca els dets interrogatius 'quin' per a tractaclor al t2x)-->
+    <def-macro n="nom_cas" npar="1"> <!-- EO: marca els SN que si són objecte estaran en acusatiu (les regles del t2x s'encarreguen; també marca els dets interrogatius 'quin' per a tractar-los al t2x)-->
 	<choose>
   	<when>
     	<test>
@@ -1563,7 +1563,7 @@
 	  </test>
 	  <let>
 	    <var n="nombre"/>
-	    <lit-tag v="sg_slpl"/>
+	    <lit-tag v="sp"/>
 	  </let>
 	</when>
        <when>
@@ -1627,7 +1627,7 @@
 	  </test>
 	  <let>
 	    <var n="nombre2"/>
-	    <lit-tag v="sg_slpl"/>
+	    <lit-tag v="sp"/>
 	  </let>
 	</when>
        <when>
@@ -1897,7 +1897,7 @@
             <lu>
               <clip pos="4" side="tl" part="lem"/>
               <clip pos="4" side="tl" part="a_adj"/>
-              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
 
@@ -2290,7 +2290,7 @@
 	    <lu>   
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_adj"/>
-	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
 	    </lu> 
@@ -2349,7 +2349,7 @@
 	    <lu>   
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
@@ -2384,7 +2384,7 @@
 	    <lu>   
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_adj"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
@@ -2435,7 +2435,7 @@
 	    <lu>   
 	      <clip pos="1" side="tl" part="lem"/> 
 	      <clip pos="1" side="tl" part="a_adj"/>
-	      <clip pos="1" side="tl" part="nbr"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
@@ -2456,7 +2456,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: DET NOM ADJ (EOes, aquella casa grande, un libro interesante, alguns coches viejos -> tiu granda domo, interesa libro, iuj verdaj aŭtoj)">
+<rule comment="REGLA: DET NOM ADJ (EOes, aquella casa grande, un libro interesante, algunos coches viejos -> tiu granda domo, interesa libro, iuj verdaj aŭtoj)">
 <!-- amb <pattern-item n="adjADJ"/> en comptes de <pattern-item n="adj">
 - s'evita la inversió del participi per evitar problemes com: aquella casa construïda pel meu pare -> tiu konstruita domo por mia patro
 - però es perd la generació de l'acusatiu
@@ -2498,7 +2498,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
-	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
@@ -2533,7 +2533,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="3" side="tl" part="lem"/> 
 	      <clip pos="3" side="tl" part="a_adj"/>
-	      <clip pos="3" side="tl" part="nbr"/>
+	      <clip pos="3" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
@@ -2600,7 +2600,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             <lu>
               <clip pos="4" side="tl" part="lem"/>
               <clip pos="4" side="tl" part="a_adj"/>
-              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
 	    <b pos="2"/>
@@ -2641,7 +2641,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             <lu>
               <clip pos="4" side="tl" part="lem"/>
               <clip pos="4" side="tl" part="a_adj"/>
-              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
 	    <b pos="3"/>
@@ -2711,7 +2711,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             <lu>
               <clip pos="4" side="tl" part="lem"/>
               <clip pos="4" side="tl" part="a_adj"/>
-              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
             <b pos="2"/>
@@ -2771,7 +2771,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             <lu>
               <clip pos="4" side="tl" part="lem"/>
               <clip pos="4" side="tl" part="a_adj"/>
-              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
 	    <b pos="2"/>
@@ -2840,7 +2840,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
-	      <clip pos="4" side="tl" part="nbr"/>
+	      <clip pos="4" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
@@ -2879,7 +2879,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="4" side="tl" part="lem"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
-	      <clip pos="4" side="tl" part="nbr"/>
+	      <clip pos="4" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="3"/>
@@ -2951,7 +2951,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             <lu>
               <clip pos="5" side="tl" part="lem"/>
               <clip pos="5" side="tl" part="a_adj"/>
-              <clip pos="5" side="tl" part="nbr"/>
+              <clip pos="5" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
 	    <b pos="3"/>
@@ -2996,7 +2996,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
             <lu>
               <clip pos="5" side="tl" part="lem"/>
               <clip pos="5" side="tl" part="a_adj"/>
-              <clip pos="5" side="tl" part="nbr"/>
+              <clip pos="5" side="tl" part="nbr" link-to="3"/>
               <lit-tag v="4"/>
             </lu>
 	    <b pos="4"/>
@@ -3064,7 +3064,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
-	      <clip pos="4" side="tl" part="nbr"/>
+	      <clip pos="4" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu> 
@@ -3076,7 +3076,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="6" side="tl" part="lemh"/> 
 	      <clip pos="6" side="tl" part="a_adj"/>
-	      <clip pos="6" side="tl" part="nbr"/>
+	      <clip pos="6" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu> 
@@ -3116,7 +3116,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="4" side="tl" part="lemh"/> 
 	      <clip pos="4" side="tl" part="a_adj"/>
-	      <clip pos="4" side="tl" part="nbr"/>
+	      <clip pos="4" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	      <clip pos="4" side="tl" part="lemq"/> 
 	    </lu> 
@@ -3128,7 +3128,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    <lu>   
 	      <clip pos="6" side="tl" part="lemh"/> 
 	      <clip pos="6" side="tl" part="a_adj"/>
-	      <clip pos="6" side="tl" part="nbr"/>
+	      <clip pos="6" side="tl" part="nbr" link-to="3"/>
 	      <lit-tag v="4"/>
 	      <clip pos="6" side="tl" part="lemq"/> 
 	    </lu> 
@@ -6810,7 +6810,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<lu>   
 		  <clip pos="6" side="tl" part="lem"/> 
 		  <clip pos="6" side="tl" part="a_adj"/>
-		  <clip pos="6" side="tl" part="nbr"/>
+		  <clip pos="6" side="tl" part="nbr" link-to="3"/>
 		  <lit-tag v="4"/>
 		</lu> 
 		<b pos="5"/>
