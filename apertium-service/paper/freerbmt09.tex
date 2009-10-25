@@ -194,9 +194,9 @@ In our service, the default policy is to allocate new resources from the resourc
 Relying on a resource pool is designed to result in the following improvements for our rule-based machine translation service:
 
 \begin{description}
- \item[Performance] -- By preventing repetitious acquisition, elaboration and release of resources;
- \item[Predictability] -- Because direct acquisition of a resource from an external resource enviroment (for example, a filesystem or a DBMS) can lead, in some cases, to unpredictable results and dynamic memory allocation and deallocation can be non-deterministic with respect to time~\citep{realtime};
- \item[Stability] -- Because repetitious acquisition and release of resources can increase the risk of system instability due, for example, to memory fragmentation problems~\citep{robust, realtime};  %% SHOULD YOU PUT A REF HERE ? -FMT
+ \item[Performance] -- Preventing repetitious acquisition, elaboration and release of resources;
+ \item[Predictability] -- Direct acquisition of a resource from an external resource enviroment (for example, a filesystem or a DBMS) can lead, in some cases, to unpredictable results and dynamic memory allocation and deallocation can be non-deterministic with respect to time~\citep{realtime};
+ \item[Stability] -- Repetitious acquisition and release of resources can increase the risk of system instability due, for example, to memory fragmentation problems~\citep{robust, realtime};  %% SHOULD YOU PUT A REF HERE ? -FMT
 %% If you want examples for "instability" (see comments by reviewer #2), then you can mention
 %% that on at least one server using standard Apertium over a long-term period (one year), 
 %% there have been numerous problems with run-away processes. For example:
@@ -212,7 +212,7 @@ Relying on a resource pool is designed to result in the following improvements f
 %% You can also mention security problems in scripts:
 %%   http://bugs.apertium.org/cgi-bin/bugzilla/show_bug.cgi?id=76
 %% Not that a service might not introduce new security problems!
- \item[Scalability] -- As resources can be used also in different types of translation tasks, avoiding the allocation of a complete set of resources for each different translation task (for example, translation tasks on different language pairs using different dictionaries can make use of the same resource for managing the removal and restoration of formatting).
+ \item[Scalability] -- Resources can be recycled by multiple types of translation tasks -- for example, Formatters can be used in multiple contexts since they are usually not language pair-specific.
 \end{description}
 
 Another approach to implement a service based on Apertium by \cite{sanchez-cartagena2009scalable} consists in making use of a pool of {\tt\small apertium} processes: each translation request is routed to a process making use of the required language pair, and then its output is returned back to the service client.
