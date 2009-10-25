@@ -8,8 +8,8 @@ plot(x, as, "-*;apertium-service;",
 	x, a, "-+;apertium;",
 	x, aws, "-^;apertium-ws;");
 
-title ('Comparison in the "Number of Threads - Time" space', "fontsize", 30);
-xlabel ("Number of Threads", "fontsize", 30);
+title ('Comparison in the "Number of Concurrent Clients - Time" space', "fontsize", 30);
+xlabel ("Number of Concurrent Clients", "fontsize", 30);
 ylabel ("Time (ms)", "fontsize", 30);
 legend ("location", "northwest");
 legend ("boxon");
