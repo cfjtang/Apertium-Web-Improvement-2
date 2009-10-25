@@ -17,9 +17,7 @@
 \usepackage{verbatim}
 \usepackage{fancyvrb}
 \usepackage[small,bf]{caption}
-
 %%\newtheorem{cs}{Case Study}
-
 
 \title{An efficient and scalable service-oriented architecture for the Apertium rule-based machine translation platform}
 
@@ -38,7 +36,6 @@
 \begin{abstract}
 Service Oriented Architecture (SOA) is a paradigm for organising and using distributed services that may be under the control of different ownership domains and implemented using various technology stacks. In some contexts, an organisation using an IT infrastructure implementing the SOA paradigm can take a great benefit from the integration, in its business processes, of efficient machine translation (MT) services to overcome language barriers. This paper describes the architecture and the design patterns used to develop an MT service that is efficient, scalable and easy to integrate in new and existing business processes. The service is based on Apertium, a free/open-source rule-based machine translation platform.
 \end{abstract}
-
 
 \section{Introduction}
 
@@ -68,9 +65,7 @@ Our decision to prefer a rule-based machine translation system like Apertium to 
 \end{itemize}
 
 Efficiency and scalability are critical for the service since, especially in collaborative enviroments, it should be able to sustain a heavy load of traffic. In this paper, the techniques and design patterns used to implement the machine translation service will be described and it will be compared to other existing machine translation systems.
-
 %% You should probably put some note about the alternative (Víctor's service here) p.2 of his paper
-
 
 \section{Service APIs}
 
@@ -128,9 +123,7 @@ In addition, our service provides a {\bf Language Pairs} method that returns a s
 
 %% It might be worth explaining in this section, why an existing API, e.g. Google wasn't used 
 %% as a model? -FMT
-
 In all methods, languages are represented by their ISO 639-1~\citep{ISO:639-1} code. Figure \ref{fig:pythoninv} shows a short example of how our service's XML-RPC interface can be invoked from the Python\footnote{\small\url{http://www.python.org/}} shell.
-
 %% Here you should describe how the service is used!!! Section 4 of Víctor's paper.
 
 \begin{figure}
@@ -146,7 +139,6 @@ Prueba para el servicio de traducción automática
  \caption{Example -- invoking our service from the Python shell using XML-RPC.}
  \label{fig:pythoninv}
 \end{figure}
-
 
 \section{Internal architecture of the service}
 
@@ -179,9 +171,7 @@ Our service has been realized in the form of a multithreaded program, which reli
 
 %% THEN HERE YOU DESCRIBE HOW YOU GOT AROUND THESE PROBLEMS, AND OTHER PROSPECTIVE WAYS OF GETTING 
 %% AROUND THEM (e.g. NULL FLUSH). -FMT
-
 %% ALSO HERE DESCRIBE WHY THESE PROBLEMS NEED TO BE GOT AROUND. See Víctor's paper, p.4 sec 5.1
-
 %% This diagram should be redone to make it look nice -- make it a vector so zooming is good. :) -FMT
 \begin{figure}[!ht]
 \begin{center}
@@ -244,7 +234,6 @@ While disadvantages can be synthesized by the following:
 \section{Results}
 
 To evaluate the efficiency of our service, which we will refer to as {\tt\small apertium-service}, we compared the time it requires to compute and answer to a translation request from Spanish to English with the time required by the following systems:
-
 %% REVIEWER #1: "I cannot see a reason for comparing the translation times for the 
 %%      Apertium-based SOA system with those of a Moses SMT translator in the experiments. They 
 %%      are completely heterogeneous machine translation systems and, most important, authors 
@@ -287,14 +276,10 @@ All the Apertium-based systems ({\tt\small apertium}, {\tt\small apertium-servic
 All the experiments were run on a server with four 2GHz Dual-Core AMD Opteron processors and 4GB of main memory, using the GNU/Linux operating system. {\tt\small apertium-service} and {\tt\small moses-service} were accepting translation requests in the form of XML-RPC calls, {\tt\small apertium-ws} in the form of REST HTTP GET requests, {\tt\small apertium} and {\tt\small moses} through standard input (a new process was created for each translation task). The free text used for timing all the systems was also taken from Europarl corpus. Figure \ref{fig:comp} shows the time required to translate increasingly longer sentences for all systems (values in the time dimension are shown on a logarithmic scale), and Figure \ref{fig:compap} only for {\tt\small apertium-service}, {\tt\small apertium} and {\tt\small apertium-ws}.
 
 Scalability for {\tt\small apertium-service}, {\tt\small apertium} and {\tt\small apertium-ws} has been evaluated by calculating the average time required by the systems to answer to 1,024 translation requests sequentially sent by a variable number of clients; the requests consisted to translating the longest sentence from the Europarl evaluation corpus (679 characters), so to obtain a worst case score, from Spanish to English. Figure \ref{fig:compmt} shows the results of this comparison.
-
 %% Why did you choose the _longest_ sentence ? Wouldn't it have made sense to try different lengths of 
 %% sentences ? If you did it so you could give a "worst case score" say so. -FMT
 
-
-\section{Future work}
-
-%% Here you should describe the case study, but in terms of future work. 
+\section{Future work} %% Here you should describe the case study, but in terms of future work. 
 
 Our service lends to a series of potentially useful applications:
 
@@ -311,7 +296,6 @@ In many cases, closely related languages are mutually intelligible~\citep{tyers0
 However, the current use of Machine Translation on the Wikipedias of marginalized languages is a somewhat error-prone process, where the original text is manually copied from the source Wikipedia, translated off-line, and pasted as a new article to the target Wikipedia. By providing an efficient, easily integrated service, we hope to remove some of the accidental errors inherent to this process.
 
 In addition, the service's logging facilities may be used to improve Machine Translation quality, by incorporating user feedback~\citep{google}, in the form of corrections to the translated text. Small corrections to Wikipedia articles have been used in the construction of error corpora~\citep{milek08}, which can then be used to augment translation rules, or in the creation of statistical post-correction systems~\citep{dugast07}.
-
 
 \section{Conclusions}
 
