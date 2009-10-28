@@ -713,7 +713,7 @@ Todo: word-at-point function which ignores xml stuff."
 
 (defun dix-space ()
   "This should insert a space, unless we're inside the data area
-of <r>, <l> or <i>, in which case we want a <b/>.
+of <g>, <r>, <l> or <i>, in which case we want a <b/>.
 
 A bit hacky I guess, but I don't want to require nxhtml just to
 get nxml-where-path, and reimplementing an XML Path seems rather
@@ -731,7 +731,7 @@ too much work for this."
 			  (nxml-token-before)
 			  (goto-char xmltok-start))
 			(xmltok-start-tag-qname))))
-	 (and eltname (member eltname '("b" "r" "l" "i")))))      
+	 (and eltname (member eltname '("g" "b" "r" "l" "i")))))      
       (insert "<b/>")
     (insert " ")))
 
