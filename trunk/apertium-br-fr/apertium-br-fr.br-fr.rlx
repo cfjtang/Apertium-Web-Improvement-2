@@ -411,7 +411,8 @@ REMOVE ("e" det pos) IF (1 NomM) (1 SoftMutCons) (NOT 1 SoftMut);
 
 # REGLA (B    ): "e c’heller ober gant e ijinadenn"
 #   "ouzhpenn da verañ savadurioù ar skolaj. "
-REMOVE:Remove_prep_for_poss Prep IF (-1 Prep) (NOT -1 PRE-N) (NOT 1 Verb) (0 Prep) (0 DetPos);
+#   "muioc’h eget e 1975"
+REMOVE:Remove_prep_for_poss Prep IF (-1 Prep) (NOT -1 PRE-N) (NOT 1 Verb) (0 Prep) (0 DetPos) (NOT 1 Num);
 
 #  "ouzhpenn da verañ savadurioù ar skolaj. "
 SELECT:Prep_for_poss_if_verb Prep IF (0 Prep) (0 DetPos) (1C Verb) (NOT 0 Vpart);
