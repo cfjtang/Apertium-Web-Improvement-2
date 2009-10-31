@@ -1,3 +1,4 @@
+# Beginnings of a Constraint Grammar for Slovenian
 
 SOFT-DELIMITERS = "<,>" ;
 DELIMITERS = "<.>"ri "<:>"ri "<!>"ri "<?>"ri ;
@@ -43,13 +44,19 @@ LIST NAGDLI = nom acc gen dat loc ins;
 LIST GENDER = m f nt;
 LIST NUMBER = sg du pl;
 
-LIST COMMA = (",") ;
+#LIST GenPrep = ;
+#LIST AccPrep = ;
+#LIST DatPrep = ;
+#LIST InsPrep = ;
+#LIST LocPrep = ;
 
 SET NounMscFem = (n m) OR (n f) ;
 SET NounMscNeu = (n m) OR (n nt) ;
 SET NounFemNeu = (n f) OR (n nt) ;
 
-SET PRE-N =  A | Det | (N Gen) | Num | (Pron Gen) | CC ; # Det???
+SET PRE-N =  A | Det | (n gen) | Num | (prn gen) | CC ; # Det???
+
+LIST COMMA = (",") ;
 
 SET WORD = N | V | A | Pr | Pron | Det | Adv | CC | CS | Interj | Num | ("\?") ;
 SET MARK =  COMMA | ("\") | ("\;") ; #"
@@ -59,11 +66,10 @@ SET NPNHA = WORDMARK - PRE-N - Adv ;
 
 SECTION
 
-
+# Remove adjective genders if a noun cannot be found in the appropriate gender
 REMOVE:r1 A + Fem IF (0  $$NAGDLI) (*1 NounMscNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Fem);
 REMOVE:r2 A + Msc IF (0  $$NAGDLI) (*1 NounFemNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Msc);
 REMOVE:r3 A + Neu IF (0  $$NAGDLI) (*1 NounMscFem + $$NAGDLI BARRIER NPNHA LINK NOT 0 Neu);
-
 
 # ti si 
 REMOVE:r4 Dem + Nom IF (NOT 1 V + P3);
