@@ -218,7 +218,7 @@
     <def-var n="concord"/>
     <def-var n="subj_vist"/>
     <def-var n="verb_prs"/>
-    <def-var n="last_cnjadv"/>
+    <def-var n="last_cnj"/>
   </section-def-vars>
 
 
@@ -265,26 +265,44 @@
 
 <section-def-macros>
   <def-macro n="convert_tense" npar="1">
-  <choose>
-    <when>
-      <test>
-        <and>
-          <equal caseless="yes">
-            <var n="last_cnjadv"/>
-            <lit v="pour que"/>
-          </equal>
-          <equal>
-            <clip pos="1" part="temps"/>
-            <lit-tag v="cni"/>
-          </equal>
-        </and>
-      </test>
-      <let>
-        <clip pos="1" part="temps"/>
-        <lit-tag v="prs"/>
-      </let>
-    </when>
-  </choose>
+    <choose>
+      <when>
+        <test>
+          <and>
+            <equal caseless="yes">
+              <var n="last_cnj"/>
+              <lit v="pour que"/>
+            </equal>
+            <equal>
+              <clip pos="1" part="temps"/>
+              <lit-tag v="cni"/>
+            </equal>
+          </and>
+        </test>
+        <let>
+          <clip pos="1" part="temps"/>
+          <lit-tag v="prs"/>
+        </let>
+      </when>
+      <when>
+        <test>
+          <and>
+            <equal caseless="yes">
+              <var n="last_cnj"/>
+              <lit v="sauf si"/>
+            </equal>
+            <equal>
+              <clip pos="1" part="temps"/>
+              <lit-tag v="cni"/>
+            </equal>
+          </and>
+        </test>
+        <let>
+          <clip pos="1" part="temps"/>
+          <lit-tag v="pii"/>
+        </let>
+      </when>
+    </choose>
   </def-macro>
 
   <def-macro n="f_concord1" npar="1">
@@ -2500,7 +2518,7 @@
     </pattern>
     <action>
     <let>
-      <var n="last_cnjadv"/>
+      <var n="last_cnj"/>
       <clip pos="1" part="lem"/>
     </let>
         <out>
@@ -2519,6 +2537,10 @@
 		<pattern-item n="CS"/>
 	</pattern>
 	<action>
+        <let>
+          <var n="last_cnj"/>
+          <clip pos="1" part="lem"/>
+        </let>
 		<choose>
 			<when>
 				<test>
@@ -8529,7 +8551,7 @@
       </action>
 </rule>
 
- <rule>
+ <rule comment="REGLA: SV ADV">
       <pattern>
 	<pattern-item n="SV"/>
 	<pattern-item n="adv"/>
@@ -8542,7 +8564,11 @@
                 <call-macro n="posa_subj">
                         <with-param pos="1"/>
                 </call-macro>
+    <call-macro n="convert_tense">
+      <with-param pos="1"/>
+    </call-macro>
 
+ 
             <out>
               <chunk>
                 <clip pos="1" part="whole"/>
