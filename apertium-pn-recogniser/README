@@ -72,6 +72,11 @@ This is an example of code to be included in the modes.xml file in order to use 
   </mode>
 
 
+Please note: Input to the program must be on the form WITH the surface form, e.g. ^bigger/big<adj><sint><comp>$.
+The program CRASHES if the surface form is not present (eg. on unput like ^big<adj><sint><comp>$).
+This means you MUST add the parameter -g to the tagger.
+
+
 CONFIGURATION FILES FOR LINGUISTIC DATA PACKAGES
 
 A directory named conf-samples is included in this package with configuration files for Spanish, Galician, Catalan and English. These configuration files should be included in the package for a particular language pair (for example, es-pn.dat and gl-pn.dat for the es-gl pair). A new mode should be included as well as stated before. Besides that, it is necessary to modify the file Makefile.am so that the new configuration files are taken into account; these changes are very simple (note: these instructions might change depending on your installation):
