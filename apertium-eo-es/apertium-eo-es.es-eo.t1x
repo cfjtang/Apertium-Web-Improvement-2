@@ -367,6 +367,10 @@
       <cat-item lemma="continuar" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="parecer"> <!--EO perífrasi-->
+      <cat-item lemma="parecer" tags="vblex.*"/>
+    </def-cat>
+
     <def-cat n="acabarde"> <!--EO perífrasi-->
       <cat-item lemma="acabar# de" tags="vblex.*"/>
     </def-cat>
@@ -2011,11 +2015,11 @@
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="cierto"/>
+        <lit v="XXcierto"/>
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="algun"/>
+        <lit v="XXalguno"/>
         </equal>
        </or>
       </test>
@@ -3054,7 +3058,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
       <test>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="un"/>
+        <lit v="uno"/>
         </equal>
       </test>
 
@@ -3444,11 +3448,11 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="cert"/>
+        <lit v="XXcierto"/>
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="algun"/>
+        <lit v="XXalguno"/>
         </equal>
        </or>
       </test>
@@ -3604,11 +3608,11 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="cert"/>
+        <lit v="XXcierto"/>
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="algun"/>
+        <lit v="XXalguno"/>
         </equal>
        </or>
       </test>
@@ -4471,7 +4475,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       <test>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="un"/>
+        <lit v="uno"/>
         </equal>
       </test>
 	<out>  
@@ -4586,7 +4590,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       <test>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="un"/>
+        <lit v="uno"/>
         </equal>
       </test>
 	<out>  
@@ -4945,7 +4949,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       <test>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="un"/>
+        <lit v="uno"/>
         </equal>
       </test>
 	<out>  
@@ -5155,7 +5159,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       <test>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="un"/>
+        <lit v="uno"/>
         </equal>
       </test>
 	<out>  
@@ -5301,7 +5305,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       <test>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="un"/>
+        <lit v="uno"/>
         </equal>
       </test>
 	<out>  
@@ -5617,11 +5621,11 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="cert"/>
+        <lit v="XXcierto"/>
         </equal>
        <equal caseless="yes">
         <clip pos="1" side="sl" part="lem"/>
-        <lit v="algun"/>
+        <lit v="XXalguno"/>
         </equal>
        </or>
       </test>
@@ -6864,7 +6868,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: ADJECTIU (quan no acompanya res o va amb desconeguda) (EOes)">
       <pattern>
-	<pattern-item n="adj"/>
+	<pattern-item n="adjADJ"/>
       </pattern>
       <action>     	
 	<call-macro n="firstWord">
@@ -6884,6 +6888,43 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <lu>   
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <clip pos="1" side="tl" part="a_adj"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu> 
+	  </chunk>
+	</out>  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: PARTICIPI (quan no acompanya res o va amb desconeguda) (EOes)">
+      <pattern>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>     	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<out>
+	  <chunk name="adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PP"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	      <clip pos="1" side="tl" part="lemq"/> 
@@ -6990,6 +7031,30 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>
+
+   <choose>
+     <when>   <!-- article indefinit s'elimina -->
+      <test>
+       <or>
+       <equal caseless="yes">
+        <clip pos="1" side="sl" part="lem"/>
+        <lit v="uno"/>
+        </equal>
+       <equal caseless="yes">
+        <clip pos="1" side="sl" part="lem"/>
+        <lit v="XXcierto"/>
+        </equal>
+       <equal caseless="yes">
+        <clip pos="1" side="sl" part="lem"/>
+        <lit v="XXalguno"/>
+        </equal>
+       </or>
+      </test>
+
+    </when>
+
+<otherwise>
+
 	<out>  
 	  <chunk name="det" case="caseFirstWord">
 	    <tags>
@@ -7006,6 +7071,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu> 
 	  </chunk>
 	</out>  
+     </otherwise>
+      </choose>
+
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -9204,6 +9272,235 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </tags>
                     <lu>
                       <lit v="ĉesi"/>
+                      <lit-tag v="vblex"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+                    <b/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="inf"/>
+                    </lu>
+                  </chunk>
+                </out>
+        </otherwise>
+        </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+<rule comment="HABER VERBparecer + INF (parecer EOes)">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="parecer"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+
+
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+
+                <let>
+                  <clip pos="2" side="tl" part="auxiliar"/>
+                  <lit-tag v="past"/>
+                </let>
+	    <out>
+                  <chunk name="verb_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="ĉesi"/>
+                      <lit-tag v="vblex"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                    </lu>
+                    <b/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="inf"/>
+                    </lu>
+                  </chunk>
+            </out>
+	  <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+	  </let>
+      </action>
+    </rule>
+
+<rule comment="VERBparecer + INF (parecer EOes)">
+      <pattern>
+	<pattern-item n="parecer"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="2"/>
+        </call-macro>
+
+	<choose>
+
+              <when>           <!-- traduccions a participi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pp"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </let>
+            <out>
+
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="case"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="ŝajni"/>
+                      <lit-tag v="vblex"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
+                    </lu>
+                    <b/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="inf"/>
+                    </lu>
+                  </chunk>
+            </out>
+              </when>
+            <otherwise>
+	    <choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pres"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fts"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+	   </choose>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp2"/>
+                </let>
+                <out>
+
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+			<tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="ŝajni"/>
                       <lit-tag v="vblex"/>
                       <clip pos="1" side="tl" part="temps"/>
                     </lu>
