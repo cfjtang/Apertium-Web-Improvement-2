@@ -86,26 +86,19 @@ apertium-dixtools sort -group n,n_symbol -alignBidix -bil apertium-sv-da.sv-da.d
 for i in `grep stik__n apertium-sv-da.da.dix | cut -d '"' -f 2 | sort -u`; do echo $i; sed -i -r "s/(<r>$i<.*)<par n=\"sp_sgpl__n\"\/>/\1/g" apertium-sv-da.sv-da.dix; done
 -->
 
+
+<pardef n="__n">
+  <e>       <p><l></l>          <r></r></p></e>
+</pardef>
+
+
+
 <pardef n="sgpl_sgpl__n">
   <e>       <p><l><s n="sg"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
   <e>       <p><l><s n="pl"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
   <e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
   <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
 </pardef>
-
-<pardef n="sp_sgpl__n">
-  <e r="LR"><p><l><s n="sp"/><s n="ind"/></l><r><s n="ND"/><s n="ind"/></r></p></e>
-  <e r="RL"><p><l><s n="sp"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
-  <e r="RL"><p><l><s n="sp"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
-  <e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
-  <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
-</pardef>
-
-
-<pardef n="__n">
-  <e>       <p><l></l>          <r></r></p></e>
-</pardef>
-
 
 
 <!-- Bruges når svensk har sg og pl, men på dansk er der sp. F.eks: 
@@ -123,12 +116,14 @@ jordbær  jordbær
   <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
 </pardef>
 
-<pardef n="sgpl_sgpl__n">
-  <e><p><l><s n="sg"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
-  <e><p><l><s n="pl"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
+<pardef n="sp_sgpl__n">
+  <e r="LR"><p><l><s n="sp"/><s n="ind"/></l><r><s n="ND"/><s n="ind"/></r></p></e>
+  <e r="RL"><p><l><s n="sp"/><s n="ind"/></l><r><s n="sg"/><s n="ind"/></r></p></e>
+  <e r="RL"><p><l><s n="sp"/><s n="ind"/></l><r><s n="pl"/><s n="ind"/></r></p></e>
   <e>       <p><l><s n="sg"/><s n="def"/></l><r><s n="sg"/><s n="def"/></r></p></e>
   <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
 </pardef>
+
 
 
 <pardef n="nt_ut">
@@ -291,6 +286,7 @@ jordbær  jordbær
   <e r="RL"><p><l><s n="sint"/><s n="sup"/><s n="un"/></l><r><s n="sup"/><s n="ut"/></r></p></e>
   <e r="RL"><p><l><s n="sint"/><s n="sup"/><s n="un"/></l><r><s n="sup"/><s n="nt"/></r></p></e>
 </pardef>
+
 
 <pardef n="aktiv_bange__adj">
   <e r="LR"><p><l><s n="pst"/><s n="un"/><s n="sp"/><s n="def"/></l><r><s n="pst"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
