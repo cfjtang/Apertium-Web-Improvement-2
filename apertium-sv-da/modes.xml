@@ -17,16 +17,44 @@
       <program name="lt-proc $1">
         <file name="sv-da.autogen.bin"/>
       </program>
+<!-- not necessary, we dont have contractions 
       <program name="lt-proc -p">
         <file name="sv-da.autopgen.bin"/>
+      </program>
+-->
+    </pipeline>
+  </mode>
+ 
+  <mode name="sv-da-profile" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="sv-da.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="sv-da.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-sv-da.sv-da.t1x"/>
+        <file name="sv-da.t1x.bin"/>
+        <file name="profiler/sv-da.autobil.bin"/>
+      </program>
+      <program name="apertium-dixtools profilecollect">
+        <file name="dixtools-profiledata.txt"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="profiler/sv-da.autogen.bin"/>
+      </program>
+      <program name="apertium-dixtools profilecollect">
+        <file name="dixtools-profiledata.txt"/>
       </program>
     </pipeline>
   </mode>
  
   <mode name="sv-da-testword" install="no">
     <pipeline>
-	<!--<program prefix="./dev/" name="lt-expand-grep.sh">-->
-      <program name="lt-expand-grep.sh">
+	<program prefix="./dev/" name="lt-expand-grep.sh">
+     <!-- <program name="lt-expand-grep.sh"> -->
         <file name="apertium-sv-da.sv.dix"/>
       </program>
       <program name="apertium-pretransfer"/>
@@ -37,9 +65,6 @@
       </program>
       <program name="lt-proc $1">
         <file name="sv-da.autogen.bin"/>
-      </program>
-      <program name="lt-proc -p">
-        <file name="sv-da.autopgen.bin"/>
       </program>
     </pipeline>
   </mode>
