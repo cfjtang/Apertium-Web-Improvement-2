@@ -623,6 +623,7 @@
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
+    <def-var n="vegada"/>
     <def-var n="test"/>
   </section-def-vars>
 
@@ -668,6 +669,12 @@
     <list-item v="sortir"/>
     </def-list> 
 
+  <def-list n="vegades"> <!-- per canviar "cop/colp/pic" a "vegada" -->
+    <list-item v="vegada"/>
+    <list-item v="cop"/>
+    <list-item v="colp"/>
+    <list-item v="pic"/>
+    </def-list> 
 
   <def-list n="agradar"> <!-- BCN EO per a la inversio argumental-->
     <list-item v="agradar"/>
@@ -2315,7 +2322,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="le">
+	  <chunk name="el">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -2473,7 +2480,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
     </rule>
 
 
-<rule comment="REGLA: DET NUM NOM ADV ADJ (EO, ex. les dues cases tan grans -> la du domoj tiel grandaj - mantenim l'ordre perquè en comparacions hi ha a vegades problemes)">
+<rule comment="REGLA: DET NUM NOM ADV ADJ (EO, ex. les dues cases tan grans -> la du domoj tiel grandaj - mantenim l'ordre perquè en comparacions hi ha a vegades problemes: una altra deu vegades més pesada -> #alia dek pli peza fojoj)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="num"/>
@@ -2491,6 +2498,31 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="vegada"/></let> 
+<!--
+          <let>
+            <var n="nom"/>
+            <lit-tag v="vegada"/>
+          </let>
+-->
+     </when>
+<!--
+     <otherwise>
+          <let>
+            <var n="nom"/>
+       	    <clip pos="3" side="sl" part="lemh"/>
+          </let>
+     </otherwise>
+-->
+   </choose>
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -2520,12 +2552,12 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    </lu> 
 	    <b pos="1"/>
             <lu>
-              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="sl" part="lemh"/>
               <clip pos="3" side="tl" part="a_nom"/>
               <clip pos="3" side="tl" part="gen"/>
               <clip pos="3" side="tl" part="nbr"/>
               <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
+              <clip pos="3" side="sl" part="lemq"/>
             </lu>
 	    <b pos="2"/>
             <lu>
