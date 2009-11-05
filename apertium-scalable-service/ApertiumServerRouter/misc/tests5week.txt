@@ -1,0 +1,17 @@
+5th week load tests
+-------------------
+
+Using ApertiumServerTest.jmx (JMeter)
+Thread group properties:
+Number of threads: 20
+Ramp-up period: 0
+Loop count: 40
+
+The variable "numDaemon" (LoadBalancer.java, line 106) tells the system how many
+daemons allocate for the same pair. 0 means allocating 1 daemon, 1 means 2 daemons, etc.
+
+Test results:
+
+Number of daemons                       1       2       3
+Average request processing time (ms)    1335    1385    1658
+Throughput (responses/minute)           887     877     717
