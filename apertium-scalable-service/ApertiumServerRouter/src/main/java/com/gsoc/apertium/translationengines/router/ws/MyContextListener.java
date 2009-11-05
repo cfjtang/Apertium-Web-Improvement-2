@@ -17,7 +17,6 @@
  */
 package com.gsoc.apertium.translationengines.router.ws;
 
-
 import com.gsoc.apertium.translationengines.rmi.router.IApplicationRouter;
 import com.gsoc.apertium.translationengines.rmi.router.ITradubiTranslationEngine;
 import com.gsoc.apertium.translationengines.router.logic.ApplicationRouterImpl;
@@ -46,7 +45,6 @@ public class MyContextListener implements ServletContextListener {
      */
     static Log logger = LogFactory.getLog(MyContextListener.class);
 
-    
     /**
      * Actions performed when servlet context starts.
      * RMI Registry is started and a remote object {@link ApplicationRouterImpl} is exported
@@ -59,49 +57,57 @@ public class MyContextListener implements ServletContextListener {
         System.setProperty("java.rmi.server.hostname", Util.readConfigurationProperty("requestrouter_rmi_host"));
 
         System.out.println(RegionInfo.REGIONURL_EU_WEST);
-        try
-        {
-		
-		//start RMI registry
-		 Registry registry=null;
-		try
-		{
-		 registry = LocateRegistry.getRegistry(Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
-		 registry.list();
-         logger.info("RMI Registry already running on port "+Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
-		}
-		catch (Exception e) {
-		
+        try {
+
+            //start RMI registry
+            Registry registry = null;
+            try {
+                registry = LocateRegistry.getRegistry(Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
+                registry.list();
+                logger.info("RMI Registry already running on port " + Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
+            } catch (Exception e) {
+
                 logger.error("Cannot find RMI registry", e);
                 return;
-		}
+            }
 
-		
-		try
-		{
-          //Instantiate and export remote objects
-        IApplicationRouter obj = new ApplicationRouterImpl();
-        IApplicationRouter stub = (IApplicationRouter) UnicastRemoteObject.exportObject(obj,Integer.parseInt(Util.readConfigurationProperty("requestrouter_rmi_port")));
 
-        ITradubiTranslationEngine objt= new ApertiumTranslationEngineTradubi();
-        ITradubiTranslationEngine stubt = (ITradubiTranslationEngine) UnicastRemoteObject.exportObject(objt, Integer.parseInt(Util.readConfigurationProperty("tradubi_interface_rmi_port")));
 
-        //Bind objects to registry
-		registry.rebind(Util.readConfigurationProperty("requestrouter_rmi_name"), stub);
-        registry.rebind(Util.readConfigurationProperty("tradubi_interface_rmi_name"), stubt);
 
-        logger.info("RMI remote objects "+Util.readConfigurationProperty("requestrouter_rmi_name") + "and "+Util.readConfigurationProperty("tradubi_interface_rmi_name")+" bound OK: Name: "+Util.readConfigurationProperty("requestrouter_rmi_name")+". Port:"+Util.readConfigurationProperty("requestrouter_rmi_port"));
+            if ("yes".equals(Util.readConfigurationProperty("tradubi_on"))) {
+                try {
+                    //Instantiate and export remote objects
+                    ITradubiTranslationEngine objt = new ApertiumTranslationEngineTradubi();
+                    ITradubiTranslationEngine stubt = (ITradubiTranslationEngine) UnicastRemoteObject.exportObject(objt, Integer.parseInt(Util.readConfigurationProperty("tradubi_interface_rmi_port")));
+                    //Bind objects to registry
+                    registry.rebind(Util.readConfigurationProperty("tradubi_interface_rmi_name"), stubt);
+                    logger.info("RMI remote object " + Util.readConfigurationProperty("tradubi_interface_rmi_name") + " bound OK: Name: " + Util.readConfigurationProperty("tradubi_interface_rmi_name") + ". Port:" + Util.readConfigurationProperty("tradubi_interface_rmi_port"));
+                } catch (Exception e) {
+                    logger.error("Cannot bind tradubi object to registry", e);
+                }
+            }
 
-        LoadBalancer.getInstance();
-		}
-		catch (Exception e) {
-            logger.error("Cannot bind object to registry", e);
-		}
+            try
+            {
+                
+            //Instantiate and export remote objects
+            IApplicationRouter obj = new ApplicationRouterImpl();
+            IApplicationRouter stub = (IApplicationRouter) UnicastRemoteObject.exportObject(obj, Integer.parseInt(Util.readConfigurationProperty("requestrouter_rmi_port")));
+            //Bind objects to registry
+            registry.rebind(Util.readConfigurationProperty("requestrouter_rmi_name"), stub);
 
-		 
-		} catch (Exception e) {
-		  logger.error("Unexpected error starting RMI service", e);
-		}
+            logger.info("RMI remote object " + Util.readConfigurationProperty("requestrouter_rmi_name") +  " bound OK: Name: " + Util.readConfigurationProperty("requestrouter_rmi_name") + ". Port:" + Util.readConfigurationProperty("requestrouter_rmi_port"));
+
+            LoadBalancer.getInstance();
+            }
+            catch(Exception e) {
+                    logger.error("Cannot bind object to registry", e);
+                }
+
+
+        } catch (Exception e) {
+            logger.error("Unexpected error starting RMI service", e);
+        }
     }
 
     /**
@@ -113,23 +119,20 @@ public class MyContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
 
-		 Registry registry=null;
-		try
-		{
-		 registry = LocateRegistry.getRegistry(Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
-		 registry.unbind( Util.readConfigurationProperty("requestrouter_rmi_name"));
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry(Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
+            registry.unbind(Util.readConfigurationProperty("requestrouter_rmi_name"));
 
-         /*
-         if(ownRegistry!=null)
-         {
+            /*
+            if(ownRegistry!=null)
+            {
             UnicastRemoteObject.unexportObject(ownRegistry, true);
             logger.info("Stopped RMI Registry");
-         }
-          * */
-		}
-		catch (Exception e) {
-           logger.warn("Cannot unbind object", e);
+            }
+             * */
+        } catch (Exception e) {
+            logger.warn("Cannot unbind object", e);
         }
     }
-
 }
