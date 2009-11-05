@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# chkconfig: – 85 15
+# description: Ec2 Bootstrapping Process
+#
+#touch /root/bootstrap
+RETVAL=0
+case "$1" in
+start)
+cd /tmp
+s3cmd -c /root/.s3cfg  get s3://org.apertium.server.slave.bootstrap/bootstrap.tar.gz
+tar xvzf bootstrap.tar.gz
+cd bootstrap
+bash bootstrap.sh
+RETVAL=$?
+;;
+
+stop)
+exit 0
+;;
+
+restart)
+$0 start
+RETVAL=$?
+;;
+
+*)
+echo “Usage: $0 {start|stop|restart}”
+exit 1
+;;
+
+esac
+
+exit $RETVAL
