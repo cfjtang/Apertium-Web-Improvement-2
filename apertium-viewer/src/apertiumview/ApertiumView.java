@@ -76,29 +76,29 @@ public class ApertiumView extends FrameView {
                     loadMode(new File(fn));
                 }
             } else {
-                warnUser("Welcome to Apertium-viewer.\nIt seems this is first time you run this program. I will therefore try to search install language pairs ('modes') from standart places. Use the File menu to install others.");
+                warnUser("Welcome to Apertium-viewer.\nIt seems this is first time you run this program."
+                        +"\nI will therefore try to search install language pairs ('modes') from standart places."
+                        +"\nIf you wish to install other language pairs you can use the File menu"
+                        +"\n(for example, Esperanto-English pair is called eo-en.mode).");
                 LinkedHashSet<File> fal = new LinkedHashSet<File>();
                 try {
                     fal.addAll(Arrays.asList(new File("/usr/share/apertium/modes/").listFiles()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception e) { }
                 try {
                     fal.addAll(Arrays.asList(new File("/usr/local/share/apertium/modes/").listFiles()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception e) { }
                 try {
                     fal.addAll(Arrays.asList(new File(".").listFiles()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                for (File f : fal) {
-                    if (f.getName().endsWith(".mode")) {
-                        loadMode(f);
+                } catch (Exception e) { }
+                
+                if (!fal.isEmpty()) {
+                    for (File f : fal) {
+                        if (f.getName().endsWith(".mode")) {
+                            loadMode(f);
+                        }
                     }
+                    editModesMenuItemActionPerformed(null);
                 }
-                editModesMenuItemActionPerformed(null);
             }
 
             

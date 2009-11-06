@@ -89,15 +89,17 @@ public class Pipeline {
             try {
             PipelineTask t = this;
             t.proces = Runtime.getRuntime().exec(t.execstr);
-/*
+
+            // For mac users UTF-8 is needed.
             t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream(),"UTF-8"));
             t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream(),"UTF-8"));
             t.osw = new OutputStreamWriter(t.proces.getOutputStream(),"UTF-8");            
 
- */
+/*
             t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream()));
             t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream()));
             t.osw = new OutputStreamWriter(t.proces.getOutputStream());            
+ */
             osw.write(input,0,input.length());
             osw.write('\n');
             osw.close();
