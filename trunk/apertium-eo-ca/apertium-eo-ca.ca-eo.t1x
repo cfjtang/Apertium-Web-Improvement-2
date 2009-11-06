@@ -172,6 +172,13 @@
       <cat-item lemma="parèixer" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="verb">
+      <cat-item tags="vblex.*"/>
+      <cat-item tags="vbser.*"/>
+      <cat-item tags="vbhaver.*"/>
+      <cat-item tags="vbmodal.*"/>
+    </def-cat>
+
     <def-cat n="verbcj">
       <cat-item tags="vblex.cni.*"/>
       <cat-item tags="vblex.fti.*"/>
@@ -416,6 +423,10 @@
       <cat-item lemma="deixar# de" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="fet"> <!-- EO "fakto" en comptes de "farita" -->
+      <cat-item lemma="fer" tags="vblex.pp.m.sg"/>
+    </def-cat>
+
     <def-cat n="tornara"> <!--EO perífrasi-->
       <cat-item lemma="tornar# a" tags="vblex.*"/>
     </def-cat>
@@ -618,7 +629,6 @@
     <def-var n="caseFirstWord"/> 
     <def-var n="lema"/>
     <def-var n="EOS"/>
-    <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
@@ -667,6 +677,11 @@
     <list-item v="caminar"/>
     <list-item v="avançar"/>
     <list-item v="sortir"/>
+    </def-list> 
+
+  <def-list n="laqualcosa">
+    <list-item v="la qual cosa"/>
+    <list-item v="cosa que"/>
     </def-list> 
 
   <def-list n="vegades"> <!-- per canviar "cop/colp/pic" a "vegada" -->
@@ -1604,13 +1619,6 @@
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="nombre_nom">
-	  <with-param pos="3"/>
-	</call-macro>
-	<!--<call-macro n="canvia_det">
-	  <with-param pos="1"/>
-	  <with-param pos="3"/>
-	</call-macro>-->
 
    <!-- article indefinit té valor d'aproximació -->
    <choose>
@@ -1696,6 +1704,18 @@
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>-->
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
 
    <!-- article indefinit té valor d'aproximació -->
    <choose>
@@ -2143,6 +2163,19 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
+
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -2373,7 +2406,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
       </action>
     </rule>
 
-<rule comment="REGLA: DET NOM ADV ADJ (EO, una noia molt maca; una noia increïblement maca -> tre bela knabino; nekredeble bela knabino)">
+<rule comment="REGLA: DET NOM ADV ADJ (EO, una noia molt maca; una noia increïblement maca -> tre bela knabino; nekredeble bela knabino - mantenim l'ordre perquè en comparacions hi ha a vegades problemes: una estrella deu vegades més pesada -> #stelo dek pli peza fojoj)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
@@ -2498,6 +2531,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
+
    <choose>
      <when>
       <test>
@@ -2506,23 +2540,10 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
        	  <list n="vegades"/>
       	</in>
       </test>
-          <let><clip pos="3" side="tl" part="lemh"/><lit v="vegada"/></let> 
-<!--
-          <let>
-            <var n="nom"/>
-            <lit-tag v="vegada"/>
-          </let>
--->
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
      </when>
-<!--
-     <otherwise>
-          <let>
-            <var n="nom"/>
-       	    <clip pos="3" side="sl" part="lemh"/>
-          </let>
-     </otherwise>
--->
    </choose>
+
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -2903,6 +2924,19 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
+
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -5060,14 +5094,42 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>
-        <let>
-                <var n="case"/>
-                <lit-tag v="nomi"/>
-        </let>
+        <let><var n="case"/><lit-tag v="nomi"/></let>
 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="2" side="sl" part="lem"/>
+       	  <list n="laqualcosa"/>
+      	</in>
+      </test>
+        <let><clip pos="2" side="tl" part="lem"/><lit v="kio"/></let> 
+     </when>
+     <otherwise>
+        <let><clip pos="2" side="tl" part="lem"/><lit v="kiu"/></let> 
+     </otherwise>
+   </choose>
+
+   <choose>
+     <when>
+      <test>
+       <equal>
+        <clip pos="2" side="sl" part="nbr"/>
+        <lit-tag v="pl"/>
+        </equal>
+      </test>
+        <let><var n="nombre"/><lit-tag v="pl"/></let>
+     </when>
+     <otherwise>
+        <let><var n="nombre"/><lit-tag v="sg"/></let>
+     </otherwise>
+   </choose>
+
 	<out>
           <chunk name="punt">
             <tags>
@@ -5085,10 +5147,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                         <tag><var n="case"/></tag>
                         </tags>
                         <lu>
-                        <lit v="kiu"/>
+                        <clip pos="2" side="tl" part="lem"/>
                         <lit-tag v="prn"/>
                         <lit-tag v="rel"/>
-                        <lit-tag v="sg"/>
+                        <var n="nombre"/>
                         <lit-tag v="2"/>
                         </lu>
                         </chunk>
@@ -5232,6 +5294,18 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>-->
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
 
    <!-- article indefinit té valor d'aproximació -->
    <choose>
@@ -5579,6 +5653,19 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
+
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -5864,6 +5951,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>-->
+
    <!-- article indefinit s'elimina-->
    <choose>
      <when>
@@ -5989,6 +6077,19 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
+
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -6270,6 +6371,19 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="3" side="sl" part="lemh"/>
+       	  <list n="vegades"/>
+      	</in>
+      </test>
+          <let><clip pos="3" side="tl" part="lemh"/><lit v="fojo"/></let> 
+     </when>
+   </choose>
+
    <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
@@ -6685,6 +6799,65 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 <!-- ****** REGLES DE SV *********************************************** -->
 
 
+<rule comment=", VERBfet QUE (únicament per corregir al tagger quan s'equivoca amb FAKTO i amb KE) (EO)">
+      <pattern>
+	<pattern-item n="sent_coma"/>
+	<pattern-item n="fet"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+
+        <out>
+	  <chunk name="punt">
+	    <tags>
+	      <tag><lit-tag v="sent"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	   <b pos="1"/>
+           <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><lit-tag v="m"/></tag>
+              <tag><lit-tag v="sg"/></tag>
+              <tag><lit-tag v="nomi"/></tag>
+            </tags>
+            <lu>
+                <lit v="fakto"/>
+		<lit-tag v="n"/>
+		<lit-tag v="sg"/>
+	        <lit-tag v="4"/>
+            </lu>
+           </chunk>
+	   <b pos="2"/>
+	 <chunk name="relatiu">
+            <tags>
+            <tag><lit-tag v="SNrelatiu"/></tag>
+            <tag><lit-tag v="nomi"/></tag>
+            </tags>
+            <lu>
+                <lit v="kiu"/>
+		<lit-tag v="prn"/>
+		<lit-tag v="rel"/>
+		<lit-tag v="sg"/>
+		<lit-tag v="2"/>
+            </lu>
+          </chunk>
+          </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
 
 
 <rule comment="VERB QUE ( únicament per corregir al tagger quan s'equivoca amb el KE) (EO)">
