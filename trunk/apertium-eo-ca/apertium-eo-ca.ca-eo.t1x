@@ -431,8 +431,21 @@
       <cat-item lemma="tornar# a" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="parir_volar"> <!-- per desfer errors del lexer (tria enlloc de parèixer, voler, etc.) -->
+      <cat-item lemma="parir" tags="vblex.*"/>
+      <cat-item lemma="volar" tags="vblex.*"/>
+    </def-cat>
+
     <def-cat n="parir"> <!-- per desfer errors del lexer (tria enlloc de parèixer) -->
       <cat-item lemma="parir" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="volar"> <!-- per desfer errors del lexer (tria enlloc de voler) -->
+      <cat-item lemma="volar" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="vol"> <!-- per desfer errors del lexer (tria enlloc de voler) -->
+      <cat-item lemma="vol" tags="n.m.sg"/>
     </def-cat>
 
     <def-cat n="estar_pp">
@@ -445,6 +458,7 @@
 
     <def-cat n="continuar"> <!--EO per a la perifrasi continuar +  gerundi-->
       <cat-item lemma="continuar" tags="vblex.*"/>
+      <cat-item lemma="seguir" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="deure"> <!--EO per a la perifrasi deure +  infinitiu-->
@@ -984,6 +998,35 @@
 	<var n="EOS"/>
 	<lit v="false"/>
       </let>
+    </def-macro>
+
+    <def-macro n="m_parir_volar" npar="1">
+	<choose>
+              <when>
+                <test>
+                    <equal caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="parir"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit v="ŝajni"/>
+                </let>
+              </when>
+              <when>
+                <test>
+                    <equal caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="volar"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit v="voli"/>
+                </let>
+              </when>
+	</choose>
     </def-macro>
 
 
@@ -9498,7 +9541,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 <rule comment="HABER VERBparir + INF (parir = parèixer EOes)">
       <pattern>
 	<pattern-item n="haveranar"/>
-	<pattern-item n="parir"/>
+	<pattern-item n="parir_volar"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
@@ -9508,6 +9551,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
+	<call-macro n="m_parir_volar">
+	  <with-param pos="2"/>
+	</call-macro>
 
 
                 <let>
@@ -9530,7 +9576,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="2" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="2" side="tl" part="temps"/>
                     </lu>
@@ -9551,7 +9597,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="VERBparir + INF (parir = parèixer EOes)">
       <pattern>
-	<pattern-item n="parir"/>
+	<pattern-item n="parir_volar"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
@@ -9561,6 +9607,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="nom_cas">
           <with-param pos="2"/>
         </call-macro>
+	<call-macro n="m_parir_volar">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	<choose>
 
@@ -9587,7 +9636,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	              <tag><var n="case"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="1" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="1" side="tl" part="temps"/>
                       <clip pos="1" side="tl" part="nbr"/>
@@ -9702,7 +9751,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 			<tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="1" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="1" side="tl" part="temps"/>
                     </lu>
@@ -9724,10 +9773,101 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
+<rule comment="vol + INF (vol (n) = voli EOes)">
+      <pattern>
+	<pattern-item n="vol"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+                <out>
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vblex"/></tag>
+                      <tag><lit-tag v="pri"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
+                      <tag><lit-tag v="sg"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="voli"/>
+                      <lit-tag v="vblex"/>
+                      <lit-tag v="pres"/>
+                    </lu>
+                  <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="inf"/>
+                    </lu>
+                  </chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+<rule comment="vol + INF + QUE (vol (n) = voli EOes)">
+      <pattern>
+	<pattern-item n="vol"/>
+	<pattern-item n="inf"/>
+        <pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+                <out>
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vblex"/></tag>
+                      <tag><lit-tag v="pri"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
+                      <tag><lit-tag v="sg"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="voli"/>
+                      <lit-tag v="vblex"/>
+                      <lit-tag v="pres"/>
+                    </lu>
+                  <b pos="1"/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="inf"/>
+                    </lu>
+                  </chunk>
+                  <b pos="2"/>
+                  <chunk name="cnjsub" >
+                    <tags>
+                      <tag><lit-tag v="cnjsub"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="ke"/>
+                      <lit-tag v="cnjsub"/>
+                    </lu>
+                  </chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
 <rule comment="HABER VERBparir + INF + QUE (parir = parèixer EOes)">
       <pattern>
 	<pattern-item n="haveranar"/>
-	<pattern-item n="parir"/>
+	<pattern-item n="parir_volar"/>
 	<pattern-item n="inf"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
@@ -9738,6 +9878,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
+	<call-macro n="m_parir_volar">
+	  <with-param pos="2"/>
+	</call-macro>
 
 
                 <let>
@@ -9760,7 +9903,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="2" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="2" side="tl" part="temps"/>
                     </lu>
@@ -9791,7 +9934,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="VERBparir + INF + QUE (pareix dir que, únicament per corregir el tagger) EO">
       <pattern>
-	<pattern-item n="parir"/>
+	<pattern-item n="parir_volar"/>
 	<pattern-item n="inf"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
@@ -9802,6 +9945,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="nom_cas">
           <with-param pos="2"/>
         </call-macro>
+	<call-macro n="m_parir_volar">
+	  <with-param pos="1"/>
+	</call-macro>
 
 	<choose>
 
@@ -9828,7 +9974,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	              <tag><var n="case"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="1" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="1" side="tl" part="temps"/>
                       <clip pos="1" side="tl" part="nbr"/>
@@ -9953,7 +10099,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 			<tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="1" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="1" side="tl" part="temps"/>
                     </lu>
@@ -9988,12 +10134,15 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 <rule comment="HABER VERBparir + QUE (parir = parèixer EOes)">
       <pattern>
 	<pattern-item n="haveranar"/>
-	<pattern-item n="parir"/>
+	<pattern-item n="parir_volar"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>    	
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="m_parir_volar">
+	  <with-param pos="2"/>
 	</call-macro>
 
 
@@ -10017,7 +10166,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ŝajni"/>
+                      <clip pos="2" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <clip pos="2" side="tl" part="temps"/>
                     </lu>
@@ -10042,7 +10191,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="VERBparir + QUE (pareix que, únicament per corregir el tagger) EO">
       <pattern>
-        <pattern-item n="parir"/>
+	<pattern-item n="parir_volar"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>
@@ -10052,6 +10201,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+	<call-macro n="m_parir_volar">
+	  <with-param pos="1"/>
+	</call-macro>
 
             <out>
               <chunk name="verbcj" case="caseFirstWord">
@@ -10064,7 +10216,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		 <tag><var n="tipus_verb"/></tag>
                 </tags>
                 <lu>
-                  <lit v="ŝajni"/>
+                  <clip pos="2" side="tl" part="lem"/>
                   <lit-tag v="vblex"/>
                   <clip pos="2" side="tl" part="temps"/>
                 </lu>

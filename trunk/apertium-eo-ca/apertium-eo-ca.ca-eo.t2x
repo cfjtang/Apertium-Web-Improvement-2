@@ -14,6 +14,10 @@
       <cat-item tags="SN.*.*.*.nomi"/>
     </def-cat>
 
+   <def-cat n="SAacc"><!-- EO: tots el que no porten changecase=sense-->
+      <cat-item tags="SA.*.*.*.nomi"/>
+    </def-cat>
+
    <def-cat n="SNrelatiu"><!-- EO: -->
       <cat-item tags="SNrelatiu.*"/>
     </def-cat>
@@ -3275,7 +3279,36 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 	</out>
       </action>
 </rule>
+
+<rule comment="REGLA: SV SA (EO per l'acusatiu dels SN objecte amb changecase=nomi)">
+      <pattern>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SAacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="2" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
 -->
+
     <rule comment="REGLA: SN SV SA (- viuen feliços (BCN s'ha modificat) EO">
       <pattern>
         <pattern-item n="SN"/>
