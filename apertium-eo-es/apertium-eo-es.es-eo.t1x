@@ -400,6 +400,10 @@
       <cat-item lemma="haber# que" tags="vbhaver.*"/>
     </def-cat>
 
+    <def-cat n="hecho"> <!-- EO "fakto" en comptes de "farita" -->
+      <cat-item lemma="hacer" tags="vblex.pp.m.sg"/>
+    </def-cat>
+
 
   </section-def-cats>
 
@@ -611,7 +615,6 @@
 
   <section-def-lists>
 
-
   <def-list n="detsprep"> <!-- BCN EO per marcar els que no poden anar en acc-->
     <list-item v="pli da"/>
     <list-item v="iom da"/>
@@ -631,6 +634,10 @@
   <def-list n="quin"> <!-- BCN EO per marcar els que han d'anar en acc (dets int preverbals)-->
     <list-item v="cuál"/>
     </def-list> 
+
+  <def-list n="locual">
+    <list-item v="lo cual"/>
+    </def-list>
 
   <def-list n="moviment"> <!-- BCN EO-->
     <list-item v="ir"/>
@@ -2082,6 +2089,83 @@
 
 
 
+<rule comment="REGLA: DET NUM (EOes, ex. las dos , estos tres -> la du, ĉi tiuj tri)">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+
+   <!-- article indefinit té valor d'aproximació -->
+   <choose>
+     <when>
+      <test>
+       <equal caseless="yes">
+        <clip pos="1" side="sl" part="lem"/>
+        <lit v="uno"/>
+        </equal>
+      </test>
+        <out>
+          <chunk name="num_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="3" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+            </tags>
+	    <lu>   
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
+	    </lu> 
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_det"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu> 
+          </chunk>
+        </out>
+    </when>
+<otherwise>           <!-- article definit-->
+	<out>
+	  <chunk name="det_num_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu> 
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lem"/> 
+	      <clip pos="2" side="tl" part="a_num"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu> 
+	  </chunk>
+	</out>	  
+     </otherwise>
+      </choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: DET NUM NOM (EOes, ex. las dos chicas, estos tres libros -> la du knaboj, ĉi tiuj tri libroj)">
       <pattern>
 	<pattern-item n="det"/>
@@ -2103,7 +2187,7 @@
 	  <with-param pos="3"/>
 	</call-macro>-->
 
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -2120,6 +2204,11 @@
               <tag><var n="nombre"/></tag>
               <tag><var n="case"/></tag>
             </tags>
+	    <lu>   
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
+	    </lu> 
+	    <b pos="1"/>
 	    <lu>   
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
@@ -2587,7 +2676,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -2605,9 +2694,8 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
               <tag><var n="case"/></tag>
             </tags>
 	    <lu>   
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_det"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
 	    </lu> 
 	    <b pos="1"/>
             <lu>
@@ -2916,7 +3004,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
     </rule>
 
 
-<rule comment="REGLA: DET NUM NOM ADV ADJ (EOes, ex. esas dos casas tan grandes -> tiuj du tiel grandaj domoj)">
+<rule comment="REGLA: DET NUM NOM ADV ADJ (EO, ex. las dos casas tan altas -> la du domoj tiel altaj - mantenim l'ordre perquè en comparacions hi ha a vegades problemes: otra diez veces más pesada -> #alia dek pli peza fojoj)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="num"/>
@@ -2934,7 +3022,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -2952,22 +3040,14 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
               <tag><var n="case"/></tag>
             </tags>
 	    <lu>   
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_det"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
 	    </lu> 
 	    <b pos="1"/>
                 <lu>
-                  <clip pos="4" side="tl" part="whole"/>
+                  <clip pos="2" side="tl" part="whole"/>
                 </lu>
 	    <b pos="2"/>
-            <lu>
-              <clip pos="5" side="tl" part="lem"/>
-              <clip pos="5" side="tl" part="a_adj"/>
-              <clip pos="5" side="tl" part="nbr" link-to="3"/>
-              <lit-tag v="4"/>
-            </lu>
-	    <b pos="3"/>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_nom"/>
@@ -2975,6 +3055,17 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
               <clip pos="3" side="tl" part="nbr"/>
               <lit-tag v="4"/>
               <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+	    <b pos="3"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+	    <b pos="4"/>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_adj"/>
+              <clip pos="5" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
             </lu>
           </chunk>
         </out>
@@ -3002,17 +3093,6 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	      <clip pos="2" side="tl" part="nbr"/>
 	    </lu> 
 	    <b pos="2"/>
-                <lu>
-                  <clip pos="4" side="tl" part="whole"/>
-                </lu>
-	    <b pos="3"/>
-            <lu>
-              <clip pos="5" side="tl" part="lem"/>
-              <clip pos="5" side="tl" part="a_adj"/>
-              <clip pos="5" side="tl" part="nbr" link-to="3"/>
-              <lit-tag v="4"/>
-            </lu>
-	    <b pos="4"/>
 	    <lu>     
 	      <clip pos="3" side="tl" part="lemh"/> 
 	      <clip pos="3" side="tl" part="a_nom"/>
@@ -3021,6 +3101,17 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	      <lit-tag v="4"/>
 	      <clip pos="3" side="tl" part="lemq"/>
 	    </lu>
+	    <b pos="3"/>
+                <lu>
+                  <clip pos="4" side="tl" part="whole"/>
+                </lu>
+	    <b pos="4"/>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_adj"/>
+              <clip pos="5" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
+            </lu>
 	  </chunk>
 	</out>	  
      </otherwise>
@@ -3284,7 +3375,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
       </action>
     </rule>
 
-<rule comment="REGLA: DET NUM NOM ADJ conj ADJ (EOes, coordinació d'ajectius las dos mujeres altas y delgadas -> la du altaj kaj plataj virinoj)">
+<rule comment="REGLA: DET NUM NOM ADJ conj ADJ (EOes, coordinació d'ajectius las dos mujeres altas y delgadas -> la du altaj kaj maldikaj virinoj)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="num"/>
@@ -3303,7 +3394,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -3320,11 +3411,11 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 		  <tag><var n="nombre"/></tag>
 		  <tag><var n="case"/></tag>
 		</tags>
-            	<lu>
-              	<clip pos="2" side="tl" part="lem"/>
-              	<clip pos="2" side="tl" part="a_det"/>
-              	<clip pos="2" side="tl" part="nbr"/>
-            	</lu>
+	    <lu>   
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
+	    </lu> 
+	    <b/>
 		<b pos="1"/>
 		<lu>   
 		  <clip pos="4" side="tl" part="lem"/> 
@@ -5726,7 +5817,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	  <with-param pos="3"/>
 	</call-macro>-->
 
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -5744,9 +5835,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               <tag><var n="case"/></tag>
             </tags>
 	    <lu>   
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_det"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
 	    </lu> 
 	    <b pos="2"/>
             <lu>
@@ -6065,7 +6155,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -6083,9 +6173,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               <tag><var n="case"/></tag>
             </tags>
 	    <lu>   
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_det"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
 	    </lu> 
 	    <b pos="1"/>
             <lu>
@@ -6464,7 +6553,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nombre_nom">
 	  <with-param pos="3"/>
 	</call-macro>
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -6482,9 +6571,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               <tag><var n="case"/></tag>
             </tags>
 	    <lu>   
-	      <clip pos="2" side="tl" part="lem"/> 
-	      <clip pos="2" side="tl" part="a_det"/>
-	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
 	    </lu> 
 	    <b pos="1"/>
                 <lu>
@@ -6734,7 +6822,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
-   <!-- article indefinit s'elimina-->
+   <!-- article indefinit té valor d'aproximació -->
    <choose>
      <when>
       <test>
@@ -6751,11 +6839,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		  <tag><var n="nombre"/></tag>
 		  <tag><var n="case"/></tag>
 		</tags>
-            	<lu>
-              	<clip pos="2" side="tl" part="lem"/>
-              	<clip pos="2" side="tl" part="a_det"/>
-              	<clip pos="2" side="tl" part="nbr"/>
-            	</lu>
+	    <lu>   
+	      <lit v="ĉirkaŭ"/>
+              <lit-tag v="adv"/>
+	    </lu> 
 		<b pos="1"/>
 		<lu>   
 		  <clip pos="4" side="tl" part="lem"/> 
@@ -7083,6 +7170,67 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 
     <!-- *************************************** REGLES DE SV *********************************************** -->
+
+<rule comment=", VERBhecho QUE (únicament per corregir al tagger quan s'equivoca amb FAKTO i amb KE) (EO)">
+      <pattern>
+	<pattern-item n="sent_coma"/>
+	<pattern-item n="hecho"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+
+        <out>
+	  <chunk name="punt">
+	    <tags>
+	      <tag><lit-tag v="sent"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	   <b pos="1"/>
+           <chunk name="nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><lit-tag v="m"/></tag>
+              <tag><lit-tag v="sg"/></tag>
+              <tag><lit-tag v="nomi"/></tag>
+            </tags>
+            <lu>
+                <lit v="fakto"/>
+		<lit-tag v="n"/>
+		<lit-tag v="sg"/>
+	        <lit-tag v="4"/>
+            </lu>
+           </chunk>
+	   <b pos="2"/>
+	 <chunk name="relatiu">
+            <tags>
+            <tag><lit-tag v="SNrelatiu"/></tag>
+            <tag><lit-tag v="nomi"/></tag>
+            </tags>
+            <lu>
+                <lit v="kiu"/>
+		<lit-tag v="prn"/>
+		<lit-tag v="rel"/>
+		<lit-tag v="sg"/>
+		<lit-tag v="2"/>
+            </lu>
+          </chunk>
+          </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
 
 <rule comment="VERB QUE ( únicament per corregir al tagger quan s'equivoca amb el KE) (EOes)">
@@ -10968,7 +11116,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                     </lu>
                   </chunk>
                 </out>
-     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefacctius, etc...-->
+     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefactius, etc...-->
 
           <choose>
               <when>  <!-- mirem si és SE per no fer res-->
@@ -11968,7 +12116,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		    </lu>
 		  </chunk>
 		</out>
-     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefacctius, etc...-->
+     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefactius, etc...-->
 
           <choose>
               <when>  <!-- mirem si és SE per no fer res-->
@@ -12277,7 +12425,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                     </lu>
                   </chunk>
                 </out>
-     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefacctius, etc...-->
+     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefactius, etc...-->
 
           <choose>
               <when>  <!-- mirem si és SE per no fer res-->
@@ -13278,19 +13426,47 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 
 <rule comment="REGLA: COMA QUE (EO, regles específiques de SN amb causula de relatiu, creades per a corregir el tagger 'que -> kiu' )">
       <pattern>
-        <pattern-item n="sent_coma"/>
-        <pattern-item n="cnjcoopercorregir"/>
+	<pattern-item n="sent_coma"/>
+	<pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>
-        <let>
-                <var n="case"/>
-                <lit-tag v="nomi"/>
-        </let>
+        <let><var n="case"/><lit-tag v="nomi"/></let>
 
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+   <choose>
+     <when>
+      <test>
+     	 <in>
+       	  <clip pos="2" side="sl" part="lem"/>
+       	  <list n="locual"/>
+      	</in>
+      </test>
+        <let><clip pos="2" side="tl" part="lem"/><lit v="kio"/></let> 
+     </when>
+     <otherwise>
+        <let><clip pos="2" side="tl" part="lem"/><lit v="kiu"/></let> 
+     </otherwise>
+   </choose>
+
+   <choose>
+     <when>
+      <test>
+       <equal>
+        <clip pos="2" side="sl" part="nbr"/>
+        <lit-tag v="pl"/>
+        </equal>
+      </test>
+        <let><var n="nombre"/><lit-tag v="pl"/></let>
+     </when>
+     <otherwise>
+        <let><var n="nombre"/><lit-tag v="sg"/></let>
+     </otherwise>
+   </choose>
+
+	<out>
           <chunk name="punt">
             <tags>
               <tag><lit-tag v="sent"/></tag>
@@ -13307,19 +13483,19 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                         <tag><var n="case"/></tag>
                         </tags>
                         <lu>
-                        <lit v="kiu"/>
+                        <clip pos="2" side="tl" part="lem"/>
                         <lit-tag v="prn"/>
                         <lit-tag v="rel"/>
-                        <lit-tag v="sg"/>
+                        <var n="nombre"/>
                         <lit-tag v="2"/>
                         </lu>
                         </chunk>
 
-        </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
