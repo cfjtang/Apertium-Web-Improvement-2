@@ -1,8 +1,8 @@
 DELIMITERS            = (sent) (".");
 SOFT-DELIMITERS       = ("<,>") ;
 
-LIST BOS              = (>>>);
-LIST EOS              = (<<<);
+LIST BOS              = (>>>) (sent);
+LIST EOS              = (<<<) (sent);
 
 LIST Coma             = (cm);
 
@@ -286,7 +286,9 @@ SELECT Verb IF (1 PrnDObj) (2 PrnIObj);
 SELECT VerbInf IF (-1 VpartGer);
 
 # REGLA (B0009): "Geriadur digor ha frank"
-SELECT Adj IF (-1 NC) (0 NC) (0 Adj);
+#                "kinnig tremen anezho bep bloaz"
+SELECT Adj IF (-1 NC) (0 NC) (0 Adj) (NOT 1 Prep) (NOT 1 PrnDObj) ;
+
 
 # REGLA (B    ): "seul fonnusoc'h, seul welloc'h"
 SELECT PreAdv IF (1 (adj sint comp));
@@ -577,6 +579,20 @@ SELECT CS IF (1C ("ne"ri adv));
 
 #ne ra nemet c'hoari
 SELECT CS IF (0 ("nemet"ri)) (1 VerbFin); # check this, perhaps too loose
+
+#lavaret em eus dezhañ tremen
+REMOVE Prep IF (1 EOS);
+
+#hag e kinnige an dud tremen da welet anezhañ
+SELECT Verb IF (1 ("da" pr)) (2 VerbPP);
+
+# kinnig d'an dud tremen anezho bep bloaz
+# verbo + ART + NOUN + Tremen (ADJ) + prep/pron
+# verbo + ART + NOUN + Tremen (NOUN) + prep/pron
+REMOVE NC IF (-3 Verb) (-2 DetDef) (-1 NC) (0 VerbInf) ((1 Prep) OR (1 PrnDObj));
+REMOVE Adj IF (-3 Verb) (-2 DetDef) (-1 NC) (0 VerbInf) ((1 Prep) OR (1 PrnDObj));
+
+REMOVE Prep IF (0 VerbInf) (0 Prep) (1C PrnDObj);
 
 SECTION
 
