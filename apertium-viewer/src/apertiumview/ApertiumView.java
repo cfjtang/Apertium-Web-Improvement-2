@@ -153,14 +153,14 @@ public class ApertiumView extends FrameView {
     }
     
     
-    public void saveSettings() {
-        System.out.println("saveSettings()");
+    public void shutdown() {
         prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
         prefs.putInt("modesComboBox",modesComboBox.getSelectedIndex());
         String divLoc = "";
         for (JSplitPane p : splitPanes) divLoc += ","+p.getDividerLocation();
         prefs.put("dividerLocation", divLoc);
         prefs.put("inputText", textWidget1.getText());
+        Pipeline.getPipeline().shutdown();
     }
     
     
@@ -364,6 +364,28 @@ public class ApertiumView extends FrameView {
             lastTextWidget = tw;
         }
 
+
+        // Set the working directory of the mode. This is necesary in case the mode contains relative paths
+        // to (development) files
+        String workingDir = prefs.get("workingDir", "").trim();
+        if (!workingDir.isEmpty()) {
+          Pipeline.getPipeline().execPath  = new File(workingDir);
+        } else {
+          if (m.file.getParentFile().getName().equals("modes"))
+            Pipeline.getPipeline().execPath  = m.file.getParentFile().getParentFile();
+          else
+            Pipeline.getPipeline().execPath  = m.file.getParentFile();
+        }
+        System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
+        
+        String envVars = prefs.get("envVars", "").trim();
+        Pipeline.getPipeline().envp = envVars.isEmpty()?null: envVars.split("\n");
+        System.err.println("Pipeline.getPipeline().envp = " + envVars);
+
+        // Set title to mode - easens window tabbing
+        ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer ("+m.name+")");
+
+
         if (startingUp) return;
 
         if (firstWithChangedCommand != null) {
@@ -416,6 +438,7 @@ public class ApertiumView extends FrameView {
     storedTextsMenu = new javax.swing.JMenu();
     javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     changeFontMenuItem = new javax.swing.JMenuItem();
+    optionsMenuItem = new javax.swing.JMenuItem();
     helpMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -430,6 +453,7 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
+    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -446,23 +470,24 @@ public class ApertiumView extends FrameView {
     textWidgetsPanel.setLayout(textWidgetsPanelLayout);
     textWidgetsPanelLayout.setHorizontalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 980, Short.MAX_VALUE)
+      .addGap(0, 979, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 979, Short.MAX_VALUE))
     );
     textWidgetsPanelLayout.setVerticalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 398, Short.MAX_VALUE)
+      .addGap(0, 418, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
     );
 
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
+    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
-    showCommandsCheckBox.setMnemonic('S');
+    showCommandsCheckBox.setMnemonic('H');
     showCommandsCheckBox.setSelected(true);
     showCommandsCheckBox.setText("Show commands");
     showCommandsCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -507,7 +532,7 @@ public class ApertiumView extends FrameView {
         .addComponent(copyTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(storeTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
         .addComponent(jLabel1)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -525,7 +550,7 @@ public class ApertiumView extends FrameView {
           .addComponent(storeTextButton)
           .addComponent(jLabel1))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))
     );
 
     fileMenu.setMnemonic('F');
@@ -555,6 +580,7 @@ public class ApertiumView extends FrameView {
     toolsMenu.add(makeTestCaseMenuItem);
 
     importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
+    importTestCaseMenuItem.setText("Import test case"); // NOI18N
     toolsMenu.add(importTestCaseMenuItem);
 
     storedTextsMenu.setMnemonic('S');
@@ -569,7 +595,11 @@ public class ApertiumView extends FrameView {
     changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
     helpMenu.add(changeFontMenuItem);
 
-    helpMenuItem.setText("Help");
+    optionsMenuItem.setAction(actionMap.get("editOptions")); // NOI18N
+    optionsMenuItem.setText("Options...");
+    helpMenu.add(optionsMenuItem);
+
+    helpMenuItem.setText("Help...");
     helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         helpMenuItemActionPerformed(evt);
@@ -731,8 +761,7 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     public void loadMode() {
         if (modeFileChooser == null) {
             modeFileChooser = new JFileChooser(prefs.get("lastModePath", "."));
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Apertium mode files", "mode");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Apertium mode files", "mode");
             modeFileChooser.setFileFilter(filter);
             modeFileChooser.setMultiSelectionEnabled(true);
         }
@@ -774,6 +803,7 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
   private javax.swing.JCheckBox markUnknownWordsCheckBox;
   private javax.swing.JMenuBar menuBar;
   private javax.swing.JComboBox modesComboBox;
+  private javax.swing.JMenuItem optionsMenuItem;
   private javax.swing.JCheckBox showCommandsCheckBox;
   private javax.swing.JButton storeTextButton;
   private javax.swing.JMenu storedTextsMenu;
@@ -799,7 +829,7 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         try {
             String txt = legu(f).trim();
             Mode m = new Mode();
-            m.commandChain = txt.split("\\|");
+            m.commandChain = txt.split("\n")[0].split("\\|");
             m.name = f.getName();
             m.file = f;
             //System.out.println("txt=" + txt);
@@ -841,6 +871,7 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     
     @Action
     public void changeFont() {
+
         FontDialog fd = new FontDialog((Frame) SwingUtilities.getWindowAncestor(mainPanel));
         fd.setInitialFont(textWidget1.textEditor.getFont());
         fd.setVisible(true);
@@ -905,6 +936,19 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             }
       }
     }
+
+  @Action
+  public void editOptions() {
+    OptionsPanel op = new OptionsPanel();
+    op.workingDirTextField.setText(prefs.get("workingDir", ""));
+    op.envVarsTextArea.setText(prefs.get("envVars", ""));
+    int ret = JOptionPane.showConfirmDialog(mainPanel, op,"Edit Options", JOptionPane.OK_CANCEL_OPTION);
+    if (ret == JOptionPane.OK_OPTION) {
+      prefs.put("workingDir", op.workingDirTextField.getText());
+      prefs.put("envVars", op.envVarsTextArea.getText());
+      modesComboBoxActionPerformed(null); // reload the current mode
+    }
+  }
 
 
 }

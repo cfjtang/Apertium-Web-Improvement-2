@@ -41,19 +41,23 @@ public class Pipeline {
                 t.printStackTrace();
             }
         }
-        
     };
+
     PipelineTask task = null;
     PipelineTask nextTask = null;
     
     void queueAsyncProcessing(TextWidget sourceWidget, int priority, String input, TextWidget recieverWidget) {
         //System.out.println("q"+priority+" "+sourceWidget.getText());
-        if (nextTask != null) {
-          if (nextTask.startTime>System.currentTimeMillis()+5000) {
-            nextTask.proces.destroy(); // task probably runned amok
-          } else 
-          if (nextTask.priority<priority) return;  // too low priority, ignore new task
+        if (nextTask != null && nextTask.priority<priority) return;  // too low priority, ignore new task
+
+        if (task != null && task.startTime<System.currentTimeMillis()-5000) {
+          String err = "task probably runned amok, destroying: "+nextTask.execstr;
+          System.out.println(err);
+          task.proces.destroy(); // task probably runned amok
+          task.recieverWidget.setText(err);
+          task.recieverWidget.setStatus(TextWidget.STATUS_ERROR);
         }
+
 
         PipelineTask t = new PipelineTask();
         t.priority = priority;
@@ -74,6 +78,19 @@ public class Pipeline {
         }
     }
 
+    public File execPath=null;
+    public String[] envp=null;
+
+  void shutdown() {
+    try {
+      if (task!=null && task.proces!=null) task.proces.destroy();
+      if (nextTask!=null && nextTask.proces!=null) nextTask.proces.destroy();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+
     private class PipelineTask implements Runnable {
         private String execstr;
         private String input;
@@ -86,9 +103,9 @@ public class Pipeline {
         public int priority = Integer.MAX_VALUE;
 
         public void run() {
-            try {
+          try {
             PipelineTask t = this;
-            t.proces = Runtime.getRuntime().exec(t.execstr);
+            t.proces = Runtime.getRuntime().exec(t.execstr, envp, execPath);
 
             // For mac users UTF-8 is needed.
             t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream(),"UTF-8"));
@@ -125,13 +142,13 @@ public class Pipeline {
                 }
             };
             SwingUtilities.invokeLater(runnable);
-            } catch (IOException ex) {
-                recieverWidget.setText(ex.getLocalizedMessage());
-                Logger.getLogger(Pipeline.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-            } finally {
-                task = null;
-            }
+          } catch (IOException ex) {
+              recieverWidget.setText(ex.getLocalizedMessage());
+              Logger.getLogger(Pipeline.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (InterruptedException ex) {
+          } finally {
+              task = null;
+          }
         }    
     }
  }

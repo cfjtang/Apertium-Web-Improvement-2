@@ -40,17 +40,17 @@ class FontDialog extends JDialog implements ActionListener{
 		
 		Object[] fontlist = ge.getAvailableFontFamilyNames();
 		font = new JComboBox(fontlist);
-		font.setPreferredSize(new Dimension(150,30));
+		//font.setPreferredSize(new Dimension(150,30));
 		fontstuff.add(font);
  
 		Object[] stylelist = {"Plain", "Bold", "Italic"};
 		style = new JComboBox(stylelist);
-		style.setPreferredSize(new Dimension(60,30));
+		//style.setPreferredSize(new Dimension(60,30));
 		fontstuff.add(style);
  
-		Object[] sizelist = {"8", "9", "10","11","12", "14", "16","18","20", "22", "24","26","28", "32", "36","72"};
+		Object[] sizelist = {"8", "9", "10","11","12", "13", "14","15", "16","18","20", "22", "24","26","28", "32", "36","72"};
 		size = new JComboBox(sizelist);
-		size.setPreferredSize(new Dimension(40,30));
+		//size.setPreferredSize(new Dimension(40,30));
 		fontstuff.add(size);
 		
  
@@ -82,6 +82,9 @@ class FontDialog extends JDialog implements ActionListener{
 	public void setInitialFont(Font f)
 	{
 		initial = f;
+
+    System.err.println("initial = " + initial);
+
 		font.setSelectedItem(f.getFamily());
 		
 		if (f.getStyle() == Font.BOLD)
