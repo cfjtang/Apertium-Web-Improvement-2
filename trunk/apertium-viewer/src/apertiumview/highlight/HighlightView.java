@@ -47,13 +47,32 @@ public class HighlightView extends WrappedPlainView {//PlainView
 
     private static HashMap<Pattern, Color> patternColors;
  // IMPORTANT NOTE: regex should contain 1 group. Groups other than group one is ignored
+
+    /*
+    private static String TAG = "(<[^/>]+)>?";
+    private static String LEMMA = "\\^([^</]+)";
+    private static String UNKNOWN_LEMMA = "\\^(\\w+)\\/\\*\\w+\\$";
+    private static String AMBIGIOUS_LEMMA = "\\^(\\w+)/[^\\$]+(/[^\\$]+)+\\$";
+    private static String COMMENT = "(<!--.*-->)";
+
+     */
+
+    /* meget gammel
     private static String TAG = "(<[\\w\\s]+)>?";
     private static String LEMMA = "\\^(\\w+)";
     //private static String UNKNOWN_LEMMA = "\\^(\\w+\\/\\*\\w+)\\$";
     private static String UNKNOWN_LEMMA = "\\^(\\w+)\\/\\*\\w+\\$";
     private static String AMBIGIOUS_LEMMA = "\\^(\\w+)/[^\\$]+(/[^\\$]+)+\\$";
     private static String COMMENT = "(<!--.*-->)";
-   
+*/
+    private static String TAG = "(<[\\p{L}\\d\\.\\s]+)>?";
+    private static String LEMMA = "\\^([\\p{L}\\d\\.]+)";
+    private static String UNKNOWN_LEMMA = "(\\*[\\p{L}\\d\\.]+)\\$";
+    //private static String AMBIGIOUS_LEMMA = "\\^(\\w+)/[^\\$]+(/[^\\$]+)+\\$";
+    private static String COMMENT = "(<!--.*-->)";
+
+
+
     static {
         // NOTE: the order is important!
         patternColors = new HashMap<Pattern, Color>();
@@ -61,17 +80,13 @@ public class HighlightView extends WrappedPlainView {//PlainView
         patternColors.put(Pattern.compile(TAG),  Color.decode("#aaaaaa"));
         patternColors.put(Pattern.compile(LEMMA),  Color.BLUE);
         patternColors.put(Pattern.compile(UNKNOWN_LEMMA),  Color.RED);
-        patternColors.put(Pattern.compile(AMBIGIOUS_LEMMA),  Color.RED.darker());
-        patternColors.put(Pattern.compile("([\\^\\$]+)"),  Color.decode("#009900"));
-        patternColors.put(Pattern.compile("([{}]+)"),  Color.decode("#999900"));
-        patternColors.put(Pattern.compile("([@\\*#]+)"),  Color.decode("#990000"));
-        patternColors.put(Pattern.compile("([\\[\\]]+)"),  Color.decode("#aaaaff"));
+        //patternColors.put(Pattern.compile(AMBIGIOUS_LEMMA),  Color.RED.darker());
+        //patternColors.put(Pattern.compile("([\\^\\$]+)"),  Color.decode("#009900"));
+        //patternColors.put(Pattern.compile("([{}]+)"),  Color.decode("#999900"));
+        //patternColors.put(Pattern.compile("([@\\*#]+)"),  Color.decode("#990000"));
+        //patternColors.put(Pattern.compile("([\\[\\]]+)"),  Color.decode("#aaaaff"));
         patternColors.put(Pattern.compile(COMMENT), Color.LIGHT_GRAY);
-        /*
-        patternColors.put(Pattern.compile(TAG),  Color.GREEN.darker());
-        patternColors.put(Pattern.compile(LEMMA),  Color.BLUE);
-        patternColors.put(Pattern.compile(COMMENT), Color.LIGHT_GRAY);
-         */
+
     }
 
 

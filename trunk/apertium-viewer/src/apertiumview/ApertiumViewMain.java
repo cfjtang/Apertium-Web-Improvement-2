@@ -48,7 +48,7 @@ public class ApertiumViewMain extends SingleFrameApplication {
     }
 
      @Override protected void shutdown() {
-         mainFrame.saveSettings();
+         mainFrame.shutdown();
          java.awt.Window root= SwingUtilities.getWindowAncestor(mainFrame.mainPanel);
         Point l = root.getLocation();
         Dimension d = root.getSize();
