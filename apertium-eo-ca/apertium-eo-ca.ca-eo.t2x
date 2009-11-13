@@ -212,8 +212,13 @@
       <attr-item tags="vaux"/>
     </def-attr>
 
- 
+    <def-attr n="tipus_verb">
+          <attr-item tags="vbser"/>
+          <attr-item tags="vblex"/>
+    </def-attr>
+
   </section-def-attrs>
+
 
   <section-def-vars>
     <def-var n="uno"/>
@@ -4726,6 +4731,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
        <choose>
           <when>
             <test>
+		<or>
 		<and>
                 <equal>
                   <clip pos="1" part="nbr"/>
@@ -4736,6 +4742,11 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 		  <lit-tag v="p3"/>
                 </equal>
 		</and>
+                <equal>
+                  <clip pos="3" part="tipus_verb"/>
+		  <lit-tag v="vbser"/>
+                </equal>
+		</or>
             </test>
 
             <let>
