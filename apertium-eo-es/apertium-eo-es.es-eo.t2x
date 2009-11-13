@@ -270,6 +270,10 @@
       <attr-item tags="vaŭ"/>
     </def-attr>
 
+    <def-attr n="tipus_verb">
+          <attr-item tags="vbser"/>
+	  <attr-item tags="vblex"/>
+    </def-attr>
  
   </section-def-attrs>
 
@@ -3497,7 +3501,7 @@
 
 
 
-<rule comment="REGLA: SN SNrelatiu SV (. la niña que vino -> la knabino kiu vino; los niños que viste -> la knaboj kiujn vi vestu)">
+<rule comment="REGLA: SN SNrelatiu SV (. la niña que vino -> la knabino kiu vensi; los niños que viste -> la knaboj kiujn vi vidis)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SNrelatiu"/>
@@ -3508,6 +3512,7 @@
        <choose>
           <when>
             <test>
+		<or>
 		<and>
                 <equal>
                   <clip pos="1" part="nbr"/>
@@ -3518,6 +3523,11 @@
 		  <lit-tag v="p3"/>
                 </equal>
 		</and>
+                <equal>
+                  <clip pos="3" part="tipus_verb"/>
+		  <lit-tag v="vbser"/>
+                </equal>
+		</or>
             </test>
 
             <let>
@@ -3582,8 +3592,7 @@
             <lit-tag v="prn.subj.3.4.5"/>
             <lit v="$}"/>
           </chunk>
-	   <b/>
-	  <b pos="3"/>
+	  <b/>
 	  <chunk>
             <clip pos="3" part="whole"/>
 	  </chunk>

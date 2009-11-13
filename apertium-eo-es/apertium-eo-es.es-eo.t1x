@@ -18,13 +18,17 @@
       <cat-item tags="prn.pro.*"/>
     </def-cat>
 
- <def-cat n="sent">
+    <def-cat n="sent">
        <cat-item tags="sent"/>
-     </def-cat>
+    </def-cat>
 
- <def-cat n="sent_coma">
+    <def-cat n="sent_coma">
        <cat-item tags="cm"/><!-- provem amb la coma EO, per a poder tractar el pro-drop-->
-     </def-cat>
+    </def-cat>
+
+    <def-cat n="guio">
+       <cat-item tags="guio"/>
+    </def-cat>
 
 
     <def-cat n="adj">
@@ -2659,6 +2663,267 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
     </rule>
 
 
+<rule comment="REGLA: DET NOM-NOM ADJ (EO, aquella ciudad-jardín moderna -> tiu moderna urbo-ĝardeno, para evitar *tiu urbo-moderna ĝardeno)">
+<!-- amb <pattern-item n="adjADJ"/> en comptes de <pattern-item n="adj">
+- s'evita la inversió del participi per evitar problemes com: aquella casa construïda pel meu pare -> tiu konstruita domo por mia patro
+- però es perd la generació de l'acusatiu
+Es podria generar una regla semblant amb <pattern-item n="pp"> però llavors es perd la regla pp + POR -> pp + DE
+i prefereixo que no passi (solucionar aquest segon problema condueix a una nova inflació de regles)
+-->
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="guio"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="adjADJ"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nombre_nom">
+	  <with-param pos="4"/>
+	</call-macro>	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>	
+   <!-- article indefinit s'elimina-->
+   <choose>
+     <when>
+      <test>
+       <equal caseless="yes">
+        <clip pos="1" side="sl" part="lem"/>
+        <lit v="uno"/>
+        </equal>
+      </test>
+	<out>  
+	  <chunk name="nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="5" side="tl" part="lemh"/> 
+	      <clip pos="5" side="tl" part="a_adj"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="5" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="4"/>
+	    <lu>       
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/> 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>       
+	    <b pos="2"/>
+	    <lu>   
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="3"/>
+	    <lu>       
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_nom"/>
+	      <clip pos="4" side="tl" part="gen"/> 
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>       
+    </when>
+<otherwise>           <!-- article definit-->
+	<out>  
+	  <chunk name="det_nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="5" side="tl" part="lemh"/> 
+	      <clip pos="5" side="tl" part="a_adj"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="5" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="4"/>
+	    <lu>       
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/> 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>   
+	      <clip pos="3" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="3"/>
+	    <lu>       
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_nom"/>
+	      <clip pos="4" side="tl" part="gen"/> 
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>       
+     </otherwise>
+      </choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: DET NOM ADJ-ADJ (EO, las propiedades físico-químicas -> la proprecoj fizikaj-kemiaj para evitar *la fisikaj propecoj-kemiaj)">
+<!-- en general el análisis ADJ-ADJ es incorrecto, ya que se trata de un adjetivo compuesto, pero se da en muy numerosas ocasiones -->
+<!-- amb <pattern-item n="adjADJ"/> en comptes de <pattern-item n="adj">
+- s'evita la inversió del participi per evitar problemes com: aquella casa construïda pel meu pare -> tiu konstruita domo por mia patro
+- però es perd la generació de l'acusatiu
+Es podria generar una regla semblant amb <pattern-item n="pp"> però llavors es perd la regla pp + POR -> pp + DE
+i prefereixo que no passi (solucionar aquest segon problema condueix a una nova inflació de regles)
+-->
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="guio"/>
+	<pattern-item n="adjADJ"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>	
+   <!-- article indefinit s'elimina-->
+   <choose>
+     <when>
+      <test>
+       <equal caseless="yes">
+        <clip pos="1" side="sl" part="lem"/>
+        <lit v="uno"/>
+        </equal>
+      </test>
+	<out>  
+	  <chunk name="nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_adj"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="3" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="3"/>
+	    <lu>   
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="4"/>
+	    <lu>   
+	      <clip pos="5" side="tl" part="lemh"/> 
+	      <clip pos="5" side="tl" part="a_adj"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="5" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>       
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/> 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>       
+	  </chunk>
+	</out>       
+    </when>
+<otherwise>           <!-- article definit-->
+	<out>  
+	  <chunk name="det_nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>   
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_adj"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="3" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="3"/>
+	    <lu>   
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+	    <b pos="4"/>
+	    <lu>   
+	      <clip pos="5" side="tl" part="lemh"/> 
+	      <clip pos="5" side="tl" part="a_adj"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="5" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>       
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen"/> 
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>       
+     </otherwise>
+      </choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: DET NUM NOM ADJ (EOes, ex. aquellas tres casas pequeñas, los tres libros viejos, todos los coches grandes -> tiuj tri malgrandaj domoj, la tri malnovaj libroj, ĉiuj grandaj aŭtoj)">
       <pattern>
 	<pattern-item n="det"/>
@@ -4524,6 +4789,134 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	    </lu> 
+	    <b pos="1"/>
+	    <lu>       
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/> 
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>       
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NOM-NOM ADJ (EO, ciutat-jardí moderna -> moderna urbo-ĝardeno, per evitar *urbo-moderna ĝardeno)">
+<!-- sobre <pattern-item n="adjADJ"/> en comptes de <pattern-item n="adj"> veure comentari per a la regla DET NOM ADJ -->
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="guio"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="adjADJ"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<out> 
+	  <chunk name="nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_adj"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="4" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="3"/>
+	    <lu>       
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_nom"/>
+	      <clip pos="1" side="tl" part="gen"/> 
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+	    <b pos="2"/>
+	    <lu>       
+	      <clip pos="3" side="tl" part="lemh"/> 
+	      <clip pos="3" side="tl" part="a_nom"/>
+	      <clip pos="3" side="tl" part="gen"/> 
+	      <clip pos="3" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>       
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NOM ADJ-ADJ (EO, propiedades físico-químicas -> proprecoj fizikaj-kemiaj para evitar *fisikaj propecoj-kemiaj)">
+<!-- en general el análisis ADJ-ADJ es incorrecto, pero se da en muy numerosas ocasiones -->
+<!-- sobre <pattern-item n="adjADJ"/> en comptes de <pattern-item n="adj"> veure comentari per a la regla DET NOM ADJ -->
+      <pattern>
+	<pattern-item n="nom"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="guio"/>
+	<pattern-item n="adjADJ"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nombre_nom">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<out> 
+	  <chunk name="nom_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_adj"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu> 
+	    <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
+	    <b pos="3"/>
+	    <lu>       
+	      <clip pos="4" side="tl" part="lemh"/> 
+	      <clip pos="4" side="tl" part="a_adj"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu>
 	    <b pos="1"/>
 	    <lu>       
 	      <clip pos="1" side="tl" part="lemh"/> 
@@ -10519,7 +10912,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule>
 
-<rule comment="VERB + ADV + ADJ + INF (el ADJ passa a ADV: es muy intereante leer ->  estas tre interese legi EOes)">
+<rule comment="VERB + ADV + ADJ + INF (el ADJ passa a ADV: es muy interesante leer ->  estas tre interese legi EOes)">
       <pattern>
 	<pattern-item n="verbcj2"/>
 	<pattern-item n="adv_preadv"/>
@@ -11401,10 +11794,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                       <clip pos="1" side="sl" part="temps"/>
                       <lit-tag v="prs"/><!--present subjunctiu digui -->
                     </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="lem"/>
-                      <lit v="haya"/><!--TAGGER-->
-                    </equal>
                   </or>
                 </test>
                 <let>
@@ -11418,6 +11807,36 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+          </when>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="haya"/><!--TAGGER-->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><lit-tag v="prs"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
@@ -11583,10 +12002,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                       <clip pos="1" side="sl" part="temps"/>
                       <lit-tag v="prs"/><!--present subjunctiu digui -->
                     </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="lem"/>
-                      <lit v="haya"/><!--TAGGER-->
-                    </equal>
                   </or>
                 </test>
                 <let>
@@ -11600,6 +12015,47 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                <b pos="1"/>
+                 <chunk name="cnjsub" case="caseFirstWord">
+                        <tags>
+                        <tag><lit-tag v="cnjsub"/></tag>
+                        </tags>
+                        <lu>
+                        <lit v="ke"/>
+                        <lit-tag v="cnjsub"/>
+                        </lu>
+                        </chunk>
+
+                </out>
+          </when>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="haya"/><!--TAGGER-->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><lit-tag v="prs"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
@@ -11924,10 +12380,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                       <clip pos="1" side="sl" part="temps"/>
                       <lit-tag v="prs"/><!--present subjunctiu digui -->
                     </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="lem"/>
-                      <lit v="haya"/><!--TAGGER-->
-                    </equal>
                   </or>
                 </test>
                 <let>
@@ -11941,6 +12393,45 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="sep"/>
+                      <clip pos="3" side="tl" part="temps"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+
+                  </chunk>
+                </out>
+          </when>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="haya"/><!--TAGGER-->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><lit-tag v="prs"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
                     </tags>

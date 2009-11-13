@@ -69,6 +69,7 @@
     <sdef n="rpar"/>
     <sdef n="lquest"/>
     <sdef n="web"/>
+    <sdef n="guio"/>
   </sdefs>
   <pardefs>
 <!--   <pardef n="internet">    
@@ -95,6 +96,14 @@
         <p>
           <l/>
           <r><s n="sent"/></r>
+        </p>
+      </e>
+    </pardef>
+    <pardef n="guionet">
+      <e>
+        <p>
+          <l>-</l>
+          <r>-<s n="guio"/></r>
         </p>
       </e>
     </pardef>
@@ -1404,10 +1413,16 @@
       <e>
         <p>
           <l/>
+          <r><s n="adj"/><s n="mf"/><s n="sp"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l/>
           <r><s n="adj"/><s n="mf"/><s n="sg"/></r>
         </p>
       </e>
-      <e>
+      <e r="RL">
         <p>
           <l/>
           <r><s n="adj"/><s n="mf"/><s n="pl"/></r>
@@ -3306,10 +3321,16 @@
       <e>
         <p>
           <l/>
+          <r><s n="n"/><s n="m"/><s n="sp"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l/>
           <r><s n="n"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
-      <e r="RL">  <!-- PARCHE: Problemas con el desambiguador -->
+      <e r="RL">
         <p>
           <l/>
           <r><s n="n"/><s n="m"/><s n="pl"/></r>
@@ -3831,22 +3852,34 @@
       <e>
         <p>
           <l>óvenes</l>
-          <r>oven<s n="n"/><s n="m"/><s n="pl"/></r>
+          <r>oven<s n="n"/><s n="mf"/><s n="pl"/></r>
         </p>
       </e>
       <e>
         <p>
           <l>oven</l>
+          <r>oven<s n="n"/><s n="mf"/><s n="sg"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l>óvenes</l>
+          <r>oven<s n="n"/><s n="m"/><s n="pl"/></r>
+        </p>
+      </e>
+      <e r="RL">
+        <p>
+          <l>oven</l>
           <r>oven<s n="n"/><s n="m"/><s n="sg"/></r>
         </p>
       </e>
-      <e>
+      <e r="RL">
         <p>
           <l>óvenes</l>
           <r>oven<s n="n"/><s n="f"/><s n="pl"/></r>
         </p>
       </e>
-      <e>
+      <e r="RL">
         <p>
           <l>oven</l>
           <r>oven<s n="n"/><s n="f"/><s n="sg"/></r>
@@ -71885,7 +71918,6 @@ Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "
 <e lm="sudeuropeo"><i>sudeurope</i><par n="absolut/o__adj"/></e>
 <e lm="eventual"><i>eventual</i><par n="abdominal__adj"/></e>
 <e lm="evidente"><i>evidente</i><par n="abundante__adj"/></e>
-<e lm="ex"><i>ex</i><par n="multimedia__adj"/></e>
 <e lm="exacto"><i>exact</i><par n="abstract/o__adj"/></e>
 <e lm="excelente"><i>excelente</i><par n="abundante__adj"/></e>
 <e lm="excelso"><i>excels</i><par n="absolut/o__adj"/></e>
@@ -71940,6 +71972,7 @@ Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "
 <e lm="febril"><i>febril</i><par n="abundante__adj"/></e>
 <e lm="fecundo"><i>fecund</i><par n="absolut/o__adj"/></e>
 <e lm="federal"><i>federal</i><par n="abdominal__adj"/></e>
+<e lm="confederal"><i>confederal</i><par n="abdominal__adj"/></e>
 <e lm="feliz"><i>feli</i><par n="atro/z__adj"/></e>
 <e lm="femenino"><i>femenin</i><par n="absolut/o__adj"/></e>
 <e lm="feminino"><i>feminin</i><par n="absolut/o__adj"/></e>
@@ -73165,6 +73198,7 @@ Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "
 <e lm="hispanoamericano"><i>hispanoamerican</i><par n="absolut/o__adj"/></e>
 <e lm="hispano-americano"><i>hispano-american</i><par n="absolut/o__adj"/></e>
 <e lm="hispano-norteamericano"><i>hispano-norteamerican</i><par n="absolut/o__adj"/></e>
+<e lm="hispano-estadounidense"><i>hispano-estadounidense</i><par n="abundante__adj"/></e>
 <e lm="hispano-francés"><i>hispano-franc</i><par n="aragon/és__adj"/></e>
 <e lm="hispano-británico"><i>hispano-británic</i><par n="absolut/o__adj"/></e>
 <e lm="hispano-alemán"><i>hispano-alem</i><par n="alem/án__adj"/></e>
@@ -73441,6 +73475,22 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="XXI"><i>XXI</i><par n="abdominal__adj"/></e>
 <e lm="XXII"><i>XXII</i><par n="abdominal__adj"/></e>
 
+<!-- prefixos -->
+
+<e lm="ex"><i>ex</i><par n="multimedia__adj"/></e>
+<e lm="ex-"><i>ex-</i><par n="multimedia__adj"/></e>
+<e lm="pro"><i>pro</i><par n="multimedia__adj"/></e>
+<e lm="pro-"><i>pro-</i><par n="multimedia__adj"/></e>
+<e lm="pre"><i>pre</i><par n="multimedia__adj"/></e>
+<e lm="pre-"><i>pre-</i><par n="multimedia__adj"/></e>
+<e lm="proto"><i>proto</i><par n="multimedia__adj"/></e>
+<e lm="proto-"><i>proto-</i><par n="multimedia__adj"/></e>
+<e lm="neo"><i>neo</i><par n="multimedia__adj"/></e>
+<e lm="neo-"><i>neo-</i><par n="multimedia__adj"/></e>
+<e lm="pos"><i>pos</i><par n="multimedia__adj"/></e>
+<e lm="pos-"><i>pos-</i><par n="multimedia__adj"/></e>
+<e lm="post"><i>post</i><par n="multimedia__adj"/></e>
+<e lm="post-"><i>post-</i><par n="multimedia__adj"/></e>
 
 <!-- NOMBRES-->
 
@@ -74919,6 +74969,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="caverna"><i>caverna</i><par n="abeja__n"/></e>
 <e lm="caviar"><i>caviar</i><par n="abril__n"/></e>
 <e lm="cavidad"><i>cavidad</i><par n="accesibilidad__n"/></e>
+<e lm="caza"><i>caza</i><par n="abeja__n"/></e>
+<e lm="cazador"><i>cazador</i><par n="señor__n"/></e>
 <e lm="cazuela"><i>cazuela</i><par n="abeja__n"/></e>
 <e lm="cebada"><i>cebada</i><par n="abeja__n"/></e>
 <e lm="cebo"><i>cebo</i><par n="abismo__n"/></e>
@@ -75255,6 +75307,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="comestibles"><i>comestibles</i><par n="campus__n"/></e>
 <e lm="comezón"><i>comez</i><par n="acci/ón__n"/></e>
 <e lm="cómic"><i>cómic</i><par n="abismo__n"/></e>
+<e lm="comida"><i>comida</i><par n="abeja__n"/></e>
 <e lm="comienzo"><i>comienzo</i><par n="abismo__n"/></e>
 <e lm="comino"><i>comino</i><par n="abismo__n"/></e>
 <e lm="comisario"><i>comisari</i><par n="abogad/o__n"/></e>
@@ -75298,6 +75351,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="compromiso"><i>compromiso</i><par n="abismo__n"/></e>
 <e lm="compuerta"><i>compuerta</i><par n="abeja__n"/></e>
 <e lm="compuesto"><i>compuesto</i><par n="abismo__n"/></e>
+<e lm="computación"><i>computaci</i><par n="acci/ón__n"/></e>
 <e lm="computador"><i>computador</i><par n="abismo__n"/></e>
 <e lm="computadora"><i>computadora</i><par n="abeja__n"/></e>
 <e lm="computística"><i>computística</i><par n="abeja__n"/></e>
@@ -75369,6 +75423,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="conexión"><i>conexi</i><par n="acci/ón__n"/></e>
 <e lm="confección"><i>confecci</i><par n="acci/ón__n"/></e>
 <e lm="confederación"><i>confederaci</i><par n="acci/ón__n"/></e>
+<e lm="confederado"><i>confederad</i><par n="abogad/o__n"/></e>
+<e lm="confederado"><i>confederad</i><par n="absolut/o__adj"/></e>
 <e lm="conferencia"><i>conferencia</i><par n="abeja__n"/></e>
 <e lm="confesión"><i>confesi</i><par n="acci/ón__n"/></e>
 <e lm="confianza"><i>confianza</i><par n="abeja__n"/></e>
@@ -75403,6 +75459,11 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="consecución"><i>consecuci</i><par n="acci/ón__n"/></e>
 <e lm="consecuencia"><i>consecuencia</i><par n="abeja__n"/></e>
 <e lm="consejero"><i>consejer</i><par n="abogad/o__n"/></e>
+<e lm="lehendakari"><i>lehendakari</i><par n="abismo__n"/></e>
+<e lm="conseller"><i>conseller</i><par n="abismo__n"/></e>
+<e lm="consellera"><i>consellera</i><par n="abeja__n"/></e>
+<e lm="conselleiro"><i>conselleiro</i><par n="señor__n"/></e>
+<e lm="conseller de la Generalitat"><i>conseller</i><par n="señor__n"/><p><l><b/>de<b/>la<b/>Generalitat</l><r><g><b/>de<b/>la<b/>Generalitat</g></r></p></e>
 <e lm="consejo"><i>consejo</i><par n="abismo__n"/></e>
 <e lm="consenso"><i>consenso</i><par n="abismo__n"/></e>
 <e lm="conserje"><i>conserje</i><par n="accionista__n"/></e>
@@ -75574,8 +75635,11 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="criatura"><i>criatura</i><par n="abeja__n"/></e>
 <e lm="cric"><i>cric</i><par n="abismo__n"/></e>
 <e lm="crimen"><i>cr</i><par n="cr/imen__n"/></e>
-<e lm="crin"><i>clar</i><par n="bot/ín__n"/></e>
-<e lm="crío"><i>crí</i><par n="abogad/o__n"/></e>
+<e lm="crin"><i>crin</i><par n="accesibilidad__n"/></e>
+<e lm="cría"><i>cría</i><par n="abeja__n"/></e>
+<e lm="crianza"><i>crianza</i><par n="abeja__n"/></e>
+<e lm="crío"><i>crío</i><par n="abismo__n"/></e>
+<!-- <e lm="crío"><i>crí</i><par n="abogad/o__n"/></e> -->
 <e lm="cripta"><i>cripta</i><par n="abeja__n"/></e>
 <e lm="criptón"><i>cript</i><par n="aluvi/ón__n"/></e>
 <e lm="críquet"><i>críquet</i><par n="abismo__n"/></e>
@@ -76549,7 +76613,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="evento"><i>evento</i><par n="abismo__n"/></e>
 <e lm="evidencia"><i>evidencia</i><par n="abeja__n"/></e>
 <e lm="evolución"><i>evoluci</i><par n="acci/ón__n"/></e>
-<e lm="ex"><i>ex</i><par n="gilipollas__n"/></e>
+<!-- <e lm="ex"><i>ex</i><par n="gilipollas__n"/></e> -->
 <e lm="exacción"><i>exacci</i><par n="acci/ón__n"/></e>
 <e lm="exactitud"><i>exactitud</i><par n="accesibilidad__n"/></e>
 <e lm="exageración"><i>exageraci</i><par n="acci/ón__n"/></e>
@@ -76702,6 +76766,9 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="reformismo"><i>reformismo</i><par n="abismo__n"/></e>
 <e lm="reformista"><i>reformista</i><par n="accionista__n"/></e>
 <e lm="reformista"><i>reformista</i><par n="abundante__adj"/></e>
+<e lm="tradicionalismo"><i>tradicionalismo</i><par n="abismo__n"/></e>
+<e lm="tradicionalista"><i>tradicionalista</i><par n="accionista__n"/></e>
+<e lm="tradicionalista"><i>tradicionalista</i><par n="abundante__adj"/></e>
 <e lm="carlismo"><i>carlismo</i><par n="abismo__n"/></e>
 <e lm="carlista"><i>carlista</i><par n="accionista__n"/></e>
 <e lm="carlista"><i>carlista</i><par n="abundante__adj"/></e>
@@ -77127,6 +77194,14 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="gobernador"><i>gobernador</i><par n="señor__n"/></e>
 <e lm="gobernante"><i>gobernant</i><par n="asistent/e__n"/></e>
 <e lm="gobierno"><i>gobierno</i><par n="abismo__n"/></e>
+<e lm="Generalitat"><i>Generalitat</i><par n="abeja__n"/></e>
+<e lm="Generalitat de Catalunya"><i>Generalitat</i><par n="abeja__n"/><p><l><b/>de<b/>Catalunya</l><r><g><b/>de<b/>Catalunya</g></r></p></e>
+<e lm="Generalitat de Cataluña"><i>Generalitat</i><par n="abeja__n"/><p><l><b/>de<b/>Cataluña</l><r><g><b/>de<b/>Cataluña</g></r></p></e>
+<e lm="Generalitat Valenciana"><i>Generalitat<b/>Valenciana</i><par n="abeja__n"/></e>
+<e lm="gobierno de la Generalitat"><i>gobierno</i><par n="abismo__n"/><p><l><b/>de<b/>la<b/>Generalitat</l><r><g><b/>de<b/>la<b/>Generalitat</g></r></p></e>
+<e lm="gobierno de la Generalitat de Catalunya"><i>gobierno</i><par n="abismo__n"/><p><l><b/>de<b/>la<b/>Generalitat<b/>de<b/>Catalunya</l><r><g><b/>de<b/>la<b/>Generalitat<b/>de<b/>Catalunya</g></r></p></e>
+<e lm="gobierno de la Generalitat de Cataluña"><i>gobierno</i><par n="abismo__n"/><p><l><b/>de<b/>la<b/>Generalitat<b/>de<b/>Cataluña</l><r><g><b/>de<b/>la<b/>Generalitat<b/>de<b/>Cataluña</g></r></p></e>
+<e lm="gobierno de la Generalitat Valenciana"><i>gobierno</i><par n="abismo__n"/><p><l><b/>de<b/>la<b/>Generalitat<b/>Valenciana</l><r><g><b/>de<b/>la<b/>Generalitat<b/>Valenciana</g></r></p></e>
 <e lm="gobio"><i>gobio</i><par n="abismo__n"/></e>
 <e lm="goce"><i>goce</i><par n="abismo__n"/></e>
 <e lm="godo"><i>god</i><par n="abogad/o__n"/></e>
@@ -77539,6 +77614,9 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="federalista"><i>federalista</i><par n="accionista__n"/></e>
 <e lm="federalista"><i>federalista</i><par n="abundante__adj"/></e>
 <e lm="federalismo"><i>federalismo</i><par n="abismo__n"/></e>
+<e lm="confederalista"><i>confederalista</i><par n="accionista__n"/></e>
+<e lm="confederalista"><i>confederalista</i><par n="abundante__adj"/></e>
+<e lm="confederalismo"><i>confederalismo</i><par n="abismo__n"/></e>
 <e lm="regionalista"><i>regionalista</i><par n="accionista__n"/></e>
 <e lm="regionalista"><i>regionalista</i><par n="abundante__adj"/></e>
 <e lm="regionalismo"><i>regionalismo</i><par n="abismo__n"/></e>
@@ -78417,6 +78495,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="maqueta"><i>maqueta</i><par n="abeja__n"/></e>
 <e lm="maquillaje"><i>maquillaje</i><par n="abismo__n"/></e>
 <e lm="máquina"><i>máquina</i><par n="abeja__n"/></e>
+<e lm="máquina tragaperras"><i>máquina</i><par n="abeja__n"/><p><l><b/>tragaperras</l><r><g><b/>tragaperras</g></r></p></e>
 <e lm="maquinaria"><i>maquinaria</i><par n="abeja__n"/></e>
 <e lm="maquinilla"><i>maquinilla</i><par n="abeja__n"/></e>
 <e lm="maquinista"><i>maquinista</i><par n="accionista__n"/></e>
@@ -79363,6 +79442,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="pasión"><i>pasi</i><par n="acci/ón__n"/></e>
 <e lm="pasmo"><i>pasmo</i><par n="abismo__n"/></e>
 <e lm="paso"><i>paso</i><par n="abismo__n"/></e>
+<e lm="paso atrás"><i>paso</i><par n="abismo__n"/><p><l><b/>atrás</l><r><g><b/>atrás</g></r></p></e>
+<e lm="paso en falso"><i>paso</i><par n="abismo__n"/><p><l><b/>en<b/>falso</l><r><g><b/>en<b/>falso</g></r></p></e>
 <e lm="pasta"><i>pasta</i><par n="abeja__n"/></e>
 <e lm="pastelería"><i>pastelería</i><par n="abeja__n"/></e>
 <e lm="pastelero"><i>pasteler</i><par n="abogad/o__n"/></e>
@@ -80058,6 +80139,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="rabo"><i>rabo</i><par n="abismo__n"/></e>
 <e lm="racha"><i>racha</i><par n="abeja__n"/></e>
 <e lm="racionalismo"><i>racionalismo</i><par n="abismo__n"/></e>
+<e lm="racionalización"><i>racionalizaci</i><par n="acci/ón__n"/></e>
 <e lm="ración"><i>raci</i><par n="acci/ón__n"/></e>
 <e lm="racismo"><i>racismo</i><par n="abismo__n"/></e>
 <e lm="radar"><i>radar</i><par n="abril__n"/></e>
@@ -80099,6 +80181,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="rato"><i>rato</i><par n="abismo__n"/></e>
 <e lm="ratón"><i>rat</i><par n="aluvi/ón__n"/></e>
 <e lm="rayo"><i>rayo</i><par n="abismo__n"/></e>
+<e lm="rayos X"><i>rayos<b/>X</i><par n="alrededores__n"/></e>
+<e lm="rayos gamma"><i>rayos<b/>gamma</i><par n="alrededores__n"/></e>
 <e lm="raza"><i>raza</i><par n="abeja__n"/></e>
 <e lm="razonamiento"><i>razonamiento</i><par n="abismo__n"/></e>
 <e lm="razón"><i>raz</i><par n="acci/ón__n"/></e>
@@ -81308,7 +81392,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="traficante"><i>traficante</i><par n="accionista__n"/></e>
 <e lm="tráfico"><i>tráfico</i><par n="abismo__n"/></e>
 <e lm="tragaluz"><i>tragalu</i><par n="ajedre/z__n"/></e>
-<e lm="tragaperras"><i>tragaperras</i><par n="campus__n"/></e>
+<e lm="tragaperras"><i>tragaperras</i><par n="afueras__n"/></e>
 <e lm="tragedia"><i>tragedia</i><par n="abeja__n"/></e>
 <e lm="trago"><i>trago</i><par n="abismo__n"/></e>
 <e lm="traición"><i>traici</i><par n="acci/ón__n"/></e>
@@ -83997,6 +84081,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="favorecer"><p><l>favoré</l><r>favore</r></p><par n="agradé/cer__vblex"/></e>
 <e lm="federar"><i>feder</i><par n="abandon/ar__vblex"/></e>
 <e lm="federar"><p><l>fedér</l><r>feder</r></p><par n="abandón/ar__vblex"/></e>
+<e lm="confederar"><i>confeder</i><par n="abandon/ar__vblex"/></e>
+<e lm="confederar"><p><l>confedér</l><r>confeder</r></p><par n="abandón/ar__vblex"/></e>
 <e lm="felicitar"><i>felicit</i><par n="abandon/ar__vblex"/></e>
 <e lm="felicitar"><p><l>felicít</l><r>felicit</r></p><par n="abandón/ar__vblex"/></e>
 <e lm="fermentar" a="mikel"><i>ferment</i><par n="abandon/ar__vblex"/></e>
@@ -85017,6 +85103,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="quitar el polvo a"><p><l>quít</l><r>quit</r></p><par n="abandón/ar__vblex"/><p><l><b/>el<b/>polvo<b/>a</l><r><g><b/>el<b/>polvo<b/>a</g></r></p></e>
 <e lm="quitar el polvo"><i>quit</i><par n="abandon/ar__vblex"/><p><l><b/>el<b/>polvo</l><r><g><b/>el<b/>polvo</g></r></p></e>
 <e lm="quitar el polvo"><p><l>quít</l><r>quit</r></p><par n="abandón/ar__vblex"/><p><l><b/>el<b/>polvo</l><r><g><b/>el<b/>polvo</g></r></p></e>
+<e lm="racionalizar"><i>racionali</i><par n="abalan/zar__vblex"/></e>
+<e lm="racionalizar"><p><l>racionalí</l><r>racionali</r></p><par n="abalán/zar__vblex"/></e>
 <e lm="radicar"><i>radi</i><par n="ata/car__vblex"/></e>
 <e lm="radicar"><p><l>radí</l><r>radi</r></p><par n="atá/car__vblex"/></e>
 <e lm="radiografiar"><i>radiografi</i><par n="ampli/ar__vblex"/></e>
@@ -86560,6 +86648,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="dentro de poco"><i>dentro<b/>de<b/>poco</i><par n="ahora__adv"/></e>
 <e lm="dentro"><i>dentro</i><par n="ahora__adv"/></e>
 <e lm="de nuevo"><i>de<b/>nuevo</i><par n="ahora__adv"/></e>
+<e lm="de paso"><i>de<b/>paso</i><par n="ahora__adv"/></e>
 <e lm="deprisa"><i>deprisa</i><par n="ahora__adv"/></e>
 <e lm="desafortunadamente"><i>desafortunadamente</i><par n="ahora__adv"/></e>
 <e lm="desagradablemente"><i>desagradablemente</i><par n="ahora__adv"/></e>
@@ -87025,6 +87114,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="familiarmente"><i>familiar</i><par n="abdominal/mente__adv"/></e>
 <e lm="fatalmente"><i>fatal</i><par n="abdominal/mente__adv"/></e>
 <e lm="federalmente"><i>federal</i><par n="abdominal/mente__adv"/></e>
+<e lm="confederalmente"><i>confederal</i><par n="abdominal/mente__adv"/></e>
 <e lm="fenomenalmente"><i>fenomenal</i><par n="abdominal/mente__adv"/></e>
 <e lm="fértilmente"><i>fértil</i><par n="abdominal/mente__adv"/></e>
 <e lm="feudalmente"><i>feudal</i><par n="abdominal/mente__adv"/></e>
@@ -89578,5 +89668,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <!--    <e>
         <par n="internet"/>
       </e> -->
+    <e>
+      <par n="guionet"/>
+    </e>
   </section>
 </dictionary>
