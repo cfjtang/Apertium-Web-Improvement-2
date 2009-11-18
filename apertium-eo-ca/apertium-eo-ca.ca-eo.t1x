@@ -3667,20 +3667,22 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
     </rule>
 
 
-
+<!--
+x- feia més mal que bé (esp. per a casos com DET NOM DE NOM ADJ ADJ i sim.) x-
+x- havia perdut el seu sentit en eliminar les regles de composició de NOM DE NOM x-
 <rule comment="REGLA: DET NOM DE NOM ADJ (EO)(pertany a les regles de formació de compostos a partir de  N+de+N, en aquest cas NO volem que faci el compost, ex. els animals de zones càlides-> la besto de varmaj zonoj)">
       <pattern>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="de"/>
 	<pattern-item n="nom"/>
-	<pattern-item n="adj"/>
+	<pattern-item n="adjADJ"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	 <call-macro n="nom_cas"> <!x- assigna cas nominatiu per defecte x-> 
 	  <with-param pos="1"/>
 	</call-macro> 
 	<call-macro n="nombre_nom">
@@ -3688,7 +3690,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	</call-macro>
 
    <choose>
-     <when>   <!-- article indefinit s'elimina -->
+     <when>   <!x- article indefinit s'elimina x->
       <test>
        <or>
        <equal caseless="yes">
@@ -3759,7 +3761,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
         </out>
     </when>
 
-<otherwise>           <!-- altres (amb cas)-->
+<otherwise>           <!x- altres (amb cas)x->
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -3830,6 +3832,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	</let>
       </action>
     </rule>
+-->
 
 <!--
 x- feia més mal que bé x-
