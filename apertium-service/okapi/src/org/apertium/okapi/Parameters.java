@@ -51,7 +51,7 @@ public class Parameters extends BaseParameters implements IEditorDescriptionProv
 	}
 
 	public EditorDescription createEditorDescription(ParametersDescription paramsDesc) {
-		EditorDescription desc = new EditorDescription("Apertium XML-RPC MT Connector Settings");
+		EditorDescription desc = new EditorDescription("Apertium-service MT Connector Settings");
 		desc.addTextInputPart(paramsDesc.get(SERVER));
 		return desc;
 	}
