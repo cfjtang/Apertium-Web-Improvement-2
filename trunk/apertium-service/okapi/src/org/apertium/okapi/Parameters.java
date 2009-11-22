@@ -1,3 +1,5 @@
+package org.apertium.okapi;
+
 import net.sf.okapi.common.*;
 import net.sf.okapi.common.uidescription.*;
 

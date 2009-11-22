@@ -1,3 +1,5 @@
+package org.apertium.okapi;
+
 import java.io.*;
 import java.net.*;
 import java.util.Map;
@@ -126,8 +128,7 @@ public class ApertiumXMLRPCMTConnector implements IQuery {
         	
 			if (frag.hasCode()) {
 				result.target = new TextFragment(store.fromCodedHTML(transText, frag), frag.getCodes());
-			}
-			else {
+			} else {
 				result.target = new TextFragment(store.fromCodedHTML(transText, frag));
 			}
 			
