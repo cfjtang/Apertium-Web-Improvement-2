@@ -12,6 +12,7 @@ LIST Vbser = vbser;
 LIST A = adj;
 LIST Pr = pr;
 LIST Pron = prn;
+LIST Poss = pos;
 LIST Det = det;
 LIST Dem = dem;
 LIST Adv = adv;
@@ -70,6 +71,11 @@ SECTION
 REMOVE:r1 A + Fem IF (0  $$NAGDLI) (*1 NounMscNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Fem);
 REMOVE:r2 A + Msc IF (0  $$NAGDLI) (*1 NounFemNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Msc);
 REMOVE:r3 A + Neu IF (0  $$NAGDLI) (*1 NounMscFem + $$NAGDLI BARRIER NPNHA LINK NOT 0 Neu);
+
+# Remove possessive genders if a noun cannot be found in the appropriate gender
+REMOVE:r4 Poss + Fem IF (0  $$NAGDLI) (*1 NounMscNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Fem);
+REMOVE:r5 Poss + Msc IF (0  $$NAGDLI) (*1 NounFemNeu + $$NAGDLI BARRIER NPNHA LINK NOT 0 Msc);
+REMOVE:r6 Poss + Neu IF (0  $$NAGDLI) (*1 NounMscFem + $$NAGDLI BARRIER NPNHA LINK NOT 0 Neu);
 
 # ti si 
 REMOVE:r4 Dem + Nom IF (NOT 1 V + P3);
