@@ -33,6 +33,16 @@
 #include "ResourceBroker.h"
 #include "utils/Logger.h"
 
+#include "cg/stdafx.h"
+#include "cg/Grammar.h"
+#include "cg/BinaryGrammar.h"
+#include "cg/ApertiumApplicator.h"
+#include "cg/MatxinApplicator.h"
+#include "cg/GrammarApplicator.h"
+
+using namespace std;
+using CG3::CG3Quit;
+
 ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPool(ub),
 	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
 	PostchunkPool(ub), TransferMultPool(ub), GrammarPool(ub) {
@@ -269,8 +279,9 @@ template <> CG3::Grammar *NonIndexedObjectPool<CG3::Grammar>::getNewInstance(Pro
 	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*ret, ux_err);
 
 	(*ret).ux_stderr = ux_err;
-	CG3::Tag *tag_any = ret->allocateTag(stringbits[S_ASTERIK]);
-	(*ret).tag_any = tag_any->hash;
+
+	//CG3::Tag *tag_any = ret->allocateTag(stringbits[S_ASTERIK]);
+	//(*ret).tag_any = tag_any->hash;
 
 	int pret = 0;
 

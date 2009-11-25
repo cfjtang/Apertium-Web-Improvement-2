@@ -24,7 +24,7 @@
 #include "ContextualTest.h"
 #include "Anchor.h"
 
-using namespace CG3;
+namespace CG3 {
 
 Grammar::Grammar() {
 	has_dep = false;
@@ -38,7 +38,8 @@ Grammar::Grammar() {
 	sets_any = 0;
 	rules_any = 0;
 	mapping_prefix = '@';
-	srand((unsigned int)time(0));
+	ux_stderr = 0;
+	ux_stdout = 0;
 }
 
 Grammar::~Grammar() {
@@ -107,12 +108,12 @@ Grammar::~Grammar() {
 		xset->second = 0;
 	}
 
-	foreach(uint32Setuint32HashMap, rules_by_set, irbs, irbs_end) {
+	foreach (uint32Setuint32HashMap, rules_by_set, irbs, irbs_end) {
 		delete irbs->second;
 		irbs->second = 0;
 	}
 
-	foreach(std::vector<ContextualTest*>, template_list, tmpls, tmpls_end) {
+	foreach (std::vector<ContextualTest*>, template_list, tmpls, tmpls_end) {
 		delete (*tmpls);
 	}
 }
@@ -122,18 +123,18 @@ void Grammar::addPreferredTarget(UChar *to) {
 	preferred_targets.push_back(tag->hash);
 }
 void Grammar::addSet(Set *to) {
-	if (!delimiters && u_strcmp(to->name, stringbits[S_DELIMITSET]) == 0) {
+	if (!delimiters && u_strcmp(to->name.c_str(), stringbits[S_DELIMITSET].getTerminatedBuffer()) == 0) {
 		delimiters = to;
 	}
-	else if (!soft_delimiters && u_strcmp(to->name, stringbits[S_SOFTDELIMITSET]) == 0) {
+	else if (!soft_delimiters && u_strcmp(to->name.c_str(), stringbits[S_SOFTDELIMITSET].getTerminatedBuffer()) == 0) {
 		soft_delimiters = to;
 	}
 	if (to->name[0] == 'T' && to->name[1] == ':') {
-		u_fprintf(ux_stderr, "Warning: Set name %S looks like a misattempt of template usage on line %u.\n", to->name, to->line);
+		u_fprintf(ux_stderr, "Warning: Set name %S looks like a misattempt of template usage on line %u.\n", to->name.c_str(), to->line);
 	}
 	uint32_t chash = to->rehash();
 	if (to->name[0] != '_' || to->name[1] != 'G' || to->name[2] != '_') {
-		uint32_t nhash = hash_sdbm_uchar(to->name);
+		uint32_t nhash = hash_sdbm_uchar(to->name.c_str());
 		if (set_name_seeds.find(nhash) != set_name_seeds.end()) {
 			nhash += set_name_seeds[nhash];
 		}
@@ -142,14 +143,14 @@ void Grammar::addSet(Set *to) {
 		}
 		else if (chash != sets_by_contents.find(sets_by_name.find(nhash)->second)->second->hash) {
 			Set *a = sets_by_contents.find(sets_by_name.find(nhash)->second)->second;
-			if (u_strcmp(a->name, to->name) == 0) {
-				u_fprintf(ux_stderr, "Error: Set %S already defined at line %u. Redefinition attempted at line %u!\n", a->name, a->line, to->line);
+			if (a->name == to->name) {
+				u_fprintf(ux_stderr, "Error: Set %S already defined at line %u. Redefinition attempted at line %u!\n", a->name.c_str(), a->line, to->line);
 				CG3Quit(1);
 			}
 			else {
 				for (uint32_t seed=0 ; seed<1000 ; seed++) {
 					if (sets_by_name.find(nhash+seed) == sets_by_name.end()) {
-						u_fprintf(ux_stderr, "Warning: Set %S got hash seed %u.\n", to->name, seed);
+						u_fprintf(ux_stderr, "Warning: Set %S got hash seed %u.\n", to->name.c_str(), seed);
 						u_fflush(ux_stderr);
 						set_name_seeds[nhash] = seed;
 						sets_by_name[nhash+seed] = chash;
@@ -167,7 +168,7 @@ void Grammar::addSet(Set *to) {
 		if (a->is_special != to->is_special || a->is_unified != to->is_unified || a->is_child_unified != to->is_child_unified
 		|| a->set_ops.size() != to->set_ops.size() || a->sets.size() != to->sets.size()
 		|| a->single_tags.size() != to->single_tags.size() || a->tags.size() != to->tags.size()) {
-			u_fprintf(ux_stderr, "Error: Content hash collision between set %S line %u and %S line %u!\n", a->name, a->line, to->name, to->line);
+			u_fprintf(ux_stderr, "Error: Content hash collision between set %S line %u and %S line %u!\n", a->name.c_str(), a->line, to->name.c_str(), to->line);
 			CG3Quit(1);
 		}
 	}
@@ -224,7 +225,8 @@ CompositeTag *Grammar::addCompositeTag(CompositeTag *tag) {
 			tags_list.push_back(tag);
 			tag->number = (uint32_t)tags_list.size()-1;
 		}
-	} else {
+	}
+	else {
 		u_fprintf(ux_stderr, "Error: Attempted to add empty composite tag to grammar on line %u!\n", lines);
 		CG3Quit(1);
 	}
@@ -237,7 +239,8 @@ CompositeTag *Grammar::addCompositeTagToSet(Set *set, CompositeTag *tag) {
 			addTagToSet(rtag, set);
 			delete tag;
 			tag = 0;
-		} else {
+		}
+		else {
 			tag = addCompositeTag(tag);
 			set->tags_set.insert(tag->hash);
 			set->tags.insert(tag);
@@ -245,7 +248,8 @@ CompositeTag *Grammar::addCompositeTagToSet(Set *set, CompositeTag *tag) {
 				set->is_special = true;
 			}
 		}
-	} else {
+	}
+	else {
 		u_fprintf(ux_stderr, "Error: Attempted to add empty composite tag to grammar and set on line %u!\n", lines);
 		CG3Quit(1);
 	}
@@ -275,9 +279,15 @@ void Grammar::destroyRule(Rule *rule) {
 Tag *Grammar::allocateTag() {
 	return new Tag;
 }
-Tag *Grammar::allocateTag(const UChar *txt) {
+Tag *Grammar::allocateTag(const UChar *txt, bool raw) {
 	Tag *tag = new Tag();
-	tag->parseTag(txt, ux_stderr);
+	if (raw) {
+		tag->parseTagRaw(txt);
+	}
+	else {
+		tag->parseTag(txt, ux_stderr);
+	}
+	tag->in_grammar = true;
 	uint32_t hash = tag->rehash();
 	uint32_t seed = 0;
 	for ( ; seed < 10000 ; seed++) {
@@ -308,7 +318,8 @@ Tag *Grammar::allocateTag(const UChar *txt) {
 void Grammar::addTagToCompositeTag(Tag *simpletag, CompositeTag *tag) {
 	if (simpletag && simpletag->tag) {
 		tag->addTag(simpletag);
-	} else {
+	}
+	else {
 		u_fprintf(ux_stderr, "Error: Attempted to add empty tag to grammar and composite tag on line %u!\n", lines);
 		CG3Quit(1);
 	}
@@ -367,7 +378,7 @@ void Grammar::resetStatistics() {
 }
 
 void Grammar::renameAllRules() {
-	foreach(RuleByLineHashMap, rule_by_line, iter_rule, iter_rule_end) {
+	foreach (RuleByLineHashMap, rule_by_line, iter_rule, iter_rule_end) {
 		Rule *r = iter_rule->second;
 		gbuffers[0][0] = 0;
 		u_sprintf(gbuffers[0], "L%u", r->line);
@@ -394,43 +405,43 @@ void Grammar::reindex(bool unused_sets) {
 
 	RuleByLineMap rule_by_line;
 	rule_by_line.insert(this->rule_by_line.begin(), this->rule_by_line.end());
-	foreach(RuleByLineMap, rule_by_line, iter_rule, iter_rule_end) {
+	foreach (RuleByLineMap, rule_by_line, iter_rule, iter_rule_end) {
 		Set *s = 0;
 		s = getSet(iter_rule->second->target);
-		s->markUsed(this);
+		s->markUsed(*this);
 		if (iter_rule->second->dep_target) {
-			iter_rule->second->dep_target->markUsed(this);
+			iter_rule->second->dep_target->markUsed(*this);
 		}
 		ContextualTest *test = iter_rule->second->dep_test_head;
 		while (test) {
-			test->markUsed(this);
+			test->markUsed(*this);
 			test = test->next;
 		}
 		test = iter_rule->second->test_head;
 		while (test) {
-			test->markUsed(this);
+			test->markUsed(*this);
 			test = test->next;
 		}
 	}
 	if (delimiters) {
-		delimiters->markUsed(this);
+		delimiters->markUsed(*this);
 	}
 	if (soft_delimiters) {
-		soft_delimiters->markUsed(this);
+		soft_delimiters->markUsed(*this);
 	}
 
 	// This is only necessary due to binary grammars.
 	// Sets used in unused templates may otherwise crash the loading of a binary grammar.
-	foreach(std::vector<ContextualTest*>, template_list, tmpls, tmpls_end) {
-		(*tmpls)->markUsed(this);
+	foreach (std::vector<ContextualTest*>, template_list, tmpls, tmpls_end) {
+		(*tmpls)->markUsed(*this);
 	}
 
 	if (unused_sets) {
 		u_fprintf(ux_stdout, "Unused sets:\n");
 		foreach (Setuint32HashMap, sets_by_contents, rset, rset_end) {
-			if (!rset->second->is_used && rset->second->name) {
+			if (!rset->second->is_used && !rset->second->name.empty()) {
 				if (rset->second->name[0] != '_' || rset->second->name[1] != 'G' || rset->second->name[2] != '_') {
-					u_fprintf(ux_stdout, "Line %u set %S\n", rset->second->line, rset->second->name);
+					u_fprintf(ux_stdout, "Line %u set %S\n", rset->second->line, rset->second->name.c_str());
 				}
 			}
 		}
@@ -449,12 +460,12 @@ void Grammar::reindex(bool unused_sets) {
 	}
 
 	sets_by_contents.clear();
-	foreach(std::set<Set*>, sets_all, sall, sall_end) {
+	foreach (std::set<Set*>, sets_all, sall, sall_end) {
 		sets_by_contents[(*sall)->hash] = *sall;
 	}
 
 	std::vector<CompositeTag*> ctmp;
-	foreach(std::vector<CompositeTag*>, tags_list, citer, citer_end) {
+	foreach (std::vector<CompositeTag*>, tags_list, citer, citer_end) {
 		if ((*citer)->is_used) {
 			ctmp.push_back(*citer);
 		}
@@ -465,12 +476,12 @@ void Grammar::reindex(bool unused_sets) {
 	}
 	tags_list.clear();
 	tags.clear();
-	foreach(std::vector<CompositeTag*>, ctmp, cniter, cniter_end) {
+	foreach (std::vector<CompositeTag*>, ctmp, cniter, cniter_end) {
 		addCompositeTag(*cniter);
 	}
 
 	std::vector<Tag*> stmp;
-	foreach(std::vector<Tag*>, single_tags_list, siter, siter_end) {
+	foreach (std::vector<Tag*>, single_tags_list, siter, siter_end) {
 		if ((*siter)->is_used) {
 			stmp.push_back(*siter);
 		}
@@ -481,7 +492,7 @@ void Grammar::reindex(bool unused_sets) {
 	}
 	single_tags_list.clear();
 	single_tags.clear();
-	foreach(std::vector<Tag*>, stmp, sniter, sniter_end) {
+	foreach (std::vector<Tag*>, stmp, sniter, sniter_end) {
 		addTag(*sniter);
 	}
 
@@ -489,9 +500,26 @@ void Grammar::reindex(bool unused_sets) {
 
 	// Stuff below this line is not optional...
 
+	size_t num_sets = 0, num_lists = 0;
+	size_t num_is = 0, num_it = 0;
+	size_t max_is = 0, max_it = 0;
+	std::map<size_t,size_t> cnt_is, cnt_it;
+
 	foreach (Setuint32HashMap, sets_by_contents, tset, tset_end) {
 		if (tset->second->is_used) {
 			addSetToList(tset->second);
+			if (tset->second->sets.empty()) {
+				++num_lists;
+				num_it += tset->second->tags_set.size();
+				max_it = std::max(max_it, tset->second->tags_set.size());
+				cnt_it[tset->second->tags_set.size()]++;
+			}
+			else {
+				++num_sets;
+				num_is += tset->second->sets.size();
+				max_is = std::max(max_is, tset->second->sets.size());
+				cnt_is[tset->second->sets.size()]++;
+			}
 		}
 	}
 
@@ -508,7 +536,7 @@ void Grammar::reindex(bool unused_sets) {
 
 	foreach (Setuint32HashMap, sets_by_contents, iter_sets, iter_sets_end) {
 		if (iter_sets->second->is_used) {
-			iter_sets->second->reindex(this);
+			iter_sets->second->reindex(*this);
 			indexSets(iter_sets->first, iter_sets->second);
 		}
 	}
@@ -567,14 +595,16 @@ void Grammar::indexSetToRule(uint32_t r, Set *s) {
 			CompositeTag *curcomptag = *comp_iter;
 			if (curcomptag->tags.size() == 1) {
 				indexTagToRule((*(curcomptag->tags.begin()))->hash, r);
-			} else {
+			}
+			else {
 				TagSet::const_iterator tag_iter;
 				for (tag_iter = curcomptag->tags_set.begin() ; tag_iter != curcomptag->tags_set.end() ; tag_iter++) {
 					indexTagToRule((*tag_iter)->hash, r);
 				}
 			}
 		}
-	} else if (!s->sets.empty()) {
+	}
+	else if (!s->sets.empty()) {
 		for (uint32_t i=0;i<s->sets.size();i++) {
 			Set *set = sets_by_contents.find(s->sets.at(i))->second;
 			indexSetToRule(r, set);
@@ -607,14 +637,16 @@ void Grammar::indexSets(uint32_t r, Set *s) {
 			CompositeTag *curcomptag = *comp_iter;
 			if (curcomptag->tags.size() == 1) {
 				indexTagToSet((*(curcomptag->tags.begin()))->hash, r);
-			} else {
+			}
+			else {
 				TagSet::const_iterator tag_iter;
 				for (tag_iter = curcomptag->tags_set.begin() ; tag_iter != curcomptag->tags_set.end() ; tag_iter++) {
 					indexTagToSet((*tag_iter)->hash, r);
 				}
 			}
 		}
-	} else if (!s->sets.empty()) {
+	}
+	else if (!s->sets.empty()) {
 		for (uint32_t i=0;i<s->sets.size();i++) {
 			Set *set = sets_by_contents.find(s->sets.at(i))->second;
 			indexSets(r, set);
@@ -630,4 +662,6 @@ void Grammar::indexTagToSet(uint32_t t, uint32_t r) {
 		sets_by_tag.insert(p);
 	}
 	sets_by_tag.find(t)->second->insert(r);
+}
+
 }

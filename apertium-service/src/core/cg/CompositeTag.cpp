@@ -22,13 +22,15 @@
 #include "CompositeTag.h"
 #include "Tag.h"
 
-using namespace CG3;
+namespace CG3 {
 
-CompositeTag::CompositeTag() {
-	is_used = false;
-	is_special = false;
-	hash = 0;
-	number = 0;
+CompositeTag::CompositeTag() :
+is_used(false),
+is_special(false),
+hash(0),
+number(0)
+{
+	// Nothing in the actual body...
 }
 
 CompositeTag::~CompositeTag() {
@@ -36,7 +38,6 @@ CompositeTag::~CompositeTag() {
 
 void CompositeTag::addTag(Tag *tag) {
 	tags.insert(tag);
-	tags_hash.insert(tag->hash);
 	tags_set.insert(tag);
 	if (tag->is_special) {
 		is_special = true;
@@ -54,7 +55,9 @@ uint32_t CompositeTag::rehash() {
 
 void CompositeTag::markUsed() {
 	is_used = true;
-	foreach(TagSet, tags_set, itag, itag_end) {
+	foreach (TagSet, tags_set, itag, itag_end) {
 		(*itag)->markUsed();
 	}
+}
+
 }

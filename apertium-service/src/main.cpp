@@ -54,6 +54,7 @@
 #include "utils/Statistics.h"
 
 #include "core/cg/stdafx.h"
+#include "core/cg/Strings.h"
 #include "core/cg/icu_uoptions.h"
 #include "core/cg/Grammar.h"
 #include "core/cg/BinaryGrammar.h"
@@ -98,10 +99,10 @@ void cleanup(void) {
 
 	delete logger;
 
-	free_strings();
-	free_keywords();
-	free_gbuffers();
-	free_flags();
+	//free_strings();
+	//free_keywords();
+	//free_gbuffers();
+	//free_flags();
 
 	u_cleanup();
 }
@@ -169,10 +170,10 @@ int main(int ac, char *av[]) {
 			return (1);
 		}
 
-		init_gbuffers();
-		init_strings();
-		init_keywords();
-		init_flags();
+		CG3::init_gbuffers();
+		//init_strings();
+		//init_keywords();
+		//init_flags();
 
 		::atexit(cleanup);
 		//::signal(SIGINT, &signalHandler);

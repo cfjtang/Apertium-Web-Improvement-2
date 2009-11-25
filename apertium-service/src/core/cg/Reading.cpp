@@ -20,45 +20,24 @@
 */
 
 #include "Reading.h"
-#include "Tag.h"
 
-using namespace CG3;
+namespace CG3 {
 
-Reading::Reading(Cohort *p) {
-	wordform = 0;
-	baseform = 0;
-	hash = 0;
-	hash_plain = 0;
-	parent = p;
-	number = 0;
-	mapped = false;
-	deleted = false;
-	noprint = false;
-	matched_target = false;
-	matched_tests = false;
-	mapping = 0;
-}
-
-void Reading::clear(Cohort *p) {
-	wordform = 0;
-	baseform = 0;
-	hash = 0;
-	hash_plain = 0;
-	parent = p;
-	number = 0;
-	mapped = false;
-	deleted = false;
-	noprint = false;
-	matched_target = false;
-	matched_tests = false;
-	hit_by.clear();
-	tags_list.clear();
-	tags.clear();
-	tags_plain.clear();
-	tags_textual.clear();
-	tags_numerical.clear();
-	possible_sets.clear();
-	mapping = 0;
+Reading::Reading(Cohort *p) :
+mapped(false),
+deleted(false),
+noprint(false),
+matched_target(false),
+matched_tests(false),
+wordform(0),
+baseform(0),
+hash(0),
+hash_plain(0),
+number(0),
+mapping(0),
+parent(p)
+{
+	// Nothing in the actual body...
 }
 
 Reading::~Reading() {
@@ -80,27 +59,28 @@ uint32_t Reading::rehash() {
 	return hash;
 }
 
-void Reading::duplicateFrom(Reading *r) {
-	wordform = r->wordform;
-	baseform = r->baseform;
-	hash = r->hash;
-	hash_plain = r->hash_plain;
-	parent = r->parent;
-	mapped = r->mapped;
-	deleted = r->deleted;
-	noprint = r->noprint;
-	mapping = r->mapping;
-	number = r->number;
+void Reading::duplicateFrom(Reading &r) {
+	wordform = r.wordform;
+	baseform = r.baseform;
+	hash = r.hash;
+	hash_plain = r.hash_plain;
+	parent = r.parent;
+	mapped = r.mapped;
+	deleted = r.deleted;
+	noprint = r.noprint;
+	mapping = r.mapping;
+	number = r.number;
 
-	hit_by = r->hit_by;
-	tags_list = r->tags_list;
-	tags = r->tags;
-	tags_plain = r->tags_plain;
-	tags_textual = r->tags_textual;
-	tags_numerical = r->tags_numerical;
-	possible_sets = r->possible_sets;
+	hit_by = r.hit_by;
+	tags_list = r.tags_list;
+	tags = r.tags;
+	tags_plain = r.tags_plain;
+	tags_textual = r.tags_textual;
+	tags_numerical = r.tags_numerical;
 }
 
 bool Reading::cmp_number(Reading *a, Reading *b) {
 	return a->number < b->number;
+}
+
 }

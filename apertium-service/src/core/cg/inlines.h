@@ -156,6 +156,10 @@ inline uint32_t hash_sdbm_char(const char *str, uint32_t hash = 0, size_t len = 
 	return SuperFastHash_char(str, hash, len);
 }
 
+inline bool ISSPACE(const UChar c) {
+	return (c == 0x20 || c == 0x09 || u_isWhitespace(c));
+}
+
 inline bool ISSTRING(UChar *p, uint32_t c) {
 	if (*(p-1) == '"' && *(p+c+1) == '"') {
 		return true;
@@ -176,9 +180,9 @@ inline bool ISNL(const UChar c) {
 	);
 }
 
-inline bool ISESC(UChar *p) {
+inline bool ISESC(const UChar *p) {
 	uint32_t a=1;
-	while(*(p-a) && *(p-a) == '\\') {
+	while (*(p-a) && *(p-a) == '\\') {
 		a++;
 	}
 	return (a%2==0);
@@ -188,79 +192,79 @@ inline bool ISCHR(const UChar p, const UChar a, const UChar b) {
 	return ((p) && ((p) == (a) || (p) == (b)));
 }
 
-inline void BACKTONL(UChar **p) {
-	while (**p && !ISNL(**p) && (**p != ';' || ISESC(*p))) {
-		(*p)--;
+inline void BACKTONL(UChar *& p) {
+	while (*p && !ISNL(*p) && (*p != ';' || ISESC(p))) {
+		p--;
 	}
-	(*p)++;
+	++p;
 }
 
-inline uint32_t SKIPLN(UChar **p) {
-	while (**p && !ISNL(**p)) {
-		(*p)++;
+inline uint32_t SKIPLN(UChar *& p) {
+	while (*p && !ISNL(*p)) {
+		++p;
 	}
-	(*p)++;
+	++p;
 	return 1;
 }
 
-inline uint32_t SKIPWS(UChar **p, const UChar a = 0, const UChar b = 0) {
+inline uint32_t SKIPWS(UChar *& p, const UChar a = 0, const UChar b = 0) {
 	uint32_t s = 0;
-	while (**p && **p != a && **p != b) {
-		if (ISNL(**p)) {
-			s++;
+	while (*p && *p != a && *p != b) {
+		if (ISNL(*p)) {
+			++s;
 		}
-		if (**p == '#' && !ISESC(*p)) {
+		if (*p == '#' && !ISESC(p)) {
 			s += SKIPLN(p);
-			(*p)--;
+			p--;
 		}
-		if (!u_isWhitespace(**p)) {
+		if (!ISSPACE(*p)) {
 			break;
 		}
-		(*p)++;
+		++p;
 	}
 	return s;
 }
 
-inline uint32_t SKIPTOWS(UChar **p, const UChar a = 0, const bool allowhash = false) {
+inline uint32_t SKIPTOWS(UChar *& p, const UChar a = 0, const bool allowhash = false) {
 	uint32_t s = 0;
-	while (**p && !u_isWhitespace(**p)) {
-		if (!allowhash && **p == '#' && !ISESC(*p)) {
+	while (*p && !ISSPACE(*p)) {
+		if (!allowhash && *p == '#' && !ISESC(p)) {
 			s += SKIPLN(p);
-			(*p)--;
+			p--;
 		}
-		if (ISNL(**p)) {
-			s++;
-			(*p)++;
+		if (ISNL(*p)) {
+			++s;
+			++p;
 		}
-		if (**p == ';' && !ISESC(*p)) {
+		if (*p == ';' && !ISESC(p)) {
 			break;
 		}
-		if (**p == a && !ISESC(*p)) {
+		if (*p == a && !ISESC(p)) {
 			break;
 		}
-		(*p)++;
+		++p;
 	}
 	return s;
 }
 
-inline uint32_t SKIPTO(UChar **p, const UChar a) {
+inline uint32_t SKIPTO(UChar *& p, const UChar a) {
 	uint32_t s = 0;
-	while (**p && (**p != a || ISESC(*p))) {
-		if (ISNL(**p)) {
-			s++;
+	while (*p && (*p != a || ISESC(p))) {
+		if (ISNL(*p)) {
+			++s;
 		}
-		(*p)++;
+		++p;
 	}
 	return s;
 }
 
-inline uint32_t SKIPTO_NOSPAN(UChar **p, const UChar a) {
+inline uint32_t SKIPTO_NOSPAN(UChar *& p, const UChar a) {
 	uint32_t s = 0;
-	while (**p && (**p != a || ISESC(*p))) {
-		if (ISNL(**p)) {
+	while (*p && (*p != a || ISESC(p))) {
+		if (ISNL(*p)) {
 			break;
 		}
-		(*p)++;
+		++p;
 	}
 	return s;
 }

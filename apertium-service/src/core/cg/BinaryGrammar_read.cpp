@@ -25,8 +25,7 @@
 #include "ContextualTest.h"
 #include "version.h"
 
-using namespace CG3;
-using namespace CG3::Strings;
+namespace CG3 {
 
 int BinaryGrammar::readBinaryGrammar(FILE *input) {
 	if (!input) {
@@ -52,7 +51,7 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 		CG3Quit(1);
 	}
 
-#define B_TOO_OLD 4767
+#define B_TOO_OLD 5118
 	fread(&u32tmp, sizeof(uint32_t), 1, input);
 	u32tmp = (uint32_t)ntohl(u32tmp);
 	if (u32tmp < B_TOO_OLD) {
@@ -138,7 +137,7 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 		}
 		grammar->single_tags[t->hash] = t;
 		grammar->single_tags_list[t->number] = t;
-		if (t->tag && t->tag[0] == '*' && u_strcmp(t->tag, stringbits[S_ASTERIK]) == 0) {
+		if (t->tag && t->tag[0] == '*' && u_strcmp(t->tag, stringbits[S_ASTERIK].getTerminatedBuffer()) == 0) {
 			grammar->tag_any = t->hash;
 		}
 	}
@@ -163,7 +162,6 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 			fread(&u32tmp, sizeof(uint32_t), 1, input);
 			u32tmp = (uint32_t)ntohl(u32tmp);
 			curcomptag->tags.insert(grammar->single_tags_list.at(u32tmp));
-			curcomptag->tags_hash.insert(grammar->single_tags_list.at(u32tmp)->hash);
 			curcomptag->tags_set.insert(grammar->single_tags_list.at(u32tmp));
 		}
 		grammar->tags[curcomptag->hash] = curcomptag;
@@ -411,6 +409,8 @@ void BinaryGrammar::readContextualTest(ContextualTest *t, FILE *input) {
 		fread(&u32tmp, sizeof(uint32_t), 1, input);
 		t->target = (uint32_t)ntohl(u32tmp);
 		fread(&u32tmp, sizeof(uint32_t), 1, input);
+		t->relation = (uint32_t)ntohl(u32tmp);
+		fread(&u32tmp, sizeof(uint32_t), 1, input);
 		t->barrier = (uint32_t)ntohl(u32tmp);
 		fread(&u32tmp, sizeof(uint32_t), 1, input);
 		t->cbarrier = (uint32_t)ntohl(u32tmp);
@@ -424,4 +424,6 @@ void BinaryGrammar::readContextualTest(ContextualTest *t, FILE *input) {
 	else {
 		t->linked = 0;
 	}
+}
+
 }

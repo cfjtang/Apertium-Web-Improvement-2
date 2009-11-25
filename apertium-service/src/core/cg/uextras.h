@@ -25,7 +25,8 @@
 
 #include "stdafx.h"
 
-bool ux_isNewline(const UChar32 current, const UChar32 previous);
+namespace CG3 {
+
 bool ux_isEmpty(const UChar *text);
 
 bool ux_trim(UChar *totrim);
@@ -38,8 +39,12 @@ bool ux_unEscape(UChar *target, const UChar *source);
 UChar *ux_append(UChar *target, const UChar *data);
 UChar *ux_append(UChar *target, const UChar data);
 
-UChar *ux_substr(UChar *string, int start, int end);
+UChar *ux_substr(UChar *string, const size_t start, const size_t end);
 
 char *ux_dirname(const char *in);
+
+bool ux_simplecasecmp(const UChar *a, const UChar *b, const size_t n);
+
+}
 
 #endif

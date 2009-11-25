@@ -22,7 +22,7 @@
 #include "Window.h"
 #include "SingleWindow.h"
 
-using namespace CG3;
+namespace CG3 {
 
 Window::Window(GrammarApplicator *p) {
 	parent = p;
@@ -48,10 +48,10 @@ Window::~Window() {
 	}
 }
 
-void Window::pushSingleWindow(SingleWindow *swindow) {
+SingleWindow *Window::allocPushSingleWindow() {
+	SingleWindow *swindow = new SingleWindow(this);
 	window_counter++;
 	swindow->number = window_counter;
-	swindow->parent = this;
 	if (!next.empty()) {
 		swindow->next = next.front();
 		next.front()->previous = swindow;
@@ -61,17 +61,19 @@ void Window::pushSingleWindow(SingleWindow *swindow) {
 		current->next = swindow;
 	}
 	next.push_front(swindow);
+	return swindow;
 }
 
-void Window::appendSingleWindow(SingleWindow *swindow) {
+SingleWindow *Window::allocAppendSingleWindow() {
+	SingleWindow *swindow = new SingleWindow(this);
 	window_counter++;
 	swindow->number = window_counter;
-	swindow->parent = this;
 	if (!next.empty()) {
 		swindow->previous = next.back();
 		next.back()->next = swindow;
 	}
 	next.push_back(swindow);
+	return swindow;
 }
 
 void Window::shuffleWindowsDown() {
@@ -84,4 +86,6 @@ void Window::shuffleWindowsDown() {
 		current = next.front();
 		next.pop_front();
 	}
+}
+
 }

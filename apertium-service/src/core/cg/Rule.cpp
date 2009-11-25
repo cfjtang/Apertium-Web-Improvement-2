@@ -24,8 +24,7 @@
 #include "Strings.h"
 #include "Tag.h"
 
-using namespace CG3;
-using namespace CG3::Strings;
+namespace CG3 {
 
 Rule::Rule() {
 	name = 0;
@@ -66,9 +65,8 @@ Rule::~Rule() {
 }
 
 void Rule::setName(const UChar *to) {
-	if (name) {
-		delete[] name;
-	}
+	delete[] name;
+	name = 0;
 	if (to) {
 		name = new UChar[u_strlen(to)+1];
 		u_strcpy(name, to);
@@ -143,4 +141,6 @@ void Rule::resetStatistics() {
 
 bool Rule::cmp_quality(const Rule *a, const Rule *b) {
 	return a->total_time > b->total_time;
+}
+
 }

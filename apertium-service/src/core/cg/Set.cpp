@@ -24,48 +24,41 @@
 #include "Strings.h"
 #include "Grammar.h"
 
-using namespace CG3;
+namespace CG3 {
 
-Set::Set() {
-	match_any = false;
-	is_special = false;
-	is_unified = false;
-	is_child_unified = false;
-	is_used = false;
-	name = 0;
-	line = 0;
-	hash = 0;
-	num_fail = 0;
-	num_match = 0;
-	total_time = 0;
-	number = 0;
+Set::Set() :
+match_any(false),
+is_special(false),
+is_unified(false),
+is_child_unified(false),
+is_used(false),
+line(0),
+hash(0),
+number(0),
+num_fail(0),
+num_match(0),
+total_time(0)
+{
+	// Nothing in the actual body...
 }
 
 Set::~Set() {
-	if (name) {
-		delete[] name;
-	}
 }
 
 void Set::setName(uint32_t to) {
-	if (name) {
-		delete[] name;
-	}
 	if (!to) {
 		to = (uint32_t)rand();
 	}
-	name = new UChar[32];
-	memset(name, 0, sizeof(UChar)*32);
-	u_sprintf(name, "_G_%u_%u_", line, to);
+	name.reserve(26);
+	name.resize(26);
+	size_t n = u_snprintf(&name[0], 26, "_G_%u_%u_", line, to);
+	name.resize(n);
 }
 void Set::setName(const UChar *to) {
-	if (name) {
-		delete[] name;
-	}
 	if (to) {
-		name = new UChar[u_strlen(to)+1];
-		u_strcpy(name, to);
-	} else {
+		name = to;
+	}
+	else {
 		setName((uint32_t)rand());
 	}
 }
@@ -91,7 +84,7 @@ uint32_t Set::rehash() {
 	return retval;
 }
 
-void Set::reindex(Grammar *grammar) {
+void Set::reindex(Grammar &grammar) {
 	if (is_unified || is_child_unified) {
 		is_special = true;
 		is_child_unified = true;
@@ -113,7 +106,8 @@ void Set::reindex(Grammar *grammar) {
 				if (tag->is_special) {
 					is_special = true;
 				}
-			} else {
+			}
+			else {
 				TagSet::const_iterator tag_iter;
 				for (tag_iter = curcomptag->tags_set.begin() ; tag_iter != curcomptag->tags_set.end() ; tag_iter++) {
 					Tag *tag = *tag_iter;
@@ -123,9 +117,10 @@ void Set::reindex(Grammar *grammar) {
 				}
 			}
 		}
-	} else if (!sets.empty()) {
+	}
+	else if (!sets.empty()) {
 		for (uint32_t i=0;i<sets.size();i++) {
-			Set *set = grammar->sets_by_contents.find(sets.at(i))->second;
+			Set *set = grammar.sets_by_contents.find(sets.at(i))->second;
 			set->reindex(grammar);
 			if (set->is_special) {
 				is_special = true;
@@ -137,7 +132,7 @@ void Set::reindex(Grammar *grammar) {
 	}
 }
 
-void Set::markUsed(Grammar *grammar) {
+void Set::markUsed(Grammar &grammar) {
 	is_used = true;
 
 	if (sets.empty()) {
@@ -151,9 +146,10 @@ void Set::markUsed(Grammar *grammar) {
 			CompositeTag *curcomptag = *comp_iter;
 			curcomptag->markUsed();
 		}
-	} else if (!sets.empty()) {
+	}
+	else if (!sets.empty()) {
 		for (uint32_t i=0;i<sets.size();i++) {
-			Set *set = grammar->sets_by_contents.find(sets.at(i))->second;
+			Set *set = grammar.sets_by_contents.find(sets.at(i))->second;
 			set->markUsed(grammar);
 		}
 	}
@@ -163,4 +159,6 @@ void Set::resetStatistics() {
 	num_fail = 0;
 	num_match = 0;
 	total_time = 0;
+}
+
 }

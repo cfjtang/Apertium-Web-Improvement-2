@@ -28,16 +28,15 @@
 #include "Rule.h"
 
 namespace CG3 {
+	class Window;
 
 	class SingleWindow {
 	public:
 		uint32_t number;
 		SingleWindow *next, *previous;
 		Window *parent;
-
-		std::vector<Cohort*> cohorts;
 		UChar *text;
-		uint32_t hash, hash_tags, hash_mapped, hash_plain, hash_textual;
+		CohortVector cohorts;
 		uint32Set valid_rules;
 		RuleToCohortsMap rule_to_cohorts;
 

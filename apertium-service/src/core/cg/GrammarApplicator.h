@@ -24,8 +24,17 @@
 #define __GRAMMARAPPLICATOR_H
 
 #include "stdafx.h"
+#include "Tag.h"
 
 namespace CG3 {
+	class Window;
+	class Grammar;
+	class Reading;
+	class SingleWindow;
+	class Cohort;
+	class ContextualTest;
+	class Set;
+
 	class GrammarApplicator {
 	public:
 		bool always_span;
@@ -37,24 +46,27 @@ namespace CG3 {
 		bool trace;
 		bool trace_name_only;
 		bool trace_no_removed;
+		bool trace_encl;
 		bool single_run;
 		bool allow_magic_readings;
 		bool no_pass_origin;
 		bool unsafe;
+		bool ordered;
 
 		bool dep_has_spanned;
 		bool dep_delimit;
 		bool dep_humanize;
 		bool dep_original;
 		bool dep_block_loops;
+		bool dep_block_crossing;
 
 		uint32_t num_windows;
 		uint32_t soft_limit;
 		uint32_t hard_limit;
-		std::vector<uint32_t> sections;
+		uint32Vector sections;
 		uint32_t verbosity_level;
 
-		GrammarApplicator(UFILE *ux_in, UFILE *ux_out, UFILE *ux_err);
+		GrammarApplicator(UFILE *ux_err);
 		virtual ~GrammarApplicator();
 
 		void enableStatistics();
@@ -72,10 +84,8 @@ namespace CG3 {
 
 	protected:
 		void printReading(Reading *reading, UFILE *output);
-		void printSingleWindow(SingleWindow *window, UFILE *output);
+		virtual void printSingleWindow(SingleWindow *window, UFILE *output);
 
-		UFILE *ux_stdin;
-		UFILE *ux_stdout;
 		UFILE *ux_stderr;
 
 		uint32_t numLines;
@@ -84,6 +94,7 @@ namespace CG3 {
 		uint32_t numReadings;
 
 		bool did_index;
+		uint32Set dep_deep_seen;
 
 		uint32_t numsections;
 		typedef std::map<int32_t,uint32Set*> RSType;
@@ -105,9 +116,10 @@ namespace CG3 {
 		std::map<uint32_t,UnicodeString> regexgrps;
 		uint32HashMap variables;
 		uint32HashMap metas;
+		Cohort *target;
 		Cohort *mark;
+		Cohort *attach_to;
 
-		bool unif_mode;
 		uint32HashMap unif_tags;
 		uint32_t unif_last_wordform;
 		uint32_t unif_last_baseform;
@@ -123,37 +135,40 @@ namespace CG3 {
 	
 		Tag *addTag(const UChar *tag);
 
-		void updateRuleToCohorts(Cohort *c, uint32_t rsit);
-		void indexSingleWindow(SingleWindow *current);
+		void updateRuleToCohorts(Cohort& c, const uint32_t& rsit);
+		void indexSingleWindow(SingleWindow &current);
 		int runGrammarOnWindow();
-		int runGrammarOnSingleWindow(SingleWindow *current);
-		void updateValidRules(uint32Set *rules, uint32Set *intersects, uint32_t hash, Reading *reading);
-		uint32_t runRulesOnWindow(SingleWindow *current, uint32Set *rules);
+		int runGrammarOnSingleWindow(SingleWindow &current);
+		void updateValidRules(const uint32Set& rules, uint32Set &intersects, const uint32_t& hash, Reading &reading);
+		uint32_t runRulesOnWindow(SingleWindow &current, uint32Set &rules);
 
 		Cohort *runSingleTest(SingleWindow *sWindow, size_t i, const ContextualTest *test, bool *brk, bool *retval, Cohort **deep = 0, Cohort *origin = 0);
 		Cohort *runContextualTest(SingleWindow *sWindow, size_t position, const ContextualTest *test, Cohort **deep = 0, Cohort *origin = 0);
 		Cohort *runDependencyTest(SingleWindow *sWindow, const Cohort *current, const ContextualTest *test, Cohort **deep = 0, Cohort *origin = 0, const Cohort *self = 0);
 		Cohort *runParenthesisTest(SingleWindow *sWindow, const Cohort *current, const ContextualTest *test, Cohort **deep = 0, Cohort *origin = 0);
+		Cohort *runRelationTest(SingleWindow *sWindow, Cohort *current, const ContextualTest *test, Cohort **deep = 0, Cohort *origin = 0);
 
-		bool doesTagMatchSet(const uint32_t tag, const Set *set);
-		bool doesTagMatchReading(const Reading *reading, const Tag *tag);
-		bool doesSetMatchReading_tags(const Reading *reading, const Set *theset);
-		bool doesSetMatchReading(Reading *reading, const uint32_t set, bool bypass_index = false);
-		bool doesSetMatchCohortNormal(Cohort *cohort, const uint32_t set, uint32_t options = 0);
-		bool doesSetMatchCohortCareful(const Cohort *cohort, const uint32_t set, uint32_t options = 0);
+		bool doesTagMatchSet(const uint32_t tag, const Set &set);
+		bool doesTagMatchReading(const Reading &reading, const Tag &tag, bool unif_mode = false);
+		bool doesSetMatchReading_tags(const Reading &reading, const Set &theset, bool unif_mode = false);
+		bool doesSetMatchReading(Reading &reading, const uint32_t set, bool bypass_index = false, bool unif_mode = false);
+		bool doesSetMatchCohortNormal(Cohort &cohort, const uint32_t set, uint32_t options = 0);
+		bool doesSetMatchCohortCareful(const Cohort &cohort, const uint32_t set, uint32_t options = 0);
 
 		bool statistics;
 		ticks gtimer;
 
-		void reflowReading(Reading *reading);
-		void addTagToReading(Reading *reading, uint32_t tag, bool rehash = true);
-		void delTagFromReading(Reading *reading, uint32_t tag);
-		void splitMappings(TagList mappings, Cohort *cohort, Reading *reading, bool mapped = false);
-		void mergeMappings(Cohort *cohort);
+		void rebuildCohortLinks();
+		void reflowReading(Reading &reading);
+		void addTagToReading(Reading &reading, uint32_t tag, bool rehash = true);
+		void delTagFromReading(Reading &reading, uint32_t tag);
+		void splitMappings(TagList mappings, Cohort &cohort, Reading &reading, bool mapped = false);
+		void mergeMappings(Cohort &cohort);
 		bool wouldParentChildLoop(Cohort *parent, Cohort *child);
-		bool attachParentChild(Cohort *parent, Cohort *child, bool allowloop = false);
+		bool wouldParentChildCross(Cohort *parent, Cohort *child);
+		bool attachParentChild(Cohort &parent, Cohort &child, bool allowloop = false, bool allowcrossing = false);
 
-		Reading *initEmptyCohort(Cohort *cohort);
+		Reading *initEmptyCohort(Cohort &cohort);
 	};
 }
 

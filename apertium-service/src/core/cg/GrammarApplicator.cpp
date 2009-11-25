@@ -27,12 +27,9 @@
 #include "SingleWindow.h"
 #include "Reading.h"
 
-using namespace CG3;
-using namespace CG3::Strings;
+namespace CG3 {
 
-GrammarApplicator::GrammarApplicator(UFILE *ux_in, UFILE *ux_out, UFILE *ux_err) {
-	ux_stdin = ux_in;
-	ux_stdout = ux_out;
+GrammarApplicator::GrammarApplicator(UFILE *ux_err) {
 	ux_stderr = ux_err;
 	always_span = false;
 	apply_mappings = true;
@@ -41,6 +38,7 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_in, UFILE *ux_out, UFILE *ux_err)
 	trace = false;
 	trace_name_only = false;
 	trace_no_removed = false;
+	trace_encl = false;
 	single_run = false;
 	statistics = false;
 	dep_has_spanned = false;
@@ -48,6 +46,7 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_in, UFILE *ux_out, UFILE *ux_err)
 	dep_humanize = false;
 	dep_original = false;
 	dep_block_loops = true;
+	dep_block_crossing = false;
 	dep_highest_seen = 0;
 	has_dep = false;
 	verbosity_level = 0;
@@ -55,7 +54,9 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_in, UFILE *ux_out, UFILE *ux_err)
 	begintag = 0;
 	endtag = 0;
 	grammar = 0;
+	target = 0;
 	mark = 0;
+	attach_to = 0;
 	match_single = 0;
 	match_comp = 0;
 	match_sub = 0;
@@ -77,6 +78,7 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_in, UFILE *ux_out, UFILE *ux_err)
 	did_final_enclosure = false;
 	did_index = false;
 	unsafe = false;
+	ordered = false;
 	gWindow = new Window(this);
 }
 
@@ -89,16 +91,14 @@ GrammarApplicator::~GrammarApplicator() {
 		}
 	}
 
-	foreach(RSType, runsections, rsi, rsi_end) {
+	foreach (RSType, runsections, rsi, rsi_end) {
 		delete rsi->second;
 		rsi->second = 0;
 	}
 
-	if (gWindow) {
-		delete gWindow;
-	}
+	delete gWindow;
 	grammar = 0;
-	ux_stdin = ux_stderr = ux_stdout = 0;
+	ux_stderr = 0;
 }
 
 void GrammarApplicator::resetIndexes() {
@@ -240,25 +240,27 @@ void GrammarApplicator::printReading(Reading *reading, UFILE *output) {
 	u_fprintf(output, "\t");
 
 	if (reading->baseform) {
-		Tag::printTagRaw(output, single_tags[reading->baseform]);
+		u_fprintf(output, "%S", single_tags.find(reading->baseform)->second->tag);
 		u_fprintf(output, " ");
 	}
 
 	uint32HashMap used_tags;
 	foreach (uint32List, reading->tags_list, tter, tter_end) {
-		if (used_tags.find(*tter) != used_tags.end()) {
-			continue;
-		}
 		if (*tter == endtag || *tter == begintag) {
 			continue;
 		}
-		used_tags[*tter] = *tter;
+		if (!ordered) {
+			if (used_tags.find(*tter) != used_tags.end()) {
+				continue;
+			}
+			used_tags[*tter] = *tter;
+		}
 		const Tag *tag = single_tags[*tter];
 		if (tag->type & T_DEPENDENCY && has_dep && !dep_original) {
 			continue;
 		}
 		if (!(tag->type & T_BASEFORM) && !(tag->type & T_WORDFORM)) {
-			Tag::printTagRaw(output, tag);
+			u_fprintf(output, "%S", tag->tag);
 			u_fprintf(output, " ");
 		}
 	}
@@ -269,7 +271,7 @@ void GrammarApplicator::printReading(Reading *reading, UFILE *output) {
 		}
 		const Cohort *pr = 0;
 		pr = reading->parent;
-		if (reading->parent->dep_parent != UINT_MAX) {
+		if (reading->parent->dep_parent != std::numeric_limits<uint32_t>::max()) {
 			if (reading->parent->dep_parent == 0) {
 				pr = reading->parent->parent->cohorts.at(0);
 			}
@@ -290,7 +292,7 @@ void GrammarApplicator::printReading(Reading *reading, UFILE *output) {
 				pr->local_number);
 		}
 		else {
-			if (reading->parent->dep_parent == UINT_MAX) {
+			if (reading->parent->dep_parent == std::numeric_limits<uint32_t>::max()) {
 				u_fprintf(output, "#%u->%u ",
 					reading->parent->dep_self,
 					reading->parent->dep_self);
@@ -306,24 +308,39 @@ void GrammarApplicator::printReading(Reading *reading, UFILE *output) {
 	if (reading->parent->is_related) {
 		u_fprintf(output, "ID:%u ", reading->parent->global_number);
 		if (!reading->parent->relations.empty()) {
-			std::multimap<uint32_t,uint32_t>::iterator miter;
-			for (miter = reading->parent->relations.begin() ; miter != reading->parent->relations.end() ; miter++) {
-				u_fprintf(output, "R:");
-				Tag::printTagRaw(output, single_tags[miter->second]);
-				u_fprintf(output, ":%u ", miter->first);
+			foreach(RelationCtn, reading->parent->relations, miter, miter_end) {
+				foreach(uint32Set, miter->second, siter, siter_end) {
+					u_fprintf(output, "R:%S:%u ", grammar->single_tags.find(miter->first)->second->tag, *siter);
+				}
 			}
 		}
 	}
 
 	if (trace) {
 		foreach (uint32Vector, reading->hit_by, iter_hb, iter_hb_end) {
-			const Rule *r = grammar->rule_by_line.find(*iter_hb)->second;
-			u_fprintf(output, "%S", keywords[r->type]);
-			if (!trace_name_only || !r->name) {
-				u_fprintf(output, ":%u", *iter_hb);
+			RuleByLineHashMap::const_iterator ruit = grammar->rule_by_line.find(*iter_hb);
+			if (ruit != grammar->rule_by_line.end()) {
+				const Rule *r = ruit->second;
+				u_fprintf(output, "%S", keywords[r->type].getTerminatedBuffer());
+				if (r->type == K_ADDRELATION || r->type == K_SETRELATION || r->type == K_REMRELATION
+				|| r->type == K_ADDRELATIONS || r->type == K_SETRELATIONS || r->type == K_REMRELATIONS
+					) {
+						u_fprintf(output, "(%S", grammar->single_tags.find(r->maplist.front()->hash)->second->tag);
+						if (r->type == K_ADDRELATIONS || r->type == K_SETRELATIONS || r->type == K_REMRELATIONS) {
+							u_fprintf(output, ",%S", grammar->single_tags.find(r->sublist.front())->second->tag);
+						}
+						u_fprintf(output, ")");
+				}
+				if (!trace_name_only || !r->name) {
+					u_fprintf(output, ":%u", *iter_hb);
+				}
+				if (r->name) {
+					u_fprintf(output, ":%S", r->name);
+				}
 			}
-			if (r->name) {
-				u_fprintf(output, ":%S", r->name);
+			else {
+				uint32_t pass = std::numeric_limits<uint32_t>::max() - (*iter_hb);
+				u_fprintf(output, "ENCL:%u", pass);
 			}
 			u_fprintf(output, " ");
 		}
@@ -340,30 +357,29 @@ void GrammarApplicator::printSingleWindow(SingleWindow *window, UFILE *output) {
 	uint32_t cs = (uint32_t)window->cohorts.size();
 	for (uint32_t c=1 ; c < cs ; c++) {
 		Cohort *cohort = window->cohorts.at(c);
-		Tag::printTagRaw(output, single_tags[cohort->wordform]);
+		u_fprintf(output, "%S", single_tags.find(cohort->wordform)->second->tag);
 		//u_fprintf(output, " %u", cohort->number);
 		u_fprintf(output, "\n");
-		if (cohort->text_pre) {
-			u_fprintf(output, "%S", cohort->text_pre);
-		}
 
-		mergeMappings(cohort);
+		mergeMappings(*cohort);
 
-		foreach (std::list<Reading*>, cohort->readings, rter1, rter1_end) {
+		foreach (ReadingList, cohort->readings, rter1, rter1_end) {
 			printReading(*rter1, output);
 		}
 		if (trace && !trace_no_removed) {
-			foreach (std::list<Reading*>, cohort->delayed, rter3, rter3_end) {
+			foreach (ReadingList, cohort->delayed, rter3, rter3_end) {
 				printReading(*rter3, output);
 			}
-			foreach (std::list<Reading*>, cohort->deleted, rter2, rter2_end) {
+			foreach (ReadingList, cohort->deleted, rter2, rter2_end) {
 				printReading(*rter2, output);
 			}
 		}
-		if (cohort->text_post) {
-			u_fprintf(output, "%S", cohort->text_post);
+		if (cohort->text) {
+			u_fprintf(output, "%S", cohort->text);
 		}
 	}
 	u_fprintf(output, "\n");
 	u_fflush(output);
+}
+
 }

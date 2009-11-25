@@ -226,7 +226,8 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 		CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
 
-		CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_in, ux_out, ux_err);
+		//CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_in, ux_out, ux_err);
+		CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_err);
 
 		{
 		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);

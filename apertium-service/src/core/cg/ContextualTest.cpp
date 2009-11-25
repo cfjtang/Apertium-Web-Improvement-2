@@ -23,26 +23,28 @@
 #include "Grammar.h"
 #include "Strings.h"
 
-using namespace CG3;
-using namespace CG3::Strings;
+namespace CG3 {
 
-ContextualTest::ContextualTest() {
-	pos = 0;
-	offset = 0;
-	target = 0;
-	barrier = 0;
-	cbarrier = 0;
-	linked = 0;
-	hash = 0;
-	name = 0;
-	line = 0;
-	num_fail = 0;
-	num_match = 0;
-	total_time = 0;
-	tmpl = 0;
-	prev = 0;
-	next = 0;
-	is_used = false;
+ContextualTest::ContextualTest() :
+is_used(false),
+offset(0),
+line(0),
+name(0),
+hash(0),
+pos(0),
+target(0),
+relation(0),
+barrier(0),
+cbarrier(0),
+num_fail(0),
+num_match(0),
+total_time(0),
+tmpl(0),
+linked(0),
+prev(0),
+next(0)
+{
+	// Nothing in the actual body...
 }
 
 ContextualTest::~ContextualTest() {
@@ -66,114 +68,6 @@ void ContextualTest::detach() {
 	prev = next = 0;
 }
 
-void ContextualTest::parsePosition(const UChar *input, UFILE *ux_stderr) {
-	if (u_strstr(input, stringbits[S_ASTERIKTWO])) {
-		pos |= POS_SCANALL;
-	}
-	else if (u_strstr(input, stringbits[S_ASTERIK])) {
-		pos |= POS_SCANFIRST;
-	}
-	if (u_strchr(input, 'C')) {
-		pos |= POS_CAREFUL;
-	}
-	if (u_strchr(input, 'c')) {
-		pos |= POS_DEP_CHILD;
-	}
-	if (u_strchr(input, 'p')) {
-		pos |= POS_DEP_PARENT;
-	}
-	if (u_strchr(input, 's')) {
-		pos |= POS_DEP_SIBLING;
-	}
-	if (u_strchr(input, 'S')) {
-		pos |= POS_DEP_SELF;
-	}
-	if (u_strchr(input, '<')) {
-		pos |= POS_SPAN_LEFT;
-	}
-	if (u_strchr(input, '>')) {
-		pos |= POS_SPAN_RIGHT;
-	}
-	if (u_strchr(input, 'W')) {
-		pos |= POS_SPAN_BOTH;
-	}
-	if (u_strchr(input, '@')) {
-		pos |= POS_ABSOLUTE;
-	}
-	if (u_strchr(input, 'O')) {
-		pos |= POS_NO_PASS_ORIGIN;
-	}
-	if (u_strchr(input, 'o')) {
-		pos |= POS_PASS_ORIGIN;
-	}
-	if (u_strchr(input, 'L')) {
-		pos |= POS_LEFT_PAR;
-	}
-	if (u_strchr(input, 'R')) {
-		pos |= POS_RIGHT_PAR;
-	}
-	if (u_strchr(input, 'X')) {
-		pos |= POS_MARK_SET;
-	}
-	if (u_strchr(input, 'x')) {
-		pos |= POS_MARK_JUMP;
-	}
-	if (u_strchr(input, 'D')) {
-		pos |= POS_LOOK_DELETED;
-	}
-	if (u_strchr(input, 'd')) {
-		pos |= POS_LOOK_DELAYED;
-	}
-	if (u_strchr(input, '?')) {
-		pos |= POS_NONE;
-	}
-	UChar tmp[16];
-	tmp[0] = 0;
-	int32_t retval = u_sscanf(input, "%[^0-9]%d", &tmp, &offset);
-	if (u_strchr(input, '-')) {
-		offset = (-1) * abs(offset);
-	}
-
-	if ((pos & (POS_DEP_CHILD|POS_DEP_SIBLING|POS_DEP_PARENT)) && (pos & (POS_SCANFIRST|POS_SCANALL))) {
-		pos &= ~POS_SCANFIRST;
-		pos &= ~POS_SCANALL;
-		pos |= POS_DEP_DEEP;
-	}
-	if ((pos & (POS_DEP_CHILD|POS_DEP_SIBLING|POS_DEP_PARENT)) && (pos & POS_CAREFUL)) {
-		pos &= ~POS_CAREFUL;
-		pos |= POS_DEP_ALL;
-	}
-	if ((pos & (POS_DEP_CHILD|POS_DEP_SIBLING|POS_DEP_PARENT)) && (pos & POS_NEGATIVE)) {
-		pos &= ~POS_NEGATIVE;
-		pos |= POS_DEP_NONE;
-	}
-
-	if ((!(pos & (POS_DEP_CHILD|POS_DEP_SIBLING|POS_DEP_PARENT))) && (retval == EOF || (offset == 0 && tmp[0] == 0 && retval < 1))) {
-		u_fprintf(ux_stderr, "Error: '%S' is not a valid position!\n", input);
-		CG3Quit(1);
-	}
-	if ((pos & (POS_LEFT_PAR|POS_RIGHT_PAR)) && (pos & (POS_SCANFIRST|POS_SCANALL))) {
-		u_fprintf(ux_stderr, "Error: '%S' is not a valid position - cannot have both enclosure and scan!\n", input);
-		CG3Quit(1);
-	}
-	if ((pos & POS_PASS_ORIGIN) && (pos & POS_NO_PASS_ORIGIN)) {
-		u_fprintf(ux_stderr, "Error: '%S' is not a valid position - cannot have both O and o!\n", input);
-		CG3Quit(1);
-	}
-	if ((pos & POS_LEFT_PAR) && (pos & POS_RIGHT_PAR)) {
-		u_fprintf(ux_stderr, "Error: '%S' is not a valid position - cannot have both L and R!\n", input);
-		CG3Quit(1);
-	}
-	if ((pos & POS_DEP_ALL) && (pos & POS_DEP_NONE)) {
-		u_fprintf(ux_stderr, "Error: '%S' is not a valid position - cannot have both NOT and C for dependencies!\n", input);
-		CG3Quit(1);
-	}
-	if ((pos & POS_NONE) && (pos != POS_NONE || offset != 0 || u_strcmp(input, stringbits[S_QUESTION]) != 0)) {
-		u_fprintf(ux_stderr, "Error: '%S' is not a valid position - '?' cannot be combined with anything else!\n", input);
-		CG3Quit(1);
-	}
-}
-
 ContextualTest *ContextualTest::allocateContextualTest() {
 	return new ContextualTest;
 }
@@ -193,6 +87,13 @@ uint32_t ContextualTest::rehash() {
 	return hash;
 }
 
+uint32_t ContextualTest::getHash() {
+	if (hash == 0) {
+		rehash();
+	}
+	return hash;
+}
+
 void ContextualTest::resetStatistics() {
 	num_fail = 0;
 	num_match = 0;
@@ -200,7 +101,7 @@ void ContextualTest::resetStatistics() {
 	if (tmpl) {
 		tmpl->resetStatistics();
 	}
-	foreach(std::list<ContextualTest*>, ors, idts, idts_end) {
+	foreach (std::list<ContextualTest*>, ors, idts, idts_end) {
 		(*idts)->resetStatistics();
 	}
 	if (linked) {
@@ -208,26 +109,26 @@ void ContextualTest::resetStatistics() {
 	}
 }
 
-void ContextualTest::markUsed(Grammar *grammar) {
+void ContextualTest::markUsed(Grammar &grammar) {
 	is_used = true;
 
 	Set *s = 0;
 	if (target) {
-		s = grammar->getSet(target);
+		s = grammar.getSet(target);
 		s->markUsed(grammar);
 	}
 	if (barrier) {
-		s = grammar->getSet(barrier);
+		s = grammar.getSet(barrier);
 		s->markUsed(grammar);
 	}
 	if (cbarrier) {
-		s = grammar->getSet(cbarrier);
+		s = grammar.getSet(cbarrier);
 		s->markUsed(grammar);
 	}
 	if (tmpl) {
 		tmpl->markUsed(grammar);
 	}
-	foreach(std::list<ContextualTest*>, ors, idts, idts_end) {
+	foreach (std::list<ContextualTest*>, ors, idts, idts_end) {
 		(*idts)->markUsed(grammar);
 	}
 	if (linked) {
@@ -235,6 +136,4 @@ void ContextualTest::markUsed(Grammar *grammar) {
 	}
 }
 
-bool ContextualTest::cmp_quality(ContextualTest *a, ContextualTest *b) {
-	return a->total_time > b->total_time;
 }
