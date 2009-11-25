@@ -1809,7 +1809,6 @@
         <label-item label="VERBREL_ART_POST_EDIN"/>
         <label-item label="VERB_CNJADV_EDIN"/>
         <label-item label="VERB_CNJSUBS_EDIN"/>
-        <label-item label=""/>
       </label-set>
     </enforce-after>
 
