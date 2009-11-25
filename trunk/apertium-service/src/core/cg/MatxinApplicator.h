@@ -20,8 +20,8 @@
 */
 
 #pragma once
-#ifndef __GRAMMARAPPLICATORAPERTIUM_H
-#define __GRAMMARAPPLICATORAPERTIUM_H
+#ifndef __GRAMMARAPPLICATORMATXIN_H
+#define __GRAMMARAPPLICATORMATXIN_H
 
 #include "stdafx.h"
 #include "Strings.h"
@@ -32,9 +32,9 @@
 #include "GrammarApplicator.h"
 
 namespace CG3 {
-	class ApertiumApplicator : public virtual GrammarApplicator {
+	class MatxinApplicator : public virtual GrammarApplicator {
 	public:
-		ApertiumApplicator(UFILE *ux_err);
+		MatxinApplicator(UFILE *ux_err);
 
 		virtual int runGrammarOnText(UFILE *input, UFILE *output);
 
@@ -42,12 +42,14 @@ namespace CG3 {
 		bool wordform_case;
 		bool print_word_forms;
 		void setNullFlush(bool pNullFlush);
+		// Readings with this tag get their own chunk:
+		const UChar *CHUNK;
 		
 	protected:
 		bool nullFlush;
 		bool runningWithNullFlush;
 	
-		void printReading(Reading *reading, UFILE *output);
+		int printReading(Reading *reading, UFILE *output, int ischunk, int ord, int alloc);
 		virtual void printSingleWindow(SingleWindow *window, UFILE *output);
 		
 		int runGrammarOnTextWrapperNullFlush(UFILE *input, UFILE *output);

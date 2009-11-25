@@ -20,33 +20,27 @@
 */
 
 #ifdef _MSC_VER
+	#define _SECURE_SCL 0
+	#define _CRT_SECURE_NO_DEPRECATE 1
 	#define WIN32_LEAN_AND_MEAN
+	#define VC_EXTRALEAN
 	#define NOMINMAX
 	#include <windows.h>
 #endif
 
 #include "uextras.h"
 #include "Strings.h"
+#include "inlines.h"
 
-using namespace CG3::Strings;
+namespace CG3 {
 
 // ToDo: Make all of ux_* inline to get around possible memory errors.
-
-bool ux_isNewline(const UChar32 current, const UChar32 previous) {
-	return (current == 0x0D0AL // ASCII \r\n
-	|| current == 0x2028L // Unicode Line Seperator
-	|| current == 0x2029L // Unicode Paragraph Seperator
-	|| current == 0x0085L // EBCDIC NEL
-	|| current == 0x000CL // Form Feed
-	|| current == 0x000AL // ASCII \n
-	|| previous == 0x000DL); // ASCII \r
-}
 
 bool ux_isEmpty(const UChar *text) {
 	size_t length = u_strlen(text);
 	if (length > 0) {
 		for (size_t i=0 ; i<=length ; i++) {
-			if (!u_isWhitespace(text[i])) {
+			if (!ISSPACE(text[i])) {
 				return false;
 			}
 		}
@@ -56,23 +50,23 @@ bool ux_isEmpty(const UChar *text) {
 
 bool ux_trim(UChar *totrim) {
 	bool retval = false;
-	unsigned int length = u_strlen(totrim);
+	size_t length = u_strlen(totrim);
 	if (totrim && length) {
-		while(length >= 1 && u_isWhitespace(totrim[length-1])) {
+		while (length >= 1 && ISSPACE(totrim[length-1])) {
 			length--;
 		}
-		if (u_isWhitespace(totrim[length])) {
+		if (ISSPACE(totrim[length])) {
 			totrim[length] = 0;
 			retval = true;
 		}
-		if (u_isWhitespace(totrim[0])) {
+		if (ISSPACE(totrim[0])) {
 			retval = true;
 			UChar *current = totrim;
-			while(u_isWhitespace(current[0])) {
+			while (ISSPACE(current[0])) {
 				current++;
 			}
 			size_t num_spaces = ((current-totrim)-1);
-			for (unsigned int i=0;i<length;i++) {
+			for (size_t i=0 ; i<length ; ++i) {
 				totrim[i] = totrim[i+num_spaces+1];
 			}
 		}
@@ -82,30 +76,30 @@ bool ux_trim(UChar *totrim) {
 
 bool ux_packWhitespace(UChar *totrim) {
 	bool retval = false;
-	unsigned int length = u_strlen(totrim);
+	size_t length = u_strlen(totrim);
 	if (totrim && length) {
 		UChar *space = 0;
 		UChar *current = totrim;
 		UChar previous = 0;
 		uint32_t num_spaces = 0;
 		while (current[0]) {
-			if (u_isWhitespace(current[0]) && !u_isWhitespace(previous)) {
+			if (ISSPACE(current[0]) && !ISSPACE(previous)) {
 				current[0] = ' ';
 				space = current+1;
 				num_spaces = 1;
 			}
-			else if (!u_isWhitespace(current[0]) && u_isWhitespace(previous)) {
+			else if (!ISSPACE(current[0]) && ISSPACE(previous)) {
 				if (num_spaces > 1) {
 					num_spaces--;
 					retval = true;
 					length = u_strlen(current);
-					for (unsigned int i=0;i<=length;i++) {
+					for (size_t i=0 ; i<=length ; ++i) {
 						space[i] = current[i];
 					}
 					current = space;
 				}
 			}
-			else if (u_isWhitespace(current[0]) && u_isWhitespace(previous)) {
+			else if (ISSPACE(current[0]) && ISSPACE(previous)) {
 				num_spaces++;
 			}
 			previous = current[0];
@@ -117,22 +111,23 @@ bool ux_packWhitespace(UChar *totrim) {
 
 int ux_isSetOp(const UChar *it) {
 	int retval = S_IGNORE;
-	if (u_strcasecmp(it, stringbits[S_OR], 0) == 0 || u_strcmp(it, stringbits[S_PIPE]) == 0) {
+	// u_strncasecmp will mistake set ORA for operator OR
+	if (u_strcasecmp(it, stringbits[S_OR].getTerminatedBuffer(), 0) == 0 || u_strcmp(it, stringbits[S_PIPE].getTerminatedBuffer()) == 0) {
 		retval = S_OR;
 	}
-	else if (u_strcmp(it, stringbits[S_PLUS]) == 0) {
+	else if (u_strcmp(it, stringbits[S_PLUS].getTerminatedBuffer()) == 0) {
 		retval = S_PLUS;
 	}
-	else if (u_strcmp(it, stringbits[S_MINUS]) == 0) {
+	else if (u_strcmp(it, stringbits[S_MINUS].getTerminatedBuffer()) == 0) {
 		retval = S_MINUS;
 	}
-	else if (u_strcmp(it, stringbits[S_MULTIPLY]) == 0) {
+	else if (u_strcmp(it, stringbits[S_MULTIPLY].getTerminatedBuffer()) == 0) {
 		retval = S_MULTIPLY;
 	}
-	else if (u_strcmp(it, stringbits[S_FAILFAST]) == 0) {
+	else if (u_strcmp(it, stringbits[S_FAILFAST].getTerminatedBuffer()) == 0) {
 		retval = S_FAILFAST;
 	}
-	else if (u_strcmp(it, stringbits[S_NOT]) == 0) {
+	else if (u_strcmp(it, stringbits[S_NOT].getTerminatedBuffer()) == 0) {
 		retval = S_NOT;
 	}
 	return retval;
@@ -181,7 +176,8 @@ UChar *ux_append(UChar *target, const UChar *data) {
 		tmp[0] = 0;
 		u_strcat(tmp, data);
 		target = tmp;
-	} else {
+	}
+	else {
 		uint32_t length = u_strlen(target)+u_strlen(data)+1;
 		tmp = new UChar[length];
 		tmp[0] = 0;
@@ -193,9 +189,7 @@ UChar *ux_append(UChar *target, const UChar *data) {
 	return tmp;
 }
 
-
-UChar *ux_append(UChar *target, const UChar data)
-{
+UChar *ux_append(UChar *target, const UChar data) {
 	UChar *tmp = 0;
 	UChar *char_tmp = new UChar[2];
 	char_tmp[0] = data;
@@ -208,7 +202,8 @@ UChar *ux_append(UChar *target, const UChar data)
 		u_strcat(tmp, char_tmp);
 		delete[] target;
 		target = tmp;
-	} else {
+	}
+	else {
 		uint32_t length = u_strlen(target)+u_strlen(char_tmp)+1;
 		tmp = new UChar[length];
 		tmp[0] = 0;
@@ -221,18 +216,18 @@ UChar *ux_append(UChar *target, const UChar data)
 	return tmp;
 }
 
-UChar *ux_substr(UChar *string, int start, int end) 
-{
+UChar *ux_substr(UChar *string, const size_t start, const size_t end) {
+	// ToDo: Surely this whole function can be replaced with u_strncpy(tmp, &string[start], end-start) or similar?
 	UChar *tmp = 0;
-	int i = 0;
+	size_t i = 0;
 
-	int len = u_strlen(string);
+	size_t len = u_strlen(string);
 	
-	if(end > len) {
+	if (end > len) {
 		return tmp;
 	}
 
-	for(i = start; i < end; i++) {
+	for (i = start; i < end; i++) {
 		tmp = ux_append(tmp, string[i]);
 	}
 
@@ -254,9 +249,22 @@ char *ux_dirname(const char *in) {
 		strcpy(tmp, dir);
 	}
 #endif
-	if (tmp[strlen(tmp)-1] != '/' && tmp[strlen(tmp)-1] != '\\') {
-		tmp[strlen(tmp)+1] = 0;
-		tmp[strlen(tmp)] = '/';
+	size_t tlen = strlen(tmp);
+	if (tmp[tlen-1] != '/' && tmp[tlen-1] != '\\') {
+		tmp[tlen+1] = 0;
+		tmp[tlen] = '/';
 	}
 	return tmp;
+}
+
+bool ux_simplecasecmp(const UChar *a, const UChar *b, const size_t n) {
+	for (size_t i = 0 ; i < n ; ++i) {
+		if (a[i] != b[i] && a[i] != b[i]+32) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 }

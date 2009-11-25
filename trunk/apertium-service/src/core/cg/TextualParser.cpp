@@ -24,8 +24,7 @@
 #include "Grammar.h"
 #include "ContextualTest.h"
 
-using namespace CG3;
-using namespace CG3::Strings;
+namespace CG3 {
 
 TextualParser::TextualParser(Grammar &res, UFILE *ux_err) {
 	ux_stderr = ux_err;
@@ -50,128 +49,128 @@ TextualParser::~TextualParser() {
 	result = 0;
 }
 
-int TextualParser::parseTagList(Set *s, UChar **p, const bool isinline) {
-	while (**p && **p != ';' && **p != ')') {
+int TextualParser::parseTagList(UChar *& p, Set *s, const bool isinline) {
+	while (*p && *p != ';' && *p != ')') {
 		result->lines += SKIPWS(p, ';', ')');
-		if (**p && **p != ';' && **p != ')') {
-			if (**p == '(') {
-				(*p)++;
+		if (*p && *p != ';' && *p != ')') {
+			if (*p == '(') {
+				++p;
 				TagVector tags;
 
-				while (**p && **p != ';' && **p != ')') {
-					UChar *n = *p;
+				while (*p && *p != ';' && *p != ')') {
+					UChar *n = p;
 					if (*n == '"') {
 						n++;
-						result->lines += SKIPTO_NOSPAN(&n, '"');
+						result->lines += SKIPTO_NOSPAN(n, '"');
 						if (*n != '"') {
 							u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 							CG3Quit(1);
 						}
 					}
-					result->lines += SKIPTOWS(&n, ')', true);
-					uint32_t c = (uint32_t)(n - *p);
-					u_strncpy(gbuffers[0], *p, c);
+					result->lines += SKIPTOWS(n, ')', true);
+					ptrdiff_t c = n - p;
+					u_strncpy(gbuffers[0], p, c);
 					gbuffers[0][c] = 0;
 					Tag *t = result->allocateTag(gbuffers[0]);
 					tags.push_back(t);
-					*p = n;
+					p = n;
 					result->lines += SKIPWS(p, ';', ')');
 				}
-				if (**p != ')') {
+				if (*p != ')') {
 					u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 					CG3Quit(1);
 				}
-				(*p)++;
+				++p;
 
 				if (tags.size() == 1) {
 					result->addTagToSet(tags.back(), s);
 				}
 				else {
 					CompositeTag *ct = result->allocateCompositeTag();
-					foreach(TagVector, tags, tvi, tvi_end) {
+					foreach (TagVector, tags, tvi, tvi_end) {
 						result->addTagToCompositeTag(*tvi, ct);
 					}
 					result->addCompositeTagToSet(s, ct);
 				}
 			}
 			else {
-				UChar *n = *p;
+				UChar *n = p;
 				if (*n == '"') {
 					n++;
-					result->lines += SKIPTO_NOSPAN(&n, '"');
+					result->lines += SKIPTO_NOSPAN(n, '"');
 					if (*n != '"') {
 						u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 						CG3Quit(1);
 					}
 				}
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - *p);
-				u_strncpy(gbuffers[0], *p, c);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
+				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				Tag *t = result->allocateTag(gbuffers[0]);
 				result->addTagToSet(t, s);
-				*p = n;
+				p = n;
 			}
 		}
 	}
 	if (isinline) {
-		if (**p != ')') {
+		if (*p != ')') {
 			u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 	}
 	return 0;
 }
 
-Set *TextualParser::parseSetInline(UChar **p, Set *s) {
+Set *TextualParser::parseSetInline(UChar *& p, Set *s) {
 	uint32Vector set_ops;
 	uint32Vector sets;
 
 	bool wantop = false;
-	while (**p && **p != ';' && **p != ')') {
+	while (*p && *p != ';' && *p != ')') {
 		result->lines += SKIPWS(p, ';', ')');
-		if (**p && **p != ';' && **p != ')') {
+		if (*p && *p != ';' && *p != ')') {
 			if (!wantop) {
-				if (**p == '(') {
-					(*p)++;
+				if (*p == '(') {
+					++p;
 					Set *set_c = result->allocateSet();
 					set_c->line = result->lines;
 					set_c->setName(sets_counter++);
 					TagVector tags;
 
-					while (**p && **p != ';' && **p != ')') {
+					while (*p && *p != ';' && *p != ')') {
 						result->lines += SKIPWS(p, ';', ')');
-						UChar *n = *p;
+						UChar *n = p;
 						if (*n == '"') {
 							n++;
-							result->lines += SKIPTO_NOSPAN(&n, '"');
+							result->lines += SKIPTO_NOSPAN(n, '"');
 							if (*n != '"') {
 								u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 								CG3Quit(1);
 							}
 						}
-						result->lines += SKIPTOWS(&n, ')', true);
-						uint32_t c = (uint32_t)(n - *p);
-						u_strncpy(gbuffers[0], *p, c);
+						result->lines += SKIPTOWS(n, ')', true);
+						ptrdiff_t c = n - p;
+						u_strncpy(gbuffers[0], p, c);
 						gbuffers[0][c] = 0;
 						Tag *t = result->allocateTag(gbuffers[0]);
 						tags.push_back(t);
-						*p = n;
+						p = n;
 						result->lines += SKIPWS(p, ';', ')');
 					}
-					if (**p != ')') {
+					if (*p != ')') {
 						u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 						CG3Quit(1);
 					}
-					(*p)++;
+					++p;
 
 					if (tags.size() == 1) {
 						result->addTagToSet(tags.back(), set_c);
 					}
 					else {
 						CompositeTag *ct = result->allocateCompositeTag();
-						foreach(TagVector, tags, tvi, tvi_end) {
+						foreach (TagVector, tags, tvi, tvi_end) {
 							result->addTagToCompositeTag(*tvi, ct);
 						}
 						result->addCompositeTagToSet(set_c, ct);
@@ -180,13 +179,13 @@ Set *TextualParser::parseSetInline(UChar **p, Set *s) {
 					sets.push_back(set_c->hash);
 				}
 				else {
-					UChar *n = *p;
-					result->lines += SKIPTOWS(&n, ')', true);
+					UChar *n = p;
+					result->lines += SKIPTOWS(n, ')', true);
 					while (n[-1] == ',' || n[-1] == ']') {
-						n--;
+						--n;
 					}
-					uint32_t c = (uint32_t)(n - *p);
-					u_strncpy(gbuffers[0], *p, c);
+					ptrdiff_t c = n - p;
+					u_strncpy(gbuffers[0], p, c);
 					gbuffers[0][c] = 0;
 					uint32_t sh = hash_sdbm_uchar(gbuffers[0]);
 
@@ -223,22 +222,22 @@ Set *TextualParser::parseSetInline(UChar **p, Set *s) {
 					}
 					sh = tmp->hash;
 					sets.push_back(sh);
-					*p = n;
+					p = n;
 				}
 				wantop = true;
 			}
 			else {
-				UChar *n = *p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - *p);
-				u_strncpy(gbuffers[0], *p, c);
+				UChar *n = p;
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
+				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				//dieIfKeyword(gbuffers[0]);
 				int sop = ux_isSetOp(gbuffers[0]);
 				if (sop != S_IGNORE) {
 					set_ops.push_back(sop);
 					wantop = false;
-					*p = n;
+					p = n;
 				}
 				else {
 					break;
@@ -262,7 +261,7 @@ Set *TextualParser::parseSetInline(UChar **p, Set *s) {
 	return s;
 }
 
-Set *TextualParser::parseSetInlineWrapper(UChar **p) {
+Set *TextualParser::parseSetInlineWrapper(UChar *& p) {
 	uint32_t tmplines = result->lines;
 	Set *s = parseSetInline(p);
 	s->line = tmplines;
@@ -271,7 +270,181 @@ Set *TextualParser::parseSetInlineWrapper(UChar **p) {
 	return s;
 }
 
-int TextualParser::parseContextualTestList(Rule *rule, ContextualTest **head, CG3::ContextualTest *parentTest, UChar **p, CG3::ContextualTest *self) {
+int TextualParser::parseContextualTestPosition(UChar *& p, ContextualTest& t) {
+	bool negative = false;
+
+	size_t tries;
+	for (tries=0 ; *p != ' ' && *p != '(' && tries < 100 ; ++tries) {
+		if (*p == '*' && *(p+1) == '*') {
+			t.pos |= POS_SCANALL;
+			p += 2;
+		}
+		if (*p == '*') {
+			t.pos |= POS_SCANFIRST;
+			++p;
+		}
+		if (*p == 'C') {
+			t.pos |= POS_CAREFUL;
+			++p;
+		}
+		if (*p == 'c') {
+			t.pos |= POS_DEP_CHILD;
+			++p;
+		}
+		if (*p == 'p') {
+			t.pos |= POS_DEP_PARENT;
+			++p;
+		}
+		if (*p == 's') {
+			t.pos |= POS_DEP_SIBLING;
+			++p;
+		}
+		if (*p == 'S') {
+			t.pos |= POS_SELF;
+			++p;
+		}
+		if (*p == '<') {
+			t.pos |= POS_SPAN_LEFT;
+			++p;
+		}
+		if (*p == '>') {
+			t.pos |= POS_SPAN_RIGHT;
+			++p;
+		}
+		if (*p == 'W') {
+			t.pos |= POS_SPAN_BOTH;
+			++p;
+		}
+		if (*p == '@') {
+			t.pos |= POS_ABSOLUTE;
+			++p;
+		}
+		if (*p == 'O') {
+			t.pos |= POS_NO_PASS_ORIGIN;
+			++p;
+		}
+		if (*p == 'o') {
+			t.pos |= POS_PASS_ORIGIN;
+			++p;
+		}
+		if (*p == 'L') {
+			t.pos |= POS_LEFT_PAR;
+			++p;
+		}
+		if (*p == 'R') {
+			t.pos |= POS_RIGHT_PAR;
+			++p;
+		}
+		if (*p == 'X') {
+			t.pos |= POS_MARK_SET;
+			++p;
+		}
+		if (*p == 'x') {
+			t.pos |= POS_MARK_JUMP;
+			++p;
+		}
+		if (*p == 'D') {
+			t.pos |= POS_LOOK_DELETED;
+			++p;
+		}
+		if (*p == 'd') {
+			t.pos |= POS_LOOK_DELAYED;
+			++p;
+		}
+		if (*p == 'A') {
+			t.pos |= POS_ATTACH_TO;
+			++p;
+		}
+		if (*p == '?') {
+			t.pos |= POS_UNKNOWN;
+			++p;
+		}
+		if (*p == '-') {
+			negative = true;
+			++p;
+		}
+		if (u_isdigit(*p)) {
+			while (*p >= '0' && *p <= '9') {
+				t.offset = (t.offset*10) + (*p - '0');
+				++p;
+			}
+		}
+		if (*p == 'r' && *(p+1) == ':') {
+			t.pos |= POS_RELATION;
+			p += 2;
+			UChar *n = p;
+			SKIPTOWS(n, '(');
+			ptrdiff_t c = n - p;
+			u_strncpy(gbuffers[0], p, c);
+			gbuffers[0][c] = 0;
+			Tag *tag = result->allocateTag(gbuffers[0], true);
+			t.relation = tag->hash;
+			p = n;
+		}
+	}
+
+	if (negative) {
+		t.offset = (-1) * abs(t.offset);
+	}
+
+	if ((t.pos & (POS_DEP_CHILD|POS_DEP_SIBLING)) && (t.pos & (POS_SCANFIRST|POS_SCANALL))) {
+		t.pos &= ~POS_SCANFIRST;
+		t.pos &= ~POS_SCANALL;
+		t.pos |= POS_DEP_DEEP;
+	}
+	if ((t.pos & (POS_DEP_CHILD|POS_DEP_SIBLING)) && (t.pos & POS_CAREFUL)) {
+		u_fprintf(ux_stderr, "Warning: Deprecated conversion from C to ALL on line %u.\n", result->lines);
+		t.pos &= ~POS_CAREFUL;
+		t.pos |= POS_ALL;
+	}
+	if ((t.pos & (POS_DEP_CHILD|POS_DEP_SIBLING)) && (t.pos & POS_NOT)) {
+		u_fprintf(ux_stderr, "Warning: Deprecated conversion from NOT to NONE on line %u.\n", result->lines);
+		t.pos &= ~POS_NOT;
+		t.pos |= POS_NONE;
+	}
+	if ((t.pos & POS_RELATION) && (t.pos & POS_CAREFUL)) {
+		u_fprintf(ux_stderr, "Warning: Deprecated conversion from C to ALL on line %u.\n", result->lines);
+		t.pos &= ~POS_CAREFUL;
+		t.pos |= POS_ALL;
+	}
+	if ((t.pos & POS_RELATION) && (t.pos & POS_NOT)) {
+		u_fprintf(ux_stderr, "Warning: Deprecated conversion from NOT to NONE on line %u.\n", result->lines);
+		t.pos &= ~POS_NOT;
+		t.pos |= POS_NONE;
+	}
+
+	if (tries >= 5) {
+		u_fprintf(ux_stderr, "Warning: Position on line %u took many loops.\n", result->lines);
+	}
+	if (tries >= 100) {
+		u_fprintf(ux_stderr, "Error: Invalid position on line %u - caused endless loop!\n", result->lines);
+		CG3Quit(1);
+	}
+	if ((t.pos & (POS_LEFT_PAR|POS_RIGHT_PAR)) && (t.pos & (POS_SCANFIRST|POS_SCANALL))) {
+		u_fprintf(ux_stderr, "Error: Invalid position on line %u - cannot have both enclosure and scan!\n", result->lines);
+		CG3Quit(1);
+	}
+	if ((t.pos & POS_PASS_ORIGIN) && (t.pos & POS_NO_PASS_ORIGIN)) {
+		u_fprintf(ux_stderr, "Error: Invalid position on line %u - cannot have both O and o!\n", result->lines);
+		CG3Quit(1);
+	}
+	if ((t.pos & POS_LEFT_PAR) && (t.pos & POS_RIGHT_PAR)) {
+		u_fprintf(ux_stderr, "Error: Invalid position on line %u - cannot have both L and R!\n", result->lines);
+		CG3Quit(1);
+	}
+	if ((t.pos & POS_ALL) && (t.pos & POS_NONE)) {
+		u_fprintf(ux_stderr, "Error: Invalid position on line %u - cannot have both NONE and ALL!\n", result->lines);
+		CG3Quit(1);
+	}
+	if ((t.pos & POS_UNKNOWN) && (t.pos != POS_UNKNOWN || t.offset != 0)) {
+		u_fprintf(ux_stderr, "Error: Invalid position on line %u - '?' cannot be combined with anything else!\n", result->lines);
+		CG3Quit(1);
+	}
+
+	return 0;
+}
+
+int TextualParser::parseContextualTestList(UChar *& p, Rule *rule, ContextualTest **head, CG3::ContextualTest *parentTest, CG3::ContextualTest *self) {
 	ContextualTest *t = 0;
 	if (self) {
 		t = self;
@@ -283,40 +456,50 @@ int TextualParser::parseContextualTestList(Rule *rule, ContextualTest **head, CG
 		t = rule->allocateContextualTest();
 	}
 	t->line = result->lines;
-	bool negated = false, negative = false;
+	bool negated = false, negative = false, all = false, none = false;
 
 	result->lines += SKIPWS(p);
-	if (u_strncasecmp(*p, stringbits[S_TEXTNEGATE], stringbit_lengths[S_TEXTNEGATE], U_FOLD_CASE_DEFAULT) == 0) {
-		(*p) += stringbit_lengths[S_TEXTNEGATE];
+	if (ux_simplecasecmp(p, stringbits[S_TEXTNEGATE].getTerminatedBuffer(), stringbits[S_TEXTNEGATE].length())) {
+		p += stringbits[S_TEXTNEGATE].length();
 		negated = true;
 	}
 	result->lines += SKIPWS(p);
-	if (u_strncasecmp(*p, stringbits[S_TEXTNOT], stringbit_lengths[S_TEXTNOT], U_FOLD_CASE_DEFAULT) == 0) {
-		(*p) += stringbit_lengths[S_TEXTNOT];
+	if (ux_simplecasecmp(p, stringbits[S_ALL].getTerminatedBuffer(), stringbits[S_ALL].length())) {
+		p += stringbits[S_ALL].length();
+		all = true;
+	}
+	result->lines += SKIPWS(p);
+	if (ux_simplecasecmp(p, stringbits[S_NONE].getTerminatedBuffer(), stringbits[S_NONE].length())) {
+		p += stringbits[S_NONE].length();
+		none = true;
+	}
+	result->lines += SKIPWS(p);
+	if (ux_simplecasecmp(p, stringbits[S_TEXTNOT].getTerminatedBuffer(), stringbits[S_TEXTNOT].length())) {
+		p += stringbits[S_TEXTNOT].length();
 		negative = true;
 	}
 	result->lines += SKIPWS(p);
 
-	UChar *n = *p;
-	result->lines += SKIPTOWS(&n, '(');
-	uint32_t c = (uint32_t)(n - *p);
-	u_strncpy(gbuffers[0], *p, c);
+	UChar *n = p;
+	result->lines += SKIPTOWS(n, '(');
+	ptrdiff_t c = n - p;
+	u_strncpy(gbuffers[0], p, c);
 	gbuffers[0][c] = 0;
 	if (ux_isEmpty(gbuffers[0])) {
-		*p = n;
+		p = n;
 		for (;;) {
 			ContextualTest *ored = t->allocateContextualTest();
-			if (**p != '(') {
-				u_fprintf(ux_stderr, "Error: Expected '(' but found '%C' on line %u!\n", **p, result->lines);
+			if (*p != '(') {
+				u_fprintf(ux_stderr, "Error: Expected '(' but found '%C' on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			(*p)++;
-			parseContextualTestList(rule, 0, 0, p, ored);
-			(*p)++;
+			++p;
+			parseContextualTestList(p, rule, 0, 0, ored);
+			++p;
 			t->ors.push_back(ored);
 			result->lines += SKIPWS(p);
-			if (u_strncasecmp(*p, stringbits[S_OR], stringbit_lengths[S_OR], U_FOLD_CASE_DEFAULT) == 0) {
-				(*p) += stringbit_lengths[S_OR];
+			if (ux_simplecasecmp(p, stringbits[S_OR].getTerminatedBuffer(), stringbits[S_OR].length())) {
+				p += stringbits[S_OR].length();
 			}
 			else {
 				break;
@@ -325,14 +508,14 @@ int TextualParser::parseContextualTestList(Rule *rule, ContextualTest **head, CG
 		}
 	}
 	else if (gbuffers[0][0] == '[') {
-		(*p) += 1;
+		++p;
 		result->lines += SKIPWS(p);
 		Set *s = parseSetInlineWrapper(p);
 		t->offset = 1;
 		t->target = s->hash;
 		result->lines += SKIPWS(p);
-		while (**p == ',') {
-			(*p) += 1;
+		while (*p == ',') {
+			++p;
 			result->lines += SKIPWS(p);
 			ContextualTest *lnk = t->allocateContextualTest();
 			Set *s = parseSetInlineWrapper(p);
@@ -342,37 +525,43 @@ int TextualParser::parseContextualTestList(Rule *rule, ContextualTest **head, CG
 			t = lnk;
 			result->lines += SKIPWS(p);
 		}
-		if (**p != ']') {
-			u_fprintf(ux_stderr, "Error: Expected ']' but found '%C' on line %u!\n", **p, result->lines);
+		if (*p != ']') {
+			u_fprintf(ux_stderr, "Error: Expected ']' but found '%C' on line %u!\n", *p, result->lines);
 			CG3Quit(1);
 		}
-		(*p) += 1;
+		++p;
 	}
 	else if (gbuffers[0][0] == 'T' && gbuffers[0][1] == ':') {
 		goto label_parseTemplateRef;
 	}
 	else {
+		if (all) {
+			t->pos |= POS_ALL;
+		}
+		if (none) {
+			t->pos |= POS_NONE;
+		}
 		if (negated) {
-			t->pos |= POS_NEGATED;
+			t->pos |= POS_NEGATE;
 		}
 		if (negative) {
-			t->pos |= POS_NEGATIVE;
+			t->pos |= POS_NOT;
 		}
-		t->parsePosition(gbuffers[0], ux_stderr);
-		*p = n;
+		parseContextualTestPosition(p, *t);
+		p = n;
 		if (t->pos & (POS_DEP_CHILD|POS_DEP_PARENT|POS_DEP_SIBLING)) {
 			result->has_dep = true;
 		}
 		result->lines += SKIPWS(p);
 
-		if ((*p)[0] == 'T' && (*p)[1] == ':') {
+		if (p[0] == 'T' && p[1] == ':') {
 			t->pos |= POS_TMPL_OVERRIDE;
 label_parseTemplateRef:
-			(*p) += 2;
-			n = *p;
-			result->lines += SKIPTOWS(&n, ')');
-			uint32_t c = (uint32_t)(n - *p);
-			u_strncpy(gbuffers[0], *p, c);
+			p += 2;
+			n = p;
+			result->lines += SKIPTOWS(n, ')');
+			ptrdiff_t c = n - p;
+			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			uint32_t cn = hash_sdbm_uchar(gbuffers[0]);
 			if (result->templates.find(cn) == result->templates.end()) {
@@ -380,7 +569,7 @@ label_parseTemplateRef:
 				CG3Quit(1);
 			}
 			t->tmpl = result->templates.find(cn)->second;
-			*p = n;
+			p = n;
 			result->lines += SKIPWS(p);
 		}
 		else {
@@ -389,15 +578,15 @@ label_parseTemplateRef:
 		}
 
 		result->lines += SKIPWS(p);
-		if (u_strncasecmp(*p, stringbits[S_CBARRIER], stringbit_lengths[S_CBARRIER], U_FOLD_CASE_DEFAULT) == 0) {
-			(*p) += stringbit_lengths[S_CBARRIER];
+		if (ux_simplecasecmp(p, stringbits[S_CBARRIER].getTerminatedBuffer(), stringbits[S_CBARRIER].length())) {
+			p += stringbits[S_CBARRIER].length();
 			result->lines += SKIPWS(p);
 			Set *s = parseSetInlineWrapper(p);
 			t->cbarrier = s->hash;
 		}
 		result->lines += SKIPWS(p);
-		if (u_strncasecmp(*p, stringbits[S_BARRIER], stringbit_lengths[S_BARRIER], U_FOLD_CASE_DEFAULT) == 0) {
-			(*p) += stringbit_lengths[S_BARRIER];
+		if (ux_simplecasecmp(p, stringbits[S_BARRIER].getTerminatedBuffer(), stringbits[S_BARRIER].length())) {
+			p += stringbits[S_BARRIER].length();
 			result->lines += SKIPWS(p);
 			Set *s = parseSetInlineWrapper(p);
 			t->barrier = s->hash;
@@ -407,18 +596,22 @@ label_parseTemplateRef:
 
 	bool linked = false;
 	result->lines += SKIPWS(p);
-	if (u_strncasecmp(*p, stringbits[S_AND], stringbit_lengths[S_AND], U_FOLD_CASE_DEFAULT) == 0) {
+	if (ux_simplecasecmp(p, stringbits[S_AND].getTerminatedBuffer(), stringbits[S_AND].length())) {
 		u_fprintf(ux_stderr, "Error: 'AND' is deprecated; use 'LINK 0' or operator '+' instead. Found on line %u!\n", result->lines);
 		CG3Quit(1);
 	}
-	if (u_strncasecmp(*p, stringbits[S_LINK], stringbit_lengths[S_LINK], U_FOLD_CASE_DEFAULT) == 0) {
-		(*p) += stringbit_lengths[S_LINK];
+	if (ux_simplecasecmp(p, stringbits[S_LINK].getTerminatedBuffer(), stringbits[S_LINK].length())) {
+		p += stringbits[S_LINK].length();
 		linked = true;
 	}
 	result->lines += SKIPWS(p);
 
 	if (linked) {
-		parseContextualTestList(rule, 0, t, p);
+		if (t->pos & POS_NONE) {
+			u_fprintf(ux_stderr, "Error: It does not make sense to LINK from a NONE test; perhaps you meant NOT or NEGATE on line %u?\n", result->lines);
+			CG3Quit(1);
+		}
+		parseContextualTestList(p, rule, 0, t);
 	}
 
 	if (self) {
@@ -428,9 +621,9 @@ label_parseTemplateRef:
 		parentTest->linked = t;
 	}
 	else {
-		if (option_vislcg_compat && t->pos & POS_NEGATIVE) {
-			t->pos &= ~POS_NEGATIVE;
-			t->pos |= POS_NEGATED;
+		if (option_vislcg_compat && t->pos & POS_NOT) {
+			t->pos &= ~POS_NOT;
+			t->pos |= POS_NEGATE;
 		}
 		rule->addContextualTest(t, head);
 	}
@@ -445,53 +638,53 @@ label_parseTemplateRef:
 	return 0;
 }
 
-int TextualParser::parseContextualTests(Rule *rule, UChar **p) {
-	return parseContextualTestList(rule, &rule->test_head, 0, p);
+int TextualParser::parseContextualTests(UChar *& p, Rule *rule) {
+	return parseContextualTestList(p, rule, &rule->test_head, 0);
 }
 
-int TextualParser::parseContextualDependencyTests(Rule *rule, UChar **p) {
-	return parseContextualTestList(rule, &rule->dep_test_head, 0, p);
+int TextualParser::parseContextualDependencyTests(UChar *& p, Rule *rule) {
+	return parseContextualTestList(p, rule, &rule->dep_test_head, 0);
 }
 
-int TextualParser::parseRule(KEYWORDS key, UChar **p) {
+int TextualParser::parseRule(UChar *& p, KEYWORDS key) {
 	Rule *rule = result->allocateRule();
 	rule->line = result->lines;
 	rule->type = key;
 
-	UChar *lp = *p;
-	BACKTONL(&lp);
-	result->lines += SKIPWS(&lp);
+	UChar *lp = p;
+	BACKTONL(lp);
+	result->lines += SKIPWS(lp);
 
-	if (lp != *p && lp < *p) {
+	if (lp != p && lp < p) {
 		UChar *n = lp;
 		if (*n == '"') {
 			n++;
-			result->lines += SKIPTO_NOSPAN(&n, '"');
+			result->lines += SKIPTO_NOSPAN(n, '"');
 			if (*n != '"') {
 				u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
 		}
-		result->lines += SKIPTOWS(&n, 0, true);
-		uint32_t c = (uint32_t)(n - lp);
+		result->lines += SKIPTOWS(n, 0, true);
+		ptrdiff_t c = n - lp;
 		u_strncpy(gbuffers[0], lp, c);
 		gbuffers[0][c] = 0;
 		Tag *wform = result->allocateTag(gbuffers[0]);
 		rule->wordform = wform->hash;
 	}
 
-	(*p) += keyword_lengths[key];
+	p += keywords[key].length();
 	result->lines += SKIPWS(p);
 
-	if (**p == ':') {
-		(*p)++;
-		UChar *n = *p;
-		result->lines += SKIPTOWS(&n, '(');
-		uint32_t c = (uint32_t)(n - *p);
-		u_strncpy(gbuffers[0], *p, c);
+	if (*p == ':') {
+		++p;
+		UChar *n = p;
+		result->lines += SKIPTOWS(n, '(');
+		ptrdiff_t c = n - p;
+		u_strncpy(gbuffers[0], p, c);
 		gbuffers[0][c] = 0;
 		rule->setName(gbuffers[0]);
-		*p = n;
+		p = n;
 	}
 	result->lines += SKIPWS(p);
 
@@ -499,8 +692,8 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 	while (setflag) {
 		setflag = false;
 		for (uint32_t i=0 ; i<FLAGS_COUNT ; i++) {
-			if (u_strncasecmp(*p, flags[i], flag_lengths[i], U_FOLD_CASE_DEFAULT) == 0) {
-				(*p) += flag_lengths[i];
+			if (ux_simplecasecmp(p, flags[i].getTerminatedBuffer(), flags[i].length())) {
+				p += flags[i].length();
 				rule->flags |= (1 << i);
 				setflag = true;
 			}
@@ -538,56 +731,56 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 	result->lines += SKIPWS(p);
 
 	if (key == K_JUMP || key == K_EXECUTE) {
-		UChar *n = *p;
-		result->lines += SKIPTOWS(&n, '(');
-		if (!u_isalnum(**p)) {
-			u_fprintf(ux_stderr, "Error: Anchor name for %S must be alphanumeric on line %u!\n", keywords[key], result->lines);
+		UChar *n = p;
+		result->lines += SKIPTOWS(n, '(');
+		if (!u_isalnum(*p)) {
+			u_fprintf(ux_stderr, "Error: Anchor name for %S must be alphanumeric on line %u!\n", keywords[key].getTerminatedBuffer(), result->lines);
 			CG3Quit(1);
 		}
-		uint32_t c = (uint32_t)(n - *p);
-		u_strncpy(gbuffers[0], *p, c);
+		ptrdiff_t c = n - p;
+		u_strncpy(gbuffers[0], p, c);
 		gbuffers[0][c] = 0;
 		uint32_t sh = hash_sdbm_uchar(gbuffers[0]);
 		rule->jumpstart = sh;
-		*p = n;
+		p = n;
 	}
 	result->lines += SKIPWS(p);
 
 	if (key == K_EXECUTE) {
-		UChar *n = *p;
-		result->lines += SKIPTOWS(&n, '(');
-		if (!u_isalnum(**p)) {
-			u_fprintf(ux_stderr, "Error: Anchor name for %S must be alphanumeric on line %u!\n", keywords[key], result->lines);
+		UChar *n = p;
+		result->lines += SKIPTOWS(n, '(');
+		if (!u_isalnum(*p)) {
+			u_fprintf(ux_stderr, "Error: Anchor name for %S must be alphanumeric on line %u!\n", keywords[key].getTerminatedBuffer(), result->lines);
 			CG3Quit(1);
 		}
-		uint32_t c = (uint32_t)(n - *p);
-		u_strncpy(gbuffers[0], *p, c);
+		ptrdiff_t c = n - p;
+		u_strncpy(gbuffers[0], p, c);
 		gbuffers[0][c] = 0;
 		uint32_t sh = hash_sdbm_uchar(gbuffers[0]);
 		rule->jumpend = sh;
-		*p = n;
+		p = n;
 	}
 	result->lines += SKIPWS(p);
 
 	if (key == K_SUBSTITUTE) {
-		if (**p != '(') {
-			u_fprintf(ux_stderr, "Error: Tag list for %S must be in () on line %u!\n", keywords[key], result->lines);
+		if (*p != '(') {
+			u_fprintf(ux_stderr, "Error: Tag list for %S must be in () on line %u!\n", keywords[key].getTerminatedBuffer(), result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 		result->lines += SKIPWS(p, ';', ')');
-		while (**p && **p != ';' && **p != ')') {
-			UChar *n = *p;
-			result->lines += SKIPTOWS(&n, ')', true);
-			uint32_t c = (uint32_t)(n - *p);
-			u_strncpy(gbuffers[0], *p, c);
+		while (*p && *p != ';' && *p != ')') {
+			UChar *n = p;
+			result->lines += SKIPTOWS(n, ')', true);
+			ptrdiff_t c = n - p;
+			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			Tag *wform = result->allocateTag(gbuffers[0]);
 			rule->sublist.push_back(wform->hash);
-			*p = n;
+			p = n;
 			result->lines += SKIPWS(p, ';', ')');
 		}
-		if (**p != ')') {
+		if (*p != ')') {
 			u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
@@ -595,30 +788,32 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 			u_fprintf(ux_stderr, "Error: Empty removal tag list on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 	}
 
 	result->lines += SKIPWS(p);
 	if (key == K_MAP || key == K_ADD || key == K_REPLACE || key == K_APPEND || key == K_SUBSTITUTE
-		|| key == K_SETRELATIONS || key == K_SETRELATION || key == K_REMRELATIONS || key == K_REMRELATION) {
-		if (**p != '(') {
-			u_fprintf(ux_stderr, "Error: Tag list for %S must be in () on line %u!\n", keywords[key], result->lines);
+	|| key == K_ADDRELATIONS || key == K_ADDRELATION
+	|| key == K_SETRELATIONS || key == K_SETRELATION
+	|| key == K_REMRELATIONS || key == K_REMRELATION) {
+		if (*p != '(') {
+			u_fprintf(ux_stderr, "Error: Tag list for %S must be in () on line %u!\n", keywords[key].getTerminatedBuffer(), result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 		result->lines += SKIPWS(p, ';', ')');
-		while (**p && **p != ';' && **p != ')') {
-			UChar *n = *p;
-			result->lines += SKIPTOWS(&n, ')', true);
-			uint32_t c = (uint32_t)(n - *p);
-			u_strncpy(gbuffers[0], *p, c);
+		while (*p && *p != ';' && *p != ')') {
+			UChar *n = p;
+			result->lines += SKIPTOWS(n, ')', true);
+			ptrdiff_t c = n - p;
+			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			Tag *wform = result->allocateTag(gbuffers[0]);
 			rule->maplist.push_back(wform);
-			*p = n;
+			p = n;
 			result->lines += SKIPWS(p, ';', ')');
 		}
-		if (**p != ')') {
+		if (*p != ')') {
 			u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
@@ -626,29 +821,29 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 			u_fprintf(ux_stderr, "Error: Empty tag list on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 	}
 
 	result->lines += SKIPWS(p);
-	if (key == K_SETRELATIONS || key == K_REMRELATIONS) {
-		if (**p != '(') {
-			u_fprintf(ux_stderr, "Error: Tag list for %S must be in () on line %u!\n", keywords[key], result->lines);
+	if (key == K_ADDRELATIONS || key == K_SETRELATIONS || key == K_REMRELATIONS) {
+		if (*p != '(') {
+			u_fprintf(ux_stderr, "Error: Tag list for %S must be in () on line %u!\n", keywords[key].getTerminatedBuffer(), result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 		result->lines += SKIPWS(p, ';', ')');
-		while (**p && **p != ';' && **p != ')') {
-			UChar *n = *p;
-			result->lines += SKIPTOWS(&n, ')', true);
-			uint32_t c = (uint32_t)(n - *p);
-			u_strncpy(gbuffers[0], *p, c);
+		while (*p && *p != ';' && *p != ')') {
+			UChar *n = p;
+			result->lines += SKIPTOWS(n, ')', true);
+			ptrdiff_t c = n - p;
+			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			Tag *wform = result->allocateTag(gbuffers[0]);
 			rule->sublist.push_back(wform->hash);
-			*p = n;
+			p = n;
 			result->lines += SKIPWS(p, ';', ')');
 		}
-		if (**p != ')') {
+		if (*p != ')') {
 			u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
@@ -656,12 +851,12 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 			u_fprintf(ux_stderr, "Error: Empty relation tag list on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 	}
 
 	result->lines += SKIPWS(p);
-	if (u_strncasecmp(*p, stringbits[S_TARGET], stringbit_lengths[S_TARGET], U_FOLD_CASE_DEFAULT) == 0) {
-		(*p) += stringbit_lengths[S_TARGET];
+	if (ux_simplecasecmp(p, stringbits[S_TARGET].getTerminatedBuffer(), stringbits[S_TARGET].length())) {
+		p += stringbits[S_TARGET].length();
 	}
 	result->lines += SKIPWS(p);
 
@@ -669,34 +864,37 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 	rule->target = s->hash;
 
 	result->lines += SKIPWS(p);
-	if (u_strncasecmp(*p, stringbits[S_IF], stringbit_lengths[S_IF], U_FOLD_CASE_DEFAULT) == 0) {
-		(*p) += stringbit_lengths[S_IF];
+	if (ux_simplecasecmp(p, stringbits[S_IF].getTerminatedBuffer(), stringbits[S_IF].length())) {
+		p += stringbits[S_IF].length();
 	}
 	result->lines += SKIPWS(p);
 
-	while (**p && **p == '(') {
-		(*p)++;
+	while (*p && *p == '(') {
+		++p;
 		result->lines += SKIPWS(p);
-		parseContextualTests(rule, p);
+		parseContextualTests(p, rule);
 		result->lines += SKIPWS(p);
-		if (**p != ')') {
+		if (*p != ')') {
 			u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 			CG3Quit(1);
 		}
-		(*p)++;
+		++p;
 		result->lines += SKIPWS(p);
 	}
 
-	if (key == K_SETPARENT || key == K_SETCHILD || key == K_SETRELATION || key == K_REMRELATION
-		|| key == K_SETRELATIONS || key == K_REMRELATIONS || key == K_MOVE || key == K_SWITCH) {
+	if (key == K_SETPARENT || key == K_SETCHILD
+	|| key == K_ADDRELATIONS || key == K_ADDRELATION
+	|| key == K_SETRELATIONS || key == K_SETRELATION
+	|| key == K_REMRELATIONS || key == K_REMRELATION
+	|| key == K_MOVE || key == K_SWITCH) {
 		result->lines += SKIPWS(p);
 		if (key == K_MOVE) {
-			if (u_strncasecmp(*p, stringbits[S_AFTER], stringbit_lengths[S_AFTER], U_FOLD_CASE_DEFAULT) == 0) {
-				(*p) += stringbit_lengths[S_AFTER];
+			if (ux_simplecasecmp(p, stringbits[S_AFTER].getTerminatedBuffer(), stringbits[S_AFTER].length())) {
+				p += stringbits[S_AFTER].length();
 				rule->type = K_MOVE_AFTER;
 			}
-			else if (u_strncasecmp(*p, stringbits[S_BEFORE], stringbit_lengths[S_BEFORE], U_FOLD_CASE_DEFAULT) == 0) {
-				(*p) += stringbit_lengths[S_BEFORE];
+			else if (ux_simplecasecmp(p, stringbits[S_BEFORE].getTerminatedBuffer(), stringbits[S_BEFORE].length())) {
+				p += stringbits[S_BEFORE].length();
 				rule->type = K_MOVE_BEFORE;
 			}
 			else {
@@ -705,8 +903,8 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 			}
 		}
 		else if (key == K_SWITCH) {
-			if (u_strncasecmp(*p, stringbits[S_WITH], stringbit_lengths[S_WITH], U_FOLD_CASE_DEFAULT) == 0) {
-				(*p) += stringbit_lengths[S_WITH];
+			if (ux_simplecasecmp(p, stringbits[S_WITH].getTerminatedBuffer(), stringbits[S_WITH].length())) {
+				p += stringbits[S_WITH].length();
 			}
 			else {
 				u_fprintf(ux_stderr, "Error: Missing movement keyword WITH on line %u!\n", result->lines);
@@ -714,8 +912,8 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 			}
 		}
 		else {
-			if (u_strncasecmp(*p, stringbits[S_TO], stringbit_lengths[S_TO], U_FOLD_CASE_DEFAULT) == 0) {
-				(*p) += stringbit_lengths[S_TO];
+			if (ux_simplecasecmp(p, stringbits[S_TO].getTerminatedBuffer(), stringbits[S_TO].length())) {
+				p += stringbits[S_TO].length();
 			}
 			else {
 				u_fprintf(ux_stderr, "Error: Missing dependency keyword TO on line %u!\n", result->lines);
@@ -723,16 +921,16 @@ int TextualParser::parseRule(KEYWORDS key, UChar **p) {
 			}
 		}
 		result->lines += SKIPWS(p);
-		while (**p && **p == '(') {
-			(*p)++;
+		while (*p && *p == '(') {
+			++p;
 			result->lines += SKIPWS(p);
-			parseContextualDependencyTests(rule, p);
+			parseContextualDependencyTests(p, rule);
 			result->lines += SKIPWS(p);
-			if (**p != ')') {
+			if (*p != ')') {
 				u_fprintf(ux_stderr, "Error: Missing closing ) on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
-			(*p)++;
+			++p;
 			result->lines += SKIPWS(p);
 		}
 		if (!rule->dep_test_head) {
@@ -770,7 +968,7 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 		if (verbosity_level > 0 && result->lines % 500 == 0) {
 			std::cerr << "Parsing line " << result->lines << "          \r" << std::flush;
 		}
-		result->lines += SKIPWS(&p);
+		result->lines += SKIPWS(p);
 		// DELIMITERS
 		if (ISCHR(*p,'D','d') && ISCHR(*(p+9),'S','s') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'L','l')
 			&& ISCHR(*(p+3),'I','i') && ISCHR(*(p+4),'M','m') && ISCHR(*(p+5),'I','i') && ISCHR(*(p+6),'T','t')
@@ -782,21 +980,21 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			}
 			result->delimiters = result->allocateSet();
 			result->delimiters->line = result->lines;
-			result->delimiters->setName(stringbits[S_DELIMITSET]);
+			result->delimiters->setName(stringbits[S_DELIMITSET].getTerminatedBuffer());
 			p += 10;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			parseTagList(result->delimiters, &p);
+			++p;
+			parseTagList(p, result->delimiters);
 			result->addSet(result->delimiters);
 			if (result->delimiters->tags.empty() && result->delimiters->single_tags.empty()) {
 				u_fprintf(ux_stderr, "Error: DELIMITERS declared, but no definitions given, on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -815,21 +1013,21 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			}
 			result->soft_delimiters = result->allocateSet();
 			result->soft_delimiters->line = result->lines;
-			result->soft_delimiters->setName(stringbits[S_SOFTDELIMITSET]);
+			result->soft_delimiters->setName(stringbits[S_SOFTDELIMITSET].getTerminatedBuffer());
 			p += 15;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			parseTagList(result->soft_delimiters, &p);
+			++p;
+			parseTagList(p, result->soft_delimiters);
 			result->addSet(result->soft_delimiters);
 			if (result->soft_delimiters->tags.empty() && result->soft_delimiters->single_tags.empty()) {
 				u_fprintf(ux_stderr, "Error: SOFT-DELIMITERS declared, but no definitions given, on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -850,17 +1048,17 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			seen_mapping_prefix = result->lines;
 
 			p += 14;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			result->lines += SKIPWS(&p);
+			++p;
+			result->lines += SKIPWS(p);
 
 			UChar *n = p;
-			result->lines += SKIPTOWS(&n, ';');
-			uint32_t c = (uint32_t)(n - p);
+			result->lines += SKIPTOWS(n, ';');
+			ptrdiff_t c = n - p;
 			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			p = n;
@@ -871,7 +1069,7 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 				u_fprintf(ux_stderr, "Error: MAPPING-PREFIX declared, but no definitions given, on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -885,84 +1083,98 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			&& ISCHR(*(p+12),'R','r') && ISCHR(*(p+13),'G','g') && ISCHR(*(p+14),'E','e') && ISCHR(*(p+15),'T','t')
 			&& !ISSTRING(p, 16)) {
 			p += 17;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			result->lines += SKIPWS(&p);
+			++p;
+			result->lines += SKIPWS(p);
 
 			while (*p && *p != ';') {
 				UChar *n = p;
 				if (*n == '"') {
 					n++;
-					result->lines += SKIPTO_NOSPAN(&n, '"');
+					result->lines += SKIPTO_NOSPAN(n, '"');
 					if (*n != '"') {
 						u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 						CG3Quit(1);
 					}
 				}
-				result->lines += SKIPTOWS(&n, ';', true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, ';', true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				Tag *t = result->allocateTag(gbuffers[0]);
 				result->preferred_targets.push_back(t->hash);
 				p = n;
-				result->lines += SKIPWS(&p);
+				result->lines += SKIPWS(p);
 			}
 
 			if (result->preferred_targets.empty()) {
 				u_fprintf(ux_stderr, "Error: PREFERRED-TARGETS declared, but no definitions given, on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
 			}
+		}
+		// ADDRELATIONS
+		else if (ISCHR(*p,'A','a') && ISCHR(*(p+11),'S','s') && ISCHR(*(p+1),'D','d') && ISCHR(*(p+2),'D','d')
+			&& ISCHR(*(p+3),'R','r') && ISCHR(*(p+4),'E','e') && ISCHR(*(p+5),'L','l') && ISCHR(*(p+6),'A','a')
+			&& ISCHR(*(p+7),'T','t') && ISCHR(*(p+8),'I','i') && ISCHR(*(p+9),'O','o') && ISCHR(*(p+10),'N','n')
+			&& !ISSTRING(p, 11)) {
+			parseRule(p, K_ADDRELATIONS);
 		}
 		// SETRELATIONS
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+11),'S','s') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'T','t')
 			&& ISCHR(*(p+3),'R','r') && ISCHR(*(p+4),'E','e') && ISCHR(*(p+5),'L','l') && ISCHR(*(p+6),'A','a')
 			&& ISCHR(*(p+7),'T','t') && ISCHR(*(p+8),'I','i') && ISCHR(*(p+9),'O','o') && ISCHR(*(p+10),'N','n')
 			&& !ISSTRING(p, 11)) {
-			parseRule(K_SETRELATIONS, &p);
+			parseRule(p, K_SETRELATIONS);
 		}
 		// REMRELATIONS
 		else if (ISCHR(*p,'R','r') && ISCHR(*(p+11),'S','s') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'M','m')
 			&& ISCHR(*(p+3),'R','r') && ISCHR(*(p+4),'E','e') && ISCHR(*(p+5),'L','l') && ISCHR(*(p+6),'A','a')
 			&& ISCHR(*(p+7),'T','t') && ISCHR(*(p+8),'I','i') && ISCHR(*(p+9),'O','o') && ISCHR(*(p+10),'N','n')
 			&& !ISSTRING(p, 11)) {
-			parseRule(K_REMRELATIONS, &p);
+			parseRule(p, K_REMRELATIONS);
+		}
+		// ADDRELATION
+		else if (ISCHR(*p,'A','a') && ISCHR(*(p+10),'N','n') && ISCHR(*(p+1),'D','d') && ISCHR(*(p+2),'D','d')
+			&& ISCHR(*(p+3),'R','r') && ISCHR(*(p+4),'E','e') && ISCHR(*(p+5),'L','l') && ISCHR(*(p+6),'A','a')
+			&& ISCHR(*(p+7),'T','t') && ISCHR(*(p+8),'I','i') && ISCHR(*(p+9),'O','o')
+			&& !ISSTRING(p, 10)) {
+			parseRule(p, K_ADDRELATION);
 		}
 		// SETRELATION
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+10),'N','n') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'T','t')
 			&& ISCHR(*(p+3),'R','r') && ISCHR(*(p+4),'E','e') && ISCHR(*(p+5),'L','l') && ISCHR(*(p+6),'A','a')
 			&& ISCHR(*(p+7),'T','t') && ISCHR(*(p+8),'I','i') && ISCHR(*(p+9),'O','o')
 			&& !ISSTRING(p, 10)) {
-			parseRule(K_SETRELATION, &p);
+			parseRule(p, K_SETRELATION);
 		}
 		// REMRELATION
 		else if (ISCHR(*p,'R','r') && ISCHR(*(p+10),'N','n') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'M','m')
 			&& ISCHR(*(p+3),'R','r') && ISCHR(*(p+4),'E','e') && ISCHR(*(p+5),'L','l') && ISCHR(*(p+6),'A','a')
 			&& ISCHR(*(p+7),'T','t') && ISCHR(*(p+8),'I','i') && ISCHR(*(p+9),'O','o')
 			&& !ISSTRING(p, 10)) {
-			parseRule(K_REMRELATION, &p);
+			parseRule(p, K_REMRELATION);
 		}
 		// SETPARENT
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+8),'T','t') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'T','t')
 			&& ISCHR(*(p+3),'P','p') && ISCHR(*(p+4),'A','a') && ISCHR(*(p+5),'R','r') && ISCHR(*(p+6),'E','e')
 			&& ISCHR(*(p+7),'N','n')
 			&& !ISSTRING(p, 8)) {
-			parseRule(K_SETPARENT, &p);
+			parseRule(p, K_SETPARENT);
 		}
 		// SETCHILD
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+7),'D','d') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'T','t')
 			&& ISCHR(*(p+3),'C','c') && ISCHR(*(p+4),'H','h') && ISCHR(*(p+5),'I','i') && ISCHR(*(p+6),'L','l')
 			&& !ISSTRING(p, 7)) {
-			parseRule(K_SETCHILD, &p);
+			parseRule(p, K_SETCHILD);
 		}
 		// SETS
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+3),'S','s') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'T','t')
@@ -975,36 +1187,36 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			Set *s = result->allocateSet();
 			s->line = result->lines;
 			p += 4;
-			result->lines += SKIPWS(&p);
+			result->lines += SKIPWS(p);
 			UChar *n = p;
-			result->lines += SKIPTOWS(&n, 0, true);
+			result->lines += SKIPTOWS(n, 0, true);
 			while (n[-1] == ',' || n[-1] == ']') {
-				n--;
+				--n;
 			}
-			uint32_t c = (uint32_t)(n - p);
+			ptrdiff_t c = n - p;
 			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			s->setName(gbuffers[0]);
 			uint32_t sh = hash_sdbm_uchar(gbuffers[0]);
 			p = n;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			parseTagList(s, &p);
+			++p;
+			parseTagList(p, s);
 			s->rehash();
 			Set *tmp = result->getSet(s->hash);
 			if (tmp) {
 				if (verbosity_level > 0) {
-					u_fprintf(ux_stderr, "Warning: LIST %S was defined twice with the same contents: Lines %u and %u.\n", s->name, tmp->line, s->line);
+					u_fprintf(ux_stderr, "Warning: LIST %S was defined twice with the same contents: Lines %u and %u.\n", s->name.c_str(), tmp->line, s->line);
 					u_fflush(ux_stderr);
 				}
 			}
 			else if (tmp) {
 				if (verbosity_level > 0) {
-					u_fprintf(ux_stderr, "Warning: Set %S (L:%u) has been aliased to %S (L:%u).\n", s->name, s->line, tmp->name, tmp->line);
+					u_fprintf(ux_stderr, "Warning: Set %S (L:%u) has been aliased to %S (L:%u).\n", s->name.c_str(), s->line, tmp->name.c_str(), tmp->line);
 					u_fflush(ux_stderr);
 				}
 				result->set_alias[sh] = tmp->hash;
@@ -1013,10 +1225,10 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			}
 			result->addSet(s);
 			if (s->tags.empty() && s->single_tags.empty()) {
-				u_fprintf(ux_stderr, "Error: LIST %S declared, but no definitions given, on line %u!\n", s->name, result->lines);
+				u_fprintf(ux_stderr, "Error: LIST %S declared, but no definitions given, on line %u!\n", s->name.c_str(), result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -1028,37 +1240,37 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			Set *s = result->allocateSet();
 			s->line = result->lines;
 			p += 3;
-			result->lines += SKIPWS(&p);
+			result->lines += SKIPWS(p);
 			UChar *n = p;
-			result->lines += SKIPTOWS(&n, 0, true);
+			result->lines += SKIPTOWS(n, 0, true);
 			while (n[-1] == ',' || n[-1] == ']') {
-				n--;
+				--n;
 			}
-			uint32_t c = (uint32_t)(n - p);
+			ptrdiff_t c = n - p;
 			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			s->setName(gbuffers[0]);
 			uint32_t sh = hash_sdbm_uchar(gbuffers[0]);
 			p = n;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			parseSetInline(&p, s);
+			++p;
+			parseSetInline(p, s);
 			s->rehash();
 			Set *tmp = result->getSet(s->hash);
 			if (tmp) {
 				if (verbosity_level > 0) {
-					u_fprintf(ux_stderr, "Warning: SET %S was defined twice with the same contents: Lines %u and %u.\n", s->name, tmp->line, s->line);
+					u_fprintf(ux_stderr, "Warning: SET %S was defined twice with the same contents: Lines %u and %u.\n", s->name.c_str(), tmp->line, s->line);
 					u_fflush(ux_stderr);
 				}
 			}
 			else if (s->sets.size() == 1 && !s->is_unified) {
 				tmp = result->getSet(s->sets.back());
 				if (verbosity_level > 0) {
-					u_fprintf(ux_stderr, "Warning: Set %S (L:%u) has been aliased to %S (L:%u).\n", s->name, s->line, tmp->name, tmp->line);
+					u_fprintf(ux_stderr, "Warning: Set %S (L:%u) has been aliased to %S (L:%u).\n", s->name.c_str(), s->line, tmp->name.c_str(), tmp->line);
 					u_fflush(ux_stderr);
 				}
 				result->set_alias[sh] = tmp->hash;
@@ -1067,10 +1279,10 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			}
 			result->addSet(s);
 			if (s->sets.empty() && s->tags.empty() && s->single_tags.empty()) {
-				u_fprintf(ux_stderr, "Error: SET %S declared, but no definitions given, on line %u!\n", s->name, result->lines);
+				u_fprintf(ux_stderr, "Error: SET %S declared, but no definitions given, on line %u!\n", s->name.c_str(), result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u! Probably caused by missing set operator.\n", result->lines);
 				CG3Quit(1);
@@ -1086,13 +1298,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = false;
 			in_null_section = false;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1110,13 +1322,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = false;
 			in_null_section = false;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1135,13 +1347,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = false;
 			in_null_section = false;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1159,13 +1371,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = false;
 			in_null_section = false;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1184,13 +1396,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = false;
 			in_null_section = false;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1209,13 +1421,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = true;
 			in_null_section = false;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1234,13 +1446,13 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			in_after_sections = false;
 			in_null_section = true;
 			UChar *s = p;
-			SKIPLN(&s);
-			SKIPWS(&s);
-			result->lines += SKIPWS(&p);
+			SKIPLN(s);
+			SKIPWS(s);
+			result->lines += SKIPWS(p);
 			if (p != s) {
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, 0, true);
-				uint32_t c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, 0, true);
+				ptrdiff_t c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				result->addAnchor(gbuffers[0], result->lines);
@@ -1252,17 +1464,17 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			&& ISCHR(*(p+3),'H','h') && ISCHR(*(p+4),'O','o')
 			&& !ISSTRING(p, 5)) {
 			p += 6;
-			result->lines += SKIPWS(&p);
+			result->lines += SKIPWS(p);
 			UChar *n = p;
-			result->lines += SKIPTOWS(&n, 0, true);
-			uint32_t c = (uint32_t)(n - p);
+			result->lines += SKIPTOWS(n, 0, true);
+			ptrdiff_t c = n - p;
 			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			result->addAnchor(gbuffers[0], result->lines);
 			p = n;
 			//*
 			// ToDo: Whether ANCHOR should require ; or not...
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -1274,15 +1486,15 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			&& ISCHR(*(p+3),'L','l') && ISCHR(*(p+4),'U','u') && ISCHR(*(p+5),'D','d')
 			&& !ISSTRING(p, 6)) {
 			p += 7;
-			result->lines += SKIPWS(&p);
+			result->lines += SKIPWS(p);
 			UChar *n = p;
-			result->lines += SKIPTOWS(&n, 0, true);
-			uint32_t c = (uint32_t)(n - p);
+			result->lines += SKIPTOWS(n, 0, true);
+			ptrdiff_t c = n - p;
 			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			uint32_t olines = result->lines;
 			p = n;
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -1299,7 +1511,7 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			char *abspath = new char[strlen(cbuffers[1])+1];
 			strcpy(abspath, cbuffers[1]);
 
-			uint32_t grammar_size = 0;
+			size_t grammar_size = 0;
 			struct stat _stat;
 			int error = stat(abspath, &_stat);
 
@@ -1308,7 +1520,7 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 				CG3Quit(1);
 			}
 			else {
-				grammar_size = _stat.st_size;
+				grammar_size = static_cast<size_t>(_stat.st_size);
 			}
 
 			UFILE *grammar = u_fopen(abspath, "r", locale, codepage);
@@ -1317,15 +1529,16 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 				CG3Quit(1);
 			}
 
-			std::vector<UChar> data(grammar_size*4, 0);
-			uint32_t read = u_file_read(&data[0], grammar_size*4, grammar);
+			std::vector<UChar> data(grammar_size*2, 0);
+			uint32_t read = u_file_read(&data[4], grammar_size*2, grammar);
 			u_fclose(grammar);
-			if (read >= grammar_size*4-1) {
-				u_fprintf(ux_stderr, "Error: Converting from underlying codepage to UTF-16 exceeded factor 4 buffer.\n");
+			if (read >= grammar_size*2-1) {
+				u_fprintf(ux_stderr, "Error: Converting from underlying codepage to UTF-16 exceeded factor 2 buffer.\n");
 				CG3Quit(1);
 			}
+			data.resize(read+4+1);
 
-			parseFromUChar(&data[0], abspath);
+			parseFromUChar(&data[4], abspath);
 			delete[] abspath;
 
 			result->lines = olines;
@@ -1333,76 +1546,76 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 		// IFF
 		else if (ISCHR(*p,'I','i') && ISCHR(*(p+2),'F','f') && ISCHR(*(p+1),'F','f')
 			&& !ISSTRING(p, 2)) {
-			parseRule(K_IFF, &p);
+			parseRule(p, K_IFF);
 		}
 		// MAP
 		else if (ISCHR(*p,'M','m') && ISCHR(*(p+2),'P','p') && ISCHR(*(p+1),'A','a')
 			&& !ISSTRING(p, 2)) {
-			parseRule(K_MAP, &p);
+			parseRule(p, K_MAP);
 		}
 		// ADD
 		else if (ISCHR(*p,'A','a') && ISCHR(*(p+2),'D','d') && ISCHR(*(p+1),'D','d')
 			&& !ISSTRING(p, 2)) {
-			parseRule(K_ADD, &p);
+			parseRule(p, K_ADD);
 		}
 		// APPEND
 		else if (ISCHR(*p,'A','a') && ISCHR(*(p+5),'D','d') && ISCHR(*(p+1),'P','p') && ISCHR(*(p+2),'P','p')
 			&& ISCHR(*(p+3),'E','e') && ISCHR(*(p+4),'N','n')
 			&& !ISSTRING(p, 5)) {
-			parseRule(K_APPEND, &p);
+			parseRule(p, K_APPEND);
 		}
 		// SELECT
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+5),'T','t') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'L','l')
 			&& ISCHR(*(p+3),'E','e') && ISCHR(*(p+4),'C','c')
 			&& !ISSTRING(p, 5)) {
-			parseRule(K_SELECT, &p);
+			parseRule(p, K_SELECT);
 		}
 		// REMOVE
 		else if (ISCHR(*p,'R','r') && ISCHR(*(p+5),'E','e') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'M','m')
 			&& ISCHR(*(p+3),'O','o') && ISCHR(*(p+4),'V','v')
 			&& !ISSTRING(p, 5)) {
-			parseRule(K_REMOVE, &p);
+			parseRule(p, K_REMOVE);
 		}
 		// REPLACE
 		else if (ISCHR(*p,'R','r') && ISCHR(*(p+6),'E','e') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'P','p')
 			&& ISCHR(*(p+3),'L','l') && ISCHR(*(p+4),'A','a') && ISCHR(*(p+5),'C','c')
 			&& !ISSTRING(p, 6)) {
-			parseRule(K_REPLACE, &p);
+			parseRule(p, K_REPLACE);
 		}
 		// DELIMIT
 		else if (ISCHR(*p,'D','d') && ISCHR(*(p+6),'T','t') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'L','l')
 			&& ISCHR(*(p+3),'I','i') && ISCHR(*(p+4),'M','m') && ISCHR(*(p+5),'I','i')
 			&& !ISSTRING(p, 6)) {
-			parseRule(K_DELIMIT, &p);
+			parseRule(p, K_DELIMIT);
 		}
 		// SUBSTITUTE
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+9),'E','e') && ISCHR(*(p+1),'U','u') && ISCHR(*(p+2),'B','b')
 			&& ISCHR(*(p+3),'S','s') && ISCHR(*(p+4),'T','t') && ISCHR(*(p+5),'I','i') && ISCHR(*(p+6),'T','t')
 			&& ISCHR(*(p+7),'U','u') && ISCHR(*(p+8),'T','t')
 			&& !ISSTRING(p, 9)) {
-			parseRule(K_SUBSTITUTE, &p);
+			parseRule(p, K_SUBSTITUTE);
 		}
 		// JUMP
 		else if (ISCHR(*p,'J','j') && ISCHR(*(p+3),'P','p') && ISCHR(*(p+1),'U','u') && ISCHR(*(p+2),'M','m')
 			&& !ISSTRING(p, 4)) {
-			parseRule(K_JUMP, &p);
+			parseRule(p, K_JUMP);
 		}
 		// MOVE
 		else if (ISCHR(*p,'M','m') && ISCHR(*(p+3),'E','e') && ISCHR(*(p+1),'O','o') && ISCHR(*(p+2),'V','v')
 			&& !ISSTRING(p, 4)) {
-			parseRule(K_MOVE, &p);
+			parseRule(p, K_MOVE);
 		}
 		// SWITCH
 		else if (ISCHR(*p,'S','s') && ISCHR(*(p+5),'H','h') && ISCHR(*(p+1),'W','w') && ISCHR(*(p+2),'I','i')
 			&& ISCHR(*(p+3),'T','t') && ISCHR(*(p+4),'C','c')
 			&& !ISSTRING(p, 5)) {
-			parseRule(K_SWITCH, &p);
+			parseRule(p, K_SWITCH);
 		}
 		// EXECUTE
 		else if (ISCHR(*p,'E','e') && ISCHR(*(p+6),'E','e') && ISCHR(*(p+1),'X','x') && ISCHR(*(p+2),'E','e')
 			&& ISCHR(*(p+3),'C','c') && ISCHR(*(p+4),'U','u') && ISCHR(*(p+5),'T','t')
 			&& !ISSTRING(p, 7)) {
-			parseRule(K_EXECUTE, &p);
+			parseRule(p, K_EXECUTE);
 		}
 		// TEMPLATE
 		else if (ISCHR(*p,'T','t') && ISCHR(*(p+7),'E','e') && ISCHR(*(p+1),'E','e') && ISCHR(*(p+2),'M','m')
@@ -1411,26 +1624,26 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			ContextualTest *t = result->allocateContextualTest();
 			t->line = result->lines;
 			p += 8;
-			result->lines += SKIPWS(&p);
+			result->lines += SKIPWS(p);
 			UChar *n = p;
-			result->lines += SKIPTOWS(&n, 0, true);
-			uint32_t c = (uint32_t)(n - p);
+			result->lines += SKIPTOWS(n, 0, true);
+			ptrdiff_t c = n - p;
 			u_strncpy(gbuffers[0], p, c);
 			gbuffers[0][c] = 0;
 			uint32_t cn = hash_sdbm_uchar(gbuffers[0]);
 			t->name = cn;
 			result->addContextualTest(t, gbuffers[0]);
 			p = n;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
+			++p;
 
-			parseContextualTestList(0, 0, 0, &p, t);
+			parseContextualTestList(p, 0, 0, 0, t);
 
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u! Probably caused by missing set operator.\n", result->lines);
 				CG3Quit(1);
@@ -1442,41 +1655,41 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 			&& ISCHR(*(p+7),'E','e') && ISCHR(*(p+8),'S','s') && ISCHR(*(p+9),'E','e')
 			&& !ISSTRING(p, 10)) {
 			p += 11;
-			result->lines += SKIPWS(&p, '=');
+			result->lines += SKIPWS(p, '=');
 			if (*p != '=') {
 				u_fprintf(ux_stderr, "Error: Encountered a %C before the expected = on line %u!\n", *p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
-			result->lines += SKIPWS(&p);
+			++p;
+			result->lines += SKIPWS(p);
 
 			while (*p && *p != ';') {
-				uint32_t c = 0;
+				ptrdiff_t c = 0;
 				Tag *left = 0;
 				Tag *right = 0;
 				UChar *n = p;
-				result->lines += SKIPTOWS(&n, '(', true);
+				result->lines += SKIPTOWS(n, '(', true);
 				if (*n != '(') {
 					u_fprintf(ux_stderr, "Error: Encountered %C before the expected ( on line %u!\n", *p, result->lines);
 					CG3Quit(1);
 				}
 				n++;
-				result->lines += SKIPWS(&n);
+				result->lines += SKIPWS(n);
 				p = n;
 				if (*n == '"') {
 					n++;
-					result->lines += SKIPTO_NOSPAN(&n, '"');
+					result->lines += SKIPTO_NOSPAN(n, '"');
 					if (*n != '"') {
 						u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 						CG3Quit(1);
 					}
 				}
-				result->lines += SKIPTOWS(&n, ')', true);
-				c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, ')', true);
+				c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				left = result->allocateTag(gbuffers[0]);
-				result->lines += SKIPWS(&n);
+				result->lines += SKIPWS(n);
 				p = n;
 
 				if (*p == ')') {
@@ -1486,26 +1699,26 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 
 				if (*n == '"') {
 					n++;
-					result->lines += SKIPTO_NOSPAN(&n, '"');
+					result->lines += SKIPTO_NOSPAN(n, '"');
 					if (*n != '"') {
 						u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 						CG3Quit(1);
 					}
 				}
-				result->lines += SKIPTOWS(&n, ')', true);
-				c = (uint32_t)(n - p);
+				result->lines += SKIPTOWS(n, ')', true);
+				c = n - p;
 				u_strncpy(gbuffers[0], p, c);
 				gbuffers[0][c] = 0;
 				right = result->allocateTag(gbuffers[0]);
-				result->lines += SKIPWS(&n);
+				result->lines += SKIPWS(n);
 				p = n;
 
 				if (*p != ')') {
 					u_fprintf(ux_stderr, "Error: Encountered %C before the expected ) on line %u!\n", *p, result->lines);
 					CG3Quit(1);
 				}
-				p++;
-				result->lines += SKIPWS(&p);
+				++p;
+				result->lines += SKIPWS(p);
 
 				if (left && right) {
 					result->parentheses[left->hash] = right->hash;
@@ -1517,7 +1730,7 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 				u_fprintf(ux_stderr, "Error: PARENTHESES declared, but no definitions given, on line %u!\n", result->lines);
 				CG3Quit(1);
 			}
-			result->lines += SKIPWS(&p, ';');
+			result->lines += SKIPWS(p, ';');
 			if (*p != ';') {
 				u_fprintf(ux_stderr, "Error: Missing closing ; before line %u!\n", result->lines);
 				CG3Quit(1);
@@ -1525,32 +1738,32 @@ int TextualParser::parseFromUChar(UChar *input, const char *fname) {
 		}
 		// END
 		else if (ISCHR(*p,'E','e') && ISCHR(*(p+2),'D','d') && ISCHR(*(p+1),'N','n')) {
-			if (ISNL(*(p-1)) || u_isWhitespace(*(p-1))) {
-				if (*(p+3) == 0 || ISNL(*(p+3)) || u_isWhitespace(*(p+3))) {
+			if (ISNL(*(p-1)) || ISSPACE(*(p-1))) {
+				if (*(p+3) == 0 || ISNL(*(p+3)) || ISSPACE(*(p+3))) {
 					break;
 				}
 			}
-			p++;
+			++p;
 		}
 		// No keyword found at this position, skip a character.
 		else {
 			if (*p == ';' || *p == '"' || *p == '<') {
 				if (*p == '"') {
-					p++;
-					result->lines += SKIPTO_NOSPAN(&p, '"');
+					++p;
+					result->lines += SKIPTO_NOSPAN(p, '"');
 					if (*p != '"') {
 						u_fprintf(ux_stderr, "Error: Missing closing \" on line %u!\n", result->lines);
 						CG3Quit(1);
 					}
 				}
-				result->lines += SKIPTOWS(&p);
+				result->lines += SKIPTOWS(p);
 			}
-			if (*p && *p != ';' && *p != '"' && *p != '<' && !ISNL(*p) && !u_isWhitespace(*p)) {
+			if (*p && *p != ';' && *p != '"' && *p != '<' && !ISNL(*p) && !ISSPACE(*p)) {
 				p[16] = 0;
 				u_fprintf(ux_stderr, "Error: Garbage data '%S...' encountered on line %u!\n", p, result->lines);
 				CG3Quit(1);
 			}
-			p++;
+			++p;
 		}
 	}
 	
@@ -1575,7 +1788,7 @@ int TextualParser::parse_grammar_from_file(const char *fname, const char *loc, c
 		CG3Quit(1);
 	}
 	else {
-		result->grammar_size = _stat.st_size;
+		result->grammar_size = static_cast<size_t>(_stat.st_size);
 	}
 
 	UFILE *grammar = u_fopen(filename, "r", locale, codepage);
@@ -1584,28 +1797,57 @@ int TextualParser::parse_grammar_from_file(const char *fname, const char *loc, c
 		CG3Quit(1);
 	}
 
-	std::vector<UChar> data(result->grammar_size*4, 0);
-	uint32_t read = u_file_read(&data[0], result->grammar_size*4, grammar);
+	// It reads into the buffer at offset 4 because certain functions may look back, so we need some nulls in front.
+	std::vector<UChar> data(result->grammar_size*2, 0);
+	uint32_t read = u_file_read(&data[4], result->grammar_size*2, grammar);
 	u_fclose(grammar);
-	if (read >= result->grammar_size*4-1) {
-		u_fprintf(ux_stderr, "Error: Converting from underlying codepage to UTF-16 exceeded factor 4 buffer.\n");
+	if (read >= result->grammar_size*2-1) {
+		u_fprintf(ux_stderr, "Error: Converting from underlying codepage to UTF-16 exceeded factor 2 buffer.\n");
 		CG3Quit(1);
 	}
+	data.resize(read+4+1);
 
-	result->addAnchor(keywords[K_START], result->lines);
+	result->addAnchor(keywords[K_START].getTerminatedBuffer(), result->lines);
 
 	// Allocate the magic * tag
 	{
-		Tag *tany = result->allocateTag(stringbits[S_ASTERIK]);
+		Tag *tany = result->allocateTag(stringbits[S_ASTERIK].getTerminatedBuffer());
 		result->tag_any = tany->hash;
+	}
+	// Create the magic set _TARGET_ containing the tag _TARGET_
+	{
+		Set *set_c = result->allocateSet();
+		set_c->line = 0;
+		set_c->setName(stringbits[S_UU_TARGET].getTerminatedBuffer());
+		Tag *t = result->allocateTag(stringbits[S_UU_TARGET].getTerminatedBuffer());
+		result->addTagToSet(t, set_c);
+		result->addSet(set_c);
+	}
+	// Create the magic set _MARK_ containing the tag _MARK_
+	{
+		Set *set_c = result->allocateSet();
+		set_c->line = 0;
+		set_c->setName(stringbits[S_UU_MARK].getTerminatedBuffer());
+		Tag *t = result->allocateTag(stringbits[S_UU_MARK].getTerminatedBuffer());
+		result->addTagToSet(t, set_c);
+		result->addSet(set_c);
+	}
+	// Create the magic set _ATTACHTO_ containing the tag _ATTACHTO_
+	{
+		Set *set_c = result->allocateSet();
+		set_c->line = 0;
+		set_c->setName(stringbits[S_UU_ATTACHTO].getTerminatedBuffer());
+		Tag *t = result->allocateTag(stringbits[S_UU_ATTACHTO].getTerminatedBuffer());
+		result->addTagToSet(t, set_c);
+		result->addSet(set_c);
 	}
 	// Create the magic set _LEFT_ containing the tag _LEFT_
 	Set *s_left = 0;
 	{
 		Set *set_c = s_left = result->allocateSet();
 		set_c->line = 0;
-		set_c->setName(stringbits[S_UU_LEFT]);
-		Tag *t = result->allocateTag(stringbits[S_UU_LEFT]);
+		set_c->setName(stringbits[S_UU_LEFT].getTerminatedBuffer());
+		Tag *t = result->allocateTag(stringbits[S_UU_LEFT].getTerminatedBuffer());
 		result->addTagToSet(t, set_c);
 		result->addSet(set_c);
 	}
@@ -1614,8 +1856,8 @@ int TextualParser::parse_grammar_from_file(const char *fname, const char *loc, c
 	{
 		Set *set_c = s_right = result->allocateSet();
 		set_c->line = 0;
-		set_c->setName(stringbits[S_UU_RIGHT]);
-		Tag *t = result->allocateTag(stringbits[S_UU_RIGHT]);
+		set_c->setName(stringbits[S_UU_RIGHT].getTerminatedBuffer());
+		Tag *t = result->allocateTag(stringbits[S_UU_RIGHT].getTerminatedBuffer());
 		result->addTagToSet(t, set_c);
 		result->addSet(set_c);
 	}
@@ -1623,19 +1865,19 @@ int TextualParser::parse_grammar_from_file(const char *fname, const char *loc, c
 	{
 		Set *set_c = result->allocateSet();
 		set_c->line = 0;
-		set_c->setName(stringbits[S_UU_PAREN]);
+		set_c->setName(stringbits[S_UU_PAREN].getTerminatedBuffer());
 		set_c->set_ops.push_back(S_OR);
 		set_c->sets.push_back(s_left->hash);
 		set_c->sets.push_back(s_right->hash);
 		result->addSet(set_c);
 	}
 
-	error = parseFromUChar(&data[0], filename);
+	error = parseFromUChar(&data[4], filename);
 	if (error) {
 		return error;
 	}
 
-	result->addAnchor(keywords[K_END], result->lines);
+	result->addAnchor(keywords[K_END].getTerminatedBuffer(), result->lines);
 
 	return 0;
 }
@@ -1670,4 +1912,6 @@ void TextualParser::addRuleToGrammar(Rule *rule) {
 		u_fprintf(ux_stderr, "Error: Rule definition attempted outside a section on line %u!\n", result->lines);
 		CG3Quit(1);
 	}
+}
+
 }

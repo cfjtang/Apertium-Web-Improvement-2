@@ -26,71 +26,69 @@
 #include "stdafx.h"
 
 namespace CG3 {
+	class Grammar;
 
 	enum CT_POS {
-		POS_CAREFUL        =        1U,
-		POS_NEGATED        =        2U,
-		POS_NEGATIVE       =        4U,
-		POS_SCANFIRST      =        8U,
-		POS_SCANALL        =       16U,
-		POS_ABSOLUTE       =       32U,
-		POS_SPAN_RIGHT     =       64U,
-		POS_SPAN_LEFT      =      128U,
-		POS_SPAN_BOTH      =      256U,
-		POS_DEP_PARENT     =      512U,
-		POS_DEP_SIBLING    =     1024U,
-		POS_DEP_CHILD      =     2048U,
-		POS_PASS_ORIGIN    =     4096U,
-		POS_NO_PASS_ORIGIN =     8192U,
-		POS_LEFT_PAR       =    16384U,
-		POS_RIGHT_PAR      =    32768U,
-		POS_DEP_SELF       =    65536U,
-		POS_DEP_NONE       =   131072U,
-		POS_DEP_ALL        =   262144U,
-		POS_DEP_DEEP       =   524288U,
-		POS_MARK_SET       =  1048576U,
-		POS_MARK_JUMP      =  2097152U,
-		POS_LOOK_DELETED   =  4194304U,
-		POS_LOOK_DELAYED   =  8388608U,
-		POS_TMPL_OVERRIDE  = 16777216U,
-		POS_NONE           = 33554432U
+		POS_CAREFUL        =        0x1,
+		POS_NEGATE         =        0x2,
+		POS_NOT            =        0x4,
+		POS_SCANFIRST      =        0x8,
+		POS_SCANALL        =       0x10,
+		POS_ABSOLUTE       =       0x20,
+		POS_SPAN_RIGHT     =       0x40,
+		POS_SPAN_LEFT      =       0x80,
+		POS_SPAN_BOTH      =      0x100,
+		POS_DEP_PARENT     =      0x200,
+		POS_DEP_SIBLING    =      0x400,
+		POS_DEP_CHILD      =      0x800,
+		POS_PASS_ORIGIN    =     0x1000,
+		POS_NO_PASS_ORIGIN =     0x2000,
+		POS_LEFT_PAR       =     0x4000,
+		POS_RIGHT_PAR      =     0x8000,
+		POS_SELF           =    0x10000,
+		POS_NONE           =    0x20000,
+		POS_ALL            =    0x40000,
+		POS_DEP_DEEP       =    0x80000,
+		POS_MARK_SET       =   0x100000,
+		POS_MARK_JUMP      =   0x200000,
+		POS_LOOK_DELETED   =   0x400000,
+		POS_LOOK_DELAYED   =   0x800000,
+		POS_TMPL_OVERRIDE  =  0x1000000,
+		POS_UNKNOWN        =  0x2000000,
+		POS_RELATION       =  0x4000000,
+		POS_ATTACH_TO      =  0x8000000,
 	};
 
 	class ContextualTest {
 	public:
+		bool is_used;
+		int32_t offset;
 		uint32_t line;
 		uint32_t name;
 		uint32_t hash;
 		uint32_t pos;
-		int32_t offset;
-		bool is_used;
-
 		uint32_t target;
+		uint32_t relation;
 		uint32_t barrier;
 		uint32_t cbarrier;
-
 		mutable uint32_t num_fail, num_match;
 		mutable double total_time;
-
 		ContextualTest *tmpl;
-		std::list<ContextualTest*> ors;
 		ContextualTest *linked;
-
 		ContextualTest *prev, *next;
+
+		std::list<ContextualTest*> ors;
 		void detach();
 
 		ContextualTest();
 		~ContextualTest();
 
-		void parsePosition(const UChar *input, UFILE *ux_stderr);
-
 		ContextualTest *allocateContextualTest();
 		
 		uint32_t rehash();
+		uint32_t getHash();
 		void resetStatistics();
-		void markUsed(Grammar *grammar);
-
-		static bool cmp_quality(ContextualTest *a, ContextualTest *b);
+		void markUsed(Grammar &grammar);
 	};
 
 }

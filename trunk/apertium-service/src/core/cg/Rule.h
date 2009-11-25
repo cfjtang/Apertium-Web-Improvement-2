@@ -25,10 +25,13 @@
 
 #include "stdafx.h"
 #include "Strings.h"
+#include "Tag.h"
+#include "Cohort.h"
 
 namespace CG3 {
 
 	class Grammar;
+	class ContextualTest;
 
 	enum RULE_FLAGS {
 		RF_NEAREST      =     1U,
@@ -46,7 +49,8 @@ namespace CG3 {
 		RF_ENCL_INNER   =  4096U,
 		RF_ENCL_OUTER   =  8192U,
 		RF_ENCL_FINAL   = 16384U,
-		RF_ENCL_ANY     = 32768U
+		RF_ENCL_ANY     = 32768U,
+		RF_ALLOWCROSS   = 65536U
 	};
 
 	class Rule {
@@ -104,6 +108,10 @@ namespace CG3 {
 		}
 	};
 
+	typedef std::vector<Rule*> RuleVector;
+	typedef std::map<uint32_t,Rule*> RuleByLineMap;
+	typedef stdext::hash_map<uint32_t,Rule*> RuleByLineHashMap;
+	typedef stdext::hash_map<const Rule*, CohortSet, compare_Rule> RuleToCohortsMap;
 }
 
 #ifdef __GNUC__

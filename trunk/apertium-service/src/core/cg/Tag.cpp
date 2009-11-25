@@ -22,24 +22,27 @@
 #include "Tag.h"
 #include "Strings.h"
 
-using namespace CG3;
+namespace CG3 {
 
-Tag::Tag() {
-	type = 0;
-	in_grammar = false;
-	is_special = false;
-	is_used = false;
-	comparison_key = 0;
-	comparison_op = OP_NOP;
-	comparison_val = 0;
-	tag = 0;
-	regexp = 0;
-	dep_self = 0;
-	dep_parent = 0;
-	number = 0;
-	hash = 0;
-	plain_hash = 0;
-	seed = 0;
+Tag::Tag() :
+in_grammar(false),
+is_special(false),
+is_used(false),
+comparison_op(OP_NOP),
+comparison_val(0),
+type(0),
+comparison_hash(0),
+dep_self(0),
+dep_parent(0),
+hash(0),
+plain_hash(0),
+number(0),
+seed(0),
+comparison_key(0),
+tag(0),
+regexp(0)
+{
+	// Nothing in the actual body...
 }
 
 Tag::~Tag() {
@@ -58,7 +61,6 @@ Tag::~Tag() {
 }
 
 void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
-	in_grammar = true;
 	type = 0;
 
 	if (u_strlen(to)) {
@@ -74,10 +76,10 @@ void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
 			}
 		}
 
-		uint32_t length = u_strlen(tmp);
+		size_t length = u_strlen(tmp);
 
 		if (tmp[0] == 'T' && tmp[1] == ':') {
-			u_fprintf(ux_stderr, "Warning: Tag name %S looks like a misattempt of template usage.\n", tmp);
+			u_fprintf(ux_stderr, "Warning: Tag %S looks like a misattempt of template usage.\n", tmp);
 		}
 
 		// ToDo: Implement META and VAR
@@ -92,9 +94,8 @@ void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
 			length -= 4;
 		}
 		
-		if (tmp[0] && (tmp[0] == '"' || tmp[0] == '<')) {
-			type |= T_TEXTUAL;
-		}
+		size_t oldlength = length;
+
 		while (tmp[0] && (tmp[0] == '"' || tmp[0] == '<') && (tmp[length-1] == 'i' || tmp[length-1] == 'r' || tmp[length-1] == 'v')) {
 			if (tmp[length-1] == 'v') {
 				type |= T_VARSTRING;
@@ -110,18 +111,29 @@ void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
 			}
 		}
 
-		if (tmp[0] == '"' && tmp[length-1] == '"') {
-			if (tmp[1] == '<' && tmp[length-2] == '>') {
-				type |= T_WORDFORM;
+		if (tmp[0] && (tmp[0] == '"' || tmp[0] == '<')) {
+			if ((tmp[0] == '"' && tmp[length-1] == '"') || (tmp[0] == '<' && tmp[length-1] == '>')) {
+				type |= T_TEXTUAL;
+				if (tmp[0] == '"' && tmp[length-1] == '"') {
+					if (tmp[1] == '<' && tmp[length-2] == '>') {
+						type |= T_WORDFORM;
+					}
+					else {
+						type |= T_BASEFORM;
+					}
+				}
 			}
 			else {
-				type |= T_BASEFORM;
+				type &= ~T_VARSTRING;
+				type &= ~T_REGEXP;
+				type &= ~T_CASE_INSENSITIVE;
+				length = oldlength;
 			}
 		}
 
 		tag = new UChar[length+8];
-		u_memset(tag, 0, length+8);
 		u_strncpy(tag, tmp, length);
+		tag[length] = 0;
 
 		UChar *utag = gbuffers[0];
 		ux_unEscape(utag, tag);
@@ -137,27 +149,37 @@ void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
 		if (tag && tag[0] == '<' && tag[length-1] == '>') {
 			parseNumeric(this, tag);
 		}
+		// ToDo: Grammar tags surely have no need to be dependency tags...?
 		if (tag && tag[0] == '#') {
 			if (u_sscanf(tag, "#%i->%i", &dep_self, &dep_parent) == 2 && dep_self != 0) {
 				type |= T_DEPENDENCY;
 			}
 		}
 
-		if (u_strcmp(tag, stringbits[S_ASTERIK]) == 0) {
+		if (u_strcmp(tag, stringbits[S_ASTERIK].getTerminatedBuffer()) == 0) {
 			type |= T_ANY;
 		}
-		else if (u_strcmp(tag, stringbits[S_UU_LEFT]) == 0) {
+		else if (u_strcmp(tag, stringbits[S_UU_LEFT].getTerminatedBuffer()) == 0) {
 			type |= T_PAR_LEFT;
 		}
-		else if (u_strcmp(tag, stringbits[S_UU_RIGHT]) == 0) {
+		else if (u_strcmp(tag, stringbits[S_UU_RIGHT].getTerminatedBuffer()) == 0) {
 			type |= T_PAR_RIGHT;
+		}
+		else if (u_strcmp(tag, stringbits[S_UU_TARGET].getTerminatedBuffer()) == 0) {
+			type |= T_TARGET;
+		}
+		else if (u_strcmp(tag, stringbits[S_UU_MARK].getTerminatedBuffer()) == 0) {
+			type |= T_MARK;
+		}
+		else if (u_strcmp(tag, stringbits[S_UU_ATTACHTO].getTerminatedBuffer()) == 0) {
+			type |= T_ATTACHTO;
 		}
 
 		// ToDo: Add ICASE: REGEXP: and //r //ri //i to tags
 		if (type & T_REGEXP) {
-			if (u_strcmp(tag, stringbits[S_RXTEXT_ANY]) == 0
-			|| u_strcmp(tag, stringbits[S_RXBASE_ANY]) == 0
-			|| u_strcmp(tag, stringbits[S_RXWORD_ANY]) == 0) {
+			if (u_strcmp(tag, stringbits[S_RXTEXT_ANY].getTerminatedBuffer()) == 0
+			|| u_strcmp(tag, stringbits[S_RXBASE_ANY].getTerminatedBuffer()) == 0
+			|| u_strcmp(tag, stringbits[S_RXWORD_ANY].getTerminatedBuffer()) == 0) {
 				type |= T_REGEXP_ANY;
 				type &= ~T_REGEXP;
 			}
@@ -180,7 +202,7 @@ void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
 		}
 	}
 	is_special = false;
-	if (type & (T_ANY|T_PAR_LEFT|T_PAR_RIGHT|T_NUMERICAL|T_VARIABLE|T_META|T_NEGATIVE|T_FAILFAST|T_CASE_INSENSITIVE|T_REGEXP|T_REGEXP_ANY|T_VARSTRING)) {
+	if (type & (T_ANY|T_TARGET|T_MARK|T_ATTACHTO|T_PAR_LEFT|T_PAR_RIGHT|T_NUMERICAL|T_VARIABLE|T_META|T_NEGATIVE|T_FAILFAST|T_CASE_INSENSITIVE|T_REGEXP|T_REGEXP_ANY|T_VARSTRING)) {
 		is_special = true;
 	}
 
@@ -191,22 +213,22 @@ void Tag::parseTag(const UChar *to, UFILE *ux_stderr) {
 }
 
 void Tag::parseTagRaw(const UChar *to) {
-	in_grammar = false;
 	type = 0;
 	if (u_strlen(to)) {
 		const UChar *tmp = to;
 		uint32_t length = u_strlen(tmp);
 
 		if (tmp[0] && (tmp[0] == '"' || tmp[0] == '<')) {
-			type |= T_TEXTUAL;
-		}
-
-		if (tmp[0] == '"' && tmp[length-1] == '"') {
-			if (tmp[1] == '<' && tmp[length-2] == '>') {
-				type |= T_WORDFORM;
-			}
-			else {
-				type |= T_BASEFORM;
+			if ((tmp[0] == '"' && tmp[length-1] == '"') || (tmp[0] == '<' && tmp[length-1] == '>')) {
+				type |= T_TEXTUAL;
+				if (tmp[0] == '"' && tmp[length-1] == '"') {
+					if (tmp[1] == '<' && tmp[length-2] == '>') {
+						type |= T_WORDFORM;
+					}
+					else {
+						type |= T_BASEFORM;
+					}
+				}
 			}
 		}
 
@@ -337,7 +359,7 @@ uint32_t Tag::rehash() {
 	}
 
 	is_special = false;
-	if (type & (T_ANY|T_PAR_LEFT|T_PAR_RIGHT|T_NUMERICAL|T_VARIABLE|T_META|T_NEGATIVE|T_FAILFAST|T_CASE_INSENSITIVE|T_REGEXP|T_REGEXP_ANY|T_VARSTRING)) {
+	if (type & (T_ANY|T_TARGET|T_MARK|T_ATTACHTO|T_PAR_LEFT|T_PAR_RIGHT|T_NUMERICAL|T_VARIABLE|T_META|T_NEGATIVE|T_FAILFAST|T_CASE_INSENSITIVE|T_REGEXP|T_REGEXP_ANY|T_VARSTRING)) {
 		is_special = true;
 	}
 
@@ -348,33 +370,8 @@ void Tag::markUsed() {
 	is_used = true;
 }
 
-void Tag::printTagRaw(UFILE *to, const Tag *tag) {
-	if (tag->type & T_NEGATIVE) {
-		u_fprintf(to, "!");
-	}
-	if (tag->type & T_FAILFAST) {
-		u_fprintf(to, "^");
-	}
-	if (tag->type & T_META) {
-		u_fprintf(to, "META:");
-	}
-	if (tag->type & T_VARIABLE) {
-		u_fprintf(to, "VAR:");
-	}
-
-	u_fprintf(to, "%S", tag->tag);
-
-	if (tag->type & T_CASE_INSENSITIVE) {
-		u_fprintf(to, "i");
-	}
-	if (tag->type & T_REGEXP) {
-		u_fprintf(to, "r");
-	}
-	if (tag->type & T_VARSTRING) {
-		u_fprintf(to, "v");
-	}
-}
-
 UChar *Tag::allocateUChars(uint32_t n) {
 	return new UChar[n];
+}
+
 }

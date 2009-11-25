@@ -24,51 +24,54 @@
 #define __COHORT_H
 
 #include "stdafx.h"
+#include "Reading.h"
 
 namespace CG3 {
+	class SingleWindow;
+	class Reading;
+	class Cohort;
+	typedef std::map<uint32_t,uint32Set> RelationCtn;
+	typedef std::vector<Cohort*> CohortVector;
 
 	class Cohort {
 	public:
+		bool num_is_current;
+		bool dep_done;
+		bool is_enclosed;
+		bool is_related;
 		uint32_t global_number;
 		uint32_t local_number;
 		uint32_t wordform;
+		uint32_t dep_self;
+		uint32_t dep_parent;
+		uint32_t is_pleft, is_pright;
 		SingleWindow *parent;
-		std::list<Reading*> readings;
-		std::list<Reading*> deleted;
-		std::list<Reading*> delayed;
-		UChar *text_pre, *text_post;
-
-		bool num_is_current;
+		UChar *text;
+		Cohort *prev, *next;
+		ReadingList readings;
+		ReadingList deleted;
+		ReadingList delayed;
 		uint32int32Map num_max, num_min;
+		uint32HashSet dep_children;
+		uint32HashSet possible_sets;
+		CohortVector enclosed;
+		RelationCtn relations;
+
 		int32_t getMin(uint32_t key);
 		int32_t getMax(uint32_t key);
 
-		bool dep_done;
-		uint32_t dep_self;
-		uint32_t dep_parent;
-		uint32HashSet dep_children;
-
-		uint32_t is_pleft, is_pright;
-
-		Cohort *prev, *next;
 		void detach();
-
-		uint32HashSet possible_sets;
-
-		bool is_enclosed;
-		std::vector<Cohort*> enclosed;
-
-		bool is_related;
-		std::multimap<uint32_t, uint32_t> relations;
 
 		Cohort(SingleWindow *p);
 		~Cohort();
-		void clear(SingleWindow *p);
 
-		void addChild(uint32_t child);
-		void remChild(uint32_t child);
+		bool addChild(uint32_t child);
+		bool remChild(uint32_t child);
 		void appendReading(Reading *read);
 		Reading *allocateAppendReading();
+		bool addRelation(uint32_t rel, uint32_t cohort);
+		bool setRelation(uint32_t rel, uint32_t cohort);
+		bool remRelation(uint32_t rel, uint32_t cohort);
 
 	private:
 		inline void updateMinMax();
@@ -80,6 +83,7 @@ namespace CG3 {
 		}
 	};
 
+	typedef std::set<Cohort*, compare_Cohort> CohortSet;
 }
 
 #endif

@@ -26,6 +26,12 @@
 #include "stdafx.h"
  
 namespace CG3 {
+	class Grammar;
+	class Tag;
+	class Set;
+	class Rule;
+	class ContextualTest;
+
 	class GrammarWriter {
 	public:
 		bool statistics;
@@ -40,10 +46,10 @@ namespace CG3 {
 		uint32HashSet used_sets;
 		const Grammar *grammar;
 
-		void printTag(UFILE *out, const Tag *tag);
-		void printSet(UFILE *output, const Set *curset);
-		void printRule(UFILE *to, const Rule *rule);
-		void printContextualTest(UFILE *to, const ContextualTest *test);
+		void printTag(UFILE *out, const Tag &tag);
+		void printSet(UFILE *output, const Set &curset);
+		void printRule(UFILE *to, const Rule &rule);
+		void printContextualTest(UFILE *to, const ContextualTest &test);
 	};
 }
 

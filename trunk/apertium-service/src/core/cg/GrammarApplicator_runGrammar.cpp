@@ -27,20 +27,18 @@
 #include "SingleWindow.h"
 #include "Reading.h"
 
-using namespace CG3;
-using namespace CG3::Strings;
+namespace CG3 {
 
-Reading *GrammarApplicator::initEmptyCohort(Cohort *cCohort) {
-	Reading *cReading = new Reading(cCohort);
-	cReading->wordform = cCohort->wordform;
-	cReading->baseform = cCohort->wordform;
+Reading *GrammarApplicator::initEmptyCohort(Cohort &cCohort) {
+	Reading *cReading = new Reading(&cCohort);
+	cReading->wordform = cCohort.wordform;
+	cReading->baseform = cCohort.wordform;
 	if (grammar->sets_any && !grammar->sets_any->empty()) {
 		cReading->parent->possible_sets.insert(grammar->sets_any->begin(), grammar->sets_any->end());
-		cReading->possible_sets.insert(grammar->sets_any->begin(), grammar->sets_any->end());
 	}
-	addTagToReading(cReading, cCohort->wordform);
+	addTagToReading(*cReading, cCohort.wordform);
 	cReading->noprint = true;
-	cCohort->appendReading(cReading);
+	cCohort.appendReading(cReading);
 	numReadings++;
 	return cReading;
 }
@@ -84,8 +82,8 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 	uint32_t resetAfter = ((num_windows+4)*2+1);
 	uint32_t lines = 0;
 
-	begintag = addTag(stringbits[S_BEGINTAG])->hash;
-	endtag = addTag(stringbits[S_ENDTAG])->hash;
+	begintag = addTag(stringbits[S_BEGINTAG].getTerminatedBuffer())->hash;
+	endtag = addTag(stringbits[S_ENDTAG].getTerminatedBuffer())->hash;
 
 	SingleWindow *cSWindow = 0;
 	Cohort *cCohort = 0;
@@ -107,7 +105,7 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 
 		if (!ignoreinput && cleaned[0] == '"' && cleaned[1] == '<') {
 			ux_trim(cleaned);
-			if (cCohort && cSWindow->cohorts.size() >= soft_limit && grammar->soft_delimiters && doesTagMatchSet(cCohort->wordform, grammar->soft_delimiters)) {
+			if (cCohort && cSWindow->cohorts.size() >= soft_limit && grammar->soft_delimiters && doesTagMatchSet(cCohort->wordform, *(grammar->soft_delimiters))) {
 				if (cSWindow->cohorts.size() >= soft_limit) {
 					if (verbosity_level > 0) {
 						u_fprintf(ux_stderr, "Warning: Soft limit of %u cohorts reached at line %u but found suitable soft delimiter.\n", soft_limit, numLines);
@@ -115,36 +113,34 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 					}
 				}
 				if (cCohort->readings.empty()) {
-					cReading = initEmptyCohort(cCohort);
+					cReading = initEmptyCohort(*cCohort);
 					lReading = cReading;
 				}
-				foreach (std::list<Reading*>, cCohort->readings, iter, iter_end) {
-					addTagToReading(*iter, endtag);
+				foreach (ReadingList, cCohort->readings, iter, iter_end) {
+					addTagToReading(**iter, endtag);
 				}
 
 				cSWindow->appendCohort(cCohort);
-				gWindow->appendSingleWindow(cSWindow);
 				lSWindow = cSWindow;
 				lCohort = cCohort;
 				cSWindow = 0;
 				cCohort = 0;
 				numCohorts++;
 			}
-			if (cCohort && (cSWindow->cohorts.size() >= hard_limit || (grammar->delimiters && doesTagMatchSet(cCohort->wordform, grammar->delimiters)))) {
+			if (cCohort && (cSWindow->cohorts.size() >= hard_limit || (grammar->delimiters && doesTagMatchSet(cCohort->wordform, *(grammar->delimiters))))) {
 				if (cSWindow->cohorts.size() >= hard_limit) {
 					u_fprintf(ux_stderr, "Warning: Hard limit of %u cohorts reached at line %u - forcing break.\n", hard_limit, numLines);
 					u_fflush(ux_stderr);
 				}
 				if (cCohort->readings.empty()) {
-					cReading = initEmptyCohort(cCohort);
+					cReading = initEmptyCohort(*cCohort);
 					lReading = cReading;
 				}
-				foreach (std::list<Reading*>, cCohort->readings, iter, iter_end) {
-					addTagToReading(*iter, endtag);
+				foreach (ReadingList, cCohort->readings, iter, iter_end) {
+					addTagToReading(**iter, endtag);
 				}
 
 				cSWindow->appendCohort(cCohort);
-				gWindow->appendSingleWindow(cSWindow);
 				lSWindow = cSWindow;
 				lCohort = cCohort;
 				cSWindow = 0;
@@ -153,7 +149,7 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 			}
 			if (!cSWindow) {
 				// ToDo: Refactor to allocate SingleWindow, Cohort, and Reading from their containers
-				cSWindow = new SingleWindow(gWindow);
+				cSWindow = gWindow->allocAppendSingleWindow();
 
 				cCohort = new Cohort(cSWindow);
 				cCohort->global_number = 0;
@@ -164,9 +160,8 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 				cReading->wordform = begintag;
 				if (grammar->sets_any && !grammar->sets_any->empty()) {
 					cReading->parent->possible_sets.insert(grammar->sets_any->begin(), grammar->sets_any->end());
-					cReading->possible_sets.insert(grammar->sets_any->begin(), grammar->sets_any->end());
 				}
-				addTagToReading(cReading, begintag);
+				addTagToReading(*cReading, begintag);
 
 				cCohort->appendReading(cReading);
 
@@ -182,7 +177,7 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 				cSWindow->appendCohort(cCohort);
 				lCohort = cCohort;
 				if (cCohort->readings.empty()) {
-					cReading = initEmptyCohort(cCohort);
+					cReading = initEmptyCohort(*cCohort);
 					lReading = cReading;
 				}
 			}
@@ -215,16 +210,15 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 			cReading->wordform = cCohort->wordform;
 			if (grammar->sets_any && !grammar->sets_any->empty()) {
 				cReading->parent->possible_sets.insert(grammar->sets_any->begin(), grammar->sets_any->end());
-				cReading->possible_sets.insert(grammar->sets_any->begin(), grammar->sets_any->end());
 			}
-			addTagToReading(cReading, cReading->wordform);
+			addTagToReading(*cReading, cReading->wordform);
 
 			ux_trim(cleaned);
 			UChar *space = cleaned;
 			UChar *base = space;
 			if (*space == '"') {
 				space++;
-				SKIPTO_NOSPAN(&space, '"');
+				SKIPTO_NOSPAN(space, '"');
 			}
 
 			TagList mappings;
@@ -238,13 +232,13 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 						mappings.push_back(tag);
 					}
 					else {
-						addTagToReading(cReading, tag->hash);
+						addTagToReading(*cReading, tag->hash);
 					}
 				}
 				base = space;
 				if (*space == '"') {
 					space++;
-					SKIPTO_NOSPAN(&space, '"');
+					SKIPTO_NOSPAN(space, '"');
 				}
 			}
 			if (base && base[0]) {
@@ -253,7 +247,7 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 					mappings.push_back(tag);
 				}
 				else {
-					addTagToReading(cReading, tag->hash);
+					addTagToReading(*cReading, tag->hash);
 				}
 			}
 			if (!cReading->baseform) {
@@ -261,7 +255,7 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 				u_fflush(ux_stderr);
 			}
 			if (!mappings.empty()) {
-				splitMappings(mappings, cCohort, cReading, true);
+				splitMappings(mappings, *cCohort, *cReading, true);
 			}
 			cCohort->appendReading(cReading);
 			lReading = cReading;
@@ -276,18 +270,17 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 			}
 			ux_trim(cleaned);
 			if (u_strlen(cleaned) > 0) {
-				if (u_strcmp(cleaned, stringbits[S_CMD_FLUSH]) == 0) {
-					u_fprintf(ux_stderr, "Info: CGCMD:FLUSH encountered on line %u. Flushing...\n", numLines);
+				if (u_strcmp(cleaned, stringbits[S_CMD_FLUSH].getTerminatedBuffer()) == 0) {
+					u_fprintf(ux_stderr, "Info: FLUSH encountered on line %u. Flushing...\n", numLines);
 					if (cCohort && cSWindow) {
 						cSWindow->appendCohort(cCohort);
 						if (cCohort->readings.empty()) {
-							cReading = initEmptyCohort(cCohort);
+							cReading = initEmptyCohort(*cCohort);
 							lReading = cReading;
 						}
-						foreach (std::list<Reading*>, cCohort->readings, iter, iter_end) {
-							addTagToReading(*iter, endtag);
+						foreach (ReadingList, cCohort->readings, iter, iter_end) {
+							addTagToReading(**iter, endtag);
 						}
-						gWindow->appendSingleWindow(cSWindow);
 						cReading = lReading = 0;
 						cCohort = lCohort = 0;
 						cSWindow = lSWindow = 0;
@@ -318,25 +311,22 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 					}
 					u_fflush(output);
 				}
-				else if (u_strcmp(cleaned, stringbits[S_CMD_IGNORE]) == 0) {
-					u_fprintf(ux_stderr, "Info: CGCMD:IGNORE encountered on line %u. Passing through all input...\n", numLines);
+				else if (u_strcmp(cleaned, stringbits[S_CMD_IGNORE].getTerminatedBuffer()) == 0) {
+					u_fprintf(ux_stderr, "Info: IGNORE encountered on line %u. Passing through all input...\n", numLines);
 					ignoreinput = true;
 				}
-				else if (u_strcmp(cleaned, stringbits[S_CMD_RESUME]) == 0) {
-					u_fprintf(ux_stderr, "Info: CGCMD:RESUME encountered on line %u. Resuming CG...\n", numLines);
+				else if (u_strcmp(cleaned, stringbits[S_CMD_RESUME].getTerminatedBuffer()) == 0) {
+					u_fprintf(ux_stderr, "Info: RESUME encountered on line %u. Resuming CG...\n", numLines);
 					ignoreinput = false;
 				}
-				else if (u_strcmp(cleaned, stringbits[S_CMD_EXIT]) == 0) {
-					u_fprintf(ux_stderr, "Info: CGCMD:EXIT encountered on line %u. Exiting...\n", numLines);
+				else if (u_strcmp(cleaned, stringbits[S_CMD_EXIT].getTerminatedBuffer()) == 0) {
+					u_fprintf(ux_stderr, "Info: EXIT encountered on line %u. Exiting...\n", numLines);
 					u_fprintf(output, "%S", line);
 					goto CGCMD_EXIT;
 				}
 				
-				if (lReading && lCohort) {
-					lCohort->text_post = ux_append(lCohort->text_post, line);
-				}
-				else if (lCohort) {
-					lCohort->text_pre = ux_append(lCohort->text_pre, line);
+				if (lCohort) {
+					lCohort->text = ux_append(lCohort->text, line);
 				}
 				else if (lSWindow) {
 					lSWindow->text = ux_append(lSWindow->text, line);
@@ -353,12 +343,11 @@ int GrammarApplicator::runGrammarOnText(UFILE *input, UFILE *output) {
 	if (cCohort && cSWindow) {
 		cSWindow->appendCohort(cCohort);
 		if (cCohort->readings.empty()) {
-			cReading = initEmptyCohort(cCohort);
+			cReading = initEmptyCohort(*cCohort);
 		}
-		foreach (std::list<Reading*>, cCohort->readings, iter, iter_end) {
-			addTagToReading(*iter, endtag);
+		foreach (ReadingList, cCohort->readings, iter, iter_end) {
+			addTagToReading(**iter, endtag);
 		}
-		gWindow->appendSingleWindow(cSWindow);
 		cReading = 0;
 		cCohort = 0;
 		cSWindow = 0;
@@ -397,4 +386,6 @@ CGCMD_EXIT:
 	}
 
 	return 0;
+}
+
 }

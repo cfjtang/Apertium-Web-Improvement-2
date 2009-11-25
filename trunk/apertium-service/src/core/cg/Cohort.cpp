@@ -30,93 +30,43 @@
 #include "Window.h"
 #include "SingleWindow.h"
 
-using namespace CG3;
+namespace CG3 {
 
-Cohort::Cohort(SingleWindow *p) {
-	wordform = 0;
-	global_number = 0;
-	local_number = 0;
-	parent = p;
-	dep_done = false;
-	is_related = false;
-	is_enclosed = false;
-	num_is_current = false;
-	text_pre = 0;
-	text_post = 0;
-	dep_self = 0;
-	dep_parent = UINT_MAX;
-	prev = 0;
-	next = 0;
-	is_pleft = 0;
-	is_pright = 0;
-}
-
-void Cohort::clear(SingleWindow *p) {
-	foreach (std::list<Reading*>, readings, iter1, iter1_end) {
-		delete (*iter1);
-	}
-	readings.clear();
-	foreach (std::list<Reading*>, deleted, iter2, iter2_end) {
-		delete (*iter2);
-	}
-	deleted.clear();
-	foreach (std::list<Reading*>, delayed, iter3, iter3_end) {
-		delete (*iter3);
-	}
-	delayed.clear();
-	if (parent) {
-		parent->parent->cohort_map.erase(global_number);
-		parent->parent->dep_window.erase(global_number);
-	}
-
-	wordform = 0;
-	global_number = 0;
-	local_number = 0;
-	parent = p;
-	dep_done = false;
-	is_related = false;
-	is_enclosed = false;
-	num_is_current = false;
-	if (text_pre) {
-		delete[] text_pre;
-	}
-	text_pre = 0;
-	if (text_post) {
-		delete[] text_post;
-	}
-	text_post = 0;
-	dep_self = 0;
-	dep_parent = UINT_MAX;
-	is_pleft = 0;
-	is_pright = 0;
-	possible_sets.clear();
-	dep_children.clear();
-	enclosed.clear();
-	detach();
-	num_max.clear();
-	num_min.clear();
+Cohort::Cohort(SingleWindow *p) :
+num_is_current(false),
+dep_done(false),
+is_enclosed(false),
+is_related(false),
+global_number(0),
+local_number(0),
+wordform(0),
+dep_self(0),
+dep_parent(std::numeric_limits<uint32_t>::max()),
+is_pleft(0),
+is_pright(0),
+parent(p),
+text(0),
+prev(0),
+next(0)
+{
+	// Nothing in the actual body...
 }
 
 Cohort::~Cohort() {
-	foreach (std::list<Reading*>, readings, iter1, iter1_end) {
+	foreach (ReadingList, readings, iter1, iter1_end) {
 		delete (*iter1);
 	}
-	foreach (std::list<Reading*>, deleted, iter2, iter2_end) {
+	foreach (ReadingList, deleted, iter2, iter2_end) {
 		delete (*iter2);
 	}
-	foreach (std::list<Reading*>, delayed, iter3, iter3_end) {
+	foreach (ReadingList, delayed, iter3, iter3_end) {
 		delete (*iter3);
 	}
 	if (parent) {
 		parent->parent->cohort_map.erase(global_number);
 		parent->parent->dep_window.erase(global_number);
 	}
-	if (text_pre) {
-		delete[] text_pre;
-	}
-	if (text_post) {
-		delete[] text_post;
-	}
+	delete[] text;
 	detach();
 }
 
@@ -130,12 +80,12 @@ void Cohort::detach() {
 	prev = next = 0;
 }
 
-void Cohort::addChild(uint32_t child) {
-	dep_children.insert(child);
+bool Cohort::addChild(uint32_t child) {
+	return dep_children.insert(child).second;
 }
 
-void Cohort::remChild(uint32_t child) {
-	dep_children.erase(child);
+bool Cohort::remChild(uint32_t child) {
+	return (dep_children.erase(child) != 0);
 }
 
 void Cohort::appendReading(Reading *read) {
@@ -162,8 +112,8 @@ inline void Cohort::updateMinMax() {
 	}
 	num_min.clear();
 	num_max.clear();
-	const_foreach(std::list<Reading*>, readings, rter, rter_end) {
-		const_foreach(Taguint32HashMap, (*rter)->tags_numerical, nter, nter_end) {
+	const_foreach (ReadingList, readings, rter, rter_end) {
+		const_foreach (Taguint32HashMap, (*rter)->tags_numerical, nter, nter_end) {
 			const Tag *tag = nter->second;
 			if (num_min.find(tag->comparison_hash) == num_min.end() || tag->comparison_val < num_min[tag->comparison_hash]) {
 				num_min[tag->comparison_hash] = tag->comparison_val;
@@ -190,4 +140,28 @@ int32_t Cohort::getMax(uint32_t key) {
 		return num_max[key];
 	}
 	return INT_MAX;
+}
+
+bool Cohort::addRelation(uint32_t rel, uint32_t cohort) {
+	uint32Set& cohorts = relations[rel];
+	return cohorts.insert(cohort).second;
+}
+
+bool Cohort::setRelation(uint32_t rel, uint32_t cohort) {
+	uint32Set& cohorts = relations[rel];
+	if (cohorts.size() == 1 && cohorts.find(cohort) != cohorts.end()) {
+		return false;
+	}
+	cohorts.clear();
+	cohorts.insert(cohort);
+	return true;
+}
+
+bool Cohort::remRelation(uint32_t rel, uint32_t cohort) {
+	if (relations.find(rel) != relations.end()) {
+		return (relations.find(rel)->second.erase(cohort) != 0);
+	}
+	return false;
+}
+
 }

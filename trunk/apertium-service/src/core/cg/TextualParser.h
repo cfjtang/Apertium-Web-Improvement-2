@@ -27,6 +27,10 @@
 #include "Strings.h"
 
 namespace CG3 {
+	class Rule;
+	class Set;
+	class ContextualTest;
+
 	class TextualParser : public IGrammarParser {
 	public:
 		TextualParser(Grammar &result, UFILE *ux_err);
@@ -50,13 +54,14 @@ namespace CG3 {
 		int parseFromUChar(UChar *input, const char *fname = 0);
 		void addRuleToGrammar(Rule *rule);
 
-		int parseTagList(Set *s, UChar **p, const bool isinline = false);
-		Set *parseSetInline(UChar **p, Set *s = 0);
-		Set *parseSetInlineWrapper(UChar **p);
-		int parseContextualTestList(Rule *rule = 0, ContextualTest **head = 0, CG3::ContextualTest *parentTest = 0, UChar **p = 0, CG3::ContextualTest *self = 0);
-		int parseContextualTests(Rule *rule, UChar **p);
-		int parseContextualDependencyTests(Rule *rule, UChar **p);
-		int parseRule(KEYWORDS key, UChar **p);
+		int parseTagList(UChar *& p, Set *s, const bool isinline = false);
+		Set *parseSetInline(UChar *& p, Set *s = 0);
+		Set *parseSetInlineWrapper(UChar *& p);
+		int parseContextualTestPosition(UChar *& p, ContextualTest& t);
+		int parseContextualTestList(UChar *& p, Rule *rule, ContextualTest **head, CG3::ContextualTest *parentTest, CG3::ContextualTest *self = 0);
+		int parseContextualTests(UChar *& p, Rule *rule);
+		int parseContextualDependencyTests(UChar *& p, Rule *rule);
+		int parseRule(UChar *& p, KEYWORDS key);
 	};
 }
 

@@ -27,6 +27,7 @@
 #include "CompositeTag.h"
 
 namespace CG3 {
+	class Grammar;
 
 	class Set {
 	public:
@@ -35,12 +36,12 @@ namespace CG3 {
 		bool is_unified;
 		bool is_child_unified;
 		bool is_used;
-		mutable uint32_t num_fail, num_match;
-		mutable double total_time;
-		UChar *name;
 		uint32_t line;
 		uint32_t hash;
 		uint32_t number;
+		mutable uint32_t num_fail, num_match;
+		mutable double total_time;
+		UString name;
 
 		uint32Set tags_set;
 		CompositeTagHashSet tags;
@@ -60,8 +61,8 @@ namespace CG3 {
 
 		uint32_t rehash();
 		void resetStatistics();
-		void reindex(Grammar *grammar);
-		void markUsed(Grammar *grammar);
+		void reindex(Grammar &grammar);
+		void markUsed(Grammar &grammar);
 	};
 
 	struct compare_Set {
@@ -77,6 +78,8 @@ namespace CG3 {
 		}
 	};
 
+	typedef std::set<Set*> SetSet;
+	typedef stdext::hash_map<uint32_t,Set*> Setuint32HashMap;
 }
 
 #endif

@@ -39,43 +39,45 @@ namespace CG3 {
 	};
 
 	enum TAG_TYPE {
-		T_ANY        =  1U,
-		T_NUMERICAL  =  2U,
-		T_MAPPING    =  4U,
-		T_VARIABLE   =  8U,
-		T_META       = 16U,
-		T_WORDFORM   = 32U,
-		T_BASEFORM   = 64U,
-		T_TEXTUAL    = 128U,
-		T_DEPENDENCY = 256U,
-		T_NEGATIVE   =  512U,
-		T_FAILFAST   =  1024U,
+		T_ANY        =      1U,
+		T_NUMERICAL  =      2U,
+		T_MAPPING    =      4U,
+		T_VARIABLE   =      8U,
+		T_META       =     16U,
+		T_WORDFORM   =     32U,
+		T_BASEFORM   =     64U,
+		T_TEXTUAL    =    128U,
+		T_DEPENDENCY =    256U,
+		T_NEGATIVE   =    512U,
+		T_FAILFAST   =   1024U,
 		T_CASE_INSENSITIVE = 2048U,
-		T_REGEXP     =  4096U,
-		T_PAR_LEFT   =  8192U,
-		T_PAR_RIGHT  = 16384U,
-		T_REGEXP_ANY = 32768U,
-		T_VARSTRING  = 65536U
+		T_REGEXP     =   4096U,
+		T_PAR_LEFT   =   8192U,
+		T_PAR_RIGHT  =  16384U,
+		T_REGEXP_ANY =  32768U,
+		T_VARSTRING  =  65536U,
+		T_TARGET     = 131072U,
+		T_MARK       = 262144U,
+		T_ATTACHTO   = 524288U,
 	};
 
 	class Tag {
 	public:
-		uint32_t type;
-		mutable URegularExpression *regexp;
-
 		bool in_grammar;
 		bool is_special;
 		bool is_used;
-		uint32_t comparison_hash;
-		UChar *comparison_key;
 		C_OPS comparison_op;
 		int32_t comparison_val;
+		uint32_t type;
+		uint32_t comparison_hash;
 		uint32_t dep_self, dep_parent;
-		UChar *tag;
 		uint32_t hash;
 		uint32_t plain_hash;
 		uint32_t number;
 		uint32_t seed;
+		UChar *comparison_key;
+		UChar *tag;
+		mutable URegularExpression *regexp;
 
 		Tag();
 		~Tag();
@@ -83,7 +85,6 @@ namespace CG3 {
 		void parseTag(const UChar *to, UFILE *ux_stderr);
 		void parseTagRaw(const UChar *to);
 		static void parseNumeric(Tag *tag, const UChar *txt);
-		static void printTagRaw(UFILE *out, const Tag *tag);
 
 		uint32_t rehash();
 		void markUsed();
@@ -102,6 +103,11 @@ namespace CG3 {
 		}
 	};
 
+	typedef std::list<Tag*> TagList;
+	typedef std::vector<Tag*> TagVector;
+	typedef std::set<Tag*, compare_Tag> TagSet;
+	typedef stdext::hash_map<uint32_t,Tag*> Taguint32HashMap;
+	typedef stdext::hash_set<Tag*, compare_Tag> TagHashSet;
 }
 
 #ifdef __GNUC__

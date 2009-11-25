@@ -27,41 +27,38 @@
 #include "Tag.h"
 
 namespace CG3 {
+	class Cohort;
 
 	class Reading {
 	public:
-		Cohort *parent;
-
+		bool mapped;
+		bool deleted;
+		bool noprint;
+		bool matched_target;
+		bool matched_tests;
 		uint32_t wordform;
 		uint32_t baseform;
 		uint32_t hash;
 		uint32_t hash_plain;
 		uint32_t number;
-		bool mapped;
-		bool deleted;
+		Tag *mapping;
+		Cohort *parent;
 		uint32Vector hit_by;
-		bool noprint;
 		uint32List tags_list;
 		uint32Set tags;
 		uint32HashSet tags_plain;
 		uint32HashSet tags_textual;
 		Taguint32HashMap tags_numerical;
-		Tag *mapping;
-
-		uint32HashSet possible_sets;
-
-		bool matched_target;
-		bool matched_tests;
 
 		Reading(Cohort *p);
 		~Reading();
-		void clear(Cohort *p);
-		void duplicateFrom(Reading *r);
+		void duplicateFrom(Reading &r);
 
 		uint32_t rehash();
 		static bool cmp_number(Reading *a, Reading *b);
 	};
 
+	typedef std::list<Reading*> ReadingList;
 }
 
 #endif

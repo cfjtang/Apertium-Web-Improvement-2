@@ -26,6 +26,9 @@
 #include "stdafx.h"
 
 namespace CG3 {
+	class GrammarApplicator;
+	class Cohort;
+	class SingleWindow;
 
 	class Window {
 	public:
@@ -45,8 +48,8 @@ namespace CG3 {
 		Window(GrammarApplicator *p);
 		~Window();
 
-		void pushSingleWindow(SingleWindow *swindow);
-		void appendSingleWindow(SingleWindow *swindow);
+		SingleWindow *allocPushSingleWindow();
+		SingleWindow *allocAppendSingleWindow();
 		void shuffleWindowsDown();
 	};
 
