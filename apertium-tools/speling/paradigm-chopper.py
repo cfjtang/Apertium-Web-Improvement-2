@@ -11,10 +11,15 @@ from Ft.Xml.XPath import Evaluate;
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+sys.stdin = codecs.getreader('utf-8')(sys.stdin);
 
 sys.setrecursionlimit(20000);
 
 dictionary = sys.argv[1];
+
+if dictionary == os.path.basename(dictionary): #{
+	dictionary = os.getcwd() + '/' + dictionary;
+#}
 
 doc = NonvalidatingReader.parseUri('file:///' + dictionary);
 path = '/dictionary/pardefs/pardef';

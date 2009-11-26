@@ -14,16 +14,6 @@ def mangle_flexion_tags(a): #{
 	a = a.replace('ind', 'd1');
 	a = a.replace('def', 'd2');
 
-	a = a.replace('mf', 'a4');
-	a = a.replace('m', 'a1');
-	a = a.replace('f', 'a2');
-	a = a.replace('nt', 'a3');
-
-	a = a.replace('sg', 'n1');
-	a = a.replace('sg', 'n4');
-	a = a.replace('du', 'n2');
-	a = a.replace('pl', 'n3');
-
 	a = a.replace('nom', 'c1');
 	a = a.replace('gen', 'c2');
 	a = a.replace('dat', 'c3');
@@ -31,6 +21,16 @@ def mangle_flexion_tags(a): #{
 	a = a.replace('loc', 'c5');
 	a = a.replace('Ins', 'c6');
 	a = a.replace('voc', 'c7');
+
+	a = a.replace('sg', 'n1');
+	a = a.replace('sg', 'n4');
+	a = a.replace('du', 'n2');
+	a = a.replace('pl', 'n3');
+
+	a = a.replace('mf', 'a4');
+	a = a.replace('m', 'a1');
+	a = a.replace('f', 'a2');
+	a = a.replace('nt', 'a3');
 
 	return a;
 #}
