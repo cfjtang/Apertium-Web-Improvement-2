@@ -3,8 +3,8 @@
 use warnings;
 use strict;
 
-my @net = qw(ARPAnet JANET ChaosNet FidoNet SNA);
-my @sys = split/, /, "PDP10, BBC Micro, Lisp Machine, Commodore 64, IBM 360";
+my @net = qw(ARPAnet JANET ChaosNet FidoNet SNA SkyNet);
+my @sys = split/, /, "PDP10, BBC Micro, Lisp Machine, Commodore 64, IBM 360i, T-800";
 
 my $r = rand $#net;
 
