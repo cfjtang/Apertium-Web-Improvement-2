@@ -67,6 +67,13 @@
       <cat-item tags="adj.sup"/>
     </def-cat>
 
+    <def-cat n="adjsup">
+      <cat-item tags="adj.sup"/>
+      <cat-item tags="adj.sint.sup"/>
+    </def-cat>
+
+
+
     <def-cat n="num">
       <cat-item tags="num.*"/>
       <cat-item tags="num"/>
@@ -494,6 +501,9 @@
 
     <def-cat n="adv">
       <cat-item tags="adv"/>
+    </def-cat>
+    <def-cat n="ever">
+      <cat-item lemma="ever" tags="adv"/>
     </def-cat>
     
     <def-cat n="adv_not"><!--BCN-->
@@ -17250,6 +17260,62 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu> 
 	  </chunk>
 	</out>
+      </action>
+    </rule> 
+
+ <rule comment="REGLA: ADJECTIU superlatiu EVER ('biggest ever'; queda com a GD i ND fins al interchunk)">
+      <pattern>
+	<pattern-item n="adjsup"/>
+	<pattern-item n="ever"/>
+      </pattern>
+      <action>    
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="comparatiu_adj1">
+	  <with-param pos="1"/>
+	</call-macro> 	 
+	<choose>
+	  <when>
+	    <test>
+		<equal>
+		  <clip pos="1" side="tl" part="gen"/>
+		  <lit-tag v="mf"/>
+		</equal>
+	    </test>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	    </let>
+	  </when>
+	  <otherwise>
+	    <let>
+	      <var n="gen_chunk"/>
+	      <lit-tag v="GD"/>
+	    </let>
+	  </otherwise>
+	</choose>    
+	<out>   
+	  <chunk name="adjsup" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SA"/></tag>
+	      <tag><var n="gen_chunk"/></tag>
+	      <tag><lit-tag v="ND"/></tag>
+	    </tags>
+	    <lu> 
+	      <var n="adjectiu1"/>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_adj"/>
+	      <lit-tag v="2"/>
+	      <lit-tag v="3"/>
+	      <clip pos="1" side="tl" part="lemq"/> 
+	    </lu> 
+	  </chunk>
+	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule> 
 
