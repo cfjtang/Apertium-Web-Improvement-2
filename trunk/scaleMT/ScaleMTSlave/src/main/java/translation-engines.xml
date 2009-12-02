@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<translation-engines>
+    <engine name="Apertium">
+        <pairs>
+            <pair>
+                <source>es</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>ca_valencia</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>es</target>
+            </pair>
+            
+        </pairs>
+        <formats>
+            <format>txt</format>
+            <format>html</format>
+        </formats>
+        <processes format-indp="yes">
+            <variables>
+                <file id="1" />
+                <memory id="2"/>
+                <memory id="3"/>
+            </variables>
+            <pipeline>
+                <program name="apertium deformatter">
+                    <exec>/home/vitaka/local/bin/apertium-des$f</exec>
+                    <in>in</in>
+                    <out>2</out>
+                </program>
+                <translation-core>
+                    <exec>/home/vitaka/local/bin/apertium -f none $p-null</exec>
+                    <in>2</in>
+                    <out>3</out>
+                </translation-core>
+                <program name="apertium reformatter">
+                    <exec>/home/vitaka/local/bin/apertium-re$f</exec>
+                    <in>3</in>
+                    <out>out</out>
+                </program>
+            </pipeline>
+        </processes>
+        <separation after-deformat="yes">
+            <null-flush/>
+            <before>
+                <regexps>
+                    <regexp id-field="1">^\[--apertium-translation id="(\d+)" dict="(([-]?\d+(,[-]?\d+)*)?)"--\]$</regexp>
+                </regexps>
+                <text>[--apertium-translation id="$id" dict="0"--]</text>
+            </before>
+            <after>
+                <regexps>
+                    <regexp>\[--end-apertium-translation--\]</regexp>
+                </regexps>
+                <text>[--end-apertium-translation--]</text>
+            </after>
+        </separation>
+    </engine>
+    <engine name="Matxin">
+        <pairs>
+            <pair>
+                <source>es</source>
+                <target>eu</target>
+            </pair>
+        </pairs>
+        <formats>
+            <format>txt</format>
+            <format>html</format>
+        </formats>
+        <processes format-indp="yes">
+        <variables>
+            <file id="1" />
+            <memory id="2"/>
+            <memory id="3"/>
+        </variables>
+        <pipeline>
+            <program>
+                <!--TODO: falta algo -->
+                <exec>/usr/local/bin/$f-deformat $1</exec>
+                <in>in</in>
+                <out>2</out>
+            </program>
+            <translation-core>
+                <exec>/usr/local/bin/Matxin_core</exec>
+                <in>2</in>
+                <out>3</out>
+            </translation-core>
+            <program>
+                <!--TODO: falta algo -->
+                <exec>/usr/local/bin/reFormat $1</exec>
+                <in>3</in>
+		<in-filter><![CDATA[<?xml version="1.0" encoding="UTF-8" ?>
+                <corpus>
+                $in
+                </corpus>
+                ]]>
+                </in-filter>
+                <out>out</out>
+            </program>
+        </pipeline>
+        </processes>
+        <separation after-deformat="yes">
+            
+            <before>
+                <regexps>
+                    <regexp><![CDATA[<SENTENCE ord='(\d+)' ref='(\d+)' alloc='(\d+)'>]]></regexp>
+                    <regexp id-field="4"><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='is' alloc='(\d+)' si='top' mi='\[MG\]' headpos='\[Z\]' headlem='sssssssssssssss(\d+)' leafpos='\[Z\]' cas='\[ABS\]' length='1'>]]></regexp>
+                    <regexp id-field="1"><![CDATA[<NODE form='sssssssssssssss(\d+)' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='sssssssssssssss(\d+)' smi='Z' UpCase='none' lem='sssssssssssssss(\d+)' pos='\[Z\]'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='p-buka' alloc='(\d+)' si='term' headlem='\.' length='1'>]]></regexp>
+                    <regexp><![CDATA[<NODE form='.' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='\.' smi='Fp' UpCase='none' lem='\.' parol='Fp' unknown='transfer'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='p-buka' alloc='(\d+)' si='term' headlem='\.' length='1'>]]></regexp>
+                    <regexp><![CDATA[<NODE form='.' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='\.' smi='Fp' UpCase='none' lem='\.' parol='Fp' unknown='transfer'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</SENTENCE>]]></regexp>
+                </regexps>
+                <text>sssssssssssssss$id. .</text>
+            </before>
+            <after>
+                 <regexps>
+                    <regexp><![CDATA[<SENTENCE ord='(\d+)' ref='(\d+)' alloc='(\d+)'>]]></regexp>
+                    <regexp id-field="4"><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='is' alloc='(\d+)' si='top' mi='\[MG\]' headpos='\[Z\]' headlem='fffffffffffffff(\d+)' leafpos='\[Z\]' cas='\[ABS\]' length='1'>]]></regexp>
+                    <regexp id-field="1"><![CDATA[<NODE form='fffffffffffffff(\d+)' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='fffffffffffffff(\d+)' smi='Z' UpCase='none' lem='fffffffffffffff(\d+)' pos='\[Z\]'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='p-buka' alloc='(\d+)' si='term' headlem='\.' length='1'>]]></regexp>
+                    <regexp><![CDATA[<NODE form='.' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='\.' smi='Fp' UpCase='none' lem='\.' parol='Fp' unknown='transfer'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='p-buka' alloc='(\d+)' si='term' headlem='\.' length='1'>]]></regexp>
+                    <regexp><![CDATA[<NODE form='.' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='\.' smi='Fp' UpCase='none' lem='\.' parol='Fp' unknown='transfer'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</SENTENCE>]]></regexp>
+                </regexps>
+                <text>fffffffffffffff$id. .</text>
+            </after>
+	   <trash>iueghdsilghbsoigubsigbeogbdfoigbdfigobdfogbdfgbiueghdsilghbsoigubsigbeogbdfoigbdfigobdfogbdfgbiueghdsilghbsoigubsigbeogbdfoigbdfigobdfogbdfgbiueghdsilghbsoigubsigbeogbdfoigbdfigobdfogbdfgb. .</trash>
+        </separation>
+    </engine>
+</translation-engines>
