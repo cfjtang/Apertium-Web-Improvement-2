@@ -48,6 +48,7 @@ import com.gsoc.apertium.translationengines.rmi.transferobjects.TranslationServe
 import com.gsoc.apertium.translationengines.util.ModesXMLProcessor;
 import com.gsoc.apertium.translationengines.util.ServerUtil;
 import java.io.BufferedReader;
+import java.nio.charset.Charset;
 
 public class Main {
 
@@ -120,6 +121,8 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
+
+        System.out.println("Charset: "+Charset.defaultCharset().toString());
 
         Option pairsInformation = OptionBuilder.withDescription("Compute pairs speed and memory requirements").create("pairsInformation");
         Option comparationPair = OptionBuilder.withArgName("pair").hasArg().withDescription("Pair to compare speed with").create("comparationPair");
