@@ -385,12 +385,10 @@ public class ApertiumDaemon {
 		stopMark = new ApertiumQueueElement(-100, "");
 		this.apertiumPath = apertiumPath;
 
-		command = new String[5];
-		command[0] = apertiumPath + "/execAndGetPID.sh";
-		command[1] = apertiumPath + "/apertium";
-		command[2] = "-f";
-		command[3] = "none";
-		command[4] = pair.getSource() + "-" + pair.getTarget() + suffix;
+		command = new String[3];
+                command[0]="/bin/sh";
+                command[1]="-c";
+                command[2]= apertiumPath + "/execAndGetPID.sh "+ apertiumPath + "/apertium -f none "+pair.getSource() + "-" + pair.getTarget() + suffix;
 
 		tReader = new Thread(new ApertiumReader());
 		tWriter = new Thread(new ApertiumWriter());
