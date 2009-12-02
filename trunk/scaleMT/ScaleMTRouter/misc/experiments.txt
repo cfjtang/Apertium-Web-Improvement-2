@@ -1,0 +1,55 @@
+Utilizar el número de caracteres de una petición para evaluar su consumo de cpu no es correcto.
+
+La capacidad C de un servidor se calcula realizando una traducción de N caracteres y diviendo N entre el tiempo t que ha tardado
+en realizarse N/t.
+
+Haciendo pruebas con jMeter se llega a la conclusión de que el número de caracteres por segundo procesados por el sistema suministrándole 
+la suficiente carga para que siempre haya elementos en las colas y no haya esperas  no llega al valor C (capacidad del servidor) 
+a menos que la longitud de los textos a traducir sea igual o mayor que la del texto utilizado para calibrar el servidor.
+
+Se puede extraer la conclusión de que, para procesar una petición hay un coste computacional fijo, además del número de caracteres.
+Cuando se hacen peticiones muy pequeñas el numero de caracteres procesados por unidad de tiempo es muy bajo, porque la capacidad
+del servidor es prácticamente consumida por el coste fijo de procesamiento de la petición. Ejecutando htop en la máquina que realiza
+las traducciones podemos comprobar este hecho. Cuando se realizan peticiones con pocos caracteres, la mayoria del tiempo de CPU es
+consumido por la máquina virtual java (encargada de recibir las peticiones RMI y enviarlas a Apertium). En cambio, cuando se realizan
+peticiones con textos más largos, las mayoría del tiempo de CPU es consumido por Apertium.
+
+El principal problema consiste en averiguar cuál es esta cantidad de cpu fija necesaria para procesar cada petición. Además, hemos de tener
+en cuenta que la capacidad de CPU se mide en caracteres español-catalán traducidos por segundo.
+
+Una primera aproximación podría consistir en realizar una serie de mediciones en el sistema mientras este está lo suficientemente cargado
+para que siempre haya elementos en las colas y no haya esperas. Durante un periodo de tiempo t se miden los caracteres procesados por
+el sistema completamente cargado, nc, y el número de peticiones atendidas np. Teóricamente el sistema es capaz de procesar C*t caracteres.
+Si a C*t le restamos nc, tenemos el número de "caracteres" consumidos por el coste fijo de de las peticiones. Al dividir este número entre
+np, tenemos el coste de cada petición. Se puede repetir el cálculo con distintos tamaños de entrada y comprobar que los valores para el coste
+fijo son similares. Resumiendo
+
+k= ( C*t - nc  ) / np
+
+
+
+En este caso, hemos calibrado el servidor con un texto de ¿? (muchos) caracteres, obteniendo una capacidad de 18138 caracateres/s.
+
+
+Hemos realizado 4 pruebas de 60 segundos de duración cada una, con el mismo texto de entrada (sólo 3 palabras), obteniendo los siguientes resultados:
+p1: 1344 peticiones, 21488 caracteres 
+p2: 1339 peticiones, 21408 c
+p3: 1375 p, 21984 c
+p4: 1357 p, 21696 c
+
+La media de los valores es: np=1354 nc=21644
+k = ( 18138*60 - 21644 ) / 1354 = 788
+
+
+Con un texto de entrada más grande (~1800 caracteres), obtenemos los siguientes resultados:
+p1:422 p, 792743 c
+p2: "      "
+p3: 421 p, 790860 c
+p4: 420 p, 788977 c
+
+Con estos datos el valor de k es 705
+
+
+Probablemente los textos a traducir por el sistema no sean mayores de 1800 caracteres, asi que utilizamos la media de ambos valores. Habria que probar
+con textos aun más grande para deducir si el valor de k calculado con este método depende de la longitud de los textos empleados. El valor obtenido
+es simplemente un punto de partida.

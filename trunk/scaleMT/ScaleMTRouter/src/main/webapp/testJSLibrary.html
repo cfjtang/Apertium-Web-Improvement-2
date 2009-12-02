@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Test JS Library</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<script src="http://localhost:8090/ApertiumServerRouter/js/apertium.js"></script>
+</head>
+<body>
+	Test
+</body>
+</html>
+<script>
+//alert(apertium.serviceUrl);
+apertium.translate("Hola, buenos días. Esto es una prueba.",'es','ca', function(data){ alert(data.translation) });
+alert("true="+apertium.isTranslatable('es','ca'));
+alert("false="+apertium.isTranslatable('es','en'));
+alert(apertium.getSourceLanguages());
+alert(apertium.getTargetLanguages('es'));
+</script>
