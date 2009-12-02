@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<translation-engines>
+    <!-- The Apertium translation engine -->
+    <engine name="Apertium">
+
+        <!-- Supported language pairs -->
+        <pairs>
+            <pair>
+                <source>ro</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>pt</source>
+                <target>gl</target>
+            </pair>
+            <pair>
+                <source>pt</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>pt</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>oc</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>oc</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>oc_aran</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>oc_aran</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>gl</source>
+                <target>pt</target>
+            </pair>
+            <pair>
+                <source>gl</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>gl</source>
+                <target>en</target>
+            </pair>
+            <pair>
+                <source>fr</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>fr</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>eu</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>ro</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>pt</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>pt_BR</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>oc</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>oc_aran</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>gl</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>fr</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>eo</target>
+            </pair><pair>
+                <source>es</source>
+                <target>en_US</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>en</target>
+            </pair>
+            <pair>
+                <source>es</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>en</source>
+                <target>gl</target>
+            </pair>
+            <pair>
+                <source>en</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>en</source>
+                <target>eo</target>
+            </pair>
+            <pair>
+                <source>en</source>
+                <target>ca</target>
+            </pair>
+            <pair>
+                <source>cy</source>
+                <target>en</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>pt</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>oc</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>oc_aran</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>fr</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>es</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>eo</target>
+            </pair>
+            <pair>
+                <source>ca</source>
+                <target>en</target>
+            </pair>
+            <pair>
+                <source>br</source>
+                <target>fr</target>
+            </pair>
+        </pairs>
+
+        <!-- Supported formats -->
+        <formats>
+            <format>txt</format>
+            <format>html</format>
+        </formats>
+
+        <!-- Processes  -->
+        <processes format-indp="yes">
+            <variables>
+                <file id="1" />
+                <memory id="2"/>
+                <memory id="3"/>
+            </variables>
+            <pipeline>
+                <program name="apertium deformatter">
+                    <exec>/usr/local/bin/apertium-des$f</exec>
+                    <in>in</in>
+                    <out>2</out>
+                </program>
+                <translation-core>
+                    <exec>/usr/local/bin/apertium -f none $p-null</exec>
+                    <in>2</in>
+                    <out>3</out>
+                </translation-core>
+                <program name="apertium reformatter">
+                    <exec>/usr/local/bin/apertium-re$f</exec>
+                    <in>3</in>
+                    <out>out</out>
+                </program>
+            </pipeline>
+        </processes>
+        <separation in-core="yes">
+            
+            <before>
+                <regexps>
+                    <regexp id-field="1">^\[--apertium-translation id="(\d+)" dict="(([-]?\d+(,[-]?\d+)*)?)"--\]$</regexp>
+                </regexps>
+                <text>[--apertium-translation id="$id" dict="0"--]</text>
+            </before>
+            <after>
+                <regexps>
+                    <regexp>\[--end-apertium-translation--\]</regexp>
+                </regexps>
+                <text>[--end-apertium-translation--]</text>
+            </after>
+            <null-flush/>
+        </separation>
+    </engine>
+    <engine name="Matxin">
+        <pairs>
+            <pair>
+                <source>es</source>
+                <target>eu</target>
+            </pair>
+        </pairs>
+        <formats>
+            <format>txt</format>
+            <format>html</format>
+        </formats>
+        <processes format-indp="yes">
+        <variables>
+            <file id="1" />
+            <memory id="2"/>
+            <memory id="3"/>
+        </variables>
+        <pipeline>
+            <program>
+                <!--TODO: falta algo -->
+                <exec>/usr/local/bin/$f-deformat $1</exec>
+                <in>in</in>
+                <out>2</out>
+            </program>
+            <translation-core>
+                <exec>/usr/local/bin/Matxin_core</exec>
+                <in>2</in>
+                <out>3</out>
+            </translation-core>
+            <program>
+                <!--TODO: falta algo -->
+                <exec>/usr/local/bin/reFormat $1</exec>
+                <in>3</in>
+                <in-filter><![CDATA[<?xml version="1.0" encoding="UTF-8" ?>
+                <corpus>
+                $in
+                </corpus>
+                ]]>
+                </in-filter>
+                <out>out</out>
+            </program>
+        </pipeline>
+        </processes>
+        <separation in-core="no">
+            
+            <before>
+                <regexps>
+                    <regexp><![CDATA[<SENTENCE ord='(\d+)' ref='(\d+)' alloc='(\d+)'>]]></regexp>
+                    <regexp id-field="4"><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='is' alloc='(\d+)' si='top' mi='\[MG\]' headpos='\[Z\]' headlem='sssssssssssssss(\d+)' leafpos='\[Z\]' cas='\[ABS\]' length='1'>]]></regexp>
+                    <regexp id-field="1"><![CDATA[<NODE form='sssssssssssssss(\d+)' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='sssssssssssssss(\d+)' smi='Z' UpCase='none' lem='sssssssssssssss(\d+)' pos='\[Z\]'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='p-buka' alloc='(\d+)' si='term' headlem='\.' length='1'>]]></regexp>
+                    <regexp><![CDATA[<NODE form='.' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='\.' smi='Fp' UpCase='none' lem='\.' parol='Fp' unknown='transfer'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</SENTENCE>]]></regexp>
+                </regexps>
+                <text>sssssssssssssss$id</text>
+            </before>
+            <after>
+                 <regexps>
+                    <regexp><![CDATA[<SENTENCE ord='(\d+)' ref='(\d+)' alloc='(\d+)'>]]></regexp>
+                    <regexp id-field="4"><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='is' alloc='(\d+)' si='top' mi='\[MG\]' headpos='\[Z\]' headlem='fffffffffffffff(\d+)' leafpos='\[Z\]' cas='\[ABS\]' length='1'>]]></regexp>
+                    <regexp id-field="1"><![CDATA[<NODE form='fffffffffffffff(\d+)' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='fffffffffffffff(\d+)' smi='Z' UpCase='none' lem='fffffffffffffff(\d+)' pos='\[Z\]'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[<CHUNK ord='(\d+)' ref='(\d+)' type='p-buka' alloc='(\d+)' si='term' headlem='\.' length='1'>]]></regexp>
+                    <regexp><![CDATA[<NODE form='.' ref ='(\d+)' alloc ='(\d+)' ord='(\d+)' slem='\.' smi='Fp' UpCase='none' lem='\.' parol='Fp' unknown='transfer'>]]></regexp>
+                    <regexp><![CDATA[</NODE>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</CHUNK>]]></regexp>
+                    <regexp><![CDATA[</SENTENCE>]]></regexp>
+                </regexps>
+                <text>fffffffffffffff$id</text>
+            </after>
+            <padding>iueghdsilghbsoigubsigbeogbdfoigbdfigobdfogbdfgb..</padding>
+        </separation>
+    </engine>
+</translation-engines>

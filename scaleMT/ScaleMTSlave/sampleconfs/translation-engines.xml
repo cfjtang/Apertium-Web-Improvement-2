@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+This is an explanation on how to configure translation-engines.xml with
+the information of the translation engines to be exposed as web services.
+
+A particular example of how to configure Apertium and Matxin can be found at:
+
+scaleMT/ScaleMTSlave/src/main/assembly-files/conf/translation-engines.xml
+
+-->
+
+
+<!-- Root element -->
+<translation-engines>
+
+<!-- Definition of a translation engine. We can define a name, but it is not compulsory -->
+<tranlation-engine name="NAME">
+
+    <!-- List of language pairs supported by the engine -->
+    <pairs>
+
+        <!-- A particular language pair -->
+        <pair>
+            <!-- Code of the source language -->
+            <source>SOURCE_CODE</source>
+
+            <!-- Code of the target language -->
+            <target>TARGET_CODE</target>
+        </pair>
+
+        <!-- Another language pair -->
+        <pair>
+            <!-- Code of the source language -->
+            <source>SOURCE_CODE</source>
+
+            <!-- Code of the target language -->
+            <target>TARGET_CODE</target>
+        </pair>
+
+    </pairs>
+
+    <!-- List of supported formats -->
+    <formats>
+        <!-- The code of a supported format -->
+        <format>FORMAT1_CODE</format>
+
+        <!-- The code of another supported format -->
+        <format>FORMAT2_CODE</format>
+
+    </formats>
+
+    <!-- The translation engine pipeline is built with these programs  -->
+    <!-- With the attribute format indp we define if the same daemon can translate text in different formats ("yes"),
+    or we run a different daemon for each language pair/format combination ("no").
+    -->
+    <processes format-indp="yes|no">
+
+        <!-- The different processes of the pipeline communicate with variables, that are defined in
+        this section -->
+        <variables>
+            <!-- A memory variable can only be written with data from the standard output of a process
+             and readed by the standard input of a process. There are two special memory variables already
+             defined: "in" and "out". "in" contains the source text that arrives to the daemon, and "out" must
+             contain the translation at the end.
+             ID must be an integer
+             -->
+             <memory id="ID"/>
+
+             <!-- A file variable is an input or output of a process that is stored in a temporal file,
+             in operative system default directory for temporal files.
+             ID must be an integer
+             -->
+             <file id="ID" />
+        </variables>
+
+        <!-- The set processes that perform the translations. One of them is kept in execution
+        while the others are executed once per translation
+        -->
+        <pipeline>
+            
+            <!-- The process that is kept in execution -->
+            <translation-core>
+                <!-- Command to launch the process. The following wildcards are allowed:
+                    $f -> Format of the request to be translated (or of the daemon, if format-indp=no )
+                    $p -> Language pair of the daemon
+                    $ID -> File variable whose id is ID
+                -->
+                <exec>COMMAND TO RUN THE TRANSLATION CORE $f</exec>
+                <!-- Variable that will be written to translation core -->
+                <in>ID</in>
+                <!-- Variable that will be read from translation core output -->
+                <out>ID</out>
+            </translation-core>
+
+            <!-- A process that is launched for each translation request -->
+            <process>
+                <!-- Command to launch the process. The following wildcards are allowed:
+                    $f -> Format of the request to be translated (or of the daemon, if format-indp=no )
+                    $p -> Language pair of the daemon
+                    $ID -> File variable whose id is ID
+                -->
+                <exec>COMMAND TO RUN THE TRANSLATION CORE $f</exec>
+                <!-- Variable that will be written to process standard input -->
+                <in>ID</in>
+                <!-- Variable that will be read from process standard output -->
+                <out>ID</out>
+            </process>
+
+            <!-- You can define as many <process> elements as you want.
+            For each translation, the daemon will search the process whose standard input is "in",
+            then the process whose standard input is the standard output of the previous one, etc.
+            The loop finishes when the putput of a process is "out".
+            -->
+
+
+        </pipeline>
+
+    </processes>
+
+    <!-- This section defines how to isolate the different translations in translation core input and
+    output flows.
+
+    The attribute in-core defines if the separation sentence are appended to the input text when it arrives at
+    the daemon ("no"), or just before writing it to the translation core process ("yes").
+
+    -->
+    <separation in-core="yes|no">
+
+        <!-- Text appended before the translation source -->
+        <before>
+            <!-- Sentence (s) appended before the translation source.
+            It must contain the translation id, with the wilcard $id.
+            -->
+            <text>STARTING SEPARATION SENTENCE FOR TRANSLATION $id</text>
+
+            <!-- Regular expressions to match the sentence(s) appended before the source text
+            at translation core process output.
+            Since the sentence(s) could be translated as multiple lines, a regular expression is
+            defined for each line. At least one of them must have the attribute id-field, that
+            defines which parenthesis of the regular expresion, counting from left to right and
+            starting by 1, must match the translation id.
+            -->
+            <regexps>
+                <regexp id-field="1">FIRST LINE OF THE TRANSLATION STARTING SEPARATION SENTENCE FOR (\d+)</regexp>
+                <regexp id-field="1">SECOND LINE OF THE TRANSLATION STARTING SEPARATION SENTENCE FOR (\d+)</regexp>
+            </regexps>
+        </before>
+
+        <!-- Text appended after the translation source -->
+        <after>
+             <!-- Sentence (s) appended after the translation source.
+            It can contain the translation id, with the wilcard $id.
+            -->
+            <text>ENDING SEPARATION SENTENCE FOR TRANSLATION $id</text>
+            <!-- Regular expressions to match the sentence(s) appended after the source text
+            at translation core process output.
+            Since the sentence(s) could be translated as multiple lines, a regular expression is
+            defined for each line. Some of them can have the attribute id-field, that
+            defines which parenthesis of the regular expresion, counting from left to right and
+            starting by 1, must match the translation id.
+            -->
+            <regexps>
+                <regexp id-field="1">FIRST LINE OF THE TRANSLATION ENDING SEPARATION SENTENCE FOR (\d+)</regexp>
+                <regexp id-field="1">SECOND LINE OF THE TRANSLATION ENDING SEPARATION SENTENCE FOR (\d+)</regexp>
+            </regexps>
+        </after>
+
+        <!-- Finally we can define the padding sentence.
+        It will be sent to the translation core until it outputs the requested translation.
+        If we do not define it, no padding sentences are sent
+        -->
+        <padding>Padding sentence</padding>
+
+        <!-- If we include this element, a null character is sent to the translation core after each
+        translation request.
+        -->
+        <null-flush/>
+
+    </separation>
+    
+</tranlation-engine>
+
+</translation-engines>
