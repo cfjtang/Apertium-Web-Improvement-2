@@ -207,8 +207,8 @@ public class ApertiumDaemon {
 					lastWrite = System.currentTimeMillis();
                                         logger.trace("Writing :"+textToWrite.toString());
 					pWriter.write(textToWrite.toString());
-                                        //pWriter.write("\n");
                                         pWriter.write(0);
+                                        pWriter.write("\n");
 					pWriter.flush();
 
 				}
