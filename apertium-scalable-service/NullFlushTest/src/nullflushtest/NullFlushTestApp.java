@@ -105,6 +105,7 @@ public class NullFlushTestApp extends SingleFrameApplication {
     void sendText(String text)  throws Exception{
         synchronized(processWriter)
         {
+            System.out.println("Writing: "+text+"\n");
             processWriter.write(text);
             processWriter.write("\n");
             processWriter.write(0);
