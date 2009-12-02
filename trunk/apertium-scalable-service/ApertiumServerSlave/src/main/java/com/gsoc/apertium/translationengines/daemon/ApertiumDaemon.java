@@ -202,14 +202,12 @@ public class ApertiumDaemon {
                     textToWrite.append("\"--]\n");
 					textToWrite.append(queueElement.getText());
 					textToWrite.append("\n[--end-apertium-translation--]\n");
-					char nullchar = 0;
-                                        textToWrite.append("\n");
-					textToWrite.append(nullchar);
-                    
 
 					resultsQueue.put(queueElement);
 					lastWrite = System.currentTimeMillis();
 					pWriter.write(textToWrite.toString());
+                                        //pWriter.write("\n");
+                                        pWriter.write(0);
 					pWriter.flush();
 
 				}
@@ -390,6 +388,7 @@ public class ApertiumDaemon {
                 command[0]="/bin/sh";
                 command[1]="-c";
                 command[2]= apertiumPath + "/execAndGetPID.sh "+ apertiumPath + "/apertium -f none "+pair.getSource() + "-" + pair.getTarget() + suffix;
+
 
 		tReader = new Thread(new ApertiumReader());
 		tWriter = new Thread(new ApertiumWriter());
