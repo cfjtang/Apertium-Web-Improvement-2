@@ -203,8 +203,9 @@ public class ApertiumDaemon {
 					textToWrite.append(queueElement.getText());
 					textToWrite.append("\n[--end-apertium-translation--]\n");
 					char nullchar = 0;
+                                        textToWrite.append("\n");
 					textToWrite.append(nullchar);
-                    textToWrite.append("\n");
+                    
 
 					resultsQueue.put(queueElement);
 					lastWrite = System.currentTimeMillis();
