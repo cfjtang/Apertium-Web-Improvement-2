@@ -205,6 +205,7 @@ public class ApertiumDaemon {
 
 					resultsQueue.put(queueElement);
 					lastWrite = System.currentTimeMillis();
+                                        logger.trace("Writing :"+textToWrite.toString());
 					pWriter.write(textToWrite.toString());
                                         //pWriter.write("\n");
                                         pWriter.write(0);
