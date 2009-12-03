@@ -8,6 +8,11 @@
 
      <def-cat n="ant">
       <cat-item tags="np.ant.*"/>
+      <cat-item tags="np.cog.*"/>
+    </def-cat>
+
+     <def-cat n="cog">
+      <cat-item tags="np.cog.*"/>
     </def-cat>
 
      <def-cat n="loc">
@@ -60,13 +65,52 @@
    <def-cat n="def">
       <cat-item tags="det.def.*"/>
     </def-cat>
-   <def-cat n="tot">
+   <def-cat n="qnt">
       <cat-item tags="det.qnt.*"/>
+    </def-cat>
+
+   <def-cat n="tot">
+      <cat-item lemma="tot" tags="det.*"/>
+      <cat-item lemma="tot" tags="predet.*"/>
     </def-cat>
 
     <def-cat n="num">
       <cat-item tags="num.*"/>
       <cat-item tags="num"/>
+    </def-cat>
+
+    <def-cat n="num_dato">
+      <cat-item lemma="1" tags="num"/>
+      <cat-item lemma="2" tags="num"/>
+      <cat-item lemma="3" tags="num"/>
+      <cat-item lemma="4" tags="num"/>
+      <cat-item lemma="5" tags="num"/>
+      <cat-item lemma="6" tags="num"/>
+      <cat-item lemma="7" tags="num"/>
+      <cat-item lemma="8" tags="num"/>
+      <cat-item lemma="9" tags="num"/>
+      <cat-item lemma="10" tags="num"/>
+      <cat-item lemma="11" tags="num"/>
+      <cat-item lemma="12" tags="num"/>
+      <cat-item lemma="13" tags="num"/>
+      <cat-item lemma="14" tags="num"/>
+      <cat-item lemma="15" tags="num"/>
+      <cat-item lemma="16" tags="num"/>
+      <cat-item lemma="17" tags="num"/>
+      <cat-item lemma="18" tags="num"/>
+      <cat-item lemma="19" tags="num"/>
+      <cat-item lemma="20" tags="num"/>
+      <cat-item lemma="21" tags="num"/>
+      <cat-item lemma="22" tags="num"/>
+      <cat-item lemma="23" tags="num"/>
+      <cat-item lemma="24" tags="num"/>
+      <cat-item lemma="25" tags="num"/>
+      <cat-item lemma="26" tags="num"/>
+      <cat-item lemma="27" tags="num"/>
+      <cat-item lemma="28" tags="num"/>
+      <cat-item lemma="29" tags="num"/>
+      <cat-item lemma="30" tags="num"/>
+      <cat-item lemma="31" tags="num"/>
     </def-cat>
 
     <def-cat n="prep">
@@ -77,7 +121,7 @@
       <cat-item lemma="prpers" tags="prn.*"/>
     </def-cat>
 
-    <def-cat n="tn"><!--EO indefnitis i companyia sense gènere al EO-->
+    <def-cat n="tn"><!--EO indefinits i companyia sense gènere al EO-->
       <cat-item tags="prn.tn.m.*"/>
       <cat-item tags="prn.tn.f.*"/>
       <cat-item tags="prn.tn.mf.*"/>
@@ -473,6 +517,20 @@
       <cat-item lemma="un" tags="det.ind.*"/>
     </def-cat>
 
+    <def-cat n="monato">
+      <cat-item lemma="gener" tags="n.m.sg"/>
+      <cat-item lemma="febrer" tags="n.m.sg"/>
+      <cat-item lemma="març" tags="n.m.sg"/>
+      <cat-item lemma="abril" tags="n.m.sg"/>
+      <cat-item lemma="maig" tags="n.m.sg"/>
+      <cat-item lemma="juny" tags="n.m.sg"/>
+      <cat-item lemma="juliol" tags="n.m.sg"/>
+      <cat-item lemma="agost" tags="n.m.sg"/>
+      <cat-item lemma="setembre" tags="n.m.sg"/>
+      <cat-item lemma="octubre" tags="n.m.sg"/>
+      <cat-item lemma="novembre" tags="n.m.sg"/>
+      <cat-item lemma="desembre" tags="n.m.sg"/>
+    </def-cat>
 
   </section-def-cats>
 
@@ -498,7 +556,6 @@
       <attr-item tags="adj.pos"/>
       <attr-item tags="vblex.pp"/>
     </def-attr>  
-
 
     <def-attr n="a_det">
       <attr-item tags="det.dem"/>
@@ -1094,7 +1151,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: ANTROPÒNIM (Barcelona)">
+<rule comment="REGLA: ANTROPÒNIM (Joan)">
       <pattern>
 	<pattern-item n="ant"/>
       </pattern>
@@ -1126,7 +1183,7 @@
     </rule>
 
 
-<rule comment="REGLA: ART ANTROPÒNIM (La Maria - Maria; s0elimina l'article)">
+<rule comment="REGLA: ART ANTROPÒNIM (La Maria - Maria; s'elimina l'article)">
       <pattern>
 	<pattern-item n="def"/>
 	<pattern-item n="ant"/>
@@ -1197,7 +1254,7 @@
     </rule>
 
 
-<rule comment="REGLA: A TOPÒNIM (a Barcelona - en Barcelono; s'elimina l'article)">
+<rule comment="REGLA: A TOPÒNIM (a Barcelona - en Barcelono; es canvia la preposició)">
       <pattern>
 	<pattern-item n="a"/>
 	<pattern-item n="loc"/>
@@ -1297,7 +1354,7 @@
     </rule>
 
 
-<rule comment="REGLA: tot TOPÒNIM (tot Europa -> la tuta Eŭropo)">
+<rule comment="REGLA: TOT TOPÒNIM (tot Europa -> la tuta Eŭropo [correcció de tot = prn])">
       <pattern>
 	<pattern-item n="tn"/>
 	<pattern-item n="loc"/>
@@ -1343,7 +1400,7 @@
     </rule>
 
 
-<rule comment="REGLA: A TOT TOPÒNIM (a tot Europa -> en la tuta Eŭropo)">
+<rule comment="REGLA: A TOT TOPÒNIM (a tot Europa -> en la tuta Eŭropo [correcció de tot = prn])">
       <pattern>
 	<pattern-item n="a"/>
 	<pattern-item n="tn"/>
@@ -1399,6 +1456,283 @@
       </action>
     </rule>
 
+<!-- KOMENCO DATOJ -->
+
+<rule comment="REGLA: NUM DE MES (2-3 de juliol -> 2an-3an de julio)">
+      <pattern>
+        <pattern-item n="num_dato"/>
+	<pattern-item n="guio"/>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="dato" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.acc.acc"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="whole"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NUM DE MES DE ANY (2-3 de juliol de 1930 -> 2an-3an de julio 1930)">
+      <pattern>
+        <pattern-item n="num_dato"/>
+	<pattern-item n="guio"/>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="dato" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.acc.acc"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="whole"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+            <b pos="5"/>
+            <lu>
+              <clip pos="6" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NUM DE MES (2 de juliol -> 2an de julio)">
+      <pattern>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="dato" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.acc.acc"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NUM DE MES DE ANY (2 de juliol de 1930 -> 2an de julio 1930)">
+      <pattern>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="dato" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.acc.acc"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="5" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: PREP NUM DE MES (de 2 de juliol -> de 2a de julio)">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+          <b pos="1"/>
+          <chunk name="dato">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.nomi.nomi"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: PREP NUM DE MES DE ANY (de 2 de juliol de 1930 -> de 2a de julio 1930)">
+      <pattern>
+        <pattern-item n="prep"/>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+          <b pos="1"/>
+          <chunk name="dato">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.nomi.nomi"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nomi"/>
+            </lu>
+            <b pos="5"/>
+            <lu>
+              <clip pos="6" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<!-- FINO KOMENCO DATOJ -->
 
 <!-- no activo perquè caldria fer el tractament dels adjectius "més cases boniques"
     <rule comment="REGLA: més NOM, 'més cases' -> 'pli da domoj'">
@@ -1412,7 +1746,7 @@
             <out>
               <chunk name="more_nom" case="caseFirstWord">
                 <tags>
-                  <tag><lit-tag v="SN.nom"/></tag>
+                  <tag><lit-tag v="SN.m.sg.nomi.nomi"/></tag>
                 </tags>
                 <lu>
                   <clip pos="1" side="tl" part="whole"/>
@@ -1848,7 +2182,7 @@
 
 <rule comment="REGLA: QNT DET NOM (EO, tots els nois -> ĉiuj knaboj; la majoria dels nois -> la plimulto da knaboj)">
       <pattern>
-	<pattern-item n="tot"/>
+	<pattern-item n="qnt"/>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
       </pattern>
@@ -2885,7 +3219,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 <rule comment="REGLA: QNT DET NOM ADJ (EO, ex. tots els cotxes blancs -> ĉiuj blankaj auxtoj)">
 <!-- sobre <pattern-item n="adjADJ"/> en comptes de <pattern-item n="adj"> veure comentari per a la regla DET NOM ADJ -->
       <pattern>
-	<pattern-item n="tot"/>
+	<pattern-item n="qnt"/>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adjADJ"/>
@@ -4229,7 +4563,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: QNT DET NOM DE NOM ADJ (EO)(pertany a les regles de formació de compostos a partir de  N+de+N, en aquest cas NO volem que faci el compost)">
       <pattern>
-	<pattern-item n="tot"/>
+	<pattern-item n="qnt"/>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="de"/>
@@ -4395,7 +4729,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 <rule comment="REGLA: QNT DET NOM DE NOM (EO)(pertany a les regles de formació de compostos a partir de  N+de+N)">
       <pattern>
-	<pattern-item n="tot"/>
+	<pattern-item n="qnt"/>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="de"/>
@@ -6296,7 +6630,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: QNT DET NOM QUE (EO, regles específiques de SN amb causula de relatiu, creades per a corregir el tagger 'que -> kiu')">
       <pattern>
-	<pattern-item n="tot"/>
+	<pattern-item n="qnt"/>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="cnjcoopercorregir"/>
@@ -6669,7 +7003,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: QNT DET NOM ADJ QUE (EO, regles específiques de SN amb causula de relatiu, creades per a corregir el tagger 'que -> kiu')">
       <pattern>
-	<pattern-item n="tot"/>
+	<pattern-item n="qnt"/>
 	<pattern-item n="det"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
