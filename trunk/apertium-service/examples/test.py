@@ -4,8 +4,8 @@
 
 import xmlrpclib, sys;
 
-#proxy = xmlrpclib.ServerProxy("http://localhost:6173/RPC2");
-proxy = xmlrpclib.ServerProxy("http://localhost:8080/RPC2");
+proxy = xmlrpclib.ServerProxy("http://localhost:6173/RPC2");
+#proxy = xmlrpclib.ServerProxy("http://localhost:8080/RPC2");
 
 sys.stdout.write('* Enabled pairs: ');
 count = 0;
