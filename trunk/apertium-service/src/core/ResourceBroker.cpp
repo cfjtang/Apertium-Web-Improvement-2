@@ -45,7 +45,11 @@ using CG3::CG3Quit;
 
 ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPool(ub),
 	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
-	PostchunkPool(ub), TransferMultPool(ub), GrammarPool(ub) {
+	PostchunkPool(ub), TransferMultPool(ub), GrammarPool(ub)
+#if defined(HAVE_IRSTLM)
+	, IRSTLMRankerPool(ub)
+#endif
+	{
 	upperBound = ub;
 }
 
@@ -104,6 +108,24 @@ void FormatWrapper::init(string index) {
 Format *FormatWrapper::getFormatter() {
 	return formatter;
 }
+
+#if defined(HAVE_IRSTLM)
+IRSTLMRankerWrapper::IRSTLMRankerWrapper() {
+	ranker = NULL;
+}
+
+IRSTLMRankerWrapper::~IRSTLMRankerWrapper() {
+	delete ranker;
+}
+
+void IRSTLMRankerWrapper::init(string index) {
+	ranker = new IRSTLMRanker(index);
+}
+
+IRSTLMRanker *IRSTLMRankerWrapper::getRanker() {
+	return ranker;
+}
+#endif
 
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
@@ -259,6 +281,20 @@ template <> TransferMult *NonIndexedObjectPool<TransferMult>::getNewInstance(Pro
 	ret->read(fileNames[0], fileNames[1]);
 	return(ret);
 }
+
+#if defined(HAVE_IRSTLM)
+template <> IRSTLMRankerWrapper *NonIndexedObjectPool<IRSTLMRankerWrapper>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<IRSTLMRankerWrapper>::getNewInstance();");
+
+	std::vector<std::string> fileNames = p.getFileNames();
+
+	checkFile(fileNames[0]);
+
+	IRSTLMRankerWrapper *ret = pool.construct();
+	ret->init(fileNames[0]);
+	return(ret);
+}
+#endif
 
 boost::mutex ResourceBroker::cgMutex;
 
