@@ -190,7 +190,6 @@ apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
 		    $(PREFIX1)-poly.autobil.bin $(PREFIX2)-poly.autobil.bin \
-		    empty.bin \
 		    $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).lextormono.bin $(PREFIX2).lextormono.bin \
 		    $(PREFIX1).lextorbil.bin $(PREFIX2).lextorbil.bin \
