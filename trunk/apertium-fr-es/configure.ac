@@ -27,7 +27,7 @@ AC_DEFUN([PKG_CHECK_APERTIUM], [
               APERTIUM_VER=30
           ],
           [
-              PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0
+              PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0,
               [
               	APERTIUM_VER=31
               ],
