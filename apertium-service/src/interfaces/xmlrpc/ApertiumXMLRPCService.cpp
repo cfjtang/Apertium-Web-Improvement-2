@@ -30,6 +30,7 @@
 
 #include "ApertiumXMLRPCService.h"
 
+#include <string>
 #include <vector>
 #include <map>
 
@@ -140,17 +141,19 @@ public:
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
-		std::vector<xmlrpc_c::value> translations(paramList.getArray(0));
+		std::vector<xmlrpc_c::value> tv(paramList.getArray(0));
+		std::vector<std::string> translations(tv.size());
 
-		for (std::vector<xmlrpc_c::value>::iterator it = translations.begin(); it != translations.end(); ++it) {
-			xmlrpc_c::value value = *it;
-			string const translation(xmlrpc_c::value_string(value));
+		for (unsigned int i = 0; i < tv.size(); ++i) {
+			xmlrpc_c::value value = tv[i];
+			std::string translation = xmlrpc_c::value_string(value);
+			translations[i] = translation;
 		}
 
 		string const srcLang(paramList.getString(1));
 		string const destLang(paramList.getString(2));
 
-		*retvalP = xmlrpc_c::value_string("prova");
+		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, translations, srcLang, destLang));
 	}
 
 private:
