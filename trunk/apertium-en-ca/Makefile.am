@@ -39,6 +39,12 @@ TARGETS = $(TARGETS_COMMON) \
 	xsltproc buscaPar.xsl .deps/$(LANG1b).metadix | uniq >$$$$tmp1 && \
 	xsltproc $$$$tmp1 .deps/$(LANG1b).metadix > $@ && rm $$$$tmp1
 
+.deps/pgen-ca.dix: $(BASENAME).post-ca.dix
+        xsltproc --stringparam alt cat alt.xsl $< >$@ 
+
+.deps/pgen-ca_valencia.dix: $(BASENAME).post-ca.dix
+        xsltproc --stringparam alt val alt.xsl $< >$@ 
+
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix
 	apertium-validate-dictionary .deps/$(LANG1).dix
 	apertium-validate-acx $(BASENAME).$(LANG1).acx
@@ -64,9 +70,13 @@ $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp rl $(BASENAME).$(LANG2).dix $@
 
-$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
-	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
+$(PREFIX1).autopgen.bin: .deps/pgen-ca.dix
+	apertium-validate-dictionary .deps/pgen-ca.dix
+	lt-comp lr .deps/pgen-ca.dix $@
+
+$(PREFIX1)-val.autopgen.bin: .deps/pgen-ca_valencia.dix
+	apertium-validate-dictionary .deps/pgen-ca_valencia.dix
+	lt-comp lr .deps/pgen-ca_valencia.dix $@
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG2).acx
 	apertium-validate-acx $(BASENAME).$(LANG2).acx
