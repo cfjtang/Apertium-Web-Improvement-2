@@ -229,13 +229,13 @@ void ConfigurationManager::setConfTextClassifier(fs::path c) {
 #endif
 
 #if defined(HAVE_IRSTLM)
-	boost::unordered_map<std::pair<std::string, std::string>, std::string> ConfigurationManager::getMonolingualDictionaries() {
-		return monolingualDictionaries;
-	}
+boost::unordered_map<std::pair<std::string, std::string>, std::string> ConfigurationManager::getMonolingualDictionaries() {
+	return monolingualDictionaries;
+}
 
-	boost::unordered_map<std::string, std::string> ConfigurationManager::getLanguageModels() {
-		return languageModels;
-	}
+boost::unordered_map<std::string, std::string> ConfigurationManager::getLanguageModels() {
+	return languageModels;
+}
 #endif
 
 /*

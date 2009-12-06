@@ -57,6 +57,10 @@
 #include "core/TextClassifier.h"
 #endif
 
+#if defined(HAVE_IRSTLM)
+#include "core/Synthesiser.h"
+#endif
+
 #include "utils/ConfigurationManager.h"
 #include "utils/Logger.h"
 #include "utils/Statistics.h"

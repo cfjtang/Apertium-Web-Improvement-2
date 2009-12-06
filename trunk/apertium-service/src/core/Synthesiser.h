@@ -20,39 +20,27 @@
  *
  * @section DESCRIPTION
  *
- * The TextClassifier class implements the classification technique described
- * in [1].
- * [1] William B. Cavnar & John M. Trenkle (1994), N-Gram-Based Text Categorization.
+ * The class Translate is used to execute the sequence of step required by
+ * a translation task by using the informations contained in Modes files.
  */
+
+#ifndef SYNTHESISER_H_
+#define SYNTHESISER_H_
 
 #include "config.h"
 
-#if defined(HAVE_LIBTEXTCAT)
+#if defined(HAVE_IRSTLM)
 
-#include "TextClassifier.h"
+#include <iostream>
+#include <wchar.h>
 
-extern "C" {
-	#include <textcat.h>
-}
+#include "core/ResourceBroker.h"
 
-/**
- * Initialize the language detector using the data contained in a configuration file.
- */
-TextClassifier::TextClassifier(fs::path p) {
-	h = textcat_Init(p.string().data());
-}
-
-TextClassifier::~TextClassifier() {
-	textcat_Done(h);
-}
-
-/**
- * Recognize the language used in a text.
- */
-std::string TextClassifier::classify(std::string str) {
-	std::string ret = textcat_Classify(h, str.data(), str.size());
-	return(ret == "SHORT" ? "" : ret.substr(1, ret.size() - 2));
-}
+class Synthesiser {
+public:
+	static std::string synthesise(ResourceBroker&, std::vector<std::string>&, std::string, std::string);
+};
 
 #endif
 
+#endif
