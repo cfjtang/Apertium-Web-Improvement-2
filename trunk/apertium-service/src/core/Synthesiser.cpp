@@ -35,7 +35,21 @@
 #include "Synthesiser.h"
 #include "format/Encoding.h"
 
+#include "memt/alignment.hh"
+#include "memt/hypotheses.hh"
+#include "memt/irstlm_ranker.hh"
+#include "memt/max_conseq_aligner.hh"
+#include "memt/parallel_scan_generator.hh"
+#include "memt/case_insensitive_morph_matcher.hh"
+
 std::string Synthesiser::synthesise(ResourceBroker &rb, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
+
+	std::vector<wstring> input_lines(translations.size());
+
+	for (unsigned int i = 0; i < translations.size(); ++i) {
+		input_lines[i] = Encoding::utf8ToWstring(translations[i]);
+	}
+
 	return "";
 }
 
