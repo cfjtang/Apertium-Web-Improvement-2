@@ -43,6 +43,10 @@ const string ApertiumXMLRPCService::TRANSLATE_NAME = "translate";
 const string ApertiumXMLRPCService::DETECT_NAME = "detect";
 #endif
 
+#if defined(HAVE_IRSTLM)
+const string ApertiumXMLRPCService::SYNTHESISE_NAME = "synthesise";
+#endif
+
 const string ApertiumXMLRPCService::LANGUAGEPAIRS_NAME = "languagePairs";
 
 class TranslateMethod : public xmlrpc_c::method {
@@ -126,6 +130,22 @@ private:
 };
 #endif
 
+#if defined(HAVE_IRSTLM)
+class SynthesiseMethod : public xmlrpc_c::method {
+public:
+	SynthesiseMethod() {
+		this->_signature = "s:ass";
+		this->_help = "Synthesise method";
+	}
+
+	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
+		*retvalP = xmlrpc_c::value_string("prova");
+	}
+
+private:
+};
+#endif
+
 class LanguagePairsMethod : public xmlrpc_c::method {
 public:
 	LanguagePairsMethod(ModesManager &mm) : modesManager(&mm) {
@@ -180,6 +200,11 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 #if defined(HAVE_LIBTEXTCAT)
 	xmlrpc_c::methodPtr const DetectMethodP(new DetectMethod(tc));
 	xmlrpcRegistry->addMethod(DETECT_NAME, DetectMethodP);
+#endif
+
+#if defined(HAVE_IRSTLM)
+	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod());
+	xmlrpcRegistry->addMethod(SYNTHESISE_NAME, SynthesiseMethodP);
 #endif
 
 	xmlrpc_c::methodPtr const LanguagePairsMethodP(new LanguagePairsMethod(mm));
