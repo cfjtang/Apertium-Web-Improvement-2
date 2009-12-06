@@ -44,8 +44,7 @@
  * Translate a given text from a source language to a destination language, by using the resources present inside a specific
  * Resource Pool and the informations present inside a given mode.
  */
-std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::string &text, ContentType type, std::string srcLang, std::string destLang,
-		Statistics *s) {
+std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::string &text, ContentType type, std::string srcLang, std::string destLang, Statistics *s) {
 	string pair = srcLang + "-" + destLang;
 
 	wstring wtext = Encoding::utf8ToWstring(text);

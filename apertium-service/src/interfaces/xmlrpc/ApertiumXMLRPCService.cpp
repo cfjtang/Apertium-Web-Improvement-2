@@ -134,7 +134,7 @@ private:
 #if defined(HAVE_IRSTLM)
 class SynthesiseMethod : public xmlrpc_c::method {
 public:
-	SynthesiseMethod() {
+	SynthesiseMethod(ResourceBroker &rb) : resourceBroker(&rb) {
 		this->_signature = "s:Ass";
 		this->_help = "Synthesise method";
 	}
@@ -154,6 +154,7 @@ public:
 	}
 
 private:
+	ResourceBroker *resourceBroker;
 };
 #endif
 
@@ -214,7 +215,7 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 #endif
 
 #if defined(HAVE_IRSTLM)
-	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod());
+	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod(rb));
 	xmlrpcRegistry->addMethod(SYNTHESISE_NAME, SynthesiseMethodP);
 #endif
 
