@@ -57,7 +57,7 @@ AC_LANG([C++])
 # Debug mode
 AC_ARG_ENABLE([debug],AC_HELP_STRING([--enable-debug],[debug mode (default disabled)]))
 if test "${enable_debug}" = "yes"; then
-    CPPFLAGS+=" -DDEBUG"
+    # CPPFLAGS+=" -DDEBUG"
     CFLAGS+=" -g"
     CXXFLAGS+=" -g"
 fi
