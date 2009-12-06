@@ -93,6 +93,10 @@ private:
     static const string DETECT_NAME;
 #endif
 
+#if defined(HAVE_IRSTLM)
+    static const string SYNTHESISE_NAME;
+#endif
+
     static const string LANGUAGEPAIRS_NAME;
 
 	xmlrpc_c::registry* xmlrpcRegistry;
