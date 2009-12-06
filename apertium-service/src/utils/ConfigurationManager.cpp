@@ -132,6 +132,36 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 				strStream >> highWaterMark;
 			}
 
+#if defined(HAVE_IRSTLM)
+			xmlpp::NodeSet memtmonoNodeSet = rootNode->find(rootName + "/MultiEngineMachineTranslation/MonolingualDictionary");
+			for (xmlpp::NodeSet::iterator it = memtmonoNodeSet.begin(); it != memtmonoNodeSet.end(); ++it) {
+				xmlpp::Element *e = dynamic_cast<xmlpp::Element*> (*it);
+				xmlpp::Attribute const *const src_attribute(e->get_attribute("srcLang"));
+				xmlpp::Attribute const *const dest_attribute(e->get_attribute("destLang"));
+
+				if (src_attribute != NULL && dest_attribute != NULL) {
+					xmlpp::TextNode *tn = e->get_child_text();
+					if (tn != NULL) {
+						std::pair<std::string, std::string> lp(src_attribute->get_value(), dest_attribute->get_value());
+						monolingualDictionaries[lp] = tn->get_content();
+					}
+				}
+			}
+
+			xmlpp::NodeSet memtlmNodeSet = rootNode->find(rootName + "/MultiEngineMachineTranslation/LanguageModel");
+			for (xmlpp::NodeSet::iterator it = memtlmNodeSet.begin(); it != memtlmNodeSet.end(); ++it) {
+				xmlpp::Element *e = dynamic_cast<xmlpp::Element*> (*it);
+				xmlpp::Attribute const *const lang_attribute(e->get_attribute("lang"));
+
+				if (lang_attribute != NULL) {
+					xmlpp::TextNode *tn = e->get_child_text();
+					if (tn != NULL) {
+						languageModels[lang_attribute->get_value()] = tn->get_content();
+					}
+				}
+			}
+#endif
+
 		}
 	}
 }
@@ -196,6 +226,16 @@ fs::path ConfigurationManager::getConfTextClassifier() {
 void ConfigurationManager::setConfTextClassifier(fs::path c) {
 	confTextClassifier = c;
 }
+#endif
+
+#if defined(HAVE_IRSTLM)
+	boost::unordered_map<std::pair<std::string, std::string>, std::string> ConfigurationManager::getMonolingualDictionaries() {
+		return monolingualDictionaries;
+	}
+
+	boost::unordered_map<std::string, std::string> ConfigurationManager::getLanguageModels() {
+		return languageModels;
+	}
 #endif
 
 /*
