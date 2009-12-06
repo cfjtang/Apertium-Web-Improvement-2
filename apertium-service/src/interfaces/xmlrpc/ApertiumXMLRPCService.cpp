@@ -73,6 +73,7 @@ public:
 
 		if (paramList.size() > 3) {
 			string const type(paramList.getString(3));
+
 			if (type == "text") {
 				contentType = Translator::TEXT;
 			} else if (type == "html") {
@@ -134,11 +135,21 @@ private:
 class SynthesiseMethod : public xmlrpc_c::method {
 public:
 	SynthesiseMethod() {
-		this->_signature = "s:ass";
+		this->_signature = "s:Ass";
 		this->_help = "Synthesise method";
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
+		std::vector<xmlrpc_c::value> translations(paramList.getArray(0));
+
+		for (std::vector<xmlrpc_c::value>::iterator it = translations.begin(); it != translations.end(); ++it) {
+			xmlrpc_c::value value = *it;
+			string const translation(xmlrpc_c::value_string(value));
+		}
+
+		string const srcLang(paramList.getString(1));
+		string const destLang(paramList.getString(2));
+
 		*retvalP = xmlrpc_c::value_string("prova");
 	}
 
