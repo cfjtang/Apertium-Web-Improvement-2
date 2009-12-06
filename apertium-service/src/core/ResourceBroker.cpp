@@ -45,11 +45,11 @@ using CG3::CG3Quit;
 
 ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPool(ub),
 	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
-	PostchunkPool(ub), TransferMultPool(ub), GrammarPool(ub)
+	PostchunkPool(ub), TransferMultPool(ub)
 #if defined(HAVE_IRSTLM)
 	, IRSTLMRankerPool(ub)
 #endif
-	{
+	, GrammarPool(ub) {
 	upperBound = ub;
 }
 
