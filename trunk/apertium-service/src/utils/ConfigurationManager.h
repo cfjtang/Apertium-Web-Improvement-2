@@ -31,6 +31,7 @@
 #include <iostream>
 
 #include <libxml++/libxml++.h>
+#include <boost/unordered/unordered_map.hpp>
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
@@ -66,6 +67,11 @@ public:
 	void setConfTextClassifier(fs::path);
 #endif
 
+#if defined(HAVE_IRSTLM)
+	boost::unordered_map<std::pair<std::string, std::string>, std::string> getMonolingualDictionaries();
+	boost::unordered_map<std::string, std::string> getLanguageModels();
+#endif
+
 	//fs::path getConfUsers();
 	//void setConfUsers(fs::path);
 
@@ -82,6 +88,11 @@ private:
 
 #if defined(HAVE_LIBTEXTCAT)
     static const fs::path CONFTEXTCLASSIFIER_DEF;
+#endif
+
+#if defined(HAVE_IRSTLM)
+    boost::unordered_map<std::pair<std::string, std::string>, std::string> monolingualDictionaries;
+    boost::unordered_map<std::string, std::string> languageModels;
 #endif
 
     static const unsigned int HIGHWATERMARK_DEF;
