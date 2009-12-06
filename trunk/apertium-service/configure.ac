@@ -62,6 +62,29 @@ if test "${enable_debug}" = "yes"; then
     CXXFLAGS+=" -g"
 fi
 
+AC_ARG_WITH(irstlm,
+            [AC_HELP_STRING([--with-irstlm=PATH], [(optional) path to IRST's LM toolkit])],
+            [with_irstlm=$withval],
+            [with_irstlm=no]
+           )
+           
+if test "x$with_irstlm" != 'xno'
+then
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I${with_irstlm}/include"
+
+  AC_CHECK_HEADER(n_gram.h,
+                 [AC_DEFINE([HAVE_IRSTLM], [], [flag for IRSTLM])],
+                 [AC_MSG_ERROR([Cannot find IRST-LM!])])
+
+  LIB_SRILM="-lirstlm"
+  LDFLAGS="$LDFLAGS -L${with_irstlm}/lib"
+  LIBS="$LIBS $LIB_SRILM"
+  FMTLIBS="$FMTLIBS libirstlm.a"
+fi
+
+LIBS="$LIBS -lz"
+
 # Checks for libraries.
 AX_BOOST_BASE([1.34.0])
 AX_BOOST_THREAD
@@ -218,7 +241,7 @@ LDFLAGS="$XMLRPC_LIBS"
 #AC_CORBA_IDLCOS
 
 # Checks for header files.
-AC_CHECK_HEADERS([wchar.h])
+# AC_CHECK_HEADERS([wchar.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
