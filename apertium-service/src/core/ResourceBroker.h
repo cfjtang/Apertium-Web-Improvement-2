@@ -31,9 +31,12 @@
 #ifndef RESOURCEBROKER_H_
 #define RESOURCEBROKER_H_
 
-#include <iostream>
+#include "config.h"
 
+#include <iostream>
 #include <list>
+
+#include <stdlib.h>
 
 #include <lttoolbox/compiler.h>
 #include <lttoolbox/fst_processor.h>
@@ -77,6 +80,15 @@
 #include "core/cg/Grammar.h"
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
+
+#if defined(HAVE_IRSTLM)
+#include "core/memt/alignment.hh"
+#include "core/memt/hypotheses.hh"
+#include "core/memt/irstlm_ranker.hh"
+#include "core/memt/max_conseq_aligner.hh"
+#include "core/memt/parallel_scan_generator.hh"
+#include "core/memt/case_insensitive_morph_matcher.hh"
+#endif
 
 #include "format/Format.h"
 
@@ -290,6 +302,19 @@ private:
 	Format *formatter;
 };
 
+#if defined(HAVE_IRSTLM)
+class IRSTLMRankerWrapper {
+public:
+	IRSTLMRankerWrapper();
+	~IRSTLMRankerWrapper();
+
+	void init(string);
+	IRSTLMRanker *getRanker();
+private:
+	IRSTLMRanker *ranker;
+};
+#endif
+
 /**
  * The ResourceBroker class is an implementation of the Object Pool design pattern.
  * An object pool is a set of initialised objects that are kept ready to use,
@@ -314,6 +339,10 @@ public:
 	IndexedObjectPool<Interchunk> InterchunkPool;
 	IndexedObjectPool<Postchunk> PostchunkPool;
 	IndexedObjectPool<TransferMult> TransferMultPool;
+
+#if defined(HAVE_IRSTLM)
+	IndexedObjectPool<IRSTLMRankerWrapper> IRSTLMRankerPool;
+#endif
 
 	IndexedObjectPool<CG3::Grammar> GrammarPool;
 
