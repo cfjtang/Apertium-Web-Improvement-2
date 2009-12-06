@@ -7,6 +7,8 @@ PREFIX1=$(LANG1)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
 PREFIX2b=$(LANG2)-$(LANG1b)
 ALT=alt.xsl
+PREFVAR1=#dejar en blanco
+PREFVAR2=val-
 
 BASENAME=apertium-$(PREFIX1)
 
@@ -40,12 +42,18 @@ TARGETS = $(TARGETS_COMMON) \
 	xsltproc $$$$tmp1 .deps/$(LANG1b).metadix > $@ && rm $$$$tmp1
 
 .deps/pgen-ca.dix: $(BASENAME).post-ca.dix
-        xsltproc --stringparam alt cat alt.xsl $< >$@ 
+	xsltproc --stringparam alt cat alt.xsl $< >$@ 
 
 .deps/pgen-ca_valencia.dix: $(BASENAME).post-ca.dix
-        xsltproc --stringparam alt val alt.xsl $< >$@ 
+	xsltproc --stringparam alt val alt.xsl $< >$@ 
 
-$(PREFIX1).automorf.bin: .deps/$(LANG1).dix
+.deps/$(PREFVAR1)$(LANG2).dix: $(BASENAME).$(LANG2).dix
+	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang cat --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - >$@
+
+.deps/$(PREFVAR2)$(LANG2).dix: $(BASENAME).$(LANG2).dix
+	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang val --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - >$@
+
+$(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
 	apertium-validate-dictionary .deps/$(LANG1).dix
 	apertium-validate-acx $(BASENAME).$(LANG1).acx
 	lt-comp lr .deps/$(LANG1).dix $@ $(BASENAME).$(LANG1).acx
@@ -66,9 +74,13 @@ $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	lt-comp lr tmp$(PREFIX1).autobil.dix $@
 	rm tmp$(PREFIX1).autobil.dix
 
-$(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp rl $(BASENAME).$(LANG2).dix $@
+$(PREFVAR1)$(PREFIX1).autogen.bin: .deps/$(PREFVAR1)$(LANG2).dix 
+	apertium-validate-dictionary .deps/$(PREFVAR1)$(LANG2).dix 
+	lt-comp rl .deps/$(PREFVAR1)$(LANG2).dix  $@
+
+$(PREFVAR2)$(PREFIX1).autogen.bin: .deps/$(PREFVAR2)$(LANG2).dix 
+	apertium-validate-dictionary .deps/$(PREFVAR2)$(LANG2).dix 
+	lt-comp rl .deps/$(PREFVAR2)$(LANG2).dix  $@
 
 $(PREFIX1).autopgen.bin: .deps/pgen-ca.dix
 	apertium-validate-dictionary .deps/pgen-ca.dix
@@ -78,10 +90,15 @@ $(PREFIX1)-val.autopgen.bin: .deps/pgen-ca_valencia.dix
 	apertium-validate-dictionary .deps/pgen-ca_valencia.dix
 	lt-comp lr .deps/pgen-ca_valencia.dix $@
 
-$(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG2).acx
+$(PREFVAR1)$(PREFIX2).automorf.bin: .deps/$(PREFVAR1)$(LANG2).dix $(BASENAME).$(LANG1).acx
 	apertium-validate-acx $(BASENAME).$(LANG2).acx
-	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp lr $(BASENAME).$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
+	apertium-validate-dictionary	 .deps/$(PREFVAR1)$(LANG2).dix
+	lt-comp lr .deps/$(PREFVAR1)$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
+
+$(PREFVAR2)$(PREFIX2).automorf.bin: .deps/$(PREFVAR2)$(LANG2).dix $(BASENAME).$(LANG1).acx
+	apertium-validate-acx $(BASENAME).$(LANG2).acx
+	apertium-validate-dictionary .deps/$(PREFVAR2)$(LANG2).dix
+	lt-comp lr .deps/$(PREFVAR2)$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
