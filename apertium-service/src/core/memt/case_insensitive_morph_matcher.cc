@@ -98,7 +98,7 @@ void Case_Insensitive_Morph_Matcher::readBil(string const &fstfile) {
 	fstp.initBiltrans();
 	fclose(in);
 
-	cerr << "Loaded transducer from " << fstfile << endl;
+	//cerr << "Loaded transducer from " << fstfile << endl;
 }
 
 #endif

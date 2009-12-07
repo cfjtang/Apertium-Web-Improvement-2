@@ -66,8 +66,7 @@ struct Chained_Word {
                 (chain_of_words);
             tmp.first += aligned ? 1 : 0;
             tmp.second.push_back(word);
-            h.push_back(Hypothesis(tmp.first, 
-                        tmp.second));
+            h.push_back(Hypothesis(tmp.first, tmp.second));
         }
     }
 };
@@ -106,9 +105,7 @@ struct Chained_Word_Sentinel {
         for (std::vector<Chained_Word*>::iterator it = firsts.begin();
                 it != firsts.end(); ++it) {
             std::pair<unsigned int, std::list<wstring*> > starter = 
-                std::pair<unsigned int, std::list<wstring*> >(0, 
-                        std::list<wstring*>());
-            wcout << "read_all" << endl;
+                std::pair<unsigned int, std::list<wstring*> >(0, std::list<wstring*>());
             (*it)->read_all(starter, h);
         }
     }
