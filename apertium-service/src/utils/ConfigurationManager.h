@@ -68,8 +68,11 @@ public:
 #endif
 
 #if defined(HAVE_IRSTLM)
-	boost::unordered_map<std::pair<std::string, std::string>, std::string> getMonolingualDictionaries();
-	boost::unordered_map<std::string, std::string> getLanguageModels();
+	typedef boost::unordered_map<std::pair<std::string, std::string>, std::string> MonolingualDictionariesType;
+	typedef boost::unordered_map<std::string, std::string> LanguageModelsType;
+
+	MonolingualDictionariesType getMonolingualDictionaries();
+	LanguageModelsType getLanguageModels();
 #endif
 
 	//fs::path getConfUsers();
@@ -91,8 +94,8 @@ private:
 #endif
 
 #if defined(HAVE_IRSTLM)
-    boost::unordered_map<std::pair<std::string, std::string>, std::string> monolingualDictionaries;
-    boost::unordered_map<std::string, std::string> languageModels;
+    MonolingualDictionariesType monolingualDictionaries;
+    LanguageModelsType languageModels;
 #endif
 
     static const unsigned int HIGHWATERMARK_DEF;
