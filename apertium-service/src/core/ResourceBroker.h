@@ -342,6 +342,7 @@ public:
 
 #if defined(HAVE_IRSTLM)
 	IndexedObjectPool<IRSTLMRankerWrapper> IRSTLMRankerPool;
+	IndexedObjectPool<Case_Insensitive_Morph_Matcher> Case_Insensitive_Morph_MatcherPool;
 #endif
 
 	IndexedObjectPool<CG3::Grammar> GrammarPool;

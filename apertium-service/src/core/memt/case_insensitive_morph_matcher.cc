@@ -46,8 +46,9 @@ Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher(
 	readBil(fstfile);
 }
 
-Case_Insensitive_Morph_Matcher::~Case_Insensitive_Morph_Matcher() {
-}
+Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher() { }
+
+Case_Insensitive_Morph_Matcher::~Case_Insensitive_Morph_Matcher() { }
 
 int Case_Insensitive_Morph_Matcher::match(const wstring& left,
 		const wstring& right) {
