@@ -158,11 +158,15 @@ public:
 		ConfigurationManager::LanguageModelsType::iterator itlm = configurationManager->getLanguageModels().find(srcLang);
 		if (itlm != configurationManager->getLanguageModels().end()) {
 			lm = itlm->second;
+		} else {
+			throw xmlrpc_c::fault("Invalid parameter: no language models for the language \"" + lm + "\"");
 		}
 
 		ConfigurationManager::MonolingualDictionariesType::iterator itmm = configurationManager->getMonolingualDictionaries().find(std::pair<std::string, std::string>(srcLang, destLang));
 		if (itmm != configurationManager->getMonolingualDictionaries().end()) {
 			mm = itmm->second;
+		} else {
+			throw xmlrpc_c::fault("Invalid parameter: no monolingual dictionaries for the language pair \"" + srcLang + "-" + destLang + "\"");
 		}
 
 		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, lm, mm, translations, srcLang, destLang));
