@@ -70,7 +70,7 @@ $(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
 $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 ##NO TOCAR	apertium-gen-oldbil $(BASENAME).$(PREFIX1).dix tmp$(PREFIX1).autobil.dix
-	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix >tmp$(PREFIX1).autobil.dix
+	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix |xsltproc --stringparam lang en_GB --stringparam side left filter.xsl - >tmp$(PREFIX1).autobil.dix
 	lt-comp lr tmp$(PREFIX1).autobil.dix $@
 	rm tmp$(PREFIX1).autobil.dix
 
@@ -102,8 +102,13 @@ $(PREFVAR2)$(PREFIX2).automorf.bin: .deps/$(PREFVAR2)$(LANG2).dix $(BASENAME).$(
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-##NO TOCAR	apertium-gen-oldbil $(BASENAME).$(PREFIX1).dix tmp$(PREFIX2).autobil.dix
-	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix >tmp$(PREFIX2).autobil.dix
+	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix|xsltproc --stringparam lang en_GB --stringparam side left filter.xsl - >tmp$(PREFIX2).autobil.dix
+	lt-comp rl tmp$(PREFIX2).autobil.dix $@
+	rm tmp$(PREFIX2).autobil.dix
+
+$(PREFIX2b).autobil.bin: $(BASENAME).$(PREFIX1).dix
+	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+	xsltproc translate-to-default-equivalent.xsl $(BASENAME).$(PREFIX1).dix|xsltproc --stringparam lang en_US --stringparam side left filter.xsl - >tmp$(PREFIX2).autobil.dix
 	lt-comp rl tmp$(PREFIX2).autobil.dix $@
 	rm tmp$(PREFIX2).autobil.dix
 
@@ -215,6 +220,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
 
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
+		    $(PREFIX2b).autobil.bin \
 		    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
 		    $(PREFIX1)-poly.autobil.bin $(PREFIX2)-poly.autobil.bin \
