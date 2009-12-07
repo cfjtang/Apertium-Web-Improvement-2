@@ -31,11 +31,7 @@
 
 #include "config.h"
 
-#include <sys/types.h>
-
 #include <iostream>
-#include <iomanip>
-#include <iosfwd>
 #include <string>
 
 #include <exception>

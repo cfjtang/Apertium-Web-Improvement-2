@@ -244,14 +244,14 @@ LDFLAGS="$XMLRPC_LIBS"
 # AC_CHECK_HEADERS([wchar.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_INLINE
-AC_TYPE_INT32_T
-AC_TYPE_SIZE_T
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT64_T
-AC_TYPE_UINT8_T
+# AC_HEADER_STDBOOL
+# AC_C_INLINE
+# AC_TYPE_INT32_T
+# AC_TYPE_SIZE_T
+# AC_TYPE_UINT16_T
+# AC_TYPE_UINT32_T
+# AC_TYPE_UINT64_T
+# AC_TYPE_UINT8_T
 
 # Checks for library functions.
 ICU_LIBS=`icu-config --ldflags`
