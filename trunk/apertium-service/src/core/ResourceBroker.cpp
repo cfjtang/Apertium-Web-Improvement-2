@@ -294,6 +294,18 @@ template <> IRSTLMRankerWrapper *NonIndexedObjectPool<IRSTLMRankerWrapper>::getN
 	ret->init(fileNames[0]);
 	return(ret);
 }
+
+template <> Case_Insensitive_Morph_Matcher *NonIndexedObjectPool<Case_Insensitive_Morph_Matcher>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<Case_Insensitive_Morph_Matcher>::getNewInstance();");
+
+	std::vector<std::string> fileNames = p.getFileNames();
+
+	checkFile(fileNames[0]);
+
+	Case_Insensitive_Morph_Matcher *ret = pool.construct();
+	ret->readBil(fileNames[0]);
+	return(ret);
+}
 #endif
 
 boost::mutex ResourceBroker::cgMutex;

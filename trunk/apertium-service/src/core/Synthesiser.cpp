@@ -53,18 +53,40 @@ std::string Synthesiser::synthesise(ResourceBroker &rb, ConfigurationManager &cm
 	std::vector<std::string> lm(1);
 	lm[0] = cm.getLanguageModels()[srcLang];
 
-	Program p("irstlm");
-	p.setFileNames(lm);
+	std::vector<std::string> mm(1);
+	mm[0] = cm.getMonolingualDictionaries()[std::pair<std::string, std::string>(srcLang, destLang)];
 
-	IRSTLMRankerWrapper *i = rb.IRSTLMRankerPool.acquire(p);
+	Program plm("irstlm");
+	plm.setFileNames(lm);
+
+	Program pmm("matcher");
+	pmm.setFileNames(mm);
+
+	IRSTLMRankerWrapper *i = rb.IRSTLMRankerPool.acquire(plm);
+
+    Case_Insensitive_Morph_Matcher *matcher = rb.Case_Insensitive_Morph_MatcherPool.acquire(pmm);
+
+    IRSTLMRanker *r = i->getRanker();
 
 	Alignment alignment = Alignment(input_lines);
 
+    alignment.match(*matcher);
 
+    Max_Conseq_Aligner aligner;
+    alignment.align(aligner, 0);
 
-	rb.IRSTLMRankerPool.release(i, p);
+    Parallel_Scan_Generator generator;
+    Hypotheses hypotheses = Hypotheses(alignment, generator);
 
-	return "";
+    hypotheses.rank(r);
+
+    std::wstring wret = hypotheses.best();
+
+    rb.Case_Insensitive_Morph_MatcherPool.release(matcher, pmm);
+
+	rb.IRSTLMRankerPool.release(i, plm);
+
+	return Encoding::wstringToUtf8(wret);
 }
 
 #endif
