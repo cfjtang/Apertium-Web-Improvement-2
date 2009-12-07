@@ -42,13 +42,27 @@
 #include "memt/parallel_scan_generator.hh"
 #include "memt/case_insensitive_morph_matcher.hh"
 
-std::string Synthesiser::synthesise(ResourceBroker &rb, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
+std::string Synthesiser::synthesise(ResourceBroker &rb, ConfigurationManager &cm, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
 
-	std::vector<wstring> input_lines(translations.size());
+	std::vector<std::wstring> input_lines(translations.size());
 
 	for (unsigned int i = 0; i < translations.size(); ++i) {
 		input_lines[i] = Encoding::utf8ToWstring(translations[i]);
 	}
+
+	std::vector<std::string> lm(1);
+	lm[0] = cm.getLanguageModels()[srcLang];
+
+	Program p("irstlm");
+	p.setFileNames(lm);
+
+	IRSTLMRankerWrapper *i = rb.IRSTLMRankerPool.acquire(p);
+
+	Alignment alignment = Alignment(input_lines);
+
+
+
+	rb.IRSTLMRankerPool.release(i, p);
 
 	return "";
 }
