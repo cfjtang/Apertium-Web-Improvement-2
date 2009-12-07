@@ -135,7 +135,7 @@ private:
 #if defined(HAVE_IRSTLM)
 class SynthesiseMethod : public xmlrpc_c::method {
 public:
-	SynthesiseMethod(ResourceBroker &rb) : resourceBroker(&rb) {
+	SynthesiseMethod(ResourceBroker &rb, ConfigurationManager &cm) : resourceBroker(&rb), configurationManager(&cm) {
 		this->_signature = "s:Ass";
 		this->_help = "Synthesise method";
 	}
@@ -153,11 +153,12 @@ public:
 		string const srcLang(paramList.getString(1));
 		string const destLang(paramList.getString(2));
 
-		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, translations, srcLang, destLang));
+		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, *configurationManager, translations, srcLang, destLang));
 	}
 
 private:
 	ResourceBroker *resourceBroker;
+	ConfigurationManager *configurationManager;
 };
 #endif
 
@@ -218,7 +219,7 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 #endif
 
 #if defined(HAVE_IRSTLM)
-	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod(rb));
+	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod(rb, cm));
 	xmlrpcRegistry->addMethod(SYNTHESISE_NAME, SynthesiseMethodP);
 #endif
 

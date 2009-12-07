@@ -35,10 +35,11 @@
 #include <wchar.h>
 
 #include "core/ResourceBroker.h"
+#include "utils/ConfigurationManager.h"
 
 class Synthesiser {
 public:
-	static std::string synthesise(ResourceBroker&, std::vector<std::string>&, std::string, std::string);
+	static std::string synthesise(ResourceBroker&, ConfigurationManager&, std::vector<std::string>&, std::string, std::string);
 };
 
 #endif
