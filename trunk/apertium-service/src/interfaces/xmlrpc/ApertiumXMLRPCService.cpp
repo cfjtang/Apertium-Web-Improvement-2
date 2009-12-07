@@ -150,10 +150,22 @@ public:
 			translations[i] = translation;
 		}
 
-		string const srcLang(paramList.getString(1));
-		string const destLang(paramList.getString(2));
+		std::string const srcLang(paramList.getString(1));
+		std::string const destLang(paramList.getString(2));
 
-		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, *configurationManager, translations, srcLang, destLang));
+		std::string lm, mm;
+
+		ConfigurationManager::LanguageModelsType::iterator itlm = configurationManager->getLanguageModels().find(srcLang);
+		if (itlm != configurationManager->getLanguageModels().end()) {
+			lm = itlm->second;
+		}
+
+		ConfigurationManager::MonolingualDictionariesType::iterator itmm = configurationManager->getMonolingualDictionaries().find(std::pair<std::string, std::string>(srcLang, destLang));
+		if (itmm != configurationManager->getMonolingualDictionaries().end()) {
+			mm = itmm->second;
+		}
+
+		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, lm, mm, translations, srcLang, destLang));
 	}
 
 private:

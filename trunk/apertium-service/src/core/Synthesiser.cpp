@@ -42,7 +42,7 @@
 #include "memt/parallel_scan_generator.hh"
 #include "memt/case_insensitive_morph_matcher.hh"
 
-std::string Synthesiser::synthesise(ResourceBroker &rb, ConfigurationManager &cm, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
+std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::string mm, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
 
 	std::vector<std::wstring> input_lines(translations.size());
 
@@ -50,17 +50,17 @@ std::string Synthesiser::synthesise(ResourceBroker &rb, ConfigurationManager &cm
 		input_lines[i] = Encoding::utf8ToWstring(translations[i]);
 	}
 
-	std::vector<std::string> lm(1);
-	lm[0] = cm.getLanguageModels()[srcLang];
+	std::vector<std::string> vlm(1);
+	vlm[0] = lm;
 
-	std::vector<std::string> mm(1);
-	mm[0] = cm.getMonolingualDictionaries()[std::pair<std::string, std::string>(srcLang, destLang)];
+	std::vector<std::string> vmm(1);
+	vmm[0] = mm;
 
 	Program plm("irstlm");
-	plm.setFileNames(lm);
+	plm.setFileNames(vlm);
 
 	Program pmm("matcher");
-	pmm.setFileNames(mm);
+	pmm.setFileNames(vmm);
 
 	IRSTLMRankerWrapper *i = rb.IRSTLMRankerPool.acquire(plm);
 

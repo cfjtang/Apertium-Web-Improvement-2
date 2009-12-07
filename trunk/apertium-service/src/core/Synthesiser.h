@@ -39,7 +39,7 @@
 
 class Synthesiser {
 public:
-	static std::string synthesise(ResourceBroker&, ConfigurationManager&, std::vector<std::string>&, std::string, std::string);
+	static std::string synthesise(ResourceBroker&, std::string, std::string, std::vector<std::string>&, std::string, std::string);
 };
 
 #endif
