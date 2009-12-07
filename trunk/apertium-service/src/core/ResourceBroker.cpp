@@ -47,7 +47,7 @@ ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPoo
 	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
 	PostchunkPool(ub), TransferMultPool(ub)
 #if defined(HAVE_IRSTLM)
-	, IRSTLMRankerPool(ub)
+	, IRSTLMRankerPool(ub), Case_Insensitive_Morph_MatcherPool(ub)
 #endif
 	, GrammarPool(ub) {
 	upperBound = ub;
