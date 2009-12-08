@@ -114,8 +114,8 @@ $(PREFIX2).autobil.bin: .deps/$(PREFIX1).bil.dix
 $(PREFIX2b).autobil.bin: .deps/$(PREFIX1)-US.bil.dix
 	apertium-validate-dictionary .deps/$(PREFIX1)-US.bil.dix
 	xsltproc translate-to-default-equivalent.xsl .deps/$(PREFIX1)-US.bil.dix >tmp$(PREFIX2b).autobil.dix
-	lt-comp rl tmp$(PREFIX2).autobil.dix $@
-	rm tmp$(PREFIX2).autobil.dix
+	lt-comp rl tmp$(PREFIX2b).autobil.dix $@
+	rm tmp$(PREFIX2b).autobil.dix
 
 $(PREFIX2).autogen.bin: .deps/$(LANG1).dix
 	apertium-validate-dictionary .deps/$(LANG1).dix
