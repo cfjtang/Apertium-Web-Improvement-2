@@ -53,10 +53,10 @@ TARGETS = $(TARGETS_COMMON) \
 .deps/$(PREFVAR2)$(LANG2).dix: $(BASENAME).$(LANG2).dix
 	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang val --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - >$@
 
-.deps/$(PREFIX1).bil.dix: .deps/$(PREFIX1).bil.dix
+.deps/$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam lang en_GB --stringparam side left filter.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
-.deps/$(PREFIX1)-US.bil.dix: .deps/$(PREFIX1).bil.dix
+.deps/$(PREFIX1)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam lang en_US --stringparam side left filter.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
