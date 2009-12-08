@@ -77,13 +77,12 @@ then
                  [AC_DEFINE([HAVE_IRSTLM], [], [flag for IRSTLM])],
                  [AC_MSG_ERROR([Cannot find IRST-LM!])])
 
-  LIB_SRILM="-lirstlm"
+  LIB_IRSTLM="-lirstlm"
   LDFLAGS="$LDFLAGS -L${with_irstlm}/lib"
-  LIBS="$LIBS $LIB_SRILM"
-  FMTLIBS="$FMTLIBS libirstlm.a"
+  LIBS=" $LIBS $LIB_ITSTLM "
 fi
 
-LIBS="$LIBS -lz"
+LIBS=" $LIBS -lz "
 
 # Checks for libraries.
 AX_BOOST_BASE([1.34.0])
