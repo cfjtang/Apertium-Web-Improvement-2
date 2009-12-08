@@ -79,7 +79,8 @@ then
 
   LIB_IRSTLM="-lirstlm"
   LDFLAGS="$LDFLAGS -L${with_irstlm}/lib"
-  LIBS=" $LIBS $LIB_ITSTLM "
+  LIBS=" $LIBS $LIB_IRSTLM "
+  FMTLIBS="$FMTLIBS libirstlm.a"
 fi
 
 LIBS=" $LIBS -lz "
