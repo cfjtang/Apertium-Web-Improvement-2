@@ -16,6 +16,8 @@
 ;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+;;; Author: Kevin Brubeck Unhammer <unhammer hos gmail punktum com>
+
 ;;; Usage:
 ;; (add-to-list 'load-path "/path/to/dix.el")
 ;; (require 'dix)
@@ -82,7 +84,7 @@
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
 
-(defconst dix-version "2009-08-29") 
+(defconst dix-version "2009-11-07") 
 
 (require 'nxml-mode)
 
@@ -131,22 +133,62 @@ Entering dix-mode calls the hook dix-mode-hook.
      (setq nxml-sexp-element-flag old-sexp-element-flag)))
 (put 'dix-with-sexp 'lisp-indent-function 0)
 
+(defvar dix-parse-bound 5000
+  "Maximum amount of chars to parse through in dix xml
+operations (since dix tend to get huge). Decrease the number if
+operations ending in \"No parent element\" take too long.")
+
+(defun dix-backward-up-element (&optional arg bound)
+  "Modified from `nxml-backward-up-element' to include optional
+arg `bound'"
+  (interactive "p")
+  (or arg (setq arg 1))
+  (if (< arg 0)
+      (nxml-up-element (- arg))
+    (condition-case err
+	(while (and (> arg 0)
+		    (< (point-min) (point)))
+	  (let ((token-end (nxml-token-before)))
+	    (goto-char (cond ((or (memq xmltok-type '(start-tag
+						      partial-start-tag))
+				  (and (memq xmltok-type
+					     '(empty-element
+					       partial-empty-element))
+				       (< (point) token-end)))
+			      xmltok-start)
+			     ((nxml-scan-element-backward
+			       (if (and (eq xmltok-type 'end-tag)
+					(= (point) token-end))
+				   token-end
+				 xmltok-start)
+			       t
+			       bound)
+			      xmltok-start)
+			     (t (error "No parent element")))))
+	  (setq arg (1- arg)))
+      (nxml-scan-error
+       (goto-char (cadr err))
+       (apply 'error (cddr err))))))
+
 (defun dix-up-to (eltname &optional barrier)
   "Move point to start of element `eltname' (a string, eg. \"e\")
 which we're looking at. Optional `barrier' is the outer element,
 so we don't go all the way through the file looking for our
-element. Ideally `nxml-backward-up-element' should stop on
-finding another `eltname' element."
+element (ultimately constrained by the variable
+`dix-parse-bound').  Ideally `dix-backward-up-element' should
+stop on finding another `eltname' element."
   (nxml-token-after)
   (when (eq xmltok-type 'space)
     (goto-char (1+ (nxml-token-after)))
     (nxml-token-after))
   (goto-char xmltok-start)
-  (let ((tok (xmltok-start-tag-qname)))
+  (let ((tok (xmltok-start-tag-qname))
+	(bound (max (point-min)
+		    (- (point) dix-parse-bound))))
     (while (not (or (equal tok eltname)
 		    (equal tok barrier)
 		    (equal tok (concat "<" eltname))))
-      (nxml-backward-up-element)
+      (dix-backward-up-element 1 bound)
       (nxml-token-after)
       (setq tok (xmltok-start-tag-qname)))
     (if (equal tok barrier)
@@ -168,6 +210,13 @@ finding another `eltname' element."
     (dix-up-to "e" "section")
     (re-search-forward "lm=\"" nil t)
     (word-at-point)))
+
+(defun dix-pardef-type-of-e ()
+  (save-excursion
+    (dix-up-to "e" "section")
+    (nxml-down-element 1)
+    (re-search-forward "n=[^_]*__\\([^\"]*\\)" nil t)
+    (match-string-no-properties 1)))
 
 (defun dix-split-root-suffix ()
   (save-excursion
@@ -404,6 +453,16 @@ add an RL restriction to the copy."
     (goto-char end)
     (if (save-excursion (search-forward "</pardef>" nil 'noerror 1))
 	(indent-to dix-ep-align-column))))
+
+(defun dix-copy-yank ()
+  "Make a copy of the Apertium element we're looking at, and yank
+into the beginning of the lm and <i>."
+  (interactive)
+  (dix-copy)
+  (dix-next 1)
+  (yank)
+  (dix-next 1)
+  (yank))
 
 (defun dix-sort-e-by-r (reverse beg end)
   "Sort region alphabetically by contents of <r> element;
@@ -824,6 +883,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
 (define-key dix-mode-map (kbd "C-c C") 'dix-copy)
+(define-key dix-mode-map (kbd "C-c C-y") 'dix-copy-yank)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
 (define-key dix-mode-map (kbd "M-n") 'dix-next)
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
