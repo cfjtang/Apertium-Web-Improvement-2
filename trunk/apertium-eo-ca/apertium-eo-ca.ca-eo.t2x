@@ -6,16 +6,16 @@
       <cat-item tags="SN.*"/>
     </def-cat>
     <def-cat n="SNitg"> <!-- EO per als interrogatius, què (el qui porta sense, per tant no entra)...-->
-      <cat-item tags="SN.itg.*.*.nomi"/>
+      <cat-item tags="SN.itg.*.*.nom"/>
       <cat-item tags="SN.*.*.*.nomi2"/>
     </def-cat>
     
    <def-cat n="SNacc"><!-- EO: tots el que no porten changecase=sense-->
-      <cat-item tags="SN.*.*.*.nomi"/>
+      <cat-item tags="SN.*.*.*.nom"/>
     </def-cat>
 
    <def-cat n="SAacc"><!-- EO: tots el que no porten changecase=sense-->
-      <cat-item tags="SA.*.*.*.nomi"/>
+      <cat-item tags="SA.*.*.*.nom"/>
     </def-cat>
 
    <def-cat n="SNrelatiu"><!-- EO: -->
@@ -164,11 +164,11 @@
 
    <def-attr n="changecase">
           <attr-item tags="nomi2"/>
-          <attr-item tags="nomi"/>
+          <attr-item tags="nom"/>
 	  <attr-item tags="sense"/>
       </def-attr>
    <def-attr n="case">
-          <attr-item tags="nomi"/>
+          <attr-item tags="nom"/>
 	  <attr-item tags="acc"/>
       </def-attr>
     <def-attr n="tipus_prn">
@@ -376,7 +376,7 @@ Venen marcats del t1x com a SN.obj, aqui els indentifiquem i segons el patró en
 Segon paques de regles per a indentificar els SN objectes i possar-los en acusatiu-->  
 
 
-<rule comment="REGLA: SNitg SV SN (EO per l'acusatiu dels SN interrogatiu amb changecase=nomi; volem que posi acc al primer SN ja que el segon suposem que serà el subjecte: què menja la nena?-> kion manĝas la knabino?)">
+<rule comment="REGLA: SNitg SV SN (EO per l'acusatiu dels SN interrogatiu amb changecase=nom; volem que posi acc al primer SN ja que el segon suposem que serà el subjecte: què menja la nena?-> kion manĝas la knabino?)">
       <pattern>
 	<pattern-item n="SNitg"/>
 	<pattern-item n="SVlex"/>
@@ -411,7 +411,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SNitg SV (EO per l'acusatiu dels SN subjecte si és 'a aqui vas veure?' o 'què vas veure? amb changecase=nomi; A més a més posa el pronom subjecte (no pro-drop) aqui vas veure) -> kiun vi vidis?; què vas veure? -> kion vi vidis?)">
+<rule comment="REGLA: SNitg SV (EO per l'acusatiu dels SN subjecte si és 'a aqui vas veure?' o 'què vas veure? amb changecase=nom; A més a més posa el pronom subjecte (no pro-drop) aqui vas veure) -> kiun vi vidis?; què vas veure? -> kion vi vidis?)">
       <pattern>
 	<pattern-item n="SNitg"/>
 	<pattern-item n="SVlex"/>
@@ -484,7 +484,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 
 
-<rule comment="REGLA: SN PRO SV SN and SN (EO per l'acusatiu dels SN objecte amb changecase=nomi; la nena em va donar el llibre i els fulls:: la knabino al mi donis la libron kaj la foliojn; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
+<rule comment="REGLA: SN PRO SV SN and SN (EO per l'acusatiu dels SN objecte amb changecase=nom; la nena em va donar el llibre i els fulls:: la knabino al mi donis la libron kaj la foliojn; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SNobj"/>
@@ -560,7 +560,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
  
-<rule comment="REGLA: SN PRO SV SN (EO per l'acusatiu dels SN objecte amb changecase=nomi; la nena em va donar el llibre :: la knabino al mi donis la libron; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
+<rule comment="REGLA: SN PRO SV SN (EO per l'acusatiu dels SN objecte amb changecase=nom; la nena em va donar el llibre :: la knabino al mi donis la libron; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SNobj"/>
@@ -620,7 +620,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
  
-<rule comment="REGLA: SN SV PRO SN (EO per l'acusatiu dels SN objecte amb changecase=nomi); la nena va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
+<rule comment="REGLA: SN SV PRO SN (EO per l'acusatiu dels SN objecte amb changecase=nom); la nena va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVlex"/>
@@ -680,7 +680,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SN SV PRO SN and SNacc (EO per l'acusatiu dels SN objecte amb changecase=nomi); la nena va donar-me el llibre i els fulls; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
+<rule comment="REGLA: SN SV PRO SN and SNacc (EO per l'acusatiu dels SN objecte amb changecase=nom); la nena va donar-me el llibre i els fulls; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVlex"/>
@@ -769,7 +769,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="1" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="1" part="tipus_prn"/>
@@ -826,7 +826,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="1" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="1" part="tipus_prn"/>
@@ -874,7 +874,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -932,7 +932,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -979,7 +979,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1041,7 +1041,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1102,7 +1102,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1153,7 +1153,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1207,7 +1207,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="3" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="3" part="tipus_prn"/>
@@ -1272,7 +1272,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="1" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="1" part="tipus_prn"/>
@@ -1324,7 +1324,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="1" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="1" part="tipus_prn"/>
@@ -1391,7 +1391,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1457,7 +1457,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1526,7 +1526,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1596,7 +1596,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="3" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="3" part="tipus_prn"/>
@@ -1666,7 +1666,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="1" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="1" part="tipus_prn"/>
@@ -1725,7 +1725,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="1" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="1" part="tipus_prn"/>
@@ -1799,7 +1799,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1860,7 +1860,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1921,7 +1921,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -1979,7 +1979,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="2" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="2" part="tipus_prn"/>
@@ -2040,7 +2040,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 	    <let> <!-- assignem nominatiu al SN inicial-->
 	      <clip pos="3" part="case"/>
-	      <lit-tag v="nomi"/>
+	      <lit-tag v="nom"/>
 	    </let>
 	    <let>
 	      <clip pos="3" part="tipus_prn"/>
@@ -2092,7 +2092,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
 
 
-<rule comment="REGLA: PRO SV SN (EO per l'acusatiu dels SN objecte amb changecase=nomi; em va donar el llibre :: (la knabino) al mi donis la libron; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
+<rule comment="REGLA: PRO SV SN (EO per l'acusatiu dels SN objecte amb changecase=nom; em va donar el llibre :: (la knabino) al mi donis la libron; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
       <pattern>
 	<pattern-item n="SNobj"/>
 	<pattern-item n="SVlex"/>
@@ -2145,7 +2145,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
  
-<rule comment="REGLA: PRO SV SN and SN (EO per l'acusatiu dels SN objecte amb changecase=nomi; em va donar el llibre i els fulls :: (la knabino) al mi donis la libron kaj foliojn; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
+<rule comment="REGLA: PRO SV SN and SN (EO per l'acusatiu dels SN objecte amb changecase=nom; em va donar el llibre i els fulls :: (la knabino) al mi donis la libron kaj foliojn; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
       <pattern>
 	<pattern-item n="SNobj"/>
 	<pattern-item n="SVlex"/>
@@ -2215,7 +2215,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: punt_cnjadv PRO SV SNacc (EO per l'acusatiu dels SN objecte amb changecase=nomi; em va donar el llibre :: (la knabino) al mi donis la libron; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
+<rule comment="REGLA: punt_cnjadv PRO SV SNacc (EO per l'acusatiu dels SN objecte amb changecase=nom; em va donar el llibre :: (la knabino) al mi donis la libron; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SNobj"/>
@@ -2334,7 +2334,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: punt_cnjadv PRO SV SNacc and SNacc (EO per l'acusatiu dels SN objecte amb changecase=nomi; em va donar el llibre i els fulls :: (la knabino) al mi donis la libron kaj la foliojn; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
+<rule comment="REGLA: punt_cnjadv PRO SV SNacc and SNacc (EO per l'acusatiu dels SN objecte amb changecase=nom; em va donar el llibre i els fulls :: (la knabino) al mi donis la libron kaj la foliojn; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SNobj"/>
@@ -2470,7 +2470,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
  
-<rule comment="REGLA: SV PRO SN (EO per l'acusatiu dels SN objecte amb changecase=nomi); va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
+<rule comment="REGLA: SV PRO SN (EO per l'acusatiu dels SN objecte amb changecase=nom); va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
       <pattern>
 	<pattern-item n="SVlex"/>
 	<pattern-item n="SNobj"/>
@@ -2523,7 +2523,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SV PRO SN and SNacc (EO per l'acusatiu dels SN objecte amb changecase=nomi); va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
+<rule comment="REGLA: SV PRO SN and SNacc (EO per l'acusatiu dels SN objecte amb changecase=nom); va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
       <pattern>
 	<pattern-item n="SVlex"/>
 	<pattern-item n="SNobj"/>
@@ -2593,7 +2593,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: punt_cnjadv SV PRO SN (EO pro-drop; per l'acusatiu dels SN objecte amb changecase=nomi); va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
+<rule comment="REGLA: punt_cnjadv SV PRO SN (EO pro-drop; per l'acusatiu dels SN objecte amb changecase=nom); va donar-me el llibre; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SVlex"/>
@@ -2711,7 +2711,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: punt_cnjadv SV PRO SN and SN (EO pro-drop; per l'acusatiu dels SN objecte amb changecase=nomi); va donar-me el llibre i els fulls; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
+<rule comment="REGLA: punt_cnjadv SV PRO SN and SN (EO pro-drop; per l'acusatiu dels SN objecte amb changecase=nom); va donar-me el llibre i els fulls; el clític passa a objecte indirecte precedit per al i el SN objecte agafa cas acusatiu">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SVlex"/>
@@ -2846,7 +2846,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SN SV SN and SNacc(EO per l'acusatiu dels SN objecte amb changecase=nomi)">
+<rule comment="REGLA: SN SV SN and SNacc(EO per l'acusatiu dels SN objecte amb changecase=nom)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVlex"/>
@@ -2897,7 +2897,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SN SV SN (EO per l'acusatiu dels SN objecte amb changecase=nomi)">
+<rule comment="REGLA: SN SV SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVlex"/>
@@ -2933,7 +2933,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: SV SN and SN (EO per l'acusatiu dels SN objecte amb changecase=nomi)">
+<rule comment="REGLA: SV SN and SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVlex"/>
 	<pattern-item n="SNacc"/>
@@ -2978,7 +2978,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SV SN (EO per l'acusatiu dels SN objecte amb changecase=nomi)">
+<rule comment="REGLA: SV SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVlex"/>
 	<pattern-item n="SNacc"/>
@@ -3006,7 +3006,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SN SVmoviment PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nomi)">
+<rule comment="REGLA: SN SVmoviment PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVmoviment"/>
@@ -3049,7 +3049,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: SN SVmoviment SNacc PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nomi)">
+<rule comment="REGLA: SN SVmoviment SNacc PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVmoviment"/>
@@ -3102,7 +3102,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SVmoviment PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nomi)">
+<rule comment="REGLA: SVmoviment PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVmoviment"/>
 	<pattern-item n="PREP"/>
@@ -3138,7 +3138,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: SVmoviment SN PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nomi)">
+<rule comment="REGLA: SVmoviment SN PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVmoviment"/>
 	<pattern-item n="SN"/>
@@ -3285,7 +3285,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SV SA (EO per l'acusatiu dels SN objecte amb changecase=nomi)">
+<rule comment="REGLA: SV SA (EO per l'acusatiu dels SN objecte amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVlex"/>
 	<pattern-item n="SAacc"/>
@@ -4481,7 +4481,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: punt_cnjadv SVmoviment PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nomi i afegir pronom subjecte)">
+<rule comment="REGLA: punt_cnjadv SVmoviment PREP SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom i afegir pronom subjecte)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SVmoviment"/>
@@ -4596,7 +4596,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       <action>
             <let>
               <clip pos="2" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
 	<out>
 	  <chunk>
@@ -4631,7 +4631,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       <action>
             <let>
               <clip pos="2" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
             <let>
               <clip pos="5" part="case"/>
@@ -4751,7 +4751,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
             <let>
               <clip pos="2" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
             <let>
               <clip pos="4" part="case"/>
@@ -4825,7 +4825,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
             <let>
               <clip pos="2" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
             <let>
               <clip pos="4" part="case"/>
@@ -4910,7 +4910,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
             <let>
               <clip pos="2" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
 
 	<out>
@@ -5074,11 +5074,11 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 
             <let>
               <clip pos="2" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
             <let>
               <clip pos="5" part="case"/>
-              <lit-tag v="nomi"/>
+              <lit-tag v="nom"/>
             </let>
 
 	<out>
