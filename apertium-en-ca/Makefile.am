@@ -54,10 +54,16 @@ TARGETS = $(TARGETS_COMMON) \
 	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang val --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam lang en_GB --stringparam side left filter.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFIX1)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam lang en_US --stringparam side left filter.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right val filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+
+.deps/$(PREFVAR2)$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
+	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+
+.deps/$(PREFVAR2)$(PREFIX1)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
+	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right val filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
 	apertium-validate-dictionary .deps/$(LANG1).dix
