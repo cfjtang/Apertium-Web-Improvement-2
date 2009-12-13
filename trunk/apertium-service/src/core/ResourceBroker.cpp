@@ -46,7 +46,7 @@ using CG3::CG3Quit;
 ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPool(ub),
 	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
 	PostchunkPool(ub), TransferMultPool(ub)
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 	, IRSTLMRankerPool(ub), Case_Insensitive_Morph_MatcherPool(ub)
 #endif
 	, GrammarPool(ub) {
@@ -109,7 +109,7 @@ Format *FormatWrapper::getFormatter() {
 	return formatter;
 }
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 IRSTLMRankerWrapper::IRSTLMRankerWrapper() {
 	ranker = NULL;
 }
@@ -282,7 +282,7 @@ template <> TransferMult *NonIndexedObjectPool<TransferMult>::getNewInstance(Pro
 	return(ret);
 }
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 template <> IRSTLMRankerWrapper *NonIndexedObjectPool<IRSTLMRankerWrapper>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "ObjectPool<IRSTLMRankerWrapper>::getNewInstance();");
 

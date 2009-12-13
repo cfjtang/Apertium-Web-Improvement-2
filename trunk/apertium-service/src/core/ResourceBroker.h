@@ -81,13 +81,13 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
-#if defined(HAVE_IRSTLM)
-#include "core/memt/alignment.hh"
-#include "core/memt/hypotheses.hh"
-#include "core/memt/irstlm_ranker.hh"
-#include "core/memt/max_conseq_aligner.hh"
-#include "core/memt/parallel_scan_generator.hh"
-#include "core/memt/case_insensitive_morph_matcher.hh"
+#if defined(HAVE_COMBINE)
+#include <apertium-combine/alignment.hh>
+#include <apertium-combine/hypotheses.hh>
+#include <apertium-combine/irstlm_ranker.hh>
+#include <apertium-combine/max_conseq_aligner.hh>
+#include <apertium-combine/parallel_scan_generator.hh>
+#include <apertium-combine/case_insensitive_morph_matcher.hh>
 #endif
 
 #include "format/Format.h"
@@ -302,7 +302,7 @@ private:
 	Format *formatter;
 };
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 class IRSTLMRankerWrapper {
 public:
 	IRSTLMRankerWrapper();
@@ -340,7 +340,7 @@ public:
 	IndexedObjectPool<Postchunk> PostchunkPool;
 	IndexedObjectPool<TransferMult> TransferMultPool;
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 	IndexedObjectPool<IRSTLMRankerWrapper> IRSTLMRankerPool;
 	IndexedObjectPool<Case_Insensitive_Morph_Matcher> Case_Insensitive_Morph_MatcherPool;
 #endif

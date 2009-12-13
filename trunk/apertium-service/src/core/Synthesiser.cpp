@@ -26,7 +26,7 @@
 
 #include "config.h"
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 
 #include <iostream>
 #include <vector>
@@ -35,12 +35,12 @@
 #include "Synthesiser.h"
 #include "format/Encoding.h"
 
-#include "memt/alignment.hh"
-#include "memt/hypotheses.hh"
-#include "memt/irstlm_ranker.hh"
-#include "memt/max_conseq_aligner.hh"
-#include "memt/parallel_scan_generator.hh"
-#include "memt/case_insensitive_morph_matcher.hh"
+#include <apertium-combine/alignment.hh>
+#include <apertium-combine/hypotheses.hh>
+#include <apertium-combine/irstlm_ranker.hh>
+#include <apertium-combine/max_conseq_aligner.hh>
+#include <apertium-combine/parallel_scan_generator.hh>
+#include <apertium-combine/case_insensitive_morph_matcher.hh>
 
 std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::string mm, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
 

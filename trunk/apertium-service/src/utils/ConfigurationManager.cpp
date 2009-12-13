@@ -132,7 +132,7 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 				strStream >> highWaterMark;
 			}
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 			xmlpp::NodeSet memtmonoNodeSet = rootNode->find(rootName + "/MultiEngineMachineTranslation/MonolingualDictionary");
 			for (xmlpp::NodeSet::iterator it = memtmonoNodeSet.begin(); it != memtmonoNodeSet.end(); ++it) {
 				xmlpp::Element *e = dynamic_cast<xmlpp::Element*> (*it);
@@ -228,7 +228,7 @@ void ConfigurationManager::setConfTextClassifier(fs::path c) {
 }
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 ConfigurationManager::MonolingualDictionariesType ConfigurationManager::getMonolingualDictionaries() {
 	return monolingualDictionaries;
 }
