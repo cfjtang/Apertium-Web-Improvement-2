@@ -15,6 +15,8 @@ void inline to_lower(wstring& to_lower)
     return;
 }
 
+Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher() { }
+
 Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher(string const &fstfile) {
 	readBil(fstfile);
 }
