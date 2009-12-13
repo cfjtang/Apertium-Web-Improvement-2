@@ -16,54 +16,56 @@
 
 using namespace std;
 
-void usage() 
-{
-    wcout << 
-        "./combiner first_input second_input [third_input [...]]" 
-        << endl;
+void usage() {
+    wcout << L"./combiner monodix model first_input second_input [third_input [...]]" << endl;
 }
 
-int main(int argc, char** argv) 
-{ 
+int main(int argc, char **argv) {
     std::vector<char*> input_files;
-    unsigned int k = 1;
-    while (argv[k] != NULL) {
-        input_files.push_back(argv[k]);
-        ++k;
-    }
-    if (input_files[1] == NULL) {
+
+    if (argc < 5) {
         usage();
         return -1;
     }
+
+    const string fst = argv[1];
+    const string model = argv[2];
+
+    for (int i = 3; i < argc; ++i) {
+    	input_files.push_back(argv[i]);
+    }
+
     std::vector<wfstream*> files_in;
     cout << "Reading from";
-    for (std::vector<char*>::iterator it = input_files.begin(); 
-            it != input_files.end(); ++it) {
+
+    for (std::vector<char*>::iterator it = input_files.begin(); it != input_files.end(); ++it) {
         wfstream* file_in = new wfstream(*it);
         files_in.push_back(file_in);
         cout << " " << *it;
     }
+
     cout << endl;
+
     std::vector<wstring> input_lines;
-    for (std::vector<wfstream*>::iterator it = files_in.begin();
-            it != files_in.end(); ++it) {
+
+    for (std::vector<wfstream*>::iterator it = files_in.begin(); it != files_in.end(); ++it) {
         wstring tmp;
         getline(**it, tmp);
         input_lines.push_back(tmp);
     }
 
     bool condition = true;
-    for (std::vector<wfstream*>::iterator it = files_in.begin();
-            it != files_in.end(); ++it) {
+
+    for (std::vector<wfstream*>::iterator it = files_in.begin(); it != files_in.end(); ++it) {
         if (!**it) { 
             condition = false;
             break;
         }
     }
-    
+
     /// You can instantiate another derivation of Ranker here, 
     /// that should be the only change for switching the ranker
-    IRSTLMRanker* r = new IRSTLMRanker("/Users/snippy/apertium/EN-LM");
+    IRSTLMRanker* r = new IRSTLMRanker(model);
     //Dummy_Ranker* r = new Dummy_Ranker();
 
     while(condition) {
@@ -78,7 +80,7 @@ int main(int argc, char** argv)
         /// This is where you can change the Matcher
         //Case_Insensitive_Matcher matcher;
         //Case_Insensitive_Stemmer_Matcher matcher;
-        Case_Insensitive_Morph_Matcher matcher;
+        Case_Insensitive_Morph_Matcher matcher(fst);
         alignment.match(matcher);
         /// This is where you can change the Aligner
         Max_Conseq_Aligner aligner;
