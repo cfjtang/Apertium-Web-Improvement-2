@@ -78,7 +78,7 @@ struct Chained_Word_Sentinel
             std::pair<unsigned int, std::list<wstring*> > starter = 
                 std::pair<unsigned int, std::list<wstring*> >(0, 
                         std::list<wstring*>());
-            wcout << "read_all" << endl;
+            //wcout << "read_all" << endl;
             (*it)->read_all(starter, h);
         }
     }
