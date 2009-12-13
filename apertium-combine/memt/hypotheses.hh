@@ -81,7 +81,7 @@ class Hypotheses
         void rank(Ranker* r);
         void print();
         void print(wfstream* where);
-        void best();
+        wstring best();
     private:
         std::list<Hypothesis> _hypotheses;
         void inline concatenate(std::list<wstring>& ls, wstring& s);
