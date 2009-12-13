@@ -142,6 +142,11 @@ public:
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
 		std::vector<xmlrpc_c::value> tv(paramList.getArray(0));
+
+		if (tv.size() == 0) {
+			throw xmlrpc_c::fault("Invalid parameter: the list of translations is empty");
+		}
+
 		std::vector<std::string> translations(tv.size());
 
 		for (unsigned int i = 0; i < tv.size(); ++i) {
