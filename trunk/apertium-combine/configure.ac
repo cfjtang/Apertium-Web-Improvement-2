@@ -79,6 +79,14 @@ AC_PROG_LIBTOOL
 AM_SANITY_CHECK
 AC_LANG_CPLUSPLUS
 
+AC_ARG_ENABLE(debug,
+              [  --enable-debug  Enable "-g -Wall" compiler options],
+              [CXXFLAGS="-g -Wall";CFLAGS="-g -Wall"])
+
+AC_ARG_ENABLE(profile,
+              [  --enable-profile  Enable "-pg -g -Wall" compiler options],
+              [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
+
 AM_CONDITIONAL([IRSTLM], true)
 AM_CONDITIONAL([MOSES], true)
 
