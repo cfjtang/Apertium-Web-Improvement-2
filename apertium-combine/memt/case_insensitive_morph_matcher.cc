@@ -15,11 +15,10 @@ void inline to_lower(wstring& to_lower)
     return;
 }
 
-Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher()
-{
-
-    readBil("/Users/snippy/apertium/trunk/apertium-cy-en/en-cy.automorf.bin");                                 
+Case_Insensitive_Morph_Matcher::Case_Insensitive_Morph_Matcher(string const &fstfile) {
+	readBil(fstfile);
 }
+
 
 Case_Insensitive_Morph_Matcher::~Case_Insensitive_Morph_Matcher()
 {
