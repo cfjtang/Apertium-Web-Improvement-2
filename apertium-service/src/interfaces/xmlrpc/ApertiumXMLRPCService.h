@@ -99,6 +99,8 @@ private:
 
     static const string LANGUAGEPAIRS_NAME;
 
+    boost::shared_mutex serviceMutex;
+
 	xmlrpc_c::registry* xmlrpcRegistry;
 	xmlrpc_c::serverAbyss* abyssServer;
 
