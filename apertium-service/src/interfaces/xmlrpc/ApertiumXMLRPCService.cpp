@@ -44,7 +44,7 @@ const string ApertiumXMLRPCService::TRANSLATE_NAME = "translate";
 const string ApertiumXMLRPCService::DETECT_NAME = "detect";
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 const string ApertiumXMLRPCService::SYNTHESISE_NAME = "synthesise";
 #endif
 
@@ -132,7 +132,7 @@ private:
 };
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 class SynthesiseMethod : public xmlrpc_c::method {
 public:
 	SynthesiseMethod(ResourceBroker &rb, ConfigurationManager &cm) : resourceBroker(&rb), configurationManager(&cm) {
@@ -234,7 +234,7 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 	xmlrpcRegistry->addMethod(DETECT_NAME, DetectMethodP);
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod(rb, cm));
 	xmlrpcRegistry->addMethod(SYNTHESISE_NAME, SynthesiseMethodP);
 #endif

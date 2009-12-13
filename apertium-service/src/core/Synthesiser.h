@@ -29,7 +29,7 @@
 
 #include "config.h"
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 
 #include <iostream>
 #include <wchar.h>

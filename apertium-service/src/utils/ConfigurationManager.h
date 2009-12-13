@@ -67,7 +67,7 @@ public:
 	void setConfTextClassifier(fs::path);
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 	typedef boost::unordered_map<std::pair<std::string, std::string>, std::string> MonolingualDictionariesType;
 	typedef boost::unordered_map<std::string, std::string> LanguageModelsType;
 
@@ -93,7 +93,7 @@ private:
     static const fs::path CONFTEXTCLASSIFIER_DEF;
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
     MonolingualDictionariesType monolingualDictionaries;
     LanguageModelsType languageModels;
 #endif

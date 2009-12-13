@@ -53,7 +53,7 @@
 #include "core/TextClassifier.h"
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
 #include "core/Synthesiser.h"
 #endif
 
@@ -93,7 +93,7 @@ private:
     static const string DETECT_NAME;
 #endif
 
-#if defined(HAVE_IRSTLM)
+#if defined(HAVE_COMBINE)
     static const string SYNTHESISE_NAME;
 #endif
 

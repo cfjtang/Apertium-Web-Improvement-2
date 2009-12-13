@@ -62,28 +62,26 @@ if test "${enable_debug}" = "yes"; then
     CXXFLAGS+=" -g"
 fi
 
-AC_ARG_WITH(irstlm,
-            [AC_HELP_STRING([--with-irstlm=PATH], [(optional) path to IRST's LM toolkit])],
-            [with_irstlm=$withval],
-            [with_irstlm=no]
+AC_ARG_WITH(combine,
+            [AC_HELP_STRING([--with-combine=PATH], [(optional) path to apertium-combine])],
+            [with_combine=$withval],
+            [with_combine=no]
            )
            
-if test "x$with_irstlm" != 'xno'
+if test "x$with_combine" != 'xno'
 then
   SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I${with_irstlm}/include"
+  CPPFLAGS="$CPPFLAGS -I${with_combine}/include/apertium-combine-1.0/"
 
-  AC_CHECK_HEADER(n_gram.h,
-                 [AC_DEFINE([HAVE_IRSTLM], [], [flag for IRSTLM])],
-                 [AC_MSG_ERROR([Cannot find IRST-LM!])])
+  AC_CHECK_HEADER(apertium-combine/irstlm_ranker.hh,
+                 [AC_DEFINE([HAVE_COMBINE], [], [flag for COMBINE])],
+                 [AC_MSG_ERROR([Cannot find apertium-combine!])])
 
-  LIB_IRSTLM="-lirstlm"
+  LIB_COMBINE="-lapertiumcombine1 -lz"
   LDFLAGS="$LDFLAGS -L${with_irstlm}/lib"
-  LIBS=" $LIBS $LIB_IRSTLM "
-  FMTLIBS="$FMTLIBS libirstlm.a"
+  LIBS=" $LIBS $LIB_COMBINE "
+  FMTLIBS="$FMTLIBS libapertiumcombine1.a"
 fi
-
-LIBS=" $LIBS -lz "
 
 # Checks for libraries.
 AX_BOOST_BASE([1.34.0])
