@@ -53,18 +53,23 @@ const string ApertiumXMLRPCService::LANGUAGEPAIRS_NAME = "languagePairs";
 class TranslateMethod : public xmlrpc_c::method {
 public:
 
+	TranslateMethod(boost::shared_mutex &m, ResourceBroker &rb, ModesManager &mm,
 #if defined(HAVE_LIBTEXTCAT)
-	TranslateMethod(ResourceBroker &rb, ModesManager &mm, TextClassifier &tc, Statistics *s) : resourceBroker(&rb), modesManager(&mm),
-		textClassifier(&tc), statistics(s) {
-#else
-	TranslateMethod(ResourceBroker &rb, ModesManager &mm, Statistics *s) : resourceBroker(&rb), modesManager(&mm), statistics(s) {
+			TextClassifier &tc,
 #endif
+			Statistics *s) : mux(&m), resourceBroker(&rb), modesManager(&mm),
+#if defined(HAVE_LIBTEXTCAT)
+			textClassifier(&tc),
+#endif
+			statistics(s) {
 
 		this->_signature = "S:sss,S:ssss";
 		this->_help = "Translate method";
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
+		boost::shared_lock<boost::shared_mutex> lock(*mux);
+
 		string text(paramList.getString(0));
 		string srcLang(paramList.getString(1));
 
@@ -94,15 +99,14 @@ public:
         }
 #endif
 
-	    pair<string, xmlrpc_c::value> translation("translation",
-	    		xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType,
-	    				srcLang, destLang, statistics)));
+	    pair<string, xmlrpc_c::value> translation("translation", xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType, srcLang, destLang, statistics)));
 	    ret.insert(translation);
 
 		*retvalP = xmlrpc_c::value_struct(ret);
 	}
 
 private:
+	boost::shared_mutex *mux;
 	ResourceBroker *resourceBroker;
 	ModesManager *modesManager;
 
@@ -116,18 +120,21 @@ private:
 #if defined(HAVE_LIBTEXTCAT)
 class DetectMethod : public xmlrpc_c::method {
 public:
-	DetectMethod(TextClassifier &tc) : textClassifier(&tc) {
+	DetectMethod(boost::shared_mutex &m, TextClassifier &tc) : mux(&m), textClassifier(&tc) {
 		this->_signature = "s:s";
 		this->_help = "Detect method";
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
+		boost::shared_lock<boost::shared_mutex> lock(*mux);
+
 		string const text(paramList.getString(0));
 
 		*retvalP = xmlrpc_c::value_string(textClassifier->classify(text));
 	}
 
 private:
+	boost::shared_mutex *mux;
 	TextClassifier *textClassifier;
 };
 #endif
@@ -135,12 +142,14 @@ private:
 #if defined(HAVE_COMBINE)
 class SynthesiseMethod : public xmlrpc_c::method {
 public:
-	SynthesiseMethod(ResourceBroker &rb, ConfigurationManager &cm) : resourceBroker(&rb), configurationManager(&cm) {
+	SynthesiseMethod(boost::shared_mutex &m, ResourceBroker &rb, ConfigurationManager &cm) : mux(&m), resourceBroker(&rb), configurationManager(&cm) {
 		this->_signature = "s:Ass";
 		this->_help = "Synthesise method";
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
+		boost::shared_lock<boost::shared_mutex> lock(*mux);
+
 		std::vector<xmlrpc_c::value> tv(paramList.getArray(0));
 
 		if (tv.size() == 0) {
@@ -178,6 +187,7 @@ public:
 	}
 
 private:
+	boost::shared_mutex *mux;
 	ResourceBroker *resourceBroker;
 	ConfigurationManager *configurationManager;
 };
@@ -185,12 +195,14 @@ private:
 
 class LanguagePairsMethod : public xmlrpc_c::method {
 public:
-	LanguagePairsMethod(ModesManager &mm) : modesManager(&mm) {
+	LanguagePairsMethod(boost::shared_mutex &m, ModesManager &mm) : mux(&m), modesManager(&mm) {
 		this->_signature = "A:";
 		this->_help = "LanguagePairs method";
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
+		boost::shared_lock<boost::shared_mutex> lock(*mux);
+
 		vector<xmlrpc_c::value> ret;
 		ModesManager::ModeMapType modes = modesManager->getModes();
 
@@ -215,36 +227,36 @@ public:
 	}
 
 private:
+	boost::shared_mutex *mux;
 	ModesManager *modesManager;
 };
 
-#if defined(HAVE_LIBTEXTCAT)
 ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesManager &mm, ResourceBroker &rb,
-		TextClassifier &tc, Statistics *s) : configurationManager(&cm) {
-#else
-ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesManager &mm, ResourceBroker &rb, Statistics *s) {
+#if defined(HAVE_LIBTEXTCAT)
+		TextClassifier &tc,
 #endif
-
+		Statistics *s) : configurationManager(&cm) {
 	xmlrpcRegistry = new xmlrpc_c::registry;
 
+
+	xmlrpc_c::methodPtr const TranslateMethodP(new TranslateMethod(serviceMutex, rb, mm,
 #if defined(HAVE_LIBTEXTCAT)
-	xmlrpc_c::methodPtr const TranslateMethodP(new TranslateMethod(rb, mm, tc, s));
-#else
-	xmlrpc_c::methodPtr const TranslateMethodP(new TranslateMethod(rb, mm, s));
+			tc,
 #endif
+			s));
 	xmlrpcRegistry->addMethod(TRANSLATE_NAME, TranslateMethodP);
 
 #if defined(HAVE_LIBTEXTCAT)
-	xmlrpc_c::methodPtr const DetectMethodP(new DetectMethod(tc));
+	xmlrpc_c::methodPtr const DetectMethodP(new DetectMethod(serviceMutex, tc));
 	xmlrpcRegistry->addMethod(DETECT_NAME, DetectMethodP);
 #endif
 
 #if defined(HAVE_COMBINE)
-	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod(rb, cm));
+	xmlrpc_c::methodPtr const SynthesiseMethodP(new SynthesiseMethod(serviceMutex, rb, cm));
 	xmlrpcRegistry->addMethod(SYNTHESISE_NAME, SynthesiseMethodP);
 #endif
 
-	xmlrpc_c::methodPtr const LanguagePairsMethodP(new LanguagePairsMethod(mm));
+	xmlrpc_c::methodPtr const LanguagePairsMethodP(new LanguagePairsMethod(serviceMutex, mm));
 	xmlrpcRegistry->addMethod(LANGUAGEPAIRS_NAME, LanguagePairsMethodP);
 
 	abyssServer = new xmlrpc_c::serverAbyss(xmlrpc_c::serverAbyss::constrOpt()
@@ -252,30 +264,26 @@ ApertiumXMLRPCService::ApertiumXMLRPCService(ConfigurationManager &cm, ModesMana
 		.portNumber(configurationManager->getServerPort())
 		.keepaliveTimeout(configurationManager->getKeepaliveTimeout())
 		.keepaliveMaxConn(configurationManager->getKeepaliveMaxConn())
-		.timeout(configurationManager->getTimeout())
-		);
-
+		.timeout(configurationManager->getTimeout()));
 }
 
 ApertiumXMLRPCService::~ApertiumXMLRPCService() {
+	boost::unique_lock<boost::shared_mutex> lock(serviceMutex);
+
 	delete abyssServer;
 	delete xmlrpcRegistry;
 }
 
 void ApertiumXMLRPCService::start() {
-	{
-		stringstream ssmsg;
-		ssmsg << "Starting Apertium XML-RPC service on port " << (configurationManager->getServerPort());
-		Logger::Instance()->trace(Logger::Info, ssmsg.str());
-	}
+	stringstream ssmsg;
+	ssmsg << "Starting Apertium XML-RPC service on port " << (configurationManager->getServerPort());
+	Logger::Instance()->trace(Logger::Info, ssmsg.str());
 
 	abyssServer->run();
 }
 
 void ApertiumXMLRPCService::stop() {
-	stringstream ssmsg;
-	ssmsg << "Terminating the Apertium XML-RPC service..";
-	Logger::Instance()->trace(Logger::Info, ssmsg.str());
+	Logger::Instance()->trace(Logger::Info, "Terminating the Apertium XML-RPC service..");
 
 	//abyssServer->terminate();
 }
