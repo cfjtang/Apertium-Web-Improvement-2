@@ -113,12 +113,11 @@ void Hypotheses::print(wfstream* where)
     (*where) << "}" << endl;
 }
 
-void Hypotheses::best()
+wstring Hypotheses::best()
 {
     wstring s = L"";
     concatenate(_hypotheses.front().words, s);
-    wcout << s << endl;
-    return;
+    return s;
 }
 
 void inline Hypotheses::concatenate(std::list<wstring>& ls, wstring& s) 
