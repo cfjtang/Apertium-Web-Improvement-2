@@ -150,7 +150,7 @@ public:
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
 		boost::shared_lock<boost::shared_mutex> lock(*mux);
 
-		std::vector<xmlrpc_c::value> tv(paramList.getArray(0));
+		std::vector<xmlrpc_c::value> tv = paramList.getArray(0);
 
 		if (tv.size() == 0) {
 			throw xmlrpc_c::fault("Invalid parameter: the list of translations is empty");
@@ -164,20 +164,26 @@ public:
 			translations[i] = translation;
 		}
 
-		std::string const srcLang(paramList.getString(1));
-		std::string const destLang(paramList.getString(2));
+		std::string const srcLang = paramList.getString(1);
+		std::string const destLang = paramList.getString(2);
 
 		std::string lm, mm;
 
-		ConfigurationManager::LanguageModelsType::iterator itlm = configurationManager->getLanguageModels().find(srcLang);
-		if (itlm != configurationManager->getLanguageModels().end()) {
+		ConfigurationManager::LanguageModelsType languageModels = configurationManager->getLanguageModels();
+		ConfigurationManager::LanguageModelsType::iterator itlm = languageModels.find(srcLang);
+
+		if (itlm != languageModels.end()) {
 			lm = itlm->second;
 		} else {
 			throw xmlrpc_c::fault("Invalid parameter: no language models for the language \"" + lm + "\"");
 		}
 
-		ConfigurationManager::MonolingualDictionariesType::iterator itmm = configurationManager->getMonolingualDictionaries().find(std::pair<std::string, std::string>(srcLang, destLang));
-		if (itmm != configurationManager->getMonolingualDictionaries().end()) {
+		ConfigurationManager::MonolingualDictionariesType monolingualDictionaries = configurationManager->getMonolingualDictionaries();
+
+		std::pair<std::string, std::string> monodixpair = std::pair<std::string, std::string>(srcLang, destLang);
+		ConfigurationManager::MonolingualDictionariesType::iterator itmm = monolingualDictionaries.find(monodixpair);
+
+		if (itmm != monolingualDictionaries.end()) {
 			mm = itmm->second;
 		} else {
 			throw xmlrpc_c::fault("Invalid parameter: no monolingual dictionaries for the language pair \"" + srcLang + "-" + destLang + "\"");
