@@ -19,6 +19,7 @@ class Case_Insensitive_Morph_Matcher: public Matcher
         FSTProcessor fstp;
 
     public: 
+	Case_Insensitive_Morph_Matcher();
         Case_Insensitive_Morph_Matcher(string const &filename);
         ~Case_Insensitive_Morph_Matcher();
         int match(const wstring& left, const wstring& right);
