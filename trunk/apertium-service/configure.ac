@@ -54,13 +54,13 @@ AC_LANG_CPLUSPLUS
 
 AC_LANG([C++])
 
-# Debug mode
-AC_ARG_ENABLE([debug],AC_HELP_STRING([--enable-debug],[debug mode (default disabled)]))
-if test "${enable_debug}" = "yes"; then
-    # CPPFLAGS+=" -DDEBUG"
-    CFLAGS+=" -g"
-    CXXFLAGS+=" -g"
-fi
+AC_ARG_ENABLE(debug,
+              [  --enable-debug  Enable "-g -Wall" compiler options],
+              [CXXFLAGS="-g -Wall";CFLAGS="-g -Wall"])
+
+AC_ARG_ENABLE(profile,
+              [  --enable-profile  Enable "-pg -g -Wall" compiler options],
+              [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
 
 AC_ARG_WITH(combine,
             [AC_HELP_STRING([--with-combine=PATH], [(optional) path to apertium-combine])],
