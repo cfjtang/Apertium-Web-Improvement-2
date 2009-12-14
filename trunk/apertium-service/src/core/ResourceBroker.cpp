@@ -82,51 +82,6 @@ HMM *HMMWrapper::getHmm() {
 	return hmm;
 }
 
-FormatWrapper::FormatWrapper() {
-	formatter = NULL;
-}
-
-FormatWrapper::~FormatWrapper() {
-	delete formatter;
-}
-
-void FormatWrapper::init(string index) {
-	if (index == "apertium-destxt") {
-		formatter = new TXTDeformat();
-	}
-	if (index == "apertium-retxt") {
-		formatter = new TXTReformat();
-	}
-	if (index == "apertium-deshtml") {
-		formatter = new HTMLDeformat();
-	}
-	if (index == "apertium-rehtml") {
-		formatter = new HTMLReformat();
-	}
-}
-
-Format *FormatWrapper::getFormatter() {
-	return formatter;
-}
-
-#if defined(HAVE_COMBINE)
-IRSTLMRankerWrapper::IRSTLMRankerWrapper() {
-	ranker = NULL;
-}
-
-IRSTLMRankerWrapper::~IRSTLMRankerWrapper() {
-	delete ranker;
-}
-
-void IRSTLMRankerWrapper::init(string index) {
-	ranker = new IRSTLMRanker(index);
-}
-
-IRSTLMRanker *IRSTLMRankerWrapper::getRanker() {
-	return ranker;
-}
-#endif
-
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
 
@@ -134,11 +89,25 @@ template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Progr
 	return(ret);
 }
 
-template <> FormatWrapper *NonIndexedObjectPool<FormatWrapper>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<FormatWrapper>::getNewInstance();");
+template <> Format *NonIndexedObjectPool<Format>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<Format>::getNewInstance();");
 
-	FormatWrapper *ret = pool.construct();
-	ret->init(p.getProgramName());
+	Format *ret = NULL;
+
+	if (p.getProgramName() == "apertium-destxt") {
+		ret = new TXTDeformat();
+	}
+	else if (p.getProgramName() == "apertium-retxt") {
+		ret = new TXTReformat();
+	}
+	else if (p.getProgramName() == "apertium-deshtml") {
+		ret = new HTMLDeformat();
+	}
+	else if (p.getProgramName() == "apertium-rehtml") {
+		ret = new HTMLReformat();
+	}
+
+	pool.add(ret);
 
 	return(ret);
 }
@@ -283,15 +252,16 @@ template <> TransferMult *NonIndexedObjectPool<TransferMult>::getNewInstance(Pro
 }
 
 #if defined(HAVE_COMBINE)
-template <> IRSTLMRankerWrapper *NonIndexedObjectPool<IRSTLMRankerWrapper>::getNewInstance(Program &p) {
-	Logger::Instance()->trace(Logger::Debug, "ObjectPool<IRSTLMRankerWrapper>::getNewInstance();");
+template <> IRSTLMRanker *NonIndexedObjectPool<IRSTLMRanker>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<IRSTLMRanker>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
 	checkFile(fileNames[0]);
 
-	IRSTLMRankerWrapper *ret = pool.construct();
-	ret->init(fileNames[0]);
+	IRSTLMRanker *ret = new IRSTLMRanker(fileNames[0]);
+	pool.add(ret);
+
 	return(ret);
 }
 

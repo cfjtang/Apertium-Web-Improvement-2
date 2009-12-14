@@ -291,30 +291,6 @@ private:
 	TaggerData *td;
 };
 
-class FormatWrapper {
-public:
-	FormatWrapper();
-	~FormatWrapper();
-
-	void init(string);
-	Format *getFormatter();
-private:
-	Format *formatter;
-};
-
-#if defined(HAVE_COMBINE)
-class IRSTLMRankerWrapper {
-public:
-	IRSTLMRankerWrapper();
-	~IRSTLMRankerWrapper();
-
-	void init(string);
-	IRSTLMRanker *getRanker();
-private:
-	IRSTLMRanker *ranker;
-};
-#endif
-
 /**
  * The ResourceBroker class is an implementation of the Object Pool design pattern.
  * An object pool is a set of initialised objects that are kept ready to use,
@@ -330,7 +306,7 @@ public:
 
 	NonIndexedObjectPool<PreTransfer> PreTransferPool;
 
-	IndexedObjectPool<FormatWrapper> FormatPool;
+	IndexedObjectPool<Format> FormatPool;
 
 	IndexedObjectPool<FSTProcessor> FSTProcessorPool;
 	IndexedObjectPool<HMMWrapper> HMMPool;
@@ -341,7 +317,7 @@ public:
 	IndexedObjectPool<TransferMult> TransferMultPool;
 
 #if defined(HAVE_COMBINE)
-	IndexedObjectPool<IRSTLMRankerWrapper> IRSTLMRankerPool;
+	IndexedObjectPool<IRSTLMRanker> IRSTLMRankerPool;
 	IndexedObjectPool<Case_Insensitive_Morph_Matcher> Case_Insensitive_Morph_MatcherPool;
 #endif
 
