@@ -96,14 +96,11 @@ template <> Format *NonIndexedObjectPool<Format>::getNewInstance(Program &p) {
 
 	if (p.getProgramName() == "apertium-destxt") {
 		ret = new TXTDeformat();
-	}
-	else if (p.getProgramName() == "apertium-retxt") {
+	} else if (p.getProgramName() == "apertium-retxt") {
 		ret = new TXTReformat();
-	}
-	else if (p.getProgramName() == "apertium-deshtml") {
+	} else if (p.getProgramName() == "apertium-deshtml") {
 		ret = new HTMLDeformat();
-	}
-	else if (p.getProgramName() == "apertium-rehtml") {
+	} else if (p.getProgramName() == "apertium-rehtml") {
 		ret = new HTMLReformat();
 	}
 
