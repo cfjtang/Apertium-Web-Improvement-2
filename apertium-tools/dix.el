@@ -134,9 +134,10 @@ Entering dix-mode calls the hook dix-mode-hook.
 (put 'dix-with-sexp 'lisp-indent-function 0)
 
 (defvar dix-parse-bound 5000
-  "Maximum amount of chars to parse through in dix xml
-operations (since dix tend to get huge). Decrease the number if
-operations ending in \"No parent element\" take too long.")
+  "Relative bound; maximum amount of chars (not lines) to parse
+through in dix xml operations (since dix tend to get
+huge). Decrease the number if operations ending in \"No parent
+element\" take too long.")
 
 (defun dix-backward-up-element (&optional arg bound)
   "Modified from `nxml-backward-up-element' to include optional
@@ -772,27 +773,36 @@ Todo: word-at-point function which ignores xml stuff."
 
 (defun dix-space ()
   "This should insert a space, unless we're inside the data area
-of <g>, <r>, <l> or <i>, in which case we want a <b/>.
+of <g>, <r>, <l> or <i>, in which case we want a <b/>. If we're
+in the attribute of a <par> or <pardef>, we insert an underscore.
 
 A bit hacky I guess, but I don't want to require nxhtml just to
 get nxml-where-path, and reimplementing an XML Path seems rather
 too much work for this."
+  (defun in-elt (names)	; nxml-token-before must be called before this
+    (let ((eltname (save-excursion
+		     (goto-char xmltok-start)
+		     (when (equal xmltok-type 'data)
+		       (nxml-token-before)
+		       (goto-char xmltok-start))
+		     (xmltok-start-tag-qname))))
+      (and eltname (member eltname names))))
   (interactive)
-  (if (and
-       (nxml-token-before)
-       (or (eq xmltok-type 'data)
-	   (and (memq xmltok-type '(start-tag empty-element))
-		(dix-point-after->)))
-       (let ((eltname (save-excursion
-			(nxml-token-before)
-			(goto-char xmltok-start)
-			(when (equal xmltok-type 'data)
-			  (nxml-token-before)
-			  (goto-char xmltok-start))
-			(xmltok-start-tag-qname))))
-	 (and eltname (member eltname '("g" "b" "r" "l" "i")))))      
-      (insert "<b/>")
-    (insert " ")))
+  (nxml-token-before)
+  (cond ((and (or (eq xmltok-type 'data)
+		  (and (memq xmltok-type '(start-tag empty-element))
+		       (dix-point-after->)))
+	      (in-elt '("g" "b" "r" "l" "i")))
+	 (insert "<b/>"))
+	((and (catch 'in-attr
+		(dolist (attr xmltok-attributes)
+		  (if (and (>= (point) (xmltok-attribute-value-start attr))
+			   (<= (point) (xmltok-attribute-value-end   attr)))
+		      (throw 'in-attr t))))
+	      (in-elt '("par" "pardef")))
+	 (insert "_"))
+	(t 
+	 (insert " "))))
 
 (defcustom dix-hungry-backspace t
   "Delete whole XML elements (<b/>, comments) with a single press
@@ -834,7 +844,7 @@ to the regular `delete-backward-char'."
   "Show all usages of this pardef in the dictionaries represented
 by the (customizable) string `dix-dixfiles'"
   (interactive)
-  (grep (concat "grep -nH -e 'par n=\"" (dix-pardef-at-point) "' " dix-dixfiles)))
+  (grep (concat "grep -nH -e 'par n=\"" (dix-pardef-at-point) "\"' " dix-dixfiles)))
 
 ;;; Alignment ----------------------------------------------------------------
 (defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'"
