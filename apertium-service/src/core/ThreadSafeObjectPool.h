@@ -110,6 +110,7 @@ public:
 	virtual ~ThreadSafeObjectPool<T>();
 
 	T *construct();
+	void add(T*);
 
 private:
 	list<Container<T>*> pool;
@@ -131,12 +132,16 @@ template <class T> ThreadSafeObjectPool<T>::~ThreadSafeObjectPool() {
 
 template <class T> T* ThreadSafeObjectPool<T>::construct() {
 	T* ret = new T();
-	Container<T> *c = new Container<T>(ret);
+	add(ret);
+    return ret;
+}
+
+template <class T> void ThreadSafeObjectPool<T>::add(T *o) {
+	Container<T> *c = new Container<T>(o);
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex);
 		pool.push_back(c);
 	}
-    return ret;
 }
 
 #endif /* THREADSAFEOBJECTPOOL_H_ */

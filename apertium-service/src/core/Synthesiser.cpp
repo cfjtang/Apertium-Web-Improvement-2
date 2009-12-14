@@ -62,11 +62,9 @@ std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::str
 	Program pmm("matcher");
 	pmm.setFileNames(vmm);
 
-	IRSTLMRankerWrapper *i = rb.IRSTLMRankerPool.acquire(plm);
+	IRSTLMRanker *r = rb.IRSTLMRankerPool.acquire(plm);
 
     Case_Insensitive_Morph_Matcher *matcher = rb.Case_Insensitive_Morph_MatcherPool.acquire(pmm);
-
-    IRSTLMRanker *r = i->getRanker();
 
 	Alignment alignment = Alignment(input_lines);
 
@@ -84,7 +82,7 @@ std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::str
 
     rb.Case_Insensitive_Morph_MatcherPool.release(matcher, pmm);
 
-	rb.IRSTLMRankerPool.release(i, plm);
+	rb.IRSTLMRankerPool.release(r, plm);
 
 	return Encoding::wstringToUtf8(wret);
 }

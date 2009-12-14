@@ -90,8 +90,8 @@ std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in, ContentT
 		break;
 	}
 
-	FormatWrapper *d = rb.FormatPool.acquire(*p);
-	std::wstring ret = d->getFormatter()->process(in);
+	Format *d = rb.FormatPool.acquire(*p);
+	std::wstring ret = d->process(in);
 	rb.FormatPool.release(d, *p);
 
 	delete p;
@@ -112,8 +112,8 @@ std::wstring Translator::reformat(ResourceBroker &rb, std::wstring &in, ContentT
 		break;
 	}
 
-	FormatWrapper *r = rb.FormatPool.acquire(*p);
-	std::wstring ret = r->getFormatter()->process(in);
+	Format *r = rb.FormatPool.acquire(*p);
+	std::wstring ret = r->process(in);
 	rb.FormatPool.release(r, *p);
 
 	delete p;
