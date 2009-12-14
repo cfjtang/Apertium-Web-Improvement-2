@@ -21,7 +21,7 @@
 
 AC_PREREQ([2.61])
 
-AC_INIT([apertium-service], [0.1.0+svn], [p.minervini@gmail.com])
+AC_INIT([apertium-service], [0.2.0+svn], [p.minervini@gmail.com])
 AM_INIT_AUTOMAKE([foreign])
 
 PACKAGE=apertium-service
