@@ -19,7 +19,7 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autog
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
      $(PREFIX1)-poly.autobil.bin $(PREFIX2)-poly.autobil.bin empty.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes \
-     $(PREFIX2b).autogen.bin
+     $(PREFIX2b).autogen.bin $(PREFVAR2)$(PREFIX1).autobil.bin
 
 TARGETS = $(TARGETS_COMMON) \
 	  $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
@@ -57,12 +57,9 @@ TARGETS = $(TARGETS_COMMON) \
 	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFIX1)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right val filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFVAR2)$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
-
-.deps/$(PREFVAR2)$(PREFIX1)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right val filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
@@ -85,6 +82,12 @@ $(PREFIX1).autobil.bin: .deps/$(PREFIX1).bil.dix
 	lt-comp lr tmp$(PREFIX1).autobil.dix $@
 	rm tmp$(PREFIX1).autobil.dix
 
+$(PREFVAR2)$(PREFIX1).autobil.bin: .deps/$(PREFVAR2)$(PREFIX1).bil.dix
+	apertium-validate-dictionary $<
+	xsltproc translate-to-default-equivalent.xsl $< >tmp$(PREFIX1).autobil.dix
+	lt-comp lr tmp$(PREFIX1).autobil.dix $@
+	rm tmp$(PREFIX1).autobil.dix
+
 $(PREFVAR1)$(PREFIX1).autogen.bin: .deps/$(PREFVAR1)$(LANG2).dix 
 	apertium-validate-dictionary .deps/$(PREFVAR1)$(LANG2).dix 
 	lt-comp rl .deps/$(PREFVAR1)$(LANG2).dix  $@
@@ -97,7 +100,7 @@ $(PREFIX1).autopgen.bin: .deps/pgen-ca.dix
 	apertium-validate-dictionary .deps/pgen-ca.dix
 	lt-comp lr .deps/pgen-ca.dix $@
 
-$(PREFIX1)-val.autopgen.bin: .deps/pgen-ca_valencia.dix
+$(PREFVAR2)$(PREFIX1).autopgen.bin: .deps/pgen-ca_valencia.dix
 	apertium-validate-dictionary .deps/pgen-ca_valencia.dix
 	lt-comp lr .deps/pgen-ca_valencia.dix $@
 
@@ -231,9 +234,10 @@ EXTRA_DIST=$(BASENAME).$(LANG1).metadix .deps/$(PREFIX1).bil.dix \
 
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
-		    $(PREFIX2b).autobil.bin \
+		    $(PREFIX2b).autobil.bin $(PREFVAR2)$(PREFIX1).autobil.bin\
 		    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
+		    $(PREFVAR2)$(PREFIX1).autogen.bin $(PREFVAR2)$(PREFIX1).autopgen.bin\
 		    $(PREFIX1)-poly.autobil.bin $(PREFIX2)-poly.autobil.bin \
 		    $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).lextormono.bin $(PREFIX2).lextormono.bin \
@@ -242,7 +246,8 @@ apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).genitive.bin  \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1)-multi.mode $(PREFIX2)-multi.mode empty.bin
+		    $(PREFIX1).mode $(PREFIX2).mode $(PREFVAR2)$(PREFIX1).mode $(PREFIX2b).mode\
+		    $(PREFIX1)-multi.mode $(PREFIX2)-multi.mode empty.bin
 
 apertium_en_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_en_modesdir=$(prefix)/share/apertium/modes/
@@ -254,6 +259,9 @@ $(PREFIX2).mode: modes.xml
 	apertium-gen-modes modes.xml
 
 $(PREFIX2b).mode: modes.xml
+	apertium-gen-modes modes.xml
+
+$(PREFVAR2)$(PREFIX1).mode: modes.xml
 	apertium-gen-modes modes.xml
 
 $(PREFIX1)-multi.mode: modes.xml
@@ -269,9 +277,10 @@ install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_en_modesdir)
+	$(INSTALL_DATA) $(PREFIX2b).mode $(apertium_en_modesdir)
+	$(INSTALL_DATA) $(PREFVAR)$(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX1)-multi.mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2)-multi.mode $(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFIX2b).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).genitive.t1x $(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(apertium_en_cadir)
