@@ -36,6 +36,40 @@
       </program>
     </pipeline>
   </mode>
+  <mode name="val-en-ca" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="en-ca.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="en-ca.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-en-ca.en-ca.genitive.t1x"/>
+        <file name="en-ca.genitive.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-en-ca.en-ca.t1x"/>
+        <file name="en-ca.t1x.bin"/>
+        <file name="val-en-ca.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-en-ca.en-ca.t2x"/>
+        <file name="en-ca.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-en-ca.en-ca.t3x"/>
+        <file name="en-ca.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="val-en-ca.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="val-en-ca.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
 
   <mode name="en-ca-multi" install="yes">
     <pipeline>
