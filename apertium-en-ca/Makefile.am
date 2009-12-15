@@ -278,7 +278,7 @@ install-data-local:
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2b).mode $(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFVAR)$(PREFIX1).mode $(apertium_en_modesdir)
+	$(INSTALL_DATA) $(PREFVAR2)$(PREFIX1).mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX1)-multi.mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(PREFIX2)-multi.mode $(apertium_en_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).genitive.t1x $(apertium_en_cadir)
