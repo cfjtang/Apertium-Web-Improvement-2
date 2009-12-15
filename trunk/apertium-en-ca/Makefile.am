@@ -53,14 +53,14 @@ TARGETS = $(TARGETS_COMMON) \
 .deps/$(PREFVAR2)$(LANG2).dix: $(BASENAME).$(LANG2).dix
 	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang val --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - >$@
 
-.deps/$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
+.deps/$(PREFIX2).bil.dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
-.deps/$(PREFIX1)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
+.deps/$(PREFIX2)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
 	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right cat filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFVAR2)$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right val filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right val filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
 
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
 	apertium-validate-dictionary .deps/$(LANG1).dix
@@ -114,15 +114,15 @@ $(PREFVAR2)$(PREFIX2).automorf.bin: .deps/$(PREFVAR2)$(LANG2).dix $(BASENAME).$(
 	apertium-validate-dictionary .deps/$(PREFVAR2)$(LANG2).dix
 	lt-comp lr .deps/$(PREFVAR2)$(LANG2).dix $@ $(BASENAME).$(LANG2).acx
 
-$(PREFIX2).autobil.bin: .deps/$(PREFIX1).bil.dix
-	apertium-validate-dictionary .deps/$(PREFIX1).bil.dix
-	xsltproc translate-to-default-equivalent.xsl .deps/$(PREFIX1).bil.dix >tmp$(PREFIX2).autobil.dix
+$(PREFIX2).autobil.bin: .deps/$(PREFIX2).bil.dix
+	apertium-validate-dictionary .deps/$(PREFIX2).bil.dix
+	xsltproc translate-to-default-equivalent.xsl .deps/$(PREFIX2).bil.dix >tmp$(PREFIX2).autobil.dix
 	lt-comp rl tmp$(PREFIX2).autobil.dix $@
 	rm tmp$(PREFIX2).autobil.dix
 
-$(PREFIX2b).autobil.bin: .deps/$(PREFIX1)-US.bil.dix
-	apertium-validate-dictionary .deps/$(PREFIX1)-US.bil.dix
-	xsltproc translate-to-default-equivalent.xsl .deps/$(PREFIX1)-US.bil.dix >tmp$(PREFIX2b).autobil.dix
+$(PREFIX2b).autobil.bin: .deps/$(PREFIX2)-US.bil.dix
+	apertium-validate-dictionary .deps/$(PREFIX2)-US.bil.dix
+	xsltproc translate-to-default-equivalent.xsl .deps/$(PREFIX2)-US.bil.dix >tmp$(PREFIX2b).autobil.dix
 	lt-comp rl tmp$(PREFIX2b).autobil.dix $@
 	rm tmp$(PREFIX2b).autobil.dix
 
