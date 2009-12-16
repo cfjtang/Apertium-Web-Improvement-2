@@ -96,11 +96,11 @@ AC_ARG_WITH(irstlm,
             [with_irstlm=no]
            )
 
-# AC_ARG_WITH(moses,
-#            [AC_HELP_STRING([--with-moses=PATH], [path to Moses SMT toolkit])],
-#            [with_moses=$withval],
-#            [with_moses=no]
-#           )
+AC_ARG_WITH(moses,
+            [AC_HELP_STRING([--with-moses=PATH], [path to Moses SMT toolkit])],
+            [with_moses=$withval],
+            [with_moses=no]
+           )
 
 AC_ARG_ENABLE(debug,
               [  --enable-debug    Enable "-g -Wall" compiler options], 
@@ -165,27 +165,27 @@ then
   AM_CONDITIONAL([IRSTLM], true)
 fi
 
-# if test "x$with_moses" != 'xno'
-# then
-#  SAVE_CPPFLAGS="$CPPFLAGS"
-#  CPPFLAGS="$CPPFLAGS -I${with_moses}/moses/src"
+if test "x$with_moses" != 'xno'
+ then
+  SAVE_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS -I${with_moses}/moses/src"
 
-#  AC_CHECK_HEADER(Hypothesis.h,
-#                 [AC_DEFINE([HAVE_MOSES], [], [flag for MOSES])],
-#                 [AC_MSG_ERROR([Cannot find Moses!])])
+  AC_CHECK_HEADER(Hypothesis.h,
+                 [AC_DEFINE([HAVE_MOSES], [], [flag for MOSES])],
+                 [AC_MSG_ERROR([Cannot find Moses!])])
 
-#  if test $MACHTYPE
-#  then
-#    MY_ARCH=$MACHTYPE
-#  else
-#    MY_ARCH=`uname -m`
-#  fi
+  if test $MACHTYPE
+  then
+    MY_ARCH=$MACHTYPE
+  else
+    MY_ARCH=`uname -m`
+  fi
 
-#  LDFLAGS_MOSES="-L${with_moses}/moses/src -lmoses"
-#  AC_SUBST(LDFLAGS_MOSES)
-#  AM_CONDITIONAL([MOSES], true)
-# fi
+  LDFLAGS_MOSES="-L${with_moses}/moses/src -lmoses"
+  AC_SUBST(LDFLAGS_MOSES)
+fi
 
+AM_CONDITIONAL([MOSES], [test x$with_moses = xtrue])
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -212,6 +212,7 @@ AC_CONFIG_FILES([
                  Makefile
                  apertium-combine-1.0.pc
                  combiner/Makefile
+                 collectors/Makefile
                  ])
 
 #AC_OUTPUT([Makefile apertium-combine-1.0.pc memt/Makefile])
