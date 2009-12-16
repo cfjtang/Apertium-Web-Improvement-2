@@ -59,7 +59,9 @@ MosesCollector::MosesCollector(int argc, char **argv, FILE *buffer)
 
 MosesCollector::~MosesCollector()
 {
-//	delete parameter;
+	if (parameter) {
+		delete parameter;
+	}
 }
 
 /*
