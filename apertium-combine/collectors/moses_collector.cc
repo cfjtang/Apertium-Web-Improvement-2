@@ -103,7 +103,7 @@ MosesCollector::tokenise(string &sentence)
 void
 MosesCollector::setPath(string file)
 {
-	filePath = filepath;
+	filePath = file;
 }
 
 wstring*
