@@ -73,7 +73,7 @@ else
     CXXFLAGS="$CXXFLAGS -Wall -ansi -O3"
   fi
 fi
-emt
+
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 AM_SANITY_CHECK
