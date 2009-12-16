@@ -18,12 +18,6 @@
 package org.scalemt.main;
 
 import org.scalemt.rmi.slave.ITranslationEngine;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -35,11 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.Semaphore;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,10 +47,9 @@ import org.scalemt.transferobjects.ServerCPUInformation;
 import org.scalemt.rmi.transferobjects.ServerInformationTO;
 import org.scalemt.rmi.transferobjects.ServerStatusTO;
 import org.scalemt.util.ServerUtil;
-import org.scalemt.util.StreamGobbler;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.HashSet;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
 
 
 /**
@@ -123,12 +111,12 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
     /**
      * Semaphore that limits the number of running deformatters
      */
-	private final Semaphore deformatSemaphore;
+//private final Semaphore deformatSemaphore;
 
     /**
      * Semaphore that limits the number of running reformatters
      */
-	private final Semaphore reformatSemaphore;
+//	private final Semaphore reformatSemaphore;
 
     /**
      * Interface to get some OS specyfic data, like system load
@@ -139,6 +127,11 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
      * Static server information
      */
 	private ServerInformationTO serverInformationTO;
+
+        /**
+         * Class for guessing system information
+         */
+        public static Sigar sigar = new Sigar();
 
     /**
      * Translation request that makes the thread running {@link DaemonSelector} stop.
@@ -331,8 +324,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		
 		daemons = Collections.synchronizedList(new ArrayList<Daemon>());
                 supportedPairs = readSupportedPairs();
-		
-		
+
 		
 		apertiumPath = ServerUtil.readProperty("apertium_path");
 		if (apertiumPath == null)
@@ -345,7 +337,8 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 			timeout = 20000;
 			logger.warn("Can't load request timeout from config file");
 		}
-		
+
+                /*
 		int maxDeformat = 3;
 		try
 		{
@@ -363,10 +356,10 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		catch (Exception e) {
 			logger.warn("Can't load maximum number of reformatters from config file. Using defaults (3)", e);
 		}
+		*/
 		
-		
-		deformatSemaphore = new Semaphore(maxDeformat,true);
-		reformatSemaphore = new Semaphore(maxReformat,true);
+		//deformatSemaphore = new Semaphore(maxDeformat,true);
+		//reformatSemaphore = new Semaphore(maxReformat,true);
 
         serverInformationTO=new ServerInformationTO();
 		serverInformationTO.setSupportedPairs(getSupportedPairs());
@@ -404,18 +397,6 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                 Daemon d = iterator.next();
                 d.stop();
             }
-        }
-
-        try
-        {
-         logger.debug("De-registering.");
-         Registry registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
-         registry.unbind(Main.rminame);
-         logger.info("Server stopped successfully");
-        }
-        catch(Exception e)
-        {
-            logger.error("Exception stopping server", e);
         }
     }
 
@@ -505,9 +486,9 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 	}
 
     /**
-     * Calculates server's free memory reading it from <code>/proc/meminfo</code>.
+     * Calculates server's free memory
      * <br/>
-     * If server is running on a 64-bit operative system, the value read from <code>/proc/meminfo</code>
+     * If server is running on a 64-bit operative system, the value
      * is reduced using the ratio read from the configuration property <code>memoryrate_64bit</code> because
      * the same program consumes more memory running on 64-bit operative system than running on 32-bit ones.
      *
@@ -517,53 +498,33 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
      */
 	private int computeServerFreeMemory()
 	{
-		try
-		{
-			int freemem = readFromMemInfo("MemFree");
-			
-			//Guess if we are in a 64-bit system
-			String[] cmd = {"uname","-m"};
-			Process p =Runtime.getRuntime().exec(cmd);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line=reader.readLine();
-			reader.close();
-			if(line.trim().equals("x86_64"))
-			{
-				try
-				{
-				String strRatio = ServerUtil.readProperty("memoryrate_64bit");
-				Double ratio= Double.parseDouble(strRatio);
-				freemem = (int) (ratio*freemem);
-				}
-				catch (Exception e) {
-					logger.error("Exception converting memory capacity", e);
-				}
-			}
-			
-			return freemem; 
-		}
-		catch (Exception e) {
-			//return default memory capacity
-			return 1000;
-		}
+                
+            try
+            {
+                return (int) sigar.getMem().getActualFree()/1024/1024;
+            }
+            catch(SigarException e)
+            {
+                //return default memory capacity
+                return 1000;
+            }
+            
 	}
 
    /**
-    *  Calculates server's total memory reading it from <code>/proc/meminfo</code>
+    *  Calculates server's total memory
     *
     * @return Server's total memory, in MegaBytes.
     *
     */
 	private int computeServerTotalMemory()
 	{
-		try
-		{
-		return readFromMemInfo("MemTotal");
-		}
-		catch (Exception e) {
-			//return default memory capacity
-			return 0;
-		}
+            try {
+                return (int) (sigar.getMem().getTotal() / 1024 / 1024);
+            } catch (SigarException ex) {
+                logger.warn("Cannot guess server total memory", ex);
+                return 0;
+            }
 	}
 
     /**
@@ -572,6 +533,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
      * @return property value, in megaBytes
      * @throws java.lang.Exception
      */
+       /*
 	private int readFromMemInfo(String property) throws Exception
 	{
 		int memoryCapacity=0;
@@ -606,6 +568,8 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		
 		return memoryCapacity;
 	}
+        
+        */
 
     /**
      * Reads the supported language pairs
@@ -1035,9 +999,9 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 	}
 
     /**
-     * Calculates the memory Apertium requires to translate with each language pair.
+     * Calculates the memory required to translate with each language pair.
      * <br/>
-     * This method launch a daemon for each supported language pair, translates with it
+     * This method launches a daemon for each supported language pair, translates with it
      * and then measures its memory consumption.
      *
      * @return Memory requirements of supported pairs
@@ -1066,6 +1030,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                                     for(Daemon daemon: daemons)
                                         if(daemon.getId()==daemonInfo.getId())
                                         {
+                                            /*
                                             Double usage=daemon.getMemoryUsage();
                                             if(usage!=null)
                                             {
@@ -1073,6 +1038,9 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                                                 logger.info("Usage: "+usage+" Memory requirement: "+require);
                                                 resultMap.put(c, require);
                                             }
+                                              */
+                                            resultMap.put(c, (int) daemon.getMemoryUsed().longValue());
+
                                         }
                                     }
                                 }

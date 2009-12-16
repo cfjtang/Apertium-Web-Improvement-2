@@ -18,6 +18,7 @@
 package org.scalemt.main;
 
 
+import java.rmi.Remote;
 import org.scalemt.daemon.DaemonFactory;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.router.IApplicationRouter;
@@ -55,11 +56,15 @@ import org.scalemt.rmi.transferobjects.TranslationServerId;
 import org.scalemt.util.ModesXMLProcessor;
 import org.scalemt.util.ServerUtil;
 import java.io.BufferedReader;
+import java.rmi.NotBoundException;
 import java.util.HashMap;
 
 public class Main {
 
     public static String rminame;
+    private static Object remoteObject=null;
+    private static int rmiPort;
+
     static Log logger = LogFactory.getLog(Main.class);
 
     /**
@@ -138,7 +143,7 @@ public class Main {
         Option ownHost = OptionBuilder.withArgName("host name").hasArg().withDescription("Name of the host where the app is running").create("host");
         Option RMIRemoteObjectName = OptionBuilder.withArgName("name").hasArg().withDescription("Name of the RMI remote object representing this application").create("RMIname");
         Option RMIRemoteObjectPort = OptionBuilder.withArgName("port").hasArg().withDescription("Port of the exported RMI remote object representing this application").create("RMIport");
-        Option readServerCapacityFromConfigFile = OptionBuilder.withDescription("read server capacity from config file").create("capacityFromConfigFile");
+        Option readServerCapacityFromConfigFile = OptionBuilder.withDescription("do not server capacity from config file").create("reCalculateCapacity");
         Option requestRouterHost = OptionBuilder.withArgName("host name").hasArg().withDescription("Name of the host where request router is running").create("routerHost");
 
         Option testTime = OptionBuilder.withDescription("Tests the time spent to translate the files passed as command line arguments").create("testTime");
@@ -183,23 +188,23 @@ public class Main {
             CommandLine line = parser.parse(options, args);
 
             if (line.hasOption("pairsInformation")) {
-                TranslationEnginePool apertiumTranslationEnginePool = new TranslationEnginePool();
+                TranslationEnginePool translationEnginePool = new TranslationEnginePool();
 
                 //Get parameters
                 LanguagePair pair;
                 pair = new LanguagePair(line.getOptionValue("comparationPair", "es-ca"), "-".toCharArray());
                 DaemonConfiguration refDc=DaemonFactory.getInstance().searchConfiguration(pair, Format.txt);
 
-                Map<DaemonConfiguration, Double> langConversionRates = apertiumTranslationEnginePool.calculateLanguagesSpeedRatio(refDc);
-                Map<Format, Double> formatConversionRates = apertiumTranslationEnginePool.calculateFormatSpeedRatio(refDc,Format.txt);
-                Map<DaemonConfiguration, Integer> memoryRequirements = apertiumTranslationEnginePool.calculateMemoryRequirements();
-                /*
-                Map<DaemonConfiguration, Double> langConversionRates = new HashMap<DaemonConfiguration, Double>();
-                Map<Format, Double> formatConversionRates = new HashMap<Format, Double>();
-                Map<DaemonConfiguration, Integer> memoryRequirements = new HashMap<DaemonConfiguration, Integer>();
-                */
+                Map<DaemonConfiguration, Double> langConversionRates = translationEnginePool.calculateLanguagesSpeedRatio(refDc);
+                Map<Format, Double> formatConversionRates = translationEnginePool.calculateFormatSpeedRatio(refDc,Format.txt);
+                Map<DaemonConfiguration, Integer> memoryRequirements = translationEnginePool.calculateMemoryRequirements();
                 
-                apertiumTranslationEnginePool.stop();
+                //Map<DaemonConfiguration, Double> langConversionRates = new HashMap<DaemonConfiguration, Double>();
+                //Map<Format, Double> formatConversionRates = new HashMap<Format, Double>();
+                //Map<DaemonConfiguration, Integer> memoryRequirements = new HashMap<DaemonConfiguration, Integer>();
+                
+                
+                translationEnginePool.stop();
 
                 //Map<DaemonConfiguration,Integer> constantCost = calculateConstantCostPerRequest(line);
                 Map<DaemonConfiguration,Integer> constantCost = new HashMap<DaemonConfiguration, Integer>();
@@ -310,102 +315,126 @@ public class Main {
 
     private static void startSlave(CommandLine line)
     {
-         try {
-                    String ownhost = line.getOptionValue("host", "localhost");
-                    String remoteObjectName = line.getOptionValue("RMIname", "ScaleMTSlave");
-                    Main.rminame = remoteObjectName;
-                    int remoteObjectPort = Integer.parseInt(line.getOptionValue("RMIport", "1331"));
+                String ownhost = line.getOptionValue("host", "localhost");
+                String remoteObjectName = line.getOptionValue("RMIname", "ScaleMTSlave");
+                
+                Main.rminame = remoteObjectName;
+                Main.rmiPort=Registry.REGISTRY_PORT;
 
-                    String routerHost = line.getOptionValue("routerHost", ServerUtil.readProperty("requestrouter_host"));
 
-                    //start RMI registry
-                    Registry registry = null;
+                int remoteObjectPort = Integer.parseInt(line.getOptionValue("RMIport", "1331"));
+                String routerHost = line.getOptionValue("routerHost", ServerUtil.readProperty("requestrouter_host"));
 
+                //start RMI registry
+                Registry registry = null;
+               
+                try {
+                    registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
+                    registry.list();
+                    logger.info("RMI Registry already running on port " + Registry.REGISTRY_PORT);
+                } catch (Exception e) {
                     try {
-                        registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
+                        registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
                         registry.list();
-                        logger.info("RMI Registry already running on port " + Registry.REGISTRY_PORT);
-                    } catch (Exception e) {
-                        try {
-                            registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-                            registry.list();
-                            logger.info("Started RMI Registry on port " + Registry.REGISTRY_PORT);
-                        } catch (Exception ex) {
-                            logger.error("Couldn't initialise RMI");
-                        }
+                        logger.info("Started RMI Registry on port " + Registry.REGISTRY_PORT);
+                    } catch (Exception ex) {
+                        logger.error("Couldn't initialise RMI");
                     }
+                }
 
-                    try {
+                try {
 
 
-                        //Instantiate and export remote object
-                        TranslationEnginePool apertiumTranslationEnginePool = new TranslationEnginePool();
+                    //Instantiate and export remote object
+                    TranslationEnginePool apertiumTranslationEnginePool = new TranslationEnginePool();
 
-                        if (line.hasOption("capacityFromConfigFile")) {
-                            apertiumTranslationEnginePool.getServerInformation().setCpuCapacity(Integer.parseInt(ServerUtil.readPropertyFromFile("cpu_capacity", "/capacity.properties")));
-                            apertiumTranslationEnginePool.getServerInformation().setCpuCapacityPerDaemon(Integer.parseInt(ServerUtil.readPropertyFromFile("cpu_daemon_capacity", "/capacity.properties")));
-                            apertiumTranslationEnginePool.getServerInformation().setMemoryCapacity(Integer.parseInt(ServerUtil.readPropertyFromFile("memory_capacity", "/capacity.properties")));
-                            Map<LanguagePair, Integer> trashLinesMap = new HashMap<LanguagePair, Integer>();
-                            for(LanguagePair p: apertiumTranslationEnginePool.getServerInformation().getSupportedPairs())
+                    String cpuCapacityStr,cpuCapacityPerDaemonStr,memoryCapacityStr;
+                    cpuCapacityStr=ServerUtil.readPropertyFromFile("cpu_capacity", "/capacity.properties");
+                    cpuCapacityPerDaemonStr=ServerUtil.readPropertyFromFile("cpu_daemon_capacity", "/capacity.properties");
+                    memoryCapacityStr=ServerUtil.readPropertyFromFile("memory_capacity", "/capacity.properties");
+
+                    if (!line.hasOption("reCalculateCapacity") && cpuCapacityStr!=null && cpuCapacityPerDaemonStr!=null && memoryCapacityStr!=null) {
+                        apertiumTranslationEnginePool.getServerInformation().setCpuCapacity(Integer.parseInt(cpuCapacityStr));
+                        apertiumTranslationEnginePool.getServerInformation().setCpuCapacityPerDaemon(Integer.parseInt(cpuCapacityPerDaemonStr));
+                        apertiumTranslationEnginePool.getServerInformation().setMemoryCapacity(Integer.parseInt(memoryCapacityStr));
+                        Map<LanguagePair, Integer> trashLinesMap = new HashMap<LanguagePair, Integer>();
+                        for(LanguagePair p: apertiumTranslationEnginePool.getServerInformation().getSupportedPairs())
+                        {
+
+                            String prop = ServerUtil.readPropertyFromFile("trash_"+p.toString(), "/capacity.properties");
+
+                            if(prop!=null)
                             {
-
-                                String prop = ServerUtil.readPropertyFromFile("trash_"+p.toString(), "/capacity.properties");
-
-                                if(prop!=null)
+                                logger.debug("Property "+"trash_"+p.toString()+" = "+prop);
+                                try
                                 {
-                                    logger.debug("Property "+"trash_"+p.toString()+" = "+prop);
-                                    try
-                                    {
-                                      trashLinesMap.put(p, Integer.parseInt(prop));
-                                    }
-                                    catch(NumberFormatException nfe)
-                                    {
-                                        logger.warn("Exception parsing trash_"+p.toString(), nfe);
-                                    }
+                                  trashLinesMap.put(p, Integer.parseInt(prop));
                                 }
-                                else
-                                    logger.debug("Property "+"trash_"+p.toString()+" = null");
+                                catch(NumberFormatException nfe)
+                                {
+                                    logger.warn("Exception parsing trash_"+p.toString(), nfe);
+                                }
                             }
-                            apertiumTranslationEnginePool.getServerInformation().setTrashNeededToFlush(trashLinesMap);
-
-                        } else {
-                            apertiumTranslationEnginePool.guessServerInformation();
-                            Properties properties = new Properties();
-                            properties.setProperty("cpu_capacity", Integer.toString(apertiumTranslationEnginePool.getServerInformation().getCpuCapacity()));
-                            properties.setProperty("cpu_daemon_capacity", Integer.toString(apertiumTranslationEnginePool.getServerInformation().getCpuCapacityPerDaemon()));
-                            properties.setProperty("memory_capacity", Integer.toString(apertiumTranslationEnginePool.getServerInformation().getMemoryCapacity()));
-                            for(Entry<LanguagePair,Integer> entry: apertiumTranslationEnginePool.getServerInformation().getTrashNeededToFlush().entrySet())
-                            {
-                                properties.setProperty("trash_"+entry.getKey().toString(), entry.getValue().toString());
-                            }
-                            properties.store(new FileWriter("conf/capacity.properties"), "");
+                            else
+                                logger.debug("Property "+"trash_"+p.toString()+" = null");
                         }
-                        ServerInformationTO serverInformationTO = apertiumTranslationEnginePool.getServerInformation();
-                        logger.info("Server information. Cpu capacity: " + serverInformationTO.getCpuCapacity() + " Max capacity per daemon: " + serverInformationTO.getCpuCapacityPerDaemon() + " Memory capacity: " + serverInformationTO.getMemoryCapacity());
+                        apertiumTranslationEnginePool.getServerInformation().setTrashNeededToFlush(trashLinesMap);
 
-                        ITranslationEngine obj = apertiumTranslationEnginePool;
-                        ITranslationEngine stub = (ITranslationEngine) UnicastRemoteObject.exportObject(obj, remoteObjectPort);
-
-                        //Bind object to registry
-                        registry.rebind(remoteObjectName, stub);
-                        logger.info("Remote object " + remoteObjectName + " bound OK. Name: " + remoteObjectName + ". Port: " + remoteObjectPort);
-
-                        //Notify request router
-                        TranslationServerId serverid = new TranslationServerId(ownhost, Registry.REGISTRY_PORT, remoteObjectName);
-                        Registry routerregistry = LocateRegistry.getRegistry(routerHost, Integer.parseInt(ServerUtil.readProperty("requestrouter_port")));
-                        IApplicationRouter applicationRouter = (IApplicationRouter) routerregistry.lookup(ServerUtil.readProperty("requestrouter_objectname"));
-                        applicationRouter.addServer(serverid);
-                        logger.info("Server ready: registered with request router");
-
-                    } catch (Exception e) {
-                        logger.error("Exception binding object or notifying request router", e);
+                    } else {
+                        apertiumTranslationEnginePool.guessServerInformation();
+                        Properties properties = new Properties();
+                        properties.setProperty("cpu_capacity", Integer.toString(apertiumTranslationEnginePool.getServerInformation().getCpuCapacity()));
+                        properties.setProperty("cpu_daemon_capacity", Integer.toString(apertiumTranslationEnginePool.getServerInformation().getCpuCapacityPerDaemon()));
+                        properties.setProperty("memory_capacity", Integer.toString(apertiumTranslationEnginePool.getServerInformation().getMemoryCapacity()));
+                        for(Entry<LanguagePair,Integer> entry: apertiumTranslationEnginePool.getServerInformation().getTrashNeededToFlush().entrySet())
+                        {
+                            properties.setProperty("trash_"+entry.getKey().toString(), entry.getValue().toString());
+                        }
+                        properties.store(new FileWriter("conf/capacity.properties"), "");
                     }
 
+                    ServerInformationTO serverInformationTO = apertiumTranslationEnginePool.getServerInformation();
+                    logger.info("Server information. Cpu capacity: " + serverInformationTO.getCpuCapacity() + " Max capacity per daemon: " + serverInformationTO.getCpuCapacityPerDaemon() + " Memory capacity: " + serverInformationTO.getMemoryCapacity());
+
+                    Main.remoteObject = apertiumTranslationEnginePool;
+                    ITranslationEngine stub = (ITranslationEngine) UnicastRemoteObject.exportObject((Remote) remoteObject,remoteObjectPort);
+
+                    //Bind object to registry
+                    registry.rebind(remoteObjectName, stub);
+                    logger.info("Remote object " + remoteObjectName + " bound OK. Name: " + remoteObjectName + ". Port: " + remoteObjectPort);
+
+                    //Notify request router
+                    TranslationServerId serverid = new TranslationServerId(ownhost, Registry.REGISTRY_PORT, remoteObjectName);
+                    Registry routerregistry = LocateRegistry.getRegistry(routerHost, Integer.parseInt(ServerUtil.readProperty("requestrouter_port")));
+                    IApplicationRouter applicationRouter = (IApplicationRouter) routerregistry.lookup(ServerUtil.readProperty("requestrouter_objectname"));
+                    applicationRouter.addServer(serverid);
+                    logger.info("Server ready: registered with request router");
 
                 } catch (Exception e) {
-                    System.err.println("Server exception: " + e.toString());
-                    e.printStackTrace();
+                    logger.error("Exception binding object or notifying request router", e);
+                    stopSlave();
                 }
+    }
+
+    private static void stopSlave()
+    {
+        try
+        {
+        Registry registry=LocateRegistry.getRegistry(Main.rmiPort);
+        if(registry!=null)
+        {
+            registry.unbind(Main.rminame);
+            UnicastRemoteObject.unexportObject((Remote) Main.remoteObject, true);
+        }
+        }
+        catch(RemoteException re)
+        {
+            logger.warn("Cannot unbind object", re);
+        }
+        catch(NotBoundException nbe)
+        {
+            logger.warn("Cannot unbind object", nbe);
+        }
     }
 
     private static Map<DaemonConfiguration, Integer> calculateConstantCostPerRequest(CommandLine line) {
@@ -471,12 +500,7 @@ public class Main {
             logger.error("Exception calculating constant request cost", e);
         }
         finally{
-            try{
-                Registry registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
-         registry.unbind(Main.rminame);
-            }
-            catch(Exception e)
-            {}
+            stopSlave();
         }
 
         return constatntCostMap;

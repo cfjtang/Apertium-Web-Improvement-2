@@ -53,6 +53,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import org.apache.commons.lang.SerializationUtils;
+import org.hyperic.sigar.ProcMem;
+import org.hyperic.sigar.SigarException;
+import org.hyperic.sigar.SigarFileNotFoundException;
+import org.hyperic.sigar.ptql.ProcessFinder;
+import org.hyperic.sigar.ptql.ProcessQuery;
+import org.scalemt.main.TranslationEnginePool;
 
 /**
  * An object on type ApertiumDaemon has an Apertium instance attached, and allows
@@ -924,6 +930,7 @@ public class Daemon {
      * Gets the % of system's memory consumed by the Apertium process
      * @return % of system's memory consumed by the Apertium process, or <code>null</code> if there is any error
      */
+    /*
     public Double getMemoryUsage() {
         String information = "";
         try {
@@ -937,6 +944,57 @@ public class Daemon {
             return Double.parseDouble(pieces[1]);
         } catch (Exception e) {
             logger.error("Exception reading memory usage", e);
+        }
+
+        return null;
+    }
+     *
+     */
+
+    /**
+     *
+     * @return Memory used, in MiB
+     */
+    public Long getMemoryUsed()
+    {
+        Set<Long> finalProcesses= new HashSet<Long>();
+        Set<Long> unexploredProcesses= new HashSet<Long>();
+
+        long parentPid=daemonInformation.getPid();
+        unexploredProcesses.add(parentPid);
+
+        ProcessFinder pf = new ProcessFinder(TranslationEnginePool.sigar);
+        String bquery="State.Ppid.eq=";
+
+        try
+        {
+
+            while(!unexploredProcesses.isEmpty())
+            {
+                Long unexploredProcess = unexploredProcesses.iterator().next();
+                unexploredProcesses.remove(unexploredProcess);
+                finalProcesses.add(unexploredProcess);
+
+                long[] children=pf.find(bquery+unexploredProcess.toString());
+                for(long child: children)
+                {
+                    unexploredProcesses.add(child);
+                }
+            }
+            
+
+
+            long totalMem=0;
+
+            for(Long processPid: finalProcesses)
+                totalMem+=TranslationEnginePool.sigar.getProcMem(processPid).getResident();
+
+            return totalMem/1024/1024;
+
+        }
+        catch(SigarException e)
+        {
+            
         }
 
         return null;
