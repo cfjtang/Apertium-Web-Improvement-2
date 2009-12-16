@@ -20,6 +20,7 @@
 #include <iostream>
 #include <cwchar>
 #include <string>
+#include <cstdio>
 
 #include "collector.hh"
 
