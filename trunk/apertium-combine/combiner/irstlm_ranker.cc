@@ -26,7 +26,9 @@ IRSTLMRanker::IRSTLMRanker()
 
 IRSTLMRanker::~IRSTLMRanker() 
 {
-
+	if(lmtb) {
+		delete lmtb;
+	}
 }
 
 void inline IRSTLMRanker::score(Hypothesis& h)
