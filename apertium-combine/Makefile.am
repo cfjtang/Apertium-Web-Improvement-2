@@ -1,4 +1,4 @@
-SUBDIRS = memt
+SUBDIRS = combiner
 
-DIST_SUBDIRS = memt
+DIST_SUBDIRS = combiner
 

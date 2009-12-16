@@ -73,7 +73,7 @@ else
     CXXFLAGS="$CXXFLAGS -Wall -ansi -O3"
   fi
 fi
-
+emt
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 AM_SANITY_CHECK
@@ -88,7 +88,7 @@ AC_ARG_ENABLE(profile,
               [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
 
 AM_CONDITIONAL([IRSTLM], true)
-AM_CONDITIONAL([MOSES], true)
+# AM_CONDITIONAL([MOSES], true)
 
 AC_ARG_WITH(irstlm,
             [AC_HELP_STRING([--with-irstlm=PATH], [(mandatory) path to IRST's LM toolkit])],
@@ -96,11 +96,11 @@ AC_ARG_WITH(irstlm,
             [with_irstlm=no]
            )
 
-AC_ARG_WITH(moses,
-            [AC_HELP_STRING([--with-moses=PATH], [(mandatory) path to Moses SMT toolkit])],
-            [with_moses=$withval],
-            [with_moses=no]
-           )
+# AC_ARG_WITH(moses,
+#            [AC_HELP_STRING([--with-moses=PATH], [path to Moses SMT toolkit])],
+#            [with_moses=$withval],
+#            [with_moses=no]
+#           )
 
 AC_ARG_ENABLE(debug,
               [  --enable-debug    Enable "-g -Wall" compiler options], 
@@ -161,28 +161,26 @@ then
   AM_CONDITIONAL([IRSTLM], true)
 fi
 
-if test "x$with_moses" != 'xno'
-then
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I${with_moses}/moses/src"
+# if test "x$with_moses" != 'xno'
+# then
+#  SAVE_CPPFLAGS="$CPPFLAGS"
+#  CPPFLAGS="$CPPFLAGS -I${with_moses}/moses/src"
 
-  AC_CHECK_HEADER(Hypothesis.h,
-                 [AC_DEFINE([HAVE_MOSES], [], [flag for MOSES])],
-                 [AC_MSG_ERROR([Cannot find Moses!])])
+#  AC_CHECK_HEADER(Hypothesis.h,
+#                 [AC_DEFINE([HAVE_MOSES], [], [flag for MOSES])],
+#                 [AC_MSG_ERROR([Cannot find Moses!])])
 
-  if test $MACHTYPE
-  then
-    MY_ARCH=$MACHTYPE
-    #echo $ECHO_N "THEN -> MY_ARCH=$MY_ARCH" >&6
-  else
-    MY_ARCH=`uname -m`
-    #echo $ECHO_N "ELSE -> MY_ARCH=$MY_ARCH\n" >&6
-  fi
+#  if test $MACHTYPE
+#  then
+#    MY_ARCH=$MACHTYPE
+#  else
+#    MY_ARCH=`uname -m`
+#  fi
 
-  LDFLAGS_MOSES="-L${with_moses}/moses/src -lmoses"
-  AC_SUBST(LDFLAGS_MOSES)
-  AM_CONDITIONAL([MOSES], true)
-fi
+#  LDFLAGS_MOSES="-L${with_moses}/moses/src -lmoses"
+#  AC_SUBST(LDFLAGS_MOSES)
+#  AM_CONDITIONAL([MOSES], true)
+# fi
 
 
 # Checks for header files.
@@ -209,7 +207,7 @@ AC_CHECK_FUNCS([setlocale])
 AC_CONFIG_FILES([
                  Makefile
                  apertium-combine-1.0.pc
-                 memt/Makefile
+                 combiner/Makefile
                  ])
 
 #AC_OUTPUT([Makefile apertium-combine-1.0.pc memt/Makefile])
