@@ -183,9 +183,8 @@ if test "x$with_moses" != 'xno'
 
   LDFLAGS_MOSES="-L${with_moses}/moses/src -lmoses"
   AC_SUBST(LDFLAGS_MOSES)
+  AM_CONDITIONAL([MOSES], true)
 fi
-
-AM_CONDITIONAL([MOSES], [test x$with_moses != xno])
 
 # Checks for header files.
 AC_HEADER_STDC

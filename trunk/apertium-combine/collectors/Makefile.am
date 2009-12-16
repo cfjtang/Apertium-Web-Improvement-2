@@ -1,10 +1,8 @@
-if MOSES
-	MOSES_PROGRAMS = collector
-else
-	MOSES_PROGRAMS =
-endif
+bin_PROGRAMS =
 
-bin_PROGRAMS = $(MOSES_PROGRAMS)
+if MOSES
+bin_PROGRAMS += collector
 
 collector_SOURCES = collector.cc apertium_collector.cc moses_collector.cc
-collector_LDADD = $(LDFLAGS_MOSES) -L. -lapertiumcombine$(GENERIC_MAJOR_VERSION)
+collector_LDADD= $(LDFLAGS_MOSES)
+endif
