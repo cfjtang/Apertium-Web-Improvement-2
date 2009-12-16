@@ -41,6 +41,7 @@ using namespace Moses;
 
 class MosesCollector : public Collector {
 private:
+	string filePath;
 	void tokenise(string &sentence);
 	
 public:
@@ -50,7 +51,7 @@ public:
 	~MosesCollector();
 
 	wstring* translate(const wstring *block);
-
+	void setPath(string file);
 };
 
 #endif /* __MOSES_COLLECTOR_H__ */

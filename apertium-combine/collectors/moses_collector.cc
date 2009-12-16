@@ -38,8 +38,6 @@ using namespace Moses;
 
 MosesCollector::MosesCollector(int argc, char **argv, FILE *buffer)
 {
-//	const string filePath = "/home/fran/statmt/corpora5/model/moses.ini";
-	const string filePath = "/home/fran/statmt/corpora-cy-en/model/moses.ini";
 	parameter = new Moses::Parameter();
 
         if (!parameter->LoadParam(filePath))
@@ -100,6 +98,12 @@ MosesCollector::tokenise(string &sentence)
 */
 
 	return;
+}
+
+void
+MosesCollector::setPath(string file)
+{
+	filePath = filepath;
 }
 
 wstring*
