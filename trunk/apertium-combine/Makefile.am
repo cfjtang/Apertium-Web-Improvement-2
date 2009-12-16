@@ -1,4 +1,3 @@
-SUBDIRS = combiner
+SUBDIRS = combiner collectors
 
-DIST_SUBDIRS = combiner
-
+DIST_SUBDIRS = combiner collectors
