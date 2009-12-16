@@ -144,6 +144,10 @@ then
                  [AC_DEFINE([HAVE_IRSTLM], [], [flag for IRSTLM])],
                  [AC_MSG_ERROR([Cannot find IRSTLM!])])
 
+  AC_CHECK_HEADER(lmtable.h,
+                 [AC_DEFINE([HAVE_IRSTLM], [], [flag for IRSTLM])],
+                 [AC_MSG_ERROR([Cannot find IRSTLM!])])
+
   if test $MACHTYPE
   then
     MY_ARCH=$MACHTYPE
