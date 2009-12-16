@@ -6,9 +6,6 @@ cc_SOURCES = pairwise_alignment.cc alignment.cc hypotheses.cc irstlm_ranker.cc c
 combiner_SOURCES = apertium_combiner.cc
 combiner_LDADD = -L. -lapertiumcombine$(GENERIC_MAJOR_VERSION) -lirstlm
 
-# collector_SOURCES = collector.cc apertium_collector.cc moses_collector.cc
-# collector_LDADD = $(LDFLAGS_MOSES) -L. -lapertiumcombine$(GENERIC_MAJOR_VERSION)
-
 library_includedir = $(includedir)/$(GENERIC_LIBRARY_NAME)-$(GENERIC_API_VERSION)/$(GENERIC_LIBRARY_NAME)
 library_include_HEADERS = $(h_SOURCES)
 
