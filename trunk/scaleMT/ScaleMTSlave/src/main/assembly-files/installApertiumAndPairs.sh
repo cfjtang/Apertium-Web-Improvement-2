@@ -186,7 +186,7 @@ fi
 
 PREFIX=~/local
 CONF_FILE=./conf/configuration.properties
-LANGUAGE_PAIRS="es-ca es-ro fr-ca oc-ca en-gl oc-es es-pt en-ca en-es eo-en es-gl fr-es eo-es cy-en eo-ca pt-ca pt-gl eu-es br-fr"
+LANGUAGE_PAIRS="es-ca es-ro fr-ca oc-ca en-gl oc-es es-pt en-ca en-es eo-en es-gl fr-es eo-es cy-en eo-ca pt-ca pt-gl eu-es br-fr nn-nb sv-da"
 DICT_DIR=/tmp/apertium_dictionaries
 
 while getopts ":p:c:d:l:t" optname
