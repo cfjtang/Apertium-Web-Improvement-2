@@ -26,8 +26,8 @@ class Pairwise_Alignment
         unsigned int _index_mte_right; 
         std::vector<wstring> _words_left;
         std::vector<wstring> _words_right;
-        std::vector<int> _final_alignment; // result of align()
-        std::vector<int> _final_alignment_left; // result of align()
+        std::vector<unsigned int> _final_alignment; // result of align()
+        std::vector<unsigned int> _final_alignment_left; // result of align()
         Pairwise_Alignment(wstring& left, wstring& right);
         Pairwise_Alignment(const wchar_t* left, const wchar_t* right);
         Pairwise_Alignment(std::vector<wstring>& left, 
