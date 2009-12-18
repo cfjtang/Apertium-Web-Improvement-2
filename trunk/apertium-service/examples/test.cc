@@ -1,3 +1,7 @@
+/*
+ * g++ test.cc -o test -lxmlrpc_client++ -lxmlrpc++ -lxmlrpc_client -lxmlrpc_cpp -lxmlrpc_xmlparse -lxmlrpc_xmltok -lxmlrpc_server
+ */
+
 #include <cstdlib>
 #include <string>
 #include <iostream>
