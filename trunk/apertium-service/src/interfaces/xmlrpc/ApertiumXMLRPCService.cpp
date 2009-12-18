@@ -170,12 +170,12 @@ public:
 		std::string lm, mm;
 
 		ConfigurationManager::LanguageModelsType languageModels = configurationManager->getLanguageModels();
-		ConfigurationManager::LanguageModelsType::iterator itlm = languageModels.find(srcLang);
+		ConfigurationManager::LanguageModelsType::iterator itlm = languageModels.find(destLang);
 
 		if (itlm != languageModels.end()) {
 			lm = itlm->second;
 		} else {
-			throw xmlrpc_c::fault("Invalid parameter: no language models for the language \"" + lm + "\"");
+			throw xmlrpc_c::fault("Invalid parameter: no language models for the language \"" + destLang + "\"");
 		}
 
 		ConfigurationManager::MonolingualDictionariesType monolingualDictionaries = configurationManager->getMonolingualDictionaries();
