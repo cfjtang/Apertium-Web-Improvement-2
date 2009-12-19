@@ -18,29 +18,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @section DESCRIPTION
- *
- * The class Synthesiser is used to execute the Multi-Engine Translation Synthesiser.
  */
 
-#ifndef SYNTHESISER_H_
-#define SYNTHESISER_H_
+#ifndef IO_H_
+#define IO_H_
 
+#include <cstdio>
 #include "config.h"
 
-#if defined(HAVE_COMBINE)
-
-#include <iostream>
-#include <wchar.h>
-
-#include "core/ResourceBroker.h"
-#include "utils/ConfigurationManager.h"
-
-class Synthesiser {
-public:
-	static std::string synthesise(ResourceBroker&, std::string, std::string, std::vector<std::string>&, std::string, std::string);
-};
-
+#if !HAVE_DECL_FPUTS_UNLOCKED
+#define fputs_unlocked fputs
 #endif
 
-#endif /* SYNTHESISER_H_ */
+#if !HAVE_DECL_FGETC_UNLOCKED 
+#define fgetc_unlocked fgetc
+#endif
+
+#if !HAVE_DECL_FPUTC_UNLOCKED
+#define fputc_unlocked fputc
+#endif
+
+#if !HAVE_DECL_FWRITE_UNLOCKED
+#define fwrite_unlocked fwrite
+#endif
+
+#if !HAVE_DECL_FREAD_UNLOCKED
+#define fread_unlocked fread
+#endif
+
+#if !HAVE_DECL_FGETWC_UNLOCKED
+#define fgetwc_unlocked fgetwc
+#endif
+
+#if !HAVE_DECL_FPUTWC_UNLOCKED
+#define fputwc_unlocked fputwc
+#endif
+
+#if !HAVE_DECL_FPUTWS_UNLOCKED
+#define fputws_unlocked fputws
+#endif
+
+#endif /* IO_H_ */

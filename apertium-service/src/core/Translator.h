@@ -20,7 +20,7 @@
  *
  * @section DESCRIPTION
  *
- * The class Translate is used to execute the sequence of step required by
+ * The class Translator is used to execute the sequence of step required by
  * a translation task by using the informations contained in Modes files.
  */
 
