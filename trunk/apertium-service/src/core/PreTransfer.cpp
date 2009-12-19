@@ -40,6 +40,7 @@
 #include <apertium/string_utils.h>
 
 #include "PreTransfer.h"
+#include "io.h"
 
 using namespace Apertium;
 using namespace std;
