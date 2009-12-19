@@ -21,7 +21,7 @@
 
 bin_PROGRAMS = apertium-service
 
-apertium_service_CPPFLAGS = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@ @XMLRPC_CFLAGS@ @LIBTEXTCAT_CFLAGS@
-apertium_service_LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @XMLRPC_LIBS@ @XMLRPC_LDFLAGS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @BOOST_DATE_TIME_LIB@ @LIBTEXTCAT_LIBS@
+apertium_service_CPPFLAGS = @XMLPP_CFLAGS@ @LTTOOLBOX_CFLAGS@ @APERTIUM_CFLAGS@ @XMLRPC_CFLAGS@ @LIBTEXTCAT_CFLAGS@ @COMBINE_CFLAGS@
+apertium_service_LDADD = @XMLPP_LIBS@ @LTTOOLBOX_LIBS@ @APERTIUM_LIBS@ @XMLRPC_LIBS@ @XMLRPC_LDFLAGS@ @BOOST_THREAD_LIB@ @BOOST_FILESYSTEM_LIB@ @BOOST_SYSTEM_LIB@ @BOOST_PROGRAM_OPTIONS_LIB@ @BOOST_REGEX_LIB@ @BOOST_DATE_TIME_LIB@ @LIBTEXTCAT_LIBS@ @COMBINE_LIBS@
 
 apertium_service_SOURCES = ./format/Encoding.cpp ./interfaces/xmlrpc/ApertiumXMLRPCService.cpp ./core/PreTransfer.cpp ./core/FunctionMapper.cpp ./core/ModesManager.cpp ./core/TextClassifier.cpp ./core/ResourceBroker.cpp ./core/Translator.cpp ./core/ApertiumRuntimeException.cpp ./core/cg/Rule.cpp ./core/cg/ApertiumApplicator.cpp ./core/cg/Window.cpp ./core/cg/GrammarApplicator_runContextualTest.cpp ./core/cg/uextras.cpp ./core/cg/Cohort.cpp ./core/cg/GrammarApplicator_reflow.cpp ./core/cg/CompositeTag.cpp ./core/cg/Strings.cpp ./core/cg/GrammarApplicator_matchSet.cpp ./core/cg/TextualParser.cpp ./core/cg/BinaryGrammar_write.cpp ./core/cg/GrammarApplicator_runGrammar.cpp ./core/cg/Reading.cpp ./core/cg/Grammar.cpp ./core/cg/BinaryGrammar.cpp ./core/cg/Set.cpp ./core/cg/ContextualTest.cpp ./core/cg/Tag.cpp ./core/cg/GrammarWriter.cpp ./core/cg/FormatConverter.cpp ./core/cg/Anchor.cpp ./core/cg/GrammarApplicator_runRules.cpp ./core/cg/GrammarApplicator.cpp ./core/cg/SingleWindow.cpp ./core/cg/BinaryGrammar_read.cpp ./core/Synthesiser.cpp ./utils/Statistics.cpp ./utils/ConfigurationManager.cpp ./utils/Logger.cpp ./main.cpp
