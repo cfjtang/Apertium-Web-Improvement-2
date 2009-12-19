@@ -257,7 +257,7 @@ fi
 AC_SUBST(ASCONFDIR)
 
 asconfdir_e=`eval "echo ${ASCONFDIR}"`
-AC_DEFINE_UNQUOTED(ASCONFDIR, "${asconfdir_e}", "Apertium Service's configuration directory")
+AC_DEFINE_UNQUOTED(ASCONFDIR, "${asconfdir_e}", "apertium-service's configuration directory")
 
 # write a summary
 echo "+-------------------------------------------------------------------+"
