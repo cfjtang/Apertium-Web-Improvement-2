@@ -68,18 +68,27 @@ AC_ARG_WITH(combine,
            
 if test "x$with_combine" != 'xno'
 then
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS -I${with_combine}/include/apertium-combine-1.0/"
-
+  CPPFLAGS_cache="$CPPFLAGS"
+  LDFLAGS_cache="$LDFLAGS"
+  
+  COMBINE_CFLAGS="-I${with_combine}/include/apertium-combine-1.0/"
+  COMBINE_LIBS="-lapertiumcombine1 -lz"
+  
+  CPPFLAGS="$CPPFLAGS_cache $COMBINE_CFLAGS"
+  LDFLAGS="$LDFLAGS_cache $COMBINE_LIBS"
+  
   AC_CHECK_HEADER(apertium-combine/irstlm_ranker.hh,
                  [AC_DEFINE([HAVE_COMBINE], [], [flag for COMBINE])],
                  [AC_MSG_ERROR([Cannot find apertium-combine!])])
 
-  LIB_COMBINE="-lapertiumcombine1 -lz"
-  LDFLAGS="$LDFLAGS -L${with_combine}/lib"
-  LIBS=" $LIBS $LIB_COMBINE "
-  FMTLIBS="$FMTLIBS libapertiumcombine1.a"
+  CPPFLAGS="$CPPFLAGS_cache"
+  LDFLAGS="$LDFLAGS_cache"
 fi
+
+AM_CONDITIONAL(HAVE_COMBINE, test x"$with_combine" = xyes)
+AC_SUBST(COMBINE_CFLAGS)
+AC_SUBST(COMBINE_LIBS)
+
 
 # Checks for libraries.
 AX_BOOST_BASE([1.34.0])
