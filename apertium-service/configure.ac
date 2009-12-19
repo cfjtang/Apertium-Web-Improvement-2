@@ -72,7 +72,7 @@ then
   LDFLAGS_cache="$LDFLAGS"
   
   COMBINE_CFLAGS="-I${with_combine}/include/apertium-combine-1.0/"
-  COMBINE_LIBS="-lapertiumcombine1 -lz"
+  COMBINE_LIBS="-lapertiumcombine1 -lirstlm -lz"
   
   CPPFLAGS="$CPPFLAGS_cache $COMBINE_CFLAGS"
   LDFLAGS="$LDFLAGS_cache $COMBINE_LIBS"
