@@ -76,7 +76,7 @@ then
                  [AC_MSG_ERROR([Cannot find apertium-combine!])])
 
   LIB_COMBINE="-lapertiumcombine1 -lz"
-  LDFLAGS="$LDFLAGS -L${with_irstlm}/lib"
+  LDFLAGS="$LDFLAGS -L${with_combine}/lib"
   LIBS=" $LIBS $LIB_COMBINE "
   FMTLIBS="$FMTLIBS libapertiumcombine1.a"
 fi
