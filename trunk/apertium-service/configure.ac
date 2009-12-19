@@ -260,14 +260,16 @@ asconfdir_e=`eval "echo ${ASCONFDIR}"`
 AC_DEFINE_UNQUOTED(ASCONFDIR, "${asconfdir_e}", "Apertium Service's configuration directory")
 
 # write a summary
-echo             "+-------------------------------------------------------------------+"
-echo             "| Package:                 ${PACKAGE_NAME}"
-echo             "| CXX :                    $CXX"
-echo             "| CXXFLAGS :               $CXXFLAGS"
-echo             "| XMLRPC-C Version :       $XMLRPC_VERSION"
-echo             "| Source directory:        ${srcdir}"
-echo             "| Configuration directory: ${asconfdir_e}"
-echo              "+-------------------------------------------------------------------+"
+echo "+-------------------------------------------------------------------+"
+echo "| Package:                  ${PACKAGE_STRING}"
+echo "| CXX :                     $CXX"
+echo "| CXXFLAGS :                $CXXFLAGS"
+echo "| XMLRPC-C Version :        $XMLRPC_VERSION"
+echo "| Language Detection:       $have_libtextcat"
+echo "| Translation Synthesiser:  $with_combine"
+echo "| Source directory:         ${srcdir}"
+echo "| Configuration directory:  ${asconfdir_e}"
+echo "+-------------------------------------------------------------------+"
 
 
 AC_OUTPUT([Makefile src/Makefile])
