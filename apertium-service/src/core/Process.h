@@ -48,4 +48,4 @@ private:
 	boost::process::child *p;
 };
 
-#endif
+#endif /* PROCESS_H_ */
