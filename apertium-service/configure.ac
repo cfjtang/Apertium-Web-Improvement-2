@@ -57,7 +57,7 @@ AC_LANG([C++])
 AC_ARG_ENABLE(debug,
               [  --enable-debug  Enable "-g -Wall" compiler options],
               [CXXFLAGS="-g -Wall";CFLAGS="-g -Wall"])
-Files
+
 AC_ARG_ENABLE(profile,
               [  --enable-profile  Enable "-pg -g -Wall" compiler options],
               [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
@@ -218,9 +218,9 @@ if test x$XMLRPC_CONFIG = xno; then
   AC_MSG_ERROR(Couldn't find xmlrpc-c-config -- please install the xmlrpc-c library)
 fi
 
-XMLRPC_CFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 --cflags`
-XMLRPC_LIBS=`$XMLRPC_CONFIG abyss-server c++ c++2 --libs`
-XMLRPC_LDFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 --ldadd`
+XMLRPC_CFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 client server-util --cflags`
+XMLRPC_LIBS=`$XMLRPC_CONFIG abyss-server c++ c++2 client server-util --libs`
+XMLRPC_LDFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 client server-util --ldadd`
 
 XMLRPC_LDFLAGS+=" -lxmlrpc_server++ -lxmlrpc_server_abyss++ "
 
