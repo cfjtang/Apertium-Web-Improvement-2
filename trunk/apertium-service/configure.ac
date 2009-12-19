@@ -25,7 +25,7 @@ AC_INIT([apertium-service], [0.2.0+svn], [p.minervini@gmail.com])
 AM_INIT_AUTOMAKE([foreign])
 
 PACKAGE=apertium-service
-VERSION=0.1.0
+VERSION=0.2.0
 
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 
@@ -41,8 +41,6 @@ AC_ARG_WITH(xmlrpc-prefix,
 
 ICUCPPFLAGS=`icu-config --cppflags`
 CXXFLAGS="-Wno-deprecated $ICUCPPFLAGS $CXXFLAGS"
-
-#ac_omniorbbase="$OMNIORBBASE"
 
 # Checks for programs.
 AC_PROG_CXX
@@ -188,8 +186,6 @@ PKG_CHECK_MODULES(LTTOOLBOX, lttoolbox-3.2 >= 3.2.0,
 AC_SUBST(LTTOOLBOX_CFLAGS)
 AC_SUBST(LTTOOLBOX_LIBS)
 
-# PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0)
-
 PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0,
 [
 	APERTIUM_VER=32
@@ -201,14 +197,6 @@ PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0,
 
 AC_SUBST(APERTIUM_CFLAGS)
 AC_SUBST(APERTIUM_LIBS)
-
-# PKG_CHECK_MODULES(LIBIQXMLRPC, libiqxmlrpc-server >= 0.8.9)
-
-# AC_SUBST(LIBIQXMLRPC_CFLAGS)
-# AC_SUBST(LIBIQXMLRPC_CXXFLAGS)
-# AC_SUBST(LIBIQXMLRPC_INCLUDES)
-# AC_SUBST(LIBIQXMLRPC_LDFLAGS)
-# AC_SUBST(LIBIQXMLRPC_LIBS)
 
 ### xmlrpc-c
 
@@ -238,24 +226,6 @@ CXXFLAGS_cache=$CXXFLAGS
 CXXFLAGS="$XMLRPC_CFLAGS"
 LDFLAGS_cache=$LDFLAGS
 LDFLAGS="$XMLRPC_LIBS"
-
-### omniORB4
-
-#AC_CORBA_ORB
-#AC_CORBA_IDLCOS
-
-# Checks for header files.
-# AC_CHECK_HEADERS([wchar.h])
-
-# Checks for typedefs, structures, and compiler characteristics.
-# AC_HEADER_STDBOOL
-# AC_C_INLINE
-# AC_TYPE_INT32_T
-# AC_TYPE_SIZE_T
-# AC_TYPE_UINT16_T
-# AC_TYPE_UINT32_T
-# AC_TYPE_UINT64_T
-# AC_TYPE_UINT8_T
 
 # Checks for library functions.
 ICU_LIBS=`icu-config --ldflags`
@@ -297,22 +267,6 @@ echo             "| CXXFLAGS :               $CXXFLAGS"
 echo             "| XMLRPC-C Version :       $XMLRPC_VERSION"
 echo             "| Source directory:        ${srcdir}"
 echo             "| Configuration directory: ${asconfdir_e}"
-
-#case "$CORBA_ORB" in
-#  omniORB3) echo "| CORBA ORB : $ac_cv_corba_omniorb3 (omniORB3)" ;;
-#  omniORB4) echo "| CORBA ORB : $ac_cv_corba_omniorb4 (omniORB4)" ;;
-#         *) echo "| CORBA ORB : NONE FOUND" ;;
-#esac
-#echo             "| omniidl   : $IDL"
-#if test "x$OMNIORBBASE" != x; then
-#echo             "+-------------------------------------------------------------------+"
-#  if test "x$OMNIORBBASE" = "x$ac_omniorbbase"; then
-#    echo         "| NOTE: omniORB search restricted by OMNIORBBASE=$ac_omniorbbase"
-#    echo         "| To override, try 'unset OMNIORBBASE' or option '--with-omniorb'"
-#  else
-#    echo         "| NOTE: omniORB search restricted by --with-omniorb=$OMNIORBBASE"
-#  fi
-#fi
 echo              "+-------------------------------------------------------------------+"
 
 
