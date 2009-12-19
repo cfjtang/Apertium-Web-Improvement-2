@@ -83,6 +83,15 @@ then
 
   CPPFLAGS="$CPPFLAGS_cache"
   LDFLAGS="$LDFLAGS_cache"
+  
+  have_combine=yes
+else
+  have_combine=no
+fi
+
+if test x"$have_combine" = xno; then
+  COMBINE_CFLAGS=" "
+  COMBINE_LIBS=" "
 fi
 
 AM_CONDITIONAL(HAVE_COMBINE, test x"$with_combine" = xyes)
@@ -275,7 +284,7 @@ echo "| CXX :                     $CXX"
 echo "| CXXFLAGS :                $CXXFLAGS"
 echo "| XMLRPC-C Version :        $XMLRPC_VERSION"
 echo "| Language Detection:       $have_libtextcat"
-echo "| Translation Synthesiser:  $with_combine"
+echo "| Translation Synthesiser:  $have_combine"
 echo "| Source directory:         ${srcdir}"
 echo "| Configuration directory:  ${asconfdir_e}"
 echo "+-------------------------------------------------------------------+"
