@@ -44,14 +44,11 @@
 
 class PreTransfer {
 public:
-	PreTransfer();
-	virtual ~PreTransfer();
-
-	void processStream(FILE*, FILE*);
+	static void processStream(FILE*, FILE*);
 
 private:
-	void readAndWriteUntil(FILE*, FILE*, int const);
-	void procWord(FILE*, FILE*);
+	static void readAndWriteUntil(FILE*, FILE*, int const);
+	static void procWord(FILE*, FILE*);
 };
 
 #endif /* PRETRANSFER_H_ */

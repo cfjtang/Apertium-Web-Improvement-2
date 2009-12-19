@@ -133,9 +133,10 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 		break;
 
 	case APERTIUM_PRETRANSFER: {
-		PreTransfer *i = resourceBroker->PreTransferPool.acquire(p);
-		i->processStream(in, out);
-		resourceBroker->PreTransferPool.release(i, p);
+		//PreTransfer *i = resourceBroker->PreTransferPool.acquire(p);
+		//i->processStream(in, out);
+		//resourceBroker->PreTransferPool.release(i, p);
+		PreTransfer::processStream(in, out);
 	}
 		break;
 

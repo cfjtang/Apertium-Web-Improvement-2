@@ -63,27 +63,27 @@ std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::str
 
 	IRSTLMRanker *r = rb.IRSTLMRankerPool.acquire(plm);
 
-    Case_Insensitive_Morph_Matcher *matcher = rb.Case_Insensitive_Morph_MatcherPool.acquire(pmm);
+	Case_Insensitive_Morph_Matcher *matcher = rb.Case_Insensitive_Morph_MatcherPool.acquire(pmm);
 
 	Alignment alignment = Alignment(input_lines);
 
-    alignment.match(*matcher);
+	alignment.match(*matcher);
 
-    Max_Conseq_Aligner aligner;
-    alignment.align(aligner, 0);
+	Max_Conseq_Aligner aligner;
+	alignment.align(aligner, 0);
 
-    Parallel_Scan_Generator generator;
-    Hypotheses hypotheses = Hypotheses(alignment, generator);
+	Parallel_Scan_Generator generator;
+	Hypotheses hypotheses = Hypotheses(alignment, generator);
 
-    hypotheses.rank(r);
+	hypotheses.rank(r);
 
-    std::wstring wret = hypotheses.best();
+	std::wstring wret = hypotheses.best();
 
-    rb.Case_Insensitive_Morph_MatcherPool.release(matcher, pmm);
+	rb.Case_Insensitive_Morph_MatcherPool.release(matcher, pmm);
 
 	rb.IRSTLMRankerPool.release(r, plm);
 
 	return Encoding::wstringToUtf8(wret);
 }
 
-#endif
+#endif /* defined(HAVE_COMBINE) */
