@@ -20,8 +20,7 @@
  *
  * @section DESCRIPTION
  *
- * The class Translate is used to execute the sequence of step required by
- * a translation task by using the informations contained in Modes files.
+ * The class Synthesiser is used to execute the Multi-Engine Translation Synthesiser.
  */
 
 #include "config.h"
