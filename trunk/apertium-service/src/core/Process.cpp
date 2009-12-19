@@ -24,6 +24,8 @@
  * a translation task by using the informations contained in Modes files.
  */
 
+#include <assert.h>
+
 #include "Process.h"
 
 Process::Process(std::string cmd, std::vector<std::string> params) : p(NULL) {
