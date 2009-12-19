@@ -94,7 +94,7 @@ if test x"$have_combine" = xno; then
   COMBINE_LIBS=" "
 fi
 
-AM_CONDITIONAL(HAVE_COMBINE, test x"$with_combine" = xyes)
+AM_CONDITIONAL(HAVE_COMBINE, test x"$have_combine" = xyes)
 AC_SUBST(COMBINE_CFLAGS)
 AC_SUBST(COMBINE_LIBS)
 
@@ -285,7 +285,6 @@ echo "| CXXFLAGS :                $CXXFLAGS"
 echo "| XMLRPC-C Version :        $XMLRPC_VERSION"
 echo "| Language Detection:       $have_libtextcat"
 echo "| Translation Synthesiser:  $have_combine"
-echo "| Source directory:         ${srcdir}"
 echo "| Configuration directory:  ${asconfdir_e}"
 echo "+-------------------------------------------------------------------+"
 
