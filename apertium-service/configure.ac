@@ -57,7 +57,7 @@ AC_LANG([C++])
 AC_ARG_ENABLE(debug,
               [  --enable-debug  Enable "-g -Wall" compiler options],
               [CXXFLAGS="-g -Wall";CFLAGS="-g -Wall"])
-
+Files
 AC_ARG_ENABLE(profile,
               [  --enable-profile  Enable "-pg -g -Wall" compiler options],
               [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
@@ -95,6 +95,12 @@ AX_BOOST_FILESYSTEM
 
 if test -z "$BOOST_FILESYSTEM_LIB"; then
    AC_MSG_ERROR([unable to find Boost.Filesystem library, currently this is required.])
+fi
+
+AX_BOOST_SYSTEM
+
+if test -z "$BOOST_SYSTEM_LIB"; then
+   AC_MSG_ERROR([unable to find Boost.System library, currently this is required.])
 fi
 
 AX_BOOST_PROGRAM_OPTIONS
