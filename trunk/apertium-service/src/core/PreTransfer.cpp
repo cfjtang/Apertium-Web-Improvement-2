@@ -45,14 +45,6 @@
 using namespace Apertium;
 using namespace std;
 
-PreTransfer::PreTransfer() {
-
-}
-
-PreTransfer::~PreTransfer() {
-
-}
-
 void PreTransfer::readAndWriteUntil(FILE *input, FILE *output,
 		int const charcode) {
 	wchar_t mychar;
@@ -72,7 +64,7 @@ void PreTransfer::readAndWriteUntil(FILE *input, FILE *output,
 
 void PreTransfer::procWord(FILE *input, FILE *output) {
 	wchar_t mychar;
-	wstring buffer =L"" ;
+	wstring buffer = L"" ;
 
 	bool buffer_mode = false;
 	while((mychar = fgetwc_unlocked(input)) != L'$') {

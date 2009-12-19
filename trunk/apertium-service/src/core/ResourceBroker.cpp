@@ -43,7 +43,7 @@
 using namespace std;
 using CG3::CG3Quit;
 
-ResourceBroker::ResourceBroker(unsigned int ub) : PreTransferPool(ub), FormatPool(ub),
+ResourceBroker::ResourceBroker(unsigned int ub) : /* PreTransferPool(ub), */ FormatPool(ub),
 	FSTProcessorPool(ub), HMMPool(ub), TransferPool(ub), InterchunkPool(ub),
 	PostchunkPool(ub), TransferMultPool(ub)
 #if defined(HAVE_COMBINE)
@@ -82,12 +82,14 @@ HMM *HMMWrapper::getHmm() {
 	return hmm;
 }
 
+/*
 template <> PreTransfer *NonIndexedObjectPool<PreTransfer>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<PreTransfer>::getNewInstance();");
 
 	PreTransfer *ret = pool.construct();
 	return(ret);
 }
+*/
 
 template <> Format *NonIndexedObjectPool<Format>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "NonIndexedObjectPool<Format>::getNewInstance();");

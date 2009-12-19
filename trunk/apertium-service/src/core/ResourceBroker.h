@@ -304,7 +304,7 @@ public:
 	ResourceBroker(unsigned int = 0);
 	virtual ~ResourceBroker();
 
-	NonIndexedObjectPool<PreTransfer> PreTransferPool;
+	//NonIndexedObjectPool<PreTransfer> PreTransferPool;
 
 	IndexedObjectPool<Format> FormatPool;
 
