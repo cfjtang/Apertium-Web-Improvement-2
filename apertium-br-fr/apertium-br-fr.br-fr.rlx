@@ -18,6 +18,7 @@ SET  N                = NC + NP;
 
 # Numerals
 LIST Num              = (num);
+LIST Ord              = (ord);
 
 # Determiners         
 LIST Det              = (det);
@@ -28,7 +29,6 @@ LIST Dem              = (prn dem) (det dem);
 
 # Adjectives
 LIST Adj              = (adj);
-
 LIST Itg              = (itg);
 
 # Pronouns
@@ -600,6 +600,9 @@ SELECT Adj IF (0 Num) (0 Adj) (-1C NC);
 #20 milion a dud a implij anezhañ
 SELECT Vpart IF (1 VerbFin) (1 NC) (2 PrnDObj);
 REMOVE Vpart IF (1C NC);
+
+#rebech kentañ
+REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 Adj OR Ord);
 
 SECTION
 
