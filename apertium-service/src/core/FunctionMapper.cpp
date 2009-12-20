@@ -247,9 +247,10 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 		break;
 	}
 
-	wstring ret;
-
+	fclose(in);
 	fclose(out);
+
+	wstring ret;
 
 	if (useUtf8) {
 		stringstream ss;
