@@ -28,12 +28,8 @@
 #include "FunctionMapper.h"
 
 #include <iostream>
-#include <sstream>
-
 #include <vector>
-
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <wchar.h>
@@ -83,17 +79,7 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 	TaskType taskType = task[program];
 
-	int infd[2];
-	int outfd[2];
-
-	pipe(infd);
-	pipe(outfd);
-
-	FILE *tin = fdopen(infd[1], "w");
-	FILE *in = fdopen(infd[0], "r");
-
-	FILE *out = fdopen(outfd[1], "w");
-	FILE *tout = fdopen(outfd[0], "r");
+	FILE *in = tmpfile();
 
 	bool useUtf8 = false;
 
@@ -102,17 +88,27 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 	if (useUtf8) {
 		string sd = Encoding::wstringToUtf8(d);
-
 		for (size_t i = 0; i < sd.size(); ++i) {
-			fputc(sd[i], tin);
+			fputc(sd[i], in);
 		}
 	} else {
 		for (size_t i = 0; i < d.size(); ++i) {
-			fputwc(d[i], tin);
+			fputwc(d[i], in);
 		}
 	}
 
-	fclose(tin);
+	rewind(in);
+
+	void *outptr;
+	size_t outsize;
+
+	FILE *out = NULL;
+
+	if (useUtf8) {
+		out = open_memstream(reinterpret_cast<char **>(&outptr), &outsize);
+	} else {
+		out = open_wmemstream(reinterpret_cast<wchar_t **>(&outptr), &outsize);
+	}
 
 	switch (task[program]) {
 	case APERTIUM_INTERCHUNK: {
@@ -247,31 +243,21 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 		break;
 	}
 
-	wstring ret;
-
 	fclose(out);
 
+	wstring ret;
+
 	if (useUtf8) {
-		stringstream ss;
-		while (true) {
-			int c = fgetc(tout);
-			if (feof(tout))
-				break;
-			ss << (char)c;
-		}
-		ret = Encoding::utf8ToWstring(ss.str());
+		string sret(reinterpret_cast<char *>(outptr), outsize);
+		ret = Encoding::utf8ToWstring(sret);
 	} else {
-		wstringstream wss;
-		while (true) {
-			wint_t c = fgetwc(tout);
-			if (feof(tout))
-				break;
-			wss << (wchar_t)c;
-		}
-		ret = wss.str();
+		wstring wret(reinterpret_cast<wchar_t *>(outptr), outsize);
+		ret = wret;
 	}
 
-	fclose(tout);
+	free(outptr);
+
+	fclose(in);
 
 	return (ret);
 }
