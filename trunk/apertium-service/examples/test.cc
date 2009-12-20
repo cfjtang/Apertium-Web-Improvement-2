@@ -28,8 +28,12 @@ main(int argc, char **) {
 
         myClient.call(serverUrl, methodName, "sss", &result, "test", "en", "es");
 
+        map<string, xmlrpc_c::value> const resultStruct = xmlrpc_c::value_struct(result);
+        map<string, xmlrpc_c::value>::const_iterator iter = resultStruct.find("translation");
+
+        string ret = (string)xmlrpc_c::value_string(iter->second);
+
         string ret = xmlrpc_c::value_string(result);
-            // Assume the method returned an integer; throws error if not
 
         cout << "Translation: " << ret << endl;
 
