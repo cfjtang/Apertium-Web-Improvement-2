@@ -309,11 +309,11 @@ int main(int ac, char *av[]) {
 		mm = new ModesManager;
 	    mm->initPipe(cm->getApertiumBase());
 
+	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb,
 #if defined(HAVE_LIBTEXTCAT)
-	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, *tc, s);
-#else
-	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb, s);
+	   *tc,
 #endif
+	    s);
 
 	    axs->start();
 
