@@ -20,7 +20,7 @@ main(int argc, char **) {
     }
 
     try {
-        string const serverUrl("http://localhost:8080/RPC2");
+        string const serverUrl("http://localhost:6173/RPC2");
         string const methodName("translate");
 
         xmlrpc_c::clientSimple myClient;
@@ -32,8 +32,6 @@ main(int argc, char **) {
         map<string, xmlrpc_c::value>::const_iterator iter = resultStruct.find("translation");
 
         string ret = (string)xmlrpc_c::value_string(iter->second);
-
-        string ret = xmlrpc_c::value_string(result);
 
         cout << "Translation: " << ret << endl;
 
