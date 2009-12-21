@@ -165,12 +165,9 @@ class QueueScheduler {
             String translation = "";
             try {
 
-                if (queueElement.getFormat() == Format.html) {
-                    translation = serverReferences.getTranslationEngine(translationServerId).translateHTML(queueElement.getSourceText(),daemonConfiguration.getLanguagePair(),queueElement.getDictionaries());
-                } else {
-                    translation = serverReferences.getTranslationEngine(translationServerId).translateText(queueElement.getSourceText(), daemonConfiguration.getLanguagePair(),queueElement.getDictionaries());
+                    translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSourceText(),daemonConfiguration.getLanguagePair(),queueElement.getDictionaries(),Format.txt);                
                 }
-            } catch (Exception e) {
+             catch (Exception e) {
                 queueElement.setException(new TranslationEngineException(e));
             }
             requestsPrediction.removeFromNumberOfChars(queueElement.getFormat(), queueElement.getSourceText().length());

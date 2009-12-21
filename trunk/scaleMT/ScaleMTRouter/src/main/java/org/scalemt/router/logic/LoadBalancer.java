@@ -560,11 +560,11 @@ public class LoadBalancer {
             if(hasDaemon)
                 try
                 {
-                    translationEngines.getTranslationEngine(server).translateText("a", p,null);
+                    translationEngines.getTranslationEngine(server).translate("a", p,null,Format.txt);
                 }
                 catch(Exception e)
                 {
-                    logger.warn("Eception sending empty translation to server", e);
+                    logger.warn("Exception sending empty translation to server", e);
                 }
         }
     }

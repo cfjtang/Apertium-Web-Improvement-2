@@ -24,9 +24,12 @@ import org.scalemt.router.logic.LoadBalancer;
 import org.scalemt.router.logic.Util;
 import org.scalemt.router.tradubi.ApertiumTranslationEngineTradubi;
 import com.xerox.amazonws.ec2.RegionInfo;
+import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -44,6 +47,7 @@ public class MyContextListener implements ServletContextListener {
      * Commons-logging logger
      */
     static Log logger = LogFactory.getLog(MyContextListener.class);
+    List<Remote> remoteObjs=new ArrayList<Remote>();
 
     /**
      * Actions performed when servlet context starts.
@@ -79,6 +83,8 @@ public class MyContextListener implements ServletContextListener {
                     //Instantiate and export remote objects
                     ITradubiTranslationEngine objt = new ApertiumTranslationEngineTradubi();
                     ITradubiTranslationEngine stubt = (ITradubiTranslationEngine) UnicastRemoteObject.exportObject(objt, Integer.parseInt(Util.readConfigurationProperty("tradubi_interface_rmi_port")));
+                    remoteObjs.add(objt);
+
                     //Bind objects to registry
                     registry.rebind(Util.readConfigurationProperty("tradubi_interface_rmi_name"), stubt);
                     logger.info("RMI remote object " + Util.readConfigurationProperty("tradubi_interface_rmi_name") + " bound OK: Name: " + Util.readConfigurationProperty("tradubi_interface_rmi_name") + ". Port:" + Util.readConfigurationProperty("tradubi_interface_rmi_port"));
@@ -95,6 +101,7 @@ public class MyContextListener implements ServletContextListener {
             IApplicationRouter stub = (IApplicationRouter) UnicastRemoteObject.exportObject(obj, Integer.parseInt(Util.readConfigurationProperty("requestrouter_rmi_port")));
             //Bind objects to registry
             registry.rebind(Util.readConfigurationProperty("requestrouter_rmi_name"), stub);
+            remoteObjs.add(obj);
 
             logger.info("RMI remote object " + Util.readConfigurationProperty("requestrouter_rmi_name") +  " bound OK: Name: " + Util.readConfigurationProperty("requestrouter_rmi_name") + ". Port:" + Util.readConfigurationProperty("requestrouter_rmi_port"));
 
@@ -123,6 +130,10 @@ public class MyContextListener implements ServletContextListener {
         try {
             registry = LocateRegistry.getRegistry(Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
             registry.unbind(Util.readConfigurationProperty("requestrouter_rmi_name"));
+            for(Remote obj: remoteObjs)
+            {
+                UnicastRemoteObject.unexportObject(obj, true);
+            }
 
             /*
             if(ownRegistry!=null)

@@ -541,7 +541,7 @@ class LoopTranslationSender implements Runnable
 
                     for(String text: textsToTranslate)
                     {
-                        translationEngine.translateText(text, l, null);
+                        translationEngine.translate(text, l, null,Format.txt);
                         successFullyTranslated++;
                     }
                 } catch (TranslationEngineException ex) {
