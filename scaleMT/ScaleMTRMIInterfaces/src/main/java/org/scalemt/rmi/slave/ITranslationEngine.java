@@ -26,6 +26,7 @@ import org.scalemt.rmi.transferobjects.ServerStatusTO;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import org.scalemt.rmi.transferobjects.Format;
 
 
 
@@ -48,25 +49,12 @@ public interface ITranslationEngine extends Remote{
      * @param sourceText Text to be translated
      * @param pair Language pair.
      * @param  dictionaries List of Tradubi dictionaries
-     * @return Translated text.
-     * @throws com.gsoc.apertium.translationengines.rmi.exceptions.TranslationEngineException If there is
-     * an unexpected exception while translating.
-     * @throws java.rmi.RemoteException If there is
+     * @param format Format of the content to be translated
+     * @return Translated content.
+     * @throws TranslationEngineException If there is an unexpected exception while translating.
+     * @throws java.rmi.RemoteException
      */
-	public String translateText(String sourceText, LanguagePair pair, List<Long> dictionaries) throws  TranslationEngineException, RemoteException;
-	
-	/**
-     * Translates a piece of html code.
-     *
-     * @param sourceHtml Html code to be translated
-     * @param pair Language pair.
-     * @param  dictionaries List of Tradubi dictionaries
-     * @return Translated html
-     * @throws com.gsoc.apertium.translationengines.rmi.exceptions.TranslationEngineException If there is
-     * an unexpected exception while translating.
-     * @throws java.rmi.RemoteException If there is
-     */
-	public String translateHTML(String sourceHtml, LanguagePair pair, List<Long> dictionaries) throws  TranslationEngineException, RemoteException;
+	public String translate(String sourceText, LanguagePair pair, List<Long> dictionaries, Format format) throws  TranslationEngineException, RemoteException;
 	
 	/**
      * Gets server static information, i.e., that doesn't change during server's lifecycle.
@@ -87,7 +75,7 @@ public interface ITranslationEngine extends Remote{
 	public ServerStatusTO getServerStatus()  throws RemoteException,TranslationEngineException;
 	
     /**
-     * Starts a daemon capable of translating texts with the giiven pair.
+     * Starts a daemon capable of translating texts with the given pair.
      *
      * @param pair Language pair that can be translated with the new daemon.
      * @return New daemon information

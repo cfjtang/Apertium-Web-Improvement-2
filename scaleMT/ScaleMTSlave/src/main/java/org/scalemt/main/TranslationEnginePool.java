@@ -289,7 +289,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		public void run(){
 			try
 			{
-			translateText(text, pair,dictionaries);
+			translate(text, pair,dictionaries,Format.txt);
 			}
 			catch (TranslationEngineException e) {
 				exception=e;
@@ -606,47 +606,18 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                 return supPairs;
 	}
 
-    @Override
-	public String translateHTML(String sourceHtml, LanguagePair pair, List<Long> dictionaries) throws TranslationEngineException
-			 {
-
-	
-		try {
-			
-			return translate(sourceHtml,Format.html, pair,dictionaries);
-		} catch (Exception e) {
-			logger.error("Couldn't perform translation Unexpected exception", e);
-			throw new TranslationEngineException(e);
-		}
-	}
-
-    @Override
-	public  String translateText(String sourceText, LanguagePair pair, List<Long> dictionaries)
-			throws TranslationEngineException {
-
-		try {
-			
-			return translate(sourceText,Format.txt, pair,dictionaries);
-		}
-		catch(TranslationEngineException te)
-		{
-			throw te;
-		}
-		catch (Exception e) {
-			logger.error("Couldn't perform translation: Unexpected exception", e);
-			throw new TranslationEngineException(e);
-		}
-	}
+   
 
 	/**
-     * Translates a piece of text
+     * Translates 
      *
      * @param sourceText Source deformatted text
      * @param pair language pair: source language and target language
      * @return Translated deformatted text
      * @throws java.lang.Exception If there is aerror translating the text
      */
-	private String translate(String sourceText, Format format,LanguagePair pair, List<Long> dictionaries)
+    @Override
+    public String translate(String sourceText,LanguagePair pair, List<Long> dictionaries,Format format)
 			throws TranslationEngineException {
 		
 		
@@ -843,12 +814,12 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 			throw new Exception("Cannot read corpora");
 		
 		//Send these translation first to ensure daemon is up
-		translateText(uhdr, comparationConf.getLanguagePair(),null);
-		translateText(gpl, comparationConf.getLanguagePair(),null);
+		translate(uhdr, comparationConf.getLanguagePair(),null,Format.txt);
+		translate(gpl, comparationConf.getLanguagePair(),null,Format.txt);
 		
 		t1 = System.currentTimeMillis();
-		translateText(uhdr, comparationConf.getLanguagePair(),null);
-		translateText(gpl, comparationConf.getLanguagePair(),null);
+		translate(uhdr, comparationConf.getLanguagePair(),null,Format.txt);
+		translate(gpl, comparationConf.getLanguagePair(),null,Format.txt);
 		t2=System.currentTimeMillis();
 		stopAllDaemonsLanguage(comparationConf);
 		
@@ -874,15 +845,15 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 				throw new Exception("Cannot read corpora");
 			//Send these translation first to ensure daemon is up
 			if(uhdr!=null)
-				translateText(uhdr, c.getLanguagePair(), null);
+				translate(uhdr, c.getLanguagePair(), null,Format.txt);
 			if(gpl!=null)
-				translateText(gpl, c.getLanguagePair(), null);
+				translate(gpl, c.getLanguagePair(), null,Format.txt);
 			
 			t1 = System.currentTimeMillis();
 			if(uhdr!=null)
-				udhrTranslation=translateText(uhdr, c.getLanguagePair(), null);
+				udhrTranslation=translate(uhdr, c.getLanguagePair(), null,Format.txt);
 			if(gpl!=null)
-				gplTranslation=translateText(gpl, c.getLanguagePair(), null);
+				gplTranslation=translate(gpl, c.getLanguagePair(), null,Format.txt);
 			t2=System.currentTimeMillis();
 			logger.debug(c+" UDHR Translation: "+udhrTranslation+" GPL translation: "+gplTranslation);
 			
@@ -936,10 +907,10 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		//Calculate reference speed
 		
 		//ensure daemon is working
-		translateText(quijoteText, referenceConf.getLanguagePair(), null);
+		translate(quijoteText, referenceConf.getLanguagePair(), null,Format.txt);
 		
 		t1=System.currentTimeMillis();
-		translateText(quijoteText, referenceConf.getLanguagePair(), null);
+		translate(quijoteText, referenceConf.getLanguagePair(), null,Format.txt);
 		t2=System.currentTimeMillis();
 		
 		txtSpeed =   (quijoteText.length()*1000/ (double) (t2-t1));
@@ -968,9 +939,9 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 				if(format.equals(Format.html))
 				{
                                     startDaemon(referenceConf);
-                                        translateHTML(quijoteHtml, referenceConf.getLanguagePair(), null);
+                                        translate(quijoteHtml, referenceConf.getLanguagePair(), null,Format.html);
 					t1=System.currentTimeMillis();
-					translateHTML(quijoteHtml, referenceConf.getLanguagePair(), null);
+					translate(quijoteHtml, referenceConf.getLanguagePair(), null,Format.html);
 					t2=System.currentTimeMillis();
 					
 					double speed = quijoteHtml.length()*1000/ (double) (t2-t1);
@@ -1024,7 +995,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 				{
 				DaemonInformation daemonInfo=startDaemon(c);
                                 String uhdr = ServerUtil.readFileFromClasspath("/corpora/UDHR_"+c.getLanguagePair().getSource()+".txt");
-                                translateText(uhdr, c.getLanguagePair(), null);
+                                translate(uhdr, c.getLanguagePair(), null,Format.txt);
                                 synchronized(daemons)
                                 {
                                     for(Daemon daemon: daemons)
@@ -1085,7 +1056,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		
 		startTime = System.currentTimeMillis();
 		for(String text: filesContent)
-			translateText(text, pair, null);
+			translate(text, pair, null,Format.txt);
 		endTime =System.currentTimeMillis();
 		
 		float time = (float) ((endTime-startTime) / 1000.0);
