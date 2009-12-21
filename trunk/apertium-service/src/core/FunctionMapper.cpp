@@ -52,10 +52,13 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
-#ifdef WIN32
-#include <windows.h>
-#define pipe(a) _pipe(a,4096,_O_BINARY)
-#endif
+#include <boost/process/detail/file_handle.hpp>
+#include <boost/process/detail/pipe.hpp>
+
+// #ifdef WIN32
+// #include <windows.h>
+// #define pipe(a) _pipe(a,4096,_O_BINARY)
+// #endif
 
 using namespace std;
 
@@ -88,17 +91,19 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 	TaskType taskType = task[program];
 
-	int infd[2];
-	int outfd[2];
+	//int infd[2];
+	//int outfd[2];
 
-	pipe(infd);
-	pipe(outfd);
+	//::pipe(infd);
+	//::pipe(outfd);
 
-	FILE *tin = fdopen(infd[1], "w");
-	FILE *in = fdopen(infd[0], "r");
+	boost::process::detail::pipe pin, pout;
 
-	FILE *out = fdopen(outfd[1], "w");
-	FILE *tout = fdopen(outfd[0], "r");
+	FILE *tin = fdopen(pin.wend().get(), "w");
+	FILE *in = fdopen(pin.rend().get(), "r");
+
+	FILE *out = fdopen(pout.wend().get(), "w");
+	FILE *tout = fdopen(pout.rend().get(), "r");
 
 	bool useUtf8 = false;
 
