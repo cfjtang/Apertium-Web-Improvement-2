@@ -52,6 +52,11 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
+#ifdef WIN32
+#include <windows.h>
+#define pipe(a) _pipe(a,4096,_O_BINARY)
+#endif
+
 using namespace std;
 
 FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
