@@ -55,11 +55,6 @@
 #include <boost/process/detail/file_handle.hpp>
 #include <boost/process/detail/pipe.hpp>
 
-// #ifdef WIN32
-// #include <windows.h>
-// #define pipe(a) _pipe(a,4096,_O_BINARY)
-// #endif
-
 using namespace std;
 
 FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
@@ -90,12 +85,6 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 	vector<string> files = p.getFileNames();
 
 	TaskType taskType = task[program];
-
-	//int infd[2];
-	//int outfd[2];
-
-	//::pipe(infd);
-	//::pipe(outfd);
 
 	boost::process::detail::pipe pin, pout;
 
