@@ -102,17 +102,11 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 	boost::process::detail::file_handle &pinr = pin.rend();
 	boost::process::detail::file_handle &pinw = pin.wend();
 
-	pinr.release();
-	pinw.release();
-
 	FILE *tin = fdopen(pinw.get(), "w");
 	FILE *in = fdopen(pinr.get(), "r");
 
 	boost::process::detail::file_handle &poutr = pout.rend();
 	boost::process::detail::file_handle &poutw = pout.wend();
-
-	poutr.release();
-	poutw.release();
 
 	FILE *out = fdopen(poutw.get(), "w");
 	FILE *tout = fdopen(poutr.get(), "r");
@@ -295,6 +289,12 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 	}
 
 	fclose(tout);
+
+	pinr.release();
+	pinw.release();
+
+	poutr.release();
+	poutw.release();
 
 	return (ret);
 }
