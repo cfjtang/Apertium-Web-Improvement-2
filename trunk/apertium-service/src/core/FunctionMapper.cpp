@@ -99,11 +99,23 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 	boost::process::detail::pipe pin, pout;
 
-	FILE *tin = fdopen(pin.wend().get(), "w");
-	FILE *in = fdopen(pin.rend().get(), "r");
+	boost::process::detail::file_handle &pinr = pin.rend();
+	boost::process::detail::file_handle &pinw = pin.wend();
 
-	FILE *out = fdopen(pout.wend().get(), "w");
-	FILE *tout = fdopen(pout.rend().get(), "r");
+	pinr.release();
+	pinw.release();
+
+	FILE *tin = fdopen(pinw.get(), "w");
+	FILE *in = fdopen(pinr.get(), "r");
+
+	boost::process::detail::file_handle &poutr = pout.rend();
+	boost::process::detail::file_handle &poutw = pout.wend();
+
+	poutr.release();
+	poutw.release();
+
+	FILE *out = fdopen(poutw.get(), "w");
+	FILE *tout = fdopen(poutr.get(), "r");
 
 	bool useUtf8 = false;
 
