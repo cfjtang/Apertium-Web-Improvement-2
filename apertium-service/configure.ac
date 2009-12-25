@@ -250,7 +250,7 @@ ICU_LIBS=`icu-config --ldflags`
 ICUIO_LIBS=`icu-config --ldflags-icuio`
 
 LIBS="$ICU_LIBS $ICUIO_LIBS $LIBS"
-CXXFLAGS="$CXXFLAGS -Icore/"
+CXXFLAGS="$CXXFLAGS -Icore/ -Isrc/core/ -I../src/core/"
 
 AC_CHECK_DECLS([fread_unlocked, fwrite_unlocked, fgetc_unlocked, fputc_unlocked, fputs_unlocked, fgetwc_unlocked, fputwc_unlocked, fputws_unlocked])
 
