@@ -249,7 +249,7 @@ LDFLAGS="$XMLRPC_LIBS"
 ICU_LIBS=`icu-config --ldflags`
 ICUIO_LIBS=`icu-config --ldflags-icuio`
 
-LIBS="$ICU_LIBS $ICUIO_LIBS $LIBS"
+LIBS="$ICU_LIBS $ICUIO_LIBS $LIBS -Icore/"
 
 AC_CHECK_DECLS([fread_unlocked, fwrite_unlocked, fgetc_unlocked, fputc_unlocked, fputs_unlocked, fgetwc_unlocked, fputwc_unlocked, fputws_unlocked])
 
