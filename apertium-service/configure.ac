@@ -281,8 +281,8 @@ AC_DEFINE_UNQUOTED(ASCONFDIR, "${asconfdir_e}", "apertium-service's configuratio
 # write a summary
 echo "+-------------------------------------------------------------------+"
 echo "| Package:                  ${PACKAGE_STRING}"
-echo "| CXX :                     $CXX"
-echo "| CXXFLAGS :                $CXXFLAGS"
+# echo "| CXX :                     $CXX"
+# echo "| CXXFLAGS :                $CXXFLAGS"
 echo "| XMLRPC-C Version :        $XMLRPC_VERSION"
 echo "| Language Detection:       $have_libtextcat"
 echo "| Translation Synthesiser:  $have_combine"
