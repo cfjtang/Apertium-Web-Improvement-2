@@ -5,7 +5,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.4.5)
 # ######### General setup ##########
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 
-# ########## src executable ##########
+TARGET_LINK_LIBRARIES(ApertiumServiceMain ITKCommon ITKIO ITKBasicFilters)
+
+# ########## ApertiumService executable ##########
 # Sources:
 SET(ApertiumService_executable_SRCS
 ./format/Encoding.cpp
