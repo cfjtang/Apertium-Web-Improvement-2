@@ -25,6 +25,5 @@ DIST_SUBDIRS = src
 
 install-data-local:
 	@$(mkinstalldirs) ${ASCONFDIR} ${ASCONFDIR}/LM/
-#	cp -R ${srcdir}/configuration/* ${ASCONFDIR}
 	$(INSTALL_DATA) ${srcdir}/configuration/?*.* ${ASCONFDIR}
 	$(INSTALL_DATA) ${srcdir}/configuration/LM/?*.* ${ASCONFDIR}/LM/
