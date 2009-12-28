@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
      * @param translation The translation
      */
     private final void showTranslation(String translation) {
-        TextView tv = (TextView) findViewById(R.id.translationText);
+        EditText tv = (EditText) findViewById(R.id.translationText);
         tv.setText(translation);
     }
 }

@@ -48,11 +48,26 @@ is divided into following sections:
     <target depends="-pre-init,-init-private,-init-user,-init-project,-init-macrodef-property" name="-do-init">
         <androidproject1:property name="platform.home" value="platforms.${platform.active}.home"/>
         <androidproject1:property name="platform.bootcp" value="platforms.${platform.active}.bootclasspath"/>
+        <androidproject1:property name="platform.bootcp0" value="platforms.${platform.active}.bootclasspath0"/>
+        <androidproject1:property name="platform.bootcp1" value="platforms.${platform.active}.bootclasspath1"/>
         <androidproject1:property name="aapt" value="platforms.${platform.active}.aapt"/>
         <androidproject1:property name="adb" value="platforms.${platform.active}.adb"/>
         <androidproject1:property name="dx" value="platforms.${platform.active}.dx"/>
         <androidproject1:property name="emulator" value="platforms.${platform.active}.emulator"/>
         <androidproject1:property name="apkbuilder" value="platforms.${platform.active}.apkbuilder"/>
+        <condition property="bootclasspath1.available">
+            <and>
+                <isset property="platforms.${platform.active}.bootclasspath1"/>
+                <not>
+                    <equals arg1="${platform.bootcp1}" arg2="" trim="true"/>
+                </not>
+            </and>
+        </condition>
+        <condition property="no.bootclasspath1.available">
+            <not>
+                <isset property="bootclasspath1.available"/>
+            </not>
+        </condition>
         <condition property="assets.available">
             <and>
                 <isset property="${assets.dir}"/>
@@ -120,6 +135,13 @@ is divided into following sections:
         </condition>
         <property name="screen.skin" value="HVGA"/>
         <property name="emulator.options" value=""/>
+        <property name="android.target.device" value=""/>
+        <condition property="do.start.app.false">
+            <and>
+                <isset property="do.start.app"/>
+                <isfalse value="${do.start.app}"/>
+            </and>
+        </condition>
     </target>
     <target name="-post-init">
         <!-- Empty placeholder for easier customization. -->
@@ -222,7 +244,7 @@ is divided into following sections:
     </target>
     <target name="-init-macrodef-nbjpda">
         <macrodef name="nbjpdastart" uri="http://www.netbeans.org/ns/android-project/1">
-            <attribute default="${main.class}" name="name"/>
+            <attribute default="${main.activity}" name="name"/>
             <attribute default="${debug.classpath}" name="classpath"/>
             <attribute default="" name="stopclassname"/>
             <sequential>
@@ -237,7 +259,7 @@ is divided into following sections:
             </sequential>
         </macrodef>
         <macrodef name="nbjpdaconnect" uri="http://www.netbeans.org/ns/android-project/1">
-            <attribute default="${main.class}" name="name"/>
+            <attribute default="${main.activity}" name="name"/>
             <attribute default="${debug.classpath}" name="classpath"/>
             <sequential>
                 <nbjpdaconnect address="${local.debug.port}" name="@{name}" transport="dt_socket">
@@ -275,7 +297,7 @@ is divided into following sections:
     </target>
     <target depends="-init-debug-args" name="-init-macrodef-debug">
         <macrodef name="debug" uri="http://www.netbeans.org/ns/android-project/1">
-            <attribute default="${main.class}" name="classname"/>
+            <attribute default="${main.activity}" name="classname"/>
             <attribute default="${debug.classpath}" name="classpath"/>
             <element name="customize" optional="true"/>
             <sequential>
@@ -295,26 +317,7 @@ is divided into following sections:
             </sequential>
         </macrodef>
     </target>
-    <target name="-init-macrodef-java">
-        <macrodef name="java" uri="http://www.netbeans.org/ns/android-project/1">
-            <attribute default="${main.class}" name="classname"/>
-            <element name="customize" optional="true"/>
-            <sequential>
-                <java classname="@{classname}" dir="${work.dir}" fork="true">
-                    <jvmarg line="${run.jvmargs}"/>
-                    <classpath>
-                        <path path="${run.classpath}"/>
-                    </classpath>
-                    <syspropertyset>
-                        <propertyref prefix="run-sys-prop."/>
-                        <mapper from="run-sys-prop.*" to="*" type="glob"/>
-                    </syspropertyset>
-                    <customize/>
-                </java>
-            </sequential>
-        </macrodef>
-    </target>
-    <target depends="-pre-init,-init-private,-init-user,-init-project,-do-init,-post-init,-init-check,-init-macrodef-property,-init-macrodef-javac,-init-macrodef-junit,-init-macrodef-nbjpda,-init-macrodef-debug,-init-macrodef-java" name="init"/>
+    <target depends="-pre-init,-init-private,-init-user,-init-project,-do-init,-post-init,-init-check,-init-macrodef-property,-init-macrodef-javac,-init-macrodef-junit,-init-macrodef-nbjpda,-init-macrodef-debug" name="init"/>
     <!--
                 ===================
                 COMPILATION SECTION
@@ -331,7 +334,7 @@ is divided into following sections:
     <target if="do.depend.true" name="-compile-depend">
         <androidproject1:depend/>
     </target>
-    <target depends="init,-pre-pre-compile,-pre-compile" name="-res-compile">
+    <target depends="init,-pre-pre-compile,-pre-compile" name="-res-compile" unless="bootclasspath1.available">
         <exec executable="${aapt}" failonerror="true">
             <arg value="package"/>
             <arg value="-m"/>
@@ -345,6 +348,22 @@ is divided into following sections:
             <arg value="${platform.bootcp}"/>
         </exec>
     </target>
+    <target depends="init,-pre-pre-compile,-pre-compile" if="bootclasspath1.available" name="-res-compile1">
+        <exec executable="${aapt}" failonerror="true">
+            <arg value="package"/>
+            <arg value="-m"/>
+            <arg value="-J"/>
+            <arg value="${src.dir}"/>
+            <arg value="-M"/>
+            <arg value="AndroidManifest.xml"/>
+            <arg value="-S"/>
+            <arg value="${resource.dir}"/>
+            <arg value="-I"/>
+            <arg value="${platform.bootcp0}"/>
+            <arg value="-I"/>
+            <arg value="${platform.bootcp1}"/>
+        </exec>
+    </target>
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile" name="-idl-compile"/>
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile,-compile-depend" if="have.sources" name="-do-compile">
         <androidproject1:javac/>
@@ -356,7 +375,7 @@ is divided into following sections:
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target depends="init,deps-jar,-pre-pre-compile,-pre-compile,-res-compile,-idl-compile,-do-compile,-post-compile" description="Compile project." name="compile"/>
+    <target depends="init,deps-jar,-pre-pre-compile,-pre-compile,-res-compile,-res-compile1,-idl-compile,-do-compile,-post-compile" description="Compile project." name="compile"/>
     <target name="-pre-compile-single">
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
@@ -396,7 +415,7 @@ is divided into following sections:
             <arg path="${build.classes.dir}"/>
         </exec>
     </target>
-    <target depends="init,compile,-pre-pre-jar,-pre-jar" if="assets.available" name="-package-res-and-assets">
+    <target depends="init,compile,-pre-pre-jar,-pre-jar" if="assets.available" name="-package-res-and-assets" unless="bootclasspath1.available">
         <exec executable="${aapt}" failonerror="true">
             <arg value="package"/>
             <arg value="-f"/>
@@ -412,7 +431,25 @@ is divided into following sections:
             <arg value="${dist.apk}_"/>
         </exec>
     </target>
-    <target depends="init,compile,-pre-pre-jar,-pre-jar" name="-package-res-no-assets" unless="assets.available">
+    <target depends="init,compile,-pre-pre-jar,-pre-jar" if="assets.available" name="-package-res-and-assets1" unless="no.bootclasspath1.available">
+        <exec executable="${aapt}" failonerror="true">
+            <arg value="package"/>
+            <arg value="-f"/>
+            <arg value="-M"/>
+            <arg value="AndroidManifest.xml"/>
+            <arg value="-S"/>
+            <arg value="${resource.dir}"/>
+            <arg value="-A"/>
+            <arg value="${asset.dir}"/>
+            <arg value="-I"/>
+            <arg value="${platform.bootcp0}"/>
+            <arg value="-I"/>
+            <arg value="${platform.bootcp1}"/>
+            <arg value="-F"/>
+            <arg value="${dist.apk}_"/>
+        </exec>
+    </target>
+    <target depends="init,compile,-pre-pre-jar,-pre-jar" if="no.bootclasspath1.available" name="-package-res-no-assets" unless="assets.available">
         <exec executable="${aapt}" failonerror="true">
             <arg value="package"/>
             <arg value="-f"/>
@@ -426,38 +463,57 @@ is divided into following sections:
             <arg value="${dist.apk}_"/>
         </exec>
     </target>
-    <target depends="init,compile,-pre-pre-jar,-pre-jar,-package-res-and-assets,-package-res-no-assets" name="-package-java">
-        <jar basedir="${build.classes.dir}" destfile="${dist.apk}_" update="true"/>
+    <target depends="init,compile,-pre-pre-jar,-pre-jar" if="bootclasspath1.available" name="-package-res-no-assets1" unless="assets.available">
+        <exec executable="${aapt}" failonerror="true">
+            <arg value="package"/>
+            <arg value="-f"/>
+            <arg value="-M"/>
+            <arg value="AndroidManifest.xml"/>
+            <arg value="-S"/>
+            <arg value="${resource.dir}"/>
+            <arg value="-I"/>
+            <arg value="${platform.bootcp0}"/>
+            <arg value="-I"/>
+            <arg value="${platform.bootcp1}"/>
+            <arg value="-F"/>
+            <arg value="${dist.apk}_"/>
+        </exec>
     </target>
-    <target depends="init,compile,-pre-pre-jar,-pre-jar,-dex,-package-res-and-assets,-package-res-no-assets" name="-package-dex">
+    <target depends="init,compile,-pre-pre-jar,-pre-jar,-dex,-package-res-and-assets,-package-res-no-assets,-package-res-and-assets1,-package-res-no-assets1" name="-package-dex">
         <dirname file="${intermediate.dex}" property="package-dex.dex.folder"/>
         <basename file="${intermediate.dex}" property="package-dex.dex.file"/>
         <zip destfile="${dist.apk}_" update="true">
             <fileset dir="${package-dex.dex.folder}" includes="${package-dex.dex.file}"/>
         </zip>
     </target>
-    <target depends="init,-package-res-and-assets,-package-res-no-assets,-package-java,-package-dex" name="-sign">
+    <target depends="init,-package-res-and-assets,-package-res-no-assets,-package-dex" name="-sign">
         <exec executable="${apkbuilder}" failonerror="true">
-            <arg value="${dist.apk}"/>
+            <arg value="${basedir}/${dist.apk}"/>
             <arg value="-z"/>
-            <arg value="${dist.apk}_"/>
+            <arg value="${basedir}/${dist.apk}_"/>
         </exec>
         <delete file="${dist.apk}_"/>
     </target>
-    <target depends="init,compile,-pre-jar,-dex,-package-res-and-assets,-package-res-no-assets,-package-java,-package-dex,-sign,-post-jar" description="Build JAR." name="jar"/>
+    <target depends="init,compile,-pre-jar,-dex,-package-res-and-assets,-package-res-no-assets,-package-dex,-sign,-post-jar" description="Build JAR." name="jar"/>
     <!--
                 =================
                 EXECUTION SECTION
                 =================
             -->
-    <target depends="init,compile,jar,-start-emulator,-wait-for-emulator,-install-app" description="Run a main activity." name="run">
+    <target depends="init,compile,jar,-start-emulator,-wait-for-emulator,-install-app,-run-app" description="Run a main activity." name="run"/>
+    <target depends="init,compile,jar,-start-emulator,-wait-for-emulator,-install-app" name="-run-app" unless="do.start.app.false">
+        <taskdef classname="org.netbeans.modules.android.ant.AndroidManifestParse" classpath="${libs.AndroidAntTasks.classpath}" name="android-manifest-parse"/>
+        <android-manifest-parse mainActivityProperty="main.activity" manifestFile="AndroidManifest.xml"/>
+        <echo message="About to start ${main.component}/${main.activity}"/>
         <exec executable="${adb}">
+            <arg line="${android.target.device}"/>
             <arg value="shell"/>
-            <arg value="am start -n ${main.component}/${main.class}"/>
+            <arg value="am start -n ${main.component}/${main.activity}"/>
         </exec>
     </target>
     <target depends="init,compile,jar" name="-emulator-running">
         <exec executable="${adb}" outputproperty="emulator-running.out" resultproperty="is.emulator.running.tmp">
+            <arg line="${android.target.device}"/>
             <arg value="shell"/>
             <arg value="date"/>
         </exec>
@@ -471,18 +527,22 @@ is divided into following sections:
         <exec executable="${adb}">
             <arg value="kill-server"/>
         </exec>
+        <fail unless="android.target.avd">Must set android.target.avd</fail>
         <exec executable="${emulator}" spawn="true">
             <arg value="-skin"/>
             <arg value="${screen.skin}"/>
+            <arg value="-avd"/>
+            <arg value="${android.target.avd}"/>
             <arg line="${emulator.options}"/>
         </exec>
     </target>
     <target depends="init,compile,jar,-start-emulator" name="-wait-for-emulator">
-        <taskdef classname="org.netbeans.modules.android.ant.AdbPackageManagerWait" classpath="${libs.AndroidForwardDebugger.classpath}" name="adb-pm-wait"/>
-        <adb-pm-wait adb="${adb}"/>
+        <taskdef classname="org.netbeans.modules.android.ant.AdbPackageManagerWait" classpath="${libs.AndroidAntTasks.classpath}" name="adb-pm-wait"/>
+        <adb-pm-wait adb="${adb}" deviceArgs="${android.target.device}"/>
     </target>
     <target depends="init,compile,jar,-start-emulator,-wait-for-emulator" name="-install-app">
         <exec executable="${adb}">
+            <arg line="${android.target.device}"/>
             <arg value="install"/>
             <arg value="-r"/>
             <arg value="${dist.apk}"/>
@@ -500,18 +560,17 @@ is divided into following sections:
         <androidproject1:nbjpdaconnect/>
     </target>
     <target depends="init,compile,-start-emulator,-wait-for-emulator,-install-app" name="-debug-start-debuggee">
+        <taskdef classname="org.netbeans.modules.android.ant.AndroidManifestParse" classpath="${libs.AndroidAntTasks.classpath}" name="android-manifest-parse"/>
+        <android-manifest-parse mainActivityProperty="main.activity" manifestFile="AndroidManifest.xml"/>
+        <echo message="About to start ${main.component}/${main.activity}"/>
         <exec executable="${adb}">
+            <arg line="${android.target.device}"/>
             <arg value="shell"/>
-            <arg value="am start -D -n ${main.component}/${main.class}"/>
+            <arg value="am start -D -n ${main.component}/${main.activity}"/>
         </exec>
-        <taskdef classname="org.netbeans.modules.android.ant.ForwardDebugger" classpath="${libs.AndroidForwardDebugger.classpath}" name="forwarddebugger"/>
-        <forwarddebugger adb="${adb}" addressProperty="local.debug.port" app="${main.component}"/>
+        <getdebuggerport addressProperty="local.debug.port" app="${main.component}"/>
     </target>
     <target depends="init,compile,-debug-start-debuggee,-debug-start-debugger" description="Debug project in IDE." if="netbeans.home" name="debug"/>
-    <target depends="init" if="netbeans.home" name="-debug-start-debugger-stepinto">
-        <androidproject1:nbjpdastart stopclassname="${main.class}"/>
-    </target>
-    <target depends="init,compile,-debug-start-debugger-stepinto,-debug-start-debuggee" if="netbeans.home" name="debug-stepinto"/>
     <!--
                 ===============
                 JAVADOC SECTION
