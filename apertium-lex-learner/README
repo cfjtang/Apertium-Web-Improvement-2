@@ -7,3 +7,64 @@ Pre-requisites:
 Optional:
 
 * RandLM
+
+
+Brief howto:
+
+This presumes you are using Wikipedia as corpus for source 
+language phrases and as corpus for language model.
+
+* Clean / tag and tokenise your SL Wikipedia. (file: ca.tagged.txt)
+
+* Clean / tokenise your TL Wikipedia. (file: en.crp.txt)
+
+* Build an IRSTLM or RandLM language model from your target language corpus. 
+
+** If IRSTLM, binarise the language model. (en.blm)
+
+* Extract the multi-translation words from the bidix of your language pair. 
+
+  $ cat apertium-en-ca.en-ca.dix | grep '<:[0-9]\+>' > ca-en.ambig.exp
+
+* Run the 'generate_sl_ambig_corpus.py' script on your tagged source
+  language corpus.
+
+  $ cat ca.tagged.txt | python generate_sl_ambig_corpus.py ca-en.ambig.exp > ca.ambig.txt
+
+* Compile the empty CG rule file,
+
+  $ cg-comp data/empty.rlx data/empty.rlx.bin
+
+* Now extract the baseline corpus of phrases, 
+
+  $ cat ca.ambig.txt | grep ':0 |' | cg-proc data/empty.rlx.bin > ca.baseline.txt
+
+* Run the ambiguous corpus through the rest of the translation pipeline. (file: ca.translated.txt)
+
+* Rank the translated phrases using one of the rankers,
+
+  $ cat ca.translated.txt | irstlm-ranker en.blm > ca.ranked.txt
+
+* Extract candidate phrases which differ substantially in LM score from the baseline
+  to any of the other possible translations.
+
+  $ cat ca.ranked.txt | python extract_candidate_phrases.py 0.1 > en.candidates.txt
+
+* Generate candidate rules by processing the candidate phrase file with the original
+  ambiguated corpus.
+
+  $ python generate_candidate_rules.py ca.ambig.txt en.candidates.txt > ca-en.lexrules.txt
+
+* Rank the output for each of the generated rules,
+
+  $ bash rank-rules.sh ca-en.lexrules.txt <dir>
+
+  Where <dir> is a temporary directory to store the translated and ranked outputs for 
+  each of the rules.
+
+  NOTE: This stage can take a long time, as it translates the whole of the baseline times
+        the number of candidate rules.
+
+* Show the rules ordered by score,
+
+  $ bash show-rule-ranking.sh ca-en.lexrules.txt <dir>
