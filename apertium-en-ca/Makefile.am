@@ -272,6 +272,8 @@ $(PREFIX2)-multi.mode: modes.xml
 
 modes: modes.xml
 	apertium-gen-modes modes.xml
+	cp $(PREFIX1).mode modes/
+	cp $(PREFIX2).mode modes/
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
