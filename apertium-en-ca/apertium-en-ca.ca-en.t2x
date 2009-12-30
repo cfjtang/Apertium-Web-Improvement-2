@@ -14,16 +14,20 @@
       <cat-item tags="SV.*"/>
       <cat-item tags="SVneg.*"/>
     </def-cat>
-
+  
+    <def-cat n="haverger_pp">
+      <cat-item lemma="haver_pp" tags="SV.vblex.ger"/>
+    </def-cat>
+ 
     <def-cat n="SV_pers"><!--Formes personals. Exclou inf i ger (i alguns imperatius per ara) -->
       <cat-item lemma="verbcj" tags="SV.*"/>
       <cat-item lemma="verbcj" tags="SVneg.*"/>
       <cat-item lemma="aux_verb" tags="SV.*"/>
       <cat-item lemma="aux_verb" tags="SVneg.*"/>
-      <cat-item lemma="haver_pp" tags="SV.*"/>
-      <cat-item lemma="haver_pp" tags="SVneg.*"/>
-      <cat-item lemma="haver_pp_enc" tags="SV.*"/>
-      <cat-item lemma="haver_pp_enc" tags="SVneg.*"/>
+      <cat-item lemma="haver_pp" tags="SV.*.*.*"/> <!-- havent acabat ... -->
+      <cat-item lemma="haver_pp" tags="SVneg.*.*.*"/> 
+      <cat-item lemma="haver_pp_enc" tags="SV.*.*.*"/> 
+      <cat-item lemma="haver_pp_enc" tags="SVneg.*.*.*"/>
       <cat-item lemma="aux_haver_pp" tags="SV.*"/>
       <cat-item lemma="aux_haver_pp" tags="SVneg.*"/>
       <cat-item lemma="aux_haver_pp_enc" tags="SV.*"/>
@@ -291,6 +295,25 @@
 
   <section-rules>
    
+<rule comment="REGLA: haverger pp"> <!-- Havent acabat , el 1901 , va tornar a la Península -->
+      <pattern>
+	<pattern-item n="haverger_pp"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
+
+
+
 
 	    
 	  
@@ -1468,6 +1491,7 @@ No posen la variable =no els xuncs: PREP (
 	</let>
       </action>
 </rule>
+
 <rule comment="REGLA: DET">
       <pattern>
 	<pattern-item n="DET"/>
@@ -1484,7 +1508,6 @@ No posen la variable =no els xuncs: PREP (
 	</let>
       </action>
 </rule>
-
 
 <!--
 <rule comment="REGLA: PREADV">
