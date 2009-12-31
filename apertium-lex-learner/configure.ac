@@ -41,6 +41,7 @@ then
     echo $ECHO_N "ELSE -> MY_ARCH=$MY_ARCH\n" >&6
   fi
 
+  echo ""
   #MY_ARCH=`uname -m`
   LIB_IRSTLM="-lirstlm"
   LDFLAGS="$LDFLAGS -L${with_irstlm}/lib/${MY_ARCH}"
@@ -67,7 +68,6 @@ then
   AM_CONDITIONAL([RAND_LM], true)
 fi
 
-echo ""
 
 PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0)
 
