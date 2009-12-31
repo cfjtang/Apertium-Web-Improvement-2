@@ -67,11 +67,14 @@ then
   AM_CONDITIONAL([RAND_LM], true)
 fi
 
+echo ""
+
+PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0)
+
 #
 # Check for VISL constraint grammar
 #
 
-echo ""
 
 AC_PATH_PROG(CGCOMP, cg-comp, no)
 if test x$ac_cv_path_CGCOMP = x
