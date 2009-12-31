@@ -10,7 +10,26 @@ Optional:
 
 * RandLM
 
-Brief howto:
+Files:
+
+This is a quick reference to the files used:
+
+* ca.crp.txt         -- Clean corpus of Catalan
+* en.crp.txt         -- Clean corpus of English
+* ca.tagged.txt      -- Tagged version of Catalan corpus
+* en.blm             -- Binarised language model from English corpus
+* ca-en.ambig.exp    -- Ambiguous list extracted from dictionary
+* ca.ambig.txt       -- Expanded Catalan corpus, of sentences where words
+                        in the ambiguous list appear.
+* ca.baseline.txt    -- Baseline of sentences (with default translations)
+* ca.translated.txt  -- The expanded corpus translated
+* ca.ranked.txt      -- The translated expanded corpus ranked
+* en.candidates.txt  -- Candidate sentences where the LM score for one or 
+                        more of the translation alternatives differs 
+                        substantially from the default.
+* ca-en.lexrules.txt -- Candidate lexical selection rules
+
+Brief HOWTO:
 
 This presumes you are using Wikipedia as corpus for source 
 language phrases and as corpus for language model.
@@ -25,7 +44,7 @@ language phrases and as corpus for language model.
 
 * Extract the multi-translation words from the bidix of your language pair. 
 
-  $ cat apertium-en-ca.en-ca.dix | grep '<:[0-9]\+>' > ca-en.ambig.exp
+  $ lt-expand apertium-en-ca.en-ca.dix | grep '<:[0-9]\+>' > ca-en.ambig.exp
 
 * Run the 'generate_sl_ambig_corpus.py' script on your tagged source
   language corpus.
