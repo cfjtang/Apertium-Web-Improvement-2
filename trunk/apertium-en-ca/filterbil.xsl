@@ -21,6 +21,7 @@
   <xsl:output method="xml" encoding="UTF-8"/>
   <xsl:param name="left"/> <!-- value to choose on the left -->
   <xsl:param name="right"/> <!-- value to choose on the right -->
+  <xsl:param name="side"/> <!-- which side is in use -->
 
 <xsl:template match="alphabet">
   <alphabet><xsl:apply-templates/></alphabet>
@@ -59,34 +60,76 @@
       </e>
     </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vr=$right and count(./@vl)=0">
-      <e>
-        <xsl:apply-templates/>
-      </e>
+      <xsl:choose>
+        <xsl:when test="$side=string('right')">
+          <e>
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vl=$left and count(./@vr)=0">
-      <e>
-        <xsl:apply-templates/>
-      </e>
+      <xsl:choose>
+        <xsl:when test="$side=string('left')">
+          <e>
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="count(./@r)=0 and not(./@vr=$right) and count(./@vl)=0">
-      <e r="RL">
-        <xsl:apply-templates/>
-      </e>
+      <xsl:choose>
+        <xsl:when test="$side=string('right')">
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="count(./@r)=0 and not(./@vl=$left) and count(./@vr)=0">
-      <e r="LR">
-        <xsl:apply-templates/>
-      </e>
+      <xsl:choose>
+        <xsl:when test="$side=string('left')">
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vr=$right and not(./@vl=$left)">
-      <e r="LR">
-        <xsl:apply-templates/>
-      </e>
+      <xsl:choose>
+        <xsl:when test="$side=string('left')">
+        </xsl:when>
+        <xsl:otherwise>
+          <e>
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vl=$left and not(./@vr=$right)">
-      <e r="RL">
-        <xsl:apply-templates/>
-      </e>
+      <xsl:choose>
+        <xsl:when test="$side=string('right')">
+        </xsl:when>
+        <xsl:otherwise>
+          <e>
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vl=$left) and not(./@vr=$right)">
     </xsl:when>
