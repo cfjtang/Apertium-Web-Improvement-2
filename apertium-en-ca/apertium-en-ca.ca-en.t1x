@@ -229,6 +229,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
       <cat-item tags="vblex.pron.inf"/>
       <cat-item tags="vbser.inf"/>
       <cat-item tags="vbhaver.inf"/>
+<!--      <cat-item tags="vbmod.inf"/>-->
+    </def-cat>
+    <def-cat n="mod_inf">
       <cat-item tags="vbmod.inf"/>
     </def-cat>
 
@@ -8461,6 +8464,38 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
       </action>
     </rule>
 
+    <rule comment="REGLA: VERB no conjugat (perquè posi bé la cua en multiparaules)">
+      <pattern>
+	<pattern-item n="mod_inf"/> 
+      </pattern>
+      <action>     	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>     	
+	<call-macro n="tipus_verb">
+	  <with-param pos="1"/>
+	</call-macro>  
+	<out>
+	  <chunk name="inf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	      <tag><var n="lemaverb"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="sep"/>
+	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+	      <clip pos="1" side="tl" part="lemq"/>    
+	    </lu>
+	  </chunk>
+	</out>  
+      </action>
+    </rule>
+
+ 
     <rule comment="REGLA: VERB no conjugat (perquè posi bé la cua en multiparaules)">
       <pattern>
 	<pattern-item n="ger"/> 
