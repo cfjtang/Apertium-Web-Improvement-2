@@ -192,7 +192,7 @@ int main(int ac, char *av[]) {
 		cd = fs::system_complete(cd);
 
 	    if (vm.count("directory")) {
-	        cout << "Configuration directory was " << cd <<  ", setting it to " << vm["directory"].as<string>() << endl;
+	        cout << "Configuration directory was " << cd <<  ", setting it to " << vm["directory"].as<std::string>() << endl;
 	        cd = vm["directory"].as<std::string>();
 	    }
 
@@ -210,7 +210,7 @@ int main(int ac, char *av[]) {
 
 
 	    if (vm.count("conf")) {
-	        cout << "Configuration file was " << cf <<  ", setting it to " << vm["conf"].as<string>() << endl;
+	        cout << "Configuration file was " << cf <<  ", setting it to " << vm["conf"].as<std::string>() << endl;
 	        cf = vm["conf"].as<std::string>();
 	    }
 
@@ -220,13 +220,13 @@ int main(int ac, char *av[]) {
 
 #if defined(HAVE_LIBTEXTCAT)
 	    if (vm.count("conftc")) {
-	        cout << "Text Classifier's configuration file was " << cm->getConfTextClassifier() <<  ", setting it to " << vm["conftc"].as<string>() << endl;
+	        cout << "Text Classifier's configuration file was " << cm->getConfTextClassifier() <<  ", setting it to " << vm["conftc"].as<std::string>() << endl;
 	        cm->setConfTextClassifier(vm["conftc"].as<std::string>());
 	    }
 #endif
 
 	    if (vm.count("modes")) {
-	        cout << "Modes directory was " << cm->getApertiumBase() <<  ", setting it to " << vm["modes"].as<string>() << endl;
+	        cout << "Modes directory was " << cm->getApertiumBase() <<  ", setting it to " << vm["modes"].as<std::string>() << endl;
 	        cm->setApertiumBase(vm["modes"].as<std::string>());
 	    }
 
