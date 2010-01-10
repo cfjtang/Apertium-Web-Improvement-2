@@ -61,9 +61,6 @@
 #include "utils/Logger.h"
 #include "utils/Statistics.h"
 
-using namespace std;
-
-
 /**
  * The class ApertiumXMLRPCService implements a service using the XML-RPC protocol
  * and exposing Apertium's capabilities for translation and language detection.
@@ -87,17 +84,17 @@ public:
 	void stop();
 
 private:
-    static const string TRANSLATE_NAME;
+    static const std::string TRANSLATE_NAME;
 
 #if defined(HAVE_LIBTEXTCAT)
-    static const string DETECT_NAME;
+    static const std::string DETECT_NAME;
 #endif
 
 #if defined(HAVE_COMBINE)
     static const string SYNTHESISE_NAME;
 #endif
 
-    static const string LANGUAGEPAIRS_NAME;
+    static const std::string LANGUAGEPAIRS_NAME;
 
     boost::shared_mutex serviceMutex;
 

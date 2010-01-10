@@ -36,17 +36,15 @@
 
 #include "core/ResourceBroker.h"
 
-using namespace std;
-
 class Statistics {
 public:
 	Statistics(ResourceBroker&);
 	virtual ~Statistics();
 
-	void notifyTranslationRequest(string, string);
+	void notifyTranslationRequest(std::string, std::string);
 	void notifyProgramExecutionRequest(Program&);
 
-	typedef boost::unordered_map<pair<string, string>, unsigned int> PairInvocationsMapType;
+	typedef boost::unordered_map<pair<std::string, std::string>, unsigned int> PairInvocationsMapType;
 	typedef boost::unordered_map<Program, unsigned int> ProgramInvocationsMapType;
 
 	PairInvocationsMapType getPairs();

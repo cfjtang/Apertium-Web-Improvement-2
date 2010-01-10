@@ -60,7 +60,6 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
-using namespace std;
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
@@ -134,14 +133,14 @@ int main(int ac, char *av[]) {
 		("syslog,s", "enable sending messages to the system logger")
 #endif
 
-		("directory,d",	po::value<string>(), "(string) set configuration directory")
-		("conf,c", po::value<string>(), "(string) set configuration file")
+		("directory,d",	po::value<std::string>(), "(string) set configuration directory")
+		("conf,c", po::value<std::string>(), "(string) set configuration file")
 
 #if defined(HAVE_LIBTEXTCAT)
-		("conftc,t", po::value<string>(), "(string) set text classifier's configuration file")
+		("conftc,t", po::value<std::string>(), "(string) set text classifier's configuration file")
 #endif
 
-		("modes,m", po::value<string>(), "(string) set modes' directory")
+		("modes,m", po::value<std::string>(), "(string) set modes' directory")
 
 		("port,p", po::value<unsigned int>(), "(uint) set XML-RPC service's port")
 		("keepalivetimeout,k", po::value<unsigned int>(), "(uint) set maximum time in seconds that the server allows a connection to be open between RPCs.")
@@ -194,7 +193,7 @@ int main(int ac, char *av[]) {
 
 	    if (vm.count("directory")) {
 	        cout << "Configuration directory was " << cd <<  ", setting it to " << vm["directory"].as<string>() << endl;
-	        cd = vm["directory"].as<string>();
+	        cd = vm["directory"].as<std::string>();
 	    }
 
 	    if (!fs::is_directory(cd)) {
@@ -212,7 +211,7 @@ int main(int ac, char *av[]) {
 
 	    if (vm.count("conf")) {
 	        cout << "Configuration file was " << cf <<  ", setting it to " << vm["conf"].as<string>() << endl;
-	        cf = vm["conf"].as<string>();
+	        cf = vm["conf"].as<std::string>();
 	    }
 
 	    cout << "Using the configuration file located in " << cf << endl;
@@ -222,13 +221,13 @@ int main(int ac, char *av[]) {
 #if defined(HAVE_LIBTEXTCAT)
 	    if (vm.count("conftc")) {
 	        cout << "Text Classifier's configuration file was " << cm->getConfTextClassifier() <<  ", setting it to " << vm["conftc"].as<string>() << endl;
-	        cm->setConfTextClassifier(vm["conftc"].as<string>());
+	        cm->setConfTextClassifier(vm["conftc"].as<std::string>());
 	    }
 #endif
 
 	    if (vm.count("modes")) {
 	        cout << "Modes directory was " << cm->getApertiumBase() <<  ", setting it to " << vm["modes"].as<string>() << endl;
-	        cm->setApertiumBase(vm["modes"].as<string>());
+	        cm->setApertiumBase(vm["modes"].as<std::string>());
 	    }
 
 	    logger = Logger::Instance();

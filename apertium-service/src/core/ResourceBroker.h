@@ -102,7 +102,6 @@
 
 #include "ApertiumRuntimeException.h"
 
-using namespace std;
 namespace fs = boost::filesystem;
 
 template <class T> class ObjectPool : private boost::noncopyable {
@@ -128,7 +127,7 @@ protected:
 
 	static void checkFile(fs::path p) {
 		if (!fs::exists(p)) {
-			string msg = "File " + p.string() + " requested but doesn't exist.";
+			std::string msg = "File " + p.string() + " requested but doesn't exist.";
 			Logger::Instance()->trace(Logger::Err, msg);
 			throw ApertiumRuntimeException(msg);
 		}
@@ -284,7 +283,7 @@ public:
 	HMMWrapper();
 	~HMMWrapper();
 
-	void read(string);
+	void read(std::string);
 	HMM *getHmm();
 private:
 	HMM *hmm;

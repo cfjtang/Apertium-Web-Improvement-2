@@ -28,14 +28,12 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 Statistics::Statistics(ResourceBroker &rb) : resourceBroker(&rb) { }
 
 Statistics::~Statistics() { }
 
-void Statistics::notifyTranslationRequest(string srcLang, string destLang) {
-	pair<string, string> p(srcLang, destLang);
+void Statistics::notifyTranslationRequest(std::string srcLang, std::string destLang) {
+	pair<std::string, std::string> p(srcLang, destLang);
 	boost::unique_lock<boost::shared_mutex> uniqueLock(pairsMutex);
 	if (pairs.find(p) == pairs.end()) {
 		pairs[p] = 1;
