@@ -5,8 +5,10 @@
 
 package org.scalemt.router.ws;
 
+import org.scalemt.rmi.transferobjects.BinaryDocument;
 import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
+import org.scalemt.rmi.transferobjects.TextContent;
 import org.scalemt.router.logic.LoadBalancer;
 import org.scalemt.router.logic.UserType;
 
@@ -22,7 +24,7 @@ public class TranslateXMLRPC {
         try
         {
         LanguagePair pair= new LanguagePair(sourceLang, targetLang);
-        String translation=LoadBalancer.getInstance().translate(sourceText, pair, Format.txt, UserType.anonymous, null);
+        String translation=LoadBalancer.getInstance().translate(new TextContent(sourceText), pair, Format.txt, UserType.anonymous, null).toString();
         return translation;
         }
         catch(Exception e)
@@ -33,8 +35,16 @@ public class TranslateXMLRPC {
 
     public byte[] translateDocument(byte[] sourceDocument,String sourceLang, String targetLang,String format )
     {
-        //TODO: implement
-        return new byte[100];
+        try
+        {
+         LanguagePair pair= new LanguagePair(sourceLang, targetLang);
+         byte[] translatedDocuemnt =LoadBalancer.getInstance().translate(new BinaryDocument(sourceDocument), pair, Format.html, UserType.anonymous, null).toByteArray();
+        return translatedDocuemnt;
+        }
+        catch(Exception e)
+        {
+            return new byte[1];
+        }
     }
 
 }

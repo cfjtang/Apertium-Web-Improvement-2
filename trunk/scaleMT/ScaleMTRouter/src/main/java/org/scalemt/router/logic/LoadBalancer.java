@@ -38,6 +38,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.scalemt.rmi.transferobjects.Content;
+import org.scalemt.rmi.transferobjects.TextContent;
 
 /**
  * Main request router class. Coordinates all the other classes.
@@ -438,7 +440,7 @@ public class LoadBalancer {
      * @throws com.gsoc.apertium.translationengines.router.logic.NoEngineForThatPairException If the pair is not supported
      * @throws com.gsoc.apertium.translationengines.exceptions.TranslationEngineException If some other error happens
      */
-    public String translate(String source, LanguagePair pair, Format format, UserType userType, List<Long> dictionaries) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
+    public Content translate(Content source, LanguagePair pair, Format format, UserType userType, List<Long> dictionaries) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
 
         DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, format);
         if (dc == null) {
@@ -560,7 +562,7 @@ public class LoadBalancer {
             if(hasDaemon)
                 try
                 {
-                    translationEngines.getTranslationEngine(server).translate("a", p,null,Format.txt);
+                    translationEngines.getTranslationEngine(server).translate(new TextContent("a"), p,null,Format.txt);
                 }
                 catch(Exception e)
                 {

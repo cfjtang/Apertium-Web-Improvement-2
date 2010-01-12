@@ -58,6 +58,7 @@ import org.scalemt.util.ServerUtil;
 import java.io.BufferedReader;
 import java.rmi.NotBoundException;
 import java.util.HashMap;
+import org.scalemt.rmi.transferobjects.TextContent;
 
 public class Main {
 
@@ -541,7 +542,7 @@ class LoopTranslationSender implements Runnable
 
                     for(String text: textsToTranslate)
                     {
-                        translationEngine.translate(text, l, null,Format.txt);
+                        translationEngine.translate(new TextContent(text), l, null,Format.txt);
                         successFullyTranslated++;
                     }
                 } catch (TranslationEngineException ex) {

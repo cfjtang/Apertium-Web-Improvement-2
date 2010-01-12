@@ -40,6 +40,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.scalemt.rmi.transferobjects.TextContent;
 
 
 /**
@@ -220,7 +221,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
                 throw new UnsupportedLanguagePairException();
 
 		try {
-			return  LoadBalancer.getInstance().translate(sourceHtml, reqPair, Format.html, UserType.registered,dictionaries) ;
+			return  LoadBalancer.getInstance().translate(new TextContent(sourceHtml), reqPair, Format.html, UserType.registered,dictionaries).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
 			throw new TranslationEngineException(e);
@@ -239,7 +240,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
                 throw new UnsupportedLanguagePairException();
 
 		try {
-			return  LoadBalancer.getInstance().translate(sourceText, reqPair, Format.txt, UserType.registered,dictionaries) ;
+			return  LoadBalancer.getInstance().translate(new TextContent(sourceText), reqPair, Format.txt, UserType.registered,dictionaries).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
 			throw new TranslationEngineException(e);
