@@ -30,5 +30,5 @@ package org.scalemt.rmi.transferobjects;
  * @author vitaka
  */
 public enum Format {
-    txt, html
+    txt, html, rtf
 }

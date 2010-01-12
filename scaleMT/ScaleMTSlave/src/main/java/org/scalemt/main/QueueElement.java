@@ -21,6 +21,7 @@ import org.scalemt.daemon.Daemon;
 import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
 import java.util.List;
+import org.scalemt.rmi.transferobjects.Content;
 
 
 /**
@@ -38,7 +39,7 @@ public class QueueElement {
     /**
      * Source text
      */
-	private String text;
+	private Content source;
 
     /**
      * Language pair: source language and target language
@@ -53,7 +54,7 @@ public class QueueElement {
     /**
      * Translated source
      */
-	private String translation;
+	private Content translation;
 
     /**
      * Thread to be interrupted when translation is performed
@@ -77,10 +78,10 @@ public class QueueElement {
      * @param id Id
      * @param text Source text
      */
-	public QueueElement(long id, String text) {
+	public QueueElement(long id, Content text) {
 		super();
 		this.id = id;
-		this.text = text;
+		this.source = text;
 		this.exception=null;
 	}
 	
@@ -92,11 +93,11 @@ public class QueueElement {
      * @param languagePair Language pair
      * @param caller Caller thread
      */
-	public QueueElement(long id, String text,
+	public QueueElement(long id, Content text,
 			Format format,LanguagePair languagePair, Thread caller, List<Long> dictionaries) {
 		super();
 		this.id = id;
-		this.text = text;
+		this.source = text;
 
                 this.format=format;
 		this.languagePair = languagePair;
@@ -113,11 +114,11 @@ public class QueueElement {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getText() {
-		return text;
+	public Content getSource() {
+		return source;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void setSource(Content text) {
+		this.source = text;
 	}
 
 
@@ -144,13 +145,13 @@ public class QueueElement {
 		this.format = format;
 	}
 
-	public String getTranslation() {
+	public Content getTranslation() {
 		return translation;
 	}
 
 
 
-	public void setTranslation(String translation) {
+	public void setTranslation(Content translation) {
 		this.translation = translation;
 	}
 

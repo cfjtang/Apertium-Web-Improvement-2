@@ -45,6 +45,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scalemt.rmi.transferobjects.TextContent;
 
 /**
  * Translation REST Web Service
@@ -240,7 +241,7 @@ public class TranslateResource {
                    // if (key != null && UserManagement.getInstance().isKeyValid(key)) {
                    //     userType = UserType.registered;
                     //}
-                    translation = LoadBalancer.getInstance().translate(source, lpair, enumFormat, userType,null);
+                    translation = LoadBalancer.getInstance().translate(new TextContent(source), lpair, enumFormat, userType,null).toString();
                 } else {
                     errorMessage = "Not supported pair";
                     responseCode = 451;

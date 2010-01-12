@@ -17,54 +17,39 @@
  */
 package org.scalemt.util;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PipedWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+
 
 public class StreamGobbler extends Thread
 {
     InputStream is;
-    StringBuilder builder;
-    StringWriter sw;
+    //StringBuilder builder;
+    //StringWriter sw;
     
+    ByteArrayOutputStream baos;
+    byte[] buffer;
+
     public StreamGobbler(InputStream is)
     {
         this.is = is;
-     
-        
+        baos = new ByteArrayOutputStream();
+        buffer=new byte[1000];
     }
     
     public void run()
     {
         try
         {
-        	sw = new StringWriter();
-             PrintWriter pw = new PrintWriter(sw);
-                
-                
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            String line=null;
-            while ( (line = br.readLine()) != null)
-            {
-                if (pw != null)
-                {
-                    pw.print(line);
-                    if(br.ready())
-                        pw.println();
-                }
+            int bytesRead;
 
-            }
-            if (pw != null)
+            while ( (bytesRead = is.read(buffer)) != -1)
             {
-                pw.flush();
-                pw.close();
+                baos.write(buffer, 0, bytesRead);
             }
-            isr.close();
+
+            baos.close();
             
             
         } catch (IOException ioe)
@@ -72,9 +57,17 @@ public class StreamGobbler extends Thread
             ioe.printStackTrace();  
             }
     }
+
     
     public String getReadedStr()
     {
-    	return sw.toString();
+    	return new String(baos.toByteArray());
+    }
+    
+     
+
+    public byte[] getReadBytes()
+    {
+        return baos.toByteArray();
     }
 }

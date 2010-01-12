@@ -20,6 +20,7 @@ package org.scalemt.router.logic;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.transferobjects.Format;
 import java.util.List;
+import org.scalemt.rmi.transferobjects.Content;
 
 
 
@@ -33,7 +34,7 @@ public class QueueElement implements Comparable<QueueElement>{
     /**
      * Text to be translated
      */
-    private String sourceText;
+    private Content sourceText;
 
     /**
      * Format: plain text, html, etc
@@ -53,7 +54,7 @@ public class QueueElement implements Comparable<QueueElement>{
     /**
      * Translated text
      */
-    private String translation;
+    private Content translation;
 
     /**
      * Exception thrown when processing request
@@ -82,7 +83,7 @@ public class QueueElement implements Comparable<QueueElement>{
      * @param userType User type: registered or not.
      * @param caller Caller thread
      */
-    public QueueElement(String sourceText, Format format, UserType userType, Thread caller, long notRegisteredIncrement,List<Long> dictionaries) {
+    public QueueElement(Content sourceText, Format format, UserType userType, Thread caller, long notRegisteredIncrement,List<Long> dictionaries) {
         this.sourceText = sourceText;
         this.format = format;
         this.userType = userType;
@@ -123,19 +124,19 @@ public class QueueElement implements Comparable<QueueElement>{
         this.format = format;
     }
 
-    public String getSourceText() {
+    public Content getSource() {
         return sourceText;
     }
 
-    public void setSourceText(String sourceText) {
+    public void setSource(Content sourceText) {
         this.sourceText = sourceText;
     }
 
-    public String getTranslation() {
+    public Content getTranslation() {
         return translation;
     }
 
-    public void setTranslation(String translation) {
+    public void setTranslation(Content translation) {
         this.translation = translation;
     }
 
