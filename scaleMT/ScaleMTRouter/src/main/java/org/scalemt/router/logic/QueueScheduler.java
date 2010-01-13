@@ -115,7 +115,7 @@ class QueueScheduler {
     private int maxQueuedElementsInServer;
 
     /**
-     * Count of the characters and request waiting in the queue.
+     * Count of the characters and requests waiting in the queue.
      */
     private RequestsHistoryTO requestsPrediction;
 
@@ -166,12 +166,12 @@ class QueueScheduler {
             Content translation = null;
             try {
 
-                    translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSource(),daemonConfiguration.getLanguagePair(),queueElement.getDictionaries(),Format.txt);
+                    translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSource(),daemonConfiguration.getLanguagePair(),queueElement.getDictionaries());
                 }
              catch (Exception e) {
                 queueElement.setException(new TranslationEngineException(e));
             }
-            requestsPrediction.removeFromNumberOfChars(queueElement.getFormat(), queueElement.getSource().length());
+            requestsPrediction.removeFromNumberOfChars(queueElement.getFormat(), queueElement.getSource().getLength());
 
             synchronized (charactersInServerQueue) {
                 Object objOldCharacterAmount = charactersInServerQueue.get(translationServerId);
@@ -180,7 +180,7 @@ class QueueScheduler {
                     int oldCharacterAmount = (Integer)  objOldCharacterAmount;
                     int oldElements = elementsInServerQueue.get(translationServerId);
                     //charactersInServerQueue.put(translationServerId, oldCharacterAmount - queueElement.getSourceText().length() - constatRequestCPUcost);
-                    charactersInServerQueue.put(translationServerId, oldCharacterAmount - queueElement.getSource().length());
+                    charactersInServerQueue.put(translationServerId, oldCharacterAmount - queueElement.getSource().getLength());
                     elementsInServerQueue.put(translationServerId, oldElements - 1);
                 }
             }
@@ -229,7 +229,7 @@ class QueueScheduler {
                                             sent = true;
 
                                             //charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSourceText().length() + constatRequestCPUcost);
-                                            charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSource().length());
+                                            charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSource().getLength());
                                             elementsInServerQueue.put(translationServerId, elementsQueued + 1);
                                             TranslationSender translationSender = new TranslationSender(queueElement, translationServerId);
                                             Thread t = new Thread(translationSender);
@@ -288,7 +288,7 @@ class QueueScheduler {
         loadDistribution = new HashMap<TranslationServerId, Integer>();
         requestsPrediction=new RequestsHistoryTO();
         supportedServers=new HashSet<TranslationServerId>();
-        stopMark=new QueueElement(null, Format.txt, UserType.anonymous, Thread.currentThread(),notRegisteredPriorityIncrement,null);
+        stopMark=new QueueElement(null,  UserType.anonymous, Thread.currentThread(),notRegisteredPriorityIncrement,null);
         //this.queue = new LinkedBlockingQueue<QueueElement>();
         this.queue=new PriorityBlockingQueue<QueueElement>();
 
@@ -334,9 +334,9 @@ class QueueScheduler {
      * @return Translated source
      * @throws com.gsoc.apertium.translationengines.rmi.exceptions.TranslationEngineException If there is an error translating the source, or sending it to the server.
      */
-    public Content translate(Content source, Format format, UserType userType, List<Long> dictionaries) throws TranslationEngineException {
-        QueueElement queueElement = new QueueElement(source, format, userType, Thread.currentThread(),notRegisteredPriorityIncrement, dictionaries);
-        requestsPrediction.addToNumberOfChars(format, source.length());
+    public Content translate(Content source,  UserType userType, List<Long> dictionaries) throws TranslationEngineException {
+        QueueElement queueElement = new QueueElement(source,  userType, Thread.currentThread(),notRegisteredPriorityIncrement, dictionaries);
+        requestsPrediction.addToNumberOfChars(source.getFormat(), source.getLength());
         queue.add(queueElement);
 
         try {

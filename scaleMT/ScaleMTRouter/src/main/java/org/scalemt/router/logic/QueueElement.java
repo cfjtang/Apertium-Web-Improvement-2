@@ -36,10 +36,7 @@ public class QueueElement implements Comparable<QueueElement>{
      */
     private Content sourceText;
 
-    /**
-     * Format: plain text, html, etc
-     */
-    private Format format;
+    
 
     /**
      * User type: registered or not
@@ -83,9 +80,9 @@ public class QueueElement implements Comparable<QueueElement>{
      * @param userType User type: registered or not.
      * @param caller Caller thread
      */
-    public QueueElement(Content sourceText, Format format, UserType userType, Thread caller, long notRegisteredIncrement,List<Long> dictionaries) {
+    public QueueElement(Content sourceText,  UserType userType, Thread caller, long notRegisteredIncrement,List<Long> dictionaries) {
         this.sourceText = sourceText;
-        this.format = format;
+        
         this.userType = userType;
         this.caller = caller;
         this.time= System.currentTimeMillis();
@@ -117,12 +114,10 @@ public class QueueElement implements Comparable<QueueElement>{
     }
 
     public Format getFormat() {
-        return format;
+        return sourceText.getFormat();
     }
 
-    public void setFormat(Format format) {
-        this.format = format;
-    }
+   
 
     public Content getSource() {
         return sourceText;

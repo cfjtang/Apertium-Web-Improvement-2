@@ -55,7 +55,7 @@ public interface ITranslationEngine extends Remote{
      * @throws TranslationEngineException If there is an unexpected exception while translating.
      * @throws java.rmi.RemoteException
      */
-	public Content translate(Content sourceText, LanguagePair pair, List<Long> dictionaries, Format format) throws  TranslationEngineException, RemoteException;
+	public Content translate(Content sourceText, LanguagePair pair, List<Long> dictionaries) throws  TranslationEngineException, RemoteException;
 	
 	/**
      * Gets server static information, i.e., that doesn't change during server's lifecycle.

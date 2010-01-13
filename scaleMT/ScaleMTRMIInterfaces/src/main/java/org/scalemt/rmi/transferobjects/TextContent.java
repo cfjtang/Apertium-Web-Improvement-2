@@ -5,6 +5,10 @@
 
 package org.scalemt.rmi.transferobjects;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author vmsanchez
@@ -13,7 +17,8 @@ public class TextContent extends Content{
 
     private String string;
 
-    public TextContent(String string) {
+    public TextContent(Format f,String string) {
+        super(f);
         this.string = string;
     }
 
@@ -23,7 +28,7 @@ public class TextContent extends Content{
     }
 
     @Override
-    public int length() {
+    public int calculateLength() {
         return string.length();
     }
 
@@ -34,7 +39,19 @@ public class TextContent extends Content{
 
     @Override
     public byte[] toByteArray() {
-        return string.getBytes();
+        try {
+            return string.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            return string.getBytes();
+        }
+    }
+
+    @Override
+    protected Set<Format> getValidFormats() {
+        Set<Format> validFormats = new HashSet<Format>();
+       validFormats.add(Format.txt);
+       validFormats.add(Format.html);
+        return validFormats;
     }
     
 }

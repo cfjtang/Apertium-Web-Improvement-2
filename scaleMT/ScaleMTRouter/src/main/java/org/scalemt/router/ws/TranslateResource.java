@@ -241,7 +241,7 @@ public class TranslateResource {
                    // if (key != null && UserManagement.getInstance().isKeyValid(key)) {
                    //     userType = UserType.registered;
                     //}
-                    translation = LoadBalancer.getInstance().translate(new TextContent(source), lpair, enumFormat, userType,null).toString();
+                    translation = LoadBalancer.getInstance().translate(new TextContent(enumFormat,source), lpair,  userType,null).toString();
                 } else {
                     errorMessage = "Not supported pair";
                     responseCode = 451;

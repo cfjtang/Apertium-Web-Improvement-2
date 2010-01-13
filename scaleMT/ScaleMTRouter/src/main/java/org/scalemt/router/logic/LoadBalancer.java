@@ -440,16 +440,16 @@ public class LoadBalancer {
      * @throws com.gsoc.apertium.translationengines.router.logic.NoEngineForThatPairException If the pair is not supported
      * @throws com.gsoc.apertium.translationengines.exceptions.TranslationEngineException If some other error happens
      */
-    public Content translate(Content source, LanguagePair pair, Format format, UserType userType, List<Long> dictionaries) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
+    public Content translate(Content source, LanguagePair pair,  UserType userType, List<Long> dictionaries) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
 
-        DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, format);
+        DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, source.getFormat());
         if (dc == null) {
             throw new NoEngineForThatPairException();
         }
         QueueScheduler queue = queues.get(dc);
 
         //Log request
-        loadPredictor.getRequestHistory().addRequest(pair, source.length(), format);
+        loadPredictor.getRequestHistory().addRequest(pair, source.getLength(), source.getFormat());
         //Thread.currentThread().getId();
         //logger.info("Request received");
 
@@ -457,7 +457,7 @@ public class LoadBalancer {
             boolean hasException=false;
             try
             {
-            return queue.translate(source, format, userType, dictionaries);
+                return queue.translate(source,  userType, dictionaries);
 
             }
             catch(TranslationEngineException e)
@@ -562,7 +562,7 @@ public class LoadBalancer {
             if(hasDaemon)
                 try
                 {
-                    translationEngines.getTranslationEngine(server).translate(new TextContent("a"), p,null,Format.txt);
+                    translationEngines.getTranslationEngine(server).translate(new TextContent(Format.txt,"a"), p,null);
                 }
                 catch(Exception e)
                 {

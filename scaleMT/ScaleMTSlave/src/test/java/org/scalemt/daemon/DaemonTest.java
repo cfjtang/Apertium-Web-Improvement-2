@@ -28,6 +28,8 @@ import org.scalemt.rmi.transferobjects.TextContent;
  * @author vitaka
  */
 public class DaemonTest extends TestCase {
+
+    private static final boolean DO_TESTS=false;
     
     private DaemonFactory daemonFactory;
 
@@ -103,6 +105,8 @@ public class DaemonTest extends TestCase {
 
     public void testTranslateTextWithoutConfigParsing()
     {
+        if(!DO_TESTS)
+             return;
         
         TranslationEngineInfo tei = new TranslationEngineInfo();
         tei.setName("Apertiumtest");
@@ -161,7 +165,7 @@ public class DaemonTest extends TestCase {
         {
         d = new Daemon(1, dc, tei);
         d.start();
-        QueueElement qe = new QueueElement(1, new TextContent("Hola, esto es una frase de prueba y esto otra. Tenemos un problema con los puntos."), Format.txt,new LanguagePair("es", "ca"), Thread.currentThread() , null);
+        QueueElement qe = new QueueElement(1, new TextContent(Format.txt,"Hola, esto es una frase de prueba y esto otra. Tenemos un problema con los puntos."),new LanguagePair("es", "ca"), Thread.currentThread() , null);
         d.assignQueueElement(qe);
         d.translate(qe, 10000);
         System.out.println(qe.getTranslation());
@@ -191,6 +195,10 @@ public class DaemonTest extends TestCase {
 
      public void testTranslateDocumentWithoutConfigParsing()
     {
+
+         if(!DO_TESTS)
+             return;
+         
         TranslationEngineInfo tei = new TranslationEngineInfo();
         tei.setName("Apertiumtest");
         tei.setDeformatOutFromPipeline(true);
@@ -264,7 +272,7 @@ public class DaemonTest extends TestCase {
         is.close();
         baos.close();
 
-        QueueElement qe2 = new QueueElement(1, new BinaryDocument(baos.toByteArray()), Format.rtf,new LanguagePair("es", "ca"), Thread.currentThread() , null);
+        QueueElement qe2 = new QueueElement(1, new BinaryDocument(Format.rtf,baos.toByteArray()),new LanguagePair("es", "ca"), Thread.currentThread() , null);
         d.assignQueueElement(qe2);
         d.translate(qe2, 10000);
         assertTrue(qe2.getTranslation().isBinary());
