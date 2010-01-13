@@ -20,6 +20,7 @@ package org.scalemt.daemon;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -216,7 +217,7 @@ public class Daemon {
                                 QueueElement element = localResultsQueue.poll();
                                 if (element != null) {
                                     if (element.getId() == currentId) {
-                                        element.setTranslation(new TextContent(text.toString()));
+                                        element.setRawTranslation(text.toString().getBytes("UTF-8"));
                                     } else {
                                         logger.error("Daemon - EngineReader " + daemonInformation.getId() + ": Read translation id (" + currentId + ") that doesn't match translation queue element(" + element.getId() + ")");
                                         element.setTranslation(null);
@@ -343,7 +344,7 @@ public class Daemon {
                     }
                     }
                     textToWrite.append("\"--]\n");*/
-                    textToWrite.append(queueElement.getSource().toString());
+                    textToWrite.append(new String(queueElement.getRawContent(),"UTF-8"));
                     textToWrite.append("\n");
                     if(translationEngine.getTranslationCore().isSeparateAfterDeformat())
                     {
@@ -688,7 +689,7 @@ public class Daemon {
     public  void translate(QueueElement element, long timeout) throws TranslationEngineException{
 
         List<Program> programs =translationEngine.getPrograms();
-        Map<Integer,Content> memoryVars= new HashMap<Integer, Content>();
+        Map<Integer,byte[]> memoryVars= new HashMap<Integer,byte[]>();
         Map<Integer,String> fileVars= new HashMap<Integer, String>();
         int output=-10;
         int input=-1;
@@ -709,35 +710,43 @@ public class Daemon {
             //else
             //    memoryVars.put(entry.getKey(), new StringBuilder());
         }
-        StringBuilder inBuilder,outBuilder;
+
+        byte[] inVariable;
         if(translationEngine.getTranslationCore().isSeparateAfterDeformat())
         {
-            inBuilder=new StringBuilder(element.getSource().toString());
-            //inBuilder.append("\n");
+            inVariable=element.getSource().toByteArray();
         }
         else
         {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             String startText = translationEngine.getTranslationCore().getTextBefore().replaceAll("\\$id", Long.toString(element.getId()));
             String endText = translationEngine.getTranslationCore().getTextAfter().replaceAll("\\$id", Long.toString(element.getId()));
-            inBuilder=new StringBuilder(startText);
-            inBuilder.append("\n");
-            inBuilder.append(element.getSource().toString());
-            inBuilder.append("\n");
-            inBuilder.append(endText);
-            //inBuilder.append("\n");
+            byte[] startBytes = startText.getBytes("UTF-8");
+            byte[] endBytes = endText.getBytes("UTF-8");
+            byte[] newLineBytes ="\n".getBytes("UTF-8");
+            byte[] inputTextBytes = element.getSource().toByteArray();
+
+            baos.write(startBytes, 0, startBytes.length);
+            baos.write(newLineBytes, 0, newLineBytes.length);
+            baos.write(inputTextBytes, 0, inputTextBytes.length);
+            baos.write(newLineBytes, 0, newLineBytes.length);
+            baos.write(endBytes, 0, endBytes.length);
+            baos.close();
+            inVariable=baos.toByteArray();
+            
         }
-        //outBuilder=new StringBuilder();
-        memoryVars.put(-1, new TextContent(inBuilder.toString()));
-        memoryVars.put(-2, new TextContent(""));
+        
+        memoryVars.put(-1,inVariable );
+        memoryVars.put(-2, new byte[10]);
 
         while(output!=-2)
         {
             if(translationEngine.getTranslationCore().getInput()==input)
             {
-                 output=translationEngine.getTranslationCore().getOutput();
+                output=translationEngine.getTranslationCore().getOutput();
                 logger.debug("Daemon "+ this.getId() +". Translation "+element.getId()+". Calling translation engine");
                 boolean isTimeout=true;
-                element.setSource(memoryVars.get(input));
+                element.setRawContent(memoryVars.get(input));
                  try {
                     element.setException(null);
                     writingQueue.put(element);
@@ -748,7 +757,7 @@ public class Daemon {
                     {
                             throw element.getException();
                     }
-                    memoryVars.put(output,element.getTranslation());
+                    memoryVars.put(output,element.getRawTranslation());
                 }
                 if(isTimeout)
                     throw new TranslationEngineException("Timeout waiting for translation core");
@@ -801,11 +810,11 @@ public class Daemon {
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
                             if(program.getInFilter()!=null)
                             {
-                                writer.write(program.getInFilter().replaceAll("\\$in", memoryVars.get(program.getInput()).toString()));
+                                writer.write(program.getInFilter().replaceAll("\\$in", new String(memoryVars.get(program.getInput()),"UTF-8")));
                             }
                             else
                             {
-                                writer.write(memoryVars.get(program.getInput()).toString());
+                                writer.write(new String(memoryVars.get(program.getInput()),"UTF-8"));
                             }
                             writer.flush();
                             writer.close();
@@ -822,7 +831,7 @@ public class Daemon {
                         // if(memoryVars.containsKey(output))
                         //{
                             //Read process output
-                             memoryVars.put(output, new BinaryDocument(stdoutGobbler.getReadBytes()));
+                             memoryVars.put(output, stdoutGobbler.getReadBytes());
                         //}
                         if(p.waitFor()!=0)
                             throw new TranslationEngineException("Exit value of program "+programCommand+" != 0");
@@ -848,13 +857,13 @@ public class Daemon {
         {
             outputStr.delete(0, outputStr.indexOf("\n")+1);
             outputStr.delete(outputStr.lastIndexOf("\n"), outputStr.length());
-            memoryVars.put(-2, new TextContent(outputStr.toString()));
+            memoryVars.put(-2,outputStr.toString().getBytes("UTF-8"));
         }
 
         if(inputBinary)
-            element.setTranslation(memoryVars.get(-2));
+            element.setTranslation(new BinaryDocument(element.getFormat(), memoryVars.get(-2)));
         else
-            element.setTranslation(new TextContent(memoryVars.get(-2).toString()));
+            element.setTranslation(new TextContent(element.getFormat(),new String(memoryVars.get(-2),"UTF-8")));
 
 
         }
@@ -882,9 +891,9 @@ public class Daemon {
     public synchronized void assignQueueElement(QueueElement element) {
         readWriteLock.writeLock().lock();
         engineWriter.getRequestsBeforeCore().add(element.getId());
-        daemonInformation.setCharactersInside(daemonInformation.getCharactersInside() + element.getSource().length());
+        daemonInformation.setCharactersInside(daemonInformation.getCharactersInside() + element.getSource().getLength());
         readWriteLock.writeLock().unlock();
-        charactersPerTranslation.put(element.getId(), (long) (element.getSource().length()));
+        charactersPerTranslation.put(element.getId(), (long) (element.getSource().getLength()));
         element.setDaemon(this);
     }
 
@@ -1106,7 +1115,7 @@ public class Daemon {
         statusTimer.cancel();
         TrashSender tsender = new TrashSender(processWriter);
         Thread t = new Thread(tsender);
-        QueueElement element=new QueueElement(1, new TextContent(translationEngine.getTranslationCore().getTrash()), Format.txt, this.getConfiguration().getLanguagePair(), Thread.currentThread(), null);
+        QueueElement element=new QueueElement(1, new TextContent( Format.txt,translationEngine.getTranslationCore().getTrash()), this.getConfiguration().getLanguagePair(), Thread.currentThread(), null);
         boolean error=true;
 
        

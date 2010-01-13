@@ -26,9 +26,8 @@ package org.scalemt.rmi.transferobjects;
 
 /**
  * Translation source format.
- * Now upported format are only plain text and html
  * @author vitaka
  */
 public enum Format {
-    txt, html, rtf
+    txt, html, rtf, odt
 }

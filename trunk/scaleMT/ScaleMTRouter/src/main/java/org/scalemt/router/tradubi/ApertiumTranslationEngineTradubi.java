@@ -221,7 +221,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
                 throw new UnsupportedLanguagePairException();
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(sourceHtml), reqPair, Format.html, UserType.registered,dictionaries).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair,  UserType.registered,dictionaries).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
 			throw new TranslationEngineException(e);
@@ -240,7 +240,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
                 throw new UnsupportedLanguagePairException();
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(sourceText), reqPair, Format.txt, UserType.registered,dictionaries).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, UserType.registered,dictionaries).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
 			throw new TranslationEngineException(e);

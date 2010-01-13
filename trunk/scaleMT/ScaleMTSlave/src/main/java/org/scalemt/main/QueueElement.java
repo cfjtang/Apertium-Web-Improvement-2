@@ -41,20 +41,21 @@ public class QueueElement {
      */
 	private Content source;
 
+        private byte[] rawContent;
+
     /**
      * Language pair: source language and target language
      */
 	private LanguagePair languagePair;
 
-    /**
-     * Input fomrat: plain text, html, etc.
-     */
-	private Format format;
+    
 
     /**
      * Translated source
      */
 	private Content translation;
+
+        private byte[] rawTranslation;
 
     /**
      * Thread to be interrupted when translation is performed
@@ -94,12 +95,12 @@ public class QueueElement {
      * @param caller Caller thread
      */
 	public QueueElement(long id, Content text,
-			Format format,LanguagePair languagePair, Thread caller, List<Long> dictionaries) {
+			LanguagePair languagePair, Thread caller, List<Long> dictionaries) {
 		super();
 		this.id = id;
 		this.source = text;
 
-                this.format=format;
+                
 		this.languagePair = languagePair;
 		this.caller = caller;
 		this.exception=null;
@@ -136,14 +137,12 @@ public class QueueElement {
 
 
 	public Format getFormat() {
-		return format;
+		return source.getFormat();
 	}
 
 
 
-	public void setFormat(Format format) {
-		this.format = format;
-	}
+	
 
 	public Content getTranslation() {
 		return translation;
@@ -193,6 +192,22 @@ public class QueueElement {
 
     public void setDaemon(Daemon daemon) {
         this.daemon = daemon;
+    }
+
+    public byte[] getRawContent() {
+        return rawContent;
+    }
+
+    public void setRawContent(byte[] rawContent) {
+        this.rawContent = rawContent;
+    }
+
+    public byte[] getRawTranslation() {
+        return rawTranslation;
+    }
+
+    public void setRawTranslation(byte[] rawTranslation) {
+        this.rawTranslation = rawTranslation;
     }
 	
 	

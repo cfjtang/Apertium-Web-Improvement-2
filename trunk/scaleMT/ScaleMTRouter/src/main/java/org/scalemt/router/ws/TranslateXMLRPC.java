@@ -24,7 +24,7 @@ public class TranslateXMLRPC {
         try
         {
         LanguagePair pair= new LanguagePair(sourceLang, targetLang);
-        String translation=LoadBalancer.getInstance().translate(new TextContent(sourceText), pair, Format.txt, UserType.anonymous, null).toString();
+        String translation=LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), pair, UserType.anonymous, null).toString();
         return translation;
         }
         catch(Exception e)
@@ -38,7 +38,7 @@ public class TranslateXMLRPC {
         try
         {
          LanguagePair pair= new LanguagePair(sourceLang, targetLang);
-         byte[] translatedDocuemnt =LoadBalancer.getInstance().translate(new BinaryDocument(sourceDocument), pair, Format.html, UserType.anonymous, null).toByteArray();
+         byte[] translatedDocuemnt =LoadBalancer.getInstance().translate(new BinaryDocument( Format.rtf,sourceDocument), pair, UserType.anonymous, null).toByteArray();
         return translatedDocuemnt;
         }
         catch(Exception e)
