@@ -16,7 +16,7 @@ scaleMT/ScaleMTSlave/src/main/assembly-files/conf/translation-engines.xml
 <translation-engines>
 
 <!-- Definition of a translation engine. We can define a name, but it is not compulsory -->
-<tranlation-engine name="NAME">
+<engine name="NAME">
 
     <!-- List of language pairs supported by the engine -->
     <pairs>
@@ -95,18 +95,18 @@ scaleMT/ScaleMTSlave/src/main/assembly-files/conf/translation-engines.xml
             </translation-core>
 
             <!-- A process that is launched for each translation request -->
-            <process>
+            <program>
                 <!-- Command to launch the process. The following wildcards are allowed:
                     $f -> Format of the request to be translated (or of the daemon, if format-indp=no )
                     $p -> Language pair of the daemon
                     $ID -> File variable whose id is ID
                 -->
-                <exec>COMMAND TO RUN THE TRANSLATION CORE $f</exec>
+                <exec>COMMAND TO LAUNCH THE PROCESS $f</exec>
                 <!-- Variable that will be written to process standard input -->
                 <in>ID</in>
                 <!-- Variable that will be read from process standard output -->
                 <out>ID</out>
-            </process>
+            </program>
 
             <!-- You can define as many <process> elements as you want.
             For each translation, the daemon will search the process whose standard input is "in",
@@ -180,6 +180,6 @@ scaleMT/ScaleMTSlave/src/main/assembly-files/conf/translation-engines.xml
 
     </separation>
     
-</tranlation-engine>
+</engine>
 
 </translation-engines>

@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/translation-engines.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE translation-engines SYSTEM "translation-engines.dtd">
+
+    <translation-engines>
+    ...
+    </translation-engines>
+-->
+
+<!ELEMENT translation-engines (engine)*>
+
+<!ELEMENT engine (pairs,formats,processes,separation)*>
+<!ATTLIST engine
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT pairs (pair)+>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT pair (source,target)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT source (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT target (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT formats (format)+>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT format (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT processes (variables,pipeline)>
+<!ATTLIST processes
+    format-indp ( yes | no ) #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT variables (file|memory)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT memory EMPTY>
+<!ATTLIST memory
+    id NMTOKEN #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT file EMPTY>
+<!ATTLIST file
+    id NMTOKEN #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT pipeline (program*,translation-core,program*)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT translation-core (exec,in,out)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT exec (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT in (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT out (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT program (exec,in,in-filter?,out)>
+<!ATTLIST program
+    name CDATA #IMPLIED
+  >
+
+<!ELEMENT in-filter (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT separation (before,after,padding?,null-flush?)>
+<!ATTLIST separation
+    in-core ( yes | no ) #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT before (regexps,text)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT text (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT regexps (regexp)+>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT regexp (#PCDATA)>
+<!ATTLIST regexp
+    id-field CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT after (regexps,text)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT padding (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT null-flush EMPTY>
