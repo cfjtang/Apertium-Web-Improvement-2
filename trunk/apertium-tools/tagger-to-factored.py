@@ -1,18 +1,35 @@
-# Convert a file tagged with the apertium-tagger -p -g to the factored
-# format required by Moses
-
-# Copyright (c) 2009 Francis Tyers, released under the GNU GPL.
-
-
 #!/usr/bin/python
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
+# Convert a file tagged with the apertium-tagger -p -g to the factored
+# format required by Moses
+
+# Copyright (c) 2009 Francis Tyers, released under the GNU GPL.
 import sys, codecs, copy, commands;
 
 sys.stdin  = codecs.getreader('utf-8')(sys.stdin);
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+
+n_tags = -1;
+
+if len(sys.argv) == 2: #{
+	try: #{
+		n_tags = int(sys.argv[1]);
+	except: #{
+		print 'tagger-to-factored.py NUMTAGS';
+		print 'Values for NUMTAGS:';
+		print '  0: No tags, just lemmatisation (2 factors)';
+		print '  1: Only first (POS) tag (3 factors)';
+		print ' >1: First (POS) tag and NUMTAGS morphological tags (4 factors)';
+		print 'Default is to print out all tags';
+		
+		sys.exit(-1);
+	#}
+#}
+
+print n_tags;
 
 c = sys.stdin.read(1);
 
@@ -22,7 +39,7 @@ c = sys.stdin.read(1);
 #  2. ^mont da get/mont<vblex><inf># da get$
 #  3. ^mat-tre/mat<adj><mf><sp>+tre<adv>$
 #
-def processWord(c): #{
+def processWord(c, _tags): #{
 	superficial = '';
 	lemma = '';
 	analysis = '';
@@ -47,7 +64,13 @@ def processWord(c): #{
 	#}
 
 	if unknown == True: #{
-		sys.stdout.write(superficial + '|' + lemma + '|?|? ' );
+		if _tags == 0: #{
+			sys.stdout.write(superficial + '|' + lemma + ' ' );
+		elif _tags == 1: #{
+			sys.stdout.write(superficial + '|' + lemma + '|? ' );
+		else: #{
+			sys.stdout.write(superficial + '|' + lemma + '|?|? ' );
+		#}
 	#}
 
 	while c != '$': #{
@@ -91,18 +114,34 @@ def processWord(c): #{
 		tag = tags.replace('><','.').strip('+><');
 	#}
 
-	sys.stdout.write(superficial + '|' + lemma + '|' + tag + '|' + tags.replace('><','.').strip('+><') + ' ' );
+	if _tags == 0: #{
+		sys.stdout.write(superficial + '|' + lemma + ' ');
+	elif _tags == 1: #{
+		sys.stdout.write(superficial + '|' + lemma + '|' + tag + ' ');
+	elif _tags > 1: #{
+		row_tags = tags.replace('><', '.').strip('+><').split('.');
+		tags = '.'.join(row_tags[0:_tags]);
+		sys.stdout.write(superficial + '|' + lemma + '|' + tag + '|' + tags + ' ' );
+	else: #{
+		sys.stdout.write(superficial + '|' + lemma + '|' + tag + '|' + tags.replace('><','.').strip('+><') + ' ' );
+	#}
 #}
 
 while c: #{
 	# Beginning of a lexical unit
 	if c == '^': #{
-		processWord(c);
+		processWord(c, n_tags);
 	#}
 
 	# In some analysers, the comma is not analysed, it should be
 	if c == ',': #{
-		sys.stdout.write(',|,|cm|cm');
+		if n_tags == 0: #{
+			sys.stdout.write(',|,');
+		elif n_tags == 1: #{
+			sys.stdout.write(',|,|cm');
+		else: #{
+			sys.stdout.write(',|,|cm|cm');
+		#}
 	#}
 
 	# Newline is newline
