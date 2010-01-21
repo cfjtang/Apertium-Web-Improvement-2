@@ -29,8 +29,6 @@ if len(sys.argv) == 2: #{
 	#}
 #}
 
-print n_tags;
-
 c = sys.stdin.read(1);
 
 # Process a lexical unit, examples:
