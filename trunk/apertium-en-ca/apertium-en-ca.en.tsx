@@ -826,6 +826,10 @@
     </label-sequence>
     <label-sequence>
       <label-item label="NOADV"/>
+      <label-item label="ADJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="NOADV"/>
       <label-item label="ACR"/>
     </label-sequence>
     <label-sequence>
