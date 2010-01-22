@@ -159,12 +159,12 @@
 
 
     <def-cat n="adj">
-      <cat-item lemma="adj"  tags="SA.*"/>
-      <cat-item lemma="adjsup"  tags="SA.*"/>
-      <cat-item lemma="pp_pr_np"  tags="SA.*"/>
-      <cat-item lemma="adv_ger"  tags="SA.*"/>
-      <cat-item lemma="adj_ger"  tags="SA.*"/>
-      <cat-item lemma="nom_ger"  tags="SA.*"/>
+      <cat-item lemma="adj" tags="SA.*"/>
+      <cat-item lemma="adjsup" tags="SA.*"/>
+      <cat-item lemma="pp_pr_np" tags="SA.*"/>
+      <cat-item lemma="adv_ger" tags="SA.*"/>
+      <cat-item lemma="adj_ger" tags="SA.*"/>
+      <cat-item lemma="nom_ger" tags="SA.*"/>
     </def-cat>
 
     <def-cat n="DET">
@@ -7910,6 +7910,29 @@ Your mother and you will come - La vostra mare i tu vindran
 	    </choose>
 	  </when>
 	</choose>
+	<choose>
+	<when>
+	<test>
+	<equal caseless="yes">
+		<clip pos="1" part="lem"/>
+		<lit v="adjsup"/>
+	</equal>
+	</test>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+	    <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>	  
+	</out>
+	</when>
+	<otherwise>
 	<out>
 	  <chunk>
 	    <get-case-from pos="1">
@@ -7927,6 +7950,8 @@ Your mother and you will come - La vostra mare i tu vindran
 	    <clip pos="1" part="chcontent"/>
 	  </chunk>	  
 	</out>
+	</otherwise>
+	</choose>
 	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="2"/>
 	</call-macro>
@@ -8119,7 +8144,30 @@ Your mother and you will come - La vostra mare i tu vindran
 	      </otherwise>
 	    </choose>
 	  </when>
-	</choose>	      
+	</choose>	
+	<choose>
+	<when>
+	<test>
+	<equal caseless="yes">
+	<clip pos="2" part="lem"/>
+	<lit v="adjsup"/>
+	</equal>
+	</test>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>	 
+	</out>
+	</when>
+	<otherwise>	      
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
@@ -8133,6 +8181,8 @@ Your mother and you will come - La vostra mare i tu vindran
 	    <clip pos="2" part="whole"/>
 	  </chunk>	  
 	</out>
+	</otherwise>
+	</choose>
 	<call-macro n="determina_nbr_gen_SN">
 	  <with-param pos="3"/>
 	</call-macro>
