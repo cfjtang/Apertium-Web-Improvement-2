@@ -7,7 +7,8 @@
 <div style="width:inherit;background-color:orange;text-align:center;border:0px;padding:4px;">
 
 <?
-    include '/home/fran/public_html/basque/berria/rss_php.php';
+//    include '/home/fran/public_html/basque/berria/rss_php.php';
+    include 'rss_php.php';
 
     $rss = new rss_php;
     $rss->load('http://sourceforge.net/export/rss2_projnews.php?group_id=143781');
