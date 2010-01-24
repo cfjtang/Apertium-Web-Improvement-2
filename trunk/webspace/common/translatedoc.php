@@ -46,8 +46,8 @@ function show_form($text, $dir) {
 	
 	// Translate & Reset
 	print '<tr><td><div>';
-	print '<input type="submit" value="' . _("Translate") . '" class="submit" title="' . _("Clic here to translate") . '"/>';
-	print '<input type="reset" value="' . _("Reset") . '" class="reset" title="' . _("Clic here to reset") . '"/>';
+	print '<input type="submit" value="' . _("Translate") . '" class="submit" title="' . _("Click here to translate") . '"/>';
+	print '<input type="reset" value="' . _("Reset") . '" class="reset" title="' . _("Click here to reset") . '"/>';
 	print '</div></td></tr></table></fieldset></form>';
 	
 }
