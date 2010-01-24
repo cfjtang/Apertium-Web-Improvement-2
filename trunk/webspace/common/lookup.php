@@ -35,6 +35,7 @@ function show_form($textbox, $dir) {
 	print "<option class='beta' value='en-es-lr' " . ($dir == 'en-es' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Spanish") . " (beta)</option>";
 	print "<option value='en-pl-lr' " . ($dir == 'en-pl' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Polish") . "</option>";
 	print "<option value='eo-en-rl' " . ($dir == 'en-eo' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Esperanto") . "</option>";
+	print "<option value='ht-en-rl' " . ($dir == 'ht-eo' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Haitian Creole") . "</option>";
 
 	print "<option class='header' value='' disabled='true'>" . _("Esperanto") . "</option>";
 	print "<option value='eo-es-lr' " . ($dir == 'eo-es' ? ' selected=true' : '') . ">" . _("Esperanto") . " &rarr; " . _("Spanish") . "</option>";
@@ -56,6 +57,9 @@ function show_form($textbox, $dir) {
 	print "<option class='header' value='' disabled='true'>" . _("French") . "</option>";
 	print "<option value='fr-ca-lr' " . ($dir == 'fr-ca' ? ' selected=true' : '') . ">" . _("French") . " &rarr; " . _("Catalan") . "</option>";
 	print "<option value='fr-es-lr' " . ($dir == 'fr-es' ? ' selected=true' : '') . ">" . _("French") . " &rarr; " . _("Spanish") . "</option>";	
+
+	print "<option class='header' value='' disabled='true'>" . _("Haitian Creole") . "</option>";
+	print "<option value='ht-en-lr' " . ($dir == 'ht-en' ? ' selected=true' : '') . ">" . _("Haitian Creole") . " &rarr; " . _("English") . "</option>";
 
 	print "<option class='header' value='' disabled='true'>" . _("Occitan") . "</option>";
 	print "<option value='oc-ca-lr' " . ($dir == 'oc-ca' ? ' selected=true' : '') . ">" . _("Occitan") . " &rarr; " . _("Catalan") . "</option>";	
