@@ -169,14 +169,22 @@
         <!-- Processes  -->
         <processes format-indp="yes">
             <variables>
-                <file id="1" />
+                 <file id="1" />
                 <memory id="2"/>
+                <memory id="4"/>
                 <memory id="3"/>
+                <memory id="5"/>
+                <dir id="6" />
             </variables>
             <pipeline>
+                <program name="predeformat" onlyFormats="odt">
+            		<exec>/home/vmsanchez/local/bin/apertium-predes$f $6</exec>
+            		<in>in</in>
+            		<out>4</out>
+            	</program>
                 <program name="apertium deformatter">
                     <exec>/usr/local/bin/apertium-des$f</exec>
-                    <in>in</in>
+                    <in>4</in>
                     <out>2</out>
                 </program>
                 <translation-core>
@@ -187,7 +195,12 @@
                 <program name="apertium reformatter">
                     <exec>/usr/local/bin/apertium-re$f</exec>
                     <in>3</in>
-                    <out>out</out>
+                    <out>5</out>
+                </program>
+                 <program name="postreformat" onlyFormats="odt">
+                	<exec>/home/vmsanchez/local/bin/apertium-postre$f $6</exec>
+            		<in>5</in>
+            		<out>out</out>
                 </program>
             </pipeline>
         </processes>
