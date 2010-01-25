@@ -7,15 +7,19 @@ package org.scalemt.rmi.transferobjects;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 
 /**
  *
@@ -44,25 +48,41 @@ public class BinaryDocument extends Content{
         {
             //For odt, unzip, and read content.xml
             case odt:
+            FileOutputStream  fos=null;
+            ZipFile zfile=null;
             try
             {
-                ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-                ZipInputStream  zis = new ZipInputStream(bais);
-
+                fos = new FileOutputStream(System.getProperty("java.io.tmpdir")+"/"+Thread.currentThread().toString()+".odt");
+                fos.write(bytes);
+                fos.close();
+                
+                zfile= new ZipFile(System.getProperty("java.io.tmpdir")+"/"+Thread.currentThread().toString()+".odt");
+                Enumeration entries = zfile.entries();
                 ZipEntry entry=null;
-                while((entry=zis.getNextEntry())!=null)
+                while(entries.hasMoreElements())
                 {
+                    entry=(ZipEntry) entries.nextElement();
                     if(!entry.isDirectory() && entry.getName().equals("content.xml"))
                     {
                         returnValue= (int) entry.getSize();
                         break;
                     }
                 }
-               
+
             }
             catch(IOException e)
             {
                e.printStackTrace();
+            }
+            finally
+            {
+                
+
+                if(zfile!=null)
+                    try {
+                zfile.close();
+                } catch (IOException ex) {
+                }
             }
 
             break;
