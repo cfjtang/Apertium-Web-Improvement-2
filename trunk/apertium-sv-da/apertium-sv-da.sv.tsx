@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE tagger SYSTEM "../tagger.dtd">
 <tagger name="swedish">
 <tagset>
    <def-label name="PREP" closed="true">
@@ -22,7 +21,7 @@
   </def-label>
   <def-label name="PRN" closed="true">
     <tags-item tags="prn.*"/>
-  </def-label> 
+  </def-label>
   <def-label name="ONLYPRN" closed="true">
     <tags-item tags="prn"/>
   </def-label>
@@ -40,7 +39,7 @@
   </def-label>
   <def-label name="DETDEF" closed="true">
     <tags-item tags="det.def.*"/>
-  </def-label> 
+  </def-label>
   <def-label name="DETPOS" closed="true">
     <tags-item tags="det.pos.*"/>
   </def-label>
@@ -70,6 +69,9 @@
   </def-label>
   <def-label name="ADV">
     <tags-item tags="adv"/>
+  </def-label>
+  <def-label name="PREADV">
+    <tags-item tags="preadv"/>
   </def-label>
   <def-label name="ADVS">
     <tags-item tags="adv.*"/>
@@ -139,10 +141,10 @@
   </def-label>
   <def-label name="VBSPRET" closed="true">
     <tags-item tags="vbs.part"/>
-  </def-label>  
+  </def-label>
   <def-label name="VBSINF" closed="true">
     <tags-item tags="vbs.inf"/>
-  </def-label>  
+  </def-label>
    <def-label name="VBLEXPRS" closed="true">
     <tags-item tags="vblex.pres.*"/>
   </def-label>
@@ -206,10 +208,10 @@
     <tags-item tags="vbhaver.pp.*"/>
   </def-label>
   <def-label name="VAUXINF" closed="true">
-    <tags-item tags="vaux.inf"/>
+    <tags-item tags="vaux.inf.*"/>
   </def-label>
   <def-label name="VAUXPRES" closed="true">
-    <tags-item tags="vaux.pres"/>
+    <tags-item tags="vaux.pres.*"/>
   </def-label>
   <def-label name="VAUXPAST" closed="true">
     <tags-item tags="vaux.past"/>
@@ -648,7 +650,7 @@
     <label-sequence>
       <label-item label="DETDEM"/>
       <label-item label="DETIND"/>
-    </label-sequence>    
+    </label-sequence>
     <label-sequence>
       <label-item label="DETIND"/>
       <label-item label="NP"/>
@@ -808,135 +810,135 @@
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBSPRET"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBERPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBERDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBERRPET"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBHARPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBHARDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBHARPRET"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="ADJ"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="VBLEX"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="VBHAR"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="VBER"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="VBMOD"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="VBSDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="VBSPRET"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="PRNOBJ"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBMOD"/>
       <label-item label="PRNREL"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBLEXPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBLEXDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBERPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBERDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBHARPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBHARDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBAUXPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBAUXDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBMOD"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBLEXPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBLEXDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBERPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBERDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBHARPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBHARDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBAUXPRS"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBAUXDA"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBMOD"/>
@@ -944,93 +946,93 @@
     <label-sequence>
       <label-item label="VBS"/>
       <label-item label="VBER"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBS"/>
       <label-item label="VBHAR"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBS"/>
       <label-item label="VBMOD"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBS"/>
       <label-item label="VBAUX"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="VBS"/>
       <label-item label="VBLEX"/>
-    </label-sequence>	
+    </label-sequence>
 
 
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="PR"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="ADV"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="PRNTN"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="PRNOBJ"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBLEX"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBER"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBHAR"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBAUX"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBMOD"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="DETPOS"/>
       <label-item label="VBS"/>
-    </label-sequence>	
+    </label-sequence>
 
     <label-sequence>
       <label-item label="NOMSNEUTREUTRE"/>
       <label-item label="IMP"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="NOMSNEUTRE"/>
       <label-item label="IMP"/>
-    </label-sequence>	
+    </label-sequence>
     <label-sequence>
       <label-item label="NOMSUTRE"/>
       <label-item label="IMP"/>
-    </label-sequence>	
+    </label-sequence>
 
     <label-sequence>
       <label-item label="IMP"/>
       <label-item label="IMP"/>
-    </label-sequence>	
+    </label-sequence>
 
 
     <label-sequence>
       <label-item label="VB"/>
       <label-item label="IMP"/>
-    </label-sequence>	
+    </label-sequence>
 
     <label-sequence>
-	<label-item label="PRNSUBJ"/>
-	<label-item label="ADVHÄR"/>
+  <label-item label="PRNSUBJ"/>
+  <label-item label="ADVHÄR"/>
     </label-sequence>
 
     </forbid>
@@ -1040,7 +1042,7 @@
       <enforce-after label="DETDEF">
         <label-set>
         <label-item label="ADVHÄR"/>
-      </label-set>	
+      </label-set>
      </enforce-after>
 
     </enforce-rules>
