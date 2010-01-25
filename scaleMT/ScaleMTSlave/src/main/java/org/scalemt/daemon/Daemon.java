@@ -21,7 +21,10 @@ package org.scalemt.daemon;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -44,7 +47,6 @@ import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.transferobjects.DaemonConfiguration;
 import org.scalemt.rmi.transferobjects.DaemonInformation;
 import org.scalemt.rmi.transferobjects.Format;
-import org.scalemt.rmi.transferobjects.LanguagePair;
 import org.scalemt.util.ServerUtil;
 import org.scalemt.util.StreamGobbler;
 import java.util.HashSet;
@@ -54,14 +56,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import org.apache.commons.lang.SerializationUtils;
-import org.hyperic.sigar.ProcMem;
 import org.hyperic.sigar.SigarException;
-import org.hyperic.sigar.SigarFileNotFoundException;
 import org.hyperic.sigar.ptql.ProcessFinder;
-import org.hyperic.sigar.ptql.ProcessQuery;
 import org.scalemt.main.TranslationEnginePool;
 import org.scalemt.rmi.transferobjects.BinaryDocument;
-import org.scalemt.rmi.transferobjects.Content;
 import org.scalemt.rmi.transferobjects.TextContent;
 
 /**
@@ -691,6 +689,7 @@ public class Daemon {
         List<Program> programs =translationEngine.getPrograms();
         Map<Integer,byte[]> memoryVars= new HashMap<Integer,byte[]>();
         Map<Integer,String> fileVars= new HashMap<Integer, String>();
+        Map<Integer,String> dirVars= new HashMap<Integer, String>();
         int output=-10;
         int input=-1;
         String programCommand;
@@ -707,8 +706,14 @@ public class Daemon {
         {
             if(entry.getValue()==VariableType.file)
                 fileVars.put(entry.getKey(), tmpDir+"/"+"scalablewebservice-"+this.getId()+"-"+element.getId()+"-"+entry.getKey());
-            //else
-            //    memoryVars.put(entry.getKey(), new StringBuilder());
+            else if(entry.getValue()==VariableType.dir)
+            {
+                String dirPath=tmpDir+"/"+"dirscalablewebservice-"+this.getId()+"-"+element.getId()+"-"+entry.getKey();
+                dirVars.put(entry.getKey(), dirPath);
+                new File(dirPath).mkdir();
+            }
+            else
+                memoryVars.put(entry.getKey(), new byte[1]);
         }
 
         byte[] inVariable;
@@ -770,80 +775,135 @@ public class Daemon {
                 {
                     if(program.getInput()==input)
                     {
-                        synchronized(program)
+                         output=program.getOutput();
+                        if(program.getOnlyFormats().contains(element.getFormat()))
                         {
-                        
-                        output=program.getOutput();
-
-                        //Prepare command
-                        programCommand=program.getCommand();
-                        for(Entry<Integer,String> entry: fileVars.entrySet())
-                            programCommand=programCommand.replaceAll("\\$"+entry.getKey(), entry.getValue());
-                        programCommand=programCommand.replaceAll("\\$f", element.getFormat().name());
-                        programCommand=programCommand.replaceAll("\\$p", element.getLanguagePair().toString());
-                        
-                        if(fileVars.containsKey(program.getInput()))
-                            programCommand=programCommand+" <"+fileVars.get(program.getInput());
-                        if(fileVars.containsKey(program.getOutput()))
-                            programCommand=programCommand+" >"+fileVars.get(program.getOutput());
-
-                        logger.debug("Daemon "+ this.getId() +". Translation "+element.getId()+". Launching "+programCommand);
-
-                        //Execute command
-                        StreamGobbler stdoutGobbler;
-
-                        try
-                        {
-
-                        //Execute command
-                        Process p =Runtime.getRuntime().exec(programCommand);
-
-                        //Create threads for reading stdout and stderr
-                        stdoutGobbler = new StreamGobbler(p.getInputStream());
-                        StreamGobbler stderrGobbler = new StreamGobbler(p.getErrorStream());
-                        stdoutGobbler.start();
-                        stderrGobbler.start();
-
-                        if(memoryVars.containsKey(program.getInput()))
-                        {
-                            //Write source text
-                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-                            if(program.getInFilter()!=null)
+                            synchronized(program)
                             {
-                                writer.write(program.getInFilter().replaceAll("\\$in", new String(memoryVars.get(program.getInput()),"UTF-8")));
-                            }
-                            else
+
+                            //Prepare command
+                            programCommand=program.getCommand();
+                            for(Entry<Integer,String> entry: fileVars.entrySet())
+                                programCommand=programCommand.replaceAll("\\$"+entry.getKey(), entry.getValue());
+                            for(Entry<Integer,String> entry: dirVars.entrySet())
+                                programCommand=programCommand.replaceAll("\\$"+entry.getKey(), entry.getValue());
+                            programCommand=programCommand.replaceAll("\\$f", element.getFormat().name());
+                            programCommand=programCommand.replaceAll("\\$p", element.getLanguagePair().toString());
+
+                            if(fileVars.containsKey(program.getInput()))
+                                programCommand=programCommand+" <"+fileVars.get(program.getInput());
+                            if(fileVars.containsKey(program.getOutput()))
+                                programCommand=programCommand+" >"+fileVars.get(program.getOutput());
+
+                            logger.debug("Daemon "+ this.getId() +". Translation "+element.getId()+". Launching "+programCommand);
+
+                            //Execute command
+                            StreamGobbler stdoutGobbler;
+
+                            try
                             {
-                                writer.write(new String(memoryVars.get(program.getInput()),"UTF-8"));
+
+                            //Execute command
+                            Process p =Runtime.getRuntime().exec(programCommand);
+
+                            //Create threads for reading stdout and stderr
+                            stdoutGobbler = new StreamGobbler(p.getInputStream());
+                            StreamGobbler stderrGobbler = new StreamGobbler(p.getErrorStream());
+                            stdoutGobbler.start();
+                            stderrGobbler.start();
+
+                            if(memoryVars.containsKey(program.getInput()))
+                            {
+                                logger.trace("Writing input ("+input+") to program "+programCommand+" ("+memoryVars.get(program.getInput()).length+" bytes)");
+                                //Write source text
+                                //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+                                if(program.getInFilter()!=null)
+                                {
+                                     p.getOutputStream().write(program.getInFilter().replaceAll("\\$in", new String(memoryVars.get(program.getInput()),"UTF-8")).getBytes("UTF-8") );
+                                }
+                                else
+                                {
+                                    p.getOutputStream().write(memoryVars.get(program.getInput()));
+                                }
+                                //writer.flush();
+                                //writer.close();
+                                p.getOutputStream().close();
                             }
-                            writer.flush();
-                            writer.close();
-                        }
 
-                        //Wait for stdout reader thread to end reading
-                        try
+                            //Wait for stdout reader thread to end reading
+                            try
+                            {
+                            stdoutGobbler.join();
+                            }catch (InterruptedException e) {
+                                logger.error("Program interrupted", e);
+                            }
+
+                             if(memoryVars.containsKey(output))
+                            {
+                                //Read process output
+                                 memoryVars.put(output, stdoutGobbler.getReadBytes());
+                            }
+                            if(p.waitFor()!=0)
+                                throw new TranslationEngineException("Exit value of program "+programCommand+" != 0");
+
+                            }
+                            catch(IOException e)
+                            {
+                                logger.error("IOException executing program", e);
+                            }
+
+
+                            logger.trace("Daemon "+ this.getId() +". Translation "+element.getId()+". "+programCommand+" output: "+memoryVars.get(output).toString());
+                            }
+                        }
+                        else
                         {
-                        stdoutGobbler.join();
-                        }catch (InterruptedException e) {
-                            logger.error("Program interrupted", e);
-                        }
-
-                        // if(memoryVars.containsKey(output))
-                        //{
-                            //Read process output
-                             memoryVars.put(output, stdoutGobbler.getReadBytes());
-                        //}
-                        if(p.waitFor()!=0)
-                            throw new TranslationEngineException("Exit value of program "+programCommand+" != 0");
-
-                        }
-                        catch(IOException e)
-                        {
-                            logger.error("IOException executing program", e);
-                        }
-                       
-
-                        logger.trace("Daemon "+ this.getId() +". Translation "+element.getId()+". "+programCommand+" output: "+memoryVars.get(output).toString());
+                            if(memoryVars.containsKey(input))
+                            {
+                                byte[] inputBytes = memoryVars.get(input);
+                                if(memoryVars.containsKey(output))
+                                {
+                                    memoryVars.put(output, inputBytes);
+                                }
+                                else if(fileVars.containsKey(output))
+                                {
+                                    FileOutputStream fos = new FileOutputStream(fileVars.get(output));
+                                    fos.write(inputBytes);
+                                    fos.close();
+                                }
+                            }
+                            else if(fileVars.containsKey(program.getInput()))
+                            {
+                                if(memoryVars.containsKey(output))
+                                {
+                                    FileInputStream fis = new FileInputStream(fileVars.get(input));
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    byte[] buffer= new byte[100];
+                                    int read=fis.read(buffer);
+                                    while(read!=-1)
+                                    {
+                                        baos.write(buffer, 0, read);
+                                        read=fis.read(buffer);
+                                    }
+                                    fis.close();
+                                    baos.close();
+                                    memoryVars.put(output, baos.toByteArray());
+                                }
+                                else if(fileVars.containsKey(output))
+                                {
+                                    FileOutputStream fos = new FileOutputStream(fileVars.get(output));
+                                    FileInputStream fis = new FileInputStream(fileVars.get(input));
+                                    byte[] buffer= new byte[100];
+                                    int read=fis.read(buffer);
+                                    while(read!=-1)
+                                    {
+                                        fos.write(buffer, 0, read);
+                                        read=fis.read(buffer);
+                                    }
+                                    fis.close();
+                                    fos.close();
+                                }
+                            }
                         }
                     }
                 }

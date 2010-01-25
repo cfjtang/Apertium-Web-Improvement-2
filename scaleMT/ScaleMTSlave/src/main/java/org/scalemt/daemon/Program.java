@@ -6,6 +6,9 @@
 package org.scalemt.daemon;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import org.scalemt.rmi.transferobjects.Format;
 
 /**
  *
@@ -17,6 +20,15 @@ class Program implements Serializable{
     private String inFilter;
     private int input=-10;
     private int output=-10;
+    private Set<Format> onlyFormats;
+
+    public Program() {
+        onlyFormats=new HashSet<Format>();
+        for(Format f:Format.values())
+            onlyFormats.add(f);
+    }
+
+
 
     public String getCommand() {
         return command;
@@ -50,5 +62,11 @@ class Program implements Serializable{
         this.inFilter = inFilter;
     }
 
-    
+    public Set<Format> getOnlyFormats() {
+        return onlyFormats;
+    }
+
+    public void setOnlyFormats(Set<Format> onlyFormats) {
+        this.onlyFormats = onlyFormats;
+    }
 }

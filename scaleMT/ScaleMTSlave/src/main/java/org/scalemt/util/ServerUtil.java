@@ -19,6 +19,7 @@ package org.scalemt.util;
 
 import org.scalemt.main.TranslationEnginePool;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,6 +28,10 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.scalemt.rmi.transferobjects.BinaryDocument;
+import org.scalemt.rmi.transferobjects.Content;
+import org.scalemt.rmi.transferobjects.Format;
+import org.scalemt.rmi.transferobjects.TextContent;
 
 
 /**
@@ -104,6 +109,22 @@ public class ServerUtil {
 		
 	}
 
+        private static byte[] readInputStream(InputStream in) throws Exception
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[100];
+            int read=in.read(buffer);
+            while(read!=-1)
+            {
+                baos.write(buffer, 0, read);
+                read=in.read(buffer);
+            }
+            return baos.toByteArray();
+        }
+
+
+       
+
     /**
      * Reads the content of a text file represented by its path in the local filesystem.
      * @param path Path of the file in the local filesystem
@@ -137,5 +158,35 @@ public class ServerUtil {
 			return null;
 		}
 	}
+
+         public static byte[] readArrayFromClasspath(String path)
+        {
+            try
+		{
+		return readInputStream(TranslationEnginePool.class.getResourceAsStream(path));
+		}
+		catch (Exception e) {
+			logger.error("Cannot read file: "+path, e);
+			return null;
+		}
+        }
+
+         public static Content readContentFromClasspath(String path, Format format)
+         {
+             Content c=null;
+             if(format.equals(Format.txt) || format.equals(Format.html))
+             {
+                 String text = readFileFromClasspath(path);
+                 if(text!=null)
+                     c = new TextContent(format, text);
+             }
+             else
+             {
+                byte[] file = readArrayFromClasspath(path);
+                if(file!=null)
+                    c=new BinaryDocument(format, file);
+             }
+             return c;
+         }
 	
 }

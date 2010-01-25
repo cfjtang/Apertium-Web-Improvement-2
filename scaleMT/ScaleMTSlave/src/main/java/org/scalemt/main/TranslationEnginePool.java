@@ -50,6 +50,7 @@ import org.scalemt.util.ServerUtil;
 import java.util.HashSet;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.scalemt.rmi.transferobjects.BinaryDocument;
 import org.scalemt.rmi.transferobjects.Content;
 import org.scalemt.rmi.transferobjects.TextContent;
 
@@ -815,7 +816,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		if(uhdr==null || gpl==null)
 			throw new Exception("Cannot read corpora");
 		
-		//Send these translation first to ensure daemon is up
+		//Send these translations first to ensure daemon is up
 		translate(new TextContent(Format.txt,uhdr), comparationConf.getLanguagePair(),null);
 		translate(new TextContent(Format.txt,gpl), comparationConf.getLanguagePair(),null);
 		
@@ -897,8 +898,19 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		long t1,t2;
                 double txtSpeed=0;
 		String quijoteText = ServerUtil.readFileFromClasspath("/corpora/quijoteFragment.txt");
-		String quijoteHtml = ServerUtil.readFileFromClasspath("/corpora/quijote-1a22.htm");
-		
+		String quijoteHtml = ServerUtil.readFileFromClasspath("/corpora/quijoteFragment.html");
+
+                Map<Format,byte[]> binaryFiles= new HashMap<Format, byte[]>();
+                for(Format f: Format.values())
+                {
+                    if(!f.equals(Format.txt) && !f.equals(Format.html))
+                    {
+                        byte[] file = ServerUtil.readArrayFromClasspath("/corpora/quijoteFragment."+f.toString());
+                        if(file!=null)
+                            binaryFiles.put(f, file);
+                    }
+                }
+
 		logger.info("Calculating formats speed. Comparing with "+comparationFormat);
 		try
 		{
@@ -941,15 +953,34 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 				if(format.equals(Format.html))
 				{
                                     startDaemon(referenceConf);
-                                        translate(new TextContent(Format.html,quijoteHtml), referenceConf.getLanguagePair(), null);
-					t1=System.currentTimeMillis();
-					translate(new TextContent(Format.html,quijoteHtml), referenceConf.getLanguagePair(), null);
-					t2=System.currentTimeMillis();
-					
-					double speed = quijoteHtml.length()*1000/ (double) (t2-t1);
-					double ratio = txtSpeed/speed;
-					ratioMap.put(format, ratio);
+                                    translate(new TextContent(Format.html,quijoteHtml), referenceConf.getLanguagePair(), null);
+                                    t1=System.currentTimeMillis();
+                                    translate(new TextContent(Format.html,quijoteHtml), referenceConf.getLanguagePair(), null);
+                                    t2=System.currentTimeMillis();
+
+                                    double speed = quijoteHtml.length()*1000/ (double) (t2-t1);
+                                    double ratio = txtSpeed/speed;
+                                    ratioMap.put(format, ratio);
 				}
+                                else /*if(format.equals(Format.odt) || format.equals(Format.rtf))*/
+                                {
+                                    byte[] file= binaryFiles.get(format);
+                                    if(file!=null)
+                                    {
+                                        BinaryDocument doc = new BinaryDocument(format,file);
+                                        startDaemon(referenceConf);
+                                        translate(doc, referenceConf.getLanguagePair(), null);
+                                        t1=System.currentTimeMillis();
+                                        translate(doc, referenceConf.getLanguagePair(), null);
+                                        t2=System.currentTimeMillis();
+
+                                        double length =doc.calculateLength();
+                                        //System.err.println("t1="+t1+" t2="+t2+" length="+length);
+                                        double speed = length*1000/ (double) (t2-t1);
+                                        double ratio = txtSpeed/speed;
+                                        ratioMap.put(format, ratio);
+                                    }
+                                }
 					
                             }
                             

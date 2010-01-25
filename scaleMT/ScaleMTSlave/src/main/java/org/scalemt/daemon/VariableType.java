@@ -10,5 +10,5 @@ package org.scalemt.daemon;
  * @author vitaka
  */
 public enum VariableType {
-  memory,file
+  memory,file,dir
 }

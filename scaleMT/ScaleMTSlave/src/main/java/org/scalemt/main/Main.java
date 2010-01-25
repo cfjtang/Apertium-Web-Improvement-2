@@ -57,7 +57,9 @@ import org.scalemt.util.ModesXMLProcessor;
 import org.scalemt.util.ServerUtil;
 import java.io.BufferedReader;
 import java.rmi.NotBoundException;
+import java.util.AbstractList;
 import java.util.HashMap;
+import org.scalemt.rmi.transferobjects.Content;
 import org.scalemt.rmi.transferobjects.TextContent;
 
 public class Main {
@@ -207,8 +209,8 @@ public class Main {
                 
                 translationEnginePool.stop();
 
-                //Map<DaemonConfiguration,Integer> constantCost = calculateConstantCostPerRequest(line);
-                Map<DaemonConfiguration,Integer> constantCost = new HashMap<DaemonConfiguration, Integer>();
+                Map<Format,Integer> constantCost = calculateConstantCostPerRequest(line,refDc);
+                //Map<DaemonConfiguration,Integer> constantCost = new HashMap<DaemonConfiguration, Integer>();
 
                 Properties properties = new Properties();
                 Properties memProperties = new Properties();
@@ -216,7 +218,7 @@ public class Main {
                 for (Entry<DaemonConfiguration, Double> entry : langConversionRates.entrySet()) {
                     properties.setProperty(entry.getKey().toString(), entry.getValue().toString());
                 }
-                for (Entry<DaemonConfiguration, Integer> entry : constantCost.entrySet()) {
+                for (Entry<Format, Integer> entry : constantCost.entrySet()) {
                     properties.setProperty("constant_k_"+entry.getKey().toString(), entry.getValue().toString());
                 }
                 for (Entry<DaemonConfiguration, Integer> entry : memoryRequirements.entrySet()) {
@@ -304,7 +306,7 @@ public class Main {
                 }
 
             } else {
-                startSlave(line);
+                startSlave(line,true);
 
             }
 
@@ -314,7 +316,7 @@ public class Main {
         }
     }
 
-    private static void startSlave(CommandLine line)
+    private static void startSlave(CommandLine line,boolean registerWithRouter)
     {
                 String ownhost = line.getOptionValue("host", "localhost");
                 String remoteObjectName = line.getOptionValue("RMIname", "ScaleMTSlave");
@@ -404,12 +406,15 @@ public class Main {
                     registry.rebind(remoteObjectName, stub);
                     logger.info("Remote object " + remoteObjectName + " bound OK. Name: " + remoteObjectName + ". Port: " + remoteObjectPort);
 
-                    //Notify request router
-                    TranslationServerId serverid = new TranslationServerId(ownhost, Registry.REGISTRY_PORT, remoteObjectName);
-                    Registry routerregistry = LocateRegistry.getRegistry(routerHost, Integer.parseInt(ServerUtil.readProperty("requestrouter_port")));
-                    IApplicationRouter applicationRouter = (IApplicationRouter) routerregistry.lookup(ServerUtil.readProperty("requestrouter_objectname"));
-                    applicationRouter.addServer(serverid);
-                    logger.info("Server ready: registered with request router");
+                    if(registerWithRouter)
+                    {
+                        //Notify request router
+                        TranslationServerId serverid = new TranslationServerId(ownhost, Registry.REGISTRY_PORT, remoteObjectName);
+                        Registry routerregistry = LocateRegistry.getRegistry(routerHost, Integer.parseInt(ServerUtil.readProperty("requestrouter_port")));
+                        IApplicationRouter applicationRouter = (IApplicationRouter) routerregistry.lookup(ServerUtil.readProperty("requestrouter_objectname"));
+                        applicationRouter.addServer(serverid);
+                        logger.info("Server ready: registered with request router");
+                    }
 
                 } catch (Exception e) {
                     logger.error("Exception binding object or notifying request router", e);
@@ -445,7 +450,7 @@ public class Main {
         long start,end,time;
         Map<DaemonConfiguration,Integer> constatntCostMap = new HashMap<DaemonConfiguration, Integer>();
 
-        startSlave(line);
+        startSlave(line,false);
 
         //Get remote object
         try
@@ -467,7 +472,14 @@ public class Main {
 
             List<Thread> loops= new ArrayList<Thread>();
             for(int i=0; i<numThreads;i++)
-                loops.add(new Thread(new LoopTranslationSender(numLoops, textsToTranslate, translationEngine, d.getLanguagePair())));
+            {
+                List<Content> contentsToTranslate = new ArrayList<Content>();
+                 for(String str: textsToTranslate)
+                {
+                   contentsToTranslate.add(new TextContent(Format.txt, str));
+                }
+                loops.add(new Thread(new LoopTranslationSender(numLoops, contentsToTranslate, translationEngine, d.getLanguagePair())));
+            }
                 
          start = System.currentTimeMillis();
 
@@ -507,6 +519,75 @@ public class Main {
         return constatntCostMap;
     }
 
+    private static Map<Format, Integer> calculateConstantCostPerRequest(CommandLine line,DaemonConfiguration d) {
+
+        int numThreads=10;
+        int numLoops=100;
+        long start,end,time;
+        Map<Format,Integer> constatntCostMap = new HashMap<Format, Integer>();
+
+        startSlave(line,false);
+
+        //Get remote object
+        try
+        {
+         Registry registry = LocateRegistry.getRegistry(Registry.REGISTRY_PORT);
+        ITranslationEngine translationEngine = (ITranslationEngine) registry.lookup(Main.rminame);
+
+        for(Format f: d.getFormats())
+        {
+            logger.debug("Testing k for "+f);
+            translationEngine.startDaemon(d);
+            Content gpl = ServerUtil.readContentFromClasspath("/corpora/gpl_"+d.getLanguagePair().getSource()+"."+f.toString(),f);
+            Content udhr = ServerUtil.readContentFromClasspath("/corpora/UDHR_"+d.getLanguagePair().getSource()+"."+f.toString(),f);
+            List<Content> textsToTranslate = new ArrayList<Content>();
+            if(gpl!=null)
+                textsToTranslate.add(gpl);
+            if(udhr!=null)
+                textsToTranslate.add(udhr);
+
+            List<Thread> loops= new ArrayList<Thread>();
+            for(int i=0; i<numThreads;i++)
+                loops.add(new Thread(new LoopTranslationSender(numLoops, textsToTranslate, translationEngine, d.getLanguagePair())));
+
+         start = System.currentTimeMillis();
+
+         for(Thread t:loops)
+             t.start();
+
+         for(Thread t:loops)
+             t.join();
+
+         end = System.currentTimeMillis();
+         time=(end-start)/1000;
+
+         translationEngine.stopAllDaemonsLanguage(d);
+
+         int totalAmountOfChars = 0;
+         for(Content content: textsToTranslate)
+         {
+             totalAmountOfChars+=numLoops*content.getLength();
+         }
+
+         //k = ( capacity*time - numchars ) / numRequests
+         int requestK = (int) ((translationEngine.getServerInformation().getCpuCapacity() * time - totalAmountOfChars) / numLoops * textsToTranslate.size());
+         constatntCostMap.put(f, requestK);
+         logger.debug("Format="+f+". k="+requestK);
+
+        }
+
+        }
+        catch(Exception e)
+        {
+            logger.error("Exception calculating constant request cost", e);
+        }
+        finally{
+            stopSlave();
+        }
+
+        return constatntCostMap;
+    }
+
     
 
 }
@@ -514,12 +595,12 @@ public class Main {
 class LoopTranslationSender implements Runnable
     {
         private int numLoops;
-        private List<String> textsToTranslate;
+        private List<Content> textsToTranslate;
         private ITranslationEngine translationEngine;
         private LanguagePair l;
         private int successFullyTranslated;
 
-        public LoopTranslationSender(int numLoops, List<String> textsToTranslate, ITranslationEngine translationEngine, LanguagePair l) {
+        public LoopTranslationSender(int numLoops, List<Content> textsToTranslate, ITranslationEngine translationEngine, LanguagePair l) {
             this.numLoops = numLoops;
             this.textsToTranslate = textsToTranslate;
             this.translationEngine = translationEngine;
@@ -527,12 +608,22 @@ class LoopTranslationSender implements Runnable
             this.successFullyTranslated=0;
         }
 
+        /*
+        public LoopTranslationSender(int numLoops, List<String> textsToTranslate, ITranslationEngine translationEngine, LanguagePair l) {
+            this.numLoops = numLoops;
+            this.textsToTranslate = new ArrayList<Content>();
+            for(String str: textsToTranslate)
+            {
+                this.textsToTranslate.add(new TextContent(Format.txt, str));
+            }
+            this.translationEngine = translationEngine;
+            this.l=l;
+            this.successFullyTranslated=0;
+        }
+*/
         public int getSuccessFullyTranslated() {
             return successFullyTranslated;
         }
-
-
-
 
         @Override
         public void run() {
@@ -540,9 +631,9 @@ class LoopTranslationSender implements Runnable
             {
                 try {
 
-                    for(String text: textsToTranslate)
+                    for(Content text: textsToTranslate)
                     {
-                        translationEngine.translate(new TextContent(Format.txt,text), l, null);
+                        translationEngine.translate(text, l, null);
                         successFullyTranslated++;
                     }
                 } catch (TranslationEngineException ex) {

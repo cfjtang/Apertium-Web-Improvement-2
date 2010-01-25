@@ -262,6 +262,22 @@ public class DaemonFactory {
                                  {
                                      Program program=new Program();
                                      NodeList programElements = pipeNode.getChildNodes();
+                                     NamedNodeMap attribs =pipeNode.getAttributes();
+                                     Node ofNode= attribs.getNamedItem("onlyFormats");
+                                     if(ofNode!=null)
+                                     {
+                                         program.getOnlyFormats().clear();
+                                         String formats=ofNode.getNodeValue();
+                                         String[] pieces = formats.split(",");
+                                         for(String piece: pieces)
+                                         {
+                                             try
+                                             {
+                                                 program.getOnlyFormats().add(Format.valueOf(piece));
+                                             }
+                                             catch(IllegalArgumentException e){}
+                                         }
+                                     }
                                      for(int l=0; l<programElements.getLength();l++)
                                      {
                                          Node programEl=programElements.item(l);
