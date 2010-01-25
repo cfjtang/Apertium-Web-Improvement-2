@@ -43,6 +43,7 @@ public class TranslateXMLRPC {
         }
         catch(Exception e)
         {
+            e.printStackTrace();
             return new byte[1];
         }
     }

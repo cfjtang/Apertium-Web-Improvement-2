@@ -17,6 +17,8 @@
  */
 package org.scalemt.router.logic;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.slave.ITranslationEngine;
 import org.scalemt.rmi.transferobjects.DaemonConfiguration;
@@ -36,6 +38,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.scalemt.rmi.transferobjects.Content;
@@ -130,6 +133,11 @@ public class LoadBalancer {
                 period = now - lastExecution;
             }
             lastExecution = now;
+            try {
+                cdlSyncPlacementStatus.await();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LoadBalancer.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             synchronized (nonSingletonInstance) {
                 try {
@@ -172,8 +180,9 @@ public class LoadBalancer {
                 } catch (Exception e) {
                     logger.error("Exception Updating placement", e);
                 }
-            }
 
+                cdlSyncPlacementStatus=new CountDownLatch(1);
+            }
         }
     }
 
@@ -238,6 +247,10 @@ public class LoadBalancer {
                     logger.error("Exception updating servers status", e);
                 } finally {
                 }
+                
+                
+                cdlSyncPlacementStatus.countDown();
+
             }
         }
     }
@@ -316,6 +329,8 @@ public class LoadBalancer {
      */
     private final Timer serverStatusTimer;
 
+    private CountDownLatch cdlSyncPlacementStatus;
+
     /**
      * Creates an instance with no translation servers.
      */
@@ -330,7 +345,8 @@ public class LoadBalancer {
         //languagePairsInfo = new HashMap<LanguagePair, LanguagePairInfo>();
         daemonsConfigInfo = new HashMap<DaemonConfiguration, DaemonConfigurationInformation>();
         placementControllerAdapter = new PlacementControllerAdapter(translationEngines);
-       
+        cdlSyncPlacementStatus=new CountDownLatch(0);
+
         loadPredictor = new LoadPredictor();
         this.dynamicServerManagement = new DynamicServerManagement();
         secureStoppingServers = new HashSet<TranslationServerId>();
@@ -351,7 +367,7 @@ public class LoadBalancer {
             logger.warn("Cannot read \"placement controller execution period\" property", e);
         }
         placementControllerTimer = new Timer();
-        placementControllerTimer.scheduleAtFixedRate(new PlacementControllerUpdater(updaterExecutionPeriod), 1000, updaterExecutionPeriod);
+        placementControllerTimer.schedule(new PlacementControllerUpdater(updaterExecutionPeriod), 1000, updaterExecutionPeriod);
 
         long serverStatutsUpdatePeriod = 1000;
         try {
@@ -360,7 +376,7 @@ public class LoadBalancer {
             logger.warn("Cannot read \"admission control update period\" property", e);
         }
         serverStatusTimer = new Timer();
-        serverStatusTimer.scheduleAtFixedRate(new ServersStatusUpdater(),1000, serverStatutsUpdatePeriod);
+        serverStatusTimer.schedule(new ServersStatusUpdater(),1000, serverStatutsUpdatePeriod);
     }
 
     /**

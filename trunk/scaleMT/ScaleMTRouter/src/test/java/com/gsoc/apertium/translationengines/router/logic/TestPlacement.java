@@ -293,7 +293,8 @@ public class TestPlacement {
          }
 
     }
-    
+
+    /*
     @Test
    public void test3()
     {
@@ -307,8 +308,8 @@ public class TestPlacement {
         int[] memoryDemand = new int[apps.size()];
         cpuDemand[0]=0;
         cpuDemand[1]=100;
-        cpuDemand[2]=0;
-        cpuDemand[3]=0;
+        cpuDemand[2]=1;
+        cpuDemand[3]=1;
         memoryDemand[0]=100;
         memoryDemand[1]=100;
         memoryDemand[2]=100;
@@ -361,5 +362,73 @@ public class TestPlacement {
          }
 
         assertTrue(1==newI[1][1]);
+    }
+*/
+
+   @Test
+   public void testApertium()
+    {
+       System.out.println("Test Apertium");
+        PlacementController<String,String> placementController = new PlacementController<String, String>();
+        List<String> apps = new ArrayList<String>();
+        for(int i =1; i<= 41;i++)
+            apps.add("app"+i);
+        
+        int[] cpuDemand = new int[apps.size()];
+        int[] memoryDemand = new int[apps.size()];
+        for(int i =0; i< cpuDemand.length;i++)
+            cpuDemand[i]=0;
+        cpuDemand[12]=73;
+
+        for(int i =0; i< memoryDemand.length;i++)
+            memoryDemand[i]=100;
+
+        List<String> servers = new ArrayList<String>();
+        servers.add("s0");
+        
+        int[] cpuCapacity = new int[servers.size()];
+        int[] memoryCapacity = new int[servers.size()];
+        cpuCapacity[0]=27016;
+        memoryCapacity[0]=347;
+        
+
+        int[][] R = new int[apps.size()][servers.size()];
+        int[][] I = new int[apps.size()][servers.size()];
+        for(int i=0; i<apps.size();i++)
+            for(int j=0; j<servers.size();j++)
+            {
+                R[i][j]=1;
+                I[i][j]=0;
+            }
+
+         I[7][0]=1;
+         I[14][0]=1;
+         I[30][0]=1;
+
+        placementController.setApps(apps);
+        placementController.setCpuDemand(cpuDemand);
+        placementController.setMemoryDemand(memoryDemand);
+        placementController.setServers(servers);
+        placementController.setCpuCapacity(cpuCapacity);
+        placementController.setCpuCapacitiesPerDaemon(cpuCapacity);
+        placementController.setMemoryCapacity(memoryCapacity);
+        placementController.setK(10);
+        placementController.setR(R);
+        placementController.setI(I);
+
+        placementController.place();
+
+        int[][] newI = placementController.getOutputI();
+        int[][] newL = placementController.getOutputL();
+         for(int i=0; i<apps.size();i++)
+         {
+            for(int j=0; j<servers.size();j++)
+            {
+                System.out.print(newL[i][j]+"("+newI[i][j]+") ");
+            }
+            System.out.println();
+         }
+
+        assertTrue(1==newI[12][0]);
     }
 }
