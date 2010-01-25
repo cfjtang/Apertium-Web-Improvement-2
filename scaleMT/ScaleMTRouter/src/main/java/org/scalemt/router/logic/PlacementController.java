@@ -900,7 +900,7 @@ public class PlacementController <T1,T2> {
                             instance=new AppInstance(app, machine.getMaxCapacityPerDaemon());
                             remainingLoad-=machine.getMaxCapacityPerDaemon();
                         }
-                        else if(remainingLoad>0)
+                        else /* if(remainingLoad>0) */
                         {
                             instance=new AppInstance(app, remainingLoad);
                             remainingLoad=0;
@@ -1023,7 +1023,7 @@ public class PlacementController <T1,T2> {
                int cpuSatisfied = 0;
                for(int k=0;k<appsInfo.size();k++)
                    cpuSatisfied+=L[k][machine.getPosition()];
-               if(cpuSatisfied>maxCPUBestSolution)
+               if(cpuSatisfied>maxCPUBestSolution || (cpuSatisfied==maxCPUBestSolution && localPlacementChanges<bestSolutionPlacementChanges ))
                {
                    maxCPUBestSolution=cpuSatisfied;
                    for(int k=0;k<appsInfo.size();k++)

@@ -33,7 +33,7 @@ public class TestPlacementControllerSpeed {
        // serverCpuCapacities= new int[]{1000,1600,2400,3000};
         serverMemoryCapacities= new int[]{1000,500,800,1400};
         //serverMemoryCapacities= new int[]{1000,2000,3000,4000};
-        appMemoryDemands=new int[]{64,124,69,28,97};
+        appMemoryDemands=new int[]{207,124,69,94,97};
         // appMemoryDemands=new int[]{400,800,1200,1600};
     }
 
@@ -113,6 +113,14 @@ public class TestPlacementControllerSpeed {
         fw.close();
     }
     */
+
+    @Test
+    public void testApertium()
+    {
+        long time=doTest(100, 0.9, 35, 0.5, 100);
+        //System.out.println("Time for Apertium placement algorithm simulation: "+time);
+    }
+
      private long doTest(int numServers,  double cpuLoadFactor, int numApps, double demandVariability, int numCycles)
     {
 
