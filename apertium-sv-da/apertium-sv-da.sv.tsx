@@ -228,11 +228,13 @@
   <def-label name="ADVHÄR" closed="true">
     <tags-item lemma="här" tags="adv"/>
   </def-label>
+  <def-label name="VBCLOSED" closed="true">
+    <tags-item tags="vbser.*"/>
+    <tags-item tags="vbhaver.*"/>
+  </def-label>
 
    <def-label name="VB">
     <tags-item tags="vblex.*"/>
-    <tags-item tags="vbser.*"/>
-    <tags-item tags="vbhaver.*"/>
   </def-label>
 
 </tagset>

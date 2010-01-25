@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tagger name="danish">
+<tagger name="swedish">
 <tagset>
    <def-label name="PREP" closed="true">
     <tags-item tags="pr"/>
@@ -226,27 +226,21 @@
     <tags-item tags="vaux.supn.*"/>
   </def-label>
   <def-label name="ADVHÄR" closed="true">
-    <tags-item lemma="här" tags="adv"/>
+    <tags-item lemma="her" tags="adv"/>
   </def-label>
   <def-label name="VBMODPART" closed="true">
     <tags-item tags="vbmod.pp"/>
   </def-label>
-
-<!--
   <def-label name="VAUXPART" closed="true">
     <tags-item tags="vaux.pp"/>
   </def-label>
--->
-
-
-   <def-label name="VB">
-    <tags-item tags="vblex.*"/>
+  <def-label name="VBCLOSED" closed="true">
     <tags-item tags="vbser.*"/>
     <tags-item tags="vbhaver.*"/>
-    <tags-item tags="vbmod.*"/>
-    <tags-item tags="vaux.*"/>
   </def-label>
-
+   <def-label name="VB">
+    <tags-item tags="vblex.*"/>
+  </def-label>
 </tagset>
 
   <forbid>
