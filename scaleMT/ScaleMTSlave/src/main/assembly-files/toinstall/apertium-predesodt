@@ -1,0 +1,10 @@
+#!/bin/bash
+APERTIUM_PATH="/home/vmsanchez/local/bin"
+
+cd $1
+cat - > file.zip
+mkdir -p odt-content
+unzip -q -o -d odt-content file.zip
+find odt-content | grep "content\\.xml\\|styles\\.xml" |\
+  awk '{printf "<file name=\"" $0 "\"/>"; PART = $0; while(getline < PART) printf(" %s", $0); printf("\n");}'
+
