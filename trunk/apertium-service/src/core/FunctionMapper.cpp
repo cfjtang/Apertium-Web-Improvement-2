@@ -55,8 +55,6 @@
 #include <boost/process/detail/file_handle.hpp>
 #include <boost/process/detail/pipe.hpp>
 
-using namespace std;
-
 FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
 	//task["deformat"] = DEFORMAT;
 	//task["reformat"] = REFORMAT;
@@ -76,13 +74,13 @@ FunctionMapper::~FunctionMapper() { }
 /**
  * Request an arbitrary resource from the Resource Pool, use it and release it.
  */
-wstring FunctionMapper::execute(Program &p, wstring &d) {
-	vector<string> params;
-	const string commandLine = p.getProgramName();
+std::wstring FunctionMapper::execute(Program &p, std::wstring &d) {
+	std::vector<std::string> params;
+	const std::string commandLine = p.getProgramName();
 	boost::split(params, commandLine, boost::is_any_of("\t "));
 
-	string program = params[0];
-	vector<string> files = p.getFileNames();
+	std::string program = params[0];
+	std::vector<std::string> files = p.getFileNames();
 
 	TaskType taskType = task[program];
 
@@ -106,7 +104,7 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 		useUtf8 = true;
 
 	if (useUtf8) {
-		string sd = Encoding::wstringToUtf8(d);
+		std::string sd = Encoding::wstringToUtf8(d);
 
 		for (size_t i = 0; i < sd.size(); ++i) {
 			fputc(sd[i], tin);
@@ -161,8 +159,8 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 		bool useBilingual = true;
 
-		for (vector<string>::iterator it = params.begin(); it != params.end(); ++it) {
-			string param = *it;
+		for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it) {
+			std::string param = *it;
 			if (param == "-n") {
 				useBilingual = false;
 			}
@@ -184,8 +182,8 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 
 		FSTProcessorTask task = ANALYSIS;
 
-		for (vector<string>::iterator it = params.begin(); it != params.end(); ++it) {
-			string param = *it;
+		for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it) {
+			std::string param = *it;
 			if (param[0] == '-') {
 				switch (param[1]) {
 				case 'g':
@@ -255,10 +253,10 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 	fclose(in);
 	fclose(out);
 
-	wstring ret;
+	std::wstring ret;
 
 	if (useUtf8) {
-		stringstream ss;
+		std::stringstream ss;
 		while (true) {
 			int c = fgetc(tout);
 			if (feof(tout))
@@ -267,7 +265,7 @@ wstring FunctionMapper::execute(Program &p, wstring &d) {
 		}
 		ret = Encoding::utf8ToWstring(ss.str());
 	} else {
-		wstringstream wss;
+		std::wstringstream wss;
 		while (true) {
 			wint_t c = fgetwc(tout);
 			if (feof(tout))

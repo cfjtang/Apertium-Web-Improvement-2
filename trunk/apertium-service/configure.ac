@@ -100,7 +100,7 @@ AC_SUBST(COMBINE_LIBS)
 
 
 # Checks for libraries.
-AX_BOOST_BASE([1.34.0])
+AX_BOOST_BASE([1.41.0])
 AX_BOOST_THREAD
 
 if test -z "$BOOST_THREAD_LIB"; then

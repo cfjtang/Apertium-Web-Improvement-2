@@ -43,7 +43,7 @@ public:
 	FunctionMapper(ResourceBroker&);
 	virtual ~FunctionMapper();
 
-	wstring execute(Program&, wstring&);
+	wstring execute(Program&, std::wstring&);
 
 private:
 	ResourceBroker *resourceBroker;
@@ -51,7 +51,7 @@ private:
 	enum TaskType { /*DEFORMAT, REFORMAT,*/ APERTIUM_INTERCHUNK, APERTIUM_MULTIPLE_TRANSLATIONS, APERTIUM_POSTCHUNK,
 		APERTIUM_PRETRANSFER, APERTIUM_TAGGER, APERTIUM_TRANSFER, LT_PROC, CG_PROC };
 
-	typedef boost::unordered_map<string, TaskType> TaskMapType;
+	typedef boost::unordered_map<std::string, TaskType> TaskMapType;
 	TaskMapType task;
 };
 

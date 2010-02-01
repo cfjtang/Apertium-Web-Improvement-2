@@ -36,19 +36,17 @@
 
 #include "utils/Logger.h"
 
-using namespace std;
-
-const string ApertiumXMLRPCService::TRANSLATE_NAME = "translate";
+const std::string ApertiumXMLRPCService::TRANSLATE_NAME = "translate";
 
 #if defined(HAVE_LIBTEXTCAT)
-const string ApertiumXMLRPCService::DETECT_NAME = "detect";
+const std::string ApertiumXMLRPCService::DETECT_NAME = "detect";
 #endif
 
 #if defined(HAVE_COMBINE)
-const string ApertiumXMLRPCService::SYNTHESISE_NAME = "synthesise";
+const std::string ApertiumXMLRPCService::SYNTHESISE_NAME = "synthesise";
 #endif
 
-const string ApertiumXMLRPCService::LANGUAGEPAIRS_NAME = "languagePairs";
+const std::string ApertiumXMLRPCService::LANGUAGEPAIRS_NAME = "languagePairs";
 
 class TranslateMethod : public xmlrpc_c::method {
 public:
@@ -70,36 +68,36 @@ public:
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
 		boost::shared_lock<boost::shared_mutex> lock(*mux);
 
-		string text(paramList.getString(0));
-		string srcLang(paramList.getString(1));
+		std::string text(paramList.getString(0));
+		std::string srcLang(paramList.getString(1));
 
-		string const destLang(paramList.getString(2));
+		std::string const destLang(paramList.getString(2));
 
 		Translator::ContentType contentType = Translator::TEXT;
 
 		if (paramList.size() > 3) {
-			string const type(paramList.getString(3));
+			std::string const type(paramList.getString(3));
 
 			if (type == "text") {
 				contentType = Translator::TEXT;
-			} else if (type == "html") {
-				contentType = Translator::HTML;
+			//} else if (type == "html") {
+			//	contentType = Translator::HTML;
 			} else {
 				throw xmlrpc_c::fault("Invalid parameter: Content Type unknown or not supported");
 			}
 		}
 
-	    map<string, xmlrpc_c::value> ret;
+	    std::map<std::string, xmlrpc_c::value> ret;
 
 #if defined(HAVE_LIBTEXTCAT)
         if (srcLang.empty()) {
         	srcLang = textClassifier->classify(text);
-        	pair<string, xmlrpc_c::value> detectedSourceLanguage("detectedSourceLanguage", xmlrpc_c::value_string(srcLang));
+        	std::pair<std::string, xmlrpc_c::value> detectedSourceLanguage("detectedSourceLanguage", xmlrpc_c::value_string(srcLang));
         	ret.insert(detectedSourceLanguage);
         }
 #endif
 
-	    pair<string, xmlrpc_c::value> translation("translation", xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType, srcLang, destLang, statistics)));
+	    std::pair<std::string, xmlrpc_c::value> translation("translation", xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType, srcLang, destLang, statistics)));
 	    ret.insert(translation);
 
 		*retvalP = xmlrpc_c::value_struct(ret);
@@ -128,7 +126,7 @@ public:
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
 		boost::shared_lock<boost::shared_mutex> lock(*mux);
 
-		string const text(paramList.getString(0));
+		std::string const text(paramList.getString(0));
 
 		*retvalP = xmlrpc_c::value_string(textClassifier->classify(text));
 	}
@@ -209,19 +207,19 @@ public:
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
 		boost::shared_lock<boost::shared_mutex> lock(*mux);
 
-		vector<xmlrpc_c::value> ret;
+		std::vector<xmlrpc_c::value> ret;
 		ModesManager::ModeMapType modes = modesManager->getModes();
 
-		for (ModesManager::ModeMapType::iterator it = modes.begin(); it != modes.end(); it++) {
-			map<string, xmlrpc_c::value> spair;
-            string mode = (*it).first;
+		for (ModesManager::ModeMapType::iterator it = modes.begin(); it != modes.end(); ++it) {
+			std::map<std::string, xmlrpc_c::value> spair;
+            std::string mode = (*it).first;
             size_t sep = mode.find("-", 0);
 
-            string srcLang = mode.substr(0, sep);
-            string destLang = mode.substr(sep + 1, mode.size());
+            std::string srcLang = mode.substr(0, sep);
+            std::string destLang = mode.substr(sep + 1, mode.size());
 
-			pair<string, xmlrpc_c::value> src("srcLang", xmlrpc_c::value_string(srcLang));
-			pair<string, xmlrpc_c::value> dest("destLang", xmlrpc_c::value_string(destLang));
+            std::pair<std::string, xmlrpc_c::value> src("srcLang", xmlrpc_c::value_string(srcLang));
+            std::pair<std::string, xmlrpc_c::value> dest("destLang", xmlrpc_c::value_string(destLang));
 
 			spair.insert(src);
 			spair.insert(dest);
@@ -281,7 +279,7 @@ ApertiumXMLRPCService::~ApertiumXMLRPCService() {
 }
 
 void ApertiumXMLRPCService::start() {
-	stringstream ssmsg;
+	std::stringstream ssmsg;
 	ssmsg << "Starting Apertium XML-RPC service on port " << (configurationManager->getServerPort());
 	Logger::Instance()->trace(Logger::Info, ssmsg.str());
 

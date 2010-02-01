@@ -65,7 +65,7 @@ HMMWrapper::~HMMWrapper() {
 	delete td;
 }
 
-void HMMWrapper::read(string index) {
+void HMMWrapper::read(std::string index) {
 	td = new TaggerData();
 	FILE *ftemp = fopen(index.c_str(), "rb");
 
@@ -100,11 +100,11 @@ template <> Format *NonIndexedObjectPool<Format>::getNewInstance(Program &p) {
 		ret = new TXTDeformat();
 	} else if (p.getProgramName() == "apertium-retxt") {
 		ret = new TXTReformat();
-	} else if (p.getProgramName() == "apertium-deshtml") {
-		ret = new HTMLDeformat();
-	} else if (p.getProgramName() == "apertium-rehtml") {
-		ret = new HTMLReformat();
-	}
+	} //else if (p.getProgramName() == "apertium-deshtml") {
+	//	ret = new HTMLDeformat();
+	//} else if (p.getProgramName() == "apertium-rehtml") {
+	//	ret = new HTMLReformat();
+	//}
 
 	pool.add(ret);
 
@@ -116,15 +116,15 @@ template <> FSTProcessor *NonIndexedObjectPool<FSTProcessor>::getNewInstance(Pro
 
 	enum FSTProcessorTask { ANALYSIS, GENERATION, POSTGENERATION, TRANSLITERATION };
 
-	vector<string> params;
-	const string cl = p.getProgramName();
+	std::vector<std::string> params;
+	const std::string cl = p.getProgramName();
 
 	boost::split(params, cl, boost::is_any_of("\t "));
 
 	FSTProcessorTask task = ANALYSIS;
 
-	for (vector<string>::iterator it = params.begin(); it != params.end(); ++it) {
-		string param = *it;
+	for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it) {
+		std::string param = *it;
 		if (param[0] == '-') {
 			switch (param[1]) {
 			case 'g':
