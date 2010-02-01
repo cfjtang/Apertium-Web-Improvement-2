@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -24,7 +24,6 @@
 #define __STRINGS_H
 
 #include "stdafx.h"
-#define CG3_BUFFER_SIZE (131072L)
 
 namespace CG3 {
 	// ToDo: Add ABORT
@@ -166,12 +165,11 @@ namespace CG3 {
 	extern UnicodeString stringbits[STRINGS_COUNT];
 	extern UnicodeString flags[FLAGS_COUNT];
 
-	#define NUM_GBUFFERS 5
-	extern UChar *gbuffers[NUM_GBUFFERS];
-	#define NUM_CBUFFERS 2
-	extern char *cbuffers[NUM_CBUFFERS];
-	int init_gbuffers();
-	int free_gbuffers();
+	static const size_t CG3_BUFFER_SIZE = 8192;
+	static const size_t NUM_GBUFFERS = 1;
+	extern std::vector< std::vector<UChar> > gbuffers;
+	static const size_t NUM_CBUFFERS = 2;
+	extern std::vector<std::string> cbuffers;
 }
 
 #endif

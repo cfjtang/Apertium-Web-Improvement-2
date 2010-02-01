@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -188,6 +188,10 @@ uint32_t GrammarApplicator::runRulesOnWindow(SingleWindow &current, uint32Set &r
 				unif_last_textual = 0;
 				if (!unif_tags.empty()) {
 					unif_tags.clear();
+				}
+				unif_sets_firstrun = true;
+				if (!unif_sets.empty()) {
+					unif_sets.clear();
 				}
 
 				target = 0;

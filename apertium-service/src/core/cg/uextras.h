@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -29,8 +29,6 @@ namespace CG3 {
 
 bool ux_isEmpty(const UChar *text);
 
-bool ux_trim(UChar *totrim);
-bool ux_packWhitespace(UChar *totrim);
 int ux_isSetOp(const UChar *it);
 
 bool ux_escape(UChar *target, const UChar *source);

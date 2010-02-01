@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -31,9 +31,13 @@ namespace CG3 {
 
 	class Set {
 	public:
+		static bool dump_hashes;
+		static UFILE* dump_hashes_out;
+
 		bool match_any;
 		bool is_special;
-		bool is_unified;
+		bool is_tag_unified;
+		bool is_set_unified;
 		bool is_child_unified;
 		bool is_used;
 		uint32_t line;

@@ -169,7 +169,7 @@ int main(int ac, char *av[]) {
 			return (1);
 		}
 
-		CG3::init_gbuffers();
+		//CG3::init_gbuffers();
 		//init_strings();
 		//init_keywords();
 		//init_flags();

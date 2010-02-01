@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -53,6 +53,7 @@
 #include <sys/stat.h>
 
 #ifdef _MSC_VER
+	// Test for MSVC++ >= 10.0 (MSVS 2010)
 	#if _MSC_VER >= 1600
 		#include <cstdint>
 	#endif

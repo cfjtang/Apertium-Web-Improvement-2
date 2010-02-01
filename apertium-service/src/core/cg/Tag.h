@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -63,6 +63,9 @@ namespace CG3 {
 
 	class Tag {
 	public:
+		static bool dump_hashes;
+		static UFILE* dump_hashes_out;
+
 		bool in_grammar;
 		bool is_special;
 		bool is_used;
