@@ -36,21 +36,26 @@
 #include <vector>
 #include <regex.h>
 #include <string>
+
 #include <lttoolbox/lt_locale.h>
 #include <lttoolbox/ltstr.h>
+
 #ifdef _MSC_VER
 #include <io.h>
 #include <fcntl.h>
 #endif
 
-#include <boost/spirit/include/lex_lexer_lexertl.hpp>
+#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/lex_lexertl.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
+
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
 
 #include "format/Format.h"
 
-using namespace std;
-using namespace boost::spirit;
+//using namespace boost::spirit;
+namespace lex = boost::spirit::lex;
 using namespace boost::spirit::lex;
 
 /**
@@ -60,10 +65,13 @@ using namespace boost::spirit::lex;
 class TXTDeformat : public Format {
 public:
 
-	template <typename Lexer> struct deformat_tokens: lexer_def<Lexer> {
-		template<typename Self>
-		void def(Self& self) {
-			self.add
+	enum token_ids {
+		ID_NEWLINES = lex::min_token_id + 1, ID_WHITESPACE, ID_SPECIAL, ID_CHAR
+	};
+
+	template <typename Lexer> struct my_deformat_tokens : lex::lexer<Lexer> {
+		my_deformat_tokens() {
+			this->self.add
 			(L"((\"\\n\\n\")|(\"\\r\\n\\r\\n\"))+", ID_NEWLINES)
 			(L"[ \\n\\t\\r]", ID_WHITESPACE)
 			(L"[\\]\\[\\\\/@<>^$]", ID_SPECIAL)
@@ -71,41 +79,38 @@ public:
 		}
 	};
 
-	TXTDeformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
+	TXTDeformat(std::wstring in = L"", std::wostream* out = NULL) : yyin(in), yyout(out) {
 		reset();
 		init_escape();
 		init_tagNames();
 
-		def = new deformat_tokens<lexer_type>();
-		l = new lexer<deformat_tokens<lexer_type> >(*def);
+		def = new my_deformat_tokens<lexer_type>();
+		//l = new lexer<my_deformat_tokens<lexer_type> >(*def);
+		//l = new my_deformat_tokens<lexertl::lexer<> >(*def);
 	}
 
 	virtual ~TXTDeformat() {
-		delete l;
+		//delete l;
 		delete def;
 
 		regfree(&escape_chars);
 		regfree(&names_regexp);
 	}
 
-	void setYyin(wstring in) {
+	void setYyin(std::wstring in) {
 		yyin = in;
 	}
 
-	void setYyout(wostream* out) {
+	void setYyout(std::wostream* out) {
 		yyout = out;
 	}
 
-	enum token_ids {
-		ID_NEWLINES = lex::min_token_id + 1, ID_WHITESPACE, ID_SPECIAL, ID_CHAR
-	};
-
-	void handleNewLines(wstring &yytext) {
+	void handleNewLines(std::wstring &yytext) {
 		isDot = true;
 		buffer += yytext;
 	}
 
-	void handleSpecial(wstring &yytext) {
+	void handleSpecial(std::wstring &yytext) {
 		printBuffer();
 		*yyout << L'\\';
 		offset++;
@@ -115,7 +120,7 @@ public:
 		hasWrite_dot = hasWrite_white = true;
 	}
 
-	void handleWhiteSpace(wstring &yytext) {
+	void handleWhiteSpace(std::wstring &yytext) {
 		if (last == "open_tag") {
 			tags.back() += yytext;
 		} else {
@@ -123,7 +128,7 @@ public:
 		}
 	}
 
-	void handleChar(wstring &yytext) {
+	void handleChar(std::wstring &yytext) {
 		printBuffer();
 		*yyout << yytext;
 		offset++;
@@ -133,13 +138,10 @@ public:
 	struct func {
 		typedef bool result_type;
 		template<typename Token> bool operator()(Token const& t, TXTDeformat *d, std::wostream &o) const {
-			//wcout << L"id is: " << t.id() << endl;
-			//wcout << L"value is: " << t.value() << endl;
-
-			wstringstream wss;
+			std::wstringstream wss;
 			wss << t.value();
 
-			wstring yytext = wss.str();
+			std::wstring yytext = wss.str();
 
 			switch (t.id()) {
 			case ID_NEWLINES:
@@ -161,13 +163,6 @@ public:
 	};
 
 	virtual bool lex() {
-		//typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-		//typedef lexertl_lexer<token_type> lexer_type;
-		//typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
-
-		//deformat_tokens<lexer_type> def;
-		//lexer<deformat_tokens<lexer_type> > l(def);
-
 		wchar_t const* first = yyin.data();
 		wchar_t const* last = &first[yyin.size()];
 
@@ -175,7 +170,7 @@ public:
 				last,
 				//make_lexer(def),
 				//lexer<deformat_tokens<lexer_type> >(def),
-				*l,
+				*def,
 				boost::bind(func(), _1, boost::ref(this), boost::ref(*yyout))
 		);
 
@@ -188,27 +183,32 @@ public:
 	}
 
 private:
-	wstring yyin;
-	wostream *yyout;
+	std::wstring yyin;
+	std::wostream *yyout;
 
-	typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-	typedef lexertl_lexer<token_type> lexer_type;
-	typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
+	typedef lexertl::token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+	typedef lexertl::lexer<token_type> lexer_type;
 
-	deformat_tokens<lexer_type> *def;
-	lexer<deformat_tokens<lexer_type> > *l;
+	typedef my_deformat_tokens<lexer_type> deformat_tokens;
+	typedef deformat_tokens::iterator_type iterator_type;
 
-	wstring buffer;
-	string symbuf;
+	//typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
+
+	my_deformat_tokens<lexer_type> *def;
+	//lexer<my_deformat_tokens<lexer_type> > *l;
+	//my_deformat_tokens<lexertl::lexer<> > *l;
+
+	std::wstring buffer;
+	std::string symbuf;
 	bool isDot, hasWrite_dot, hasWrite_white;
 	FILE *formatfile;
-	string last;
+	std::string last;
 	int current;
 	long int offset;
 
-	vector<long int> offsets;
-	vector<wstring> tags;
-	vector<int> orders;
+	std::vector<long int> offsets;
+	std::vector<std::wstring> tags;
+	std::vector<int> orders;
 
 	regex_t escape_chars;
 	regex_t names_regexp;
@@ -221,7 +221,7 @@ private:
 		offset = 0;
 	}
 
-	void bufferAppend(wstring &buf, string const &str) {
+	void bufferAppend(std::wstring &buf, std::string const &str) {
 		symbuf.append(str);
 
 		for (size_t i = 0, limit = symbuf.size(); i < limit;) {
@@ -261,8 +261,8 @@ private:
 		}
 	}
 
-	string backslash(string const &str) {
-		string new_str = "";
+	std::string backslash(std::string const &str) {
+		std::string new_str = "";
 
 		for (unsigned int i = 0; i < str.size(); i++) {
 			if (str[i] == '\\') {
@@ -274,7 +274,7 @@ private:
 		return new_str;
 	}
 
-	wstring escape(string const &str) {
+	wstring escape(std::string const &str) {
 		regmatch_t pmatch;
 
 		char const *mystring = str.c_str();
@@ -301,8 +301,8 @@ private:
 		return result;
 	}
 
-	wstring escape(wstring const &str) {
-		string dest = "";
+	std::wstring escape(std::wstring const &str) {
+		std::string dest = "";
 		for(size_t i = 0, limit = str.size(); i < limit; i++) {
 			char symbol[MB_CUR_MAX+1];
 			int pos = wctomb(symbol, str[i]);
@@ -316,10 +316,10 @@ private:
 		return escape(dest);
 	}
 
-	string get_tagName(string tag) {
+	std::string get_tagName(std::string tag) {
 		regmatch_t pmatch;
 		char const *mystring = tag.c_str();
-		string result = "";
+		std::string result = "";
 		if (!regexec(&names_regexp, mystring, 1, &pmatch, 0)) {
 			result = tag.substr(pmatch.rm_so, pmatch.rm_eo - pmatch.rm_so);
 			return result;
@@ -333,7 +333,7 @@ private:
 			isDot = false;
 		}
 		if (buffer.size() > 8192) {
-			string filename = tmpnam(NULL);
+			std::string filename = tmpnam(NULL);
 			FILE *largeblock = fopen(filename.c_str(), "w");
 			fputws_unlocked(buffer.c_str(), largeblock);
 			fclose(largeblock);
@@ -342,17 +342,17 @@ private:
 			wchar_t cad[filename.size()];
 			size_t pos = mbstowcs(cad, filename.c_str(), filename.size());
 			if (pos == (size_t) -1) {
-				wcerr << L"Tres" << endl;
-				wcerr << L"Encoding error." << endl;
+				std::wcerr << L"Tres" << endl;
+				std::wcerr << L"Encoding error." << endl;
 				exit(EXIT_FAILURE);
 			}
 			cad[pos] = 0;
-			wstring wcad(cad);
+			std::wstring wcad(cad);
 			*yyout << wcad;
 			*yyout << L']';
 		} else if (buffer.size() > 1) {
 			*yyout << L'[';
-			wstring const tmp = escape(buffer);
+			std::wstring const tmp = escape(buffer);
 			if (tmp[0] == L'@') {
 				*yyout << L'\\';
 			}
@@ -360,7 +360,7 @@ private:
 			*yyout << L']';
 		} else if(buffer.size() == 1 && buffer[0] != L' ') {
 			*yyout << L'[';
-			wstring const tmp = escape(buffer);
+			std::wstring const tmp = escape(buffer);
 			if(tmp[0] == L'@') {
 				*yyout << L'\\';
 			}

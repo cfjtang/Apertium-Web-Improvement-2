@@ -45,9 +45,9 @@
  * Resource Pool and the informations present inside a given mode.
  */
 std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::string &text, ContentType type, std::string srcLang, std::string destLang, Statistics *s) {
-	string pair = srcLang + "-" + destLang;
+	std::string pair = srcLang + "-" + destLang;
 
-	wstring wtext = Encoding::utf8ToWstring(text);
+	std::wstring wtext = Encoding::utf8ToWstring(text);
 
 	ModesManager::ModeMapType modes = mm.getModes();
 	ModesManager::ModeMapType::iterator modeit = modes.find(pair);
@@ -60,18 +60,18 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 
 	FunctionMapper fm(rb);
 
-	vector<Program> programs = mode.getPrograms();
+	std::vector<Program> programs = mode.getPrograms();
 
-	wstring ret = deformat(rb, wtext, type);
+	std::wstring ret = deformat(rb, wtext, type);
 
-	for (vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
+	for (std::vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
 
 		std::stringstream ss;
 		ss << "Translator::translate(): Executing " << program;
 		Logger::Instance()->trace(Logger::Debug, ss.str());
 
-		wstring tmp = fm.execute(program, ret);
+		std::wstring tmp = fm.execute(program, ret);
 		ret = tmp;
 	}
 
@@ -85,9 +85,9 @@ std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in, ContentT
 	case TEXT:
 		p = new Program("apertium-destxt");
 		break;
-	case HTML:
-		p = new Program("apertium-deshtml");
-		break;
+	//case HTML:
+		//p = new Program("apertium-deshtml");
+		//break;
 	}
 
 	Format *d = rb.FormatPool.acquire(*p);
@@ -107,9 +107,9 @@ std::wstring Translator::reformat(ResourceBroker &rb, std::wstring &in, ContentT
 	case TEXT:
 		p = new Program("apertium-retxt");
 		break;
-	case HTML:
-		p = new Program("apertium-rehtml");
-		break;
+	//case HTML:
+	//	p = new Program("apertium-rehtml");
+	//	break;
 	}
 
 	Format *r = rb.FormatPool.acquire(*p);

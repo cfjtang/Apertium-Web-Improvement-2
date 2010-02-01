@@ -37,21 +37,26 @@
 #include <vector>
 #include <regex.h>
 #include <string>
+
 #include <lttoolbox/lt_locale.h>
 #include <lttoolbox/ltstr.h>
+
 #ifdef _MSC_VER
 #include <io.h>
 #include <fcntl.h>
 #endif
 
-#include <boost/spirit/include/lex_lexer_lexertl.hpp>
+#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/lex_lexertl.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
+
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
 
 #include "format/Format.h"
 
-using namespace std;
-using namespace boost::spirit;
+//using namespace boost::spirit;
+namespace lex = boost::spirit::lex;
 using namespace boost::spirit::lex;
 
 /**
@@ -62,10 +67,13 @@ using namespace boost::spirit::lex;
 class TXTReformat : public Format {
 public:
 
-	template <typename Lexer> struct reformat_tokens: lexer_def<Lexer> {
-		template<typename Self>
-		void def(Self& self) {
-			self.add
+	enum token_ids {
+		ID_SQUARES = lex::min_token_id + 1, ID_SQUARED, ID_SQUAREAT, ID_DOTSQUARES, ID_SPECIAL, ID_CHARORNEWLINE
+	};
+
+	template <typename Lexer> struct my_reformat_tokens : lex::lexer<Lexer> {
+		my_reformat_tokens() {
+			this->self.add
 			(L"\"\\[\"|\"\\]\"", ID_SQUARES)
 			(L"\"\\[@\"[^\\]]+\"\\]\"", ID_SQUARED)
 			(L"\"\\[\\@\"", ID_SQUAREAT)
@@ -76,31 +84,28 @@ public:
 	};
 
 	TXTReformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
-		def = new reformat_tokens<lexer_type>();
-		l = new lexer<reformat_tokens<lexer_type> >(*def);
+		def = new my_reformat_tokens<lexer_type>();
+		//l = new lexer<my_reformat_tokens<lexer_type> >(*def);
+		//l = new my_reformat_tokens<lexertl::lexer<> >(*def);
 	}
 
 	virtual ~TXTReformat() {
-		delete l;
+		//delete l;
 		delete def;
 	}
 
-	void setYyin(wstring in) {
+	void setYyin(std::wstring in) {
 		yyin = in;
 	}
 
-	void setYyout(wostream* out) {
+	void setYyout(std::wostream* out) {
 		yyout = out;
 	}
 
-	enum token_ids {
-		ID_SQUARES = lex::min_token_id + 1, ID_SQUARED, ID_SQUAREAT, ID_DOTSQUARES, ID_SPECIAL, ID_CHARORNEWLINE
-	};
+	void handleSquares(std::wstring &yytext) { }
 
-	void handleSquares(wstring &yytext) { }
-
-	void handleSquared(wstring &yytext) {
-		 string filename(yytext.length(), ' ');
+	void handleSquared(std::wstring &yytext) {
+		std::string filename(yytext.length(), ' ');
 		 copy(yytext.begin(), yytext.end(), filename.begin());
 
 		 filename = filename.substr(2, filename.size() - 3);
@@ -126,30 +131,27 @@ public:
 		 unlink(filename.c_str());
 	}
 
-	void handleSquareAt(wstring &yytext) {
+	void handleSquareAt(std::wstring &yytext) {
 		 *yyout << L'@';
 	}
 
-	void handleDotSquares(wstring &yytext) { }
+	void handleDotSquares(std::wstring &yytext) { }
 
-	void handleSpecial(wstring &yytext) {
+	void handleSpecial(std::wstring &yytext) {
 		 *yyout << yytext.substr(1, yytext.size() - 1);
 	}
 
-	void handleCharOrNewLine(wstring &yytext) {
+	void handleCharOrNewLine(std::wstring &yytext) {
 		 *yyout << yytext;
 	}
 
 	struct func {
 		typedef bool result_type;
 		template<typename Token> bool operator()(Token const& t, TXTReformat *r, std::wostream &o) const {
-			//wcout << L"id is: " << t.id() << endl;
-			//wcout << L"value is: " << t.value() << endl;
-
-			wstringstream wss;
+			std::wstringstream wss;
 			wss << t.value();
 
-			wstring yytext = wss.str();
+			std::wstring yytext = wss.str();
 
 			switch (t.id()) {
 			case ID_SQUARES:
@@ -177,13 +179,6 @@ public:
 	};
 
 	virtual bool lex() {
-		//typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-		//typedef lexertl_lexer<token_type> lexer_type;
-		//typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
-
-		//reformat_tokens<lexer_type> def;
-		//lexer<reformat_tokens<lexer_type> > l(def);
-
 		wchar_t const* first = yyin.data();
 		wchar_t const* last = &first[yyin.size()];
 
@@ -191,7 +186,7 @@ public:
 				last,
 				//make_lexer(def),
 				//lexer<reformat_tokens<lexer_type> >(def),
-				*l,
+				*def,
 				boost::bind(func(), _1, boost::ref(this), boost::ref(*yyout))
 		);
 
@@ -199,15 +194,20 @@ public:
 	}
 
 private:
-	wstring yyin;
-	wostream *yyout;
+	std::wstring yyin;
+	std::wostream *yyout;
 
-	typedef lexertl_token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-	typedef lexertl_lexer<token_type> lexer_type;
-	typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
+	typedef lexertl::token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+	typedef lexertl::lexer<token_type> lexer_type;
 
-	reformat_tokens<lexer_type> *def;
-	lexer<reformat_tokens<lexer_type> > *l;
+	typedef my_reformat_tokens<lexer_type> reformat_tokens;
+	typedef reformat_tokens::iterator_type iterator_type;
+
+	//typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
+
+	my_reformat_tokens<lexer_type> *def;
+	//lexer<my_reformat_tokens<lexer_type> > *l;
+	//my_reformat_tokens<lexertl::lexer<> > *l;
 };
 
 #endif /* TXTREFORMAT_H_ */
