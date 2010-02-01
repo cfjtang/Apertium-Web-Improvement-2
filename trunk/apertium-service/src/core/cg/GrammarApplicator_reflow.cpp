@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -28,6 +28,24 @@
 #include "Reading.h"
 
 namespace CG3 {
+
+Tag *GrammarApplicator::makeBaseFromWord(uint32_t tag) {
+	return makeBaseFromWord(single_tags.find(tag)->second);
+}
+
+Tag *GrammarApplicator::makeBaseFromWord(Tag *tag) {
+	size_t len = u_strlen(tag->tag);
+	if (len < 5) {
+		return tag;
+	}
+	UChar *n = new UChar[len-1];
+	n[0] = n[len-3] = '"';
+	n[len-2] = 0;
+	u_strncpy(n+1, tag->tag+2, len-4);
+	Tag *nt = addTag(n);
+	delete[] n;
+	return nt;
+}
 
 bool GrammarApplicator::wouldParentChildLoop(Cohort *parent, Cohort *child) {
 	bool retval = false;

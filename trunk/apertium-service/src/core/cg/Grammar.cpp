@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -65,7 +65,7 @@ Grammar::~Grammar() {
 		}
 	}
 
-	stdext::hash_map<uint32_t, Tag*>::iterator iter_stag;
+	Taguint32HashMap::iterator iter_stag;
 	for (iter_stag = single_tags.begin() ; iter_stag != single_tags.end() ; iter_stag++) {
 		if (iter_stag->second) {
 			delete iter_stag->second;
@@ -165,7 +165,8 @@ void Grammar::addSet(Set *to) {
 	}
 	else {
 		Set *a = sets_by_contents.find(chash)->second;
-		if (a->is_special != to->is_special || a->is_unified != to->is_unified || a->is_child_unified != to->is_child_unified
+		if (a->is_special != to->is_special || a->is_tag_unified != to->is_tag_unified || a->is_child_unified != to->is_child_unified
+		|| a->is_set_unified != to->is_set_unified
 		|| a->set_ops.size() != to->set_ops.size() || a->sets.size() != to->sets.size()
 		|| a->single_tags.size() != to->single_tags.size() || a->tags.size() != to->tags.size()) {
 			u_fprintf(ux_stderr, "Error: Content hash collision between set %S line %u and %S line %u!\n", a->name.c_str(), a->line, to->name.c_str(), to->line);
@@ -381,8 +382,8 @@ void Grammar::renameAllRules() {
 	foreach (RuleByLineHashMap, rule_by_line, iter_rule, iter_rule_end) {
 		Rule *r = iter_rule->second;
 		gbuffers[0][0] = 0;
-		u_sprintf(gbuffers[0], "L%u", r->line);
-		r->setName(gbuffers[0]);
+		u_sprintf(&gbuffers[0][0], "L%u", r->line);
+		r->setName(&gbuffers[0][0]);
 	}
 };
 
@@ -523,7 +524,7 @@ void Grammar::reindex(bool unused_sets) {
 		}
 	}
 
-	stdext::hash_map<uint32_t, Tag*>::iterator iter_tags;
+	Taguint32HashMap::iterator iter_tags;
 	for (iter_tags = single_tags.begin() ; iter_tags != single_tags.end() ; iter_tags++) {
 		Tag *tag = iter_tags->second;
 		if (tag->tag[0] == mapping_prefix) {
@@ -581,7 +582,7 @@ void Grammar::reindex(bool unused_sets) {
 }
 
 void Grammar::indexSetToRule(uint32_t r, Set *s) {
-	if (s->is_special || s->is_unified) {
+	if (s->is_special || s->is_tag_unified) {
 		indexTagToRule(tag_any, r);
 		return;
 	}
@@ -604,7 +605,7 @@ void Grammar::indexSetToRule(uint32_t r, Set *s) {
 			}
 		}
 	}
-	else if (!s->sets.empty()) {
+	else {
 		for (uint32_t i=0;i<s->sets.size();i++) {
 			Set *set = sets_by_contents.find(s->sets.at(i))->second;
 			indexSetToRule(r, set);
@@ -623,7 +624,7 @@ void Grammar::indexTagToRule(uint32_t t, uint32_t r) {
 }
 
 void Grammar::indexSets(uint32_t r, Set *s) {
-	if (s->is_special || s->is_unified) {
+	if (s->is_special || s->is_tag_unified) {
 		indexTagToSet(tag_any, r);
 		return;
 	}
@@ -646,7 +647,7 @@ void Grammar::indexSets(uint32_t r, Set *s) {
 			}
 		}
 	}
-	else if (!s->sets.empty()) {
+	else {
 		for (uint32_t i=0;i<s->sets.size();i++) {
 			Set *set = sets_by_contents.find(s->sets.at(i))->second;
 			indexSets(r, set);

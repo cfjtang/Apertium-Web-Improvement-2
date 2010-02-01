@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -70,6 +70,7 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_err) {
 	unif_last_wordform = 0;
 	unif_last_baseform = 0;
 	unif_last_textual = 0;
+	unif_sets_firstrun = false;
 	no_sections = false;
 	no_after_sections = false;
 	no_before_sections = false;
@@ -83,7 +84,7 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_err) {
 }
 
 GrammarApplicator::~GrammarApplicator() {
-	stdext::hash_map<uint32_t, Tag*>::iterator iter_stag;
+	Taguint32HashMap::iterator iter_stag;
 	for (iter_stag = single_tags.begin() ; iter_stag != single_tags.end() ; iter_stag++) {
 		if (iter_stag->second && !iter_stag->second->in_grammar) {
 			delete iter_stag->second;

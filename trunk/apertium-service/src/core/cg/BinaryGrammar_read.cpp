@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2007, GrammarSoft ApS
+* Copyright (C) 2007-2010, GrammarSoft ApS
 * Developed by Tino Didriksen <tino@didriksen.cc>
 * Design by Eckhard Bick <eckhard.bick@mail.dk>, Tino Didriksen <tino@didriksen.cc>
 *
@@ -42,7 +42,7 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 	UErrorCode err = U_ZERO_ERROR;
 	UConverter *conv = ucnv_open("UTF-8", &err);
 
-	if (fread(cbuffers[0], 1, 4, input) != 4) {
+	if (fread(&cbuffers[0][0], 1, 4, input) != 4) {
 		std::cerr << "Error: Error reading first 4 bytes from grammar!" << std::endl;
 		CG3Quit(1);
 	}
@@ -51,11 +51,10 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 		CG3Quit(1);
 	}
 
-#define B_TOO_OLD 5118
 	fread(&u32tmp, sizeof(uint32_t), 1, input);
 	u32tmp = (uint32_t)ntohl(u32tmp);
-	if (u32tmp < B_TOO_OLD) {
-		u_fprintf(ux_stderr, "Error: Grammar revision is %u, but this loader requires %u or later!\n", u32tmp, B_TOO_OLD);
+	if (u32tmp < CG3_TOO_OLD) {
+		u_fprintf(ux_stderr, "Error: Grammar revision is %u, but this loader requires %u or later!\n", u32tmp, CG3_TOO_OLD);
 		CG3Quit(1);
 	}
 	if (u32tmp > CG3_REVISION) {
@@ -71,8 +70,8 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 	ucnv_reset(conv);
 	fread(&u32tmp, sizeof(uint32_t), 1, input);
 	u32tmp = (uint32_t)ntohl(u32tmp);
-	fread(cbuffers[0], 1, u32tmp, input);
-	i32tmp = ucnv_toUChars(conv, &grammar->mapping_prefix, 1, cbuffers[0], u32tmp, &err);
+	fread(&cbuffers[0][0], 1, u32tmp, input);
+	i32tmp = ucnv_toUChars(conv, &grammar->mapping_prefix, 1, &cbuffers[0][0], u32tmp, &err);
 
 	fread(&u32tmp, sizeof(uint32_t), 1, input);
 	u32tmp = (uint32_t)ntohl(u32tmp);
@@ -105,20 +104,20 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 			ucnv_reset(conv);
 			fread(&u32tmp, sizeof(uint32_t), 1, input);
 			u32tmp = (uint32_t)ntohl(u32tmp);
-			fread(cbuffers[0], 1, u32tmp, input);
-			i32tmp = ucnv_toUChars(conv, gbuffers[0], CG3_BUFFER_SIZE-1, cbuffers[0], u32tmp, &err);
+			fread(&cbuffers[0][0], 1, u32tmp, input);
+			i32tmp = ucnv_toUChars(conv, &gbuffers[0][0], CG3_BUFFER_SIZE-1, &cbuffers[0][0], u32tmp, &err);
 			t->comparison_key = t->allocateUChars(i32tmp+1);
-			u_strcpy(t->comparison_key, gbuffers[0]);
+			u_strcpy(t->comparison_key, &gbuffers[0][0]);
 		}
 
 		fread(&u32tmp, sizeof(uint32_t), 1, input);
 		u32tmp = (uint32_t)ntohl(u32tmp);
 		if (u32tmp) {
 			ucnv_reset(conv);
-			fread(cbuffers[0], 1, u32tmp, input);
-			i32tmp = ucnv_toUChars(conv, gbuffers[0], CG3_BUFFER_SIZE-1, cbuffers[0], u32tmp, &err);
+			fread(&cbuffers[0][0], 1, u32tmp, input);
+			i32tmp = ucnv_toUChars(conv, &gbuffers[0][0], CG3_BUFFER_SIZE-1, &cbuffers[0][0], u32tmp, &err);
 			t->tag = t->allocateUChars(i32tmp+1);
-			u_strcpy(t->tag, gbuffers[0]);
+			u_strcpy(t->tag, &gbuffers[0][0]);
 		}
 		if (t->type & T_REGEXP) {
 			UParseError pe;
@@ -212,10 +211,14 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 		s->hash = (uint32_t)ntohl(u32tmp);
 		fread(&u8tmp, sizeof(uint8_t), 1, input);
 		s->match_any = (u8tmp == 1);
+		/*
 		fread(&u8tmp, sizeof(uint8_t), 1, input);
 		s->is_special = (u8tmp == 1);
+		//*/
 		fread(&u8tmp, sizeof(uint8_t), 1, input);
-		s->is_unified = (u8tmp == 1);
+		s->is_tag_unified = (u8tmp == 1);
+		fread(&u8tmp, sizeof(uint8_t), 1, input);
+		s->is_set_unified = (u8tmp == 1);
 
 		fread(&u8tmp, sizeof(uint8_t), 1, input);
 		if (u8tmp == 0) {
@@ -311,9 +314,9 @@ int BinaryGrammar::readBinaryGrammar(FILE *input) {
 		u32tmp = (uint32_t)ntohl(u32tmp);
 		if (u32tmp) {
 			ucnv_reset(conv);
-			fread(cbuffers[0], 1, u32tmp, input);
-			i32tmp = ucnv_toUChars(conv, gbuffers[0], CG3_BUFFER_SIZE-1, cbuffers[0], u32tmp, &err);
-			r->setName(gbuffers[0]);
+			fread(&cbuffers[0][0], 1, u32tmp, input);
+			i32tmp = ucnv_toUChars(conv, &gbuffers[0][0], CG3_BUFFER_SIZE-1, &cbuffers[0][0], u32tmp, &err);
+			r->setName(&gbuffers[0][0]);
 		}
 		fread(&u32tmp, sizeof(uint32_t), 1, input);
 		r->target = (uint32_t)ntohl(u32tmp);
@@ -405,16 +408,17 @@ void BinaryGrammar::readContextualTest(ContextualTest *t, FILE *input) {
 
 	if (!t->tmpl && t->ors.empty()) {
 		fread(&u32tmp, sizeof(uint32_t), 1, input);
-		t->line = (uint32_t)ntohl(u32tmp);
-		fread(&u32tmp, sizeof(uint32_t), 1, input);
 		t->target = (uint32_t)ntohl(u32tmp);
-		fread(&u32tmp, sizeof(uint32_t), 1, input);
-		t->relation = (uint32_t)ntohl(u32tmp);
-		fread(&u32tmp, sizeof(uint32_t), 1, input);
-		t->barrier = (uint32_t)ntohl(u32tmp);
-		fread(&u32tmp, sizeof(uint32_t), 1, input);
-		t->cbarrier = (uint32_t)ntohl(u32tmp);
 	}
+
+	fread(&u32tmp, sizeof(uint32_t), 1, input);
+	t->line = (uint32_t)ntohl(u32tmp);
+	fread(&u32tmp, sizeof(uint32_t), 1, input);
+	t->relation = (uint32_t)ntohl(u32tmp);
+	fread(&u32tmp, sizeof(uint32_t), 1, input);
+	t->barrier = (uint32_t)ntohl(u32tmp);
+	fread(&u32tmp, sizeof(uint32_t), 1, input);
+	t->cbarrier = (uint32_t)ntohl(u32tmp);
 
 	fread(&u8tmp, sizeof(uint8_t), 1, input);
 	if (u8tmp == 1) {
