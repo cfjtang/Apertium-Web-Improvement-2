@@ -174,6 +174,14 @@ int main(int ac, char *av[]) {
 		//init_keywords();
 		//init_flags();
 
+		UErrorCode status = U_ZERO_ERROR;
+
+        u_init(&status);
+        if (U_FAILURE(status) && status != U_FILE_ACCESS_ERROR) {
+                std::cerr << "Error: Cannot initialize ICU. Status = " << u_errorName(status) << std::endl;
+                CG3Quit(1);
+        }
+
 		::atexit(cleanup);
 		//::signal(SIGINT, &signalHandler);
 
