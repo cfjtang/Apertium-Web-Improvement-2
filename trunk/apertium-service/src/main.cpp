@@ -63,6 +63,8 @@
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
+using CG3::CG3Quit;
+
 Logger *logger = NULL;
 
 ConfigurationManager *cm = NULL;
