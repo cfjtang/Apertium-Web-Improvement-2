@@ -481,7 +481,7 @@
   <section-def-macros>
     
 
-    <def-macro n="f_bcond" npar="1"><!--Para mirar se o branco contén ou non formato. É necesario pór esta función nas regras en que desapareza algunha palabra, para decidir se o branco da palabra eliminada se debe eliminar ou conservar. Se contén formato debe conservarse, se non o contén debe eliminarse para que non aparezan dous espazos seguidos. -->
+    <def-macro n="f_bcond" npar="2"><!--Para mirar se o branco contén ou non formato. É necesario pór esta función nas regras en que desapareza algunha palabra, para decidir se o branco da palabra eliminada se debe eliminar ou conservar. Se contén formato debe conservarse, se non o contén debe eliminarse para que non aparezan dous espazos seguidos. -->
       <choose>
 	<when>
 	  <test>
@@ -3001,6 +3001,7 @@
 	</out> 
 	<call-macro n="f_bcond">
 	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro>    
       </action>
     </rule>
@@ -3054,6 +3055,7 @@
 	</out>   
 	<call-macro n="f_bcond">
 	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro> 
       </action>
     </rule>
@@ -3623,6 +3625,7 @@
 	    </out>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
       </action>
     </rule> 
@@ -3688,6 +3691,7 @@
 	</out>
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
+	  <with-param pos="3"/>
 	</call-macro>
       </action>
     </rule> 
@@ -3789,6 +3793,7 @@
 	    </out>
 	    <call-macro n="f_bcond">
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
       </action>
     </rule> 
@@ -4334,6 +4339,7 @@
 		    </test>	
 		    <call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		      <with-param pos="2"/>
+	              <with-param pos="3"/>
 		    </call-macro>
 		  </when>
 		  <otherwise>
@@ -4479,6 +4485,7 @@
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
 	  <otherwise><!--si no és un verb separable...-->
@@ -4526,6 +4533,7 @@
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="1"/>
+	          <with-param pos="2"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -6097,6 +6105,7 @@
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise><!--si no és un verb separable...-->
@@ -6148,6 +6157,7 @@
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+		  <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -6200,6 +6210,7 @@
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -6286,6 +6297,7 @@
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+              <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -6361,6 +6373,7 @@
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -6545,6 +6558,7 @@
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -6813,6 +6827,7 @@
 		    </test>	
 		    <call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		      <with-param pos="3"/>
+		      <with-param pos="4"/>
 		    </call-macro>
 		  </when>
 		  <otherwise>
@@ -6915,6 +6930,7 @@
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 	      <var n="caseSecondWord"/>
@@ -7016,6 +7032,7 @@
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 	      <var n="caseSecondWord"/>
@@ -7152,6 +7169,7 @@
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem el blanc -->
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise><!--Si no és separable...-->
@@ -7199,6 +7217,7 @@
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+	          <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>	
