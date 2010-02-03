@@ -219,6 +219,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
     for (unsigned j=ats[i].target.size(); j<ats[i].source.size(); j++) {
       rule+=L"        <call-macro n=\"f_bcond\">\n";
       rule+=L"          <with-param pos=\""+Utils::itoa(j)+L"\"/>\n";
+      rule+=L"          <with-param pos=\""+Utils::itoa(j+1)+L"\"/>\n";
       rule+=L"        </call-macro>\n";
     }
 
@@ -345,7 +346,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 
   head+=L"<section-def-macros>\n";
 
-  head+=L"<def-macro n=\"f_bcond\" npar=\"1\">\n";
+  head+=L"<def-macro n=\"f_bcond\" npar=\"2\">\n";
   head+=L"<!--To test whether a blank contains format information.\n";
   head+=L"If no format information is present it is removed. -->\n";
   head+=L"  <choose>\n";
