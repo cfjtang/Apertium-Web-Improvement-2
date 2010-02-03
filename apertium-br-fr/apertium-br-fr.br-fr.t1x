@@ -142,6 +142,12 @@
     <def-cat n="e">
       <cat-item lemma="e" tags="pr"/>
     </def-cat>
+    <def-cat n="all">
+      <cat-item lemma="all" tags="adj.ind.*"/>
+    </def-cat>
+    <def-cat n="ken">
+      <cat-item lemma="ken" tags="pr"/>
+    </def-cat>
     <def-cat n="a">
       <cat-item lemma="a" tags="pr"/>
     </def-cat>
@@ -11714,6 +11720,60 @@
         </let>
       </action>
    </rule>
+
+   <rule comment="REGLA: ken ADJ all">
+      <pattern>
+        <pattern-item n="ken"/>
+        <pattern-item n="adjec"/>
+        <pattern-item n="all"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord1">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="comparatiu_adj1">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk name="tout_aussi_adj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SA"/></tag>
+              <tag><clip pos="2" side="tl" part="gen"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <lit v="tout"/>
+              <lit-tag v="predet.2.3"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="aussi"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <var n="adjectiu1"/>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="2" side="tl" part="gen_mf"/> 
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="2" side="tl" part="nbr_sp"/> 
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+
 
    <rule comment="REGLA: ADJ (quan no acompanya res o va amb desconeguda)">
       <pattern>
