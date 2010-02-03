@@ -893,7 +893,7 @@
 
  
 
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+    <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -10172,10 +10172,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                   <lit-tag v="past"/>
                 </let>
 
-                <let>
-                  <clip pos="2" side="tl" part="auxiliar"/>
-                  <lit-tag v="past"/>
-                </let>
 	    <out>
                   <chunk name="verb_perif" case="caseFirstWord">
                     <tags>
@@ -10401,10 +10397,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                   <lit-tag v="past"/>
                 </let>
 
-                <let>
-                  <clip pos="2" side="tl" part="auxiliar"/>
-                  <lit-tag v="past"/>
-                </let>
 	    <out>
                   <chunk name="verb_perif" case="caseFirstWord">
                     <tags>
@@ -10619,7 +10611,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-        <call-macro n="tipus_verb">
+        <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
 
@@ -10807,7 +10799,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-        <call-macro n="tipus_verb">
+        <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
 
@@ -13932,7 +13924,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	      <clip pos="1" side="tl" part="lemh"/> 
 	      <lit-tag v="vblex.pp"/>
 	      <clip pos="1" side="sl" part="nbr"/>
-	      <clip pos="1" side="tl" part="case" link-to="4"/>
+	      <clip pos="1" side="tl" part="cas" link-to="4"/>
 	      <clip pos="1" side="tl" part="lemq"/>    
 	    </lu>
 	  </chunk>
