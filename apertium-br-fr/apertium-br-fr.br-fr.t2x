@@ -15,7 +15,6 @@
       <cat-item lemma="ant" tags="SN.*"/>
     </def-cat>
 
-
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
@@ -75,6 +74,10 @@
       <cat-item tags="SN.DET.*"/>
       <cat-item tags="SN.UNDET.*"/>
       <cat-item tags="SN.NUM.*"/>
+    </def-cat>
+
+    <def-cat n="FMAINV">
+      <cat-item tags="SV.@\+FMAINV.*"/>
     </def-cat>
 
     <def-cat n="SV">
@@ -204,6 +207,11 @@
      <attr-item tags="subj"/>
      <attr-item tags="obj"/>
    </def-attr>
+   <def-attr n="syn_label">
+     <attr-item tags="@SUBJ→"/>
+     <attr-item tags="@←SUBJ"/>
+   </def-attr>
+
 
   </section-def-attrs>
 
@@ -264,6 +272,44 @@
 
 
 <section-def-macros>
+  <def-macro n="assign_subj_num" npar="1">
+    <choose>
+      <when>
+        <test>
+          <or>
+            <equal>
+              <var n="nombre_subj"/>
+              <lit-tag v="sg"/>
+            </equal>
+            <equal>
+              <var n="nombre_subj"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </or>
+        </test>
+        <let>
+          <clip pos="1" part="nbr"/>
+          <var n="nombre_subj"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
+  <def-macro n="check_subject_number1" npar="1">
+    <choose>
+      <when>
+        <test>
+          <equal>
+            <clip pos="1" part="syn_label"/>
+            <lit-tag v="@SUBJ→"/>
+          </equal>
+        </test>
+        <let>
+          <var n="nombre_subj"/>
+          <clip pos="1" part="nbr"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
   <def-macro n="convert_tense" npar="1">
     <choose>
       <when>
@@ -1736,6 +1782,9 @@
           <var n="subj_vist"/>
           <lit v="yes"/>
         </let>
+        <call-macro n="check_subject_number1">
+          <with-param pos="1"/>
+        </call-macro>
 	<out>
 		<chunk>
 				<clip pos="1" part="lem"/>
@@ -3092,10 +3141,13 @@
     <pattern-item n="SV"/>
   </pattern>
   <action>
-    <call-macro n="posa_subj">
+    <call-macro n="assign_subj_num">
       <with-param pos="1"/>
     </call-macro>
     <call-macro n="convert_tense">
+      <with-param pos="1"/>
+    </call-macro>
+    <call-macro n="posa_subj">
       <with-param pos="1"/>
     </call-macro>
     <out>
@@ -7935,7 +7987,7 @@
 
 
 
- <rule> <!-- REGLA: reset variables-->
+ <rule comment="REGLA: reset variables">
       <pattern>
 	<pattern-item n="punt"/>
       </pattern>
@@ -7947,7 +7999,7 @@
 	<let>
 	      <var n="nombre_subj"/>
 	  <lit v="no_assignat"/>
-	</let>
+	</let> 
 	<let>
 	      <var n="pers_subj"/>
 	  <lit-tag v="p3"/>
@@ -7975,7 +8027,7 @@
       </action>
 </rule>
 
- <rule>
+ <rule comment="REGLA: PRNS VPART SV">
       <pattern>
 	<pattern-item n="PRNS"/>
 	<pattern-item n="VPART"/>
@@ -8095,7 +8147,7 @@
 
 
 
- <rule>
+ <rule comment="REGLA: SV SN V_en_train">
       <pattern>
 	<pattern-item n="SV"/>
 	<pattern-item n="SN"/>
@@ -8382,7 +8434,7 @@
 </rule>
 
 
- <rule>
+ <rule comment="REGLA: V_que SV SN">
       <pattern>
 	<pattern-item n="V_que"/>
 	<pattern-item n="SV"/>
