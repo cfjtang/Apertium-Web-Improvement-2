@@ -37,6 +37,7 @@ LIST PrnDObj          = ("direct"ri prn obj);
 LIST PrnIObj          = ("indirect"ri prn obj) (+indirect);  # Lemmas from sub-readings are expressed as tags and prefixed with '+'
 LIST PrnInd	      = (prn ind);
 LIST PrnItg	      = (prn itg);
+LIST PrnDem           = (prn dem);
 
 SET Prn               = PrnSubj + PrnDObj + PrnIObj;
 
@@ -158,7 +159,8 @@ SECTION
 REMOVE DetPos IF (-1 BOS) (1C Verb);
 
 #ne goust netra / n'eus redi ebet
-SELECT VerbFin IF (-1C ("ne"ri adv)) (NOT -1 (+kaout)) (NOT -1 (+bezañ));
+# N'ez an ket da labourat
+SELECT VerbFin IF (-1C ("ne"ri adv)) (NOT -1 (+kaout)) (NOT -1 (+bezañ)) (NOT 0 Vpart);
 
 #deuet e oan
 SELECT Vpart IF (-1C VerbPP) (1 VerbFin);
@@ -604,6 +606,9 @@ REMOVE Vpart IF (1C NC);
 #rebech kentañ
 REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 Adj OR Ord);
 
+# Skrivadeg e brezhoneg e Kemper e miz Meurzh
+REMOVE PrnDObj IF (-1C NC) (0 Prep) (0 PrnDObj); 
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
@@ -727,3 +732,22 @@ SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
 ##
 
 SUBSTITUTE (vblex) (vblex tv) ("pediñ" vblex) ((1C NC) OR (1C PrnDObj));
+
+## SYNTAX 
+
+SECTION
+
+LIST @X = @X ;
+LIST @SUBJ→ = @SUBJ→ ;
+LIST @←SUBJ = @←SUBJ ;
+LIST @+FMAINV = @+FMAINV ;
+LIST @-FMAINV = @-FMAINV ;
+
+MAP (@SUBJ→) TARGET PrnSubj | PrnDem (1C ("<zo>" vblex));
+
+MAP (@+FMAINV) TARGET VerbFin;
+
+AFTER-SECTIONS
+
+MAP (@X) TARGET PrnSubj | PrnDem ;
+MAP (@X) TARGET VerbFin ;
