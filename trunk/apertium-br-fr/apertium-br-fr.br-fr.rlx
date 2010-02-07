@@ -498,8 +498,9 @@ REMOVE Verb IF (-1C DetDef) (1C NC);
 #Prezidant Kevre Gouren Aodoù-an-Arvor
 #Ma c’hall
 # hag a ya da stummañ
-REMOVE VerbFin IF (NOT -1 Vpart) (0 SoftMutCons) (NOT 0 SoftMut);
-REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut) (NOT 0 ("ya"ri adv));
+# mar fell dit 
+REMOVE VerbFin IF (NOT -1 Vpart) (0 SoftMutCons) (NOT 0 SoftMut) (NOT -1 ("ma"ri));
+REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut) (NOT 0 ("ya"ri adv)) (NOT -1 ("ma"ri));
 
 # Aet e vefen a-walc’h eus
 SELECT Vpart IF (-1 VerbPP) (1C VerbFin);
