@@ -635,6 +635,7 @@
       <attr-item tags="NEG"/>
     </def-attr>
     <def-attr n="syn_label">
+      <attr-item tags="@X"/>
       <attr-item tags="@←SUBJ"/>
       <attr-item tags="@SUBJ→"/>
       <attr-item tags="@\+FMAINV"/>
@@ -17835,6 +17836,12 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+          <when>
+            <test><equal><clip pos="1" side="sl" part="syn_label"/><lit v=""/></equal></test>
+            <let><clip pos="1" side="tl" part="syn_label"/><lit-tag v="@X"/></let>
+          </when>
+        </choose>
         <out>
           <chunk name="prnsubj" case="caseFirstWord">
             <tags>
@@ -17842,12 +17849,8 @@
               <tag><clip pos="1" side="tl" part="syn_label"/></tag>
               <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 <!-- 				<tag><clip pos="1" side="tl" part="pers"/></tag> -->
-              <tag>
-                <clip pos="1" side="tl" part="gen"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="nbr"/>
-              </tag>
+              <tag><clip pos="1" side="tl" part="gen"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lem"/>
