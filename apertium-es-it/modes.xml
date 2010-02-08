@@ -125,6 +125,46 @@
     </pipeline>
   </mode>
 
+  <mode name="es-it-pretransfer-to-postchunk">
+    <pipeline>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-it.es-it.t1x"/>
+        <file name="es-it.t1x.bin"/>
+        <file name="es-it.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-es-it.es-it.t2x"/>
+        <file name="es-it.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-es-it.es-it.t3x"/>
+        <file name="es-it.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  <mode name="es-it-pretransfer-to-generator">
+    <pipeline>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-es-it.es-it.t1x"/>
+        <file name="es-it.t1x.bin"/>
+        <file name="es-it.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-es-it.es-it.t2x"/>
+        <file name="es-it.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-es-it.es-it.t3x"/>
+        <file name="es-it.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="es-it.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
   <mode name="es-it-generador">
     <pipeline>
       <program name="lt-proc">
