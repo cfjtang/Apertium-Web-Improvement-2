@@ -84,7 +84,7 @@
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
 
-(defconst dix-version "2009-11-07") 
+(defconst dix-version "2010-01-12") 
 
 (require 'nxml-mode)
 
@@ -443,17 +443,35 @@ add an RL restriction to the copy."
     (interactive)
     (dix-LR-restriction-copy 'RL))
 
-(defun dix-copy ()
-  "Make a copy of the Apertium element we're looking at."
-  (interactive)
+(defun dix-copy (&optional remove-lex)
+  "Make a copy of the Apertium element we're looking at. Optional
+argument `remove-lex' removes the contents of the lm attribute
+and <i> or <p> elements."
+  (interactive "P")
+  ;; todo: find the first one of these: list-item, e, def-var, sdef, attr-item, cat-item, clip, pattern-item, 
   (dix-up-to "e" "pardef")
   (let ((beg (point))
 	(end (1+ (nxml-scan-element-forward (point)))))
     (goto-char end)
-    (insert (concat) (buffer-substring-no-properties beg end))
-    (goto-char end)
-    (if (save-excursion (search-forward "</pardef>" nil 'noerror 1))
-	(indent-to dix-ep-align-column))))
+    (insert (buffer-substring-no-properties beg end))
+    (let ((copyend (point)))
+      (goto-char end)
+      (when (save-excursion (search-forward "</pardef>" nil 'noerror 1))
+	(indent-to dix-ep-align-column))
+      (when remove-lex
+	(save-excursion
+	  (save-restriction
+	    (narrow-to-region end copyend)
+	    (while (re-search-forward "lm=\\\"[^\\\"]*\\\"" nil 'noerror 1)
+	      (replace-match "lm=\"\""))
+	    (goto-char (point-min))
+	    (while (re-search-forward "<i>.*</i>" nil 'noerror 1)
+	      (replace-match "<i></i>"))
+	    (goto-char (point-min))
+	    (while (re-search-forward "<p>.*</p>" nil 'noerror 1)
+	      (replace-match "<p><l></l><r></r></p>"))))))))
+
+
 
 (defun dix-copy-yank ()
   "Make a copy of the Apertium element we're looking at, and yank
@@ -779,6 +797,8 @@ in the attribute of a <par> or <pardef>, we insert an underscore.
 A bit hacky I guess, but I don't want to require nxhtml just to
 get nxml-where-path, and reimplementing an XML Path seems rather
 too much work for this."
+  (interactive)
+  
   (defun in-elt (names)	; nxml-token-before must be called before this
     (let ((eltname (save-excursion
 		     (goto-char xmltok-start)
@@ -787,7 +807,7 @@ too much work for this."
 		       (goto-char xmltok-start))
 		     (xmltok-start-tag-qname))))
       (and eltname (member eltname names))))
-  (interactive)
+  
   (nxml-token-before)
   (cond ((and (or (eq xmltok-type 'data)
 		  (and (memq xmltok-type '(start-tag empty-element))
@@ -796,8 +816,11 @@ too much work for this."
 	 (insert "<b/>"))
 	((and (catch 'in-attr
 		(dolist (attr xmltok-attributes)
-		  (if (and (>= (point) (xmltok-attribute-value-start attr))
-			   (<= (point) (xmltok-attribute-value-end   attr)))
+		  (if (and (xmltok-attribute-value-start attr)
+			   (>= (point) (xmltok-attribute-value-start attr))
+			   (xmltok-attribute-value-end   attr)
+			   (<= (point) (xmltok-attribute-value-end   attr))
+			   (equal (xmltok-attribute-local-name attr) "n"))
 		      (throw 'in-attr t))))
 	      (in-elt '("par" "pardef")))
 	 (insert "_"))
@@ -828,6 +851,27 @@ to the regular `delete-backward-char'."
       (delete-region (point) xmltok-start)
     (call-interactively 'delete-backward-char)))
 
+(defun dix-< (literal)			; not in use yet
+  "Inserts < in space or unclosed tags, otherwise moves to the
+beginning of the element."
+  (interactive "*P")
+  (if literal
+      (self-insert-command (prefix-numeric-value literal))
+    (nxml-token-after)
+    (cond ((memq xmltok-type '(space data not-well-formed partial-start-tag))
+	   (insert-char ?< 1))
+	  (t (progn (nxml-up-element)
+		    (dix-with-sexp (backward-sexp)))))))
+(defun dix-> (literal)
+  "Inserts > in space or unclosed tags, otherwise moves to the
+end of the element."
+  (interactive "*P")
+  (if literal
+      (self-insert-command (prefix-numeric-value literal))
+    (nxml-token-before)
+    (cond ((memq xmltok-type '(space not-well-formed partial-start-tag))
+	   (insert-char ?> 1))
+	  (t (nxml-up-element)))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
@@ -913,6 +957,8 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c % %") 'dix-replace-regexp-within-elt)
 (define-key dix-mode-map (kbd "C-c % l") 'dix-replace-regexp-within-l)
 (define-key dix-mode-map (kbd "C-c % r") 'dix-replace-regexp-within-r)
+(define-key dix-mode-map (kbd "C-<") 'dix-<)
+(define-key dix-mode-map (kbd "C->") 'dix->)
 
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
