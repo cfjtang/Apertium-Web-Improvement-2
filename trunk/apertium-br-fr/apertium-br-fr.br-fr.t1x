@@ -65,6 +65,9 @@
     <def-cat n="ma">
       <cat-item lemma="ma" tags="cnjsub"/>
     </def-cat>
+    <def-cat n="bennak">
+      <cat-item lemma="bennak" tags="adj.*"/>
+    </def-cat>
     <def-cat n="instant">
       <cat-item lemma="poent" tags="n.m.*"/>
     </def-cat>
@@ -8564,6 +8567,73 @@
         </let>
       </action>
    </rule>
+    
+    <rule comment="REGLA: NUM NOM bennak">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="bennak"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord1">
+          <with-param pos="2"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+          <out>
+            <chunk name="environ_num_nom" case="caseFirstWord">
+              <tags>
+                <tag><lit-tag v="SN"/></tag>
+                <tag><var n="genero"/></tag>
+                <tag><var n="numero"/></tag>
+              </tags>
+              <lu>
+                <lit v="environ"/> 
+                <lit-tag v="adv"/> 
+              </lu>
+              <b pos="1"/>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+                <clip pos="1" side="tl" part="a_num"/>
+                <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+                <clip pos="1" side="tl" part="gen_mf"/>
+                <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+                <clip pos="1" side="tl" part="nbr_sp"/>
+              </lu>
+              <b pos="1"/>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+                <clip pos="2" side="tl" part="a_nom"/>
+                <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                <clip pos="2" side="tl" part="gen_mf"/>
+                <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                <clip pos="2" side="tl" part="nbr_sp"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </lu>
+            </chunk>
+          </out>
+          <let>
+            <var n="caseFirstWord"/>
+            <lit v="aa"/>
+          </let>
+      </action>
+    </rule>
+ 
     
     <rule comment="REGLA: NUM NOM">
       <pattern>
