@@ -12801,6 +12801,20 @@
                 <lit v="pronaux_pp"/>
 		</let>  
 	      </when>
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="tl" part="lem"/>
+                      <list n="verbref_meta"/>
+                    </in>
+            	</test>
+                <let>
+                  <var n="lema"/>
+                  <lit v="verbcj_ref"/>
+		</let>  
+	      </when>
+
+
 	      <otherwise>
 		<let>
 		<var n="lema"/>
@@ -12862,10 +12876,24 @@
                 <lit v="pronverb"/>
 		</let>  
 	      </when>
+	     <when>
+		<test>   
+                   <in caseless="yes">
+                      <clip pos="1" side="tl" part="lem"/>
+                      <list n="verbref_meta"/>
+                    </in>
+            	</test>
+                <let>
+                  <var n="lema"/>
+                  <lit v="verbcj_ref"/>
+		</let>  
+	      </when>
+
+
 	      <otherwise>
 		<let>
 		<var n="lema"/>
-		<lit v="adv_verbcj_adv"/>
+		<lit v="dobj_verbcj"/>
                 </let>
    	      </otherwise>
 	    </choose>
