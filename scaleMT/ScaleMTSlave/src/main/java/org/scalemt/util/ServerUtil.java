@@ -20,6 +20,7 @@ package org.scalemt.util;
 import org.scalemt.main.TranslationEnginePool;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -188,5 +189,21 @@ public class ServerUtil {
              }
              return c;
          }
+
+         static public boolean deleteDirectory(File path) {
+        if( path.exists() ) {
+          File[] files = path.listFiles();
+          for(int i=0; i<files.length; i++) {
+             if(files[i].isDirectory()) {
+               deleteDirectory(files[i]);
+             }
+             else {
+               files[i].delete();
+             }
+          }
+        }
+        return( path.delete() );
+      }
+
 	
 }

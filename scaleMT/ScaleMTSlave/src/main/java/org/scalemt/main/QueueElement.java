@@ -21,6 +21,7 @@ import org.scalemt.daemon.Daemon;
 import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
 import java.util.List;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.Content;
 
 
@@ -69,7 +70,7 @@ public class QueueElement {
      */
 	private Exception exception;
 
-    private List<Long> dictionaries;
+    private AdditionalTranslationOptions additionalTranslationOptions;
 
     /**
      * Constructor with id and source txt.
@@ -95,7 +96,7 @@ public class QueueElement {
      * @param caller Caller thread
      */
 	public QueueElement(long id, Content text,
-			LanguagePair languagePair, Thread caller, List<Long> dictionaries) {
+			LanguagePair languagePair, Thread caller, AdditionalTranslationOptions to) {
 		super();
 		this.id = id;
 		this.source = text;
@@ -104,7 +105,7 @@ public class QueueElement {
 		this.languagePair = languagePair;
 		this.caller = caller;
 		this.exception=null;
-        this.dictionaries=dictionaries;
+                this.additionalTranslationOptions=to;
 	}
 
 
@@ -178,13 +179,15 @@ public class QueueElement {
 		this.exception = exception;
 	}
 
-    public List<Long> getDictionaries() {
-        return dictionaries;
+    public AdditionalTranslationOptions getAdditionalTranslationOptions() {
+        return additionalTranslationOptions;
     }
 
-    public void setDictionaries(List<Long> dictionaries) {
-        this.dictionaries = dictionaries;
+    public void setAdditionalTranslationOptions(AdditionalTranslationOptions additionalTranslationOptions) {
+        this.additionalTranslationOptions = additionalTranslationOptions;
     }
+
+  
 
     public Daemon getDaemon() {
         return daemon;

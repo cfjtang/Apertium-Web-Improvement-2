@@ -776,11 +776,27 @@ public class Daemon {
                     if(program.getInput()==input)
                     {
                          output=program.getOutput();
-                        if(program.getOnlyFormats().contains(element.getFormat()))
+
+                         boolean meetsRestrictions=true;
+
+                         for(Entry<String,String> restriction: program.getRestrictions().entrySet())
+                         {
+                             String value=element.getAdditionalTranslationOptions().getOptions().get(restriction.getKey());
+                             if( !(value!=null && value.equals(restriction.getValue())) )
+                             {
+                                 meetsRestrictions=false;
+                             }
+                         }
+
+                        if(program.getOnlyFormats().contains(element.getFormat()) && meetsRestrictions)
                         {
                             synchronized(program)
                             {
+                            String[] fullCommand= new String[3];
 
+                            //TODO: Make it platform-independent
+                            fullCommand[0]="/bin/bash";
+                            fullCommand[1]="-c";
                             //Prepare command
                             programCommand=program.getCommand();
                             for(Entry<Integer,String> entry: fileVars.entrySet())
@@ -795,6 +811,7 @@ public class Daemon {
                             if(fileVars.containsKey(program.getOutput()))
                                 programCommand=programCommand+" >"+fileVars.get(program.getOutput());
 
+                            fullCommand[2]=programCommand;
                             logger.debug("Daemon "+ this.getId() +". Translation "+element.getId()+". Launching "+programCommand);
 
                             //Execute command
@@ -804,7 +821,7 @@ public class Daemon {
                             {
 
                             //Execute command
-                            Process p =Runtime.getRuntime().exec(programCommand);
+                            Process p =Runtime.getRuntime().exec(fullCommand);
 
                             //Create threads for reading stdout and stderr
                             stdoutGobbler = new StreamGobbler(p.getInputStream());
@@ -942,6 +959,13 @@ public class Daemon {
                 daemonInformation.setCharactersInside(daemonInformation.getCharactersInside() - translationSize);
                 readWriteLock.writeLock().unlock();
                 charactersPerTranslation.remove(element.getId());
+
+                for(Entry<Integer,String> entry: dirVars.entrySet())
+                {
+                    String dirPath=tmpDir+"/"+"dirscalablewebservice-"+this.getId()+"-"+element.getId()+"-"+entry.getKey();
+                    ServerUtil.deleteDirectory(new File(dirPath));
+                }
+
             }
             
         }

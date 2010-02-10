@@ -50,6 +50,7 @@ import org.scalemt.util.ServerUtil;
 import java.util.HashSet;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.BinaryDocument;
 import org.scalemt.rmi.transferobjects.Content;
 import org.scalemt.rmi.transferobjects.TextContent;
@@ -273,16 +274,16 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 	{
 		private Content text;
 		private LanguagePair pair;
-        private List<Long> dictionaries;
+        private AdditionalTranslationOptions additionalTranslationOptions;
 
 		private TranslationEngineException exception;
 
 
-		public TranslationCaller(Content text, LanguagePair pair, List<Long> dictionaries) {
+		public TranslationCaller(Content text, LanguagePair pair, AdditionalTranslationOptions to) {
 			super();
 			this.text = text;
 			this.pair = pair;
-            this.dictionaries=dictionaries;
+                        this.additionalTranslationOptions=to;
 			this.exception=null;
 		}
 
@@ -292,7 +293,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		public void run(){
 			try
 			{
-			translate(text, pair,dictionaries);
+			translate(text, pair,additionalTranslationOptions);
 			}
 			catch (TranslationEngineException e) {
 				exception=e;
@@ -442,7 +443,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		int maxCapacityPerDaemon=0;
 		
 		LanguagePair pairesca=new LanguagePair("es","ca");
-		String quijote = ServerUtil.readFileFromClasspath("/corpora/quijoteFragment.txt");
+		String quijote = ServerUtil.readFileFromClasspath("/corpora/quijoteFragmentBig.txt");
 		int numChars = quijote.length();
 		DaemonConfiguration cd = DaemonFactory.getInstance().searchConfiguration(pairesca, Format.txt);
 
@@ -458,6 +459,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 				TranslationCaller[] translateThreads = new TranslationCaller[numDaemons];
 				for(int i=0; i<numDaemons;i++)
 					translateThreads[i]=new TranslationCaller(new TextContent(Format.txt,quijote),pairesca,null);
+                                translate(new TextContent(Format.txt,quijote.substring(0, Math.max(quijote.length()/10000,1))), pairesca, null);
 				startTime=System.currentTimeMillis();
 				for(int i=0; i<numDaemons;i++)
 					translateThreads[i].start();
@@ -465,6 +467,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 					translateThreads[i].join();
 				endTime=System.currentTimeMillis();
 				timeEllapsed=endTime-startTime;
+                                logger.trace("Time ellapsed calculating CPU capacity : "+timeEllapsed);
 				for(int i=0; i<numDaemons;i++)
 					if(translateThreads[i].getException()!=null)
 						throw translateThreads[i].getException();
@@ -620,7 +623,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
      * @throws java.lang.Exception If there is aerror translating the text
      */
     @Override
-    public Content translate(Content source,LanguagePair pair, List<Long> dictionaries)
+    public Content translate(Content source,LanguagePair pair, AdditionalTranslationOptions to)
 			throws TranslationEngineException {
 		
 		
@@ -655,7 +658,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		return builder.toString();
 		*/
 
-                QueueElement queueElement = new QueueElement(getNewId(), source,pair,Thread.currentThread(), dictionaries);
+                QueueElement queueElement = new QueueElement(getNewId(), source,pair,Thread.currentThread(), to);
                 Daemon d = chooseDaemon(queueElement);
 		if(d==null)
                     throw new NotAvailableDaemonException();
@@ -974,7 +977,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                                         translate(doc, referenceConf.getLanguagePair(), null);
                                         t2=System.currentTimeMillis();
 
-                                        double length =doc.calculateLength();
+                                        double length =doc.getLength();
                                         //System.err.println("t1="+t1+" t2="+t2+" length="+length);
                                         double speed = length*1000/ (double) (t2-t1);
                                         double ratio = txtSpeed/speed;

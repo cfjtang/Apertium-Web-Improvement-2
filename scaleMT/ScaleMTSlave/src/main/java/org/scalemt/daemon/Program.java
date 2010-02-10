@@ -6,7 +6,9 @@
 package org.scalemt.daemon;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import org.scalemt.rmi.transferobjects.Format;
 
@@ -21,11 +23,13 @@ class Program implements Serializable{
     private int input=-10;
     private int output=-10;
     private Set<Format> onlyFormats;
+    private Map<String,String> restrictions;
 
     public Program() {
         onlyFormats=new HashSet<Format>();
         for(Format f:Format.values())
             onlyFormats.add(f);
+        restrictions=new HashMap<String, String>();
     }
 
 
@@ -68,5 +72,13 @@ class Program implements Serializable{
 
     public void setOnlyFormats(Set<Format> onlyFormats) {
         this.onlyFormats = onlyFormats;
+    }
+
+    public Map<String, String> getRestrictions() {
+        return restrictions;
+    }
+
+    public void setRestrictions(Map<String, String> restrictions) {
+        this.restrictions = restrictions;
     }
 }
