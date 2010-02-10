@@ -17,11 +17,16 @@
  */
 package org.scalemt.router.logic;
 
+import java.util.Date;
 import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.commons.lang.mutable.MutableInt;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,13 +50,28 @@ class SimpleRequestHistory implements IRequestHistory {
      */
     private Map<LanguagePair, RequestsHistoryTO> requestsMap;
 
+    private Map<Requester,List<UserRequest>> requestsPerUser;
+    private Map<Requester,MutableInt> costPerUser;
+
+    private long userAdmissionPeriod=24*60*60*1000;
+
     public SimpleRequestHistory() {
         requestsMap = new HashMap<LanguagePair, RequestsHistoryTO>();
+        requestsPerUser=new HashMap<Requester, List<UserRequest>>();
+        costPerUser=new HashMap<Requester, MutableInt>();
+
+         try
+        {
+            userAdmissionPeriod=Integer.parseInt(Util.readConfigurationProperty("user_limit_period"));
+        }
+        catch(Exception e){}
     }
 
     @Override
-    public void addRequest(LanguagePair pair, int numCharacters, Format format) {
+    public void addRequest(LanguagePair pair, int numCharacters, Format format, Requester requester) {
 
+        List<UserRequest> userHistory=null;
+        MutableInt userCost =null;
         synchronized(this)
         {
             if (requestsMap.containsKey(pair)) {
@@ -61,9 +81,40 @@ class SimpleRequestHistory implements IRequestHistory {
                 rp.addRequest(format, numCharacters);
                 requestsMap.put(pair, rp);
             }
+            userHistory=requestsPerUser.get(requester);
+            userCost=costPerUser.get(requester);
+            if(userHistory==null)
+            {
+                userHistory=new LinkedList<UserRequest>();
+                requestsPerUser.put(requester, userHistory);
+                userCost=new MutableInt(0);
+                costPerUser.put(requester, userCost);
+            }
         }
-    }
 
+        synchronized(userHistory)
+        {
+            ListIterator<UserRequest> iterator = userHistory.listIterator();
+            Date now = new Date();
+            
+            while(iterator.hasNext())
+            {
+                UserRequest request=iterator.next();
+                if(now.getTime()-request.getTime().getTime() >userAdmissionPeriod)
+                {
+                    userCost.subtract(request.getCpuCost());
+                    iterator.remove();
+                }
+                else
+                    break;
+            }
+
+           int newRequestCost =LoadBalancer.getInstance().getLoadPredictor().getLoadConverter().convertRequest(numCharacters, LoadBalancer.getInstance().getDaemonConfigurationToTranslate(pair, format), format);
+           userHistory.add(new UserRequest(new Date(), newRequestCost));
+           userCost.add(newRequestCost);
+        }
+        
+    }
 
     @Override
     public Map<LanguagePair, RequestsHistoryTO> getHistoryAndReset() {
@@ -81,5 +132,10 @@ class SimpleRequestHistory implements IRequestHistory {
 
             return returnMap;
         }
+    }
+
+    @Override
+    public int getCostUser(Requester rq) {
+        return costPerUser.get(rq).intValue();
     }
 }

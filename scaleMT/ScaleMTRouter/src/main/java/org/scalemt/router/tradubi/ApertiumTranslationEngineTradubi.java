@@ -41,6 +41,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.scalemt.rmi.transferobjects.TextContent;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 
 
 /**
@@ -221,7 +222,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
                 throw new UnsupportedLanguagePairException();
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair,  UserType.registered,dictionaries).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair,  "","",new AdditionalTranslationOptions(dictionaries)).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
 			throw new TranslationEngineException(e);
@@ -240,7 +241,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
                 throw new UnsupportedLanguagePairException();
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, UserType.registered,dictionaries).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, "","",new AdditionalTranslationOptions(dictionaries)).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
 			throw new TranslationEngineException(e);

@@ -17,6 +17,7 @@
  */
 package org.scalemt.router.logic;
 
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
@@ -456,7 +457,7 @@ public class LoadBalancer {
      * @throws com.gsoc.apertium.translationengines.router.logic.NoEngineForThatPairException If the pair is not supported
      * @throws com.gsoc.apertium.translationengines.exceptions.TranslationEngineException If some other error happens
      */
-    public Content translate(Content source, LanguagePair pair,  UserType userType, List<Long> dictionaries) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
+    public Content translate(Content source, LanguagePair pair, String ip, String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
 
         DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, source.getFormat());
         if (dc == null) {
@@ -464,17 +465,27 @@ public class LoadBalancer {
         }
         QueueScheduler queue = queues.get(dc);
 
+        Requester requester=new AnonymousRequester(ip);
+        UserType type = UserType.anonymous;
+        //Test if user is registered
+        if(UserManagement.getInstance().isKeyValid(apiKey))
+        {
+            type=UserType.registered;
+            requester=new RegisteredRequester(apiKey);
+        }
+
         //Log request
-        loadPredictor.getRequestHistory().addRequest(pair, source.getLength(), source.getFormat());
+        loadPredictor.getRequestHistory().addRequest(pair, source.getLength(), source.getFormat(),requester);
         //Thread.currentThread().getId();
         //logger.info("Request received");
 
-        if (AdmissionControl.getInstance().canAcceptRequest()) {
-            boolean hasException=false;
+        //Check user limit
+        //if (AdmissionControl.getInstance().canAcceptRequest()) {
+        if (UserAdmissionControl.getInstance().canTranslate(requester)) {
             try
             {
-                return queue.translate(source,  userType, dictionaries);
-
+                logger.debug("requestprocessing "+source.getLength()+" "+loadPredictor.getLoadConverter().convertRequest(source.getLength(), dc, source.getFormat()));
+                return queue.translate(source, type, to);
             }
             catch(TranslationEngineException e)
             {
@@ -543,8 +554,8 @@ public class LoadBalancer {
             //int constantConvertedLoad =loadConverter.convert(loadPredictor.getConstantCpuCostPerRequest(), new LanguagePair("es", "ca"), Format.txt);
             //int constantCostPerRequest=loadPredictor.getConstantCpuCostPerRequest();
             //int rate = loadPredictor.getLoadConverter().convert(10000, dc);
-            int constantCost = loadPredictor.getConstantCpuCostPerRequest(dc);
-            queues.put(dc, new QueueScheduler(dc, translationEngines, serversInformation, Integer.parseInt(Util.readConfigurationProperty("scheduler_maxcharacters_in_daemon_queue")), Integer.parseInt(Util.readConfigurationProperty("scheduler_maxelements_in_daemon_queue")),constantCost));
+            
+            queues.put(dc, new QueueScheduler(dc, translationEngines, serversInformation, Integer.parseInt(Util.readConfigurationProperty("scheduler_maxcharacters_in_daemon_queue")), Integer.parseInt(Util.readConfigurationProperty("scheduler_maxelements_in_daemon_queue")),loadPredictor));
             DaemonConfigurationInformation newInfo = new DaemonConfigurationInformation(dc);
             daemonsConfigInfo.put(dc, newInfo);
         }
@@ -587,7 +598,7 @@ public class LoadBalancer {
         }
     }
 
-    private DaemonConfiguration getDaemonConfigurationToTranslate(LanguagePair p, Format format)
+    DaemonConfiguration getDaemonConfigurationToTranslate(LanguagePair p, Format format)
     {
          DaemonConfiguration chosenc=null;
              for(DaemonConfiguration c: supportedConfigurations)
@@ -597,4 +608,11 @@ public class LoadBalancer {
              }
              return chosenc;
     }
+
+    LoadPredictor getLoadPredictor() {
+        return loadPredictor;
+    }
+
+    
 }
+

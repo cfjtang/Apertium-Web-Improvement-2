@@ -17,12 +17,20 @@
  */
 package org.scalemt.router.logic;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import org.scalemt.router.persistence.ExistingNameException;
 import org.scalemt.router.persistence.IUserDAO;
 import org.scalemt.router.persistence.UserDAOFactory;
 import org.scalemt.router.persistence.UserEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.validator.EmailValidator;
+import org.apache.commons.validator.UrlValidator;
+import org.apache.commons.validator.Validator;
+import org.scalemt.router.persistence.Base64;
+import org.scalemt.router.ws.WrongFormatException;
 
 /**
  * Manages users registered with the application. Allows registering users and
@@ -65,21 +73,49 @@ public class UserManagement {
         dao=UserDAOFactory.getUserDAO();
     }
 
+    private String encrypt(String plaintext)  {
+		if (plaintext == null) {
+                    return null;
+		}
+
+		try {
+			final MessageDigest md = MessageDigest.getInstance("SHA");
+			md.update(plaintext.getBytes("UTF-8"));
+			return Base64.encodeBytes(md.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+                return null;
+	}
+
     /**
      * Registers a new user and generates his/her API key
      *
      * @param userName User name
      * @return API key, or null if there is any error
      */
-    public String registerUser(String userName)
+    public UserEntity registerUser(String email, String url) throws ExistingNameException, WrongFormatException
     {
         try
         {
-            return dao.createUser(userName).getApiKey().toString();
+            EmailValidator emailValidator = EmailValidator.getInstance();
+            if(!emailValidator.isValid(email))
+                throw new WrongFormatException("email");
+            UrlValidator urlValidator = new UrlValidator();
+            if(!urlValidator.isValid(url))
+               throw new WrongFormatException("url");
+            String key = encrypt(email+System.currentTimeMillis());
+            return dao.createUser(email,url,key.substring(0, key.length()-1));
         }
         catch(ExistingNameException e)
         {
-            return null;
+            throw e;
+        }
+        catch(WrongFormatException e)
+        {
+            throw e;
         }
         catch(Exception e)
         {

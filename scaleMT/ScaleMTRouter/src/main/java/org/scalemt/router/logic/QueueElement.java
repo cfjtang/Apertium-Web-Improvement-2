@@ -20,6 +20,7 @@ package org.scalemt.router.logic;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.transferobjects.Format;
 import java.util.List;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.Content;
 
 
@@ -68,7 +69,7 @@ public class QueueElement implements Comparable<QueueElement>{
      */
     private long priority;
 
-    private List<Long> dictionaries;
+   private AdditionalTranslationOptions additionalTranslationOptions;
 
     /**
      * Constructor. Calculates priority.
@@ -80,14 +81,14 @@ public class QueueElement implements Comparable<QueueElement>{
      * @param userType User type: registered or not.
      * @param caller Caller thread
      */
-    public QueueElement(Content sourceText,  UserType userType, Thread caller, long notRegisteredIncrement,List<Long> dictionaries) {
+    public QueueElement(Content sourceText,  UserType userType, Thread caller, long notRegisteredIncrement,AdditionalTranslationOptions to) {
         this.sourceText = sourceText;
         
         this.userType = userType;
         this.caller = caller;
         this.time= System.currentTimeMillis();
         this.priority=this.time;
-        this.dictionaries=dictionaries;
+        this.additionalTranslationOptions=to;
         if(this.userType!=UserType.registered)
             this.priority+=notRegisteredIncrement;
     }
@@ -143,12 +144,12 @@ public class QueueElement implements Comparable<QueueElement>{
         this.userType = userType;
     }
 
-    public List<Long> getDictionaries() {
-        return dictionaries;
+    public AdditionalTranslationOptions getAdditionalTranslationOptions() {
+        return additionalTranslationOptions;
     }
 
-    public void setDictionaries(List<Long> dictionaries) {
-        this.dictionaries = dictionaries;
+    public void setAdditionalTranslationOptions(AdditionalTranslationOptions additionalTranslationOptions) {
+        this.additionalTranslationOptions = additionalTranslationOptions;
     }
 
 

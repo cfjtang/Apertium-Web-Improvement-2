@@ -64,7 +64,7 @@ public class LoadConverter {
     /**
      * Configuration conversion rates
      */
-    private Map<DaemonConfiguration,Integer> constantCosts;
+    private Map<Format,Integer> constantCosts;
 
     /**
      * Format conversion rates
@@ -82,7 +82,7 @@ public class LoadConverter {
         referenceFormat=rFormat;
         conversionRates=new HashMap<DaemonConfiguration, Double>();
         formatConversionRates = new HashMap<Format, Double>();
-        constantCosts = new HashMap<DaemonConfiguration, Integer>();
+        constantCosts = new HashMap<Format, Integer>();
         loadRatesFromConfigurationFile("/LoadConverter.properties");
     }
 
@@ -134,9 +134,22 @@ public class LoadConverter {
         return convert(numCharacters, dc, referenceFormat);
     }
 
-    public Integer getConstantCost(DaemonConfiguration dc)
+    public Integer getConstantCost(DaemonConfiguration dc, Format f)
     {
-        return constantCosts.get(dc);
+        return constantCosts.get(f);
+    }
+
+    public int convertRequest(int numCharacters, DaemonConfiguration dc, Format format)
+    {
+        int chars = convert(numCharacters, dc, format);
+        Integer constant = getConstantCost(dc, format);
+        if(constant==null)
+        {
+            logger.warn("Constant cost not found for "+dc+" "+format);
+            return chars;
+        }
+        else
+            return chars+constant;
     }
 
     /**
@@ -174,8 +187,8 @@ public class LoadConverter {
             {
                 try
                 {
-                    DaemonConfiguration c = DaemonConfiguration.parse(((String)pairObj).substring("constant_k_".length()));
-                    constantCosts.put(c, Integer.parseInt(properties.getProperty((String) pairObj)));
+                    Format f = Format.valueOf(((String)pairObj).substring("constant_k_".length()));
+                    constantCosts.put(f, Integer.parseInt(properties.getProperty((String) pairObj)));
                 }catch(Exception e)
                 {
                    logger.warn("Exception parsing daemonconfig property", e);

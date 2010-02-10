@@ -17,11 +17,13 @@
         <h1>Apertium Web Service register page</h1>
         <p>
         <form action="RegisterUserServlet">
-            User name: <input type="text" name="name" />
+            Email: <input type="text" name="email" />
+            <br/>
+            Website URL: <input type="text" name="url" />
             <br/>
             <input type="submit" value="Register">
         </form>
-        </p>
+    </p>
         <p>
             <%
             if(request.getAttribute("message")!=null)

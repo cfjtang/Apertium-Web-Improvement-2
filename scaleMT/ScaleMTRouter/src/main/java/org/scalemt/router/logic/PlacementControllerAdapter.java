@@ -179,6 +179,7 @@ public class PlacementControllerAdapter {
                     appMap.put(servers.get(j), newL[i][j]);
             }
             loadDistributionMatrix.put(apps.get(i), appMap);
+            newPlacementStr.append(" ("+cpuDemand[i]+")");
             newPlacementStr.append("\n");
         }
 
