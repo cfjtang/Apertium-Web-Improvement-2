@@ -209,7 +209,7 @@ public class Main {
                 
                 translationEnginePool.stop();
 
-                Map<Format,Integer> constantCost = calculateConstantCostPerRequest(line,refDc);
+                Map<Format,Integer> constantCost = calculateConstantCostPerRequest(line,refDc,formatConversionRates);
                 //Map<DaemonConfiguration,Integer> constantCost = new HashMap<DaemonConfiguration, Integer>();
 
                 Properties properties = new Properties();
@@ -445,8 +445,8 @@ public class Main {
 
     private static Map<DaemonConfiguration, Integer> calculateConstantCostPerRequest(CommandLine line) {
 
-        int numThreads=10;
-        int numLoops=100;
+        int numThreads=1;
+        int numLoops=50;
         long start,end,time;
         Map<DaemonConfiguration,Integer> constatntCostMap = new HashMap<DaemonConfiguration, Integer>();
 
@@ -501,7 +501,7 @@ public class Main {
          }
 
          //k = ( capacity*time - numchars ) / numRequests
-         int requestK = (int) ((translationEngine.getServerInformation().getCpuCapacity() * time - totalAmountOfChars) / numLoops * textsToTranslate.size());
+         int requestK = (int) ((translationEngine.getServerInformation().getCpuCapacity() * time - totalAmountOfChars) / numLoops *numThreads* textsToTranslate.size());
          constatntCostMap.put(d, requestK);
          logger.debug("DaemonConfig="+d+". k="+requestK);
 
@@ -519,10 +519,10 @@ public class Main {
         return constatntCostMap;
     }
 
-    private static Map<Format, Integer> calculateConstantCostPerRequest(CommandLine line,DaemonConfiguration d) {
+    private static Map<Format, Integer> calculateConstantCostPerRequest(CommandLine line,DaemonConfiguration d, Map<Format, Double> formatConversionRates) {
 
-        int numThreads=10;
-        int numLoops=100;
+        int numThreads=5;
+        int numLoops=20;
         long start,end,time;
         Map<Format,Integer> constatntCostMap = new HashMap<Format, Integer>();
 
@@ -538,40 +538,54 @@ public class Main {
         {
             logger.debug("Testing k for "+f);
             translationEngine.startDaemon(d);
-            Content gpl = ServerUtil.readContentFromClasspath("/corpora/gpl_"+d.getLanguagePair().getSource()+"."+f.toString(),f);
-            Content udhr = ServerUtil.readContentFromClasspath("/corpora/UDHR_"+d.getLanguagePair().getSource()+"."+f.toString(),f);
+            Content gpl = ServerUtil.readContentFromClasspath("/corpora/quijoteFragmentVerySmall"+"."+f.toString(),f);
+            //Content udhr = ServerUtil.readContentFromClasspath("/corpora/UDHR_"+d.getLanguagePair().getSource()+"."+f.toString(),f);
             List<Content> textsToTranslate = new ArrayList<Content>();
             if(gpl!=null)
                 textsToTranslate.add(gpl);
-            if(udhr!=null)
-                textsToTranslate.add(udhr);
+           // if(udhr!=null)
+             //   textsToTranslate.add(udhr);
 
-            List<Thread> loops= new ArrayList<Thread>();
+            List<LoopTranslationSender> loops= new ArrayList<LoopTranslationSender>();
             for(int i=0; i<numThreads;i++)
-                loops.add(new Thread(new LoopTranslationSender(numLoops, textsToTranslate, translationEngine, d.getLanguagePair())));
+                loops.add(new LoopTranslationSender(numLoops, textsToTranslate, translationEngine, d.getLanguagePair()));
+
+         int successfullyTranslated =0;
+
+         translationEngine.translate(textsToTranslate.get(0), d.getLanguagePair(), null);
 
          start = System.currentTimeMillis();
 
-         for(Thread t:loops)
+         for(LoopTranslationSender t:loops)
              t.start();
 
-         for(Thread t:loops)
+         for(LoopTranslationSender t:loops)
+         {
              t.join();
+             successfullyTranslated+=t.getSuccessFullyTranslated();
+         }
 
          end = System.currentTimeMillis();
-         time=(end-start)/1000;
+         time=end-start;
 
          translationEngine.stopAllDaemonsLanguage(d);
 
          int totalAmountOfChars = 0;
          for(Content content: textsToTranslate)
          {
-             totalAmountOfChars+=numLoops*content.getLength();
+             totalAmountOfChars+=numLoops*numThreads*content.getLength();
          }
 
+         double rate=1;
+         Double drate=formatConversionRates.get(f);
+             if(drate!=null)
+                 rate=drate.doubleValue();
+
+        logger.trace(f+"cap: "+translationEngine.getServerInformation().getCpuCapacity()+" time:"+time+" capacity*time: "+translationEngine.getServerInformation().getCpuCapacity() * time+ " amountofchars:"+totalAmountOfChars*rate+ " successfullyTranslated:"+successfullyTranslated);
+
          //k = ( capacity*time - numchars ) / numRequests
-         int requestK = (int) ((translationEngine.getServerInformation().getCpuCapacity() * time - totalAmountOfChars) / numLoops * textsToTranslate.size());
-         constatntCostMap.put(f, requestK);
+         int requestK = (int) ((translationEngine.getServerInformation().getCpuCapacity() * time/1000 - totalAmountOfChars*rate) / successfullyTranslated )/* (numLoops * numThreads * textsToTranslate.size()))*/;
+         constatntCostMap.put(f, Math.max(0, requestK));
          logger.debug("Format="+f+". k="+requestK);
 
         }
@@ -592,7 +606,7 @@ public class Main {
 
 }
 
-class LoopTranslationSender implements Runnable
+class LoopTranslationSender extends Thread
     {
         private int numLoops;
         private List<Content> textsToTranslate;
@@ -637,9 +651,9 @@ class LoopTranslationSender implements Runnable
                         successFullyTranslated++;
                     }
                 } catch (TranslationEngineException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 } catch (RemoteException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         }

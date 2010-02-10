@@ -278,6 +278,18 @@ public class DaemonFactory {
                                              catch(IllegalArgumentException e){}
                                          }
                                      }
+
+                                     ofNode= attribs.getNamedItem("onlyIf");
+                                     if(ofNode!=null)
+                                     {
+                                         String restriction=ofNode.getNodeValue();
+                                         String[] pieces = restriction.split("=");
+                                         if(pieces.length==2)
+                                         {
+                                             program.getRestrictions().put(pieces[0],pieces[1]);
+                                         }
+                                     }
+
                                      for(int l=0; l<programElements.getLength();l++)
                                      {
                                          Node programEl=programElements.item(l);
