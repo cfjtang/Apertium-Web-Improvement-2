@@ -34,7 +34,7 @@ public interface IRequestHistory {
      * @param numCharacters Number of characters.
      * @param format Format
      */
-    public void addRequest(LanguagePair pair, int numCharacters,Format format);
+    public void addRequest(LanguagePair pair, int numCharacters,Format format, Requester requester);
 
     /**
      * Gets the requests received since the last time this method was called.
@@ -42,4 +42,12 @@ public interface IRequestHistory {
      * @return Requests received since the last time this method was called.
      */
     public Map<LanguagePair,RequestsHistoryTO> getHistoryAndReset();
+
+    /**
+     * Gets the total cpu cost of the requests sent by a user in the last period.
+     *
+     * @param rq
+     * @return
+     */
+    public int getCostUser(Requester rq);
 }

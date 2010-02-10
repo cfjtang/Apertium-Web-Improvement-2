@@ -40,18 +40,24 @@ public class JPAUserDAO implements IUserDAO{
 
 
     @Override
-    public UserEntity createUser(String name) throws DAOException {
+    public UserEntity createUser(String email,String url,String key) throws DAOException {
 
       EntityManager em = emf.createEntityManager();
       em.getTransaction().begin();
       try
       {
     
-      List results =   em.createNamedQuery("userByName").setParameter("parName",name).getResultList();
+      List results =   em.createNamedQuery("userByApiKey").setParameter("parApiKey",key).getResultList();
+      if(results.size()>0)
+          throw new ExistingKeyException();
+      results =   em.createNamedQuery("userByEmail").setParameter("parEmail",email).getResultList();
       if(results.size()>0)
           throw new ExistingNameException();
+
       UserEntity userEntity=new UserEntity();
-      userEntity.setUsername(name);
+      userEntity.setEmail(email);
+      userEntity.setApiKey(key);
+      userEntity.setUrl(url);
       em.persist(userEntity);
       return userEntity;
       }

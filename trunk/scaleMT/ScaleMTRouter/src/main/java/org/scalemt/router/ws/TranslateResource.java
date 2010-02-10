@@ -22,17 +22,16 @@ import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
 import org.scalemt.router.logic.LoadBalancer;
 import org.scalemt.router.logic.Util;
-import org.scalemt.router.ws.Constants;
 
 import org.scalemt.router.logic.NoEngineForThatPairException;
 import org.scalemt.router.logic.TooMuchLoadException;
 
 
-import org.scalemt.router.logic.UserManagement;
 import org.scalemt.router.logic.UserType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -45,6 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.TextContent;
 
 /**
@@ -73,8 +73,9 @@ public class TranslateResource {
      */
     @GET
     @Produces("application/json")
-    public String getJSON() {
-        return process(uricontext.getQueryParameters());
+    public String getJSON(@Context HttpServletRequest request) {
+        
+        return process(uricontext.getQueryParameters(),request.getRemoteAddr());
     }
 
     /**
@@ -85,8 +86,8 @@ public class TranslateResource {
     @POST
     @Consumes({"application/x-www-form-urlencoded", "multipart/form-data"})
     @Produces("application/json")
-    public String postJSON(MultivaluedMap<String, String> params) {
-        return process(params);
+    public String postJSON(MultivaluedMap<String, String> params,@Context HttpServletRequest request) {
+        return process(params,request.getRemoteAddr());
     }
 
     /**
@@ -95,7 +96,7 @@ public class TranslateResource {
      * @param params HTTP parameters
      * @return JSON data with the translation and result code
      */
-    private String process(MultivaluedMap<String, String> params) {
+    private String process(MultivaluedMap<String, String> params,String clientIp) {
         //Get parameters
         List<String> q = params.get("q");
         List<String> langpairs = params.get("langpair");
@@ -103,6 +104,15 @@ public class TranslateResource {
         String context = params.getFirst("context");
         String format = params.getFirst("format");
         String key = params.getFirst("key");
+
+        Map<String,String> additionalOptions = new HashMap<String, String>();
+        for(String mapkey: params.keySet())
+        {
+            if(!"q".equals(mapkey) && !"langpair".equals(mapkey) && !"callback".equals(mapkey) && !"context".equals(mapkey) && !"format".equals(mapkey) && !"key".equals(mapkey) )
+            {
+                additionalOptions.put(mapkey, params.getFirst(mapkey));
+            }
+        }
 
         JSONObject response = new JSONObject();
         String responseStr;
@@ -118,7 +128,7 @@ public class TranslateResource {
                     /*
                      * If there is only a source text and a language pair, perform one translation
                      */
-                    response = getTranslationJSON(q.get(0), langpairs.get(0), format, key);
+                    response = getTranslationJSON(q.get(0), langpairs.get(0), format,clientIp, key,additionalOptions);
                     responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
                     responseStatus = response.getInt(Constants.JSON_RESPONSESTATUS);
                     errorDetails = response.isNull(Constants.JSON_RESPONSEDETAILS) ? null : response.getString(Constants.JSON_RESPONSEDETAILS);
@@ -131,7 +141,7 @@ public class TranslateResource {
                     responseStatus = 200;
                     errorDetails = null;
                     for (String languagePair : langpairs) {
-                        JSONObject pairResponse = getTranslationJSON(q.get(0), languagePair, format, key);
+                        JSONObject pairResponse = getTranslationJSON(q.get(0), languagePair, format,clientIp, key,additionalOptions);
                         response.accumulate(Constants.JSON_RESPONSEDATA, pairResponse);
                         if (pairResponse.getInt(Constants.JSON_RESPONSESTATUS) != 200) {
                             responseStatus = pairResponse.getInt(Constants.JSON_RESPONSESTATUS);
@@ -147,7 +157,7 @@ public class TranslateResource {
                     responseStatus = 200;
                     errorDetails = null;
                     for (String query : q) {
-                        JSONObject pairResponse = getTranslationJSON(query, langpairs.get(0), format, key);
+                        JSONObject pairResponse = getTranslationJSON(query, langpairs.get(0), format, clientIp,key,additionalOptions);
                         response.accumulate(Constants.JSON_RESPONSEDATA, pairResponse);
                         if (pairResponse.getInt(Constants.JSON_RESPONSESTATUS) != 200) {
                             responseStatus = pairResponse.getInt(Constants.JSON_RESPONSESTATUS);
@@ -164,7 +174,7 @@ public class TranslateResource {
                     responseStatus = 200;
                     errorDetails = null;
                     for (int i = 0; i < q.size(); i++) {
-                        JSONObject pairResponse = getTranslationJSON(q.get(i), langpairs.get(i), format, key);
+                        JSONObject pairResponse = getTranslationJSON(q.get(i), langpairs.get(i), format,clientIp, key,additionalOptions);
                         response.accumulate(Constants.JSON_RESPONSEDATA, pairResponse);
                         if (pairResponse.getInt(Constants.JSON_RESPONSESTATUS) != 200) {
                             responseStatus = pairResponse.getInt(Constants.JSON_RESPONSESTATUS);
@@ -214,13 +224,12 @@ public class TranslateResource {
      * @return JSON object with translation and status codes
      * @throws org.json.JSONException
      */
-    private JSONObject getTranslationJSON(String source, String pair, String format, String key) throws JSONException {
+    private JSONObject getTranslationJSON(String source, String pair, String format,String clientIp, String key,Map<String,String> moreOptions) throws JSONException {
 
         String translation = null;
         String errorMessage = null;
         int responseCode = 200;
-
-        logger.debug("requestreceived "+key+" "+pair);
+         logger.debug("requestreceived "+clientIp+" "+key+" "+pair);
         LanguagePair lpair = null;
         try {
             lpair = new LanguagePair(pair, "\\|".toCharArray());
@@ -237,11 +246,12 @@ public class TranslateResource {
                     if (format != null && !"".equals(format)) {
                         enumFormat = Format.valueOf(format);
                     }
-                    UserType userType = UserType.anonymous;
+                    //UserType userType = UserType.anonymous;
                    // if (key != null && UserManagement.getInstance().isKeyValid(key)) {
                    //     userType = UserType.registered;
                     //}
-                    translation = LoadBalancer.getInstance().translate(new TextContent(enumFormat,source), lpair,  userType,null).toString();
+                    AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
+                    translation = LoadBalancer.getInstance().translate(new TextContent(enumFormat,source), lpair,clientIp ,key ,additionalTranslationOptions).toString();
                 } else {
                     errorMessage = "Not supported pair";
                     responseCode = 451;
@@ -255,7 +265,7 @@ public class TranslateResource {
                 errorMessage = "No translation engines available";
                 responseCode = 551;
             } catch (TooMuchLoadException tmle) {
-                errorMessage = "System is overloaded";
+                errorMessage = "Your translations limit has been reached";
                 responseCode = 552;
             } catch (TranslationEngineException e) {
                 errorMessage = e.getMessage();

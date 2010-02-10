@@ -17,6 +17,8 @@
  */
 package org.scalemt.router.ws;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.scalemt.router.logic.UserManagement;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -24,6 +26,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.scalemt.router.persistence.ExistingNameException;
+import org.scalemt.router.persistence.UserEntity;
 
 /**
  * Servlet that allows new user to register to use the web service
@@ -42,16 +46,34 @@ public class RegisterUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String name = request.getParameter("name");
+       String email = request.getParameter("email");
+       String url = request.getParameter("url");
        String message=null;
 
-       if(name!=null && !"".equals(name) && name.length()<100)
+       if(email!=null && !"".equals(email) && email.length()<100 && url!=null && !"".equals(url) && url.length()<100)
        {
-           String key =UserManagement.getInstance().registerUser(name);
-           if(key==null)
-               message="There have been an error while registering. Please try again later or use another name";
-           else
-               message="Register OK. Your key is '"+key+"'";
+            try {
+                UserEntity user = UserManagement.getInstance().registerUser(email,url);
+                if(user==null)
+                   message="Unexpected error. Please try again later or use another name";
+               else
+                   message="Register OK. Your key is '"+user.getApiKey()+"'";
+            } catch (ExistingNameException ex) {
+                message="Error. Your email is already registered.";
+            }
+            catch(WrongFormatException e)
+            {
+                if(e.getWrongfield().equals("email"))
+                {
+                     message="Error. Your email is not valid.";
+                }
+                else if(e.getWrongfield().equals("url"))
+                {
+                    message="Error. Your url is not valid.";
+                }
+            }
+
+           
        }
 
        if(message!=null)

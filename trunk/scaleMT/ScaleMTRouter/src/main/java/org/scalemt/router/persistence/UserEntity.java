@@ -23,49 +23,78 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import org.scalemt.router.logic.Requester;
 
 /**
  * JPA Entity with the information of a user.
  * @author vmsanchez
  */
-@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
-@Entity
-@NamedQuery(name="userByName",
+
+@NamedQueries({
+@NamedQuery(name="userByApiKey",
 				         query="SELECT u " +
 				               "FROM UserEntity u " +
-				               "WHERE u.username = :parName ")
-public class UserEntity implements Serializable {
+				               "WHERE u.apiKey = :parApiKey "),
+@NamedQuery(name="userByEmail",
+				         query="SELECT u " +
+				               "FROM UserEntity u " +
+				               "WHERE u.email = :parEmail ")})
+//@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
+@Entity
+public class UserEntity implements Serializable  {
+
+    @Id
+    private long id;
 
     /**
      * Name of the user. Only an user can exist with the same name
      */
-    private String username;
+    private String email;
+
+    /**
+     * Url of the website that will perform the requests
+     */
+    private String url;
 
     /**
      * API key. Generated field. Only an user can exist with the same API key
      */
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long apiKey;
+    private String apiKey;
 
-    public Long getApiKey() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getApiKey() {
         return apiKey;
     }
 
-    public void setApiKey(Long apiKey) {
+    public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
 
-    
-
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 
 
 }

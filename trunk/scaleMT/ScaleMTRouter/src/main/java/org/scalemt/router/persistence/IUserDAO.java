@@ -30,7 +30,7 @@ public interface IUserDAO {
      * @throws ExistingNameException If the name already exists
      * @throws com.gsoc.apertium.translationengines.router.persistence.DAOException If there is a database error
      */
-    public UserEntity createUser(String name) throws ExistingNameException,DAOException;
+    public UserEntity createUser(String email,String url,String key) throws ExistingNameException,DAOException;
     /**
      * Gets information abour the user with the given key
      * @param key User's key
@@ -39,9 +39,9 @@ public interface IUserDAO {
      */
     public UserEntity getUser(String key) throws DAOException;
     /**
-     * Deletes the user with the given name
-     * @param name Name of the user to be deleted
+     * Deletes the user with the given email
+     * @param email Email of the user to be deleted
      * @throws com.gsoc.apertium.translationengines.router.persistence.DAOException If there is a database error or the user doesn't exist
      */
-    public void deleteUser(String name) throws DAOException;
+    public void deleteUser(String email) throws DAOException;
 }

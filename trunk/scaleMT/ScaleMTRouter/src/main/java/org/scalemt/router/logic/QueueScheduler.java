@@ -32,6 +32,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import org.apache.commons.collections.OrderedMapIterator;
 import org.apache.commons.collections.map.ValueSortedHashMap;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.Content;
 
 /**
@@ -124,12 +125,8 @@ class QueueScheduler {
      */
     private long notRegisteredPriorityIncrement;
 
-    /**
-     * Number of characters representing the constant CPU cost of processing a request.
-     * It is added to the number of characters of the request
-     */
-    private int constatRequestCPUcost;
     
+    private LoadPredictor loadPredictor;
 
     /**
      * Sends a translation request to a server
@@ -166,7 +163,7 @@ class QueueScheduler {
             Content translation = null;
             try {
 
-                    translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSource(),daemonConfiguration.getLanguagePair(),queueElement.getDictionaries());
+                    translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSource(),daemonConfiguration.getLanguagePair(),queueElement.getAdditionalTranslationOptions());
                 }
              catch (Exception e) {
                 queueElement.setException(new TranslationEngineException(e));
@@ -180,7 +177,7 @@ class QueueScheduler {
                     int oldCharacterAmount = (Integer)  objOldCharacterAmount;
                     int oldElements = elementsInServerQueue.get(translationServerId);
                     //charactersInServerQueue.put(translationServerId, oldCharacterAmount - queueElement.getSourceText().length() - constatRequestCPUcost);
-                    charactersInServerQueue.put(translationServerId, oldCharacterAmount - queueElement.getSource().getLength());
+                    charactersInServerQueue.put(translationServerId, oldCharacterAmount - queueElement.getSource().getLength() - loadPredictor.getConstantCpuCostPerRequest(daemonConfiguration, queueElement.getSource().getFormat()));
                     elementsInServerQueue.put(translationServerId, oldElements - 1);
                 }
             }
@@ -229,7 +226,7 @@ class QueueScheduler {
                                             sent = true;
 
                                             //charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSourceText().length() + constatRequestCPUcost);
-                                            charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSource().getLength());
+                                            charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSource().getLength()+loadPredictor.getConstantCpuCostPerRequest(daemonConfiguration,queueElement.getSource().getFormat() ));
                                             elementsInServerQueue.put(translationServerId, elementsQueued + 1);
                                             TranslationSender translationSender = new TranslationSender(queueElement, translationServerId);
                                             Thread t = new Thread(translationSender);
@@ -274,7 +271,7 @@ class QueueScheduler {
      * @param maxQueuedCharactersServer Property <code>scheduler_maxcharacters_in_daemon_queue</code>
      * @param maxQueuedElementsServer Property <code>scheduler_maxelements_in_daemon_queue</code>
      */
-    public QueueScheduler(DaemonConfiguration dc, ITranslationServerReferences references, Map<TranslationServerId, TranslationServerInformation> serversInfo, int maxQueuedCharactersServer,int maxQueuedElementsServer,int constantCPUcost) {
+    public QueueScheduler(DaemonConfiguration dc, ITranslationServerReferences references, Map<TranslationServerId, TranslationServerInformation> serversInfo, int maxQueuedCharactersServer,int maxQueuedElementsServer,LoadPredictor predictor) {
 
         this.serverReferences = references;
         this.serversInformation = serversInfo;
@@ -282,7 +279,7 @@ class QueueScheduler {
         this.daemonConfiguration = dc;
         this.maxQueuedCharactersInServer = maxQueuedCharactersServer;
         this.maxQueuedElementsInServer = maxQueuedElementsServer;
-        this.constatRequestCPUcost=constantCPUcost;
+        this.loadPredictor=predictor;
         charactersInServerQueue = new ValueSortedHashMap(true);
         elementsInServerQueue = new HashMap<TranslationServerId, Integer>();
         loadDistribution = new HashMap<TranslationServerId, Integer>();
@@ -334,8 +331,8 @@ class QueueScheduler {
      * @return Translated source
      * @throws com.gsoc.apertium.translationengines.rmi.exceptions.TranslationEngineException If there is an error translating the source, or sending it to the server.
      */
-    public Content translate(Content source,  UserType userType, List<Long> dictionaries) throws TranslationEngineException {
-        QueueElement queueElement = new QueueElement(source,  userType, Thread.currentThread(),notRegisteredPriorityIncrement, dictionaries);
+    public Content translate(Content source,  UserType userType, AdditionalTranslationOptions to) throws TranslationEngineException {
+        QueueElement queueElement = new QueueElement(source,  userType, Thread.currentThread(),notRegisteredPriorityIncrement, to);
         requestsPrediction.addToNumberOfChars(source.getFormat(), source.getLength());
         queue.add(queueElement);
 

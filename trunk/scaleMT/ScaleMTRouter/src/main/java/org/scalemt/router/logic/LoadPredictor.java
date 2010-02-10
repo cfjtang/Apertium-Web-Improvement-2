@@ -132,7 +132,7 @@ public class LoadPredictor {
             logger.trace(entry.getKey()+": "+entry.getValue().getNumberOfRequests()+" requests. "+entry.getValue().getNumberOfChars().values()+" chars.");
 
         Map<DaemonConfiguration,Integer> loadPrediction = new HashMap<DaemonConfiguration, Integer>();
-        Map<DaemonConfiguration,MutableInt> numRequests = new HashMap<DaemonConfiguration, MutableInt>();
+        Map<DaemonConfiguration,Map<Format,MutableInt>> numRequests = new HashMap<DaemonConfiguration, Map<Format,MutableInt>>();
         Map<DaemonConfiguration,MutableInt> numChars = new HashMap<DaemonConfiguration, MutableInt>();
 
         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
@@ -144,11 +144,27 @@ public class LoadPredictor {
                 loadHistory.get(entry.getKey()).mergeNumberOfChars(queueRequests.getNumberOfChars());
                 loadHistory.get(entry.getKey()).addToNumberOfRequests(queueRequests.getNumberOfRequests());
             }*/
-            numRequests.put(entry.getKey(), new MutableInt(0 ));
-            for(MutableInt numr: entry.getValue().getRequestsSummary().getNumberOfRequests().values())
-                numRequests.get(entry.getKey()).add(numr);
+
+            Map<Format,MutableInt> requestsMap = new HashMap<Format, MutableInt>();
+            for(Format f: Format.values())
+                requestsMap.put(f,new MutableInt(0));
+            numRequests.put(entry.getKey(), requestsMap);
+
+            for(Entry<Format,MutableInt> ent: entry.getValue().getRequestsSummary().getNumberOfRequests().entrySet())
+                numRequests.get(entry.getKey()).get(ent.getKey()).add(ent.getValue());
 
             numChars.put(entry.getKey(), new MutableInt(0));
+
+            
+            for(Entry<Format,MutableInt> ent: entry.getValue().getRequestsSummary().getNumberOfChars().entrySet())
+            {
+                int convertedCharacters =ent.getValue().intValue();
+                if(entry.getKey().getFormats().size()>1)
+                    convertedCharacters=loadConverter.convert(ent.getValue().intValue(),  ent.getKey());
+                numChars.get(entry.getKey()).add(convertedCharacters);
+            }
+            
+            /*
             if(entry.getKey().getFormats().size()>1)
             {
                 for(Entry<Format,MutableInt> ent: entry.getValue().getRequestsSummary().getNumberOfChars().entrySet())
@@ -161,6 +177,8 @@ public class LoadPredictor {
                 for(MutableInt chars: entry.getValue().getRequestsSummary().getNumberOfChars().values())
                     numChars.get(entry.getKey()).add(chars);
             }
+             * */
+             
         }
 
         for(Entry<LanguagePair,RequestsHistoryTO> entry: loadHistory.entrySet())
@@ -171,13 +189,22 @@ public class LoadPredictor {
                 for(DaemonConfiguration d: queues.keySet())
                     if(d.getLanguagePair().equals(entry.getKey()) && d.getFormats().contains(f))
                         chosenDaemon=d;
-                numRequests.get(chosenDaemon).add(1);
+                //numRequests.get(chosenDaemon).get(f).add(1);
                 if(chosenDaemon.getFormats().size()>1)
                 {
                     numChars.get(chosenDaemon).add( loadConverter.convert(entry.getValue().getNumberOfChars().get(f).intValue(), f)) ;
                 }
                 else
                     numChars.get(chosenDaemon).add(entry.getValue().getNumberOfChars().get(f));
+            }
+
+            for(Format f: entry.getValue().getNumberOfRequests().keySet())
+            {
+                DaemonConfiguration chosenDaemon=null;
+                for(DaemonConfiguration d: queues.keySet())
+                    if(d.getLanguagePair().equals(entry.getKey()) && d.getFormats().contains(f))
+                        chosenDaemon=d;
+                numRequests.get(chosenDaemon).get(f).add( entry.getValue().getNumberOfRequests().get(f));
             }
         }
 
@@ -189,7 +216,11 @@ public class LoadPredictor {
             int loadConverted = 0;
 
             loadConverted += loadConverter.convert(numChars.get(dc).intValue(), dc);
-            loadConverted += numRequests.get(dc).intValue() * loadConverter.convert(getConstantCpuCostPerRequest(dc), dc);
+
+            for(Format f : dc.getFormats())
+            {
+                loadConverted += numRequests.get(dc).get(f).intValue() * loadConverter.convert(getConstantCpuCostPerRequest(dc,f), dc);
+            }
 
            cpuDemand = loadConverted > 0 ? Math.max((int) (((long) loadConverted * 1000) / (long) period), 1) : 0;
 
@@ -213,8 +244,8 @@ public class LoadPredictor {
         return loadPrediction;
     }
 
-    public int getConstantCpuCostPerRequest(DaemonConfiguration dc) {
-        Integer itgcost =loadConverter.getConstantCost(dc);
+    public int getConstantCpuCostPerRequest(DaemonConfiguration dc, Format f) {
+        Integer itgcost =loadConverter.getConstantCost(dc,f);
         if(itgcost!=null)
             return itgcost;
         else
