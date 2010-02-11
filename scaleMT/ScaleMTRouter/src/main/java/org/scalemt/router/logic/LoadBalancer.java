@@ -44,6 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.scalemt.rmi.transferobjects.Content;
 import org.scalemt.rmi.transferobjects.TextContent;
+import org.scalemt.router.ws.LoggerStatiticsWriter;
 
 /**
  * Main request router class. Coordinates all the other classes.
@@ -468,11 +469,14 @@ public class LoadBalancer {
         Requester requester=new AnonymousRequester(ip);
         UserType type = UserType.anonymous;
         //Test if user is registered
-        if(UserManagement.getInstance().isKeyValid(apiKey))
+        String registeredUser = UserManagement.getInstance().checkKey(apiKey);
+        if(registeredUser!=null)
         {
             type=UserType.registered;
-            requester=new RegisteredRequester(apiKey);
+            requester=new RegisteredRequester(registeredUser);
         }
+        else
+            registeredUser="anonymous";
 
         //Log request
         loadPredictor.getRequestHistory().addRequest(pair, source.getLength(), source.getFormat(),requester);
@@ -484,7 +488,9 @@ public class LoadBalancer {
         if (UserAdmissionControl.getInstance().canTranslate(requester)) {
             try
             {
-                logger.debug("requestprocessing "+source.getLength()+" "+loadPredictor.getLoadConverter().convertRequest(source.getLength(), dc, source.getFormat()));
+                int cost=loadPredictor.getLoadConverter().convertRequest(source.getLength(), dc, source.getFormat());
+                 LoggerStatiticsWriter.getInstance().logRequestProcessing(registeredUser, source.getLength(), cost);
+                logger.debug("requestprocessing "+registeredUser+" "+source.getLength()+" "+cost);
                 return queue.translate(source, type, to);
             }
             catch(TranslationEngineException e)

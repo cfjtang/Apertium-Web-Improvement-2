@@ -21,11 +21,15 @@
               $$('#langPairs option').each(function(elem){
                 if (elem.selected)
                 {
+                    var mu="no";
+                    if($('cbUnknown').checked)
+                        mu="yes"
+
                     $('translation').value='Loading...';
                      $('errorFooter').textContent='';
                     new Ajax.Request('resources/translate', {
                     method: 'post',
-                    parameters: {langpair: elem.value, q: $('source').value, key: "2"},
+                    parameters: {langpair: elem.value, q: $('source').value, key: "2", markUnknown: mu},
                     requestHeaders: {Accept: 'application/json'},
                     onSuccess: success,
                     onFailure: failure
@@ -99,7 +103,7 @@
        <p>Translation: </p>
        <p><textarea id="translation" readonly cols="60" rows="10" ></textarea></p>
 
-       <p> <select id="langPairs"></select> <button onclick="translate()">Translate!</button> </p>
+       <p> <select id="langPairs"></select> <button onclick="translate()">Translate!</button>  Mark unknown: <input id="cbUnknown" type="checkbox"/> </p>
 
        <p id="errorFooter" class="error"></p>
        <p id="register"><a href="register.jsp">Register to use API</a></p>

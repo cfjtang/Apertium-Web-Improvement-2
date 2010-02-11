@@ -65,7 +65,7 @@ public class DaemonConfigurationInformation {
         }
         catch(Exception e)
         {
-            logger.warn("Cannot find property"+dc);
+            logger.warn("Cannot find property "+dc);
             try
             {
                 memoryDemand=Integer.parseInt(Util.readPropertyFromFile("generic","/MemoryRequirements.properties"));
