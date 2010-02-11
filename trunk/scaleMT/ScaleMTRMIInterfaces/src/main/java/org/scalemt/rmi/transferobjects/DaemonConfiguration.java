@@ -6,7 +6,10 @@
 package org.scalemt.rmi.transferobjects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -57,7 +60,7 @@ public class DaemonConfiguration implements Serializable{
         if (obj instanceof DaemonConfiguration)
         {
             DaemonConfiguration dc = (DaemonConfiguration) obj;
-            return languagePair.equals(dc.languagePair) && formats.equals(dc.formats);
+            return (languagePair.equals(dc.languagePair) && formats.containsAll(dc.formats) && dc.formats.containsAll(formats));
         }
         else return false;
     }
@@ -66,9 +69,15 @@ public class DaemonConfiguration implements Serializable{
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder(languagePair+"|");
+        List<String> formatsList = new ArrayList<String>();
         for(Format f: formats)
         {
-            str.append(f.toString());
+            formatsList.add(f.toString());
+        }
+        Collections.sort(formatsList);
+        for(String f: formatsList)
+        {
+            str.append(f);
             str.append(",");
         }
         str.deleteCharAt(str.length()-1);
@@ -80,7 +89,7 @@ public class DaemonConfiguration implements Serializable{
         //System.out.println("DaemonConfiguration. Parsing "+str);
          String[] fr0 = str.split("\\|");
          //System.out.println("DaemonConfiguration. fr0[0] "+fr0[0]);
-        LanguagePair pair = new LanguagePair( fr0[0], "-");
+        LanguagePair pair = new LanguagePair( fr0[0], "-".toCharArray());
         String[] fr1 = fr0[1].split(",");
         //System.out.println("DaemonConfiguration. fr0[1] "+fr0[1]);
         Set<Format> formats=new HashSet<Format>();

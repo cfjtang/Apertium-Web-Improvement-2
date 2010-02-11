@@ -102,16 +102,26 @@ public class LoadConverter {
      */
     public int convert(int numCharacters, DaemonConfiguration dc, Format format)
     {
+        logger.trace("Converting "+dc+" "+format+" "+numCharacters+" characters");
         double conversionRate;
         if(dc.equals(referenceConfiguration))
+        {
             conversionRate=1;
+            logger.trace("Is reference format");
+        }
         else
         {
             Double rate = conversionRates.get(dc);
             if(rate==null)
+            {
+                logger.trace("Conversion rate not found");
                 conversionRate=1;
+            }
             else
+            {
+                logger.trace("Conversion rate found: "+rate);
                 conversionRate=rate;
+            }
         }
         //TODO: ¿Only if daemonconfig has more than one format?
         if(!format.equals(referenceFormat))
@@ -199,6 +209,7 @@ public class LoadConverter {
                try
                 {
                     DaemonConfiguration c = DaemonConfiguration.parse((String)pairObj);
+                    logger.trace("Read an actual conversion rate");
                     conversionRates.put(c, Double.parseDouble(properties.getProperty((String) pairObj)));
                 }catch(Exception e)
                 {
@@ -206,6 +217,8 @@ public class LoadConverter {
                 }
             }
         }
+
+        logger.trace("Number of conversion rates: "+conversionRates.size());
         
     }
 

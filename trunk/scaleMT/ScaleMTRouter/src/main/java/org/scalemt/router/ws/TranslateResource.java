@@ -229,7 +229,12 @@ public class TranslateResource {
         String translation = null;
         String errorMessage = null;
         int responseCode = 200;
-         logger.debug("requestreceived "+clientIp+" "+key+" "+pair);
+         Format enumFormat = Format.txt;
+                    if (format != null && !"".equals(format)) {
+                        enumFormat = Format.valueOf(format);
+                    }
+         LoggerStatiticsWriter.getInstance().logRequestReceived(clientIp, key, pair, enumFormat.toString());
+         logger.debug("requestreceived "+clientIp+" "+key+" "+pair+" "+enumFormat.toString());
         LanguagePair lpair = null;
         try {
             lpair = new LanguagePair(pair, "\\|".toCharArray());
@@ -242,15 +247,13 @@ public class TranslateResource {
             try {
                 List<LanguagePair> supportedPairs = LoadBalancer.getInstance().getSupportedPairs();
                 if (supportedPairs.contains(lpair)) {
-                    Format enumFormat = Format.txt;
-                    if (format != null && !"".equals(format)) {
-                        enumFormat = Format.valueOf(format);
-                    }
+                   
                     //UserType userType = UserType.anonymous;
                    // if (key != null && UserManagement.getInstance().isKeyValid(key)) {
                    //     userType = UserType.registered;
                     //}
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
+                    additionalTranslationOptions.getOptions().putAll(moreOptions);
                     translation = LoadBalancer.getInstance().translate(new TextContent(enumFormat,source), lpair,clientIp ,key ,additionalTranslationOptions).toString();
                 } else {
                     errorMessage = "Not supported pair";
@@ -277,6 +280,7 @@ public class TranslateResource {
             }
         }
 
+        LoggerStatiticsWriter.getInstance().logRequestProcessed(Integer.toString(responseCode));
         logger.debug("requesprocessed "+responseCode+" "+errorMessage);
 
         Map<String, String> responseData = new HashMap<String, String>();

@@ -129,20 +129,20 @@ public class UserManagement {
      * @param key API key
      * @return <code>true</code> if the key belongs to a registered user, <code>false</code> if it doesn't belong or there is an unexpected error
      */
-    public boolean isKeyValid(String key)
+    public String checkKey(String key)
     {
         try
         {
         UserEntity user = dao.getUser(key);
         if(user!=null)
-            return true;
+            return user.getEmail();
         else
-            return false;
+            return null;
         }
         catch(Exception e)
         {
             logger.error("Exception checking key", e);
-            return false;
+            return null;
         }
     }
 
