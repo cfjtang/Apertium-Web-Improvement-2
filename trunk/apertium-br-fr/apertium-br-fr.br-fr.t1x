@@ -166,6 +166,16 @@
     <def-cat n="indirect">
       <cat-item lemma="indirect" tags="prn.obj.*"/>
     </def-cat>
+    <def-cat n="prnpos">
+<!-- pronoms personals-->
+      <cat-item lemma="ma hini" tags="prn.pos.*"/>
+      <cat-item lemma="da hini" tags="prn.pos.*"/>
+      <cat-item lemma="e hini" tags="prn.pos.*"/>
+      <cat-item lemma="he hini" tags="prn.pos.*"/>
+      <cat-item lemma="ho hini" tags="prn.pos.*"/>
+      <cat-item lemma="hon hini" tags="prn.pos.*"/>
+      <cat-item lemma="o hini" tags="prn.pos.*"/>
+    </def-cat>
     <def-cat n="prnperssubj">
 <!-- pronoms personals-->
       <cat-item lemma="prpers" tags="prn.*"/>
@@ -1072,6 +1082,106 @@
 	  </def-list>
   </section-def-lists>
   <section-def-macros>
+    <def-macro n="prn_pos_to_det_pos" npar="1">
+      <choose>
+        <when>
+          <test> 
+              <equal caseless="yes">
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="le mien"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="mon"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="f"/>
+          </let>
+        </when>
+        <when>
+          <test> 
+              <equal caseless="yes">
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="le tien"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="ton"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="f"/>
+          </let>
+        </when>
+        <when>
+          <test> 
+              <equal caseless="yes">
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="le sien"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="son"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="f"/>
+          </let>
+        </when>
+        <when>
+          <test> 
+              <equal caseless="yes">
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="le nôtre"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="notre"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="mf"/>
+          </let>
+        </when>
+        <when>
+          <test> 
+              <equal caseless="yes">
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="le vôtre"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="votre"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="mf"/>
+          </let>
+        </when>
+        <when>
+          <test> 
+              <equal caseless="yes">
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="le leur"/>
+              </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="leur"/>
+          </let>
+          <let>
+            <clip pos="1" side="tl" part="gen"/>
+            <lit-tag v="mf"/>
+          </let>
+        </when>
+      </choose>
+    </def-macro>
     <def-macro n="indirect_to_prnpers" npar="1">
       <choose>
 
@@ -8568,6 +8678,78 @@
         </let>
       </action>
    </rule>
+    
+    <rule comment="REGLA: PRNPOS NOM">
+      <pattern>
+        <pattern-item n="prnpos"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="prn_pos_to_det_pos">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord1">
+          <with-param pos="2"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="nbr"/>
+                <lit-tag v="pl"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+          <out>
+            <chunk name="det_paire_de_nom" case="caseFirstWord">
+              <tags>
+                <tag><lit-tag v="SN"/></tag>
+                <tag><var n="genero"/></tag>
+                <tag><var n="numero"/></tag>
+              </tags>
+              <lu>
+                <clip pos="1" side="tl" part="lem"/>
+                <lit-tag v="det.pos"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <lit-tag v="sg"/>
+              </lu> 
+              <b/>
+              <lu>
+                <lit v="paire"/> 
+                <lit-tag v="n.f.sg"/> 
+              </lu>
+              <b/>
+              <lu>
+                <lit v="de"/> 
+                <lit-tag v="pr"/> 
+              </lu>
+              <b pos="1"/>
+              <lu>
+                <clip pos="2" side="tl" part="lemh"/>
+                <clip pos="2" side="tl" part="a_nom"/>
+                <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                <clip pos="2" side="tl" part="gen_mf"/>
+                <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                <clip pos="2" side="tl" part="nbr_sp"/>
+                <clip pos="2" side="tl" part="lemq"/>
+              </lu>
+            </chunk>
+          </out>
+          <let>
+            <var n="caseFirstWord"/>
+            <lit v="aa"/>
+          </let>
+      </action>
+    </rule>
+ 
     
     <rule comment="REGLA: NUM NOM bennak">
       <pattern>
