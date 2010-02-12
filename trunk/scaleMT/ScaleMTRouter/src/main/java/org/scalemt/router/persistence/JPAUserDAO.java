@@ -47,7 +47,7 @@ public class JPAUserDAO implements IUserDAO{
       try
       {
     
-      List results =   em.createNamedQuery("userByApiKey").setParameter("parApiKey",key).getResultList();
+      List results =   em.createNamedQuery("userByKey").setParameter("parKey",key).getResultList();
       if(results.size()>0)
           throw new ExistingKeyException();
       results =   em.createNamedQuery("userByEmail").setParameter("parEmail",email).getResultList();
@@ -56,7 +56,7 @@ public class JPAUserDAO implements IUserDAO{
 
       UserEntity userEntity=new UserEntity();
       userEntity.setEmail(email);
-      userEntity.setApiKey(key);
+      userEntity.setApi(key);
       userEntity.setUrl(url);
       em.persist(userEntity);
       return userEntity;
@@ -70,9 +70,12 @@ public class JPAUserDAO implements IUserDAO{
 
     @Override
     public UserEntity getUser(String key) throws DAOException {
+        UserEntity user=null;
         EntityManager em = emf.createEntityManager();
       em.getTransaction().begin();
-      UserEntity user= em.find(UserEntity.class, Long.parseLong(key));
+      List users = em.createNamedQuery("userByKey").setParameter("parKey",key).getResultList();
+      if(users.size()>0)
+        user= (UserEntity) users.get(0);
       em.getTransaction().commit();
       em.close();
       return user;
@@ -85,7 +88,7 @@ public class JPAUserDAO implements IUserDAO{
       em.getTransaction().begin();
       try
       {
-      UserEntity existingUser = (UserEntity) em.createNamedQuery("userByName").setParameter("parName",name).getSingleResult();
+      UserEntity existingUser = (UserEntity) em.createNamedQuery("userByEmail").setParameter("parEmail",name).getSingleResult();
       if(existingUser!=null)
           em.remove(existingUser);
       }

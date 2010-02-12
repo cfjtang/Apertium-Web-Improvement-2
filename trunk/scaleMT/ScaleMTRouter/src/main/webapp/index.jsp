@@ -29,7 +29,7 @@
                      $('errorFooter').textContent='';
                     new Ajax.Request('resources/translate', {
                     method: 'post',
-                    parameters: {langpair: elem.value, q: $('source').value, key: "2", markUnknown: mu},
+                    parameters: {langpair: elem.value, q: $('source').value, key: '/hPZuyVJgLDX4t9RA6s508EK0ss', markUnknown: mu},
                     requestHeaders: {Accept: 'application/json'},
                     onSuccess: success,
                     onFailure: failure
