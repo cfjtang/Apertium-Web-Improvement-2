@@ -25,27 +25,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import org.scalemt.router.logic.Requester;
 
 /**
  * JPA Entity with the information of a user.
  * @author vmsanchez
  */
 
+
 @NamedQueries({
-@NamedQuery(name="userByApiKey",
+@NamedQuery(name="userByKey",
 				         query="SELECT u " +
 				               "FROM UserEntity u " +
-				               "WHERE u.apiKey = :parApiKey "),
+				               "WHERE u.api = :parKey "),
 @NamedQuery(name="userByEmail",
 				         query="SELECT u " +
 				               "FROM UserEntity u " +
 				               "WHERE u.email = :parEmail ")})
-//@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
+/*
+@NamedQuery(name="userByApiKey",
+				         query="SELECT u " +
+				               "FROM UserEntity u " +
+				               "WHERE u.apiKey = :parApiKey ") */
+@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 public class UserEntity implements Serializable  {
 
-    @Id
+    @Id @GeneratedValue(strategy=GenerationType.TABLE)
     private long id;
 
     /**
@@ -61,7 +66,7 @@ public class UserEntity implements Serializable  {
     /**
      * API key. Generated field. Only an user can exist with the same API key
      */
-    private String apiKey;
+    private String api;
 
     public long getId() {
         return id;
@@ -71,12 +76,12 @@ public class UserEntity implements Serializable  {
         this.id = id;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getApi() {
+        return api;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public void setApi(String apiKey) {
+        this.api = apiKey;
     }
 
     public String getEmail() {

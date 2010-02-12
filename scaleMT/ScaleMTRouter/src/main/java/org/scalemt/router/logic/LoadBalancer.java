@@ -469,6 +469,7 @@ public class LoadBalancer {
         Requester requester=new AnonymousRequester(ip);
         UserType type = UserType.anonymous;
         //Test if user is registered
+        logger.trace("Checking key:"+apiKey);
         String registeredUser = UserManagement.getInstance().checkKey(apiKey);
         if(registeredUser!=null)
         {

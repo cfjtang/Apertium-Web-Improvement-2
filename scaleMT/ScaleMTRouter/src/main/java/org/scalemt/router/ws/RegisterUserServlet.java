@@ -57,7 +57,7 @@ public class RegisterUserServlet extends HttpServlet {
                 if(user==null)
                    message="Unexpected error. Please try again later or use another name";
                else
-                   message="Register OK. Your key is '"+user.getApiKey()+"'";
+                   message="Register OK. Your key is '"+user.getApi()+"'";
             } catch (ExistingNameException ex) {
                 message="Error. Your email is already registered.";
             }
