@@ -276,7 +276,10 @@ SELECT VerbInf IF (-1 ("gellout" vblex) OR ("ober" vblex));
 SELECT VerbImp IF (-1 VpartNegImp);
 
 # REGLA (B0006): "emañ e Brest"
-SELECT Prep IF (-1 Vbloc);
+SELECT Prep IF (-1 Vbloc) (NOT 1 SoftMut);
+
+#Kalz tostoc’h emañ e brezegenn ouzh da hini
+REMOVE Prep + ("e") IF (1 SoftMutCons) (1 SoftMut);
 
 # REGLA (B0008): "edo o vervel"
 SELECT VpartGer IF (1 VerbInf);
@@ -611,6 +614,7 @@ REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 Adj OR Ord);
 REMOVE PrnDObj IF (-1C NC) (0 Prep) (0 PrnDObj); 
 
 REMOVE Vpart + ("e") IF (1 MixedMutCons) (NOT 1 MixedMut);
+
 
 SECTION
 
