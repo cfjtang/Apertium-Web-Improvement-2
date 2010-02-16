@@ -11,18 +11,18 @@ package org.scalemt.router.logic;
  */
 public class RegisteredRequester extends Requester{
 
-    private String apiKey;
+    private String email;
 
     public RegisteredRequester(String apiKey) {
-        this.apiKey = apiKey;
+        this.email = apiKey;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getEmail() {
+        return email;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public void setEmail(String apiKey) {
+        this.email = apiKey;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RegisteredRequester extends Requester{
             return false;
         }
         final RegisteredRequester other = (RegisteredRequester) obj;
-        if ((this.apiKey == null) ? (other.apiKey != null) : !this.apiKey.equals(other.apiKey)) {
+        if ((this.email == null) ? (other.email != null) : !this.email.equals(other.email)) {
             return false;
         }
         return true;
@@ -43,7 +43,7 @@ public class RegisteredRequester extends Requester{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + (this.apiKey != null ? this.apiKey.hashCode() : 0);
+        hash = 79 * hash + (this.email != null ? this.email.hashCode() : 0);
         return hash;
     }
 

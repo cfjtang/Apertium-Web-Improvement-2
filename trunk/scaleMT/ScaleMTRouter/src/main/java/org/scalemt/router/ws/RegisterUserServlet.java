@@ -48,30 +48,37 @@ public class RegisterUserServlet extends HttpServlet {
     throws ServletException, IOException {
        String email = request.getParameter("email");
        String url = request.getParameter("url");
+       String checked=request.getParameter("accept");
        String message=null;
 
        if(email!=null && !"".equals(email) && email.length()<100 && url!=null && !"".equals(url) && url.length()<100)
        {
-            try {
-                UserEntity user = UserManagement.getInstance().registerUser(email,url);
-                if(user==null)
-                   message="Unexpected error. Please try again later or use another name";
-               else
-                   message="Register OK. Your key is '"+user.getApi()+"'";
-            } catch (ExistingNameException ex) {
-                message="Error. Your email is already registered.";
-            }
-            catch(WrongFormatException e)
-            {
-                if(e.getWrongfield().equals("email"))
-                {
-                     message="Error. Your email is not valid.";
+           if(checked!=null && (checked.equals("yes") || checked.equals("on")))
+           {
+
+                try {
+                    UserEntity user = UserManagement.getInstance().registerUser(email,url);
+                    if(user==null)
+                       message="Unexpected error. Please try again later or use another name";
+                   else
+                       message="Register OK. Your key is '"+user.getApi()+"'";
+                } catch (ExistingNameException ex) {
+                    message="Error. Your email is already registered.";
                 }
-                else if(e.getWrongfield().equals("url"))
+                catch(WrongFormatException e)
                 {
-                    message="Error. Your url is not valid.";
+                    if(e.getWrongfield().equals("email"))
+                    {
+                         message="Error. Your email is not valid.";
+                    }
+                    else if(e.getWrongfield().equals("url"))
+                    {
+                        message="Error. Your url is not valid.";
+                    }
                 }
-            }
+           }
+           else
+               message="you must accept the terms and conditions in order to register";
 
            
        }

@@ -5,6 +5,9 @@
 
 package org.scalemt.router.logic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author vmsanchez
@@ -22,7 +25,8 @@ public class UserAdmissionControl {
 
     private int limitRegistered=10000000;
     private int limitAnonymous=1000000;
-
+    private List<String> whiteListUsers;
+    private List<String> whiteListIPs;
     public UserAdmissionControl() {
         try
         {
@@ -35,7 +39,24 @@ public class UserAdmissionControl {
             limitAnonymous=Integer.parseInt(Util.readConfigurationProperty("user_limit_anonymous"));
         }
         catch(Exception e){}
-        
+
+        whiteListUsers=new ArrayList<String>();
+        String users=Util.readConfigurationProperty("user_whitelist");
+        if(users!=null)
+        {
+            String[] pieces = users.split(",");
+            for(String piece: pieces)
+                whiteListUsers.add(piece);
+        }
+
+        whiteListIPs=new ArrayList<String>();
+        String ips=Util.readConfigurationProperty("ip_whitelist");
+        if(ips!=null)
+        {
+            String[] pieces = ips.split(",");
+            for(String piece: pieces)
+                whiteListIPs.add(piece);
+        }
     }
 
     public boolean canTranslate(Requester rq)
@@ -44,10 +65,19 @@ public class UserAdmissionControl {
         boolean result=true;
 
         if(rq instanceof RegisteredRequester)
-            result = (cost<limitRegistered);
+        {
+            if ( whiteListUsers.contains(((RegisteredRequester) rq).getEmail()))
+                result=true;
+            else
+                result = (cost<limitRegistered);
+        }
         else
-            result= (cost<limitAnonymous);
+        {
+            if(whiteListIPs.contains(( (AnonymousRequester) rq ).getIp()))
+                result=true;
+            else
+                result= (cost<limitAnonymous);
+        }
         return result;
     }
-
 }
