@@ -229,7 +229,7 @@ public class TranslateResource {
         String translation = null;
         String errorMessage = null;
         int responseCode = 200;
-         Format enumFormat = Format.txt;
+        Format enumFormat = Format.txt;
                     if (format != null && !"".equals(format)) {
                         enumFormat = Format.valueOf(format);
                     }

@@ -319,7 +319,16 @@ public class Daemon {
                 StringBuilder textToWrite;
 
                 while ((queueElement = localWritingQueue.take()) != stopMark) {
-                    startText = translationEngine.getTranslationCore().getTextBefore().replaceAll("\\$id", Long.toString(queueElement.getId()));
+                    StringBuilder dictString=new StringBuilder("");
+                    List<Long> dictionaries = queueElement.getAdditionalTranslationOptions().getDictionaries();
+                    for(int i=0; i< dictionaries.size();i++)
+                    {
+                        dictString.append(dictionaries.get(i));
+                        if(i<dictionaries.size()-1)
+                            dictString.append(",");
+                    }
+
+                    startText = translationEngine.getTranslationCore().getTextBefore().replaceAll("\\$id", Long.toString(queueElement.getId())).replaceAll("\\$dicts", dictString.toString());
                     endText = translationEngine.getTranslationCore().getTextAfter().replaceAll("\\$id", Long.toString(queueElement.getId()));
                     textToWrite = new StringBuilder();
                      if(translationEngine.getTranslationCore().isSeparateAfterDeformat())
