@@ -458,8 +458,8 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 				DaemonInformation newDaemon= startDaemon(cd);
 				TranslationCaller[] translateThreads = new TranslationCaller[numDaemons];
 				for(int i=0; i<numDaemons;i++)
-					translateThreads[i]=new TranslationCaller(new TextContent(Format.txt,quijote),pairesca,null);
-                                translate(new TextContent(Format.txt,quijote.substring(0, Math.max(quijote.length()/10000,1))), pairesca, null);
+					translateThreads[i]=new TranslationCaller(new TextContent(Format.txt,quijote),pairesca, new AdditionalTranslationOptions());
+                                translate(new TextContent(Format.txt,quijote.substring(0, Math.max(quijote.length()/10000,1))), pairesca, new AdditionalTranslationOptions());
 				startTime=System.currentTimeMillis();
 				for(int i=0; i<numDaemons;i++)
 					translateThreads[i].start();

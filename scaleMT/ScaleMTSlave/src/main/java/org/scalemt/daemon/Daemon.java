@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +60,7 @@ import org.apache.commons.lang.SerializationUtils;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.ptql.ProcessFinder;
 import org.scalemt.main.TranslationEnginePool;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.BinaryDocument;
 import org.scalemt.rmi.transferobjects.TextContent;
 
@@ -320,12 +322,17 @@ public class Daemon {
 
                 while ((queueElement = localWritingQueue.take()) != stopMark) {
                     StringBuilder dictString=new StringBuilder("");
-                    List<Long> dictionaries = queueElement.getAdditionalTranslationOptions().getDictionaries();
+                    
+                    AdditionalTranslationOptions ato=queueElement.getAdditionalTranslationOptions();
+                    if(ato!=null)
+                    {
+                    List<Long> dictionaries = ato.getDictionaries();
                     for(int i=0; i< dictionaries.size();i++)
                     {
                         dictString.append(dictionaries.get(i));
                         if(i<dictionaries.size()-1)
                             dictString.append(",");
+                    }
                     }
 
                     startText = translationEngine.getTranslationCore().getTextBefore().replaceAll("\\$id", Long.toString(queueElement.getId())).replaceAll("\\$dicts", dictString.toString());
