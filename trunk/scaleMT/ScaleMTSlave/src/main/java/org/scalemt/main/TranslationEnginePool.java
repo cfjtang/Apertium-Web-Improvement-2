@@ -507,10 +507,12 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                 
             try
             {
-                return (int) sigar.getMem().getActualFree()/1024/1024;
+                long mem=sigar.getMem().getActualFree()/1024/1024;
+                return (int) mem;
             }
             catch(SigarException e)
             {
+                logger.error("Cannot determine servers free memory",e);
                 //return default memory capacity
                 return 1000;
             }
@@ -525,11 +527,16 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
     */
 	private int computeServerTotalMemory()
 	{
-            try {
-                return (int) (sigar.getMem().getTotal() / 1024 / 1024);
-            } catch (SigarException ex) {
-                logger.warn("Cannot guess server total memory", ex);
-                return 0;
+             try
+            {
+                long mem=sigar.getMem().getTotal()/1024/1024;
+                return (int) mem;
+            }
+            catch(SigarException e)
+            {
+                logger.error("Cannot determine server total memory",e);
+                //return default memory capacity
+                return 1000;
             }
 	}
 
