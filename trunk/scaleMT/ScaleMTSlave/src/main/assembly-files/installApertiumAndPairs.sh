@@ -150,37 +150,6 @@ done
 	
 cd ..
 
-#Add successfully installed pairs to ApertiumServer configuration file
-
-#delete apertium_supported_pairs line
-cp $CONF_FILE $CONF_FILE.old
-sed -i -e '/^apertium_supported_pairs/d' $CONF_FILE
-sed -i -e '$aapertium_supported_pairs=' $CONF_FILE
-
-pushd $REAL_PREFIX/share/apertium/modes
-list=`ls | grep -E  "\-null.mode$"` # list of modes
-for file in $list 
-do
-	popd
-	sed -i -e "s!apertium_supported_pairs=!&${file/%-null.mode/},!" $CONF_FILE #${file:0:5}
-	pushd $REAL_PREFIX/share/apertium/modes
-done
-popd
-
-#Add Apertium executable path to ApertiumServer configuration file
-sed -i -e '/^apertium_path/d' $CONF_FILE
-sed -i -e "\$aapertium_path=$REAL_PREFIX/bin/" $CONF_FILE
-
-#remove comma
-sed -i -e 's/,$//' $CONF_FILE
-
-#Copy additional files
-cp toinstall/execAndGetPID.sh toinstall/getProcessInfo.sh $REAL_PREFIX/bin
-
-if [ "enable-yes" = $4 ]
- then
-cp apertium-module/* $REAL_PREFIX/bin
-fi
 
 }
 
