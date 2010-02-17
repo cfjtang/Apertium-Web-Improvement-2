@@ -23,7 +23,6 @@ import org.scalemt.rmi.router.ITradubiTranslationEngine;
 import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
 import org.scalemt.router.logic.LoadBalancer;
-import org.scalemt.router.logic.UserType;
 import org.scalemt.router.logic.Util;
 import java.io.File;
 import java.io.FileWriter;
@@ -42,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.scalemt.rmi.transferobjects.TextContent;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
+import org.scalemt.router.ws.LoggerStatiticsWriter;
 
 
 /**
@@ -57,13 +57,8 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
 	private static final long serialVersionUID = -2215612722973686962L;
 
 	static Log logger = LogFactory.getLog(ApertiumTranslationEngineTradubi.class);
-
-	private static final String PERSONAL_DICTIONARY_MODE_SUFFIX = "-tradubidu"; 
-	
 	private int maxCompilationInstances;
-	private long timeout;
 	private long compilationTimeout;
-	private String modeSuffix;
 
 	
 	private final String tmpdir = System.getProperty("java.io.tmpdir");
@@ -215,37 +210,68 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
 	public String translateHTML(String sourceHtml, String sourceLang,
 			String targetLang, List<Long> dictionaries) throws UnsupportedLanguagePairException,TranslationEngineException
 	{
-             List<LanguagePair> supPairs =LoadBalancer.getInstance().getSupportedPairs();
-             
+            int responseCode=200;
+         String errorMessage="";
+        try
+        {
+
+         LoggerStatiticsWriter.getInstance().logRequestReceived("tradubi-ip", "tradubi", sourceLang+"|"+targetLang,"html");
+         logger.debug("requestreceived "+"tradubi-ip"+" "+"tradubi"+" "+sourceLang+"|"+targetLang+" "+"html");
+		 List<LanguagePair> supPairs =LoadBalancer.getInstance().getSupportedPairs();
+
              LanguagePair reqPair = new LanguagePair(sourceLang, targetLang);
             if (!supPairs.contains(reqPair))
+            {
+                responseCode=451;
                 throw new UnsupportedLanguagePairException();
+            }
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair,  "","",new AdditionalTranslationOptions(dictionaries)).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair, "tradubi-ip","tradubi",new AdditionalTranslationOptions(dictionaries)).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
+                        responseCode=500;
 			throw new TranslationEngineException(e);
 		}
+        }
+        finally{
+            LoggerStatiticsWriter.getInstance().logRequestProcessed(Integer.toString(responseCode));
+            logger.debug("requesprocessed "+responseCode+" "+errorMessage);
+        }
 	}
 
     @Override
 	public  String translateText(String sourceText, String sourceLang,
 			String targetLang, List<Long> dictionaries)
 			throws TranslationEngineException,UnsupportedLanguagePairException {
-
+          int responseCode=200;
+         String errorMessage="";
+        try
+        {
+       
+         LoggerStatiticsWriter.getInstance().logRequestReceived("tradubi-ip", "tradubi", sourceLang+"|"+targetLang,"txt");
+         logger.debug("requestreceived "+"tradubi-ip"+" "+"tradubi"+" "+sourceLang+"|"+targetLang+" "+"txt");
 		 List<LanguagePair> supPairs =LoadBalancer.getInstance().getSupportedPairs();
 
              LanguagePair reqPair = new LanguagePair(sourceLang, targetLang);
             if (!supPairs.contains(reqPair))
+            {
+                responseCode=451;
                 throw new UnsupportedLanguagePairException();
+            }
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, "","",new AdditionalTranslationOptions(dictionaries)).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, "tradubi-ip","tradubi",new AdditionalTranslationOptions(dictionaries)).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
+                        responseCode=500;
 			throw new TranslationEngineException(e);
 		}
+        }
+        finally{
+            LoggerStatiticsWriter.getInstance().logRequestProcessed(Integer.toString(responseCode));
+            logger.debug("requesprocessed "+responseCode+" "+errorMessage);
+        }
 	}
 
 
