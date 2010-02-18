@@ -54,9 +54,7 @@
 
 #include "format/Format.h"
 
-//using namespace boost::spirit;
 namespace lex = boost::spirit::lex;
-using namespace boost::spirit::lex;
 
 /**
  * The TXTDeformat class implements a text format processor. Data should be
@@ -85,12 +83,9 @@ public:
 		init_tagNames();
 
 		def = new my_deformat_tokens<lexer_type>();
-		//l = new lexer<my_deformat_tokens<lexer_type> >(*def);
-		//l = new my_deformat_tokens<lexertl::lexer<> >(*def);
 	}
 
 	virtual ~TXTDeformat() {
-		//delete l;
 		delete def;
 
 		regfree(&escape_chars);
@@ -186,17 +181,13 @@ private:
 	std::wstring yyin;
 	std::wostream *yyout;
 
-	typedef lexertl::token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-	typedef lexertl::lexer<token_type> lexer_type;
+	typedef lex::lexertl::token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+	typedef lex::lexertl::lexer<token_type> lexer_type;
 
 	typedef my_deformat_tokens<lexer_type> deformat_tokens;
 	typedef deformat_tokens::iterator_type iterator_type;
 
-	//typedef lexer_iterator<deformat_tokens<lexer_type> >::type iterator_type;
-
 	my_deformat_tokens<lexer_type> *def;
-	//lexer<my_deformat_tokens<lexer_type> > *l;
-	//my_deformat_tokens<lexertl::lexer<> > *l;
 
 	std::wstring buffer;
 	std::string symbuf;
@@ -263,23 +254,21 @@ private:
 
 	std::string backslash(std::string const &str) {
 		std::string new_str = "";
-
 		for (unsigned int i = 0; i < str.size(); i++) {
 			if (str[i] == '\\') {
 				new_str += str[i];
 			}
 			new_str += str[i];
 		}
-
 		return new_str;
 	}
 
-	wstring escape(std::string const &str) {
+	std::wstring escape(std::string const &str) {
 		regmatch_t pmatch;
 
 		char const *mystring = str.c_str();
 		int base = 0;
-		wstring result = L"" ;
+		std::wstring result = L"" ;
 
 		while (!regexec(&escape_chars, mystring + base, 1, &pmatch, 0)) {
 			bufferAppend(result, str.substr(base, pmatch.rm_so));

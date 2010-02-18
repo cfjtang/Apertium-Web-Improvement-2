@@ -55,9 +55,7 @@
 
 #include "format/Format.h"
 
-//using namespace boost::spirit;
 namespace lex = boost::spirit::lex;
-using namespace boost::spirit::lex;
 
 /**
  * The TXTReformat class implements a text format processor. It restores the
@@ -83,14 +81,11 @@ public:
 		}
 	};
 
-	TXTReformat(wstring in = L"", wostream* out = NULL) : yyin(in), yyout(out) {
+	TXTReformat(std::wstring in = L"", std::wostream* out = NULL) : yyin(in), yyout(out) {
 		def = new my_reformat_tokens<lexer_type>();
-		//l = new lexer<my_reformat_tokens<lexer_type> >(*def);
-		//l = new my_reformat_tokens<lexertl::lexer<> >(*def);
 	}
 
 	virtual ~TXTReformat() {
-		//delete l;
 		delete def;
 	}
 
@@ -184,8 +179,6 @@ public:
 
 		bool ret = tokenize(first,
 				last,
-				//make_lexer(def),
-				//lexer<reformat_tokens<lexer_type> >(def),
 				*def,
 				boost::bind(func(), _1, boost::ref(this), boost::ref(*yyout))
 		);
@@ -197,17 +190,13 @@ private:
 	std::wstring yyin;
 	std::wostream *yyout;
 
-	typedef lexertl::token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
-	typedef lexertl::lexer<token_type> lexer_type;
+	typedef lex::lexertl::token<wchar_t const*, boost::mpl::vector<std::wstring> > token_type;
+	typedef lex::lexertl::lexer<token_type> lexer_type;
 
 	typedef my_reformat_tokens<lexer_type> reformat_tokens;
 	typedef reformat_tokens::iterator_type iterator_type;
 
-	//typedef lexer_iterator<reformat_tokens<lexer_type> >::type iterator_type;
-
 	my_reformat_tokens<lexer_type> *def;
-	//lexer<my_reformat_tokens<lexer_type> > *l;
-	//my_reformat_tokens<lexertl::lexer<> > *l;
 };
 
 #endif /* TXTREFORMAT_H_ */
