@@ -44,6 +44,7 @@ public:
 	enum ContentType { TEXT /*, HTML */ };
 
 	static std::string translate(ResourceBroker&, ModesManager&, std::string&, ContentType, std::string, std::string, Statistics* = NULL);
+	static void eagerlyLoad(ResourceBroker&, ModesManager&, std::string, std::string, unsigned int);
 
 private:
 	static std::wstring deformat(ResourceBroker&, std::wstring&, ContentType);
