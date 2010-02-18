@@ -26,6 +26,7 @@ public class AdditionalTranslationOptions implements Serializable{
 
     public AdditionalTranslationOptions(List<Long> dictionaries) {
         this.dictionaries = dictionaries;
+        options=new HashMap<String, String>();
     }
 
     
