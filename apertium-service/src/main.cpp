@@ -318,6 +318,14 @@ int main(int ac, char *av[]) {
 		mm = new ModesManager;
 	    mm->initPipe(cm->getApertiumBase());
 
+	    ConfigurationManager::EagerlyLoadsType els = cm->getEagerlyLoads();
+	    for (ConfigurationManager::EagerlyLoadsType::iterator it = els.begin(); it != els.end(); ++it) {
+	    	std::pair<std::string, std::string> p = (*it).first;
+	    	unsigned int qty = (*it).second;
+
+	    	Translator::eagerlyLoad(*rb, *mm, p.first, p.second, qty);
+	    }
+
 	    axs = new ApertiumXMLRPCService(*cm, *mm, *rb,
 #if defined(HAVE_LIBTEXTCAT)
 	   *tc,
