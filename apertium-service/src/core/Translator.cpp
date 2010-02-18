@@ -90,6 +90,8 @@ void Translator::eagerlyLoad(ResourceBroker &rb, ModesManager &mm, std::string s
 
 	Mode mode = (*modeit).second;
 
+	FunctionMapper fm(rb);
+
 	std::vector<Program> programs = mode.getPrograms();
 
 	for (std::vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
@@ -98,6 +100,8 @@ void Translator::eagerlyLoad(ResourceBroker &rb, ModesManager &mm, std::string s
 		std::stringstream ss;
 		ss << "Translator::translate(): Loading " << program;
 		Logger::Instance()->trace(Logger::Debug, ss.str());
+
+		fm.load(program, qty);
 	}
 }
 
