@@ -29,20 +29,18 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 class Format {
 public:
-	wstring process(wstring in) {
-		wstringstream wss;
+	std::wstring process(std::wstring in) {
+		std::wstringstream wss;
 		setYyin(in);
 		setYyout(&wss);
 		lex();
 		return wss.str();
 	}
 
-	virtual void setYyin(wstring in) = 0;
-	virtual void setYyout(wostream* out) = 0;
+	virtual void setYyin(std::wstring in) = 0;
+	virtual void setYyout(std::wostream* out) = 0;
 	virtual bool lex() = 0;
 };
 
