@@ -279,10 +279,12 @@ ApertiumXMLRPCService::~ApertiumXMLRPCService() {
 }
 
 void ApertiumXMLRPCService::start() {
-	std::stringstream ssmsg;
-	ssmsg << "Starting Apertium XML-RPC service on port " << (configurationManager->getServerPort());
-	Logger::Instance()->trace(Logger::Info, ssmsg.str());
-
+	{
+		std::stringstream ssmsg;
+		ssmsg << "Starting Apertium XML-RPC service on port "
+				<< (configurationManager->getServerPort());
+		Logger::Instance()->trace(Logger::Info, ssmsg.str());
+	}
 	abyssServer->run();
 }
 
