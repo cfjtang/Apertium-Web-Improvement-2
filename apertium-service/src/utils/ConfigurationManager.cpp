@@ -126,6 +126,9 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 
 				std::istringstream qtyss(qtys);
 				qtyss >> qty;
+
+				std::pair<std::string, std::string> p(src, dest);
+				eagerlyLoads[p] = qty;
 			}
 
 #if defined(HAVE_COMBINE)
@@ -230,4 +233,8 @@ unsigned int ConfigurationManager::getHighWaterMark() {
 
 void ConfigurationManager::setHighWaterMark(unsigned int h) {
 	highWaterMark = h;
+}
+
+ConfigurationManager::EagerlyLoadsType ConfigurationManager::getEagerlyLoads() {
+	return eagerlyLoads;
 }
