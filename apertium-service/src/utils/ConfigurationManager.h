@@ -59,9 +59,6 @@ public:
 	unsigned int getTimeout();
 	void setTimeout(unsigned int);
 
-	//bool getUseSsl();
-	//void setUseSsl(bool);
-
 #if defined(HAVE_LIBTEXTCAT)
 	fs::path getConfTextClassifier();
 	void setConfTextClassifier(fs::path);
@@ -74,9 +71,6 @@ public:
 	MonolingualDictionariesType getMonolingualDictionaries();
 	LanguageModelsType getLanguageModels();
 #endif
-
-	//fs::path getConfUsers();
-	//void setConfUsers(fs::path);
 
 	unsigned int getHighWaterMark();
 	void setHighWaterMark(unsigned int);
@@ -107,15 +101,12 @@ private:
 	unsigned int keepaliveMaxConn;
 	unsigned int timeout;
 
-	//bool useSsl;
-
 #if defined(HAVE_LIBTEXTCAT)
 	fs::path confTextClassifier;
 #endif
 
-	//fs::path confUsers;
-
 	unsigned int highWaterMark;
+	boost::unordered_map<std::pair<std::string, std::string>, unsigned int> eagerlyLoad;
 };
 
 #endif /* CONFIGURATIONMANAGER_H_ */
