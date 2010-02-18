@@ -31,6 +31,7 @@
 #include <sstream>
 
 #include <vector>
+#include <stack>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -71,10 +72,138 @@ FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
 
 FunctionMapper::~FunctionMapper() { }
 
+void FunctionMapper::load(Program &p, unsigned int qty) {
+	std::vector<std::string> params;
+	const std::string commandLine = p.getProgramName();
+	boost::split(params, commandLine, boost::is_any_of("\t "));
+
+	std::string program = params[0];
+	std::vector<std::string> files = p.getFileNames();
+
+	TaskType taskType = task[program];
+
+	switch (taskType) {
+	case APERTIUM_INTERCHUNK: {
+		std::stack<Interchunk*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			Interchunk *i = resourceBroker->InterchunkPool.acquire(p);
+			mem.push(i);
+		}
+
+		while (!mem.empty()) {
+			Interchunk *i = mem.top();
+			resourceBroker->InterchunkPool.release(i, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	case APERTIUM_MULTIPLE_TRANSLATIONS: {
+		std::stack<TransferMult*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			TransferMult *i = resourceBroker->TransferMultPool.acquire(p);
+			mem.push(i);
+		}
+
+		while (!mem.empty()) {
+			TransferMult *i = mem.top();
+			resourceBroker->TransferMultPool.release(i, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	case APERTIUM_POSTCHUNK: {
+		std::stack<Postchunk*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			Postchunk *i = resourceBroker->PostchunkPool.acquire(p);
+			mem.push(i);
+		}
+
+		while (!mem.empty()) {
+			Postchunk *i = mem.top();
+			resourceBroker->PostchunkPool.release(i, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	case APERTIUM_TAGGER: {
+		std::stack<HMMWrapper*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			HMMWrapper *i = resourceBroker->HMMPool.acquire(p);
+			mem.push(i);
+		}
+
+		while (!mem.empty()) {
+			HMMWrapper *i = mem.top();
+			resourceBroker->HMMPool.release(i, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	case APERTIUM_TRANSFER: {
+		std::stack<Transfer*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			Transfer *i = resourceBroker->TransferPool.acquire(p);
+			mem.push(i);
+		}
+
+		while (!mem.empty()) {
+			Transfer *i = mem.top();
+			resourceBroker->TransferPool.release(i, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	case LT_PROC: {
+		std::stack<FSTProcessor*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			FSTProcessor *i = resourceBroker->FSTProcessorPool.acquire(p);
+			mem.push(i);
+		}
+
+		while (!mem.empty()) {
+			FSTProcessor *i = mem.top();
+			resourceBroker->FSTProcessorPool.release(i, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	case CG_PROC: {
+		std::stack<CG3::Grammar*> mem;
+
+		for (unsigned int i = 0; i < qty; ++i) {
+			CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
+			mem.push(grammar);
+		}
+
+		while (!mem.empty()) {
+			CG3::Grammar *grammar = mem.top();
+			resourceBroker->GrammarPool.release(grammar, p);
+			mem.pop();
+		}
+	}
+		break;
+
+	default:
+		break;
+	}
+}
+
 /**
  * Request an arbitrary resource from the Resource Pool, use it and release it.
  */
-std::wstring FunctionMapper::execute(Program &p, std::wstring &d, unsigned int qty) {
+std::wstring FunctionMapper::execute(Program &p, std::wstring &d) {
 	std::vector<std::string> params;
 	const std::string commandLine = p.getProgramName();
 	boost::split(params, commandLine, boost::is_any_of("\t "));
@@ -117,7 +246,7 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, unsigned int q
 
 	fclose(tin);
 
-	switch (task[program]) {
+	switch (taskType) {
 	case APERTIUM_INTERCHUNK: {
 		Interchunk *i = resourceBroker->InterchunkPool.acquire(p);
 		i->interchunk(in, out);
@@ -140,9 +269,6 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, unsigned int q
 		break;
 
 	case APERTIUM_PRETRANSFER: {
-		//PreTransfer *i = resourceBroker->PreTransferPool.acquire(p);
-		//i->processStream(in, out);
-		//resourceBroker->PreTransferPool.release(i, p);
 		PreTransfer::processStream(in, out);
 	}
 		break;
