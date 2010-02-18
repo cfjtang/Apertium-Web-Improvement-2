@@ -26,7 +26,6 @@
 #include "ConfigurationManager.h"
 #include <sstream>
 
-using namespace std;
 namespace fs = boost::filesystem;
 
 const fs::path ConfigurationManager::APERTIUMBASE_DEF = "/usr/local/share/apertium";
@@ -49,7 +48,9 @@ const unsigned int ConfigurationManager::HIGHWATERMARK_DEF = 0;
 ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPath)
 	: apertiumBase(APERTIUMBASE_DEF),
 	serverPort(SERVERPORT_DEF),
-	keepaliveTimeout(KEEPALIVETIMEOUT_DEF), keepaliveMaxConn(KEEPALIVEMAXCONN_DEF), timeout(TIMEOUT_DEF),
+	keepaliveTimeout(KEEPALIVETIMEOUT_DEF),
+	keepaliveMaxConn(KEEPALIVEMAXCONN_DEF),
+	timeout(TIMEOUT_DEF),
 	highWaterMark(HIGHWATERMARK_DEF) {
 	xmlpp::DomParser parser(confPath.string());
 
@@ -62,7 +63,7 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 
 		if (rootNode) {
 
-			const string rootName = "/ApertiumServiceConfiguration";
+			const std::string rootName = "/ApertiumServiceConfiguration";
 
 			xmlpp::NodeSet apertiumBaseNodeSet = rootNode->find(rootName + "/ApertiumBase/text()");
 			if (apertiumBaseNodeSet.begin() != apertiumBaseNodeSet.end()) {
@@ -99,16 +100,6 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 				strStream >> timeout;
 			}
 
-			/*
-			xmlpp::NodeSet useSslNodeSet = rootNode->find(rootName + "/UseSsl/text()");
-			if (useSslNodeSet.begin() != useSslNodeSet.end()) {
-				xmlpp::TextNode *node =	dynamic_cast<xmlpp::TextNode*> (*useSslNodeSet.begin());
-				if (node->get_content() == "true") {
-					useSsl = true;
-				}
-			}
-			*/
-
 #if defined(HAVE_LIBTEXTCAT)
 			xmlpp::NodeSet confTextClassifierNodeSet = rootNode->find(rootName + "/ConfTextClassifier/text()");
 			if (confTextClassifierNodeSet.begin() != confTextClassifierNodeSet.end()) {
@@ -117,19 +108,24 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 			}
 #endif
 
-			/*
-			xmlpp::NodeSet confUsersNodeSet = rootNode->find(rootName + "/ConfUsers/text()");
-			if (confUsersNodeSet.begin() != confUsersNodeSet.end()) {
-				xmlpp::TextNode *node = dynamic_cast<xmlpp::TextNode*> (*confUsersNodeSet.begin());
-				confUsers = node->get_content();
-			}
-			*/
-
 			xmlpp::NodeSet highWaterMarkNodeSet = rootNode->find(rootName + "/HighWaterMark/text()");
 			if (highWaterMarkNodeSet.begin() != highWaterMarkNodeSet.end()) {
 				xmlpp::TextNode	*node = dynamic_cast<xmlpp::TextNode*> (*highWaterMarkNodeSet.begin());
 				std::stringstream strStream(node->get_content());
 				strStream >> highWaterMark;
+			}
+
+			xmlpp::NodeSet eagerlyLoadNodeSet = rootNode->find(rootName + "/EagerlyLoad");
+			if (eagerlyLoadNodeSet.begin() != eagerlyLoadNodeSet.end()) {
+				xmlpp::Element *node = dynamic_cast<xmlpp::Element*> (*eagerlyLoadNodeSet.begin());
+				std::string src = node->get_attribute_value("srcLang");
+				std::string dest = node->get_attribute_value("destLang");
+
+				unsigned int qty = 0;
+				std::string qtys = node->get_attribute_value("qty");
+
+				std::istringstream qtyss(qtys);
+				qtyss >> qty;
 			}
 
 #if defined(HAVE_COMBINE)
@@ -208,16 +204,6 @@ void ConfigurationManager::setTimeout(unsigned int t) {
 	timeout = t;
 }
 
-/*
-bool ConfigurationManager::getUseSsl() {
-	return useSsl;
-}
-
-void ConfigurationManager::setUseSsl(bool u) {
-	useSsl = u;
-}
-*/
-
 #if defined(HAVE_LIBTEXTCAT)
 fs::path ConfigurationManager::getConfTextClassifier() {
 	return confTextClassifier;
@@ -237,16 +223,6 @@ ConfigurationManager::LanguageModelsType ConfigurationManager::getLanguageModels
 	return languageModels;
 }
 #endif
-
-/*
-fs::path ConfigurationManager::getConfUsers() {
-	return confUsers;
-}
-
-void ConfigurationManager::setConfUsers(fs::path c) {
-	confUsers = c;
-}
-*/
 
 unsigned int ConfigurationManager::getHighWaterMark() {
 	return highWaterMark;
