@@ -59,6 +59,10 @@ public:
 	unsigned int getTimeout();
 	void setTimeout(unsigned int);
 
+	typedef boost::unordered_map<std::pair<std::string, std::string>, unsigned int> EagerlyLoadsType;
+
+	EagerlyLoadsType getEagerlyLoads();
+
 #if defined(HAVE_LIBTEXTCAT)
 	fs::path getConfTextClassifier();
 	void setConfTextClassifier(fs::path);
@@ -106,7 +110,8 @@ private:
 #endif
 
 	unsigned int highWaterMark;
-	boost::unordered_map<std::pair<std::string, std::string>, unsigned int> eagerlyLoad;
+
+	EagerlyLoadsType eagerlyLoads;
 };
 
 #endif /* CONFIGURATIONMANAGER_H_ */
