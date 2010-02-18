@@ -78,6 +78,29 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 	return Encoding::wstringToUtf8(reformat(rb, ret, type));
 }
 
+void Translator::eagerlyLoad(ResourceBroker &rb, ModesManager &mm, std::string srcLang, std::string destLang, unsigned int qty) {
+	std::string pair = srcLang + "-" + destLang;
+
+	ModesManager::ModeMapType modes = mm.getModes();
+	ModesManager::ModeMapType::iterator modeit = modes.find(pair);
+
+	if (modeit == modes.end()) {
+		throw ApertiumRuntimeException("Mode not found: " + pair);
+	}
+
+	Mode mode = (*modeit).second;
+
+	std::vector<Program> programs = mode.getPrograms();
+
+	for (std::vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
+		Program program = *it;
+
+		std::stringstream ss;
+		ss << "Translator::translate(): Loading " << program;
+		Logger::Instance()->trace(Logger::Debug, ss.str());
+	}
+}
+
 std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in, ContentType type) {
 	Program *p = NULL;
 
