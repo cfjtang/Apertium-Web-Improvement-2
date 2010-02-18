@@ -103,6 +103,32 @@ void Translator::eagerlyLoad(ResourceBroker &rb, ModesManager &mm, std::string s
 
 		fm.load(program, qty);
 	}
+
+	std::stack<Format*> memd;
+	std::stack<Format*> memr;
+
+	Program pd("apertium-destxt");
+	Program pr("apertium-retxt");
+
+	for (unsigned int i = 0; i < qty; ++i) {
+		Format *fd = rb.FormatPool.acquire(pd);
+		Format *fr = rb.FormatPool.acquire(pr);
+
+		memd.push(fd);
+		memr.push(fr);
+	}
+
+	while (!memd.empty()) {
+		Format *fd = memd.top();
+		rb.FormatPool.release(fd, pd);
+		memd.pop();
+	}
+
+	while (!memr.empty()) {
+		Format *fr = memr.top();
+		rb.FormatPool.release(fr, pr);
+		memr.pop();
+	}
 }
 
 std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in, ContentType type) {
