@@ -118,11 +118,11 @@ ConfigurationManager::ConfigurationManager(fs::path confPath, fs::path confDirPa
 			xmlpp::NodeSet eagerlyLoadNodeSet = rootNode->find(rootName + "/EagerlyLoad");
 			if (eagerlyLoadNodeSet.begin() != eagerlyLoadNodeSet.end()) {
 				xmlpp::Element *node = dynamic_cast<xmlpp::Element*> (*eagerlyLoadNodeSet.begin());
-				std::string src = node->get_attribute_value("srcLang");
-				std::string dest = node->get_attribute_value("destLang");
+				const std::string src = node->get_attribute_value("srcLang");
+				const std::string dest = node->get_attribute_value("destLang");
 
 				unsigned int qty = 0;
-				std::string qtys = node->get_attribute_value("qty");
+				const std::string qtys = node->get_attribute_value("qty");
 
 				std::istringstream qtyss(qtys);
 				qtyss >> qty;
