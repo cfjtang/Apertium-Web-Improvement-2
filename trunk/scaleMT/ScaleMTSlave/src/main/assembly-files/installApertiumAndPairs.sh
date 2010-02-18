@@ -149,7 +149,7 @@ do
 done
 	
 cd ..
-
+cp apertium-module/* $REAL_PREFIX/bin
 
 }
 
