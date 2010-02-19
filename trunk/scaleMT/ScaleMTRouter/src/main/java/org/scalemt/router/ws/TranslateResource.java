@@ -265,8 +265,8 @@ public class TranslateResource {
                 errorMessage = "Unsupported format";
                 responseCode = 452;
             } catch (NoEngineForThatPairException nepe) {
-                errorMessage = "No translation engines available";
-                responseCode = 551;
+                errorMessage = "Unexpected Error";
+                responseCode = 500;
             } catch (TooMuchLoadException tmle) {
                 errorMessage = "Your translations limit has been reached";
                 responseCode = 552;
