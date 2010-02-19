@@ -81,6 +81,12 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 void Translator::eagerlyLoad(ResourceBroker &rb, ModesManager &mm, std::string srcLang, std::string destLang, unsigned int qty) {
 	std::string pair = srcLang + "-" + destLang;
 
+	{
+		std::stringstream ss;
+		ss << "Translator::translate(): Eagerly loading " << qty << " instances of the pair " << pair;
+		Logger::Instance()->trace(Logger::Info, ss.str());
+	}
+
 	ModesManager::ModeMapType modes = mm.getModes();
 	ModesManager::ModeMapType::iterator modeit = modes.find(pair);
 
