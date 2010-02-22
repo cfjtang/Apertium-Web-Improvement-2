@@ -27,7 +27,7 @@
 
                     $('translation').value='Loading...';
                      $('errorFooter').textContent='';
-                    new Ajax.Request('resources/translate', {
+                    new Ajax.Request('json/translate', {
                     method: 'post',
                     parameters: {langpair: elem.value, q: $('source').value, key: '/hPZuyVJgLDX4t9RA6s508EK0ss', markUnknown: mu},
                     requestHeaders: {Accept: 'application/json'},
@@ -61,7 +61,7 @@
 
           function getLangPairs()
           {
-               new Ajax.Request('resources/listPairs', {
+               new Ajax.Request('json/listPairs', {
                 method: 'get',
                 parameters: {},
                 requestHeaders: {Accept: 'application/json'},
