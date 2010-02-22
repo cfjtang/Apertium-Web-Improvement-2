@@ -1,4 +1,5 @@
 
+var apertium_supported_pairs=new Array();
 
 var apertium = new function() {
 
@@ -156,22 +157,65 @@ c.each(["Height","Width"],function(a,b){var d=b.toLowerCase();c.fn["inner"+b]=fu
 e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b],e.body["scroll"+b],e.documentElement["scroll"+b],e.body["offset"+b],e.documentElement["offset"+b]):f===v?c.css(e,d):this.css(d,typeof f==="string"?f:f+"px")}});z.jQuery=z.$=c})(window);
 
 
-    this.url = "http://elx.dlsi.ua.es/ScaleMTRouter/json/";
-    this.translate = function (sourceText,sourceLang,targetLang,callback) {
+    //this.url = "http://api.apertium.org/json/";
+    this.url = "http://localhost:8080/ScaleMTRouter/json/";
+    this.supportedPairs= new Array();
 
-        $.getJSON(this.url+"translate?callback=?", { q: sourceText, langpair: sourceLang+"|"+targetLang},function(data)
+
+    this.processSupportedPairsResponse= function(data)
+    {
+        if(data.responseStatus==200)
+		{
+                    apertium_supported_pairs=data.responseData;
+		}
+    };
+    $.getJSON(this.url+"listPairs?callback=?", this.processSupportedPairsResponse);
+
+    this.translate = function (sourceText,sourceLang,targetLang,callback) {
+        
+        var format="txt";
+        var source;
+        if(sourceText.type)
+        {
+            format=sourceText.type;
+            source=sourceText.text;
+        }
+        else
+            source=sourceText;
+
+        $.getJSON(this.url+"translate?callback=?", {q: source, format:format,langpair: sourceLang+"|"+targetLang},function(data)
 	{
 		var jsonData;
 		if(data.responseStatus==200)
 		{
-			jsonData = { "translation" : data.responseData.translatedText };
+			jsonData = {"translation" : data.responseData.translatedText};
 		}
 		else
 		{
-			jsonData = { "translation" : null, "error": {"code": data.responseStatus, "message": data.responseDetails} };
+			jsonData = {"translation" : null, "error": {"code": data.responseStatus, "message": data.responseDetails}};
 		}
 		callback(jsonData);
 	});
     };
-}
+
+    this.isTranslatablePair= function(source,target)
+    {
+        var result=false;
+
+      
+        for(var i=0; i<apertium_supported_pairs.length;i++)
+        {
+            pair=apertium_supported_pairs[i];
+      
+            if(pair.sourceLanguage==source && pair.targetLanguage==target)
+                return true;
+        }
+        return result;
+    };
+};
+
+apertium.ContentType = {
+  'TEXT' : 'txt',
+  'HTML' : 'html'
+};
 
