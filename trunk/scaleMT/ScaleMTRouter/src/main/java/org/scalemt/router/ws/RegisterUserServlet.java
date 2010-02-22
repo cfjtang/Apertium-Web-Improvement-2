@@ -17,8 +17,6 @@
  */
 package org.scalemt.router.ws;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.scalemt.router.logic.UserManagement;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -26,6 +24,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.tanesha.recaptcha.ReCaptcha;
+import net.tanesha.recaptcha.ReCaptchaFactory;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+import org.scalemt.router.logic.Util;
 import org.scalemt.router.persistence.ExistingNameException;
 import org.scalemt.router.persistence.UserEntity;
 
@@ -49,19 +51,31 @@ public class RegisterUserServlet extends HttpServlet {
        String email = request.getParameter("email");
        String url = request.getParameter("url");
        String checked=request.getParameter("accept");
+       String recaptcha_challenge_field= request.getParameter("recaptcha_challenge_field");
+       String recaptcha_response_field=request.getParameter("recaptcha_response_field");
        String message=null;
+
+       boolean registerOK=false;
+
+      ReCaptcha reCaptcha =ReCaptchaFactory.newReCaptcha(Util.readConfigurationProperty("recaptcha_public"),Util.readConfigurationProperty("recaptcha_private") , true);
 
        if(email!=null && !"".equals(email) && email.length()<100 && url!=null && !"".equals(url) && url.length()<100)
        {
            if(checked!=null && (checked.equals("yes") || checked.equals("on")))
            {
+               ReCaptchaResponse reCaptchaResponse= reCaptcha.checkAnswer(request.getRemoteAddr(), recaptcha_challenge_field, recaptcha_response_field);
+               if(reCaptchaResponse.isValid())
+               {
 
                 try {
                     UserEntity user = UserManagement.getInstance().registerUser(email,url);
                     if(user==null)
                        message="Unexpected error. Please try again later or use another name";
                    else
+                   {
                        message="Register OK. Your key is '"+user.getApi()+"'";
+                       registerOK=true;
+                   }
                 } catch (ExistingNameException ex) {
                     message="Error. Your email is already registered.";
                 }
@@ -76,16 +90,25 @@ public class RegisterUserServlet extends HttpServlet {
                         message="Error. Your url is not valid.";
                     }
                 }
+               }
+               else
+                   message="Captcha failed. Please try again";
            }
            else
-               message="you must accept the terms and conditions in order to register";
+               message="You must accept the terms and conditions in order to register";
 
            
        }
+       else
+           message="You must type your email and the home page of your website of application";
 
        if(message!=null)
            request.setAttribute("message",message);
-       RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+       RequestDispatcher rd;
+       if(registerOK)
+            rd= request.getRequestDispatcher("registerOK.jsp");
+       else
+            rd= request.getRequestDispatcher("register.jsp");
        rd.forward(request, response);
 
     } 

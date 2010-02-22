@@ -63,6 +63,18 @@ Eam ad primis omnesque, corpora conceptam intellegebat ad sed. Mazim veritus urb
             <br/>
             <input type="checkbox" name="accept"/> I accept the service terms and conditions
             <br/>
+            <script type="text/javascript"
+               src="http://api.recaptcha.net/challenge?k=6LeHXQsAAAAAAPIc3n1YkSeDb9f-NVAk3JrriCFn">
+            </script>
+
+            <noscript>
+               <iframe src="http://api.recaptcha.net/noscript?k=6LeHXQsAAAAAAPIc3n1YkSeDb9f-NVAk3JrriCFn"
+                   height="300" width="500" frameborder="0"></iframe><br>
+               <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+               </textarea>
+               <input type="hidden" name="recaptcha_response_field"
+                   value="manual_challenge">
+            </noscript>
             <input type="submit" value="Register">
         </form>
    
