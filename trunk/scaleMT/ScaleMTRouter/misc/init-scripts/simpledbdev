@@ -1,0 +1,26 @@
+#! /bin/sh
+# /etc/init.d/simpledbdev
+#
+
+# Some things that run always
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting simpledbdev"
+    cd /usr/local/lib/SimpleDB-Dev/src
+    python simpledb_dev.py 8082 >/tmp/simpledb.log 2>1 &
+    echo "$!" >/var/lock/simpledbdev.pid
+    ;;
+  stop)
+    echo "Stopping simpledbdev"
+    kill -15 `cat /var/lock/simpledbdev.pid`
+    rm /var/lock/simpledbdev.pid
+    ;;
+  *)
+    echo "Usage: /etc/init.d/simpledbdev {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
