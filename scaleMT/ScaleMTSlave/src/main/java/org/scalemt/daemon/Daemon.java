@@ -833,11 +833,12 @@ public class Daemon {
                             //Execute command
                             StreamGobbler stdoutGobbler;
 
+                             Process p=null;
                             try
                             {
 
                             //Execute command
-                            Process p =Runtime.getRuntime().exec(fullCommand);
+                            p =Runtime.getRuntime().exec(fullCommand);
 
                             //Create threads for reading stdout and stderr
                             stdoutGobbler = new StreamGobbler(p.getInputStream());
@@ -860,8 +861,9 @@ public class Daemon {
                                 }
                                 //writer.flush();
                                 //writer.close();
-                                p.getOutputStream().close();
+                               
                             }
+                             p.getOutputStream().close();
 
                             //Wait for stdout reader thread to end reading
                             try

@@ -1,4 +1,5 @@
 #!/bin/bash
 
-kill -9 `cat .pid`
-rm .pid
+DIR=`dirname $0`
+kill -9 `cat $DIR/.pid`
+rm  $DIR/.pid
