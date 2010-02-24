@@ -280,6 +280,35 @@ public class ApertiumView extends FrameView {
         }
     };
 
+  private void ajustSplitPaneHeights(int toth) {
+    for (JSplitPane s : splitPanes) {
+      if (s.getDividerLocation()>2) {
+        //System.out.println("getDividerLocation()"+s.getDividerLocation());
+        Dimension d=s.getTopComponent().getMinimumSize();
+        s.setDividerLocation(d.height);
+        //System.out.println("dp="+d);
+        toth+=s.getDividerSize()+2;
+        //System.out.println("getDividerLocation()"+s.getDividerLocation());
+      }
+    }
+    Dimension d=textWidgetsPanel.getSize();
+    d.height=toth; //Math.max(toth, d.height);
+    textWidgetsPanel.setSize(d);
+    d=textWidgetsPanel.getPreferredSize();
+    d.height=toth;
+    textWidgetsPanel.setMinimumSize(d);
+    textWidgetsPanel.setPreferredSize(d);
+    mainPanel.validate();
+    for (TextWidget w : textWidgets) {
+      w.jScrollPane1.setMinimumSize(null);
+      w.textEditor.setMinimumSize(null);
+      w.setMinimumSize(new Dimension(5, 5));
+      w.jScrollPane1.setPreferredSize(null);
+      w.textEditor.setPreferredSize(null);
+      w.setPreferredSize(null);
+    }
+  }
+
     private void showMode(Mode m) {
         if (m==null) {
             return;
@@ -426,6 +455,7 @@ public class ApertiumView extends FrameView {
     markUnknownWordsCheckBox = new javax.swing.JCheckBox();
     storeTextButton = new javax.swing.JButton();
     jLabel1 = new javax.swing.JLabel();
+    jButton1 = new javax.swing.JButton();
     menuBar = new javax.swing.JMenuBar();
     javax.swing.JMenu fileMenu = new javax.swing.JMenu();
     loadModeMenuItem = new javax.swing.JMenuItem();
@@ -453,7 +483,6 @@ public class ApertiumView extends FrameView {
 
     javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
-    fitToTextButton.setMnemonic('I');
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
@@ -484,7 +513,6 @@ public class ApertiumView extends FrameView {
     jScrollPane1.setViewportView(textWidgetsPanel);
 
     copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
-    copyTextButton.setMnemonic('C');
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
 
     showCommandsCheckBox.setMnemonic('H');
@@ -518,6 +546,10 @@ public class ApertiumView extends FrameView {
     jLabel1.setLabelFor(modesComboBox);
     jLabel1.setText("Mode");
 
+    jButton1.setAction(actionMap.get("hideIntermediate")); // NOI18N
+    jButton1.setText("Hide intermediate");
+    jButton1.setMargin(new java.awt.Insets(0, 4, 0, 4));
+
     javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
     mainPanel.setLayout(mainPanelLayout);
     mainPanelLayout.setHorizontalGroup(
@@ -529,10 +561,12 @@ public class ApertiumView extends FrameView {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(fitToTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jButton1)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(copyTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(storeTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, Short.MAX_VALUE)
         .addComponent(jLabel1)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -548,7 +582,8 @@ public class ApertiumView extends FrameView {
           .addComponent(fitToTextButton)
           .addComponent(copyTextButton)
           .addComponent(storeTextButton)
-          .addComponent(jLabel1))
+          .addComponent(jLabel1)
+          .addComponent(jButton1))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))
     );
@@ -580,7 +615,6 @@ public class ApertiumView extends FrameView {
     toolsMenu.add(makeTestCaseMenuItem);
 
     importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
-    importTestCaseMenuItem.setText("Import test case"); // NOI18N
     toolsMenu.add(importTestCaseMenuItem);
 
     storedTextsMenu.setMnemonic('S');
@@ -596,7 +630,6 @@ public class ApertiumView extends FrameView {
     helpMenu.add(changeFontMenuItem);
 
     optionsMenuItem.setAction(actionMap.get("editOptions")); // NOI18N
-    optionsMenuItem.setText("Options...");
     helpMenu.add(optionsMenuItem);
 
     helpMenuItem.setText("Help...");
@@ -724,34 +757,7 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             toth += d.height;
         }
 
-
-        for (JSplitPane s : splitPanes) if (s.getDividerLocation()>2) {
-            //System.out.println("getDividerLocation()"+s.getDividerLocation());
-            Dimension d = s.getTopComponent().getMinimumSize();
-            s.setDividerLocation(d.height);
-            //System.out.println("dp="+d);
-            toth += s.getDividerSize() + 2;
-            //System.out.println("getDividerLocation()"+s.getDividerLocation());
-        }
-        
-        Dimension d = textWidgetsPanel.getSize();
-        d.height = toth; //Math.max(toth, d.height);
-        textWidgetsPanel.setSize(d);
-        d = textWidgetsPanel.getPreferredSize();
-        d.height = toth;
-        textWidgetsPanel.setMinimumSize(d);
-        textWidgetsPanel.setPreferredSize(d);
-
-        mainPanel.validate();
-
-        for (TextWidget w : textWidgets) {
-            w.jScrollPane1.setMinimumSize(null);
-            w.textEditor.setMinimumSize(null);
-            w.setMinimumSize(new Dimension(5,5));
-            w.jScrollPane1.setPreferredSize(null);
-            w.textEditor.setPreferredSize(null);
-            w.setPreferredSize(null);
-        }
+        ajustSplitPaneHeights(toth);
     
     }
 
@@ -793,6 +799,7 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
   private javax.swing.JButton fitToTextButton;
   private javax.swing.JMenuItem helpMenuItem;
   private javax.swing.JMenuItem importTestCaseMenuItem;
+  private javax.swing.JButton jButton1;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JSeparator jSeparator1;
@@ -948,6 +955,30 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
       prefs.put("envVars", op.envVarsTextArea.getText());
       modesComboBoxActionPerformed(null); // reload the current mode
     }
+  }
+
+  @Action
+  public void hideIntermediate() {
+        int toth = 0;
+        for (TextWidget w : textWidgets) {
+            Dimension d = w.textEditor.getPreferredSize();
+            d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
+
+
+            if (w == textWidget1 || w == textWidgets.get(textWidgets.size()-1)) {
+                d.height += w.commandTextField.getPreferredSize().height;
+                d.height += insetHeight(w.commandTextField);
+            } else {
+                d.height = 0;
+            }
+
+            w.setMinimumSize(d);
+            w.setPreferredSize(d);
+            toth += d.height;
+        }
+
+
+       ajustSplitPaneHeights(toth);
   }
 
 
