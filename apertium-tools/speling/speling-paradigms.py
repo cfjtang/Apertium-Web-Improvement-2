@@ -3,29 +3,44 @@
 # -*- encoding: utf-8 -*-
 
 import sys, string, codecs;
-from xml.dom import minidom;
-from xml import xpath;
 
 sys.stdin = codecs.getreader('utf-8')(sys.stdin);
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
 def mangle_flexion_tags(a): #{
-	a = a.replace('ind', 'd1');
-	a = a.replace('def', 'd2');
+	a = a.replace('actv', 'v0');
+	a = a.replace('midv', 'v1');
 
-	a = a.replace('nom', 'c1');
-	a = a.replace('gen', 'c2');
-	a = a.replace('dat', 'c3');
-	a = a.replace('acc', 'c4');
-	a = a.replace('loc', 'c5');
-	a = a.replace('Ins', 'c6');
-	a = a.replace('voc', 'c7');
+	a = a.replace('inf', 'e0');
+	a = a.replace('supn', 'e1');
+	a = a.replace('pri', 'e2');
+	a = a.replace('prs', 'e3');
+	a = a.replace('psi', 'e4');
+	a = a.replace('pss', 'e5');
+	a = a.replace('imp', 'e6');
+	a = a.replace('ppres', 'e7');
+	a = a.replace('pp', 'e8');
+
+	a = a.replace('pst', 'g1');
+	a = a.replace('comp', 'g2');
+	a = a.replace('sup', 'g3');
+
+	a = a.replace('nom', 'c0');
+	a = a.replace('acc', 'c3');
+	a = a.replace('gen', 'c4');
+	a = a.replace('dat', 'c5');
+	a = a.replace('loc', 'c6');
+	a = a.replace('ins', 'c7');
+	a = a.replace('voc', 'c8');
+
+	a = a.replace('ind', '0a');
+	a = a.replace('def', 'x9');
 
 	a = a.replace('sg', 'n1');
-	a = a.replace('sg', 'n4');
 	a = a.replace('du', 'n2');
 	a = a.replace('pl', 'n3');
+	a = a.replace('ct', 'n4');
 
 	a = a.replace('mf', 'a4');
 	a = a.replace('m', 'a1');
@@ -36,8 +51,25 @@ def mangle_flexion_tags(a): #{
 #}
 
 def demangle_flexion_tags(a): #{
-	a = a.replace('d1', 'ind');
-	a = a.replace('d2', 'def');
+	a = a.replace('v0', 'actv');
+	a = a.replace('v1', 'midv');
+
+	a = a.replace('e0', 'inf');
+	a = a.replace('e1', 'supn');
+	a = a.replace('e2', 'pri');
+	a = a.replace('e3', 'prs');
+	a = a.replace('e4', 'psi');
+	a = a.replace('e5', 'pss');
+	a = a.replace('e6', 'imp');
+	a = a.replace('e7', 'ppres');
+	a = a.replace('e8', 'pp');
+
+	a = a.replace('g1', 'pst');
+	a = a.replace('g2', 'comp');
+	a = a.replace('g3', 'sup');
+
+	a = a.replace('0a', 'ind');
+	a = a.replace('x9', 'def');
 
 	a = a.replace('a4', 'mf');
 	a = a.replace('a1', 'm');
@@ -49,19 +81,18 @@ def demangle_flexion_tags(a): #{
 	a = a.replace('n3', 'pl');
 	a = a.replace('n4', 'ct');
 
-	a = a.replace('c1', 'nom');
-	a = a.replace('c2', 'gen');
-	a = a.replace('c3', 'dat');
-	a = a.replace('c4', 'acc');
-	a = a.replace('c5', 'loc');
-	a = a.replace('c6', 'ins');
-	a = a.replace('c7', 'voc');
+	a = a.replace('c0', 'nom');
+	a = a.replace('c3', 'acc');
+	a = a.replace('c4', 'gen');
+	a = a.replace('c5', 'dat');
+	a = a.replace('c6', 'loc');
+	a = a.replace('c7', 'ins');
+	a = a.replace('c8', 'voc');
 	
 	return a;
 #}
 
 def sort_flexions(a, b): #{
-	
 	if(mangle_flexion_tags(a[1]) > mangle_flexion_tags(b[1])): #{
 		return 1;
 	#}
@@ -82,11 +113,12 @@ def find_longest_common_substring(lemma, flexion): #{
         length = len(lemma.decode('utf-8'));
         for char in lemma.decode('utf-8'): #{
                 candidate = candidate + char;
+		#print >> sys.stderr , 'cand: ' , candidate , '; flexion:', flexion;
                 if flexion.find(candidate.encode('utf-8')) == -1: #{
                         return candidate[0:len(candidate)-1];
                 #}
         #}
-
+	#print >> sys.stderr , 'cand: ' , candidate
         return candidate;
 #}
 
@@ -116,8 +148,12 @@ def return_symlist(symlist): #{
 #       MAIN
 #
 
+v_1line = False;
+
 if len(sys.argv) < 2: #{
         print 'python speling.py <filename>';
+if len(sys.argv) == 3: #{
+	v_1line = True;	
 #}
 
 flist = file(sys.argv[1]);
@@ -188,8 +224,8 @@ print '  <pardefs>';
 for lemma in lemmata.keys(): #{
 	for pos in lemmata[lemma].keys(): #{
 	        stem = return_shortest(lemmata[lemma][pos]);
-	        print '  <!-- ' + lemma + '; ' + stem + ' -->';
-	        end = lemma.replace(stem, '');
+	        print '  <!-- ' + lemma + '; ' + stem + '; ' + str(len(flexions[lemma][pos])) + ' -->';
+	        end = lemma.replace(stem, '', 1);
 	        slash = '/';
 
 	        if end == '': #{
@@ -200,24 +236,41 @@ for lemma in lemmata.keys(): #{
 		
 		flexions[lemma][pos].sort(sort_flexions);
 
-	        for pair in flexions[lemma][pos]: #{
-	                print '      <e>';
-	                print '        <p>';
-	                if len(pair[0]) > 1: #{
-	                        print '          <l>' + pair[0].replace(stem, '', 1).replace(' ', '<b/>') + '</l>';
-	                #}
-	                if len(pair[0]) == 1: #{
-	                        print '          <l>' + pair[0].replace(' ', '<b/>') + '</l>';
-	                #}
-	                if len(pair[0]) < 1: #{
-	                        print '          <l/>';
-	                #}
-	                print '          <r>' + end + return_symlist(pair[1]) + '</r>';
-	                print '        </p>';
-	                print '      </e>';
-	        #}
-	        print '    </pardef>';
-	        print '';
+		if v_1line == True: #{
+			for pair in flexions[lemma][pos]: #{
+				out = '';
+		                if len(pair[0]) > 1: #{
+					out = out + '      <e>       <p><l>' + pair[0].replace(stem, '', 1).replace(' ', '<b/>') + '</l>';
+		                #}
+		                if len(pair[0]) == 1: #{
+					out = out + '      <e>       <p><l>' + pair[0].replace(' ', '<b/>') + '</l>';
+		                #}
+		                if len(pair[0]) < 1: #{
+					out = out + '      <e>       <p><l/>';
+		                #}
+				out = out + '<r>' + end + return_symlist(pair[1]) + '</r></p></e>';
+				print out;
+			#}
+		else: #{
+		        for pair in flexions[lemma][pos]: #{
+		                print '      <e>';
+		                print '        <p>';
+		                if len(pair[0]) > 1: #{
+		                        print '          <l>' + pair[0].replace(stem, '', 1).replace(' ', '<b/>') + '</l>';
+		                #}
+		                if len(pair[0]) == 1: #{
+		                        print '          <l>' + pair[0].replace(' ', '<b/>') + '</l>';
+		                #}
+		                if len(pair[0]) < 1: #{
+		                        print '          <l/>';
+		                #}
+		                print '          <r>' + end + return_symlist(pair[1]) + '</r>';
+		                print '        </p>';
+		                print '      </e>';
+		        #}
+		#}
+		print '    </pardef>';
+		print '';
 	#}
 #}
 print '  </pardefs>';
@@ -226,7 +279,7 @@ print '  <section id="main" type="standard">';
 for lemma in lemmata.keys(): #{
 	for pos in lemmata[lemma].keys(): #{
 	        stem = return_shortest(lemmata[lemma][pos]);
-	        end = lemma.replace(stem, '');
+	        end = lemma.replace(stem, '',1);
 	        slash = '/';
 
 	        if end == '': #{
@@ -240,4 +293,3 @@ for lemma in lemmata.keys(): #{
 
 print '  </section>';
 print '</dictionary>';
-
