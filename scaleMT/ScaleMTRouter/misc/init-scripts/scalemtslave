@@ -1,0 +1,23 @@
+#! /bin/sh
+# /etc/init.d/scalemtslave
+#
+
+# Some things that run always
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting scalemtslave"
+    /home/vmsanchez/ScaleMTSlave-1.0/run-scaleMT.sh localhost &
+    ;;
+  stop)
+    echo "Stopping scalemtslave"
+    /home/vmsanchez/ScaleMTSlave-1.0/stop-scaleMT.sh
+    ;;
+  *)
+    echo "Usage: /etc/init.d/scalemtslave {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0

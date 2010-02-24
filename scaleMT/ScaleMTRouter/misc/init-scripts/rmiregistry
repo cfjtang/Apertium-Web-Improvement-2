@@ -1,0 +1,25 @@
+#! /bin/sh
+# /etc/init.d/rmiregistry
+#
+
+# Some things that run always
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting rmiregistry"
+    rmiregistry 1098 &
+    echo "$!" >/var/lock/rmiregistry.pid
+    ;;
+  stop)
+    echo "Stopping rmiregistry"
+    kill -15 `cat /var/lock/rmiregistry.pid`
+    rm /var/lock/rmiregistry.pid
+    ;;
+  *)
+    echo "Usage: /etc/init.d/rmiregistry {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
