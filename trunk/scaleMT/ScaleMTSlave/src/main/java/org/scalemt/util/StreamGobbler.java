@@ -38,6 +38,7 @@ public class StreamGobbler extends Thread
         buffer=new byte[1000];
     }
     
+    @Override
     public void run()
     {
         try
@@ -48,7 +49,7 @@ public class StreamGobbler extends Thread
             {
                 baos.write(buffer, 0, bytesRead);
             }
-
+            is.close();
             baos.close();
             
             
