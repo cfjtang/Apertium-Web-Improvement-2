@@ -2,16 +2,17 @@
 <head>
     <title>Test JS Library</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<script type="text/javascript" src="http://localhost:8080/ScaleMTRouter/apertium.js"></script>
+<script type="text/javascript" src="JSLibrary.jsp?key=hola"></script>
 <script type="text/javascript">
     function test()
     {
     //alert(apertium.serviceUrl);
-    apertium.translate("Hola, buenos días. Esto es una prueba.",'es','ca', function(data){ alert(data.translation) });
+    apertium.translate("Hola, buenos días. Esto es una prueba <zfafsf.",'es','ca', function(data){ alert(data.translation) });
     alert("true="+apertium.isTranslatablePair('es','ca'));
     alert("false="+apertium.isTranslatablePair('cy','eo'));
-    //alert(apertium.getSourceLanguages());
-    //alert(apertium.getTargetLanguages('es'));
+    alert(apertium.getSourceLanguages());
+    alert(apertium.getTargetLanguages('es'));
+    alert(apertium.getSupportedLanguagePairs());
 }
 </script>
 </head>

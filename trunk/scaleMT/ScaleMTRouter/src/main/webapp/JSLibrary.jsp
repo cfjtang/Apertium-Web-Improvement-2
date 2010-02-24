@@ -1,3 +1,11 @@
+<%-- 
+    Document   : JSLibrary
+    Created on : 23-feb-2010, 11:54:42
+    Author     : vmsanchez
+--%>
+
+<%@page contentType="text/javascript" pageEncoding="UTF-8"%>
+<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 var apertium_supported_pairs=new Array();
 
@@ -160,7 +168,11 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
     this.url = "http://api.apertium.org/json/";
     //this.url = "http://localhost:8080/ScaleMTRouter/json/";
     this.supportedPairs= new Array();
-    this.key="";
+    this.key="<%
+    String key=request.getParameter("key");
+    if(key!=null)
+        out.print(StringEscapeUtils.escapeJavaScript(key));
+            %>";
 
     this.processSupportedPairsResponse= function(data)
     {
@@ -172,7 +184,7 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
     $.getJSON(this.url+"listPairs?callback=?", this.processSupportedPairsResponse);
 
     this.translate = function (sourceText,sourceLang,targetLang,callback) {
-        
+
         var format="txt";
         var source;
         if(sourceText.type)
@@ -183,7 +195,7 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
         else
             source=sourceText;
 
-        $.getJSON(this.url+"translate?callback=?", {q: source, format:format,langpair: sourceLang+"|"+targetLang},function(data)
+        $.getJSON(this.url+"translate?callback=?", {q: source, format:format,langpair: sourceLang+"|"+targetLang, key:this.key,markUnknown: 'no' },function(data)
 	{
 		var jsonData;
 		if(data.responseStatus==200)
@@ -202,11 +214,11 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
     {
         var result=false;
 
-      
+
         for(var i=0; i<apertium_supported_pairs.length;i++)
         {
             pair=apertium_supported_pairs[i];
-      
+
             if(pair.sourceLanguage==source && pair.targetLanguage==target)
                 return true;
         }
@@ -230,7 +242,7 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
 
     this.getSourceLanguages =function()
     {
-        
+
         var arraySources= Array();
         for(var i=0; i<apertium_supported_pairs.length;i++)
         {
@@ -270,3 +282,4 @@ apertium.ContentType = {
   'TEXT' : 'txt',
   'HTML' : 'html'
 };
+

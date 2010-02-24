@@ -5,7 +5,10 @@
 
 package org.scalemt.router.ws;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
@@ -37,7 +40,7 @@ public class TranslateXMLRPC {
         int code=200;
         String errorMessage="";
         String translation=null;
-       
+        
         LoggerStatiticsWriter.getInstance().logRequestReceived(ip, key, sourceLang+"|"+targetLang, format);
         logger.debug("requestreceived "+ip+" "+key+" "+sourceLang+"|"+targetLang);
         Format f=null;
@@ -104,11 +107,11 @@ public class TranslateXMLRPC {
 
     public byte[] translateDocument(byte[] sourceDocument,String format,String sourceLang, String targetLang, String key ) throws XmlRpcException
     {
-          String ip=MyXmlRpcServlet.clientIpAddress.get().toString();
+        String ip=MyXmlRpcServlet.clientIpAddress.get().toString();
 
         int code=200;
         String errorMessage="";
-       byte[] translation=null;
+        byte[] translation=null;
 
         LoggerStatiticsWriter.getInstance().logRequestReceived(ip, key, sourceLang+"|"+targetLang, format);
         logger.debug("requestreceived "+ip+" "+key+" "+sourceLang+"|"+targetLang);
@@ -172,5 +175,20 @@ public class TranslateXMLRPC {
             return translation;
         else
             throw new XmlRpcException(code, errorMessage);
+    }
+
+    public List<Map<String,String>> getSupportedLanguagePairs()
+    {
+        List<LanguagePair> pairs=LoadBalancer.getInstance().getSupportedPairs();
+        List<Map<String,String>> returnList = new ArrayList<Map<String, String>>(pairs.size());
+        for(LanguagePair p: pairs)
+        {
+            Map<String,String> mapPair =new HashMap<String, String>();
+            mapPair.put("sourceLanguage", p.getSource());
+            mapPair.put("targetLanguage", p.getTarget());
+            returnList.add(mapPair);
+        }
+
+        return returnList;
     }
 }
