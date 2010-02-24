@@ -27,6 +27,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang.mutable.MutableLong;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -51,14 +52,14 @@ class SimpleRequestHistory implements IRequestHistory {
     private Map<LanguagePair, RequestsHistoryTO> requestsMap;
 
     private Map<Requester,List<UserRequest>> requestsPerUser;
-    private Map<Requester,MutableInt> costPerUser;
+    private Map<Requester,MutableLong> costPerUser;
 
     private long userAdmissionPeriod=24*60*60*1000;
 
     public SimpleRequestHistory() {
         requestsMap = new HashMap<LanguagePair, RequestsHistoryTO>();
         requestsPerUser=new HashMap<Requester, List<UserRequest>>();
-        costPerUser=new HashMap<Requester, MutableInt>();
+        costPerUser=new HashMap<Requester, MutableLong>();
 
          try
         {
@@ -71,7 +72,7 @@ class SimpleRequestHistory implements IRequestHistory {
     public void addRequest(LanguagePair pair, int numCharacters, Format format, Requester requester) {
 
         List<UserRequest> userHistory=null;
-        MutableInt userCost =null;
+        MutableLong userCost =null;
         synchronized(this)
         {
             if (requestsMap.containsKey(pair)) {
@@ -87,7 +88,7 @@ class SimpleRequestHistory implements IRequestHistory {
             {
                 userHistory=new LinkedList<UserRequest>();
                 requestsPerUser.put(requester, userHistory);
-                userCost=new MutableInt(0);
+                userCost=new MutableLong(0);
                 costPerUser.put(requester, userCost);
             }
         }
