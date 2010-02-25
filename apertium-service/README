@@ -1,0 +1,100 @@
+- Apertium-service
+
+* Introduction
+
+A paper describing the service, its interfaces and internal architecture can be found here: http://rua.ua.es/dspace/handle/10045/12031
+
+* Compiling and Installing
+
+This document covers compilation and installation of apertium-service on Unix and Unix-like systems only, but it can be compiled also on other systems that meet the requirements.
+apertium-service, like many other Open Source projects, uses GNU buildtools (like autoconf and automake) to create a build environment.
+
+* Requirements
+
+You need the following software installed:
+
+liblttoolbox3 - library for lttoolbox, a toolbox for lexical processing, morphological analysis and generation of words.
+libapertium3 - library for apertium, a Free / Open-Source machine translation system.
+libtextcat0 - a library implementing the classification technique described in Cavnar & Trenkle, "N-Gram-Based Text Categorization". (optional)
+libapertiumcombine1 - a library implementing a Multi-Engine Translation Synthesiser (optional)
+libxmlrpc-c3 - a lightweight RPC library based on XML and HTTP for C and C++. (>= 1.16.07-1)
+libxml++2 - a C++ interface to libxml2, the GNOME XML library.
+libboost - Boost C++ libraries are a collection of peer-reviewed, Open Source libraries that extend the functionality of C++. (>= 1.41.0)
+
+In particular, the following components from Boost C++ libraries are required:
+libboost-thread - for portable C++ multi-threading.
+libboost-filesystem - for portable filesystem operations in C++.
+libboost-system - for dealing with system-specific error code values in C++.
+libboost-date-time - for portable date/time operations in C++.
+libboost-regex - regular expression library for C++.
+libboost-program-options - program options library for C++.
+To install the xml and boost components on Ubuntu, use
+sudo apt-get install libxml++2.6-dev libxmlrpc-c3-dev libboost-thread-dev libboost-filesystem-dev \
+libboost-system-dev libboost-date-time-dev libboost-regex-dev libboost-program-options-dev libcurl4-openssl-dev
+
+* Checkout from SVN
+
+apertium-service can be downloaded from the Apertium SVN repository with the following command:
+
+$ svn co http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/apertium-service
+
+Immediately after a SVN checkout, you can generate the files required for building apertium-service with GNU autotools with the following command:
+
+$ ./autogen.sh
+
+* Configuring the source tree
+
+The next step is to configure the apertium-service source tree for your particular platform and personal requirements. This is done using the script configure included in the root directory of the distribution. (Developers downloading an unreleased version of the apertium-service source tree will need to have autoconf and libtool installed and will need to run the script autogen.sh before proceeding with the next steps. This is not necessary for official releases.)
+To configure the source tree using all the default options, simply type ./configure. To change the default options, configure accepts a variety of variables and command line options.
+The most important option is the location --prefix where the apertium-service is to be installed later, because apertium-service has to be configured for this location to work correctly. More fine-tuned control of the location of files is possible with additional configure options.
+In addition, it is sometimes necessary to provide the configure script with extra information about the location of your compiler, libraries, or header files. This is done by passing either environment variables or command line options to configure. For more information, see the configure manual page.
+For a short impression of what possibilities you have, here is a typical example which compiles apertium-service for the installation tree /sw/pkg/apertium-service with a particular compiler and flags:
+
+$ CC="pgcc" CFLAGS="-O2" \
+./configure --prefix=/sw/pkg/apertium-service
+
+When configure is run it will take a few seconds to test for the availability of features on your system and build Makefiles which will later be used to compile the server.
+Details on all the different configure options are available on the configure manual page.
+
+* Build
+
+Now you can build the various parts which form the apertium-service package by simply running the command:
+
+$ make
+
+A base configuration takes a few minutes to compile and the time will vary widely depending on your hardware.
+
+* Install
+
+Now it's time to install the package under the configured installation PREFIX (see --prefix option above) by running:
+
+$ make install
+
+* Customise
+
+Next, you can customise your apertium-service by editing the configuration files under PREFIX/etc/apertium-service/.
+
+$ vi PREFIX/etc/apertium-service/configuration.xml
+
+The configuration.xml file is fairly straightforward,
+
+<ApertiumServiceConfiguration>
+       <ServerPort>6173</ServerPort>
+       <ApertiumBase>/usr/local/share/apertium/modes</ApertiumBase>
+
+The supported fields of the configuration file are the following:
+
+ServerPort sets the port where the XML-RPC service should listen on
+ApertiumBase sets where it can find the modes files.
+HighWaterMark sets the high water mark (the maximum number of object that can be allocated for each resource pool).
+MultiEngineMachineTranslation is only if you want to enable the MEMT module (not yet stable). Within that,
+<MonolingualDictionary srcLang="br" destLang="fr">/usr/local/share/apertium/apertium-br-fr/br-fr.automorf.bin</MonolingualDictionary> gives the path to an analyser for a given language. This analyser is used to lemmatise all the input sentences to the MEMT module to improve alignment.
+<LanguageModel lang="de">/home/pasquale/gsoc/lm/europarl.de.blm</LanguageModel> gives an IRSTLM language model used to score the final hypotheses from the MEMT module.
+
+* Test
+
+Now you can start your apertium-service by immediately running:
+
+$ PREFIX/bin/apertium-service
+
+and then you should be able to make your first XML-RPC query via URL http://localhost:port/RPC2.
