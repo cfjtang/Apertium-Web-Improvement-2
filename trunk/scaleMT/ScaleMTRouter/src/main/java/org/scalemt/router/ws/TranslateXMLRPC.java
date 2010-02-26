@@ -41,8 +41,8 @@ public class TranslateXMLRPC {
         String errorMessage="";
         String translation=null;
         
-        LoggerStatiticsWriter.getInstance().logRequestReceived(ip, key, sourceLang+"|"+targetLang, format);
-        logger.debug("requestreceived "+ip+" "+key+" "+sourceLang+"|"+targetLang);
+        LoggerStatiticsWriter.getInstance().logRequestReceived(ip,"xml-rpc", key, sourceLang+"|"+targetLang, format);
+        logger.debug("requestreceived "+ip+" xml-rpc "+key+" "+sourceLang+"|"+targetLang);
         Format f=null;
         LanguagePair p = null;
         try
@@ -71,7 +71,7 @@ public class TranslateXMLRPC {
                 if (supportedPairs.contains(p)) {
 
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
-                    translation = LoadBalancer.getInstance().translate(new TextContent(f,sourceText), p,ip ,key ,additionalTranslationOptions).toString();
+                    translation = LoadBalancer.getInstance().translate(new TextContent(f,sourceText), p,ip,"xml-rpc",key ,additionalTranslationOptions).toString();
                 } else {
                     errorMessage = "Not supported pair";
                     code = 451;
@@ -113,8 +113,8 @@ public class TranslateXMLRPC {
         String errorMessage="";
         byte[] translation=null;
 
-        LoggerStatiticsWriter.getInstance().logRequestReceived(ip, key, sourceLang+"|"+targetLang, format);
-        logger.debug("requestreceived "+ip+" "+key+" "+sourceLang+"|"+targetLang);
+        LoggerStatiticsWriter.getInstance().logRequestReceived(ip,"xml-rpc", key, sourceLang+"|"+targetLang, format);
+        logger.debug("requestreceived "+ip+" xml-rpc "+key+" "+sourceLang+"|"+targetLang);
         Format f=null;
         LanguagePair p = null;
         try
@@ -143,7 +143,7 @@ public class TranslateXMLRPC {
                 if (supportedPairs.contains(p)) {
 
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
-                    translation = LoadBalancer.getInstance().translate(new BinaryDocument(f,sourceDocument), p,ip ,key ,additionalTranslationOptions).toByteArray();
+                    translation = LoadBalancer.getInstance().translate(new BinaryDocument(f,sourceDocument), p,ip ,"xml-rpc",key ,additionalTranslationOptions).toByteArray();
                 } else {
                     errorMessage = "Not supported pair";
                     code = 451;

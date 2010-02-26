@@ -75,7 +75,7 @@ public class TranslateResource {
     @Produces("application/json")
     public String getJSON(@Context HttpServletRequest request) {
         
-        return process(uricontext.getQueryParameters(),request.getRemoteAddr());
+        return process(uricontext.getQueryParameters(),request.getRemoteAddr(),request.getHeader("Referer"));
     }
 
     /**
@@ -87,7 +87,8 @@ public class TranslateResource {
     @Consumes({"application/x-www-form-urlencoded", "multipart/form-data"})
     @Produces("application/json")
     public String postJSON(MultivaluedMap<String, String> params,@Context HttpServletRequest request) {
-        return process(params,request.getRemoteAddr());
+  
+        return process(params,request.getRemoteAddr(),request.getHeader("Referer"));
     }
 
     /**
@@ -96,7 +97,7 @@ public class TranslateResource {
      * @param params HTTP parameters
      * @return JSON data with the translation and result code
      */
-    private String process(MultivaluedMap<String, String> params,String clientIp) {
+    private String process(MultivaluedMap<String, String> params,String clientIp,String referer) {
         //Get parameters
         List<String> q = params.get("q");
         List<String> langpairs = params.get("langpair");
@@ -128,7 +129,7 @@ public class TranslateResource {
                     /*
                      * If there is only a source text and a language pair, perform one translation
                      */
-                    response = getTranslationJSON(q.get(0), langpairs.get(0), format,clientIp, key,additionalOptions);
+                    response = getTranslationJSON(q.get(0), langpairs.get(0), format,clientIp,referer, key,additionalOptions);
                     responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
                     responseStatus = response.getInt(Constants.JSON_RESPONSESTATUS);
                     errorDetails = response.isNull(Constants.JSON_RESPONSEDETAILS) ? null : response.getString(Constants.JSON_RESPONSEDETAILS);
@@ -141,7 +142,7 @@ public class TranslateResource {
                     responseStatus = 200;
                     errorDetails = null;
                     for (String languagePair : langpairs) {
-                        JSONObject pairResponse = getTranslationJSON(q.get(0), languagePair, format,clientIp, key,additionalOptions);
+                        JSONObject pairResponse = getTranslationJSON(q.get(0), languagePair, format,clientIp,referer, key,additionalOptions);
                         response.accumulate(Constants.JSON_RESPONSEDATA, pairResponse);
                         if (pairResponse.getInt(Constants.JSON_RESPONSESTATUS) != 200) {
                             responseStatus = pairResponse.getInt(Constants.JSON_RESPONSESTATUS);
@@ -157,7 +158,7 @@ public class TranslateResource {
                     responseStatus = 200;
                     errorDetails = null;
                     for (String query : q) {
-                        JSONObject pairResponse = getTranslationJSON(query, langpairs.get(0), format, clientIp,key,additionalOptions);
+                        JSONObject pairResponse = getTranslationJSON(query, langpairs.get(0), format, clientIp,referer,key,additionalOptions);
                         response.accumulate(Constants.JSON_RESPONSEDATA, pairResponse);
                         if (pairResponse.getInt(Constants.JSON_RESPONSESTATUS) != 200) {
                             responseStatus = pairResponse.getInt(Constants.JSON_RESPONSESTATUS);
@@ -174,7 +175,7 @@ public class TranslateResource {
                     responseStatus = 200;
                     errorDetails = null;
                     for (int i = 0; i < q.size(); i++) {
-                        JSONObject pairResponse = getTranslationJSON(q.get(i), langpairs.get(i), format,clientIp, key,additionalOptions);
+                        JSONObject pairResponse = getTranslationJSON(q.get(i), langpairs.get(i), format,clientIp,referer, key,additionalOptions);
                         response.accumulate(Constants.JSON_RESPONSEDATA, pairResponse);
                         if (pairResponse.getInt(Constants.JSON_RESPONSESTATUS) != 200) {
                             responseStatus = pairResponse.getInt(Constants.JSON_RESPONSESTATUS);
@@ -224,7 +225,7 @@ public class TranslateResource {
      * @return JSON object with translation and status codes
      * @throws org.json.JSONException
      */
-    private JSONObject getTranslationJSON(String source, String pair, String format,String clientIp, String key,Map<String,String> moreOptions) throws JSONException {
+    private JSONObject getTranslationJSON(String source, String pair, String format,String clientIp,String referer, String key,Map<String,String> moreOptions) throws JSONException {
 
         String translation = null;
         String errorMessage = null;
@@ -233,13 +234,12 @@ public class TranslateResource {
                     if (format != null && !"".equals(format)) {
                         enumFormat = Format.valueOf(format);
                     }
-         LoggerStatiticsWriter.getInstance().logRequestReceived(clientIp, key, pair, enumFormat.toString());
-         logger.debug("requestreceived "+clientIp+" "+key+" "+pair+" "+enumFormat.toString());
+         LoggerStatiticsWriter.getInstance().logRequestReceived(clientIp,referer, key, pair, enumFormat.toString());
+         logger.debug("requestreceived "+clientIp+" "+referer+" "+key+" "+pair+" "+enumFormat.toString());
         LanguagePair lpair = null;
         try {
             lpair = new LanguagePair(pair, "\\|".toCharArray());
         } catch (IllegalArgumentException iae) {
-
             errorMessage = "Bad language pair format";
             responseCode = 400;
         }
@@ -254,7 +254,7 @@ public class TranslateResource {
                     //}
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
                     additionalTranslationOptions.getOptions().putAll(moreOptions);
-                    translation = LoadBalancer.getInstance().translate(new TextContent(enumFormat,source), lpair,clientIp ,key ,additionalTranslationOptions).toString();
+                    translation = LoadBalancer.getInstance().translate(new TextContent(enumFormat,source), lpair,clientIp, referer ,key ,additionalTranslationOptions).toString();
                 } else {
                     errorMessage = "Not supported pair";
                     responseCode = 451;

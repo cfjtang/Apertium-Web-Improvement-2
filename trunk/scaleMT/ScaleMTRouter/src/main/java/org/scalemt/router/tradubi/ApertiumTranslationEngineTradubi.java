@@ -215,8 +215,8 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
         try
         {
 
-         LoggerStatiticsWriter.getInstance().logRequestReceived("tradubi-ip", "tradubi", sourceLang+"|"+targetLang,"html");
-         logger.debug("requestreceived "+"tradubi-ip"+" "+"tradubi"+" "+sourceLang+"|"+targetLang+" "+"html");
+         LoggerStatiticsWriter.getInstance().logRequestReceived("tradubi-ip", "tradubi-ref","tradubi", sourceLang+"|"+targetLang,"html");
+         logger.debug("requestreceived "+"tradubi-ip"+" tradubi-ref" +"tradubi"+" "+sourceLang+"|"+targetLang+" "+"html");
 		 List<LanguagePair> supPairs =LoadBalancer.getInstance().getSupportedPairs();
 
              LanguagePair reqPair = new LanguagePair(sourceLang, targetLang);
@@ -227,7 +227,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
             }
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair, "tradubi-ip","tradubi",new AdditionalTranslationOptions(dictionaries)).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.html,sourceHtml), reqPair, "tradubi-ip","tradubi","tradubi",new AdditionalTranslationOptions(dictionaries)).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
                         responseCode=500;
@@ -249,8 +249,8 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
         try
         {
        
-         LoggerStatiticsWriter.getInstance().logRequestReceived("tradubi-ip", "tradubi", sourceLang+"|"+targetLang,"txt");
-         logger.debug("requestreceived "+"tradubi-ip"+" "+"tradubi"+" "+sourceLang+"|"+targetLang+" "+"txt");
+         LoggerStatiticsWriter.getInstance().logRequestReceived("tradubi-ip","tradubi-ref", "tradubi", sourceLang+"|"+targetLang,"txt");
+         logger.debug("requestreceived "+"tradubi-ip"+" tradubi-ref "+"tradubi"+" "+sourceLang+"|"+targetLang+" "+"txt");
 		 List<LanguagePair> supPairs =LoadBalancer.getInstance().getSupportedPairs();
 
              LanguagePair reqPair = new LanguagePair(sourceLang, targetLang);
@@ -261,7 +261,7 @@ public class ApertiumTranslationEngineTradubi implements ITradubiTranslationEngi
             }
 
 		try {
-			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, "tradubi-ip","tradubi",new AdditionalTranslationOptions(dictionaries)).toString() ;
+			return  LoadBalancer.getInstance().translate(new TextContent(Format.txt,sourceText), reqPair, "tradubi-ip","tradubi","tradubi",new AdditionalTranslationOptions(dictionaries)).toString() ;
 		} catch (Exception e) {
 			logger.error("Couldn't perform translation", e);
                         responseCode=500;

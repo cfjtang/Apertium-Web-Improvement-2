@@ -30,6 +30,7 @@ import org.apache.commons.validator.EmailValidator;
 import org.apache.commons.validator.UrlValidator;
 import org.apache.commons.validator.Validator;
 import org.scalemt.router.persistence.Base64;
+import org.scalemt.router.persistence.DAOException;
 import org.scalemt.router.ws.WrongFormatException;
 
 /**
@@ -89,6 +90,24 @@ public class UserManagement {
 		}
                 return null;
 	}
+
+    public UserEntity checkEmailURL(String email,String url)
+    {
+        try
+        {
+        UserEntity user = dao.getUserByEmail(email);
+        if(user.getUrl().equals(url))
+            return user;
+        else
+            return null;
+        }
+        catch(DAOException e)
+        {
+             logger.error("Exception checking user email and url", e);
+            return null;
+        }
+    }
+
 
     /**
      * Registers a new user and generates his/her API key

@@ -69,6 +69,20 @@ public class JPAUserDAO implements IUserDAO{
     }
 
     @Override
+    public UserEntity getUserByEmail(String email) throws DAOException
+    {
+        UserEntity user=null;
+        EntityManager em = emf.createEntityManager();
+      em.getTransaction().begin();
+      List users = em.createNamedQuery("userByEmail").setParameter("parEmail",email).getResultList();
+      if(users.size()>0)
+        user= (UserEntity) users.get(0);
+      em.getTransaction().commit();
+      em.close();
+      return user;
+    }
+
+    @Override
     public UserEntity getUser(String key) throws DAOException {
         UserEntity user=null;
         EntityManager em = emf.createEntityManager();

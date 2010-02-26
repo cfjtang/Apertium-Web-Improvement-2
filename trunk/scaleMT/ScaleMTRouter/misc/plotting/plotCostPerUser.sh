@@ -1,6 +1,6 @@
 # /bin/bash
 
-cat $1 | cut -f 5,9 -d " "| sort  >/tmp/tmpplot$$
+cat $1 | cut -f 5,10 -d " "| sort  >/tmp/tmpplot$$
 echo "aaaaaaaaaaaaaa 0" >> /tmp/tmpplot$$
 
 rm /tmp/plotb

@@ -20,11 +20,17 @@ package org.scalemt.router.logic;
 import org.scalemt.router.ws.Constants;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
@@ -217,5 +223,64 @@ public class Util {
         else
             return "\""+str+"\"";
     }
+
+    /**
+	 * Sends an email through the default SMTP server.
+	 *
+	 * @param to To field
+	 * @param from From field
+	 * @param subject Subject
+	 * @param body Message contents
+	 * @throws ServerErrorException If there is an unexpected error
+	 */
+ 
+	public static void sendEmail(String to,String from,String fromName,String subject,String body) throws Exception
+	{
+
+		sendEmail(readConfigurationProperty("mail_smtp_server"), to, from,fromName, subject, body);
+	}
+
+	/**
+	 * Sends an email through the given SMTP server.
+	 *
+	 * @param smtpServer SMTP server.
+	 * @param to To field
+	 * @param from From field
+	 * @param subject Subject
+	 * @param body Message contents
+	 * @throws ServerErrorException If there is an unexpected error
+	 */
+	private static void sendEmail(String smtpServer, String to, String from,String fromName,
+			String subject, String body) throws Exception{
+		try {
+			Properties props = System.getProperties();
+			// -- Attaching to default Session, or we could start a new one --
+			props.put("mail.smtp.host", smtpServer);
+			Session session = Session.getDefaultInstance(props, null);
+			// -- Create a new message --
+			Message msg = new MimeMessage(session);
+			// -- Set the FROM and TO fields --
+			msg.setFrom(new InternetAddress(from,fromName));
+                        
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(
+					to, false));
+			// -- We could include CC recipients too --
+			// if (cc != null)
+			// msg.setRecipients(Message.RecipientType.CC
+			// ,InternetAddress.parse(cc, false));
+			// -- Set the subject and body text --
+			msg.setSubject(subject);
+			msg.setText(body);
+			// -- Set some other header information --
+			msg.setHeader("X-Mailer", "LOTONtechEmail");
+			msg.setSentDate(new Date());
+			// -- Send the message --
+			Transport.send(msg);
+			logger.debug("Message sent OK.");
+		} catch (Exception ex) {
+			logger.error("Can't send email", ex);
+			throw new Exception("Can't send email", ex);
+		}
+	}
 
 }
