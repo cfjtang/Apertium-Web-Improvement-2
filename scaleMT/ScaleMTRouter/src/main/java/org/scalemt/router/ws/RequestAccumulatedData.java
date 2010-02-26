@@ -18,9 +18,11 @@ class RequestAccumulatedData {
     private String format;
     private String user;
     private String ip;
+    private String referer;
     private int numCharacters;
     private int cpuCost;
     private  String resultCode;
+
 
     public int getCpuCost() {
         return cpuCost;
@@ -94,6 +96,12 @@ class RequestAccumulatedData {
         this.user = user;
     }
 
-    
+    public String getReferer() {
+        return referer;
+    }
+
+    public void setReferer(String referer) {
+        this.referer = referer;
+    }
 
 }

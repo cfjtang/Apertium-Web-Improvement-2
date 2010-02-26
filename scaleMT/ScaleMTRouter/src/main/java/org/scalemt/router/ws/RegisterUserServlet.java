@@ -77,7 +77,24 @@ public class RegisterUserServlet extends HttpServlet {
                        registerOK=true;
                    }
                 } catch (ExistingNameException ex) {
-                    message="Error. Your email is already registered.";
+                    UserEntity user=UserManagement.getInstance().checkEmailURL(email, url);
+                    if(user==null)
+                        message="Error. Your email is already registered.";
+                    else
+                    {
+                        registerOK=true;
+                        //Send email
+                        try
+                        {
+                            String content="Your Apertium API key is '"+user.getApi()+"'\nThe Apertium API team";
+                            Util.sendEmail(email, Util.readConfigurationProperty("mail_from"),Util.readConfigurationProperty("mail_from_name"), Util.readConfigurationProperty("mail_subject"), content);
+                            message="We have sent you an email with your API key";
+                        }
+                        catch(Exception e)
+                        {
+                            
+                        }
+                    }
                 }
                 catch(WrongFormatException e)
                 {
@@ -92,7 +109,13 @@ public class RegisterUserServlet extends HttpServlet {
                 }
                }
                else
-                   message="Captcha failed. Please try again";
+               {
+                   if("incorrect-captcha-sol".equals(reCaptchaResponse.getErrorMessage()))
+                       message="Captcha failed. Please type it again";
+                   else
+                       message="Unexpected captcha error";
+               }
+                   
            }
            else
                message="You must accept the terms and conditions in order to register";
@@ -100,7 +123,7 @@ public class RegisterUserServlet extends HttpServlet {
            
        }
        else
-           message="You must type your email and the home page of your website of application";
+           message="You must type your email and the home page of your website or application";
 
        if(message!=null)
            request.setAttribute("message",message);

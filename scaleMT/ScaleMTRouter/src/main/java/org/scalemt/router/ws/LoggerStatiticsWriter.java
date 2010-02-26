@@ -38,13 +38,14 @@ public class LoggerStatiticsWriter {
         dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     }
 
-    public void logRequestReceived(String ip, String key, String langPair,String format)
+    public void logRequestReceived(String ip,String referer, String key, String langPair,String format)
     {
         RequestAccumulatedData accumulatedData=new RequestAccumulatedData();
         accumulatedData.setStartingHour(new Date());
         accumulatedData.setPair(langPair);
         accumulatedData.setFormat(format);
         accumulatedData.setIp(ip);
+        accumulatedData.setReferer(referer);
         datamap.put(Thread.currentThread().getId(), accumulatedData);
     }
 
@@ -67,7 +68,7 @@ public class LoggerStatiticsWriter {
             data.setDuration(new Date().getTime()-data.getStartingHour().getTime());
             data.setResultCode(code);
             String separation=" ";
-            logger.debug(dateFormat.format(data.getStartingHour()) +separation+data.getDuration()+separation+data.getPair()+separation+data.getFormat()+separation+data.getUser()+separation+data.getIp()+separation+data.getResultCode()+separation+data.getNumCharacters()+separation+data.getCpuCost());
+            logger.debug(dateFormat.format(data.getStartingHour()) +separation+data.getDuration()+separation+data.getPair()+separation+data.getFormat()+separation+data.getUser()+separation+data.getIp()+separation+data.getReferer()+separation+data.getResultCode()+separation+data.getNumCharacters()+separation+data.getCpuCost());
             datamap.remove(Thread.currentThread().getId());
         }
     }

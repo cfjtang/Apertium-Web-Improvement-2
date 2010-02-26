@@ -13,53 +13,90 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Apertium Web Service register page</title>
     </head>
-    <body>
+    <body onload="<%
+            if(request.getAttribute("message")!=null)
+                out.println("alert('"+(String)request.getAttribute("message")+"');");
+            %>">
         <h1>Apertium Web Service register page</h1>
 
         <h3>Terms and conditions</h3>
-        <p>
-            Lorem ipsum an tibique mediocritatem duo. Nec te inermis luptatum legendos, probo sensibus erroribus eam ex, pro cu possit omnesque. Nam at melius percipitur assueverit, possit facete no pri. At atomorum vituperata comprehensam has, ex populo aliquid impedit nec. Per an dicit partem. Eu equidem sensibus dignissim est, debet conclusionemque pro no.
-<p>
-Ei mucius everti ius, has id saepe vivendo dissentias, te vim amet dicant labitur. Cu ius natum magna nemore, id porro constituam cotidieque vis. Cu vix dicant officiis definitionem, eius offendit repudiandae no mea. Timeam docendi tincidunt ut mel, ludus corpora mea id, partiendo incorrupte nam eu. Sumo prima melius sea in, natum mollis constituam ne usu, duo justo quaerendum liberavisse ad. Facilisi pertinax democritum cu mea, duo mutat soluta sensibus ad, ex per posse bonorum facilisi.
-</p>
+<div id="termsbox" style="border:2px solid #000066;margin-left:2em;overflow:auto;height:300px;width:90%">
+    <h2>Apertium API Terms and Conditions of use</h2>
 
-<p>
-Eu mollis repudiare contentiones quo, pro ea sint inimicus torquatos, justo congue diceret mei ut. Patrioque honestatis mel ei, id eos quod dico tincidunt. Ius in nonummy iudicabit iracundia. Eum modo clita molestiae an, ei vero dicit ocurreret eos, at scripta aperiam adversarium has. Has te error aliquam accommodare, an iriure maiestatis accommodare vel, eros graeco labitur eos ad. Zzril dicunt impetus ut eum, vim affert eripuit deseruisse et. Eum at qualisque adolescens mediocritatem, mea ne adhuc iudicabit theophrastus, debet laoreet eleifend sed ut.
-</p>
+    <p>You've chosen to use the Apertium API and we thank you for that.</p>
+    <p>Apertium grants you a license to use its API under the terms and conditions set forth below.
+        These terms and conditions may be updated at any time without notice. You can view the latest
+        version at this address: http://api.apertium.org/register.jsp . Your use of the API results in unconditional acceptance of the most recent terms and conditions.</p>
+    <p>License to use the API is granted non-exclusively and non-relicenseable, for unlimited time, until terminated by either party.<p>
+    <p>Apertium may terminate your license at any time, for any reason. The goal of this document is to give you as much information as possible
+        to avoid this from occurring. You can also terminate your license at any time by ceasing to use the API and removing your API key.
 
-<p>
-His nisl dignissim te. An qui putant iudicabit efficiantur, pri an inermis eligendi pertinax, doming nominavi reprimique eam ne. Cum an hinc esse disputationi, sed falli novum repudiare te. Eu est copiosae adipiscing efficiantur, noster nostrum invenire te vel. Sea ut meis viderer honestatis, lorem dicant saperet pro ut, te omnis sonet omittantur mel. Omnium ornatus accusamus has ex, sea id diam melius sensibus, et vis numquam labores quaerendum.
-</p>
+    <h3>1. Request and use of an API key</h3>
 
-<p>
-Pro in ipsum malorum facilis, his choro populo expetendis ex, ea nobis option urbanitas has. Idque scriptorem consequuntur nam no, unum tempor pro no, sit iriure aliquid percipit in. Iudico oporteat liberavisse te nam, quo dicit necessitatibus cu. Offendit omittantur te nam, regione integre platonem ea mel, et qui laudem albucius definitiones. Vel ne noster placerat adipisci, vim cu sint periculis prodesset. Vis omnis utinam putent et, est an sint novum partiendo. An sed paulo nobis eleifend, elitr decore eirmod vel in, nec ei tincidunt omittantur reformidans.
-</p>
+    <p>The proper use of the API requires obtaining an identifier (the "key") issued by Apertium as detailed below.</p>
+    <p>To obtain a key you will be asked to detail some necessary information.</p>
+    <p>You agree to provide true, accurate and complete information.</p>
+    <p>Providing this information is a critical condition on your right to use the API.</p>
+    <p>It is your responsibility to keep your key confidential. You are responsible for all activities related to API use associated with your key and you agree to immediately notify Apertium of any fraudulent use of your key.</p>
+    
+    <h3>2. Terms and restrictions of use</h3>
 
-<p>
-Eu sit alia quas, eu mea melius periculis pertinacia. Eum te latine diceret antiopam, nusquam conceptam theophrastus ei usu. Omnes deserunt eu vis, eam eu tota omnium consulatu. Eripuit quaestio imperdiet ad duo, in cum kasd comprehensam, qui duis minimum deseruisse ea. Eum lobortis forensibus scribentur an, vel autem homero feugait ea, ut tamquam qualisque sea.
-</p>
+    <p>Remember that the availability of the API represents a real cost to the Apertium community. Design your application to make wise use of API resources and offer a genuinely useful service to users.</p>
+    <p>Don't attempt to exploit any security vulnerabilities. If you detect a possible flaw, be discreet and let us know as soon as possible.</p>
+    <p>Don't make large numbers of unnecessary API requests which could cause slowdown or instability of the Apertium platform.</p>
+    <p>If your application generates a large number of API requests and thereby significant cost to Apertium, a financial contribution may be required. If you have any doubt regarding the impact of your application, please contact us.</p>
 
-<p>
-An mei dolor dignissim reformidans, id vim lorem deserunt accommodare, ei doctus delicata ius. No nisl veniam pri, cum esse error te. Ad electram laboramus sea, sonet errem docendi ei mel. Ut sed sententiae mediocritatem, ex mei mediocrem contentiones, an eam doctus vituperata. Vis wisi vivendum probatus id, eu vim autem omittantur. Vel id veniam oportere urbanitas, cum ea vivendo suscipit moderatius.
-</p>
 
-<p>
-Id aeterno convenire vituperatoribus mei, sea at puto vulputate instructior. In falli vivendo voluptatibus usu, pri vocent aliquid impedit id. Nec ad eirmod torquatos, quas summo probatus sit ex. Mei audiam ponderum prodesset ne, has ei dicat simul luptatum, id debitis inimicus honestatis sea. Ad essent dolorem percipit nam, inani repudiandae mediocritatem at cum, ut fuisset maiestatis sit.
-</p>
+    <h3>3. Commercial Use</h3>
 
-<p>
-Has minimum appetere abhorreant an, an qui mutat dicit nobis, mel laudem omnium moderatius ex. Usu ad altera aeterno takimata, ea aperiri fierent has. Nec eu audiam nominavi definitiones, puto natum blandit his eu, ei posse choro placerat his. Takimata partiendo assentior et eum, duo ea populo qualisque disputationi. Putent omnesque ius te, an per omittam disputando consectetuer, mea mutat facilisis salutatus cu. Eum te blandit prodesset philosophia.
-</p>
+    <p>If your application intends to profit, directly or indirectly, your application will be considered commercial.</p>
+    <p>Commercial applications have no additional limitations.</p>
 
-<p>
-Eam ad primis omnesque, corpora conceptam intellegebat ad sed. Mazim veritus urbanitas vim at, no munere putent impedit ius. Nonumy everti denique qui eu, hinc populo doctus ei ius. Duo eleifend scribentur theophrastus an, sed te nullam maiorum ullamcorper, eu nemore euripidis pri. Eleifend explicari dignissim at cum, id sea nostro tamquam consequat, graecis adipisci senserit nec no.
-        </p>
+    <h3>4. Disclaimer of warranties</h3>
 
+    <p>Nothing in these terms and conditions shall affect your statutory rights as a consumer.</p>
+    <p>You expressly understand and agree that:</p>
+    <ul>
+        <li> Your use of the Apertium API is at your sole risk.</li>
+        <li>The Apertium API is provided on an “as is” and “as available” basis.</li>
+        <li>To the maximum extent permitted by applicable law, Apertium expressly disclaims all warranties and conditions of any kind, whether express or implied, including, but not limited to the implied warranties and conditions of merchantability, fitness for a particular purpose and non-infringement.</li>
+    </ul>
+    <p>Apertium makes no warranty that:</p>
+    <ul>
+        <li>the Apertium API will meet your requirements;</li>
+        <li>the Apertium API will be uninterrupted, timely, secure, or error-free;</li>
+        <li>the results that may be obtained from the use of the Apertium API will be accurate or reliable;</li>
+        <li>the quality of any products, services, information, or other material purchased or obtained by you through the Apertium API will meet your expectations; and/or any errors in the Apertium API will be corrected.</li>
+</ul>
+
+
+    <h3>5. Limitation of liability</h3
+
+    <p>The stipulation of the present conditions only exonerates and limits Apertium’s liability in case of loss within the limits prescribed by the law.</p>
+    <p>Apertium shall not be liable to you for any direct, indirect, incidental, special, consequential or exemplary damages resulting from:</p>
+    <ul>
+        <li> the use or the inability to use the Apertium API;</li>
+<li> the cost of procurement of substitute goods and services resulting from any goods, data, information or services purchased or obtained or messages received or transactions entered into through or from the Apertium API;</li>
+<li> unauthorized access to or alteration of your transmissions or data;</li>
+<li> statements or conduct of any third party on the Apertium API; or</li>
+<li> any other matter relating to the Apertium API ;</li>
+</ul>
+    <p>including but not limited to damages for loss of:</p>
+<ul>
+<li> goodwill;</li>
+<li> data;</li>
+<li> content;</li>
+<li> profits ; or</li>
+<li> any other matter related or intangible losses ;</li>
+</ul>
+<p>even if Apertium has been advised of the possibility of such damages.</p>
+
+</div>
         <h3>Register</h3>
         <form action="RegisterUserServlet" method="POST">
-            Email: <input type="text" name="email" />
+            Your email: <input type="text" name="email"  />
             <br/>
-            Website URL: <input type="text" name="url" />
+            URL address of your web application*: <input type="text" name="url" value="http://" />
             <br/>
             <input type="checkbox" name="accept"/> I accept the service terms and conditions
             <br/>
@@ -76,13 +113,7 @@ Eam ad primis omnesque, corpora conceptam intellegebat ad sed. Mazim veritus urb
                    value="manual_challenge">
             </noscript>
             <input type="submit" value="Register">
-        </form>
-   
-        <p>
-            <%
-            if(request.getAttribute("message")!=null)
-                out.println((String)request.getAttribute("message"));
-            %>
-        </p>
+            <p>* If you are going to use the API from a desktop application, please provide a web page with information about that application.</p>
+        </form>      
     </body>
 </html>

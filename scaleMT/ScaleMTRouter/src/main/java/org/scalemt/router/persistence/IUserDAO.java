@@ -38,6 +38,8 @@ public interface IUserDAO {
      * @throws com.gsoc.apertium.translationengines.router.persistence.DAOException If there is a database error
      */
     public UserEntity getUser(String key) throws DAOException;
+
+     public UserEntity getUserByEmail(String email) throws DAOException;
     /**
      * Deletes the user with the given email
      * @param email Email of the user to be deleted

@@ -458,7 +458,7 @@ public class LoadBalancer {
      * @throws com.gsoc.apertium.translationengines.router.logic.NoEngineForThatPairException If the pair is not supported
      * @throws com.gsoc.apertium.translationengines.exceptions.TranslationEngineException If some other error happens
      */
-    public Content translate(Content source, LanguagePair pair, String ip, String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
+    public Content translate(Content source, LanguagePair pair, String ip, String referer,String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
 
         DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, source.getFormat());
         if (dc == null) {
@@ -470,6 +470,9 @@ public class LoadBalancer {
         UserType type = UserType.anonymous;
         //Test if user is registered
         logger.trace("Checking key:"+apiKey);
+
+        //TODO: ¿Check referer?
+
         String registeredUser = UserManagement.getInstance().checkKey(apiKey);
         if(registeredUser!=null)
         {

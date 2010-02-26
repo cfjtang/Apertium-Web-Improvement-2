@@ -95,8 +95,18 @@
             </script>
     </head>
     <body onload="getLangPairs();">
-       <h1>ScaleMT Web Service test</h1>
+       <h1>Apertium Web Service test</h1>
 
+       <h3>Welcome!</h3>
+       <p>Welcome to the Apertium web service test page.</p>
+       <p>You can find the complete API specification at <a href="http://wiki.apertium.org/wiki/ScaleMT#API">http://wiki.apertium.org/wiki/ScaleMT#API</a>  </p>
+       <p>There is also an <a href="http://apertium.pikaspart.com" >example mashup</a> combining Apertium and Twitter APIs</p>
+
+       <h3>Registration</h3>
+       <p>Machine translation web service usage is limited to a certain amount of requests per IP.
+           If you want to overcome that restriction, please <a href="register.jsp">register</a> and get an API key. This way we can track where our traffic come from. Registered users enjoy a more generous traffic limit.</p>
+
+       <h3>Test</h3>
        <p> Source text: </p>
        <p><textarea id="source" cols="60" rows="10"></textarea></p>
 
@@ -106,6 +116,5 @@
        <p> <select id="langPairs"></select> <button onclick="translate()">Translate!</button>  Mark unknown: <input id="cbUnknown" type="checkbox"/> </p>
 
        <p id="errorFooter" class="error"></p>
-       <p id="register"><a href="register.jsp">Register to use API</a></p>
     </body>
 </html>
