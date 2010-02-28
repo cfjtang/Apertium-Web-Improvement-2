@@ -53,6 +53,12 @@
 #include "core/cg/BinaryGrammar.h"
 #include "core/cg/ApertiumApplicator.h"
 
+#ifdef __CYGWIN__
+# define BOOST_POSIX 1
+# define BOOST_POSIX_API 1
+# define BOOST_POSIX_PATH 1
+#endif
+
 #include <boost/process/detail/file_handle.hpp>
 #include <boost/process/detail/pipe.hpp>
 
