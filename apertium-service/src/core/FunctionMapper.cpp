@@ -56,10 +56,10 @@
 #include <boost/process/detail/file_handle.hpp>
 #include <boost/process/detail/pipe.hpp>
 
-#if defined(BOOST_WINDOWS_API)
-# include <windows.h>
-# include <io.h> // _get_osfhandle and _open_osfhandle
-#endif
+// #if defined(BOOST_WINDOWS_API)
+// # include <windows.h>
+// # include <io.h> // _get_osfhandle and _open_osfhandle
+// #endif
 
 FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
 	//task["deformat"] = DEFORMAT;
@@ -223,9 +223,9 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d) {
 	boost::process::detail::file_handle &pinr = pin.rend();
 	boost::process::detail::file_handle &pinw = pin.wend();
 
-	#if defined(BOOST_WINDOWS_API)
-	# define fdopen(x, y) fdopen(_open_osfhandle(_get_osfhandle(x), 0), y)
-	#endif
+	//#if defined(BOOST_WINDOWS_API)
+	//# define fdopen(x, y) fdopen(_open_osfhandle(_get_osfhandle(x), 0), y)
+	//#endif
 
 	FILE *tin = fdopen(pinw.get(), "w");
 	FILE *in = fdopen(pinr.get(), "r");
