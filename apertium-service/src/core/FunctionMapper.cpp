@@ -56,6 +56,10 @@
 #include <boost/process/detail/file_handle.hpp>
 #include <boost/process/detail/pipe.hpp>
 
+#if defined(BOOST_WINDOWS_API) && !defined(BOOST_POSIX_API)
+# include <io.h> // _get_osfhandle and _open_osfhandle
+#endif
+
 FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
 	//task["deformat"] = DEFORMAT;
 	//task["reformat"] = REFORMAT;
