@@ -219,7 +219,7 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d) {
 	boost::process::detail::file_handle &pinw = pin.wend();
 
 	#if defined(BOOST_WINDOWS_API) 
-		#define fdopen _fdopen
+		#define fdopen(x, y) fdopen(_open_osfhandle(_get_osfhandle(x)), y)
 	#endif
 
 	FILE *tin = fdopen(pinw.get(), "w");
