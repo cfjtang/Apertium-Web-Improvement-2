@@ -14,9 +14,17 @@
         <title>You got your API Key!</title>
     </head>
     <body>
+        <div id="result">
+        <p>
          <%
             if(request.getAttribute("message")!=null)
                 out.println((String)request.getAttribute("message"));
             %>
+            </p>
+            </div>
+            <div id="back">
+           <p><a href="http://api.apertium.org">Go back</a></p>
+      </div>
+            
     </body>
 </html>

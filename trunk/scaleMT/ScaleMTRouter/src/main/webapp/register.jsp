@@ -16,11 +16,21 @@
     <body onload="<%
             if(request.getAttribute("message")!=null)
                 out.println("alert('"+(String)request.getAttribute("message")+"');");
-            %>">
+            %>" style="font-family:helvetica;margin-left:2em;">
         <h1>Apertium Web Service register page</h1>
-
+        <div id="termsmain" style="">
         <h3>Terms and conditions</h3>
-<div id="termsbox" style="border:2px solid #000066;margin-left:2em;overflow:auto;height:300px;width:90%">
+
+        These are the most important terms written in a language understandable by non-lawyers:
+        <ul>
+            <li>API usage is limited to a small amount of requests per IP if yyou do not have an API key</li>
+            <li>An API key provides a more generous traffic limit</li>
+            <li>Remember that the API usage has an economical cost for Apertium. Do not make unnecessary requests</li>
+            <li>If you want unlimited access to the API, a financial contribution is required </li>
+            <li>Commercial applications have no additional restrictions</li>
+        </ul>
+
+<div id="termsbox" style="border:2px solid #000066;margin-left:0px;margin-top: 1em;overflow:auto;height:200px;width:90%;padding-left: 20px;padding-right: 10px;">
     <h2>Apertium API Terms and Conditions of use</h2>
 
     <p>You've chosen to use the Apertium API and we thank you for that.</p>
@@ -34,6 +44,7 @@
     <h3>1. Request and use of an API key</h3>
 
     <p>The proper use of the API requires obtaining an identifier (the "key") issued by Apertium as detailed below.</p>
+    <p>Requests not including an API key are strictly limited to a small amount per IP.</p>
     <p>To obtain a key you will be asked to detail some necessary information.</p>
     <p>You agree to provide true, accurate and complete information.</p>
     <p>Providing this information is a critical condition on your right to use the API.</p>
@@ -44,7 +55,7 @@
     <p>Remember that the availability of the API represents a real cost to the Apertium community. Design your application to make wise use of API resources and offer a genuinely useful service to users.</p>
     <p>Don't attempt to exploit any security vulnerabilities. If you detect a possible flaw, be discreet and let us know as soon as possible.</p>
     <p>Don't make large numbers of unnecessary API requests which could cause slowdown or instability of the Apertium platform.</p>
-    <p>If your application generates a large number of API requests and thereby significant cost to Apertium, a financial contribution may be required. If you have any doubt regarding the impact of your application, please contact us.</p>
+    <p>If your application generates a large number of API requests, some of them could be rejected to avoid server overload. A financial contribution may be required if you want the service to process all your requests. If you have any doubt regarding the impact of your application, please contact us.</p>
 
 
     <h3>3. Commercial Use</h3>
@@ -70,7 +81,7 @@
 </ul>
 
 
-    <h3>5. Limitation of liability</h3
+    <h3>5. Limitation of liability</h3>
 
     <p>The stipulation of the present conditions only exonerates and limits Apertium’s liability in case of loss within the limits prescribed by the law.</p>
     <p>Apertium shall not be liable to you for any direct, indirect, incidental, special, consequential or exemplary damages resulting from:</p>
@@ -90,17 +101,19 @@
 <li> any other matter related or intangible losses ;</li>
 </ul>
 <p>even if Apertium has been advised of the possibility of such damages.</p>
-
 </div>
+</div>
+        <div id="register">
+
         <h3>Register</h3>
-        <form action="RegisterUserServlet" method="POST">
-            Your email: <input type="text" name="email"  />
-            <br/>
-            URL address of your web application*: <input type="text" name="url" value="http://" />
-            <br/>
-            <input type="checkbox" name="accept"/> I accept the service terms and conditions
-            <br/>
-            <script type="text/javascript"
+        <form action="RegisterUserServlet" method="POST" style="left: auto;right:auto;">
+            <table cellpadding="5px" style="margin:5px;">
+                <tbody>
+                    <tr><td>Your email:</td><td> <input type="text" name="email"  /></td></tr>
+                    <tr><td>URL address of your web application*: </td><td><input type="text" name="url" value="http://" /></td>
+                    <tr><td colspan="2"><input type="checkbox" name="accept"/> I accept the service terms and conditions</td></tr>
+            
+             <tr><td colspan="2"><script type="text/javascript"
                src="http://api.recaptcha.net/challenge?k=6LeHXQsAAAAAAPIc3n1YkSeDb9f-NVAk3JrriCFn">
             </script>
 
@@ -111,9 +124,23 @@
                </textarea>
                <input type="hidden" name="recaptcha_response_field"
                    value="manual_challenge">
-            </noscript>
-            <input type="submit" value="Register">
+            </noscript></td></tr>
+              
+             <tr><td colspan="2"><input type="submit" value="Register"></td></tr>
+              </tbody>
+            </table>
             <p>* If you are going to use the API from a desktop application, please provide a web page with information about that application.</p>
-        </form>      
+        </form>
+        </div>
+        <div id="back">
+           <p><a href="http://api.apertium.org">Go back</a></p>
+      </div>
+        <div id="validaton">
+            <p>
+    <a href="http://validator.w3.org/check?uri=referer"><img
+        src="http://www.w3.org/Icons/valid-html401"
+        alt="Valid HTML 4.01 Transitional" height="31" width="88"></a>
+  </p>
+        </div>
     </body>
 </html>
