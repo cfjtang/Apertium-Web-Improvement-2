@@ -34,7 +34,17 @@ public class TranslateXMLRPC {
      */
     static Log logger = LogFactory.getLog(TranslateXMLRPC.class);
 
+    public String translate(String sourceText,String format, String sourceLang, String targetLang,boolean markUnkown,String key) throws XmlRpcException
+    {
+        return translateP(sourceText, format, sourceLang, targetLang, markUnkown, key);
+    }
+
     public String translate(String sourceText,String format, String sourceLang, String targetLang,String key) throws XmlRpcException
+    {
+        return translateP(sourceText, format, sourceLang, targetLang, false, key);
+    }
+
+    private String translateP(String sourceText,String format, String sourceLang, String targetLang,boolean markUnkown,String key) throws XmlRpcException
     {
         String ip=MyXmlRpcServlet.clientIpAddress.get().toString();
         int code=200;
@@ -71,6 +81,14 @@ public class TranslateXMLRPC {
                 if (supportedPairs.contains(p)) {
 
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
+                    if(markUnkown)
+                    {
+                        additionalTranslationOptions.getOptions().put("markUnknown", "yes");
+                    }
+                    else
+                    {
+                        additionalTranslationOptions.getOptions().put("markUnknown", "no");
+                    }
                     translation = LoadBalancer.getInstance().translate(new TextContent(f,sourceText), p,ip,"xml-rpc",key ,additionalTranslationOptions).toString();
                 } else {
                     errorMessage = "Not supported pair";
@@ -105,7 +123,18 @@ public class TranslateXMLRPC {
             throw new XmlRpcException(code, errorMessage);    
     }
 
+    public byte[] translateDocument(byte[] sourceDocument,String format,String sourceLang, String targetLang, boolean markUnknown,String key ) throws XmlRpcException
+    {
+        return translateDocumentP(sourceDocument, format, sourceLang, targetLang, markUnknown, key);
+    }
+    
     public byte[] translateDocument(byte[] sourceDocument,String format,String sourceLang, String targetLang, String key ) throws XmlRpcException
+    {
+        return translateDocumentP(sourceDocument, format, sourceLang, targetLang, false, key);
+    }
+
+
+    private byte[] translateDocumentP(byte[] sourceDocument,String format,String sourceLang, String targetLang, boolean markUnknown,String key ) throws XmlRpcException
     {
         String ip=MyXmlRpcServlet.clientIpAddress.get().toString();
 
@@ -143,6 +172,14 @@ public class TranslateXMLRPC {
                 if (supportedPairs.contains(p)) {
 
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
+                    if(markUnknown)
+                    {
+                        additionalTranslationOptions.getOptions().put("markUnknown", "yes");
+                    }
+                    else
+                    {
+                        additionalTranslationOptions.getOptions().put("markUnknown", "no");
+                    }
                     translation = LoadBalancer.getInstance().translate(new BinaryDocument(f,sourceDocument), p,ip ,"xml-rpc",key ,additionalTranslationOptions).toByteArray();
                 } else {
                     errorMessage = "Not supported pair";

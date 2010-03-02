@@ -1,7 +1,3 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -10,39 +6,52 @@ and open the template in the editor.
     <script type="text/javascript" src="http://api.apertium.org/JSLibrary.jsp?key=YOURAPIKEY"></script>
     <script type="text/javascript">
 
-        //Search in twitter
+        //Function called when the users clicks the "search" button
         function search(query)
         {
-            var url = "http://search.twitter.com/search.json?lang=en&callback=twittercallback&q="+escape(query);
-            // this shows dynamic script insertion
+            //URL of twitter web service
+            var url = "http://search.twitter.com/search.json?lang=en&callback=twittercallback&q="+encodeURIComponent(query)+"&nocache="+encodeURIComponent(new Date().getTime());
+
+            //Append a <script> element pointing to the twitter service URL
+            //The returned script will be a function call to "twittercallback" with
+            //the search result as argument
             var script = document.createElement('script');
             script.setAttribute('src', url);
             document.getElementsByTagName('head')[0].appendChild(script);
             document.getElementById('results').innerHTML="Searching..."
         }
 
-        //Process twitter response: show the tweets and call apertium web service to translate them
+        //Process twitter response
         function twittercallback(data)
         {
             var newHtml="";
+
+            if(data.results)
+            {
             var resultsArray=data.results;
+            //Append english search results to webpage
             for(var i=0; i<resultsArray.length; i++)
             {
-                newHtml=newHtml+"<p>"+resultsArray[i].created_at+", from <strong>"+resultsArray[i].from_user+"</strong>:</p><p><i>Original</i>: "+resultsArray[i].text+'</p><p><i>Translation</i>: <span id="translation'+i+'"></span></p><hr/>';
+                newHtml=newHtml+"<p>"+resultsArray[i].created_at+", from <strong>"+resultsArray[i].from_user+"<\/strong>:<\/p><p><i>Original<\/i>: "+resultsArray[i].text+'<\/p><p><i>Translation<\/i>: <span id="translation'+i+'"><\/span><\/p><hr/>';
             }
             document.getElementById('results').innerHTML=newHtml;
 
-
+            //translate the results and appends them just below the original text
             for(i=0; i<resultsArray.length; i++)
             {
                  translate(resultsArray[i].text,'translation'+i)
             }
+            }
+            else
+                document.getElementById('results').innerHTML="";
         }
 
-        //Translates a text and puts it the given element
+        //Translates a text with Apertium and puts it the given element
         function translate(text,element)
         {
+            //call Apertium web service
              apertium.translate(text,'en','es',function(data){
+                 //when the apertium web service result is available, append it to the given element
                     if(!data.error)
                     {
                         document.getElementById(element).innerHTML=data.translation;
@@ -51,13 +60,33 @@ and open the template in the editor.
                         alert(data.error.code);
                 });
         }
+
+        //Process key pressing event and start searching in Twitter if the key pressed
+        //is the carriage return (CR)
+        function keyPressCallback(event)
+        {
+            var key=event.keyCode || e.which;
+            if(key==13)
+                search(document.getElementById('query').value);              
+        }
     </script>
   </head>
-  <body>
+  <body onLoad="document.getElementById('query').focus()" style="font-family:helvetica;">
       <h1>Apertium API example</h1>
-      <p>Searches in <a href="http://twitter.com">Twitter</a> and translates the tweets from English to Spanish. Check the source code, as it is a good example of the Apertium API usage.</p>
-      <button id="search" onclick="search(document.getElementById('query').value);">Search</button> <input type="text" id="query"/>
+      <p>Type some words in the box below and you will get the last 10 messages written in English from the <a href="http://twitter.com">Twitter</a> API, and their translation to Spanish using the Apertium API.</p>
+      <p>Please, check the source code of this page, as it is a good example of the Apertium API usage.</p>
+      <button id="search" onclick="search(document.getElementById('query').value);">Search</button> <input type="text" id="query" onkeypress=" keyPressCallback(event);"/>
       <div id="results">
+      </div>
+      <div id="back">
+           <p><a href="http://api.apertium.org">Go back</a></p>
+      </div>
+      <div id="validation">
+      <p>
+    <a href="http://validator.w3.org/check?uri=referer"><img
+        src="http://www.w3.org/Icons/valid-html401"
+        alt="Valid HTML 4.01 Transitional" height="31" width="88"></a>
+        </p>
       </div>
   </body>
 </html>
