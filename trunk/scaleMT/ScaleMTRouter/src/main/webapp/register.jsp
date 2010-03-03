@@ -28,6 +28,7 @@
             <li>Remember that the API usage has an economical cost for Apertium. Do not make unnecessary requests</li>
             <li>If you want unlimited access to the API, a financial contribution might be required </li>
             <li>Commercial applications have no additional restrictions</li>
+            <li>Remember that you can download the source code of the API services and install them in your own server</li>
         </ul>
 
 <div id="termsbox" style="border:2px solid #000066;margin-left:0px;margin-top: 1em;overflow:auto;height:200px;width:90%;padding-left: 20px;padding-right: 10px;">
