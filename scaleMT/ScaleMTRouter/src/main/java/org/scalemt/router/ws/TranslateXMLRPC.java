@@ -24,6 +24,7 @@ import org.scalemt.router.logic.TooMuchLoadException;
 
 
 /**
+ * XML-RPC endpoint. All the public methods of this class are exposed through the XML-RPC API
  *
  * @author vmsanchez
  */
@@ -33,6 +34,7 @@ public class TranslateXMLRPC {
      * Commons-logging logger
      */
     static Log logger = LogFactory.getLog(TranslateXMLRPC.class);
+
 
     public String translate(String sourceText,String format, String sourceLang, String targetLang,boolean markUnkown,String key) throws XmlRpcException
     {
@@ -44,6 +46,18 @@ public class TranslateXMLRPC {
         return translateP(sourceText, format, sourceLang, targetLang, false, key);
     }
 
+    /**
+     * Translates text content.
+     *
+     * @param sourceText Text to be translated
+     * @param format Format of the text: "txt" for plain text, "html" for html
+     * @param sourceLang Source language code
+     * @param targetLang Target language code
+     * @param markUnkown Put an asterisk next to each unknown word
+     * @param key USer API Key
+     * @return Translation
+     * @throws XmlRpcException
+     */
     private String translateP(String sourceText,String format, String sourceLang, String targetLang,boolean markUnkown,String key) throws XmlRpcException
     {
         String ip=MyXmlRpcServlet.clientIpAddress.get().toString();
@@ -133,7 +147,18 @@ public class TranslateXMLRPC {
         return translateDocumentP(sourceDocument, format, sourceLang, targetLang, false, key);
     }
 
-
+    /**
+     * Translates a document, received as a binary file
+     *
+     * @param sourceDocument Document to be translated
+     * @param format "rtf" for RTF, "odt" for ODT. See Format and BinaryDocument
+     * @param sourceLang Source language code
+     * @param targetLang Target language code
+     * @param markUnknown Put an asterisk next to each unknown word
+     * @param key key USer API Key
+     * @return Translated document
+     * @throws XmlRpcException
+     */
     private byte[] translateDocumentP(byte[] sourceDocument,String format,String sourceLang, String targetLang, boolean markUnknown,String key ) throws XmlRpcException
     {
         String ip=MyXmlRpcServlet.clientIpAddress.get().toString();

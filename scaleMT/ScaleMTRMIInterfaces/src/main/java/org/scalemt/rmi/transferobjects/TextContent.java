@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
+ * Piece of text to be translated
  * @author vmsanchez
  */
 public class TextContent extends Content{
