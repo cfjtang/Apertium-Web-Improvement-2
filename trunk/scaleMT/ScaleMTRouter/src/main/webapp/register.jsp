@@ -23,10 +23,10 @@
 
         These are the most important terms written in a language understandable by non-lawyers:
         <ul>
-            <li>API usage is limited to a small amount of requests per IP if yyou do not have an API key</li>
+            <li>API usage is limited to a small amount of requests per IP if you do not have an API key</li>
             <li>An API key provides a more generous traffic limit</li>
             <li>Remember that the API usage has an economical cost for Apertium. Do not make unnecessary requests</li>
-            <li>If you want unlimited access to the API, a financial contribution is required </li>
+            <li>If you want unlimited access to the API, a financial contribution might be required </li>
             <li>Commercial applications have no additional restrictions</li>
         </ul>
 
@@ -55,7 +55,7 @@
     <p>Remember that the availability of the API represents a real cost to the Apertium community. Design your application to make wise use of API resources and offer a genuinely useful service to users.</p>
     <p>Don't attempt to exploit any security vulnerabilities. If you detect a possible flaw, be discreet and let us know as soon as possible.</p>
     <p>Don't make large numbers of unnecessary API requests which could cause slowdown or instability of the Apertium platform.</p>
-    <p>If your application generates a large number of API requests, some of them could be rejected to avoid server overload. A financial contribution may be required if you want the service to process all your requests. If you have any doubt regarding the impact of your application, please contact us.</p>
+    <p>If your application generates a large number of API requests, some of them could be rejected to avoid server overload. A financial contribution might be required if you want the service to process all your requests. If you have any doubt regarding the impact of your application, please contact us.</p>
 
 
     <h3>3. Commercial Use</h3>
