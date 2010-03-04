@@ -224,9 +224,9 @@ if test x$XMLRPC_CONFIG = xno; then
   AC_MSG_ERROR(Couldn't find xmlrpc-c-config -- please install the xmlrpc-c library)
 fi
 
-XMLRPC_CFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 client server-util --cflags`
-XMLRPC_LIBS=`$XMLRPC_CONFIG abyss-server c++ c++2 client server-util --libs`
-XMLRPC_LDFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 client server-util --ldadd`
+XMLRPC_CFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 server-util --cflags`
+XMLRPC_LIBS=`$XMLRPC_CONFIG abyss-server c++ c++2 server-util --libs`
+XMLRPC_LDFLAGS=`$XMLRPC_CONFIG abyss-server c++ c++2 server-util --ldadd`
 
 XMLRPC_LDFLAGS+=" -lxmlrpc_server++ -lxmlrpc_server_abyss++ "
 
