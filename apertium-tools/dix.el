@@ -1,4 +1,4 @@
-; dix.el -- minor mode for editing Apertium dictionary files
+					; dix.el -- minor mode for editing Apertium dictionary files
 
 ; See http://wiki.apertium.org 
 
@@ -20,14 +20,15 @@
 
 ;;; Usage:
 ;; (add-to-list 'load-path "/path/to/dix.el")
-;; (require 'dix)
+;; (autoload 'dix-mode "dix" 
+;;   "dix-mode is a minor mode for editing Apertium XML dictionary files."  t)
 ;; (add-hook 'nxml-mode-hook
 ;; 	  (lambda () (and buffer-file-name
 ;; 			  (string-match "\\.dix$" buffer-file-name)
 ;; 			  (dix-mode 1))))
 ;;; 
-;;; `C-c L' now creates an LR-restricted copy of the <e>-element at
-;;; point, `C-c R' an RL-restricted one. `C-TAB' cycles through the
+;;; `C-c L' creates an LR-restricted copy of the <e>-element at point,
+;;; `C-c R' an RL-restricted one. `C-TAB' cycles through the
 ;;; restriction possibilities (LR, RL, none), while `M-n' and `M-p'
 ;;; move to the next and previous "important bits" of <e>-elements
 ;;; (just try it!). `C-c S' sorts a pardef, while `C-c G' moves point
@@ -74,8 +75,8 @@
 ;;; - Function for creating a prelimenary list of bidix entries from
 ;;;   monodix entries, and preferably from two such lists which
 ;;;   we "paste" side-by-side.
-;;; - `dix-LR-restriction-copy' could add a="author"
-;;; - generalise to `dix-copy' with LR/RL options instead.
+;;; - `dix-LR-restriction-copy' (and the other copy functions) could
+;;;   add a="author"
 ;;; - `dix-dixfiles' should be a list of strings instead.
 ;;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
 ;;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
@@ -84,9 +85,10 @@
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
 
-(defconst dix-version "2010-01-12") 
+(defconst dix-version "2010-03-05") 
 
 (require 'nxml-mode)
+(require 'easymenu)
 
 ;;;============================================================================
 ;;;
@@ -119,6 +121,59 @@ Entering dix-mode calls the hook dix-mode-hook.
   :keymap     dix-mode-map
   :require    nxml-mode
   )
+
+
+;;;============================================================================
+;;;
+;;; Menu
+;;;
+
+(easy-menu-define dix-mode-easy-menu dix-mode-map "dix-mode menu" 
+  '("dix"
+    ["View pardef" dix-view-pardef
+     :help "View the pardef in another window"]
+    ["Go to pardef" dix-goto-pardef]
+    "---"
+    ["Sort pardef" dix-sort-pardef
+     :help "Must be called from within a pardef"]
+    ["Grep for this pardef in dix-dixfiles" dix-grep-all
+     :help "Must be called from within a pardef. Uses the variable dix-dixfiles"]
+    ["Show Duplicate pardefs" dix-find-duplicate-pardefs
+     :help "Must be called from within a pardef. Calculate must have been called at least once"]
+    ["Calculate and Show Duplicate pardefs" (dix-find-duplicate-pardefs 'recompile)
+     :keys "C-u C-c D"
+     :help "Must be called from within a pardef. Slower, but must be called at least once before showing duplicate pardefs"]
+    "---"
+    ["Change Restriction of <e> (LR, RL, none)" dix-restriction-cycle]
+    ["Go to Next Useful Position in the Buffer" dix-next]
+    ["Go to Previous Useful Position in the Buffer" dix-previous]
+    ("Replace Regexp Within..."
+     ["Certain Elements" dix-replace-regexp-within-elt
+      :help "Prompts for an element name"]
+     ["<l> Elements" dix-replace-regexp-within-l]
+     ["<r> Elements" dix-replace-regexp-within-r])
+    ("Copy <e> and..."
+     ["Keep Contents" dix-copy
+      :help "Make a copy of the current <e> element"]
+     ["Apply an LR Restriction" dix-LR-restriction-copy
+      :help "Make a copy of the current <e> element"]
+     ["Apply an RL Restriction" dix-RL-restriction-copy
+      :help "Make a copy of the current <e> element"]
+     ["Clear Contents" (dix-copy 'remove-lex)
+      :keys "C-u C-c C"
+      :help "Make a copy of the current <e> element"]
+     ["Prepend kill-buffer into lm and <i>" dix-copy-yank
+      :help "Make a copy of the current <e> element"])
+    ["I-search Within lm's (rather buggy)" dix-word-search-forward]
+    "---"
+    ["Syntax Highlighting" dix-toggle-syntax-highlighting
+     :style toggle
+     :selected nxml-syntax-highlight-flag
+     :help "Toggle syntax highlighting of unseen parts of the buffer"]
+    ["Customize dix-mode" (customize-group 'dix)]
+    ["Help for dix-mode" (describe-function 'dix-mode)
+     :keys "C-h m"]
+    ["Show dix-mode Version" (message "dix-mode version %s" dix-version)]))
 
 ;;;============================================================================
 ;;;
@@ -445,8 +500,8 @@ add an RL restriction to the copy."
 
 (defun dix-copy (&optional remove-lex)
   "Make a copy of the Apertium element we're looking at. Optional
-argument `remove-lex' removes the contents of the lm attribute
-and <i> or <p> elements."
+prefix argument `remove-lex' removes the contents of the lm
+attribute and <i> or <p> elements."
   (interactive "P")
   ;; todo: find the first one of these: list-item, e, def-var, sdef, attr-item, cat-item, clip, pattern-item, 
   (dix-up-to "e" "pardef")
