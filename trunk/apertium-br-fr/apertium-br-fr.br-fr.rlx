@@ -594,6 +594,9 @@ SELECT CS IF (0 ("nemet"ri)) (1 VerbFin); # check this, perhaps too loose
 #lavaret em eus dezhañ tremen
 REMOVE Prep IF (1 EOS);
 
+#Bevañ a ra e Mali 
+REMOVE DetPos IF (0 Prep) (0 DetPos) (1 NP) (NOT 1 SoftMutCons LINK 0 SoftMut);
+
 #hag e kinnige an dud tremen da welet anezhañ
 SELECT Verb IF (1 ("da" pr)) (2 VerbPP);
 
