@@ -1,7 +1,11 @@
 AC_PREREQ(2.61)
 
+m4_define([required_libxml_version], [2.6.17])
+m4_define([required_apertium_version], [3.2.0])
+
 AC_INIT([apertium-lex-learner], [0.1], [ftyers@prompsit.com])
 AM_INIT_AUTOMAKE([apertium-lex-learner], [0.1], no-define)
+
 
 AC_PROG_CXX
 AM_SANITY_CHECK
@@ -69,7 +73,9 @@ then
 fi
 
 
-PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0)
+PKG_CHECK_MODULES(APERTIUM, [apertium-3.2 >= required_apertium_version])
+PKG_CHECK_MODULES(LIBXML, [libxml-2.0 >= required_libxml_version])
+
 
 #
 # Check for VISL constraint grammar
@@ -95,6 +101,9 @@ if test x$ac_cv_path_CGPROC = xno
 then
   AC_MSG_ERROR([You don't have cg-proc installed.])
 fi
+
+# Checks for libraries.
+AC_CHECK_LIB(xml2, xmlReaderForFile)
 
 
 LIBS="$LIBS -lz"
