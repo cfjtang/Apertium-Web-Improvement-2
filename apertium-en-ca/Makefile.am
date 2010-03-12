@@ -1,4 +1,4 @@
-VERSION=0.8.9
+VERSION=0.8.99
 LANG1=en
 LANG1a=en_GB
 LANG1b=en_US
@@ -27,7 +27,7 @@ TARGETS = $(TARGETS_COMMON) \
 
 .deps/$(LANG1).metadix: $(BASENAME).$(LANG1).metadix
 	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc --stringparam alt $(LANG1a) $(ALT) $(BASENAME).$(LANG1).metadix >$@
+	xsltproc --stringparam lang en_GB --stringparam side left filter.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1).dix: .deps/$(LANG1).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1).metadix | uniq >$$$$tmp1 && \
@@ -35,7 +35,7 @@ TARGETS = $(TARGETS_COMMON) \
 
 .deps/$(LANG1b).metadix: $(BASENAME).$(LANG1).metadix
 	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc --stringparam alt $(LANG1b) $(ALT) $(BASENAME).$(LANG1).metadix >$@
+	xsltproc --stringparam lang en_US --stringparam side left filter.xsl $(BASENAME).$(LANG1).metadix >$@
 
 .deps/$(LANG1b).dix: .deps/$(LANG1b).metadix
 	xsltproc buscaPar.xsl .deps/$(LANG1b).metadix | uniq >$$$$tmp1 && \
@@ -54,16 +54,16 @@ TARGETS = $(TARGETS_COMMON) \
 	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang val --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat --stringparam side right filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc --stringparam left en_GB --stringparam right cat --stringparam side left filterbil.xsl $< | xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFIX2).bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right cat --stringparam side left filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc --stringparam left en_GB --stringparam right cat --stringparam side right filterbil.xsl $< | xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFIX2)-US.bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_US --stringparam right cat --stringparam side left filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc --stringparam left en_US --stringparam right cat --stringparam side left filterbil.xsl $< | xsltproc --stringparam alt std alt.xsl - >$@
 
 .deps/$(PREFVAR2)$(PREFIX1).bil.dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< |xsltproc --stringparam left en_GB --stringparam right val --stringparam side right filterbil.xsl -| xsltproc --stringparam alt std alt.xsl - >$@
+	xsltproc --stringparam left en_GB --stringparam right val --stringparam side right filterbil.xsl $< | xsltproc --stringparam alt std alt.xsl - >$@
 
 $(PREFIX1).automorf.bin: .deps/$(LANG1).dix $(BASENAME).$(LANG1).acx
 	apertium-validate-dictionary .deps/$(LANG1).dix
@@ -83,13 +83,13 @@ $(PREFIX1).autobil.bin: .deps/$(PREFIX1).bil.dix
 	apertium-validate-dictionary $<
 	xsltproc translate-to-default-equivalent.xsl $< >tmp$(PREFIX1).autobil.dix
 	lt-comp lr tmp$(PREFIX1).autobil.dix $@
-	rm tmp$(PREFIX1).autobil.dix
+#	rm tmp$(PREFIX1).autobil.dix
 
 $(PREFVAR2)$(PREFIX1).autobil.bin: .deps/$(PREFVAR2)$(PREFIX1).bil.dix
 	apertium-validate-dictionary $<
 	xsltproc translate-to-default-equivalent.xsl $< >tmp$(PREFVAR2)$(PREFIX1).autobil.dix
 	lt-comp lr tmp$(PREFVAR2)$(PREFIX1).autobil.dix $@
-	rm tmp$(PREFVAR2)$(PREFIX1).autobil.dix
+#	rm tmp$(PREFVAR2)$(PREFIX1).autobil.dix
 
 $(PREFVAR1)$(PREFIX1).autogen.bin: .deps/$(PREFVAR1)$(LANG2).dix 
 	apertium-validate-dictionary .deps/$(PREFVAR1)$(LANG2).dix 
@@ -153,9 +153,17 @@ $(BASENAME).$(LANG1)-lextor.dix: .deps/$(PREFIX1).bil.dix
 	apertium-validate-dictionary .deps/$(PREFIX1).bil.dix
 	apertium-gen-lextormono rl .deps/$(PREFIX1).bil.dix $@
 
-$(BASENAME).$(LANG2)-lextor.dix: .deps/$(PREFIX1).bil.dix
+$(BASENAME).$(LANG2)-lextor.dix: .deps/$(PREFIX2).bil.dix
+	apertium-validate-dictionary .deps/$(PREFIX2).bil.dix
+	apertium-gen-lextormono lr .deps/$(PREFIX2).bil.dix $@
+
+$(BASENAME).$(PREFVAR2)$(LANG1)-lextor.dix: .deps/$(PREFVAR2)$(PREFIX1).bil.dix
 	apertium-validate-dictionary .deps/$(PREFIX1).bil.dix
-	apertium-gen-lextormono lr .deps/$(PREFIX1).bil.dix $@
+	apertium-gen-lextormono rl .deps/$(PREFIX1).bil.dix $@
+
+$(BASENAME).$(LANG2)-US-lextor.dix: .deps/$(PREFIX2)-US.bil.dix
+	apertium-validate-dictionary .deps/$(PREFIX2).bil.dix
+	apertium-gen-lextormono lr .deps/$(PREFIX2).bil.dix $@
 
 $(PREFIX1).lextormono.bin: $(BASENAME).$(LANG1)-lextor.dix
 	lt-comp lr $(BASENAME).$(LANG1)-lextor.dix $@
@@ -163,20 +171,40 @@ $(PREFIX1).lextormono.bin: $(BASENAME).$(LANG1)-lextor.dix
 $(PREFIX2).lextormono.bin: $(BASENAME).$(LANG2)-lextor.dix
 	lt-comp lr $(BASENAME).$(LANG2)-lextor.dix $@
 
+$(PREFVAR2)$(PREFIX1).lextormono.bin: $(BASENAME).$(PREFVAR2)$(LANG1)-lextor.dix
+	lt-comp lr $(BASENAME).$(LANG1)-lextor.dix $@
+
+$(PREFIX2)-US.lextormono.bin: $(BASENAME).$(LANG2)-US-lextor.dix
+	lt-comp lr $(BASENAME).$(LANG2)-lextor.dix $@
+
 
 $(BASENAME).$(PREFIX1)-lextor.dix: .deps/$(PREFIX1).bil.dix
 	apertium-validate-dictionary .deps/$(PREFIX1).bil.dix
 	apertium-gen-lextorbil rl .deps/$(PREFIX1).bil.dix $@
 
-$(BASENAME).$(PREFIX2)-lextor.dix: .deps/$(PREFIX1).bil.dix
-	apertium-validate-dictionary .deps/$(PREFIX1).bil.dix
-	apertium-gen-lextorbil lr .deps/$(PREFIX1).bil.dix $@
+$(BASENAME).$(PREFIX2)-lextor.dix: .deps/$(PREFIX2).bil.dix
+	apertium-validate-dictionary .deps/$(PREFIX2).bil.dix
+	apertium-gen-lextorbil lr .deps/$(PREFIX2).bil.dix $@
+
+$(BASENAME).$(PREFVAR2)$(PREFIX1)-lextor.dix: .deps/$(PREFVAR2)$(PREFIX1).bil.dix
+	apertium-validate-dictionary .deps/$(PREFVAR2)$(PREFIX1).bil.dix
+	apertium-gen-lextorbil rl .deps/$(PREFVAR2)$(PREFIX1).bil.dix $@
+
+$(BASENAME).$(PREFIX2)-US-lextor.dix: .deps/$(PREFIX2)-US.bil.dix
+	apertium-validate-dictionary .deps/$(PREFIX2)-US.bil.dix
+	apertium-gen-lextorbil lr .deps/$(PREFIX2)-US.bil.dix $@
 
 $(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFIX1)-lextor.dix
 	lt-comp lr $(BASENAME).$(PREFIX1)-lextor.dix $@
 
 $(PREFIX2).lextorbil.bin: $(BASENAME).$(PREFIX2)-lextor.dix
 	lt-comp lr $(BASENAME).$(PREFIX2)-lextor.dix $@
+
+$(PREFVAR2)$(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFVAR2)$(PREFIX1)-lextor.dix
+	lt-comp lr $(BASENAME).$(PREFVAR2)$(PREFIX1)-lextor.dix $@
+
+$(PREFIX2)-US.lextorbil.bin: $(BASENAME).$(PREFIX2)-US-lextor.dix
+	lt-comp lr $(BASENAME).$(PREFIX2)-US-lextor.dix $@
 
 $(PREFIX1)-poly.autobil.bin: $(BASENAME).$(PREFIX1)-poly.dix
 	lt-comp lr $(BASENAME).$(PREFIX1)-poly.dix $@
@@ -216,7 +244,7 @@ empty.bin: empty.t1x
 	apertium-validate-transfer empty.t1x
 	apertium-preprocess-transfer empty.t1x $@
 
-EXTRA_DIST=$(BASENAME).$(LANG1).metadix .deps/$(PREFIX1).bil.dix \
+EXTRA_DIST=$(BASENAME).$(LANG1).metadix  $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
 	   $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
 	   $(BASENAME).$(LANG2).tsx empty.t1x \
@@ -233,6 +261,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).metadix .deps/$(PREFIX1).bil.dix \
 	   $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
 	   $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
            $(BASENAME).$(LANG1).acx $(BASENAME).$(LANG2).acx \
+           filter.xsl filterbil.xsl filter.sh \
 	   modes.xml
 
 apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
