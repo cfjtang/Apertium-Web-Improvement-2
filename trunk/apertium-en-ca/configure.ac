@@ -6,8 +6,8 @@ AC_PREREQ(2.52)
 
 m4_define([required_apertium_version], [3.1.0])
 
-AC_INIT([apertium-en-ca], [0.8.9], [mginesti@dlsi.ua.es])
-AM_INIT_AUTOMAKE([apertium-en-ca], [0.8.9], no-define)
+AC_INIT([apertium-en-ca], [0.8.99], [jimregan@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-en-ca], [0.8.99], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])

@@ -54,20 +54,56 @@
     <xsl:when test="not(./@vl) and not(./@vr)">
       <xsl:copy-of select="."/>
     </xsl:when>
-    <xsl:when test="count(./@r)=0 and ./@vl=$left and ./@vr=$right">
-      <e>
-        <xsl:apply-templates/>
-      </e>
+    <!-- these are not the sides you are looking for -->
+    <xsl:when test="not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vl=$left) and not(./@vr=$right)">
     </xsl:when>
-    <xsl:when test="count(./@r)=0 and ./@vr=$right and count(./@vl)=0">
+    <xsl:when test="not(count(./@r)=0) and ./@r=string('LR') and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('left')">
+    </xsl:when>
+    <xsl:when test="not(count(./@r)=0) and ./@r=string('RL') and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('right')">
+    </xsl:when>
+    <xsl:when test="count(./@r)=0 and ./@vl=$left and ./@vr=$right">
       <xsl:choose>
-        <xsl:when test="$side=string('right')">
-          <e>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}">
             <xsl:apply-templates/>
           </e>
         </xsl:when>
         <xsl:otherwise>
-          <e r="RL">
+          <e>
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    <xsl:when test="count(./@r)=0 and ./@vr=$right and count(./@vl)=0">
+      <xsl:choose>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e>
             <xsl:apply-templates/>
           </e>
         </xsl:otherwise>
@@ -75,21 +111,44 @@
     </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vl=$left and count(./@vr)=0">
       <xsl:choose>
-        <xsl:when test="$side=string('left')">
-          <e>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}">
             <xsl:apply-templates/>
           </e>
         </xsl:when>
         <xsl:otherwise>
-          <e r="LR">
+          <e>
             <xsl:apply-templates/>
           </e>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
-    <xsl:when test="count(./@r)=0 and not(./@vr=$right) and count(./@vl)=0">
+    <xsl:when test="count(./@r)=0 and not(count(./@vr)=0) and not(./@vr=$right) and count(./@vl)=0">
       <xsl:choose>
-        <xsl:when test="$side=string('right')">
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
         </xsl:when>
         <xsl:otherwise>
           <e r="RL">
@@ -98,9 +157,22 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
-    <xsl:when test="count(./@r)=0 and not(./@vl=$left) and count(./@vr)=0">
+    <xsl:when test="count(./@r)=0 and not(count(./@vl)=0) and not(./@vl=$left) and count(./@vr)=0">
       <xsl:choose>
-        <xsl:when test="$side=string('left')">
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}" r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}" r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}" r="LR">
+            <xsl:apply-templates/>
+          </e>
         </xsl:when>
         <xsl:otherwise>
           <e r="LR">
@@ -109,49 +181,133 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
-    <xsl:when test="count(./@r)=0 and ./@vr=$right and not(./@vl=$left)">
-      <xsl:choose>
-        <xsl:when test="$side=string('left')">
-        </xsl:when>
-        <xsl:otherwise>
-          <e>
-            <xsl:apply-templates/>
-          </e>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vl=$left and not(./@vr=$right)">
       <xsl:choose>
-        <xsl:when test="$side=string('right')">
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
         </xsl:when>
         <xsl:otherwise>
-          <e>
+          <e r="RL">
             <xsl:apply-templates/>
           </e>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:when>
-    <xsl:when test="not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vl=$left) and not(./@vr=$right)">
-    </xsl:when>
+<!--
     <xsl:when test="not(count(./@vl)=0) and not(./@vl=$left) and ./@vr=$right and ./@r=string('RL')">
     </xsl:when>
     <xsl:when test="not(count(./@vr)=0) and not(./@vr=$right) and ./@vl=$left and ./@r=string('LR')">
     </xsl:when>
-    <xsl:when test="not(./@vl=$left) and not(count(./@r)=0) and not(./@r=string('RL'))">
+-->
+    <xsl:when test="./@vl=$left and not(count(./@r)=0) and ./@r=string('LR')">
+      <xsl:choose>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}" r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}" r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}" r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
-    <xsl:when test="not(./@vl=$right) and not(count(./@r)=0) and not(./@r=string('LR'))">
+    <xsl:when test="./@vr=$right and not(count(./@r)=0) and ./@r=string('RL')">
+      <xsl:choose>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:otherwise>
       <xsl:choose>
 	<xsl:when test="not(count(./@r))=0">
-	  <e r="{./@r}">
-	    <xsl:apply-templates/>
-	  </e>
+      <xsl:choose>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}" r="{./@r}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}" r="{./@r}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}" r="{./@r}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e r="{./@r}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
 	</xsl:when>
 	<xsl:otherwise>
-	  <e>
-	    <xsl:apply-templates/>
-	  </e>
+      <xsl:choose>
+        <xsl:when test="not(count(./@slr)=0) and not(count(./@srl)=0)">
+          <e slr="{./@slr}" srl="{./@srl}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
+          <e slr="{./@slr}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+          <e srl="{./@srl}">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+          <e>
+            <xsl:apply-templates/>
+          </e>
+        </xsl:otherwise>
+      </xsl:choose>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:otherwise>
@@ -218,3 +374,4 @@
 
 
 </xsl:stylesheet>
+

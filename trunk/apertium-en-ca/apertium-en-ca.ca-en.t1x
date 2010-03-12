@@ -564,7 +564,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
   <section-def-macros>
     
 
-    <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+    <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -2706,6 +2706,10 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </lu>
 	  </chunk>
 	</out>
+	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -3249,6 +3253,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</out> 
 	<call-macro n="f_bcond">
 	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro>    
       </action>
     </rule>
@@ -3305,6 +3310,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</out>   
 	<call-macro n="f_bcond">
 	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro> 
       </action>
     </rule>
@@ -3917,6 +3923,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
       </action>
     </rule> 
@@ -3985,6 +3992,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  </chunk>
 	</out>
 	<call-macro n="f_bcond">
+	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
       </action>
@@ -4087,6 +4095,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond">
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
       </action>
     </rule> 
@@ -4279,6 +4288,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</out> 
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
+	  <with-param pos="3"/>
 	</call-macro>
       </otherwise>
     </choose>
@@ -4711,6 +4721,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</choose>
 	<call-macro n="f_bcond">
 	  <with-param pos="1"/>
+	  <with-param pos="2"/>
 	</call-macro> 
       </action>
     </rule>
@@ -4780,9 +4791,11 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise> <!--si no és un verb separable...-->
@@ -4855,6 +4868,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </choose>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>  
 	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
 	      <when>
@@ -4882,6 +4896,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+	          <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -5064,9 +5079,11 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise> <!--si no és un verb separable...-->
@@ -5139,6 +5156,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </choose>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>  
 	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
 	      <when>
@@ -5166,6 +5184,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+	          <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -5341,6 +5360,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
 	  <otherwise> <!--si no és un verb separable, imprimeix primer el verb i despres el pron-->
@@ -5464,7 +5484,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  <otherwise> <!--si el 2n pronom tenia trad buida i el verb no era separable, imprimeix el primer pronom directament sense la prep 'to' -->
 	
 		<out>
-		  <chunk namefrom="pro">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -5485,6 +5505,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</out>
 		<call-macro n="f_bcond"> 
 		  <with-param pos="3"/>
+	          <with-param pos="4"/>
 		</call-macro>
 	  </otherwise>
 	</choose>
@@ -5492,6 +5513,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  <otherwise>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="3"/>
@@ -5843,6 +5865,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		    </test>	
 		    <call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		      <with-param pos="2"/>
+		      <with-param pos="3"/>
 		    </call-macro>
 		  </when>
 		  <otherwise>
@@ -6246,6 +6269,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</out>
 		<call-macro n="f_bcond"> 
 		  <with-param pos="3"/>
+	          <with-param pos="4"/>
 		</call-macro>
 	      </otherwise>
 	    </choose>
@@ -6253,9 +6277,11 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  <otherwise>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="3"/>
+	      <with-param pos="4"/>
 	    </call-macro>
 	  </otherwise>	  
 	</choose>
@@ -6386,6 +6412,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem el blanc -->
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
 	  <otherwise> <!--si no és un verb separable...-->
@@ -6434,6 +6461,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="1"/>
+	          <with-param pos="2"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -6605,6 +6633,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem el blanc -->
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	  </when>
 	  <otherwise> <!--si no és un verb separable...-->
@@ -6751,6 +6780,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  <otherwise>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </otherwise>
 	</choose>
@@ -7872,6 +7902,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>  
 	    <call-macro n="f_bcond">
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise><!--si no és un verb separable...-->
@@ -7927,6 +7958,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+		  <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -8272,7 +8304,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  </when>
 	</choose>
 	<out>
-	  <chunk namefrom="per_haver_pp" case="caseFirstWord">
+	  <chunk name="per_haver_pp" case="caseFirstWord">
 		<tags>
 		  <tag><lit-tag v="SV"/></tag>
 		  <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -8691,6 +8723,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise><!--si no és un verb separable...-->
@@ -8743,6 +8776,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+	          <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -9161,6 +9195,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -9240,6 +9275,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -9339,6 +9375,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</choose>
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
+	  <with-param pos="3"/>
 	</call-macro> 
       </action>
     </rule>
@@ -9371,6 +9408,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -9510,9 +9548,11 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem els blancs -->
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	    <call-macro n="f_bcond"> 
 	      <with-param pos="3"/>
+	      <with-param pos="4"/>
 	    </call-macro>
 	  </when>
 	  <otherwise> <!--si no és un verb separable...-->
@@ -9585,6 +9625,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </choose>
 	    <call-macro n="f_bcond">
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>  
 	    <choose><!--I ara que ja hem imprès el verb, mirem els proclítics -->
 	      <when>
@@ -9612,6 +9653,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="3"/>
+	          <with-param pos="4"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -9697,6 +9739,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -9829,6 +9872,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 		<var n="caseSecondWord"/>
@@ -10096,6 +10140,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		    </test>	
 		    <call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		      <with-param pos="3"/>
+		      <with-param pos="4"/>
 		    </call-macro>
 		  </when>
 		  <otherwise>
@@ -10241,6 +10286,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </let>
 	    <call-macro n="f_bcond">
 	      <with-param pos="1"/>
+	      <with-param pos="2"/>
 	    </call-macro>
 	    <let>
 	      <var n="caseSecondWord"/>
@@ -10377,6 +10423,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond"> <!-- si cal, enviem el blanc -->
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise><!--Si no és separable...-->
@@ -10425,6 +10472,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</test>	
 		<call-macro n="f_bcond"><!--imprimeix el blanc si té info de format, el pronom no l'imprimeixis -->
 		  <with-param pos="2"/>
+	          <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -11547,6 +11595,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</out>  
 	<call-macro n="f_bcond">
 	  <with-param pos="2"/>
+	  <with-param pos="3"/>
 	</call-macro>
       </action>
     </rule>
@@ -11619,6 +11668,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond">
 	      <with-param pos="2"/>
+	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise>
@@ -11729,6 +11779,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</out>
 		<call-macro n="f_bcond">
 		  <with-param pos="2"/>
+		  <with-param pos="3"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
@@ -11929,6 +11980,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	</out>  
 	<call-macro n="f_bcond">
 	  <with-param pos="3"/>
+	  <with-param pos="4"/>
 	</call-macro>
       </action>
     </rule>
@@ -12009,6 +12061,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </out>
 	    <call-macro n="f_bcond">
 	      <with-param pos="3"/>
+	      <with-param pos="4"/>
 	    </call-macro>
 	  </when>
 	  <otherwise>
@@ -12134,6 +12187,7 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 		</out>
 		<call-macro n="f_bcond">
 		  <with-param pos="3"/>
+	          <with-param pos="4"/>
 		</call-macro>
 	      </when>
 	      <otherwise>
