@@ -29,9 +29,6 @@
     <def-cat n="verbpart">
       <cat-item tags="vpart.*"/>
     </def-cat>
-    <def-cat n="querel">
-      <cat-item lemma="que" tags="rel.*"/>
-    </def-cat>
     <def-cat n="no">
       <cat-item lemma="no" tags="adv"/>
     </def-cat>
@@ -456,12 +453,28 @@
       <cat-item tags="cnjsub"/>
       <cat-item tags="cnjadv"/>
     </def-cat>
+
+    <!-- Categorias lexicalizadas -->
     <def-cat n="da">
       <cat-item lemma="da" tags="pr"/>
     </def-cat>
     <def-cat n="de">
       <cat-item lemma="de" tags="pr"/>
     </def-cat>
+    <def-cat n="gwezh">
+      <cat-item lemma="gwezh" tags="n.f.*"/>
+      <cat-item lemma="gwech" tags="n.f.*"/>
+    </def-cat>
+
+    <def-cat n="temp_nom">
+      <cat-item lemma="diez" tags="n.m.*"/>
+      <cat-item lemma="noz" tags="n.f.*"/>
+      <cat-item lemma="sizhun" tags="n.f.*"/>
+      <cat-item lemma="miz" tags="n.m.*"/>
+      <cat-item lemma="bloaz" tags="n.m.*"/>
+    </def-cat>
+
+    <!-- Punctuation -->
     <def-cat n="sent">
       <cat-item tags="sent"/>
     </def-cat>
@@ -7158,7 +7171,68 @@
         </let>
       </action>
    </rule>
- 
+  
+    <rule comment="REGLA: NUM gwezh DET temp_nom">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="gwezh"/>
+        <pattern-item n="det"/>
+        <pattern-item n="temp_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_concord1">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="num_fois_par_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="genero"/></tag>
+              <tag><var n="numero"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="2" side="tl" part="gen_mf"/>
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="2" side="tl" part="nbr_sp"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="par"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="gen_sense_mf"/>
+              <clip pos="4" side="tl" part="gen_mf"/>
+              <clip pos="4" side="tl" part="nbr_sense_sp"/>
+              <clip pos="4" side="tl" part="nbr_sp"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
 
  
     <rule comment="REGLA: NUM NOM DET NOM">
@@ -12373,45 +12447,6 @@
               <clip pos="1" side="tl" part="gen_mf"/>
               <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
               <clip pos="1" side="tl" part="nbr_sp"/>
-            </lu>
-          </chunk>
-        </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-   </rule>
-    
-    <rule comment="REGLA: que relatiu (s'enxunca a part)">
-      <pattern>
-        <pattern-item n="querel"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="que" case="caseFirstWord">
-            <tags>
-              <tag>
-                <lit-tag v="querel"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="gen"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="nbr"/>
-              </tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_rel"/>
-              <clip pos="1" side="tl" part="gen"/>
-              <clip pos="1" side="tl" part="nbr"/>
             </lu>
           </chunk>
         </out>
