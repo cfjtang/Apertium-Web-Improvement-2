@@ -410,6 +410,10 @@
       <cat-item tags="vbhaver.prs.*"/>
     </def-cat>
     <def-cat n="pp">
+      <cat-item tags="vblex.pp.*"/>
+      <cat-item tags="vbser.pp.*"/>
+      <cat-item tags="vbmod.pp.*"/>
+      <cat-item tags="vbhaver.pp.*"/>
       <cat-item tags="vblex.pp"/>
       <cat-item tags="vbser.pp"/>
       <cat-item tags="vbmod.pp"/>
@@ -17731,6 +17735,84 @@
       </action>
    </rule>
  
+ 
+   <rule comment="adv aux pp → adv aux pp // n'hon eus bet evezhiadenn ebet"> 
+      <pattern>
+        <pattern-item n="adv_neg"/>
+        <pattern-item n="aux"/>
+        <pattern-item n="pp"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="vauxiliar">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="numero"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+
+        <out>
+          <chunk name="adv" case="caseFirstWord">
+            <tags>
+              <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk name="haver_pp" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+<!--              <tag><clip pos="2" side="tl" part="gen"/></tag> --> <!-- "n'en doa ket gwelet" Il n'avait pas vu -->
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps" link-to="3"/>
+              <clip pos="2" side="tl" part="pers" link-to="4"/>
+              <clip pos="2" side="tl" part="nbr" link-to="5"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_pp"/>
+              <lit-tag v="m"/>
+              <var n="numero"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+
  
    <rule comment="adv aux adv pp → adv aux adv pp">
       <pattern>
