@@ -2,10 +2,10 @@
 <!--
 	Dictionary:
 	Sections: 1
-	Entries: 6477
+	Entries: 6471
 	Sdefs: 68
 	Paradigms: 26
-	Last processed by: apertium-dixtools fix apertium-sv-da.sv-da.dix x
+	Last processed by: apertium-dixtools fix apertium-sv-da.sv-da.dix apertium-sv-da.sv-da.dix
 
 -->
 <dictionary>
@@ -62,7 +62,6 @@
     <sdef n="p1" 	c="First person"/> 
     <sdef n="p2" 	c="Second person"/> 
     <sdef n="p3" 	c="Third person"/> 
-    <sdef n="p3" 	c="Third person"/> 
     <sdef n="subj" 	c="Subject"/> 
     <sdef n="obj" 	c="Object"/> 
     <sdef n="ref" 	c="Reflexive"/> 
@@ -88,10 +87,26 @@ for i in `grep stik__n apertium-sv-da.da.dix | cut -d '"' -f 2 | sort -u`; do ec
 -->
 
 
-<pardef n="__n">
-  <e>       <p><l></l>          <r></r></p></e>
+<pardef n="n" c="noun marker">
+  <e>       <i><s n="n"/></i></e>
 </pardef>
 
+
+<pardef n="_ut_ut">
+  <e>       <i><s n="ut"/></i></e>
+</pardef>
+
+<pardef n="_nt_nt">
+  <e>       <i><s n="nt"/></i></e>
+</pardef>
+
+<pardef n="_ut_nt">
+  <e>       <p><l><s n="ut"/></l><r><s n="nt"/></r></p></e>
+</pardef>
+
+<pardef n="_nt_ut">
+  <e>       <p><l><s n="nt"/></l><r><s n="ut"/></r></p></e>
+</pardef>
 
 
 <pardef n="sgpl_sgpl__n">
