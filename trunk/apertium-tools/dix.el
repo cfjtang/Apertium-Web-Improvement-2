@@ -144,6 +144,9 @@ Entering dix-mode calls the hook dix-mode-hook.
      :keys "C-u C-c D"
      :help "Must be called from within a pardef. Slower, but must be called at least once before showing duplicate pardefs"]
     "---"
+    ["Narrow Buffer to Given sdef" dix-narrow-to-sdef
+     :help "Show only that part of the buffer which contains a given sdef, eg. work only on nouns for a while. Widen with `C-x n w' as per usual."]
+    "---"
     ["Change Restriction of <e> (LR, RL, none)" dix-restriction-cycle]
     ["Go to Next Useful Position in the Buffer" dix-next]
     ["Go to Previous Useful Position in the Buffer" dix-previous]
