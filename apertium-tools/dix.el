@@ -1,4 +1,4 @@
-					; dix.el -- minor mode for editing Apertium dictionary files
+; dix.el -- minor mode for editing Apertium dictionary files
 
 ; See http://wiki.apertium.org 
 
@@ -162,6 +162,10 @@ Entering dix-mode calls the hook dix-mode-hook.
       :help "Make a copy of the current <e> element"]
      ["Apply an RL Restriction" dix-RL-restriction-copy
       :help "Make a copy of the current <e> element"]
+     ["Increase slr sense index" dix-slr-copy
+      :help "Make a copy of the current <e> element"]
+     ["Increase srl sense index" dix-srl-copy
+      :help "Make a copy of the current <e> element"]
      ["Clear Contents" (dix-copy 'remove-lex)
       :keys "C-u C-c C"
       :help "Make a copy of the current <e> element"]
@@ -189,7 +193,14 @@ Entering dix-mode calls the hook dix-mode-hook.
      (setq nxml-sexp-element-flag t)
      ,@body
      (setq nxml-sexp-element-flag old-sexp-element-flag)))
+(defmacro dix-with-no-case-fold (&rest body)
+  "Execute `body' with `case-fold-search' set to nil."
+  `(let ((old-case-fold-search case-fold-search))
+     (setq case-fold-search nil)
+     ,@body
+     (setq case-fold-search old-case-fold-search)))
 (put 'dix-with-sexp 'lisp-indent-function 0)
+(put 'dix-with-no-case-fold 'lisp-indent-function 0)
 
 (defvar dix-parse-bound 5000
   "Relative bound; maximum amount of chars (not lines) to parse
@@ -500,8 +511,8 @@ restriction."
 (defun dix-RL-restriction-copy ()
   "Make a copy of the Apertium element we're looking at, and
 add an RL restriction to the copy."
-    (interactive)
-    (dix-LR-restriction-copy 'RL))
+  (interactive)
+  (dix-LR-restriction-copy 'RL))
 
 (defun dix-copy (&optional remove-lex)
   "Make a copy of the Apertium element we're looking at. Optional
@@ -543,15 +554,61 @@ into the beginning of the lm and <i>."
   (dix-next 1)
   (yank))
 
+(defun dix-increase-sense (&optional dir)
+  (interactive)
+  (let ((dir (or dir "slr")))
+    (save-excursion
+      (dix-up-to "e" "section")
+      (let* ((old	     ; find what, if any, restriction we have:
+	      (save-excursion
+		(if (re-search-forward (concat " " dir "=\"\\([0-9]+\\)\"") (nxml-token-after) 'noerror)
+		    (match-string 1))))
+	     (new (number-to-string (if old (1+ (string-to-number old)) 1))))
+	;; restrict:
+	(forward-word)
+	(if old (delete-region (match-beginning 0)
+			       (match-end 0)))
+	(insert (concat " " dir "=\"" new "\""))
+	(unless (looking-at ">") (just-one-space))
+	;; formatting, remove whitespace:
+	(goto-char (nxml-token-after))
+	(unless (looking-at "<") (goto-char (nxml-token-after)))
+	(delete-horizontal-space)
+	(cond ((looking-at "<i") (indent-to dix-i-align-column))
+	      ((looking-at "<p") (indent-to dix-pb-align-column)))))))
+
+(defun dix-slr-copy (&optional srl)
+  "Make a copy of the Apertium element we're looking at, and
+increase the slr sense attribute of the copy (optionally adding
+it if it's not present). Optional prefix argument `srl' makes it
+an srl sense."
+  (interactive "P")
+  (let ((dir (if srl "srl" "slr")))
+    (save-excursion
+      (dix-copy)
+      (dix-increase-sense dir)))
+  ;; move point to end of relevant word:
+  (dix-up-to "e" "section")
+  (nxml-forward-element)
+  (nxml-down-element 2) (unless srl (nxml-forward-element))
+  (nxml-down-element 1) (goto-char (nxml-token-after)))
+(defun dix-srl-copy ()
+  "Make a copy of the Apertium element we're looking at, and
+increase the srl sense attribute of the copy (optionally adding
+it if it's not present)."
+  (interactive)
+  (dix-slr-copy 'srl))
+
+
 (defun dix-sort-e-by-r (reverse beg end)
   "Sort region alphabetically by contents of <r> element;
 argument means descending order. Assumes <e> elements never
 occupy more than one line.
 
-Called from a program, there
-are three arguments: REVERSE (non-nil means reverse order), BEG
-and END (region to sort).  The variable `sort-fold-case'
-determines whether alphabetic case affects the sort order."
+Called from a program, there are three arguments:
+`reverse' (non-nil means reverse order), `beg' and `end' (region
+to sort).  The variable `sort-fold-case' determines whether
+alphabetic case affects the sort order."
   (interactive "P\nr")
   (save-excursion
     (save-restriction
@@ -1001,29 +1058,29 @@ several with >< between them."
 occurence of a given sdef in a given section; lets you
 tab-complete on sdefs and sections."
   (interactive)
-  (let (sdefs) 
-    (save-excursion ;; find all sdefs
-      (goto-char (point-min))
-      (while 
-	  (re-search-forward "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
-	(add-to-list 'sdefs (match-string-no-properties 1))))  
-    (let ((sdef (completing-read "sdef/POS-tag: " sdefs nil 'require-match))
-	  id start end sections)
-      (save-excursion ;; find all sections
-	(goto-char (point-min))
-	(while (setq start
-		     (re-search-forward "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
-	  (setq id (match-string-no-properties 1))
-	  (setq end (re-search-forward "</section>"))
-	  (goto-char start)
-	  (if (search-forward (concat "<s n=\"" sdef "\"") end 'noerror)
-	      (add-to-list 'sections (list id start end)))))
-      ;; narrow to region between first and last occurrence of sdef in chosen section
-      (let* ((ids (mapcar 'car sections))
-	     (id (completing-read "Section:" ids nil 'require-match
-				  (if (cdr ids) nil (car ids))))
-	     (section (assoc id sections)))
-	(dix-narrow-to-sdef-narrow sdef (second section) (third section))))))
+  (dix-with-no-case-fold
+   (let (sdefs)
+     (save-excursion ;; find all sdefs
+       (goto-char (point-min))
+       (while (re-search-forward
+	       "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
+	 (add-to-list 'sdefs (match-string-no-properties 1))))
+     (let ((sdef (completing-read "sdef/POS-tag: " sdefs nil 'require-match))
+	   id start end sections)
+       (save-excursion ;; find all sections
+	 (goto-char (point-min))
+	 (while (setq start (re-search-forward
+			     "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
+	   (setq id (match-string-no-properties 1))
+	   (setq end (re-search-forward "</section>"))
+	   (if (search-backward (concat "<s n=\"" sdef "\"") start 'noerror)
+	       (add-to-list 'sections (list id start end)))))
+       ;; narrow to region between first and last occurrence of sdef in chosen section
+       (let* ((ids (mapcar 'car sections))
+	      (id (completing-read "Section:" ids nil 'require-match
+				   (if (cdr ids) nil (car ids))))
+	      (section (assoc id sections)))
+	 (dix-narrow-to-sdef-narrow sdef (second section) (third section)))))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
@@ -1088,6 +1145,10 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 ;;; Keybindings --------------------------------------------------------------
 (define-key dix-mode-map (kbd "C-c L") 'dix-LR-restriction-copy)
 (define-key dix-mode-map (kbd "C-c R") 'dix-RL-restriction-copy)
+(define-prefix-command 'dix-sense-prefix)
+(define-key dix-mode-map (kbd "C-c s") 'dix-sense-prefix)
+(define-key dix-mode-map (kbd "C-c s l") 'dix-slr-copy)
+(define-key dix-mode-map (kbd "C-c s r") 'dix-srl-copy)
 (define-key dix-mode-map (kbd "C-c C") 'dix-copy)
 (define-key dix-mode-map (kbd "C-c C-y") 'dix-copy-yank)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
