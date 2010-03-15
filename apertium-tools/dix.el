@@ -262,10 +262,12 @@ stop on finding another `eltname' element."
 	pardef))))
 
 (defun dix-lemma-at-point ()
-  (save-excursion
-    (dix-up-to "e" "section")
-    (re-search-forward "lm=\"" nil t)
-    (word-at-point)))
+  (if (string-match "-[^.]+\\.[^.]+$" (buffer-file-name))
+      (word-at-point) ;; bidix
+    (save-excursion   ;; monodix
+      (dix-up-to "e" "section")
+      (re-search-forward "lm=\"" nil t)
+      (word-at-point))))
 
 (defun dix-pardef-type-of-e ()
   (save-excursion
@@ -882,7 +884,7 @@ too much work for this."
 	(t 
 	 (insert " "))))
 
-(defcustom dix-hungry-backspace t
+(defcustom dix-hungry-backspace nil
   "Delete whole XML elements (<b/>, comments) with a single press
 of the backspace key. Set to nil if you don't want this behaviour."
   :type 'boolean
@@ -927,6 +929,98 @@ end of the element."
     (cond ((memq xmltok-type '(space not-well-formed partial-start-tag))
 	   (insert-char ?> 1))
 	  (t (nxml-up-element)))))
+
+(defun dix-trim-string (s)
+  "Trim leading and trailing spaces, tabs and newlines off `s'."
+  (cond ((not (stringp s)) nil)
+	((string-match "\\([^ \t\n]+\\)" s) (match-string 1 s))
+	(t s)))
+
+(defvar dix-expansion-left nil
+  "Cons of the tmpfile used to store the expansion, and the
+timestamp of the file last time we expanded it, as given
+by (sixth (file-attributes dix-monodix-left)).")
+(defvar dix-monodix-left "/l/n/apertium-nn-nb.nn.dix")
+
+(defun dix-expansion-sentinel (proc change-str)
+  (when (string= "finished\n" change-str)
+    (message "Expansion updated")
+    (kill-buffer "*lt-expand*")))
+
+(defun dix-update-expansion (expansion monodix update-expansion)
+  "Due to emacs variable scoping, we have to include a function
+`update-expansion' that updates the `expansion' variable with a
+new tmpfile and `monodix' timestamp."
+  (if (or (not expansion)
+	  (and expansion
+	       (not (equal (sixth (file-attributes monodix))
+			   (cdr expansion)))))
+      (let ((tmpfile (dix-trim-string
+		      (shell-command-to-string "mktemp -t expansion.XXXXXXXXXX"))))
+	(message "Expansion out of date with left monodix, hang on...")
+	(if (and (file-attributes tmpfile) (file-attributes monodix))
+	    (progn
+	      (shell-command
+	       (concat "lt-expand " monodix " " tmpfile " &") "*lt-expand*")
+	      (funcall update-expansion tmpfile (sixth (file-attributes monodix)))
+	      (set-process-sentinel (get-buffer-process "*lt-expand*") #'dix-expansion-sentinel))
+	  (error "mktemp command failed: %s" tmpfile)))
+    (message "Expansion up-to-date")))
+
+(defun dix-update-expansions ()
+  (interactive)
+  (dix-update-expansion dix-expansion-left dix-monodix-left
+			(lambda (file time)
+			  (setq dix-expansion-left (cons file time)))))
+
+(defun dix-expand (lemma pos)
+  (shell-command (concat "grep ':\\([>]:\\)*" lemma "<" pos ">' " (car dix-expansion-left))))
+(defun dix-expand-possibilities (tags)
+  "There should be no leading < in `tags', but you can have
+several with >< between them."
+  (shell-command (concat "grep ':\\([>]:\\)*[^<]*<" tags "' " (car dix-expansion-left)
+			 " | sed 's/.*:[^\\<]*\\</</' | sort | uniq")))
+
+(defun dix-narrow-to-sdef-narrow (sdef sec-start sec-end)
+  (goto-char sec-start)
+  (search-forward (concat "<s n=\"" sdef "\""))
+  (search-backward "<e")
+  (beginning-of-line)
+  (narrow-to-region (point)
+		    (save-excursion
+		      (goto-char sec-end)
+		      (search-backward (concat "<s n=\"" sdef "\""))
+		      (search-forward "</e")
+		      (end-of-line)
+		      (point))))
+(defun dix-narrow-to-sdef ()
+  "Narrow buffer to a region between the first and the last
+occurence of a given sdef in a given section; lets you
+tab-complete on sdefs and sections."
+  (interactive)
+  (let (sdefs) 
+    (save-excursion ;; find all sdefs
+      (goto-char (point-min))
+      (while 
+	  (re-search-forward "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
+	(add-to-list 'sdefs (match-string-no-properties 1))))  
+    (let ((sdef (completing-read "sdef/POS-tag: " sdefs nil 'require-match))
+	  id start end sections)
+      (save-excursion ;; find all sections
+	(goto-char (point-min))
+	(while (setq start
+		     (re-search-forward "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
+	  (setq id (match-string-no-properties 1))
+	  (setq end (re-search-forward "</section>"))
+	  (goto-char start)
+	  (if (search-forward (concat "<s n=\"" sdef "\"") end 'noerror)
+	      (add-to-list 'sections (list id start end)))))
+      ;; narrow to region between first and last occurrence of sdef in chosen section
+      (let* ((ids (mapcar 'car sections))
+	     (id (completing-read "Section:" ids nil 'require-match
+				  (if (cdr ids) nil (car ids))))
+	     (section (assoc id sections)))
+	(dix-narrow-to-sdef-narrow sdef (second section) (third section))))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
@@ -1014,6 +1108,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c % r") 'dix-replace-regexp-within-r)
 (define-key dix-mode-map (kbd "C-<") 'dix-<)
 (define-key dix-mode-map (kbd "C->") 'dix->)
+(define-key dix-mode-map (kbd "C-x n s") 'dix-narrow-to-sdef)
 
 ;;; Run hooks -----------------------------------------------------------------
 (run-hooks 'dix-load-hook)
