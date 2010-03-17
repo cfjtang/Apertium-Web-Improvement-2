@@ -61,33 +61,67 @@ public:
 #endif
 			statistics(s) {
 
-		this->_signature = "S:sss,S:ssss";
+		this->_signature = "S:S,S:sss,S:ssss";
 		this->_help = "Translate method";
 	}
 
 	void execute(xmlrpc_c::paramList const &paramList, xmlrpc_c::value* const retvalP) {
 		boost::shared_lock<boost::shared_mutex> lock(*mux);
 
-		std::string text(paramList.getString(0));
-		std::string srcLang(paramList.getString(1));
+		std::string text;
+		std::string srcLang;
+		std::string destLang;
 
-		std::string const destLang(paramList.getString(2));
+		std::string type = "text";
 
-		Translator::ContentType contentType = Translator::TEXT;
+		if (paramList.size() < 2) {
+			typedef std::map<std::string, xmlrpc_c::value> params_t;
 
-		if (paramList.size() > 3) {
-			std::string const type(paramList.getString(3));
+			const params_t params = paramList.getStruct(0);
 
-			if (type == "text") {
-				contentType = Translator::TEXT;
-			//} else if (type == "html") {
-			//	contentType = Translator::HTML;
-			} else {
-				throw xmlrpc_c::fault("Invalid parameter: Content Type unknown or not supported");
+	        params_t::const_iterator ti = params.find("text");
+	        if (ti == params.end()) {
+	            throw xmlrpc_c::fault("Missing source text", xmlrpc_c::fault::CODE_PARSE);
+	        }
+	        text = xmlrpc_c::value_string(ti->second);
+
+	        params_t::const_iterator si = params.find("srcLang");
+	        if (si == params.end()) {
+	            throw xmlrpc_c::fault("Missing source language", xmlrpc_c::fault::CODE_PARSE);
+	        }
+	        srcLang = xmlrpc_c::value_string(si->second);
+
+	        params_t::const_iterator di = params.find("destLang");
+	        if (di == params.end()) {
+	            throw xmlrpc_c::fault("Missing destination language", xmlrpc_c::fault::CODE_PARSE);
+	        }
+	        destLang = xmlrpc_c::value_string(di->second);
+
+	        params_t::const_iterator pi = params.find("type");
+	        if (pi != params.end()) {
+	        	type = xmlrpc_c::value_string(pi->second);
+	        }
+
+		} else {
+			text = paramList.getString(0);
+			srcLang = paramList.getString(1);
+			destLang = paramList.getString(2);
+
+			if (paramList.size() > 3) {
+				type = paramList.getString(3);
 			}
 		}
 
-	    std::map<std::string, xmlrpc_c::value> ret;
+		Translator::ContentType contentType = Translator::TEXT;
+
+		if (type == "text") {
+			contentType = Translator::TEXT;
+		} else {
+			throw xmlrpc_c::fault(
+					"Invalid parameter: Content Type unknown or not supported");
+		}
+
+		std::map<std::string, xmlrpc_c::value> ret;
 
 #if defined(HAVE_LIBTEXTCAT)
         if (srcLang.empty()) {
