@@ -584,9 +584,14 @@
 
     <!-- Proper nouns -->
 
-<pardef n="S__case"> <!-- Case endings for nouns -->
+<pardef n="S__case"> <!-- Case endings for nouns not ending on s (mand / mands) -->
   <e>       <p><l></l>          <r><s n="nom"/></r></p></e>
   <e>       <p><l>s</l>         <r><s n="gen"/></r></p></e>
+</pardef>
+
+<pardef n="apos__case"> <!-- Case endings for nouns ending on s (hus / hus' ) -->
+  <e>       <p><l></l>          <r><s n="nom"/></r></p></e>
+  <e>       <p><l>'</l>         <r><s n="gen"/></r></p></e>
 </pardef>
 
 <pardef n="Danmark__np">
@@ -594,8 +599,7 @@
 </pardef>
 
 <pardef n="Schweiz__np">
-  <e>       <p><l></l>          <r><s n="np"/><s n="top"/><s n="sg"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="np"/><s n="top"/><s n="sg"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="np"/><s n="top"/><s n="sg"/></r></p><par n="apos__case"/></e>
 </pardef>
 
 <pardef n="Eva__np">
@@ -607,8 +611,7 @@
 </pardef>
 
 <pardef n="Anders__np">
-  <e>       <p><l></l>          <r><s n="np"/><s n="ant"/><s n="m"/><s n="sg"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="np"/><s n="ant"/><s n="m"/><s n="sg"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="np"/><s n="ant"/><s n="m"/><s n="sg"/></r></p><par n="apos__case"/></e>
 </pardef>
 
 <pardef n="Magnusson__np">
@@ -616,8 +619,7 @@
 </pardef>
 
 <pardef n="Wikipedia__np">
-  <e>       <p><l>s</l>         <r><s n="np"/><s n="al"/><s n="sg"/><s n="gen"/></r></p></e>
-  <e>       <p><l></l>          <r><s n="np"/><s n="al"/><s n="sg"/><s n="nom"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="np"/><s n="al"/><s n="sg"/></r></p><par n="S__case"/></e>
 </pardef>
 
 
@@ -787,35 +789,25 @@
 
     <!-- Nouns -->
 
-<!-- paradigm to mark that an entry should be removed, but to be testvoc clean we keep it for now!
-  i="yes"   - så er den væk -->
-<pardef n="REMOVE">
-  <e r="RL"><p><l></l>          <r></r></p></e>
-  <e r="RL" i="yes"><p><l></l>  <r></r></p></e>
-</pardef>
-
-
 
 <pardef n="år__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~et / ~ / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="ribs__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~et / ~ / ~ene; Like år__n but for lemmas ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="apos__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="chips__n"> <!-- Neuter; # / # / ~ / ~ene; Only plural -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="un"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="un"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="un"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="un"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
@@ -829,8 +821,7 @@
 
 
 <pardef n="boks__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~e / ~ene; Like bold__n but for lemmas ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>e</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -855,19 +846,12 @@
 
 <pardef n="spil__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~let / ~ / ~lene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>let</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>lene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
-<pardef n="bal__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~let / ~ler / ~lene -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>let</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>ler</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>lene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-</pardef>
 
 <pardef n="nød__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~den / ~der / ~derne -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
@@ -884,8 +868,7 @@
 </pardef>
 
 <pardef n="hus__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~et / ~e / ~ene; Remember genitive is "hus'". Only to bed used with nouns that end in "s". If not, use skib__n -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>e</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -893,11 +876,10 @@
 
 <pardef n="tog__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~et / ~ / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="klub__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~ben / ~ber / ~berne -->
@@ -915,8 +897,7 @@
 </pardef>
 
 <pardef n="residens__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~er / ~erne; Like ateist__n but for lemmas ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>er</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>erne</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -940,8 +921,7 @@
 </pardef>
 
 <pardef n="suffiks__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~et / ~er / ~erne; Like alibi__n but for lemmas ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>er</l>        <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>erne</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -956,41 +936,34 @@
 
 <pardef n="sko__n" c="bidixhint:ut,sp"> <!-- Common; ~ / ~en / ~ / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="laks__n" c="bidixhint:ut,sp"> <!-- Common; ~ / ~en / ~ / ~ene; Like sko__n, but with lemmas ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/></r></p><par n="apos__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="glas__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~set / ~ / ~sene -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="apos__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>set</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>sene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="vir/us__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~us / ~usset | ~ussen / ~a | ~us | ~usser / ~aene | ~usserne | ~ussene; Very special -->
-  <e>       <p><l>us</l>        <r>us<s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>us'</l>       <r>us<s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>us</l>        <r>us<s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>usset</l>     <r>us<s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e r="LR"><p><l>ussen</l>     <r>us<s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>a</l>         <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
-  <e r="LR"><p><l>us</l>        <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e r="LR"><p><l>us'</l>       <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e r="LR"><p><l>us</l>        <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e r="LR"><p><l>usser</l>     <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>aene</l>      <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
   <e r="LR"><p><l>usserne</l>   <r>us<s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -1062,11 +1035,10 @@
 
 <pardef n="tilfælde__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~t / ~ / ~ne; invariant in indefinite -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>t</l>         <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ne</l>        <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="portræt__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~tet / ~ter / ~terne -->
@@ -1089,8 +1061,7 @@
 </pardef>
 
 <pardef n="harpiks__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / # / #; uncountable; Like mad__n but for lemmas ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
@@ -1113,11 +1084,10 @@
 
 <pardef n="brud__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~det / ~ / ~dene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>det</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>dene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="alt/er__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~er / ~ret | (~eret) / ~re / ~rene -->
@@ -1130,20 +1100,18 @@
 
 <pardef n="jordbær__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~ret / ~ / ~rene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ret</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>rene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="mail__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~s | (~) / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
+  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e r="LR"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s'</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
 </pardef>
 
 <pardef n="menneske__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~t / ~r / ~rne | (~ne) -->
@@ -1191,16 +1159,14 @@
 
 <pardef n="æg__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~get / ~ / ~gene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>get</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>gene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="vals__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~e / ~ene; Only for nouns ending in 's' -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>e</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -1208,16 +1174,14 @@
 
 <pardef n="søskende__n" c="bidixhint:ut,sp"> <!-- Common; ~ / ~n / ~ / ~ -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>n</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="mis__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~sen / ~ser / ~serne -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>'</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>sen</l>       <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ser</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>serne</l>     <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -1247,13 +1211,12 @@
 
 <pardef n="øl__n" c="bidixhint:ut,sp"> <!-- Common; ~ / ~len / ~ | (~ler) / ~lene | (~lerne) -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>len</l>       <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e r="LR"><p><l>ler</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>lene</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
   <e r="LR"><p><l>lerne</l>     <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="m/or__n" c="bidixhint:ut,sgpl"> <!-- Common; ~or / ~oren / ~ødre / ~ødrene -->
@@ -1268,8 +1231,7 @@
   <e>       <p><l>net</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e r="LR"><p><l>nen</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
-  <e r="LR"><p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e r="LR"><p><l>s'</l>        <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e r="LR"><p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>nene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
@@ -1318,8 +1280,7 @@
 
 <pardef n="synops/is__n" c="bidixhint:ut,sgpl"> <!-- Common; ~e | (~is) / ~en / ~er / ~erne -->
   <e>       <p><l>e</l>         <r>is<s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
-  <e r="LR"><p><l>is</l>        <r>is<s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e r="LR"><p><l>is'</l>       <r>is<s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e r="LR"><p><l>is</l>        <r>is<s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>en</l>        <r>is<s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>er</l>        <r>is<s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>erne</l>      <r>is<s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -1382,11 +1343,10 @@
 
 <pardef n="stik__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~ket / ~ / ~kene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ket</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>kene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="blik__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~ket / ~ke / ~kene -->
@@ -1396,10 +1356,11 @@
   <e>       <p><l>kene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
-<pardef n="egern__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~et / ~ / ~ene | (~erne) -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+<pardef n="egern__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~et / ~ / ~ene | (~erne) -->
+  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
   <e r="LR"><p><l>erne</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
@@ -1413,11 +1374,10 @@
 
 <pardef n="hjem__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~met / ~ / ~mene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>met</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>mene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="sadisme__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~n / # / #; uncountable -->
@@ -1431,9 +1391,6 @@
   <e>       <p><l>ørn</l>       <r>arn<s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ørnene</l>    <r>arn<s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
-
-
-
 
 <pardef n="søn__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~nen / ~ner / ~nerne -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
@@ -1505,8 +1462,7 @@
 <pardef n="band__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~et / ~s | (~) / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>s'</l>        <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e r="LR"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
@@ -1538,8 +1494,8 @@
   <e>       <p><l>fet</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>fene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
 </pardef>
 
 <pardef n="paragraf__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~fen / ~fer / ~ferne -->
@@ -1556,11 +1512,8 @@
   <e>       <p><l>fene</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
-<pardef n="røre__n"> <!-- Neuter/Common; ~ / ~n | (~t) / # / #; uncountable -->
-  <!-- Special paradigm, probably not very useful; notice how it contains different genders -->
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+<pardef n="røre__n"> <!-- Neuter; ~ / ~t / # / #; uncountable -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>n</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>t</l>         <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
@@ -1609,8 +1562,7 @@
 <pardef n="snowboard__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~et / ~s / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>et</l>        <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>s'</l>        <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
@@ -1631,42 +1583,37 @@
 <pardef n="blog__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~gen / ~s / ~gene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>gen</l>       <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>s'</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e r="LR"><p><l>gene</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>sne</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
 <pardef n="jitterbug__n" c="bidixhint:ut,sp"> <!-- Common; ~ / ~gen / ~ / ~gene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>gen</l>       <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>gene</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="coach__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~es / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>es</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>es'</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>es</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
 <pardef n="drink__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~s / ~sne -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>s'</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>sne</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
 <pardef n="event__n" c="bidixhint:ut,sgpl"> <!-- Common; ~ / ~en / ~s / ~ene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e>       <p><l>s'</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e>       <p><l>s</l>         <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>ene</l>       <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
@@ -1781,22 +1728,19 @@
 
 <pardef n="sæt__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~tet / ~ / ~tene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>tet</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>tene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="hit__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~tet / ~ / ~tene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>tet</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
-  <e r="LR"><p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="nom"/></r></p></e>
-  <e r="LR"><p><l>s'</l>        <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/><s n="gen"/></r></p></e>
+  <e r="LR"><p><l>s</l>         <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="apos__case"/></e>
   <e>       <p><l>tene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="slot__n" c="bidixhint:nt,sgpl"> <!-- Neuter; ~ / ~tet / ~te / ~tene -->
@@ -1808,20 +1752,18 @@
 
 <pardef n="hop__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~pet / ~ / ~pene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>pet</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>pene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="køn__n" c="bidixhint:nt,sp"> <!-- Neuter; ~ / ~net / ~ / ~nene -->
   <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sp"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e r="RL"><p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>net</l>       <r><s n="n"/><s n="nt"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>nene</l>      <r><s n="n"/><s n="nt"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
-
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
-  <e>       <p><l></l>          <r><s n="n"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/><par n="REMOVE"/></e>
 </pardef>
 
 <pardef n="antikken__n" c="bidixhint:ut,sgpl"> <!-- Common; # / ~ / # / #; only definite, no plural -->
@@ -10393,7 +10335,7 @@
 <e lm="bakke">           <i>bakke</i><par n="abe__n"/></e>
 <e lm="bakterie">        <i>bakterie</i><par n="abe__n"/></e>
 <e lm="bal" c="en billarbal"><i>bal</i><par n="duel__n"/></e>
-<e lm="bal" c="et dansebal"><i>bal</i><par n="bal__n"/></e>
+<e lm="bal" c="et dansebal"><i>bal</i><par n="spil__n"/></e>
 <e lm="balde">           <i>balde</i><par n="abe__n"/></e>
 <e lm="balkon">          <i>balkon</i><par n="ateist__n"/></e>
 <e lm="ballast">         <i>ballast</i><par n="ateist__n"/></e>
@@ -10528,7 +10470,7 @@
 <e lm="blød">            <i>blød</i><par n="ateist__n"/></e>
 <e lm="bløddyr">         <i>bløddyr</i><par n="år__n"/></e>
 <e lm="bløde">           <i>bløde</i><par n="abe__n"/></e>
-<e lm="bo">              <i>bo</i><par n="alibi__n"/></e>
+<e lm="bo">              <i>bo</i><par n="år__n"/></e>
 <e lm="boble">           <i>boble</i><par n="abe__n"/></e>
 <e lm="bod">             <i>bod</i><par n="ateist__n"/></e>
 <e lm="boer">            <i>boer</i><par n="spiller__n"/></e>
