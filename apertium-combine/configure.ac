@@ -91,9 +91,9 @@ AM_CONDITIONAL([IRSTLM], true)
 # AM_CONDITIONAL([MOSES], true)
 
 AC_ARG_WITH(irstlm,
-            [AC_HELP_STRING([--with-irstlm=PATH], [(mandatory) path to IRST's LM toolkit])],
+            [AC_HELP_STRING([--with-irstlm=PATH], [path to IRST's LM toolkit])],
             [with_irstlm=$withval],
-            [with_irstlm=no]
+            [with_irstlm=${prefix}]
            )
 
 AC_ARG_WITH(moses,
@@ -135,8 +135,8 @@ PKG_CHECK_MODULES(APERTIUM, [apertium-3.2 >= required_apertium_version], CPPFLAG
 
 AC_PATH_PROG(APERTIUM_DESTXT, apertium-destxt, no)
 
-if test "x$with_irstlm" != 'xno'
-then
+# if test "x$with_irstlm" != 'xno'
+# then
   SAVE_CPPFLAGS="$CPPFLAGS"
   CPPFLAGS="$CPPFLAGS -I${with_irstlm}/include"
 
@@ -163,7 +163,7 @@ then
   LIBS="$LIBS $LIB_IRSTLM"
   FMTLIBS="$FMTLIBS libirstlm.a"
   AM_CONDITIONAL([IRSTLM], true)
-fi
+# fi
 
 if test "x$with_moses" != 'xno'
  then
