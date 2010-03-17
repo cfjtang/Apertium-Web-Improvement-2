@@ -117,8 +117,7 @@ public:
 		if (type == "text") {
 			contentType = Translator::TEXT;
 		} else {
-			throw xmlrpc_c::fault(
-					"Invalid parameter: Content Type unknown or not supported");
+			throw xmlrpc_c::fault("Invalid parameter: Content Type unknown or not supported", xmlrpc_c::fault::CODE_PARSE);
 		}
 
 		std::map<std::string, xmlrpc_c::value> ret;
