@@ -52,13 +52,17 @@ AC_LANG_CPLUSPLUS
 
 AC_LANG([C++])
 
-AC_ARG_ENABLE(debug,
-              [  --enable-debug  Enable "-g -Wall" compiler options],
-              [CXXFLAGS="-g -Wall";CFLAGS="-g -Wall"])
+AC_ARG_ENABLE(debugging,
+              [AC_HELP_STRING([--enable-debugging], [Enable "-g -Wall" compiler options])],
+              [CXXFLAGS+=" -g -Wall"])
 
-AC_ARG_ENABLE(profile,
-              [  --enable-profile  Enable "-pg -g -Wall" compiler options],
-              [CXXFLAGS="-pg -g -Wall"; CFLAGS="-pg -g -Wall"; LDFLAGS="-pg"])
+AC_ARG_ENABLE(profiling,
+              [AC_HELP_STRING([--enable-profiling], [Enable "-pg -g -Wall" compiler options])],
+              [CXXFLAGS+=" -pg -g -Wall"; LDFLAGS+=" -pg"])
+
+AC_ARG_ENABLE(optimization,
+              [AC_HELP_STRING([--enable-optimization], [compile with -O3 flag])],
+              [CXXFLAGS+=" -O3"; LDFLAGS+=" -O3"])
 
 AC_ARG_WITH(combine,
             [AC_HELP_STRING([--with-combine=PATH], [(optional) path to apertium-combine])],
