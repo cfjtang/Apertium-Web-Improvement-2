@@ -174,7 +174,7 @@ private:
 class SynthesiseMethod : public xmlrpc_c::method {
 public:
 	SynthesiseMethod(boost::shared_mutex &m, ResourceBroker &rb, ConfigurationManager &cm) : mux(&m), resourceBroker(&rb), configurationManager(&cm) {
-		this->_signature = "s:Ass";
+		this->_signature = "S:Ass";
 		this->_help = "Synthesise method";
 	}
 
@@ -220,7 +220,12 @@ public:
 			throw xmlrpc_c::fault("Invalid parameter: no monolingual dictionaries for the language pair \"" + srcLang + "-" + destLang + "\"");
 		}
 
-		*retvalP = xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, lm, mm, translations, srcLang, destLang));
+		std::map<std::string, xmlrpc_c::value> ret;
+
+	    std::pair<std::string, xmlrpc_c::value> translation("synthesis", xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, lm, mm, translations, srcLang, destLang)));
+	    ret.insert(translation);
+
+		*retvalP = xmlrpc_c::value_struct(ret);
 	}
 
 private:
