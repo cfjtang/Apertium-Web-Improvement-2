@@ -632,7 +632,7 @@ SECTION
 SELECT DroppedG IF (-1 Vpart);
 
 # REGLA (A0003): "na ganit ket"
-SELECT SoftMut IF (-1C SoftMutTrigger) (0 SoftMutCons) (NOT -1 ("da"ri pr)) (NOT -1 (indirect)) ; 
+SELECT SoftMut IF (-1C SoftMutTrigger) (0 SoftMutCons) (0 SoftMut) (NOT -1 ("da"ri pr)) (NOT -1 (indirect)); 
 
 # REGLA (A0004): "emañ e Brest"
 REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
@@ -773,5 +773,6 @@ MAP (@X) TARGET PrnSubj | PrnDem ;
 MAP (@X) TARGET VerbFin (NOT 0 (+direct));
 
 # n'eus kador ebet
+SUBSTITUTE (cnjsub @+FMAINV) (cnjsub) (cnjsub);
 SUBSTITUTE (cnjadv @+FMAINV) (cnjadv) (cnjadv);
 SUBSTITUTE (adv @+FMAINV) (adv) (adv);
