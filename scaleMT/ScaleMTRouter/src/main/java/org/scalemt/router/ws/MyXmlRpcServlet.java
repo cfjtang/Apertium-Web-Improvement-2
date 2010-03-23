@@ -37,17 +37,42 @@ public class MyXmlRpcServlet extends XmlRpcServlet{
 
     @Override
     public void doPost(HttpServletRequest pRequest, HttpServletResponse pResponse) throws IOException, ServletException {
-        clientIpAddress.set(pRequest.getRemoteAddr());
+        /*
+         *  Log client IP address contained in X-Forwarded-For header,
+         * if request passed through a proxy
+         */
+        String ip=pRequest.getRemoteAddr();
+        String apacheProxyHeader=pRequest.getHeader("X-Forwarded-For");
+        if(apacheProxyHeader!=null)
+        {
+            String[] ips=apacheProxyHeader.split(",");
+            if(ips.length>0)
+                if(ips[0].length()>0)
+                    ip=ips[0];
+        }
+
+        clientIpAddress.set(ip);
         super.doPost(pRequest, pResponse);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        clientIpAddress.set(req.getRemoteAddr());
+         /*
+         *  Log client IP address contained in X-Forwarded-For header,
+         * if request passed through a proxy
+         */
+        String ip=req.getRemoteAddr();
+        String apacheProxyHeader=req.getHeader("X-Forwarded-For");
+        if(apacheProxyHeader!=null)
+        {
+            String[] ips=apacheProxyHeader.split(",");
+            if(ips.length>0)
+                if(ips[0].length()>0)
+                    ip=ips[0];
+        }
+
+        clientIpAddress.set(ip);
         super.doGet(req, resp);
     }
-
-
-    
 
 }
