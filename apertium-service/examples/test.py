@@ -19,6 +19,6 @@ for pair in proxy.languagePairs():
 
 print "";
 
-res = proxy.translate('una prova', 'ca', 'en');
+res = proxy.translate('hello world', 'en', 'it');
 
 print ' → ' + res['translation'];
