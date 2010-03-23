@@ -74,8 +74,23 @@ public class TranslateResource {
     @GET
     @Produces("application/json")
     public String getJSON(@Context HttpServletRequest request) {
-        
-        return process(uricontext.getQueryParameters(),request.getRemoteAddr(),request.getHeader("Referer"));
+
+        /*
+         *  Log client IP address contained in X-Forwarded-For header,
+         * if request passed through a proxy
+         */
+        String ip=request.getRemoteAddr();
+        String apacheProxyHeader=request.getHeader("X-Forwarded-For");
+        if(apacheProxyHeader!=null)
+        {
+            String[] ips=apacheProxyHeader.split(",");
+            if(ips.length>0)
+                if(ips[0].length()>0)
+                    ip=ips[0];
+        }
+
+
+        return process(uricontext.getQueryParameters(),ip,request.getHeader("Referer"));
     }
 
     /**
@@ -87,8 +102,22 @@ public class TranslateResource {
     @Consumes({"application/x-www-form-urlencoded", "multipart/form-data"})
     @Produces("application/json")
     public String postJSON(MultivaluedMap<String, String> params,@Context HttpServletRequest request) {
-  
-        return process(params,request.getRemoteAddr(),request.getHeader("Referer"));
+
+        /*
+         *  Log client IP address contained in X-Forwarded-For header,
+         * if request passed through a proxy
+         */
+        String ip=request.getRemoteAddr();
+        String apacheProxyHeader=request.getHeader("X-Forwarded-For");
+        if(apacheProxyHeader!=null)
+        {
+            String[] ips=apacheProxyHeader.split(",");
+            if(ips.length>0)
+                if(ips[0].length()>0)
+                    ip=ips[0];
+        }
+
+        return process(params,ip,request.getHeader("Referer"));
     }
 
     /**
