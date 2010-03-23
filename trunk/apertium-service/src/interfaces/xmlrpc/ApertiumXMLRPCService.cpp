@@ -198,31 +198,9 @@ public:
 		std::string const srcLang = paramList.getString(1);
 		std::string const destLang = paramList.getString(2);
 
-		std::string lm, mm;
-
-		ConfigurationManager::LanguageModelsType languageModels = configurationManager->getLanguageModels();
-		ConfigurationManager::LanguageModelsType::iterator itlm = languageModels.find(destLang);
-
-		if (itlm != languageModels.end()) {
-			lm = itlm->second;
-		} else {
-			throw xmlrpc_c::fault("Invalid parameter: no language models for the language \"" + destLang + "\"");
-		}
-
-		ConfigurationManager::MonolingualDictionariesType monolingualDictionaries = configurationManager->getMonolingualDictionaries();
-
-		std::pair<std::string, std::string> monodixpair = std::pair<std::string, std::string>(srcLang, destLang);
-		ConfigurationManager::MonolingualDictionariesType::iterator itmm = monolingualDictionaries.find(monodixpair);
-
-		if (itmm != monolingualDictionaries.end()) {
-			mm = itmm->second;
-		} else {
-			throw xmlrpc_c::fault("Invalid parameter: no monolingual dictionaries for the language pair \"" + srcLang + "-" + destLang + "\"");
-		}
-
 		std::map<std::string, xmlrpc_c::value> ret;
 
-	    std::pair<std::string, xmlrpc_c::value> translation("synthesis", xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, lm, mm, translations, srcLang, destLang)));
+	    std::pair<std::string, xmlrpc_c::value> translation("synthesis", xmlrpc_c::value_string(Synthesiser::synthesise(*resourceBroker, translations, srcLang, destLang)));
 	    ret.insert(translation);
 
 		*retvalP = xmlrpc_c::value_struct(ret);

@@ -41,7 +41,28 @@
 #include <apertium-combine/parallel_scan_generator.hh>
 #include <apertium-combine/case_insensitive_morph_matcher.hh>
 
-std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::string mm, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
+std::string Synthesiser::synthesise(ResourceBroker &rb, std::vector<std::string> &translations, std::string srcLang, std::string destLang) {
+	std::string lm, mm;
+
+	ConfigurationManager::LanguageModelsType languageModels = configurationManager->getLanguageModels();
+	ConfigurationManager::LanguageModelsType::iterator itlm = languageModels.find(destLang);
+
+	if (itlm != languageModels.end()) {
+		lm = itlm->second;
+	} else {
+		throw ApertiumRuntimeException("Invalid parameter: no language models for the language \"" + destLang + "\"");
+	}
+
+	ConfigurationManager::MonolingualDictionariesType monolingualDictionaries =	configurationManager->getMonolingualDictionaries();
+
+	std::pair<std::string, std::string> monodixpair = std::pair<std::string, std::string>(srcLang, destLang);
+	ConfigurationManager::MonolingualDictionariesType::iterator itmm = monolingualDictionaries.find(monodixpair);
+
+	if (itmm != monolingualDictionaries.end()) {
+		mm = itmm->second;
+	} else {
+		throw ApertiumRuntimeException("Invalid parameter: no monolingual dictionaries for the language pair \"" + srcLang + "-" + destLang + "\"");
+	}
 
 	std::vector<std::wstring> input_lines(translations.size());
 
@@ -84,6 +105,72 @@ std::string Synthesiser::synthesise(ResourceBroker &rb, std::string lm, std::str
 	rb.IRSTLMRankerPool.release(r, plm);
 
 	return Encoding::wstringToUtf8(wret);
+}
+
+void Synthesiser::eagerlyLoadMonodix(ResourceBroker &rb, std::string srcLang, std::string destLang, unsigned int qty) {
+	std::string mm;
+
+	ConfigurationManager::MonolingualDictionariesType monolingualDictionaries =	configurationManager->getMonolingualDictionaries();
+
+	std::pair<std::string, std::string> monodixpair = std::pair<std::string, std::string>(srcLang, destLang);
+	ConfigurationManager::MonolingualDictionariesType::iterator itmm = monolingualDictionaries.find(monodixpair);
+
+	if (itmm != monolingualDictionaries.end()) {
+		mm = itmm->second;
+	} else {
+		throw ApertiumRuntimeException("Invalid parameter: no monolingual dictionaries for the language pair \"" + srcLang + "-" + destLang + "\"");
+	}
+
+	std::vector<std::string> vmm(1);
+	vmm[0] = mm;
+
+	Program pmm("matcher");
+	pmm.setFileNames(vmm);
+
+	std::stack<ICase_Insensitive_Morph_Matcher *> mem;
+
+	for (unsigned int i = 0; i < qty; ++i) {
+		Case_Insensitive_Morph_Matcher *i = rb.Case_Insensitive_Morph_MatcherPool.acquire(p);
+		mem.push(i);
+	}
+
+	while (!mem.empty()) {
+		Case_Insensitive_Morph_Matcher *i = mem.top();
+		rb.Case_Insensitive_Morph_MatcherPool.release(i, p);
+		mem.pop();
+	}
+}
+
+void Synthesiser::eagerlyLoadLanguageModel(ResourceBroker &rb, std::string lang, unsigned int qty) {
+	std::string lm;
+
+	ConfigurationManager::LanguageModelsType languageModels = configurationManager->getLanguageModels();
+	ConfigurationManager::LanguageModelsType::iterator itlm = languageModels.find(lang);
+
+	if (itlm != languageModels.end()) {
+		lm = itlm->second;
+	} else {
+		throw ApertiumRuntimeException("Invalid parameter: no language models for the language \"" + lang + "\"");
+	}
+
+	std::vector<std::string> vlm(1);
+	vlm[0] = lm;
+
+	Program plm("irstlm");
+	plm.setFileNames(vlm);
+
+	std::stack<IRSTLMRanker *> mem;
+
+	for (unsigned int i = 0; i < qty; ++i) {
+		IRSTLMRanker *i = rb.IRSTLMRankerPool.acquire(p);
+		mem.push(i);
+	}
+
+	while (!mem.empty()) {
+		IRSTLMRanker *i = mem.top();
+		rb.IRSTLMRankerPool.release(i, p);
+		mem.pop();
+	}
 }
 
 #endif /* defined(HAVE_COMBINE) */
