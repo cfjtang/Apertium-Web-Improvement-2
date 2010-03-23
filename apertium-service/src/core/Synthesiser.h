@@ -38,7 +38,10 @@
 
 class Synthesiser {
 public:
-	static std::string synthesise(ResourceBroker&, std::string, std::string, std::vector<std::string>&, std::string, std::string);
+	static std::string synthesise(ResourceBroker&, std::vector<std::string>&, std::string, std::string);
+
+	static void eagerlyLoadLanguageModel(ResourceBroker&, std::string, unsigned int);
+	static void eagerlyLoadMonodix(ResourceBroker&, std::string, std::string, unsigned int);
 };
 
 #endif
