@@ -61,7 +61,7 @@ public:
 #endif
 			statistics(s) {
 
-		this->_signature = "S:S,S:sss,S:ssss";
+		this->_signature = "S:S,S:sss,S:ssss,S:ssssb";
 		this->_help = "Translate method";
 	}
 
@@ -73,6 +73,7 @@ public:
 		std::string destLang;
 
 		std::string type = "text";
+		bool markUnknownWords = true;
 
 		if (paramList.size() < 2) {
 			typedef std::map<std::string, xmlrpc_c::value> params_t;
@@ -102,6 +103,11 @@ public:
 	        	type = xmlrpc_c::value_string(pi->second);
 	        }
 
+	        params_t::const_iterator mi = params.find("markUnknownWords");
+	        if (mi != params.end()) {
+	        	markUnknownWords = xmlrpc_c::value_boolean(mi->second);
+	        }
+
 		} else {
 			text = paramList.getString(0);
 			srcLang = paramList.getString(1);
@@ -109,6 +115,10 @@ public:
 
 			if (paramList.size() > 3) {
 				type = paramList.getString(3);
+
+				if (paramList.size() > 4) {
+					markUnknownWords = paramList.getBoolean(4);
+				}
 			}
 		}
 
@@ -130,7 +140,7 @@ public:
         }
 #endif
 
-	    std::pair<std::string, xmlrpc_c::value> translation("translation", xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType, srcLang, destLang, statistics)));
+	    std::pair<std::string, xmlrpc_c::value> translation("translation", xmlrpc_c::value_string(Translator::translate(*resourceBroker, *modesManager, text, contentType, srcLang, destLang, markUnknownWords, statistics)));
 	    ret.insert(translation);
 
 		*retvalP = xmlrpc_c::value_struct(ret);
