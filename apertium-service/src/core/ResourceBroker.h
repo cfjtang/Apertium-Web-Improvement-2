@@ -75,11 +75,11 @@
 #include "ThreadSafeObjectPool.h"
 
 #include "core/ModesManager.h"
-#include "core/cg/stdafx.h"
-#include "core/cg/icu_uoptions.h"
-#include "core/cg/Grammar.h"
-#include "core/cg/BinaryGrammar.h"
-#include "core/cg/ApertiumApplicator.h"
+#include "core/vislcg3/stdafx.h"
+#include "core/vislcg3/icu_uoptions.h"
+#include "core/vislcg3/Grammar.h"
+#include "core/vislcg3/BinaryGrammar.h"
+#include "core/vislcg3/ApertiumApplicator.h"
 
 #if defined(HAVE_COMBINE)
 #include <apertium-combine/alignment.hh>
