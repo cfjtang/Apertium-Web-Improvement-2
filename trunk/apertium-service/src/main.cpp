@@ -53,12 +53,12 @@
 #include "utils/Logger.h"
 #include "utils/Statistics.h"
 
-#include "core/cg/stdafx.h"
-#include "core/cg/Strings.h"
-#include "core/cg/icu_uoptions.h"
-#include "core/cg/Grammar.h"
-#include "core/cg/BinaryGrammar.h"
-#include "core/cg/ApertiumApplicator.h"
+#include "core/vislcg3/stdafx.h"
+#include "core/vislcg3/Strings.h"
+#include "core/vislcg3/icu_uoptions.h"
+#include "core/vislcg3/Grammar.h"
+#include "core/vislcg3/BinaryGrammar.h"
+#include "core/vislcg3/ApertiumApplicator.h"
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;

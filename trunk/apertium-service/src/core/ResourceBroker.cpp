@@ -33,12 +33,12 @@
 #include "ResourceBroker.h"
 #include "utils/Logger.h"
 
-#include "cg/stdafx.h"
-#include "cg/Grammar.h"
-#include "cg/BinaryGrammar.h"
-#include "cg/ApertiumApplicator.h"
-#include "cg/MatxinApplicator.h"
-#include "cg/GrammarApplicator.h"
+#include "vislcg3/stdafx.h"
+#include "vislcg3/Grammar.h"
+#include "vislcg3/BinaryGrammar.h"
+#include "vislcg3/ApertiumApplicator.h"
+#include "vislcg3/MatxinApplicator.h"
+#include "vislcg3/GrammarApplicator.h"
 
 using namespace std;
 using CG3::CG3Quit;
