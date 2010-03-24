@@ -71,7 +71,7 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 		ss << "Translator::translate(): Executing " << program;
 		Logger::Instance()->trace(Logger::Debug, ss.str());
 
-		std::wstring tmp = fm.execute(program, ret);
+		std::wstring tmp = fm.execute(program, ret, markUnknownWords);
 		ret = tmp;
 	}
 

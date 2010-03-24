@@ -208,7 +208,7 @@ void FunctionMapper::load(Program &p, unsigned int qty) {
 /**
  * Request an arbitrary resource from the Resource Pool, use it and release it.
  */
-std::wstring FunctionMapper::execute(Program &p, std::wstring &d) {
+std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnknownWords) {
 	std::vector<std::string> params;
 	const std::string commandLine = p.getProgramName();
 	boost::split(params, commandLine, boost::is_any_of("\t "));
