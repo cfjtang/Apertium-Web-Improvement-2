@@ -44,7 +44,7 @@ public:
 	virtual ~FunctionMapper();
 
 	void load(Program&, unsigned int = 0);
-	std::wstring execute(Program&, std::wstring&);
+	std::wstring execute(Program&, std::wstring&, bool);
 
 private:
 	ResourceBroker *resourceBroker;
