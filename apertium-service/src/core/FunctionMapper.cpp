@@ -346,7 +346,11 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 			i->analysis(in, out);
 			break;
 		case GENERATION:
-			i->generation(in, out);
+			if (markUnknownWords) {
+				i->generation(in, out);
+			} else {
+				i->generation(in, out, gm_clean);
+			}
 			break;
 		case POSTGENERATION:
 			i->postgeneration(in, out);
