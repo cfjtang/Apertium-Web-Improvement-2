@@ -1,18 +1,87 @@
-Swedish--Danish
-===================================================================
+Swedish and Danish
 
-You need apertium-3.0 and lttoolbox-3.0 to use this translator.  To compile
-the linguistic data simply do:
+                            apertium-sv-da
+===============================================================================
 
-sh autogen.sh
-./configure
-make
+This is an Apertium language pair for translating between Swedish and 
+Danish. What you can use this language package for:
 
-inside of this directory.
+* Translating between Swedish and Danish
+* Morphological analysis of Swedish and Danish
+* Part-of-speech tagging of Swedish and Danish
 
-===================================================================
+For information on the latter two points, see subheading "For more 
+information" below
 
-More information about this module, and others can be found on
-the Apertium: Wiki, http://wiki.apertium.org
+Requirements
+===============================================================================
 
+You will need the following software installed:
 
+* lttoolbox (>= 3.0.0)
+* apertium (>= 3.0.0)
+
+If this does not make any sense, we recommend you look at: www.apertium.org
+
+Compiling
+===============================================================================
+
+Given the requirements being installed, you should be able to just run:
+
+$ ./configure 
+$ make
+# make install
+
+You can use ./autogen.sh instead of ./configure you're compiling from
+SVN. If you're using a --prefix to ./configure, make sure it's the
+same one you used to install apertium itself.
+
+Testing
+===============================================================================
+
+If you are in the source directory after running make, the following
+commands should work:
+
+$  echo "Dörren skall öppnas" | apertium -d . sv-da
+Døren skal åbnes
+
+$ echo "Døren skal åbnes" | apertium -d . da-sv
+Dörren skall öppnas
+
+After installing somewhere in $PATH, you should be able to do e.g.
+
+$  echo "Dörren skall öppnas" | apertium sv-da
+Døren skal åbnes
+
+The following command runs tests which are on the Apertium wiki page:
+
+$ ./regression-tests.sh 
+
+Files and data
+===============================================================================
+
+* apertium-sv-da.sv.dix        	   - Monolingual dictionary for Swedish
+* apertium-sv-da.sv-da.dix  	   - Bilingual dictionary 
+* apertium-sv-da.da.dix        	   - Monolingual dictionary for Danish
+* apertium-sv-da.sv-da.t1x         - Transfer rules for translating into Danish
+* apertium-sv-da.da-sv.t1x         - Transfer rules for translating into Swedish
+* sv-da.prob                       - Tagger model for Swedish
+* da-sv.prob                       - Tagger model for Danish
+* modes.xml                        - Translation modes
+
+For more information
+===============================================================================
+
+* http://wiki.apertium.org/wiki/Installation
+* http://wiki.apertium.org/wiki/apertium-sv-da
+* http://wiki.apertium.org/wiki/Using_an_lttoolbox_dictionary
+
+Help and support
+===============================================================================
+
+If you need help using this language pair or data, you can contact:
+
+* Mailing list: apertium-stuff@lists.sourceforge.net
+* IRC: #apertium on irc.freenode.net
+
+See also the file AUTHORS included in this distribution.
