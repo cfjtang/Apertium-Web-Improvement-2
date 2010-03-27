@@ -373,16 +373,31 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 
 		CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
 
-		//CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_in, ux_out, ux_err);
-		CG3::GrammarApplicator *applicator = new CG3::ApertiumApplicator(ux_err);
+		bool wordform_case = false;
+
+		for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it) {
+				std::string param = *it;
+				if (param[0] == '-') {
+					switch (param[1]) {
+					case 'w':
+						wordform_case = true;
+						break;
+					}
+				}
+		}
 
 		{
 		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
+
+		CG3::ApertiumApplicator *applicator = new CG3::ApertiumApplicator(ux_err);
+
+		applicator->wordform_case = wordform_case;
+
 		applicator->setGrammar(grammar);
 		applicator->runGrammarOnText(ux_in, ux_out);
-		}
 
 		delete applicator;
+		}
 
 		resourceBroker->GrammarPool.release(grammar, p);
 	}
