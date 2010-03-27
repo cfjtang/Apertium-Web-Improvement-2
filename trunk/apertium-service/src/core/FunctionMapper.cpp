@@ -386,23 +386,21 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 
 		CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
 
+		{
+		CG3::ApertiumApplicator aap(ux_err);
+
+		aap.setNullFlush(false);
+		aap.wordform_case = wordform_case;
+
+		aap.setGrammar(grammar);
+		aap.runGrammarOnText(ux_in, ux_out);
+
 		{ // XXX
 		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
-
-		CG3::GrammarApplicator *ap = NULL;
-
-		CG3::ApertiumApplicator *aap = new CG3::ApertiumApplicator(ux_err);
-
-		aap->setNullFlush(false);
-		aap->wordform_case = wordform_case;
-
-		ap = aap;
-
-		ap->setGrammar(grammar);
-		ap->runGrammarOnText(ux_in, ux_out);
-
-		//delete ap;
+		aap.setGrammar(grammar);
+		aap.runGrammarOnText(ux_in, ux_out);
 		} // XXX
+		}
 
 		resourceBroker->GrammarPool.release(grammar, p);
 
