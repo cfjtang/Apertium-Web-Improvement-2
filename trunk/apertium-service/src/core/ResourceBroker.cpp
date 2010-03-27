@@ -289,21 +289,20 @@ template <> CG3::Grammar *NonIndexedObjectPool<CG3::Grammar>::getNewInstance(Pro
 	const char *codepage_default = ucnv_getDefaultName();
 	const char *locale_default = "en_US_POSIX"; //uloc_getDefault();
 
-	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
-
 	int pret = 0;
 	CG3::Grammar *ret = NULL;
 
 	{ // XXX
+	boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
+
 	ret = pool.construct();
+
+	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
+	ret->ux_stderr = ux_err;
 
 	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*ret, ux_err);
 
-	ret->ux_stderr = ux_err;
-
-	boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 	pret = parser->parse_grammar_from_file(fileNames[0].data(), locale_default, codepage_default);
-
 	ret->reindex();
 
 	delete parser;

@@ -371,8 +371,6 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 		UFILE *ux_out = u_finit(out, locale_default, codepage_default);
 		UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
 
-		CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
-
 		bool wordform_case = false;
 
 		for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it) {
@@ -386,20 +384,31 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 				}
 		}
 
-		{
+		CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
+
+		{ // XXX
 		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 
-		CG3::ApertiumApplicator *applicator = new CG3::ApertiumApplicator(ux_err);
+		CG3::GrammarApplicator *ap = NULL;
 
-		applicator->wordform_case = wordform_case;
+		CG3::ApertiumApplicator *aap = new CG3::ApertiumApplicator(ux_err);
 
-		applicator->setGrammar(grammar);
-		applicator->runGrammarOnText(ux_in, ux_out);
+		aap->setNullFlush(false);
+		aap->wordform_case = wordform_case;
 
-		delete applicator;
-		}
+		ap = aap;
+
+		ap->setGrammar(grammar);
+		ap->runGrammarOnText(ux_in, ux_out);
+
+		//delete ap;
+		} // XXX
 
 		resourceBroker->GrammarPool.release(grammar, p);
+
+        u_fclose(ux_in);
+        u_fclose(ux_out);
+        u_fclose(ux_err);
 	}
 		break;
 	}
