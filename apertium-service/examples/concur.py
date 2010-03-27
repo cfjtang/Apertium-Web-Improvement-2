@@ -12,11 +12,11 @@ class testit(Thread):
 		
 	def run(self):
 		for c in range(1, 1024):
-			self.proxy.translate('the cat is on the table', 'en', 'it');
+			self.proxy.translate('Hovuddrag i norsk språkhistorie', 'nb', 'nn');
 
 def main():
 	proxy = xmlrpclib.ServerProxy("http://localhost:6173/RPC2");
-	for c in range(1, 8):
+	for c in range(1, 2):
 		cur = testit(proxy)
 		cur.start()
 

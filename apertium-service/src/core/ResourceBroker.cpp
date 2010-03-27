@@ -291,29 +291,27 @@ template <> CG3::Grammar *NonIndexedObjectPool<CG3::Grammar>::getNewInstance(Pro
 
 	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
 
-	CG3::Grammar *ret = pool.construct();
+	int pret = 0;
+	CG3::Grammar *ret = NULL;
+
+	{ // XXX
+	ret = pool.construct();
 
 	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*ret, ux_err);
 
-	(*ret).ux_stderr = ux_err;
+	ret->ux_stderr = ux_err;
 
-	//CG3::Tag *tag_any = ret->allocateTag(stringbits[S_ASTERIK]);
-	//(*ret).tag_any = tag_any->hash;
-
-	int pret = 0;
-
-	{ // XXX
 	boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 	pret = parser->parse_grammar_from_file(fileNames[0].data(), locale_default, codepage_default);
+
+	ret->reindex();
+
+	delete parser;
 	} // XXX
 
 	if (pret) {
 		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
 	}
-
-	ret->reindex();
-
-	delete parser;
 
 	return(ret);
 }

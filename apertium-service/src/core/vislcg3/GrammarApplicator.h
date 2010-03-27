@@ -25,6 +25,8 @@
 
 #include "stdafx.h"
 #include "Tag.h"
+#include "CohortIterator.h"
+#include "miniset.h"
 
 namespace CG3 {
 	class Window;
@@ -47,7 +49,6 @@ namespace CG3 {
 		bool trace_name_only;
 		bool trace_no_removed;
 		bool trace_encl;
-		bool single_run;
 		bool allow_magic_readings;
 		bool no_pass_origin;
 		bool unsafe;
@@ -66,6 +67,8 @@ namespace CG3 {
 		uint32_t hard_limit;
 		uint32Vector sections;
 		uint32_t verbosity_level;
+		uint32_t debug_level;
+		uint32_t section_max_count;
 
 		GrammarApplicator(UFILE *ux_err);
 		virtual ~GrammarApplicator();
@@ -98,8 +101,13 @@ namespace CG3 {
 		uint32Set dep_deep_seen;
 
 		uint32_t numsections;
-		typedef std::map<int32_t,uint32Set*> RSType;
+		typedef std::map<int32_t,uint32MiniSet> RSType;
 		RSType runsections;
+
+		CohortIterator ci_CohortIterator;
+		TopologyLeftIter ci_TopologyLeftIter;
+		TopologyRightIter ci_TopologyRightIter;
+		DepParentIter ci_DepParentIter;
 
 		static const uint32_t RV_NOTHING = 1;
 		static const uint32_t RV_SOMETHING = 2;
@@ -144,8 +152,8 @@ namespace CG3 {
 		void indexSingleWindow(SingleWindow &current);
 		int runGrammarOnWindow();
 		int runGrammarOnSingleWindow(SingleWindow &current);
-		void updateValidRules(const uint32Set& rules, uint32Set &intersects, const uint32_t& hash, Reading &reading);
-		uint32_t runRulesOnWindow(SingleWindow &current, uint32Set &rules);
+		void updateValidRules(const uint32MiniSet& rules, uint32Vector &intersects, const uint32_t& hash, Reading &reading);
+		uint32_t runRulesOnSingleWindow(SingleWindow &current, uint32MiniSet &rules);
 
 		Cohort *runSingleTest(Cohort *cohort, const ContextualTest *test, bool *brk, bool *retval, Cohort **deep = 0, Cohort *origin = 0);
 		Cohort *runSingleTest(SingleWindow *sWindow, size_t i, const ContextualTest *test, bool *brk, bool *retval, Cohort **deep = 0, Cohort *origin = 0);

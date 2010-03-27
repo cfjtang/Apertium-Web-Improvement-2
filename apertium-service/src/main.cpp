@@ -108,13 +108,6 @@ void cleanup(void) {
 	u_cleanup();
 }
 
-/*
-void signalHandler(int) {
-	cerr << "SIGINT received." << endl;
-	exit(EXIT_SUCCESS);
-}
-*/
-
 int main(int ac, char *av[]) {
 	LtLocale::tryToSetLocale();
 
@@ -184,8 +177,9 @@ int main(int ac, char *av[]) {
                 CG3Quit(1);
         }
 
+        ucnv_setDefaultName("UTF-8");
+
 		::atexit(cleanup);
-		//::signal(SIGINT, &signalHandler);
 
 		fs::path cd;
 
