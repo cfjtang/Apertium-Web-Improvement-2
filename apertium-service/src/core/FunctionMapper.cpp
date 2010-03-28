@@ -384,15 +384,15 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 				}
 		}
 
+		{ // XXX
+		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 		CGApplicator *grammar = resourceBroker->GrammarPool.acquire(p);
 
 		(grammar->get())->wordform_case = wordform_case;
-		{ // XXX
-		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 		(grammar->get())->runGrammarOnText(ux_in, ux_out);
-		}
 
 		resourceBroker->GrammarPool.release(grammar, p);
+		}
 
 	}
 		break;

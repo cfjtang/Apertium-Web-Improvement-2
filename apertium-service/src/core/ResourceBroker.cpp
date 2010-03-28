@@ -100,8 +100,8 @@ void CGApplicator::read(std::string index) {
 
 	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
 
-	{ // XXX
-	boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
+	//{ // XXX
+	//boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 
 	grammar = new CG3::Grammar();
 	grammar->ux_stderr = ux_err;
@@ -120,7 +120,7 @@ void CGApplicator::read(std::string index) {
 	applicator = new CG3::ApertiumApplicator(ux_err);
 	applicator->setNullFlush(false);
 	applicator->setGrammar(grammar);
-	} // XXX
+	//} // XXX
 }
 
 CG3::ApertiumApplicator *CGApplicator::get() {
