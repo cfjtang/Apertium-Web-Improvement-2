@@ -78,9 +78,8 @@ FunctionMapper::FunctionMapper(ResourceBroker &rb) : resourceBroker(&rb) {
 FunctionMapper::~FunctionMapper() { }
 
 void FunctionMapper::load(Program &p, unsigned int qty) {
-	std::vector<std::string> params;
+	std::vector<std::string> params = p.getParameters();
 	const std::string commandLine = p.getProgramName();
-	boost::split(params, commandLine, boost::is_any_of("\t "));
 
 	std::string program = params[0];
 	std::vector<std::string> files = p.getFileNames();
@@ -392,7 +391,7 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 		(grammar->get())->runGrammarOnText(ux_in, ux_out);
 
 		resourceBroker->GrammarPool.release(grammar, p);
-		}
+		} // XXX
 
 	}
 		break;
