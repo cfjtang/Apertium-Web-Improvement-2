@@ -60,8 +60,10 @@ public:
 	Program(const std::string);
 	virtual ~Program();
 
+	std::string getProgram();
+	void setProgram(const std::string);
+
 	std::string getProgramName();
-	void setProgramName(const std::string);
 
 	std::vector<std::string> getParameters();
 
@@ -69,18 +71,18 @@ public:
 	void setFileNames(const std::vector<std::string>);
 
 	bool operator==(Program const& other) const {
-        return programName == other.programName && fileNames == other.fileNames;
+        return program == other.program && fileNames == other.fileNames;
     }
 
 	friend std::size_t hash_value(Program const& p) {
 		std::size_t seed = 0;
-		boost::hash_combine(seed, p.programName);
+		boost::hash_combine(seed, p.program);
 		boost::hash_combine(seed, p.fileNames);
 		return seed;
 	}
 
 private:
-	std::string programName;
+	std::string program;
 	std::vector<std::string> fileNames;
 };
 
