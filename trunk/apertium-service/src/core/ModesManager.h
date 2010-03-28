@@ -63,6 +63,8 @@ public:
 	std::string getProgramName();
 	void setProgramName(const std::string);
 
+	std::vector<std::string> getParameters();
+
 	std::vector<std::string> getFileNames();
 	void setFileNames(const std::vector<std::string>);
 

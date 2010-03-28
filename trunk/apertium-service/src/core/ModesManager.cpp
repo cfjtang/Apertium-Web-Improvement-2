@@ -39,66 +39,74 @@
 
 #include <cstring>
 
+#include <boost/algorithm/string.hpp>
+
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/tokenizer.hpp>
 
 #include <boost/regex.hpp>
 
-using namespace std;
 namespace fs = boost::filesystem;
 
 Program::Program() { }
 
-Program::Program(const string p) : programName(p) { }
+Program::Program(const std::string p) : programName(p) { }
 
 Program::~Program() { }
 
-ostream& operator<<(ostream &output, Program &p) {
+std::ostream& operator<<(std::ostream &output, Program &p) {
 	output << p.getProgramName() << " { ";
-	vector<string> files = p.getFileNames();
-	for (vector<string>::iterator it = files.begin(); it != files.end(); ++it) {
+	std::vector<std::string> files = p.getFileNames();
+	for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it) {
 		output << *it << " ";
 	}
 	output << "}";
     return output;
 }
 
-string Program::getProgramName() {
+std::string Program::getProgramName() {
 	return programName;
 }
 
-void Program::setProgramName(const string p) {
+void Program::setProgramName(const std::string p) {
 	programName = p;
 }
 
-vector<string> Program::getFileNames() {
+std::vector<std::string> Program::getParameters() {
+	std::vector<std::string> params;
+	const std::string commandLine = this->getProgramName();
+	boost::split(params, commandLine, boost::is_any_of("\t "));
+	return params;
+}
+
+std::vector<std::string> Program::getFileNames() {
 	return fileNames;
 }
 
-void Program::setFileNames(const vector<string> f) {
+void Program::setFileNames(const std::vector<std::string> f) {
 	fileNames = f;
 }
 
 Mode::Mode() { }
 
-Mode::Mode(string m) : modeName(m) { }
+Mode::Mode(std::string m) : modeName(m) { }
 
 Mode::~Mode() { }
 
-string Mode::getModeName() {
+std::string Mode::getModeName() {
 	return modeName;
 }
 
-void Mode::setModeName(const string m) {
+void Mode::setModeName(const std::string m) {
 	modeName = m;
 }
 
-vector<Program> Mode::getPrograms() {
+std::vector<Program> Mode::getPrograms() {
 	return programs;
 }
 
-void Mode::setPrograms(const vector<Program> p) {
+void Mode::setPrograms(const std::vector<Program> p) {
 	programs = p;
 }
 
@@ -119,7 +127,7 @@ void ModesManager::parseXML(const fs::path path) {
 			for(xmlpp::NodeSet::iterator it = modeNodeSet.begin(); it != modeNodeSet.end(); ++it) {
 				xmlpp::NodeSet modeNameAttributeSet = (*it)->find("@name");
 
-				string modeName;
+				std::string modeName;
 
 				for (xmlpp::NodeSet::iterator ita = modeNameAttributeSet.begin(); modeName.size() == 0 && ita != modeNameAttributeSet.end(); ++ita) {
 					xmlpp::Attribute *modeNameAttribute = dynamic_cast<xmlpp::Attribute *>(*ita);
@@ -128,13 +136,13 @@ void ModesManager::parseXML(const fs::path path) {
 
 				Mode mode(modeName);
 
-				vector<Program> programs;
+				std::vector<Program> programs;
 				xmlpp::NodeSet programNodeSet = (*it)->find("pipeline/program");
 
 				for(xmlpp::NodeSet::iterator ita = programNodeSet.begin(); ita != programNodeSet.end(); ++ita) {
 					xmlpp::NodeSet programNameAttributeSet = (*ita)->find("@name");
 
-					string programName;
+					std::string programName;
 
 					for (xmlpp::NodeSet::iterator itb = programNameAttributeSet.begin(); programName.size() == 0 && itb != programNameAttributeSet.end(); ++itb) {
 						xmlpp::Attribute *programNameAttribute = dynamic_cast<xmlpp::Attribute *>(*itb);
@@ -143,7 +151,7 @@ void ModesManager::parseXML(const fs::path path) {
 
 					Program program(programName);
 
-					vector<string> fileNames;
+					std::vector<std::string> fileNames;
 
 					xmlpp::NodeSet fileNodeSet = (*ita)->find("file");
 
@@ -152,7 +160,7 @@ void ModesManager::parseXML(const fs::path path) {
 
 						for (xmlpp::NodeSet::iterator itc = fileNameAttributeSet.begin(); itc != fileNameAttributeSet.end(); ++itc) {
 							xmlpp::Attribute *fileNameAttribute = dynamic_cast<xmlpp::Attribute *>(*itc);
-							string fileName = fileNameAttribute->get_value();
+							std::string fileName = fileNameAttribute->get_value();
 
 							//if (!fs::exists(fileName)){
 							//	cout << "WARNING: " << fileName << " used by " << modeName << " but it doesn't exist." << endl;
@@ -178,8 +186,8 @@ void ModesManager::parseXML(const fs::path path) {
  */
 void ModesManager::initXML(const fs::path path) {
 	boost::regex e("modes\\.xml$");
-	list<fs::path> modeFiles = findFilesByRegex(path, e);
-	for (list<fs::path>::iterator it = modeFiles.begin(); it != modeFiles.end(); ++it) {
+	std::list<fs::path> modeFiles = findFilesByRegex(path, e);
+	for (std::list<fs::path>::iterator it = modeFiles.begin(); it != modeFiles.end(); ++it) {
 		fs::path curPath = (*it);
 		parseXML(curPath);
 	}
@@ -189,28 +197,28 @@ void ModesManager::initXML(const fs::path path) {
  * Parse the mode files having the .mode suffix present under an arbitrary path.
  */
 void ModesManager::initPipe(const fs::path path) {
-	string suffix = ".mode";
+	std::string suffix = ".mode";
 
 	//boost::regex e(".*\\.mode$")
 
-	list<fs::path> modeFiles = findFilesBySuffix(path, suffix);
+	std::list<fs::path> modeFiles = findFilesBySuffix(path, suffix);
 
-	for (list<fs::path>::iterator it = modeFiles.begin(); it != modeFiles.end(); ++it) {
+	for (std::list<fs::path>::iterator it = modeFiles.begin(); it != modeFiles.end(); ++it) {
 		fs::path curPath = (*it);
-		string fileName = curPath.filename();
+		std::string fileName = curPath.filename();
 
-		string modeName = fileName.substr(0, fileName.length()	- suffix.length());
+		std::string modeName = fileName.substr(0, fileName.length()	- suffix.length());
 
 		fs::ifstream inFile;
 		inFile.open(curPath);
 
-		string line, fileContent = "";
+		std::string line, fileContent = "";
 
 		while (getline(inFile, line)) {
 			fileContent += line + " ";
 		}
 
-		vector<string> commands;
+		std::vector<std::string> commands;
 
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 		boost::char_separator<char> sepp("|");
@@ -224,22 +232,22 @@ void ModesManager::initPipe(const fs::path path) {
 		boost::char_separator<char> seps(" \t\n\r");
 
 		Mode a(modeName);
-		vector<Program> programs;
+		std::vector<Program> programs;
 
-		for (vector<string>::iterator vit = commands.begin(); vit
+		for (std::vector<std::string>::iterator vit = commands.begin(); vit
 				!= commands.end(); vit++) {
-			vector<string> files;
+			std::vector<std::string> files;
 
 			tokenizer tokenss(*vit, seps);
 			tokenizer::iterator tit2 = tokenss.begin();
 
-			string command = *(tit2++);
+			std::string command = *(tit2++);
 
 			fs::path path(command);
 			command = boost::filesystem::basename(path);
 
 			while (tit2 != tokenss.end()) {
-				string param = *tit2;
+				std::string param = *tit2;
 				if (param[0] == '-' || param[0] == '$') {
 					command += (" " + param);
 				} else {
@@ -279,7 +287,7 @@ std::list<fs::path> ModesManager::findFilesBySuffix(const fs::path p, const std:
 			ret.sort();
 			ret.merge(a);
 			} else {
-				string fileName = itr->leaf();
+				std::string fileName = itr->leaf();
 				if (fileName.length() > suffix.length()) {
 					if (fileName.substr(fileName.length() - suffix.length(), suffix.length()) == suffix) {
 						ret.push_back(itr->path());
@@ -300,7 +308,7 @@ std::list<fs::path> ModesManager::findFilesByRegex(const fs::path p, const boost
 			ret.sort();
 			ret.merge(a);
 			} else {
-				string fileName = itr->leaf();
+				std::string fileName = itr->leaf();
 				if (regex_match(fileName, e))
 					ret.push_back(itr->path());
 			}
