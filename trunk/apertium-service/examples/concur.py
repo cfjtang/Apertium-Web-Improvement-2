@@ -16,7 +16,7 @@ class testit(Thread):
 
 def main():
 	proxy = xmlrpclib.ServerProxy("http://localhost:6173/RPC2");
-	for c in range(1, 2):
+	for c in range(1, 8):
 		cur = testit(proxy)
 		cur.start()
 
