@@ -51,7 +51,7 @@ namespace fs = boost::filesystem;
 
 Program::Program() { }
 
-Program::Program(const std::string p) : programName(p) { }
+Program::Program(const std::string p) : program(p) { }
 
 Program::~Program() { }
 
@@ -65,12 +65,18 @@ std::ostream& operator<<(std::ostream &output, Program &p) {
     return output;
 }
 
-std::string Program::getProgramName() {
-	return programName;
+std::string Program::getProgram() {
+	return program;
 }
 
-void Program::setProgramName(const std::string p) {
-	programName = p;
+void Program::setProgram(const std::string p) {
+	program = p;
+}
+
+std::string Program::getProgramName() {
+	fs::path path(program);
+	std::string ret = boost::filesystem::basename(path);
+	return ret;
 }
 
 std::vector<std::string> Program::getParameters() {
@@ -242,9 +248,6 @@ void ModesManager::initPipe(const fs::path path) {
 			tokenizer::iterator tit2 = tokenss.begin();
 
 			std::string command = *(tit2++);
-
-			fs::path path(command);
-			command = boost::filesystem::basename(path);
 
 			while (tit2 != tokenss.end()) {
 				std::string param = *tit2;
