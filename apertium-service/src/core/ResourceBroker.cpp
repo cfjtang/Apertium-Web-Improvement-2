@@ -78,8 +78,55 @@ void HMMWrapper::read(std::string index) {
 	hmm = new HMM(td);
 }
 
-HMM *HMMWrapper::getHmm() {
+HMM *HMMWrapper::get() {
 	return hmm;
+}
+
+CGApplicator::CGApplicator() {
+	applicator = NULL;
+	grammar = NULL;
+}
+
+CGApplicator::~CGApplicator() {
+	delete applicator;
+	delete grammar;
+}
+
+void CGApplicator::read(std::string index) {
+	const char *codepage_default = ucnv_getDefaultName();
+	const char *locale_default = "en_US_POSIX"; //uloc_getDefault();
+
+	int pret = 0;
+
+	//{ // XXX
+	//boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
+
+	grammar = new CG3::Grammar();
+
+	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
+	grammar->ux_stderr = ux_err;
+
+	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*grammar, ux_err);
+
+	parser->parse_grammar_from_file(index.data(), locale_default, codepage_default);
+	grammar->reindex();
+
+	delete parser;
+	//} // XXX
+
+	if (pret) {
+		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
+	}
+
+	applicator = new CG3::ApertiumApplicator(ux_err);
+
+	applicator->setNullFlush(false);
+
+	applicator->setGrammar(grammar);
+}
+
+CG3::ApertiumApplicator *CGApplicator::get() {
+	return applicator;
 }
 
 /*
@@ -279,38 +326,15 @@ template <> Case_Insensitive_Morph_Matcher *NonIndexedObjectPool<Case_Insensitiv
 
 boost::mutex ResourceBroker::cgMutex;
 
-template <> CG3::Grammar *NonIndexedObjectPool<CG3::Grammar>::getNewInstance(Program &p) {
+template <> CGApplicator *NonIndexedObjectPool<CGApplicator>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "ObjectPool<CG3::Grammar>::getNewInstance();");
 
 	std::vector<std::string> fileNames = p.getFileNames();
 
 	checkFile(fileNames[0]);
 
-	const char *codepage_default = ucnv_getDefaultName();
-	const char *locale_default = "en_US_POSIX"; //uloc_getDefault();
-
-	int pret = 0;
-	CG3::Grammar *ret = NULL;
-
-	{ // XXX
-	boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
-
-	ret = pool.construct();
-
-	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
-	ret->ux_stderr = ux_err;
-
-	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*ret, ux_err);
-
-	pret = parser->parse_grammar_from_file(fileNames[0].data(), locale_default, codepage_default);
-	ret->reindex();
-
-	delete parser;
-	} // XXX
-
-	if (pret) {
-		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
-	}
+	CGApplicator *ret = new CGApplicator();
+	ret->read(fileNames[0]);
 
 	return(ret);
 }
