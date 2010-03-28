@@ -98,31 +98,29 @@ void CGApplicator::read(std::string index) {
 
 	int pret = 0;
 
-	//{ // XXX
-	//boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
+	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
+
+	{ // XXX
+	boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
 
 	grammar = new CG3::Grammar();
-
-	UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
 	grammar->ux_stderr = ux_err;
 
 	CG3::IGrammarParser *parser = new CG3::BinaryGrammar(*grammar, ux_err);
 
-	parser->parse_grammar_from_file(index.data(), locale_default, codepage_default);
-	grammar->reindex();
+	pret = parser->parse_grammar_from_file(index.data(), locale_default, codepage_default);
+	//grammar->reindex();
 
 	delete parser;
-	//} // XXX
 
 	if (pret) {
 		throw ApertiumRuntimeException("Error: Grammar could not be parsed.");
 	}
 
 	applicator = new CG3::ApertiumApplicator(ux_err);
-
 	applicator->setNullFlush(false);
-
 	applicator->setGrammar(grammar);
+	} // XXX
 }
 
 CG3::ApertiumApplicator *CGApplicator::get() {
@@ -333,8 +331,16 @@ template <> CGApplicator *NonIndexedObjectPool<CGApplicator>::getNewInstance(Pro
 
 	checkFile(fileNames[0]);
 
-	CGApplicator *ret = new CGApplicator();
+	CGApplicator *ret = pool.construct();
 	ret->read(fileNames[0]);
+
+	return(ret);
+}
+
+template <> Process *NonIndexedObjectPool<Process>::getNewInstance(Program &p) {
+	Logger::Instance()->trace(Logger::Debug, "ObjectPool<Process>::getNewInstance();");
+
+	Process *ret = NULL;
 
 	return(ret);
 }

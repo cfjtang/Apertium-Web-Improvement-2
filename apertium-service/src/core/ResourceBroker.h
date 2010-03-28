@@ -75,6 +75,9 @@
 #include "ThreadSafeObjectPool.h"
 
 #include "core/ModesManager.h"
+
+#include "Process.h"
+
 #include "core/vislcg3/stdafx.h"
 #include "core/vislcg3/icu_uoptions.h"
 #include "core/vislcg3/Grammar.h"
@@ -333,6 +336,7 @@ public:
 #endif
 
 	IndexedObjectPool<CGApplicator> GrammarPool;
+	IndexedObjectPool<Process> ProcessPool;
 
 	static boost::mutex cgMutex;
 
