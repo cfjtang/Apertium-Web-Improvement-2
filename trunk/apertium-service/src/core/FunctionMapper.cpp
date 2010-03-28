@@ -185,15 +185,15 @@ void FunctionMapper::load(Program &p, unsigned int qty) {
 		break;
 
 	case CG_PROC: {
-		std::stack<CG3::Grammar*> mem;
+		std::stack<CGApplicator*> mem;
 
 		for (unsigned int i = 0; i < qty; ++i) {
-			CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
+			CGApplicator *grammar = resourceBroker->GrammarPool.acquire(p);
 			mem.push(grammar);
 		}
 
 		while (!mem.empty()) {
-			CG3::Grammar *grammar = mem.top();
+			CGApplicator *grammar = mem.top();
 			resourceBroker->GrammarPool.release(grammar, p);
 			mem.pop();
 		}
@@ -284,7 +284,7 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 
 	case APERTIUM_TAGGER: {
 		HMMWrapper *i = resourceBroker->HMMPool.acquire(p);
-		i->getHmm()->tagger(in, out, false);
+		i->get()->tagger(in, out, false);
 		resourceBroker->HMMPool.release(i, p);
 	}
 		break;
@@ -369,7 +369,7 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 
 		UFILE *ux_in = u_finit(in, locale_default, codepage_default);
 		UFILE *ux_out = u_finit(out, locale_default, codepage_default);
-		UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
+		//UFILE *ux_err = u_finit(stderr, locale_default, codepage_default);
 
 		bool wordform_case = false;
 
@@ -384,29 +384,12 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 				}
 		}
 
-		CG3::Grammar *grammar = resourceBroker->GrammarPool.acquire(p);
+		CGApplicator *grammar = resourceBroker->GrammarPool.acquire(p);
 
-		{
-		CG3::ApertiumApplicator aap(ux_err);
-
-		aap.setNullFlush(false);
-		aap.wordform_case = wordform_case;
-
-		aap.setGrammar(grammar);
-		aap.runGrammarOnText(ux_in, ux_out);
-
-		{ // XXX
-		boost::mutex::scoped_lock Lock(ResourceBroker::cgMutex);
-		aap.setGrammar(grammar);
-		aap.runGrammarOnText(ux_in, ux_out);
-		} // XXX
-		}
+		(grammar->get())->runGrammarOnText(ux_in, ux_out);
 
 		resourceBroker->GrammarPool.release(grammar, p);
 
-        u_fclose(ux_in);
-        u_fclose(ux_out);
-        u_fclose(ux_err);
 	}
 		break;
 	}

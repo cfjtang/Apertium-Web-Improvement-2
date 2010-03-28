@@ -284,10 +284,22 @@ public:
 	~HMMWrapper();
 
 	void read(std::string);
-	HMM *getHmm();
+	HMM *get();
 private:
 	HMM *hmm;
 	TaggerData *td;
+};
+
+class CGApplicator {
+public:
+	CGApplicator();
+	~CGApplicator();
+
+	void read(std::string);
+	CG3::ApertiumApplicator *get();
+private:
+	CG3::ApertiumApplicator *applicator;
+	CG3::Grammar *grammar;
 };
 
 /**
@@ -320,7 +332,7 @@ public:
 	IndexedObjectPool<Case_Insensitive_Morph_Matcher> Case_Insensitive_Morph_MatcherPool;
 #endif
 
-	IndexedObjectPool<CG3::Grammar> GrammarPool;
+	IndexedObjectPool<CGApplicator> GrammarPool;
 
 	static boost::mutex cgMutex;
 
