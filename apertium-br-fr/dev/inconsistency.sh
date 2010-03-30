@@ -1,6 +1,7 @@
 TMPDIR=/tmp
 
 lt-expand ../apertium-br-fr.br.dix | grep -v '<prn><enc>' | grep -e ':<:' -e '\w:\w' | sed 's/:<:/%/g' | sed 's/:/%/g' | cut -f2 -d'%' |  sed 's/^/^/g' | sed 's/$/$ ^.<sent>$/g' | tee $TMPDIR/tmp_testvoc1.txt |
+	cg-proc ../br-fr.rlx.bin|
         apertium-pretransfer|
         apertium-transfer ../apertium-br-fr.br-fr.t1x  ../br-fr.t1x.bin  ../br-fr.autobil.bin |
         apertium-interchunk ../apertium-br-fr.br-fr.t2x  ../br-fr.t2x.bin |

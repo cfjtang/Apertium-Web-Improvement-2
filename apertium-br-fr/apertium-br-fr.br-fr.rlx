@@ -126,7 +126,7 @@ LIST MixedMutTrigger  = ("e"ri vpart);
 # Orthography
 LIST DroppedG         = ("<[aeiou].*>"r "g[aeiou].*"ri);
 
-LIST UPPER = ("<[ABCDEFGHIJKLMNOPQRSTUVWXYZ].*>"ri);
+LIST UPPER = ("<[ABCDEFGHIJKLMNOPQRSTUVWXYZ].*>"r);
 
 #
 #	Semantic lists
@@ -621,10 +621,17 @@ REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 Adj OR Ord);
 # Skrivadeg e brezhoneg e Kemper e miz Meurzh
 REMOVE PrnDObj IF (-1C NC) (0 Prep) (0 PrnDObj); 
 
-REMOVE Vpart + ("e") IF (1 MixedMutCons) (NOT 1 MixedMut);
+#Skuizh e oan c'hoazh
+REMOVE Vpart + ("e") IF (1 MixedMutCons) (NOT 1 MixedMut) (NOT 1 ("<[aeiou].*>"ri));
+
+#Skuizh e oan c'hoazh
+REMOVE NC IF (0 ("<oan>" n)) (0 ("<oan>" vblex)) (-1 ("e"));
 
 #dre ret ½ bost war ar buheziñ politikel 
 REMOVE VerbFin IF (NOT -1C Vpart);
+
+#met bezañ a ra e Gwipedel
+SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
 
 SECTION
 
