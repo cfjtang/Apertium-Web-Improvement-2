@@ -86,9 +86,9 @@ for i in `grep stik__n apertium-sv-da.da.dix | cut -d '"' -f 2 | sort -u`; do ec
 -->
 
 <!-- Autocorrecting paradigms.
-If an entry has one of these paradigms applied or the word 'autofix' as a comment, AND no other paradigms are applied,
+If an entry has only these paradigms applied or the word 'autoconcord' as a comment (AND no other paradigms are applied),
 then the paradigms will be regenerated in concordance with the monodices, by the command
-apertium-dixtools XXX  apertium-sv-da.sv-da.dix
+apertium-dixtools autoconcord apertium-sv-da.sv-da.dix
 TODO write exact command
 -->
 
@@ -1348,7 +1348,7 @@ jordbær  jordbær
 <e>       <p><l>blåsinstrument<s n="n"/></l>           <r>blæseinstrument<s n="n"/></r></p><par n="_nt_nt"/><par n="_sp_sgpl"/></e>
 <e>       <p><l>blödning<s n="n"/></l>                 <r>blødning<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>blötdjur<s n="n"/></l>                 <r>bløddyr<s n="n"/></r></p><par n="_nt_nt"/></e>
-<e>       <p><l>bo<s n="n"/></l>                       <r>bo<s n="n"/></r></p><par n="_nt_nt"/></e>
+<e>       <p><l>bo<s n="n"/></l>                       <r>bo<s n="n"/></r></p><par n="_nt_nt"/><par n="_sgpl_sp"/></e>
 <e>       <p><l>bok<s n="n"/></l>                      <r>bog<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>bokbuss<s n="n"/></l>                  <r>bogbus<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>bokförlag<s n="n"/></l>                <r>bogforlag<s n="n"/></r></p><par n="_nt_nt"/></e>
@@ -2397,7 +2397,7 @@ jordbær  jordbær
 <e>       <p><l>gruva<s n="n"/></l>                    <r>mine<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>gryn<s n="n"/></l>                     <r>gryn<s n="n"/></r></p><par n="_nt_nt"/></e>
 <e>       <p><l>gryning<s n="n"/></l>                  <r>daggry<s n="n"/></r></p><par n="_ut_nt"/><par n="_sgpl_sp"/></e>
-<e>       <p><l>gryt<s n="n"/></l>                     <r>bo<s n="n"/></r></p><par n="_nt_nt"/><par n="_sp_sgpl"/></e>
+<e>       <p><l>gryt<s n="n"/></l>                     <r>bo<s n="n"/></r></p><par n="_nt_nt"/></e>
 <e>       <p><l>gryta<s n="n"/></l>                    <r>gryde<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>grädde<s n="n"/></l>                   <r>fløde<s n="n"/></r></p><par n="_ut_ut"/></e>
 
@@ -2691,7 +2691,6 @@ jordbær  jordbær
 <e>       <p><l>höst<s n="n"/></l>                     <r>høst<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>höst<s n="n"/></l>                     <r>efterår<s n="n"/></r></p><par n="_ut_nt"/><par n="_sgpl_sp"/></e>
 <e>       <p><l>höstlov<s n="n"/></l>                  <r>efterårsferie<s n="n"/></r></p><par n="_nt_ut"/></e>
-<e>       <p><l>id<s n="n"/></l>                       <r>rimte<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>ideal<s n="n"/></l>                    <r>ideal<s n="n"/></r></p><par n="_nt_nt"/><par n="_sp_sgpl"/></e>
 <e>       <p><l>ideal<s n="n"/></l>                    <r>ideal<s n="n"/></r></p><par n="_nt_nt"/><par n="_sp_sgpl"/></e>
 <e>       <p><l>identifiering<s n="n"/></l>            <r>identificering<s n="n"/></r></p><par n="_ut_ut"/></e>
@@ -4675,7 +4674,7 @@ jordbær  jordbær
 <e>       <p><l>skriptspråk<s n="n"/></l>              <r>scriptsprog<s n="n"/></r></p><par n="_nt_nt"/></e>
 
 <e>       <p><l>skrivare<s n="n"/></l>                 <r>printer<s n="n"/></r></p><par n="_ut_ut"/><par n="_sp_sgpl"/></e>
-<e>       <p><l>skrivare<s n="n"/><s n="ut"/></l>      <r>printer<s n="n"/></r></p></e>
+<e>       <p><l>skrivare<s n="n"/></l>                 <r>printer<s n="n"/></r></p><par n="_ut_ut"/><par n="_sp_sgpl"/></e>
 <e>       <p><l>skrivbord<s n="n"/></l>                <r>skrivebord<s n="n"/></r></p><par n="_nt_nt"/><par n="_sp_sgpl"/></e>
 <e>       <p><l>skrivmaskin<s n="n"/></l>              <r>skrivemaskine<s n="n"/></r></p><par n="_ut_ut"/></e>
 <e>       <p><l>skrivning<s n="n"/></l>                <r>skrivning<s n="n"/></r></p><par n="_ut_ut"/></e>
@@ -6593,7 +6592,6 @@ jordbær  jordbær
 <e>       <p><l>musikalisk<s n="adj"/></l>             <r>musikalsk<s n="adj"/></r></p><par n="afrikansk_amerikansk__adj"/></e>
 <e>       <p><l>matematisk<s n="adj"/></l>             <r>matematisk<s n="adj"/></r></p><par n="afrikansk_amerikansk__adj"/></e>
 <e>       <p><l>indisk<s n="adj"/></l>                 <r>indisk<s n="adj"/></r></p><par n="afrikansk_amerikansk__adj"/></e>
-<e>       <p><l>demokrati<s n="n"/></l>                <r>demokrati<s n="n"/></r></p><par n="_ut_nt"/><par n="afrikansk_amerikansk__adj"/></e>
 <e>       <p><l>demokratisk<s n="adj"/></l>            <r>demokratisk<s n="adj"/></r></p><par n="afrikansk_amerikansk__adj"/></e>
 <e>       <p><l>mystisk<s n="adj"/></l>                <r>mystisk<s n="adj"/></r></p><par n="afrikansk_amerikansk__adj"/></e>
 <e>       <p><l>elastisk<s n="adj"/></l>               <r>elastisk<s n="adj"/></r></p><par n="afrikansk_amerikansk__adj"/></e>
