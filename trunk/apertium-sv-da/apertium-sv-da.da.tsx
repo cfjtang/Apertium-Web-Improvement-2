@@ -119,7 +119,7 @@
     <tags-item tags="vbmod.supn.*"/>
   </def-label>
   <def-label name="VBMODPPRES" closed="true">
-    <tags-item tags="vbmod.ppres"/>
+    <tags-item tags="vbmod.pprs"/>
   </def-label>
    <def-label name="VBAUXPRS" closed="true">
     <tags-item tags="vbaux.prs"/>
@@ -155,7 +155,7 @@
     <tags-item tags="vblex.pp.*"/>
   </def-label>
   <def-label name="VBLEXPPRES" closed="true">
-    <tags-item tags="vblex.ppres"/>
+    <tags-item tags="vblex.pprs"/>
   </def-label>
   <def-label name="VBLEXINF" closed="true">
     <tags-item tags="vblex.inf.*"/>
@@ -179,10 +179,10 @@
     <tags-item tags="vbser.supn.*"/>
   </def-label>
   <def-label name="VBSERPPRES" closed="true">
-    <tags-item tags="vbser.ppres"/>
+    <tags-item tags="vbser.pprs"/>
   </def-label>
   <def-label name="VBSERPPRESS" closed="true">
-    <tags-item tags="vbser.ppres.*"/>
+    <tags-item tags="vbser.pprs.*"/>
   </def-label>
   <def-label name="VBHAVERPRES" closed="true">
     <tags-item tags="vbhaver.pres.*"/>
@@ -191,7 +191,7 @@
     <tags-item tags="vbhaver.past.*"/>
   </def-label>
   <def-label name="VBHAVERPPRES" closed="true">
-    <tags-item tags="vbhaver.ppres"/>
+    <tags-item tags="vbhaver.pprs"/>
   </def-label>
   <def-label name="IMP">
     <tags-item tags="vblex.imp"/>
