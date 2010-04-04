@@ -245,7 +245,8 @@ SELECT PrnSubj IF (1 VpartSDO) (2 VerbFin);
 SELECT VpartSDO IF ((-1 PrnSubj) OR (-1 PrnDObj));
 
 # REGLA (B0002): "eviti e laboure"
-SELECT VpartIDO IF ((-1 PrnIObj) OR (-1 Adv));
+# Da skouer e 2004 e oa bet embannet gant Unvaniezh Europa
+SELECT VpartIDO IF ((-1 PrnIObj) OR (-1 Adv)) (1 Verb);
 
 # REGLA (B0003): "na ganit ket"
 SELECT VpartNegImp IF (1 VerbImp);
@@ -634,6 +635,9 @@ REMOVE VerbFin IF (NOT -1C Vpart);
 
 #met bevañ a ra e Gwipedel
 SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
+
+#Da skouer e 2004 e oa bet embannet gant Unvaniezh Europa
+REMOVE Vpart IF (1C Num);
 
 SECTION
 
