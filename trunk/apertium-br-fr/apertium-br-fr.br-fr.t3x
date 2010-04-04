@@ -2,11 +2,18 @@
 <postchunk>
   <section-def-cats>
 
+    <def-cat n="prnperssubj">
+      <cat-item name="prnperssubj"/>
+    </def-cat>
     
     <def-cat n="inf">
       <cat-item name="inf"/>
     </def-cat> 
-    
+
+     <def-cat n="haver_pp">
+      <cat-item name="haver_pp"/>
+    </def-cat> 
+     
      <def-cat n="prep">
       <cat-item name="PREP"/>
     </def-cat> 
@@ -188,7 +195,72 @@
 </section-def-macros>
 
   <section-rules>
+	
+		<rule comment="CHUNK: ">
+			<pattern>
+				<pattern-item n="haver_pp"/>
+			</pattern>
+			<action>
+                        <choose>
+                          <when>
+                            <test>
+                              <or>
+                              <equal>
+                                <clip pos="2" part="gen"/>
+                                <lit-tag v="mf"/> <!-- Los participios en francés no pueden ser mf -->
+                              </equal>
+                              <equal>
+                                <clip pos="2" part="gen"/>
+                                <lit-tag v="GD"/>
+                              </equal>
+                              </or>
+                            </test>
+                            <let>
+                              <clip pos="2" part="gen"/>
+                              <lit-tag v="m"/>
+                            </let>
+                          </when>
+                        </choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+                                        <b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+				</out>   
+			</action>
+		</rule> 
+
 		
+		<rule comment="CHUNK: ">
+			<pattern>
+				<pattern-item n="prnperssubj"/>
+			</pattern>
+			<action>
+                        <choose>
+                          <when>
+                            <test>
+                              <equal>
+                                <clip pos="1" part="gen"/>
+                                <lit-tag v="GD"/>
+                              </equal>
+                            </test>
+                            <let>
+                              <clip pos="1" part="gen"/>
+                              <lit-tag v="m"/>
+                            </let>
+                          </when>
+                        </choose>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>   
+			</action>
+		</rule> 
+
 		<rule comment="CHUNK: arregla en cv de relatiu que/qui">
 			<pattern>
 				<pattern-item n="qui"/>
