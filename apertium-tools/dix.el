@@ -1,4 +1,4 @@
-; dix.el -- minor mode for editing Apertium dictionary files
+					; dix.el -- minor mode for editing Apertium dictionary files
 
 ; See http://wiki.apertium.org 
 
@@ -48,8 +48,11 @@
 ;;; 
 ;;; I like having the following set too:
 ;; (setq nxml-sexp-element-flag t 		; treat <e>...</e> as a sexp
+;;       nxml-completion-hook '(rng-complete t) ; C-RET completes based on DTD
 ;;       rng-nxml-auto-validate-flag nil)       ; 8MB of XML takes a while
-;;; You can always turn on validation again with C-c C-v.
+;;; You can always turn on validation again with C-c C-v. Validation
+;;; is necessary for the C-RET completion, which is really handy in
+;;; transfer files.
 ;;; 
 ;;; 
 ;;; I haven't bothered with defining a real indentation function, but
@@ -77,15 +80,15 @@
 ;;;   we "paste" side-by-side.
 ;;; - `dix-LR-restriction-copy' (and the other copy functions) could
 ;;;   add a="author"
-;;; - `dix-dixfiles' should be a list of strings instead.
+;;; - `dix-dixfiles' should be a list of strings instead (could also
+;;;   optionally auto-add all files from modes.xml?)
 ;;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
 ;;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
 ;;;   do with spaces
 ;;; - `dix-reverse' should be able to reverse on a regexp match, so
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
-
-(defconst dix-version "2010-03-05") 
+(defconst dix-version "2010-04-06") 
 
 (require 'nxml-mode)
 (require 'easymenu)
@@ -521,8 +524,10 @@ attribute and <i> or <p> elements."
   (interactive "P")
   ;; todo: find the first one of these: list-item, e, def-var, sdef, attr-item, cat-item, clip, pattern-item, 
   (dix-up-to "e" "pardef")
-  (let ((beg (point))
-	(end (1+ (nxml-scan-element-forward (point)))))
+  (let ((beg (or (re-search-backward "^[\t ]*" (line-beginning-position) 'noerror) (point)))
+	(end (1+ (save-excursion
+		   (goto-char (nxml-scan-element-forward (point)))
+		   (or (re-search-forward "[\t ]*$" (line-end-position) 'noerror) (point))))))
     (goto-char end)
     (insert (buffer-substring-no-properties beg end))
     (let ((copyend (point)))
@@ -806,15 +811,26 @@ also `dix-next'."
   (interactive "p")
   (dix-next (- (if step step 1))))
 
+(defun dix-nearest-pdname (origin)
+  "Return the pardef-name nearest `origin' within an <e> element."
+  (save-excursion
+    (dix-up-to "e")
+    (let* ((e-end (nxml-scan-element-forward (nxml-token-before)))
+	   (pdname (and (re-search-forward "par\\s *n=\"\\([^\"]*\\)\"" e-end)
+			(match-string-no-properties 1))))
+      (while (and (re-search-forward "<par\\s *n=\"\\([^\"]*\\)\"" e-end 'noerror)
+		  (< (match-beginning 0) origin))
+	(setq pdname (match-string-no-properties 1)))
+      pdname)))
+
 (defun dix-goto-pardef ()
   "Call from an entry to go to its pardef. Mark is pushed so you
 can go back with C-u \\[set-mark-command]."
   (interactive)
-  (let (pos)
+  (let ((start (point))
+	pos)
     (if (save-excursion
-	  (dix-up-to "e")
-	  (re-search-forward "n=\"\\([^\"]*\\)\"")
-	  (let ((pdname (match-string 1)))
+	  (let* ((pdname (dix-nearest-pdname start)))
 	    (goto-char (point-min))
 	    (if (re-search-forward
 		 (concat "<pardef *n=\"" pdname "\"") nil t)
