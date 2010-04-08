@@ -45,7 +45,7 @@ public class HighlightView extends WrappedPlainView {//PlainView
 
     // http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html
     private static String TAG = "(<[\\p{L}\\d\\.\\s]+>)";
-    private static String W = "[\\p{L}\\d\\.]+";
+    private static String W = "[\\p{L}\\d\\._ ]+";
     private static String ANALYSIS_UNKNOWN_WORD = "(\\^"+W+"/)\\*"+W+"+\\$";
     private static String ANALYSIS_AMBIGIOUS_WORD = "(\\^"+W+"/)[^\\$]+(?:/[^\\$]+)+\\$";
     private static String ANALYSIS_UNAMBIGIOUS_WORD = "(\\^"+W+"/)[^/\\*\\$]+\\$";
@@ -59,7 +59,7 @@ public class HighlightView extends WrappedPlainView {//PlainView
         patternColors = new HashMap<Pattern, Color>();
         patternColors.put(Pattern.compile(TAG),  Color.decode("#aaaaaa"));
         patternColors.put(Pattern.compile(ANALYSIS_UNKNOWN_WORD),  Color.RED);
-        patternColors.put(Pattern.compile(ANALYSIS_AMBIGIOUS_WORD),  Color.ORANGE.darker());
+        patternColors.put(Pattern.compile(ANALYSIS_AMBIGIOUS_WORD),  Color.RED);//Color.ORANGE.darker());
         patternColors.put(Pattern.compile(ANALYSIS_UNAMBIGIOUS_WORD),  Color.BLUE);
         patternColors.put(Pattern.compile(LEMMA),  Color.BLUE);
         patternColors.put(Pattern.compile(UNKNOWN_LEMMA),  Color.RED.darker());
