@@ -15,13 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
-import javax.swing.text.GlyphView;
-import javax.swing.text.LabelView;
-import javax.swing.text.PlainDocument;
-import javax.swing.text.PlainView;
 import javax.swing.text.Segment;
 import javax.swing.text.Utilities;
 import javax.swing.text.WrappedPlainView;
@@ -48,45 +43,27 @@ public class HighlightView extends WrappedPlainView {//PlainView
     private static HashMap<Pattern, Color> patternColors;
  // IMPORTANT NOTE: regex should contain 1 group. Groups other than group one is ignored
 
-    /*
-    private static String TAG = "(<[^/>]+)>?";
-    private static String LEMMA = "\\^([^</]+)";
-    private static String UNKNOWN_LEMMA = "\\^(\\w+)\\/\\*\\w+\\$";
-    private static String AMBIGIOUS_LEMMA = "\\^(\\w+)/[^\\$]+(/[^\\$]+)+\\$";
-    private static String COMMENT = "(<!--.*-->)";
-
-     */
-
-    /* meget gammel
-    private static String TAG = "(<[\\w\\s]+)>?";
-    private static String LEMMA = "\\^(\\w+)";
-    //private static String UNKNOWN_LEMMA = "\\^(\\w+\\/\\*\\w+)\\$";
-    private static String UNKNOWN_LEMMA = "\\^(\\w+)\\/\\*\\w+\\$";
-    private static String AMBIGIOUS_LEMMA = "\\^(\\w+)/[^\\$]+(/[^\\$]+)+\\$";
-    private static String COMMENT = "(<!--.*-->)";
-*/
-    private static String TAG = "(<[\\p{L}\\d\\.\\s]+)>?";
-    private static String LEMMA = "\\^([\\p{L}\\d\\.]+)";
-    private static String UNKNOWN_LEMMA = "(\\*[\\p{L}\\d\\.]+)\\$";
-    //private static String AMBIGIOUS_LEMMA = "\\^(\\w+)/[^\\$]+(/[^\\$]+)+\\$";
-    private static String COMMENT = "(<!--.*-->)";
+    // http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html
+    private static String TAG = "(<[\\p{L}\\d\\.\\s]+>)";
+    private static String W = "[\\p{L}\\d\\.]+";
+    private static String ANALYSIS_UNKNOWN_WORD = "(\\^"+W+"/)\\*"+W+"+\\$";
+    private static String ANALYSIS_AMBIGIOUS_WORD = "(\\^"+W+"/)[^\\$]+(?:/[^\\$]+)+\\$";
+    private static String ANALYSIS_UNAMBIGIOUS_WORD = "(\\^"+W+"/)[^/\\*\\$]+\\$";
+    private static String LEMMA = "\\^("+W+")(<[\\p{L}\\d\\.\\s]+>)*\\$";
+    private static String UNKNOWN_LEMMA = "\\^(\\*"+W+")\\$";
+    private static String CHUNK = "\\^("+W+")(<[\\p{L}\\d\\.\\s]+>)*\\{";
 
 
 
     static {
-        // NOTE: the order is important!
         patternColors = new HashMap<Pattern, Color>();
-        // tags are #aaaaaa, ^ and $ are #009900 { } are #999900 @ * # are #990000 and [] are #aaaaff 
         patternColors.put(Pattern.compile(TAG),  Color.decode("#aaaaaa"));
+        patternColors.put(Pattern.compile(ANALYSIS_UNKNOWN_WORD),  Color.RED);
+        patternColors.put(Pattern.compile(ANALYSIS_AMBIGIOUS_WORD),  Color.ORANGE.darker());
+        patternColors.put(Pattern.compile(ANALYSIS_UNAMBIGIOUS_WORD),  Color.BLUE);
         patternColors.put(Pattern.compile(LEMMA),  Color.BLUE);
-        patternColors.put(Pattern.compile(UNKNOWN_LEMMA),  Color.RED);
-        //patternColors.put(Pattern.compile(AMBIGIOUS_LEMMA),  Color.RED.darker());
-        //patternColors.put(Pattern.compile("([\\^\\$]+)"),  Color.decode("#009900"));
-        //patternColors.put(Pattern.compile("([{}]+)"),  Color.decode("#999900"));
-        //patternColors.put(Pattern.compile("([@\\*#]+)"),  Color.decode("#990000"));
-        //patternColors.put(Pattern.compile("([\\[\\]]+)"),  Color.decode("#aaaaff"));
-        patternColors.put(Pattern.compile(COMMENT), Color.LIGHT_GRAY);
-
+        patternColors.put(Pattern.compile(UNKNOWN_LEMMA),  Color.RED.darker());
+        patternColors.put(Pattern.compile(CHUNK),  Color.CYAN.darker());
     }
 
 
@@ -105,6 +82,7 @@ public class HighlightView extends WrappedPlainView {//PlainView
         for (Map.Entry<Pattern, Color> entry : patternColors.entrySet()) {
 
             Matcher matcher = entry.getKey().matcher(text);
+            
 
             while (matcher.find()) {
                 startMap.put(matcher.start(1), matcher.end(1));

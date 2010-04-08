@@ -6,6 +6,8 @@ package apertiumview;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.SwingUtilities;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -44,15 +46,22 @@ public class ApertiumViewMain extends SingleFrameApplication {
         if (mainFrame.prefs.get("dividerLocation", null)==null) {
             mainFrame.fitToText();
         }
+        // Seems like closing window doesent exit the app - so force exit
+        root.addWindowListener(new WindowAdapter() {
+        @Override
+          public void windowClosing(WindowEvent e) {shutdown(); System.exit(0);}
+        });
         
     }
 
      @Override protected void shutdown() {
          mainFrame.shutdown();
          java.awt.Window root= SwingUtilities.getWindowAncestor(mainFrame.mainPanel);
-        Point l = root.getLocation();
-        Dimension d = root.getSize();
-        mainFrame.prefs.put("geometry", ""+l.x+","+l.y+","+d.width+","+d.height);         
+        Point location = root.getLocation();
+
+        Dimension size = root.getSize();
+        mainFrame.prefs.put("geometry", ""+location.x+","+location.y+","+size.width+","+size.height);
+        System.err.println("shutdown size = " + size);
 
          super.shutdown();
      }
