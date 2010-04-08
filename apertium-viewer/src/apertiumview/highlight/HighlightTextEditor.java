@@ -20,14 +20,16 @@ public class HighlightTextEditor extends JTextPane {
             return super.getPreferredSize();
         }
         Dimension size = null;
-        if (ui != null) try {
+        try {
             // For some reason this sometimes fails.
-            size = ui.getPreferredSize(this);
+            if (ui != null) size = ui.getPreferredSize(this);
+            return (size != null) ? size : super.getPreferredSize();
         } catch (Exception e2) {
-            e2.printStackTrace();
+            //e2.printStackTrace();
+            System.err.println("Ignoring in getPreferredSize(): " + e2);
+            return new Dimension(800, 200);
         }
 
-        return (size != null) ? size : super.getPreferredSize();
     }
     
     

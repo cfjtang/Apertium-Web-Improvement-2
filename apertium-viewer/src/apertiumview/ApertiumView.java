@@ -4,23 +4,18 @@
 
 package apertiumview;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
 import org.jdesktop.application.*;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -33,7 +28,6 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.Collections;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -131,6 +125,8 @@ public class ApertiumView extends FrameView {
         
         startingUp = false;
         
+        showMode((Mode) modesComboBox.getSelectedItem());
+  
         String txt = prefs.get("inputText", textWidget1.getText());        
         System.err.println("startup txt = " + txt);
         try {
@@ -150,6 +146,8 @@ public class ApertiumView extends FrameView {
         storeTextButton.addKeyListener(switchFocus);
         copyTextButton.addKeyListener(switchFocus);
         fitToTextButton.addKeyListener(switchFocus);
+        
+        //app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     
@@ -406,6 +404,7 @@ public class ApertiumView extends FrameView {
             Pipeline.getPipeline().execPath  = m.file.getParentFile();
         }
         System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
+        //new Exception().printStackTrace();
         
         String envVars = prefs.get("envVars", "").trim();
         Pipeline.getPipeline().envp = envVars.isEmpty()?null: envVars.split("\n");
@@ -474,16 +473,22 @@ public class ApertiumView extends FrameView {
 
     mainPanel.setAutoscrolls(true);
 
-    modesComboBox.setToolTipText("Change mode (language)");
+    modesComboBox.setToolTipText("Change mode (language pair)");
     modesComboBox.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         modesComboBoxActionPerformed(evt);
       }
     });
 
-    javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
-    fitToTextButton.setAction(actionMap.get("fitToText")); // NOI18N
+    fitToTextButton.setMnemonic('I');
+    fitToTextButton.setText("Fit");
+    fitToTextButton.setToolTipText("Fits the text areas to the size of the contained text");
     fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
+    fitToTextButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fitToText(evt);
+      }
+    });
 
     textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
 
@@ -499,21 +504,28 @@ public class ApertiumView extends FrameView {
     textWidgetsPanel.setLayout(textWidgetsPanelLayout);
     textWidgetsPanelLayout.setHorizontalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 979, Short.MAX_VALUE)
+      .addGap(0, 980, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 979, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE))
     );
     textWidgetsPanelLayout.setVerticalGroup(
       textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 418, Short.MAX_VALUE)
+      .addGap(0, 414, Short.MAX_VALUE)
       .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
     );
 
     jScrollPane1.setViewportView(textWidgetsPanel);
 
-    copyTextButton.setAction(actionMap.get("copyText")); // NOI18N
+    copyTextButton.setMnemonic('C');
+    copyTextButton.setText("Copy");
+    copyTextButton.setToolTipText("<html>Copy text from all stages to the clipboard.<br>Hidden stages and stages with no change are ignored.<br>Usefull for pasting into chat/email");
     copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
+    copyTextButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        copyText(evt);
+      }
+    });
 
     showCommandsCheckBox.setMnemonic('H');
     showCommandsCheckBox.setSelected(true);
@@ -535,6 +547,7 @@ public class ApertiumView extends FrameView {
 
     storeTextButton.setMnemonic('S');
     storeTextButton.setText("Store");
+    storeTextButton.setToolTipText("Stores input text for later use");
     storeTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
     storeTextButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -546,9 +559,15 @@ public class ApertiumView extends FrameView {
     jLabel1.setLabelFor(modesComboBox);
     jLabel1.setText("Mode");
 
-    jButton1.setAction(actionMap.get("hideIntermediate")); // NOI18N
+    jButton1.setMnemonic('D');
     jButton1.setText("Hide intermediate");
+    jButton1.setToolTipText("Hides all but input and output");
     jButton1.setMargin(new java.awt.Insets(0, 4, 0, 4));
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        hideIntermediate(evt);
+      }
+    });
 
     javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
     mainPanel.setLayout(mainPanelLayout);
@@ -566,7 +585,7 @@ public class ApertiumView extends FrameView {
         .addComponent(copyTextButton)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(storeTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
         .addComponent(jLabel1)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -585,12 +604,13 @@ public class ApertiumView extends FrameView {
           .addComponent(jLabel1)
           .addComponent(jButton1))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE))
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
     );
 
     fileMenu.setMnemonic('F');
     fileMenu.setText("File");
 
+    javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
     loadModeMenuItem.setAction(actionMap.get("loadMode")); // NOI18N
     fileMenu.add(loadModeMenuItem);
 
@@ -614,7 +634,12 @@ public class ApertiumView extends FrameView {
     makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
     toolsMenu.add(makeTestCaseMenuItem);
 
-    importTestCaseMenuItem.setAction(actionMap.get("importTestCase")); // NOI18N
+    importTestCaseMenuItem.setText("Import Test Case...");
+    importTestCaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        importTestCase(evt);
+      }
+    });
     toolsMenu.add(importTestCaseMenuItem);
 
     storedTextsMenu.setMnemonic('S');
@@ -629,7 +654,13 @@ public class ApertiumView extends FrameView {
     changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
     helpMenu.add(changeFontMenuItem);
 
-    optionsMenuItem.setAction(actionMap.get("editOptions")); // NOI18N
+    optionsMenuItem.setMnemonic('O');
+    optionsMenuItem.setText("Options");
+    optionsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        editOptions(evt);
+      }
+    });
     helpMenu.add(optionsMenuItem);
 
     helpMenuItem.setText("Help...");
@@ -650,7 +681,7 @@ public class ApertiumView extends FrameView {
   }// </editor-fold>//GEN-END:initComponents
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-// TODO add your handling code here:
+  if (!startingUp)
     showMode((Mode) modesComboBox.getSelectedItem());
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
@@ -726,40 +757,126 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 }//GEN-LAST:event_helpMenuItemActionPerformed
 
+private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOptions
+  OptionsPanel op = new OptionsPanel();
+  op.workingDirTextField.setText(prefs.get("workingDir", ""));
+  op.envVarsTextArea.setText(prefs.get("envVars", ""));
+  int ret = JOptionPane.showConfirmDialog(mainPanel, op,"Edit Options", JOptionPane.OK_CANCEL_OPTION);
+  if (ret == JOptionPane.OK_OPTION) {
+    prefs.put("workingDir", op.workingDirTextField.getText());
+    prefs.put("envVars", op.envVarsTextArea.getText());
+    modesComboBoxActionPerformed(null); // reload the current mode
+  }
+}//GEN-LAST:event_editOptions
+
+private void importTestCase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importTestCase
+  // TODO add your handling code here:
+   String text = "Here you can import input sentences you want to test.\n"+
+       "For example, go to http://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"+
+       "# (en) My dog → Mia hundo\n"+
+       "# (en) My big dogs → Miaj grandaj hundoj\n"+
+       "# (en) Your big dogs → Viaj grandaj hundoj\n"+
+       "# (en) Her cat → Ŝia kato\n"+
+       "# (en) Her small cats → Ŝiaj malgrandaj katoj \n"+
+       "# (en) The fastest snails -> La plej rapidaj helikoj \n\n"+
+       "All souce text will be extracted.";
+  JTextArea ta = new JTextArea(text);
+  String res = "";
+  int ret = JOptionPane.showConfirmDialog(mainPanel, ta,"Past test cases from a Wiki page", JOptionPane.OK_CANCEL_OPTION);
+  if (ret == JOptionPane.OK_OPTION) {
+        for (String s : ta.getText().split("\n")) {
+            int x1 = s.indexOf(')');
+            if (x1==-1) continue; // no ), so skip line
+            int x2 = s.indexOf('→');
+            if (x2==-1) x2 = s.indexOf("->");
+            if (x2==-1) x2 = s.indexOf("=>");
+            if (x2<x1) continue; // no → found after ), so skip line
+            res = res + "\n" + s.substring(x1+1, x2).trim();
+        }
+        if (res.trim().length()==0) {
+            JOptionPane.showMessageDialog(mainPanel, "You didn't enter any test cases with text between a ) and a →. \nTry again.");
+        } else {
+          textWidget1.setText(res.trim());
+        }
+  }
+}//GEN-LAST:event_importTestCase
+
+private void hideIntermediate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideIntermediate
+    int toth = 0;
+    for (TextWidget w : textWidgets) {
+        Dimension d = w.textEditor.getPreferredSize();
+        d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
+
+
+        if (w == textWidget1 || w == textWidgets.get(textWidgets.size()-1)) {
+            d.height += w.commandTextField.getPreferredSize().height;
+            d.height += insetHeight(w.commandTextField);
+        } else {
+            d.height = 0;
+        }
+
+        w.setMinimumSize(d);
+        w.setPreferredSize(d);
+        toth += d.height;
+    }
+
+   ajustSplitPaneHeights(toth);
+}//GEN-LAST:event_hideIntermediate
+
+private void copyText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyText
+    String tottxt = "";
+    String lasttxt = "";
+    for (TextWidget w : textWidgets) {
+        if (!w.getVisibleRect().isEmpty()) {
+            String txt = w.getText();
+            if (!txt.equals(lasttxt)) {
+                tottxt += txt + "\n";
+            }
+            lasttxt = txt;
+        }
+    }
+
+    System.out.println(tottxt);
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt), null);
+		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt),"Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
+}//GEN-LAST:event_copyText
 
     private int insetHeight(JComponent c) {
         Insets i = c.getInsets();
         return i.top + i.bottom;
-    } 
+    }
 
+private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToText
+    //System.out.println();
+    //System.out.println("============fitToText()");
+    int toth = 0;
+    for (TextWidget w : textWidgets) {
 
-    @Action
-    public void fitToText() {
-        //System.out.println();
-        //System.out.println("============fitToText()");
-        int toth = 0;
-        for (TextWidget w : textWidgets) {
+        Dimension d = w.textEditor.getPreferredSize();
+        d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
 
-            Dimension d = w.textEditor.getPreferredSize();
-            d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
-
-            if (w.commandTextField.isVisible()) {
-                d.height += w.commandTextField.getPreferredSize().height;
-                d.height += insetHeight(w.commandTextField);
-            }
-
-            //System.out.println("d="+d.height);
-            
-            if (w.getStatus()==w.STATUS_EQUAL) d.height = 0;
-            
-            w.setMinimumSize(d);
-            w.setPreferredSize(d);
-            toth += d.height;
+        if (w.commandTextField.isVisible()) {
+            d.height += w.commandTextField.getPreferredSize().height;
+            d.height += insetHeight(w.commandTextField);
         }
 
-        ajustSplitPaneHeights(toth);
-    
+        //System.out.println("d="+d.height);
+
+        if (w.getStatus()==w.STATUS_EQUAL) d.height = 0;
+
+        w.setMinimumSize(d);
+        w.setPreferredSize(d);
+        toth += d.height;
     }
+
+    ajustSplitPaneHeights(toth);
+}//GEN-LAST:event_fitToText
+
+    void fitToText() {
+      fitToText(null);
+    }
+
+
 
     JFileChooser modeFileChooser;
     
@@ -793,30 +910,30 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JMenuItem changeFontMenuItem;
-  private javax.swing.JButton copyTextButton;
-  private javax.swing.JMenuItem editModesMenuItem;
-  private javax.swing.JButton fitToTextButton;
-  private javax.swing.JMenuItem helpMenuItem;
-  private javax.swing.JMenuItem importTestCaseMenuItem;
-  private javax.swing.JButton jButton1;
-  private javax.swing.JLabel jLabel1;
-  private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JSeparator jSeparator1;
-  private javax.swing.JSplitPane jSplitPane1;
-  private javax.swing.JMenuItem loadModeMenuItem;
+  javax.swing.JMenuItem changeFontMenuItem;
+  javax.swing.JButton copyTextButton;
+  javax.swing.JMenuItem editModesMenuItem;
+  javax.swing.JButton fitToTextButton;
+  javax.swing.JMenuItem helpMenuItem;
+  javax.swing.JMenuItem importTestCaseMenuItem;
+  javax.swing.JButton jButton1;
+  javax.swing.JLabel jLabel1;
+  javax.swing.JScrollPane jScrollPane1;
+  javax.swing.JSeparator jSeparator1;
+  javax.swing.JSplitPane jSplitPane1;
+  javax.swing.JMenuItem loadModeMenuItem;
   javax.swing.JPanel mainPanel;
-  private javax.swing.JMenuItem makeTestCaseMenuItem;
-  private javax.swing.JCheckBox markUnknownWordsCheckBox;
-  private javax.swing.JMenuBar menuBar;
-  private javax.swing.JComboBox modesComboBox;
-  private javax.swing.JMenuItem optionsMenuItem;
-  private javax.swing.JCheckBox showCommandsCheckBox;
-  private javax.swing.JButton storeTextButton;
-  private javax.swing.JMenu storedTextsMenu;
-  private apertiumview.TextWidget textWidget1;
-  private javax.swing.JPanel textWidgetsPanel;
-  private javax.swing.JMenu toolsMenu;
+  javax.swing.JMenuItem makeTestCaseMenuItem;
+  javax.swing.JCheckBox markUnknownWordsCheckBox;
+  javax.swing.JMenuBar menuBar;
+  javax.swing.JComboBox modesComboBox;
+  javax.swing.JMenuItem optionsMenuItem;
+  javax.swing.JCheckBox showCommandsCheckBox;
+  javax.swing.JButton storeTextButton;
+  javax.swing.JMenu storedTextsMenu;
+  apertiumview.TextWidget textWidget1;
+  javax.swing.JPanel textWidgetsPanel;
+  javax.swing.JMenu toolsMenu;
   // End of variables declaration//GEN-END:variables
 
     private JDialog aboutBox;
@@ -846,25 +963,6 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
             warnUser("Loading of mode "+f+" failed:\n\n"+ex.toString()+"\n\nContinuing without this mode.");
         }
-    }
-
-    @Action
-    public void copyText() {
-        String tottxt = "";
-        String lasttxt = "";
-        for (TextWidget w : textWidgets) {
-            if (!w.getVisibleRect().isEmpty()) {
-                String txt = w.getText();
-                if (!txt.equals(lasttxt)) {
-                    tottxt += txt + "\n";
-                }
-                lasttxt = txt;
-            }
-        }
-        
-        System.out.println(tottxt);
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt), null);
-		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt),"Contents of clipboard", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
@@ -910,76 +1008,5 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt.trim()), null);
     		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt.trim()),"Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
   }
-
-
-   @Action
-    public void importTestCase() {
-       String text = "Here you can import input sentences you want to test.\n"+
-           "For example, go to http://wiki.apertium.org/wiki/English_and_Esperanto/Regression_tests\nand copy some tests into this window, like this:\n\n"+
-           "# (en) My dog → Mia hundo\n"+
-           "# (en) My big dogs → Miaj grandaj hundoj\n"+
-           "# (en) Your big dogs → Viaj grandaj hundoj\n"+
-           "# (en) Her cat → Ŝia kato\n"+
-           "# (en) Her small cats → Ŝiaj malgrandaj katoj \n"+
-           "# (en) The fastest snails -> La plej rapidaj helikoj \n\n"+
-           "All souce text will be extracted.";
-      JTextArea ta = new JTextArea(text);
-      String res = "";
-      int ret = JOptionPane.showConfirmDialog(mainPanel, ta,"Past test cases from a Wiki page", JOptionPane.OK_CANCEL_OPTION);
-      if (ret == JOptionPane.OK_OPTION) {
-            for (String s : ta.getText().split("\n")) {
-                int x1 = s.indexOf(')');
-                if (x1==-1) continue; // no ), so skip line
-                int x2 = s.indexOf('→');
-                if (x2==-1) x2 = s.indexOf("->");
-                if (x2==-1) x2 = s.indexOf("=>");
-                if (x2<x1) continue; // no → found after ), so skip line
-                res = res + "\n" + s.substring(x1+1, x2).trim();
-            }
-            if (res.trim().length()==0) {
-                JOptionPane.showMessageDialog(mainPanel, "You didn't enter any test cases with text between a ) and a →. \nTry again.");
-            } else {
-              textWidget1.setText(res.trim());
-            }
-      }
-    }
-
-  @Action
-  public void editOptions() {
-    OptionsPanel op = new OptionsPanel();
-    op.workingDirTextField.setText(prefs.get("workingDir", ""));
-    op.envVarsTextArea.setText(prefs.get("envVars", ""));
-    int ret = JOptionPane.showConfirmDialog(mainPanel, op,"Edit Options", JOptionPane.OK_CANCEL_OPTION);
-    if (ret == JOptionPane.OK_OPTION) {
-      prefs.put("workingDir", op.workingDirTextField.getText());
-      prefs.put("envVars", op.envVarsTextArea.getText());
-      modesComboBoxActionPerformed(null); // reload the current mode
-    }
-  }
-
-  @Action
-  public void hideIntermediate() {
-        int toth = 0;
-        for (TextWidget w : textWidgets) {
-            Dimension d = w.textEditor.getPreferredSize();
-            d.height += insetHeight(w.textEditor) + insetHeight(w) + insetHeight(w.jScrollPane1) +6;
-
-
-            if (w == textWidget1 || w == textWidgets.get(textWidgets.size()-1)) {
-                d.height += w.commandTextField.getPreferredSize().height;
-                d.height += insetHeight(w.commandTextField);
-            } else {
-                d.height = 0;
-            }
-
-            w.setMinimumSize(d);
-            w.setPreferredSize(d);
-            toth += d.height;
-        }
-
-
-       ajustSplitPaneHeights(toth);
-  }
-
 
 }
