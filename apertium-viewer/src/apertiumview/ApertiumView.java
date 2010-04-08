@@ -689,9 +689,19 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
     String mpref = "";
     for (Mode mo : modes) mpref = mpref + mo.file+"\n";
     JTextArea ta = new JTextArea(mpref);
-    int ret = JOptionPane.showConfirmDialog(mainPanel,
-        new JScrollPane(ta), "Edit the list of modes",
-        JOptionPane.OK_CANCEL_OPTION);
+    // Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
+    // longer than can be displayed on screen. I know I'm not the typical
+    // user, but do you think you could fit a scroll bar in there?
+    JScrollPane sp = new JScrollPane(ta);
+    Dimension ps = sp.getPreferredSize();
+    Dimension sceen = Toolkit.getDefaultToolkit().getScreenSize();
+    if (ps.height>sceen.height-150) {
+      ps.height = sceen.height-150;
+      ps.width += 50; // some space
+      sp.setPreferredSize(ps);
+    }
+    int ret = JOptionPane.showConfirmDialog(mainPanel,  sp,
+        "Edit the list of modes", JOptionPane.OK_CANCEL_OPTION);
     if (ret==JOptionPane.OK_OPTION) {
         modes.clear();
         modesComboBox.removeAllItems();
