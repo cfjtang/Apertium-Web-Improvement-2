@@ -15,7 +15,10 @@ import javax.swing.text.*;
  */
 public class HighlightTextEditor extends JTextPane {
 
+      /*
     public Dimension getPreferredSize() {
+      //System.err.println("getPreferredSize()" + this.toString()+getText());
+      return super.getPreferredSize();
         if (isPreferredSizeSet()) {
             return super.getPreferredSize();
         }
@@ -29,8 +32,8 @@ public class HighlightTextEditor extends JTextPane {
             System.err.println("Ignoring in getPreferredSize(): " + e2);
             return new Dimension(800, 200);
         }
-
     }
+*/
     
     
     public boolean getScrollableTracksViewportWidth() { return true; }
