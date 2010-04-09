@@ -5,6 +5,7 @@
 package apertiumview;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -30,10 +31,13 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -62,6 +66,18 @@ public class ApertiumView extends FrameView {
     public ApertiumView(SingleFrameApplication app) {
         super(app);
         initComponents();
+        modesComboBox.setRenderer(new DefaultListCellRenderer() {
+          public Component getListCellRendererComponent(JList list, Object value, int index,
+              boolean isSelected, boolean cellHasFocus) {
+            JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            if (value instanceof Mode) {
+              Mode m = (Mode) value;
+              renderer.setToolTipText( m.file.getPath());
+            }
+            return renderer;
+          }
+        });
 
         try {
             String mpref = prefs.get("modeFiles", null);
@@ -473,7 +489,6 @@ public class ApertiumView extends FrameView {
 
     mainPanel.setAutoscrolls(true);
 
-    modesComboBox.setToolTipText("Change mode (language pair)");
     modesComboBox.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         modesComboBoxActionPerformed(evt);
@@ -558,6 +573,7 @@ public class ApertiumView extends FrameView {
     jLabel1.setDisplayedMnemonic('M');
     jLabel1.setLabelFor(modesComboBox);
     jLabel1.setText("Mode");
+    jLabel1.setToolTipText("Change mode (language pair)");
 
     jButton1.setMnemonic('D');
     jButton1.setText("Hide intermediate");
@@ -681,8 +697,10 @@ public class ApertiumView extends FrameView {
   }// </editor-fold>//GEN-END:initComponents
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-  if (!startingUp)
-    showMode((Mode) modesComboBox.getSelectedItem());
+  Mode mode = (Mode) modesComboBox.getSelectedItem();
+  modesComboBox.setToolTipText(mode.file.getPath());
+  if (!startingUp) 
+    showMode(mode);
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
@@ -911,8 +929,6 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
             String mpref = "";
             for (Mode mo : modes) mpref = mpref + mo.file+"\n";
             prefs.put("modeFiles", mpref);
-            
-            
         }
     }
     
