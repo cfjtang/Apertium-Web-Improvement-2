@@ -20,27 +20,51 @@
 */
 
 #pragma once
-#ifndef __MINISET_H
-#define __MINISET_H
+#ifndef __SORTED_VECTOR_HPP
+#define __SORTED_VECTOR_HPP
+#include <iostream>
 #include <vector>
 #include <algorithm>
+#include <stdint.h> // C99 or C++0x or C++ TR1 will have this header. ToDo: Change to <cstdint> when C++0x broader support gets under way.
 
 namespace CG3 {
 
 template<typename T>
-class miniset {
+class sorted_vector {
 private:
 	typedef typename std::vector<T> Cont;
+	typedef typename Cont::iterator iterator;
 	Cont elements;
 
 public:
-	typedef typename Cont::iterator iterator;
 	typedef typename Cont::const_iterator const_iterator;
 	typedef typename Cont::size_type size_type;
 	typedef T value_type;
 	typedef T key_type;
 
+	#ifdef CG_TRACE_OBJECTS
+	sorted_vector() {
+		std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << std::endl;
+	}
+
+	~sorted_vector() {
+		std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << ": " << elements.size() << std::endl;
+	}
+	#endif
+
 	bool insert(T t) {
+		if (elements.empty()) {
+			elements.push_back(t);
+			return true;
+		}
+		else if (elements.back() < t) {
+			elements.push_back(t);
+			return true;
+		}
+		else if (t < elements.front()) {
+			elements.insert(elements.begin(), t);
+			return true;
+		}
 		iterator it = std::lower_bound(elements.begin(), elements.end(), t);
 		if (it == elements.end() || *it != t) {
 			elements.insert(it, t);
@@ -50,6 +74,15 @@ public:
 	}
 
 	bool erase(T t) {
+		if (elements.empty()) {
+			return false;
+		}
+		else if (elements.back() < t) {
+			return false;
+		}
+		else if (t < elements.front()) {
+			return false;
+		}
 		iterator it = std::lower_bound(elements.begin(), elements.end(), t);
 		if (it != elements.end() && *it == t) {
 			elements.erase(it);
@@ -59,6 +92,15 @@ public:
 	}
 
 	const_iterator find(T t) const {
+		if (elements.empty()) {
+			return elements.end();
+		}
+		else if (elements.back() < t) {
+			return elements.end();
+		}
+		else if (t < elements.front()) {
+			return elements.end();
+		}
 		const_iterator it = std::lower_bound(elements.begin(), elements.end(), t);
 		if (it != elements.end() && *it != t) {
 			return elements.end();
@@ -78,12 +120,16 @@ public:
 		return elements.size();
 	}
 
+	bool empty() const {
+		return elements.empty();
+	}
+
 	void clear() {
 		elements.clear();
 	}
 };
 
-typedef miniset<uint32_t> uint32MiniSet;
+typedef sorted_vector<uint32_t> uint32SortedVector;
 
 }
 

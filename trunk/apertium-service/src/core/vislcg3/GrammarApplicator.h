@@ -26,7 +26,7 @@
 #include "stdafx.h"
 #include "Tag.h"
 #include "CohortIterator.h"
-#include "miniset.h"
+#include "sorted_vector.hpp"
 
 namespace CG3 {
 	class Window;
@@ -101,13 +101,14 @@ namespace CG3 {
 		uint32Set dep_deep_seen;
 
 		uint32_t numsections;
-		typedef std::map<int32_t,uint32MiniSet> RSType;
+		typedef std::map<int32_t,uint32SortedVector> RSType;
 		RSType runsections;
 
-		CohortIterator ci_CohortIterator;
-		TopologyLeftIter ci_TopologyLeftIter;
-		TopologyRightIter ci_TopologyRightIter;
-		DepParentIter ci_DepParentIter;
+		uint32Vector ci_depths;
+		stdext::hash_map<uint32_t,CohortIterator> cohortIterators;
+		stdext::hash_map<uint32_t,TopologyLeftIter> topologyLeftIters;
+		stdext::hash_map<uint32_t,TopologyRightIter> topologyRightIters;
+		stdext::hash_map<uint32_t,DepParentIter> depParentIters;
 
 		static const uint32_t RV_NOTHING = 1;
 		static const uint32_t RV_SOMETHING = 2;
@@ -140,8 +141,11 @@ namespace CG3 {
 
 		uint32HashSet index_regexp_yes;
 		uint32HashSet index_regexp_no;
+		uint32HashSet index_icase_yes;
+		uint32HashSet index_icase_no;
 		uint32HashSet index_readingSet_yes;
 		uint32HashSet index_readingSet_no;
+		uint32HashSet index_ruleCohort_no;
 		void resetIndexes();
 	
 		Tag *addTag(const UChar *tag);
@@ -152,8 +156,8 @@ namespace CG3 {
 		void indexSingleWindow(SingleWindow &current);
 		int runGrammarOnWindow();
 		int runGrammarOnSingleWindow(SingleWindow &current);
-		void updateValidRules(const uint32MiniSet& rules, uint32Vector &intersects, const uint32_t& hash, Reading &reading);
-		uint32_t runRulesOnSingleWindow(SingleWindow &current, uint32MiniSet &rules);
+		void updateValidRules(const uint32SortedVector& rules, uint32Vector &intersects, const uint32_t& hash, Reading &reading);
+		uint32_t runRulesOnSingleWindow(SingleWindow &current, uint32SortedVector &rules);
 
 		Cohort *runSingleTest(Cohort *cohort, const ContextualTest *test, bool *brk, bool *retval, Cohort **deep = 0, Cohort *origin = 0);
 		Cohort *runSingleTest(SingleWindow *sWindow, size_t i, const ContextualTest *test, bool *brk, bool *retval, Cohort **deep = 0, Cohort *origin = 0);
@@ -162,7 +166,6 @@ namespace CG3 {
 		Cohort *runParenthesisTest(SingleWindow *sWindow, const Cohort *current, const ContextualTest *test, Cohort **deep = 0, Cohort *origin = 0);
 		Cohort *runRelationTest(SingleWindow *sWindow, Cohort *current, const ContextualTest *test, Cohort **deep = 0, Cohort *origin = 0);
 
-		bool doesTagMatchSet(const uint32_t tag, const Set &set);
 		bool doesTagMatchReading(const Reading &reading, const Tag &tag, bool unif_mode = false);
 		bool doesSetMatchReading_tags(const Reading &reading, const Set &theset, bool unif_mode = false);
 		bool doesSetMatchReading(Reading &reading, const uint32_t set, bool bypass_index = false, bool unif_mode = false);

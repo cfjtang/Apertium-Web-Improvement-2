@@ -25,7 +25,8 @@
 
 #include "stdafx.h"
 #include "Tag.h"
-#include "miniset.h"
+#include "sorted_vector.hpp"
+#include "bloomish.hpp"
 
 namespace CG3 {
 	class Cohort;
@@ -42,17 +43,26 @@ namespace CG3 {
 		uint32_t hash;
 		uint32_t hash_plain;
 		uint32_t number;
+		uint32Bloomish tags_bloom;
+		uint32Bloomish tags_plain_bloom;
+		uint32Bloomish tags_textual_bloom;
 		Tag *mapping;
 		Cohort *parent;
 		uint32Vector hit_by;
 		uint32List tags_list;
-		uint32MiniSet tags;
-		uint32HashSet tags_plain;
-		uint32HashSet tags_textual;
+		uint32SortedVector tags;
+		uint32SortedVector tags_plain;
+		uint32SortedVector tags_textual;
 		Taguint32HashMap tags_numerical;
 
 		Reading(Cohort *p);
 		Reading(const Reading &r);
+
+		#ifdef CG_TRACE_OBJECTS
+		~Reading() {
+			std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << ": " << tags.size() << ", " << hit_by.size() << std::endl;
+		}
+		#endif
 
 		uint32_t rehash();
 		static bool cmp_number(Reading *a, Reading *b);

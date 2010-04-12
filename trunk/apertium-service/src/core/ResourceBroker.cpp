@@ -340,7 +340,8 @@ template <> CGApplicator *NonIndexedObjectPool<CGApplicator>::getNewInstance(Pro
 template <> Process *NonIndexedObjectPool<Process>::getNewInstance(Program &p) {
 	Logger::Instance()->trace(Logger::Debug, "ObjectPool<Process>::getNewInstance();");
 
-	Process *ret = NULL;
+	Process *ret = new Process(p.getProgram(), p.getParameters());
+	pool.add(ret);
 
 	return(ret);
 }

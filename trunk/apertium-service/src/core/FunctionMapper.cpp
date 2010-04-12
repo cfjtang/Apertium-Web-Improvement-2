@@ -84,7 +84,12 @@ void FunctionMapper::load(Program &p, unsigned int qty) {
 	std::string program = params[0];
 	std::vector<std::string> files = p.getFileNames();
 
-	TaskType taskType = task[program];
+	TaskType taskType = OTHER;
+
+	TaskMapType::iterator iter = task.find(program);
+	if (iter != task.end()) {
+		taskType = iter->second;
+	}
 
 	switch (taskType) {
 	case APERTIUM_INTERCHUNK: {
@@ -199,7 +204,9 @@ void FunctionMapper::load(Program &p, unsigned int qty) {
 	}
 		break;
 
-	default:
+	case OTHER: {
+
+	}
 		break;
 	}
 }
@@ -215,7 +222,12 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 	std::string program = params[0];
 	std::vector<std::string> files = p.getFileNames();
 
-	TaskType taskType = task[program];
+	TaskType taskType = OTHER;
+
+	TaskMapType::iterator iter = task.find(program);
+	if (iter != task.end()) {
+		taskType = iter->second;
+	}
 
 	boost::process::detail::pipe pin, pout;
 
@@ -237,7 +249,7 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 
 	bool useUtf8 = false;
 
-	if (taskType == CG_PROC)
+	if (taskType == CG_PROC || taskType == OTHER)
 		useUtf8 = true;
 
 	if (useUtf8) {
@@ -394,6 +406,29 @@ std::wstring FunctionMapper::execute(Program &p, std::wstring &d, bool markUnkno
 		} // XXX
 
 	}
+		break;
+
+	case OTHER: {
+		Process *proc = resourceBroker->ProcessPool.acquire(p);
+
+		while (true) {
+			int c = fgetc(in);
+			if (feof(in))
+				break;
+			(proc->in()) << (char)c;
+		}
+
+		(proc->in()) << (char)0;
+
+		std::string os;
+		(proc->out()) >> os;
+
+		fwrite(os.c_str(), sizeof(char), os.size(), out);
+		fflush(out);
+
+		resourceBroker->ProcessPool.release(proc, p);
+	}
+
 		break;
 	}
 

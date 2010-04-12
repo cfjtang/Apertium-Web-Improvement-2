@@ -76,7 +76,7 @@ public:
 			(L"\"\\[@\"[^\\]]+\"\\]\"", ID_SQUARED)
 			(L"\"\\[\\@\"", ID_SQUAREAT)
 			(L"\".\\[\\]\"", ID_DOTSQUARES)
-			(L"\"\\\\\"[\\]\\[\\\\/@<>^$]", ID_SPECIAL)
+			(L"\"\\\\\"[\\]\\[\\\\/@<>^$\{\}]", ID_SPECIAL)
 			(L".|\\n", ID_CHARORNEWLINE);
 		}
 	};

@@ -41,32 +41,9 @@ void GrammarApplicator::updateRuleToCohorts(Cohort& c, const uint32_t& rsit) {
 	current->valid_rules.insert(r->line);
 }
 
-void intersectInitialize(const uint32MiniSet& first, const uint32Set& second, uint32Vector& intersects) {
+void intersectInitialize(const uint32SortedVector& first, const uint32Set& second, uint32Vector& intersects) {
 	intersects.reserve(std::max(first.size(), second.size()));
-	uint32MiniSet::const_iterator iiter = first.begin();
-	uint32Set::const_iterator oiter = second.begin();
-	while (oiter != second.end() && iiter != first.end()) {
-		while (oiter != second.end() && iiter != first.end() && *oiter < *iiter) {
-			++oiter;
-		}
-		while (oiter != second.end() && iiter != first.end() && *iiter < *oiter) {
-			++iiter;
-		}
-		if (oiter != second.end() && iiter != first.end() && *oiter == *iiter) {
-			intersects.push_back(*oiter);
-			++oiter;
-			++iiter;
-		}
-	}
-}
-
-void intersectUpdate(const uint32MiniSet& first, const uint32Set& second, uint32Vector& intersects) {
-	if (intersects.empty()) {
-		intersectInitialize(first, second, intersects);
-		return;
-	}
-	intersects.reserve(std::max(first.size(), second.size()));
-	uint32MiniSet::const_iterator iiter = first.begin();
+	uint32SortedVector::const_iterator iiter = first.begin();
 	uint32Set::const_iterator oiter = second.begin();
 	while (oiter != second.end() && iiter != first.end()) {
 		while (oiter != second.end() && iiter != first.end() && *oiter < *iiter) {
@@ -76,9 +53,35 @@ void intersectUpdate(const uint32MiniSet& first, const uint32Set& second, uint32
 			++iiter;
 		}
 		while (oiter != second.end() && iiter != first.end() && *oiter == *iiter) {
-			uint32Vector::iterator ins = std::lower_bound(intersects.begin(), intersects.end(), *oiter);
+			intersects.push_back(*oiter);
+			++oiter;
+			++iiter;
+		}
+	}
+}
+
+void intersectUpdate(const uint32SortedVector& first, const uint32Set& second, uint32Vector& intersects) {
+	/* This is never true, so don't bother...
+	if (intersects.empty()) {
+		intersectInitialize(first, second, intersects);
+		return;
+	}
+	//*/
+	intersects.reserve(std::max(first.size(), second.size()));
+	uint32SortedVector::const_iterator iiter = first.begin();
+	uint32Set::const_iterator oiter = second.begin();
+	uint32Vector::iterator ins = intersects.begin();
+	while (oiter != second.end() && iiter != first.end()) {
+		while (oiter != second.end() && iiter != first.end() && *oiter < *iiter) {
+			++oiter;
+		}
+		while (oiter != second.end() && iiter != first.end() && *iiter < *oiter) {
+			++iiter;
+		}
+		while (oiter != second.end() && iiter != first.end() && *oiter == *iiter) {
+			ins = std::lower_bound(ins, intersects.end(), *oiter);
 			if (ins == intersects.end() || *ins != *oiter) {
-				intersects.insert(ins, *oiter);
+				ins = intersects.insert(ins, *oiter);
 			}
 			++oiter;
 			++iiter;
@@ -86,7 +89,7 @@ void intersectUpdate(const uint32MiniSet& first, const uint32Set& second, uint32
 	}
 }
 
-void GrammarApplicator::updateValidRules(const uint32MiniSet& rules, uint32Vector &intersects, const uint32_t& hash, Reading &reading) {
+void GrammarApplicator::updateValidRules(const uint32SortedVector& rules, uint32Vector &intersects, const uint32_t& hash, Reading &reading) {
 	uint32HashSetuint32HashMap::const_iterator it = grammar->rules_by_tag.find(hash);
 	if (it != grammar->rules_by_tag.end()) {
 		SingleWindow &current = *(reading.parent->parent);
@@ -115,7 +118,7 @@ void GrammarApplicator::indexSingleWindow(SingleWindow &current) {
 	}
 }
 
-uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32MiniSet &rules) {
+uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32SortedVector &rules) {
 	uint32_t retval = RV_NOTHING;
 	bool section_did_good = false;
 	bool delimited = false;
@@ -164,7 +167,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 			}
 
 			uint32_t c = cohort->local_number;
-			if (cohort->is_enclosed || cohort->parent != &current) {
+			if ((cohort->type & CT_ENCLOSED) || cohort->parent != &current) {
 				continue;
 			}
 			if (cohort->readings.empty()) {
@@ -203,6 +206,12 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 					continue;
 				}
 			}
+
+			uint32_t ih = hash_sdbm_uint32_t(rule.line, cohort->global_number);
+			if (index_matches(index_ruleCohort_no, ih)) {
+				continue;
+			}
+			index_ruleCohort_no.insert(ih);
 
 			size_t num_active = 0;
 			size_t num_iff = 0;
@@ -250,6 +259,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 								mark = cohort;
 							}
 							dep_deep_seen.clear();
+							std::fill(ci_depths.begin(), ci_depths.end(), 0);
 							if (!(test->pos & POS_PASS_ORIGIN) && (no_pass_origin || (test->pos & POS_NO_PASS_ORIGIN))) {
 								test_good = (runContextualTest(&current, c, test, 0, cohort) != 0);
 							}
@@ -319,6 +329,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 					if (good) {
 						removed.push_back(&reading);
 						reading.deleted = true;
+						index_ruleCohort_no.clear();
 						reading.hit_by.push_back(rule.line);
 						section_did_good = true;
 						if (debug_level > 0) {
@@ -329,11 +340,13 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 				else if (type == K_SELECT) {
 					if (good) {
 						selected.push_back(&reading);
+						index_ruleCohort_no.clear();
 						reading.hit_by.push_back(rule.line);
 					}
 					else {
 						removed.push_back(&reading);
 						reading.deleted = true;
+						index_ruleCohort_no.clear();
 						reading.hit_by.push_back(rule.line);
 					}
 					if (good) {
@@ -393,6 +406,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 						break;
 					}
 					else if (rule.type == K_ADD || rule.type == K_MAP) {
+						index_ruleCohort_no.clear();
 						reading.hit_by.push_back(rule.line);
 						reading.noprint = false;
 						TagList mappings;
@@ -415,6 +429,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 						}
 					}
 					else if (rule.type == K_REPLACE) {
+						index_ruleCohort_no.clear();
 						reading.hit_by.push_back(rule.line);
 						reading.noprint = false;
 						reading.tags_list.clear();
@@ -457,11 +472,13 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 							}
 						}
 						if (tagb != reading.tags_list.size()) {
+							index_ruleCohort_no.clear();
 							reading.hit_by.push_back(rule.line);
 							reading.noprint = false;
+							uint32List::iterator tpos = reading.tags_list.end();
 							foreach (uint32List, reading.tags_list, tfind, tfind_end) {
 								if (*tfind == tloc) {
-									tfind++;
+									tpos = ++tfind;
 									break;
 								}
 							}
@@ -477,7 +494,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 									mappings.push_back(*tter);
 								}
 								else {
-									reading.tags_list.insert(tfind, (*tter)->hash);
+									reading.tags_list.insert(tpos, (*tter)->hash);
 								}
 								updateValidRules(rules, intersects, (*tter)->hash, reading);
 								iter_rules = std::lower_bound(intersects.begin(), intersects.end(), rule.line);
@@ -492,6 +509,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 					else if (rule.type == K_APPEND && rule.line != did_append) {
 						Reading *cReading = cohort->allocateAppendReading();
 						numReadings++;
+						index_ruleCohort_no.clear();
 						cReading->hit_by.push_back(rule.line);
 						cReading->noprint = false;
 						addTagToReading(*cReading, cohort->wordform);
@@ -547,6 +565,7 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 										attached = attachParentChild(*cohort, *attach, (rule.flags & RF_ALLOWLOOP) != 0, (rule.flags & RF_ALLOWCROSS) != 0);
 									}
 									if (attached) {
+										index_ruleCohort_no.clear();
 										reading.hit_by.push_back(rule.line);
 										reading.noprint = false;
 										has_dep = true;
@@ -656,16 +675,17 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 								test = test->next;
 							}
 							if (good) {
+								index_ruleCohort_no.clear();
 								reading.hit_by.push_back(rule.line);
 								reading.noprint = false;
 								if (type == K_ADDRELATION) {
-									attach->is_related = true;
-									cohort->is_related = true;
+									attach->type |= CT_RELATED;
+									cohort->type |= CT_RELATED;
 									cohort->addRelation(rule.maplist.front()->hash, attach->global_number);
 								}
 								else if (type == K_SETRELATION) {
-									attach->is_related = true;
-									cohort->is_related = true;
+									attach->type |= CT_RELATED;
+									cohort->type |= CT_RELATED;
 									cohort->setRelation(rule.maplist.front()->hash, attach->global_number);
 								}
 								else {
@@ -696,17 +716,18 @@ uint32_t GrammarApplicator::runRulesOnSingleWindow(SingleWindow &current, uint32
 								test = test->next;
 							}
 							if (good) {
+								index_ruleCohort_no.clear();
 								reading.hit_by.push_back(rule.line);
 								reading.noprint = false;
 								if (type == K_ADDRELATIONS) {
-									attach->is_related = true;
-									cohort->is_related = true;
+									attach->type |= CT_RELATED;
+									cohort->type |= CT_RELATED;
 									cohort->addRelation(rule.maplist.front()->hash, attach->global_number);
 									attach->addRelation(rule.sublist.front(), cohort->global_number);
 								}
 								else if (type == K_SETRELATIONS) {
-									attach->is_related = true;
-									cohort->is_related = true;
+									attach->type |= CT_RELATED;
+									cohort->type |= CT_RELATED;
 									cohort->setRelation(rule.maplist.front()->hash, attach->global_number);
 									attach->setRelation(rule.sublist.front(), cohort->global_number);
 								}
@@ -868,7 +889,7 @@ int GrammarApplicator::runGrammarOnWindow() {
 					}
 					current->cohorts.resize(current->cohorts.size() - encs.size());
 					foreach (CohortVector, encs, eiter, eiter_end) {
-						(*eiter)->is_enclosed = true;
+						(*eiter)->type |= CT_ENCLOSED;
 					}
 					foreach (CohortVector, c->enclosed, eiter2, eiter2_end) {
 						encs.push_back(*eiter2);
@@ -888,6 +909,7 @@ int GrammarApplicator::runGrammarOnWindow() {
 	uint32_t pass = 0;
 
 label_runGrammarOnWindow_begin:
+	index_ruleCohort_no.clear();
 	current = gWindow->current;
 
 	++pass;
@@ -923,7 +945,7 @@ label_runGrammarOnWindow_begin:
 					current->cohorts[i+j+1] = c->enclosed[j];
 					current->cohorts[i+j+1]->local_number = i+j+1;
 					current->cohorts[i+j+1]->parent = current;
-					current->cohorts[i+j+1]->is_enclosed = false;
+					current->cohorts[i+j+1]->type &= ~CT_ENCLOSED;
 				}
 				par_left_tag = c->enclosed[0]->is_pleft;
 				par_right_tag = c->enclosed[ne-1]->is_pright;

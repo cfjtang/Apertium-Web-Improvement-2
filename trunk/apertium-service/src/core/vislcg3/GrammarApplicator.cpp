@@ -83,6 +83,7 @@ GrammarApplicator::GrammarApplicator(UFILE *ux_err) {
 	ordered = false;
 	show_end_tags = false;
 	gWindow = new Window(this);
+	ci_depths.resize(4, 0);
 }
 
 GrammarApplicator::~GrammarApplicator() {
@@ -104,6 +105,8 @@ void GrammarApplicator::resetIndexes() {
 	index_readingSet_no.clear();
 	index_regexp_yes.clear();
 	index_regexp_no.clear();
+	index_icase_yes.clear();
+	index_icase_no.clear();
 }
 
 void GrammarApplicator::setGrammar(const Grammar *res) {
@@ -117,7 +120,7 @@ void GrammarApplicator::index() {
 	}
 
 	if (!grammar->before_sections.empty()) {
-		uint32MiniSet& m = runsections[-1];
+		uint32SortedVector& m = runsections[-1];
 		const_foreach (RuleVector, grammar->before_sections, iter_rules, iter_rules_end) {
 			const Rule *r = *iter_rules;
 			m.insert(r->line);
@@ -125,7 +128,7 @@ void GrammarApplicator::index() {
 	}
 
 	if (!grammar->after_sections.empty()) {
-		uint32MiniSet& m = runsections[-2];
+		uint32SortedVector& m = runsections[-2];
 		const_foreach (RuleVector, grammar->after_sections, iter_rules, iter_rules_end) {
 			const Rule *r = *iter_rules;
 			m.insert(r->line);
@@ -133,7 +136,7 @@ void GrammarApplicator::index() {
 	}
 
 	if (!grammar->null_section.empty()) {
-		uint32MiniSet& m = runsections[-3];
+		uint32SortedVector& m = runsections[-3];
 		const_foreach (RuleVector, grammar->null_section, iter_rules, iter_rules_end) {
 			const Rule *r = *iter_rules;
 			m.insert(r->line);
@@ -148,7 +151,7 @@ void GrammarApplicator::index() {
 				if (r->section < 0 || r->section > i) {
 					continue;
 				}
-				uint32MiniSet& m = runsections[i];
+				uint32SortedVector& m = runsections[i];
 				m.insert(r->line);
 			}
 		}
@@ -162,7 +165,7 @@ void GrammarApplicator::index() {
 					if (r->section != (int32_t)sections.at(e)-1) {
 						continue;
 					}
-					uint32MiniSet& m = runsections[n];
+					uint32SortedVector& m = runsections[n];
 					m.insert(r->line);
 				}
 			}
@@ -292,7 +295,7 @@ void GrammarApplicator::printReading(Reading *reading, UFILE *output) {
 		}
 	}
 
-	if (reading->parent->is_related) {
+	if (reading->parent->type & CT_RELATED) {
 		u_fprintf(output, "ID:%u ", reading->parent->global_number);
 		if (!reading->parent->relations.empty()) {
 			foreach(RelationCtn, reading->parent->relations, miter, miter_end) {

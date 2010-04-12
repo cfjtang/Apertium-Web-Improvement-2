@@ -144,7 +144,7 @@ Cohort *GrammarApplicator::runContextualTest(SingleWindow *sWindow, size_t posit
 		sWindow = mark->parent;
 		position = mark->local_number;
 	}
-	int32_t pos = int32_t(position) + test->offset;
+	int32_t pos = static_cast<int32_t>(position) + test->offset;
 
 	if (test->tmpl) {
 		uint32_t orgpos = test->tmpl->pos;
@@ -276,8 +276,7 @@ Cohort *GrammarApplicator::runContextualTest(SingleWindow *sWindow, size_t posit
 			*deep = cohort;
 		}
 		if (test->pos & POS_DEP_PARENT) {
-			ci_DepParentIter.reset(cohort, test, always_span);
-			it = &ci_DepParentIter;
+			it = &depParentIters[ci_depths[3]++];
 		}
 		else if (test->pos & (POS_DEP_CHILD|POS_DEP_SIBLING)) {
 			Cohort *nc = runDependencyTest(sWindow, cohort, test, deep, origin);
@@ -370,19 +369,17 @@ Cohort *GrammarApplicator::runContextualTest(SingleWindow *sWindow, size_t posit
 			}
 		}
 		else if (test->offset < 0) {
-			ci_TopologyLeftIter.reset(cohort, test, always_span);
-			it = &ci_TopologyLeftIter;
+			it = &topologyLeftIters[ci_depths[1]++];
 		}
 		else if (test->offset > 0) {
-			ci_TopologyRightIter.reset(cohort, test, always_span);
-			it = &ci_TopologyRightIter;
+			it = &topologyRightIters[ci_depths[2]++];
 		}
 		else {
-			ci_CohortIterator.reset(cohort, test, always_span);
-			it = &ci_CohortIterator;
+			it = &cohortIterators[ci_depths[0]++];
 		}
 
 		if (it) {
+			it->reset(cohort, test, always_span);
 			Cohort *nc = 0;
 			bool brk = false;
 			size_t seen = 0;
@@ -460,7 +457,7 @@ Cohort *GrammarApplicator::runDependencyTest(SingleWindow *sWindow, Cohort *curr
 
 	// ToDo: Make the dep_deep_seen key a composite of cohort number and test hash so we don't have to clear as often
 	if (test->pos & POS_DEP_DEEP) {
-		if (dep_deep_seen.find(current->global_number) != dep_deep_seen.end()) {
+		if (index_matches(dep_deep_seen, current->global_number)) {
 			return 0;
 		}
 		dep_deep_seen.insert(current->global_number);
@@ -623,7 +620,7 @@ Cohort *GrammarApplicator::runParenthesisTest(SingleWindow *sWindow, const Cohor
 }
 
 Cohort *GrammarApplicator::runRelationTest(SingleWindow *sWindow, Cohort *current, const ContextualTest *test, Cohort **deep, Cohort *origin) {
-	if (!current->is_related || current->relations.empty()) {
+	if (!(current->type & CT_RELATED) || current->relations.empty()) {
 		return 0;
 	}
 	Cohort *rv = 0;
