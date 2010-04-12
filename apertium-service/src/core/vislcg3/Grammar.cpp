@@ -48,7 +48,7 @@ Grammar::~Grammar() {
 	}
 
 	foreach (SetSet, sets_all, rsets, rsets_end) {
-		delete (*rsets);
+		delete *rsets;
 	}
 
 	std::map<uint32_t, Anchor*>::iterator iter_anc;
@@ -97,7 +97,7 @@ Grammar::~Grammar() {
 	}
 
 	foreach (std::vector<ContextualTest*>, template_list, tmpls, tmpls_end) {
-		delete (*tmpls);
+		delete *tmpls;
 	}
 }
 
@@ -105,6 +105,7 @@ void Grammar::addPreferredTarget(UChar *to) {
 	Tag *tag = allocateTag(to);
 	preferred_targets.push_back(tag->hash);
 }
+
 void Grammar::addSet(Set *to) {
 	if (!delimiters && u_strcmp(to->name.c_str(), stringbits[S_DELIMITSET].getTerminatedBuffer()) == 0) {
 		delimiters = to;
@@ -115,6 +116,59 @@ void Grammar::addSet(Set *to) {
 	if (to->name[0] == 'T' && to->name[1] == ':') {
 		u_fprintf(ux_stderr, "Warning: Set name %S looks like a misattempt of template usage on line %u.\n", to->name.c_str(), to->line);
 	}
+
+	// If there are failfast tags, and if they don't comprise the whole of the set, split the set into Positive - Negative
+	if (!to->ff_tags.empty() && to->ff_tags.size() < to->tags_set.size()) {
+		Set *positive = allocateSet(to);
+		Set *negative = allocateSet();
+
+		UString str;
+		str = stringbits[S_GPREFIX].getTerminatedBuffer();
+		str += to->name;
+		str += '_';
+		str += stringbits[S_POSITIVE].getTerminatedBuffer();
+		positive->setName(str);
+		str = stringbits[S_GPREFIX].getTerminatedBuffer();
+		str += to->name;
+		str += '_';
+		str += stringbits[S_NEGATIVE].getTerminatedBuffer();
+		negative->setName(str);
+
+		TagSet tags;
+		foreach(TagHashSet, to->ff_tags, iter, iter_end) {
+			positive->tags_set.erase((*iter)->hash);
+			positive->single_tags.erase(*iter);
+			positive->single_tags_hash.erase((*iter)->hash);
+			UString str = (*iter)->toUString();
+			str.erase(str.find('^'), 1);
+			str=str;
+			Tag *tag = allocateTag(str.c_str());
+			addTagToSet(tag, negative);
+		}
+		positive->ff_tags.clear();
+		positive->ff_tags_hash.clear();
+
+		positive->reindex(*this);
+		negative->reindex(*this);
+		addSet(positive);
+		addSet(negative);
+
+		to->tags.clear();
+		to->tags_set.clear();
+		to->single_tags.clear();
+		to->single_tags_hash.clear();
+		to->ff_tags.clear();
+		to->ff_tags_hash.clear();
+
+		to->sets.push_back(positive->hash);
+		to->sets.push_back(negative->hash);
+		to->set_ops.push_back(S_MINUS);
+
+		to->reindex(*this);
+		u_fprintf(ux_stderr, "Info: LIST %S on line %u was split into two sets.\n", to->name.c_str(), to->line);
+		u_fflush(ux_stderr);
+	}
+
 	uint32_t chash = to->rehash();
 	if (to->name[0] != '_' || to->name[1] != 'G' || to->name[2] != '_') {
 		uint32_t nhash = hash_sdbm_uchar(to->name.c_str());
@@ -157,6 +211,7 @@ void Grammar::addSet(Set *to) {
 		}
 	}
 }
+
 Set *Grammar::getSet(uint32_t which) {
 	Set *retval = 0;
 	if (sets_by_contents.find(which) != sets_by_contents.end()) {
@@ -173,15 +228,23 @@ Set *Grammar::getSet(uint32_t which) {
 	return retval;
 }
 
-Set *Grammar::allocateSet() {
-	Set *ns = new Set;
+Set *Grammar::allocateSet(Set *from) {
+	Set *ns = 0;
+	if (from) {
+		ns = new Set(*from);
+	}
+	else {
+		ns = new Set;
+	}
 	sets_all.insert(ns);
 	return ns;
 }
+
 void Grammar::destroySet(Set *set) {
 	sets_all.erase(set);
 	delete set;
 }
+
 void Grammar::addSetToList(Set *s) {
 	if (s->number == 0) {
 		if (sets_list.empty() || sets_list.at(0) != s) {
@@ -216,6 +279,7 @@ CompositeTag *Grammar::addCompositeTag(CompositeTag *tag) {
 	}
 	return tags[tag->hash];
 }
+
 CompositeTag *Grammar::addCompositeTagToSet(Set *set, CompositeTag *tag) {
 	if (tag && tag->tags.size()) {
 		if (tag->tags.size() == 1) {
@@ -239,9 +303,11 @@ CompositeTag *Grammar::addCompositeTagToSet(Set *set, CompositeTag *tag) {
 	}
 	return tag;
 }
+
 CompositeTag *Grammar::allocateCompositeTag() {
 	return new CompositeTag;
 }
+
 void Grammar::destroyCompositeTag(CompositeTag *tag) {
 	delete tag;
 }
@@ -249,6 +315,7 @@ void Grammar::destroyCompositeTag(CompositeTag *tag) {
 Rule *Grammar::allocateRule() {
 	return new Rule;
 }
+
 void Grammar::addRule(Rule *rule) {
 	if (rule_by_line.find(rule->line) != rule_by_line.end()) {
 		u_fprintf(ux_stderr, "Error: Multiple rules defined on line %u - cannot currently handle multiple rules per line!\n", rule->line);
@@ -256,6 +323,7 @@ void Grammar::addRule(Rule *rule) {
 	}
 	rule_by_line[rule->line] = rule;
 }
+
 void Grammar::destroyRule(Rule *rule) {
 	delete rule;
 }
@@ -263,6 +331,7 @@ void Grammar::destroyRule(Rule *rule) {
 Tag *Grammar::allocateTag() {
 	return new Tag;
 }
+
 Tag *Grammar::allocateTag(const UChar *txt, bool raw) {
 	Taguint32HashMap::iterator it;
 	uint32_t thash = hash_sdbm_uchar(txt);
@@ -305,6 +374,7 @@ Tag *Grammar::allocateTag(const UChar *txt, bool raw) {
 	}
 	return single_tags[hash];
 }
+
 void Grammar::addTagToCompositeTag(Tag *simpletag, CompositeTag *tag) {
 	if (simpletag && simpletag->tag) {
 		tag->addTag(simpletag);
@@ -314,6 +384,7 @@ void Grammar::addTagToCompositeTag(Tag *simpletag, CompositeTag *tag) {
 		CG3Quit(1);
 	}
 }
+
 void Grammar::addTagToSet(Tag *rtag, Set *set) {
 	set->tags_set.insert(rtag->hash);
 	set->single_tags.insert(rtag);
@@ -330,6 +401,7 @@ void Grammar::addTagToSet(Tag *rtag, Set *set) {
 		set->ff_tags_hash.insert(rtag->hash);
 	}
 }
+
 void Grammar::destroyTag(Tag *tag) {
 	delete tag;
 }
@@ -337,6 +409,7 @@ void Grammar::destroyTag(Tag *tag) {
 ContextualTest *Grammar::allocateContextualTest() {
 	return new ContextualTest;
 }
+
 void Grammar::addContextualTest(ContextualTest *test, const UChar *name) {
 	uint32_t cn = hash_sdbm_uchar(name);
 	if (templates.find(cn) != templates.end()) {
@@ -533,7 +606,7 @@ void Grammar::reindex(bool unused_sets) {
 
 	uint32Set sects;
 
-	for (iter_rule = rule_by_line.begin() ; iter_rule != rule_by_line.end() ; iter_rule++) {
+	foreach (RuleByLineMap, rule_by_line, iter_rule, iter_rule_end) {
 		if (iter_rule->second->section == -1) {
 			before_sections.push_back(iter_rule->second);
 		}

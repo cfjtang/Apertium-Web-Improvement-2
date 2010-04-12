@@ -37,7 +37,9 @@ number(0),
 mapping(0),
 parent(p)
 {
-	// Nothing in the actual body...
+	#ifdef CG_TRACE_OBJECTS
+	std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << std::endl;
+	#endif
 }
 
 Reading::Reading(const Reading& r) :
@@ -51,6 +53,9 @@ baseform(r.baseform),
 hash(r.hash),
 hash_plain(r.hash_plain),
 number(r.number),
+tags_bloom(r.tags_bloom),
+tags_plain_bloom(r.tags_plain_bloom),
+tags_textual_bloom(r.tags_textual_bloom),
 mapping(r.mapping),
 parent(r.parent),
 hit_by(r.hit_by),
@@ -60,13 +65,15 @@ tags_plain(r.tags_plain),
 tags_textual(r.tags_textual),
 tags_numerical(r.tags_numerical)
 {
-	// Nothing in the actual body...
+	#ifdef CG_TRACE_OBJECTS
+	std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << std::endl;
+	#endif
 }
 
 uint32_t Reading::rehash() {
 	hash = 0;
 	hash_plain = 0;
-	uint32MiniSet::const_iterator iter;
+	uint32SortedVector::const_iterator iter;
 	for (iter = tags.begin() ; iter != tags.end() ; iter++) {
 		if (!mapping || mapping->hash != *iter) {
 			hash = hash_sdbm_uint32_t(*iter, hash);

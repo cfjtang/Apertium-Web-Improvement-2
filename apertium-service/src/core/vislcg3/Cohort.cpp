@@ -35,8 +35,7 @@ namespace CG3 {
 Cohort::Cohort(SingleWindow *p) :
 num_is_current(false),
 dep_done(false),
-is_enclosed(false),
-is_related(false),
+type(0),
 global_number(0),
 local_number(0),
 wordform(0),
@@ -49,10 +48,16 @@ text(0),
 prev(0),
 next(0)
 {
-	// Nothing in the actual body...
+	#ifdef CG_TRACE_OBJECTS
+	std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << std::endl;
+	#endif
 }
 
 Cohort::~Cohort() {
+	#ifdef CG_TRACE_OBJECTS
+	std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << ": " << readings.size() << ", " << deleted.size() << ", " << delayed.size() << std::endl;
+	#endif
+
 	foreach (ReadingList, readings, iter1, iter1_end) {
 		delete (*iter1);
 	}
@@ -106,7 +111,7 @@ Reading* Cohort::allocateAppendReading() {
 	return read;
 }
 
-inline void Cohort::updateMinMax() {
+void Cohort::updateMinMax() {
 	if (num_is_current) {
 		return;
 	}

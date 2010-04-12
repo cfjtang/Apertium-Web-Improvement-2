@@ -154,7 +154,7 @@ int GrammarWriter::writeGrammar(UFILE *output) {
 	}
 	const_foreach (uint32Vector, grammar->sections, isec, isec_end) {
 		found = false;
-		for (rule_iter = rule_by_line.begin() ; rule_iter != rule_by_line.end() ; rule_iter++) {
+		const_foreach (RuleByLineMap, rule_by_line, rule_iter, rule_iter_end) {
 			const Rule &r = *(rule_iter->second);
 			if (r.section == (int32_t)*isec) {
 				if (!found) {
@@ -167,7 +167,7 @@ int GrammarWriter::writeGrammar(UFILE *output) {
 		}
 	}
 	found = false;
-	for (rule_iter = rule_by_line.begin() ; rule_iter != rule_by_line.end() ; rule_iter++) {
+	const_foreach (RuleByLineMap, rule_by_line, rule_iter, rule_iter_end) {
 		const Rule &r = *(rule_iter->second);
 		if (r.section == -2) {
 			if (!found) {
@@ -179,7 +179,7 @@ int GrammarWriter::writeGrammar(UFILE *output) {
 		}
 	}
 	found = false;
-	for (rule_iter = rule_by_line.begin() ; rule_iter != rule_by_line.end() ; rule_iter++) {
+	const_foreach (RuleByLineMap, rule_by_line, rule_iter, rule_iter_end) {
 		const Rule &r = *(rule_iter->second);
 		if (r.section == -3) {
 			if (!found) {
@@ -381,32 +381,8 @@ void GrammarWriter::printContextualTest(UFILE *to, const ContextualTest &test) {
 }
 
 void GrammarWriter::printTag(UFILE *to, const Tag &tag) {
-	if (tag.type & T_NEGATIVE) {
-		u_fprintf(to, "!");
-	}
-	if (tag.type & T_FAILFAST) {
-		u_fprintf(to, "^");
-	}
-	if (tag.type & T_META) {
-		u_fprintf(to, "META:");
-	}
-	if (tag.type & T_VARIABLE) {
-		u_fprintf(to, "VAR:");
-	}
-
-	UChar *tmp = &gbuffers[0][0];
-	ux_escape(tmp, tag.tag);
-	u_fprintf(to, "%S", tmp);
-
-	if (tag.type & T_CASE_INSENSITIVE) {
-		u_fprintf(to, "i");
-	}
-	if (tag.type & T_REGEXP) {
-		u_fprintf(to, "r");
-	}
-	if (tag.type & T_VARSTRING) {
-		u_fprintf(to, "v");
-	}
+	UString str = tag.toUString();
+	u_file_write(str.c_str(), str.length(), to);
 }
 
 }

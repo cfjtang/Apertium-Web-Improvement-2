@@ -25,6 +25,7 @@
 
 #include "stdafx.h"
 #include "CompositeTag.h"
+#include "sorted_vector.hpp"
 
 namespace CG3 {
 	class Grammar;
@@ -50,17 +51,19 @@ namespace CG3 {
 		uint32Set tags_set;
 		CompositeTagHashSet tags;
 		TagHashSet single_tags;
-		uint32HashSet single_tags_hash;
+		uint32SortedVector single_tags_hash;
 		TagHashSet ff_tags;
-		uint32HashSet ff_tags_hash;
+		uint32SortedVector ff_tags_hash;
 
 		uint32Vector set_ops;
 		uint32Vector sets;
 
 		Set();
+		Set(const Set& from);
 
 		void setName(uint32_t to = 0);
 		void setName(const UChar *to);
+		void setName(const UString& to);
 
 		uint32_t rehash();
 		void resetStatistics();

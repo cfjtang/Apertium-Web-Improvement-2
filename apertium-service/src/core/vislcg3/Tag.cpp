@@ -45,10 +45,16 @@ comparison_key(0),
 tag(0),
 regexp(0)
 {
-	// Nothing in the actual body...
+	#ifdef CG_TRACE_OBJECTS
+	std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << std::endl;
+	#endif
 }
 
 Tag::~Tag() {
+	#ifdef CG_TRACE_OBJECTS
+	std::cerr << "OBJECT: " << __PRETTY_FUNCTION__ << std::endl;
+	#endif
+
 	if (tag) {
 		delete[] tag;
 		tag = 0;
@@ -356,6 +362,9 @@ uint32_t Tag::rehash() {
 	if (type & T_REGEXP) {
 		hash = hash_sdbm_char("r", hash);
 	}
+	if (type & T_VARSTRING) {
+		hash = hash_sdbm_char("v", hash);
+	}
 
 	if (seed) {
 		hash += seed;
@@ -380,6 +389,42 @@ void Tag::markUsed() {
 
 UChar *Tag::allocateUChars(uint32_t n) {
 	return new UChar[n];
+}
+
+UString Tag::toUString() const {
+	UString str;
+	if (type & T_NEGATIVE) {
+		str += '!';
+	}
+	if (type & T_FAILFAST) {
+		str += '^';
+	}
+	if (type & T_META) {
+		str += 'M';
+		str += 'E';
+		str += 'T';
+		str += 'A';
+		str += ':';
+	}
+	if (type & T_VARIABLE) {
+		str += 'V';
+		str += 'A';
+		str += 'R';
+		str += ':';
+	}
+
+	str += tag;
+
+	if (type & T_CASE_INSENSITIVE) {
+		str += 'i';
+	}
+	if (type & T_REGEXP) {
+		str += 'r';
+	}
+	if (type & T_VARSTRING) {
+		str += 'v';
+	}
+	return str;
 }
 
 }

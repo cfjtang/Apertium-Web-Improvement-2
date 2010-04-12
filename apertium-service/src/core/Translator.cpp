@@ -67,11 +67,20 @@ std::string Translator::translate(ResourceBroker &rb, ModesManager &mm, std::str
 	for (std::vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
 
-		std::stringstream ss;
-		ss << "Translator::translate(): Executing " << program;
-		Logger::Instance()->trace(Logger::Debug, ss.str());
+		{
+			std::stringstream ss;
+			ss << "Translator::translate(): Executing " << program;
+			Logger::Instance()->trace(Logger::Debug, ss.str());
+		}
 
 		std::wstring tmp = fm.execute(program, ret, markUnknownWords);
+
+		{
+			std::stringstream ss;
+			ss << "Translator::translate(): Result: " << Encoding::wstringToUtf8(tmp);
+			Logger::Instance()->trace(Logger::Debug, ss.str());
+		}
+
 		ret = tmp;
 	}
 
@@ -103,9 +112,11 @@ void Translator::eagerlyLoad(ResourceBroker &rb, ModesManager &mm, std::string s
 	for (std::vector<Program>::iterator it = programs.begin(); it != programs.end(); ++it) {
 		Program program = *it;
 
-		std::stringstream ss;
-		ss << "Translator::translate(): Loading " << program;
-		Logger::Instance()->trace(Logger::Debug, ss.str());
+		{
+			std::stringstream ss;
+			ss << "Translator::translate(): Loading " << program;
+			Logger::Instance()->trace(Logger::Debug, ss.str());
+		}
 
 		fm.load(program, qty);
 	}
@@ -149,9 +160,21 @@ std::wstring Translator::deformat(ResourceBroker &rb, std::wstring &in, ContentT
 		//break;
 	}
 
+	{
+		std::stringstream ss;
+		ss << "Translator::translate(): Executing " << *p;
+		Logger::Instance()->trace(Logger::Debug, ss.str());
+	}
+
 	Format *d = rb.FormatPool.acquire(*p);
 	std::wstring ret = d->process(in);
 	rb.FormatPool.release(d, *p);
+
+	{
+		std::stringstream ss;
+		ss << "Translator::translate(): Result: " << Encoding::wstringToUtf8(ret);
+		Logger::Instance()->trace(Logger::Debug, ss.str());
+	}
 
 	delete p;
 
@@ -171,9 +194,21 @@ std::wstring Translator::reformat(ResourceBroker &rb, std::wstring &in, ContentT
 	//	break;
 	}
 
+	{
+		std::stringstream ss;
+		ss << "Translator::translate(): Executing " << *p;
+		Logger::Instance()->trace(Logger::Debug, ss.str());
+	}
+
 	Format *r = rb.FormatPool.acquire(*p);
 	std::wstring ret = r->process(in);
 	rb.FormatPool.release(r, *p);
+
+	{
+		std::stringstream ss;
+		ss << "Translator::translate(): Result: " << Encoding::wstringToUtf8(ret);
+		Logger::Instance()->trace(Logger::Debug, ss.str());
+	}
 
 	delete p;
 
