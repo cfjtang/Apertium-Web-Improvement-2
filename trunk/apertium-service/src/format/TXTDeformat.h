@@ -72,7 +72,7 @@ public:
 			this->self.add
 			(L"((\"\\n\\n\")|(\"\\r\\n\\r\\n\"))+", ID_NEWLINES)
 			(L"[ \\n\\t\\r]", ID_WHITESPACE)
-			(L"[\\]\\[\\\\/@<>^$\{\}]", ID_SPECIAL)
+			(L"[\\]\\[\\\\/@<>^${}]", ID_SPECIAL)
 			(L".", ID_CHAR);
 		}
 	};
