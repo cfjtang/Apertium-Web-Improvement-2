@@ -1771,6 +1771,92 @@
     </def-macro>
 
 
+    <def-macro n="conjuga_verb" npar="1">
+	<choose>
+              <when>  <!-- traduccions a present -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pres"/> <!-- present -->
+                </let>
+              </when>
+              <when>           <!-- traduccions a passat -->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fts"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+
+              <when>           <!-- traduccions a futur -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a condicional -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+              </when>
+              <when>           <!-- traduccions a gerundi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="ger"/>
+                </let>
+              </when>
+            </choose>
+    </def-macro>
+
   </section-def-macros> 
 
   <section-rules>
@@ -3586,7 +3672,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="le" case="caseFirstWord">
+	  <chunk name="el" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -7281,7 +7367,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="le" case="caseFirstWord">
+	  <chunk name="el" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -11899,7 +11985,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </choose>
                 <out>
 <b pos="1"/>		<!-- PROVIZORE, ĉar en la malnova versio aperis blanko kaj tiel evidentiĝas kio ŝanĝiĝas kaj kio ne ŝanĝiĝas per ĉi tiu nova regulo -->
-                  <chunk name="verbcj" case="caseFirstWord"> <!-- PROVA: verbcj1!! -->
+                  <chunk name="verbcj" case="caseFirstWord">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11947,7 +12033,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         </call-macro>
 
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="por" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -11995,7 +12081,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         </call-macro>
 
 	<out>
-          <chunk name="pr" case="caseFirstWord">
+          <chunk name="por" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -12073,7 +12159,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                   <b pos="2"/>
                   <chunk name="pro_indirecte" case="caseFirstWord">
                     <tags>
-                      <tag><lit-tag v="SN"/></tag>
+                      <tag><lit-tag v="SP"/></tag>
                       <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
                       <tag><clip pos="3" side="sl" part="pers"/></tag>
                       <tag><clip pos="3" side="tl" part="gen"/></tag>
@@ -12111,7 +12197,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <with-param pos="1"/>
         </call-macro>
         <out>
-          <chunk name="pr" case="caseFirstWord">
+          <chunk name="por" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="PREP"/></tag>
             </tags>
@@ -12775,90 +12861,10 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         <!--<call-macro n="tipus_verb2">
           <with-param pos="2"/>
         </call-macro>-->
+        <call-macro n="conjuga_verb">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
 	<out>
                   <chunk name="verbcj_perif" case="caseFirstWord">
                     <tags>
@@ -13133,6 +13139,253 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 
 
 
+    <rule comment="PROCLITIC PROCLITIC VERB conj (se le dijo -> oni diris al li; se lo dijo -> diris ĝin al li; me lo dijo -> diris ĝin al mi')">
+      <pattern>
+	<pattern-item n="proenc"/>
+	<pattern-item n="proenc"/>
+	<pattern-item n="verbcj"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="conjuga_verb">
+          <with-param pos="3"/>
+        </call-macro>
+          <choose>
+              <when>  <!-- mirem si el primer pronom és SE -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="tipus_prn"/>
+                      <lit-tag v="ref"/>
+                    </equal>
+                </test>
+               <choose>
+                <when>  <!-- mirem si el segon pronom és me/te/le/nos/os -->
+                  <test>
+                      <equal>
+                        <clip pos="2" side="sl" part="gen"/>
+                        <lit-tag v="mf"/>
+                      </equal>
+                  </test>
+		  <out> <!-- se le dijo -> oni diris al li -->
+		    <chunk name="prn" case="caseFirstWord">
+		      <tags>
+		        <tag><lit-tag v="SN"/></tag>
+		        <tag><lit-tag v="tn"/></tag>
+		        <tag><lit-tag v="sg"/></tag>
+		        <tag><lit-tag v="nom"/></tag>
+		      </tags>
+		      <lu>
+		        <lit v="oni"/>
+		        <lit-tag v="prn"/>
+		        <lit-tag v="tn"/>
+		        <lit-tag v="3"/>
+		        <lit-tag v="4"/>
+		      </lu>
+		    </chunk>
+		    <b pos="2"/>
+                    <chunk name="verbcj">
+                      <tags>
+                        <tag><lit-tag v="SV"/></tag>
+                        <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                        <tag><clip pos="3" side="sl" part="temps"/></tag>
+                        <tag><clip pos="3" side="tl" part="pers"/></tag>
+                        <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		        <tag><var n="tipus_verb"/></tag>
+		        <tag><var n="tipus_verb2"/></tag>
+                      </tags>
+                      <lu>
+                        <clip pos="3" side="tl" part="lemh"/>
+                        <clip pos="3" side="tl" part="a_verb"/>
+                        <clip pos="3" side="tl" part="sep"/>
+                        <clip pos="3" side="tl" part="temps"/>
+                        <clip pos="3" side="tl" part="lemq"/>
+                      </lu>
+		    </chunk>
+		    <b pos="1"/>
+                    <!-- poso directe perquè si és indirecte, sovint pot funcionar amb directe, però no al revés -->
+		    <chunk name="pro_obj">
+		      <tags>
+		        <tag><lit-tag v="SN"/></tag>
+		        <tag><lit-tag v="obj"/></tag>
+		        <tag><clip pos="2" side="sl" part="pers"/></tag>
+		        <tag><clip pos="2" side="tl" part="gen"/></tag>
+		        <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      </tags>
+		      <lu>
+	                <clip pos="2" side="tl" part="lem"/>
+		        <clip pos="2" side="tl" part="a_prn"/>
+		        <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+		        <clip pos="2" side="sl" part="pers"/>
+		        <clip pos="2" side="tl" part="gen"/>
+		        <clip pos="2" side="tl" part="nbr"/>
+		      </lu>
+		    </chunk>
+<!-- amb objecte indirecte
+		    <chunk name="pro_indirecte">
+		      <tags>
+		        <tag><lit-tag v="SP"/></tag>
+		        <tag><lit-tag v="subj"/></tag>
+		        <tag><clip pos="2" side="sl" part="pers"/></tag>
+		        <tag><clip pos="2" side="tl" part="gen"/></tag>
+		        <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		      </tags>
+		      <lu>
+		        <lit v="al"/>
+		        <lit-tag v="pr"/>
+		      </lu>
+		      <b pos="1"/>
+		      <lu>
+	                <clip pos="2" side="tl" part="lem"/>
+		        <clip pos="2" side="tl" part="a_prn"/>
+		        <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+		        <clip pos="2" side="sl" part="pers"/>
+		        <clip pos="2" side="tl" part="gen"/>
+		        <clip pos="2" side="tl" part="nbr"/>
+		      </lu>
+		    </chunk>
+-->
+		  </out>
+		</when>
+		<otherwise>
+		<out> <!-- se lo dijo -> diris ĝin al mi -->
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="3" side="sl" part="temps"/></tag>
+                      <tag><clip pos="3" side="tl" part="pers"/></tag>
+                      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+		      <tag><var n="tipus_verb2"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="sep"/>
+                      <clip pos="3" side="tl" part="temps"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+		  </chunk>
+		  <b pos="2"/>
+		  <chunk name="pro_directe">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="2" side="sl" part="pers"/></tag>
+		      <tag><clip pos="2" side="tl" part="gen"/></tag>
+		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <lu>
+	              <clip pos="2" side="tl" part="lem"/>
+		      <clip pos="2" side="tl" part="a_prn"/>
+		      <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+		      <clip pos="2" side="sl" part="pers"/>
+		      <clip pos="2" side="tl" part="gen"/>
+		      <clip pos="2" side="tl" part="nbr"/>
+		    </lu>
+		  </chunk>
+		  <b pos="1"/>
+		  <chunk name="pro_indirecte">
+		    <tags>
+		      <tag><lit-tag v="SP"/></tag>
+		      <tag><lit-tag v="subj"/></tag>
+		      <tag><clip pos="1" side="sl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="3" side="sl" part="nbr"/></tag>
+		    </tags>
+		    <lu>
+		      <lit v="al"/>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+		      <lit v="prpers"/>
+		      <lit-tag v="prn"/>
+		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="1" side="tl" part="gen"/>
+		      <clip pos="3" side="sl" part="nbr"/>
+		    </lu>
+		  </chunk>
+		</out>
+                </otherwise>
+               </choose>
+              </when>
+              <otherwise>
+		<out> <!-- me lo dijo -> diris ĝin al mi -->
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="3" side="sl" part="temps"/></tag>
+                      <tag><clip pos="3" side="tl" part="pers"/></tag>
+                      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+		      <tag><var n="tipus_verb2"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="sep"/>
+                      <clip pos="3" side="tl" part="temps"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+		  </chunk>
+		  <b pos="2"/>
+		  <chunk name="pro_directe">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="2" side="sl" part="pers"/></tag>
+		      <tag><clip pos="2" side="tl" part="gen"/></tag>
+		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <lu>
+	              <clip pos="2" side="tl" part="lem"/>
+		      <clip pos="2" side="tl" part="a_prn"/>
+		      <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+		      <clip pos="2" side="sl" part="pers"/>
+		      <clip pos="2" side="tl" part="gen"/>
+		      <clip pos="2" side="tl" part="nbr"/>
+		    </lu>
+		  </chunk>
+		  <b pos="1"/>
+		  <chunk name="pro_indirecte">
+		    <tags>
+		      <tag><lit-tag v="SP"/></tag>
+		      <tag><lit-tag v="subj"/></tag>
+		      <tag><clip pos="1" side="sl" part="pers"/></tag>
+		      <tag><clip pos="1" side="tl" part="gen"/></tag>
+		      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <lu>
+		      <lit v="al"/>
+		      <lit-tag v="pr"/>
+		    </lu>
+		    <b pos="1"/>
+		    <lu>
+	              <clip pos="1" side="tl" part="lem"/>
+		      <clip pos="1" side="tl" part="a_prn"/>
+		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+		      <clip pos="1" side="sl" part="pers"/>
+		      <clip pos="1" side="tl" part="gen"/>
+		      <clip pos="1" side="tl" part="nbr"/>
+		    </lu>
+		  </chunk>
+		</out>
+              </otherwise>
+            </choose>
+
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
     <rule comment="PROCLITIC PROCLITIC (me los; te los; se la EOes)">
       <pattern>
 	<pattern-item n="proenc"/>
@@ -13142,6 +13395,51 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+          <choose>
+              <when>  <!-- mirem si és SE -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="tipus_prn"/>
+                      <lit-tag v="ref"/>
+                    </equal>
+                </test>
+		<out>
+		  <chunk name="prn" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><lit-tag v="tn"/></tag>
+		      <tag><lit-tag v="sg"/></tag>
+		      <tag><lit-tag v="nom"/></tag>
+		    </tags>
+		    <lu>
+		      <lit v="oni"/>
+		      <lit-tag v="prn"/>
+		      <lit-tag v="tn"/>
+		      <lit-tag v="3"/>
+		      <lit-tag v="4"/>
+		    </lu>
+		  </chunk>
+		  <b pos="1"/>
+		  <chunk name="pro_directe" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SN"/></tag>
+		      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+		      <tag><clip pos="2" side="sl" part="pers"/></tag>
+		      <tag><clip pos="2" side="tl" part="gen"/></tag>
+		      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		    </tags>
+		    <lu>
+	              <clip pos="2" side="tl" part="lem"/>
+		      <clip pos="2" side="tl" part="a_prn"/>
+		      <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+		      <clip pos="2" side="sl" part="pers"/>
+		      <clip pos="2" side="tl" part="gen"/>
+		      <clip pos="2" side="tl" part="nbr"/>
+		    </lu>
+		  </chunk>
+		</out>
+              </when>
+              <otherwise>
 		<out>
 		  <chunk name="pro_directe" case="caseFirstWord">
 		    <tags>
@@ -13161,27 +13459,15 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		    </lu>
 		  </chunk>
 		</out>
-     <!-- Si el primer clitic és SE: l'eliminem; si no el fem objecte indirecte (eliminem les formes SE ja que estadísticament sembla justificat, la majoria de vegades són benefactius, etc...-->
-
-          <choose>
-              <when>  <!-- mirem si és SE per no fer res-->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="tipus_prn"/>
-                      <lit-tag v="ref"/>
-                    </equal>
-                </test>
-              </when>
-           <otherwise> <!-- SI NO es SE: objecte indirecte (passa a 'subj' per agafar nominatiu i s'afegeix la prep 'al') -->	
                 <let>
                   <clip pos="1" side="tl" part="tipus_prn"/>
                   <lit-tag v="subj"/>
                 </let>
 		<out>
 		  <b pos="1"/>
-		  <chunk name="pro_indirecte" case="caseFirstWord">
+		  <chunk name="pro_indirecte">
 		    <tags>
-		      <tag><lit-tag v="SN"/></tag>
+		      <tag><lit-tag v="SP"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -13355,9 +13641,9 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		    </lu>
 		  </chunk>
 		    <b pos="1"/>
-                  <chunk name="pro_indirecte" case="caseFirstWord">
+                  <chunk name="pro_indirecte">
                     <tags>
-                      <tag><lit-tag v="SN"/></tag>
+                      <tag><lit-tag v="SP"/></tag>
                       <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
                       <tag><clip pos="1" side="sl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -13513,9 +13799,9 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 </let>
                 <out>
                   <b pos="1"/>
-                  <chunk name="pro_indirecte" case="caseFirstWord">
+                  <chunk name="pro_indirecte">
                     <tags>
-                      <tag><lit-tag v="SN"/></tag>
+                      <tag><lit-tag v="SP"/></tag>
                       <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
                       <tag><clip pos="2" side="sl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="gen"/></tag>
@@ -14385,6 +14671,32 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	</call-macro>
 	<out>
 	  <chunk name="de" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+ <rule comment="al">
+      <pattern>
+	<pattern-item n="a"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="al" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
