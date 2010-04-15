@@ -5,6 +5,12 @@
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
     </def-cat>
+
+    <def-cat n="SNextend">
+      <cat-item tags="SN.*"/>
+      <cat-item tags="DET.*"/> <!-- este, esta -->
+    </def-cat>
+
     <def-cat n="SNitg"> <!-- EO per als interrogatius, què (el qui porta sense, per tant no entra)...-->
       <cat-item tags="SN.itg.*.*.nom"/>
       <cat-item tags="SN.*.*.*.nomi2"/>
@@ -112,20 +118,20 @@
       <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.moviment"/>
       <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.volition"/>
 
-
-      <cat-item lemma="aŭ_verb" tags="SV.*"/>
-      <cat-item lemma="aŭ_verb" tags="SVneg.*"/>
+      <cat-item lemma="aux_verb" tags="SV.*"/>
+      <cat-item lemma="aux_verb" tags="SVneg.*"/>
       <cat-item lemma="haver_pp" tags="SV.*"/>
       <cat-item lemma="haver_pp" tags="SVneg.*"/>
       <cat-item lemma="haver_pp_enc" tags="SV.*"/>
       <cat-item lemma="haver_pp_enc" tags="SVneg.*"/>
-      <cat-item lemma="aŭ_haver_pp" tags="SV.*"/>
-      <cat-item lemma="aŭ_haver_pp" tags="SVneg.*"/>
-      <cat-item lemma="aŭ_haver_pp_enc" tags="SV.*"/>
-      <cat-item lemma="aŭ_haver_pp_enc" tags="SVneg.*"/>
+      <cat-item lemma="aux_haver_pp" tags="SV.*"/>
+      <cat-item lemma="aux_haver_pp" tags="SVneg.*"/>
+      <cat-item lemma="aux_haver_pp_enc" tags="SV.*"/>
+      <cat-item lemma="aux_haver_pp_enc" tags="SVneg.*"/>
       <cat-item lemma="verbcj_enc" tags="SV.*"/>
       <cat-item lemma="verbcj_enc" tags="SVneg.*"/>
     <!--  <cat-item lemma="be_adj" tags="SV.*"/>-->
+
     </def-cat>
 
      <def-cat n="inf">
@@ -145,6 +151,26 @@
 
     <def-cat n="PREP"> <!-- per l'acusatiu dels verbs de moviment-->
       <cat-item tags="PREP"/>
+    </def-cat>
+
+    <def-cat n="al">
+      <cat-item lemma="al" tags="PREP"/>
+    </def-cat>
+
+    <def-cat n="oni">
+      <cat-item lemma="prn" tags="SN.tn.sg.nom"/>
+    </def-cat>
+
+    <def-cat n="lin_ilin">
+      <cat-item lemma="pro_obj" tags="SN.obj.p3.*"/>
+    </def-cat>
+
+    <def-cat n="pro_directe">
+      <cat-item lemma="pro_directe" tags="SN.obj.*"/>
+    </def-cat>
+
+    <def-cat n="pro_indirecte">
+      <cat-item lemma="pro_indirecte" tags="SP.*"/>
     </def-cat>
 
     <def-cat n="ser">
@@ -269,7 +295,7 @@
       <attr-item tags="vbser"/>
       <attr-item tags="vbhaver"/>
       <attr-item tags="vbmod"/>
-      <attr-item tags="vaŭ"/>
+      <attr-item tags="vaux"/>
     </def-attr>
 
     <def-attr n="tipus_verb">
@@ -2816,7 +2842,7 @@
 	    <test>
 	      <not>
 		<equal>
-		  <clip pos="2" part="temps"/>
+		  <clip pos="3" part="temps"/>
 		  <lit-tag v="imp"/>
 		</equal>
 	      </not>
@@ -3884,6 +3910,82 @@
 
 	</when>
 	</choose>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: al SN oni SV lin/ilin ( A Pedro se le llama Pedrito -> Al Petro oni nomas Pedrito )">
+      <pattern>
+	<pattern-item n="al"/>
+	<pattern-item n="SNextend"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="lin_ilin"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: al SN SV lin/ilin ( A este punto se lo conoce -> Ĉi tiun punkton oni konas )">
+	<!-- necesas malfari aferojn kiujn faras t1x:
+		A este punto se lo conoce -> Al ĉi tiu punkto konas lin al li -> Ĉi tiun punkton oni konas -->
+      <pattern>
+	<pattern-item n="al"/>
+	<pattern-item n="SNextend"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="pro_directe"/>
+	<pattern-item n="pro_indirecte"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="2" part="case"/>
+          <lit-tag v="acc"/>
+        </let>
+	<out>
+	  <chunk>
+            <get-case-from pos="1">
+              <clip pos="2" part="lem"/>
+            </get-case-from>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b/>
+<!-- ^prn<SN><tn><sg><nom>{^oni<prn><tn><3><4>$}$ -->
+          <chunk>
+            <get-case-from pos="2">
+              <lit v="prn"/>
+            </get-case-from>
+            <lit-tag v="SN.tn.sg.nom"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+              <lit v="oni"/>
+            </get-case-from>
+            <lit-tag v="prn.tn.3.4.5"/>
+            <lit v="$}"/>
+          </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
       </action>
 </rule>
 
