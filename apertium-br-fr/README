@@ -1,26 +1,91 @@
-Breton--French translator
+Breton and French
+
+                            apertium-br-fr
 ===============================================================================
 
-This is the Apertium language pair for Breton to French.
+This is an Apertium language pair for translating between Norwegian
+Breton and French. What you can use this language package for:
 
-Files:
+* Translating between Breton and French
+* Morphological analysis of Breton and French
+* Part-of-speech tagging of Breton and French
 
-* apertium-br-fr.br.acx      -- ACX file for Breton
-* apertium-br-fr.br.dix      -- Breton morphological analyser
-* apertium-br-fr.br-fr.dix   -- Breton--French bilingual dictionary
-* apertium-br-fr.br-fr.rlx   -- Breton--French constraint grammar
-* apertium-br-fr.br-fr.t1x   -- Breton--French transfer rules (chunking/lexical)
-* apertium-br-fr.br-fr.t2x   -- Breton--French transfer rules (interchunk)
-* apertium-br-fr.br-fr.t3x   -- Breton--French transfer rules (postchunk)
-* apertium-br-fr.fr.acx      -- ACX file for French
-* apertium-br-fr.fr.metadix  -- French morphological analyser (metadix)
-* apertium-br-fr.post-fr.dix -- French post-generation dictionary
-* br-fr.prob                 -- Breton tagger probabilities
-* fr-br.prob                 -- French tagger probabilities
-* modes.xml                  -- Modes file
+For information on the latter two points, see subheading "For more 
+information" below
 
-===================================================================
+Requirements
+===============================================================================
 
-More information about this module, and others can be found on
-the Apertium: Wiki, http://wiki.apertium.org
+You will need the following software installed:
 
+* lttoolbox (>= 3.1.2)
+* apertium (>= 3.1.1)
+* vislcg3 (>= 0.9.7.5129)
+
+If this does not make any sense, we recommend you look at: www.apertium.org
+
+Compiling
+===============================================================================
+
+Given the requirements being installed, you should be able to just run:
+
+$ ./configure 
+$ make
+# make install
+
+You can use ./autogen.sh instead of ./configure you're compiling from
+SVN. If you're using a --prefix to ./configure, make sure it's the
+same one you used to install apertium itself.
+
+Testing
+===============================================================================
+
+If you are in the source directory after running make, the following
+commands should work:
+
+$  echo "Brav eo an amzer." | apertium -d . br-fr
+Le temps est beau.
+
+After installing somewhere in $PATH, you should be able to do eg.
+
+$ echo "Brav eo an amzer" | apertium fr-br
+Le temps est beau.
+
+The following command runs tests which are on the Apertium wiki page:
+
+$ ./regression-tests.sh 
+
+Files and data
+===============================================================================
+
+* apertium-br-fr.br.dix            - Monolingual dictionary for Breton
+* apertium-br-fr.br-fr.dix         - Bilingual dictionary 
+* apertium-br-fr.fr.metadix        - Monolingual dictionary for French[1]
+* apertium-br-fr.br-fr.rlx         - Constraint Grammar for Breton
+* apertium-br-fr.br-fr.t1x         - Chunker rules for translating into French
+* apertium-br-fr.br-fr.t2x         - Interchunk rules for translating into French
+* apertium-br-fr.br-fr.t3x         - Postchunk rules for translating into French
+* br-fr.prob                       - Tagger model for Breton
+* modes.xml                        - Translation modes
+
+Notes:
+
+1. Metadix format, see http://wiki.apertium.org/wiki/Metadix
+
+For more information
+===============================================================================
+
+* http://wiki.apertium.org/wiki/Installation
+* http://wiki.apertium.org/wiki/apertium-br-fr
+* http://wiki.apertium.org/wiki/Using_an_lttoolbox_dictionary
+* http://wiki.apertium.org/wiki/Constraint_Grammar
+
+Help and support
+===============================================================================
+
+If you need help using this language pair or data, you can contact:
+
+* Mailing list: apertium-stuff@lists.sourceforge.net
+* IRC: #apertium on irc.freenode.net
+
+See also the file AUTHORS included in this distribution.
