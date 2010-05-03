@@ -601,6 +601,7 @@ an srl sense."
   (nxml-forward-element)
   (nxml-down-element 2) (unless srl (nxml-forward-element))
   (nxml-down-element 1) (goto-char (nxml-token-after)))
+
 (defun dix-srl-copy ()
   "Make a copy of the Apertium element we're looking at, and
 increase the srl sense attribute of the copy (optionally adding
@@ -609,10 +610,11 @@ it if it's not present)."
   (dix-slr-copy 'srl))
 
 
-(defun dix-sort-e-by-r (reverse beg end)
-  "Sort region alphabetically by contents of <r> element;
-argument means descending order. Assumes <e> elements never
-occupy more than one line.
+(defun dix-sort-e-by-l (reverse beg end &optional by-r)
+  "Sort region alphabetically by contents of <l> element (or by
+<r> element if optional argument `by-r' is true); argument means
+descending order. Assumes <e> elements never occupy more than one
+line.
 
 Called from a program, there are three arguments:
 `reverse' (non-nil means reverse order), `beg' and `end' (region
@@ -623,23 +625,38 @@ alphabetic case affects the sort order."
     (save-restriction
       (narrow-to-region beg end)
       (goto-char (point-min))
-      (let ;; To make `end-of-line' and etc. to ignore fields.
+      (let ;; make `end-of-line' and etc. to ignore fields:
 	  ((inhibit-field-text-motion t))
 	(sort-subr
 	 reverse
 	 (lambda ()	                ; nextrec
-	   (goto-char (nxml-token-after)))
+	   (goto-char (nxml-token-after))
+	   (re-search-backward "\\s *" (line-beginning-position) 'noerror))
 	 (lambda ()			; endrec
 	   (dix-up-to "e")
-	   (nxml-forward-element))
+	   (nxml-forward-element)
+	   (re-search-forward "\\s *" (line-end-position) 'noerror)
+	   (let ((next-tok (nxml-token-after))) ; skip comments:
+	     (while (and (eq xmltok-type 'comment)
+			 (<= next-tok (line-end-position)))
+	       (goto-char next-tok)
+	       (re-search-forward "\\s *" (line-end-position) 'noerror)
+	       (setq next-tok (nxml-token-after)))))
 	 (lambda ()			; startkey
 	   (nxml-down-element 2)
-	   (let ((lstart (point))
-		 (lend (progn (nxml-forward-element) (point)))
-		 (rstart (if (looking-at "<") (point) (nxml-token-after)))
-		 (rend (progn (nxml-forward-element) (point))))
-	     (concat (buffer-substring-no-properties rstart rend)
-		     (buffer-substring-no-properties lstart lend)))))))))
+	   (let* ((lstart (point))
+		  (lend (progn (nxml-forward-element) (point)))
+		  (rstart (if (looking-at "<") (point) (nxml-token-after)))
+		  (rend (progn (nxml-forward-element) (point)))
+		  (l (buffer-substring-no-properties lstart lend))
+		  (r (buffer-substring-no-properties rstart rend)))
+	     (if by-r
+		 (concat r l)
+	       (concat l r)))))))))
+
+(defun dix-sort-e-by-r (reverse beg end)
+  (interactive "P\nr")
+  (dix-sort-e-by-l reverse beg end 'by-r))
 
 (defun dix-sort-pardef (reverse)
   "Sort a pardef using `dix-sort-e-by-r'."
