@@ -1,6 +1,6 @@
-					; dix.el -- minor mode for editing Apertium dictionary files
+; dix.el -- minor mode for editing Apertium dictionary files
 
-; See http://wiki.apertium.org 
+; See http://wiki.apertium.org/wiki/Emacs
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 ;;; Author: Kevin Brubeck Unhammer <unhammer hos gmail punktum com>
 
 ;;; Usage:
-;; (add-to-list 'load-path "/path/to/dix.el")
+;; (add-to-list 'load-path "/path/to/dix.el-folder") 
 ;; (autoload 'dix-mode "dix" 
 ;;   "dix-mode is a minor mode for editing Apertium XML dictionary files."  t)
 ;; (add-hook 'nxml-mode-hook
@@ -395,7 +395,9 @@ information."
 and `dix-get-pardefs'."
   (save-excursion
     (let (sufflist)
-      (dix-up-to "pardef" "pardefs")
+      (condition-case nil
+	  (progn (dix-up-to "pardef" "pardefs"))
+	(error (dix-goto-pardef)))
       ;; find all suffixes within this pardef:
       (let ((end (save-excursion (dix-with-sexp (forward-sexp))
 				 (point))))
@@ -445,7 +447,9 @@ Returns the list of pardef names."
   (interactive "P")
   (let* ((partype
 	  (save-excursion
-	    (dix-up-to "pardef" "pardefs")
+	    (condition-case nil
+		(progn (dix-up-to "pardef" "pardefs"))
+	      (error (dix-goto-pardef)))
 	    (re-search-forward
 	     (concat "pardef[^n>]*n=\"[^_]*__\\([^\"]*\\)" ) nil 'noerror)
 	    (match-string-no-properties 1)))
@@ -1069,41 +1073,58 @@ several with >< between them."
 		      (search-forward "</e")
 		      (end-of-line)
 		      (point))))
-(defun dix-narrow-to-sdef ()
+
+(defun dix-narrow-to-sdef (&optional no-widen)
   "Narrow buffer to a region between the first and the last
 occurence of a given sdef in a given section; lets you
-tab-complete on sdefs and sections."
-  (interactive)
+tab-complete on sdefs and sections.
+
+Optional prefix argument `no-widen' lets you narrow even more in
+on a previously narrowed buffer (the default behaviour for
+`narrow-to-region'), otherwise the buffer is widened first."
+  (interactive "P")
   (dix-with-no-case-fold
    (let (sdefs)
      (save-excursion ;; find all sdefs
-       (goto-char (point-min))
-       (while (re-search-forward
-	       "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
-	 (add-to-list 'sdefs (match-string-no-properties 1))))
+       (save-restriction (widen)
+	 (goto-char (point-min))
+	 (while (re-search-forward
+		 "<sdef[^>]*n=\"\\([^\"]*\\)\"" nil 'noerror)
+	   (add-to-list 'sdefs (match-string-no-properties 1)))))
      (let ((sdef (completing-read "sdef/POS-tag: " sdefs nil 'require-match))
 	   id start end sections)
        (save-excursion ;; find all sections
-	 (goto-char (point-min))
-	 (while (setq start (re-search-forward
-			     "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
-	   (setq id (match-string-no-properties 1))
-	   (setq end (re-search-forward "</section>"))
-	   (if (search-backward (concat "<s n=\"" sdef "\"") start 'noerror)
-	       (add-to-list 'sections (list id start end)))))
+	 (save-restriction (widen)
+	   (goto-char (point-min))
+	   (while (setq start (re-search-forward
+			       "<section[^>]*id=\"\\([^\"]*\\)\"" nil 'noerror))
+	     (setq id (match-string-no-properties 1))
+	     (setq end (re-search-forward "</section>"))
+	     (if (search-backward (concat "<s n=\"" sdef "\"") start 'noerror)
+		 (add-to-list 'sections (list id start end))))))
        ;; narrow to region between first and last occurrence of sdef in chosen section
        (let* ((ids (mapcar 'car sections))
 	      (id (completing-read "Section:" ids nil 'require-match
 				   (if (cdr ids) nil (car ids))))
 	      (section (assoc id sections)))
+	 (unless no-widen (widen))
 	 (dix-narrow-to-sdef-narrow sdef (second section) (third section)))))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
   (interactive)
-  (dix-up-to "e")
-  (dix-with-sexp
-   (execute-kbd-macro [?\C-\M-b ?\C-\M-f ?\C-\M-k ?\M-< ?\C-e ?\C-y ?\C-u ?\C-  ?\C-  ?\C-f])))
+  (save-excursion
+    (dix-up-to "e")
+    (when (re-search-backward "\\S " nil t)
+      (forward-char))
+    (let* ((beg (point))
+	   (end (nxml-scan-element-forward beg))
+	   (elt (buffer-substring beg end)))
+      (delete-region beg end)
+      (beginning-of-buffer)
+      (end-of-line)
+      (insert elt)))
+  (re-search-forward "\\S "))
 
 (defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'"
   :type 'string
