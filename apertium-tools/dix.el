@@ -314,12 +314,55 @@ list `attributes' of the same format as
 	  (car attributes)
 	(dix-get-attrib (cdr attributes) name))))
 
-(defun dix-next-one (&optional backward)
-  "Helper for `dix-next'. Todo: handle pardef entries too."
+(defun dix-attrib-start (attributes name)
+  "Return start position of attribute by `name' only if it exists.
+`attributes' is of the format of `xmltok-attributes'."
+  (let ((attrib (dix-get-attrib attributes name)))
+    (when attrib (xmltok-attribute-value-start attrib))))
 
-  (defun attrib-start (attributes name)
-    (let ((attrib (dix-get-attrib attributes name)))
-      (if attrib (xmltok-attribute-value-start attrib))))
+(defvar dix-interesting
+  '(("clip" "pos" "side" "part")
+    ("e" "lm" "slr" "srl" "r" "c")
+    ("par" "n")
+    ("s" "n")
+    ("sdef" "n")
+    ("pattern-item" "n")
+    ("lit" "v")
+    ("lit-tag" "v"))
+  "Association list of elements and which attributes are considered interesting,
+used by `dix-next'.")
+
+(defvar dix-skip-empty
+  '("lu" "p" "e")
+  "Skip past these elements when using `dix-next' (but not if
+they have interesting attributes as defined by
+`dix-interesting').")
+
+(defun dix-nearest (pivot backward &rest args)
+  "(dix-nearest 3 nil 1 2 3 4 5 6 7) => 4
+   (dix-nearest 3 nil 1 2 3) => nil
+   (dix-nearest 3 t 1 2 3) => 2
+   (dix-nearest 3 t 1 2 4) => 2"
+  (let ((cmp (if backward '< '>))
+	(nearest (if backward 'max 'min)))
+    (let ((OK (remove nil
+		      (mapcar (lambda (x)
+				(when (and x (funcall cmp x pivot)) x))
+			      args))))
+      (when OK (apply nearest OK)))))
+
+(defun dix-nearest-interesting (attributes pivot backward interest)
+  "Find the position of the nearest member of list `interest'
+which is also a member of `attributes' (in the format of
+`xmltok-attributes') but not crossing `pivot'."
+  (apply 'dix-nearest pivot backward
+	 (mapcar (lambda (attname)
+		   (dix-attrib-start attributes attname))
+		 interest)))
+
+(defun dix-next-one (&optional backward)
+  "Helper for `dix-next'. 
+TODO: handle pardef entries too; make non-recursive."
 
   (defun move (spot)
     (if (if backward (< spot (point)) (> spot (point)))
@@ -331,20 +374,26 @@ list `attributes' of the same format as
 	 (token-next (if backward
 			 xmltok-start
 		       (1+ token-end)))
-	 (qname (xmltok-start-tag-qname)))
-    (cond ((eq xmltok-type 'comment)
-	   (goto-char token-next))
+	 (qname (xmltok-start-tag-qname))
+	 (interest (cdr (assoc qname dix-interesting)))
+	 (near-int (dix-nearest-interesting xmltok-attributes
+					    (point)
+					    backward
+					    interest)))
+    (cond ((eq (point) (if backward (point-min) (point-max)))
+	   t)
 
-	  ((member qname '("par" "s"))
-	   (move (or (attrib-start xmltok-attributes "n")
-		     token-next)))
+	  ((memq xmltok-type '(prolog comment))
+	   (goto-char token-next)
+	   (dix-next-one backward))
 
-	  ((and (equal qname "e")	; monodix <e> with lm
-		(attrib-start xmltok-attributes "lm"))
-	   (move (attrib-start xmltok-attributes "lm")))
+	  (near-int			; interesting attribute
+	   (move near-int))		; to go to
 	  
-	  ((member qname '("p" "e")) 	; bidix/pardef <e>
-	   (move (point)))
+	  ((or interest	; interesting element but no next interesting attribute
+	       (member qname dix-skip-empty)) ; skip if empty
+	   (move token-next)
+	   (dix-next-one backward))	  
 
 	  ((memq xmltok-type '(space data end-tag))
 	   (and (goto-char token-next)
@@ -352,7 +401,10 @@ list `attributes' of the same format as
 			  (nxml-token-before) ; before looping on:
 			  (member (xmltok-start-tag-qname) '("r" "l" "i"))))
 		(dix-next-one backward)))
-
+	  
+	  ;; TODO: should instead while-loop until the next member of
+	  ;; dix-interesting, or maybe the default should be to go to
+	  ;; the next _attribute_, whatever it is?
  	  (t (move token-end)))))
 
 
@@ -678,7 +730,7 @@ alphabetic case affects the sort order."
 	       (setq next-tok (nxml-token-after)))))
 	 (lambda ()			; startkey
 	   (nxml-down-element 1)
-	   (let ((slr (dix-slr-get xmltok-attributes)))
+	   (let ((slr (dix-get-slr xmltok-attributes)))
 	     (nxml-down-element 1)
 	     (let* ((lstart (point))
 		    (lend (progn (nxml-forward-element) (point)))
@@ -690,17 +742,16 @@ alphabetic case affects the sort order."
 		   (concat r l)
 		 (concat l slr r))))))))))
 
-(defun dix-slr-get (atts)
-  "`atts' is `xmltok-attributes', returns the string value of the
-slr attribute if it's set, otherwise \"0\". Should probably be
-padded since we use it for sorting, but so far there are never
-slr's over 10 anyway..."
-  (if atts
-    (let ((att (car atts)))
-      (if (string= "slr" (buffer-substring (aref att 0) (aref att 2)) )
-	  (buffer-substring-no-properties (aref att 3) (aref att 4))
-	(dix-slr-get (cdr atts))))
-    "0"))
+(defun dix-get-slr (attributes)
+  "`attributes' is of the format of `xmltok-attributes', returns
+the string value of the slr attribute if it's set, otherwise
+\"0\". Should probably be padded since we use it for sorting, but
+so far there are never slr's over 10 anyway..."
+  (let ((att (dix-get-attrib attributes "slr")))
+    (if att
+	(buffer-substring-no-properties (xmltok-attribute-value-start att)
+					(xmltok-attribute-value-end att))
+      "0")))
 
 (defun dix-sort-e-by-r (reverse beg end)
   (interactive "P\nr")
