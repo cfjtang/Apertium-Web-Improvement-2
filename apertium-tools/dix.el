@@ -945,6 +945,7 @@ eg. collapse pardefs."
 	   ("apertium-pretransfer")
 	   ("apertium-transfer" "/l/n/apertium-nn-nb.nb-nn.t1x" "/l/n/nb-nn.t1x.bin" "/l/n/nb-nn.autobil.bin")
 	   ("lt-proc -g" "/l/n/nb-nn.autogen.bin"))))
+(make-variable-buffer-local 'dix-modes)
 
 (defun dix-analyse (&optional no-disambiguate)
   "Very bare-bones at the moment. 
@@ -956,10 +957,11 @@ option to override the modes.xml reading).
 Todo: word-at-point function which ignores xml stuff."
   (interactive "P")
   (save-selected-window
-    (let ((word (word-at-point))
+    (let ((modes dix-modes)
+	  (word (word-at-point))
 	  last-output)
       (pop-to-buffer "*dix-analysis*")
-      (dolist (mode dix-modes)
+      (dolist (mode modes)
 	(insert "==> " (symbol-name (car mode)) " <==\n")
 	(setq last-output word)
 	(dolist (cmd (cdr mode))
