@@ -609,7 +609,41 @@ it if it's not present)."
   (interactive)
   (dix-slr-copy 'srl))
 
+(defvar dix-char-alist
+  ;; TODO: Emacs<23 uses utf8, latin5 etc. while Emacs>=23 uses unicode
+  ;; for internal representation; use (string< emacs-version "23")
+  '((?a 2273)
+    (?A 2241)
+    (?s 331937)
+    (?S 331936)
+    (?t 331943)
+    (?T 331942)
+    (?n 331883)
+    (?N 331882)
+    (?d 331825)
+    (?D 331824)
+    (?c 331821)
+    (?C 331820))
+  "Sámi alphabet:
+ášertŧuiopåŋđæølkjhgfdsazčcvbnmÁŠERTŦUIOPÅŊĐÆØLKJHGFDSAZČCVBNM")
 
+(put 'dix-char-table 'char-table-extra-slots 0) ; needed if 0?
+
+(defvar dix-asciify-table
+  (let ((ct (make-char-table 'dix-char-table)))
+    (dolist (lst dix-char-alist ct)
+      (mapc (lambda (x) (aset ct x (car lst))) (cdr lst))))
+  "Converts Sámi characters into ascii equivalent.")
+
+(defun dix-asciify (str)
+  "Used before sorting to turn á into a, etc."
+  (let ((cpos 0))
+    (while (< cpos (length str))
+      (let ((tr (aref dix-asciify-table (elt str cpos))))
+	(when tr (aset str cpos tr)))
+      (incf cpos)))
+  str)
+      
 (defun dix-sort-e-by-l (reverse beg end &optional by-r)
   "Sort region alphabetically by contents of <l> element (or by
 <r> element if optional argument `by-r' is true); argument means
@@ -636,23 +670,37 @@ alphabetic case affects the sort order."
 	   (dix-up-to "e")
 	   (nxml-forward-element)
 	   (re-search-forward "\\s *" (line-end-position) 'noerror)
-	   (let ((next-tok (nxml-token-after))) ; skip comments:
+	   (let ((next-tok (nxml-token-after))) ; skip comments before eol:
 	     (while (and (eq xmltok-type 'comment)
 			 (<= next-tok (line-end-position)))
 	       (goto-char next-tok)
 	       (re-search-forward "\\s *" (line-end-position) 'noerror)
 	       (setq next-tok (nxml-token-after)))))
 	 (lambda ()			; startkey
-	   (nxml-down-element 2)
-	   (let* ((lstart (point))
-		  (lend (progn (nxml-forward-element) (point)))
-		  (rstart (if (looking-at "<") (point) (nxml-token-after)))
-		  (rend (progn (nxml-forward-element) (point)))
-		  (l (buffer-substring-no-properties lstart lend))
-		  (r (buffer-substring-no-properties rstart rend)))
-	     (if by-r
-		 (concat r l)
-	       (concat l r)))))))))
+	   (nxml-down-element 1)
+	   (let ((slr (dix-slr-get xmltok-attributes)))
+	     (nxml-down-element 1)
+	     (let* ((lstart (point))
+		    (lend (progn (nxml-forward-element) (point)))
+		    (rstart (if (looking-at "<") (point) (nxml-token-after)))
+		    (rend (progn (nxml-forward-element) (point)))
+		    (l (dix-asciify (buffer-substring-no-properties lstart lend)))
+		    (r (dix-asciify (buffer-substring-no-properties rstart rend))))
+	       (if by-r
+		   (concat r l)
+		 (concat l slr r))))))))))
+
+(defun dix-slr-get (atts)
+  "`atts' is `xmltok-attributes', returns the string value of the
+slr attribute if it's set, otherwise \"0\". Should probably be
+padded since we use it for sorting, but so far there are never
+slr's over 10 anyway..."
+  (if atts
+    (let ((att (car atts)))
+      (if (string= "slr" (buffer-substring (aref att 0) (aref att 2)) )
+	  (buffer-substring-no-properties (aref att 3) (aref att 4))
+	(dix-slr-get (cdr atts))))
+    "0"))
 
 (defun dix-sort-e-by-r (reverse beg end)
   (interactive "P\nr")
