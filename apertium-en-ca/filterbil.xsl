@@ -73,10 +73,12 @@
             <xsl:apply-templates/>
           </e>
         </xsl:when>
-        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0)">
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0) and not($side=left)">
           <e srl="{./@srl}">
             <xsl:apply-templates/>
           </e>
+        </xsl:when>
+        <xsl:when test="count(./@slr)=0 and not(count(./@srl)=0) and $side=left">
         </xsl:when>
         <xsl:otherwise>
           <e>
