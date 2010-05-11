@@ -326,6 +326,8 @@ list `attributes' of the same format as
     ("par" "n")
     ("s" "n")
     ("sdef" "n")
+    ("with-param" "pos")
+    ("call-macro" "n")
     ("pattern-item" "n")
     ("lit" "v")
     ("lit-tag" "v"))
@@ -1222,8 +1224,10 @@ on a previously narrowed buffer (the default behaviour for
 		 (add-to-list 'sections (list id start end))))))
        ;; narrow to region between first and last occurrence of sdef in chosen section
        (let* ((ids (mapcar 'car sections))
-	      (id (completing-read "Section:" ids nil 'require-match
-				   (if (cdr ids) nil (car ids))))
+	      (id (if (cdr sections)
+		      (completing-read "Section:" ids nil 'require-match
+				       (if (cdr ids) nil (car ids)))
+		    (caar sections)))
 	      (section (assoc id sections)))
 	 (unless no-widen (widen))
 	 (dix-narrow-to-sdef-narrow sdef (second section) (third section)))))))
