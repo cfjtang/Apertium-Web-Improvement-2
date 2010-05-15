@@ -220,6 +220,10 @@
       <cat-item lemma="haya" tags="n.f.sg"/> <!-- EOes cosas del tagger 'haya ido'-->
     </def-cat>
 
+    <def-cat n="ser-pp">
+      <cat-item lemma="ser" tags="vbser.pp.*"/>
+    </def-cat>
+
     <def-cat n="verbcj">
       <cat-item tags="vblex.cni.*"/>
       <cat-item tags="vblex.fti.*"/>
@@ -323,11 +327,6 @@
     </def-cat>
 
 
-    <def-cat n="haveranar">
-      <cat-item lemma="anar" tags="vblex.pri.*"/>
-      <cat-item lemma="haber" tags="vbhaver.*"/>
-    </def-cat>
-    
     <def-cat n="ir_a"> <!-- per a la perífrasi 'voy a dormir' EOes-->
       <cat-item lemma="ir" tags="vblex.*"/>
     </def-cat>
@@ -1771,8 +1770,8 @@
     </def-macro>
 
 
-    <def-macro n="conjuga_verb" npar="1">
-	<choose>
+    <def-macro n="set_temps" npar="1">
+        <choose>
               <when>  <!-- traduccions a present -->
                 <test>
                   <or>
@@ -1806,10 +1805,6 @@
                       <clip pos="1" side="sl" part="temps"/>
                       <lit-tag v="pis"/><!--digués -->
                     </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
                   </or>
                 </test>
                 <let>
@@ -1830,6 +1825,7 @@
                   <lit-tag v="fti"/>
                 </let>
               </when>
+
               <when>           <!-- traduccions a condicional -->
                 <test>
                     <equal>
@@ -1842,6 +1838,7 @@
                   <lit-tag v="cni"/>
                 </let>
               </when>
+
               <when>           <!-- traduccions a gerundi -->
                 <test>
                     <equal>
@@ -1855,6 +1852,96 @@
                 </let>
               </when>
             </choose>
+    </def-macro>
+
+    <def-macro n="set_temps2" npar="2">
+	    <choose>
+              <when>      <!-- traduccions des de passat -> ESTIS + PP (2)-->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+              <when>      <!-- traduccions des de futur -> ESTIS + PP (3)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+              <when>      <!-- traduccions des de condicional -> ESTIS + PP (3)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+
+              <when>      <!-- traduccions des de infinitiu -> ESTIS + PP (3)-->
+                <test>
+		  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="inf"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ger"/><!--digué -->
+                    </equal>
+		</or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="inf"/>
+                </let>
+                <let>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="sg"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+	     </choose>
     </def-macro>
 
   </section-def-macros> 
@@ -8271,94 +8358,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-
-
-            </choose>
                 <out>
                   <chunk name="verbcj" case="caseFirstWord">
                     <tags>
@@ -8409,90 +8412,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj" case="caseFirstWord">
                     <tags>
@@ -8555,90 +8478,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj" case="caseFirstWord">
                     <tags>
@@ -8719,90 +8562,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj" case="caseFirstWord">
                     <tags>
@@ -8856,90 +8619,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out> 
                   <chunk name="adv" case="caseFirstWord">
                     <tags>
@@ -9000,107 +8683,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a infinitiu -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="inf"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="inf"/>
-                </let>
-                <let>
-                  <clip pos="2" side="tl" part="nbr"/>
-                  <lit-tag v="sg"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -9213,89 +8799,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -9363,90 +8869,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj" case="caseFirstWord">
                     <tags>
@@ -9488,90 +8914,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out> 
                   <chunk name="adv" case="caseFirstWord">
                     <tags>
@@ -9620,103 +8966,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a infinitiu -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="inf"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="inf"/>
-                </let>
-                <let>
-                  <clip pos="2" side="tl" part="nbr"/>
-                  <lit-tag v="sg"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -9869,89 +9122,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -10111,89 +9284,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -10342,89 +9435,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -10567,89 +9580,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -10748,89 +9681,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -10934,89 +9787,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             </out>
               </when>
             <otherwise>
-	    <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- pasado -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-	   </choose>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
                 <out>
 		 <chunk name="adv" case="caseFirstWord">
                     <tags>
@@ -11066,86 +9839,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
@@ -11199,86 +9896,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <let>
                   <clip pos="2" side="tl" part="temps"/>
                   <lit-tag v="inf"/>
@@ -11399,91 +10020,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
-        <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj_adj_inf" case="caseFirstWord">
                     <tags>
@@ -11551,87 +10091,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="4"/>
         </call-macro>
-        <choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj_adj_inf" case="caseFirstWord">
                     <tags>
@@ -11693,6 +10156,348 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
+
+    <rule comment="VERBhaber + VERBser-pp + PP (kompleksa pasivo: ha estat llegit - estis legita ; forfalas unu helpverbo) (EO)">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="ser-pp"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+<!-- ĉar pasivo, prefere vbser
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+-->
+
+        <choose>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+		    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="pp"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+          </when>
+	    <otherwise>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+                <out>
+                  <chunk name="verbcj_perifP1" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+		    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="pp"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+            </otherwise>
+	</choose>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>    
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+    <rule comment="VERBhaber + VERBser-pp + PP + POR (kompleksa pasivo: ha estat llegit per - estis legita de; forfalas unu helpverbo + ŝanĝo prepozicio) (EO)">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="ser-pp"/>
+	<pattern-item n="pp"/>
+	<pattern-item n="por"/>
+      </pattern>
+      <action>
+<!-- ĉar pasivo, prefere vbser
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+-->
+
+        <choose>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+		    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="pp"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+          </when>
+	    <otherwise>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+                <out>
+                  <chunk name="verbcj_perifP1" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+		    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="pp"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+            </otherwise>
+	</choose>
+        <out>
+          <b pos="3"/> <!-- ŝanĝo al DE-->
+	  <chunk name="pr" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+	  </chunk>
+        </out>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>    
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+    <rule comment="VERBhaber + VERBser-pp + PP + POR + INF (kompleksa pasivo: ha estat llegit per riure - estis legita por ridi; forfalas unu helpverbo + ŝanĝo prepozicio) (EO)">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="ser-pp"/>
+	<pattern-item n="pp"/>
+	<pattern-item n="por"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>
+<!-- ĉar pasivo, prefere vbser
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+-->
+
+        <choose>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+		    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="pp"/>
+                      <clip pos="3" side="tl" part="nbr"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+          </when>
+	    <otherwise>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+                <out>
+                  <chunk name="verbcj_perifP1" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <clip pos="1" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+		    <b pos="1"/>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <lit-tag v="pp"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+            </otherwise>
+	</choose>
+        <out>
+          <b pos="3"/> <!-- ŝanĝo al POR-->
+	  <chunk name="pr">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+            <lu>
+              <lit v="por"/>
+              <lit-tag v="pr"/>
+            </lu>
+	  </chunk>
+          <b pos="4"/>
+	  <chunk name="inf">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="5" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="5" side="tl" part="temps"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="5" side="tl" part="lemh"/> 
+	      <clip pos="5" side="tl" part="a_verb"/>
+	      <clip pos="5" side="tl" part="sep"/>
+	      <clip pos="5" side="tl" part="temps" link-to="3"/>
+	      <clip pos="5" side="tl" part="lemq"/>    
+	    </lu>
+	  </chunk>
+        </out>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>    
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+
+
+
+
     <rule comment="REGLA: ADV ADJECTIU ('muy/poco//bastante//increiblemente grande - ') (EOes)">
       <pattern>
 	<pattern-item n="adv_preadv"/>
@@ -11744,91 +10549,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
                 <out>
                   <chunk name="verbcj" case="caseFirstWord">
                     <tags>
@@ -11884,105 +10608,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="fts"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="2" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-
-<!--
-              <when> 
-                <test>
-                    <equal>
-                      <var n="treu_ref"/>
-                      <lit-tag v=""/>
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
--->
-
-            </choose>
                 <out>
 <b pos="1"/>		<!-- PROVIZORE, ĉar en la malnova versio aperis blanko kaj tiel evidentiĝas kio ŝanĝiĝas kaj kio ne ŝanĝiĝas per ĉi tiu nova regulo -->
                   <chunk name="verbcj" case="caseFirstWord">
@@ -12289,86 +10918,10 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         <!--<call-macro n="tipus_verb2">
           <with-param pos="2"/>
         </call-macro>-->
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
 
-	<choose>
-              <when>  <!-- traduccions a present -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="pres"/> <!-- present -->
-                </let>
-              </when>
-              <when>           <!-- traduccions a passat -->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ifi"/><!--digué -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pii"/><!--deia -->
-                    </equal>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="pis"/><!--digués -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
-              </when>
-
-              <when>           <!-- traduccions a futur -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="fti"/><!--digué -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="fti"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a condicional -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="cni"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="cni"/>
-                </let>
-              </when>
-              <when>           <!-- traduccions a gerundi -->
-                <test>
-                    <equal>
-                      <clip pos="1" side="sl" part="temps"/>
-                      <lit-tag v="ger"/><!-- -->
-                    </equal>
-                </test>
-                <let>
-                  <clip pos="1" side="tl" part="temps"/>
-                  <lit-tag v="ger"/>
-                </let>
-              </when>
-            </choose>
 	<out>
                   <chunk name="verbcj_perif" case="caseFirstWord">
                     <tags>
@@ -12861,7 +11414,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         <!--<call-macro n="tipus_verb2">
           <with-param pos="2"/>
         </call-macro>-->
-        <call-macro n="conjuga_verb">
+        <call-macro n="set_temps">
           <with-param pos="1"/>
         </call-macro>
 
@@ -13149,7 +11702,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-        <call-macro n="conjuga_verb">
+        <call-macro n="set_temps">
           <with-param pos="3"/>
         </call-macro>
           <choose>
