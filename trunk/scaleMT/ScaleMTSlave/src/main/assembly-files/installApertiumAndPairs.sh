@@ -149,6 +149,7 @@ do
 done
 	
 cd ..
+cp toinstall/* $REAL_PREFIX/bin
 cp apertium-module/* $REAL_PREFIX/bin
 
 }
