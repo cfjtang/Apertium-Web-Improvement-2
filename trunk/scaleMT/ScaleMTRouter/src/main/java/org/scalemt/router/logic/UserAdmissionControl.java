@@ -27,7 +27,14 @@ public class UserAdmissionControl {
     private long limitAnonymous=1000000;
     private List<String> whiteListUsers;
     private List<String> whiteListIPs;
+    private boolean limitsEnabled=false;
+
     public UserAdmissionControl() {
+
+        String strLimits=Util.readConfigurationProperty("user_limit_enabled");
+        if("true".equals(strLimits) || "yes".equals(strLimits))
+            limitsEnabled=true;
+
         try
         {
             limitRegistered=Long.parseLong(Util.readConfigurationProperty("user_limit_registered"));
@@ -61,6 +68,9 @@ public class UserAdmissionControl {
 
     public boolean canTranslate(Requester rq)
     {
+        if(!limitsEnabled)
+            return true;
+
         long cost =LoadBalancer.getInstance().getLoadPredictor().getRequestHistory().getCostUser(rq);
         boolean result=true;
 
