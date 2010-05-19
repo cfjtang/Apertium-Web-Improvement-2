@@ -46,14 +46,15 @@ $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 
 $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x \
-	                             $(PREFIX1).t1x.bin
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.bin
+	@if [ "`which apertium-preprocess-transfer-bytecode-j`" == "" ]; then echo && echo "NOTE: lttoolbox-java (used for bytecode accelerated transfer) is missing" && echo "      Therefore the following will fail (but it's OK)" && echo; fi
+	-apertium-preprocess-transfer-bytecode-j $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class
 
 $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x \
-	                             $(PREFIX2).t1x.bin
-	                             
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x $(PREFIX2).t1x.bin
+	@if [ "`which apertium-preprocess-transfer-bytecode-j`" == "" ]; then echo && echo "NOTE: lttoolbox-java (used for bytecode accelerated transfer) is missing" && echo "      Therefore the following will fail (but it's OK)" && echo; fi
+	-apertium-preprocess-transfer-bytecode-j $(BASENAME).$(PREFIX2).t1x $(PREFIX2).t1x.class
 
 $(PREFIX1).mode: modes.xml 
 	apertium-gen-modes modes.xml
