@@ -53,9 +53,29 @@ After installing somewhere in $PATH, you should be able to do e.g.
 $  echo "Dörren skall öppnas" | apertium sv-da
 Døren skal åbnes
 
+
+
+
+If you change anything you should check your changes agains the test corpas.
+This command downloads the test corpas:
+
+$ curl "http://apertium.svn.sourceforge.net/viewvc/apertium/trunk/apertium-sv-da/corpa.tar.gz?view=tar&pathrev=21802" | tar -xzvf-
+
+Thereafter, run
+$ ./testcorpus_sv-da.sh 
+and
+$ ./testcorpus_da-sv.sh 
+
+
+
 The following command runs tests which are on the Apertium wiki page:
 
 $ ./regression-tests.sh 
+
+These test are not mainained anymore.
+
+
+
 
 Files and data
 ===============================================================================
