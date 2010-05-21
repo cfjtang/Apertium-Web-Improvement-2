@@ -636,8 +636,8 @@ public class Daemon {
         Runtime r = Runtime.getRuntime();
         try {
             p = r.exec(command);
-            BufferedReader pReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedWriter pWriter = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+            BufferedReader pReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
+            BufferedWriter pWriter = new BufferedWriter(new OutputStreamWriter(p.getOutputStream(),"UTF-8"));
             processWriter=pWriter;
 
             writingQueue = new LinkedBlockingQueue<QueueElement>();
