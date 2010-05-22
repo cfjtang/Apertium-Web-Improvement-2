@@ -685,8 +685,8 @@
       <attr-item tags="pp"/><!-- ? -->
       <attr-item tags="pp2"/><!-- ? -->
       <attr-item tags="pp3"/><!-- ? -->
-      <attr-item tags="ger"/><!-- ? -->
-      <attr-item tags="gerpast"/><!-- ? -->
+      <attr-item tags="ger"/><!-- ante -->
+      <attr-item tags="gerpast"/><!-- inte -->
       <attr-item tags="inf"/><!-- ? -->
 
     </def-attr>
@@ -12082,7 +12082,40 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 </out>
-          </when>
+              </when>
+
+              <when>  <!-- traduccions des de gerundi -> inte -->
+                <test>
+                  <equal>
+                    <clip pos="1" side="sl" part="temps"/>
+                    <lit-tag v="ger"/>
+                  </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="gerpast"/> <!-- inte -->
+                </let>
+                <out>
+                  <chunk name="verbger" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <!-- <clip pos="2" side="tl" part="temps"/> --> <!-- per alguna raó falla a vegades amb vbser -->
+                      <lit-tag v="gerpast"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </when>
+
 	    <otherwise>
 	    <choose>
               <when>      <!-- traduccions des de passat -> ESTIS + PP (2)-->
