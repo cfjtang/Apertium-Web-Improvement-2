@@ -11685,6 +11685,63 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule>
 
+    <rule comment="ANAR ADV INF (vaig ràpidament venir) EO">
+      <pattern>
+        <pattern-item n="anar"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+
+        <let>
+          <clip pos="3" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+		  <chunk name="adv" >
+		    <tags>
+		      <tag><lit-tag v="ADV"/></tag>
+		    </tags>
+		    <lu>
+		      <clip pos="2" side="tl" part="whole"/>
+		    </lu>
+		  </chunk>
+		<b pos="1"/>
+              <chunk name="verbcj" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="3" side="tl" part="temps"/></tag>
+                  <tag><clip pos="1" side="tl" part="pers"/></tag>
+                  <tag><clip pos="1" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="sep"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
     <rule comment="VERB conjugat + INF (volia cantar; EO)">
       <pattern>
 	<pattern-item n="verbcj"/>
@@ -11807,7 +11864,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </let>
       </action>
     </rule>
-
 
 
     <rule comment="ANAR + INF + INF (vaig voler/estar a punt de venir) EO">
@@ -13948,6 +14004,36 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <!-- *** duoblaj neoj *** -->
 
+    <rule comment="ADVNEG NO ( mai no -> neniam )">
+      <pattern>
+	<pattern-item n="advneg"/>
+	<pattern-item n="no"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+                <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="1" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="1" side="tl" part="lem"/>
+	              <clip pos="1" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
     <rule comment="NE VERBconj ADVNEG ( ne chante jamais -> neniam kantas )">
       <pattern>
 	<pattern-item n="no"/>
@@ -14738,7 +14824,504 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
+    <rule comment="NO ANAR INF ADVNEG ( no vaig cantar mai -> neniam kantis )">
+      <pattern>
+	<pattern-item n="no"/>
+        <pattern-item n="anar"/>
+        <pattern-item n="inf"/>
+	<pattern-item n="advneg"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
 
+        <let>
+          <clip pos="3" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="4" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="4" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="4" side="tl" part="lem"/>
+	              <clip pos="4" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+		  <b pos="1"/>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="3" side="tl" part="temps"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="sep"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="NO ANAR ADVNEG INF ( no vaig mai cantar -> neniam kantis )">
+      <pattern>
+	<pattern-item n="no"/>
+        <pattern-item n="anar"/>
+	<pattern-item n="advneg"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+
+        <let>
+          <clip pos="4" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="3" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="3" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="3" side="tl" part="lem"/>
+	              <clip pos="3" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+		  <b pos="1"/>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="4" side="tl" part="temps"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="4" side="tl" part="lemh"/>
+                  <clip pos="4" side="tl" part="a_verb"/>
+                  <clip pos="4" side="tl" part="sep"/>
+                  <clip pos="4" side="tl" part="temps"/>
+                  <clip pos="4" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="NO ANAR INF ADVNEG PRONEG ( no vaig cantar mai res -> neniam kantis ion )">
+      <pattern>
+	<pattern-item n="no"/>
+        <pattern-item n="anar"/>
+        <pattern-item n="inf"/>
+	<pattern-item n="advneg"/>
+	<pattern-item n="pronneg"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+
+        <let>
+          <clip pos="3" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="4" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="4" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="4" side="tl" part="lem"/>
+	              <clip pos="4" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+		  <b pos="1"/>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="3" side="tl" part="temps"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="sep"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+		  <b pos="2"/>
+	          <chunk name="prn_nosubj">
+	            <tags>
+                      <tag><lit-tag v="SN.tn.sg.nom"/></tag>
+	            </tags>
+	            <lu>
+                      <lit v="io"/>
+                      <lit-tag v="prn.tn.3.4"/>
+	            </lu>
+	          </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="NO ANAR ADVNEG INF PRONEG ( no vaig mai cantar res -> neniam kantis ion )">
+      <pattern>
+	<pattern-item n="no"/>
+        <pattern-item n="anar"/>
+	<pattern-item n="advneg"/>
+        <pattern-item n="inf"/>
+	<pattern-item n="pronneg"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+
+        <let>
+          <clip pos="4" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="3" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="3" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="3" side="tl" part="lem"/>
+	              <clip pos="3" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+		  <b pos="1"/>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="4" side="tl" part="temps"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="4" side="tl" part="lemh"/>
+                  <clip pos="4" side="tl" part="a_verb"/>
+                  <clip pos="4" side="tl" part="sep"/>
+                  <clip pos="4" side="tl" part="temps"/>
+                  <clip pos="4" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+		  <b pos="2"/>
+	          <chunk name="prn_nosubj">
+	            <tags>
+                      <tag><lit-tag v="SN.tn.sg.nom"/></tag>
+	            </tags>
+	            <lu>
+                      <lit v="io"/>
+                      <lit-tag v="prn.tn.3.4"/>
+	            </lu>
+	          </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="NO ANAR INF PRONEG ( no vaig cantar res -> kantis nenion )">
+      <pattern>
+	<pattern-item n="no"/>
+        <pattern-item n="anar"/>
+        <pattern-item n="inf"/>
+	<pattern-item n="pronneg"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+
+        <let>
+          <clip pos="3" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="3" side="tl" part="temps"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <clip pos="3" side="tl" part="sep"/>
+                  <clip pos="3" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+		  <b pos="2"/>
+	          <chunk name="prn_nosubj">
+	            <tags>
+                      <tag><lit-tag v="SN.tn.sg.nom"/></tag>
+	            </tags>
+	            <lu>
+                      <lit v="nenio"/>
+                      <lit-tag v="prn.tn.3.4"/>
+	            </lu>
+	          </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="NO PRO ANAR INF ADVNEG ( no ho vaig cantar mai -> neniam kantis ĝin )">
+      <pattern>
+	<pattern-item n="no"/>
+	<pattern-item n="pro"/>
+        <pattern-item n="anar"/>
+        <pattern-item n="inf"/>
+	<pattern-item n="advneg"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+
+        <let>
+          <clip pos="4" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="5" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="5" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="5" side="tl" part="lem"/>
+	              <clip pos="5" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+		  <b pos="2"/>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="4" side="tl" part="temps"/></tag>
+                  <tag><clip pos="3" side="tl" part="pers"/></tag>
+                  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="4" side="tl" part="lemh"/>
+                  <clip pos="4" side="tl" part="a_verb"/>
+                  <clip pos="4" side="tl" part="sep"/>
+                  <clip pos="4" side="tl" part="temps"/>
+                  <clip pos="4" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+		  <b pos="1"/>
+	  <chunk name="prn_nosubj">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <clip pos="2" side="tl" part="a_prn"/>
+	      <clip pos="2" side="tl" part="tipus_prn"/>
+	      <clip pos="2" side="tl" part="pers"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="3"/>
+	    </lu>
+	  </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="3"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="NO PRO ANAR ADVNEG INF ( no ho vaig mai cantar -> neniam kantis ĝin )">
+      <pattern>
+	<pattern-item n="no"/>
+	<pattern-item n="pro"/>
+        <pattern-item n="anar"/>
+	<pattern-item n="advneg"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="5"/>
+        </call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+
+        <let>
+          <clip pos="5" side="tl" part="temps"/>
+          <lit-tag v="past"/>
+        </let>
+            <out>
+	          <chunk name="adv" case="caseFirstWord">
+	            <tags>
+	              <tag><clip pos="4" side="tl" part="a_adv"/></tag>
+	              <tag><clip pos="4" side="tl" part="neg"/></tag>
+	            </tags>
+	            <lu>
+	              <clip pos="4" side="tl" part="lem"/>
+	              <clip pos="4" side="tl" part="a_adv"/>
+	            </lu>
+	          </chunk>
+		  <b pos="2"/>
+              <chunk name="verbcj">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="5" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="5" side="tl" part="temps"/></tag>
+                  <tag><clip pos="3" side="tl" part="pers"/></tag>
+                  <tag><clip pos="3" side="tl" part="nbr"/></tag>
+		  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="5" side="tl" part="lemh"/>
+                  <clip pos="5" side="tl" part="a_verb"/>
+                  <clip pos="5" side="tl" part="sep"/>
+                  <clip pos="5" side="tl" part="temps"/>
+                  <clip pos="5" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+		  <b pos="1"/>
+	  <chunk name="prn_nosubj">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <clip pos="2" side="tl" part="a_prn"/>
+	      <clip pos="2" side="tl" part="tipus_prn"/>
+	      <clip pos="2" side="tl" part="pers"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <lit-tag v="3"/>
+	    </lu>
+	  </chunk>
+            </out>
+        <call-macro n="f_bcond">
+          <with-param pos="3"/>
+          <with-param pos="5"/>
+        </call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
 
 
     <!--************************************ ALTRES ************************************************ -->
