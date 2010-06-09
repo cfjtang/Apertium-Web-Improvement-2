@@ -24,6 +24,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <apertium/apertium_re.h>
 
 using namespace std;
 
@@ -31,14 +32,15 @@ class AmbiguateCorpus
 {
 private:
 	string dic_exp_file;  // File with the ambiguous parts of the expanded dictionary
-	map<string, vector<string> > a_table;
+	map<ApertiumRE, vector<string> > a_table; // {"orð<n><nt>", ["orð:1<n><nt>", "orð:2<n><nt>", ...]}
 
 public:
 	AmbiguateCorpus();
-	AmbiguateCorpus(const string dict);
+	void readDict(const string dict, const string dir);
+
 	virtual ~AmbiguateCorpus();
 	
-	int ambiguate(FILE *input, FILE *output);
+	void processCorpus(FILE *input, FILE *output);
 };
 
 

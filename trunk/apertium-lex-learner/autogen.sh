@@ -31,6 +31,8 @@ fi
 
 rm -f config.cache acconfig.h
 
+echo "- autoheader."		&& \
+autoheader			&& \
 echo "- aclocal."		&& \
 aclocal			&& \
 echo "- autoconf."		&& \

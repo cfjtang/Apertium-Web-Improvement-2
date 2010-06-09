@@ -18,6 +18,7 @@
  */
 
 #include "ambiguate_corpus.h"
+#include "bidix_parser.h"
 
 #include <iostream>
 
@@ -28,19 +29,26 @@ AmbiguateCorpus::AmbiguateCorpus()
 	return;	
 }
 
-AmbiguateCorpus::AmbiguateCorpus(const string dict)
+void
+AmbiguateCorpus::readDict(const string dict, const string dir)
 {
+	// a_table = {"orð<n><nt>", ["orð:1<n><nt>", "orð:2<n><nt>", ...]}
+	BidixParser p;
+	
+	p.parse(dict, "LR");
+
 	cout << " " << dict << endl;
 	dic_exp_file = dict;	
 }
+
 
 AmbiguateCorpus::~AmbiguateCorpus()
 {
 	return;	
 }
 
-int
-AmbiguateCorpus::ambiguate(FILE *input, FILE *output)
+void
+AmbiguateCorpus::processCorpus(FILE *input, FILE *output)
 {
-	return 0;
+	return;
 }

@@ -22,6 +22,10 @@
 #include <libgen.h>
 #include <iostream>
 
+#include <lttoolbox/lt_locale.h>
+
+
+#include "config.h"
 #include "ambiguate_corpus.h"
 
 using namespace std;
@@ -31,13 +35,16 @@ endProgram(char *name)
 {
   cout << basename(name) << ": process a stream with a letter transducer" << endl;
   cout << "USAGE: " << basename(name) << " [-a bidix [input_file [output_file]]]" << endl;
+  cout << "       " << basename(name) << " [-r lm [input_file [output_file]]]" << endl;
   cout << "Options:" << endl;
 #if HAVE_GETOPT_LONG
   cout << "  -a, --ambiguate:        ambiguate a tagged corpus" << endl;
+  cout << "  -r, --rank:             rank a set of translations" << endl;
   cout << "  -v, --version:          version" << endl;
   cout << "  -h, --help:             show this help" << endl;
 #else
   cout << "  -a:   ambiguate a tagged corpus" << endl;
+  cout << "  -r:   rank a set of translations" << endl;
   cout << "  -v:   version" << endl;
   cout << "  -h:   show this help" << endl;
 #endif
@@ -47,16 +54,57 @@ endProgram(char *name)
 int
 main(int argc, char **argv) 
 {
-#if HAVE_GETOPT_LONG
-  static struct option long_options[]=
-    {
-      {"ambiguate",       0, 0, 'a'},
-      {"version",	  0, 0, 'v'},
-      {"help",            0, 0, 'h'}
-    };
-#endif    
+	string dict = "";
+	string dir = "lr";
+	AmbiguateCorpus amb;
 
-	AmbiguateCorpus amb("/tmp/bar");
+
+#if HAVE_GETOPT_LONG
+	static struct option long_options[]=
+		{
+			{"ambiguate", 1, 0, 'a'},
+			{"version",   0, 0, 'v'},
+			{"help",      0, 0, 'h'},
+			{0, 0, 0, 0}
+		};
+#endif    
+	while(true) {
+#if HAVE_GETOPT_LONG
+		int option_index = 0;
+		int c = getopt_long(argc, argv, "a:vh", long_options, &option_index);
+#else
+		int c = getopt(argc, argv, "a:vh");
+#endif
+
+		if(c == -1)
+		{
+			break;
+		}
+
+		switch(c)
+		{
+		case 'a':
+			dict = string(optarg);
+			amb.readDict(dict, dir);
+			break;
+
+		case 'v':
+			cout << basename(argv[0]) << " version " << PACKAGE_VERSION << endl;
+			exit(EXIT_SUCCESS);
+			break;
+
+		case 'h':
+		default:
+			endProgram(argv[0]);
+			break;
+		}
+	}
+
+	FILE *input = stdin, *output = stdout;
+
+	LtLocale::tryToSetLocale();
+	
+	amb.processCorpus(input, output);
 
 	return 0;
 }
