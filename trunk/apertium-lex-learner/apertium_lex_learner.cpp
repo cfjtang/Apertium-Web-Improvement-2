@@ -24,7 +24,6 @@
 
 #include <lttoolbox/lt_locale.h>
 
-
 #include "config.h"
 #include "ambiguate_corpus.h"
 
