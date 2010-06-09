@@ -140,12 +140,12 @@ endElement(void *user_data, const xmlChar *localname)
 {
 	BidixSAXData *d = (BidixSAXData *)user_data;
 
-	if(XMLParseUtil::towstring(localname) == L"section") {
+	if(xmlStrEqual(localname, xmlCharStrdup("section")) == 1) {
 		d->in_section = false;
 	}
 
 	if(XMLParseUtil::towstring(localname) == L"e" && d->in_section) {
-		wcout << "e: " << d->left_string << " " << d->right_string << endl;
+		wcout << L"e: " << d->left_string << L" " << d->right_string << endl;
 
 		d->left_string = L"";
 		d->right_string = L"";
