@@ -125,6 +125,11 @@ Entering dix-mode calls the hook dix-mode-hook.
   :require    nxml-mode
   )
 
+(unless (boundp 'nxml-syntax-highlight-flag)
+  (defvar nxml-syntax-highlight-flag nil
+    "This variable existed in old versions of nxml-mode, newer
+versions use the regular built-in highlighting."))
+
 
 ;;;============================================================================
 ;;;
@@ -324,18 +329,27 @@ list `attributes' of the same format as
   '(("clip" "pos" "side" "part")
     ("e" "lm" "slr" "srl" "r" "c")
     ("par" "n")
+    ("section" "id" "type")
+    ("pardef" "n")
     ("s" "n")
     ("sdef" "n")
     ("with-param" "pos")
     ("call-macro" "n")
+    ("def-macro" "n" "npar")
+    ("cat-item" "lemma" "tags" "name")
+    ("attr-item" "lemma" "tags")
+    ("def-attr" "n")
+    ("def-cat" "n")
     ("pattern-item" "n")
+    ("chunk" "name" "case" "namefrom")
+    ("var" "n")
     ("lit" "v")
     ("lit-tag" "v"))
   "Association list of elements and which attributes are considered interesting,
 used by `dix-next'.")
 
 (defvar dix-skip-empty
-  '("lu" "p" "e")
+  '("lu" "p" "e" "tags" "chunk" "tag" "pattern" "rule" "action" "out" "b" "def-macro" "choose" "when" "test" "equal" "otherwise" "let")
   "Skip past these elements when using `dix-next' (but not if
 they have interesting attributes as defined by
 `dix-interesting').")
@@ -476,7 +490,10 @@ and `dix-get-pardefs'."
   "Toggle nXML syntax highlighting. Runs `normal-mode' to make
 sure syntax highlighting gets turned on afterwards, but you'll
 have to reopen the file if you want to completely clear all
-syntax highlighting."
+syntax highlighting.
+
+Note: newer versions of nxml-mode use the regular (quicker)
+built-in syntax highlighting, making this function obsolete."
   (interactive)
   (setq nxml-syntax-highlight-flag (not nxml-syntax-highlight-flag))
   (normal-mode)
