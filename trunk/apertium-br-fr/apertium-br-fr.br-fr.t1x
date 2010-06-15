@@ -5042,6 +5042,9 @@
           <with-param pos="2"/>
           <with-param pos="1"/>
         </call-macro>
+        <call-macro n="set_syn_label">
+          <with-param pos="1"/>
+        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
@@ -5049,15 +5052,16 @@
           <chunk name="det_nom" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SN"/></tag>
+              <tag><var n="cur_syn_label"/></tag>
               <tag><var n="genero"/></tag>
               <tag><var n="numero"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="1" side="tl" part="gen_sense_mf" link-to="3"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="4"/>
               <clip pos="1" side="tl" part="nbr_sp"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
@@ -5065,9 +5069,9 @@
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="2" side="tl" part="gen_sense_mf" link-to="3"/>
               <clip pos="2" side="tl" part="gen_mf"/>
-              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="2" side="tl" part="nbr_sense_sp" link-to="4"/>
               <clip pos="2" side="tl" part="nbr_sp"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
@@ -18643,36 +18647,30 @@
         <pattern-item n="prnperssubj"/>
       </pattern>
       <action>
+        <call-macro n="set_syn_label">
+          <with-param pos="1"/>
+        </call-macro>
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
         <out>
           <chunk name="prnperssubj" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SN"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="tipus_prn"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="pers"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="gen"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="nbr"/>
-              </tag>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="cur_syn_label"/></tag>
+              <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="gen"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_prn"/>
               <clip pos="1" side="tl" part="tipus_prn"/>
               <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="gen_sense_mf" link-to="4"/>
+              <clip pos="1" side="tl" part="gen_sense_mf" link-to="5"/>
               <clip pos="1" side="tl" part="gen_mf"/>
-              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="5"/>
+              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="6"/>
               <clip pos="1" side="tl" part="nbr_sp"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
