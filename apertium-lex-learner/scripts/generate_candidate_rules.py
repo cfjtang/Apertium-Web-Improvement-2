@@ -140,6 +140,11 @@ class Phrase: #{
 s_phrases = {};
 phrases = {}; # ['2782'] = {'0': Phrase(0, -2.45835, 'The climate is ...', '^El/El<det><def><m><sg>$ ...', '1': ...)}
 
+if len(sys.argv) < 3: #{
+	print 'generate_candidate_rules.py <ambig> <ranked>';
+	sys.exit(-1);
+#}
+
 f_s_ambig = sys.argv[1];
 f_m_probs = sys.argv[2];
 
@@ -152,7 +157,7 @@ for s_line in fd_s_ambig.read().split('\n'): #{
 	#}
 	s_id = s_line.split('||')[0].split(':')[0].strip('[').strip();
 	s_idx = s_line.split('||')[0].split(':')[1].strip();
-	s_phr = s_line.split('.[]')[1];
+	s_phr = s_line.split('.[]')[1].replace('  ', ' ').replace('   ', ' ').replace('  ', ' ');
 
 	if s_id not in s_phrases: #{
 		s_phrases[s_id] = {};
@@ -238,10 +243,28 @@ def pos_and_index_diff(base, new): #{
 	#}
 	pos = 0;
 	for u in base_unigrams: #{
+		if u.count('<sent>') > 0: #{
+			pos = pos + 1;
+			continue;
+		#}
 		if u.count(':') > 0: #{
+			print >>sys.stderr , 'UNIGRAM U: ' , u;
 			# @
+			no_surface = base_unigrams[pos].split('/')[1];
+			if no_surface.count('<') > 1: #{
+				first_tag = no_surface.split('<')[1];
+				lem_tag = first_tag.strip('>');	
+			else: #{
+				print >>sys.stderr , 'ERROR: No tag found!';
+				print >>sys.stderr , base_unigrams[pos];
+				print >>sys.stderr , no_surface;
+				lem_tag = '';
+				sys.exit(-1);
+			#}
 			lem = base_unigrams[pos].split('/')[1].split('<')[0];
 			lem_n = new_unigrams[pos].split('/')[1].split('<')[0];
+
+			print >> sys.stderr , '++ lem:' , lem_tag , lem , lem_n;
 
 #			xtags = base_unigrams[pos].split('><')[0:];
 #			ytags = new_unigrams[pos].split('><')[0:];
@@ -249,7 +272,7 @@ def pos_and_index_diff(base, new): #{
 #			ytags[0] = ytags[0].split('<')[1];
 #
 #			print >> sys.stderr , 'idx+diff: ' , pos , xtags, ytags;
-			pos_index = (lem, '("' + lem + '")', '("' + lem_n + '")');
+			pos_index = (lem, '("' + lem + '")', '("' + lem_n + '")', lem_tag);
 #			print >> sys.stderr , 'idx+diff: ' , pos_index;
 			break;
 		#}
@@ -291,13 +314,17 @@ for p_id in phrases: #{
 
 	pos_index = pos_and_index_diff(phrases[p_id][0],  phrases[p_id][1]);
 
-	if pos_index[1] == pos_index[2]: #{
+	print >>sys.stderr, '++ pos_index: ' , pos_index;
+
+	if len(pos_index) < 2: #{
+		continue;
+	elif pos_index[1] == pos_index[2]: #{
 		continue;
 	#}
 
 	for ngram in n_ngrams: #{
 		#print 'pos_index: ', pos_index;
-		nout = 'SUBSTITUTE ' + pos_index[1].replace(':0', '') + ' ' + pos_index[2] + ' ("' + pos_index[0].replace(':0', '') + '") ';
+		nout = 'SUBSTITUTE ' + pos_index[1].replace(':0', '') + ' ' + pos_index[2] + ' ("' + pos_index[0].replace(':0', '') + '" ' + pos_index[3] + ') ';
 		keys = ngram.keys();
 		keys.sort();
 		for y in keys:
@@ -327,7 +354,7 @@ for p_id in phrases: #{
 			# don't generate rules with single lemmas
 			continue;
 		#}
-		nout = 'SUBSTITUTE ' + pos_index[1].replace(':0', '') + ' ' + pos_index[2] + ' ("' + pos_index[0].replace(':0', '') + '") ';
+		nout = 'SUBSTITUTE ' + pos_index[1].replace(':0', '') + ' ' + pos_index[2] + ' ("' + pos_index[0].replace(':0', '') + '" ' + pos_index[3] + ') ';
 		keys = ngram.keys();
 		keys.sort();
 		if ngram[0].count(':') > 0: #{
