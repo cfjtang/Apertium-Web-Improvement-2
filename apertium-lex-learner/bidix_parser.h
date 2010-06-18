@@ -41,6 +41,8 @@ private:
 	xmlSAXHandler handler;
 	wstring direction;
 
+	wstring towstring (const xmlChar* input);
+
 /**
 sorti<n><m> (0, u'sorti:0<n><m>', u'darkness<n>')
 sorti<n><m> (1, u'sorti:1<n><m>', u'thick fog<n>')
