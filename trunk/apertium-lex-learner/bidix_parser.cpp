@@ -19,9 +19,10 @@
 
 #include <iostream>
 #include <string.h>
+#include <errno.h>
 
 #include <lttoolbox/lt_locale.h>
-#include <lttoolbox/xml_parse_util.h>
+#include <iconv.h>
 
 #include "bidix_parser.h"
 
@@ -44,17 +45,79 @@ void startElement(void *context, const xmlChar *fullname, const xmlChar **atts);
 void endElement(void *context, const xmlChar *fullname);
 void characters(void *context, const xmlChar *chars, int len);
 
+wstring
+towstring(xmlChar const * input)
+{ 
+	wstring result = L"";
+	int i;
+	int len = xmlStrlen(input)+1;
+	size_t outsize = sizeof(char);
+	size_t insize = sizeof(char);
+	char* buf = (char *)malloc (len * outsize * 2);
+	if (buf == NULL) {
+		fprintf (stderr, "Error allocating memory\n");
+		exit (1);
+	}
+	char* inbuf = (char *)malloc (len * outsize);
+	if (inbuf == NULL) {
+		fprintf (stderr, "Error allocating memory\n");
+		exit (1);
+	}
+
+	memset (inbuf, '\0', len);
+	memcpy (inbuf, input, len);
+
+	if (inbuf == NULL) {
+		fprintf (stderr, "Error in memcpy\n");
+		exit (1);
+	}
+	fprintf (stderr, "Debug: %s (%d)\n", inbuf, len);
+
+	memset (buf, '\0', strlen(inbuf));
+
+	iconv_t cnv = iconv_open ("WCHAR_T", "UTF-8");
+	size_t err;
+	err = iconv (cnv, &inbuf, &insize, &buf, &outsize);
+	if (err == -1) {
+		fprintf (stderr, "iconv error: %s\n", strerror(errno));
+		if (errno == EILSEQ || errno == EINVAL)
+			fprintf (stderr, "-> %s\n", inbuf);
+		if (errno == E2BIG)
+			fprintf (stderr, "WTF? Facepalm!\n");
+		exit (1);
+	}
+	iconv_close (cnv);
+
+	if (inbuf != NULL) free(inbuf);
+
+	wchar_t* tmp = (wchar_t *)malloc ((strlen(buf)+1) * sizeof(wchar_t));
+	if (tmp == NULL) {
+		fprintf (stderr, "Error allocating memory\n");
+		exit (1);
+	}
+
+	size_t mblen = mbstowcs(tmp, buf, strlen(buf));
+	tmp[mblen+1] = '\0';
+	//fprintf (stderr, "Debug: %s\n", tmp);
+	result = tmp;
+
+	if (buf != NULL) free(buf);
+	if (tmp != NULL) free(tmp);
+
+	return result;
+}
+
 void
 startElement(void *user_data, const xmlChar *localname, const xmlChar **attributes)
 {
 
 	BidixSAXData *d = (BidixSAXData *)user_data;
 
-	if(XMLParseUtil::towstring(localname) == L"section") {
+	if(towstring(localname) == L"section") {
 		d->in_section = true;
 	}
 
-	if(XMLParseUtil::towstring(localname) == L"e") {
+	if(towstring(localname) == L"e") {
 		d->in_tag = "e";
 
 		unsigned int var = 0;
@@ -68,9 +131,9 @@ startElement(void *user_data, const xmlChar *localname, const xmlChar **attribut
 
 			for(unsigned int i = 0; i < len; i++) {
 				cout << len << ": " << endl;
-				if(d->direction == "lr" && XMLParseUtil::towstring(attributes[i]) == L"slr") {
+				if(d->direction == "lr" && towstring(attributes[i]) == L"slr") {
 					var = atoi((char*)attributes[i+1]);
-				} else if(d->direction == "rl" && XMLParseUtil::towstring(attributes[i]) == L"srl") {
+				} else if(d->direction == "rl" && towstring(attributes[i]) == L"srl") {
 					var = atoi((char*)attributes[i+1]);
 				}	
 			}
@@ -88,21 +151,21 @@ startElement(void *user_data, const xmlChar *localname, const xmlChar **attribut
 			}
 		}	
 
-	} else if(XMLParseUtil::towstring(localname) == L"p") {
+	} else if(towstring(localname) == L"p") {
 		d->in_tag = "p";
 	
-	} else if(XMLParseUtil::towstring(localname) == L"l") {
+	} else if(towstring(localname) == L"l") {
 		d->in_tag = "l";
 		d->cur_side = "l";
 
-	} else if(XMLParseUtil::towstring(localname) == L"r") {
+	} else if(towstring(localname) == L"r") {
 		d->in_tag = "r";
 		d->cur_side = "r";
 
-	} else if(XMLParseUtil::towstring(localname) == L"i") {
+	} else if(towstring(localname) == L"i") {
 		d->in_tag = "i";
 
-	} else if(XMLParseUtil::towstring(localname) == L"b") {
+	} else if(towstring(localname) == L"b") {
 		d->in_tag = "b";
 
 		if(d->cur_side == "l") {
@@ -111,17 +174,17 @@ startElement(void *user_data, const xmlChar *localname, const xmlChar **attribut
 			d->right_string += L" ";
 		}
 
-	} else if(XMLParseUtil::towstring(localname) == L"s") {
+	} else if(towstring(localname) == L"s") {
 		d->in_tag = "s";
 
-		wstring tag = XMLParseUtil::towstring(attributes[1]);
+		wstring tag = towstring(attributes[1]);
 		if(d->cur_side == "l") {
 			d->left_string = d->left_string + L"<" + tag + L">";
 		} else if(d->cur_side == "r") {
 			d->right_string = d->right_string + L"<" + tag + L">" ;
 		}
 
-	} else if(XMLParseUtil::towstring(localname) == L"g") {
+	} else if(towstring(localname) == L"g") {
 		d->in_tag = "g";
 
 		if(d->cur_side == "l") {
@@ -144,7 +207,7 @@ endElement(void *user_data, const xmlChar *localname)
 		d->in_section = false;
 	}
 
-	if(XMLParseUtil::towstring(localname) == L"e" && d->in_section) {
+	if(towstring(localname) == L"e" && d->in_section) {
 		wcout << L"e: " << d->left_string << L" " << d->right_string << endl;
 
 		d->left_string = L"";
@@ -163,9 +226,9 @@ characters(void *user_data, const xmlChar *chars, int len)
 	}
 
 	if(d->cur_side == "l") {
-		d->left_string += XMLParseUtil::towstring(chars).substr(0, len);
+		d->left_string += towstring(chars).substr(0, len);
 	} else if(d->cur_side == "r") {
-		d->right_string += XMLParseUtil::towstring(chars).substr(0, len);
+		d->right_string += towstring(chars).substr(0, len);
 	}
 }
 
