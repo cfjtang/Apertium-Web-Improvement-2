@@ -1,6 +1,6 @@
 # /bin/bash
 
-cat $1 | cut -f 3 -d " "| sort | uniq -c | sed 's/^ *//g' | sort > /tmp/plota
+cat $1 |cut -f 3,8 -d " " | grep -e ' 200' | cut -f 1 -d " " | sort | uniq -c | sed 's/^ *//g' | sort -g -r > /tmp/plota
 
 #lineNumber=0
 #rm /tmp/plotb
