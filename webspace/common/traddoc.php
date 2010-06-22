@@ -1,5 +1,6 @@
 <?php
 	include_once("../config/apertium-config.php");
+	include_once("./logging.php");
 	process_form();
 ?>
 
@@ -25,6 +26,9 @@ function translate($doctype, $dir, $markUnknown) {
 	global $APERTIUM_TRANSLATOR;
 	global $APERTIUM_PATH;
 	
+	$log = new Logging();
+        $log->lwrite( $dir . ' ' . $doctype . ' ' . $_SERVER [ 'REMOTE_ADDR' ] );
+
 	$content_type = getContentType($doctype);
 	$download_filetype = getDownloadFileType($doctype);
 

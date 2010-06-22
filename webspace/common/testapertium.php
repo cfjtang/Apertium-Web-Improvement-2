@@ -7,10 +7,10 @@ include_once("config/apertium-config.php");
 <?php
 // if content from textbox was sent for translation
 if (array_key_exists('textbox',$_POST)) {
-	process_form();
+	//process_form();
 } else {
 // otherwise: show the translation textbox
-	show_form("");
+	//show_form("");
 }
 ?>
 

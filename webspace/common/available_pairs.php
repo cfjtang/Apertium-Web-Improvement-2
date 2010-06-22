@@ -4,6 +4,7 @@ if ($dir=="") {
    print "<option disabled='true' selected='true'>" . _("Select direction...") . "</option>";
 }
 print "<option value='es-ca' " . ($dir == 'es-ca' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Catalan") . "</option>";
+print "<option value='es-ca_valencia' " . ($dir == 'es-ca_valencia' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Catalan (Valencian)") . "</option>";
 print "<option value='ca-es' " . ($dir == 'ca-es' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Spanish") . "</option>";
 print "<option disabled='true'></option>";
 print "<option value='es-gl' " . ($dir == 'es-gl' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Galician") . "</option>";
@@ -48,4 +49,19 @@ print "<option value='en-gl' " . ($dir == 'en-gl' ? ' selected=true' : '') . ">"
 print "<option value='gl-en' " . ($dir == 'gl-en' ? ' selected=true' : '') . ">" . _("Galician") . " &rarr; " . _("English") . "</option>";
 print "<option disabled='true'></option>";	    
 print "<option value='en-eo' " . ($dir == 'en-eo' ? ' selected=true' : '') . ">" . _("English") . " &rarr; " . _("Esperanto") . "</option>";
+print "<option value='eo-en' " . ($dir == 'eo-en' ? ' selected=true' : '') . ">" . _("Esperanto") . " &rarr; " . _("English") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='pt-ca' " . ($dir == 'pt-ca' ? ' selected=true' : '') . ">" . _("Portuguese") . " &rarr; " . _("Catalan") . "</option>";
+print "<option value='ca-pt' " . ($dir == 'ca-pt' ? ' selected=true' : '') . ">" . _("Catalan") . " &rarr; " . _("Portuguese") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='br-fr' " . ($dir == 'br-fr' ? ' selected=true' : '') . ">" . _("Breton") . " &rarr; " . _("French") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='nb-nn' " . ($dir == 'nb-nn' ? ' selected=true' : '') . ">" . _("Norwegian Bokmål") . " &rarr; " . _("Norwegian Nynorsk") . "</option>";
+print "<option value='nn-nb' " . ($dir == 'nn-nb' ? ' selected=true' : '') . ">" . _("Norwegian Nynorsk") . " &rarr; " . _("Norwegian Bokmål") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='sv-da' " . ($dir == 'sv-da' ? ' selected=true' : '') . ">" . _("Swedish") . " &rarr; " . _("Danish") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='es-ast' " . ($dir == 'es-ast' ? ' selected=true' : '') . ">" . _("Spanish") . " &rarr; " . _("Asturian") . "</option>";
+print "<option disabled='true'></option>";	    
+print "<option value='is-en' " . ($dir == 'is-en' ? ' selected=true' : '') . ">" . _("Icelandic") . " &rarr; " . _("English") . "</option>";
 ?>

@@ -1,5 +1,6 @@
 <?php
 	include_once("config/apertium-config.php");
+	include_once("common/logging.php");
 ?>
 
 <?php
@@ -34,11 +35,16 @@ function process_form() {
 	}
 
 	show_form($text, $dir);
+
+	// Logging class initialization  
+	$log = new Logging();  
+
+	$log->lwrite( $dir . ' txt ' . $_SERVER [ 'REMOTE_ADDR' ] );
 		
 	$trad = translate($text, $dir, $markUnknown);
 	
 	print "<h3>" . _("Translation") . "</h3>";
-	
+
 	print '<p class="transresult">' . $trad . '</p>';
 }
 
