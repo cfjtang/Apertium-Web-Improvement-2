@@ -1,12 +1,16 @@
 <?php
 include("header.php");
 require("../config/apertium-config.php");
+include_once("./logging.php");
 
 $dir = $_GET["dir"];
 $mark = $_GET["mark"];
 if ($mark=="")
    $mark = $_POST["mark"];	
 $inurl = $_GET["inurl"];
+
+$log = new Logging();
+$log->lwrite( $dir . ' url ' . $_SERVER [ 'REMOTE_ADDR' ] );
 
 $inurl = urldecode($inurl);
 

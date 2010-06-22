@@ -1,5 +1,8 @@
 <?php
 include_once("config/langpairs.php");
+
+//echo "Currently disabled.";
+//exit;
 ?>
 
 <?php

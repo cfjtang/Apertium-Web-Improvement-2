@@ -61,11 +61,13 @@
 <table>
 <tr>
 <td>
-Copyright &copy; 2007&mdash;2008 <a href="http://www.ua.es">Universidad de Alicante</a><br/>
+Copyright &copy; 2007&mdash;2009 <a href="http://www.ua.es">Universidad de Alicante</a><br/>
+<!--
 <?php
 	print _("Original design by");
 ?>
 &nbsp;<a href="http://www.mdibb.net" title="Website of Matt Dibb">Matt Dibb</a> 2006. <a href="http://jigsaw.w3.org/css-validator/check/referer" title="Validate CSS">CSS</a> <a href="http://validator.w3.org/check/referer" title="Validate XHTML">XHTML</a>
+-->
 <br/><br/>
 </td>
 
@@ -84,7 +86,6 @@ print _("Creative Commons licence");
 
 <!--
 	Project hosted in SourceForge.net
--->
 <td align="right">
 <?php
 print _("Project hosted in");
@@ -94,6 +95,17 @@ print _("Project hosted in");
 	<img src="images/sflogo.png" alt="Sourceforge.net"/>
 </a>
 </td>
+-->
+<td valign="center" align="right"><b>
+<?
+ print _("Additional hosting kindly provided by:");
+?></b>
+<br/>
+<a href="http://www.bytemark.co.uk/">
+	<img alt="Bytemark" src="images/logo_bytemark.gif"/>
+</a>
+</td>
+
 
 </tr>
 </table>

@@ -1,6 +1,9 @@
 <?php
   include("header.php");
 
+  // banned strings in urls
+  $banlist = array("ixquick");
+
   $dir = $_POST["dir"];
   $mark = $_POST["mark"];
  
@@ -22,6 +25,12 @@
   }
 
   $inurl = urldecode($inurl);
+
+  for($i = 0; $i < sizeof($banlist); $i++) {
+    if(strstr($inurl, $banlist[$i])) {
+      echo "Banned, email apertium-trouble@dlsi.ua.es";
+    }
+  }
 
 	if($inurl=="") {
     error(_("URL not found"));
