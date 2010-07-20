@@ -18,6 +18,13 @@
     <def-cat n="haverger_pp">
       <cat-item lemma="haver_pp" tags="SV.vblex.ger"/>
     </def-cat>
+  
+    <def-cat n="donarper">
+      <cat-item lemma="donar_per" tags="SV.*"/>
+      <cat-item lemma="donar_per" tags="SVneg.*"/>
+      <cat-item lemma="aux_donar_per" tags="SV.*"/>
+      <cat-item lemma="aux_donar_per" tags="SVneg.*"/>
+    </def-cat>
  
     <def-cat n="SV_pers"><!--Formes personals. Exclou inf i ger (i alguns imperatius per ara) -->
       <cat-item lemma="verbcj" tags="SV.*"/>
@@ -38,6 +45,10 @@
       <cat-item lemma="verbcj_ger_enc" tags="SV.*"/>
       <cat-item lemma="verbcj_ger" tags="SVneg.*"/>
       <cat-item lemma="verbcj_ger_enc" tags="SVneg.*"/>
+      <cat-item lemma="donar_per" tags="SV.*"/>
+      <cat-item lemma="donar_per" tags="SVneg.*"/>
+      <cat-item lemma="aux_donar_per" tags="SV.*"/>
+      <cat-item lemma="aux_donar_per" tags="SVneg.*"/>
     <!--  <cat-item lemma="be_adj" tags="SV.*"/>-->
     </def-cat>
 
@@ -84,6 +95,10 @@
 
     <def-cat n="SA"><!--MG: falta posar en les regles què fer per als ND (assignar nbr del verb generalment) -->
       <cat-item tags="SA.*"/>
+    </def-cat>
+
+    <def-cat n="pp">
+      <cat-item lemma="pp" tags="SA.*"/>
     </def-cat>
 
       <def-cat n="SP">
@@ -827,6 +842,36 @@
 	  <b/>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+  </action>
+</rule>
+
+<rule comment="REGLA: doner per pp SN (donen per acabat el judici -> consider the trial finished)" >
+      <pattern>
+	<pattern-item n="donarper"/>
+	<pattern-item n="pp"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<call-macro n="generate_subject">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
 	<let>

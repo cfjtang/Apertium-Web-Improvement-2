@@ -1264,6 +1264,44 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 </def-macro>
 		  
 
+<def-macro n="donar_per" npar="1">
+  <choose>
+    <when>
+      <test>
+	<equal>
+	  <clip pos="1" side="sl" part="lem"/>
+	  <lit v="donar# per"/>
+	</equal>
+      </test>
+      <choose>
+        <when>
+          <test>
+	    <equal>
+	      <var n="lema_SV"/>
+	      <lit v="verbcj"/>
+	    </equal>
+          </test>
+          <let>
+            <var n="lema_SV"/>
+	    <lit v="donar_per"/>
+          </let>
+        </when>
+        <when>
+          <test>
+	    <equal>
+	      <var n="lema_SV"/>
+	      <lit v="aux_verb"/>
+	    </equal>
+          </test>
+          <let>
+            <var n="lema_SV"/>
+	    <lit v="aux_donar_per"/>
+          </let>
+        </when>
+      </choose>
+    </when>
+  </choose>
+</def-macro>
 
 
 <def-macro n="elimina_ND" npar="1">
@@ -4722,6 +4760,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	<call-macro n="conj_verb1">
 	  <with-param pos="1"/>
 	</call-macro>	
+	<call-macro n="donar_per">
+	  <with-param pos="1"/>
+	</call-macro>	
 	<call-macro n="tipus_verb">
 	  <with-param pos="1"/>
 	</call-macro>
@@ -6490,6 +6531,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    <call-macro n="conj_verb1">
 	      <with-param pos="2"/>
 	    </call-macro>
+	    <call-macro n="donar_per">
+	      <with-param pos="2"/>
+  	    </call-macro>	
 	    <append n="lema_SV">
 	      <lit v="_enc"/>
 	    </append>
@@ -6643,6 +6687,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	  <with-param pos="3"/>
 	</call-macro>
 	<call-macro n="conj_verb1">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="donar_per">
 	  <with-param pos="3"/>
 	</call-macro>
 	<choose>
@@ -9337,6 +9384,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	<call-macro n="conj_verb1">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="donar_per">
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
 	  <chunk namefrom="lema_SV" case="caseSecondWord">
 	    <tags>
@@ -10499,6 +10549,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	      </and>
 	    </test>
 	    <call-macro n="conj_verb1">
+	      <with-param pos="3"/>
+	    </call-macro>
+	    <call-macro n="donar_per">
 	      <with-param pos="3"/>
 	    </call-macro>
 	    <append n="lema_SV">
