@@ -10,6 +10,11 @@
       <cat-item lemma="pro" tags="SN.*"/>
     </def-cat>
 
+    <def-cat n="que">
+      <cat-item lemma="que" tags="cnjcoo"/>
+      <cat-item lemma="que" tags="cnjsub"/>
+    </def-cat>
+
     <def-cat n="SV">
       <cat-item tags="SV.*"/>
       <cat-item tags="SVneg.*"/>
@@ -198,6 +203,7 @@
     <def-var n="uno"/>
     <def-var n="paraula"/>
     <def-var n="fifrase" v="yes"/>
+    <def-var n="que_cnjsub" v="no"/>
   </section-def-vars>
 
  <section-def-lists>
@@ -324,6 +330,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -381,9 +391,59 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
+<rule comment="REGLA: que (horrible kludge to avoid than where it should be that)">
+      <pattern>
+	<pattern-item n="que"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<var n="que_cnjsub"/>
+		<lit v="yes"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk>
+	        <get-case-from pos="1">
+	          <lit v="que"/>
+	        </get-case-from>
+	        <lit-tag v="cnjsub"/>
+	        <lit v="{^"/>
+	        <get-case-from pos="1">
+	          <lit v="that"/>
+	        </get-case-from>
+	        <lit-tag v="cnjsub"/>
+	        <lit v="$}"/>
+	      </chunk>
+	    </out>
+	  </when>
+          <otherwise>
+	    <out>
+	      <chunk>
+                <clip pos="1" part="whole"/>
+	      </chunk>
+	    </out>
+          </otherwise>
+	</choose>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
 
 <rule comment="REGLA: saber greu + pron">
       <pattern>
@@ -420,6 +480,10 @@
 	    <clip pos="1" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 	
@@ -503,6 +567,10 @@
 	</out>
 	<let>
 	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
 	  <lit v="no"/>
 	</let>
       </action>
@@ -618,6 +686,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
@@ -649,6 +721,10 @@
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
 	</let>
       </action>
 </rule>
@@ -742,6 +818,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -802,6 +882,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -848,6 +932,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
   </action>
 </rule>
 
@@ -877,6 +965,10 @@
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="no"/>
+	</let>
+	<let> <!-- err...? -->
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
 	</let>
   </action>
 </rule>
@@ -922,6 +1014,10 @@
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
 	</let>
   </action>
 </rule>
@@ -997,6 +1093,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
   </action>
 </rule>
 
@@ -1071,6 +1171,10 @@
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
 	</let>
   </action>
 </rule>
@@ -1158,6 +1262,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -1196,6 +1304,10 @@
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
 	</let>
       </action>
 </rule>
@@ -1275,6 +1387,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -1336,6 +1452,10 @@
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
 	</let>
       </action>
 </rule>
@@ -1399,6 +1519,10 @@
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -1422,6 +1546,10 @@ No posen la variable =no els xuncs: PREP (
 	<let>
 	  <var n="fifrase"/>
 	  <lit v="yes"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="no"/>
 	</let>
 	<out>
 	  <chunk>
@@ -1466,6 +1594,10 @@ No posen la variable =no els xuncs: PREP (
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="yes"/>
+	</let>
       </action>
 </rule>
 
@@ -1502,6 +1634,10 @@ No posen la variable =no els xuncs: PREP (
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 <rule comment="REGLA: SP"><!-- vols dir que cal posar la variable a no?-->
@@ -1516,6 +1652,10 @@ No posen la variable =no els xuncs: PREP (
 	</out>
 	<let>
 	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
 	  <lit v="no"/>
 	</let>
       </action>
@@ -1534,6 +1674,10 @@ No posen la variable =no els xuncs: PREP (
 	  <var n="fifrase"/>
 	  <lit v="no"/>
 	</let>
+	<let>
+	  <var n="que_cnjsub"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
@@ -1549,6 +1693,10 @@ No posen la variable =no els xuncs: PREP (
 	</out>
 	<let>
 	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
 	  <lit v="no"/>
 	</let>
       </action>
@@ -1585,6 +1733,10 @@ No posen la variable =no els xuncs: PREP (
 	</out>
 	<let>
 	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+	<let>
+	  <var n="que_cnjsub"/>
 	  <lit v="no"/>
 	</let>
       </action>
