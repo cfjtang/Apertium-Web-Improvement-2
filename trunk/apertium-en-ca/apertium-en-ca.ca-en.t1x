@@ -12716,17 +12716,39 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>	
-	<out>
-	  <chunk name="cnj" case="caseFirstWord">
-	    <tags>
-	      <tag><clip pos="1" side="tl" part="tags"/></tag>		
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
+	</call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="sl" part="lem"/>
+                <lit v="que"/>
+              </equal>
+            </test>
+	    <out>
+	      <chunk name="que" case="caseFirstWord">
+	        <tags>
+	          <tag><clip pos="1" side="tl" part="tags"/></tag>		
+	        </tags>
+	        <lu>
+	          <clip pos="1" side="tl" part="whole"/>
+	        </lu>
+	      </chunk>
+	    </out>
+          </when>
+          <otherwise>
+	    <out>
+	      <chunk name="cnj" case="caseFirstWord">
+	        <tags>
+	          <tag><clip pos="1" side="tl" part="tags"/></tag>		
+	        </tags>
+	        <lu>
+	          <clip pos="1" side="tl" part="whole"/>
+	        </lu>
+	      </chunk>
+	    </out>
+          </otherwise>
+        </choose>
       </action>
     </rule>
 
