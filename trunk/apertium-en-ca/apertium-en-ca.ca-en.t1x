@@ -252,6 +252,21 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
     </def-cat>
 
 
+    <def-cat n="mesos">
+      <cat-item lemma="gener" tags="n.*"/>
+      <cat-item lemma="febrer" tags="n.*"/>
+      <cat-item lemma="març" tags="n.*"/>
+      <cat-item lemma="abril" tags="n.*"/>
+      <cat-item lemma="maig" tags="n.*"/>
+      <cat-item lemma="juny" tags="n.*"/>
+      <cat-item lemma="juliol" tags="n.*"/>
+      <cat-item lemma="august" tags="n.*"/>
+      <cat-item lemma="setembre" tags="n.*"/>
+      <cat-item lemma="octubre" tags="n.*"/>
+      <cat-item lemma="novembre" tags="n.*"/>
+      <cat-item lemma="desembre" tags="n.*"/>
+    </def-cat>
+
     <def-cat n="anar">
       <cat-item lemma="anar" tags="vblex.pri.*"/>
     </def-cat>
@@ -12518,6 +12533,43 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 
 
     <!--************************************ ALTRES ************************************************ -->
+
+    <rule comment="NUM de MESO de NUM (23 de juliol de 2010 → July 23, 2010">
+      <pattern>
+	<pattern-item n="num"/>
+	<pattern-item n="de"/>
+	<pattern-item n="mesos"/>
+	<pattern-item n="de"/>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="num_de_meso_de_num" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>	
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+            <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <lu>
+	      <lit v=","/>
+	      <lit-tag v="cm"/>
+	    </lu>
+            <b pos="2"/>
+	    <lu>
+	      <clip pos="5" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>  
+      </action>
+    </rule>
 
     <rule comment="ADV">
       <pattern>
