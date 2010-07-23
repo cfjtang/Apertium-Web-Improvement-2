@@ -27,6 +27,21 @@
       <cat-item tags="np.*"/>
     </def-cat>
 
+    <def-cat n="months">
+      <cat-item lemma="january" tags="n.*"/>
+      <cat-item lemma="february" tags="n.*"/>
+      <cat-item lemma="march" tags="n.*"/>
+      <cat-item lemma="march" tags="np.cog.*"/>
+      <cat-item lemma="april" tags="n.*"/>
+      <cat-item lemma="may" tags="n.*"/>
+      <cat-item lemma="june" tags="n.*"/>
+      <cat-item lemma="july" tags="n.*"/>
+      <cat-item lemma="august" tags="n.*"/>
+      <cat-item lemma="september" tags="n.*"/>
+      <cat-item lemma="october" tags="n.*"/>
+      <cat-item lemma="november" tags="n.*"/>
+      <cat-item lemma="december" tags="n.*"/>
+    </def-cat>
 
     <def-cat n="nomcomu">
       <cat-item tags="n.*"/>
@@ -4984,6 +4999,86 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
     <!--********************************* REGLES DE SN ***************************************************** -->
 
 <!-- primer les regles lèxiques-->
+    <rule comment="REGLA: MONTH NUM, NUM (July 23, 2010 → 23 de juliol de 2010)">
+      <pattern>
+	<pattern-item n="months"/>    
+	<pattern-item n="num"/>
+	<pattern-item n="coma"/>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>    
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/>
+		<lit v="March"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <lit v="març"/>
+	    </let>
+            <choose>
+	      <when>
+	        <test>
+	          <equal>
+		    <clip pos="1" side="sl" part="a_nom"/>
+		    <lit-tag v="np.cog"/>
+	          </equal>
+	        </test>
+	        <let>
+	          <clip pos="1" side="tl" part="a_nom"/>
+	          <lit-tag v="n"/>
+	        </let>
+	        <let>
+	          <clip pos="1" side="tl" part="gen"/>
+	          <lit-tag v="m"/>
+	       </let>
+	        <let>
+	          <clip pos="1" side="tl" part="nbr"/>
+	          <lit-tag v="sg"/>
+	       </let>
+	      </when>
+            </choose>
+	  </when>
+	</choose>
+	<out>
+	  <chunk name="month_num_cm_num" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="2" side="tl" part="a_adv"/></tag>
+	      <tag><var n="neg"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+  	    <b pos="1"/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+  	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+  	    <b/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+  	    <b pos="3"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu>
+          </chunk>
+	</out>
+      </action>
+    </rule>
+
+
 
     <rule comment="REGLA: ALL NOUNplural (BCN: per afegir l'article definit en català 'all students' :: 'tots els estudiants'"> 
 
@@ -18139,8 +18234,6 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</out>
       </action>
     </rule>
-
-
 
     <rule comment="REGLA: be sorry ADV">
       <pattern>
