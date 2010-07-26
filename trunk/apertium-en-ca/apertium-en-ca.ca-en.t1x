@@ -607,6 +607,28 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
       <list-item v="costa"/>
       <list-item v="mar"/>
     </def-list>
+    <def-list n="direccio">
+      <list-item v="nord"/>
+      <list-item v="sud"/>
+      <list-item v="est"/>
+      <list-item v="oest"/>
+      <list-item v="nord-est"/>
+      <list-item v="nord-oest"/>
+      <list-item v="sud-est"/>
+      <list-item v="sud-oest"/>
+    </def-list>
+    <def-list n="familia">
+      <list-item v="fill"/>
+      <list-item v="mare"/>
+      <list-item v="pare"/>
+      <list-item v="cosí"/>
+      <list-item v="gendre"/>
+      <list-item v="germà"/>
+      <list-item v="avi"/>
+      <list-item v="nét"/>
+      <list-item v="tia"/>
+      <list-item v="oncle"/>
+    </def-list>
   </section-def-lists>
 
 
@@ -708,6 +730,30 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
           <let>
             <var n="tipusnom_chunk"/>
             <lit v="geog"/>
+          </let>
+	</when>
+	<when>
+	  <test>
+	    <in caseless="yes">
+	      <clip pos="1" side="sl" part="lem"/>
+	      <list n="direccio"/>
+	    </in>
+	  </test>
+          <let>
+            <var n="tipusnom_chunk"/>
+            <lit v="direccio"/>
+          </let>
+	</when>
+	<when>
+	  <test>
+	    <in caseless="yes">
+	      <clip pos="1" side="sl" part="lem"/>
+	      <list n="familia"/>
+	    </in>
+	  </test>
+          <let>
+            <var n="tipusnom_chunk"/>
+            <lit v="fam"/>
           </let>
 	</when>
         <otherwise>
