@@ -7,6 +7,10 @@
       <cat-item name="inf"/>
     </def-cat>
 
+    <def-cat n="rm_el">
+      <cat-item name="rm_el"/>
+    </def-cat>
+
 <!--    <def-cat n="SV">
       <cat-item name="verbcj"/>
       <cat-item name="aux_verb"/>
@@ -124,6 +128,10 @@
           <attr-item tags="p3.sg"/>
           <attr-item tags="p3.pl"/>
       </def-attr>
+      <def-attr n="a_SN">
+          <attr-item tags="SN"/>
+          <attr-item tags="SN.rm_el"/>
+      </def-attr>     
 
 
  <def-attr n="a_SV">
@@ -880,6 +888,110 @@
       </action>
 </rule>
 
+    <rule comment="CHUNK: SN, rm 'the'">
+      <pattern>
+	<pattern-item n="rm_el"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="lem"/>
+		<lit v="the"/>
+	      </equal>
+	    </test>
+          </when>
+          <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	    </out> 
+          </otherwise>
+	</choose> 
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<lu-count/>
+		<lit v="2"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out> 
+	  </when>
+	</choose> 
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<lu-count/>
+		<lit v="3"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <b pos="2"/>
+	      <lu>
+		<clip pos="3" part="whole"/>
+	      </lu>
+	    </out> 
+	  </when>
+	</choose> 
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<lu-count/>
+		<lit v="4"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <b pos="3"/>
+	      <lu>
+		<clip pos="4" part="whole"/>
+	      </lu>
+	    </out> 
+	  </when>
+	</choose> 
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<lu-count/>
+		<lit v="5"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <b pos="4"/>
+	      <lu>
+		<clip pos="5" part="whole"/>
+	      </lu>
+	    </out> 
+	  </when>
+	</choose> 
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<lu-count/>
+		<lit v="6"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <b pos="5"/>
+	      <lu>
+		<clip pos="6" part="whole"/>
+	      </lu>
+	    </out> 
+	  </when>
+	</choose> 
+      </action>
+    </rule> 
 
 
   </section-rules>
