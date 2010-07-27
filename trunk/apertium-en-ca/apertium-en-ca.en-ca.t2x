@@ -86,9 +86,9 @@
       <cat-item tags="SV.reporting.pii*"/>
       <cat-item lemma="going_to_inf"  tags="SV.*"/>
       <cat-item lemma="pro_going_to_inf"  tags="SV.*"/>
-      
-    </def-cat>
-    
+
+</def-cat>
+
     <def-cat n="SVGER"><!-- BCN. Per ara no entren els compostos amb have (having won)-->
       <cat-item lemma="ger" tags="SV.*"/>
       <cat-item lemma="ger_enc" tags="SV.*"/>
@@ -129,6 +129,14 @@
       <cat-item tags="Vcop.*"/>
       <cat-item tags="SV.vbser.*"/>
     </def-cat>
+
+<!--
+    <def-cat n="vbconditional">
+      <cat-item tags="SV.vbmod.inf.*"/>
+      <cat-item lemma="be" tags="Vcop.vbser.*"/>
+      <cat-item lemma="pp" tags="SA.*"/>
+    </def-cat>-->
+
 
     <def-cat n="pro_vblike">
       <cat-item lemma="pro_verbcj" tags="SV.like.*"/>
@@ -380,13 +388,27 @@
 			<clip pos="2" part="temps"/>
 			<lit-tag v="ger"/>
 		      </equal>
-		    </not>
+		   </not>
 		  </and>
 		</test>
 		<let>
 		  <clip pos="2" part="pers"/>
 		  <clip pos="1" part="pers"/>
 		</let>
+	    <choose>
+	      <when>
+		<test>
+		    <equal>
+		      <clip pos="1" part="pers"/>
+		      <lit-tag v="p3"/>
+		    </equal>
+		</test>
+		<let>
+		  <clip pos="2" part="temps"/>
+		  <lit-tag v="prs"/>
+		</let>
+	      </when>
+	      </choose>
 	      </when>
 	    </choose>
 	    <choose>
@@ -8428,6 +8450,105 @@ Your mother and you will come - La vostra mare i tu vindran
       </action>
     </rule>
 
+
+<!-- gema: should the assembly approve the decision = en cas que l'assemblea approvi la decisió
+    <rule comment="REGLA: SV SN SV amb valor de condicional">
+      <pattern>
+	<pattern-item n="vbconditional"/>
+	<pattern-item n="SN_nopron"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+	<out>
+	   <chunk>
+		<get-case-from pos="1">
+       	        <lit v="cnjadv"/>
+		</get-case-from>
+		<lit-tag v="CNJADV"/>
+		<lit v="{^"/>
+		  <lit v="en cas que"/>
+		<lit-tag v="cnjadv"/>
+		<lit v="$}"/>
+	   </chunk>
+	  	<b pos="1"/>
+ 	   <chunk>
+	  	<clip pos="2" part="whole"/>
+	   </chunk>
+	  	<b pos="2"/>
+	</out>
+	<choose>
+	  <when>
+	    <test>
+	<or>
+		  <equal>
+		    <clip pos="3" part="temps"/>
+		    <lit-tag v="pri"/>
+		  </equal>
+		  <equal>
+		    <clip pos="3" part="temps"/>
+		    <lit-tag v="ifip"/>
+		  </equal>
+	</or>
+ 
+	    </test>
+               <let>
+		  <clip pos="3" part="temps"/>
+		  <lit-tag v="prs"/>
+		</let>
+         </when>
+	</choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="3" part="pers"/>
+		    <lit-tag v="PD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="3" part="pers"/>
+		  <lit-tag v="p3"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="3" part="nbr"/>
+		    <lit-tag v="ND"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="3" part="nbr"/>
+		  <lit-tag v="sg"/>
+		</let>
+	      </when>
+	    </choose>
+	    <choose>
+	      <when>
+		<test>
+		  <equal>
+		    <clip pos="3" part="gen"/>
+		    <lit-tag v="GD"/>
+		  </equal>
+		</test>
+		<let>
+		  <clip pos="3" part="gen"/>
+		  <lit-tag v="m"/>
+		</let>
+	      </when>
+	    </choose>
+	<out>
+	<chunk>
+	    <clip pos="3" part="whole"/>
+	</chunk>
+	</out>
+      </action>
+    </rule>
+-->
+
+
     <rule comment="REGLA: SV (per assignar persona i nombre si hi ha PD i ND que no s'han pogut determinar, escepte per als infinitius i gerundis ">
       <pattern>
 	<pattern-item n="SV"/>
@@ -8500,6 +8621,9 @@ Your mother and you will come - La vostra mare i tu vindran
 	</out>
       </action>
     </rule>
+
+
+
 
 
     <rule comment="REGLA: NUM (per assignar gènere si hi ha GD)">
