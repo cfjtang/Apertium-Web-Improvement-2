@@ -164,6 +164,7 @@ this.offsetParent||r.body;a&&!/^body|html$/i.test(a.nodeName)&&c.css(a,"position
 c.each(["Height","Width"],function(a,b){var d=b.toLowerCase();c.fn["inner"+b]=function(){return this[0]?c.css(this[0],d,false,"padding"):null};c.fn["outer"+b]=function(f){return this[0]?c.css(this[0],d,false,f?"margin":"border"):null};c.fn[d]=function(f){var e=this[0];if(!e)return f==null?null:this;if(c.isFunction(f))return this.each(function(i){var j=c(this);j[d](f.call(this,i,j[d]()))});return"scrollTo"in e&&e.document?e.document.compatMode==="CSS1Compat"&&e.document.documentElement["client"+b]||
 e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b],e.body["scroll"+b],e.documentElement["scroll"+b],e.body["offset"+b],e.documentElement["offset"+b]):f===v?c.css(e,d):this.css(d,typeof f==="string"?f:f+"px")}});z.jQuery=z.$=c})(window);
 
+    var jApertium = jQuery.noConflict();
 
     this.url = "http://api.apertium.org/json/";
     //this.url = "http://localhost:8080/ScaleMTRouter/json/";
@@ -181,7 +182,7 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
                     apertium_supported_pairs=data.responseData;
 		}
     };
-    $.getJSON(this.url+"listPairs?callback=?", this.processSupportedPairsResponse);
+    jApertium.getJSON(this.url+"listPairs?callback=?", this.processSupportedPairsResponse);
 
     this.translate = function (sourceText,sourceLang,targetLang,callback) {
 
@@ -195,7 +196,7 @@ e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b
         else
             source=sourceText;
 
-        $.getJSON(this.url+"translate?callback=?", {q: source, format:format,langpair: sourceLang+"|"+targetLang, key:this.key,markUnknown: 'no' },function(data)
+        jApertium.getJSON(this.url+"translate?callback=?", {q: source, format:format,langpair: sourceLang+"|"+targetLang, key:this.key,markUnknown: 'no' },function(data)
 	{
 		var jsonData;
 		if(data.responseStatus==200)
