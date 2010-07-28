@@ -566,10 +566,21 @@ public class Daemon {
         //TODO: incluir formato
         //TODO: Y si quiero usar otro separador?
         String commandCore = translationEngine.getTranslationCore().getCommand().replaceAll("\\$p", c.getLanguagePair().getSource() + "-" + c.getLanguagePair().getTarget());
+        String execPrefix="";
+        String[] path=commandCore.split("/");
+
+        for(int i=0; i<path.length-1; i++)
+        {
+            if(i==0 && commandCore.startsWith("/"))
+                execPrefix="/";
+            execPrefix=execPrefix+path[i]+"/";
+        }
+        
+
         command = new String[3];
         command[0]="bash";
         command[1]="-c";
-        command[2] = "execAndGetPID.sh " + commandCore;
+        command[2] = execPrefix+"execAndGetPID.sh " + commandCore;
         
 
         tmpDir=System.getProperty("java.io.tmpdir");
