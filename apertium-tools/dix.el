@@ -199,8 +199,9 @@ versions use the regular built-in highlighting."))
   "Execute `body' with `nxml-sexp-element-flag' set to true."
   `(let ((old-sexp-element-flag nxml-sexp-element-flag))
      (setq nxml-sexp-element-flag t)
-     ,@body
-     (setq nxml-sexp-element-flag old-sexp-element-flag)))
+     (let ((ret ,@body))
+       (setq nxml-sexp-element-flag old-sexp-element-flag)
+       ret)))
 (defmacro dix-with-no-case-fold (&rest body)
   "Execute `body' with `case-fold-search' set to nil."
   `(let ((old-case-fold-search case-fold-search))
@@ -299,14 +300,19 @@ stop on finding another `eltname' element."
     (match-string-no-properties 1)))
 
 (defun dix-split-root-suffix ()
+  "Return a pair of the contents of <i> and the letters following
+the slash of the pardef. Does not give the correct root of it's
+not all contained within an <i> (eg. lemma pardefs will give
+wrong roots)."
   (save-excursion
     (dix-up-to "e" "section")
-    (nxml-down-element 2)
-    (cons (word-at-point)
-	  (progn
-	    (nxml-up-element)
-	    (re-search-forward "n=[^/]*/" nil t)
-	    (word-at-point)))))
+    (let ((e-end (nxml-scan-element-forward (point))))
+      (nxml-down-element 2)
+      (cons (symbol-name (dix-with-sexp (sexp-at-point)))
+	    (progn
+	      (nxml-up-element)
+	      (when (re-search-forward "n=\"[^/]*/\\([^_\"]*\\)[^\"]*\"" e-end 'noerror)
+		(match-string-no-properties 1)))))))
 
 (defun dix-get-attrib (attributes name)
   "Find attribute with attribute name `name' (a string) in the
@@ -333,13 +339,17 @@ list `attributes' of the same format as
     ("pardef" "n")
     ("s" "n")
     ("sdef" "n")
+    ("b" "pos")
     ("with-param" "pos")
     ("call-macro" "n")
     ("def-macro" "n" "npar")
     ("cat-item" "lemma" "tags" "name")
     ("attr-item" "lemma" "tags")
+    ("list-item" "v")
+    ("list" "n")
     ("def-attr" "n")
     ("def-cat" "n")
+    ("def-list" "n")
     ("pattern-item" "n")
     ("chunk" "name" "case" "namefrom")
     ("var" "n")
@@ -349,7 +359,7 @@ list `attributes' of the same format as
 used by `dix-next'.")
 
 (defvar dix-skip-empty
-  '("lu" "p" "e" "tags" "chunk" "tag" "pattern" "rule" "action" "out" "b" "def-macro" "choose" "when" "test" "equal" "otherwise" "let")
+  '("dictionary" "alphabet" "sdefs" "pardefs" "lu" "p" "e" "tags" "chunk" "tag" "pattern" "rule" "action" "out" "b" "def-macro" "choose" "when" "test" "equal" "not" "otherwise" "let")
   "Skip past these elements when using `dix-next' (but not if
 they have interesting attributes as defined by
 `dix-interesting').")
@@ -683,8 +693,22 @@ it if it's not present)."
 (defvar dix-char-alist
   ;; TODO: Emacs<23 uses utf8, latin5 etc. while Emacs>=23 uses unicode
   ;; for internal representation; use (string< emacs-version "23")
-  '((?a 2273)
+  '((?a 225)
+    (?A 193)
+    (?s 353)
+    (?S 352)
+    (?t 359)
+    (?T 358)
+    (?n 331)
+    (?N 330)
+    (?d 273)
+    (?D 272)
+    (?c 269)
+    (?C 268)
+    (?a 2273)
     (?A 2241)
+    (?z 382)
+    (?Z 381)
     (?s 331937)
     (?S 331936)
     (?t 331943)
@@ -701,6 +725,7 @@ it if it's not present)."
 (put 'dix-char-table 'char-table-extra-slots 0) ; needed if 0?
 
 (defvar dix-asciify-table
+  ;; TODO: seems like this has to be eval'ed after loading something else...
   (let ((ct (make-char-table 'dix-char-table)))
     (dolist (lst dix-char-alist ct)
       (mapc (lambda (x) (aset ct x (car lst))) (cdr lst))))
@@ -969,7 +994,11 @@ can go back with C-u \\[set-mark-command]."
   (let ((start (point))
 	pos)
     (if (save-excursion
-	  (let* ((pdname (dix-nearest-pdname start)))
+	  (let* ((pdname
+		  (replace-regexp-in-string
+		   "\\\\" 	; replace single \ (double-escaped) 
+		   "\\\\\\\\"	; with \\ (double-escaped)
+		   (dix-nearest-pdname start) 'fixedcase)))
 	    (goto-char (point-min))
 	    (if (re-search-forward
 		 (concat "<pardef *n=\"" pdname "\"") nil t)
