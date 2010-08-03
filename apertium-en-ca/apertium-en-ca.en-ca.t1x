@@ -3895,6 +3895,74 @@
       </choose>
     </def-macro>
 
+    <def-macro n="split_verb" npar="1">
+      <choose> <!-- Remember to also change output_adj, below -->
+	<when> 
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="lem"/>
+	      <lit v="make# public"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="lem"/>
+	    <lit v="fer"/>
+	  </let>
+	</when>
+      </choose> 
+    </def-macro>
+    <def-macro n="output_adj" npar="1">
+      <choose>
+	<when> 
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="lem"/>
+	      <lit v="make# public"/>
+	    </equal>
+	  </test>
+	  <out>
+	    <b/>
+	    <chunk name="adj_obj">
+	      <tags>
+	        <tag><lit-tag v="SAobj"/></tag>
+	        <tag><lit-tag v="GD"/></tag>
+	        <tag><lit-tag v="ND"/></tag>
+	      </tags>
+	      <lu>
+	        <lit v="públic"/>
+	        <lit-tag v="adj.2.3"/>
+	      </lu>
+            </chunk>
+          </out>
+	</when>
+      </choose> 
+    </def-macro>
+    <def-macro n="output_adj2" npar="2">
+      <choose>
+	<when> 
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="lem"/>
+	      <lit v="make# public"/>
+	    </equal>
+	  </test>
+	  <out>
+	    <b/>
+	    <chunk name="adj"> <!-- *not* adj_obj, because we already have the agreement. This is crappy. -->
+	      <tags>
+	        <tag><lit-tag v="SA"/></tag>
+	        <tag><lit-tag v="m"/></tag>
+	        <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	      </tags>
+	      <lu>
+	        <lit v="públic"/>
+	        <lit-tag v="adj.2.3"/>
+	      </lu>
+            </chunk>
+          </out>
+	</when>
+      </choose> 
+    </def-macro>
 
     <def-macro n="pron" npar="1"><!--Aquesta macro s'ha d'aplicar, en les regles, després de la macro tipus_verbs. Asigna a la variable 'pronom' el valor del pronom que han de dur els verbs pronominals -->
       <let>
@@ -18136,6 +18204,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="conj_verb1">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="split_verb">
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>
 	  <var n="lema_SV"/>
 	  <clip pos="1" side="sl" part="lem"/>
@@ -18166,6 +18237,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	  </chunk>
 	</out>
+	<call-macro n="output_adj">
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18318,6 +18392,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="pron">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="split_verb">
+	  <with-param pos="1"/>
+	</call-macro>
 	<call-macro n="conj_verb1">
 	  <with-param pos="1"/>
 	</call-macro>
@@ -18336,6 +18413,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		</lu>
 	      </chunk>
 	    </out>
+	<call-macro n="output_adj">
+	  <with-param pos="1"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18356,6 +18436,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>
 	<call-macro n="conj_verb1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="1"/>
 	</call-macro>
 	<let>
@@ -18388,6 +18471,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		</lu>
 	      </chunk>
 	    </out>
+	<call-macro n="output_adj2">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18465,6 +18552,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="tipus_verbs">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="split_verb">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -18536,6 +18626,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </out>
 	  </when>
 	</choose>
+	<call-macro n="output_adj">
+	  <with-param pos="1"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18549,6 +18642,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -18631,6 +18727,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </out>
 	  </when> 
 	</choose>
+	<call-macro n="output_adj2">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18645,6 +18745,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="2"/>
 	</call-macro>
 	<let>				<!-- canvi de preposició-->
@@ -18733,6 +18836,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </out>
 	  </when>
 	</choose>
+	<call-macro n="output_adj">
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18749,9 +18855,12 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="tipus_verbs">
 	  <with-param pos="2"/>
 	</call-macro>
+	<call-macro n="split_verb">
+	  <with-param pos="2"/>
+	</call-macro>
 	<let>				<!-- canvi de preposició-->
 	  <clip pos="1" side="tl" part="lem"/>
-	  <lit v ="per"/>
+	  <lit v="per"/>
 	</let>
 	<out>
 	  <chunk name="pr" case="caseFirstWord">
@@ -18844,6 +18953,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </out>
 	  </when>
 	</choose>
+	<call-macro n="output_adj2">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18857,6 +18970,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -18908,6 +19024,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	  </chunk>
 	</out>
+	<call-macro n="output_adj">
+	  <with-param pos="1"/>
+	</call-macro>
       </action>
     </rule>
     
@@ -18921,6 +19040,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -18980,6 +19102,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>	
 	  </chunk>
 	</out>
+	<call-macro n="output_adj2">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -18993,6 +19119,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="1"/>
 	</call-macro>
 	<choose>
@@ -19044,6 +19173,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	  </chunk>
 	</out>
+	<call-macro n="output_adj">
+	  <with-param pos="1"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -19062,6 +19194,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	<call-macro n="tipus_verbs">
 	  <with-param pos="1"/>
 	</call-macro>
+	<call-macro n="split_verb">
+	  <with-param pos="1"/>
+	</call-macro>
 	<choose>
 	  <when>
 	    <test>
@@ -19119,6 +19254,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>	
 	  </chunk>
 	</out>
+	<call-macro n="output_adj2">
+	  <with-param pos="1"/>
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -19134,6 +19273,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="2"/>
 	</call-macro>
 	<let>
@@ -19236,6 +19378,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	  </chunk>
 	</out>
+	<call-macro n="output_adj">
+	  <with-param pos="2"/>
+	</call-macro>
       </action>
     </rule>
     
@@ -19250,6 +19395,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="2"/>
 	</call-macro>
 	<let>
@@ -19350,6 +19498,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <!--  </mlu>		-->
 	  </chunk>
 	</out>
+	<call-macro n="output_adj2">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -19365,6 +19517,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="3"/>
 	</call-macro>
 	<let>
@@ -19464,6 +19619,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	    </lu>
 	  </chunk>
 	</out>
+	<call-macro n="output_adj">
+	  <with-param pos="3"/>
+	</call-macro>
       </action>
     </rule>
 
@@ -19479,6 +19637,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  <with-param pos="1"/>
 	</call-macro>	
 	<call-macro n="tipus_verbs">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="split_verb">
 	  <with-param pos="3"/>
 	</call-macro>
 	<let>
@@ -19587,6 +19748,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	  </chunk>
 	</out>
 	<call-macro n="f_bcond">
+	  <with-param pos="3"/>
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="output_adj2">
 	  <with-param pos="3"/>
 	  <with-param pos="4"/>
 	</call-macro>
