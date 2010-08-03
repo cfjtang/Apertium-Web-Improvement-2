@@ -19,6 +19,11 @@
       <cat-item tags="SV.*"/>
       <cat-item tags="SVneg.*"/>
     </def-cat>
+
+    <def-cat n="vblextohave">
+      <cat-item lemma="tohavevblex" tags="SV.*"/>
+    </def-cat>
+    
   
     <def-cat n="haverger_pp">
       <cat-item lemma="haver_pp" tags="SV.vblex.ger"/>
@@ -54,6 +59,7 @@
       <cat-item lemma="donar_per" tags="SVneg.*"/>
       <cat-item lemma="aux_donar_per" tags="SV.*"/>
       <cat-item lemma="aux_donar_per" tags="SVneg.*"/>
+      <cat-item lemma="tohaveblex" tags="SV.*"/>
     <!--  <cat-item lemma="be_adj" tags="SV.*"/>-->
     </def-cat>
 
@@ -223,6 +229,7 @@
       <list-item v="verbcj_enc"/>
       <list-item v="verbcj_ger"/>
       <list-item v="verbcj_ger_enc"/>
+      <list-item v="tohavevblex"/>
     </def-list>
 
     <def-list n="loc_amb_de"> 
@@ -1936,6 +1943,116 @@ No posen la variable =no els xuncs: PREP (
 	</let>
       </action>
 </rule>
+
+
+    <rule comment="REGLA: vblexhave SN">
+      <pattern>
+	<pattern-item n="vblextohave"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<call-macro n="generate_subject">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>		
+		<clip pos="2" part="lem"/>
+		<lit v="num_nom"/>
+	      </equal>
+	    </test>
+	<choose>
+	  <when>
+	    <test>  
+	     <equal>		
+		<clip pos="1" part="temps"/>
+		<lit-tag v="fti"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <chunk>
+     	        <lit v="verbcj"/>
+		<lit-tag v="SV"/>
+		<lit v="{^"/>
+                <lit v="will"/>
+	        <lit-tag v="vaux"/>
+		<lit-tag v="inf"/>
+		<lit v="$}"/>
+		</chunk>
+		<b/>
+		<chunk>
+     	        <lit v="verbcj"/>
+		<lit-tag v="SV"/>
+		<lit v="{^"/>
+		<lit v="be"/>
+		<lit-tag v="vbser"/>
+		<lit-tag v="inf"/>
+		<lit v="$}"/>
+              </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b/>
+	     <chunk>
+                <lit v="nom"/>
+		<lit-tag v="SN"/>
+		<lit v="{^"/>
+		<lit v="old"/>
+		<lit-tag v="adj"/>
+		<lit-tag v="sint"/>
+		<lit v="$}"/>
+              </chunk>	
+	    </out>
+	</when>
+	<otherwise>
+	    <out>
+	      <chunk>
+     	        <lit v="verbcj"/>
+		<lit-tag v="SV"/>
+		<lit v="{^"/>
+		<lit v="be"/>
+		<lit-tag v="vbser"/>
+		<clip pos="1" part="temps"/>
+		<clip pos="1" part="pers"/>
+		<clip pos="1" part="nbr"/>
+		<lit v="$}"/>
+              </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	      <b/>
+	     <chunk>
+                <lit v="nom"/>
+		<lit-tag v="SN"/>
+		<lit v="{^"/>
+		<lit v="old"/>
+		<lit-tag v="adj"/>
+		<lit-tag v="sint"/>
+		<lit v="$}"/>
+              </chunk>	
+	    </out>
+	</otherwise>
+	</choose>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <chunk>
+		<clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+		<clip pos="2" part="whole"/>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>	
+      </action>
+    </rule>
+
+
 
 
 
