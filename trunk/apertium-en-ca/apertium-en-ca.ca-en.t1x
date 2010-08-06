@@ -86,6 +86,40 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
       <cat-item tags="num"/>
     </def-cat>
 
+    <def-cat n="digits">
+      <cat-item lemma="1" tags="num"/>
+      <cat-item lemma="2" tags="num"/>
+      <cat-item lemma="3" tags="num"/>
+      <cat-item lemma="4" tags="num"/>
+      <cat-item lemma="5" tags="num"/>
+      <cat-item lemma="6" tags="num"/>
+      <cat-item lemma="7" tags="num"/>
+      <cat-item lemma="8" tags="num"/>
+      <cat-item lemma="9" tags="num"/>
+      <cat-item lemma="10" tags="num"/>
+      <cat-item lemma="11" tags="num"/>
+      <cat-item lemma="12" tags="num"/>
+      <cat-item lemma="13" tags="num"/>
+      <cat-item lemma="14" tags="num"/>
+      <cat-item lemma="15" tags="num"/>
+      <cat-item lemma="16" tags="num"/>
+      <cat-item lemma="17" tags="num"/>
+      <cat-item lemma="18" tags="num"/>
+      <cat-item lemma="19" tags="num"/>
+      <cat-item lemma="20" tags="num"/>
+      <cat-item lemma="21" tags="num"/>
+      <cat-item lemma="22" tags="num"/>
+      <cat-item lemma="23" tags="num"/>
+      <cat-item lemma="24" tags="num"/>
+      <cat-item lemma="25" tags="num"/>
+      <cat-item lemma="26" tags="num"/>
+      <cat-item lemma="27" tags="num"/>
+      <cat-item lemma="28" tags="num"/>
+      <cat-item lemma="29" tags="num"/>
+      <cat-item lemma="30" tags="num"/>
+      <cat-item lemma="31" tags="num"/>
+    </def-cat>
+
     <def-cat n="percent">
       <cat-item tags="num.percent"/>
     </def-cat>
@@ -95,6 +129,9 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
     </def-cat>
     <def-cat n="a">
       <cat-item lemma="a" tags="pr"/>
+    </def-cat>
+    <def-cat n="fins">
+      <cat-item lemma="fins" tags="pr"/>
     </def-cat>
     <def-cat n="aquí">
       <cat-item lemma="aquí" tags="adv"/>
@@ -12870,6 +12907,90 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 
     <!--************************************ ALTRES ************************************************ -->
 
+    <rule comment="fins el DIGITS de MESO (fins el 30 d'agost → until August 30th (en_US))">
+      <pattern>
+	<pattern-item n="fins"/>
+	<pattern-item n="el"/>
+	<pattern-item n="digits"/>
+	<pattern-item n="de"/>
+	<pattern-item n="mesos"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="fins_el_digits_de_meso" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>	
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+            <b pos="1"/>
+	    <lu>
+	      <clip pos="5" side="tl" part="whole"/>
+	    </lu>
+            <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/>
+	      <lit-tag v="num.ord"/>
+	    </lu>
+	  </chunk>
+	</out>  
+        <call-macro n="f_bcond">
+          <with-param pos="3"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="f_bcond">
+          <with-param pos="4"/>
+          <with-param pos="5"/>
+        </call-macro>
+      </action>
+    </rule>
+<!-- above is en_US, en_GB:
+    <rule comment="fins el DIGITS de MESO (fins el 30 d'agost → until the 30th of August)">
+      <pattern>
+	<pattern-item n="fins"/>
+	<pattern-item n="el"/>
+	<pattern-item n="digits"/>
+	<pattern-item n="de"/>
+	<pattern-item n="mesos"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="fins_el_digits_de_meso" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>	
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+            <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+            <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lem"/>
+	      <lit-tag v="num.ord"/>
+	    </lu>
+            <b pos="3"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu>
+            <b pos="4"/>
+	    <lu>
+	      <clip pos="5" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>  
+      </action>
+    </rule>
+-->
     <rule comment="NUM de MESO de NUM (23 de juliol de 2010 → July 23, 2010">
       <pattern>
 	<pattern-item n="num"/>
@@ -12904,9 +13025,16 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	    </lu>
 	  </chunk>
 	</out>  
+        <call-macro n="f_bcond">
+          <with-param pos="3"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="f_bcond">
+          <with-param pos="4"/>
+          <with-param pos="5"/>
+        </call-macro>
       </action>
     </rule>
-
     <rule comment="ADV">
       <pattern>
 	<pattern-item n="adv"/>
