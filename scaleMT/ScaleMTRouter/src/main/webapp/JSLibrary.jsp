@@ -7,6 +7,10 @@
 <%@page contentType="text/javascript" pageEncoding="UTF-8"%>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 
+<%
+//Disable cookies to allow caching
+response.setHeader("Set-Cookie", "");
+%>
 var apertium_supported_pairs=new Array();
 
 var apertium = new function() {
