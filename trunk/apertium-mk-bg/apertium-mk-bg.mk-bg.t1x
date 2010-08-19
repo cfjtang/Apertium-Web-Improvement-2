@@ -2,12 +2,36 @@
 
 <transfer>
   <section-def-cats>
- <!--   <def-cat n="vfin">
-      <cat-item tags="vblex.*.*.pres.*"/>
-      <cat-item tags="vblex.*.*.aor.*"/>
-      <cat-item tags="vblex.*"/>
-    </def-cat>
+
+   <def-cat n="vfin">
+      <cat-item tags="vblex.perf.tv.imp.*"/>
+      <cat-item tags="vblex.imperf.tv.imp.*"/>
+      <cat-item tags="vblex.perf.iv.imp.*"/>
+      <cat-item tags="vblex.imperf.iv.imp.*"/>
+
+	  <cat-item tags="vblex.perf.tv.pres.*"/>
+      <cat-item tags="vblex.imperf.tv.pres.*"/>
+      <cat-item tags="vblex.perf.iv.pres.*"/>
+      <cat-item tags="vblex.imperf.iv.pres.*"/>
+
+      <cat-item tags="vblex.perf.tv.pii.*"/>
+      <cat-item tags="vblex.imperf.tv.pii.*"/>
+      <cat-item tags="vblex.perf.iv.pii.*"/>
+      <cat-item tags="vblex.imperf.iv.pii.*"/>
+
+      <cat-item tags="vblex.perf.tv.aor.*"/>
+      <cat-item tags="vblex.imperf.tv.aor.*"/>
+      <cat-item tags="vblex.perf.iv.aor.*"/>
+      <cat-item tags="vblex.imperf.iv.aor.*"/>
+
+<!--
+	  <cat-item tags="vblex.perf.tv.lp.pii.*"/>
+      <cat-item tags="vblex.imperf.tv.lp.pii.*"/>
+      <cat-item tags="vblex.perf.iv.lp.pii.*"/>
+      <cat-item tags="vblex.imperf.iv.lp.pii.*"/>
 -->
+   </def-cat>
+   
 
     <def-cat n="lp_pii">
       <cat-item tags="vblex.perf.tv.lp.pii.*"/>
@@ -25,10 +49,14 @@
       <cat-item tags="vbhaver.lp.aor.*"/> 
     </def-cat>
 
+    <def-cat n="pronom_clitic">
+      <cat-item lemma="clitic" tags="prn.pos.clt.*"/>
+      <cat-item lemma="clitic" tags="prn.pers.clt.*"/>
+    </def-cat>
+
     <def-cat n="pronom_pers">
       <cat-item tags="prn.pers.*"/>
     </def-cat>
-
 
     <def-cat n="pronom_gen_def"> <!-- These pronouns can change gender and defnes in concordances adj+noun -->
       <cat-item tags="prn.tot.*"/> <!-- сиот sekoj...  -->
@@ -36,13 +64,11 @@
       <cat-item tags="prn.pos.*"/>  <!-- мой... -->
     </def-cat>
 
-
    <def-cat n="pronom_gen"> <!-- These pronouns can change only gender and no defnes in concordances adj+noun -->
       <cat-item tags="prn.neg.*"/>
       <cat-item tags="prn.itg.*"/>
       <cat-item tags="prn.dem.*"/>
     </def-cat>
-
 
    <def-cat n="pronom_def"> <!-- These pronouns can change only defnes and no gender, therefore no obj/subj choice in Bulgarian -->
       <cat-item tags="prn.ind.ind"/>
@@ -50,7 +76,6 @@
       <cat-item tags="prn.ind.prx"/>
       <cat-item tags="prn.ind.dst"/>
     </def-cat>
-
 
     <def-cat n="pronom">
       <cat-item tags="prn.ind.*"/>
@@ -85,30 +110,6 @@
 	      <cat-item tags="vblex.imperf.iv.pp.*"/>
 	<!--      <cat-item tags="vbhaver.*"/>     -->
     </def-cat>
-
-   <def-cat n="vfin">
-	  <cat-item tags="vblex.perf.tv.imp.*"/>
-      <cat-item tags="vblex.imperf.tv.imp.*"/>
-      <cat-item tags="vblex.perf.iv.imp.*"/>
-      <cat-item tags="vblex.imperf.iv.imp.*"/>
-	  <cat-item tags="vblex.perf.tv.pres.*"/>
-      <cat-item tags="vblex.imperf.tv.pres.*"/>
-      <cat-item tags="vblex.perf.iv.pres.*"/>
-      <cat-item tags="vblex.imperf.iv.pres.*"/>
-	  <cat-item tags="vblex.perf.tv.pii.*"/>
-      <cat-item tags="vblex.imperf.tv.pii.*"/>
-      <cat-item tags="vblex.perf.iv.pii.*"/>
-      <cat-item tags="vblex.imperf.iv.pii.*"/>
-	  <cat-item tags="vblex.perf.tv.lp.pii.*"/>
-      <cat-item tags="vblex.imperf.tv.lp.pii.*"/>
-      <cat-item tags="vblex.perf.iv.lp.pii.*"/>
-      <cat-item tags="vblex.imperf.iv.lp.pii.*"/>
-	  <cat-item tags="vblex.perf.tv.aor.*"/>
-      <cat-item tags="vblex.imperf.tv.aor.*"/>
-      <cat-item tags="vblex.perf.iv.aor.*"/>
-      <cat-item tags="vblex.imperf.iv.aor.*"/>
-   </def-cat>
-   
 
    <def-cat n="vfin_iv_pp">
       <cat-item tags="vblex.perf.iv.pp.*"/>
@@ -275,7 +276,44 @@
   </section-def-macros>
 
   <section-rules>
-    
+  
+		    <rule comment="RULE: Clitic pronoun + Finite verb  → Finite verb + Clitic pronoun: ( → )">
+		      <pattern>
+		        <pattern-item n="pronom_clitic"/>
+		        <pattern-item n="vfin"/>
+		      </pattern>
+		      <action>
+		        <out>
+		          <lu>
+                            <get-case-from pos="1">
+		              <clip pos="2" side="tl" part="lemh"/>
+                            </get-case-from>
+		            <clip pos="2" side="tl" part="a_verb"/>
+		            <clip pos="2" side="tl" part="aspect"/>
+		            <clip pos="2" side="tl" part="transitivity"/>
+		            <clip pos="2" side="tl" part="temps"/>
+		            <clip pos="2" side="tl" part="pers"/>
+		            <clip pos="2" side="tl" part="gen"/>
+		            <clip pos="2" side="tl" part="nbr"/>
+		            <clip pos="2" side="tl" part="defnes"/>
+		            <clip pos="2" side="tl" part="lemq"/>
+		          </lu>
+                          <b pos="1"/>
+                          <lu>
+                            <get-case-from pos="2">
+		              <clip pos="1" side="tl" part="lemh"/>
+                            </get-case-from>
+		            <clip pos="1" side="tl" part="a_prn"/>
+		            <clip pos="1" side="tl" part="pers"/>
+		            <clip pos="1" side="tl" part="gen"/>
+		            <clip pos="1" side="tl" part="nbr"/>
+		            <clip pos="1" side="tl" part="cas"/>
+		            <clip pos="1" side="tl" part="lemq"/>
+                          </lu>
+		        </out>
+		      </action>
+		    </rule>
+  
     <rule comment="RULE: Noun → Noun : (вода → вода)">
       <pattern>
         <pattern-item n="nom"/>
@@ -1673,7 +1711,6 @@ output: def
 		    </rule>
 
 
-
     <rule comment="RULE: Adverbial present participle → Adverbial present participle : ( → )">
       <pattern>
         <pattern-item n="pprs_adv"/>
@@ -1717,7 +1754,7 @@ output: def
     </rule>
 
 
-    <rule comment="RULE: L-Participle → L-Participle : ( → )">
+    <rule comment="RULE: L-Participle (Aorist) → L-Participle (Aorist) : ( → )">
       <pattern>
         <pattern-item n="lp_aor"/>
       </pattern>
@@ -1801,29 +1838,6 @@ output: def
         </out>
       </action>
     </rule>
-
-		    <rule comment="RULE: Finite verb  → Finite verb: ( → )">
-		      <pattern>
-		        <pattern-item n="vfin"/>
-		      </pattern>
-		      <action>
-		        <out>
-		          <lu>
-		            <clip pos="1" side="tl" part="lemh"/>
-		            <clip pos="1" side="tl" part="a_verb"/>
-		            <clip pos="1" side="tl" part="aspect"/>
-		            <clip pos="1" side="tl" part="transitivity"/>
-		            <clip pos="1" side="tl" part="temps"/>
-		            <clip pos="1" side="tl" part="pers"/>
-		            <clip pos="1" side="tl" part="gen"/>
-		            <clip pos="1" side="tl" part="nbr"/>
-		            <clip pos="1" side="tl" part="defnes"/>
-		            <clip pos="1" side="tl" part="lemq"/>
-		          </lu>
-		        </out>
-		      </action>
-		    </rule>
-
 
 
 
