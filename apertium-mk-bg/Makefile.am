@@ -90,6 +90,7 @@ apertium_mk_bg_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_mk_bgmodesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_mk_bgmodesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX2).t1x $(apertium_mk_bgdir)
 
 CLEANFILES = -r $(TARGETS_COMMON) 
