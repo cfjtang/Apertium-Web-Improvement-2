@@ -17,6 +17,8 @@
  */
 package org.scalemt.router.logic;
 
+import java.io.IOException;
+import java.net.URL;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -569,6 +571,26 @@ public class LoadBalancer {
             DaemonConfigurationInformation newInfo = new DaemonConfigurationInformation(dc);
             daemonsConfigInfo.put(dc, newInfo);
         }
+
+        if(removedConfigs.size()>0 || newConfs.size()>0)
+        {
+           URL url=LoadBalancer.class.getResource("/updateJSLibrary.sh");
+           String[] command = new String[2];
+            command[0]="bash";
+            //command[1]="-c";
+            command[1] = url.getPath();
+
+            logger.info("executing: "+url.getPath());
+            try {
+                Process p = Runtime.getRuntime().exec(command);
+
+            } catch (IOException ex) {
+              logger.error("Exception updating javascript library.",ex);
+            }
+            
+           
+        }
+
         logger.info("Suported pairs are: " + supportedPairs);
     }
 
