@@ -99,8 +99,9 @@
       <cat-item tags="num.*"/>
     </def-cat>
 
-    <def-cat n="nom">
-      <cat-item tags="n.*"/>
+    <def-cat n="adv">
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.*"/>
     </def-cat>
    
    <def-cat n="pp">
@@ -180,10 +181,16 @@
       <attr-item tags="prn.ref.pos"/>
       <attr-item tags="prn.pos"/>
       <attr-item tags="prn.pos.clt"/>
+      <attr-item tags="prn.pers.clt"/>
     </def-attr>
           
     <def-attr n="a_num">
       <attr-item tags="num"/>
+    </def-attr>
+
+    <def-attr n="a_adv">
+      <attr-item tags="adv"/>
+      <attr-item tags="adv.itg"/>
     </def-attr>
 
     <def-attr n="a_nom">
@@ -316,7 +323,7 @@
   
     <rule comment="RULE: Noun → Noun : (вода → вода)">
       <pattern>
-        <pattern-item n="nom"/>
+        <pattern-item n="noun"/>
       </pattern>
       <action>
 <!--
@@ -477,6 +484,43 @@ output: def
         </out>
       </action>
     </rule>
+
+    <rule comment="RULE: Adverb → Adverb: ( → )">
+      <pattern>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_adv"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+    
+    <rule comment="RULE: Personal Pronoun → Personal Pronoun : ( → )">
+      <pattern>
+        <pattern-item n="pronom_pers"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_prn"/>
+            <clip pos="1" side="tl" part="pers"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="cas"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+    
+
+
     
     <rule comment="RULE: Pronoun (with article) → Pronoun (with article) : ( → )">
       <pattern>
