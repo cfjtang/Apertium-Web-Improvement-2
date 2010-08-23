@@ -11,6 +11,7 @@ LIST PREP = (pr) ;
 LIST Interj = (ij) ;
 LIST Pron = (prn) ;
 LIST Pcle = (part) ;
+LIST Copula = (vbser);
 
 LIST Pers = (pers) ;
 
@@ -45,6 +46,7 @@ LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
 LIST NAGDV = nom acc dat gen voc ;
 
 SET V-IND-FIN = Prs OR Aor OR Pii ;
+SET V-COP = Copula ;
 SET SG2-OR-SG3 = Sg2 OR Sg3 ;
 SET REL-OR-ITG = (prn rel) OR (prn itg) ;
 SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") OR CS ;
@@ -88,6 +90,8 @@ LIST @OBJ→ = @OBJ→;
 LIST @←OBJ = @←OBJ;
 LIST @IOBJ→ = @IOBJ→;
 LIST @←IOBJ = @←IOBJ;
+LIST @←SPRED = @←SPRED;
+LIST @SPRED→ = @SPRED→;
 
 LIST @→N = @→N;
 LIST @N← = @N←;
@@ -115,7 +119,15 @@ MAP:r102 (@←SUBJ) TARGET Pers + $$PERSON + Nom IF (-1* V-IND-FIN + $$PERSON BA
 # Noun modifiers
 #    - Adjectives (agree in gender/number)
 #    - Numerals 
+#    -
 
 MAP:r103 (@→N) TARGET A + $$GENDER + Sg IF (1 N + $$GENDER + Sg) ;
 
 MAP:r104 (@→N) TARGET A + Pl IF (1 N + Pl) ;
+
+#
+# Subject predicates 
+#
+#
+
+MAP:r105 (@←SPRED) TARGET A + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
