@@ -84,6 +84,10 @@ REMOVE:r9 Pron IF (0 Pron) (0 A + $$NUMBER) (1C N + $$NUMBER) ;
 
 SECTION
 
+LIST @+FMAINV = @+FMAINV;
+LIST @-FMAINV = @-FMAINV;
+LIST @+FAUXV = @+FAUXV;
+LIST @-FAUXV = @-FAUXV;
 LIST @SUBJ→ = @SUBJ→;
 LIST @←SUBJ = @←SUBJ;
 LIST @OBJ→ = @OBJ→;
@@ -101,8 +105,18 @@ LIST @INTERJ = @INTERJ;
 
 MAP:r100 (@INTERJ) TARGET Interj ;
 
+#
+# Finite verb:
+#    - Finite main verb
+#    - Finite auxiliary (needs infinite main verb)
+#    - Modal
+
+# Main verb:
+#    - Finite main verb
+#    - Infinite main verb
+
 # 
-# Things that can be subjects:
+# Subjects:
 #    - Personal pronouns (agree in person/number with finite main verb) 
 #    - Demonstrative pronouns (finite main verb in Sg3/Pl3)
 #    -
@@ -117,7 +131,7 @@ MAP:r102 (@←SUBJ) TARGET Pers + $$PERSON + Nom IF (-1* V-IND-FIN + $$PERSON BA
 
 #
 # Noun modifiers
-#    - Adjectives (agree in gender/number)
+#    - Adjectives (agree with head in gender/number)
 #    - Numerals 
 #    -
 
@@ -127,8 +141,12 @@ MAP:r104 (@→N) TARGET A + Pl IF (1 N + Pl) ;
 
 #
 # Subject predicates 
-#
+#    - Adjectives in copula clauses (agree with subject in gender/number)
 #
 
 MAP:r105 (@←SPRED) TARGET A + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
-	# Here we should also check for agreement in gender with the subject -FMT
+	## Јас сум стар.
+	# FMT: Here we should also check for agreement in gender with the subject
+
+MAP:r106 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
+	## Јас сум македонец. 
