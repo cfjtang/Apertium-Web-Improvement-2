@@ -1282,16 +1282,20 @@ on a previously narrowed buffer (the default behaviour for
 (defun dix-move-to-top ()
   (interactive)
   (save-excursion
-    (dix-up-to "e")
+    (if (and transient-mark-mode mark-active)
+	(exchange-point-and-mark)
+      (progn
+	(dix-up-to "e")
+	(push-mark (nxml-scan-element-forward (point)))))
     (when (re-search-backward "\\S " nil t)
       (forward-char))
     (let* ((beg (point))
-	   (end (nxml-scan-element-forward beg))
-	   (elt (buffer-substring beg end)))
+	   (end (mark))
+	   (region (buffer-substring beg end)))
       (delete-region beg end)
       (beginning-of-buffer)
       (end-of-line)
-      (insert elt)))
+      (insert region)))
   (re-search-forward "\\S "))
 
 (defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'"
