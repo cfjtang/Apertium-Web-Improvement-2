@@ -87,7 +87,7 @@ var apertium = new function() {
         }
         var qs = "?q=" + encodeURIComponent(source) + "&format=" + format +
                  "&langpair=" + sourceLang + encodeURIComponent("|") + targetLang +
-                 "&key=" + apertium.key + "&markUnknown=no&callback=?";
+                 "&key=" + apertium.key + "&markUnknown=no";
         var url = apertium.url + qs;
 
         apertium.getJSON(url, function(data) {
