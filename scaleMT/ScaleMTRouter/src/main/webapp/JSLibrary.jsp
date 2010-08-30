@@ -5,7 +5,7 @@
 
 var apertium = new function() {
     this.url = "http://api.apertium.org/json/translate";
-
+    var __callbackId = 0;
        this.key="<%
     String key=request.getParameter("key");
     if(key!=null)
@@ -28,25 +28,53 @@ var apertium = new function() {
     ];
 
     this.getJSON = function(url, callback) {
-        var jsre = /=\?(&|$)/;
-        var uid = (new Date()).getTime();
-        var jsonp = "jsonp" + uid;
-        url = url.replace(jsre, "=" + jsonp + "$1");
 
-        window[jsonp] = window[jsonp] || function(tmp) {
-            callback(tmp);
-            window[jsonp] = undefined;
-            try { delete window[ jsonp ]; } catch(e) {}
-            if (head)
-                head.removeChild(script);
-        };
+        var callBackName = "_json" + __callbackId++;
+        url = url+"&callback=apertium."+callBackName;
 
-        var head = document.getElementsByTagName("head")[0] || document.documentElement;
-        var script = document.createElement("script");
-        script.src = url;
-        head.insertBefore(script, head.firstChild);
-        return undefined;
+
+        var scr = document.createElement("script");
+        scr.type = "text/javascript";
+        scr.src = url;
+
+		//Setup the callback
+		apertium[callBackName]=function(data) {
+            delete apertium[callBackName];
+             if (head)
+                head.removeChild(scr);
+			callback(data);
+            };
+
+		// send the request
+        var head = document.getElementsByTagName("head")[0];
+        head.insertBefore(scr, head.firstChild);
+
+
+        // default to 10 second timeout
+        var timeout = timeout || 20000;
+
+        //set timeout
+         window.setTimeout(function() {
+            if (typeof apertium[callBackName] == "function") {
+
+                // replace success with null callback in case the request is just very latent.
+                apertium[callBackName] = function(data) {
+                    delete jsonp[callBackName];
+                };
+
+                // call the error callback
+                callback({"responseData":null,"responseDetails":"timeout","responseStatus":509});
+
+                // set a longer timeout to safely clean up the unused callback.
+                window.setTimeout(function() {
+                    if (typeof apertium[callBackName] == "function") {
+                        delete apertium[callBackName];
+                    };
+                }, 60000);
+            };
+        }, timeout);
     };
+
 
     this.translate = function(sourceText, sourceLang, targetLang, callback) {
         var source,
