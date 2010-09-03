@@ -150,6 +150,8 @@ public class UserManagement {
      */
     public String checkKey(String key)
     {
+        if ("".equals(key) || key==null)
+            return null;
         try
         {
         UserEntity user = dao.getUser(key);
