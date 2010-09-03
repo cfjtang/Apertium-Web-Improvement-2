@@ -85,8 +85,11 @@
 
   <mode name="bg-mk" install="yes">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w">
         <file name="bg-mk.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="bg-mk.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="bg-mk.prob"/>
@@ -108,16 +111,31 @@
   
   <mode name="bg-mk-morph" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w">
         <file name="bg-mk.automorf.bin"/>
       </program>
     </pipeline>
   </mode>
 
+  <mode name="bg-mk-constraint" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="bg-mk.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="bg-mk.rlx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="bg-mk-tagger" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w">
         <file name="bg-mk.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="bg-mk.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="bg-mk.prob"/>
@@ -128,8 +146,11 @@
 
   <mode name="bg-mk-transfer" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w">
         <file name="bg-mk.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="bg-mk.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="bg-mk.prob"/>
