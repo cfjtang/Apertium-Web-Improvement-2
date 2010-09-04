@@ -16,6 +16,7 @@
 */
 #include <string>
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 #ifndef MAIN
@@ -164,7 +165,69 @@ string Parser::simple_text(string s)
 // stand in
 string Parser::table(string s)
 {
-  return "[" + s + "]";
+  string done, line;
+  istringstream is(s);
+  while( getline(is, line) ){
+    string::iterator it = line.begin();
+    switch( *it ){
+    case '{':
+      done += "[" + simple_text(line) + "]\n";
+      break;
+    case '!':{
+      string head, tail;
+      //build head
+      for(; it!= line.end(); ++it){
+	head += *it;
+	if( *it == '|' )
+	  break;
+      }
+
+      //build tail
+      for(; it != line.end(); ++it){
+	tail += *it;
+	// if we find a |, everything upto here was head and tail starts here
+	if( *it == '|' ){
+	  head += tail;
+	  tail = "";
+	}
+      }
+
+      // if tail is empty, then we never found a | and the whole line is data
+      if( tail == "" ){
+	done += simple_text(head) + '\n';
+	break;
+      }
+      done += "[" + head + "]" + simple_text(tail) + '\n';
+      break;
+    }
+    case '|':{
+      // current 'token'
+      string t;
+      for( ; it != line.end(); ++it){
+	if( *it == '|' ){
+	  // if we see a '||' then the previous token was text
+	  if( *(it+1) == '|' ){
+	    done += simple_text(t) + "[||]";
+	    t = "";
+	  }
+	  // otherwise we saw a '|' and the previous token was formatting
+	  else {
+	    done += '[' + t + "|]";
+	    t = "";
+	  }
+	  continue;
+	}
+	t += *it;
+      }
+      done += simple_text(t) + '\n';
+      break;
+    }
+    default:
+      done += simple_text(line) + '\n';
+      break;
+    }
+  }
+  return done;
 }
 
 Token Parser::parse(Token t)
