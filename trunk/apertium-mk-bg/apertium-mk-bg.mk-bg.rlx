@@ -57,8 +57,9 @@ SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") 
 
 SECTION
 
-REMOVE:r1 Interj IF (1 V) ;
+REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
+	## Даниел, студент од Бања Лука, вели дека нема намера да ја напушти БиХ.
 
 REMOVE:r2 Pron IF (0 ("не")) (-1 REL-OR-ITG) ;
 
