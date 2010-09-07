@@ -6,7 +6,7 @@ LIST N = (n) ;
 LIST A = (adj) ;
 LIST CS = (cnjsub) ;
 LIST Adv = (adv) ;
-LIST V = (vblex) (vbser) (vbmod) ;
+LIST V = (vblex) (vbser) (vbmod) (vbhaver);
 LIST PREP = (pr) ;
 LIST Interj = (ij) ;
 LIST Pron = (prn) ;
@@ -105,6 +105,8 @@ REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N);
 	## Тој е тука.
 	## Тој даде својата книга.
 
+REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
+	# Do something better here 
 
 ###############################################################################
 #  Syntactic labelling and disambiguation
