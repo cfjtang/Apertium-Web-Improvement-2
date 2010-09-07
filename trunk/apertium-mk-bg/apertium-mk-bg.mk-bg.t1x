@@ -56,6 +56,7 @@
 
     <def-cat n="pronom_pers">
       <cat-item tags="prn.pers.*"/>
+      <cat-item tags="prn.ref.pers.*"/>
     </def-cat>
 
     <def-cat n="pronom_gen_def"> <!-- These pronouns can change gender and defnes in concordances adj+noun -->
@@ -93,6 +94,10 @@
 
     <def-cat n="noun">
       <cat-item tags="n.*"/>
+    </def-cat>
+
+    <def-cat n="pref">
+      <cat-item tags="pref.*"/>
     </def-cat>
 
     <def-cat n="num">
@@ -184,6 +189,7 @@
       <attr-item tags="prn.ind"/>
       <attr-item tags="prn.ref"/>
       <attr-item tags="prn.ref.pos"/>
+      <attr-item tags="prn.ref.pers"/>
       <attr-item tags="prn.pos"/>
       <attr-item tags="prn.pos.clt"/>
       <attr-item tags="prn.pers.clt"/>
@@ -206,8 +212,17 @@
       <attr-item tags="n"/>
     </def-attr>
     
+    <def-attr n="a_pref">
+      <attr-item tags="pref"/>
+    </def-attr>
+
     <def-attr n="a_adj">
       <attr-item tags="adj"/>
+    </def-attr>
+
+    <def-attr n="grau">
+      <attr-item tags="comp"/>
+      <attr-item tags="sup"/>
     </def-attr>
 
     <def-attr n="transitivity">
@@ -496,6 +511,22 @@ output: def
             <clip pos="1" side="tl" part="defnes"/>
             <clip pos="1" side="tl" part="lemq"/>
 
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="RULE: Prefix → Prefix : ( → )">
+      <pattern>
+        <pattern-item n="pref"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_pref"/>
+            <clip pos="1" side="tl" part="grau"/>
+            <clip pos="1" side="tl" part="lemq"/>
           </lu>
         </out>
       </action>
