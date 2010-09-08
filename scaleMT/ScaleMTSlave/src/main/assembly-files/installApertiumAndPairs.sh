@@ -116,14 +116,14 @@ do
 		cd $folder
 
 		#install in fake folder to know which mode files are generated
-		mkdir -p /tmp/apertiumServerGSOC/$folder/share/apertium/modes
-		PKG_CONFIG_PATH=$REAL_PREFIX/lib/pkgconfig sh autogen.sh --prefix=/tmp/apertiumServerGSOC/$folder
-	 	make 
-		make install
-		pushd /tmp/apertiumServerGSOC/$folder/share/apertium/modes
-		installed_modes=`ls | grep -E  ".mode$"`
-		popd
-		rm -Rf /tmp/apertiumServerGSOC/$folder
+		#mkdir -p /tmp/apertiumServerGSOC/$folder/share/apertium/modes
+		#PKG_CONFIG_PATH=$REAL_PREFIX/lib/pkgconfig sh autogen.sh --prefix=/tmp/apertiumServerGSOC/$folder
+	 	#make
+		#make install
+		#pushd /tmp/apertiumServerGSOC/$folder/share/apertium/modes
+		#installed_modes=`ls | grep -E  ".mode$"`
+		#popd
+		#rm -Rf /tmp/apertiumServerGSOC/$folder
 
 		#Change modes.xml
 		mv modes.xml modes.xml.original
@@ -139,11 +139,11 @@ do
 		make install
 		mv modes.xml modes.xml.modified
 		mv modes.xml.original modes.xml
-		for installed_mode in $installed_modes
-		do
-			cp ${installed_mode/%.mode/}-null.mode $REAL_PREFIX/share/apertium/modes
-		done
-
+		#for installed_mode in $installed_modes
+		#do
+		#	cp ${installed_mode/%.mode/}-null.mode $REAL_PREFIX/share/apertium/modes
+		#done
+                cp *-null.mode $REAL_PREFIX/share/apertium/modes
 		cd ..
 	done
 done
