@@ -109,9 +109,10 @@ REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N);
 REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
 	# Do something better here 
 
-SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part) OR (1 Pron LINK 1 L-part));
+SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A) OR (1 Pron LINK 1 L-part OR A));
 	## Ако ми се јавите, би дошол.
 	## Да може бебето да прозборува, би ти рекло...
+	## Полицијата се сомнева дека пратката била наменета за западна Европа.
 
 ###############################################################################
 #  Syntactic labelling and disambiguation
