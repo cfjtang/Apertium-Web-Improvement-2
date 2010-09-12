@@ -3,36 +3,36 @@ LANG1=en
 LANG2=ca
 FILTERTAG="<prn><enc>"
 
+case $3 in
+us|US) MON=en_US; BIL=ca-en_US ;;
+val)   MON=val-ca; BIL=val-en-ca ;;
+*)     MON=$1; BIL=$1-$2;;
+esac
+
 # FASE 1
 echo "=======================";
 echo "Comprovació superficial";
 echo "=======================";
 echo -n "Calculant expansió inicial...";
-if [ -e $PREFIX.$1.metadix ];
-then xsltproc buscaPar.xsl $PREFIX.$1.metadix | uniq > tmp1gen.xsl 	 
-     xsltproc tmp1gen.xsl $PREFIX.$1.metadix >$PREFIX.$1.dixtmp1 
-     rm tmp1gen.xsl
-     lt-expand $PREFIX.$1.dixtmp1 | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' |apertium-pretransfer | grep -v "REGEXP" > comp-$1-$2.expand
-     rm $PREFIX.$1.dixtmp1
-else lt-expand $PREFIX.$1.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' |apertium-pretransfer | grep -v "REGEXP" > comp-$1-$2.expand
+lt-expand .deps/$MON.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' |apertium-pretransfer | grep -v "REGEXP" > comp-$BIL.expand
 fi
 echo " fet.";
 echo -n "Calculant expansió filtrada...";
-grep -v "$FILTERTAG" comp-$1-$2.expand >comp-$1-$2.filtered
+grep -v "$FILTERTAG" comp-$BIL.expand >comp-$BIL.filtered
 echo " fet.";
 echo -n "Executant el traductor..."
-apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$1-$2.filtered | \
+apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $BIL.autobil.bin < comp-$BIL.filtered | \
 apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | \
 apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | \
-lt-proc -d $1-$2.autogen.bin > comp-$1-$2.trans
+lt-proc -d $1-$2.autogen.bin > comp-$BIL.trans
 echo " fet.";
-echo -n "Detectant errades i guardant-les en errors-$1-$2.superficial..."
-paste comp-$1-$2.filtered comp-$1-$2.trans > comprovacio-$1-$2
-egrep "(@|/|. #)" comprovacio-$1-$2 > errors-$1-$2.superficial
+echo -n "Detectant errades i guardant-les en errors-$BIL.superficial..."
+paste comp-$BIL.filtered comp-$BIL.trans > comprovacio-$BIL
+egrep "(@|/|. #)" comprovacio-$BIL > errors-$BIL.superficial
 echo " fet."
-echo "==========================" >> errors-$1-$2.superficial
-echo "ALTRES ERRADES DE BILINGÜE" >> errors-$1-$2.superficial
-echo "==========================" >> errors-$1-$2.superficial
+echo "==========================" >> errors-$BIL.superficial
+echo "ALTRES ERRADES DE BILINGÜE" >> errors-$BIL.superficial
+echo "==========================" >> errors-$BIL.superficial
 echo -n "Convertint diccionari bilingüe... "
 xsltproc translate-to-default-equivalent.xsl $PREFIX.$LANG1-$LANG2.dix > $$.dix
 echo " fet."
@@ -49,13 +49,13 @@ else lt-comp rl $$.dix $$.bin >/dev/null
 fi
 echo " fet."
 rm $$.dix
-echo -n "Detectant errades i guardant-les en errors-$1-$2.superficial..."
-awk 'BEGIN{FS=":";}{if($2 == ">") print "^" $1 "$"; else if($2=="<"); else print "^" $1 "$";}' <$$.expand|lt-proc -d $$.bin |grep "/" >>errors-$1-$2.superficial
+echo -n "Detectant errades i guardant-les en errors-$BIL.superficial..."
+awk 'BEGIN{FS=":";}{if($2 == ">") print "^" $1 "$"; else if($2=="<"); else print "^" $1 "$";}' <$$.expand|lt-proc -d $$.bin |grep "/" >>errors-$BIL.superficial
 echo " fet."a
 rm $$.bin
 #rm $$.expand
 echo "";
-echo "Comprovació superficial finalitzada. Mireu en 'errors-$1-$2.superficial'"
+echo "Comprovació superficial finalitzada. Mireu en 'errors-$BIL.superficial'"
 
 echo ""
 echo "===================="
@@ -65,15 +65,15 @@ echo "===================="
 # FASE 2
 echo "Continuant comprovació completa, ^C per a cancelar"
 echo -n "Calculant expansió filtrada..."
-grep "$FILTERTAG" comp-$1-$2.expand >comp-$1-$2.filtered
+grep "$FILTERTAG" comp-$BIL.expand >comp-$BIL.filtered
 echo " fet."
 echo -n "Executant el traductor..."
-apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$1-$2.filtered | \
+apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$BIL.filtered | \
 apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | \
 apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | \
-lt-proc -d $1-$2.autogen.bin > comp-$1-$2.trans
+lt-proc -d $1-$2.autogen.bin > comp-$BIL.trans
 echo " fet."
-echo -n "Detectant errades i guardant-les en errors-$1-$2"
-paste comp-$1-$2.filtered comp-$1-$2.trans > comprovacio-$1-$2
-egrep "(@|/|. #)" comprovacio-$1-$2 > errors-$1-$2
+echo -n "Detectant errades i guardant-les en errors-$BIL"
+paste comp-$BIL.filtered comp-$BIL.trans > comprovacio-$BIL
+egrep "(@|/|. #)" comprovacio-$BIL > errors-$BIL
 echo " fet."
