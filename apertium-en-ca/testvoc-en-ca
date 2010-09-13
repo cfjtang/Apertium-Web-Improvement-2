@@ -15,7 +15,6 @@ echo "Comprovació superficial";
 echo "=======================";
 echo -n "Calculant expansió inicial...";
 lt-expand .deps/$MON.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' |apertium-pretransfer | grep -v "REGEXP" > comp-$BIL.expand
-#fi
 echo " fet.";
 echo -n "Calculant expansió filtrada...";
 grep -v "$FILTERTAG" comp-$BIL.expand >comp-$BIL.filtered
@@ -35,7 +34,6 @@ echo "ALTRES ERRADES DE BILINGÜE" >> errors-$BIL.superficial
 echo "==========================" >> errors-$BIL.superficial
 echo -n "Convertint diccionari bilingüe... "
 xsltproc translate-to-default-equivalent.xsl .deps/$BIL.bil.dix > $$.dix
-#xsltproc translate-to-default-equivalent.xsl $PREFIX.$LANG1-$LANG2.dix > $$.dix
 echo " fet."
 echo -n "Expandint diccionari bilingüe... "
 if [ $1-$2 = $LANG1-$LANG2 ]
@@ -69,7 +67,7 @@ echo -n "Calculant expansió filtrada..."
 grep "$FILTERTAG" comp-$BIL.expand >comp-$BIL.filtered
 echo " fet."
 echo -n "Executant el traductor..."
-apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$BIL.filtered | \
+apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $BIL.autobil.bin < comp-$BIL.filtered | \
 apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | \
 apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | \
 lt-proc -d $1-$2.autogen.bin > comp-$BIL.trans
