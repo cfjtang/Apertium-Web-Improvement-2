@@ -4,8 +4,8 @@ LANG2=ca
 FILTERTAG="<prn><enc>"
 
 case $3 in
-us|US) MON=en_US; BIL=ca-en_US ;;
-val)   MON=val-ca; BIL=val-en-ca ;;
+us|US) MON="ca" MONB=en_US; BIL=ca-en_US ;;
+val)   MON="$1" MONB=val-ca; BIL=val-en-ca ;;
 *)     MON=$1; BIL=$1-$2;;
 esac
 
@@ -15,7 +15,7 @@ echo "Comprovació superficial";
 echo "=======================";
 echo -n "Calculant expansió inicial...";
 lt-expand .deps/$MON.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' |apertium-pretransfer | grep -v "REGEXP" > comp-$BIL.expand
-fi
+#fi
 echo " fet.";
 echo -n "Calculant expansió filtrada...";
 grep -v "$FILTERTAG" comp-$BIL.expand >comp-$BIL.filtered
@@ -34,7 +34,8 @@ echo "==========================" >> errors-$BIL.superficial
 echo "ALTRES ERRADES DE BILINGÜE" >> errors-$BIL.superficial
 echo "==========================" >> errors-$BIL.superficial
 echo -n "Convertint diccionari bilingüe... "
-xsltproc translate-to-default-equivalent.xsl $PREFIX.$LANG1-$LANG2.dix > $$.dix
+xsltproc translate-to-default-equivalent.xsl .deps/$BIL.bil.dix > $$.dix
+#xsltproc translate-to-default-equivalent.xsl $PREFIX.$LANG1-$LANG2.dix > $$.dix
 echo " fet."
 echo -n "Expandint diccionari bilingüe... "
 if [ $1-$2 = $LANG1-$LANG2 ]
