@@ -57,13 +57,13 @@
     <!-- these are not the sides you are looking for -->
     <xsl:when test="not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vl=$left) and not(./@vr=$right)">
     </xsl:when>
-    <xsl:when test="not(count(./@r)=0) and ./@r=string('LR') and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('left')">
+    <xsl:when test="not(count(./@r)=0) and ./@r=string('LR') and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('right')">
     </xsl:when>
-    <xsl:when test="not(count(./@r)=0) and not(count(./@vr)=0) and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('right')">
+    <xsl:when test="not(count(./@r)=0) and not(count(./@vr)=0) and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('left')">
     </xsl:when>
-    <xsl:when test="not(count(./@r)=0) and not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('left')">
+    <xsl:when test="not(count(./@r)=0) and not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('right')">
     </xsl:when>
-    <xsl:when test="not(count(./@r)=0) and ./@r=string('RL') and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('right')">
+    <xsl:when test="not(count(./@r)=0) and ./@r=string('RL') and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('left')">
     </xsl:when>
     <xsl:when test="count(./@r)=0 and ./@vl=$left and ./@vr=$right">
       <xsl:choose>
