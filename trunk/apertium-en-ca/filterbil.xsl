@@ -55,13 +55,33 @@
       <xsl:copy-of select="."/>
     </xsl:when>
     <!-- these are not the sides you are looking for -->
+<!--
     <xsl:when test="not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vl=$left) and not(./@vr=$right)">
     </xsl:when>
+-->
     <xsl:when test="not(count(./@r)=0) and ./@r=string('LR') and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('right')">
     </xsl:when>
     <xsl:when test="not(count(./@vr)=0) and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('left')">
+      <xsl:choose>
+        <xsl:when test="./@vr=$right">
+          <e slr="{./@slr}" srl="{./@srl}" r="LR">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="not(count(./@vl)=0) and not(count(./@vr)=0) and not(./@vr=$right) and $side=string('right')">
+      <xsl:choose>
+        <xsl:when test="./@vl=$left">
+          <e slr="{./@slr}" srl="{./@srl}" r="RL">
+            <xsl:apply-templates/>
+          </e>
+        </xsl:when>
+        <xsl:otherwise>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:when>
     <xsl:when test="not(count(./@r)=0) and ./@r=string('RL') and not(count(./@vl)=0) and not(./@vl=$left) and $side=string('left')">
     </xsl:when>
@@ -285,8 +305,26 @@
           </e>
         </xsl:when>
         <xsl:when test="not(count(./@vr)=0) and not(./@vr=$right) and not($side=string('right'))">
+          <xsl:choose>
+            <xsl:when test="not(count(./@vl)=0) and ./@vr=$left">
+              <e l="LR">
+                <xsl:apply-templates/>
+              </e>
+            </xsl:when>
+            <xsl:otherwise>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:when test="not(count(./@vl)=0) and not(./@vl=$left) and not($side=string('left'))">
+          <xsl:choose>
+            <xsl:when test="not(count(./@vr)=0) and ./@vr=$right">
+              <e l="RL">
+                <xsl:apply-templates/>
+              </e>
+            </xsl:when>
+            <xsl:otherwise>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
           <e r="{./@r}">
