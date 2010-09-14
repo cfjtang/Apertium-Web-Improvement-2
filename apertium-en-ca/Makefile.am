@@ -321,5 +321,5 @@ install-data-local:
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(apertium_en_cadir)
 
 
-CLEANFILES = -rf $(TARGETS) modes
+CLEANFILES = -rf $(TARGETS) modes .deps
 
