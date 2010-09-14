@@ -284,6 +284,10 @@
             <xsl:apply-templates/>
           </e>
         </xsl:when>
+        <xsl:when test="not(count(./@vr)=0) and not(./@vr=$right) and not($side=string('right'))">
+        </xsl:when>
+        <xsl:when test="not(count(./@vl)=0) and not(./@vl=$left) and not($side=string('left'))">
+        </xsl:when>
         <xsl:otherwise>
           <e r="{./@r}">
             <xsl:apply-templates/>
