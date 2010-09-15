@@ -852,6 +852,7 @@
     <def-var n="gen_qual"/>
     <def-var n="gen_paraula"/>
     <def-var n="nbr_paraula"/>
+    <def-var n="nbr_adj"/>
     <def-var n="pronom"/>
     <def-var n="pronomenc"/>
     <def-var n="paraula1"/>
@@ -3939,6 +3940,26 @@
     </def-macro>
     <def-macro n="output_adj2" npar="2">
       <choose>
+        <when>
+          <test>
+             <equal>
+               <clip pos="2" side="sl" part="nbr"/>
+               <lit-tag v="sp"/>
+             </equal>
+          </test>
+          <let>
+            <var n="nbr_adj"/>
+            <lit-tag v="ND"/>
+          </let>
+        </when>
+        <otherwise>
+          <let>
+            <var n="nbr_adj"/>
+            <clip pos="2" side="sl" part="nbr"/>
+          </let>
+        </otherwise>
+      </choose>
+      <choose>
 	<when> 
 	  <test>
 	    <equal>
@@ -3952,7 +3973,7 @@
 	      <tags>
 	        <tag><lit-tag v="SA"/></tag>
 	        <tag><lit-tag v="m"/></tag>
-	        <tag><clip pos="2" side="sl" part="nbr"/></tag>
+	        <tag><var n="nbr_adj"/></tag>
 	      </tags>
 	      <lu>
 	        <lit v="públic"/>
