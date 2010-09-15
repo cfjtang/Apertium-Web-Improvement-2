@@ -78,7 +78,7 @@
           </e>
         </xsl:when>
         <xsl:when test="count(./@srl)=0 and not(count(./@slr)=0)" c="LR;right;vr!=right;slr;srl">
-          <e r="LR" slr="{./@slr}">
+          <e i="yes" c="LR;right;vr!=right;slr;!srl;slr={./@slr}">
             <xsl:apply-templates/>
           </e>
         </xsl:when>
