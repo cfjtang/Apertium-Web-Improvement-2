@@ -19,6 +19,10 @@
       <cat-item name="subs_enc"/>
     </def-cat>
 
+    <def-cat n="adj_obj">
+      <cat-item name="adj_obj"/>
+    </def-cat>
+
   <def-cat n="inf_enc_enc">
       <cat-item name="inf_enc_enc"/>
       <cat-item name="subs_enc_enc"/>
@@ -455,6 +459,59 @@
 	    <clip pos="1" part="whole"/>
 	  </lu> 
 	</out>   
+      </action>
+    </rule> 
+
+    <rule comment="CHUNK: adj_obj">
+      <pattern>
+	<pattern-item n="adj_obj"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <or>
+	        <equal>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="GD"/>
+	        </equal>
+	        <equal>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="nt"/>
+	        </equal>
+              </or>
+            </test>
+            <let>
+              <clip pos="1" part="gen"/>
+              <lit-tag v="m"/>
+            </let>
+          </when>
+        </choose>
+        <choose>
+          <when>
+            <test>
+              <or>
+	        <equal>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="ND"/>
+	        </equal>
+	        <equal>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="sp"/>
+	        </equal>
+              </or>
+            </test>
+            <let>
+              <clip pos="1" part="nbr"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+        </out>
       </action>
     </rule> 
 
