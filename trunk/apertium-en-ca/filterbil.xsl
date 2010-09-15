@@ -273,7 +273,7 @@
           </e>
         </xsl:when>
         <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
-          <e slr="{./@slr}" r="RL">
+          <e r="RL" c="!r;vr!=right;!vl;slr={./@slr}">
             <xsl:apply-templates/>
           </e>
         </xsl:when>
@@ -321,7 +321,7 @@
           </e>
         </xsl:when>
         <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
-          <e slr="{./@slr}" r="RL">
+          <e r="RL" c="!r;vl=left;vr!=right;slr={./@slr}">
             <xsl:apply-templates/>
           </e>
         </xsl:when>
@@ -377,7 +377,7 @@
           </e>
         </xsl:when>
         <xsl:when test="not(count(./@slr)=0) and count(./@srl)=0">
-          <e slr="{./@slr}" r="RL">
+          <e r="RL" c="vr=right;r=RL;slr={./@slr}">
             <xsl:apply-templates/>
           </e>
         </xsl:when>
