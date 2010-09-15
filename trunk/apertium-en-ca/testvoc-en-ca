@@ -28,7 +28,7 @@ lt-proc -d $BIL.autogen.bin > comp-$BIL.trans
 echo " fet.";
 echo -n "Detectant errades i guardant-les en errors-$BIL.superficial..."
 paste comp-$BIL.filtered comp-$BIL.trans > comprovacio-$BIL
-egrep "(@|/|. #)" comprovacio-$BIL > errors-$BIL.superficial
+egrep "(@|/|. #)" comprovacio-$BIL | grep -v '\\\/' > errors-$BIL.superficial
 echo " fet."
 echo "==========================" >> errors-$BIL.superficial
 echo "ALTRES ERRADES DE BILINGÜE" >> errors-$BIL.superficial
