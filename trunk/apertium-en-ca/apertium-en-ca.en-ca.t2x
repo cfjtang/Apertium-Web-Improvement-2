@@ -8408,19 +8408,53 @@ Your mother and you will come - La vostra mare i tu vindran
 	<choose>
 	  <when>
 	    <test>
-              <or>
+              <and>
 	        <equal>
-	  	  <clip pos="2" part="nbr"/>
-		  <lit-tag v="ND"/>
+		  <clip pos="1" part="gen"/>
+		  <lit-tag v="GD"/>
 	        </equal>
 	        <equal>
-	  	  <clip pos="2" part="nbr"/>
-		  <lit-tag v="sp"/>
+		  <clip pos="2" part="gen"/>
+		  <lit-tag v="nt"/>
 	        </equal>
-              </or>
+              </and>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+	  	<clip pos="2" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
 	    </test>
 	    <let>
 	      <clip pos="2" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+              <and>
+	        <equal>
+		  <clip pos="1" part="nbr"/>
+		  <lit-tag v="ND"/>
+	        </equal>
+	        <equal>
+		  <clip pos="2" part="nbr"/>
+		  <lit-tag v="sp"/>
+	        </equal>
+              </and>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
 	      <lit-tag v="sg"/>
 	    </let>
 	  </when>
