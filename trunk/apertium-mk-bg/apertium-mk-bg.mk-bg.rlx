@@ -13,6 +13,7 @@ LIST Pron = (prn) ;
 LIST Pcle = (part) ;
 LIST Copula = (vbser) ;
 LIST L-part = (lp) ;
+LIST P-part = (pp) ;
 
 LIST Pers = (pers) ;
 LIST Dem = (dem) ;
@@ -109,10 +110,11 @@ REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N);
 REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
 	# Do something better here 
 
-SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A) OR (1 Pron LINK 1 L-part OR A));
+SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1 L-part OR A));
 	## Ако ми се јавите, би дошол.
 	## Да може бебето да прозборува, би ти рекло...
 	## Полицијата се сомнева дека пратката била наменета за западна Европа.
+	## Кметството било укинато во 1861 година.
 
 SELECT:r19 V-COP IF (0 V-COP) (0 V) (-1 V-COP + V-IND-FIN);
 	## Ако би била една држава, ЕУ би била седмата најголема држава во светот по површина и трета најголема по население, по Кина и Индија.
