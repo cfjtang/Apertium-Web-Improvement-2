@@ -60,6 +60,8 @@ $(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
 
 EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).dix \
+           $(BASENAME).$(LANG1).acx \
+           $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(PREFIX1).alpha.dix \
            $(PREFIX1).prob \
            $(BASENAME).$(PREFIX1).t1x \
