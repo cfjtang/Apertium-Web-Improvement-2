@@ -90,6 +90,7 @@ apertium_mk_en_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).t3x.bin  \
 		    $(PREFIX1).rlx.bin  \
 		    $(PREFIX1).lex.bin  \
+		    lexchoicebil.xsl  \
 		    $(PREFIX1).alpha.bin  \
 		    $(BASENAME).$(PREFIX1).t1x \
 		    $(BASENAME).$(PREFIX1).t2x \
