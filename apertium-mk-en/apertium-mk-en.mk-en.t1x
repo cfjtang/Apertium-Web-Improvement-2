@@ -34,6 +34,7 @@
       <cat-item tags="np.al.*"/>
     </def-cat>
     <def-cat n="num">
+      <cat-item tags="num"/>
       <cat-item tags="num.*"/>
     </def-cat>
     <def-cat n="hyp">
@@ -1264,6 +1265,75 @@
         </call-macro>
       </action>
     </rule>
+
+    <rule comment="REGLA: num guio adj nom">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="np_set_defnes2">
+          <with-param pos="3"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="a_num"/>
+                <lit-tag v="adj.ord"/>
+              </equal>
+            </test>
+            <let>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit v=""/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <chunk name="m_m_n" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="np_chunk_s"/></tag>
+              <tag><var n="defin"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <var n="np_chunk_h"/>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_num"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_adj"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="lemq"/>
+              <var n="np_chunk_q"/>
+            </lu>
+          </chunk>
+        </out>
+        <call-macro n="np_cleanup1">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
+
+
 
     <rule comment="REGLA: num adj nom">
       <pattern>
