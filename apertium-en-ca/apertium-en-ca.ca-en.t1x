@@ -13035,6 +13035,39 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
         </call-macro>
       </action>
     </rule>
+
+    <rule comment="a + DET + MESO ( al juliol → in July">
+      <pattern>
+	<pattern-item n="a"/>
+	<pattern-item n="det"/>
+	<pattern-item n="mesos"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="in_meso" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="a_prep"/></tag>	
+	    </tags>
+
+	    <lu>
+	      <lit v="in"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+            <b pos="1"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>  
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+      </action>
+    </rule>
     <rule comment="ADV">
       <pattern>
 	<pattern-item n="adv"/>
