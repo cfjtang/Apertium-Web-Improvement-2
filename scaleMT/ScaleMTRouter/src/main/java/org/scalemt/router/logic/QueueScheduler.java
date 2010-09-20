@@ -338,6 +338,7 @@ class QueueScheduler {
 
         try {
             Thread.sleep(timeout);
+            queue.remove(queueElement);
             throw new TranslationEngineException("Timeout");
         } catch (InterruptedException e) {
             if (queueElement.getException() != null) {
