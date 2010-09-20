@@ -19,89 +19,79 @@
             %>" style="font-family:helvetica;margin-left:2em;">
         <h1>Apertium Web Service register page</h1>
         <div id="termsmain" style="">
-        <h3>Terms and conditions</h3>
-
-        These are the most important terms written in a language understandable by non-lawyers:
-        <ul>
-            <li>API usage is limited to a small amount of requests per IP if you do not have an API key</li>
-            <li>An API key provides a more generous traffic limit</li>
-            <li>Remember that the API usage has an economical cost for Apertium. Do not make unnecessary requests</li>
-            <li>If you want unlimited access to the API, a financial contribution might be required </li>
-            <li>Commercial applications have no additional restrictions</li>
-            <li>Remember that you can download the source code of the API services and install them in your own server</li>
-        </ul>
+        <p>Here you can get an API key for using the <a href="http://wiki.apertium.org/wiki/Apertium_web_service">Apertium API</a>.
+Without a key, API usage is limited to a small amount of requests per IP;
+an API key allows for more generous traffic limits. You must accept the Terms of Service below before obtaining your key. Please, note that
+the service is provided "as is" without warranty of any kind, and remember that you can also
+download the <a href="http://wiki.apertium.org/wiki/ScaleMT#Downloading">source code</a> of the Apertium API services and install them in your own server.</p>
 
 <div id="termsbox" style="border:2px solid #000066;margin-left:0px;margin-top: 1em;overflow:auto;height:200px;width:90%;padding-left: 20px;padding-right: 10px;">
-    <h2>Apertium API Terms and Conditions of use</h2>
+    <h2>Terms of Service</h2>
 
-    <p>You've chosen to use the Apertium API and we thank you for that.</p>
-    <p>Apertium grants you a license to use its API under the terms and conditions set forth below.
-        These terms and conditions may be updated at any time without notice. You can view the latest
-        version at this address: http://api.apertium.org/register.jsp . Your use of the API results in unconditional acceptance of the most recent terms and conditions.</p>
-    <p>License to use the API is granted non-exclusively and non-relicenseable, for unlimited time, until terminated by either party.<p>
-    <p>Apertium may terminate your license at any time, for any reason. The goal of this document is to give you as much information as possible
-        to avoid this from occurring. You can also terminate your license at any time by ceasing to use the API and removing your API key.
+<h3>Introduction:</h3>
 
-    <h3>1. Request and use of an API key</h3>
+<p>The Apertium API is operated by the <a href="http://www.apertium.org">Apertium</a> Project
+and the <a href="http://transducens.dlsi.ua.es">Transducens</a> Research Group at <a href="http://www.ua.es">Universitat d'Alacant</a>.
+To use it, register with us to obtain an API Key. Please make sure you read through, understand and agree
+with the terms of this agreement before you start to use the Apertium API.</p>
 
-    <p>The proper use of the API requires obtaining an identifier (the "key") issued by Apertium as detailed below.</p>
-    <p>Requests not including an API key are strictly limited to a small amount per IP.</p>
-    <p>To obtain a key you will be asked to detail some necessary information.</p>
-    <p>You agree to provide true, accurate and complete information.</p>
-    <p>Providing this information is a critical condition on your right to use the API.</p>
-    <p>It is your responsibility to keep your key confidential. You are responsible for all activities related to API use associated with your key and you agree to immediately notify Apertium of any fraudulent use of your key.</p>
-    
-    <h3>2. Terms and restrictions of use</h3>
-
-    <p>Remember that the availability of the API represents a real cost to the Apertium community. Design your application to make wise use of API resources and offer a genuinely useful service to users.</p>
-    <p>Don't attempt to exploit any security vulnerabilities. If you detect a possible flaw, be discreet and let us know as soon as possible.</p>
-    <p>Don't make large numbers of unnecessary API requests which could cause slowdown or instability of the Apertium platform.</p>
-    <p>If your application generates a large number of API requests, some of them could be rejected to avoid server overload. A financial contribution might be required if you want the service to process all your requests. If you have any doubt regarding the impact of your application, please contact us.</p>
+<p>[These Terms of Service are derived from <a href="http://akismet.com/tos">Akismet.com
+TOS</a>, available under a <a href="http://creativecommons.org/licenses/by-sa/2.5/">Creative
+Commons Sharealike license</a>.]</p>
 
 
-    <h3>3. Commercial Use</h3>
+<h3>Terms of Service:</h3>
 
-    <p>If your application intends to profit, directly or indirectly, your application will be considered commercial.</p>
-    <p>Commercial applications have no additional limitations.</p>
+<p>The <a href="http://api.apertium.org">Apertium</a> web service ("Service") is a machine translation Application
+Programming Interface ("API") operated by the Apertium Project and the Transducens Research Group at Universitat d'Alacant ("Providers").
+Any use of the Service is subject to the following Terms and Conditions of Use ("Terms and Conditions"). When you use your Apertium API Key ("API Key")
+and the Service, you agree that you have read, understood, and agree to be bound by the these Terms and Conditions.
+</p>
 
-    <h3>4. Disclaimer of warranties</h3>
+<ol>
+<li><p><b>General.</b> To obtain an API Key you must first register with the website.
+After obtaining an API Key, you will be able to use the Service. Requests not including an API key are strictly limited to a small amount per IP;
+the API key allows for more generous traffic limits.
+The Providers may in its sole discretion change, modify, suspend, make improvements to or discontinue
+any aspect of Service, temporarily or permanently, at any time and without notice to you. Under no circumstances will the
+Providers be liable for any such change, modification, suspension,
+improvement or discontinuance.  If you do not agree with any of these changes, you may terminate your account.</p></li>
 
-    <p>Nothing in these terms and conditions shall affect your statutory rights as a consumer.</p>
-    <p>You expressly understand and agree that:</p>
-    <ul>
-        <li> Your use of the Apertium API is at your sole risk.</li>
-        <li>The Apertium API is provided on an “as is” and “as available” basis.</li>
-        <li>To the maximum extent permitted by applicable law, Apertium expressly disclaims all warranties and conditions of any kind, whether express or implied, including, but not limited to the implied warranties and conditions of merchantability, fitness for a particular purpose and non-infringement.</li>
-    </ul>
-    <p>Apertium makes no warranty that:</p>
-    <ul>
-        <li>the Apertium API will meet your requirements;</li>
-        <li>the Apertium API will be uninterrupted, timely, secure, or error-free;</li>
-        <li>the results that may be obtained from the use of the Apertium API will be accurate or reliable;</li>
-        <li>the quality of any products, services, information, or other material purchased or obtained by you through the Apertium API will meet your expectations; and/or any errors in the Apertium API will be corrected.</li>
-</ul>
+<li><p><b>Registration.</b> By registering, you represent and warrant that the information you provide in connection with any registration
+process is true and accurate, and that you will promptly notify the Providers if any of that information changes.
+The Providers may use the information that you provide during the registration process, in particular your email address,
+to communicate with you about the Service. The Providers reserve the right to terminate your access to
+the Service if you provide false or inaccurate information.</p>
 
+<p>If you obtain an API Key, you are responsible for maintaining the security of your API Key, and you are fully responsible for all activities
+that occur under the account and any other actions taken in connection with your API Key. You must immediately notify the Providers
+of any unauthorized uses of your API Key, your account or any other breaches of security. The Providers
+will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions.</p></li>
 
-    <h3>5. Limitation of liability</h3>
+<li><p><b>Responsibility of API usage.</b> The Providers have not reviewed, and cannot review, all of the material you sent
+through the API, and cannot therefore be responsible for that materialâ€™s content, use or effects.</p></li>
 
-    <p>The stipulation of the present conditions only exonerates and limits Apertium’s liability in case of loss within the limits prescribed by the law.</p>
-    <p>Apertium shall not be liable to you for any direct, indirect, incidental, special, consequential or exemplary damages resulting from:</p>
-    <ul>
-        <li> the use or the inability to use the Apertium API;</li>
-<li> the cost of procurement of substitute goods and services resulting from any goods, data, information or services purchased or obtained or messages received or transactions entered into through or from the Apertium API;</li>
-<li> unauthorized access to or alteration of your transmissions or data;</li>
-<li> statements or conduct of any third party on the Apertium API; or</li>
-<li> any other matter relating to the Apertium API ;</li>
-</ul>
-    <p>including but not limited to damages for loss of:</p>
-<ul>
-<li> goodwill;</li>
-<li> data;</li>
-<li> content;</li>
-<li> profits ; or</li>
-<li> any other matter related or intangible losses ;</li>
-</ul>
-<p>even if Apertium has been advised of the possibility of such damages.</p>
+<li><p><b>Changes.</b> The Service and these Terms and Conditions may be changed at the sole discretion of the Providers and without notice.
+You are bound by any such updates or changes, including but not limited to those affecting these Terms and Conditions, and so should periodically
+review these Terms and Conditions.</p></li>
+
+<li><p><b>Limitation of warranties.</b> Except as otherwise expressly stated, the Service is provided "as is", and the
+Providers make no representations or warranties, express or implied, including but not limited to warranties of merchantability,
+fitness for a particular purpose, title or non-infringement of proprietary rights. The Providers
+make no representations and warranties regarding uptime for the Service and the accuracy of the Service. You understand and agree that you
+obtain the service at your own discretion and risk, and that the Providers will have no liability or responsibility for any damage to you
+that results from the use of such services.</p></li>
+
+<li><p><b>Limitation of liability.</b> Except as otherwise expressly stated, in no event will the Providers
+be liable to you or any other party for any direct, indirect, special, consequential or exemplary damages, regardless of the basis or nature
+of the claim, resulting from any use of the Service including without limitation any lost profits, business interruption, loss of data or otherwise, even
+if the Providers were expressly advised of the possibility of such damages.</p></li>
+
+<li><p><b>Termination.</b> The Providers may terminate this Agreement, your rights under this Agreement, and your access to and use of the
+Service in its sole discretion, for any reason or no reason at all, with or without cause and without notice or liability to you or any third party.
+Any termination of these Terms and Conditions automatically terminates the license to use the Service and to use your API Key.
+You can also terminate this Agreement at any time by ceasing to use the API.</p></li>
+</ol> 
 </div>
 </div>
         <div id="register">
