@@ -1501,13 +1501,28 @@
           <with-param pos="2"/>
           <with-param pos="1"/>
         </call-macro>
+        <choose> 
+          <when>
+            <test>
+              <equal>
+                <var n="adj_h"/>
+                <lit v=""/>
+              </equal>
+            </test>
+            <let>
+              <clip pos="2" side="tl" part="lemh"/>
+              <get-case-from pos="1">
+                <clip pos="2" side="tl" part="lemh"/>
+              </get-case-from>
+            </let>
+          </when>
+        </choose>
         <out>
           <chunk name="a" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="SA"/></tag>
             </tags>
             <lu>
-              <var n="adj_h"/>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_adj"/>
               <var n="adj_g"/>
@@ -1783,9 +1798,6 @@
       </action>
     </rule>
 
-
-
-
     <rule comment="REGLA: pref adj nom">
       <pattern>
         <pattern-item n="pref"/>
@@ -1801,6 +1813,22 @@
           <with-param pos="3"/>
           <with-param pos="2"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="adj_h"/>
+                <lit v=""/>
+              </equal>
+            </test>
+            <let>
+              <clip pos="2" side="tl" part="lemh"/>
+              <get-case-from pos="1">
+                <clip pos="2" side="tl" part="lemh"/>
+              </get-case-from>
+            </let>
+          </when>
+        </choose>
         <out>
           <chunk namefrom="np_chunk_n" case="caseFirstWord">
             <tags>
