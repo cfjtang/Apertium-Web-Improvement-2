@@ -69,7 +69,7 @@ of any unauthorized uses of your API Key, your account or any other breaches of 
 will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions.</p></li>
 
 <li><p><b>Responsibility of API usage.</b> The Providers have not reviewed, and cannot review, all of the material you sent
-through the API, and cannot therefore be responsible for that materialâ€™s content, use or effects.</p></li>
+through the API, and cannot therefore be responsible for that material's content, use or effects.</p></li>
 
 <li><p><b>Changes.</b> The Service and these Terms and Conditions may be changed at the sole discretion of the Providers and without notice.
 You are bound by any such updates or changes, including but not limited to those affecting these Terms and Conditions, and so should periodically
