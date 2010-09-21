@@ -7,6 +7,9 @@ LIST Fract = ("третина") ("половина") ;
 LIST Num = (num) ;
 LIST Comp = (comp) ;
 LIST TimeAdv = ("денес") ;
+LIST Sg1 = (p1 sg);
+LIST Sg2 = (p2 sg);
+LIST Sg3 = (p3 sg);
 
 SET NUM = Num | Fract ;
 SET TIME = TimeAdv ;
@@ -46,6 +49,9 @@ SUBSTITUTE ("на") ("на:4") ("на") (-2 ("од")) (-1 Num) (1 Num) ;
 
 SUBSTITUTE ("за") ("за:2") ("за") (-1 ("министер")) ;
 	## Одбивајќи да даде имиoа, српскиот министер за внатрешни работи изјави дека се идентификувани двајца од осомничените убијци.
+
+SUBSTITUTE ("сака") ("сака:1") ("сака" vblex) (0 Sg2);
+	## Зар не сакаш да дојдеш?
 
 #
 # Automatically generated
