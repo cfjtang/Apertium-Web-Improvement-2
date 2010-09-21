@@ -10,6 +10,7 @@ LIST TimeAdv = ("денес") ;
 LIST Sg1 = (p1 sg);
 LIST Sg2 = (p2 sg);
 LIST Sg3 = (p3 sg);
+LIST Toponym = (np top);
 
 SET NUM = Num | Fract ;
 SET TIME = TimeAdv ;
