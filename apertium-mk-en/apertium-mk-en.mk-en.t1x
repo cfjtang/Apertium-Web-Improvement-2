@@ -517,6 +517,48 @@
       <choose>
         <when>
           <test>
+            <and>
+              <or>
+                <equal>
+                  <clip pos="1" side="sl" part="temps"/>
+                  <lit-tag v="pii"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="temps"/>
+                  <lit-tag v="aor"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="temps"/>
+                  <lit-tag v="lp.aor"/>
+                </equal>
+                <equal>
+                  <clip pos="1" side="sl" part="temps"/>
+                  <lit-tag v="lp.pii"/>
+                </equal>
+              </or>
+              <equal>
+                <clip pos="1" side="sl" part="nbr"/>
+                <lit-tag v="sg"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="pers"/>
+                <lit-tag v="p3"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="sl" part="a_verb"/>
+                <lit-tag v="vbser"/>
+              </equal>
+            </and>
+            
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="temps"/>
+            <lit-tag v="past"/>
+          </let>
+        </when>
+
+        <when>
+          <test>
             <or>
               <equal>
                 <clip pos="1" side="sl" part="temps"/>
