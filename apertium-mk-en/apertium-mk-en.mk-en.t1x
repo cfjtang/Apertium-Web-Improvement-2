@@ -37,6 +37,10 @@
       <cat-item tags="num"/>
       <cat-item tags="num.*"/>
     </def-cat>
+    <def-cat n="adv">
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.*"/>
+    </def-cat>
     <def-cat n="hyp">
       <cat-item lemma="би" tags="vbser.*"/>
     </def-cat>
@@ -1281,8 +1285,8 @@
       </pattern>
       <action>
         <call-macro n="np_set_defnes2">
+          <with-param pos="4"/>
           <with-param pos="3"/>
-          <with-param pos="1"/>
         </call-macro>
         <choose>
           <when>
@@ -3753,6 +3757,54 @@
             <with-param pos="1"/>
           </call-macro>
        </action>
+    </rule>
+
+    <rule comment="REGLA: не требе adv да prn_clitic v_pres">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="trebe"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="prn_clitic"/>
+        <pattern-item n="v_pres"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+                <lit v="should"/>
+              </get-case-from>
+              <lit-tag v="vaux.inf"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_adv"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="6" side="tl" part="lemh"/>
+              <clip pos="6" side="tl" part="a_verb"/>
+              <lit-tag v="inf"/>
+              <clip pos="6" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
     </rule>
 
 
