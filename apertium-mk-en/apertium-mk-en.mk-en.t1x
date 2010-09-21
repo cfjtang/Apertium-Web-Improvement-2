@@ -3224,6 +3224,48 @@
     </rule>
 
 
+    <rule comment="REGLA: не може да prn_clitic v_pres">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="može"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="prn_clitic"/>
+        <pattern-item n="v_pres"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+                <lit v="can"/>
+              </get-case-from>
+              <lit-tag v="vaux.pres"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="5" side="tl" part="lemh"/>
+              <clip pos="5" side="tl" part="a_verb"/>
+              <lit-tag v="inf"/>
+              <clip pos="5" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: не би требе да v_pres">
       <pattern>
         <pattern-item n="ne"/>
