@@ -3484,6 +3484,53 @@
 
 
 
+    <rule comment="REGLA: не v_cop_fin_pres v_lp_aor">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="v_cop_fin_pres"/>
+        <pattern-item n="v_lp_aor"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="1" side="sl" part="a_verb"/>
+          <lit-tag v="vblex"/>
+        </let>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+                <lit v="do"/>
+              </get-case-from>
+              <lit-tag v="vblex.past"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <get-case-from pos="2">
+                <clip pos="1" side="tl" part="lemh"/>
+              </get-case-from>
+              <clip pos="1" side="tl" part="a_adv"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <lit-tag v="inf"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+
     <rule comment="REGLA: требе да v_cop_fin_pres">
       <pattern>
         <pattern-item n="trebe"/>
