@@ -1,7 +1,7 @@
 TMPDIR=/tmp
 PAIR=mk-en
 #DIX=/home/fran/source/apertium/trunk/apertium-mk-bg/apertium-mk-bg.mk.dix
-DIX=/home/fran/source/apertium/incubator/apertium-mk-en/apertium-mk-en.mk.dix
+DIX=/home/fran/source/apertium/trunk/apertium-mk-en/apertium-mk-en.mk.dix
 
 lt-expand $DIX | grep -e ':<:' -e '\w:\w' | sed 's/:<:/%/g' | sed 's/:/%/g' | cut -f2 -d'%' |  sed 's/^/^/g' | sed 's/$/$ ^.<sent>$/g' | tee $TMPDIR/$PAIR.tmp_testvoc1.txt |
         apertium-pretransfer|
