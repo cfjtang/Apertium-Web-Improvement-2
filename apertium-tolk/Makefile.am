@@ -28,7 +28,7 @@ prefix.py: prefix.py.in Makefile
 	prefix.py.in > $@
 
 apertium-tolk.desktop.in: apertium-tolk.desktop.in.in
-	./intltool-merge -d po/ apertium-tolk.desktop.in.in apertium-tolk.desktop.in	
+	intltool-merge -d po/ apertium-tolk.desktop.in.in apertium-tolk.desktop.in	
 
 apertium-tolk.desktop: apertium-tolk.desktop.in
 	cat apertium-tolk.desktop.in \
