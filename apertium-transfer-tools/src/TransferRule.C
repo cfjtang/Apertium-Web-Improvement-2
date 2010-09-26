@@ -21,6 +21,7 @@
 #include "TransferRule.H"
 #include "Utils.H"
 #include <apertium/string_utils.h>
+#include <algorithm>
 
 set<pair<wstring, wstring> > TransferRule::categories;
 set<wstring> TransferRule::attributes;
