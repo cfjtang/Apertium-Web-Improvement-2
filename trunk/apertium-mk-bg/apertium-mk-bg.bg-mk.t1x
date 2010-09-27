@@ -13,6 +13,11 @@
       <cat-item tags="vbser.pii.*"/>
     </def-cat>
 
+   <def-cat n="copula_pres">
+      <cat-item tags="vbser.pres.*"/>
+    </def-cat>
+
+
     <def-cat n="copula_lp">
       <cat-item tags="vbser.lp.pii.*"/>
     </def-cat>
@@ -51,6 +56,20 @@
       <cat-item tags="vblex.imperf.iv.lp.aor.*.ind"/>
       <cat-item tags="vbhaver.lp.aor.*"/>
       <cat-item tags="vbmod.lp.aor.*"/>
+    </def-cat>
+
+    <def-cat n="lp_compound_tenses">
+	  <cat-item tags="vblex.perf.tv.lp.aor.*.ind"/>
+      <cat-item tags="vblex.imperf.tv.lp.aor.*.ind"/>
+      <cat-item tags="vblex.perf.iv.lp.aor.*.ind"/>
+      <cat-item tags="vblex.imperf.iv.lp.aor.*.ind"/>
+      <cat-item tags="vbhaver.lp.aor.*"/>
+      <cat-item tags="vbmod.lp.aor.*"/>
+      <cat-item tags="vblex.perf.tv.lp.pii.*"/>
+      <cat-item tags="vblex.imperf.tv.lp.pii.*"/>
+      <cat-item tags="vblex.perf.iv.lp.pii.*"/>
+      <cat-item tags="vblex.imperf.iv.lp.pii.*"/>
+      <cat-item tags="vbhaver.lp.pii.*"/> 
     </def-cat>
 
     <def-cat n="lp_aor_def">
@@ -112,6 +131,10 @@
  
     <def-cat n="prn_dem">
       <cat-item tags="prn.dem.*"/>
+    </def-cat>
+
+    <def-cat n="prn_pers_nom">
+      <cat-item tags="prn.pers.*.nom"/>
     </def-cat>
 
     <def-cat n="prn_art">
@@ -188,6 +211,13 @@
       <attr-item tags="vbser"/>
       <attr-item tags="vbmod"/>
     </def-attr>
+
+    <def-attr n="a_lp">
+      <attr-item tags="vblex.*.lp"/>
+      <attr-item tags="vbhaver.lp"/>
+      <attr-item tags="vbmod.lp"/>
+    </def-attr>
+
 
     <def-attr n="a_prn">
       <attr-item tags="prn.rel"/>
@@ -945,6 +975,37 @@
 
 	  </action>
 	</rule>
+	
+	
+
+<!--
+	Той е писал романи => Тој пишувал романи
+-->
+
+	<rule comment="RULE: Copula (present) + l-participle → l-participle: ( → )">  
+	   <pattern>
+	     <pattern-item n="copula_pres"/>
+	     <pattern-item n="lp_compound_tenses"/>
+	   </pattern>
+	   <action>
+
+
+	     <out>
+	       <lu>
+	         <clip pos="2" side="tl" part="lemh"/>
+	         <clip pos="2" side="tl" part="a_verb"/>
+	       	<clip pos="2" side="tl" part="aspect"/>
+	       	<clip pos="2" side="tl" part="transitivity"/>
+	       	<clip pos="2" side="tl" part="temps"/>
+            <clip pos="2" side="tl" part="gen"/>
+	         <clip pos="2" side="tl" part="nbr"/>
+	         <clip pos="2" side="tl" part="lemq"/>
+	       </lu>
+	     </out>
+	   </action>
+	 </rule>
+
+	
 	
 	
   </section-rules>
