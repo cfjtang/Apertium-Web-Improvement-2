@@ -7,6 +7,7 @@ LIST Prop = (np) ;
 LIST A = (adj) ;
 LIST CS = (cnjsub) ;
 LIST Adv = (adv) ;
+LIST Abbr = (abbr) ;
 LIST V = (vblex) (vbmod) (vbhaver);
 LIST PREP = (pr) ;
 LIST Interj = (ij) ;
@@ -48,6 +49,7 @@ LIST NUMBER = sg pl ;
 LIST GENDER = m f nt mfn ;
 LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
 LIST NAGDV = nom acc dat gen voc ;
+LIST LOWERCASE-WORD = ("[абвгдѓежзѕијклљмнњопрстќуфхцчџшЭѐѝю]+"ri);
 
 SET V-IND-FIN = Prs OR Aor OR Pii ;
 SET V-COP = Copula ;
@@ -126,6 +128,9 @@ SELECT:r20 A IF (0 A) (0 N) (1C N-OR-PROP) ;
 
 SELECT:r21 A IF (0 A) (0 V-IND-FIN) (1C N-OR-PROP) ;
 	## Со оглед на тоа во Западна Европа почнало сериозно да се размислува за воспоставување на поморски врски со Азија.
+
+SELECT:r22 Abbr IF (0 ("ОН")) ((-1 LOWERCASE-WORD) OR (1 LOWERCASE-WORD));
+	## ОН водат истрага за заменик-шефот на косовската мисија.
 
 ###############################################################################
 #  Syntactic labelling and disambiguation
