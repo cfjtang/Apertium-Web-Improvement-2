@@ -7,6 +7,7 @@ python example-service.py &
 import os.path as path
 import os
 import logging
+import getpass
 
 import service
 from command_line import call
@@ -85,11 +86,18 @@ def quit_handler(*args):
     service.quit()
 
 def setup_logging():
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)-8s %(message)s',
-                        datefmt='%a, %d %b %Y %H:%M:%S',
-                        filename='/tmp/mode.log',
-                        filemode='w')
+    # since the log file is owned by user who calls dbus-send, make it
+    # unique on username:
+    logfile='/tmp/mode-'+getpass.getuser()+'.log'
+    try:
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s %(levelname)-8s %(message)s',
+                            datefmt='%a, %d %b %Y %H:%M:%S',
+                            filename=logfile,
+                            filemode='w')
+    except IOError, e:
+        print "IOError: %s" % e
+        print "Continuing without logging!"
     
 if __name__ == "__main__":
     setup_logging()
