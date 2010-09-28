@@ -4,7 +4,7 @@
     Author     : vmsanchez
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="org.scalemt.router.logic.Util" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -105,11 +105,11 @@ You can also terminate this Agreement at any time by ceasing to use the API.</p>
                     <tr><td colspan="2"><input type="checkbox" name="accept"/> I accept the service terms and conditions</td></tr>
             
              <tr><td colspan="2"><script type="text/javascript"
-               src="http://api.recaptcha.net/challenge?k=6LeHXQsAAAAAAPIc3n1YkSeDb9f-NVAk3JrriCFn">
+               src="http://api.recaptcha.net/challenge?k=<%= Util.readConfigurationProperty("recaptcha_public") %>">
             </script>
 
             <noscript>
-               <iframe src="http://api.recaptcha.net/noscript?k=6LeHXQsAAAAAAPIc3n1YkSeDb9f-NVAk3JrriCFn"
+               <iframe src="http://api.recaptcha.net/noscript?k=<%= Util.readConfigurationProperty("recaptcha_public") %>"
                    height="300" width="500" frameborder="0"></iframe><br>
                <textarea name="recaptcha_challenge_field" rows="3" cols="40">
                </textarea>
