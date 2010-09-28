@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.tanesha.recaptcha.ReCaptcha;
 import net.tanesha.recaptcha.ReCaptchaFactory;
 import net.tanesha.recaptcha.ReCaptchaResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.scalemt.router.logic.Util;
 import org.scalemt.router.persistence.ExistingNameException;
 import org.scalemt.router.persistence.UserEntity;
@@ -38,6 +40,8 @@ import org.scalemt.router.persistence.UserEntity;
  * @author vmsanchez
  */
 public class RegisterUserServlet extends HttpServlet {
+
+    static Log logger = LogFactory.getLog(RegisterUserServlet.class);
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -92,7 +96,7 @@ public class RegisterUserServlet extends HttpServlet {
                         }
                         catch(Exception e)
                         {
-                            
+                            logger.error("Error sending email", e);
                         }
                     }
                 }
@@ -113,7 +117,10 @@ public class RegisterUserServlet extends HttpServlet {
                    if("incorrect-captcha-sol".equals(reCaptchaResponse.getErrorMessage()))
                        message="Captcha failed. Please type it again";
                    else
+                   {
                        message="Unexpected captcha error";
+                       logger.error("Unsexpected captcha error: '"+reCaptchaResponse.getErrorMessage()+"'");
+                   }
                }
                    
            }
