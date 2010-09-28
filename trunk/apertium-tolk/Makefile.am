@@ -32,6 +32,7 @@ apertium-tolk.desktop.in: apertium-tolk.desktop.in.in
 
 apertium-tolk.desktop: apertium-tolk.desktop.in
 	cat apertium-tolk.desktop.in \
+	| sed "s|PYTHONDIR|$(pythondir)|" \
 	| sed -e s/$$\(datadir\)/`echo $(datadir) | sed -e 's/\//\\\\\\//g'`/g \
 	> apertium-tolk.desktop
 
