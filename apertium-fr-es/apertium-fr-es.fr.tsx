@@ -972,7 +972,7 @@
       <label-item label="VMODALIMP"/>
       <label-item label="IMPMODPRNENC"/>
     </label-sequence>
-    
+
   <!--prova prohibició verb que no siga être o avoir + participi-->  
    <!-- <label-sequence>
       <label-item label="VLEXPFCI"/>
@@ -1706,11 +1706,17 @@
       <label-item label="ADV"/>
     </label-sequence>  -->
    
+    <label-sequence>
+      <label-item label="VLEXIMP"/>
+      <label-item label="CNJSUBS"/>
+    </label-sequence>
+
+
   </forbid>
 
-<!--
+
   <enforce-rules>
-    <enforce-after label="PRNPROREF">
+<!--    <enforce-after label="PRNPROREF">
       <label-set>
         <label-item label="VLEXPFCI"/>
         <label-item label="VLEXIPI"/>
@@ -1757,16 +1763,27 @@
         <label-item label="VMODALGER"/>
 	<label-item label="VMODALPPRES"/>
       </label-set>
-    </enforce-after>
+    </enforce-after>-->
    <enforce-after label="PRNTN">
       <label-set>
-        <label-item label="PRNPRO"/>
+        <label-item label="VLEXPFCI"/>
+        <label-item label="VLEXIPI"/>
+        <label-item label="VLEXSUBJ"/>
+        <label-item label="VSERPFCI"/>
+        <label-item label="VSERIPI"/>
+        <label-item label="VSERSUBJ"/>        
+        <label-item label="VHABERPFCI"/>
+        <label-item label="VHABERIPI"/>
+        <label-item label="VHABERSUBJ"/>        
+        <label-item label="VMODALPFCI"/>
+        <label-item label="VMODALIPI"/>
+        <label-item label="VMODALSUBJ"/>  
       </label-set>
    </enforce-after>
   </enforce-rules>-->
   
 
- <!-- <preferences>
+  <preferences>
    <prefer tags="vblex.pri.p3.sg"/>
    <prefer tags="vbser.pri.p3.sg"/>
    <prefer tags="vbhaver.pri.p3.sg"/>
@@ -1787,6 +1804,6 @@
    <prefer tags="vbser.pis.p3.sg"/>
    <prefer tags="vbhaver.pis.p3.sg"/>
    <prefer tags="vbmod.pis.p3.sg"/>
-  </preferences> -->
+  </preferences> 
   
 </tagger>

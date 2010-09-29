@@ -23,8 +23,8 @@
     </def-cat>-->
 
     <def-cat n="SV">
-				<cat-item tags="SV.*"/>
-</def-cat>
+	<cat-item tags="SV.*"/>
+    </def-cat>
 
  
     <def-cat n="vbcop">
@@ -352,6 +352,11 @@
 					</choose>
 		</when>
 	</choose>
+
+	<let>
+    	 <clip pos="2" part="pers"/>
+	 <clip pos="1" part="pers"/>
+	</let>
 </def-macro>
   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contï¿½o no format. Cal posar aquesta funciï¿½en les regles en quï¿½desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contï¿½format cal conservar-la, si no en contï¿½cal eliminar-la perquï¿½no apareguin dos espais seguits. -->
      	<choose>
@@ -875,7 +880,7 @@
 			</and>
 			</test>
 			<out>
-				<chunk><!--el pronom no l'envio, nomï¿½ el 2n chunk -->
+				<chunk><!--el pronom no l'envio, només el 2n chunk -->
 					<get-case-from pos="1">
 						<clip pos="2" part="lem"/>
 					</get-case-from>
@@ -884,7 +889,7 @@
 				</chunk>
 			</out>
 		</when>
-		<otherwise><!--Quan SN no ï¿½ pronom subjecte, per tant, quan ï¿½ qualsevol altre SN -->
+		<otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -945,7 +950,7 @@
 					</and>
 				</test>
 				<out>
-					<chunk><!--el pronom no l'envio, nomï¿½ el 2n chunk -->
+					<chunk><!--el pronom no l'envio, només el 2n chunk -->
 						<get-case-from pos="1">
 							<clip pos="2" part="lem"/>
 						</get-case-from>
@@ -958,7 +963,7 @@
 					<with-param pos="2"/>
 				</call-macro>
 			</when>
-			<otherwise><!--Quan SN no ï¿½ pronom subjecte, per tant, quan ï¿½ qualsevol altre SN -->
+			<otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
 				<out>
 					<chunk>
 						<clip pos="1" part="lem"/>
@@ -1488,6 +1493,10 @@
 	<call-macro n="assigna_gen_nbr">
 		<with-param pos="6"/>
 	</call-macro>
+	<call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	</call-macro>
 	<call-macro n="cv_prep">
 		<with-param pos="2"/>
 		<with-param pos="5"/>
@@ -1534,7 +1543,7 @@
 				<with-param pos="2"/>
 			</call-macro>
 		</when>
-		<otherwise><!--Quan SN no ï¿½ pronom subjecte, per tant, quan ï¿½ qualsevol altre SN -->
+		<otherwise><!--Quan SN no és pronom subjecte, per tant, quan és qualsevol altre SN -->
 			<out>
 				<chunk>
 					<clip pos="1" part="lem"/>
@@ -1556,7 +1565,8 @@
 			</out>
 		</otherwise>
 	</choose>
-	<choose>
+<!-- no fa falta: buscar contraexemples. 
+		<choose>
 		<when>
 			<test>
 				<or>
@@ -1588,7 +1598,7 @@
 				<with-param pos="3"/>
 			</call-macro>
 		</otherwise>
-	</choose>
+	</choose>-->
 	<out>
 		<b pos="4"/>
 		<chunk>
@@ -1615,6 +1625,7 @@
 		<pattern-item n="SN"/>
 	</pattern>
 	<action>
+
 		<let>
 			<clip pos="2" part="lem"/>
 			<lit v="solo"/>
@@ -1625,6 +1636,11 @@
 		<call-macro n="assigna_gen_nbr">
 			<with-param pos="5"/>
 		</call-macro>
+                
+	      <call-macro n="concord_sn">
+		<with-param pos="1"/>
+		<with-param pos="3"/>
+	      </call-macro>
 		<choose>
 			<when>
 				<test>

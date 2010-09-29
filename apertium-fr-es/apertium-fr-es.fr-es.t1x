@@ -6384,7 +6384,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="adv" case="caseFirstWord">
+<!--	  <chunk name="adv" case="caseFirstWord">
 	    <tags>
 	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
 	    </tags>
@@ -6410,6 +6410,36 @@
 	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
 	      <tag><var n="tipusverb"/></tag>
 	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_verb"/>
+	      <clip pos="2" side="tl" part="temps"/>
+	      <clip pos="2" side="tl" part="pers"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="5"/>
+	      <clip pos="2" side="tl" part="lemq"/> 
+	    </lu>
+	  </chunk>-->
+	  <chunk name="ya_no_verb">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+	      <tag><clip pos="2" side="tl" part="temps"/></tag>
+	      <tag><clip pos="2" side="tl" part="pers"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipusverb"/></tag>
+	    </tags>
+	    <lu>
+	      <get-case-from pos="1">
+		<lit v="ya"/>
+	      </get-case-from>
+	      <lit-tag v="adv"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <lit v="no"/>
+	      <lit-tag v="adv"/>
+	    </lu>
+	   <b pos="2"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="lemh"/> 
 	      <clip pos="2" side="tl" part="a_verb"/>
