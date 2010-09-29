@@ -17,6 +17,11 @@
       <cat-item tags="vbser.pres.*"/>
     </def-cat>
 
+   <def-cat n="part">
+      <cat-item tags="part"/>
+      <cat-item tags="part.*"/>
+    </def-cat>
+
 
     <def-cat n="copula_lp">
       <cat-item tags="vbser.lp.pii.*"/>
@@ -212,10 +217,20 @@
       <attr-item tags="vbmod"/>
     </def-attr>
 
+    <def-attr n="a_vbser">
+      <attr-item tags="vbser"/>
+    </def-attr>
+
+
     <def-attr n="a_lp">
       <attr-item tags="vblex.*.lp"/>
       <attr-item tags="vbhaver.lp"/>
       <attr-item tags="vbmod.lp"/>
+    </def-attr>
+
+    <def-attr n="a_part">
+      <attr-item tags="part"/>
+      <attr-item tags="part.exp"/>
     </def-attr>
 
 
@@ -1004,6 +1019,51 @@
 	     </out>
 	   </action>
 	 </rule>
+
+
+	<!--
+		Той е писал романи => Тој пишувал романи
+	-->
+
+		<rule comment="RULE: Particle + Copula (present) + l-participle → l-participle: ( → )">  
+		   <pattern>
+		     <pattern-item n="part"/>
+		     <pattern-item n="copula_pres"/>
+		     <pattern-item n="lp_compound_tenses"/>
+		   </pattern>
+		   <action>
+
+
+		     <out>
+			  <lu>
+	            <clip pos="1" side="tl" part="lemh"/>
+	            <clip pos="1" side="tl" part="a_part"/>
+	            <clip pos="1" side="tl" part="lemq"/>
+	          </lu>
+				<b pos="1"/>
+				<lu>
+	            <clip pos="2" side="tl" part="lemh"/>
+	            <clip pos="2" side="tl" part="a_vbser"/>
+		       	<clip pos="2" side="tl" part="temps"/>
+	            <clip pos="2" side="tl" part="gen"/>
+	            <clip pos="2" side="tl" part="pers"/>
+		         <clip pos="2" side="tl" part="nbr"/>
+	            <clip pos="2" side="tl" part="lemq"/>
+	          </lu>
+				<b pos="2"/>
+		       <lu>
+		         <clip pos="3" side="tl" part="lemh"/>
+		         <clip pos="3" side="tl" part="a_verb"/>
+		       	<clip pos="3" side="tl" part="aspect"/>
+		       	<clip pos="3" side="tl" part="transitivity"/>
+		       	<clip pos="3" side="tl" part="temps"/>
+	            <clip pos="3" side="tl" part="gen"/>
+		         <clip pos="3" side="tl" part="nbr"/>
+		         <clip pos="3" side="tl" part="lemq"/>
+		       </lu>
+		     </out>
+		   </action>
+		 </rule>
 
 	
 	
