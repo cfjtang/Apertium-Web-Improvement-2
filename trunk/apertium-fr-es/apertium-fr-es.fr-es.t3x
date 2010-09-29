@@ -6,6 +6,18 @@
       <cat-item name="pr"/>
     </def-cat>
 
+
+     <def-cat n="verb">
+      <cat-item name="verb"/>
+    </def-cat>
+
+     <def-cat n="pro_verb">
+      <cat-item name="pro_verb"/>
+    </def-cat>
+
+     <def-cat n="ya_no_verb">
+      <cat-item name="ya_no_verb"/>
+    </def-cat>
    
     <def-cat n="inf">
       <cat-item name="inf"/>
@@ -43,46 +55,47 @@
 
   <section-def-attrs>
 
-		<def-attr n="tprep">
-          <attr-item tags="a"/>
-          <attr-item tags="en"/>
+        <def-attr n="tprep">
+         <attr-item tags="a"/>
+         <attr-item tags="en"/>
          <attr-item tags="para"/>
-		</def-attr>
-<def-attr n="pers">
+	</def-attr>
+
+        <def-attr n="pers">
           <attr-item tags="p1"/>
           <attr-item tags="p2"/>
           <attr-item tags="p3"/>
           <attr-item tags="PD"/>
-</def-attr>
+        </def-attr>
 
-      <def-attr n="gen">
+        <def-attr n="gen">
           <attr-item tags="m"/>
           <attr-item tags="f"/>
           <attr-item tags="mf"/>
           <attr-item tags="GD"/>
           <attr-item tags="nt"/>
-      </def-attr>
+        </def-attr>
 
-   <def-attr n="nbr">
+        <def-attr n="nbr">
           <attr-item tags="sg"/>
           <attr-item tags="pl"/>
           <attr-item tags="sp"/>
           <attr-item tags="ND"/>
-      </def-attr>
+        </def-attr>
 			
-			  <def-attr n="determinant">
+	<def-attr n="determinant">
           <attr-item tags="treu_det"/>
-      </def-attr>
+        </def-attr>
 
-<def-attr n="a_SN">
+        <def-attr n="a_SN">
           <attr-item tags="DET"/>
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
 	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaci?que far?el postchunk detectant els PDET. -->
-</def-attr>
+        </def-attr>
 
 
-<def-attr n="a_verb">
+     <def-attr n="a_verb">
       <attr-item tags="vblex"/>	  
       <attr-item tags="vblex.pron"/>
       <attr-item tags="vbhaver"/>
@@ -181,7 +194,7 @@
 				<out>
 					<lu>
 						<get-case-from pos="1">
-						<lit v="sólo"/>
+						<lit v="solo"/>
 						</get-case-from>
 						<clip pos="1" part="a_adv"/>
 					</lu> 
@@ -439,5 +452,69 @@
 			</action>
 		</rule>
 	
+
+<rule comment="assigna persona del chunck al verb">
+      <pattern>
+	<pattern-item n="verb"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="1" part="pers"/>
+	  <clip pos="0" part="pers"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
+
+<rule comment="assigna persona del chunck al verb">
+      <pattern>
+	<pattern-item n="pro_verb"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="2" part="pers"/>
+	  <clip pos="0" part="pers"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+  	  <b pos="1"/>
+	  <lu>
+	    <clip pos="2" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
+
+<rule comment="assigna persona del chunck al verb">
+      <pattern>
+	<pattern-item n="ya_no_verb"/>
+      </pattern>
+      <action>
+	<let>
+	  <clip pos="3" part="pers"/>
+	  <clip pos="0" part="pers"/>
+	</let>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu>
+  	  <b pos="1"/>
+	  <lu>
+	    <clip pos="2" part="whole"/>
+	  </lu>
+	  <b pos="2"/>
+	  <lu>
+	    <clip pos="3" part="whole"/>
+	  </lu>
+	</out>
+      </action>
+    </rule>
+
 	</section-rules>
 </postchunk>
