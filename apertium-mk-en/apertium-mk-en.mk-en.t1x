@@ -3316,6 +3316,44 @@
     </rule>
 
 
+    <rule comment="REGLA: не v_cop_fin">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="v_cop_fin"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+                <clip pos="2" side="tl" part="lemh"/>
+              </get-case-from>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <get-case-from pos="2">
+                <clip pos="1" side="tl" part="lemh"/>
+              </get-case-from>
+              <clip pos="1" side="tl" part="a_adv"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: не може да prn_clitic v_pres">
       <pattern>
         <pattern-item n="ne"/>
