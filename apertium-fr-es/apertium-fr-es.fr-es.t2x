@@ -352,11 +352,6 @@
 					</choose>
 		</when>
 	</choose>
-
-	<let>
-    	 <clip pos="2" part="pers"/>
-	 <clip pos="1" part="pers"/>
-	</let>
 </def-macro>
   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc contï¿½o no format. Cal posar aquesta funciï¿½en les regles en quï¿½desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contï¿½format cal conservar-la, si no en contï¿½cal eliminar-la perquï¿½no apareguin dos espais seguits. -->
      	<choose>
@@ -869,16 +864,20 @@
 					<clip pos="1" part="lem"/>
 					<lit v="prnperssubj"/>
 				</equal>
-				<equal>
+			<!--	<equal>
 					<clip pos="2" part="pers"/>
 					<clip pos="1" part="pers"/>
-				</equal>
+				</equal>-->
 				<equal>
 					<clip pos="2" part="nbr"/>
 					<clip pos="1" part="nbr"/>
 				</equal>
 			</and>
 			</test>
+			<let>
+    	 		  <clip pos="2" part="pers"/>
+	 		  <clip pos="1" part="pers"/>
+			</let>
 			<out>
 				<chunk><!--el pronom no l'envio, només el 2n chunk -->
 					<get-case-from pos="1">
@@ -939,16 +938,20 @@
 							<clip pos="1" part="lem"/>
 							<lit v="prnperssubj"/>
 						</equal>
-						<equal>
+					<!--	<equal>
 							<clip pos="2" part="pers"/>
 							<clip pos="1" part="pers"/>
-						</equal>
+						</equal>-->
 						<equal>
 							<clip pos="2" part="nbr"/>
 							<clip pos="1" part="nbr"/>
 						</equal>
 					</and>
 				</test>
+			<let>
+    	 		  <clip pos="2" part="pers"/>
+	 		  <clip pos="1" part="pers"/>
+			</let>
 				<out>
 					<chunk><!--el pronom no l'envio, només el 2n chunk -->
 						<get-case-from pos="1">
@@ -1514,16 +1517,20 @@
 					<clip pos="1" part="lem"/>
 					<lit v="prnperssubj"/>
 				</equal>
-				<equal>
+				<!--<equal>
 					<clip pos="3" part="pers"/>
 					<clip pos="1" part="pers"/>
-				</equal>
+				</equal>-->
 				<equal>
 					<clip pos="3" part="nbr"/>
 					<clip pos="1" part="nbr"/>
 				</equal>
 			</and>
 			</test>
+			<let>
+    	 		  <clip pos="3" part="pers"/>
+	 		  <clip pos="1" part="pers"/>
+			</let>
 			<out>
 				<chunk>
 					<get-case-from pos="1">
@@ -1565,7 +1572,7 @@
 			</out>
 		</otherwise>
 	</choose>
-<!-- no fa falta: buscar contraexemples. 
+<!-- no fa falta, no?: buscar contraexemples. 
 		<choose>
 		<when>
 			<test>
@@ -1649,16 +1656,20 @@
 							<clip pos="1" part="lem"/>
 							<lit v="prnperssubj"/>
 						</equal>
-						<equal>
+						<!--<equal>
 							<clip pos="3" part="pers"/>
 							<clip pos="1" part="pers"/>
-						</equal>
+						</equal>-->
 						<equal>
 							<clip pos="3" part="nbr"/>
 							<clip pos="1" part="nbr"/>
 						</equal>
 					</and>
 				</test>
+			<let>
+    	 		  <clip pos="3" part="pers"/>
+	 		  <clip pos="1" part="pers"/>
+			</let>
 				<out>
 					<chunk>
 						<get-case-from pos="1">
@@ -2101,16 +2112,20 @@
 					<clip pos="1" part="lem"/>
 					<lit v="prnperssubj"/>
 				</equal>
-				<equal>
+				<!--<equal>
 					<clip pos="2" part="pers"/>
 					<clip pos="1" part="pers"/>
-				</equal>
+				</equal>-->
 				<equal>
 					<clip pos="2" part="nbr"/>
 					<clip pos="1" part="nbr"/>
 				</equal>
 				</and>
 			</test>
+			<let>
+    	 		  <clip pos="2" part="pers"/>
+	 		  <clip pos="1" part="pers"/>
+			</let>
 			<out>
 				<chunk>
 					<get-case-from pos="1">
