@@ -3,10 +3,12 @@ DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
 SETS
 
 LIST N = (n) ;
+LIST Num = (num) ;
 LIST Prop = (np) ;
 LIST A = (adj) ;
 LIST CS = (cnjsub) ;
 LIST Adv = (adv) ;
+LIST Abbr = (abbr) ;
 LIST V = (vblex) (vbmod) (vbhaver);
 LIST PREP = (pr) ;
 LIST Interj = (ij) ;
@@ -15,7 +17,6 @@ LIST Pcle = (part) ;
 LIST Copula = (vbser) ;
 LIST L-part = (lp) ;
 LIST P-part = (pp) ;
-LIST Abbr = (abbr) ;
 
 LIST Pers = (pers) ;
 LIST Dem = (dem) ;
@@ -130,10 +131,10 @@ SELECT:r21 A IF (0 A) (0 V-IND-FIN) (1C N-OR-PROP) ;
 	## Со оглед на тоа во Западна Европа почнало сериозно да се размислува за воспоставување на поморски врски со Азија.
 
 SELECT:r22 Abbr IF (0 ("ОН")) ((-1 LOWERCASE-WORD) OR (1 LOWERCASE-WORD));
-        ## ОН водат истрага за заменик-шефот на косовската мисија.
+	## ОН водат истрага за заменик-шефот на косовската мисија.
 
 SELECT:r23 N IF (0 A) (0 N) (-1 A) (1 PREP);
-        ## СоЕ повика на формирање на нов суд за човекови права за Косово
+	## СоЕ повика на формирање на нов суд за човекови права за Косово
 
 ###############################################################################
 #  Syntactic labelling and disambiguation
@@ -196,15 +197,18 @@ MAP:r103 (@→N) TARGET A + $$GENDER + Sg IF (1 N + $$GENDER + Sg) ;
 
 MAP:r104 (@→N) TARGET A + Pl IF (1 N + Pl) ;
 
+MAP:r105 (@→N) TARGET Num IF (1 N) ;
+	## Една третина од населението е помладо од 30 години.
+
 #
 # Subject predicates 
 #    - Adjectives in copula clauses (agree with subject in gender/number)
 #
 
-MAP:r105 (@←SPRED) TARGET A + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
+MAP:r106 (@←SPRED) TARGET A + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
 	## Јас сум стар.
 
-MAP:r106 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY OR PREP) ;
+MAP:r107 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY OR PREP) ;
 	## Јас сум македонец. 
 	## Чашата е на масата.
 
@@ -213,12 +217,12 @@ MAP:r106 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDAR
 #    - 
 #    - 
 
-MAP:r107 (@P←) TARGET N (-1 PREP); 
+MAP:r108 (@P←) TARGET N (-1 PREP); 
 	## Чашата е на масата.
 
 
 # Give up
 #
 
-MAP:r108 (@X) TARGET (prn dem) ;
-MAP:r108 (@X) TARGET (prn pers) ;
+MAP:r109 (@X) TARGET (prn dem) ;
+MAP:r110 (@X) TARGET (prn pers) ;
