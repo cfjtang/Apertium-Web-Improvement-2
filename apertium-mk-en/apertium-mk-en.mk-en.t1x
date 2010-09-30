@@ -176,6 +176,7 @@
       <attr-item tags="vaux"/>
     </def-attr>
     <def-attr n="a_adv">
+      <attr-item tags="preadv"/>
       <attr-item tags="cnjadv"/>
       <attr-item tags="adv"/>
       <attr-item tags="adv.itg"/>
@@ -283,6 +284,8 @@
     <def-var n="case"/>
     <def-var n="genere"/>
     <def-var n="defin"/>
+    <def-var n="adv_infix"/>
+    <def-var n="adv_postfix"/>
     <def-var n="adj_h"/> <!-- Head -->
     <def-var n="adj_g"/> <!-- Grade -->
     <def-var n="np_chunk_s"/><!-- Syntax label -->
@@ -3127,6 +3130,83 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: prn_clitic v_fin да v_cop_fin">
+      <pattern>
+        <pattern-item n="prn_clitic"/>
+        <pattern-item n="v_fin"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="v_cop_fin"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="4"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <and>
+                <equal>
+                  <clip pos="4" side="tl" part="nbr"/>
+                  <lit-tag v="sg"/>
+                </equal>
+                <or> 
+                  <equal>
+                    <clip pos="4" side="tl" part="pers"/>
+                    <lit-tag v="p2"/>
+                  </equal>
+                  <equal>
+                    <clip pos="4" side="tl" part="pers"/>
+                    <lit-tag v="p1"/>
+                  </equal>
+                </or>
+              </and>
+            </test>
+            <let>
+              <clip pos="4" side="tl" part="nbr"/>
+              <lit v=""/>
+            </let>
+            <let>
+              <clip pos="4" side="tl" part="pers"/>
+              <lit v=""/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <chunk name="v_to_be" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+                <clip pos="2" side="tl" part="lemh"/>
+              </get-case-from>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="4" side="tl" part="pers"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <lit-tag v="pr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+              <lit-tag v="inf"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: ќе prn_clitic prn_clitic v_pres">
       <pattern>
@@ -3988,6 +4068,38 @@
         <call-macro n="conv_verb_tense1">
           <with-param pos="3"/>
         </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="4" side="tl" part="a_adv"/>
+                <lit-tag v="adv"/>
+              </equal>
+            </test>
+            <let>
+              <var n="adv_infix"/>
+              <concat>
+                <lit v="^"/>
+                <clip pos="4" side="tl" part="lemh"/>
+                <clip pos="4" side="tl" part="a_adv"/>
+                <clip pos="4" side="tl" part="lemq"/>
+                <lit v="$ "/>
+              </concat>
+            </let>
+          </when>
+          <otherwise>
+            <let>
+              <var n="adv_postfix"/>
+              <concat>
+                <lit v="^"/>
+                <clip pos="4" side="tl" part="lemh"/>
+                <clip pos="4" side="tl" part="a_adv"/>
+                <clip pos="4" side="tl" part="lemq"/>
+                <lit v="$ "/>
+              </concat>
+            </let>
+          </otherwise>
+        </choose>
         <out>
           <chunk name="v" case="caseFirstWord">
             <tags>
@@ -4008,20 +4120,25 @@
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="2"/>
-            <lu>
-              <clip pos="4" side="tl" part="lemh"/>
-              <clip pos="4" side="tl" part="a_adv"/>
-              <clip pos="4" side="tl" part="lemq"/>
-            </lu>
-            <b pos="3"/>
+            <var n="adv_infix"/>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
               <lit-tag v="inf"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
+            <b pos="3"/>
+            <var n="adv_postfix"/>
           </chunk>
         </out>
+        <let>
+          <var n="adv_infix"/>
+          <lit v=""/>
+        </let>
+        <let>
+          <var n="adv_postfix"/>
+          <lit v=""/>
+        </let>
       </action>
     </rule>
 
