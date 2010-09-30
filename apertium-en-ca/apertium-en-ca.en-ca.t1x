@@ -3713,7 +3713,7 @@
       </choose>
     </def-macro>
 
-
+<!--
     <def-macro n="firstWord" npar="1">
       <choose>
 	<when>
@@ -3760,6 +3760,73 @@
 	<lit v="false"/>
       </let>
     </def-macro>
+-->
+
+
+    <def-macro n="firstWord" npar="1">
+      <choose>
+	<when>
+	  <test>
+	      <equal>
+		<clip pos="1" side="sl" part="a_np_acr"/>
+		<lit v=""/>
+	      </equal>
+	  </test>
+	  <choose>
+	    <when>
+	      <test>
+		<equal> 
+		  <var n="EOS"/>
+		  <lit v="true"/>
+		</equal> 
+	      </test>
+	      <modify-case>
+		<clip pos="1" side="tl" part="lem"/>
+		<lit v="aa"/>
+	      </modify-case>
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="Aa"/>
+	      </let>
+	    </when>
+	    <otherwise> 
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="aa"/>
+	      </let>
+	    </otherwise>
+	  </choose>
+	</when>
+	<otherwise>
+	  <choose>
+  	    <when>
+	      <test>
+		<equal> 
+		  <var n="EOS"/>
+		  <lit v="true"/>
+		</equal> 
+	      </test>
+	      <let>
+		<var n="caseFirstWord"/>
+		<lit v="Aa"/>
+	      </let>
+ 	     </when>
+	  <otherwise>
+	  <let>
+	    <var n="caseFirstWord"/>
+	    <lit v="aa"/>
+	  </let>
+</otherwise>
+</choose>
+
+	</otherwise>
+      </choose>
+      <let>
+	<var n="EOS"/>
+	<lit v="false"/>
+      </let>
+    </def-macro>
+
 
 
 
