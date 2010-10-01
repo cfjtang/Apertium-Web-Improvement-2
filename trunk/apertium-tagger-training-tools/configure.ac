@@ -3,8 +3,8 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_lttoolbox_version], [3.1])
-m4_define([required_apertium_version], [3.1])
+m4_define([required_lttoolbox_version], [3.2])
+m4_define([required_apertium_version], [3.2])
 m4_define([required_libxml_version], [2.6.17])
 
 AC_INIT([apertium-tagger-training-tools], [1.1.1], [fsanchez@dlsi.ua.es])
@@ -37,8 +37,8 @@ ARCH=$(/bin/uname -m)
 if test x$ARCH = xppc
 then
   AC_MSG_RESULT([PowerPC])
-  CFLAGS="$CFLAGS -Wall -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
-  CXXFLAGS="$CXXFLAGS -Wall -ansi -mpowerpc -maltivec -fno-pic -fomit-frame-pointer"
+  CFLAGS="$CFLAGS -Wall -ansi -fomit-frame-pointer"
+  CXXFLAGS="$CXXFLAGS -Wall -ansi -fomit-frame-pointer"
 else
   if test x$ARCH = xi686
   then
@@ -125,10 +125,10 @@ PKG_CHECK_MODULES(LIBXML2, [dnl
   libxml-2.0 >= required_libxml_version])
 
 PKG_CHECK_MODULES(LTTOOLBOX, [dnl
-  lttoolbox-3.1 >= required_lttoolbox_version])
+  lttoolbox-3.2 >= required_lttoolbox_version])
   
 PKG_CHECK_MODULES(APERTIUM, [dnl
-  apertium-3.1 >= required_apertium_version])
+  apertium-3.2 >= required_apertium_version])
 
 #Check for libraries.
 AC_CHECK_LIB(xml2, xmlReaderForFile)
