@@ -65,7 +65,11 @@
 	   <cat-item lemma="има" tags="vbhaver.aor.*.pl"/>
 	</def-cat>
 
-
+	<def-cat n="part_da">
+	   <cat-item lemma="да" tags="part"/>
+	</def-cat>
+	
+	
 
 	<def-cat n="vbhaver_nema_with_gender">
 	   <cat-item lemma="нема" tags="vbhaver.lp.*"/>
@@ -287,6 +291,9 @@
       <attr-item tags="adv.itg"/>
     </def-attr>
 
+    <def-attr n="a_part">
+      <attr-item tags="part"/>
+    </def-attr>
 
    <def-attr n="a_vaux">
       <attr-item tags="vaux"/>
@@ -438,6 +445,96 @@
 		      </action>
 		    </rule>
   
+
+		    <rule comment="RULE: da + Clitic pronoun + Finite verb  → da + Clitic pronoun + Finite verb : ( → )">
+		      <pattern>
+		        <pattern-item n="part_da"/>
+		        <pattern-item n="pronom_clitic"/>
+		        <pattern-item n="vfin"/>
+		      </pattern>
+		      <action>
+		        <out>
+		          <lu>
+		            <clip pos="1" side="tl" part="lemh"/>
+		            <clip pos="1" side="tl" part="a_part"/>
+		            <clip pos="1" side="tl" part="lemq"/>
+		          </lu>			
+                  <b pos="1"/>
+                  <lu>
+		              <clip pos="2" side="tl" part="lemh"/>
+		            <clip pos="2" side="tl" part="a_prn"/>
+		            <clip pos="2" side="tl" part="pers"/>
+		            <clip pos="2" side="tl" part="gen"/>
+		            <clip pos="2" side="tl" part="nbr"/>
+		            <clip pos="2" side="tl" part="cas"/>
+		            <clip pos="2" side="tl" part="lemq"/>
+                  </lu>			
+                  <b pos="2"/>
+		          <lu>
+   	                <clip pos="3" side="tl" part="lemh"/>
+		            <clip pos="3" side="tl" part="a_verb"/>
+		            <clip pos="3" side="tl" part="aspect"/>
+		            <clip pos="3" side="tl" part="transitivity"/>
+		            <clip pos="3" side="tl" part="temps"/>
+		            <clip pos="3" side="tl" part="pers"/>
+		            <clip pos="3" side="tl" part="gen"/>
+		            <clip pos="3" side="tl" part="nbr"/>
+		            <clip pos="3" side="tl" part="defnes"/>
+		            <clip pos="3" side="tl" part="lemq"/>
+		          </lu>
+ 
+		        </out>
+		      </action>
+		    </rule>
+
+		    <rule comment="RULE: ke + Clitic pronoun + Finite verb  → shte + Clitic pronoun + Finite verb : ( → )">
+		      <pattern>
+		        <pattern-item n="vaux_ke"/>
+		        <pattern-item n="pronom_clitic"/>
+		        <pattern-item n="vfin"/>
+		      </pattern>
+		      <action>
+		        <out>
+				  <lu>
+			        <clip pos="1" side="tl" part="lemh"/>
+			        <clip pos="1" side="tl" part="a_vaux"/>
+				  	<clip pos="1" side="tl" part="temps"/>
+			        <clip pos="1" side="tl" part="gen"/>
+			        <clip pos="1" side="tl" part="pers"/>
+				    <clip pos="1" side="tl" part="nbr"/>
+			        <clip pos="1" side="tl" part="lemq"/>
+			      </lu>
+                  <b pos="1"/>
+                  <lu>
+		            <clip pos="2" side="tl" part="lemh"/>
+		            <clip pos="2" side="tl" part="a_prn"/>
+		            <clip pos="2" side="tl" part="pers"/>
+		            <clip pos="2" side="tl" part="gen"/>
+		            <clip pos="2" side="tl" part="nbr"/>
+		            <clip pos="2" side="tl" part="cas"/>
+		            <clip pos="2" side="tl" part="lemq"/>
+                  </lu>			
+                  <b pos="2"/>
+		          <lu>
+   	                <clip pos="3" side="tl" part="lemh"/>
+		            <clip pos="3" side="tl" part="a_verb"/>
+		            <clip pos="3" side="tl" part="aspect"/>
+		            <clip pos="3" side="tl" part="transitivity"/>
+		            <clip pos="3" side="tl" part="temps"/>
+		            <clip pos="3" side="tl" part="pers"/>
+		            <clip pos="3" side="tl" part="gen"/>
+		            <clip pos="3" side="tl" part="nbr"/>
+		            <clip pos="3" side="tl" part="defnes"/>
+		            <clip pos="3" side="tl" part="lemq"/>
+		          </lu>
+ 
+		        </out>
+		      </action>
+		    </rule>
+
+
+
+
     <rule comment="RULE: Noun → Noun : (вода → вода)">
       <pattern>
         <pattern-item n="noun"/>
