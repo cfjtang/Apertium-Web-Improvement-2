@@ -22,10 +22,13 @@
       <cat-item tags="part.*"/>
     </def-cat>
 
-	<def-cat n="part_shte">
-	   <cat-item lemma="ще" tags="part.exp"/>
+	<def-cat n="vaux_shte">
+	   <cat-item lemma="ще" tags="vaux.*"/>
 	</def-cat>
 
+	<def-cat n="part_da">
+	   <cat-item lemma="да" tags="part"/>
+	</def-cat>
 
     <def-cat n="copula_lp">
       <cat-item tags="vbser.lp.pii.*"/>
@@ -111,6 +114,13 @@
       <cat-item tags="vblex.imperf.tv.aor.*"/>
       <cat-item tags="vblex.perf.iv.aor.*"/>
       <cat-item tags="vblex.imperf.iv.aor.*"/>
+    </def-cat>
+
+    <def-cat n="vfin_pres">
+	  <cat-item tags="vblex.perf.tv.pres.*"/>
+      <cat-item tags="vblex.imperf.tv.pres.*"/>
+      <cat-item tags="vblex.perf.iv.pres.*"/>
+      <cat-item tags="vblex.imperf.iv.pres.*"/>
     </def-cat>
 
     <def-cat n="pprs">
@@ -223,6 +233,10 @@
 
     <def-attr n="a_vbser">
       <attr-item tags="vbser"/>
+    </def-attr>
+
+   <def-attr n="a_vaux">
+      <attr-item tags="vaux"/>
     </def-attr>
 
 
@@ -1071,6 +1085,83 @@
 
 	
 	
+		<rule comment="RULE: Щяхме да сме пристигнали -> Ке сме пристигнале.">  
+		   <pattern>
+		     <pattern-item n="vaux_shte"/>
+		     <pattern-item n="part_da"/>
+		     <pattern-item n="copula_pres"/>
+		     <pattern-item n="lp_compound_tenses"/>
+		   </pattern>
+		   <action>
+
+		     <out>
+			    <lu>
+		            <clip pos="1" side="tl" part="lemh"/>
+		            <clip pos="1" side="tl" part="a_vaux"/>
+			       	<clip pos="1" side="tl" part="temps"/>
+		            <clip pos="1" side="tl" part="gen"/>
+		            <clip pos="1" side="tl" part="pers"/>
+			        <clip pos="1" side="tl" part="nbr"/>
+		            <clip pos="1" side="tl" part="lemq"/>
+		          </lu>
+			<b pos="1"/>
+        		  <lu>
+			        <clip pos="3" side="tl" part="lemh"/>
+			        <clip pos="3" side="tl" part="a_vbser"/>
+				   	<clip pos="3" side="tl" part="temps"/>
+			        <clip pos="3" side="tl" part="gen"/>
+			        <clip pos="3" side="tl" part="pers"/>
+				    <clip pos="3" side="tl" part="nbr"/>
+			        <clip pos="3" side="tl" part="lemq"/>
+			      </lu>
+			<b pos="2"/>	
+		          <lu>
+		            <clip pos="4" side="tl" part="lemh"/>
+		         	<clip pos="4" side="tl" part="a_verb"/>
+		       		<clip pos="4" side="tl" part="aspect"/>
+		       		<clip pos="4" side="tl" part="transitivity"/>
+		       		<clip pos="4" side="tl" part="temps"/>
+	            	<clip pos="4" side="tl" part="gen"/>
+		         	<clip pos="4" side="tl" part="nbr"/>
+		         	<clip pos="4" side="tl" part="lemq"/>
+		       	  </lu>
+		     </out>
+		   </action>
+		 </rule>
+	
+	
+		<rule comment="RULE: Щях да пристигна -> Ке пристигнев.">  
+		   <pattern>
+		     <pattern-item n="vaux_shte"/>
+		     <pattern-item n="part_da"/>
+		     <pattern-item n="vfin_pres"/>
+		   </pattern>
+		   <action>
+
+		     <out>
+			    <lu>
+		            <clip pos="1" side="tl" part="lemh"/>
+		            <clip pos="1" side="tl" part="a_vaux"/>
+			       	<clip pos="1" side="tl" part="temps"/>
+		            <clip pos="1" side="tl" part="gen"/>
+		            <clip pos="1" side="tl" part="pers"/>
+			        <clip pos="1" side="tl" part="nbr"/>
+		            <clip pos="1" side="tl" part="lemq"/>
+		          </lu>
+			<b pos="1"/>
+		          <lu>
+		            <clip pos="3" side="tl" part="lemh"/>
+		         	<clip pos="3" side="tl" part="a_verb"/>
+		       		<clip pos="3" side="tl" part="aspect"/>
+		       		<clip pos="3" side="tl" part="transitivity"/>
+		       		<clip pos="1" side="tl" part="temps"/>
+		            <clip pos="1" side="tl" part="pers"/>
+		         	<clip pos="1" side="tl" part="nbr"/>
+		         	<clip pos="3" side="tl" part="lemq"/>
+		       	  </lu>
+		     </out>
+		   </action>
+		 </rule>
 	
   </section-rules>
 </transfer>
