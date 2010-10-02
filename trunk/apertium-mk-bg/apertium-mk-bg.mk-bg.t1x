@@ -53,11 +53,36 @@
 	   <cat-item lemma="има" tags="vbhaver.lp.*"/>
 	</def-cat>
 
-	<def-cat n="vbhaver_ima_no_gender">
-	   <cat-item lemma="има" tags="vbhaver.pres.*"/>
-	   <cat-item lemma="има" tags="vbhaver.pii.*"/>
-	   <cat-item lemma="има" tags="vbhaver.aor.*"/>
+	<def-cat n="vbhaver_ima_no_gender_sg">
+	   <cat-item lemma="има" tags="vbhaver.pres.*.sg"/>
+	   <cat-item lemma="има" tags="vbhaver.pii.*.sg"/>
+	   <cat-item lemma="има" tags="vbhaver.aor.*.sg"/>
 	</def-cat>
+
+	<def-cat n="vbhaver_ima_no_gender_pl">
+	   <cat-item lemma="има" tags="vbhaver.pres.*.pl"/>
+	   <cat-item lemma="има" tags="vbhaver.pii.*.pl"/>
+	   <cat-item lemma="има" tags="vbhaver.aor.*.pl"/>
+	</def-cat>
+
+
+
+	<def-cat n="vbhaver_nema_with_gender">
+	   <cat-item lemma="нема" tags="vbhaver.lp.*"/>
+	</def-cat>
+
+	<def-cat n="vbhaver_nema_no_gender_sg">
+	   <cat-item lemma="нема" tags="vbhaver.pres.*.sg"/>
+	   <cat-item lemma="нема" tags="vbhaver.pii.*.sg"/>
+	   <cat-item lemma="нема" tags="vbhaver.aor.*.sg"/>
+	</def-cat>
+
+	<def-cat n="vbhaver_nema_no_gender_pl">
+	   <cat-item lemma="нема" tags="vbhaver.pres.*.pl"/>
+	   <cat-item lemma="нема" tags="vbhaver.pii.*.pl"/>
+	   <cat-item lemma="нема" tags="vbhaver.aor.*.pl"/>
+	</def-cat>
+
 
 
     <def-cat n="prn_pers_nom">
@@ -2045,7 +2070,11 @@ output: def
 
 
 
-	<rule comment="RULE: Имал пишувано. -> Бил пишел. ">  
+<!--
+	ИМАМ ПИШУВАНО   ПЕРФЕКТ С ИМАМ
+-->
+
+	<rule comment="RULE: Имал пишувано. -> Бил писал. ">  
 	   <pattern>
 	     <pattern-item n="vbhaver_ima_with_gender"/>
 	     <pattern-item n="pp_nt"/>
@@ -2066,9 +2095,10 @@ output: def
 	         	<clip pos="2" side="tl" part="a_verb"/>
 	       		<clip pos="2" side="tl" part="aspect"/>
 	       		<clip pos="2" side="tl" part="transitivity"/>
-				<lit-tag v="lp.pii"/>
+				<lit-tag v="lp.aor"/>
 	         	<clip pos="1" side="tl" part="gen"/>
 	         	<clip pos="1" side="tl" part="nbr"/>
+				<lit-tag v="ind"/>
 	         	<clip pos="2" side="tl" part="lemq"/>
 	       	  </lu>
 	     </out>
@@ -2076,9 +2106,9 @@ output: def
 	 </rule>
 
 
-	<rule comment="RULE: Имам/имах пишувано. -> съм/бях пишел. ">  
+	<rule comment="RULE: Имам/имах пишувано. -> съм/бях писал. ">  
 	   <pattern>
-	     <pattern-item n="vbhaver_ima_no_gender"/>
+	     <pattern-item n="vbhaver_ima_no_gender_sg"/>
 	     <pattern-item n="pp_nt"/>
 	   </pattern>
 	   <action>
@@ -2096,14 +2126,155 @@ output: def
 	         	<clip pos="2" side="tl" part="a_verb"/>
 	       		<clip pos="2" side="tl" part="aspect"/>
 	       		<clip pos="2" side="tl" part="transitivity"/>
-				<lit-tag v="lp.pii"/>
-				<lit-tag v="m"/>
+				<lit-tag v="lp.aor"/>
+				<lit-tag v="m"/> <!--		how about this??		-->
 	         	<clip pos="1" side="tl" part="nbr"/>
+				<lit-tag v="ind"/>
 	         	<clip pos="2" side="tl" part="lemq"/>
 	       	  </lu>
 	     </out>
 	   </action>
 	 </rule>
+
+	<rule comment="RULE: Имамe/имахме пишувано. -> сме/бяхме писали. ">  
+	   <pattern>
+	     <pattern-item n="vbhaver_ima_no_gender_pl"/>
+	     <pattern-item n="pp_nt"/>
+	   </pattern>
+	   <action>
+
+	     <out>
+		    <lu>
+				<lit v="е"/> <lit-tag v="vbser"/>
+		       	<clip pos="1" side="tl" part="temps"/>
+	            <clip pos="1" side="tl" part="pers"/>
+		        <clip pos="1" side="tl" part="nbr"/>
+	          </lu>
+		<b pos="1"/>
+	          <lu>
+	            <clip pos="2" side="tl" part="lemh"/>
+	         	<clip pos="2" side="tl" part="a_verb"/>
+	       		<clip pos="2" side="tl" part="aspect"/>
+	       		<clip pos="2" side="tl" part="transitivity"/>
+				<lit-tag v="lp.aor"/>
+				<lit-tag v="mfn"/>
+	         	<clip pos="1" side="tl" part="nbr"/>
+				<lit-tag v="ind"/>
+	         	<clip pos="2" side="tl" part="lemq"/>
+	       	  </lu>
+	     </out>
+	   </action>
+	 </rule>
+
+
+
+	<rule comment="RULE: Немал пишувано. -> не бил писал. ">  
+	   <pattern>
+	     <pattern-item n="vbhaver_nema_with_gender"/>
+	     <pattern-item n="pp_nt"/>
+	   </pattern>
+	   <action>
+
+	     <out>
+			<lu>
+				<lit v="не"/> <lit-tag v="adv"/>
+         	</lu>
+		<b pos="1"/>
+		    <lu>
+				<lit v="е"/> <lit-tag v="vbser"/>
+		       	<clip pos="1" side="tl" part="temps"/>
+	            <clip pos="1" side="tl" part="pers"/>
+	            <clip pos="1" side="tl" part="gen"/>
+		        <clip pos="1" side="tl" part="nbr"/>
+	          </lu>
+		<b pos="1"/>
+	          <lu>
+	            <clip pos="2" side="tl" part="lemh"/>
+	         	<clip pos="2" side="tl" part="a_verb"/>
+	       		<clip pos="2" side="tl" part="aspect"/>
+	       		<clip pos="2" side="tl" part="transitivity"/>
+				<lit-tag v="lp.aor"/>
+	         	<clip pos="1" side="tl" part="gen"/>
+	         	<clip pos="1" side="tl" part="nbr"/>
+				<lit-tag v="ind"/>
+	         	<clip pos="2" side="tl" part="lemq"/>
+	       	  </lu>
+	     </out>
+	   </action>
+	 </rule>
+
+
+	<rule comment="RULE: немам/немах пишувано. ->не съм/бях писал. ">  
+	   <pattern>
+	     <pattern-item n="vbhaver_nema_no_gender_sg"/>
+	     <pattern-item n="pp_nt"/>
+	   </pattern>
+	   <action>
+
+	     <out>
+			<lu>
+				<lit v="не"/> <lit-tag v="adv"/>
+         	</lu>
+		<b pos="1"/>
+		    <lu>
+				<lit v="е"/> <lit-tag v="vbser"/>
+		       	<clip pos="1" side="tl" part="temps"/>
+	            <clip pos="1" side="tl" part="pers"/>
+		        <clip pos="1" side="tl" part="nbr"/>
+	          </lu>
+		<b pos="1"/>
+	          <lu>
+	            <clip pos="2" side="tl" part="lemh"/>
+	         	<clip pos="2" side="tl" part="a_verb"/>
+	       		<clip pos="2" side="tl" part="aspect"/>
+	       		<clip pos="2" side="tl" part="transitivity"/>
+				<lit-tag v="lp.aor"/>
+				<lit-tag v="m"/>
+	         	<clip pos="1" side="tl" part="nbr"/>
+				<lit-tag v="ind"/>
+	         	<clip pos="2" side="tl" part="lemq"/>
+	       	  </lu>
+	     </out>
+	   </action>
+	 </rule>
+
+
+	<rule comment="RULE: немамe/немахме пишувано. -> не сме/бяхме писали. ">  
+	   <pattern>
+	     <pattern-item n="vbhaver_nema_no_gender_pl"/>
+	     <pattern-item n="pp_nt"/>
+	   </pattern>
+	   <action>
+
+	     <out>
+			<lu>
+				<lit v="не"/> <lit-tag v="adv"/>
+	       	</lu>
+		<b pos="1"/>
+		    <lu>
+				<lit v="е"/> <lit-tag v="vbser"/>
+		       	<clip pos="1" side="tl" part="temps"/>
+	            <clip pos="1" side="tl" part="pers"/>
+		        <clip pos="1" side="tl" part="nbr"/>
+	          </lu>
+		<b pos="1"/>
+	          <lu>
+	            <clip pos="2" side="tl" part="lemh"/>
+	         	<clip pos="2" side="tl" part="a_verb"/>
+	       		<clip pos="2" side="tl" part="aspect"/>
+	       		<clip pos="2" side="tl" part="transitivity"/>
+				<lit-tag v="lp.aor"/>
+				<lit-tag v="mfn"/>
+	         	<clip pos="1" side="tl" part="nbr"/>
+				<lit-tag v="ind"/>
+	         	<clip pos="2" side="tl" part="lemq"/>
+	       	  </lu>
+	     </out>
+	   </action>
+	 </rule>
+	
+
+
 
   </section-rules>
 </transfer>
