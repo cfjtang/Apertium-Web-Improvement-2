@@ -45,8 +45,9 @@
       <cat-item tags="vbser.pres.*"/>
     </def-cat>
 
-	<def-cat n="vaux_ke">
-	   <cat-item lemma="ќе" tags="vaux.*"/>
+	<def-cat n="part_ke">
+	   <cat-item lemma="ќе" tags="part"/>
+	   <cat-item lemma="ќе" tags="part.*"/>
 	</def-cat>
 
 	<def-cat n="vbhaver_ima_with_gender">
@@ -295,11 +296,6 @@
       <attr-item tags="part"/>
     </def-attr>
 
-   <def-attr n="a_vaux">
-      <attr-item tags="vaux"/>
-    </def-attr>
-
-
     <def-attr n="a_nom">
       <attr-item tags="n"/>
     </def-attr>
@@ -489,7 +485,7 @@
 
 		    <rule comment="RULE: ke + Clitic pronoun + Finite verb  → shte + Clitic pronoun + Finite verb : ( → )">
 		      <pattern>
-		        <pattern-item n="vaux_ke"/>
+		        <pattern-item n="part_ke"/>
 		        <pattern-item n="pronom_clitic"/>
 		        <pattern-item n="vfin"/>
 		      </pattern>
@@ -497,11 +493,11 @@
 		        <out>
 				  <lu>
 			        <clip pos="1" side="tl" part="lemh"/>
-			        <clip pos="1" side="tl" part="a_vaux"/>
-				  	<clip pos="1" side="tl" part="temps"/>
-			        <clip pos="1" side="tl" part="gen"/>
-			        <clip pos="1" side="tl" part="pers"/>
-				    <clip pos="1" side="tl" part="nbr"/>
+			        <clip pos="1" side="tl" part="a_verb"/>
+				  	<clip pos="3" side="tl" part="temps"/>
+			        <clip pos="3" side="tl" part="gen"/>
+			        <clip pos="3" side="tl" part="pers"/>
+				    <clip pos="3" side="tl" part="nbr"/>
 			        <clip pos="1" side="tl" part="lemq"/>
 			      </lu>
                   <b pos="1"/>
@@ -2131,7 +2127,7 @@ output: def
 
 	<rule comment="RULE: Ке пристигнев. -> Щях да пристигна. ">  
 	   <pattern>
-	     <pattern-item n="vaux_ke"/>
+	     <pattern-item n="part_ke"/>
 	     <pattern-item n="vfin_pii"/>
 	   </pattern>
 	   <action>
@@ -2139,7 +2135,7 @@ output: def
 	     <out>
 		    <lu>
 	            <clip pos="1" side="tl" part="lemh"/>
-	            <clip pos="1" side="tl" part="a_vaux"/>
+	            <clip pos="1" side="tl" part="a_verb"/>
 		       	<clip pos="2" side="tl" part="temps"/>
 	            <clip pos="2" side="tl" part="gen"/>
 	            <clip pos="2" side="tl" part="pers"/>

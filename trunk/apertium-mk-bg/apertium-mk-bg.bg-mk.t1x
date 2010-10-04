@@ -1084,6 +1084,47 @@
 
 	
 	
+		<rule comment="RULE: Ще съм платял -> Ќе сум плател">  
+		   <pattern>
+		     <pattern-item n="vaux_shte"/>
+		     <pattern-item n="copula_pres"/>
+		     <pattern-item n="lp_compound_tenses"/>
+		   </pattern>
+		   <action>
+
+		     <out>
+			    <lu>
+                            <get-case-from pos="1">
+                              <lit v="ќе"/> 
+                            </get-case-from>
+                            <lit-tag v="part"/>
+		          </lu>
+			<b pos="1"/>
+        		  <lu>
+			        <clip pos="2" side="tl" part="lemh"/>
+			        <clip pos="2" side="tl" part="a_vbser"/>
+				   	<clip pos="2" side="tl" part="temps"/>
+			        <clip pos="2" side="tl" part="gen"/>
+			        <clip pos="2" side="tl" part="pers"/>
+				    <clip pos="2" side="tl" part="nbr"/>
+			        <clip pos="2" side="tl" part="lemq"/>
+			      </lu>
+			<b pos="2"/>	
+		          <lu>
+		            <clip pos="3" side="tl" part="lemh"/>
+		         	<clip pos="3" side="tl" part="a_verb"/>
+		       		<clip pos="3" side="tl" part="aspect"/>
+		       		<clip pos="3" side="tl" part="transitivity"/>
+		       		<clip pos="3" side="tl" part="temps"/>
+	            	<clip pos="3" side="tl" part="gen"/>
+		         	<clip pos="3" side="tl" part="nbr"/>
+		         	<clip pos="3" side="tl" part="lemq"/>
+		       	  </lu>
+		     </out>
+		   </action>
+		 </rule>
+
+	
 		<rule comment="RULE: Щяхме да сме пристигнали -> Ке сме пристигнале.">  
 		   <pattern>
 		     <pattern-item n="vaux_shte"/>
@@ -1095,13 +1136,10 @@
 
 		     <out>
 			    <lu>
-		            <clip pos="1" side="tl" part="lemh"/>
-		            <clip pos="1" side="tl" part="a_vaux"/>
-			       	<clip pos="1" side="tl" part="temps"/>
-		            <clip pos="1" side="tl" part="gen"/>
-		            <clip pos="1" side="tl" part="pers"/>
-			        <clip pos="1" side="tl" part="nbr"/>
-		            <clip pos="1" side="tl" part="lemq"/>
+                            <get-case-from pos="1">
+                              <lit v="ќе"/> 
+                            </get-case-from>
+                            <lit-tag v="part"/>
 		          </lu>
 			<b pos="1"/>
         		  <lu>
@@ -1139,13 +1177,10 @@
 
 		     <out>
 			    <lu>
-		            <clip pos="1" side="tl" part="lemh"/>
-		            <clip pos="1" side="tl" part="a_vaux"/>
-			       	<clip pos="1" side="tl" part="temps"/>
-		            <clip pos="1" side="tl" part="gen"/>
-		            <clip pos="1" side="tl" part="pers"/>
-			        <clip pos="1" side="tl" part="nbr"/>
-		            <clip pos="1" side="tl" part="lemq"/>
+                            <get-case-from pos="1">
+                              <lit v="ќе"/> 
+                            </get-case-from>
+                            <lit-tag v="part"/>
 		          </lu>
 			<b pos="1"/>
 		          <lu>
