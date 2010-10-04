@@ -22,7 +22,7 @@ LIST Pers = (pers) ;
 LIST Dem = (dem) ;
 
 LIST TV = (tv) ;
-LIST IV = (tv) ;
+LIST IV = (iv) ;
 
 LIST Imprt = (imp) ;
 LIST Pii = (pii) ;
@@ -68,24 +68,31 @@ SECTION
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
 	## Даниел, студент од Бања Лука, вели дека нема намера да ја напушти БиХ.
+		##	remove interjection if there is a verb to the right
+		##or a pronoun to the right and after that a verb
 
 REMOVE:r2 Pron IF (0 ("не")) (-1 REL-OR-ITG) ;
 
 REMOVE:r3 N IF (0 N) (0 V-IND-FIN) (-1C ("не") + Adv) ;
-
-REMOVE:r4 Imprt IF (-1* REL-OR-ITG BARRIER S-BOUNDARY) ;
+	##remove a noun if the current word could be a noun or a finite verb and the previous word is only 'ne' as an adverb
 
 REMOVE:r5 TV IF (1C PREP) ;
+##??
 
 SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUNDARY) ;
 
 SELECT:r7 $$NUMBER IF (0 A) (1 N + $$NUMBER) ;
+##??
 
 SELECT:r8 V-IND-FIN (0 V-IND-FIN) (0 Pron) (NOT -1* V-IND-FIN BARRIER S-BOUNDARY) (NOT 1* V-IND-FIN BARRIER S-BOUNDARY) ;
 	## Ти си тука.
 
 REMOVE:r9 Pron IF (0 Pron) (0 A + $$NUMBER) (1C N + $$NUMBER) ;
 	## На сите места добивав ист одговор Не.
+
+
+
+REMOVE:r4 Imprt IF (-1* REL-OR-ITG BARRIER S-BOUNDARY) ;
 
 REMOVE:r10 Imprt IF (0 N) (0 Imprt) (-1C A);
 	## Тешката економска во Босна и Херцеговина принуди голем број студенти и неодамна дипломирани студенти да ја напуштат земјата.
@@ -102,6 +109,9 @@ REMOVE:r13 Imprt IF (0 Imprt) (0 Prs + Sg3) (1 CS);
 
 REMOVE:r14 Imprt IF (NOT 1* ("!") BARRIER S-BOUNDARY);
 	# This is probably too loose, but we have to do something
+	#??
+
+
 
 REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 	## Министерот за надворешни работи, Вук Драшковиќ, во Њујорк разговараше за актуелните проблеми во покраината со генералниот секретар на ОН.

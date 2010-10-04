@@ -16,7 +16,7 @@ LIST Copula = (vbser);
 LIST Pers = (pers) ;
 
 LIST TV = (tv) ;
-LIST IV = (tv) ;
+LIST IV = (iv) ;
 
 LIST Imprt = (imp) ;
 LIST Pii = (pii) ;
@@ -65,3 +65,9 @@ REMOVE:r2 V-IND-FIN IF (0 N) (0 V-IND-FIN) (1C V-COP);
 
 REMOVE:r2 V-IND-FIN IF (-1 PREP) (0 N) (0 V-IND-FIN);
 	## Забележителност по течението на река Арда е Дяволския мост.
+
+
+SELECT:r4 V-COP IF (0 V-COP) (0 V) ((1 V-COP OR V) OR (-1 V-COP OR V));
+	## Бил съм платил.
+	## Съм бил платил.
+	

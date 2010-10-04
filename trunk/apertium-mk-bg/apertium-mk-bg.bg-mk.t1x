@@ -1162,5 +1162,47 @@
 		   </action>
 		 </rule>
 	
+	
+	
+		<rule comment="RULE: Бил съм платил -> Сум имал платено.">  
+		   <pattern>
+		     <pattern-item n="copula_lp"/>
+		     <pattern-item n="copula_pres"/>
+		     <pattern-item n="lp_aor_ind"/>
+		   </pattern>
+		   <action>
+
+		     <out>
+			    <lu>
+		            <clip pos="2" side="tl" part="lemh"/>
+		            <clip pos="2" side="tl" part="a_vbser"/>
+			       	<clip pos="2" side="tl" part="temps"/>
+		            <clip pos="2" side="tl" part="pers"/>
+			        <clip pos="2" side="tl" part="nbr"/>
+		            <clip pos="2" side="tl" part="lemq"/>
+		          </lu>
+			<b pos="1"/>
+				<lu>
+					<lit v="има"/> <lit-tag v="vbhaver"/>
+					<lit-tag v="lp.pii"/>
+					<clip pos="1" side="tl" part="gen"/>
+		        	<clip pos="1" side="tl" part="nbr"/>
+	          	</lu>
+			<b pos="2"/>
+		          <lu>
+		            <clip pos="3" side="tl" part="lemh"/>
+		         	<clip pos="3" side="tl" part="a_verb"/>
+		       		<clip pos="3" side="tl" part="aspect"/>
+		       		<clip pos="3" side="tl" part="transitivity"/>
+					<lit-tag v="pp"/>
+					<lit-tag v="nt"/>
+					<lit-tag v="sg"/>
+					<lit-tag v="ind"/>
+		         	<clip pos="3" side="tl" part="lemq"/>
+		       	  </lu>
+		     </out>
+		   </action>
+		 </rule>
+	
   </section-rules>
 </transfer>
