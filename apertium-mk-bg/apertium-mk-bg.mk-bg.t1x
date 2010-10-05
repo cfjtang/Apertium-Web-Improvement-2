@@ -95,6 +95,11 @@
     </def-cat>
 
 
+    <def-cat n="prn_dem">
+      <cat-item tags="prn.dem.*"/>
+    </def-cat>
+
+
     <def-cat n="lp_compound_tenses">
 	  <cat-item tags="vblex.perf.tv.lp.aor.*"/>
       <cat-item tags="vblex.imperf.tv.lp.aor.*"/>
@@ -283,6 +288,10 @@
       <attr-item tags="prn.pers.clt"/>
     </def-attr>
           
+    <def-attr n="a_prn_dem">
+      <attr-item tags="prn.dem"/>
+    </def-attr>
+
     <def-attr n="a_num">
       <attr-item tags="num"/>
     </def-attr>
@@ -2139,7 +2148,7 @@ output: def
 		    <lu>
                 <lit v="ще"/>  <lit-tag v="vaux"/>
 				<lit-tag v="pres"/>
-				<lit-tag v="p1"/>
+				<lit-tag v="p3"/>
 				<lit-tag v="sg"/>
 	          </lu>
 	     </out>
@@ -2390,6 +2399,23 @@ output: def
 	   </action>
 	 </rule>
 	
+	<rule comment="RULE: Prn.dem. -> Prn.dem">  
+	   <pattern>
+	     <pattern-item n="prn_dem"/>
+	   </pattern>
+	   <action>
+	     <out>
+		    <lu>
+	            <clip pos="1" side="tl" part="lemh"/>
+	         	<clip pos="1" side="tl" part="a_prn_dem"/>
+		        <clip pos="1" side="tl" part="gen"/>
+		        <clip pos="1" side="tl" part="nbr"/>
+		        <clip pos="1" side="tl" part="defnes"/>
+	         	<clip pos="1" side="tl" part="lemq"/>
+	          </lu>
+	     </out>
+	   </action>
+	 </rule>
 
 
 
