@@ -109,14 +109,14 @@ REMOVE:r13 Imprt IF (0 Imprt) (0 Prs + Sg3) (1 CS);
 
 REMOVE:r14 Imprt IF (NOT 1* ("!") BARRIER S-BOUNDARY);
 	# This is probably too loose, but we have to do something
-	#??
+
 
 
 
 REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 	## Министерот за надворешни работи, Вук Драшковиќ, во Њујорк разговараше за актуелните проблеми во покраината со генералниот секретар на ОН.
 
-REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N);
+REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP);
 	## Друга милитантна група ја презеде одговорноста за убиството на еден полицаец во Атина, единствениот смртоносен напад во Грција таа година.
 	## "Јас студирам и патувам," рече тој.
 	## Тој е тука.
@@ -124,6 +124,9 @@ REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N);
 
 REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
 	# Do something better here 
+
+
+
 
 SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1 L-part OR A));
 	## Ако ми се јавите, би дошол.
@@ -133,6 +136,10 @@ SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1
 
 SELECT:r19 V-COP IF (0 V-COP) (0 V) (-1 V-COP + V-IND-FIN);
 	## Ако би била една држава, ЕУ би била седмата најголема држава во светот по површина и трета најголема по население, по Кина и Индија.
+
+SELECT:r25 V-COP IF (0 ("<се>")) (0 V-COP) (0 Pron) (1C A);
+    ## нагласија дека претстојните избори во БиХ се клучни за иднината на земјата
+
 
 SELECT:r20 A IF (0 A) (0 N) (1C N-OR-PROP) ;
 	## Koсово се соочува со долг пат пред себе во спречуваoето на трговијата со дрога
@@ -148,6 +155,8 @@ SELECT:r23 N IF (0 A) (0 N) (-1 A) (1 PREP);
 
 SELECT:r24 N IF (0 A) (0 N) (-1 PREP) (1 PREP);
         ## тие се обврзани да осигурат заштита на правата на сите етнички групи.
+
+#SELECT:r26 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 PREP);
 
 ###############################################################################
 #  Syntactic labelling and disambiguation
