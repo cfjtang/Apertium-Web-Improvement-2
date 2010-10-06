@@ -373,6 +373,8 @@
     <def-attr n="syntax">
       <attr-item tags="@SUBJ→"/>
       <attr-item tags="@←SUBJ"/>
+      <attr-item tags="@←SPRED"/>
+      <attr-item tags="@SPRED→"/>
       <attr-item tags="@P←"/>
       <attr-item tags="@→P"/>
     </def-attr>
@@ -382,6 +384,7 @@
  
   <section-def-vars>
     <def-var n="number"/>
+    <def-var n="subj_obj"/>
   </section-def-vars>  
   <section-def-macros>
     <def-macro n="concord1" npar="1">
@@ -593,8 +596,40 @@ output: def
       </test>
       <let>
         <clip pos="1" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
-        <lit-tag v="def.obj"/>
+        <lit-tag v="def"/>
       </let>
+      <let>
+        <var n="subj_obj"/>
+        <lit-tag v="obj"/>
+      </let>
+      <choose>
+        <when>
+          <test>
+            <or>
+              <equal>
+                <clip pos="1" side="tl" part="syntax"/>
+                <lit-tag v="@←SUBJ"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="syntax"/>
+                <lit-tag v="@SUBJ→"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="syntax"/>
+                <lit-tag v="@SPRED→"/>
+              </equal>
+              <equal>
+                <clip pos="1" side="tl" part="syntax"/>
+                <lit-tag v="@←SPRED"/>
+              </equal>
+            </or>
+          </test>
+          <let>
+            <var n="subj_obj"/>
+            <lit-tag v="subj"/>
+          </let>
+        </when>
+      </choose>
       
     </when>
     <when>
@@ -651,9 +686,8 @@ output: def
             <clip pos="1" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="cas"/>
             <clip pos="1" side="tl" part="defnes"/>
-
+            <var n="subj_obj"/>
             <clip pos="1" side="tl" part="lemq"/>
-
           </lu>
         </out>
       </action>
