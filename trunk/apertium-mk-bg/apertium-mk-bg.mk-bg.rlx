@@ -22,6 +22,7 @@ LIST Pers = (pers) ;
 LIST Dem = (dem) ;
 LIST Itg = (prn itg) ;
 LIST Rel = (prn rel) ;
+LIST Poss = (prn pos) ;
 
 LIST TV = (tv) ;
 LIST IV = (iv) ;
@@ -236,9 +237,9 @@ MAP:r402 (@SUBJ→) TARGET N + $$NUMBER IF (1 V-COP + $$NUMBER);
 #    - Numerals 
 #    -
 
-MAP:r500 (@→N) TARGET A + $$GENDER + Sg IF (1 N + $$GENDER + Sg) ;
+MAP:r500 (@→N) TARGET A | Poss + $$GENDER + Sg IF (1 N + $$GENDER + Sg) ;
 
-MAP:r501 (@→N) TARGET A + Pl IF (1 N + Pl) ;
+MAP:r501 (@→N) TARGET A | Poss + Pl IF (1 N + Pl) ;
 
 MAP:r502 (@→N) TARGET Num IF ((1 N) OR (1 A LINK 1 N)) ;
 	## Една третина од населението е помладо од 30 години.
