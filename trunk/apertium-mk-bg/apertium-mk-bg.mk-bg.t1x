@@ -590,6 +590,165 @@
 
 
 
+    <rule comment="RULE: Num Noun → Num Noun : (вода → вода)">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="noun"/>
+      </pattern>
+      <action>
+<!--
+input: prx, dst
+output: def 
+-->
+  <choose>     <!-- if -->
+    <when>
+      <test>
+        <and>
+        <not>
+          <equal>
+            <clip pos="2" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
+            <lit-tag v="ind"/>
+          </equal>
+        </not>
+        <equal>
+          <clip pos="2" side="tl" part="gen"/>  
+          <lit-tag v="m"/>
+        </equal>
+        <equal>
+          <clip pos="2" side="tl" part="nbr"/>  
+          <lit-tag v="sg"/>
+        </equal>
+        </and>
+      </test>
+      <let>
+        <clip pos="2" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
+        <lit-tag v="def"/>
+      </let>
+      <let>
+        <var n="subj_obj"/>
+        <lit-tag v="obj"/>
+      </let>
+
+      <choose>
+        <when>
+          <test>
+            <or>
+              <equal>
+                <clip pos="2" side="tl" part="syntax"/>
+                <lit-tag v="@←SUBJ"/>
+              </equal>
+              <equal>
+                <clip pos="2" side="tl" part="syntax"/>
+                <lit-tag v="@SUBJ→"/>
+              </equal>
+              <equal>
+                <clip pos="2" side="tl" part="syntax"/>
+                <lit-tag v="@SPRED→"/>
+              </equal>
+              <equal>
+                <clip pos="2" side="tl" part="syntax"/>
+                <lit-tag v="@←SPRED"/>
+              </equal>
+            </or>
+          </test>
+          <let>
+            <var n="subj_obj"/>
+            <lit-tag v="subj"/>
+          </let>
+        </when>
+      </choose>
+      
+    </when>
+    <when>
+      <test>
+        <and>
+        <not><equal>
+          <clip pos="2" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
+          <lit-tag v="ind"/>
+          
+        </equal></not>
+        <equal>
+          <clip pos="2" side="tl" part="gen"/>  
+          <lit-tag v="m"/>
+        </equal>
+        <equal>
+          <clip pos="2" side="tl" part="nbr"/>  
+          <lit-tag v="pl"/>
+        </equal>
+        </and>
+      </test>
+      <let>
+        <clip pos="2" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
+        <lit-tag v="def"/>
+      </let>
+    </when>
+
+    <when>
+      <test>
+        <and>
+        <not><equal>
+          <clip pos="2" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
+          <lit-tag v="ind"/>
+        </equal></not>
+        <not><equal>
+          <clip pos="2" side="tl" part="gen"/> 
+          <lit-tag v="m"/>
+        </equal></not>
+        </and>
+      </test>
+      <let>
+        <clip pos="2" side="tl" part="defnes"/>  <!-- pulls out the part of the pattern that corresponds to defnes-->
+        <lit-tag v="def"/>
+      </let>
+    </when>
+  </choose>
+
+  <choose>
+    <when>
+      <test>
+        <and>
+          <equal>
+            <clip pos="1" side="tl" part="syntax"/>
+            <lit-tag v="@→N"/>
+          </equal>
+          <equal>
+            <clip pos="1" side="tl" part="a_num"/>
+            <lit-tag v="num"/>
+          </equal>
+          <equal>
+            <clip pos="2" side="tl" part="nbr"/>
+            <lit-tag v="pl"/>
+          </equal>
+        </and>
+      </test>
+      <let>
+        <clip pos="2" side="tl" part="nbr"/>
+        <lit-tag v="ct"/>
+      </let>
+    </when>
+  </choose>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_num"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="lemh"/>
+            <clip pos="2" side="tl" part="a_nom"/>
+            <clip pos="2" side="tl" part="gen"/>
+            <clip pos="2" side="tl" part="nbr"/>
+            <clip pos="2" side="tl" part="cas"/>
+            <clip pos="2" side="tl" part="defnes"/>
+            <var n="subj_obj"/>
+            <clip pos="2" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+ 
+
     <rule comment="RULE: Noun → Noun : (вода → вода)">
       <pattern>
         <pattern-item n="noun"/>
@@ -702,28 +861,13 @@ output: def
     </when>
 
 
-<!--на околу 2.000 метри надморска височина  -> на около 2.000 метрA *надморска *височина-->
-      <when>
-        <test>
-            <equal>
-              <clip pos="1" side="tl" part="syntax"/>
-              <lit-tag v="@N←"/>
-            </equal>
-        </test>
-        <let>
-          <var n="number"/>
-          <lit-tag v="ct"/>
-        </let>
-      </when>
-
-
   </choose>
         <out>
           <lu>
             <clip pos="1" side="tl" part="lemh"/>
             <clip pos="1" side="tl" part="a_nom"/>
             <clip pos="1" side="tl" part="gen"/>
-            <var n="number"/>
+            <clip pos="1" side="tl" part="nbr"/>
             <clip pos="1" side="tl" part="cas"/>
             <clip pos="1" side="tl" part="defnes"/>
             <var n="subj_obj"/>
@@ -2512,41 +2656,6 @@ output: def
 
 
 <!-- Правила за пълен определителен член след спомагателен глагол съм -->
-
-	<rule comment="RULE: мажот е убав. -> мъжът е хубав. ">  
-		<!-- трябва да се подобри, например> Анализата е тука = Анализът е тук.		-->
-	   <pattern>
-	     <pattern-item n="noun_m_with_article"/>
-	     <pattern-item n="copula_sg"/>
-	   </pattern>
-	   <action>
-
-	     <out>
-		  <lu>
-	            <clip pos="1" side="tl" part="lemh"/>
-	         	<clip pos="1" side="tl" part="a_nom"/>
-	       		<clip pos="1" side="tl" part="gen"/>
-	       		<clip pos="1" side="tl" part="nbr"/>
-	         	<clip pos="1" side="tl" part="cas"/>
-				<lit-tag v="def"/>
-				<lit-tag v="subj"/>
-	         	<clip pos="1" side="tl" part="lemq"/>
-	       </lu>
-		<b pos="1"/>
-		   <lu>
-	            <clip pos="2" side="tl" part="lemh"/>
-	         	<clip pos="2" side="tl" part="a_vbser"/>
-		       	<clip pos="2" side="tl" part="temps"/>
-	            <clip pos="2" side="tl" part="pers"/>
-	            <clip pos="2" side="tl" part="gen"/>
-		        <clip pos="2" side="tl" part="nbr"/>
-	         	<clip pos="2" side="tl" part="lemq"/>
-	       </lu>
-
-	     </out>
-	   </action>
-	 </rule>
-
 
 	<rule comment="RULE: твојот маж е тука. -> твоят мъж е тук. ">  
 	   <pattern>

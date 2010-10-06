@@ -222,11 +222,13 @@ MAP:r100 (@INTERJ) TARGET Interj ;
 #    -
 
 
-MAP:r101 (@SUBJ→) TARGET Pers + $$PERSON + Nom IF (1* V-IND-FIN + $$PERSON BARRIER V-IND-FIN) ;
+MAP:r400 (@SUBJ→) TARGET Pers + $$PERSON + Nom IF (1* V-IND-FIN + $$PERSON BARRIER V-IND-FIN) ;
 	## Јас сум тука.
 	## Ти си тука.
-MAP:r102 (@←SUBJ) TARGET Pers + $$PERSON + Nom IF (-1* V-IND-FIN + $$PERSON BARRIER V-IND-FIN) ;
+MAP:r401 (@←SUBJ) TARGET Pers + $$PERSON + Nom IF (-1* V-IND-FIN + $$PERSON BARRIER V-IND-FIN) ;
 
+MAP:r402 (@SUBJ→) TARGET N + $$NUMBER IF (1 V-COP + $$NUMBER);
+	## мажот е убав. 
 
 #
 # Noun modifiers
@@ -234,13 +236,11 @@ MAP:r102 (@←SUBJ) TARGET Pers + $$PERSON + Nom IF (-1* V-IND-FIN + $$PERSON BA
 #    - Numerals 
 #    -
 
-MAP:r103 (@→N) TARGET A + $$GENDER + Sg IF (1 N + $$GENDER + Sg) ;
+MAP:r500 (@→N) TARGET A + $$GENDER + Sg IF (1 N + $$GENDER + Sg) ;
 
-MAP:r104 (@→N) TARGET A + Pl IF (1 N + Pl) ;
+MAP:r501 (@→N) TARGET A + Pl IF (1 N + Pl) ;
 
-MAP:r109 (@N←) TARGET N + Pl IF (-1 Num) ;
-
-MAP:r105 (@→N) TARGET Num IF ((1 N) OR (1 A LINK 1 N)) ;
+MAP:r502 (@→N) TARGET Num IF ((1 N) OR (1 A LINK 1 N)) ;
 	## Една третина од населението е помладо од 30 години.
 	## Полицијата уапси еден индиски лекар пред неколку месеци.
 
@@ -249,10 +249,10 @@ MAP:r105 (@→N) TARGET Num IF ((1 N) OR (1 A LINK 1 N)) ;
 #    - Adjectives in copula clauses (agree with subject in gender/number)
 #
 
-MAP:r106 (@←SPRED) TARGET A + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
+MAP:r600 (@←SPRED) TARGET A + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY) ;
 	## Јас сум стар.
 
-MAP:r107 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY OR PREP) ;
+MAP:r601 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDARY OR PREP) ;
 	## Јас сум македонец. 
 	## Чашата е на масата.
 
@@ -261,7 +261,7 @@ MAP:r107 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDAR
 #    - 
 #    - 
 
-MAP:r108 (@P←) TARGET N | Pron + Dem (-1 PREP); 
+MAP:r700 (@P←) TARGET N | Pron + Dem (-1 PREP); 
 	## Чашата е на масата.
 	## от това
 
@@ -269,5 +269,5 @@ MAP:r108 (@P←) TARGET N | Pron + Dem (-1 PREP);
 # Give up
 #
 
-MAP:r109 (@X) TARGET (prn dem) ;
-MAP:r110 (@X) TARGET (prn pers) ;
+MAP:r800 (@X) TARGET (prn dem) ;
+MAP:r801 (@X) TARGET (prn pers) ;
