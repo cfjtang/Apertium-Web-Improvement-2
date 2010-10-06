@@ -53,6 +53,7 @@ LIST GENDER = m f nt mfn ;
 LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
 LIST NAGDV = nom acc dat gen voc ;
 LIST LOWERCASE-WORD = ("[абвгдѓежзѕијклљмнњопрстќуфхцчџшЭѐѝю]+"ri);
+LIST BOS = (>>>) (sent);
 
 SET V-IND-FIN = Prs OR Aor OR Pii ;
 SET V-COP = Copula ;
@@ -60,7 +61,6 @@ SET SG2-OR-SG3 = Sg2 OR Sg3 ;
 SET REL-OR-ITG = (prn rel) OR (prn itg) ;
 SET N-OR-PROP = N OR Prop ;
 SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") OR CS ;
-
 ###############################################################################
 #  Morphological disambiguation
 #
@@ -166,7 +166,16 @@ SELECT:r27 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 V-COP) (1 ("<што>"));
 	## Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму.
 
 SELECT:r28 CS IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem);
-	##Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму
+	##Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму.
+
+
+SELECT:r29 Itg IF (0 Itg) (0 Rel) (-1 BOS);
+		# кој е твојот глас
+
+SELECT:r29 Itg IF (0 Itg) (0 Rel) (-1 BOS);
+		# кој е твојот глас
+
+
 
 ###############################################################################
 #  Syntactic labelling and disambiguation

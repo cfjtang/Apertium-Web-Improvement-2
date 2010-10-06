@@ -41,6 +41,14 @@
       <cat-item tags="vblex.imperf.iv.pii.*"/>
    </def-cat>
 
+   <def-cat n="copula">
+      <cat-item tags="vbser.*"/>
+    </def-cat>
+
+   <def-cat n="copula_sg">
+      <cat-item tags="vbser.*.sg"/>
+    </def-cat>
+
    <def-cat n="copula_pres">
       <cat-item tags="vbser.pres.*"/>
     </def-cat>
@@ -177,6 +185,12 @@
       <cat-item tags="n.*"/>
     </def-cat>
 
+    <def-cat n="noun_m_with_article">
+      <cat-item tags="n.m.*.def"/>
+      <cat-item tags="n.m.*.prx"/>
+      <cat-item tags="n.m.*.dst"/>
+    </def-cat>
+
     <def-cat n="pref">
       <cat-item tags="pref.*"/>
     </def-cat>
@@ -307,6 +321,10 @@
 
     <def-attr n="a_part">
       <attr-item tags="part"/>
+    </def-attr>
+
+    <def-attr n="a_vbser">
+      <attr-item tags="vbser"/>
     </def-attr>
 
     <def-attr n="a_nom">
@@ -2417,6 +2435,41 @@ output: def
 	   </action>
 	 </rule>
 
+
+
+<!-- Правила за пълен определителен член след спомагателен глагол съм -->
+
+	<rule comment="RULE: е мъжот. -> е мъжът. ">  
+	   <pattern>
+	     <pattern-item n="copula_sg"/>
+	     <pattern-item n="noun_m_with_article"/>
+	   </pattern>
+	   <action>
+
+	     <out>
+		    <lu>
+	            <clip pos="1" side="tl" part="lemh"/>
+	         	<clip pos="1" side="tl" part="a_vbser"/>
+		       	<clip pos="1" side="tl" part="temps"/>
+	            <clip pos="1" side="tl" part="pers"/>
+	            <clip pos="1" side="tl" part="gen"/>
+		        <clip pos="1" side="tl" part="nbr"/>
+	         	<clip pos="1" side="tl" part="lemq"/>
+	          </lu>
+		<b pos="1"/>
+	          <lu>
+	            <clip pos="2" side="tl" part="lemh"/>
+	         	<clip pos="2" side="tl" part="a_nom"/>
+	       		<clip pos="2" side="tl" part="gen"/>
+	       		<clip pos="2" side="tl" part="nbr"/>
+	         	<clip pos="2" side="tl" part="cas"/>
+				<lit-tag v="def"/>
+				<lit-tag v="subj"/>
+	         	<clip pos="2" side="tl" part="lemq"/>
+	       	  </lu>
+	     </out>
+	   </action>
+	 </rule>
 
 
   </section-rules>
