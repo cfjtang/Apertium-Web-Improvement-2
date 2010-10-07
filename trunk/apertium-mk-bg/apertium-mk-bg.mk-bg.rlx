@@ -69,7 +69,8 @@ SET V-COP = Copula ;
 SET SG2-OR-SG3 = Sg2 OR Sg3 ;
 SET REL-OR-ITG = (prn rel) OR (prn itg) ;
 SET N-OR-PROP = N OR Prop ;
-SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") OR CS ;
+SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") OR CS OR ("\.") OR ("\!") OR ("\?");
+SET STRICT-S-BOUNDARY  = ("\;") OR (":") OR ("\.") OR ("\!") OR ("\?");
 ###############################################################################
 #  Morphological disambiguation
 #
@@ -191,9 +192,9 @@ SELECT:r33 Rel IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem) (1 V OR Clt);
 	## тоа што ја одржува Македонија на агендата
 
 #for tenses
-SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER S-BOUNDARY) OR (1* Prs BARRIER S-BOUNDARY)) (NOT -1 ("да") + Pcle);
-SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER S-BOUNDARY) OR (1* Aor BARRIER S-BOUNDARY)) (NOT -1 ("да") + Pcle);
-SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER S-BOUNDARY) OR (1* Pii BARRIER S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER STRICT-S-BOUNDARY) OR (1* Prs BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER STRICT-S-BOUNDARY) OR (1* Aor BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER STRICT-S-BOUNDARY) OR (1* Pii BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
 
 SELECT:r39 Prs IF (0 Prs) (0 Aor) (-1 ("да") + Pcle);
 	#тој сакаше да носи камења
