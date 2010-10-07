@@ -38,9 +38,9 @@ LIST Sg = (sg) ;
 LIST Pl = (pl) ;
 LIST Count = (ct) ;
 
-LIST M = (m) ;
-LIST F = (f) ;
-LIST Nt = (nt) ;
+LIST Masc = (m) ;
+LIST Fem = (f) ;
+LIST Neu = (nt) ;
 
 
 LIST Sg1 = (p1 sg) ;
@@ -198,14 +198,14 @@ SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER S-BOUNDARY) OR (
 SELECT:r39 Prs IF (0 Prs) (0 Aor) (-1 ("да") + Pcle);
 	#тој сакаше да носи камења
 
-SELECT:r37 CC IF (0 ("и")) (0 CC) (0 Clt) (NOT -1* F BARRIER S-BOUNDARY) (NOT 1* F BARRIER S-BOUNDARY);
+REMOVE:r37 Clt IF (0 ("и")) (0 CC) (0 Clt) (NOT -1* Fem BARRIER S-BOUNDARY) (NOT 1* Fem BARRIER S-BOUNDARY);
 	#тој е убаво момче и пее убаво
 	
-SELECT:r38 A IF (0 A + Nt) (0 Adv) (1C N + Nt);
+SELECT:r38 A IF (0 A + Neu) (0 Adv) (1C N + Neu);
 	#тој е убаво момче
 	#same as rule 7?
 	
-SELECT:r40 Adv IF (0 A + Nt) (0 Adv) (-1C V) (NOT 1C N + Nt);
+SELECT:r40 Adv IF (0 A + Neu) (0 Adv) (-1C V) (NOT 1C N + Neu);
 	# тој пее убаво
 
 
