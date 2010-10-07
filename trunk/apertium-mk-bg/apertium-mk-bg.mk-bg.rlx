@@ -7,6 +7,7 @@ LIST Num = (num) ;
 LIST Prop = (np) ;
 LIST A = (adj) ;
 LIST CS = (cnjsub) ;
+LIST CC = (cnjcoo) ;
 LIST Adv = (adv) ;
 LIST Abbr = (abbr) ;
 LIST V = (vblex) (vbmod) (vbhaver);
@@ -23,6 +24,7 @@ LIST Dem = (dem) ;
 LIST Itg = (prn itg) ;
 LIST Rel = (prn rel) ;
 LIST Poss = (prn pos) ;
+LIST Clt = (clt) ;
 
 LIST TV = (tv) ;
 LIST IV = (iv) ;
@@ -35,6 +37,11 @@ LIST Prs = (pres) ;
 LIST Sg = (sg) ;
 LIST Pl = (pl) ;
 LIST Count = (ct) ;
+
+LIST M = (m) ;
+LIST F = (f) ;
+LIST Nt = (nt) ;
+
 
 LIST Sg1 = (p1 sg) ;
 LIST Sg2 = (p2 sg) ;
@@ -114,12 +121,10 @@ REMOVE:r14 Imprt IF (NOT 1* ("!") BARRIER S-BOUNDARY);
 	# This is probably too loose, but we have to do something
 
 
-
-
 REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 	## Министерот за надворешни работи, Вук Драшковиќ, во Њујорк разговараше за актуелните проблеми во покраината со генералниот секретар на ОН.
 
-REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP);
+REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP) (NOT 1 CS);
 	## Друга милитантна група ја презеде одговорноста за убиството на еден полицаец во Атина, единствениот смртоносен напад во Грција таа година.
 	## "Јас студирам и патувам," рече тој.
 	## Тој е тука.
@@ -166,15 +171,36 @@ SELECT:r26 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 PREP);
 SELECT:r27 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 V-COP) (1 ("<што>"));
 	## Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму.
 
-SELECT:r28 CS IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem);
+SELECT:r28 CS IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem) (NOT 1 V OR Clt);
 	##Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму.
 
-
 SELECT:r29 Itg IF (0 Itg) (0 Rel) (-1 BOS);
-		# кој е твојот глас
+	## кој е твојот глас
 
-SELECT:r29 Itg IF (0 Itg) (0 Rel) (-1 BOS);
-		# кој е твојот глас
+REMOVE:r30 PREP IF (-1C PREP) (0 PREP) (0 Adv);
+	## на околу 2.000 метри надморска височина
+	
+SELECT:r31 V-COP IF (0 ("<се>")) (0 V-COP) (0 Pron) (1C N) (-1C N);
+	## она што Македонија го заслужува, но тоа што ја одржува Македонија на агендата на Европската Унија се реформите, а тие се неопходни за да може да се направи пробив во некои други поповолни услови."
+
+SELECT:r32 Dem IF (0 Dem) (0 Pers) (1 ("што"));
+	## тоа што ја одржува Македонија на агендата
+	
+SELECT:r33 Rel IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem) (1 V OR Clt);
+	## тоа што ја одржува Македонија на агендата
+
+#for tenses
+SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER S-BOUNDARY) OR (1* Prs BARRIER S-BOUNDARY));
+SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER S-BOUNDARY) OR (1* Aor BARRIER S-BOUNDARY));
+SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER S-BOUNDARY) OR (1* Pii BARRIER S-BOUNDARY));
+
+SELECT:r39 Prs IF (0 Prs) (0 Aor) (-1 ("да") + Pcle);
+
+
+
+SELECT:r37 CC IF (0 ("и")) (0 CC) (0 Clt) (NOT -1* F BARRIER S-BOUNDARY) (NOT 1* F BARRIER S-BOUNDARY);
+
+SELECT:r38 A IF (0 A + Nt) (0 Adv) (1C N + Nt);
 
 
 
