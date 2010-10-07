@@ -62,6 +62,7 @@ LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
 LIST NAGDV = nom acc dat gen voc ;
 LIST LOWERCASE-WORD = ("[абвгдѓежзѕијклљмнњопрстќуфхцчџшЭѐѝю]+"ri);
 LIST BOS = (>>>) (sent);
+LIST EOS = (<<<) (sent);
 
 SET V-IND-FIN = Prs OR Aor OR Pii ;
 SET V-COP = Copula ;
@@ -190,17 +191,22 @@ SELECT:r33 Rel IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem) (1 V OR Clt);
 	## тоа што ја одржува Македонија на агендата
 
 #for tenses
-SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER S-BOUNDARY) OR (1* Prs BARRIER S-BOUNDARY));
-SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER S-BOUNDARY) OR (1* Aor BARRIER S-BOUNDARY));
-SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER S-BOUNDARY) OR (1* Pii BARRIER S-BOUNDARY));
+SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER S-BOUNDARY) OR (1* Prs BARRIER S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER S-BOUNDARY) OR (1* Aor BARRIER S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER S-BOUNDARY) OR (1* Pii BARRIER S-BOUNDARY)) (NOT -1 ("да") + Pcle);
 
 SELECT:r39 Prs IF (0 Prs) (0 Aor) (-1 ("да") + Pcle);
-
-
+	#тој сакаше да носи камења
 
 SELECT:r37 CC IF (0 ("и")) (0 CC) (0 Clt) (NOT -1* F BARRIER S-BOUNDARY) (NOT 1* F BARRIER S-BOUNDARY);
-
+	#тој е убаво момче и пее убаво
+	
 SELECT:r38 A IF (0 A + Nt) (0 Adv) (1C N + Nt);
+	#тој е убаво момче
+	#same as rule 7?
+	
+SELECT:r40 Adv IF (0 A + Nt) (0 Adv) (-1C V) (NOT 1C N + Nt);
+	# тој пее убаво
 
 
 
