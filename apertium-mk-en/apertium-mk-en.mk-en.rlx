@@ -20,9 +20,11 @@ LIST P-part = (pp) ;
 
 LIST Pers = (pers) ;
 LIST Dem = (dem) ;
+LIST Itg = (prn itg) ;
+LIST Rel = (prn rel) ;
 
 LIST TV = (tv) ;
-LIST IV = (tv) ;
+LIST IV = (iv) ;
 
 LIST Imprt = (imp) ;
 LIST Pii = (pii) ;
@@ -68,24 +70,31 @@ SECTION
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
 	## Даниел, студент од Бања Лука, вели дека нема намера да ја напушти БиХ.
+		##	remove interjection if there is a verb to the right
+		##or a pronoun to the right and after that a verb
 
 REMOVE:r2 Pron IF (0 ("не")) (-1 REL-OR-ITG) ;
 
 REMOVE:r3 N IF (0 N) (0 V-IND-FIN) (-1C ("не") + Adv) ;
-
-REMOVE:r4 Imprt IF (-1* REL-OR-ITG BARRIER S-BOUNDARY) ;
+	##remove a noun if the current word could be a noun or a finite verb and the previous word is only 'ne' as an adverb
 
 REMOVE:r5 TV IF (1C PREP) ;
+##??
 
 SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUNDARY) ;
 
 SELECT:r7 $$NUMBER IF (0 A) (1 N + $$NUMBER) ;
+##??
 
 SELECT:r8 V-IND-FIN (0 V-IND-FIN) (0 Pron) (NOT -1* V-IND-FIN BARRIER S-BOUNDARY) (NOT 1* V-IND-FIN BARRIER S-BOUNDARY) ;
 	## Ти си тука.
 
 REMOVE:r9 Pron IF (0 Pron) (0 A + $$NUMBER) (1C N + $$NUMBER) ;
 	## На сите места добивав ист одговор Не.
+
+
+
+REMOVE:r4 Imprt IF (-1* REL-OR-ITG BARRIER S-BOUNDARY) ;
 
 REMOVE:r10 Imprt IF (0 N) (0 Imprt) (-1C A);
 	## Тешката економска во Босна и Херцеговина принуди голем број студенти и неодамна дипломирани студенти да ја напуштат земјата.
@@ -103,17 +112,24 @@ REMOVE:r13 Imprt IF (0 Imprt) (0 Prs + Sg3) (1 CS);
 REMOVE:r14 Imprt IF (NOT 1* ("!") BARRIER S-BOUNDARY);
 	# This is probably too loose, but we have to do something
 
+
+
+
 REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 	## Министерот за надворешни работи, Вук Драшковиќ, во Њујорк разговараше за актуелните проблеми во покраината со генералниот секретар на ОН.
 
-REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N);
+REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP);
 	## Друга милитантна група ја презеде одговорноста за убиството на еден полицаец во Атина, единствениот смртоносен напад во Грција таа година.
 	## "Јас студирам и патувам," рече тој.
 	## Тој е тука.
 	## Тој даде својата книга.
+	## додаде дека оваа поддршка зависи од тоа дали Турција ќе се придржува на принципите на ЕУ
 
 REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
 	# Do something better here 
+
+
+
 
 SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1 L-part OR A));
 	## Ако ми се јавите, би дошол.
@@ -123,6 +139,10 @@ SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1
 
 SELECT:r19 V-COP IF (0 V-COP) (0 V) (-1 V-COP + V-IND-FIN);
 	## Ако би била една држава, ЕУ би била седмата најголема држава во светот по површина и трета најголема по население, по Кина и Индија.
+
+SELECT:r25 V-COP IF (0 ("<се>")) (0 V-COP) (0 Pron) (1C A);
+    ## нагласија дека претстојните избори во БиХ се клучни за иднината на земјата
+
 
 SELECT:r20 A IF (0 A) (0 N) (1C N-OR-PROP) ;
 	## Koсово се соочува со долг пат пред себе во спречуваoето на трговијата со дрога
@@ -137,7 +157,16 @@ SELECT:r23 N IF (0 A) (0 N) (-1 A) (1 PREP);
 	## СоЕ повика на формирање на нов суд за човекови права за Косово
 
 SELECT:r24 N IF (0 A) (0 N) (-1 PREP) (1 PREP);
-	## тие се обврзани да осигурат заштита на правата на сите етнички групи.
+    ## тие се обврзани да осигурат заштита на правата на сите етнички групи.
+
+SELECT:r26 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 PREP);
+	##додаде дека оваа поддршка зависи од тоа дали Турција ќе се придржува на принципите на ЕУ
+
+SELECT:r27 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 V-COP) (1 ("<што>"));
+	## Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму.
+
+SELECT:r28 CS IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem);
+	##Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму
 
 ###############################################################################
 #  Syntactic labelling and disambiguation
@@ -221,8 +250,9 @@ MAP:r107 (@←SPRED) TARGET N + $$NUMBER (-1* V-COP + $$NUMBER BARRIER S-BOUNDAR
 #    - 
 #    - 
 
-MAP:r108 (@P←) TARGET N (-1 PREP); 
+MAP:r108 (@P←) TARGET N | Pron + Dem (-1 PREP); 
 	## Чашата е на масата.
+	## додаде дека оваа поддршка зависи од тоа дали Турција ќе се придржува на принципите на ЕУ
 
 
 # Give up
