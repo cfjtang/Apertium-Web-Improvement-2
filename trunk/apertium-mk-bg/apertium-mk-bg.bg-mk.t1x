@@ -209,6 +209,7 @@
      
     <def-attr n="a_num">
       <attr-item tags="num"/>
+      <attr-item tags="num.ord"/>
     </def-attr>
 
     <def-attr n="temps">
@@ -1162,6 +1163,24 @@
 		         	<clip pos="4" side="tl" part="nbr"/>
 		         	<clip pos="4" side="tl" part="lemq"/>
 		       	  </lu>
+		     </out>
+		   </action>
+		 </rule>
+	
+	
+		<rule comment="RULE: Щях -> Ке .">  
+		   <pattern>
+		     <pattern-item n="vaux_shte"/>
+		   </pattern>
+		   <action>
+
+		     <out>
+			    <lu>
+                            <get-case-from pos="1">
+                              <lit v="ќе"/> 
+                            </get-case-from>
+                            <lit-tag v="part"/>
+		          </lu>
 		     </out>
 		   </action>
 		 </rule>
