@@ -156,6 +156,8 @@ versions use the regular built-in highlighting."))
      :help "Show only that part of the buffer which contains a given sdef, eg. work only on nouns for a while. Widen with `C-x n w' as per usual."]
     "---"
     ["Change Restriction of <e> (LR, RL, none)" dix-restriction-cycle]
+    ["Swap sense translation of this <e> with above <e>" dix-sense-swap
+     :help "Use with slr/srl entries to swap the translations of two <e>'s -- <r> if slr, <l> if srl."]
     ["Go to Next Useful Position in the Buffer" dix-next]
     ["Go to Previous Useful Position in the Buffer" dix-previous]
     ("Replace Regexp Within..."
@@ -666,6 +668,53 @@ into the beginning of the lm and <i>."
 	(delete-horizontal-space)
 	(cond ((looking-at "<i") (indent-to dix-i-align-column))
 	      ((looking-at "<p") (indent-to dix-pb-align-column)))))))
+
+(defun dix-r-at-point ()
+  "Return <r> of <e> at point as pair of buffer positions."
+  (save-excursion
+    (dix-up-to "e" "pardef")
+    (nxml-down-element 2) (nxml-forward-element 1)
+    (cons (point) (nxml-scan-element-forward (point)))))
+(defun dix-l-at-point ()
+  "Return <l> of <e> at point as pair of buffer positions."
+  (save-excursion
+    (dix-up-to "e" "pardef")
+    (nxml-down-element 2)
+    (cons (point) (nxml-scan-element-forward (point)))))
+
+(defun dix-sense-swap ()
+  "Swap this translation with the above. If this <e> has an slr,
+swap the <r>'s, if this <e> has an srl, swap the <l>'s.
+
+When using, make sure point is at an entry marked slr/srl, and
+the above <e> is part of the same sense group."
+  (interactive)
+  (dix-up-to "e" "pardef")
+  (let ((dir
+	 (save-excursion
+	   (when (re-search-forward (concat " \\(slr\\|srl\\)=\"[0-9]\"") (nxml-token-after) 'noerror)
+	     (match-string-no-properties 1)))))
+    (if dir
+	(let* ((reg1 (save-excursion
+		       (dix-with-sexp (nxml-backward-element 1))
+		       (if (string= "slr" dir)
+			   (dix-r-at-point)
+			 (dix-l-at-point))))
+	       (elt1 (buffer-substring (car reg1) (cdr reg1))))
+	  (let* ((reg2 (if (string= "slr" dir)
+			   (dix-r-at-point)
+			 (dix-l-at-point)))
+		 (elt2 (buffer-substring (car reg2) (cdr reg2))))
+	    (goto-char (car reg2))
+	    (delete-region (car reg2) (cdr reg2))
+	    (insert elt1)
+	    (goto-char (car reg1))
+	    (delete-region (car reg1) (cdr reg1))
+	    (insert elt2))
+	  ;; So that we can move an element up several places with
+	  ;; consecutive tab presses:
+	  (goto-char (car reg1)))
+      (message "No slr/srl found in this <e>-element"))))
 
 (defun dix-slr-copy (&optional srl)
   "Make a copy of the Apertium element we're looking at, and
@@ -1361,6 +1410,8 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c C") 'dix-copy)
 (define-key dix-mode-map (kbd "C-c C-y") 'dix-copy-yank)
 (define-key dix-mode-map (kbd "<C-tab>") 'dix-restriction-cycle)
+(define-key dix-mode-map (kbd "<C-S-tab>") 'dix-sense-swap)
+(define-key dix-mode-map (kbd "<C-S-iso-lefttab>") 'dix-sense-swap)
 (define-key dix-mode-map (kbd "M-n") 'dix-next)
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
