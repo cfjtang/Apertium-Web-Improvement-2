@@ -692,7 +692,7 @@ the above <e> is part of the same sense group."
   (dix-up-to "e" "pardef")
   (let ((dir
 	 (save-excursion
-	   (when (re-search-forward (concat " \\(slr\\|srl\\)=\"[0-9]\"") (nxml-token-after) 'noerror)
+	   (when (re-search-forward (concat " \\(slr\\|srl\\)=\"[0-9][0-9]*\"") (nxml-token-after) 'noerror)
 	     (match-string-no-properties 1)))))
     (if dir
 	(let* ((reg1 (save-excursion
