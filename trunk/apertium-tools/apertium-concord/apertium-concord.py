@@ -31,7 +31,7 @@ class ConcordGTK:
         self.sentListFile = sentListFile
         
         # Set the glade file
-        self.gladefile = "concordancer.glade"
+        self.gladefile = "apertium-concord.glade"
         self.wTree = gtk.Builder()
         self.wTree.add_from_file(self.gladefile)
         
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     
     # Sanity check input
     if len(sys.argv) != 3:
-        print("Usage: python concordancer.py freqList sentences")
+        print("Usage: python apertium-concord.py freqList sentences")
         sys.exit(-1)
         
     # Read frequency list, pass to main class
