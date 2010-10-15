@@ -3,7 +3,7 @@ Will have a GLADE gui and show concordances for frequencies """
 
 # First import our libs
 
-import sys, pango, re
+import sys, pango, re, os
 
 try:
     import pygtk
@@ -54,6 +54,12 @@ class ConcordGTK:
         fontdesc = pango.FontDescription("Monospace 10")
         self.concView.modify_font(fontdesc)
 
+        self.corpusNameLabel = self.wTree.get_object("label_corpus_name");
+        self.corpusNameLabel.set_text(os.path.basename(sentListFile)); 
+
+        self.numTokensLabel = self.wTree.get_object("label_num_tokens");
+        self.sentListNumTokens = self.calc_num_tokens(sentListFile);
+        self.numTokensLabel.set_text('Tokens: ' + str(self.sentListNumTokens)); 
         
         # Now connect our on click signal handler, this is done using a dict
         dic = { "on_freq_clicked" : self.freq_clicked,
@@ -61,6 +67,10 @@ class ConcordGTK:
                                     "on_search_box_changed" : self.search_box_update,
                                     "on_MainWindow_destroy" : gtk.main_quit }
         self.wTree.connect_signals(dic)
+
+    def calc_num_tokens(self, sentFileName): 
+        # This almost certainly wants to be more efficient
+        return len(file(sentFileName).read().split(' '));
 
     def search_box_update(self, box): 
 
