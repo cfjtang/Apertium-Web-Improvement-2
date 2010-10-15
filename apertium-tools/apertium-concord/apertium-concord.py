@@ -96,7 +96,7 @@ class ConcordGTK:
 
 
     def process_line(self, line, token, exactMatch):
-        """ Chop line to max char length, center the line on our token """
+        """ Chop line to max char length, centre the line on our token """
          
         global WINDOW_CHARS;
         formattedLine = '';
