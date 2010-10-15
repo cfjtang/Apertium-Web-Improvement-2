@@ -58,8 +58,13 @@ class ConcordGTK:
         # Now connect our on click signal handler, this is done using a dict
         dic = { "on_freq_clicked" : self.freq_clicked,
                                     "on_exact_match_check_button_toggled" : self.exact_match_check,
+                                    "on_search_box_changed" : self.search_box_update,
                                     "on_MainWindow_destroy" : gtk.main_quit }
         self.wTree.connect_signals(dic)
+
+    def search_box_update(self, box): 
+
+        print 'Search box updated';
 
     def exact_match_check(self, treeview): 
         # This should also update the concordance window automagically
@@ -77,13 +82,8 @@ class ConcordGTK:
 	line = line.decode('utf-8');
 
         # Do this with a regular expression allowing for punctuation
-        if exactMatch == True: 
-            patron = re.compile('\W' + token + '\W'); 
-            match = patron.match(line);
 
-            loc = line.find(' ' + token + ' ');
-        else: 
-            loc = line.find(token);
+        loc = line.find(token);
       
         if loc <= 0: 
             return line;
