@@ -17,8 +17,8 @@ try:
 except:
     sys.exit(1)
     
-MAX_CONCORDANCES = 50 # how many concordances for each frequency to find
-WINDOW_CHARS = 50 # how many characters of context for the concordance ... should be replaced with words -FMT
+MAX_CONCORDANCES = 100 # how many concordances for each frequency to find
+WINDOW_CHARS = 40 # how many characters of context for the concordance ... should be replaced with words -FMT
 
 # Create the main class that will contain and do everything
 class ConcordGTK:
@@ -95,8 +95,10 @@ class ConcordGTK:
             for x in range(diff):
                 pad = pad + ' ';
             formattedLine = pad + line[startPoint:loc] + ' ' + line[loc:endPoint]
+	
+	print len(formattedLine);
         
-        return formattedLine;
+        return formattedLine + '\n';
             
     def freq_clicked(self, treeview, path, viewcolumn):
         """ Frequency click event handler """
