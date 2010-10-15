@@ -63,9 +63,10 @@ class ConcordGTK:
         
         # Now connect our on click signal handler, this is done using a dict
         dic = { "on_freq_clicked" : self.freq_clicked,
-                                    "on_exact_match_check_button_toggled" : self.exact_match_check,
-                                    "on_search_box_changed" : self.search_box_update,
-                                    "on_MainWindow_destroy" : gtk.main_quit }
+                "on_exact_match_check_button_toggled" : self.exact_match_check,
+                "on_search_box_changed" : self.search_box_update,
+                "on_MainWindow_destroy" : gtk.main_quit }
+                
         self.wTree.connect_signals(dic)
 
     def calc_num_tokens(self, sentFileName): 
