@@ -69,15 +69,23 @@ class ConcordGTK:
                 
         self.wTree.connect_signals(dic)
 
+
     def calc_num_tokens(self, sentFileName): 
+        """ Return the number of tokens in the sentences file """
+        
         # This almost certainly wants to be more efficient
         return len(file(sentFileName).read().split(' '));
 
-    def search_box_update(self, box): 
 
+    def search_box_update(self, box): 
+        """ Search box update callback """
+        
         print 'Search box updated';
 
-    def exact_match_check(self, treeview): 
+
+    def exact_match_check(self, treeview):
+        """ Toggle exact match check status """
+         
         # This should also update the concordance window automagically
         global exactMatch;
         
@@ -87,7 +95,9 @@ class ConcordGTK:
             exactMatch = False;
 
 
-    def process_line(self, line, token, exactMatch): 
+    def process_line(self, line, token, exactMatch):
+        """ Chop line to max char length, center the line on our token """
+         
         global WINDOW_CHARS;
         formattedLine = '';
         line = line.decode('utf-8');
@@ -130,8 +140,10 @@ class ConcordGTK:
 	
         return formattedLine.strip('\n') + '\n';
             
+            
     def freq_clicked(self, treeview, path, viewcolumn):
         """ Frequency click event handler """
+        
         global exactMatch; 
         # Find out which frequency word was clicked
         clickedFrequency = self.freqList[path[0]].strip().split()[1]
