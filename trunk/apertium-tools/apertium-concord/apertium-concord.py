@@ -3,7 +3,7 @@ Will have a GLADE gui and show concordances for frequencies """
 
 # First import our libs
 
-import sys, pango
+import sys, pango, re
 
 try:
     import pygtk
@@ -19,6 +19,8 @@ except:
     
 MAX_CONCORDANCES = 100 # how many concordances for each frequency to find
 WINDOW_CHARS = 40 # how many characters of context for the concordance ... should be replaced with words -FMT
+
+exactMatch = False;
 
 # Create the main class that will contain and do everything
 class ConcordGTK:
@@ -54,15 +56,34 @@ class ConcordGTK:
 
         
         # Now connect our on click signal handler, this is done using a dict
-        dic = { "on_freq_clicked" : self.freq_clicked, 
+        dic = { "on_freq_clicked" : self.freq_clicked,
+                                    "on_exact_match_check_button_toggled" : self.exact_match_check,
                                     "on_MainWindow_destroy" : gtk.main_quit }
         self.wTree.connect_signals(dic)
 
-    def process_line(self, line, token): 
+    def exact_match_check(self, treeview): 
+        # This should also update the concordance window automagically
+        global exactMatch;
+        
+        if exactMatch == False: 
+            exactMatch = True;
+        else: 
+            exactMatch = False;
+
+
+    def process_line(self, line, token, exactMatch): 
         global WINDOW_CHARS;
         formattedLine = '';
 	line = line.decode('utf-8');
-        loc = line.find(token);
+
+        # Do this with a regular expression allowing for punctuation
+        if exactMatch == True: 
+            patron = re.compile('\W' + token + '\W'); 
+            match = patron.match(line);
+
+            loc = line.find(' ' + token + ' ');
+        else: 
+            loc = line.find(token);
       
         if loc <= 0: 
             return line;
@@ -100,7 +121,7 @@ class ConcordGTK:
             
     def freq_clicked(self, treeview, path, viewcolumn):
         """ Frequency click event handler """
-        
+        global exactMatch; 
         # Find out which frequency word was clicked
         clickedFrequency = self.freqList[path[0]].strip().split()[1]
         
@@ -114,7 +135,7 @@ class ConcordGTK:
             
             if len(myLine):
                 if clickedFrequency in myLine:
-                    newLine = self.process_line(myLine, clickedFrequency);
+                    newLine = self.process_line(myLine, clickedFrequency, exactMatch);
                     if len(newLine.strip()) > 3: 
                         concList.append(newLine)
             else:
