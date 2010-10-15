@@ -89,7 +89,7 @@ class ConcordGTK:
     def process_line(self, line, token, exactMatch): 
         global WINDOW_CHARS;
         formattedLine = '';
-	line = line.decode('utf-8');
+        line = line.decode('utf-8');
 
         # Do this with a regular expression allowing for punctuation
 
