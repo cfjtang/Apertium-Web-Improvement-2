@@ -3,7 +3,7 @@ Will have a GLADE gui and show concordances for frequencies """
 
 # First import our libs
 
-import sys
+import sys, pango
 
 try:
     import pygtk
@@ -17,7 +17,8 @@ try:
 except:
     sys.exit(1)
     
-NO_CONCS_TO_SHOW = 50 # how many concordances for each frequency to find
+MAX_CONCORDANCES = 50 # how many concordances for each frequency to find
+WINDOW_CHARS = 50 # how many characters of context for the concordance ... should be replaced with words -FMT
 
 # Create the main class that will contain and do everything
 class ConcordGTK:
@@ -47,12 +48,55 @@ class ConcordGTK:
                     
         # Get a handle on the concordances view
         self.concView = self.wTree.get_object("concTextView")
+
+        fontdesc = pango.FontDescription("Monospace 10")
+        self.concView.modify_font(fontdesc)
+
         
         # Now connect our on click signal handler, this is done using a dict
         dic = { "on_freq_clicked" : self.freq_clicked, 
                                     "on_MainWindow_destroy" : gtk.main_quit }
         self.wTree.connect_signals(dic)
 
+    def process_line(self, line, token): 
+        global WINDOW_CHARS;
+        formattedLine = '';
+	line = line.decode('utf-8');
+        loc = line.find(token);
+      
+        if loc <= 0: 
+            return line;
+
+        lineLen = len(line);
+        midPoint = lineLen / 2; 
+        startPoint = loc - WINDOW_CHARS; 
+        endPoint = loc + WINDOW_CHARS; 
+
+        if startPoint < 0 and endPoint > lineLen: 
+            diff = WINDOW_CHARS - loc;
+            pad = '';
+            for x in range(diff):
+                pad = pad + ' ';
+            formattedLine = pad + line[0:loc] + ' ' + line[loc:endPoint]
+
+        elif startPoint > 0 and endPoint > lineLen:
+            formattedLine = line[startPoint:loc] + ' ' + line[loc:endPoint]
+
+        elif startPoint < 0 and endPoint < lineLen: 
+            diff = WINDOW_CHARS - loc;
+            pad = '';
+            for x in range(diff):
+                pad = pad + ' ';
+            formattedLine = pad + line[0:loc] + ' ' + line[loc:endPoint]
+
+        else: 
+            diff = WINDOW_CHARS - loc;
+            pad = '';
+            for x in range(diff):
+                pad = pad + ' ';
+            formattedLine = pad + line[startPoint:loc] + ' ' + line[loc:endPoint]
+        
+        return formattedLine;
             
     def freq_clicked(self, treeview, path, viewcolumn):
         """ Frequency click event handler """
@@ -61,16 +105,17 @@ class ConcordGTK:
         clickedFrequency = self.freqList[path[0]].strip().split()[1]
         
         # Find sentences from our file containing this word
-        global NO_CONCS_TO_SHOW
+        global MAX_CONCORDANCES
         concList = []
         sentListHandler = open(self.sentListFile)
         
-        while(len(concList) < NO_CONCS_TO_SHOW) :
+        while(len(concList) < MAX_CONCORDANCES) :
             myLine = sentListHandler.readline()
             
             if len(myLine):
                 if clickedFrequency in myLine:
-                    concList.append(myLine)
+                    newLine = self.process_line(myLine, clickedFrequency);
+                    concList.append(newLine)
             else:
                 # EOL, break the while
                 break
