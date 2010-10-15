@@ -77,28 +77,26 @@ class ConcordGTK:
             pad = '';
             for x in range(diff):
                 pad = pad + ' ';
-            formattedLine = pad + line[0:loc] + ' ' + line[loc:endPoint]
+            formattedLine = pad + line[0:loc] + '  ' + line[loc:endPoint]
 
         elif startPoint > 0 and endPoint > lineLen:
-            formattedLine = line[startPoint:loc] + ' ' + line[loc:endPoint]
+            formattedLine = line[startPoint:loc] + '  ' + line[loc:endPoint]
 
         elif startPoint < 0 and endPoint < lineLen: 
             diff = WINDOW_CHARS - loc;
             pad = '';
             for x in range(diff):
                 pad = pad + ' ';
-            formattedLine = pad + line[0:loc] + ' ' + line[loc:endPoint]
+            formattedLine = pad + line[0:loc] + '  ' + line[loc:endPoint]
 
         else: 
             diff = WINDOW_CHARS - loc;
             pad = '';
             for x in range(diff):
                 pad = pad + ' ';
-            formattedLine = pad + line[startPoint:loc] + ' ' + line[loc:endPoint]
+            formattedLine = pad + line[startPoint:loc] + '  ' + line[loc:endPoint]
 	
-	print len(formattedLine);
-        
-        return formattedLine + '\n';
+        return formattedLine.strip('\n') + '\n';
             
     def freq_clicked(self, treeview, path, viewcolumn):
         """ Frequency click event handler """
@@ -117,7 +115,8 @@ class ConcordGTK:
             if len(myLine):
                 if clickedFrequency in myLine:
                     newLine = self.process_line(myLine, clickedFrequency);
-                    concList.append(newLine)
+                    if len(newLine.strip()) > 3: 
+                        concList.append(newLine)
             else:
                 # EOL, break the while
                 break
