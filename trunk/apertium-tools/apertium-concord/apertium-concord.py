@@ -1,5 +1,14 @@
-""" First go at a concordancer for spectie
-Will have a GLADE gui and show concordances for frequencies """
+""" 
+    First go at a concordancer for spectie
+    Has a GLADE gui and show concordances for frequencies 
+    Sebastian Clarke, Francis Tyers - 10/2010 
+
+    Haiku are easy, 
+    But somtimes they don't make sense, 
+    Refrigerator
+
+
+"""
 
 # First import our libs
 
@@ -103,8 +112,8 @@ class ConcordGTK:
         
         global WINDOW_WORDS # how many words to display
         line = line.decode('utf-8')
+        word_loc = len(line.split(token)[0].strip().split(' '))
         line = line.strip().split(' ') # turn line into list of words
-        word_loc = line.index(token)
         
         # if our word is not in the first 10
         if not word_loc < WINDOW_WORDS:
@@ -116,7 +125,7 @@ class ConcordGTK:
         line = line[0:WINDOW_WORDS]       
         
         # split line into two segments, around word
-        word_loc = line.index(token)
+        word_loc = len(' '.join(line).split(token)[0].strip().split(' '))
         front = line[0:word_loc]
         back = line[word_loc:len(line)]
        
@@ -185,7 +194,7 @@ class ConcordGTK:
         
         global exactMatch; 
         # Find out which frequency word was clicked
-        clickedFrequency = self.freqList[path[0]].strip().split()[1]
+        clickedFrequency = ' '.join(self.freqList[path[0]].strip().split()[1:])
         
         # Find sentences from our file containing this word
         global MAX_CONCORDANCES
