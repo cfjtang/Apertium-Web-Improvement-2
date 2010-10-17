@@ -97,11 +97,13 @@ class ConcordGTK:
 
 
     def process_line(self, line, token, exactMatch):
-        """ Another process line which works on words not chars """
+        """ Another process line which works on words not chars 
+        This function strips a line down to a max amount of words
+        and centers it on the token """
         
-        global WINDOW_WORDS
+        global WINDOW_WORDS # how many words to display
         line = line.decode('utf-8')
-        line = line.strip().split(' ')
+        line = line.strip().split(' ') # turn line into list of words
         word_loc = line.index(token)
         
         # if our word is not in the first 10
@@ -125,7 +127,6 @@ class ConcordGTK:
         front.insert(0,''.join(pad))
         
         # stick the two segments together
-        new_line = front
         front.extend(back)
         
         # return it as a string
