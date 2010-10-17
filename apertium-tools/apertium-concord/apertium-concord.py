@@ -111,7 +111,7 @@ class ConcordGTK:
             line = line[word_loc - half:word_loc + half]
 
         # ensure it is only 10 long
-        line = line[0:WINDOW_WORDS]        
+        line = line[0:WINDOW_WORDS]       
         
         # split line into two segments, around word
         word_loc = line.index(token)
@@ -119,7 +119,7 @@ class ConcordGTK:
         back = line[word_loc:len(line)]
        
         # add pad word to first segment       
-        MAGIC_PAD_CHARS_VALUE = 80
+        MAGIC_PAD_CHARS_VALUE = 8*WINDOW_WORDS
         diff = MAGIC_PAD_CHARS_VALUE - len(' '.join(front))
         pad = [' ' for i in range(diff)]
         front.insert(0,''.join(pad))
