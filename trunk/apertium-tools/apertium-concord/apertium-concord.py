@@ -30,8 +30,6 @@ MAX_CONCORDANCES = 100 # how many concordances for each frequency to find
 WINDOW_CHARS = 40 # how many characters of context for the concordance ... should be replaced with words -FMT
 WINDOW_WORDS = 10 # has now been replaced with words - SEB
 
-exactMatch = False;
-
 # Create the main class that will contain and do everything
 class ConcordGTK:
     """ This is our concordancer class, will show UI and respond to input """
@@ -42,6 +40,7 @@ class ConcordGTK:
         # Set up instance variables
         self.freqList = freqList
         self.sentListFile = sentListFile
+        self.exactMatch = False;
         
         # Set the glade file
         self.gladefile = "apertium-concord.glade"
@@ -97,15 +96,13 @@ class ConcordGTK:
         """ Toggle exact match check status """
          
         # This should also update the concordance window automagically
-        global exactMatch;
-        
-        if exactMatch == False: 
-            exactMatch = True;
+        if self.exactMatch == False: 
+            self.exactMatch = True;
         else: 
-            exactMatch = False;
+            self.exactMatch = False;
 
 
-    def process_line(self, line, token, exactMatch):
+    def process_line(self, line, token):
         """ Another process line which works on words not chars 
         This function strips a line down to a max amount of words
         and centers it on the token """
@@ -142,57 +139,9 @@ class ConcordGTK:
         return ' '.join(front)+'\n'
         
         
-
-    def old_process_line(self, line, token, exactMatch):
-        """ Chop line to max char length, centre the line on our token """
-         
-        global WINDOW_CHARS;
-        formattedLine = '';
-        line = line.decode('utf-8');
-
-        # Do this with a regular expression allowing for punctuation
-
-        loc = line.find(token);
-      
-        if loc <= 0: 
-            return line;
-
-        lineLen = len(line);
-        midPoint = lineLen / 2; 
-        startPoint = loc - WINDOW_CHARS; 
-        endPoint = loc + WINDOW_CHARS; 
-
-        if startPoint < 0 and endPoint > lineLen: 
-            diff = WINDOW_CHARS - loc;
-            pad = '';
-            for x in range(diff):
-                pad = pad + ' ';
-            formattedLine = pad + line[0:loc] + '  ' + line[loc:endPoint]
-
-        elif startPoint > 0 and endPoint > lineLen:
-            formattedLine = line[startPoint:loc] + '  ' + line[loc:endPoint]
-
-        elif startPoint < 0 and endPoint < lineLen: 
-            diff = WINDOW_CHARS - loc;
-            pad = '';
-            for x in range(diff):
-                pad = pad + ' ';
-            formattedLine = pad + line[0:loc] + '  ' + line[loc:endPoint]
-
-        else: 
-            diff = WINDOW_CHARS - loc;
-            pad = '';
-            for x in range(diff):
-                pad = pad + ' ';
-            formattedLine = pad + line[startPoint:loc] + '  ' + line[loc:endPoint]
-	
-        return formattedLine.strip('\n') + '\n';
-            
-            
     def freq_clicked(self, treeview, path, viewcolumn):
         """ Frequency click event handler """
         
-        global exactMatch; 
         # Find out which frequency word was clicked
         clickedFrequency = ' '.join(self.freqList[path[0]].strip().split()[1:])
         
@@ -207,7 +156,7 @@ class ConcordGTK:
             if len(myLine):
                 if ' '+clickedFrequency+' ' in myLine: # changing this to match whole word - SEB
                 
-                    newLine = self.process_line(myLine, clickedFrequency, exactMatch);
+                    newLine = self.process_line(myLine, clickedFrequency);
                     if len(newLine.strip()) > 3: 
                         concList.append(newLine)
             else:
