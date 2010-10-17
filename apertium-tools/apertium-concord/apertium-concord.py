@@ -19,6 +19,7 @@ except:
     
 MAX_CONCORDANCES = 100 # how many concordances for each frequency to find
 WINDOW_CHARS = 40 # how many characters of context for the concordance ... should be replaced with words -FMT
+WINDOW_WORDS = 10 # has now been replaced with words - SEB
 
 exactMatch = False;
 
@@ -96,6 +97,43 @@ class ConcordGTK:
 
 
     def process_line(self, line, token, exactMatch):
+        """ Another process line which works on words not chars """
+        
+        global WINDOW_WORDS
+        line = line.decode('utf-8')
+        line = line.strip().split(' ')
+        word_loc = line.index(token)
+        
+        # if our word is not in the first 10
+        if not word_loc < WINDOW_WORDS:
+            # we need to strip this down to 10 words, with ours in the middle
+            half = WINDOW_WORDS/2
+            line = line[word_loc - half:word_loc + half]
+
+        # ensure it is only 10 long
+        line = line[0:WINDOW_WORDS]        
+        
+        # split line into two segments, around word
+        word_loc = line.index(token)
+        front = line[0:word_loc]
+        back = line[word_loc:len(line)]
+       
+        # add pad word to first segment       
+        MAGIC_PAD_CHARS_VALUE = 80
+        diff = MAGIC_PAD_CHARS_VALUE - len(' '.join(front))
+        pad = [' ' for i in range(diff)]
+        front.insert(0,''.join(pad))
+        
+        # stick the two segments together
+        new_line = front
+        front.extend(back)
+        
+        # return it as a string
+        return ' '.join(front)+'\n'
+        
+        
+
+    def old_process_line(self, line, token, exactMatch):
         """ Chop line to max char length, centre the line on our token """
          
         global WINDOW_CHARS;
@@ -151,13 +189,14 @@ class ConcordGTK:
         # Find sentences from our file containing this word
         global MAX_CONCORDANCES
         concList = []
-        sentListHandler = open(self.sentListFile)
+        sentListHandler = open(self.sentListFile) # should prob change this to ro
         
         while(len(concList) < MAX_CONCORDANCES) :
             myLine = sentListHandler.readline()
             
             if len(myLine):
-                if clickedFrequency in myLine:
+                if ' '+clickedFrequency+' ' in myLine: # changing this to match whole word - SEB
+                
                     newLine = self.process_line(myLine, clickedFrequency, exactMatch);
                     if len(newLine.strip()) > 3: 
                         concList.append(newLine)
