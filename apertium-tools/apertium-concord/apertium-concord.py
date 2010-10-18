@@ -27,15 +27,15 @@ except:
     sys.exit(1)
     
 MAX_CONCORDANCES = 100 # how many concordances for each frequency to find
-WINDOW_CHARS = 40 # how many characters of context for the concordance ... should be replaced with words -FMT
-WINDOW_WORDS = 10 # has now been replaced with words - SEB
+WINDOW_WORDS = 10 # how many buffer words to aim for
 
 # Create the main class that will contain and do everything
 class ConcordGTK:
     """ This is our concordancer class, will show UI and respond to input """
 
     def __init__(self, freqList, sentListFile):
-        """ The constructor for this class """
+        """ The constructor for this class 
+        Takes a list of frequencys and a file containing sentences """
         
         # Set up instance variables
         self.freqList = freqList
@@ -107,6 +107,8 @@ class ConcordGTK:
         line = line.decode('utf-8')
         word_loc = len(line.split(token)[0].strip().split(' '))
         line = line.strip().split(' ') # turn line into list of words
+        fullLine = []
+        fullLine.extend(line)
         
         # if our word is not in the first 10
         if not word_loc < WINDOW_WORDS:
@@ -117,18 +119,62 @@ class ConcordGTK:
         # ensure it is only 10 long
         line = line[0:WINDOW_WORDS]       
         
+        # ok so we could make this a whole lot more complicated by padding with
+        # words from the context sentence rather than just spaces
+        
         # split line into two segments, around word
+        # get our word location in newly shortened line
+        old_word_loc = word_loc
         word_loc = len(' '.join(line).split(token)[0].strip().split(' '))
+        
         if word_loc == len(line):
             word_loc -= 1
         front = line[0:word_loc]
         back = line[word_loc:len(line)]
        
-        # add pad word to first segment       
+        # add pad word to first segment
+        # TO REPLACE, add pad words from the context instead       
         MAGIC_PAD_CHARS_VALUE = 8*WINDOW_WORDS
         diff = MAGIC_PAD_CHARS_VALUE - len(' '.join(front))
-        pad = [' ' for i in range(diff)]
-        front.insert(0,''.join(pad))
+        
+        # get the words preceeding our token if there are some
+        padWords = fullLine[0:old_word_loc]
+        
+        if not len(padWords):    
+            pad = [' ' for i in range(diff)]
+            front.insert(0,''.join(pad))
+        else:
+            # there are some pad words so use them!
+            spaceToFill = diff
+            pad = [] # a list of words to pad with, plus a pad word of spaces
+            
+            # loop backwards through padWords, adding words to our pad
+            done = False
+            i = len(padWords)-1
+            while not done:
+                try:
+                    ourWord = padWords[i]
+                except IndexError:
+                    # ran out of pad words!
+                    break
+                    
+                if ( (len(padWords[i]) + 2) <= spaceToFill ):
+                    pad.append(padWords[i])
+                    spaceToFill = MAGIC_PAD_CHARS_VALUE - (len(' '.join(front)) +
+                                                            len(' '.join(pad)))
+                                                         
+                    i -= 1
+                else:
+                    done = True
+            # reverse pad list and pad remaining space with spaces
+            if spaceToFill:
+                spacePadWord = [' ' for i in range(spaceToFill)]
+                pad.append(''.join(spacePadWord))
+            pad.reverse()
+            front.insert(0,' '.join(pad))
+            
+                
+            
         
         # stick the two segments together
         front.extend(back)
