@@ -172,8 +172,6 @@ class ConcordGTK:
         """ Frequency click event handler """
         
         # Find out which frequency word was clicked, store
-        print path
-        print self.listStore[path[0]][0]
         clickedFrequency = ' '.join(self.listStore[path[0]][0].strip().split()[1:]) 
         self.currentFrequency = clickedFrequency
         # update the view
