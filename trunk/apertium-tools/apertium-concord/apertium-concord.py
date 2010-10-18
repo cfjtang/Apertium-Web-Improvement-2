@@ -86,6 +86,16 @@ class ConcordGTK:
         # This almost certainly wants to be more efficient
         return len(file(sentFileName).read().split(' '));
 
+    
+    def filter_frequencies(self, searchTerm):
+        """ A function to filter the frequency box and update """
+        
+        self.listStore.clear()
+        for line in self.freqList:
+            if searchTerm in line:
+                self.listStore.append([line.strip()])
+        
+
 
     def process_line(self, line, token):
         """ Another process line which works on words not chars 
@@ -94,8 +104,6 @@ class ConcordGTK:
         
         global WINDOW_WORDS # how many words to display
         line = line.decode('utf-8')
-        if self.exactMatch: token = ' '+token+' '
-        else: token = ' '+token            
         word_loc = len(line.split(token)[0].strip().split(' '))
         line = line.strip().split(' ') # turn line into list of words
         
@@ -109,7 +117,6 @@ class ConcordGTK:
         line = line[0:WINDOW_WORDS]       
         
         # split line into two segments, around word
-        
         word_loc = len(' '.join(line).split(token)[0].strip().split(' '))
         if word_loc == len(line):
             word_loc -= 1
@@ -136,24 +143,17 @@ class ConcordGTK:
         global MAX_CONCORDANCES
         concList = []
         sentListHandler = open(self.sentListFile) # should prob change this to ro
+        if self.exactMatch: frequency = ' '+frequency+' '
+        else: frequency = ' '+frequency
         
         while(len(concList) < MAX_CONCORDANCES) :
             myLine = sentListHandler.readline()
             
             if len(myLine):
-            
-                # different kinds of matching, exact or not
-                if self.exactMatch:
-                    if ' '+frequency+' ' in myLine:
-                        newLine = self.process_line(myLine, frequency);
-                        if len(newLine.strip()) > 3: 
-                            concList.append(newLine)
-                else:
-                    if ' '+frequency in myLine:
-                        newLine = self.process_line(myLine, frequency);
-                        if len(newLine.strip()) > 3: 
-                            concList.append(newLine)
-                    
+                if frequency in myLine:
+                    newLine = self.process_line(myLine, frequency);
+                    if len(newLine.strip()) > 3: 
+                        concList.append(newLine)
             else:
                 # EOL, break the while
                 break
@@ -181,7 +181,7 @@ class ConcordGTK:
     def search_box_update(self, box): 
         """ Search box update callback """
            
-        print 'Search box updated';
+        self.filter_frequencies(box.get_text())
 
 
     def exact_match_check(self, treeview):
