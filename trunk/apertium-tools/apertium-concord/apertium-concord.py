@@ -40,7 +40,8 @@ class ConcordGTK:
         # Set up instance variables
         self.freqList = freqList
         self.sentListFile = sentListFile
-        self.exactMatch = False;
+        self.exactMatch = True;
+        self.currentFrequency = None;
         
         # Set the glade file
         self.gladefile = "apertium-concord.glade"
@@ -86,22 +87,6 @@ class ConcordGTK:
         return len(file(sentFileName).read().split(' '));
 
 
-    def search_box_update(self, box): 
-        """ Search box update callback """
-        
-        print 'Search box updated';
-
-
-    def exact_match_check(self, treeview):
-        """ Toggle exact match check status """
-         
-        # This should also update the concordance window automagically
-        if self.exactMatch == False: 
-            self.exactMatch = True;
-        else: 
-            self.exactMatch = False;
-
-
     def process_line(self, line, token):
         """ Another process line which works on words not chars 
         This function strips a line down to a max amount of words
@@ -109,6 +94,8 @@ class ConcordGTK:
         
         global WINDOW_WORDS # how many words to display
         line = line.decode('utf-8')
+        if self.exactMatch: token = ' '+token+' '
+        else: token = ' '+token            
         word_loc = len(line.split(token)[0].strip().split(' '))
         line = line.strip().split(' ') # turn line into list of words
         
@@ -122,7 +109,10 @@ class ConcordGTK:
         line = line[0:WINDOW_WORDS]       
         
         # split line into two segments, around word
+        
         word_loc = len(' '.join(line).split(token)[0].strip().split(' '))
+        if word_loc == len(line):
+            word_loc -= 1
         front = line[0:word_loc]
         back = line[word_loc:len(line)]
        
@@ -139,11 +129,8 @@ class ConcordGTK:
         return ' '.join(front)+'\n'
         
         
-    def freq_clicked(self, treeview, path, viewcolumn):
-        """ Frequency click event handler """
-        
-        # Find out which frequency word was clicked
-        clickedFrequency = ' '.join(self.freqList[path[0]].strip().split()[1:])
+    def update_conc_view(self, frequency):
+        """ Function to update the concordance window for a given frequency """
         
         # Find sentences from our file containing this word
         global MAX_CONCORDANCES
@@ -154,11 +141,19 @@ class ConcordGTK:
             myLine = sentListHandler.readline()
             
             if len(myLine):
-                if ' '+clickedFrequency+' ' in myLine: # changing this to match whole word - SEB
-                
-                    newLine = self.process_line(myLine, clickedFrequency);
-                    if len(newLine.strip()) > 3: 
-                        concList.append(newLine)
+            
+                # different kinds of matching, exact or not
+                if self.exactMatch:
+                    if ' '+frequency+' ' in myLine:
+                        newLine = self.process_line(myLine, frequency);
+                        if len(newLine.strip()) > 3: 
+                            concList.append(newLine)
+                else:
+                    if ' '+frequency in myLine:
+                        newLine = self.process_line(myLine, frequency);
+                        if len(newLine.strip()) > 3: 
+                            concList.append(newLine)
+                    
             else:
                 # EOL, break the while
                 break
@@ -168,7 +163,34 @@ class ConcordGTK:
         # Update the concordances list accordingly
         self.concView.get_buffer().set_text("")
         for line in concList:
-            self.concView.get_buffer().insert_at_cursor(line)  
+            self.concView.get_buffer().insert_at_cursor(line)
+        
+        
+    # CALL BACKS
+        
+    def freq_clicked(self, treeview, path, viewcolumn):
+        """ Frequency click event handler """
+        
+        # Find out which frequency word was clicked, store
+        clickedFrequency = ' '.join(self.freqList[path[0]].strip().split()[1:]) 
+        self.currentFrequency = clickedFrequency
+        # update the view
+        self.update_conc_view(clickedFrequency) 
+     
+        
+    def search_box_update(self, box): 
+        """ Search box update callback """
+           
+        print 'Search box updated';
+
+
+    def exact_match_check(self, treeview):
+        """ Toggle exact match check status """
+         
+        # This should also update the concordance window automagically
+        self.exactMatch = not self.exactMatch
+        if not self.currentFrequency == None:
+            self.update_conc_view(self.currentFrequency)
             
 
 if __name__ == "__main__":
