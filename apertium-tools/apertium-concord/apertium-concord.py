@@ -90,7 +90,7 @@ class ConcordGTK:
     def filter_frequencies(self, searchTerm):
         """ A function to filter the frequency box and update """
 
-	matcher = re.compile(searchTerm);
+	matcher = re.compile('.*' + searchTerm);
         self.listStore.clear()
         for line in self.freqList:
             if matcher.match(line):
