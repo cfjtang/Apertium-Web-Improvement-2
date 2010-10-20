@@ -22,6 +22,7 @@
  */
 
 #include <stdlib.h>
+#include <math.h>
 #include <sstream>
 #include <iostream>
 #include <getopt.h>
@@ -50,7 +51,7 @@ size_t         m_nGramOrder; //! max n-gram length contained in this LM.
 
 // Prototypes
 
-bool           load(const string &filePath, float weight, size_t nGramOrder);
+bool           load(const string &filePath, float weight);
 float          rank(const string &frame);
 void           usage(const char *name);
 void           process(FILE *input, FILE *output);
@@ -72,10 +73,9 @@ void usage(const char *name)
         exit(EXIT_FAILURE);
 }
 
-bool load(const string &filePath, float weight, size_t nGramOrder)
+bool load(const string &filePath, float weight)
 {
         m_weight       = weight;
-        m_nGramOrder   = nGramOrder;
 
         // get name of LM file and, if any, of the micro-macro map file
         m_filePath = strdup(filePath.c_str());
@@ -97,6 +97,7 @@ bool load(const string &filePath, float weight, size_t nGramOrder)
         }
 
         m_lmtb_size = m_lmtb->maxlevel();       
+        m_nGramOrder = m_lmtb->maxlevel();       
 
         // LM can be ok, just outputs warnings
 
@@ -119,7 +120,7 @@ bool load(const string &filePath, float weight, size_t nGramOrder)
 inline string trim(const string& o) 
 {
 	string ret = o;
-	const char* chars = "\n\t\v\f\r ";
+	const char* chars = "\n\t\v\f\r *"; // whitespace and unknown words
 	ret.erase(ret.find_last_not_of(chars)+1);
 	ret.erase(0, ret.find_first_not_of(chars));
 	return ret;
@@ -142,56 +143,44 @@ float rank(const string &frame)
         m_lmtb_ng = new ngram(m_lmtb->getDict()); // ngram of words/micro tags
 	m_lmtb_ng->size = 0;
 
+	int count = 0;
         while (ss >> buf) {
-                s_unigrams.push_back(trim(buf));
-
-/*
-        	m_lmtb_ng = new ngram(m_lmtb->getDict()); // ngram of words/micro tags
-                lmId = m_lmtb->getDict()->encode(buf.c_str()); 
-                m_lmtb_ng->pushc(lmId);
-		prob = m_lmtb->clprob(*m_lmtb_ng);
-		sprob += prob;
-		cerr << "_1: " << buf << " " << prob << endl;
-		delete m_lmtb_ng;
-		num++;
-*/
+		if(count == 1) {
+                	s_unigrams.push_back(trim(buf));
+		}
+		if(strstr(trim(buf).c_str(),"].[]")) {
+			count = 1;
+		}
         }
 
-        for(unsigned int i = 1; i < (s_unigrams.size()); i++) {
-		buf = s_unigrams.at(i - 1) + " " + s_unigrams.at(i);
-
+        for(unsigned int i = (m_nGramOrder - 1); i < (s_unigrams.size()); i++) {
+		buf = "";
+        	m_lmtb_ng = new ngram(m_lmtb->getDict()); // ngram of words/micro tags
+		for(unsigned int j = m_nGramOrder; j > 0; j--) {
+			buf = buf + s_unigrams.at(i - (j - 1)) + " ";
+                	lmId = m_lmtb->getDict()->encode(s_unigrams.at(i - (j - 1)).c_str()); 
+                	m_lmtb_ng->pushc(lmId);
+		}
+		buf = trim(buf);
 /*
-        	m_lmtb_ng = new ngram(m_lmtb->getDict()); // ngram of words/micro tags
-                lmId = m_lmtb->getDict()->encode(s_unigrams.at(i - 1).c_str()); 
-                m_lmtb_ng->pushc(lmId);
-                lmId = m_lmtb->getDict()->encode(s_unigrams.at(i).c_str()); 
-                m_lmtb_ng->pushc(lmId);
-		prob = m_lmtb->clprob(*m_lmtb_ng);
-		sprob += prob;
-		cerr << "_2: " << buf << " " << prob << endl;
-		delete m_lmtb_ng;
-		num++;
-*/
-        }
-
-        for(unsigned int i = 2; i < (s_unigrams.size()); i++) {
-		buf = s_unigrams.at(i - 2) + " " + s_unigrams.at(i - 1) + " " + s_unigrams.at(i);
-
-        	m_lmtb_ng = new ngram(m_lmtb->getDict()); // ngram of words/micro tags
                 lmId = m_lmtb->getDict()->encode(s_unigrams.at(i - 2).c_str()); 
                 m_lmtb_ng->pushc(lmId);
                 lmId = m_lmtb->getDict()->encode(s_unigrams.at(i - 1).c_str()); 
                 m_lmtb_ng->pushc(lmId);
                 lmId = m_lmtb->getDict()->encode(s_unigrams.at(i).c_str()); 
                 m_lmtb_ng->pushc(lmId);
+*/
 		prob = m_lmtb->clprob(*m_lmtb_ng);
 		sprob += prob;
-		cerr << "_3: " << buf << " " << prob << endl;
+		cerr << "_" << m_nGramOrder << ": " << buf << " " << prob << endl;
 		delete m_lmtb_ng;
 		num++;
         }
-        cerr << num << endl; 
-        return sprob  / num;
+        cerr << "sprob_ " << sprob << endl;
+        cerr << "sprob_ /" << num << " " << sprob / num << endl;
+        cerr << "sprob_x/" << num << " " << log10(exp(sprob * 2.30258509299405f) / num) << endl;                               
+        //return sprob  / num;
+        return sprob ;
         
 }
 
@@ -275,7 +264,7 @@ int main(int argc, char **argv)
         }
 
         if(optind == (argc - 3)) {
-                bool val = load(argv[optind], 1.0, 3);
+                bool val = load(argv[optind], 1.0);
 
                 if(val == false) {
                         usage(argv[0]);
@@ -293,7 +282,7 @@ int main(int argc, char **argv)
                 }
 
         } else if(optind == (argc -2)) { 
-                bool val = load(argv[optind], 1.0, 3);
+                bool val = load(argv[optind], 1.0);
 
                 if(val == false) {
                         usage(argv[0]);
@@ -304,7 +293,7 @@ int main(int argc, char **argv)
                         usage(argv[0]);
                 }
         } else if(optind == (argc - 1)) {
-                bool val = load(argv[optind], 1.0, 3);
+                bool val = load(argv[optind], 1.0);
 
                 if(val == false) {
                         usage(argv[0]);
