@@ -47,7 +47,9 @@ int            m_lmtb_dub;           // dictionary upperbound
 
 float          m_weight; //! scoring weight.
 string         m_filePath; //! for debugging purposes.
+string         m_stopWordPath;
 size_t         m_nGramOrder; //! max n-gram length contained in this LM.
+vector<string> stopWords;
 
 // Prototypes
 
@@ -59,15 +61,17 @@ void           process(FILE *input, FILE *output);
 void usage(const char *name) 
 {
         cout << basename(name) << ": rank a stream with a language model" << endl;
-        cout << "USAGE: " << basename(name) << " [-r] lm_file [input_file [output_file]]" << endl;
+        cout << "USAGE: " << basename(name) << " [-r] [-s stopword_file] lm_file [input_file [output_file]]" << endl;
         cout << "Options:" << endl;
 #if HAVE_GETOPT_LONG
         cout << "  -r, --rank:             ranking (default behaviour)" << endl;
+        cout << "  -s, --stop-words:       file containing stop words" << endl;
         cout << "  -v, --version:          version" << endl;
         cout << "  -h, --help:             show this help" << endl;
 #else
         cout << "  -r:   ranking (default behaviour)" << endl;
         cout << "  -v:   version" << endl;
+        cout << "  -s:   file containing stop words" << endl;
         cout << "  -h:   show this help" << endl;
 #endif
         exit(EXIT_FAILURE);
@@ -184,6 +188,18 @@ float rank(const string &frame)
         
 }
 
+void load_stopwords(const string &path)
+{
+	ifstream ifs(path.c_str());
+	string temp;
+
+	while(getline(ifs, temp)) {
+     		stopWords.push_back(temp);
+	}
+
+	std::cerr << "+ " << stopWords.size() << " stop words loaded." << std::endl;
+}
+
 void process(FILE *input, FILE *output)
 {
         char c = 0;
@@ -201,11 +217,28 @@ void process(FILE *input, FILE *output)
                         float max_value = 0.0;
                         int max_ind = 0;
                         float log_prob = 0.0;
-                        
+               
+			// eliminate stop words here 
+			string orig_sentence = string(unambig);
+
+			for (unsigned int i = 0; i < stopWords.size(); i++) {
+				string::size_type pos = 0;
+       				pos = unambig.find(stopWords[i] + " ", pos);
+				if(pos != string::npos && pos == 0) {
+					unambig.replace(pos, stopWords[i].size()+1, "");
+				}
+				pos = 0;
+	                        while ((pos = unambig.find(" " + stopWords[i] + " ", pos)) != string::npos) {
+        	                        unambig.replace(pos, stopWords[i].size()+1, "");
+                	                pos++;
+        	                }
+			}	
+			std::cerr << "unambig_nostop: " << unambig << std::endl;
+         
                         log_prob = rank(unambig);
 			// same fiddle used by Moses 
                         //cout << exp(log_prob * 2.30258509299405f)  << "\t||\t" << unambig << endl;                               
-                        cout << log_prob << "\t||\t" << unambig << endl;                               
+                        cout << log_prob << "\t||\t" << orig_sentence << endl;                               
                         unambig = "";
 
                 } else {
@@ -240,9 +273,9 @@ int main(int argc, char **argv)
 
 #if HAVE_GETOPT_LONG
                 int option_index;
-                int c = getopt_long(argc, argv, "rvh", long_options, &option_index);
+                int c = getopt_long(argc, argv, "rvhs:", long_options, &option_index);
 #else
-                int c = getopt(argc, argv, "rvh");
+                int c = getopt(argc, argv, "rvhs:");
 #endif    
                 if(c == -1) {
                         break;
@@ -255,7 +288,10 @@ int main(int argc, char **argv)
                                 cout << basename(argv[0]) << " version " << VERSION << endl;
                                 exit(EXIT_SUCCESS);
                                 break;
-                        
+                        case 's':
+				m_stopWordPath = string(argv[optind-1]);
+				load_stopwords(m_stopWordPath);
+                		break;        
                         case 'h':
                         default:
                                 usage(argv[0]);
