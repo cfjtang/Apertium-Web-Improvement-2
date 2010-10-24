@@ -405,6 +405,11 @@
       <cat-item lemma="que" tags="cnjadv"/>
     </def-cat>
 
+    <def-cat n="forma_manera">
+      <cat-item lemma="forma" tags="n.*"/>
+      <cat-item lemma="manera" tags="n.*"/>
+    </def-cat>
+
     <def-cat n="por">
       <cat-item lemma="por" tags="pr"/>
     </def-cat>
@@ -9341,6 +9346,179 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</let>
       </action>
     </rule>
+
+
+<rule comment="REGLA: DE MANERA ADJ (de forma escandalosa -> skandale)">
+      <pattern>
+        <pattern-item n="de"/>
+	<pattern-item n="forma_manera"/>
+	<pattern-item n="adj"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="adv" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="adv"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="3" side="tl" part="lemh"/> 
+	          <lit-tag v="adv"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: DE MANERA ADJ I ADJ (de forma escandalosa i monstruosa -> skandale kaj monstre)">
+      <pattern>
+        <pattern-item n="de"/>
+	<pattern-item n="forma_manera"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="cnjcoo"/>
+	<pattern-item n="adj"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="adv" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="adv"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="3" side="tl" part="lemh"/> 
+	          <lit-tag v="adv"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="3"/>   
+	    <lu>   
+	      <clip pos="4" side="tl" part="whole"/> 
+	    </lu>
+		<b pos="4"/>   
+		<lu>   
+		  <clip pos="5" side="tl" part="lemh"/> 
+	          <lit-tag v="adv"/>
+		  <clip pos="5" side="tl" part="lemq"/> 
+		</lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: DE FORMA QUE (de forma que -> tiel ke) (EO)">
+      <pattern>
+        <pattern-item n="de"/>
+	<pattern-item n="forma_manera"/>
+	<pattern-item n="cnjcorregir"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+		 <chunk name="adv" case="caseFirstWord">
+            		<tags>
+            	  	<tag><lit-tag v="adv"/></tag>
+            		</tags>
+		<lu>
+	          <lit v="tiel"/>
+                  <lit-tag v="adv"/>
+		</lu>   
+	      </chunk>
+	      <b pos="2"/>
+		 <chunk name="cnjsub">
+            		<tags>
+            	  	<tag><lit-tag v="cnjsub"/></tag>
+            		</tags>
+		<lu>
+	          <lit v="ke"/>
+                  <lit-tag v="cnjsub"/>
+		</lu>   
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: DE FORMA A INF (de forma a fer -> por fari)">
+      <pattern>
+        <pattern-item n="de"/>
+	<pattern-item n="forma_manera"/>
+	<pattern-item n="a"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="4"/>
+        </call-macro>
+	    <out>
+		 <chunk name="pr" case="caseFirstWord">
+            		<tags>
+            	  	<tag><lit-tag v="PREP"/></tag>
+            		</tags>
+		<lu>
+	          <lit v="por"/>
+                  <lit-tag v="pr"/>
+		</lu>   
+	      </chunk>
+	      <b pos="3"/>
+                  <chunk name="inf">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="4" side="sl" part="temps"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="4" side="tl" part="lemh"/>
+                      <clip pos="4" side="tl" part="a_verb"/>
+                      <clip pos="4" side="tl" part="temps"/>
+                      <clip pos="4" side="tl" part="nbr"/>
+                    </lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
 
 
 
