@@ -76,8 +76,10 @@ EXTRA_DIST = $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
 	   $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
 	   $(BASENAME).$(LANG2).acx \
-	   modes.xml
-
+	   modes.xml \
+           $(BASENAME).$(LANG2).tsx \
+           $(PREFIX1).prob $(PREFIX2).prob
+           
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 #           $(BASENAME).$(LANG1).tsx 
 #           $(BASENAME).$(LANG2).tsx  
