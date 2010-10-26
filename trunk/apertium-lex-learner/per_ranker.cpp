@@ -73,7 +73,8 @@ pair<int, string> get_id_and_sentence(const string &line)
 
 	unsigned int id = 0;
 	unsigned int plox = line.find(':');	
-	id = atoi(line.substr(1,plox).c_str());
+	string sid = trim(line.substr(1,plox));
+	id = atoi(sid.c_str());
 	plox = line.find(".[]");
 	p = make_pair(id, trim(line.substr(plox+3)));
 
@@ -158,7 +159,7 @@ float rank(const string &frame)
 	cerr << "N:REF " << s_unigrams.size() << " : " << s_ref_unigrams.size() << endl;
 
 	if(0 == s_ref_unigrams.size()) {
-		return -1.0;
+		return 100.0;
 	}
 
 	errors = edit_distance(s_unigrams, s_ref_unigrams);	
