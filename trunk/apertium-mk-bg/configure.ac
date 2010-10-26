@@ -4,8 +4,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-mk-bg], [0.0.1], [tihomir.rangelov@gmail.com])
-AM_INIT_AUTOMAKE([apertium-mk-bg], [0.0.1], no-define)
+AC_INIT([apertium-mk-bg], [0.2.0], [tihomir.rangelov@gmail.com])
+AM_INIT_AUTOMAKE([apertium-mk-bg], [0.2.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 #AC_CONFIG_HEADER([config])
