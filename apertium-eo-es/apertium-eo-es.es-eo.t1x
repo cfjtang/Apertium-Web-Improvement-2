@@ -426,6 +426,10 @@
       <cat-item lemma="estar# a punto de" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="venirde">
+      <cat-item lemma="venir# de" tags="vblex.*"/>
+    </def-cat>
+
     <def-cat n="seguir"> <!--EO perífrasi-->
       <cat-item lemma="seguir" tags="vblex.*"/>
       <cat-item lemma="continuar" tags="vblex.*"/>
@@ -10411,6 +10415,117 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </let>
       </action>
     </rule>
+
+<rule comment="VERBvenirde + INF (vengo de hacer -> mi ĵus faris)">
+      <pattern>
+	<pattern-item n="venirde"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+
+	<choose>
+
+              <when>           <!-- traduccions a participi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pp"/><!-- -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </let>
+            <out>
+
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="ĵus"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b/>
+
+                  <chunk name="verb_perif">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="case"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
+                    </lu>
+                  </chunk>
+            </out>
+              </when>
+
+            <otherwise>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+	<choose>
+              <when> <!-- korekto: je viens de faire -> mi ĵus faras -> mi ĵus faris -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="pres"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+              </when>
+	</choose>
+                <out>
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="ĵus"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b/>
+
+                  <chunk name="verb_perif">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="sl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="1" side="tl" part="temps"/>
+                    </lu>
+                  </chunk>
+                </out>
+        </otherwise>
+        </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
 <rule comment="REGLA: VERBestar_a_punto_de + INF (está a punto de venir -> estas venonta EOes)">
       <pattern>
