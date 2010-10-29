@@ -509,9 +509,9 @@
       <cat-item lemma="semestre" tags="n.*.pl"/>
       <cat-item lemma="any" tags="n.*.pl"/>
       <cat-item lemma="dècada" tags="n.*.pl"/>
-      <cat-item lemma="segle" tags="n.*"/>
-      <cat-item lemma="mil·leni" tags="n.*"/>
-      <cat-item lemma="temps" tags="n.*"/>
+      <cat-item lemma="segle" tags="n.*.pl"/>
+      <cat-item lemma="mil·leni" tags="n.*.pl"/>
+      <cat-item lemma="temps" tags="n.*"/> <!-- pot ser tbé singular -->
     </def-cat>
 
     <def-cat n="per">
@@ -2229,6 +2229,26 @@
 	  <with-param pos="2"/>
 	</call-macro>
 
+   <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="3" side="sl" part="lem"/>
+              <lit v="més"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="3" side="tl" part="lem"/>
+            <lit v="plej"/>
+          </let>
+        </when>
+        <otherwise>
+          <let>
+            <clip pos="3" side="tl" part="lem"/>
+            <lit v="malplej"/>
+          </let>
+        </otherwise>
+   </choose>
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2245,9 +2265,9 @@
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	    </lu> 
-            <b pos="1"/> <!-- canvi a plej-->
+            <b pos="1"/> <!-- canvi a plej/malplej-->
                         <lu>
-                        <lit v="plej"/>
+                        <clip pos="3" side="tl" part="lem"/>
                         <lit-tag v="adv"/>
                         </lu>
 
@@ -2296,6 +2316,26 @@
 	  <with-param pos="1"/>
 	</call-macro>
 
+   <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="2" side="sl" part="lem"/>
+              <lit v="més"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="2" side="tl" part="lem"/>
+            <lit v="plej"/>
+          </let>
+        </when>
+        <otherwise>
+          <let>
+            <clip pos="2" side="tl" part="lem"/>
+            <lit v="malplej"/>
+          </let>
+        </otherwise>
+   </choose>
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2312,9 +2352,9 @@
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	    </lu> 
-            <b pos="1"/> <!-- canvi a plej-->
+            <b pos="1"/> <!-- canvi a plej/malplej-->
                         <lu>
-                        <lit v="plej"/>
+                        <clip pos="2" side="tl" part="lem"/>
                         <lit-tag v="adv"/>
                         </lu>
 
