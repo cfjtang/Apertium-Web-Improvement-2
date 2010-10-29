@@ -46,8 +46,15 @@
       <cat-item tags=""/>
     </def-cat>
 
-    <def-cat n="article">
+    <def-cat n="el">
       <cat-item lemma="el" tags="det.*"/>
+    </def-cat>
+
+    <def-cat n="un_sg">
+      <cat-item lemma="un" tags="det.ind.*.sg"/>
+    </def-cat>
+    <def-cat n="un_pl">
+      <cat-item lemma="un" tags="det.ind.*.pl"/>
     </def-cat>
 
     
@@ -414,7 +421,7 @@
     <def-cat n="advitg">
       <cat-item tags="adv.itg"/>
     </def-cat>
-    
+ 
     <def-cat n="mes">
       <cat-item lemma="més" tags="adv"/>
       <cat-item lemma="més" tags="preadv"/>
@@ -422,6 +429,11 @@
       <cat-item lemma="menys" tags="adv"/>
       <cat-item lemma="menys" tags="preadv"/>
       <cat-item lemma="menys" tags="det.*"/><!-- pel tagger-->
+    </def-cat>
+
+    <def-cat n="mesde">
+      <cat-item lemma="més de" tags="pr"/>
+      <cat-item lemma="menys de" tags="pr"/>
     </def-cat>
 
     <def-cat n="tan">
@@ -471,6 +483,37 @@
       <cat-item lemma="manera" tags="n.*"/>
     </def-cat>
 
+    <def-cat n="n_temps">
+      <cat-item lemma="segon" tags="n.*"/>
+      <cat-item lemma="minut" tags="n.*"/>
+      <cat-item lemma="hora" tags="n.*"/>
+      <cat-item lemma="dia" tags="n.*"/>
+      <cat-item lemma="setmana" tags="n.*"/>
+      <cat-item lemma="mes" tags="n.*"/>
+      <cat-item lemma="trimestre" tags="n.*"/>
+      <cat-item lemma="semestre" tags="n.*"/>
+      <cat-item lemma="any" tags="n.*"/>
+      <cat-item lemma="dècada" tags="n.*"/>
+      <cat-item lemma="segle" tags="n.*"/>
+      <cat-item lemma="mil·leni" tags="n.*"/>
+    </def-cat>
+
+    <def-cat n="n_temps_pl">
+      <cat-item lemma="segon" tags="n.*.pl"/>
+      <cat-item lemma="minut" tags="n.*.pl"/>
+      <cat-item lemma="hora" tags="n.*.pl"/>
+      <cat-item lemma="dia" tags="n.*.pl"/>
+      <cat-item lemma="setmana" tags="n.*.pl"/>
+      <cat-item lemma="mes" tags="n.*.pl"/>
+      <cat-item lemma="trimestre" tags="n.*.pl"/>
+      <cat-item lemma="semestre" tags="n.*.pl"/>
+      <cat-item lemma="any" tags="n.*.pl"/>
+      <cat-item lemma="dècada" tags="n.*.pl"/>
+      <cat-item lemma="segle" tags="n.*"/>
+      <cat-item lemma="mil·leni" tags="n.*"/>
+      <cat-item lemma="temps" tags="n.*"/>
+    </def-cat>
+
     <def-cat n="per">
       <cat-item lemma="per" tags="pr"/>
     </def-cat>
@@ -493,6 +536,10 @@
 
     <def-cat n="deixarde"> <!--EO perífrasi-->
       <cat-item lemma="deixar# de" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="fer">
+      <cat-item lemma="fer" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="fet"> <!-- EO "fakto" en comptes de "farita" -->
@@ -2166,7 +2213,7 @@
 
 <rule comment="REGLA: ART NOM més ADJ (EO, més -> plej ex: la casa més gran -> la plej granda domo)">
       <pattern>
-	<pattern-item n="article"/>
+	<pattern-item n="el"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="mes"/>
 	<pattern-item n="adj"/>
@@ -2234,7 +2281,7 @@
 
 <rule comment="REGLA: ART més ADJ (EO, més -> plej ex: la més gran -> la plej granda)">
       <pattern>
-	<pattern-item n="article"/>
+	<pattern-item n="el"/>
 	<pattern-item n="mes"/>
 	<pattern-item n="adj"/>
       </pattern>
@@ -10524,7 +10571,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule>
 
-<rule comment="VERBestar + GERUNDI (continuar cantant EO)">
+<rule comment="VERBcontinuar + GERUNDI (continuar cantant EO)">
       <pattern>
 	<pattern-item n="continuar"/>
 	<pattern-item n="ger"/>
@@ -10572,7 +10619,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
-<rule comment="VERBestar + GERUNDI + QUE (continuar pensant EO)">
+<rule comment="VERBcontinuar + GERUNDI + QUE (continuar pensant EO)">
       <pattern>
 	<pattern-item n="continuar"/>
 	<pattern-item n="ger"/>
@@ -10839,7 +10886,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
-<rule comment="HABER VERBtornara + INF (tornar a EOes)">
+<rule comment="HAVER/ANAR VERBtornara + INF (tornar a EOes)">
       <pattern>
 	<pattern-item n="haveranar"/>
 	<pattern-item n="tornara"/>
@@ -10997,7 +11044,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
-<rule comment="HABER VERBtornara + INF + QUE (tornar a EOes)">
+<rule comment="HAVER/ANAR VERBtornara + INF + QUE (tornar a EOes)">
       <pattern>
 	<pattern-item n="haveranar"/>
 	<pattern-item n="tornara"/>
@@ -15552,6 +15599,620 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
           <var n="caseFirstWord"/>
           <lit v="aa"/>
         </let>
+      </action>
+    </rule>
+
+    <!--********************************** FER + TEMPS ********************************************* -->
+
+    <rule comment="VERBfer NUM NOMtemps (fa tres setmanes -> antaŭ tri semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="num"/>
+	<pattern-item n="n_temps"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+            	<lu>
+              	<clip pos="2" side="tl" part="lem"/>
+              	<clip pos="2" side="tl" part="a_det"/>
+              	<clip pos="2" side="tl" part="nbr"/>
+            	</lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer MESDE NUM NOMtemps (fa menys de tres setmanes -> antaŭ malpli tri semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="mesde"/>
+	<pattern-item n="num"/>
+	<pattern-item n="n_temps"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="4"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+            	<lu>
+                <clip pos="2" side="tl" part="whole"/>
+            	</lu>
+		<b pos="2"/>
+            	<lu>
+              	<clip pos="3" side="tl" part="lem"/>
+              	<clip pos="3" side="tl" part="a_det"/>
+              	<clip pos="3" side="tl" part="nbr"/>
+            	</lu>
+		<b pos="3"/>
+		<lu>       
+		  <clip pos="4" side="tl" part="lemh"/> 
+		  <clip pos="4" side="tl" part="a_nom"/>
+		  <clip pos="4" side="tl" part="gen"/>
+		  <clip pos="4" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="4" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer QNT NOMtemps (fa algunes setmanes -> antaŭ kelkaj semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="qnt"/>
+	<pattern-item n="n_temps"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+            	<lu>
+	        <clip pos="2" side="tl" part="lem"/> 
+	        <clip pos="2" side="tl" part="a_det"/>
+	        <clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="nom"/>
+            	</lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer IND NOMtemps (fa una setmana -> antaŭ unu semajno)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="un_sg"/>
+	<pattern-item n="n_temps"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+	    <lu>
+	      <lit v="unu"/>
+	      <lit-tag v="num.sg"/>
+	    </lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer IND NOMtemps (fa unes setmanes -> antaŭ kelkaj semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="un_pl"/>
+	<pattern-item n="n_temps"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+	    <lu>
+	      <lit v="kelka"/>
+	      <lit-tag v="det.qnt.pl.nom"/>
+	    </lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer NOMtemps (fa setmanes -> antaŭ semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="n_temps_pl"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+		<lu>       
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="2" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+    <!-- idem + que -->
+
+    <rule comment="VERBfer NUM NOMtemps (fa tres setmanes -> antaŭ tri semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="num"/>
+	<pattern-item n="n_temps"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+            	<lu>
+              	<clip pos="2" side="tl" part="lem"/>
+              	<clip pos="2" side="tl" part="a_det"/>
+              	<clip pos="2" side="tl" part="nbr"/>
+            	</lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer MESDE NUM NOMtemps (fa menys de tres setmanes -> antaŭ malpli tri semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="mesde"/>
+	<pattern-item n="num"/>
+	<pattern-item n="n_temps"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="4"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="4"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+            	<lu>
+                <clip pos="2" side="tl" part="whole"/>
+            	</lu>
+		<b pos="2"/>
+            	<lu>
+              	<clip pos="3" side="tl" part="lem"/>
+              	<clip pos="3" side="tl" part="a_det"/>
+              	<clip pos="3" side="tl" part="nbr"/>
+            	</lu>
+		<b pos="3"/>
+		<lu>       
+		  <clip pos="4" side="tl" part="lemh"/> 
+		  <clip pos="4" side="tl" part="a_nom"/>
+		  <clip pos="4" side="tl" part="gen"/>
+		  <clip pos="4" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="4" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer QNT NOMtemps (fa algunes setmanes -> antaŭ kelkaj semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="qnt"/>
+	<pattern-item n="n_temps"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+            	<lu>
+	        <clip pos="2" side="tl" part="lem"/> 
+	        <clip pos="2" side="tl" part="a_det"/>
+	        <clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="nom"/>
+            	</lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer IND NOMtemps (fa una setmana -> antaŭ unu semajno)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="un_sg"/>
+	<pattern-item n="n_temps"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+	    <lu>
+	      <lit v="unu"/>
+	      <lit-tag v="num.sg"/>
+	    </lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer IND NOMtemps (fa unes setmanes -> antaŭ kelkaj semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="un_pl"/>
+	<pattern-item n="n_temps"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="3"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+	    <lu>
+	      <lit v="kelka"/>
+	      <lit-tag v="det.qnt.pl.nom"/>
+	    </lu>
+		<b pos="2"/>
+		<lu>       
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_nom"/>
+		  <clip pos="3" side="tl" part="gen"/>
+		  <clip pos="3" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="3" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="VERBfer NOMtemps (fa setmanes -> antaŭ semajnoj)">
+      <pattern>
+	<pattern-item n="fer"/>
+	<pattern-item n="n_temps_pl"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="adv" case="caseFirstWord"> <!-- per ajudar l'anàlisi sintàctica posterior -->
+	    <tags>
+	      <tag><lit-tag v="adv"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="antaŭ"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+		<b pos="1"/>
+		<lu>       
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_nom"/>
+		  <clip pos="2" side="tl" part="gen"/>
+		  <clip pos="2" side="tl" part="nbr"/>
+		  <lit-tag v="nom"/>
+		  <clip pos="2" side="tl" part="lemq"/>  
+		</lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
