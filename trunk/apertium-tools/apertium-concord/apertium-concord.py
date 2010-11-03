@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """ 
     First go at a concordancer for spectie
     Has a GLADE gui and show concordances for frequencies 
