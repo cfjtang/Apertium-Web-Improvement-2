@@ -225,7 +225,7 @@ for paradigm in paradigms.keys(): #{
 		for pair in paradigms[paradigm]: #{
 			print '      <e>';
 			print '        <p>';
-			if pair[0] == type(None): #{
+			if type(pair[0]) == type(None): #{
 				print '          <l/>';
 			else: #{
 				print('          <l>%s</l>' % (pair[0]));
