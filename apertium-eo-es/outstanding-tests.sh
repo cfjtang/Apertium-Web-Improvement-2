@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TESTNAME=Regression_tests
+TESTNAME=Outstanding_tests
 
 NODOWNLOAD=$1
 #TEMPDIR=/tmp/testcache # `mktemp -d`;

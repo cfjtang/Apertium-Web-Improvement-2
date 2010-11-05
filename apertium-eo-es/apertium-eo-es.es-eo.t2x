@@ -73,12 +73,16 @@
       <cat-item lemma="verbcj" tags="SV.vblex.*.*.*.moviment"/>
       <cat-item lemma="verbcj" tags="SV.vblex.*.*.*.volition"/>
       <cat-item lemma="inf" tags="SV.vblex.inf"/>
+      <cat-item tags="SV.vblex.gerpast"/>
+      <cat-item tags="SV.vblex.gerpast.*"/>
       <cat-item lemma="verbcj" tags="SVneg.vblex.*.*.*.res"/>
       <cat-item lemma="verbcj" tags="SVneg.vblex.*.*.*.pron"/>
       <cat-item lemma="verbcj" tags="SVneg.vblex.*.*.*.reportingverb"/>
       <cat-item lemma="verbcj" tags="SVneg.vblex.*.*.*.moviment"/>
       <cat-item lemma="verbcj" tags="SVneg.vblex.*.*.*.volition"/>
       <cat-item lemma="inf" tags="SVneg.vblex.inf"/>
+      <cat-item tags="SVneg.vblex.gerpast"/>
+      <cat-item tags="SVneg.vblex.gerpast.*"/>
       <cat-item lemma="verbcj_perif" tags="SV.vblex.*.*.*.*"/>
       <cat-item lemma="verbcj_perif" tags="SV.vblex.*.*.*.pron"/>
       <cat-item lemma="verbcj_perif" tags="SV.vblex.*.*.*.reportingverb"/>
@@ -277,6 +281,7 @@
 	  <attr-item tags="pp"/>
 	  <attr-item tags="ppres"/>
 	  <attr-item tags="ger"/>
+	  <attr-item tags="gerpast"/>
 	  <attr-item tags="pprs"/>
 	  <attr-item tags="subs"/>
 	  <attr-item tags="imp"/>
@@ -285,12 +290,10 @@
 	  <attr-item tags="pii"/>
 	  <attr-item tags="pis"/>
 
-       <attr-item tags="pp2"/>
-      <attr-item tags="pp3"/>
-      <attr-item tags="gerpast"/>
-      <attr-item tags="prs"/>
+          <attr-item tags="pp2"/>
+          <attr-item tags="pp3"/>
+          <attr-item tags="prs"/>
 
-	  
       </def-attr>
 
 
@@ -673,7 +676,7 @@
 </rule>
 
 
-<rule comment="REGLA: SV cnjsub SV ( . creo que vendrá -> . Mi kreas ke ĝi venos; EOes)">
+<rule comment="REGLA: SV cnjsub SV ( . creo que vendrá -> . Mi kredas ke ĝi venos; EOes)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SV"/>
@@ -704,6 +707,10 @@
                 <equal>
                   <clip pos="2" part="temps"/>
                   <lit-tag v="ger"/>
+                </equal>
+                <equal>
+                  <clip pos="2" part="temps"/>
+                  <lit-tag v="gerpast"/>
                 </equal>
                 <equal>
                   <clip pos="2" part="temps"/>
@@ -1823,10 +1830,20 @@
           <when>
             <test>
               <not>
-                <equal>
-                  <clip pos="2" part="temps"/>
-                  <lit-tag v="inf"/>
-                </equal>
+                <or>
+                  <equal>
+                    <clip pos="2" part="temps"/>
+                    <lit-tag v="inf"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" part="temps"/>
+                    <lit-tag v="ger"/>
+                  </equal>
+                  <equal>
+                    <clip pos="2" part="temps"/>
+                    <lit-tag v="gerpast"/>
+                  </equal>
+                </or>
               </not>
             </test>
 	<out>
@@ -1891,10 +1908,20 @@
           <when>
             <test>
               <not>
-                <equal>
-                  <clip pos="3" part="temps"/>
-                  <lit-tag v="inf"/>
-                </equal>
+                <or>
+                  <equal>
+                    <clip pos="3" part="temps"/>
+                    <lit-tag v="inf"/>
+                  </equal>
+                  <equal>
+                    <clip pos="3" part="temps"/>
+                    <lit-tag v="ger"/>
+                  </equal>
+                  <equal>
+                    <clip pos="3" part="temps"/>
+                    <lit-tag v="gerpast"/>
+                  </equal>
+                </or>
               </not>
             </test>
 	<out>
@@ -1923,7 +1950,7 @@
 	  <b/>
           <chunk>
             <get-case-from pos="3">
-              <lit v="al"/>
+              <lit v="1al"/>
             </get-case-from>
             <lit-tag v="pr"/>
             <lit v="{^"/>
@@ -1979,7 +2006,7 @@
 
 	  <chunk>
 	    <get-case-from pos="2">
-	      <lit v="al"/>
+	      <lit v="2al"/>
 	    </get-case-from>
 	    <lit-tag v="pr"/>
 	    <lit v="{^"/>
@@ -2045,7 +2072,7 @@
 	  <b pos="2"/>
 	  <chunk>
 	    <get-case-from pos="3">
-	      <lit v="al"/>
+	      <lit v="3al"/>
 	    </get-case-from>
 	    <lit-tag v="pr"/>
 	    <lit v="{^"/>
@@ -2099,7 +2126,7 @@
 	  <b pos="1"/>
 	  <chunk>
 	    <get-case-from pos="1">
-	      <lit v="al"/>
+	      <lit v="4al"/>
 	    </get-case-from>
 	    <lit-tag v="pr"/>
 	    <lit v="{^"/>
@@ -2126,7 +2153,7 @@
 </rule>
 
 
-<rule comment="REGLA: SV PRO SN (EOes; quiso darme el libro -> al mi volis doni la libron. ">
+<rule comment="REGLA: SV PRO SN (EOes; quiso darme el libro -> volis doni al mi la libron. ">
       <pattern>
 	<pattern-item n="SVlex"/>
 	<pattern-item n="SNobj"/>
@@ -2146,14 +2173,16 @@
 	<out>
 
 	  <chunk>
-	    <get-case-from pos="2">
-	      <lit v="al"/>
-	    </get-case-from>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <lit v="5al"/>
 	    <lit-tag v="pr"/>
 	    <lit v="{^"/>
-	    <get-case-from pos="2">
-	      <lit v="al"/>
-	    </get-case-from>
+	    <lit v="al"/>
 	    <lit-tag v="pr"/>
 	    <lit v="$}"/>
 	  </chunk>
@@ -2162,12 +2191,6 @@
             <clip pos="2" part="lem"/>
             <clip pos="2" part="tags"/>
 	    <clip pos="2" part="chcontent"/>
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk>
-            <clip pos="1" part="lem"/>
-            <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
@@ -2181,7 +2204,7 @@
 
 <!-- INDEX reglas para el prodrop y asignación de caso -->
  
-<rule comment="REGLA: punt_cnjadv PRO SV SN (EOes; me dió el libro -> , ĝi al mi donis la libron)">
+<rule comment="REGLA: punt_cnjadv PRO SV SN (EOes; me dió el libro -> , ĝi donis al mi la libron)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SNobj"/>
@@ -2257,12 +2280,18 @@
 	<out>
 
 	  <chunk>
-	    <get-case-from pos="1">
-	      <lit v="al"/>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <get-case-from pos="3">
+	      <lit v="6al"/>
 	    </get-case-from>
 	    <lit-tag v="pr"/>
 	    <lit v="{^"/>
-	    <get-case-from pos="1">
+	    <get-case-from pos="3">
 	      <lit v="al"/>
 	    </get-case-from>
 	    <lit-tag v="pr"/>
@@ -2276,12 +2305,6 @@
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
-            <clip pos="3" part="lem"/>
-            <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
-	  </chunk>
-	  <b pos="3"/>
-	  <chunk>
             <clip pos="4" part="lem"/>
             <clip pos="4" part="tags"/>
 	    <clip pos="4" part="chcontent"/>
@@ -2291,7 +2314,7 @@
 </rule>
  
 
-<rule comment="REGLA: punt_cnjadv SV PRO SN (EOes , prometieron darnos el libro -> , ili al ni promesis doni la libron)">
+<rule comment="REGLA: punt_cnjadv SV PRO SN (EOes , prometieron darnos el libro -> , ili promesis doni al ni la libron)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SVlex"/>
@@ -2366,9 +2389,13 @@
 	<out>
 
 	  <chunk>
-	    <get-case-from pos="2">
-	      <lit v="al"/>
-	    </get-case-from>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <lit v="7al"/>
 	    <lit-tag v="pr"/>
 	    <lit v="{^"/>
 	    <get-case-from pos="2">
@@ -2382,12 +2409,6 @@
             <clip pos="3" part="lem"/>
             <clip pos="3" part="tags"/>
 	    <clip pos="3" part="chcontent"/>
-	  </chunk>
-	  <b pos="2"/>
-	  <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
 	  </chunk>
 	  <b pos="3"/>
 	  <chunk>
@@ -2783,6 +2804,10 @@
                 </equal>
                 <equal>
                   <clip pos="2" part="temps"/>
+                  <lit-tag v="gerpast"/>
+                </equal>
+                <equal>
+                  <clip pos="2" part="temps"/>
                   <lit-tag v="pp"/>
                 </equal>
                 <equal>
@@ -3019,6 +3044,10 @@
 		<equal>
 		  <clip pos="3" part="temps"/>
 		  <lit-tag v="ger"/>
+		</equal>
+		<equal>
+		  <clip pos="3" part="temps"/>
+		  <lit-tag v="gerpast"/>
 		</equal>
 		<equal>
 		  <clip pos="3" part="temps"/>
@@ -3406,7 +3435,7 @@
 	  <b pos="2"/>
           <chunk>
             <get-case-from pos="2">
-              <lit v="al"/>
+              <lit v="8al"/>
             </get-case-from>
             <lit-tag v="pr"/>
             <lit v="{^"/>
@@ -3545,7 +3574,7 @@
 
 
 
-<rule comment="REGLA: SN SNrelatiu SV (. la niña que vino -> la knabino kiu vensi; los niños que viste -> la knaboj kiujn vi vidis)">
+<rule comment="REGLA: SN SNrelatiu SV (. la niña que vino -> la knabino kiu venis; los niños que viste -> la knaboj kiujn vi vidis)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SNrelatiu"/>
@@ -3599,10 +3628,10 @@
 	<when>
             <test>
 		<not>
-                <equal>
-                  <clip pos="3" part="temps"/>
-		  <lit-tag v="inf"/>
-                </equal>
+                  <equal>
+                    <clip pos="3" part="temps"/>
+		    <lit-tag v="inf"/>
+                  </equal>
 		</not>
             </test>
             <let>
@@ -3748,7 +3777,7 @@
 	  <b pos="1"/>
           <chunk>
             <get-case-from pos="2">
-              <lit v="al"/>
+              <lit v="9al"/>
             </get-case-from>
             <lit-tag v="pr"/>
             <lit v="{^"/>
