@@ -50,6 +50,10 @@
       <cat-item lemma="el" tags="det.*"/>
     </def-cat>
 
+    <def-cat n="el_det_ms">
+      <cat-item lemma="el" tags="det.def.m.s"/>
+    </def-cat>
+
     <def-cat n="un_sg">
       <cat-item lemma="un" tags="det.ind.*.sg"/>
     </def-cat>
@@ -1969,7 +1973,7 @@
 
 <!-- KOMENCO DATOJ -->
 
-<rule comment="REGLA: NUM DE MES (2-3 de juliol -> 2an-3an de julio)">
+<rule comment="REGLA: NUM-NUM DE MES (2-3 de juliol -> 2an-3an de julio)">
       <pattern>
         <pattern-item n="num_dato"/>
 	<pattern-item n="guio"/>
@@ -2017,7 +2021,7 @@
       </action>
     </rule>
 
-<rule comment="REGLA: NUM DE MES DE ANY (2-3 de juliol de 1930 -> 2an-3an de julio 1930)">
+<rule comment="REGLA: NUM-NUM DE MES DE ANY (2-3 de juliol de 1930 -> 2an-3an de julio 1930)">
       <pattern>
         <pattern-item n="num_dato"/>
 	<pattern-item n="guio"/>
@@ -2106,6 +2110,49 @@
       </action>
     </rule>
 
+<rule comment="REGLA: DET NUM DE MES (el 2 de juliol -> la 2an de julio)">
+      <pattern>
+        <pattern-item n="el_det_ms"/>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="dato" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.acc.acc"/></tag>
+            </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu> 
+	    <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nom"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 <rule comment="REGLA: NUM DE MES DE ANY (2 de juliol de 1930 -> 2an de julio 1930)">
       <pattern>
         <pattern-item n="num_dato"/>
@@ -2141,6 +2188,55 @@
             <b pos="4"/>
             <lu>
               <clip pos="5" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+<rule comment="REGLA: DET NUM DE MES DE ANY (el 2 de juliol de 1930 -> la 2an de julio de 1930)">
+      <pattern>
+        <pattern-item n="el_det_ms"/>
+        <pattern-item n="num_dato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="monato"/>
+        <pattern-item n="de"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="dato" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.m.sg.acc.acc"/></tag>
+            </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu> 
+	    <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/><lit v="a"/>
+              <lit-tag v="adj"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="acc"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <lit-tag v="n"/>
+              <lit-tag v="sg"/>
+              <lit-tag v="nom"/>
+            </lu>
+            <b pos="5"/>
+            <lu>
+              <clip pos="6" side="tl" part="whole"/>
             </lu>
           </chunk>
         </out>
