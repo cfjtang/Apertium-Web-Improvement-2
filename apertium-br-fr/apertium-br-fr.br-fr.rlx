@@ -478,7 +478,7 @@ SELECT NC IF (-2C Prep) (-1C DetDef) (0 NC) (0 VerbFin);
 SELECT NC IF (-1C Prep) (-1C SoftMutTrigger) (0 NC) (0 VerbFin);
 
 # pemp servij / 5 servij
-SELECT NC IF (-1C Num) (0 NC) (0 VerbFin);
+SELECT NC IF (-1C Num) (0 NC) (0 VerbFin) (NOT 0 Prep);
 
 # eil gwreg ma zad
 REMOVE:Remove_VerbFin_BOS VerbFin IF (-1 BOS);
@@ -718,6 +718,8 @@ REMOVE VerbFin IF (NOT (-1 Vpart) LINK (-1 Conj)) ;
 #D'ar mare ma oan o tigeriñ an nor
 SELECT VerbFin IF (-1C* Conj) (NOT 1C* VerbFin);
 
+SELECT (pr) IF (-1 Num) (1 NC);
+
 # select proper names if they are in caps
 
 SELECT NP IF (0 ("Al Levrig" np));
@@ -761,6 +763,7 @@ SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
 
 # treiñ + e + idioma = traduire + en + idioma 
 SUBSTITUTE ("treiñ") ("treiñ:1") ("treiñ" vblex) (1 ("e")) (2 Language);
+
 
 ##
 ## TRANSITIVE / INTRANSITIVE VERBS

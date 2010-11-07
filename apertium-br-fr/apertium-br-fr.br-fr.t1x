@@ -18312,6 +18312,90 @@
         </let>
       </action>
    </rule>
+
+ 
+   <rule comment="aux pp iobj → aux iobj pp">
+      <pattern>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="aux"/>
+        <pattern-item n="pp"/>
+        <pattern-item n="da"/>
+        <pattern-item n="indirect"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="pih_prh_past_cip">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="vauxiliar">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="indirect_to_proclitic">
+          <with-param pos="5"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="numero"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="numero"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+
+        <out>
+          <chunk name="iobj_haver_pp" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag>
+                <clip pos="3" side="tl" part="a_verb"/>
+              </tag>
+              <tag>
+                <clip pos="2" side="tl" part="temps"/>
+              </tag>
+              <tag>
+                <clip pos="2" side="tl" part="pers"/>
+              </tag>
+              <tag>
+                <clip pos="2" side="tl" part="nbr"/>
+              </tag>
+            </tags>
+            <lu>
+             <clip pos="5" side="tl" part="whole"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_pp"/>
+              <lit-tag v="m"/>
+              <var n="numero"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
  
    <rule comment="aux pp iobj → aux iobj pp">
       <pattern>
