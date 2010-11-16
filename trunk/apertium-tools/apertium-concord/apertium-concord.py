@@ -106,8 +106,8 @@ class ConcordGTK:
         
         global WINDOW_WORDS # how many words to display
         line = line.decode('utf-8')
-        word_loc = len(line.split(token)[0].strip().split(' '))
-        line = line.strip().split(' ') # turn line into list of words
+        word_loc = len([tok for tok in line.split(token)[0].strip().split(' ') if len(tok)])
+        line = [ word for word in line.strip().split(' ') if len(word) ] # turn line into list of words
         fullLine = []
         fullLine.extend(line)
         
@@ -119,19 +119,19 @@ class ConcordGTK:
 
         # ensure it is only 10 long
         line = line[0:WINDOW_WORDS]       
-        
         # ok so we could make this a whole lot more complicated by padding with
         # words from the context sentence rather than just spaces
         
         # split line into two segments, around word
         # get our word location in newly shortened line
+
         old_word_loc = word_loc
         word_loc = len(' '.join(line).split(token)[0].strip().split(' '))
-        
         if word_loc == len(line):
             word_loc -= 1
         front = line[0:word_loc]
         back = line[word_loc:len(line)]
+        
        
         # add pad word to first segment
         # TO REPLACE, add pad words from the context instead       
@@ -139,7 +139,7 @@ class ConcordGTK:
         diff = MAGIC_PAD_CHARS_VALUE - len(' '.join(front))
         
         # get the words preceeding our token if there are some
-        padWords = fullLine[0:old_word_loc]
+        padWords = [ word for word in fullLine[0:old_word_loc] if len(word) ]
         
         if not len(padWords):    
             pad = [' ' for i in range(diff)]
@@ -147,14 +147,24 @@ class ConcordGTK:
         else:
             # there are some pad words so use them!
             spaceToFill = diff
-            pad = [] # a list of words to pad with, plus a pad word of spaces
-            
+            pad = [] # a list of words to pad with, plus a pad word of space
+                        
+            if "trafikant." in padWords: 
+                print padWords
+                print front
+
+            front = []
+                     
             # loop backwards through padWords, adding words to our pad
             done = False
             i = len(padWords)-1
             while not done:
                 try:
                     ourWord = padWords[i]
+                    if "trafikant." in padWords:
+                        print i
+                        print ourWord
+            
                 except IndexError:
                     # ran out of pad words!
                     break
@@ -166,6 +176,9 @@ class ConcordGTK:
                                                          
                     i -= 1
                 else:
+                    if "trafikant." in padWords:
+                        print "Done"
+                        print pad
                     done = True
             # reverse pad list and pad remaining space with spaces
             if spaceToFill:
@@ -173,10 +186,7 @@ class ConcordGTK:
                 pad.append(''.join(spacePadWord))
             pad.reverse()
             front.insert(0,' '.join(pad))
-            
                 
-            
-        
         # stick the two segments together
         front.extend(back)
         
