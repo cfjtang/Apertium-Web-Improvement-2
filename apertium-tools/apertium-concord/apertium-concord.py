@@ -149,10 +149,6 @@ class ConcordGTK:
             spaceToFill = diff
             pad = [] # a list of words to pad with, plus a pad word of space
                         
-            if "trafikant." in padWords: 
-                print padWords
-                print front
-
             front = []
                      
             # loop backwards through padWords, adding words to our pad
@@ -176,9 +172,6 @@ class ConcordGTK:
                                                          
                     i -= 1
                 else:
-                    if "trafikant." in padWords:
-                        print "Done"
-                        print pad
                     done = True
             # reverse pad list and pad remaining space with spaces
             if spaceToFill:
