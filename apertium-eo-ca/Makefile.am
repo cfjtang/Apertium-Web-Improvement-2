@@ -9,18 +9,18 @@ BILNAME=apertium-eo-ca.eo-ca.dix
 
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX2).autobil.bin $(PREFIX2).autogen.bin $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
-     $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-     $(PREFIX2).t1x.bin $(PREFIX2).antaux_t2x.bin $(PREFIX2).antaux2_t2x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes $(PREFIX1).mode $(PREFIX2).mode
+     $(PREFIX1).t1x.bin $(PREFIX1).antaux_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes $(PREFIX1).mode $(PREFIX2).mode
 
 TARGETS = $(TARGETS_COMMON)
 
-$(PREFIX2).antaux_t2x.bin: $(BASENAME).$(PREFIX2).antaux_t2x
-	apertium-validate-interchunk $(BASENAME).$(PREFIX2).antaux_t2x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).antaux_t2x $@
+$(PREFIX1).antaux_t2x.bin: $(BASENAME).$(PREFIX1).antaux_t2x
+	apertium-validate-interchunk $(BASENAME).$(PREFIX1).antaux_t2x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).antaux_t2x $@
 
-$(PREFIX2).antaux2_t2x.bin: $(BASENAME).$(PREFIX2).antaux2_t2x
-	apertium-validate-interchunk $(BASENAME).$(PREFIX2).antaux2_t2x
-	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).antaux2_t2x $@
+$(PREFIX1).antaux2_t2x.bin: $(BASENAME).$(PREFIX1).antaux2_t2x
+	apertium-validate-interchunk $(BASENAME).$(PREFIX1).antaux2_t2x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).antaux2_t2x $@
 
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
@@ -98,7 +98,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BILNAME) \
 	   $(BASENAME).post-$(LANG1).dix \
 	   $(BASENAME).$(LANG2).dix \
 	   $(PREFIX1).prob \
-	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
+	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).antaux_t2x $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).t2x \
 	   $(BASENAME).$(PREFIX1).t3x \
 	   transliterate.sh modes.xml
 
@@ -107,7 +107,7 @@ apertium_eo_ca_DATA=$(PREFIX1).automorf.bin \
 		    $(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
 		    $(PREFIX1).prob \
-		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+		    $(PREFIX1).t1x.bin $(PREFIX1).antaux_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
 		    $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).t3x \
 		    $(BASENAME).$(PREFIX1).t1x.translit $(BASENAME).$(PREFIX1).t2x.translit $(BASENAME).$(PREFIX1).t3x.translit \
