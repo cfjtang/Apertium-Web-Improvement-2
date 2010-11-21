@@ -426,6 +426,9 @@ public class ApertiumView extends FrameView {
         Pipeline.getPipeline().envp = envVars.isEmpty()?null: envVars.split("\n");
         System.err.println("Pipeline.getPipeline().envp = " + envVars);
 
+
+        Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
+
         // Set title to mode - easens window tabbing
         ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer ("+m.name+")");
 
@@ -789,10 +792,12 @@ private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit
   OptionsPanel op = new OptionsPanel();
   op.workingDirTextField.setText(prefs.get("workingDir", ""));
   op.envVarsTextArea.setText(prefs.get("envVars", ""));
+  op.ignoreErrorMessages.setSelected(Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false")));
   int ret = JOptionPane.showConfirmDialog(mainPanel, op,"Edit Options", JOptionPane.OK_CANCEL_OPTION);
   if (ret == JOptionPane.OK_OPTION) {
     prefs.put("workingDir", op.workingDirTextField.getText());
     prefs.put("envVars", op.envVarsTextArea.getText());
+    prefs.put("ignoreErrorMessages", Boolean.toString(op.ignoreErrorMessages.isSelected()));
     modesComboBoxActionPerformed(null); // reload the current mode
   }
 }//GEN-LAST:event_editOptions

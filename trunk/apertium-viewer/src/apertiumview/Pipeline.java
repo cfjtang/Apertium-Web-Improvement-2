@@ -17,6 +17,11 @@ import javax.swing.SwingUtilities;
 
 public class Pipeline {
     private static Pipeline instance = new Pipeline();
+
+    public File execPath=null;
+    public String[] envp=null;
+    public boolean ignoreErrorMessages;
+
     private Pipeline() {        
         processor.start();
     } 
@@ -78,9 +83,6 @@ public class Pipeline {
         }
     }
 
-    public File execPath=null;
-    public String[] envp=null;
-
   void shutdown() {
     try {
       if (task!=null && task.proces!=null) task.proces.destroy();
@@ -123,7 +125,7 @@ public class Pipeline {
             final StringBuffer outputsb = new StringBuffer(input.length()*2);
             String lin;
             while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
-            while ( (lin=err.readLine())!=null) outputsb.append("ERR:"+lin).append('\n');
+            while ( (lin=err.readLine())!=null) if (!ignoreErrorMessages) outputsb.append("ERR:"+lin).append('\n');
             while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
             
             final int retval = proces.waitFor();
