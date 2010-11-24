@@ -35,7 +35,11 @@
     <def-cat n="V_en_train">
       <cat-item lemma="en_train_de_inf" tags="SN"/>
     </def-cat>
-    
+     
+    <def-cat n="V_être_sg3">
+      <cat-item lemma="être" tags="SV.*.vblex.pri.p3.sg"/>
+    </def-cat>
+   
     <def-cat n="V_être_temps_que">
       <cat-item lemma="être_temps_que" tags="SV"/>
     </def-cat>
@@ -1754,7 +1758,83 @@
 </section-def-macros>
 
   <section-rules>
-   
+  
+<rule comment="REGLA: punt SN VPART_a 'zo'"> 
+    <pattern>
+        <pattern-item n="punt"/>
+        <pattern-item n="SN"/>
+        <pattern-item n="VPART_a"/>
+        <pattern-item n="V_être_sg3"/>
+    </pattern>
+    <action>
+                        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <lit v="il_y_a"/>
+            <clip pos="3" part="tags"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+            <lit v="il"/>
+            </get-case-from>
+            <lit-tag v="prn.tn.p3.m.sg"/>
+            <lit v="$ ^"/>
+            <lit v="y avoir"/>
+            <lit-tag v="vblex.pri.p3.sg"/>
+            <lit v="$}"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <get-case-from pos="4">
+            <clip pos="2" part="lem"/>
+            </get-case-from>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+        </out>
+    </action>
+</rule>
+ 
+<rule comment="REGLA: SN VPART_a 'zo' punt"> 
+    <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="VPART_a"/>
+        <pattern-item n="V_être_sg3"/>
+        <pattern-item n="punt"/>
+    </pattern>
+    <action>
+                        <out>
+          <chunk>
+            <lit v="il_y_a"/>
+            <clip pos="3" part="tags"/>
+            <lit v="{^"/>
+            <get-case-from pos="1">
+            <lit v="il"/>
+            </get-case-from>
+            <lit-tag v="prn.tn.p3.m.sg"/>
+            <lit v="$ ^"/>
+            <lit v="y avoir"/>
+            <lit-tag v="vblex.pri.p3.sg"/>
+            <lit v="$}"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <get-case-from pos="3">
+            <clip pos="1" part="lem"/>
+            </get-case-from>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+    </action>
+</rule>
+
+ 
 <!--REGLES GENERALS -->
 
 <rule comment="REGLA: unknown">
@@ -1775,7 +1855,7 @@
 	</action>
 </rule>
 
-<rule>
+<rule comment="regla: PRNS SV punt">
       <pattern>
 	<pattern-item n="PRNS"/>
 	<pattern-item n="SV"/>
@@ -1808,7 +1888,7 @@
 
 
 
-<rule>
+<rule comment="regla: PRNS SV SN">
       <pattern>
 	<pattern-item n="PRNS"/>
 	<pattern-item n="SV"/>
@@ -1841,7 +1921,7 @@
 
 
 
-<rule>
+<rule comment="regla: PRNS SV">
       <pattern>
 	<pattern-item n="PRNS"/>
 	<pattern-item n="SV"/>
@@ -3287,7 +3367,7 @@
       </action>
 </rule>
 
-<rule>
+<rule comment="regla: ANT SV punt">
       <pattern>
 	<pattern-item n="ANT"/>
 	<pattern-item n="SV"/>
@@ -8555,7 +8635,7 @@
 </rule>
 
 
- <rule>
+ <rule comment="regla: V_que SN INF">
       <pattern>
 	<pattern-item n="V_que"/>
 	<pattern-item n="SN"/>
@@ -8594,7 +8674,7 @@
 
 
 
- <rule>
+ <rule comment="regla: 'être temps que' SN INF">
       <pattern>
 	<pattern-item n="V_être_temps_que"/>
 	<pattern-item n="SN"/>
@@ -8627,7 +8707,7 @@
       </action>
 </rule>
 
- <rule>
+ <rule comment="regla: 'être temps de' inf">
       <pattern>
 	<pattern-item n="V_être_temps_de"/>
 	<pattern-item n="INF"/>
@@ -8698,7 +8778,7 @@
 
 
 
- <rule>
+ <rule comment="regla: num pr SN">
       <pattern>
 	<pattern-item n="NUM"/>
 	<pattern-item n="pr"/>
