@@ -314,6 +314,10 @@
       <attr-item tags="acr"/>
     </def-attr>
 
+    <def-attr n="np">
+      <attr-item tags="np" />
+    </def-attr>
+
     <def-attr n="a_adj">          
       <attr-item tags="adj"/>
       <attr-item tags="adj.sint"/>
@@ -1620,46 +1624,71 @@
     </def-macro>
 
     <def-macro n="firstWord" npar="1">
+      <let>
+        <var n="caseFirstWord" />
+        <case-of pos="1" side="sl" part="lem" />
+      </let>
       <choose>
-	<when>
-	  <test>
-	    <equal>
-	      <clip pos="1" side="sl" part="a_np_acr"/>
-	      <lit v=""/>
-	    </equal>
-	  </test>
-	  <choose>
-	    <when>
-	      <test>
-		<equal> 
-		  <var n="EOS"/>
-		  <lit v="true"/>
-		</equal> 
-	      </test>
-	      <modify-case>
-		<clip pos="1" side="tl" part="lem"/>
-		<lit v="aa"/>
-	      </modify-case>
-	      <let>
-		<var n="caseFirstWord"/>
-		<lit v="Aa"/>
-	      </let>
-	    </when>
-	  </choose>
-	</when>
-	<otherwise>
-	  <let>
-	    <var n="caseFirstWord"/>
-	    <lit v="aa"/>
-	  </let>
-	</otherwise>
+        <when>
+          <test>
+            <equal>
+              <case-of pos="1" side="sl" part="lem" />
+              <lit v="Aa" />
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+               <equal>
+                  <clip pos="1" side="sl" part="a_np" />
+                  <lit v="" />
+                </equal>
+              </test>
+              <modify-case>
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="aa"/>
+              </modify-case>
+            </when>
+          </choose>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <case-of pos="1" side="sl" part="lem" />
+              <lit v="AA" />
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal>
+                  <clip pos="1" side="tl" part="a_np_acr" />
+                  <lit v="" />
+                </equal>
+              </test>
+              <choose>
+                <when>
+                  <test>
+                    <equal>
+                      <var n="EOS" />
+                      <lit v="true" />
+                    </equal>
+                  </test>
+                  <let>
+                    <var n="caseFirstWord" />
+                    <lit v="Aa" />
+                  </let>
+                </when>
+              </choose>
+            </when>
+          </choose>
+        </when>
       </choose>
       <let>
 	<var n="EOS"/>
 	<lit v="false"/>
       </let>
     </def-macro>
-
     
     <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc cont?o no format. Cal posar aquesta funci?en les regles en qu?desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si cont?format cal conservar-la, si no en cont?cal eliminar-la perqu?no apareguin dos espais seguits. -->
       <choose>
@@ -17424,7 +17453,7 @@
 	  <with-param pos="1"/>
 	</call-macro>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+          <chunk name="pr" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	      <tag><var n="tipusprep"/></tag>
