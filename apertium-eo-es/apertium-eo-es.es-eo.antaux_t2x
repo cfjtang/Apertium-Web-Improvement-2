@@ -16,15 +16,12 @@
       <cat-item tags="SAdj.*"/>
     </def-cat>
     <def-cat n="adv">
-      <cat-item tags="PREADV"/>
-      <cat-item tags="Adv"/>
+      <cat-item tags="adv"/>
+      <cat-item tags="preadv"/>
     </def-cat>
     <def-cat n="SV">
       <cat-item tags="SV"/>
       <cat-item tags="SV.*"/>
-    </def-cat>
-    <def-cat n="out">
-      <cat-item lemma="out" tags="Adv"/>
     </def-cat>
     <def-cat n="GEN">
       <cat-item tags="GEN"/>
@@ -32,20 +29,12 @@
     <def-cat n="unknown">
        <cat-item lemma="unknown" tags=""/>
     </def-cat>
-    <def-cat n="Adv">
-      <cat-item tags="Adv"/>
-      <cat-item tags="CA"/>
-      <cat-item tags="NEG"/>
-    </def-cat>
-    <def-cat n="CC">
-      <cat-item tags="CC.*"/>
-      <cat-item tags="and_or.*"/>
-    </def-cat>
     <def-cat n="CM">
       <cat-item tags="CM"/>
     </def-cat>
     <def-cat n="and_or">
       <cat-item tags="and_or.*"/>
+      <cat-item tags="cnjcoo.*"/>
     </def-cat>
   </section-def-cats>
 
@@ -555,30 +544,6 @@
         </out>
       </action>
     </rule>
-
-
-    <rule comment="REGLA: SV out (wash out)  -   elSV (ellavi)">
-      <pattern>
-        <pattern-item n="SV"/>
-        <pattern-item n="out"/>
-      </pattern>
-      <action>
-        <out>
-          <chunk>
-            <clip pos="1" part="lem"/>
-            <clip pos="1" part="tags"/>
-            <lit v="{^el"/><lit-tag v="adv"/><lit v="$"/>
-            <!-- <clip pos="2" part="content"/>-->
-            <clip pos="1" part="content"/>
-             <lit v="}"/>
-          </chunk>
-        </out>
-      </action>
-    </rule>
-
-
-
-
 
   </section-rules>
 </interchunk>
