@@ -51,7 +51,7 @@
     </def-cat>
 
     <def-cat n="el_det_ms">
-      <cat-item lemma="el" tags="det.def.m.s"/>
+      <cat-item lemma="el" tags="det.def.m.sg"/>
     </def-cat>
 
     <def-cat n="un_sg">
@@ -90,42 +90,42 @@
     </def-cat>
 
     <def-cat n="num">
-      <cat-item tags="num.*"/>
       <cat-item tags="num"/>
+      <cat-item tags="num.*"/>
     </def-cat>
 
     <def-cat n="num_dato">
-      <cat-item lemma="1" tags="num"/>
-      <cat-item lemma="2" tags="num"/>
-      <cat-item lemma="3" tags="num"/>
-      <cat-item lemma="4" tags="num"/>
-      <cat-item lemma="5" tags="num"/>
-      <cat-item lemma="6" tags="num"/>
-      <cat-item lemma="7" tags="num"/>
-      <cat-item lemma="8" tags="num"/>
-      <cat-item lemma="9" tags="num"/>
-      <cat-item lemma="10" tags="num"/>
-      <cat-item lemma="11" tags="num"/>
-      <cat-item lemma="12" tags="num"/>
-      <cat-item lemma="13" tags="num"/>
-      <cat-item lemma="14" tags="num"/>
-      <cat-item lemma="15" tags="num"/>
-      <cat-item lemma="16" tags="num"/>
-      <cat-item lemma="17" tags="num"/>
-      <cat-item lemma="18" tags="num"/>
-      <cat-item lemma="19" tags="num"/>
-      <cat-item lemma="20" tags="num"/>
-      <cat-item lemma="21" tags="num"/>
-      <cat-item lemma="22" tags="num"/>
-      <cat-item lemma="23" tags="num"/>
-      <cat-item lemma="24" tags="num"/>
-      <cat-item lemma="25" tags="num"/>
-      <cat-item lemma="26" tags="num"/>
-      <cat-item lemma="27" tags="num"/>
-      <cat-item lemma="28" tags="num"/>
-      <cat-item lemma="29" tags="num"/>
-      <cat-item lemma="30" tags="num"/>
-      <cat-item lemma="31" tags="num"/>
+      <cat-item lemma="1" tags="num.*"/>
+      <cat-item lemma="2" tags="num.*"/>
+      <cat-item lemma="3" tags="num.*"/>
+      <cat-item lemma="4" tags="num.*"/>
+      <cat-item lemma="5" tags="num.*"/>
+      <cat-item lemma="6" tags="num.*"/>
+      <cat-item lemma="7" tags="num.*"/>
+      <cat-item lemma="8" tags="num.*"/>
+      <cat-item lemma="9" tags="num.*"/>
+      <cat-item lemma="10" tags="num.*"/>
+      <cat-item lemma="11" tags="num.*"/>
+      <cat-item lemma="12" tags="num.*"/>
+      <cat-item lemma="13" tags="num.*"/>
+      <cat-item lemma="14" tags="num.*"/>
+      <cat-item lemma="15" tags="num.*"/>
+      <cat-item lemma="16" tags="num.*"/>
+      <cat-item lemma="17" tags="num.*"/>
+      <cat-item lemma="18" tags="num.*"/>
+      <cat-item lemma="19" tags="num.*"/>
+      <cat-item lemma="20" tags="num.*"/>
+      <cat-item lemma="21" tags="num.*"/>
+      <cat-item lemma="22" tags="num.*"/>
+      <cat-item lemma="23" tags="num.*"/>
+      <cat-item lemma="24" tags="num.*"/>
+      <cat-item lemma="25" tags="num.*"/>
+      <cat-item lemma="26" tags="num.*"/>
+      <cat-item lemma="27" tags="num.*"/>
+      <cat-item lemma="28" tags="num.*"/>
+      <cat-item lemma="29" tags="num.*"/>
+      <cat-item lemma="30" tags="num.*"/>
+      <cat-item lemma="31" tags="num.*"/>
     </def-cat>
 
     <def-cat n="prep">
@@ -661,10 +661,14 @@
       <attr-item tags="det.ord"/>
       <attr-item tags="predet"/>
       <attr-item tags="num"/>
+      <attr-item tags="num.ciph"/>
+      <attr-item tags="num.percent"/>
     </def-attr>
 
     <def-attr n="a_num">
       <attr-item tags="num"/>
+      <attr-item tags="num.ciph"/>
+      <attr-item tags="num.percent"/>
     </def-attr>
 
     <def-attr n="a_verb2"> <!-- mirem si és pronominal a la macro tipus_verbs -->
@@ -2068,7 +2072,10 @@
             </lu>
             <b pos="5"/>
             <lu>
-              <clip pos="7" side="tl" part="whole"/>
+	      <clip pos="7" side="tl" part="lem"/> 
+	      <clip pos="7" side="tl" part="a_num"/>
+	      <clip pos="7" side="tl" part="nbr"/>
+              <lit-tag v="nom"/>
             </lu>
           </chunk>
         </out>
@@ -2187,7 +2194,10 @@
             </lu>
             <b pos="4"/>
             <lu>
-              <clip pos="5" side="tl" part="whole"/>
+	      <clip pos="5" side="tl" part="lem"/> 
+	      <clip pos="5" side="tl" part="a_num"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+              <lit-tag v="nom"/>
             </lu>
           </chunk>
         </out>
@@ -2236,7 +2246,10 @@
             </lu>
             <b pos="5"/>
             <lu>
-              <clip pos="6" side="tl" part="whole"/>
+	      <clip pos="6" side="tl" part="lem"/> 
+	      <clip pos="6" side="tl" part="a_num"/>
+	      <clip pos="6" side="tl" part="nbr"/>
+              <lit-tag v="nom"/>
             </lu>
           </chunk>
         </out>
@@ -2332,7 +2345,10 @@
             </lu>
             <b pos="5"/>
             <lu>
-              <clip pos="6" side="tl" part="whole"/>
+	      <clip pos="6" side="tl" part="lem"/> 
+	      <clip pos="6" side="tl" part="a_num"/>
+	      <clip pos="6" side="tl" part="nbr"/>
+              <lit-tag v="nom"/>
             </lu>
           </chunk>
         </out>
@@ -2662,7 +2678,7 @@
             <tags>
               <tag><lit-tag v="SN"/></tag>
               <tag><clip pos="1" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
+              <tag><clip pos="1" side="sl" part="nbr"/></tag>
               <tag><var n="case"/></tag>
             </tags>
             <lu>
@@ -2674,6 +2690,7 @@
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
           </chunk>
         </out>
@@ -2699,6 +2716,7 @@
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	  </chunk>
 	</out>	  
@@ -2771,6 +2789,7 @@
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
             <lu>
@@ -2805,6 +2824,7 @@
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>     
@@ -4219,6 +4239,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
             <lu>
@@ -4261,6 +4282,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
             <lu>
@@ -4587,6 +4609,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
             <lu>
@@ -4633,6 +4656,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>     
@@ -4980,6 +5004,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
               	<clip pos="2" side="tl" part="lem"/>
               	<clip pos="2" side="tl" part="a_det"/>
               	<clip pos="2" side="tl" part="nbr"/>
+                <lit-tag v="4"/>
             	</lu>
 		<b pos="1"/>
 		<lu>   
@@ -5467,6 +5492,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>     
@@ -5605,6 +5631,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>     
@@ -8065,7 +8092,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
    </choose>
 
 	<out>
-          <chunk name="punt">
+          <chunk name="cm">
             <tags>
               <tag><lit-tag v="sent"/></tag>
             </tags>
@@ -8267,6 +8294,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
             <lu>
@@ -8301,6 +8329,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
 	    <lu>     
@@ -8626,6 +8655,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
             <lu>
@@ -8668,6 +8698,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
             <lu>
@@ -9050,6 +9081,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_det"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="1"/>
                 <lu>
@@ -9096,6 +9128,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <clip pos="2" side="tl" part="lem"/> 
 	      <clip pos="2" side="tl" part="a_num"/>
 	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
 	    </lu> 
 	    <b pos="2"/>
                 <lu>
@@ -9344,6 +9377,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               	<clip pos="2" side="tl" part="lem"/>
               	<clip pos="2" side="tl" part="a_det"/>
               	<clip pos="2" side="tl" part="nbr"/>
+                <lit-tag v="4"/>
             	</lu>
 		<b pos="1"/>
 		<lu>   
@@ -9976,7 +10010,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </call-macro>
 
         <out>
-	  <chunk name="punt">
+	  <chunk name="cm">
 	    <tags>
 	      <tag><lit-tag v="sent"/></tag>
 	    </tags>
@@ -16293,8 +16327,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="1"/>
             	<lu>
               	<clip pos="2" side="tl" part="lem"/>
-              	<clip pos="2" side="tl" part="a_det"/>
+              	<clip pos="2" side="tl" part="a_num"/>
               	<clip pos="2" side="tl" part="nbr"/>
+                <lit-tag v="nom"/>
             	</lu>
 		<b pos="2"/>
 		<lu>       
@@ -16349,8 +16384,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="2"/>
             	<lu>
               	<clip pos="3" side="tl" part="lem"/>
-              	<clip pos="3" side="tl" part="a_det"/>
+              	<clip pos="3" side="tl" part="a_num"/>
               	<clip pos="3" side="tl" part="nbr"/>
+                <lit-tag v="nom"/>
             	</lu>
 		<b pos="3"/>
 		<lu>       
@@ -16452,7 +16488,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="1"/>
 	    <lu>
 	      <lit v="unu"/>
-	      <lit-tag v="num.sg"/>
+	      <lit-tag v="num.sg.nom"/>
 	    </lu>
 		<b pos="2"/>
 		<lu>       
@@ -16598,8 +16634,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="1"/>
             	<lu>
               	<clip pos="2" side="tl" part="lem"/>
-              	<clip pos="2" side="tl" part="a_det"/>
+              	<clip pos="2" side="tl" part="a_num"/>
               	<clip pos="2" side="tl" part="nbr"/>
+		<lit-tag v="nom"/>
             	</lu>
 		<b pos="2"/>
 		<lu>       
@@ -16655,8 +16692,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="2"/>
             	<lu>
               	<clip pos="3" side="tl" part="lem"/>
-              	<clip pos="3" side="tl" part="a_det"/>
+              	<clip pos="3" side="tl" part="a_num"/>
               	<clip pos="3" side="tl" part="nbr"/>
+		<lit-tag v="nom"/>
             	</lu>
 		<b pos="3"/>
 		<lu>       
@@ -16760,7 +16798,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="1"/>
 	    <lu>
 	      <lit v="unu"/>
-	      <lit-tag v="num.sg"/>
+	      <lit-tag v="num.sg.nom"/>
 	    </lu>
 		<b pos="2"/>
 		<lu>       
@@ -17295,7 +17333,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </pattern>
       <action>
 	<out>
-	  <chunk name="punt">
+	  <chunk name="cm">
 	    <tags>
 	      <tag><lit-tag v="sent"/></tag>
 	    </tags>
