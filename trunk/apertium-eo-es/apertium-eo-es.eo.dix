@@ -83,6 +83,8 @@
 		<sdef n="ref" /> 
 		<sdef n="sup" /> 
 		<sdef n="num" /> 
+		<sdef n="percent" /> 
+		<sdef n="ciph" /> 
 		<sdef n="ij" /> 
 		<sdef n="sent" /> 
 		<sdef n="cm" /> 
@@ -208,7 +210,10 @@
 
 
 <pardef n="numeros">
-<e>                           <re>[0-9]+([.,][0-9]+)*</re><p><l></l><r><s n="num"/></r></p></e>
+<e>                           <re>[0-9]+([.,][0-9]+)*</re><p><l></l><r><s n="num"/><s n="ciph"/><s n="sp"/><s n="nom"/></r></p></e>
+<e>                           <re>[0-9]+([.,][0-9]+)*</re><p><l></l><r><s n="num"/><s n="ciph"/><s n="sp"/><s n="acc"/></r></p></e>
+<e>                           <re>[0-9]+([.,][0-9]+)*%</re><p><l></l><r><s n="num"/><s n="percent"/><s n="sp"/><s n="nom"/></r></p></e>
+<e>                           <re>[0-9]+([.,][0-9]+)*%</re><p><l></l><r><s n="num"/><s n="percent"/><s n="sp"/><s n="acc"/></r></p></e>
 </pardef>
 
 
@@ -1873,6 +1878,7 @@
 <e lm="dividstreko">          <i>dividstrek</i><par n="o__n"/></e>
 <e lm="divizio">              <i>divizi</i><par n="o__n"/></e>
 <e lm="divorco">              <i>divorc</i><par n="o__n"/></e>
+<e lm="divorci">              <i>divorc</i><par n="i__vblex"/></e>
 <e lm="dizelo">               <i>dizel</i><par n="o__n"/></e>
 <e lm="do">                   <i>d</i><par n="o__n"/></e>
 <e lm="dogano">               <i>dogan</i><par n="o__n"/></e>
@@ -4438,6 +4444,7 @@
 <e lm="ministerio pri defendo">  <i>ministeri</i><par n="o__n"/><p><l><b/>pri<b/>defendo</l><r><g><b/>pri<b/>defendo</g></r></p></e>
 <e lm="ministro de la Kataluna Registaro">                <i>ministr</i><par n="ino__n"/><p><l><b/>de<b/>la<b/>Kataluna<b/>Registaro</l><r><g><b/>de<b/>la<b/>Kataluna<b/>Registaro</g></r></p></e>
 <e lm="mino">                 <i>min</i><par n="o__n"/></e>
+<e lm="mina">                 <i>min</i><par n="a__adj"/></e>
 <e lm="minoritato">           <i>minoritat</i><par n="o__n"/></e>
 <e lm="minora">               <i>minor</i><par n="a__adj"/></e>
 <e lm="minorigi">             <i>minorig</i><par n="i__vblex"/></e>
@@ -5951,6 +5958,7 @@
 <e lm="skalara">              <i>skalar</i><par n="a__adj"/></e>
 <e lm="skandalo">             <i>skandal</i><par n="o__n"/></e>
 <e lm="skandinavo">           <i>skandinav</i><par n="ino__n"/></e>
+<e lm="skandinava">           <i>skandinav</i><par n="a__adj"/></e>
 <e lm="skapolo">              <i>skapol</i><par n="o__n"/></e>
 <e lm="skarabo">              <i>skarab</i><par n="o__n"/></e>
 <e lm="skarlatino">           <i>skarlatin</i><par n="o__n"/></e>
@@ -8474,6 +8482,8 @@
 <e lm="biopsio">              <i>biopsi</i><par n="o__n"/></e>
 <e lm="geedziĝo">             <i>geedziĝ</i><par n="o__n"/></e>
 <e lm="eksedziĝo">            <i>eksedziĝ</i><par n="o__n"/></e>
+<e lm="eksedziniĝo">          <i>eksedziniĝ</i><par n="o__n"/></e>
+<e lm="eksgeedziĝo">          <i>eksgeedziĝ</i><par n="o__n"/></e>
 <e lm="vangofrapo">           <i>vangofrap</i><par n="o__n"/></e>
 <e lm="bereto">               <i>beret</i><par n="o__n"/></e>
 <e lm="tamburego">            <i>tambureg</i><par n="o__n"/></e>
@@ -9889,6 +9899,7 @@
 <e lm="migrado">              <i>migrad</i><par n="o__n"/></e>
 <e lm="dorlotado">            <i>dorlotad</i><par n="o__n"/></e>
 <e lm="ministo">              <i>minist</i><par n="ino__n"/></e>
+<e lm="minista">              <i>minist</i><par n="a__adj"/></e>
 <e lm="detalisto">            <i>detalist</i><par n="ino__n"/></e>
 <e lm="ĝenado">               <i>ĝenad</i><par n="o__n"/></e>
 <e lm="ĝeno">                 <i>ĝen</i><par n="o__n"/></e>
@@ -16932,6 +16943,8 @@
 <e lm="ekscii">               <i>eksci</i><par n="i__vblex"/></e>
 <e lm="eksciti">              <i>ekscit</i><par n="i__vblex"/></e>
 <e lm="eksedziĝi">            <i>eksedziĝ</i><par n="i__vblex"/></e>
+<e lm="eksedziniĝi">          <i>eksedziniĝ</i><par n="i__vblex"/></e>
+<e lm="eksgeedziĝi">          <i>eksgeedziĝ</i><par n="i__vblex"/></e>
 <e lm="eksidi">               <i>eksid</i><par n="i__vblex"/></e>
 <e lm="eloficigi">            <i>eloficig</i><par n="i__vblex"/></e>
 <e lm="elpostenigi">          <i>elpostenig</i><par n="i__vblex"/></e>
