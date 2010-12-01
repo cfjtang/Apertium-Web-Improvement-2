@@ -19,7 +19,7 @@
     </def-cat>
     <def-cat n="det">
       <cat-item tags="det.*"/>
-      <cat-item tags="predet.*"/>
+      <cat-item tags="predet.def.*"/>
     </def-cat>
     <def-cat n="detcel">
       <cat-item lemma="cel" tags="det.*"/>
@@ -31,13 +31,13 @@
       <cat-item tags="det.dem.*"/>
     </def-cat>
      <def-cat n="dettuturor">
-      <cat-item lemma="tuturor" tags="det.def.*"/>
+      <cat-item lemma="tuturor" tags="predet.def.*"/>
     </def-cat> 
     <def-cat n="detind">
       <cat-item tags="det.ind.*"/>
     </def-cat>
     <def-cat n="predet">
-      <cat-item tags="predet.*"/>
+      <cat-item tags="predet.def*"/>
     </def-cat>
     <def-cat n="adjec">
       <cat-item tags="adj.*"/>
@@ -312,10 +312,10 @@
       <attr-item tags="det.ind"/>
       <attr-item tags="det.dem"/>
       <attr-item tags="det.pos"/>
-      <attr-item tags="predet"/>
+      <attr-item tags="predet.def"/>
     </def-attr>
     <def-attr n="a_predet">
-      <attr-item tags="predet"/>
+      <attr-item tags="predet.def"/>
     </def-attr>
     <def-attr n="a_adjec">
       <attr-item tags="adj.ind"/>
@@ -6612,6 +6612,9 @@ is not applicable because gender and number can not be taken from previous rules
              <call-macro n="modcase">
                <with-param pos="1"/>
             </call-macro>
+            <call-macro n="f_concord1">
+               <with-param pos="2"/>
+            </call-macro>
 	       <out>
                   <lu>
                 <clip pos="1" side="tl" part="lem"/>	     
@@ -6630,7 +6633,7 @@ is not applicable because gender and number can not be taken from previous rules
                   <lu>
                    <clip pos="2" side="tl" part="lem"/>
                     <clip pos="2" side="tl" part="a_det"/>	
-                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="gen"/>
                     <clip pos="2" side="tl" part="nbr"/>
                 </lu> 
                 </out>
@@ -6646,6 +6649,9 @@ is not applicable because gender and number can not be taken from previous rules
       <action>
              <call-macro n="modcase">
                <with-param pos="1"/>
+            </call-macro>
+            <call-macro n="f_concord1">
+               <with-param pos="2"/>
             </call-macro>
 	       <out>
                   <lu>
@@ -6663,7 +6669,7 @@ is not applicable because gender and number can not be taken from previous rules
                   <lu>
                    <clip pos="2" side="tl" part="lem"/>
                     <clip pos="2" side="tl" part="a_det"/>	
-                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="gen"/>
                     <clip pos="2" side="tl" part="nbr"/>
                 </lu> 
                 </out>
