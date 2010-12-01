@@ -18,24 +18,18 @@
     <def-cat n="adv">
       <cat-item tags="PREADV"/>
       <cat-item tags="Adv"/>
+      <cat-item tags="adv"/>
+      <cat-item tags="preadv"/>
     </def-cat>
     <def-cat n="SV">
       <cat-item tags="SV"/>
       <cat-item tags="SV.*"/>
-    </def-cat>
-    <def-cat n="out">
-      <cat-item lemma="out" tags="Adv"/>
     </def-cat>
     <def-cat n="GEN">
       <cat-item tags="GEN"/>
     </def-cat>
     <def-cat n="unknown">
        <cat-item lemma="unknown" tags=""/>
-    </def-cat>
-    <def-cat n="Adv">
-      <cat-item tags="Adv"/>
-      <cat-item tags="CA"/>
-      <cat-item tags="NEG"/>
     </def-cat>
     <def-cat n="CC">
       <cat-item tags="CC.*"/>
@@ -46,6 +40,7 @@
     </def-cat>
     <def-cat n="and_or">
       <cat-item tags="and_or.*"/>
+      <cat-item tags="cnjcoo"/>
     </def-cat>
   </section-def-cats>
 
@@ -557,25 +552,50 @@
     </rule>
 
 
-    <rule comment="REGLA: SV out (wash out)  -   elSV (ellavi)">
+<!-- adverboj -->
+
+    <rule comment="REGLA: ADV ADV   -   ADV ">
       <pattern>
-        <pattern-item n="SV"/>
-        <pattern-item n="out"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="adv"/>
       </pattern>
       <action>
         <out>
           <chunk>
             <clip pos="1" part="lem"/>
             <clip pos="1" part="tags"/>
-            <lit v="{^el"/><lit-tag v="adv"/><lit v="$"/>
-            <!-- <clip pos="2" part="content"/>-->
+            <lit v="{"/>
             <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
              <lit v="}"/>
           </chunk>
         </out>
       </action>
     </rule>
 
+    <rule comment="REGLA: ADV and/or ADV   -   ADV ">
+      <pattern>
+        <pattern-item n="adv"/>
+        <pattern-item n="and_or"/>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
+                <b pos="2"/>
+            <clip pos="3" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
 
 

@@ -16,8 +16,8 @@
       <cat-item tags="SAdj.*"/>
     </def-cat>
     <def-cat n="adv">
-      <cat-item tags="PREADV"/>
-      <cat-item tags="Adv"/>
+      <cat-item tags="adv"/>
+      <cat-item tags="preadv"/>
     </def-cat>
     <def-cat n="SV">
       <cat-item tags="SV"/>
@@ -76,29 +76,68 @@
 
   <section-rules>
 
-
-
-    <rule comment="REGLA: SV out (wash out)  -   elSV (ellavi)">
+    <rule comment="REGLA: ADV SV   -   SV ">
       <pattern>
+        <pattern-item n="adv"/>
         <pattern-item n="SV"/>
-        <pattern-item n="out"/>
       </pattern>
       <action>
         <out>
           <chunk>
-            <clip pos="1" part="lem"/>
-            <clip pos="1" part="tags"/>
-            <lit v="{^el"/><lit-tag v="adv"/><lit v="$"/>
-            <!-- <clip pos="2" part="content"/>-->
+            <get-case-from pos="1"><clip pos="1" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
             <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
              <lit v="}"/>
           </chunk>
         </out>
       </action>
     </rule>
 
+    <rule comment="REGLA: SV ADV -   SV ">
+      <pattern>
+        <pattern-item n="SV"/>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="1" part="lem"/></get-case-from>
+            <clip pos="1" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
-
+    <rule comment="REGLA: ADV SV ADV  -   SV ">
+      <pattern>
+        <pattern-item n="adv"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="1" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
+                <b pos="2"/>
+            <clip pos="3" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
 
   </section-rules>
