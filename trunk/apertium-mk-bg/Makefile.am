@@ -70,10 +70,14 @@ $(PREFIX1).mode: modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
+$(PREFIX2).mode: modes.xml
+	apertium-gen-modes modes.xml
+	cp *.mode modes/
+
 clean-dicts:
 	touch $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(PREFIX1).dix
 	rm $(BASENAME).$(LANG1).dix
-	
+
 apertium_mk_bgmodesdir=$(prefix)/share/apertium/modes/
 apertium_mk_bgdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_mk_bg_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
@@ -91,7 +95,7 @@ apertium_mk_bg_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autopgen.bin \
 		    $(PREFIX1).mode \
 		    $(PREFIX2).mode
-		  
+
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_mk_bgmodesdir)
