@@ -1171,6 +1171,89 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: num num num">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="num"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="np_set_defnes1">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="number"/>
+          <clip pos="1" side="tl" part="nbr"/>
+        </let>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </test>
+            <let>
+              <var n="number"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+          <when>
+            <test>
+              <equal>
+                <clip pos="1" side="tl" part="a_num"/>
+                <lit-tag v="adj.ord"/>
+              </equal>
+            </test>
+            <let>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit v=""/>
+            </let>
+            <let>
+              <var n="number"/>
+              <lit-tag v="sg"/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <chunk namefrom="np_chunk_n" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="np_chunk_s"/></tag>
+              <tag><var n="defin"/></tag>
+              <tag><var n="number"/></tag>
+            </tags>
+            <lu>
+              <var n="np_chunk_h"/>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_num"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_num"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_num"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <clip pos="3" side="tl" part="lemq"/>
+              <var n="np_chunk_q"/>
+            </lu>
+          </chunk>
+        </out>
+        <call-macro n="np_cleanup1">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
+
+
 
     <rule comment="REGLA: nom">
       <pattern>
@@ -3152,6 +3235,7 @@
         <choose>
           <when>
             <test>
+              <or>
               <and>
                 <equal>
                   <clip pos="4" side="tl" part="nbr"/>
@@ -3168,6 +3252,12 @@
                   </equal>
                 </or>
               </and>
+               
+                  <equal>
+                    <clip pos="2" side="tl" part="temps"/>
+                    <lit-tag v="past"/>
+                  </equal>
+              </or>
             </test>
             <let>
               <clip pos="4" side="tl" part="nbr"/>
