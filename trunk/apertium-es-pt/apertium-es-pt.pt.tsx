@@ -1417,15 +1417,15 @@
 		</enforce-rules>
 
 	<preferences>
-		<prefer tags="vblex.ifi.3.sg"/>
-		<prefer tags="vbser.ifi.3.sg"/>
-		<prefer tags="vbhaver.ifi.3.sg"/>
-		<prefer tags="vbmod.ifi.3.sg"/>
-		<prefer tags="vblex.ifi.3.pl"/>
-		<prefer tags="vbser.ifi.3.pl"/>
-		<prefer tags="vbhaver.ifi.3.pl"/>
-		<prefer tags="vbmod.ifi.3.pl"/>
-		<prefer tags="cuavb.cni.3.sg"/>
+		<prefer tags="vblex.ifi.p3.sg"/>
+		<prefer tags="vbser.ifi.p3.sg"/>
+		<prefer tags="vbhaver.ifi.p3.sg"/>
+		<prefer tags="vbmod.ifi.p3.sg"/>
+		<prefer tags="vblex.ifi.p3.pl"/>
+		<prefer tags="vbser.ifi.p3.pl"/>
+		<prefer tags="vbhaver.ifi.p3.pl"/>
+		<prefer tags="vbmod.ifi.p3.pl"/>
+		<prefer tags="cuavb.cni.p3.sg"/>
 	</preferences>
 		
 
