@@ -633,6 +633,16 @@
       <list-item v="décembre"/>
     </def-list>
 
+    <def-list n="jours">
+      <list-item v="lundi"/>
+      <list-item v="mardi"/>
+      <list-item v="mercredi"/>
+      <list-item v="jeudi"/>
+      <list-item v="vendredi"/>
+      <list-item v="samedi"/>
+      <list-item v="dimanche"/>
+    </def-list>
+
   </section-def-lists>
 
 
@@ -4075,6 +4085,106 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: NOM(_jour_) NOM(matin|soir)">
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when> <!-- _jour_  matin|soir  -->
+            <test>
+              <and>
+                <in caseless="yes">
+		  <clip pos="1" side="sl" part="lem"/>
+		  <list n="jours"/>
+	        </in>
+                <or>
+                  <equal caseless="yes">
+                    <clip pos="2" side="sl" part="lem"/>
+                    <lit v="matin"/>
+                  </equal>
+                  <equal caseless="yes">
+                    <clip pos="2" side="sl" part="lem"/>
+                    <lit v="soir"/>
+                  </equal>
+                </or>
+              </and>
+            </test>
+            <out>
+              <chunk name="SN" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><lit-tag v="m"/></tag>
+                  <tag><lit-tag v="sg"/></tag>
+                </tags>
+                <lu>
+                  <lit v="el"/>
+                  <lit-tag v="det"/>
+                  <lit-tag v="def"/>
+                  <lit-tag v="m"/>
+                  <lit-tag v="sg"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="1" side="tl" part="whole"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="por"/>
+                  <lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="el"/>
+                  <lit-tag v="det"/>
+                  <lit-tag v="def"/>
+                  <lit-tag v="f"/>
+                  <lit-tag v="sg"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="2" side="tl" part="whole"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+          <otherwise> <!-- NOM NOM -->
+            <out>
+	      <chunk name="nom" case="caseFirstWord">
+	        <tags>
+	          <tag><lit-tag v="SN"/></tag>
+	          <tag><clip pos="1" side="tl" part="gen"/></tag>
+	          <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	        </tags>
+	        <lu>   
+	          <clip pos="1" side="tl" part="whole"/> 
+	        </lu>
+	      </chunk>
+              <b/>
+              <chunk name="nom" case="caseFirstWord">
+	        <tags>
+	          <tag><lit-tag v="SN"/></tag>
+	          <tag><clip pos="2" side="tl" part="gen"/></tag>
+	          <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	        </tags>
+	        <lu>   
+	          <clip pos="2" side="tl" part="whole"/> 
+	        </lu>
+	      </chunk>
+	    </out>
+          </otherwise>
+        </choose>
+        <let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
     <rule comment="REGLA: ANTROPÒNIM">
       <pattern>
 	<pattern-item n="ant"/>
@@ -4444,6 +4554,160 @@
 	</let>
       </action>
     </rule>
+
+   <rule comment="en NOM(_mois_) ADJ(dernier|prochain)"> <!-- en mai dernier: el pasado mayo -->
+     <pattern>
+       <pattern-item n="enprep"/>
+       <pattern-item n="nom"/>
+       <pattern-item n="adj"/>
+     </pattern>
+     <action>
+       <call-macro n="f_concord2">
+         <with-param pos="2"/>
+         <with-param pos="3"/>
+       </call-macro> 
+       <call-macro n="tipus_nom">
+         <with-param pos="2"/>
+       </call-macro>
+       <call-macro n="firstWord">
+         <with-param pos="1"/>
+       </call-macro>
+       <choose>
+         <when> <!-- PREP _mois_ dernier|prochain  -->
+           <test>
+             <and>
+               <in caseless="yes">
+                 <clip pos="2" side="sl" part="lem"/>
+                 <list n="mois"/>
+               </in>
+               <or>
+                 <equal caseless="yes">
+                   <clip pos="3" side="sl" part="lem"/>
+                   <lit v="dernier"/>
+                 </equal>
+                 <equal caseless="yes">
+                   <clip pos="3" side="sl" part="lem"/>
+                   <lit v="prochain"/>
+                 </equal>
+               </or>
+             </and>
+           </test>
+           <choose>
+             <when> <!-- PREP _mois_ dernier -->
+               <test>
+                 <equal caseless="yes">
+                   <clip pos="3" side="sl" part="lem"/>
+                   <lit v="dernier"/>
+                 </equal>
+               </test>
+               <out>
+                 <chunk name="det_adj_nom" case="caseFirstWord">
+                   <tags>
+                     <tag><lit-tag v="SN"/></tag>
+                     <tag><lit-tag v="m"/></tag>
+                     <tag><lit-tag v="sg"/></tag>
+                   </tags>
+                   <lu>
+                     <lit v="el"/>
+                     <lit-tag v="det"/>
+                     <lit-tag v="def"/>
+                     <lit-tag v="m"/>
+                     <lit-tag v="sg"/>
+                   </lu>
+                   <b pos="1"/>
+                   <lu>
+                     <lit v="pasar"/>
+                     <lit-tag v="vblex"/>
+                     <lit-tag v="pp"/>
+                     <lit-tag v="m"/>
+                     <lit-tag v="sg"/>
+                   </lu>
+                   <b pos="2"/>
+                   <lu>
+                     <clip pos="2" side="tl" part="lem"/> 
+                     <clip pos="2" side="tl" part="a_nom"/>
+                     <clip pos="2" side="tl" part="gen" link-to="2"/>
+                     <clip pos="2" side="tl" part="nbr" link-to="3"/>
+                   </lu>
+                 </chunk>
+               </out>
+             </when>
+             <otherwise> <!-- PREP _mois_ prochain -->
+               <out>
+                 <chunk name="prep_nom_adj" case="caseFirstWord">
+                   <tags>
+                     <tag><lit-tag v="SN"/></tag>
+                     <tag><lit-tag v="m"/></tag>
+                     <tag><lit-tag v="sg"/></tag>
+                   </tags>
+                   <lu>
+                     <lit v="el"/>
+                     <lit-tag v="det"/>
+                     <lit-tag v="def"/>
+                     <lit-tag v="m"/>
+                     <lit-tag v="sg"/>
+                   </lu>
+                   <b pos="1"/>
+                   <lu>
+                     <lit v="próximo"/>
+                     <lit-tag v="adj"/>
+                     <lit-tag v="m"/>
+                     <lit-tag v="sg"/>
+                   </lu>
+                   <b pos="2"/>
+                   <lu>
+                     <clip pos="2" side="tl" part="lem"/> 
+                     <clip pos="2" side="tl" part="a_nom"/>
+                     <clip pos="2" side="tl" part="gen" link-to="2"/>
+                     <clip pos="2" side="tl" part="nbr" link-to="3"/>
+                   </lu>
+                 </chunk>
+               </out>
+             </otherwise>
+           </choose>
+         </when>
+         <otherwise> <!-- PREP + RULE: NOM ADJ -->
+           <out>
+             <chunk name="prep_nom_adj" case="caseFirstWord">
+               <tags>
+                 <tag><lit-tag v="SP"/></tag>
+                 <tag><var n="genero"/></tag>
+                 <tag><var n="numero"/></tag>
+                 <tag><var n="tipusnom"/></tag>
+               </tags>
+               <lu>
+                 <clip pos="1" side="tl" part="whole"/> 
+               </lu>
+               <b pos="1"/>
+               <lu>
+                 <clip pos="2" side="tl" part="lemh"/> 
+                 <clip pos="2" side="tl" part="a_nom"/>
+                 <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+                 <clip pos="2" side="tl" part="gen_mf"/>  
+                 <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+                 <clip pos="2" side="tl" part="nbr_sp"/>  
+                 <clip pos="2" side="tl" part="lemq"/>
+               </lu>
+               <b pos="2"/>
+               <lu>
+                 <clip pos="3" side="tl" part="lemh"/>
+                 <clip pos="3" side="tl" part="a_adj"/>
+                 <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+                 <clip pos="3" side="tl" part="gen_mf"/>  
+                 <clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+                 <clip pos="3" side="tl" part="nbr_sp"/>  
+                 <clip pos="3" side="tl" part="lemq"/>
+               </lu>
+             </chunk>
+           </out>
+         </otherwise>
+       </choose>
+       <let>
+         <var n="caseFirstWord"/>
+         <lit v="aa"/>
+       </let>
+     </action>
+   </rule>
 
     <rule comment="REGLA: ADJ NOM">
       <pattern>
@@ -6235,6 +6499,60 @@
 	    </lu> 
 	    <b/>
 	    <lu><clip pos="2" side="tl" part="whole"/></lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+    <rule comment="REGLA: PERCENT APREP NUM -> un PERCENT hasta los NUM ">
+      <pattern>
+	<pattern-item n="percent"/>
+        <pattern-item n="aprep"/>
+	<pattern-item n="num"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="percent_a_num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+              <tag><lit-tag v="m"/></tag>
+              <tag><lit-tag v="sg"/></tag>
+	    </tags>
+	    <lu>
+              <lit v="uno"/>
+	      <lit-tag v="det"/>
+              <lit-tag v="ind"/>
+              <lit-tag v="m"/>
+              <lit-tag v="sg"/>
+	    </lu>
+            <b/>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="hasta"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="el"/>
+              <lit-tag v="det"/>
+              <lit-tag v="def"/>
+              <lit-tag v="m"/>
+              <lit-tag v="pl"/>
+            </lu>
+            <b/>
+            <lu>
+              <clip pos="3" side="tl" part="whole"/>
+            </lu>
 	  </chunk>
 	</out>
 	<let>
