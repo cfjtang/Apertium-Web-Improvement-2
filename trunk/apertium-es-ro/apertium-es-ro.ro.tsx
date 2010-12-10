@@ -69,6 +69,7 @@
   <def-label name="DETMFN" closed="true">
     <tags-item tags="det.*.mfn.*"/>
   </def-label>
+
   <def-label name="INTERJ">
     <tags-item tags="ij"/>
   </def-label>
@@ -155,12 +156,15 @@
   <def-label name="PREDET" closed="true">
     <tags-item tags="predet.*"/>
   </def-label>  
+
  <!--<def-label name="PREPA" closed="true">
     <tags-item lemma="a" tags="pr"/>
   </def-label> --><!--Preguntar a Delia si fa falta. -->
+
   <def-label name="PREP" closed="true">
     <tags-item tags="pr"/>
   </def-label>
+
 <!--  <def-label name="PRNTNNT" closed="true">
     <tags-item tags="prn.tn.nt"/>
   </def-label> -->
@@ -204,6 +208,33 @@
   </def-label>
    <def-label name="VLEXIMP">
     <tags-item tags="vblex.imp.*"/>
+  </def-label>
+
+
+
+  <def-label name="VSERINF">
+    <tags-item tags="vbser.inf"/>
+  </def-label>
+  <def-label name="VSERGER">
+    <tags-item tags="vbser.ger"/>
+  </def-label>
+  <def-label name="VSERPARTPI">
+    <tags-item tags="vbser.pp.*"/>
+  </def-label>
+  <def-label name="VSERPFCI">
+    <tags-item tags="vbser.pri.*"/>
+    <tags-item tags="vbser.cni.*"/>
+     <tags-item tags="vbser.fti.*"/>
+  </def-label>
+  <def-label name="VSERIPI">
+    <tags-item tags="vbser.pii.*"/>
+    <tags-item tags="vbser.pper.*"/>
+  </def-label>
+  <def-label name="VSERSUBJ">
+    <tags-item tags="vbser.prs.*"/>
+  </def-label>
+   <def-label name="VSERIMP">
+    <tags-item tags="vbser.imp.*"/>
   </def-label>
 
  
@@ -822,6 +853,56 @@
       <label-item label="VREALEX"/>
     </label-sequence> -->
 
+
+    <label-sequence>
+      <label-item label="DETM"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMN"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETM"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMN"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETM"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMN"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETM"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMN"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETM"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMN"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETM"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMN"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+
     <label-sequence>
       <label-item label="DETF"/>
       <label-item label="VLEXPFCI"/>
@@ -930,7 +1011,68 @@
       <label-item label="DETFN"/>
       <label-item label="VREALEX"/>
     </label-sequence> -->
-       <label-sequence>
+
+  <label-sequence>
+      <label-item label="DETF"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETFN"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    
+    <label-sequence>
+      <label-item label="DETF"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETFN"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETF"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+   <label-sequence>
+      <label-item label="DETFN"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETF"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETFN"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETF"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETFN"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+
+
+    <label-sequence>
+      <label-item label="DETF"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETFN"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+
+
+    <label-sequence>
+      <label-item label="DETDEFF"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+    
+  
+
+     <label-sequence>
       <label-item label="DETMFN"/>
       <label-item label="VLEXPFCI"/>
     </label-sequence>
@@ -1028,6 +1170,60 @@
       <label-item label="DETMF"/>
       <label-item label="VREALEX"/>
     </label-sequence> -->
+
+   <label-sequence>
+      <label-item label="DETMFN"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMFN"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMFN"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMFN"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMFN"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="DETMF"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETMFN"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+
+
+
     <label-sequence>
       <label-item label="CNJSUBS"/>
       <label-item label="VLEXIMP"/>
@@ -1330,6 +1526,11 @@
       <label-item label="FOARTEADV"/>
       <label-item label="INTERJ"/>
     </label-sequence>    -->
+<label-sequence>
+      <label-item label="CNJSUBS"/>
+      <label-item label="CNJCOORD"/>
+    </label-sequence>
+    
   </forbid>
   
    <enforce-rules>
@@ -1344,33 +1545,15 @@
       <label-set>
         <label-item label="VLEXPARTPI"/>
         <label-item label="VMODALPARTPI"/>
+        <label-item label="VSERPARTPI"/>
       </label-set>
     </enforce-after>
  </enforce-rules>
 
-
-
   <preferences>
    <prefer tags="vblex.pri.p3.pl"/>
+   <prefer tags="vblex.pri.p3.sg"/>
   </preferences>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </tagger>
