@@ -631,7 +631,8 @@ REMOVE Vpart + ("e") IF (1 MixedMutCons) (NOT 1 MixedMut) (NOT 1 ("<[aeiou].*>"r
 REMOVE NC IF (0 ("<oan>" n)) (0 ("<oan>" vblex)) (-1 ("e"));
 
 #dre ret ½ bost war ar buheziñ politikel 
-REMOVE VerbFin IF (NOT -1C Vpart);
+#ar mod ma c'hall an implijidi bezañ galvet 
+REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 ("ma"));
 
 #met bevañ a ra e Gwipedel
 SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
@@ -641,6 +642,9 @@ REMOVE Vpart IF (1C Num);
 
 #C'hoari zo
 REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 ("<zo>"));
+
+#ar mod ma c'hall an implijidi bezañ galvet
+REMOVE Adj IF (-3 DetDef) (-2 NC) (-1 ("ma")) (0 ("gallout"));
 
 SECTION
 
@@ -766,6 +770,9 @@ SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
 
 # treiñ + e + idioma = traduire + en + idioma 
 SUBSTITUTE ("treiñ") ("treiñ:1") ("treiñ" vblex) (1 ("e")) (2 Language);
+
+# un tamm dic'hortoz : un poco inhabitual/un peu inattendu.
+SUBSTITUTE ("tamm") ("tamm:1") ("tamm" n) (-1 DetInd) (1 Adj);
 
 
 ##
