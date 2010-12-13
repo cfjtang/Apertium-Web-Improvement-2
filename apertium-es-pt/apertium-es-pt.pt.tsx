@@ -95,11 +95,13 @@
 		</def-label>
 		<def-label name="TOPONIM">
 			<tags-item tags="np.loc"/>
+                        <tags-item tags="np.loc.*"/>
 		</def-label>
 		<def-label name="NPALTRES">
 			<tags-item tags="np.al"/>
 		</def-label>
 		<def-label name="NUM" closed="true">
+                        <tags-item tags="num"/>
 			<tags-item tags="num.*"/>
 		</def-label>
 		<def-label name="PREDETNT" closed="true">
