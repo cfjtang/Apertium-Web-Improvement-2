@@ -183,7 +183,10 @@
   <def-label name="PRNPRO" closed="true">
     <tags-item tags="prn.pro.*"/>
   </def-label>
-
+  <!-- DECISION DE SERGIO -->
+  <def-label name="PRNGENERAL" closed="true">
+    <tags-item tags="prn.*"/>
+  </def-label>
   
   <def-label name="VLEXINF">
     <tags-item tags="vblex.inf"/>
@@ -375,6 +378,12 @@
   
   <def-label name="RELADV" closed="true">
     <tags-item tags="rel.adv"/>
+  </def-label>
+
+<!-- DECISION DE SERGIO -->
+
+  <def-label name="RELGENERAL" closed="true">
+    <tags-item tags="rel.*"/>
   </def-label>
 
 <!--Mireia: això ja no m'ho he mirat, caldria repassar-ho, també les prohibicions amb enclítics -->
