@@ -56,6 +56,9 @@
       <cat-item lemma="ret" tags="adj.*"/>
       <cat-item lemma="dav" tags="adj.*"/>
     </def-cat>
+    <def-cat n="krog">
+      <cat-item lemma="krog" tags="n.m.*"/>
+    </def-cat>
     <def-cat n="arabat">
       <cat-item lemma="arabat" tags="adv"/>
     </def-cat>
@@ -68,7 +71,7 @@
     <def-cat n="instant">
       <cat-item lemma="poent" tags="n.m.*"/>
     </def-cat>
-    <def-cat n="posibilitat">
+    <def-cat n="possibilitat">
       <cat-item lemma="tu" tags="n.m.*"/>
       <cat-item lemma="tro" tags="n.f.*"/>
     </def-cat>
@@ -5798,6 +5801,28 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+
+        <choose>
+          <when>
+            <test>
+              <or>
+                <equal>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="sp"/>
+                </equal>
+                <equal>
+                  <var n="numero"/>
+                  <lit-tag v="sp"/>
+                </equal>
+              </or>
+            </test>
+            <let>
+              <var n="numero"/>
+              <clip pos="1" side="sl" part="nbr"/>
+            </let>
+          </when>
+        </choose>
+
         <out>
           <chunk name="det_nom_de_ant" case="caseFirstWord">
             <tags>
@@ -11032,10 +11057,16 @@
         <choose>
           <when>
             <test>
-              <in caseless="yes">
-                <clip pos="3" side="tl" part="lem"/>
-                <list n="adj_colloc_abans"/>
-              </in>
+              <and>
+                <in caseless="yes">
+                  <clip pos="3" side="tl" part="lem"/>
+                  <list n="adj_colloc_abans"/>
+                </in>
+                <equal>
+                  <clip pos="3" side="sl" part="grau_adj"/>
+                  <lit v=""/>
+                </equal>
+              </and>
             </test> 
           <out>
             <chunk name="det_adj_nom" case="caseFirstWord">
@@ -12278,6 +12309,10 @@
             </out>
           </otherwise>
         </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
       </action>
    </rule>
 
@@ -14362,6 +14397,61 @@
       </action>
    </rule>
 
+    <rule comment="REGLA: klask vpart ober inf → essayer de inf">
+      <pattern>
+        <pattern-item n="klask"/>
+        <pattern-item n="verbpart"/>
+        <pattern-item n="ober"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <clip pos="4" side="tl" part="lem"/>
+        </let>
+        <out>
+          <chunk name="essayer_de" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+              <lit v="essayer"/>
+              </get-case-from>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="pers"/>
+              <clip pos="3" side="tl" part="nbr"/>
+            </lu>
+            <b/>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="lema">
+            <tags> 
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="4" side="tl" part="temps"/></tag>
+            </tags>
+            <lu>
+              <clip pos="4" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+         
+
+
     <rule comment="REGLA: klask inf → chercher à inf">
       <pattern>
         <pattern-item n="klask"/>
@@ -14403,7 +14493,6 @@
         </out>
       </action>
    </rule>
- 
          
     <rule comment="REGLA: arabat inf → ne falloir pas inf">
       <pattern>
@@ -14819,10 +14908,60 @@
    </rule>
             
 
-         
+   
+    <rule comment="REGLA: krog + bezañ + da + inf → commencer à inf">
+      <pattern>
+        <pattern-item n="krog"/>
+        <pattern-item n="bezañ"/>
+        <pattern-item n="da"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="lema"/>
+          <lit v="commencer_à_inf"/>
+        </let>
+        <out>
+          <chunk namefrom="lema" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <lit v="commencer"/>
+              <lit-tag v="vblex"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="à"/>
+              <lit-tag v="pr"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+              <clip pos="4" side="tl" part="temps"/>
+              <clip pos="4" side="tl" part="pers"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+   </rule>
+
+   
     <rule comment="REGLA: tu/tro + verbpart + bezañ → il y a moyen">
       <pattern>
-        <pattern-item n="posibilitat"/>
+        <pattern-item n="possibilitat"/>
         <pattern-item n="verbpart"/>
         <pattern-item n="bezañ"/>
       </pattern>
@@ -14865,7 +15004,7 @@
          
     <rule comment="REGLA: tu/tro + verbpart + bezañ + da + indirect → il y a moyen que prnperssubj">
       <pattern>
-        <pattern-item n="posibilitat"/>
+        <pattern-item n="possibilitat"/>
         <pattern-item n="verbpart"/>
         <pattern-item n="bezañ"/>
         <pattern-item n="da"/>
@@ -17844,6 +17983,25 @@
               <lit-tag v="sg"/>
             </let>
           </when>
+        </choose>
+        <choose>
+          <when>
+            <test>
+              <not>
+                <equal>
+                  <clip pos="2" side="sl" part="gen"/>
+                  <lit v=""/>
+                </equal>
+              </not>
+            </test>
+            <let>
+              <var n="genero"/>
+              <clip pos="2" side="sl" part="gen"/>
+            </let>
+          </when>
+        </choose>
+
+        <choose>
           <when>
             <test>
               <or>
@@ -17888,7 +18046,8 @@
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_pp"/>
-              <lit-tag v="6.7"/>
+              <!--<lit-tag v="6.7"/>-->
+              <lit-tag v="m.sg"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
           </chunk>

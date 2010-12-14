@@ -296,7 +296,8 @@ SELECT VerbInf IF (-1 VpartGer);
 
 # REGLA (B0009): "Geriadur digor ha frank"
 #                "kinnig tremen anezho bep bloaz"
-SELECT Adj IF (-1 NC) (0 NC) (0 Adj) (NOT 1 Prep) (NOT 1 PrnDObj) ;
+#                "E Brest"
+SELECT Adj IF (-1 NC) (0 NC) (0 Adj) (NOT 1 Prep) (NOT 1 PrnDObj) (NOT 0 Toponim);
 
 
 # REGLA (B    ): "seul fonnusoc'h, seul welloc'h"
@@ -382,7 +383,8 @@ REMOVE Vpart IF (1 ("kaout" vblex));
 REMOVE Vpart IF (1 Vbloc);
 
 # REGLA (B0017): >The particle is omitted before verbal nouns and imperatives
-REMOVE Vpart IF ((1C VerbInf) OR (1C VerbImp));
+# C’hwitellat a ra en ur labourat
+REMOVE Vpart IF ((1C VerbInf) OR (1C VerbImp)) (NOT 0 ("<en ur>"));
 
 # REGLA (B0019): "o chom e Roazhon"
 REMOVE PrnDObj IF (-1 VerbInf);
@@ -632,7 +634,7 @@ REMOVE NC IF (0 ("<oan>" n)) (0 ("<oan>" vblex)) (-1 ("e"));
 
 #dre ret ½ bost war ar buheziñ politikel 
 #ar mod ma c'hall an implijidi bezañ galvet 
-REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 ("ma"));
+REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 (".*ma"r));
 
 #met bevañ a ra e Gwipedel
 SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
@@ -645,6 +647,21 @@ REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 ("<zo>"));
 
 #ar mod ma c'hall an implijidi bezañ galvet
 REMOVE Adj IF (-3 DetDef) (-2 NC) (-1 ("ma")) (0 ("gallout"));
+
+#D'ar mare ma oan o tigeriñ an nor
+REMOVE NC IF (-1 CA | CS) (0 ("<oan>")) (1 ("o"));
+
+#C’hwitellat a ra en ur labourat
+SELECT Vpart IF (0 ("<en ur>")) (1C VerbInf);
+
+#Ne zeuio ket Katell da gomz
+REMOVE NC IF (0 NC) (0 VerbInf) (-1 ("da")) (-2* VerbFin BARRIER BOS);
+
+# E Brest
+SELECT Toponim IF (-1 ("e"i)) (0 Toponim) ;
+
+# E Brest
+SELECT Prep IF (0 Prep) (0 NC) (1C Toponim);
 
 SECTION
 

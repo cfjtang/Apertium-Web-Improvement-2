@@ -89,6 +89,12 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
+<def-cat n="VPART_en_em">
+      <cat-item lemma="en em" tags="Vpart.ref"/>
+    </def-cat>
+<def-cat n="PREP_à">
+      <cat-item lemma="à" tags="PREP"/>
+    </def-cat>
 <def-cat n="VPART_a">
       <cat-item lemma="a" tags="Vpart.subj"/>
     </def-cat>
@@ -109,7 +115,6 @@
      <def-cat n="adv_neg">
       <cat-item lemma="adv_neg" tags="adv"/>
     </def-cat>
-
      
      <def-cat n="adv">
       <cat-item tags="adv"/>
@@ -1147,6 +1152,12 @@
               <var n="subj_vist"/>
               <lit v="yes"/>
             </equal>
+            <not>
+              <equal>
+                <clip pos="1" part="lem"/>
+                <lit v="verbcj_ref"/>
+              </equal>
+            </not>
             <equal>
               <clip pos="1" part="pers"/>
               <lit-tag v="impers"/>
@@ -1190,6 +1201,12 @@
                     <lit v="yes"/>
                   </equal>
                 </not>
+            <not>
+              <equal>
+                <clip pos="1" part="lem"/>
+                <lit v="verbcj_ref"/>
+              </equal>
+            </not>
                </and>    
             </test>
 
@@ -3339,7 +3356,7 @@
   </action>
 </rule>
 
-<rule>
+<rule comment="ANT VPART_a SV punt">
       <pattern>
     <pattern-item n="ANT"/>
     <pattern-item n="VPART_a"/>
@@ -3409,6 +3426,12 @@
                                 <clip pos="1" part="chcontent"/>
                             </chunk>
                             <b pos="1"/>
+                        </out>
+
+        <call-macro n="posa_subj">
+            <with-param pos="3"/>
+        </call-macro>
+                        <out>
                             <chunk>
                                 <clip pos="3" part="lem"/>
                                 <clip pos="3" part="tags"/>
@@ -3422,6 +3445,74 @@
 </rule>
 
 
+<rule comment="REGLA: SN VPART_en_em SV punt"> 
+    <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="VPART_en_em"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="punt"/>
+    </pattern>
+    <action>
+      <call-macro n="particle_concord2">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+      </call-macro>
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+      <call-macro n="f_concord1"> <!-- This should not be necessary "ar serc’hed en em starde" -->
+        <with-param pos="1"/>
+      </call-macro>
+      <choose>
+        <when>
+          <test>
+            <not>
+              <equal>
+                <clip pos="1" part="nbr"/>
+                <lit-tag v="sp"/>
+              </equal>
+            </not>
+          </test>
+           <let>
+             <clip pos="3" part="nbr"/>
+             <clip pos="1" part="nbr"/>
+           </let>
+        </when>
+      </choose>
+
+                        <out>
+                            <chunk>
+                                <clip pos="1" part="lem"/>
+                                <clip pos="1" part="tags"/>
+                                <clip pos="1" part="chcontent"/>
+                            </chunk>
+                         
+                            <b pos="1"/>
+                                            <chunk>
+                                                <lit v="prnpro"/>
+                                                <lit-tag v="SN"/>
+                                                <lit v="{^"/>
+                                                <lit v="se"/>
+                                                <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+                                                <lit v="$}"/>
+                                            </chunk>
+                                            <b/>
+
+                            <chunk>
+                                <clip pos="3" part="lem"/>
+                                <clip pos="3" part="tags"/>
+                                <clip pos="3" part="chcontent"/>
+                            </chunk>
+                        </out>
+        <out>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+    </action>
+</rule>
+
 
 
 <rule comment="REGLA: SN VPART SV punt"> 
@@ -3432,13 +3523,13 @@
         <pattern-item n="punt"/>
     </pattern>
     <action>
-        <call-macro n="posa_subj">
-            <with-param pos="3"/>
-        </call-macro>
       <call-macro n="particle_concord2">
           <with-param pos="2"/>
           <with-param pos="3"/>
       </call-macro>
+        <call-macro n="posa_subj">
+            <with-param pos="3"/>
+        </call-macro>
       <call-macro n="f_concord1"> <!-- This should not be necessary "ar serc’hed en em starde" -->
         <with-param pos="1"/>
       </call-macro>
@@ -8599,7 +8690,48 @@
 
 
 
- <rule>
+ <rule comment="SV ANT PREP_à INF">
+      <pattern>
+    <pattern-item n="SV"/>
+    <pattern-item n="ANT"/>
+    <pattern-item n="PREP_à"/>
+    <pattern-item n="INF"/>
+      </pattern>
+      <action>
+            <out>
+              <chunk>
+                <clip pos="2" part="whole"/>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+                <get-case-from pos="4">
+                <clip pos="1" part="lem"/>
+                </get-case-from>
+                <clip pos="1" part="tags"/>
+                <clip pos="1" part="chcontent"/>
+              </chunk>
+              <b pos="2"/>
+              <chunk>
+                <clip pos="3" part="whole"/>
+              </chunk>
+              <b pos="3"/>
+              <chunk>
+                <clip pos="4" part="lem"/>
+                <clip pos="4" part="tags"/>
+                <clip pos="4" part="chcontent"/>
+              </chunk>
+            </out>
+
+        <let>
+                <var n="subj_vist"/>
+                <lit v="yes"/>
+        </let>
+
+      </action>
+</rule>
+
+
+ <rule comment="V_que INF SN">
       <pattern>
     <pattern-item n="V_que"/>
     <pattern-item n="INF"/>
