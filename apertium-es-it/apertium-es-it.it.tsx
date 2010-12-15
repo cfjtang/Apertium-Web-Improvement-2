@@ -78,6 +78,7 @@
   <def-label name="NUM" closed="true">
     <tags-item tags="num.*"/>
     <tags-item tags="num"/>
+    <tags-item tags="time"/>
   </def-label>
   <def-label name="PREDETNT" closed="true">
     <tags-item tags="predet.nt.*"/>
