@@ -1,4 +1,4 @@
-VERSION=0.2.0
+VERSION=0.3.0
 LANG1=br
 LANG2=fr
 PREFIX1=$(LANG1)-$(LANG2)
@@ -104,6 +104,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX1).rlx \
            $(PREFIX1).prob $(PREFIX2).prob \
+	   lexchoicebil.xsl \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x \
            $(BASENAME).pre-xfer-br.t1x buscaPar.xsl principal.xsl \
