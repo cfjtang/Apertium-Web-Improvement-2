@@ -3,8 +3,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-br-fr], [0.2.0], [ftyers@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-br-fr], [0.2.0], no-define)
+AC_INIT([apertium-br-fr], [0.3.0], [ftyers@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-br-fr], [0.3.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
