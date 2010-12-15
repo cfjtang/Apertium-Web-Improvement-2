@@ -371,17 +371,24 @@
       <attr-item tags="prn.pro"/>
       <attr-item tags="prn.pro.ref"/>
     </def-attr>
+    
+    <def-attr n="a_ref">
+      <attr-item tags="ref"/>
+    </def-attr>
+    
     <def-attr n="a_verb">
       <attr-item tags="vblex"/>
       <attr-item tags="vbser"/>
       <attr-item tags="vbhaver"/>
       <attr-item tags="vbmod"/>
     </def-attr>
+
     <def-attr n="a_inf">
       <attr-item tags="vblex.inf"/>
       <attr-item tags="vbavea.inf"/>
       <attr-item tags="vbmod.inf"/>
     </def-attr>
+    
     <def-attr n="a_infnm">
       <attr-item tags="vblex.inf"/>
       <attr-item tags="vbavea.inf"/>
@@ -5259,13 +5266,43 @@
                     <clip pos="2" side="tl" part="a_prep"/>
                  </lu>
 		  <b/>
-		  <lu>
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
                     <lit v="el"/>
-		    <lit-tag v="det.def"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="sl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
                     <clip pos="3" side="tl" part="gen"/>
                     <clip pos="3" side="tl" part="nbr"/>
                   </lu>
                   <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
                   <lu>
                     <clip pos="3" side="tl" part="lemh"/>
                     <clip pos="3" side="tl" part="a_nom"/>
@@ -5279,12 +5316,43 @@
                     <lit-tag v="pr"/>
                    </lu>
                   <b/> 
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
                   <lu>
-                   <lit v="el"/>		   
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="sl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
                     <lit-tag v="det.def"/>
                     <clip pos="4" side="tl" part="gen"/>
                     <clip pos="4" side="tl" part="nbr"/>
                   </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
                   <b/>
                   <lu>
                     <clip pos="4" side="tl" part="lemh"/>
@@ -5319,13 +5387,43 @@
                 <clip pos="3" side="tl" part="lemq"/>
                   </lu>
                   <b/>
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
                   <lu>
-                   <lit v="el"/>		   
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="sl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
                     <lit-tag v="det.def"/>
                     <clip pos="4" side="tl" part="gen"/>
                     <clip pos="4" side="tl" part="nbr"/>
                   </lu>
                   <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
                   <lu>
                     <clip pos="4" side="tl" part="lemh"/>
                     <clip pos="4" side="tl" part="a_nom"/>
@@ -5383,13 +5481,38 @@
                     <clip pos="1" side="tl" part="a_prep"/>
                   </lu>
 		  <b/>
-		  <lu>
+             </out>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
                     <lit v="el"/>
-		    <lit-tag v="det.def"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+                    <lit v="el"/>  
+                    <lit-tag v="det.def"/>
                     <clip pos="2" side="tl" part="gen"/>
                     <clip pos="2" side="tl" part="nbr"/>
                   </lu>
                   <b/>
+                 </out>
+               </otherwise>
+               </choose>
+               <out>
                   <lu>
                     <clip pos="2" side="tl" part="lemh"/>
                     <clip pos="2" side="tl" part="a_nom"/>
@@ -5402,14 +5525,39 @@
                    <lit v="de"/>		   
                     <lit-tag v="pr"/>
                    </lu>
-                  <b/> 
+                  <b/>
+                  </out>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
                   <lu>
-                   <lit v="el"/>		   
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="sl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+                    <lit v="el"/>  
                     <lit-tag v="det.def"/>
                     <clip pos="3" side="tl" part="gen"/>
                     <clip pos="3" side="tl" part="nbr"/>
                   </lu>
                   <b/>
+                 </out>
+               </otherwise>
+               </choose>
+               <out>                  
                   <lu>
                     <clip pos="3" side="tl" part="lemh"/>
                     <clip pos="3" side="tl" part="a_nom"/>
@@ -5450,13 +5598,38 @@
                     <clip pos="1" side="tl" part="a_prep"/>
                   </lu>
 		  <b/>
-		  <lu>
+	      </out>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
                     <lit v="el"/>
-		    <lit-tag v="det.def"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+                    <lit v="el"/>  
+                    <lit-tag v="det.def"/>
                     <clip pos="2" side="tl" part="gen"/>
                     <clip pos="2" side="tl" part="nbr"/>
                   </lu>
                   <b/>
+                 </out>
+               </otherwise>
+               </choose>
+		<out>
                   <lu>
                     <clip pos="2" side="tl" part="lemh"/>
                     <clip pos="2" side="tl" part="a_nom"/>
@@ -5526,13 +5699,38 @@
                     <lit-tag v="pr"/>
                    </lu>
                    <b/>
-		  <lu>
+                   </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
                     <lit v="el"/>
-		    <lit-tag v="det.def"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="sl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+                    <lit v="el"/>  
+                    <lit-tag v="det.def"/>
                     <clip pos="3" side="tl" part="gen"/>
                     <clip pos="3" side="tl" part="nbr"/>
                   </lu>
                   <b/>
+                 </out>
+               </otherwise>
+               </choose>
+                   <out>
                   <lu>
                     <clip pos="3" side="tl" part="lemh"/>
                     <clip pos="3" side="tl" part="a_nom"/>
@@ -5630,8 +5828,8 @@
                 <clip pos="2" side="tl" part="lemq"/>
                   </lu>
                 </out>
-</when>
-<otherwise>
+	</when>
+	<otherwise>
 	     <out>
 		<lu>
 		  <get-case-from pos="1">
@@ -7214,12 +7412,42 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="nbr"/>
 	       </lu>
                <b/>
-               <lu> 
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
               <b/>
               <lu>
                 <clip pos="2" side="tl" part="lemh"/>
@@ -7234,13 +7462,42 @@ is not applicable because gender and number can not be taken from previous rules
                 <lit-tag v="pr"/>
               </lu>
               <b/>
-              <lu>
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="3" side="tl" part="nbr"/>
-              </lu>
-              <b/>
+             </out>
+              <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="sl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+	     <out>
               <lu>
                 <clip pos="3" side="tl" part="lemh"/>
                 <clip pos="3" side="tl" part="a_nom"/>
@@ -7288,13 +7545,42 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="nbr"/>
 	       </lu>
                <b/>
-               <lu> 
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-              <b/>
+               </out>
+                <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+	      <out>
               <lu>
                 <clip pos="2" side="tl" part="lemh"/>
                 <clip pos="2" side="tl" part="a_nom"/>
@@ -7368,13 +7654,42 @@ is not applicable because gender and number can not be taken from previous rules
                 <lit-tag v="pr"/>
               </lu>
               <b/>
-              <lu>
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="3" side="tl" part="nbr"/>
-              </lu>
-              <b/>
+              </out>
+	     <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="sl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
               <lu>
                 <clip pos="3" side="tl" part="lemh"/>
                 <clip pos="3" side="tl" part="a_nom"/>
@@ -9680,6 +9995,7 @@ is not applicable because gender and number can not be taken from previous rules
       </pattern>
       <action> 
           <out>
+          <!--<lu><lit v="aquí"/></lu><b/>-->
                <lu>
 	          <get-case-from pos="1">
                   <clip pos="1" side="tl" part="lem"/>
@@ -9695,10 +10011,12 @@ is not applicable because gender and number can not be taken from previous rules
                  </lu>
                <lu>
                    <clip pos="3" side="tl" part="lem"/>
-                   <clip pos="3" side="tl" part="a_prnenc"/>
-                   <clip pos="3" side="tl" part="persona"/>
-                   <clip pos="3" side="tl" part="gen"/>
-                   <clip pos="3" side="tl" part="nbr"/>
+	           <lit-tag v="prn.enc"/>
+	           
+                    <clip pos="3" side="tl" part="a_ref"/>
+                    <clip pos="3" side="tl" part="persona"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
                    <clip pos="4" side="tl" part="lemq"/>
                 </lu>
                </mlu>
@@ -10172,36 +10490,86 @@ is not applicable because gender and number can not be taken from previous rules
 	    <call-macro n="modcase">
                <with-param pos="1"/>
             </call-macro>
-            <out>
-              <lu> 
-	      <get-case-from pos="1">
-                <lit v="el"/>
-	      </get-case-from> 
-                <lit-tag v="det.def"/>
-                <clip pos="1" side="tl" part="gen"/>
-                <clip pos="1" side="tl" part="nbr"/>
-              </lu>
-              <b/>
-              <lu>
-                <clip pos="1" side="tl" part="lemh"/>
-                <clip pos="1" side="tl" part="a_nom"/>
-                <clip pos="1" side="tl" part="gen"/>
-                <clip pos="1" side="tl" part="nbr"/>
-                <clip pos="1" side="tl" part="lemq"/>
-              </lu>
-              <b/>
-              <lu>
-                <lit v="de"/>
-                <lit-tag v="pr"/>
-              </lu>
-              <b/>
-              <lu>
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-              <b/>
+            <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="sl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+               <out>
+               <lu>
+                 <clip pos="1" side="tl" part="lemh"/>
+                 <clip pos="1" side="tl" part="a_nom"/>
+                 <clip pos="1" side="tl" part="gen"/>
+                 <clip pos="1" side="tl" part="nbr"/>
+                 <clip pos="1" side="tl" part="lemq"/>
+               </lu>
+               <b/>
+               <lu>
+                 <lit v="de"/>
+                 <lit-tag v="pr"/>
+               </lu>
+               <b/>
+              </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                <out>
+                  <lu>
+                    <lit v="el"/>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+              </out>
+            </otherwise>
+           </choose>
+           <out>              
               <lu>
                 <clip pos="2" side="tl" part="lemh"/>
                 <clip pos="2" side="tl" part="a_nom"/>
@@ -10677,13 +11045,42 @@ is not applicable because gender and number can not be taken from previous rules
                 <lit-tag v="pr"/>
               </lu>
               <b/>
-              <lu>
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-              <b pos="1"/>
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
               <lu>
                 <clip pos="2" side="tl" part="lemh"/>
                 <clip pos="2" side="tl" part="a_nom"/>
@@ -10716,13 +11113,43 @@ is not applicable because gender and number can not be taken from previous rules
                 <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b/>
-              <lu>
-                <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="2" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
-              </lu>
-              <b/>
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="sl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
               <lu>
                 <clip pos="2" side="tl" part="lemh"/>
                 <clip pos="2" side="tl" part="a_nom"/>
@@ -12051,7 +12478,8 @@ is not applicable because gender and number can not be taken from previous rules
     </rule>
     
     <rule>
-<!--REGLA 87: DET NUMERAL NOM -->
+<!--REGLA 87: DET NUMERAL NOM. gema:canvi gen i nbr del determinant a 1.
+    abans 3 gen 2 nbr -->
       <pattern>
         <pattern-item n="detcel"/>
         <pattern-item n="num"/>
@@ -12080,8 +12508,8 @@ is not applicable because gender and number can not be taken from previous rules
                 <lit v="el"/>
 	       </get-case-from>
                 <lit-tag v="det.def"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b pos="1"/>
               <lu>
@@ -12121,8 +12549,8 @@ is not applicable because gender and number can not be taken from previous rules
               <lu>
                 <lit v="el"/>
                 <lit-tag v="det.def"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="2" side="tl" part="nbr"/>
+                <clip pos="1" side="tl" part="gen"/>
+                <clip pos="1" side="tl" part="nbr"/>
               </lu>
               <b pos="1"/>
               <lu>
@@ -12640,13 +13068,14 @@ is not applicable because gender and number can not be taken from previous rules
         <out>
 	      <lu>
 	       <get-case-from pos="1">
-                <clip pos="1" side="tl" part="lem"/>
+                <clip pos="1" side="tl" part="lemh"/>
 		</get-case-from>
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="persona"/>
                 <clip pos="1" side="tl" part="nbr"/>
+                <clip pos="1" side="tl" part="lemq"/>
               </lu>
           <b/>
            <lu>
@@ -12654,13 +13083,43 @@ is not applicable because gender and number can not be taken from previous rules
               <lit-tag v="pr"/>
            </lu>
 	   <b/>
-           <lu>
-	        <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="3" side="tl" part="gen"/>
-                <clip pos="3" side="tl" part="nbr"/>
-           </lu>
-           <b/>
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="sl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="3" side="tl" part="gen"/>
+                    <clip pos="3" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
            <lu>
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_nom"/>  
@@ -12674,13 +13133,14 @@ is not applicable because gender and number can not be taken from previous rules
 	     <out>
              <lu>
 	       <get-case-from pos="1">
-                <clip pos="1" side="tl" part="lem"/>
+                <clip pos="1" side="tl" part="lemh"/>
 		</get-case-from>
                 <clip pos="1" side="tl" part="a_verb"/>
                 <clip pos="1" side="tl" part="temps"/>
                 <clip pos="1" side="tl" part="gen"/>
                 <clip pos="1" side="tl" part="persona"/>
                 <clip pos="1" side="tl" part="nbr"/>
+                <clip pos="1" side="tl" part="lemq"/>
               </lu>
              <b/>
 		<lu>
@@ -12817,13 +13277,43 @@ is not applicable because gender and number can not be taken from previous rules
               <lit-tag v="pr"/>
            </lu>
 	   <b/>
-           <lu>
-	        <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="4" side="tl" part="gen"/>
-                <clip pos="4" side="tl" part="nbr"/>
-           </lu>
-           <b/>
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="sl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
            <lu>
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_nom"/>  
@@ -12902,13 +13392,43 @@ is not applicable because gender and number can not be taken from previous rules
               <lit-tag v="pr"/>
            </lu>
 	   <b/>
-           <lu>
-	        <lit v="el"/>
-                <lit-tag v="det.def"/>
-                <clip pos="4" side="tl" part="gen"/>
-                <clip pos="4" side="tl" part="nbr"/>
-           </lu>
-           <b/>
+
+               </out>
+             <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+                <out>
+                  <lu>
+		  <get-case-from pos="1">
+                    <lit v="el"/>
+		  </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="sl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </when>
+               <otherwise>
+                 <out>
+                  <lu>
+		   <get-case-from pos="1">
+                    <lit v="el"/>  
+		   </get-case-from>  
+                    <lit-tag v="det.def"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                  <b/>
+                 </out>
+               </otherwise>
+               </choose>
+              <out>
            <lu>
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_nom"/>  
@@ -13087,11 +13607,11 @@ is not applicable because gender and number can not be taken from previous rules
         <call-macro n="f_modgen">
            <with-param pos="1"/>
         </call-macro>
-	<let>
+<!-- prova gema	<let>
 	        <clip pos="1" side="tl" part="nbr"/>
                 <var n="numero"/>
 	</let>
-	<choose>
+-->	<choose>
 	  <when>
 	    <test> 
 	      <in caseless="yes">
@@ -13661,11 +14181,11 @@ is not applicable because gender and number can not be taken from previous rules
                   </lu>
 		  <b pos="1"/>
                   <lu>
-                    <clip pos="1" side="tl" part="lemh"/>
-                    <clip pos="1" side="tl" part="a_nom"/>
-                    <clip pos="1" side="tl" part="gen"/>
-                    <clip pos="1" side="tl" part="nbr"/>
-                <clip pos="1" side="tl" part="lemq"/>
+                    <clip pos="2" side="tl" part="lemh"/>
+                    <clip pos="2" side="tl" part="a_nom"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+                    <clip pos="2" side="tl" part="lemq"/>
                   </lu>
 		  <b pos="2"/>
                   <lu>
