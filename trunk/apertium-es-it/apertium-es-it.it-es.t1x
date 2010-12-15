@@ -538,6 +538,12 @@
       <list-item v="domenica"/>
     </def-list>
 
+    <def-list n="parte_día">
+      <list-item v="mattina"/>
+      <list-item v="pomeriggio"/>
+      <list-item v="sera"/>
+    </def-list>
+
     <def-list n="v_amb_a">
       <list-item v="soumettre"/>
       <list-item v="aller"/>
@@ -817,7 +823,7 @@
         <case-of pos="1" side="sl" part="lem"/>
       </let>
       <choose>
-	<when> <!-- palabra que comienza por letra mayúscula sin ser nombre propio -> se reescribe para que comience por letra minúscula (Il bambino -> il bambino) -->
+	<when>
 	  <test>
 	    <equal>
 	      <case-of pos="1" side="sl" part="lem"/>
@@ -845,7 +851,7 @@
 	    </when>
           </choose>
         </when>
-        <when> <!-- palabra escrita con letras mayúsculas sin ser acrónimo y a principio de frase -> se reescribe con letras minúsculas (I bambini -> i bambini)-->
+        <when>
           <test>
             <equal>
               <case-of pos="1" side="sl" part="lem"/>
@@ -3509,10 +3515,10 @@
                   <clip pos="1" side="sl" part="lem"/>
                   <list n="semana"/>
                 </in>
-                <equal>
+                <in caseless="yes">
                   <clip pos="2" side="sl" part="lem"/>
-                  <lit v="mattina"/>
-                </equal>
+                  <list n="parte_día"/>
+                </in>
               </and>
             </test>
             <choose> <!-- comprobación del número -->
