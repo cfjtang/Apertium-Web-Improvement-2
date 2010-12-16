@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<interchunk>
+  <section-def-cats>
+
+    <def-cat n="SN">
+      <cat-item tags="SN.*"/>
+    </def-cat>
+  </section-def-cats>
+
+  <section-def-attrs>
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+	  <attr-item tags="pl"/>
+	  <attr-item tags="sp"/>
+	  <attr-item tags="ND"/>
+    <attr-item tags="NN"/>
+   </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="uno"/>
+  </section-def-vars>
+
+<section-rules>
+<rule comment="REGLA: SN">
+	<pattern>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+<!--	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>-->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
+</section-rules>
+</interchunk>
