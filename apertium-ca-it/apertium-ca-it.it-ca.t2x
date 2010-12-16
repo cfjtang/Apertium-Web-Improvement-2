@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<interchunk>
+  <section-def-cats>
+
+    <def-cat n="SN">
+      <cat-item tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="NUM">
+      <cat-item tags="NUM.*"/>
+    </def-cat>
+
+  </section-def-cats>
+
+  <section-def-attrs>
+
+ <def-attr n="pers">
+      <attr-item tags="p1"/>
+      <attr-item tags="p2"/>
+      <attr-item tags="p3"/>
+      <attr-item tags="PD"/>
+    </def-attr>
+
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="mf"/>
+      <attr-item tags="GD"/>
+      <attr-item tags="nt"/>
+    </def-attr>
+
+
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+	  <attr-item tags="pl"/>
+	  <attr-item tags="sp"/>
+	  <attr-item tags="ND"/>
+    <attr-item tags="NN"/>
+   </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="uno"/>
+  </section-def-vars>
+
+<section-rules>
+<rule comment="REGLA: SN">
+	<pattern>
+		<pattern-item n="SN"/>
+	</pattern>
+	<action>
+<!--	<call-macro n="assigna_gen_nbr">
+		<with-param pos="1"/>
+	</call-macro>-->
+			<out>
+				<chunk>
+					<clip pos="1" part="lem"/>
+					<clip pos="1" part="tags"/>
+					<clip pos="1" part="chcontent"/>
+				</chunk>
+			</out>
+</action>
+</rule>
+
+<rule comment="REGLA: NUM (per assignar gènere si hi ha GD)">
+      <pattern>
+	<pattern-item n="NUM"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="gen"/>
+		<lit-tag v="GD"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="gen"/>
+	      <lit-tag v="m"/>
+	    </let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="1" part="nbr"/>
+		<lit-tag v="ND"/>
+	      </equal>
+	    </test>
+	    <let>
+	      <clip pos="1" part="nbr"/>
+	      <lit-tag v="sg"/>
+	    </let>
+	  </when>
+	</choose>	
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
+</section-rules>
+</interchunk>
