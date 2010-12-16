@@ -8,6 +8,9 @@
   <def-label name="QUEREL" closed="true">
     <tags-item lemma="che" tags="rel.*"/>
   </def-label>
+  <def-label name="QUEPRN" closed="true">
+    <tags-item lemma="che" tags="prn.itg.*"/>
+  </def-label>
   <def-label name="ACRONIMOM">
     <tags-item tags="n.acr.m.*"/>
   </def-label>
@@ -26,7 +29,7 @@
   <def-label name="NOMMF">
     <tags-item tags="n.mf.*"/>
   </def-label>
-  <def-label name="INTNOM" closed="true">
+  <def-label name="INTPRN" closed="true">
     <tags-item tags="prn.itg.*"/>
   </def-label> 
   <def-label name="INTADV" closed="true">
@@ -90,7 +93,7 @@
     <tags-item tags="pr"/>
   </def-label>
   <def-label name="PRNTNNT" closed="true">
-    <tags-item tags="prn.tn.nt"/>
+    <tags-item tags="prn.tn.nt.*"/>
   </def-label>
   <def-label name="PRNTN" closed="true">
     <tags-item tags="prn.tn.*"/>
@@ -255,12 +258,68 @@
     <tags-item tags="apos"/>
   </def-label>
 
+  <def-label name="TIME" closed="true">
+    <tags-item tags="time"/>
+  </def-label>
+
   <def-mult name="PREPDET" closed="true">
     <sequence>
       <label-item label="PREP"/>
       <tags-item tags="det.def.m.sg"/>
     </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.def.m.pl"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.def.f.sg"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.def.f.pl"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.pos.m.sg"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.pos.m.pl"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.pos.f.sg"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.pos.f.pl"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="det.mf.sg"/>
+    </sequence>
   </def-mult>
+
+  <def-mult name="PREPPRN" closed="true">
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="prn.tn.pos.m.sg"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="prn.tn.pos.m.pl"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="prn.tn.pos.f.sg"/>
+    </sequence>
+    <sequence>
+      <label-item label="PREP"/>
+      <tags-item tags="prn.tn.pos.f.pl"/>
+    </sequence>
+  </def-mult>
+<!--
   <def-mult name="PRCNJ" closed="true">
     <sequence>
       <label-item label="PREP"/>
@@ -280,7 +339,8 @@
       <label-item label="PREP"/>
       <label-item label="RELN"/>
     </sequence>
-  </def-mult>
+  </def-mult> 
+-->
   <def-mult name="INFLEXPRNENC">
     <sequence>
       <label-item label="VLEXINF"/>
@@ -415,6 +475,12 @@
     </label-sequence>
     <label-sequence>
       <label-item label="PREP"/>
+      <label-item label="PREPPRN"/>
+    </label-sequence>
+
+
+    <label-sequence>
+      <label-item label="PREP"/>
       <label-item label="VLEXPFCI"/>
     </label-sequence>
     <label-sequence>
@@ -485,6 +551,8 @@
       <label-item label="PREP"/>
       <label-item label="IMPMODPRNENC"/>
     </label-sequence>
+
+
     <label-sequence>
       <label-item label="DETM"/>
       <label-item label="VLEXPFCI"/>
@@ -637,7 +705,7 @@
       <label-item label="DETF"/>
       <label-item label="VMODALGER"/>
     </label-sequence>
-<label-sequence>
+   <label-sequence>
       <label-item label="DETMF"/>
       <label-item label="VLEXPFCI"/>
     </label-sequence>
@@ -757,15 +825,62 @@
       <label-item label="DETNT"/>
       <label-item label="VMODALINF"/>
     </label-sequence>
+ 
+
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VLEXPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VLEXIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VLEXSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VLEXGER"/>
+    </label-sequence>
+
+
+    <label-sequence>
+      <label-item label="PREPPRN"/>
+      <label-item label="VLEXPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPPRN"/>
+      <label-item label="VLEXIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPPRN"/>
+      <label-item label="VLEXSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPPRN"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VLEXGER"/>
+    </label-sequence>
+
+
+
     <label-sequence>
       <label-item label="DETNT"/>
       <label-item label="NOMM"/>
     </label-sequence>
- <label-sequence>
+    <label-sequence>
       <label-item label="DETNT"/>
       <label-item label="NOMF"/>
     </label-sequence>
- <label-sequence>
+    <label-sequence>
       <label-item label="DETNT"/>
       <label-item label="NOMMF"/>
     </label-sequence>
@@ -785,6 +900,8 @@
       <label-item label="DETNT"/>
       <label-item label="NUM"/>
     </label-sequence>
+
+
     <label-sequence>
       <label-item label="DETM"/>
       <label-item label="PRNPRO"/>
@@ -793,6 +910,8 @@
       <label-item label="DETM"/>
       <label-item label="PRNENC"/>
     </label-sequence>
+
+
     <label-sequence>
       <label-item label="DETF"/>
       <label-item label="PRNPRO"/>
@@ -801,6 +920,7 @@
       <label-item label="DETF"/>
       <label-item label="PRNENC"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETMF"/>
       <label-item label="PRNPRO"/>
@@ -809,6 +929,7 @@
       <label-item label="DETMF"/>
       <label-item label="PRNENC"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETM"/>
       <label-item label="DETM"/>
@@ -1062,6 +1183,8 @@
       <label-item label="VMODALIMP"/>
       <label-item label="IMPMODPRNENC"/>
     </label-sequence>
+
+
     <label-sequence>
       <label-item label="DETM"/>
       <label-item label="SENT"/>
@@ -1114,6 +1237,7 @@
       <label-item label="PREPDET"/>
       <label-item label="SENT"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="NOMM"/>
       <label-item label="NOMM"/>
@@ -1262,6 +1386,7 @@
       <label-item label="ANTROPONIM"/>
       <label-item label="VLEXIMP"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="TOPONIM"/>
       <label-item label="VLEXIMP"/>
@@ -1402,6 +1527,8 @@
       <label-item label="NPALTRES"/>
       <label-item label="ACRONIMOMF"/>
     </label-sequence>
+
+
     <label-sequence>
       <label-item label="CNJADV"/>
       <label-item label="IMPLEXPRNENC"/>
@@ -1458,6 +1585,8 @@
       <label-item label="IMPLEXPRNENC"/>
       <label-item label="VMODALSUBJ"/>
     </label-sequence>  
+
+<!--
     <label-sequence>
       <label-item label="VLEXINF"/>
       <label-item label="PRREL"/>
@@ -1490,6 +1619,8 @@
       <label-item label="VLEXIMP"/>
       <label-item label="PRREL"/>
     </label-sequence> 
+-->
+
     <label-sequence>
       <label-item label="VMODALINF"/><!--Afegit 17/01/2006 fins a VMODALIMP-->
       <label-item label="DETNT"/>
@@ -1798,10 +1929,12 @@
       <label-item label="VMODALIMP"/>
       <label-item label="ADJPOS"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="VSERPFCI_PL"/>
       <label-item label="VLEXPARTPI_SG"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="VSERPFCI_SG"/>
       <label-item label="VLEXPARTPI_PL"/>
