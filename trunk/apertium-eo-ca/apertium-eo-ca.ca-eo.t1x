@@ -9614,7 +9614,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule> 
 
-<rule comment="REGLA: MES ADJECTIU QUE ('més/menys gran que - ') (EO)">
+<rule comment="REGLA: MÉS ADJECTIU QUE ('més/menys gran que - ') (EO)">
       <pattern>
 	<pattern-item n="mes"/> 
 	<pattern-item n="adj"/>
@@ -9644,6 +9644,44 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		  <clip pos="2" side="tl" part="a_adj"/>
 	          <clip pos="2" side="sl" part="nbr"/>
 	          <lit-tag v="4"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>
+              		<lit v="ol"/>
+			<lit-tag v="cnjcoo"/>
+		</lu>   
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+<rule comment="REGLA: MÉS ADV QUE ('més/menys alegrament que - ') (EO)">
+      <pattern>
+	<pattern-item n="mes"/> 
+	<pattern-item n="adv"/>
+	<pattern-item n="cnjcomp"/>
+      </pattern>
+      <action>          	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="adv" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="adv"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="whole"/> 
+		</lu> 
+		<b pos="1"/>
+		<lu>   
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_adv"/> 
 		  <clip pos="2" side="tl" part="lemq"/> 
 		</lu>
 		<b pos="2"/>
