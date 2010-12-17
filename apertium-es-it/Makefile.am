@@ -32,7 +32,7 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	./i_to_p.awk $(BASENAME).$(LANG2).dix | ./sustituye_caracteres.awk > $(BASENAME).$(LANG2).dix.apos
+	./inline_e.awk $(BASENAME).$(LANG2).dix | ./i_to_p.awk | ./sustituye_caracteres.awk > $(BASENAME).$(LANG2).dix.apos
 	lt-comp lr $(BASENAME).$(LANG2).dix.apos $@ $(BASENAME).$(LANG2).acx
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
