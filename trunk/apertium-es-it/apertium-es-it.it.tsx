@@ -2,7 +2,7 @@
 <tagger name="italian">
 
 <tagset>
-  <def-label name="QUECNJ" closed="true">
+<!--  <def-label name="QUECNJ" closed="true">
     <tags-item lemma="che" tags="cnjsub"/>
   </def-label>
   <def-label name="QUEREL" closed="true">
@@ -10,7 +10,7 @@
   </def-label>
   <def-label name="QUEPRN" closed="true">
     <tags-item lemma="che" tags="prn.itg.*"/>
-  </def-label>
+  </def-label>-->
   <def-label name="ACRONIMOM">
     <tags-item tags="n.acr.m.*"/>
   </def-label>
@@ -1940,7 +1940,67 @@
       <label-item label="VLEXPARTPI_PL"/>
     </label-sequence>
 
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="DETNT"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="DETM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="DETF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="DETMF"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="DETPRN"/>
+      <label-item label="NOMM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETPRN"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="DETPRN"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+
+
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="PREPDET"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="PREPPRN"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="VLEXIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="AVEREIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="INTPRN"/>
+      <label-item label="VMODALIMP"/>
+    </label-sequence>
+
+
+
   </forbid>
+
 
   <enforce-rules>
     <enforce-after label="PRNPRO">
@@ -2067,6 +2127,9 @@
    <prefer tags="vbhaver.pis.p3.sg"/>
    <prefer tags="vbmod.pis.p3.sg"/>
 
+   <prefer tags="rel.an.mf.sp"/>
+   <prefer tags="cnjsub"/>
+   <prefer tags="rel.adv"/>
 
   </preferences>
 </tagger>
