@@ -19,25 +19,25 @@ TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
           trules-$(PREFIX1).xml trules-$(PREFIX2).xml
 
 $(PREFVAR1)$(LANG1).dix: $(BASENAME).$(LANG1).dix
-	xsltproc --stringparam alt $(VAR1) alt.xsl $< >$@
+	xsltproc --stringparam alt $(VAR1) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}' >$@
 
 $(PREFVAR2)$(LANG1).dix: $(BASENAME).$(LANG1).dix
-	xsltproc --stringparam alt $(VAR2) alt.xsl $< >$@
+	xsltproc --stringparam alt $(VAR2) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}' >$@
 
 $(PREFVAR1)$(LANG2).dix: $(BASENAME).$(LANG2).dix
-	xsltproc --stringparam alt $(VAR1) alt.xsl $< >$@
+	xsltproc --stringparam alt $(VAR1) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}' >$@
 
 $(PREFVAR2)$(LANG2).dix: $(BASENAME).$(LANG2).dix
-	xsltproc --stringparam alt $(VAR2) alt.xsl $< >$@
+	xsltproc --stringparam alt $(VAR2) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}'>$@
 	
 common-$(PREFIX1).dix: $(BASENAME).$(PREFIX1).dix
-	xsltproc translate-to-default-equivalent.xsl $< >$@
+	xsltproc translate-to-default-equivalent.xsl $<  | gawk '{gsub("&", "&amp;"); print;}' >$@
 	
 $(PREFVAR1)$(PREFIX1).dix: common-$(PREFIX1).dix
-	xsltproc --stringparam alt $(VAR1) alt.xsl $< >$@
+	xsltproc --stringparam alt $(VAR1) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}' >$@
 
 $(PREFVAR2)$(PREFIX1).dix: common-$(PREFIX1).dix
-	xsltproc --stringparam alt $(VAR2) alt.xsl $< >$@
+	xsltproc --stringparam alt $(VAR2) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}'>$@
 
 
 $(PREFVAR1)$(PREFIX1).automorf.bin:$(PREFVAR1)$(LANG1).dix
@@ -170,8 +170,8 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(LANG2).acx
 
 apertium-fr-es.fr.dix: apertium-fr-es.fr.metadix
-	@xsltproc buscaPar.xsl apertium-fr-es.fr.metadix | uniq > $$gen.xsl
-	@xsltproc $$gen.xsl apertium-fr-es.fr.metadix >$@
+	@xsltproc buscaPar.xsl apertium-fr-es.fr.metadix |gawk '{gsub("&", "&amp;"); print;}' | uniq > $$gen.xsl
+	@xsltproc $$gen.xsl apertium-fr-es.fr.metadix | gawk '{gsub("&", "&amp;"); print;}' >$@
 	@rm $$gen.xsl
 	
 apertium_fr_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
