@@ -444,6 +444,13 @@
       <cat-item lemma="tan" tags="adv"/>
     </def-cat>
 
+    <def-cat n="millor">
+      <cat-item lemma="millor" tags="adj.*"/>
+      <cat-item lemma="pitjor" tags="adj.*"/>
+      <cat-item lemma="major" tags="adj.*"/>
+      <cat-item lemma="menor" tags="adj.*"/>
+    </def-cat>
+
     <def-cat n="no">
       <cat-item lemma="no" tags="adv"/>
     </def-cat>
@@ -918,7 +925,7 @@
       <choose>
         <when>
           <test>
-          <in>
+          <in caseless="yes">
          <clip pos="1" side="sl" part="lemh"/>
          <list n="agradar"/>
           </in>
@@ -930,7 +937,7 @@
         </when>
 	<when>
     	<test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="1" side="sl" part="lemh"/>
        	  <list n="moviment"/>
       	</in>
@@ -943,7 +950,7 @@
 
     <when>
     <test>
-      <in>
+      <in caseless="yes">
          <clip pos="1" side="sl" part="lemh"/>
          <list n="volition"/>
       </in>
@@ -956,7 +963,7 @@
 
 	<when>
     	<test>
-      	<in>
+      	<in caseless="yes">
         <clip pos="1" side="sl" part="lemh"/>
         <list n="reportingverb"/>
       	</in>
@@ -1210,11 +1217,11 @@
   	<when>
     	<test>
 	<or>
-      	   <in>
+      	   <in caseless="yes">
          	<clip pos="1" side="tl" part="lem"/>
          	<list n="detsprep"/> <!-- llista de dets amb preposició (quantificadors) -->
       	   </in>
-      	   <in>
+      	   <in caseless="yes">
          	<clip pos="1" side="sl" part="lem"/>
          	<list n="qui"/> <!-- per a pronoms  -->
       	   </in>
@@ -1228,7 +1235,7 @@
 
   	<when>
     	<test>
-      	   <in>
+      	   <in caseless="yes">
          	<clip pos="1" side="sl" part="lem"/>
          	<list n="quin"/> <!-- per a determinats interrogatius (van davant del verb) -->
       	   </in>
@@ -1572,6 +1579,90 @@
               </when>
 	     </choose>
     </def-macro>
+
+<def-macro n="pli_plej" npar="1">
+   <choose>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="més"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="plej"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="menys"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="malplej"/>
+          </let>
+        </when>
+   </choose>
+</def-macro>
+
+<def-macro n="pli_plej2" npar="1">
+   <choose>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="millor"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="plej bona"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="pitjor"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="plej malbona"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="major"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="plej granda"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="menor"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="plej malgranda"/>
+          </let>
+        </when>
+   </choose>
+</def-macro>
+
+ 
 
   </section-def-macros> 
 
@@ -2425,27 +2516,9 @@
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
 	</call-macro>
-
-   <choose>
-        <when>
-          <test>
-            <equal>
-              <clip pos="3" side="sl" part="lem"/>
-              <lit v="més"/>
-            </equal>
-          </test>
-          <let>
-            <clip pos="3" side="tl" part="lem"/>
-            <lit v="plej"/>
-          </let>
-        </when>
-        <otherwise>
-          <let>
-            <clip pos="3" side="tl" part="lem"/>
-            <lit v="malplej"/>
-          </let>
-        </otherwise>
-   </choose>
+	<call-macro n="pli_plej">
+	  <with-param pos="3"/>
+	</call-macro>
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2462,12 +2535,11 @@
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	    </lu> 
-            <b pos="1"/> <!-- canvi a plej/malplej-->
-                        <lu>
-                        <clip pos="3" side="tl" part="lem"/>
-                        <lit-tag v="adv"/>
-                        </lu>
-
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
             <b pos="2"/>
             <lu>
               <clip pos="4" side="tl" part="lemh"/>
@@ -2476,7 +2548,6 @@
               <lit-tag v="4"/>
               <clip pos="4" side="tl" part="lemq"/>
             </lu>
-
 	    <b pos="3"/>
 	    <lu>     
 	      <clip pos="2" side="tl" part="lemh"/> 
@@ -2486,7 +2557,6 @@
 	      <lit-tag v="4"/>
 	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu>
-
 	  </chunk>
 	</out>	  
 	<let>
@@ -2512,27 +2582,9 @@
 	<call-macro n="nombre_nom">
 	  <with-param pos="1"/>
 	</call-macro>
-
-   <choose>
-        <when>
-          <test>
-            <equal>
-              <clip pos="2" side="sl" part="lem"/>
-              <lit v="més"/>
-            </equal>
-          </test>
-          <let>
-            <clip pos="2" side="tl" part="lem"/>
-            <lit v="plej"/>
-          </let>
-        </when>
-        <otherwise>
-          <let>
-            <clip pos="2" side="tl" part="lem"/>
-            <lit v="malplej"/>
-          </let>
-        </otherwise>
-   </choose>
+	<call-macro n="pli_plej">
+	  <with-param pos="2"/>
+	</call-macro>
 
 	<out>
 	  <chunk name="det_nom" case="caseFirstWord">
@@ -2549,12 +2601,11 @@
 	      <clip pos="1" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	    </lu> 
-            <b pos="1"/> <!-- canvi a plej/malplej-->
-                        <lu>
-                        <clip pos="2" side="tl" part="lem"/>
-                        <lit-tag v="adv"/>
-                        </lu>
-
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
             <b pos="2"/>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
@@ -2563,7 +2614,6 @@
               <lit-tag v="4"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
-
 	  </chunk>
 	</out>	  
 	<let>
@@ -2572,6 +2622,203 @@
 	</let>
       </action>
     </rule>
+
+
+<rule comment="REGLA: ART NOM més ADJ de (EOes, más -> plej ex: la casa más grande de -> la plej granda domo el)">
+      <pattern>
+	<pattern-item n="el"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="mes"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="de"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	  <with-param pos="1"/>
+	</call-macro> 
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="pli_plej">
+	  <with-param pos="3"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="det_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu> 
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <clip pos="4" side="tl" part="a_adj"/>
+              <clip pos="4" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
+            </lu>
+	    <b pos="3"/>
+	    <lu>     
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+              <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+          <b pos="4"/>
+	  <chunk name="el">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="el"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+	</out>	  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: ART més ADJ de (EOes, más -> plej ex: la más grande de -> la plej granda el)">
+      <pattern>
+	<pattern-item n="el"/>
+	<pattern-item n="mes"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="de"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	  <with-param pos="1"/>
+	</call-macro> 
+	<call-macro n="nombre_nom">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="pli_plej">
+	  <with-param pos="2"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="det_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu> 
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_adj"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+	  </chunk>
+          <b pos="3"/>
+	  <chunk name="el">
+	    <tags>
+	      <tag><lit-tag v="PREP"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="el"/>
+	      <lit-tag v="pr"/>
+	    </lu>
+	  </chunk>
+	</out>	  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ART millor (EOes, más -> plej ex: la mejor -> la plej bona)">
+      <pattern>
+	<pattern-item n="el"/>
+	<pattern-item n="millor"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	 <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte --> 
+	  <with-param pos="2"/>
+	</call-macro> 
+	<call-macro n="nombre_nom">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="pli_plej2">
+	  <with-param pos="2"/>
+	</call-macro>
+
+	<out>
+	  <chunk name="det_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="sl" part="gen"/></tag>
+	      <tag><var n="nombre"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu> 
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+	  </chunk>
+	</out>	  
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
 
 <rule comment="REGLA: DET NOM (EO ex. els llibres, les cases -> la libroj, la domoj)">
       <pattern>
@@ -2770,7 +3017,7 @@
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -3027,6 +3274,7 @@
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
+
    <!-- article indefinit s'elimina-->
    <choose>
      <when>
@@ -3065,6 +3313,9 @@
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -3135,32 +3386,9 @@
         <lit v="el"/>
         </equal>
       </test>
-      <choose>
-        <when>
-         <test>
-          <equal caseless="yes">
-           <clip pos="2" side="sl" part="lem"/>
-           <lit v="més"/>
-           </equal>
-         </test>
-           <let>
-             <clip pos="2" side="tl" part="lem"/>
-             <lit v="plej"/>
-           </let>
-        </when>
-        <when>
-         <test>
-          <equal caseless="yes">
-           <clip pos="2" side="sl" part="lem"/>
-           <lit v="menys"/>
-           </equal>
-         </test>
-           <let>
-             <clip pos="2" side="tl" part="lem"/>
-             <lit v="malplej"/>
-           </let>
-        </when>
-      </choose>
+	<call-macro n="pli_plej">
+	  <with-param pos="2"/>
+	</call-macro>
      </when>
    </choose>
 
@@ -3281,32 +3509,9 @@
         <lit v="el"/>
         </equal>
       </test>
-      <choose>
-        <when>
-         <test>
-          <equal caseless="yes">
-           <clip pos="2" side="sl" part="lem"/>
-           <lit v="més"/>
-           </equal>
-         </test>
-           <let>
-             <clip pos="2" side="tl" part="lem"/>
-             <lit v="plej"/>
-           </let>
-        </when>
-        <when>
-         <test>
-          <equal caseless="yes">
-           <clip pos="2" side="sl" part="lem"/>
-           <lit v="menys"/>
-           </equal>
-         </test>
-           <let>
-             <clip pos="2" side="tl" part="lem"/>
-             <lit v="malplej"/>
-           </let>
-        </when>
-      </choose>
+	<call-macro n="pli_plej">
+	  <with-param pos="2"/>
+	</call-macro>
      </when>
    </choose>
 
@@ -3476,6 +3681,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="3"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -3595,6 +3803,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="5"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -4538,7 +4749,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -4597,6 +4808,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
         </out>
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="4"/>
+	</call-macro>
 	<out>
 	  <chunk name="det_num_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -4911,7 +5125,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -5309,7 +5523,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -7097,6 +7311,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>	
+
    <!-- article indefinit s'elimina-->
    <choose>
      <when>
@@ -7143,6 +7358,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj_adj" case="caseFirstWord">
 	    <tags>
@@ -8157,6 +8375,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj_adj" case="caseFirstWord">
 	    <tags>
@@ -8300,6 +8521,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="2"/>
+	</call-macro>
 	<out>
 	  <chunk name="det_nom_adj_adj" case="caseFirstWord">
 	    <tags>
@@ -8399,7 +8623,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
                 <b pos="1"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -8438,7 +8662,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="2" side="sl" part="lem"/>
        	  <list n="laqualcosa"/>
       	</in>
@@ -8476,7 +8700,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
           </chunk>
 
                 <b pos="1"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -8586,7 +8810,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="1"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
 	                <tag><var n="case"/></tag>
@@ -8634,7 +8858,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -8722,7 +8946,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 		<out>
                 <b pos="3"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -8838,7 +9062,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="3"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -8953,7 +9177,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="3"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -8997,7 +9221,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -9056,6 +9280,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         </out>
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="4"/>
+	</call-macro>
 	<out>
 	  <chunk name="det_num_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -9101,7 +9328,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="4"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -9204,7 +9431,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="le">
+	  <chunk name="el">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -9251,7 +9478,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="4"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -9380,7 +9607,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="4"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -9425,7 +9652,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -9537,7 +9764,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="5"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -9678,7 +9905,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="5"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -9723,7 +9950,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="3" side="sl" part="lemh"/>
        	  <list n="vegades"/>
       	</in>
@@ -9850,7 +10077,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </choose>
 	<out>
                 <b pos="6"/>
-                 <chunk name="relatiu" >
+                 <chunk name="relatiu">
                         <tags>
                         <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
@@ -9900,7 +10127,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </equal>
                   </and>
 -->
-                    <equal>
+                    <equal caseless="yes">
                       <clip pos="1" side="sl" part="lem"/>
                       <lit v="estar"/>
                     </equal>
@@ -10080,6 +10307,223 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</let>
       </action>
     </rule> 
+
+<rule comment="REGLA: MAJOR QUE ('mayor/menor que - pli granda/pli malgranda ol') (EOes)">
+      <pattern>
+	<pattern-item n="millor"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="adj_comparatiu" case="caseFirstWord">
+		<tags>
+	           <tag><lit-tag v="SA"/></tag>
+	           <tag><clip pos="1" side="sl" part="gen"/></tag>
+	           <tag><var n="nombre"/></tag>
+	           <tag><var n="case"/></tag>
+	           <tag><var n="changecase"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="lemh"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+	          <clip pos="1" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="1" side="tl" part="lemq"/> 
+		</lu> 
+		<b pos="1"/>
+                <lu>
+                  <lit v="ol"/>
+                  <lit-tag v="cnjcoo"/>
+		</lu>   
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: MAJOR NOM QUE ('mayor/menor libertad que - pli granda/pli malgranda libereco ol') (EOes)">
+      <pattern>
+	<pattern-item n="millor"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="nom_comparatiu" case="caseFirstWord">
+		<tags>
+	           <tag><lit-tag v="SN"/></tag>
+	           <tag><clip pos="2" side="sl" part="gen"/></tag>
+	           <tag><var n="nombre"/></tag>
+	           <tag><var n="case"/></tag>
+	           <tag><var n="changecase"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="lemh"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+	          <clip pos="1" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="1" side="tl" part="lemq"/> 
+		</lu> 
+		<b pos="1"/>
+		<lu>   
+	          <clip pos="2" side="tl" part="lemh"/> 
+	          <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen"/>
+	          <clip pos="2" side="tl" part="nbr"/>
+	          <lit-tag v="4"/>
+	          <clip pos="2" side="tl" part="lemq"/>
+		</lu>
+		<b pos="2"/>
+                <lu>
+                  <lit v="ol"/>
+                  <lit-tag v="cnjcoo"/>
+		</lu>   
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: MAJOR NOM ADJ QUE ('mayor/menor libertad individual que - pli granda/pli malgranda libereco ol') (EOes)">
+      <pattern>
+	<pattern-item n="millor"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="adj"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="nom_comparatiu" case="caseFirstWord">
+		<tags>
+	           <tag><lit-tag v="SN"/></tag>
+	           <tag><clip pos="2" side="sl" part="gen"/></tag>
+	           <tag><var n="nombre"/></tag>
+	           <tag><var n="case"/></tag>
+	           <tag><var n="changecase"/></tag>
+		</tags>
+		<lu>   
+		  <clip pos="1" side="tl" part="lemh"/> 
+		  <clip pos="1" side="tl" part="a_adj"/>
+	          <clip pos="1" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="1" side="tl" part="lemq"/> 
+		</lu> 
+		<b pos="1"/>
+		<lu>   
+		  <clip pos="3" side="tl" part="lemh"/> 
+		  <clip pos="3" side="tl" part="a_adj"/>
+	          <clip pos="3" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="3" side="tl" part="lemq"/> 
+		</lu>
+		<b pos="2"/>
+		<lu>   
+	          <clip pos="2" side="tl" part="lemh"/> 
+	          <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen"/>
+	          <clip pos="2" side="tl" part="nbr"/>
+	          <lit-tag v="4"/>
+	          <clip pos="2" side="tl" part="lemq"/>
+		</lu>
+		<b pos="3"/>
+                <lu>
+                  <lit v="ol"/>
+                  <lit-tag v="cnjcoo"/>
+		</lu>   
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
+
+<rule comment="REGLA: EL MAJOR DE ('el mayor/menor de - la plej granda/plej malgranda el') (EOes)">
+      <pattern>
+	<pattern-item n="el"/>
+	<pattern-item n="millor"/>
+	<pattern-item n="de"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="pli_plej2">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	    <out>
+	      <chunk name="det_adj_comparatiu" case="caseFirstWord">
+		<tags>
+	           <tag><lit-tag v="SA"/></tag>
+	           <tag><clip pos="2" side="sl" part="gen"/></tag>
+	           <tag><var n="nombre"/></tag>
+	           <tag><var n="case"/></tag>
+	           <tag><var n="changecase"/></tag>
+		</tags>
+	        <lu>
+	          <clip pos="1" side="tl" part="lem"/> 
+	          <clip pos="1" side="tl" part="a_det"/>
+	          <clip pos="1" side="tl" part="nbr"/>
+	          <lit-tag v="4"/>
+	        </lu> 
+                <b pos="1"/>
+		<lu>   
+		  <clip pos="2" side="tl" part="lemh"/> 
+		  <clip pos="2" side="tl" part="a_adj"/>
+	          <clip pos="2" side="sl" part="nbr"/>
+	          <lit-tag v="4"/>
+		  <clip pos="2" side="tl" part="lemq"/> 
+		</lu> 
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk name="pr">
+	        <tags>
+	          <tag><lit-tag v="PREP"/></tag>
+	        </tags>
+	        <lu>
+	          <lit v="el"/>
+	          <lit-tag v="pr"/>
+	        </lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule> 
+
 
 <rule comment="REGLA: MÉS NOM QUE ('més/menys llibertat que - pli/malpli da libereco ol')">
       <pattern>
@@ -10564,7 +11008,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -10675,7 +11119,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
 		<b pos="1"/>
-		  <chunk name="adv" >
+		  <chunk name="adv">
 		    <tags>
 		      <tag><lit-tag v="ADV"/></tag>
 		    </tags>
@@ -10684,7 +11128,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu>
 		  </chunk>
 		<b pos="2"/>
-		 <chunk name="cnjsub" >
+		 <chunk name="cnjsub">
             		<tags>
             	  	<tag><lit-tag v="CNJCSUB"/></tag>
             		</tags>
@@ -10748,7 +11192,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b pos="2"/>
-		 <chunk name="cnjsub" >
+		 <chunk name="cnjsub">
             		<tags>
             	  	<tag><lit-tag v="CNJCSUB"/></tag>
             		</tags>
@@ -10816,7 +11260,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b pos="3"/>
-		 <chunk name="cnjsub" >
+		 <chunk name="cnjsub">
             		<tags>
             	  	<tag><lit-tag v="CNJCSUB"/></tag>
             		</tags>
@@ -10870,7 +11314,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                 </lu>
               </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" >
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -10929,7 +11373,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" >
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -10976,7 +11420,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
  	          <b pos="1"/>
-                  <chunk name="verbcj" >
+                  <chunk name="verbcj">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -10995,7 +11439,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" >
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -11004,7 +11448,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                         <lit-tag v="cnjsub"/>
                         </lu>
                         </chunk>
-
                 </out>
         <let>
           <var n="caseFirstWord"/>
@@ -11043,7 +11486,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
-
                     </tags>
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
@@ -11059,7 +11501,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" >
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -11117,9 +11559,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
-                  <chunk name="verb_perif" >
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11157,9 +11597,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
-                  <chunk name="verb_perif" >
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11174,7 +11612,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" >
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -11183,7 +11621,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                         <lit-tag v="cnjsub"/>
                         </lu>
                         </chunk>
-
                 </out>
         </otherwise>
         </choose>
@@ -11220,7 +11657,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
-
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
@@ -11381,7 +11817,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -11428,7 +11864,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
-
                     </tags>
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
@@ -11478,8 +11913,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -11540,8 +11973,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -11580,8 +12011,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -11637,7 +12066,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-                  <chunk name="verb_perif" case="caseFirstWord">
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11698,7 +12127,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-                  <chunk name="verbcj_perif" case="caseFirstWord">
+                  <chunk name="verbcj_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11736,9 +12165,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
-                  <chunk name="verbcj_perif" case="caseFirstWord">
+                  <chunk name="verbcj_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11796,7 +12223,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-                  <chunk name="verb_perif" case="caseFirstWord">
+                  <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11812,7 +12239,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -11869,9 +12296,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
-                  <chunk name="verbcj_perif" case="caseFirstWord">
+                  <chunk name="verbcj_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11889,7 +12314,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -11919,9 +12344,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
-                  <chunk name="verbcj_perif" case="caseFirstWord">
+                  <chunk name="verbcj_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
@@ -11938,7 +12361,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -12129,7 +12552,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b pos="2"/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -12203,7 +12626,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -12223,7 +12646,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                   <lit-tag v="pp2"/>
                 </let>
                 <out>
-
                   <chunk name="verbcj_perif" case="caseFirstWord">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -12246,7 +12668,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -12297,8 +12719,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b/>
-
-
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -12355,8 +12775,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 		</chunk>
 		<b pos="1"/>
-
-
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -12373,7 +12791,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b pos="2"/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -12552,8 +12970,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
 	        <b pos="1"/>
-
-
                 <chunk name="adv">
                         <tags>
                         <tag><lit-tag v="adv"/></tag>
@@ -12619,7 +13035,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
                       <tag><var n="tipus_verb2"/></tag>
-
                     </tags>
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
@@ -12704,7 +13119,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
           <lit-tag v="past"/>
         </let>
             <out>
-		  <chunk name="adv" >
+		  <chunk name="adv" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="ADV"/></tag>
 		    </tags>
@@ -12713,7 +13128,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu>
 		  </chunk>
 		<b pos="1"/>
-              <chunk name="verbcj" case="caseFirstWord">
+              <chunk name="verbcj">
                 <tags>
                   <tag><lit-tag v="SV"/></tag>
                   <tag><clip pos="3" side="tl" part="a_verb"/></tag>
@@ -12771,7 +13186,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <!--<tag><var n="tipus_verb2"/></tag>-->
-
                     </tags>
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
@@ -12829,7 +13243,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
 		      <!--<tag><var n="tipus_verb2"/></tag>-->
-
                     </tags>
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
@@ -12848,7 +13261,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -12893,7 +13306,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
-
 		</tags>
 		<lu>          
 		  <clip pos="2" side="tl" part="lemh"/>
@@ -12952,7 +13364,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		  <tag><clip pos="1" side="tl" part="pers"/></tag>
 		  <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		  <tag><var n="tipus_verb"/></tag>
-
 		</tags>
 		<lu>          
 		  <clip pos="2" side="tl" part="lemh"/>
@@ -12972,7 +13383,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		</lu>
 	      </chunk>
                   <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -13029,7 +13440,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="3" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="3" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -13089,7 +13500,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu> 
 		  </chunk>
 		  <b/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
@@ -13151,7 +13562,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="3" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="3" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -13185,7 +13596,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </choose>  
 
 		<out>
-		   <b pos="1"/>
 		  <chunk name="verbcj_perifC2" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
@@ -13201,7 +13611,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		      <clip pos="2" side="tl" part="temps"/>
 		      <clip pos="2" side="tl" part="lemq"/>                  
 		    </lu> 
-		   <b pos="2"/>
+		   <b pos="1"/>
 		    <lu>          
 		      <clip pos="4" side="tl" part="lemh"/>
 		      <clip pos="4" side="tl" part="a_verb"/>
@@ -13210,8 +13620,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		      <clip pos="4" side="tl" part="lemq"/>                  
 		    </lu> 
 		  </chunk>
-                  <b/>
-		  <chunk name="pro" case="caseFirstWord">
+		   <b pos="2"/>
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
@@ -13236,7 +13646,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu>
 		  </chunk>
 		  <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -13295,7 +13705,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 			<clip pos="1" side="sl" part="nbr"/>
 			<clip pos="4" side="sl" part="nbr"/>
 		      </equal>
-		      <equal>
+		      <equal caseless="yes">
 			<clip pos="4" side="sl" part="lem"/>
 			<lit v="es"/><!--és 'sp' -->
 		      </equal>
@@ -13329,7 +13739,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </choose>  
 
 		<out>
-		   <b pos="1"/>
 		  <chunk name="verbcj_perifC3" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SV"/></tag>
@@ -13345,7 +13754,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		      <clip pos="2" side="tl" part="temps"/>
 		      <clip pos="2" side="tl" part="lemq"/>                  
 		    </lu> 
-		   <b pos="2"/>
+		   <b pos="1"/>
 		    <lu>          
 		      <clip pos="3" side="tl" part="lemh"/>
 		      <clip pos="3" side="tl" part="a_verb"/>
@@ -13354,8 +13763,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		      <clip pos="3" side="tl" part="lemq"/>                  
 		    </lu> 
 		  </chunk>
-                  <b/>
-		  <chunk name="pro" case="caseFirstWord">
+		  <b pos="2"/>
+		  <chunk name="pro">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="4" side="tl" part="tipus_prn"/></tag>
@@ -13369,7 +13778,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		    </lu>
 		  </chunk>
 		  <b/>
-                  <chunk name="cnjsub" >
+                  <chunk name="cnjsub">
                     <tags>
                       <tag><lit-tag v="cnjsub"/></tag>
                     </tags>
@@ -13764,7 +14173,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub" case="caseFirstWord">
+                 <chunk name="cnjsub">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -14164,7 +14573,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</choose>
         <out>
           <b pos="3"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr">
+	  <chunk name="de">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -14276,7 +14685,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	</choose>
         <out>
           <b pos="3"/> <!-- ŝanĝo al POR-->
-	  <chunk name="pr">
+	  <chunk name="por">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -14416,7 +14825,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
           <b pos="4"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr">
+	  <chunk name="de">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -14540,7 +14949,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
           <b pos="4"/> <!-- ŝanĝo al POR-->
-	  <chunk name="pr">
+	  <chunk name="por">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -14768,7 +15177,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
                   </chunk>
                     <b pos="1"/>
-                 <chunk name="pro_indirecte" case="caseFirstWord">
+                 <chunk name="pro_indirecte">
                     <tags>
                       <tag><lit-tag v="SN"/></tag>
                       <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -14868,7 +15277,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	<choose>
               <when>  <!-- mirem si és SE per no fer res-->
                 <test>
-                    <equal>
+                    <equal caseless="yes">
                         <clip pos="2" side="sl" part="lem"/>
                         <lit v="es"/><!--és 'sp' -->
                       </equal>
@@ -14979,10 +15388,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 	  </chunk>
 	 <b/>
-	</out>  
-
-                <out>
-                  <chunk name="pro_directe" case="caseFirstWord">
+                  <chunk name="pro_directe">
                     <tags>
                       <tag><lit-tag v="SN"/></tag>
                       <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
@@ -15081,7 +15487,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
           <b pos="1"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="de">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -15130,7 +15536,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
           <b pos="1"/> <!-- ŝanĝo al POR-->
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="por">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -15205,7 +15611,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
           <b pos="2"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="de">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -15266,7 +15672,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu>
 	  </chunk>
           <b pos="2"/> <!-- ŝanĝo al POR-->
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="por">
 	    <tags>
 	      <tag><lit-tag v="PREP"/></tag>
 	    </tags>
@@ -15322,7 +15728,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <tag><clip pos="1" side="sl" part="gen"/></tag>
 	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
               <tag><var n="case"/></tag>
-
 	    </tags> 	
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/> 
