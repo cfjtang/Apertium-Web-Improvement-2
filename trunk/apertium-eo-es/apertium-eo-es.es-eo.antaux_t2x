@@ -61,7 +61,72 @@
   <section-def-vars>
     <def-var n="nombre"/>
     <def-var n="genere"/>
+    <def-var n="test_equival"/>
+    <def-var n="test"/>
   </section-def-vars>
+
+
+  <section-def-macros>
+   
+    <def-macro n="test_equiv" npar="2"> 
+    <choose>
+      <when>
+        <test>
+          <and>
+            <equal><clip pos="1" part="a_nbr"/><clip pos="2" part="a_nbr"/></equal>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
+                <equal><clip pos="2" part="lem"/><lit v="prpers"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
+                <not><equal><clip pos="2" part="lem"/><lit v="prpers"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal>
+                <equal><clip pos="2" part="lem"/><lit v="pro_obj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal></not>
+                <not><equal><clip pos="2" part="lem"/><lit v="pro_obj"/></equal></not>
+              </and>
+            </or>
+          </and>
+        </test>
+          <let>
+            <var n="test_equival"/>
+            <lit-tag v="jes"/>
+          </let>
+      </when>
+      <otherwise>
+          <let>
+            <var n="test_equival"/>
+            <lit-tag v="no"/>
+          </let>
+      </otherwise>
+    </choose>
+<!--
+          <let>
+            <var n="test"/>
+          <concat>
+            <clip pos="1" part="lem"/>
+            <lit-tag v="-"/>
+            <clip pos="2" part="lem"/>
+            <lit-tag v="="/>
+            <clip pos="1" part="a_nbr"/>
+            <lit-tag v="-"/>
+            <clip pos="1" part="a_nbr"/>
+            <lit-tag v="="/>
+            <var n="test_equival"/>
+          </concat>
+          </let>
+-->
+    </def-macro>
+
+  </section-def-macros>
 
 
   <section-rules>
@@ -480,22 +545,14 @@
       <action>
 <!-- Ni kunigas nur se SN1 kaj SN2 estas samnombraj; aliokaze unu el la du ŝanĝus sian nombron -->
 <!-- Ni kunigas nur se SN1 kaj SN2 estas ambaŭ pronomoj aŭ malpronomoj; aliokaze la sintagmo-ĉapo malsamas kaj estiĝas bordelo -->
+        <call-macro n="test_equiv">
+          <with-param pos="1"/>
+          <with-param pos="3"/>
+        </call-macro>
     <choose>
       <when>
         <test>
-          <and>
-            <equal><clip pos="1" part="a_nbr"/><clip pos="3" part="a_nbr"/></equal>
-            <or>
-              <and>
-                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
-                <equal><clip pos="3" part="lem"/><lit v="prpers"/></equal>
-              </and>
-              <and>
-                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
-                <not><equal><clip pos="3" part="lem"/><lit v="prpers"/></equal></not>
-              </and>
-            </or>
-          </and>
+            <equal><var n="test_equival"/><lit-tag v="jes"/></equal>
         </test>
         <out>
           <chunk>
@@ -544,22 +601,14 @@
       <action>
 <!-- Ni kunigas nur se SN0 kaj SN2 estas samnombraj; aliokaze unu el la du ŝanĝus sian nombron -->
 <!-- Ni kunigas nur se SN0 kaj SN2 estas ambaŭ pronomoj aŭ malpronomoj; aliokaze la sintagmo-ĉapo malsamas kaj estiĝas bordelo -->
+        <call-macro n="test_equiv">
+          <with-param pos="1"/>
+          <with-param pos="5"/>
+        </call-macro>
     <choose>
       <when>
         <test>
-          <and>
-            <equal><clip pos="1" part="a_nbr"/><clip pos="5" part="a_nbr"/></equal>
-            <or>
-              <and>
-                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
-                <equal><clip pos="5" part="lem"/><lit v="prpers"/></equal>
-              </and>
-              <and>
-                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
-                <not><equal><clip pos="5" part="lem"/><lit v="prpers"/></equal></not>
-              </and>
-            </or>
-          </and>
+            <equal><var n="test_equival"/><lit-tag v="jes"/></equal>
         </test>
         <out>
           <chunk>
@@ -622,22 +671,14 @@
       <action>
 <!-- Ni kunigas nur se SN0 kaj SN2 estas samnombraj; aliokaze unu el la du ŝanĝus sian nombron -->
 <!-- Ni kunigas nur se SN0 kaj SN2 estas ambaŭ pronomoj aŭ malpronomoj; aliokaze la sintagmo-ĉapo malsamas kaj estiĝas bordelo -->
+        <call-macro n="test_equiv">
+          <with-param pos="1"/>
+          <with-param pos="6"/>
+        </call-macro>
     <choose>
       <when>
         <test>
-          <and>
-            <equal><clip pos="1" part="a_nbr"/><clip pos="6" part="a_nbr"/></equal>
-            <or>
-              <and>
-                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
-                <equal><clip pos="6" part="lem"/><lit v="prpers"/></equal>
-              </and>
-              <and>
-                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
-                <not><equal><clip pos="6" part="lem"/><lit v="prpers"/></equal></not>
-              </and>
-            </or>
-          </and>
+            <equal><var n="test_equival"/><lit-tag v="jes"/></equal>
         </test>
         <out>
           <chunk>
