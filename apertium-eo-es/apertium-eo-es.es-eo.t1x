@@ -960,7 +960,7 @@
       <choose>
         <when>
           <test>
-          <in>
+          <in caseless="yes">
          <clip pos="1" side="sl" part="lemh"/>
          <list n="agradar"/>
           </in>
@@ -972,7 +972,7 @@
         </when>
 	<when>
     	<test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="1" side="sl" part="lemh"/>
        	  <list n="moviment"/>
       	</in>
@@ -985,7 +985,7 @@
 
     <when>
     <test>
-      <in>
+      <in caseless="yes">
          <clip pos="1" side="sl" part="lemh"/>
          <list n="volition"/>
       </in>
@@ -998,7 +998,7 @@
 
 	<when>
     	<test>
-      	<in>
+      	<in caseless="yes">
         <clip pos="1" side="sl" part="lemh"/>
         <list n="reportingverb"/>
       	</in>
@@ -1036,7 +1036,7 @@
    <choose>
         <when>
           <test>
-            <equal>
+            <equal caseless="yes">
               <clip pos="1" side="sl" part="lem"/>
               <lit v="más"/>
             </equal>
@@ -1048,7 +1048,7 @@
         </when>
         <when>
           <test>
-            <equal>
+            <equal caseless="yes">
               <clip pos="1" side="sl" part="lem"/>
               <lit v="menos"/>
             </equal>
@@ -1065,7 +1065,7 @@
    <choose>
         <when>
           <test>
-            <equal>
+            <equal caseless="yes">
               <clip pos="1" side="sl" part="lem"/>
               <lit v="mejor"/>
             </equal>
@@ -1077,7 +1077,7 @@
         </when>
         <when>
           <test>
-            <equal>
+            <equal caseless="yes">
               <clip pos="1" side="sl" part="lem"/>
               <lit v="peor"/>
             </equal>
@@ -1089,7 +1089,7 @@
         </when>
         <when>
           <test>
-            <equal>
+            <equal caseless="yes">
               <clip pos="1" side="sl" part="lem"/>
               <lit v="mayor"/>
             </equal>
@@ -1101,7 +1101,7 @@
         </when>
         <when>
           <test>
-            <equal>
+            <equal caseless="yes">
               <clip pos="1" side="sl" part="lem"/>
               <lit v="menor"/>
             </equal>
@@ -1824,7 +1824,7 @@
 	<when>
 	  <test>
 	    <and>
-	      <equal>
+	      <equal caseless="yes">
 	        <clip pos="1" side="sl" part="lem"/>
 		<lit v="lo"/>
 	      </equal>
@@ -2045,11 +2045,11 @@
   	<when>
     	<test>
 	<or>
-      	   <in>
+      	   <in caseless="yes">
          	<clip pos="1" side="tl" part="lem"/>
          	<list n="detsprep"/> <!-- llista de dets amb preposició (quantificadors) -->
       	   </in>
-      	   <in>
+      	   <in caseless="yes">
          	<clip pos="1" side="sl" part="lem"/>
          	<list n="quien"/> <!-- per a pronoms  -->
       	   </in>
@@ -2063,7 +2063,7 @@
 
   	<when>
     	<test>
-      	   <in>
+      	   <in caseless="yes">
          	<clip pos="1" side="sl" part="lem"/>
          	<list n="quin"/> <!-- per a determinats interrogatius (van davant del verb) -->
       	   </in>
@@ -4375,6 +4375,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="3"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -4493,6 +4496,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	</out>       
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="5"/>
+	</call-macro>
 	<out>  
 	  <chunk name="det_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -5535,6 +5541,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
         </out>
     </when>
 <otherwise>           <!-- article definit-->
+	<call-macro n="pli_plej2">
+	  <with-param pos="4"/>
+	</call-macro>
 	<out>
 	  <chunk name="det_num_nom_adj" case="caseFirstWord">
 	    <tags>
@@ -14269,7 +14278,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                     </lu>
                   </chunk>
                   <b pos="1"/>
-		  <chunk name="pro_obj">
+		  <chunk name="pro_obj1">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -15435,7 +15444,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		    </chunk>
 		    <b pos="1"/>
                     <!-- poso directe perquè si és indirecte, sovint pot funcionar amb directe, però no al revés -->
-		    <chunk name="pro_obj">
+		    <chunk name="pro_obj2">
 		      <tags>
 		        <tag><lit-tag v="SN"/></tag>
 		        <tag><lit-tag v="obj"/></tag>
@@ -15817,7 +15826,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	  <with-param pos="1"/>
 	</call-macro>
 		<out>
-		  <chunk name="pro_obj" case="caseFirstWord">
+		  <chunk name="pro_obj3" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -15924,7 +15933,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
               </when>
            <otherwise> <!-- SI NO es SE: el traduim) -->	
 		<out>
-		  <chunk name="pro_obj" case="caseFirstWord">
+		  <chunk name="pro_obj3" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
@@ -18629,7 +18638,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
    <choose>
      <when>
       <test>
-     	 <in>
+     	 <in caseless="yes">
        	  <clip pos="2" side="sl" part="lem"/>
        	  <list n="locual"/>
       	</in>
