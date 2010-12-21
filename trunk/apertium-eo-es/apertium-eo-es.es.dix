@@ -86,6 +86,27 @@
     <pardef n="numeros">
       <e><re>[0-9]+([.,][0-9]+)*</re><p><l/><r><s n="num"/><s n="ciph"/><s n="mf"/><s n="sp"/></r></p></e>
       <e><re>[0-9]+([.,][0-9]+)*%</re><p><l/><r><s n="num"/><s n="percent"/><s n="mf"/><s n="sp"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*</re><p><l>º</l><r>º<s n="adj"/><s n="m"/><s n="sg"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*</re><p><l>ª</l><r>º<s n="adj"/><s n="f"/><s n="sg"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*º[0-9]+([.,][0-9]+)</re><p><l/><r><s n="num"/><s n="ciph"/><s n="mf"/><s n="sp"/></r></p></e> <!-- coordenadas -->
+    </pardef>
+    <pardef n="numeros_separa">
+      <e><re>[0-9]+([.,][0-9]+)*ºC</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*ºF</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*ºK</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*ºN</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*ºS</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*ºE</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+      <e><re>[0-9]+([.,][0-9]+)*ºO</re><p><l></l><r><s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>C</l><r>C<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>F</l><r>F<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>K</l><r>K<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>N</l><r>N<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>S</l><r>S<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>E</l><r>E<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>O</l><r>O<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l>W</l><r>O<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
+<e r="LR"><re>[0-9]+([.,][0-9]+)*º</re><p><l><b/>W</l><r>O<s n="n"/><s n="m"/><s n="pl"/></r></p></e>
     </pardef>
     <pardef n="separa">
       <e>
@@ -72246,6 +72267,8 @@ Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "
 <e lm="altivo"><i>altiv</i><par n="absolut/o__adj"/></e>
 <e lm="alto"><i>alt</i><par n="abstract/o__adj"/></e>
 <e lm="bajo"><i>baj</i><par n="abstract/o__adj"/></e>
+<e lm="altísimo"><i>altísim</i><par n="abstract/o__adj"/></e>
+<e lm="bajísimo"><i>bajísim</i><par n="abstract/o__adj"/></e>
 <e lm="altruista"><i>altruista</i><par n="abundante__adj"/></e>
 <e lm="amable"><i>amable</i><par n="abundante__adj"/></e>
 <e lm="amargo"><i>amarg</i><par n="absolut/o__adj"/></e>
@@ -73390,6 +73413,7 @@ Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "
 <e lm="islamista"><i>islamista</i><par n="abundante__adj"/></e>
 <e lm="sefardí"><i>sefardí</i><par n="abdominal__adj"/></e>
 <e lm="israelí"><i>israelí</i><par n="abdominal__adj"/></e>
+<e lm="nepalí"><i>nepalí</i><par n="abdominal__adj"/></e>
 <e lm="israelita"><i>israelita</i><par n="abundante__adj"/></e>
 <e lm="maorí"><i>maorí</i><par n="abdominal__adj"/></e>
 <e lm="italiano"><i>italian</i><par n="absolut/o__adj"/></e>
@@ -73856,6 +73880,9 @@ Curiosamente este problema no se da en ca->fr, con los mismos tags largos (cf. "
 <e lm="práctico"><i>práctic</i><par n="absolut/o__adj"/></e>
 <e lm="pragmático"><i>pragmátic</i><par n="absolut/o__adj"/></e>
 <e lm="precario"><i>precari</i><par n="absolut/o__adj"/></e>
+<e lm="precariedad"><i>precariedad</i><par n="abeja__n"/></e>
+<e lm="precariedad laboral"><p><l>precariedad<b/>laboral</l><r>precariedad<b/>laboral<s n="n"/><s n="f"/><s n="sg"/></r></p></e>
+<e lm="precariedad laboral"><p><l>precariedad<b/>laborals</l><r>precariedad<b/>laboral<s n="n"/><s n="f"/><s n="pl"/></r></p></e>
 <e lm="precavido"><i>precavid</i><par n="absolut/o__adj"/></e>
 <e lm="precioso"><i>precios</i><par n="absolut/o__adj"/></e>
 <e lm="semiprecioso"><i>semiprecios</i><par n="absolut/o__adj"/></e>
@@ -75293,6 +75320,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="bahía"><i>bahía</i><par n="abeja__n"/></e>
 <e lm="baile"><i>baile</i><par n="abismo__n"/></e>
 <e lm="baja"><i>baja</i><par n="abeja__n"/></e>
+<e lm="alta"><i>alta</i><par n="abeja__n"/></e>
 <e lm="bajorrelieve"><i>bajorrelieve</i><par n="abismo__n"/></e>
 <e lm="balada"><i>balada</i><par n="abeja__n"/></e>
 <e lm="bala"><i>bala</i><par n="abeja__n"/></e>
@@ -75381,6 +75409,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="barrote"><i>barrote</i><par n="abismo__n"/></e>
 <e lm="basalto"><i>basalto</i><par n="abismo__n"/></e>
 <e lm="base"><i>base</i><par n="abeja__n"/></e>
+<e lm="base"><i>base</i><par n="multimedia__adj"/></e>
 <e lm="base de datos"><p><l>base<b/>de<b/>datos</l><r>base<b/>de<b/>datos<s n="n"/><s n="f"/><s n="sg"/></r></p></e>
 <e lm="base de datos"><p><l>bases<b/>de<b/>datos</l><r>base<b/>de<b/>datos<s n="n"/><s n="f"/><s n="pl"/></r></p></e>
 <e lm="basílica"><i>basílica</i><par n="abeja__n"/></e>
@@ -75395,6 +75424,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="bate"><i>bate</i><par n="abismo__n"/></e>
 <e lm="batel"><i>batel</i><par n="abril__n"/></e>
 <e lm="batería"><i>batería</i><par n="abeja__n"/></e>
+<e lm="batería"><i>batería</i><par n="abismo__n"/></e>
 <e lm="batiscafo"><i>batiscafo</i><par n="abismo__n"/></e>
 <e lm="batista"><i>batista</i><par n="abeja__n"/></e>
 <e lm="batracio"><i>batracio</i><par n="abismo__n"/></e>
@@ -76153,7 +76183,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="ciencia"><i>ciencia</i><par n="abeja__n"/></e>
 <e lm="cieno"><i>cieno</i><par n="abismo__n"/></e>
 <e lm="cierre"><i>cierre</i><par n="abismo__n"/></e>
-<e lm="ciervo"><i>ciervo</i><par n="abismo__n"/></e>
+<e lm="ciervo"><i>cierv</i><par n="abogad/o__n"/></e>
 <e lm="cifra"><i>cifra</i><par n="abeja__n"/></e>
 <e lm="cigala"><i>cigala</i><par n="abeja__n"/></e>
 <e lm="cigarillo"><i>cigarillo</i><par n="abismo__n"/></e>
@@ -76591,9 +76621,12 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="cooperador"><i>cooperador</i><par n="abdominal__adj"/></e>
 <e lm="cooperador"><i>cooperador</i><par n="señor__n"/></e>
 <e lm="coordinación"><i>coordinaci</i><par n="acci/ón__n"/></e>
+<e lm="descoordinación"><i>descoordinaci</i><par n="acci/ón__n"/></e>
 <e lm="coordinador"><i>coordinador</i><par n="señor__n"/></e>
 <e lm="coordinador"><i>coordinador</i><par n="abdominal__adj"/></e>
+<e lm="descoordinador"><i>descoordinador</i><par n="abdominal__adj"/></e>
 <e lm="coordinadamente"><i>coordinad</i><par n="absolut/amente__adv"/></e>
+<e lm="descoordinadamente"><i>descoordinad</i><par n="absolut/amente__adv"/></e>
 <e lm="copa"><i>copa</i><par n="abeja__n"/></e>
 <e lm="copia"><i>copia</i><par n="abeja__n"/></e>
 <e lm="copla"><i>copla</i><par n="abeja__n"/></e>
@@ -76834,7 +76867,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="dedo"><i>dedo</i><par n="abismo__n"/></e>
 <e lm="deducción"><i>deducci</i><par n="acci/ón__n"/></e>
 <e lm="defecto"><i>defecto</i><par n="abismo__n"/></e>
-<e lm="defensa"><i>defensa</i><par n="accionista__n"/></e>
+<e lm="defensa"><i>defensa</i><par n="abismo__n"/></e>
+<e lm="defensa"><i>defensa</i><par n="abeja__n"/></e>
 <e lm="defensiva"><i>defensiva</i><par n="abeja__n"/></e>
 <e lm="defensor"><i>defensor</i><par n="señor__n"/></e>
 <e lm="déficit"><i>déficit</i><par n="abismo__n"/></e>
@@ -77404,6 +77438,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="equipajes"><i>equipajes</i><par n="campus__n"/></e>
 <e lm="equipo"><i>equipo</i><par n="abismo__n"/></e>
 <e lm="equis"><i>equis</i><par n="Tm__n"/></e>
+<e lm="equívoco"><i>equívoco</i><par n="abismo__n"/></e>
 <e lm="equivocación"><i>equivocaci</i><par n="acci/ón__n"/></e>
 <e lm="era" a="mginesti"><i>era</i><par n="abeja__n"/></e>
 <e lm="erario"><i>erario</i><par n="abismo__n"/></e>
@@ -79107,6 +79142,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="isótopo"><i>isótopo</i><par n="abismo__n"/></e>
 <e lm="sefardí"><i>sefardí</i><par n="albañil__n"/></e>
 <e lm="israelí"><i>israelí</i><par n="albañil__n"/></e>
+<e lm="nepalí"><i>nepalí</i><par n="albañil__n"/></e>
 <e lm="israelita"><i>israelita</i><par n="accionista__n"/></e>
 <e lm="maorí"><i>maorí</i><par n="albañil__n"/></e>
 <e lm="istmo"><i>istmo</i><par n="abismo__n"/></e>
@@ -79352,7 +79388,6 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="lengua planificada"><p><l>lenguas<b/>planificadas</l><r>lengua<b/>planificada<s n="n"/><s n="f"/><s n="pl"/></r></p></e>
 <e lm="lengua románica"><p><l>lengua<b/>románica</l><r>lengua<b/>románica<s n="n"/><s n="f"/><s n="sg"/></r></p></e>
 <e lm="lengua románica"><p><l>lenguas<b/>románicas</l><r>lengua<b/>románica<s n="n"/><s n="f"/><s n="pl"/></r></p></e>
-
 <e lm="lenguaje"><i>lenguaje</i><par n="abismo__n"/></e>
 <e lm="lente"><i>lente</i><par n="abeja__n"/></e>
 <e lm="lenteja"><i>lenteja</i><par n="abeja__n"/></e>
@@ -79736,6 +79771,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="quimioterapia"><i>quimioterapia</i><par n="abeja__n"/></e>
 <e lm="materia"><i>materia</i><par n="abeja__n"/></e>
 <e lm="material"><i>material</i><par n="abril__n"/></e>
+<e lm="material"><i>material</i><par n="abdominal__adj"/></e>
+<e lm="materialmente"><i>material</i><par n="abdominal/mente__adv"/></e>
 <e lm="materialismo"><i>materialismo</i><par n="abismo__n"/></e>
 <e lm="maternidad"><i>maternidad</i><par n="accesibilidad__n"/></e>
 <e lm="matiz"><i>mati</i><par n="ajedre/z__n"/></e>
@@ -81954,6 +81991,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="bosnio"><i>bosni</i><par n="absolut/o__adj"/></e>
 <e r="LR" lm="bosniaco"><i>bosniac</i><par n="abogad/o__n"/></e>
 <e r="LR" lm="bosniaco"><i>bosniac</i><par n="absolut/o__adj"/></e>
+<e r="LR" lm="bosníaco"><i>bosníac</i><par n="abogad/o__n"/></e>
+<e r="LR" lm="bosníaco"><i>bosníac</i><par n="absolut/o__adj"/></e>
 <e lm="croata"><i>croata</i><par n="accionista__n"/></e>
 <e lm="croata"><i>croata</i><par n="abundante__adj"/></e>
 <e lm="serbocroata"><i>serbocroata</i><par n="accionista__n"/></e>
@@ -81995,6 +82034,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="siquiatría"><i>siquiatría</i><par n="abeja__n"/></e>
 <e lm="sicomoro"><i>sicomoro</i><par n="abismo__n"/></e>
 <e lm="sida"><i>sida</i><par n="abismo__n"/></e>
+<e r="LR" lm="SIDA"><i>SIDA</i><par n="BBVA__n"/></e>
 <e lm="siderurgia"><i>siderurgia</i><par n="abeja__n"/></e>
 <e lm="sidra"><i>sidra</i><par n="abeja__n"/></e>
 <e lm="sien"><i>sien</i><par n="accesibilidad__n"/></e>
@@ -82984,6 +83024,7 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="villa"><i>villa</i><par n="abeja__n"/></e>
 <e lm="villa natal"><p><l>villa<b/>natal</l><r>villa<b/>natal<s n="n"/><s n="f"/><s n="sg"/></r></p></e>
 <e lm="villa natal"><p><l>villas<b/>natales</l><r>villa<b/>natal<s n="n"/><s n="f"/><s n="pl"/></r></p></e>
+<e lm="medio ambiente"><p><l>medio<b/>ambiente</l><r>medio<b/>ambiente<s n="n"/><s n="m"/><s n="sg"/></r></p></e>
 <e lm="villancico"><i>villancico</i> <par n="abismo__n"/></e>
 <e lm="vinagre"><i>vinagre</i><par n="abismo__n"/></e>
 <e lm="vinaza"><i>vinaza</i><par n="abeja__n"/></e>
@@ -83619,6 +83660,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="abdicar"><p><l>abdí</l><r>abdi</r></p><par n="atá/car__vblex"/></e>
 <e lm="abocar"><i>abo</i><par n="ata/car__vblex"/></e>
 <e lm="abocar"><p><l>abó</l><r>abo</r></p><par n="atá/car__vblex"/></e>
+<e lm="equivocar"><i>equivo</i><par n="ata/car__vblex"/></e>
+<e lm="equivocar"><p><l>equivó</l><r>equivo</r></p><par n="atá/car__vblex"/></e>
 <e lm="abolir"><i>abol</i><par n="abat/ir__vblex"/></e>
 <e lm="abolir"><p><l>aból</l><r>abol</r></p><par n="abát/ir__vblex"/></e>
 <e lm="abominar"><i>abomin</i><par n="abandon/ar__vblex"/></e>
@@ -84485,6 +84528,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="convocar"><p><l>convó</l><r>convo</r></p><par n="atá/car__vblex"/></e>
 <e lm="cooptar"><i>coopt</i><par n="abandon/ar__vblex"/></e>
 <e lm="cooptar"><p><l>coópt</l><r>coopt</r></p><par n="abandón/ar__vblex"/></e>
+<e lm="descoordinar"><i>descoordin</i><par n="abandon/ar__vblex"/></e>
+<e lm="descoordinar"><p><l>descoordín</l><r>descoordin</r></p><par n="abandón/ar__vblex"/></e>
 <e lm="coordinar"><i>coordin</i><par n="abandon/ar__vblex"/></e>
 <e lm="coordinar"><p><l>coordín</l><r>coordin</r></p><par n="abandón/ar__vblex"/></e>
 <e lm="copiar"><i>copi</i><par n="abandon/ar__vblex"/></e>
@@ -87947,7 +87992,12 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="de acuerdo"><i>de<b/>acuerdo</i><par n="ahora__adv"/></e>
 <e lm="debajo"><i>debajo</i><par n="ahora__adv"/></e>
 <e lm="debidamente"><i>debid</i><par n="absolut/amente__adv"/></e>
+<e lm="de día"><i>de<b/>día</i><par n="multimedia__adj"/></e>
+<e lm="de noche"><i>de<b/>noche</i><par n="multimedia__adj"/></e>
 <e lm="de día"><i>de<b/>día</i><par n="ahora__adv"/></e>
+<e lm="de noche"><i>de<b/>noche</i><par n="ahora__adv"/></e>
+<e lm="poco después"><i>poco<b/>después</i><par n="ahora__adv"/></e>
+<e lm="poco antes"><i>poco<b/>antes</i><par n="ahora__adv"/></e>
 <e lm="definitivamente"><i>definitiv</i><par n="absolut/amente__adv"/></e>
 <e lm="de hecho"><i>de<b/>hecho</i><par n="ahora__adv"/></e>
 <e lm="de hoy en adelante"><i>de<b/>hoy<b/>en<b/>adelante</i><par n="ahora__adv"/></e>
@@ -88144,6 +88194,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="mucho antes"><i>mucho<b/>antes</i><par n="ahora__adv"/></e>
 <e lm="mucho después"><i>mucho<b/>después</i><par n="ahora__adv"/></e>
 <e lm="mucho"><i>mucho</i><par n="ahora__adv"/></e>
+<e lm="muy mucho"><i>muy<b/>mucho</i><par n="ahora__adv"/></e>
+<e lm="muchísimo"><i>muchísimo</i><par n="ahora__adv"/></e>
 <e lm="mucho más"><i>mucho<b/>más</i><par n="ahora__adv"/></e>
 <e lm="mucho mejor"><i>mucho<b/>mejor</i><par n="ahora__adv"/></e>
 <e lm="mucho menos"><i>mucho<b/>menos</i><par n="ahora__adv"/></e>
@@ -88179,6 +88231,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="personalmente"><i>personalmente</i><par n="ahora__adv"/></e>
 <e lm="plenamente"><i>plen</i><par n="absolut/amente__adv"/></e>
 <e lm="poco"><i>poco</i><par n="ahora__adv"/></e>
+<e lm="poco a poco"><i>poco<b/>a<b/>poco</i><par n="ahora__adv"/></e>
+<e lm="poquísimo"><i>poquísimo</i><par n="ahora__adv"/></e>
 <e lm="poco a poco"><i>poco<b/>a<b/>poco</i><par n="ahora__adv"/></e>
 <e lm="poderosamente"><i>poderos</i><par n="absolut/amente__adv"/></e>
 <e lm="políticamente"><i>polític</i><par n="absolut/amente__adv"/></e>
@@ -90221,6 +90275,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 
 <!--PREPOSICIONES-->
 
+<e lm="poco después de"><i>poco<b/>después<b/></i><par n="contde__pr"/></e>
+<e lm="poco antes de"><i>poco<b/>antes<b/></i><par n="contde__pr"/></e>
 <e lm="delante de"><i>delante<b/></i><par n="contde__pr"/></e>
 <e lm="además de"><i>además<b/></i><par n="contde__pr"/></e>
 <e lm="a bordo de"><i>a<b/>bordo<b/></i><par n="contde__pr"/></e>
@@ -90565,6 +90621,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="octogésimo"><i>octogésim</i><par n="abstract/o__adj"/></e>
 <e lm="nonagésimo"><i>nonagésim</i><par n="abstract/o__adj"/></e>
 <e lm="centésimo"><i>centésim</i><par n="abstract/o__adj"/></e>
+<e lm="bicentésimo"><i>bicentésim</i><par n="abstract/o__adj"/></e>
+<e lm="tricentésimo"><i>tricentésim</i><par n="abstract/o__adj"/></e>
 <e lm="milésimo"><i>milésim</i><par n="abstract/o__adj"/></e>
 <e lm="millonésimo"><i>millonésim</i><par n="abstract/o__adj"/></e>
 
@@ -90659,6 +90717,8 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="pese a que"><i>pese<b/>a<b/>que</i><par n="a_fe_que__cnjadv"/></e>
 <e lm="a fe que"><i>a<b/>fe<b/>que</i><par n="a_fe_que__cnjadv"/></e>
 <e lm="a fin de que"><i>a<b/>fin<b/>de<b/>que</i><par n="a_fe_que__cnjadv"/></e>
+<e lm="poco después de que"><i>poco<b/>después<b/>de<b/>que</i><par n="a_fe_que__cnjadv"/></e>
+<e lm="poco antes de que"><i>poco<b/>antes<b/>de<b/>que</i><par n="a_fe_que__cnjadv"/></e>
 <e lm="a menos que" r="LR"><i>a<b/>menos<b/>que</i><par n="a_fe_que__cnjadv"/></e>
 <e lm="a no ser que"><i>a<b/>no<b/>ser<b/>que</i><par n="a_fe_que__cnjadv"/></e>
 <e lm="a pesar de que"><i>a<b/>pesar<b/>de<b/>que</i><par n="a_fe_que__cnjadv"/></e>
@@ -90962,10 +91022,11 @@ sempre són plurals, en comptes de tenir en compte el nombre del nom anterior)
 <e lm="CD"><i>CD</i><par n="BBVA__n"/></e>
 <e lm="DVD"><i>DVD</i><par n="BBVA__n"/></e>
 
-<!--Multipalabras con flexión intercalada -->
-
 <e lm="casi"><i>casi</i><par n="bien__preadv"/></e>
 <!--<e lm="cual"><i>cual</i><par n="adonde__rel"/></e>-->
+    <e>
+      <par n="numeros_separa"/>
+    </e>
   </section>
   <section id="final" type="inconditional">
     <e>
