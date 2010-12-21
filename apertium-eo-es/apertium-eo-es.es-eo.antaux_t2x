@@ -9,6 +9,11 @@
     <def-cat n="SNnotunk">
       <cat-item tags="SN.*"/>
     </def-cat>
+    <def-cat n="SNSAdj">
+      <cat-item tags="unknown"/>
+      <cat-item tags="SN.*"/>
+      <cat-item tags="SA.*"/>
+    </def-cat>
     <def-cat n="num">
       <cat-item lemma="num" tags="SN.*"/>
     </def-cat>
@@ -17,6 +22,9 @@
     </def-cat>
     <def-cat n="SAdj"> <!-- adjektiva sintagmo -->
       <cat-item tags="SA.*"/>
+    </def-cat>
+    <def-cat n="pp">
+      <cat-item lemma="pp" tags="SA.*"/>
     </def-cat>
     <def-cat n="adv">
       <cat-item tags="preadv"/>
@@ -27,7 +35,7 @@
       <cat-item tags="SV.*"/>
     </def-cat>
     <def-cat n="unknown">
-       <cat-item lemma="unknown" tags=""/>
+       <cat-item tags="unknown"/>
     </def-cat>
     <def-cat n="CM">
       <cat-item lemma="cm" tags="sent"/>
@@ -36,6 +44,9 @@
       <cat-item tags="and_or.*"/>
       <cat-item tags="cnjcoo.*"/>
       <cat-item tags="cnjcoo"/>
+    </def-cat>
+    <def-cat n="por">
+      <cat-item lemma="por" tags="PREP"/>
     </def-cat>
   </section-def-cats>
 
@@ -505,15 +516,45 @@
     </rule>
 
 
+    <rule comment="REGLA: PP PER SN  -  querido por él -> volita por li -> volita de  ">
+      <pattern>
+        <pattern-item n="pp"/>
+        <pattern-item n="por"/>
+        <pattern-item n="SNSAdj"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+	    <lit-tag v="PREP"/>
+	    <lit v="{^"/>
+	    <get-case-from pos="2">
+	      <lit v="de"/>
+	    </get-case-from>
+	    <lit-tag v="pr"/>
+	    <lit v="$}"/>
+	  </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
 <!-- Reguloj de SN -->
 
 <!--
 - Tio ŝajnas sensecaĵo, ĉar SN povas esti determinita (3 la domoj)
-- Krome estas problemo, ĉar SN povas esti unknown; tiam oni kopias la ĉapon de unk kaj okazas bordelo
     <rule comment="REGLA: NUM SN   -   SN ">
       <pattern>
         <pattern-item n="num"/>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNnotunk"/>
       </pattern>
       <action>
         <out>
