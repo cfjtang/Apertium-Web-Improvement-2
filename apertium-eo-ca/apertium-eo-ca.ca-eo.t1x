@@ -542,6 +542,72 @@
       <cat-item lemma="miler" tags="n.*"/>
       <cat-item lemma="milió" tags="n.*"/>
       <cat-item lemma="miliard" tags="n.*"/>
+      <cat-item lemma="bilió" tags="n.*"/>
+      <cat-item lemma="quantitat" tags="n.*"/>
+      <cat-item lemma="metre" tags="n.*"/>
+      <cat-item lemma="decímetre" tags="n.*"/>
+      <cat-item lemma="centímetre" tags="n.*"/>
+      <cat-item lemma="mil·límetre" tags="n.*"/>
+      <cat-item lemma="micra" tags="n.*"/>
+      <cat-item lemma="decàmetre" tags="n.*"/>
+      <cat-item lemma="hectòmetre" tags="n.*"/>
+      <cat-item lemma="quilòmetre" tags="n.*"/>
+      <cat-item lemma="milla" tags="n.*"/>
+      <cat-item lemma="llegua" tags="n.*"/>
+      <cat-item lemma="hectàrea" tags="n.*"/>
+      <cat-item lemma="litre" tags="n.*"/>
+      <cat-item lemma="decilitre" tags="n.*"/>
+      <cat-item lemma="centilitre" tags="n.*"/>
+      <cat-item lemma="mil·lilitre" tags="n.*"/>
+      <cat-item lemma="decalitre" tags="n.*"/>
+      <cat-item lemma="hectolitre" tags="n.*"/>
+      <cat-item lemma="gram" tags="n.*"/>
+      <cat-item lemma="decigram" tags="n.*"/>
+      <cat-item lemma="centigram" tags="n.*"/>
+      <cat-item lemma="mil·ligram" tags="n.*"/>
+      <cat-item lemma="decagram" tags="n.*"/>
+      <cat-item lemma="hectogram" tags="n.*"/>
+      <cat-item lemma="quilogram" tags="n.*"/>
+      <cat-item lemma="tona" tags="n.*"/>
+      <cat-item lemma="watt" tags="n.*"/>
+      <cat-item lemma="quilowatt" tags="n.*"/>
+      <cat-item lemma="megawatt" tags="n.*"/>
+      <cat-item lemma="caloria" tags="n.*"/>
+      <cat-item lemma="kilocaloria" tags="n.*"/>
+      <cat-item lemma="bit" tags="n.*"/>
+      <cat-item lemma="kilobit" tags="n.*"/>
+      <cat-item lemma="megabit" tags="n.*"/>
+      <cat-item lemma="byte" tags="n.*"/>
+      <cat-item lemma="kilobyte" tags="n.*"/>
+      <cat-item lemma="megabyte" tags="n.*"/>
+      <cat-item lemma="gigabyte" tags="n.*"/>
+      <cat-item lemma="terabyte" tags="n.*"/>
+      <cat-item lemma="km²" tags="n.*"/>
+      <cat-item lemma="m²" tags="n.*"/>
+      <cat-item lemma="km" tags="n.*"/>
+      <cat-item lemma="m" tags="n.*"/>
+      <cat-item lemma="l" tags="n.*"/>
+      <cat-item lemma="dl" tags="n.*"/>
+      <cat-item lemma="cl" tags="n.*"/>
+      <cat-item lemma="ml" tags="n.*"/>
+      <cat-item lemma="kg" tags="n.*"/>
+      <cat-item lemma="g" tags="n.*"/>
+      <cat-item lemma="dg" tags="n.*"/>
+      <cat-item lemma="cg" tags="n.*"/>
+      <cat-item lemma="mg" tags="n.*"/>
+      <cat-item lemma="W" tags="n.*"/>
+      <cat-item lemma="kW" tags="n.*"/>
+      <cat-item lemma="MW" tags="n.*"/>
+      <cat-item lemma="b" tags="n.*"/>
+      <cat-item lemma="kb" tags="n.*"/>
+      <cat-item lemma="Mb" tags="n.*"/>
+      <cat-item lemma="B" tags="n.*"/>
+      <cat-item lemma="KB" tags="n.*"/>
+      <cat-item lemma="MB" tags="n.*"/>
+      <cat-item lemma="GB" tags="n.*"/>
+      <cat-item lemma="TB" tags="n.*"/>
+      <cat-item lemma="cal" tags="n.*"/>
+      <cat-item lemma="kcal" tags="n.*"/>
     </def-cat>
 
     <def-cat n="per">
@@ -818,6 +884,7 @@
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
     <def-var n="vegada"/>
+    <def-var n="nprep"/>
     <def-var n="test"/>
   </section-def-vars>
 
@@ -849,6 +916,7 @@
     <list-item v="afegir"/>
     <list-item v="posar"/>
     <list-item v="treure"/>
+    <list-item v="traure"/>
     <list-item v="introduir"/>
     <list-item v="entrar"/>
     <list-item v="caure"/>
@@ -861,6 +929,14 @@
     <list-item v="caminar"/>
     <list-item v="avançar"/>
     <list-item v="sortir"/>
+    <list-item v="eixir"/>
+    <list-item v="traduir"/>
+    <list-item v="inserir"/>
+    <list-item v="posar"/>
+    <list-item v="baixar"/>
+    <list-item v="portar"/>
+    <list-item v="atreure"/>
+    <list-item v="atraure"/>
     </def-list> 
 
   <def-list n="laqualcosa">
@@ -1734,6 +1810,7 @@
 	<call-macro n="nom_cas">
 	  <with-param pos="1"/>
 	</call-macro>
+        <let><var n="nprep"/><clip pos="2" side="tl" part="lem"/></let>
 	<out>
 	  <chunk name="nom" case="caseFirstWord">
 	    <tags>
@@ -1753,9 +1830,9 @@
 	    </lu>
 	  </chunk>
  	  <b pos="1"/>
-	  <chunk name="pr">
+	  <chunk name="da">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="da"/>
@@ -1895,9 +1972,9 @@
 	  <clip pos="2" side="tl" part="nbr"/>
 	</let>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="en" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="en"/>
@@ -1945,9 +2022,9 @@
 	  <clip pos="3" side="tl" part="nbr"/>
 	</let>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="en" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="en"/>
@@ -2042,9 +2119,9 @@
 	  <clip pos="3" side="tl" part="nbr"/>
 	</let>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk name="en" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="en"/>
@@ -2374,10 +2451,11 @@
       </pattern>
       <action>
         <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
         <out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="nprep" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -2421,10 +2499,11 @@
       </pattern>
       <action>
         <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
         <out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="nprep" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -2690,7 +2769,7 @@
           <b pos="4"/>
 	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -2757,7 +2836,7 @@
           <b pos="3"/>
 	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -7204,7 +7283,7 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
  	    <b/>
 	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -7982,7 +8061,7 @@ x- havia perdut el seu sentit en eliminar les regles de composició de NOM DE NO
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
 	    <lu>
               <clip pos="3" side="tl" part="whole"/>
@@ -8048,7 +8127,7 @@ x- havia perdut el seu sentit en eliminar les regles de composició de NOM DE NO
 	    <b pos="2"/>
             <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
 	    <lu>
               <clip pos="3" side="tl" part="whole"/>
@@ -8263,7 +8342,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -8333,7 +8412,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -8548,7 +8627,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -8618,7 +8697,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -11827,7 +11906,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
  	    <b/>
 	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -12905,9 +12984,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		</lu> 
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk name="pr">
+	      <chunk name="el">
 	        <tags>
-	          <tag><lit-tag v="PREP"/></tag>
+	          <tag><lit-tag v="pr"/></tag>
 	        </tags>
 	        <lu>
 	          <lit v="el"/>
@@ -13171,9 +13250,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
           <with-param pos="4"/>
         </call-macro>
 	    <out>
-		 <chunk name="pr" case="caseFirstWord">
+		 <chunk name="por" case="caseFirstWord">
             		<tags>
-            	  	<tag><lit-tag v="PREP"/></tag>
+            	  	<tag><lit-tag v="pr"/></tag>
             		</tags>
 		<lu>
 	          <lit v="por"/>
@@ -17105,7 +17184,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="3"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -17217,7 +17296,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="3"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -17357,7 +17436,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="4"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -17481,7 +17560,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="4"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -18019,7 +18098,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="1"/>
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -18068,7 +18147,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="1"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -18143,7 +18222,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="2"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -18204,7 +18283,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="2"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -18273,7 +18352,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="2"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -18328,7 +18407,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="2"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -18409,7 +18488,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="3"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -18476,7 +18555,7 @@ problema: és molt millor que vingui / és molt millor que jo
           <b pos="3"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -20769,10 +20848,11 @@ problema: és molt millor que vingui / és molt millor que jo
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
 	</call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
 	<out>
-          <chunk name="pr" case="caseFirstWord">
+          <chunk namefrom="nprep" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="whole"/>
@@ -20861,58 +20941,6 @@ problema: és molt millor que vingui / és molt millor que jo
       </action>
     </rule>
 
- <rule comment="de">
-      <pattern>
-	<pattern-item n="de"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="de" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-      </action>
-    </rule>
-
-
- <rule comment="per">
-      <pattern>
-	<pattern-item n="per"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="per" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-      </action>
-    </rule>
-
-
     <rule comment="PREP">
       <pattern>
 	<pattern-item n="prep"/>
@@ -20921,10 +20949,11 @@ problema: és molt millor que vingui / és molt millor que jo
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="nprep" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
