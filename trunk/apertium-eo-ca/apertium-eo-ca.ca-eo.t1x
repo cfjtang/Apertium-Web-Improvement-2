@@ -568,6 +568,7 @@
       <cat-item lemma="decagram" tags="n.*"/>
       <cat-item lemma="hectogram" tags="n.*"/>
       <cat-item lemma="quilogram" tags="n.*"/>
+      <cat-item lemma="quintar" tags="n.*"/>
       <cat-item lemma="tona" tags="n.*"/>
       <cat-item lemma="watt" tags="n.*"/>
       <cat-item lemma="quilowatt" tags="n.*"/>
@@ -582,6 +583,10 @@
       <cat-item lemma="megabyte" tags="n.*"/>
       <cat-item lemma="gigabyte" tags="n.*"/>
       <cat-item lemma="terabyte" tags="n.*"/>
+      <cat-item lemma="mes" tags="n.*.pl"/>
+      <cat-item lemma="any" tags="n.*.pl"/>
+      <cat-item lemma="dècada" tags="n.*.pl"/>
+      <cat-item lemma="segle" tags="n.*.pl"/>
       <cat-item lemma="km²" tags="n.*"/>
       <cat-item lemma="m²" tags="n.*"/>
       <cat-item lemma="km" tags="n.*"/>
@@ -646,9 +651,10 @@
       <cat-item lemma="tornar# a" tags="vblex.*"/>
     </def-cat>
 
-    <def-cat n="parir_volar"> <!-- per desfer errors del lexer (tria enlloc de parèixer, voler, etc.) -->
+    <def-cat n="parir_volar_creuar"> <!-- per desfer errors del lexer (tria enlloc de parèixer, voler, etc.) -->
       <cat-item lemma="parir" tags="vblex.*"/>
       <cat-item lemma="volar" tags="vblex.*"/>
+      <cat-item lemma="creuar" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="parir"> <!-- per desfer errors del lexer (tria enlloc de parèixer) -->
@@ -659,8 +665,19 @@
       <cat-item lemma="volar" tags="vblex.*"/>
     </def-cat>
 
+    <def-cat n="creuar"> <!-- per desfer errors del lexer (tria enlloc de creure) -->
+      <cat-item lemma="creuar" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="vol_creu"> <!-- per desfer errors del lexer (tria enlloc de voler, creure) -->
+      <cat-item lemma="vol" tags="n.m.sg"/>
+      <cat-item lemma="creu" tags="n.f.sg"/>
+    </def-cat>
     <def-cat n="vol"> <!-- per desfer errors del lexer (tria enlloc de voler) -->
       <cat-item lemma="vol" tags="n.m.sg"/>
+    </def-cat>
+    <def-cat n="creu"> <!-- per desfer errors del lexer (tria enlloc de creure) -->
+      <cat-item lemma="creu" tags="n.f.sg"/>
     </def-cat>
 
     <def-cat n="estar_pp">
@@ -1440,7 +1457,7 @@
       </let>
     </def-macro>
 
-    <def-macro n="m_parir_volar" npar="1">
+    <def-macro n="m_parir_volar_creuar" npar="1">
 	<choose>
               <when>
                 <test>
@@ -1468,6 +1485,48 @@
                 <let>
                   <clip pos="1" side="tl" part="lem"/>
                   <lit v="voli"/>
+                </let>
+              </when>
+              <when>
+                <test>
+                    <equal caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="creuar"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit v="kredi"/>
+                </let>
+              </when>
+	</choose>
+    </def-macro>
+
+
+    <def-macro n="m_vol_creu" npar="1">
+	<choose>
+              <when>
+                <test>
+                    <equal caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="vol"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit v="voli"/>
+                </let>
+              </when>
+              <when>
+                <test>
+                    <equal caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="creu"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <lit v="kredi"/>
                 </let>
               </when>
 	</choose>
@@ -11062,6 +11121,53 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 
 
+<rule comment="vol + QUE (vol (n) = voli EOes)">
+      <pattern>
+	<pattern-item n="vol_creu"/>
+        <pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="m_vol_creu">
+	  <with-param pos="1"/>
+	</call-macro>
+
+                <out>
+                  <chunk name="verbcj" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><lit-tag v="pri"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
+                      <tag><lit-tag v="sg"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lem"/>
+                      <lit-tag v="vblex"/>
+                      <lit-tag v="pres"/>
+                    </lu>
+                  </chunk>
+                  <b pos="1"/>
+                  <chunk name="cnjsub">
+                    <tags>
+                      <tag><lit-tag v="cnjsub"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="ke"/>
+                      <lit-tag v="cnjsub"/>
+                    </lu>
+                  </chunk>
+                </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: NOM QUE (EO, regles específiques de SN amb causula de relatiu, creades per a corregir el tagger 'que -> kiu' )">
       <pattern>
 	<pattern-item n="nom"/>
@@ -13405,7 +13511,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="VERBparir + QUE (pareix que, únicament per corregir el tagger) - aquesta regla ha d'estar davant de VERB + QUE">
       <pattern>
-	<pattern-item n="parir_volar"/>
+	<pattern-item n="parir_volar_creuar"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>    	
@@ -13415,7 +13521,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="nom_cas">
           <with-param pos="1"/>
         </call-macro>
-	<call-macro n="m_parir_volar">
+	<call-macro n="m_parir_volar_creuar">
 	  <with-param pos="1"/>
 	</call-macro>
 
@@ -14866,7 +14972,7 @@ problema: és molt millor que vingui / és molt millor que jo
 
 <rule comment="VERBparir + INF (parir = parèixer EOes)">
       <pattern>
-	<pattern-item n="parir_volar"/>
+	<pattern-item n="parir_volar_creuar"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
@@ -14876,7 +14982,7 @@ problema: és molt millor que vingui / és molt millor que jo
         <call-macro n="nom_cas">
           <with-param pos="2"/>
         </call-macro>
-	<call-macro n="m_parir_volar">
+	<call-macro n="m_parir_volar_creuar">
 	  <with-param pos="1"/>
 	</call-macro>
 
@@ -14964,11 +15070,14 @@ problema: és molt millor que vingui / és molt millor que jo
 
 <rule comment="vol + INF (vol (n) = voli EOes)">
       <pattern>
-	<pattern-item n="vol"/>
+	<pattern-item n="vol_creu"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
 	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="m_vol_creu">
 	  <with-param pos="1"/>
 	</call-macro>
 
@@ -14982,7 +15091,7 @@ problema: és molt millor que vingui / és molt millor que jo
                       <tag><lit-tag v="sg"/></tag>
                     </tags>
                     <lu>
-                      <lit v="voli"/>
+                      <clip pos="1" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <lit-tag v="pres"/>
                     </lu>
@@ -15004,12 +15113,15 @@ problema: és molt millor que vingui / és molt millor que jo
 
 <rule comment="vol + INF + QUE (vol (n) = voli EOes)">
       <pattern>
-	<pattern-item n="vol"/>
+	<pattern-item n="vol_creu"/>
 	<pattern-item n="inf"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
       <action>    	
 	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="m_vol_creu">
 	  <with-param pos="1"/>
 	</call-macro>
 
@@ -15023,7 +15135,7 @@ problema: és molt millor que vingui / és molt millor que jo
                       <tag><lit-tag v="sg"/></tag>
                     </tags>
                     <lu>
-                      <lit v="voli"/>
+                      <clip pos="1" side="tl" part="lem"/>
                       <lit-tag v="vblex"/>
                       <lit-tag v="pres"/>
                     </lu>
@@ -15055,7 +15167,7 @@ problema: és molt millor que vingui / és molt millor que jo
 
 <rule comment="VERBparir + INF + QUE (pareix dir que, únicament per corregir el tagger) EO">
       <pattern>
-	<pattern-item n="parir_volar"/>
+	<pattern-item n="parir_volar_creuar"/>
 	<pattern-item n="inf"/>
         <pattern-item n="cnjcoopercorregir"/>
       </pattern>
@@ -15066,7 +15178,7 @@ problema: és molt millor que vingui / és molt millor que jo
         <call-macro n="nom_cas">
           <with-param pos="1"/>
         </call-macro>
-	<call-macro n="m_parir_volar">
+	<call-macro n="m_parir_volar_creuar">
 	  <with-param pos="1"/>
 	</call-macro>
 
