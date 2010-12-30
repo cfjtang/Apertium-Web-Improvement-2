@@ -102,19 +102,28 @@
     </def-cat>
 
     <def-cat n="PREP">
-      <cat-item tags="PREP"/>
+      <cat-item tags="pr"/>
     </def-cat>
 
-    <def-cat n="PREPmov"> <!-- per l'acusatiu dels verbs de moviment-->
-      <cat-item lemma="pr" tags="PREP"/> <!-- no: al, de -->
+    <def-cat n="PREPmoviment"> <!-- per l'acusatiu dels verbs de moviment-->
+      <cat-item lemma="en" tags="pr"/>
+      <cat-item lemma="antaŭ" tags="pr"/>
+      <cat-item lemma="malantaŭ" tags="pr"/>
+      <cat-item lemma="post" tags="pr"/>
+      <cat-item lemma="ekster" tags="pr"/>
+      <cat-item lemma="sur" tags="pr"/>
+      <cat-item lemma="super" tags="pr"/>
+      <cat-item lemma="sub" tags="pr"/>
+      <cat-item lemma="trans" tags="pr"/>
+      <cat-item lemma="preter" tags="pr"/>
     </def-cat>
 
     <def-cat n="al">
-      <cat-item lemma="al" tags="PREP"/>
+      <cat-item lemma="al" tags="pr"/>
     </def-cat>
 
     <def-cat n="de">
-      <cat-item lemma="de" tags="PREP"/>
+      <cat-item lemma="de" tags="pr"/>
     </def-cat>
 
     <def-cat n="oni">
@@ -3064,7 +3073,7 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVmoviment"/>
-	<pattern-item n="PREPmov"/>
+	<pattern-item n="PREPmoviment"/>
 	<pattern-item n="SNacc"/>
       </pattern>
       <action>
@@ -3103,12 +3112,12 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: SN SVmoviment SNacc PREPmov SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
+<rule comment="REGLA: SN SVmoviment SNacc PREPmoviment SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SVmoviment"/>
 	<pattern-item n="SN"/>
-	<pattern-item n="PREPmov"/>
+	<pattern-item n="PREPmoviment"/>
 	<pattern-item n="SNacc"/>
       </pattern>
       <action>
@@ -3156,10 +3165,10 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
       </action>
 </rule>
 
-<rule comment="REGLA: SVmoviment PREPmov SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
+<rule comment="REGLA: SVmoviment PREPmoviment SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVmoviment"/>
-	<pattern-item n="PREPmov"/>
+	<pattern-item n="PREPmoviment"/>
 	<pattern-item n="SNacc"/>
       </pattern>
       <action>
@@ -3192,11 +3201,11 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: SVmoviment SN PREPmov SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
+<rule comment="REGLA: SVmoviment SN PREPmoviment SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom)">
       <pattern>
 	<pattern-item n="SVmoviment"/>
 	<pattern-item n="SN"/>
-	<pattern-item n="PREPmov"/>
+	<pattern-item n="PREPmoviment"/>
 	<pattern-item n="SNacc"/>
       </pattern>
       <action>
@@ -4580,11 +4589,11 @@ Segon paques de regles per a indentificar els SN objectes i possar-los en acusat
 </rule>
 
 
-<rule comment="REGLA: punt_cnjadv SVmoviment PREPmov SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom i afegir pronom subjecte)">
+<rule comment="REGLA: punt_cnjadv SVmoviment PREPmoviment SN (EO per l'acusatiu dels verbs de moviment amb changecase=nom i afegir pronom subjecte)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SVmoviment"/>
-	<pattern-item n="PREPmov"/>
+	<pattern-item n="PREPmoviment"/>
 	<pattern-item n="SNacc"/>
       </pattern>
       <action>
