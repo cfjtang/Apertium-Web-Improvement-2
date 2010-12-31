@@ -493,6 +493,80 @@
       <cat-item lemma="millar" tags="n.*"/>
       <cat-item lemma="millón" tags="n.*"/>
       <cat-item lemma="millardo" tags="n.*"/>
+      <cat-item lemma="trillón" tags="n.*"/>
+      <cat-item lemma="cientos" tags="n.*"/>
+      <cat-item lemma="miles" tags="n.*"/>
+      <cat-item lemma="cantidad" tags="n.*"/>
+      <cat-item lemma="metro" tags="n.*"/>
+      <cat-item lemma="decímetro" tags="n.*"/>
+      <cat-item lemma="centímetro" tags="n.*"/>
+      <cat-item lemma="milímetro" tags="n.*"/>
+      <cat-item lemma="micra" tags="n.*"/>
+      <cat-item lemma="decámetro" tags="n.*"/>
+      <cat-item lemma="hectómetro" tags="n.*"/>
+      <cat-item lemma="kilómetro" tags="n.*"/>
+      <cat-item lemma="milla" tags="n.*"/>
+      <cat-item lemma="legua" tags="n.*"/>
+      <cat-item lemma="hectárea" tags="n.*"/>
+      <cat-item lemma="litro" tags="n.*"/>
+      <cat-item lemma="decilitro" tags="n.*"/>
+      <cat-item lemma="centilitro" tags="n.*"/>
+      <cat-item lemma="mililitro" tags="n.*"/>
+      <cat-item lemma="decalitro" tags="n.*"/>
+      <cat-item lemma="hectolitro" tags="n.*"/>
+      <cat-item lemma="gramo" tags="n.*"/>
+      <cat-item lemma="decigramo" tags="n.*"/>
+      <cat-item lemma="centigramo" tags="n.*"/>
+      <cat-item lemma="miligramo" tags="n.*"/>
+      <cat-item lemma="decagramo" tags="n.*"/>
+      <cat-item lemma="hectogramo" tags="n.*"/>
+      <cat-item lemma="kilogramo" tags="n.*"/>
+      <cat-item lemma="quintal" tags="n.*"/>
+      <cat-item lemma="tonelada" tags="n.*"/>
+      <cat-item lemma="caloría" tags="n.*"/>
+      <cat-item lemma="kilocaloría" tags="n.*"/>
+      <cat-item lemma="vatio" tags="n.*"/>
+      <cat-item lemma="kilovatio" tags="n.*"/>
+      <cat-item lemma="megavatio" tags="n.*"/>
+      <cat-item lemma="gigavatio" tags="n.*"/>
+      <cat-item lemma="bit" tags="n.*"/>
+      <cat-item lemma="kilobit" tags="n.*"/>
+      <cat-item lemma="megabit" tags="n.*"/>
+      <cat-item lemma="byte" tags="n.*"/>
+      <cat-item lemma="kilobyte" tags="n.*"/>
+      <cat-item lemma="megabyte" tags="n.*"/>
+      <cat-item lemma="gigabyte" tags="n.*"/>
+      <cat-item lemma="terabyte" tags="n.*"/>
+      <cat-item lemma="mes" tags="n.*.pl"/>
+      <cat-item lemma="año" tags="n.*.pl"/>
+      <cat-item lemma="década" tags="n.*.pl"/>
+      <cat-item lemma="siglo" tags="n.*.pl"/>
+      <cat-item lemma="km²" tags="n.*"/>
+      <cat-item lemma="m²" tags="n.*"/>
+      <cat-item lemma="km" tags="n.*"/>
+      <cat-item lemma="m" tags="n.*"/>
+      <cat-item lemma="l" tags="n.*"/>
+      <cat-item lemma="dl" tags="n.*"/>
+      <cat-item lemma="cl" tags="n.*"/>
+      <cat-item lemma="ml" tags="n.*"/>
+      <cat-item lemma="kg" tags="n.*"/>
+      <cat-item lemma="g" tags="n.*"/>
+      <cat-item lemma="dg" tags="n.*"/>
+      <cat-item lemma="cg" tags="n.*"/>
+      <cat-item lemma="mg" tags="n.*"/>
+      <cat-item lemma="cal" tags="n.*"/>
+      <cat-item lemma="kcal" tags="n.*"/>
+      <cat-item lemma="W" tags="n.*"/>
+      <cat-item lemma="kW" tags="n.*"/>
+      <cat-item lemma="MW" tags="n.*"/>
+      <cat-item lemma="b" tags="n.*"/>
+      <cat-item lemma="kb" tags="n.*"/>
+      <cat-item lemma="Mb" tags="n.*"/>
+      <cat-item lemma="B" tags="n.*"/>
+      <cat-item lemma="KB" tags="n.*"/>
+      <cat-item lemma="MB" tags="n.*"/>
+      <cat-item lemma="GB" tags="n.*"/>
+      <cat-item lemma="TB" tags="n.*"/>
     </def-cat>
 
     <def-cat n="por">
@@ -810,6 +884,7 @@
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
+    <def-var n="nprep"/>
 <!-- variables només per depurar i veure per on es passa en executar -->
     <def-var n="debug1"/>
     <def-var n="debug2"/>
@@ -860,6 +935,13 @@
     <list-item v="andar"/>
     <list-item v="avanzar"/>
     <list-item v="salir"/>
+    <list-item v="traducir"/>
+    <list-item v="poner"/>
+    <list-item v="insertar"/>
+    <list-item v="bajar"/>
+    <list-item v="llevar"/>
+    <list-item v="traer"/>
+    <list-item v="atraer"/>
     </def-list> 
 
 
@@ -3066,10 +3148,11 @@
       </pattern>
       <action>
         <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
         <out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="nprep" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -3113,10 +3196,11 @@
       </pattern>
       <action>
         <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
         <out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="nprep" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -3195,9 +3279,9 @@
 	    </lu>
 	  </chunk>
  	  <b pos="1"/>
-	  <chunk name="pr">
+	  <chunk name="da">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="da"/>
@@ -3396,9 +3480,9 @@
 	    </lu>
 	  </chunk>
           <b pos="4"/>
-	  <chunk name="pr">
+	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -3463,9 +3547,9 @@
             </lu>
 	  </chunk>
           <b pos="3"/>
-	  <chunk name="pr">
+	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -3625,9 +3709,9 @@
             </lu>
 	  </chunk>
           <b pos="2"/>
-	  <chunk name="pr">
+	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -3685,9 +3769,9 @@
             </lu>
 	  </chunk>
           <b pos="2"/>
-	  <chunk name="pr">
+	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -8092,9 +8176,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="pr">
+	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -8831,7 +8915,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
 	    <lu>
               <clip pos="3" side="tl" part="whole"/>
@@ -8896,7 +8980,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="2"/>
             <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
 	    <lu>
               <clip pos="3" side="tl" part="whole"/>
@@ -9106,7 +9190,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -9175,7 +9259,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -9389,7 +9473,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -9458,7 +9542,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
             <b pos="1"/>
          <chunk name="de">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="4" side="tl" part="whole"/>
@@ -12407,9 +12491,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	    </lu> 
 	  </chunk>
  	    <b/>
-	  <chunk name="pr">
+	  <chunk name="el">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <lit v="el"/>
@@ -13165,9 +13249,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
           <with-param pos="4"/>
         </call-macro>
 	    <out>
-		 <chunk name="pr" case="caseFirstWord">
+		 <chunk name="por" case="caseFirstWord">
             		<tags>
-            	  	<tag><lit-tag v="PREP"/></tag>
+            	  	<tag><lit-tag v="pr"/></tag>
             		</tags>
 		<lu>
 	          <lit v="por"/>
@@ -13686,9 +13770,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		</lu> 
 	      </chunk>
 	      <b pos="2"/>
-	      <chunk name="pr">
+	      <chunk name="el">
 	        <tags>
-	          <tag><lit-tag v="PREP"/></tag>
+	          <tag><lit-tag v="pr"/></tag>
 	        </tags>
 	        <lu>
 	          <lit v="el"/>
@@ -13758,9 +13842,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		</lu>
 	      </chunk>
 	      <b pos="3"/>
-	      <chunk name="pr">
+	      <chunk name="el">
 	        <tags>
-	          <tag><lit-tag v="PREP"/></tag>
+	          <tag><lit-tag v="pr"/></tag>
 	        </tags>
 	        <lu>
 	          <lit v="el"/>
@@ -13836,9 +13920,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		</lu>
 	      </chunk>
 	      <b pos="4"/>
-	      <chunk name="pr">
+	      <chunk name="el">
 	        <tags>
-	          <tag><lit-tag v="PREP"/></tag>
+	          <tag><lit-tag v="pr"/></tag>
 	        </tags>
 	        <lu>
 	          <lit v="el"/>
@@ -13985,7 +14069,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
 	    <out>
-                  <chunk name="adv">
+                  <chunk name="adv" case="caseFirstWord">
                     <tags>
                       <tag><lit-tag v="ADV"/></tag>
                     </tags>
@@ -14079,10 +14163,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </pattern>
       <action>    	
 	<call-macro n="firstWord">
-	  <with-param pos="1"/>
+	  <with-param pos="2"/>
 	</call-macro>
         <call-macro n="tipus_verbs">
-          <with-param pos="1"/>
+          <with-param pos="2"/>
         </call-macro>
 
         <out>
@@ -16270,9 +16354,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	</choose>
         <out>
           <b pos="3"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr">
+	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -16382,9 +16466,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	</choose>
         <out>
           <b pos="3"/> <!-- ŝanĝo al POR-->
-	  <chunk name="pr">
+	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -16520,9 +16604,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    </lu>
 	  </chunk>
           <b pos="4"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr">
+	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -16644,9 +16728,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    </lu>
 	  </chunk>
           <b pos="4"/> <!-- ŝanĝo al POR-->
-	  <chunk name="pr">
+	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -16980,7 +17064,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <with-param pos="3"/>
         </call-macro>
         <out>
-          <b pos="2"/>
+        <b pos="2"/>
 	  <chunk name="pro_obj">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
@@ -17081,7 +17165,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<out>
 	  <chunk name="por" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -17129,7 +17213,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<out>
           <chunk name="por" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <lit v="por"/>
@@ -17167,7 +17251,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         </out>
 
                 <out>
-                  <chunk name="pro_directe" case="caseFirstWord">
+                  <chunk name="pro_directe">
                     <tags>
                       <tag><lit-tag v="SN"/></tag>
                       <tag><clip pos="4" side="tl" part="tipus_prn"/></tag>
@@ -17245,7 +17329,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
         <out>
           <chunk name="por" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <lit v="por"/>
@@ -17292,7 +17376,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
               </when>
            <otherwise> <!-- SI NO es SE: objecte indirecte (passa a 'subj' per agafar nominatiu i s'afegeix la prep 'al') -->
                 <out>
-                  <chunk name="pro_directe" case="caseFirstWord">
+                  <chunk name="pro_directe">
                     <tags>
                       <tag><lit-tag v="SN"/></tag>
                       <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
@@ -18813,7 +18897,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <b pos="1"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -18886,9 +18970,9 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	    </lu>
 	  </chunk>
           <b pos="2"/> <!-- ŝanĝo al DE-->
-	  <chunk name="pr">
+	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -18949,7 +19033,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <b pos="2"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -19018,7 +19102,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <b pos="2"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -19073,7 +19157,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <b pos="2"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -19154,7 +19238,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <b pos="3"/> <!-- ŝanĝo al DE-->
 	  <chunk name="de">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="de"/>
@@ -19221,7 +19305,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <b pos="3"/> <!-- ŝanĝo al POR-->
 	  <chunk name="por">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
             <lu>
               <lit v="por"/>
@@ -21095,10 +21179,11 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<call-macro n="nombre_nom">
 	  <with-param pos="2"/>
 	</call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
 	<out>
-          <chunk name="pr" case="caseFirstWord">
+          <chunk namefrom="nprep" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="PREP"/></tag>
+              <tag><lit-tag v="pr"/></tag>
             </tags>
             <lu>
               <clip pos="1" side="tl" part="whole"/>
@@ -21189,84 +21274,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
       </action>
     </rule>
 
- <rule comment="REGLA: de">
-      <pattern>
-	<pattern-item n="de"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="de" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-      </action>
-    </rule>
-
-
- <rule comment="REGLA: al">
-      <pattern>
-	<pattern-item n="a"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="al" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-      </action>
-    </rule>
-
-
- <rule comment="REGLA: por">
-      <pattern>
-	<pattern-item n="por"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out>
-	  <chunk name="por" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
-      </action>
-    </rule>
-
-
     <rule comment="REGLA: PREP">
       <pattern>
 	<pattern-item n="prep"/>
@@ -21275,10 +21282,11 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
 	<out>
-	  <chunk name="pr" case="caseFirstWord">
+	  <chunk namefrom="nprep" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="PREP"/></tag>
+	      <tag><lit-tag v="pr"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>

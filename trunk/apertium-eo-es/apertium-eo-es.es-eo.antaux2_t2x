@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+
 <interchunk>
 
   <section-def-cats>
@@ -13,7 +15,7 @@
       <cat-item tags="DET.*"/>
     </def-cat>
     <def-cat n="SAdj"> <!-- adjektiva sintagmo -->
-      <cat-item tags="SAdj.*"/>
+      <cat-item tags="SA.*"/>
     </def-cat>
     <def-cat n="adv">
       <cat-item tags="adv"/>
@@ -22,9 +24,6 @@
     <def-cat n="SV">
       <cat-item tags="SV"/>
       <cat-item tags="SV.*"/>
-    </def-cat>
-    <def-cat n="GEN">
-      <cat-item tags="GEN"/>
     </def-cat>
     <def-cat n="unknown">
        <cat-item lemma="unknown" tags=""/>
@@ -38,6 +37,12 @@
     </def-cat>
     <def-cat n="and_or">
       <cat-item tags="and_or.*"/>
+    </def-cat>
+    <def-cat n="da">
+      <cat-item lemma="da" tags="pr"/>
+    </def-cat>
+    <def-cat n="loc">
+      <cat-item lemma="loc" tags="SN.*"/>
     </def-cat>
   </section-def-cats>
 
@@ -131,5 +136,34 @@
       </action>
     </rule>
 
+<rule comment="REGLA: da LOC -> de LOC">
+      <pattern>
+	<pattern-item n="da"/>
+	<pattern-item n="loc"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <get-case-from pos="1">
+	      <lit v="de"/>
+	    </get-case-from>
+	    <lit-tag v="pr"/>
+	    <lit v="{^"/>
+	    <get-case-from pos="1">
+	      <lit v="de"/>
+	    </get-case-from>
+	    <lit-tag v="pr"/>
+	    <lit v="$}"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+ 
   </section-rules>
 </interchunk>
