@@ -28,7 +28,7 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 
 if len(sys.argv) < 4: #{
-	print 'Usage: ./dix-to-maco.py [-l|-m|-n] <dix file> <parole lookup>';	
+	print 'Usage: ./dix-to-maco.py [-l|-n] <dix file> <parole lookup>';	
 	print '';
 	sys.exit(-1);
 #}
@@ -70,7 +70,7 @@ if tipoxt == '-l': #{
 	mode = 1;
 #}
 
-for line in commands.getoutput('lt-expand ' + infile).split('\n'): #{
+for line in commands.getoutput('lt-expand ' + infile).decode('utf-8').split('\n'): #{
 	# We skip "generate only" entries and regexes
 	if line.count(':<:') > 0 or line.count('REGEXP') > 0: #{
 		continue;
