@@ -955,6 +955,7 @@
     <list-item v="portar"/>
     <list-item v="atreure"/>
     <list-item v="atraure"/>
+    <list-item v="dividir"/>
     </def-list> 
 
   <def-list n="laqualcosa">
@@ -18781,12 +18782,16 @@ problema: és molt millor que vingui / és molt millor que jo
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
 	<out>
 	  <chunk name="ger" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="1" side="sl" part="temps"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/> 
