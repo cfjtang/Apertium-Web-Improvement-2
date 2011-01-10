@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
@@ -23,12 +23,15 @@ def processWord(c): #{
 	tags = '';
 	count = 0;
 
+	last = '';
 	c = sys.stdin.read(1);
-	while c != '/': #{
-		superficial = superficial + c;
+	while not (c == '/' and last != '\\') : #{
+		if c != '\\':
+			superficial = superficial + c;
+		last = c;
 		c = sys.stdin.read(1);
 	#}
-
+	last = c;
 	c = sys.stdin.read(1);
 #	while c != '<': #{
 #		lemma = lemma + c;
@@ -36,9 +39,9 @@ def processWord(c): #{
 #	#}
 
 	analyses[count] = '';
-
-	while c != '$': #{
-		if c == '/': #{
+	
+	while not (c == '$' and last != '\\') : #{
+		if c == '/' and last != '\\' : #{
 			count = count + 1;
 			c = sys.stdin.read(1);
 			continue;
@@ -46,7 +49,9 @@ def processWord(c): #{
 		if count not in analyses: #{
 			analyses[count] = '';
 		#}
-		analyses[count] = analyses[count] + c;
+		if c != '\\':
+			analyses[count] = analyses[count] + c;
+		last = c;
 		c = sys.stdin.read(1);
 	#}
 
