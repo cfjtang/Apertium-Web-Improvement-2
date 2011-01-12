@@ -2,11 +2,25 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
+
+# You might want to change these variables:
+UNKNOWNTAG=' ukjent';
+BLANKSTART='<blank>'; # put around superblanks if given the option -wxml
+BLANKEND='</blank>';
+
+
+
 import sys, codecs;
 
 sys.stdin  = codecs.getreader('utf-8')(sys.stdin);
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
 sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+
+WXML = False;
+if len(sys.argv) >= 2 and sys.argv[1] == '-wxml': #{
+	# Output surface forms in <word> tags, and keep blanks/superblanks:
+	WXML = True;
+#}
 
 # Process a lexical unit, examples:
 #
@@ -14,7 +28,7 @@ sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
 #  2. ^mont da get/mont<vblex><inf># da get$
 #  3. ^mat-tre/mat<adj><mf><sp>+tre<adv>$
 #
-
+blank = [];
 for line in sys.stdin: #{
 	# Beginning of a lexical unit
 	new = [];
@@ -24,9 +38,21 @@ for line in sys.stdin: #{
 		
 		if c == '\\': #{
 			ci +=1;
-			continue;
+			if WXML: #{
+				c = line[ci];
+				blank.append(c);
+			#}
 		#}
-		if c == '^': #{
+		elif c == '^': #{
+			if WXML and blank != [] : #{
+				# Flush out the superblanks:
+				new.append(BLANKSTART);
+				new.extend(blank)
+				new.append(BLANKEND);
+				new.append('\n');
+				blank = [];
+			#}
+			
 			ci += 1;
 			superficial = '';
 			lemma = '';
@@ -65,15 +91,21 @@ for line in sys.stdin: #{
 				ci += 1;
 				c = line[ci];
 			#}
+			if WXML: #{
+				new.append('<word>');
+				new.append(superficial);
+				new.append('</word>\n');
+			#}
 			new.append('"<');
 			new.append(superficial);
 			new.append('>"');
+			
 			for i in analyses: #{
 				#print '**' , analyses[i]
 				analyses[i] = analyses[i].replace(' ', '_');
 				if analyses[i].count('*') > 0: #{
-					analyses[i] = analyses[i].replace('*', '')
-					analyses[i] = analyses[i] + ' ukjent'
+					analyses[i] = analyses[i].replace('*', '');
+					analyses[i] = analyses[i] + UNKNOWNTAG;
 				#}
 				if analyses[i].count('#') > 0: #{
 					lemh = analyses[i].split('<')[0].replace(' ', '_');
@@ -91,11 +123,15 @@ for line in sys.stdin: #{
 			new.append('\n');
 			#}
 		#}
-		# Newline is newline
-		if c == '\n': #{
-			new.append('\n');
+		elif WXML: #{
+			if c == '\n': #{
+				blank.append('\\n');
+			#}
+			else: #{
+				blank.append(c);
+			#}
 		#}
-
+		
 		ci += 1;
 	print ''.join(new);
 #}
