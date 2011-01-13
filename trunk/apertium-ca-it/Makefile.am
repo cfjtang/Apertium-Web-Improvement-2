@@ -106,7 +106,7 @@ apertium_ca_it_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX2).autopgen.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-		    $(PREFIX1).mode $(PREFIX2).mode \
+		    $(PREFIX2).mode \
 		    $(PREFIX1).prob $(PREFIX2).prob 
 		  
 install-data-local: 
