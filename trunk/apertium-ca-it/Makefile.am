@@ -75,16 +75,18 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
 
 
-EXTRA_DIST = $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
+EXTRA_DIST = $(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix $(BASENAME).$(LANG2).dix \
+	   $(BASENAME).post-$(LANG1).dix $(BASENAME).post-$(LANG2).dix \
+	   $(BASENAME).$(LANG1).acx $(BASENAME).$(LANG2).acx \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
+           $(PREFIX1).prob $(PREFIX2).prob \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
-           modes.xml
+           modes.xml translate-to-default-equivalent.xsl filter.xsl alt.xsl
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
 #           $(BASENAME).$(LANG1).tsx 
 #           $(BASENAME).$(LANG2).tsx  
-#           $(PREFIX1).prob $(PREFIX2).prob
 
 apertium_ca_itdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_ca_modesdir=$(prefix)/share/apertium/modes/
