@@ -578,6 +578,10 @@
       <attr-item tags="prn"/>
 <!--      <attr-item tags="prn.ind"/> -->
     </def-attr>
+    <def-attr n="transitivitat">
+      <attr-item tags="tv"/>
+      <attr-item tags="iv"/>
+    </def-attr>
     <def-attr n="a_rel">
       <attr-item tags="rel"/>
       <attr-item tags="rel.adv"/>
@@ -718,6 +722,12 @@
    <def-list n="vbpron">
       <list-item v="salir# del paso"/>
    </def-list>
+
+    <!-- Verbs que són reflexius quan siguen intransitius en bretó -->
+    <def-list n="verbref_iv_meta">
+      <list-item v="koumanantiñ"/>
+      <list-item v="sevel"/>
+    </def-list>
  
     <!-- Verbs que no són reflexius en bretó però si que són en francès -->
     <def-list n="verbref_meta">
@@ -14006,10 +14016,6 @@
         <call-macro n="set_syn_label">
           <with-param pos="1"/>
         </call-macro>
-	    <let>
-              <var n="lema"/>
-              <lit v="verbcj"/>
-            </let>
             <out>
               <chunk namefrom="lema" case="caseFirstWord">
                 <tags>
@@ -17829,18 +17835,40 @@
         <call-macro n="firstWord">
           <with-param pos="1"/>
         </call-macro>
+        <choose>
+	     <when>
+		<test>   
+                  <and>
+                   <in caseless="yes">
+                      <clip pos="1" side="sl" part="lem"/>
+                      <list n="verbref_iv_meta"/>
+                    </in>
+                    <not>
+                      <equal>
+                        <clip pos="1" side="sl" part="transitivitat"/>
+                        <lit-tag v="tv"/>
+                      </equal>
+                    </not>
+                  </and>
+            	</test>
+                <let>
+                  <var n="lema"/>
+                  <lit v="verbcj_ref"/>
+		</let>  
+	      </when>
+              <otherwise>
+	    <let>
+              <var n="lema"/>
+              <lit v="verbcj"/>
+            </let>
+              </otherwise>
+        </choose>
         <out>
-          <chunk name="verbcj" case="caseFirstWord">
+          <chunk namefrom="lema" case="caseFirstWord">
             <tags>
-              <tag>
-                <lit-tag v="SV"/>
-              </tag>
-              <tag>
-                <clip pos="1" side="tl" part="a_verb"/>
-              </tag>
-              <tag>
-                <clip pos="3" side="tl" part="temps"/>
-              </tag>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
               <tag><clip pos="3" side="tl" part="pers"/></tag>
               <tag><clip pos="3" side="tl" part="nbr"/></tag>
 <!--com a sn és sg ("cantar és important") -->
