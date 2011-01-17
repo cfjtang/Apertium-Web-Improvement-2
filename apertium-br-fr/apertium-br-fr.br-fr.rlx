@@ -232,7 +232,7 @@ REMOVE NC IF (-1 ("ne"ri adv)) (1 ("ket"ri adv));
 # REGLA (B    ): "Al labour a vo kinniget deoc’h."
 SELECT NC IF (-1 ("<al>"ri det def));
 
-# REGLA (B0024): "WAR BONT AR NAONED"
+# REGLA (B0024): "WAR BONT AN NAONED"
 REMOVE Acr IF (0 NC) (0 Acr);
 
 # REGLA (B0022): "ha zo bet skrivet"
@@ -677,10 +677,10 @@ REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
 # REGLA (A0006): ""
 SELECT SoftMutTrigger IF (1C SoftMut) (1C SoftMutCons) ;
 
-# REGLA (A0005): "ez di"
+# REGLA (A0005): "ez ti"
 SELECT HardMut IF (-1 HardMutTrigger);
 
-# REGLA (A0006): "ez di"
+# REGLA (A0006): "ez ti"
 SELECT HardMutTrigger IF (1 HardMut);
 
 # REGLA (A0007): "o deus kanet"
@@ -746,10 +746,13 @@ SELECT (pr) IF (-1 Num) (1 NC);
 
 # select proper names if they are in caps
 
+SELECT NP IF (0 ("Al Lanv" np));
 SELECT NP IF (0 ("Al Levrig" np));
+SELECT NP IF (0 ("Al Liamm" np));
 SELECT NP IF (0 ("An Here" np));
 SELECT NP IF (0 ("Bremaik" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Bremañ" np)) (NOT -1 BOS);
+SELECT NP IF (0 ("Brud Nevez" np));
 SELECT NP IF (0 ("Daoulagad Breizh" np));
 SELECT NP IF (0 ("Dastum" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Dihun" np)) (NOT -1 BOS);
@@ -757,6 +760,7 @@ SELECT NP IF (0 ("Divskouarn" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Diwan" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Dizale" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Emgann" np)) (NOT -1 BOS);
+SELECT NP IF (0 ("Emgleo Breiz" np));
 SELECT NP IF (0 ("Emsav" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Goursez" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Gwalarn" np)) (NOT -1 BOS);
