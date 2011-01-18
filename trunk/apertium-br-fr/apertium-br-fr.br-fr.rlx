@@ -70,6 +70,7 @@ LIST VerbImp          = (vblex imp);
 LIST VerbInf          = (vblex inf);
 LIST VerbImpers       = (vblex impers);
 
+LIST Fut              = (vblex fti) (vbser fti) (vbhaver fti);
 LIST TempsFin         = (pri) (pii) (past) (fti) (cni) (prh) (cip);  
 LIST Cond             = (cni) (cip);
 
@@ -119,7 +120,7 @@ LIST SoftMutTrigger   = ("a"ri vpart) ("a"ri pr) ("aba"ri adv) ("da"ri pr) ("ez"
                         ("da"ri det pos) ("daou"ri num m) ("div"ri num f) ("dindan"ri adv) ("diwar"ri pr) ("dre"ri pr)
                         ("e"ri det pos m) ("na"ri vpart neg) ("ne"ri vpart neg) ("pa"ri cnjsub) ("pe"ri cnjcoo) 
                         ("pe"ri adv itg) ("ra"ri vpart opt) ("re"ri prn) ("war"ri pr) ("re"ri adv) ("an"ri det def) ("un"ri det ind)
-			("meur a"ri det ind) ("kalz a"ri pr);
+			("meur a"ri det ind) ("kalz a"ri pr) ("ken"i pr);
 
 LIST MixedMutTrigger  = ("e"ri vpart);
 
@@ -706,6 +707,12 @@ REMOVE AspMut IF (NOT -1 AspMutTrigger);
 
 # REGLA (A0010): "un taol, un daol"
 REMOVE NomF IF (-1 SoftMutTrigger) (NOT 0 SoftMut) (0 NomF) (0 NomM);
+
+# "ken vi labouret"
+SELECT Fut IF (-1 ("ken"i)) (0 ("vi"i)) (1 VerbPP);
+
+# ul labour ken pouezus
+SELECT PreAdv IF (-1C NC) (0 ("ken"i)) (1 Adj);
 
 SECTION
 
