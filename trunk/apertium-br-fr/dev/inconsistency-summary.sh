@@ -13,9 +13,9 @@ for i in $POS; do
 		AT=`cat $INC | grep "<$i>" | grep '@' | grep -v -e '<n>' -e '<np>'  | grep -v REGEX | wc -l`;
 		HASH=`cat $INC | grep "<$i>" | grep '>  *#' | grep -v -e '<n>' -e '<np>' | grep -v REGEX |  wc -l`;
 	elif [ "$i" = "vblex" ]; then
-		TOTAL=`cat $INC | grep "<$i>" | grep -v -e '<adv>' -e '<imp>' | grep -v REGEX | wc -l`; 
-		AT=`cat $INC | grep "<$i>" | grep '@' | grep -v -e '<adv>' -e '<imp>'  | grep -v REGEX | wc -l`;
-		HASH=`cat $INC | grep "<$i>" | grep '>  *#' | grep -v -e '<adv>' -e '<imp>' | grep -v REGEX |  wc -l`;
+		TOTAL=`cat $INC | grep "<$i>" | sed 's/@+FMAINV/+FMAINV/g' | grep -v -e '<adv>' -e '<imp>' | grep -v REGEX | wc -l`; 
+		AT=`cat $INC | grep "<$i>" | sed 's/@+FMAINV/+FMAINV/g' | grep '@' | grep -v -e '<adv>' -e '<imp>'  | grep -v REGEX | wc -l`;
+		HASH=`cat $INC | grep "<$i>" | sed 's/@+FMAINV/+FMAINV/g' | grep '>  *#' | grep -v -e '<adv>' -e '<imp>' | grep -v REGEX | wc -l`;
 	elif [ "$i" = "prn" ]; then
 		TOTAL=`cat $INC | grep "<$i>" | grep -v -e '<adv>' -e '<imp>' | grep -v REGEX | wc -l`; 
 		AT=`cat $INC | grep "<$i>" | grep '@' | grep -v -e '<adv>' -e '<imp>'  | grep -v REGEX | wc -l`;
