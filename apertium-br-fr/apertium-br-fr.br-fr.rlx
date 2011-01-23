@@ -462,7 +462,8 @@ SELECT VerbFin IF (-1 Vpart) (-2 ("ne"ri adv));
 
 
 # REGLA (B    ): "en he fenn "
-REMOVE VerbFin IF (-1 DetPos);
+# e ran mat
+REMOVE VerbFin IF (-1C DetPos);
 
 # REGLA (      ): "ouzhpenn 23"
 SELECT Prep IF (0 ("ouzhpenn")) ((1 Num) OR (1 NC));
@@ -618,8 +619,9 @@ REMOVE Prep IF (0 VerbInf) (0 Prep) (1C PrnDObj);
 SELECT Adj IF (0 Num) (0 Adj) (-1C NC);
 
 #20 milion a dud a implij anezhañ
+#bevañ a ran
 SELECT Vpart IF (1 VerbFin) (1 NC) (2 PrnDObj);
-REMOVE Vpart IF (1C NC);
+REMOVE Vpart IF (1C NC) (NOT -1 VerbInf);
 
 #rebech kentañ
 REMOVE VerbInf IF (0 VerbInf) (0 NC) (1 Adj OR Ord);
@@ -632,6 +634,13 @@ REMOVE Vpart + ("e") IF (1 MixedMutCons) (NOT 1 MixedMut) (NOT 1 ("<[aeiou].*>"r
 
 #Skuizh e oan c'hoazh
 REMOVE NC IF (0 ("<oan>" n)) (0 ("<oan>" vblex)) (-1 ("e"));
+
+# bevañ a ran
+SELECT VerbFin IF (-2 VerbInf) (-1C ("<a>"i)) (0 ("<ran>"i)) ;
+
+# e ran mat 
+# e ran vat
+REMOVE NC IF (-1 Vpart) (0 NC) (0 VerbFin) (1 Adj) (1 SoftMutCons) (NOT 1 SoftMut);
 
 #dre ret ½ bost war ar buheziñ politikel 
 #ar mod ma c'hall an implijidi bezañ galvet 
