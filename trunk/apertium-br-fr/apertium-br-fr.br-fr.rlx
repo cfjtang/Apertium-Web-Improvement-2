@@ -642,6 +642,12 @@ SELECT VerbFin IF (-2 VerbInf) (-1C ("<a>"i)) (0 ("<ran>"i)) ;
 # e ran vat
 REMOVE NC IF (-1 Vpart) (0 NC) (0 VerbFin) (1 Adj) (1 SoftMutCons) (NOT 1 SoftMut);
 
+# - ran venga después de un ART (def o indef) 
+# - o que este seguido de un ADJ con mutacion suave
+# ur ran : una rana
+# ran vihan : ranita
+SELECT VerbFin IF (0 ("<ran>")) (NOT -1 DetInd) (NOT 1 Adj) (NOT 1 SoftMutCons) (NOT 1 SoftMut);
+
 #dre ret ½ bost war ar buheziñ politikel 
 #ar mod ma c'hall an implijidi bezañ galvet 
 REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 (".*ma"r));
