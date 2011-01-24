@@ -231,6 +231,7 @@
 
   <section-def-vars>
     <def-var n="nombre_subj"/>
+    <def-var n="partitiu"/>
     <def-var n="pers_subj"/>
     <def-var n="uno"/>
     <def-var n="nombre"/>
@@ -1772,6 +1773,58 @@
          </otherwise>
        </choose>
      </def-macro> 
+     <def-macro n="set_partitiu2" npar="2">
+        <let>
+          <var n="partitiu"/>
+          <lit v=""/>
+        </let>
+        <choose>
+            <when>
+                <test>
+                    <and>
+                        <or>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="part"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="partadj_nom"/>
+                            </equal>
+                            <equal caseless="yes">
+                                <clip pos="1" part="lem"/>
+                                <lit v="partnom_adj"/>
+                            </equal>
+                        </or>
+                        <equal>
+                            <clip pos="1" part="nbr"/>
+                            <lit-tag v="sg"/>
+                        </equal>
+                    </and>
+                </test>
+                <let>
+                  <var n="partitiu"/>
+                  <concat>
+                      <lit v=" ^"/>
+                      <get-case-from pos="2">
+                        <lit v="partitiu"/>
+                      </get-case-from>
+                      <lit-tag v="part"/>      
+                                            
+                      <lit v="{^de"/>
+                      <lit-tag v="pr"/>
+                      <lit v="$"/>
+                      <b/>
+                      <lit v="^le"/>    
+                          <lit-tag v="det.def"/>
+                      <clip pos="1" part="gen"/>
+                      <lit-tag v="sg"/>
+                      <lit v="$}$"/>
+                  </concat>
+                </let>
+            </when>
+        </choose>
+     </def-macro> 
 
 </section-def-macros>
 
@@ -1785,6 +1838,10 @@
         <pattern-item n="punt"/>
     </pattern>
     <action>
+      <call-macro n="set_partitiu2">
+        <with-param pos="2"/>
+        <with-param pos="3"/>
+      </call-macro>
         <out>
           <chunk>
             <clip pos="1" part="whole"/>
@@ -1803,6 +1860,7 @@
             <lit-tag v="vblex.pri.p3.sg"/>
             <lit v="$}"/>
           </chunk>
+          <var n="partitiu"/>
           <b pos="2"/>
           <chunk>
             <get-case-from pos="3">
@@ -1826,6 +1884,10 @@
         <pattern-item n="V_être_sg3"/>
     </pattern>
     <action>
+      <call-macro n="set_partitiu2">
+        <with-param pos="1"/>
+        <with-param pos="3"/>
+      </call-macro>
         <out>
           <chunk>
             <clip pos="1" part="whole"/>
@@ -1844,6 +1906,7 @@
             <lit-tag v="vblex.pri.p3.sg"/>
             <lit v="$}"/>
           </chunk>
+          <var n="partitiu"/>
           <b pos="2"/>
           <chunk>
             <get-case-from pos="3">
@@ -1865,7 +1928,11 @@
         <pattern-item n="adv"/>
     </pattern>
     <action>
-                        <out>
+        <call-macro n="set_partitiu2">
+          <with-param pos="2"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <out>
           <chunk>
             <clip pos="1" part="whole"/>
           </chunk>
@@ -1883,6 +1950,7 @@
             <lit-tag v="vblex.pri.p3.sg"/>
             <lit v="$}"/>
           </chunk>
+          <var n="partitiu"/>
           <b pos="2"/>
           <chunk>
             <get-case-from pos="4">
@@ -1898,6 +1966,10 @@
             <clip pos="5" part="chcontent"/>
           </chunk>
         </out>
+        <let>
+          <var n="partitiu"/>
+          <lit v=""/>
+        </let>
     </action>
 </rule>
 
@@ -1910,7 +1982,11 @@
         <pattern-item n="V_être_sg3"/>
     </pattern>
     <action>
-                        <out>
+        <call-macro n="set_partitiu2">
+          <with-param pos="2"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <out>
           <chunk>
             <clip pos="1" part="whole"/>
           </chunk>
@@ -1928,6 +2004,7 @@
             <lit-tag v="vblex.pri.p3.sg"/>
             <lit v="$}"/>
           </chunk>
+          <var n="partitiu"/>
           <b pos="2"/>
           <chunk>
             <get-case-from pos="4">
@@ -1949,6 +2026,10 @@
         <pattern-item n="punt"/>
     </pattern>
     <action>
+      <call-macro n="set_partitiu2">
+        <with-param pos="1"/>
+        <with-param pos="4"/>
+      </call-macro>
                         <out>
           <chunk>
             <lit v="il_y_a"/>
@@ -1963,6 +2044,7 @@
             <lit-tag v="vblex.pri.p3.sg"/>
             <lit v="$}"/>
           </chunk>
+          <var n="partitiu"/>
           <b pos="1"/>
           <chunk>
             <get-case-from pos="3">
@@ -1994,6 +2076,10 @@
         <pattern-item n="punt"/>
     </pattern>
     <action>
+      <call-macro n="set_partitiu2">
+        <with-param pos="1"/>
+        <with-param pos="3"/>
+      </call-macro>
                         <out>
           <chunk>
             <lit v="il_y_a"/>
@@ -2008,6 +2094,7 @@
             <lit-tag v="vblex.pri.p3.sg"/>
             <lit v="$}"/>
           </chunk>
+          <var n="partitiu"/>
           <b pos="1"/>
           <chunk>
             <get-case-from pos="3">
