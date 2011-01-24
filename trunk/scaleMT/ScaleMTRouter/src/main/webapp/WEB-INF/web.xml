@@ -21,19 +21,23 @@
         <servlet-name>XmlRpcServlet</servlet-name>
         <servlet-class>org.scalemt.router.ws.MyXmlRpcServlet</servlet-class>
         <init-param>
-          <param-name>enabledForExtensions</param-name>
-          <param-value>true</param-value>
-          <description>
+            <param-name>enabledForExtensions</param-name>
+            <param-value>true</param-value>
+            <description>
             Sets, whether the servlet supports vendor extensions for XML-RPC.
           </description>
         </init-param>
         <init-param>
-          <param-name>enabledForExceptions</param-name>
-          <param-value>false</param-value>
-          <description>
+            <param-name>enabledForExceptions</param-name>
+            <param-value>false</param-value>
+            <description>
             Sets, whether the servlet supports vendor extensions for XML-RPC.
           </description>
         </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>DebugServlet</servlet-name>
+        <servlet-class>org.scalemt.router.ws.DebugServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
@@ -43,8 +47,14 @@
         <servlet-name>RegisterUserServlet</servlet-name>
         <url-pattern>/RegisterUserServlet</url-pattern>
     </servlet-mapping>
-      <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>XmlRpcServlet</servlet-name>
         <url-pattern>/xmlrpc</url-pattern>
     </servlet-mapping>
+    <!--
+    <servlet-mapping>
+        <servlet-name>DebugServlet</servlet-name>
+        <url-pattern>/DebugServlet</url-pattern>
+    </servlet-mapping>
+    -->
 </web-app>
