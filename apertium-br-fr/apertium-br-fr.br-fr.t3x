@@ -10,6 +10,11 @@
       <cat-item name="inf"/>
     </def-cat> 
 
+    <def-cat n="sent">
+      <cat-item name="sent"/>
+      <cat-item name="punt"/>
+    </def-cat> 
+
      <def-cat n="haver_pp">
       <cat-item name="haver_pp"/>
     </def-cat> 
@@ -48,6 +53,10 @@
     
     <def-cat n="partitiu">
       <cat-item name="partitiu"/>
+    </def-cat>
+
+    <def-cat n="pr_nploc">
+      <cat-item name="pr_nploc"/>
     </def-cat>
 
     <def-cat n="adj_adj_nom">
@@ -128,7 +137,7 @@
           <attr-item tags="DET"/>
 	  <attr-item tags="UNDET"/>
 	  <attr-item tags="NUM"/>
-	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformaciï¿½que farï¿½el postchunk detectant els PDET. -->
+	  <attr-item tags="PDET"/><!--'Per determinar', per a SN UNDET que han de passar a determinats, transformació que farà el postchunk detectant els PDET. -->
 </def-attr>
 
 
@@ -168,6 +177,7 @@
   
 <section-def-vars>
     <def-var n="paraula"/>
+    <def-var n="firstWordAfterBOS"/>
   </section-def-vars>
 
   
@@ -230,8 +240,34 @@
 						<clip pos="2" part="whole"/>
 					</lu>
 				</out>   
+                                <let>
+                                  <var n="firstWordAfterBOS"/>
+                                  <lit v="false"/>
+                                </let>
 			</action>
 		</rule> 
+		
+		<rule comment="CHUNK: pr_nploc">
+			<pattern>
+				<pattern-item n="pr_nploc"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+                                        <b pos="1"/>
+					<lu>
+						<clip pos="2" part="whole"/>
+					</lu>
+				</out>   
+                                <let>
+                                  <var n="firstWordAfterBOS"/>
+                                  <lit v="false"/>
+                                </let>
+			</action>
+		</rule> 
+
 
 		
 		<rule comment="CHUNK: ">
@@ -253,12 +289,30 @@
                             </let>
                           </when>
                         </choose>
-				<out>
-					<lu>
-						<clip pos="1" part="whole"/>
-					</lu>
-				</out>   
-			</action>
+                        <choose>
+                          <when>
+                            <test>
+                              <equal>
+                                <var n="firstWordAfterBOS"/>
+                                <lit v="true"/>
+                              </equal>
+                            </test>
+                            <modify-case>
+				  <clip pos="1" part="lem"/>
+                                <lit v="Aa"/>
+                            </modify-case>
+                          </when>
+                        </choose>
+   			    <out>
+				<lu>
+					<clip pos="1" part="whole"/>
+				</lu>
+			    </out>   
+                        <let>
+                          <var n="firstWordAfterBOS"/>
+                          <lit v="false"/>
+                        </let>
+		      </action>
 		</rule> 
 
 		<rule comment="CHUNK: arregla en cv de relatiu que/qui">
@@ -289,6 +343,23 @@
 				</out>   
 			</action>
 		</rule> 
+		<rule comment="CHUNK: sent">
+			<pattern>
+				<pattern-item n="sent"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>   
+                                <let>
+                                  <var n="firstWordAfterBOS"/>
+                                  <lit v="true"/>
+                                </let>
+			</action>
+		</rule> 
+
 
 </section-rules>
 </postchunk>
