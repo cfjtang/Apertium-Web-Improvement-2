@@ -520,7 +520,7 @@ REMOVE Verb IF (-1C DetDef) (1C NC);
 # hag a ya da stummañ
 # mar fell dit 
 # e-lec'h ma tispleg
-REMOVE VerbFin IF (NOT -1 Vpart) (0 SoftMutCons) (NOT 0 SoftMut) (NOT -1 (".*ma"ri cnjadv));
+REMOVE VerbFin IF (NOT -1 Vpart) (0 SoftMutCons) (NOT 0 SoftMut) (NOT -1 (".*ma"ri cnjadv)) (NOT -1 ("pa"i cnjsub));
 REMOVE VerbFin IF (-1C ("a" vpart)) (0 SoftMutCons) (NOT 0 SoftMut) (NOT 0 ("ya"ri adv)) (NOT -1 (".*ma"ri cnjadv));
 
 # e-lec'h ma tispleg 
@@ -557,7 +557,7 @@ SELECT:CSub_if_neg CS IF (0 ("ma"ri cnjsub)) (1 ("ne"ri neg)) (3 ("ket"ri adv));
 SELECT:Pos_if_nemet DetPos IF (0 DetPos) (0 Prep) (2 ("nemet"ri));
 
 #pa c’houlenn devezhioù vakañsoù
-SELECT:p3_after_pa (vblex p3) IF (-1 ("pa"ri cnjsub)) (0 VerbInf) (0 VerbFin);
+SELECT:p3_after_pa (vblex p3) IF (-1 ("pa"i cnjsub)) (0 VerbInf) (0 VerbFin);
 
 # ademas, en una serie Nombre Propio + a + verbo/sustantivo : hay que escoger al verbo
 SELECT VerbFin IF (-2 NP) (-1 ("a"ri)) (0 Verb) (0 NC); 
@@ -659,7 +659,7 @@ SELECT VerbFin IF (0 ("<ran>")) (NOT -1 DetInd) (NOT 1 Adj) (NOT 1 SoftMutCons) 
 
 #dre ret ½ bost war ar buheziñ politikel 
 #ar mod ma c'hall an implijidi bezañ galvet 
-REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 (".*ma"r));
+REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 (".*ma"r)) (NOT -1 ("pa"i cnjsub));
 
 #met bevañ a ra e Gwipedel
 SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
@@ -740,6 +740,9 @@ SELECT PreAdv IF (-1C NC) (0 ("ken"i)) (1 Adj);
 
 # e zivaskell 
 SELECT DetPos IF (0 ("<e>")) (1 SoftMut) (1 SoftMutCons);
+
+# pa oan bihan
+SELECT VerbFin (-1 ("pa"i cnjsub)) (0 VerbFin) (0 NC);
 
 SECTION
 
