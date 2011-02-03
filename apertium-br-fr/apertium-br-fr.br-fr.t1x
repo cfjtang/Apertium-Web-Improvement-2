@@ -702,6 +702,7 @@
     </def-attr>
   </section-def-attrs>
   <section-def-vars>
+    <def-var n="cur_espai"/>
     <def-var n="treu_ref"/>
     <def-var n="nbr_pp"/>
     <def-var n="cur_syn_label"/>
@@ -14186,6 +14187,26 @@
           <var n="lema"/>
           <lit v="en_train_de_inf"/>
         </let>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <b pos="1"/>
+                <lit v=""/>
+              </equal>
+            </test>
+            <let>
+              <var n="cur_espai"/>
+              <lit v=" "/>
+            </let>
+          </when>
+          <otherwise>
+            <let>
+              <var n="cur_espai"/>
+              <b pos="1"/>
+            </let>
+          </otherwise>
+        </choose>
         <out>
           <chunk namefrom="lema" case="caseFirstWord">
             <tags>
@@ -14213,7 +14234,7 @@
               <lit v="de"/>
               <lit-tag v="pr"/>
             </lu>
-            <b pos="1"/>
+            <var n="cur_espai"/>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
@@ -14222,6 +14243,10 @@
             </lu>
           </chunk>
         </out>
+        <let>
+          <var n="cur_espai"/>
+          <lit v=""/>
+        </let>
       </action>
    </rule>
          
