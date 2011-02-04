@@ -77,6 +77,7 @@
     <def-cat n="post">
       <cat-item tags="post"/>
       <cat-item tags="post.*"/>
+      <cat-item tags="gra.*"/>
     </def-cat>
 
     <def-cat n="spost">
@@ -599,6 +600,11 @@
       <attr-item tags="rec"/>  
     </def-attr> 
 
+    <def-attr n="a_gra">       
+      <attr-item tags="gra"/> 
+    </def-attr>
+
+
   </section-def-attrs>
 
   <section-def-vars>    
@@ -751,6 +757,17 @@
 	    <var n="tipo_post"/>
 	    <lit-tag v="ABS"/>
 	  </let>
+	</when><when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="a_gra"/> 
+	      <lit-tag v="gra"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="tipo_post"/>
+	    <lit-tag v="GRA"/>
+	  </let>
 	</when>
 	<otherwise>
 	  <let>
@@ -898,6 +915,43 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: Nom + post + detart + post">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <mlu>
 	      <lu> 
@@ -1073,6 +1127,45 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 
 
 
+<rule comment="REGLA: adj + post + detart + post">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adj_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
  <rule comment="REGLA: prn + detart">
       <pattern>
 	<pattern-item n="prn"/>
@@ -1224,6 +1317,42 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  </rule>
 
 
+<rule comment="REGLA: prn + post + detart + post">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="prn_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
 
 
 
@@ -1358,6 +1487,45 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+<rule comment="REGLA: verbo + post + detart + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
 	    </tags>
 	    <mlu>
 	      <lu> 
@@ -1532,6 +1700,44 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  </rule>
 
 
+<rule comment="REGLA: det_num + post + detart + post">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="det_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
 
 
  <rule comment="REGLA: spost + detart">
@@ -1685,6 +1891,45 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  </rule>
 
 
+
+<rule comment="REGLA: spost + post + detart + post">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="spost_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
  <rule comment="REGLA: verbo + cnj">
       <pattern>
 	<pattern-item n="verbos"/>
@@ -1797,6 +2042,50 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 	      </lu>
 	      <lu> 
 		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+
+<rule comment="REGLA: verbo + cnj + post + art + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="cnjsubadvrel"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_cnj_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="5" side="tl" part="whole"/> 
 	      </lu>
 	    </mlu>
 	  </chunk>

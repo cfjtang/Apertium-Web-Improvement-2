@@ -52,6 +52,15 @@
       <cat-item lemma="bat" tags="num.sg"/>
     </def-cat>
 
+    <def-cat n="det_num">
+      <cat-item tags="det.ind.*"/>
+      <cat-item tags="det.indizl.*"/>
+      <cat-item tags="det.itg.*"/>
+      <cat-item tags="det.dem.*"/>
+      <cat-item tags="num.*"/>
+      <cat-item tags="num"/>
+    </def-cat>
+
     <def-cat n="detindizl"><!--determinantes indefinidos e interrogativos, que van generalmente delante del nombre -->
       <cat-item tags="det.indizl.*"/>
       <cat-item tags="det.itg.*"/>
@@ -68,6 +77,7 @@
     <def-cat n="post">
       <cat-item tags="post"/>
       <cat-item tags="post.*"/>
+      <cat-item tags="gra.*"/>
     </def-cat>
 
     <def-cat n="spost">
@@ -93,6 +103,12 @@
     </def-cat>
     <def-cat n="bat">
       <cat-item lemma="bat" tags="num.sg"/>
+    </def-cat>
+
+    <def-cat n="verbos">
+      <cat-item tags="vblex.*"/>
+      <cat-item tags="vbper.*"/>
+      <cat-item tags="vbsint.*"/>
     </def-cat>
 
     <def-cat n="vbsint_aux">
@@ -295,6 +311,11 @@
 
     <def-cat n="cnjsub">
       <cat-item lemma="la" tags="cnjsub"/>
+    </def-cat>
+    <def-cat n="cnjsubadvrel">
+      <cat-item tags="cnjsub"/>
+      <cat-item tags="cnjadv"/>
+      <cat-item tags="rel"/>
     </def-cat>
 
 
@@ -579,6 +600,11 @@
       <attr-item tags="rec"/>  
     </def-attr> 
 
+    <def-attr n="a_gra">       
+      <attr-item tags="gra"/> 
+    </def-attr>
+
+
   </section-def-attrs>
 
   <section-def-vars>    
@@ -587,9 +613,7 @@
     <def-var n="EOS" v="true"/>
     <def-var n="genere" v="m"/>
     <def-var n="nombre" v="sg"/>
-    <def-var n="gen_chunk"/>
-    <def-var n="nbr_chunk"/>
-    <def-var n="palabra"/>
+    <def-var n="tipo_post"/> 
     <def-var n="chunk"/>
     <def-var n="tipusdet"/>
     <def-var n="procl"/>
@@ -691,35 +715,1384 @@
     </def-macro>
 
 
+ <def-macro n="tipo_posposicion" npar="1"><!--si la postposición és ko/en, el nombre del chunk serà SPGEN para que el t2x realice las operaciones necesarias. Nota: hay reglas que detectan ya chunks con CN dentro ('aitaren etxea'), la marca de genitivo es para los chunks que escapan a estas reglas, para que el t2x pueda tratarlos. -->
 
-
+      <choose>
+	<when>
+	  <test>
+	    <or>
+	      <equal>		
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="en"/>
+	      </equal>
+	      <equal>		
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="ko"/>
+	      </equal>
+	      <equal>		
+		<clip pos="1" side="sl" part="a_post"/> 
+		<lit-tag v="ko"/>
+	      </equal>
+	    </or>
+	  </test>
+	  <let>
+	    <var n="tipo_post"/>
+	    <lit-tag v="GEN"/>
+	  </let>
+	</when>
+	<when>
+	  <test>
+	    <or>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="k"/>
+	      </equal>
+	      <equal>
+		<clip pos="1" side="sl" part="lem"/> 
+		<lit v="ik"/>
+	      </equal>
+	    </or>
+	  </test>
+	  <let>
+	    <var n="tipo_post"/>
+	    <lit-tag v="ABS"/>
+	  </let>
+	</when><when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="sl" part="a_gra"/> 
+	      <lit-tag v="gra"/>
+	    </equal>
+	  </test>
+	  <let>
+	    <var n="tipo_post"/>
+	    <lit-tag v="GRA"/>
+	  </let>
+	</when>
+	<otherwise>
+	  <let>
+	    <var n="tipo_post"/>
+	    <lit-tag v="POST"/>
+	  </let>
+	</otherwise>
+      </choose>
+</def-macro>
 
 
   </section-def-macros>
 
   <section-rules>
 
-    <!--********************************* REGLES DE SN   **************************************************** -->
+    <!--********************************* REGLAS PARA CONCATENACIONES GENERALES   *********************************************
+Reglas para generar correctamente las uniones de palabras entre lexemas principales y posposiciones/artículos -->
 
- <rule comment="REGLA: NP">
+ <rule comment="REGLA: Nom + detart">
       <pattern>
 	<pattern-item n="nom_np"/>
+	<pattern-item n="detart"/>
       </pattern>
       <action>
 	<out> 
-	  <chunk name="nom" case="caseFirstWord">
+	  <chunk name="nom_art" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
-	      <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
 	    </tags>
-	    <lu> 
-	      <clip pos="1" side="tl" part="whole"/> 
-	    </lu>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
 	  </chunk>
 	</out>
       </action>
  </rule>
  
+
+ <rule comment="REGLA: Nom + post">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+ <rule comment="REGLA: Nom + detart + post">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: Nom + post + detart">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="nom_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: Nom + detart + post + detart">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="nom_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: Nom + post + detart + post">
+      <pattern>
+	<pattern-item n="nom_np"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="nom_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+
+ <rule comment="REGLA: adj + detart">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="adj_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
+ <rule comment="REGLA: adj + post">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adj_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+ <rule comment="REGLA: adj + detart + post">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adj_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: adj + post + detart">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="adj_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: adj + detart + post + detart">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="adj_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+<rule comment="REGLA: adj + post + detart + post">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adj_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+ <rule comment="REGLA: prn + detart">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="prn_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
+ <rule comment="REGLA: prn + post">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="prn_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+ <rule comment="REGLA: prn + detart + post">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="prn_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: prn + post + detart: 'nirea'">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="prn_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: prn + detart + post + detart">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="prn_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: prn + post + detart + post">
+      <pattern>
+	<pattern-item n="prn"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="prn_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+
+ <rule comment="REGLA: verbo + detart">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="vb_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
+ <rule comment="REGLA: verbo + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+ <rule comment="REGLA: verbo + detart + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: verbo + post + detart">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="vb_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: verbo + detart + post + detart">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="vb_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+<rule comment="REGLA: verbo + post + detart + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+ <rule comment="REGLA: det_num + detart">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="det_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
+ <rule comment="REGLA: det_num + post">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="det_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+ <rule comment="REGLA: det_num + detart + post">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="det_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: det_num + post + detart">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="det_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: det_num + detart + post + detart">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="det_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: det_num + post + detart + post">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="det_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+
+ <rule comment="REGLA: spost + detart">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="spost_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
+ <rule comment="REGLA: spost + post">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="spost_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+ <rule comment="REGLA: spost + detart + post">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="spost_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: spost + post + detart">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="spost_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+<rule comment="REGLA: spost + detart + post + detart">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="spost_art_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+<rule comment="REGLA: spost + post + detart + post">
+      <pattern>
+	<pattern-item n="spost"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="spost_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+ <rule comment="REGLA: verbo + cnj">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="cnjsubadvrel"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="vb_cnj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SVSUB"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: verbo + cnj + art">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="cnjsubadvrel"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="vb_cnj_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag><!--MG: això seria un SN? -->
+	      <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+<rule comment="REGLA: verbo + cnj + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="cnjsubadvrel"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="3"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_cnj_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
+<rule comment="REGLA: verbo + cnj + post + art">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="cnjsubadvrel"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+      </pattern>
+      <action>
+	<out> 
+	  <chunk name="vb_cnj_post_art" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag><!--MG: això seria un SN? -->
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+
+
+
+
+<rule comment="REGLA: verbo + cnj + post + art + post">
+      <pattern>
+	<pattern-item n="verbos"/>
+	<pattern-item n="cnjsubadvrel"/>
+	<pattern-item n="post"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="4"/>
+	</call-macro>
+	<out> 
+	  <chunk name="vb_cnj_post_art_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="4" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="5" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
+ 
+
   </section-rules>
 </transfer>
