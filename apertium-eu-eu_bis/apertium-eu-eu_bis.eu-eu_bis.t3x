@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<postchunk>
+  <section-def-cats>
+
+    
+     <def-cat n="nom">
+      <cat-item name="nom"/>
+    </def-cat>
+
+   <def-cat n="det_pp">
+      <cat-item name="det_pp"/>
+    </def-cat>
+
+
+    <def-cat n="baino-que">
+      <cat-item name="baino-que"/>
+    </def-cat>
+    <def-cat n="baino-de">
+      <cat-item name="baino-de"/>
+    </def-cat>
+    <def-cat n="elkar">
+      <cat-item name="elkar-prn"/>
+    </def-cat>
+    <def-cat n="elkar-pr">
+      <cat-item name="elkar-pr-prn"/>
+    </def-cat>
+
+ <def-cat n="SP2">
+      <cat-item name="pr_nom"/>
+      <cat-item name="pr_prn"/>
+      <cat-item name="pr_num"/>
+      <cat-item name="pr_det"/>
+      <cat-item name="pr_inf"/>
+      <cat-item name="pr_adj"/>
+      <cat-item name="pr_prnpers"/>
+    </def-cat>
+
+  
+
+
+
+  </section-def-cats>
+
+  <section-def-attrs>
+
+<def-attr n="pers">
+          <attr-item tags="p1"/>
+          <attr-item tags="p2"/>
+          <attr-item tags="p3"/>
+          <attr-item tags="PD"/>
+</def-attr>
+
+      <def-attr n="gen">
+          <attr-item tags="m"/>
+          <attr-item tags="f"/>
+          <attr-item tags="mf"/>
+          <attr-item tags="GD"/>
+          <attr-item tags="nt"/>
+      </def-attr>
+
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+          <attr-item tags="pl"/>
+          <attr-item tags="sp"/>
+          <attr-item tags="ND"/>
+      </def-attr>
+
+  
+      <def-attr n="temps">
+          <attr-item tags="inf"/>
+          <attr-item tags="pres"/>
+          <attr-item tags="past"/>
+          <attr-item tags="pri"/>
+          <attr-item tags="prs"/>
+          <attr-item tags="cni"/>
+          <attr-item tags="pp"/>
+          <attr-item tags="ger"/>
+          <attr-item tags="pprs"/>
+          <attr-item tags="subs"/>
+          <attr-item tags="fti"/>
+      </def-attr>
+
+ <def-attr n="valor_NK">  
+   <attr-item tags="NK_HK"/>
+   <attr-item tags="NK_HU"/>
+   <attr-item tags="NK_NI"/>
+   <attr-item tags="NK_ZK"/>
+   <attr-item tags="NK_GU"/>
+   <attr-item tags="NK_ZU"/>
+   <attr-item tags="NK_HI"/>
+ </def-attr>
+
+
+  <def-attr n="tipus_det">          
+      <attr-item tags="art"/>         
+      <attr-item tags="def"/>         
+      <attr-item tags="ind"/>         
+      <attr-item tags="dem"/>  
+    </def-attr>
+
+ <def-attr n="a_verb">          
+      <attr-item tags="vblex"/>  
+      <attr-item tags="vbser"/>  
+      <attr-item tags="vbsint"/>  
+      <attr-item tags="vbhaver"/>    
+      <attr-item tags="vbmod"/> 
+    </def-attr>
+
+ <def-attr n="a_SP">          
+      <attr-item tags="SPGEN"/>         
+      <attr-item tags="SP"/>         
+      <attr-item tags="SPR-SN"/> 
+    </def-attr>
+
+<def-attr n="pr">          
+      <attr-item tags="pr"/>     
+    </def-attr>
+  </section-def-attrs>
+
+<section-def-vars> 
+    <def-var n="genere"/>
+  </section-def-vars>
+
+
+
+<section-def-macros>
+
+  <def-macro n="f_bcond" npar="1">
+        <choose>
+          <when>
+            <test>
+              <not>
+                <equal>
+                  <b pos="1"/>   
+                  <lit v=" "/>
+                </equal>
+              </not>
+            </test>
+            <out>
+              <b pos="1"/>
+            </out>  
+          </when>     
+        </choose>
+     </def-macro>
+
+</section-def-macros>
+
+  <section-rules>
+
+ <rule comment="CHUNK:">
+      <pattern>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<out>
+	  <lu>
+	    <clip pos="1" part="whole"/>
+	  </lu> 
+	</out>   
+      </action>
+    </rule> 
+
+
+
+
+  </section-rules>
+</postchunk>
