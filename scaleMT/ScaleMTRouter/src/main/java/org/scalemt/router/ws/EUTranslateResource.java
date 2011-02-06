@@ -200,7 +200,7 @@ public class EUTranslateResource {
      try
        {
        String source=jo.getString("src");
-       String target=jo.getString("target");
+       String target=jo.getString("trg");
        JSONArray sgms=jo.getJSONArray("sgms");
        String tid=jo.getString("tid");
        jo.remove("tid");
