@@ -16,11 +16,21 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scalemt.rmi.exceptions.TranslationEngineException;
+import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
+import org.scalemt.rmi.transferobjects.Format;
+import org.scalemt.rmi.transferobjects.LanguagePair;
+import org.scalemt.rmi.transferobjects.TextContent;
+import org.scalemt.router.logic.LoadBalancer;
+import org.scalemt.router.logic.NoEngineForThatPairException;
+import org.scalemt.router.logic.TooMuchLoadException;
+import org.scalemt.router.logic.Util;
 
 /**
  *
@@ -31,12 +41,30 @@ public class EUTranslateResource {
 
      static Log logger = LogFactory.getLog(EUTranslateResource.class);
 
+     private  String APIKEY;
+
+    public EUTranslateResource() {
+        APIKEY=Util.readConfigurationProperty("itranslate4eu_key");
+    }
+
+
+
     @GET
     @Produces("application/json")
     @Consumes("application/json")
-    public String getJSON(@Context HttpServletRequest request) {
+    public Response getJSON(@Context HttpServletRequest request) {
         
         logger.trace("Processing GET request");
+
+        String ip=request.getRemoteAddr();
+        String apacheProxyHeader=request.getHeader("X-Forwarded-For");
+        if(apacheProxyHeader!=null)
+        {
+            String[] ips=apacheProxyHeader.split(",");
+            if(ips.length>0)
+                if(ips[0].length()>0)
+                    ip=ips[0];
+        }
 
         String function=request.getParameter("func");
         if("translate".equals(function))
@@ -49,22 +77,28 @@ public class EUTranslateResource {
                     jo = new JSONObject(data);
                 } catch (JSONException ex) {
                     //TODO: Log, HTTP error code
-                    logger.warn("Error creating input JSON object", ex);
+                    logger.trace("Error creating input JSON object", ex);
                 }
 
-                return translate(jo).toString();
+                int code= translate(jo,ip,request.getHeader("Referer"));
+                if(code==200)
+                    return  Response.ok(jo.toString()).build();
+                else
+                {
+                    return Response.status(code).build();
+                }
             }
             else
             {
                  //TODO: Log, HTTP error code
                 logger.warn("Data object not provided");
-                return "";
+               return Response.status(400).build();
             }
         }
         else
         {
             //TODO: http error code
-            return "";
+           return Response.status(400).build();
         }
         
     }
@@ -73,9 +107,19 @@ public class EUTranslateResource {
     //@Consumes({"application/x-www-form-urlencoded", "multipart/form-data"})
     @Produces("application/json")
     @Consumes("application/json")
-    public String postJSON(InputStream is,@Context HttpServletRequest request) {
+    public Response postJSON(InputStream is,@Context HttpServletRequest request) {
 
         logger.trace("Processing POST request");
+
+        String ip=request.getRemoteAddr();
+        String apacheProxyHeader=request.getHeader("X-Forwarded-For");
+        if(apacheProxyHeader!=null)
+        {
+            String[] ips=apacheProxyHeader.split(",");
+            if(ips.length>0)
+                if(ips[0].length()>0)
+                    ip=ips[0];
+        }
 
         String function=request.getParameter("func");
         if("translate".equals(function))
@@ -119,31 +163,89 @@ public class EUTranslateResource {
                 } catch (JSONException ex) {
                     //TODO: Log, HTTP error code
                     logger.warn("Error creating input JSON object", ex);
+                   return Response.status(400).build();
+                    
                 }
-                return translate(jo).toString();
+               
+                int code= translate(jo,ip,request.getHeader("Referer"));
+                if(code==200)
+                    return  Response.ok(jo.toString()).build();
+                else
+                {
+                    return Response.status(code).build();
+                }
+               
+               
             }
             else
             {
                 logger.trace("Null POST data");
+
             }
 
-             return "";
+            return Response.status(400).build();
         }
         else
         {
             //TODO: http error code
-            return "";
+            return Response.status(400).build();
         }
 
     }
 
-    private JSONObject translate(JSONObject jo)
+    private int translate(JSONObject jo, String ip, String referer)
     {
-        /*
+
+        int responseCode=200;
+     try
+       {
        String source=jo.getString("src");
        String target=jo.getString("target");
        JSONArray sgms=jo.getJSONArray("sgms");
-       */
-        return new JSONObject();
+       String tid=jo.getString("tid");
+       jo.remove("tid");
+       JSONArray newsgms=new JSONArray();
+      
+           for(int i=0; i<sgms.length(); i++)
+           {
+               JSONObject newSegmElem= new JSONObject();
+               JSONArray newUnits= new JSONArray();
+
+               JSONObject segm_elem=sgms.getJSONObject(i);
+               JSONArray units=segm_elem.getJSONArray("units");
+               for(int j=0; j<units.length(); j++)
+               {
+                   JSONObject newUnitElem= new JSONObject();
+
+                   JSONObject unit_elem=units.getJSONObject(j);
+                   String text=unit_elem.getString("text");
+                   String translation = LoadBalancer.getInstance().translate(new TextContent(Format.txt,text), new LanguagePair(source, target),ip, referer ,APIKEY,new AdditionalTranslationOptions()).toString();
+
+                   newUnitElem.put("text", translation);
+                   newUnits.put(newUnitElem);
+               }
+
+               newSegmElem.put("units", newUnits);
+               newsgms.put(newSegmElem);
+           }
+       jo.remove("sgms");
+       jo.put("sgms", newsgms);
+        }
+     catch(JSONException jse)
+     {
+         responseCode=400;
+     }
+       catch (NoEngineForThatPairException nepe) {
+                responseCode = 503;
+            } catch (TooMuchLoadException tmle) {
+                responseCode = 500;
+            } catch (TranslationEngineException e) {
+                responseCode = 500;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                responseCode = 500;
+            }
+
+       return responseCode;
     }
 }
