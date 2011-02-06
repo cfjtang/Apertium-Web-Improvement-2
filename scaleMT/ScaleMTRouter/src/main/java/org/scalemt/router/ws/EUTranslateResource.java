@@ -221,6 +221,8 @@ public class EUTranslateResource {
                    String text=unit_elem.getString("text");
                    String translation = LoadBalancer.getInstance().translate(new TextContent(Format.txt,text), new LanguagePair(source, target),ip, referer ,APIKEY,new AdditionalTranslationOptions()).toString();
 
+                   if(translation.length()>0)
+                       translation=translation.substring(0, translation.length()-1);
                    newUnitElem.put("text", translation);
                    newUnits.put(newUnitElem);
                }
