@@ -169,6 +169,13 @@
     <def-cat n="indirect">
       <cat-item lemma="indirect" tags="prn.obj.*"/>
     </def-cat>
+    <def-cat n="hon_hor_ho_o">
+      <cat-item lemma="hon" tags="det.pos.*"/>
+      <cat-item lemma="hor" tags="det.pos.*"/>
+      <cat-item lemma="o" tags="det.pos.*"/>
+      <cat-item lemma="ho" tags="det.pos.*"/>
+    </def-cat>
+ 
     <def-cat n="prnpos">
 <!-- pronoms personals-->
       <cat-item lemma="ma hini" tags="prn.pos.*"/>
@@ -504,6 +511,9 @@
     </def-cat>
     <def-cat n="coma">
       <cat-item tags="cm"/>
+    </def-cat>
+    <def-cat n="guio">
+      <cat-item tags="guio"/>
     </def-cat>
   </section-def-cats>
 
@@ -9039,7 +9049,82 @@
       </action>
    </rule>
      
- 
+      
+    <rule comment="REGLA: POS-NUM">
+      <pattern>
+        <pattern-item n="hon_hor_ho_o"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="num"/>
+      </pattern>
+      <action>
+        <call-macro n="f_concord2">
+          <with-param pos="3"/>
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <choose>
+          <when>
+            <test>
+              <equal>
+                <var n="genero"/>
+                <lit-tag v="mf"/>
+              </equal>
+            </test>
+            <let>
+              <var n="genero"/>
+              <lit-tag v="m"/>
+            </let>
+          </when>
+        </choose>
+            <out>
+              <chunk name="det_num" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><var n="genero"/></tag>
+                  <tag><var n="numero"/></tag>
+                </tags>
+                <lu>
+                  <get-case-from pos="1">
+                    <lit v="tout"/>
+                  </get-case-from>
+                  <lit-tag v="predet"/>
+                  <clip pos="1" side="tl" part="gen" link-to="2"/>
+                  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="1" side="tl" part="nbr_sp"/>
+                </lu>
+                <b/>
+                <lu>
+                  <get-case-from pos="2">
+                    <lit v="le"/>
+                  </get-case-from>
+                  <lit-tag v="det.def"/>
+                  <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="1" side="tl" part="gen_mf"/>
+                  <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="1" side="tl" part="nbr_sp"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_num"/>
+                  <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+                  <clip pos="3" side="tl" part="gen_mf"/>
+                  <clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+                  <clip pos="3" side="tl" part="nbr_sp"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+   </rule>
+
+
 
 
      
