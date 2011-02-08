@@ -70,11 +70,18 @@
       <cat-item tags="det.art.*"/>
     </def-cat>
 
+ 
+
     <def-cat n="k">
       <cat-item lemma="k" tags="post"/>
     </def-cat>
 
-    <def-cat n="post">
+    <def-cat n="z">
+      <cat-item lemma="z" tags="post"/>
+    </def-cat>
+
+
+    <def-cat n="post_gra">
       <cat-item tags="post"/>
       <cat-item tags="post.*"/>
       <cat-item tags="gra.*"/>
@@ -82,6 +89,14 @@
 
     <def-cat n="spost">
       <cat-item tags="spost"/>
+    </def-cat>
+
+
+    <def-cat n="gero">
+      <cat-item lemma="gero" tags="spost"/>
+    </def-cat>
+    <def-cat n="artean">
+      <cat-item lemma="artean" tags="adv.gen"/>
     </def-cat>
 
     <def-cat n="part">
@@ -270,6 +285,10 @@
     <def-cat n="tik">
       <cat-item lemma="tik" tags="post"/>
     </def-cat>
+    <def-cat n="ra">
+      <cat-item lemma="ra" tags="post"/>
+    </def-cat>
+
     <def-cat n="gra">
       <cat-item tags="gra.*"/>
     </def-cat>
@@ -783,6 +802,7 @@
 
   <section-rules>
 
+
     <!--********************************* REGLAS PARA CONCATENACIONES GENERALES   *********************************************
 Reglas para generar correctamente las uniones de palabras entre lexemas principales y posposiciones/artículos -->
 
@@ -815,7 +835,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  <rule comment="REGLA: Nom + post">
       <pattern>
 	<pattern-item n="nom_np"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -844,7 +864,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -876,7 +896,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: Nom + post + detart">
       <pattern>
 	<pattern-item n="nom_np"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -906,7 +926,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -938,9 +958,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: Nom + post + detart + post">
       <pattern>
 	<pattern-item n="nom_np"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1004,7 +1024,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  <rule comment="REGLA: adj + post">
       <pattern>
 	<pattern-item n="adj"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1033,7 +1053,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="adj"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1065,7 +1085,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: adj + post + detart">
       <pattern>
 	<pattern-item n="adj"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1096,7 +1116,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="adj"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1130,9 +1150,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: adj + post + detart + post">
       <pattern>
 	<pattern-item n="adj"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1195,7 +1215,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  <rule comment="REGLA: prn + post">
       <pattern>
 	<pattern-item n="prn"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1224,7 +1244,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="prn"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1257,7 +1277,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: prn + post + detart: 'nirea'">
       <pattern>
 	<pattern-item n="prn"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1287,7 +1307,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="prn"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1320,9 +1340,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: prn + post + detart + post">
       <pattern>
 	<pattern-item n="prn"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1386,7 +1406,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  <rule comment="REGLA: verbo + post">
       <pattern>
 	<pattern-item n="verbos"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1415,7 +1435,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="verbos"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1447,7 +1467,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: verbo + post + detart">
       <pattern>
 	<pattern-item n="verbos"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1478,7 +1498,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="verbos"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1512,9 +1532,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: verbo + post + detart + post">
       <pattern>
 	<pattern-item n="verbos"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1577,7 +1597,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  <rule comment="REGLA: det_num + post">
       <pattern>
 	<pattern-item n="det_num"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1606,7 +1626,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="det_num"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1639,7 +1659,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: det_num + post + detart">
       <pattern>
 	<pattern-item n="det_num"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1670,7 +1690,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="det_num"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1703,9 +1723,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: det_num + post + detart + post">
       <pattern>
 	<pattern-item n="det_num"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1769,7 +1789,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
  <rule comment="REGLA: spost + post">
       <pattern>
 	<pattern-item n="spost"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1798,7 +1818,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="spost"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1830,7 +1850,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: spost + post + detart">
       <pattern>
 	<pattern-item n="spost"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1861,7 +1881,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="spost"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -1895,9 +1915,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
 <rule comment="REGLA: spost + post + detart + post">
       <pattern>
 	<pattern-item n="spost"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -1987,7 +2007,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="verbos"/>
 	<pattern-item n="cnjsubadvrel"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
@@ -2020,7 +2040,7 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="verbos"/>
 	<pattern-item n="cnjsubadvrel"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
       </pattern>
       <action>
@@ -2056,9 +2076,9 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       <pattern>
 	<pattern-item n="verbos"/>
 	<pattern-item n="cnjsubadvrel"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
 	<pattern-item n="detart"/>
-	<pattern-item n="post"/>
+	<pattern-item n="post_gra"/>
       </pattern>
       <action>
 	<call-macro n="tipo_posposicion">
