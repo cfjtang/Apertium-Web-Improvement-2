@@ -2969,14 +2969,24 @@
 						</out>
 					</when>
 					<otherwise>
+					
+				<call-macro n="f_concord1">
+					<with-param pos="2"/>
+				</call-macro>
+				<call-macro n="comprovagostar">
+					<with-param pos="2"/>
+				</call-macro>
 						<out>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
 							</lu>
 							<b/>
 							<lu>
-								<clip pos="2" side="tl" part="whole"/>
-							</lu>
+								<clip pos="2" side="tl" part="lemh"/>
+								<clip pos="2" side="tl"	part="a_nom"/>
+								<clip pos="2" side="tl" part="gen"/>
+								<clip pos="2" side="tl" part="nbr"/>
+								<clip pos="2" side="tl" part="lemq"/>							</lu>
 						</out>
 					</otherwise>
 				</choose>
@@ -3018,11 +3028,22 @@
 							</lu>
 							<b/>
 							<lu>
-								<clip pos="2" side="tl" part="whole"/>
-							</lu>
+								<clip pos="2" side="tl" part="lemh"/>
+								<clip pos="2" side="tl"	part="a_nom"/>
+								<clip pos="2" side="tl" part="gen"/>
+								<clip pos="2" side="tl" part="nbr"/>
+								<clip pos="2" side="tl" part="lemq"/>							</lu>
 						</out>
 					</when>
 					<otherwise>
+					
+				<call-macro n="f_concord1">
+					<with-param pos="2"/>
+				</call-macro>
+				<call-macro n="comprovagostar">
+					<with-param pos="2"/>
+				</call-macro>
+					
 						<out>
 							<lu>
 								<get-case-from pos="1">
@@ -7738,14 +7759,6 @@
 					<with-param pos="2"/>
 					<with-param pos="1"/>
 				</call-macro>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="2" side="tl" part="gen"/>
-								<lit-tag v="mf"/>
-							</equal>
-						</test>
 						<out>
 							<lu>
 								<clip pos="1" side="tl" part="whole"/>
@@ -7759,26 +7772,6 @@
 								<clip pos="2" side="tl" part="lemq"/>
 							</lu>
 						</out>
-					</when>
-					<otherwise>
-						<out>
-							<lu>
-								<clip pos="1" side="tl" part="lemh"/>
-								<clip pos="1" side="tl" part="a_det"/>
-								<clip pos="2" side="tl" part="gen"/>
-								<clip pos="2" side="tl" part="nbr"/>
-							</lu>
-							<b pos="1"/>
-							<lu>
-								<clip pos="2" side="tl" part="lemh"/>
-								<clip pos="2" side="tl" part="a_tnom"/>
-								<clip pos="2" side="tl" part="gen"/>
-								<clip pos="2" side="tl" part="nbr"/>
-								<clip pos="2" side="tl" part="lemq"/>
-							</lu>
-						</out>
-					</otherwise>
-				</choose>
 			</action>
 		</rule>
 		<rule>
