@@ -54,7 +54,7 @@ function process_form() {
 	**************************
 */
 function show_form($textbox, $dir) {
-	print '<form name="translationform" class="translation" action="' . $_SERVER[PHP_SELF] . '?id=translatetext" method="post">';
+	print '<form name="translationform" class="translation" action="' . $_SERVER['PHP_SELF'] . '?id=translatetext" method="post">';
 	print '<fieldset name="fset"><legend></legend><label for="direction">';
 	print _("Direction:");
 	
