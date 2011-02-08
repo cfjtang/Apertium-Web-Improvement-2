@@ -43,7 +43,7 @@
         $lon = strlen($queryString);
 
         if( $langParam != null ) {
-                $newQueryString = substr($queryString,0,$long-8);
+                $newQueryString = substr($queryString,0,$lon-8);
         } else {
                 $newQueryString = $queryString;
         }
