@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- La celo de tiu (fina) interchunk estas atribui defaultan nombron aŭ genron al ĉiujn nomoj kaj adjektivoj,
+kies nombro aŭ genro ne povis esti eksciita (ĉar en la franca ofte la afero malklaras).
+Tiel la esperanto-vortaroj povas resti pli kongruaj kun tiuj uzataj en aliaj lingvoparoj. -->
+<interchunk>
+
+  <section-def-cats>
+    <def-cat n="SN">
+      <cat-item tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="SN_nopron"> <!-- sen pronomoj -->
+      <cat-item tags="SN.m.*"/>
+      <cat-item tags="SN.f.*"/>
+      <cat-item tags="SN.mf.*"/>
+    </def-cat>
+
+    <def-cat n="SA">
+      <cat-item tags="SA.*"/>
+    </def-cat>
+
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="mf"/>
+    </def-attr>
+
+    <def-attr n="nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+    </def-attr>
+
+    <def-attr n="tipus_prn">
+      <attr-item tags="subj"/>
+      <attr-item tags="obj"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="tn"/>
+      <attr-item tags="itg"/>
+      <attr-item tags="pos"/>
+      <attr-item tags="ref"/>
+    </def-attr>
+
+  </section-def-attrs>
+
+
+  <section-def-vars>
+    <def-var n="nombre"/>
+    <def-var n="genere"/>
+  </section-def-vars>
+
+
+  <section-rules>
+
+    <rule comment="CHUNK: SN">
+      <pattern>
+        <pattern-item n="SN_nopron"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
+	      </or>
+	    </test>
+	    <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal><clip pos="1" part="gen"/><lit-tag v="ND"/></equal>
+		<equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal>
+	      </or>
+	    </test>
+	    <let><clip pos="1" part="gen"/><lit-tag v="m"/></let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="CHUNK: SA">
+      <pattern>
+        <pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
+	      </or>
+	    </test>
+	    <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+  </section-rules>
+</interchunk>

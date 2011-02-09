@@ -1,0 +1,54 @@
+## Sintakso:
+# Regexp (v.d. http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html)
+# anstatauxaĵo je venonta linio (Se linio estas malplena la rezulto estas forigita kaj ignorata)
+
+# Adjektivoj
+(\p{L}+)a<adj><sg><nom>
+<e lm="$1a">      <i>$1</i><par n="a__adj"/></e>
+
+# Verboj
+(\p{L}+)i<vblex><inf>
+<e lm="$1i">      <i>$1</i><par n="i__vblex"/></e>
+
+# Ignoru restantajn verbformojn
+.*<vblex>.*
+
+
+# Ni tute ignoras pluralojn
+.*<pl>.*
+
+
+
+# Adverboj
+(\p{L}+)e<adv>
+<e lm="$1e">      <i>$1</i><par n="e__adj"/></e>
+
+
+# Nomoj (sen genro)
+(\p{L}+)o<n><sg><nom>
+<e lm="$1o">      <i>$1</i><par n="o__n"/></e>
+
+
+# Genraj nomoj
+(\p{L}+)o<n><f><sg><nom>
+<e lm="$1o">      <i>$1</i><par n="ino__n"/></e>
+
+# Genraj nomoj (ignoras viran formon) 
+(\p{L}+)o<n><m><sg><nom>
+
+# Viraj personaj nomoj, finante kun o
+(\p{L}+)o<np><ant><m><sg>
+<e lm="$1o">      <i>$1</i><par n="Mark/o__np"/></e>
+
+# Aliaj virinaj personaj nomoj
+(\p{L}+)<np><ant><m><sg>
+<e lm="$1">      <i>$1</i><par n="Mark__np"/></e>
+
+
+# Virinaj personaj nomoj
+(\p{L}+)<np><ant><f><sg>
+<e lm="$1">      <i>$1</i><par n="Maria__np"/></e>
+
+
+
+
