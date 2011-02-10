@@ -214,9 +214,12 @@ public class EUTranslateResource {
        for(LanguagePair lpair: LoadBalancer.getInstance().getSupportedPairs())
        {
            JSONArray pair=new JSONArray();
-           pair.put(lpair.getSource());
-           pair.put(lpair.getTarget());
-           lp.put(pair);
+           if(!lpair.getSource().contains("_") && !lpair.getTarget().contains("_"))
+           {
+               pair.put(lpair.getSource());
+               pair.put(lpair.getTarget());
+               lp.put(pair);
+           }
            
        }
        infoObj.put("lp",lp);
