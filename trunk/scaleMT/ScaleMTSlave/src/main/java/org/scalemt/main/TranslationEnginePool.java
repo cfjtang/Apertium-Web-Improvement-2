@@ -1099,7 +1099,7 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		
 		startTime = System.currentTimeMillis();
 		for(String text: filesContent)
-			translate(new TextContent(Format.txt,text), pair, null);
+			translate(new TextContent(Format.txt,text), pair, new AdditionalTranslationOptions());
 		endTime =System.currentTimeMillis();
 		
 		float time = (float) ((endTime-startTime) / 1000.0);
