@@ -95,6 +95,10 @@ public class EUTranslateResource {
                return Response.status(400).build();
             }
         }
+         else if("info".equals(function))
+        {
+            return  Response.ok(info().toString()).build();
+        }
         else
         {
             //TODO: http error code
@@ -185,12 +189,45 @@ public class EUTranslateResource {
 
             return Response.status(400).build();
         }
+        else if("info".equals(function))
+        {
+            return  Response.ok(info().toString()).build();
+        }
         else
         {
             //TODO: http error code
             return Response.status(400).build();
         }
 
+    }
+
+    private JSONObject info()
+    {
+       JSONObject infoObj=new JSONObject();
+       try
+       {
+       infoObj.put("version",Util.readConfigurationProperty("itranslate4eu_version"));
+       infoObj.put("vendor",Util.readConfigurationProperty("itranslate4eu_vendor"));
+       infoObj.put("engine",Util.readConfigurationProperty("itranslate4eu_engine"));
+       infoObj.put("logo",Util.readConfigurationProperty("itranslate4eu_logo"));
+       JSONArray lp=new JSONArray();
+       for(LanguagePair lpair: LoadBalancer.getInstance().getSupportedPairs())
+       {
+           JSONArray pair=new JSONArray();
+           pair.put(lpair.getSource());
+           pair.put(lpair.getTarget());
+           lp.put(pair);
+           
+       }
+       infoObj.put("lp",lp);
+       infoObj.put("features", new JSONObject());
+
+        }
+       catch(JSONException jse)
+       {
+           logger.warn("Error creating info object", jse);
+       }
+       return infoObj;
     }
 
     private int translate(JSONObject jo, String ip, String referer)
