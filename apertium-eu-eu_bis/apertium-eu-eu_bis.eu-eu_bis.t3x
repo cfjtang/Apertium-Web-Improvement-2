@@ -3,39 +3,11 @@
   <section-def-cats>
 
     
-     <def-cat n="nom">
-      <cat-item name="nom"/>
+    
+    <def-cat n="vb_bakar">
+      <cat-item name="vb_bakar"/>
     </def-cat>
 
-   <def-cat n="det_pp">
-      <cat-item name="det_pp"/>
-    </def-cat>
-
-
-    <def-cat n="baino-que">
-      <cat-item name="baino-que"/>
-    </def-cat>
-    <def-cat n="baino-de">
-      <cat-item name="baino-de"/>
-    </def-cat>
-    <def-cat n="elkar">
-      <cat-item name="elkar-prn"/>
-    </def-cat>
-    <def-cat n="elkar-pr">
-      <cat-item name="elkar-pr-prn"/>
-    </def-cat>
-
- <def-cat n="SP2">
-      <cat-item name="pr_nom"/>
-      <cat-item name="pr_prn"/>
-      <cat-item name="pr_num"/>
-      <cat-item name="pr_det"/>
-      <cat-item name="pr_inf"/>
-      <cat-item name="pr_adj"/>
-      <cat-item name="pr_prnpers"/>
-    </def-cat>
-
-  
 
 
 
@@ -66,29 +38,67 @@
       </def-attr>
 
   
-      <def-attr n="temps">
-          <attr-item tags="inf"/>
-          <attr-item tags="pres"/>
-          <attr-item tags="past"/>
-          <attr-item tags="pri"/>
-          <attr-item tags="prs"/>
-          <attr-item tags="cni"/>
-          <attr-item tags="pp"/>
-          <attr-item tags="ger"/>
-          <attr-item tags="pprs"/>
-          <attr-item tags="subs"/>
-          <attr-item tags="fti"/>
-      </def-attr>
+   <def-attr n="temps">
+      <attr-item tags="inf"/>
+      <attr-item tags="pres"/>
+      <attr-item tags="past"/>
+      <attr-item tags="pri"/>
+      <attr-item tags="pp"/>
+      <attr-item tags="ger"/>
+      <attr-item tags="pprs"/>
+      <attr-item tags="subs"/>	  
+      <attr-item tags="pii"/>	  
+      <attr-item tags="pfut"/>	  
+      <attr-item tags="padv"/>	  
+      <attr-item tags="fti"/>	  
+      <attr-item tags="cni"/>	  
+      <attr-item tags="imp"/>	  
+      <attr-item tags="izen"/>	  
+      <attr-item tags="ifi"/>	  
+      <attr-item tags="potpr"/>  
+      <attr-item tags="potps"/>  
+      <attr-item tags="poth"/>	  
+      <attr-item tags="prs"/>	  
+      <attr-item tags="pis"/>	  
+      <attr-item tags="hs"/>	  
+      <attr-item tags="onpr"/>	  
+      <attr-item tags="bald"/>	  
+      <attr-item tags="prs2"/>	  
+      <attr-item tags="prob1"/>  
+      <attr-item tags="prob2"/>
+    </def-attr>
 
- <def-attr n="valor_NK">  
-   <attr-item tags="NK_HK"/>
-   <attr-item tags="NK_HU"/>
-   <attr-item tags="NK_NI"/>
-   <attr-item tags="NK_ZK"/>
-   <attr-item tags="NK_GU"/>
-   <attr-item tags="NK_ZU"/>
-   <attr-item tags="NK_HI"/>
- </def-attr>
+
+  <def-attr n="nor">
+      <attr-item tags="NR_HK"/>
+      <attr-item tags="NR_HU"/>
+      <attr-item tags="NR_NI"/>
+      <attr-item tags="NR_ZK"/>
+      <attr-item tags="NR_GU"/>
+      <attr-item tags="NR_ZU"/>
+      <attr-item tags="NR_HI"/>
+    </def-attr>
+
+    <def-attr n="nori">
+      <attr-item tags="NI_HK"/>
+      <attr-item tags="NI_HU"/>
+      <attr-item tags="NI_NI"/>
+      <attr-item tags="NI_ZK"/>
+      <attr-item tags="NI_GU"/>
+      <attr-item tags="NI_ZU"/>
+      <attr-item tags="NI_HI"/>
+    </def-attr>
+
+    <def-attr n="nork">
+      <attr-item tags="NK_HK"/>
+      <attr-item tags="NK_HU"/>
+      <attr-item tags="NK_NI"/>
+      <attr-item tags="NK_ZK"/>
+      <attr-item tags="NK_GU"/>
+      <attr-item tags="NK_ZU"/>
+      <attr-item tags="NK_HI"/>
+    </def-attr>
+
 
 
   <def-attr n="tipus_det">          
@@ -98,12 +108,11 @@
       <attr-item tags="dem"/>  
     </def-attr>
 
- <def-attr n="a_verb">          
+
+    <def-attr n="a_verb">          
       <attr-item tags="vblex"/>  
-      <attr-item tags="vbser"/>  
-      <attr-item tags="vbsint"/>  
-      <attr-item tags="vbhaver"/>    
-      <attr-item tags="vbmod"/> 
+      <attr-item tags="vbsint"/> 
+      <attr-item tags="vbper"/>  
     </def-attr>
 
  <def-attr n="a_SP">          
@@ -149,12 +158,17 @@
 
  <rule comment="CHUNK:">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="vb_bakar"/>
       </pattern>
       <action>
 	<out>
 	  <lu>
-	    <clip pos="1" part="whole"/>
+	    <clip pos="1" part="lem"/>
+	    <clip pos="1" part="a_verb"/>
+	    <clip pos="1" part="temps"/>
+	    <clip pos="1" part="nor"/>
+	    <clip pos="1" part="nori"/>
+	    <clip pos="1" part="nork"/>
 	  </lu> 
 	</out>   
       </action>

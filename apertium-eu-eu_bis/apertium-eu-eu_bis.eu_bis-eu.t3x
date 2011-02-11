@@ -3,36 +3,9 @@
   <section-def-cats>
 
     
-     <def-cat n="nom">
-      <cat-item name="nom"/>
-    </def-cat>
 
-   <def-cat n="det_pp">
-      <cat-item name="det_pp"/>
-    </def-cat>
-
-
-    <def-cat n="baino-que">
-      <cat-item name="baino-que"/>
-    </def-cat>
-    <def-cat n="baino-de">
-      <cat-item name="baino-de"/>
-    </def-cat>
-    <def-cat n="elkar">
-      <cat-item name="elkar-prn"/>
-    </def-cat>
-    <def-cat n="elkar-pr">
-      <cat-item name="elkar-pr-prn"/>
-    </def-cat>
-
- <def-cat n="SP2">
-      <cat-item name="pr_nom"/>
-      <cat-item name="pr_prn"/>
-      <cat-item name="pr_num"/>
-      <cat-item name="pr_det"/>
-      <cat-item name="pr_inf"/>
-      <cat-item name="pr_adj"/>
-      <cat-item name="pr_prnpers"/>
+ <def-cat n="pp_arekin">
+      <cat-item name="pp_arekin"/>
     </def-cat>
 
   
@@ -149,13 +122,23 @@
 
  <rule comment="CHUNK:">
       <pattern>
-	<pattern-item n="nom"/>
+	<pattern-item n="pp_arekin"/>
       </pattern>
       <action>
 	<out>
-	  <lu>
-	    <clip pos="1" part="whole"/>
-	  </lu> 
+	  <mlu>
+	    <lu>
+	      <clip pos="1" part="whole"/>
+	    </lu> 
+	    <lu>
+	      <lit v="a"/>
+	      <lit-tag v="det.art.sg"/>
+	    </lu>
+	    <lu>
+	      <lit v="ekin"/>
+	      <lit-tag v="post"/>
+	    </lu>
+	  </mlu>
 	</out>   
       </action>
     </rule> 

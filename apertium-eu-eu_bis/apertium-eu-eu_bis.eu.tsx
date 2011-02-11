@@ -275,6 +275,7 @@
   </def-label>
   <def-label name="CNJADV">
     <tags-item tags="cnjadv"/>
+    <tags-item tags="scnjadv"/>
   </def-label>
   <def-label name="CNJLOC">
     <tags-item tags="cnjloc"/>
