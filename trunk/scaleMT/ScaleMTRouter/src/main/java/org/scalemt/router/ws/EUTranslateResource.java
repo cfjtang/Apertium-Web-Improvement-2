@@ -165,8 +165,8 @@ public class EUTranslateResource {
                 try {
                     jo = new JSONObject(input);
                 } catch (JSONException ex) {
-                    //TODO: Log, HTTP error code
-                    logger.warn("Error creating input JSON object", ex);
+                    
+                    logger.warn("Error creating input JSON object from '"+input+"'", ex);
                    return Response.status(400).build();
                     
                 }
