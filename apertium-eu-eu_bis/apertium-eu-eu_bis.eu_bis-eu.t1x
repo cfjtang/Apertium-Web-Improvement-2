@@ -878,7 +878,7 @@
 </rule>
 	      
 
-<rule comment="dem + post + nom + post (hauek umek - ume hauek)">
+<rule comment="REGLA: dem + post + nom + post (hauek umek - ume hauek)">
    <pattern>
 	<pattern-item n="detdem"/>
 	<pattern-item n="post"/>
@@ -956,7 +956,7 @@
 
 
 
-<rule comment="dem + post + nom + post (hauek umeek - ume hauek)">
+<rule comment="REGLA: dem + post + nom + post (hauek umeek - ume hauek)">
    <pattern>
 	<pattern-item n="detdem"/>
 	<pattern-item n="post"/>
@@ -1044,7 +1044,7 @@
 
 
 
-<rule comment="dem + post + nom + adj + det + post (horrek auto gorriak - auto gorri horrek)">
+<rule comment="REGLA: dem + post + nom + adj + det + post (horrek auto gorriak - auto gorri horrek)">
    <pattern>
 	<pattern-item n="detdem"/>
 	<pattern-item n="post"/>
@@ -1141,7 +1141,7 @@
 </rule>		
 		  
 	      
-<rule comment="dem + post + nom + adj + post (horrek auto gorriak - auto gorri horrek)">
+<rule comment="REGLA: dem + post + nom + adj + post (horrek auto gorriak - auto gorri horrek)">
    <pattern>
 	<pattern-item n="detdem"/>
 	<pattern-item n="post"/>
@@ -1365,6 +1365,101 @@
 
 	  
 	  
+<!--*****************reglas para crear chunks que se necesitan en el t2x ***********************-->
+
+
+<rule comment="REGLA: pp">
+      <pattern>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	    </tags>
+	      <lu> 
+		<clip pos="1" side="tl" part="lem"/> 
+		<clip pos="1" side="tl" part="a_verb"/> 
+		<clip pos="1" side="tl" part="temps" link-to="2"/> 
+		<clip pos="1" side="tl" part="nor"/> 
+		<clip pos="1" side="tl" part="nori"/> 
+		<clip pos="1" side="tl" part="nork"/> 
+	      </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: ADV">
+      <pattern>
+	<pattern-item n="adv"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_adv">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="ADV"/></tag>
+	      <tag><var n="tipoadv"/></tag>
+	    </tags>
+	      <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+	   
+
+<rule comment="REGLA: ADV + post">
+      <pattern>
+	<pattern-item n="adv"/>
+	<pattern-item n="post"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_adv">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="2"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adv_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="ADV"/></tag>
+	      <tag><var n="tipoadv"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	      <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+	      
+
+   
+
 	
 
 
@@ -2812,101 +2907,6 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       </action>
  </rule>
  
-
-<!--*****************reglas para crear chunks que se necesitan en el t2x ***********************-->
-
-
-<rule comment="REGLA: pp">
-      <pattern>
-	<pattern-item n="pp"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out> 
-	  <chunk name="pp" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="temps"/></tag>
-	    </tags>
-	      <lu> 
-		<clip pos="1" side="tl" part="lem"/> 
-		<clip pos="1" side="tl" part="a_verb"/> 
-		<clip pos="1" side="tl" part="temps" link-to="2"/> 
-		<clip pos="1" side="tl" part="nor"/> 
-		<clip pos="1" side="tl" part="nori"/> 
-		<clip pos="1" side="tl" part="nork"/> 
-	      </lu>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-
-
-<rule comment="REGLA: ADV">
-      <pattern>
-	<pattern-item n="adv"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="tipo_adv">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out> 
-	  <chunk name="adv" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="ADV"/></tag>
-	      <tag><var n="tipoadv"/></tag>
-	    </tags>
-	      <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-	   
-
-<rule comment="REGLA: ADV + post">
-      <pattern>
-	<pattern-item n="adv"/>
-	<pattern-item n="post"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="tipo_adv">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="tipo_posposicion">
-	  <with-param pos="2"/>
-	</call-macro>
-	<out> 
-	  <chunk name="adv_post" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="ADV"/></tag>
-	      <tag><var n="tipoadv"/></tag>
-	      <tag><var n="tipo_post"/></tag>
-	    </tags>
-	    <mlu>
-	      <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	      <lu>
-	      <clip pos="2" side="tl" part="whole"/>
-	    </lu>
-	    </mlu>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-	      
-
-   
 
 
   </section-rules>
