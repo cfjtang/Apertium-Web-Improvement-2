@@ -110,7 +110,7 @@ public class EUTranslateResource {
     @POST
     //@Consumes({"application/x-www-form-urlencoded", "multipart/form-data"})
     @Produces("application/json")
-    @Consumes("application/json")
+    @Consumes({"application/json","application/x-www-form-urlencoded", "multipart/form-data"})
     public Response postJSON(InputStream is,@Context HttpServletRequest request) {
 
         logger.trace("Processing POST request");
