@@ -786,6 +786,58 @@
 
 
 
+<!--*****************reglas para crear chunks que se necesitan en el t2x ***********************-->
+
+
+	      
+<rule comment="REGLA: pp">
+      <pattern>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="pp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: ADV">
+      <pattern>
+	<pattern-item n="adv"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_adv">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out> 
+	  <chunk name="adv" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="ADV"/></tag>
+	      <tag><var n="tipoadv"/></tag>
+	    </tags>
+	      <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+	      
+
 
 
     <!--********************************* REGLAS PARA CONCATENACIONES GENERALES   *********************************************
@@ -2237,58 +2289,6 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       </action>
  </rule>
  
-<!--*****************reglas para crear chunks que se necesitan en el t2x ***********************-->
-
-
-	      
-<rule comment="REGLA: pp">
-      <pattern>
-	<pattern-item n="pp"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out> 
-	  <chunk name="pp" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="SV"/></tag>
-	      <tag><clip pos="1" side="tl" part="temps"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-
-<rule comment="REGLA: ADV">
-      <pattern>
-	<pattern-item n="adv"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="tipo_adv">
-	  <with-param pos="1"/>
-	</call-macro>
-	<out> 
-	  <chunk name="adv" case="caseFirstWord">
-	    <tags>
-	      <tag><lit-tag v="ADV"/></tag>
-	      <tag><var n="tipoadv"/></tag>
-	    </tags>
-	      <lu>
-	      <clip pos="1" side="tl" part="whole"/>
-	    </lu>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-	      
-
 
   </section-rules>
 </transfer>
