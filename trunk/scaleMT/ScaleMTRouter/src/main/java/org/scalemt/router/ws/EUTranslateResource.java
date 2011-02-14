@@ -259,7 +259,9 @@ public class EUTranslateResource {
 
                    JSONObject unit_elem=units.getJSONObject(j);
                    String text=unit_elem.getString("text");
-                   String translation = LoadBalancer.getInstance().translate(new TextContent(Format.txt,text), new LanguagePair(source, target),ip, referer ,APIKEY,new AdditionalTranslationOptions()).toString();
+                   AdditionalTranslationOptions ato= new AdditionalTranslationOptions();
+                   ato.getOptions().put("markUnknown", "no");
+                   String translation = LoadBalancer.getInstance().translate(new TextContent(Format.txt,text), new LanguagePair(source, target),ip, referer ,APIKEY,ato).toString();
 
                    if(translation.length()>0)
                        translation=translation.substring(0, translation.length()-1);
