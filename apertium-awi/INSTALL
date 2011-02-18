@@ -1,0 +1,92 @@
++-----------------------------------+
+| Apertium - Advanced web interface |
+| Install instructions              |
++-----------------------------------+
+
+
+------------------------
+Installing prerequisites
+------------------------
+
+1*	Install a web server on your machine, with apache2 and PHP 5.2 or higher
+	(on Ubuntu Lucid Lynx : sudo tasksel install lamp-server)
+
+
+2*	Install apertium, version 3.1.0-1.1 or higher 
+	(on Ubuntu Lucid Lynx : sudo apt-get install apertium)
+
+	Install all apertium language pairs you want to work with 
+	(For example, on Ubuntu Lucid Lynx : sudo apt-get install apertium-en-es)
+
+
+3*	Install aspell 0.60.6-1 or higher 
+	(on Ubuntu Lucid Lynx : sudo apt-get install aspell)
+
+	Install aspell dictionaries for all languages you want to work with 
+	(For example, on Ubuntu Lucid Lynx : sudo apt-get install aspell-en aspell-es)
+
+
+4*	Install zip and unzip command-line utilities
+	(on Ubuntu Lucid Lynx : sudo apt-get install zip unzip)
+
+
+5*	Make sure the locale en_GB.utf8 is installed on your system.
+	(You can see installed locales with "locale -a" in the command line. If it isn't in the list, run "sudo locale-gen en_GB.utf8")
+
+
+6*	Download and extract LanguageTool and Maligna somewhere on your system. The simplest way is to download the ApertiumAWI-dependencies-0.9.0.tar.gz (http://aceattorney.free.fr/ApertiumAWI-dependencies-0.9.0.tar.gz) file as well, that contains both sofware in versions that are sure to work with the program.
+	*WARNING* : be aware that other LanguageTool distributions than the one included in the dependencies package may have a bug with character indexes that would give bad results for grammar proofing.
+
+
+---------------------------------------
+Installing and setting up the interface
+---------------------------------------
+
+1*	Extract the present archive (ApertiumAWI-0.9.1.tar.gz) in the directory of your web server installation
+	(in most cases, /var/www/ )
+
+2*	If you downloaded the dependencies package, extract its contents in the same directory, so that the "external" folder be on the same level as "includes", dictionaries", etc.
+
+3*	Now, open the includes/config.php file
+
+	3.1*	Set the apertium commands correctly. 
+		If you properly installed apertium to your command line, they should already be fine. Else, you will need to enter /path/to/the/executable
+		Also, please notice that apertium formatting (apertium-des* and apertium-re*) executables have to be in the same directory or all in the command line, as you only define one command prefix for all of them.
+
+	3.2*	Set the LanguageTool commands correctly. 
+		If you extracted the dependencies package properly, all settings should already be fine. However, if you want to use another distribution, you will have to fix the path to point to your executables.
+		You also need to choose the port for LanguageTool server to run. The default 8081 should be fine in most cases.
+
+	3.3*	Set the aspell command correctly.
+		If you properly installed aspell to your command line, it should already be fine. Else, you will need to enter /path/to/the/executable
+
+	3.4*	Set the maligna command correctly.
+		If you extracted the dependencies package properly, all settings should already be fine. However, if you want to use another distribution, you will have to fix the path to point to your executable.
+
+	3.5*	Set the zip and unzip commands correctly.
+		If you properly installed zip and unzip to your command line, they should already be fine. Else, you will need to enter /path/to/the/executable
+
+	3.6*	Make sure the 'temp_dir' config line points to a directory that is accessible by PHP. Check that the permissions for that directory allow read/write for all.
+
+	Save your changes to the file and close it.
+
+You can now use this interface on your web server, by visiting http://localhost/index.php in your web browser.
+
+
+
+---------------------------------------------------
+Add new dictionaries for spell checking suggestions
+---------------------------------------------------
+
+This interface is able to read OpenSearch XML Description files to generate links to external dictionaries for spell checking suggestions.
+A few dictionaries are already present in the archive, but you will likely want to add more for the languages you enable.
+
+To do this, you'll need to put the OpenSearch XML Description files of the dictionaries you want to use into the "dictionaries" folder.
+
+1*	For usual dictionaries (working with one language only), you should put the file into "dictionaries/languagename/".
+	(languagename is to be replaced by the two-letters name of this language, e.g. "en", "es", etc.)
+
+2*	For bilingual translation dictionaries, you should put the file into "dictionaries/sourcelanguagename/targetlanguagename/"
+	(sourcelanguagename and targetlanguagename being, as before, the two-letters name of the source and target languages of the translation)
+
+
