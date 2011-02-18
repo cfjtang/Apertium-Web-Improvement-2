@@ -1,0 +1,103 @@
++-----------------------------------+
+| Apertium - Advanced web interface |
+| Usage instructions                |
++-----------------------------------+
+
+
+See INSTALL for instructions to install this system to a web server.
+
+
+--------
+I. USAGE
+--------
+
+
+The translation interface, translate.php, is a web page splitted vertically, the left and right side containing tools that are used respectively before and after the translation process.
+
+
+Basic translation process
+-------------------------
+
+First, you should select the language pair to use for the translation using the drop-down menu on top left of the page. It contains all language pairs installed on the server.
+Then, you can type the text to translate in the left text edition field. By clicking translate, you'll get the translation of this text in the right text field.
+
+This interface, however, is built with many additional tools that will be described below.
+
+
+
+Spelling and Grammar checking
+-----------------------------
+
+When Javascript is activated, you will be able to check for mistakes in the texts from both the left and right text fields. This is done by clicking the "Check for mistakes" button, over the top-right corner of each field.
+
+As a result, all spelling mistakes detected should appear with a red-dotted underline, while grammar mistakes will appear with a blue-dotted underline.
+For grammar mistakes, hovering your mouse pointer over the location of the mistake should give you a description of it.
+In both cases, if the system is able to suggest corrections, you will see them by clicking on that mistake : it will open a list of suggestions.
+Clicking away from that list will close it; clicking on a word in it will replace the erroneous text by this suggestion.
+
+
+
+Getting dictionary definitions
+------------------------------
+
+When you don't really know what suggestion is the best, you can easily consult external dictionaries to get the definition or translation of all these suggestions. If such dictionaries are available, they will appear in the "Dictionary" drop-down list below the text field : you can then chose the one you want to consult.
+When a dictionary is selected, all suggestion links will come with a search icon that'll open this suggestion's definition in a new tab.
+
+
+
+Global manual replacements
+--------------------------
+
+This interface contains a tool to automatically replace some recurrent parts of your text.
+You can add elements to the manual replacements list by clicking the "+" button below it. It will create a new row containing the fields to define your replacement.
+
+The left field is the word that will have to be matched in the text. 
+The right field is the replacement you will use for this word.
+The drop-down menu enables you to set the case sensitivity. The default setting, "Apply source case", will be the best in most situations, as it will try to keep the case of the original match. In other words, if the word matched started with an uppercase letter, so will the replacement; if the match was all lowercase, so will the replacement, etc. The other modes (case sensitive or insensitive) will both apply the exact replacement given.
+The "-" button in a row enables you to delete that row.
+
+Once you have set this list, click the "Apply replacements" button to actually apply all the replacements from that list.
+
+
+
+Generating a translation memory
+-------------------------------
+
+When you are satisfied with your translation, you can click the button "Generate TMX", that will enable you to download a translation memory in TMX format.
+
+
+
+Generating edition logs
+-----------------------
+
+This interface is able to track all the manual edits you make to the text before and after the translation. When you are satisfied, click the "Get Logs" button to open these logs in a new tab.
+
+
+
+Translating formatted documents
+-------------------------------
+
+This interface is able to handle formatted documents as input. For this, you will need to visit the index.php page and fill the file transmission form.
+First, select the file to upload. If you want to force interpreting it as a specific format, type the corresponding extension in the empty text field; else, leave it empty to use automatic mode. Then click the "Translate" button : that will open the translation interface with the text from that document already loaded in the left text field.
+
+While you edit the text, you will notice there are some "empty" characters that you can't delete : those contain the formatting information of the original document, that you cannot edit during this translation process.
+
+When you're satisfied by your translation, you can click the "Get Translation result" button, that will enable you to download the translated file.
+
+
+
+----------------
+II. KNOWN ISSUES
+----------------
+
+Due to its "experimental" status, this project suffers from a few issues. As of 02/09/2010, know issues are :
+
+
+1*	In its current state, this interface has only been tested on recent versions of Firefox and Chrome.
+	However, many details have already been thought in a cross-browser way, so wider support should soon be possible.
+
+2*	Characters inputted through special composition methods (like the Linux compose key) will cause the edition logs to fail in Firefox, due to it not supporting the universal textInput event. It should work fine with Chrome or Safari.
+
+3*	It is not yet possible to copy/paste text in the translation area. Support for this - in browsers that have the corresponding events - should be possible in the future.
+
+4*	So far, only OpenOffice documents (odt, odp, etc.) can be reformatted at the end of the translation process. The functions for rebuilding other formats have not been written yet.

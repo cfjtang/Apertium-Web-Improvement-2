@@ -1,0 +1,319 @@
+\documentclass{beamer}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usetheme{Copenhagen}
+
+\title[Apertium Advanced Web Interface]{A first step towards interactivity and language tools convergence}
+
+\author[Vié, Villarejo Muñoz, Farrús Cabeceran, O'Regan] % (optional, for multiple authors)
+{Arnaud~Vié\inst{1} \and Luis~Villarejo~Muñoz\inst{2} \and Mireia~Farrús~Cabeceran\inst{2} \and Jimmy~O'Regan\inst{3}}
+\institute
+{
+  \inst{1}%
+  Informations Systems Engineering \\
+  Grenoble INP - Ensimag \\
+  {\tt arnaud.vie@ensimag.fr}
+  \and
+  \inst{2}%
+  Learning Technologies Office \\
+  Universitat Oberta de Catalunya \\
+  {\tt lvillarejo@uoc.edu}, \\* 
+  {\tt mfarrusc@uoc.edu}
+  \and
+  \inst{3}%
+  Eolaistriu Technologies \\
+  {\tt joregan@gmail.com}
+}
+
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{section}{Introduction}
+\begin{frame}{Two Main Uses of MT}
+\begin{description}
+  \item[Assimilation] \hfill \\
+  understanding the text
+  \item[Dissemination] \hfill \\
+  producing text for consumption
+\end{description}
+\end{frame}
+
+\begin{frame}{Dissemination}
+No MT system is perfect.
+
+Post-editing is required to produce text fit for human consumption.
+\end{frame}
+
+\begin{frame}{Post-Edition}
+MT Post-Edition is an active research area, with two main aims:
+
+\begin{itemize}
+\item Improve the translation.
+\item Improve the MT system itself.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Apertium and Post-Editing}
+Apertium currently has {\it no} post-editing facilities.
+
+This is an obvious disadvantage to the user, who must use other means
+to improve the translation.
+
+A less obvious disadvantage is to the developers of Apertium language
+pairs, who miss out on user feedback that could be used to improve the
+system.
+\end{frame}
+
+\begin{frame}{Two Types of Edits}
+\begin{description}
+  \item[Brief Edits] \hfill \\
+  small, local changes (mostly syntactic)
+  \item[Full Edits] \hfill \\
+  larger changes (mostly stylistic)
+\end{description}
+\end{frame}
+
+\begin{frame}{Full Edits}
+The most famous example of a Full Edit system is Google Translate's
+``Suggest a Better Translation'' feature.
+
+Users click on a sentence, and type a replacement. Google (after checking
+for a number of undesirables) later add this to their corpora for later
+integration.
+\end{frame}
+
+\begin{frame}{Full Edits}
+The Open Source Computer Assisted Translation tools Virtaal and OmegaT
+both include the facility to have the current sentence translated
+using (mostly) online MT services.
+
+To a certain degree, they can be considered Open Source MT post-edition
+tools, which allow Full Edits.
+
+However, using a desktop system with online translations brings the 
+disadvantages of desktop software to an online service (and vice versa).
+\end{frame}
+
+\begin{frame}{Brief Edits}
+Ironically, Google Translate is also the most famous example of a
+post-edition interface including Brief Edits.
+
+The ``Suggest'' feature has recently been replaced with a simpler
+feature that allows the user to click on an individual word, and
+choose an alternative translation.
+\end{frame}
+\end{section}
+
+\begin{section}{Project Goals}
+\begin{frame}{Primary Goals}
+\begin{itemize}
+\item Fully online
+\item Full Edits
+\item Easy to integrate with existing installations
+\item Extensible
+\item Feedback
+\item Integration with existing tools
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Fully online}
+Most Apertium users use it via a web interface.
+\end{frame}
+
+\begin{frame}{Full edits}
+The translator should be in control, not the interface
+\end{frame}
+
+\begin{frame}{Integration with Existing Installations}
+Most current web interfaces to Apertium are written in PHP; this
+interface was also written in PHP to make integration easier.
+\end{frame}
+
+\begin{frame}{Extensible}
+The interface was designed to be a {\it framework} for post-edition.
+
+Lacking current work in Apertium on automated post-edition, we cannot
+know what future needs will be.
+
+With the rapid pace of language pair development, we cannot know what
+future language pairs will need from post-edition.
+
+We don't assume.
+\end{frame}
+
+\begin{frame}{Feedback}
+The interface should log user changes, for protential use in 
+improving language pairs, and in developing automated post-edition tools.
+\end{frame}
+
+\begin{frame}{Integration with existing tools}
+We should leverage other Open Source projects where appropriate.
+
+Spell checking is provided by Aspell.
+
+Grammar checking is provided by LanguageTool.
+\end{frame}
+\end{section}
+
+\begin{section}{Reusing User Edits}
+\begin{frame}{Translation Memory}
+The most obvious way to reuse edits is by using Translation Memory.
+
+Apertium already includes support for TMX.
+
+Does not work particularly well below the sentence level.
+
+The mALIGNa sentence alignment tool is integrated, to allow
+creation of TMX files from edited sentences.
+\end{frame}
+
+\begin{frame}{Edit Logging}
+Realtime keystroke logging.
+
+Uses browser events.
+
+Associated events are aggregated and ``promoted'': a deleted 
+word is logged as a deleted word, not as a series of character 
+deletions.
+\end{frame}
+
+\begin{frame}{Word Objects}
+
+Each word is represented by an object containing:
+
+\begin{itemize}
+\item Current text (mutable)
+\item Original text (immutable)
+\item Reference to containing sentence object
+\item Reference to containing document node
+\item Position within the document node
+\item Reference to previous and next word objects
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sentence Objects}
+
+Each sentence is represented by an object containing:
+
+\begin{itemize}
+\item References to its first and last words
+\item References to previous and next sentence objects
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Logging}
+Logging is invoked whenever editing occurs.
+
+The logging module aggregates character level events and
+promotes them to word level events (deletion, insertion)
+or sentence level events (joining/splitting sentences)
+as appropriate.
+\end{frame}
+
+\begin{frame}{Logging}
+This aggregation is flexible: it may be modified to
+aggregate events in different ways, to provide more
+user feedback, etc., without changing the character-level
+logging system, which performs the bulk of the work.
+\end{frame}
+\end{section}
+
+\begin{section}{User Experience}
+\begin{frame}{Formatted Documents}
+Apertium operates as a series of programs in a Unix-like pipeline:
+each program reads from standard input, and writes to standard output.
+
+The first and last programs of a typical pipeline take care of removing
+formatting information, and restoring it, respectively.
+
+This formatting information is retained inline, escaped as
+{\it superblanks}: extended text contained within braces,
+which are treated as spaces by the translation components.
+\end{frame}
+
+\begin{frame}{Superblanks}
+
+Similarly to the convention used in Translation Memory software,
+superblanks are presented to the user as a set of colour-coded
+(greyed), immutable strings in the interface, so the user can
+know at all times where to move words in relation to formatting.
+\end{frame}
+\begin{frame}{Spell checking and Grammar checking}
+
+All checking is performed server-side, for consistency, and to reduce 
+administrative overhead.
+
+When the user presses the ``Check for Mistakes'' button, spelling and 
+grammar errors in the text are underlined (in red and blue, respectively).
+The user may then click on a word to see any suggestions the server
+may have to offer.
+
+\end{frame}
+
+\begin{frame}{External dictionaries}
+Mistake suggestions may be accompanied by translations of the suggestions
+provided by external web-based dictionaries, to help the user to find
+the intended meaning.
+
+Dictionaries are provided using OpenSearch XML files (used by the search
+feature in the Firefox and Chrome browsers), for which a large number
+of dictionaries have ready made configurations.
+\end{frame}
+
+\begin{frame}{Search and Replace}
+The interface includes a search and replace feature.
+
+In addition to the usual 'case sensitive'/'case insensitive' features,
+the interface includes an 'Apply source case' option, which takes
+case information from the original string and applies it to the
+replacement string.
+\end{frame}
+\end{section}
+
+\begin{section}{Future Possibilies}
+\begin{frame}{Future/Ongoing Work}
+
+The current interface has mostly been tested in Firefox: more
+testing is required for other browsers.
+
+More work is required to improve the response in the interface.
+
+TMX use with Apertium' built-in support is not currently optimal; OmegaT
+recently added an option to act as an automatic sentence translation system. 
+We are investigating integrating it.
+
+We are also looking into allowing After the Deadline to be used as an
+alternative to LanguageTool.
+\end{frame}
+\end{section}
+
+\begin{section}{End}
+\begin{frame}{Thanks}
+Questions?
+\end{frame}
+
+\begin{frame}{But first...}
+Arnaud could not join us today, because of his studies. 
+
+I hope you will join me in wishing him luck!
+\end{frame}
+
+\begin{frame}{Copying}
+\begin{figure*}
+  \caption{This presentation is Open Content}
+     \includegraphics[width=\textwidth]{by-sa.png}
+\end{figure*}
+
+This presentation is licensed under the Creative Commons Attribution 
+Share-Alike 3.0 Licence.
+
+\end{frame}
+
+\end{section}
+
+\end{document}​
