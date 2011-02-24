@@ -298,22 +298,31 @@ fi
 }
 
 morphify(){
-dixurl=$(grabmorph $1)
-if [ "$dixurl" = "" ]
+if [ -e "$WD/$base.$1.dix" ] 
 then
-	stubmorph $1
-	touch "$WD/COPYING"
-else 
-	ext=$(echo $dixurl|awk -F'.' '{print $NF}')
-	download "$dixurl" "$WD/$base.$1.$ext"
-	download "$url/trunk/apertium-en-es/COPYING" "$WD/COPYING"
-	if [ "$?" -eq "1" ]
+	echo "Skipping existing file: $WD/$base.$1.dix"
+	ext="dix"
+elif [ -e "$WD/$base.$1.metadix" ]
+then 
+	echo "Skipping existing file: $WD/$base.$1.metadix"
+	ext="metadix"
+else
+	dixurl=$(grabmorph $1)
+	if [ "$dixurl" = "" ]
 	then
 		stubmorph $1
-		ext="dix" #just in case, to skip next section
+		touch "$WD/COPYING"
+	else 
+		ext=$(echo $dixurl|awk -F'.' '{print $NF}')
+		download "$dixurl" "$WD/$base.$1.$ext"
+		download "$url/trunk/apertium-en-es/COPYING" "$WD/COPYING"
+		if [ "$?" -eq "1" ]
+		then
+			stubmorph $1
+			ext="dix" #just in case, to skip next section
+		fi
 	fi
 fi
-
 #Check if LANG1 or LANG2, for generating Make bits
 if [ "$1" = "$xx" ]
 then
@@ -467,7 +476,7 @@ fi
 
 cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t1x.bin: \$(BASENAME).\$(PREFIX$sidenum).t1x
-	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t1x
+	apertium-validate-transfer \$(BASENAME).\$(PREFIX$sidenum).t1x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t1x \$@
 
 __MAKE__
@@ -536,7 +545,7 @@ fi
 
 cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t2x.bin: \$(BASENAME).\$(PREFIX$sidenum).t2x
-	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t2x
+	apertium-validate-interchunk \$(BASENAME).\$(PREFIX$sidenum).t2x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t2x \$@
 
 __MAKE__
