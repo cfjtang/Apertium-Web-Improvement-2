@@ -405,16 +405,20 @@ fi
 }
 
 dochunker(){
-if [ "$1" = "$xx" ]
+if [ -e "$WD/$base.$1-$2.t1x" ]
 then
-	sidenum="1"
-	otherside="1"
+	echo "Skipping existing file: $WD/$base.$1-$2.t1x"
 else
-	sidenum="2"
-	otherside="1"
-fi
+	if [ "$1" = "$xx" ]
+	then
+		sidenum="1"
+		otherside="1"
+	else
+		sidenum="2"
+		otherside="1"
+	fi
 
-cat <<__CHUNKER__ > "$WD/$base.$1.t1x"
+	cat <<__CHUNKER__ > "$WD/$base.$1-$2.t1x"
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- -*- nxml -*- -->
 <transfer default="chunk">
@@ -460,12 +464,13 @@ cat <<__CHUNKER__ > "$WD/$base.$1.t1x"
 </transfer>
 __CHUNKER__
 
-cat << __MAKE__ >> "$WD/Makefile.am"
+	cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t1x.bin: \$(BASENAME).\$(PREFIX$sidenum).t1x
 	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t1x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t1x \$@
 
 __MAKE__
+fi
 }
 
 dointerchunk(){
@@ -478,7 +483,11 @@ else
 	otherside="1"
 fi
 
-cat <<__ICHUNK__ > "$WD/$base.$1.t2x"
+if [ -e "$WD/$base.$1-$2.t2x" ]
+then
+	echo "Skipping existing file: $WD/$base.$1-$2.t2x"
+else
+	cat <<__ICHUNK__ > "$WD/$base.$1-$2.t2x"
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- -*- nxml -*- -->
 <interchunk>
@@ -524,12 +533,13 @@ cat <<__ICHUNK__ > "$WD/$base.$1.t2x"
 </interchunk>
 __ICHUNK__
 
-cat << __MAKE__ >> "$WD/Makefile.am"
+	cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t2x.bin: \$(BASENAME).\$(PREFIX$sidenum).t2x
 	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t2x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t2x \$@
 
 __MAKE__
+fi
 }
 
 dopostchunk(){
@@ -542,7 +552,11 @@ else
 	otherside="1"
 fi
 
-cat <<__PCHUNK__ > "$WD/$base.$1.t3x"
+if [ -e "$WD/$base.$1-$2.t3x" ]
+then
+	echo "Skipping existing file: $$WD/$base.$1-$2.t3x"
+else
+	cat <<__PCHUNK__ > "$WD/$base.$1-$2.t3x"
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- -*- nxml -*- -->
 <postchunk>
@@ -583,12 +597,13 @@ cat <<__PCHUNK__ > "$WD/$base.$1.t3x"
 </postchunk>
 __PCHUNK__
 
-cat << __MAKE__ >> "$WD/Makefile.am"
+	cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t3x.bin: \$(BASENAME).\$(PREFIX$sidenum).t3x
 	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t3x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t3x \$@
 
 __MAKE__
+fi
 }
 
 genmodeanal(){
@@ -715,7 +730,11 @@ echo "  </mode>"
 }
 
 stubpost(){
-cat <<__PGEN__ >>"$WD/$base.post-$1.dix"
+if [ -e "$WD/$base.post-$1.dix" ]
+then
+	echo "Skipping existing file: $WD/$base.post-$1.dix" 
+else
+	cat <<__PGEN__ >>"$WD/$base.post-$1.dix"
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
   <alphabet/>
@@ -819,6 +838,7 @@ cat <<__PGEN__ >>"$WD/$base.post-$1.dix"
   </section>
 </dictionary>
 __PGEN__
+fi
 }
 
 posturl(){
@@ -910,7 +930,11 @@ fi
 }
 
 stubbil(){
-cat <<__BIL__ >"$WD/$base.$1-$2.dix"
+if [ -e "$WD/$base.$1-$2.dix" ]
+then
+	echo "Skipping existing file: $WD/$base.$1-$2.dix"
+else
+	cat <<__BIL__ >"$WD/$base.$1-$2.dix"
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
   <alphabet/>
@@ -922,6 +946,7 @@ cat <<__BIL__ >"$WD/$base.$1-$2.dix"
   </section>
 </dictionary>
 __BIL__
+fi
 }
 
 #Stuff happens...
@@ -954,12 +979,12 @@ __MAKEHEAD__
 morphify $xx
 morphify $yy
 
-dochunker $xx
-dochunker $yy
-dointerchunk $xx
-dointerchunk $yy
-dopostchunk $xx
-dopostchunk $yy
+dochunker $xx $yy
+dochunker $yy $xx
+dointerchunk $xx $yy
+dointerchunk $yy $xx
+dopostchunk $xx $yy
+dopostchunk $yy $xx
 
 probify $xx $yy
 probify $yy $xx
