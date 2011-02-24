@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2011 Jimmy O'Regan (Eolaistriu Technologies)
+# Copyright (C) 2011 European Commission
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -463,14 +463,14 @@ else
   </section-rules>
 </transfer>
 __CHUNKER__
+fi
 
-	cat << __MAKE__ >> "$WD/Makefile.am"
+cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t1x.bin: \$(BASENAME).\$(PREFIX$sidenum).t1x
 	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t1x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t1x \$@
 
 __MAKE__
-fi
 }
 
 dointerchunk(){
@@ -532,14 +532,14 @@ else
   </section-rules>
 </interchunk>
 __ICHUNK__
+fi
 
-	cat << __MAKE__ >> "$WD/Makefile.am"
+cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t2x.bin: \$(BASENAME).\$(PREFIX$sidenum).t2x
 	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t2x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t2x \$@
 
 __MAKE__
-fi
 }
 
 dopostchunk(){
@@ -596,14 +596,14 @@ else
   </section-rules>
 </postchunk>
 __PCHUNK__
+fi
 
-	cat << __MAKE__ >> "$WD/Makefile.am"
+cat << __MAKE__ >> "$WD/Makefile.am"
 \$(PREFIX$sidenum).t3x.bin: \$(BASENAME).\$(PREFIX$sidenum).t3x
 	apertium-validate-postchunk \$(BASENAME).\$(PREFIX$sidenum).t3x
 	apertium-preprocess-transfer \$(BASENAME).\$(PREFIX$sidenum).t3x \$@
 
 __MAKE__
-fi
 }
 
 genmodeanal(){
