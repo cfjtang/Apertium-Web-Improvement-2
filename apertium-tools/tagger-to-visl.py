@@ -135,3 +135,11 @@ for line in sys.stdin: #{
 		ci += 1;
 	print ''.join(new);
 #}
+if WXML and blank != [] : #{
+	# Flush out any remaining superblanks:
+	new = [];
+	new.append(BLANKSTART);
+	new.extend(blank)
+	new.append(BLANKEND);
+	print ''.join(new);
+#}
