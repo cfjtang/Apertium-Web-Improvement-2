@@ -1135,7 +1135,89 @@ Todo: word-at-point function which ignores xml stuff."
 	 (surface (substring ambig (string-match "\\^" ambig) first))
 	 (analyses (substring ambig first (string-match "\\$" ambig))))
     (mapconcat (lambda (analysis) (concat surface "/" analysis "$"))
-	       (split-string analyses "/" 'omitnulls) " "))) 
+	       (split-string analyses "/" 'omitnulls) " ")))
+
+(defun dix-rstrip (whole end)
+  "Remove substring `end' from string `whole' and return the result."
+  (if (string= end
+	       (substring whole
+			  (- (length whole) (length end))))
+      (substring whole 0 (- (length whole) (length end)))
+    (error (concat "The string \"" end "\" does not end \"" whole "\""))))
+
+(defun dix-consume-i (substr)
+  "Try to remove `substr' from this <i>-element."
+  (when (> (length substr) 0)
+    (let ((end (+ (point) (length substr))))
+      (if (string= (xmltok-start-tag-qname) "i")
+	  (if (string= substr (buffer-substring-no-properties (point) end))
+	      (delete-region (point) end)
+	    (error "dix-consume-i did not find substring"))
+	(error "bailing out, dix-consume-i can't handle elements other than <i>")))))
+
+(defun dix-guess-pardef (&optional partype)
+  "How to use: write a long word, e.g. a compound noun like
+\"øygruppe\", in the dix file below all the nouns, put point
+between \"øy\" and \"gruppe\", and if \"gruppe\" is defined
+somewhere above, this function will turn the word into:
+
+<e lm=\"øygruppe\">    <i>øygrupp</i><par n=\"lø/e__n\"/></e>
+
+Optional string argument `partype' lets you restrict the search
+to entries with pardef names ending in that string (e.g. \"__n\").
+
+TODO: ideally, instead of having to place the cursor at the
+compound border, it should try to get the longest possible match,
+the same as trying this function from first char, then from
+second, etc., but preferably using a more efficient method..."
+  (interactive)
+  (let* ((rhs (buffer-substring-no-properties (point) (line-end-position)))
+	 (pos (save-excursion
+		(re-search-backward
+		 (concat "<e.* lm=\"[^\"]*" rhs "\".*" partype "\"") nil 'noerror 1))))
+    (if pos
+	(let ((e (buffer-substring-no-properties pos (nxml-scan-element-forward pos)))
+	      (word (buffer-substring-no-properties (line-beginning-position)
+						    (line-end-position))))
+	  (delete-region (line-beginning-position) (line-end-position))
+	  (insert e)
+	  (nxml-backward-single-balanced-item)
+	  (dix-next)
+	  (let* ((lmbound (progn (nxml-token-after)
+				 (nxml-attribute-value-boundary (point))))
+		 (oldlm (buffer-substring-no-properties (car lmbound) (cdr lmbound)))
+		 ;; (oldroot.suffix (dix-split-root-suffix))
+		 ;; (oldroot (car oldroot.suffix))
+		 ;; (suffix (cdr oldroot.suffix))
+		 ;; (nroot (if suffix
+		 ;; 	   (if (string= (substring word (- (length suffix))) suffix)
+		 ;; 	       (substring word 0 (- (length suffix)))
+		 ;; 	     (error "Pardef suffix didn't match!"))
+		 ;; 	 word))
+		 (oldlhs (dix-rstrip oldlm rhs))
+		 (lhs (dix-rstrip word rhs)))
+	    (delete-region (car lmbound) (cdr lmbound))
+	    (insert word)
+	    (dix-next)
+	    (dix-consume-i oldlhs)
+	    (unless (string= (xmltok-start-tag-qname) "i")
+	      (nxml-backward-up-element)
+	      (insert "<i></i>")
+	      (backward-char 4))
+	    (insert lhs)
+	    (beginning-of-line) (insert (concat "<!-- " oldlm " -->")) (end-of-line)))
+      (message "No fitting word found :-/"))))
+
+(defun dix-guess-pardef__n ()
+  "Like `dix-guess-pardef', but restricted to pardefs with names
+ending in __n"
+  (interactive)
+  (dix-guess-pardef "__n"))
+(defun dix-guess-pardef__vblex_adj ()
+  "Like `dix-guess-pardef', but restricted to pardefs with names
+ending in __vblex_adj"
+  (interactive)
+  (dix-guess-pardef "__vblex_adj")) 
 
 (defun dix-point-after-> ()
   (equal (buffer-substring-no-properties (1- (point)) (point))
