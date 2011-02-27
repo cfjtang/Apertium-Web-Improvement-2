@@ -88,7 +88,7 @@
 ;;; - `dix-reverse' should be able to reverse on a regexp match, so
 ;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
 
-(defconst dix-version "2010-04-06") 
+(defconst dix-version "2011-02-27") 
 
 (require 'nxml-mode)
 (require 'easymenu)
