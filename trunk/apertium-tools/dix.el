@@ -141,6 +141,14 @@ versions use the regular built-in highlighting."))
     ["View pardef" dix-view-pardef
      :help "View the pardef in another window"]
     ["Go to pardef" dix-goto-pardef]
+    ("Guess pardef of the word on this line..."
+     :help "Write a single word on a line, place point somewhere inside the word, and this will guess the pardef using the above entries."
+     ["with no PoS restriction" dix-guess-pardef
+      :help "Write a single word on a line, place point somewhere inside the word, and this will guess the pardef using the above entries."]
+     ["looking only at __n-pardefs" dix-guess-pardef__n
+      :help "Write a single word on a line, place point somewhere inside the word, and this will guess the pardef using the above __n-entries."]
+     ["looking only at __vblex_adj-pardefs" dix-guess-pardef__vblex_adj
+      :help "Write a single word on a line, place point somewhere inside the word, and this will guess the pardef using the above __vblex_adj-entries."])
     "---"
     ["Sort pardef" dix-sort-pardef
      :help "Must be called from within a pardef"]
@@ -1498,6 +1506,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
+(define-key dix-mode-map (kbd "C-c g") 'dix-guess-pardef)
 (define-key dix-mode-map (kbd "C-c V") 'dix-view-pardef)
 (define-key dix-mode-map (kbd "C-c W") 'dix-word-search-forward)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
