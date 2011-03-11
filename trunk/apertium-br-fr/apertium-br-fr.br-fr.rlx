@@ -168,6 +168,9 @@ SECTION
 
 REMOVE DetPos IF (0 DetPos) (0 Prep) (1C Toponim);
 
+# en ur gambr.
+REMOVE Vpart (NOT 1 Verb);
+
 #Ma vez klasket sevel abadennoù
 REMOVE DetPos IF (-1 BOS) (1C Verb);
 
@@ -293,7 +296,7 @@ SELECT VerbImp IF (-1 VpartNegImp);
 SELECT Prep IF (-1 Vbloc) (NOT 1 SoftMut);
 
 #Kalz tostoc’h emañ e brezegenn ouzh da hini
-REMOVE Prep + ("e") IF (1 SoftMutCons) (1 SoftMut);
+REMOVE Prep + ("e") IF (0 Vpart) (0 Prep) (1 SoftMutCons) (1 SoftMut) (NOT 1C NC);
 
 # REGLA (B0008): "edo o vervel"
 SELECT VpartGer IF (1 VerbInf);
