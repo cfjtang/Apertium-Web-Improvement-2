@@ -2,7 +2,7 @@
 PREFIX=apertium-eu-eu_bis
 LANG1=eu
 LANG2=eu_bis
-FILTERTAG="<post>"
+FILTERTAG="(<vbper>|<vbsint>|<vblex>)"
 
 echo "=======================";
 echo "Comprovació superficial";
@@ -10,7 +10,7 @@ echo "=======================";
 echo -n "Calculant expansió inicial...";
 #lt-expand $PREFIX.$1.dix | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' |apertium-pretransfer | grep -v "REGEXP" > comp-$1-$2.expand
 lt-expand $PREFIX.$1.dix > expand-$1-$2
-cat expand-$1-$2 | grep -v "$FILTERTAG" | grep -v "REGEXP" > expand-$1-$2.filtered
+cat expand-$1-$2 | egrep -v "$FILTERTAG" | grep -v "REGEXP" > expand-$1-$2.filtered
 cat expand-$1-$2.filtered | awk 'BEGIN{FS=":"}{if($2!="<") printf($1"::::\n")}'  > lemes-$1-$2.expand.filtered
 cat expand-$1-$2.filtered | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' | apertium-pretransfer > comp-$1-$2.expand.filtered
 echo " fet.";
@@ -59,7 +59,7 @@ if [ $resposta = "si" ]
 then
     echo "Continuant comprovació completa, ^C per a cancelar"
     echo -n "Calculant expansió filtrada..."
-    cat expand-$1-$2 | grep "$FILTERTAG" > comp-$1-$2.filtered
+    cat expand-$1-$2 | egrep "$FILTERTAG" > comp-$1-$2.filtered
     echo " fet."
     echo -n "Executant el traductor..."
     apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$1-$2.filtered | apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | lt-proc -d $1-$2.autogen.bin > comp-$1-$2.trans
@@ -68,7 +68,19 @@ then
     paste comp-$1-$2.filtered comp-$1-$2.trans > comprovacio-$1-$2
     egrep "(@|/|. #)" comprovacio-$1-$2 > errors-$1-$2
     echo " fet."
+    rm expand-$1-$2
+    rm expand-$1-$2.filtered
+    rm lemes-$1-$2.expand.filtered
+    rm comp-$1-$2.expand.filtered
+    rm comp-$1-$2.trans
+    rm comprovacio-$1-$2
 
 else
     echo "Fi de la comprovació de vocabulari."
+    rm expand-$1-$2
+    rm expand-$1-$2.filtered
+    rm lemes-$1-$2.expand.filtered
+    rm comp-$1-$2.expand.filtered
+    rm comp-$1-$2.trans
+    rm comprovacio-$1-$2
 fi
