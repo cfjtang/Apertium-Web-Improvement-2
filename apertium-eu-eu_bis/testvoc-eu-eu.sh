@@ -2,7 +2,7 @@
 PREFIX=apertium-eu-eu_bis
 LANG1=eu
 LANG2=eu_bis
-FILTERTAG="(<vbper>|<vbsint>|<vblex>)"
+FILTERTAG="<post>"
 
 echo "=======================";
 echo "Comprovació superficial";
