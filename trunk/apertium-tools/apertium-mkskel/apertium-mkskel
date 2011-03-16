@@ -245,18 +245,8 @@ stubmorph(){
   
   <pardefs>
     <pardef n="house__n">
-      <e>
-        <p>
-          <l/>
-          <r><s n="n"/><s n="sg"/></r>
-        </p>
-      </e>
-      <e>
-        <p>
-          <l>s</l>
-          <r><s n="n"/><s n="pl"/></r>
-        </p>
-      </e>
+      <e><p><l/><r><s n="n"/><s n="sg"/></r></p></e>
+      <e><p><l>s</l><r><s n="n"/><s n="pl"/></r></p></e>
     </pardef>
   </pardefs>
   <section id="main" type="standard">
@@ -882,6 +872,7 @@ esac
 proburl(){
 case $1 in
 	en) echo "$url/trunk/apertium-en-es/en-es.prob" ;;
+	bg) echo "$url/trunk/apertium-mk-bg/bg-mk.prob" ;;
 	es) echo "$url/trunk/apertium-en-es/es-en.prob" ;;
 	fr) echo "$url/trunk/apertium-fr-es/fr-es.prob" ;;
 	pt) echo "$url/trunk/apertium-es-pt/pt-es.prob" ;;
@@ -898,6 +889,7 @@ case $1 in
 	en) echo "$url/trunk/apertium-en-es/apertium-en-es.en.tsx" ;;
 	es) echo "$url/trunk/apertium-en-es/apertium-en-es.es.tsx" ;;
 	fr) echo "$url/trunk/apertium-fr-es/apertium-fr-es.fr.tsx" ;;
+	bg) echo "$url/trunk/apertium-mk-bg/apertium-mk-bg.bg.tsx" ;;
 	pt) echo "$url/trunk/apertium-es-pt/apertium-es-pt.pt.tsx" ;;
 	da) echo "$url/trunk/apertium-sv-da/apertium-sv-da.da.tsx" ;;
 	sv) echo "$url/trunk/apertium-sv-da/apertium-sv-da.sv.tsx" ;;
@@ -961,19 +953,21 @@ else
 <dictionary>
   <alphabet/>
   <sdefs>
-    <sdef n="n"/>
-    <sdef n="mf"/>
-    <sdef n="sg"/>
-    <sdef n="cm"/>
-    <sdef n="sent"/>
-    <sdef n="lquest"/>
-    <sdef n="lpar"/>
-    <sdef n="rpar"/>
-    <sdef n="apos"/>
-    <sdef n="web"/>
-    <sdef n="guio"/>
-    <sdef n="num"/>
-    <sdef n="percent"/>
+    <sdef n="n"         c="Noun"/>
+    <sdef n="num"       c="Numeral"/>
+
+    <sdef n="mf"        c="Masculine/feminine"/>
+    <sdef n="sg"        c="Singular"/>
+
+    <sdef n="cm"        c="Comma"/>
+    <sdef n="sent"      c="Sentence marker"/>
+    <sdef n="lquest"    c="Left question mark"/>
+    <sdef n="lpar"      c="Left parenthesis"/>
+    <sdef n="rpar"      c="Right parenthesis"/>
+    <sdef n="apos"      c="Apostrophe"/>
+    <sdef n="web"       c="Web address"/>
+    <sdef n="guio"      c="Hyphen"/>
+    <sdef n="percent"   c="Percentage"/>
   </sdefs>
   <section id="main" type="standard">
     <e><p><l>foo<s n="n"/></l><r>bar<s n="n"/></r></p></e>
