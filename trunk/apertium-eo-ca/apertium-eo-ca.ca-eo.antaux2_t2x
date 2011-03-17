@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
+<!-- aldoni "SN" -> SN, "SAdj" -> SAdj ktp -->
+<!-- celà signife "ça" -->
+
 <interchunk>
 
   <section-def-cats>
@@ -8,41 +11,102 @@
       <cat-item tags="unknown"/>
       <cat-item tags="SN.*"/>
     </def-cat>
+
+    <def-cat n="SNrelatiu">
+      <cat-item tags="SNrelatiu.*"/>
+    </def-cat>
+
+    <def-cat n="SN_nopron"> <!-- sen pronomoj -->
+      <cat-item tags="SN.m.*"/>
+      <cat-item tags="SN.f.*"/>
+      <cat-item tags="SN.mf.*"/>
+    </def-cat>
+
     <def-cat n="num">
       <cat-item lemma="num" tags="SN.*"/>
     </def-cat>
+
     <def-cat n="det">
       <cat-item tags="DET.*"/>
     </def-cat>
+
     <def-cat n="SAdj"> <!-- adjektiva sintagmo -->
       <cat-item tags="SA.*"/>
     </def-cat>
+
+    <def-cat n="pp">
+      <cat-item lemma="pp" tags="SA.*"/>
+    </def-cat>
+
     <def-cat n="adv">
       <cat-item tags="adv"/>
       <cat-item tags="preadv"/>
     </def-cat>
+
     <def-cat n="SV">
       <cat-item tags="SV"/>
       <cat-item tags="SV.*"/>
     </def-cat>
+
+    <def-cat n="pr">
+      <cat-item tags="pr"/>
+    </def-cat>
+
+    <def-cat n="de">
+      <cat-item lemma="de" tags="pr"/>
+    </def-cat>
+
     <def-cat n="unknown">
        <cat-item lemma="unknown" tags=""/>
     </def-cat>
+
     <def-cat n="CC">
       <cat-item tags="CC.*"/>
       <cat-item tags="and_or.*"/>
     </def-cat>
-    <def-cat n="CM">
+
+    <def-cat n="cm">
       <cat-item lemma="cm" tags="sent"/>
+      <cat-item lemma="lpar" tags="sent"/>
     </def-cat>
+
     <def-cat n="and_or">
       <cat-item tags="and_or.*"/>
     </def-cat>
+
     <def-cat n="da">
       <cat-item lemma="da" tags="pr"/>
     </def-cat>
+
     <def-cat n="loc">
       <cat-item lemma="loc" tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="sent_preblank">
+      <cat-item lemma="?" tags="sent"/>
+      <cat-item lemma="!" tags="sent"/>
+      <cat-item lemma=":" tags="sent"/>
+      <cat-item lemma=";" tags="sent"/>
+    </def-cat>
+
+    <def-cat n="any">
+      <cat-item tags="SN.*"/>
+      <cat-item tags="SA.*"/>
+      <cat-item tags="SV.*"/>
+      <cat-item tags="preadv"/>
+      <cat-item tags="adv"/>
+      <cat-item tags="adv.*"/>
+      <cat-item tags="num.*"/>
+      <cat-item tags="predet.*"/>
+      <cat-item tags="DET.*"/>
+      <cat-item tags="cnjadv"/>
+      <cat-item tags="cnjcoo"/>
+      <cat-item tags="cnjsub"/>
+      <cat-item tags="pr"/>
+      <cat-item tags="ij"/>
+      <cat-item tags="unknown"/>
+      <cat-item tags="sent"/>
+      <cat-item tags="default"/>
     </def-cat>
   </section-def-cats>
 
@@ -57,11 +121,16 @@
       <attr-item tags="acc"/>
     </def-attr>
 
-    <def-attr n="a_nbr">
-      <attr-item tags="sp"/>
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="mf"/>
+    </def-attr>
+
+    <def-attr n="nbr">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
-      <attr-item tags="ND"/>
+      <attr-item tags="sp"/>
     </def-attr>
   </section-def-attrs>
 
@@ -70,6 +139,38 @@
     <def-var n="genere"/>
   </section-def-vars>
 
+
+<section-def-macros>
+
+    <def-macro n="kunordigo_nbr" npar="2">
+       <choose>
+          <when>
+            <test>
+              <and>
+                <equal><clip pos="2" part="nbr"/><lit-tag v="sp"/></equal>
+                <or>
+                  <equal><clip pos="1" part="nbr"/><lit-tag v="sg"/></equal>
+                  <equal><clip pos="1" part="nbr"/><lit-tag v="pl"/></equal>
+                </or>
+              </and>
+            </test>
+            <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+	</when>
+      </choose>
+    </def-macro>
+
+  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+     	<choose>
+     	  <when>
+     	    <test><not><equal><b pos="1"/><lit v=" "/></equal></not></test>
+            <out>
+              <b pos="1"/>
+            </out>
+          </when>     	    
+     	</choose>
+  </def-macro>
+
+</section-def-macros>
 
   <section-rules>
 
@@ -165,5 +266,227 @@
       </action>
 </rule>
  
+<rule comment="REGLA: SN SNrel ( deux enseignants (dont une femme) )">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SNrelatiu"/>
+      </pattern>
+      <action>
+        <call-macro n="kunordigo_nbr">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SN, SNrel ( deux enseignants (dont une femme) )">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="cm"/>
+	<pattern-item n="SNrelatiu"/>
+      </pattern>
+      <action>
+        <call-macro n="kunordigo_nbr">
+          <with-param pos="1"/>
+          <with-param pos="3"/>
+        </call-macro>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN PP ( le livre tombé )">
+      <pattern>
+	<pattern-item n="SN_nopron"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+
+       <choose>
+          <when>
+            <test>
+              <and>
+                <or>
+                  <equal><clip pos="1" part="nbr"/><clip pos="2" part="nbr"/></equal>
+                  <equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
+                  <equal><clip pos="2" part="nbr"/><lit-tag v="sp"/></equal>
+                </or>
+                <or>
+                  <equal><clip pos="1" part="gen"/><clip pos="2" part="gen"/></equal>
+                  <equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal>
+                  <equal><clip pos="2" part="gen"/><lit-tag v="mf"/></equal>
+                </or>
+              </and>
+            </test>
+            <call-macro n="kunordigo_nbr">
+              <with-param pos="1"/>
+              <with-param pos="2"/>
+            </call-macro>
+	    <out>
+              <chunk>
+                <clip pos="1" part="lem"/>
+                <clip pos="1" part="tags"/>
+                <lit v="{"/>
+                <clip pos="1" part="content"/>
+                    <b pos="1"/>
+                <clip pos="2" part="content"/>
+                 <lit v="}"/>
+              </chunk>
+	    </out>
+	</when>
+	<otherwise>
+	  <out>
+	    <chunk>
+	      <clip pos="1" part="whole"/>
+	    </chunk>
+	    <b pos="1"/>
+	    <chunk>
+	      <clip pos="2" part="whole"/>
+	      <lit-tag v="hola"/>
+	    </chunk>
+	  </out>
+	</otherwise>
+      </choose>
+    </action>
+</rule>
+
+
+<!--
+bedaŭrinde ne eblas (en kelkaj okazoj) meti ĉion sub unu solan SN; pro tio, sencela
+<rule comment="REGLA: SN DE SN PP ( la version des faits soutenue )">
+      <pattern>
+	<pattern-item n="SN_nopron"/>
+	<pattern-item n="de"/>
+	<pattern-item n="SN_nopron"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>
+
+       <choose> - se estas kunordigo inter SN2 kaj pp ni ligas ilin -
+          <when>
+            <test>
+              <and>
+                <or>
+                  <equal><clip pos="3" part="nbr"/><clip pos="2" part="nbr"/></equal>
+                  <equal><clip pos="3" part="nbr"/><lit-tag v="sp"/></equal>
+                  <equal><clip pos="4" part="nbr"/><lit-tag v="sp"/></equal>
+                </or>
+                <or>
+                  <equal><clip pos="3" part="gen"/><clip pos="2" part="gen"/></equal>
+                  <equal><clip pos="3" part="gen"/><lit-tag v="mf"/></equal>
+                  <equal><clip pos="4" part="gen"/><lit-tag v="mf"/></equal>
+                </or>
+              </and>
+            </test>
+            <call-macro n="kunordigo_nbr">
+              <with-param pos="3"/>
+              <with-param pos="2"/>
+            </call-macro>
+	    <out>
+	      <chunk>
+	        <clip pos="1" part="whole"/>
+	      </chunk>
+	      <b pos="1"/>
+	      <chunk>
+	        <clip pos="2" part="whole"/>
+	      </chunk>
+	      <b pos="2"/>
+              <chunk>
+                <clip pos="3" part="lem"/>
+                <clip pos="3" part="tags"/>
+                <lit v="{"/>
+                <clip pos="3" part="content"/>
+                    <b pos="3"/>
+                <clip pos="4" part="content"/>
+                 <lit v="}"/>
+              </chunk>
+	    </out>
+	</when>
+	<otherwise>
+           <choose> - se estas kunordigo inter SN1 kaj pp ni ligas ilin -
+              <when>
+                <test>
+                  <and>
+                    <or>
+                      <equal><clip pos="1" part="nbr"/><clip pos="2" part="nbr"/></equal>
+                      <equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
+                      <equal><clip pos="4" part="nbr"/><lit-tag v="sp"/></equal>
+                    </or>
+                    <or>
+                      <equal><clip pos="1" part="gen"/><clip pos="4" part="gen"/></equal>
+                      <equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal>
+                      <equal><clip pos="4" part="gen"/><lit-tag v="mf"/></equal>
+                    </or>
+                  </and>
+                </test>
+                <call-macro n="kunordigo_nbr">
+                  <with-param pos="1"/>
+                  <with-param pos="4"/>
+                </call-macro>
+	        <out> - bedaŭrinde ni ne povas krei unu solan SN pro tio, ke ni ne povas heredigi valorojn al la interna SN -
+	          <chunk>
+	            <clip pos="1" part="whole"/>
+	          </chunk>
+	          <b pos="1"/>
+	          <chunk>
+	            <clip pos="2" part="whole"/>
+	          </chunk>
+	          <b pos="2"/>
+	          <chunk>
+	            <clip pos="3" part="whole"/>
+	          </chunk>
+	          <b pos="3"/>
+	          <chunk>
+	            <clip pos="4" part="whole"/>
+	          </chunk>
+	        </out>
+	    </when>
+	    <otherwise>
+	      <out>
+	        <chunk>
+	          <clip pos="1" part="whole"/>
+	        </chunk>
+	        <b pos="1"/>
+	        <chunk>
+	          <clip pos="2" part="whole"/>
+	        </chunk>
+	        <b pos="2"/>
+	        <chunk>
+	          <clip pos="3" part="whole"/>
+	        </chunk>
+	        <b pos="3"/>
+	        <chunk>
+	          <clip pos="4" part="whole"/>
+	        </chunk>
+	      </out>
+	    </otherwise>
+          </choose>
+	</otherwise>
+      </choose>
+    </action>
+</rule>
+-->
+
   </section-rules>
 </interchunk>
