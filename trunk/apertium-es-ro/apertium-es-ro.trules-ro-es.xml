@@ -299,6 +299,7 @@
     </def-attr>
     <def-attr n="a_np">
       <attr-item tags="np"/>
+      <attr-item tags="np.loc"/>
     </def-attr>
     <def-attr n="a_npant">
       <attr-item tags="np.ant"/>
@@ -3974,7 +3975,121 @@
     </rule>
 
 <rule>
+
+<!-- REGLA 10a DELIA: NOM + ADJ + DETA + NPLOC oficiile consulare ale României = las oficinas consulares de Rumanía-->
+      <pattern>        
+        <pattern-item n="nom"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="deta"/>
+        <pattern-item n="nploc"/>
+      </pattern>
+      <action> 
+        <call-macro n="f_modgen">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_modgen">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_concord2">
+          <with-param pos="1"/>
+          <with-param pos="2"/> 
+	</call-macro> 
+          <choose>
+              <when>
+                <test>
+                  <equal>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <lit-tag v="mf"/>
+                  </equal>
+                </test>
+               <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="1" side="tl" part="lemh"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                <clip pos="1" side="tl" part="lemq"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="2" side="tl" part="lemh"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+            <clip pos="2" side="tl" part="lemq"/>
+           
+                  </lu>
+                  <b/>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                 <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nploc"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </when>
+	      <otherwise>
+               <out>
+                  <lu>
+                    <lit v="el"/>
+                    <lit-tag v="det.def"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                  </lu>
+                 <b/>
+                  <lu>
+                    <clip pos="1" side="tl" part="lemh"/>
+                    <clip pos="1" side="tl" part="a_nom"/>
+                    <clip pos="1" side="tl" part="gen"/>
+                    <clip pos="1" side="tl" part="nbr"/>
+                <clip pos="1" side="tl" part="lemq"/>
+                  </lu>
+	           <b/>
+                   <lu>
+                    <clip pos="2" side="tl" part="lemh"/>
+                    <clip pos="2" side="tl" part="a_adj"/>
+                    <clip pos="2" side="tl" part="gen"/>
+                    <clip pos="2" side="tl" part="nbr"/>
+            <clip pos="2" side="tl" part="lemq"/>
+           
+                  </lu>
+                  <b/>
+                  <lu>
+		    <lit v="de"/>  
+		    <lit-tag v="pr"/>
+                  </lu>
+                  <b/>
+                  <lu>
+                    <clip pos="4" side="tl" part="lem"/>
+                    <clip pos="4" side="tl" part="a_nploc"/>
+                    <clip pos="4" side="tl" part="gen"/>
+                    <clip pos="4" side="tl" part="nbr"/>
+                  </lu>
+                </out>
+              </otherwise>
+            </choose>
+         </action>
+    </rule> 
+
+
+<rule>
 <!-- REGLA 10 DELIA: NOM + ADJ + DETA + NP oficiile consulare ale României = las oficinas consulares de Rumanía-->
+
       <pattern>        
         <pattern-item n="nom"/>
         <pattern-item n="adj"/>
@@ -4083,7 +4198,6 @@
             </choose>
          </action>
     </rule> 
-
 
 <rule>
 <!-- REGLA 11 DELIA: NOM (def)+ DETA + Rel Cărui + Nom /cartea a cărei copertă = el libro cuya portada-->
@@ -10650,7 +10764,7 @@ is not applicable because gender and number can not be taken from previous rules
             <clip pos="1" side="tl" part="a_verb"/>
             <clip pos="1" side="tl" part="temps"/>
             <clip pos="3" side="tl" part="persona"/>
-            <clip pos="1" side="tl" part="gen"/>
+            <!--<clip pos="1" side="tl" part="gen"/>-->
             <clip pos="3" side="tl" part="nbr"/>
 	    <clip pos="1" side="tl" part="lemq"/>
           </lu>
@@ -10985,7 +11099,7 @@ is not applicable because gender and number can not be taken from previous rules
             <clip pos="2" side="tl" part="a_verb"/>
             <lit-tag v="ifi"/>
             <clip pos="4" side="tl" part="persona"/>
-            <clip pos="2" side="tl" part="gen"/>
+            <!--<clip pos="2" side="tl" part="gen"/>-->
             <clip pos="4" side="tl" part="nbr"/>
 	    <clip pos="2" side="tl" part="lemq"/>
           </lu>
