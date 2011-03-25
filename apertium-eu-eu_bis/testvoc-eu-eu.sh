@@ -59,7 +59,7 @@ if [ $resposta = "si" ]
 then
     echo "Continuant comprovació completa, ^C per a cancelar"
     echo -n "Calculant expansió filtrada..."
-    cat expand-$1-$2 | egrep "$FILTERTAG" > comp-$1-$2.filtered
+    cat expand-$1-$2 | egrep "$FILTERTAG" | grep -v "REGEXP" | awk 'BEGIN{FS=":"}{if($2!="<") printf("^.<sent>$ ^%s$\n",$NF)}' | apertium-pretransfer > comp-$1-$2.filtered
     echo " fet."
     echo -n "Executant el traductor..."
     apertium-transfer $PREFIX.$1-$2.t1x $1-$2.t1x.bin $1-$2.autobil.bin < comp-$1-$2.filtered | apertium-interchunk $PREFIX.$1-$2.t2x $1-$2.t2x.bin | apertium-postchunk $PREFIX.$1-$2.t3x $1-$2.t3x.bin | lt-proc -d $1-$2.autogen.bin > comp-$1-$2.trans
