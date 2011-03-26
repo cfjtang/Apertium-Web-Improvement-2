@@ -213,9 +213,13 @@ function analyseLanguageToolReport($text, $correction_result, $merge_colliding)
 	
 	$correction_result = simplexml_load_string($correction_result);
 	
-	foreach($correction_result->children() as $error)
+	if($correction_result)
 	{
-		insertMistake(array('text' => utf8_substr($text, intval($error['fromx']), intval($error['errorlength'])), 'start' => intval($error['fromx']), 'end' => intval($error['fromx']) + intval($error['errorlength']) - 1, 'desc' => (string)$error['msg'], 'sugg' => explode('#', $error['replacements'])), $mistakes, $text, $merge_colliding);
+		//If LanguageTool ran fine and produced an XML result, fetch its contents
+		foreach($correction_result->children() as $error)
+		{
+			insertMistake(array('text' => utf8_substr($text, intval($error['fromx']), intval($error['errorlength'])), 'start' => intval($error['fromx']), 'end' => intval($error['fromx']) + intval($error['errorlength']) - 1, 'desc' => (string)$error['msg'], 'sugg' => explode('#', $error['replacements'])), $mistakes, $text, $merge_colliding);
+		}
 	}
 	
 	return $mistakes;
