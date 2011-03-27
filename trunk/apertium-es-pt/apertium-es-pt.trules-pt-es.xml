@@ -9447,26 +9447,16 @@
 								</equal>
 							</or>
 						</test>
-						<out>
-							<lu>
-								<clip pos="1" side="tl" part="lemh"/>
-								<clip pos="1" side="tl" part="a_verb"/>
-								<lit-tag v="prs"/>
-								<clip pos="1" side="tl" part="persona"/>
-								<clip pos="1" side="tl" part="nbr"/>
-								<!-- 						<clip pos="1" side="tl" part="lemq"/>	  -->
-							</lu>
-						</out>
+						<let>
+							<clip pos="1" side="tl" part="temps"/>
+							<lit-tag v="prs"/>
+						</let>
 					</when>
-					<otherwise>
-						<out>
-							<lu>
-								<clip pos="1" side="tl" part="whole"/>
-							</lu>
-						</out>
-					</otherwise>
 				</choose>
 				<out>
+					<lu>
+						<clip pos="1" side="tl" part="whole"/>
+					</lu>
 					<b pos="1"/>
 					<lu>
 						<get-case-from pos="2">
