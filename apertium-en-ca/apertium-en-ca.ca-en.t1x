@@ -3115,9 +3115,29 @@ del transfer i les regles. Potser seria necessari redefinir les regles.
 	<call-macro n="f_concord2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
-	</call-macro>
+	</call-macro>       
+       <choose>
+          <when>
+            <test>
+              <equal>
+                <clip pos="2" side="sl" part="lem"/>
+                <lit v="any"/>
+              </equal>
+            </test>
+           <let>             
+             <var n="lema_chunk"/> 
+             <lit v="num_year"/> 
+           </let>
+          </when>
+          <otherwise>
+           <let>             
+             <var n="lema_chunk"/> 
+             <lit v="num_nom"/> 
+           </let>
+          </otherwise>
+        </choose>
 	<out>  
-	  <chunk name="num_nom" case="caseFirstWord">
+	  <chunk namefrom="lema_chunk" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="2" side="sl" part="gen"/></tag>
