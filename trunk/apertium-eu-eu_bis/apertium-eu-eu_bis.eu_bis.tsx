@@ -255,6 +255,7 @@
 
 <def-label name="ADVITG">
     <tags-item tags="adv.itg"/>
+    <tags-item tags="adv.itg.*"/>
   </def-label>
 
 
@@ -1550,6 +1551,15 @@
       <label-item label="DETINDIZL"/>
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
+    </sequence>
+  </def-mult>
+<def-mult name="DETINDIZL_POST_ART_POST_POST" closed="true">
+    <sequence>
+      <label-item label="DETINDIZL"/>
+      <tags-item tags="post"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
       <tags-item tags="post"/>
     </sequence>
   </def-mult>
