@@ -275,6 +275,7 @@
   </def-label>
   <def-label name="CNJADV">
     <tags-item tags="cnjadv"/>
+    <tags-item tags="scnjadv"/>
   </def-label>
   <def-label name="CNJLOC">
     <tags-item tags="cnjloc"/>
@@ -1252,11 +1253,24 @@
       <tags-item tags="post"/>
     </sequence>
 </def-mult>
+<def-mult name="ADV_DET">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
 <def-mult name="ADV_POST_DET">
     <sequence>
       <tags-item tags="adv"/>
       <tags-item tags="post"/>
       <tags-item tags="det.art.*"/>
+    </sequence>
+</def-mult>
+<def-mult name="ADV_DET_POST">
+    <sequence>
+      <tags-item tags="adv"/>
+      <tags-item tags="det.art.*"/>
+      <tags-item tags="post"/>
     </sequence>
 </def-mult>
 <def-mult name="ADV_POST_DET_POST">

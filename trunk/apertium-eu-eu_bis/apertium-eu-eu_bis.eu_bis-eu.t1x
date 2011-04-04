@@ -20,6 +20,7 @@
       <cat-item tags="n.acr"/>
       <cat-item tags="adv"/>
       <cat-item tags="adv.gen"/>
+      <cat-item tags="adv.itg"/>
     </def-cat>
 
     <def-cat n="adv">
@@ -520,6 +521,7 @@
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
       <attr-item tags="sp"/>
+      <attr-item tags="mg"/>
       <attr-item tags="ND"/>
     </def-attr>
 
@@ -2982,6 +2984,50 @@ Reglas para generar correctamente las uniones de palabras entre lexemas principa
       </action>
  </rule>
 
+
+<rule comment="REGLA: det_num + detart + post + post + post">
+      <pattern>
+	<pattern-item n="det_num"/>
+	<pattern-item n="detart"/>
+	<pattern-item n="post_gra"/>
+	<pattern-item n="post_gra"/>
+	<pattern-item n="post_gra"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="tipo_posposicion">
+	  <with-param pos="5"/>
+	</call-macro>
+	<out> 
+	  <chunk name="det_art_post_post_post" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SP"/></tag>
+	      <tag><var n="tipo_post"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <mlu>
+	      <lu> 
+		<clip pos="1" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="2" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="3" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="4" side="tl" part="whole"/> 
+	      </lu>
+	      <lu> 
+		<clip pos="5" side="tl" part="whole"/> 
+	      </lu>
+	    </mlu>
+	  </chunk>
+	</out>
+      </action>
+ </rule>
 
 <rule comment="REGLA: det_num + post + detart">
       <pattern>
