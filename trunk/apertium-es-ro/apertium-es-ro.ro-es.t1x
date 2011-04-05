@@ -11119,6 +11119,54 @@ is not applicable because gender and number can not be taken from previous rules
     </action>
 </rule>     
     
+<rule> <!-- REGLA:  Perfecte compost  A TREBUIT să fie pp- Tuvo que ser pp -->
+  <pattern>
+      <pattern-item n="vbaveapri"/>
+      <pattern-item n="verbtrebui"/>
+      <pattern-item n="conjsub"/>
+      <pattern-item n="verbfi"/>
+      <pattern-item n="pp"/>
+    </pattern>
+    <action> 
+        <call-macro n="f_concord1">
+          <with-param pos="5"/>
+        </call-macro> 
+        <out>
+          <lu>
+	  <get-case-from pos="1">
+            <clip pos="2" side="tl" part="lemh"/>
+          </get-case-from>
+            <clip pos="2" side="tl" part="a_verb"/>
+            <lit-tag v="ifi"/>
+            <clip pos="4" side="tl" part="persona"/>
+            <!--<clip pos="2" side="tl" part="gen"/>-->
+            <clip pos="4" side="tl" part="nbr"/>
+	    <clip pos="2" side="tl" part="lemq"/>
+          </lu>
+	  <b pos="1"/>
+	    <lu>
+            <lit v="que"/>
+            <lit-tag v="cnjsub"/>
+          </lu>
+	  <b pos="2"/>
+	  <lu>
+            <lit v="ser"/>
+            <lit-tag v="vbser.inf"/>
+          </lu>
+
+	  <b pos="3"/>
+	  <lu>
+            <clip pos="5" side="tl" part="lemh"/>
+            <clip pos="5" side="tl" part="a_verb"/>
+            <clip pos="5" side="tl" part="temps"/>
+            <clip pos="5" side="tl" part="gen"/>
+            <clip pos="5" side="tl" part="nbr"/>
+            <clip pos="5" side="tl" part="lemq"/>
+          </lu>
+        </out>
+    </action>
+</rule>     
+
     
 <!-- REGLA 78 DATIU: VERB + NOM = VERB + A + NOM -->
     <rule>
