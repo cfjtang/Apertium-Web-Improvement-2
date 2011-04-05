@@ -85,6 +85,7 @@ $(PREFIX2).mode: modes.xml
 
 modes: modes.xml
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
            
 apertium_es_ro_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
