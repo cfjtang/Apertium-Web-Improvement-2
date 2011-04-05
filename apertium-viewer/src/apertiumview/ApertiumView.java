@@ -701,7 +701,11 @@ public class ApertiumView extends FrameView {
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
   Mode mode = (Mode) modesComboBox.getSelectedItem();
-  modesComboBox.setToolTipText(mode.file.getPath());
+  String tooltip = "[No mode selected]";
+  if (mode != null) {
+    tooltip = mode.file.getPath();
+  }
+  modesComboBox.setToolTipText(tooltip);
   if (!startingUp) 
     showMode(mode);
 }//GEN-LAST:event_modesComboBoxActionPerformed
