@@ -163,9 +163,19 @@
     <def-cat n="verbfi">
       <cat-item lemma="fi" tags="vblex.*"/>
     </def-cat>
+    <def-cat n="verbfi_pp">
+      <cat-item lemma="fi" tags="vblex.pp.*"/>
+      <cat-item lemma="fi" tags="vbser.pp.*"/>
+    </def-cat>
     <def-cat n="verbtrebui">
       <cat-item lemma="trebui" tags="vbmod.*"/>
     </def-cat>
+    <def-cat n="vbaveapri_p3_sg_al"> <!-- per la mala desambiguació de 'a fost proiectată' -->
+      <cat-item tags="vbavea.pri.p3.sg"/>
+      <cat-item lemma="al" tags="det.def.f.sg"/>
+      <cat-item lemma="avea" tags="vblex.pri.p3.sg"/>
+    </def-cat>
+<!-- el tagger no tria vbavea pri, afegim  vblex prs mentre el millorem-->
     <def-cat n="vbaveapri">
       <cat-item tags="vbavea.pri.*"/>
       <cat-item lemma="avea" tags="vblex.prs.*"/>
@@ -11118,6 +11128,42 @@ is not applicable because gender and number can not be taken from previous rules
         </out>
     </action>
 </rule>     
+    
+<rule> <!-- REGLA:  A fost pp - Ha sido pp -->
+  <pattern>
+      <pattern-item n="vbaveapri_p3_sg_al"/>
+      <pattern-item n="verbfi_pp"/>
+      <pattern-item n="pp"/>
+    </pattern>
+    <action> 
+        <call-macro n="f_concord1">
+          <with-param pos="3"/>
+        </call-macro> 
+        <out>
+          <lu>
+            <lit v="haber"/>
+            <lit-tag v="vbhaver.pri.p3.sg"/>
+          </lu>
+	  <b pos="1"/>
+	  <lu>
+            <lit v="ser"/>
+            <lit-tag v="vbser.pp.m.sg"/>
+          </lu>
+
+	  <b pos="2"/>
+	  <lu>
+            <clip pos="3" side="tl" part="lemh"/>
+            <clip pos="3" side="tl" part="a_verb"/>
+            <clip pos="3" side="tl" part="temps"/>
+            <clip pos="3" side="tl" part="gen"/>
+            <clip pos="3" side="tl" part="nbr"/>
+            <clip pos="3" side="tl" part="lemq"/>
+          </lu>
+        </out>
+    </action>
+</rule>     
+
+
     
 <rule> <!-- REGLA:  Perfecte compost  A TREBUIT să fie pp- Tuvo que ser pp -->
   <pattern>
