@@ -106,15 +106,19 @@ es-pt_BR.dix: $(BASENAME).$(PREFIX1).dix
 
 $(PREFIX1).mode: modes.xml 
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
 $(PREFIX1b).mode: modes.xml 
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
 $(PREFIX2).mode: modes.xml 
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
 modes: modes.xml
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
            
 apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
