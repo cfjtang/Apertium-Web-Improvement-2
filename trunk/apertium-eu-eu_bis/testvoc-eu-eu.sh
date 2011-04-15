@@ -68,19 +68,19 @@ then
     paste comp-$1-$2.filtered comp-$1-$2.trans > comprovacio-$1-$2
     egrep "(@|/|. #)" comprovacio-$1-$2 > errors-$1-$2
     echo " fet."
-   # rm expand-$1-$2
-   # rm expand-$1-$2.filtered
-   # rm lemes-$1-$2.expand.filtered
-   # rm comp-$1-$2.expand.filtered
-   # rm comp-$1-$2.trans
-   # rm comprovacio-$1-$2
+    rm expand-$1-$2
+    rm expand-$1-$2.filtered
+    rm lemes-$1-$2.expand.filtered
+    rm comp-$1-$2.expand.filtered
+    rm comp-$1-$2.trans
+    rm comprovacio-$1-$2
 
 else
     echo "Fi de la comprovació de vocabulari."
-   # rm expand-$1-$2
-   # rm expand-$1-$2.filtered
-   # rm lemes-$1-$2.expand.filtered
-   # rm comp-$1-$2.expand.filtered
-   # rm comp-$1-$2.trans
-   # rm comprovacio-$1-$2
+    rm expand-$1-$2
+    rm expand-$1-$2.filtered
+    rm lemes-$1-$2.expand.filtered
+    rm comp-$1-$2.expand.filtered
+    rm comp-$1-$2.trans
+    rm comprovacio-$1-$2
 fi
