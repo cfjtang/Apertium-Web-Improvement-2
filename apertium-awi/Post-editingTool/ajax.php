@@ -31,6 +31,40 @@ else
 	die("No language given");
 }
 
+//Define all variables, for strictness...
+if(!isset($data['text_input']))
+{
+	$data['text_input'] = null;
+}
+if(!isset($data['text_output']))
+{
+	$data['text_output'] = null;
+}
+if(!isset($data['pretrans_src']))
+{
+	$data['pretrans_src'] = null;
+}
+if(!isset($data['pretrans_dst']))
+{
+	$data['pretrans_dst'] = null;
+}
+if(!isset($data['pretrans_case']))
+{
+	$data['pretrans_case'] = null;
+}
+if(!isset($data['posttrans_src']))
+{
+	$data['posttrans_src'] = null;
+}
+if(!isset($data['posttrans_dst']))
+{
+	$data['posttrans_dst'] = null;
+}
+if(!isset($data['posttrans_case']))
+{
+	$data['posttrans_case'] = null;
+}
+
 switch($data['action_request'])
 {
 	case 'proof_input' :
