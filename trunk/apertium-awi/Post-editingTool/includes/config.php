@@ -15,13 +15,13 @@ $config = array(
 	'apertium_re_commands' => 'apertium-re',
 	'apertium_des_commands' => 'apertium-des',
 	
-	'languagetool_command' => 'java -jar ../LanguageTool/LanguageTool.jar',
-	'languagetool_server_command' => 'java -cp ../LanguageTool/jaminid.jar:../LanguageTool/LanguageTool.jar de.danielnaber.languagetool.server.HTTPServer',
+	'languagetool_command' => 'java -jar external/LanguageTool/LanguageTool.jar',
+	'languagetool_server_command' => 'java -cp external/LanguageTool/jaminid.jar:external/LanguageTool/LanguageTool.jar de.danielnaber.languagetool.server.HTTPServer',
 	'languagetool_server_port' => 8081,
 	
 	'aspell_command' => 'aspell',
 	
-	'maligna_command' => '../TmxTools/maligna-2.5.5/bin/maligna',
+	'maligna_command' => 'external/maligna-2.5.5/bin/maligna',
 	
 	'unzip_command' => 'unzip',
 	'zip_command' => 'zip'

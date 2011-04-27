@@ -17,15 +17,19 @@ init_environment();
 $data = escape($_POST);
 
 
-//begin input document handling
-if($_FILES["in_doc"] AND !($_FILES["in_doc"]["error"] > 0))
+if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 {
+	//if handling formatted document
 	$data['input_doc_name'] = $_FILES["in_doc"]["name"];
 	$data['input_doc_type'] = getFileFormat($data['input_doc_name'], $data['in_doc_type']);
 	$data['text_input'] = convertFileToHTML($_FILES["in_doc"]["tmp_name"], $data['input_doc_type']);
 	$data['input_doc'] = base64_encode(file_get_contents($_FILES["in_doc"]["tmp_name"]));
 }
-//end input document handling
+else
+{
+	$data['text_input'] = '';
+}
+$data['text_output'] = '';
 
 
 if(isset($data['language_pair']) and is_installed($data['language_pair']))
@@ -151,7 +155,7 @@ page_header("Apertium translation", array(
 				Manual replacements : 
 				<ul id="pretrans_list">
 <?
-	if(is_array($data['pretrans_del']))
+	if(isset($data['pretrans_del']) AND is_array($data['pretrans_del']))
 	{
 		foreach($data['pretrans_del'] as $index => $nothing)
 		{
@@ -160,7 +164,7 @@ page_header("Apertium translation", array(
 		}
 	}
 	
-	if(is_array($data['pretrans_src']))
+	if(isset($data['pretrans_src']) AND is_array($data['pretrans_src']))
 	{
 		foreach($data['pretrans_src'] as $ind => $val)
 		{
@@ -204,7 +208,7 @@ page_header("Apertium translation", array(
 				Manual replacements : 
 				<ul id="posttrans_list">
 <?
-	if(is_array($data['posttrans_del']))
+	if(isset($data['posttrans_del']) AND is_array($data['posttrans_del']))
 	{
 		foreach($data['posttrans_del'] as $index => $nothing)
 		{
@@ -213,7 +217,7 @@ page_header("Apertium translation", array(
 		}
 	}
 	
-	if(is_array($data['posttrans_src']))
+	if(isset($data['posttrans_src']) AND is_array($data['posttrans_src']))
 	{
 		foreach($data['posttrans_src'] as $ind => $val)
 		{

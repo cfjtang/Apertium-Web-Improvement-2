@@ -71,6 +71,7 @@ function runLTserver()
 	if( !($file = @file_get_contents('http://localhost:'.$config['languagetool_server_port'].'/?language=en&text=You%20can%20has%20cheeseburger.') AND (utf8_strpos($file, '<?xml version="1.0" encoding="UTF-8"?>') === 0)) )
 	{
 		//we've got to start LT server
+		$out1; $out2;
 		executeBackgroundCommand($config['languagetool_server_command'] . ' -p ' . $config['languagetool_server_port'], '', $out1, $out2);
 		
 		while(!($file = @file_get_contents('http://localhost:'.$config['languagetool_server_port'].'/?language=en&text=You%20can%20has%20cheeseburger.') AND (utf8_strpos($file, '<?xml version="1.0" encoding="UTF-8"?>') === 0)))
