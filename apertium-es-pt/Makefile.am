@@ -128,7 +128,7 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).prob $(PREFIX2).prob $(PREFIX1).t1x \
 	$(PREFIX2).t1x $(PREFIX1).t1x \
 	$(PREFIX1b).t1x $(PREFIX1b).t1x.bin \
-	$(PREFIX2).t1x.bin $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode
+	$(PREFIX2).t1x.bin $(PREFIX1).t1x.bin $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
