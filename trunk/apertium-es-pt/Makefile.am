@@ -125,7 +125,7 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1b).autobil.bin $(PREFIX1b).autogen.bin \
 	$(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
 	$(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
-	$(PREFIX1).prob $(PREFIX2).prob $(PREFIX1).t1x \
+	$(PREFIX1).prob $(PREFIX2).prob \
 	$(PREFIX2).t1x $(PREFIX1).t1x \
 	$(PREFIX1b).t1x $(PREFIX1b).t1x.bin \
 	$(PREFIX2).t1x.bin $(PREFIX1).t1x.bin $(PREFIX1).mode $(PREFIX2).mode $(PREFIX1b).mode
