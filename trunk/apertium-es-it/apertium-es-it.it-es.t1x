@@ -28,6 +28,10 @@
       <cat-item tags="predet.*"/>
     </def-cat>
 
+    <def-cat n="piu">
+      <cat-item lemma="più" tags="adv"/>
+    </def-cat>
+
     <def-cat n="det">
       <cat-item tags="det.dem.*"/>
       <cat-item tags="det.ind.*"/>
@@ -4654,7 +4658,7 @@
       </action>
     </rule>
     
-    <rule comment="REGLA: NUM ADJ cnj	 ADJ NOM">
+    <rule comment="REGLA: NUM ADJ cnj ADJ NOM">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adjec"/>
@@ -5103,11 +5107,11 @@
     </rule>
 
 
-  <!-- <rule comment="REGLA: COMPAR ADJ QUE">
+    <rule comment="REGLA: PIU ADJ DI">
       <pattern>
-	<pattern-item n="compar"/>
+	<pattern-item n="piu"/>
 	<pattern-item n="adj"/>
-	<pattern-item n="que_compar"/>
+	<pattern-item n="di"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
@@ -5117,7 +5121,7 @@
 	  <with-param pos="2"/>
 	</call-macro>
 	<out>
-	  <chunk name="comp_adj_que" case="caseFirstWord">
+	  <chunk name="adv_adj" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SA"/></tag>
 	      <tag><var n="genero"/></tag>
@@ -5136,10 +5140,15 @@
 	      <clip pos="2" side="tl" part="nbr_sp"/>	 
 	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu> 
-	    <b pos="2"/>
+          </chunk>
+	  <b pos="2"/>
+	  <chunk name="rel" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="rel.an.mf.sp"/></tag>
+	    </tags>
 	    <lu>
-	      <lit v="di"/>
-	      <lit-tag v="pr"/>
+	      <lit v="que"/>
+	      <lit-tag v="rel.an.mf.sp"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -5147,32 +5156,49 @@
     </rule>
 
   
-   <rule comment="REGLA: COMPAR QUE">
+   <rule comment="REGLA: PIU DI">
       <pattern>
-	<pattern-item n="compar"/>
-	<pattern-item n="que_compar"/>
+	<pattern-item n="piu"/>
+	<pattern-item n="di"/>
       </pattern>
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <call-macro n="f_concord1">
+          <with-param pos="1"/>
+        </call-macro>
 	<out>
-	  <chunk name="comp_que" case="caseFirstWord">
+	  <chunk name="adj" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="comp_que"/></tag>
+              <tag><lit-tag v="SA"/></tag>
+              <tag><var n="genero"/></tag>
+              <tag><var n="numero"/></tag>
 	    </tags>
 	    <lu>
-	      <clip pos="1" side="tl" part="whole"/>
+              <clip pos="1" side="tl" part="lemh"/> 
+              <clip pos="1" side="tl" part="a_adj"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+              <clip pos="1" side="tl" part="gen_mf"/>    
+              <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+              <clip pos="1" side="tl" part="nbr_sp"/>    
+              <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
-	    <b pos="1"/>
+          </chunk>
+	  <b pos="2"/>
+	  <chunk name="rel" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="rel.an.mf.sp"/></tag>
+	    </tags>
 	    <lu>
-	      <lit v="di"/>
-	      <lit-tag v="pr"/>
+	      <lit v="que"/>
+	      <lit-tag v="rel.an.mf.sp"/>
 	    </lu>
 	  </chunk>
 	</out>
       </action>
-    </rule> -->
+    </rule>
     
 
 
