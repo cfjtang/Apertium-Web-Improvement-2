@@ -113,6 +113,17 @@
       <cat-item lemma="haber" tags="vbhaver.*"/>
     </def-cat>
 
+    <def-cat n="avere">
+      <cat-item lemma="avere" tags="vbhaver.*"/>
+      <cat-item lemma="avere" tags="vblex.*"/>
+    </def-cat>
+    <def-cat n="bisogno">
+      <cat-item lemma="bisogno" tags="n.m.*"/>
+    </def-cat>
+    <def-cat n="di">
+      <cat-item lemma="di" tags="pr"/>
+    </def-cat>
+
     <def-cat n="essere">
       <cat-item lemma="essere" tags="vblex.*"/>
       <cat-item lemma="essere" tags="vbser.*"/>
@@ -5471,6 +5482,55 @@
 	    </lu> 
 	  </chunk>
 	</out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: AVERE BISOGNO DI">
+      <pattern>
+	<pattern-item n="avere"/>
+	<pattern-item n="bisogno"/>
+	<pattern-item n="di"/>
+      </pattern>
+      <action>	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <let>
+          <clip pos="1" side="tl" part="lem"/>
+          <lit v="necesitar"/>
+        </let>
+        <let>
+          <clip pos="1" side="tl" part="a_verb"/>
+          <lit-tag v="vblex"/>
+        </let>
+	<out>
+	  <chunk name="verb" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>	      
+	    </tags>
+	    <lu>   
+	      <clip pos="1" side="tl" part="lemh"/> 
+	      <clip pos="1" side="tl" part="a_verb"/>
+	      <clip pos="1" side="tl" part="temps"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>	 
+	      <clip pos="1" side="tl" part="nbr" link-to="5"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="f_bcond">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
       </action>
     </rule>
 
