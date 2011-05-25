@@ -38,6 +38,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -115,10 +117,12 @@ public class Daemon {
 
         private final BlockingQueue<QueueElement> localResultsQueue;
         private BufferedReader pReader;
+         private final Process localp;
 
-        public EngineReader(BlockingQueue<QueueElement> resultsQueue, BufferedReader pReader) {
+        public EngineReader(BlockingQueue<QueueElement> resultsQueue, BufferedReader pReader, Process myp) {
             localResultsQueue=resultsQueue;
             this.pReader=pReader;
+            localp=myp;
         }
 
 
@@ -301,14 +305,41 @@ public class Daemon {
 
             stopBackingQueue();
             start();
-            logger.trace("Extracting remaining output from EngineReader of daemon "+daemonInformation.getId());
+            OutputCleaner oc= new OutputCleaner(pReader);
+            Thread t = new Thread(oc);
+            t.start();
+            try {
+                t.join(10000);
+            } catch (InterruptedException ex) {
+                
+            }
+            if (t.isAlive())
+            {
+                localp.destroy();
+            }
+           
+        }
+    }
+
+    private class OutputCleaner implements Runnable
+    {
+        private final BufferedReader r;
+       
+        OutputCleaner(BufferedReader br)
+        {
+            r=br;
+            
+        }
+
+        @Override
+        public void run() {
+             logger.trace("Extracting remaining output from EngineReader of daemon "+daemonInformation.getId());
             try{
-             while (pReader.readLine() != null) {}
+             while (r.readLine() != null) {}
             }
             catch(Exception e){
             }
             logger.debug("Finished EngineReader from " + daemonInformation.getId());
-           
         }
     }
 
@@ -323,6 +354,7 @@ public class Daemon {
         private final BlockingQueue<QueueElement> localWritingQueue;
         private final BufferedWriter pWriter;
         private Set<Long> requestsBeforeCore;
+       
 
         public EngineWriter(BlockingQueue<QueueElement> writingQueue, BufferedWriter pWriter) {
             localWritingQueue=writingQueue;
@@ -692,7 +724,7 @@ public class Daemon {
             }
             resultsQueue.clear();
 
-            tReader = new Thread(new EngineReader(resultsQueue,pReader));
+            tReader = new Thread(new EngineReader(resultsQueue,pReader,p));
             engineWriter=new EngineWriter(writingQueue,pWriter);
             tWriter = new Thread(engineWriter);
             tReader.start();
