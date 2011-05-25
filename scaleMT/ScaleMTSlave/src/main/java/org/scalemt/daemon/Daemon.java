@@ -83,6 +83,18 @@ public class Daemon {
      */
     static Log logger = LogFactory.getLog(Daemon.class);
 
+    private void stopBackingQueue() {
+        synchronized (writingQueue) {
+            while (writingQueue.size() > 0) {
+                QueueElement element = writingQueue.poll();
+                writingQueueBackup.add(element);
+                //element.setException(new DaemonDeadException());
+                //element.getCaller().interrupt();
+            }
+        }
+        stop();
+    }
+
     /**
      * Reads translations from apertium standard output and wakes up threads
      * that are waiting for these translations.
@@ -287,6 +299,7 @@ public class Daemon {
                 }
             }
 
+            stopBackingQueue();
             logger.trace("Extracting remaining output from EngineReader of daemon "+daemonInformation.getId());
             try{
              while (pReader.readLine() != null) {}
@@ -294,7 +307,7 @@ public class Daemon {
             catch(Exception e){
             }
             logger.debug("Finished EngineReader from " + daemonInformation.getId());
-            restart();
+            start();
         }
     }
 
@@ -506,14 +519,14 @@ public class Daemon {
     /**
      * Queue where translation requests are put before writing them to the Apertium pipeline
      */
-    private BlockingQueue<QueueElement> writingQueue;
+    private final BlockingQueue<QueueElement> writingQueue;
 
-    private List<QueueElement> writingQueueBackup;
+    private final List<QueueElement> writingQueueBackup;
 
     /**
      * Queue where translation requests are put after writing them to the Apertium pipeline
      */
-    private BlockingQueue<QueueElement> resultsQueue;
+    private final BlockingQueue<QueueElement> resultsQueue;
     /**
      * Queue element that stops all the running threads
      */
@@ -565,7 +578,8 @@ public class Daemon {
 
         stopMark = new QueueElement(-100, null);
         
-       
+        writingQueue = new LinkedBlockingQueue<QueueElement>();
+        resultsQueue = new LinkedBlockingQueue<QueueElement>();
 
         frozenTime = 20000;
         try {
@@ -669,8 +683,13 @@ public class Daemon {
             BufferedWriter pWriter = new BufferedWriter(new OutputStreamWriter(p.getOutputStream(),"UTF-8"));
             processWriter=pWriter;
 
-            writingQueue = new LinkedBlockingQueue<QueueElement>();
-            resultsQueue = new LinkedBlockingQueue<QueueElement>();
+            synchronized(writingQueue)
+            {
+                writingQueue.clear();
+                writingQueue.addAll(writingQueueBackup);
+                writingQueueBackup.clear();
+            }
+            resultsQueue.clear();
 
             tReader = new Thread(new EngineReader(resultsQueue,pReader));
             engineWriter=new EngineWriter(writingQueue,pWriter);
@@ -726,17 +745,7 @@ public class Daemon {
     }
 
      private void restart() {
-            synchronized(writingQueue)
-            {
-                 while(writingQueue.size()>0)
-                {
-                    QueueElement element = writingQueue.poll();
-                    writingQueueBackup.add(element);
-                    //element.setException(new DaemonDeadException());
-                    //element.getCaller().interrupt();
-                }
-            }
-            stop();
+            stopBackingQueue();
             start();
         }
 
