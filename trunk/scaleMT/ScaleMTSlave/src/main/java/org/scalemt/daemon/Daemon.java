@@ -140,7 +140,7 @@ public class Daemon {
             List<SeparatorRegexp> separatorBefore = translationEngine.getTranslationCore().getRegexpsBefore();
             List<SeparatorRegexp> separatorAfter = translationEngine.getTranslationCore().getRegexpsAfter();
 
-
+            boolean endWithError=false;
             try {
 
                 String buffer;
@@ -251,6 +251,7 @@ public class Daemon {
                                 } else {
                                     logger.error("Daemon - EngineReader " + daemonInformation.getId() + ": Translation queue is empty");
                                     crashed=true;
+                                    endWithError=true;
                                 }
 
                                 
@@ -289,9 +290,17 @@ public class Daemon {
                 }
             } catch (FileNotFoundException e) {
                 logger.warn(daemonInformation.getId() + ": Cannot find pipe to read from");
+                endWithError=true;
             } catch (IOException ie) {
                 logger.warn(daemonInformation.getId() + ": Exception while reading pipe", ie);
+                endWithError=true;
             }
+
+
+            if(endWithError)
+            {
+
+
             synchronized(localResultsQueue)
             {
 
@@ -302,6 +311,8 @@ public class Daemon {
                     element.getCaller().interrupt();
                 }
             }
+
+
 
             stopBackingQueue();
             start();
@@ -315,7 +326,10 @@ public class Daemon {
             }
             if (t.isAlive())
             {
+                logger.warn("Killing daemon "+daemonInformation.getId());
                 localp.destroy();
+            }
+
             }
            
         }
@@ -486,7 +500,8 @@ public class Daemon {
 
             // Check if process has finished
             int exitValue = -1;
-            boolean finished;
+            boolean finished,frozen;
+            frozen=false;
             try {
                 exitValue = p.exitValue();
                 finished = true;
@@ -499,13 +514,13 @@ public class Daemon {
                 // Check if process is frozen
                 if (lastRead < lastWrite && System.currentTimeMillis() - lastWrite > frozenTime) {
                     logger.error("Daemon " + daemonInformation.getId() + " frozen");
-                    finished = true;
+                    frozen=true;
                 }
             }
 
-            if (finished) {
+            if (frozen) {
                 //crashed = true;
-                restart();
+                p.destroy();
             }
 
 
