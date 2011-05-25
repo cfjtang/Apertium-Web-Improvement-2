@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -131,6 +132,7 @@ public class Daemon {
 
                 logger.debug(daemonInformation.getId() + ": Starting EngineReader");
                 while ((buffer = pReader.readLine()) != null) {
+                    boolean crashed=false;
                     logger.trace(daemonInformation.getId() +
                             ": read \"" + buffer + "\"");
                     lastRead = System.currentTimeMillis();
@@ -210,7 +212,7 @@ public class Daemon {
                             }
                             stackAfter.clear();
                             numMatchesAfter=0;
-                            
+           
                                 logger.debug(daemonInformation.getId() + ": read TRANSLATION_END. ID="+currentId);
 
                                 QueueElement element = localResultsQueue.poll();
@@ -222,8 +224,8 @@ public class Daemon {
                                         element.setTranslation(null);
                                         element.setException(new DaemonDeadException());
                                         logger.error("Daemon " + daemonInformation.getId() + " crashed");
-                                        //crashed = true;
-                                        restart();
+                                        crashed = true;
+                                        //restart();
 
                                     }
                                     if (element.getCaller() != null) {
@@ -232,6 +234,7 @@ public class Daemon {
 
                                 } else {
                                     logger.error("Daemon - EngineReader " + daemonInformation.getId() + ": Translation queue is empty");
+                                    crashed=true;
                                 }
 
                                 
@@ -265,6 +268,8 @@ public class Daemon {
                             text.append("\n");
                         }
                     }
+                    if(crashed)
+                        break;
                 }
             } catch (FileNotFoundException e) {
                 logger.warn(daemonInformation.getId() + ": Cannot find pipe to read from");
@@ -281,7 +286,15 @@ public class Daemon {
                     element.getCaller().interrupt();
                 }
             }
+
+            logger.trace("Extracting remaining output from EngineReader of daemon "+daemonInformation.getId());
+            try{
+             while (pReader.readLine() != null) {}
+            }
+            catch(Exception e){
+            }
             logger.debug("Finished EngineReader from " + daemonInformation.getId());
+            restart();
         }
     }
 
@@ -401,9 +414,9 @@ public class Daemon {
             } catch (Exception e) {
                 logger.error("Can't stop daemon",e);
             }
+            /*
             synchronized(localWritingQueue)
             {
-
                 while(localWritingQueue.size()>0)
                 {
                     QueueElement element = localWritingQueue.poll();
@@ -411,6 +424,8 @@ public class Daemon {
                     element.getCaller().interrupt();
                 }
             }
+             * 
+             */
             logger.debug("Finished EngineWriter from " + daemonInformation.getId());
         }
     }
@@ -492,6 +507,9 @@ public class Daemon {
      * Queue where translation requests are put before writing them to the Apertium pipeline
      */
     private BlockingQueue<QueueElement> writingQueue;
+
+    private List<QueueElement> writingQueueBackup;
+
     /**
      * Queue where translation requests are put after writing them to the Apertium pipeline
      */
@@ -543,6 +561,8 @@ public class Daemon {
         charactersPerTranslation = Collections.synchronizedMap(new HashMap<Long, Long>());
         readWriteLock = new ReentrantReadWriteLock();
        
+        writingQueueBackup=new ArrayList<QueueElement>();
+
         stopMark = new QueueElement(-100, null);
         
        
@@ -684,12 +704,13 @@ public class Daemon {
 
     /**
      * Stops daemon. It simply closes Apertium input. Apertium will stop when
-     * translation inside it are completed
+     * translations inside it are completed
      */
     public void stop() {
         statusTimer.cancel();
         try {
             writingQueue.put(stopMark);
+            //writingQueue.
         } catch (Exception e) {
             logger.error("Coultn't write into writing queue to stop daemon", e);
         }
@@ -705,6 +726,16 @@ public class Daemon {
     }
 
      private void restart() {
+            synchronized(writingQueue)
+            {
+                 while(writingQueue.size()>0)
+                {
+                    QueueElement element = writingQueue.poll();
+                    writingQueueBackup.add(element);
+                    //element.setException(new DaemonDeadException());
+                    //element.getCaller().interrupt();
+                }
+            }
             stop();
             start();
         }
