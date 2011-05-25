@@ -300,6 +300,7 @@ public class Daemon {
             }
 
             stopBackingQueue();
+            start();
             logger.trace("Extracting remaining output from EngineReader of daemon "+daemonInformation.getId());
             try{
              while (pReader.readLine() != null) {}
@@ -307,7 +308,7 @@ public class Daemon {
             catch(Exception e){
             }
             logger.debug("Finished EngineReader from " + daemonInformation.getId());
-            start();
+           
         }
     }
 
