@@ -519,13 +519,14 @@ public class Daemon {
             }
 
             if (frozen) {
-                try {
+                //try {
                     //crashed = true;
-                    TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
+                    //TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
+                    killProcessTree();
                     //p.destroy();
-                } catch (SigarException ex) {
-                    logger.error("Couldn't kill process (daemon "+daemonInformation.getId()+")");
-                }
+                //} catch (SigarException ex) {
+                  //  logger.error("Couldn't kill process (daemon "+daemonInformation.getId()+")");
+                //}
             }
 
 
@@ -1237,7 +1238,7 @@ public class Daemon {
 
             for(Long processPid: finalProcesses)
                 totalMem+=TranslationEnginePool.sigar.getProcMem(processPid).getResident();
-
+            
             return totalMem/1024/1024;
            
         }
@@ -1269,6 +1270,51 @@ public class Daemon {
         }
 
         return null;
+    }
+
+    private void killProcessTree()
+    {
+        Set<Long> finalProcesses= new HashSet<Long>();
+        Set<Long> unexploredProcesses= new HashSet<Long>();
+
+        long parentPid=daemonInformation.getPid();
+        unexploredProcesses.add(parentPid);
+
+        ProcessFinder pf = new ProcessFinder(TranslationEnginePool.sigar);
+        String bquery="State.Ppid.eq=";
+
+
+            while(!unexploredProcesses.isEmpty())
+            {
+                Long unexploredProcess = unexploredProcesses.iterator().next();
+                unexploredProcesses.remove(unexploredProcess);
+                finalProcesses.add(unexploredProcess);
+
+                long[] children=new long[0];
+            try {
+                children = pf.find(bquery + unexploredProcess.toString());
+            } catch (SigarException ex) {
+                
+            }
+                for(long child: children)
+                {
+                    unexploredProcesses.add(child);
+                }
+            }
+
+
+
+          
+
+            for(Long processPid: finalProcesses)
+                try {
+            TranslationEnginePool.sigar.kill(processPid, 9);
+        } catch (SigarException ex) {
+           
+        }
+
+        
+       
     }
 
     public TranslationEngineInfo getTranslationEngine() {
