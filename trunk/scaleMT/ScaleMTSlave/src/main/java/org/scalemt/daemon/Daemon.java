@@ -519,8 +519,13 @@ public class Daemon {
             }
 
             if (frozen) {
-                //crashed = true;
-                p.destroy();
+                try {
+                    //crashed = true;
+                    TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
+                    //p.destroy();
+                } catch (SigarException ex) {
+                    logger.error("Couldn't kill process (daemon "+daemonInformation.getId()+")");
+                }
             }
 
 
