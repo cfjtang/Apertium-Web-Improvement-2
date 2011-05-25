@@ -28,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +100,7 @@ public class Daemon {
          */
         private StringBuilder text;
 
-        private BlockingQueue<QueueElement> localResultsQueue;
+        private final BlockingQueue<QueueElement> localResultsQueue;
         private BufferedReader pReader;
 
         public EngineReader(BlockingQueue<QueueElement> resultsQueue, BufferedReader pReader) {
@@ -294,8 +293,8 @@ public class Daemon {
      */
     private class EngineWriter implements Runnable {
 
-        private BlockingQueue<QueueElement> localWritingQueue;
-        private BufferedWriter pWriter;
+        private final BlockingQueue<QueueElement> localWritingQueue;
+        private final BufferedWriter pWriter;
         private Set<Long> requestsBeforeCore;
 
         public EngineWriter(BlockingQueue<QueueElement> writingQueue, BufferedWriter pWriter) {
@@ -456,7 +455,7 @@ public class Daemon {
     /**
      * Daemon information
      */
-    private DaemonInformation daemonInformation;
+    private final DaemonInformation daemonInformation;
     /**
      * Translation engine core process
      */
@@ -539,8 +538,7 @@ public class Daemon {
     private Daemon instance=this;
 
     Daemon(long id, DaemonConfiguration c, TranslationEngineInfo te) {
-        SerializationUtils seUtils = new SerializationUtils();
-        translationEngine = (TranslationEngineInfo) seUtils.clone(te);
+        translationEngine = (TranslationEngineInfo) SerializationUtils.clone(te);
         daemonInformation = new DaemonInformation(id, c);
         charactersPerTranslation = Collections.synchronizedMap(new HashMap<Long, Long>());
         readWriteLock = new ReentrantReadWriteLock();
@@ -699,6 +697,13 @@ public class Daemon {
 
     }
 
+    private void dirtyStop()
+    {
+        statusTimer.cancel();
+        this.p.destroy();
+        start();
+    }
+
      private void restart() {
             stop();
             start();
@@ -844,16 +849,16 @@ public class Daemon {
                             //Execute command
                             StreamGobbler stdoutGobbler;
 
-                             Process p=null;
+                             Process localp=null;
                             try
                             {
 
                             //Execute command
-                            p =Runtime.getRuntime().exec(fullCommand);
+                            localp =Runtime.getRuntime().exec(fullCommand);
 
                             //Create threads for reading stdout and stderr
-                            stdoutGobbler = new StreamGobbler(p.getInputStream());
-                            StreamGobbler stderrGobbler = new StreamGobbler(p.getErrorStream());
+                            stdoutGobbler = new StreamGobbler(localp.getInputStream());
+                            StreamGobbler stderrGobbler = new StreamGobbler(localp.getErrorStream());
                             stdoutGobbler.start();
                             stderrGobbler.start();
 
@@ -864,17 +869,17 @@ public class Daemon {
                                 //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
                                 if(program.getInFilter()!=null)
                                 {
-                                     p.getOutputStream().write(program.getInFilter().replaceAll("\\$in", new String(memoryVars.get(program.getInput()),"UTF-8")).getBytes("UTF-8") );
+                                     localp.getOutputStream().write(program.getInFilter().replaceAll("\\$in", new String(memoryVars.get(program.getInput()),"UTF-8")).getBytes("UTF-8") );
                                 }
                                 else
                                 {
-                                    p.getOutputStream().write(memoryVars.get(program.getInput()));
+                                    localp.getOutputStream().write(memoryVars.get(program.getInput()));
                                 }
                                 //writer.flush();
                                 //writer.close();
                                
                             }
-                             p.getOutputStream().close();
+                             localp.getOutputStream().close();
 
                             //Wait for stdout reader thread to end reading
                             try
@@ -889,7 +894,7 @@ public class Daemon {
                                 //Read process output
                                  memoryVars.put(output, stdoutGobbler.getReadBytes());
                             }
-                            if(p.waitFor()!=0)
+                            if(localp.waitFor()!=0)
                                 throw new TranslationEngineException("Exit value of program "+programCommand+" != 0");
 
                             }
@@ -984,9 +989,14 @@ public class Daemon {
                 engineWriter.getRequestsBeforeCore().remove(element.getId());
                 if (charactersPerTranslation.containsKey(element.getId())) {
                 long translationSize = charactersPerTranslation.get(element.getId());
+                try
+                {
                 readWriteLock.writeLock().lock();
                 daemonInformation.setCharactersInside(daemonInformation.getCharactersInside() - translationSize);
+                    }
+                finally{
                 readWriteLock.writeLock().unlock();
+                    }
                 charactersPerTranslation.remove(element.getId());
 
                 for(Entry<Integer,String> entry: dirVars.entrySet())
@@ -1002,10 +1012,15 @@ public class Daemon {
     }
 
     public synchronized void assignQueueElement(QueueElement element) {
+        try{
         readWriteLock.writeLock().lock();
         engineWriter.getRequestsBeforeCore().add(element.getId());
         daemonInformation.setCharactersInside(daemonInformation.getCharactersInside() + element.getSource().getLength());
+        }
+        finally
+        {
         readWriteLock.writeLock().unlock();
+        }
         charactersPerTranslation.put(element.getId(), (long) (element.getSource().getLength()));
         element.setDaemon(this);
     }
@@ -1018,11 +1033,16 @@ public class Daemon {
      */
     public long getCharactersInside() {
 
+        try
+        {
         readWriteLock.readLock().lock();
         long returnValue = daemonInformation.getCharactersInside();
-        readWriteLock.readLock().unlock();
-
         return returnValue;
+        }
+        finally{
+        readWriteLock.readLock().unlock();}
+
+        
     }
 
     /**
@@ -1126,7 +1146,7 @@ public class Daemon {
                 totalMem+=TranslationEnginePool.sigar.getProcMem(processPid).getResident();
 
             return totalMem/1024/1024;
-
+           
         }
         catch(SigarException e)
         {
@@ -1143,8 +1163,8 @@ public class Daemon {
     public Double getCPUUsage() {
         String information = "";
         try {
-            String[] command = {"getProcessInfo.sh", Integer.toString(daemonInformation.getPid())};
-            Process p = Runtime.getRuntime().exec(command);
+            String[] myCommand = {"getProcessInfo.sh", Integer.toString(daemonInformation.getPid())};
+            Process p = Runtime.getRuntime().exec(myCommand);
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             information = reader.readLine();
             reader.close();
@@ -1166,7 +1186,7 @@ public class Daemon {
     {
         private int numberSent;
         private boolean stop;
-        private BufferedWriter pWriter;
+        private final BufferedWriter pWriter;
 
         public TrashSender(BufferedWriter pWriter) {
             numberSent=0;
