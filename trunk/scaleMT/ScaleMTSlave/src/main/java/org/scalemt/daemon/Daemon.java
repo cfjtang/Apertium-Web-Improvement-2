@@ -307,7 +307,7 @@ public class Daemon {
             }
 
 
-            if(endWithError && this.isErrorFlag())
+            if(endWithError || this.isErrorFlag())
             {
 
 
@@ -341,7 +341,7 @@ public class Daemon {
             }
 
             }
-             logger.debug("Finished EngineReader from " + daemonInformation.getId()+". EndWithError="+Boolean.toString(endWithError));
+             logger.debug("Finished EngineReader from " + daemonInformation.getId()+". EndWithError="+Boolean.toString(endWithError || this.isErrorFlag()));
            
         }
     }
