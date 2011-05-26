@@ -331,6 +331,7 @@ public class Daemon {
             }
 
             }
+             logger.debug("Finished EngineReader from " + daemonInformation.getId()+". EndWithError="+Boolean.toString(endWithError));
            
         }
     }
@@ -353,7 +354,7 @@ public class Daemon {
             }
             catch(Exception e){
             }
-            logger.debug("Finished EngineReader from " + daemonInformation.getId());
+            logger.debug("Finished OutputCleaner from " + daemonInformation.getId());
         }
     }
 
