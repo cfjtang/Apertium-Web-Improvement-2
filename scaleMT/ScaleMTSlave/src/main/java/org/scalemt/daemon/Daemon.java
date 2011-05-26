@@ -117,12 +117,22 @@ public class Daemon {
 
         private final BlockingQueue<QueueElement> localResultsQueue;
         private BufferedReader pReader;
-         private final Process localp;
+        private final Process localp;
+        private boolean errorFlag;
 
         public EngineReader(BlockingQueue<QueueElement> resultsQueue, BufferedReader pReader, Process myp) {
             localResultsQueue=resultsQueue;
             this.pReader=pReader;
             localp=myp;
+            errorFlag=false;
+        }
+
+        public boolean isErrorFlag() {
+            return errorFlag;
+        }
+
+        public void setErrorFlag(boolean errorFlag) {
+            this.errorFlag = errorFlag;
         }
 
 
@@ -297,7 +307,7 @@ public class Daemon {
             }
 
 
-            if(endWithError)
+            if(endWithError && this.isErrorFlag())
             {
 
 
@@ -523,7 +533,9 @@ public class Daemon {
                 //try {
                     //crashed = true;
                     //TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
+                    engineReader.setErrorFlag(true);
                     killProcessTree();
+                    
                     //p.destroy();
                 //} catch (SigarException ex) {
                   //  logger.error("Couldn't kill process (daemon "+daemonInformation.getId()+")");
@@ -558,6 +570,7 @@ public class Daemon {
     private Thread tWriter;
 
     private EngineWriter engineWriter;
+    private EngineReader engineReader;
 
     private BufferedWriter processWriter;
 
@@ -746,7 +759,8 @@ public class Daemon {
             }
             resultsQueue.clear();
 
-            tReader = new Thread(new EngineReader(resultsQueue,pReader,p));
+            engineReader=new EngineReader(resultsQueue,pReader,p);
+            tReader = new Thread(engineReader);
             engineWriter=new EngineWriter(writingQueue,pWriter);
             tWriter = new Thread(engineWriter);
             tReader.start();
