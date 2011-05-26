@@ -511,8 +511,9 @@ public class Daemon {
 
             // Check if process has finished
             int exitValue = -1;
-            boolean finished,frozen;
+            boolean finished,frozen,passmemorylimit;
             frozen=false;
+            passmemorylimit=false;
             try {
                 exitValue = p.exitValue();
                 finished = true;
@@ -527,9 +528,22 @@ public class Daemon {
                     logger.error("Daemon " + daemonInformation.getId() + " frozen");
                     frozen=true;
                 }
+                else
+                {
+                    Long memused=getMemoryUsed();
+                    if(memused!=null)
+                    {
+                        if(memused.longValue() > maxMemoryPerDaemon)
+                        {
+                            passmemorylimit=true;
+                             logger.error("Daemon " + daemonInformation.getId() + " excedeed memory limit");
+                        }
+                    }
+
+                }
             }
 
-            if (frozen) {
+            if (frozen || passmemorylimit) {
                 //try {
                     //crashed = true;
                     //TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
@@ -616,6 +630,13 @@ public class Daemon {
      * Daemon status checking period
      */
     private long checkStatusPeriod;
+
+    /**
+     * Maximum amount of memory a daemon can have (measured in megabytes)
+     */
+    private long maxMemoryPerDaemon;
+
+
     /**
      * If a daemon doesn't emit any output during this time, having received
      * an input, we assume it is frozen.
@@ -656,11 +677,18 @@ public class Daemon {
             logger.warn("Exception reading daemon_frozen_time", e);
         }
 
-        checkStatusPeriod = 5000;
+        checkStatusPeriod = 10000;
         try {
             checkStatusPeriod = Long.parseLong(ServerUtil.readProperty("daemon_check_status_period"));
         } catch (Exception e) {
             logger.warn("Exception reading daemon_check_status_period", e);
+        }
+
+        maxMemoryPerDaemon=2000;
+        try {
+            maxMemoryPerDaemon = Long.parseLong(ServerUtil.readProperty("max_memory_per_daemon"));
+        } catch (Exception e) {
+            logger.warn("Exception reading max_memory_per_daemon", e);
         }
 
         //TODO: incluir formato
