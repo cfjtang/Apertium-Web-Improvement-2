@@ -1316,7 +1316,7 @@ public class Daemon {
         return null;
     }
 
-    private void killProcessTree( long parentPid)
+    private synchronized void killProcessTree( long parentPid)
     {
         Set<Long> finalProcesses= new HashSet<Long>();
         Set<Long> unexploredProcesses= new HashSet<Long>();
