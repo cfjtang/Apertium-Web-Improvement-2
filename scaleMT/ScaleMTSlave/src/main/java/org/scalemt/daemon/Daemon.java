@@ -549,7 +549,7 @@ public class Daemon {
                     //crashed = true;
                     //TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
                     engineReader.setErrorFlag(true);
-                    killProcessTree();
+                    killProcessTree(daemonInformation.getPid());
                     
                     //p.destroy();
                 //} catch (SigarException ex) {
@@ -1316,12 +1316,12 @@ public class Daemon {
         return null;
     }
 
-    private void killProcessTree()
+    private void killProcessTree( long parentPid)
     {
         Set<Long> finalProcesses= new HashSet<Long>();
         Set<Long> unexploredProcesses= new HashSet<Long>();
 
-        long parentPid=daemonInformation.getPid();
+        
         unexploredProcesses.add(parentPid);
 
         ProcessFinder pf = new ProcessFinder(TranslationEnginePool.sigar);
@@ -1349,13 +1349,15 @@ public class Daemon {
 
 
           
-
+            logger.debug("Killing processs tree. father="+Long.toString(parentPid));
             for(Long processPid: finalProcesses)
                 try {
+            logger.debug("killing PID="+Long.toString(processPid.longValue()));
             TranslationEnginePool.sigar.kill(processPid, 9);
         } catch (SigarException ex) {
            
         }
+        logger.debug("End killing processs tree. father="+Long.toString(parentPid));
 
         
        
