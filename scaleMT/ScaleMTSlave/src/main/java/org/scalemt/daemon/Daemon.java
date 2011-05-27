@@ -251,6 +251,7 @@ public class Daemon {
                                         element.setException(new DaemonDeadException());
                                         logger.error("Daemon " + daemonInformation.getId() + " crashed");
                                         crashed = true;
+                                        endWithError=true;
                                         //restart();
 
                                     }
