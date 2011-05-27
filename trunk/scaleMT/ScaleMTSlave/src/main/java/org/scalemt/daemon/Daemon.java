@@ -38,8 +38,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,6 +57,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import org.apache.commons.lang.SerializationUtils;
+import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.ptql.ProcessFinder;
 import org.scalemt.main.TranslationEnginePool;
@@ -655,6 +654,8 @@ public class Daemon {
     private final String tmpDir;
 
     private int trashNeededToFlush=0;
+
+    public static final Sigar sigar = new Sigar();
 
     private Daemon instance=this;
 
@@ -1257,7 +1258,9 @@ public class Daemon {
         long parentPid=daemonInformation.getPid();
         unexploredProcesses.add(parentPid);
 
-        ProcessFinder pf = new ProcessFinder(TranslationEnginePool.sigar);
+        synchronized(sigar)
+        {
+        ProcessFinder pf = new ProcessFinder(sigar);
         String bquery="State.Ppid.eq=";
 
         try
@@ -1289,6 +1292,7 @@ public class Daemon {
         catch(SigarException e)
         {
             
+        }
         }
 
         return null;
@@ -1323,8 +1327,9 @@ public class Daemon {
 
         
         unexploredProcesses.add(parentPid);
-
-        ProcessFinder pf = new ProcessFinder(TranslationEnginePool.sigar);
+        synchronized(sigar)
+        {
+        ProcessFinder pf = new ProcessFinder(sigar);
         String bquery="State.Ppid.eq=";
 
 
@@ -1353,12 +1358,12 @@ public class Daemon {
             for(Long processPid: finalProcesses)
                 try {
             logger.debug("killing PID="+Long.toString(processPid.longValue()));
-            TranslationEnginePool.sigar.kill(processPid, 9);
+            sigar.kill(processPid, 9);
         } catch (SigarException ex) {
            
         }
         logger.debug("End killing processs tree. father="+Long.toString(parentPid));
-
+        }
         
        
     }
