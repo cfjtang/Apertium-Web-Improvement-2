@@ -1,0 +1,48 @@
+default namespace = "http://apertium.org/xml/statistics"
+element statistics {
+	attribute type { xsd:string },
+	attribute version { xsd:float },
+	element regressions {
+		element regression {
+			attribute timestamp { xsd:dateTime },
+			element title { 
+				xsd:string,
+				attribute revision { xsd:positiveInteger }
+			},
+			element percent { xsd:float },
+			element total { xsd:positiveInteger },
+			element passes { xsd:positiveInteger },
+			element fails { xsd:positiveInteger },
+			element system {
+				element speed { xsd:float }
+			}
+		}*
+	},
+	element coverages {
+		element coverage {
+			attribute timestamp { xsd:dateTime },
+			element corpus {
+				xsd:string,
+				attribute checksum { xsd:string }
+			},
+			element dictionary {
+				xsd:string,
+				attribute checksum { xsd:string }
+			},
+			element percent { xsd:float },
+			element total { xsd:positiveInteger },
+			element known { xsd:positiveInteger },
+			element unknown { xsd:positiveInteger },
+			element top {
+				element word {
+					xsd:string,
+					attribute count { xsd:positiveInteger }
+				}*
+			},
+			element system {
+				element speed { xsd:float }
+			}
+		}*
+	}
+}
+
