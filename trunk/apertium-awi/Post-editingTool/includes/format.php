@@ -87,7 +87,9 @@ function apertium_extract($input_doc, $format)
 	//rebuild the input file into a temporary file, $input_document
 	$input_document = tempnam($config['temp_dir'], 'APRE_');
 	$input_document = $config['temp_dir'] . basename($input_document);
-	file_put_contents($input_document, $input_doc);
+	$handle = fopen($input_document, "w");
+	fwrite($handle, $input_doc);
+	fclose($handle);
 	
 	switch($format)
 	{
@@ -364,8 +366,9 @@ function apertium_reformat($unformatted_text, $format, $input_doc)
 					
 					break;
 			}
-			
-			file_put_contents($document . $filename, $reformatted_text);
+			$handle = fopen($document . $filename, "w");
+			fwrite($handle, $reformatted_text);
+			fclose($handle);
 		}
 	}
 	
