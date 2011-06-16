@@ -32,7 +32,7 @@ $modules = array(
 		'description' => 'Integrate the ability to check both input and output texts for mistakes, with a button “Check for mistakes”.
 When pressed, it runs spell checking and grammar checking on the text and underlines mistakes in different colours (red for spelling, blue for grammar).',
 		'default' => TRUE,
-		'javascript' => array('textEditor.js', 'main.js'),
+		'javascript' => array('gramproof.js', 'main.js'),
 		'php' => array('gramproof.php', 'strings.php', 'system.php'),
 		'button_in' => '<input type="submit" name="check_input" value="Check for mistakes" />',
 		'button_out' => '<input type="submit" name="check_output" value="Check for mistakes" />'
@@ -62,7 +62,7 @@ displayed under the text editing field.',
 		'description' => 'Log the changes made by you in the target text after the translation.
 This isn’t directly reusable in other translation processes, but it can help language pair maintainers get an idea of the changes to make.',
 		'default' => TRUE,
-		'javascript' => array('logging.js', 'logging_lowlevel.js', 'nodes.js', 'paste_event.js', 'main.js'),
+		'javascript' => array('logs.js'),
 		'php' => array('language.php', 'strings.php'),
 		'button_in' => '',
 		'button_out' => ''

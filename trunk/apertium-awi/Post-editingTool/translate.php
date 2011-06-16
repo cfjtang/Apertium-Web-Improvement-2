@@ -87,7 +87,6 @@ $javascript_header = array('javascript/browser_support.js',
 			   'javascript/textEditor.js',
 			   'javascript/ajax.js',
 			   'javascript/main.js',
-			   'javascript/nodes.js',
 			   'CSS/textEditor.css');
 $javascript_header = AddJSDependencies($javascript_header);
 
