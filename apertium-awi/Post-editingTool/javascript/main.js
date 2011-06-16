@@ -17,8 +17,12 @@ function initJSMain()
 	//initialise scripts for the page
 	
 	initBrowsers();
-	initJSEditors();
-	initPasteEvent();
+	try {
+		initJSEditors();
+		initPasteEvent();
+	}
+	catch(e) {
+	}
 	initAjax();
 	try {
 		initDictionaries();
@@ -27,9 +31,13 @@ function initJSMain()
 	}
 	
 	document.onclick = handleClick;
-	document.onkeydown = handleKeyDown;
-	document.onkeypress = handleKeyPress;
-	document.addEventListener("textInput", handleKeyPress, false);
+	try {
+		document.onkeydown = handleKeyDown;
+		document.onkeypress = handleKeyPress;
+		document.addEventListener("textInput", handleKeyPress, false);
+	}
+	catch(e) {
+	}
 }
 
 function handleClick(e)
@@ -48,11 +56,15 @@ function handleClick(e)
 				var query_string = 'action_request=proof_input&' + buildRequestString(document.mainform, new Array('language_pair', 'text_input') );
 				var resultManager = function(str)
 				{
-					text_in_js_on.innerHTML = str+'<br />';
-					//store previous logs
-					extractLogs(text_in_js_on);
-					//build words lists for logging
-					text_in_js_on.text_object = buildWordList(text_in_js_on);
+					try {
+						text_in_js_on.innerHTML = str+'<br />';
+						//store previous logs
+						extractLogs(text_in_js_on);
+						//build words lists for logging
+						text_in_js_on.text_object = buildWordList(text_in_js_on);
+					}
+					catch(e) {
+					}
 				};
 				
 				ajaxRequest(query_string, resultManager);
@@ -68,11 +80,15 @@ function handleClick(e)
 				var query_string = 'action_request=proof_output&' + buildRequestString(document.mainform, new Array('language_pair', 'text_output') );
 				var resultManager = function(str)
 				{
-					text_out_js_on.innerHTML = str+'<br />';
-					//store previous logs
-					extractLogs(text_out_js_on);
-					//build words lists for logging
-					text_out_js_on.text_object = buildWordList(text_out_js_on);
+					try {
+						text_out_js_on.innerHTML = str+'<br />';
+						//store previous logs
+						extractLogs(text_out_js_on);
+						//build words lists for logging
+						text_out_js_on.text_object = buildWordList(text_out_js_on);
+					}
+					catch(e) {
+					}
 				};
 				
 				ajaxRequest(query_string, resultManager);
@@ -88,13 +104,17 @@ function handleClick(e)
 				var query_string = 'action_request=translate&' + buildRequestString(document.mainform, new Array('language_pair', 'text_input', 'pretrans_src[]', 'pretrans_dst[]') );
 				var resultManager = function(str)
 				{
-					text_out_js_on.innerHTML = str+'<br />';
-					//store previous logs from input
-					extractLogs(text_in_js_on);
-					//delete logs from output
-					text_out_js_on.final_log = '';
-					//build words lists for logging
-					text_out_js_on.text_object = buildWordList(text_out_js_on);
+					try {
+						text_out_js_on.innerHTML = str+'<br />';
+						//store previous logs from input
+						extractLogs(text_in_js_on);
+						//delete logs from output
+						text_out_js_on.final_log = '';
+						//build words lists for logging
+						text_out_js_on.text_object = buildWordList(text_out_js_on);
+					}
+					catch(e) {
+					}
 				};
 				
 				ajaxRequest(query_string, resultManager);
@@ -110,29 +130,33 @@ function handleClick(e)
 				var query_string = 'action_request=replace_input&' + buildRequestString(document.mainform, new Array('language_pair', 'text_input', 'pretrans_src[]', 'pretrans_dst[]', 'pretrans_case[]') );
 				var resultManager = function(str)
 				{
-					text_in_js_on.innerHTML = str+'<br />';
-					//store previous logs from input
-					extractLogs(text_in_js_on);
-					//add log for the replacements
-					text_in_js_on.final_log += 'Manual replacements : <ul>';
-					if(document.mainform["pretrans_src[]"].nodeType && document.mainform["pretrans_src[]"].nodeType == 1)
-					{
-						var src_list = [ document.mainform["pretrans_src[]"] ];
-						var dst_list = [ document.mainform["pretrans_dst[]"] ];
-					}
-					else
-					{
-						var src_list = document.mainform["pretrans_src[]"];
-						var dst_list = document.mainform["pretrans_dst[]"];
-					}
+					try {
+						text_in_js_on.innerHTML = str+'<br />';
+						//store previous logs from input
+						extractLogs(text_in_js_on);
+						//add log for the replacements
+						text_in_js_on.final_log += 'Manual replacements : <ul>';
+						if(document.mainform["pretrans_src[]"].nodeType && document.mainform["pretrans_src[]"].nodeType == 1)
+						{
+							var src_list = [ document.mainform["pretrans_src[]"] ];
+							var dst_list = [ document.mainform["pretrans_dst[]"] ];
+						}
+						else
+						{
+							var src_list = document.mainform["pretrans_src[]"];
+							var dst_list = document.mainform["pretrans_dst[]"];
+						}
 					
-					for(var i = 0; i < src_list.length; i++)
-					{
-						text_in_js_on.final_log += '<li>'+src_list[i].value+' by <strong>'+dst_list[i].value+'</strong></li>';
+						for(var i = 0; i < src_list.length; i++)
+						{
+							text_in_js_on.final_log += '<li>'+src_list[i].value+' by <strong>'+dst_list[i].value+'</strong></li>';
+						}
+						text_in_js_on.final_log += '</ul><br />\n';
+						//build words lists for logging
+						text_in_js_on.text_object = buildWordList(text_in_js_on);
 					}
-					text_in_js_on.final_log += '</ul><br />\n';
-					//build words lists for logging
-					text_in_js_on.text_object = buildWordList(text_in_js_on);
+					catch(e) {
+					}
 				};
 				
 				ajaxRequest(query_string, resultManager);
@@ -148,29 +172,33 @@ function handleClick(e)
 				var query_string = 'action_request=replace_output&' + buildRequestString(document.mainform, new Array('language_pair', 'text_output', 'posttrans_src[]', 'posttrans_dst[]', 'posttrans_case[]') );
 				var resultManager = function(str)
 				{
-					text_out_js_on.innerHTML = str+'<br />';
-					//store previous logs
-					extractLogs(text_out_js_on);
-					//add log for the replacements
-					text_out_js_on.final_log += 'Manual replacements : <ul>';
-					if(document.mainform["posttrans_src[]"].nodeType && document.mainform["pretrans_src[]"].nodeType == 1)
-					{
-						var src_list = [ document.mainform["posttrans_src[]"] ];
-						var dst_list = [ document.mainform["posttrans_dst[]"] ];
-					}
-					else
-					{
-						var src_list = document.mainform["posttrans_src[]"];
-						var dst_list = document.mainform["posttrans_dst[]"];
-					}
+					try {
+						text_out_js_on.innerHTML = str+'<br />';
+						//store previous logs
+						extractLogs(text_out_js_on);
+						//add log for the replacements
+						text_out_js_on.final_log += 'Manual replacements : <ul>';
+						if(document.mainform["posttrans_src[]"].nodeType && document.mainform["pretrans_src[]"].nodeType == 1)
+						{
+							var src_list = [ document.mainform["posttrans_src[]"] ];
+							var dst_list = [ document.mainform["posttrans_dst[]"] ];
+						}
+						else
+						{
+							var src_list = document.mainform["posttrans_src[]"];
+							var dst_list = document.mainform["posttrans_dst[]"];
+						}
 					
-					for(var i = 0; i < src_list.length; i++)
-					{
-						text_out_js_on.final_log += '<li>'+src_list[i].value+' by <strong>'+dst_list[i].value+'</strong></li>';
+						for(var i = 0; i < src_list.length; i++)
+						{
+							text_out_js_on.final_log += '<li>'+src_list[i].value+' by <strong>'+dst_list[i].value+'</strong></li>';
+						}
+						text_out_js_on.final_log += '</ul><br />\n';
+						//build words lists for logging
+						text_out_js_on.text_object = buildWordList(text_out_js_on);
 					}
-					text_out_js_on.final_log += '</ul><br />\n';
-					//build words lists for logging
-					text_out_js_on.text_object = buildWordList(text_out_js_on);
+					catch(e) {
+					}
 				};
 				
 				ajaxRequest(query_string, resultManager);
@@ -199,27 +227,4 @@ function handleClick(e)
 }
 
 
-function handleKeyPress(e)
-{
-	var event = getEvent(e);
-	
-	if(event.ctrlKey)
-	{
-		var character = false;
-	}
-	else
-	{
-		var character = event.charCode ? String.fromCharCode(event.charCode) : (event.data ? event.data : "");
-	}
 
-	//let the text editor lib handle it
-	return TE_handleKeyPress(event, character);
-}
-
-function handleKeyDown(e)
-{
-	var event = getEvent(e);
-	
-	//let the text editor lib handle it
-	return TE_handleKeyPress(event, false);
-}
