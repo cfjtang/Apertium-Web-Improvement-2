@@ -1,10 +1,10 @@
 //coding: utf-8
 /*
-	Apertium Web Post Editing tool
-	Functions for handling of external dictionaries
+  Apertium Web Post Editing tool
+  Functions for handling of external dictionaries
 	
-	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
-	Mentors : Luis Villarejo, Mireia Farrús
+  Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
+  Mentors : Luis Villarejo, Mireia Farrús
 */
 
 var dictionary_src;
@@ -48,6 +48,6 @@ function refreshDictionaryLists()
 
 function getDictionaryLink(word, field)
 {
-	return window["dictionary_"+field].value.replace(/\{searchTerms\}/g, encodeURIComponent(word))
+	return window["dictionary_"+field].value.replace(/\{searchTerms\}/g, encodeURIComponent(word));
 }
 

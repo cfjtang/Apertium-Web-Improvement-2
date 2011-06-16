@@ -5,11 +5,16 @@
 	
 	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
 	Mentors : Luis Villarejo, Mireia Farrús
+
+	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+	Mentors : Arnaud Vié, Luis Villarejo
+
 */
 
 include_once('includes/language.php');
 include_once('includes/strings.php');
 
+include_once('includes/gramproof.php');
 
 putenv('LANG=en_GB.UTF-8');
 
@@ -32,37 +37,11 @@ else
 }
 
 //Define all variables, for strictness...
-if(!isset($data['text_input']))
-{
-	$data['text_input'] = null;
-}
-if(!isset($data['text_output']))
-{
-	$data['text_output'] = null;
-}
-if(!isset($data['pretrans_src']))
-{
-	$data['pretrans_src'] = null;
-}
-if(!isset($data['pretrans_dst']))
-{
-	$data['pretrans_dst'] = null;
-}
-if(!isset($data['pretrans_case']))
-{
-	$data['pretrans_case'] = null;
-}
-if(!isset($data['posttrans_src']))
-{
-	$data['posttrans_src'] = null;
-}
-if(!isset($data['posttrans_dst']))
-{
-	$data['posttrans_dst'] = null;
-}
-if(!isset($data['posttrans_case']))
-{
-	$data['posttrans_case'] = null;
+$variables_name = array('text_input', 'text_output', 'pretrans_src', 'pretrans_dst', 'pretrans_case', 'posttrans_src', 'posttrans_dst', 'posttrans_case');
+
+foreach ($variables_name as $name) {
+	if(!isset($data[$name]))
+		$data[$name] = null;
 }
 
 switch($data['action_request'])
