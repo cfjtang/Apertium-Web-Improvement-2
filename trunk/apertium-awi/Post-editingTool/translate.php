@@ -4,13 +4,17 @@
 	
 	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
 	Mentors : Luis Villarejo, Mireia Farrús
+
+	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+	Mentors : Arnaud Vié, Luis Villarejo
 */
+
+include_once('includes/config.php');
+include_once('modules.php');
 
 include_once('includes/language.php');
 include_once('includes/template.php');
 include_once('includes/strings.php');
-include_once('includes/format.php');
-
 
 init_environment();
 
@@ -79,19 +83,15 @@ elseif(isset($data['submit_output']))
 	send_file('Translation-' . $data['language_pair'] . '-' . $data['input_doc_name'], $output_file);
 }
 
+$javascript_header = array('javascript/browser_support.js',
+			   'javascript/textEditor.js',
+			   'javascript/ajax.js',
+			   'javascript/main.js',
+			   'javascript/nodes.js',
+			   'CSS/textEditor.css');
+$javascript_header = AddJSDependencies($javascript_header);
 
-page_header("Apertium translation", array(
-	'javascript/browser_support.js',
-	'javascript/textEditor.js',
-	'javascript/paste_event.js',
-	'javascript/ajax.js',
-	'javascript/dictionaries.js',
-	'javascript/main.js',
-	'javascript/logging_lowlevel.js',
-	'javascript/logging.js',
-	'javascript/nodes.js',
-	'CSS/textEditor.css'
-));
+page_header("Apertium translation", $javascript_header);
 ?>
 
 <form name="mainform" action="" method="post">
@@ -108,21 +108,25 @@ page_header("Apertium translation", array(
 			</select>
 		</div>
 		
-		<div class="run_check">
-			<input type="submit" name="check_input" value="Check for mistakes" />
-		</div>
-		
+	
 		<div class="input_box">
 			<textarea id="text_in_js_off" name="text_input"><?echo strip_tags($data['text_input']);?></textarea>
 			<div id="text_in_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_input']);?><br class="nodelete" contenteditable="false" /></div>
 		</div>
 		
 		<div class="submit_text">
-			<input type="submit" name="replace_input" value="Apply replacements" />
+	<?php
+	foreach (LoadModules() as $module_name)
+	WriteButtonInput($module_name);
+?>
+		
 			<input type="submit" name="submit_input" value="Translate text" />
 		</div>
 		
 		<div class="more_options">
+	<?php
+	if (module_is_load('SearchAndReplace')) {
+		?>
 			<div>
 <? /*/ Fields for manual translation, which doesn't work at the moment ?>
 				Manual translations : 
@@ -179,17 +183,18 @@ page_header("Apertium translation", array(
 ?>				</ul>
 				<input id="pretrans_add" name="pretrans_add" type="submit" value="+" />
 			</div>
-			
-			<div style="display: none;">Dictionary :
-				<select id="dictionary_src"><option value=""></option></select>
-			</div>
+<?php
+	}
+if (module_is_load('LinkExternalDictionnaries')) {		     
+	echo '<div style="display: none;">Dictionary :';
+	echo '<select id="dictionary_src"><option value=""></option></select>';
+	echo '</div>';
+}
+?>
 		</div>
 	</div>
 	
 	<div id="right">
-		<div class="run_check">
-			<input type="submit" name="check_output" value="Check for mistakes" />
-		</div>
 		
 		<div class="input_box">
 			<textarea id="text_out_js_off" name="text_output"><?echo strip_tags($data['text_output']);?></textarea>
@@ -197,13 +202,19 @@ page_header("Apertium translation", array(
 		</div>
 		
 		<div class="submit_text">
-			<input type="submit" name="replace_output" value="Apply replacements" />
+<?php
+			foreach (LoadModules() as $module_name)
+	WriteButtonOutput($module_name);
+?>
+		
 			<input type="submit" name="submit_output_tmx" value="Generate TMX" />
-			<input type="submit" name="submit_output" value="Get translation result" />
 			<input id="get_logs" type="submit" name="get_logs" value="Get logs" style="display:none;" />
 		</div>
 		
 		<div class="more_options">
+		<?php
+		if (module_is_load('SearchAndReplace')) {
+?>
 			<div>
 				Manual replacements : 
 				<ul id="posttrans_list">
@@ -232,10 +243,14 @@ page_header("Apertium translation", array(
 ?>				</ul>
 				<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
 			</div>
-			
-			<div style="display: none;">Dictionary :
-				<select id="dictionary_dst"><option value=""></option></select>
-			</div>
+		<?php
+		}
+		if (module_is_load('LinkExternalDictionnaries')) {
+			echo '<div style="display: none;">Dictionary :';
+			echo '<select id="dictionary_dst"><option value=""></option></select>';
+			echo '</div>';
+		}
+?>
 		</div>
 	</div>
 	

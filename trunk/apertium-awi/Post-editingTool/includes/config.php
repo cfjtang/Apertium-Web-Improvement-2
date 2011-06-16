@@ -6,7 +6,6 @@
 	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
 	Mentors : Luis Villarejo, Mireia Farrús
 */
-
 $config = array(
 	'temp_dir' => 'temp/',
 
@@ -26,6 +25,5 @@ $config = array(
 	'unzip_command' => 'unzip',
 	'zip_command' => 'zip'
 );
-
 
 ?>

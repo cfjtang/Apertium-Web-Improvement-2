@@ -5,6 +5,9 @@
 	
 	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
 	Mentors : Luis Villarejo, Mireia Farrús
+
+	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+	Mentors : Arnaud Vié, Luis Villarejo
 */
 
 window.onload = initJSMain;
@@ -17,7 +20,11 @@ function initJSMain()
 	initJSEditors();
 	initPasteEvent();
 	initAjax();
-	initDictionaries();
+	try {
+		initDictionaries();
+	}
+	catch(e) {
+	}
 	
 	document.onclick = handleClick;
 	document.onkeydown = handleKeyDown;

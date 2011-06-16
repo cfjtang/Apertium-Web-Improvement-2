@@ -8,7 +8,6 @@
 */
 
 include_once('config.php');
-include_once('strings.php');
 include_once('system.php');
 include_once('files.php');
 
