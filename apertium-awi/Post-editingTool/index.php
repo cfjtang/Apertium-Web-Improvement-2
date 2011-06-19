@@ -25,6 +25,9 @@ if (isset($_POST['set_module'])) {
 		else
 			UnloadAModule($module_name);
 	}
+	/* Create main.js, textEditor.js */
+	gen_templateJS('javascript/main.tmpl', 'javascript/main.js');
+	gen_templateJS('javascript/textEditor.tmpl', 'javascript/textEditor.js');
 }
 
 ?>

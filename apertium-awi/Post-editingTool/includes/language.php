@@ -38,18 +38,16 @@ function init_environment()
 	}
 }
 
-
-
-/*--------------------------------------
-Functions for translation
---------------------------------------*/
-
-
 function is_installed($language_pair)
 {
 	global $language_pairs_list;
 	return in_array($language_pair, $language_pairs_list);
 }
+
+
+/*--------------------------------------
+Functions for translation
+--------------------------------------*/
 
 function getApertiumTranslation($source_language, $target_language, $format, $text, $pretrans_src='', $pretrans_dst='')
 {
