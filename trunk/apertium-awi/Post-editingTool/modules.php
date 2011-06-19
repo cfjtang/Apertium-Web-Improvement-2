@@ -181,6 +181,29 @@ function AddJSDependencies($js_header)
 	return array_values(array_unique($js_header));
 }
 
+function gen_templateJS($url_source, $url_dst)
+{
+	/* Generate the javascript/main.js file, according to javascript/main.tmpl
+	 * and modules loaded
+	 */
+	$source = file_get_contents($url_source);
+	$file = fopen($url_dst, "w");
+
+	preg_match_all("|\#BEGIN\#(.*?)\#END\#|s",$source,$matche);
+	$to_treat = str_replace(array("#BEGIN#\n", "#END#"), '', $matche[0][0]);
+	
+	preg_match_all("|\#(.*?)\#(.*?)\#\#|s", $to_treat, $matches);
+	
+	$i = 0;
+	foreach ($matches[1] as $ModuleName) {
+		if ($ModuleName == 'all' || module_is_load($ModuleName)) 
+			fwrite($file, $matches[2][$i]);
+		$i++;
+	}
+       
+	fclose($file);
+}
+	
 
 session_start();
 if (!isset($_SESSION['modules_load']))
