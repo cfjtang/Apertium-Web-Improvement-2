@@ -5,6 +5,9 @@
 	
 	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
 	Mentors : Luis Villarejo, Mireia Farrús
+
+	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+	Mentors : Arnaud Vié, Luis Villarejo
 */
 $config = array(
 	'temp_dir' => 'temp/',
@@ -21,6 +24,10 @@ $config = array(
 	'aspell_command' => 'aspell',
 	
 	'maligna_command' => 'external/maligna-2.5.5/bin/maligna',
+
+	'spellcheckingtool' => 'aspell',
+
+	'grammarproofingtool' => 'languagetool',
 	
 	'unzip_command' => 'unzip',
 	'zip_command' => 'zip'

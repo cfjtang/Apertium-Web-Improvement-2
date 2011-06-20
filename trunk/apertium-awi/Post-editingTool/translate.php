@@ -11,7 +11,6 @@
 
 include_once('includes/config.php');
 include_once('modules.php');
-
 include_once('includes/language.php');
 include_once('includes/template.php');
 include_once('includes/strings.php');
@@ -41,6 +40,8 @@ if(isset($data['language_pair']) and is_installed($data['language_pair']))
 	$source_language = explode('-', $data['language_pair']);
 	$target_language = $source_language[1];
 	$source_language = $source_language[0];
+	$_SESSION['translate']->set_source_language($source_language);
+	$_SESSION['translate']->set_target_language($target_language);
 }
 
 if(isset($data['check_input']))
@@ -55,7 +56,7 @@ elseif(isset($data['submit_input']))
 	//translate input
 	//changes $data['text_output']
 	
-	$data['text_output'] = getApertiumTranslation($source_language, $target_language, 'html', $data['text_input'] /*, $data['pretrans_src'], $data['pretrans_dst']*/);
+	$data['text_output'] = $_SESSION['translate']->getApertiumTranslation($data['text_input'] /*, $data['pretrans_src'], $data['pretrans_dst']*/);
 }
 elseif(isset($data['replace_input']))
 {
@@ -74,7 +75,7 @@ elseif(isset($data['check_output']))
 elseif(isset($data['submit_output_tmx']))
 {
 	//generate translation memory
-	$tmx = generateTmxOutput($source_language, $target_language, strip_tags($data['text_input']), strip_tags($data['text_output']));
+	$tmx = $_SESSION['translate']->generateTmxOutput($source_language, $target_language, strip_tags($data['text_input']), strip_tags($data['text_output']));
 	send_file('out.tmx', $tmx);
 }
 elseif(isset($data['submit_output']))
