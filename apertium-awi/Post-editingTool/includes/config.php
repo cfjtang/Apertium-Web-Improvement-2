@@ -26,4 +26,12 @@ $config = array(
 	'zip_command' => 'zip'
 );
 
+/* List of modules to load
+ * Existing modules : see modules.php
+ * If you change this list, do not forget to uncomment 
+ * gen_templateJS
+ * in modules.php (at the end of file)
+ */
+$modules_to_load = array('FormattedDocumentHandling', 'SpellGrammarChecking', 'LinkExternalDictionnaries', 'SearchAndReplace', 'Logs');
+
 ?>

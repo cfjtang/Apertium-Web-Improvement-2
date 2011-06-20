@@ -69,6 +69,8 @@ This isn’t directly reusable in other translation processes, but it can help l
 		)
 	);
 
+$modules_load = array();
+
 function CheckModule($name)
 {
 	/* Check the existence of the modules :
@@ -136,20 +138,26 @@ function DefaultModules()
 function module_is_load($name)
 {
 	/* Return TRUE if the module $name is load, FALSE otherwise */
-	return in_array($name, $_SESSION['modules_load']);
+	global $modules_load;
+
+	return in_array($name, $modules_load);
 }
 
 function LoadModules()
 {
 	/* Return an array of the modules loaded */
-	return $_SESSION['modules_load'];
+	global $modules_load;		
+	
+	return $modules_load;
 }
 
 function LoadAModule($name)
 {
 	/* Load the module $name */
+	global $modules_load;
+
 	if (!in_array($name, LoadModules())) {
-		$_SESSION['modules_load'][] = $name;
+		$modules_load[] = $name;
 		LoadPHPDependencies($name);
 	}
 }
@@ -157,9 +165,11 @@ function LoadAModule($name)
 function UnloadAModule($name)
 {
 	/* Unload the module $name */
+	global $modules_load;
+
 	if (in_array($name, LoadModules())) {
-		unset($_SESSION['modules_load'][array_search($name, $_SESSION['modules_load'])]);
-		$_SESSION['modules_load'] = array_values($_SESSION['modules_load']);
+		unset($modules_load[array_search($name, $modules_load)]);
+		$modules_load = array_values($modules_load);
 	}
 }
 
@@ -203,15 +213,19 @@ function gen_templateJS($url_source, $url_dst)
        
 	fclose($file);
 }
-	
-
-session_start();
-if (!isset($_SESSION['modules_load']))
-	$_SESSION['modules_load'] = DefaultModules();
-else {
-	foreach (LoadModules() as $module_name)
-		LoadPHPDependencies($module_name);
+       
+foreach ($modules_to_load as $name) {
+	if (CheckModule($name))
+		LoadAModule($name);
+	else
+		echo "Dependencies problem for the module " . $name . "\n";
 }
+
+/* Create main.js, textEditor.js
+ * gen_templateJS('javascript/main.tmpl', 'javascript/main.js');
+ * gen_templateJS('javascript/textEditor.tmpl', 'javascript/textEditor.js');
+ * Uncomment this region if you change $modules_to_load 
+ */
 
 ?>
 		
