@@ -541,8 +541,9 @@ SELECT ("gant" pr) IF (-1 ("pe" cnjcoo)) ;
 #  en el singular, no mutan los sustantivos masculinos después del articulo (excepto k que muta en c'h)
 # ki (perro) --> ar c'hi, taol (golpe) --> an taol, perzh (qualidad) --> ar perzh, 
 # berzh (suceso) --> ar berzh, taol (mesa) --> an daol
+# the mutation k>c'h isn't a soft one. "ar gred" can't be a mutation of the word "kred" which is masculine.
 
-REMOVE NomM + SoftMut IF (0 SoftMutCons) (0 SoftMut) (-1C DetDef) (NOT 0 ("k.*"ri)); 
+REMOVE NomM + SoftMut IF (0 SoftMutCons) (0 SoftMut) (-1C DetDef OR DetInd);
 
 # An niver a votoù bet dastumet gant listenn E.E.
 REMOVE VerbFin IF (-1C DetDef);
