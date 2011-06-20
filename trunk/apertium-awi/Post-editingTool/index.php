@@ -8,7 +8,7 @@
 	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
 	Mentors : Arnaud Vié, Luis Villarejo
 */
-
+include_once('includes/config.php');
 include_once('modules.php');
 include_once('includes/template.php');
 
@@ -16,19 +16,6 @@ include_once('includes/template.php');
 
 
 page_header("Apertium translation", array());
-
-/* Load/Unload modules */
-if (isset($_POST['set_module'])) {
-	foreach ($modules as $module_name => $module_data) {
-		if (isset($_POST[$module_name]))			     
-			LoadAModule($module_name);
-		else
-			UnloadAModule($module_name);
-	}
-	/* Create main.js, textEditor.js */
-	gen_templateJS('javascript/main.tmpl', 'javascript/main.js');
-	gen_templateJS('javascript/textEditor.tmpl', 'javascript/textEditor.js');
-}
 
 ?>
 
@@ -51,8 +38,6 @@ if (module_is_load('FormattedDocumentHandling')) {
 }
 ?>
 
-<form action = "" method = "POST">
-<input type="hidden" name="set_module" value="true"/>
 <table>
 <tr><td>Module</td><td>Description</td><td>Recommended</td><td>Dependencies</td><td>Load</td></tr>
 <?php
@@ -74,8 +59,6 @@ if (module_is_load('FormattedDocumentHandling')) {
 }
 ?>       
 </table>
-<input type='submit' value='Apply' />
-</form>
 
 <?	
 page_footer();

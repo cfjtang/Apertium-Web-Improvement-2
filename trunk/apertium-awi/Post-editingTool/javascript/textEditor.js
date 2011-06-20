@@ -33,6 +33,30 @@ function initJSEditors()
 	text_in_js_on.setAttribute("spellcheck", "false");
 	text_out_js_on.setAttribute("spellcheck", "false");
 
+	
+	//build words lists for logging
+	text_in_js_on.text_object = buildWordList(text_in_js_on);
+	text_out_js_on.text_object = buildWordList(text_out_js_on);
+	
+	//prepare text logs
+	text_in_js_on.final_log = '';
+	text_out_js_on.final_log = '';
+	
+	//display the log button
+	document.getElementById('get_logs').style.display = '';
+	
+	//Set text fields to get their paste event intercepted
+	addPasteEventListener(text_in_js_on, function(text){
+			var selRange = window.getSelection().getRangeAt(0);
+			var correctRange = getCorrectedRange(selRange, text_in_js_on);
+			replaceCharacters(correctRange.startContainer, correctRange.startOffset, correctRange.endContainer, correctRange.endOffset, strip_tags(text), selRange);
+		});
+	
+	addPasteEventListener(text_out_js_on, function(text){
+			var selRange = window.getSelection().getRangeAt(0);
+			var correctRange = getCorrectedRange(selRange, text_out_js_on);
+			replaceCharacters(correctRange.startContainer, correctRange.startOffset, correctRange.endContainer, correctRange.endOffset, strip_tags(text), selRange);
+		});
 
 }
 
