@@ -16,6 +16,7 @@ class externtool
 	private $config;
 	private $spellcheckingtool;
 	private $grammarproofingtool;
+	private $ATDsupport_lang;
 	
 	public function __construct($config)
 	{
@@ -23,8 +24,10 @@ class externtool
 		$this->config = $config;
 		$this->spellcheckingtool = $config['spellcheckingtool'];
 		$this->grammarproofingtool = $config['grammarproofingtool'];
+		$this->ATDsupport_lang = array('en', 'fr', 'de', 'pt', 'es');
 	}
 
+	/* Aspell */
 	private function getAspellCorrection($language, $text, $apply, $additional_argument='')
 	{
 		//runs Aspell to spellcheck $text in the given $language
@@ -115,6 +118,7 @@ class externtool
 		}
 	}
 	
+	/* LanguageTool */
 	private function mergeMistakes($mistake1, $mistake2, $text)
 	{
 		$result = array();
@@ -243,6 +247,81 @@ class externtool
 		}
 	}
 
+	/* After the DeadLine */
+	private function launch_ATD()
+	{
+		/* Launch the webserver ATD */
+		executeCommand($this->config['ATD_command'], '', $result, $return_status);
+	}
+
+	private function stop_ATD()
+	{
+		/* Stop the webserver ATD */
+		executeCommand('killall run-lowmem.sh', '', $result, $return_status);
+	}
+
+	private function getATDresult($lang, $data, $online_server = TRUE)
+	{
+		/* Return the XML file generate by ATD for the data $data and
+		 * the language $lang, if the language is in $ATDsupport_lang
+		 * Use the online server if $online_server
+		 */
+		if (!in_array($lang, $this->ATDsupport_lang))
+			$lang = 'en';
+		
+		$url = $this->config['ATD_link'];
+		if ($online_server)
+			$url = $lang . '.' . $url;
+		
+		return file_get_contents('http://' . $url . '/checkDocument?data=' . urlencode($data));
+	}
+	
+	private function analyseATDresult($XML, $type_error, $text)
+	{
+		/* Analyse the XML file generaye by ATD 
+		 * Return the table of mistakes
+		 */
+		$mistakes = array();
+		
+		$data = simplexml_load_string($XML);
+
+		foreach ($data->error as $error) {
+			if ($error->type == $type_error) {
+				if ((string) $error->{'precontext'} != '')
+					$start = strpos($text,
+							(string) $error->precontext . ' ' . (string) $error->string)
+						+ strlen($error->precontext) + 1;
+				else
+					$start = strpos($text, (string) $error->string);
+				       
+				$sugg = array();
+				/* Get the list of suggestions */
+				foreach ($error->children() as $child1) {
+					foreach ($child1->children() as $child2)
+						$sugg[] = $child2;
+				}
+				
+				$one_mistake = array(
+					'text' => $error->string,
+					'desc' => $error->description,
+					'sugg' => $sugg,
+					'start' => $start,
+					'end' => $start + strlen($error->string) - 1);
+				$mistakes[] = $one_mistake;
+			}
+		}
+		
+		return $mistakes;
+	}
+	
+	private function getATDCorrection($language, $text, $apply, $type_error)
+	{
+		/* Return a table of mystake for error $type_error (spelling, grammar)
+		 * Using AfterTheDeadLine
+		 */
+		return $this->analyseATDresult($this->getATDresult($language, $text), $type_error, $text);
+	}
+
 	public function SpellChecking($language, $text, $apply
 				      , $additional_argument = '') 
 	{
@@ -251,10 +330,18 @@ class externtool
 		 * closest match
 		 * Else, return the table of mistakes
 		 */
-		if ($this->spellcheckingtool == 'aspell')
+		switch ($this->spellcheckingtool)
+		{
+		case 'aspell':
 			return $this->getAspellCorrection($language, $text, $apply, $additional_argument);
-		else
+			break;
+		case 'ATD':
+			return $this->getATDCorrection($language, $text, $apply, 'spelling');
+			break;
+		default:
 			return $text;
+			break;
+		}
 	}
 
 	public function GrammarProofing($language, $format, $text, $motherlanguage
@@ -264,10 +351,17 @@ class externtool
 		 * If $apply, return the corrected text
 		 * Else return the table of mistakes
 		 */
-		if ($this->grammarproofingtool == 'languagetool')
+		switch ($this->grammarproofingtool) {
+		case 'languagetool':
 			return $this->getLanguageToolCorrection($language, $format, $text, $motherlanguage, $apply, $merge_colliding);
-		else
+			break;
+		case 'ATD':
+			return $this->getATDCorrection($language, $text, $apply, 'grammar');
+			break;
+		default:
 			return $text;
+			break;
+		}
 	}
 }
 			

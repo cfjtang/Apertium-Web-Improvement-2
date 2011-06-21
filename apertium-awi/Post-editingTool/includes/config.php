@@ -25,9 +25,12 @@ $config = array(
 	
 	'maligna_command' => 'external/maligna-2.5.5/bin/maligna',
 
-	'spellcheckingtool' => 'aspell',
+	'ATD_command' => './external/atd/run-lowmem.sh',
+	'ATD_link' => 'service.afterthedeadline.com',
 
-	'grammarproofingtool' => 'languagetool',
+	'spellcheckingtool' => 'aspell', /* aspell, ATD */
+
+	'grammarproofingtool' => 'ATD', /* languagetool, ATD */
 	
 	'unzip_command' => 'unzip',
 	'zip_command' => 'zip'
