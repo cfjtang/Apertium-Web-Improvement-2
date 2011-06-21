@@ -73,7 +73,6 @@ function generateCorrectionField($original, $suggestions, $message, $type)
 {
 	//generate the correction field with all suggestions for a given mistake.
 	//$type is either "grammar" or "spelling" depending on the mistake
-	
 	$output = '<span class="' . $type . '_mistake" title="' . escape_attribute($message, false) . '" data-suggestions="' . escape_attribute(implode('#', $suggestions), false) . '" >' . $original . '</span>';
 	
 	return str_replace("\n", ' ', $output);
