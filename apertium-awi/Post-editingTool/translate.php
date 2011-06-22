@@ -10,8 +10,8 @@
 */
 
 include_once('includes/config.php');
+include('includes/language.php');
 include_once('modules.php');
-include_once('includes/language.php');
 include_once('includes/template.php');
 include_once('includes/strings.php');
 
@@ -25,6 +25,7 @@ if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 	//if handling formatted document
 	$data['input_doc_name'] = $_FILES["in_doc"]["name"];
 	$data['input_doc_type'] = getFileFormat($data['input_doc_name'], $data['in_doc_type']);
+	echo $data['input_doc_type'];
 	$data['text_input'] = convertFileToHTML($_FILES["in_doc"]["tmp_name"], $data['input_doc_type']);
 	$data['input_doc'] = base64_encode(file_get_contents($_FILES["in_doc"]["tmp_name"]));
 }
@@ -40,8 +41,8 @@ if(isset($data['language_pair']) and is_installed($data['language_pair']))
 	$source_language = explode('-', $data['language_pair']);
 	$target_language = $source_language[1];
 	$source_language = $source_language[0];
-	$_SESSION['translate']->set_source_language($source_language);
-	$_SESSION['translate']->set_target_language($target_language);
+	$trans->set_source_language($source_language);
+	$trans->set_target_language($target_language);
 }
 
 if(isset($data['check_input']))
@@ -56,7 +57,7 @@ elseif(isset($data['submit_input']))
 	//translate input
 	//changes $data['text_output']
 	
-	$data['text_output'] = $_SESSION['translate']->getApertiumTranslation($data['text_input'] /*, $data['pretrans_src'], $data['pretrans_dst']*/);
+	$data['text_output'] = $trans->getApertiumTranslation($data['text_input'] /*, $data['pretrans_src'], $data['pretrans_dst']*/);
 }
 elseif(isset($data['replace_input']))
 {
