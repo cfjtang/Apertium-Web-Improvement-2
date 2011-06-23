@@ -5,6 +5,9 @@
 	
 	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
 	Mentors : Luis Villarejo, Mireia Farrús
+
+	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+	Mentors : Arnaud Vié, Luis Villarejo
 */
 
 include_once('config.php');
@@ -135,12 +138,12 @@ function apertium_unformat($format, $input_doc_path)
 			$command = 'find . | grep content\\\\.xml';
 			executeCommand($command, '', $files, $return_status);
 			$files = explode("\n", trim($files));
-			
+	       
 			foreach($files as $ind => $file)
 			{
 				$files[$ind] = array('path' => $file, 'type' => 'odt');
 			}
-			
+		
 			break;
 		
 		case 'docx' :
@@ -175,12 +178,11 @@ function apertium_unformat($format, $input_doc_path)
 		}
 		else
 		{
-			$output .= '[<file name="' . addcslashes(ltrim($file['path'], '.'), '\\"[]') . '" type="' . $file['type'] . '"/>]';
+			$output .= '[<file name="' . addcslashes(ltrim($file['path'], '.'), '\\"[]') . '" type="' . $file['type'] . '"/>].[]';
 		}
 		
 		$command = $config['apertium_des_commands'].$file['type'];
 		executeCommand($command, file_get_contents($file['path']), $contents, $return_status);
-		
 		$output .= $contents;
 	}
 	
@@ -188,14 +190,10 @@ function apertium_unformat($format, $input_doc_path)
 	
 	//clean the file
 	if(is_dir($document))
-	{
 		rmdir_recursive($document);
-	}
 	else
-	{
 		unlink($document);
-	}
-	
+		
 	return $output;
 }
 
@@ -214,8 +212,7 @@ function convertFileToHTML($filepath, $format)
 	// Using a php function
 	$unformatted_text = apertium_unformat($format, $filepath);
 	//*/
-	
-	$unformatted_text = str_replace('.[]', "\n", $unformatted_text);
+	$unformatted_text = str_replace(".[]", "", $unformatted_text);
 	
 	$opening_bracket = utf8_strpos_unescaped($unformatted_text, '[');
 	
@@ -269,7 +266,6 @@ function apertium_rebuild($input_path, $format)
 			executeCommand($command, '', $return_value, $return_status);
 			chdir($old_dir);
 			$output = file_get_contents($input_path . '.zip');
-			
 			rmdir_recursive($input_path);
 			unlink($input_path . '.zip');
 			
@@ -310,17 +306,17 @@ function apertium_reformat($unformatted_text, $format, $input_doc)
 		
 		//find next file start
 		$next_quote = utf8_strpos($unformatted_text, '"', $current_offset + strlen('<file name="') + 1);
-		$content_start = utf8_strpos($unformatted_text, '/>', $next_quote + 1) + 3;
+		$content_start = utf8_strpos($unformatted_text, '/>', $next_quote + 1) + 2;
+//get the name of the current file
 		
-		//get the name of the current file
-		$current_file = utf8_substr($unformatted_text, $current_offset + strlen('<file name="'), $next_quote - ($current_offset + strlen('<file name="')));
+$current_file = utf8_substr($unformatted_text, $current_offset + strlen('<file name="'), $next_quote - ($current_offset + strlen('<file name="')));
 		//for some reason, slashes are sometimes escaped, sometimes not...
 		$current_file = stripslashes($current_file);
 		//make path relative to the root of the archive (they are given absolute to the OS root...)
 		$current_file = preg_replace('#^.*?/\\d+'.$format.'dir/#', '/', $current_file);
 	}
-	//store last file
-	$file_replacements[$current_file] = utf8_substr($unformatted_text, $content_start);
+	//store last file + indicates the begin of file
+	$file_replacements[$current_file] = '.[]' . utf8_substr($unformatted_text, $content_start);
 	
 	$document = apertium_extract($input_doc, $format);
 	
@@ -378,9 +374,9 @@ function rebuildFileFromHTML($text_data, $format, $input_doc)
 {
 	//replace the hr tags by the style information they contain
 	$unformatted_text = preg_replace('#<hr.+?data-format="(.*?)".+?>#ie', 'unescape_attribute("$1")', $text_data);
-	//new lines are encoded by .[] in apertium's data format
-	$unformatted_text = str_replace("\n", '.[]', $unformatted_text);
-	
+	/* Managed apertium's data format */	
+	$unformatted_text = str_replace(array("\n","\t","\r"), array("[\n]", "[\t]", "[\r]"), $unformatted_text);
+
 	return apertium_reformat($unformatted_text, $format, $input_doc);
 }
 

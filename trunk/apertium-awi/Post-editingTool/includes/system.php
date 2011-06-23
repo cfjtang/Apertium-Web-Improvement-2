@@ -90,10 +90,11 @@ function send_file($filename, $bin_content)
 	header("Content-Length: $size");
 	header("Content-Disposition: attachment; filename=\"" . addslashes($filename) . "\"");
 	header("Expires: 0");
-	header("Cache-Control: no-cache, must-revalidate");
-	header("Pragma: no-cache");
-	echo $bin_content;
-	exit();
+	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	header('Cache-Control: private',false);
+	header("Pragma: public");
+	header('Connection: close');
+	die($bin_content);
 }
 
 ?>
