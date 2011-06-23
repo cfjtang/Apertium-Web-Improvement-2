@@ -47,3 +47,4 @@ function is_installed($language_pair)
 	global $language_pairs_list;
 	return in_array($language_pair, $language_pairs_list);
 }
+?>

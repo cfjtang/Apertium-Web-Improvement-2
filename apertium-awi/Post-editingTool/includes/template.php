@@ -15,9 +15,8 @@ include_once('strings.php');
 function page_header($title, $includes)
 {
 	header ('Content-type: text/html; charset=utf-8');
-	
 ?><!DOCTYPE html>
-<html>
+<html> 
 <head>
 	<meta charset="utf-8">
 	<title><?echo $title;?></title>
