@@ -28,7 +28,7 @@ $config = array(
 	'ATD_command' => './external/atd/run-lowmem.sh',
 	'ATD_link' => 'service.afterthedeadline.com',
 
-	'spellcheckingtool' => 'aspell', /* aspell, ATD */
+	'spellcheckingtool' => 'ATD', /* aspell, ATD */
 
 	'grammarproofingtool' => 'ATD', /* languagetool, ATD */
 	
