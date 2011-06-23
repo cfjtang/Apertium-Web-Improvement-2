@@ -17,9 +17,10 @@
 */
 
 include('config.php');
-include_once("externaltool.php");
-
-$extern = new externtool($config);
+/* Create the object $spell */
+include_once("spelling.php");
+/* Create the object $grammar */
+include_once("grammar.php");
 
 /*--------------------------------------
 General functions
@@ -28,12 +29,12 @@ General functions
 function checkForMistakes($input_text, $language, $motherlanguage='')
 {
 	//generate the correction fields for a given text
-	global $extern;
-
-	$text = $input_text;
+	global $extern, $spell, $grammar;
 	
+	$text = $input_text;	
+
 	//run grammar proofing
-	$correction_result = $extern->GrammarProofing($language, 'html', $text, $motherlanguage, false, true);
+	$correction_result = $grammar->getGrammarCorrection($language, 'html', $text, $motherlanguage, false, true);
 	
 	if(!empty($correction_result))
 	{
@@ -48,7 +49,7 @@ function checkForMistakes($input_text, $language, $motherlanguage='')
 	}
 	
 	//run spell checking (sgml filter activated)
-	$spellchecking_result = $extern->SpellChecking($language, $text, false, '--add-filter=sgml');
+	$spellchecking_result = $spell->getSpellCorrection($language, $text, false, '--add-filter=sgml');
 	
 	if(!empty($spellchecking_result))
 	{

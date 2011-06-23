@@ -21,6 +21,8 @@ $data = escape($_POST);
 
 if (!array_key_exists('text_output', $data))
 	$data['text_output'] = '';
+if (!array_key_exists('text_input', $data))
+	$data['text_input'] = '';
 
 if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 {
