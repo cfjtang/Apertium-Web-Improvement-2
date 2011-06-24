@@ -1,13 +1,13 @@
 <?//coding: utf-8
 /*
-	Apertium Web Post Editing tool
-	Functions to handle deformatting and reformatting of documents
+  Apertium Web Post Editing tool
+  Functions to handle deformatting and reformatting of documents
 	
-	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
-	Mentors : Luis Villarejo, Mireia Farrús
+  Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
+  Mentors : Luis Villarejo, Mireia Farrús
 
-	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
-	Mentors : Arnaud Vié, Luis Villarejo
+  Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+  Mentors : Arnaud Vié, Luis Villarejo
 */
 
 include_once('config.php');
@@ -19,32 +19,38 @@ function getFormatName($inputFormat)
 	//returns the format name to input to apertium depending on the format asked
 	//returns false if no corresponding format exists
 	
+	/* If you had a format here, do not forget to add it in
+	 * config.php: $config['supported_format']
+	 */
 	switch($inputFormat)
 	{
-		case "rtf":
-			return "rtf";
-			break;
-		case "wxml":
-			return "wxml";
-			break;
-		case "docx":
-			return "docx";
-			break;
-		case "pptx":
-			return "pptx";
-			break;
-		case "xlsx":
-			return "xlsx";
-			break;
-		case "odt": case "ods": case "odp":
-			return "odt";
-			break;
-		case "html":
-			return "html";
-			break;
-		case "txt" :
-			return "txt";
-			break;
+	case "rtf":
+		return "rtf";
+		break;
+	case "wxml":
+		return "wxml";
+		break;
+	case "docx":
+		return "docx";
+		break;
+	case "pptx":
+		return "pptx";
+		break;
+	case "xlsx":
+		return "xlsx";
+		break;
+	case "odt": case "ods": case "odp":
+		return "odt";
+		break;
+	case "html":
+		return "html";
+		break;
+	case 'mediawiki':
+		return "mediawiki";
+		break;
+	case "txt" :
+		return "txt";
+	break;
 	}
 	
 	return false;
@@ -77,7 +83,7 @@ function getFileFormat($filename, $inputFormat="")
 }
 
 /*
-FUNCTIONS FOR FORMATTED FILE READING
+  FUNCTIONS FOR FORMATTED FILE READING
 */
 
 function apertium_extract($input_doc, $format)
@@ -95,25 +101,25 @@ function apertium_extract($input_doc, $format)
 	
 	switch($format)
 	{
-		case 'odt' : case 'docx' : case 'pptx' : case 'xlsx' :
+	case 'odt' : case 'docx' : case 'pptx' : case 'xlsx' :
 			
-			//extract it to a temporary directory, $input_document_directory
-			$input_document_directory = dirname($input_document) . '/DIR_' . basename($input_document);
-			mkdir($input_document_directory);
-			$command = $config['unzip_command'] . ' -qq -o -d ' . $input_document_directory . ' ' . $input_document;
-			executeCommand($command, '', $return_value, $return_status);
+		//extract it to a temporary directory, $input_document_directory
+		$input_document_directory = dirname($input_document) . '/DIR_' . basename($input_document);
+		mkdir($input_document_directory);
+		$command = $config['unzip_command'] . ' -qq -o -d ' . $input_document_directory . ' ' . $input_document;
+		executeCommand($command, '', $return_value, $return_status);
 			
-			unlink($input_document);
+		unlink($input_document);
 			
-			return $input_document_directory;
+		return $input_document_directory;
 			
-			break;
+		break;
 		
-		default :
+	default :
 			
-			return $input_document;
+		return $input_document;
 			
-			break;
+		break;
 	}
 }
 
@@ -131,41 +137,41 @@ function apertium_unformat($format, $input_doc_path)
 	//select files to edit
 	switch($format)
 	{
-		case 'odt' :
+	case 'odt' :
 			
-			chdir($document);
+		chdir($document);
 			
-			$command = 'find . | grep content\\\\.xml';
-			executeCommand($command, '', $files, $return_status);
-			$files = explode("\n", trim($files));
+		$command = 'find . | grep content\\\\.xml';
+		executeCommand($command, '', $files, $return_status);
+		$files = explode("\n", trim($files));
 	       
-			foreach($files as $ind => $file)
-			{
-				$files[$ind] = array('path' => $file, 'type' => 'odt');
-			}
+		foreach($files as $ind => $file)
+		{
+			$files[$ind] = array('path' => $file, 'type' => 'odt');
+		}
 		
-			break;
+		break;
 		
-		case 'docx' :
+	case 'docx' :
 			
-			chdir($document);
+		chdir($document);
 			
-			$command = 'find . | grep \\\\.xml$ | grep -v -i \\(settings\\|theme\\|styles\\|font\\|rels\\)';
-			executeCommand($command, '', $files, $return_status);
-			$files = explode("\n", trim($files));
+		$command = 'find . | grep \\\\.xml$ | grep -v -i \\(settings\\|theme\\|styles\\|font\\|rels\\)';
+		executeCommand($command, '', $files, $return_status);
+		$files = explode("\n", trim($files));
 			
-			foreach($files as $ind => $file)
-			{
-				$files[$ind] = array('path' => $file, 'type' => 'wxml');
-			}
+		foreach($files as $ind => $file)
+		{
+			$files[$ind] = array('path' => $file, 'type' => 'wxml');
+		}
 			
-			break;
+		break;
 		
-		default :
+	default :
 			
-			$files = array(array('path' => '', 'type' => $format));
+		$files = array(array('path' => '', 'type' => $format));
 			
-			break;
+		break;
 	}
 	
 	$output = '';
@@ -205,8 +211,8 @@ function convertFileToHTML($filepath, $format)
 	global $config;
 	
 	/*/ Using apertium-unformat
-	$command = $config['apertium_unformat_command'] . ' -f ' . $format . ' "' . $filepath . '"';
-	executeCommand($command, '', $unformatted_text, $return_status);
+	  $command = $config['apertium_unformat_command'] . ' -f ' . $format . ' "' . $filepath . '"';
+	  executeCommand($command, '', $unformatted_text, $return_status);
 	//*/
 	
 	// Using a php function
@@ -247,7 +253,7 @@ function convertFileToHTML($filepath, $format)
 }
 
 /*
-FUNCTIONS FOR FORMATTED FILE GENERATION
+  FUNCTIONS FOR FORMATTED FILE GENERATION
 */
 
 function apertium_rebuild($input_path, $format)
@@ -257,29 +263,29 @@ function apertium_rebuild($input_path, $format)
 	
 	switch($format)
 	{
-		case 'odt' : case 'docx' : case 'pptx' : case 'xlsx' :
+	case 'odt' : case 'docx' : case 'pptx' : case 'xlsx' :
 			
-			//re-zip the $input_path into a file, and read its content into the $output variable
-			$old_dir = getcwd();
-			chdir($input_path);
-			$command = $config['zip_command'] . ' -q -r "' . $old_dir . '/' . $input_path . '.zip" .'; //the annoying zip CLI adds .zip extension...
-			executeCommand($command, '', $return_value, $return_status);
-			chdir($old_dir);
-			$output = file_get_contents($input_path . '.zip');
-			rmdir_recursive($input_path);
-			unlink($input_path . '.zip');
+		//re-zip the $input_path into a file, and read its content into the $output variable
+		$old_dir = getcwd();
+		chdir($input_path);
+		$command = $config['zip_command'] . ' -q -r "' . $old_dir . '/' . $input_path . '.zip" .'; //the annoying zip CLI adds .zip extension...
+		executeCommand($command, '', $return_value, $return_status);
+		chdir($old_dir);
+		$output = file_get_contents($input_path . '.zip');
+		rmdir_recursive($input_path);
+		unlink($input_path . '.zip');
 			
-			return $output;
+		return $output;
 			
-			break;
+		break;
 			
-		default :
+	default :
 			
-			$output = file_get_contents($input_path);
-			unlink($input_path);
-			return $output;
+		$output = file_get_contents($input_path);
+		unlink($input_path);
+		return $output;
 			
-			break;
+		break;
 	}
 }
 
@@ -309,7 +315,7 @@ function apertium_reformat($unformatted_text, $format, $input_doc)
 		$content_start = utf8_strpos($unformatted_text, '/>', $next_quote + 1) + 2;
 //get the name of the current file
 		
-$current_file = utf8_substr($unformatted_text, $current_offset + strlen('<file name="'), $next_quote - ($current_offset + strlen('<file name="')));
+		$current_file = utf8_substr($unformatted_text, $current_offset + strlen('<file name="'), $next_quote - ($current_offset + strlen('<file name="')));
 		//for some reason, slashes are sometimes escaped, sometimes not...
 		$current_file = stripslashes($current_file);
 		//make path relative to the root of the archive (they are given absolute to the OS root...)
@@ -326,40 +332,40 @@ $current_file = utf8_substr($unformatted_text, $current_offset + strlen('<file n
 		{
 			switch($format)
 			{
-				case 'odt' :
-					$command = $config['apertium_re_commands'].'odt';
-					executeCommand($command, $contents, $reformatted_text, $return_status);
+			case 'odt' :
+				$command = $config['apertium_re_commands'].'odt';
+				executeCommand($command, $contents, $reformatted_text, $return_status);
 					
-					break;
+				break;
 				
-				case 'docx' :
+			case 'docx' :
 					
-					$extension = utf8_substr($filename, utf8_strrpos($filename, '.') + 1);
+				$extension = utf8_substr($filename, utf8_strrpos($filename, '.') + 1);
 					
-					switch($extension)
-					{
-						case 'xml' :
-							$command = $config['apertium_re_commands'].'wxml';
-							executeCommand($command, $contents, $reformatted_text, $return_status);
+				switch($extension)
+				{
+				case 'xml' :
+					$command = $config['apertium_re_commands'].'wxml';
+					executeCommand($command, $contents, $reformatted_text, $return_status);
 							
-							break;
+					break;
 						
-						case 'xlsx' :
-							$command = $config['apertium_re_commands'].'xlsx';
-							executeCommand($command, $contents, $reformatted_text, $return_status);
-							
-							break;
-					}
-					
-					break;
-				
-				default:
-					
-					//execute apertium-re$format to get the contents of the translated file into the $reformatted_text variable
-					$command = $config['apertium_re_commands'].$format;
+				case 'xlsx' :
+					$command = $config['apertium_re_commands'].'xlsx';
 					executeCommand($command, $contents, $reformatted_text, $return_status);
-					
+							
 					break;
+				}
+					
+				break;
+				
+			default:
+					
+				//execute apertium-re$format to get the contents of the translated file into the $reformatted_text variable
+				$command = $config['apertium_re_commands'].$format;
+				executeCommand($command, $contents, $reformatted_text, $return_status);
+					
+				break;
 			}
 			$handle = fopen($document . $filename, "w");
 			fwrite($handle, $reformatted_text);

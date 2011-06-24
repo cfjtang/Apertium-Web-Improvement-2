@@ -30,6 +30,10 @@ page_header("Apertium translation", array());
 </ul>
 <?php
 if (module_is_load('FormattedDocumentHandling')) {
+	echo 'Formats supported :<br /><i>';
+	foreach ($config['supported_format'] as $extension)
+		echo $extension . ' ';
+	echo "</i><br />";
 	echo '<form action="translate.php" method="post" enctype="multipart/form-data">';
 	echo '<input type="file" name="in_doc" />';
 	echo '<input type="text" name="in_doc_type" />';
