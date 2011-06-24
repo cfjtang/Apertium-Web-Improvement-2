@@ -126,8 +126,16 @@ function apertium_extract($input_doc, $format)
 		 * Uncomment if you don't use the -i option (ignore image)
 		 * unlink($input_document . '001.png');
 		 */
-
+		
+		/* Replacing the HTML Title */
+		$contents = file_get_contents($input_document . '.html');
+		$contents = str_replace('<TITLE>' . $input_document . '</TITLE>', '', $contents);
+		$handle = fopen($input_document . '.html', 'w');
+		fwrite($handle, $contents);
+		fclose($handle);
+		
 		$input_document .= '.html';
+		
 		return $input_document;
 		
 		break;
