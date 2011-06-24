@@ -33,7 +33,9 @@ $config = array(
 	'grammarproofingtool' => 'ATD', /* languagetool, ATD */
 	
 	'unzip_command' => 'unzip',
-	'zip_command' => 'zip'
+	'zip_command' => 'zip',
+	
+	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "txt")
 );
 
 /* List of modules to load
