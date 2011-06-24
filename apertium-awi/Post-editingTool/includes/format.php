@@ -48,6 +48,9 @@ function getFormatName($inputFormat)
 	case 'mediawiki':
 		return "mediawiki";
 		break;
+	case 'pdf':
+		return "pdf";
+		break;
 	case "txt" :
 		return "txt";
 	break;
@@ -114,7 +117,20 @@ function apertium_extract($input_doc, $format)
 		return $input_document_directory;
 			
 		break;
+	case 'pdf':
+		/* Convert the file into html with pdf2html_command*/
+		$command = $config['pdf2html_command'] . ' -c -noframes -i ' . $input_document . ' ' . $input_document . '.html';
+		executeCommand($command, '', $return_value, $return_status);
+		unlink($input_document);
+		/* Remove png file generates by pdf2html
+		 * Uncomment if you don't use the -i option (ignore image)
+		 * unlink($input_document . '001.png');
+		 */
+
+		$input_document .= '.html';
+		return $input_document;
 		
+		break;
 	default :
 			
 		return $input_document;
@@ -166,7 +182,6 @@ function apertium_unformat($format, $input_doc_path)
 		}
 			
 		break;
-		
 	default :
 			
 		$files = array(array('path' => '', 'type' => $format));
@@ -186,8 +201,12 @@ function apertium_unformat($format, $input_doc_path)
 		{
 			$output .= '[<file name="' . addcslashes(ltrim($file['path'], '.'), '\\"[]') . '" type="' . $file['type'] . '"/>].[]';
 		}
-		
-		$command = $config['apertium_des_commands'].$file['type'];
+		/* In the case of a pdf document(transform into html) */
+		if ($file['type'] == 'pdf')
+			$command = $config['apertium_des_commands'].'html';
+		else
+			$command = $config['apertium_des_commands'].$file['type'];
+
 		executeCommand($command, file_get_contents($file['path']), $contents, $return_status);
 		$output .= $contents;
 	}
@@ -277,8 +296,7 @@ function apertium_rebuild($input_path, $format)
 			
 		return $output;
 			
-		break;
-			
+		break;		
 	default :
 			
 		$output = file_get_contents($input_path);
@@ -358,7 +376,19 @@ function apertium_reformat($unformatted_text, $format, $input_doc)
 				}
 					
 				break;
-				
+
+			case 'pdf':
+				/* In case of a pdf file, use apertium_rehtml, 
+				 * and then html2pdf
+				 */
+				$command = $config['apertium_re_commands'] . 'html';
+				executeCommand($command, $contents, $reformatted_text, $return_status);
+			
+				$command = $config['html2pdf_command'] . ' - -';
+				executeCommand($command, $reformatted_text, $return_value, $return_status);
+				$reformatted_text = $return_value;
+				break;
+
 			default:
 					
 				//execute apertium-re$format to get the contents of the translated file into the $reformatted_text variable
