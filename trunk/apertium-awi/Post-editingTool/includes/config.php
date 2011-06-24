@@ -34,8 +34,11 @@ $config = array(
 	
 	'unzip_command' => 'unzip',
 	'zip_command' => 'zip',
+
+	'pdf2html_command' => 'pdftohtml -c -noframes',
+	'html2pdf_command' => 'external/wkhtmltopdf-i386',
 	
-	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "txt")
+	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "txt")
 );
 
 /* List of modules to load
