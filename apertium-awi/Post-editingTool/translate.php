@@ -77,7 +77,10 @@ elseif(isset($data['submit_output_tmx']))
 }
 elseif(isset($data['submit_output']))
 {
-      	$output_file = rebuildFileFromHTML($data['text_output'], $data['input_doc_type'], base64_decode($data['input_doc']));
+	if ($data['input_doc_type'] == 'tif')
+		/* Tif file are managed as TXT file after the translation */
+		$data['input_doc_name'] .= '.txt';
+	$output_file = rebuildFileFromHTML($data['text_output'], $data['input_doc_type'], base64_decode($data['input_doc']));
 	send_file('Translation-' . $data['language_pair'] . '-' . $data['input_doc_name'], $output_file);
 }
 
