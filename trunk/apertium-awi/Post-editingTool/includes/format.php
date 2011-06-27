@@ -51,9 +51,12 @@ function getFormatName($inputFormat)
 	case 'pdf':
 		return "pdf";
 		break;
+	case 'png' : case 'jpg': case 'jpeg': case 'tiff': case 'tif':
+		return 'tif';
+		break;
 	case "txt" :
 		return "txt";
-	break;
+		break;
 	}
 	
 	return false;
@@ -139,6 +142,36 @@ function apertium_extract($input_doc, $format)
 		return $input_document;
 		
 		break;
+	case 'tif':
+		/* Try to use ocr_command on the file
+		 * If error, try to convert the file into tif (with Bpp <= 8) 
+		 * with convert_command
+		 * then convert into txt using ocr_command 
+		 */
+		
+		$command = $config['ocr_command'] . ' ' . $input_document . ' ' . $input_document . '.txt';
+		executeCommand($command, '', $return_value, $return_status);
+
+		if ($return_status) {
+			/* Any image format => tif in 256 colors*/
+
+			$command = $config['convert_command'] . ' -type Truecolor ' . $input_document . ' ' . $input_document . '.tif';
+			executeCommand($command, '', $return_value, $return_status);
+			unlink($input_document);
+			$input_document .= '.tif';
+		
+			/* tif => text */
+			$command = $config['ocr_command'] . ' ' . $input_document . ' ' . $input_document . '.txt';
+			executeCommand($command, '', $return_value, $return_status);
+		}
+		
+		unlink($input_document);
+		
+		$input_document .= '.txt.txt';
+
+		return $input_document;
+
+		break;
 	default :
 			
 		return $input_document;
@@ -190,6 +223,12 @@ function apertium_unformat($format, $input_doc_path)
 		}
 			
 		break;
+
+	case 'tif':
+		/* The image can now be considered as a text */
+		$files = array(array('path' => '', 'type' => 'txt'));
+		break;
+
 	default :
 			
 		$files = array(array('path' => '', 'type' => $format));
@@ -396,6 +435,10 @@ function apertium_reformat($unformatted_text, $format, $input_doc)
 				executeCommand($command, $reformatted_text, $return_value, $return_status);
 				$reformatted_text = $return_value;
 				break;
+
+			case 'tif':
+				/* Tif file are managed as TXT file after the translation */
+				$format = 'txt';
 
 			default:
 					

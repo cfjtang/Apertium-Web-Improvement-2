@@ -37,6 +37,9 @@ $config = array(
 
 	'pdf2html_command' => 'pdftohtml -c -noframes',
 	'html2pdf_command' => 'external/wkhtmltopdf-i386',
+
+	'convert_command' => 'convert',
+	'ocr_command' => 'tesseract',
 	
 	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "txt")
 );
