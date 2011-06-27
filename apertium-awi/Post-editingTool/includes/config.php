@@ -41,7 +41,7 @@ $config = array(
 	'convert_command' => 'convert',
 	'ocr_command' => 'tesseract',
 	
-	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "txt")
+	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "png", "jpg", "jpeg", "tiff", "tif", "txt")
 );
 
 /* List of modules to load
