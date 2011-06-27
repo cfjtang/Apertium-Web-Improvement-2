@@ -9,44 +9,44 @@
 	Mentors : Arnaud Vié, Luis Villarejo
 */
 include_once('includes/config.php');
-include_once('modules.php');
 include_once('includes/template.php');
+include_once('modules.php');
 
 //init_environment();
 
 
-page_header("Apertium translation", array());
-
+page_header(get_text('index', 'title'), array());
+choose_language();
 ?>
 
-<p>What would you like to translate ?</p>
+<p><? write_text('index', 'menu_title'); ?></p>
 
 <ul>
-	<li>A short text ? <a href="translate.php">Click here</a></li>
+	<li><? write_text('index', 'menu1'); ?></li>
 	<?php
 	if (module_is_load('FormattedDocumentHandling'))
-		echo "<li>A document ? Use the form below !</li>";
+		echo "<li>" . get_text('index', 'menu2') . "</li>";
 ?>
 </ul>
 <?php
 if (module_is_load('FormattedDocumentHandling')) {
-	echo 'Formats supported :<br /><i>';
+	echo get_text('index', 'supported_format') . ' :<br /><i>';
 	foreach ($config['supported_format'] as $extension)
 		echo $extension . ' ';
 	echo "</i><br />";
 	echo '<form action="translate.php" method="post" enctype="multipart/form-data">';
 	echo '<input type="file" name="in_doc" />';
 	echo '<input type="text" name="in_doc_type" />';
-	echo '<input type="submit" value="Translate !" />';
+	echo '<input type="submit" value="' . get_text('index', 'translate') . '" />';
 	echo '</form>';
 }
 ?>
 
 <table>
-<tr><td>Module</td><td>Description</td><td>Recommended</td><td>Dependencies</td><td>Load</td></tr>
+<tr><? write_text('index', 'columns_name'); ?></tr>
 <?php
 	foreach ($modules as $module_name => $module_data) {
-	echo '<tr><td>' . $module_data['name'] . '</td><td><pre>' . $module_data['description'] . '</pre></td><td><center>';
+	echo '<tr><td>' . $module_data['name'] . '</td><td><p>' . $module_data['description'] . '</p></td><td><center>';
 	if ($module_data['default'])
 		echo 'YES';
 	else

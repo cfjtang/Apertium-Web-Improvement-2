@@ -15,32 +15,34 @@
  * php : an array of php dependencies (with path includes/)
  * button_in : HTML code for the interface, under the input, when the module is activated
  * button_out : HTML code for the interface, under the output, when the module is activated
+ *
+ * name, description, button_in text and button_out text are set in templates
+ * see templates/en/module_FormattedDocumentHandling for example
+ * read templates/README for more informations
  */
 
 $modules = array(
 	'FormattedDocumentHandling' => array(
-		'name' => 'Formatted document handling',
-		'description' => 'Allow the text editor to handle formatted documents through the apertium-unformat and apertium-reformat modules.',
+		'name' => get_text('module_FormattedDocumentHandling', 'name'),
+		'description' =>  get_text('module_FormattedDocumentHandling', 'description'),
 		'default' => TRUE,
 		'javascript' => array(),
 		'php' => array('format.php', 'system.php', 'files.php'),
 		'button_in' => '',
-		'button_out' => '<input type="submit" name="submit_output" value="Get translation result" />'
+		'button_out' => '<input type="submit" name="submit_output" value="'. get_text('module_FormattedDocumentHandling', 'button_out') . '" />'
 		),
 	'SpellGrammarChecking' => array(
-		'name' => 'Spell and Grammar checking',
-		'description' => 'Integrate the ability to check both input and output texts for mistakes, with a button “Check for mistakes”.
-When pressed, it runs spell checking and grammar checking on the text and underlines mistakes in different colours (red for spelling, blue for grammar).',
+		'name' => get_text('module_SpellGrammarChecking', 'name'),
+		'description' => get_text('module_SpellGrammarChecking', 'description'),
 		'default' => TRUE,
 		'javascript' => array('gramproof.js', 'main.js'),
 		'php' => array('gramproof.php', 'strings.php', 'system.php'),
-		'button_in' => '<input type="submit" name="check_input" value="Check for mistakes" />',
-		'button_out' => '<input type="submit" name="check_output" value="Check for mistakes" />'
+		'button_in' => '<input type="submit" name="check_input" value="' . get_text('module_SpellGrammarChecking', 'button_in') . '" />',
+		'button_out' => '<input type="submit" name="check_output" value="' . get_text('module_SpellGrammarChecking', 'button_out') . '" />',
 		),
 	'LinkExternalDictionnaries' => array(
 		'name' => 'Link to external dictionaries',
-		'description' => 'Include links to dictionaries next to all suggestions on mistakes, so you may easily find which one corresponds to the expected meaning.
-Whenever a dictionary for the language is available, a dictionary selection list is
+		'description' => 'Include links to dictionaries next to all suggestions on mistakes, so you may easily find which one corresponds to the expected meaning.<br />Whenever a dictionary for the language is available, a dictionary selection list is
 displayed under the text editing field.',
 		'default' => TRUE,
 		'javascript' => array('dictionaries.js'),
@@ -59,8 +61,7 @@ displayed under the text editing field.',
 		),
 	'Logs' => array(
 		'name' => 'Logs changes',
-		'description' => 'Log the changes made by you in the target text after the translation.
-This isn’t directly reusable in other translation processes, but it can help language pair maintainers get an idea of the changes to make.',
+		'description' => 'Log the changes made by you in the target text after the translation.<br />This isn’t directly reusable in other translation processes, but it can help language pair maintainers get an idea of the changes to make.',
 		'default' => TRUE,
 		'javascript' => array('logs.js'),
 		'php' => array('language.php', 'strings.php'),
