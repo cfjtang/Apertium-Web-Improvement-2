@@ -91,14 +91,14 @@ $javascript_header = array('javascript/browser_support.js',
 			   'CSS/textEditor.css');
 $javascript_header = AddJSDependencies($javascript_header);
 
-page_header("Apertium translation", $javascript_header);
+page_header(get_text('translate', 'title'), $javascript_header);
 ?>
 
 <form name="mainform" action="" method="post">
 
 	<div id="left">		
 		<div id="language_select">
-			Select languages for the translation : 
+	<? write_text('translate', 'select_language'); ?> : 
 			<select name="language_pair">
 	<?	foreach($language_pairs_list as $pair)
 {
@@ -120,7 +120,7 @@ page_header("Apertium translation", $javascript_header);
 	WriteButtonInput($module_name);
 ?>
 		
-			<input type="submit" name="submit_input" value="Translate text" />
+			<input type="submit" name="submit_input" value="<? write_text('translate', 'button_translate'); ?>" />
 		</div>
 		
 		<div class="more_options">
@@ -156,7 +156,7 @@ page_header("Apertium translation", $javascript_header);
 ?>				</ul>
 				<input id="pretrans_add" name="pretrans_add" type="submit"  value="+" />
 <? //*/ ?>
-				Manual replacements : 
+		<? write_text('translate', 'manual_replacement'); ?> : 
 				<ul id="pretrans_list">
 <?
 	if(isset($data['pretrans_del']) AND is_array($data['pretrans_del']))
@@ -186,7 +186,7 @@ page_header("Apertium translation", $javascript_header);
 <?php
 	}
 if (module_is_load('LinkExternalDictionnaries')) {		     
-	echo '<div style="display: none;">Dictionary :';
+	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
 	echo '<select id="dictionary_src"><option value=""></option></select>';
 	echo '</div>';
 }
@@ -207,8 +207,8 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	WriteButtonOutput($module_name);
 ?>
 		
-			<input type="submit" name="submit_output_tmx" value="Generate TMX" />
-			<input id="get_logs" type="submit" name="get_logs" value="Get logs" style="display:none;" />
+			<input type="submit" name="submit_output_tmx" value="<? write_text('translate', 'gen_TMX'); ?>" />
+			
 		</div>
 		
 		<div class="more_options">
@@ -216,7 +216,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
 		if (module_is_load('SearchAndReplace')) {
 ?>
 			<div>
-				Manual replacements : 
+<? write_text('translate', 'manual_replacement'); ?> : 
 				<ul id="posttrans_list">
 <?
 	if(isset($data['posttrans_del']) AND is_array($data['posttrans_del']))
@@ -246,7 +246,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
 		<?php
 		}
 		if (module_is_load('LinkExternalDictionnaries')) {
-			echo '<div style="display: none;">Dictionary :';
+			echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
 			echo '<select id="dictionary_dst"><option value=""></option></select>';
 			echo '</div>';
 		}

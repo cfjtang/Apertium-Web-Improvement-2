@@ -41,9 +41,8 @@ $modules = array(
 		'button_out' => '<input type="submit" name="check_output" value="' . get_text('module_SpellGrammarChecking', 'button_out') . '" />',
 		),
 	'LinkExternalDictionnaries' => array(
-		'name' => 'Link to external dictionaries',
-		'description' => 'Include links to dictionaries next to all suggestions on mistakes, so you may easily find which one corresponds to the expected meaning.<br />Whenever a dictionary for the language is available, a dictionary selection list is
-displayed under the text editing field.',
+		'name' => get_text('module_LinkExternalDictionnaries', 'name'),
+		'description' => get_text('module_LinkExternalDictionnaries', 'description'),
 		'default' => TRUE,
 		'javascript' => array('dictionaries.js'),
 		'php' => array('files.php'),
@@ -51,22 +50,22 @@ displayed under the text editing field.',
 		'button_out' => ''
 		),
 	'SearchAndReplace' => array(
-		'name' => 'Search and Replace',
-		'description' => 'Inlcude search and replace forms in interface to instantly search for a word throughout the whole text and replace it, according to a specific pattern.',
+		'name' => get_text('module_SearchAndReplace', 'name'),
+		'description' => get_text('module_SearchAndReplace', 'description'),
 		'default' => TRUE,
 		'javascript' => array('main.js'),
 		'php' => array('searchreplace.php', 'strings.php'),
-		'button_in' => '<input type="submit" name="replace_input" value="Apply replacements" />',
-		'button_out' => '<input type="submit" name="replace_output" value="Apply replacements" />'
+		'button_in' => '<input type="submit" name="replace_input" value="'.get_text('module_SearchAndReplace', 'button_in') . '" />',
+		'button_out' => '<input type="submit" name="replace_output" value="'.get_text('module_SearchAndReplace', 'button_out').'" />'
 		),
 	'Logs' => array(
-		'name' => 'Logs changes',
-		'description' => 'Log the changes made by you in the target text after the translation.<br />This isn’t directly reusable in other translation processes, but it can help language pair maintainers get an idea of the changes to make.',
+		'name' => get_text('module_Logs', 'name'),
+		'description' => get_text('module_Logs', 'description'),
 		'default' => TRUE,
 		'javascript' => array('logs.js'),
 		'php' => array('language.php', 'strings.php'),
 		'button_in' => '',
-		'button_out' => ''
+		'button_out' => '<input id="get_logs" type="submit" name="get_logs" value="'.get_text('module_Logs', 'button_out').'" />'
 		)
 	);
 
