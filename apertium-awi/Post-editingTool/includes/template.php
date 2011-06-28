@@ -139,6 +139,22 @@ function get_text($page, $info)
 		}
 
 	case 'translate':
+		switch ($info) {
+		case 'title':
+			return retrieve_info('translate', 0);
+		case 'select_language':
+			return retrieve_info('translate', 1);
+		case 'button_translate':
+			return retrieve_info('translate', 2);
+		case 'manual_replacement':
+			return retrieve_info('translate', 3);
+		case 'dictionary':
+			return retrieve_info('translate', 4);
+		case 'gen_TMX':
+			return retrieve_info('translate', 5);
+		default:
+			return '';
+		}
 		break;
 	default:
 		/* This is a module
@@ -158,7 +174,7 @@ function get_text($page, $info)
 		break;
 		}
 
-		$module_name = str_replace("module_", '', $page);
+		/* $module_name = str_replace("module_", '', $page); */
 		break;
 	}	
 }
