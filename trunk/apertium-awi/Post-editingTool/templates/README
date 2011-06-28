@@ -1,0 +1,74 @@
+#                                                  #
+##                                                ##
+#### Apertium - AWI : interface multi-languages ####
+##                                                ##
+#                                                  #
+Contributed By Mougey Camille <commial@gmail.com> 
+for Google Summer of Code 2011
+Mentors : Arnaud Vié, Luis Villarejo
+
+--- Summary ---
+I/ Directory Organisation
+II/ How to managed interface translation
+---------------
+I/ Directory Organisation
+---------------
+
+In the root (./templates/), there are this file(README)
+and the file "avalaible_languages".
+
+The README explains how the directory is organised, and
+how managed interface translation.
+The "avalaible_languages" lists languages avalaible,
+ie languages for which translation exists.
+
+For each avalaible language, there is a directory named
+by the language.
+In this directory, there are some file:
+index - Contains translation for the home page,
+        in a specific order
+translate - Contains translation for the translate page,
+            in a specific order
+module_name - Contains translation for the module name,
+              ie the file for the module Logs is 
+              module_Logs, in a specific order
+
+The correspondence between the order in the file, and
+the signification, is write in the file
+../includes/formats.php: function retrieve_info
+For example, a module file is organised as:
+name
+description
+text for button_in
+text for button_out
+
+---------------
+II/ How to managed interface translation
+---------------
+
+The text is displayed in page by the call of the function
+get_text(page, information requested), or
+write_text(page, information requested). For example, the
+title of the home page is get by 
+get_text('index', 'title');
+If you want to add text in page, or add page, you have to
+write the correspondence in the file format.php.
+In this example, the correspondence is 
+index->title : first line of the file index
+
+If you want to add a language, for example the espanol,
+you have to write all file corresponding, who contain 
+translation, in a directory es/, ie
+es/index, es/translate, es/module_Logs, ...
+and add the name of language in ./avalaible_languages.
+
+To modify a language, you just have to open the
+adequate file, write your own translation, and save.
+If you want to modify the description of the Logs module,
+open en/module_Logs and change the second line.
+
+Do not forget to commit your changes, to allow the
+apertium community to use your work.
+
+For any problem/question, you can contact me, or go on
+the Apertium IRC Channel (#apertium).
