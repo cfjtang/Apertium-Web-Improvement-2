@@ -54,22 +54,22 @@ if (module_is_load('FormattedDocumentHandling')) {
 $img_yes = 'images/yes.png';
 $img_no = 'images/no.png';
 	foreach ($modules as $module_name => $module_data) {
-	echo '<tr><td>' . $module_data['name'] . '</td><td><p>' . $module_data['description'] . '</p></td><td><center>';
+		echo '<tr><td>' . $module_data['name'] . '</td><td><p>' . $module_data['description'] . '</p></td><td style="text-align: center;">';
 	if ($module_data['default'])
 		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
 	else
 		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
-	echo '</center></td><td><center>';
+	echo '</td><td style="text-align: center;">';
 	if (CheckModule($module_name))
 		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
 	else
 		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
-	echo '</center></td><td><center>';
+	echo '</td><td style="text-align: center;">';
 	if (module_is_load($module_name))
 		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
 	else
 		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
-	echo '</center></td></tr>';
+	echo '</td></tr>';
 }
 ?>       
 </table>

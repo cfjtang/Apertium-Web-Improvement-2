@@ -32,6 +32,15 @@ if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 	$data['text_input'] = convertFileToHTML($_FILES["in_doc"]["tmp_name"], $data['input_doc_type']);
 	$data['input_doc'] = base64_encode(file_get_contents($_FILES["in_doc"]["tmp_name"]));
 }
+else
+{
+	/* Define variable data['input_doc'], data['input_doc_type'], 
+	 * data['input_doc_name']
+	 */
+	$data['input_doc'] = '';
+	$data['input_doc_type'] = '';
+	$data['input_doc_name'] = '';
+}
 
 if(isset($data['language_pair']) and is_installed($data['language_pair']))
 {
@@ -84,12 +93,13 @@ elseif(isset($data['submit_output']))
 	send_file('Translation-' . $data['language_pair'] . '-' . $data['input_doc_name'], $output_file);
 }
 
-$javascript_header = array('javascript/browser_support.js',
-			   'javascript/textEditor.js',
-			   'javascript/ajax.js',
-			   'javascript/main.js',
-			   'CSS/textEditor.css',
-	                   'CSS/style.css');
+$javascript_header = array(
+	'CSS/textEditor.css',
+	'CSS/style.css',
+	'javascript/browser_support.js',
+	'javascript/textEditor.js',
+	'javascript/ajax.js',
+	'javascript/main.js');
 $javascript_header = AddJSDependencies($javascript_header);
 
 page_header(get_text('translate', 'title'), $javascript_header);
@@ -97,7 +107,7 @@ choose_language();
 
 ?>
 <form name="mainform" action="" method="post" style='border: 1px solid silver; padding: 10px;'>
-<div id="language_select">
+<div class="language_select">
 	<? write_text('translate', 'select_language'); ?> : 
 </div>
 	<table>
@@ -187,7 +197,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
 </div>
 </td>
 <td>
-<div id="language_select">
+<div class="language_select">
 	<select name="language_pair">
 	<?	foreach($language_pairs_list as $pair)
 {
