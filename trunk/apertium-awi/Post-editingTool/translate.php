@@ -1,12 +1,12 @@
 <?//coding: utf-8
 /*
-	Apertium Web Post Editing tool
+  Apertium Web Post Editing tool
 	
-	Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
-	Mentors : Luis Villarejo, Mireia Farrús
+  Contributed by Arnaud Vié <unas.zole@gmail.com> for Google Summer of Code 2010
+  Mentors : Luis Villarejo, Mireia Farrús
 
-	Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
-	Mentors : Arnaud Vié, Luis Villarejo
+  Contributed By Mougey Camille <commial@gmail.com> for Google Summer of Code 2011
+  Mentors : Arnaud Vié, Luis Villarejo
 */
 
 include_once('includes/config.php');
@@ -88,102 +88,95 @@ $javascript_header = array('javascript/browser_support.js',
 			   'javascript/textEditor.js',
 			   'javascript/ajax.js',
 			   'javascript/main.js',
-			   'CSS/textEditor.css');
+			   'CSS/textEditor.css',
+	                   'CSS/style.css');
 $javascript_header = AddJSDependencies($javascript_header);
 
 page_header(get_text('translate', 'title'), $javascript_header);
+choose_language();
+
 ?>
-
-<form name="mainform" action="" method="post">
-
-	<div id="left">		
-		<div id="language_select">
+<form name="mainform" action="" method="post" style='border: 1px solid silver; padding: 10px;'>
+<div id="language_select">
 	<? write_text('translate', 'select_language'); ?> : 
-			<select name="language_pair">
-	<?	foreach($language_pairs_list as $pair)
-{
-	?>				<option value="<?echo $pair;?>"<? if(isset($data['language_pair']) AND $data['language_pair'] == $pair) {?> selected="selected"<?} ?>><?echo str_replace('-', ' → ', $pair);?></option>
-	<?	}
-?>
-			</select>
-		</div>
+</div>
+	<table>
+	<tr><td style = 'width:45%;vertical-align:top;'>
+	<div class="input_box">
+	<textarea id="text_in_js_off" name="text_input"><?echo strip_tags($data['text_input']);?></textarea>
+	<div id="text_in_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_input']);?><br class="nodelete" contenteditable="false" /></div>
+	</div>
 		
-	
-		<div class="input_box">
-			<textarea id="text_in_js_off" name="text_input"><?echo strip_tags($data['text_input']);?></textarea>
-			<div id="text_in_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_input']);?><br class="nodelete" contenteditable="false" /></div>
-		</div>
-		
-		<div class="submit_text">
+	<div class="submit_text">
 	<?php
 	foreach (LoadModules() as $module_name)
 	WriteButtonInput($module_name);
 ?>
 		
-			<input type="submit" name="submit_input" value="<? write_text('translate', 'button_translate'); ?>" />
-		</div>
+<input type="submit" name="submit_input" value="<? write_text('translate', 'button_translate'); ?>" />
+	</div>
 		
-		<div class="more_options">
+	<div class="more_options">
 	<?php
 	if (module_is_load('SearchAndReplace')) {
 		?>
-			<div>
-<? /*/ Fields for manual translation, which doesn't work at the moment ?>
-				Manual translations : 
-				<ul id="pretrans_list">
-<?	
-	if(is_array($data['pretrans_del']))
-	{
-		foreach($data['pretrans_del'] as $index => $nothing)
-		{
-			unset($data['pretrans_src'][$index]);
-			unset($data['pretrans_dst'][$index]);
-		}
-	}
+		<div>
+		<? /*/ Fields for manual translation, which doesn't work at the moment ?>
+		     Manual translations : 
+		     <ul id="pretrans_list">
+		     <?	
+		     if(is_array($data['pretrans_del']))
+		     {
+		     foreach($data['pretrans_del'] as $index => $nothing)
+		     {
+		     unset($data['pretrans_src'][$index]);
+		     unset($data['pretrans_dst'][$index]);
+		     }
+		     }
 	
-	if(is_array($data['pretrans_src']))
-	{
-		foreach($data['pretrans_src'] as $ind => $val)
-		{
-			generatePretransLine($val, $data['pretrans_dst'][$ind], $ind);
-		}
-	}
+		     if(is_array($data['pretrans_src']))
+		     {
+		     foreach($data['pretrans_src'] as $ind => $val)
+		     {
+		     generatePretransLine($val, $data['pretrans_dst'][$ind], $ind);
+		     }
+		     }
 	
-	if(isset($data['pretrans_add']))
-	{
-		generatePretransLine('', '', count($data['pretrans_src']));
-	}
-?>				</ul>
-				<input id="pretrans_add" name="pretrans_add" type="submit"  value="+" />
-<? //*/ ?>
+		     if(isset($data['pretrans_add']))
+		     {
+		     generatePretransLine('', '', count($data['pretrans_src']));
+		     }
+		     ?>				</ul>
+		     <input id="pretrans_add" name="pretrans_add" type="submit"  value="+" />
+		     <? //*/ ?>
 		<? write_text('translate', 'manual_replacement'); ?> : 
-				<ul id="pretrans_list">
-<?
-	if(isset($data['pretrans_del']) AND is_array($data['pretrans_del']))
-	{
-		foreach($data['pretrans_del'] as $index => $nothing)
+		<ul id="pretrans_list">
+		<?
+		if(isset($data['pretrans_del']) AND is_array($data['pretrans_del']))
 		{
-			unset($data['pretrans_src'][$index]);
-			unset($data['pretrans_dst'][$index]);
+			foreach($data['pretrans_del'] as $index => $nothing)
+			{
+				unset($data['pretrans_src'][$index]);
+				unset($data['pretrans_dst'][$index]);
+			}
 		}
-	}
 	
-	if(isset($data['pretrans_src']) AND is_array($data['pretrans_src']))
-	{
-		foreach($data['pretrans_src'] as $ind => $val)
+		if(isset($data['pretrans_src']) AND is_array($data['pretrans_src']))
 		{
-			generateReplacementLine('pretrans', $val, $data['pretrans_dst'][$ind], $data['pretrans_case'][$ind], $ind);
+			foreach($data['pretrans_src'] as $ind => $val)
+			{
+				generateReplacementLine('pretrans', $val, $data['pretrans_dst'][$ind], $data['pretrans_case'][$ind], $ind);
+			}
 		}
-	}
 	
-	if(isset($data['pretrans_add']))
-	{
-		generateReplacementLine('pretrans', '', '', 'apply', count($data['pretrans_src']));
-	}
-?>				</ul>
-				<input id="pretrans_add" name="pretrans_add" type="submit" value="+" />
-			</div>
-<?php
+		if(isset($data['pretrans_add']))
+		{
+			generateReplacementLine('pretrans', '', '', 'apply', count($data['pretrans_src']));
+		}
+		?>				</ul>
+		<input id="pretrans_add" name="pretrans_add" type="submit" value="+" />
+		</div>
+		<?php
 	}
 if (module_is_load('LinkExternalDictionnaries')) {		     
 	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
@@ -191,82 +184,92 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	echo '</div>';
 }
 ?>
-		</div>
+</div>
+</td>
+<td>
+<div id="language_select">
+	<select name="language_pair">
+	<?	foreach($language_pairs_list as $pair)
+{
+	?>				<option value="<?echo $pair;?>"<? if(isset($data['language_pair']) AND $data['language_pair'] == $pair) {?> selected="selected"<?} ?>><?echo str_replace('-', ' → ', $pair);?></option>
+	<?	}
+?>
+			</select>
 	</div>
-	
-	<div id="right">
+</td>
+<td style = 'width:45%;'>		
+<div class="input_box">
+	<textarea id="text_out_js_off" name="text_output"><?echo strip_tags($data['text_output']);?></textarea>
+	<div id="text_out_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_output']);?><br class="nodelete" contenteditable="false" /></div>
+	</div>
 		
-		<div class="input_box">
-			<textarea id="text_out_js_off" name="text_output"><?echo strip_tags($data['text_output']);?></textarea>
-			<div id="text_out_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_output']);?><br class="nodelete" contenteditable="false" /></div>
-		</div>
-		
-		<div class="submit_text">
-<?php
-			foreach (LoadModules() as $module_name)
+	<div class="submit_text">
+	<?php
+	foreach (LoadModules() as $module_name)
 	WriteButtonOutput($module_name);
 ?>
 		
-			<input type="submit" name="submit_output_tmx" value="<? write_text('translate', 'gen_TMX'); ?>" />
+<input type="submit" name="submit_output_tmx" value="<? write_text('translate', 'gen_TMX'); ?>" />
 			
-		</div>
-		
-		<div class="more_options">
-		<?php
-		if (module_is_load('SearchAndReplace')) {
-?>
-			<div>
-<? write_text('translate', 'manual_replacement'); ?> : 
-				<ul id="posttrans_list">
-<?
-	if(isset($data['posttrans_del']) AND is_array($data['posttrans_del']))
-	{
-		foreach($data['posttrans_del'] as $index => $nothing)
-		{
-			unset($data['posttrans_src'][$index]);
-			unset($data['posttrans_dst'][$index]);
-		}
-	}
-	
-	if(isset($data['posttrans_src']) AND is_array($data['posttrans_src']))
-	{
-		foreach($data['posttrans_src'] as $ind => $val)
-		{
-			generateReplacementLine('posttrans', $val, $data['posttrans_dst'][$ind], $data['posttrans_case'][$ind], $ind);
-		}
-	}
-	
-	if(isset($data['posttrans_add']))
-	{
-		generateReplacementLine('posttrans', '', '', 'apply', count($data['posttrans_src']));
-	}
-?>				</ul>
-				<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
-			</div>
-		<?php
-		}
-		if (module_is_load('LinkExternalDictionnaries')) {
-			echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
-			echo '<select id="dictionary_dst"><option value=""></option></select>';
-			echo '</div>';
-		}
-?>
-		</div>
 	</div>
+		
+	<div class="more_options">
+	<?php
+	if (module_is_load('SearchAndReplace')) {
+		?>
+		<div>
+		<? write_text('translate', 'manual_replacement'); ?> : 
+		<ul id="posttrans_list">
+		<?
+		if(isset($data['posttrans_del']) AND is_array($data['posttrans_del']))
+		{
+			foreach($data['posttrans_del'] as $index => $nothing)
+			{
+				unset($data['posttrans_src'][$index]);
+				unset($data['posttrans_dst'][$index]);
+			}
+		}
 	
-	<input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
+		if(isset($data['posttrans_src']) AND is_array($data['posttrans_src']))
+		{
+			foreach($data['posttrans_src'] as $ind => $val)
+			{
+				generateReplacementLine('posttrans', $val, $data['posttrans_dst'][$ind], $data['posttrans_case'][$ind], $ind);
+			}
+		}
+	
+		if(isset($data['posttrans_add']))
+		{
+			generateReplacementLine('posttrans', '', '', 'apply', count($data['posttrans_src']));
+		}
+		?>				</ul>
+		<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
+		</div>
+		<?php
+	}
+if (module_is_load('LinkExternalDictionnaries')) {
+	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
+	echo '<select id="dictionary_dst"><option value=""></option></select>';
+	echo '</div>';
+}
+?>
+</div>
+</td></tr>
+</table>
+	
+<input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
 	<input type="hidden" name="input_doc_type" value="<?echo $data['input_doc_type'];?>" />
 	<input type="hidden" name="input_doc_name" value="<?echo $data['input_doc_name'];?>" />
 
-</form>
+	</form>
 
-<ul style="display:none;" id="list_elements_models">
-<? 
+	<ul style="display:none;" id="list_elements_models">
+	<? 
 	generateReplacementLine('pretrans', '', '', 'apply', 'NUM');
-	generateReplacementLine('posttrans', '', '', 'apply', 'NUM');
+generateReplacementLine('posttrans', '', '', 'apply', 'NUM');
 ?>
 </ul>
-	
+
 <?	
 page_footer();
 

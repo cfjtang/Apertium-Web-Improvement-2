@@ -15,9 +15,15 @@ include_once('modules.php');
 //init_environment();
 
 
-page_header(get_text('index', 'title'), array());
+page_header(get_text('index', 'title'), array('CSS/style.css'));
 choose_language();
 ?>
+<div id='content'>
+	<div id='header'>
+	<h1>Apertium</h1>
+	<p>Post-edition Interface</p>
+	</div>
+	<div id='frame'>
 
 <p><? write_text('index', 'menu_title'); ?></p>
 
@@ -41,29 +47,34 @@ if (module_is_load('FormattedDocumentHandling')) {
 	echo '</form>';
 }
 ?>
-
+<br />
 <table>
 <tr><? write_text('index', 'columns_name'); ?></tr>
 <?php
+$img_yes = 'images/yes.png';
+$img_no = 'images/no.png';
 	foreach ($modules as $module_name => $module_data) {
 	echo '<tr><td>' . $module_data['name'] . '</td><td><p>' . $module_data['description'] . '</p></td><td><center>';
 	if ($module_data['default'])
-		echo 'YES';
+		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
 	else
-		echo 'NO';
+		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
 	echo '</center></td><td><center>';
 	if (CheckModule($module_name))
-		echo '<span style="color:green;">OK</span></center></td>';
+		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
 	else
-		echo '<span style="color:red;">NO</span></td>';
-	echo '<td><center><input type="checkbox" name="'.$module_name.'" ';
+		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
+	echo '</center></td><td><center>';
 	if (module_is_load($module_name))
-		echo ' checked="1"';	
-	echo ' /></center></td></tr>';
+		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
+	else
+		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
+	echo '</center></td></tr>';
 }
 ?>       
 </table>
-
+</div>
+</div>
 <?	
 page_footer();
 
