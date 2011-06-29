@@ -40,6 +40,8 @@ $config = array(
 
 	'convert_command' => 'convert',
 	'ocr_command' => 'tesseract',
+
+	'yuicompressor_command' => 'java -jar external/yuicompressor-2.4.6/build/yuicompressor-2.4.6.jar',
 	
 	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "png", "jpg", "jpeg", "tiff", "tif", "txt")
 );
@@ -49,6 +51,8 @@ $config = array(
  * If you change this list, do not forget to uncomment 
  * gen_templateJS
  * in modules.php (at the end of file)
+ *
+ * or use publish.php
  */
 $modules_to_load = array('FormattedDocumentHandling', 'SpellGrammarChecking', 'LinkExternalDictionnaries', 'SearchAndReplace', 'Logs');
 

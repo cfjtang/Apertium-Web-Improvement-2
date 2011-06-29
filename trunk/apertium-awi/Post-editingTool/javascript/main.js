@@ -20,17 +20,11 @@ function initJSMain()
 	initBrowsers();
 	initJSEditors();
 	
-	initPasteEvent();
-	
 	initAjax();
 	
 	initDictionaries();
 	
 	document.onclick = handleClick;
-	
-	document.onkeydown = handleKeyDown;
-	document.onkeypress = handleKeyPress;
-	document.addEventListener("textInput", handleKeyPress, false);
 	
 }
 
@@ -51,11 +45,6 @@ function handleClick(e)
 				var resultManager = function(str)
 				{
 					text_in_js_on.innerHTML = str+'<br />';
-						
-					//store previous logs
-					extractLogs(text_in_js_on);
-					//build words lists for logging
-					text_in_js_on.text_object = buildWordList(text_in_js_on);
 
 				};
 				
@@ -73,11 +62,6 @@ function handleClick(e)
 				var resultManager = function(str)
 				{
 					text_out_js_on.innerHTML = str+'<br />';
-	
-					//store previous logs
-					extractLogs(text_out_js_on);
-					//build words lists for logging
-					text_out_js_on.text_object = buildWordList(text_out_js_on);
 
 				};
 				
@@ -96,13 +80,6 @@ function handleClick(e)
 				{
 					text_out_js_on.innerHTML = str+'<br />';
 
-					//store previous logs from input
-					extractLogs(text_in_js_on);
-					//delete logs from output
-					text_out_js_on.final_log = '';
-					//build words lists for logging
-					text_out_js_on.text_object = buildWordList(text_out_js_on);
-
 				};
 				
 				ajaxRequest(query_string, resultManager);
@@ -119,29 +96,6 @@ function handleClick(e)
 				var resultManager = function(str)
 				{
 					text_in_js_on.innerHTML = str+'<br />';
-
-					//store previous logs from input
-					extractLogs(text_in_js_on);
-					//add log for the replacements
-					text_in_js_on.final_log += 'Manual replacements : <ul>';
-					if(document.mainform["pretrans_src[]"].nodeType && document.mainform["pretrans_src[]"].nodeType == 1)
-					{
-						var src_list = [ document.mainform["pretrans_src[]"] ];
-						var dst_list = [ document.mainform["pretrans_dst[]"] ];
-					}
-					else
-					{
-						var src_list = document.mainform["pretrans_src[]"];
-						var dst_list = document.mainform["pretrans_dst[]"];
-					}
-				
-					for(var i = 0; i < src_list.length; i++)
-					{
-						text_in_js_on.final_log += '<li>'+src_list[i].value+' by <strong>'+dst_list[i].value+'</strong></li>';
-					}
-					text_in_js_on.final_log += '</ul><br />\n';
-					//build words lists for logging
-					text_in_js_on.text_object = buildWordList(text_in_js_on);
 					
 				};
 				
@@ -159,29 +113,6 @@ function handleClick(e)
 				var resultManager = function(str)
 				{
 					text_out_js_on.innerHTML = str+'<br />';
-						
-					//store previous logs
-					extractLogs(text_out_js_on);
-					//add log for the replacements
-					text_out_js_on.final_log += 'Manual replacements : <ul>';
-					if(document.mainform["posttrans_src[]"].nodeType && document.mainform["pretrans_src[]"].nodeType == 1)
-					{
-						var src_list = [ document.mainform["posttrans_src[]"] ];
-						var dst_list = [ document.mainform["posttrans_dst[]"] ];
-					}
-					else
-					{
-						var src_list = document.mainform["posttrans_src[]"];
-						var dst_list = document.mainform["posttrans_dst[]"];
-					}
-				
-					for(var i = 0; i < src_list.length; i++)
-					{
-						text_out_js_on.final_log += '<li>'+src_list[i].value+' by <strong>'+dst_list[i].value+'</strong></li>';
-					}
-					text_out_js_on.final_log += '</ul><br />\n';
-					//build words lists for logging
-					text_out_js_on.text_object = buildWordList(text_out_js_on);
 
 				};
 				
