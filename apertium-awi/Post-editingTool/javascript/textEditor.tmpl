@@ -214,7 +214,11 @@ function TE_handleClick(event)
 
 function insertCharacter(node, offset, character, selRange)
 {
+##
+#Logs#
 	logInsertChar(node, offset, character);
+##
+#all#
 	node.nodeValue = node.nodeValue.substr(0, offset) + character + node.nodeValue.substr(offset); //insert the character in the string
 	
 	if(selRange)
@@ -226,7 +230,11 @@ function insertCharacter(node, offset, character, selRange)
 
 function deleteCharacter(node, offset, selRange)
 {
+##
+#Logs#
 	logDeleteChar(node, offset);
+##
+#all#
 	node.nodeValue = node.nodeValue.substr(0, offset) + node.nodeValue.substr(offset + 1); //delete char at position offset
 	
 	if(selRange)

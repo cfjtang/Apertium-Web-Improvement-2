@@ -1147,7 +1147,7 @@ function logInsertChar(node, offset, character)
 		if(!previousWord) //if the previous word isn't in this node
 		{
 			var currentNode = node.previousNode;
-			while(currentNode && !previousWord)
+			while(currentNode && previousWord)
 			{
 				if(currentNode.lastWord)
 				{
