@@ -30,7 +30,7 @@ $config = array(
 
 	'spellcheckingtool' => 'ATD', /* aspell, ATD */
 
-	'grammarproofingtool' => 'languagetool', /* languagetool, ATD */
+	'grammarproofingtool' => 'ATD', /* languagetool, ATD */
 	
 	'unzip_command' => 'unzip',
 	'zip_command' => 'zip',
