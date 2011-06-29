@@ -19,7 +19,7 @@ function page_header($title, $includes)
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 		 <head>
 		 <link rel="shortcut icon" href="http://xixona.dlsi.ua.es/apertium-www/favicon.ico"/>
-		 <meta charset="utf-8">
+		 <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
 		 <title><?echo $title;?></title>
 						  <?	foreach($includes as $file)
 					  {
@@ -37,12 +37,6 @@ function page_header($title, $includes)
 		  <body>
 		  <?
 		  }
-
-function content_header()
-{
-	?><div id="content">
-<?
-}
 
 function page_footer()
 {
@@ -73,7 +67,11 @@ function get_language()
 	global $_COOKIE;
 		
 	if (!isset($_COOKIE['lang']) or !in_array($_COOKIE['lang'], avalaible_languages())) {
-		$browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+			$browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+		else
+			$browser_lang = 'en';
+
 		if (in_array($browser_lang, avalaible_languages())) {
 			setcookie('lang', $browser_lang);
 			$_COOKIE['lang'] = $browser_lang;
@@ -93,11 +91,11 @@ function choose_language()
 	$current_language = get_language();
 	?>
 	<div id='streamer'>
-	<form action = "" method = "POST" style='text-align:right;' onChange='this.submit()'>
-		<select name = 'new_lang'>
+	<form action = "" method = "post" style='text-align:right;' >
+		<select name = 'new_lang' onchange='this.form.submit()'>
 		<?
 		foreach (avalaible_languages() as $lang) {
-		echo "<option label = 'new_lang' value = '".$lang."' ";
+		echo "<option label = '".$lang."' value = '".$lang."' ";
 		if ($lang == $current_language)
 			echo "selected = 'selected'";
 		echo ">".$lang."</option>\n";
