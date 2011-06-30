@@ -41,9 +41,11 @@ if (module_is_load('FormattedDocumentHandling')) {
 		echo $extension . ' ';
 	echo "</i><br />";
 	echo '<form action="translate.php" method="post" enctype="multipart/form-data">';
+	echo '<div>';
 	echo '<input type="file" name="in_doc" />';
 	echo '<input type="text" name="in_doc_type" />';
 	echo '<input type="submit" value="' . get_text('index', 'translate') . '" />';
+	echo '</div>';
 	echo '</form>';
 }
 ?>

@@ -114,7 +114,7 @@ choose_language();
 	<tr><td style = 'width:45%;vertical-align:top;'>
 	<div class="input_box">
 	<textarea id="text_in_js_off" name="text_input"><?echo strip_tags($data['text_input']);?></textarea>
-	<div id="text_in_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_input']);?><br class="nodelete" contenteditable="false" /></div>
+	<div id="text_in_js_on" contenteditable="true" style="display:none;"><?echo nl2br_r($data['text_input']);?><br class="nodelete" contenteditable="false" /></div>
 	</div>
 		
 	<div class="submit_text">
@@ -214,23 +214,22 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	</div>
 		
 	<div class="submit_text">
-	<?php
+<?php
 	foreach (LoadModules() as $module_name)
-	WriteButtonOutput($module_name);
+	     WriteButtonOutput($module_name);
 ?>
 		
-<input type="submit" name="submit_output_tmx" value="<? write_text('translate', 'gen_TMX'); ?>" />
-			
+	<input type="submit" name="submit_output_tmx" value="<? write_text('translate', 'gen_TMX'); ?>" />
 	</div>
 		
 	<div class="more_options">
-	<?php
+<?php
 	if (module_is_load('SearchAndReplace')) {
-		?>
+?>
 		<div>
 		<? write_text('translate', 'manual_replacement'); ?> : 
 		<ul id="posttrans_list">
-		<?
+<?
 		if(isset($data['posttrans_del']) AND is_array($data['posttrans_del']))
 		{
 			foreach($data['posttrans_del'] as $index => $nothing)
@@ -252,10 +251,11 @@ if (module_is_load('LinkExternalDictionnaries')) {
 		{
 			generateReplacementLine('posttrans', '', '', 'apply', count($data['posttrans_src']));
 		}
-		?>				</ul>
+?>
+		</ul>
 		<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
 		</div>
-		<?php
+<?php
 	}
 if (module_is_load('LinkExternalDictionnaries')) {
 	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
@@ -266,21 +266,20 @@ if (module_is_load('LinkExternalDictionnaries')) {
 </div>
 </td></tr>
 </table>
-	
-<input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
-	<input type="hidden" name="input_doc_type" value="<?echo $data['input_doc_type'];?>" />
-	<input type="hidden" name="input_doc_name" value="<?echo $data['input_doc_name'];?>" />
+<div>
+  <input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
+  <input type="hidden" name="input_doc_type" value="<?echo $data['input_doc_type'];?>" />
+  <input type="hidden" name="input_doc_name" value="<?echo $data['input_doc_name'];?>" />
+</div>
+</form>
 
-	</form>
-
-	<ul style="display:none;" id="list_elements_models">
-	<? 
-	generateReplacementLine('pretrans', '', '', 'apply', 'NUM');
-generateReplacementLine('posttrans', '', '', 'apply', 'NUM');
+<ul style="display:none;" id="list_elements_models">
+<? 
+   generateReplacementLine('pretrans', '', '', 'apply', 'NUM');
+   generateReplacementLine('posttrans', '', '', 'apply', 'NUM');
 ?>
 </ul>
 
 <?	
 page_footer();
-
 ?>
