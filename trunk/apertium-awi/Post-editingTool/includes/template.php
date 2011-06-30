@@ -14,34 +14,33 @@ include_once('strings.php');
 
 function page_header($title, $includes)
 {
-	header ('Content-type: text/html; charset=utf-8');
-	?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
-		 <head>
-		 <link rel="shortcut icon" href="http://xixona.dlsi.ua.es/apertium-www/favicon.ico"/>
-		 <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
-		 <title><?echo $title;?></title>
-						  <?	foreach($includes as $file)
-					  {
-						  if(str_endswith($file, '.js'))
-						  {
-							  ?>	<script type="text/javascript" src="<?echo $file . '?v=' . @filemtime($file); ?>"></script>
-							  <?		}
-						  elseif(str_endswith($file, '.css'))
-						  {
-							  ?>	<link rel="stylesheet" type="text/css" href="<?echo $file . '?v=' . @filemtime($file);?>" />
-							  <?		}
-					  }
-	?>
-	</head>
-		  <body>
-		  <?
-		  }
+	header ('Content-type: text/html; charset=utf-8'); ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
+  <head>
+    <link rel="shortcut icon" href="http://xixona.dlsi.ua.es/apertium-www/favicon.ico"/>
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+    <title><?echo $title;?></title>
+ <?	foreach($includes as $file) {
+	     if(str_endswith($file, '.js'))  {
+?>
+   <script type="text/javascript" src="<?echo $file . '?v=' . @filemtime($file); ?>"></script>
+<?	     }
+	     elseif(str_endswith($file, '.css')) { 
+?>
+   <link rel="stylesheet" type="text/css" href="<?echo $file . '?v=' . @filemtime($file);?>" />
+<?	     }
+        }
+?>
+  </head>
+  <body>
+<?
+}
 
 function page_footer()
 {
 	?></body>
-	</html>
+</html>
 		<?
 		}
 
@@ -92,9 +91,10 @@ function choose_language()
 	?>
 	<div id='streamer'>
 	<form action = "" method = "post" style='text-align:right;' >
-		<select name = 'new_lang' onchange='this.form.submit()'>
-		<?
-		foreach (avalaible_languages() as $lang) {
+		 <div>
+		 <select name = 'new_lang' onchange='this.form.submit()'>
+		 <?
+		 foreach (avalaible_languages() as $lang) {
 		echo "<option label = '".$lang."' value = '".$lang."' ";
 		if ($lang == $current_language)
 			echo "selected = 'selected'";
@@ -102,9 +102,10 @@ function choose_language()
 	}
 	?>
 	</select>
-		  <noscript><input type="submit" name="submit_language" value="Change" /></noscript>
-		</form>
-		  </div>
+        <noscript><input type="submit" name="submit_language" value="Change" /></noscript>
+	</div>
+	</form>
+	</div>
 <?
 }
 
