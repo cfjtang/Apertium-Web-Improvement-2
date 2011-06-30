@@ -33,19 +33,28 @@ class translate
 	public function set_source_language($src_language)
 	{
 		/* Set the Source language */
-		$this->source_language = $src_language;
+		if (ctype_alpha($src_language))
+			$this->source_language = $src_language;
+		else
+			return false;
 	}
 
 	public function set_target_language($tgt_language)
 	{
 		/* Set the Target language */
-		$this->target_language = $tgt_language;
+		if (ctype_alpha($tgt_language))
+			$this->target_language = $tgt_language;
+		else
+			return false;
 	}
 
 	public function set_format($format)
 	{
 		/* Set the Format */
-		$this->format = $format;
+		if (ctype_alpha($format))
+			$this->format = $format;
+		else
+			return false;
 	}
 
 	private function generateTMXApertium($pretrans_src, $pretrans_dst)

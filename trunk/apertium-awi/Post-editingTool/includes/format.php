@@ -188,7 +188,7 @@ function apertium_unformat($format, $input_doc_path)
 	global $config; 
 	
 	$document = apertium_extract(file_get_contents($input_doc_path), $format);
-	
+
 	$old_dir = getcwd();
 	
 	//select files to edit
@@ -275,6 +275,10 @@ function convertFileToHTML($filepath, $format)
 	//by hidden html tags <hr data-format="..." contenteditable="false" />
 	
 	global $config;
+	
+	/* Security issues */
+	if (!ctype_alpha($format))
+		return false;
 	
 	/*/ Using apertium-unformat
 	  $command = $config['apertium_unformat_command'] . ' -f ' . $format . ' "' . $filepath . '"';
@@ -459,7 +463,11 @@ function apertium_reformat($unformatted_text, $format, $input_doc)
 
 function rebuildFileFromHTML($text_data, $format, $input_doc)
 {
-	//replace the hr tags by the style information they contain
+	/* Security issues */
+	if (!ctype_alpha($format))
+		return false;
+	
+	/* replace the hr tags by the style information they contain */
 	$unformatted_text = preg_replace('#<hr.+?data-format="(.*?)".+?>#ie', 'unescape_attribute("$1")', $text_data);
 	/* Managed apertium's data format */	
 	$unformatted_text = str_replace(array("\n","\t","\r"), array("[\n]", "[\t]", "[\r]"), $unformatted_text);
