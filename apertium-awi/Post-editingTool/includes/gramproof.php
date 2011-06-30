@@ -33,6 +33,10 @@ function checkForMistakes($input_text, $language, $motherlanguage='')
 	
 	$text = $input_text;	
 
+	/* Security issues */
+	if (!ctype_alpha($language) OR !ctype_alpha($motherlanguage))
+		return false;
+
 	//run grammar proofing
 	$correction_result = $grammar->getGrammarCorrection($language, 'html', $text, $motherlanguage, false, true);
 	

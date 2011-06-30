@@ -19,10 +19,17 @@ init_environment();
 
 $data = escape($_POST);
 
-if (!array_key_exists('text_output', $data))
-	$data['text_output'] = '';
+$to_define = array('text_output', 'text_input', 'input_doc', 'input_doc_type', 'input_doc_name');
+foreach ($to_define as $name_var) {
+	if (!array_key_exists($name_var, $data))
+		$data[$name_var] = '';
+}
 if (!array_key_exists('text_input', $data))
 	$data['text_input'] = '';
+
+/* Define $source_language, $target_language for security issues */
+$target_language = '';
+$source_language = '';
 
 if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 {
@@ -31,15 +38,6 @@ if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 	$data['input_doc_type'] = getFileFormat($data['input_doc_name'], $data['in_doc_type']);
 	$data['text_input'] = convertFileToHTML($_FILES["in_doc"]["tmp_name"], $data['input_doc_type']);
 	$data['input_doc'] = base64_encode(file_get_contents($_FILES["in_doc"]["tmp_name"]));
-}
-else
-{
-	/* Define variable data['input_doc'], data['input_doc_type'], 
-	 * data['input_doc_name']
-	 */
-	$data['input_doc'] = '';
-	$data['input_doc_type'] = '';
-	$data['input_doc_name'] = '';
 }
 
 if(isset($data['language_pair']) and is_installed($data['language_pair']))
