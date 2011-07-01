@@ -32,9 +32,9 @@ function checkForMistakes($input_text, $language, $motherlanguage='')
 	global $extern, $spell, $grammar;
 	
 	$text = $input_text;	
-
+	
 	/* Security issues */
-	if (!ctype_alpha($language) OR !ctype_alpha($motherlanguage))
+	if ((!empty($language) && !ctype_alpha($language)) OR (!empty($motherlanguage) && !ctype_alpha($motherlanguage)))
 		return false;
 
 	//run grammar proofing
