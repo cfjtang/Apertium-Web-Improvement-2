@@ -45,18 +45,64 @@ foreach ($variables_name as $name) {
 		$data[$name] = null;
 }
 
+function check_entry($text)
+{
+	/* Run test on $text :
+	 * Test 1: just 'br', 'span' and 'hr' tags are allowed
+	 * Test 2: span tag have to be the form defined in includes/gramproof.php
+	 * Test 3: hr tag have to be the form defined in includes/format.php
+	 *
+	 * Return false if a test fail
+	 */
+	
+	/* Test1 */
+	$text1 = strip_tags($text, '<br><br/><span><hr>');
+	if($text1 != $text) {
+		die('ici');
+		return false;
+	}
+
+	preg_match_all('#<(.*?)>#',strtolower($text),$matches);
+	$safe_tags = array('/span', 'br', 'br/');
+	foreach ($matches[1] as $tag) {
+		if (in_array($tag, $safe_tags))
+			continue;
+		elseif (substr($tag, 0, 4) == 'span') {
+			/* Test2 */
+			preg_match_all('#span class\=\"[^\"]*\" title\=\"[^\"]*\" data-suggestions\=\"[^\"]*\" #', $tag, $matche);
+			if ($matche[0][0] != $tag)
+				return false;
+		}
+		elseif (substr($tag, 0, 2) == 'hr') {
+			/* Test3 */
+			preg_match_all('#hr data-format\=\"[^\"]*\" contenteditable\=\"false\"#', $tag, $matche);
+			if ($matche[0][0] != $tag)
+				return false;
+		}
+		else
+			return false;
+	}
+
+	return true;
+
+}
+
+
 switch($data['action_request'])
 {
 case 'proof_input' :
-	echo nl2br_r(checkForMistakes($data['text_input'], $source_language));
+	if(check_entry($data['text_input']))
+		echo nl2br_r(checkForMistakes($data['text_input'], $source_language));
 	break;
 	
 case 'proof_output' :
-	echo nl2br_r(checkForMistakes($data['text_output'], $target_language, $source_language));
+	if(check_entry($data['text_output']))
+		echo nl2br_r(checkForMistakes($data['text_output'], $target_language, $source_language));
 	break;
 	
 case 'translate' :
-	echo nl2br_r($trans->getApertiumTranslation($data['text_input'], $data['pretrans_src'], $data['pretrans_dst']));
+	if(check_entry($data['text_input']))
+		echo nl2br_r($trans->getApertiumTranslation($data['text_input'], $data['pretrans_src'], $data['pretrans_dst']));
 	break;
 	
 case 'replace_input' :
