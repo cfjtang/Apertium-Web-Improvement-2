@@ -28,15 +28,25 @@ General functions
 
 function checkForMistakes($input_text, $language, $motherlanguage='')
 {
+	/* Run checkforMistakes_atomic on text chain, without hr tags */
+
+	/* Security issues */
+	if ((!empty($language) && !ctype_alpha($language)) OR (!empty($motherlanguage) && !ctype_alpha($motherlanguage)))
+		return false;
+	
+	return preg_replace("#(.*?)<hr data-format=\"(.*?)\" contenteditable=\"false\">(.*?)#se", 
+			    "checkForMistakes_atomic('\\1', '$language', '$motherlanguage').'<hr data-format=\"\\2\" contenteditable=\"false\">'.checkForMistakes_atomic('\\3', '$language', '$motherlanguage')", 
+			    $input_text);
+	
+}
+
+function checkForMistakes_atomic($input_text, $language, $motherlanguage='')
+{
 	//generate the correction fields for a given text
 	global $extern, $spell, $grammar;
 	
 	$text = $input_text;	
 	
-	/* Security issues */
-	if ((!empty($language) && !ctype_alpha($language)) OR (!empty($motherlanguage) && !ctype_alpha($motherlanguage)))
-		return false;
-
 	//run grammar proofing
 	$correction_result = $grammar->getGrammarCorrection($language, 'html', $text, $motherlanguage, false, true);
 	
@@ -53,8 +63,8 @@ function checkForMistakes($input_text, $language, $motherlanguage='')
 	}
 	
 	//run spell checking (sgml filter activated)
-	$spellchecking_result = $spell->getSpellCorrection($language, $text, false, '--add-filter=sgml');
-	
+	$spellchecking_result = $spell->getSpellCorrection($language, $text, false, 'add-filter=sgml');
+
 	if(!empty($spellchecking_result))
 	{
 		//$offset will remember the new position as replacements are done
