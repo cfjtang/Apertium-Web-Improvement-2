@@ -26,7 +26,7 @@ class Spelling_Aspell extends Spelling
 	
 		$command = $this->config['aspell_command'] . ' -l '. $language .' -a ' . $additional_argument . ' | grep ^[\&#] '; //only lines beginning with & and # indicate a mistake
 		executeCommand($command, str_replace("\n", " ", $text), $mistakes, $return_status);
-	
+
 		if($apply)
 		{
 			$final_output = $text;

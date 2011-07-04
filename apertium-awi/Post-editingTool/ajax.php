@@ -55,13 +55,7 @@ function check_entry($text)
 	 * Return false if a test fail
 	 */
 	
-	/* Test1 */
-	$text1 = strip_tags($text, '<br><br/><span><hr>');
-	if($text1 != $text) {
-		die('ici');
-		return false;
-	}
-
+	
 	preg_match_all('#<(.*?)>#',strtolower($text),$matches);
 	$safe_tags = array('/span', 'br', 'br/');
 	foreach ($matches[1] as $tag) {
@@ -69,17 +63,18 @@ function check_entry($text)
 			continue;
 		elseif (substr($tag, 0, 4) == 'span') {
 			/* Test2 */
-			preg_match_all('#span class\=\"[^\"]*\" title\=\"[^\"]*\" data-suggestions\=\"[^\"]*\" #', $tag, $matche);
+			preg_match_all('#span class\=\"[^\"]*\" title\=\"[^\"]*\" data-suggestions\=\"[^\"]*\" #s', $tag, $matche);
 			if ($matche[0][0] != $tag)
 				return false;
 		}
 		elseif (substr($tag, 0, 2) == 'hr') {
 			/* Test3 */
-			preg_match_all('#hr data-format\=\"[^\"]*\" contenteditable\=\"false\"#', $tag, $matche);
+			preg_match_all('#hr data-format="[^\"]*" contenteditable="false"#s', $tag, $matche);
 			if ($matche[0][0] != $tag)
 				return false;
 		}
 		else
+			/* Test1 */
 			return false;
 	}
 
