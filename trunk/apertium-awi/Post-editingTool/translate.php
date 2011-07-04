@@ -79,7 +79,7 @@ elseif(isset($data['check_output']))
 elseif(isset($data['submit_output_tmx']))
 {
 	//generate translation memory
-	$tmx = $trans->generateTmxOutput($source_language, $target_language, strip_tags($data['text_input']), strip_tags($data['text_output']));
+	$tmx = $trans->generateTmxOutput(strip_tags($data['text_input']), strip_tags($data['text_output']));
 	send_file('out.tmx', $tmx);
 }
 elseif(isset($data['submit_output']))
