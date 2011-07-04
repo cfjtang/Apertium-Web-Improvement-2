@@ -33,10 +33,13 @@ function checkForMistakes($input_text, $language, $motherlanguage='')
 	/* Security issues */
 	if ((!empty($language) && !ctype_alpha($language)) OR (!empty($motherlanguage) && !ctype_alpha($motherlanguage)))
 		return false;
-	
-	return preg_replace("#(.*?)<hr data-format=\"(.*?)\" contenteditable=\"false\">(.*?)#se", 
-			    "checkForMistakes_atomic('\\1', '$language', '$motherlanguage').'<hr data-format=\"\\2\" contenteditable=\"false\">'.checkForMistakes_atomic('\\3', '$language', '$motherlanguage')", 
-			    $input_text);
+	if (strstr($input_text, '<hr data-format=')) {
+		return preg_replace("#(.*?)<hr data-format=\"(.*?)\" contenteditable=\"false\">(.*?)#se", 
+				    "checkForMistakes_atomic('\\1', '$language', '$motherlanguage').'<hr data-format=\"\\2\" contenteditable=\"false\">'.checkForMistakes_atomic('\\3', '$language', '$motherlanguage')", 
+				    $input_text);
+	}
+	else
+		return checkForMistakes_atomic($input_text, $language, $motherlanguage);
 	
 }
 
