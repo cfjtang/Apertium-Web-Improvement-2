@@ -19,6 +19,7 @@ class translate
 	private $source_language;
 	private $target_language;
 	private $format;
+	private $inputTMX;
 
 	public function __construct($config, $src_language = '',
 				    $tgt_language = '', $format = '')
@@ -28,6 +29,7 @@ class translate
 		$this->source_language = $src_language;
 		$this->target_language = $tgt_language;
 		$this->format = $format;
+		$this->inputTMX = false;
 	}
 
 	public function set_source_language($src_language)
@@ -55,6 +57,21 @@ class translate
 			$this->format = $format;
 		else
 			return false;
+	}
+
+	public function set_inputTMX($inputTMX)
+	{
+		/* Set the input TMX file */
+		if (is_readable($inputTMX))
+			$this->inputTMX = $inputTMX;
+		else
+			$this->inputTMX = htmlspecialchars(filter_var($inputTMX, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED), ENT_QUOTES, 'UTF-8');
+	}
+
+	public function get_inputTMX()
+	{
+		/* Return the value of $inputTMX */
+		return $this->inputTMX;
 	}
 
 	private function generateTMXApertium($pretrans_src, $pretrans_dst)
@@ -119,10 +136,16 @@ class translate
 			$generate_tmx = !empty($pretrans_src);
 		}
 	
-		if($generate_tmx)
+		$command = $this->config['apertium_command'].' -u -f '.$this->format.' '.$this->source_language.'-'.$this->target_language;
+
+		if ($this->inputTMX)
+			$command .= ' -m "'.$this->inputTMX.'"';
+
+		if ($generate_tmx) {
 			$tempname =  generateTMXApertium($pretrans_src, $pretrans_dst);	
-	
-		$command = $this->config['apertium_command'].' -u -f '.$this->format.' '.$this->source_language.'-'.$this->target_language . (isset($tempname) ? ' -m "'.$tempname.'"' : '');
+			$command .= ' -m "'.$tempname.'"';
+		}
+
 		executeCommand($command, $text, $translation_result, $return_status);
 	
 		if(isset($tempname))
