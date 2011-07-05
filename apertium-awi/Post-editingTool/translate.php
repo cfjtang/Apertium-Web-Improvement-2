@@ -49,6 +49,9 @@ if(isset($data['language_pair']) and is_installed($data['language_pair']))
 	$trans->set_target_language($target_language);
 }
 
+if (isset($data['inputTMX']))
+	$trans->set_inputTMX($data['inputTMX']);
+
 if(isset($data['check_input']))
 {
 	//run grammar and spell checking on input
@@ -90,6 +93,7 @@ elseif(isset($data['submit_output']))
 	$output_file = rebuildFileFromHTML($data['text_output'], $data['input_doc_type'], base64_decode($data['input_doc']));
 	send_file('Translation-' . $data['language_pair'] . '-' . $data['input_doc_name'], $output_file);
 }
+
 
 $javascript_header = array(
 	'CSS/textEditor.css',
@@ -192,6 +196,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	echo '</div>';
 }
 ?>
+<input type="text" name="inputTMX" value="<? echo $trans->get_inputTMX(); ?>" /><input type="submit" name="useTMX" value="Use TMX" />
 </div>
 </td>
 <td>

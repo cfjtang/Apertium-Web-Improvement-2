@@ -38,7 +38,7 @@ else
 }
 
 //Define all variables, for strictness...
-$variables_name = array('text_input', 'text_output', 'pretrans_src', 'pretrans_dst', 'pretrans_case', 'posttrans_src', 'posttrans_dst', 'posttrans_case');
+$variables_name = array('text_input', 'text_output', 'pretrans_src', 'pretrans_dst', 'pretrans_case', 'posttrans_src', 'posttrans_dst', 'posttrans_case', 'inputTMX');
 
 foreach ($variables_name as $name) {
 	if(!isset($data[$name]))
@@ -82,6 +82,7 @@ function check_entry($text)
 
 }
 
+$trans->set_inputTMX($data['inputTMX']);
 
 switch($data['action_request'])
 {
