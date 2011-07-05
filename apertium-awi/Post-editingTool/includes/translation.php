@@ -74,6 +74,24 @@ class translate
 		return $this->inputTMX;
 	}
 
+	private function mergeTMX($files_array)
+	{
+		/* Merge TMX file in $files_array using tmxmerger_command, 
+		 * and language source: $this->source_language
+		 * and return the name of the file generated 
+		 */
+		$tempname = tempnam($this->config['temp_dir'], 'ap_temp_');
+		
+		$command = $this->config['tmxmerger_command'] . ' source=' . $this->source_language;
+		foreach ($files_array as $file_name)
+			$command .= ' ' . $file_name;
+		
+		$command .= ' ' . $tempname;
+		executeCommand($command, '', $return_value, $return_status);
+		
+		return $tempname;
+	}
+
 	private function generateTMXApertium($pretrans_src, $pretrans_dst)
 	{
 		/* Generate a TMX file for the need of Apertium translation '-m' 
@@ -138,18 +156,27 @@ class translate
 	
 		$command = $this->config['apertium_command'].' -u -f '.$this->format.' '.$this->source_language.'-'.$this->target_language;
 
-		if ($this->inputTMX)
-			$command .= ' -m "'.$this->inputTMX.'"';
-
-		if ($generate_tmx) {
-			$tempname =  generateTMXApertium($pretrans_src, $pretrans_dst);	
+		if ($this->inputTMX) {
+			if ($generate_tmx) {
+				/* Merging pretrans and external TMX */
+				$tempname =  $this->generateTMXApertium($pretrans_src, $pretrans_dst);	
+				$tempname_tmx = $this->mergeTMX(array($tempname, $this->inputTMX));
+				$command .= ' -m "'.$tempname_tmx.'"';
+			}
+			else	
+				$command .= ' -m "'.$this->inputTMX.'"';
+		}
+		elseif ($generate_tmx) {
+			$tempname =  $this->generateTMXApertium($pretrans_src, $pretrans_dst);	
 			$command .= ' -m "'.$tempname.'"';
 		}
 
 		executeCommand($command, $text, $translation_result, $return_status);
-	
-		if(isset($tempname))
+
+		if (isset($tempname))
 			unlink($tempname);
+		if (isset($tempname_tmx))
+			unlink($tempname_tmx);
 	
 		/* $translation_result = html_entity_decode($translation_result, ENT_COMPAT, 'UTF-8'); 
 		 * only useful if  the"-f html" option is enabled in the apertium command

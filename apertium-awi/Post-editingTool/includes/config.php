@@ -42,6 +42,8 @@ $config = array(
 	'ocr_command' => 'tesseract',
 
 	'yuicompressor_command' => 'java -jar external/yuicompressor-2.4.6/build/yuicompressor-2.4.6.jar',
+
+	'tmxmerger_command' => 'java -jar external/TMXMerger-1.1.jar',
 	
 	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "png", "jpg", "jpeg", "tiff", "tif", "txt")
 );
