@@ -98,7 +98,7 @@ case 'proof_output' :
 	
 case 'translate' :
 	if(check_entry($data['text_input']))
-		echo nl2br_r($trans->getApertiumTranslation($data['text_input'], $data['pretrans_src'], $data['pretrans_dst']));
+		echo nl2br_r($trans->getTranslation($data['text_input'], $data['pretrans_src'], $data['pretrans_dst']));
 	break;
 	
 case 'replace_input' :
