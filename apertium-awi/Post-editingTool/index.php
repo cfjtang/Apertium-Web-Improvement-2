@@ -16,7 +16,7 @@ include_once('modules.php');
 
 
 page_header(get_text('index', 'title'), array('CSS/style.css'));
-choose_language();
+display_streamer();
 ?>
 <div id='content'>
 	<div id='header'>
