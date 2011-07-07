@@ -27,8 +27,11 @@ if (isset($_POST['useapertiumorg']))
 function get_apertiumorglanguagepair()
 {
 	/* return an array of language pair on Apertium.org */
-	
-
+	global $config;
+	$source = file_get_contents($config['apertiumorg_homeurl']);
+	preg_match('#<select id="direction" name="direction" title="Select the translation type">(.*?)</select>#s', $source, $select_content);
+	preg_match_all("#<option value='(.*?)' [selected=true ]*>#s", $select_content[1], $matches);
+	return $matches[1];
 }
 
 function init_environment()
@@ -39,13 +42,8 @@ function init_environment()
 	
 	putenv('LANG=en_GB.UTF-8');
 
-	if ($trans->get_useapertiumorg()) {
-		$source = file_get_contents($config['apertiumorg_homeurl']);
-		preg_match('#<select id="direction" name="direction" title="Select the translation type">(.*?)</select>#s', $source, $select_content);
-		preg_match_all("#<option value='(.*?)' [selected=true ]*>#s", $select_content[1], $matches);
-		
-		$language_pairs_list = $matches[1];
-	}	
+	if ($trans->get_useapertiumorg())
+		$language_pairs_list = get_apertiumorglanguagepair();       	
 	else {
 
 		executeCommand($config['apertium_command']." fr-fr", "", $cmd_return, $return_status);
