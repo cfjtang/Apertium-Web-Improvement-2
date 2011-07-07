@@ -45,6 +45,8 @@ $config = array(
 
 	'tmxmerger_command' => 'java -jar external/TMXMerger-1.1.jar',
 	
+	'apertiumorg_homeurl' => 'http://www.apertium.org/index.php',
+	
 	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "png", "jpg", "jpeg", "tiff", "tif", "txt")
 );
 

@@ -20,6 +20,7 @@ class translate
 	private $target_language;
 	private $format;
 	private $inputTMX;
+	private $useapertiumorg;
 
 	public function __construct($config, $src_language = '',
 				    $tgt_language = '', $format = '')
@@ -30,6 +31,7 @@ class translate
 		$this->target_language = $tgt_language;
 		$this->format = $format;
 		$this->inputTMX = false;
+		$this->useapertiumorg = false;
 	}
 
 	public function set_source_language($src_language)
@@ -57,6 +59,21 @@ class translate
 			$this->format = $format;
 		else
 			return false;
+	}
+
+	public function set_useapertiumorg($value)
+	{
+		/* Set the Use Apertium.ORG */
+		if ($value)
+		        $this->useapertiumorg = TRUE;
+		else
+			$this->useapertiumorg = FALSE;
+	}
+
+	public function get_useapertiumorg()
+	{
+		/* Return the value of Use Apertium.ORG */
+		return $this->useapertiumorg;
 	}
 
 	public function set_inputTMX($inputTMX)
@@ -183,6 +200,38 @@ class translate
 		 */
 	
 		return $translation_result;
+	}
+
+	private function getApertiumORGTranslation($text)
+	{
+		/* Return the translation of $text, using the translation system
+		 * of ApertiumORG
+		 */
+		$data = http_build_query(array(
+						 'direction' => $this->source_language . '-' . $this->target_language,
+						 'textbox' => urlencode($text)));
+		$context = array('http' => array(
+					 'method' => 'POST',
+					 'header' => "Content-type: application/x-www-form-urlencoded\r\nConnection: close\r\nContent-Length: " . strlen($data) . "\r\n",
+					 'content' => $data));
+		$source = file_get_contents($this->config['apertiumorg_homeurl'], false, stream_context_create($context));
+		preg_match('#<p class="transresult">(.*?)</p>#s', $source, $result);
+
+		if (isset($result[1]))
+			return $result[1];
+		else
+			return "Request Failed !";
+	}
+
+	public function getTranslation($text, $pretrans_src='', $pretrans_dst='')
+	{
+		/* Return the translation of $text using Apertium local install or
+		 * Apertium.org, depending on $useapertiumorg
+		 */
+		if ($this->useapertiumorg)
+			return $this->getApertiumORGTranslation($text);
+		else
+			return $this->getApertiumTranslation($text, $pretrans_src, $pretrans_dst);
 	}
 
 	public function generateTmxOutput($source_text, $target_text)

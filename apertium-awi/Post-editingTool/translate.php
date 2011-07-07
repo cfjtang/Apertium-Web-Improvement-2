@@ -63,7 +63,7 @@ elseif(isset($data['submit_input']))
 {
 	//translate input
 	//changes $data['text_output']
-	$data['text_output'] = $trans->getApertiumTranslation($data['text_input'] /*, $data['pretrans_src'], $data['pretrans_dst']*/);
+	$data['text_output'] = $trans->getTranslation($data['text_input'] /*, $data['pretrans_src'], $data['pretrans_dst']*/);
 }
 elseif(isset($data['replace_input']))
 {
@@ -105,7 +105,7 @@ $javascript_header = array(
 $javascript_header = AddJSDependencies($javascript_header);
 
 page_header(get_text('translate', 'title'), $javascript_header);
-choose_language();
+display_streamer(true);
 
 ?>
 <form name="mainform" action="" method="post" style='border: 1px solid silver; padding: 10px;'>
@@ -273,6 +273,10 @@ if (module_is_load('LinkExternalDictionnaries')) {
   <input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
   <input type="hidden" name="input_doc_type" value="<?echo $data['input_doc_type'];?>" />
   <input type="hidden" name="input_doc_name" value="<?echo $data['input_doc_name'];?>" />
+<?
+	if ($trans->get_useapertiumorg())
+		echo '  <input type="hidden" name="useapertiumorg" value="true" />';
+  ?>
 </div>
 </form>
 
