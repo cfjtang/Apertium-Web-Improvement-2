@@ -37,13 +37,16 @@ function ajaxRequest(str, resultManager)
 	//resultManager is a function that will be called with the results as parameter
 	
 	var xhr;
-	
+	ajax_loader = document.getElementById('ajax_loader');
+	ajax_loader.style.display = '';
+
 	if(xhr = createXMLHttpRequest())
 	{
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4)
 			{
 				resultManager(xhr.responseText);
+				ajax_loader.style.display = 'none';
 				delete xhr;
 			}
 		};
@@ -56,6 +59,7 @@ function ajaxRequest(str, resultManager)
 		
 		xhr.send(str);
 	}
+
 }
 
 function buildRequestString(form, fields)

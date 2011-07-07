@@ -44,6 +44,14 @@ function page_footer()
 		<?
 		}
 
+function display_ajax_loader()
+{
+	/* Display the gif for ajax_loading
+	 * By default, it isn't visible
+	 */
+	echo "<img alt='' id='ajax_loader' src='images/ajax-loader.gif' style='display:none;' />";
+}
+
 /* Interface language */
 
 function avalaible_languages()
@@ -126,9 +134,9 @@ function display_streamer($choose_translation_system = false)
 	?>
 	<div id='streamer'>
 <?	
-		if ($choose_translation_system)
-			choose_translation_system();
-		choose_language();
+	if ($choose_translation_system)
+		choose_translation_system();
+	choose_language();
 	?>
 	</div>
 <?
