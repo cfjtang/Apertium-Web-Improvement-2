@@ -207,8 +207,12 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	?>				<option value="<?echo $pair;?>"<? if(isset($data['language_pair']) AND $data['language_pair'] == $pair) {?> selected="selected"<?} ?>><?echo str_replace('-', ' → ', $pair);?></option>
 	<?	}
 ?>
-			</select>
-	</div>
+	</select>
+        <br /><br /><br />
+<?
+	display_ajax_loader();
+?>	
+</div>
 </td>
 <td style = 'width:45%;'>		
 <div class="input_box">
