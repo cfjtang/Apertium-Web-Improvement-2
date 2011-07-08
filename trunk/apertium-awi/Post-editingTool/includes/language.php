@@ -21,7 +21,7 @@ $trans = new translate($config, 'en', 'es', 'html');
 
 $language_pairs_list = array();
 
-if (isset($_POST['useapertiumorg']))
+if ($config['use_apertiumorg'])
 	$trans->set_useapertiumorg(true);
 
 function get_apertiumorglanguagepair()

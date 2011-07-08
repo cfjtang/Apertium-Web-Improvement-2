@@ -17,7 +17,7 @@ include_once('modules.php');
 
 
 page_header(get_text('index', 'title'), array('CSS/style.css'));
-display_streamer(true);
+display_streamer();
 ?>
 <div id='content'>
 	<div id='header'>
@@ -37,27 +37,18 @@ display_streamer(true);
 </ul>
 <?php
 if (module_is_load('FormattedDocumentHandling')) {
-	if ($trans->get_useapertiumorg()) {
-		$source = file_get_contents($config['apertiumorg_docurl']);
-		preg_match('#<form class="translation" enctype="multipart/form-data" action="common/traddoc.php" method="post">(.*?)</form>#s', $source, $form_content);
-		
-		echo '<form class="translation" enctype="multipart/form-data" action="' . $config['apertiumorg_traddoc'] . '" method="post">';
-		echo $form_content[1];
-		echo '</form>';
-	}
-	else {		
-		echo get_text('index', 'supported_format') . ' :<br /><i>';
-		foreach ($config['supported_format'] as $extension)
-			echo $extension . ' ';
-		echo "</i><br />";
-		echo '<form action="translate.php" method="post" enctype="multipart/form-data">';
-		echo '<div>';
-		echo '<input type="file" name="in_doc" />';
-		echo '<input type="text" name="in_doc_type" />';
-		echo '<input type="submit" value="' . get_text('index', 'translate') . '" />';
-		echo '</div>';
-		echo '</form>';
-	}
+	echo get_text('index', 'supported_format') . ' :<br /><i>';
+	foreach ($config['supported_format'] as $extension)
+		echo $extension . ' ';
+	echo "</i><br />";
+	echo '<form action="translate.php" method="post" enctype="multipart/form-data">';
+	echo '<div>';
+	echo '<input type="file" name="in_doc" />';
+	echo '<input type="text" name="in_doc_type" />';
+	echo '<input type="submit" value="' . get_text('index', 'translate') . '" />';
+	echo '</div>';
+	echo '</form>';
+	
 }
 ?>
 <br />
