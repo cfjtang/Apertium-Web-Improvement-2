@@ -12,15 +12,14 @@
 
 include_once("system.php");
 
-class translate
+abstract class Translate
 {
 	/* This class provide a system for translation using Apertium */
-	private $config;
-	private $source_language;
-	private $target_language;
-	private $format;
-	private $inputTMX;
-	private $useapertiumorg;
+	protected $config;
+	protected $source_language;
+	protected $target_language;
+	protected $format;
+	protected $inputTMX;
 
 	public function __construct($config, $src_language = '',
 				    $tgt_language = '', $format = '')
@@ -31,7 +30,6 @@ class translate
 		$this->target_language = $tgt_language;
 		$this->format = $format;
 		$this->inputTMX = false;
-		$this->useapertiumorg = false;
 	}
 
 	public function set_source_language($src_language)
@@ -61,21 +59,6 @@ class translate
 			return false;
 	}
 
-	public function set_useapertiumorg($value)
-	{
-		/* Set the Use Apertium.ORG */
-		if ($value)
-		        $this->useapertiumorg = TRUE;
-		else
-			$this->useapertiumorg = FALSE;
-	}
-
-	public function get_useapertiumorg()
-	{
-		/* Return the value of Use Apertium.ORG */
-		return $this->useapertiumorg;
-	}
-
 	public function set_inputTMX($inputTMX)
 	{
 		/* Set the input TMX file */
@@ -91,7 +74,7 @@ class translate
 		return $this->inputTMX;
 	}
 
-	private function mergeTMX($files_array)
+	protected function mergeTMX($files_array)
 	{
 		/* Merge TMX file in $files_array using tmxmerger_command, 
 		 * and language source: $this->source_language
@@ -109,130 +92,16 @@ class translate
 		return $tempname;
 	}
 
-	private function generateTMXApertium($pretrans_src, $pretrans_dst)
-	{
-		/* Generate a TMX file for the need of Apertium translation '-m' 
-		 * Return the TMX file name
-		 */
-		$tmx_input = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<tmx version="1.4b">
-	<header srclang="'.$this->source_language.'" segtype="phrase" o-tmf="al" datatype="plaintext" creationtoolversion="1" creationtool="unas" adminlang="en"/>
-	<body>' . "\n";
-		
-		foreach($pretrans_src as $ind => $value)
-		{
-			if(trim($value) != '')
-			{
-				$tmx_input .= '	<tu>
-		<tuv xml:lang="'.$this->source_language.'">
-			<seg>'. htmlspecialchars($value, ENT_QUOTES, 'UTF-8') .'</seg>
-		</tuv>
-		<tuv xml:lang="'.$this->target_language.'">
-			<seg>'. htmlspecialchars($pretrans_dst[$ind], ENT_QUOTES, 'UTF-8') .'</seg>
-		</tuv>
-	</tu>' . "\n";
-			}
-		}
-		
-		$tmx_input .= '	</body>
-</tmx>';
-		
-		$tempname = tempnam($this->config['temp_dir'], 'ap_temp_');
-		$tempname = $this->config['temp_dir'] . basename($tempname);
-		
-		$tmx_file = fopen($tempname, "w");
-		fwrite($tmx_file, $tmx_input);
-		fclose($tmx_file);
-		
-		return $tempname;
-	}
+	public abstract function get_language_pairs_list();
+	/* Return an array of the language pairs list, 
+	 * depending on $config['use_apertiumorg']
+	 */
 
-	public function getApertiumTranslation($text, $pretrans_src='', $pretrans_dst='')
-	{
-		/* Runs a translation of the $text using the $language_pair with
-		 * Apertium, and returns the result text
-		 * If $pretrans_src is an array, then translate all elements in 
-		 * $pretrans_src as their counterpart in $pretrans_dst
-		 *
-		 * Return the translation result
-		 */		
-		$generate_tmx = false;
-
-		if(is_array($pretrans_src) AND !empty($pretrans_src))
-		{
-			foreach($pretrans_src as $ind => $value)
-			{
-				if(strlen(trim($value)) < 5) //for some reason, Apertium crashes when loading arguments shorter than 5 chars from tmx
-				{
-					unset($pretrans_src[$ind]);
-					unset($pretrans_dst[$ind]);
-				}
-			}
-			$generate_tmx = !empty($pretrans_src);
-		}
-	
-		$command = $this->config['apertium_command'].' -u -f '.$this->format.' '.$this->source_language.'-'.$this->target_language;
-
-		if ($this->inputTMX) {
-			if ($generate_tmx) {
-				/* Merging pretrans and external TMX */
-				$tempname =  $this->generateTMXApertium($pretrans_src, $pretrans_dst);	
-				$tempname_tmx = $this->mergeTMX(array($tempname, $this->inputTMX));
-				$command .= ' -m "'.$tempname_tmx.'"';
-			}
-			else	
-				$command .= ' -m "'.$this->inputTMX.'"';
-		}
-		elseif ($generate_tmx) {
-			$tempname =  $this->generateTMXApertium($pretrans_src, $pretrans_dst);	
-			$command .= ' -m "'.$tempname.'"';
-		}
-
-		executeCommand($command, $text, $translation_result, $return_status);
-
-		if (isset($tempname))
-			unlink($tempname);
-		if (isset($tempname_tmx))
-			unlink($tempname_tmx);
-	
-		/* $translation_result = html_entity_decode($translation_result, ENT_COMPAT, 'UTF-8'); 
-		 * only useful if  the"-f html" option is enabled in the apertium command
-		 */
-	
-		return $translation_result;
-	}
-
-	private function getApertiumORGTranslation($text)
-	{
-		/* Return the translation of $text, using the translation system
-		 * of ApertiumORG
-		 */
-		$data = http_build_query(array(
-						 'direction' => $this->source_language . '-' . $this->target_language,
-						 'textbox' => urlencode($text)));
-		$context = array('http' => array(
-					 'method' => 'POST',
-					 'header' => "Content-type: application/x-www-form-urlencoded\r\nConnection: close\r\nContent-Length: " . strlen($data) . "\r\n",
-					 'content' => $data));
-		$source = file_get_contents($this->config['apertiumorg_homeurl'], false, stream_context_create($context));
-		preg_match('#<p class="transresult">(.*?)</p>#s', $source, $result);
-
-		if (isset($result[1]))
-			return $result[1];
-		else
-			return "Request Failed !";
-	}
-
-	public function getTranslation($text, $pretrans_src='', $pretrans_dst='')
-	{
+	public abstract function getTranslation($text, $pretrans_src='', $pretrans_dst='');
 		/* Return the translation of $text using Apertium local install or
-		 * Apertium.org, depending on $useapertiumorg
+		 * Apertium.org, depending on $config['use_apertiumorg']
 		 */
-		if ($this->useapertiumorg)
-			return $this->getApertiumORGTranslation($text);
-		else
-			return $this->getApertiumTranslation($text, $pretrans_src, $pretrans_dst);
-	}
+	
 
 	public function generateTmxOutput($source_text, $target_text)
 	{
@@ -278,4 +147,14 @@ class translate
 		return $output;
 	}
 }
+
+if (!$config['use_apertiumorg']) {
+	include_once('translation_apertium.php');
+	$trans = new Translate_Apertium($config, 'en', 'es', 'html');
+}
+else {
+	include_once('translation_apertiumorg.php');
+	$trans = new Translate_ApertiumORG($config, 'en', 'es', 'html');
+}
+
 ?>

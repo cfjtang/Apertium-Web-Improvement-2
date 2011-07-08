@@ -277,10 +277,6 @@ if (module_is_load('LinkExternalDictionnaries')) {
   <input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
   <input type="hidden" name="input_doc_type" value="<?echo $data['input_doc_type'];?>" />
   <input type="hidden" name="input_doc_name" value="<?echo $data['input_doc_name'];?>" />
-<?
-	if ($trans->get_useapertiumorg())
-		echo '  <input type="hidden" name="useapertiumorg" value="true" />';
-  ?>
 </div>
 </form>
 
