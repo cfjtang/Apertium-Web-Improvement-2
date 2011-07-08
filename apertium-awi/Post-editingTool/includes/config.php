@@ -45,6 +45,7 @@ $config = array(
 
 	'tmxmerger_command' => 'java -jar external/TMXMerger-1.1.jar',
 	
+	'use_apertiumorg' => true,
 	'apertiumorg_homeurl' => 'http://www.apertium.org/index.php',
 	'apertiumorg_docurl' => 'http://www.apertium.org/index.php?id=translatedoc',
 	'apertiumorg_traddoc' => 'http://www.apertium.org/common/traddoc.php',

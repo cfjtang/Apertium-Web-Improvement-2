@@ -116,26 +116,13 @@ function choose_language()
 }
 
 /* Apertium.org translation system */
-function choose_translation_system()
-{
-	/* Write the menu for switching to Apertium.org translation */
-	global $trans;
-	?>
-	<form action = "" method = "post" style='float:left;'>
-		<input type="checkbox" name="useapertiumorg" onchange='this.form.submit()' <? if (isset($trans) && $trans->get_useapertiumorg()) echo "checked='1'"; ?> />Use Apertium.org Translation system
-		<noscript><input type="submit" name="submit_useapertiumorg" value="Change" /></noscript>
-        </form>		
-<?
-}
 
-function display_streamer($choose_translation_system = false)
+function display_streamer()
 {
 	/* Write the streamer */
 	?>
 	<div id='streamer'>
 <?	
-	if ($choose_translation_system)
-		choose_translation_system();
 	choose_language();
 	?>
 	</div>

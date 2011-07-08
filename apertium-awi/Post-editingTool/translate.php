@@ -105,7 +105,7 @@ $javascript_header = array(
 $javascript_header = AddJSDependencies($javascript_header);
 
 page_header(get_text('translate', 'title'), $javascript_header);
-display_streamer(true);
+display_streamer();
 
 ?>
 <form name="mainform" action="" method="post" style='border: 1px solid silver; padding: 10px;'>
