@@ -849,6 +849,60 @@
     </label-sequence>
 
 
+
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERSUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERGER"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="VSERPARTPI"/>
+    </label-sequence>
+
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="AVEREPFCI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="AVEREPDET"/>
+      <label-item label="VSERIPI"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="AVERESUBJ"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="AVEREIMP"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREPDET"/>
+      <label-item label="AVEREGER"/>
+    </label-sequence>
+
+
     <label-sequence>
       <label-item label="PREPPRN"/>
       <label-item label="VLEXPFCI"/>
