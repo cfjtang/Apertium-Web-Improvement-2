@@ -43,7 +43,7 @@ $config = array(
 
 	'yuicompressor_command' => 'java -jar external/yuicompressor-2.4.6/build/yuicompressor-2.4.6.jar',
 
-	'tmxmerger_command' => 'java -jar external/TMXMerger-1.1.jar',
+	'tmxmerger_command' => 'java -jar ../TmxTools/TMXMerger-1.1.jar',
 	
 	'use_apertiumorg' => FALSE,
 	'apertiumorg_homeurl' => 'http://www.apertium.org/index.php',
