@@ -3,7 +3,7 @@
   <section-def-cats>
     <def-cat n="nom">
       <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
-      <cat-item tags="np.loc"/>
+      <cat-item tags="np.loc.*"/>
     </def-cat>
 
     <def-cat n="ant">
@@ -4172,6 +4172,140 @@
       </action>
     </rule>
     
+
+
+    <rule comment="REGLA: DET NOM ADJ ADJ">
+      <pattern>
+	<pattern-item n="det"/>
+	<pattern-item n="nom"/>
+	<pattern-item n="adjec"/>
+	<pattern-item n="adjec"/>
+      </pattern>
+      <action>
+	<call-macro n="f_concord4">
+	  <with-param pos="2"/>
+	  <with-param pos="4"/>
+	  <with-param pos="3"/>
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<choose>
+	  <when>
+	    <test> 
+	      <equal>
+		<clip pos="4" side="sl" part="a_adj"/>
+		<lit-tag v="adj.pos"/>
+	      </equal>
+	    </test>
+	<out>
+	  <chunk name="det_adj_adj_nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="1" side="tl" part="gen_mf"/>	 
+	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr_sp"/>	 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="lemh"/>
+	      <clip pos="4" side="tl" part="a_adj"/>
+	      <clip pos="4" side="tl" part="temps"/>
+	      <clip pos="4" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="4" side="tl" part="gen_mf"/>	 
+	      <clip pos="4" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="4" side="tl" part="nbr_sp"/>	 
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/>
+	      <clip pos="3" side="tl" part="a_adj"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="3" side="tl" part="gen_mf"/>	 
+	      <clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="3" side="tl" part="nbr_sp"/>	 
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="3"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="2" side="tl" part="gen_mf"/>	 
+	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="2" side="tl" part="nbr_sp"/>	 
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+	  </when>
+	  <otherwise>
+
+	<out>
+	  <chunk name="det_nom_adj_adj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><var n="genero"/></tag>
+	      <tag><var n="numero"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/> 
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="1" side="tl" part="gen_mf"/>	 
+	      <clip pos="1" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="1" side="tl" part="nbr_sp"/>	 
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/> 
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="2" side="tl" part="gen_mf"/>	 
+	      <clip pos="2" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="2" side="tl" part="nbr_sp"/>	 
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/>
+	      <clip pos="3" side="tl" part="a_adj"/>
+	      <clip pos="3" side="tl" part="temps"/>
+	      <clip pos="3" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="3" side="tl" part="gen_mf"/>	 
+	      <clip pos="3" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="3" side="tl" part="nbr_sp"/>	 
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu> 
+	    <b pos="3"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="lemh"/>
+	      <clip pos="4" side="tl" part="a_adj"/>
+	      <clip pos="4" side="tl" part="temps"/>
+	      <clip pos="4" side="tl" part="gen_sense_mf" link-to="2"/>
+	      <clip pos="4" side="tl" part="gen_mf"/>	 
+	      <clip pos="4" side="tl" part="nbr_sense_sp" link-to="3"/>
+	      <clip pos="4" side="tl" part="nbr_sp"/>	 
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu> 
+	  </chunk>
+	</out>
+	  </otherwise>
+	</choose>
+      </action>
+    </rule>
+    
+
     <rule comment="REGLA: DET ADJ">
       <pattern>
 	<pattern-item n="det"/>
