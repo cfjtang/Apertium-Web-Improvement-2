@@ -26,8 +26,14 @@ abstract class Translate
 	{
 		/* Initialise the Object */
 		$this->config = $config;
-		$this->source_language = $src_language;
-		$this->target_language = $tgt_language;
+		if (ctype_alpha($src_language))
+			$this->source_language = $src_language;
+		else
+			$this->source_language = 'en';
+		if (ctype_alpha($tgt_language))
+			$this->target_language = $tgt_language;
+		else
+			$this->target_language = 'en';
 		$this->format = $format;
 		$this->inputTMX = false;
 	}
