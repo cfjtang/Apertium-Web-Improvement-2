@@ -41,6 +41,9 @@ abstract class TMmanage
 			return false;
 	}
 	
+	public abstract function add_TM($source);
+	/* Add the Translation Memory segment to the database */
+	
 	public abstract function get_TM($language_pair = '');
 	/* If $language_pair = ''
 	 * Return a file corresponding to the Translation Memory having 

@@ -8,6 +8,7 @@
 
 include_once('includes/TMmanage.php');
 
+/* Get Translation Memory */
 if (isset($_GET['language_pair'])) {
 	$file = $tm->get_TM($_GET['language_pair']);
 	header('Location: ' . $file);
@@ -36,6 +37,20 @@ if (isset($_GET['language_pair'])) {
 
 	<ul>
 	  <li>Add a translation memory</li>
+	  <form action="" method="post" enctype="multipart/form-data">
+	    <input type="file" name="in_doc" />
+	    <input type="submit" name="add_tm" value="Add TM" />
+	  </form>
+<?
+/* Add Translation Memory */
+if (isset($_FILES["in_doc"]) && !($_FILES["in_doc"]["error"] > 0)) {
+	$source = file_get_contents($_FILES["in_doc"]["tmp_name"]);
+	if ($tm->add_TM($source))
+		echo '<p>Translation memory correctly added !</p>';
+	else
+		echo '<p>An error occured</p>';
+}
+?>
 	  <li>Get a translation memory:<br />
 	    <p>Avalaible language pairs: 
 	      <form action = "" method = "get">
