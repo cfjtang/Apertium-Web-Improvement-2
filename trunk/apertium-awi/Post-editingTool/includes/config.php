@@ -50,6 +50,9 @@ $config = array(
 	'apertiumorg_docurl' => 'http://www.apertium.org/index.php?id=translatedoc',
 	'apertiumorg_traddoc' => 'http://www.apertium.org/common/traddoc.php',
 	
+	'externTM_type' => 'TMServer', /* 'TMServer', ''(to use nothing) */
+	'externTM_url' => 'http://localhost/TMServer/',
+	
 	'supported_format' => array("rtf", "wxml", "docx", "pptx", "xlsx", "odt", "ods", "odp", "html", "mediawiki", "pdf", "png", "jpg", "jpeg", "tiff", "tif", "txt")
 );
 
