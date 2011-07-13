@@ -8,6 +8,13 @@
 
 include_once('includes/TMmanage.php');
 
+/* Get avalaible language pairs list */
+if (isset($_GET['action']) && $_GET['action'] == 'get_language_pairs') {
+	foreach ($tm->get_language_pairs() as $lang_pair)
+		echo $lang_pair . "\n";
+	exit();
+}
+
 /* Get Translation Memory */
 if (isset($_GET['language_pair'])) {
 	$file = $tm->get_TM($_GET['language_pair']);
@@ -63,6 +70,11 @@ if (isset($_FILES["in_doc"]) && !($_FILES["in_doc"]["error"] > 0)) {
 		<input type='submit' name='get_language_pairs' value='Get the TM!' />
 		</form>
 	    </li>
+	  </ul>
+	  <p>Want to use TMSever in your web application ?</p>
+	  <ul>
+	    <li><a href="index.php?action=get_language_pairs">Get the language pairs list</a></li>
+	    <li><a href="index.php?language_pair=[HERE YOUR LANGUAGE PAIR]">Get an record from the database, by indicating the language pair</a>(in URL, replace [HERE YOUR LANGUAGE PAIR] with the language pair, for example fr-es)</li>
 	  </ul>
 	</div>
       </div>
