@@ -195,6 +195,43 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	echo '<select id="dictionary_src"><option value=""></option></select>';
 	echo '</div>';
 }
+
+/* Extern Translation Memory Server */
+switch ($config['externTM_type']) {
+case 'TMServer':
+	include('includes/TMServer.php');
+	$TM = new TMServer($config['externTM_url']);
+	$avalaible_pair_list = $TM->get_language_pairs_list();
+	$new_pair = FALSE;
+	
+	if (isset($data['TM_pair']) && in_array($data['TM_pair'], $avalaible_pair_list)) {
+		$trans->set_inputTMX($TM->get_real_URL($data['TM_pair']));
+		$new_pair = $data['TM_pair'];
+	}
+	
+	?>
+	<p>Extern Translation Memory Server:
+<?
+		 echo '<h4>' . $TM->get_server_url() . '</h4>';
+?>
+	Avalaible language on this server: <select name='TM_pair'>
+<?
+        foreach ($avalaible_pair_list as $pair) {
+		echo '<option label="' . $pair . '" value = "' . $pair . '" ';
+		if ($pair == $new_pair)
+			echo 'selected = "selected"';
+		echo '>' . $pair . '</option>' . "\n";
+	}
+?>
+</select>
+<?
+	
+	
+	break;
+default:
+	break;
+}
+
 ?>
 <input type="text" name="inputTMX" value="<? echo $trans->get_inputTMX(); ?>" /><input type="submit" name="useTMX" value="Use TMX" />
 </div>
@@ -214,7 +251,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
 ?>	
 </div>
 </td>
-<td style = 'width:45%;'>		
+<td style = 'width:45%;vertical-align:top;'>		
 <div class="input_box">
 	<textarea id="text_out_js_off" name="text_output"><?echo strip_tags($data['text_output']);?></textarea>
 	<div id="text_out_js_on" contentEditable="true" style="display:none;"><?echo nl2br_r($data['text_output']);?><br class="nodelete" contenteditable="false" /></div>
@@ -227,6 +264,25 @@ if (module_is_load('LinkExternalDictionnaries')) {
 ?>
 		
 	<input type="submit" name="submit_output_tmx" value="<? write_text('translate', 'gen_TMX'); ?>" />
+<?
+/* Extern Translation Memory Server */
+switch ($config['externTM_type']) {
+case 'TMServer':
+if (isset($data['add_TM'])) {
+        $tmx = $trans->generateTmxOutput(strip_tags($data['text_input']), strip_tags($data['text_output']));
+	if ($TM->send_TM($tmx))
+		echo "<br />TMX file successfully added !<br />";
+	else
+		echo "<br />An error occured...<br />";
+}
+?>
+        <input type="submit" name="add_TM" value="Add TMX to the TMServer" />
+<?
+	break;
+default:
+	break;
+}
+?>
 	</div>
 		
 	<div class="more_options">
