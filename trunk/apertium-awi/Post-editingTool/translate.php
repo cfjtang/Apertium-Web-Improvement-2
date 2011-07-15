@@ -49,8 +49,13 @@ if(isset($data['language_pair']) and is_installed($data['language_pair']))
 	$trans->set_target_language($target_language);
 }
 
-if (isset($data['inputTMX']))
-	$trans->set_inputTMX($data['inputTMX']);
+if (isset($_FILES["inputTMXFile"]))
+	$trans->set_inputTMX($_FILES["inputTMXFile"]["tmp_name"]);
+
+if (isset($data['inputTMX'])) {
+	if (!(isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'FILE')))
+		$trans->set_inputTMX($data['inputTMX']);
+}
 
 if(isset($data['check_input']))
 {
@@ -108,7 +113,7 @@ page_header(get_text('translate', 'title'), $javascript_header);
 display_streamer();
 
 ?>
-<form name="mainform" action="" method="post" style='border: 1px solid silver; padding: 10px;'>
+<form name="mainform" action="" method="post" style='border: 1px solid silver; padding: 10px;' enctype="multipart/form-data">
 <div class="language_select">
 	<? write_text('translate', 'select_language'); ?> : 
 </div>
@@ -195,7 +200,9 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	echo '<select id="dictionary_src"><option value=""></option></select>';
 	echo '</div>';
 }
-
+?>
+<table><tr><td>
+<?
 /* Extern Translation Memory Server */
 switch ($config['externTM_type']) {
 case 'TMServer':
@@ -204,7 +211,7 @@ case 'TMServer':
 	$avalaible_pair_list = $TM->get_language_pairs_list();
 	$new_pair = FALSE;
 	
-	if (isset($data['TM_pair']) && in_array($data['TM_pair'], $avalaible_pair_list)) {
+	if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'extern') && isset($data['TM_pair']) && in_array($data['TM_pair'], $avalaible_pair_list)) {
 		$trans->set_inputTMX($TM->get_real_URL($data['TM_pair']));
 		$new_pair = $data['TM_pair'];
 	}
@@ -223,7 +230,7 @@ case 'TMServer':
 		echo '>' . $pair . '</option>' . "\n";
 	}
 ?>
-</select>
+</select></td><td><input type="radio" name="inputTMXtype" value="extern" <? if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'extern')) echo 'checked="1"';?>/></td></tr><tr><td>
 <?
 	
 	
@@ -233,7 +240,10 @@ default:
 }
 
 ?>
-<input type="text" name="inputTMX" value="<? echo $trans->get_inputTMX(); ?>" /><input type="submit" name="useTMX" value="Use TMX" />
+<input type="text" name="inputTMX" value="<? echo $trans->get_inputTMX(); ?>" /><input type="submit" name="useTMX" value="Use TMX" /></td><td><input type="radio" name="inputTMXtype" value="URL" <? if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'URL')) echo 'checked="1"';?>/></td></tr>
+<tr><td>
+<input type="file" name="inputTMXFile" /></td><td><input type="radio" name="inputTMXtype" value="FILE" <? if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'FILE')) echo 'checked="1"';?>/></td></tr>
+</table>
 </div>
 </td>
 <td>
