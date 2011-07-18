@@ -33,9 +33,9 @@ class Translate_ApertiumORG extends Translate
 					 'content' => $data));
 		$source = file_get_contents($this->config['apertiumorg_homeurl'], false, stream_context_create($context));
 		preg_match('#<p class="transresult">(.*?)</p>#s', $source, $result);
-
+		
 		if (isset($result[1]))
-			return $result[1];
+			return urldecode($result[1]);
 		else
 			return "Request Failed !";
 	}
