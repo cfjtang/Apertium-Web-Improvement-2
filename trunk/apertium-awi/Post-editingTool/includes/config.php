@@ -45,8 +45,9 @@ $config = array(
 
 	'tmxmerger_command' => 'java -jar ../TmxTools/TMXMerger-1.1.jar',
 	
-	'use_apertiumorg' => TRUE,
+	'use_apertiumorg' => FALSE,
 	'apertiumorg_homeurl' => 'http://www.apertium.org/index.php',
+	'apertiumorg_traddoc' => 'http://www.apertium.org/common/traddoc.php',
 	
 	'externTM_type' => 'TMServer', /* 'TMServer', ''(to use nothing) */
 	'externTM_url' => 'http://localhost/TMServer/',

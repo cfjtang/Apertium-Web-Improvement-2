@@ -21,21 +21,31 @@ class Translate_ApertiumORG extends Translate
 
 	private function getApertiumORGTranslation($text)
 	{
-		/* Return the translation of $text, using the translation system
-		 * of ApertiumORG
+		/* Return the translation of $text, using the FILE translation 
+		 * system of ApertiumORG, passing $text as a HTML file
 		 */
-		$data = http_build_query(array(
-						 'direction' => $this->source_language . '-' . $this->target_language,
-						 'textbox' => urlencode($text)));
+		$boundary = rand();
+		
+		/* direction: $this->source_language . '-' . $this->target_language */
+		$content = "-----------------------------" . $boundary . "\r\nContent-Disposition: form-data; name='direction'\r\n\r\n";
+		$content .= $this->source_language . '-' . $this->target_language;
+
+		/* doctype: html */
+		$content .= "\r\n-----------------------------" . $boundary . "\r\nContent-Disposition: form-data; name='doctype'\r\n\r\n";
+		$content .= "html";
+
+		/* userfile: $text */
+		$content .= "\r\n-----------------------------" . $boundary . "\r\nContent-Disposition: form-data; name='userfile'; filename='to_translate.html'\r\nContent-Type: text/html\r\n\r\n";
+		$content .= $text;
+		$content .= "\r\n-----------------------------" . $boundary . "--\r\n";
 		$context = array('http' => array(
 					 'method' => 'POST',
-					 'header' => "Content-type: application/x-www-form-urlencoded\r\nConnection: close\r\nContent-Length: " . strlen($data) . "\r\n",
-					 'content' => $data));
-		$source = file_get_contents($this->config['apertiumorg_homeurl'], false, stream_context_create($context));
-		preg_match('#<p class="transresult">(.*?)</p>#s', $source, $result);
-		
-		if (isset($result[1]))
-			return urldecode($result[1]);
+					 'header' => "Connection: Close\r\nContent-Type: multipart/form-data, boundary=---------------------------" . $boundary . "\r\nContent-Length: " . strlen($content) . "\r\n",
+					 'content' => $content));
+		$source = file_get_contents($this->config['apertiumorg_traddoc'], false, stream_context_create($context));
+				
+		if (isset($source))
+			return $source;
 		else
 			return "Request Failed !";
 	}
