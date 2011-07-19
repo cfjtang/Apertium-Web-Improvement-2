@@ -45,13 +45,15 @@ class TMServer {
 
 	public function send_TM($source) {
 		/* Send the TM file to the TMServer */
-		$content = "-----------------------------143422751206517382258287566\r\nContent-Disposition: form-data; name='in_doc'; filename='to_add.tmx'\r\nContent-Type: application/octet-stream\r\n\r\n";
+		$boundary = rand();
+		
+		$content = "-----------------------------" . $boundary . "\r\nContent-Disposition: form-data; name='in_doc'; filename='to_add.tmx'\r\nContent-Type: application/octet-stream\r\n\r\n";
 		$content .= $source;
-		$content .= "\r\n-----------------------------143422751206517382258287566--\r\n";
+		$content .= "\r\n-----------------------------" . $boundary . "--\r\n";
 		
 		$context = array('http' => array(
 					 'method' => 'POST',
-					 'header' => "Connection: Close\r\nContent-Type: multipart/form-data, boundary=---------------------------143422751206517382258287566\r\nContent-Length: " . strlen($content) . "\r\n",
+					 'header' => "Connection: Close\r\nContent-Type: multipart/form-data, boundary=---------------------------" . $boundary . "\r\nContent-Length: " . strlen($content) . "\r\n",
 					 'content' => $content));
 		$source = file_get_contents($this->server_url . 'index.php', false, stream_context_create($context));
 		
