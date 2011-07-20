@@ -35,22 +35,57 @@ display_streamer();
 		echo "<li>" . get_text('index', 'menu2') . "</li>";
 ?>
 </ul>
+<form action="translate.php" method="post" enctype="multipart/form-data">
 <?php
 if (module_is_load('FormattedDocumentHandling')) {
 	echo get_text('index', 'supported_format') . ' :<br /><i>';
 	foreach ($config['supported_format'] as $extension)
 		echo $extension . ' ';
 	echo "</i><br />";
-	echo '<form action="translate.php" method="post" enctype="multipart/form-data">';
+	
 	echo '<div>';
 	echo '<input type="file" name="in_doc" />';
 	echo '<input type="text" name="in_doc_type" />';
 	echo '<input type="submit" value="' . get_text('index', 'translate') . '" />';
-	echo '</div>';
-	echo '</form>';
-	
+	echo '</div>';	
 }
 ?>
+<p>Would you like to use a TMX File to improve your translation ?</p>
+<table>
+  <tr>
+    <td>With an URL: </td><td><input type="text" name="inputTMX" value="" /></td>
+  </tr>
+  <tr>
+  <td>With a local file: </td><td><input type="file" name="inputTMXFile" /></td>
+  </tr>
+  <tr>
+    <td>With a TMServer: </td><td>
+<?
+/* Extern Translation Memory Server */
+switch ($config['externTM_type']) {
+case 'TMServer':
+	include('includes/TMServer.php');
+	$TM = new TMServer($config['externTM_url']);
+	$avalaible_pair_list = $TM->get_language_pairs_list(); 
+        echo "(" . $TM->get_server_url() . ") ";
+        echo "<select name='TM_pair'>";
+        echo "<option label='' value='' checked='1'></option>";
+        foreach ($avalaible_pair_list as $pair)
+		echo '<option label="' . $pair . '" value = "' . $pair . '">' . $pair . '</option>' . "\n";
+        echo "</select>";
+        break;
+default:
+        echo "No server set";
+        break;
+}
+?>
+    </td>
+  </tr>
+  <tr>
+    <td></td><td><input type="submit" name="use_TMX" value="Use TMX!" /></td>
+  </tr>
+</table>
+</form>
 <br />
 <table>
 <tr><? write_text('index', 'columns_name'); ?></tr>

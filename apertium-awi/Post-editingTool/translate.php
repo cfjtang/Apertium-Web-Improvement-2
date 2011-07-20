@@ -97,10 +97,12 @@ define_var($to_define);
 $target_language = '';
 $source_language = '';
 
+/* Do the right action */
 $avalaible_action = array('check_input', 'submit_input', 'replace_input', 'replace_output', 'check_output', 'submit_output_tmx', 'submit_output');
 $action = get_action($avalaible_action);
 do_action($action);
 
+/* Specific cases */
 if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
 {
 	//if handling formatted document
@@ -120,13 +122,27 @@ if(isset($data['language_pair']) and is_installed($data['language_pair']))
 }
 
 /* TMX Input management */
-if (isset($_FILES["inputTMXFile"]))
-	$trans->set_inputTMX($_FILES["inputTMXFile"]["tmp_name"]);
+if (isset($_FILES["inputTMXFile"]) && !($_FILES["inputTMXFile"]["error"] > 0))
+	$trans->set_inputTMX(file_get_contents($_FILES["inputTMXFile"]["tmp_name"]));
 
-if (isset($data['inputTMX'])) {
-	if (!(isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'FILE')))
+if (isset($data['inputTMX']) && $data['inputTMX'] != '')
 		$trans->set_inputTMX($data['inputTMX']);
+
+if (isset($data['TM_pair']) && $data['TM_pair'] != '') {
+	switch ($config['externTM_type']) {
+	case 'TMServer':
+		include('includes/TMServer.php');
+		$TM = new TMServer($config['externTM_url']);
+		if (in_array($data['TM_pair'], $TM->get_language_pairs_list()))
+			$trans->set_inputTMX(file_get_contents($TM->get_real_URL($data['TM_pair'])));
+		break;
+	default:
+		break;
+	}
 }
+
+if (isset($data['inputTMX_content']))
+	$trans->set_inputTMX(base64_decode($data['inputTMX_content']));
 
 /* Page display */
 $javascript_header = array(
@@ -196,54 +212,6 @@ if (module_is_load('LinkExternalDictionnaries')) {
 	echo '</div>';
 }
 ?>
-<table>
-<?
-/* Extern Translation Memory Server */
-switch ($config['externTM_type']) {
-case 'TMServer':
-	include('includes/TMServer.php');
-	$TM = new TMServer($config['externTM_url']);
-	$avalaible_pair_list = $TM->get_language_pairs_list();
-	$new_pair = FALSE;
-	
-	if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'extern') && isset($data['TM_pair']) && in_array($data['TM_pair'], $avalaible_pair_list)) {
-		$trans->set_inputTMX($TM->get_real_URL($data['TM_pair']));
-		$new_pair = $data['TM_pair'];
-	}
-	
-	?>
-	<tr>
-	<td><p>Extern Translation Memory Server:
-<?
-		 echo '<h4>' . $TM->get_server_url() . '</h4>';
-?>
-	Avalaible language on this server: <select name='TM_pair'>
-<?
-        foreach ($avalaible_pair_list as $pair) {
-		echo '<option label="' . $pair . '" value = "' . $pair . '" ';
-		if ($pair == $new_pair)
-			echo 'selected = "selected"';
-		echo '>' . $pair . '</option>' . "\n";
-	}
-?>
-</select></td>
-<td><input type="radio" name="inputTMXtype" value="extern" <? if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'extern')) echo 'checked="1"';?>/></td></tr>
-<?
-	break;
-default:
-	break;
-}
-
-?>
-<tr>
-  <td><input type="text" name="inputTMX" value="<? echo $trans->get_inputTMX(); ?>" /><input type="submit" name="useTMX" value="Use TMX" /></td>
-  <td><input type="radio" name="inputTMXtype" value="URL" <? if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'URL')) echo 'checked="1"';?>/></td>
-</tr>
-<tr>
-  <td><input type="file" name="inputTMXFile" /></td>
-  <td><input type="radio" name="inputTMXtype" value="FILE" <? if (isset($data['inputTMXtype']) && ($data['inputTMXtype'] == 'FILE')) echo 'checked="1"';?>/></td>
-</tr>
-</table>
 </div>
 </td>
 <td>
@@ -338,6 +306,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
   <input type="hidden" name="input_doc" value="<?echo $data['input_doc'];?>" />
   <input type="hidden" name="input_doc_type" value="<?echo $data['input_doc_type'];?>" />
   <input type="hidden" name="input_doc_name" value="<?echo $data['input_doc_name'];?>" />
+  <input type="hidden" name="inputTMX_content" value="<? echo base64_encode($trans->get_inputTMX()); ?>" />
 </div>
 </form>
 

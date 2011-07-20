@@ -91,7 +91,7 @@ function handleClick(e)
 				
 				prepareSubmit();
 				
-				var query_string = 'action_request=translate&' + buildRequestString(document.mainform, new Array('inputTMX', 'language_pair', 'text_input', 'pretrans_src[]', 'pretrans_dst[]') );
+				var query_string = 'action_request=translate&' + buildRequestString(document.mainform, new Array('inputTMX', 'language_pair', 'text_input', 'pretrans_src[]', 'pretrans_dst[]', 'inputTMX_content') );
 				var resultManager = function(str)
 				{
 					text_out_js_on.innerHTML = str+'<br />';
