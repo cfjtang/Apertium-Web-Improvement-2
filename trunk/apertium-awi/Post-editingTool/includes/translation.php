@@ -67,11 +67,8 @@ abstract class Translate
 
 	public function set_inputTMX($inputTMX)
 	{
-		/* Set the input TMX file */
-		if (is_readable($inputTMX))
-			$this->inputTMX = $inputTMX;
-		else
-			$this->inputTMX = htmlspecialchars(filter_var($inputTMX, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED), ENT_QUOTES, 'UTF-8');
+		/* Set the input TMX content */
+		$this->inputTMX = $inputTMX;
 	}
 
 	public function get_inputTMX()

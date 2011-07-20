@@ -97,15 +97,24 @@ class Translate_Apertium extends Translate
 	
 		$command = $this->config['apertium_command'].' -u -f '.$this->format.' '.$this->source_language.'-'.$this->target_language;
 
-		if ($this->inputTMX) {
+		if ($this->inputTMX != '') {
+			$tempname_inputTMX = tempnam($this->config['temp_dir'], 'ap_temp_');
+			$tempname_inputTMX = $this->config['temp_dir'] . basename($tempname_inputTMX);
+			$tmx_file = fopen($tempname_inputTMX, "w");
+			fwrite($tmx_file, $this->inputTMX);
+			fclose($tmx_file);
+		}
+			
+
+		if (isset($tempname_inputTMX)) {
 			if ($generate_tmx) {
 				/* Merging pretrans and external TMX */
 				$tempname =  $this->generateTMXApertium($pretrans_src, $pretrans_dst);	
-				$tempname_tmx = $this->mergeTMX(array($tempname, $this->inputTMX));
+				$tempname_tmx = $this->mergeTMX(array($tempname, $tempname_inputTMX));
 				$command .= ' -m "'.$tempname_tmx.'"';
 			}
 			else	
-				$command .= ' -m "'.$this->inputTMX.'"';
+				$command .= ' -m "'.$tempname_inputTMX.'"';
 		}
 		elseif ($generate_tmx) {
 			$tempname =  $this->generateTMXApertium($pretrans_src, $pretrans_dst);	
@@ -118,6 +127,8 @@ class Translate_Apertium extends Translate
 			unlink($tempname);
 		if (isset($tempname_tmx))
 			unlink($tempname_tmx);
+		if (isset($tempname_inputTMX))
+			unlink($tempname_inputTMX);
 	
 		/* $translation_result = html_entity_decode($translation_result, ENT_COMPAT, 'UTF-8'); 
 		 * only useful if  the"-f html" option is enabled in the apertium command

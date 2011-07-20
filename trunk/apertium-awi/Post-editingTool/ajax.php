@@ -82,7 +82,10 @@ function check_entry($text)
 
 }
 
-$trans->set_inputTMX($data['inputTMX']);
+if (isset($data['inputTMX_content']))
+	$trans->set_inputTMX(base64_decode($data['inputTMX_content']));
+else
+	$trans->set_inputTMX('');
 
 switch($data['action_request'])
 {
