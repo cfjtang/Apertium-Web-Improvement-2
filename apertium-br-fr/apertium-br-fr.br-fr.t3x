@@ -6,6 +6,12 @@
       <cat-item name="prnperssubj"/>
     </def-cat>
     
+    <def-cat n="cnjsub">
+      <cat-item name="puisque"/>
+      <cat-item name="si"/>
+      <cat-item name="que"/>
+    </def-cat> 
+
     <def-cat n="inf">
       <cat-item name="inf"/>
     </def-cat> 
@@ -343,6 +349,42 @@
 				</out>   
 			</action>
 		</rule> 
+
+		<rule comment="CHUNK: adv">
+			<pattern>
+				<pattern-item n="adv"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>   
+                                <let>
+                                  <var n="firstWordAfterBOS"/>
+                                  <lit v="false"/>
+                                </let>
+			</action>
+		</rule> 
+
+
+		<rule comment="CHUNK: cnjsub">
+			<pattern>
+				<pattern-item n="cnjsub"/>
+			</pattern>
+			<action>
+				<out>
+					<lu>
+						<clip pos="1" part="whole"/>
+					</lu>
+				</out>   
+                                <let>
+                                  <var n="firstWordAfterBOS"/>
+                                  <lit v="false"/>
+                                </let>
+			</action>
+		</rule> 
+
 		<rule comment="CHUNK: sent">
 			<pattern>
 				<pattern-item n="sent"/>
