@@ -163,6 +163,16 @@ function get_text($page, $info)
 			return retrieve_info('index', 5);
 		case 'columns_name' :
 			return retrieve_info('index', 6);
+		case 'TMX_menu_title' :
+			return retrieve_info('index', 7);
+		case 'TMX_menu1' :
+			return retrieve_info('index', 8);
+		case 'TMX_menu2' :
+			return retrieve_info('index', 9);
+		case 'TMX_menu3' :
+			return retrieve_info('index', 10);
+		case 'TMX_menu_submit' :
+			return retrieve_info('index', 11);
 		default:
 			return '';
 		break;
@@ -182,6 +192,8 @@ function get_text($page, $info)
 			return retrieve_info('translate', 4);
 		case 'gen_TMX':
 			return retrieve_info('translate', 5);
+		case 'add_TMX':
+			return retrieve_info('translate', 6);	
 		default:
 			return '';
 		}

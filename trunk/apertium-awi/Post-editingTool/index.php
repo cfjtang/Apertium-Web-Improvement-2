@@ -50,16 +50,16 @@ if (module_is_load('FormattedDocumentHandling')) {
 	echo '</div>';	
 }
 ?>
-<p>Would you like to use a TMX File to improve your translation ?</p>
+<p><? write_text('index', 'TMX_menu_title'); ?></p>
 <table>
   <tr>
-    <td>With an URL: </td><td><input type="text" name="inputTMX" value="" /></td>
+    <td><? write_text('index', 'TMX_menu1'); ?></td><td><input type="text" name="inputTMX" value="" /></td>
   </tr>
   <tr>
-  <td>With a local file: </td><td><input type="file" name="inputTMXFile" /></td>
+  <td><? write_text('index', 'TMX_menu2'); ?></td><td><input type="file" name="inputTMXFile" /></td>
   </tr>
   <tr>
-    <td>With a TMServer: </td><td>
+    <td><? write_text('index', 'TMX_menu3'); ?></td><td>
 <?
 /* Extern Translation Memory Server */
 switch ($config['externTM_type']) {
@@ -69,7 +69,7 @@ case 'TMServer':
 	$avalaible_pair_list = $TM->get_language_pairs_list(); 
         echo "(" . $TM->get_server_url() . ") ";
         echo "<select name='TM_pair'>";
-        echo "<option label='' value='' checked='1'></option>";
+        echo "<option label='' value='' selected='selected'></option>";
         foreach ($avalaible_pair_list as $pair)
 		echo '<option label="' . $pair . '" value = "' . $pair . '">' . $pair . '</option>' . "\n";
         echo "</select>";
@@ -82,7 +82,7 @@ default:
     </td>
   </tr>
   <tr>
-    <td></td><td><input type="submit" name="use_TMX" value="Use TMX!" /></td>
+    <td></td><td><input type="submit" name="use_TMX" value="<? write_text('index', 'TMX_menu_submit'); ?>" /></td>
   </tr>
 </table>
 </form>
