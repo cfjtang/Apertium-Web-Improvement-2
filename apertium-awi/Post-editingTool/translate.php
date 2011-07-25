@@ -254,7 +254,7 @@ case 'TMServer':
 			echo "<br />An error occured...<br />";
 	}
 ?>
-        <input type="submit" name="add_TM" value="Add TMX to the TMServer" />
+        <input type="submit" name="add_TM" value="<? write_text('translate', 'add_TMX'); ?>" />
 <?
 	break;
 default:
@@ -283,15 +283,15 @@ if (module_is_load('SearchAndReplace')) {
 	if(isset($data['posttrans_src']) AND is_array($data['posttrans_src'])) {
 		foreach($data['posttrans_src'] as $ind => $val)
 			generateReplacementLine('posttrans', $val, $data['posttrans_dst'][$ind], $data['posttrans_case'][$ind], $ind);
-	
-		if(isset($data['posttrans_add']))
-			generateReplacementLine('posttrans', '', '', 'apply', count($data['posttrans_src']));
-?>
-		</ul>
-		<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
-		</div>
-<?
 	}
+
+       if(isset($data['posttrans_add']))
+	       generateReplacementLine('posttrans', '', '', 'apply', count($data['posttrans_src']));
+?>
+	</ul>
+	<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
+	</div>
+<?
 }
 if (module_is_load('LinkExternalDictionnaries')) {
 	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
