@@ -14,8 +14,10 @@ abstract class Grammar
 }
 
 /* Includes the right spell checking tool, whichever $config['spellcheckingtool'] 
- * Create the $spell object
+ * Create the $grammar object
  */
+global $grammar;
+
 switch ($config['grammarproofingtool']) {
 case 'languagetool':
 	include_once("grammar_LT.php");
@@ -30,5 +32,4 @@ default:
 	$grammar = new Grammar_LT($config);
 	break;
 }
-
 ?>

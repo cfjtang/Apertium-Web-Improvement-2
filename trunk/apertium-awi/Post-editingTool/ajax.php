@@ -13,14 +13,13 @@
 
 include('includes/language.php');
 include_once('includes/strings.php');
-include_once('includes/gramproof.php');
+include_once('modules.php');
 
 putenv('LANG=en_GB.UTF-8');
 
 $data = escape($_POST);
 
-if(isset($data['language_pair']))
-{
+if(isset($data['language_pair'])) {
 	$source_language = explode('-', $data['language_pair']);
 	$target_language = $source_language[1];
 	$source_language = $source_language[0];
@@ -28,14 +27,10 @@ if(isset($data['language_pair']))
 	$trans->set_target_language($target_language);
 	
 	if(!(ctype_alpha($source_language) AND ctype_alpha($target_language)))
-	{
 		die("Incorrect languages");
-	}
 }
 else
-{
 	die("No language given");
-}
 
 //Define all variables, for strictness...
 $variables_name = array('text_input', 'text_output', 'pretrans_src', 'pretrans_dst', 'pretrans_case', 'posttrans_src', 'posttrans_dst', 'posttrans_case', 'inputTMX');
