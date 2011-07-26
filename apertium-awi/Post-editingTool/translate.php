@@ -53,6 +53,7 @@ function do_action($action_name) {
 		/* run grammar and spell checking on input
 		 * changes $data['text_input'] */
 		global $source_language;
+		
 		$data['text_input'] = checkForMistakes($data['text_input'], $source_language);
 		break;
 	case 'submit_input':
@@ -290,7 +291,7 @@ if (module_is_load('SearchAndReplace')) {
 ?>
 	</ul>
 	<input id="posttrans_add" name="posttrans_add" type="submit" value="+" />
-	</div>
+</div>
 <?
 }
 if (module_is_load('LinkExternalDictionnaries')) {

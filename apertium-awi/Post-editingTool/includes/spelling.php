@@ -15,6 +15,7 @@ abstract class Spelling
 /* Includes the right spell checking tool, whichever $config['spellcheckingtool'] 
  * Create the $spell object
  */
+global $spell;
 switch ($config['spellcheckingtool']) {
 case 'aspell':
 	include_once("spelling_aspell.php");
