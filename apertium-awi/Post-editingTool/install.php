@@ -25,17 +25,18 @@ function display_result($array) {
 	}
 }
 
-function add_test($condition, $result_true, $recommend_true, $result_false, $recommend_false) 
+function add_test($condition, $result_true, $recommend_true, $result_false, $recommend_false, $recommend_condition = FALSE) 
 {
-	/* If $condition, add $result_true and $recommend_true in $test_result and 
-	 * $test_result
+	/* If $condition, add $result_true in $test_result 
+	 * In addition, if not $recommend_condition, add $recommend_true to $recommendation 
 	 * Else $result_false and $recommend_false
 	 */
 	global $recommendation, $test_result;
 	
 	if ($condition) {
 		$test_result[] = $result_true;
-		$recommendation[] = $recommend_true;
+		if (!$recommend_condition)
+			$recommendation[] = $recommend_true;
 	}
 	else {
 		$test_result[] = $result_false;
@@ -86,17 +87,17 @@ function test_externTM()
 	return file_get_contents($config['externTM_url']);
 }
 
-add_test(test_apertium_command(), "Your apertium installation is correctly detected", "You should set 'use_apertiumorg' on FALSE", "Your apertium installation isn't detected", "You should set 'use_apertiumorg' on TRUE");
+add_test(test_apertium_command(), "Your apertium installation is correctly detected", "You should set 'use_apertiumorg' on FALSE", "Your apertium installation isn't detected", "You should set 'use_apertiumorg' on TRUE", $config['use_apertiumorg'] == FALSE);
 
 add_test(test_command('java'), "Your installation of JAVA is correctly detected", "You should use languagetool, yuicompressor and TMXMerger", "No JAVA installation are detected.", "You should set 'spellcheckingtool' on ATD, and 'grammarproofingtool' too. Or install JAVA to dispose of all functionnality.");
 
 add_test(test_temp_dir(), "Your temp directory is writable", "", "Your temp directory isn't writable. Some functionnality are disabled.", "Change the right of your temp directory, or change the temp directory to a directory writable.");
 
-add_test(test_command('pdftohtml'), "PdftoHtml program is correctly installed on your system.", "You should set 'pdf2html_command' on 'pdftohtml -c -noframes'", "PdftoHtml isn't detected on your system. PDF file management will not work.", "You should install pdftohtml program.");
+add_test(test_command('pdftohtml'), "PdftoHtml program is correctly installed on your system.", "You should set 'pdf2html_command' on 'pdftohtml -c -noframes'", "PdftoHtml isn't detected on your system. PDF file management will not work.", "You should install pdftohtml program.", $config['pdf2html_command'] == 'pdftohtml -c -noframes');
 
 add_test(test_command($config['ocr_command']), "The OCR program is correctly installed.", "", "The convert program and the OCR program aren't correctly installed. Picture management will not work.", "You should install 'convert' program and 'tesseract' program.");
 
-add_test(test_externTM(), "An extern translation memory as been detected.", "You should set 'externTM_type' on 'TMServer', and keep 'externTM_url' as current.", "No extern translation memory is detected.", "You should set 'externTM_type' on ''. Or install a Translation Memory server, such as TMServer.");
+add_test(test_externTM(), "An extern translation memory as been detected.", "You should set 'externTM_type' on 'TMServer', and keep 'externTM_url' as current.", "No extern translation memory is detected.", "You should set 'externTM_type' on ''. Or install a Translation Memory server, such as TMServer.", $config['externTM_type'] == 'TMServer');
 
 page_header('Configure', array('CSS/style.css'));
 
