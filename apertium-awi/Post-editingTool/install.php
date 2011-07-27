@@ -11,7 +11,149 @@ include_once('includes/template.php');
 include_once('modules.php');
 
 /* Change config.php */
+$avalaible_config = array(
+	array('name' => 'temp_dir',
+	      'type' => 'text'),
+	array('name' => 'apertium_command',
+	      'type' => 'text'),
+	array('name' => 'apertium_unformat_command',
+	      'type' => 'text'),
+	array('name' => 'apertium_re_commands',
+	      'type' => 'text'),
+	array('name' => 'apertium_des_commands',
+	      'type' => 'text'),
+	array('name' => 'languagetool_command',
+	      'type' => 'text'),
+	array('name' => 'languagetool_server_command',
+	      'type' => 'text'),
+	array('name' => 'languagetool_server_port',
+	      'type' => 'text'),
+	array('name' => 'aspell_command',
+	      'type' => 'text'),
+	array('name' => 'maligna_command',
+	      'type' => 'text'),
+	array('name' => 'ATD_command',
+	      'type' => 'text'),
+	array('name' => 'ATD_link',
+	      'type' => 'text'),
+	array('name' => 'spellcheckingtool',
+	      'type' => 'select',
+	      'options' => array('aspell', 'ATD')),
+	array('name' => 'grammarproofingtool',
+	      'type' => 'select',
+	      'options' => array('languagetool', 'ATD')),
+	array('name' => 'unzip_command',
+	      'type' => 'text'),
+	array('name' => 'zip_command',
+	      'type' => 'text'),
+	array('name' => 'pdf2html_command',
+	      'type' => 'text'),
+	array('name' => 'html2pdf_command',
+	      'type' => 'text'),
+	array('name' => 'convert_command',
+	      'type' => 'text'),
+	array('name' => 'ocr_command',
+	      'type' => 'text'),
+	array('name' => 'yuicompressor_command',
+	      'type' => 'text'),
+	array('name' => 'tmxmerger_command',
+	      'type' => 'text'),
+	array('name' => 'use_apertiumorg',
+	      'type' => 'boolean'),
+	array('name' => 'apertiumorg_homeurl',
+	      'type' => 'text'),
+	array('name' => 'apertiumorg_traddoc',
+	      'type' => 'text'),
+	array('name' => 'externTM_type',
+	      'type' => 'select',
+	      'options' => array('TMServer', '')),
+	array('name' => 'externTM_url',
+	      'type' => 'text'),
+	array('name' => 'supported_format',
+	      'type' => 'array')
+	);
 
+function set_new_config()
+{
+	/* Return an array of the new configuration */
+	global $avalaible_config, $_POST;
+
+	$new_config = array();
+	foreach ($avalaible_config as $element) {
+		switch ($element['type']) {
+		case 'array':
+			$new_config[$element['name']] = explode(',', $_POST[$element['name']]);
+			break;
+		case 'boolean':
+			if ($_POST[$element['name']] == 'TRUE')
+				$new_config[$element['name']] = TRUE;
+			else
+				$new_config[$element['name']] = FALSE;
+			break;
+		default:
+			$new_config[$element['name']] = $_POST[$element['name']];
+		}
+	}
+		
+	return $new_config;
+}
+
+function display_choice($array)
+{
+	/* Display a menu depending on the 'type' field */
+	global $config;
+	
+	switch ($array['type']) {
+	case 'text':
+		echo '<input type="text" name="' . $array['name'] . '" value="' . $config[$array['name']] . '" />';
+		break;
+	case 'select':
+		echo '<select name="' . $array['name'] . '">';
+		foreach ($array['options'] as $option) {
+			echo "<option label='" . $option . "' value='" . $option . "' ";
+			if ($option == $config[$array['name']])
+				echo "selected='selected'";
+			echo ">" . $option . "</option>\n";
+		}
+		echo '</select>';
+		break;
+
+	case 'array':
+		echo '<input type="text" name="' . $array['name'] . '" value="' . implode(',',$config[$array['name']]) . '" />';
+		break;
+
+	case 'boolean':
+		echo '<select name="' . $array['name'] . '">';
+		echo "<option label='TRUE' value='TRUE' ";
+		if ($config[$array['name']])
+			echo "selected='selected'";
+		echo ">TRUE</option>\n";
+		echo "<option label='FALSE' value='FALSE' ";
+		if (!$config[$array['name']])
+			echo "selected='selected'";
+		echo ">FALSE</option>\n";		
+		echo '</select>';
+		break;
+		
+	default:
+		break;
+	}
+}
+
+function display_menu()
+{
+	/* Display the menu as a table */
+	global $avalaible_config;
+	
+	foreach ($avalaible_config as $choice) {
+		echo "<tr><td>" . $choice['name'] . "</td><td>";
+		display_choice($choice);
+		echo "</td></tr>\n";
+	}
+}
+
+if (isset($_POST['apertium_command']))
+	print_r(set_new_config());
 
 /* Do some test */
 $recommendation = array();
@@ -34,12 +176,12 @@ function add_test($condition, $result_true, $recommend_true, $result_false, $rec
 	global $recommendation, $test_result;
 	
 	if ($condition) {
-		$test_result[] = $result_true;
+		$test_result[] = "<span style='color: green;'>" . $result_true . "</span>";
 		if (!$recommend_condition)
 			$recommendation[] = $recommend_true;
 	}
-	else {
-		$test_result[] = $result_false;
+	else {		
+		$test_result[] = "<span style='color: red;'>" . $result_false . "</span>";
 		$recommendation[] = $recommend_false;
 	}
 }
@@ -48,7 +190,8 @@ function test_command($command) {
 	/* Return true if $command is avalaible 
 	 * False otherwise
 	 * Warning: this function launch the command */
-	if (exec($command) == '')
+	$return = explode(':', trim(exec('whereis ' . $command)));
+	if (isset($return[1]) and trim($return[1]) != '')
 		return TRUE;
 	else
 		return FALSE;
@@ -59,10 +202,11 @@ function test_apertium_command() {
 	 * Return true if all of these commands are accessible, false otherwise */
 	global $config;
 	
-	$command_to_test = array($config['apertium_command'], $config['apertium_command'], $config['apertium_command'], $config['apertium_command']);
+	$command_to_test = array($config['apertium_command'], $config['apertium_unformat_command']);
 	$return = TRUE;
 	foreach ($command_to_test as $command) {
-		if (test_command($command)) {
+		if (!test_command($command)) {
+			echo $command;
 			$return = FALSE;
 			break;
 		}
@@ -84,7 +228,13 @@ function test_externTM()
 	/* Return true if externTM_url is achievable */
 	global $config;
 	
-	return file_get_contents($config['externTM_url']);
+	return (file_get_contents($config['externTM_url']) != '');
+}
+
+function test_config()
+{
+	/* Return true if includes/config.php is writable */
+	return is_writable('includes/config.php');
 }
 
 add_test(test_apertium_command(), "Your apertium installation is correctly detected", "You should set 'use_apertiumorg' on FALSE", "Your apertium installation isn't detected", "You should set 'use_apertiumorg' on TRUE", $config['use_apertiumorg'] == FALSE);
@@ -95,9 +245,11 @@ add_test(test_temp_dir(), "Your temp directory is writable", "", "Your temp dire
 
 add_test(test_command('pdftohtml'), "PdftoHtml program is correctly installed on your system.", "You should set 'pdf2html_command' on 'pdftohtml -c -noframes'", "PdftoHtml isn't detected on your system. PDF file management will not work.", "You should install pdftohtml program.", $config['pdf2html_command'] == 'pdftohtml -c -noframes');
 
-add_test(test_command($config['ocr_command']), "The OCR program is correctly installed.", "", "The convert program and the OCR program aren't correctly installed. Picture management will not work.", "You should install 'convert' program and 'tesseract' program.");
+add_test(test_command($config['convert_command']) && test_command($config['ocr_command']), "The convert program and the OCR program are correctly installed.", "", "The convert program and the OCR program aren't correctly installed. Picture management will not work.", "You should install 'convert' program and 'tesseract' program.");
 
-add_test(test_externTM(), "An extern translation memory as been detected.", "You should set 'externTM_type' on 'TMServer', and keep 'externTM_url' as current.", "No extern translation memory is detected.", "You should set 'externTM_type' on ''. Or install a Translation Memory server, such as TMServer.", $config['externTM_type'] == 'TMServer');
+add_test(test_externTM(), "An extern translation memory has been detected.", "You should set 'externTM_type' on 'TMServer', and keep 'externTM_url' as current.", "No extern translation memory is detected.", "You should set 'externTM_type' on ''. Or install a Translation Memory server, such as TMServer.", $config['externTM_type'] == 'TMServer');
+
+add_test(test_config(), "Your configuration file is writable.", "", "Your configuration file isn't writable. You cannot save a new configuration.", "You should change the right of includes/config.php to enable the write on it.");
 
 page_header('Configure', array('CSS/style.css'));
 
@@ -117,16 +269,20 @@ page_header('Configure', array('CSS/style.css'));
 ?>
       </ul>
       Recommendations:
-      <ul>
+      <ul><span style='color: blue;'>
 <?
 	display_result($recommendation);
 ?>
-      </ul>
+      </span></ul>
       Choose your configuration:
     </p>
     <form action="" method="post">
       <table>
 	<tr><td>Configuration</td><td>Avalaible Option</td></tr>
+<?
+	display_menu();
+?>
+      <tr><td></td><td><input type="submit" name="apply" value="Apply changes" /></td></tr>
       </table>
     </form>
     <br />
