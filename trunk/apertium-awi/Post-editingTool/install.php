@@ -152,8 +152,37 @@ function display_menu()
 	}
 }
 
-if (isset($_POST['apertium_command']))
-	print_r(set_new_config());
+function replace_in_config($name_var, $value)
+{
+	/* Replace the value of the variable $name_var by $value 
+	 * in includes/config.php 
+	 * Return true if operation is a success, false otherwise
+	 */
+	
+	$source = file_get_contents('includes/config.php');
+	$value_formatted = var_export($value, true);
+	$replace = "\n\$" . $name_var . " = " . $value_formatted . ";";
+	
+	$new_source = preg_replace('#\n\$' . $name_var . '(.*?)\;#s', 
+				   "$replace", $source);
+
+	if ($handle = @fopen('includes/config.php', 'w')) {
+		fwrite($handle, $new_source);
+		fclose($handle);
+		return TRUE;
+	}
+	else
+		return FALSE;
+}
+
+if (isset($_POST['apply_config'])) {
+	$new_config = set_new_config();
+	$config_replacement = false;
+	if (replace_in_config('config', $new_config)) {
+		$config = $new_config;
+		$config_replacement = true;
+	}
+}
 
 /* Do some test */
 $recommendation = array();
@@ -251,6 +280,8 @@ add_test(test_externTM(), "An extern translation memory has been detected.", "Yo
 
 add_test(test_config(), "Your configuration file is writable.", "", "Your configuration file isn't writable. You cannot save a new configuration.", "You should change the right of includes/config.php to enable the write on it.");
 
+add_test(test_command($config['aspell_command']), "Aspell program is correctly installed", "You should set 'spellcheckingtool' on 'aspell'.", "Aspell program isn't installed.", "You should set 'spellcheckingtool' on 'ATD', or install aspell.", $config['spellcheckingtool'] == 'aspell');
+
 page_header('Configure', array('CSS/style.css'));
 
 ?>
@@ -261,6 +292,14 @@ page_header('Configure', array('CSS/style.css'));
     <p>Post-edition Interface : configure script</p>
   </div>
   <div id='frame'>
+<?
+	if (isset($config_replacement)) {
+		if ($config_replacement)
+			echo "<h3>The new config file has been succesfuly write !</h3>";
+		else
+			echo "<h3>The write of the new config file failed. Please verify includes/config.php right.</h3>";
+	}
+?>
     <p>This script allow you to have a easily configure your Apertium Post-edition interface installation.<br /><br />
       Result of the test of your installation:
       <ul>
@@ -282,14 +321,14 @@ page_header('Configure', array('CSS/style.css'));
 <?
 	display_menu();
 ?>
-      <tr><td></td><td><input type="submit" name="apply" value="Apply changes" /></td></tr>
+      <tr><td></td><td><input type="submit" name="apply_config" value="Apply changes" /></td></tr>
       </table>
     </form>
+    <p>Modules</p>
     <br />
     <p>Do not forget to use the <a href='publish.php'>Publish script</a> to finalize your installation.</p> 
   </div>
 </div>
-
 
 <?
     page_footer();
