@@ -6,6 +6,28 @@
  * Mentors : Arnaud Vié, Luis Villarejo
  */
 set_time_limit(0);
+
+/* PASSWORD TO CHANGE */
+$password = "password";
+/* */
+
+/* Security issue */
+if ($password == 'password')
+	die('Please change the default password to avoid a bad use of this script by a malicious user. Set the new password in install.php, line 11.');
+
+if (isset($_POST['password'])) {
+	setcookie('password', $_POST['password'], time()+3600);
+	$_COOKIE['password'] = $_POST['password'];
+}
+
+if (!isset($_COOKIE['password']) or $_COOKIE['password'] != $password) {
+	echo "<h3>Bad password</h3>";
+	echo "<p>Please enter the password, define in install.php, line 11: </p>";
+	echo "<form action='' method='post'><input type='text' name='password' /><input type='submit' name='auth' value='Login' /></form>";
+	exit();
+}
+
+/* Script begin */
 include_once('includes/config.php');
 include_once('includes/template.php');
 include_once('modules.php');
