@@ -282,6 +282,57 @@ add_test(test_config(), "Your configuration file is writable.", "", "Your config
 
 add_test(test_command($config['aspell_command']), "Aspell program is correctly installed", "You should set 'spellcheckingtool' on 'aspell'.", "Aspell program isn't installed.", "You should set 'spellcheckingtool' on 'ATD', or install aspell.", $config['spellcheckingtool'] == 'aspell');
 
+/* Module management */
+
+function display_module()
+{
+	/* Show informations on modules installed */
+	global $modules, $modules_to_load;
+	
+	echo "<tr><td>Module</td><td>Description</td><td>Recommended</td><td>Dependencies</td><td>To load</td></tr>";
+	$img_yes = 'images/yes.png';
+	$img_no = 'images/no.png';
+	foreach ($modules as $module_name => $module_data) {
+		echo '<tr><td>' . $module_data['name'] . '</td><td><p>' . $module_data['description'] . '</p></td><td style="text-align: center;">';
+	if ($module_data['default'])
+		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
+	else
+		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
+	echo '</td><td style="text-align: center;">';
+	if (CheckModule($module_name))
+		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
+	else
+		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
+	echo '</td><td style="text-align: center;"><input type="checkbox" name="' . $module_name . '" ';
+	if (in_array($module_name, $modules_to_load))
+		echo 'checked="1" ';
+	echo '/></td></tr>';
+	}
+}
+
+function set_new_module()
+{
+	/* Return an array of the new list of modules to load */
+	global $modules, $_POST;
+
+	$return = array();
+	foreach ($modules as $name => $value) {
+		if (isset($_POST[$name]))
+			$return[] = $name;
+	}
+
+	return $return;
+}
+
+if (isset($_POST['apply_modules'])) {
+	$new_module = set_new_module();
+	$module_replacement = false;
+	if (replace_in_config('modules_to_load', $new_module)) {
+		$modules_to_load = $new_module;
+		$module_replacement = true;
+	}
+}
+/* Page display */
 page_header('Configure', array('CSS/style.css'));
 
 ?>
@@ -295,10 +346,17 @@ page_header('Configure', array('CSS/style.css'));
 <?
 	if (isset($config_replacement)) {
 		if ($config_replacement)
-			echo "<h3>The new config file has been succesfuly write !</h3>";
+			echo "<h3>The new config file has been successfully write !</h3>";
 		else
 			echo "<h3>The write of the new config file failed. Please verify includes/config.php right.</h3>";
 	}
+       if (isset($module_replacement)) {
+	       if ($module_replacement)
+			echo "<h3>The new list of modules has been successfully write !</h3>";
+		else
+			echo "<h3>The write of the new modules list failed. Please verify includes/config.php right.</h3>";
+       }
+	
 ?>
     <p>This script allow you to have a easily configure your Apertium Post-edition interface installation.<br /><br />
       Result of the test of your installation:
@@ -324,7 +382,15 @@ page_header('Configure', array('CSS/style.css'));
       <tr><td></td><td><input type="submit" name="apply_config" value="Apply changes" /></td></tr>
       </table>
     </form>
-    <p>Modules</p>
+    <p>Choose which modules to load:</p>
+    <form action="" method="post">    
+      <table>
+<?
+	display_module();
+?>
+        <tr><td></td><td></td><td></td><td></td><td><input type="submit" name="apply_modules" value="Apply changes" /></td></tr> 
+      </table>
+    </form>
     <br />
     <p>Do not forget to use the <a href='publish.php'>Publish script</a> to finalize your installation.</p> 
   </div>
