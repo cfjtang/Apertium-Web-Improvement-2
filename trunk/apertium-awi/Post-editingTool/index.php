@@ -85,6 +85,9 @@ default:
     <td></td><td><input type="submit" name="use_TMX" value="<? write_text('index', 'TMX_menu_submit'); ?>" /></td>
   </tr>
 </table>
+<p>Want to traduce a WikiPage ?</p>
+<ul><li>Insert article edit URL (http://example.com/wiki/index.php?title=foo&action=edit): <br /><input type="text" name="wiki_url" /><input type="submit" name="wiki_submit" value="Edit Wiki!" /></li></ul>
+<noscript>You need to activate Javascript or install a more up-to-date browser to benefit of this feature.</noscript>
 </form>
 <br />
 <table>
