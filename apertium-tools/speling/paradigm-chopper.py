@@ -17,13 +17,8 @@ sys.setrecursionlimit(20000);
 format = '';
 
 dictionary = sys.argv[1];
-print len(sys.argv);
-if len(sys.argv) < 2: #{
-	print 'python paradigm-chopper.py <dix file> [-1|-1line]';
-	sys.exit(-1);
-#}
-if len(sys.argv) == 3: #{
-	if sys.argv[2] == '-1line' or sys.argv[2] == '-1': #{
+if len(sys.argv) > 2: #{
+	if sys.argv[2] == '1line' or sys.argv[2] == '-1': #{
 		format = '1line';
 	#}	
 #}
@@ -208,10 +203,10 @@ for paradigm in paradigms.keys(): #{
 		for pair in paradigms[paradigm]: #{
 			out = '';
 			out = out + '      <e><p>';
-			if type(pair[0]) == type(None): #{
-				out = out + '<l></l>';
+			if pair[0] == type(None): #{
+				out = out + '<l/>';
 			else: #{
-				out = out + '<l>' + pair[0] + '</l>';
+				out = out + '          <l>%s</l>' % (pair[0]);
 			#}
 			rpost = paradigm[bar_idx:udr_idx];
 			if paradigm.find('/') == -1: #{
@@ -225,7 +220,7 @@ for paradigm in paradigms.keys(): #{
 		for pair in paradigms[paradigm]: #{
 			print '      <e>';
 			print '        <p>';
-			if type(pair[0]) == type(None): #{
+			if pair[0] == type(None): #{
 				print '          <l/>';
 			else: #{
 				print('          <l>%s</l>' % (pair[0]));
