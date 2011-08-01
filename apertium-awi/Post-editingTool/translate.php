@@ -94,7 +94,7 @@ function do_action($action_name) {
 		$wiki_form = array();
 		if (!empty($url) and filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
 			/* Security issue */
-			$source = file_get_contents($url);
+			$source = file_get_contents($url, false, stream_context_create(array('http' => array('method' => 'GET', 'header' => 'User-Agent: Apertium AWI <commial@gmail.com>\r\n'))));
 
 			/* Get informations for the future POST, stocked in $wiki_form */
 			preg_match('#<form id="editform" name="editform" method="post" action="(.*?)" enctype="multipart/form-data">(.*?)</form>#s', $source, $matche_form);
