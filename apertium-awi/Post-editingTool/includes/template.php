@@ -171,8 +171,6 @@ function get_text($page, $info)
 			return retrieve_info('index', 9);
 		case 'TMX_menu3' :
 			return retrieve_info('index', 10);
-		case 'TMX_menu_submit' :
-			return retrieve_info('index', 11);
 		default:
 			return '';
 		break;

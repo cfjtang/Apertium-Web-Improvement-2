@@ -8,7 +8,7 @@
 set_time_limit(0);
 
 /* PASSWORD TO CHANGE */
-$password = "password";
+$password = "passwor";
 /* */
 
 /* Security issue */
@@ -279,7 +279,7 @@ function test_externTM()
 	/* Return true if externTM_url is achievable */
 	global $config;
 	
-	return (file_get_contents($config['externTM_url']) != '');
+	return (@file_get_contents($config['externTM_url']) != '');
 }
 
 function test_config()
@@ -414,6 +414,13 @@ page_header('Configure', array('CSS/style.css'));
       </table>
     </form>
     <br />
+    <p>Download extern packages:</p>
+    <table style='text-align: center;'>
+	       <tr><td><a href='http://aceattorney.free.fr/ApertiumAWI-dependencies-0.9.0.tar.gz'><img src='images/extern.png' title='download'/></a></td><td>Maligna, LanguageTool</td><td>Extract in current directory</td></tr>
+      <tr><td><a href='http://yui.zenfs.com/releases/yuicompressor/yuicompressor-2.4.6.zip'><img src='images/extern.png' title='download'/></a></td><td>Yuicompressor</td><td>Extract in your external directory</td></tr>
+      <tr><td><a href='http://code.google.com/p/wkhtmltopdf/downloads/list'><img src='images/extern.png' title='download'/></a></td><td>WkHTMLToPdf</td><td>Extract in your external directory</td></tr>
+      <!-- <tr><td><a href='http://www.omegat.org/resources/TMXMerger.zip'><img src='images/extern.png' title='download'/></a></td><td>TMXMerger</td></tr> -->
+    </table>
     <p>Do not forget to use the <a href='publish.php'>Publish script</a> to finalize your installation.</p> 
   </div>
 </div>
