@@ -589,8 +589,8 @@
       <cat-item lemma="estar# a punto de" tags="vblex.*"/>
     </def-cat>
 
-    <def-cat n="venirde">
-      <cat-item lemma="venir# de" tags="vblex.*"/>
+    <def-cat n="venir">
+      <cat-item lemma="venir" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="seguir"> <!--EO perífrasi-->
@@ -610,8 +610,8 @@
       <cat-item lemma="dejar# de" tags="vblex.*"/>
     </def-cat>
 
-    <def-cat n="volvera"> <!--EO perífrasi-->
-      <cat-item lemma="volver# a" tags="vblex.*"/>
+    <def-cat n="volver"> <!--EO perífrasi-->
+      <cat-item lemma="volver" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="echarse"> <!--EO perífrasi-->
@@ -14816,7 +14816,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
 <rule comment="VERBvenirde + INF (vengo de hacer -> mi ĵus faris)">
       <pattern>
-	<pattern-item n="venirde"/>
+	<pattern-item n="venir"/>
+	<pattern-item n="de"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
@@ -14851,18 +14852,18 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="case"/></tag>
                     </tags>
                     <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="temps"/>
                       <clip pos="1" side="tl" part="nbr"/>
-		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
+		      <clip pos="3" side="tl" part="tipus_prn" link-to="5"/>
                     </lu>
                   </chunk>
             </out>
@@ -14900,14 +14901,14 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <chunk name="verb_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                     </tags>
                     <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="temps"/>
                     </lu>
                   </chunk>
@@ -14977,7 +14978,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 <rule comment="REGLA: HABER VERBvolvera + INF (volver a EOes)">
       <pattern>
 	<pattern-item n="haber"/>
-	<pattern-item n="volvera"/>
+	<pattern-item n="volver"/>
+	<pattern-item n="a"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
@@ -14985,7 +14987,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="tipus_verbs">
-          <with-param pos="3"/>
+          <with-param pos="4"/>
         </call-macro>
 
                 <let>
@@ -15013,8 +15015,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <clip pos="3" side="tl" part="lemh"/>
-                      <clip pos="3" side="tl" part="a_verb"/>
+                      <clip pos="4" side="tl" part="lemh"/>
+                      <clip pos="4" side="tl" part="a_verb"/>
                       <clip pos="2" side="tl" part="temps"/>
                     </lu>
                   </chunk>
@@ -15028,7 +15030,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
 <rule comment="REGLA: VERBvolvera + INF (volver a EOes)">
       <pattern>
-	<pattern-item n="volvera"/>
+	<pattern-item n="volver"/>
+	<pattern-item n="a"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
@@ -15036,7 +15039,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="nom_cas">
-          <with-param pos="2"/>
+          <with-param pos="3"/>
         </call-macro>
 
 	<choose>
@@ -15067,18 +15070,18 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <chunk name="verbcj_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="case"/></tag>
                     </tags>
                     <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="temps"/>
                       <clip pos="1" side="tl" part="nbr"/>
-		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
+		      <clip pos="3" side="tl" part="tipus_prn" link-to="5"/>
                     </lu>
                   </chunk>
             </out>
@@ -15088,7 +15091,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <with-param pos="1"/>
         </call-macro>
                 <let>
-                  <clip pos="2" side="tl" part="temps"/>
+                  <clip pos="3" side="tl" part="temps"/>
                   <lit-tag v="pp2"/>
                 </let>
                 <out>
@@ -15105,7 +15108,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <chunk name="verbcj_perif">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
@@ -15113,8 +15116,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
                     </tags>
                     <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="temps"/>
                     </lu>
                   </chunk>
