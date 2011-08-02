@@ -87,42 +87,66 @@ function do_action($action_name) {
 		send_file('Translation-' . $data['language_pair'] . '-' . $data['input_doc_name'], $output_file);
 		break;
 
-	case 'wiki_submit':
-		global $wiki_form, $config;
-	        $url = $data['wiki_url'];
+	case 'load_input':
+	       	/* Load the entry */
 		
-		$wiki_form = array();
-		if (!empty($url) and filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
-			/* Security issue */
-			$source = file_get_contents($url, false, stream_context_create(array('http' => array('method' => 'GET', 'header' => 'User-Agent: Apertium AWI <commial@gmail.com>\r\n'))));
-
-			/* Get informations for the future POST, stocked in $wiki_form */
-			preg_match('#<form id="editform" name="editform" method="post" action="(.*?)" enctype="multipart/form-data">(.*?)</form>#s', $source, $matche_form);
-			unset($source);
-			$wiki_form['action'] = 'http://' . parse_url($url, PHP_URL_HOST) . '/' . parse_url($url, PHP_URL_PATH) . '/' . $matche_form[1];
-			$form_content = $matche_form[2];
-			unset($matche_form);
+		switch ($data['input_type']) {
+		case 'none':
+			break;
+		case 'file':
+			/* File management */
+			global $_FILES;
 			
-			preg_match_all('#<input (.*?)>#s', $form_content, $matche_input);
-			$wiki_form['input'] = $matche_input[0];
-			unset($matche_input);
+			if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0)) {
+				//if handling formatted document
+				$data['input_doc_name'] = $_FILES["in_doc"]["name"];
+				$data['input_doc_type'] = getFileFormat($data['input_doc_name'], $data['in_doc_type']);
+				$data['text_input'] = convertFileToHTML($_FILES["in_doc"]["tmp_name"], $data['input_doc_type']);
+				$data['input_doc'] = base64_encode(file_get_contents($_FILES["in_doc"]["tmp_name"]));
+			}
+			break;
+		case 'wiki':
+			/* WikiPage */
+			global $wiki_form, $config;
+			$url = $data['wiki_url'];
+		
+			$wiki_form = array();
+			if (!empty($url) and filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+				/* Security issue */
+				$source = file_get_contents($url, false, stream_context_create(array('http' => array('method' => 'GET', 'header' => 'User-Agent: Apertium AWI <commial@gmail.com>\r\n'))));
+				
+				/* Get informations for the future POST, stocked in $wiki_form */
+				preg_match('#<form id="editform" name="editform" method="post" action="(.*?)" enctype="multipart/form-data">(.*?)</form>#s', $source, $match_form);
+				unset($source);
+				$wiki_form['action'] = 'http://' . parse_url($url, PHP_URL_HOST) . '/' . parse_url($url, PHP_URL_PATH) . '/' . $match_form[1];
+				$form_content = $match_form[2];
+				unset($match_form);
+			
+				preg_match_all('#<input (.*?)>#s', $form_content, $match_input);
+				$wiki_form['input'] = $match_input[0];
+				unset($match_input);
+				
+				preg_match('#<textarea (.*?)>(.*?)</textarea>#s', $form_content, $match_textarea);
+				$wiki_form['textarea'] = $match_textarea[1];
+				$content = $match_textarea[2];
+				unset($match_textarea);
 
-			preg_match('#<textarea (.*?)>(.*?)</textarea>#s', $form_content, $matche_textarea);
-			$wiki_form['textarea'] = $matche_textarea[1];
-			$content = $matche_textarea[2];
-			unset($matche_textarea);
-
-			/* write the main content in a file, 
-			 * to use convertFileToHTML method */
-			$tempname = tempnam($config['temp_dir'], 'ap_temp_');
-			$tempname = $config['temp_dir'] . basename($tempname);
-			$file = fopen($tempname, "w");
-			fwrite($file, $content);
-			fclose($file);
-
-			$data['text_input'] = convertFileToHTML($tempname, 'mediawiki');
-			unlink($tempname);
+				/* write the main content in a file, 
+				 * to use convertFileToHTML method */
+				$tempname = tempnam($config['temp_dir'], 'ap_temp_');
+				$tempname = $config['temp_dir'] . basename($tempname);
+				$file = fopen($tempname, "w");
+				fwrite($file, $content);
+				fclose($file);
+				
+				$data['text_input'] = convertFileToHTML($tempname, 'mediawiki');
+				unlink($tempname);
+				break;
+			}
+		default:
+			break;
 		}
+		
 		break;
 
 	case 'wiki_end_submit':
@@ -156,7 +180,7 @@ function do_action($action_name) {
 	}
 }
 
-$to_define = array('text_output', 'text_input', 'input_doc', 'input_doc_type', 'input_doc_name');
+$to_define = array('text_output', 'text_input', 'input_doc', 'input_doc_type', 'input_doc_name', 'pretrans_src', 'posttrans_src');
 define_var($to_define);
 
 /* Define $source_language, $target_language for security issues */
@@ -164,20 +188,11 @@ $target_language = '';
 $source_language = '';
 
 /* Do the right action */
-$avalaible_action = array('check_input', 'submit_input', 'replace_input', 'replace_output', 'check_output', 'submit_output_tmx', 'submit_output', 'wiki_submit', 'wiki_end_submit', 'wiki_end_preview');
+$avalaible_action = array('check_input', 'submit_input', 'replace_input', 'replace_output', 'check_output', 'submit_output_tmx', 'submit_output', 'load_input', 'wiki_end_submit', 'wiki_end_preview');
 $action = get_action($avalaible_action);
 do_action($action);
 
 /* Specific cases */
-if(isset($_FILES["in_doc"]) AND !($_FILES["in_doc"]["error"] > 0))
-{
-	//if handling formatted document
-	$data['input_doc_name'] = $_FILES["in_doc"]["name"];
-	$data['input_doc_type'] = getFileFormat($data['input_doc_name'], $data['in_doc_type']);
-	$data['text_input'] = convertFileToHTML($_FILES["in_doc"]["tmp_name"], $data['input_doc_type']);
-	$data['input_doc'] = base64_encode(file_get_contents($_FILES["in_doc"]["tmp_name"]));
-}
-
 if(isset($data['language_pair']) and is_installed($data['language_pair']))
 {
 	$source_language = explode('-', $data['language_pair']);
@@ -246,7 +261,7 @@ foreach (LoadModules() as $module_name)
 		
 	<div class="more_options">
 <?
-if (module_is_load('SearchAndReplace')) {
+if (module_is_loaded('SearchAndReplace')) {
 	?>
 	<div>
 <? write_text('translate', 'manual_replacement'); ?> : 
@@ -272,7 +287,7 @@ if (module_is_load('SearchAndReplace')) {
 	</div>
 <?
 	}
-if (module_is_load('LinkExternalDictionnaries')) {		     
+if (module_is_loaded('LinkExternalDictionnaries')) {		     
 	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
 	echo '<select id="dictionary_src"><option value=""></option></select>';
 	echo '</div>';
@@ -331,7 +346,7 @@ default:
 		
 	<div class="more_options">
 <?
-if (module_is_load('SearchAndReplace')) {
+if (module_is_loaded('SearchAndReplace')) {
 ?>
 		<div>
 <? 
@@ -359,7 +374,7 @@ if (module_is_load('SearchAndReplace')) {
 </div>
 <?
 }
-if (module_is_load('LinkExternalDictionnaries')) {
+if (module_is_loaded('LinkExternalDictionnaries')) {
 	echo '<div style="display: none;">' . get_text('translate', 'dictionary') . ' :';
 	echo '<select id="dictionary_dst"><option value=""></option></select>';
 	echo '</div>';
@@ -375,7 +390,7 @@ if (module_is_load('LinkExternalDictionnaries')) {
   <input type="hidden" name="inputTMX_content" value="<? echo base64_encode($trans->get_inputTMX()); ?>" />
 </div>
 <?
-if (isset($_POST['wiki_submit'])) {
+if (isset($_POST['wiki_url']) && $_POST['wiki_url'] != '') {
 	/* In the case of a wiki page */
 	echo '<input type="hidden" name="wiki_form" value="' . base64_encode(serialize($wiki_form)) . '" />';
 	echo '<input type="submit" style="font-weight : bolder;" name="wiki_end_submit" value="Save wiki page" />';

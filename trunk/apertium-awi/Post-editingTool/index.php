@@ -27,36 +27,36 @@ display_streamer();
 	<div id='frame'>
 
 <p><? write_text('index', 'menu_title'); ?></p>
-
-<ul>
-	<li><? write_text('index', 'menu1'); ?></li>
-	<?php
-	if (module_is_load('FormattedDocumentHandling'))
-		echo "<li>" . get_text('index', 'menu2') . "</li>";
-?>
-</ul>
 <form action="translate.php" method="post" enctype="multipart/form-data">
+<input type="radio" id="input_type_none" name="input_type" value="none" checked="checked"/><? write_text('index', 'menu1'); ?><br />
 <?php
-if (module_is_load('FormattedDocumentHandling')) {
-	echo get_text('index', 'supported_format') . ' :<br /><i>';
+if (module_is_loaded('FormattedDocumentHandling'))
+	echo "<script type='text/javascript'>document.write(\"<input type='radio' name='input_type' id='input_type_file' value='file' />" . get_text('index', 'menu2') . "\");</script>";
+?>
+<?php
+if (module_is_loaded('FormattedDocumentHandling')) {
+	$to_write = '<br /><br />' . get_text('index', 'supported_format') . ' :<br /><i>';
 	foreach ($config['supported_format'] as $extension)
-		echo $extension . ' ';
-	echo "</i><br />";
-	
-	echo '<div>';
-	echo '<input type="file" name="in_doc" />';
-	echo '<input type="text" name="in_doc_type" />';
-	echo '<input type="submit" value="' . get_text('index', 'translate') . '" />';
-	echo '</div>';	
+			$to_write .=  $extension . ' ';
+	$to_write .=  "</i><br />";
+	$to_write .= '<div>';
+	$to_write .= '<input type="file" name="in_doc" onchange="javascript:document.getElementById(\\\'input_type_file\\\').checked=true;"/>';
+	$to_write .= '<input type="text" name="in_doc_type" />';
+	$to_write .= '</div>';	
+	/* To avoid non-Javascript user */
+	echo '<script type="text/javascript">document.write(\'' . $to_write . '\');</script>';
 }
 ?>
+<script type='text/javascript'>document.write("\n<p><input type='radio' name='input_type' id='input_type_wiki' value='wiki' />Want to translate a WikiPage ?</p>\nInsert article edit URL (http://example.com/wiki/index.php?title=foo&action=edit): <br /><input type='text' name='wiki_url' onclick=\"javascript:document.getElementById('input_type_wiki').checked=true;\" />");</script>
 <p><? write_text('index', 'TMX_menu_title'); ?></p>
+<input type="radio" id="use_TMX_none" name="use_TMX" value="" checked="checked" />None<br />
+<input type="radio" id="use_TMX_yes" name="use_TMX" value="yes"/>
 <table>
   <tr>
-    <td><? write_text('index', 'TMX_menu1'); ?></td><td><input type="text" name="inputTMX" value="" /></td>
+    <td><? write_text('index', 'TMX_menu1'); ?></td><td><input type="text" name="inputTMX" value="" onclick="javascript:document.getElementById('use_TMX_yes').checked=true;" /></td>
   </tr>
   <tr>
-  <td><? write_text('index', 'TMX_menu2'); ?></td><td><input type="file" name="inputTMXFile" /></td>
+  <td><? write_text('index', 'TMX_menu2'); ?></td><td><input type="file" name="inputTMXFile" onchange="javascript:document.getElementById('use_TMX_yes').checked=true;" /></td>
   </tr>
   <tr>
     <td><? write_text('index', 'TMX_menu3'); ?></td><td>
@@ -68,7 +68,7 @@ case 'TMServer':
 	$TM = new TMServer($config['externTM_url']);
 	$avalaible_pair_list = $TM->get_language_pairs_list(); 
         echo "(" . $TM->get_server_url() . ") ";
-        echo "<select name='TM_pair'>";
+        echo "<select name='TM_pair' onchange=\"javascript:document.getElementById('use_TMX_yes').checked=true;\">";
         echo "<option label='' value='' selected='selected'></option>";
         foreach ($avalaible_pair_list as $pair)
 		echo '<option label="' . $pair . '" value = "' . $pair . '">' . $pair . '</option>' . "\n";
@@ -82,12 +82,9 @@ default:
     </td>
   </tr>
   <tr>
-    <td></td><td><input type="submit" name="use_TMX" value="<? write_text('index', 'TMX_menu_submit'); ?>" /></td>
+    <td></td><td><input type="submit" name="load_input" value="<? write_text('index', 'translate'); ?>" /></td>
   </tr>
 </table>
-<p>Want to traduce a WikiPage ?</p>
-<ul><li>Insert article edit URL (http://example.com/wiki/index.php?title=foo&action=edit): <br /><input type="text" name="wiki_url" /><input type="submit" name="wiki_submit" value="Edit Wiki!" /></li></ul>
-<noscript>You need to activate Javascript or install a more up-to-date browser to benefit of this feature.</noscript>
 </form>
 <br />
 <table>
@@ -107,7 +104,7 @@ $img_no = 'images/no.png';
 	else
 		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';
 	echo '</td><td style="text-align: center;">';
-	if (module_is_load($module_name))
+	if (module_is_loaded($module_name))
 		echo '<img src="'.$img_yes.'" alt="YES" style="width: 40px;" />';
 	else
 		echo '<img src="'.$img_no.'" alt="NO" style="width: 40px;" />';

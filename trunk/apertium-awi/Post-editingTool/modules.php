@@ -29,7 +29,7 @@ $modules = array(
 		'javascript' => array(),
 		'php' => array('format.php', 'system.php', 'files.php'),
 		'button_in' => '',
-		'button_out' => '<input type="submit" name="submit_output" value="'. get_text('module_FormattedDocumentHandling', 'button_out') . '" />'
+		'button_out' => '<input type="submit" id="submit_output" name="submit_output" value="'. get_text('module_FormattedDocumentHandling', 'button_out') . '" style="display: none;" /><script type="text/javascript">document.getElementById(\'submit_output\').style.display=\'\';</script>'
 		),
 	'SpellGrammarChecking' => array(
 		'name' => get_text('module_SpellGrammarChecking', 'name'),
@@ -37,8 +37,8 @@ $modules = array(
 		'default' => TRUE,
 		'javascript' => array('gramproof.js', 'main.js'),
 		'php' => array('gramproof.php', 'strings.php', 'system.php'),
-		'button_in' => '<input type="submit" name="check_input" value="' . get_text('module_SpellGrammarChecking', 'button_in') . '" />',
-		'button_out' => '<input type="submit" name="check_output" value="' . get_text('module_SpellGrammarChecking', 'button_out') . '" />',
+		'button_in' => '<input type="submit" id="check_input" name="check_input" value="' . get_text('module_SpellGrammarChecking', 'button_in') . '" style="display: none;" /><script type="text/javascript">document.getElementById(\'check_input\').style.display=\'\';</script>',
+		'button_out' => '<input type="submit" id="check_output" name="check_output" value="' . get_text('module_SpellGrammarChecking', 'button_out') . '" style="display: none;" /><script type="text/javascript">document.getElementById(\'check_output\').style.display=\'\';</script>',
 		),
 	'LinkExternalDictionnaries' => array(
 		'name' => get_text('module_LinkExternalDictionnaries', 'name'),
@@ -65,7 +65,7 @@ $modules = array(
 		'javascript' => array('logs.js'),
 		'php' => array('language.php', 'strings.php'),
 		'button_in' => '',
-		'button_out' => '<input id="get_logs" type="submit" name="get_logs" value="'.get_text('module_Logs', 'button_out').'" />'
+		'button_out' => '<input id="get_logs" type="submit" name="get_logs" value="'.get_text('module_Logs', 'button_out').'" style="display:none;" />'
 		)
 	);
 
@@ -135,7 +135,7 @@ function DefaultModules()
 	return $return;
 }
 
-function module_is_load($name)
+function module_is_loaded($name)
 {
 	/* Return TRUE if the module $name is load, FALSE otherwise */
 	global $modules_load;
