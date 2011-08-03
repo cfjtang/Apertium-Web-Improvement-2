@@ -157,20 +157,22 @@ function get_text($page, $info)
 			return retrieve_info('index', 2);
 		case 'menu2':
 			return retrieve_info('index', 3);
-		case 'supported_format':
+		case 'menu3':
 			return retrieve_info('index', 4);
-		case 'translate' :
+		case 'supported_format':
 			return retrieve_info('index', 5);
-		case 'columns_name' :
+		case 'translate' :
 			return retrieve_info('index', 6);
-		case 'TMX_menu_title' :
+		case 'columns_name' :
 			return retrieve_info('index', 7);
-		case 'TMX_menu1' :
+		case 'TMX_menu_title' :
 			return retrieve_info('index', 8);
-		case 'TMX_menu2' :
+		case 'TMX_menu1' :
 			return retrieve_info('index', 9);
-		case 'TMX_menu3' :
+		case 'TMX_menu2' :
 			return retrieve_info('index', 10);
+		case 'TMX_menu3' :
+			return retrieve_info('index', 11);
 		default:
 			return '';
 		break;
