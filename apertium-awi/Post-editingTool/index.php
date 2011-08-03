@@ -66,9 +66,9 @@ if (module_is_loaded('FormattedDocumentHandling'))
 	<script type="text/javascript">document.write("<option label='<? write_text('index', 'menu2'); ?>' value='file' ><? write_text('index', 'menu2'); ?></option>");</script>
 <script type='text/javascript'>document.write("<option label='<? write_text('index', 'menu3'); ?>' value='wiki' ><? write_text('index', 'menu3'); ?></option>");</script>
 </select></p>
-<div id="textsource_content"></div>
 <span style='display: none;' id="textsource_content_file"><? echo $textsource_content_file; ?></span>
 <span style='display: none;' id="textsource_content_wiki"><? echo $textsource_content_wiki; ?></span>
+<div id="textsource_content"></div>
 </fieldset>
 <fieldset><legend>TMX</legend>
 <p><? write_text('index', 'TMX_menu_title'); ?>
@@ -84,10 +84,10 @@ if ($config['externTM_type'] == 'TMServer') {
 	}
 ?>
 </select></p>
-<div id="TMX_content"></div>
 <div id="TMX_content_URL"><? echo $TMX_content_URL; ?></div>
 <div id="TMX_content_file"><? echo $TMX_content_file; ?></div>
 <div id="TMX_content_externTM"><? echo $TMX_content_externTM; ?></div>
+<div id="TMX_content"></div>
 <script type="text/javascript">
 	document.getElementById('TMX_content_URL').style.display = 'none';
 	document.getElementById('TMX_content_file').style.display = 'none';
