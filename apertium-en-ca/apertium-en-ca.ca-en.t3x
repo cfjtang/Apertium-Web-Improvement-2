@@ -907,6 +907,115 @@
 	</choose>
       </action>
 </rule>
+<rule comment="CHUNK: AUX HAVER-HI">
+      <pattern>
+        <pattern-item n="aux_haverhi"/>
+      </pattern>
+      <action>
+	<choose><!--Si en el t2x s'ha posat nombre pl, cal canviar manera d'enviar verb perquè no doni error (sense persona ni nombre, coses del diccionari) -->
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="0" part="temps"/>
+		  <lit-tag v="pri"/>
+		</equal>
+		<equal>
+		  <clip pos="0" part="nbr"/>
+		  <lit-tag v="pl"/>
+		</equal>
+	      </and>
+	    </test>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="lem"/>
+		<clip pos="2" part="a_verb"/>
+		<lit-tag v="pres"/>
+	      </lu>
+	    </out>
+	  </when>
+	  <when>
+	    <test>
+	      <and>
+		<equal>
+		  <clip pos="0" part="temps"/>
+		  <lit-tag v="past"/>
+		</equal>
+		<equal>
+		  <clip pos="0" part="nbr"/>
+		  <lit-tag v="pl"/>
+		</equal>
+	      </and>
+	    </test>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="lem"/>
+		<clip pos="2" part="a_verb"/>
+		<clip pos="2" part="temps"/>
+	      </lu>
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <lu>
+		<clip pos="1" part="whole"/>
+	      </lu>
+	      <b pos="1"/>
+	      <lu>
+		<clip pos="2" part="whole"/>
+	      </lu>
+	    </out>
+	  </otherwise>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<clip pos="0" part="a_SV"/>
+		<lit-tag v="SVneg"/>
+	      </equal>
+	    </test>
+	    <out>
+	      <b/>
+	      <lu>
+		<lit v="not"/>
+		<lit-tag v="adv"/>
+	      </lu>
+	    </out>
+	  </when>
+	</choose>
+	<choose>
+	  <when><!--segons si porta aux o no, pot haver-hi una tercera lu, envia-la si hi és -->
+	    <test>
+	      <or>
+		<equal>
+		  <clip pos="0" part="temps"/>
+		  <lit-tag v="cni"/>
+		</equal>
+		<equal>
+		  <clip pos="0" part="temps"/>
+		  <lit-tag v="fti"/>
+		</equal>
+	      </or>
+	    </test>
+	    <out>
+	      <b pos="2"/>
+	       <lu>
+		<clip pos="3" part="whole"/>
+	      </lu>
+	    </out>
+	  </when>
+	</choose>
+      </action>
+</rule>
 
     <rule comment="CHUNK: SN, rm 'the'">
       <pattern>
