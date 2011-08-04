@@ -87,7 +87,7 @@ if ($config['externTM_type'] == 'TMServer') {
 <div id="TMX_content_URL"><? echo $TMX_content_URL; ?></div>
 <div id="TMX_content_file"><? echo $TMX_content_file; ?></div>
 <div id="TMX_content_externTM"><? echo $TMX_content_externTM; ?></div>
-<div id="TMX_content"></div>
+<div id="TMX_content" style='clear: both;'></div>
 <script type="text/javascript">
 	document.getElementById('TMX_content_URL').style.display = 'none';
 	document.getElementById('TMX_content_file').style.display = 'none';
