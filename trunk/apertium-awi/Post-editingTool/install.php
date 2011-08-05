@@ -23,7 +23,7 @@ if (isset($_POST['password'])) {
 if (!isset($_COOKIE['password']) or $_COOKIE['password'] != $password) {
 	echo "<h3>Bad password</h3>";
 	echo "<p>Please enter the password, define in install.php, line 11: </p>";
-	echo "<form action='' method='post'><input type='text' name='password' /><input type='submit' name='auth' value='Login' /></form>";
+	echo "<form action='' method='post'><input type='password' name='password' /><input type='submit' name='auth' value='Login' /></form>";
 	exit();
 }
 
@@ -31,6 +31,18 @@ if (!isset($_COOKIE['password']) or $_COOKIE['password'] != $password) {
 include_once('includes/config.php');
 include_once('includes/template.php');
 include_once('modules.php');
+
+/* Download external packages */
+$package_url = '';
+$package_name = '';
+
+if (isset($_POST['download'])) {
+	if ($_POST['download'] == 'external') {
+		system('wget ' . $package_url);
+		system($config['unzip'] . ' ' . $package_name);
+		exit();
+	}
+}
 
 /* Change config.php */
 $avalaible_config = array(
@@ -471,6 +483,10 @@ page_header('Configure', array('CSS/style.css'));
     </form>
     <br />
     <p>Download extern packages:</p>
+<?
+if (test_command('wget') && test_command($config['unzip_command']))
+	echo '<p><a href="install.php?download=external">Download automatically packages</a></p>' ;
+?>
     <table style='text-align: center;'>
        <tr><td><a href='http://aceattorney.free.fr/ApertiumAWI-dependencies-0.9.0.tar.gz'><img src='images/extern.png' title='download'/></a></td><td>Maligna, LanguageTool</td><td>Extract in current directory</td></tr>
       <tr><td><a href='http://yui.zenfs.com/releases/yuicompressor/yuicompressor-2.4.6.zip'><img src='images/extern.png' title='download'/></a></td><td>Yuicompressor</td><td>Extract in your external directory</td></tr>

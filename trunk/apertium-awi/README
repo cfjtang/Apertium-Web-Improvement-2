@@ -83,6 +83,64 @@ First, select the file to upload. If you want to force interpreting it as a spec
 While you edit the text, you will notice there are some "empty" characters that you can't delete : those contain the formatting information of the original document, that you cannot edit during this translation process.
 
 When you're satisfied by your translation, you can click the "Get Translation result" button, that will enable you to download the translated file.
+Currently, supported formats are "rtf wxml docx pptx xlsx odt ods odp html mediawiki pdf png jpg jpeg tiff tif txt" (perhaps less, depending on your installation).
+
+
+
+Improving your translation with TMX file
+--------------------------------------
+
+On the home page, there is an interface to add a TMX file to your translation process. First, select (in the field named TMX) URL, File or TMServer.
+Then, if you have selected URL, enter an URL targeting a TMX file (in the right language pair, of course). If you have selected File, you can upload a local TMX file.
+Finally, if you have selected TMServer, you can directly choose the interesting language pair, and the corresponding server's TMX file will be loaded.
+
+Once your translation finished, if you made some change on the result, you can improve the TMServer database with your changes by clicking on 'Add TMX to the TMServer'.
+
+
+
+Changing Interface Language
+---------------------------
+
+On the top of the page, there is an orange streamer. In this streamer, you can select a language (from language avalaible on the server), and the interface will be changed.
+Normally, the language is automatically set, regarding the default language of your browser.
+
+
+
+Using Apertium.ORG instead of local installation
+------------------------------------------------
+
+You can use the website Apertium.ORG, if you want. To enable this feature, set the value 'use_apertiumorg' on TRUE in includes/config.php. And FALSE if you want to desactivate it.
+This feature is transparent for the user, and the rest of the interface works as usual.
+
+
+
+Translating page from Wikipedia
+-------------------------------
+
+On the index.php interface, select Wikipage in Source text part. Then, enter the URL of the mediawiki page's edit. When you click on Translate button, it will retrieve the source from the mediawiki server and display it in the left part of the translation part (formatted as a mediawiki document).
+
+Two buttons have apparead in the bottom of the page. When you have finish your job, click on 'Save page' to save the page or 'Preview changes' to preview the page on the mediawiki website. The Save and the Preview are done with your own session on the website. It means that if you're logged on it, changes are save with your login.
+
+
+
+Modifying your configuration
+----------------------------
+
+Your main configuration is set in includes/config.php file. If you want to change something, there is a script, install.php, to help you during this process. For more informations, refer to INSTALL file.
+
+
+
+Enable/Disabled modules
+-----------------------
+
+The interface for consult modules descriptions, and for enable/disable them is behind the configuration part of the file install.php. For more informations, refer to INSTALL file.
+
+
+
+Publishing your website
+-----------------------
+
+If you're ready to pusblih your website on the Internet, publish.php script can help you. It will regenerate Javascript files according to loaded modules, compress Javascript files to speed-up page loading, compress CSS files to speed-up page loading, and delete it self (for security reasons).
 
 
 
@@ -90,14 +148,21 @@ When you're satisfied by your translation, you can click the "Get Translation re
 II. KNOWN ISSUES
 ----------------
 
-Due to its "experimental" status, this project suffers from a few issues. As of 02/09/2010, know issues are :
+Due to its "experimental" status, this project suffers from a few issues. As of 04/08/2011, know issues are :
 
 
-1*	In its current state, this interface has only been tested on recent versions of Firefox and Chrome.
-	However, many details have already been thought in a cross-browser way, so wider support should soon be possible.
+1*	Characters inputted through special composition methods (like the Linux compose key) will cause the edition logs to fail in Firefox, due to it not supporting the universal textInput event. It should work fine with Chrome or Safari.
 
-2*	Characters inputted through special composition methods (like the Linux compose key) will cause the edition logs to fail in Firefox, due to it not supporting the universal textInput event. It should work fine with Chrome or Safari.
+2*	It is possible to copy/paste text in the translation area only for browsers that have the corresponding events.
 
-3*	It is not yet possible to copy/paste text in the translation area. Support for this - in browsers that have the corresponding events - should be possible in the future.
+3*	So far, there is a problem of rendering for PDF format, at the rebuilding step. Background and picture can be loss.
 
-4*	So far, only OpenOffice documents (odt, odp, etc.) can be reformatted at the end of the translation process. The functions for rebuilding other formats have not been written yet.
+4*	When desactiving Logs module, there is a Javascript error (invisible for normal user) when replacing mistakes.
+
+
+
+-----------------
+More informations
+-----------------
+
+If you want to have a look at the process, or get more details about a feature, there is the project apertium wiki page at: http://wiki.apertium.org/wiki/User:Commial/AWI
