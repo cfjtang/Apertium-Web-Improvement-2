@@ -1239,6 +1239,9 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
       <cat-item lemma="kilomètre" tags="n.*"/>
       <cat-item lemma="mille" tags="n.*"/>
       <cat-item lemma="lieue" tags="n.*"/>
+      <cat-item lemma="lieue" tags="n.*"/>
+      <cat-item lemma="année-lumière" tags="n.*"/>
+      <cat-item lemma="mégaparsec" tags="n.*"/>
       <cat-item lemma="hectare" tags="n.*"/>
       <cat-item lemma="litre" tags="n.*"/>
       <cat-item lemma="décilitre" tags="n.*"/>
@@ -1306,6 +1309,22 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
       <cat-item lemma="To" tags="n.*"/>
       <cat-item lemma="cal" tags="n.*"/>
       <cat-item lemma="kcal" tags="n.*"/>
+    </def-cat>
+
+    <def-cat n="nom_dist"> <!-- nomoj postulantaj "el" en difinitaj kuntekstoj -->
+      <cat-item lemma="mètre" tags="n.*"/>
+      <cat-item lemma="décimètre" tags="n.*"/>
+      <cat-item lemma="centimètre" tags="n.*"/>
+      <cat-item lemma="millimètre" tags="n.*"/>
+      <cat-item lemma="micromètre" tags="n.*"/>
+      <cat-item lemma="decamètre" tags="n.*"/>
+      <cat-item lemma="hectomètre" tags="n.*"/>
+      <cat-item lemma="kilomètre" tags="n.*"/>
+      <cat-item lemma="mille" tags="n.*"/>
+      <cat-item lemma="lieue" tags="n.*"/>
+      <cat-item lemma="lieue" tags="n.*"/>
+      <cat-item lemma="année-lumière" tags="n.*"/>
+      <cat-item lemma="mégaparsec" tags="n.*"/>
     </def-cat>
 
     <def-cat n="debut_fin">
@@ -5908,6 +5927,84 @@ antaŭas la nomon -->
             </tags>
             <lu>
               <lit v="da"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: À NUM NOMda DE (à 15 quilòmetres de -> je 15 kilometroj de)">
+      <pattern>
+        <pattern-item n="a_pr"/>
+        <pattern-item n="num"/>
+        <pattern-item n="nom_dist"/>
+        <pattern-item n="de"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="nombro2">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="genro2">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="genro_tl2">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="3"/>
+        </call-macro>
+        <out>
+          <chunk name="je">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+            <lu>
+              <lit v="je"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk name="num_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="genere"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_num"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <var n="genere2"/>
+              <lit-tag v="3"/>
+              <lit-tag v="4"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+           <b pos="3"/>
+          <chunk name="el">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+            <lu>
+              <lit v="el"/>
               <lit-tag v="pr"/>
             </lu>
           </chunk>
