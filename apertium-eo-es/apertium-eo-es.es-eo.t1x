@@ -429,8 +429,8 @@
 
      <def-cat n="cnjcoopercorregir"> <!-- EO afegit per a corregir errors del tagger, veure regles-->
       <cat-item lemma="que" tags="cnjcoo"/> <!-- ara el tagger prioritza aquest-->
-      <cat-item tags="cnjsub"/> <!-- per si de cas-->
       <cat-item lemma="que" tags="prn.rel.*"/> <!-- seria el correcte, en fi ... -->
+<!--      <cat-item tags="cnjsub"/> --> <!-- per si de cas-->
     </def-cat>
 
      <def-cat n="cnj">
@@ -794,6 +794,8 @@
       <attr-item tags="prn"/>
       <attr-item tags="prn.pro"/>
       <attr-item tags="rel"/><!-- OJO -->
+      <attr-item tags="prn.rel"/><!-- OJO -->
+      <attr-item tags="rel"/><!-- OJO -->
     </def-attr>
 
     <def-attr n="tipus_prn">
@@ -803,10 +805,10 @@
       <attr-item tags="itg"/>
       <attr-item tags="pos"/>
       <attr-item tags="ref"/>
-      <attr-item tags="rel"/><!--EO-->
       <attr-item tags="nn"/><!--EO-->
       <attr-item tags="adv"/><!--EO-->
     </def-attr>
+
     <def-attr n="tipoenc_pro">
       <attr-item tags="ref.p3.mf.sp"/>
       <attr-item tags="p1.mf.pl"/>
@@ -21274,7 +21276,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	  <chunk name="prn" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SNloque"/></tag>
-	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 	      <tag><var n="nombre"/></tag>
 	      <tag><var n="case"/></tag>
               <tag><var n="changecase"/></tag>
@@ -21283,8 +21284,8 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_prn"/>
 	      <clip pos="1" side="tl" part="tipus_prn"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
-	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="2"/>
+	      <lit-tag v="3"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -21295,8 +21296,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<out>
 	  <chunk name="prn" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SNrelatiu"/></tag>
-	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><lit-tag v="SNrelatiu1"/></tag>
 	      <tag><var n="nombre"/></tag>
 	      <tag><var n="case"/></tag>
               <tag><var n="changecase"/></tag>
@@ -21305,8 +21305,8 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_prn"/>
 	      <clip pos="1" side="tl" part="tipus_prn"/>
-	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
-	      <lit-tag v="4"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="2"/>
+	      <lit-tag v="3"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -21348,7 +21348,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	  <b pos="1"/>
 	  <chunk name="prn">
 	    <tags>
-	      <tag><lit-tag v="SNrelatiu"/></tag>
+	      <tag><lit-tag v="SNrelatiu2"/></tag>
               <tag><lit-tag v="rel"/></tag>
 	      <tag><var n="nombre"/></tag>
 	      <tag><var n="case"/></tag>
@@ -21357,7 +21357,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/>
 	      <clip pos="2" side="tl" part="a_prn"/>
-              <lit-tag v="rel"/>
+	      <clip pos="2" side="tl" part="tipus_prn"/>
 	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
   	      <lit-tag v="4"/>
 	    </lu>
@@ -21585,13 +21585,13 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 <b pos="1"/>
                  <chunk name="relatiu">
                         <tags>
-                        <tag><lit-tag v="SNrelatiu"/></tag>
+                        <tag><lit-tag v="SNrelatiu3"/></tag>
                         <tag><var n="case"/></tag>
                         </tags>
                         <lu>
                         <clip pos="2" side="tl" part="lem"/>
-                        <lit-tag v="prn"/>
-                        <lit-tag v="rel"/>
+	      <clip pos="2" side="tl" part="a_prn"/>
+	      <clip pos="2" side="tl" part="tipus_prn"/>
                         <var n="nombre"/>
                         <lit-tag v="2"/>
                         </lu>
