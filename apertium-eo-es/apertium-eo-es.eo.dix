@@ -17,7 +17,7 @@ apertium-dixtools fix apertium-eo-es.eo.dix.new2 apertium-eo-es.eo.dix.new3
 -->
 
 <dictionary>
-  <alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖŒÙÚÛÜàáâäçèéêëìíîïñòóôöœøùúûüABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭąĄčČćĆđĐęĘłŁŀĿńŃőŐšŠśŚžŽźŹżŻÆæØøÅåăĂşșȘțȚıİğĞ</alphabet>
+  <alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖŒÙÚÛÜàáâäçèéêëìíîïñòóôöœøùúûüABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭąĄčČćĆđĐęĘłŁŀĿńŃőŐřšŠśŚžŽźŹżŻÆæØøÅåăĂşșȘțȚıİğĞ</alphabet>
   <sdefs>
     <sdef n="acc" /> 
     <sdef n="nom" /> 
@@ -102,6 +102,9 @@ apertium-dixtools fix apertium-eo-es.eo.dix.new2 apertium-eo-es.eo.dix.new3
     <sdef n="lpar" /> 
     <sdef n="rpar" /> 
     <sdef n="lquest" /> 
+    <sdef n="lcit" /> 
+    <sdef n="rcit" /> 
+    <sdef n="cit" /> 
     <sdef n="web" /> 
     <sdef n="subs" /> 
     <sdef n="pres" /> 
@@ -254,11 +257,15 @@ apertium-dixtools fix apertium-eo-es.eo.dix.new2 apertium-eo-es.eo.dix.new3
 
 <pardef n="guionet">
   <e>       <p><l>-</l>         <r>-<s n="guio"/></r></p></e>
+  <e>       <p><l>–</l>         <r>–<s n="guio"/></r></p></e>
+  <e>       <p><l>—</l>         <r>—<s n="guio"/></r></p></e>
+  <e>       <p><l>―</l>         <r>―<s n="guio"/></r></p></e>
 </pardef>
 
 
 <pardef n="coma">
   <e>       <p><l>,</l>         <r>,<s n="cm"/></r></p></e>
+  <e>       <p><l>&quot;</l>    <r>&quot;<s n="cit"/></r></p></e>
 </pardef>
 
 
@@ -299,24 +306,24 @@ apertium-dixtools fix apertium-eo-es.eo.dix.new2 apertium-eo-es.eo.dix.new3
 
 
 <pardef n="separa">
-  <e>       <re>[.\?;:!]</re><p><l></l><r><s n="sent"/></r></p></e>
+  <e>       <re>[.\?;:!•]</re><p><l></l><r><s n="sent"/></r></p></e>
+  <e>       <p><l>...</l>       <r>...<s n="sent"/></r></p></e> <!-- por eviti aŭtomatan majuskligon post tripunkto -->
 </pardef>
 
-
 <pardef n="separ">
-<!--
-<e>                           <re>[¿¡]</re><p><l></l>       <r><s n="lquest"/></r></p></e>
--->
   <e>       <p><l></l>          <r><s n="lquest"/></r></p></e>
 </pardef>
 
 <pardef n="paresq">
   <e>       <re>[\(\[]</re><p><l></l><r><s n="lpar"/></r></p></e>
+  <e>       <p><l>«</l>         <r>«<s n="lcit"/></r></p></e>
+  <e>       <p><l>“</l>         <r>“<s n="lcit"/></r></p></e>
 </pardef>
-
 
 <pardef n="pardret">
   <e>       <re>[\)\]]</re><p><l></l><r><s n="rpar"/></r></p></e>
+  <e>       <p><l>»</l>         <r>»<s n="rcit"/></r></p></e>
+  <e>       <p><l>”</l>         <r>”<s n="rcit"/></r></p></e>
 </pardef>
 
 
@@ -1437,8 +1444,10 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Ainoa">           <i>Ainoa</i><par n="Maria__np"/></e>
 <e lm="Ainoha">          <i>Ainoha</i><par n="Maria__np"/></e>
 <e lm="Ainsley">         <i>Ainsley</i><par n="Smith__np"/></e>
-<e lm="ainua">           <i>ainu</i><par n="a__adj"/></e>
-<e lm="ainuo">           <i>ainu</i><par n="ino__n"/></e>
+<e lm="aina">           <i>ain</i><par n="a__adj"/></e>
+<e lm="aino">           <i>ain</i><par n="ino__n"/></e>
+<e lm="ajnua">           <i>ajnu</i><par n="a__adj"/></e>
+<e lm="ajnuo">           <i>ajnu</i><par n="ino__n"/></e>
 <e lm="Ainzón">          <i>Ainzón</i><par n="Barcelona__np"/></e>
 <e lm="Air France">      <i>Air<b/>France</i><par n="Wikipedia__np"/></e>
 <e lm="Air France-KLM">  <i>Air<b/>France-KLM</i><par n="Wikipedia__np"/></e>
@@ -1514,6 +1523,8 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Akhter">          <i>Akhter</i><par n="Smith__np"/></e>
 <e lm="akiri">           <i>akir</i><par n="i__vblex"/></e>
 <e lm="akiraĵo">         <i>akiraĵ</i><par n="o__n"/></e>
+<e lm="akirado">         <i>akirad</i><par n="o__n"/></e>
+<e lm="akiro">         <i>akir</i><par n="o__n"/></e>
 <e lm="aklami">          <i>aklam</i><par n="i__vblex"/></e>
 <e lm="akmeo">           <i>akme</i><par n="o__n"/></e>
 <e lm="akno">            <i>akn</i><par n="o__n"/></e>
@@ -4244,6 +4255,8 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="aŭskultumi">      <i>aŭskultum</i><par n="i__vblex"/></e>
 <e lm="aŭspicio">        <i>aŭspici</i><par n="o__n"/></e>
 <e lm="aŭstera">         <i>aŭster</i><par n="a__adj"/></e>
+<e lm="aŭstero">         <i>aŭster</i><par n="o__n"/></e>
+<e lm="aŭstereco">         <i>aŭsterec</i><par n="o__n"/></e>
 <e lm="aŭstro">          <i>aŭstr</i><par n="ino__n"/></e>
 <e lm="aŭstra">          <i>aŭstr</i><par n="a__adj"/></e>
 <e lm="aŭstrala">        <i>aŭstral</i><par n="a__adj"/></e>
@@ -8587,6 +8600,16 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Clifford">        <i>Clifford</i><par n="Smith__np"/></e>
 <e lm="Climent">         <i>Climent</i><par n="Smith__np"/></e>
 <e lm="Clinton">         <i>Clinton</i><par n="Smith__np"/></e>
+<e lm="al Gadafi">       <i>al<b/>Gadafi</i><par n="Smith__np"/></e>
+<e lm="al Assad">        <i>al<b/>Assad</i><par n="Smith__np"/></e>
+<e lm="Gadafi">       <i>Gadafi</i><par n="Smith__np"/></e>
+<e lm="Assad">        <i>Assad</i><par n="Smith__np"/></e>
+<e lm="al Gadafi">      <p><l>al-Gadafi</l>   <r>al<b/>Gadafi</r></p><par n="Smith__np"/></e>
+<e lm="al Gadafi">      <p><l>el-Gadafi</l>   <r>al<b/>Gadafi</r></p><par n="Smith__np"/></e>
+<e lm="al Gadafi">      <p><l>el<b/>Gadafi</l>   <r>al<b/>Gadafi</r></p><par n="Smith__np"/></e>
+<e lm="al Assad">      <p><l>al-Assad</l>   <r>al<b/>Assad</r></p><par n="Smith__np"/></e>
+<e lm="al Assad">      <p><l>el-Assad</l>   <r>al<b/>Assad</r></p><par n="Smith__np"/></e>
+<e lm="al Assad">      <p><l>el<b/>Assad</l>   <r>al<b/>Assad</r></p><par n="Smith__np"/></e>
 <e lm="Clivillé">        <i>Clivillé</i><par n="Smith__np"/></e>
 <e lm="Cloe">            <i>Cloe</i><par n="Maria__np"/></e>
 <e lm="Clop">            <i>Clop</i><par n="Smith__np"/></e>
@@ -9864,6 +9887,10 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="demografie">      <i>demografi</i><par n="e__adv"/></e>
 <e lm="demografio">      <i>demografi</i><par n="o__n"/></e>
 <e lm="demografia">      <i>demografi</i><par n="a__adj"/></e>
+<e lm="socialdemokrato">       <i>socialdemokrat</i><par n="ino__n"/></e>
+<e lm="socialdemokrata">       <i>socialdemokrat</i><par n="a__adj"/></e>
+<e lm="socialdemokratio">      <i>socialdemokrati</i><par n="o__n"/></e>
+<e lm="socialdemokratia">      <i>socialdemokrati</i><par n="a__adj"/></e>
 <e lm="demokrato">       <i>demokrat</i><par n="ino__n"/></e>
 <e lm="demokrata">       <i>demokrat</i><par n="a__adj"/></e>
 <e lm="demokratio">      <i>demokrati</i><par n="o__n"/></e>
@@ -11697,7 +11724,9 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Elda">            <i>Elda</i><par n="Barcelona__np"/></e>
 <e lm="eldevigo">        <i>eldevig</i><par n="o__n"/></e>
 <e lm="eldevigi">        <i>eldevig</i><par n="i__vblex"/></e>
+<e lm="reeldono">          <i>reeldon</i><par n="o__n"/></e>
 <e lm="eldono">          <i>eldon</i><par n="o__n"/></e>
+<e lm="reeldoni">          <i>reeldon</i><par n="i__vblex"/></e>
 <e lm="eldoni">          <i>eldon</i><par n="i__vblex"/></e>
 <e lm="eldonejo">        <i>eldonej</i><par n="o__n"/></e>
 <e lm="eldonisto">       <i>eldonist</i><par n="ino__n"/></e>
@@ -12940,6 +12969,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Eŭlero">          <i>Eŭler</i><par n="Mark/o__np"/></e>
 <e lm="eŭnuko">          <i>eŭnuk</i><par n="o__n"/></e>
 <e lm="eŭro">            <i>eŭr</i><par n="o__n"/></e>
+<e lm="eŭrozono">        <i>eŭrozon</i><par n="o__n"/></e>
 <e lm="Eŭropo">          <i>Eŭrop</i><par n="Barcelon/o__np"/></e>
 <e lm="eŭropa">          <i>eŭrop</i><par n="a__adj"/></e>
 <e lm="Eŭropa Centra Banko"><p><l>Eŭropa<b/>Centra<b/>Banko</l><r>Eŭropa<b/>Centra<b/>Banko<s n="np"/><s n="al"/><s n="sp"/><s n="nom"/></r></p></e>
@@ -14220,7 +14250,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="frandinda">       <i>frandind</i><par n="a__adj"/></e>
 <e lm="Frandovínez">     <i>Frandovínez</i><par n="Barcelona__np"/></e>
 <e lm="frangolo">        <i>frangol</i><par n="o__n"/></e>
-<e lm="franko">          <i>frank</i><par n="ino__n"/></e>
+<e lm="franko">          <i>frank</i><par n="o__n"/></e>
 <e lm="franka">          <i>frank</i><par n="a__adj"/></e>
 <e lm="Frank">           <i>Frank</i><par n="Smith__np"/></e>
 <e lm="Frank">           <i>Frank</i><par n="Mark__np"/></e>
@@ -15077,6 +15107,10 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="gazelo">          <i>gazel</i><par n="o__n"/></e>
 <e lm="gazeto">          <i>gazet</i><par n="o__n"/></e>
 <e lm="gazetaro">        <i>gazetar</i><par n="o__n"/></e>
+<e lm="gazetara selektado"><p><l>gazetara<b/>selektado</l><r>gazetara<b/>selektado<s n="n"/><s n="sg"/><s n="nom"/></r></p></e>
+<e lm="gazetara selektado"><p><l>gazetaran<b/>selektadon</l><r>gazetara<b/>selektado<s n="n"/><s n="sg"/><s n="acc"/></r></p></e>
+<e lm="gazetara selektado"><p><l>gazetaraj<b/>selektadoj</l><r>gazetara<b/>selektado<s n="n"/><s n="pl"/><s n="nom"/></r></p></e>
+<e lm="gazetara selektado"><p><l>gazetarajn<b/>selektadojn</l><r>gazetara<b/>selektado<s n="n"/><s n="pl"/><s n="acc"/></r></p></e>
 <e lm="gazono">          <i>gazon</i><par n="o__n"/></e>
 <e lm="gazpaĉo">         <i>gazpaĉ</i><par n="o__n"/></e>
 <e lm="Gazprom">         <i>Gazprom</i><par n="Wikipedia__np"/></e>
@@ -15248,6 +15282,14 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="germana">         <i>german</i><par n="a__adj"/></e>
 <e lm="germane">         <i>german</i><par n="e__adv"/></e>
 <e lm="Germanio">        <i>Germani</i><par n="Barcelon/o__np"/></e>
+<e lm="Okcidenta Eŭropo"><p><l>Okcidenta<b/>Eŭropo</l><r>Okcidenta<b/>Eŭropo<s n="np"/><s n="loc"/><s n="sg"/><s n="nom"/></r></p></e>
+<e lm="Okcidenta Eŭropo"><p><l>Okcidentan<b/>Eŭropon</l><r>Okcidenta<b/>Eŭropo<s n="np"/><s n="loc"/><s n="sg"/><s n="acc"/></r></p></e>
+<e lm="Orienta Eŭropo"><p><l>Orienta<b/>Eŭropo</l><r>Orienta<b/>Eŭropo<s n="np"/><s n="loc"/><s n="sg"/><s n="nom"/></r></p></e>
+<e lm="Orienta Eŭropo"><p><l>Orientan<b/>Eŭropon</l><r>Orienta<b/>Eŭropo<s n="np"/><s n="loc"/><s n="sg"/><s n="acc"/></r></p></e>
+<e lm="Okcidenta Germanio"><p><l>Okcidenta<b/>Germanio</l><r>Okcidenta<b/>Germanio<s n="np"/><s n="loc"/><s n="sg"/><s n="nom"/></r></p></e>
+<e lm="Okcidenta Germanio"><p><l>Okcidentan<b/>Germanion</l><r>Okcidenta<b/>Germanio<s n="np"/><s n="loc"/><s n="sg"/><s n="acc"/></r></p></e>
+<e lm="Orienta Germanio"><p><l>Orienta<b/>Germanio</l><r>Orienta<b/>Germanio<s n="np"/><s n="loc"/><s n="sg"/><s n="nom"/></r></p></e>
+<e lm="Orienta Germanio"><p><l>Orientan<b/>Germanion</l><r>Orienta<b/>Germanio<s n="np"/><s n="loc"/><s n="sg"/><s n="acc"/></r></p></e>
 <e lm="germaniumo">      <i>germanium</i><par n="o__n"/></e>
 <e lm="Germany">         <i>Germany</i><par n="Barcelona__np"/></e>
 <e lm="Germán">          <i>Germán</i><par n="Smith__np"/></e>
@@ -19311,6 +19353,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="kiel">            <i>kiel</i><par n="after__cnjadv"/></e>
 <e lm="kiel">            <i>kiel</i><par n="kaj__cnjcoo"/></e>
 <e lm="kiel">            <i>kiel</i><par n="al__pr"/></e>
+<e lm="same kiel">            <i>same<b/>kiel</i><par n="al__pr"/></e>
 <e lm="kiel antaŭvidite"><i>kiel<b/>antaŭvidit</i><par n="e__adv"/></e>
 <e lm="kiel antaŭzorgo"> <i>kiel<b/>antaŭzorgo</i><par n="jam__adv"/></e>
 <e lm="kiel decas">      <i>kiel<b/>decas</i><par n="jam__adv"/></e>
@@ -20870,6 +20913,8 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="kuzo">            <i>kuz</i><par n="ino__n"/></e>
 <e lm="kuzino">          <i>kuzin</i><par n="o__n"/></e>
 <e lm="kuŝi">            <i>kuŝ</i><par n="i__vblex"/></e>
+<e lm="subkuŝi">            <i>subkuŝ</i><par n="i__vblex"/></e>
+<e lm="subkuŝanta">          <i>subkuŝant</i><par n="a__adj"/></e>
 <e lm="kuŝejo">          <i>kuŝej</i><par n="o__n"/></e>
 <e lm="kuŝigi">          <i>kuŝig</i><par n="i__vblex"/></e>
 <e lm="kvadrato">        <i>kvadrat</i><par n="o__n"/></e>
@@ -22259,6 +22304,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Liber">           <i>Liber</i><par n="Smith__np"/></e>
 <e lm="libera volo">     <i>libera<b/>vol</i><par n="o__n"/></e>
 <e lm="liberala">        <i>liberal</i><par n="a__adj"/></e>
+<e lm="liberaligi">      <i>liberalig</i><par n="i__vblex"/></e>
 <e lm="liberaligo">      <i>liberalig</i><par n="o__n"/></e>
 <e lm="liberalismo">     <i>liberalism</i><par n="o__n"/></e>
 <e lm="liberalisto">     <i>liberalist</i><par n="ino__n"/></e>
@@ -23341,6 +23387,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="malamiko">        <i>malamik</i><par n="ino__n"/></e>
 <e lm="malamikeco">      <i>malamikec</i><par n="o__n"/></e>
 <e lm="malamikiĝi">      <i>malamikiĝ</i><par n="i__vblex"/></e>
+<e lm="malamikigi">      <i>malamikig</i><par n="i__vblex"/></e>
 <e lm="malaminda">       <i>malamind</i><par n="a__adj"/></e>
 <e lm="malaneksi">       <i>malaneks</i><par n="i__vblex"/></e>
 <e lm="malaneksado">     <i>malaneksad</i><par n="o__n"/></e>
@@ -23743,6 +23790,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="malplimulta">     <i>malplimult</i><par n="a__adj"/></e>
 <e lm="malplimulte">     <i>malplimult</i><par n="e__adv"/></e>
 <e lm="malplipeziĝi">    <i>malplipeziĝ</i><par n="i__vblex"/></e>
+<e lm="pliintensigi">    <i>pliintensig</i><par n="i__vblex"/></e>
 <e lm="malpreciza">      <i>malpreciz</i><par n="a__adj"/></e>
 <e lm="malprestiĝo">     <i>malprestiĝ</i><par n="o__n"/></e>
 <e lm="malprestiĝa">     <i>malprestiĝ</i><par n="a__adj"/></e>
@@ -25340,6 +25388,9 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="milimetro">       <i>milimetr</i><par n="o__n"/></e>
 <e lm="miliono">         <i>milion</i><par n="o__n"/></e>
 <e lm="miliona">         <i>milion</i><par n="a__adj"/></e>
+<e lm="multmilionulo">   <i>multmilionul</i><par n="ino__n"/></e>
+<e lm="multmiliona">     <i>multmilion</i><par n="a__adj"/></e>
+<e lm="plurmiliona">     <i>plurmilion</i><par n="a__adj"/></e>
 <e lm="miliono">         <i>miliono</i><par n="du__num"/></e>
 <e lm="milionono">       <i>milionon</i><par n="o__n"/></e>
 <e lm="milionulo">       <i>milionul</i><par n="ino__n"/></e>
@@ -27403,7 +27454,10 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="neĝkovrita">      <i>neĝkovrit</i><par n="a__adj"/></e>
 <e lm="neĝofloro">       <i>neĝoflor</i><par n="o__n"/></e>
 <e lm="Neĝulino">        <i>Neĝulin</i><par n="Mark/o__np"/></e>
+<e lm="ŝanĝebla">      <i>ŝanĝebl</i><par n="a__adj"/></e>
+<e lm="ŝanĝeble">      <i>ŝanĝebl</i><par n="e__adv"/></e>
 <e lm="neŝanĝebla">      <i>neŝanĝebl</i><par n="a__adj"/></e>
+<e lm="neŝanĝeble">      <i>neŝanĝebl</i><par n="e__adv"/></e>
 <e lm="neŭralgio">       <i>neŭralgi</i><par n="o__n"/></e>
 <e lm="neŭrastenio">     <i>neŭrasteni</i><par n="o__n"/></e>
 <e lm="neŭrologo">       <i>neŭrolog</i><par n="ino__n"/></e>
@@ -30579,7 +30633,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="politikiĝo">      <i>politikiĝ</i><par n="o__n"/></e>
 <e lm="polko">           <i>polk</i><par n="o__n"/></e>
 <e lm="Pollack">         <i>Pollack</i><par n="Smith__np"/></e>
-<e lm="Pollando">        <i>Polland</i><par n="Barcelon/o__np"/></e>
+<e lm="Pollando">        <i>Pol</i><par n="Pol/lando__np"/></e>
 <e lm="Pollender">       <i>Pollender</i><par n="Smith__np"/></e>
 <e lm="Pollença">        <i>Pollença</i><par n="Barcelona__np"/></e>
 <e lm="Pollock">         <i>Pollock</i><par n="Smith__np"/></e>
@@ -31169,7 +31223,10 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="preĝi">           <i>preĝ</i><par n="i__vblex"/></e>
 <e lm="preĝejo">         <i>preĝej</i><par n="o__n"/></e>
 <e lm="pri">             <i>pri</i><par n="al__pr"/></e>
+<e r="RL" lm="plie pri">        <i>plie<b/>pri</i><par n="al__pr"/></e>
 <e lm="pri tio">         <i>pri<b/>tio</i><par n="jam__adv"/></e>
+<e lm="pri temo">        <i>pri<b/>temo</i><par n="jam__adv"/></e>
+<e lm="pri la temo">     <i>pri<b/>la<b/>temo</i><par n="jam__adv"/></e>
 <e lm="Priaranza del Bierzo"><i>Priaranza<b/>del<b/>Bierzo</i><par n="Barcelona__np"/></e>
 <e lm="Price">           <i>Price</i><par n="Smith__np"/></e>
 <e lm="pridemandi">      <i>pridemand</i><par n="i__vblex"/></e>
@@ -31336,6 +31393,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="prokuro">         <i>prokur</i><par n="o__n"/></e>
 <e lm="prokuristo">      <i>prokurist</i><par n="ino__n"/></e>
 <e lm="prokuroro">       <i>prokuror</i><par n="ino__n"/></e>
+<e lm="prokurorejo">     <i>prokurorej</i><par n="o__n"/></e>
 <e lm="proleto">         <i>prolet</i><par n="ino__n"/></e>
 <e lm="proleto">         <i>prolet</i><par n="o__n"/></e>
 <e lm="proleta">         <i>prolet</i><par n="a__adj"/></e>
@@ -33266,6 +33324,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="Romaissae">       <i>Romaissae</i><par n="Maria__np"/></e>
 <e lm="romano">          <i>roman</i><par n="o__n"/></e>
 <e lm="romano">          <i>roman</i><par n="ino__n"/></e>
+<e lm="romao">           <i>roma</i><par n="ino__n"/></e>
 <e lm="Roman">           <i>Roman</i><par n="Smith__np"/></e>
 <e lm="Roman">           <i>Roman</i><par n="Mark__np"/></e>
 <e lm="romanco">         <i>romanc</i><par n="o__n"/></e>
@@ -36138,6 +36197,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="solvebla">        <i>solvebl</i><par n="a__adj"/></e>
 <e lm="solventa">        <i>solvent</i><par n="a__adj"/></e>
 <e lm="solventeco">      <i>solventec</i><par n="o__n"/></e>
+<e lm="nesolventeco">    <i>nesolventec</i><par n="o__n"/></e>
 <e lm="Solà">            <i>Solà</i><par n="Smith__np"/></e>
 <e lm="Solá">            <i>Solá</i><par n="Smith__np"/></e>
 <e lm="Solé">            <i>Solé</i><par n="Smith__np"/></e>
@@ -36962,6 +37022,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="sunao">           <i>suna</i><par n="o__n"/></e>
 <e lm="suna kalendaro">  <p><l>suna<b/>kalendaro</l><r>suna<b/>kalendaro<s n="n"/><s n="sg"/><s n="nom"/></r></p></e>
 <e lm="sunaisto">        <i>sunaist</i><par n="ino__n"/></e>
+<e lm="sunaisma">            <i>sunaism</i><par n="a__adj"/></e>
 <e lm="suna kalendaro">  <p><l>sunaj<b/>kalendaroj</l><r>suna<b/>kalendaro<s n="n"/><s n="pl"/><s n="nom"/></r></p></e>
 <e lm="suna kalendaro">  <p><l>sunajn<b/>kalendarojn</l><r>suna<b/>kalendaro<s n="n"/><s n="pl"/><s n="acc"/></r></p></e>
 <e lm="suna kalendaro">  <p><l>sunan<b/>kalendaron</l><r>suna<b/>kalendaro<s n="n"/><s n="sg"/><s n="acc"/></r></p></e>
@@ -37174,6 +37235,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="sviso">           <i>svis</i><par n="ino__n"/></e>
 <e lm="svisa">           <i>svis</i><par n="a__adj"/></e>
 <e lm="Svisio">          <i>Svisi</i><par n="Barcelon/o__np"/></e>
+<e lm="Svislando">       <i>Svis</i><par n="Pol/lando__np"/></e>
 <e lm="Svislando">       <i>Svisland</i><par n="Barcelon/o__np"/></e>
 <e lm="Swallow">         <i>Swallow</i><par n="Smith__np"/></e>
 <e lm="Sweden">          <i>Sweden</i><par n="Barcelona__np"/></e>
@@ -42117,6 +42179,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="ĵudo">            <i>ĵud</i><par n="o__n"/></e>
 <e lm="ĵudisto">         <i>ĵudist</i><par n="ino__n"/></e>
 <e lm="ĵuri">            <i>ĵur</i><par n="i__vblex"/></e>
+<e lm="forĵuri">         <i>forĵur</i><par n="i__vblex"/></e>
 <e lm="kunĵuri">         <i>kunĵur</i><par n="i__vblex"/></e>
 <e lm="ĵuro">            <i>ĵur</i><par n="o__n"/></e>
 <e lm="ĵuraso">          <i>ĵuras</i><par n="o__n"/></e>
@@ -42198,6 +42261,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="ŝia">             <i>ŝia</i><par n="mia__det"/></e>
 <e lm="ŝijaismo">        <i>ŝijaism</i><par n="o__n"/></e>
 <e lm="ŝijaisto">        <i>ŝijaist</i><par n="ino__n"/></e>
+<e lm="ŝijaisma">            <i>ŝijaism</i><par n="a__adj"/></e>
 <e lm="ŝika">            <i>ŝik</i><par n="a__adj"/></e>
 <e lm="ŝildo">           <i>ŝild</i><par n="o__n"/></e>
 <e lm="ŝilingo">         <i>ŝiling</i><par n="o__n"/></e>
@@ -42341,6 +42405,7 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 
 <e lm="amuzparko">            <i>amuzpark</i><par n="o__n"/></e>
 <e lm="balotrajto">            <i>balotrajt</i><par n="o__n"/></e>
+<e lm="baloto">            <i>balot</i><par n="o__n"/></e>
 <e lm="ĉashundo">            <i>ĉashund</i><par n="o__n"/></e>
 <e lm="fisko-fraŭdanto">            <i>fisko-fraŭdant</i><par n="ino__n"/></e>
 <e lm="kelvino">            <i>kelvin</i><par n="o__n"/></e>
@@ -42350,6 +42415,30 @@ la traduko povas atribui al ili eraran pluralon (temas esence pri propraj nomoj,
 <e lm="neĝfloro">            <i>neĝflor</i><par n="o__n"/></e>
 <e lm="tagmeze">            <i>tagmez</i><par n="e__adv"/></e>
 <e lm="tagordo">            <i>tagord</i><par n="o__n"/></e>
+
+<e lm="ĉiameco">            <i>ĉiamec</i><par n="o__n"/></e>
+<e lm="garantianta">            <i>garantiant</i><par n="a__adj"/></e>
+<e lm="garantianto">            <i>garantiant</i><par n="ino__n"/></e>
+<e lm="maltrankvileco">            <i>maltrankvilec</i><par n="o__n"/></e>
+<e lm="nepravigebla">            <i>nepravigebl</i><par n="a__adj"/></e>
+<e lm="nepravigeble">            <i>nepravigebl</i><par n="e__adv"/></e>
+<e lm="neŝanĝeblo">            <i>neŝanĝebl</i><par n="o__n"/></e>
+<e lm="pertubita">            <i>pertubit</i><par n="a__adj"/></e>
+<e lm="pertubite">            <i>pertubit</i><par n="e__adv"/></e>
+<e lm="pravigebla">            <i>pravigebl</i><par n="a__adj"/></e>
+<e lm="pravigeble">            <i>pravigebl</i><par n="e__adv"/></e>
+<e lm="romaa">            <i>roma</i><par n="a__adj"/></e>
+<e lm="ŝanĝeblo">            <i>ŝanĝebl</i><par n="o__n"/></e>
+
+<e lm="akceptebla">            <i>akceptebl</i><par n="a__adj"/></e>
+<e lm="akcepteble">            <i>akceptebl</i><par n="e__adv"/></e>
+<e lm="avantaĝe">            <i>avantaĝ</i><par n="e__adv"/></e>
+<e lm="daŭr-folia">            <i>daŭr-foli</i><par n="a__adj"/></e>
+<e lm="elrevigi">            <i>elrevig</i><par n="i__vblex"/></e>
+<e lm="emocia">            <i>emoci</i><par n="a__adj"/></e>
+<e lm="malavantaĝa">            <i>malavantaĝ</i><par n="a__adj"/></e>
+<e lm="malavantaĝe">            <i>malavantaĝ</i><par n="e__adv"/></e>
+
 
     <!-- ******************************
           group sg_symbol
