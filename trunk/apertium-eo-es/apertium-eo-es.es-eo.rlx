@@ -1,0 +1,102 @@
+DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
+ 
+SETS
+
+LIST >>> = >>> ;
+LIST <<< = <<< ;
+
+LIST N = (n) ;
+LIST NP = (np) ;
+LIST A = (adj) ;
+LIST Det = (det) ;
+LIST Adv = (adv) ;
+LIST V = (vblex) (vbser) (vbmod) ;
+LIST Vblex = (vblex) ;
+LIST Copula = (vbser);
+LIST Pron = (prn) ;
+LIST Prep = (pr) ;
+LIST CnjCoo = (cnjcoo) ;
+LIST CnjSub = (cnjsub) ;
+LIST CnjAdv = (cnjadv) ;
+LIST Rel = (rel) ;		# PROBLEMA: està malparit en eo-es i eo-ca: prn.rel i rel.adv (es-ca: rel.adv, rel.an, rel.nn, rel.aa)
+LIST Interj = (ij) ;
+
+SET Word = N + NP + A + Det + Adv + V + Pron + Prep + CnjCoo + CnjSub + CnjAdv + Rel + Interj ;
+SET NP_Member = N + A + Det + Adv ;
+SET NOT_NP_Member = Word - NP_Member;
+
+
+LIST Pers = (pers) ;
+
+LIST PP = (pp) ;
+
+LIST Masc = m mf ;
+LIST Fem = f mf ;
+LIST Sg = sg sp ;
+LIST Pl = pl sp ;
+SET MascSg = (m sg) OR (m sp) OR (mf sg) OR (mf sp) ;
+SET MascPl = (m pl) OR (m sp) OR (mf pl) OR (mf sp) ;
+SET FemSg = (f sg) OR (f sp) OR (mf sg) OR (mf sp) ;
+SET FemPl = (f pl) OR (f sp) OR (mf pl) OR (mf sp) ;
+
+SET Noun_Adj = N OR A ;
+SET Noun_Adj_PP = N OR A OR PP ;
+SET Adj_PP = A OR PP ;
+SET NO_Adj_PP = Word - Adj_PP ;
+
+
+
+###############################################################################
+#  Morphological disambiguation
+#
+
+SECTION
+
+REMOVE:r_na_1_ms A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_1_mp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_1_fs A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemSg) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_1_fp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$FemPl) ;
+	## jóvenes inteligentes (jóvenes > n)
+	## jóvenes encapuchadas (jóvenes > n)
+	## abisenios inteligentes (jóvenes > n)
+	## escrito largo (escrito > n)
+
+# COMPTE!!! "la Primera Conferencia Internacional Americana celebrada" 
+# es carrega Americana A i la converteix en "Jako"
+#REMOVE:r_na_3_fs N IF (*-1 N + $$FemSg BARRIER Noun_Adj_PP) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg BARRIER NO_Adj_PP) ;
+#REMOVE:r_na_3_fs N IF (*-1 N ) (0 Adj_PP ) (1 Adj_PP ) ;
+#REMOVE:r_na_3_fs N IF (*-1 N ) (0 Adj_PP ) (*1 Adj_PP ) ;
+#REMOVE:r_na_3_fs N IF (*-1 N ) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
+#REMOVE:r_na_3_fs N IF (*-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_3_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_3_fs N IF (-2 N + $$FemSg) (-1 Adj_PP + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;	# S'ha d'afegir!!!! :(((
+#REMOVE:r_na_3_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg + $$FemSg BARRIER NO_Adj_PP) ;
+
+#REMOVE:r_na_2_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) (*2 Adj_PP + $$MascSg BARRIER NO_Adj_PP) ; # at list one Adj_PP
+REMOVE:r_na_2_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_2_mp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_2_fs A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemSg) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_2_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$FemPl) ;
+	## vieron jóvenes inteligentes (jóvenes > n)
+	## vieron jóvenes encapuchadas (jóvenes > n)
+	## vieron abisenios inteligentes (jóvenes > n)
+
+
+# el agitado medio social / el medio social / el medio terrestre
+#	cal treure medio ADV
+
+# la Indochina francesa
+#	cal treure Indoĉina n
+# PERÒ: en la Puerta Negra,
+REMOVE:r_na_3_ms Noun_Adj_PP IF (-1 Det + $$FemSg) (0 NP + $$FemSg) (1 Adj_PP + $$FemSg) ;
+
+# cogieron rehenes
+	
+#SELECT:n_a_eos_1 N IF (0 Noun_Adj_PP) (-1 Vblex) (1 <<<) ;
+	## detonar explosivos.
+	## PERO: alimentos para consumo interno. > interno = N
+
+#SELECT:n_a_eos_2 N IF (0 Noun_Adj_PP) (-1 Det) (1 <<<) ;
+	## detonar los explosivos.
+	## PERO: el portugués es > la portugalo estas [PER QUÈ ENTRA???]
+
