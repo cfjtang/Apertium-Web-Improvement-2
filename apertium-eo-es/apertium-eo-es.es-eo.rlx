@@ -42,14 +42,23 @@ SET MascPl = (m pl) OR (m sp) OR (mf pl) OR (mf sp) ;
 SET FemSg = (f sg) OR (f sp) OR (mf sg) OR (mf sp) ;
 SET FemPl = (f pl) OR (f sp) OR (mf pl) OR (mf sp) ;
 
+SET Cog = (np cog) ;
+SET Ant = (np ant) ;
+
+SET DetDef = (det def) ;
+SET DetInd = (det ind) ;
+
 SET Noun_Adj = N OR A ;
 SET Noun_Adj_PP = N OR A OR PP ;
 SET Adj_PP = A OR PP ;
 SET NO_Adj_PP = Word - Adj_PP ;
 
 SET Verb = Vblex OR Vbmod OR Vbhaver OR Copula ;
-SET Verb_Prep = Verb OR Prep;
+SET Verb_Prep = Verb OR Prep ;
+SET Cnj_Rel = CnjCoo OR CnjSub OR CnjAdv OR Rel ;
 
+SET como = ("como") ;
+SET para = ("para") ;
 
 
 ###############################################################################
@@ -57,6 +66,11 @@ SET Verb_Prep = Verb OR Prep;
 #
 
 SECTION
+
+REMOVE:r_cog_1 Cog IF (-1 DetDef) (0 Cog);
+REMOVE:r_cog_2 Cog IF (-1 DetInd) (0 Cog);
+REMOVE:r_ant_1 Ant IF (-1 DetDef) (0 Ant);
+REMOVE:r_ant_2 Ant IF (-1 DetInd) (0 Ant);
 
 SELECT:este_2 Det IF (0 ("este") + $$MascSg) (-1 Verb_Prep) (1 A + $$MascSg) (2 N + $$MascSg) ;
 	# de este bonito estado
@@ -107,16 +121,24 @@ REMOVE:r_na_3_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$F
 
 # la Indochina francesa
 #	cal treure Indoĉina n
-# PERÒ: en la Puerta Negra,
-REMOVE:r_na_3_ms Noun_Adj_PP IF (-1 Det + $$FemSg) (0 NP + $$FemSg) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_3_ms Noun_Adj_PP IF (-1 Det + $$MascSg) (0 NP + $$MascSg) (1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_3_mp Noun_Adj_PP IF (-1 Det + $$MascPl) (0 NP + $$MascPl) (1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_3_fs Noun_Adj_PP IF (-1 Det + $$FemSg) (0 NP + $$FemSg) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_3_fp Noun_Adj_PP IF (-1 Det + $$FemPl) (0 NP + $$FemPl) (1 Adj_PP + $$FemPl) ;
 
 # cogieron rehenes
 	
-#SELECT:n_a_eos_1 N IF (0 Noun_Adj_PP) (-1 Vblex) (1 <<<) ;
+#SELECT:n_a_eos_1 N IF (0 Noun_Adj_PP LINK NOT 0 Adv) (-1C Vblex) (1 <<<) ;
 	## detonar explosivos.
-	## PERO: alimentos para consumo interno. > interno = N
+	## PERO: para parecer lógicas.
+	## PERO: mientras estaban parados.
 
-#SELECT:n_a_eos_2 N IF (0 Noun_Adj_PP) (-1 Det) (1 <<<) ;
+SELECT:n_a_eos_2 N IF (0 Noun_Adj_PP LINK NOT 0 NP) (-1 Det) (1 <<<) ;
 	## detonar los explosivos.
-	## PERO: el portugués es > la portugalo estas [PER QUÈ ENTRA???]
+	## PERO: Las clasificaciones más reconocidas internacionalmente son la francesa y la estadounidense.
+	## PERO: muy poco conocida.
 
+REMOVE:r_como_1 Vblex (O ("como") OR ("Como")) (*-1C Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_como_2 Vblex (O ("como") OR ("Como")) (*1C Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_para_1 Vblex (O ("para") OR ("Para")) (*-1C Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_para_2 Vblex (O ("para") OR ("Para")) (*1C Vblex BARRIER Cnj_Rel) ;
