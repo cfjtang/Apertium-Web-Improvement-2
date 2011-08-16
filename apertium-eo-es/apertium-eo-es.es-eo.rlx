@@ -1,4 +1,5 @@
 DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
+SOFT-DELIMITERS = "<,>" ;
  
 SETS
 
@@ -10,8 +11,9 @@ LIST NP = (np) ;
 LIST A = (adj) ;
 LIST Det = (det) ;
 LIST Adv = (adv) ;
-LIST V = (vblex) (vbser) (vbmod) ;
 LIST Vblex = (vblex) ;
+LIST Vbmod = (vbmod) ;
+LIST Vbhaver = (vbhaver) ;
 LIST Copula = (vbser);
 LIST Pron = (prn) ;
 LIST Prep = (pr) ;
@@ -21,6 +23,7 @@ LIST CnjAdv = (cnjadv) ;
 LIST Rel = (rel) ;		# PROBLEMA: està malparit en eo-es i eo-ca: prn.rel i rel.adv (es-ca: rel.adv, rel.an, rel.nn, rel.aa)
 LIST Interj = (ij) ;
 
+SET V = Vblex + Vbmod + Vbhaver + Copula ;
 SET Word = N + NP + A + Det + Adv + V + Pron + Prep + CnjCoo + CnjSub + CnjAdv + Rel + Interj ;
 SET NP_Member = N + A + Det + Adv ;
 SET NOT_NP_Member = Word - NP_Member;
@@ -44,6 +47,9 @@ SET Noun_Adj_PP = N OR A OR PP ;
 SET Adj_PP = A OR PP ;
 SET NO_Adj_PP = Word - Adj_PP ;
 
+SET Verb = Vblex OR Vbmod OR Vbhaver OR Copula ;
+SET Verb_Prep = Verb OR Prep;
+
 
 
 ###############################################################################
@@ -51,6 +57,15 @@ SET NO_Adj_PP = Word - Adj_PP ;
 #
 
 SECTION
+
+SELECT:este_2 Det IF (0 ("este") + $$MascSg) (-1 Verb_Prep) (1 A + $$MascSg) (2 N + $$MascSg) ;
+	# de este bonito estado
+SELECT:este_1 Det IF (0 ("este") + $$MascSg) (-1 Verb_Prep) (1 N + $$MascSg) ;
+	# de este estado
+SELECT:este_2 Det IF (0 ("Este") + $$MascSg) (-1 >>>) (1 A + $$MascSg) (2 N + $$MascSg) ;
+	# Este bonito estado
+SELECT:este_1 Det IF (0 ("Este") + $$MascSg) (-1 >>>) (1 N + $$MascSg) ;
+	# Este estado
 
 REMOVE:r_na_1_ms A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
 REMOVE:r_na_1_mp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
@@ -61,25 +76,30 @@ REMOVE:r_na_1_fp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$Fem
 	## abisenios inteligentes (jóvenes > n)
 	## escrito largo (escrito > n)
 
-# COMPTE!!! "la Primera Conferencia Internacional Americana celebrada" 
-# es carrega Americana A i la converteix en "Jako"
-#REMOVE:r_na_3_fs N IF (*-1 N + $$FemSg BARRIER Noun_Adj_PP) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg BARRIER NO_Adj_PP) ;
-#REMOVE:r_na_3_fs N IF (*-1 N ) (0 Adj_PP ) (1 Adj_PP ) ;
-#REMOVE:r_na_3_fs N IF (*-1 N ) (0 Adj_PP ) (*1 Adj_PP ) ;
-#REMOVE:r_na_3_fs N IF (*-1 N ) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
-#REMOVE:r_na_3_fs N IF (*-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_3_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_3_fs N IF (-2 N + $$FemSg) (-1 Adj_PP + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;	# S'ha d'afegir!!!! :(((
-#REMOVE:r_na_3_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg + $$FemSg BARRIER NO_Adj_PP) ;
+REMOVE:r_na_2_ms N IF (-1 N + $$MascSg) (0 Adj_PP + $$MascSg) (*1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_2_mp N IF (-1 N + $$MascPl) (0 Adj_PP + $$MascPl) (*1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_2_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_2_fp N IF (-1 N + $$FemPl) (0 Adj_PP + $$FemPl) (*1 Adj_PP + $$FemPl) ;
+	## "la Primera Conferencia Americana celebrada" (pqè Americana > adj)
 
-#REMOVE:r_na_2_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) (*2 Adj_PP + $$MascSg BARRIER NO_Adj_PP) ; # at list one Adj_PP
-REMOVE:r_na_2_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
-REMOVE:r_na_2_mp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
-REMOVE:r_na_2_fs A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemSg) (1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_2_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$FemPl) ;
+REMOVE:r_na_2_1_ms N IF (-2 N + $$MascSg) (-1 Adj_PP + $$MascSg) (0 Adj_PP + $$MascSg) (*1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_2_1_mp N IF (-2 N + $$MascPl) (-1 Adj_PP + $$MascPl) (0 Adj_PP + $$MascPl) (*1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_2_1_fs N IF (-2 N + $$FemSg) (-1 Adj_PP + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_2_1_fp N IF (-2 N + $$FemPl) (-1 Adj_PP + $$FemPl) (0 Adj_PP + $$FemPl) (*1 Adj_PP + $$FemPl) ;
+	## "la Primera Conferencia Internacional Americana celebrada" (pqè Americana > adj)
+
+#REMOVE:r_na_2_2_ms N IF (-3 N + $$MascSg) (-2 Adj_PP + $$MascSg) (-1 Adj_PP + $$MascSg) (0 Adj_PP + $$MascSg) (*1 Adj_PP + $$MascSg) ;
+	## líder obrero norteamericano afiliado (afiliado > adj)
+
+#REMOVE:r_na_3_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) (*2 Adj_PP + $$MascSg BARRIER NO_Adj_PP) ; # at list one Adj_PP
+REMOVE:r_na_3_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_3_mp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_3_fs A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemSg) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_3_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$FemPl) ;
 	## vieron jóvenes inteligentes (jóvenes > n)
 	## vieron jóvenes encapuchadas (jóvenes > n)
 	## vieron abisenios inteligentes (jóvenes > n)
+	## PROBLEMA: con alto contenido (alto > n/adv); ídem per a adj ambigus típicament preposats: alto, bajo, mal (+flaco favor, etc.)
 
 
 # el agitado medio social / el medio social / el medio terrestre
