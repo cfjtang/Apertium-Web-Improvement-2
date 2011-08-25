@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<transfer>
+  <section-def-cats>
+
+    <def-cat n="nom">
+      <cat-item tags="n"/>
+      <cat-item tags="n.*"/>
+    </def-cat>
+
+    <def-cat n="part_qst">
+      <cat-item tags="q.*"/>
+    </def-cat>
+     
+    <def-cat n="np_apos">
+      <cat-item tags="np.apos"/>
+      <cat-item tags="np.apos.*"/>
+      <cat-item tags="np.*.apos"/>
+      <cat-item tags="np.*.apos.*"/>
+    </def-cat>
+
+<def-cat n="v_pres">
+      <cat-item tags="v.t_cont.1s"/>
+      <cat-item tags="v.t_cont.2s"/>
+      <cat-item tags="v.t_cont.3s"/>
+      <cat-item tags="v.t_cont.1p"/>
+      <cat-item tags="v.t_cont.2p"/>
+      <cat-item tags="v.t_cont.3p"/>
+    </def-cat>
+
+<def-cat n="abil">
+      <cat-item tags="v.abil.*"/>
+      <cat-item tags="v.pass.abil.*"/>
+      <cat-item tags="v.caus.pass.abil.*"/>
+      <cat-item tags="v.caus.abil.*"/>
+  </def-cat>
+    
+  </section-def-cats>
+  
+  <section-def-attrs>
+ 
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="GD"/>
+    </def-attr>
+
+<def-attr n="temps">
+    <attr-item tags="t_aor"/>
+    <attr-item tags="t_cond"/>
+    <attr-item tags="t_cont"/>
+    <attr-item tags="t_fut"/>
+    <attr-item tags="t_imp"/>
+    <attr-item tags="t_makta"/>
+    <attr-item tags="t_narr"/>
+    <attr-item tags="t_obl"/>
+    <attr-item tags="t_opt"/>
+    <attr-item tags="t_past"/>
+
+    </def-attr>
+ 
+    <def-attr n="cas">
+      <attr-item tags="nom"/>
+      <attr-item tags="acc"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="ins"/>
+      <attr-item tags="abl"/>
+      <attr-item tags="loc"/>
+    </def-attr>
+    
+    <def-attr n="nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="ND"/>
+    </def-attr>
+       
+    <def-attr n="a_nom">
+      <attr-item tags="n"/>
+      <attr-item tags="n.acr"/>
+      <attr-item tags="n.unc"/>
+      <attr-item tags="np"/>
+      <attr-item tags="np.top"/>
+      <attr-item tags="np.al"/>
+      <attr-item tags="np.org"/>
+      <attr-item tags="np.cog"/>
+      <attr-item tags="np.ant"/>
+      <attr-item tags="np.apos"/>
+    </def-attr>
+    
+    <def-attr n="nonfin">
+      <attr-item tags="cv_mak"/>
+      <attr-item tags="vn_dik"/>
+      <attr-item tags="vn_ma"/>
+      <attr-item tags="vn_mak"/>
+      <attr-item tags="vn_acak"/>
+      <attr-item tags="cv_acak"/>
+      <attr-item tags="vn_yis"/>
+      <attr-item tags="cv_dik"/>
+      <attr-item tags="cv_ma"/>
+      <attr-item tags="cv_dan"/>
+      <attr-item tags="cv_zdan"/>
+      <attr-item tags="cv_ince"/>
+      <attr-item tags="cv_erek"/>
+      <attr-item tags="cv_eli"/>
+      <attr-item tags="cv_ene"/>
+      <attr-item tags="cv_ir"/>
+      <attr-item tags="cv_ar"/>
+      <attr-item tags="cv_ecek"/>
+      <attr-item tags="cv_mis"/>
+      <attr-item tags="cv_anda"/>
+      <attr-item tags="cv_iyor"/>
+      <attr-item tags="cv_cesine"/>
+      <attr-item tags="cv_ip"/>
+
+        <attr-item tags="part_dik"/>
+        <attr-item tags="part_yan"/>
+        <attr-item tags="part_acak"/>
+        </def-attr>
+
+    <def-attr n="dir">
+        <attr-item tags="dir"/>
+        </def-attr>
+    
+
+
+    <def-attr n="poss_pers">
+      <attr-item tags="p1s"/>
+      <attr-item tags="p2s"/>
+      <attr-item tags="p3s"/>
+      <attr-item tags="p1p"/>
+      <attr-item tags="p2p"/>
+      <attr-item tags="p3p"/>
+    </def-attr>
+ 
+    <def-attr n="cop_pers">
+      <attr-item tags="1s"/>
+      <attr-item tags="2s"/>
+      <attr-item tags="3s"/>
+      <attr-item tags="1p"/>
+      <attr-item tags="2p"/>
+      <attr-item tags="3p"/>
+    </def-attr>
+    
+  </section-def-attrs>
+ 
+  <section-def-vars>
+    <def-var n="number"/>
+  </section-def-vars>  
+
+  <section-rules>
+    
+    <rule comment="regla: nom">
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <clip pos="1" side="tl" part="a_nom"/>
+            <clip pos="1" side="tl" part="gen"/>
+            <clip pos="1" side="tl" part="nbr"/>
+            <clip pos="1" side="tl" part="poss_pers"/>
+            <clip pos="1" side="tl" part="cas"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+ 
+    <rule comment="regla: nom part_qst">
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="part_qst"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+          </lu>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="regla: np_apos">
+      <pattern>
+        <pattern-item n="np_apos"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="1" side="tl" part="a_nom"/>
+          <lit-tag v="np"/>
+        </let>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+<!-- <v><t_opt> _ bil<X><Y><Z><...> -->
+
+    <rule comment="regla: abil">
+      <pattern>
+        <pattern-item n="abil"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="1" side="tl" part="a_nom"/>
+          <lit-tag v="np"/>
+        </let>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lemh"/>
+            <lit-tag v="v.t_opt.3s"/>
+            <clip pos="1" side="tl" part="lemq"/>
+          </lu>
+          <b/>
+          <lu>
+            <lit v="bil"/>
+            <lit-tag v="v"/>
+            <clip pos="1" side="tl" part="temps"/>
+            <clip pos="1" side="tl" part="nonfin"/>
+            <clip pos="1" side="tl" part="poss_pers"/>
+            <clip pos="1" side="tl" part="cop_pers"/>
+            <clip pos="1" side="tl" part="dir"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+  
+    
+  </section-rules>
+</transfer>
