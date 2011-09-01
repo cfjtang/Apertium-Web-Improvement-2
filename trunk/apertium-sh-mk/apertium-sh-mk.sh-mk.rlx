@@ -61,6 +61,9 @@ LIST Cm = (",") (cm) ;
 
 LIST Clt = clt | "clitic"; 
 LIST Lp = lp ; 
+LIST FutureI = futI ; 
+LIST FutureII = futII ; 
+LIST Infinitive = inf ; 
 LIST PassiveParticiple = pp ;
 LIST PresParticiple = pprs ;
 LIST Participle = lp opt pprs pp ;
@@ -92,11 +95,14 @@ LIST Ant = ant ;
 LIST Cog = cog ; 
 LIST ProperNoun = np ;
 
-LIST Nomen = top al ant cog n np prn adj; # Words that have gender, number and case
+# Words that have gender, number and case:
+LIST Nomen = top al ant cog n np prn adj; 
 
+# Animacy
 LIST Animate = ma ; 
 LIST Inanimate = mi ; 
 
+# Cases:
 LIST Nom = nom ; 
 LIST Gen = gen ; 
 LIST Dat = dat ; 
@@ -475,6 +481,8 @@ LIST @N← = @N← ; # Modifier of noun to the left
 LIST @→N = @→N ; # Modifier of noun to the right 
 LIST @A← = @A← ; # Modifier of adjective to the left
 LIST @Adv← = @Adv← ; # Modifier of adverb to the left
+LIST @V← = @V← ; # Modifier of verb to the left
+LIST @V→ = @V→ ; # Modifier of verb to the right
 
 # Partitive vs. possesive disambiguation
 MAP:PartitiveAfterAdv ( @Adv← ) TARGET N + Gen (-1 Adv OR A + Neuter) ;
@@ -487,3 +495,35 @@ MAP:GenitiveModN ( @N← ) TARGET N + Gen (-1C* N BARRIER NOT-NP-MEMBER) ;
 MAP:NounModPoss ( @→N ) TARGET PosPron (1C N) ;
 
 MAP:NounModA ( @→N ) TARGET A + $$CASE (1C N + $$CASE) ;
+
+# Verb modifiers
+## Adverbs
+MAP:Adverb→Verb @V→ TARGET Adv (1C V)
+MAP:Verb←Adverb @V← TARGET Adv (-1C V)
+MAP:Verb←...←Adverb @V← TARGET Adv (-1*C V BARRIER BOS OR Cm) (1C Cm OR EOS)
+MAP:Adverb→...→Verb @V← TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V BARRIER EOS)
+## Participles and such Note: Looks like a copy paste, but was thought through :) Could perhaps be made more universal though
+### l-participle
+MAP:Lp→VBSer @V→ TARGET Lp (1C VBSer + Clt)
+MAP:VBSer←Lp @V← TARGET Lp (-1C VBSer + Clt)
+MAP:Lp→...→VBSer @V→ TARGET Lp (NOT -1*C VBSer + Clt BARRIER BOS) (1*C VBSer + Clt BARRIER EOS)
+MAP:VBSer←...←Lp @V← TARGET Lp (-1*C VBSer + Clt BARRIER BOS)
+MAP:Lp→FutureII @V→ TARGET Lp (1C FutureII)
+MAP:FutureII←Lp @V← TARGET Lp (-1C FutureII)
+MAP:Lp→...→FutureII @V→ TARGET Lp (NOT -1*C FutureII BARRIER BOS) (1*C FutureII BARRIER EOS)
+MAP:FutureII←...←Lp @V← TARGET Lp (-1*C FutureII BARRIER BOS)
+### infinitive
+MAP:Infinitive→FutureI @V→ TARGET Infinitive (1C FutureI)
+MAP:FutureI←Infinitive @V← TARGET Infinitive (-1C FutureI)
+MAP:Infinitive→...→FutureI @V→ TARGET Infinitive (NOT -1*C FutureI BARRIER BOS) (1*C FutureI BARRIER EOS)
+MAP:FutureI←...←Infinitive @V← TARGET Infinitive (-1*C FutureI BARRIER BOS)
+
+
+SECTION
+# =========================================================================== #
+#   Dependency grammar rules                                                  #
+# =========================================================================== #
+
+SETPARENT:FuturI V + Infinitive (1C VBMod + Clt) TO (1C VBMod + Clt)
+SETPARENT:FuturI V + Infinitive (-1C VBMod + Clt) TO (-1C VBMod + Clt)
+
