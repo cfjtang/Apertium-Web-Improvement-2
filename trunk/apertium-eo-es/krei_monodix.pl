@@ -65,7 +65,7 @@ sub skribi {
 		} elsif ($lemo =~ /o$/o) {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'o__n';
 		} else {
-			print STDERR "Eraro 2: Ne konata paradigmo en linio $.: $paradigmo, lemo = $lemo.\n";
+			print STDERR "Eraro 2: Ne konata paradigmo en linio $.: $paradigmo, lemo = [$lemo]\n";
 		}
 	} elsif ($paradigmo eq "n><acr") {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'BBC__n';
@@ -88,10 +88,52 @@ sub skribi {
 	} elsif ($paradigmo eq "ij") {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'adiós__ij';
 	} elsif ($paradigmo eq "vblex") {
-		if ($lemo =~ /i$/o) {
+		if ($lemo =~ /igi$/o) {
+			print STDERR "Eraro 5a: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbtr')\n";
+		} elsif ($lemo =~ /iĝi$/o) {
+			print STDERR "Eraro 5b: Erara paradigmo lemo $lemo (en linio $.): [$paradigmo] (devas esti 'vbntr')\n";
+		} elsif ($lemo =~ /i$/o) {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'i__vblex';
 		} else {
-			print STDERR "Eraro 4: Ne konata paradigmo en linio $.: $paradigmo.\n";
+			print STDERR "Eraro 4a: Ne konata paradigmo en $lemo (linio $.): [$paradigmo]\n";
+		}
+	} elsif ($paradigmo eq "vbtr") {
+		if ($lemo =~ /iĝi$/o) {
+			print STDERR "Eraro 6a: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbntr')\n";
+		} elsif ($lemo =~ /i$/o) {
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'i__vbtr';
+		} else {
+			print STDERR "Eraro 4b: Ne konata paradigmo en $lemo (linio $.): [$paradigmo]\n";
+		}
+	} elsif ($paradigmo eq "vbntr") {
+		if ($lemo =~ /igi$/o) {
+			print STDERR "Eraro 6a: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbtr')\n";
+		} elsif ($lemo =~ /iĝi$/o) {
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, '/iĝi__vbntr';
+		} elsif ($lemo =~ /i$/o) {
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'i__vbntr';
+		} else {
+			print STDERR "Eraro 4c: Ne konata paradigmo en $lemo (linio $.): [$paradigmo]\n";
+		}
+	} elsif ($paradigmo eq "vbtr_ntr") {
+		if ($lemo =~ /igi$/o) {
+			print STDERR "Eraro 7a: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbtr')\n";
+		} elsif ($lemo =~ /iĝi$/o) {
+			print STDERR "Eraro 7b: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbntr')\n";
+		} elsif ($lemo =~ /i$/o) {
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'i__vbtr_ntr';
+		} else {
+			print STDERR "Eraro 4d: Ne konata paradigmo en $lemo (linio $.): [$paradigmo]\n";
+		}
+	} elsif ($paradigmo eq "vbser") {
+		if ($lemo =~ /igi$/o) {
+			print STDERR "Eraro 8a: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbtr')\n";
+		} elsif ($lemo =~ /iĝi$/o) {
+			print STDERR "Eraro 8b: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbntr')\n";
+		} elsif ($lemo =~ /i$/o) {
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'ser__vb';
+		} else {
+			print STDERR "Eraro 4e: Ne konata paradigmo en $lemo (linio $.): [$paradigmo]\n";
 		}
 	} elsif ($paradigmo eq "np><loc") {
 		if ($lemo =~ /io$/o) {
@@ -99,7 +141,7 @@ sub skribi {
 		} elsif ($lemo =~ /o$/o) {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'Barcelon/o__np';
 		} elsif ($lemo =~ /oj$/o) {
-			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'Alp/oj__np';
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'And/oj__np';
 		} else {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'Barcelona__np';
 		}
@@ -118,6 +160,6 @@ sub skribi {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'Wikipedia__np';
 		}
 	} else {
-		print STDERR "Eraro 9: Ne konata paradigmo en linio $.: $paradigmo, lemo = $lemo.\n";
+		print STDERR "Eraro 9: Ne konata paradigmo en linio $.: $paradigmo, lemo = [$lemo]\n";
 	}
 }
