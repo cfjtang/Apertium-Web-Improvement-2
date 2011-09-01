@@ -305,6 +305,11 @@
   <def-label name="COMA" closed="true">
     <tags-item tags="cm"/>
   </def-label>
+  <def-label name="COMETES" closed="true">
+    <tags-item tags="cit"/>
+    <tags-item tags="lcit"/>
+    <tags-item tags="rcit"/>
+  </def-label>
 
   <def-mult name="PREPDET" closed="true">
     <sequence>

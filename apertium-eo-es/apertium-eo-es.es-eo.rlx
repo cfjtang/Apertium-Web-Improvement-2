@@ -10,6 +10,7 @@ LIST N = (n) ;
 LIST NP = (np) ;
 LIST A = (adj) ;
 LIST Det = (det) ;
+LIST Num = (num) ;
 LIST Adv = (adv) ;
 LIST Vblex = (vblex) ;
 LIST Vbmod = (vbmod) ;
@@ -57,8 +58,9 @@ SET Verb = Vblex OR Vbmod OR Vbhaver OR Copula ;
 SET Verb_Prep = Verb OR Prep ;
 SET Cnj_Rel = CnjCoo OR CnjSub OR CnjAdv OR Rel ;
 
-SET como = ("como") ;
-SET para = ("para") ;
+#SET como = ("como") ;
+#SET para = ("para") ;
+SET Defensa = ("defensa") OR ("Defensa") ;
 
 
 ###############################################################################
@@ -115,6 +117,7 @@ REMOVE:r_na_3_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$F
 	## vieron abisenios inteligentes (jóvenes > n)
 	## PROBLEMA: con alto contenido (alto > n/adv); ídem per a adj ambigus típicament preposats: alto, bajo, mal (+flaco favor, etc.)
 
+SELECT:estado_1 N IF (-1 Det + Masc) (0 ("estado")) ;
 
 # el agitado medio social / el medio social / el medio terrestre
 #	cal treure medio ADV
@@ -126,26 +129,46 @@ REMOVE:r_na_3_mp Noun_Adj_PP IF (-1 Det + $$MascPl) (0 NP + $$MascPl) (1 Adj_PP 
 REMOVE:r_na_3_fs Noun_Adj_PP IF (-1 Det + $$FemSg) (0 NP + $$FemSg) (1 Adj_PP + $$FemSg) ;
 REMOVE:r_na_3_fp Noun_Adj_PP IF (-1 Det + $$FemPl) (0 NP + $$FemPl) (1 Adj_PP + $$FemPl) ;
 
-# cogieron rehenes
 # vía pr/n
-# dos veces y media > kaj duono
+SELECT:media_1 N IF (-3C Num) (-2 N) (-1 CnjCoo) (0 ("media")) ;
+SUBSTITUTE:media_2 ("media") ("media_duono") TARGET ("media") IF (-3C Num) (-2 N) (-1 CnjCoo) (0 ("media")) ;
+	# dos veces y media > kaj duono
 	
-#SELECT:n_a_eos_1 N IF (0 Noun_Adj_PP LINK NOT 0 Adv) (-1C Vblex) (1 <<<) ;
+SELECT:n_a_eos_1 N IF (0 Noun_Adj_PP LINK NOT 0 Adv) (-1C Vblex) (NOT -1 PP) (1 <<<) ;
 	## detonar explosivos.
-	## PERO: para parecer lógicas.
-	## PERO: mientras estaban parados.
 
 SELECT:n_a_eos_2 N IF (0 Noun_Adj_PP LINK NOT 0 NP) (-1 Det) (1 <<<) ;
 	## detonar los explosivos.
 	## PERO: Las clasificaciones más reconocidas internacionalmente son la francesa y la estadounidense.
 	## PERO: muy poco conocida.
 
-REMOVE:r_como_1 Vblex (O ("como") OR ("Como")) (*-1C Vblex BARRIER Cnj_Rel) ;
-REMOVE:r_como_2 Vblex (O ("como") OR ("Como")) (*1C Vblex BARRIER Cnj_Rel) ;
-REMOVE:r_para_1 Vblex (O ("para") OR ("Para")) (*-1C Vblex BARRIER Cnj_Rel) ;
-REMOVE:r_para_2 Vblex (O ("para") OR ("Para")) (*1C Vblex BARRIER Cnj_Rel) ;
-#REMOVE:r_bajo_1 Vblex (O ("bajo") OR ("Bajo")) (*-1C Vblex BARRIER Cnj_Rel) ;
-#REMOVE:r_bajo_2 Vblex (O ("bajo") OR ("Bajo")) (*1C Vblex BARRIER Cnj_Rel) ;
-	# PERO: cae bajo la jurisdicción (error en el desambiguador d'Apertium)
-	# PERO: ponía a los manifestantes bajo jurisdicción (ídem)
-	# PERO: antes de que los Andes se sumerjan bajo el mar (ídem)
+SELECT:n_a_eos_3 N IF (-2C N) (-1 CnjCoo) (0 Noun_Adj_PP LINK NOT 0 NP) (1 <<<) ;
+	## adquiriendo una gran reputación como poeta y crítico.
+
+# Tio estas ligita al la (mis)difinoj de accionista__n, albañil__n, gilipollas__n kaj reh/én__n
+#SELECT:n_mf_1 Masc IF (0C N LINK NOT 0 Defensa) (-1C Vblex OR Prep OR ("como")) (NOT -1 PP) (1 <<< OR Prep) ;
+	## cogieron rehenes.
+#SELECT:n_mf_2 Masc IF (0C N LINK NOT 0 Defensa) (-1C Num) (-2C Vblex OR Prep OR ("como")) (NOT -2 PP) (1 <<< OR Prep) ;
+	## cogieron tres rehenes.
+
+
+REMOVE:r_como_1 Vblex (O ("como") OR ("Como")) (*-1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_como_2 Vblex (O ("como") OR ("Como")) (*1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_para_1 Vblex (O ("para") OR ("Para")) (*-1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_para_2 Vblex (O ("para") OR ("Para")) (*1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_bajo_1 Vblex (O ("bajo") OR ("Bajo")) (*-1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_bajo_2 Vblex (O ("bajo") OR ("Bajo")) (*1 Vblex BARRIER Cnj_Rel) ;
+SELECT:bajo_3 Prep (O ("bajo") OR ("Bajo")) (1 Det) ;
+SELECT:bajo_4 Prep (O ("bajo") OR ("Bajo")) (-1 Copula) ;
+SELECT:bajo_5 Prep (O ("bajo") OR ("Bajo")) (-1C N) (1C N) ;
+#SELECT:bajo_ms Prep (0 ("bajo") OR ("Bajo")) (-1C N) (NOT -1 MascSg ) (1C N) (NOT 1 MascSg);
+	# elaborada bajo presidencia
+
+REMOVE:r_adv Adv (0 Adv) (-1C N) (1C N) ;
+	# manifestantes bajo jurisdicción
+
+#REMOVE:np_a_ms A IF (0 NP LINK 0 (adj m sg)) (-1 Prep) (1C N) (NOT 1 MascSg);
+#REMOVE:np_a_fs A IF (0 NP LINK 0 (adj f sg)) (-1 Prep) (1C N) (NOT 1 FemSg);
+#REMOVE:np_a_mp A IF (0 NP LINK 0 (adj m pl)) (-1 Prep) (1C N) (NOT 1 MascPl);
+#REMOVE:np_a_fp A IF (0 NP LINK 0 (adj f pl)) (-1 Prep) (1C N) (NOT 1 FemPl);
+	# asignaba a Armenia territorios
