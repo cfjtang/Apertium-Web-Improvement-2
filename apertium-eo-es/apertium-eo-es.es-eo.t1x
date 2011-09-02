@@ -22,6 +22,14 @@
 
     <def-cat n="prnref">
       <cat-item tags="prn.pro.ref.*"/>
+      <cat-item tags="prn.tn.ref.*"/>
+    </def-cat>
+
+    <def-cat n="pro-noref">
+      <cat-item tags="prn.pro.p1.*"/>
+      <cat-item tags="prn.pro.p2.*"/>
+      <cat-item tags="prn.pro.p3.*"/>
+      <cat-item tags="prn.pro.adv"/>
     </def-cat>
 
     <def-cat n="sent">
@@ -66,13 +74,15 @@
       <cat-item lemma="el" tags="det.def.m.sg"/>
     </def-cat>
 
+    <def-cat n="un">
+      <cat-item lemma="uno" tags="det.ind.*.*"/>
+    </def-cat>
     <def-cat n="un_sg">
       <cat-item lemma="uno" tags="det.ind.*.sg"/>
     </def-cat>
     <def-cat n="un_pl">
       <cat-item lemma="uno" tags="det.ind.*.pl"/>
     </def-cat>
-
 
    <def-cat n="det"><!--Determinants i predeterminants, van anteposats -->
       <cat-item tags="det.dem.*"/>
@@ -85,7 +95,6 @@
       <cat-item tags="predet.*"/>
       <cat-item tags="num.*"/>
     </def-cat>
-
 
    <def-cat n="dem">
       <cat-item tags="det.dem.*"/>
@@ -152,7 +161,11 @@
       <cat-item lemma="prpers" tags="prn.*"/>
     </def-cat>
 
-    <def-cat n="tn"><!--EO indefnitis i companyia sense gènere al EO-->
+    <def-cat n="si_mismo">
+      <cat-item lemma="sí mismo" tags="prn.*"/>
+    </def-cat>
+
+    <def-cat n="tn"><!--EO indefinits i companyia sense gènere al EO-->
       <cat-item tags="prn.tn.m.*"/>
       <cat-item tags="prn.tn.f.*"/>
       <cat-item tags="prn.tn.mf.*"/>
@@ -179,7 +192,6 @@
       <cat-item lemma="se" tags="prn.pro.*"/>
     </def-cat>
 
-
     <def-cat n="profort"> <!-- ver regla PRO_FUERTE...-->
       <cat-item lemma="prpers_fort" tags="prn.pro.*"/>
     </def-cat>
@@ -200,6 +212,8 @@
     <def-cat n="pro">
       <cat-item tags="prn.pro.*"/>
       <cat-item lemma="lo" tags="prn.tn.*"/>
+      <cat-item lemma="sí" tags="prn.tn.*"/>
+      <cat-item lemma="sí mismo" tags="prn.tn.*"/>
     </def-cat>
 
     <def-cat n="lo_det">
@@ -417,6 +431,10 @@
     </def-cat>
 
     <def-cat n="pronneg">
+      <cat-item lemma="nada" tags="prn.*"/>
+    </def-cat>
+
+    <def-cat n="nada">
       <cat-item lemma="nada" tags="prn.*"/>
     </def-cat>
 
@@ -676,10 +694,418 @@
       <cat-item lemma="hacer" tags="vblex.pp.m.sg"/>
     </def-cat>
 
-    <def-cat n="vbref2pasivo">
+    <def-cat n="vbref2oni">
       <cat-item lemma="formar" tags="vblex.*"/>
       <cat-item lemma="usar" tags="vblex.*"/>
+      <cat-item lemma="decir" tags="vblex.*"/>
+      <cat-item lemma="hablar" tags="vblex.*"/>
+      <cat-item lemma="comentar" tags="vblex.*"/>
+      <cat-item lemma="opinar" tags="vblex.*"/>
+      <cat-item lemma="proponer" tags="vblex.*"/>
+      <cat-item lemma="organizar" tags="vblex.*"/>
+      <cat-item lemma="querer" tags="vblex.*"/>
+      <cat-item lemma="desear" tags="vblex.*"/>
+      <cat-item lemma="emplear" tags="vblex.*"/>
+      <cat-item lemma="mostrar" tags="vblex.*"/>
+      <cat-item lemma="conocer" tags="vblex.*"/>
+      <cat-item lemma="requerir" tags="vblex.*"/>
+      <cat-item lemma="obligar" tags="vblex.*"/>
+      <cat-item lemma="aplicar" tags="vblex.*"/>
+      <cat-item lemma="utilizar" tags="vblex.*"/>
+      <cat-item lemma="usar" tags="vblex.*"/>
+      <cat-item lemma="ver" tags="vblex.*"/>
+      <cat-item lemma="observar" tags="vblex.*"/>
+      <cat-item lemma="fundar" tags="vblex.*"/>
+      <cat-item lemma="inaugurar" tags="vblex.*"/>
+      <cat-item lemma="producir" tags="vblex.*"/>
+      <cat-item lemma="fabricar" tags="vblex.*"/>
+      <cat-item lemma="estimar" tags="vblex.*"/>
+      <cat-item lemma="considerar" tags="vblex.*"/>
+      <cat-item lemma="deber" tags="vblex.*"/>
+      <cat-item lemma="poder" tags="vblex.*"/>
+      <cat-item lemma="soler" tags="vblex.*"/>
+      <cat-item lemma="acostumbrar" tags="vblex.*"/>
+      <cat-item lemma="intentar" tags="vblex.*"/>
     </def-cat>
+<!-- iĝi
+    <def-cat n="vbref2iĝi">
+      <cat-item lemma="crear" tags="vblex.*"/> 
+      <cat-item lemma="dividir" tags="vblex.*"/>
+      <cat-item lemma="ocupar" tags="vblex.*"/>
+      <cat-item lemma="deformar" tags="vblex.*"/>
+      <cat-item lemma="distorsionar" tags="vblex.*"/>
+      <cat-item lemma="originar" tags="vblex.*"/>
+      <cat-item lemma="abrir" tags="vblex.*"/>
+      <cat-item lemma="cerrar" tags="vblex.*"/>
+      <cat-item lemma="caracterizar" tags="vblex.*"/>
+      <cat-item lemma="llamar" tags="vblex.*"/>
+      <cat-item lemma="retirar" tags="vblex.*"/>
+      <cat-item lemma="hacer" tags="vblex.*"/>
+      <cat-item lemma="convertir" tags="vblex.*"/>
+	*izar
+situar
+ubicar
+encontrar
+    </def-cat>
+-->
+
+  <def-cat n="transtivos_personales">
+   <cat-item lemma="abandonar" tags="vblex.*"/>
+   <cat-item lemma="abatir" tags="vblex.*"/>
+   <cat-item lemma="abochornar" tags="vblex.*"/>
+   <cat-item lemma="abominar" tags="vblex.*"/>
+   <cat-item lemma="abordar" tags="vblex.*"/>
+   <cat-item lemma="aborrecer" tags="vblex.*"/>
+   <cat-item lemma="abrazar" tags="vblex.*"/>
+   <cat-item lemma="abrigar" tags="vblex.*"/>
+   <cat-item lemma="abrumar" tags="vblex.*"/>
+   <cat-item lemma="aburrir" tags="vblex.*"/>
+   <cat-item lemma="acallar" tags="vblex.*"/>
+   <cat-item lemma="acariciar" tags="vblex.*"/>
+   <cat-item lemma="acaudillar" tags="vblex.*"/>
+   <cat-item lemma="aceptar" tags="vblex.*"/>
+   <cat-item lemma="acercar" tags="vblex.*"/>
+   <cat-item lemma="aclimatar" tags="vblex.*"/>
+   <cat-item lemma="acoger" tags="vblex.*"/>
+   <cat-item lemma="acometer" tags="vblex.*"/>
+   <cat-item lemma="acompañar" tags="vblex.*"/>
+   <cat-item lemma="aconsejar" tags="vblex.*"/>
+   <cat-item lemma="acosar" tags="vblex.*"/>
+   <cat-item lemma="acostar" tags="vblex.*"/>
+   <cat-item lemma="acunar" tags="vblex.*"/>
+   <cat-item lemma="adiestrar" tags="vblex.*"/>
+   <cat-item lemma="admirar" tags="vblex.*"/>
+   <cat-item lemma="admitir" tags="vblex.*"/>
+   <cat-item lemma="adorar" tags="vblex.*"/>
+   <cat-item lemma="adormecer" tags="vblex.*"/>
+   <cat-item lemma="adquirir" tags="vblex.*"/>
+   <cat-item lemma="adular" tags="vblex.*"/>
+   <cat-item lemma="advertir" tags="vblex.*"/>
+   <cat-item lemma="afectar" tags="vblex.*"/>
+   <cat-item lemma="afeitar" tags="vblex.*"/>
+   <cat-item lemma="afiliar" tags="vblex.*"/>
+   <cat-item lemma="afrontar" tags="vblex.*"/>
+   <cat-item lemma="agachar" tags="vblex.*"/>
+   <cat-item lemma="agarrar" tags="vblex.*"/>
+   <cat-item lemma="agitar" tags="vblex.*"/>
+   <cat-item lemma="agotar" tags="vblex.*"/>
+   <cat-item lemma="agradecer" tags="vblex.*"/>
+   <cat-item lemma="agrandar" tags="vblex.*"/>
+   <cat-item lemma="agregar" tags="vblex.*"/>
+   <cat-item lemma="agrupar" tags="vblex.*"/>
+   <cat-item lemma="aguantar" tags="vblex.*"/>
+   <cat-item lemma="aguardar" tags="vblex.*"/>
+   <cat-item lemma="agujerear" tags="vblex.*"/>
+   <cat-item lemma="ahogar" tags="vblex.*"/>
+   <cat-item lemma="ahorcar" tags="vblex.*"/>
+   <cat-item lemma="airear" tags="vblex.*"/>
+   <cat-item lemma="aislar" tags="vblex.*"/>
+   <cat-item lemma="alabar" tags="vblex.*"/>
+   <cat-item lemma="albergar" tags="vblex.*"/>
+   <cat-item lemma="alcanzar" tags="vblex.*"/>
+   <cat-item lemma="alcoholizar" tags="vblex.*"/>
+   <cat-item lemma="alegrar" tags="vblex.*"/>
+   <cat-item lemma="alejar" tags="vblex.*"/>
+   <cat-item lemma="alentar" tags="vblex.*"/>
+   <cat-item lemma="alimentar" tags="vblex.*"/>
+   <cat-item lemma="alinear" tags="vblex.*"/>
+   <cat-item lemma="alistar" tags="vblex.*"/>
+   <cat-item lemma="aliviar" tags="vblex.*"/>
+   <cat-item lemma="alojar" tags="vblex.*"/>
+   <cat-item lemma="alterar" tags="vblex.*"/>
+   <cat-item lemma="aludir" tags="vblex.*"/>
+   <cat-item lemma="alumbrar" tags="vblex.*"/>
+   <cat-item lemma="alzar" tags="vblex.*"/>
+   <cat-item lemma="amamantar" tags="vblex.*"/>
+   <cat-item lemma="amar" tags="vblex.*"/>
+   <cat-item lemma="amargar" tags="vblex.*"/>
+   <cat-item lemma="amarrar" tags="vblex.*"/>
+   <cat-item lemma="amenazar" tags="vblex.*"/>
+   <cat-item lemma="amonestar" tags="vblex.*"/>
+   <cat-item lemma="amontonar" tags="vblex.*"/>
+   <cat-item lemma="angustiar" tags="vblex.*"/>
+   <cat-item lemma="animar" tags="vblex.*"/>
+   <cat-item lemma="aniquilar" tags="vblex.*"/>
+   <cat-item lemma="anular" tags="vblex.*"/>
+   <cat-item lemma="apaciguar" tags="vblex.*"/>
+   <cat-item lemma="apalear" tags="vblex.*"/>
+   <cat-item lemma="apartar" tags="vblex.*"/>
+   <cat-item lemma="apasionar" tags="vblex.*"/>
+   <cat-item lemma="apelar" tags="vblex.*"/>
+   <cat-item lemma="apetecer" tags="vblex.*"/>
+   <cat-item lemma="aplastar" tags="vblex.*"/>
+   <cat-item lemma="aplaudir" tags="vblex.*"/>
+   <cat-item lemma="aporrear" tags="vblex.*"/>
+   <cat-item lemma="apoyar" tags="vblex.*"/>
+   <cat-item lemma="apreciar" tags="vblex.*"/>
+   <cat-item lemma="apresurar" tags="vblex.*"/>
+   <cat-item lemma="apretar" tags="vblex.*"/>
+   <cat-item lemma="aprobar" tags="vblex.*"/>
+   <cat-item lemma="aprovechar" tags="vblex.*"/>
+   <cat-item lemma="aprovisionar" tags="vblex.*"/>
+   <cat-item lemma="apuntar" tags="vblex.*"/>
+   <cat-item lemma="apuñalar" tags="vblex.*"/>
+   <cat-item lemma="apurar" tags="vblex.*"/>
+   <cat-item lemma="armar" tags="vblex.*"/>
+   <cat-item lemma="arrancar" tags="vblex.*"/>
+   <cat-item lemma="arrasar" tags="vblex.*"/>
+   <cat-item lemma="arrastrar" tags="vblex.*"/>
+   <cat-item lemma="arrestar" tags="vblex.*"/>
+   <cat-item lemma="arriesgar" tags="vblex.*"/>
+   <cat-item lemma="arrimar" tags="vblex.*"/>
+   <cat-item lemma="arrinconar" tags="vblex.*"/>
+   <cat-item lemma="arrojar" tags="vblex.*"/>
+   <cat-item lemma="arropar" tags="vblex.*"/>
+   <cat-item lemma="arruinar" tags="vblex.*"/>
+   <cat-item lemma="asalariar" tags="vblex.*"/>
+   <cat-item lemma="asar" tags="vblex.*"/>
+   <cat-item lemma="asediar" tags="vblex.*"/>
+   <cat-item lemma="asegurar" tags="vblex.*"/>
+   <cat-item lemma="asesorar" tags="vblex.*"/>
+   <cat-item lemma="asir" tags="vblex.*"/>
+   <cat-item lemma="asolar" tags="vblex.*"/>
+   <cat-item lemma="asombrar" tags="vblex.*"/>
+   <cat-item lemma="asustar" tags="vblex.*"/>
+   <cat-item lemma="atacar" tags="vblex.*"/>
+   <cat-item lemma="atar" tags="vblex.*"/>
+   <cat-item lemma="atascar" tags="vblex.*"/>
+   <cat-item lemma="atemorizar" tags="vblex.*"/>
+   <cat-item lemma="atender" tags="vblex.*"/>
+   <cat-item lemma="aterrar" tags="vblex.*"/>
+   <cat-item lemma="aterrorizar" tags="vblex.*"/>
+   <cat-item lemma="atizar" tags="vblex.*"/>
+   <cat-item lemma="atormentar" tags="vblex.*"/>
+   <cat-item lemma="atornillar" tags="vblex.*"/>
+   <cat-item lemma="atraer" tags="vblex.*"/>
+   <cat-item lemma="atrapar" tags="vblex.*"/>
+   <cat-item lemma="atrasar" tags="vblex.*"/>
+   <cat-item lemma="atravesar" tags="vblex.*"/>
+   <cat-item lemma="atropellar" tags="vblex.*"/>
+   <cat-item lemma="aunar" tags="vblex.*"/>
+   <cat-item lemma="aupar" tags="vblex.*"/>
+   <cat-item lemma="auscultar" tags="vblex.*"/>
+   <cat-item lemma="autentificar" tags="vblex.*"/>
+   <cat-item lemma="autoinculpar" tags="vblex.*"/>
+   <cat-item lemma="automatizar" tags="vblex.*"/>
+   <cat-item lemma="autorizar" tags="vblex.*"/>
+   <cat-item lemma="auxiliar" tags="vblex.*"/>
+   <cat-item lemma="avalar" tags="vblex.*"/>
+   <cat-item lemma="aventajar" tags="vblex.*"/>
+   <cat-item lemma="avergonzar" tags="vblex.*"/>
+   <cat-item lemma="avisar" tags="vblex.*"/>
+   <cat-item lemma="ayudar" tags="vblex.*"/>
+   <cat-item lemma="azotar" tags="vblex.*"/>
+   <cat-item lemma="azuzar" tags="vblex.*"/>
+   <cat-item lemma="bailar" tags="vblex.*"/>
+   <cat-item lemma="balancear" tags="vblex.*"/>
+   <cat-item lemma="bañar" tags="vblex.*"/>
+   <cat-item lemma="barrer" tags="vblex.*"/>
+   <cat-item lemma="batir" tags="vblex.*"/>
+   <cat-item lemma="bautizar" tags="vblex.*"/>
+   <cat-item lemma="bendecir" tags="vblex.*"/>
+   <cat-item lemma="beneficiar" tags="vblex.*"/>
+   <cat-item lemma="besar" tags="vblex.*"/>
+   <cat-item lemma="broncear" tags="vblex.*"/>
+   <cat-item lemma="burlar" tags="vblex.*"/>
+   <cat-item lemma="buscar" tags="vblex.*"/>
+   <cat-item lemma="cabrear" tags="vblex.*"/>
+   <cat-item lemma="calar" tags="vblex.*"/>
+   <cat-item lemma="calcular" tags="vblex.*"/>
+   <cat-item lemma="calentar" tags="vblex.*"/>
+   <cat-item lemma="calmar" tags="vblex.*"/>
+   <cat-item lemma="calumniar" tags="vblex.*"/>
+   <cat-item lemma="cambiar" tags="vblex.*"/>
+   <cat-item lemma="canjear" tags="vblex.*"/>
+   <cat-item lemma="canonizar" tags="vblex.*"/>
+   <cat-item lemma="cansar" tags="vblex.*"/>
+   <cat-item lemma="capacitar" tags="vblex.*"/>
+   <cat-item lemma="capar" tags="vblex.*"/>
+   <cat-item lemma="capitanear" tags="vblex.*"/>
+   <cat-item lemma="captar" tags="vblex.*"/>
+   <cat-item lemma="capturar" tags="vblex.*"/>
+   <cat-item lemma="cargar" tags="vblex.*"/>
+   <cat-item lemma="castigar" tags="vblex.*"/>
+   <cat-item lemma="castrar" tags="vblex.*"/>
+   <cat-item lemma="cautivar" tags="vblex.*"/>
+   <cat-item lemma="cazar" tags="vblex.*"/>
+   <cat-item lemma="ceder" tags="vblex.*"/>
+   <cat-item lemma="cegar" tags="vblex.*"/>
+   <cat-item lemma="cepillar" tags="vblex.*"/>
+   <cat-item lemma="cercar" tags="vblex.*"/>
+   <cat-item lemma="cercenar" tags="vblex.*"/>
+   <cat-item lemma="cerrar" tags="vblex.*"/>
+   <cat-item lemma="certificar" tags="vblex.*"/>
+   <cat-item lemma="chamuscar" tags="vblex.*"/>
+   <cat-item lemma="chillar" tags="vblex.*"/>
+   <cat-item lemma="citar" tags="vblex.*"/>
+   <cat-item lemma="civilizar" tags="vblex.*"/>
+   <cat-item lemma="clasificar" tags="vblex.*"/>
+   <cat-item lemma="clavar" tags="vblex.*"/>
+   <cat-item lemma="cocer" tags="vblex.*"/>
+   <cat-item lemma="cocinar" tags="vblex.*"/>
+   <cat-item lemma="codiciar" tags="vblex.*"/>
+   <cat-item lemma="coger" tags="vblex.*"/>
+   <cat-item lemma="cohesionar" tags="vblex.*"/>
+   <cat-item lemma="colgar" tags="vblex.*"/>
+   <cat-item lemma="colocar" tags="vblex.*"/>
+   <cat-item lemma="columpiar" tags="vblex.*"/>
+   <cat-item lemma="comer" tags="vblex.*"/>
+   <cat-item lemma="comisionar" tags="vblex.*"/>
+   <cat-item lemma="compadecer" tags="vblex.*"/>
+   <cat-item lemma="comparar" tags="vblex.*"/>
+   <cat-item lemma="compartir" tags="vblex.*"/>
+   <cat-item lemma="complementar" tags="vblex.*"/>
+   <cat-item lemma="completar" tags="vblex.*"/>
+   <cat-item lemma="comprar" tags="vblex.*"/>
+   <cat-item lemma="comprender" tags="vblex.*"/>
+   <cat-item lemma="concernir" tags="vblex.*"/>
+   <cat-item lemma="conciliar" tags="vblex.*"/>
+   <cat-item lemma="condenar" tags="vblex.*"/>
+   <cat-item lemma="condicionar" tags="vblex.*"/>
+   <cat-item lemma="condoler" tags="vblex.*"/>
+   <cat-item lemma="conferir" tags="vblex.*"/>
+   <cat-item lemma="confesar" tags="vblex.*"/>
+   <cat-item lemma="confinar" tags="vblex.*"/>
+   <cat-item lemma="confundir" tags="vblex.*"/>
+   <cat-item lemma="congelar" tags="vblex.*"/>
+   <cat-item lemma="conllevar" tags="vblex.*"/>
+   <cat-item lemma="conmemorar" tags="vblex.*"/>
+   <cat-item lemma="conminar" tags="vblex.*"/>
+   <cat-item lemma="conmover" tags="vblex.*"/>
+   <cat-item lemma="conocer" tags="vblex.*"/>
+   <cat-item lemma="conseguir" tags="vblex.*"/>
+   <cat-item lemma="conservar" tags="vblex.*"/>
+   <cat-item lemma="considerar" tags="vblex.*"/>
+   <cat-item lemma="consolar" tags="vblex.*"/>
+   <cat-item lemma="consolidar" tags="vblex.*"/>
+   <cat-item lemma="consternar" tags="vblex.*"/>
+   <cat-item lemma="constreñir" tags="vblex.*"/>
+   <cat-item lemma="consumir" tags="vblex.*"/>
+   <cat-item lemma="contar" tags="vblex.*"/>
+   <cat-item lemma="contener" tags="vblex.*"/>
+   <cat-item lemma="contentar" tags="vblex.*"/>
+   <cat-item lemma="contraatacar" tags="vblex.*"/>
+   <cat-item lemma="contradecir" tags="vblex.*"/>
+   <cat-item lemma="contrarrestar" tags="vblex.*"/>
+   <cat-item lemma="contratar" tags="vblex.*"/>
+   <cat-item lemma="controlar" tags="vblex.*"/>
+   <cat-item lemma="contusionar" tags="vblex.*"/>
+   <cat-item lemma="convencer" tags="vblex.*"/>
+   <cat-item lemma="convertir" tags="vblex.*"/>
+   <cat-item lemma="convocar" tags="vblex.*"/>
+   <cat-item lemma="coordinar" tags="vblex.*"/>
+   <cat-item lemma="copiar" tags="vblex.*"/>
+   <cat-item lemma="coronar" tags="vblex.*"/>
+   <cat-item lemma="corregir" tags="vblex.*"/>
+   <cat-item lemma="corroborar" tags="vblex.*"/>
+   <cat-item lemma="corroer" tags="vblex.*"/>
+   <cat-item lemma="corromper" tags="vblex.*"/>
+   <cat-item lemma="cortar" tags="vblex.*"/>
+   <cat-item lemma="cortejar" tags="vblex.*"/>
+   <cat-item lemma="coser" tags="vblex.*"/>
+   <cat-item lemma="cosquillear" tags="vblex.*"/>
+   <cat-item lemma="crear" tags="vblex.*"/>
+   <cat-item lemma="creer" tags="vblex.*"/>
+   <cat-item lemma="criar" tags="vblex.*"/>
+   <cat-item lemma="criminalizar" tags="vblex.*"/>
+   <cat-item lemma="criticar" tags="vblex.*"/>
+   <cat-item lemma="crucificar" tags="vblex.*"/>
+   <cat-item lemma="cuadriplicar" tags="vblex.*"/>
+   <cat-item lemma="cuadruplicar" tags="vblex.*"/>
+   <cat-item lemma="cubrir" tags="vblex.*"/>
+   <cat-item lemma="cuestionar" tags="vblex.*"/>
+   <cat-item lemma="culpar" tags="vblex.*"/>
+   <cat-item lemma="cultivar" tags="vblex.*"/>
+   <cat-item lemma="curar" tags="vblex.*"/>
+   <cat-item lemma="curtir" tags="vblex.*"/>
+   <cat-item lemma="custodiar" tags="vblex.*"/>
+   <cat-item lemma="debilitar" tags="vblex.*"/>
+   <cat-item lemma="decepcionar" tags="vblex.*"/>
+   <cat-item lemma="decorar" tags="vblex.*"/>
+   <cat-item lemma="degradar" tags="vblex.*"/>
+   <cat-item lemma="degustar" tags="vblex.*"/>
+   <cat-item lemma="delatar" tags="vblex.*"/>
+   <cat-item lemma="demandar" tags="vblex.*"/>
+   <cat-item lemma="democratizar" tags="vblex.*"/>
+   <cat-item lemma="demoler" tags="vblex.*"/>
+   <cat-item lemma="denominar" tags="vblex.*"/>
+   <cat-item lemma="denunciar" tags="vblex.*"/>
+   <cat-item lemma="deponer" tags="vblex.*"/>
+   <cat-item lemma="depurar" tags="vblex.*"/>
+   <cat-item lemma="derretir" tags="vblex.*"/>
+   <cat-item lemma="derribar" tags="vblex.*"/>
+   <cat-item lemma="derrocar" tags="vblex.*"/>
+   <cat-item lemma="derrotar" tags="vblex.*"/>
+   <cat-item lemma="desacostumbrar" tags="vblex.*"/>
+   <cat-item lemma="desacreditar" tags="vblex.*"/>
+   <cat-item lemma="desactivar" tags="vblex.*"/>
+   <cat-item lemma="desagradar" tags="vblex.*"/>
+   <cat-item lemma="desahuciar" tags="vblex.*"/>
+   <cat-item lemma="desanimar" tags="vblex.*"/>
+   <cat-item lemma="desaprender" tags="vblex.*"/>
+   <cat-item lemma="desaprobar" tags="vblex.*"/>
+   <cat-item lemma="desaprovechar" tags="vblex.*"/>
+   <cat-item lemma="desarmar" tags="vblex.*"/>
+   <cat-item lemma="desarrollar" tags="vblex.*"/>
+   <cat-item lemma="desarticular" tags="vblex.*"/>
+   <cat-item lemma="desatar" tags="vblex.*"/>
+   <cat-item lemma="desatender" tags="vblex.*"/>
+   <cat-item lemma="descargar" tags="vblex.*"/>
+   <cat-item lemma="descartar" tags="vblex.*"/>
+   <cat-item lemma="descentrar" tags="vblex.*"/>
+   <cat-item lemma="desconocer" tags="vblex.*"/>
+   <cat-item lemma="descoordinar" tags="vblex.*"/>
+   <cat-item lemma="descubrir" tags="vblex.*"/>
+   <cat-item lemma="desdoblar" tags="vblex.*"/>
+   <cat-item lemma="desear" tags="vblex.*"/>
+   <cat-item lemma="desenganchar" tags="vblex.*"/>
+   <cat-item lemma="desengañar" tags="vblex.*"/>
+   <cat-item lemma="desenmascarar" tags="vblex.*"/>
+   <cat-item lemma="desenterrar" tags="vblex.*"/>
+   <cat-item lemma="desequilibrar" tags="vblex.*"/>
+   <cat-item lemma="desesperanzar" tags="vblex.*"/>
+   <cat-item lemma="desesperar" tags="vblex.*"/>
+   <cat-item lemma="desestabilizar" tags="vblex.*"/>
+   <cat-item lemma="desestimar" tags="vblex.*"/>
+   <cat-item lemma="desheredar" tags="vblex.*"/>
+   <cat-item lemma="desilusionar" tags="vblex.*"/>
+   <cat-item lemma="desinfectar" tags="vblex.*"/>
+   <cat-item lemma="desintoxicar" tags="vblex.*"/>
+   <cat-item lemma="desmentir" tags="vblex.*"/>
+   <cat-item lemma="desobedecer" tags="vblex.*"/>
+   <cat-item lemma="desocultar" tags="vblex.*"/>
+   <cat-item lemma="desordenar" tags="vblex.*"/>
+   <cat-item lemma="desorientar" tags="vblex.*"/>
+   <cat-item lemma="despachar" tags="vblex.*"/>
+   <cat-item lemma="despedazar" tags="vblex.*"/>
+   <cat-item lemma="despedir" tags="vblex.*"/>
+   <cat-item lemma="despegar" tags="vblex.*"/>
+   <cat-item lemma="despeinar" tags="vblex.*"/>
+   <cat-item lemma="despejar" tags="vblex.*"/>
+   <cat-item lemma="despeñar" tags="vblex.*"/>
+   <cat-item lemma="desperdigar" tags="vblex.*"/>
+   <cat-item lemma="despertar" tags="vblex.*"/>
+   <cat-item lemma="desplazar" tags="vblex.*"/>
+   <cat-item lemma="desplegar" tags="vblex.*"/>
+   <cat-item lemma="desplumar" tags="vblex.*"/>
+   <cat-item lemma="despojar" tags="vblex.*"/>
+   <cat-item lemma="despolitizar" tags="vblex.*"/>
+   <cat-item lemma="desposeer" tags="vblex.*"/>
+   <cat-item lemma="despreciar" tags="vblex.*"/>
+   <cat-item lemma="desprestigiar" tags="vblex.*"/>
+   <cat-item lemma="destacar" tags="vblex.*"/>
+   <cat-item lemma="destapar" tags="vblex.*"/>
+   <cat-item lemma="desterrar" tags="vblex.*"/>
+   <cat-item lemma="destituir" tags="vblex.*"/>
+   <cat-item lemma="destronar" tags="vblex.*"/>
+   <cat-item lemma="destrozar" tags="vblex.*"/>
+   <cat-item lemma="destruir" tags="vblex.*"/>
+   <cat-item lemma="desvestir" tags="vblex.*"/>
+   <cat-item lemma="desvincular" tags="vblex.*"/>
+   <cat-item lemma="detener" tags="vblex.*"/>
+   <cat-item lemma="detentar" tags="vblex.*"/>
+   <cat-item lemma="detestar" tags="vblex.*"/>
+  </def-cat>
 
     <def-cat n="monato">
       <cat-item lemma="enero" tags="n.m.sg"/>
@@ -730,7 +1156,6 @@
       <attr-item tags="vbtr_ntr.pp"/>
       <attr-item tags="vbtr_ntr.geradj"/>
     </def-attr>
-
 
     <def-attr n="a_det">
       <attr-item tags="det.dem"/>
@@ -824,6 +1249,14 @@
       <attr-item tags="ref"/>
       <attr-item tags="nn"/><!--EO-->
       <attr-item tags="adv"/><!--EO-->
+    </def-attr>
+
+    <def-attr n="tipus_prn_tn">
+      <attr-item tags="tn"/>
+    </def-attr>
+
+    <def-attr n="tipus_prn_ref">
+      <attr-item tags="ref"/>
     </def-attr>
 
     <def-attr n="tipoenc_pro">
@@ -1243,24 +1676,16 @@
    </choose>
 </def-macro>
 
-
-    <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
-      <choose>
-	<when>
-	  <test>
-	    <not>
-	      <equal>
-		<b pos="1"/>
-		<lit v=" "/>
-	      </equal>
-	    </not>
-	  </test>
-	  <out>
-	    <b pos="1"/>
-	  </out>
-	</when>     	
-      </choose>
-    </def-macro>
+  <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+     	<choose>
+     	  <when>
+     	    <test><not><equal><b pos="1"/><lit v=" "/></equal></not></test>
+            <out>
+              <b pos="1"/>
+            </out>
+          </when>     	
+     	</choose>
+  </def-macro>
 
 
 	<!-- PROVISIONAL -->
@@ -2355,6 +2780,12 @@
                       <clip pos="1" side="sl" part="temps"/>
                       <lit-tag v="prs"/><!--present subjunctiu digui -->
                     </equal>
+<!-- tro da eraroj de la senambiguigilo, tamen estas problemo en la persona 2p.imp = 3p.pri
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="imp"/>
+                    </equal>
+-->
                   </or>
                 </test>
                 <let>
@@ -2793,6 +3224,7 @@
 	  <var n="nombre"/>
 	  <clip pos="2" side="tl" part="nbr"/>
 	</let>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
 	<out>
 	  <chunk name="ant" case="caseFirstWord">
 	    <tags>
@@ -2828,6 +3260,7 @@
 	  <var n="nombre"/>
 	  <clip pos="2" side="tl" part="nbr"/>
 	</let>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
 	<out>
 	  <chunk name="nom" case="caseFirstWord">
 	    <tags>
@@ -2883,7 +3316,7 @@
 	      <clip pos="2" side="tl" part="nbr"/>
 	      <lit-tag v="4"/>
 	    </lu>
-	    <b/>
+	    <b pos="1"/>
 	    <lu>
 	      <clip pos="2" side="tl" part="lem"/>
 	      <lit-tag v="np"/>
@@ -2947,6 +3380,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3004,6 +3441,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3039,6 +3480,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3082,6 +3527,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3126,6 +3575,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3178,6 +3631,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3224,6 +3681,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -3279,6 +3740,10 @@
             </lu>
           </chunk>
         </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
       </action>
     </rule>
 
@@ -13469,6 +13934,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="3"/>
         </call-macro>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
 	    <out>
                   <chunk name="inf" case="caseFirstWord">
                     <tags>
@@ -13493,7 +13960,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
       </action>
     </rule>
 
-<rule comment="REGLA: A EL INF (al haber encontrado -> trovinte)">
+<rule comment="REGLA: A EL HABERinf + PP (al haber encontrado -> trovinte)">
       <pattern>
         <pattern-item n="a"/>
 	<pattern-item n="el_det_ms"/>
@@ -13507,7 +13974,106 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
         <call-macro n="tipus_verbs">
           <with-param pos="4"/>
         </call-macro>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+        <out>
+          <chunk name="inf" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="4" side="tl" part="a_verb"/></tag>
+              <tag><lit-tag v="gerpast"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+            </tags>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+              <clip pos="4" side="tl" part="sep"/>
+              <lit-tag v="gerpast"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NADA MÁS INF (nada más encontrar -> ĵus trovinte)">
+      <pattern>
+        <pattern-item n="nada"/>
+	<pattern-item n="mas"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>          	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
 	    <out>
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="ĵus"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="1"/>
+                  <chunk name="inf" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+	              <tag><lit-tag v="gerpast"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="3" side="tl" part="lemh"/>
+                      <clip pos="3" side="tl" part="a_verb"/>
+                      <clip pos="3" side="tl" part="sep"/>
+	              <lit-tag v="gerpast"/>
+                      <clip pos="3" side="tl" part="lemq"/>
+                    </lu>
+	      </chunk>
+	    </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: NADA MÁS HABERinf + PP (nada más haber encontrado -> ĵus trovinte)">
+      <pattern>
+        <pattern-item n="nada"/>
+	<pattern-item n="mas"/>
+	<pattern-item n="haber_inf"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>          	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+	    <out>
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="ĵus"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="1"/>
                   <chunk name="inf" case="caseFirstWord">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -13524,6 +14090,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     </lu>
 	      </chunk>
 	    </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -16657,9 +17225,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    </lu>
 	  </chunk>
         </out>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -16781,9 +17346,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             </lu>
 	  </chunk>
         </out>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -16921,9 +17483,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    </lu>
 	  </chunk>
         </out>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -17076,9 +17635,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </lu>
                   </chunk>
                 </out>
-<!--
-No sé com, però això fa que la segona paraula de la frase no surti en majúscula
--->
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
@@ -17089,10 +17645,10 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 
     <!-- reglas de pasivas reflejas -->
 
-    <rule comment="REGLA: REF + VERB tipo a pasiva (se usa -> estas uzata)">
+    <rule comment="REGLA: REF + VERB tipo pasiva refleja a impersonal (se usa -> oni uzas)">
       <pattern>
 	<pattern-item n="prnref"/>
-	<pattern-item n="vbref2pasivo"/>
+	<pattern-item n="vbref2oni"/>
       </pattern>
       <action>    	
 	<call-macro n="firstWord">
@@ -17105,11 +17661,10 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <with-param pos="2"/>
         </call-macro>
 
+<!--
                 <out>
                   <chunk name="verbcj_perif" case="caseFirstWord">
                     <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
                       <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
@@ -17130,12 +17685,168 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                     </lu>
                   </chunk>
                 </out>
+-->
+                <out>
+	  <chunk name="prpers" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+	    </tags>
+            <lu>
+              <lit v="oni"/>
+              <lit-tag v="prn.tn.sg.nom"/>
+            </lu>
+	  </chunk>
+	  <b pos="1"/>
+          <chunk name="verbcj_perif">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="sep"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+	  </chunk>
+        </out>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
         </let>
       </action>
     </rule>
+
+    <rule comment="REGLA: REF + VERB tipo pasiva refleja reflexivo (se observa a sí mismo -> observas sin)">
+      <pattern>
+	<pattern-item n="prnref"/>
+	<pattern-item n="vbref2oni"/>
+	<pattern-item n="a"/>
+	<pattern-item n="si_mismo"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="2"/>
+        </call-macro>
+
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="sep"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+	  </chunk>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <out>
+	  <b pos="3"/>
+	  <chunk name="pro_obj">
+	    <tags>
+	      <tag><lit-tag v="SN.ref.p3.mf.sp"/></tag>
+	    </tags>
+	    <lu>
+              <lit v="sin"/>
+              <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	    </lu>
+	  </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: NO REF + VERB tipo pasiva refleja a impersonal (no se usa -> oni ne uzas)">
+      <pattern>
+	<pattern-item n="no"/>
+	<pattern-item n="prnref"/>
+	<pattern-item n="vbref2oni"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="3"/>
+        </call-macro>
+
+        <out>
+	  <chunk name="prpers" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+	    </tags>
+            <lu>
+              <lit v="oni"/>
+              <lit-tag v="prn.tn.sg.nom"/>
+            </lu>
+	  </chunk>
+	  <b pos="1"/>
+          <chunk name="adv">
+            <tags>
+              <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+              <tag><clip pos="1" side="tl" part="neg"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+            </lu>
+          </chunk>
+	  <b pos="2"/>
+          <chunk name="verbcj_perif">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+	  </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
     <!-- reglas de pronombre -->
 
@@ -17188,6 +17899,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	  <chunk name="pro_obj">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
 	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 	      <tag><clip pos="1" side="tl" part="pers"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -17196,6 +17908,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_prn"/>
+	      <clip pos="1" side="tl" part="tipus_prn_tn"/>
 	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
 	      <clip pos="1" side="tl" part="pers"/>
 	      <clip pos="1" side="tl" part="gen"/>
@@ -17236,6 +17949,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	  <chunk name="pro_obj">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
 	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 	      <tag><clip pos="1" side="tl" part="pers"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -17244,6 +17958,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	    <lu>
               <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_prn"/>
+	      <clip pos="1" side="tl" part="tipus_prn_tn"/>
 	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
 	      <clip pos="1" side="tl" part="pers"/>
 	      <clip pos="1" side="tl" part="gen"/>
@@ -17257,6 +17972,93 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	</let>
       </action>
     </rule>
+
+<!-- kaŭzas pli da strangaĵoj, ol ĝi riparas (ĉefe, sed ne nur, pro "como = pr")
+    <rule comment="REGLA: PREP PRON VERB ( en sí mismo fue -> en si mem estis ) - evitas la antaŭan ŝanĝon">
+      <pattern>
+	<pattern-item n="prep"/>
+	<pattern-item n="pro"/>
+	<pattern-item n="verbcj"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="correccion_lo">
+          <with-param pos="2"/>
+        </call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+
+        <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
+	<out>
+          <chunk namefrom="nprep" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+	  <chunk name="pro_obj">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="tipus_prn_ref"/></tag>
+	      <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="2" side="tl" part="pers"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <clip pos="2" side="tl" part="a_prn"/>
+	      <clip pos="2" side="tl" part="tipus_prn_tn"/>
+	      <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+	      <clip pos="2" side="tl" part="pers"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+          <b pos="2"/>
+          <chunk name="verbcj">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+-->
+
 
 
 <!-- montriĝas, ke ofte temas pri verboj mankantaj en nia vortaro; ni konsideras la nekonataĵon kiel verbon por helpi la postan sintaksan analizon -->
@@ -17285,6 +18087,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		  <chunk name="pro_obj" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
+	              <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="tl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -17293,6 +18096,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		    <lu>
 	              <clip pos="1" side="tl" part="lem"/>
 		      <clip pos="1" side="tl" part="a_prn"/>
+	              <clip pos="1" side="tl" part="tipus_prn_tn"/>
 		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
 		      <clip pos="1" side="tl" part="pers"/>
 		      <clip pos="1" side="tl" part="gen"/>
@@ -17591,34 +18395,390 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
           <with-param pos="1"/>
         </call-macro>
 
+     <choose>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="hacer"/>
+            </equal>
+          </test>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <out>
+          <chunk name="verbcj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><lit-tag v="vbtr"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <lit-tag v="igi"/>
+              <clip pos="2" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        </when>
+        <otherwise>
 	<out>
-                  <chunk name="verbcj_perif" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="1" side="tl" part="temps"/></tag>
-                      <tag><clip pos="1" side="tl" part="pers"/></tag>
-                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
-		      <tag><var n="tipus_verb"/></tag>
-		      <tag><var n="tipus_verb2"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="1" side="tl" part="lemh"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
-                      <clip pos="1" side="tl" part="lemq"/>
-                    </lu>
-	    <b pos="1"/>
-                    <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="sep"/>
-                      <clip pos="2" side="tl" part="temps"/>
-                      <clip pos="2" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                </out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="sep"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        </otherwise>
+     </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: VERB conjugat + HABERinf + PP (quería haber cantado; EOes)">
+      <pattern>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="haber_inf"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="tipus_verb2">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+
+	<out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="esti"/>
+              <lit-tag v="vbser.inf"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <lit-tag v="pp3"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: VERB conjugat + HABERinf + VERBser-pp + PP (kompleksa pasivo: pudo haber sido cantado; EOes)">
+      <pattern>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="haber_inf"/>
+	<pattern-item n="ser-pp"/>
+	<pattern-item n="pp"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+<!-- ĉar pasivo, prefere vbser
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+-->
+        <call-macro n="tipus_verb2">
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+
+	<out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="esti"/>
+              <lit-tag v="vbser.inf"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+              <lit-tag v="pp"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="4"/></call-macro>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: VERB conjugat + HABERinf + VERBser-pp + PP + POR  (kompleksa pasivo: pudo haber sido cantado; EOes)">
+      <pattern>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="haber_inf"/>
+	<pattern-item n="ser-pp"/>
+	<pattern-item n="pp"/>
+	<pattern-item n="por"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+<!-- ĉar pasivo, prefere vbser
+        <call-macro n="tipus_verbs">
+          <with-param pos="1"/>
+        </call-macro>
+-->
+        <call-macro n="tipus_verb2">
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+
+	<out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><lit-tag v="vbser"/></tag>	<!-- pasivo -->
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="esti"/>
+              <lit-tag v="vbser.inf"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+              <lit-tag v="pp"/>
+              <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+        <out>
+          <b pos="4"/> <!-- ŝanĝo al DE-->
+	  <chunk name="de">
+	    <tags>
+	      <tag><lit-tag v="pr"/></tag>
+	    </tags>
+            <lu>
+              <lit v="de"/>
+              <lit-tag v="pr"/>
+            </lu>
+	  </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: PRO VERB conjugat + INF (lo quería cantar; EOes)">
+      <pattern>
+<!-- 	<pattern-item n="pro"/> -->
+        <pattern-item n="pro-noref"/>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+        <!--<call-macro n="tipus_verb2">
+          <with-param pos="2"/>
+        </call-macro>-->
+        <call-macro n="set_temps">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="correccion_lo">
+          <with-param pos="1"/>
+        </call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+
+     <choose>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="2" side="sl" part="lem"/>
+              <lit v="hacer"/>
+            </equal>
+          </test>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <out>
+          <chunk name="verbcj" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><lit-tag v="vbtr"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <lit-tag v="igi"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        </when>
+        <otherwise>
+	<out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="sep"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </otherwise>
+     </choose>
+
+        <out>
+          <b pos="2"/>
+	  <chunk name="pro_obj">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_prn"/>
+	      <clip pos="1" side="tl" part="tipus_prn_tn"/>
+	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+        </out>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
@@ -17971,9 +19131,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 </out>
             </otherwise>
 	</choose>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -18435,6 +19592,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		  <chunk name="pro_obj" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
+	              <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -18443,6 +19601,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		    <lu>
 	              <clip pos="1" side="tl" part="lem"/>
 		      <clip pos="1" side="tl" part="a_prn"/>
+	              <clip pos="1" side="tl" part="tipus_prn_tn"/>
 		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
 		      <clip pos="1" side="sl" part="pers"/>
 		      <clip pos="1" side="tl" part="gen"/>
@@ -18542,6 +19701,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		  <chunk name="pro_obj" case="caseFirstWord">
 		    <tags>
 		      <tag><lit-tag v="SN"/></tag>
+	              <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
 		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
 		      <tag><clip pos="1" side="sl" part="pers"/></tag>
 		      <tag><clip pos="1" side="tl" part="gen"/></tag>
@@ -18550,6 +19710,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 		   <lu>
 	              <clip pos="1" side="tl" part="lem"/>
 		      <clip pos="1" side="tl" part="a_prn"/>
+	              <clip pos="1" side="tl" part="tipus_prn_tn"/>
 		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
 		      <clip pos="1" side="sl" part="pers"/>
 		      <clip pos="1" side="tl" part="gen"/>
@@ -19839,9 +21000,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 </out>
             </otherwise>
 	</choose>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -20091,9 +21249,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 </out>
             </otherwise>
 	</choose>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -20262,9 +21417,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 </out>
             </otherwise>
 	</choose>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -20468,9 +21620,6 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 </out>
             </otherwise>
 	</choose>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -21321,7 +22470,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	<out>
 	  <chunk name="prn" case="caseFirstWord">
 	    <tags>
-	      <tag><lit-tag v="SNrelatiu1"/></tag>
+	      <tag><lit-tag v="SNrelatiu"/></tag>
 	      <tag><var n="nombre"/></tag>
 	      <tag><var n="case"/></tag>
               <tag><var n="changecase"/></tag>
@@ -21373,7 +22522,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	  <b pos="1"/>
 	  <chunk name="prn">
 	    <tags>
-	      <tag><lit-tag v="SNrelatiu2"/></tag>
+	      <tag><lit-tag v="SNrelatiu"/></tag>
               <tag><lit-tag v="rel"/></tag>
 	      <tag><var n="nombre"/></tag>
 	      <tag><var n="case"/></tag>
@@ -21415,6 +22564,44 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
 	      <clip pos="1" side="tl" part="a_prn"/>
+	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: PRN obj">
+      <pattern>
+	<pattern-item n="pro"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+
+	  <chunk name="pro_obj" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_prn"/>
+              <clip pos="1" side="tl" part="tipus_prn_tn"/>
 	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
 	      <clip pos="1" side="tl" part="pers"/>
 	      <clip pos="1" side="tl" part="gen"/>
@@ -21559,6 +22746,19 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
       </action>
     </rule>
 
+<!-- no serveix per a res :( (volia solucionar això de l'espai extra)
+ <rule comment="REGLA: UN">
+      <pattern>
+	<pattern-item n="un"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+      </action>
+    </rule>
+-->
+
 <rule comment="REGLA: COMA QUE (EO, regles específiques de SN amb causula de relatiu, creades per a corregir el tagger 'que -> kiu' )">
       <pattern>
 	<pattern-item n="sent_coma"/>
@@ -21614,7 +22814,7 @@ No sé com, però això fa que la segona paraula de la frase no surti en majúsc
                 <b pos="1"/>
                  <chunk name="relatiu">
                         <tags>
-                        <tag><lit-tag v="SNrelatiu3"/></tag>
+                        <tag><lit-tag v="SNrelatiu"/></tag>
                         <tag><var n="case"/></tag>
                         </tags>
                         <lu>

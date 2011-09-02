@@ -137,14 +137,14 @@
 -->
     </def-macro>
 
-  <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
      	<choose>
      	  <when>
      	    <test><not><equal><b pos="1"/><lit v=" "/></equal></not></test>
             <out>
               <b pos="1"/>
             </out>
-          </when>     	
+          </when>     	    
      	</choose>
   </def-macro>
 
@@ -584,9 +584,7 @@
 -->
 
 
-
-
-
+    <!-- kunordigo -->
 
     <rule comment="REGLA: SN1 and/or SN2   -   SN ">
       <pattern>
@@ -597,19 +595,47 @@
       <action>
 <!-- Ni kunigas nur se SN1 kaj SN2 estas samnombraj; aliokaze unu el la du ŝanĝus sian nombron -->
 <!-- Ni kunigas nur se SN1 kaj SN2 estas ambaŭ pronomoj aŭ malpronomoj; aliokaze la sintagmo-ĉapo malsamas kaj estiĝas bordelo -->
-        <call-macro n="test_equiv">
-          <with-param pos="1"/>
-          <with-param pos="3"/>
-        </call-macro>
     <choose>
       <when>
         <test>
-            <equal><var n="test_equival"/><lit-tag v="jes"/></equal>
+          <and>
+            <equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal>
+            <equal><clip pos="1" part="tipus_prn"/><clip pos="3" part="tipus_prn"/></equal>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="prpers"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="prpers"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prn_nosubj"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="prn_nosubj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prn_nosubj"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="prn_nosubj"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="pro_obj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="pro_obj"/></equal></not>
+              </and>
+            </or>
+          </and>
         </test>
         <out>
           <chunk>
-            <!-- <clip pos="1" part="lem"/> -->
-            <lit v="nom_conj_nom"/>
+            <get-case-from pos="1"><lit v="nom_conj_nom"/></get-case-from>
             <clip pos="1" part="tags"/>
             <lit v="{"/>
             <clip pos="1" part="content"/>
@@ -641,7 +667,6 @@
     </rule>
 
 
-
     <rule comment="REGLA: SN0, SN1 and/or SN2   -   SN ">
       <pattern>
         <pattern-item n="SNnotunk"/>
@@ -653,19 +678,47 @@
       <action>
 <!-- Ni kunigas nur se SN0 kaj SN2 estas samnombraj; aliokaze unu el la du ŝanĝus sian nombron -->
 <!-- Ni kunigas nur se SN0 kaj SN2 estas ambaŭ pronomoj aŭ malpronomoj; aliokaze la sintagmo-ĉapo malsamas kaj estiĝas bordelo -->
-        <call-macro n="test_equiv">
-          <with-param pos="1"/>
-          <with-param pos="5"/>
-        </call-macro>
     <choose>
       <when>
         <test>
-            <equal><var n="test_equival"/><lit-tag v="jes"/></equal>
+          <and>
+            <equal><clip pos="1" part="nbr"/><clip pos="5" part="nbr"/></equal>
+            <equal><clip pos="1" part="tipus_prn"/><clip pos="5" part="tipus_prn"/></equal>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
+                <equal><clip pos="5" part="lem"/><lit v="prpers"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
+                <not><equal><clip pos="5" part="lem"/><lit v="prpers"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prn_nosubj"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="prn_nosubj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prn_nosubj"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="prn_nosubj"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="pro_obj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="pro_obj"/></equal></not>
+              </and>
+            </or>
+          </and>
         </test>
         <out>
           <chunk>
-            <!-- <clip pos="1" part="lem"/> -->
-            <lit v="nom_conj_nom_conj_nom"/>
+            <get-case-from pos="1"><lit v="nom_conj_nom"/></get-case-from>
             <clip pos="1" part="tags"/>
             <lit v="{"/>
             <clip pos="1" part="content"/>
@@ -723,19 +776,47 @@
       <action>
 <!-- Ni kunigas nur se SN0 kaj SN2 estas samnombraj; aliokaze unu el la du ŝanĝus sian nombron -->
 <!-- Ni kunigas nur se SN0 kaj SN2 estas ambaŭ pronomoj aŭ malpronomoj; aliokaze la sintagmo-ĉapo malsamas kaj estiĝas bordelo -->
-        <call-macro n="test_equiv">
-          <with-param pos="1"/>
-          <with-param pos="6"/>
-        </call-macro>
     <choose>
       <when>
         <test>
-            <equal><var n="test_equival"/><lit-tag v="jes"/></equal>
+          <and>
+            <equal><clip pos="1" part="nbr"/><clip pos="6" part="nbr"/></equal>
+            <equal><clip pos="1" part="tipus_prn"/><clip pos="6" part="tipus_prn"/></equal>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
+                <equal><clip pos="6" part="lem"/><lit v="prpers"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prpers"/></equal></not>
+                <not><equal><clip pos="6" part="lem"/><lit v="prpers"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="prn_nosubj"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="prn_nosubj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="prn_nosubj"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="prn_nosubj"/></equal></not>
+              </and>
+            </or>
+            <or>
+              <and>
+                <equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal>
+                <equal><clip pos="3" part="lem"/><lit v="pro_obj"/></equal>
+              </and>
+              <and>
+                <not><equal><clip pos="1" part="lem"/><lit v="pro_obj"/></equal></not>
+                <not><equal><clip pos="3" part="lem"/><lit v="pro_obj"/></equal></not>
+              </and>
+            </or>
+          </and>
         </test>
         <out>
           <chunk>
-            <!--  <clip pos="1" part="lem"/> <lit v="^nom_conj_nom_conj_nom"/> -->
-            <lit v="nom_conj_nom_conj_nom"/>
+            <get-case-from pos="1"><lit v="nom_conj_nom"/></get-case-from>
             <clip pos="1" part="tags"/>
             <lit v="{"/>
             <clip pos="1" part="content"/>
@@ -785,26 +866,9 @@
     </rule>
 
 
-<!-- Ne eblas kunigi: kutime tio disigas du subfrazojn kaj tio permesas ke la subejkto de la dua subfrazo analiziĝas kiel parto de la objekto de la unua (kaj ricevu akuzativon)
-    <rule comment="REGLA: , and/or    -   and/or ">
-      <pattern>
-        <pattern-item n="CM"/>
-        <pattern-item n="and_or"/>
-      </pattern>
-      <action>
-        <out>
-          <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-            <lit v="{"/>
-                <b pos="1"/>
-            <clip pos="2" part="content"/>
-             <lit v="}"/>
-          </chunk>
-        </out>
-      </action>
-    </rule>
--->
+
+
+
 
 <!-- Reguloj de SV -->
 
