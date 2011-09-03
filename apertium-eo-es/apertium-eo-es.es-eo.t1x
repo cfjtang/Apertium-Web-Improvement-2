@@ -462,6 +462,10 @@
       <cat-item lemma="que" tags="cnjadv"/>
     </def-cat>
 
+     <def-cat n="ij">
+      <cat-item tags="ij"/>
+    </def-cat>
+
     <def-cat n="forma_manera">
       <cat-item lemma="forma" tags="n.*"/>
       <cat-item lemma="manera" tags="n.*"/>
@@ -698,6 +702,7 @@
       <cat-item lemma="formar" tags="vblex.*"/>
       <cat-item lemma="usar" tags="vblex.*"/>
       <cat-item lemma="decir" tags="vblex.*"/>
+      <cat-item lemma="mencionar" tags="vblex.*"/>
       <cat-item lemma="hablar" tags="vblex.*"/>
       <cat-item lemma="comentar" tags="vblex.*"/>
       <cat-item lemma="opinar" tags="vblex.*"/>
@@ -726,7 +731,46 @@
       <cat-item lemma="soler" tags="vblex.*"/>
       <cat-item lemma="acostumbrar" tags="vblex.*"/>
       <cat-item lemma="intentar" tags="vblex.*"/>
+      <cat-item lemma="conocer" tags="vblex.*"/>
+      <cat-item lemma="saber" tags="vblex.*"/>
     </def-cat>
+    <def-cat n="vbref2oni-pp">
+      <cat-item lemma="formar" tags="vblex.pp.*"/>
+      <cat-item lemma="usar" tags="vblex.pp.*"/>
+      <cat-item lemma="decir" tags="vblex.pp.*"/>
+      <cat-item lemma="mencionar" tags="vblex.pp.*"/>
+      <cat-item lemma="hablar" tags="vblex.pp.*"/>
+      <cat-item lemma="comentar" tags="vblex.pp.*"/>
+      <cat-item lemma="opinar" tags="vblex.pp.*"/>
+      <cat-item lemma="proponer" tags="vblex.pp.*"/>
+      <cat-item lemma="organizar" tags="vblex.pp.*"/>
+      <cat-item lemma="querer" tags="vblex.pp.*"/>
+      <cat-item lemma="desear" tags="vblex.pp.*"/>
+      <cat-item lemma="emplear" tags="vblex.pp.*"/>
+      <cat-item lemma="mostrar" tags="vblex.pp.*"/>
+      <cat-item lemma="conocer" tags="vblex.pp.*"/>
+      <cat-item lemma="requerir" tags="vblex.pp.*"/>
+      <cat-item lemma="obligar" tags="vblex.pp.*"/>
+      <cat-item lemma="aplicar" tags="vblex.pp.*"/>
+      <cat-item lemma="utilizar" tags="vblex.pp.*"/>
+      <cat-item lemma="usar" tags="vblex.pp.*"/>
+      <cat-item lemma="ver" tags="vblex.pp.*"/>
+      <cat-item lemma="observar" tags="vblex.pp.*"/>
+      <cat-item lemma="fundar" tags="vblex.pp.*"/>
+      <cat-item lemma="inaugurar" tags="vblex.pp.*"/>
+      <cat-item lemma="producir" tags="vblex.pp.*"/>
+      <cat-item lemma="fabricar" tags="vblex.pp.*"/>
+      <cat-item lemma="estimar" tags="vblex.pp.*"/>
+      <cat-item lemma="considerar" tags="vblex.pp.*"/>
+      <cat-item lemma="deber" tags="vblex.pp.*"/>
+      <cat-item lemma="poder" tags="vblex.pp.*"/>
+      <cat-item lemma="soler" tags="vblex.pp.*"/>
+      <cat-item lemma="acostumbrar" tags="vblex.pp.*"/>
+      <cat-item lemma="intentar" tags="vblex.pp.*"/>
+      <cat-item lemma="conocer" tags="vblex.pp.*"/>
+      <cat-item lemma="saber" tags="vblex.pp.*"/>
+    </def-cat>
+
 <!-- iĝi
     <def-cat n="vbref2iĝi">
       <cat-item lemma="crear" tags="vblex.*"/> 
@@ -742,6 +786,9 @@
       <cat-item lemma="retirar" tags="vblex.*"/>
       <cat-item lemma="hacer" tags="vblex.*"/>
       <cat-item lemma="convertir" tags="vblex.*"/>
+      <cat-item lemma="reflejar" tags="vblex.*"/>
+      <cat-item lemma="encontrar" tags="vblex.*"/>
+      <cat-item lemma="acercar" tags="vblex.*"/>
 	*izar
 situar
 ubicar
@@ -2984,6 +3031,7 @@ encontrar
                     </lu>
                   </chunk>
                 </out>
+                <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
               </when>
 
               <when>  <!-- traduccions des de gerundi -> inte -->
@@ -3013,6 +3061,7 @@ encontrar
                     </lu>
                   </chunk>
                 </out>
+                <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
               </when>
 
               <when>  <!-- traduccions des de present -> passat (1)-->
@@ -3044,6 +3093,7 @@ encontrar
                     </lu>
                   </chunk>
                 </out>
+                <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
               </when>
 
 	    <otherwise>
@@ -17661,32 +17711,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <with-param pos="2"/>
         </call-macro>
 
-<!--
-                <out>
-                  <chunk name="verbcj_perif" case="caseFirstWord">
-                    <tags>
-                      <tag><clip pos="2" side="tl" part="temps"/></tag>
-                      <tag><clip pos="2" side="tl" part="pers"/></tag>
-                      <tag><clip pos="2" side="tl" part="nbr"/></tag>
-                      <tag><var n="tipus_verb"/></tag>
-                    </tags>
-                    <lu>
-		      <lit v="esti"/>
-		      <lit-tag v="vbser"/>
-                      <clip pos="2" side="tl" part="temps"/>
-                    </lu>
-		    <b pos="1"/>
-                    <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
-                      <lit-tag v="ppres"/>
-                      <clip pos="2" side="tl" part="nbr"/>
-                      <clip pos="2" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                </out>
--->
-                <out>
+        <out>
 	  <chunk name="prpers" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
@@ -17848,6 +17873,293 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
     </rule>
 
 
+    <rule comment="REGLA: NO + REF + VERB tipo pasiva refleja reflexivo (no se observa a sí mismo -> ne observas sin)">
+      <pattern>
+	<pattern-item n="no"/>
+	<pattern-item n="prnref"/>
+	<pattern-item n="vbref2oni"/>
+	<pattern-item n="a"/>
+	<pattern-item n="si_mismo"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="3"/>
+        </call-macro>
+
+        <out>
+          <chunk name="adv">
+            <tags>
+              <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+              <tag><clip pos="1" side="tl" part="neg"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+            </lu>
+          </chunk>
+	  <b pos="1"/>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <out>
+          <chunk name="verbcj_perif" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+	  </chunk>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+        <out>
+	  <b pos="4"/>
+	  <chunk name="pro_obj">
+	    <tags>
+	      <tag><lit-tag v="SN.ref.p3.mf.sp"/></tag>
+	    </tags>
+	    <lu>
+              <lit v="sin"/>
+              <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	    </lu>
+	  </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja a impersonal (se ha usado -> oni uzis)">
+      <pattern>
+	<pattern-item n="prnref"/>
+	<pattern-item n="haber"/>
+	<pattern-item n="vbref2oni-pp"/>
+      </pattern>
+      <action>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+        <out>
+	  <chunk name="prpers" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+	    </tags>
+            <lu>
+              <lit v="oni"/>
+              <lit-tag v="prn.tn.sg.nom"/>
+            </lu>
+	  </chunk>
+	  <b pos="1"/>
+        </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+        <call-macro n="haber__pp">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja reflexivo (se ha observado a sí mismo -> uzis sin)">
+      <pattern>
+	<pattern-item n="prnref"/>
+	<pattern-item n="haber"/>
+	<pattern-item n="vbref2oni-pp"/>
+	<pattern-item n="a"/>
+	<pattern-item n="si_mismo"/>
+      </pattern>
+      <action>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <call-macro n="haber__pp">
+          <with-param pos="2"/>
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+        <out>
+	  <b pos="4"/>
+	  <chunk name="pro_obj">
+	    <tags>
+	      <tag><lit-tag v="SN.ref.p3.mf.sp"/></tag>
+	    </tags>
+	    <lu>
+              <lit v="sin"/>
+              <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	    </lu>
+	  </chunk>
+        </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: NO + REF + HABER + PP tipo pasiva refleja a impersonal (no se ha usado -> oni ne uzis)">
+      <pattern>
+	<pattern-item n="no"/>
+	<pattern-item n="prnref"/>
+	<pattern-item n="haber"/>
+	<pattern-item n="vbref2oni-pp"/>
+      </pattern>
+      <action>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+        <out>
+	  <chunk name="prpers" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+	    </tags>
+            <lu>
+              <lit v="oni"/>
+              <lit-tag v="prn.tn.sg.nom"/>
+            </lu>
+	  </chunk>
+	  <b pos="1"/>
+          <chunk name="adv">
+            <tags>
+              <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+              <tag><clip pos="1" side="tl" part="neg"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+            </lu>
+          </chunk>
+	  <b pos="2"/>
+        </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+        <call-macro n="haber__pp">
+          <with-param pos="3"/>
+          <with-param pos="4"/>
+        </call-macro>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: NO + REF + HABER + PP tipo pasiva refleja reflexivo (no se ha observado a sí mismo -> ne uzis sin)">
+      <pattern>
+	<pattern-item n="no"/>
+	<pattern-item n="prnref"/>
+	<pattern-item n="haber"/>
+	<pattern-item n="vbref2oni-pp"/>
+	<pattern-item n="a"/>
+	<pattern-item n="si_mismo"/>
+      </pattern>
+      <action>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="nombro1">
+	  <with-param pos="1"/>
+	</call-macro>
+	<call-macro n="default_nombro">
+	</call-macro>
+	<call-macro n="nom_cas">
+	  <with-param pos="1"/>
+	</call-macro>
+        <out>
+          <chunk name="adv">
+            <tags>
+              <tag><clip pos="1" side="tl" part="a_adv"/></tag>
+              <tag><clip pos="1" side="tl" part="neg"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+            </lu>
+          </chunk>
+	  <b pos="1"/>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+        <call-macro n="haber__pp">
+          <with-param pos="3"/>
+          <with-param pos="4"/>
+        </call-macro>
+        <call-macro n="f_bcond"><with-param pos="4"/><with-param pos="5"/></call-macro>
+        <out>
+	  <b pos="5"/>
+	  <chunk name="pro_obj">
+	    <tags>
+	      <tag><lit-tag v="SN.ref.p3.mf.sp"/></tag>
+	    </tags>
+	    <lu>
+              <lit v="sin"/>
+              <lit-tag v="prn.pro.ref.p3.mf.sp"/>
+	    </lu>
+	  </chunk>
+        </out>
+      </action>
+    </rule>
+
+
     <!-- reglas de pronombre -->
 
     <rule comment="REGLA: PRON VERB ( lo como -> manĝas lin ) ">
@@ -17945,7 +18257,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <with-param pos="3"/>
         </call-macro>
         <out>
-        <b pos="2"/>
+          <b pos="2"/>
 	  <chunk name="pro_obj">
 	    <tags>
 	      <tag><lit-tag v="SN"/></tag>
@@ -22627,6 +22939,32 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	</call-macro>	
 	<out>
 	  <chunk name="cnj" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="tags"/></tag>		
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="tags"/>
+	    </lu>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+ <rule comment="REGLA: IJ">
+      <pattern>
+	<pattern-item n="ij"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<out>
+	  <chunk name="ij" case="caseFirstWord">
 	    <tags>
 	      <tag><clip pos="1" side="tl" part="tags"/></tag>		
 	    </tags>

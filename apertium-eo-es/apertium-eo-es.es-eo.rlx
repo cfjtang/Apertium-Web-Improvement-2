@@ -86,44 +86,68 @@ SELECT:este_2 Det IF (0 ("Este") + $$MascSg) (-1 >>>) (1 A + $$MascSg) (2 N + $$
 SELECT:este_1 Det IF (0 ("Este") + $$MascSg) (-1 >>>) (1 N + $$MascSg) ;
 	# Este estado
 
-REMOVE:r_na_1_ms A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
-REMOVE:r_na_1_mp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
-REMOVE:r_na_1_fs A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemSg) (1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_1_fp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$FemPl) ;
+REMOVE:r_na_1_ms A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_1_mp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_1_fs A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_1_fp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 Adj_PP + $$FemPl) ;
 	## jóvenes inteligentes (jóvenes > n)
 	## jóvenes encapuchadas (jóvenes > n)
 	## abisenios inteligentes (jóvenes > n)
 	## escrito largo (escrito > n)
 
-REMOVE:r_na_2_ms N IF (-1 N + $$MascSg) (0 Adj_PP + $$MascSg) (*1 Adj_PP + $$MascSg) ;
-REMOVE:r_na_2_mp N IF (-1 N + $$MascPl) (0 Adj_PP + $$MascPl) (*1 Adj_PP + $$MascPl) ;
-REMOVE:r_na_2_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_2_fp N IF (-1 N + $$FemPl) (0 Adj_PP + $$FemPl) (*1 Adj_PP + $$FemPl) ;
+REMOVE:r_na_2_ms N IF (-1 N + $$MascSg) (0 Adj_PP + $$MascSg LINK 0 N OR NP) (*1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_2_mp N IF (-1 N + $$MascPl) (0 Adj_PP + $$MascPl LINK 0 N OR NP) (*1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_2_fs N IF (-1 N + $$FemSg) (0 Adj_PP + $$FemSg LINK 0 N OR NP) (*1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_2_fp N IF (-1 N + $$FemPl) (0 Adj_PP + $$FemPl LINK 0 N OR NP) (*1 Adj_PP + $$FemPl) ;
 	## "la Primera Conferencia Americana celebrada" (pqè Americana > adj)
 
-REMOVE:r_na_2_1_ms N IF (-2 N + $$MascSg) (-1 Adj_PP + $$MascSg) (0 Adj_PP + $$MascSg) (*1 Adj_PP + $$MascSg) ;
-REMOVE:r_na_2_1_mp N IF (-2 N + $$MascPl) (-1 Adj_PP + $$MascPl) (0 Adj_PP + $$MascPl) (*1 Adj_PP + $$MascPl) ;
-REMOVE:r_na_2_1_fs N IF (-2 N + $$FemSg) (-1 Adj_PP + $$FemSg) (0 Adj_PP + $$FemSg) (*1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_2_1_fp N IF (-2 N + $$FemPl) (-1 Adj_PP + $$FemPl) (0 Adj_PP + $$FemPl) (*1 Adj_PP + $$FemPl) ;
+REMOVE:r_na_2_1_ms N IF (-2 N + $$MascSg) (-1 Adj_PP + $$MascSg) (0 Adj_PP + $$MascSg LINK 0 N OR NP) (*1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_2_1_mp N IF (-2 N + $$MascPl) (-1 Adj_PP + $$MascPl) (0 Adj_PP + $$MascPl LINK 0 N OR NP) (*1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_2_1_fs N IF (-2 N + $$FemSg) (-1 Adj_PP + $$FemSg) (0 Adj_PP + $$FemSg LINK 0 N OR NP) (*1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_2_1_fp N IF (-2 N + $$FemPl) (-1 Adj_PP + $$FemPl) (0 Adj_PP + $$FemPl LINK 0 N OR NP) (*1 Adj_PP + $$FemPl) ;
 	## "la Primera Conferencia Internacional Americana celebrada" (pqè Americana > adj)
 
 #REMOVE:r_na_2_2_ms N IF (-3 N + $$MascSg) (-2 Adj_PP + $$MascSg) (-1 Adj_PP + $$MascSg) (0 Adj_PP + $$MascSg) (*1 Adj_PP + $$MascSg) ;
 	## líder obrero norteamericano afiliado (afiliado > adj)
 
 #REMOVE:r_na_3_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) (*2 Adj_PP + $$MascSg BARRIER NO_Adj_PP) ; # at list one Adj_PP
-REMOVE:r_na_3_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg) (1 Adj_PP + $$MascSg) ;
-REMOVE:r_na_3_mp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascPl) (1 Adj_PP + $$MascPl) ;
-REMOVE:r_na_3_fs A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemSg) (1 Adj_PP + $$FemSg) ;
-REMOVE:r_na_3_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl) (1 Adj_PP + $$FemPl) ;
+REMOVE:r_na_3_ms A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 Adj_PP + $$MascSg) ;
+REMOVE:r_na_3_mp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 Adj_PP + $$MascPl) ;
+REMOVE:r_na_3_fs A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 Adj_PP + $$FemSg) ;
+REMOVE:r_na_3_fp A OR PP IF (NOT -1 N) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 Adj_PP + $$FemPl) ;
 	## vieron jóvenes inteligentes (jóvenes > n)
 	## vieron jóvenes encapuchadas (jóvenes > n)
 	## vieron abisenios inteligentes (jóvenes > n)
 	## PROBLEMA: con alto contenido (alto > n/adv); ídem per a adj ambigus típicament preposats: alto, bajo, mal (+flaco favor, etc.)
+REMOVE:r_na_4 A OR PP IF (-1 Prep) (0 Noun_Adj_PP LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_4c A OR PP IF (-1 Prep) (0 Noun_Adj_PP LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_5_ms A OR PP IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_5_fs A OR PP IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_5_mp A OR PP IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_5_fp A OR PP IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_5_msc A OR PP IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_5_fsc A OR PP IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_5_mpc A OR PP IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_5_fpc A OR PP IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_6_ms A OR PP IF (-2 Det + $$MascSg) (-1C A + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_6_fs A OR PP IF (-2 Det + $$FemSg) (-1C A + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_6_mp A OR PP IF (-2 Det + $$MascPl) (-1C A + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_6_fp A OR PP IF (-2 Det + $$FemPl) (-1C A + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 <<< OR Prep OR Det OR CnjSub) ;
+REMOVE:r_na_6_msc A OR PP IF (-2 Det + $$MascSg) (-1C A + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_6_fsc A OR PP IF (-2 Det + $$FemSg) (-1C A + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_6_mpc A OR PP IF (-2 Det + $$MascPl) (-1C A + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_6_fpc A OR PP IF (-2 Det + $$FemPl) (-1C A + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 CM) (2 CnjSub) ;
+REMOVE:r_na_7_ms A OR PP IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 CnjCoo) (2C N) ;
+REMOVE:r_na_7_fs A OR PP IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK 0 N OR NP) (1 CnjCoo) (2C N) ;
+REMOVE:r_na_7_mp A OR PP IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 CnjCoo) (2C N) ;
+REMOVE:r_na_7_fp A OR PP IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 CnjCoo) (2C N) ;
+	## un químico y profesor
 
-SELECT:s_na_1_ms N IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg) (1 Prep OR Det) ;
-SELECT:s_na_1_fs N IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg) (1 Prep OR Det) ;
-SELECT:s_na_1_mp N IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl) (1 Prep OR Det) ;
-SELECT:s_na_1_fp N IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl) (1 Prep OR Det) ;
+
+SELECT:s_na_1_ms N IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg) (1 <<< OR Prep OR Det) ;
+SELECT:s_na_1_fs N IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg) (1 <<< OR Prep OR Det) ;
+SELECT:s_na_1_mp N IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl) (1 <<< OR Prep OR Det) ;
+SELECT:s_na_1_fp N IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl) (1 <<< OR Prep OR Det) ;
 	# la ofensiva de pascua
 	# la política del gobierno (per error, es veu Det i no Prep)
 SELECT:s_na_2n N IF (-2C N) (-1 CM) (0 Noun_Adj_PP) (1 CnjCoo) (2 Noun_Adj_PP) ; 
