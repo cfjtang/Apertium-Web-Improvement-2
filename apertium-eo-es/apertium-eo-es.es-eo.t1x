@@ -733,6 +733,7 @@
       <cat-item lemma="intentar" tags="vblex.*"/>
       <cat-item lemma="conocer" tags="vblex.*"/>
       <cat-item lemma="saber" tags="vblex.*"/>
+      <cat-item lemma="tener" tags="vblex.*"/>
     </def-cat>
     <def-cat n="vbref2oni-pp">
       <cat-item lemma="formar" tags="vblex.pp.*"/>
@@ -769,10 +770,10 @@
       <cat-item lemma="intentar" tags="vblex.pp.*"/>
       <cat-item lemma="conocer" tags="vblex.pp.*"/>
       <cat-item lemma="saber" tags="vblex.pp.*"/>
+      <cat-item lemma="tener" tags="vblex.pp.*"/>
     </def-cat>
 
-<!-- iĝi
-    <def-cat n="vbref2iĝi">
+    <def-cat n="vbref2igxi">
       <cat-item lemma="crear" tags="vblex.*"/> 
       <cat-item lemma="dividir" tags="vblex.*"/>
       <cat-item lemma="ocupar" tags="vblex.*"/>
@@ -789,11 +790,14 @@
       <cat-item lemma="reflejar" tags="vblex.*"/>
       <cat-item lemma="encontrar" tags="vblex.*"/>
       <cat-item lemma="acercar" tags="vblex.*"/>
+      <cat-item lemma="asentar" tags="vblex.*"/>
+    </def-cat>
+<!-- iĝi
 	*izar
+mirar verbs_ref !!!
 situar
 ubicar
 encontrar
-    </def-cat>
 -->
 
   <def-cat n="transtivos_personales">
@@ -1407,6 +1411,7 @@ encontrar
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
     <def-var n="nprep"/>
+    <def-var n="ncnj"/>
 <!-- variables només per depurar i veure per on es passa en executar -->
     <def-var n="debug1"/>
     <def-var n="debug2"/>
@@ -1483,9 +1488,9 @@ encontrar
     <list-item v="proponer"/>
     <list-item v="exigir"/>
     <list-item v="reclamar"/>
-    <list-item v="indicar"/>
     <list-item v="pedir"/>
-    <list-item v="sugerir"/>
+<!--    <list-item v="sugerir"/> -->
+<!--    <list-item v="indicar"/> -->
 
 <!--  <def-list n="reportingverb"> -->
 <!--
@@ -3018,7 +3023,7 @@ encontrar
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
@@ -3026,7 +3031,7 @@ encontrar
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -3088,7 +3093,7 @@ encontrar
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -3202,7 +3207,7 @@ encontrar
                     <lu>
 		      <lit v="esti"/>
                       <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b/>
                     <lu>
@@ -12331,7 +12336,6 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
     </rule>
 
 
-
 <rule comment="REGLA: NOM QUE (EOes, regles específiques de SN amb causula de relatiu, creades per a corregir el tagger 'que -> kiu' )">
       <pattern>
 	<pattern-item n="nom"/>
@@ -12356,7 +12360,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 	      <tag><var n="case"/></tag>
 	      <tag><var n="changecase"/></tag>
 	    </tags>
-	    <lu>   <!--<clip pos="1" side="tl" part="whole"/> Per a compostos: -->
+	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_nom"/>
 	      <clip pos="1" side="tl" part="gen"/>
@@ -13899,7 +13903,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		</lu>
 	      </chunk>
 	      <b pos="2"/>
-		 <chunk name="cnjsub">
+		 <chunk name="ke">
             		<tags>
             	  	<tag><lit-tag v="cnjsub"/></tag>
             		</tags>
@@ -13957,7 +13961,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                     <lu>
                       <clip pos="4" side="tl" part="lemh"/>
                       <clip pos="4" side="tl" part="a_verb"/>
-                      <clip pos="4" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="4" side="tl" part="nbr"/>
                       <clip pos="4" side="tl" part="lemq"/>
                     </lu>
@@ -15039,12 +15043,12 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
 		<b pos="1"/>
-		 <chunk name="cnjsub">
+		 <chunk name="ke">
             		<tags>
             	  	<tag><lit-tag v="cnjsub"/></tag>
             		</tags>
@@ -15093,7 +15097,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -15107,7 +15111,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		    </lu>
 		  </chunk>
 		<b pos="2"/>
-		 <chunk name="cnjsub">
+		 <chunk name="ke">
             		<tags>
             	  	<tag><lit-tag v="cnjsub"/></tag>
             		</tags>
@@ -15158,7 +15162,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -15192,7 +15196,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                         </lu>
                         </chunk>
 		<b pos="4"/>
-		 <chunk name="cnjsub">
+		 <chunk name="ke">
             		<tags>
             	  	<tag><lit-tag v="cnjsub"/></tag>
             		</tags>
@@ -15240,12 +15244,12 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 <b pos="2"/>
-                 <chunk name="cnjsub">
+                 <chunk name="ke">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -15304,12 +15308,12 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 <b pos="3"/>
-                 <chunk name="cnjsub">
+                 <chunk name="ke">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -15360,7 +15364,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -15371,7 +15375,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </lu>
                   </chunk>
                 <b pos="2"/>
-                 <chunk name="cnjsub">
+                 <chunk name="ke">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -15441,7 +15445,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
 		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
                     </lu>
@@ -15479,11 +15483,12 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 <b pos="1"/>
-                 <chunk name="cnjsub">
+                 <chunk name="ke">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -15533,7 +15538,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -15587,7 +15592,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -15646,7 +15651,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
 		      <clip pos="3" side="tl" part="tipus_prn" link-to="5"/>
                     </lu>
@@ -15694,7 +15699,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -15741,7 +15747,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="1" side="tl" part="lemq"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -15749,6 +15756,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="2" side="tl" part="temps"/>
                       <clip pos="1" side="tl" part="nbr"/>
+                      <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -15802,7 +15810,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="4" side="tl" part="lemh"/>
                       <clip pos="4" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="4" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
             </out>
@@ -15864,9 +15873,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
-		      <clip pos="3" side="tl" part="tipus_prn" link-to="5"/>
+                      <lit-tag v="5"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
             </out>
@@ -15903,7 +15913,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -15959,7 +15970,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
             </out>
@@ -16020,9 +16032,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
-		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
+                      <lit-tag v="5"/>
+                      <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
             </out>
@@ -16054,12 +16067,12 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
-
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -16106,7 +16119,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <lit v="ĉesi"/>
                       <lit-tag v="vbntr"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                     </lu>
                     <b/>
                     <lu>
@@ -16163,7 +16176,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <lit v="ĉesi"/>
                       <lit-tag v="vbntr"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
 		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
                     </lu>
@@ -16198,7 +16211,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <lit v="ĉesi"/>
                       <lit-tag v="vbntr"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                     </lu>
                     <b/>
                     <lu>
@@ -16251,7 +16264,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <lit v="ĉesi"/>
                       <lit-tag v="vbntr"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                     </lu>
                     <b/>
                     <lu>
@@ -16308,7 +16321,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <lit v="ŝajni"/>
                       <lit-tag v="vbser"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
 		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
                     </lu>
@@ -16343,7 +16356,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <lit v="ŝajni"/>
                       <lit-tag v="vbser"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                     </lu>
                     <b/>
                     <lu>
@@ -16396,7 +16409,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><lit-tag v="ADV"/></tag>
                     </tags>
 		    <lu>
-                      <lit v="duaxre"/>
+                      <lit v="daŭre"/>
                       <lit-tag v="adv"/>
                     </lu>
 		</chunk>
@@ -16413,9 +16426,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
-		      <clip pos="2" side="tl" part="tipus_prn" link-to="5"/>
+                      <lit-tag v="5"/>
+                      <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
             </out>
@@ -16452,7 +16466,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -16516,9 +16531,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="nbr"/>
-		      <clip pos="3" side="tl" part="tipus_prn" link-to="5"/>
+                      <lit-tag v="5"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
             </out>
@@ -16549,8 +16565,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
-
+                      <lit-tag v="3"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -16563,61 +16579,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </action>
     </rule>
 
-<!--
-<rule comment="REGLA: VERBdeberde + INF (deber de + inf EOes)">
-      <pattern>
-	<pattern-item n="deberde"/>
-	<pattern-item n="inf"/>
-      </pattern>
-      <action>    	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="1"/>
-        </call-macro>
-
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="pp2"/>
-                </let>
-                <out>
-		 <chunk name="adv" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="ADV"/></tag>
-                    </tags>
-		    <lu>
-                      <lit v="eble"/>
-                      <lit-tag v="adv"/>
-                    </lu>
-		</chunk>
-		<b/>
-                  <chunk name="verbcj_perif">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="1" side="tl" part="temps"/></tag>
-                      <tag><clip pos="1" side="tl" part="pers"/></tag>
-                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
-		      <tag><var n="tipus_verb"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="2" side="tl" part="lemh"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
-                    </lu>
-                  </chunk>
-                </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
--->
 
 <rule comment="REGLA: VERBdeber + DE + INF (deber + de + inf -> debe de comer -> eble manĝas)">
       <pattern>
@@ -16663,7 +16624,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -16725,7 +16687,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="1" side="tl" part="lemq"/>
                     </lu>
 		<b/>
                     <lu>
@@ -16784,7 +16747,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="3" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
+                      <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
                 </out>
@@ -16827,7 +16791,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -16854,7 +16818,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <clip pos="3" side="tl" part="lemh"/>
                   <clip pos="3" side="tl" part="a_verb"/>
                   <clip pos="3" side="tl" part="sep"/>
-                  <clip pos="3" side="tl" part="temps"/>
+                  <lit-tag v="3"/>
                   <clip pos="3" side="tl" part="lemq"/>
                 </lu>
 	    </chunk>
@@ -16898,7 +16862,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -16932,7 +16896,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <clip pos="4" side="tl" part="lemh"/>
                   <clip pos="4" side="tl" part="a_verb"/>
                   <clip pos="4" side="tl" part="sep"/>
-                  <clip pos="4" side="tl" part="temps"/>
+                  <lit-tag v="3"/>
                   <clip pos="4" side="tl" part="lemq"/>
                 </lu>
 	    </chunk>
@@ -17020,8 +16984,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17090,8 +17054,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17120,8 +17084,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17203,8 +17167,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17233,8 +17197,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17270,7 +17234,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="5" side="tl" part="lemh"/>
 	      <clip pos="5" side="tl" part="a_verb"/>
 	      <clip pos="5" side="tl" part="sep"/>
-	      <clip pos="5" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -17328,8 +17292,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17358,8 +17322,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17450,8 +17414,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17480,8 +17444,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="1"/>
                     <lu>
@@ -17528,7 +17492,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="6" side="tl" part="lemh"/>
 	      <clip pos="6" side="tl" part="a_verb"/>
 	      <clip pos="6" side="tl" part="sep"/>
-	      <clip pos="6" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="6" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -17617,7 +17581,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -17680,7 +17644,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="2" side="tl" part="sep"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -17695,7 +17659,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
     <!-- reglas de pasivas reflejas -->
 
-    <rule comment="REGLA: REF + VERB tipo pasiva refleja a impersonal (se usa -> oni uzas)">
+    <rule comment="REGLA: REF + VERB tipo pasiva refleja a impersonal con oni (se usa -> oni uzas)">
       <pattern>
 	<pattern-item n="prnref"/>
 	<pattern-item n="vbref2oni"/>
@@ -17736,7 +17700,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
               <clip pos="2" side="tl" part="sep"/>
-              <clip pos="2" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
 	  </chunk>
@@ -17782,7 +17746,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
               <clip pos="2" side="tl" part="sep"/>
-              <clip pos="2" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
 	  </chunk>
@@ -17807,7 +17771,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </action>
     </rule>
 
-    <rule comment="REGLA: NO REF + VERB tipo pasiva refleja a impersonal (no se usa -> oni ne uzas)">
+    <rule comment="REGLA: NO REF + VERB tipo pasiva refleja a impersonal con oni (no se usa -> oni ne uzas)">
       <pattern>
 	<pattern-item n="no"/>
 	<pattern-item n="prnref"/>
@@ -17860,7 +17824,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
               <clip pos="3" side="tl" part="sep"/>
-              <clip pos="3" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
 	  </chunk>
@@ -17921,7 +17885,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
               <clip pos="3" side="tl" part="sep"/>
-              <clip pos="3" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
 	  </chunk>
@@ -17946,7 +17910,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </action>
     </rule>
 
-    <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja a impersonal (se ha usado -> oni uzis)">
+    <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja a impersonal con oni (se ha usado -> oni uzis)">
       <pattern>
 	<pattern-item n="prnref"/>
 	<pattern-item n="haber"/>
@@ -18040,7 +18004,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
     </rule>
 
 
-    <rule comment="REGLA: NO + REF + HABER + PP tipo pasiva refleja a impersonal (no se ha usado -> oni ne uzis)">
+    <rule comment="REGLA: NO + REF + HABER + PP tipo pasiva refleja a impersonal con oni (no se ha usado -> oni ne uzis)">
       <pattern>
 	<pattern-item n="no"/>
 	<pattern-item n="prnref"/>
@@ -18160,6 +18124,55 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
     </rule>
 
 
+
+<!--
+    <rule comment="REGLA: REF + VERB tipo pasiva refleja a impersonal con iĝi (se usa -> uziĝas)">
+      <pattern>
+	<pattern-item n="prnref"/>
+	<pattern-item n="vbref2igxi"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="2"/>
+        </call-macro>
+
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <out>
+          <chunk name="verbcj_perif">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="2" side="tl" part="temps"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><var n="tipus_verb"/></tag>
+              <tag><lit-tag v="iĝi"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <lit-tag v="iĝi"/>
+              <clip pos="2" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+	  </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+-->
+
+
     <!-- reglas de pronombre -->
 
     <rule comment="REGLA: PRON VERB ( lo como -> manĝas lin ) ">
@@ -18203,7 +18216,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
               <clip pos="2" side="tl" part="sep"/>
-              <clip pos="2" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -18358,7 +18371,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="3" side="tl" part="lemh"/>
               <clip pos="3" side="tl" part="a_verb"/>
               <clip pos="3" side="tl" part="sep"/>
-              <clip pos="3" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="3" side="tl" part="lemq"/>
             </lu>
           </chunk>
@@ -18468,7 +18481,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
-              <clip pos="2" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
 	 </chunk>
@@ -18518,7 +18531,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
-              <clip pos="2" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
             <b pos="2"/>
@@ -18634,7 +18647,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
-              <clip pos="2" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
             <b pos="2"/>
@@ -18698,7 +18711,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="tipus_verbs">
-          <with-param pos="1"/>
+          <with-param pos="2"/>
         </call-macro>
         <!--<call-macro n="tipus_verb2">
           <with-param pos="2"/>
@@ -18754,7 +18767,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
               <clip pos="1" side="tl" part="sep"/>
-              <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -18787,7 +18800,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="tipus_verbs">
-          <with-param pos="1"/>
+          <with-param pos="3"/>
         </call-macro>
         <call-macro n="tipus_verb2">
           <with-param pos="3"/>
@@ -18811,7 +18824,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
               <clip pos="1" side="tl" part="sep"/>
-              <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -18873,7 +18886,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
               <clip pos="1" side="tl" part="sep"/>
-              <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -18937,7 +18950,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
               <clip pos="1" side="tl" part="sep"/>
-              <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -18986,7 +18999,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="tipus_verbs">
-          <with-param pos="2"/>
+          <with-param pos="3"/>
         </call-macro>
         <!--<call-macro n="tipus_verb2">
           <with-param pos="2"/>
@@ -19053,7 +19066,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
               <clip pos="2" side="tl" part="sep"/>
-              <clip pos="2" side="tl" part="temps"/>
+              <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -19145,7 +19158,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
         <out>
         <b pos="2"/>
-        <chunk name="cnjsub">
+        <chunk name="ke">
           <tags>
             <tag><lit-tag v="cnjsub"/></tag>
           </tags>
@@ -19174,7 +19187,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="tipus_verbs">
-          <with-param pos="1"/>
+          <with-param pos="2"/>
         </call-macro>
         <!--<call-macro n="tipus_verb2">
           <with-param pos="2"/>
@@ -19198,10 +19211,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="1" side="tl" part="lemh"/>
                       <clip pos="1" side="tl" part="a_verb"/>
                       <clip pos="1" side="tl" part="sep"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="1" side="tl" part="lemq"/>
                     </lu>
-	    <b pos="1"/>
+	            <b pos="1"/>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
@@ -19211,7 +19224,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </lu>
                   </chunk>
                 <b pos="2"/>
-                 <chunk name="cnjsub">
+                 <chunk name="ke">
                         <tags>
                         <tag><lit-tag v="cnjsub"/></tag>
                         </tags>
@@ -19237,7 +19250,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </pattern>
       <action>
         <call-macro n="tipus_verbs">
-          <with-param pos="2"/>
+          <with-param pos="3"/>
         </call-macro>
 
         <choose>
@@ -19263,7 +19276,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
@@ -19271,7 +19284,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                     <b pos="1"/>
@@ -19302,7 +19315,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-                      <tag><lit-tag v="prs"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
@@ -19310,7 +19323,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                     <b pos="1"/>
@@ -19420,8 +19433,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b/>
                     <lu>
@@ -19513,7 +19526,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                         <clip pos="3" side="tl" part="lemh"/>
                         <clip pos="3" side="tl" part="a_verb"/>
                         <clip pos="3" side="tl" part="sep"/>
-                        <clip pos="3" side="tl" part="temps"/>
+                        <lit-tag v="3"/>
                         <clip pos="3" side="tl" part="lemq"/>
                       </lu>
 		    </chunk>
@@ -19578,7 +19591,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="3" side="tl" part="sep"/>
-                      <clip pos="3" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="3" side="tl" part="lemq"/>
                     </lu>
 		  </chunk>
@@ -19643,7 +19656,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="3" side="tl" part="sep"/>
-                      <clip pos="3" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="3" side="tl" part="lemq"/>
                     </lu>
 		  </chunk>
@@ -20064,7 +20077,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -20168,7 +20181,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -20268,7 +20281,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>	
             <b pos="1"/>
@@ -20296,7 +20309,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>	
             <b pos="1"/>
@@ -20366,7 +20379,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>	
 	  </chunk>
@@ -20385,7 +20398,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>	
 	    <b/>
@@ -20440,7 +20453,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	    <b/>
@@ -20557,7 +20570,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="3" side="tl" part="lemh"/>
 	      <clip pos="3" side="tl" part="a_verb"/>
 	      <clip pos="3" side="tl" part="sep"/>
-	      <clip pos="3" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="3" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -20695,7 +20708,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="4" side="tl" part="lemh"/>
 	      <clip pos="4" side="tl" part="a_verb"/>
 	      <clip pos="4" side="tl" part="sep"/>
-	      <clip pos="4" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="4" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -20821,7 +20834,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="4" side="tl" part="lemh"/>
 	      <clip pos="4" side="tl" part="a_verb"/>
 	      <clip pos="4" side="tl" part="sep"/>
-	      <clip pos="4" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="4" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -20971,7 +20984,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="5" side="tl" part="lemh"/>
 	      <clip pos="5" side="tl" part="a_verb"/>
 	      <clip pos="5" side="tl" part="sep"/>
-	      <clip pos="5" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="5" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -21045,7 +21058,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    <lu>
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
-	      <clip pos="1" side="tl" part="temps" link-to="3"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -21099,7 +21112,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="sep"/>
-	      <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -21135,7 +21148,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_verb"/>
 	      <clip pos="1" side="tl" part="sep"/>
-	      <clip pos="1" side="tl" part="temps"/>
+              <lit-tag v="3"/>
 	      <clip pos="1" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
@@ -21193,7 +21206,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="2" side="tl" part="sep"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -21296,8 +21309,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="2"/>
                     <lu>
@@ -21375,7 +21388,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="3" side="tl" part="lemh"/>
                       <clip pos="3" side="tl" part="a_verb"/>
                       <clip pos="3" side="tl" part="sep"/>
-                      <clip pos="3" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="3" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -21527,8 +21540,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="3" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="4"/>
                     <lu>
@@ -21601,7 +21614,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="2" side="tl" part="sep"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -21703,8 +21716,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="2"/>
                     <lu>
@@ -21781,7 +21794,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
                       <clip pos="2" side="tl" part="sep"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
                   </chunk>
@@ -21906,8 +21919,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                     </tags>
                     <lu>
 		      <lit v="esti"/>
-                      <clip pos="2" side="tl" part="a_verb"/>
-                      <clip pos="2" side="tl" part="temps"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
                     </lu>
 		    <b pos="2"/>
                     <lu>
@@ -22936,9 +22949,22 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       <action>
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
-	</call-macro>	
+	</call-macro>
+        <let><var n="ncnj"/><clip pos="1" side="tl" part="lem"/></let>
+        <!-- identificamos los 'ke' que no vienen de 'que' para que no sean convertidos después a 'kiu' -->
+        <choose>
+           <when>
+            <test>
+              <and>
+                <equal caseless="yes"><clip pos="1" side="tl" part="lem"/><lit v="ke"/> </equal>
+                <not><equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="que"/> </equal></not>
+              </and>
+            </test>
+           <let><var n="ncnj"/><clip pos="1" side="sl" part="lem"/></let>
+           </when>
+        </choose>
 	<out>
-	  <chunk name="cnj" case="caseFirstWord">
+	  <chunk namefrom="ncnj" case="caseFirstWord">
 	    <tags>
 	      <tag><clip pos="1" side="tl" part="tags"/></tag>		
 	    </tags>

@@ -65,8 +65,9 @@ SET Verb = Vblex OR Vbmod OR Vbhaver OR Copula ;
 SET Verb_Prep = Verb OR Prep ;
 SET Cnj_Rel = CnjCoo OR CnjSub OR CnjAdv OR Rel ;
 
-SET Barrera_Final_SN = <<< OR Prep OR Det OR CnjSub OR Verb ;	# Verb és perillós per la ambigüitat, però en general, prolífic
-SET Barrera_Inicial_SN = >>> OR Prep OR CnjSub OR Verb ;	# Verb és perillós per la ambigüitat, però en general, prolífic
+SET Barrera_Final_SN = <<< OR Prep OR Det OR CnjSub OR Verb OR Rel ;	# Verb és perillós per la ambigüitat, però en general, prolífic
+SET Barrera_Inicial_SN = >>> OR Prep OR CnjSub OR Verb OR Rel ;	# Verb és perillós per la ambigüitat, però en general, prolífic
+SET Limite_Barrera_Inicial_SN = ("ser") OR ("Ser") OR ("estar") OR ("Estar") OR ("parecer") OR ("Parecer") OR ("haber") OR ("Haber") ;
 
 #SET como = ("como") ;
 #SET para = ("para") ;
@@ -197,10 +198,13 @@ REMOVE:r_na_10_mp A OR PP IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK 
 REMOVE:r_na_10_fp A OR PP IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 CnjCoo) (2 Noun_Adj_PP LINK 0 N OR NP) (3 Barrera_Final_SN) ;
 	# los italianos y españoles son amplia mayoría
 
-REMOVE:r_na_11 A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (O Noun_Adj_PP LINK 0 N OR NP) (1 CnjCoo) (2 Noun_Adj_PP LINK 0 N OR NP) (3 Barrera_Final_SN) ;
+REMOVE:r_na_11a A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (NOT -1 Limite_Barrera_Inicial_SN) (O Noun_Adj_PP LINK 0 N OR NP) (1 CnjCoo) (2 Noun_Adj_PP LINK 0 N OR NP) (3 Barrera_Final_SN) ;
+REMOVE:r_na_11b A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (O Noun_Adj_PP LINK 0 N OR NP) (1 CnjCoo) (2C N) (3 Barrera_Final_SN) ;
 	# entre comunistas y anarquistas
 
 	# "vinieron italianos, alemanes, polacos y ucranianos."
+
+# REMOVE:r_na_20 A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (NOT -1 Limite_Barrera_Inicial_SN) (O Noun_Adj_PP LINK 0 N OR NP) (1 Barrera_Final_SN) ;
 
 # entre alemanes y argentinos en
 
