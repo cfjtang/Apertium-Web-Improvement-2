@@ -359,7 +359,37 @@
       </action>
 </rule>
 
-<rule comment="REGLA: SVvolition cnjsub SN SV ( je veux que tu viennes - mi volas ke vi venu (verb subordinat en volitiu)">
+
+<rule comment="REGLA: SVvolition cnjsub SV ( quiero que vengas - volas ke (vi) venu (verb subordinat en volitiu)">
+      <pattern>
+	<pattern-item n="SVvolition"/>
+	<pattern-item n="cnjsub"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="3" part="temps"/>
+              <lit-tag v="imp"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SVvolition cnjsub SN SV ( quiero que el niño venga - volas ke la infano venu (verb subordinat en volitiu)">
       <pattern>
 	<pattern-item n="SVvolition"/>
 	<pattern-item n="cnjsub"/>

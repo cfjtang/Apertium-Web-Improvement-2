@@ -407,6 +407,10 @@
 	  <attr-item tags="vbtr_ntr"/>
     </def-attr>
  
+    <def-attr n="tipus_verb2">
+          <attr-item tags="iĝi"/>
+    </def-attr>
+ 
   </section-def-attrs>
 
   <section-def-vars>
@@ -677,10 +681,15 @@
               <clip pos="3" part="temps"/>
               <lit-tag v="imp"/>
             </let>
+	<choose>
+	  <when>
+	    <test><not><equal><clip pos="3" part="tipus_verb2"/><lit-tag v="iĝi"/></equal></not></test>
             <let>
               <clip pos="4" part="case"/>
               <lit-tag v="acc"/>
             </let>
+	  </when>
+	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
