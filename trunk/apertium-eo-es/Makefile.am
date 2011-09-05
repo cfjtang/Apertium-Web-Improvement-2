@@ -8,7 +8,7 @@ BASENAME=apertium-eo-es
 BILNAME=apertium-eo-es.eo-es.dix
 
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin $(PREFIX1).autopgen.bin \ 
-     $(PREFIX1).t1x.bin $(PREFIX1).antaux1_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).antaux3_t2x.bin $(PREFIX1).antaux4_t2x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
+     $(PREFIX1).t1x.bin $(PREFIX1).antaux1_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).antaux3_t2x.bin $(PREFIX1).antaux4_t2x.bin $(PREFIX1).t2x.bin $(PREFIX1).post_t2x.bin $(PREFIX1).t3x.bin \
      $(PREFIX1).rlx.bin \
      modes $(PREFIX1).mode $(PREFIX2).mode
 
@@ -57,6 +57,10 @@ $(PREFIX1).t2x.bin: $(BASENAME).$(PREFIX1).t2x
 	apertium-validate-interchunk $(BASENAME).$(PREFIX1).t2x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t2x $@
 
+$(PREFIX1).post_t2x.bin: $(BASENAME).$(PREFIX1).post_t2x
+	apertium-validate-interchunk $(BASENAME).$(PREFIX1).post_t2x
+	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).post_t2x $@
+
 $(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
 	apertium-validate-postchunk $(BASENAME).$(PREFIX1).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t3x $@
@@ -66,7 +70,9 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BILNAME) \
 	   $(BASENAME).$(LANG2).dix \
 	   $(BASENAME).$(PREFIX1).rlx \
 	   $(PREFIX1).prob \
-	   $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).antaux1_t2x $(BASENAME).$(PREFIX1).antaux2_t2x (BASENAME).$(PREFIX1).antaux3_t2x (BASENAME).$(PREFIX1).antaux4_t2x $(BASENAME).$(PREFIX1).t2x \
+	   $(BASENAME).$(PREFIX1).t1x \
+	   $(BASENAME).$(PREFIX1).antaux1_t2x $(BASENAME).$(PREFIX1).antaux2_t2x (BASENAME).$(PREFIX1).antaux3_t2x (BASENAME).$(PREFIX1).antaux4_t2x \
+	   $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).post_t2x \
 	   $(BASENAME).$(PREFIX1).t3x \
 	   modes.xml
 
@@ -76,9 +82,12 @@ apertium_eo_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autopgen.bin \
 		    $(PREFIX1).rlx.bin \
 		    $(PREFIX1).prob \
-		    $(PREFIX1).t1x.bin $(PREFIX1).antaux1_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).antaux3_t2x.bin $(PREFIX1).antaux4_t2x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-		    $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).t3x \
+		    $(PREFIX1).t1x.bin \
+		    $(PREFIX1).antaux1_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).antaux3_t2x.bin $(PREFIX1).antaux4_t2x.bin \
+		    $(PREFIX1).t2x.bin $(PREFIX1).post_t2x.bin \
+		    $(PREFIX1).t3x.bin \
                     $(PREFIX1).mode $(PREFIX2).mode
+#		    $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).t3x
 
 apertium_eo_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_eo_esmodesdir=$(prefix)/share/apertium/modes/
@@ -98,7 +107,9 @@ install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_eo_esmodesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_eo_esmodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x  $(BASENAME).$(PREFIX1).antaux1_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).antaux3_t2x $(BASENAME).$(PREFIX1).antaux4_t2x $(BASENAME).$(PREFIX1).t2x $(apertium_eo_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(apertium_eo_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).antaux1_t2x $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).antaux3_t2x $(BASENAME).$(PREFIX1).antaux4_t2x $(apertium_eo_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).post_t2x $(apertium_eo_esdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_eo_esdir)
 	$(INSTALL_DATA) $(PREFIX1).rlx.bin $(apertium_eo_esdir)
 

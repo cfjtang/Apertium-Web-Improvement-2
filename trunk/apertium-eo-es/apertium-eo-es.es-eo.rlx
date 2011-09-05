@@ -19,6 +19,9 @@ LIST Copula = (vbser);
 LIST Pron = (prn) ;
 LIST Prep = (pr) ;
 LIST CnjCoo = (cnjcoo) ;
+# quantes vegades s'executa cada regla?
+# había sido inventado por los griegos mientras que los españoles aseguraban
+# elimina españoles adj, però no griegos adj; si se suprimeix la segona part de la frase, sí se suprimeix griegos adj
 LIST CnjSub = (cnjsub) ;
 LIST CnjAdv = (cnjadv) ;
 LIST Rel = (rel) ;		# PROBLEMA: està malparit en eo-es i eo-ca: prn.rel i rel.adv (es-ca: rel.adv, rel.an, rel.nn, rel.aa)
@@ -28,14 +31,16 @@ LIST CM = (cm) ;
 
 SET V = Vblex + Vbmod + Vbhaver + Copula ;
 SET Word = N + NP + A + Det + Adv + V + Pron + Prep + CnjCoo + CnjSub + CnjAdv + Rel + Interj ;
-SET NP_Member = N + A + Det + Adv ;
-SET NOT_NP_Member = Word - NP_Member;
+SET NP_Member = N + A + Det + Adv + Pron ; # Pron es distinto al resto...
+#SET NOT_NP_Member = Word - NP_Member;
+SET NOT_NP_Member = Vblex OR Vbmod OR Vbhaver OR Copula OR Prep OR CnjCoo OR CnjSub OR CnjAdv OR Rel OR Interj ;
 
 LIST Imp = (imp) ;
 
 LIST Pers = (pers) ;
 
 LIST PP = (pp) ;
+LIST PRS = (prs) ;
 
 LIST Masc = m mf ;
 LIST Fem = f mf ;
@@ -75,6 +80,8 @@ SET Defensa = ("defensa") OR ("Defensa") ;
 
 # adjetivos ambiguos habitualmente antepuestos
 SET AdjPrefAmb = ("bajo") OR ("alto") OR ("joven") OR ("viejo") OR ("medio") OR ("dicho") OR ("menor") OR ("mayor");
+
+SET VerboSubj = ("querer") OR ("Querer") OR ("desear") OR ("Desear") OR ("esperar") OR ("Esperar") OR ("proponer") OR ("Proponer") OR ("pedir") OR ("Pedir") OR ("exigir") OR ("Exigir") OR ("reclamar") OR ("Reclamar") OR ("sugerir") OR ("Sugerir") ;
 
 
 ###############################################################################
@@ -286,10 +293,18 @@ REMOVE:r_adv Adv (0 Adv) (-1C N) (1C N) ;
 
 # eliminación del imperativo en competición con el presente del indicativo
 REMOVE:imp_1 Imp IF (O (vblex pri p3 sg) LINK 0 (vblex imp p2 sg)) ;
+REMOVE:imp_2 Imp IF (-1 ("que")) (O Verb) ;
 
+# elección de subjuntivo después de "que"
+SELECT:s_subj1 PRS (-2 NOT_NP_Member) (-1 ("que")) (0C Verb) (*-1C VerboSubj BARRIER (>>> OR Cnj_Rel)) ;
 
 #
 # comparaciones
 #
 #SELECT:tanto_1 Adv IF (0 ("tanto")) (1C N) (2 ("como")) ;
 #SUBSTITUTE:tanto_1 ("tanto") ("tanto_same") TARGET ("tanto") IF (0 ("tanto")) (1C N) (2 ("como")) ;
+
+#
+# adverbios
+#
+# política y militarmente
