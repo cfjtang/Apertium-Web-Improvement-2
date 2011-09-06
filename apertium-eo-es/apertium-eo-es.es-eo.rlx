@@ -1,3 +1,4 @@
+# exemple ambigüitat fins i tot per a un parlant: "noble húngaro" (hungara nobelo / nobla hungaro)
 DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
 SOFT-DELIMITERS = "<,>" ;
  
@@ -79,7 +80,7 @@ SET Limite_Barrera_Inicial_SN = ("ser") OR ("Ser") OR ("estar") OR ("Estar") OR 
 SET Defensa = ("defensa") OR ("Defensa") ;
 
 # adjetivos ambiguos habitualmente antepuestos
-SET AdjPrefAmb = ("bajo") OR ("alto") OR ("joven") OR ("viejo") OR ("medio") OR ("dicho") OR ("menor") OR ("mayor");
+SET AdjPrefAmb = ("bajo") OR ("alto") OR ("joven") OR ("viejo") OR ("medio") OR ("dicho") OR ("menor") OR ("mayor") OR ("doble") OR ("triple") ;
 
 SET VerboSubj = ("querer") OR ("Querer") OR ("desear") OR ("Desear") OR ("esperar") OR ("Esperar") OR ("proponer") OR ("Proponer") OR ("pedir") OR ("Pedir") OR ("exigir") OR ("Exigir") OR ("reclamar") OR ("Reclamar") OR ("sugerir") OR ("Sugerir") ;
 
@@ -210,6 +211,10 @@ REMOVE:r_na_11b A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (O Noun_Adj_PP L
 	# entre comunistas y anarquistas
 
 	# "vinieron italianos, alemanes, polacos y ucranianos."
+	# ". Católicos, ortodoxos y algunos anglicanos consideran"
+	# "intelectual alemán judío exiliado."
+	# "futuro Estado independiente"
+	# "publicó grandes tiradas de libros"
 
 # REMOVE:r_na_20 A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (NOT -1 Limite_Barrera_Inicial_SN) (O Noun_Adj_PP LINK 0 N OR NP) (1 Barrera_Final_SN) ;
 

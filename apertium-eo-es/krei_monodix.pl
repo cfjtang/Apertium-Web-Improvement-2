@@ -100,6 +100,8 @@ sub skribi {
 	} elsif ($paradigmo eq "vbtr") {
 		if ($lemo =~ /iĝi$/o) {
 			print STDERR "Eraro 6a: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbntr')\n";
+		} elsif ($lemo =~ /igi$/o) {
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, '/igi__vbtr';
 		} elsif ($lemo =~ /i$/o) {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'i__vbtr';
 		} else {
@@ -131,7 +133,7 @@ sub skribi {
 		} elsif ($lemo =~ /iĝi$/o) {
 			print STDERR "Eraro 8b: Erara paradigmo en lemo $lemo (linio $.): [$paradigmo] (devas esti 'vbntr')\n";
 		} elsif ($lemo =~ /i$/o) {
-			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'ser__vb';
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'i__vbser';
 		} else {
 			print STDERR "Eraro 4e: Ne konata paradigmo en $lemo (linio $.): [$paradigmo]\n";
 		}
