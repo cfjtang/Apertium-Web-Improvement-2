@@ -631,8 +631,17 @@
       <cat-item lemma="a" tags="pr"/>
     </def-cat>
 
+    <def-cat n="a_de">
+      <cat-item lemma="a" tags="pr"/>
+      <cat-item lemma="de" tags="pr"/>
+    </def-cat>
+
     <def-cat n="estarapuntode"> <!--EO perífrasi-->
       <cat-item lemma="estar# a punto de" tags="vblex.*"/>
+    </def-cat>
+
+    <def-cat n="llegara">
+      <cat-item lemma="llegar# a" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="venir">
@@ -753,6 +762,8 @@
       <cat-item lemma="edificar" tags="vblex.*"/>
       <cat-item lemma="cambiar" tags="vblex.*"/>
       <cat-item lemma="modificar" tags="vblex.*"/>
+      <cat-item lemma="llegar# a" tags="vblex.*"/>
+      <cat-item lemma="referir" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="vbref2oni-pp">
@@ -803,6 +814,8 @@
       <cat-item lemma="edificar" tags="vblex.pp.*"/>
       <cat-item lemma="cambiar" tags="vblex.pp.*"/>
       <cat-item lemma="modificar" tags="vblex.pp.*"/>
+      <cat-item lemma="llegar# a" tags="vblex.pp.*"/>
+      <cat-item lemma="referir" tags="vblex.pp.*"/>
     </def-cat>
 
     <def-cat n="vbref2igxi">
@@ -821,6 +834,7 @@
       <cat-item lemma="convertir" tags="vblex.*"/>
       <cat-item lemma="reflejar" tags="vblex.*"/>
       <cat-item lemma="encontrar" tags="vblex.*"/>
+      <cat-item lemma="encontrar# presente" tags="vblex.*"/>
       <cat-item lemma="acercar" tags="vblex.*"/>
       <cat-item lemma="asentar" tags="vblex.*"/>
       <cat-item lemma="concentrar" tags="vblex.*"/>
@@ -839,6 +853,10 @@
       <cat-item lemma="levantar" tags="vblex.*"/>
       <cat-item lemma="acostar" tags="vblex.*"/>
       <cat-item lemma="tumbar" tags="vblex.*"/>
+      <cat-item lemma="envolver" tags="vblex.*"/>
+      <cat-item lemma="desenvolver" tags="vblex.*"/>
+      <cat-item lemma="acercar" tags="vblex.*"/>
+      <cat-item lemma="aproximar" tags="vblex.*"/>
 
       <cat-item lemma="actualizar" tags="vblex.*"/>
       <cat-item lemma="agonizar" tags="vblex.*"/>
@@ -942,6 +960,7 @@
       <cat-item lemma="naturalizar" tags="vblex.*"/>
       <cat-item lemma="neutralizar" tags="vblex.*"/>
       <cat-item lemma="normalizar" tags="vblex.*"/>
+      <cat-item lemma="estandarizar" tags="vblex.*"/>
       <cat-item lemma="obstaculizar" tags="vblex.*"/>
       <cat-item lemma="oficializar" tags="vblex.*"/>
       <cat-item lemma="organizar" tags="vblex.*"/>
@@ -1003,6 +1022,7 @@ tratar (de) > temi (pri)
 relacionarse = interrilati
 irse = foriri
 caerse = fali
+se encontrar presente = troviĝi
 -->
 
     <def-cat n="vbref2igxi-pp">
@@ -1021,6 +1041,7 @@ caerse = fali
       <cat-item lemma="convertir" tags="vblex.pp.*"/>
       <cat-item lemma="reflejar" tags="vblex.pp.*"/>
       <cat-item lemma="encontrar" tags="vblex.pp.*"/>
+      <cat-item lemma="encontrar# presente" tags="vblex.pp.*"/>
       <cat-item lemma="acercar" tags="vblex.pp.*"/>
       <cat-item lemma="asentar" tags="vblex.pp.*"/>
       <cat-item lemma="concentrar" tags="vblex.pp.*"/>
@@ -1039,6 +1060,10 @@ caerse = fali
       <cat-item lemma="levantar" tags="vblex.pp.*"/>
       <cat-item lemma="acostar" tags="vblex.pp.*"/>
       <cat-item lemma="tumbar" tags="vblex.pp.*"/>
+      <cat-item lemma="envolver" tags="vblex.pp.*"/>
+      <cat-item lemma="desenvolver" tags="vblex.pp.*"/>
+      <cat-item lemma="acercar" tags="vblex.pp.*"/>
+      <cat-item lemma="aproximar" tags="vblex.pp.*"/>
 
       <cat-item lemma="actualizar" tags="vblex.pp.*"/>
       <cat-item lemma="agonizar" tags="vblex.pp.*"/>
@@ -1142,6 +1167,7 @@ caerse = fali
       <cat-item lemma="naturalizar" tags="vblex.pp.*"/>
       <cat-item lemma="neutralizar" tags="vblex.pp.*"/>
       <cat-item lemma="normalizar" tags="vblex.pp.*"/>
+      <cat-item lemma="estandarizar" tags="vblex.pp.*"/>
       <cat-item lemma="obstaculizar" tags="vblex.pp.*"/>
       <cat-item lemma="oficializar" tags="vblex.pp.*"/>
       <cat-item lemma="organizar" tags="vblex.pp.*"/>
@@ -1797,12 +1823,13 @@ caerse = fali
     <def-var n="caseFirstWord"/>
     <def-var n="lema"/>
     <def-var n="EOS" v="true"/>
-    <def-var n="paraula1"/>
     <def-var n="SVnegatiu"/>
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
+    <def-var n="vimpers"/>
     <def-var n="nprep"/>
+    <def-var n="nadv"/>
     <def-var n="ncnj"/>
     <def-var n="nrel"/>
     <def-var n="nverb"/>
@@ -1841,8 +1868,11 @@ caerse = fali
     <list-item v="ir"/>
     <list-item v="añadir"/>
     <list-item v="poner"/>
+    <list-item v="meter"/>
+    <list-item v="colocar"/>
     <list-item v="sacar"/>
     <list-item v="introducir"/>
+    <list-item v="reintroducir"/>
     <list-item v="entrar"/>
     <list-item v="caer"/>
     <list-item v="subir"/>
@@ -1851,14 +1881,18 @@ caerse = fali
     <list-item v="llegar"/>
     <list-item v="volar"/>
     <list-item v="dirigir"/>
+    <list-item v="redirigir"/>
     <list-item v="correr"/>
     <list-item v="caminar"/>
     <list-item v="andar"/>
+    <list-item v="reandar"/>
     <list-item v="avanzar"/>
     <list-item v="salir"/>
     <list-item v="traducir"/>
+    <list-item v="retraducir"/>
     <list-item v="poner"/>
     <list-item v="insertar"/>
+    <list-item v="reinsertar"/>
     <list-item v="bajar"/>
     <list-item v="llevar"/>
     <list-item v="traer"/>
@@ -16491,8 +16525,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
 
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
 	<choose>
-
               <when>           <!-- traduccions a participi -->
                 <test>
                     <equal>
@@ -16514,7 +16548,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <lit-tag v="adv"/>
                     </lu>
 		</chunk>
-		<b/>
+		<b pos="2"/>
                   <chunk name="pp">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -16563,7 +16597,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <lit-tag v="adv"/>
                     </lu>
 		</chunk>
-		<b/>
+		<b pos="2"/>
                   <chunk namefrom="nverb">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -16588,7 +16622,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </let>
       </action>
     </rule>
-
 
 <rule comment="REGLA: VERBestar_a_punto_de + INF (está a punto de venir -> estas venonta EOes)">
       <pattern>
@@ -16644,6 +16677,137 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
     </rule>
 
 
+<rule comment="REGLA: HABER VERBllegara + INF (llegar a EOes)">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="llegara"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+
+            <out>
+		 <chunk name="eĉ" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="eĉ"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="2"/>
+            </out>
+	  <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+	  </let>
+        <call-macro n="haber__pp">
+          <with-param pos="1"/>
+          <with-param pos="3"/>
+        </call-macro>
+      </action>
+    </rule>
+
+<rule comment="REGLA: VERBllegara + INF (llegar a EOes)">
+      <pattern>
+	<pattern-item n="llegara"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="2"/>
+        </call-macro>
+
+        <out>
+	 <chunk name="eĉ" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="ADV"/></tag>
+            </tags>
+	    <lu>
+              <lit v="eĉ"/>
+              <lit-tag v="adv"/>
+            </lu>
+	</chunk>
+	<b pos="1"/>
+        </out>
+	<choose>
+              <when>           <!-- traduccions a participi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pp"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </let>
+            <out>
+                  <chunk name="pp">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="case"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="3"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="5"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+            </out>
+              </when>
+            <otherwise>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp2"/>
+                </let>
+                <out>
+                  <chunk namefrom="nverb">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+			<tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+        </otherwise>
+        </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: HABER VERBvolvera + INF (volver a EOes)">
       <pattern>
 	<pattern-item n="haber"/>
@@ -16659,10 +16823,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <with-param pos="4"/>
         </call-macro>
 
-                <let>
-                  <clip pos="2" side="tl" part="temps"/>
-                  <lit-tag v="past"/>
-                </let>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
 	    <out>
 		 <chunk name="adv" case="caseFirstWord">
                     <tags>
@@ -16673,28 +16834,16 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <lit-tag v="adv"/>
                     </lu>
 		</chunk>
-		<b/>
-                  <chunk name="verb_perif">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="2" side="tl" part="temps"/></tag>
-                      <tag><clip pos="1" side="tl" part="pers"/></tag>
-                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
-                      <tag><var n="tipus_verb"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="4" side="tl" part="lemh"/>
-                      <clip pos="4" side="tl" part="a_verb"/>
-                      <lit-tag v="3"/>
-                      <clip pos="4" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-            </out>
+		<b pos="2"/>
+	    </out>
 	  <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
 	  </let>
+        <call-macro n="haber__pp">
+          <with-param pos="1"/>
+          <with-param pos="4"/>
+        </call-macro>
       </action>
     </rule>
 
@@ -16712,8 +16861,20 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <with-param pos="3"/>
         </call-macro>
 
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+            <out>
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="denove"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="2"/>
+            </out>
 	<choose>
-
               <when>           <!-- traduccions a participi -->
                 <test>
                     <equal>
@@ -16726,17 +16887,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <lit-tag v="pp"/>
                 </let>
             <out>
-
-		 <chunk name="adv" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="ADV"/></tag>
-                    </tags>
-		    <lu>
-                      <lit v="denove"/>
-                      <lit-tag v="adv"/>
-                    </lu>
-		</chunk>
-		<b/>
                   <chunk name="pp">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -16766,16 +16916,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                   <lit-tag v="pp2"/>
                 </let>
                 <out>
-		 <chunk name="adv" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="ADV"/></tag>
-                    </tags>
-		    <lu>
-                      <lit v="denove"/>
-                      <lit-tag v="adv"/>
-                    </lu>
-		</chunk>
-		<b/>
                   <chunk namefrom="nverb">
                     <tags>
                       <tag><lit-tag v="SV"/></tag>
@@ -17137,7 +17277,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><var n="tipus_verb"/></tag>
                     </tags>
                     <lu>
-                      <lit v="ĉesi"/>
+                      <lit v="ŝajni"/>
                       <lit-tag v="vbntr"/>
                       <lit-tag v="3"/>
                     </lu>
@@ -17345,6 +17485,122 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                 </out>
         </otherwise>
         </choose>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: VERBseguir + GER + QUE (sigue siendo; para corregir el KE EOes)">
+      <pattern>
+	<pattern-item n="seguir"/>
+	<pattern-item n="ger"/>
+	<pattern-item n="cnjcoopercorregir"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="2"/>
+        </call-macro>
+
+	<choose>
+
+              <when>           <!-- traduccions a participi -->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pp"/>
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="pp"/>
+                </let>
+            <out>
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="daŭre"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="1"/>
+                  <chunk name="pp">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="3"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                      <lit-tag v="5"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+            </out>
+              </when>
+            <otherwise>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp2"/>
+                </let>
+                <out>
+		 <chunk name="adv" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="ADV"/></tag>
+                    </tags>
+		    <lu>
+                      <lit v="daŭre"/>
+                      <lit-tag v="adv"/>
+                    </lu>
+		</chunk>
+		<b pos="1"/>
+                  <chunk namefrom="nverb">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+			<tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                  </chunk>
+                </out>
+        </otherwise>
+        </choose>
+        <out>
+        <b pos="2"/>
+        <chunk name="ke">
+          <tags>
+            <tag><lit-tag v="cnjsub"/></tag>
+          </tags>
+          <lu>
+            <lit v="ke"/>
+            <lit-tag v="cnjsub"/>
+          </lu>
+        </chunk>
+        </out>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
@@ -19621,9 +19877,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
-        <!--<call-macro n="tipus_verb2">
+        <call-macro n="tipus_verb2">
           <with-param pos="2"/>
-        </call-macro>-->
+        </call-macro>
         <call-macro n="set_temps">
           <with-param pos="1"/>
         </call-macro>
@@ -19660,6 +19916,19 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </out>
         </when>
         <otherwise>
+<!-- no està madur
+        <choose>
+           <when>
+             <test>
+               <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="caber"/></equal>
+             </test>
+	   <let><clip pos="1" side="tl" part="lemh"/><lit v="indi"/></let>
+	   <let><clip pos="1" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
+           <let><var n="tipus_verb2"/><lit-tag v="imp"/></let>
+           <let><var n="vimpers"/><lit-tag v="impers"/></let>
+           </when>
+        </choose>
+-->
 	<out>
           <chunk namefrom="nverb" case="caseFirstWord">
             <tags>
@@ -19668,6 +19937,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><clip pos="1" side="tl" part="pers"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
+<!--	      <tag><var n="vimpers"/></tag>  -->
 	      <tag><var n="tipus_verb"/></tag>
 	      <tag><var n="tipus_verb2"/></tag>
             </tags>
@@ -19690,12 +19960,119 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </out>
         </otherwise>
      </choose>
+<!--        <let><var n="vimpers"/><lit-tag v="pers"/></let> -->
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
         </let>
       </action>
     </rule>
+
+    <rule comment="REGLA: VERB conjugat + a + INF (sacar a bailar -> eltiri danci; EOes)">
+      <pattern>
+	<pattern-item n="verbcj"/>
+	<pattern-item n="a_de"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>    	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <call-macro n="tipus_verbs">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="tipus_verb2">
+          <with-param pos="3"/>
+        </call-macro>
+        <call-macro n="set_temps">
+          <with-param pos="1"/>
+        </call-macro>
+
+     <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+     <choose>
+        <when>
+          <test>
+            <equal caseless="yes">
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="hacer"/>
+            </equal>
+          </test>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <out>
+          <chunk namefrom="nverb" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><lit-tag v="vbtr"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <lit-tag v="igi"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        </when>
+        <otherwise>
+<!-- no està madur
+        <choose>
+           <when>
+             <test>
+               <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="caber"/></equal>
+             </test>
+	   <let><clip pos="1" side="tl" part="lemh"/><lit v="indi"/></let>
+	   <let><clip pos="1" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
+           <let><var n="tipus_verb2"/><lit-tag v="imp"/></let>
+           <let><var n="vimpers"/><lit-tag v="impers"/></let>
+           </when>
+        </choose>
+-->
+	<out>
+          <chunk namefrom="nverb" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+<!--	      <tag><var n="vimpers"/></tag>  -->
+	      <tag><var n="tipus_verb"/></tag>
+	      <tag><var n="tipus_verb2"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+        </otherwise>
+     </choose>
+<!--        <let><var n="vimpers"/><lit-tag v="pers"/></let> -->
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: VERB conjugat + HABERinf + PP (quería haber cantado; EOes)">
       <pattern>
@@ -19755,6 +20132,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </let>
       </action>
     </rule>
+
 
     <rule comment="REGLA: VERB conjugat + HABERinf + VERBser-pp + PP (kompleksa pasivo: pudo haber sido cantado; EOes)">
       <pattern>
@@ -20097,13 +20475,24 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <call-macro n="tipus_verbs">
           <with-param pos="2"/>
         </call-macro>
-        <!--<call-macro n="tipus_verb2">
+        <call-macro n="tipus_verb2">
           <with-param pos="2"/>
-        </call-macro>-->
+        </call-macro>
         <call-macro n="set_temps">
           <with-param pos="1"/>
         </call-macro>
-
+<!-- no està madur
+        <choose>
+           <when>
+             <test>
+               <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="caber"/></equal>
+             </test>
+	   <let><clip pos="1" side="tl" part="lemh"/><lit v="indi"/></let>
+	   <let><clip pos="1" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
+           <let><var n="vimpers"/><lit-tag v="impers"/></let>
+           </when>
+        </choose>
+-->
 	<out>
                   <chunk namefrom="nverb" case="caseFirstWord">
                     <tags>
@@ -20112,6 +20501,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+<!--		      <tag><var n="vimpers"/></tag> -->
 		      <tag><var n="tipus_verb"/></tag>
 		      <tag><var n="tipus_verb2"/></tag>
                     </tags>
@@ -20142,13 +20532,14 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                         </lu>
                         </chunk>
                 </out>
-
+<!--        <let><var n="vimpers"/><lit-tag v="pers"/></let> -->
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
         </let>
       </action>
     </rule>
+
 
     <rule comment="REGLA: HAVER + PP + INF (ha decidido marchar -> decidis marŝi ) (EOes)">
       <pattern>
@@ -20364,6 +20755,230 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                 </out>
             </otherwise>
 	</choose>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: HAVER + PP + a + INF (ha sacado a bailar -> elitiris danci ) (EOes)">
+      <pattern>
+	<pattern-item n="haber"/>
+	<pattern-item n="pp"/>
+	<pattern-item n="a_de"/>
+	<pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="tipus_verbs">
+          <with-param pos="4"/>
+        </call-macro>
+
+        <choose>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pri"/><!--present indicatiu dic -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="prs"/><!--present subjunctiu digui -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="4" side="tl" part="lemh"/>
+                      <clip pos="4" side="tl" part="a_verb"/>
+                      <clip pos="4" side="tl" part="sep"/>
+                      <clip pos="4" side="tl" part="temps"/>
+                      <clip pos="4" side="tl" part="lemq"/>
+                    </lu>
+
+                  </chunk>
+                </out>
+          </when>
+              <when>  <!-- traduccions des de present -> passat (1)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="lem"/>
+                      <lit v="haya"/><!--TAGGER-->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="past"/> <!-- present -->
+                </let>
+                <out>
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="2" side="tl" part="temps"/></tag>
+                      <tag><lit-tag v="p3"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <lit-tag v="3"/>
+                      <clip pos="2" side="tl" part="lemq"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="4" side="tl" part="lemh"/>
+                      <clip pos="4" side="tl" part="a_verb"/>
+                      <clip pos="4" side="tl" part="sep"/>
+                      <clip pos="4" side="tl" part="temps"/>
+                      <clip pos="4" side="tl" part="lemq"/>
+                    </lu>
+
+                  </chunk>
+                </out>
+          </when>
+	    <otherwise>
+	    <choose>
+              <when>      <!-- traduccions des de passat -> ESTIS + PP (2)-->
+                <test>
+                  <or>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="ifi"/><!--digué -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pii"/><!--deia -->
+                    </equal>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="pis"/><!--digués -->
+                    </equal>
+                  </or>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="past"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+              <when>      <!-- traduccions des de futur -> ESTIS + PP (3)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="fti"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="fti"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+              <when>      <!-- traduccions des de condicional -> ESTIS + PP (3)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="cni"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="cni"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+
+              <when>      <!-- traduccions des de infinitiu -> ESTIS + PP (3)-->
+                <test>
+                    <equal>
+                      <clip pos="1" side="sl" part="temps"/>
+                      <lit-tag v="inf"/><!--digué -->
+                    </equal>
+                </test>
+                <let>
+                  <clip pos="1" side="tl" part="temps"/>
+                  <lit-tag v="inf"/>
+                </let>
+                <let>
+                  <clip pos="1" side="tl" part="nbr"/>
+                  <lit-tag v="sg"/>
+                </let>
+                <let>
+                  <clip pos="2" side="tl" part="temps"/>
+                  <lit-tag v="pp3"/>
+                </let>
+              </when>
+	     </choose>
+
+                <out>
+                  <chunk name="verbcj_perif" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SV"/></tag>
+                      <tag><clip pos="2" side="tl" part="a_verb"/></tag>
+                      <tag><clip pos="1" side="tl" part="temps"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                      <tag><var n="tipus_verb"/></tag>
+                    </tags>
+                    <lu>
+		      <lit v="esti"/>
+                      <lit-tag v="vbser"/>
+                      <lit-tag v="3"/>
+                    </lu>
+		    <b/>
+                    <lu>
+                      <clip pos="2" side="tl" part="lemh"/>
+                      <clip pos="2" side="tl" part="a_verb"/>
+                      <clip pos="2" side="tl" part="temps"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                    </lu>
+                    <b pos="1"/>
+                    <lu>
+                      <clip pos="4" side="tl" part="lemh"/>
+                      <clip pos="4" side="tl" part="a_verb"/>
+                      <clip pos="4" side="tl" part="sep"/>
+                      <clip pos="4" side="tl" part="temps"/>
+                      <clip pos="4" side="tl" part="lemq"/>
+                    </lu>
+
+                  </chunk>
+                </out>
+            </otherwise>
+	</choose>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -23475,8 +24090,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+        <let><var n="nadv"/><clip pos="1" side="tl" part="lem"/></let>
 	<out>
-	  <chunk name="adv" case="caseFirstWord">
+	  <chunk namefrom="nadv" case="caseFirstWord">
 	    <tags>
 	      <tag><clip pos="1" side="tl" part="a_adv"/></tag>
 	      <tag><clip pos="1" side="tl" part="neg"/></tag>		

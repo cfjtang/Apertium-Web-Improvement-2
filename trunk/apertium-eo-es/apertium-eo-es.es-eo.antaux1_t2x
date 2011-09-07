@@ -1025,12 +1025,30 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
     </rule>
 
 
-    <rule comment="REGLA: SV ADV   -   SV ">
+    <rule comment="REGLA: SV ADV   -   SV (kun ŝanĝo ĉe 'tre': queremos mucho > tre volas">
       <pattern>
         <pattern-item n="SV"/>
         <pattern-item n="adv"/>
       </pattern>
       <action>
+    <choose>
+      <when>
+        <test>
+            <equal><clip pos="2" part="lem"/><lit v="tre"/></equal>
+        </test>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="1" part="lem"/></get-case-from>
+            <clip pos="1" part="tags"/>
+            <lit v="{"/>
+            <clip pos="2" part="content"/>
+                <b pos="1"/>
+            <clip pos="1" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </when>
+      <otherwise>
         <out>
           <chunk>
             <get-case-from pos="1"><clip pos="1" part="lem"/></get-case-from>
@@ -1042,6 +1060,8 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
              <lit v="}"/>
           </chunk>
         </out>
+      </otherwise>
+    </choose>
       </action>
     </rule>
 
