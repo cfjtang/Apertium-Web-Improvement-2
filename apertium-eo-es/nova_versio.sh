@@ -8,6 +8,7 @@ cp apertium-eo-es.es-eo.antaux2_t2x apertium-eo-es.es-eo.antaux2_t2x.$date
 cp apertium-eo-es.es-eo.antaux3_t2x apertium-eo-es.es-eo.antaux3_t2x.$date
 cp apertium-eo-es.es-eo.antaux4_t2x apertium-eo-es.es-eo.antaux4_t2x.$date
 cp apertium-eo-es.es-eo.t2x apertium-eo-es.es-eo.t2x.$date
+cp apertium-eo-es.es-eo.post_t2x apertium-eo-es.es-eo.post_t2x.$date
 cp apertium-eo-es.es-eo.t3x apertium-eo-es.es-eo.t3x.$date
 cp apertium-eo-es.es-eo.rlx apertium-eo-es.es-eo.rlx.$date
 cp nova_traduko.txt aktuala_traduko.txt
