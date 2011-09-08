@@ -171,6 +171,9 @@ REMOVE DetPos IF (0 DetPos) (0 Prep) (1C Toponim);
 # en ur gambr.
 REMOVE Vpart (NOT 1 Verb);
 
+# Setu petra a vez graet.
+SELECT VerbFin (-1 ("<a>"ri vpart) OR ("<e>"ri vpart)) (0 ("<vez>"ri)) (1 VerbPP);
+
 #Ma vez klasket sevel abadennoù
 REMOVE DetPos IF (-1 BOS) (1C Verb);
 
