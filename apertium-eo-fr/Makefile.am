@@ -97,5 +97,5 @@ install-data-local:
 
 #	$(INSTALL_DATA) $(PREFIX2)-pn.mode $(apertium_es_modesdir)
 
-CLEANFILES = -rf $(TARGETS) *.translit modes 
+CLEANFILES = -rf $(TARGETS) modes 
 
