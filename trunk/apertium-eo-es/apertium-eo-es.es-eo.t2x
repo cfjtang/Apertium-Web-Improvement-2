@@ -187,18 +187,24 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
   <section-def-macros>
 
     <def-macro n="prodrop" npar="1">
-      <!-- generación del sujeto si no estamos delante de un imperativo en segunda o tercera persona -->
+      <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
       <choose>
         <when>
           <test>
             <not>
-              <and>
-                <equal><clip pos="1" part="temps"/><lit-tag v="imp"/></equal>
-                <or>
-                  <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
-                  <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
-                </or>
-              </and>
+              <or>
+                <equal><clip pos="1" part="temps"/><lit-tag v="inf"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="ger"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="gerpast"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="pp"/></equal>
+                <and>
+                  <equal><clip pos="1" part="temps"/><lit-tag v="imp"/></equal>
+                  <or>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
+                  </or>
+                </and>
+              </or>
             </not>
           </test>
 	  <out>
@@ -231,19 +237,25 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
     </def-macro>
 
     <def-macro n="prodrop2" npar="2">
-      <!-- generación del sujeto si no estamos delante de un imperativo en segunda o tercera persona -->
+      <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
       <!-- coje mayúscular de par=1 y persona y número de par=2 -->
       <choose>
         <when>
           <test>
             <not>
-              <and>
-                <equal><clip pos="2" part="temps"/><lit-tag v="imp"/></equal>
-                <or>
-                  <equal><clip pos="2" part="pers"/><lit-tag v="p2"/></equal>
-                  <equal><clip pos="2" part="pers"/><lit-tag v="p3"/></equal>
-                </or>
-              </and>
+              <or>
+                <equal><clip pos="1" part="temps"/><lit-tag v="inf"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="ger"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="gerpast"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="pp"/></equal>
+                <and>
+                  <equal><clip pos="1" part="temps"/><lit-tag v="imp"/></equal>
+                  <or>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
+                  </or>
+                </and>
+              </or>
             </not>
           </test>
 	  <out>
@@ -307,6 +319,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 </rule>
 
 
+<!--
 <rule comment="REGLA: punt_cnjadv SV cnjsub ( . pienso que - . mi pensas ke ; prodrop. EOes)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
@@ -335,8 +348,10 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	</out>
       </action>
 </rule>
+-->
 
 
+<!--
 <rule comment="REGLA: punt_cnjadv SV cnjsub SV ( . pienso que leo - . mi pensas ke mi legas ; prodrop x 2. EOes)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
@@ -375,9 +390,10 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	</out>
       </action>
 </rule>
+-->
 
 
-<rule comment="REGLA: punt_cnjadv SV cnjsub ( . lo veo - . mi vidas lin prodrop. EOes)">
+<rule comment="REGLA: punt_cnjadv SNobj SV ( . lo veo - . mi vidas lin prodrop. EOes)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SN_obj"/>

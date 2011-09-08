@@ -1640,6 +1640,7 @@
       <label-item label="VLEXIMP"/>
       <label-item label="PRREL"/>
     </label-sequence> 
+
     <label-sequence>
       <label-item label="VMODALINF"/><!--Afegit 17/01/2006 fins a VMODALIMP-->
       <label-item label="DETNT"/>
@@ -2234,6 +2235,50 @@
       <label-item label="CNJSUBS"/><!--no incluye 'que' -->
     </label-sequence>
 
+    <label-sequence>
+      <label-item label="PREADV"/><!--Afegit 17/01/2006 fins a VMODALIMP-->
+      <label-item label="DETNT"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="DETMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="NOMM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="NOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="NOMMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="ACRONIMOM"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="ACRONIMOF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="ACRONIMOMF"/>
+    </label-sequence>
+    <label-sequence>
+      <label-item label="PREADV"/>
+      <label-item label="MASNP"/>
+    </label-sequence>
   </forbid>
 
   <enforce-rules>
