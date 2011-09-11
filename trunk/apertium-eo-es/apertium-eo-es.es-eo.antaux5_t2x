@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- La celo de tiu interchunk estas generi mankantajn subjektojn.
+Krom tio, oni atribuas defaultan nombron aŭ genron al ĉiujn nomoj kaj adjektivoj,
+kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, sed konservas ĉi tie, ĉar ne malhelpas)
+-->
+<!--
+ ^pro_obj<SN><obj><p1><mf><sg>{^prpers<prn><2><p1><mf><sg>$}$ ^pro_obj<SN><obj><p3><m><sg>{^prpers<prn><2><p3><m><sg>$}
+-> +/-
+^pro_directe<SN><obj><p3><m><sg>{^prpers<prn><2><p3><m><sg>$}$ ^pro_indirecte<SP><subj><p3><mf><sg>{^al<pr>$ ^prpers<prn><2><p3><mf><sg>$}$
+-->
+<interchunk>
+
+  <section-def-cats>
+    <def-cat n="SN">
+      <cat-item tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="SN_nopron"> <!-- sen pronomoj -->
+      <cat-item tags="SN.m.*"/>
+      <cat-item tags="SN.f.*"/>
+      <cat-item tags="SN.mf.*"/>
+    </def-cat>
+
+   <def-cat n="SN_obj"><!-- EO: identifica objecte directe (únicament ho porten els pronoms)-->
+      <cat-item tags="SN.obj.*"/>
+    </def-cat>
+
+    <def-cat n="SA">
+      <cat-item tags="SA.*"/>
+    </def-cat>
+
+    <def-cat n="cnjsub">
+      <cat-item tags="cnjsub"/>
+    </def-cat>
+
+    <def-cat n="ke">
+      <cat-item lemma="ke" tags="cnjsub"/>
+    </def-cat>
+
+    <def-cat n="SV">
+      <cat-item tags="SV.*"/>
+      <cat-item tags="SVneg.*"/>
+    </def-cat>
+
+    <def-cat n="SVnocop">	<!-- todos excepto los copulativos (vbser) -->
+      <cat-item tags="SV.vblex.*"/>
+      <cat-item tags="SV.vbtr.*"/>
+      <cat-item tags="SV.vbtr_ntr.*"/>
+      <cat-item tags="SV.vbntr.*"/>
+      <cat-item tags="SVneg.vblex.*"/>
+      <cat-item tags="SVneg.vbtr.*"/>
+      <cat-item tags="SVneg.vbtr_ntr.*"/>
+      <cat-item tags="SVneg.vbntr.*"/>
+    </def-cat>
+
+    <def-cat n="SV_pers"> <!--totes les formes personals -->
+      <cat-item lemma="verbcj" tags="SV.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.*"/>
+    </def-cat>
+
+    <def-cat n="SVnocop_pers">	<!-- todos las formas personales excepto los copulativos (vbser) -->
+      <cat-item lemma="verbcj" tags="SV.vblex.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vblex.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vblex.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbtr.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbtr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbntr.*"/>
+    </def-cat>
+
+    <def-cat n="punt_cnjadv"> <!-- tractament d'inici de frase per al pro-drop-->
+      <cat-item tags="sent"/>
+      <cat-item tags="cnjadv"/>
+      <cat-item tags="cnjsub"/>
+      <cat-item lemma="kiam" tags="SNrelatiu.*"/>
+      <cat-item lemma="kial" tags="SNrelatiu.*"/>
+      <cat-item lemma="kie" tags="SNrelatiu.*"/>
+      <cat-item lemma="kiom" tags="SNrelatiu.*"/>
+    </def-cat>
+
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="mf"/>
+    </def-attr>
+
+    <def-attr n="nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+    </def-attr>
+
+    <def-attr n="tipus_prn">
+      <attr-item tags="subj"/>
+      <attr-item tags="obj"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="tn"/>
+      <attr-item tags="itg"/>
+      <attr-item tags="pos"/>
+      <attr-item tags="ref"/>
+    </def-attr>
+
+    <def-attr n="pers">
+      <attr-item tags="p1"/>
+      <attr-item tags="p2"/>
+      <attr-item tags="p3"/>
+      <attr-item tags="PD"/>
+    </def-attr>
+
+    <def-attr n="temps">
+      <attr-item tags="inf"/>
+      <attr-item tags="pres"/>
+      <attr-item tags="past"/>
+      <attr-item tags="pri"/>
+      <attr-item tags="ifip"/>
+      <attr-item tags="cni"/>
+      <attr-item tags="fti"/>
+      <attr-item tags="fts"/>
+      <attr-item tags="pp"/>
+      <attr-item tags="ppres"/>
+      <attr-item tags="ger"/>
+      <attr-item tags="gerpast"/>
+      <attr-item tags="pprs"/>
+      <attr-item tags="subs"/>
+      <attr-item tags="imp"/>
+
+      <attr-item tags="ifi"/>
+      <attr-item tags="pii"/>
+      <attr-item tags="pis"/>
+    
+      <attr-item tags="pp2"/>
+      <attr-item tags="pp3"/>
+      <attr-item tags="prs"/>
+      </def-attr>
+
+    <def-attr n="tipus_verb">
+          <attr-item tags="vbser"/>
+	  <attr-item tags="vblex"/>
+	  <attr-item tags="vbtr"/>
+	  <attr-item tags="vbntr"/>
+	  <attr-item tags="vbtr_ntr"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_igxi">
+          <attr-item tags="iĝi"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_like">
+          <attr-item tags="like"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_pred">
+          <attr-item tags="predikativo"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_impers">
+          <attr-item tags="impers"/>
+    </def-attr>
+ 
+  </section-def-attrs>
+
+
+  <section-def-vars>
+    <def-var n="nombre"/>
+    <def-var n="genere"/>
+  </section-def-vars>
+
+
+  <section-def-macros>
+
+    <def-macro n="prodrop" npar="1">
+      <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
+      <choose>
+        <when>
+          <test>
+            <not>
+              <or>
+                <equal><clip pos="1" part="temps"/><lit-tag v="inf"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="ger"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="gerpast"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="pp"/></equal>
+                <and>
+                  <equal><clip pos="1" part="temps"/><lit-tag v="imp"/></equal>
+                  <or>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
+                  </or>
+                </and>
+                <equal><clip pos="1" part="tipus_verb_like"/><lit-tag v="like"/></equal>
+                <equal><clip pos="1" part="tipus_verb_impers"/><lit-tag v="impers"/></equal>
+              </or>
+            </not>
+          </test>
+	  <out>
+	    <chunk>
+	      <get-case-from pos="1">
+	        <lit v="subj"/>
+	      </get-case-from>
+	      <lit-tag v="prn.subj"/>
+	      <clip pos="1" part="pers"/>
+	      <lit-tag v="GD"/>
+	      <clip pos="1" part="nbr"/>
+	      <lit v="{^"/>
+	      <get-case-from pos="1">
+	        <lit v="prpers"/>
+	      </get-case-from>
+	      <lit-tag v="prn.subj.3.4.5"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>	   
+	  </out>
+
+          <choose>
+            <when>
+              <test><equal><case-of pos="1" part="lem"/><lit v="Aa"/></equal></test>
+              <modify-case><clip pos="1" part="lem"/><lit v="aa"/></modify-case>
+            </when>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+    <def-macro n="prodrop2" npar="2">
+      <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
+      <!-- coje mayúscula de par=1 y persona y número de par=2 -->
+      <choose>
+        <when>
+          <test>
+            <not>
+              <or>
+                <equal><clip pos="1" part="temps"/><lit-tag v="inf"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="ger"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="gerpast"/></equal>
+                <equal><clip pos="1" part="temps"/><lit-tag v="pp"/></equal>
+                <and>
+                  <equal><clip pos="1" part="temps"/><lit-tag v="imp"/></equal>
+                  <or>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
+                    <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
+                  </or>
+                </and>
+                <equal><clip pos="1" part="tipus_verb_like"/><lit-tag v="like"/></equal>
+                <equal><clip pos="1" part="tipus_verb_impers"/><lit-tag v="impers"/></equal>
+              </or>
+            </not>
+          </test>
+	  <out>
+	    <chunk>
+	      <get-case-from pos="1">
+	        <lit v="subj"/>
+	      </get-case-from>
+	      <lit-tag v="prn.subj"/>
+	      <clip pos="1" part="pers"/>
+	      <lit-tag v="GD"/>
+	      <clip pos="1" part="nbr"/>
+	      <lit v="{^"/>
+	      <get-case-from pos="1">
+	        <lit v="prpers"/>
+	      </get-case-from>
+	      <lit-tag v="prn.subj.3.4.5"/>
+	      <lit v="$}"/>
+	    </chunk>
+	    <b/>	   
+	  </out>
+
+          <choose>
+            <when>
+              <test><equal><case-of pos="1" part="lem"/><lit v="Aa"/></equal></test>
+              <modify-case><clip pos="1" part="lem"/><lit v="aa"/></modify-case>
+            </when>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+  </section-def-macros>
+
+
+  <section-rules>
+
+    <!-- prodrop -->
+
+<rule comment="REGLA: cnjsub SV ( que vengas - ke vi venu; prodrop. EOes)">
+      <pattern>
+	<pattern-item n="punt_cnjadv"/>
+	<pattern-item n="SVnocop_pers"/>
+      </pattern>
+      <action>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<call-macro n="prodrop">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<out>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: punt_cnjadv SNobj SV ( . lo veo - . mi vidas lin prodrop. EOes)">
+      <pattern>
+	<pattern-item n="punt_cnjadv"/>
+	<pattern-item n="SN_obj"/>
+	<pattern-item n="SVnocop_pers"/>
+      </pattern>
+      <action>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+	<call-macro n="prodrop2">
+	  <with-param pos="2"/>
+	  <with-param pos="3"/>
+	</call-macro>	
+	<out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+    <!-- genro -->
+
+    <rule comment="CHUNK: SN">
+      <pattern>
+        <pattern-item n="SN_nopron"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
+	      </or>
+	    </test>
+	    <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
+	  </when>
+	</choose>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal><clip pos="1" part="gen"/><lit-tag v="ND"/></equal>
+		<equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal>
+	      </or>
+	    </test>
+	    <let><clip pos="1" part="gen"/><lit-tag v="m"/></let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="CHUNK: SA">
+      <pattern>
+        <pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test>
+	      <or>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal>
+		<equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
+	      </or>
+	    </test>
+	    <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
+	  </when>
+	</choose>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+  </section-rules>
+</interchunk>

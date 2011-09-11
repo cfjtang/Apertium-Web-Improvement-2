@@ -1,32 +1,260 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- La celo de tiu interchunk estas generi mankantajn subjektojn.
-Krom tio, oni atribuas defaultan nombron aŭ genron al ĉiujn nomoj kaj adjektivoj,
-kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, sed konservas ĉi tie, ĉar ne malhelpas)
--->
-<!--
- ^pro_obj<SN><obj><p1><mf><sg>{^prpers<prn><2><p1><mf><sg>$}$ ^pro_obj<SN><obj><p3><m><sg>{^prpers<prn><2><p3><m><sg>$}
--> +/-
-^pro_directe<SN><obj><p3><m><sg>{^prpers<prn><2><p3><m><sg>$}$ ^pro_indirecte<SP><subj><p3><mf><sg>{^al<pr>$ ^prpers<prn><2><p3><mf><sg>$}$
--->
+<?xml version="1.0"?> <!-- -*- nxml -*- -->
+<!-- la celo de tiu interchunk estas la aldono de la necesaj akuzativoj -->
 <interchunk>
-
   <section-def-cats>
+
     <def-cat n="SN">
       <cat-item tags="SN.*"/>
+      <cat-item tags="subj.*"/>  <!-- sujeto prodrop -->
     </def-cat>
 
-    <def-cat n="SN_nopron"> <!-- sen pronomoj -->
-      <cat-item tags="SN.m.*"/>
-      <cat-item tags="SN.f.*"/>
-      <cat-item tags="SN.mf.*"/>
+    <def-cat n="SNextend">
+      <cat-item tags="SN.*"/>
+      <cat-item tags="subj.*"/>  <!-- sujeto prodrop -->
+      <cat-item tags="DET.*"/> <!-- este, esta -->
     </def-cat>
 
-   <def-cat n="SN_obj"><!-- EO: identifica objecte directe (únicament ho porten els pronoms)-->
+    <def-cat n="SNitg"> <!-- EO per als interrogatius, què (el qui porta sense, per tant no entra)...-->
+      <cat-item tags="SN.itg.*.nom"/>
+      <cat-item tags="SN.*.nomi2"/>
+    </def-cat>
+    
+   <def-cat n="SNacc"><!-- EO: tots el que no porten changecase=sense-->
+      <cat-item tags="SN.*.nom"/>
+    </def-cat>
+
+    <def-cat n="SNsgacc">
+      <cat-item tags="SN.*.sg.*.nom"/>
+    </def-cat>
+
+    <def-cat n="SNplacc">
+      <cat-item tags="SN.*.pl.*.nom"/>
+    </def-cat>
+
+    <def-cat n="oni">
+      <cat-item lemma="prpers" tags="SN.subj.p3.mf.sg"/>
+      <cat-item lemma="prn" tags="SN.tn.sg.nom"/>
+    </def-cat>
+
+    <def-cat n="prpers_sub">
+      <cat-item lemma="prpers" tags="SN.subj.*"/>
+    </def-cat>
+
+   <def-cat n="SA">
+      <cat-item tags="SA.*"/>
+    </def-cat>
+
+   <def-cat n="SAacc"><!-- EO: tots el que no porten changecase=sense-->
+      <cat-item tags="SA.*.nom"/>
+    </def-cat>
+
+   <def-cat n="SNSA">
+      <cat-item tags="SN.*"/>
+      <cat-item tags="SA.*"/>
+    </def-cat>
+
+   <def-cat n="SNSAacc"><!-- EO: tots el que no porten changecase=sense-->
+      <cat-item tags="SN.*.nom"/>
+      <cat-item tags="SA.*.nom"/>
+    </def-cat>
+
+   <def-cat n="SNrelatiu"><!-- EO: -->
+      <cat-item lemma="kiu" tags="SNrelatiu.*"/>
+      <cat-item lemma="kio" tags="SNrelatiu.*"/>
+      <cat-item lemma="kia" tags="SNrelatiu.*"/>
+    </def-cat>
+
+   <def-cat n="SNloque"><!-- EO: -->
+      <cat-item tags="SNloque.*"/>
+    </def-cat>
+
+   <def-cat n="SNnoacc"><!-- EO: tots el que porten changecase=sense-->
+      <cat-item tags="SN.*.sense"/>
+      <cat-item tags="subj.*"/>  <!-- sujeto prodrop -->
+    </def-cat>
+
+    <def-cat n="ADV">
+      <cat-item tags="adv.*"/>
+      <cat-item tags="adv"/>
+      <cat-item lemma="adv" tags="adv"/>
+      <cat-item lemma="adv" tags="adv.*"/>
+    </def-cat>
+
+   <def-cat n="SNobj"><!-- EO: identifica objecte directe (únicament ho porten els pronoms)-->
       <cat-item tags="SN.obj.*"/>
     </def-cat>
 
-    <def-cat n="SA">
-      <cat-item tags="SA.*"/>
+   <def-cat n="SNsubj"><!-- EO: identifica objecte indirecte (únicament ho porten els pronoms)-->
+      <cat-item tags="SN.subj.*"/>
+    </def-cat>
+
+    <def-cat n="SV">
+      <cat-item tags="SV.*"/>
+      <cat-item tags="SVneg.*"/>
+    </def-cat>
+
+    <def-cat n="SVvolition">
+      <cat-item tags="SV.*.volition"/>
+    </def-cat>
+
+    <def-cat n="SVpredikativo">
+      <cat-item tags="SV.*.predikativo"/>
+    </def-cat>
+
+    <def-cat n="SVnocop">	<!-- todos excepto los copulativos (vbser) -->
+      <cat-item tags="SV.vblex.*"/>
+      <cat-item tags="SV.vbtr.*"/>
+      <cat-item tags="SV.vbtr_ntr.*"/>
+      <cat-item tags="SV.vbntr.*"/>
+    </def-cat>
+
+    <def-cat n="SVtrans">
+      <cat-item tags="SV.vbtr.*"/>
+      <cat-item tags="SV.vbtr_ntr.*"/>
+      <cat-item tags="SV.*.volition"/>
+      <cat-item tags="SV.vblex.*"/> <!-- ni aldonas la neklasifikitajn verbojn -->
+    </def-cat>
+
+    <def-cat n="SVtrans_pred">
+      <cat-item tags="SV.vbtr.*.predikativo"/>
+      <cat-item tags="SV.vbtr_ntr.*.predikativo"/>
+      <cat-item tags="SV.vblex.*.predikativo"/> <!-- ni aldonas la neklasifikitajn verbojn -->
+    </def-cat>
+
+    <def-cat n="SVlike">
+      <cat-item tags="SV.*.like"/>
+      <cat-item tags="SV.*.like.*"/>
+    </def-cat>
+
+    <def-cat n="SVlex"> <!-- totes les formes verbals menys els vbser -->
+      <cat-item tags="SV.vblex.*"/>
+      <cat-item tags="SVneg.vblex.*"/>
+      <cat-item tags="SV.vbtr.*"/>
+      <cat-item tags="SVneg.vbtr.*"/>
+      <cat-item tags="SV.vbntr.*"/>
+      <cat-item tags="SVneg.vbntr.*"/>
+      <cat-item tags="SV.vbtr_ntr.*"/>
+      <cat-item tags="SVneg.vbtr_ntr.*"/>
+    </def-cat>
+
+    <def-cat n="SV_pers"> <!--totes les formes personals -->
+      <cat-item lemma="verbcj" tags="SV.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.*"/>
+    </def-cat>
+
+    <def-cat n="SVtrans_pers_sg">
+      <cat-item lemma="verbcj" tags="SV.vblex.*.sg.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr.*.sg.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.sg.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.sg.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.sg.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.sg.*"/>
+    </def-cat>
+
+    <def-cat n="SVtrans_pers_pl">
+      <cat-item lemma="verbcj" tags="SV.vblex.*.pl.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr.*.pl.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.pl.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.pl.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.pl.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.pl.*"/>
+    </def-cat>
+
+    <def-cat n="SVnocop_pers">	<!-- todos las formas personales excepto los copulativos (vbser) -->
+      <cat-item lemma="verbcj" tags="SV.vblex.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj" tags="SV.vbntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vblex.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vblex.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbtr.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbtr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbtr_ntr.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbntr.*"/>
+    </def-cat>
+
+    <def-cat n="inf">
+      <cat-item tags="SV.vblex.inf"/>
+      <cat-item tags="SV.vbtr.inf"/>
+      <cat-item tags="SV.vbntr.inf"/>
+      <cat-item tags="SV.vbtr_ntr.inf"/>
+      <cat-item tags="SVneg.vblex.inf"/>
+      <cat-item tags="SV.vbhaver.inf"/>
+      <cat-item tags="SVneg.vbhaver.inf"/>
+      <cat-item tags="SV.vbser.inf"/>
+      <cat-item tags="SVneg.vbser.inf"/>
+      <cat-item tags="SV.vbmod.inf"/>
+      <cat-item tags="SVneg.vbmod.inf"/>
+    </def-cat>
+
+    <def-cat n="SVmoviment"> <!-- per a l'acusatiu dels verbs de moviment-->
+      <cat-item tags="SV.vblex.*.moviment"/>
+      <cat-item tags="SV.vbtr.*.moviment"/>
+      <cat-item tags="SV.vbntr.*.moviment"/>
+      <cat-item tags="SV.vbtr_ntr.*.moviment"/>
+      <cat-item tags="SV.vblex.*.moviment.*"/>
+      <cat-item tags="SV.vbtr.*.moviment.*"/>
+      <cat-item tags="SV.vbntr.*.moviment.*"/>
+      <cat-item tags="SV.vbtr_ntr.*.moviment.*"/>
+    </def-cat>
+
+    <def-cat n="PREP"> <!-- per a l'acusatiu dels verbs de moviment-->
+      <cat-item tags="pr"/>
+    </def-cat>
+
+    <def-cat n="al">
+      <cat-item lemma="al" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="de">
+      <cat-item lemma="de" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="kiel">
+      <cat-item lemma="kiel" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="PREPmoviment"> <!-- per a l'acusatiu dels verbs de moviment-->
+      <cat-item lemma="en" tags="pr"/>
+      <cat-item lemma="antaŭ" tags="pr"/>
+      <cat-item lemma="malantaŭ" tags="pr"/>
+      <cat-item lemma="post" tags="pr"/>
+      <cat-item lemma="ekster" tags="pr"/>
+      <cat-item lemma="sur" tags="pr"/>
+      <cat-item lemma="super" tags="pr"/>
+      <cat-item lemma="sub" tags="pr"/>
+      <cat-item lemma="trans" tags="pr"/>
+      <cat-item lemma="preter" tags="pr"/>
+    </def-cat>
+
+<!-- ATENTU: ne bone difinita -->
+    <def-cat n="PRNnosubj">
+      <cat-item tags="SN.tn.*"/>
+    </def-cat>
+
+    <def-cat n="lin_ilin">
+      <cat-item lemma="pro_obj" tags="SN.obj.p3.*"/>
+    </def-cat>
+
+    <def-cat n="pro_directe">
+      <cat-item lemma="pro_directe" tags="SN.obj.*"/>
+    </def-cat>
+
+    <def-cat n="pro_indirecte">
+      <cat-item lemma="pro_indirecte" tags="SP.*"/>
+    </def-cat>
+
+    <def-cat n="ser">
+      <cat-item tags="SV.vbser.*"/>
+      <cat-item tags="SVneg.vbser.*"/>
     </def-cat>
 
     <def-cat n="cnjsub">
@@ -37,164 +265,164 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <cat-item lemma="ke" tags="cnjsub"/>
     </def-cat>
 
-    <def-cat n="SV">
-      <cat-item tags="SV.*"/>
-      <cat-item tags="SVneg.*"/>
-    </def-cat>
-
-    <def-cat n="SV_pers">  <!--Formes personals dels vblex (i afins) no-like. Exclou inf, ger i pp -->
-      <cat-item lemma="verbcj" tags="SV.vblex.*.res"/>
-      <cat-item lemma="verbcj" tags="SV.vblex.*.pron"/>
-      <cat-item lemma="verbcj" tags="SV.vblex.*.reportingverb"/>
-      <cat-item lemma="verbcj" tags="SV.vblex.*.moviment"/>
-      <cat-item lemma="verbcj" tags="SV.vblex.*.volition"/>
-      <cat-item lemma="verbcj" tags="SV.vblex.*.predikativo"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr.*.res"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr.*.pron"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr.*.reportingverb"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr.*.moviment"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr.*.volition"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr.*.predikativo"/>
-      <cat-item lemma="verbcj" tags="SV.vbntr.*.res"/>
-      <cat-item lemma="verbcj" tags="SV.vbntr.*.pron"/>
-      <cat-item lemma="verbcj" tags="SV.vbntr.*.reportingverb"/>
-      <cat-item lemma="verbcj" tags="SV.vbntr.*.moviment"/>
-      <cat-item lemma="verbcj" tags="SV.vbntr.*.volition"/>
-      <cat-item lemma="verbcj" tags="SV.vbntr.*.predikativo"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.res"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.pron"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.reportingverb"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.moviment"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.volition"/>
-      <cat-item lemma="verbcj" tags="SV.vbtr_ntr.*.predikativo"/>
-      <cat-item lemma="verbcj" tags="SVneg.vblex.*.res"/>
-      <cat-item lemma="verbcj" tags="SVneg.vblex.*.pron"/>
-      <cat-item lemma="verbcj" tags="SVneg.vblex.*.reportingverb"/>
-      <cat-item lemma="verbcj" tags="SVneg.vblex.*.moviment"/>
-      <cat-item lemma="verbcj" tags="SVneg.vblex.*.volition"/>
-      <cat-item lemma="verbcj" tags="SVneg.vblex.*.predikativo"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.res"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.pron"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.reportingverb"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.moviment"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.volition"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vblex.*.predikativo"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.res"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.*.*.pron"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.*.*.reportingverb"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.*.*.moviment"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.*.*.volition"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr.*.*.*.predikativo"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*.*.*.res"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*.*.*.pron"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*.*.*.reportingverb"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*.*.*.moviment"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*.*.*.volition"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbntr.*.*.*.predikativo"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.*.*.res"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.*.*.pron"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.*.*.reportingverb"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.*.*.moviment"/>
-      <cat-item lemma="verbcj_perif" tags="SV.vbtr_ntr.*.*.*.predikativo"/>
-      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.res"/>
-      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.pron"/>
-      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.reportingverb"/>
-      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.moviment"/>
-      <cat-item lemma="verbcj_perif" tags="SVneg.vblex.*.*.*.predikativo"/>
-
-    </def-cat>
-
-    <def-cat n="punt_cnjadv"> <!-- tractament d'inici de frase per al pro-drop-->
-      <cat-item tags="sent"/>
-      <cat-item tags="sent_coma"/>
-      <cat-item tags="cm"/><!-- OJO provem amb la coma EO-->
+    <def-cat n="cnjadv">
       <cat-item tags="cnjadv"/>
-      <cat-item tags="cnjcoo"/> <!-- també amb i/o -->
-      <cat-item tags="cnjsub"/>
-      <cat-item lemma="kiam" tags="SNrelatiu.*"/>
-      <cat-item lemma="kial" tags="SNrelatiu.*"/>
-      <cat-item lemma="kie" tags="SNrelatiu.*"/>
-      <cat-item lemma="kiom" tags="SNrelatiu.*"/>
+    </def-cat>
+
+    <def-cat n="cnjcoo">
+      <cat-item tags="cnjcoo"/>
+    </def-cat>
+
+   <def-cat n="cm">
+      <cat-item tags="cm"/>
     </def-cat>
 
   </section-def-cats>
 
   <section-def-attrs>
-    <def-attr n="gen">
-      <attr-item tags="m"/>
-      <attr-item tags="f"/>
-      <attr-item tags="mf"/>
-    </def-attr>
 
-    <def-attr n="nbr">
-      <attr-item tags="sg"/>
-      <attr-item tags="pl"/>
-      <attr-item tags="sp"/>
-    </def-attr>
+      <def-attr n="pers">
+          <attr-item tags="p1"/>
+	  <attr-item tags="p2"/>
+	  <attr-item tags="p3"/>
+	  <attr-item tags="PD"/>
+      </def-attr>
+
+      <def-attr n="gen">
+          <attr-item tags="m"/>
+          <attr-item tags="f"/>
+	  <attr-item tags="mf"/>
+	  <attr-item tags="GD"/>
+	  <attr-item tags="nt"/>
+      </def-attr>
+
+   <def-attr n="changecase">
+          <attr-item tags="nomi2"/>
+          <attr-item tags="nom"/>
+	  <attr-item tags="sense"/>
+      </def-attr>
+
+   <def-attr n="case">
+          <attr-item tags="nom"/>
+	  <attr-item tags="acc"/>
+   </def-attr>
 
     <def-attr n="tipus_prn">
       <attr-item tags="subj"/>
       <attr-item tags="obj"/>
-      <attr-item tags="dat"/>
       <attr-item tags="tn"/>
       <attr-item tags="itg"/>
       <attr-item tags="pos"/>
-      <attr-item tags="ref"/>
     </def-attr>
 
-    <def-attr n="pers">
-      <attr-item tags="p1"/>
-      <attr-item tags="p2"/>
-      <attr-item tags="p3"/>
-      <attr-item tags="PD"/>
-    </def-attr>
-
-    <def-attr n="temps">
-      <attr-item tags="inf"/>
-      <attr-item tags="pres"/>
-      <attr-item tags="past"/>
-      <attr-item tags="pri"/>
-      <attr-item tags="ifip"/>
-      <attr-item tags="cni"/>
-      <attr-item tags="fti"/>
-      <attr-item tags="fts"/>
-      <attr-item tags="pp"/>
-      <attr-item tags="ppres"/>
-      <attr-item tags="ger"/>
-      <attr-item tags="gerpast"/>
-      <attr-item tags="pprs"/>
-      <attr-item tags="subs"/>
-      <attr-item tags="imp"/>
-
-      <attr-item tags="ifi"/>
-      <attr-item tags="pii"/>
-      <attr-item tags="pis"/>
-    
-      <attr-item tags="pp2"/>
-      <attr-item tags="pp3"/>
-      <attr-item tags="prs"/>
+   <def-attr n="nbr">
+          <attr-item tags="sg"/>
+	  <attr-item tags="pl"/>
+	  <attr-item tags="sp"/>
+	  <attr-item tags="ND"/>
       </def-attr>
 
-    <def-attr n="tipus_verb">
-      <attr-item tags="res"/>
-      <attr-item tags="like"/>
-      <attr-item tags="volition"/>
-      <attr-item tags="pron"/>
-      <attr-item tags="reportingverb"/>
-      <attr-item tags="moviment"/>
-      <attr-item tags="predikativo"/>
+      <def-attr n="temps">
+          <attr-item tags="inf"/>
+	  <attr-item tags="pres"/>
+	  <attr-item tags="past"/>
+	  <attr-item tags="pri"/>
+	  <attr-item tags="ifip"/>
+	  <attr-item tags="cni"/>
+	  <attr-item tags="fti"/>
+	  <attr-item tags="fts"/>
+	  <attr-item tags="pp"/>
+	  <attr-item tags="ppres"/>
+	  <attr-item tags="ger"/>
+	  <attr-item tags="gerpast"/>
+	  <attr-item tags="pprs"/>
+	  <attr-item tags="subs"/>
+	  <attr-item tags="imp"/>
+
+	  <attr-item tags="ifi"/>
+	  <attr-item tags="pii"/>
+	  <attr-item tags="pis"/>
+
+          <attr-item tags="pp2"/>
+          <attr-item tags="pp3"/>
+          <attr-item tags="prs"/>
+      </def-attr>
+
+    <def-attr n="a_verb">
+      <attr-item tags="vblex"/>
+      <attr-item tags="vbtr"/>
+      <attr-item tags="vbntr"/>
+      <attr-item tags="vbtr_ntr"/>
+      <attr-item tags="vblex.pron"/>
+      <attr-item tags="vbser"/>
+      <attr-item tags="vbhaver"/>
+      <attr-item tags="vbmod"/>
+      <attr-item tags="vaux"/>
     </def-attr>
 
+    <def-attr n="tipus_verb">
+          <attr-item tags="vbser"/>
+	  <attr-item tags="vblex"/>
+	  <attr-item tags="vbtr"/>
+	  <attr-item tags="vbntr"/>
+	  <attr-item tags="vbtr_ntr"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_igxi">
+          <attr-item tags="iĝi"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_like">
+          <attr-item tags="like"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_pred">
+          <attr-item tags="predikativo"/>
+    </def-attr>
+ 
+    <def-attr n="tipus_verb_impers">
+          <attr-item tags="impers"/>
+    </def-attr>
+ 
   </section-def-attrs>
 
-
   <section-def-vars>
+    <def-var n="uno"/>
     <def-var n="nombre"/>
-    <def-var n="genere"/>
+    <def-var n="paraula"/>
   </section-def-vars>
 
 
-  <section-def-macros>
+<section-def-macros>
+
+    <def-macro n="nombre_SN" npar="1"> <!-- EO-->
+      <choose><!--To determine value of variables of gender and
+                  number and propagate to other rules.  Variables are
+                  not used again in this rule -->
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" part="nbr"/>
+              <lit-tag v="sg"/>
+            </equal>
+          </test>
+          <let><var n="nombre"/><lit-tag v="sg"/></let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" part="nbr"/>
+              <lit-tag v="pl"/>
+            </equal>
+          </test>
+          <let><var n="nombre"/><lit-tag v="pl"/></let>
+        </when>
+        <otherwise>
+          <let><var n="nombre"/><lit-tag v="sg"/></let>
+        </otherwise>
+      </choose>
+    </def-macro>
+
 
     <def-macro n="prodrop" npar="1">
       <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
@@ -214,7 +442,9 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
                     <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
                   </or>
                 </and>
-                <equal><clip pos="1" part="tipus_verb"/><lit-tag v="like"/></equal>
+                <equal><clip pos="1" part="tipus_verb_like"/><lit-tag v="like"/></equal>
+                <equal><clip pos="1" part="tipus_verb_impers"/><lit-tag v="impers"/></equal>
+                <equal><clip pos="1" part="a_verb"/><lit-tag v="vbser"/></equal> <!-- evitamos la generación en formas del tipo hay/hubo -->
               </or>
             </not>
           </test>
@@ -266,7 +496,9 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
                     <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
                   </or>
                 </and>
-                <equal><clip pos="1" part="tipus_verb"/><lit-tag v="like"/></equal>
+                <equal><clip pos="1" part="tipus_verb_like"/><lit-tag v="like"/></equal>
+                <equal><clip pos="1" part="tipus_verb_impers"/><lit-tag v="impers"/></equal>
+                <equal><clip pos="1" part="a_verb"/><lit-tag v="vbser"/></equal> <!-- evitamos la generación en formas del tipo hay/hubo -->
               </or>
             </not>
           </test>
@@ -299,90 +531,270 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       </choose>
     </def-macro>
 
-  </section-def-macros>
 
+  <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+     	<choose>
+     	  <when>
+     	    <test><not><equal><b pos="1"/><lit v=" "/></equal></not></test>
+            <out>
+              <b pos="1"/>
+            </out>
+          </when>     	    
+     	</choose>
+     </def-macro>
+
+</section-def-macros>
 
   <section-rules>
 
-    <!-- prodrop -->
 
-<rule comment="REGLA: cnjsub SV ( que vengas - ke vi venu; prodrop. EOes)">
+<!-- INDEX: conjunto de reglas para los verbos con inversión argumental (gustar)-->
+
+<rule comment="REGLA: SNobj SVagradar SNacc (inversión argumental EO; me gustan los libros, me gusta leer libros -> mi ŝatas la librojn, mi ŝatas legi librojn ; pero llega aquí como 'ŝatas al mi libroj')">
       <pattern>
-	<pattern-item n="punt_cnjadv"/>
-	<pattern-item n="SV_pers"/>
+	<pattern-item n="SVlike"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SNSAacc"/>	
       </pattern>
       <action>
 
+	<!-- assignem nominatiu al SN inicial-->
+	<let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
+	<let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
+	<!--assignem cas al segon SN  -->
+	<let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+
 	<out>
 	  <chunk>
-	    <clip pos="1" part="whole"/>
+ 	<get-case-from pos="1">
+	    <clip pos="2" part="lem"/>
+ 	</get-case-from>
+	    <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
 	  </chunk>
 	  <b pos="1"/>
-	</out>
-	<call-macro n="prodrop">
-	  <with-param pos="2"/>
-	</call-macro>	
-	<out>
 	  <chunk>
-	    <clip pos="2" part="whole"/>
+ 	<get-case-from pos="2">
+	    <clip pos="1" part="lem"/>
+ 	</get-case-from>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+	</out>
+	<call-macro n="nombre_SN">
+	  <with-param pos="3"/>
+	</call-macro>	
+      </action>
+</rule>
+
+<rule comment="REGLA: SNobj SVagradar (inversión argumental EO; me gusta leer -> mi ŝatas legi ; pero llega aquí como 'ŝatas al mi')">
+      <pattern>
+	<pattern-item n="SVlike"/>
+	<pattern-item n="SNobj"/>
+      </pattern>
+      <action>
+
+	    <let> <!-- assignem nominatiu al SN inicial-->
+	      <clip pos="2" part="case"/>
+	      <lit-tag v="nom"/>
+	    </let>
+	    <let>
+	      <clip pos="2" part="tipus_prn"/>
+	      <lit-tag v="subj"/>
+	    </let>
+	    <out>
+	      <chunk><!--...creo un chunk que tindrà un pronom subjecte -->
+		<lit v="prpers"/>
+		<lit-tag v="SN.subj"/>
+		<lit v="{^"/>
+		<get-case-from pos="1">
+		  <lit v="prpers"/>
+		</get-case-from>
+		<lit-tag v="prn.subj"/>
+		<clip pos="2" part="pers"/>
+		<lit-tag v="mf"/>
+		<clip pos="2" part="nbr"/>						
+		<lit v="$}"/>
+	      </chunk>
+	      <b pos="1"/>
+	    </out>
+	    
+	<out>
+	  <chunk><!--envio el verb -->
+ 	<get-case-from pos="2">
+	    <clip pos="1" part="lem"/>
+ 	</get-case-from>
+	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
 	  </chunk>
 	</out>
       </action>
 </rule>
 
 
-<!--
-<rule comment="REGLA: punt_cnjadv SV cnjsub ( . pienso que - . mi pensas ke ; prodrop. EOes)">
+<!-- INDEX: oraciones con pronombres interrogativos-->
+
+<rule comment="REGLA: SNitg SV SN (EOes para el acusativo dels SN interrogativos con changecase=nom; asignamos acusativo al primer SN ya que suponemos que el segundo será el sujeto: qué come la niña? -> kion manĝas la knabino?)">
       <pattern>
-	<pattern-item n="punt_cnjadv"/>
-	<pattern-item n="SV_pers"/>
-	<pattern-item n="cnjsub"/>
+	<pattern-item n="SNitg"/>
+	<pattern-item n="SVtrans"/>
+	<pattern-item n="SN"/>
       </pattern>
       <action>
 
+	    <let>
+	      <clip pos="1" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
 	<out>
 	  <chunk>
-	    <clip pos="1" part="whole"/>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
 	  </chunk>
 	  <b pos="1"/>
-	</out>
-	<call-macro n="prodrop">
-	  <with-param pos="2"/>
-	</call-macro>	
-	<out>
 	  <chunk>
-	    <clip pos="2" part="whole"/>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
-	    <clip pos="3" part="whole"/>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
 	  </chunk>
 	</out>
       </action>
 </rule>
--->
 
-
-<!--
-<rule comment="REGLA: punt_cnjadv SV cnjsub SV ( . pienso que leo - . mi pensas ke mi legas ; prodrop x 2. EOes)">
+<rule comment="REGLA: SNitg SV (EOes para el acusativo de las SN sujeto en 'a quién viste? o qué viste? que tienen changecase=nom; Añade el pronombre sueto (no pro-drop) si el verbo está conjugado ; qué comes? -> kion vi manĝas?)">
       <pattern>
-	<pattern-item n="punt_cnjadv"/>
-	<pattern-item n="SV_pers"/>
-	<pattern-item n="cnjsub"/>
-	<pattern-item n="SV_pers"/>
+	<pattern-item n="SNitg"/>
+	<pattern-item n="SVlex"/>
       </pattern>
       <action>
 
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+       </out>
+
+	<call-macro n="prodrop">
+	  <with-param pos="2"/>
+	</call-macro>	
+
+	<out>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNitg PRO SV (EOes para el acusativo de les SN sujeto en 'o qué je dijiste? que tienen changecase=nom; Añade el pronombre sueto (no pro-drop) si el verbo está conjugado y modifica el PRO para generarlo como objeto indirecto; qué le dijiste? -> kion vi al li diris?)">
+      <pattern>
+	<pattern-item n="SNitg"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SVlex"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="3" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+            <let>
+              <clip pos="2" part="tipus_prn"/>
+              <lit-tag v="subj"/>
+            </let>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+       </out>
+
+	<call-macro n="prodrop">
+	  <with-param pos="3"/>
+	</call-macro>	
+
+	<out>
+          <chunk>
+            <get-case-from pos="3">
+              <lit v="al"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="{^"/>
+            <get-case-from pos="3">
+              <lit v="al"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="$}"/>
+          </chunk>
+          <b/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+          <b/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!-- INDEX: verbos de movimiento i acusativos-->
+
+<rule comment="REGLA: SN SVmoviment PREP SN (EOes; la niña se dirige hacia la escuala -> la knabino iras en la lernejon)"> 
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVmoviment"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
-	</out>
-	<call-macro n="prodrop">
-	  <with-param pos="2"/>
-	</call-macro>	
-	<out>
 	  <chunk>
 	    <clip pos="2" part="whole"/>
 	  </chunk>
@@ -391,13 +803,452 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	  <b pos="3"/>
-	</out>
-	<call-macro n="prodrop">
-	  <with-param pos="4"/>
-	</call-macro>	
-	<out>
 	  <chunk>
 	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SVmoviment PREP SN AND PREP SN (EOes)">
+      <pattern>
+	<pattern-item n="SVmoviment"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="SNacc"/>
+	<pattern-item n="cnjcoo"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	<let><clip pos="6" part="case"/><lit-tag v="acc"/></let>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SVmoviment SN PREP SN (EOes; Napoleón puso a su hermano en el trono -> Napoleono metis sian fraton en la tronon">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVmoviment"/>
+	<pattern-item n="SNacc"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	<let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SN SVmoviment SN PREP PRON (EOes; Napoleón puso a su hermano en él -> Napoleono metis sian fraton en ĝin">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVmoviment"/>
+	<pattern-item n="SNacc"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="prpers_sub"/>
+      </pattern>
+      <action>
+
+	<let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	<let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SVmoviment PREP SN (EOes)">
+      <pattern>
+	<pattern-item n="SVmoviment"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SVmoviment PREP PRON (EOes)">
+      <pattern>
+	<pattern-item n="SVmoviment"/>
+	<pattern-item n="PREPmoviment"/>
+	<pattern-item n="prpers_sub"/>
+      </pattern>
+      <action>
+
+	<let><clip pos="3" part="tipus_prn"/><lit-tag v="obj"/></let>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!-- INDEX: conjunto de reglas per a tratar el caso /acusativo/nominativo de los SN pronombres.  Vienen marcados del t1x como SN.obj, aquí los indentificamos y según el patrón asignamos caso-->
+
+<rule comment="REGLA: SN SV PRO SN (EOes; la niña prometió darme el libro -> la knabino promesis al mi doni la libron; el clitico pasa a objecto indirecto precedido por al y el SN objecto se genera en acusativo">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+	    <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	</out>
+
+	<choose>
+	  <when>
+	    <test>
+	      <equal><clip pos="2" part="tipus_verb_like"/><lit-tag v="like"/></equal>
+	    </test>
+	    <!-- assignem nominatiu al SN inicial-->
+	    <let><clip pos="3" part="case"/><lit-tag v="nom"/></let>
+	    <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
+	    <out>
+	      <chunk>
+	        <clip pos="3" part="lem"/>
+	        <clip pos="3" part="tags"/>
+	        <clip pos="3" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+	        <clip pos="2" part="lem"/>
+	        <clip pos="2" part="tags"/>
+	        <clip pos="2" part="chcontent"/>
+	      </chunk>
+	    </out>
+	  </when>
+	  <otherwise>
+	    <out>
+	      <chunk>
+                <clip pos="2" part="lem"/>
+                <clip pos="2" part="tags"/>
+	        <clip pos="2" part="chcontent"/>
+	      </chunk>
+	      <b pos="2"/>
+	      <chunk>
+	        <get-case-from pos="3">
+	          <lit v="al"/>
+	        </get-case-from>
+	        <lit-tag v="pr"/>
+	        <lit v="{^"/>
+	        <get-case-from pos="3">
+	          <lit v="al"/>
+	        </get-case-from>
+	        <lit-tag v="pr"/>
+	        <lit v="$}"/>
+	      </chunk>
+	      <b/>
+	      <chunk>
+                <clip pos="3" part="lem"/>
+                <clip pos="3" part="tags"/>
+	        <clip pos="3" part="chcontent"/>
+	      </chunk>
+	    </out>
+	  </otherwise>
+	</choose>
+	<out>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="lem"/>
+            <clip pos="4" part="tags"/>
+	    <clip pos="4" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SV PRO SN (EOes; quiso darme el libro -> volis doni al mi la libron. ">
+      <pattern>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+	    <let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
+
+	<out>
+
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <lit v="al2"/>
+	    <lit-tag v="pr"/>
+	    <lit v="{^"/>
+	    <lit v="al"/>
+	    <lit-tag v="pr"/>
+	    <lit v="$}"/>
+	  </chunk>
+	  <b/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SVtrans SA (EO per l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVtrans"/>
+	<pattern-item n="SAacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="1" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+	    </test>
+	    <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+    <rule comment="REGLA: SN SVlex SA (parlent anglais - parolas anglan">
+      <pattern>
+        <pattern-item n="SN"/>
+	<pattern-item n="SVtrans"/>
+        <pattern-item n="SA"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="2" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+	    </test>
+	    <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+            <out>
+              <chunk>
+                <clip pos="1" part="lem"/>
+                <clip pos="1" part="tags"/>
+                <clip pos="1" part="chcontent"/>
+              </chunk>
+              <b pos="1"/>
+              <chunk>
+                <clip pos="2" part="lem"/>
+                <clip pos="2" part="tags"/>
+                <clip pos="2" part="chcontent"/>
+              </chunk>
+              <b pos="2"/>
+              <chunk>
+                <clip pos="3" part="whole"/>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: SVtrans_pred SA SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVtrans_pred"/>
+	<pattern-item n="SA"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="3" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!--
+copiat del francès: no sembla madur ni gaire productiu
+<rule comment="REGLA: SVtrans PRNnosubj SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVtrans"/>
+	<pattern-item n="PRNnosubj"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="3" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
       </action>
@@ -405,10 +1256,459 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 -->
 
 
-<rule comment="REGLA: punt_cnjadv SNobj SV ( . lo veo - . mi vidas lin prodrop. EOes)">
+<rule comment="REGLA: SVtrans PREP SN SN (Il a évoqué entre autres une régulation accrue -> Li elvokis inter aliaj reguladon pliigitan)">
       <pattern>
-	<pattern-item n="punt_cnjadv"/>
-	<pattern-item n="SN_obj"/>
+	<pattern-item n="SVtrans"/>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNSA"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="4" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SVtrans PREP SN PREP SN SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVtrans"/>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNSA"/>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNSA"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="6" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+            <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+            <clip pos="6" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SVtrans, PREP SN, SN (EO per l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVtrans"/>
+	<pattern-item n="cm"/>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNSA"/>
+	<pattern-item n="cm"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="6" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+            <clip pos="5" part="whole"/>
+	  </chunk>
+	  <b pos="5"/>
+	  <chunk>
+            <clip pos="6" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SV SN and SNacc(EOes )">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SNacc"/>
+	<pattern-item n="cnjcoo"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	    <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+            <clip pos="5" part="lem"/>
+            <clip pos="5" part="tags"/>
+	    <clip pos="5" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+
+<rule comment="REGLA: SN SV SN (EO la niña come patatas -> la knabino manĝas terpomojn)">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+	    <clip pos="3" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SV SN and SN (EO per a l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SNacc"/>
+	<pattern-item n="cnjcoo"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+	    <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="lem"/>
+            <clip pos="4" part="tags"/>
+	    <clip pos="4" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SV SN (EO per a l'acusatiu dels SN objecte amb changecase=nom)">
+      <pattern>
+	<pattern-item n="SVlex"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+
+	<choose>
+	  <when>
+	    <test>
+	      <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+	    </test>
+	    <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+	  </when>
+	</choose>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNsg oni SVsg (EO el libro se publicó -> la libron oni eldonis)">
+      <pattern>
+	<pattern-item n="SNsgacc"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SVtrans_pers_sg"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="1" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNpl oni SVpl (EO los libros se publicaron -> la librojn oni eldonis)">
+      <pattern>
+	<pattern-item n="SNplacc"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SVtrans_pers_pl"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="1" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNsg oni SVsg kiel SNsg (EO el libro se publicó como éxito -> la libron oni eldonis kiel sukceson)">
+      <pattern>
+	<pattern-item n="SNsgacc"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SVtrans_pers_sg"/>
+	<pattern-item n="kiel"/>
+	<pattern-item n="SNsgacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="1" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+	    <let>
+	      <clip pos="5" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNpl oni SVpl kiel SNpl (EO los libros se publicaron como éxitos -> la librojn oni eldonis kiel sukcesojn)">
+      <pattern>
+	<pattern-item n="SNplacc"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SVtrans_pers_pl"/>
+	<pattern-item n="kiel"/>
+	<pattern-item n="SNplacc"/>
+      </pattern>
+      <action>
+
+	    <let>
+	      <clip pos="1" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+	    <let>
+	      <clip pos="5" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!-- inhabilita el acusativo en el SN inicial -->
+<rule comment="REGLA: PR SNsg oni SVsg (EO en el libro se publicó -> en la libro oni eldonis)">
+      <pattern>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="oni"/>
 	<pattern-item n="SV_pers"/>
       </pattern>
       <action>
@@ -418,85 +1718,860 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	    <clip pos="1" part="whole"/>
 	  </chunk>
 	  <b pos="1"/>
-	</out>
-	<call-macro n="prodrop2">
-	  <with-param pos="2"/>
-	  <with-param pos="3"/>
-	</call-macro>	
-	<out>
 	  <chunk>
-	    <clip pos="3" part="whole"/>
+	    <clip pos="2" part="whole"/>
 	  </chunk>
 	  <b pos="2"/>
 	  <chunk>
-	    <clip pos="2" part="whole"/>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
       </action>
 </rule>
 
 
-
-    <!-- genro -->
-
-    <rule comment="CHUNK: SN">
+<rule comment="REGLA: PR SNsg oni SVsg SNacc (EO en el libro se publicaron muchas mentiras -> en la libro oni eldonis multajn mensogojn)">
       <pattern>
-        <pattern-item n="SN_nopron"/>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SV_pers"/>
+	<pattern-item n="SNacc"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <or>
-		<equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal>
-		<equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
-	      </or>
-	    </test>
-	    <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <or>
-		<equal><clip pos="1" part="gen"/><lit-tag v="ND"/></equal>
-		<equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal>
-	      </or>
-	    </test>
-	    <let><clip pos="1" part="gen"/><lit-tag v="m"/></let>
-	  </when>
+
+	    <let>
+	      <clip pos="5" part="case"/>
+	      <lit-tag v="acc"/>
+	    </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!-- INDEX: cláusulas de relativo-->
+
+<rule comment="REGLA: SN SNrelatiu SNobj SV (. el niño que nos vió-> la knabo kiu nin vidis EOes))">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SN SNrelatiu SNobj SV SN (. el niño que nos dio el libro -> la knabo kiu al ni donis la libron EOes))">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+            <let>
+              <clip pos="5" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+            <let>
+              <clip pos="3" part="tipus_prn"/>
+              <lit-tag v="subj"/>
+            </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+          <chunk>
+            <get-case-from pos="2">
+              <lit v="al5"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+              <lit v="al"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="$}"/>
+          </chunk>
+          <b/>
+          <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+	    <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SN SNrelatiu SN SV (. el nen que ella vió -> la knabo kiun ŝi vidis EOes))">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SNrelatiu SV SN (EOes: el niño que vió la casa -> la knabo kiu vidis la domon; la niña que vieron los niños -> la knabino kiun vidis la knaboj)">
+      <pattern>
+	<pattern-item n="SN"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+
+       <choose>
+          <when>
+            <test>
+		<and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="3" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="3" part="pers"/>
+		  <lit-tag v="p3"/>
+                </equal>
+		</and>
+            </test>
+
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+            <let>
+              <clip pos="4" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	</when>
+
+	<when>
+            <test>
+		<not>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="3" part="nbr"/>
+                </equal>
+		</not>
+            </test>
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	</when>
 	</choose>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
 	</out>
-      </action>
-    </rule>
 
-    <rule comment="CHUNK: SA">
+
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SNrelatiu SV (. la niña que vino -> la knabino kiu venis; los niños que viste -> la knaboj kiujn vi vidis)">
       <pattern>
-        <pattern-item n="SA"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SV"/>
       </pattern>
       <action>
-	<choose>
-	  <when>
-	    <test>
-	      <or>
-		<equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal>
-		<equal><clip pos="1" part="nbr"/><lit-tag v="sp"/></equal>
-	      </or>
-	    </test>
-	    <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
-	  </when>
-	</choose>
+
+       <choose>
+          <when>
+            <test>
+		<or>
+		<and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="3" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="3" part="pers"/>
+		  <lit-tag v="p3"/>
+                </equal>
+		</and>
+                <equal>
+                  <clip pos="3" part="tipus_verb"/>
+		  <lit-tag v="vbser"/>
+                </equal>
+		</or>
+            </test>
+
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+	</when>
+
+
+	<when>
+            <test>
+		<not>
+                  <equal>
+                    <clip pos="3" part="temps"/>
+		    <lit-tag v="inf"/>
+                  </equal>
+		</not>
+            </test>
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+          <b pos="2"/>
+	</out>
+	<call-macro n="prodrop">
+	  <with-param pos="3"/>
+	</call-macro>	
+	<out>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+
+	</when>
+
+
+	<when>
+            <test>
+		<not>
+		<and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="3" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="3" part="pers"/>
+		  <lit-tag v="p3"/>
+                </equal>
+		</and>
+		</not>
+            </test>
+            <let>
+              <clip pos="2" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+          <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+
+	</when>
+	</choose>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNrelatiu SN SV (que ella vió -> kiun ŝi vidis EOes))">
+      <pattern>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="prpers_sub"/>
+	<pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
 	</out>
       </action>
-    </rule>
+</rule>
+
+<rule comment="REGLA: SNrelatiu SV SN (que vió ella -> kiun vidis ŝi EOes))">
+      <pattern>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="prpers_sub"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: PREP SNrelatiu SN SV (de que ella vió -> de kiu ŝi vidis (por eviti akuzativon starigutan de la supraj reguloj) EOes))">
+      <pattern>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="prpers_sub"/>
+	<pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNrelatiu SV SN (de que vió ella -> de kiu vidis ŝi (por eviti akuzativon starigutan de la supraj reguloj) EOes))">
+      <pattern>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="prpers_sub"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: PREP SNrelatiu SN SV SNacc (del que se tienen registros -> de kiu oni havas registrojn EOes))">
+      <pattern>
+	<pattern-item n="PREP"/>
+	<pattern-item n="SNrelatiu"/>
+	<pattern-item n="prpers_sub"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="5" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+            <clip pos="4" part="whole"/>
+	  </chunk>
+	  <b pos="4"/>
+	  <chunk>
+            <clip pos="5" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<!--lo que -->
+
+<rule comment="REGLA: SNloque SNobj SV (. lo que nos dijo-> EOes))">
+      <pattern>
+	<pattern-item n="SNloque"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+            <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNloque SNobj SV SN (. lo que nos dijo el niño-> kion al li diris la knabo EOes))">
+      <pattern>
+	<pattern-item n="SNloque"/>
+	<pattern-item n="SNobj"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+            <let>
+              <clip pos="4" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+            <let>
+              <clip pos="2" part="tipus_prn"/>
+              <lit-tag v="subj"/>
+            </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+          <chunk>
+            <get-case-from pos="2">
+              <lit v="al6"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+              <lit v="al"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="$}"/>
+          </chunk>
+          <b/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNloque SN SV (. lo que María dijo -> kion Maria diris EOes))">
+      <pattern>
+	<pattern-item n="SNloque"/>
+	<pattern-item n="SN"/>
+	<pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNloque SV SN (EOes: lo que vió el niño )">
+      <pattern>
+	<pattern-item n="SNloque"/>
+	<pattern-item n="SVnocop"/>
+	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNloque SV (. lo que vino )">
+      <pattern>
+	<pattern-item n="SNloque"/>
+	<pattern-item n="SV_pers"/>
+      </pattern>
+      <action>
+
+       <choose>
+          <when>
+            <test>
+		<and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="2" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="2" part="pers"/>
+		  <lit-tag v="p3"/>
+                </equal>
+		</and>
+            </test>
+
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+        </out>
+	</when>
+
+
+	<when>
+            <test>
+		<not>
+		<and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="2" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="2" part="pers"/>
+		  <lit-tag v="p3"/>
+                </equal>
+		</and>
+		</not>
+            </test>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+
+	<out>
+	  <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+	  </chunk>
+          <b pos="1"/>
+	</out>
+	<call-macro n="prodrop">
+	  <with-param pos="2"/>
+	</call-macro>	
+	<out>
+	  <chunk>
+            <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+
+	</when>
+	</choose>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: al SN oni SV lin/ilin ( A Pedro se le llama Pedrito -> Al Petro oni nomas Pedrito )">
+      <pattern>
+	<pattern-item n="al"/>
+	<pattern-item n="SNextend"/>
+	<pattern-item n="oni"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="lin_ilin"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	  <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: al SN SV lin/ilin ( A este punto se lo conoce -> Ĉi tiun punkton oni konas )">
+	<!-- necesas malfari aferojn kiujn faras t1x:
+		A este punto se lo conoce -> Al ĉi tiu punkto konas lin al li -> Ĉi tiun punkton oni konas -->
+      <pattern>
+	<pattern-item n="al"/>
+	<pattern-item n="SNextend"/>
+	<pattern-item n="SV"/>
+	<pattern-item n="pro_directe"/>
+	<pattern-item n="pro_indirecte"/>
+      </pattern>
+      <action>
+        <let>
+          <clip pos="2" part="case"/>
+          <lit-tag v="acc"/>
+        </let>
+	<out>
+	  <chunk>
+            <get-case-from pos="1">
+              <clip pos="2" part="lem"/>
+            </get-case-from>
+            <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+	  </chunk>
+	  <b/>
+<!-- ^prn<SN><tn><sg><nom>{^oni<prn><tn><3><4>$}$ -->
+          <chunk>
+            <get-case-from pos="2">
+              <lit v="prn"/>
+            </get-case-from>
+            <lit-tag v="SN.tn.sg.nom"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+              <lit v="oni"/>
+            </get-case-from>
+            <lit-tag v="prn.tn.3.4.5"/>
+            <lit v="$}"/>
+          </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
 
   </section-rules>
 </interchunk>

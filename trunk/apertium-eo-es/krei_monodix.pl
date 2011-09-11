@@ -143,7 +143,7 @@ sub skribi {
 		} elsif ($lemo =~ /o$/o) {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'Barcelon/o__np';
 		} elsif ($lemo =~ /oj$/o) {
-			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'And/oj__np';
+			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'Alp/oj__np';
 		} else {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'Barcelona__np';
 		}
