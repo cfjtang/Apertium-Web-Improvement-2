@@ -360,6 +360,29 @@
 </rule>
 
 
+<rule comment="REGLA: porke SV ( para que vengas - por ke (vi) venu (verb subordinat en volitiu)">
+      <pattern>
+	<pattern-item n="porke"/>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="2" part="temps"/>
+              <lit-tag v="imp"/>
+            </let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+	  <chunk>
+	    <clip pos="2" part="whole"/>
+	  </chunk>
+	</out>
+      </action>
+</rule>
+
+
 <rule comment="REGLA: SVvolition cnjsub SV ( quiero que vengas - volas ke (vi) venu (verb subordinat en volitiu)">
       <pattern>
 	<pattern-item n="SVvolition"/>

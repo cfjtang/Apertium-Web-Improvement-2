@@ -153,6 +153,8 @@ sub skribi {
 		} else {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'Maria__np';
 		}
+	} elsif ($paradigmo eq "np><cog") {
+		printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $lemo, 'Smith__np';
 	} elsif ($paradigmo eq "np><al") {
 		if ($lemo =~ /o$/o) {
 			printf "<e lm=\"%s\">            <i>%s</i><par n=\"%s\"/></e>\n", $lemo, $`, 'Vikipedi/o__np';

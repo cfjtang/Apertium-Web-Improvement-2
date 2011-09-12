@@ -13,6 +13,7 @@ LIST A = (adj) ;
 LIST Det = (det) ;
 LIST Num = (num) ;
 LIST Adv = (adv) ;
+LIST PreAdv = (preadv) ;
 LIST Vblex = (vblex) ;
 LIST Vbmod = (vbmod) ;
 LIST Vbhaver = (vbhaver) ;
@@ -31,8 +32,8 @@ LIST Interj = (ij) ;
 LIST CM = (cm) ;
 
 SET V = Vblex + Vbmod + Vbhaver + Copula ;
-SET Word = N + NP + A + Det + Adv + V + Pron + Prep + CnjCoo + CnjSub + CnjAdv + Rel + Interj ;
-SET NP_Member = N + A + Det + Adv + Pron ; # Pron es distinto al resto...
+SET Word = N + NP + A + Det + PreAdv + Adv + V + Pron + Prep + CnjCoo + CnjSub + CnjAdv + Rel + Interj ;
+SET NP_Member = N + A + Det + PreAdv + Adv + Pron ; # Pron es distinto al resto...
 #SET NOT_NP_Member = Word - NP_Member;
 SET NOT_NP_Member = Vblex OR Vbmod OR Vbhaver OR Copula OR Prep OR CnjCoo OR CnjSub OR CnjAdv OR Rel OR Interj ;
 
@@ -43,6 +44,8 @@ LIST Pers = (pers) ;
 
 LIST PP = (pp) ;
 LIST PRS = (prs) ;
+
+LIST Enc = (enc) ;
 
 LIST Masc = m mf ;
 LIST Fem = f mf ;
@@ -250,6 +253,7 @@ SELECT:r_na_13_fp N IF (-3 Barrera_Inicial_SN LINK NOT 0 Verb) (-2C Det + $$FemP
 	# "en distintos periódicos."
 	# "un posible saludo."
 	# "no aceptaban jovencitas de 15 años"
+	# ". Civiles étnicamente croatas"
 
 # REMOVE:r_na_20 A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (NOT -1 Limite_Barrera_Inicial_SN) (O Noun_Adj_PP LINK 0 N OR NP) (1 Barrera_Final_SN) ;
 
@@ -316,22 +320,29 @@ REMOVE:r_como_1 Vblex (O ("como") OR ("Como")) (*-1 Vblex BARRIER Cnj_Rel) ;
 REMOVE:r_como_2 Vblex (O ("como") OR ("Como")) (*1 Vblex BARRIER Cnj_Rel) ;
 REMOVE:r_para_1 Vblex (O ("para") OR ("Para")) (*-1 Vblex BARRIER Cnj_Rel) ;
 REMOVE:r_para_2 Vblex (O ("para") OR ("Para")) (*1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_salvo_1 Vblex (O ("salvo") OR ("Salvo")) (*-1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_salvo_2 Vblex (O ("salvo") OR ("Salvo")) (*1 Vblex BARRIER Cnj_Rel) ;
+SELECT:r_bajo_0 A (O ("bajo") OR ("Bajo")) (-1C PreAdv) ;
 REMOVE:r_bajo_1 Vblex (O ("bajo") OR ("Bajo")) (*-1 Vblex BARRIER Cnj_Rel) ;
 REMOVE:r_bajo_2 Vblex (O ("bajo") OR ("Bajo")) (*1 Vblex BARRIER Cnj_Rel) ;
 SELECT:bajo_3 Prep (O ("bajo") OR ("Bajo")) (1 Det) ;
 SELECT:bajo_4 Prep (O ("bajo") OR ("Bajo")) (-1 Copula) ;
 SELECT:bajo_5 Prep (O ("bajo") OR ("Bajo")) (-1C N) (1C N) ;
+	# Económicamente es muy bajo el rango. XXXXX
 SELECT:debidoa_1 Prep (O ("debido a") OR ("Debido a")) (NOT -1 ("ser") OR ("Ser")) ;
 SELECT:debidoa_2 Prep (O ("debido a") OR ("Debido a")) (-1 >>>) ;
 #SELECT:bajo_ms Prep (0 ("bajo") OR ("Bajo")) (-1C N) (NOT -1 MascSg ) (1C N) (NOT 1 MascSg) ;
 	# elaborada bajo presidencia
-SELECT:pr_cnjadv_1 Prep (0 ("después de") OR ("Después de") OR ("antes de") OR ("Antes de") OR ("tras") OR ("Tras")) (1 Det OR Pron) ;
+SELECT:pr_cnjadv_1 Prep (0 ("después de") OR ("Después de") OR ("antes de") OR ("Antes de") OR ("tras") OR ("Tras")) (1 Det OR Pron LINK NOT 0 Enc) ;
 SELECT:pr_cnjadv_2 Prep (0 ("después de") OR ("Después de") OR ("antes de") OR ("Antes de") OR ("tras") OR ("Tras")) (1C A) ;
-SELECT:pr_cnjadv_3 CnjAdv (0 ("después de") OR ("Después de") OR ("antes de") OR ("Antes de") OR ("tras") OR ("Tras")) (1C Inf) ;
+SELECT:pr_cnjadv_3 CnjAdv (0 ("después de") OR ("Después de") OR ("antes de") OR ("Antes de") OR ("tras") OR ("Tras")) (1C Inf OR Enc) ;
 
-SELECT:que_1 CnjSub (0 ("que")) (-1C Inf) ;
+SELECT:que_1 CnjSub (0 ("que")) (-1C Inf OR Enc) ;
 SELECT:que_2 CnjSub (0 ("que")) (-1C Vblex LINK NOT 0 PP) ;
-SELECT:que_3 CnjSub (0 ("que")) (-1C PP) (-2C ("haber") OR ("Haber") OR ("ser") OR ("Ser") OR ("estar") OR ("Estar")) ;
+SELECT:que_3 CnjSub (0 ("que")) (-2C Vblex LINK NOT 0 PP) (-1C Adv) ;
+SELECT:que_3b CnjSub (0 ("que")) (-2C Vblex LINK NOT 0 PP) (-1 ("entonces")) ;
+SELECT:que_4 CnjSub (0 ("que")) (-1C PP) (-2C ("haber") OR ("Haber") OR ("ser") OR ("Ser") OR ("estar") OR ("Estar")) ;
+SELECT:que_5 CnjSub (0 ("que")) (-2 ("tan") OR ("Tan")) (-1 A OR Adv) ;
 
 REMOVE:r_adv Adv (0 Adv) (-1C N) (1C N) ;
 	# manifestantes bajo jurisdicción
@@ -349,17 +360,17 @@ REMOVE:imp_2 Imp IF (-1 ("que")) (O Verb) ;
 # elección de subjuntivo después de "que"
 SELECT:s_subj1 PRS (*-1 ("que") BARRIER (Cnj_Rel_End)) (-1* VerboSubj) (0C Verb) ;
 
-REMOVE:poder_podar_1 Podar (O Podar) (1C Inf) ;
-REMOVE:poder_podar_1b Podar (O Podar) (1 Adv) (2C Inf) ;
+REMOVE:poder_podar_1 Podar (O Podar) (1C Inf OR Enc) ;
+REMOVE:poder_podar_1b Podar (O Podar) (1 Adv) (2C Inf OR Enc) ;
 REMOVE:poder_podar_2 Podar (O Podar) (1C ("que")) ;
-REMOVE:soler_salar_1 Salar (O Salar) (1C Inf) ;
-REMOVE:soler_salar_1b Salar (O Salar) (1 Adv) (2C Inf) ;
+REMOVE:soler_salar_1 Salar (O Salar) (1C Inf OR Enc) ;
+REMOVE:soler_salar_1b Salar (O Salar) (1 Adv) (2C Inf OR Enc) ;
 REMOVE:soler_salar_2 Salar (O Salar) (1C ("que")) ;
-REMOVE:sentir_sentar_1 Sentar (O Sentar) (1C Inf) ;
-REMOVE:sentir_sentar_1b Sentar (O Sentar) (1 Adv) (2C Inf) ;
+REMOVE:sentir_sentar_1 Sentar (O Sentar) (1C Inf OR Enc) ;
+REMOVE:sentir_sentar_1b Sentar (O Sentar) (1 Adv) (2C Inf OR Enc) ;
 REMOVE:sentir_sentar_2 Sentar (O Sentar) (1C ("que")) ;
 REMOVE:sentir_sentar_3 Sentar (O Sentar) (1 A) ; # me siento feliz
-REMOVE:creer_crear_1 Crear (O Crear) (1C Inf) ;
+REMOVE:creer_crear_1 Crear (O Crear) (1C Inf OR Enc) ;
 REMOVE:creer_crear_2 Crear (O Crear) (1C ("que")) ;
 REMOVE:creer_crear PRS (O ("<crea>")) (NOT *-1 ("que") BARRIER (Cnj_Rel_End)) ;
 
