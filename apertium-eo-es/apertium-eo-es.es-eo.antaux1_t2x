@@ -151,7 +151,7 @@
 -->
     </def-macro>
 
-  <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+  <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
      	<choose>
      	  <when>
      	    <test><not><equal><b pos="1"/><lit v=" "/></equal></not></test>
@@ -1113,6 +1113,99 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
              <lit v="}"/>
           </chunk>
         </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: ADV SV ADV   -   SV (no comemos nunca -> manĝas neniam; siempre comememos mucho -> ĉiam tre manĝas; no falta tampoco -> ne mankas ankaŭ)">
+      <pattern>
+        <pattern-item n="adv"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+    <choose>
+      <when>
+        <test>
+            <equal><clip pos="3" part="lem"/><lit v="tre"/></equal>
+        </test>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="2" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="3" part="content"/>
+                <b pos="2"/>
+            <clip pos="2" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </when>
+      <when>
+        <test>
+          <and>
+            <equal><clip pos="1" part="lem"/><lit v="ne"/></equal>
+            <or>
+              <equal><clip pos="3" part="lem"/><lit v="nenial"/></equal>
+              <equal><clip pos="3" part="lem"/><lit v="neniam"/></equal>
+              <equal><clip pos="3" part="lem"/><lit v="nenie"/></equal>
+              <equal><clip pos="3" part="lem"/><lit v="neniel"/></equal>
+              <equal><clip pos="3" part="lem"/><lit v="neniom"/></equal>
+            </or>
+          </and>
+        </test>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="2" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="3" part="content"/>
+                <b pos="2"/>
+            <clip pos="2" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </when>
+      <when>
+        <test>
+            <equal><clip pos="3" part="lem"/><lit v="ankaŭ ne"/></equal>
+        </test>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="2" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
+                <b pos="2"/>
+	    <lit v="^"/>
+	      <get-case-from pos="3"><lit v="ankaŭ"/></get-case-from>
+	      <lit-tag v="adv"/>
+	      <lit v="$"/>
+            <lit v="}"/>
+          </chunk>
+        </out>
+      </when>
+      <otherwise>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="2" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
+                <b pos="2"/>
+            <clip pos="3" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </otherwise>
+    </choose>
       </action>
     </rule>
 

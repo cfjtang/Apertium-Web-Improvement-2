@@ -37,6 +37,10 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <cat-item lemma="ke" tags="cnjsub"/>
     </def-cat>
 
+    <def-cat n="porke">
+      <cat-item lemma="por ke" tags="cnjsub"/>
+    </def-cat>
+
     <def-cat n="SV">
       <cat-item tags="SV.*"/>
       <cat-item tags="SVneg.*"/>
@@ -182,7 +186,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 
   <section-def-macros>
 
-    <def-macro n="prodrop" npar="1">
+    <def-macro n="prodrop2" npar="2">
       <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
       <choose>
         <when>
@@ -199,6 +203,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
                     <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
                     <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
                   </or>
+                  <not><equal><clip pos="2" part="lem"/><lit v="por ke"/></equal></not> <!-- generación después de 'por ke' -->
                 </and>
                 <equal><clip pos="1" part="tipus_verb_like"/><lit-tag v="like"/></equal>
                 <equal><clip pos="1" part="tipus_verb_impers"/><lit-tag v="impers"/></equal>
@@ -234,7 +239,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       </choose>
     </def-macro>
 
-    <def-macro n="prodrop2" npar="2">
+    <def-macro n="prodrop3" npar="3">
       <!-- generación del sujeto si no estamos delante de un infinitivo, gerundio, gerundio pasado, participio o imperativo en segunda o tercera persona -->
       <!-- coje mayúscula de par=1 y persona y número de par=2 -->
       <choose>
@@ -252,6 +257,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
                     <equal><clip pos="1" part="pers"/><lit-tag v="p2"/></equal>
                     <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
                   </or>
+                  <not><equal><clip pos="3" part="lem"/><lit v="por ke"/></equal></not> <!-- generación después de 'por ke' -->
                 </and>
                 <equal><clip pos="1" part="tipus_verb_like"/><lit-tag v="like"/></equal>
                 <equal><clip pos="1" part="tipus_verb_impers"/><lit-tag v="impers"/></equal>
@@ -307,8 +313,9 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<call-macro n="prodrop">
+	<call-macro n="prodrop2">
 	  <with-param pos="2"/>
+	  <with-param pos="1"/>
 	</call-macro>	
 	<out>
 	  <chunk>
@@ -319,7 +326,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 </rule>
 
 
-<rule comment="REGLA: punt_cnjadv SNobj SV ( . lo veo - . mi vidas lin prodrop. EOes)">
+<rule comment="REGLA: punt_cnjadv SNobj SV ( . lo veo - . mi vidas lin. EOes)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
 	<pattern-item n="SN_obj"/>
@@ -336,6 +343,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	<call-macro n="prodrop2">
 	  <with-param pos="2"/>
 	  <with-param pos="3"/>
+	  <with-param pos="1"/>
 	</call-macro>	
 	<out>
 	  <chunk>
