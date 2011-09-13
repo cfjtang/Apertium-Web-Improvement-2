@@ -2,12 +2,12 @@
 <transfer default="chunk">
   <section-def-cats>
     <def-cat n="nom">
-      <cat-item tags="n.*"/><!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
+      <cat-item tags="n.*"/> <!--Falten els altres np (antroponims) que tenen gen i nbr, revisar regles.-->
       <cat-item tags="np.loc.*"/>
       <cat-item tags="np.al.*"/>
     </def-cat>
 
-     <def-cat n="ant">
+    <def-cat n="ant">
       <cat-item tags="np.ant.*"/>
       <cat-item tags="np.cog.*"/>
     </def-cat>
@@ -795,6 +795,7 @@
       <cat-item lemma="identificar" tags="vblex.*"/>
       <cat-item lemma="administrar" tags="vblex.*"/>
       <cat-item lemma="respirar" tags="vblex.*"/>
+      <cat-item lemma="nombrar" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="vbref2oni-pp">
@@ -877,6 +878,7 @@
       <cat-item lemma="identificar" tags="vblex.pp.*"/>
       <cat-item lemma="administrar" tags="vblex.pp.*"/>
       <cat-item lemma="respirar" tags="vblex.pp.*"/>
+      <cat-item lemma="nombrar" tags="vblex.pp.*"/>
     </def-cat>
 
     <def-cat n="vbref2oni-ger">
@@ -959,6 +961,7 @@
       <cat-item lemma="identificar" tags="vblex.ger"/>
       <cat-item lemma="administrar" tags="vblex.ger"/>
       <cat-item lemma="respirar" tags="vblex.ger"/>
+      <cat-item lemma="nombrar" tags="vblex.ger"/>
     </def-cat>
 
 
@@ -1338,7 +1341,6 @@
      <cat-item lemma="multiplicar# por siete" tags="vblex.*"/>
      <cat-item lemma="multiplicar# por tres" tags="vblex.*"/>
      <cat-item lemma="navegar" tags="vblex.*"/>
-     <cat-item lemma="nombrar" tags="vblex.*"/>
      <cat-item lemma="notificar" tags="vblex.*"/>
      <cat-item lemma="obligar" tags="vblex.*"/>
      <cat-item lemma="ocasionar" tags="vblex.*"/>
@@ -1955,7 +1957,6 @@
      <cat-item lemma="multiplicar# por siete" tags="vblex.pp.*"/>
      <cat-item lemma="multiplicar# por tres" tags="vblex.pp.*"/>
      <cat-item lemma="navegar" tags="vblex.pp.*"/>
-     <cat-item lemma="nombrar" tags="vblex.pp.*"/>
      <cat-item lemma="notificar" tags="vblex.pp.*"/>
      <cat-item lemma="obligar" tags="vblex.pp.*"/>
      <cat-item lemma="ocasionar" tags="vblex.pp.*"/>
@@ -2572,7 +2573,6 @@
      <cat-item lemma="multiplicar# por siete" tags="vblex.ger"/>
      <cat-item lemma="multiplicar# por tres" tags="vblex.ger"/>
      <cat-item lemma="navegar" tags="vblex.ger"/>
-     <cat-item lemma="nombrar" tags="vblex.ger"/>
      <cat-item lemma="notificar" tags="vblex.ger"/>
      <cat-item lemma="obligar" tags="vblex.ger"/>
      <cat-item lemma="ocasionar" tags="vblex.ger"/>
@@ -3610,6 +3610,7 @@
       <list-item v="encargar"/>
       <list-item v="explotar"/>  <!-- ONI : ekspluati -->
       <list-item v="pasar"/>
+      <list-item v="adherir"/> <!-- aliĝi / algluiĝi -->
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
       <list-item v="aprovechar"/>
@@ -3623,7 +3624,6 @@
       <list-item v="aprender"/>
       <list-item v="estudiar"/>
       <list-item v="traer"/>
-      <list-item v="adherir"/> <!-- aliĝi / algluiĝi -->
 <!--
       <list-item v="codear# con"/>
       <list-item v="posicionar"/>
@@ -3945,7 +3945,7 @@ licenciarse, graduarse = diplomiĝi
                 </when>
                 <when>
                   <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="tratar#"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="temi# pri"/></let>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="temi"/></let>
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
                   <let><var n="vimpers"/><lit-tag v="impers"/></let>
                 </when>
@@ -3959,6 +3959,7 @@ licenciarse, graduarse = diplomiĝi
                   </test>
                   <let><clip pos="2" side="tl" part="lem"/><lit v="okazi"/></let>
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
+                  <let><var n="vimpers"/><lit-tag v="impers"/></let> <!-- para que no se genere pronombre sujeto -->
                 </when>
                 <when>
                   <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="referir"/></equal></test>
@@ -3991,6 +3992,11 @@ licenciarse, graduarse = diplomiĝi
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
                 </when>
                 <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="adherir"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="aliĝi"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
                   <test>
                     <or>
                        <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="situar"/></equal>
@@ -4001,7 +4007,7 @@ licenciarse, graduarse = diplomiĝi
                   </test>
                   <let><clip pos="2" side="tl" part="lem"/><lit v="situi"/></let>
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                  <let><var n="vimpers"/><lit-tag v="impers"/></let> <!-- para que no se genere pronombre sujeto -->
+                  <!-- <let><var n="vimpers"/><lit-tag v="impers"/></let> --> <!-- para que no se genere pronombre sujeto -->
                 </when>
               </choose>
               <let><var n="treu_ref"/><lit v="treu"/></let>
@@ -21711,7 +21717,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
     <!-- otras reglas de pronombres (pronominales o no) -->
 
-<!--
     <rule comment="REGLA: PRON VERB reflexiu ( me como -> formanĝas; lo como -> manĝas lin ) (EO)">
       <pattern>
 	<pattern-item n="pro"/>
@@ -21748,7 +21753,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           </chunk>
         </out> 
 
-        ni certiĝas, ĉu necesas aldoni la pronomon
+        <!-- ni certiĝas, ĉu necesas aldoni la pronomon -->
         <choose>
           <when>
             <test><equal><var n="treu_ref"/><lit v="treu"/></equal></test>
@@ -21784,7 +21789,6 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
--->
 
 
     <rule comment="REGLA: PRON VERB ( lo como -> manĝas lin ) ">

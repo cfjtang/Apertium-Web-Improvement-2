@@ -1143,6 +1143,7 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
           </chunk>
         </out>
       </when>
+
       <when>
         <test>
           <and>
@@ -1169,6 +1170,29 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
           </chunk>
         </out>
       </when>
+
+      <!-- povas esti du "iom post iom", unu kreita de verba konstruo ("IR + GER") kaj la alia kiel leksika traduko -->
+      <when>
+        <test>
+          <and>
+            <equal><clip pos="1" part="lem"/><lit v="iom post iom"/></equal>
+            <equal><clip pos="3" part="lem"/><lit v="iom post iom"/></equal>
+          </and>
+        </test>
+        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="2" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="2"/>
+            <clip pos="2" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </when>
+
       <when>
         <test>
             <equal><clip pos="3" part="lem"/><lit v="ankaŭ ne"/></equal>
@@ -1190,6 +1214,7 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
           </chunk>
         </out>
       </when>
+
       <otherwise>
         <out>
           <chunk>
