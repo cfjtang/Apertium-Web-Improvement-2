@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- La celo de tiu interchunk estas generi mankantajn subjektojn.
+<!-- La celo de tiu interchunk estas (1) generi mankantajn subjektojn kaj (2) akordigi nombre (kaj kaze) la rilativajn pronomojn.
 Krom tio, oni atribuas defaultan nombron aŭ genron al ĉiujn nomoj kaj adjektivoj,
 kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, sed konservas ĉi tie, ĉar ne malhelpas)
 -->
@@ -21,8 +21,30 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <cat-item tags="SN.mf.*"/>
     </def-cat>
 
-   <def-cat n="SN_obj"><!-- EO: identifica objecte directe (únicament ho porten els pronoms)-->
+    <def-cat n="SNsubj"> <!-- EO: identifica objecte indirecte (únicament ho porten els pronoms)-->
+      <cat-item tags="SN.subj.*"/>
+    </def-cat>
+
+    <def-cat n="SNobj"> <!-- EO: identifica objecte directe (únicament ho porten els pronoms)-->
       <cat-item tags="SN.obj.*"/>
+    </def-cat>
+
+   <def-cat n="SNacc"> <!-- EO: tots el que no porten changecase=sense-->
+      <cat-item tags="SN.*.nom"/>
+    </def-cat>
+
+   <def-cat n="SNrelatiu"> <!-- EO: -->
+      <cat-item lemma="kiu" tags="SNrelatiu.*"/>
+      <cat-item lemma="kio" tags="SNrelatiu.*"/>
+      <cat-item lemma="kia" tags="SNrelatiu.*"/>
+    </def-cat>
+
+   <def-cat n="SNloque"> <!-- EO: -->
+      <cat-item tags="SNloque.*"/>
+    </def-cat>
+
+    <def-cat n="prpers_sub">
+      <cat-item lemma="prpers" tags="SN.subj.*"/>
     </def-cat>
 
     <def-cat n="SA">
@@ -64,6 +86,13 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <cat-item lemma="verbcj_perif" tags="SVneg.*"/>
     </def-cat>
 
+    <def-cat n="SVcop_pers"> <!--totes les formes personals -->
+      <cat-item lemma="verbcj" tags="SV.vbser.*"/>
+      <cat-item lemma="verbcj" tags="SVneg.vbser.*"/>
+      <cat-item lemma="verbcj_perif" tags="SV.vbser.*"/>
+      <cat-item lemma="verbcj_perif" tags="SVneg.vbser.*"/>
+    </def-cat>
+
     <def-cat n="SVnocop_pers">	<!-- todos las formas personales excepto los copulativos (vbser) -->
       <cat-item lemma="verbcj" tags="SV.vblex.*"/>
       <cat-item lemma="verbcj" tags="SV.vbtr.*"/>
@@ -81,6 +110,10 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <cat-item lemma="verbcj_perif" tags="SVneg.vbtr.*"/>
       <cat-item lemma="verbcj_perif" tags="SVneg.vbtr_ntr.*"/>
       <cat-item lemma="verbcj_perif" tags="SVneg.vbntr.*"/>
+    </def-cat>
+
+    <def-cat n="PREP"> <!-- per a l'acusatiu dels verbs de moviment-->
+      <cat-item tags="pr"/>
     </def-cat>
 
     <def-cat n="punt_cnjadv"> <!-- tractament d'inici de frase per al pro-drop-->
@@ -107,6 +140,15 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <attr-item tags="pl"/>
       <attr-item tags="sp"/>
     </def-attr>
+
+   <def-attr n="case">
+      <attr-item tags="nom"/>
+      <attr-item tags="acc"/>
+   </def-attr>
+
+   <def-attr n="case2"> <!-- pedaç: s'utiliza "nom" com a etiqueta amb dos sentits a la mateixa cadena; cal canviar-ho, però per ara faig això -->
+      <attr-item tags="nom.nom"/>
+   </def-attr>
 
     <def-attr n="tipus_prn">
       <attr-item tags="subj"/>
@@ -181,6 +223,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
   <section-def-vars>
     <def-var n="nombre"/>
     <def-var n="genere"/>
+    <def-var n="debug1"/>
   </section-def-vars>
 
 
@@ -219,6 +262,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	      <clip pos="1" part="pers"/>
 	      <lit-tag v="GD"/>
 	      <clip pos="1" part="nbr"/>
+<var n="debug1"/>
 	      <lit v="{^"/>
 	      <get-case-from pos="1">
 	        <lit v="prpers"/>
@@ -313,6 +357,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	  </chunk>
 	  <b pos="1"/>
 	</out>
+<let><var n="debug1"/><lit v="p3"/></let>
 	<call-macro n="prodrop2">
 	  <with-param pos="2"/>
 	  <with-param pos="1"/>
@@ -329,7 +374,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 <rule comment="REGLA: punt_cnjadv SNobj SV ( . lo veo - . mi vidas lin. EOes)">
       <pattern>
 	<pattern-item n="punt_cnjadv"/>
-	<pattern-item n="SN_obj"/>
+	<pattern-item n="SNobj"/>
 	<pattern-item n="SVnocop_pers"/>
       </pattern>
       <action>
@@ -340,6 +385,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	  </chunk>
 	  <b pos="1"/>
 	</out>
+<let><var n="debug1"/><lit v="p4"/></let>
 	<call-macro n="prodrop2">
 	  <with-param pos="2"/>
 	  <with-param pos="3"/>
@@ -354,6 +400,656 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
+      </action>
+</rule>
+
+
+<!-- INDEX: cláusulas de relativo-->
+
+<rule comment="REGLA: SN SNrelatiu SNobj SV (. el niño que nos vió-> la knabo kiu nin vidis EOes))">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SNobj"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+        <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SN SNrelatiu SNobj SV SN (. el niño que nos dio el libro -> la knabo kiu al ni donis la libron EOes))">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SNobj"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
+<!--        <let><clip pos="5" part="case"/><lit-tag v="acc"/></let> -->
+<let><clip pos="5" part="case"/><lit-tag v="acc.sense"/></let>
+        <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <get-case-from pos="2">
+              <lit v="al5"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+              <lit v="al"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="$}"/>
+          </chunk>
+          <b/>
+          <chunk>
+            <clip pos="3" part="lem"/>
+            <clip pos="3" part="tags"/>
+            <clip pos="3" part="chcontent"/>
+          </chunk>
+
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+          <b pos="4"/>
+          <chunk>
+            <clip pos="5" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SN SNrelatiu SN SV (. el nen que ella vió -> la knabo kiun ŝi vidis EOes))">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SN"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+        <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SNrelatiu SV SN (EOes: el niño que vió la casa -> la knabo kiu vidis la domon; la niña que vieron los niños -> la knabino kiun vidis la knaboj)">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+
+       <choose>
+          <when>
+            <test>
+              <and>
+                <equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal>
+                <equal><clip pos="3" part="pers"/><lit-tag v="p3"/></equal>
+              </and>
+            </test>
+
+            <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
+            <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+            <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+<!--        <let><clip pos="4" part="case"/><lit-tag v="acc"/></let> -->
+<let><clip pos="4" part="case"/><lit-tag v="acc.sense"/></let>
+        </when>
+
+        <when>
+            <test>
+                <not><equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal></not>
+            </test>
+            <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+<let><clip pos="4" part="case2"/><lit-tag v="nom.sense"/></let>
+        </when>
+      </choose>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SNrelatiu SVcop (los niños que son altos -> la infanoj kiuj estas altaj)">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SVcop_pers"/>
+      </pattern>
+      <action>
+
+        <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNrelatiu SVcop (y que son altos -> kaj kiuj estas altaj)">
+      <pattern>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SV_pers"/>
+      </pattern>
+      <action>
+
+        <let><clip pos="1" part="nbr"/><clip pos="2" part="nbr"/></let>
+<let><clip pos="1" part="case2"/><lit-tag v="nom.sense"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SNrelatiu SV (la niña que vino -> la knabino kiu venis; los niños que viste -> la knaboj kiujn vi vidis)">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+
+       <choose>
+          <when>
+            <test>
+              <and>
+                <equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal>
+                <equal><clip pos="3" part="pers"/><lit-tag v="p3"/></equal>
+              </and>
+            </test>
+            <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
+            <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+        </when>
+
+        <otherwise>
+            <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+        </out>
+<let><var n="debug1"/><lit v="p1"/></let>
+        <call-macro n="prodrop2">
+          <with-param pos="3"/>
+          <with-param pos="2"/>
+        </call-macro>        
+        <out>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+        </otherwise>
+        </choose>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNrelatiu SN SV (que ella vió -> kiun ŝi vidis EOes))">
+      <pattern>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="prpers_sub"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+        <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNrelatiu SV SN (que vió ella -> kiun vidis ŝi EOes))">
+      <pattern>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="prpers_sub"/>
+      </pattern>
+
+      <action>
+        <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: PREP SNrelatiu SN SV (de que ella vió -> de kiu ŝi vidis (por eviti akuzativon starigutan de la supraj reguloj) EOes))">
+      <pattern>
+        <pattern-item n="PREP"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="prpers_sub"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: PREP SNrelatiu SV SN (de que vió ella -> de kiu vidis ŝi (por eviti akuzativon starigutan de la supraj reguloj) EOes))">
+      <pattern>
+        <pattern-item n="PREP"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="prpers_sub"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: PREP SNrelatiu SN SV SNacc (del que se tienen registros -> de kiu oni havas registrojn EOes))">
+      <pattern>
+        <pattern-item n="PREP"/>
+        <pattern-item n="SNrelatiu"/>
+        <pattern-item n="prpers_sub"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="SNacc"/>
+      </pattern>
+      <action>
+            <let>
+              <clip pos="5" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+          <b pos="4"/>
+          <chunk>
+            <clip pos="5" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<!--lo que -->
+
+<rule comment="REGLA: SNloque SNobj SV (. lo que nos dijo-> EOes))">
+      <pattern>
+        <pattern-item n="SNloque"/>
+        <pattern-item n="SNobj"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+            <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+<let><clip pos="3" part="case2"/><lit-tag v="nom.sense"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNloque SNobj SV SN (. lo que nos dijo el niño-> kion al li diris la knabo EOes))">
+      <pattern>
+        <pattern-item n="SNloque"/>
+        <pattern-item n="SNobj"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="4" part="case"/><lit-tag v="nom"/></let>
+        <let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
+<let><clip pos="4" part="case2"/><lit-tag v="nom.sense"/></let>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <get-case-from pos="2">
+              <lit v="al6"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="{^"/>
+            <get-case-from pos="2">
+              <lit v="al"/>
+            </get-case-from>
+            <lit-tag v="pr"/>
+            <lit v="$}"/>
+          </chunk>
+          <b/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNloque SN SV (. lo que María dijo -> kion Maria diris EOes))">
+      <pattern>
+        <pattern-item n="SNloque"/>
+        <pattern-item n="SN"/>
+        <pattern-item n="SVnocop"/>
+      </pattern>
+      <action>
+        <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+<let><clip pos="2" part="case2"/><lit-tag v="nom.sense"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SNloque SV SN (EOes: lo que vio el niño / lo que lleva el título: tirem els daus i triem acusatiu al darrere)">
+      <pattern>
+        <pattern-item n="SNloque"/>
+        <pattern-item n="SVnocop"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+
+        <!-- <let><clip pos="3" part="case"/><lit-tag v="acc"/></let> -->
+<let><clip pos="3" part="case2"/><lit-tag v="acc.sense"/></let>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+<rule comment="REGLA: SNloque SV (. lo que vino )">
+      <pattern>
+        <pattern-item n="SNloque"/>
+        <pattern-item n="SV_pers"/>
+      </pattern>
+      <action>
+
+       <choose>
+          <when>
+            <test>
+                <and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="2" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="2" part="pers"/>
+                  <lit-tag v="p3"/>
+                </equal>
+                </and>
+            </test>
+
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="nom"/>
+            </let>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+        </out>
+        </when>
+
+        <when>
+            <test>
+                <not>
+                <and>
+                <equal>
+                  <clip pos="1" part="nbr"/>
+                  <clip pos="2" part="nbr"/>
+                </equal>
+                <equal>
+                  <clip pos="2" part="pers"/>
+                  <lit-tag v="p3"/>
+                </equal>
+                </and>
+                </not>
+            </test>
+            <let>
+              <clip pos="1" part="case"/>
+              <lit-tag v="acc"/>
+            </let>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+        </out>
+<let><var n="debug1"/><lit v="p2"/></let>
+        <call-macro n="prodrop2">
+          <with-param pos="2"/>
+          <with-param pos="1"/>
+        </call-macro>        
+        <out>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+        </out>
+
+        </when>
+        </choose>
       </action>
 </rule>
 
