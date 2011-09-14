@@ -405,7 +405,7 @@
       <cat-item tags="adv.itg"/>
     </def-cat>
 
-    <def-cat n="mas"> <!-- EOes más -->
+    <def-cat n="mas">
       <cat-item lemma="más" tags="adv"/>
       <cat-item lemma="más" tags="preadv"/>
       <cat-item lemma="más" tags="det.qnt.*"/><!-- pel tagger-->
@@ -421,6 +421,28 @@
       <cat-item lemma="peor" tags="adj.*"/>
       <cat-item lemma="mayor" tags="adj.*"/>
       <cat-item lemma="menor" tags="adj.*"/>
+    </def-cat>
+
+    <def-cat n="mejor_muchomejor_adj">
+      <cat-item lemma="mejor" tags="adj.*"/>
+      <cat-item lemma="peor" tags="adj.*"/>
+      <cat-item lemma="mayor" tags="adj.*"/>
+      <cat-item lemma="menor" tags="adj.*"/>
+      <cat-item lemma="mucho mejor" tags="adj.*"/>
+      <cat-item lemma="mucho peor" tags="adj.*"/>
+      <cat-item lemma="mucho mayor" tags="adj.*"/>
+      <cat-item lemma="mucho menor" tags="adj.*"/>
+    </def-cat>
+
+    <def-cat n="mejor_muchomejor_adv">
+      <cat-item lemma="mejor" tags="adv"/>
+      <cat-item lemma="peor" tags="adv"/>
+      <cat-item lemma="mayor" tags="adv"/>
+      <cat-item lemma="menor" tags="adv"/>
+      <cat-item lemma="mucho mejor" tags="adv"/>
+      <cat-item lemma="mucho peor" tags="adv"/>
+      <cat-item lemma="mucho mayor" tags="adv"/>
+      <cat-item lemma="mucho menor" tags="adv"/>
     </def-cat>
 
     <def-cat n="no">
@@ -447,9 +469,12 @@
     </def-cat>
 
      <def-cat n="cnjcoopercorregir"> <!-- EO afegit per a corregir errors del tagger, veure regles-->
-      <cat-item lemma="que" tags="cnjcoo"/> <!-- ara el tagger prioritza aquest-->
-      <cat-item lemma="que" tags="prn.rel.*"/> <!-- seria el correcte, en fi ... -->
-<!--      <cat-item tags="cnjsub"/> --> <!-- per si de cas-->
+      <cat-item lemma="que" tags="prn.rel.*"/>
+    </def-cat>
+
+     <def-cat n="cnjcoopercorregir2"> <!-- EO afegit per a corregir errors del tagger, veure regles-->
+      <cat-item lemma="que" tags="prn.rel.*"/>
+      <cat-item tags="cnjsub"/>
     </def-cat>
 
      <def-cat n="cnj">
@@ -505,6 +530,7 @@
     </def-cat>
 
     <def-cat n="nom_da"> <!-- nomoj postulantaj "da" -->
+      <cat-item lemma="multitud" tags="n.*"/>
       <cat-item lemma="par" tags="n.*"/>
       <cat-item lemma="decena" tags="n.*"/>
       <cat-item lemma="docena" tags="n.*"/>
@@ -796,6 +822,9 @@
       <cat-item lemma="administrar" tags="vblex.*"/>
       <cat-item lemma="respirar" tags="vblex.*"/>
       <cat-item lemma="nombrar" tags="vblex.*"/>
+      <cat-item lemma="entender" tags="vblex.*"/>
+      <cat-item lemma="comprender" tags="vblex.*"/>
+      <cat-item lemma="recibir" tags="vblex.*"/>
     </def-cat>
 
     <def-cat n="vbref2oni-pp">
@@ -879,6 +908,9 @@
       <cat-item lemma="administrar" tags="vblex.pp.*"/>
       <cat-item lemma="respirar" tags="vblex.pp.*"/>
       <cat-item lemma="nombrar" tags="vblex.pp.*"/>
+      <cat-item lemma="entender" tags="vblex.pp.*"/>
+      <cat-item lemma="comprender" tags="vblex.pp.*"/>
+      <cat-item lemma="recibir" tags="vblex.pp.*"/>
     </def-cat>
 
     <def-cat n="vbref2oni-ger">
@@ -962,6 +994,9 @@
       <cat-item lemma="administrar" tags="vblex.ger"/>
       <cat-item lemma="respirar" tags="vblex.ger"/>
       <cat-item lemma="nombrar" tags="vblex.ger"/>
+      <cat-item lemma="entender" tags="vblex.ger"/>
+      <cat-item lemma="comprender" tags="vblex.ger"/>
+      <cat-item lemma="recibir" tags="vblex.ger"/>
     </def-cat>
 
 
@@ -3593,6 +3628,8 @@
 <!-- ek- -->
       <list-item v="poner# en servicio"/>
       <list-item v="producir# dolor"/>
+      <list-item v="enterar"/>
+      <list-item v="enterar#"/>
 <!-- aliaj -->
       <list-item v="volver"/>
       <list-item v="convertir"/>
@@ -3611,6 +3648,18 @@
       <list-item v="explotar"/>  <!-- ONI : ekspluati -->
       <list-item v="pasar"/>
       <list-item v="adherir"/> <!-- aliĝi / algluiĝi -->
+      <list-item v="criar"/>
+      <list-item v="relacionar"/>
+      <list-item v="encontrar# presente"/>
+      <list-item v="negar"/>
+      <list-item v="reunir"/>
+      <list-item v="dar# cuenta"/>
+      <list-item v="hospedar"/>
+      <list-item v="incorporar"/>
+      <list-item v="incorporar#"/>
+      <list-item v="matricular"/>
+      <list-item v="licenciar"/>
+      <list-item v="graduar"/>
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
       <list-item v="aprovechar"/>
@@ -3624,6 +3673,7 @@
       <list-item v="aprender"/>
       <list-item v="estudiar"/>
       <list-item v="traer"/>
+      <list-item v="suceder"/>
 <!--
       <list-item v="codear# con"/>
       <list-item v="posicionar"/>
@@ -3633,20 +3683,7 @@
       <list-item v="incautar"/>
       <list-item v="despedir# de"/>
       <list-item v="despedir"/>
-criarse > kreski
 saludarse > saluti unu la alian
-relacionarse = interrilati
-se encontrar presente = troviĝi
-refugiarse = situi
-negarse = rifuzi
-reunirse = renkontiĝi
-darse cuenta = rimarki
-hospedarse = gasti
-enterarse = ekscii
-incorporarse = aliĝi
-incorporarse# a = aliĝi al (sortirà acusatiu, però...)
-matricularse = enmatrikuliĝi
-licenciarse, graduarse = diplomiĝi
 -->
     </def-list>
 
@@ -3920,6 +3957,16 @@ licenciarse, graduarse = diplomiĝi
                   <let><clip pos="2" side="tl" part="lem"/><lit v="ekdolori"/></let>
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
                 </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="enterar"/></equal>
+                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="enterar#"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="ekscii"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
 
 <!-- aliaj -->
                 <when>
@@ -3997,6 +4044,11 @@ licenciarse, graduarse = diplomiĝi
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
                 </when>
                 <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="criar"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="kreski"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
                   <test>
                     <or>
                        <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="situar"/></equal>
@@ -4007,7 +4059,56 @@ licenciarse, graduarse = diplomiĝi
                   </test>
                   <let><clip pos="2" side="tl" part="lem"/><lit v="situi"/></let>
                   <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                  <!-- <let><var n="vimpers"/><lit-tag v="impers"/></let> --> <!-- para que no se genere pronombre sujeto -->
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="encontrar# presente"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="troviĝi"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="negar"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="rifuzi"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="reunir"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="renkontiĝi"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="dar# cuenta"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="rimarki"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="hospedar"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="gasti"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="incorporar"/></equal>
+                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="incorporar#"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="aliĝi"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="licenciar"/></equal>
+                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="graduar"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="diplomiĝi"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="matricular"/></equal></test>
+                  <let><clip pos="2" side="tl" part="lem"/><lit v="profiti"/></let>
+                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="enmatrikuliĝi"/></let>
                 </when>
               </choose>
               <let><var n="treu_ref"/><lit v="treu"/></let>
@@ -6815,20 +6916,7 @@ licenciarse, graduarse = diplomiĝi
    <choose>
      <when>   <!-- article indefinit s'elimina -->
       <test>
-       <or>
-       <equal caseless="yes">
-        <clip pos="1" side="sl" part="lem"/>
-        <lit v="uno"/>
-        </equal>
-       <equal caseless="yes">
-        <clip pos="1" side="sl" part="lem"/>
-        <lit v="XXcierto"/>
-        </equal>
-       <equal caseless="yes">
-        <clip pos="1" side="sl" part="lem"/>
-        <lit v="XXalguno"/>
-        </equal>
-       </or>
+       <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
       </test>
         <out>
           <chunk name="nom" case="caseFirstWord">
@@ -16835,7 +16923,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="2"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -16874,7 +16962,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="2"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -16888,8 +16976,8 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: MEJOR QUE ('mayor/menor que - pli granda/pli malgranda ol') (EOes)">
       <pattern>
-	<pattern-item n="mejor"/>
-	<pattern-item n="cnjcorregir"/>
+	<pattern-item n="mejor_muchomejor_adj"/>
+	<pattern-item n="cnjcoopercorregir2"/>
       </pattern>
       <action>          	
 	<call-macro n="nom_cas">
@@ -16917,7 +17005,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="1"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -16931,9 +17019,9 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: MEJOR NOM QUE ('mayor/menor libertad que - pli granda/pli malgranda libereco ol') (EOes)">
       <pattern>
-	<pattern-item n="mejor"/>
+	<pattern-item n="mejor_muchomejor_adj"/>
 	<pattern-item n="nom"/>
-	<pattern-item n="cnjcorregir"/>
+	<pattern-item n="cnjcoopercorregir2"/>
       </pattern>
       <action>          	
 	<call-macro n="nom_cas">
@@ -16970,7 +17058,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="2"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -16984,10 +17072,10 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 
 <rule comment="REGLA: MEJOR NOM ADJ QUE ('mayor/menor libertad individual que - pli granda/pli malgranda libereco ol') (EOes)">
       <pattern>
-	<pattern-item n="mejor"/>
+	<pattern-item n="mejor_muchomejor_adj"/>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
-	<pattern-item n="cnjcorregir"/>
+	<pattern-item n="cnjcoopercorregir2"/>
       </pattern>
       <action>          	
 	<call-macro n="nom_cas">
@@ -17032,10 +17120,44 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
 		<b pos="3"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: MEJOR QUE ('mayor/menor que - pli granda/pli malgranda ol') (EOes)">
+      <pattern>
+	<pattern-item n="mejor_muchomejor_adv"/>
+	<pattern-item n="cnjcoopercorregir2"/>
+      </pattern>
+      <action>          	
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+        <let><var n="nadv"/><clip pos="1" side="tl" part="lem"/></let>
+	<out>
+	  <chunk namefrom="nadv" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="adv"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="ol"/>
+              <lit-tag v="cnjsub"/>
+            </lu>
+          </chunk>
+        </out>
 	<let>
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
@@ -17302,6 +17424,59 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 -->
 
 
+<rule comment="REGLA: MÁS NOM ('más/menos libertad - pli/malpli da libereco') (EOes)">
+      <pattern>
+	<pattern-item n="mas"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>          	
+	<call-macro n="nom_cas">
+	  <with-param pos="2"/>
+	</call-macro>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+          <chunk name="da" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+		<lu>
+		  <clip pos="1" side="tl" part="whole"/>
+		</lu>
+		<b pos="1"/>
+            <lu>
+              <lit v="da"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+	<b/>
+	  <chunk name="nom">
+		<tags>
+	           <tag><lit-tag v="SN"/></tag>
+	           <tag><clip pos="2" side="sl" part="gen"/></tag>
+	           <tag><var n="nombre"/></tag>
+	           <tag><var n="case"/></tag>
+	           <tag><var n="changecase"/></tag>
+		</tags>
+		<lu>
+	          <clip pos="2" side="tl" part="lemh"/>
+	          <clip pos="2" side="tl" part="a_nom"/>
+                  <clip pos="2" side="tl" part="gen"/>
+	          <clip pos="2" side="tl" part="nbr"/>
+	          <lit-tag v="nom"/>
+	          <clip pos="2" side="tl" part="lemq"/>
+		</lu>
+	      </chunk>
+	    </out>
+	<let>
+	  <var n="caseFirstWord"/>
+	  <lit v="aa"/>
+	</let>
+      </action>
+    </rule>
+
+
 <rule comment="REGLA: MÁS NOM QUE ('más/menos libertad que - pli/malpli da libereco ol') (EOes)">
       <pattern>
 	<pattern-item n="mas"/>
@@ -17344,7 +17519,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		<b pos="2"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -17407,7 +17582,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		<b pos="2"/>
                 <lu>
                   <lit v="ol"/>
-                  <lit-tag v="cnjcoo"/>
+                  <lit-tag v="cnjsub"/>
 		</lu>
 	      </chunk>
 	    </out>
@@ -17441,7 +17616,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <b pos="1"/>
             <lu>
               <lit v="ol"/>
-              <lit-tag v="cnjcoo"/>
+              <lit-tag v="cnjsub"/>
 	    </lu>
           </chunk>
         </out>
@@ -17467,22 +17642,11 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
    <choose>
      <when>   <!-- article indefinit s'elimina -->
       <test>
-       <or>
-       <equal caseless="yes">
-        <clip pos="1" side="sl" part="lem"/>
-        <lit v="uno"/>
-        </equal>
-       <equal caseless="yes">
-        <clip pos="1" side="sl" part="lem"/>
-        <lit v="XXcierto"/>
-        </equal>
-       <equal caseless="yes">
-        <clip pos="1" side="sl" part="lem"/>
-        <lit v="XXalguno"/>
-        </equal>
-       </or>
+       <and>
+         <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
+         <not><equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal></not>
+       </and>
       </test>
-
     </when>
 
 <otherwise>
@@ -17651,45 +17815,76 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </call-macro>
         <let><var n="nadv"/><clip pos="2" side="tl" part="lem"/></let>
 
-                <out>
-                  <chunk namefrom="nverb" case="caseFirstWord">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="1" side="tl" part="temps"/></tag>
-                      <tag><clip pos="1" side="tl" part="pers"/></tag>
-                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
-                      <tag><var n="tipus_verb"/></tag>
+        <out>
+          <chunk namefrom="nverb" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV18"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="1" side="tl" part="lemh"/>
-                      <clip pos="1" side="tl" part="a_verb"/>
-                      <clip pos="1" side="tl" part="sep"/>
-                      <lit-tag v="3"/>
-                      <clip pos="1" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-		<b pos="1"/>
-		  <chunk namefrom="nadv">
-		    <tags>
-		      <tag><lit-tag v="adv"/></tag>
-		    </tags>
-		    <lu>
-		      <clip pos="2" side="tl" part="whole"/>
-		    </lu>
-		  </chunk>
-		<b pos="2"/>
-		 <chunk name="ke">
-            		<tags>
-            	  	<tag><lit-tag v="cnjsub"/></tag>
-            		</tags>
-            		<lu>
-              		<lit v="ke"/>
-			<lit-tag v="cnjsub"/>
-            		</lu>
-          		</chunk>
-                </out>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="nadv">
+            <tags>
+              <tag><lit-tag v="adv"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        <b pos="2"/>
+        </out>
+	<choose>
+          <when>
+            <test>
+              <or>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mejor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="peor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mayor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mejor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mucho mejor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mucho peor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mucho mayor"/></equal>
+                <equal><clip pos="2" side="sl" part="lem"/><lit v="mucho mejor"/></equal>
+              </or>
+            </test>
+            <out>
+              <chunk name="ol">
+                <tags>
+                  <tag><lit-tag v="cnjsub"/></tag>
+                </tags>
+                <lu>
+                  <lit v="ol"/>
+                  <lit-tag v="cnjsub"/>
+                </lu>
+               </chunk>
+             </out>
+          </when>
+          <otherwise>
+            <out>
+              <chunk name="ke">
+                <tags>
+                  <tag><lit-tag v="cnjsub"/></tag>
+                </tags>
+                <lu>
+                  <lit v="ke"/>
+                  <lit-tag v="cnjsub"/>
+                </lu>
+               </chunk>
+             </out>
+          </otherwise>
+	</choose>
         <let>
           <var n="caseFirstWord"/>
           <lit v="aa"/>
@@ -26211,7 +26406,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		<b pos="2"/>
 	    <lu>
 	      <lit v="ol"/>
-	      <lit-tag v="cnjcoo"/>
+	      <lit-tag v="cnjsub"/>
 	    </lu>
 		<b pos="3"/>
             	<lu>
@@ -26526,7 +26721,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 		<b pos="2"/>
 	    <lu>
 	      <lit v="ol"/>
-	      <lit-tag v="cnjcoo"/>
+	      <lit-tag v="cnjsub"/>
 	    </lu>
 		<b pos="3"/>
             	<lu>
@@ -27007,6 +27202,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
     </rule>
 
 
+<!-- ERROR: no funciona qd VERB + PREP + REL: se entera de que; caldria passar-ho a antaux1_t2x per tractar SV/SN + PREP + REL -->
 <rule comment="REGLA: PREP + PRONOM relatiu EO( dels quals, pels que, als que ...)">
       <pattern>
 	<pattern-item n="prep"/>
