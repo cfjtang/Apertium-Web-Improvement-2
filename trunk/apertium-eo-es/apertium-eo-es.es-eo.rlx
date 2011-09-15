@@ -261,18 +261,17 @@ SELECT:r_na_13_fp N IF (-3 Barrera_Inicial_SN LINK NOT 0 Verb) (-2C Det + $$FemP
 	# ". Católicos, ortodoxos y algunos anglicanos consideran"
 	# "intelectual alemán judío exiliado."
 	# "futuro Estado independiente"
-	# "publicó grandes tiradas de libros"
 	# "Miembro y combatiente de la Resistencia francesa"
 	# "en el territorio histórico vascofrancés"
 	# "acoger a sus trabajadores y a los de las empresas asociadas"
-	# "El resultado de la resta"
 	# "acudió numeroso público."
-	# "se utiliza en periódicos y libros"
 	# "de los periódicos, de los discursos"
 	# "en distintos periódicos."
 	# "un posible saludo."
 	# "no aceptaban jovencitas de 15 años"
-	# ". Civiles étnicamente croatas"
+
+SELECT:pp_1 PP IF (-1 ("haber") OR ("Haber")) (O PP) ;
+SELECT:pp_2 PP IF (-1 ("ser") OR ("ser")) (O PP) (*1 ("por") BARRIER (Cnj_Rel_End)) ;
 
 # REMOVE:r_na_20 A OR PP IF (-1 Barrera_Inicial_SN LINK NOT 0 N) (NOT -1 Limite_Barrera_Inicial_SN) (O Noun_Adj_PP LINK 0 N OR NP) (1 Barrera_Final_SN) ;
 
@@ -282,7 +281,7 @@ SELECT:s_na_1_ms N IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK NOT 0 N
 SELECT:s_na_1_fs N IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_mp N IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_fp N IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
-SELECT:s_na_1_arg NP IF (-1 Det + Fem) (O ("Argentina")) (1 <<< OR Prep OR Det) ;
+SELECT:s_na_1_arg NP IF (-1 Det + Fem) (O ("Argentina") OR ("Filipinas") OR ("Baleares") OR ("Canarias") OR ("Polinesia")) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_med NP IF (-1 Det + Masc) (O ("Mediterráneo") OR ("Atlántico") OR ("Cantábrico") OR ("Pacífico") OR ("Índico") OR ("Ártico")) (1 <<< OR Prep OR Det) ;
 	# la ofensiva de pascua
 	# la política del gobierno (per error, es veu Det i no Prep)
@@ -326,8 +325,20 @@ SELECT:n_a_eos_2 N IF (0 Noun_Adj_PP LINK NOT 0 NP) (-1 Det) (1 <<<) ;
 	## PERO: Las clasificaciones más reconocidas internacionalmente son la francesa y la estadounidense.
 	## PERO: muy poco conocida.
 
-SELECT:n_a_eos_3 N IF (-2C N) (-1 CnjCoo) (0 Noun_Adj_PP LINK NOT 0 NP) (1 <<<) ;
+SELECT:n_a_eos_3 N IF (-2C N) (-1 CnjCoo) (0 Noun_Adj_PP LINK NOT 0 NP) (1 Barrera_Final_Estrict_SN) ;
 	## adquiriendo una gran reputación como poeta y crítico.
+SELECT:n_a_eos_4 N IF (2C N) (1 CnjCoo) (0C Noun_Adj_PP LINK NOT 0 NP) (-1 Barrera_Inicial_SN) ;
+	## "se utiliza en periódicos y libros"
+
+SELECT:n_adv_a_1_ms A IF (-2C N + $$MascSg) (-1C Adv) (0 A + $$MascSg LINK NOT 0 Det) ;
+SELECT:n_adv_a_1_ms A IF (-2C N + $$FemSg) (-1C Adv) (0 A + $$FemSg LINK NOT 0 Det) ;
+SELECT:n_adv_a_1_ms A IF (-2C N + $$MascPl) (-1C Adv) (0 A + $$MascPl LINK NOT 0 Det) ;
+SELECT:n_adv_a_1_ms A IF (-2C N + $$FemPl) (-1C Adv) (0 A + $$FemPl LINK NOT 0 Det) ;
+SELECT:n_adv_a_2_ms A IF (-3 Barrera_Inicial_SN) (-2 N + $$MascSg) (-1C Adv) (0 A + $$MascSg LINK NOT 0 Det) ;
+SELECT:n_adv_a_2_ms A IF (-3 Barrera_Inicial_SN) (-2 N + $$FemSg) (-1C Adv) (0 A + $$FemSg LINK NOT 0 Det) ;
+SELECT:n_adv_a_2_ms A IF (-3 Barrera_Inicial_SN) (-2 N + $$MascPl) (-1C Adv) (0 A + $$MascPl LINK NOT 0 Det) ;
+SELECT:n_adv_a_2_ms A IF (-3 Barrera_Inicial_SN) (-2 N + $$FemPl) (-1C Adv) (0 A + $$FemPl LINK NOT 0 Det) ;
+	# ". Civiles étnicamente croatas"
 
 # Tio estas ligita al la (mis)difinoj de accionista__n, albañil__n, gilipollas__n kaj reh/én__n
 #SELECT:n_mf_1 Masc IF (0C N LINK NOT 0 Defensa) (-1C Vblex OR Prep OR ("como")) (NOT -1 PP) (1 <<< OR Prep) ;
@@ -377,8 +388,11 @@ REMOVE:r_adv Adv (0 Adv) (-1C N) (1C N) ;
 
 REMOVE:nom_verb1 N (-1C Pro) (0 N LINK 0 Verb) (1 ("que")) ;
 REMOVE:nom_verb2 N (NOT -2 Verb) (NOT -2 Prep) (-1C Pro) (0 N LINK 0 Verb) ;
+#REMOVE:nom_verb3 N (NOT *-1 Verb BARRIER <<< OR CnjSub OR CnjAdv OR Rel) (0 N LINK 0 Verb) (NOT *1 Verb BARRIER >>> OR CnjSub OR CnjAdv OR Rel);
+#SELECT:nom_verb3 V (NOT *-1 Verb BARRIER <<< OR CnjSub OR CnjAdv OR Rel) (0 Verb) (NOT *1 Verb BARRIER >>> OR CnjSub OR CnjAdv OR Rel);
 	# se estima que
 	# le cuenta que
+	# NO: que ayuda en muchos aspectos
 
 REMOVE:tanto_como_1 A (0 ("tanto") OR ("Tanto")) (*1 ("como") BARRIER CnjSub) ;
 REMOVE:tanto_como_2 Verb (-1* ("tanto") OR ("Tanto") BARRIER CnjSub) (0 ("como")) ;
