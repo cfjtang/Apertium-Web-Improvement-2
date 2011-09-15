@@ -541,12 +541,17 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
                 <equal><clip pos="3" part="pers"/><lit-tag v="p3"/></equal>
               </and>
             </test>
-
             <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
             <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
-            <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
-<!--        <let><clip pos="4" part="case"/><lit-tag v="acc"/></let> -->
+            <choose>
+              <when>
+                <test>
+                  <not><equal><clip pos="3" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+                </test>
+<!--            <let><clip pos="4" part="case"/><lit-tag v="acc"/></let> -->
 <let><clip pos="4" part="case"/><lit-tag v="acc.sense"/></let>
+              </when>
+            </choose>
         </when>
 
         <when>
@@ -950,8 +955,15 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       </pattern>
       <action>
 
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
         <!-- <let><clip pos="3" part="case"/><lit-tag v="acc"/></let> -->
 <let><clip pos="3" part="case2"/><lit-tag v="acc.sense"/></let>
+          </when>
+        </choose>
         <out>
           <chunk>
             <clip pos="1" part="lem"/>

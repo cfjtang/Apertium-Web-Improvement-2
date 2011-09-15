@@ -654,10 +654,7 @@
       </pattern>
       <action>
 
-            <let>
-              <clip pos="1" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+        <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
 
         <out>
           <chunk>
@@ -1007,7 +1004,7 @@
             <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
           </when>
         </choose>
-            <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
+        <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
 
         <out>
           <chunk>
@@ -1097,7 +1094,7 @@
             <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
           </when>
         </choose>
-            <let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
+        <let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
 
         <out>
 
@@ -1142,7 +1139,10 @@
         <choose>
           <when>
             <test>
-              <not><equal><clip pos="1" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+              <and>
+                <not><equal><clip pos="1" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+                <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
             </test>
             <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
           </when>
@@ -1172,7 +1172,10 @@
         <choose>
           <when>
             <test>
-              <not><equal><clip pos="2" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+              <and>
+                <not><equal><clip pos="1" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+                <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
             </test>
             <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
           </when>
@@ -1207,10 +1210,14 @@
       </pattern>
       <action>
 
-            <let>
-              <clip pos="3" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+          </when>
+        </choose>
 
         <out>
           <chunk>
@@ -1271,10 +1278,14 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="4" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+          </when>
+        </choose>
 
         <out>
           <chunk>
@@ -1308,10 +1319,14 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="6" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="6" part="case"/><lit-tag v="acc"/></let>
+          </when>
+        </choose>
 
         <out>
           <chunk>
@@ -1353,10 +1368,14 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="6" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="6" part="case"/><lit-tag v="acc"/></let>
+          </when>
+        </choose>
 
         <out>
           <chunk>

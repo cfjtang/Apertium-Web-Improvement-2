@@ -543,6 +543,7 @@
       <cat-item lemma="centenar" tags="n.*"/>
       <cat-item lemma="millar" tags="n.*"/>
       <cat-item lemma="millón" tags="n.*"/>
+      <cat-item lemma="mil millones" tags="n.*"/>
       <cat-item lemma="millardo" tags="n.*"/>
       <cat-item lemma="trillón" tags="n.*"/>
       <cat-item lemma="cientos" tags="n.*"/>
@@ -3243,6 +3244,7 @@
 
     <def-attr n="a_adj">
       <attr-item tags="adj"/>
+      <attr-item tags="adj.sup"/>
       <attr-item tags="adj.sint"/>
       <attr-item tags="adj.sint.comp"/>
       <attr-item tags="adj.sint.sup"/>
@@ -3465,6 +3467,8 @@
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
     <def-var n="vimpers"/>
+    <def-var n="vigxi1"/>
+    <def-var n="vigxi2"/>
     <def-var n="nprep"/>
     <def-var n="nadv"/>
     <def-var n="ncnj"/>
@@ -3473,6 +3477,8 @@
 <!-- variables només per depurar i veure per on es passa en executar -->
     <def-var n="debug1"/>
     <def-var n="debug2"/>
+    <def-var n="debug3"/>
+    <def-var n="debug4"/>
   </section-def-vars>
 
   <section-def-lists>
@@ -3645,6 +3651,7 @@
       <list-item v="encontrar"/> <!-- situi / renkontiĝi ! -->
       <list-item v="parecer"/>
       <list-item v="encargar"/>
+      <list-item v="fusionar"/>
       <list-item v="explotar"/>  <!-- ONI : ekspluati -->
       <list-item v="pasar"/>
       <list-item v="adherir"/> <!-- aliĝi / algluiĝi -->
@@ -3660,6 +3667,7 @@
       <list-item v="matricular"/>
       <list-item v="licenciar"/>
       <list-item v="graduar"/>
+      <list-item v="desprender"/>
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
       <list-item v="aprovechar"/>
@@ -3689,6 +3697,707 @@ saludarse > saluti unu la alian
 
     <def-list n="verbs_pron"> <!-- lista de verbos con cambio de raíz cuando van con pronombre (p.ej intr > tr ) -->
       <list-item v="pasar"/>
+    </def-list>
+
+    <def-list n="verbs_oni">
+      <list-item v="formar"/>
+      <list-item v="usar"/>
+      <list-item v="decir"/>
+      <list-item v="mencionar"/>
+      <list-item v="hablar"/>
+      <list-item v="comentar"/>
+      <list-item v="opinar"/>
+      <list-item v="creer"/>
+      <list-item v="creer#"/>
+      <list-item v="descubrir"/>
+      <list-item v="proponer"/>
+      <list-item v="organizar"/>
+      <list-item v="querer"/>
+      <list-item v="desear"/>
+      <list-item v="emplear"/>
+      <list-item v="mostrar"/>
+      <list-item v="conocer"/>
+      <list-item v="requerir"/>
+      <list-item v="obligar"/>
+      <list-item v="aplicar"/>
+      <list-item v="utilizar"/>
+      <list-item v="usar"/>
+      <list-item v="ver"/>
+      <list-item v="golpear"/>
+      <list-item v="exponer"/>
+      <list-item v="notar"/>
+      <list-item v="observar"/>
+      <list-item v="fundar"/>
+      <list-item v="inaugurar"/>
+      <list-item v="fabricar"/>
+      <list-item v="estimar"/>
+      <list-item v="considerar"/>
+      <list-item v="deber"/>
+      <list-item v="poder"/>
+      <list-item v="soler"/>
+      <list-item v="acostumbrar"/>
+      <list-item v="intentar"/>
+      <list-item v="conocer"/>
+      <list-item v="saber"/>
+      <list-item v="tener"/>
+      <list-item v="repatriar"/>
+      <list-item v="necesitar"/>
+      <list-item v="esperar"/>
+      <list-item v="emplear"/>
+      <list-item v="planificar"/>
+      <list-item v="publicar"/>
+      <list-item v="conciliar"/>
+      <list-item v="reconciliar"/>
+      <list-item v="enterrar"/>
+      <list-item v="construir"/>
+      <list-item v="edificar"/>
+      <list-item v="cambiar"/>
+      <list-item v="modificar"/>
+      <list-item v="llegar# a"/>
+      <list-item v="enviar"/>
+      <list-item v="transmitir"/>
+      <list-item v="pronunciar"/>
+      <list-item v="escribir"/>
+      <list-item v="prever"/>
+      <list-item v="violar"/>
+      <list-item v="forzar"/>
+      <list-item v="obligar"/>
+      <list-item v="guardar"/>
+      <list-item v="almacenar"/>
+      <list-item v="interpretar"/>
+      <list-item v="promover"/>
+      <list-item v="promocionar"/>
+      <list-item v="aprovechar"/>
+      <list-item v="trabajar"/>
+      <list-item v="diferenciar"/>
+      <list-item v="lavar# en seco"/>
+      <list-item v="poner# en peligro"/>
+      <list-item v="provocar# un aborto"/>
+      <list-item v="quitar# el polvo"/>
+      <list-item v="quitar# la punta"/>
+      <list-item v="firmar"/>
+      <list-item v="identificar"/>
+      <list-item v="administrar"/>
+      <list-item v="respirar"/>
+      <list-item v="nombrar"/>
+      <list-item v="entender"/>
+      <list-item v="comprender"/>
+      <list-item v="recibir"/>
+    </def-list>
+
+    <def-list n="verbs_igxi">
+      <list-item v="crear"/> 
+      <list-item v="dividir"/>
+      <list-item v="ocupar"/>
+      <list-item v="deformar"/>
+      <list-item v="distorsionar"/>
+      <list-item v="originar"/>
+      <list-item v="abrir"/>
+      <list-item v="cerrar"/>
+      <list-item v="llamar"/>
+      <list-item v="retirar"/>
+      <list-item v="hacer"/>
+      <list-item v="convertir"/>
+      <list-item v="reflejar"/>
+      <list-item v="hallar"/>
+      <list-item v="encontrar# presente"/>
+      <list-item v="acercar"/>
+      <list-item v="asentar"/>
+      <list-item v="concentrar"/>
+      <list-item v="desarrollar"/>
+      <list-item v="casar"/>
+      <list-item v="enamorar"/>
+      <list-item v="enamorar#"/>
+      <list-item v="acostumbrar"/>
+      <list-item v="implantar"/>
+      <list-item v="reimplantar"/>
+      <list-item v="rehacer"/>
+      <list-item v="reconvertir"/>
+      <list-item v="reencontrar"/>
+      <list-item v="iniciar"/>
+      <list-item v="reiniciar"/>
+      <list-item v="terminar"/>
+      <list-item v="acabar"/>
+      <list-item v="trasladar"/>
+      <list-item v="levantar"/>
+      <list-item v="acostar"/>
+      <list-item v="tumbar"/>
+      <list-item v="envolver"/>
+      <list-item v="desenvolver"/>
+      <list-item v="acercar"/>
+      <list-item v="aproximar"/>
+      <list-item v="retrasar"/>
+      <list-item v="postergar"/>
+      <list-item v="aplazar"/>
+      <list-item v="atrasar"/>
+      <list-item v="demorar"/>
+      <list-item v="posponer"/>
+      <list-item v="procrastinar"/>
+      <list-item v="retardar"/>
+      <list-item v="conservar"/>
+      <list-item v="interesar"/>
+      <list-item v="preocupar"/>
+      <list-item v="interesar#"/>
+      <list-item v="preocupar#"/>
+      <list-item v="inquietar"/>
+      <list-item v="animar"/>
+      <list-item v="embarazar"/>
+      <list-item v="joder"/>
+      <list-item v="deber# a"/>
+      <list-item v="denominar"/>
+      <list-item v="estropear"/>
+      <list-item v="romper"/>
+      <list-item v="dirigir"/>
+      <list-item v="sentar"/>
+      <list-item v="tumbar"/>
+      <list-item v="aficionar"/>
+      <list-item v="trasladar"/>
+      <list-item v="formar"/>
+      <list-item v="orientar"/>
+      <list-item v="desorientar"/>
+      <list-item v="expandir"/>
+      <list-item v="expansionar"/>
+      <list-item v="educar"/>
+      <list-item v="basar"/>
+
+     <list-item v="abaratar"/>
+     <list-item v="abatir"/>
+     <list-item v="abochornar"/>
+     <list-item v="abreviar"/>
+     <list-item v="abultar"/>
+     <list-item v="acallar"/>
+     <list-item v="accionar"/>
+     <list-item v="acercar"/>
+     <list-item v="achispar"/>
+     <list-item v="aclarar"/>
+     <list-item v="aclimatar"/>
+     <list-item v="acordar"/>
+     <list-item v="acordar# de"/>
+     <list-item v="acortar"/>
+     <list-item v="acostar"/>
+     <list-item v="acrecentar"/>
+     <list-item v="activar"/>
+     <list-item v="acumular"/>
+     <list-item v="afianzar"/>
+     <list-item v="aficionar"/>
+     <list-item v="afilar"/>
+     <list-item v="agrandar"/>
+     <list-item v="agravar"/>
+     <list-item v="agrupar"/>
+     <list-item v="aguzar"/>
+     <list-item v="ajustar"/>
+     <list-item v="alargar"/>
+     <list-item v="albergar"/>
+     <list-item v="alegrar"/>
+     <list-item v="alejar"/>
+     <list-item v="alentar"/>
+     <list-item v="aligerar"/>
+     <list-item v="alinear"/>
+     <list-item v="alisar"/>
+     <list-item v="aliviar"/>
+     <list-item v="alojar"/>
+     <list-item v="alumbrar"/>
+     <list-item v="amargar"/>
+     <list-item v="amarrar"/>
+     <list-item v="amasar"/>
+     <list-item v="amontonar"/>
+     <list-item v="ampliar"/>
+     <list-item v="angustiar"/>
+     <list-item v="aniquilar"/>
+     <list-item v="anular"/>
+     <list-item v="apaciguar"/>
+     <list-item v="aparentar"/>
+     <list-item v="apartar"/>
+     <list-item v="apasionar"/>
+     <list-item v="aplastar"/>
+     <list-item v="apresurar"/>
+     <list-item v="apropiar"/>
+     <list-item v="aproximar"/>
+     <list-item v="archivar"/>
+     <list-item v="arquear"/>
+     <list-item v="arrimar"/>
+     <list-item v="arromar"/>
+     <list-item v="arruinar"/>
+     <list-item v="asegurar"/>
+     <list-item v="asombrar"/>
+     <list-item v="asustar"/>
+     <list-item v="atar"/>
+     <list-item v="atenuar"/>
+     <list-item v="atrofiar"/>
+     <list-item v="aumentar"/>
+     <list-item v="aunar"/>
+     <list-item v="autentificar"/>
+     <list-item v="autoinculpar"/>
+     <list-item v="autojustificar"/>
+     <list-item v="avergonzar"/>
+     <list-item v="averiguar"/>
+     <list-item v="avivar"/>
+     <list-item v="azuzar"/>
+     <list-item v="beneficiar"/>
+     <list-item v="blanquear"/>
+     <list-item v="broncear"/>
+     <list-item v="cabrear"/>
+     <list-item v="calmar"/>
+     <list-item v="cancelar"/>
+     <list-item v="cansar"/>
+     <list-item v="capacitar"/>
+     <list-item v="cartografiar"/>
+     <list-item v="casar"/>
+     <list-item v="cegar"/>
+     <list-item v="certificar"/>
+     <list-item v="chamuscar"/>
+     <list-item v="circunscribir"/>
+     <list-item v="cohesionar"/>
+     <list-item v="colgar"/>
+     <list-item v="colorar"/>
+     <list-item v="compaginar"/>
+     <list-item v="complementar"/>
+     <list-item v="completar"/>
+     <list-item v="conciliar"/>
+     <list-item v="concretar"/>
+     <list-item v="confinar"/>
+     <list-item v="conformar"/>
+     <list-item v="congelar"/>
+     <list-item v="consolidar"/>
+     <list-item v="contentar"/>
+     <list-item v="continuar"/>
+     <list-item v="convertir"/>
+     <list-item v="convertir# en"/>
+     <list-item v="coordinar"/>
+     <list-item v="cuadriplicar"/>
+     <list-item v="cuadruplicar"/>
+     <list-item v="curvar"/>
+     <list-item v="debilitar"/>
+     <list-item v="decaer"/>
+     <list-item v="decepcionar"/>
+     <list-item v="deforestar"/>
+     <list-item v="deponer"/>
+     <list-item v="depurar"/>
+     <list-item v="desacostumbrar"/>
+     <list-item v="desacreditar"/>
+     <list-item v="desactivar"/>
+     <list-item v="desahuciar"/>
+     <list-item v="desanimar"/>
+     <list-item v="desarmar"/>
+     <list-item v="desatar"/>
+     <list-item v="desbaratar"/>
+     <list-item v="descoordinar"/>
+     <list-item v="descortezar"/>
+     <list-item v="desencadenar"/>
+     <list-item v="desengañar"/>
+     <list-item v="desenmascarar"/>
+     <list-item v="desenterrar"/>
+     <list-item v="desenvainar"/>
+     <list-item v="desequilibrar"/>
+     <list-item v="desesperanzar"/>
+     <list-item v="desesperar"/>
+     <list-item v="desgranar"/>
+     <list-item v="deshabilitar"/>
+     <list-item v="deshabitar"/>
+     <list-item v="desheredar"/>
+     <list-item v="desilusionar"/>
+     <list-item v="desintoxicar"/>
+     <list-item v="desnatar"/>
+     <list-item v="desnudar"/>
+     <list-item v="despedazar"/>
+     <list-item v="despejar"/>
+     <list-item v="desperdigar"/>
+     <list-item v="desplumar"/>
+     <list-item v="despoblar"/>
+     <list-item v="desposeer"/>
+     <list-item v="desprestigiar"/>
+     <list-item v="despuntar"/>
+     <list-item v="desregular"/>
+     <list-item v="destituir"/>
+     <list-item v="destronar"/>
+     <list-item v="desunir"/>
+     <list-item v="desvertebrar"/>
+     <list-item v="desvestir"/>
+     <list-item v="desvincular"/>
+     <list-item v="detonar"/>
+     <list-item v="detractar"/>
+     <list-item v="devastar"/>
+     <list-item v="dificultar"/>
+     <list-item v="difundir"/>
+     <list-item v="disculpar"/>
+     <list-item v="disecar"/>
+     <list-item v="disminuir"/>
+     <list-item v="distanciar"/>
+     <list-item v="diversificar"/>
+     <list-item v="divulgar"/>
+     <list-item v="duplicar"/>
+     <list-item v="efectuar"/>
+     <list-item v="electrificar"/>
+     <list-item v="eliminar"/>
+     <list-item v="embalsamar"/>
+     <list-item v="embalsar"/>
+     <list-item v="embarazar"/>
+     <list-item v="embarcar"/>
+     <list-item v="embellecer"/>
+     <list-item v="emborrachar"/>
+     <list-item v="embotellar"/>
+     <list-item v="embriagar"/>
+     <list-item v="empalmar"/>
+     <list-item v="emparejar"/>
+     <list-item v="empeorar"/>
+     <list-item v="empequeñecer"/>
+     <list-item v="empobrecer"/>
+     <list-item v="enamorar"/>
+     <list-item v="enamorar# "/>
+     <list-item v="encaminar"/>
+     <list-item v="encarcelar"/>
+     <list-item v="encarecer"/>
+     <list-item v="encarnar"/>
+     <list-item v="encarrilar"/>
+     <list-item v="encuadrar"/>
+     <list-item v="enmarcar"/>
+     <list-item v="enderezar"/>
+     <list-item v="enemistar"/>
+     <list-item v="enfocar"/>
+     <list-item v="enfriar"/>
+     <list-item v="enfurecer"/>
+     <list-item v="engrandecer"/>
+     <list-item v="engrosar"/>
+     <list-item v="enjaular"/>
+     <list-item v="enlazar"/>
+     <list-item v="ennegrecer"/>
+     <list-item v="enriquecer"/>
+     <list-item v="enrojecer"/>
+     <list-item v="ensanchar"/>
+     <list-item v="ensilar"/>
+     <list-item v="ensuciar"/>
+     <list-item v="enterrar"/>
+     <list-item v="entrecasar"/>
+     <list-item v="enturbiar"/>
+     <list-item v="entusiasmar"/>
+     <list-item v="envainar"/>
+     <list-item v="envasar"/>
+     <list-item v="envilecer"/>
+     <list-item v="equilibrar"/>
+     <list-item v="erigir"/>
+     <list-item v="erradicar"/>
+     <list-item v="escalonar"/>
+     <list-item v="escenificar"/>
+     <list-item v="esclarecer"/>
+     <list-item v="espabilar"/>
+     <list-item v="espaciar"/>
+     <list-item v="espantar"/>
+     <list-item v="estratificar"/>
+     <list-item v="evaporar"/>
+     <list-item v="evidenciar"/>
+     <list-item v="exacerbar"/>
+     <list-item v="exagerar"/>
+     <list-item v="excomulgar"/>
+     <list-item v="eximir"/>
+     <list-item v="expandir"/>
+     <list-item v="expansionar"/>
+     <list-item v="expatriar"/>
+     <list-item v="explicar"/>
+     <list-item v="expropiar"/>
+     <list-item v="exterminar"/>
+     <list-item v="extralimitar"/>
+     <list-item v="facilitar"/>
+     <list-item v="fatigar"/>
+     <list-item v="fingir"/>
+     <list-item v="fornir"/>
+     <list-item v="fortalecer"/>
+     <list-item v="fortificar"/>
+     <list-item v="forzar"/>
+     <list-item v="fragmentar"/>
+     <list-item v="gangrenar"/>
+     <list-item v="gasificar"/>
+     <list-item v="habilitar"/>
+     <list-item v="humillar"/>
+     <list-item v="hundir"/>
+     <list-item v="idolatrar"/>
+     <list-item v="iluminar"/>
+     <list-item v="impedir"/>
+     <list-item v="implementar"/>
+     <list-item v="imposibilitar"/>
+     <list-item v="incapacitar"/>
+     <list-item v="incitar"/>
+     <list-item v="incorporar"/>
+     <list-item v="incrementar"/>
+     <list-item v="inculcar"/>
+     <list-item v="inculpar"/>
+     <list-item v="indignar"/>
+     <list-item v="inflamar"/>
+     <list-item v="inflar"/>
+     <list-item v="innovar"/>
+     <list-item v="inquietar"/>
+     <list-item v="instigar"/>
+     <list-item v="instituir"/>
+     <list-item v="intensificar"/>
+     <list-item v="internar"/>
+     <list-item v="interrelacionar"/>
+     <list-item v="intrigar"/>
+     <list-item v="invalidar"/>
+     <list-item v="jorobar"/>
+     <list-item v="juntar"/>
+     <list-item v="juramentar"/>
+     <list-item v="justificar"/>
+     <list-item v="laminar"/>
+     <list-item v="liberar"/>
+     <list-item v="licuar"/>
+     <list-item v="ligar"/>
+     <list-item v="limitar"/>
+     <list-item v="limpiar"/>
+     <list-item v="llenar"/>
+     <list-item v="llevar# a cabo"/>
+     <list-item v="madurar"/>
+     <list-item v="matar"/>
+     <list-item v="mejorar"/>
+     <list-item v="mitigar"/>
+     <list-item v="moderar"/>
+     <list-item v="mudar"/>
+     <list-item v="multiplicar# por cinco"/>
+     <list-item v="multiplicar# por cuatro"/>
+     <list-item v="multiplicar# por diez"/>
+     <list-item v="multiplicar# por dos"/>
+     <list-item v="multiplicar# por nueve"/>
+     <list-item v="multiplicar# por ocho"/>
+     <list-item v="multiplicar# por seis"/>
+     <list-item v="multiplicar# por siete"/>
+     <list-item v="multiplicar# por tres"/>
+     <list-item v="navegar"/>
+     <list-item v="notificar"/>
+     <list-item v="obligar"/>
+     <list-item v="ocasionar"/>
+     <list-item v="octuplicar"/>
+     <list-item v="ordenar"/>
+     <list-item v="originar"/>
+     <list-item v="oscurecer"/>
+     <list-item v="pacificar"/>
+     <list-item v="pelar"/>
+     <list-item v="perfeccionar"/>
+     <list-item v="perpetuar"/>
+     <list-item v="personificar"/>
+     <list-item v="plastificar"/>
+     <list-item v="poner# en valor"/>
+     <list-item v="posibilitar"/>
+     <list-item v="potenciar"/>
+     <list-item v="precisar"/>
+     <list-item v="preocupar"/>
+     <list-item v="preocupar#"/>
+     <list-item v="prestigiar"/>
+     <list-item v="privar"/>
+     <list-item v="prolongar"/>
+     <list-item v="proporcionar"/>
+     <list-item v="prorrogar"/>
+     <list-item v="proseguir"/>
+     <list-item v="proveer"/>
+     <list-item v="quedar# huérfano"/>
+     <list-item v="quemar"/>
+     <list-item v="quintuplicar"/>
+     <list-item v="ramificar"/>
+     <list-item v="reafirmar"/>
+     <list-item v="reagrupar"/>
+     <list-item v="reanimar"/>
+     <list-item v="reavivar"/>
+     <list-item v="reciclar"/>
+     <list-item v="reconciliar"/>
+     <list-item v="rectificar"/>
+     <list-item v="redondear"/>
+     <list-item v="reenfocar"/>
+     <list-item v="reforzar"/>
+     <list-item v="refrescar"/>
+     <list-item v="regular"/>
+     <list-item v="reincorporar"/>
+     <list-item v="reinsertar"/>
+     <list-item v="reinsertar# socialmente"/>
+     <list-item v="relacionar"/>
+     <list-item v="renovar"/>
+     <list-item v="reordenar"/>
+     <list-item v="repatriar"/>
+     <list-item v="resaltar"/>
+     <list-item v="rescatar"/>
+     <list-item v="rescindir"/>
+     <list-item v="restablecer"/>
+     <list-item v="resucitar"/>
+     <list-item v="reunificar"/>
+     <list-item v="revalidar"/>
+     <list-item v="saciar"/>
+     <list-item v="sanar"/>
+     <list-item v="satisfacer"/>
+     <list-item v="secar"/>
+     <list-item v="segregar"/>
+     <list-item v="sentar"/>
+     <list-item v="separar"/>
+     <list-item v="septuplicar"/>
+     <list-item v="sepultar"/>
+     <list-item v="sextuplicar"/>
+     <list-item v="silenciar"/>
+     <list-item v="simplificar"/>
+     <list-item v="sobresaltar"/>
+     <list-item v="sosegar"/>
+     <list-item v="subordinar"/>
+     <list-item v="suministrar"/>
+     <list-item v="suplicar"/>
+     <list-item v="suscitar"/>
+     <list-item v="terrajar"/>
+     <list-item v="triplicar"/>
+     <list-item v="tumbar"/>
+     <list-item v="unificar"/>
+     <list-item v="unir"/>
+     <list-item v="vaciar"/>
+     <list-item v="validar"/>
+     <list-item v="vertebrar"/>
+     <list-item v="vincular"/>
+     <list-item v="volver# conforme"/>
+
+      <list-item v="actualizar"/>
+      <list-item v="agonizar"/>
+      <list-item v="agudizar"/>
+      <list-item v="alcoholizar"/>
+      <list-item v="alunizar"/>
+      <list-item v="amerizar"/>
+      <list-item v="amortizar"/>
+      <list-item v="analizar"/>
+      <list-item v="armonizar"/>
+      <list-item v="aromatizar"/>
+      <list-item v="atemorizar"/>
+      <list-item v="aterrizar"/>
+      <list-item v="aterrorizar"/>
+      <list-item v="atizar"/>
+      <list-item v="automatizar"/>
+      <list-item v="autorizar"/>
+      <list-item v="bautizar"/>
+      <list-item v="canalizar"/>
+      <list-item v="canonizar"/>
+      <list-item v="caracterizar"/>
+      <list-item v="caricaturizar"/>
+      <list-item v="catequizar"/>
+      <list-item v="cauterizar"/>
+      <list-item v="centralizar"/>
+      <list-item v="cicatrizar"/>
+      <list-item v="civilizar"/>
+      <list-item v="colonizar"/>
+      <list-item v="comercializar"/>
+      <list-item v="cotizar"/>
+      <list-item v="criminalizar"/>
+      <list-item v="cristalizar"/>
+      <list-item v="democratizar"/>
+      <list-item v="descentralizar"/>
+      <list-item v="desestabilizar"/>
+      <list-item v="deslizar"/>
+      <list-item v="desorganizar"/>
+      <list-item v="despolitizar"/>
+      <list-item v="desregularizar"/>
+      <list-item v="dializar"/>
+      <list-item v="digitalizar"/>
+      <list-item v="electrizar"/>
+      <list-item v="electrolizar"/>
+      <list-item v="empanizar"/>
+      <list-item v="enfatizar"/>
+      <list-item v="enraizar"/>
+      <list-item v="erizar"/>
+      <list-item v="escandalizar"/>
+      <list-item v="especializar"/>
+      <list-item v="estabilizar"/>
+      <list-item v="esterilizar"/>
+      <list-item v="estilizar"/>
+      <list-item v="estupidizar"/>
+      <list-item v="evangelizar"/>
+      <list-item v="exorcizar"/>
+      <list-item v="exteriorizar"/>
+      <list-item v="fertilizar"/>
+      <list-item v="finalizar"/>
+      <list-item v="formalizar"/>
+      <list-item v="fraternizar"/>
+      <list-item v="galvanizar"/>
+      <list-item v="garantizar"/>
+      <list-item v="gargarizar"/>
+      <list-item v="generalizar"/>
+      <list-item v="granizar"/>
+      <list-item v="hechizar"/>
+      <list-item v="helenizar"/>
+      <list-item v="hipnotizar"/>
+      <list-item v="horrorizar"/>
+      <list-item v="hospitalizar"/>
+      <list-item v="humanizar"/>
+      <list-item v="idealizar"/>
+      <list-item v="idiotizar"/>
+      <list-item v="ilegalizar"/>
+      <list-item v="indemnizar"/>
+      <list-item v="industrializar"/>
+      <list-item v="inestabilizar"/>
+      <list-item v="inmortalizar"/>
+      <list-item v="inmunizar"/>
+      <list-item v="insoslayabilizar"/>
+      <list-item v="institucionalizar"/>
+      <list-item v="interiorizar"/>
+      <list-item v="internacionalizar"/>
+      <list-item v="inutilizar"/>
+      <list-item v="ionizar"/>
+      <list-item v="laicizar"/>
+      <list-item v="legalizar"/>
+      <list-item v="liberalizar"/>
+      <list-item v="martirizar"/>
+      <list-item v="materializar"/>
+      <list-item v="matizar"/>
+      <list-item v="maximizar"/>
+      <list-item v="memorizar"/>
+      <list-item v="minimizar"/>
+      <list-item v="minorizar"/>
+      <list-item v="modernizar"/>
+      <list-item v="movilizar"/>
+      <list-item v="nacionalizar"/>
+      <list-item v="narcotizar"/>
+      <list-item v="naturalizar"/>
+      <list-item v="neutralizar"/>
+      <list-item v="normalizar"/>
+      <list-item v="estandarizar"/>
+      <list-item v="obstaculizar"/>
+      <list-item v="oficializar"/>
+      <list-item v="organizar"/>
+      <list-item v="paralizar"/>
+      <list-item v="pasteurizar"/>
+      <list-item v="penalizar"/>
+      <list-item v="periodizar"/>
+      <list-item v="personalizar"/>
+      <list-item v="polarizar"/>
+      <list-item v="polemizar"/>
+      <list-item v="politizar"/>
+      <list-item v="popularizar"/>
+      <list-item v="preconizar"/>
+      <list-item v="privatizar"/>
+      <list-item v="profetizar"/>
+      <list-item v="profundizar"/>
+      <list-item v="protagonizar"/>
+      <list-item v="puntualizar"/>
+      <list-item v="racionalizar"/>
+      <list-item v="radicalizar"/>
+      <list-item v="regularizar"/>
+      <list-item v="rehospitalizar"/>
+      <list-item v="rentabilizar"/>
+      <list-item v="reorganizar"/>
+      <list-item v="responsabilizar"/>
+      <list-item v="ridiculizar"/>
+      <list-item v="rivalizar"/>
+      <list-item v="rizar"/>
+      <list-item v="romanizar"/>
+      <list-item v="sacralizar"/>
+      <list-item v="secularizar"/>
+      <list-item v="sensibilizar"/>
+      <list-item v="señalizar"/>
+      <list-item v="simbolizar"/>
+      <list-item v="simpatizar"/>
+      <list-item v="sincronizar"/>
+      <list-item v="sintetizar"/>
+      <list-item v="sintonizar"/>
+      <list-item v="suavizar"/>
+      <list-item v="tapizar"/>
+      <list-item v="tranquilizar"/>
+      <list-item v="trivializar"/>
+      <list-item v="urbanizar"/>
+      <list-item v="utilizar"/>
+      <list-item v="verbalizar"/>
+      <list-item v="visualizar"/>
+      <list-item v="vulcanizar"/>
+      <list-item v="inicializar"/>
+      <list-item v="reinicializar"/>
+      <list-item v="solidarizar"/>
+      <list-item v="independizar"/>
     </def-list>
 
   </section-def-lists>
@@ -3895,10 +4604,271 @@ saludarse > saluti unu la alian
   </def-macro>
 
 
-    <def-macro n="control_ref" npar="2">
+    <!-- analiza el pronombre y el verbo y actualiza variables que indican cómo tiene que generarse la salida y, eventualmente, el lema del verbo -->
+    <!-- parametro 1 = pron, parametro 2 = pers verb, parametro 3 = lema verb -->
+    <!-- variables de salida:
+	treu_ref: indica si hay que sacar el pronombre (valor = "") o no (valor = "sense")
+	vimpers: indica si hay que el verbo es personal (valor = "pers") o impersonal (valor = "impers"); se utilizará posteriormente para la generación (o no) del pronombre sujeto
+        vigxi1: indica si el verbo tiene el sufijo iĝi (valor = "iĝi") o no (valor = "ne_iĝi"); se utilizará posteriormente para la generación (o no) del acusativo
+        vigxi2: en caso que vigxi1 = "iĝi", contiene código para añadir a <lu>
+    -->
+    <def-macro n="control_pron" npar="3">
+        <let><var n="treu_ref"/><lit v=""/></let>
+        <let><var n="vimpers"/><lit-tag v="pers"/></let>
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
+<!-- es podria fer inicial que en el cas de "había PP" (p1sg, p3sg) si el verb és de tipus pronominal, mirem el pron per desambiguar -->
+
+        <call-macro n="correccion_lo"><with-param pos="1"/></call-macro>
+        <call-macro n="control_ref"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <call-macro n="control_pron_3p"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <call-macro n="control_igxi"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
+    </def-macro>
+
+    <def-macro n="control_ref" npar="3">
       <!-- canvia el lema dels verbs ref i elimina el prn si cal-->
-      <let><var n="treu_ref"/><lit v=""/></let>
-      <let><var n="vimpers"/><lit-tag v="pers"/></let>
+      <!-- par1 = pron, par2 = pers verb, par3 = lema verb -->
+<let><var n="debug2"/><lit-tag v="0"/></let>
+      <choose>
+        <when>
+          <test>
+            <or>
+              <and>
+                <equal><clip pos="1" side="sl" part="tipus_prn_ref"/><lit-tag v="ref"/></equal>
+                <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+              </and>
+              <and>
+                <equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p2"/></equal>
+                <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p2"/></equal>
+                <equal><clip pos="1" side="sl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></equal>
+              </and>
+              <and>
+                <equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p1"/></equal>
+                <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p1"/></equal>
+                <equal><clip pos="1" side="sl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></equal>
+              </and>
+            </or>
+          </test>
+<let><var n="debug2"/><lit-tag v="1"/></let>
+          <choose>
+            <!-- canvia aquests verbs-->
+            <when>
+              <test><in caseless="yes"><clip pos="3" side="sl" part="lem"/><list n="verbs_ref"/></in></test>
+              <choose>
+<!-- for -->
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="comer"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="formanĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="beber"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="fortrinki"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="ir"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="foriri"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="llevar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="forporti"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+
+<!-- ek -->
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="poner# en servicio"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="ekfunkcii"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="producir# dolor"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="ekdolori"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="enterar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="enterar#"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="ekscii"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+
+<!-- aliaj -->
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="volver"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="convertir"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="tornar"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="fariĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="aprovechar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="profiti"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="traer"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="kunporti"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="tratar#"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="temi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                  <let><var n="vimpers"/><lit-tag v="impers"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="producir"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="realizar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="celebrar"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="okazi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
+                  <let><var n="vimpers"/><lit-tag v="impers"/></let> <!-- para que no se genere pronombre sujeto -->
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="referir"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="rilati"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="parecer"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="simili"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="encargar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="okupiĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="fusionar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="kunfandiĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="pasar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="pasigi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="acordar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="acordar# de"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="rememori"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="adherir"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="aliĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="criar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="kreski"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="situar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="ubicar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="localizar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="encontrar"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="situi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="encontrar# presente"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="troviĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="negar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="rifuzi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="reunir"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="renkontiĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="dar# cuenta"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="rimarki"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="hospedar"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="gasti"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="incorporar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="incorporar#"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="aliĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test>
+                    <or>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="licenciar"/></equal>
+                       <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="graduar"/></equal>
+                    </or>
+                  </test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="diplomiĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="matricular"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="enmatrikuliĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+                <when>
+                  <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="desprender"/></equal></test>
+                  <let><clip pos="3" side="tl" part="lem"/><lit v="seniĝi"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+                </when>
+              </choose>
+              <let><var n="treu_ref"/><lit v="treu"/></let>
+            </when>
+          <otherwise> <!--se cambia la traducción sin quitar el pronombre reflexivo -->
+<let><var n="debug2"/><lit-tag v="2"/></let>
+<!--
+              <choose>
+              </choose>
+-->
+              <let><var n="treu_ref"/><lit v=""/></let>
+            </otherwise>
+          </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+    <!-- en el caso que la persona y nombre del pronombre y del verbo coincidan y el verbo esté en la lista verbs_igxi, pone las variable vigxi1 y vigxi2 con valores para generar verbos con el sufijo igxi -->
+    <def-macro n="control_igxi" npar="3">
       <choose>
         <when>
           <test>
@@ -3920,225 +4890,31 @@ saludarse > saluti unu la alian
             </or>
           </test>
           <choose>
-            <!-- canvia aquests verbs-->
             <when>
-              <test><in caseless="yes"><clip pos="2" side="sl" part="lem"/><list n="verbs_ref"/></in></test>
-              <choose>
-<!-- for -->
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="comer"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="formanĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="beber"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="fortrinki"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="ir"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="foriri"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="llevar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="forporti"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-
-<!-- ek -->
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="poner# en servicio"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="ekfunkcii"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="producir# dolor"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="ekdolori"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="enterar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="enterar#"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="ekscii"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-
-<!-- aliaj -->
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="volver"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="convertir"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="tornar"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="fariĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="aprovechar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="profiti"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="traer"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="kunporti"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="tratar#"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="temi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                  <let><var n="vimpers"/><lit-tag v="impers"/></let>
-                </when>
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="producir"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="realizar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="celebrar"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="okazi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
-                  <let><var n="vimpers"/><lit-tag v="impers"/></let> <!-- para que no se genere pronombre sujeto -->
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="referir"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="rilati"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="parecer"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="simili"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="encargar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="okupiĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="pasar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="pasigi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="acordar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="acordar# de"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="rememori"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="adherir"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="aliĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="criar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="kreski"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="situar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="ubicar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="localizar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="encontrar"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="situi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="encontrar# presente"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="troviĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="negar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="rifuzi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="reunir"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="renkontiĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="dar# cuenta"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="rimarki"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="hospedar"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="gasti"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="incorporar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="incorporar#"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="aliĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
-                </when>
-                <when>
-                  <test>
-                    <or>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="licenciar"/></equal>
-                       <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="graduar"/></equal>
-                    </or>
-                  </test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="diplomiĝi"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
-                </when>
-                <when>
-                  <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="matricular"/></equal></test>
-                  <let><clip pos="2" side="tl" part="lem"/><lit v="profiti"/></let>
-                  <let><clip pos="2" side="tl" part="a_verb"/><lit-tag v="enmatrikuliĝi"/></let>
-                </when>
-              </choose>
+              <test><in caseless="yes"><clip pos="3" side="sl" part="lem"/><list n="verbs_igxi"/></in></test>
+              <let><var n="vigxi1"/><lit-tag v="iĝi"/></let>
+              <let><var n="vigxi2"/><lit-tag v="iĝi"/></let>
               <let><var n="treu_ref"/><lit v="treu"/></let>
             </when>
-          <otherwise> <!--se cambia la traducción sin quitar el pronombre reflexivo -->
-<!--
-              <choose>
-              </choose>
--->
-              <let><var n="treu_ref"/><lit v=""/></let>
-            </otherwise>
           </choose>
         </when>
       </choose>
     </def-macro>
 
-    <def-macro n="control_pron" npar="2">
+    <!-- cambia la raíz en el caso que pronombre sea "lo, la, los, las" y el verbo perteneza a la lista verbs_pron -->
+    <def-macro n="control_pron_3p" npar="2">
+<let><var n="debug3"/><lit-tag v="0"/></let>
       <choose>
         <when>
           <test>
             <and>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="prpers"/></equal> <!-- lo, la, los, las -->
+              <equal><clip pos="1" side="sl" part="a_prn"/><lit-tag v="prn.pro"/></equal>
+              <equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p3"/></equal>
               <in caseless="yes"><clip pos="2" side="sl" part="lem"/><list n="verbs_pron"/></in>
-              <or>
-                <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="lo"/></equal>
-                <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="la"/></equal>
-                <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="los"/></equal>
-                <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="las"/></equal>
-              </or>
             </and>
           </test>
+<let><var n="debug3"/><lit-tag v="1"/></let>
           <choose>
             <when>
               <test><equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="pasar"/></equal></test>
@@ -4856,12 +5632,18 @@ saludarse > saluti unu la alian
                       <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="vimpers"/></tag>
+	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV01"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
+<tag><var n="debug3"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
+                      <var n="vigxi2"/>
                       <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
@@ -4887,12 +5669,17 @@ saludarse > saluti unu la alian
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
 	              <tag><lit-tag v="gerpast"/></tag>
+	              <tag><var n="vimpers"/></tag>
+	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV02"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
+                      <var n="vigxi2"/>
                       <lit-tag v="gerpast"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
@@ -4920,12 +5707,17 @@ saludarse > saluti unu la alian
                       <tag><lit-tag v="prs"/></tag>
                       <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="vimpers"/></tag>
+	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV03"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
+                      <var n="vigxi2"/>
                       <lit-tag v="3"/>
                       <clip pos="2" side="tl" part="lemq"/>
                     </lu>
@@ -5056,8 +5848,12 @@ saludarse > saluti unu la alian
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="vimpers"/></tag>
+	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV04"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
 		      <lit v="esti"/>
@@ -5068,6 +5864,7 @@ saludarse > saluti unu la alian
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
                       <clip pos="2" side="tl" part="a_verb"/>
+                      <var n="vigxi2"/>
                       <clip pos="2" side="tl" part="temps"/>
                       <clip pos="1" side="tl" part="nbr"/>
                     </lu>
@@ -5125,8 +5922,11 @@ saludarse > saluti unu la alian
                       <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV05"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
 		    <lu>
                       <lit v="ek"/>
@@ -5160,8 +5960,11 @@ saludarse > saluti unu la alian
                       <tag><lit-tag v="SV"/></tag>
                       <tag><clip pos="2" side="tl" part="a_verb"/></tag>
 	              <tag><lit-tag v="gerpast"/></tag>
+	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV06"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
 		    <lu>
                       <lit v="ek"/>
@@ -5197,8 +6000,11 @@ saludarse > saluti unu la alian
                       <tag><lit-tag v="prs"/></tag>
                       <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV07"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
 		    <lu>
                       <lit v="ek"/>
@@ -5337,8 +6143,11 @@ saludarse > saluti unu la alian
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
 <tag><lit-tag v="SV08"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
 		      <lit v="esti"/>
@@ -5413,6 +6222,8 @@ saludarse > saluti unu la alian
                       <tag><var n="tipus_verb"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV09"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
@@ -5446,6 +6257,8 @@ saludarse > saluti unu la alian
                       <tag><var n="tipus_verb"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV10"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
@@ -5481,6 +6294,8 @@ saludarse > saluti unu la alian
                       <tag><var n="tipus_verb"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV11"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
@@ -5619,6 +6434,8 @@ saludarse > saluti unu la alian
                       <tag><var n="tipus_verb"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV12"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
                     </tags>
                     <lu>
 		      <lit v="esti"/>
@@ -18574,6 +19391,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <var n="caseFirstWord"/>
           <lit v="aa"/>
 	  </let>
+<let><var n="debug1"/><lit-tag v="01"/></let>
         <call-macro n="haber__pp">
           <with-param pos="1"/>
           <with-param pos="3"/>
@@ -18806,6 +19624,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
           <var n="caseFirstWord"/>
           <lit v="aa"/>
 	  </let>
+<let><var n="debug1"/><lit-tag v="02"/></let>
         <call-macro n="haber__pp">
           <with-param pos="1"/>
           <with-param pos="4"/>
@@ -18928,6 +19747,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
         <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
         <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+<let><var n="debug1"/><lit-tag v="03"/></let>
         <call-macro n="haber__pp_ek">
           <with-param pos="1"/>
           <with-param pos="4"/>
@@ -19053,6 +19873,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
         <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
         <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+<let><var n="debug1"/><lit-tag v="04"/></let>
         <call-macro n="haber__pp_ek">
           <with-param pos="2"/>
           <with-param pos="5"/>
@@ -19178,6 +19999,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
         <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
         <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+<let><var n="debug1"/><lit-tag v="05"/></let>
         <call-macro n="haber__pp_ek">
           <with-param pos="1"/>
           <with-param pos="4"/>
@@ -21285,6 +22107,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
+<let><var n="debug1"/><lit-tag v="06"/></let>
         <call-macro n="haber__pp">
           <with-param pos="2"/>
           <with-param pos="3"/>
@@ -21317,6 +22140,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+<let><var n="debug1"/><lit-tag v="07"/></let>
         <call-macro n="haber__pp">
           <with-param pos="2"/>
           <with-param pos="3"/>
@@ -21391,6 +22215,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
+<let><var n="debug1"/><lit-tag v="08"/></let>
         <call-macro n="haber__pp">
           <with-param pos="3"/>
           <with-param pos="4"/>
@@ -21441,6 +22266,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
+<let><var n="debug1"/><lit-tag v="09"/></let>
         <call-macro n="haber__pp">
           <with-param pos="3"/>
           <with-param pos="4"/>
@@ -21789,6 +22615,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	  <with-param pos="1"/>
 	</call-macro>
         <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+<let><var n="debug1"/><lit-tag v="10"/></let>
         <call-macro n="haber__pp_igxi">
           <with-param pos="2"/>
           <with-param pos="3"/>
@@ -21919,9 +22746,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </pattern>
       <action>    	
 	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
-        <call-macro n="correccion_lo"><with-param pos="1"/></call-macro>
-        <call-macro n="control_ref"><with-param pos="1"/><with-param pos="2"/></call-macro>
-        <call-macro n="control_pron"><with-param pos="1"/><with-param pos="2"/></call-macro>
+        <call-macro n="control_pron"><with-param pos="1"/><with-param pos="2"/><with-param pos="2"/></call-macro>
         <call-macro n="tipus_verbs"><with-param pos="2"/></call-macro>
         <call-macro n="set_temps"><with-param pos="2"/></call-macro>
 
@@ -21934,6 +22759,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <tag><clip pos="2" side="tl" part="pers"/></tag>
               <tag><clip pos="2" side="tl" part="nbr"/></tag>
 	      <tag><var n="vimpers"/></tag>
+	      <tag><var n="vigxi1"/></tag>
               <tag><var n="tipus_verb"/></tag>
               <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV66"/></tag>
@@ -21941,6 +22767,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_verb"/>
+              <var n="vigxi2"/>
               <clip pos="2" side="tl" part="sep"/>
               <lit-tag v="3"/>
               <clip pos="2" side="tl" part="lemq"/>
@@ -21981,128 +22808,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </choose>
 
         <let><var n="vimpers"/><lit-tag v="pers"/></let>
-        <let><var n="caseFirstWord"/><lit v="aa"/></let>
-      </action>
-    </rule>
-
-
-    <rule comment="REGLA: PRON VERB ( lo como -> manĝas lin ) ">
-      <pattern>
-	<pattern-item n="pro"/>
-	<pattern-item n="verbcj"/>
-      </pattern>
-      <action>    	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="1"/>
-        </call-macro>
-	<call-macro n="nombro1">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="default_nombro">
-	</call-macro>
-	<call-macro n="nom_cas">
-	  <with-param pos="1"/>
-	</call-macro>
-
-        <out>
-          <chunk namefrom="nverb" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SV"/></tag>
-              <tag><clip pos="2" side="tl" part="a_verb"/></tag>
-              <tag><clip pos="2" side="tl" part="temps"/></tag>
-              <tag><clip pos="2" side="tl" part="pers"/></tag>
-              <tag><clip pos="2" side="tl" part="nbr"/></tag>
-              <tag><var n="tipus_verb"/></tag>
-<tag><lit-tag v="SV150"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_verb"/>
-              <clip pos="2" side="tl" part="sep"/>
-              <lit-tag v="3"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-          <b pos="1"/>
-        </out>
-
-<!--
-        <choose>
-          <when>
-            <test>
-              <or>
-                <equal><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbser"/></equal>
-                <equal><clip pos="2" side="tl" part="a_verb"/><lit-tag v="vbntr"/></equal>
-              </or>
-            </test>
-            <choose>
-              <when>
-                <test><not><equal><clip pos="1" side="sl" part="tipus_prn"/><lit-tag v="ref"/></equal></not></test>
-                <let><clip pos="1" side="tl" part="tipus_prn"/><lit-tag v="subj"/></let>
-              </when>
-            </choose>
-            <out>
-		  <chunk name="pro_indirecte">
-		    <tags>
-		      <tag><lit-tag v="SP"/></tag>
-		      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
-		      <tag><clip pos="1" side="sl" part="pers"/></tag>
-		      <tag><clip pos="1" side="tl" part="gen"/></tag>
-		      <tag><clip pos="1" side="sl" part="nbr"/></tag>
-		    </tags>
-		    <lu>
-		      <lit v="al"/>
-		      <lit-tag v="pr"/>
-		    </lu>
-		    <b pos="1"/>
-		    <lu>
-		      <lit v="prpers"/>
-		      <lit-tag v="prn"/>
-		      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
-		      <clip pos="1" side="sl" part="pers"/>
-		      <clip pos="1" side="tl" part="gen"/>
-		      <clip pos="1" side="sl" part="nbr"/>
-		    </lu>
-		  </chunk>
-            </out>
-          </when>
-
-         <otherwise>
--->
-        <out>
-	  <chunk name="pro_obj">
-	    <tags>
-	      <tag><lit-tag v="SN"/></tag>
-	      <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
-	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
-	      <tag><clip pos="1" side="tl" part="pers"/></tag>
-	      <tag><clip pos="1" side="tl" part="gen"/></tag>
-	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
-	    </tags>
-	    <lu>
-	      <clip pos="1" side="tl" part="lem"/>
-	      <clip pos="1" side="tl" part="a_prn"/>
-	      <clip pos="1" side="tl" part="tipus_prn_tn"/>
-	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
-	      <clip pos="1" side="tl" part="pers"/>
-	      <clip pos="1" side="tl" part="gen"/>
-	      <clip pos="1" side="tl" part="nbr"/>
-	    </lu>
-	  </chunk>
-        </out>
-<!--
-         </otherwise>
-       </choose>
--->
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
         <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
@@ -22115,19 +22822,18 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	<pattern-item n="pp"/>
       </pattern>
       <action>
-        <call-macro n="tipus_verbs">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="1"/>
-        </call-macro>
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="haber__pp">
-          <with-param pos="2"/>
-          <with-param pos="3"/>
-        </call-macro>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
+        <call-macro n="control_pron"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
+<let><var n="debug1"/><lit-tag v="11"/></let>
+        <call-macro n="haber__pp"><with-param pos="2"/><with-param pos="3"/></call-macro>
+
+        <choose>
+          <when>
+            <test><equal><var n="treu_ref"/><lit v="treu"/></equal></test>
+            <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
+          </when>
+          <otherwise>
         <out>
           <b pos="2"/>
 	  <chunk name="pro_obj">
@@ -22150,10 +22856,12 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	    </lu>
 	  </chunk>
         </out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+          </otherwise>
+        </choose>
+        <let><var n="vimpers"/><lit-tag v="pers"/></let>
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
+	<let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -23260,6 +23968,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+<let><var n="debug1"/><lit-tag v="12"/></let>
         <call-macro n="haber__pp">
           <with-param pos="1"/>
           <with-param pos="2"/>
@@ -23286,6 +23995,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
+<let><var n="debug1"/><lit-tag v="13"/></let>
         <call-macro n="haber__pp">
           <with-param pos="1"/>
           <with-param pos="2"/>
