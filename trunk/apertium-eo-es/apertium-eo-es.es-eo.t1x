@@ -202,6 +202,7 @@
 
     <def-cat n="pro">
       <cat-item tags="prn.pro.*"/>
+      <cat-item tags="prn.tn.ref.*"/>
       <cat-item lemma="lo" tags="prn.tn.*"/>
       <cat-item lemma="sí" tags="prn.tn.*"/>
       <cat-item lemma="sí mismo" tags="prn.tn.*"/>
@@ -1031,8 +1032,8 @@
       <cat-item lemma="rehacer" tags="vblex.*"/>
       <cat-item lemma="reconvertir" tags="vblex.*"/>
       <cat-item lemma="reencontrar" tags="vblex.*"/>
-      <cat-item lemma="iniciar" tags="vblex*"/>
-      <cat-item lemma="reiniciar" tags="vblex*"/>
+      <cat-item lemma="iniciar" tags="vblex.*"/>
+      <cat-item lemma="reiniciar" tags="vblex.*"/>
       <cat-item lemma="terminar" tags="vblex.*"/>
       <cat-item lemma="acabar" tags="vblex.*"/>
       <cat-item lemma="trasladar" tags="vblex.*"/>
@@ -3444,7 +3445,6 @@
 
   </section-def-attrs>
   <section-def-vars>
-    <def-var n="treu_ref"/>
     <def-var n="case"/>
     <def-var n="changecase"/>
     <def-var n="lemapos"/>
@@ -3466,6 +3466,8 @@
     <def-var n="auxiliar"/>
     <def-var n="tipus_verb"/>
     <def-var n="tipus_verb2"/>
+    <def-var n="forigi_ref"/>
+    <def-var n="aldoni_oni"/>
     <def-var n="vimpers"/>
     <def-var n="vigxi1"/>
     <def-var n="vigxi2"/>
@@ -3670,7 +3672,6 @@
       <list-item v="desprender"/>
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
-      <list-item v="aprovechar"/>
       <list-item v="divorciar"/>
       <list-item v="subir"/>
       <list-item v="bajar"/>
@@ -3700,7 +3701,6 @@ saludarse > saluti unu la alian
     </def-list>
 
     <def-list n="verbs_oni">
-      <list-item v="formar"/>
       <list-item v="usar"/>
       <list-item v="decir"/>
       <list-item v="mencionar"/>
@@ -3755,7 +3755,9 @@ saludarse > saluti unu la alian
       <list-item v="modificar"/>
       <list-item v="llegar# a"/>
       <list-item v="enviar"/>
+      <list-item v="reenviar"/>
       <list-item v="transmitir"/>
+      <list-item v="retransmitir"/>
       <list-item v="pronunciar"/>
       <list-item v="escribir"/>
       <list-item v="prever"/>
@@ -3767,7 +3769,7 @@ saludarse > saluti unu la alian
       <list-item v="interpretar"/>
       <list-item v="promover"/>
       <list-item v="promocionar"/>
-      <list-item v="aprovechar"/>
+      <list-item v="aprovechar"/> <!-- pero: él se aprocha = li profitas -->
       <list-item v="trabajar"/>
       <list-item v="diferenciar"/>
       <list-item v="lavar# en seco"/>
@@ -3783,12 +3785,15 @@ saludarse > saluti unu la alian
       <list-item v="entender"/>
       <list-item v="comprender"/>
       <list-item v="recibir"/>
+      <list-item v="traducir"/>
+      <list-item v="interpretar"/>
     </def-list>
 
     <def-list n="verbs_igxi">
       <list-item v="crear"/> 
       <list-item v="dividir"/>
       <list-item v="ocupar"/>
+      <list-item v="formar"/>
       <list-item v="deformar"/>
       <list-item v="distorsionar"/>
       <list-item v="originar"/>
@@ -3800,7 +3805,6 @@ saludarse > saluti unu la alian
       <list-item v="convertir"/>
       <list-item v="reflejar"/>
       <list-item v="hallar"/>
-      <list-item v="encontrar# presente"/>
       <list-item v="acercar"/>
       <list-item v="asentar"/>
       <list-item v="concentrar"/>
@@ -3852,7 +3856,6 @@ saludarse > saluti unu la alian
       <list-item v="tumbar"/>
       <list-item v="aficionar"/>
       <list-item v="trasladar"/>
-      <list-item v="formar"/>
       <list-item v="orientar"/>
       <list-item v="desorientar"/>
       <list-item v="expandir"/>
@@ -4102,7 +4105,6 @@ saludarse > saluti unu la alian
      <list-item v="fornir"/>
      <list-item v="fortalecer"/>
      <list-item v="fortificar"/>
-     <list-item v="forzar"/>
      <list-item v="fragmentar"/>
      <list-item v="gangrenar"/>
      <list-item v="gasificar"/>
@@ -4390,7 +4392,6 @@ saludarse > saluti unu la alian
       <list-item v="tranquilizar"/>
       <list-item v="trivializar"/>
       <list-item v="urbanizar"/>
-      <list-item v="utilizar"/>
       <list-item v="verbalizar"/>
       <list-item v="visualizar"/>
       <list-item v="vulcanizar"/>
@@ -4607,22 +4608,29 @@ saludarse > saluti unu la alian
     <!-- analiza el pronombre y el verbo y actualiza variables que indican cómo tiene que generarse la salida y, eventualmente, el lema del verbo -->
     <!-- parametro 1 = pron, parametro 2 = pers verb, parametro 3 = lema verb -->
     <!-- variables de salida:
-	treu_ref: indica si hay que sacar el pronombre (valor = "") o no (valor = "sense")
+	forigi_ref: indica si hay que sacar el pronombre (valor = "") o no (valor = "forigi")
+	aldoni_oni: indica si hay que añadir el pronombre impersonal "oni" (valor = "aldoni") o no (valor = "ne_aldoni")
 	vimpers: indica si hay que el verbo es personal (valor = "pers") o impersonal (valor = "impers"); se utilizará posteriormente para la generación (o no) del pronombre sujeto
         vigxi1: indica si el verbo tiene el sufijo iĝi (valor = "iĝi") o no (valor = "ne_iĝi"); se utilizará posteriormente para la generación (o no) del acusativo
         vigxi2: en caso que vigxi1 = "iĝi", contiene código para añadir a <lu>
     -->
     <def-macro n="control_pron" npar="3">
-        <let><var n="treu_ref"/><lit v=""/></let>
+        <let><var n="forigi_ref"/><lit v=""/></let>
+        <let><var n="aldoni_oni"/><lit v="ne_aldoni"/></let>
         <let><var n="vimpers"/><lit-tag v="pers"/></let>
         <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
         <let><var n="vigxi2"/><lit v=""/></let>
 <!-- es podria fer inicial que en el cas de "había PP" (p1sg, p3sg) si el verb és de tipus pronominal, mirem el pron per desambiguar -->
+<let><var n="debug1"/><lit-tag v="-1"/></let>
+<let><var n="debug2"/><lit-tag v="-1"/></let>
+<let><var n="debug3"/><lit-tag v="-1"/></let>
+<let><var n="debug4"/><lit-tag v="-1"/></let>
 
         <call-macro n="correccion_lo"><with-param pos="1"/></call-macro>
         <call-macro n="control_ref"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
         <call-macro n="control_pron_3p"><with-param pos="1"/><with-param pos="2"/></call-macro>
         <call-macro n="control_igxi"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <call-macro n="control_oni"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
     </def-macro>
 
     <def-macro n="control_ref" npar="3">
@@ -4839,7 +4847,7 @@ saludarse > saluti unu la alian
                     </or>
                   </test>
                   <let><clip pos="3" side="tl" part="lem"/><lit v="diplomiĝi"/></let>
-                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+                  <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
                 </when>
                 <when>
                   <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="matricular"/></equal></test>
@@ -4852,7 +4860,7 @@ saludarse > saluti unu la alian
                   <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
                 </when>
               </choose>
-              <let><var n="treu_ref"/><lit v="treu"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
           <otherwise> <!--se cambia la traducción sin quitar el pronombre reflexivo -->
 <let><var n="debug2"/><lit-tag v="2"/></let>
@@ -4860,7 +4868,7 @@ saludarse > saluti unu la alian
               <choose>
               </choose>
 -->
-              <let><var n="treu_ref"/><lit v=""/></let>
+              <let><var n="forigi_ref"/><lit v=""/></let>
             </otherwise>
           </choose>
         </when>
@@ -4894,9 +4902,29 @@ saludarse > saluti unu la alian
               <test><in caseless="yes"><clip pos="3" side="sl" part="lem"/><list n="verbs_igxi"/></in></test>
               <let><var n="vigxi1"/><lit-tag v="iĝi"/></let>
               <let><var n="vigxi2"/><lit-tag v="iĝi"/></let>
-              <let><var n="treu_ref"/><lit v="treu"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
           </choose>
+        </when>
+      </choose>
+    </def-macro>
+
+    <def-macro n="control_oni" npar="3">
+      <!-- indica que cal afegir oni (i eliminar el prn) si cal-->
+      <!-- par1 = pron, par2 = pers verb, par3 = lema verb -->
+<let><var n="debug4"/><lit-tag v="0"/></let>
+      <choose>
+        <when>
+          <test>
+            <and>
+              <equal><clip pos="1" side="sl" part="tipus_prn_ref"/><lit-tag v="ref"/></equal>
+              <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+              <in caseless="yes"><clip pos="3" side="sl" part="lem"/><list n="verbs_oni"/></in>
+            </and>
+          </test>
+          <let><var n="aldoni_oni"/><lit v="aldoni"/></let>
+          <let><var n="forigi_ref"/><lit v="forigi"/></let>
+<let><var n="debug4"/><lit-tag v="1"/></let>
         </when>
       </choose>
     </def-macro>
@@ -5185,10 +5213,7 @@ saludarse > saluti unu la alian
       	   </in>
 	</or>
     	</test>
-      	<let>
-		<var n="changecase"/>
-		<lit-tag v="sense"/>
-      	</let>
+      	<let><var n="changecase"/><lit-tag v="sense"/></let>
   	</when>
 
   	<when>
@@ -5639,6 +5664,7 @@ saludarse > saluti unu la alian
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
 <tag><var n="debug3"/></tag>
+<tag><var n="debug4"/></tag>
                     </tags>
                     <lu>
                       <clip pos="2" side="tl" part="lemh"/>
@@ -21815,6 +21841,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
     <!-- reglas de pasivas reflejas -->
 
+<!--
     <rule comment="REGLA: REF + VERB tipo pasiva refleja a impersonal con oni (se usa -> oni uzas)">
       <pattern>
 	<pattern-item n="prnref"/>
@@ -21868,6 +21895,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </let>
       </action>
     </rule>
+-->
 
     <rule comment="REGLA: REF + VERB tipo pasiva refleja reflexivo (se observa a sí mismo -> observas sin)">
       <pattern>
@@ -22070,6 +22098,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </action>
     </rule>
 
+<!--
     <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja a impersonal con oni (se ha usado -> oni uzis)">
       <pattern>
 	<pattern-item n="prnref"/>
@@ -22114,6 +22143,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         </call-macro>
       </action>
     </rule>
+-->
 
 
     <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja reflexivo (se ha observado a sí mismo -> uzis sin)">
@@ -22547,6 +22577,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
    <!-- pasiva refleja a iĝi -->
 
+<!--
     <rule comment="REGLA: REF + VERB tipo pasiva refleja a impersonal con iĝi (se usa -> uziĝas)">
       <pattern>
 	<pattern-item n="prnref"/>
@@ -22626,6 +22657,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	</let>
       </action>
     </rule>
+-->
 
     <rule comment="REGLA: REF + VERBestar + GER tipo pasiva refleja con iĝi (se está usando > uziĝas, EOes)">
       <pattern>
@@ -22750,6 +22782,26 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <call-macro n="tipus_verbs"><with-param pos="2"/></call-macro>
         <call-macro n="set_temps"><with-param pos="2"/></call-macro>
 
+        <!-- ni certiĝas, ĉu necesas aldoni "oni" -->
+        <choose>
+          <when>
+            <test><equal><var n="aldoni_oni"/><lit v="aldoni"/></equal></test>
+            <out>
+	      <chunk name="prpers" case="caseFirstWord">
+	        <tags>
+	          <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+	        </tags>
+                <lu>
+                  <lit v="oni"/>
+                  <lit-tag v="prn.tn.sg.nom"/>
+                </lu>
+	      </chunk>
+              <b/>
+            </out>
+	    <let><var n="caseFirstWord"/><lit v="aa"/></let>
+          </when>
+        </choose>
+
         <out>
           <chunk namefrom="nverb" case="caseFirstWord">
             <tags>
@@ -22763,6 +22815,10 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <tag><var n="tipus_verb"/></tag>
               <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV66"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
+<tag><var n="debug3"/></tag>
+<tag><var n="debug4"/></tag>
             </tags>
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
@@ -22778,7 +22834,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <!-- ni certiĝas, ĉu necesas aldoni la pronomon -->
         <choose>
           <when>
-            <test><equal><var n="treu_ref"/><lit v="treu"/></equal></test>
+            <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
             <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
           </when>
           <otherwise>
@@ -22826,11 +22882,32 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
         <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
         <call-macro n="control_pron"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
 <let><var n="debug1"/><lit-tag v="11"/></let>
+
+        <!-- ni certiĝas, ĉu necesas aldoni "oni" -->
+        <choose>
+          <when>
+            <test><equal><var n="aldoni_oni"/><lit v="aldoni"/></equal></test>
+            <out>
+	      <chunk name="prpers" case="caseFirstWord">
+	        <tags>
+	          <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+	        </tags>
+                <lu>
+                  <lit v="oni"/>
+                  <lit-tag v="prn.tn.sg.nom"/>
+                </lu>
+	      </chunk>
+              <b/>
+            </out>
+	    <let><var n="caseFirstWord"/><lit v="aa"/></let>
+          </when>
+        </choose>
+
         <call-macro n="haber__pp"><with-param pos="2"/><with-param pos="3"/></call-macro>
 
         <choose>
           <when>
-            <test><equal><var n="treu_ref"/><lit v="treu"/></equal></test>
+            <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
             <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
           </when>
           <otherwise>
@@ -22873,26 +22950,13 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	<pattern-item n="verbcj"/>
       </pattern>
       <action>    	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="2"/>
-        </call-macro>
-	<call-macro n="nombro1">
-	  <with-param pos="2"/>
-	</call-macro>
-	<call-macro n="default_nombro">
-	</call-macro>
-	<call-macro n="nom_cas">
-	  <with-param pos="2"/>
-	</call-macro>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
+        <call-macro n="set_temps"><with-param pos="3"/></call-macro>
+        <call-macro n="correccion_lo"><with-param pos="2"/></call-macro>
+	<call-macro n="nombro1"><with-param pos="2"/></call-macro>
+	<call-macro n="default_nombro"></call-macro>
+	<call-macro n="nom_cas"><with-param pos="2"/></call-macro>
 
         <let><var n="nprep"/><clip pos="1" side="tl" part="lem"/></let>
 	<out>
