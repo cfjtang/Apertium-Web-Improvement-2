@@ -1,4 +1,4 @@
-# exemple ambigüitat fins i tot per a un parlant: "noble húngaro" (hungara nobelo / nobla hungaro)
+# exemple ambigüitat fins i tot per a un parlant: "noble húngaro" (hungara nobelo / nobla hungaro), "viejos fanáticos" (maljunaj fanatikuloj / fanatikaj maljunuloj)
 DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
 SOFT-DELIMITERS = "<,>" ;
 
@@ -258,6 +258,7 @@ SELECT:r_na_13_mp N IF (-3 Barrera_Inicial_SN LINK NOT 0 Verb) (-2C Det + $$Masc
 SELECT:r_na_13_fp N IF (-3 Barrera_Inicial_SN LINK NOT 0 Verb) (-2C Det + $$FemPl) (-1C A + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK 0 N OR NP) (1 Barrera_Final_Estrict_SN) ;
 
 	# "vinieron italianos, alemanes, polacos y ucranianos."
+	# "mientras que tebanos, argivos y corintios vencieron"
 	# ". Católicos, ortodoxos y algunos anglicanos consideran"
 	# "intelectual alemán judío exiliado."
 	# "futuro Estado independiente"
@@ -269,6 +270,7 @@ SELECT:r_na_13_fp N IF (-3 Barrera_Inicial_SN LINK NOT 0 Verb) (-2C Det + $$FemP
 	# "en distintos periódicos."
 	# "un posible saludo."
 	# "no aceptaban jovencitas de 15 años"
+	# "los vertebrados, sobre todo"
 
 SELECT:pp_1 PP IF (-1 ("haber") OR ("Haber")) (O PP) ;
 SELECT:pp_2 PP IF (-1 ("ser") OR ("ser")) (O PP) (*1 ("por") BARRIER (Cnj_Rel_End)) ;
@@ -281,8 +283,8 @@ SELECT:s_na_1_ms N IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK NOT 0 N
 SELECT:s_na_1_fs N IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_mp N IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_fp N IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
-SELECT:s_na_1_arg NP IF (-1 Det + Fem) (O ("Argentina") OR ("Filipinas") OR ("Baleares") OR ("Canarias") OR ("Polinesia")) (1 <<< OR Prep OR Det) ;
-SELECT:s_na_1_med NP IF (-1 Det + Masc) (O ("Mediterráneo") OR ("Atlántico") OR ("Cantábrico") OR ("Pacífico") OR ("Índico") OR ("Ártico")) (1 <<< OR Prep OR Det) ;
+SELECT:s_na_1_arg NP IF (-1 Det + Fem) (O ("Argentina") OR ("Filipinas") OR ("Baleares") OR ("Canarias") OR ("Polinesia")) (1 <<< OR Prep OR Det OR CM) ;
+SELECT:s_na_1_med NP IF (-1 Det + Masc) (O ("Mediterráneo") OR ("Atlántico") OR ("Cantábrico") OR ("Pacífico") OR ("Índico") OR ("Ártico")) (1 <<< OR Prep OR Det OR CM) ;
 	# la ofensiva de pascua
 	# la política del gobierno (per error, es veu Det i no Prep)
 SELECT:s_na_2n N IF (-2C N) (-1 CM) (0 Noun_Adj_PP) (1 CnjCoo) (2 Noun_Adj_PP) ; 
@@ -357,6 +359,8 @@ REMOVE:r_para_2 Vblex (O ("para") OR ("Para")) (*1 Vblex BARRIER Cnj_Rel) ;
 SELECT:r_para_3 Prep (O ("para") OR ("Para")) (1 Inf) ;
 REMOVE:r_salvo_1 Vblex (O ("salvo") OR ("Salvo")) (*-1 Vblex BARRIER Cnj_Rel) ;  # no funciona sempre
 REMOVE:r_salvo_2 Vblex (O ("salvo") OR ("Salvo")) (*1 Vblex BARRIER Cnj_Rel) ;
+REMOVE:r_sobre_1 Vblex (O ("sobre") OR ("Sobre")) (*-1 Vblex BARRIER Cnj_Rel) ;  # no funciona sempre
+REMOVE:r_sobre_2 Vblex (O ("sobre") OR ("Sobre")) (*1 Vblex BARRIER Cnj_Rel) ;
 SELECT:r_bajo_0 A (O ("bajo") OR ("Bajo")) (-1C PreAdv) ;
 REMOVE:r_bajo_1 Vblex (O ("bajo") OR ("Bajo")) (*-1 Vblex BARRIER Cnj_Rel) ;  # no funciona sempre
 REMOVE:r_bajo_2 Vblex (O ("bajo") OR ("Bajo")) (*1 Vblex BARRIER Cnj_Rel) ;

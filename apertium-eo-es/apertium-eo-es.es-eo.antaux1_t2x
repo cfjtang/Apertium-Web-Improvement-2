@@ -34,8 +34,16 @@
       <cat-item lemma="pp" tags="SA.*"/>
     </def-cat>
 
+    <def-cat n="preadv">
+      <cat-item tags="preadv"/>
+    </def-cat>
+
     <def-cat n="adv">
       <cat-item tags="preadv"/>
+      <cat-item tags="adv"/>
+    </def-cat>
+
+    <def-cat n="adv_strict">
       <cat-item tags="adv"/>
     </def-cat>
 
@@ -1028,7 +1036,7 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
     <rule comment="REGLA: SV ADV   -   SV (kun ŝanĝo ĉe 'tre': queremos mucho > tre volas">
       <pattern>
         <pattern-item n="SV"/>
-        <pattern-item n="adv"/>
+        <pattern-item n="adv_strict"/>
       </pattern>
       <action>
     <choose>
@@ -1083,6 +1091,33 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
             <clip pos="2" part="content"/>
                 <b pos="2"/>
             <clip pos="3" part="content"/>
+             <lit v="}"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: ADV SV ADV ADV  -   SV ">
+      <pattern>
+        <pattern-item n="adv"/>
+        <pattern-item n="SV"/>
+        <pattern-item n="adv"/>
+        <pattern-item n="adv"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <get-case-from pos="1"><clip pos="2" part="lem"/></get-case-from>
+            <clip pos="2" part="tags"/>
+            <lit v="{"/>
+            <clip pos="1" part="content"/>
+                <b pos="1"/>
+            <clip pos="2" part="content"/>
+                <b pos="2"/>
+            <clip pos="3" part="content"/>
+                <b pos="3"/>
+            <clip pos="4" part="content"/>
              <lit v="}"/>
           </chunk>
         </out>
