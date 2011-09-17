@@ -30,7 +30,7 @@ SETS
 LIST BOS = (>>>) ;
 LIST EOS = (<<<) ;
 
-LIST N = n ; 
+LIST N = n np; 
 LIST A = adj ; 
 LIST V = vblex vbser vbhaver vbmod ; 
 LIST VBSer = vbser ;
@@ -185,11 +185,11 @@ SECTION
 # =========================================================================== #
 
 REMOVE:NotInterjection Interjection (NOT 1* ("<!>") BARRIER EOS);
-    ## for now like this
+    ## Interjections should have an exclamation mark
 
-REMOVE:jeIsNotGenitive Gen IF (0 ("<je>")) (NOT -1 VBHaver );
-    ## "je" as a pronoun in genitive can only come after the vbhaver
-    ## "Ima je, nema je";
+# For the word "je", which can be the vbser or a pronoun in accusative    
+REMOVE:jeIsNotGenitive Gen IF (0C ("<je>")) (NOT -1 VBHaver );
+    ## "je" as a pronoun in genitive can only come after the vbhaver ("Ima je / Nema je")
 REMOVE:jeIsNotAccusative Acc IF (0 ("<je>")) (NOT -1 V + Transitive ) (NOT 1* V + Transitive BARRIER EOS);
 REMOVE:jeIsNotAPronoun PRON-CLT (0 ("<je>"))  (1 Pron + Acc) ;  
     ## je is not a pronoun if there's already a pronoun before it
@@ -198,8 +198,10 @@ REMOVE:jeIsNotAPronoun PRON-CLT (0 ("<je>"))  (1 Lp OR Optative) ;
 ## REMOVE:jeIsNotAPronoun PRON-CLT (0 ("<je>")) (NOT -1 V + Transitive) (NOT 1* V + Transitive BARRIER MARK) ;
     ## je is not a pronoun in accusative if it's not an argument of a transitive verb. True, but not when formulated like this.
 
+# The demonstrative or personal pronoun ambiguity:
+## the pronouns 'ona' and 'ono', can have the meaning 'she' and 'it' or 'that one'[with gender marked]
 REMOVE:DemonstrativeOrPersonal DemPron (0 DemPron-OR-PersPron) (NOT 1C Nomen) ;
-    ## If it doesn't point to anything, this is rudimentary, and to be expanded
+    ## If it doesn't point to anything, this is rudimentary, and    
 
 SELECT:PrnNumberFromVerb $$NUMBER (0C Pron) ((1C* V + $$NUMBER BARRIER EOS) OR (-1C* V + $$NUMBER BARRIER BOS))
     ## Ona je na posljednjoj godini...
@@ -378,11 +380,8 @@ SELECT:NomenAfterNounIsGenitive Gen (-1 N) (NOT 0 ProperNoun + (al) );
 SELECT:kandidatPl Plural (0 ("kandidat"i) + Gen);
 
 REMOVE:NotGenitivePlural Gen + Plural (0 Genitive-SingularOrPlural) (NOT -1 Modifier + Gen + Plural) (NOT 1 Modifier + Gen + Plural) 
-    (NOT 0 ("kandidat"i) ); ## The last parenthesis is for this article only, since it's not properly ortographically marked
 
 REMOVE:notAcc Acc IF (NOT -1* V + Transitive BARRIER BOS OR V + Intransitive OR N + Acc) (NOT -1 Modifier + Acc);
-    ## If it's not a target of a transitive verb, it's not accusative
-    ## And if there isn't a modifier that's already in accusative
         
 SELECT:AdjectiveDefiniteness Indefinite (0C A + Ind-OR-Def ) (NOT -1 DemPron) ;
 SELECT:AdjectiveDefinitenessNabrajanje Indefinite (0C A + Ind-OR-Def ) (-1 Cm) (-2 A + Indefinite);
@@ -494,7 +493,12 @@ MAP:GenitiveModN ( @N← ) TARGET N + Gen (-1C* N BARRIER NOT-NP-MEMBER) ;
 
 MAP:NounModPoss ( @→N ) TARGET PosPron (1C N) ;
 
-MAP:NounModA ( @→N ) TARGET A + $$CASE (1C N + $$CASE) ;
+# TODO: These rules are just rudimentary
+MAP:NounModA ( @→N ) TARGET A + $$CASE (1*C N + $$CASE BARRIER WORD - N - A ) ;
+MAP:NModA ( @→A ) TARGET A + $$CASE (1*C A + $$CASE BARRIER WORD - N - A ) ;
+MAP:PrModN ( @→N ) TARGET Pr (1*C N BARRIER WORD - N - A ) ; 
+MAP:PrModA ( @→A ) TARGET Pr (1*C A BARRIER WORD - N - A ) ;
+
 
 # Verb modifiers
 ## Adverbs
@@ -527,3 +531,11 @@ SECTION
 SETPARENT:FuturI V + Infinitive (1C VBMod + Clt) TO (1C VBMod + Clt)
 SETPARENT:FuturI V + Infinitive (-1C VBMod + Clt) TO (-1C VBMod + Clt)
 
+SETPARENT:A→A (@→A) + $$CASE (0C A) (1*C A + $$CASE) TO (1*C A + $$CASE)
+SETPARENT:A←A (@A←) + $$CASE (0C A) (-1*C A + $$CASE) TO (-1*C A + $$CASE)
+
+SETPARENT:A→N (@→N) + $$CASE (0C A) (1*C N + $$CASE) TO (1*C N + $$CASE)
+SETPARENT:N←A (@N←) + $$CASE (0C A) (-1*C N + $$CASE) TO (-1*C N + $$CASE)
+
+SETPARENT:Pr→N (@→N) (0C Pr) (1*C N) TO (1*C N)
+SETPARENT:Pr→N (@→A) (0C Pr) (1*C A) TO (1*C A)
