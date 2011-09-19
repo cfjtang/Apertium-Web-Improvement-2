@@ -52,6 +52,8 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
+	@if [ "`which apertium-preprocess-transfer-bytecode-j`" == "" ]; then echo && echo "NOTE: lttoolbox-java (used for bytecode accelerated transfer) is missing" && echo "      Therefore the following will fail (but it's OK)" && echo; fi
+	apertium-preprocess-transfer-bytecode-j $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class
 
 $(PREFIX1).antaux5_t2x.bin: $(BASENAME).$(PREFIX1).antaux5_t2x
 	apertium-validate-interchunk $(BASENAME).$(PREFIX1).antaux5_t2x
@@ -82,7 +84,7 @@ apertium_eo_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autopgen.bin \
 		    $(PREFIX1).rlx.bin \
 		    $(PREFIX1).prob \
-		    $(PREFIX1).t1x.bin \
+		    $(PREFIX1).t1x.bin $(PREFIX1).t1x.class \
 		    $(PREFIX1).antaux1_t2x.bin $(PREFIX1).antaux2_t2x.bin $(PREFIX1).antaux3_t2x.bin $(PREFIX1).antaux4_t2x.bin \
 		    $(PREFIX1).antaux5_t2x.bin $(PREFIX1).t2x.bin \
 		    $(PREFIX1).t3x.bin \
@@ -107,7 +109,7 @@ install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_eo_esmodesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_eo_esmodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(apertium_eo_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class $(apertium_eo_esdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).antaux1_t2x $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).antaux3_t2x $(BASENAME).$(PREFIX1).antaux4_t2x $(apertium_eo_esdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).antaux5_t2x $(BASENAME).$(PREFIX1).t2x $(apertium_eo_esdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_eo_esdir)

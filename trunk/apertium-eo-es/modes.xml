@@ -106,6 +106,63 @@
   </mode>
 
 <!--
+pro stranga kialo, tio ne donas la saman rezulton kiel es-eo-cg; ekz. en la frazo ". Lo como."
+  <mode name="es-eo-cg-bytecode" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="es-eo.automorf.bin"/>
+      </program>
+      <program name="cg-proc">
+        <file name="es-eo.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="es-eo.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer-j">
+        <file name="es-eo.t1x.class"/>
+        <file name="es-eo.t1x.bin"/>
+        <file name="es-eo.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eo-es.es-eo.antaux1_t2x"/>
+        <file name="es-eo.antaux1_t2x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eo-es.es-eo.antaux2_t2x"/>
+        <file name="es-eo.antaux2_t2x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eo-es.es-eo.antaux3_t2x"/>
+        <file name="es-eo.antaux3_t2x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eo-es.es-eo.antaux4_t2x"/>
+        <file name="es-eo.antaux4_t2x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eo-es.es-eo.antaux5_t2x"/>
+        <file name="es-eo.antaux5_t2x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eo-es.es-eo.t2x"/>
+        <file name="es-eo.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eo-es.es-eo.t3x"/>
+        <file name="es-eo.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="es-eo.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="es-eo.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+-->
+
+<!--
   <mode name="es-eo-translit" install="yes">
     <pipeline>
       <program name="lt-proc">
