@@ -40,10 +40,11 @@ SET NOT_NP_Member = Vblex OR Vbmod OR Vbhaver OR Copula OR Prep OR CnjCoo OR Cnj
 LIST Imp = (imp) ;
 LIST Inf = (inf) ;
 
-
 LIST PP = (pp) ;
 LIST PRS = (prs) ;
 LIST Ger = (ger) ;
+
+LIST P3 = (p3) ;
 
 LIST Enc = (enc) ;
 
@@ -103,8 +104,11 @@ SET Ir = ("ir") OR ("Ir") ;
 SET Fundar = ("fundar") OR ("Fundar") ;
 SET Fundir = ("fundir") OR ("Fundir") ;
 
-# adjetivos ambiguos habitualmente antepuestos
-SET AdjPrefAmb = ("bajo") OR ("alto") OR ("joven") OR ("viejo") OR ("medio") OR ("dicho") OR ("menor") OR ("mayor") OR ("doble") OR ("triple") OR ("posible") OR ("mal") OR ("cierto") ;
+# adjetivos ambíguos que sólo pueden anteceder el nombre ("gran" o "buen" no son ambiguos)
+SET PreAdj = ("mal") OR ("Mal") ;
+
+# adjetivos ambiguos que se anteponen a menudo
+SET AdjPrefAmb = ("bajo") OR ("alto") OR ("joven") OR ("viejo") OR ("medio") OR ("dicho") OR ("menor") OR ("mayor") OR ("doble") OR ("triple") OR ("posible") OR ("cierto") ;
 
 SET VerboSubj = ("querer") OR ("Querer") OR ("desear") OR ("Desear") OR ("proponer") OR ("Proponer") OR ("gustar") OR ("Gustar") OR ("placer") OR ("Placer") OR ("exigir") OR ("Exigir") OR ("reclamar") OR ("Reclamar") OR ("pedir") OR ("Pedir") OR ("esperar") OR ("Esperar") ;
 
@@ -115,10 +119,10 @@ SET VerboSubj = ("querer") OR ("Querer") OR ("desear") OR ("Desear") OR ("propon
 
 SECTION
 
-REMOVE:r_cog_1 Cog IF (-1 DetDef) (0 Cog);
-REMOVE:r_cog_2 Cog IF (-1 DetInd) (0 Cog);
-REMOVE:r_ant_1 Ant IF (-1 DetDef) (0 Ant);
-REMOVE:r_ant_2 Ant IF (-1 DetInd) (0 Ant);
+REMOVE:r_cog_1 Cog IF (-1 DetDef) (0 Cog) ;
+REMOVE:r_cog_2 Cog IF (-1 DetInd) (0 Cog) ;
+REMOVE:r_ant_1 Ant IF (-1 DetDef) (0 Ant) ;
+REMOVE:r_ant_2 Ant IF (-1 DetInd) (0 Ant) ;
 
 SELECT:este_2 Det IF (0 ("este") + $$MascSg) (-1 Verb_Prep) (1 A + $$MascSg) (2 N + $$MascSg) ;
 	# de este bonito estado
@@ -128,6 +132,9 @@ SELECT:este_2 Det IF (0 ("Este") + $$MascSg) (-1 >>>) (1 A + $$MascSg) (2 N + $$
 	# Este bonito estado
 SELECT:este_1 Det IF (0 ("Este") + $$MascSg) (-1 >>>) (1 N + $$MascSg) ;
 	# Este estado
+
+# elimina la opción "adjetivo" de aquellos adjetivos que sólo pueden anteceder un nombre ("buen", "mal", etc.) y no están delante de uno
+REMOVE:pre_adj_1 A IF (O PreAdj) (NOT 1 N) ;
 
 REMOVE:r_na_1_ms A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascSg LINK 0 N OR NP) (1 Adj_PP + $$MascSg) ;
 REMOVE:r_na_1_mp A OR PP IF (-1 >>>) (O Noun_Adj_PP + $$MascPl LINK 0 N OR NP) (1 Adj_PP + $$MascPl) ;
@@ -272,6 +279,7 @@ SELECT:r_na_13_fp N IF (-3 Barrera_Inicial_SN LINK NOT 0 Verb) (-2C Det + $$FemP
 	# "un posible saludo."
 	# "no aceptaban jovencitas de 15 años"
 	# "los vertebrados, sobre todo"
+	# "el traspaso de poder de"
 	# adj_pp: "un trípode pesado con miras"
 
 SELECT:pp_1 PP IF (-1 ("haber") OR ("Haber")) (O PP) ;
@@ -285,7 +293,7 @@ SELECT:s_na_1_ms N IF (-1 Det + $$MascSg) (O Noun_Adj_PP + $$MascSg LINK NOT 0 N
 SELECT:s_na_1_fs N IF (-1 Det + $$FemSg) (O Noun_Adj_PP + $$FemSg LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_mp N IF (-1 Det + $$MascPl) (O Noun_Adj_PP + $$MascPl LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
 SELECT:s_na_1_fp N IF (-1 Det + $$FemPl) (O Noun_Adj_PP + $$FemPl LINK NOT 0 NP) (1 <<< OR Prep OR Det) ;
-SELECT:s_na_1_arg NP IF (-1 Det + Fem) (O ("Argentina") OR ("Filipinas") OR ("Baleares") OR ("Canarias") OR ("Polinesia")) (1 <<< OR Prep OR Det OR CM) ;
+SELECT:s_na_1_arg NP IF (-1 Det + Fem) (O ("Argentina") OR ("China") OR ("India") OR ("Filipinas") OR ("Baleares") OR ("Canarias") OR ("Polinesia")) (1 <<< OR Prep OR Det OR CM) ;
 SELECT:s_na_1_med NP IF (-1 Det + Masc) (O ("Mediterráneo") OR ("Atlántico") OR ("Cantábrico") OR ("Pacífico") OR ("Índico") OR ("Ártico")) (1 <<< OR Prep OR Det OR CM) ;
 	# la ofensiva de pascua
 	# la política del gobierno (per error, es veu Det i no Prep)
@@ -449,6 +457,11 @@ SELECT:ser_ir_1 Ser (0 Ser LINK O Ir) (1C PP) ; # no sempre funciona, però sí 
 SELECT:ser_ir_1 Ir (0 Ser LINK O Ir) (1 Ger) ;
 SELECT:fundar_fundir_1 Fundar (0 Fundar) (-1C Ref) ; # se non è vero...
 
+#
+# reflexivo
+# (decido que todos los posesivos en 3a persona, si el verbo está en 3a persona, son reflexivos)
+#
+SUBSTITUTE:ref_1 ("suyo") ("suyo_ref") TARGET ("suyo") IF (0 ("suyo")) (*-1 (vblex p3) BARRIER >>> OR CnjSub OR CnjAdv OR Rel) ;
 
 #
 # comparaciones
