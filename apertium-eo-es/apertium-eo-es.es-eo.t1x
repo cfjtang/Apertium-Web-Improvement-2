@@ -1222,6 +1222,10 @@
       <list-item v="concienciar"/>
       <list-item v="posicionar"/>
       <list-item v="saludar"/>
+      <list-item v="derrumbar"/>
+      <list-item v="desplomar"/>
+      <list-item v="desmoronar"/>
+      <list-item v="suicidar"/>
 
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
@@ -1239,6 +1243,7 @@
       <list-item v="acometer"/>
       <list-item v="incautar"/>
       <list-item v="imaginar"/>
+      <list-item v="morir"/>
     </def-list>
 
     <def-list n="verbs_pron"> <!-- lista de verbos con cambio de raíz cuando van con pronombre (p.ej intr > tr ) -->
@@ -1342,6 +1347,7 @@
       <list-item v="añadir"/>
       <list-item v="desheredar"/>
       <list-item v="entronizar"/>
+      <list-item v="indultar"/>
     </def-list>
 
     <def-list n="verbs_igxi">
@@ -1424,6 +1430,14 @@
       <list-item v="instalar"/>
       <list-item v="reinstalar"/>
       <list-item v="establecer"/>
+      <list-item v="endeudar"/>
+      <list-item v="abotonar"/>
+      <list-item v="desabotonar"/>
+      <list-item v="vestir"/>
+      <list-item v="desvestir"/>
+      <list-item v="despertar"/>
+      <list-item v="acostar"/>
+      <list-item v="matar"/>
 
      <list-item v="abaratar"/>
      <list-item v="abatir"/>
@@ -1435,8 +1449,6 @@
      <list-item v="achispar"/>
      <list-item v="aclarar"/>
      <list-item v="aclimatar"/>
-     <list-item v="acordar"/>
-     <list-item v="acordar# de"/>
      <list-item v="acortar"/>
      <list-item v="acostar"/>
      <list-item v="acrecentar"/>
@@ -1957,6 +1969,7 @@
       <list-item v="reinicializar"/>
       <list-item v="solidarizar"/>
       <list-item v="independizar"/>
+      <list-item v="flexibilizar"/>
     </def-list>
 
   <def-list n="transitivos_personales">
@@ -2732,6 +2745,18 @@
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
             <when>
+              <test>
+                <or>
+                   <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="derrumbar"/></equal>
+                   <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="desplomar"/></equal>
+                   <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="desmoronar"/></equal>
+                </or>
+              </test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="disfali"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="matricular"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="enmatrikuliĝi"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
@@ -2777,6 +2802,12 @@
             <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="poner# en evidencia"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="perfidi"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v=""/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="suicidar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="mortigi"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
               <let><var n="forigi_ref"/><lit v=""/></let>
             </when>
