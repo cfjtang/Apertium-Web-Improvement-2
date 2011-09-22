@@ -1092,6 +1092,7 @@
   <def-list n="agradar"> <!-- BCN EO per a la inversio argumental-->
     <list-item v="agradar"/>
     <list-item v="gustar"/>
+    <list-item v="fiar# de"/>
 <!--
     <list-item v="encantar"/>
     <list-item v="complacer"/>
@@ -1215,6 +1216,7 @@
       <list-item v="desprender"/>
       <list-item v="poner# en movimiento"/>
       <list-item v="poner# en marcha"/>
+      <list-item v="poner# en funcionamiento"/>
       <list-item v="poner# en evidencia"/>
       <list-item v="despedir"/>
       <list-item v="despedir# de"/>
@@ -1226,6 +1228,10 @@
       <list-item v="desplomar"/>
       <list-item v="desmoronar"/>
       <list-item v="suicidar"/>
+      <list-item v="disponer"/>
+      <list-item v="disputar"/>
+      <list-item v="distinguir#"/> <!-- elstaras / oni distingas -->
+      <list-item v="esfumar"/>
 
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
@@ -1348,6 +1354,16 @@
       <list-item v="desheredar"/>
       <list-item v="entronizar"/>
       <list-item v="indultar"/>
+      <list-item v="ejecutar"/>
+      <list-item v="ejercer"/>
+      <list-item v="elaborar"/>
+      <list-item v="elegir"/>
+      <list-item v="eliminar"/>
+      <list-item v="elogiar"/>
+      <list-item v="describir"/>
+      <list-item v="explicar"/>
+      <list-item v="contar"/>
+      <list-item v="distinguir"/>
     </def-list>
 
     <def-list n="verbs_igxi">
@@ -1426,7 +1442,6 @@
       <list-item v="retrasar"/>
       <list-item v="retirar"/>
       <list-item v="generar"/>
-      <list-item v="distinguir"/>
       <list-item v="instalar"/>
       <list-item v="reinstalar"/>
       <list-item v="establecer"/>
@@ -1438,6 +1453,13 @@
       <list-item v="despertar"/>
       <list-item v="acostar"/>
       <list-item v="matar"/>
+      <list-item v="disgustar"/>
+      <list-item v="enojar"/>
+      <list-item v="distraer"/>
+      <list-item v="divertir"/>
+      <list-item v="electrocutar"/>
+      <list-item v="empezar"/>
+      <list-item v="acabar"/>
 
      <list-item v="abaratar"/>
      <list-item v="abatir"/>
@@ -1667,7 +1689,6 @@
      <list-item v="expandir"/>
      <list-item v="expansionar"/>
      <list-item v="expatriar"/>
-     <list-item v="explicar"/>
      <list-item v="expropiar"/>
      <list-item v="exterminar"/>
      <list-item v="extralimitar"/>
@@ -2337,7 +2358,7 @@
     <def-macro n="tipus_verbs" npar="1"> <!-- tots els verbs passen per aqui -->
       <choose>
         <when>
-          <test><in caseless="yes"><clip pos="1" side="sl" part="lemh"/><list n="agradar"/></in></test>
+          <test><in caseless="yes"><clip pos="1" side="sl" part="lem"/><list n="agradar"/></in></test>
           <let><var n="tipus_verb"/><lit-tag v="like"/></let>
         </when>
 	<when>
@@ -2793,9 +2814,32 @@
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
             <when>
-              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="poner# en marcha"/></equal></test>
+              <test>
+                <or>
+                   <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="poner# en marcha"/></equal>
+                   <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="poner# en funcionamiento"/></equal>
+                </or>
+              </test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="ekstarti"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="disputar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="konkuri"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="distinguir#"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="elstari"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="esfumar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="malaperi"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
 
@@ -2808,6 +2852,12 @@
             <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="suicidar"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="mortigi"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v=""/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="disponer"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="prepari"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
               <let><var n="forigi_ref"/><lit v=""/></let>
             </when>
@@ -16448,8 +16498,30 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
       </test>
     </when>
 
-<otherwise>
+     <when>   <!-- numeral sol es tracta com a SN -->
+      <test>
+         <equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal>
+      </test>
+	<out>
+	  <chunk name="num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="sl" part="gen"/></tag>
+	      <tag><clip pos="1" side="sl" part="nbr"/></tag>
+	      <tag><var n="case"/></tag>
+	      <tag><var n="changecase"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_det"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	      <lit-tag v="4"/>
+	    </lu>
+	  </chunk>
+	</out>
+    </when>
 
+    <otherwise>
 	<out>
 	  <chunk name="det" case="caseFirstWord">
 	    <tags>
@@ -16470,10 +16542,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
      </otherwise>
       </choose>
 
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+	<let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
