@@ -12,6 +12,7 @@
 
     <def-cat n="SNextend">
       <cat-item tags="SN.*"/>
+      <cat-item lemma="prpers" tags="SN.subj.*"/>
       <cat-item tags="SNrelatiu.*"/>
       <cat-item tags="SNloque.*"/>
       <cat-item tags="subj.*"/>  <!-- sujeto prodrop -->
@@ -25,6 +26,13 @@
     
    <def-cat n="SNacc"><!-- EO: tots el que no porten changecase=sense-->
       <cat-item tags="SN.*.nom"/>
+      <cat-item tags="SNrelatiu.*.nom"/>
+      <cat-item tags="SNloque.*.nom"/>
+    </def-cat>
+
+   <def-cat n="SNpronacc"><!-- EO: tots el que no porten changecase=sense-->
+      <cat-item tags="SN.*.nom"/>
+      <cat-item lemma="prpers" tags="SN.subj.*"/>
       <cat-item tags="SNrelatiu.*.nom"/>
       <cat-item tags="SNloque.*.nom"/>
     </def-cat>
@@ -68,6 +76,7 @@
 
    <def-cat n="SNSAacc"><!-- EO: tots el que no porten changecase=sense-->
       <cat-item tags="SN.*.nom"/>
+      <cat-item lemma="prpers" tags="SN.subj.*"/>
       <cat-item tags="SNrelatiu.*.nom"/>
       <cat-item tags="SNloque.*.nom"/>
       <cat-item tags="SA.*.nom"/>
@@ -560,7 +569,7 @@
       <pattern>
         <pattern-item n="SVlike"/>
         <pattern-item n="SNobj"/>
-        <pattern-item n="SNSAacc"/>        
+        <pattern-item n="SNSAacc"/>
       </pattern>
       <action>
 
@@ -788,11 +797,12 @@
         <pattern-item n="SN"/>
         <pattern-item n="SVmoviment"/>
         <pattern-item n="PREPmoviment"/>
-        <pattern-item n="SNacc"/>
+        <pattern-item n="SNextend"/>
       </pattern>
       <action>
 
         <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="4" part="tipus_prn"/><lit-tag v="obj"/></let>
         <out>
           <chunk>
             <clip pos="1" part="whole"/>
@@ -817,15 +827,17 @@
       <pattern>
         <pattern-item n="SVmoviment"/>
         <pattern-item n="PREPmoviment"/>
-        <pattern-item n="SNacc"/>
+        <pattern-item n="SNextend"/>
         <pattern-item n="cnjcoo"/>
         <pattern-item n="PREPmoviment"/>
-        <pattern-item n="SNacc"/>
+        <pattern-item n="SNextend"/>
       </pattern>
       <action>
 
         <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="3" part="tipus_prn"/><lit-tag v="obj"/></let>
         <let><clip pos="6" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="6" part="tipus_prn"/><lit-tag v="obj"/></let>
         <out>
           <chunk>
             <clip pos="1" part="lem"/>
@@ -853,14 +865,16 @@
       <pattern>
         <pattern-item n="SN"/>
         <pattern-item n="SVmoviment"/>
-        <pattern-item n="SNacc"/>
+        <pattern-item n="SNextend"/>
         <pattern-item n="PREPmoviment"/>
-        <pattern-item n="SNacc"/>
+        <pattern-item n="SNextend"/>
       </pattern>
       <action>
 
         <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="3" part="tipus_prn"/><lit-tag v="obj"/></let>
         <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
         <out>
           <chunk>
             <clip pos="1" part="whole"/>
@@ -885,6 +899,7 @@
       </action>
 </rule>
 
+<!--
 <rule comment="REGLA: SN SVmoviment SN PREP PRON (EOes; Napoleón puso a su hermano en él -> Napoleono metis sian fraton en ĝin">
       <pattern>
         <pattern-item n="SN"/>
@@ -920,17 +935,19 @@
         </out>
       </action>
 </rule>
+-->
 
 
 <rule comment="REGLA: SVmoviment PREP SN (EOes)">
       <pattern>
         <pattern-item n="SVmoviment"/>
         <pattern-item n="PREPmoviment"/>
-        <pattern-item n="SNacc"/>
+        <pattern-item n="SNextend"/>
       </pattern>
       <action>
 
         <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="3" part="tipus_prn"/><lit-tag v="obj"/></let>
         <out>
           <chunk>
             <clip pos="1" part="lem"/>
@@ -953,6 +970,7 @@
       </action>
 </rule>
 
+<!--
 <rule comment="REGLA: SVmoviment PREP PRON (EOes)">
       <pattern>
         <pattern-item n="SVmoviment"/>
@@ -983,6 +1001,7 @@
         </out>
       </action>
 </rule>
+-->
 
 
 <!-- INDEX: conjunto de reglas per a tratar el caso /acusativo/nominativo de los SN pronombres.  Vienen marcados del t1x como SN.obj, aquí los indentificamos y según el patrón asignamos caso-->
@@ -1580,6 +1599,109 @@ copiat del francès: no sembla madur ni gaire productiu
 </rule>
 
 
+<rule comment="REGLA: SVlex SN kiel SN (recibió un pastel como regalo -> li ricevis kukon kiel donacon) - ni divenas, ke la komparo estas kun la objekto kaj ne kun la subjekto (tamen rigardas la nombran akordon)">
+      <pattern>
+        <pattern-item n="SVlex"/>
+        <pattern-item n="SNpronacc"/>
+        <pattern-item n="kiel"/>
+        <pattern-item n="SNpronacc"/>
+      </pattern>
+      <action>
+
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="2" part="tipus_prn"/><lit-tag v="obj"/></let>
+            <choose>
+              <when>
+                <test>
+                  <equal><clip pos="2" part="nbr"/><clip pos="4" part="nbr"/></equal>
+                </test>
+                <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+                <let><clip pos="4" part="tipus_prn"/><lit-tag v="obj"/></let>
+              </when>
+            </choose>
+          </when>
+        </choose>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SVlex SN kiel SN (recibió un pastel como regalo -> li ricevis kukon kiel donacon) - ni divenas, ke la komparo estas kun la objekto kaj ne kun la subjekto (tamen rigardas la nombran akordon)">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SVlex"/>
+        <pattern-item n="SNpronacc"/>
+        <pattern-item n="kiel"/>
+        <pattern-item n="SNpronacc"/>
+      </pattern>
+      <action>
+
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="3" part="tipus_prn"/><lit-tag v="obj"/></let>
+            <choose>
+              <when>
+                <test>
+                  <equal><clip pos="3" part="nbr"/><clip pos="5" part="nbr"/></equal>
+                </test>
+                <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+                <let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
+              </when>
+            </choose>
+          </when>
+        </choose>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+          <b pos="4"/>
+          <chunk>
+            <clip pos="5" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
 <rule comment="REGLA: SNsg oni SVsg (EO el libro se publicó -> la libron oni eldonis)">
       <pattern>
         <pattern-item n="SNsgacc"/>
@@ -1588,10 +1710,7 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="1" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+            <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
 
         <out>
           <chunk>
@@ -1618,10 +1737,7 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="1" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+            <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
 
         <out>
           <chunk>
@@ -1650,14 +1766,8 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="1" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
-            <let>
-              <clip pos="5" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+            <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
 
         <out>
           <chunk>
@@ -1694,14 +1804,8 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="1" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
-            <let>
-              <clip pos="5" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+            <let><clip pos="1" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
 
         <out>
           <chunk>
@@ -1769,10 +1873,8 @@ copiat del francès: no sembla madur ni gaire productiu
       </pattern>
       <action>
 
-            <let>
-              <clip pos="5" part="case"/>
-              <lit-tag v="acc"/>
-            </let>
+            <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
 
         <out>
           <chunk>
@@ -1844,10 +1946,8 @@ copiat del francès: no sembla madur ni gaire productiu
         <pattern-item n="pro_indirecte"/>
       </pattern>
       <action>
-        <let>
-          <clip pos="2" part="case"/>
-          <lit-tag v="acc"/>
-        </let>
+        <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
+        <let><clip pos="2" part="tipus_prn"/><lit-tag v="obj"/></let>
         <out>
           <chunk>
             <get-case-from pos="1">
