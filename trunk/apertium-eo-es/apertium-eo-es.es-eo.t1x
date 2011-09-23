@@ -12,6 +12,37 @@
       <cat-item tags="np.cog.*"/>
     </def-cat>
 
+     <def-cat n="antunk">
+      <cat-item tags="np.ant.*"/>
+      <cat-item tags="np.cog.*"/>
+      <cat-item tags=""/>
+    </def-cat>
+
+     <def-cat n="Saint">
+      <cat-item lemma="saint" tags="adj.*"/>
+      <cat-item lemma="Saint" tags="np.loc.*"/>
+      <cat-item lemma="Sainte" tags="np.loc.*"/>
+      <cat-item lemma="St" tags="np.loc.*"/>
+      <cat-item lemma="Ste" tags="np.loc.*"/>
+    </def-cat>
+
+     <def-cat n="npunk">
+      <cat-item tags="np.ant.*"/>
+      <cat-item tags="np.cog.*"/>
+      <cat-item tags="np.loc.*"/>
+      <cat-item tags=""/>
+    </def-cat>
+
+    <def-cat n="acr">
+      <cat-item tags="n.acr.*"/>
+    </def-cat>
+
+    <def-cat n="any">
+      <cat-item tags="prep"/>
+      <cat-item tags="det.*"/>
+      <cat-item tags=""/>
+    </def-cat>
+
      <def-cat n="loc">
       <cat-item tags="np.loc.*"/>
     </def-cat>
@@ -51,6 +82,10 @@
     <def-cat n="adjADJ"> <!-- únicament adjs, no pp -->
       <cat-item tags="adj.*"/>
       <cat-item tags="adj.pos.*"/>
+    </def-cat>
+
+    <def-cat n="mismo">
+       <cat-item lemma="mismo" tags="adj.*"/>
     </def-cat>
 
     <def-cat n="unknown"> <!-- unknown words -->
@@ -507,6 +542,7 @@
       <cat-item lemma="década" tags="n.*"/>
       <cat-item lemma="siglo" tags="n.*"/>
       <cat-item lemma="milenio" tags="n.*"/>
+      <cat-item lemma="tiempo" tags="n.*"/>
     </def-cat>
 
     <def-cat n="n_temps_pl">
@@ -522,7 +558,6 @@
       <cat-item lemma="década" tags="n.*.pl"/>
       <cat-item lemma="siglo" tags="n.*.pl"/>
       <cat-item lemma="milenio" tags="n.*.pl"/>
-      <cat-item lemma="temps" tags="n.*"/> <!-- pot ser tbé singular -->
     </def-cat>
 
     <def-cat n="nom_da"> <!-- nomoj postulantaj "da" -->
@@ -654,6 +689,21 @@
       <cat-item lemma="de" tags="pr"/>
       <cat-item lemma="en" tags="pr"/>
       <cat-item lemma="de_pri" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="de_von"> <!-- por familiaj nomoj -->
+      <cat-item lemma="de" tags="pr"/>
+      <cat-item lemma="von" tags="np.*"/>
+      <cat-item lemma="ir" tags="vblex.pri.p3.pl"/> <!-- van -->
+      <cat-item lemma="del" tags=""/>
+      <cat-item lemma="dello" tags=""/>
+      <cat-item lemma="della" tags=""/>
+      <cat-item lemma="delli" tags=""/>
+      <cat-item lemma="delle" tags=""/>
+      <cat-item lemma="do" tags=""/>
+      <cat-item lemma="da" tags=""/>
+      <cat-item lemma="di" tags=""/>
+      <cat-item lemma="du" tags=""/>
     </def-cat>
 
     <def-cat n="estarapuntode"> <!--EO perífrasi-->
@@ -1173,6 +1223,7 @@
 <!-- for- -->
       <list-item v="comer"/>
       <list-item v="beber"/>
+      <list-item v="tragar"/>
 <!--      <list-item v="leer"/> -->
       <list-item v="ir"/>
       <list-item v="llevar"/>
@@ -1228,10 +1279,15 @@
       <list-item v="desplomar"/>
       <list-item v="desmoronar"/>
       <list-item v="suicidar"/>
+      <list-item v="acomodar"/>
       <list-item v="disponer"/>
       <list-item v="disputar"/>
       <list-item v="distinguir#"/> <!-- elstaras / oni distingas -->
       <list-item v="esfumar"/>
+      <list-item v="sustraer# a"/>
+      <list-item v="sentir"/>
+      <list-item v="apreciar"/>
+      <list-item v="divisar"/>
 
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
@@ -1271,7 +1327,6 @@
       <list-item v="querer"/>
       <list-item v="desear"/>
       <list-item v="emplear"/>
-      <list-item v="mostrar"/>
       <list-item v="conocer"/>
       <list-item v="requerir"/>
       <list-item v="obligar"/>
@@ -1364,9 +1419,13 @@
       <list-item v="explicar"/>
       <list-item v="contar"/>
       <list-item v="distinguir"/>
+      <list-item v="introducir"/>
+      <list-item v="apreciar"/>
+      <list-item v="recurrir"/>
     </def-list>
 
     <def-list n="verbs_igxi">
+      <list-item v="mostrar"/>
       <list-item v="crear"/> 
       <list-item v="dividir"/>
       <list-item v="ocupar"/>
@@ -1387,6 +1446,7 @@
       <list-item v="concentrar"/>
       <list-item v="desarrollar"/>
       <list-item v="casar"/>
+      <list-item v="desposar"/>
       <list-item v="enamorar"/>
       <list-item v="enamorar#"/>
       <list-item v="implantar"/>
@@ -1450,6 +1510,7 @@
       <list-item v="desabotonar"/>
       <list-item v="vestir"/>
       <list-item v="desvestir"/>
+      <list-item v="travestir"/>
       <list-item v="despertar"/>
       <list-item v="acostar"/>
       <list-item v="matar"/>
@@ -1460,6 +1521,8 @@
       <list-item v="electrocutar"/>
       <list-item v="empezar"/>
       <list-item v="acabar"/>
+      <list-item v="resentir"/>
+      <list-item v="mover"/>
 
      <list-item v="abaratar"/>
      <list-item v="abatir"/>
@@ -1541,6 +1604,7 @@
      <list-item v="capacitar"/>
      <list-item v="cartografiar"/>
      <list-item v="casar"/>
+     <list-item v="desposar"/>
      <list-item v="cegar"/>
      <list-item v="certificar"/>
      <list-item v="chamuscar"/>
@@ -1837,6 +1901,7 @@
      <list-item v="vertebrar"/>
      <list-item v="vincular"/>
      <list-item v="volver# conforme"/>
+     <list-item v="entroncar"/>
 
       <list-item v="actualizar"/>
       <list-item v="agonizar"/>
@@ -1994,360 +2059,905 @@
     </def-list>
 
   <def-list n="transitivos_personales">
-   <list-item v="abandonar"/>
-   <list-item v="abatir"/>
-   <list-item v="abochornar"/>
-   <list-item v="abominar"/>
-   <list-item v="abordar"/>
-   <list-item v="aborrecer"/>
-   <list-item v="abrazar"/>
-   <list-item v="abrigar"/>
-   <list-item v="abrumar"/>
-   <list-item v="aburrir"/>
-   <list-item v="acallar"/>
-   <list-item v="acariciar"/>
-   <list-item v="acaudillar"/>
-   <list-item v="aceptar"/>
-   <list-item v="aclimatar"/>
-   <list-item v="acoger"/>
-   <list-item v="acometer"/>
-   <list-item v="acompañar"/>
-   <list-item v="aconsejar"/>
-   <list-item v="acosar"/>
-   <list-item v="acostar"/>
-   <list-item v="acunar"/>
-   <list-item v="adiestrar"/>
-   <list-item v="admirar"/>
-   <list-item v="admitir"/>
-   <list-item v="adorar"/>
-   <list-item v="adormecer"/>
-   <list-item v="adquirir"/>
-   <list-item v="adular"/>
-   <list-item v="advertir"/>
-   <list-item v="afectar"/>
-   <list-item v="afeitar"/>
-   <list-item v="afiliar"/>
-   <list-item v="afrontar"/>
-   <list-item v="agachar"/>
-   <list-item v="agarrar"/>
-   <list-item v="agitar"/>
-   <list-item v="agotar"/>
-   <list-item v="agradecer"/>
-   <list-item v="agrandar"/>
-   <list-item v="agregar"/>
-   <list-item v="agrupar"/>
-   <list-item v="aguantar"/>
-   <list-item v="aguardar"/>
-   <list-item v="agujerear"/>
-   <list-item v="ahogar"/>
-   <list-item v="ahorcar"/>
-   <list-item v="airear"/>
-   <list-item v="aislar"/>
-   <list-item v="alabar"/>
-   <list-item v="albergar"/>
-   <list-item v="alcanzar"/>
-   <list-item v="alcoholizar"/>
-   <list-item v="alegrar"/>
-   <list-item v="alejar"/>
-   <list-item v="alentar"/>
-   <list-item v="alimentar"/>
-   <list-item v="alinear"/>
-   <list-item v="alistar"/>
-   <list-item v="aliviar"/>
-   <list-item v="alojar"/>
-   <list-item v="alterar"/>
-   <list-item v="aludir"/>
-   <list-item v="alumbrar"/>
-   <list-item v="alzar"/>
-   <list-item v="amamantar"/>
-   <list-item v="amar"/>
-   <list-item v="amargar"/>
-   <list-item v="amarrar"/>
-   <list-item v="amenazar"/>
-   <list-item v="amonestar"/>
-   <list-item v="amontonar"/>
-   <list-item v="angustiar"/>
-   <list-item v="animar"/>
-   <list-item v="aniquilar"/>
-   <list-item v="anular"/>
-   <list-item v="apaciguar"/>
-   <list-item v="apalear"/>
-   <list-item v="apartar"/>
-   <list-item v="apasionar"/>
-   <list-item v="apelar"/>
-   <list-item v="apetecer"/>
-   <list-item v="aplastar"/>
-   <list-item v="aplaudir"/>
-   <list-item v="aporrear"/>
-   <list-item v="apoyar"/>
-   <list-item v="apreciar"/>
-   <list-item v="apresurar"/>
-   <list-item v="apretar"/>
-   <list-item v="aprobar"/>
-   <list-item v="aprovechar"/>
-   <list-item v="aprovisionar"/>
-   <list-item v="apuntar"/>
-   <list-item v="apuñalar"/>
-   <list-item v="apurar"/>
-   <list-item v="armar"/>
-   <list-item v="arrancar"/>
-   <list-item v="arrasar"/>
-   <list-item v="arrastrar"/>
-   <list-item v="arrestar"/>
-   <list-item v="arriesgar"/>
-   <list-item v="arrimar"/>
-   <list-item v="arrinconar"/>
-   <list-item v="arrojar"/>
-   <list-item v="arropar"/>
-   <list-item v="arruinar"/>
-   <list-item v="asalariar"/>
-   <list-item v="asar"/>
-   <list-item v="asediar"/>
-   <list-item v="asegurar"/>
-   <list-item v="asesorar"/>
-   <list-item v="asir"/>
-   <list-item v="asolar"/>
-   <list-item v="asombrar"/>
-   <list-item v="asustar"/>
-   <list-item v="atacar"/>
-   <list-item v="atar"/>
-   <list-item v="atascar"/>
-   <list-item v="atemorizar"/>
-   <list-item v="atender"/>
-   <list-item v="aterrar"/>
-   <list-item v="aterrorizar"/>
-   <list-item v="atizar"/>
-   <list-item v="atormentar"/>
-   <list-item v="atornillar"/>
-   <list-item v="atraer"/>
-   <list-item v="atrapar"/>
-   <list-item v="atrasar"/>
-   <list-item v="atravesar"/>
-   <list-item v="atropellar"/>
-   <list-item v="aunar"/>
-   <list-item v="aupar"/>
-   <list-item v="auscultar"/>
-   <list-item v="autentificar"/>
-   <list-item v="autoinculpar"/>
-   <list-item v="automatizar"/>
-   <list-item v="autorizar"/>
-   <list-item v="auxiliar"/>
-   <list-item v="avalar"/>
-   <list-item v="aventajar"/>
-   <list-item v="avergonzar"/>
-   <list-item v="avisar"/>
-   <list-item v="ayudar"/>
-   <list-item v="azotar"/>
-   <list-item v="azuzar"/>
-   <list-item v="bailar"/>
-   <list-item v="balancear"/>
-   <list-item v="bañar"/>
-   <list-item v="barrer"/>
-   <list-item v="batir"/>
-   <list-item v="bautizar"/>
-   <list-item v="bendecir"/>
-   <list-item v="beneficiar"/>
-   <list-item v="besar"/>
-   <list-item v="broncear"/>
-   <list-item v="burlar"/>
-   <list-item v="buscar"/>
-   <list-item v="cabrear"/>
-   <list-item v="calar"/>
-   <list-item v="calcular"/>
-   <list-item v="calentar"/>
-   <list-item v="calmar"/>
-   <list-item v="calumniar"/>
-   <list-item v="cambiar"/>
-   <list-item v="canjear"/>
-   <list-item v="canonizar"/>
-   <list-item v="cansar"/>
-   <list-item v="capacitar"/>
-   <list-item v="capar"/>
-   <list-item v="capitanear"/>
-   <list-item v="captar"/>
-   <list-item v="capturar"/>
-   <list-item v="cargar"/>
-   <list-item v="castigar"/>
-   <list-item v="castrar"/>
-   <list-item v="cautivar"/>
-   <list-item v="cazar"/>
-   <list-item v="ceder"/>
-   <list-item v="cegar"/>
-   <list-item v="cepillar"/>
-   <list-item v="cercar"/>
-   <list-item v="cercenar"/>
-   <list-item v="cerrar"/>
-   <list-item v="certificar"/>
-   <list-item v="chamuscar"/>
-   <list-item v="chillar"/>
-   <list-item v="citar"/>
-   <list-item v="civilizar"/>
-   <list-item v="clasificar"/>
-   <list-item v="clavar"/>
-   <list-item v="cocer"/>
-   <list-item v="cocinar"/>
-   <list-item v="codiciar"/>
-   <list-item v="coger"/>
-   <list-item v="cohesionar"/>
-   <list-item v="colgar"/>
-   <list-item v="colocar"/>
-   <list-item v="columpiar"/>
-   <list-item v="comer"/>
-   <list-item v="comisionar"/>
-   <list-item v="compadecer"/>
-   <list-item v="comparar"/>
-   <list-item v="compartir"/>
-   <list-item v="complementar"/>
-   <list-item v="completar"/>
-   <list-item v="comprar"/>
-   <list-item v="comprender"/>
-   <list-item v="concernir"/>
-   <list-item v="conciliar"/>
-   <list-item v="condenar"/>
-   <list-item v="condicionar"/>
-   <list-item v="condoler"/>
-   <list-item v="conferir"/>
-   <list-item v="confesar"/>
-   <list-item v="confinar"/>
-   <list-item v="confundir"/>
-   <list-item v="congelar"/>
-   <list-item v="conllevar"/>
-   <list-item v="conmemorar"/>
-   <list-item v="conminar"/>
-   <list-item v="conmover"/>
-   <list-item v="conocer"/>
-   <list-item v="conseguir"/>
-   <list-item v="conservar"/>
-   <list-item v="considerar"/>
-   <list-item v="consolar"/>
-   <list-item v="consolidar"/>
-   <list-item v="consternar"/>
-   <list-item v="constreñir"/>
-   <list-item v="consumir"/>
-   <list-item v="contar"/>
-   <list-item v="contener"/>
-   <list-item v="contentar"/>
-   <list-item v="contraatacar"/>
-   <list-item v="contradecir"/>
-   <list-item v="contrarrestar"/>
-   <list-item v="contratar"/>
-   <list-item v="controlar"/>
-   <list-item v="contusionar"/>
-   <list-item v="convencer"/>
-   <list-item v="convertir"/>
-   <list-item v="convocar"/>
-   <list-item v="coordinar"/>
-   <list-item v="copiar"/>
-   <list-item v="coronar"/>
-   <list-item v="corregir"/>
-   <list-item v="corroborar"/>
-   <list-item v="corroer"/>
-   <list-item v="corromper"/>
-   <list-item v="cortar"/>
-   <list-item v="cortejar"/>
-   <list-item v="coser"/>
-   <list-item v="cosquillear"/>
-   <list-item v="crear"/>
-   <list-item v="creer"/>
-   <list-item v="criar"/>
-   <list-item v="criminalizar"/>
-   <list-item v="criticar"/>
-   <list-item v="crucificar"/>
-   <list-item v="cuadriplicar"/>
-   <list-item v="cuadruplicar"/>
-   <list-item v="cubrir"/>
-   <list-item v="cuestionar"/>
-   <list-item v="culpar"/>
-   <list-item v="cultivar"/>
-   <list-item v="curar"/>
-   <list-item v="curtir"/>
-   <list-item v="custodiar"/>
-   <list-item v="debilitar"/>
-   <list-item v="decepcionar"/>
-   <list-item v="decorar"/>
-   <list-item v="degradar"/>
-   <list-item v="degustar"/>
-   <list-item v="delatar"/>
-   <list-item v="demandar"/>
-   <list-item v="democratizar"/>
-   <list-item v="demoler"/>
-   <list-item v="denominar"/>
-   <list-item v="denunciar"/>
-   <list-item v="deponer"/>
-   <list-item v="depurar"/>
-   <list-item v="derretir"/>
-   <list-item v="derribar"/>
-   <list-item v="derrocar"/>
-   <list-item v="derrotar"/>
-   <list-item v="desacostumbrar"/>
-   <list-item v="desacreditar"/>
-   <list-item v="desactivar"/>
-   <list-item v="desagradar"/>
-   <list-item v="desahuciar"/>
-   <list-item v="desanimar"/>
-   <list-item v="desaprender"/>
-   <list-item v="desaprobar"/>
-   <list-item v="desaprovechar"/>
-   <list-item v="desarmar"/>
-   <list-item v="desarrollar"/>
-   <list-item v="desarticular"/>
-   <list-item v="desatar"/>
-   <list-item v="desatender"/>
-   <list-item v="descargar"/>
-   <list-item v="descartar"/>
-   <list-item v="descentrar"/>
-   <list-item v="desconocer"/>
-   <list-item v="descoordinar"/>
-   <list-item v="descubrir"/>
-   <list-item v="desdoblar"/>
-   <list-item v="desear"/>
-   <list-item v="desenganchar"/>
-   <list-item v="desengañar"/>
-   <list-item v="desenmascarar"/>
-   <list-item v="desenterrar"/>
-   <list-item v="desequilibrar"/>
-   <list-item v="desesperanzar"/>
-   <list-item v="desesperar"/>
-   <list-item v="desestabilizar"/>
-   <list-item v="desestimar"/>
-   <list-item v="desheredar"/>
-   <list-item v="desilusionar"/>
-   <list-item v="desinfectar"/>
-   <list-item v="desintoxicar"/>
-   <list-item v="desmentir"/>
-   <list-item v="desobedecer"/>
-   <list-item v="desocultar"/>
-   <list-item v="desordenar"/>
-   <list-item v="desorientar"/>
-   <list-item v="despachar"/>
-   <list-item v="despedazar"/>
-   <list-item v="despedir"/>
-   <list-item v="despegar"/>
-   <list-item v="despeinar"/>
-   <list-item v="despejar"/>
-   <list-item v="despeñar"/>
-   <list-item v="desperdigar"/>
-   <list-item v="despertar"/>
-   <list-item v="desplazar"/>
-   <list-item v="desplegar"/>
-   <list-item v="desplumar"/>
-   <list-item v="despojar"/>
-   <list-item v="despolitizar"/>
-   <list-item v="desposeer"/>
-   <list-item v="despreciar"/>
-   <list-item v="desprestigiar"/>
-   <list-item v="destacar"/>
-   <list-item v="destapar"/>
-   <list-item v="desterrar"/>
-   <list-item v="destituir"/>
-   <list-item v="destronar"/>
-   <list-item v="destrozar"/>
-   <list-item v="destruir"/>
-   <list-item v="desvestir"/>
-   <list-item v="desvincular"/>
-   <list-item v="detener"/>
-   <list-item v="detentar"/>
-   <list-item v="detestar"/>
+      <list-item v="abandonar"/>
+      <list-item v="abatir"/>
+      <list-item v="abochornar"/>
+      <list-item v="abominar"/>
+      <list-item v="abordar"/>
+      <list-item v="aborrecer"/>
+      <list-item v="abrazar"/>
+      <list-item v="abrigar"/>
+      <list-item v="abrumar"/>
+      <list-item v="aburrir"/>
+      <list-item v="acallar"/>
+      <list-item v="acariciar"/>
+      <list-item v="acaudillar"/>
+      <list-item v="aceptar"/>
+      <list-item v="aclimatar"/>
+      <list-item v="acoger"/>
+      <list-item v="acometer"/>
+      <list-item v="acompañar"/>
+      <list-item v="aconsejar"/>
+      <list-item v="acosar"/>
+      <list-item v="acostar"/>
+      <list-item v="acunar"/>
+      <list-item v="adiestrar"/>
+      <list-item v="admirar"/>
+      <list-item v="admitir"/>
+      <list-item v="adorar"/>
+      <list-item v="adormecer"/>
+      <list-item v="adquirir"/>
+      <list-item v="adular"/>
+      <list-item v="advertir"/>
+      <list-item v="afectar"/>
+      <list-item v="afeitar"/>
+      <list-item v="afrontar"/>
+      <list-item v="agachar"/>
+      <list-item v="agarrar"/>
+      <list-item v="agitar"/>
+      <list-item v="agotar"/>
+      <list-item v="agradecer"/>
+      <list-item v="agrandar"/>
+      <list-item v="agregar"/>
+      <list-item v="agrupar"/>
+      <list-item v="aguantar"/>
+      <list-item v="aguardar"/>
+      <list-item v="agujerear"/>
+      <list-item v="ahogar"/>
+      <list-item v="ahorcar"/>
+      <list-item v="airear"/>
+      <list-item v="aislar"/>
+      <list-item v="alabar"/>
+      <list-item v="albergar"/>
+      <list-item v="alcanzar"/>
+      <list-item v="alcoholizar"/>
+      <list-item v="alegrar"/>
+      <list-item v="alejar"/>
+      <list-item v="alentar"/>
+      <list-item v="alimentar"/>
+      <list-item v="alinear"/>
+      <list-item v="alistar"/>
+      <list-item v="aliviar"/>
+      <list-item v="alojar"/>
+      <list-item v="alterar"/>
+      <list-item v="aludir"/>
+      <list-item v="alumbrar"/>
+      <list-item v="alzar"/>
+      <list-item v="amamantar"/>
+      <list-item v="amar"/>
+      <list-item v="amargar"/>
+      <list-item v="amarrar"/>
+      <list-item v="amenazar"/>
+      <list-item v="amonestar"/>
+      <list-item v="amontonar"/>
+      <list-item v="angustiar"/>
+      <list-item v="animar"/>
+      <list-item v="aniquilar"/>
+      <list-item v="anular"/>
+      <list-item v="apaciguar"/>
+      <list-item v="apalear"/>
+      <list-item v="apartar"/>
+      <list-item v="apasionar"/>
+      <list-item v="apelar"/>
+      <list-item v="apetecer"/>
+      <list-item v="aplastar"/>
+      <list-item v="aplaudir"/>
+      <list-item v="aporrear"/>
+      <list-item v="apoyar"/>
+      <list-item v="apreciar"/>
+      <list-item v="apresurar"/>
+      <list-item v="apretar"/>
+      <list-item v="aprobar"/>
+      <list-item v="aprovechar"/>
+      <list-item v="aprovisionar"/>
+      <list-item v="apuntar"/>
+      <list-item v="apuñalar"/>
+      <list-item v="apurar"/>
+      <list-item v="armar"/>
+      <list-item v="arrancar"/>
+      <list-item v="arrasar"/>
+      <list-item v="arrastrar"/>
+      <list-item v="arrestar"/>
+      <list-item v="arriesgar"/>
+      <list-item v="arrimar"/>
+      <list-item v="arrinconar"/>
+      <list-item v="arrojar"/>
+      <list-item v="arropar"/>
+      <list-item v="arruinar"/>
+      <list-item v="asalariar"/>
+      <list-item v="asar"/>
+      <list-item v="asediar"/>
+      <list-item v="asegurar"/>
+      <list-item v="asesorar"/>
+      <list-item v="asir"/>
+      <list-item v="asolar"/>
+      <list-item v="asombrar"/>
+      <list-item v="asustar"/>
+      <list-item v="atacar"/>
+      <list-item v="atar"/>
+      <list-item v="atascar"/>
+      <list-item v="atemorizar"/>
+      <list-item v="atender"/>
+      <list-item v="aterrar"/>
+      <list-item v="aterrorizar"/>
+      <list-item v="atizar"/>
+      <list-item v="atormentar"/>
+      <list-item v="atornillar"/>
+      <list-item v="atraer"/>
+      <list-item v="atrapar"/>
+      <list-item v="atrasar"/>
+      <list-item v="atravesar"/>
+      <list-item v="atropellar"/>
+      <list-item v="aunar"/>
+      <list-item v="aupar"/>
+      <list-item v="auscultar"/>
+      <list-item v="autentificar"/>
+      <list-item v="autoinculpar"/>
+      <list-item v="automatizar"/>
+      <list-item v="autorizar"/>
+      <list-item v="auxiliar"/>
+      <list-item v="avalar"/>
+      <list-item v="aventajar"/>
+      <list-item v="avergonzar"/>
+      <list-item v="avisar"/>
+      <list-item v="ayudar"/>
+      <list-item v="azotar"/>
+      <list-item v="azuzar"/>
+      <list-item v="bailar"/>
+      <list-item v="balancear"/>
+      <list-item v="bañar"/>
+      <list-item v="barrer"/>
+      <list-item v="batir"/>
+      <list-item v="bautizar"/>
+      <list-item v="bendecir"/>
+      <list-item v="beneficiar"/>
+      <list-item v="besar"/>
+      <list-item v="broncear"/>
+      <list-item v="burlar"/>
+      <list-item v="buscar"/>
+      <list-item v="cabrear"/>
+      <list-item v="calar"/>
+      <list-item v="calcular"/>
+      <list-item v="calentar"/>
+      <list-item v="calmar"/>
+      <list-item v="calumniar"/>
+      <list-item v="cambiar"/>
+      <list-item v="canjear"/>
+      <list-item v="canonizar"/>
+      <list-item v="cansar"/>
+      <list-item v="capacitar"/>
+      <list-item v="capar"/>
+      <list-item v="capitanear"/>
+      <list-item v="captar"/>
+      <list-item v="capturar"/>
+      <list-item v="caracterizar"/>
+      <list-item v="cargar"/>
+      <list-item v="casar"/>
+      <list-item v="castigar"/>
+      <list-item v="castrar"/>
+      <list-item v="cautivar"/>
+      <list-item v="cazar"/>
+      <list-item v="cegar"/>
+      <list-item v="cepillar"/>
+      <list-item v="cercar"/>
+      <list-item v="cercenar"/>
+      <list-item v="cerrar"/>
+      <list-item v="certificar"/>
+      <list-item v="chamuscar"/>
+      <list-item v="chillar"/>
+      <list-item v="citar"/>
+      <list-item v="civilizar"/>
+      <list-item v="clasificar"/>
+      <list-item v="clavar"/>
+      <list-item v="cocer"/>
+      <list-item v="cocinar"/>
+      <list-item v="codiciar"/>
+      <list-item v="coger"/>
+      <list-item v="cohesionar"/>
+      <list-item v="colgar"/>
+      <list-item v="colocar"/>
+      <list-item v="columpiar"/>
+      <list-item v="combatir"/>
+      <list-item v="comer"/>
+      <list-item v="comisionar"/>
+      <list-item v="compadecer"/>
+      <list-item v="comparar"/>
+      <list-item v="compartir"/>
+      <list-item v="complementar"/>
+      <list-item v="completar"/>
+      <list-item v="comprar"/>
+      <list-item v="comprender"/>
+      <list-item v="concernir"/>
+      <list-item v="conciliar"/>
+      <list-item v="condenar"/>
+      <list-item v="condicionar"/>
+      <list-item v="condoler"/>
+      <list-item v="conferir"/>
+      <list-item v="confesar"/>
+      <list-item v="confinar"/>
+      <list-item v="confundir"/>
+      <list-item v="congelar"/>
+      <list-item v="conmemorar"/>
+      <list-item v="conminar"/>
+      <list-item v="conmover"/>
+      <list-item v="conocer"/>
+      <list-item v="conseguir"/>
+      <list-item v="conservar"/>
+      <list-item v="considerar"/>
+      <list-item v="consolar"/>
+      <list-item v="consolidar"/>
+      <list-item v="consternar"/>
+      <list-item v="constreñir"/>
+      <list-item v="contactar"/>
+      <list-item v="contar"/>
+      <list-item v="contener"/>
+      <list-item v="contentar"/>
+      <list-item v="contraatacar"/>
+      <list-item v="contradecir"/>
+      <list-item v="contrarrestar"/>
+      <list-item v="contratar"/>
+      <list-item v="controlar"/>
+      <list-item v="contusionar"/>
+      <list-item v="convencer"/>
+      <list-item v="convertir"/>
+      <list-item v="convocar"/>
+      <list-item v="coordinar"/>
+      <list-item v="copiar"/>
+      <list-item v="coronar"/>
+      <list-item v="corregir"/>
+      <list-item v="corroborar"/>
+      <list-item v="corroer"/>
+      <list-item v="corromper"/>
+      <list-item v="cortar"/>
+      <list-item v="cortejar"/>
+      <list-item v="coser"/>
+      <list-item v="cosquillear"/>
+      <list-item v="crear"/>
+      <list-item v="creer"/>
+      <list-item v="criar"/>
+      <list-item v="criminalizar"/>
+      <list-item v="criticar"/>
+      <list-item v="crucificar"/>
+      <list-item v="cubrir"/>
+      <list-item v="cuestionar"/>
+      <list-item v="culpar"/>
+      <list-item v="cultivar"/>
+      <list-item v="curar"/>
+      <list-item v="curtir"/>
+      <list-item v="custodiar"/>
+      <list-item v="debilitar"/>
+      <list-item v="decepcionar"/>
+      <list-item v="decorar"/>
+      <list-item v="degradar"/>
+      <list-item v="degustar"/>
+      <list-item v="delatar"/>
+      <list-item v="demandar"/>
+      <list-item v="democratizar"/>
+      <list-item v="demoler"/>
+      <list-item v="denominar"/>
+      <list-item v="denunciar"/>
+      <list-item v="deponer"/>
+      <list-item v="depurar"/>
+      <list-item v="derretir"/>
+      <list-item v="derribar"/>
+      <list-item v="derrocar"/>
+      <list-item v="derrotar"/>
+      <list-item v="desacostumbrar"/>
+      <list-item v="desacreditar"/>
+      <list-item v="desactivar"/>
+      <list-item v="desagradar"/>
+      <list-item v="desahuciar"/>
+      <list-item v="desanimar"/>
+      <list-item v="desaprender"/>
+      <list-item v="desaprobar"/>
+      <list-item v="desaprovechar"/>
+      <list-item v="desarmar"/>
+      <list-item v="desarrollar"/>
+      <list-item v="desarticular"/>
+      <list-item v="desatar"/>
+      <list-item v="desatender"/>
+      <list-item v="desbancar"/>
+      <list-item v="descargar"/>
+      <list-item v="descartar"/>
+      <list-item v="descentrar"/>
+      <list-item v="desconocer"/>
+      <list-item v="descoordinar"/>
+      <list-item v="descubrir"/>
+      <list-item v="desdoblar"/>
+      <list-item v="desear"/>
+      <list-item v="desenganchar"/>
+      <list-item v="desengañar"/>
+      <list-item v="desenmascarar"/>
+      <list-item v="desenterrar"/>
+      <list-item v="desequilibrar"/>
+      <list-item v="desesperanzar"/>
+      <list-item v="desesperar"/>
+      <list-item v="desestabilizar"/>
+      <list-item v="desestimar"/>
+      <list-item v="desgastar"/>
+      <list-item v="desheredar"/>
+      <list-item v="desilusionar"/>
+      <list-item v="desinfectar"/>
+      <list-item v="desintoxicar"/>
+      <list-item v="desmentir"/>
+      <list-item v="desobedecer"/>
+      <list-item v="desocultar"/>
+      <list-item v="desordenar"/>
+      <list-item v="desorientar"/>
+      <list-item v="despachar"/>
+      <list-item v="despedazar"/>
+      <list-item v="despedir"/>
+      <list-item v="despegar"/>
+      <list-item v="despeinar"/>
+      <list-item v="despejar"/>
+      <list-item v="despeñar"/>
+      <list-item v="desperdigar"/>
+      <list-item v="despertar"/>
+      <list-item v="desplazar"/>
+      <list-item v="desplegar"/>
+      <list-item v="desplumar"/>
+      <list-item v="despojar"/>
+      <list-item v="despolitizar"/>
+      <list-item v="desposar"/>
+      <list-item v="desposeer"/>
+      <list-item v="despreciar"/>
+      <list-item v="desprestigiar"/>
+      <list-item v="destacar"/>
+      <list-item v="destapar"/>
+      <list-item v="desterrar"/>
+      <list-item v="destituir"/>
+      <list-item v="destronar"/>
+      <list-item v="destrozar"/>
+      <list-item v="destruir"/>
+      <list-item v="desvestir"/>
+      <list-item v="desvincular"/>
+      <list-item v="detener"/>
+      <list-item v="detentar"/>
+      <list-item v="detestar"/>
+      <list-item v="dibujar"/>
+      <list-item v="diputar"/>
+      <list-item v="disculpar"/>
+      <list-item v="disfrazar"/>
+      <list-item v="disgustar"/>
+      <list-item v="dispensar"/>
+      <list-item v="disponer"/>
+      <list-item v="disputar"/>
+      <list-item v="distanciar"/>
+      <list-item v="distinguir"/>
+      <list-item v="distraer"/>
+      <list-item v="disuadir"/>
+      <list-item v="divertir"/>
+      <list-item v="domar"/>
+      <list-item v="domesticar"/>
+      <list-item v="dominar"/>
+      <list-item v="dotar"/>
+      <list-item v="echar"/>
+      <list-item v="educar"/>
+      <list-item v="ejecutar"/>
+      <list-item v="electrocutar"/>
+      <list-item v="elegir"/>
+      <list-item v="eliminar"/>
+      <list-item v="elogiar"/>
+      <list-item v="embalsamar"/>
+      <list-item v="embarazar"/>
+      <list-item v="embarcar"/>
+      <list-item v="embaucar"/>
+      <list-item v="embellecer"/>
+      <list-item v="embetunar"/>
+      <list-item v="emborrachar"/>
+      <list-item v="embozar"/>
+      <list-item v="embriagar"/>
+      <list-item v="embrollar"/>
+      <list-item v="embrujar"/>
+      <list-item v="empalar"/>
+      <list-item v="empapar"/>
+      <list-item v="empaquetar"/>
+      <list-item v="emparejar"/>
+      <list-item v="emplear"/>
+      <list-item v="empobrecer"/>
+      <list-item v="empujar"/>
+      <list-item v="encaminar"/>
+      <list-item v="encantar"/>
+      <list-item v="encapuchar"/>
+      <list-item v="encapuzar"/>
+      <list-item v="encarcelar"/>
+      <list-item v="encerrar"/>
+      <list-item v="encontrar"/>
+      <list-item v="enderezar"/>
+      <list-item v="enemistar"/>
+      <list-item v="enfrentar"/>
+      <list-item v="enfurecer"/>
+      <list-item v="engalanar"/>
+      <list-item v="engañar"/>
+      <list-item v="enjaular"/>
+      <list-item v="enmascarar"/>
+      <list-item v="enojar"/>
+      <list-item v="enredar"/>
+      <list-item v="enriquecer"/>
+      <list-item v="enrojecer"/>
+      <list-item v="ensalzar"/>
+      <list-item v="enseñar"/>
+      <list-item v="ensuciar"/>
+      <list-item v="entender"/>
+      <list-item v="enterrar"/>
+      <list-item v="entrecasar"/>
+      <list-item v="entregar"/>
+      <list-item v="entrelazar"/>
+      <list-item v="entremezclar"/>
+      <list-item v="entretener"/>
+      <list-item v="entristecer"/>
+      <list-item v="entusiasmar"/>
+      <list-item v="enumerar"/>
+      <list-item v="envasar"/>
+      <list-item v="envenenar"/>
+      <list-item v="enviciar"/>
+      <list-item v="envidiar"/>
+      <list-item v="envilecer"/>
+      <list-item v="equiparar"/>
+      <list-item v="erigir"/>
+      <list-item v="erradicar"/>
+      <list-item v="escaldar"/>
+      <list-item v="escoger"/>
+      <list-item v="esconder"/>
+      <list-item v="escuchar"/>
+      <list-item v="escudar"/>
+      <list-item v="esculpir"/>
+      <list-item v="escupir"/>
+      <list-item v="espabilar"/>
+      <list-item v="espantar"/>
+      <list-item v="especializar"/>
+      <list-item v="esperar"/>
+      <list-item v="espolear"/>
+      <list-item v="esquivar"/>
+      <list-item v="estabilizar"/>
+      <list-item v="estampar"/>
+      <list-item v="esterilizar"/>
+      <list-item v="estilizar"/>
+      <list-item v="estimar"/>
+      <list-item v="estirar"/>
+      <list-item v="estorbar"/>
+      <list-item v="estrellar"/>
+      <list-item v="estupidizar"/>
+      <list-item v="evaluar"/>
+      <list-item v="evitar"/>
+      <list-item v="evocar"/>
+      <list-item v="exacerbar"/>
+      <list-item v="examinar"/>
+      <list-item v="exceptuar"/>
+      <list-item v="excitar"/>
+      <list-item v="excomulgar"/>
+      <list-item v="exhibir"/>
+      <list-item v="exhortar"/>
+      <list-item v="exigir"/>
+      <list-item v="exiliar"/>
+      <list-item v="eximir"/>
+      <list-item v="expatriar"/>
+      <list-item v="explorar"/>
+      <list-item v="exponer"/>
+      <list-item v="exprimir"/>
+      <list-item v="expropiar"/>
+      <list-item v="expulsar"/>
+      <list-item v="exterminar"/>
+      <list-item v="extinguir"/>
+      <list-item v="extorsionar"/>
+      <list-item v="extralimitar"/>
+      <list-item v="extrañar"/>
+      <list-item v="fabricar"/>
+      <list-item v="facturar"/>
+      <list-item v="fascinar"/>
+      <list-item v="fastidiar"/>
+      <list-item v="fatigar"/>
+      <list-item v="favorecer"/>
+      <list-item v="felicitar"/>
+      <list-item v="fertilizar"/>
+      <list-item v="festejar"/>
+      <list-item v="formar"/>
+      <list-item v="fortalecer"/>
+      <list-item v="fortificar"/>
+      <list-item v="forzar"/>
+      <list-item v="frotar"/>
+      <list-item v="fundir"/>
+      <list-item v="galardonar"/>
+      <list-item v="ganar"/>
+      <list-item v="gasear"/>
+      <list-item v="glorificar"/>
+      <list-item v="gobernar"/>
+      <list-item v="golpear"/>
+      <list-item v="grabar"/>
+      <list-item v="graduar"/>
+      <list-item v="guardar"/>
+      <list-item v="guarnecer"/>
+      <list-item v="guiar"/>
+      <list-item v="habilitar"/>
+      <list-item v="hallar"/>
+      <list-item v="hechizar"/>
+      <list-item v="helenizar"/>
+      <list-item v="herir"/>
+      <list-item v="hipnotizar"/>
+      <list-item v="honrar"/>
+      <list-item v="hospedar"/>
+      <list-item v="hospitalizar"/>
+      <list-item v="hostigar"/>
+      <list-item v="humanizar"/>
+      <list-item v="humillar"/>
+      <list-item v="hundir"/>
+      <list-item v="idealizar"/>
+      <list-item v="identificar"/>
+      <list-item v="idiotizar"/>
+      <list-item v="idolatrar"/>
+      <list-item v="igualar"/>
+      <list-item v="iluminar"/>
+      <list-item v="imaginar"/>
+      <list-item v="imitar"/>
+      <list-item v="impeler"/>
+      <list-item v="importunar"/>
+      <list-item v="impresionar"/>
+      <list-item v="impulsar"/>
+      <list-item v="incapacitar"/>
+      <list-item v="incitar"/>
+      <list-item v="inclinar"/>
+      <list-item v="incomodar"/>
+      <list-item v="incomunicar"/>
+      <list-item v="increpar"/>
+      <list-item v="incubar"/>
+      <list-item v="inculpar"/>
+      <list-item v="indignar"/>
+      <list-item v="infamar"/>
+      <list-item v="infectar"/>
+      <list-item v="inflamar"/>
+      <list-item v="influenciar"/>
+      <list-item v="influir"/>
+      <list-item v="iniciar"/>
+      <list-item v="injuriar"/>
+      <list-item v="inmolar"/>
+      <list-item v="inmortalizar"/>
+      <list-item v="inmunizar"/>
+      <list-item v="inocular"/>
+      <list-item v="inquietar"/>
+      <list-item v="inscribir"/>
+      <list-item v="inspirar"/>
+      <list-item v="instigar"/>
+      <list-item v="instituir"/>
+      <list-item v="instruir"/>
+      <list-item v="insultar"/>
+      <list-item v="intercambiar"/>
+      <list-item v="interesar"/>
+      <list-item v="interiorizar"/>
+      <list-item v="internar"/>
+      <list-item v="interponer"/>
+      <list-item v="interrogar"/>
+      <list-item v="interrumpir"/>
+      <list-item v="introducir"/>
+      <list-item v="inutilizar"/>
+      <list-item v="invalidar"/>
+      <list-item v="inventar"/>
+      <list-item v="invertir"/>
+      <list-item v="invitar"/>
+      <list-item v="involucrar"/>
+      <list-item v="ionizar"/>
+      <list-item v="jorobar"/>
+      <list-item v="juntar"/>
+      <list-item v="juramentar"/>
+      <list-item v="juzgar"/>
+      <list-item v="lamer"/>
+      <list-item v="laurear"/>
+      <list-item v="lavar"/>
+      <list-item v="levantar"/>
+      <list-item v="liar"/>
+      <list-item v="liberar"/>
+      <list-item v="librar"/>
+      <list-item v="licuar"/>
+      <list-item v="liderar"/>
+      <list-item v="limpiar"/>
+      <list-item v="liquidar"/>
+      <list-item v="llamar"/>
+      <list-item v="loar"/>
+      <list-item v="malinterpretar"/>
+      <list-item v="maltratar"/>
+      <list-item v="mamar"/>
+      <list-item v="manchar"/>
+      <list-item v="mandar"/>
+      <list-item v="mantener"/>
+      <list-item v="marcar"/>
+      <list-item v="martirizar"/>
+      <list-item v="masacrar"/>
+      <list-item v="mascar"/>
+      <list-item v="matar"/>
+      <list-item v="mecer"/>
+      <list-item v="medir"/>
+      <list-item v="mejorar"/>
+      <list-item v="menospreciar"/>
+      <list-item v="meter"/>
+      <list-item v="mezclar"/>
+      <list-item v="minar"/>
+      <list-item v="minimizar"/>
+      <list-item v="minusvalorar"/>
+      <list-item v="mirar"/>
+      <list-item v="modelar"/>
+      <list-item v="moderar"/>
+      <list-item v="modernizar"/>
+      <list-item v="mojar"/>
+      <list-item v="moler"/>
+      <list-item v="molestar"/>
+      <list-item v="morder"/>
+      <list-item v="mortificar"/>
+      <list-item v="mostrar"/>
+      <list-item v="mover"/>
+      <list-item v="multiplicar"/>
+      <list-item v="naturalizar"/>
+      <list-item v="necesitar"/>
+      <list-item v="neutralizar"/>
+      <list-item v="nivelar"/>
+      <list-item v="nombrar"/>
+      <list-item v="normalizar"/>
+      <list-item v="notificar"/>
+      <list-item v="numerar"/>
+      <list-item v="nutrir"/>
+      <list-item v="obedecer"/>
+      <list-item v="obligar"/>
+      <list-item v="obsequiar"/>
+      <list-item v="obstaculizar"/>
+      <list-item v="obstruir"/>
+      <list-item v="obtener"/>
+      <list-item v="ocasionar"/>
+      <list-item v="ocultar"/>
+      <list-item v="ocupar"/>
+      <list-item v="odiar"/>
+      <list-item v="ofender"/>
+      <list-item v="oír"/>
+      <list-item v="olvidar"/>
+      <list-item v="omitir"/>
+      <list-item v="oponer"/>
+      <list-item v="oprimir"/>
+      <list-item v="orientar"/>
+      <list-item v="oscurecer"/>
+      <list-item v="otorgar"/>
+      <list-item v="pacificar"/>
+      <list-item v="padecer"/>
+      <list-item v="palpar"/>
+      <list-item v="paralizar"/>
+      <list-item v="parir"/>
+      <list-item v="pasear"/>
+      <list-item v="patentar"/>
+      <list-item v="pegar"/>
+      <list-item v="peinar"/>
+      <list-item v="pellizcar"/>
+      <list-item v="penalizar"/>
+      <list-item v="penar"/>
+      <list-item v="penetrar"/>
+      <list-item v="perder"/>
+      <list-item v="perdonar"/>
+      <list-item v="perfeccionar"/>
+      <list-item v="perfumar"/>
+      <list-item v="permutar"/>
+      <list-item v="perpetuar"/>
+      <list-item v="perseguir"/>
+      <list-item v="pesar"/>
+      <list-item v="pescar"/>
+      <list-item v="picar"/>
+      <list-item v="pillar"/>
+      <list-item v="pinchar"/>
+      <list-item v="pintar"/>
+      <list-item v="pisotear"/>
+      <list-item v="plantar"/>
+      <list-item v="podar"/>
+      <list-item v="poder"/>
+      <list-item v="politizar"/>
+      <list-item v="popularizar"/>
+      <list-item v="poseer"/>
+      <list-item v="posibilitar"/>
+      <list-item v="potenciar"/>
+      <list-item v="precipitar"/>
+      <list-item v="preferir"/>
+      <list-item v="preguntar"/>
+      <list-item v="premiar"/>
+      <list-item v="preocupar"/>
+      <list-item v="preparar"/>
+      <list-item v="preservar"/>
+      <list-item v="presionar"/>
+      <list-item v="prestar"/>
+      <list-item v="prestigiar"/>
+      <list-item v="pretender"/>
+      <list-item v="prevenir"/>
+      <list-item v="primar"/>
+      <list-item v="privar"/>
+      <list-item v="privatizar"/>
+      <list-item v="privilegiar"/>
+      <list-item v="probar"/>
+      <list-item v="procesar"/>
+      <list-item v="proclamar"/>
+      <list-item v="procrastinar"/>
+      <list-item v="producir"/>
+      <list-item v="proporcionar"/>
+      <list-item v="propulsar"/>
+      <list-item v="proveer"/>
+      <list-item v="proyectar"/>
+      <list-item v="pulir"/>
+      <list-item v="quemar"/>
+      <list-item v="querer"/>
+      <list-item v="quitar"/>
+      <list-item v="radicalizar"/>
+      <list-item v="rajar"/>
+      <list-item v="rapar"/>
+      <list-item v="rascar"/>
+      <list-item v="razonar"/>
+      <list-item v="readmitir"/>
+      <list-item v="reanimar"/>
+      <list-item v="rearmar"/>
+      <list-item v="rechazar"/>
+      <list-item v="recibir"/>
+      <list-item v="reciclar"/>
+      <list-item v="recluir"/>
+      <list-item v="reclutar"/>
+      <list-item v="recobrar"/>
+      <list-item v="recoger"/>
+      <list-item v="recolectar"/>
+      <list-item v="recombinar"/>
+      <list-item v="recomprar"/>
+      <list-item v="rectificar"/>
+      <list-item v="recubrir"/>
+      <list-item v="recurrir"/>
+      <list-item v="redimir"/>
+      <list-item v="reelegir"/>
+      <list-item v="reemplazar"/>
+      <list-item v="reencontrar"/>
+      <list-item v="reenviar"/>
+      <list-item v="reformar"/>
+      <list-item v="reforzar"/>
+      <list-item v="refrenar"/>
+      <list-item v="registrar"/>
+      <list-item v="regular"/>
+      <list-item v="regularizar"/>
+      <list-item v="rehabilitar"/>
+      <list-item v="rehospitalizar"/>
+      <list-item v="rehusar"/>
+      <list-item v="reinsertar"/>
+      <list-item v="reintroducir"/>
+      <list-item v="relacionar"/>
+      <list-item v="relegar"/>
+      <list-item v="rematar"/>
+      <list-item v="remendar"/>
+      <list-item v="remodelar"/>
+      <list-item v="remolcar"/>
+      <list-item v="remontar"/>
+      <list-item v="remunerar"/>
+      <list-item v="renovar"/>
+      <list-item v="rentabilizar"/>
+      <list-item v="reordenar"/>
+      <list-item v="reorientar"/>
+      <list-item v="repartir"/>
+      <list-item v="repatriar"/>
+      <list-item v="reportar"/>
+      <list-item v="reprender"/>
+      <list-item v="representar"/>
+      <list-item v="reprimir"/>
+      <list-item v="reprobar"/>
+      <list-item v="reprochar"/>
+      <list-item v="reproducir"/>
+      <list-item v="repudiar"/>
+      <list-item v="repugnar"/>
+      <list-item v="repulsar"/>
+      <list-item v="rescatar"/>
+      <list-item v="reservar"/>
+      <list-item v="resguardar"/>
+      <list-item v="respaldar"/>
+      <list-item v="respectar"/>
+      <list-item v="respetar"/>
+      <list-item v="responsabilizar"/>
+      <list-item v="restablecer"/>
+      <list-item v="resucitar"/>
+      <list-item v="retener"/>
+      <list-item v="retocar"/>
+      <list-item v="retomar"/>
+      <list-item v="retorcer"/>
+      <list-item v="retrasar"/>
+      <list-item v="retratar"/>
+      <list-item v="reunificar"/>
+      <list-item v="revalidar"/>
+      <list-item v="ridiculizar"/>
+      <list-item v="rifar"/>
+      <list-item v="rizar"/>
+      <list-item v="robar"/>
+      <list-item v="rodear"/>
+      <list-item v="rogar"/>
+      <list-item v="romanizar"/>
+      <list-item v="romper"/>
+      <list-item v="rozar"/>
+      <list-item v="saborear"/>
+      <list-item v="saciar"/>
+      <list-item v="sacralizar"/>
+      <list-item v="sacrificar"/>
+      <list-item v="sacudir"/>
+      <list-item v="saludar"/>
+      <list-item v="salvaguardar"/>
+      <list-item v="salvar"/>
+      <list-item v="sanar"/>
+      <list-item v="sancionar"/>
+      <list-item v="saquear"/>
+      <list-item v="satisfacer"/>
+      <list-item v="saturar"/>
+      <list-item v="sazonar"/>
+      <list-item v="secar"/>
+      <list-item v="seccionar"/>
+      <list-item v="secularizar"/>
+      <list-item v="secundar"/>
+      <list-item v="seducir"/>
+      <list-item v="segar"/>
+      <list-item v="segregar"/>
+      <list-item v="seguir"/>
+      <list-item v="sensibilizar"/>
+      <list-item v="sentar"/>
+      <list-item v="sentenciar"/>
+      <list-item v="sentir"/>
+      <list-item v="separar"/>
+      <list-item v="sepultar"/>
+      <list-item v="silenciar"/>
+      <list-item v="sobornar"/>
+      <list-item v="sobrealimentar"/>
+      <list-item v="sobrecargar"/>
+      <list-item v="sobrepasar"/>
+      <list-item v="socorrer"/>
+      <list-item v="sofocar"/>
+      <list-item v="solucionar"/>
+      <list-item v="solventar"/>
+      <list-item v="someter"/>
+      <list-item v="soportar"/>
+      <list-item v="sorprender"/>
+      <list-item v="sortear"/>
+      <list-item v="sosegar"/>
+      <list-item v="sostener"/>
+      <list-item v="suavizar"/>
+      <list-item v="subestimar"/>
+      <list-item v="subordinar"/>
+      <list-item v="subyugar"/>
+      <list-item v="sufrir"/>
+      <list-item v="sujetar"/>
+      <list-item v="superar"/>
+      <list-item v="supervisar"/>
+      <list-item v="suprimir"/>
+      <list-item v="suspender"/>
+      <list-item v="sustentar"/>
+      <list-item v="tachar"/>
+      <list-item v="temer"/>
+      <list-item v="tentar"/>
+      <list-item v="timar"/>
+      <list-item v="tirar"/>
+      <list-item v="tirotear"/>
+      <list-item v="tocar"/>
+      <list-item v="tolerar"/>
+      <list-item v="tomar"/>
+      <list-item v="torturar"/>
+      <list-item v="traicionar"/>
+      <list-item v="tranquilizar"/>
+      <list-item v="transferir"/>
+      <list-item v="transformar"/>
+      <list-item v="transportar"/>
+      <list-item v="trastornar"/>
+      <list-item v="tratar"/>
+      <list-item v="travestir"/>
+      <list-item v="tumbar"/>
+      <list-item v="ubicar"/>
+      <list-item v="ultrajar"/>
+      <list-item v="ungir"/>
+      <list-item v="unir"/>
+      <list-item v="usar"/>
+      <list-item v="utilizar"/>
+      <list-item v="velar"/>
+      <list-item v="vencer"/>
+      <list-item v="vender"/>
+      <list-item v="vengar"/>
+      <list-item v="ver"/>
+      <list-item v="vestir"/>
+      <list-item v="vigilar"/>
+      <list-item v="vincular"/>
+      <list-item v="violar"/>
+      <list-item v="violentar"/>
+      <list-item v="visitar"/>
+      <list-item v="visualizar"/>
+      <list-item v="vituperar"/>
+      <list-item v="volcar"/>
+      <list-item v="zarandear"/>
+      <list-item v="zurrar"/>
   </def-list>
 
   </section-def-lists>
@@ -2538,6 +3148,12 @@
             <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="beber"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="fortrinki"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="tragar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="forgluti"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
@@ -2825,6 +3441,12 @@
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
             <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="apreciar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="vidi"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="disputar"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="konkuri"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
@@ -2842,6 +3464,18 @@
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbser"/></let>
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="sustraer# a"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="eviti"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="sentir"/></equal></test>
+	      <let><clip pos="3" side="tl" part="lem"/><lit v="farti"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
 
             <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="poner# en evidencia"/></equal></test>
@@ -2853,6 +3487,12 @@
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="suicidar"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="mortigi"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v=""/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="acomodar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="instaliĝi"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
               <let><var n="forigi_ref"/><lit v=""/></let>
             </when>
             <when>
@@ -3691,6 +4331,7 @@
 	              <tag><var n="vimpers"/></tag>
 	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV01"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -3729,6 +4370,7 @@
 	              <tag><var n="vimpers"/></tag>
 	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV02"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -3767,6 +4409,7 @@
 	              <tag><var n="vimpers"/></tag>
 	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV03"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -3908,6 +4551,7 @@
 	              <tag><var n="vimpers"/></tag>
 	              <tag><var n="vigxi1"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV04"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -3983,6 +4627,7 @@
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV05"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -4021,6 +4666,7 @@
 	              <tag><lit-tag v="gerpast"/></tag>
 	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV06"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -4061,6 +4707,7 @@
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV07"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -4204,6 +4851,7 @@
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="vimpers"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV08"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -4279,6 +4927,7 @@
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV09"/></tag>
 <tag><var n="debug1"/></tag>
@@ -4314,6 +4963,7 @@
                       <tag><lit-tag v="vbntr"/></tag>
 	              <tag><lit-tag v="gerpast"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV10"/></tag>
 <tag><var n="debug1"/></tag>
@@ -4351,6 +5001,7 @@
                       <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV11"/></tag>
 <tag><var n="debug1"/></tag>
@@ -4491,6 +5142,7 @@
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
                       <tag><lit-tag v="iĝi"/></tag>
 <tag><lit-tag v="SV12"/></tag>
 <tag><var n="debug1"/></tag>
@@ -4593,6 +5245,414 @@
 	</let>
       </action>
     </rule>
+
+
+<!--
+    <rule comment="REGLA: ANTROPÒNIM ANTROPÒNIM (Pierre Dupont)">
+      <pattern>
+        <pattern-item n="ant"/>
+        <pattern-item n="antunk"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="nombre"/>
+          <clip pos="1" side="tl" part="nbr"/>
+        </let>
+        <out>
+          <chunk name="ant2" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: ANTROPÒNIM ANTROPÒNIM (Pierre Dupont)">
+      <pattern>
+        <pattern-item n="antunk"/>
+        <pattern-item n="ant"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="2"/>
+        </call-macro>
+        <let>
+          <var n="nombre"/>
+          <clip pos="1" side="tl" part="nbr"/>
+        </let>
+        <out>
+          <chunk name="ant3" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+-->
+
+
+    <rule comment="REGLA: ANTROPÒNIM de NP (Pierre de Bretagne, Alexander von Humboldt)">
+      <pattern>
+        <pattern-item n="ant"/>
+        <pattern-item n="de_von"/>
+        <pattern-item n="npunk"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <let><var n="nombre"/><clip pos="1" side="tl" part="nbr"/></let>
+   <choose>
+     <when>
+      <test>
+        <equal caseless="yes"><clip pos="2" side="sl" part="lem"/><lit v="ir"/></equal>
+      </test>
+        <let><clip pos="2" side="tl" part="lem"/><lit v="van"/></let>
+     </when>
+   </choose>
+        <out>
+          <chunk name="ant2" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+<!--
+    <rule comment="REGLA: Saint-NP (Saint-Pierre)">
+      <pattern>
+        <pattern-item n="Saint"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="npunk"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="loc" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><lit-tag v="sg.nom"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="sl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="sl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="sl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: NP-Saint-NP (Lay-Saint-Pierre)">
+      <pattern>
+        <pattern-item n="npunk"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="Saint"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="npunk"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="loc" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><lit-tag v="sg.nom"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="sl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="sl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="sl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="sl" part="lem"/>
+              <clip pos="4" side="tl" part="tags"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="5" side="sl" part="lem"/>
+              <clip pos="5" side="tl" part="tags"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: Saint-NP-any-NP (Saint-Etienne-les-Remiremont)">
+      <pattern>
+        <pattern-item n="Saint"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="npunk"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="any"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="npunk"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="loc333" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><lit-tag v="sg.nom"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="sl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="sl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="sl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="sl" part="lem"/>
+              <clip pos="4" side="tl" part="tags"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="5" side="sl" part="lem"/>
+              <clip pos="5" side="tl" part="tags"/>
+            </lu>
+            <b pos="5"/>
+            <lu>
+              <clip pos="6" side="sl" part="lem"/>
+              <clip pos="6" side="tl" part="tags"/>
+            </lu>
+            <b pos="6"/>
+            <lu>
+              <clip pos="7" side="sl" part="lem"/>
+              <clip pos="7" side="tl" part="tags"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+-->
+
+
+<!--
+    <rule comment="REGLA: ANTROPÒNIM-ANTROPÒNIM (Jean-Michel)">
+      <pattern>
+        <pattern-item n="ant"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="antunk"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="1"/>
+        </call-macro>
+        <let>
+          <var n="nombre"/>
+          <clip pos="1" side="tl" part="nbr"/>
+        </let>
+        <out>
+          <chunk name="ant2" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="sl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: ANTROPÒNIM-ANTROPÒNIM (Jean-Michel)">
+      <pattern>
+        <pattern-item n="antunk"/>
+        <pattern-item n="guio"/>
+        <pattern-item n="ant"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="nom_cas">
+          <with-param pos="3"/>
+        </call-macro>
+        <let>
+          <var n="nombre"/>
+          <clip pos="1" side="tl" part="nbr"/>
+        </let>
+        <out>
+          <chunk name="ant3" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="3" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="tags"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="sl" part="lem"/>
+              <clip pos="2" side="tl" part="tags"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+        </out>
+        <let>
+          <var n="caseFirstWord"/>
+          <lit v="aa"/>
+        </let>
+      </action>
+    </rule>
+-->
 
 
 <rule comment="REGLA: ART TOPÓNIMO (Los Pirineos - Pireneoj; se elimina el artículo)">
@@ -15392,6 +16452,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="3" side="tl" part="a_verb"/></tag>
 	              <tag><lit-tag v="gerpast"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV13"/></tag>
                     </tags>
                     <lu>
@@ -15434,6 +16495,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               <tag><clip pos="4" side="tl" part="a_verb"/></tag>
               <tag><lit-tag v="gerpast"/></tag>
               <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV14"/></tag>
             </tags>
             <lu>
@@ -15486,6 +16548,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               <tag><clip pos="4" side="tl" part="a_verb"/></tag>
               <tag><lit-tag v="gerpast"/></tag>
               <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV13b"/></tag>
             </tags>
             <lu>
@@ -15539,6 +16602,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
               <tag><clip pos="5" side="tl" part="a_verb"/></tag>
               <tag><lit-tag v="gerpast"/></tag>
               <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV14b"/></tag>
             </tags>
             <lu>
@@ -15587,6 +16651,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="3" side="tl" part="a_verb"/></tag>
 	              <tag><lit-tag v="gerpast"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV15"/></tag>
                     </tags>
                     <lu>
@@ -15637,6 +16702,7 @@ x- canvio els comentaris interiors per x- en comptes de doble guió per qüestio
                       <tag><clip pos="4" side="tl" part="a_verb"/></tag>
 	              <tag><lit-tag v="gerpast"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV16"/></tag>
                     </tags>
                     <lu>
@@ -16636,6 +17702,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV17"/></tag>
                     </tags>
                     <lu>
@@ -16692,6 +17759,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <tag><clip pos="1" side="tl" part="pers"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
               <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV18"/></tag>
             </tags>
             <lu>
@@ -16790,6 +17858,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV19"/></tag>
                     </tags>
                     <lu>
@@ -16872,6 +17941,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV20"/></tag>
                     </tags>
                     <lu>
@@ -16927,6 +17997,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV21"/></tag>
                     </tags>
                     <lu>
@@ -16974,6 +18045,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
               <tag><clip pos="1" side="tl" part="pers"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV20d"/></tag>
             </tags>
             <lu>
@@ -17067,6 +18139,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV22"/></tag>
                     </tags>
                     <lu>
@@ -17133,6 +18206,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV23"/></tag>
                     </tags>
                     <lu>
@@ -17191,6 +18265,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV24"/></tag>
                     </tags>
                     <lu>
@@ -17312,6 +18387,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV25"/></tag>
                     </tags>
                     <lu>
@@ -17483,6 +18559,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV26"/></tag>
                     </tags>
                     <lu>
@@ -17622,7 +18699,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="temps"/></tag>
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
-			<tag><var n="tipus_verb"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV27"/></tag>
                     </tags>
                     <lu>
@@ -17719,7 +18797,8 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="2" side="tl" part="temps"/></tag>
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
-			<tag><var n="tipus_verb"/></tag>
+		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV27b"/></tag>
                     </tags>
                     <lu>
@@ -17858,6 +18937,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV28"/></tag>
                     </tags>
                     <lu>
@@ -17978,6 +19058,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV29"/></tag>
                     </tags>
 		    <lu>
@@ -18106,6 +19187,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV30"/></tag>
                     </tags>
 		    <lu>
@@ -18230,6 +19312,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV31"/></tag>
                     </tags>
 		    <lu>
@@ -18292,6 +19375,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV32"/></tag>
                     </tags>
                     <lu>
@@ -18395,6 +19479,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV33"/></tag>
                     </tags>
                     <lu>
@@ -18444,6 +19529,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV34"/></tag>
                     </tags>
                     <lu>
@@ -18537,6 +19623,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV36"/></tag>
                     </tags>
                     <lu>
@@ -18591,6 +19678,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV37"/></tag>
                     </tags>
                     <lu>
@@ -18684,6 +19772,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV38"/></tag>
                     </tags>
                     <lu>
@@ -18754,6 +19843,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV39"/></tag>
                     </tags>
                     <lu>
@@ -18794,6 +19884,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV40"/></tag>
                     </tags>
                     <lu>
@@ -18860,6 +19951,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 	              <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV41"/></tag>
                     </tags>
                     <lu>
@@ -18900,6 +19992,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 			<tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV42"/></tag>
                     </tags>
                     <lu>
@@ -18972,6 +20065,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV43"/></tag>
                     </tags>
                     <lu>
@@ -19036,6 +20130,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV44"/></tag>
                     </tags>
                     <lu>
@@ -19097,6 +20192,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
 		      <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV45"/></tag>
                     </tags>
                     <lu>
@@ -19141,6 +20237,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV46"/></tag>
                     </tags>
                     <lu>
@@ -19212,6 +20309,7 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV47"/></tag>
                     </tags>
                     <lu>
@@ -19922,15 +21020,9 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 	<pattern-item n="verbcj"/>
       </pattern>
       <action>    	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="1"/>
-        </call-macro>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="1"/></call-macro>
+        <call-macro n="set_temps"> <with-param pos="1"/></call-macro>
 
                 <out>
                   <chunk namefrom="nverb" case="caseFirstWord">
@@ -20488,6 +21580,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><var n="vimpers"/></tag>
 	      <tag><var n="vigxi1"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV20b"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -20597,6 +21690,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><var n="vimpers"/></tag>
 	      <tag><var n="vigxi1"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV21b"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -20707,6 +21801,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><var n="vimpers"/></tag>
 	      <tag><var n="vigxi1"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV20e"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -20827,6 +21922,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><var n="vimpers"/></tag>
 	      <tag><var n="vigxi1"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV21f"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -20936,6 +22032,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><var n="vimpers"/></tag>
 	      <tag><var n="vigxi1"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV20c"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -21211,6 +22308,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><var n="vimpers"/></tag>
 	      <tag><var n="vigxi1"/></tag>
 	      <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV20g"/></tag>
 <tag><var n="debug1"/></tag>
 <tag><var n="debug2"/></tag>
@@ -21529,6 +22627,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><clip pos="3" side="tl" part="pers"/></tag>
               <tag><clip pos="3" side="tl" part="nbr"/></tag>
               <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
             </tags>
             <lu>
               <clip pos="3" side="tl" part="lemh"/>
@@ -22080,29 +23179,14 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	<pattern-item n="inf"/>
       </pattern>
       <action>    	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="4"/>
-        </call-macro>
-        <call-macro n="tipus_verb2">
-          <with-param pos="4"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="1"/>
-        </call-macro>
-	<call-macro n="nombro1">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="default_nombro">
-	</call-macro>
-	<call-macro n="nom_cas">
-	  <with-param pos="1"/>
-	</call-macro>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="4"/></call-macro>
+        <call-macro n="tipus_verb2"><with-param pos="4"/></call-macro>
+        <call-macro n="set_temps"><with-param pos="2"/></call-macro>
+        <call-macro n="correccion_lo"><with-param pos="1"/></call-macro>
+	<call-macro n="nombro1"><with-param pos="1"/></call-macro>
+	<call-macro n="default_nombro"></call-macro>
+	<call-macro n="nom_cas"><with-param pos="1"/></call-macro>
 
      <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
      <choose>
@@ -22736,6 +23820,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV79"/></tag>
                     </tags>
                     <lu>
@@ -22776,6 +23861,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV80"/></tag>
                     </tags>
                     <lu>
@@ -22894,6 +23980,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV81"/></tag>
                     </tags>
                     <lu>
@@ -22968,6 +24055,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV82"/></tag>
                     </tags>
                     <lu>
@@ -23008,6 +24096,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><lit-tag v="p3"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV83"/></tag>
                     </tags>
                     <lu>
@@ -23126,6 +24215,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="1" side="tl" part="pers"/></tag>
                       <tag><clip pos="1" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV84"/></tag>
                     </tags>
                     <lu>
@@ -24750,12 +25840,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	<pattern-item n="inf"/>
       </pattern>
       <action>     	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="1"/>
-        </call-macro>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="1"/></call-macro>
 
 	<out>
 	  <chunk name="inf" case="caseFirstWord">
@@ -24763,6 +25849,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV131"/></tag>
 	    </tags>
 	    <lu>
@@ -24773,10 +25861,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+	<let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -24785,12 +25870,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	<pattern-item n="ger"/>
       </pattern>
       <action>     	
-	<call-macro n="firstWord">
-	  <with-param pos="1"/>
-	</call-macro>
-	<call-macro n="tipus_verbs">
-	  <with-param pos="1"/>
-	</call-macro>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+	<call-macro n="tipus_verbs"> <with-param pos="1"/></call-macro>
 	<out>
 	  <chunk name="verbger" case="caseFirstWord">
 	    <tags>
@@ -24798,6 +25879,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
 	      <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV88"/></tag>
 	    </tags>
 	    <lu>
@@ -24926,6 +26008,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV90"/></tag>
                     </tags>
                     <lu>
@@ -24964,6 +26047,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV91"/></tag>
                     </tags>
                     <lu>
@@ -25142,6 +26226,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="3" side="tl" part="pers"/></tag>
                       <tag><clip pos="3" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV93"/></tag>
                     </tags>
                     <lu>
@@ -25198,6 +26283,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="3" side="tl" part="pers"/></tag>
                       <tag><clip pos="3" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV94"/></tag>
                     </tags>
                     <lu>
@@ -25340,6 +26426,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV96"/></tag>
                     </tags>
                     <lu>
@@ -25377,6 +26464,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV97"/></tag>
                     </tags>
                     <lu>
@@ -25535,6 +26623,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV99"/></tag>
                     </tags>
                     <lu>
@@ -25583,6 +26672,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                       <tag><clip pos="2" side="tl" part="pers"/></tag>
                       <tag><clip pos="2" side="tl" part="nbr"/></tag>
                       <tag><var n="tipus_verb"/></tag>
+                      <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV02"/></tag>
                     </tags>
                     <lu>
@@ -26587,10 +27677,45 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 	    </lu>
 	  </chunk>
 	</out>
-	<let>
-	  <var n="caseFirstWord"/>
-	  <lit v="aa"/>
-	</let>
+	<let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: PRN personal MISMO">
+      <pattern>
+	<pattern-item n="prpers"/>
+	<pattern-item n="mismo"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>
+	<out>
+	  <chunk name="prpers" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+	      <tag><clip pos="1" side="tl" part="pers"/></tag>
+	      <tag><clip pos="1" side="tl" part="gen"/></tag>
+	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="a_prn"/>
+	      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+	      <clip pos="1" side="tl" part="pers"/>
+	      <clip pos="1" side="tl" part="gen"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+            <b pos="1"/>
+            <lu>
+              <lit v="mem"/>
+              <lit-tag v="adv"/>
+            </lu>
+	  </chunk>
+	</out>
+	<let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
