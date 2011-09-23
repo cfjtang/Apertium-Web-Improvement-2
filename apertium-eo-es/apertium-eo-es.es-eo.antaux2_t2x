@@ -140,11 +140,6 @@
   </section-def-cats>
 
   <section-def-attrs>
-    <def-attr n="a_chunk">
-      <attr-item tags="SN"/>
-      <attr-item tags="SV"/>
-    </def-attr>
-
     <def-attr n="case">
       <attr-item tags="nom"/>
       <attr-item tags="acc"/>
@@ -165,6 +160,10 @@
     <def-attr n="verbo_a">
       <attr-item tags="eliminar_a"/>
       <attr-item tags="no_eliminar_a"/>
+    </def-attr>
+
+    <def-attr n="tipus_verb_igxi">
+          <attr-item tags="iĝi"/>
     </def-attr>
 
   </section-def-attrs>
@@ -290,7 +289,12 @@
 
        <choose>
           <when>
-            <test><equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal></test>
+            <test>
+              <and>
+               <equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal>
+               <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
+            </test>
             <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
           </when>
           <otherwise>
@@ -332,7 +336,12 @@
 
        <choose>
           <when>
-            <test><equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal></test>
+            <test>
+              <and>
+               <equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal>
+               <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
+            </test>
             <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
           </when>
           <otherwise>
@@ -358,7 +367,12 @@
 
        <choose>
           <when>
-            <test><equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal></test>
+            <test>
+              <and>
+               <equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal>
+               <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
+            </test>
             <call-macro n="f_bcond"><with-param pos="5"/><with-param pos="6"/></call-macro>
           </when>
           <otherwise>
@@ -408,7 +422,12 @@
 
        <choose>
           <when>
-            <test><equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal></test>
+            <test>
+              <and>
+               <equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal>
+               <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
+            </test>
             <call-macro n="f_bcond"><with-param pos="4"/><with-param pos="5"/></call-macro>
           </when>
           <otherwise>
@@ -456,7 +475,12 @@
 
        <choose>
           <when>
-            <test><equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal></test>
+            <test>
+              <and>
+               <equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal>
+               <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
+            </test>
             <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
           </when>
           <otherwise>
