@@ -76,6 +76,17 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
+    <def-cat n="vblexinf">
+      <cat-item lemma="inf" tags="SV.vblex.*"/>
+      <cat-item lemma="inf" tags="SV.vbtr.*"/>
+      <cat-item lemma="inf" tags="SV.vbntr.*"/>
+      <cat-item lemma="inf" tags="SV.vbtr_ntr.*"/>
+      <cat-item tags="SV.vblex.inf.*"/>
+      <cat-item tags="SV.vbtr.inf.*"/>
+      <cat-item tags="SV.vbntr.inf.*"/>
+      <cat-item tags="SV.vbtr_ntr.inf.*"/>
+    </def-cat>
+
     <def-cat n="pr">
       <cat-item tags="pr"/>
     </def-cat>
@@ -96,6 +107,11 @@
 
     <def-cat n="al">
       <cat-item lemma="al" tags="pr"/>
+    </def-cat>
+
+    <def-cat n="al_de">
+      <cat-item lemma="al" tags="pr"/>
+      <cat-item lemma="de" tags="pr"/>
     </def-cat>
 
     <def-cat n="da">
@@ -939,6 +955,29 @@
       </action>
     </rule>
 -->
+
+    <rule comment="REGLA: SN A INF   -   SV INF: la manera de hacer -> la formo fari, el encarcago de sacar -> la respondeculo forigi">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="al_de"/>
+        <pattern-item n="vblexinf"/>
+      </pattern>
+
+      <action>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+        </out>
+      </action>
+    </rule>
 
   </section-rules>
 </interchunk>
