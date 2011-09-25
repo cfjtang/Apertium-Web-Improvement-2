@@ -86,23 +86,37 @@
   </section-def-cats>
 
   <section-def-attrs>
-    <def-attr n="a_chunk">
-      <attr-item tags="SN"/>
-      <attr-item tags="SV"/>
-    </def-attr>
-
     <def-attr n="a_cas">
       <attr-item tags="nom"/>
       <attr-item tags="acc"/>
     </def-attr>
 
-    <def-attr n="a_nbr">
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="mf"/>
+      <attr-item tags="ND"/>
+    </def-attr>
+
+    <def-attr n="nbr">
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
       <attr-item tags="sp"/>
       <attr-item tags="ND"/>
     </def-attr>
+
+    <def-attr n="tipus_prn">
+      <attr-item tags="subj"/>
+      <attr-item tags="obj"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="tn"/>
+      <attr-item tags="itg"/>
+      <attr-item tags="pos"/>
+      <attr-item tags="ref"/>
+    </def-attr>
+
   </section-def-attrs>
+
 
   <section-def-vars>
     <def-var n="nombre"/>
@@ -119,7 +133,7 @@
       <when>
         <test>
           <and>
-            <equal><clip pos="1" part="a_nbr"/><clip pos="2" part="a_nbr"/></equal>
+            <equal><clip pos="1" part="nbr"/><clip pos="2" part="nbr"/></equal>
             <or>
               <and>
                 <equal><clip pos="1" part="lem"/><lit v="prpers"/></equal>
@@ -162,9 +176,9 @@
             <lit-tag v="-"/>
             <clip pos="2" part="lem"/>
             <lit-tag v="="/>
-            <clip pos="1" part="a_nbr"/>
+            <clip pos="1" part="nbr"/>
             <lit-tag v="-"/>
-            <clip pos="1" part="a_nbr"/>
+            <clip pos="1" part="nbr"/>
             <lit-tag v="="/>
             <var n="test_equival"/>
           </concat>
@@ -740,7 +754,7 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
         </test>
         <out>
           <chunk>
-            <get-case-from pos="1"><lit v="nom_conj_nom"/></get-case-from>
+            <get-case-from pos="1"><lit v="nom_conj_nom1"/></get-case-from>
             <clip pos="1" part="tags"/>
             <lit v="{"/>
             <clip pos="1" part="content"/>
@@ -823,7 +837,7 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
         </test>
         <out>
           <chunk>
-            <get-case-from pos="1"><lit v="nom_conj_nom"/></get-case-from>
+            <get-case-from pos="1"><lit v="nom_conj_nom2"/></get-case-from>
             <clip pos="1" part="tags"/>
             <lit v="{"/>
             <clip pos="1" part="content"/>
@@ -921,7 +935,7 @@ i, a més, han de ser retocades per molts casos de "PP + por + INF" = azotado po
         </test>
         <out>
           <chunk>
-            <get-case-from pos="1"><lit v="nom_conj_nom"/></get-case-from>
+            <get-case-from pos="1"><lit v="nom_conj_nom3"/></get-case-from>
             <clip pos="1" part="tags"/>
             <lit v="{"/>
             <clip pos="1" part="content"/>
