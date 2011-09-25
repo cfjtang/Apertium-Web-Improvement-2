@@ -1145,7 +1145,7 @@
     <list-item v="atraer"/>
     <list-item v="dividir"/>
     <list-item v="desembocar"/>
-    <list-item v="enamorar"/>
+    <list-item v="enamorar#"/>
     <list-item v="zambullir"/>
     </def-list>
 
@@ -3003,7 +3003,7 @@
           <let><var n="tipus_verb"/><lit-tag v="like"/></let>
         </when>
         <when>
-              <test><in caseless="yes"><clip pos="1" side="sl" part="lemh"/><list n="moviment"/></in></test>
+           <test><in caseless="yes"><clip pos="1" side="sl" part="lem"/><list n="moviment"/></in></test>
            <let><var n="tipus_verb"/><lit-tag v="moviment"/></let>
         </when>
         <when>
@@ -3011,7 +3011,7 @@
           <let><var n="tipus_verb"/><lit-tag v="volition"/></let>
         </when>
         <when>
-          <test><in caseless="yes"><clip pos="1" side="tl" part="lemh"/><list n="predikativo"/></in></test>
+          <test><in caseless="yes"><clip pos="1" side="tl" part="lem"/><list n="predikativo"/></in></test>
           <let><var n="tipus_verb"/><lit-tag v="predikativo"/></let>
         </when>
         <when>
@@ -6418,18 +6418,10 @@
         <pattern-item n="adj"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte -->
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="pli_plej">
-          <with-param pos="3"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+         <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="2"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="3"/></call-macro>
 
         <out>
           <chunk name="det_nom" case="caseFirstWord">
@@ -6469,10 +6461,70 @@
             </lu>
           </chunk>
         </out>        
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: ART ADJ NOM más ADJ (EOes, más -> plej ex: la segunda casa más grande -> la dua plej granda domo)">
+      <pattern>
+        <pattern-item n="el"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="mas"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+         <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="3"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="4"/></call-macro>
+
+        <out>
+          <chunk name="det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="3" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_adj"/>
+              <clip pos="5" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>        
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -6483,18 +6535,10 @@
         <pattern-item n="adj"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte -->
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="pli_plej">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="1"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="2"/></call-macro>
 
         <out>
           <chunk name="det_nom" case="caseFirstWord">
@@ -6523,13 +6567,63 @@
               <clip pos="3" side="tl" part="nbr"/>
               <lit-tag v="4"/>
             </lu>
-
           </chunk>
         </out>        
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ART ADJ más ADJ (más -> plej ex: la segunda más grande -> la dua plej granda)">
+      <pattern>
+        <pattern-item n="el"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="mas"/>
+        <pattern-item n="adj"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="1"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="3"/></call-macro>
+
+        <out>
+          <chunk name="det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <clip pos="4" side="tl" part="a_adj"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+        </out>        
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -6543,18 +6637,10 @@
         <pattern-item n="de"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte -->
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="pli_plej">
-          <with-param pos="3"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="2"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="3"/></call-macro>
 
         <out>
           <chunk name="det_nom" case="caseFirstWord">
@@ -6604,10 +6690,7 @@
             </lu>
           </chunk>
         </out>        
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -6619,18 +6702,10 @@
         <pattern-item n="de"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte -->
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="pli_plej">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="1"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="2"/></call-macro>
 
         <out>
           <chunk name="det_nom" case="caseFirstWord">
@@ -6671,10 +6746,146 @@
             </lu>
           </chunk>
         </out>        
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ART ART NOM más ADJ de (más -> plej ex: la segunda casa más grande de -> la dua plej granda domo el)">
+      <pattern>
+        <pattern-item n="el"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="mas"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="de"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="3"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="4"/></call-macro>
+
+        <out>
+          <chunk name="det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="3" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_adj"/>
+              <clip pos="5" side="tl" part="nbr" link-to="3"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="4"/>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+          <b pos="5"/>
+          <chunk name="el">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+            <lu>
+              <lit v="el"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+        </out>        
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+<rule comment="REGLA: ART ART más ADJ de (más -> plej ex: la segunda más grande de -> la dua plej granda el)">
+      <pattern>
+        <pattern-item n="el"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="mas"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="de"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="1"/></call-macro>
+        <call-macro n="pli_plej"><with-param pos="3"/></call-macro>
+
+        <out>
+          <chunk name="det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="3" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <lit-tag v="adv"/>
+            </lu>
+            <b pos="3"/>
+            <lu>
+              <clip pos="4" side="tl" part="lem"/>
+              <clip pos="4" side="tl" part="a_adj"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+          <b pos="4"/>
+          <chunk name="el">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+            <lu>
+              <lit v="el"/>
+              <lit-tag v="pr"/>
+            </lu>
+          </chunk>
+        </out>        
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -6685,18 +6896,10 @@
         <pattern-item n="mejor"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!-- assigna cas nominatiu per defecte -->
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="pli_plej2">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="2"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="2"/></call-macro>
+        <call-macro n="pli_plej2"><with-param pos="2"/></call-macro>
 
         <out>
           <chunk name="det_nom" case="caseFirstWord">
@@ -6722,10 +6925,55 @@
             </lu>
           </chunk>
         </out>        
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+
+<rule comment="REGLA: ART ADJ mejor (más -> plej ex: la segunda mejor -> la dua plej bona)">
+      <pattern>
+        <pattern-item n="el"/>
+        <pattern-item n="adj"/>
+        <pattern-item n="mejor"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="3"/></call-macro>
+        <call-macro n="nombre_nom"><with-param pos="3"/></call-macro>
+        <call-macro n="pli_plej2"><with-param pos="3"/></call-macro>
+
+        <out>
+          <chunk name="det_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="sl" part="gen"/></tag>
+              <tag><var n="nombre"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+              <clip pos="1" side="tl" part="a_det"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="1"/>
+            <lu>
+              <clip pos="2" side="tl" part="lem"/>
+              <clip pos="2" side="tl" part="a_adj"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="a_adj"/>
+              <clip pos="3" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+        </out>        
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
@@ -11959,948 +12207,6 @@ i prefereixo que no passi (solucionar aquest segon problema condueix a una nova 
     </rule>
 
 
-<!--
-x- feia més mal que bé x-
-x- canvio els comentaris interiors per x- en comptes de doble guió per qüestions sintàctiques x-
-<rule comment="REGLA: DET NOM DE NOM ADJ (EOes)(pertenece a las sreglas de formación de compuestos, en este caso queremos evitar la formación del compuesto ya que tenemos un adjetivo ex. los animales de zonas cálidas -> la besto de varmaj zonoj)">
-      <pattern>
-        <pattern-item n="det"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="adj"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!x- assigna cas nominatiu per defecte x->
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="2"/>
-        </call-macro>
-
-   <choose>
-     <when>   <!x- article indefinit s'elimina x->
-      <test>
-        <and>
-           <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
-           <not><equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal></not>
-        </and>
-      </test>
-        <out>
-          <chunk name="nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-         </chunk>
-            <b pos="1"/>
-         <chunk name="de">
-            <tags>
-              <tag><lit-tag v="pr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="3" side="tl" part="whole"/>
-            </lu>
-          </chunk>
-            <b pos="2"/>
-         <chunk name="nom_adj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="5" side="tl" part="lem"/>
-              <clip pos="5" side="tl" part="a_adj"/>
-              <clip pos="5" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="4" side="tl" part="lemh"/>
-              <clip pos="4" side="tl" part="a_nom"/>
-              <clip pos="4" side="tl" part="gen"/>
-              <clip pos="4" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="4" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-
-<otherwise>           <!x- altres (amb cas)x->
-
-        <out>
-          <chunk name="det_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-            </chunk>
-            <b pos="2"/>
-            <chunk name="de">
-            <tags>
-              <tag><lit-tag v="pr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="3" side="tl" part="whole"/>
-            </lu>
-            </chunk>
-            <b pos="3"/>
-         <chunk name="nom_adj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="5" side="tl" part="lem"/>
-              <clip pos="5" side="tl" part="a_adj"/>
-              <clip pos="5" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="4"/>
-            <lu>
-              <clip pos="4" side="tl" part="lemh"/>
-              <clip pos="4" side="tl" part="a_nom"/>
-              <clip pos="4" side="tl" part="gen"/>
-              <clip pos="4" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="4" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>        
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
-<rule comment="REGLA: DET NOM DE NOM (EOes)(pertenece a ala reglas de formación de compuestos a aprtir de  N+de+N, ex. un libro de consulta -> konsultolibro)">
-      <pattern>
-        <pattern-item n="det"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-         <call-macro n="nom_cas"> <!x- assigna cas nominatiu per defecte x->
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="2"/>
-        </call-macro>
-
-   <choose>
-     <when>   <!x- article indefinit s'elimina x->
-      <test>
-        <and>
-           <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
-           <not><equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal></not>
-        </and>
-      </test>
-        <out>
-          <chunk name="nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="4" side="tl" part="lemh"/>
-              <clip pos="4" side="tl" part="a_nom"/>
-              <clip pos="4" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="4" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="1"/> de fet formem un compostx->
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-
-<otherwise>           <!x- altres (amb cas)x->
-
-        <out>
-          <chunk name="det_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="4" side="tl" part="lemh"/>
-              <clip pos="4" side="tl" part="a_nom"/>
-              <clip pos="4" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="4" side="tl" part="lemq"/>
-            </lu>
- <!x-           <b pos="2"/>x->
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>        
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
-
-<rule comment="REGLA: DET NUM NOM DE NOM ADJ (EOes)(pertenece a las reglas de formación de compuestos a partir de  N+de+N, en este caso NO queremos el compuesto)">
-      <pattern>
-        <pattern-item n="det"/>
-        <pattern-item n="num"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="adj"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="3"/>
-        </call-macro>
-
-   <!x- article indefinit s'eliminax->
-   <choose>
-     <when>
-      <test>
-        <and>
-           <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
-           <not><equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal></not>
-        </and>
-      </test>
-        <out>
-          <chunk name="num_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_det"/>
-              <clip pos="2" side="tl" part="nbr"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-            </chunk>
-            <b pos="1"/>
-         <chunk name="de">
-            <tags>
-              <tag><lit-tag v="pr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="4" side="tl" part="whole"/>
-            </lu>
-          </chunk>
-            <b pos="2"/>
-         <chunk name="nom_adj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="5" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="6" side="tl" part="lem"/>
-              <clip pos="6" side="tl" part="a_adj"/>
-              <clip pos="6" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <clip pos="5" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-<otherwise>           <!x- article definitx->
-        <out>
-          <chunk name="det_num_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_num"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-            </chunk>
-            <b pos="1"/>
-         <chunk name="de">
-            <tags>
-              <tag><lit-tag v="pr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="4" side="tl" part="whole"/>
-            </lu>
-          </chunk>
-            <b pos="2"/>
-         <chunk name="nom_adj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="5" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="6" side="tl" part="lem"/>
-              <clip pos="6" side="tl" part="a_adj"/>
-              <clip pos="6" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <clip pos="5" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>        
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
-<rule comment="REGLA: DET NUM NOM DE NOM (EO)(regla de formación de compuestos a partir de  N+de+N), los dos libros de consulta -> la du konsultolibroj">
-      <pattern>
-        <pattern-item n="det"/>
-        <pattern-item n="num"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="3"/>
-        </call-macro>
-
-   <!x- article indefinit s'eliminax->
-   <choose>
-     <when>
-      <test>
-        <and>
-           <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
-           <not><equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal></not>
-        </and>
-      </test>
-        <out>
-          <chunk name="num_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_det"/>
-              <clip pos="2" side="tl" part="nbr"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="2"/>x->
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-<otherwise>           <!x- article definitx->
-        <out>
-          <chunk name="det_num_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_num"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="3"/>x->
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>        
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
-
-<rule comment="REGLA: QNT DET NOM DE NOM ADJ (EOes)(pertenece a las rfelgas de formación de compuestos a partir de  N+de+N, en este caso NO queremos que se forme el compuesto)">
-      <pattern>
-        <pattern-item n="tot"/>
-        <pattern-item n="det"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="adj"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="3"/>
-        </call-macro>
-
-   <!x- article definit s'elimina i es 'genera' cas: 'totes les nenes : ĉiuj knabinojx->
-   <choose>
-     <when>
-      <test>
-       <equal caseless="yes">
-        <clip pos="2" side="sl" part="lem"/>
-        <lit v="el"/>
-        </equal>
-      </test>
-        <out>
-          <chunk name="ĉiu_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-            </chunk>
-            <b pos="1"/>
-         <chunk name="de">
-            <tags>
-              <tag><lit-tag v="pr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="4" side="tl" part="whole"/>
-            </lu>
-          </chunk>
-            <b pos="2"/>
-         <chunk name="nom_adj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="5" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="6" side="tl" part="lem"/>
-              <clip pos="6" side="tl" part="a_adj"/>
-              <clip pos="6" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <clip pos="5" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-<otherwise>           <!x- demostratius i altres x->
-        <out>
-          <chunk name="ĉiunom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_det"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-            </chunk>
-            <b pos="1"/>
-         <chunk name="de">
-            <tags>
-              <tag><lit-tag v="pr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="4" side="tl" part="whole"/>
-            </lu>
-          </chunk>
-            <b pos="2"/>
-         <chunk name="nom_adj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="5" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="6" side="tl" part="lem"/>
-              <clip pos="6" side="tl" part="a_adj"/>
-              <clip pos="6" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <clip pos="5" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>        
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
-<rule comment="REGLA: QNT DET NOM DE NOM (EOes)(pertence a las regla de formación  de compuestos a partir de  N+de+N)">
-      <pattern>
-        <pattern-item n="tot"/>
-        <pattern-item n="det"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombre_nom">
-          <with-param pos="3"/>
-        </call-macro>
-
-   <!x- article definit s'elimina i es 'genera' cas: 'totes les nenes : ĉiuj knabinojx->
-   <choose>
-     <when>
-      <test>
-       <equal caseless="yes">
-        <clip pos="2" side="sl" part="lem"/>
-        <lit v="el"/>
-        </equal>
-      </test>
-        <out>
-          <chunk name="ĉiu_nom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="2"/>x->
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-<otherwise>           <!x- demostratius i altres x->
-        <out>
-          <chunk name="ĉiunom" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_det"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="3"/>x->
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>        
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
-
-<rule comment="REGLA: DET ADJ NOM DE NOM (EOes) (pertenece a las relgas de formación de compuestos a partir de  N+de+N)">
-      <pattern>
-        <pattern-item n="det"/>
-        <pattern-item n="adj"/>
-        <pattern-item n="nom"/>
-        <pattern-item n="de"/>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>        
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>        
-        <call-macro n="nombre_nom">
-          <with-param pos="3"/>
-        </call-macro>        
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>        
-   <!x- article indefinit s'eliminax->
-   <choose>
-     <when>
-      <test>
-        <and>
-           <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="uno"/></equal>
-           <not><equal><clip pos="1" side="sl" part="a_det"/><lit-tag v="num"/></equal></not>
-        </and>
-      </test>
-        <out>
-          <chunk name="nom_adj" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_adj"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="2"/>x->
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-    </when>
-<otherwise>           <!x- article definitx->
-        <out>
-          <chunk name="det_nom_adj" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="3" side="sl" part="gen"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_det"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_adj"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-            </lu>
-            <b pos="2"/>
-            <lu>
-              <clip pos="5" side="tl" part="lemh"/>
-              <clip pos="5" side="tl" part="a_nom"/>
-              <clip pos="5" side="tl" part="gen"/>
-              <lit-tag v="sg"/> <!x- no volem que canvii el nbr, de fet passa a formar part d'un compostx->
-              <lit-tag v="nom"/> <!x- no volem que canvii el cas, de fet passa a formar part d'un compostx->
-              <clip pos="5" side="tl" part="lemq"/>
-            </lu>
-            <!x-<b pos="3"/>x->
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_nom"/>
-              <clip pos="3" side="tl" part="gen"/>
-              <clip pos="3" side="tl" part="nbr"/>
-              <lit-tag v="4"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-     </otherwise>
-      </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
--->
-
 <rule comment="REGLA: NOM (per a col·locar la cua en les multiparaules amb g (EO)">
       <pattern>
         <pattern-item n="nom"/>
@@ -17969,6 +17275,48 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
     </rule>
 
 
+<rule comment="REGLA: EL DE (el de -> tiu de)">
+      <pattern>
+        <pattern-item n="el"/>
+        <pattern-item n="de"/>
+      </pattern>
+      <action>                
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <let><var n="nprep"/><clip pos="2" side="tl" part="lem"/></let>
+
+        <out>
+          <chunk name="tiu" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="sl" part="gen"/></tag>
+              <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="case"/></tag>
+              <tag><var n="changecase"/></tag>
+            </tags>
+            <lu>
+              <lit v="tiu"/>
+              <lit-tag v="det.dem"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <lit-tag v="4"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk namefrom="nprep">
+            <tags>
+              <tag><lit-tag v="pr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+
     <!-- *************************************** REGLES DE SV *********************************************** -->
 
 <rule comment="REGLA: , VERBhecho QUE (únicament per corregir al tagger quan s'equivoca amb FAKTO i amb KE) (EO)">
@@ -21435,10 +20783,11 @@ Necesus io simila al "EL MEJOR NOM DE EL", tamen tio fuŝus la analizon de la du
 
 <!--
 de momento aparto las reglas porque tienen que pasarse a la forma actual de tratamiento, con pattern-item de pronoms y de verbo generales (para no tenen listas por triplicado o cuadruplicado
+-->
     <rule comment="REGLA: REF + VERB tipo pasiva refleja reflexivo (se observa a sí mismo -> observas sin)">
       <pattern>
         <pattern-item n="prnref"/>
-        <pattern-item n="vbref2oni"/>
+        <pattern-item n="verbcj"/>
         <pattern-item n="a"/>
         <pattern-item n="si_mismo"/>
       </pattern>
@@ -21495,11 +20844,11 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
       </action>
     </rule>
 
-    <rule comment="REGLA: REF + HABER + PP tipo pasiva refleja reflexivo (se ha observado a sí mismo -> uzis sin)">
+    <rule comment="REGLA: REF + HABER + PP (se ha observado a sí mismo -> observis sin)">
       <pattern>
         <pattern-item n="prnref"/>
         <pattern-item n="haber"/>
-        <pattern-item n="vbref2oni-pp"/>
+        <pattern-item n="pp"/>
         <pattern-item n="a"/>
         <pattern-item n="si_mismo"/>
       </pattern>
@@ -21543,12 +20892,11 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         </let>
       </action>
     </rule>
--->
 
 
     <!-- otras reglas de pronombres (pronominales o no) -->
 
-    <rule comment="REGLA: PRON VERB reflexiu ( me como -> formanĝas; lo como -> manĝas lin ) (EO)">
+    <rule comment="REGLA: PRON VERB ( me como -> formanĝas; lo como -> manĝas lin ) (EO)">
       <pattern>
         <pattern-item n="pro"/>
         <pattern-item n="verbcj"/>
@@ -21718,7 +21066,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
       </action>
     </rule>
 
-    <rule comment="REGLA: NO PRON VERB reflexiu ( no me como -> ne formanĝas; no lo como -> ne manĝas lin ) (EO)">
+    <rule comment="REGLA: NO PRON VERB ( no me como -> ne formanĝas; no lo como -> ne manĝas lin ) (EO)">
       <pattern>
         <pattern-item n="no"/>
         <pattern-item n="pro"/>
@@ -21874,17 +21222,17 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
           <b pos="1"/>
         </out>
         <let><var n="caseFirstWord"/><lit v="aa"/></let>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
 
         <call-macro n="haber__pp"><with-param pos="3"/><with-param pos="4"/></call-macro>
 
         <choose>
           <when>
             <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
-            <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
           </when>
           <otherwise>
         <out>
-          <b pos="3"/>
+          <b/>
           <chunk name="pro_obj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
@@ -23981,6 +23329,187 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
     </rule>
 
 
+<!-- en esta regla básicamente suponemos que PRON está ligado al verbo conjugado, cuando puede estarlo con el infinitivo; si es así, lo hacemos mal -->
+    <rule comment="REGLA: PRON + HABER + PP + a + INF (se ha ido a bailar -> foriris danci; se ha vuelto a casa -> denove geedziĝis)">
+      <pattern>
+        <pattern-item n="pro"/>
+        <pattern-item n="haber"/>
+        <pattern-item n="pp"/>
+        <pattern-item n="a_de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>            
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+
+        <choose>
+          <when>
+            <test>
+              <equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="volver"/></equal>
+            </test> 
+
+            <call-macro n="control_pron"><with-param pos="1"/><with-param pos="2"/><with-param pos="5"/></call-macro>
+            <call-macro n="tipus_verbs"><with-param pos="5"/></call-macro>
+
+            <!-- ni certiĝas, ĉu necesas aldoni "oni" -->
+            <choose>
+              <when>
+                <test><equal><var n="aldoni_oni"/><lit v="aldoni"/></equal></test>
+                <out>
+                  <chunk name="prpers" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="oni"/>
+                      <lit-tag v="prn.tn.sg.nom"/>
+                    </lu>
+                  </chunk>
+                  <b/>
+                </out>
+                <let><var n="caseFirstWord"/><lit v="aa"/></let>
+              </when>
+            </choose>
+
+            <out>
+              <chunk name="denove" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="adv"/></tag>
+                </tags>
+                <lu>
+                  <lit v="denove"/>
+                  <lit-tag v="adv"/>
+                </lu>
+             </chunk>
+             <b pos="1"/>
+           </out>
+<let><var n="debug1"/><lit-tag v="12b"/></let>
+            <call-macro n="haber__pp"><with-param pos="2"/><with-param pos="3"/></call-macro>
+
+           <!-- ni certiĝas, ĉu necesas aldoni la pronomon -->
+           <choose>
+             <when>
+               <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
+               <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+             </when>
+             <otherwise>
+               <out>
+                 <b pos="3"/>
+                 <chunk name="pro_obj">
+                   <tags>
+                     <tag><lit-tag v="SN"/></tag>
+                     <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
+                     <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+                     <tag><clip pos="1" side="tl" part="pers"/></tag>
+                     <tag><clip pos="1" side="tl" part="gen"/></tag>
+                     <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                   </tags>
+                   <lu>
+                     <clip pos="1" side="tl" part="lem"/>
+                     <clip pos="1" side="tl" part="a_prn"/>
+                     <clip pos="1" side="tl" part="tipus_prn_tn"/>
+                     <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+                     <clip pos="1" side="tl" part="pers"/>
+                     <clip pos="1" side="tl" part="gen"/>
+                     <clip pos="1" side="tl" part="nbr"/>
+                   </lu>
+                 </chunk>
+               </out>
+             </otherwise>
+           </choose>
+           <call-macro n="f_bcond"><with-param pos="4"/><with-param pos="5"/></call-macro>
+          </when>
+
+          <otherwise>
+
+            <call-macro n="control_pron"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
+            <call-macro n="tipus_verbs"><with-param pos="5"/></call-macro>
+            <!-- ni certiĝas, ĉu necesas aldoni "oni" -->
+            <choose>
+              <when>
+                <test><equal><var n="aldoni_oni"/><lit v="aldoni"/></equal></test>
+                <out>
+                  <chunk name="prpers" case="caseFirstWord">
+                    <tags>
+                      <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+                    </tags>
+                    <lu>
+                      <lit v="oni"/>
+                      <lit-tag v="prn.tn.sg.nom"/>
+                    </lu>
+                  </chunk>
+                  <b/>
+                </out>
+                <let><var n="caseFirstWord"/><lit v="aa"/></let>
+              </when>
+            </choose>
+
+            <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
+<let><var n="debug1"/><lit-tag v="12c"/></let>
+            <call-macro n="haber__pp"><with-param pos="2"/><with-param pos="3"/></call-macro>
+
+            <!-- ni certiĝas, ĉu necesas aldoni la pronomon -->
+            <choose>
+              <when>
+                <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
+                <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+              </when>
+              <otherwise>
+                <out>
+                  <b pos="3"/>
+                  <chunk name="pro_obj">
+                    <tags>
+                      <tag><lit-tag v="SN"/></tag>
+                      <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
+                      <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
+                      <tag><clip pos="1" side="tl" part="pers"/></tag>
+                      <tag><clip pos="1" side="tl" part="gen"/></tag>
+                      <tag><clip pos="1" side="tl" part="nbr"/></tag>
+                    </tags>
+                    <lu>
+                      <clip pos="1" side="tl" part="lem"/>
+                      <clip pos="1" side="tl" part="a_prn"/>
+                      <clip pos="1" side="tl" part="tipus_prn_tn"/>
+                      <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
+                      <clip pos="1" side="tl" part="pers"/>
+                      <clip pos="1" side="tl" part="gen"/>
+                      <clip pos="1" side="tl" part="nbr"/>
+                    </lu>
+                  </chunk>
+                </out>
+              </otherwise>
+            </choose>
+
+            <call-macro n="tipus_verbs"><with-param pos="5"/></call-macro>
+            <out>
+              <b pos="4"/>
+              <chunk name="inf">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><clip pos="5" side="tl" part="a_verb"/></tag>
+                  <tag><clip pos="5" side="tl" part="temps"/></tag>
+                  <tag><var n="tipus_verb"/></tag>
+                  <tag><var n="tipus_verb2"/></tag>
+<tag><lit-tag v="SV175b"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="5" side="tl" part="lemh"/>
+                  <clip pos="5" side="tl" part="a_verb"/>
+                  <clip pos="5" side="tl" part="sep"/>
+                  <clip pos="5" side="tl" part="temps"/>
+                  <clip pos="5" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+        <let><var n="vimpers"/><lit-tag v="pers"/></let>
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: VERB conjugat + HABERinf + PP (quería haber cantado; EOes)">
       <pattern>
         <pattern-item n="verbcj"/>
@@ -24171,132 +23700,6 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         </let>
       </action>
     </rule>
-
-    <rule comment="REGLA: PRO VERB conjugat + INF (lo quería cantar; EOes)">
-      <pattern>
-        <pattern-item n="pro-noref"/>
-        <pattern-item n="verbcj"/>
-        <pattern-item n="inf"/>
-      </pattern>
-      <action>            
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="tipus_verbs_like">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nombro1">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="default_nombro">
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
-
-     <choose>
-        <when>
-          <test>
-            <equal caseless="yes">
-              <clip pos="2" side="sl" part="lem"/>
-              <lit v="hacer"/>
-            </equal>
-          </test>
-        <call-macro n="f_bcond"><with-param pos="1"/><with-param pos="2"/></call-macro>
-        <out>
-          <chunk namefrom="nverb" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SV"/></tag>
-              <tag><lit-tag v="vbtr"/></tag>
-              <tag><clip pos="2" side="tl" part="temps"/></tag>
-              <tag><clip pos="2" side="tl" part="pers"/></tag>
-              <tag><clip pos="2" side="tl" part="nbr"/></tag>
-              <tag><var n="tipus_verb"/></tag>
-              <tag><var n="tipus_verb2"/></tag>
-<tag><lit-tag v="SV76"/></tag>
-            </tags>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_verb"/>
-              <lit-tag v="igi"/>
-              <clip pos="3" side="tl" part="sep"/>
-              <lit-tag v="3"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-        </when>
-        <otherwise>
-        <out>
-          <chunk namefrom="nverb" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SV"/></tag>
-              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
-              <tag><clip pos="2" side="tl" part="temps"/></tag>
-              <tag><clip pos="2" side="tl" part="pers"/></tag>
-              <tag><clip pos="2" side="tl" part="nbr"/></tag>
-              <tag><var n="tipus_verb"/></tag>
-              <tag><var n="tipus_verb2"/></tag>
-<tag><lit-tag v="SV77"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_verb"/>
-              <clip pos="2" side="tl" part="sep"/>
-              <lit-tag v="3"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="3" side="tl" part="lemh"/>
-              <clip pos="3" side="tl" part="a_verb"/>
-              <clip pos="3" side="tl" part="sep"/>
-              <clip pos="3" side="tl" part="temps"/>
-              <clip pos="3" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-      </otherwise>
-     </choose>
-
-        <out>
-          <b pos="2"/>
-          <chunk name="pro_obj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="1" side="tl" part="tipus_prn_ref"/></tag>
-              <tag><clip pos="1" side="tl" part="tipus_prn"/></tag>
-              <tag><clip pos="1" side="tl" part="pers"/></tag>
-              <tag><clip pos="1" side="tl" part="gen"/></tag>
-              <tag><clip pos="1" side="tl" part="nbr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lem"/>
-              <clip pos="1" side="tl" part="a_prn"/>
-              <clip pos="1" side="tl" part="tipus_prn_tn"/>
-              <clip pos="1" side="tl" part="tipus_prn" link-to="2"/>
-              <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="gen"/>
-              <clip pos="1" side="tl" part="nbr"/>
-            </lu>
-          </chunk>
-        </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
-      </action>
-    </rule>
-
 
 
     <rule comment="REGLA: HABER + PP (él ha leído aquel libro -> Li legis tiun libron; traducido a pasado) (EOes)">
@@ -26736,7 +26139,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
     </rule>
 
 
-    <rule comment="NO PRON VERBconj ADVNEG ( no lo canta nunca -> neniam kantas ĝin )">
+    <rule comment="REGLA: NO PRON VERB ADVNEG ( no me como nunca -> neniam formanĝas; no lo como nunca -> neniam manĝas lin ) (EO)">
       <pattern>
         <pattern-item n="no"/>
         <pattern-item n="pro"/>
@@ -26744,248 +26147,198 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="advneg"/>
       </pattern>
       <action>            
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="3"/>
-        </call-macro>
-        <call-macro n="nombro1">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="default_nombro">
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="control_pron"><with-param pos="2"/><with-param pos="3"/><with-param pos="3"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
+        <call-macro n="set_temps"><with-param pos="3"/></call-macro>
 
-                <out>
-                  <chunk name="adv" case="caseFirstWord">
-                    <tags>
-                      <tag><clip pos="4" side="tl" part="a_adv"/></tag>
-                      <tag><clip pos="4" side="tl" part="neg"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="4" side="tl" part="lem"/>
-                      <clip pos="4" side="tl" part="a_adv"/>
-                    </lu>
-                  </chunk>
-                  <b pos="2"/>
-                  <chunk namefrom="nverb">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="3" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="3" side="tl" part="temps"/></tag>
-                      <tag><clip pos="3" side="tl" part="pers"/></tag>
-                      <tag><clip pos="3" side="tl" part="nbr"/></tag>
-                      <tag><var n="tipus_verb"/></tag>
-                      <tag><var n="tipus_verb2"/></tag>
-<tag><lit-tag v="SV92"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="3" side="tl" part="lemh"/>
-                      <clip pos="3" side="tl" part="a_verb"/>
-                      <clip pos="3" side="tl" part="sep"/>
-                      <lit-tag v="3"/>
-                      <clip pos="3" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                  <b pos="1"/>
-          <chunk name="prn_nosubj">
+        <!-- ni certiĝas, ĉu necesas aldoni "oni" -->
+        <choose>
+          <when>
+            <test><equal><var n="aldoni_oni"/><lit v="aldoni"/></equal></test>
+            <out>
+              <chunk name="prpers" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+                </tags>
+                <lu>
+                  <lit v="oni"/>
+                  <lit-tag v="prn.tn.sg.nom"/>
+                </lu>
+              </chunk>
+              <b/>
+            </out>
+            <let><var n="caseFirstWord"/><lit v="aa"/></let>
+          </when>
+        </choose>
+
+        <out>
+          <chunk name="adv" case="caseFirstWord">
             <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
+              <tag><clip pos="4" side="tl" part="a_adv"/></tag>
+              <tag><clip pos="4" side="tl" part="neg"/></tag>
             </tags>
             <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_prn"/>
-              <clip pos="2" side="tl" part="tipus_prn"/>
-              <clip pos="2" side="tl" part="pers"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <lit-tag v="3"/>
+              <clip pos="4" side="tl" part="lem"/>
+              <clip pos="4" side="tl" part="a_adv"/>
             </lu>
           </chunk>
-                </out>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+          <b pos="1"/>
+          <chunk namefrom="nverb">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="3" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><clip pos="3" side="tl" part="pers"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+              <tag><var n="vimpers"/></tag>
+              <tag><var n="vigxi1"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
+<tag><lit-tag v="SV166b"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
+<tag><var n="debug3"/></tag>
+<tag><var n="debug4"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+              <var n="vigxi2"/>
+              <clip pos="3" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out> 
+
+        <!-- ni certiĝas, ĉu necesas aldoni la pronomon -->
+        <choose>
+          <when>
+            <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
+            <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+          </when>
+          <otherwise>
+            <out>
+              <b pos="2"/>
+              <chunk name="pro_obj">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><clip pos="2" side="tl" part="tipus_prn_ref"/></tag>
+                  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="gen"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="a_prn"/>
+                  <clip pos="2" side="tl" part="tipus_prn_tn"/>
+                  <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+                  <clip pos="2" side="tl" part="pers"/>
+                  <clip pos="2" side="tl" part="gen"/>
+                  <clip pos="2" side="tl" part="nbr"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+        <call-macro n="f_bcond"><with-param pos="3"/><with-param pos="4"/></call-macro>
+
+        <let><var n="vimpers"/><lit-tag v="pers"/></let>
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
-
-    <rule comment="NO PRON VERBhaber ADVNEG + PP (no lo ha nunca leído - neniam legis ĝin ; es tradueix per passat) (EO)">
+    <rule comment="REGLA: NO PRON HABER + PP ADVNEG (no lo ha leído nunca -> neniam legis ĝin)">
       <pattern>
         <pattern-item n="no"/>
         <pattern-item n="pro"/>
         <pattern-item n="haber"/>
-        <pattern-item n="advneg"/>
         <pattern-item n="pp"/>
+        <pattern-item n="advneg"/>
       </pattern>
       <action>
         <call-macro n="firstWord"><with-param pos="1"/></call-macro>
-        <call-macro n="tipus_verbs">
-          <with-param pos="5"/>
-        </call-macro>
-        <call-macro n="correccion_lo">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="nombro1">
-          <with-param pos="2"/>
-        </call-macro>
-        <call-macro n="default_nombro">
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="4"/></call-macro>
+        <call-macro n="control_pron"><with-param pos="2"/><with-param pos="3"/><with-param pos="4"/></call-macro>
+<let><var n="debug1"/><lit-tag v="11b"/></let>
+
+        <!-- ni certiĝas, ĉu necesas aldoni "oni" -->
+        <choose>
+          <when>
+            <test><equal><var n="aldoni_oni"/><lit v="aldoni"/></equal></test>
+            <out>
+              <chunk name="prpers" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN.subj.p3.mf.sg"/></tag>
+                </tags>
+                <lu>
+                  <lit v="oni"/>
+                  <lit-tag v="prn.tn.sg.nom"/>
+                </lu>
+              </chunk>
+              <b/>
+            </out>
+            <let><var n="caseFirstWord"/><lit v="aa"/></let>
+          </when>
+        </choose>
+
+        <out>
+          <chunk name="adv" case="caseFirstWord">
+            <tags>
+              <tag><clip pos="5" side="tl" part="a_adv"/></tag>
+              <tag><clip pos="5" side="tl" part="neg"/></tag>
+            </tags>
+            <lu>
+              <clip pos="5" side="tl" part="lem"/>
+              <clip pos="5" side="tl" part="a_adv"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+        </out>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+
+        <call-macro n="haber__pp"><with-param pos="3"/><with-param pos="4"/></call-macro>
 
         <choose>
-              <when>  <!-- traduccions des de present -> passat (1)-->
-                <test>
-                  <or>
-                    <equal>
-                      <clip pos="3" side="sl" part="temps"/>
-                      <lit-tag v="pri"/><!--present indicatiu dic -->
-                    </equal>
-                    <equal>
-                      <clip pos="3" side="sl" part="temps"/>
-                      <lit-tag v="prs"/><!--present subjunctiu digui -->
-                    </equal>
-                  </or>
-                </test>
-                <let>
-                  <clip pos="5" side="tl" part="temps"/>
-                  <lit-tag v="past"/> <!-- present -->
-                </let>
-                <out>
-                  <chunk name="adv" case="caseFirstWord">
-                    <tags>
-                      <tag><clip pos="4" side="tl" part="a_adv"/></tag>
-                      <tag><clip pos="4" side="tl" part="neg"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="4" side="tl" part="lem"/>
-                      <clip pos="4" side="tl" part="a_adv"/>
-                    </lu>
-                  </chunk>
-                  <b pos="2"/>
-                  <chunk name="verbcj">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="5" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="3" side="tl" part="temps"/></tag>
-                      <tag><clip pos="3" side="tl" part="pers"/></tag>
-                      <tag><clip pos="3" side="tl" part="nbr"/></tag>
-                      <tag><var n="tipus_verb"/></tag>
-                      <tag><var n="tipus_verb2"/></tag>
-<tag><lit-tag v="SV93"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="5" side="tl" part="lemh"/>
-                      <clip pos="5" side="tl" part="a_verb"/>
-                      <!-- <clip pos="5" side="tl" part="temps"/> --> <!-- per alguna raó falla a vegades amb vbser -->
-                      <lit-tag v="past"/>
-                      <clip pos="5" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                    <b pos="1"/>
-          <chunk name="prn_nosubj">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
-            </tags>
-            <lu>
-              <clip pos="2" side="tl" part="lem"/>
-              <clip pos="2" side="tl" part="a_prn"/>
-              <clip pos="2" side="tl" part="tipus_prn"/>
-              <clip pos="2" side="tl" part="pers"/>
-              <clip pos="2" side="tl" part="gen"/>
-              <lit-tag v="3"/>
-            </lu>
-          </chunk>
-                </out>
+          <when>
+            <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
           </when>
-            <otherwise>
-        <call-macro n="set_temps2">
-          <with-param pos="3"/>
-          <with-param pos="5"/>
-        </call-macro>
-
-                <out>
-                  <chunk name="adv" case="caseFirstWord">
-                    <tags>
-                      <tag><clip pos="4" side="tl" part="a_adv"/></tag>
-                      <tag><clip pos="4" side="tl" part="neg"/></tag>
-                    </tags>
-                    <lu>
-                      <clip pos="4" side="tl" part="lem"/>
-                      <clip pos="4" side="tl" part="a_adv"/>
-                    </lu>
-                  </chunk>
-                  <b pos="2"/>
-                  <chunk namefrom="nverb">
-                    <tags>
-                      <tag><lit-tag v="SV"/></tag>
-                      <tag><clip pos="5" side="tl" part="a_verb"/></tag>
-                      <tag><clip pos="3" side="tl" part="temps"/></tag>
-                      <tag><clip pos="3" side="tl" part="pers"/></tag>
-                      <tag><clip pos="3" side="tl" part="nbr"/></tag>
-                      <tag><var n="tipus_verb"/></tag>
-                      <tag><var n="tipus_verb2"/></tag>
-<tag><lit-tag v="SV94"/></tag>
-                    </tags>
-                    <lu>
-                      <lit v="esti"/>
-                      <lit-tag v="vbser"/>
-                      <lit-tag v="3"/>
-                    </lu>
-                    <b pos="4"/>
-                    <lu>
-                      <clip pos="5" side="tl" part="lemh"/>
-                      <clip pos="5" side="tl" part="a_verb"/>
-                      <!-- <clip pos="5" side="tl" part="temps"/> --> <!-- per alguna raó falla a vegades amb vbser -->
-                      <lit-tag v="pp3"/>
-                      <clip pos="2" side="tl" part="nbr"/>
-                      <clip pos="5" side="tl" part="lemq"/>
-                    </lu>
-                  </chunk>
-                    <b pos="1"/>
-          <chunk name="prn_nosubj">
+          <otherwise>
+        <out>
+          <b/>
+          <chunk name="pro_obj">
             <tags>
               <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="2" side="tl" part="tipus_prn_ref"/></tag>
               <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
-              <tag><var n="nombre"/></tag>
-              <tag><var n="case"/></tag>
-              <tag><var n="changecase"/></tag>
+              <tag><clip pos="2" side="tl" part="pers"/></tag>
+              <tag><clip pos="2" side="tl" part="gen"/></tag>
+              <tag><clip pos="2" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
               <clip pos="2" side="tl" part="lem"/>
               <clip pos="2" side="tl" part="a_prn"/>
-              <clip pos="2" side="tl" part="tipus_prn"/>
+              <clip pos="2" side="tl" part="tipus_prn_tn"/>
+              <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
               <clip pos="2" side="tl" part="pers"/>
               <clip pos="2" side="tl" part="gen"/>
-              <lit-tag v="3"/>
+              <clip pos="2" side="tl" part="nbr"/>
             </lu>
           </chunk>
-                </out>
-            </otherwise>
+        </out>
+          </otherwise>
         </choose>
-        <let>
-          <var n="caseFirstWord"/>
-          <lit v="aa"/>
-        </let>
+
+        <call-macro n="f_bcond"><with-param pos="4"/><with-param pos="5"/></call-macro>
+        <let><var n="vimpers"/><lit-tag v="pers"/></let>
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
       </action>
     </rule>
 
