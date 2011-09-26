@@ -51,6 +51,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
       <cat-item tags="SA.*"/>
     </def-cat>
 
+    <def-cat n="SNSA">
+      <cat-item tags="SN.*"/>
+      <cat-item tags="SA.*"/>
+    </def-cat>
+
     <def-cat n="cnjsub">
       <cat-item tags="cnjsub"/>
     </def-cat>
@@ -408,7 +413,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 
 <rule comment="REGLA: SN SNrelatiu SNobj SV (. el niño que nos vió-> la knabo kiu nin vidis EOes))">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNSA"/>
         <pattern-item n="SNrelatiu"/>
         <pattern-item n="SNobj"/>
         <pattern-item n="SVnocop"/>
@@ -433,13 +438,18 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="4" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu1"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
 
 <rule comment="REGLA: SN SNrelatiu SNobj SV SN (. el niño que nos dio el libro -> la knabo kiu al ni donis la libron EOes))">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNSA"/>
         <pattern-item n="SNrelatiu"/>
         <pattern-item n="SNobj"/>
         <pattern-item n="SVnocop"/>
@@ -488,13 +498,18 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="5" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu2"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
 
 <rule comment="REGLA: SN SNrelatiu SN SV (. el nen que ella vió -> la knabo kiun ŝi vidis EOes))">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNSA"/>
         <pattern-item n="SNrelatiu"/>
         <pattern-item n="SN"/>
         <pattern-item n="SVnocop"/>
@@ -519,6 +534,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="4" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu3"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -526,7 +546,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 
 <rule comment="REGLA: SN SNrelatiu SV SN (EOes: el niño que vió la casa -> la knabo kiu vidis la domon; la niña que vieron los niños -> la knabino kiun vidis la knaboj)">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNSA"/>
         <pattern-item n="SNrelatiu"/>
         <pattern-item n="SVnocop"/>
         <pattern-item n="SN"/>
@@ -536,20 +556,32 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
        <choose>
           <when>
             <test>
+              <or>
               <and>
                 <equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal>
                 <equal><clip pos="3" part="pers"/><lit-tag v="p3"/></equal>
+                <not><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></not>
               </and>
+              <and>
+                <equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal>
+                <equal><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></equal>
+              </and>
+              </or>
             </test>
             <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
-            <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+            <choose>
+              <when>
+                <test><not><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></not></test>
+                <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+              </when>
+            </choose>
             <choose>
               <when>
                 <test>
                   <not><equal><clip pos="3" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
                 </test>
 <!--            <let><clip pos="4" part="case"/><lit-tag v="acc"/></let> -->
-<let><clip pos="4" part="case"/><lit-tag v="acc.sense"/></let>
+<let><clip pos="4" part="case2"/><lit-tag v="acc.sense"/></let>
               </when>
             </choose>
         </when>
@@ -559,7 +591,12 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
                 <not><equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal></not>
             </test>
             <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
-            <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+            <choose>
+              <when>
+                <test><not><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></not></test>
+                <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+              </when>
+            </choose>
 <let><clip pos="4" part="case2"/><lit-tag v="nom.sense"/></let>
         </when>
       </choose>
@@ -579,6 +616,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="4" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu4"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -586,7 +628,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 
 <rule comment="REGLA: SN SNrelatiu SVcop (los niños que son altos -> la infanoj kiuj estas altaj)">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNSA"/>
         <pattern-item n="SNrelatiu"/>
         <pattern-item n="SVcop_pers"/>
       </pattern>
@@ -605,6 +647,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="3" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu5"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -627,6 +674,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="2" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu6"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -634,7 +686,7 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
 
 <rule comment="REGLA: SN SNrelatiu SV (la niña que vino -> la knabino kiu venis; los niños que viste -> la knaboj kiujn vi vidis)">
       <pattern>
-        <pattern-item n="SN"/>
+        <pattern-item n="SNSA"/>
         <pattern-item n="SNrelatiu"/>
         <pattern-item n="SVnocop"/>
       </pattern>
@@ -643,13 +695,25 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
        <choose>
           <when>
             <test>
+              <or>
               <and>
                 <equal><clip pos="1" part="nbr"/><clip pos="3" part="nbr"/></equal>
                 <equal><clip pos="3" part="pers"/><lit-tag v="p3"/></equal>
+                <not><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></not>
               </and>
+              <and>
+                <equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal>
+                <equal><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></equal>
+              </and>
+              </or>
             </test>
             <let><clip pos="2" part="case"/><lit-tag v="nom"/></let>
-            <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+            <choose>
+              <when>
+                <test><not><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></not></test>
+                <let><clip pos="2" part="nbr"/><clip pos="3" part="nbr"/></let>
+              </when>
+            </choose>
         <out>
           <chunk>
             <clip pos="1" part="whole"/>
@@ -662,12 +726,22 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="3" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu7"/>
+</chunk>
+-->
         </out>
         </when>
 
         <otherwise>
             <let><clip pos="2" part="case"/><lit-tag v="acc"/></let>
-            <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+            <choose>
+              <when>
+                <test><not><equal><clip pos="2" part="nbr"/><lit-tag v="pl"/></equal></not></test>
+                <let><clip pos="2" part="nbr"/><clip pos="1" part="nbr"/></let>
+              </when>
+            </choose>
         <out>
           <chunk>
             <clip pos="1" part="whole"/>
@@ -687,6 +761,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="3" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu8"/>
+</chunk>
+-->
         </out>
         </otherwise>
         </choose>
@@ -714,6 +793,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="3" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu9"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -739,6 +823,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="3" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu10"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -768,6 +857,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="4" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu11"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -796,6 +890,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="4" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu12"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>
@@ -834,6 +933,11 @@ kies nombro aŭ genro ne povis esti eksciita (tio validas ĉefe por la franca, s
           <chunk>
             <clip pos="5" part="whole"/>
           </chunk>
+<!--
+<chunk>
+<lit v="relatiu13"/>
+</chunk>
+-->
         </out>
       </action>
 </rule>

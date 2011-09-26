@@ -24,17 +24,24 @@
       <cat-item tags="SN.*.nomi2"/>
     </def-cat>
     
-   <def-cat n="SNacc"><!-- EO: tots el que no porten changecase=sense-->
+    <def-cat n="SNacc"><!-- EO: tots el que no porten changecase=sense-->
       <cat-item tags="SN.*.nom"/>
       <cat-item tags="SNrelatiu.*.nom"/>
       <cat-item tags="SNloque.*.nom"/>
     </def-cat>
 
-   <def-cat n="SNpronacc"><!-- EO: tots el que no porten changecase=sense-->
+    <def-cat n="SNpronacc"><!-- EO: tots el que no porten changecase=sense-->
       <cat-item tags="SN.*.nom"/>
       <cat-item lemma="prpers" tags="SN.subj.*"/>
       <cat-item tags="SNrelatiu.*.nom"/>
       <cat-item tags="SNloque.*.nom"/>
+    </def-cat>
+
+    <def-cat n="SNpronaccfix"><!-- EO: tots el que ja tenen l'acusatiu fixat -->
+      <cat-item tags="SN.*.acc.sense"/>
+      <cat-item lemma="prpers" tags="SN.obj.*"/>
+      <cat-item tags="SNrelatiu.*.acc.sense"/>
+      <cat-item tags="SNloque.*.acc.sense"/>
     </def-cat>
 
     <def-cat n="SNsgacc">
@@ -1673,6 +1680,113 @@ copiat del francès: no sembla madur ni gaire productiu
                 </test>
                 <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
                 <let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
+              </when>
+            </choose>
+          </when>
+        </choose>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+          <b pos="4"/>
+          <chunk>
+            <clip pos="5" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<!-- ĉi tiu regulo estas preskaŭ kiel la antaŭa, sed kiam la objekto jam ricevis fiksitan akuzativon en antaŭa paŝo; tiuokaze ni rigardas, ĉu ankaŭ la SN post "kiel" devas ricevi ĝin -->
+<rule comment="REGLA: SN SVlex SN kiel SN (recibió un pastel como regalo -> li ricevis kukon kiel donacon) - ni divenas, ke la komparo estas kun la objekto kaj ne kun la subjekto (tamen rigardas la nombran akordon)">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SVlex"/>
+        <pattern-item n="SNpronaccfix"/>
+        <pattern-item n="kiel"/>
+        <pattern-item n="SNpronacc"/>
+      </pattern>
+      <action>
+
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <choose>
+              <when>
+                <test>
+                  <equal><clip pos="3" part="nbr"/><clip pos="5" part="nbr"/></equal>
+                </test>
+                <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+                <let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
+              </when>
+            </choose>
+          </when>
+        </choose>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+          <b pos="3"/>
+          <chunk>
+            <clip pos="4" part="whole"/>
+          </chunk>
+          <b pos="4"/>
+          <chunk>
+            <clip pos="5" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SN SVlex kiel SN SN (recibió como regalo un pastel -> li ricevis kiel donacon kukon) - ni divenas, ke la komparo estas kun la objekto kaj ne kun la subjekto (tamen rigardas la nombran akordon)">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="SVlex"/>
+        <pattern-item n="kiel"/>
+        <pattern-item n="SNpronacc"/>
+        <pattern-item n="SNpronacc"/>
+      </pattern>
+      <action>
+
+        <choose>
+          <when>
+            <test>
+              <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+            </test>
+            <let><clip pos="5" part="case"/><lit-tag v="acc"/></let>
+            <let><clip pos="5" part="tipus_prn"/><lit-tag v="obj"/></let>
+            <choose>
+              <when>
+                <test>
+                  <equal><clip pos="5" part="nbr"/><clip pos="4" part="nbr"/></equal>
+                </test>
+                <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
+                <let><clip pos="4" part="tipus_prn"/><lit-tag v="obj"/></let>
               </when>
             </choose>
           </when>
