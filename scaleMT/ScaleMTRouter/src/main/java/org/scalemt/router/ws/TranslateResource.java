@@ -314,6 +314,7 @@ public class TranslateResource {
 
         Map<String, String> responseData = new HashMap<String, String>();
         responseData.put(Constants.JSON_TRANSLATEDTEXT, translation);
+        boolean encodeTranslation=!(enumFormat.equals(Format.omegat));
         return Util.generateJSON(responseData, responseCode, errorMessage);
     }
 }

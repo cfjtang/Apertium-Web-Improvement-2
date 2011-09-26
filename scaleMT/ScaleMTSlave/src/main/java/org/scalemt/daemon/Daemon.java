@@ -1042,8 +1042,18 @@ public class Daemon {
                                 logger.error("IOException executing program", e);
                             }
 
-
-                            logger.trace("Daemon "+ this.getId() +". Translation "+element.getId()+". "+programCommand+" output: "+memoryVars.get(output).toString());
+                            byte[] traceMemVar=memoryVars.get(output);
+                            String traceMemVarStr=traceMemVar.toString();
+                            try
+                            {
+                                traceMemVarStr=new String(traceMemVar, "UTF-8");
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
+                            
+                            logger.trace("Daemon "+ this.getId() +". Translation "+element.getId()+". "+programCommand+" output: "+ traceMemVarStr);
                             }
                         }
                         else
