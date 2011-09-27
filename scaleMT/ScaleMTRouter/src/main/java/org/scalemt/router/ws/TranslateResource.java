@@ -152,27 +152,30 @@ public class TranslateResource {
         int responseStatus = 400;
         String errorDetails = "Bad parameters";
 
+        String originalTranslation="";
+        String dummyTranslation="omegatdummytranslation";
+        
         try {
-            if (q != null && langpairs != null) {
+            if (q != null && langpairs != null) {                
                 if (q.size() == 1 && langpairs.size() == 1) {
                     /*
                      * If there is only a source text and a language pair, perform one translation
                      */
                     response = getTranslationJSON(q.get(0), langpairs.get(0), format,clientIp,referer, key,additionalOptions);
                     
-                    //ugly workaround to unescape translation
-                    //if(format.equals("omegat"))
-                    //{
-                     //   String dummyTranslation="omegatdummytranslation";
-                     //  String originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
-                     //  response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
-                     //   responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
-                    //}
-                    //else
-                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
                     responseStatus = response.getInt(Constants.JSON_RESPONSESTATUS);
                     errorDetails = response.isNull(Constants.JSON_RESPONSEDETAILS) ? null : response.getString(Constants.JSON_RESPONSEDETAILS);
-
+                    
+                    //ugly workaround to unescape translation
+                    if(format.equals("omegat") && responseStatus==200)
+                    {
+                       originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
+                       response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
+                       responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
+                    }
+                    else
+                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
+                    
                 } else if (q != null && q.size() == 1 && langpairs.size() > 1) {
                     /*
                      * If there is one source text and more than one language pair,
@@ -248,7 +251,15 @@ public class TranslateResource {
             responseStr = Constants.JSON_DEFAULT_RESPONSE;
             responseDataStr=Constants.JSON_DEFAULT_RESPONSE_DATA;
         } else {
-            responseStr = response.toString();
+            //ugly workaround to unescape translation
+            if(format.equals("omegat") && responseStatus==200)
+            {
+                responseStr = response.toString().replace(dummyTranslation, originalTranslation);
+            }
+            else
+            {
+                responseStr = response.toString();
+            }
         }
 
         //Process callback and context parameters
