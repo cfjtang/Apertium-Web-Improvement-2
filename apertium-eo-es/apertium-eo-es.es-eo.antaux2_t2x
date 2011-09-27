@@ -56,6 +56,11 @@
       <cat-item tags="SV.*"/>
     </def-cat>
 
+    <def-cat n="inf">
+      <cat-item lemma="inf" tags="SV.*"/>
+      <cat-item tags="SV.*.inf.*"/>
+    </def-cat>
+
     <def-cat n="vblexinf">
       <cat-item lemma="inf" tags="SV.vblex.*"/>
       <cat-item lemma="inf" tags="SV.vbtr.*"/>
@@ -65,6 +70,11 @@
       <cat-item tags="SV.vbtr.inf.*"/>
       <cat-item tags="SV.vbntr.inf.*"/>
       <cat-item tags="SV.vbtr_ntr.inf.*"/>
+    </def-cat>
+
+    <def-cat n="vbserinf">
+      <cat-item lemma="inf" tags="SV.vbser.*"/>
+      <cat-item tags="SV.vbser.inf.*"/>
     </def-cat>
 
     <def-cat n="pr">
@@ -516,6 +526,30 @@
       <pattern>
         <pattern-item n="SV"/>
         <pattern-item n="al_de"/>
+        <pattern-item n="inf"/>
+      </pattern>
+
+      <action>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+        </out>
+        <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: SN A INF   -   SN INF: la manera de hacer -> la formo fari, el encarcago de sacar -> la respondeculo forigi">
+      <pattern>
+        <pattern-item n="SN"/>
+        <pattern-item n="al_de"/>
         <pattern-item n="vblexinf"/>
       </pattern>
 
@@ -536,11 +570,11 @@
     </rule>
 
 
-    <rule comment="REGLA: SN A INF   -   SV INF: la manera de hacer -> la formo fari, el encarcago de sacar -> la respondeculo forigi">
+    <rule comment="REGLA: SN DE VBSER   -   SN INF: la manera de ser -> la formo fari">
       <pattern>
         <pattern-item n="SN"/>
-        <pattern-item n="al_de"/>
-        <pattern-item n="vblexinf"/>
+        <pattern-item n="de"/>
+        <pattern-item n="vbserinf"/>
       </pattern>
 
       <action>

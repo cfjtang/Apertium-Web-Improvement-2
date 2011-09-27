@@ -55,7 +55,7 @@ for dir in $DIRS; do
 	if [ $dir = "es" ]; then
 		mode="es-eo";
 	else 
-		mode="eo-es";
+		mode="eo-es-cg";
 	fi
 
 	echo "Translating using  apertium -d $DATADIR $mode"
