@@ -170,6 +170,10 @@ public class TranslateResource {
                     if("omegat".equals(format) && responseStatus==200)
                     {
                        originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
+                       if(originalTranslation.length()>0)
+                       {
+                           originalTranslation=originalTranslation.substring(0, originalTranslation.length()-1)+" "+originalTranslation.substring(originalTranslation.length()-1);
+                       }
                        response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
                     }
