@@ -161,14 +161,14 @@ public class TranslateResource {
                     response = getTranslationJSON(q.get(0), langpairs.get(0), format,clientIp,referer, key,additionalOptions);
                     
                     //ugly workaround to unescape translation
-                    if(format.equals("omegat"))
-                    {
-                        String dummyTranslation="omegatdummytranslation";
-                        String originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
-                        response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
-                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
-                    }
-                    else
+                    //if(format.equals("omegat"))
+                    //{
+                     //   String dummyTranslation="omegatdummytranslation";
+                     //  String originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
+                     //  response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
+                     //   responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
+                    //}
+                    //else
                         responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
                     responseStatus = response.getInt(Constants.JSON_RESPONSESTATUS);
                     errorDetails = response.isNull(Constants.JSON_RESPONSEDETAILS) ? null : response.getString(Constants.JSON_RESPONSEDETAILS);
