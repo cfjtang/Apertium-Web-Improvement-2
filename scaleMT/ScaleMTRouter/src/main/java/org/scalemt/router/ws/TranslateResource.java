@@ -167,7 +167,7 @@ public class TranslateResource {
                     errorDetails = response.isNull(Constants.JSON_RESPONSEDETAILS) ? null : response.getString(Constants.JSON_RESPONSEDETAILS);
                     
                     //ugly workaround to unescape translation
-                    if(format.equals("omegat") && responseStatus==200)
+                    if("omegat".equals(format) && responseStatus==200)
                     {
                        originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
                        response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
@@ -252,7 +252,7 @@ public class TranslateResource {
             responseDataStr=Constants.JSON_DEFAULT_RESPONSE_DATA;
         } else {
             //ugly workaround to unescape translation
-            if(format.equals("omegat") && responseStatus==200)
+            if("omegat".equals(format) && responseStatus==200)
             {
                 responseStr = response.toString().replace(dummyTranslation, originalTranslation);
             }
