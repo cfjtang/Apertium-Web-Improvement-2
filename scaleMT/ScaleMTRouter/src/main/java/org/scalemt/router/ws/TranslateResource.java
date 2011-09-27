@@ -159,7 +159,17 @@ public class TranslateResource {
                      * If there is only a source text and a language pair, perform one translation
                      */
                     response = getTranslationJSON(q.get(0), langpairs.get(0), format,clientIp,referer, key,additionalOptions);
-                    responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
+                    
+                    //ugly workaround to unescape translation
+                    if(format.equals("omegat"))
+                    {
+                        String dummyTranslation="omegatdummytranslation";
+                        String originalTranslation=response.getJSONObject(Constants.JSON_RESPONSEDATA).getString(Constants.JSON_TRANSLATEDTEXT);
+                        response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
+                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
+                    }
+                    else
+                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString();
                     responseStatus = response.getInt(Constants.JSON_RESPONSESTATUS);
                     errorDetails = response.isNull(Constants.JSON_RESPONSEDETAILS) ? null : response.getString(Constants.JSON_RESPONSEDETAILS);
 
@@ -311,10 +321,10 @@ public class TranslateResource {
 
         LoggerStatiticsWriter.getInstance().logRequestProcessed(Integer.toString(responseCode));
         logger.debug("requesprocessed "+responseCode+" "+errorMessage);
-
+        
         Map<String, String> responseData = new HashMap<String, String>();
         responseData.put(Constants.JSON_TRANSLATEDTEXT, translation);
-        boolean encodeTranslation=!(enumFormat.equals(Format.omegat));
-        return Util.generateJSON(responseData, responseCode, errorMessage);
+        
+        return Util.generateJSON(responseData, responseCode, errorMessage);       
     }
 }
