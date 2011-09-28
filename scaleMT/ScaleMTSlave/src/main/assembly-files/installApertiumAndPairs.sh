@@ -150,7 +150,13 @@ done
 	
 cd ..
 cp toinstall/* $REAL_PREFIX/bin
+
+if [ "enable-yes" = "$4"  ]
+then
+
 cp apertium-module/* $REAL_PREFIX/bin
+
+fi
 
 }
 
