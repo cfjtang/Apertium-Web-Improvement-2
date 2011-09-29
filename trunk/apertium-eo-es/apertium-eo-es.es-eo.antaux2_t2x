@@ -98,6 +98,12 @@
       <cat-item lemma="en la momento de" tags="pr"/>
     </def-cat>
 
+    <def-cat n="pseudoprep"> <!-- preposiciones que forman parte del SN -->
+      <cat-item lemma="pli ol" tags="pr"/>
+      <cat-item lemma="malpli ol" tags="pr"/>
+      <cat-item lemma="ĉirkaŭ" tags="pr"/>
+    </def-cat>
+
     <def-cat n="unknown">
        <cat-item lemma="unknown" tags=""/>
     </def-cat>
@@ -154,6 +160,10 @@
       <attr-item tags="nom"/>
       <attr-item tags="acc"/>
     </def-attr>
+
+   <def-attr n="case2"> <!-- pedaç: s'utiliza "nom" com a etiqueta amb dos sentits a la mateixa cadena; cal canviar-ho, però per ara faig això -->
+      <attr-item tags="nom.nom"/>
+   </def-attr>
 
     <def-attr n="gen">
       <attr-item tags="m"/>
@@ -330,6 +340,56 @@
         <out>
 	  <chunk>
 	    <clip pos="3" part="whole"/>
+	  </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: SV A PSEUDO_PREP SN   -   SV (a) SN: mataron a más de 700 personas -> mortigis pli ol 700 homojn">
+      <pattern>
+        <pattern-item n="SV"/>
+        <pattern-item n="al"/>
+        <pattern-item n="pseudoprep"/>
+        <pattern-item n="SN"/>
+      </pattern>
+
+      <action>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+        </out>
+
+       <choose>
+          <when>
+            <test>
+              <and>
+               <equal><clip pos="1" part="verbo_a"/><lit-tag v="eliminar_a"/></equal>
+               <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              </and>
+            </test>
+            <call-macro n="f_bcond"><with-param pos="2"/><with-param pos="3"/></call-macro>
+            <let><clip pos="4" part="case2"/><lit-tag v="acc.sense"/></let>
+          </when>
+          <otherwise>
+	  <out>
+	    <chunk>
+	      <clip pos="2" part="whole"/>
+	    </chunk>
+	    <b pos="2"/>
+	  </out>
+          </otherwise>
+       </choose>
+
+        <out>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+	  <b pos="3"/>
+	  <chunk>
+	    <clip pos="4" part="whole"/>
 	  </chunk>
         </out>
       </action>
