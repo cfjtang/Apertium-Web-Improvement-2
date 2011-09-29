@@ -286,10 +286,10 @@
       <cat-item tags="vbmod.*"/>
     </def-cat>
 
-    <def-cat n="inf_imp">
+    <def-cat n="inf_ger_imp">
       <cat-item tags="vblex.inf"/>
+      <cat-item tags="vblex.ger"/>
       <cat-item tags="vblex.imp.*"/>
-      <cat-item tags="vblex.ger.*"/>
     </def-cat>
 
     <def-cat n="verbm_inf_ger"><!--verb modal, infinitiu o gerundi -->
@@ -489,6 +489,7 @@
     <def-cat n="pronneg">
       <cat-item lemma="nada" tags="prn.*"/>
       <cat-item lemma="nadie" tags="prn.*"/>
+      <cat-item lemma="ninguno" tags="prn.*"/>
     </def-cat>
 
     <def-cat n="nada">
@@ -1221,6 +1222,8 @@
       <list-item v="porti"/>
       <list-item v="preni"/>
       <list-item v="kapti"/>
+      <list-item v="fariĝi"/>
+      <list-item v="iĝi"/>
     </def-list>
 
   <def-list n="reportingverb"> <!-- BCN EO verbs que porten KE (no s'utilitza)-->
@@ -1322,10 +1325,12 @@
       <list-item v="apreciar"/>
       <list-item v="divisar"/>
       <list-item v="desajustar"/>
+      <list-item v="posicionar"/>
 
 <!-- quitar reflexivo -->
       <list-item v="morir"/>
       <list-item v="comprar"/>
+      <list-item v="intercambiar"/>
       <list-item v="divorciar"/>
       <list-item v="subir"/>
       <list-item v="bajar"/>
@@ -1419,7 +1424,6 @@
       <list-item v="promocionar"/>
       <list-item v="aprovechar"/> <!-- pero: él se aprocha = li profitas -->
       <list-item v="trabajar"/>
-      <list-item v="diferenciar"/>
       <list-item v="lavar# en seco"/>
       <list-item v="poner# en peligro"/>
       <list-item v="provocar# un aborto"/>
@@ -1467,6 +1471,9 @@
       <list-item v="hacer# presente"/>
       <list-item v="sospechar"/>
       <list-item v="sospesar"/>
+      <list-item v="reconocer"/>
+      <list-item v="permitir"/>
+      <list-item v="robar"/>
     </def-list>
 
     <def-list n="verbs_igxi">
@@ -1575,6 +1582,8 @@
       <list-item v="encaminar"/>
       <list-item v="acentuar"/>
       <list-item v="transformar"/>
+      <list-item v="asociar"/>
+      <list-item v="diferenciar"/>
 
      <list-item v="abaratar"/>
      <list-item v="abatir"/>
@@ -2114,6 +2123,10 @@
       <list-item v="independizar"/>
       <list-item v="flexibilizar"/>
       <list-item v="divinizar"/>
+      <list-item v="inmovilizar"/>
+      <list-item v="atomizar"/>
+      <list-item v="globalizar"/>
+      <list-item v="laicalizar"/>
     </def-list>
 
   <def-list n="transitivos_personales">
@@ -2851,6 +2864,7 @@
       <list-item v="recolectar"/>
       <list-item v="recombinar"/>
       <list-item v="recomprar"/>
+      <list-item v="reconocer"/>
       <list-item v="rectificar"/>
       <list-item v="recubrir"/>
       <list-item v="recurrir"/>
@@ -3041,7 +3055,7 @@
           <let><var n="tipus_verb"/><lit-tag v="predikativo"/></let>
         </when>
         <when>
-              <test><in caseless="yes"><clip pos="1" side="sl" part="lemh"/><list n="reportingverb"/></in></test>
+          <test><in caseless="yes"><clip pos="1" side="sl" part="lemh"/><list n="reportingverb"/></in></test>
           <let><var n="tipus_verb"/><lit-tag v="reportingverb"/></let>
         </when>
 <!-- no se usa
@@ -3160,7 +3174,11 @@
               <or>
                 <and>
                   <equal><clip pos="1" side="sl" part="tipus_prn_ref"/><lit-tag v="ref"/></equal>
-                  <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+                  <or>
+                    <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+                    <equal><clip pos="2" side="sl" part="temps"/><lit-tag v="inf"/></equal>
+                    <equal><clip pos="2" side="sl" part="temps"/><lit-tag v="ger"/></equal>
+                  </or>
                 </and>
                 <and>
                   <equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p2"/></equal>
@@ -3521,6 +3539,12 @@
               <let><var n="forigi_ref"/><lit v="forigi"/></let>
             </when>
             <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="posicionar"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="preni# starpunkton"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
+              <let><var n="forigi_ref"/><lit v="forigi"/></let>
+            </when>
+            <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="disputar"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="konkuri"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbntr"/></let>
@@ -3643,7 +3667,11 @@
             <or>
               <and>
                 <equal><clip pos="1" side="sl" part="tipus_prn_ref"/><lit-tag v="ref"/></equal>
-                <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+                <or>
+                  <equal><clip pos="2" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+                  <equal><clip pos="2" side="sl" part="temps"/><lit-tag v="inf"/></equal>
+                  <equal><clip pos="2" side="sl" part="temps"/><lit-tag v="ger"/></equal>
+                </or>
               </and>
               <and>
                 <equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p2"/></equal>
@@ -21608,6 +21636,84 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
       </action>
     </rule>
 
+    <rule comment="REGLA: VERB ENC ( comerme -> formanĝi; comerlo -> manĝi lin )">
+      <pattern>
+        <pattern-item n="inf_ger_imp"/>
+        <pattern-item n="enc"/>
+      </pattern>
+      <action>            
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="control_pron"><with-param pos="2"/><with-param pos="1"/><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="1"/></call-macro>
+        <call-macro n="set_temps"><with-param pos="1"/></call-macro>
+
+        <out>
+          <chunk namefrom="nverb" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+              <tag><clip pos="1" side="tl" part="a_verb"/></tag>
+              <tag><clip pos="1" side="tl" part="temps"/></tag>
+              <tag><clip pos="1" side="tl" part="pers"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+              <tag><var n="vimpers"/></tag>
+              <tag><var n="vigxi1"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
+<tag><lit-tag v="SV266"/></tag>
+<tag><var n="debug1"/></tag>
+<tag><var n="debug2"/></tag>
+<tag><var n="debug3"/></tag>
+<tag><var n="debug4"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <var n="vigxi2"/>
+              <clip pos="1" side="tl" part="sep"/>
+              <lit-tag v="3"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out> 
+
+        <!-- ni certiĝas, ĉu necesas aldoni la pronomon -->
+        <choose>
+          <when>
+            <test><equal><var n="forigi_ref"/><lit v="forigi"/></equal></test>
+          </when>
+          <otherwise>
+            <out>
+              <b/>
+              <chunk name="pro_obj">
+                <tags>
+                  <tag><lit-tag v="SN"/></tag>
+                  <tag><clip pos="2" side="tl" part="tipus_prn_ref"/></tag>
+                  <tag><clip pos="2" side="tl" part="tipus_prn"/></tag>
+                  <tag><clip pos="2" side="tl" part="pers"/></tag>
+                  <tag><clip pos="2" side="tl" part="gen"/></tag>
+                  <tag><clip pos="2" side="tl" part="nbr"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="a_prn"/>
+                  <clip pos="2" side="tl" part="tipus_prn_tn"/>
+                  <clip pos="2" side="tl" part="tipus_prn" link-to="2"/>
+                  <clip pos="2" side="tl" part="pers"/>
+                  <clip pos="2" side="tl" part="gen"/>
+                  <clip pos="2" side="tl" part="nbr"/>
+                </lu>
+              </chunk>
+            </out>
+          </otherwise>
+        </choose>
+
+        <let><var n="vimpers"/><lit-tag v="pers"/></let>
+        <let><var n="vigxi1"/><lit-tag v="ne_iĝi"/></let>
+        <let><var n="vigxi2"/><lit v=""/></let>
+        <let><var n="caseFirstWord"/><lit v="aa"/></let>
+      </action>
+    </rule>
+
     <rule comment="REGLA: PRON HABER + PP (lo ha leído -> legis lin; traducido a pasado) (EOes)">
       <pattern>
         <pattern-item n="pro"/>
@@ -25023,12 +25129,10 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="verbcj"/>
       </pattern>
       <action>            
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="set_temps">
-          <with-param pos="3"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="set_temps"><with-param pos="3"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
+
           <choose>
               <when>  <!-- mirem si el primer pronom és SE -->
                 <test>
@@ -25605,15 +25709,14 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 
     <rule comment="REGLA: INF_IMP + ENCL + ENCL + INF (haver-los de comprar; poder-los comprar; voler-los comprar; deixa'l llegir. El clític passa al final EO- )">
       <pattern>
-        <pattern-item n="inf_imp"/>
+        <pattern-item n="inf_ger_imp"/>
         <pattern-item n="enc"/>
         <pattern-item n="enc"/>
         <pattern-item n="inf"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="4"/></call-macro>
 
         <out> <!-- primer pintem els vebrs -->
           <chunk name="verb_enc_inf" case="caseFirstWord">
@@ -25623,6 +25726,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><clip pos="1" side="sl" part="pers"/></tag>
               <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV122"/></tag>
             </tags>
             <lu>
@@ -25639,13 +25744,12 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <clip pos="4" side="tl" part="temps"/>
               <clip pos="4" side="tl" part="lemq"/>
              </lu>
-
           </chunk>
          <b/>
         </out>
 
                 <out>
-                  <chunk name="pro_directe" case="caseFirstWord">
+                  <chunk name="pro_directe">
                     <tags>
                       <tag><lit-tag v="SN"/></tag>
                       <tag><clip pos="3" side="tl" part="tipus_prn"/></tag>
@@ -25711,14 +25815,13 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
 
     <rule comment="REGLA: INF_IMP + ENCL + INF (EOes; poderlos comprar; EO- )">
       <pattern>
-        <pattern-item n="inf_imp"/>
+        <pattern-item n="inf_ger_imp"/>
         <pattern-item n="enc"/>
         <pattern-item n="inf"/>
       </pattern>
       <action>
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
 
         <out> <!-- primer pintem els vebrs -->
           <chunk name="verb_enc_inf" case="caseFirstWord">
@@ -25728,6 +25831,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><clip pos="1" side="sl" part="pers"/></tag>
               <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV123"/></tag>
             </tags>
             <lu>
@@ -25795,9 +25900,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="inf"/>
       </pattern>
       <action>                      
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
         <choose>
           <when>
             <test>
@@ -25829,6 +25933,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><clip pos="1" side="sl" part="pers"/></tag>
               <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV124"/></tag>
             </tags>
             <lu>
@@ -25845,7 +25951,6 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <clip pos="3" side="tl" part="temps"/>
               <clip pos="3" side="tl" part="lemq"/>
              </lu>
-
           </chunk>
         </out>
              </when>
@@ -25858,6 +25963,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><clip pos="1" side="sl" part="pers"/></tag>
               <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV125"/></tag>
             </tags>
             <lu>
@@ -25889,6 +25996,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
       </action>
     </rule>
 
+<!--
     <rule comment="REGLA: VERBMOD + ENCL (per quan va davant desconegudes, perquè no peti: poder-ho xxx - )">
       <pattern>
         <pattern-item n="verbm"/>
@@ -25913,11 +26021,11 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
           </when>
         </choose>
         <choose>
-              <when>  <!-- mirem si és SE per no fer res-->
+              <when> 
                 <test>
                     <equal>
                         <clip pos="2" side="sl" part="lem"/>
-                        <lit v="es"/><!--és 'sp' -->
+                        <lit v="es"/>
                       </equal>
                 </test>
 
@@ -25971,6 +26079,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         </let>
       </action>
     </rule>
+-->
 
 
     <rule><!--VERBMOD + ENCL + ENCL (per quan va davant desconegudes, perquè almenys no peti: poder-los-ho xxx - )-->
@@ -25980,9 +26089,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="enc"/>
       </pattern>
       <action>                      
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="1"/></call-macro>
         <choose>
           <when>
             <test>
@@ -26005,6 +26113,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><clip pos="1" side="tl" part="temps"/></tag>
               <tag><clip pos="1" side="sl" part="pers"/></tag>
               <tag><clip pos="1" side="sl" part="nbr"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV128"/></tag>
             </tags>
             <lu>
@@ -26085,12 +26195,9 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="inf"/>
       </pattern>
       <action>               
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="3"/></call-macro>
         <out>
           <chunk name="pp" case="caseFirstWord">
             <tags>
@@ -26125,6 +26232,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="3" side="tl" part="a_verb"/></tag>
               <tag><clip pos="3" side="tl" part="temps"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV129"/></tag>
             </tags>
             <lu>
@@ -26151,12 +26260,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="por"/>
       </pattern>
       <action>               
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
         <out>
           <chunk name="pp" case="caseFirstWord">
             <tags>
@@ -26213,12 +26318,9 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="inf"/>
       </pattern>
       <action>               
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="1"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="1"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="4"/></call-macro>
         <out>
           <chunk name="pp" case="caseFirstWord">
             <tags>
@@ -26264,6 +26366,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="4" side="tl" part="a_verb"/></tag>
               <tag><clip pos="4" side="tl" part="temps"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV130"/></tag>
             </tags>
             <lu>
@@ -26346,12 +26450,9 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="inf"/>
       </pattern>
       <action>               
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="2"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="4"/></call-macro>
         <out>
           <chunk name="pp" case="caseFirstWord">
             <tags>
@@ -26391,6 +26492,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="4" side="tl" part="a_verb"/></tag>
               <tag><clip pos="4" side="tl" part="temps"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV132"/></tag>
             </tags>
             <lu>
@@ -26486,12 +26589,9 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
         <pattern-item n="inf"/>
       </pattern>
       <action>               
-        <call-macro n="firstWord">
-          <with-param pos="1"/>
-        </call-macro>
-        <call-macro n="nom_cas">
-          <with-param pos="2"/>
-        </call-macro>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="nom_cas"><with-param pos="2"/></call-macro>
+        <call-macro n="tipus_verbs"><with-param pos="5"/></call-macro>
         <out>
           <chunk name="pp" case="caseFirstWord">
             <tags>
@@ -26542,6 +26642,8 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
               <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="5" side="tl" part="a_verb"/></tag>
               <tag><clip pos="5" side="tl" part="temps"/></tag>
+              <tag><var n="tipus_verb"/></tag>
+              <tag><var n="tipus_verb2"/></tag>
 <tag><lit-tag v="SV133"/></tag>
             </tags>
             <lu>
@@ -27065,7 +27167,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                   <tag><lit-tag v="SN.tn.sg.nom"/></tag>
                 </tags>
                 <lu>
-                  <lit v="neniu"/>
+                  <clip pos="3" side="tl" part="lem"/>
                   <lit-tag v="prn.tn.3.4"/>
                 </lu>
               </chunk>
@@ -27113,7 +27215,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                   <tag><lit-tag v="SN.tn.sg.nom"/></tag>
                 </tags>
                 <lu>
-                  <lit v="nenio"/>
+                  <clip pos="3" side="tl" part="lem"/>
                   <lit-tag v="prn.tn.3.4"/>
                 </lu>
               </chunk>
@@ -27146,7 +27248,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                   <tag><lit-tag v="SN.tn.sg.nom"/></tag>
                 </tags>
                 <lu>
-                  <lit v="neniu"/>
+                  <clip pos="4" side="tl" part="lem"/>
                   <lit-tag v="prn.tn.3.4"/>
                 </lu>
               </chunk>
@@ -27175,7 +27277,7 @@ de momento aparto las reglas porque tienen que pasarse a la forma actual de trat
                   <tag><lit-tag v="SN.tn.sg.nom"/></tag>
                 </tags>
                 <lu>
-                  <lit v="nenio"/>
+                  <clip pos="4" side="tl" part="lem"/>
                   <lit-tag v="prn.tn.3.4"/>
                 </lu>
               </chunk>

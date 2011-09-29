@@ -82,6 +82,14 @@
       <cat-item tags="SA.*"/>
     </def-cat>
 
+   <def-cat n="SNSAunk">
+      <cat-item tags="SN.*"/>
+      <cat-item tags="SNrelatiu.*"/>
+      <cat-item tags="SNloque.*"/>
+      <cat-item tags="SA.*"/>
+      <cat-item tags="unknown"/>
+    </def-cat>
+
    <def-cat n="SNSAacc"><!-- EO: tots el que no porten changecase=sense-->
       <cat-item tags="SN.*.nom"/>
       <cat-item lemma="prpers" tags="SN.subj.*"/>
@@ -121,6 +129,11 @@
       <cat-item tags="SV.vblex.*"/>
       <cat-item tags="SV.vbtr.*"/>
       <cat-item tags="SV.vbtr_ntr.*"/>
+      <cat-item tags="SV.vbntr.*"/>
+    </def-cat>
+
+    <def-cat n="SVcop_ntr">
+      <cat-item tags="SV.vbser.*"/>
       <cat-item tags="SV.vbntr.*"/>
     </def-cat>
 
@@ -1014,7 +1027,7 @@
 
 <!-- INDEX: conjunto de reglas per a tratar el caso /acusativo/nominativo de los SN pronombres.  Vienen marcados del t1x como SN.obj, aquí los indentificamos y según el patrón asignamos caso-->
 
-<rule comment="REGLA: SN SV PRO SN (EOes; la niña prometió darme el libro -> la knabino promesis al mi doni la libron; el clitico pasa a objecto indirecto precedido por al y el SN objecto se genera en acusativo">
+<rule comment="REGLA: SN SV PRO SN (EOes; la niña prometió darme el libro -> la knabino promesis al mi doni la libron; el clitico pasa a objecto indirecto precedido por al y el SN objecto se genera en acusativo; se le considera el jefe -> oni konsideras lin la mastro; tratamiento de predikativo">
       <pattern>
         <pattern-item n="SN"/>
         <pattern-item n="SVlex"/>
@@ -1026,12 +1039,14 @@
         <choose>
           <when>
             <test>
-              <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              <and>
+                <not><equal><clip pos="2" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+                <not><equal><clip pos="2" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+              </and>
             </test>
             <let><clip pos="4" part="case"/><lit-tag v="acc"/></let>
           </when>
         </choose>
-        <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
 
         <out>
           <chunk>
@@ -1058,47 +1073,58 @@
               </chunk>
               <b pos="2"/>
               <chunk>
-                <clip pos="2" part="lem"/>
-                <clip pos="2" part="tags"/>
-                <clip pos="2" part="chcontent"/>
+                <clip pos="2" part="whole"/>
               </chunk>
             </out>
           </when>
+
           <otherwise>
             <out>
               <chunk>
-                <clip pos="2" part="lem"/>
-                <clip pos="2" part="tags"/>
-                <clip pos="2" part="chcontent"/>
+                <clip pos="2" part="whole"/>
               </chunk>
               <b pos="2"/>
+            </out>
+
+            <choose>
+              <when>
+                <test>
+                  <equal><clip pos="2" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal>
+                </test>
+                <let><clip pos="4" part="case"/><lit-tag v="nom"/></let>
+              </when>
+              <otherwise>
+                <let><clip pos="3" part="tipus_prn"/><lit-tag v="subj"/></let>
+                <out>
+                  <chunk>
+                    <get-case-from pos="3">
+                      <lit v="al"/>
+                    </get-case-from>
+                    <lit-tag v="pr"/>
+                    <lit v="{^"/>
+                    <get-case-from pos="3">
+                      <lit v="al"/>
+                    </get-case-from>
+                    <lit-tag v="pr"/>
+                    <lit v="$}"/>
+                  </chunk>
+                  <b/>
+                </out>
+              </otherwise>
+            </choose>
+
+            <out>
               <chunk>
-                <get-case-from pos="3">
-                  <lit v="al"/>
-                </get-case-from>
-                <lit-tag v="pr"/>
-                <lit v="{^"/>
-                <get-case-from pos="3">
-                  <lit v="al"/>
-                </get-case-from>
-                <lit-tag v="pr"/>
-                <lit v="$}"/>
-              </chunk>
-              <b/>
-              <chunk>
-                <clip pos="3" part="lem"/>
-                <clip pos="3" part="tags"/>
-                <clip pos="3" part="chcontent"/>
+                <clip pos="3" part="whole"/>
               </chunk>
             </out>
           </otherwise>
         </choose>
+
         <out>
           <b pos="3"/>
           <chunk>
-            <clip pos="4" part="lem"/>
-            <clip pos="4" part="tags"/>
-            <clip pos="4" part="chcontent"/>
+            <clip pos="4" part="whole"/>
           </chunk>
         </out>
       </action>
@@ -1116,15 +1142,72 @@
         <choose>
           <when>
             <test>
-              <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+              <and>
+                <not><equal><clip pos="1" part="tipus_verb_igxi"/><lit-tag v="iĝi"/></equal></not>
+                <not><equal><clip pos="1" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal></not>
+              </and>
             </test>
             <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
           </when>
         </choose>
+
+        <out>
+          <chunk>
+            <clip pos="1" part="whole"/>
+          </chunk>
+          <b pos="1"/>
+        </out>
+
+        <choose>
+          <when>
+            <test>
+              <equal><clip pos="1" part="tipus_verb_pred"/><lit-tag v="predikativo"/></equal>
+            </test>
+            <let><clip pos="3" part="case"/><lit-tag v="nom"/></let>
+          </when>
+          <otherwise>
+            <let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
+            <out>
+              <chunk>
+                <get-case-from pos="2">
+                  <lit v="al2"/>
+                </get-case-from>
+                <lit-tag v="pr"/>
+                <lit v="{^"/>
+                <get-case-from pos="2">
+                  <lit v="al"/>
+                </get-case-from>
+                <lit-tag v="pr"/>
+                <lit v="$}"/>
+              </chunk>
+              <b/>
+            </out>
+          </otherwise>
+        </choose>
+
+        <out>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+          <chunk>
+            <clip pos="3" part="whole"/>
+          </chunk>
+        </out>
+      </action>
+</rule>
+
+
+<rule comment="REGLA: SVcop PRO (me falta -> mankas al mi)">
+      <pattern>
+        <pattern-item n="SVcop_ntr"/>
+        <pattern-item n="SNobj"/>
+      </pattern>
+      <action>
+
         <let><clip pos="2" part="tipus_prn"/><lit-tag v="subj"/></let>
 
         <out>
-
           <chunk>
             <clip pos="1" part="lem"/>
             <clip pos="1" part="tags"/>
@@ -1144,12 +1227,6 @@
             <clip pos="2" part="lem"/>
             <clip pos="2" part="tags"/>
             <clip pos="2" part="chcontent"/>
-          </chunk>
-          <b pos="2"/>
-          <chunk>
-            <clip pos="3" part="lem"/>
-            <clip pos="3" part="tags"/>
-            <clip pos="3" part="chcontent"/>
           </chunk>
         </out>
       </action>
@@ -1300,7 +1377,7 @@ copiat del francès: no sembla madur ni gaire productiu
       <pattern>
         <pattern-item n="SVtrans"/>
         <pattern-item n="PREP"/>
-        <pattern-item n="SNSA"/>
+        <pattern-item n="SNSAunk"/>
         <pattern-item n="SNacc"/>
       </pattern>
       <action>
