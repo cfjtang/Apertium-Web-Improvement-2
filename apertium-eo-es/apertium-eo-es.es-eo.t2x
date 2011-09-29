@@ -258,6 +258,12 @@
       <cat-item lemma="kiel" tags="pr"/>
     </def-cat>
 
+    <def-cat n="pseudoprep"> <!-- preposiciones que forman parte del SN -->
+      <cat-item lemma="pli ol" tags="pr"/>
+      <cat-item lemma="malpli ol" tags="pr"/>
+      <cat-item lemma="ĉirkaŭ" tags="pr"/>
+    </def-cat>
+
     <def-cat n="PREPmoviment"> <!-- per a l'acusatiu dels verbs de moviment-->
       <cat-item lemma="en" tags="pr"/>
       <cat-item lemma="antaŭ" tags="pr"/>
@@ -1371,6 +1377,32 @@ copiat del francès: no sembla madur ni gaire productiu
       </action>
 </rule>
 -->
+
+
+    <rule comment="REGLA: SVtrans PSEUDO_PREP SN   -   SV PR SNacc: mataron a más de 700 personas -> mortigis pli ol 700 homojn">
+      <pattern>
+        <pattern-item n="SVtrans"/>
+        <pattern-item n="pseudoprep"/>
+        <pattern-item n="SN"/>
+      </pattern>
+
+      <action>
+        <let><clip pos="3" part="case"/><lit-tag v="acc"/></let>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	  <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="whole"/>
+          </chunk>
+          <b pos="2"/>
+	  <chunk>
+	    <clip pos="3" part="whole"/>
+	  </chunk>
+        </out>
+      </action>
+    </rule>
 
 
 <rule comment="REGLA: SVtrans PREP SN SN (Il a évoqué entre autres une régulation accrue -> Li elvokis inter aliaj reguladon pliigitan)">
