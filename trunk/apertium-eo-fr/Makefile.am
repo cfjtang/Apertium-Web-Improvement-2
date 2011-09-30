@@ -48,7 +48,7 @@ $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x $@
 	@if [ "`which apertium-preprocess-transfer-bytecode-j`" == "" ]; then echo && echo "NOTE: lttoolbox-java (used for bytecode accelerated transfer) is missing" && echo "      Therefore the following will fail (but it's OK)" && echo; fi
-	-apertium-preprocess-transfer-bytecode-j $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class
+	apertium-preprocess-transfer-bytecode-j $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class
 
 $(PREFIX1).t2x.bin: $(BASENAME).$(PREFIX1).t2x
 	apertium-validate-interchunk $(BASENAME).$(PREFIX1).t2x
@@ -68,7 +68,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BILNAME) \
 	   $(LANG2)-pn.dat \
 	   modes.xml
 
-apertium_eo_ca_DATA=$(PREFIX1).automorf.bin \
+apertium_eo_fr_DATA=$(PREFIX1).automorf.bin \
 		    $(PREFIX1).autobil.bin  \
 		    $(PREFIX1).autogen.bin  \
 		    $(PREFIX1).prob \
@@ -78,8 +78,8 @@ apertium_eo_ca_DATA=$(PREFIX1).automorf.bin \
 		    $(LANG2)-pn.dat \
 		    $(PREFIX1).mode
 
-apertium_eo_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
-apertium_eo_camodesdir=$(prefix)/share/apertium/modes/
+apertium_eo_frdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
+apertium_eo_frmodesdir=$(prefix)/share/apertium/modes/
 
 $(PREFIX1).mode: modes.xml
 	apertium-gen-modes modes.xml
@@ -90,9 +90,10 @@ modes: modes.xml
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_eo_camodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).antaux1_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).antaux3_t2x $(BASENAME).$(PREFIX1).antaux4_t2x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).post_t2x $(apertium_eo_cadir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_eo_cadir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_eo_frmodesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class $(apertium_eo_frdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).antaux1_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).antaux3_t2x $(BASENAME).$(PREFIX1).antaux4_t2x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).post_t2x $(apertium_eo_frdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_eo_frdir)
 
 
 #	$(INSTALL_DATA) $(PREFIX2)-pn.mode $(apertium_es_modesdir)
