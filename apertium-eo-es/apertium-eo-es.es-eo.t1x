@@ -597,6 +597,7 @@
       <cat-item lemma="millón" tags="n.*"/>
       <cat-item lemma="mil millones" tags="n.*"/>
       <cat-item lemma="millardo" tags="n.*"/>
+      <cat-item lemma="billón" tags="n.*"/>
       <cat-item lemma="trillón" tags="n.*"/>
       <cat-item lemma="cientos" tags="n.*"/>
       <cat-item lemma="miles" tags="n.*"/>
@@ -1219,9 +1220,11 @@
       <list-item v="opinii"/>
       <list-item v="taksi"/>
       <list-item v="trovi"/>
+      <list-item v="vidi"/>
       <list-item v="porti"/>
       <list-item v="preni"/>
       <list-item v="kapti"/>
+      <list-item v="igi"/>
       <list-item v="fariĝi"/>
       <list-item v="iĝi"/>
     </def-list>
@@ -1313,6 +1316,7 @@
       <list-item v="desplomar"/>
       <list-item v="desmoronar"/>
       <list-item v="suicidar"/>
+      <list-item v="ceñir"/>
       <list-item v="desentrañar"/>
       <list-item v="rumorear"/>
       <list-item v="congregar"/>
@@ -1350,6 +1354,7 @@
       <list-item v="imaginar"/>
       <list-item v="zambullir"/>
       <list-item v="autoproclamar"/>
+      <list-item v="escapar"/>
     </def-list>
 
     <def-list n="verbs_pron"> <!-- lista de verbos con cambio de raíz cuando van con pronombre (p.ej intr > tr ) -->
@@ -1426,7 +1431,7 @@
       <list-item v="interpretar"/>
       <list-item v="promover"/>
       <list-item v="promocionar"/>
-      <list-item v="aprovechar"/> <!-- pero: él se aprocha = li profitas -->
+      <list-item v="aprovechar"/> <!-- pero: él se aprovecha = li profitas -->
       <list-item v="trabajar"/>
       <list-item v="lavar# en seco"/>
       <list-item v="poner# en peligro"/>
@@ -1598,6 +1603,7 @@
       <list-item v="apesadumbrar"/>
       <list-item v="desencantar"/>
       <list-item v="extender"/>
+      <list-item v="agotar"/>
 
      <list-item v="abaratar"/>
      <list-item v="abatir"/>
@@ -3639,6 +3645,12 @@
             <when>
               <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="desentrañar"/></equal></test>
               <let><clip pos="3" side="tl" part="lem"/><lit v="foroferi"/></let>
+              <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
+              <let><var n="forigi_ref"/><lit v=""/></let>
+            </when>
+            <when>
+              <test><equal caseless="yes"><clip pos="3" side="sl" part="lem"/><lit v="ceñir"/></equal></test>
+              <let><clip pos="3" side="tl" part="lem"/><lit v="teni"/></let>
               <let><clip pos="3" side="tl" part="a_verb"/><lit-tag v="vbtr"/></let>
               <let><var n="forigi_ref"/><lit v=""/></let>
             </when>
