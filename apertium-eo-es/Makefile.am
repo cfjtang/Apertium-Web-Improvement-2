@@ -2,7 +2,7 @@ VERSION=0.9.0
 LANG1=eo
 LANG2=es
 PREFIX1=$(LANG2)-$(LANG1)
-PREFIX2=$(LANG2)-$(LANG1)-cg
+PREFIX2=$(LANG2)-$(LANG1)-no_cg
 
 BASENAME=apertium-eo-es
 BILNAME=apertium-eo-es.eo-es.dix
