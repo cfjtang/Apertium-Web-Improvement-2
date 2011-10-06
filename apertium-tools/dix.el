@@ -1303,17 +1303,19 @@ previous <e> entry, then call this function to apply that entry
 as a template on the word list. Example (with point somewhere in
 the word list):
 
-<e>          <i>foo</i><par n=\"bar__n\"/></e>
-fie
-fum baz
-quux
+
+<e lm=\"baa\">      <i>ba</i><par n=\"ba/a__n\"/></e>
+bada
+bam bada
+nana:mana
 
 =>
 
-<e>          <i>foo</i><par n=\"bar__n\"/></e>
-<e>          <i>fie</i><par n=\"bar__n\"/></e>
-<e>          <i>fum<b/>baz</i><par n=\"bar__n\"/></e>
-<e>          <i>quux</i><par n=\"bar__n\"/></e>
+<e lm=\"baa\">      <i>ba</i><par n=\"ba/a__n\"/></e>
+<e lm=\"bada\">      <i>bad</i><par n=\"ba/a__n\"/></e>
+<e lm=\"bam bada\">      <i>bam<b/>bad</i><par n=\"ba/a__n\"/></e>
+<e lm=\"mana\">      <p><l>nan</l><r>man</r></p><par n=\"ba/a__n\"/></e>
+
 
 
 Bidix example:
@@ -1341,6 +1343,8 @@ lahka:slags
 						 (point)))
 	   (template-basis (buffer-substring-no-properties template-basis-start template-basis-end))
 	   (template
+	    ;; Create a format string like <e lm="%"><i>%s</i><par n="foo"/></e>
+	    ;; TODO: might be more understandable with regex string-match?
 	    (with-temp-buffer
 	      (insert template-basis)
 	      (goto-char (point-min))
@@ -1372,6 +1376,14 @@ lahka:slags
 				 (match-beginning 0)))
 		(insert "%s"))	      
 	      (buffer-substring-no-properties (point-min) (point-max))))
+	   (lmsuffix
+	    ;; regexp to remove from <i>'s if <i> is shorter than lm in the template:
+	    (concat (and (string-match "<i>\\(.*\\)</i>"
+				       template-basis)
+			 (string-match (concat " lm=\"" (match-string 1 template-basis) "\\([^\"]+\\)\"")
+				       template-basis)
+			 (match-string 1 template-basis))
+		    "$"))
 	   (inlist-start (save-excursion (nxml-token-before)
 					   (goto-char xmltok-start)
 					   (re-search-forward "[^ \t\n]")
@@ -1390,17 +1402,19 @@ lahka:slags
 		       ;; if there's no `:', use the whole line for both <l> and <r>,
 		       ;; if there's one `:', use that to split into <l> and <r>
 		       (let* ((lr (split-string line ":"))
-			      (lm (car lr))
-			      (l (replace-regexp-in-string " " "<b/>" (car lr)))
-			      (r (replace-regexp-in-string " " "<b/>" (if (cdr lr)
-									  (cadr lr)
-									(car lr)))))
+			      (lm (if (cdr lr) (cadr lr) (car lr)))
+			      (l (replace-regexp-in-string lmsuffix ""
+							   (replace-regexp-in-string " " "<b/>" (car lr))))
+			      (r (replace-regexp-in-string lmsuffix ""
+							   (replace-regexp-in-string " " "<b/>" (if (cdr lr)
+												    (cadr lr)
+												  (car lr))))))
 			 (when (third lr) (error "More than one : in line: %s" line))
 			 (format (if (equal l r)
 				     template
 				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>…<r/>:
 				   (replace-regexp-in-string "<i>%s</i>"
-							     "<l>%s</l><r>%s</r>"
+							     "<p><l>%s</l><r>%s</r></p>"
 							     template))
 				 (if (string-match " lm=\"%s\"" template) lm l)
 				 (if (string-match " lm=\"%s\"" template) l r)
