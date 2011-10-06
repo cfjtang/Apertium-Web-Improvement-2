@@ -125,11 +125,6 @@ Entering dix-mode calls the hook dix-mode-hook.
   :require    nxml-mode
   )
 
-(unless (boundp 'nxml-syntax-highlight-flag)
-  (defvar nxml-syntax-highlight-flag nil
-    "This variable existed in old versions of nxml-mode, newer
-versions use the regular built-in highlighting."))
-
 
 ;;;============================================================================
 ;;;
@@ -193,10 +188,6 @@ versions use the regular built-in highlighting."))
      :help "Write one word (or colon-separated word-pair) per line, then use the above <e> as a template to turn them into XML"]
     ["I-search Within lm's (rather buggy)" dix-word-search-forward]
     "---"
-    ["Syntax Highlighting" dix-toggle-syntax-highlighting
-     :style toggle
-     :selected nxml-syntax-highlight-flag
-     :help "Toggle syntax highlighting of unseen parts of the buffer"]
     ["Customize dix-mode" (customize-group 'dix)]
     ["Help for dix-mode" (describe-function 'dix-mode)
      :keys "C-h m"]
@@ -507,22 +498,6 @@ and `dix-get-pardefs'."
 ;;;
 ;;; Interactive functions
 ;;;
-
-(defun dix-toggle-syntax-highlighting ()
-  "Toggle nXML syntax highlighting. Runs `normal-mode' to make
-sure syntax highlighting gets turned on afterwards, but you'll
-have to reopen the file if you want to completely clear all
-syntax highlighting.
-
-Note: newer versions of nxml-mode use the regular (quicker)
-built-in syntax highlighting, making this function obsolete."
-  (interactive)
-  (setq nxml-syntax-highlight-flag (not nxml-syntax-highlight-flag))
-  (normal-mode)
-  (dix-mode 1)
-  (if nxml-syntax-highlight-flag
-      (message "Syntax highlighting is on")
-    (message "Syntax highlighting is off")))
 
 (defun dix-find-duplicate-pardefs (&optional recompile)
   "Find all pardefs with this list of suffixes (contents of <l>
@@ -1634,7 +1609,6 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
 (define-key dix-mode-map (kbd "C-c D") 'dix-find-duplicate-pardefs)
 (define-key dix-mode-map (kbd "C-c C-c") 'dix-analyse)
-(define-key dix-mode-map (kbd "C-c H") 'dix-toggle-syntax-highlighting)
 (define-prefix-command 'dix-replace-prefix)
 (define-key dix-mode-map (kbd "C-c %") 'dix-replace-prefix)
 (define-key dix-mode-map (kbd "<SPC>") 'dix-space)
