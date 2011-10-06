@@ -189,6 +189,8 @@ versions use the regular built-in highlighting."))
       :help "Make a copy of the current <e> element"]
      ["Prepend kill-buffer into lm and <i>" dix-copy-yank
       :help "Make a copy of the current <e> element"])
+    ["Turn one-word-per-line into XML using above <e> as template" dix-xmlise-using-above-elt
+     :help "Write one word (or colon-separated word-pair) per line, then use the above <e> as a template to turn them into XML"]
     ["I-search Within lm's (rather buggy)" dix-word-search-forward]
     "---"
     ["Syntax Highlighting" dix-toggle-syntax-highlighting
@@ -661,8 +663,9 @@ into the beginning of the lm and <i>."
       (dix-up-to "e" "section")
       (let* ((old	     ; find what, if any, restriction we have:
 	      (save-excursion
-		(if (re-search-forward (concat " " dir "=\"\\([0-9]+\\)\"") (nxml-token-after) 'noerror)
-		    (match-string 1))))
+		(if (re-search-forward (concat " " dir "=\"\\([0-9]+\\)\"\\| c=\" *\\(0\\)\"") (nxml-token-after) 'noerror)
+		    (or (match-string 1)
+			(match-string 2)))))
 	     (new (number-to-string (if old (1+ (string-to-number old)) 1))))
 	;; restrict:
 	(forward-word)
@@ -806,7 +809,9 @@ line.
 Called from a program, there are three arguments:
 `reverse' (non-nil means reverse order), `beg' and `end' (region
 to sort).  The variable `sort-fold-case' determines whether
-alphabetic case affects the sort order."
+alphabetic case affects the sort order.
+
+Note: will not work if you have several <e>'s per line!"
   (interactive "P\nr")
   (save-excursion
     (save-restriction
@@ -1315,10 +1320,126 @@ end of the element."
 	   (insert-char ?> 1))
 	  (t (nxml-up-element)))))
 
+
+(defun dix-xmlise-using-above-elt ()
+  "Simple yasnippet-like function to turn a plain list into <e>
+entries. Write a bunch of words, one word per line, below a
+previous <e> entry, then call this function to apply that entry
+as a template on the word list. Example (with point somewhere in
+the word list):
+
+<e>          <i>foo</i><par n=\"bar__n\"/></e>
+fie
+fum baz
+quux
+
+=>
+
+<e>          <i>foo</i><par n=\"bar__n\"/></e>
+<e>          <i>fie</i><par n=\"bar__n\"/></e>
+<e>          <i>fum<b/>baz</i><par n=\"bar__n\"/></e>
+<e>          <i>quux</i><par n=\"bar__n\"/></e>
+
+
+Bidix example:
+
+<e><p><l>ja<b/>nu<b/>ain<s n=\"Adv\"/></l><r>og<b/>så<b/>videre<s n=\"adv\"/></r></p></e>
+kánske:kanskje
+lahka:slags
+
+=>
+
+<e><p><l>ja<b/>nu<b/>ain<s n=\"Adv\"/></l><r>og<b/>så<b/>videre<s n=\"adv\"/></r></p></e>
+<e><p><l>kánske<s n=\"Adv\"/></l><r>kanskje<s n=\"adv\"/></r></p></e>
+<e><p><l>lahka<s n=\"Adv\"/></l><r>slags<s n=\"adv\"/></r></p></e>
+"
+  (interactive)
+  (nxml-token-before)
+  (when (eq xmltok-type 'data)
+    (let* ((template-basis-end (save-excursion (goto-char xmltok-start)
+					       ;; TODO: skip (include) comments
+					       (re-search-backward "[ \t]*$" (line-beginning-position) 'no-errors)
+					       (forward-line)
+					       (point)))
+	   (template-basis-start (save-excursion (nxml-backward-single-balanced-item)
+						 (re-search-backward "^[ \t]*" (line-beginning-position) 'no-errors)
+						 (point)))
+	   (template-basis (buffer-substring-no-properties template-basis-start template-basis-end))
+	   (template
+	    (with-temp-buffer
+	      (insert template-basis)
+	      (goto-char (point-min))
+	      (cond ((save-excursion (search-forward "<i>" (line-end-position) 'noerror))
+		     (delete-region
+		      (goto-char (match-end 0))
+		      (save-excursion (search-forward "</i>" (line-end-position))
+				      (match-beginning 0)))
+
+		     (insert "%s"))
+		    ((save-excursion (search-forward "<l>" (line-end-position) 'noerror))
+		     (delete-region
+		      (goto-char (match-end 0))
+		      (save-excursion (re-search-forward "<s \\|</l>" (line-end-position))
+				      (match-beginning 0)))
+
+		     (insert "%s")
+		     (search-forward "<r>" (line-end-position))
+		     (delete-region
+		      (match-end 0)
+		      (save-excursion (re-search-forward "<s \\|</r>" (line-end-position))
+				      (match-beginning 0)))
+		     (insert "%s")))
+	      (goto-char (point-min))
+	      (when (save-excursion (search-forward " lm=\"" (line-end-position) 'noerror))
+		(delete-region
+		 (goto-char (match-end 0))
+		 (save-excursion (search-forward "\"" (line-end-position))
+				 (match-beginning 0)))
+		(insert "%s"))	      
+	      (buffer-substring-no-properties (point-min) (point-max))))
+	   (inlist-start (save-excursion (nxml-token-before)
+					   (goto-char xmltok-start)
+					   (re-search-forward "[^ \t\n]")
+					   (match-beginning 0)))
+	   (inlist-end (save-excursion (goto-char (nxml-token-after))
+					 (re-search-backward "[^ \t\n]")
+					 (match-end 0)))
+	   (inlist (split-string
+		    (dix-trim-string (buffer-substring-no-properties
+				      inlist-start
+				      inlist-end))
+		    "\n"
+		    'omit-nulls))
+	   (outlist (mapcar
+		     (lambda (line)
+		       ;; if there's no `:', use the whole line for both <l> and <r>,
+		       ;; if there's one `:', use that to split into <l> and <r>
+		       (let* ((lr (split-string line ":"))
+			      (lm (car lr))
+			      (l (replace-regexp-in-string " " "<b/>" (car lr)))
+			      (r (replace-regexp-in-string " " "<b/>" (if (cdr lr)
+									  (cadr lr)
+									(car lr)))))
+			 (when (third lr) (error "More than one : in line: %s" line))
+			 (format (if (equal l r)
+				     template
+				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>…<r/>:
+				   (replace-regexp-in-string "<i>%s</i>"
+							     "<l>%s</l><r>%s</r>"
+							     template))
+				 (if (string-match " lm=\"%s\"" template) lm l)
+				 (if (string-match " lm=\"%s\"" template) l r)
+				 r)))
+		     inlist)))
+      ;; Delete the old inlist, and insert the new outlist:
+      (delete-region inlist-start inlist-end)
+      (insert (apply #'concat outlist)))))
+
 (defun dix-trim-string (s)
   "Trim leading and trailing spaces, tabs and newlines off `s'."
   (cond ((not (stringp s)) nil)
-	((string-match "\\([^ \t\n]+\\)" s) (match-string 1 s))
+	((string-match "^[ \t\n]*\\(\\(?:.\\|\n\\)*[^ \t\n]+\\)[ \t\n]*" s)
+	 (match-string 1 s))
 	(t s)))
 
 (defvar dix-expansion-left nil
@@ -1507,6 +1628,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
 (define-key dix-mode-map (kbd "C-c g") 'dix-guess-pardef)
+(define-key dix-mode-map (kbd "C-c x") 'dix-xmlise-using-above-elt)
 (define-key dix-mode-map (kbd "C-c V") 'dix-view-pardef)
 (define-key dix-mode-map (kbd "C-c W") 'dix-word-search-forward)
 (define-key dix-mode-map (kbd "C-c A") 'dix-grep-all)
