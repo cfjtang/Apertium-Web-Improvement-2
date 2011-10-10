@@ -57,7 +57,7 @@ $(PREFIX1).t3x.bin: $(BASENAME).$(PREFIX1).t3x
 	apertium-validate-postchunk $(BASENAME).$(PREFIX1).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t3x $@
 
-	                             
+
 $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x \
@@ -71,22 +71,22 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x modes.xml $(BASENAME).$(LANG1).acx \
 	   $(BASENAME).$(LANG2).acx
-           
+
 apertium_es_rodir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_es_modesdir=$(prefix)/share/apertium/modes/
 
-$(PREFIX1).mode: modes.xml 
+modes/$(PREFIX1).mode: modes.xml
+	apertium-validate-modes modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
-$(PREFIX2).mode: modes.xml 
+modes/$(PREFIX2).mode: modes.xml 
+	apertium-validate-modes modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
-modes: modes.xml
-	apertium-gen-modes modes.xml
-	cp *.mode modes/
-           
+noinst_DATA=modes/$(PREFIX1).mode modes/$(PREFIX2).mode
+
 apertium_es_ro_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
 	$(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
@@ -94,14 +94,21 @@ apertium_es_ro_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).prob $(PREFIX2).prob  \
 	$(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 	$(PREFIX2).t1x.bin \
-	$(PREFIX1).mode $(PREFIX2).mode 
+	modes.xml
 
 install-data-local:
+	mv modes modes.bak
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_es_modesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_es_rodir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_es_rodir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(apertium_es_rodir)
+	rm -rf modes
+	mv modes.bak modes
+	test -d $(DESTDIR)$(apertium_es_modesdir) || mkdir $(DESTDIR)$(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_es_modesdir)
+	rm $(PREFIX1).mode $(PREFIX2).mode
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_es_rodir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(DESTDIR)$(apertium_es_rodir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_es_rodir)
+
+# not installing $(PREFIX2).mode (es-ro) since it's got install="no" in modes.xml
+
 
 CLEANFILES = -rf $(TARGETS) modes *.mode
