@@ -451,7 +451,7 @@ names."
       (goto-char (point-min))
       ;; find all pardefs of `partype' in the file:
       (while (re-search-forward
-	      (concat "pardef[^n>]*n=\"\\([^_]*__" partype "\\)\"") nil 'noerror)
+	      (concat "pardef[^n>]*n=\"\\([^\"]*__" partype "\\)\"") nil 'noerror)
 	(let ((pardef (match-string-no-properties 1))
 	      (sufflist (dix-compile-sorted-suffix-list)))
 	  (puthash sufflist
@@ -519,7 +519,7 @@ Returns the list of pardef names."
 		(progn (dix-up-to "pardef" "pardefs"))
 	      (error (dix-goto-pardef)))
 	    (re-search-forward
-	     (concat "pardef[^n>]*n=\"[^_]*__\\([^\"]*\\)" ) nil 'noerror)
+	     (concat "pardef[^n>]*n=\"[^\"]*__\\([^\"]*\\)" ) nil 'noerror)
 	    (match-string-no-properties 1)))
 	 (foundmap (cdr (assoc-string partype dix-suffix-maps))))
     (let* ((suffmap
