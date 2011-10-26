@@ -846,6 +846,10 @@ SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
 # treiñ + e + idioma = traduire + en + idioma 
 SUBSTITUTE ("treiñ") ("treiñ:1") ("treiñ" vblex) (1 ("e")) (2 Language);
 
+# cuando se usa con el verbo paeañ (pagar) es mejor escoger a alquiler (loyer)
+SUBSTITUTE ("feurm") ("feurm:1") ("feurm" n m) (-1C* ("paeañ" vblex) BARRIER S-BOUNDARY) ;
+SUBSTITUTE ("feurm") ("feurm:1") ("feurm" n m) (1C* ("paeañ" vblex) BARRIER S-BOUNDARY) ;
+
 # un tamm dic'hortoz : un poco inhabitual/un peu inattendu.
 SUBSTITUTE ("tamm") ("tamm:1") ("tamm" n) (-1 DetInd) (1 Adj);
 
