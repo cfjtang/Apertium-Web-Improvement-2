@@ -188,6 +188,8 @@ Entering dix-mode calls the hook dix-mode-hook.
      :help "Write one word (or colon-separated word-pair) per line, then use the above <e> as a template to turn them into XML"]
     ["I-search Within lm's (rather buggy)" dix-word-search-forward]
     "---"
+    ["Go to transfer rule number" dix-goto-rule-number]
+    "---"
     ["Customize dix-mode" (customize-group 'dix)]
     ["Help for dix-mode" (describe-function 'dix-mode)
      :keys "C-h m"]
@@ -1066,7 +1068,39 @@ eg. collapse pardefs."
 	  (dix-mode 1)
 	  (goto-char (point-max))	; from `end-of-buffer'
 	  (overlay-recenter (point))
-	  (recenter -3))))))  
+	  (recenter -3))))))
+
+
+(defun dix-goto-rule-number (num)
+  "Go to <rule> number `num' in the file. When called
+interactively, asks for a rule number (or uses the prefix
+argument)."
+  (interactive "NRule number: ")
+  (let ((found nil)
+	(cur num))
+    (save-excursion
+      (goto-char (point-min))
+      (while (and (> cur 0)
+		  (setq found (dix-rule-forward)))
+	(decf cur)))
+    (if found
+	(goto-char found)
+      (message "Couldn't find rule number %d" num))))
+  
+(defun dix-rule-forward ()
+  "Move point to the next transfer <rule>. Return point if we can
+find a non-commented <rule> before the end of the buffer,
+otherwise nil"
+  (setq found-a-rule (re-search-forward "<rule[ >]" nil t)
+	keep-looking (and (nxml-token-before) (eq xmltok-type 'comment)))
+  (while (and found-a-rule
+	      keep-looking)
+    (setq found-a-rule (re-search-forward "<rule[ >]" nil t)
+	  keep-looking (and (nxml-token-before) (eq xmltok-type 'comment))))
+  (and found-a-rule
+       (not keep-looking)
+       (point)))
+
 
 (defvar dix-modes
   '((nn-nb ("lt-proc"    "/l/n/nn-nb.automorf.bin")
@@ -1616,6 +1650,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "M-p") 'dix-previous)
 (define-key dix-mode-map (kbd "C-c S") 'dix-sort-pardef)
 (define-key dix-mode-map (kbd "C-c G") 'dix-goto-pardef)
+(define-key dix-mode-map (kbd "C-c n") 'dix-goto-rule-number)
 (define-key dix-mode-map (kbd "C-c g") 'dix-guess-pardef)
 (define-key dix-mode-map (kbd "C-c x") 'dix-xmlise-using-above-elt)
 (define-key dix-mode-map (kbd "C-c V") 'dix-view-pardef)
