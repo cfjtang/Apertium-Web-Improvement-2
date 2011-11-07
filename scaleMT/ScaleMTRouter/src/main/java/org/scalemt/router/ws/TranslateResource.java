@@ -299,9 +299,10 @@ public class TranslateResource {
         }
         if (responseCode == 200) {
             try {
-                List<LanguagePair> supportedPairs = LoadBalancer.getInstance().getSupportedPairs();
-                if (supportedPairs.contains(lpair)) {
-                   
+                
+                LanguagePair supPair= LoadBalancer.getInstance().convertPairSupported(lpair);
+                if (supPair != null) {
+                   lpair=supPair;
                     //UserType userType = UserType.anonymous;
                    // if (key != null && UserManagement.getInstance().isKeyValid(key)) {
                    //     userType = UserType.registered;
