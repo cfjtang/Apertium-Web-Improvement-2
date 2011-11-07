@@ -528,6 +528,49 @@ public class LoadBalancer {
         } finally {
         }
     }
+    
+    public LanguagePair convertPairSupported(LanguagePair pair)
+    {
+       List<LanguagePair> supPairs=getSupportedPairs();
+       if (supPairs.contains(pair))
+           return pair;
+       else
+       {
+           String sl = pair.getSource();
+           String tl = pair.getTarget();
+           String tl_without_dialect,sl_without_dialect;
+           if (tl.contains("_"))
+               tl_without_dialect=tl.split("_")[0];
+           else
+               tl_without_dialect=tl;
+           
+           if (sl.contains("_"))
+               sl_without_dialect=sl.split("_")[0];
+           else
+               sl_without_dialect=sl;
+           
+           LanguagePair testPair=null;
+           
+           testPair=new LanguagePair(sl_without_dialect, tl);
+           if (supPairs.contains(testPair))
+               return testPair;
+           else
+           {
+               testPair=new LanguagePair(sl, tl_without_dialect);
+               if (supPairs.contains(testPair))
+                    return testPair;
+               else
+               {
+                   testPair=new LanguagePair(sl_without_dialect, tl_without_dialect);
+                   if (supPairs.contains(testPair))
+                        return testPair;
+                   else
+                       return null;
+               }
+           }
+           
+       }
+    }
 
     /**
      * Creates the list of supported language pairs by merging the pairs supported by

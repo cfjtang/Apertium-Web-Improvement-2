@@ -91,8 +91,9 @@ public class TranslateXMLRPC {
 
         if (code == 200) {
             try {
-                List<LanguagePair> supportedPairs = LoadBalancer.getInstance().getSupportedPairs();
-                if (supportedPairs.contains(p)) {
+                 LanguagePair supPair= LoadBalancer.getInstance().convertPairSupported(p);
+                if (supPair != null) {
+                   p=supPair;
 
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
                     if(markUnkown)
@@ -193,8 +194,9 @@ public class TranslateXMLRPC {
 
         if (code == 200) {
             try {
-                List<LanguagePair> supportedPairs = LoadBalancer.getInstance().getSupportedPairs();
-                if (supportedPairs.contains(p)) {
+                LanguagePair supPair= LoadBalancer.getInstance().convertPairSupported(p);
+                if (supPair != null) {
+                   p=supPair;
 
                     AdditionalTranslationOptions additionalTranslationOptions=new AdditionalTranslationOptions();
                     if(markUnknown)
