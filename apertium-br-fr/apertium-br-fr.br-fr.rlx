@@ -90,7 +90,7 @@ LIST Ket 	      = ("ket" adv);
 LIST CC               = (cnjcoo);
 LIST CS               = (cnjsub);
 LIST CA               = (cnjadv);
-LIST Conj             = CC | CA | CS;
+SET Conj             = CC | CA | CS;
 
 # Interjections 
 
@@ -688,7 +688,7 @@ REMOVE NC IF (-1 CA | CS) (0 ("<oan>")) (1 ("o"));
 SELECT Vpart IF (0 ("<en ur>")) (1C VerbInf);
 
 #Ne zeuio ket Katell da gomz
-REMOVE NC IF (0 NC) (0 VerbInf) (-1 ("da")) (-2* VerbFin BARRIER BOS);
+REMOVE NC IF (0 NC) (0 VerbInf) (-1 ("da")) (NOT -1 ("<d'an>")) (NOT -1 ("<d'ar>")) (-2* VerbFin BARRIER BOS);
 
 # E Brest
 SELECT Toponim IF (-1 ("e"i)) (0 Toponim) ;
@@ -817,7 +817,7 @@ SELECT NP IF (0 ("Mervent" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Roudour" np)) (NOT -1 BOS);
 SELECT NP IF (0 ("Sked" np)) (NOT -1 BOS);
 
-SELECT NP IF (0 UPPER) (0C (NP OR NC));
+SELECT NP IF (0 UPPER) (0C NP OR NC);
 
 #gant Kristen Nikolaz e Kemper
 SELECT (np ant) IF (0 (np ant)) (1 (np cog)) (0 UPPER) (1 UPPER);
