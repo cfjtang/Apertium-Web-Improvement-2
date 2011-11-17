@@ -9,7 +9,7 @@ PREFIX2=$(LANG2)-$(LANG1)
 BASENAME=apertium-es-pt
 
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
-     $(PREFIX1).autopgen.bin $(PREFIX1b).autobil.bin $(PREFIX1b).autogen.bin\
+     $(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin $(PREFIX1b).autobil.bin $(PREFIX1b).autogen.bin\
      $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX2).autogen.bin $(PREFIX2).autopgen.bin modes 
 
@@ -36,9 +36,18 @@ $(PREFIX1b).autogen.bin: pt_BR.dix
 	apertium-validate-dictionary pt_BR.dix
 	lt-comp rl pt_BR.dix $@
                                 
-$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
-	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
-	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
+#$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
+#	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
+#	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
+
+es-pt.autopgen.bin: post-pt.dix
+	apertium-validate-dictionary $<
+	lt-comp lr $< $@
+
+es-pt_BR.autopgen.bin: post-pt_BR.dix
+	apertium-validate-dictionary $<
+	lt-comp lr $< $@
+
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 #	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
@@ -104,6 +113,13 @@ es-pt.dix: $(BASENAME).$(PREFIX1).dix
 es-pt_BR.dix: $(BASENAME).$(PREFIX1).dix
 	./filter.sh br right $(BASENAME).$(PREFIX1).dix >$@
 
+post-pt.dix: $(BASENAME).post-pt.dix
+	./filter.sh pt right $< >$@
+	
+post-pt_BR.dix: $(BASENAME).post-pt.dix
+	./filter.sh br right $< >$@
+
+
 $(PREFIX1).mode: modes.xml 
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
@@ -124,7 +140,7 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
 	$(PREFIX1b).autobil.bin $(PREFIX1b).autogen.bin \
 	$(PREFIX1).autogen.bin $(PREFIX2).autogen.bin \
-	$(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
+	$(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin $(PREFIX2).autopgen.bin \
 	$(PREFIX1).prob $(PREFIX2).prob \
 	$(PREFIX2).t1x $(PREFIX1).t1x \
 	$(PREFIX1b).t1x $(PREFIX1b).t1x.bin \
