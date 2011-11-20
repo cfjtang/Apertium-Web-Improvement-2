@@ -206,6 +206,18 @@ sub fixtext {
 		$tags .= "$1, $2, ";
 	}
 
+	if ($text =~ /Create manually tagged corpora: (.*)/) {
+		$tags .= "$1, corpus, PoS tagging, ";
+	}
+
+	if ($text =~ /Improve a language pair: ([^-]*)-(.*)/) {
+		$tags .= "$1, $2, mt, ";
+	}
+
+	if ($text =~ /Translate the Wikipedia article on Apertium: (.*)/) {
+		$tags .= "$1, wikipedia, ";
+	}
+
 	return $out;
 }
 
