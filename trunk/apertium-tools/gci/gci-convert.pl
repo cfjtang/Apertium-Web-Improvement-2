@@ -43,6 +43,7 @@ my %who = (
 	"[[User:Jimregan|Jimregan]]" => "jimregan",
 	"[[User:Hectoralos|Hèctor&nbsp;Alòs]]" => "hectoralos",
 	"[[User:Jacob_Nordfalk|Jacob_Nordfalk]]" => "jacob_nordfalk",
+	"[[User:mlforcada|Mikel&nbsp;L.&nbsp;Forcada]]" => "mlforcada",
 );
 
 my %lang = (
@@ -98,6 +99,12 @@ my %lang = (
 	"Чувашский" => "Chuvash",
 	"чувашского" => "Chuvash",
 	"ногайский" => "Nogai",
+
+	"is" => "Icelandic",
+	"en" => "English",
+	"cze" => "Czech",
+	"ces" => "Czech",
+	
 );
 
 my $tags; #global, as we're taking this from different places
