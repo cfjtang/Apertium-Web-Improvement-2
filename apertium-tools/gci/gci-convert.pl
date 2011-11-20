@@ -238,6 +238,10 @@ sub fixtext {
 		$tags .= "$1, $2, mt, dictionary, ";
 	}
 
+	if ($text =~ /Contrastive analysis: ([^-]*)--?([^ ]*)/) {
+		$tags .= "$1, $2, mt, ";
+	}
+
 	return $out;
 }
 
