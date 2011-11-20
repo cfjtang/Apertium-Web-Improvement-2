@@ -49,6 +49,7 @@ my %who = (
 	"[[User:Juanpabl|Juan Pablo Martínez]]" => "juanpabl",
 	"[[User:AureiAnimus|Pim&nbsp;Otte]]" => "aureianimus",
 	"[[User:Unhammer|Unhammer]]" => "unhammer",
+	"[[User:Unhammer]]" => "unhammer",
 );
 
 my %lang = (
