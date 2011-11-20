@@ -210,11 +210,11 @@ sub fixtext {
 	}
 
 	if ($text =~ /Convert existing resource: ([^ ]*) morphological analyser/) {
-		$tags .= "$1, morphological_analysis, ";
+		$tags .= "$1, morphological analysis, script, ";
 	}
 
 	if ($text =~ /Convert existing resource: Reta Vortaro ([^\-]*)-(.*)/) {
-		$tags .= "$1, $2, ";
+		$tags .= "$1, $2, dictionary, script, ";
 	}
 
 	if ($text =~ /Create manually tagged corpora: (.*)/) {
