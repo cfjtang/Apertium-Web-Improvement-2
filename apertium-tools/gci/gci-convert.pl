@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# Succinct copyright notice: GPL/Artistic
 
 use warnings;
 use strict;
@@ -122,25 +123,6 @@ sub dewikilink ($) {
 
 		my $html = "<a href=\"$url\">$text</a>";
 		$line =~ s/\[\[$text\]\]/$html/;
-	}
-
-	if ($line =~ /\[\[([^\|]*)\|([^]]*)\]\]/) {
-		my $wikiraw = $1;
-		$text = $2;
-		my $wiki = $wikiraw;
-		$wiki =~ s/ /_/g;
-		$url = "http://wiki.apertium.org/wiki/$wiki";
-
-		my $html = "<a href=\"$url\">$text</a>";
-#		my $replace = "\\\[\\\[$wikiraw\\\|$text\\\]\\\]";
-#		my $replace = "";
-#		$replace =~ s!/!\\\/!;
-		$wikiraw =~ s!/!\\\/!;
-
-#print STDERR "replace: $replace\n";
-#		$line =~ s!$replace!$html!;
-#		$line =~ s!\Q\[\[$wikiraw\E\\\|\Q$text\E\Q\]\]\E!$html!;
-		$line =~ s!\[\[$wikiraw\|$text\]\]!$html!;
 	}
 
 	if ($line =~ /\[([^ ]*) ([^\]]*)\]/) {
@@ -301,9 +283,9 @@ while (<>) {
 
 	my $time;
 	if ($pieces[4] =~ /(\d*)&ndash;(\d*)/) {
-		$time = $2;
+		$time = $1 * 24;
 	} else {
-		$time = "4";
+		$time = "24";
 	}
 
 	my $ids = '';
