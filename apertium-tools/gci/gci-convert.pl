@@ -45,6 +45,9 @@ my %who = (
 	"[[User:Hectoralos|Hèctor&nbsp;Alòs]]" => "hectoralos",
 	"[[User:Jacob_Nordfalk|Jacob_Nordfalk]]" => "jacob_nordfalk",
 	"[[User:mlforcada|Mikel&nbsp;L.&nbsp;Forcada]]" => "mlforcada",
+	"[[User:mlforcada|Mikel L. Forcada]]" => "mlforcada",
+	"[[User:Juanpabl|Juan Pablo Martínez]]" => "juanpabl",
+	"[[User:AureiAnimus|Pim&nbsp;Otte]]" => "aureianimus",
 );
 
 my %lang = (
@@ -216,7 +219,7 @@ sub fixtext {
 		$tags .= "$1, corpus, PoS tagging, ";
 	}
 
-	if ($text =~ /Improve a language pair: ([^-]*)-(.*)/) {
+	if ($text =~ /Improve a language pair: ([^-]*)--?(.*)/) {
 		$tags .= "$1, $2, mt, ";
 	}
 
@@ -224,11 +227,11 @@ sub fixtext {
 		$tags .= "$1, wikipedia, ";
 	}
 
-	if ($text =~ /Improve ([^-]*)-([^ ]*) dictionaries/) {
+	if ($text =~ /Improve ([^-]*)--?([^ ]*) dictionaries/) {
 		$tags .= "$1, $2, mt, dictionary, ";
 	}
 
-	if ($text =~ /([^-]*)-([^ ]*) bilingual dictionary/) {
+	if ($text =~ /([^-]*)--?([^ ]*) bilingual dictionary/) {
 		$tags .= "$1, $2, mt, dictionary, ";
 	}
 
