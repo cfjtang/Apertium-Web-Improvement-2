@@ -290,7 +290,25 @@ while (<>) {
 	my $title = fixtext(lrtrim($pieces[2]));
 	my $text = fixtext(dewikilink(lrtrim($pieces[3])));
 	
-	
-#print;
-	print "\"$area\", \"$dif\", \"$title\", \"$text\"\n";
+#	print "\"$area\", \"$dif\", \"$title\", \"$text\"\n";
+
+	my $time;
+	if ($pieces[4] =~ /(\d*)&ndash;(\d*)/) {
+		$time = $2;
+	} else {
+		$time = "4";
+	}
+
+	my $ids = '';
+	my @tmpid = ();
+
+	for my $id (split/,/, $pieces[5]) {
+		push @tmpid, $who{lrtrim($id)} if ($who{lrtrim($id)} && $who{lrtrim($id)} ne '');
+	}
+	$ids = join(", ", @tmpid);
+	$ids = "jimregan" if ($ids eq '');
+
+	$tags =~ s/, $//;
+
+	print "\"$title\", \"$text\", \"$time\", \"$ids\", \"$dif\", \"$area\", \"$tags\"\n";
 }
