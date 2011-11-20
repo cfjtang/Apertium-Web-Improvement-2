@@ -70,6 +70,7 @@ my %lang = (
 	"англо" => "English",
 	"Бурятский" => "Buryat",
 	"бурятского" => "Buryat",
+	"бурятско" => "Buryat",
 	"эрзя" => "Erzya",
 	"калмыцкий" => "Kalmyk",
 	"тувинский" => "Tuvan",
@@ -78,12 +79,14 @@ my %lang = (
 	"эсперанто" => "Esperanto",
 	"Осетинский" => "Ossetian",
 	"осетинского" => "Ossetian",
+	"осетинско" => "Ossetian",
 	"английский" => "English",
 	"английского" => "English",
 	"Кумыкский" => "Kumyk",
 	"кумыкский" => "Kumyk",
 	"кумыкского" => "Kumyk",
 	"турецкий" => "Turkish",
+	"турецский" => "Turkish",
 	"турецкого" => "Turkish",
 	"Карачаево-балкарский" => "Karachay-Balkar",
 	"карачаево-балкарский" => "Karachay-Balkar",
@@ -91,14 +94,17 @@ my %lang = (
 	"татарский" => "Tatar",
 	"Татарский" => "Tatar",
 	"татарского" => "Tatar",
+	"татарско" => "Tatar",
 	"Якутский" => "Sakha",
 	"якутского" => "Sakha",
 	"башкирский" => "Bashkir",
 	"Башкирский" => "Bashkir",
 	"башкирского" => "Bashkir",
+	"башкирско" => "Bashkir",
 	"чувашский" => "Chuvash",
 	"Чувашский" => "Chuvash",
 	"чувашского" => "Chuvash",
+	"чувашско" => "Chuvash",
 	"ногайский" => "Nogai",
 
 	"is" => "Icelandic",
@@ -216,6 +222,14 @@ sub fixtext {
 
 	if ($text =~ /Translate the Wikipedia article on Apertium: (.*)/) {
 		$tags .= "$1, wikipedia, ";
+	}
+
+	if ($text =~ /Improve ([^-]*)-([^ ]*) dictionaries/) {
+		$tags .= "$1, $2, mt, dictionary, ";
+	}
+
+	if ($text =~ /([^-]*)-([^ ]*) bilingual dictionary/) {
+		$tags .= "$1, $2, mt, dictionary, ";
 	}
 
 	return $out;
