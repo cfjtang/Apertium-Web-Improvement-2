@@ -80,12 +80,14 @@ my %lang = (
 	"английского" => "English",
 	"Кумыкский" => "Kumyk",
 	"кумыкский" => "Kumyk",
+	"кумыкского" => "Kumyk",
 	"турецкий" => "Turkish",
 	"турецкого" => "Turkish",
 	"Карачаево-балкарский" => "Karachay-Balkar",
 	"карачаево-балкарский" => "Karachay-Balkar",
 	"хакасский" => "Khakas",
 	"татарский" => "Tatar",
+	"Татарский" => "Tatar",
 	"татарского" => "Tatar",
 	"Якутский" => "Sakha",
 	"якутского" => "Sakha",
@@ -95,6 +97,7 @@ my %lang = (
 	"чувашский" => "Chuvash",
 	"Чувашский" => "Chuvash",
 	"чувашского" => "Chuvash",
+	"ногайский" => "Nogai",
 );
 
 my $tags; #global, as we're taking this from different places
@@ -178,7 +181,7 @@ sub fixtext {
 		}		
 	}
 
-	if ($text =~ /Создать множество тестовых фраз \(посмотрите страницы 'Pending tests' и 'Regression tests' в Вики\) для перевода с ([^ ]*)(?: языка?)?(?:\s*)на ([^ ]*)(?: языки?)?\./) {
+	if ($text =~ /Создать множество тестовых фраз \(посмотрите страницы 'Pending tests' и 'Regression tests' в Вики\) для перевода с ([^ ]*)(?:\s*языка?)?(?:\s*)на ([^ ]*)(?:\s*языки?)?\./) {
 		my $l1 = $1;
 		my $l2 = $2;
 		if (!$lang{$l1} || $lang{$l1} eq "") {
@@ -203,6 +206,14 @@ sub fixtext {
 	}
 
 	if ($text =~ /Contrastive analysis: ([^ ]*) and (.*)$/) {
+		$tags .= "$1, $2, ";
+	}
+
+	if ($text =~ /Convert existing resource: ([^ ]*) morphological analyser/) {
+		$tags .= "$1, morphological_analysis, ";
+	}
+
+	if ($text =~ /Convert existing resource: Reta Vortaro ([^\-]*)-(.*)/) {
 		$tags .= "$1, $2, ";
 	}
 
@@ -278,6 +289,7 @@ while (<>) {
 	warning ($dif, $pieces[1]);
 	my $title = fixtext(lrtrim($pieces[2]));
 	my $text = fixtext(dewikilink(lrtrim($pieces[3])));
+	
 	
 #print;
 	print "\"$area\", \"$dif\", \"$title\", \"$text\"\n";
