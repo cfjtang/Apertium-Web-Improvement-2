@@ -330,5 +330,13 @@ while (<>) {
 
 	$tags =~ s/, $//;
 
-	print "\"$title\", \"$text\", \"$time\", \"$ids\", \"$dif\", \"$area\", \"$tags\"\n";
+
+	my $output = "\"$title\",\"$text\",$time,";
+	$output .= ($ids !~ /,/) ? "$ids" : "\"$ids\"";
+	$output .= ',';
+	$output .= ($dif !~ / /) ? "$dif" : "\"$dif\"";
+	$output .= ",$area,";
+	$output .= ($tags !~ /,/) ? "$tags" : "\"$tags\"";
+
+	print "$output\n";
 }
