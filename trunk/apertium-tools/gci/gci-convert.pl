@@ -94,6 +94,7 @@ my %lang = (
 	"башкирского" => "Bashkir",
 	"чувашский" => "Chuvash",
 	"Чувашский" => "Chuvash",
+	"чувашского" => "Chuvash",
 );
 
 my $tags; #global, as we're taking this from different places
@@ -201,6 +202,10 @@ sub fixtext {
 		$out = "Create $lang{$1}-$lang{$2} dictionary";
 	}
 
+	if ($text =~ /Contrastive analysis: ([^ ]*) and (.*)$/) {
+		$tags .= "$1, $2, ";
+	}
+
 	return $out;
 }
 
@@ -262,6 +267,7 @@ my $task_count = 0;
 
 while (<>) {
 	next if ($_ !~ /align=center/);
+	$tags = '';
 	s/align=center//g;
 	my @pieces = split/ ?\|\| ?/;
 	shift(@pieces) if ($pieces[0] eq '');
