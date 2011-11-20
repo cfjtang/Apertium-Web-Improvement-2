@@ -50,6 +50,7 @@ my %who = (
 	"[[User:AureiAnimus|Pim&nbsp;Otte]]" => "aureianimus",
 	"[[User:Unhammer|Unhammer]]" => "unhammer",
 	"[[User:Unhammer]]" => "unhammer",
+	"[[User:Gramirez|Gramirez]]" => "gramirez",
 );
 
 my %lang = (
