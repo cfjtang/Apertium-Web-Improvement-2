@@ -209,7 +209,7 @@ sub fixtext {
 			$ltag =~ s/ /_/g;
 			$tags .= "$ltag, ";
 			$ltag = $lang{$l2};
-			$ltag =~ s/ /_/g;
+			#$ltag =~ s/ /_/g;
 			$tags .= "$ltag, ";
 		}		
 	}
@@ -241,7 +241,7 @@ sub fixtext {
 			$ltag =~ s/ /_/g;
 			$tags .= "$ltag, ";
 			$ltag = $lang{$l2};
-			$ltag =~ s/ /_/g;
+			#$ltag =~ s/ /_/g;
 			$tags .= "$ltag, ";
 		}		
 	}
