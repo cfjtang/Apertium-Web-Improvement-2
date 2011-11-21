@@ -177,7 +177,7 @@ sub dewikilink ($) {
 		$tmp =~ s/ /_/g;
 		$url = "http://wiki.apertium.org/wiki/$tmp";
 
-		my $html = "<a href=\"$url\">$text</a>";
+		my $html = "<a href='$url'>$text</a>";
 		$line =~ s/\[\[$text\]\]/$html/;
 	}
 
@@ -185,7 +185,7 @@ sub dewikilink ($) {
 		$url = $1;
 		$text = $2;
 
-		my $html = "<a href=\"$url\">$text</a>";
+		my $html = "<a href='$url'>$text</a>";
 		$line =~ s/\[$url $text\]/$html/;
 	}
 	return $line;
@@ -349,9 +349,9 @@ sub test_dewikilink {
 		'Translate the [[new language pair HOWTO]] into Nynorsk.',
 	);
 	my @out = (
-		'You can use the utility <a href="http://vikitraduko.saluton.dk:8080/vikitraduko/">Vikitradukilo</a>.',
-		'Take <a href="http://www.sk-spell.sk.cx/mass-msas">MSAS/MASS</a> and convert to lttoolbox format.',
-		'Translate the <a href="http://wiki.apertium.org/wiki/new_language_pair_HOWTO">new language pair HOWTO</a> into Nynorsk.',
+		"You can use the utility <a href='http://vikitraduko.saluton.dk:8080/vikitraduko/'>Vikitradukilo</a>.",
+		"Take <a href='http://www.sk-spell.sk.cx/mass-msas'>MSAS/MASS</a> and convert to lttoolbox format.",
+		"Translate the <a href='http://wiki.apertium.org/wiki/new_language_pair_HOWTO'>new language pair HOWTO</a> into Nynorsk.",
 	);
 
 	simple_text_test("dewikilink", \@in, \@out, \&dewikilink);
