@@ -286,6 +286,11 @@ sub fixtext {
 		$tags .= "$1, $2, mt, ";
 	}
 
+	if ($text =~ /Quality evaluation: ([^ ]*) and ([^ ]*)/) {
+		$tags .= "$1, $2, mt, ";
+	}
+
+
 	if ($text =~ /Apertium on ([^ ]*) Wikipedia/) {
 		$tags .= "$1, wikipedia, ";
 	}
