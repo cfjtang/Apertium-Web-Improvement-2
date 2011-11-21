@@ -115,9 +115,53 @@ my %lang = (
 
 	"is" => "Icelandic",
 	"en" => "English",
+	"nn" => "Nynorsk",
+	"es" => "Spanish",
+	"mk" => "Macedonian",
+	"oc" => "Occitan",
+	"ast" => "Asturian",
+	"nb" => "Bokmål",
+	"ca" => "Catalan",
+	"bg" => "Bulgarian",
+
 	"cze" => "Czech",
 	"ces" => "Czech",
-	
+	"eng" => "English",
+	"ell" => "Greek",
+	"deu" => "German",
+	"pol" => "Polish",
+	"hrv" => "Croatian",
+	"hin" => "Hindi",
+	"dan" => "Danish",
+	"jpn" => "Japanese",
+	"rom" => "Romanian",
+	"fra" => "French",
+	"por" => "Portuguese",
+	"ita" => "Italian",
+	"nld" => "Dutch",
+	"lat" => "Latin",
+	"swe" => "Swedish",
+	"swa" => "Swahili",
+	"lit" => "Lithuanian",
+	"ara" => "Arabic",
+	"hun" => "Hungarian",
+	"wel" => "Welsh",
+	"cym" => "Welsh",
+	"gle" => "Irish",
+	"bre" => "Breton",
+	"rus" => "Russian",
+	"kur" => "Kurdish",
+	"spa" => "Spanish",
+	"kha" => "Khasi",
+	"tur" => "Turkish",
+	"scr" => "Serbo-Croatian",
+	"swh" => "Swahili",
+	"slo" => "Slovakian",
+	"afr" => "Afrikaans",
+	"gla" => "Scots Gaelic",
+	"san" => "Sanskrit",
+	"ckb" => "Central Kurdish",
+	"kmr" => "Northern Kurdish",
 );
 
 my $tags; #global, as we're taking this from different places
@@ -240,6 +284,34 @@ sub fixtext {
 
 	if ($text =~ /Contrastive analysis: ([^-]*)--?([^ ]*)/) {
 		$tags .= "$1, $2, mt, ";
+	}
+
+	if ($text =~ /Apertium on ([^ ]*) Wikipedia/) {
+		$tags .= "$1, wikipedia, ";
+	}
+
+	if ($text =~ /Convert Apertium resources: ([^-]*)--?([^ ]*) for Freedict/) {
+		my $l1 = $1;
+		my $l2 = $2;
+		if (!$lang{$l1} || $lang{$l1} eq "") {
+			print STDERR "Error: No mapping for language: $l1\n";
+		} elsif (!$lang{$l2} || $lang{$l2} eq "") {
+			print STDERR "Error: No mapping for language: $l2\n";
+		} else {
+			$tags .= "$lang{$l1}, $lang{$l2}, script, freedict, dictionary, ";
+		}
+	}
+
+	if ($text =~ /Convert existing resource: FreeDict ([^-]*)--?([^ ]*)/) {
+		my $l1 = $1;
+		my $l2 = $2;
+		if (!$lang{$l1} || $lang{$l1} eq "") {
+			print STDERR "Error: No mapping for language: $l1\n";
+		} elsif (!$lang{$l2} || $lang{$l2} eq "") {
+			print STDERR "Error: No mapping for language: $l2\n";
+		} else {
+			$tags .= "$lang{$l1}, $lang{$l2}, script, freedict, dictionary, ";
+		}
 	}
 
 	return $out;
