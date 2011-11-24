@@ -328,6 +328,10 @@ SELECT:AdvB4Partitive Adv (1 (@PAR) ) ;
 SELECT Ins IF (0 Num) (-1C ("<s>"i) + Pr);
 SELECT Gen IF (0 Num) (-1C ("<prije>"i) + Pr);
 
+SELECT:NumberChainIns Gen (0 Num) (-1* GEN-PREP BARRIER WORD - Modifier) ;
+SELECT:NumberChainIns Dat (0 Num) (-1* DAT-PREP BARRIER WORD - Modifier) ;
+SELECT:NumberChainIns Acc (0 Num) (-1* ACC-PREP BARRIER WORD - Modifier) ;
+SELECT:NumberChainIns Loc (0 Num) (-1* LOC-PREP BARRIER WORD - Modifier) ;
 SELECT:NumberChainIns Ins (0 Num) (-1* INS-PREP BARRIER WORD - Modifier) ;
     ## TODO: Expand this for all cases, currently they don't appear
 
@@ -360,7 +364,7 @@ SELECT:Pr-Loc-Clt-chain Loc IF (-1 Pron + Clt OR Num)(-2C LOC-PREP OR Modifier +
 
 SELECT:Pr-Ins-chain Ins IF (-1C INS-PREP OR Modifier + Ins);
 SELECT:Pr-Ins-chain Ins IF (-2C Nomen + Ins)(-1C CNJ);
-SELECT:Pr-Ins-chain Ins IF (-2*C Nomen + Ins BARRIER WORD - Adv - CNJ) (-1C CNJ);
+SELECT:Pr-Ins-chain Ins IF (-2*C Nomen + Ins BARRIER WORD - Adv - CNJ) (-1C CNJ); # Note and possibly TODO: Adv is here only because of 'kao<adv> i<cnjcoo>', but probably it should be a compound conjunction
 SELECT:Pr-Ins-Clt-chain Ins IF (-1 Pron + Clt OR Num)(-2C INS-PREP OR Modifier + Ins);
 
 SELECT:Ant+Cog $$NUMBER + $$GENDER + $$CASE IF (-1 Ant + $$NUMBER + $$GENDER + $$CASE ) (0 Cog + $$NUMBER + $$GENDER + $$CASE ) ;
@@ -425,8 +429,8 @@ REMOVE Plural IF (0 Lp) (-1 VBSer + Singular ) ;
 REMOVE Plural IF (0 Lp)  (1 VBSer + Singular ) ;
     # This should be extended to some barrier
     
-REMOVE Transitive IF (NOT 1* Acc BARRIER V);
-SELECT Transitive IF (1* Acc BARRIER V);
+REMOVE:notTransitiveNoAccusative Transitive IF (NOT 1* Acc BARRIER V);
+SELECT:TransitiveBCauseAccusative Transitive IF (1* Acc BARRIER V);
 
 SELECT $$NUMBER (O PassiveParticiple) (-1* VBSer LINK -1* Particle + Interrogative LINK -1 V + $$NUMBER) ;
     ## "hoću li biti primljena"
