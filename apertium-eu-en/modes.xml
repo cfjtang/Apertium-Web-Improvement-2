@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<modes>
+  <mode name="eu-en" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="eu-en.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="eu-en.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="eu-en-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-colloc">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-ordinals">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-chunker">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="eu-en-chunker-trace">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -t">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="eu-en-interchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-postchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="eu-en-generador">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="eu-en.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+ <mode name="eu-en-postgen">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="eu-en.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="eu-en.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="test-eu-en">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="eu-en.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="eu-en.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="test-eu-en-anmor">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="test-eu-en-tagger">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="test-eu-en-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="test-eu-en-chunker">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="test-eu-en-interchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="test-eu-en-postchunk">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="test-eu-en-generador">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="eu-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="eu-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.colloc.t1x"/>
+        <file name="eu-en.colloc.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-eu-en.ordinals.t1x"/>
+        <file name="eu-en.ordinals.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer">
+        <file name="apertium-eu-en.eu-en.t1x"/>
+        <file name="eu-en.t1x.bin"/>
+        <file name="eu-en.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-en.eu-en.t2x"/>
+        <file name="eu-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-en.eu-en.t3x"/>
+        <file name="eu-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="eu-en.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+</modes>
