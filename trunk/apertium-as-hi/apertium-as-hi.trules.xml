@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="ISO-8859-1"?>
+<transfer>
+	<section-def-cats>
+		<def-cat n="nom">
+			<cat-item tags="n.*"/>
+		</def-cat>
+		<def-cat n="enc">
+			<cat-item tags="en.*"/>
+		</def-cat>
+		<def-cat n="pn">
+			<cat-item tags="pn.*"/>
+		</def-cat>
+		<def-cat n="v">
+			<cat-item tags="vb.*"/>
+		</def-cat>
+		<def-cat n="number">
+			<cat-item tags="numeral.*"/>
+		</def-cat>
+		<def-cat n="punctuation">
+			<cat-item tags="sep.*"/>
+		</def-cat>
+		<def-cat n="adjectives">
+			<cat-item tags="adj.*"/>
+		</def-cat>
+		<def-cat n="others">
+			<cat-item tags="ot.*"/>
+		</def-cat>
+	</section-def-cats>
+
+	<section-def-attrs>
+		<def-attr n="a_nom">
+			<attr-item tags="n"/>
+		</def-attr>
+		<def-attr n="a_enc">
+			<attr-item tags="en"/>
+		</def-attr>
+		<def-attr n="nbr">
+			<attr-item tags="sg"/>
+			<attr-item tags="pl"/>
+		</def-attr>
+		<def-attr n="gen">
+			<attr-item tags="ma"/>
+			<attr-item tags="fe"/>
+		</def-attr>
+		<def-attr n="a_pn">
+			<attr-item tags="pn"/>
+		</def-attr>
+		<def-attr n="a_v">
+			<attr-item tags="v"/>
+		</def-attr>
+	</section-def-attrs>
+
+	<section-def-vars>
+		<def-var n="number"/>
+		<def-var n="gender"/>
+	</section-def-vars>
+
+	<section-rules>
+		<rule>
+			<pattern>
+				<pattern-item n="nom"/>
+				<pattern-item n="enc"/>
+			</pattern>
+			<action><out>
+				<lu>
+            					<clip pos="2" side="tl" part="whole"/>
+				</lu>
+				<b/>
+				<lu>
+					<clip pos="1" side="tl" part="whole"/>
+				</lu>
+			</out></action>
+		</rule>
+		<rule>
+			<pattern>
+				<pattern-item n="pn"/>
+			</pattern>
+			<action><out><lu>
+				<clip pos="1" side="tl" part="whole"/>
+			</lu></out></action>
+		</rule>
+		<rule>
+			<pattern>
+				<pattern-item n="v"/>
+			</pattern>
+			<action><out><lu>
+				<clip pos="1" side="tl" part="whole"/>
+			</lu></out></action>
+		</rule>
+		<rule>
+			<pattern>
+				<pattern-item n="punctuation"/>
+			</pattern>
+			<action><out><lu>
+				<clip pos="1" side="tl" part="whole"/>
+			</lu></out></action>
+		</rule>
+		<rule>
+			<pattern>
+				<pattern-item n="number"/>
+			</pattern>
+			<action><out><lu>
+				<clip pos="1" side="tl" part="whole"/>
+			</lu></out></action>
+		</rule>
+		<rule>
+			<pattern>
+				<pattern-item n="adjectives"/>
+			</pattern>
+			<action><out><lu>
+				<clip pos="1" side="tl" part="whole"/>
+			</lu></out></action>
+		</rule>
+		<rule>
+			<pattern>
+				<pattern-item n="others"/>
+			</pattern>
+			<action><out><lu>
+				<clip pos="1" side="tl" part="whole"/>
+			</lu></out></action>
+		</rule>
+	</section-rules>
+</transfer>
