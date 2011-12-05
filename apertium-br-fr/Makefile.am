@@ -11,8 +11,9 @@ TARGETS_COMMON = $(BASENAME).$(LANG2).dix  \
      $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX1).rlx.bin $(PREFIX1).pre-xfer.t1x.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin $(PREFIX1).mode $(PREFIX2).mode
+     $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin $(PREFIX1).mode 
 
+#$(PREFIX2).mode
 # pre-$(LANG1).t1x.bin 
 
 $(BASENAME).$(LANG2).dix: $(BASENAME).$(LANG2).metadix
@@ -136,9 +137,8 @@ apertium_br_fr_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).rlx.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX1).pre-xfer.t1x.bin \
-		    $(PREFIX1).mode $(PREFIX2).mode
-		    
-		  
+		    $(PREFIX1).mode 
+#$(PREFIX2).mode
 #$(INSTALL_DATA) $(PREFIX2).mode $(apertium_br_modesdir)
 
 install-data-local:
