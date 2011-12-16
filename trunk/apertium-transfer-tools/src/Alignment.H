@@ -91,6 +91,7 @@ public:
   friend wostream& operator << (wostream& os, Alignment& al);
 
   friend class AlignmentTemplate;
+  friend class AlignmentTemplateHandy;
 };
 
 #endif

@@ -141,7 +141,7 @@ int main(int argc, char* argv[]) {
   //  cerr<<argv[i]<<" ";
   //cerr<<"\n\n";
 
-  //cerr<<"LOCALE: "<<setlocale(LC_ALL,"")<<"\n";
+  cerr<<"LOCALE: "<<setlocale(LC_ALL,"")<<"\n";
 
 
   while (true) {
