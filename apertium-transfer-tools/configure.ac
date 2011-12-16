@@ -3,8 +3,8 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_lttoolbox_version], [3.0])
-m4_define([required_apertium_version], [3.0])
+m4_define([required_lttoolbox_version], [3.2])
+m4_define([required_apertium_version], [3.2])
 m4_define([required_libxml_version], [2.6.17])
 m4_define([required_libpcre_version], [6.4])
 
@@ -150,10 +150,10 @@ PKG_CHECK_MODULES(LIBXML2, [dnl
   libxml-2.0 >= required_libxml_version])
 
 PKG_CHECK_MODULES(LTTOOLBOX, [dnl
-  lttoolbox-3.0 >= required_lttoolbox_version])
+  lttoolbox-3.2 >= required_lttoolbox_version])
   
 PKG_CHECK_MODULES(APERTIUM, [dnl
-  apertium-3.0 >= required_apertium_version])
+  apertium-3.2 >= required_apertium_version])
 
 AC_PATH_PROG(XMLLINT, xmllint, no)
 
