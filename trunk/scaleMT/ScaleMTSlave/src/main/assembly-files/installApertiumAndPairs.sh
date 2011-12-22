@@ -83,7 +83,7 @@ cd apertium
 #install vislcg3
 echo "Installing vislcg3"
 cd vislcg3
-sh autogen.sh --prefix=$PREFIX
+./cmake.sh -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX
 make
 make install
 cd ..
