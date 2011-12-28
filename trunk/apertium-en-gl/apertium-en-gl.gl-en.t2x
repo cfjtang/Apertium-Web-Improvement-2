@@ -11,7 +11,7 @@
       <cat-item tags="SVneg.*"/>
     </def-cat>
 
-    <def-cat n="SV_pers"><!--Formes personals. Exclou inf i ger (i alguns imperatius per ara) -->
+    <def-cat n="SV_pers"><!--Formas persoais. Exclúe inf e ger (e algúns imperativos de momento) -->
       <cat-item lemma="verbcj" tags="SV.*"/>
       <cat-item lemma="verbcj" tags="SVneg.*"/>
       <cat-item lemma="aux_verb" tags="SV.*"/>
@@ -27,10 +27,11 @@
       <cat-item lemma="verbcj_enc" tags="SV.*"/>
       <cat-item lemma="verbcj_enc" tags="SVneg.*"/>
       <cat-item lemma="verbcj_ger" tags="SV.*"/>
+      <cat-item lemma="verbcj_inf" tags="SV.*"/>
       <cat-item lemma="verbcj_ger_enc" tags="SV.*"/>
       <cat-item lemma="verbcj_ger" tags="SVneg.*"/>
       <cat-item lemma="verbcj_ger_enc" tags="SVneg.*"/>
-    <!--  <cat-item lemma="be_adj" tags="SV.*"/>-->
+      <cat-item lemma="mod_inf_enc" tags="SV.*"/>      
     </def-cat>
 
      <def-cat n="inf">
@@ -69,11 +70,35 @@
       <cat-item lemma="aux_haverhi_pp" tags="SVneg.*"/>
     </def-cat>
 
-    <def-cat n="SA"><!--MG: falta posar en les regles què fer per als ND (assignar nbr del verb generalment) -->
+    <def-cat n="SA"><!-- falta pór nas regras que facer para os ND (xeralmente atribuír nbr do verbo) -->
       <cat-item tags="SA.*"/>
     </def-cat>
+    
+    <def-cat n="SP">
+      <cat-item tags="SP.*"/>
+    </def-cat>
 
-<def-cat n="punt">
+    <def-cat n="DET">
+      <cat-item tags="DET.*"/>
+    </def-cat>
+    
+    <def-cat n="PREADV">
+      <cat-item tags="preadv"/>
+    </def-cat>
+
+    <def-cat n="REL">
+      <cat-item tags="rel.*"/>
+    </def-cat>
+
+    <def-cat n="unknown">
+      <cat-item lemma="unknown" tags="unkown"/>
+    </def-cat>
+
+    <def-cat n="fi_frase">
+      <cat-item tags="sent"/>
+    </def-cat>
+    
+    <def-cat n="punt">
       <cat-item tags="sent"/>
     </def-cat>
 
@@ -138,9 +163,28 @@
   <section-def-vars>
     <def-var n="uno"/>
     <def-var n="paraula"/>
+    <def-var n="fifrase" v="yes"/>
   </section-def-vars>
+  
+  <section-def-lists>
 
-<section-def-macros>
+    <def-list n="SV_personals"> 
+      <list-item v="verbcj"/>
+      <list-item v="aux_verb"/>
+      <list-item v="haver_pp"/>
+      <list-item v="haver_pp_enc"/>
+      <list-item v="aux_haver_pp"/>
+      <list-item v="aux_haver_pp_enc"/>
+      <list-item v="verbcj_enc"/>
+      <list-item v="verbcj_ger"/>      
+      <list-item v="verbcj_ger_enc"/>
+      <list-item v="verbcj_inf"/>
+      <list-item v="mod_inf_enc"/>      
+    </def-list>
+
+ </section-def-lists>
+
+  <section-def-macros>
 
   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
      	<choose>
@@ -160,6 +204,76 @@
      	</choose>
      </def-macro>
 
+
+ <def-macro n="generate_subject" npar="1">  <!--ATENCIÓN: se se crean novos chunks verbais no t1x con novos lemas, hai que engadilos á lista SV_personals no caso de que sexan SV con formas persoais. Caso contrario non se creará o suxeito correspondente cando aparezan nun texto. -->
+     
+   <choose>
+     <when>
+       <test>
+	   <in caseless="yes">
+	     <clip pos="1" part="lem"/>
+	     <list n="SV_personals"/>
+	   </in>
+       </test>
+	<choose>
+	  <when>
+	    <test>
+	      <equal>
+		<var n="fifrase"/>
+		<lit v="yes"/>
+	      </equal>
+	    </test>		
+	    <choose>
+	      <when>
+		<test>
+		  <not>
+		    <equal>
+		      <clip pos="1" part="temps"/>
+		      <lit-tag v="imp"/>
+		    </equal>
+		  </not>
+		</test>
+		<out>
+		  <chunk>
+		    <get-case-from pos="1">
+		      <lit v="subj"/>
+		    </get-case-from>
+		    <lit-tag v="prn.subj"/>
+		    <clip pos="1" part="pers"/>
+		    <lit-tag v="GD"/>
+		    <clip pos="1" part="nbr"/>
+		    <lit v="{^"/>
+		    <get-case-from pos="1">
+		      <lit v="prpers"/>
+		    </get-case-from>
+		    <lit-tag v="prn.subj.3.4.5"/>
+		    <lit v="$}"/>
+		  </chunk>
+		  <b/>	   
+		</out>
+		<choose>
+		  <when>
+		    <test>
+		      <equal>
+			<case-of pos="1" part="lem"/>
+			<lit v="Aa"/>
+		      </equal>
+		    </test>
+		    <modify-case>
+		      <clip pos="1" part="lem"/>
+		      <lit v="aa"/>
+		    </modify-case>
+		  </when>
+		</choose>
+	      </when>
+	    </choose>
+	  </when>
+	</choose>
+     </when>
+   </choose>
+ </def-macro>
+
+
 </section-def-macros>
 
   <section-rules>
@@ -170,9 +284,9 @@
   
 
 
-<!--Regles per a sintagmes sols que han pogut quedarse amb GD, ND o PD -->
+<!--Regras para sintagmas sós que puideran ficar con GD, ND ou PD -->
 
-<rule comment="REGLA: SN (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
+<rule comment="REGRA: SN (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)">
       <pattern>
 	<pattern-item n="SN"/>
       </pattern>
@@ -212,10 +326,14 @@
 	    <clip pos="1" part="chcontent"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
-</rule>
+  </rule>
 
-<rule comment="REGLA: haverhi SN">
+  <rule comment="REGRA: haverhi SN">
       <pattern>
 	<pattern-item n="haverhi"/>
 	<pattern-item n="SN"/>
@@ -286,12 +404,16 @@
             <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
 
 
-<rule comment="REGLA: SN haverhi SN (per a frase com 'al seu país no hi ha dubte que', pq no entrin per 'SN SV'">
+<rule comment="REGRA: SN haverhi SN (per a frase com 'al seu país no hi ha dubte que', pq no entrin per 'SN SV'">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="haverhi"/>
@@ -395,11 +517,15 @@
             <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
 
-<rule comment="REGLA: haverhi (per quan no va seguit de SN, assignar-li nombre per defecte">
+<rule comment="REGRA: haverhi (per quan no va seguit de SN, assignar-li nombre per defecte">
       <pattern>
 	<pattern-item n="haverhi"/>
       </pattern>
@@ -423,15 +549,15 @@
 	    <clip pos="1" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
+<!--
 
-
-
-
-
-
-<rule comment="REGLA: SN SV">
+<rule comment="REGRA: SN SV">
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV"/>
@@ -479,11 +605,11 @@
 	  </chunk>
 	</out>
       </action>
-</rule>
+</rule>-->
 
 
 
-<rule comment="REGLA: SN SV inf (SN decidiron vir -> SN decided TO come)" >
+<rule comment="REGRA: SN SV inf (SN decidiron vir -> SN decided TO come)" >
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV_pers"/>
@@ -566,15 +692,22 @@
             <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
-<rule comment="REGLA: SV inf (han decidit venir -> have decided TO come) (caldria generar aquí subjecte? estudiar)" >
+<rule comment="REGRA: SV inf (decidiron vir -> have decided TO come)" >
       <pattern>
 	<pattern-item n="SV_pers"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>
+      	<call-macro n="generate_subject">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk>
             <clip pos="1" part="whole"/>
@@ -619,19 +752,23 @@
             <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
-</rule>
+  </rule>
 
-
-
-
-<rule comment="REGLA: SV SA inf (és/considera difícil entendre -> is/considers difficult TO understand)" >
+  <rule comment="REGRA: SV SA inf (é/considera difícil entender -> is/considers difficult TO understand)" >
       <pattern>
 	<pattern-item n="SV"/>
 	<pattern-item n="SA"/>
 	<pattern-item n="inf"/>
       </pattern>
       <action>
+	<call-macro n="generate_subject">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk>
             <clip pos="1" part="whole"/>
@@ -658,11 +795,14 @@
 	    <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
-  </action>
-</rule>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+    </action>
+  </rule>
 
-
-<rule comment="REGLA: SV SA de inf (és/considera difícil d'entendre -> is/considers difficult TO understand) MG: treureho? es fa ja tot en el t1x?" >
+<rule comment="REGRA: SV SA de inf (é/considera difícil de entender -> is/considers difficult TO understand)" >
       <pattern>
 	<pattern-item n="SV"/>
 	<pattern-item n="SA"/>
@@ -670,6 +810,9 @@
 	<pattern-item n="inf"/>
       </pattern>
       <action>
+	<call-macro n="generate_subject">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk>
             <clip pos="1" part="whole"/>
@@ -696,11 +839,15 @@
 	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
   </action>
 </rule>
 
 
-<rule comment="REGLA: SN SV SA inf (això és/considera difícil entendre -> is/considers difficult TO understand)" >
+<rule comment="REGRA: SN SV SA inf (así é/considera difícil entender -> is/considers difficult TO understand)" >
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV"/>
@@ -766,11 +913,15 @@
 	    <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
   </action>
 </rule>
 
 
-<rule comment="REGLA: SN SV SA de inf (és/considera difícil d'entendre -> is/considers difficult TO understand)MG: treureho? es fa ja tot en el t1x?" >
+<rule comment="REGRA: SN SV SA de inf (é/considera difícil de entender -> is/considers difficult TO understand)" >
       <pattern>
 	<pattern-item n="SN"/>
 	<pattern-item n="SV"/>
@@ -837,430 +988,40 @@
 	    <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
   </action>
 </rule>
 
 
-<!--
 
-<rule comment="REGLA: SN ADV SV">
+
+<!--Regras para acrecentar o pronome suxeito: o pronome xérase noutras regras, mediante a macro generate_subject, ou nestas regras creadas expresamente para a xeración do suxeito  -->
+
+<rule comment="REGRA: SV (Significava -> IT meant)">
       <pattern>
-	<pattern-item n="SN"/>
-	<pattern-item n="ADV"/>
-	<pattern-item n="SV"/>
-      </pattern>
-      <action>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="gen"/>
-		<lit-tag v="GD"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="gen"/>
-	      <lit-tag v="m"/>
-	    </let>
-	  </when>
-	</choose>
-	<choose>
-	  <when>
-	    <test>
-	      <equal>
-		<clip pos="1" part="nbr"/>
-		<lit-tag v="ND"/>
-	      </equal>
-	    </test>
-	    <let>
-	      <clip pos="1" part="nbr"/>
-	      <lit-tag v="sg"/>
-	    </let>
-	  </when>
-	</choose>
-	
-	      
-	<out>
-	  <chunk>
-            <clip pos="1" part="lem"/>
-            <clip pos="1" part="tags"/>
-	    <clip pos="1" part="chcontent"/>
-	  </chunk>
-	  <b pos="1"/>
-	  <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
-	  </chunk>
-	  <b pos="2"/>
-	  <chunk>
-            <clip pos="3" part="lem"/>
-            <clip pos="3" part="tags"/>
-	    <clip pos="3" part="chcontent"/>
-	  </chunk>
-	</out>
-      </action>
-</rule>-->
-
-<!--Regles per a afegir pronom subjecte -->
-
-<rule comment="REGLA: punt SV (. Significava -> IT meant)">
-      <pattern>
-	<pattern-item n="punt"/>
 	<pattern-item n="SV_pers"/>
       </pattern>
       <action>
+	<call-macro n="generate_subject">
+	  <with-param pos="1"/>
+	</call-macro>
 	<out>
 	  <chunk>
 	    <clip pos="1" part="whole"/>
 	  </chunk>
-	  <b pos="1"/>
 	</out>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="2" part="temps"/>
-		  <lit-tag v="imp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <out>
-	      <chunk>
-		<get-case-from pos="2">
-		  <lit v="subj"/>
-		</get-case-from>
-		<lit-tag v="prn.subj"/>
-		<clip pos="2" part="pers"/>
-		<lit-tag v="GD"/>
-		<clip pos="2" part="nbr"/>
-		<lit v="{^"/>
-		<get-case-from pos="2">
-		  <lit v="prpers"/>
-		</get-case-from>
-		<lit-tag v="prn.subj.3.4.5"/>
-		<lit v="$}"/>
-	      </chunk>
-	      <b/>	   
-	    </out>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <case-of pos="2" part="lem"/>
-		    <lit v="Aa"/>
-		  </equal>
-		</test>
-		<modify-case>
-		  <clip pos="2" part="lem"/>
-		  <lit v="aa"/>
-		</modify-case>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-	<out>
-	  <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
-	  </chunk>
-	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
-</rule>
-
-<rule comment="REGLA: punt SV inf (. Intentava venir -> IT tried TO come)">
-      <pattern>
-	<pattern-item n="punt"/>
-	<pattern-item n="SV_pers"/>
-	<pattern-item n="inf"/>
-      </pattern>
-      <action>
-	<out>
-	  <chunk>
-	    <clip pos="1" part="whole"/>
-	  </chunk>
-	  <b pos="1"/>
-	</out>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="2" part="temps"/>
-		  <lit-tag v="imp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <out>
-	      <chunk>
-		<get-case-from pos="2">
-		  <lit v="subj"/>
-		</get-case-from>
-		<lit-tag v="prn.subj"/>
-		<clip pos="2" part="pers"/>
-		<lit-tag v="GD"/>
-		<clip pos="2" part="nbr"/>
-		<lit v="{^"/>
-		<get-case-from pos="2">
-		  <lit v="prpers"/>
-		</get-case-from>
-		<lit-tag v="prn.subj.3.4.5"/>
-		<lit v="$}"/>
-	      </chunk>
-	      <b/>	   
-	    </out>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <case-of pos="2" part="lem"/>
-		    <lit v="Aa"/>
-		  </equal>
-		</test>
-		<modify-case>
-		  <clip pos="2" part="lem"/>
-		  <lit v="aa"/>
-		</modify-case>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-	<out>
-	  <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
-	  </chunk>
-	  <b pos="2"/>
-	</out>
-	<choose>
-	  <when><!--si és vbmod (o vaux: "can") no posis el "to" pq no cal ("can") o ja el té incorporat ("have to"). -->
-	    <test>
-	      <not>
-		<or>
-		  <equal>
-		    <clip pos="2" part="a_verb"/>
-		    <lit-tag v="vbmod"/>
-		  </equal>
-		  <equal>
-		    <clip pos="2" part="a_verb"/>
-		    <lit-tag v="vaux"/>
-		  </equal>
-		</or>
-	      </not>
-	    </test>
-	    <out>
-	      <chunk>
-		<get-case-from pos="3">
-		  <lit v="to"/>
-		</get-case-from>
-		<lit-tag v="pr"/>
-		<lit v="{^"/>
-		<get-case-from pos="3">
-		  <lit v="to"/>
-		</get-case-from>
-		<lit-tag v="pr"/>
-		<lit v="$}"/>
-	      </chunk>
-	      <b/>
-	    </out>
-	  </when>
-	</choose>
-	<out>
-	  <chunk>
-            <clip pos="3" part="whole"/>
-	  </chunk>
-	</out>
-      </action>
-</rule>
+  </rule>
 
 
-<rule comment="REGLA: punt SV SA inf (. Era difícil ajudar -> IT was difficult TO help)">
-      <pattern>
-	<pattern-item n="punt"/>
-	<pattern-item n="SV_pers"/>
-	<pattern-item n="SA"/>
-	<pattern-item n="inf"/>
-      </pattern>
-      <action>
-	<out>
-	  <chunk>
-	    <clip pos="1" part="whole"/>
-	  </chunk>
-	  <b pos="1"/>
-	</out>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="2" part="temps"/>
-		  <lit-tag v="imp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <out>
-	      <chunk>
-		<get-case-from pos="2">
-		  <lit v="subj"/>
-		</get-case-from>
-		<lit-tag v="prn.subj"/>
-		<clip pos="2" part="pers"/>
-		<lit-tag v="GD"/>
-		<clip pos="2" part="nbr"/>
-		<lit v="{^"/>
-		<get-case-from pos="2">
-		  <lit v="prpers"/>
-		</get-case-from>
-		<lit-tag v="prn.subj.3.4.5"/>
-		<lit v="$}"/>
-	      </chunk>
-	      <b/>	   
-	    </out>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <case-of pos="2" part="lem"/>
-		    <lit v="Aa"/>
-		  </equal>
-		</test>
-		<modify-case>
-		  <clip pos="2" part="lem"/>
-		  <lit v="aa"/>
-		</modify-case>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-	<out>
-	  <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
-	  </chunk>
-	  <b pos="2"/>
-	  <chunk>
-            <clip pos="3" part="whole"/>
-	  </chunk>
-	  <b pos="3"/>
-	  <chunk>
-	    <get-case-from pos="4">
-	      <lit v="to"/>
-	    </get-case-from>
-	    <lit-tag v="pr"/>
-	    <lit v="{^"/>
-	    <get-case-from pos="4">
-	      <lit v="to"/>
-	    </get-case-from>
-	    <lit-tag v="pr"/>
-	    <lit v="$}"/>
-	  </chunk>
-	  <b/>
-	  <chunk>
-	    <clip pos="4" part="whole"/>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-
-
-
-
-<rule comment="REGLA: punt SV SA de inf (. Era difícil d'ajudar -> IT was difficult TO help)MG: treureho? es fa ja tot en el t1x?">
-      <pattern>
-	<pattern-item n="punt"/>
-	<pattern-item n="SV_pers"/>
-	<pattern-item n="SA"/>
-	<pattern-item n="de"/>
-	<pattern-item n="inf"/>
-      </pattern>
-      <action>
-	<out>
-	  <chunk>
-	    <clip pos="1" part="whole"/>
-	  </chunk>
-	  <b pos="1"/>
-	</out>
-	<choose>
-	  <when>
-	    <test>
-	      <not>
-		<equal>
-		  <clip pos="2" part="temps"/>
-		  <lit-tag v="imp"/>
-		</equal>
-	      </not>
-	    </test>
-	    <out>
-	      <chunk>
-		<get-case-from pos="2">
-		  <lit v="subj"/>
-		</get-case-from>
-		<lit-tag v="prn.subj"/>
-		<clip pos="2" part="pers"/>
-		<lit-tag v="GD"/>
-		<clip pos="2" part="nbr"/>
-		<lit v="{^"/>
-		<get-case-from pos="2">
-		  <lit v="prpers"/>
-		</get-case-from>
-		<lit-tag v="prn.subj.3.4.5"/>
-		<lit v="$}"/>
-	      </chunk>
-	      <b/>	   
-	    </out>
-	    <choose>
-	      <when>
-		<test>
-		  <equal>
-		    <case-of pos="2" part="lem"/>
-		    <lit v="Aa"/>
-		  </equal>
-		</test>
-		<modify-case>
-		  <clip pos="2" part="lem"/>
-		  <lit v="aa"/>
-		</modify-case>
-	      </when>
-	    </choose>
-	  </when>
-	</choose>
-	<out>
-	  <chunk>
-            <clip pos="2" part="lem"/>
-            <clip pos="2" part="tags"/>
-	    <clip pos="2" part="chcontent"/>
-	  </chunk>
-	  <b pos="2"/>
-	  <chunk>
-            <clip pos="3" part="whole"/>
-	  </chunk>
-	  <b pos="3"/>
-	  <chunk>
-	    <get-case-from pos="4">
-	      <lit v="to"/>
-	    </get-case-from>
-	    <lit-tag v="pr"/>
-	    <lit v="{^"/>
-	    <get-case-from pos="4">
-	      <lit v="to"/>
-	    </get-case-from>
-	    <lit-tag v="pr"/>
-	    <lit v="$}"/>
-	  </chunk>
-	  <b/>
-	  <chunk>
-	    <clip pos="5" part="whole"/>
-	  </chunk>
-	</out>
-      </action>
-</rule>
-
-
-<rule comment="REGLA: cnjsub SV ( que vinguis -> that YOU come)">
+<rule comment="REGRA: cnjsub SV ( que veñas -> that YOU come)">
       <pattern>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="SV_pers"/>
@@ -1291,10 +1052,14 @@
 	    <clip pos="2" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
-<rule comment="REGLA: cnjsub SV inf  ( que intentis venir -> that YOU try TO come)">
+<rule comment="REGRA: cnjsub SV inf  ( que tentes vir -> that YOU try TO come)">
       <pattern>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="SV_pers"/>
@@ -1365,11 +1130,14 @@
             <clip pos="3" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
-
-<rule comment="REGLA: cnjsub SV SA inf ( que és difícil venir -> that IT is difficult TO come)">
+<rule comment="REGRA: cnjsub SV SA inf ( que é difícil vir -> that IT is difficult TO come)">
       <pattern>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="SV_pers"/>
@@ -1423,10 +1191,14 @@
             <clip pos="4" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
-<rule comment="REGLA: cnjsub SV SA de inf ( que és difícil d'entendre -> that IT is difficult TO understand)MG: treureho? es fa ja tot en el t1x?">
+<rule comment="REGRA: cnjsub SV SA de inf ( que é difícil de entender -> that IT is difficult TO understand)">
       <pattern>
 	<pattern-item n="cnjsub"/>
 	<pattern-item n="SV_pers"/>
@@ -1481,9 +1253,132 @@
             <clip pos="5" part="whole"/>
 	  </chunk>
 	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
       </action>
 </rule>
 
+<rule comment="REGRA: fin de frase">
+      <pattern>
+	<pattern-item n="fi_frase"/>
+      </pattern>
+      <action>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="yes"/>
+	</let>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>	  
+      </action>
+</rule> 
+
+<rule comment="REGRA: SV"><!--por aquí entran os SV que non entraran por SV_pers -->
+      <pattern>
+	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
+
+<rule comment="REGRA: SA">
+      <pattern>
+	<pattern-item n="SA"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
+
+<rule comment="REGRA: SP"><!-- vols dir que cal posar la variable a no?-->
+      <pattern>
+	<pattern-item n="SP"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
+
+<rule comment="REGRA: REL">
+      <pattern>
+	<pattern-item n="REL"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
+
+<rule comment="REGRA: DET">
+      <pattern>
+	<pattern-item n="DET"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
+
+
+<rule comment="REGRA: unknown">
+      <pattern>
+	<pattern-item n="unknown"/>
+      </pattern>
+      <action>
+	<out>
+	  <chunk>
+	    <clip pos="1" part="whole"/>
+	  </chunk>
+	</out>
+	<let>
+	  <var n="fifrase"/>
+	  <lit v="no"/>
+	</let>
+      </action>
+</rule>
 
   </section-rules>
 </interchunk>
