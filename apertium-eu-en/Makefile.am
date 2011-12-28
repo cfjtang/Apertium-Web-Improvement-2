@@ -1,4 +1,4 @@
-VERSION=0.0.1
+VERSION=0.3.1
 LANG1=eu
 LANG2=en
 PREFIX1=$(LANG1)-$(LANG2)
@@ -154,6 +154,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            lexchoicebil.xsl \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x \
+           apertium-eu-en.colloc.t1x apertium-eu-en.ordinals.t1x \
            buscaPar.xsl principal.xsl \
            modes.xml 
 
