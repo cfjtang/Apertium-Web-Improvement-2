@@ -309,5 +309,24 @@
 
 
 
+  <mode name="mk-sh-tagger" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mk-sh.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="mk-sh.rlx.bin"/>
+      </program>
+<!--
+      <program name="cg-proc -w">
+        <file name="mk-sh.lex.bin"/>
+      </program>
+-->
+      <program name="apertium-tagger -g $2">
+        <file name="mk-sh.prob"/>
+      </program> 
+    </pipeline>
+  </mode>
+
 
 </modes>
