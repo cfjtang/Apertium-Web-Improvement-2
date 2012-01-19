@@ -17,6 +17,11 @@
 		<def-cat n="det">
 			<cat-item tags="det.*"/>
 		</def-cat>
+		<def-cat n="detdefdem">
+			<cat-item tags="det.def.*"/>
+			<cat-item tags="det.dem.*"/>
+		</def-cat>
+
 		<def-cat n="predet">
 			<cat-item tags="predet.*"/>
 		</def-cat>
@@ -7190,7 +7195,7 @@
 		<rule>
 			<!--REGLA 43: el domingo -> no domingo -->
 			<pattern>
-				<pattern-item n="det"/>
+				<pattern-item n="detdefdem"/>
 				<pattern-item n="nomtempo"/>
 			</pattern>
 			<action>
@@ -7227,7 +7232,7 @@
 		<rule>
 			<!--REGLA 44:  el pasado viernes -> na passada sexta-feira -->
 			<pattern>
-				<pattern-item n="det"/>
+				<pattern-item n="detdefdem"/>
 				<pattern-item n="adjec"/>
 				<pattern-item n="nomtempo"/>
 			</pattern>
@@ -7277,7 +7282,7 @@
 		<rule>
 			<!--REGLA 45: el viernes pasado -> na sexta-feira passada-->
 			<pattern>
-				<pattern-item n="det"/>
+				<pattern-item n="detdefdem"/>
 				<pattern-item n="nomtempo"/>
 				<pattern-item n="adjec"/>
 			</pattern>
@@ -7430,7 +7435,7 @@
 					</lu>
 				</out>
 			</action>
-		</rule>
+		</rule> 
 		<rule>
 			<!--REGLA 43: es la semana -> é a semana (per evitar que posi la prep) -->
 			<pattern>
