@@ -391,15 +391,53 @@ I have added those for the sake of analysis -->
 	<!--See the section-->
 <!--end Particles-->
 
-<!-- Prepositions, see the section -->
+<!-- Prepositions, see the section --><!--big TODO: 2 todo's: make entries in bidix; make rules in CG-->
+<!--The old approach to prepositions, cases were listed and handled in CG-->
 <pardef n="preposition__pr">
-<e><p><l></l><r><s n="pr"/></r></p></e>
+  <e><p><l></l><r><s n="pr"/></r></p></e>
 </pardef>
-
 <pardef n="s/a__preposition__pr">
   <e r="LR"><p><l></l><r><s n="pr"/></r></p></e>
   <e r="LR"><p><l>a</l><r><s n="pr"/></r></p></e>
   <e r="RL"><p><l><a></a></l><r><s n="pr"/></r></p></e>
+</pardef>
+<!--The new approach to prepositions, makes writing more concise rules easier-->
+<!--Each preposition governs one or more cases-->
+<pardef n="gen__pr">
+  <e><p><l></l><r><s n="pr"/><s n="gen"/></r></p></e>
+</pardef>
+<pardef n="dat__pr">
+  <e><p><l></l><r><s n="pr"/><s n="dat"/></r></p></e>
+</pardef>
+<pardef n="acc__pr">
+  <e><p><l></l><r><s n="pr"/><s n="acc"/></r></p></e>
+</pardef>
+<pardef n="loc__pr">
+  <e><p><l></l><r><s n="pr"/><s n="loc"/></r></p></e>
+</pardef>
+<pardef n="ins__pr">
+  <e><p><l></l><r><s n="pr"/><s n="ins"/></r></p></e>
+</pardef>
+
+<pardef n="s/a__acc__pr">
+  <e r="LR"><p><l></l><r><s n="pr"/><s n="acc"/></r></p></e>
+  <e r="LR"><p><l>a</l><r><s n="pr"/><s n="acc"/></r></p></e>
+  <e r="RL"><p><l><a></a></l><r><s n="pr"/><s n="acc"/></r></p></e>
+</pardef>
+<pardef n="s/a__dat__pr">
+  <e r="LR"><p><l></l><r><s n="pr"/><s n="dat"/></r></p></e>
+  <e r="LR"><p><l>a</l><r><s n="pr"/><s n="dat"/></r></p></e>
+  <e r="RL"><p><l><a></a></l><r><s n="pr"/><s n="dat"/></r></p></e>
+</pardef>
+<pardef n="s/a__gen__pr">
+  <e r="LR"><p><l></l><r><s n="pr"/><s n="gen"/></r></p></e>
+  <e r="LR"><p><l>a</l><r><s n="pr"/><s n="gen"/></r></p></e>
+  <e r="RL"><p><l><a></a></l><r><s n="pr"/><s n="gen"/></r></p></e>
+</pardef>
+<pardef n="s/a__ins__pr">
+  <e r="LR"><p><l></l><r><s n="pr"/><s n="ins"/></r></p></e>
+  <e r="LR"><p><l>a</l><r><s n="pr"/><s n="ins"/></r></p></e>
+  <e r="RL"><p><l><a></a></l><r><s n="pr"/><s n="ins"/></r></p></e>
 </pardef>
 
 <!-- Conjunctions -->
@@ -29868,82 +29906,88 @@ However, veče is used only in Nominative, Accusative and Vocative. The rest of 
 <e lm="da li"><p><l>da<b/>li</l><r>da<b/>li<s n="part"/><s n="itg"/></r></p></e>
 <!--Prepositions-->
 <!--That go with Genitive -->
-<e lm="put"><i>put</i><par n="preposition__pr"/></e>
-<e lm="u"><i>u</i><par n="preposition__pr"/></e><!--gen, acc, loc -->
-<e lm="za"><i>za</i><par n="preposition__pr"/></e><!--gen, acc, ins -->
-<e lm="na"><i>na</i><par n="preposition__pr"/></e><!--acc, loc -->
-<e lm="o"><i>o</i><par n="preposition__pr"/></e><!--acc, loc -->
-<e lm="po"><i>po</i><par n="preposition__pr"/></e><!--acc, loc -->
-<e lm="među"><i>među</i><par n="preposition__pr"/></e><!--acc, ins -->
-<e lm="nad"><i>nad</i><par n="s/a__preposition__pr"/></e><!--acc, ins -->
-<e lm="pod"><i>pod</i><par n="s/a__preposition__pr"/></e><!--acc, ins -->
-<e lm="pred"><i>pred</i><par n="s/a__preposition__pr"/></e><!--acc, ins -->
-<e lm="sa"><i>s</i><par n="s/a__preposition__pr"/></e><!--gen, ins -->
-<e lm="mimo"><i>mimo</i><par n="preposition__pr"/></e><!--gen, and very very rarely accusative  -->
+<e lm="put"><i>put</i><par n="gen__pr"/></e>
+<e lm="u"><i>u</i><par n="gen__pr"/></e>
+<e lm="u"><i>u</i><par n="acc__pr"/></e>
+<e lm="u"><i>u</i><par n="loc__pr"/></e>
+<e lm="za"><i>za</i><par n="gen__pr"/></e>
+<e lm="za"><i>za</i><par n="acc__pr"/></e>
+<e lm="za"><i>za</i><par n="ins__pr"/></e>
+<e lm="na"><i>na</i><par n="acc__pr"/></e>
+<e lm="na"><i>na</i><par n="loc__pr"/></e>
+<e lm="o"><i>o</i><par n="acc__pr"/></e>
+<e lm="o"><i>o</i><par n="loc__pr"/></e>
+<e lm="po"><i>po</i><par n="acc__pr"/></e>
+<e lm="po"><i>po</i><par n="loc__pr"/></e>
+<e lm="među"><i>među</i><par n="acc__pr"/></e>
+<e lm="među"><i>među</i><par n="ins__pr"/></e>
+<e lm="nad"><i>nad</i><par n="s/a__acc__pr"/></e>
+<e lm="nad"><i>nad</i><par n="s/a__ins__pr"/></e>
+<e lm="pod"><i>pod</i><par n="s/a__acc__pr"/></e>
+<e lm="pod"><i>pod</i><par n="s/a__ins__pr"/></e>
+<e lm="pred"><i>pred</i><par n="s/a__acc__pr"/></e>
+<e lm="pred"><i>pred</i><par n="s/a__ins__pr"/></e>
+<e lm="sa"><i>s</i><par n="s/a__gen__pr"/></e>
+<e lm="sa"><i>s</i><par n="s/a__ins__pr"/></e>
+<e lm="mimo"><i>mimo</i><par n="gen__pr"/></e>
+<e lm="mimo"><i>mimo</i><par n="acc__pr"/></e><!--very very rarely accusative  -->
 <!-- with Dative only -->
-<e lm="k"><i>k</i><par n="s/a__preposition__pr"/></e>
-<e lm="proti"><i>proti</i><par n="preposition__pr"/></e>
-<e lm="nadomak"><i>nadomak</i><par n="preposition__pr"/></e>
-<e lm="nasuprot"><i>nasuprot</i><par n="preposition__pr"/></e>
-<e lm="unatoč"><i>unatoč</i><par n="preposition__pr"/></e>
-<e lm="usprkos"><i>usprkos</i><par n="preposition__pr"/></e>
+<e lm="k"><i>k</i><par n="s/a__dat__pr"/></e>
+<e lm="proti"><i>proti</i><par n="dat__pr"/></e>
+<e lm="nadomak"><i>nadomak</i><par n="dat__pr"/></e>
+<e lm="nasuprot"><i>nasuprot</i><par n="dat__pr"/></e>
+<e lm="unatoč"><i>unatoč</i><par n="dat__pr"/></e>
+<e lm="usprkos"><i>usprkos</i><par n="dat__pr"/></e>
 <!-- with Accusative only -->
-<e lm="kroz"><i>kroz</i><par n="s/a__preposition__pr"/></e>
-<e lm="niz"><i>niz</i><par n="s/a__preposition__pr"/></e>
-<e lm="uz"><i>uz</i><par n="s/a__preposition__pr"/></e>
-<!-- with Locative only -->
-<e lm="pri"><i>pri</i><par n="preposition__pr"/></e>
-<e lm="prema"><i>prema</i><par n="preposition__pr"/></e>
+<e lm="kroz"><i>kroz</i><par n="s/a__acc__pr"/></e>
+<e lm="niz"><i>niz</i><par n="s/a__acc__pr"/></e>
+<e lm="uz"><i>uz</i><par n="s/a__acc__pr"/></e>
+<!-- with Dative and Locative only --><!--The difference is purely semantic alas-->
+<e lm="pri"><i>pri</i><par n="dat__pr"/></e>
+<e lm="prema"><i>prema</i><par n="dat__pr"/></e>
+<e lm="pri"><i>pri</i><par n="loc__pr"/></e>
+<e lm="prema"><i>prema</i><par n="loc__pr"/></e>
 <!-- with Genitive only -->
-<e lm="bez"><i>bez</i><par n="preposition__pr"/></e>
-<e lm="blizu"><i>blizu</i><par n="preposition__pr"/></e>
-<e lm="do"><i>do</i><par n="preposition__pr"/></e>
-<e lm="duž"><i>duž</i><par n="preposition__pr"/></e>
-<e lm="ispred"><i>ispred</i><par n="preposition__pr"/></e>
-<e lm="ispod"><i>ispod</i><par n="preposition__pr"/></e>
-<e lm="iz"><i>iz</i><par n="preposition__pr"/></e>
-<e lm="iza"><i>iza</i><par n="preposition__pr"/></e>
-<e lm="između"><i>između</i><par n="preposition__pr"/></e>
-<e lm="iznad"><i>iznad</i><par n="preposition__pr"/></e>
-<e lm="izvan"><i>izvan</i><par n="preposition__pr"/></e>
-<e lm="kod"><i>kod</i><par n="preposition__pr"/></e>
-<e lm="kraj"><i>kraj</i><par n="preposition__pr"/></e>
-<e lm="mjesto"><i>m</i><par n="e_je__yat"/><i>sto</i><par n="preposition__pr"/></e>
-<e lm="nakon"><i>nakon</i><par n="preposition__pr"/></e>
-<e lm="nasred"><i>nasred</i><par n="preposition__pr"/></e>
-<e lm="navrh"><i>navrh</i><par n="preposition__pr"/></e>
-<e lm="od"><i>od</i><par n="preposition__pr"/></e>
-<e lm="oko"><i>oko</i><par n="preposition__pr"/></e>
-<e lm="osim"><i>osim</i><par n="preposition__pr"/></e>
-<e lm="pokraj"><i>pokraj</i><par n="preposition__pr"/></e>
-<e lm="ponad"><i>ponad</i><par n="preposition__pr"/></e>
-<e lm="poput"><i>poput</i><par n="preposition__pr"/></e>
-<e lm="pozadi"><i>pozadi</i><par n="preposition__pr"/></e>
-<e lm="pored"><i>pored</i><par n="preposition__pr"/></e>
-<e lm="poslije"><i>posl</i><par n="e_ije__yat"/><par n="preposition__pr"/></e>
-<e lm="preko"><i>preko</i><par n="preposition__pr"/></e>
-<e lm="prije"><i>pr</i><par n="e_ije__yat"/><par n="preposition__pr"/></e>
-<e lm="kasnije"><i>kasnije</i><par n="danas__adv"/></e>
-<e lm="ubuduće"><i>ubuduće</i><par n="danas__adv"/></e>
-<e lm="nadalje"><i>nadalje</i><par n="danas__adv"/></e>
-<e lm="uglavnom"><i>uglavnom</i><par n="danas__adv"/></e>
-<e lm="baš"><i>baš</i><par n="danas__adv"/></e>
-<e lm="naprijed"><i>napr</i><par n="e_ije__yat"/><i>d</i><par n="danas__adv"/></e>
-<e lm="objeručke"><i>ob</i><par n="e_je__yat"/><i>ručke</i><par n="danas__adv"/></e>
-<e lm="prvi put"><i>prvi<b/>put</i><par n="danas__adv"/></e>
-<e lm="prvi puta"><i>prvi<b/>puta</i><par n="danas__adv"/></e>
-<e lm="protiv"><i>protiv</i><par n="preposition__pr"/></e>
-<e lm="radi"><i>radi</i><par n="preposition__pr"/></e>
-<e lm="sred"><i>sred</i><par n="preposition__pr"/></e>
-<e lm="umjesto"><i>um</i><par n="e_je__yat"/><i>sto</i><par n="preposition__pr"/></e>
-<e lm="uoči"><i>uoči</i><par n="preposition__pr"/></e>
-<e lm="uzduž"><i>uzduž</i><par n="preposition__pr"/></e>
-<e lm="van"><i>van</i><par n="preposition__pr"/></e>
-<e lm="više"><i>više</i><par n="preposition__pr"/></e>
-<e lm="vrh"><i>vrh</i><par n="preposition__pr"/></e>
-<e lm="zarad"><i>zarad</i><par n="preposition__pr"/></e>
-<e lm="zaradi"><i>zaradi</i><par n="preposition__pr"/></e>
-<e lm="zbog"><i>zbog</i><par n="preposition__pr"/></e>
+<e lm="bez"><i>bez</i><par n="gen__pr"/></e>
+<e lm="blizu"><i>blizu</i><par n="gen__pr"/></e>
+<e lm="do"><i>do</i><par n="gen__pr"/></e>
+<e lm="duž"><i>duž</i><par n="gen__pr"/></e>
+<e lm="ispred"><i>ispred</i><par n="gen__pr"/></e>
+<e lm="ispod"><i>ispod</i><par n="gen__pr"/></e>
+<e lm="iz"><i>iz</i><par n="gen__pr"/></e>
+<e lm="iza"><i>iza</i><par n="gen__pr"/></e>
+<e lm="između"><i>između</i><par n="gen__pr"/></e>
+<e lm="iznad"><i>iznad</i><par n="gen__pr"/></e>
+<e lm="izvan"><i>izvan</i><par n="gen__pr"/></e>
+<e lm="kod"><i>kod</i><par n="gen__pr"/></e>
+<e lm="kraj"><i>kraj</i><par n="gen__pr"/></e>
+<e lm="mjesto"><i>m</i><par n="e_je__yat"/><i>sto</i><par n="gen__pr"/></e>
+<e lm="nakon"><i>nakon</i><par n="gen__pr"/></e>
+<e lm="nasred"><i>nasred</i><par n="gen__pr"/></e>
+<e lm="navrh"><i>navrh</i><par n="gen__pr"/></e>
+<e lm="od"><i>od</i><par n="gen__pr"/></e>
+<e lm="oko"><i>oko</i><par n="gen__pr"/></e>
+<e lm="osim"><i>osim</i><par n="gen__pr"/></e>
+<e lm="pokraj"><i>pokraj</i><par n="gen__pr"/></e>
+<e lm="ponad"><i>ponad</i><par n="gen__pr"/></e>
+<e lm="poput"><i>poput</i><par n="gen__pr"/></e>
+<e lm="pozadi"><i>pozadi</i><par n="gen__pr"/></e>
+<e lm="pored"><i>pored</i><par n="gen__pr"/></e>
+<e lm="poslije"><i>posl</i><par n="e_ije__yat"/><par n="gen__pr"/></e>
+<e lm="preko"><i>preko</i><par n="gen__pr"/></e>
+<e lm="prije"><i>pr</i><par n="e_ije__yat"/><par n="gen__pr"/></e>
+<e lm="protiv"><i>protiv</i><par n="gen__pr"/></e>
+<e lm="radi"><i>radi</i><par n="gen__pr"/></e>
+<e lm="sred"><i>sred</i><par n="gen__pr"/></e>
+<e lm="umjesto"><i>um</i><par n="e_je__yat"/><i>sto</i><par n="gen__pr"/></e>
+<e lm="uoči"><i>uoči</i><par n="gen__pr"/></e>
+<e lm="uzduž"><i>uzduž</i><par n="gen__pr"/></e>
+<e lm="van"><i>van</i><par n="gen__pr"/></e>
+<e lm="više"><i>više</i><par n="gen__pr"/></e>
+<e lm="vrh"><i>vrh</i><par n="gen__pr"/></e>
+<e lm="zarad"><i>zarad</i><par n="gen__pr"/></e>
+<e lm="zaradi"><i>zaradi</i><par n="gen__pr"/></e>
+<e lm="zbog"><i>zbog</i><par n="gen__pr"/></e>
 <!--Conjunctions-->
 <!--Coordinating-->
 <e lm="i"><i>i</i><par n="coordinating__cnj"/></e>
@@ -30070,6 +30114,15 @@ However, veče is used only in Nominative, Accusative and Vocative. The rest of 
 
 <!--Todo: add the compounds "radi čega", "zbog čega"... in the mk monodix there are some translations for them, though not all-->
 <!--Adverbs (the closed subset) -->
+<e lm="kasnije"><i>kasnije</i><par n="danas__adv"/></e>
+<e lm="ubuduće"><i>ubuduće</i><par n="danas__adv"/></e>
+<e lm="nadalje"><i>nadalje</i><par n="danas__adv"/></e>
+<e lm="uglavnom"><i>uglavnom</i><par n="danas__adv"/></e>
+<e lm="baš"><i>baš</i><par n="danas__adv"/></e>
+<e lm="naprijed"><i>napr</i><par n="e_ije__yat"/><i>d</i><par n="danas__adv"/></e>
+<e lm="objeručke"><i>ob</i><par n="e_je__yat"/><i>ručke</i><par n="danas__adv"/></e>
+<e lm="prvi put"><i>prvi<b/>put</i><par n="danas__adv"/></e>
+<e lm="prvi puta"><i>prvi<b/>puta</i><par n="danas__adv"/></e>
 <e lm="također"><i>također</i><par n="danas__adv"/></e>
 <e lm="također"><p><l>takođe</l><r>također</r></p><par n="danas__adv"/></e>
 <e lm="naravno"><i>naravno</i><par n="danas__adv"/></e>
@@ -30083,7 +30136,6 @@ However, veče is used only in Nominative, Accusative and Vocative. The rest of 
 <e lm="ovamo"><i>ovamo</i><par n="danas__adv"/></e>
 <e lm="tamo"><i>tamo</i><par n="danas__adv"/></e>
 <e lm="onamo"><i>onamo</i><par n="danas__adv"/></e>
-
 <e lm="kud"><i>kud</i><par n="danas__adv"/></e>
 <e lm="kuda"><i>kuda</i><par n="danas__adv"/></e>
 <e lm="otkud"><i>otkud</i><par n="danas__adv"/></e>
