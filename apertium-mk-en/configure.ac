@@ -4,8 +4,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-mk-en], [0.1.0], [ftyers@prompsit.com])
-AM_INIT_AUTOMAKE([apertium-mk-en], [0.1.0], no-define)
+AC_INIT([apertium-mk-en], [0.1.1], [ftyers@prompsit.com])
+AM_INIT_AUTOMAKE([apertium-mk-en], [0.1.1], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 #AC_CONFIG_HEADER([config])
