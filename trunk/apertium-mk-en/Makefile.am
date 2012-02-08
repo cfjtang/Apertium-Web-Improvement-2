@@ -64,6 +64,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(PREFIX1).alpha.dix \
            $(PREFIX1).prob \
+	   lexchoicebil.xsl \
            $(BASENAME).$(PREFIX1).t1x \
            $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x \
