@@ -40,7 +40,7 @@ $(PREFIX2).autobil.bin: $(BILNAME).translit
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp rl $(BASENAME).$(LANG1).dix $@
-	
+
 $(BASENAME).$(LANG1).dix.translit: $(BASENAME).$(LANG1).dix
 	./transliterate.sh $(BASENAME).$(LANG1).dix >$@
 
@@ -51,7 +51,7 @@ $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix.translit
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
 	lt-comp lr $(BASENAME).post-$(LANG1).dix $@
-	
+
 $(BASENAME).post-$(LANG1).dix.translit: $(BASENAME).post-$(LANG1).dix
 	./transliterate.sh $(BASENAME).post-$(LANG1).dix >$@
 
@@ -129,11 +129,11 @@ modes: modes.xml
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_eo_camodesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_eo_camodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x  $(BASENAME).$(PREFIX1).antaux_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).t2x $(apertium_eo_cadir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX1).t1x.translit $(apertium_eo_cadir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x.translit $(BASENAME).$(PREFIX1).t3x.translit $(apertium_eo_cadir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_eo_camodesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_eo_camodesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x  $(BASENAME).$(PREFIX1).antaux_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_eo_cadir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX1).t1x.translit $(DESTDIR)$(apertium_eo_cadir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x.translit $(BASENAME).$(PREFIX1).t3x.translit $(DESTDIR)$(apertium_eo_cadir)
 
 
 CLEANFILES = -rf $(TARGETS) *.translit modes 

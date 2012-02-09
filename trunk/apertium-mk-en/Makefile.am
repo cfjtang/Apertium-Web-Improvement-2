@@ -79,7 +79,7 @@ $(PREFIX1).mode: modes.xml
 clean-dicts:
 	touch $(BASENAME).$(LANG1).dix $(BASENAME).$(LANG2).dix $(BASENAME).$(PREFIX1).dix
 	rm $(BASENAME).$(LANG1).dix
-	
+
 apertium_mk_enmodesdir=$(prefix)/share/apertium/modes/
 apertium_mk_endir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_mk_en_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
@@ -98,12 +98,12 @@ apertium_mk_en_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(BASENAME).$(PREFIX1).t3x \
 		    $(PREFIX1).autopgen.bin \
 		    $(PREFIX1).mode 
-		  
+
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_mk_enmodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(apertium_mk_endir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(apertium_mk_endir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_mk_endir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_mk_enmodesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(DESTDIR)$(apertium_mk_endir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_mk_endir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(DESTDIR)$(apertium_mk_endir)
 
 CLEANFILES = -r $(TARGETS_COMMON) 

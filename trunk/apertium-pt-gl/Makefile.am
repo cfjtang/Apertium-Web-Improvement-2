@@ -48,7 +48,7 @@ $(PREFIX1).t1x.bin: $(BASENAME).$(PREFIX1).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX1).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX1).t1x \
 				     $(PREFIX1).t1x.bin
-				     
+
 $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x \
@@ -61,7 +61,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 	   $(BASENAME).$(PREFIX2).t1x $(PREFIX1).prob $(PREFIX2).prob \
 	   $(PREFIX1)-latin1.prob $(PREFIX2)-latin1.prob \
 	   modes.xml
-	   
+
 apertium_pt_gldir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_pt_modesdir=$(prefix)/share/apertium/modes/
 apertium_pt_gl_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
@@ -82,9 +82,9 @@ $(PREFIX2).mode: modes.xml
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_pt_modesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_pt_modesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(apertium_pt_gldir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(apertium_pt_gldir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_pt_modesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_pt_modesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(DESTDIR)$(apertium_pt_gldir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_pt_gldir)
 
 CLEANFILES = -rf $(TARGETS_COMMON) modes 

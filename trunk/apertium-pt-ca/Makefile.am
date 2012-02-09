@@ -69,7 +69,7 @@ clean-dicts:
 	rm $(BASENAME).$(LANG1).dix
 	rm $(BASENAME).$(LANG2).dix
 	rm $(BASENAME).$(PREFIX1).dix
-	
+
 apertium_pt_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_pt_modesdir=$(prefix)/share/apertium/modes/
 
@@ -88,12 +88,12 @@ apertium_pt_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).t1x.bin \
 		    $(PREFIX2).t1x.bin \
 	            $(PREFIX1).mode $(PREFIX2).mode modes.xml
-		  
+
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_pt_modesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_pt_modesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(apertium_pt_cadir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(apertium_pt_cadir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_pt_modesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_pt_modesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(DESTDIR)$(apertium_pt_cadir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_pt_cadir)
 
 CLEANFILES = -rf $(TARGETS_COMMON) modes
