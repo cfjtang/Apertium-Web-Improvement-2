@@ -39,7 +39,7 @@ $(BASENAME).$(LANG2).dix: $(BASENAME).$(LANG2).metadix
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp rl $(BASENAME).$(LANG2).dix $@
-	
+
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
 	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
@@ -87,14 +87,14 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 ##$(BASENAME).$(LANG1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 ##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 ##	apertium-gen-lextormono rl $(BASENAME).$(PREFIX1).dix $@
-	
+
 ##$(BASENAME).$(LANG2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 ##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 ##	apertium-gen-lextormono lr $(BASENAME).$(PREFIX1).dix $@
 
 ##$(PREFIX1).lextormono.bin: $(BASENAME).$(LANG1)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(LANG1)-lextor.dix $@
-	
+
 ##$(PREFIX2).lextormono.bin: $(BASENAME).$(LANG2)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(LANG2)-lextor.dix $@
 
@@ -102,14 +102,14 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 ##$(BASENAME).$(PREFIX1)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 ##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 ##	apertium-gen-lextorbil rl $(BASENAME).$(PREFIX1).dix $@
-	
+
 ##$(BASENAME).$(PREFIX2)-lextor.dix: $(BASENAME).$(PREFIX1).dix
 ##	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
 ##	apertium-gen-lextorbil lr $(BASENAME).$(PREFIX1).dix $@
 
 ##$(PREFIX1).lextorbil.bin: $(BASENAME).$(PREFIX1)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(PREFIX1)-lextor.dix $@
-	
+
 ##$(PREFIX2).lextorbil.bin: $(BASENAME).$(PREFIX2)-lextor.dix
 ##	lt-comp lr $(BASENAME).$(PREFIX2)-lextor.dix $@
 
@@ -162,7 +162,7 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
 #	    $(BASENAME).$(PREFIX2).t1x 
 #	    $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x 
 #	    $(BASENAME).$(LANG2).tsx 
-           	            	            	            	            	            	  	 
+
 modes: modes.xml
 	apertium-gen-modes modes.xml
 
@@ -171,7 +171,7 @@ $(PREFIX1).mode: modes.xml
 	apertium-gen-modes modes.xml
 	mkdir -p modes/
 	cp $(PREFIX1).mode modes/
-	
+
 apertium_eu_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_eu_modesdir=$(prefix)/share/apertium/modes/
 
@@ -186,11 +186,11 @@ apertium_eu_es_DATA=$(PREFIX1).automorf.bin \
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_eu_modesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(apertium_eu_esdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(apertium_eu_esdir)
-	$(INSTALL_DATA) $(BASENAME).ordinals.t1x $(apertium_eu_esdir)
-	$(INSTALL_DATA) $(BASENAME).colloc.t1x $(apertium_eu_esdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_eu_modesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_eu_esdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(DESTDIR)$(apertium_eu_esdir)
+	$(INSTALL_DATA) $(BASENAME).ordinals.t1x $(DESTDIR)$(apertium_eu_esdir)
+	$(INSTALL_DATA) $(BASENAME).colloc.t1x $(DESTDIR)$(apertium_eu_esdir)
 	cp *.mode modes/
 
 CLEANFILES = -r $(TARGETS) 

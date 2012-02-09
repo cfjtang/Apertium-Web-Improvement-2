@@ -78,7 +78,7 @@ $(PREFIX1).translit.bin: $(BASENAME).translit.dix
 	lt-comp lr $(BASENAME).translit.dix $@
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
-     
+
 $(PREFIX2).translit.bin: $(BASENAME).translit.dix
 #	apertium-validate-dictionary $(BASENAME).translit.dix
 	lt-comp rl $(BASENAME).translit.dix $@
@@ -176,19 +176,19 @@ apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autopgen.bin \
 		    $(PREFIX1).translit.bin $(PREFIX2).translit.bin \
 		    $(PREFIX1).mode $(PREFIX2a).mode $(PREFIX2b).mode $(PREFIX2c).mode
-		  
+
 #                    $(PREFIX1).autopgen.bin 
  #                   $(PREFIX2).autopgen.bin 
 # 		     $(PREFIX2).autogen.bin 
 
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_sh_mkmodesdir)
-	$(INSTALL_DATA) $(PREFIX2a).mode $(apertium_sh_mkmodesdir)
-	$(INSTALL_DATA) $(PREFIX2b).mode $(apertium_sh_mkmodesdir)
-	$(INSTALL_DATA) $(PREFIX2c).mode $(apertium_sh_mkmodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX2).t1x $(apertium_sh_mkdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX2).t2x $(apertium_sh_mkdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x $(apertium_sh_mkdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_sh_mkmodesdir)
+	$(INSTALL_DATA) $(PREFIX2a).mode $(DESTDIR)$(apertium_sh_mkmodesdir)
+	$(INSTALL_DATA) $(PREFIX2b).mode $(DESTDIR)$(apertium_sh_mkmodesdir)
+	$(INSTALL_DATA) $(PREFIX2c).mode $(DESTDIR)$(apertium_sh_mkmodesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_sh_mkdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX2).t2x $(DESTDIR)$(apertium_sh_mkdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x $(DESTDIR)$(apertium_sh_mkdir)
 
 CLEANFILES = -r $(TARGETS_COMMON) 

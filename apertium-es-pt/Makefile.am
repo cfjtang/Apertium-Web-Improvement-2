@@ -31,11 +31,11 @@ $(PREFIX1).autogen.bin: pt.dix
 $(PREFIX1b).autobil.bin: es-pt_BR.dix
 	apertium-validate-dictionary es-pt_BR.dix
 	lt-comp lr es-pt_BR.dix $@
-                
+
 $(PREFIX1b).autogen.bin: pt_BR.dix
 	apertium-validate-dictionary pt_BR.dix
 	lt-comp rl pt_BR.dix $@
-                                
+
 #$(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 #	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
 #	lt-comp lr $(BASENAME).post-$(LANG2).dix $@
@@ -69,13 +69,13 @@ $(PREFIX2).t1x.bin: $(BASENAME).$(PREFIX2).t1x
 	apertium-validate-transfer $(BASENAME).$(PREFIX2).t1x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t1x \
 	                             $(PREFIX2).t1x.bin
-	                         
+
 $(PREFIX1).t1x: $(BASENAME).$(PREFIX1).t1x
 	./filterrules.sh pt_PT $(BASENAME).$(PREFIX1).t1x >$@
 
 $(PREFIX1b).t1x: $(BASENAME).$(PREFIX1).t1x
 	./filterrules.sh pt_BR $(BASENAME).$(PREFIX1).t1x >$@	                      
-	                             
+
 $(PREFIX1).t1x.bin: $(PREFIX1).t1x
 	apertium-validate-transfer $(PREFIX1).t1x
 	apertium-preprocess-transfer $(PREFIX1).t1x $@
@@ -96,26 +96,26 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(PREFIX2)-supervised.make $(PREFIX2)-unsupervised.make \
 	   $(LANG2).dix $(LANG2b).dix $(PREFIX1).dix $(PREFIX1b).dix \
            filter.sh filter.xsl filterrules.sh filterrules.xsl modes.xml
-                                  
+
 apertium_es_ptdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_es_modesdir=$(prefix)/share/apertium/modes/
 
 
 pt.dix: $(BASENAME).$(LANG2).dix
 	./filter.sh pt left $(BASENAME).$(LANG2).dix >$@
-        
+
 pt_BR.dix: $(BASENAME).$(LANG2).dix
 	./filter.sh br left $(BASENAME).$(LANG2).dix >$@
-                 
+
 es-pt.dix: $(BASENAME).$(PREFIX1).dix
 	./filter.sh pt right $(BASENAME).$(PREFIX1).dix >$@
-                         
+
 es-pt_BR.dix: $(BASENAME).$(PREFIX1).dix
 	./filter.sh br right $(BASENAME).$(PREFIX1).dix >$@
 
 post-pt.dix: $(BASENAME).post-pt.dix
 	./filter.sh pt right $< >$@
-	
+
 post-pt_BR.dix: $(BASENAME).post-pt.dix
 	./filter.sh br right $< >$@
 
@@ -135,7 +135,7 @@ $(PREFIX2).mode: modes.xml
 modes: modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
-           
+
 apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 	$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
 	$(PREFIX1b).autobil.bin $(PREFIX1b).autogen.bin \
@@ -148,10 +148,10 @@ apertium_es_pt_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_es_modesdir)
-	$(INSTALL_DATA) $(PREFIX1b).mode $(apertium_es_modesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(apertium_es_modesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(BASENAME).$(PREFIX1).t1x $(PREFIX1b).t1x $(apertium_es_ptdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX1b).mode $(DESTDIR)$(apertium_es_modesdir)
+	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_es_modesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(BASENAME).$(PREFIX1).t1x $(PREFIX1b).t1x $(DESTDIR)$(apertium_es_ptdir)
 
 
 CLEANFILES = -rf $(TARGETS) pt.dix pt_BR.dix es-pt.dix es-pt_BR.dix  modes
