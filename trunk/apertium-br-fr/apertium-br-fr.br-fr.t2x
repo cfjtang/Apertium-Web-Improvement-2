@@ -1768,10 +1768,28 @@
            </let>
          </when>
          <otherwise>
-           <let>
-             <clip pos="2" part="pers"/>
-             <clip pos="1" part="pers"/>
-           </let>
+           <choose>
+             <when>
+               <test>
+                 <not>
+                   <equal>
+                     <clip pos="2" part="pers"/>
+                     <lit v=""/>
+                   </equal>
+                 </not>
+               </test>
+               <let>
+                 <clip pos="2" part="pers"/>
+                 <lit-tag v="p3"/>
+               </let>
+             </when>
+             <otherwise>
+               <let>
+                 <clip pos="2" part="pers"/>
+                 <clip pos="1" part="pers"/>
+               </let>
+             </otherwise>
+           </choose>
            <let>
              <clip pos="2" part="nbr"/>
              <clip pos="1" part="nbr"/>
@@ -5445,7 +5463,7 @@
             <b pos="1"/>
                 </out>
         <call-macro n="posa_subj">
-            <with-param pos="3"/>
+            <with-param pos="2"/>
         </call-macro>
                 <out>
             <chunk>
