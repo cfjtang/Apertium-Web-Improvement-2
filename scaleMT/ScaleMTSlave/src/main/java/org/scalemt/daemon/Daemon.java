@@ -61,6 +61,8 @@ import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.ptql.ProcessFinder;
 import org.scalemt.main.TranslationEnginePool;
+import org.scalemt.rmi.exceptions.NonZeroExitValueException;
+import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.BinaryDocument;
 import org.scalemt.rmi.transferobjects.TextContent;
@@ -936,7 +938,7 @@ public class Daemon {
                     memoryVars.put(output,element.getRawTranslation());
                 }
                 if(isTimeout)
-                    throw new TranslationEngineException("Timeout waiting for translation core");
+                    throw new SlaveTimeoutException("Timeout waiting for translation core");
                 logger.trace("Daemon "+ this.getId() +". Translation "+element.getId()+". Translation engine output:"+memoryVars.get(output).toString());               
                
             }
@@ -1034,7 +1036,7 @@ public class Daemon {
                                  memoryVars.put(output, stdoutGobbler.getReadBytes());
                             }
                             if(localp.waitFor()!=0)
-                                throw new TranslationEngineException("Exit value of program "+programCommand+" != 0");
+                                throw new NonZeroExitValueException("Exit value of program "+programCommand+" != 0");
 
                             }
                             catch(IOException e)
@@ -1125,7 +1127,12 @@ public class Daemon {
         else
             element.setTranslation(new TextContent(element.getFormat(),new String(memoryVars.get(-2),"UTF-8")));
 
-
+        }
+        catch(TranslationEngineException te)
+        {
+            te.printStackTrace();
+            logger.error("Unexpected exception while translating", te);
+            throw te;
         }
         catch(Exception e)
         {

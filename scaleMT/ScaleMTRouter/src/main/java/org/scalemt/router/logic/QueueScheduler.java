@@ -32,6 +32,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import org.apache.commons.collections.OrderedMapIterator;
 import org.apache.commons.collections.map.ValueSortedHashMap;
+import org.scalemt.rmi.exceptions.RouterTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.Content;
 
@@ -339,7 +340,7 @@ class QueueScheduler {
         try {
             Thread.sleep(timeout);
             queue.remove(queueElement);
-            throw new TranslationEngineException("Timeout");
+            throw new RouterTimeoutException();
         } catch (InterruptedException e) {
             if (queueElement.getException() != null) {
                 throw queueElement.getException();
