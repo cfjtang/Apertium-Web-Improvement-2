@@ -44,6 +44,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scalemt.rmi.exceptions.DaemonDeadException;
+import org.scalemt.rmi.exceptions.NonZeroExitValueException;
+import org.scalemt.rmi.exceptions.RouterTimeoutException;
+import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.TextContent;
 
@@ -316,16 +320,36 @@ public class TranslateResource {
                 }
 
             } catch (IllegalArgumentException iae) {
-
                 errorMessage = "Unsupported format";
                 responseCode = 452;
             } catch (NoEngineForThatPairException nepe) {
-                errorMessage = "Unexpected Error";
-                responseCode = 500;
+                errorMessage = "Bad language pair/format";
+                responseCode = 453;
             } catch (TooMuchLoadException tmle) {
                 errorMessage = "Your translations limit has been reached";
                 responseCode = 552;
-            } catch (TranslationEngineException e) {
+            } 
+            catch(DaemonDeadException dde)
+            {
+                errorMessage = "Daemon dead unexpectedly";
+                responseCode = 501;
+            }
+            catch(SlaveTimeoutException ste)
+            {
+                errorMessage = "Timeout waiting for translation in slave";
+                responseCode = 502;
+            }
+            catch(RouterTimeoutException rte)
+            {
+                errorMessage = "Timeout waiting for translation in router";
+                responseCode = 503;
+            }
+            catch(NonZeroExitValueException nzee)
+            {
+                errorMessage = "Non-zero exit value";
+                responseCode = 504;
+            }
+            catch (TranslationEngineException e) {
                 errorMessage = e.getMessage();
                 responseCode = 500;
             } catch (Exception ex) {

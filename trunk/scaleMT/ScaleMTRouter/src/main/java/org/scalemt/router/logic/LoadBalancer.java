@@ -474,7 +474,7 @@ public class LoadBalancer {
         logger.trace("Checking key:"+apiKey);
 
         //TODO: ¿Check referer?
-
+        
         String registeredUser = UserManagement.getInstance().checkKey(apiKey);
         if(registeredUser!=null)
         {

@@ -12,6 +12,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
+import org.scalemt.rmi.exceptions.DaemonDeadException;
+import org.scalemt.rmi.exceptions.NonZeroExitValueException;
+import org.scalemt.rmi.exceptions.RouterTimeoutException;
+import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.BinaryDocument;
@@ -114,11 +118,32 @@ public class TranslateXMLRPC {
                 errorMessage = "Unsupported format";
                 code = 452;
             } catch (NoEngineForThatPairException nepe) {
-                errorMessage = "No translation engines available";
-                code = 551;
+                errorMessage = "Bad language pair/format";
+                code = 453;
             } catch (TooMuchLoadException tmle) {
                 errorMessage = "Your translations limit has been reached";
                 code = 552;
+            } 
+            catch(DaemonDeadException dde)
+            {
+                errorMessage = "Daemon dead unexpectedly";
+                code = 501;
+            }
+            catch(SlaveTimeoutException ste)
+            {
+                errorMessage = "Timeout waiting for translation in slave";
+                code = 502;
+            }
+            catch(RouterTimeoutException rte)
+            {
+                errorMessage = "Timeout waiting for translation in router";
+                code = 503;
+            }
+            catch(NonZeroExitValueException nzee)
+            {
+                errorMessage = "Non-zero exit value";
+                code = 504;
+            
             } catch (TranslationEngineException e) {
                 errorMessage = "Unexpected Error";
                 code = 500;
