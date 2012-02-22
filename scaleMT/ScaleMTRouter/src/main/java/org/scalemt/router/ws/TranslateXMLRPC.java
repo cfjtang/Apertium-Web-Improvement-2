@@ -152,11 +152,11 @@ public class TranslateXMLRPC {
                 code = 505;
             }
             catch (TranslationEngineException e) {
-                errorMessage = "Unexpected Error";
+                errorMessage = e.getMessage();
                 code = 500;
             } catch (Exception ex) {
                 ex.printStackTrace();
-                errorMessage = "Unexpected Error";
+                errorMessage = "Unexpected Error: "+ex.getMessage();
                 code = 500;
             }
         }

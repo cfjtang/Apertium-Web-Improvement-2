@@ -17,6 +17,7 @@
  */
 package org.scalemt.router.ws;
 
+import java.io.StringWriter;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
 import org.scalemt.rmi.transferobjects.Format;
 import org.scalemt.rmi.transferobjects.LanguagePair;
@@ -360,7 +361,7 @@ public class TranslateResource {
                 responseCode = 500;
             } catch (Exception ex) {
                 ex.printStackTrace();
-                errorMessage = "Unexpected Error";
+                errorMessage = "Unexpected Error: "+ex.getMessage();
                 responseCode = 500;
             }
         }
