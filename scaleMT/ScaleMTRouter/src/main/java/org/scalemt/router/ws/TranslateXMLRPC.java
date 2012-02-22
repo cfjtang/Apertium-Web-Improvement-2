@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.scalemt.rmi.exceptions.DaemonDeadException;
 import org.scalemt.rmi.exceptions.NonZeroExitValueException;
+import org.scalemt.rmi.exceptions.NotAvailableDaemonException;
 import org.scalemt.rmi.exceptions.RouterTimeoutException;
 import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.exceptions.TranslationEngineException;
@@ -144,7 +145,13 @@ public class TranslateXMLRPC {
                 errorMessage = "Non-zero exit value";
                 code = 504;
             
-            } catch (TranslationEngineException e) {
+            }
+             catch (NotAvailableDaemonException nade)
+            {
+                errorMessage = "Not avaiable daemon";
+                code = 505;
+            }
+            catch (TranslationEngineException e) {
                 errorMessage = "Unexpected Error";
                 code = 500;
             } catch (Exception ex) {

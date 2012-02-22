@@ -46,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.scalemt.rmi.exceptions.DaemonDeadException;
 import org.scalemt.rmi.exceptions.NonZeroExitValueException;
+import org.scalemt.rmi.exceptions.NotAvailableDaemonException;
 import org.scalemt.rmi.exceptions.RouterTimeoutException;
 import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
@@ -348,6 +349,11 @@ public class TranslateResource {
             {
                 errorMessage = "Non-zero exit value";
                 responseCode = 504;
+            }
+            catch (NotAvailableDaemonException nade)
+            {
+                errorMessage = "Not avaiable daemon";
+                responseCode = 505;
             }
             catch (TranslationEngineException e) {
                 errorMessage = e.getMessage();
