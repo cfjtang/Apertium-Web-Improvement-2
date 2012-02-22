@@ -166,6 +166,10 @@ class QueueScheduler {
 
                     translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSource(),daemonConfiguration.getLanguagePair(),queueElement.getAdditionalTranslationOptions());
                 }
+            catch(TranslationEngineException te)
+            {
+                queueElement.setException(te);
+            }
              catch (Exception e) {
                 queueElement.setException(new TranslationEngineException(e));
             }
