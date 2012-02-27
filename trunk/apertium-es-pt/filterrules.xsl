@@ -39,13 +39,32 @@
   </section-rules>
 </xsl:template>
 
+<xsl:template match="section-def-macros">
+  <section-def-macros>
+    <xsl:for-each select="./def-macro">
+      <xsl:choose>
+	<xsl:when test="./@v=$lang">
+          <def-macro n="{./@n}" npar="{./@npar}">
+	  <xsl:copy-of select="./*"/>
+          </def-macro>
+        </xsl:when>
+	<xsl:when test="count(./@v)=0">
+          <xsl:copy-of select="."/>
+        </xsl:when>
+	<xsl:otherwise/>
+      </xsl:choose>
+    </xsl:for-each>    
+  </section-def-macros>
+</xsl:template>
+
+
 <xsl:template match="transfer">
 <transfer>
 <xsl:copy-of select="section-def-cats"/>
 <xsl:copy-of select="section-def-attrs"/>
 <xsl:copy-of select="section-def-vars"/>
 <xsl:copy-of select="section-def-lists"/>
-<xsl:copy-of select="section-def-macros"/>
+<xsl:apply-templates select="./section-def-macros"/>
 <xsl:apply-templates select="./section-rules"/> 
 </transfer>
 </xsl:template>
