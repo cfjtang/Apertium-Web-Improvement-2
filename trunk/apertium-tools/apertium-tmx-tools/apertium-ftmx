@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ $# -lt 2 -o $# -gt 3 ]; then
+   echo "Usage:"
+   echo "$0 src trg < in.tmx > out.tmx"
+   echo "$0 src trg mode < in.tmx > out.tmx"
+   echo ""
+   echo "Example:"
+   echo "$0 es ca                < en-es.tmx > en-ca.tmx"
+   echo "$0 es ca es-ca_valencia < en-es.tmx > en-ca_valencia.tmx"
+   exit 1
+fi
+
+if [ $# -ne 3 ]; then
+    MODE="$1-$2"
+else
+    MODE="$3"
+fi
+
+cd `dirname $0`
+xsltproc --stringparam src "$1" --stringparam trg "$2" tmx-hide.xsl - | apertium -fhtml-noent "$MODE" -u | xsltproc tmx-show.xsl -
