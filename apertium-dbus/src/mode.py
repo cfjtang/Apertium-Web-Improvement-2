@@ -100,7 +100,7 @@ def setup_logging():
         print "Continuing without logging!"
     
 if __name__ == "__main__":
-    setup_logging()
+    #setup_logging()
     objs = create_translation_objects()
     service.add_signal_receiver(quit_handler, dbus_interface = "org.apertium.General", signal_name = "QuitSignal")
     service.run_as("org.apertium.mode")
