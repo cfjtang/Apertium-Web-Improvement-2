@@ -1082,7 +1082,7 @@ argument)."
       (goto-char (point-min))
       (while (and (> cur 0)
 		  (setq found (dix-rule-forward)))
-	(decf cur)))
+	(setq cur (- cur 1))))
     (if found
 	(goto-char found)
       (message "Couldn't find rule number %d" num))))
