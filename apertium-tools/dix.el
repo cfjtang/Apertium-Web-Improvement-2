@@ -1246,15 +1246,14 @@ ending in __vblex_adj"
 	 ">"))
 
 (defun dix-space ()
-  "This should insert a space, unless we're inside the data area
+  "This should return a space, unless we're inside the data area
 of <g>, <r>, <l> or <i>, in which case we want a <b/>. If we're
 in the attribute of a <par> or <pardef>, we insert an underscore.
 
 A bit hacky I guess, but I don't want to require nxhtml just to
 get nxml-where-path, and reimplementing an XML Path seems rather
 too much work for this."
-  (interactive)
-  
+
   (defun in-elt (names)	; nxml-token-before must be called before this
     (let ((eltname (save-excursion
 		     (goto-char xmltok-start)
@@ -1269,7 +1268,7 @@ too much work for this."
 		  (and (memq xmltok-type '(start-tag empty-element))
 		       (dix-point-after->)))
 	      (in-elt '("g" "b" "r" "l" "i")))
-	 (insert "<b/>"))
+	 "<b/>")
 	((and (catch 'in-attr
 		(dolist (attr xmltok-attributes)
 		  (if (and (xmltok-attribute-value-start attr)
@@ -1279,9 +1278,14 @@ too much work for this."
 			   (equal (xmltok-attribute-local-name attr) "n"))
 		      (throw 'in-attr t))))
 	      (in-elt '("par" "pardef")))
-	 (insert "_"))
+	 "_")
 	(t 
-	 (insert " "))))
+	 " ")))
+
+(defun dix-insert-space ()
+  "Inserts a `dix-space' at point."
+  (interactive)
+  (insert (dix-space)))
 
 (defcustom dix-hungry-backspace nil
   "Delete whole XML elements (<b/>, comments) with a single press
@@ -1660,7 +1664,7 @@ Not yet implemented, only used by `dix-LR-restriction-copy'."
 (define-key dix-mode-map (kbd "C-c C-c") 'dix-analyse)
 (define-prefix-command 'dix-replace-prefix)
 (define-key dix-mode-map (kbd "C-c %") 'dix-replace-prefix)
-(define-key dix-mode-map (kbd "<SPC>") 'dix-space)
+(define-key dix-mode-map (kbd "<SPC>") 'dix-insert-space)
 (define-key dix-mode-map (kbd "<backspace>") 'dix-backspace)
 (define-key dix-mode-map (kbd "C-c % RET") 'dix-replace-regexp-within-elt)
 (define-key dix-mode-map (kbd "C-c % %") 'dix-replace-regexp-within-elt)
