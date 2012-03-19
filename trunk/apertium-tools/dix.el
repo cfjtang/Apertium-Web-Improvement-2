@@ -63,6 +63,8 @@
 ;;; 
 ;;; 
 ;;; Plan / long term todo: 
+;;; - Yank into <i/l/r> or pardef n="" should replace spaces with either
+;;;   a <b/> or a _
 ;;; - Functions shouldn't modify the kill-ring.
 ;;; - Functions should be agnostic to formatting (ie. only use nxml
 ;;;   movement functions, never forward-line).
@@ -1226,7 +1228,7 @@ second, etc., but preferably using a more efficient method..."
 	      (nxml-backward-up-element)
 	      (insert "<i></i>")
 	      (backward-char 4))
-	    (insert lhs)
+	    (insert (replace-regexp-in-string " " "<b/>" lhs))
 	    (beginning-of-line) (insert (concat "<!-- " oldlm " -->")) (end-of-line)))
       (message "No fitting word found :-/"))))
 
