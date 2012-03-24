@@ -22,6 +22,12 @@
     <def-cat n="izan">
       <cat-item lemma="izan" tags="vbsint.*"/>
     </def-cat>
+    <def-cat n="edin">
+      <cat-item lemma="edin" tags="vbsint.*"/>
+    </def-cat>
+    <def-cat n="nola">
+      <cat-item lemma="nola" tags="adv.itg"/>
+    </def-cat>
     <def-cat n="punt">
       <cat-item lemma="." tags="sent"/>
     </def-cat>
@@ -38,7 +44,7 @@
   </section-def-vars>
 
   <section-def-macros>
-   <def-macro n="f_bcond" npar="1"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+   <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
       <choose>
         <when>
           <test>
@@ -96,6 +102,24 @@
             <clip pos="5" side="tl" part="whole"/>
           </lu>
         </out>
+      </action>
+    </rule>
+    <rule>
+      <pattern>
+        <pattern-item n="edin"/>
+        <pattern-item n="nola"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <lit v="edin nola"/>
+            <clip pos="1" side="tl" part="tags"/>
+          </lu>
+        </out>
+        <call-macro n="f_bcond">
+          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
       </action>
     </rule>
     <rule>
