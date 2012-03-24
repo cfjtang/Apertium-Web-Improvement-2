@@ -25,6 +25,9 @@
     <def-cat n="edin">
       <cat-item lemma="edin" tags="vbsint.*"/>
     </def-cat>
+    <def-cat n="ba">
+      <cat-item lemma="ba" tags="cnjsub"/>
+    </def-cat>
     <def-cat n="nola">
       <cat-item lemma="nola" tags="adv.itg"/>
     </def-cat>
@@ -37,6 +40,23 @@
       <attr-item tags="sp"/>
       <attr-item tags="sg"/>
       <attr-item tags="pl"/>
+    </def-attr>
+    <def-attr n="norinork">
+      <attr-item tags="NI_HK"/>
+      <attr-item tags="NI_HU"/>
+      <attr-item tags="NI_NI"/>
+      <attr-item tags="NI_ZK"/>
+      <attr-item tags="NI_GU"/>
+      <attr-item tags="NI_ZU"/>
+      <attr-item tags="NI_HI"/>
+
+      <attr-item tags="NK_HK"/>
+      <attr-item tags="NK_HU"/>
+      <attr-item tags="NK_NI"/>
+      <attr-item tags="NK_ZK"/>
+      <attr-item tags="NK_GU"/>
+      <attr-item tags="NK_ZU"/>
+      <attr-item tags="NK_HI"/>
     </def-attr>
   </section-def-attrs>
   <section-def-vars>
@@ -59,6 +79,94 @@
             <b pos="1"/>
           </out>
         </when>                 
+      </choose>
+    </def-macro>
+    <def-macro n="nori_to_nork" npar="1">
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_HK"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_HK"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_HU"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_HU"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_NI"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_NI"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_ZK"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_ZK"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_GU"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_GU"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_ZU"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_ZU"/>
+          </let>
+        </when>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="norinork"/>
+              <lit-tag v="NI_HI"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="norinork"/>
+            <lit-tag v="NK_HI"/>
+          </let>
+        </when>
       </choose>
     </def-macro>
   </section-def-macros>
@@ -106,20 +214,31 @@
     </rule>
     <rule>
       <pattern>
+        <pattern-item n="ba"/>
         <pattern-item n="edin"/>
         <pattern-item n="nola"/>
       </pattern>
       <action>
-        <out>
-          <lu>
-            <lit v="edin nola"/>
-            <clip pos="1" side="tl" part="tags"/>
-          </lu>
-        </out>
-        <call-macro n="f_bcond">
-          <with-param pos="1"/>
+        <call-macro n="nori_to_nork">
           <with-param pos="2"/>
         </call-macro>
+        <let>
+          <clip pos="2" side="tl" part="lem"/>
+          <lit v="jakin"/>
+        </let>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" side="tl" part="whole"/>
+          </lu>
+        </out>
       </action>
     </rule>
     <rule>
