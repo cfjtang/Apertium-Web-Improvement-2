@@ -82,9 +82,13 @@
   </def-cat>
   <def-cat n="vbinf">
      <cat-item tags="vblex.*.*.inf"/>
+     <cat-item tags="vblex.*.*.inf.*"/>
      <cat-item tags="vbmod.inf"/>
+     <cat-item tags="vbmod.inf.*"/>
      <cat-item tags="vbhaver.*.*.inf"/>
+     <cat-item tags="vbhaver.*.*.inf.*"/>
      <cat-item tags="vbser.inf"/>          
+     <cat-item tags="vbser.inf.*"/>     
   </def-cat>
   <def-cat n="vbfutI">
      <cat-item lemma="htjeti" tags="vbmod.clt.futI.*"/>
@@ -338,7 +342,7 @@
 <!--convenience TODO: Sort the macros by function or smtn-->
 <def-macro n="article_assign" npar="2">
 <!--Parameter 1: the demonstrative pronoun-->
-<!--Parameter 1: word to be assigned definiteness-->
+<!--Parameter 2: word to be assigned definiteness-->
        <choose>
         <when>
             <test><equal caseless="yes"><clip pos="1" side="tl" part="lem"/><lit v="тој"/></equal></test>
@@ -1690,7 +1694,7 @@
 
 
 <rule comment="regla: ne+ftI infinitive ">
-    <pattern>
+    <pattern><!--nikada neću zaboraviti => никогаш нема да заборавам-->
         <pattern-item n="ne_part"/>
         <pattern-item n="vbfutI"/>
         <pattern-item n="vbinf"/>        

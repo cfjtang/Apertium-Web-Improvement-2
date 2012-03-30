@@ -1,5 +1,5 @@
 cat article.sh.txt | apertium -d .. sh-mk-morph > article.sh.morph.txt
-#cat article.sh.txt | apertium -d .. sh-mk-morph | python ../tagger-to-visl.py | vislcg3 --trace --grammar ../apertium-sh-mk.sh-mk.rlx > article.sh.cg.txt
+cat article.sh.txt | apertium -d .. sh-mk-morph | python ../tagger-to-visl.py | vislcg3 --trace --grammar ../apertium-sh-mk.sh-mk.rlx > article.sh.cg.txt
 #cat article.sh.txt | apertium -d .. sh-mk-morph | python ../tagger-to-visl.py | vislcg3 --trace --grammar ~/CGPOS/dev/script/ConstraintGrammar-Croatian.rlx > article.sh.cg.txt
 cat article.sh.txt | apertium -d .. sh-mk-chunker > article.sh.chunker.txt
 cat article.sh.txt | apertium -d .. sh-mk-debug > article.sh.debug.txt
