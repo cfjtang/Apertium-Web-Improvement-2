@@ -18,6 +18,7 @@ LIST BOS = (>>>) ;
 LIST EOS = (<<<) ;
 
 LIST N = n np;
+LIST Noun = N;
 LIST NProp = np;
 LIST NComm = n;
 LIST A = adj ; 
@@ -114,7 +115,7 @@ SET ACC-OR-LOC-PREP = ACC-PREP | LOC-PREP ;
 LIST V-COP = "biti"i ; 
 
 LIST DualNum = "dva"i "tri"i "četiri"i ; # TODO: Needs to be expanded, since every number ending in those [2,3,4 except 12,13,14] is in this class)
-
+LIST PluralNum = Num - DualNum;
 # =========================================================================== #
 
 LIST GENDER = ma mi f nt mf mfn ;
@@ -279,7 +280,7 @@ REMOVE:notVoc Voc IF (NOT -1 Voc OR Cm);
 REMOVE:notVoc Voc IF (NOT 1 Voc OR Cm);
     ## It's not vocative if it hasn't a separate phrase
 
-SELECT:DualGen Gen IF (-1 DualNum + Nom);
+SELECT:DualGen Singular + Gen IF (-1 DualNum + Nom);
     ## Tri žene
 SELECT:OrdDual $$GENDER IF (1 DualNum + $$GENDER) (0 Num + Ordinal );
     ## Prve tri žene. Prve should be accusative, gender the same as žene.    
@@ -341,6 +342,15 @@ SELECT:Modifier-Clt-Nom Nom IF (-1 Pron + Clt) (-2C Modifier + Nom);
 # SELECT:Pr-Loc-pristanek Loc IF (-2 ("pristanek"))(-1C ("na") OR Modifier + Loc);
 	## … in pristanku na Zemlji.
 	# To be generalized… see also the "agree" meaning :-/
+
+# Genitive inside numeral phrases
+SELECT Singular + Gen ((1* DualNum BARRIER (*) - Modifier) OR (-1* DualNum BARRIER (*) - Modifier))
+SELECT Plural + Gen ((1* PluralNum BARRIER (*) - Modifier) OR (-1* PluralNum BARRIER (*) - Modifier))
+
+# Preposition based case disambiguation:
+REMOVE Pr + $$CASE (1 Nomen - $$CASE)
+REMOVE Nomen + $$CASE (-1 Pr - $$CASE)
+REMOVE Nomen + $$CASE (-1 Modifier - $$CASE)
 	
 SELECT:Pr-Acc-chain Acc IF (-1C ACC-PREP OR Modifier + Acc);
 SELECT:Pr-Acc-chain Acc IF (-2C Nomen + Acc) (-1C CNJ);
@@ -476,6 +486,9 @@ REMOVE Imperative IF (NOT 1* ("<!>") BARRIER EOS);
 SELECT:IsThereASubject? Lp + $$GENDER + $$NUMBER IF
                      (-1C* NP-HEAD + $$GENDER + $$NUMBER BARRIER S-BOUNDARY) ; 
     ## Radovanović je ušla u povijest kao prva žena-pilot u Srbiji.
+
+# If it's not already disambiguated for plural via adjectives, it's most likely singular
+#REMOVE:PropNounSingular Prop + Plural;
 
 SECTION
 # =========================================================================== #
