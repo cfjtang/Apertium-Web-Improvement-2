@@ -115,7 +115,7 @@ SET ACC-OR-LOC-PREP = ACC-PREP | LOC-PREP ;
 LIST V-COP = "biti"i ; 
 
 LIST DualNum = "dva"i "tri"i "četiri"i ; # TODO: Needs to be expanded, since every number ending in those [2,3,4 except 12,13,14] is in this class)
-LIST PluralNum = Num - DualNum;
+SET PluralNum = Num - DualNum;
 # =========================================================================== #
 
 LIST GENDER = ma mi f nt mf mfn ;
@@ -199,6 +199,9 @@ REMOVE:DemonstrativeOrPersonal DemPron (0 DemPron-OR-PersPron) (NOT 1C Nomen) ;
 SELECT:PrnNumberFromVerb $$NUMBER (0C Pron) ((1C* V + $$NUMBER BARRIER EOS) OR (-1C* V + $$NUMBER BARRIER BOS))
     ## Ona je na posljednjoj godini...
     ## Ona, međutim, priznaje...
+
+# This is a heuristic:
+REMOVE:vbserORvblex ("biti"i vblex) IF (NOT -1* Nomen + Acc LINK 1 VBSer + Clt BARRIER V-FIN OR BOS) (NOT 1* Nomen + Acc LINK 1 VBSer + Clt BARRIER V-FIN OR EOS)
 
 SELECT VBSer IF (-1* Lp );
 SELECT VBSer IF (1* Lp BARRIER V - Lp - PresParticiple );
@@ -346,6 +349,10 @@ SELECT:Modifier-Clt-Nom Nom IF (-1 Pron + Clt) (-2C Modifier + Nom);
 # Genitive inside numeral phrases
 SELECT Singular + Gen ((1* DualNum BARRIER (*) - Modifier) OR (-1* DualNum BARRIER (*) - Modifier))
 SELECT Plural + Gen ((1* PluralNum BARRIER (*) - Modifier) OR (-1* PluralNum BARRIER (*) - Modifier))
+
+# Preposition or something else:
+	# It's not a preposition if it's not followed by a nominal word
+REMOVE Pr IF (NOT 1 Nomen) # TODO: See if unk words mess this up
 
 # Preposition based case disambiguation:
 REMOVE Pr + $$CASE (1 Nomen - $$CASE)
@@ -521,25 +528,25 @@ MAP:PrModA ( @→A ) TARGET Pr (1*C A BARRIER WORD - N - A ) ;
 
 # Verb modifiers
 ## Adverbs
-MAP:Adverb→Verb @V→ TARGET Adv (1C V)
-MAP:Verb←Adverb @V← TARGET Adv (-1C V)
-MAP:Verb←...←Adverb @V← TARGET Adv (-1*C V BARRIER BOS OR Cm) (1C Cm OR EOS)
-MAP:Adverb→...→Verb @V← TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V BARRIER EOS)
+MAP:Adverb→Verb (@V→) TARGET Adv (1C V)
+MAP:Verb←Adverb (@V←) TARGET Adv (-1C V)
+MAP:Verb←...←Adverb (@V←) TARGET Adv (-1*C V BARRIER BOS OR Cm) (1C Cm OR EOS)
+MAP:Adverb→...→Verb (@V←) TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V BARRIER EOS)
 ## Participles and such Note: Looks like a copy paste, but was thought through :) Could perhaps be made more universal though
 ### l-participle
-MAP:Lp→VBSer @V→ TARGET Lp (1C VBSer + Clt)
-MAP:VBSer←Lp @V← TARGET Lp (-1C VBSer + Clt)
-MAP:Lp→...→VBSer @V→ TARGET Lp (NOT -1*C VBSer + Clt BARRIER BOS) (1*C VBSer + Clt BARRIER EOS)
-MAP:VBSer←...←Lp @V← TARGET Lp (-1*C VBSer + Clt BARRIER BOS)
-MAP:Lp→FutureII @V→ TARGET Lp (1C FutureII)
-MAP:FutureII←Lp @V← TARGET Lp (-1C FutureII)
-MAP:Lp→...→FutureII @V→ TARGET Lp (NOT -1*C FutureII BARRIER BOS) (1*C FutureII BARRIER EOS)
-MAP:FutureII←...←Lp @V← TARGET Lp (-1*C FutureII BARRIER BOS)
+MAP:Lp→VBSer (@V→) TARGET Lp (1C VBSer + Clt)
+MAP:VBSer←Lp (@V←) TARGET Lp (-1C VBSer + Clt)
+MAP:Lp→...→VBSer (@V→) TARGET Lp (NOT -1*C VBSer + Clt BARRIER BOS) (1*C VBSer + Clt BARRIER EOS)
+MAP:VBSer←...←Lp (@V←) TARGET Lp (-1*C VBSer + Clt BARRIER BOS)
+MAP:Lp→FutureII (@V→) TARGET Lp (1C FutureII)
+MAP:FutureII←Lp (@V←) TARGET Lp (-1C FutureII)
+MAP:Lp→...→FutureII (@V→) TARGET Lp (NOT -1*C FutureII BARRIER BOS) (1*C FutureII BARRIER EOS)
+MAP:FutureII←...←Lp (@V←) TARGET Lp (-1*C FutureII BARRIER BOS)
 ### infinitive
-MAP:Infinitive→FutureI @V→ TARGET Infinitive (1C FutureI)
-MAP:FutureI←Infinitive @V← TARGET Infinitive (-1C FutureI)
-MAP:Infinitive→...→FutureI @V→ TARGET Infinitive (NOT -1*C FutureI BARRIER BOS) (1*C FutureI BARRIER EOS)
-MAP:FutureI←...←Infinitive @V← TARGET Infinitive (-1*C FutureI BARRIER BOS)
+MAP:Infinitive→FutureI (@V→) TARGET Infinitive (1C FutureI)
+MAP:FutureI←Infinitive (@V←) TARGET Infinitive (-1C FutureI)
+MAP:Infinitive→...→FutureI (@V→) TARGET Infinitive (NOT -1*C FutureI BARRIER BOS) (1*C FutureI BARRIER EOS)
+MAP:FutureI←...←Infinitive (@V←) TARGET Infinitive (-1*C FutureI BARRIER BOS)
 
 
 SECTION
