@@ -66,7 +66,7 @@ def trim(ifile, stems, ofile): #{
 		#}	
 	
 		if state == 1 and line.count('LEXICON') > 0: #{
-			print(stemlex, file=of);
+			#print(stemlex, file=of);
 			state = 0;
 		#}
 	
