@@ -61,6 +61,7 @@ def trim(ifile, stems, ofile): #{
 		line = line.strip();
 	
 		if line.count('LEXICON Root') > 0: #{
+			print(line, file=of);
 			state = 1;
 			continue;
 		#}	
