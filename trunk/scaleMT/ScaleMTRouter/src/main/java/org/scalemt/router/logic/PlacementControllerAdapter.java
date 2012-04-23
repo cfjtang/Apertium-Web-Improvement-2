@@ -183,7 +183,7 @@ public class PlacementControllerAdapter {
             newPlacementStr.append("\n");
         }
 
-        logger.info(newPlacementStr.toString());
+        logger.debug(newPlacementStr.toString());
         
 
         executor.executeNewPlacement(apps, servers, I,placementController.getOutputI());
