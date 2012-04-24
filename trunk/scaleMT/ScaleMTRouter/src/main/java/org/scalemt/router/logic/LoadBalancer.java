@@ -205,6 +205,8 @@ public class LoadBalancer {
                         try {
                             entry.getValue().setServerStatus(translationEngines.getTranslationEngine(entry.getKey()).getServerStatus());
 
+                            //This piece of code is no longer necessary
+                            /*
                             Set<DaemonConfiguration> notPresentConfigs = new HashSet<DaemonConfiguration>(supportedConfigurations);
                             List<DaemonInformation> daemonsInfo = entry.getValue().getServerStatus().getDaemonsInformation();
                             for (DaemonInformation daemonInformation : daemonsInfo) {
@@ -216,7 +218,7 @@ public class LoadBalancer {
                                 queues.get(notPresentpair).removeAvailableServer(entry.getKey());
                             }
                         //                supportedPairsLock.writeLock().unlock();
-
+                             */
                         } catch (Exception e) {
 
                             serversToRemove.add(entry.getKey());
