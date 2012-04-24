@@ -161,6 +161,7 @@ public class LoadBalancer {
                         Map<DaemonConfiguration, Set<TranslationServerId>> supportedServersMatrix;
                         try {
                             loadDistributionMatrix = placementControllerAdapter.computeNewPlacement(daemonsConfigInfo, serversInformation);
+                            placementControllerAdapter.executePlacement();
                             supportedServersMatrix = placementControllerAdapter.getI();
                             List<TranslationServerId> serversToStop = dynamicServerManagement.processPlacementControllerResult(daemonsConfigInfo, loadDistributionMatrix);
                             secureStoppingServers.addAll(serversToStop);
