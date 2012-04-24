@@ -57,6 +57,8 @@ public class PlacementControllerAdapter {
      */
     private final PlacementExecutor executor;
 
+    private int[][] prevI;
+    
     /**
      * Constructor that needs an instance of <code>ITranslationServerReferences</code> to
      * be able to communicate with the servers.
@@ -185,10 +187,14 @@ public class PlacementControllerAdapter {
 
         logger.debug(newPlacementStr.toString());
         
-
-        executor.executeNewPlacement(apps, servers, I,placementController.getOutputI());
+        this.prevI=I;
 
         return loadDistributionMatrix;
+    }
+    
+    public void executePlacement()
+    {
+        executor.executeNewPlacement(placementController.getApps(),placementController.getServers(), this.prevI,placementController.getOutputI());
     }
 
     /**
