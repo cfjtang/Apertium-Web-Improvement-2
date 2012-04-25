@@ -211,15 +211,7 @@ class QueueScheduler {
             boolean running=true;
             while (running) {
                 
-                synchronized(this)
-                {
-                    while (pleaseWait) {
-                        try {
-                            wait();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
+               
                 
                 
                 try {
@@ -235,6 +227,17 @@ class QueueScheduler {
                         
                         boolean sent = false;
                         while (!sent) {
+                            
+                             synchronized(this)
+                            {
+                                while (pleaseWait) {
+                                    try {
+                                        wait();
+                                    } catch (Exception e) {
+                                    }
+                                }
+                            }
+                            
                             boolean foundServer = false;
 
                             synchronized (charactersInServerQueue) {
