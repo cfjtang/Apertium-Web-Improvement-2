@@ -175,22 +175,29 @@ public class LoadBalancer {
                         } finally {
                         }
                         
-                        
+                        logger.trace("Pausing queues start");
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             entry.getValue().pause();
                         }
+                        logger.trace("Pausing queues finished");
                         
+                        logger.trace("Placement execution start");
                         placementControllerAdapter.executePlacement();
-
+                        logger.trace("Placement execution finished");
+                        
+                        logger.trace("queues update start");
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             if (loadDistributionMatrix.containsKey(entry.getKey())) {
                                 entry.getValue().setLoadDistribution(supportedServersMatrix.get(entry.getKey()), loadDistributionMatrix.get(entry.getKey()));
                             }
                         }
+                        logger.trace("queues update finished");
                         
+                        logger.trace("Unpausing queues start");
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             entry.getValue().unpause();
                         }
+                        logger.trace("Unpausing queues fiched");
                     }
                 } catch (Exception e) {
                     logger.error("Exception Updating placement", e);
