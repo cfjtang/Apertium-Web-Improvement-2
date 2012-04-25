@@ -668,7 +668,10 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
                 QueueElement queueElement = new QueueElement(getNewId(), source,pair,Thread.currentThread(), to);
                 Daemon d = chooseDaemon(queueElement);
 		if(d==null)
+                {
+                    logger.error("Not available daemon for queue element from pair "+pair.toString());
                     throw new NotAvailableDaemonException();
+                }
 
                 
                 d.translate(queueElement, timeout);

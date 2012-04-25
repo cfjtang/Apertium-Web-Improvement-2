@@ -545,7 +545,7 @@ public class Daemon {
                 }
             }
 
-            if (frozen || passmemorylimit) {
+            if ((frozen || passmemorylimit) && killFrozenDaemons) {
                 //try {
                     //crashed = true;
                     //TranslationEnginePool.sigar.kill(daemonInformation.getPid(), 9);
@@ -656,6 +656,8 @@ public class Daemon {
     private final String tmpDir;
 
     private int trashNeededToFlush=0;
+    
+    private boolean killFrozenDaemons=false;
 
     public static final Sigar sigar = new Sigar();
 
@@ -693,6 +695,11 @@ public class Daemon {
             maxMemoryPerDaemon = Long.parseLong(ServerUtil.readProperty("max_memory_per_daemon"));
         } catch (Exception e) {
             logger.warn("Exception reading max_memory_per_daemon", e);
+        }
+        
+        if ("yes".equals(ServerUtil.readProperty("kill_frozen_daemons")))
+        {
+            this.killFrozenDaemons=true;
         }
 
         //TODO: incluir formato
