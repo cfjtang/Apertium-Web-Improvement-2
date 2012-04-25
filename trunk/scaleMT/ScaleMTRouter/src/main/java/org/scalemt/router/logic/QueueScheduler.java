@@ -129,6 +129,8 @@ class QueueScheduler {
     
     private LoadPredictor loadPredictor;
 
+    private Scheduler scheduler;
+    
     /**
      * Sends a translation request to a server
      */
@@ -198,10 +200,24 @@ class QueueScheduler {
      */
     private class Scheduler extends Thread {
 
+        public boolean pleaseWait=false;
+        
         @Override
         public void run() {
             boolean running=true;
             while (running) {
+                
+                synchronized(this)
+                {
+                    while (pleaseWait) {
+                        try {
+                            wait();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+                
+                
                 try {
                     QueueElement queueElement = queue.take();
                     if(queueElement==stopMark)
@@ -310,8 +326,10 @@ class QueueScheduler {
         catch(Exception e)
         {}
 
-        Scheduler scheduler = new Scheduler();
+        scheduler = new Scheduler();
         scheduler.start();
+        
+        
     }
 
     /**
@@ -326,6 +344,24 @@ class QueueScheduler {
         catch(Exception e)
         {}
 
+    }
+    
+    public void pause()
+    {
+        synchronized(scheduler)
+        {
+            scheduler.pleaseWait=true;
+        }
+    }
+    
+    
+    public void unpause()
+    {
+         synchronized(scheduler)
+        {
+            scheduler.pleaseWait=false;
+            scheduler.notify();
+        }
     }
 
     /**
