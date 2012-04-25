@@ -32,6 +32,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import org.apache.commons.collections.OrderedMapIterator;
 import org.apache.commons.collections.map.ValueSortedHashMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.scalemt.rmi.exceptions.RouterTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.Content;
@@ -58,6 +60,8 @@ import org.scalemt.rmi.transferobjects.Content;
  * @author vitaka
  */
 class QueueScheduler {
+    
+    static Log logger = LogFactory.getLog(QueueScheduler.class);
 
     /**
      * If processing a request takes a server more than this time, an error is returned.
@@ -224,10 +228,11 @@ class QueueScheduler {
                         running=false;
                     else
                     {
-
+                        logger.trace("Queue Scheduler "+daemonConfiguration.toString()+": processing request.");
                         //Keep list of available servers ordered by load (or characters in queue)
                         //send request to the less loaded server
-
+                        
+                        
                         boolean sent = false;
                         while (!sent) {
                             boolean foundServer = false;
@@ -245,6 +250,7 @@ class QueueScheduler {
                                         {
                                             //Send translation to server
                                             sent = true;
+                                            logger.trace("Queue Scheduler "+daemonConfiguration.toString()+": Sending request to slave.");
 
                                             //charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSourceText().length() + constatRequestCPUcost);
                                             charactersInServerQueue.put(translationServerId, charactersQueued.intValue() + queueElement.getSource().getLength()+loadPredictor.getConstantCpuCostPerRequest(daemonConfiguration,queueElement.getSource().getFormat() ));
@@ -265,6 +271,7 @@ class QueueScheduler {
                             }*/
                             if (!sent) {
                                 //Wait
+                                logger.trace("Queue Scheduler "+daemonConfiguration.toString()+": no available server. waiting");
                                 Thread.sleep(100);
                             }
                         }
