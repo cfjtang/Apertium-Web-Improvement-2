@@ -161,7 +161,6 @@ public class LoadBalancer {
                         Map<DaemonConfiguration, Set<TranslationServerId>> supportedServersMatrix;
                         try {
                             loadDistributionMatrix = placementControllerAdapter.computeNewPlacement(daemonsConfigInfo, serversInformation);
-                            placementControllerAdapter.executePlacement();
                             supportedServersMatrix = placementControllerAdapter.getI();
                             List<TranslationServerId> serversToStop = dynamicServerManagement.processPlacementControllerResult(daemonsConfigInfo, loadDistributionMatrix);
                             secureStoppingServers.addAll(serversToStop);
@@ -175,11 +174,22 @@ public class LoadBalancer {
                             throw e;
                         } finally {
                         }
+                        
+                        
+                        for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
+                            entry.getValue().pause();
+                        }
+                        
+                        placementControllerAdapter.executePlacement();
 
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             if (loadDistributionMatrix.containsKey(entry.getKey())) {
                                 entry.getValue().setLoadDistribution(supportedServersMatrix.get(entry.getKey()), loadDistributionMatrix.get(entry.getKey()));
                             }
+                        }
+                        
+                        for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
+                            entry.getValue().unpause();
                         }
                     }
                 } catch (Exception e) {
