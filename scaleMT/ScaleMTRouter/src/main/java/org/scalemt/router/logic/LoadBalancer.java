@@ -106,7 +106,9 @@ public class LoadBalancer {
                     load += serverInfo.getServerStatus().getLoad();
                 }
             }
-            load /= numServers;
+            
+            if(numServers > 0)
+                load /= numServers;
 
             AdmissionControl.getInstance().update(load);
             }

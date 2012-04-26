@@ -96,8 +96,8 @@ public class AdmissionControl {
      */
     public void update(double measuredLoad)
     {        
-        //this.predictedLoad=(1-k)*this.predictedLoad+k*measuredLoad;
-        this.predictedLoad=measuredLoad;
+        this.predictedLoad=(1-k)*this.predictedLoad+k*measuredLoad;
+        //this.predictedLoad=measuredLoad;
         logger.trace("Updating admission control. measured load: "+Double.toString(measuredLoad)+". Predicted load: "+Double.toString(predictedLoad));
         updateCanAccept();
     }
