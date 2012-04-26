@@ -175,29 +175,43 @@ public class LoadBalancer {
                         } finally {
                         }
                         
+                        /*
                         logger.trace("Pausing queues start");
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             entry.getValue().pause();
                         }
                         logger.trace("Pausing queues finished");
                         
-                        logger.trace("Placement execution start");
-                        placementControllerAdapter.executePlacement();
-                        logger.trace("Placement execution finished");
+                         */
                         
-                        logger.trace("queues update start");
+                        logger.trace("queues update 1 start");
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             if (loadDistributionMatrix.containsKey(entry.getKey())) {
                                 entry.getValue().setLoadDistribution(supportedServersMatrix.get(entry.getKey()), loadDistributionMatrix.get(entry.getKey()));
                             }
                         }
-                        logger.trace("queues update finished");
+                        logger.trace("queues update 1 finished");
                         
+                        logger.trace("Placement execution start");
+                        placementControllerAdapter.executePlacement();
+                        logger.trace("Placement execution finished");
+                        
+                        logger.trace("queues update 2 start");
+                        for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
+                            if (loadDistributionMatrix.containsKey(entry.getKey())) {
+                                entry.getValue().finishSettingLoadDistribution();
+                            }
+                        }
+                        logger.trace("queues update 2 finished");
+                        
+                        /*
                         logger.trace("Unpausing queues start");
                         for (Entry<DaemonConfiguration, QueueScheduler> entry : queues.entrySet()) {
                             entry.getValue().unpause();
                         }
                         logger.trace("Unpausing queues fiched");
+                         * 
+                         */
                     }
                 } catch (Exception e) {
                     logger.error("Exception Updating placement", e);
@@ -390,7 +404,7 @@ public class LoadBalancer {
         } catch (Exception e) {
             logger.warn("Cannot read \"placement controller execution period\" property", e);
         }
-        placementControllerTimer = new Timer();
+        placementControllerTimer = new Timer();        
         placementControllerTimer.schedule(new PlacementControllerUpdater(updaterExecutionPeriod), 1000, updaterExecutionPeriod);
 
         long serverStatutsUpdatePeriod = 1000;
