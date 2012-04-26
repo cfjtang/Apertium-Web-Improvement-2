@@ -527,7 +527,7 @@ public class LoadBalancer {
 
         //Check user limit
         //if (AdmissionControl.getInstance().canAcceptRequest()) {
-        if (UserAdmissionControl.getInstance().canTranslate(requester)) {
+        if (UserAdmissionControl.getInstance().canTranslate(requester) && AdmissionControl.getInstance().canAcceptRequest()) {
             try
             {
                 int cost=loadPredictor.getLoadConverter().convertRequest(source.getLength(), dc, source.getFormat());
