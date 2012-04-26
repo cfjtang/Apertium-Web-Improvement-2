@@ -1135,15 +1135,20 @@ public class Daemon {
             element.setTranslation(new TextContent(element.getFormat(),new String(memoryVars.get(-2),"UTF-8")));
 
         }
+        catch(SlaveTimeoutException ste)
+        {
+            logger.error("Slave timeout exception", ste);
+            throw ste;
+        }
         catch(TranslationEngineException te)
         {
-            te.printStackTrace();
+            //te.printStackTrace();
             logger.error("Unexpected exception while translating", te);
             throw te;
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.error("Unexpected exception while translating", e);
             throw new TranslationEngineException(e);
         }
