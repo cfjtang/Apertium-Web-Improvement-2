@@ -779,7 +779,14 @@ public class TranslationEnginePool implements ITranslationEngine, Serializable {
 		serverStatusTO.setDaemonsInformation(daemonList);
 		
 		serverStatusTO.setLoad(0);
-		double load = operativeSystemMXBean.getSystemLoadAverage() / operativeSystemMXBean.getAvailableProcessors();
+                
+                double actLoad=operativeSystemMXBean.getSystemLoadAverage();
+                double numProc= operativeSystemMXBean.getAvailableProcessors();
+                
+		double load = actLoad / numProc;
+                
+                logger.debug("Load :"+Double.toString(actLoad)+"/"+Double.toString(numProc)+" = "+Double.toString(load));
+                        
 		if(load>=0)
 			serverStatusTO.setLoad(load);
 		        
