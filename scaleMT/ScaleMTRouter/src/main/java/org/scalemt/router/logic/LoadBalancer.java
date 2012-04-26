@@ -288,6 +288,8 @@ public class LoadBalancer {
                 
                 
                 cdlSyncPlacementStatus.countDown();
+                
+                new AdmissionControlUpdater().run();
 
             }
         }
