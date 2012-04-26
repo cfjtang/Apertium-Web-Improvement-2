@@ -17,6 +17,9 @@
  */
 package org.scalemt.router.logic;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Simple admission control mechanism.<br/>
  *
@@ -34,6 +37,8 @@ package org.scalemt.router.logic;
  */
 public class AdmissionControl {
 
+    static Log logger = LogFactory.getLog(AdmissionControl.class);
+    
     /**
      * Singleton instance
      */
@@ -89,8 +94,9 @@ public class AdmissionControl {
      * @param measuredLoad Real system load
      */
     public void update(double measuredLoad)
-    {
+    {        
         predictedLoad=(1-k)*predictedLoad+k*measuredLoad;
+        logger.trace("Updating admission control. measured load: "+Double.toString(measuredLoad)+". Predicted load: "+Double.toString(predictedLoad));
         updateCanAccept();
     }
 
