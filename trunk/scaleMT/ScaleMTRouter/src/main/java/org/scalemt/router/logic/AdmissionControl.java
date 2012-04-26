@@ -80,14 +80,14 @@ public class AdmissionControl {
      * load = real load * k  +  previous load * (1-k)
      *
      */
-    private final double k;
+    private double k;
 
     public AdmissionControl(double acceptTreshold, double k) {
         this.acceptTreshold = acceptTreshold;
         this.predictedLoad=0.0d;
         this.k=k;
         this.canAccept=true;
-        logger.trace("Building admission control. k="+Double.toString(this.k)+". Treshold: "+Double.toHexString(this.acceptTreshold)+". Predicted load: "+Double.toString(this.predictedLoad));
+        logger.trace("Building admission control. k="+Double.toString(this.k)+". Treshold: "+Double.toString(this.acceptTreshold)+". Predicted load: "+Double.toString(this.predictedLoad));
     }
 
     /**
@@ -96,7 +96,8 @@ public class AdmissionControl {
      */
     public void update(double measuredLoad)
     {        
-        predictedLoad=(1-k)*predictedLoad+k*measuredLoad;
+        //this.predictedLoad=(1-k)*this.predictedLoad+k*measuredLoad;
+        this.predictedLoad=measuredLoad;
         logger.trace("Updating admission control. measured load: "+Double.toString(measuredLoad)+". Predicted load: "+Double.toString(predictedLoad));
         updateCanAccept();
     }
@@ -107,8 +108,8 @@ public class AdmissionControl {
      */
     private void updateCanAccept()
     {
-        logger.debug("Updating admission poclicy. Predicted: "+Double.toString(predictedLoad)+". maximum: "+Double.toString(acceptTreshold));
-        if(predictedLoad>acceptTreshold)
+        logger.debug("Updating admission poclicy. Predicted: "+Double.toString(this.predictedLoad)+". maximum: "+Double.toString(acceptTreshold));
+        if(this.predictedLoad>acceptTreshold)
             canAccept=false;
         else
             canAccept=true;
