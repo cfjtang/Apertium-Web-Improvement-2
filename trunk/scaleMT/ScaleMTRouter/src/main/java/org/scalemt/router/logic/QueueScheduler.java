@@ -169,7 +169,6 @@ class QueueScheduler {
         public void run() {
             Content translation = null;
             try {
-
                     translation = serverReferences.getTranslationEngine(translationServerId).translate(queueElement.getSource(),daemonConfiguration.getLanguagePair(),queueElement.getAdditionalTranslationOptions());
                 }
             catch(TranslationEngineException te)
@@ -192,6 +191,9 @@ class QueueScheduler {
                     elementsInServerQueue.put(translationServerId, oldElements - 1);
                 }
             }
+            logger.trace("Queue Scheduler "+daemonConfiguration.toString()+": request result received. unpausing");
+            unpause();
+            
             queueElement.setTranslation(translation);
             queueElement.getCaller().interrupt();
         }
@@ -275,7 +277,8 @@ class QueueScheduler {
                             if (!sent) {
                                 //Wait
                                 logger.trace("Queue Scheduler "+daemonConfiguration.toString()+": no available server. waiting");
-                                Thread.sleep(100);
+                                //Thread.sleep(100);
+                                this.pleaseWait=true;
                             }
                         }
                     }
@@ -419,6 +422,11 @@ class QueueScheduler {
         updateAvailableServers();
 
     }
+    
+    public void finishSettingLoadDistribution()
+    {
+        updateAvailableServersStep2();
+    }
 
     /**
      * Tells the Scheduler not to send translation request to the given server.
@@ -451,15 +459,29 @@ class QueueScheduler {
                 elementsInServerQueue.remove(serverToRemove);
             }
 
+            
+        }
+    }
+    
+    public void updateAvailableServersStep2() {
+        Set<TranslationServerId> availableServers = new HashSet<TranslationServerId>(this.supportedServers);
+        int numAddedServers=0;
+        synchronized (charactersInServerQueue) {
             //Add to charactersInServerQueue new servers
             for (Object server : availableServers) {
                 if (!charactersInServerQueue.containsKey(server)) {
                     charactersInServerQueue.put(server, new Integer(0));
+                    numAddedServers++;
                 }
                 if (!elementsInServerQueue.containsKey(server)) {
                     elementsInServerQueue.put((TranslationServerId) server, new Integer(0));
                 }
             }
+        }
+        if(numAddedServers>0)
+        {
+            logger.trace("Queue Scheduler "+daemonConfiguration.toString()+": Adding new servers. unpausing");
+            unpause();
         }
     }
 
