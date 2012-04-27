@@ -515,33 +515,51 @@ public class Daemon {
             int exitValue = -1;
             boolean finished,frozen,passmemorylimit;
             frozen=false;
-            passmemorylimit=false;
+            passmemorylimit=false;   
+            finished=false;
             try {
-                exitValue = p.exitValue();
+                if(killFrozenDaemons)
+                {
+                    exitValue = p.exitValue();
+                }
+                else
+                {
+                    exitValue=p.waitFor();
+                }
+                
                 finished = true;
             } catch (IllegalThreadStateException e) {
                 finished = false;
             }
+            catch(InterruptedException ie)
+            {
+                
+            }
             if (finished) {
                 logger.error("Daemon " + daemonInformation.getId() + " finished with status " + exitValue);
             } else {
-                // Check if process is frozen
-                if (lastRead < lastWrite && System.currentTimeMillis() - lastWrite > frozenTime) {
-                    logger.error("Daemon " + daemonInformation.getId() + " frozen");
-                    frozen=true;
-                }
-                else
-                {
-                    Long memused=getMemoryUsed();
-                    if(memused!=null)
-                    {
-                        if(memused.longValue() > maxMemoryPerDaemon)
-                        {
-                            passmemorylimit=true;
-                             logger.error("Daemon " + daemonInformation.getId() + " excedeed memory limit");
-                        }
+                
+                if(killFrozenDaemons)
+                {    
+                    
+                    // Check if process is frozen
+                    if (lastRead < lastWrite && System.currentTimeMillis() - lastWrite > frozenTime) {
+                        logger.error("Daemon " + daemonInformation.getId() + " frozen");
+                        frozen=true;
                     }
+                    else
+                    {
+                        Long memused=getMemoryUsed();
+                        if(memused!=null)
+                        {
+                            if(memused.longValue() > maxMemoryPerDaemon)
+                            {
+                                passmemorylimit=true;
+                                 logger.error("Daemon " + daemonInformation.getId() + " excedeed memory limit");
+                            }
+                        }
 
+                    }
                 }
             }
 
@@ -812,8 +830,16 @@ public class Daemon {
             getDaemonInformation().setCharactersInside(0);
             //numRequestsBeforeCore=0;
             
-            statusTimer = new Timer();
-            statusTimer.schedule(new StatusReader(), checkStatusPeriod, checkStatusPeriod);
+            if(killFrozenDaemons)
+            {
+                statusTimer = new Timer();
+                statusTimer.schedule(new StatusReader(), checkStatusPeriod, checkStatusPeriod);
+            }
+            else
+            {
+                Thread t = new Thread(new StatusReader());
+                t.start();
+            }
 
             try {
                 String pid = new BufferedReader(new InputStreamReader(p.getErrorStream())).readLine();
