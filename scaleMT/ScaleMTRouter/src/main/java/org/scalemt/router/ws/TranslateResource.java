@@ -52,6 +52,7 @@ import org.scalemt.rmi.exceptions.RouterTimeoutException;
 import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.TextContent;
+import org.scalemt.router.logic.TooManyUserRequestsException;
 
 /**
  * Translation REST Web Service
@@ -328,6 +329,10 @@ public class TranslateResource {
                 errorMessage = "Bad language pair/format";
                 responseCode = 453;
             } catch (TooMuchLoadException tmle) {
+                errorMessage = "System is overloaded. Please try again in a few minutes.";
+                responseCode = 553;
+            
+           } catch (TooManyUserRequestsException tmure) {
                 errorMessage = "Your translations limit has been reached";
                 responseCode = 552;
             } 
