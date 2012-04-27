@@ -498,7 +498,7 @@ public class LoadBalancer {
      * @throws com.gsoc.apertium.translationengines.router.logic.NoEngineForThatPairException If the pair is not supported
      * @throws com.gsoc.apertium.translationengines.exceptions.TranslationEngineException If some other error happens
      */
-    public Content translate(Content source, LanguagePair pair, String ip, String referer,String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException {
+    public Content translate(Content source, LanguagePair pair, String ip, String referer,String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException, TooManyUserRequestsException {
 
         DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, source.getFormat());
         if (dc == null) {
@@ -529,7 +529,9 @@ public class LoadBalancer {
 
         //Check user limit
         //if (AdmissionControl.getInstance().canAcceptRequest()) {
-        if (UserAdmissionControl.getInstance().canTranslate(requester) && AdmissionControl.getInstance().canAcceptRequest()) {
+        if ( AdmissionControl.getInstance().canAcceptRequest()) {
+            if(UserAdmissionControl.getInstance().canTranslate(requester))
+            {
             try
             {
                 int cost=loadPredictor.getLoadConverter().convertRequest(source.getLength(), dc, source.getFormat());
@@ -547,6 +549,11 @@ public class LoadBalancer {
             {
                 //if(!hasException)
                     //logger.info("Request processed OK");
+            }
+            }
+            else
+            {
+                throw new TooManyUserRequestsException();
             }
 
         } else {
