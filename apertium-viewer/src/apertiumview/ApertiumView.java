@@ -136,6 +136,12 @@ public class ApertiumView extends FrameView {
         } catch (Exception e) {
            e.printStackTrace();
             warnUser("An error occured during startup:\n\n"+e);
+            try {
+                prefs.clear();
+            } catch (Exception e1) {
+                warnUser("An error ocurred while trying to reset the settings.\nIf the problem persists try removing your prefs.xml file manually.");
+            }
+            System.exit(1);
         }
         
         
