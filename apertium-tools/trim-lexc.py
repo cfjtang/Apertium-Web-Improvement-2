@@ -30,7 +30,8 @@ bidix_contlex = {
 	'<v><tv><pass>':'Verbs',
 	'<v><iv>':'Verbs',
 	'<v><TD>':'Verbs',
-	'<v>':'Verbs'
+	'<v>':'Verbs',
+	'<vaux>':'Verbs'
 };
 
 contlex_bidix = {
@@ -40,7 +41,7 @@ contlex_bidix = {
 	'Adjectives':['<adj>', '<adj><advl>', '<adj><subst>'],
 	'Adverbs':['<adv>', '<adv><itg>'],
 	'Conjunctions':['<cnjcoo>','<cnjadv>','<cnjsub>'],
-	'Verbs':['<v>', '<v><tv>', '<v><iv>', '<v><TD>', '<v><tv><pass>']
+	'Verbs':['<v>', '<v><tv>', '<v><iv>', '<v><TD>', '<v><tv><pass>', '<vaux>']
 };
 
 def sym(s): #{
