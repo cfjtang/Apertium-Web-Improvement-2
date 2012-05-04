@@ -10,6 +10,8 @@ import sys, os;
 bidix_contlex = {
 	'<n>':'Nouns',
 	'<n><attr>':'Nouns',
+	'<n><gen>':'Nouns',
+	'<n><px3sg><loc>':'Nouns',
 	'<post>':'Postpositions',
 	'<np><top>':'ProperNouns',
 	'<np><al>':'ProperNouns',
@@ -35,7 +37,7 @@ bidix_contlex = {
 };
 
 contlex_bidix = {
-	'Nouns':['<n>', '<n><attr>'],
+	'Nouns':['<n>', '<n><attr>', '<n><gen>', '<n><px3sg><loc>'],
 	'Postpositions':['<post>'],
 	'ProperNouns':['<np><top>', '<np><ant><m>', '<np><ant><f>', '<np><cog><m>', '<np><cog><f>', '<np><cog><mf>', '<np><al>'],
 	'Adjectives':['<adj>', '<adj><advl>', '<adj><subst>'],
@@ -65,7 +67,7 @@ def trim(ifile, stems, ofile): #{
 	state = 0; # 0 = initial, 1 = in root lexicon, 2 = in a stem lexicon
 	for line in open(ifile).readlines(): #{
 		total += 1;
-		line = line.strip();
+		line = line.strip('\n');
 	
 		if line.count('LEXICON Root') > 0: #{
 			print(line, file=of);
