@@ -52,6 +52,7 @@ import org.scalemt.rmi.exceptions.RouterTimeoutException;
 import org.scalemt.rmi.exceptions.SlaveTimeoutException;
 import org.scalemt.rmi.transferobjects.AdditionalTranslationOptions;
 import org.scalemt.rmi.transferobjects.TextContent;
+import org.scalemt.router.logic.TooLongSourceException;
 import org.scalemt.router.logic.TooManyUserRequestsException;
 
 /**
@@ -328,7 +329,10 @@ public class TranslateResource {
             } catch (NoEngineForThatPairException nepe) {
                 errorMessage = "Bad language pair/format";
                 responseCode = 453;
-            } catch (TooMuchLoadException tmle) {
+            } catch (TooLongSourceException tlse){
+                errorMessage = "Source text is too long";
+                responseCode = 454;    
+            }catch (TooMuchLoadException tmle) {
                 errorMessage = "System is overloaded. Please try again in a few minutes.";
                 responseCode = 553;
             
@@ -358,7 +362,7 @@ public class TranslateResource {
             }
             catch (NotAvailableDaemonException nade)
             {
-                errorMessage = "Not avaiable daemon";
+                errorMessage = "Not available daemon";
                 responseCode = 505;
             }
             catch (TranslationEngineException e) {

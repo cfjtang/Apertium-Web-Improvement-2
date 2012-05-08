@@ -25,6 +25,8 @@ import org.scalemt.rmi.transferobjects.LanguagePair;
 import org.scalemt.rmi.transferobjects.TextContent;
 import org.scalemt.router.logic.LoadBalancer;
 import org.scalemt.router.logic.NoEngineForThatPairException;
+import org.scalemt.router.logic.TooLongSourceException;
+import org.scalemt.router.logic.TooManyUserRequestsException;
 import org.scalemt.router.logic.TooMuchLoadException;
 
 
@@ -121,7 +123,14 @@ public class TranslateXMLRPC {
             } catch (NoEngineForThatPairException nepe) {
                 errorMessage = "Bad language pair/format";
                 code = 453;
-            } catch (TooMuchLoadException tmle) {
+            } catch (TooLongSourceException tlse){
+                errorMessage = "Source text is too long";
+                code = 454;    
+            }catch (TooMuchLoadException tmle) {
+                errorMessage = "System is overloaded. Please try again in a few minutes.";
+                code = 553;
+            
+           } catch (TooManyUserRequestsException tmure) {
                 errorMessage = "Your translations limit has been reached";
                 code = 552;
             } 
@@ -249,11 +258,44 @@ public class TranslateXMLRPC {
                 errorMessage = "Unsupported format";
                 code = 452;
             } catch (NoEngineForThatPairException nepe) {
-                errorMessage = "No translation engines available";
-                code = 551;
+                errorMessage = "Bad language pair/format";
+                code = 453;
+            } catch (TooLongSourceException tlse){
+                errorMessage = "Source text is too long";
+                code = 454;    
             } catch (TooMuchLoadException tmle) {
+                errorMessage = "System is overloaded. Please try again in a few minutes.";
+                code = 553;
+            
+           } catch (TooManyUserRequestsException tmure) {
                 errorMessage = "Your translations limit has been reached";
                 code = 552;
+            } 
+            catch(DaemonDeadException dde)
+            {
+                errorMessage = "Daemon dead unexpectedly";
+                code = 501;
+            }
+            catch(SlaveTimeoutException ste)
+            {
+                errorMessage = "Timeout waiting for translation in slave";
+                code = 502;
+            }
+            catch(RouterTimeoutException rte)
+            {
+                errorMessage = "Timeout waiting for translation in router";
+                code = 503;
+            }
+            catch(NonZeroExitValueException nzee)
+            {
+                errorMessage = "Non-zero exit value";
+                code = 504;
+            
+            }
+             catch (NotAvailableDaemonException nade)
+            {
+                errorMessage = "Not avaiable daemon";
+                code = 505;
             } catch (TranslationEngineException e) {
                 errorMessage = "Unexpected Error";
                 code = 500;
