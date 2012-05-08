@@ -372,6 +372,8 @@ public class LoadBalancer {
     private final Timer serverStatusTimer;
 
     private CountDownLatch cdlSyncPlacementStatus;
+    
+    private  long maxSourceLength;
 
     /**
      * Creates an instance with no translation servers.
@@ -393,6 +395,14 @@ public class LoadBalancer {
         this.dynamicServerManagement = new DynamicServerManagement();
         secureStoppingServers = new HashSet<TranslationServerId>();
 
+        maxSourceLength=1048576;
+        try {
+            maxSourceLength = Long.parseLong(Util.readConfigurationProperty("max_source_length"));
+        } catch (Exception e) {
+            logger.warn("Cannot read \"max_source_length\" property. Using default value.", e);
+            
+        }
+        
         long admissionControlPeriod = 1000;
         try {
             admissionControlPeriod = Long.parseLong(Util.readConfigurationProperty("admissioncontrol_interval"));
@@ -498,14 +508,14 @@ public class LoadBalancer {
      * @throws com.gsoc.apertium.translationengines.router.logic.NoEngineForThatPairException If the pair is not supported
      * @throws com.gsoc.apertium.translationengines.exceptions.TranslationEngineException If some other error happens
      */
-    public Content translate(Content source, LanguagePair pair, String ip, String referer,String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException, TooManyUserRequestsException {
+    public Content translate(Content source, LanguagePair pair, String ip, String referer,String apiKey, AdditionalTranslationOptions to) throws TooMuchLoadException, NoEngineForThatPairException, TranslationEngineException, TooManyUserRequestsException, TooLongSourceException {
 
         DaemonConfiguration dc =getDaemonConfigurationToTranslate(pair, source.getFormat());
         if (dc == null) {
             throw new NoEngineForThatPairException();
         }
         QueueScheduler queue = queues.get(dc);
-
+                
         Requester requester=new AnonymousRequester(ip);
         UserType type = UserType.anonymous;
         //Test if user is registered
@@ -526,7 +536,11 @@ public class LoadBalancer {
         loadPredictor.getRequestHistory().addRequest(pair, source.getLength(), source.getFormat(),requester);
         //Thread.currentThread().getId();
         //logger.info("Request received");
-
+        
+        //Check source length
+        if(source.getLength() <= this.maxSourceLength)
+        {
+        
         //Check user limit
         //if (AdmissionControl.getInstance().canAcceptRequest()) {
         if ( AdmissionControl.getInstance().canAcceptRequest()) {
@@ -559,6 +573,10 @@ public class LoadBalancer {
         } else {
             throw new TooMuchLoadException();
         }
+        
+        }
+        else
+            throw new TooLongSourceException();
 
     }
 
