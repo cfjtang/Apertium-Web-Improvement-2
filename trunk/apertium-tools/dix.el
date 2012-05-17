@@ -1337,11 +1337,11 @@ end of the element."
 
 
 (defun dix-xmlise-using-above-elt ()
-  "Simple yasnippet-like function to turn a plain list into <e>
-entries. Write a bunch of words, one word per line, below a
-previous <e> entry, then call this function to apply that entry
-as a template on the word list. Example (with point somewhere in
-the word list):
+  "Simple yasnippet-like function to turn a plain list
+into <e> entries. Write a bunch of words, one word per line,
+below a previous <e> entry, then call this function to apply that
+entry as a template on the word list. Example (with point
+somewhere in the word list):
 
 
 <e lm=\"baa\">      <i>ba</i><par n=\"ba/a__n\"/></e>
@@ -1370,6 +1370,7 @@ lahka:slags
 <e><p><l>kánske<s n=\"Adv\"/></l><r>kanskje<s n=\"adv\"/></r></p></e>
 <e><p><l>lahka<s n=\"Adv\"/></l><r>slags<s n=\"adv\"/></r></p></e>
 "
+  ;; TODO: remove the ugly
   (interactive)
   (nxml-token-before)
   (when (eq xmltok-type 'data)
@@ -1449,7 +1450,7 @@ lahka:slags
 							   (replace-regexp-in-string " " "<b/>" (if (cdr lr)
 												    (cadr lr)
 												  (car lr))))))
-			 (when (third lr) (error "More than one : in line: %s" line))
+			 (when (caddr lr) (error "More than one : in line: %s" line))
 			 (format (if (equal l r)
 				     template
 				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>…<r/>:
@@ -1565,7 +1566,7 @@ on a previously narrowed buffer (the default behaviour for
 		    (caar sections)))
 	      (section (assoc id sections)))
 	 (unless no-widen (widen))
-	 (dix-narrow-to-sdef-narrow sdef (second section) (third section)))))))
+	 (dix-narrow-to-sdef-narrow sdef (cadr section) (caddr section)))))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
