@@ -93,6 +93,7 @@
 (defconst dix-version "2011-02-27") 
 
 (require 'nxml-mode)
+(require 'cl)
 (require 'easymenu)
 
 ;;;============================================================================
@@ -1450,7 +1451,7 @@ lahka:slags
 							   (replace-regexp-in-string " " "<b/>" (if (cdr lr)
 												    (cadr lr)
 												  (car lr))))))
-			 (when (caddr lr) (error "More than one : in line: %s" line))
+			 (when (third lr) (error "More than one : in line: %s" line))
 			 (format (if (equal l r)
 				     template
 				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>…<r/>:
@@ -1566,7 +1567,7 @@ on a previously narrowed buffer (the default behaviour for
 		    (caar sections)))
 	      (section (assoc id sections)))
 	 (unless no-widen (widen))
-	 (dix-narrow-to-sdef-narrow sdef (cadr section) (caddr section)))))))
+	 (dix-narrow-to-sdef-narrow sdef (second section) (third section)))))))
 
 ;;; The following is rather nn-nb-specific stuff. Todo: generalise or remove.
 (defun dix-move-to-top ()
