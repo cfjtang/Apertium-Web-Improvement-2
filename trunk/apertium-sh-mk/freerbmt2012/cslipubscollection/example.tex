@@ -1,0 +1,93 @@
+
+\documentclass{book}
+
+\usepackage[DRAFT]{cslipubs}    % CSLI Pubs format; use [FINAL] for final copy.
+
+
+\title{A \LaTeX\ Package for CSLI Collections}    % \title{__}  is necessary.
+\author{Edie Tor and Ed Itor (eds.)}              % \author{__} is necessary.
+\date{May 23, 2002}                               % \date{__}   is optional.
+
+
+%\raggedbottom   % Uncomment this line if large diagrams cause vertical gaps.
+
+\hfuzz = 2pt     % No warnings about margin overhangs less than this amount.
+
+%\crop[]         % Uncomment for centered pages while using [FINAL] option.
+%\crop[cam]      % Uncomment for crosshairs that show corners of each page.
+%\crop[frame]    % Uncomment for rectangle that shows edges of each page.
+
+
+\usepackage[comma]{natbib}  % CSLI Pubs favored bibliography package.
+
+\usepackage{chapterbib}     % Allows chapters to have separate bibliographies.
+                            % The files example-ch01.tex and example-ch02.tex
+                            % contain their own \bibliographystyle{__} and
+                            % \bibliography{__} commands.  Run BibTeX
+                            % individually on each chapter as follows:
+                            %     bibtex example-ch01
+                            %     bibtex example-ch02
+                            % Do NOT run BibTeX on the main document file.
+
+
+\usepackage{import}         % Allows chapters to have separate subdirectories.
+
+
+\usepackage{makeidx}        % Necessary if this book has an Index.
+\makeindex                  % Comment out this line when Index is final.
+
+
+% Some extra macros that CSLI publications sometimes uses.  Not essential.
+\usepackage{cslipubs-extra}
+
+% Some more bells and whistles.
+%\usepackage{avm}
+\usepackage{lingmacros}
+
+% Create your own separate style file and load here to avoid cluttering
+% up the preamble more than necessary.  There should be no definitions,
+% etc. after the \begin{document} command.
+%\usepackage{mymacros}
+
+
+% The \includeonly{__} command is very useful for processing subsections
+% of the entire document.  Read about it in the LaTeX Manual.
+%
+%\includeonly{example-ch00,example-ch01}
+
+
+\begin{document}
+
+
+% Try to put all stuff that will be printed into \include{__} files.
+% This makes the \includeonly command work better.
+
+
+\frontmatter      %%%%%% Start with Roman page numbers and unnumbered chapters.
+
+
+\maketitle                % Necessary for CSLI Pubs.
+
+\setcounter{page}{5}
+\setcounter{tocdepth}{0}  % 0 = chapters only in Contents, 1 = sections also.
+\tableofcontents          % LaTeX at least twice for correct Table of Contents.
+
+\include {example-ch00}   % Introduction, Acknowledgments.
+
+
+\mainmatter       %%%%%% Chapter numbers and Arabic page numbers begin with 1.
+
+
+\include {example-ch01}
+
+\include {example-ch02}
+
+
+\backmatter       %%%%%% No more chapter numbers; page numbering continues.
+
+
+\include {example-index}
+
+
+\end{document}
+

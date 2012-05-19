@@ -1,0 +1,149 @@
+
+
+\achapter{Continuing On}{Christine S. Lipubs}
+
+
+This will be the second numbered chapter of the book.  The following
+will help to fill up some space.
+
+
+
+\section{Some Stuff Again}
+
+
+One can do definitions, theorems, and\index{theorems} so forth, as
+follows.
+
+\begin{definition}
+$(A,C,\cdot)$ is a {\em $X$-form system\/} if $A$ is
+a class, $C:A\to PX$ and for each $a\in A$, if $\sigma:Ca\to X$ then
+$\sigma\cdot a \in A$ such that
+    \begin{itemize}
+    \item $C(\sigma\cdot a) = \{\sigma x\mid x\in Ca\}$,
+    \item $\sigma\cdot a  = a $ if $\sigma x = x$ for $x\in Ca$,
+    \item $\sigma'\cdot(\sigma\cdot a ) = (\sigma'\circ\sigma)\cdot a$
+          if  $\sigma':C(\sigma\cdot a) \to X$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+$(A,C,\cdot) $ is a {\em (elementary) universe} if it is an $A$-form system.
+\end{definition}
+
+\begin{theorem}\label{universe-existence-theorem}
+For every ontology\index{universe!well-founded} $U$ there is a wf
+(af) $U$-universe.  Moreover it is unique up to isomorphism.
+\end{theorem}
+
+\begin{proof}
+Well, the proof is left to the reader.  Just follow the definitions
+and hack it out.
+\end{proof}
+
+\noindent
+Besides definitions and theorems, you can have axioms, lemmas,
+propositions, examples, and other types of formal
+mathematical statements.
+
+
+
+\section{Some Other Stuff Again}
+
+
+After {\LaTeX}ing these files, the indexing information will be recorded
+in a file \texttt{book.idx}.  This index data\index{index!flags} can be
+massaged into something\index{index!makeindex} that can later be
+included as an index, using the \texttt{makeindex} program (ask your
+local \LaTeX\ expert about it) plus some hands-on work.  The \LaTeX\
+manual explains how this works.
+
+Chapter bibliographies will be produced as References\index{References}
+sections by {\LaTeX}'s BibTeX\index{bibliographies} program in cooperation
+with the \texttt{chapterbib.sty} and \texttt{natbib.sty} packages.
+Check out the corresponding comments in \texttt{example.tex} and
+\texttt{natbib.summary} along with the \LaTeX\ manual.
+For example, we now cite \citealt{krip:nami72}, which is completely
+irrelevant here but demonstrates the bibliography citation mechanism.
+If nothing else were cited then this chapter's References section would
+contain just that one entry.  Additional entries are included in this
+chapter's References without being explicitly cited in the text, thanks
+to the \texttt{\backslash nocite\braced{\,}} command.
+The file \texttt{example-ch02/ch02.bib} has many possible
+bibliography entries, but only those that are cited (or ``nocited'')
+will appear in the References section at the and of this chapter.
+ \nocite{quin:vari60}
+ \nocite{putn:real83}
+ \nocite{kapl:demo89}
+ \nocite{freg:thou77}
+
+Also, an example of a figure is included here.  Figures will appear
+at the tops of pages, and the caption is placed below the figure.
+Tables also appear at the tops of pages, but the caption is placed
+above the body of the table.
+
+ \begin{figure}[t]
+ \begin{center}
+ \begin{picture}(200,50)(0,0)
+ \put(25,25){\circle{20}}
+ \put(30,25){\circle{20}}
+ \put(35,25){\circle{20}}
+ \put(45,25){\circle{20}}
+ \put(60,25){\circle{20}}
+ \put(63,25){\vector(4,3){16}}
+ \put(63,25){\vector(3,4){16}}
+ \put(63,25){\vector(3,-1){36}}
+ \put(63,25){\vector(3,1){16}}
+ \put(15,5){\line(1,0){175}}
+ \put(15,5){\line(6,1){175}}
+ \put(125,30){\circle*{4}}
+ \put(150,35){\oval(60,30)}
+ \put(115,25){\dashbox(40,10){}}
+ \end{picture}
+ \end{center}
+ \caption[A Bunch of Overlapping Circles]
+	 {A Bunch of Overlapping Circles and Some \\
+	  Other Stuff: An Example of a Figure with \\
+	  A Long Caption}
+ \end{figure}
+
+
+
+\section{Typewriter characters in \protect\textbt{cslipubs-extra.sty}}
+
+
+\index{typewriter characters}
+
+The package \texttt{cslipubs-extra.sty} also includes
+some characters normally unavailable in the typewriter
+fonts of \texttt{\backslash texttt\braced{\,}} or
+{\ttfamily \backslash ttfamily}.  Any \texttt{\$}math\texttt{\$} mode
+meanings of the following commands are unaffected.
+Yes, \texttt{\backslash sim} and \texttt{\backslash tilde}
+are redundant on purpose.
+
+\smallskip
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lccc}
+Command                      &Character          &Example
+                                    &(\texttt{\$}math\texttt{\$} mode) \\[.5ex]
+\texttt{\backslash backslash}&\texttt{\backslash}&\texttt{\backslash /}
+                                                      &( $\backslash /$ ) \\
+\texttt{\backslash caret}    &\texttt{\caret}    &\texttt{10\caret 2}
+                                                      &\smaller none \\
+\texttt{\backslash lbrace}   &\texttt{\lbrace}   &\texttt{\lbrace 100}
+                                                      &( $\lbrace 100$ ) \\
+\texttt{\backslash rbrace}   &\texttt{\rbrace}   &\texttt{100\rbrace}
+                                                      &( $100\rbrace$ ) \\
+\texttt{\backslash sim}      &\texttt{\sim}      &\texttt{\sim 1}
+                                                      &( $\sim 1$ ) \\
+\texttt{\backslash tilde}    &\texttt{\tilde}    &\texttt{\tilde 1}
+                                                      &( $\tilde 1$ ) \\
+\end{tabular}
+\end{center}
+\smallskip
+
+
+
+% The References section for this chapter is produced in ../example-ch02.tex
+
