@@ -1,0 +1,416 @@
+
+
+\documentclass{book}
+
+\usepackage[DRAFT]{cslipubs}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{footnote}
+\usepackage{multibib}
+
+\title{A rule-based machine translation from Serbo-Croatian to Macedonian}
+%\author{Hrvoje Peradin, Francis Tyers}
+
+%TODO: Ubit ovo naknadno, jer se ne bi smjelo pojaviti u člančetu
+%\usepackage{color}
+%\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+\newcommand{\todo}[1]{\textbf{TODO: #1}}
+
+
+\hfuzz = 2pt
+
+\usepackage[comma]{natbib}
+
+\usepackage{chapterbib}
+
+\usepackage{import}         % Allows chapters to have separate subdirectories.
+
+\usepackage{makeidx}        % Necessary if this book has an Index.
+\makeindex                  % Comment out this line when Index is final.
+
+\usepackage{cslipubs-extra}
+
+% Some more bells and whistles.
+%\usepackage{avm}
+\usepackage{lingmacros}
+
+\begin{document}
+
+\frontmatter      %%%%%% Start with Roman page numbers and unnumbered chapters
+
+\maketitle
+
+\setcounter{page}{5}
+\setcounter{tocdepth}{0}  % 0 = chapters only in Contents, 1 = sections also.
+%\tableofcontents          % LaTeX at least twice for correct Table of Contents.
+
+\chapter{Introduction}
+
+%\begin{abstract}
+This paper describes the development of a one-way machine translation
+from Serbo-Croatian to Macedonian in the Apertium platform.
+Details of resources and development methods are given, as well as an
+evaluation, and general directives for future work.
+%\end{abstract}
+
+The modern Macedonian language was standardised in 1944. and
+is the official language of the Republic of Macedonia.
+
+Serbo-Croatian is a term that encompasses four standard languages 
+(Bosnian, Croatian, Montenegrin and Serbian) based on the 
+\emph{neoshtokavian} dialect. The standardisation of the language started
+in the 19th century, as an attempt to unify the literary and linguistic 
+traditions of the south Slavic area. The standard remained pluricentric
+until the dissolution of Yugoslavia. Due to the large similarities between 
+the standards we have decided to group them into one module, with a common
+mode for analysis. Having in mind future work we have added separate modes 
+for generation of Bosnian, Croatian and Serbian.\footnote{The current standardisation
+process of Montenegrin is under way, and we are awaiting the outcome to implement a separate
+mode}
+
+Serbo-Croatian and Macedonian are largely mutually intelligible, however despite their close relation the differences in morphology 
+%(notably the absence of noun declension in Macedonian vs. a typically Slavic rich declension in Serbo-Croatian) 
+create difficulties in translation. For this reason the system is currently mono-directional (sh$\rightarrow$mk). 
+The direction was chosen since it is easier to construct a system translating from a more detailed morphology 
+(e.g. Macedonian "во куќа" can be translated both as "u kući" [in the house.LOC] and "u kuću"[into the house.ACC]).
+
+Other systems currently supporting the languages are notably Google Translate\footnote{Supports Croatian, Serbian and Macedonian} and Systran.\footnote{Language pairs Serbian$\rightarrow$English, Croatian$\rightarrow$English}
+
+\mainmatter
+
+\chapter{The system}
+\section{Design}
+\subsection* {The Apertium platform}
+\nocite{forcada2011apertium}
+The platform follows a modular machine translation model.
+Morphological analysis of the source text is performed by
+letter transducers, and cohorts\footnote{A cohort consists of a surface form and one or more readings containing the lemma of the word and the morphological analysis.} obtained in this manner go through
+a disambiguation process. 
+Disambiguated readings proceed to a bilingual dictionary also performed 
+by a letter transducer and  through a two-level syntactic transfer, which performs word reordering, deletions, insertions, and basic syntactic chunking.
+The final module is also a letter transducer which generates surface forms 
+in the target language from the bilingual transfer output.
+
+\subsection* {Constraint Grammar}
+The 
+%initial 
+disambiguation in this language pair is performed by a
+Constraint Grammar (CG) module. CG is a 
+paradigm that uses hand-written rules to reduce the problem 
+of linguistic ambiguity. A series of context-dependent rules are applied 
+to a stream of tokens and readings for a given surface form are excluded, 
+selected or assigned additional tags.
+
+\section{Development}
+\subsection*{Resources}
+Although some resources for morphological analysis of Serbian and Croatian exist
+(\citealp{vitas2004intex}, \citealp{vitas2003processing}, \citealp{agic2008improving}, \citealp{snajder08automatic}), 
+to our knowledge there are none freely available for either Serbian, Bosnian or 
+Croatian. Thus the monolingual dictionary for Serbo-Croatian has been developed 
+almost from scratch, with the aid of a Croatian grammar (\citealp{baric1997hrvatska}), 
+and on-line resources such as \emph{Hrvatski jezični portal},\footnote{http://hjp.srce.hr}
+wiktionaries and Wikipedia, as well as an SETimes corpus (\citealp{tyers2010south}) and a 
+corpus composed from the Serbian, Bosnian, Croatian and Serbo-Croatian Wikipedias.
+
+Bilingual resources available were also scarce. We used a parallel corpus obtained from
+SETimes, and a Serbian--Macedonian on-line dictionary.\footnote{http://rechnik.on.net.mk/}
+
+The morphological analyser/generator for Macedonian was taken from
+\texttt{apertium-mk-bg} (\citealp{rangelov2011rule}) which is freely available under Apertium.
+For reference on the Macedonian language we used the SEELRC reference grammar\footnote{http://slaviccenters.duke.edu/projects/grammars} and
+Дигитален речник на македонскиот јазик.\footnote{http://www.makedonski.info/}
+
+\subsection*{Analysis and generation}
+The morphological analyser for Serbo-Croatian was written in the XML formalism of
+\emph{lttoolbox} (\citealp{rojas2005construccion}), almost entirely from scratch, with the
+aim to match the lexicon of the analyser from \texttt{apertium-mk-bg}. Since we intended to create a resource for all three
+standards, a paradigm was assigned
+to the reflex of the vowel yat\footnote{Typically in ekavian it is either a long or short "e", while in ijekavian the long variant is reflected as "ije", and the short as "je"} to enable analysis of both ekavian and ijekavian dialects, 
+and the extended metadix format was used to enable separating different standards by
+analysis and generation modes.
+
+The basic inflectional paradigms were taken from the Croatian grammar (\citealp{baric1997hrvatska}), 
+and further refined according to new entries (e.g. with voice changes not covered by basic declension
+patterns).
+
+The entries were made mostly manually, with some proper nouns obtained semi-automatically from the Macedonian
+dictionary.
+
+\subsection*{Disambiguation}
+The disambiguation was done by a Constraint Grammar module.
+In case of remaining ambiguity, the system picks the first analysis from the output
+of the disambiguation module.
+
+%a combination of an HMM tagger (\texttt{apertium-tagger}, trained on a Wikipedia corpus)
+%and 
+
+%Though mature CG systems have proven to have a high Precision / Recall score
+%(up to 99\%, \citealp{bick2000parsing}), the CG for \texttt{apertium-sh-mk}
+%has been developed in a limited time frame, and has relatively few rules (170).
+%Thus it has been used only as a pre-disambiguator for the HMM tagger.
+
+The following are examples of disambiguation rules:
+\begin{itemize}
+\item Preposition-based case disambiguation:\nopagebreak
+
+\texttt{REMOVE Preposition + \$\$Case IF (1 Nominal - \$\$Case)}
+
+\texttt{REMOVE Nominal + \$\$Case IF (NOT -1 Preposition + \$\$Case) (NOT -1 Modifier + \$\$Case)}
+
+The first rule cleans the grammatical case from a preposition\footnote{The cases the prepositions govern
+are marked on the analyses of the prepositions.} 
+if it is not followed by a noun, pronoun or adjective in the same case. The second
+rule, similarly, cleans the case from a noun, pronoun or adjective if
+it is not preceded directly either by a preposition which governs the case
+or a modifier (e.g. adjective or demonstrative pronoun) in the same case.
+\footnote{The \$\$ prefix signifies unification, i.e. iteration over the set of all
+grammatical cases.}
+
+\item Noun phrases:
+
+\texttt{REMOVE Modifier + \$\$GenNum IF (1 Nominal - \$\$GenNum)}
+
+\texttt{REMOVE Nominal + \$\$GenNum IF (-1 Modifier - \$\$GenNum)}
+
+These rules operate on noun phrases, and use the gender and number agreement
+to eliminate grammatically impossible readings. For example, 
+if a neuter/feminine ambiguous adjective precedes a feminine noun, the neuter
+reading is removed. Similarly, if a singular/plural ambiguous noun is preceded
+by an unambiguously plural adjective, the singular reading is removed.
+
+\item Adverb / adjective ambiguity:
+
+\texttt{SELECT Adverb IF (0 Adverb OR Adjective) (1 Verb)}
+
+This simple rule resolves a common ambiguity by selecting the adverb reading if the word is followed by a verb.
+
+\item Dative / locative ambiguity:
+
+\texttt{SELECT Dative IF (0 Dative OR Locative) (NOT -1 Preposition) (NOT -1 Modifier + Locative)}
+
+The cases are orthographically identical, however locative
+is purely prepositional, so in most cases the ambiguity is easily
+resolved by selecting dative if the phrase
+is not preceded by a locative preposition.
+
+\end{itemize}
+
+\subsection*{Lexical transfer}
+The bilingual lexicon was written using the \emph{lttoolbox} format, and composed mostly 
+manually, with paradigms added to compensate the tag set differences.
+Translation entries were added according to the lexicon from 
+the Macedonian analyser. Having in mind future work, translations specific solely 
+to Bosnian, Croatian or Serbian standard were grouped in respective sections.
+
+\subsection*{Syntactic transfer}
+Despite the close relation of the two languages, there are substantial 
+differences in morphology, and structures with analogous functionality 
+are not necessarily morphologically cognate. Therefore we have used 
+a two level syntactic transfer. 
+
+The first level performs tag mappings, normalisation (e.g. 
+case to nominative, infinitive to present), 
+rudimentary transformations, and packing of phrases in syntactic chunks. 
+
+Examples of transfer rules:
+
+\begin{itemize}
+\item The future tense:
+\enumsentence{
+
+Ja ću gledati\footnote{The encliticized future tense forms (gledat ću / gledaću) are handled equally} $\rightarrow$ Јаз ќе гледам
+
+I will.P1.SG watch $\rightarrow$ I will watch.P1.SG
+}
+
+Serbo-Croatian uses a clitic + infinitive form with a declinable clitic, while
+Macedonian uses a frozen clitic form, and the person/number is marked on the verb.
+Thus several rules were written to match occurrences of future tense
+and transfer the information in translation.
+
+\item Clitic reordering:
+
+\enumsentence{
+
+...okrenut ću se... $\rightarrow$ ...ќе се обрнам...
+
+...[turn] [I will] [myself]... $\rightarrow$ ...[I will] [myself] [turn]...
+
+(I will turn myself around)
+}
+
+The order of clitics in both languages is different, so a series of rules was written to rearrange them.
+
+\item Cases as prepositional phrases:
+
+\enumsentence{
+
+Let avionom\footnote{The Croatian normative 'zrakoplov' is also accepted and translated equally} $\rightarrow$ Летање со авион.
+
+[flight] [by aeroplane.INS] $\rightarrow$ [flight] [with] [aeroplane]
+
+(Flying by an aeroplane.)
+}
+
+While Serbo-Croatian has seven morphological cases, Macedonian has 
+completely replaced its declension system with analytic, prepositional and clitic constructions.
+The second level of transfer replaces simple noun and adjective phrases with prepositional constructions.
+
+\item Inference of definiteness:
+
+\enumsentence{
+
+U sastavu Vojske Srbije $\rightarrow$ Во составот на Српската војска\footnote{The article in Macedonian
+attaches to the first constituent of the noun phrase}
+
+[in] [composition] [of Serbian Army] $\rightarrow$ [In] [composition.DEF] [of Serbian Army]
+
+(In the composition of the Serbian Army)
+
+}
+
+The definite article in Macedonian has no analogy in Serbo-Croatian (except to some extent the definiteness of adjectives). This transfer rule infers definiteness for a common noun preceding
+a proper noun in genitive.
+
+\end{itemize}
+
+\subsection*{Status}
+The current status of the language pair is given in Table \ref{tab:status}.
+
+\begin{table}
+\begin{center}
+\caption{Status of apertium-sh-mk as of April 11 2011.}
+\label{tab:status}
+\begin{tabular}{l|r}
+Module & Entries / Rules \\
+\hline
+Serbo-Croatian dictionary & 7564 \\
+Macedonian dictionary & 8672 \\
+Bilingual dictionary & 9985 (unique) \\
+Transfer rules (1 and 2) & 51 + 11 \\
+Serbo-Croatian CG & 170 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{Evaluation}
+
+This section presents an evaluation of the system performance, with
+coverage measured on two corpora, and a quantitative analysis.
+
+\subsection*{Coverage}
+
+The data for coverage of the Serbo-Croatian analyser is 
+given in Table \ref{tab:coverage}. Coverage is naive, 
+it means that for any given form in the source language at least one analysis
+has been given. The analyser has been tested on a combined Wikipedia
+corpus, and on a corpus of Serbian and Croatian
+SETimes articles. The corpora was divided in four parts and average 
+coverage calculated.
+
+\begin{table}
+\begin{center}
+\caption{Coverage}
+\label{tab:coverage}
+\begin{tabular}{l|c|c}
+Corpus & Coverage & Std. dev. \\
+\hline
+Wikipedia (sh+bs+sr+hr) & 73.12\% & 0.36 \\
+SETimes (sr + hr) & 82.64\% & 0.38 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection*{Quantitative evaluation}
+
+Quantitative evaluation has been performed on four articles from SETimes. The articles
+were translated by Apertium, and post-edited by a human translator. The word error rate (WER)
+and the position-independent error rate (PER) were calculated by the number of changes the
+human editor needed to make. Results are given in Table \ref{tab:quantitative}.
+
+\begin{savenotes}
+\begin{table}
+\begin{center}
+\begin{tabular}{l|c|c|c|c}
+Article & OOV\footnote{Out of vocabulary words} & Words & WER & PER \\
+\hline
+\texttt{setimes.pilots.txt} & 0.44\% & 454 & 29.96\% & 20.48\% \\
+\texttt{setimes.tablice.txt} & 0.43\% & 470 & 48.12\% & 34.58\% \\
+\texttt{setimes.klupa.txt} & 18.12\% & 480 & 60.36\% & 46.81\% \\
+\texttt{setimes.povijest.txt} & 14.18\% & 529 & 53.35\% & 40.52\% \\
+\hline
+\end{tabular}
+\footnotetext{Out of vocabulary words}
+\caption{Quantitative evaluation}
+\label{tab:quantitative}
+\end{center}
+\end{table}
+\end{savenotes}
+
+
+
+\subsection*{Common problems}
+
+Although CG rules successfully rule out quite a lot of
+grammatically impossible analyses, the number of rules for this language pair
+is quite low, so disambiguation is not always correct.
+
+Another obvious source of errors are unknown words, which typically disrupt 
+the flow of disambiguation, especially when they occur inside noun phrases.
+
+The definite article is quite difficult to infer. Though in limited
+cases it can be transferred from definite adjectives, or guessed from
+specific context, there is e.g. no straightforward way to mark a subject previously
+introduced in discourse as definite.
+
+Serbo-Croatian cases do not translate consistently to prepositional constructions.
+A notable example is the partitive vs. possessive genitive. The phrase "čaša vode"
+can be translated as "чаша вода" ("a glass of water") or "чашата на вода" 
+(the water's glass).
+
+Both languages have a very free word order. For instance, an 
+adjective can modify a noun arbitrarily far to the left
+(\emph{Vožnja}.N.FEM zrakoplovom ... bila je \emph{odlučujuća}.ADJ.FEM $\rightarrow$ \emph{Возенје}.N.NEUT со авионот ... беше \emph{решавачка}.ADJ.FEM  [The airplane \emph{ride} ... was \emph{decisive}])
+If the noun 
+changes gender in translation, the adjective is not matched to it, and retains
+the source language gender.
+
+\section{Discussion}
+This paper presented the design and an evaluation of a language pair for the Apertium platform.
+It is the first rule-based MT system between Serbo-Croatian\footnote{It is to our knowledge the first 
+MT system supporting Bosnian} and Macedonian, and the morphological
+analyser and CG module are currently only such open-source resources for Serbo-Croatian.
+
+The system was dubbed by a native speaker as "overall fine", there are obvious errors, but the output is legible and easily post-editable. 
+
+A significant part of the problems is typical for a system in such an early phase of 
+development. The morphological lexicons for both languages are small, and 
+the same remark can be made for the number of disambiguation rules. 
+
+Some ambiguities that arise in analysis of the source language are 
+difficult or impossible to resolve in a simple rule-based manner, which suggests that 
+the system should be combined with machine learning and statistical methods.
+
+In terms of future work the essential task is to increase coverage, to enable working
+with larger corpora, and to improve the disambiguation rules, which make a significant
+contribution to translation quality.
+
+\section*{Acknowledgements}
+The development of this language pair was funded as a part of the 
+Google Summer of Code.\footnote{http://code.google.com/soc/}
+Many thanks to my GSoC mentor Francis Tyers, for his help and inexhaustible
+patience, to Jimmy O'Regan, Kevin Unhammer and other Apertium contributors for
+their help on Apertium, to Tino Didriksen for his help on CG, to Tihomir Rangelov
+for his advice in the initial phase of this work, and to Dime Mitrevski
+for his input on the Macedonian language.
+
+\bibliographystyle {cslipubscollection/cslipubs-natbib}
+\bibliography {apertium-sh-mk}
+
+\backmatter
+\end{document}

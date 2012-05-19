@@ -1,0 +1,209 @@
+
+
+\achapter{Getting Started}{Gnu Who}
+
+
+This is the first numbered chapter of the book.  The following
+text illustrates what \texttt{cslipubs.sty} produces, along with
+examples of some of the macros in \texttt{cslipubs-extra.sty} and
+\texttt{lingmacros.sty}.  This sampling is not exhaustive.
+
+
+
+\section{Format of Documents}
+
+
+Please look at \texttt{example.tex}, which produced this
+documentation by using the \texttt{cslipubs.sty} package.
+Note that the \texttt{cslipubs.sty} package relies on
+Melchior Franz's \texttt{crop.sty} package, a copy of
+which accompanies this example.
+
+
+
+\section {\protect\textbt{D\protect\smaller RAFT} vs.
+          \protect\textbt{\protect\smaller FINAL}}
+
+
+\index{DRAFT option@\texttt{[DRAFT]} option}
+\index{FINAL option@\texttt{[FINAL]} option}
+
+In specifying \texttt{\backslash usepackage\braced{cslipubs}},
+the options \texttt{\smaller DRAFT} and \texttt{\smaller FINAL}
+are available.  The default is \texttt{\smaller DRAFT}, which
+is recommended until the book is almost ready for press:
+
+   \smallskip
+   \texttt{\backslash usepackage[{\smaller DRAFT}]\braced{cslipubs}}
+   \smallskip
+
+\noindent
+The \texttt{\smaller DRAFT} option provides the following:
+
+\begin{itemize}
+\item  Each page is centered on $8 {1 \over 2}{}'' \times 11''$
+       (USA's standard) paper.
+
+\item  \texttt{\backslash NOTE\braced{\,}} may be used for marginal
+       draft comments.\index{note@\texttt{\backslash NOTE\braced{\,}}}
+       \NOTE{This marginal note demonstrates the
+             \texttt{\backslash NOTE\braced{\,}}
+             command, which is meant for reminders
+             while using the \texttt{[{\smaller DRAFT}]} option.}
+
+\item  The date is printed at the top outer corner of each page.
+\end{itemize}
+
+\noindent
+When the book is almost ready for press, change the above
+\texttt{\backslash usepackage} command to:
+
+   \smallskip
+   \texttt{\backslash usepackage[{\smaller FINAL}]\braced{cslipubs}}
+   \smallskip
+
+\noindent
+The \texttt{\smaller FINAL} option has the following effects:
+
+\begin{itemize}
+\item  Each page is pushed to the top left corner on a printout
+       (unless a \texttt{\backslash crop[\,]} command is given, which
+       centers each page).
+
+\item  \texttt{\backslash NOTE\braced{\,}} is nullified, producing
+       no comments.
+\end{itemize}
+
+
+
+\section{Some Stuff From \protect\textbt{lingmacros.sty}}
+
+
+For instance, the following manner of displaying
+sentences\index{displayed sentences} or other kinds of examples of
+things was originally designed for linguistics documents, and we have
+found it to be generally useful in other sorts of documents as well.
+  \enumsentence{Peas\index{peas} porridge\index{porridge} hot.  Peas
+                porridge cold.\label{peas}}
+And then you can have enumerated items within such an enumerated
+example.
+
+ \eenumsentence{\item \shortex{3}
+        {kalk-n & apra & kpa-ra}
+        {sago pudding V SG-OBL & plate VII PL & big-VII PL}
+        {`big plates of sago pudding'}
+\toplabel{sago}
+ \item \shortex{1}
+        {pia-ka-tim{\'{\i}}}
+        {words O-1SG A-say}
+        {`I talked.'}
+ \item \shortex{1}
+        {na-mpu-wap{\'a}t-ncut}
+        {3SG O-3PL A-climb-RM PAST}
+        {`They climbed it (the tree).'}
+ \item \shortex{2}
+        {nan-{\'a}wkura-na & amtra}
+        {PL IMP-gather-IMP & food V PL}
+        {`Collect food!'}}
+
+The enumeration\index{enumeration} is taken care of automatically.
+And you can refer to such enumerated examples without having to keep
+track of or otherwise know which numbers they are assigned using
+the standard \LaTeX\ \texttt{\backslash label\braced{\,}} command or
+the non-standard \texttt{\backslash toplabel\braced{\,}} command.
+Look into the
+on-line file for this chapter to see how you are able to refer
+blindly to examples (\ref{peas}), (\ref{sago}).  A little bit
+extra to make sure of enough lines.
+
+
+
+\section{Some More Stuff}
+
+
+You can also produce attribute-value\index{AVMs@{\protect\smaller AVM}s}
+matrices, like this:
+ \begin{center}
+   \avm{alpha & beta \\
+        gamma & delta \\
+        epsilon & zeta}
+ \end{center}
+And various kinds of proof-trees are\index{proof trees}
+possible,\footnote{Here is a footnote.  Getting these proof trees to
+look good takes a lot of careful attention.} though\index{footnotes}
+there is a limit to how deeply these things can be embedded:
+
+ \[
+ \ddctn{A\quad \ddctn{B \land C}{D}}{E}
+ \]
+
+However, you might also want to look at the separate \texttt{avm.sty} style
+file by Christopher Manning.
+
+If you want\index{paragraph indentation} the first line of a block of
+text following such a display not to be indented, such as when the
+display occurs in the middle of a paragraph, then write
+\texttt{\backslash noindent} first thing at the start of the block of text.
+
+A table is included here as well.  Figures will appear at the tops of
+pages, and the caption is placed below the figure.  Tables also appear
+at the tops of pages, but the caption is placed above the body of the
+table.
+
+ \begin{table}[t]
+ \caption[Means, Medians, and Ranges (Experiment 2)]{ \\
+ Means, Medians, and Ranges of Twenty-four Correlations \\
+ Computed on Mean Ranks of Students' Choices Between \\
+ the Reference, Schelling, and Salience Tasks \\
+ \scriptsize (Experiment 2)}\label{mmr}
+ \begin{center}
+ {\footnotesize\advance\tabcolsep by.33em
+ \begin{tabular}{lccc}\hline\\[-2ex]
+ \sc Pairs of tasks& \sc Mean& \sc Median& \sc Range\\[.5ex]
+ \hline \\[-2ex]
+ Reference and Schelling tasks& .80& .89& 0.33--1.00\\
+ Reference and salience tasks& .80& .83& 0.27--1.00\\
+ Schelling and salience tasks& .84& .89& 0.21--1.00\\[.5ex]
+ \hline
+ \end{tabular}}
+ \end{center}
+ \end{table}
+
+
+And we really need to have enough stuff to take us onto another page.
+
+In the late autumn\index{autumn} of 1903, Professor
+R. Blondlot\index{Blondlot}, head of the
+Department of Physics at the University of Nancy, member of the French
+Academy, and widely known as an investigator, announced the discovery
+of a new ray, which he called N ray, with properties far transcending
+those of the x-rays.  Reading of his remarkable experiments, I
+attempted to repeat his observations, but failed to confirm them after
+wasting a whole morning. \dots
+
+Fuel was added by a score of other investigators. Twelve papers had
+appeared in the ``Comptes rendus'' before the year was out. \dots
+
+By early summer Blondlot had published twenty papers,
+Charpentier\index{Charpentier} twenty, and J.
+Becquerel\index{Becquerel} ten, all describing new properties and
+sources of the rays.
+
+Scientists in all other countries were frankly skeptical, but the
+French Academy stamped Blondlot's\index{Blondlot} work with its
+approval by awarding him the Lalande prize of 20,000 francs and its
+gold medal `for the discovery of the N rays.'
+
+[Excerpts from ``N rays'' by R. W. Wood,\index{Wood} in R. L.
+Weber,\index{Weber} \textit{A Random Walk in Science} (The Institute of
+Physics, London) 1973.  The article was, itself, a condensation of a
+piece in William Seabrook's \textit{Dr. Wood Modern Wizard of the Laboratory}
+(Harcourt Brace) 1941.  I chose this piece in response to the reports
+of the discovery ``cold fusion'' in Utah.]
+\nocite{wood:Nrays}
+\nocite{seabrook:wood}
+
+
+
+% The References section for this chapter is produced in ../example-ch01.tex
+
