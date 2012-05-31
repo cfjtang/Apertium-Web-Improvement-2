@@ -237,6 +237,11 @@ SELECT:Num-BOS-Nom-Viv Nom IF (0 Num)(-1 BOS OR Cm) (1* PassiveParticiple) ;
 SELECT:BOS-Passive=>Nom $$NUMBER + Nom (-1 BOS) (0 $$NUMBER) (1* PassiveParticiple BARRIER EOS) (1* VBSer + $$NUMBER BARRIER EOS) ;
     ## Tri žene su primljene...
 
+# For homographs "dan" == "day" or "given<m><sg>"
+# Select the noun reading if it's preceded by a beginning of a sentence or a modifier
+# TODO: to give "dati" usually goes with dative, so make a heuristic that will take appearances of dative around it into account
+SELECT:Modifier_dan→day ("<dan>"i) + N + $$GENDER + $$NUMBER + $$CASE IF ((-1 Modifier + $$GENDER + $$NUMBER + $$CASE) OR (-1 BOS))
+
 # Rules for passive:
 # Some simple rules:
 SELECT:numberFromLeft $$NUMBER (0 PassiveParticiple) (-1C VBSer + $$NUMBER)
