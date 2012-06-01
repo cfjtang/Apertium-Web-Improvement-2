@@ -50,6 +50,7 @@ public class TextContent extends Content{
     protected Set<Format> getValidFormats() {
         Set<Format> validFormats = new HashSet<Format>();
        validFormats.add(Format.txt);
+       validFormats.add(Format.latex);
        validFormats.add(Format.html);
        validFormats.add(Format.omegat);
        validFormats.add(Format.none);
