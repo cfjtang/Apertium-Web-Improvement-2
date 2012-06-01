@@ -63,6 +63,8 @@
 ;;; 
 ;;; 
 ;;; Plan / long term todo: 
+;;; - Switch default keybindings so they follow Emacs Key Bindings
+;;;   conventions
 ;;; - Yank into <i/l/r> or pardef n="" should replace spaces with either
 ;;;   a <b/> or a _
 ;;; - Functions shouldn't modify the kill-ring.
