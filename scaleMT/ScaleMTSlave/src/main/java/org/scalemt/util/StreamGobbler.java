@@ -1,3 +1,5 @@
+package org.scalemt.util;
+
 /*
  *  ScaleMT. Highly scalable framework for machine translation web services
  *  Copyright (C) 2009  Víctor Manuel Sánchez Cartagena
@@ -15,7 +17,6 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.scalemt.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
