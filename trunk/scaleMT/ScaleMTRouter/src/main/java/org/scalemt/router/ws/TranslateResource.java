@@ -181,7 +181,7 @@ public class TranslateResource {
                        if(originalTranslation.length()>0)
                        {
                            //originalTranslation=originalTranslation.substring(0, originalTranslation.length()-1)+" "+originalTranslation.substring(originalTranslation.length()-1);
-                           originalTranslation=originalTranslation+" ";
+                           originalTranslation=originalTranslation+" \n";
                        }
                        response.getJSONObject(Constants.JSON_RESPONSEDATA).put(Constants.JSON_TRANSLATEDTEXT, dummyTranslation);
                        responseDataStr=response.getJSONObject(Constants.JSON_RESPONSEDATA).toString().replace(dummyTranslation, originalTranslation);
