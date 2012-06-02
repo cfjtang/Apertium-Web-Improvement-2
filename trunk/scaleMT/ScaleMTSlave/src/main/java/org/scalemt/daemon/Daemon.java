@@ -1147,20 +1147,18 @@ public class Daemon {
 
         }
 
-        StringBuilder outputStr = new StringBuilder(memoryVars.get(-2).toString());
+        StringBuilder outputStr = new StringBuilder(new String(memoryVars.get(-2),"UTF-8"));
         if(!translationEngine.getTranslationCore().isSeparateAfterDeformat())
         {
             outputStr.delete(0, outputStr.indexOf("\n")+1);
             outputStr.delete(outputStr.lastIndexOf("\n"), outputStr.length());
-            memoryVars.put(-2,outputStr.toString().getBytes("UTF-8"));
-        }
-        /*
+        }        
         else
         {
             if(outputStr.charAt(outputStr.length()-1)=='\n')
                 outputStr.deleteCharAt(outputStr.length()-1);
-        }*/
-        
+        }
+        memoryVars.put(-2,outputStr.toString().getBytes("UTF-8"));
 
         if(inputBinary)
             element.setTranslation(new BinaryDocument(element.getFormat(), memoryVars.get(-2)));
