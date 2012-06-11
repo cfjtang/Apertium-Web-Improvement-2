@@ -54,8 +54,9 @@
 \setcounter{tocdepth}{0}  % 0 = chapters only in Contents, 1 = sections also.
 %\tableofcontents          % LaTeX at least twice for correct Table of Contents.
 
-\chapter{Introduction}
+\achapter{A rule-based machine translation system from Serbo-Croatian to Macedonian}{Hrvoje Peradin, Francis Tyers}
 
+\section*{Abstract}
 %\begin{abstract}
 This paper describes the development of a one-way machine translation system
 from Serbo-Croatian to Macedonian on the Apertium
@@ -64,6 +65,7 @@ Details of resources and development methods are given, as well as an
 evaluation, and general directives for future work.
 %\end{abstract}
 
+\section{Introduction}
 The modern Macedonian language was standardised in 1944. and
 is the official language of the Republic of Macedonia.
 
@@ -91,7 +93,7 @@ The language pair {\small{\tt apertium-sh-mk}}\footnote{\url{http://wiki.apertiu
 
 \mainmatter
 
-\chapter{The system}
+%\section{The system}
 \section{Design}
 \subsection* {The Apertium platform}
 \nocite{forcada2011apertium}
@@ -131,7 +133,8 @@ wiktionaries and Wikipedia, as well as an SETimes corpus\footnote{\url{http://op
 corpus composed from the Serbian, Bosnian, Croatian and Serbo-Croatian Wikipedias.
 
 Bilingual resources available were also scarce. We used a parallel corpus obtained from
-SETimes, and a Serbian--Macedonian on-line dictionary.\footnote{\url{http://rechnik.on.net.mk/}}
+SETimes, and a Serbian--Macedonian %on-line 
+dictionary.\footnote{\url{http://rechnik.on.net.mk/}}
 
 The morphological analyser/generator for Macedonian was taken from
 {\small{\tt apertium-mk-bg}} (\citealp{rangelov2011rule}), which is freely available under GNU GPL.
@@ -169,9 +172,11 @@ module.
 %has been developed in a limited time frame, and has relatively few rules (170).
 %Thus it has been used only as a pre-disambiguator for the HMM tagger.
 
+\pagebreak
 The following are examples of disambiguation rules:
+
 \begin{itemize}
-\item Preposition-based case disambiguation:%\nopagebreak
+\item Preposition-based case disambiguation:
 
 \enumsentence{
 ...u mojoj kući...
@@ -216,7 +221,7 @@ adjective, since the noun it agrees with does not have the neuter gender.
 The adjective is then left only with the singular reading and the second rule 
 proceeds to remove the plural reading from the noun.
 
-\pagebreak
+%\pagebreak
 
 \item Adverb / adjective ambiguity:
 
@@ -224,7 +229,7 @@ proceeds to remove the plural reading from the noun.
 
 On puno radi.
 
-[He] [full{\sc.(adj.nt.sg)/(adv)}] [works{\sc.vb}]
+[he] [full{\sc.(adj.nt.sg)/(adv)}] [works{\sc.vb}]
 
 (He works a lot.)
 }
@@ -233,6 +238,7 @@ On puno radi.
 
 This simple rule resolves a common ambiguity by selecting the adverb reading if the word is followed by a verb.
 
+\pagebreak 
 \item Dative / locative ambiguity:
 
 \enumsentence{
@@ -287,6 +293,8 @@ Macedonian uses a frozen clitic form, and the person/number is marked on the ver
 Thus several rules were written to match occurrences of future tense
 and transfer the information in translation.
 
+\pagebreak
+
 \item Clitic reordering:
 
 \enumsentence{
@@ -300,6 +308,8 @@ Okrenut ću se $\rightarrow$ \'{К}е се обрнам
 }
 
 The order of clitics in both languages is different, so a series of rules was written to rearrange them.
+
+%\pagebreak
 
 \item Cases as prepositional phrases:
 
@@ -323,7 +333,7 @@ The second level of transfer replaces simple noun and adjective phrases with pre
 U sastavu Vojske Srbije $\rightarrow$ Во составот на Српската војска\footnote{The article in Macedonian
 attaches to the first constituent of the noun phrase.}
 
-[in] [composition] [of Serbian Army] $\rightarrow$ [In] [composition{\sc.def}] [of Serbian Army]
+[in] [composition] [of Serbian Army] $\rightarrow$ [in] [composition{\sc.def}] [of Serbian Army]
 
 (In the composition of the Serbian Army)
 
@@ -496,7 +506,7 @@ their help on Apertium, to Tino Didriksen for his help on CG, to Tihomir Rangelo
 for his advice in the initial phase of this work, and to Dime Mitrevski
 for his input on the Macedonian language.
 
-\bibliographystyle {cslipubscollection/cslipubs-natbib}
+\bibliographystyle {cslipubs-natbib}
 \bibliography {apertium-sh-mk}
 
 \backmatter
