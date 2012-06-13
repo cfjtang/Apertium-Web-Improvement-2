@@ -46,6 +46,10 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apertium.Translator;
+import org.apertium.pipeline.Mode;
+import org.apertium.pipeline.Program;
+
 /*
  * See  http://wiki.apertium.org/wiki/Apertium-vju 
  */
@@ -73,7 +77,7 @@ public class ApertiumView extends FrameView {
 
             if (value instanceof Mode) {
               Mode m = (Mode) value;
-              renderer.setToolTipText( m.file.getPath());
+              renderer.setToolTipText(m.getFilename());
             }
             return renderer;
           }
@@ -83,7 +87,7 @@ public class ApertiumView extends FrameView {
             String mpref = prefs.get("modeFiles", null);
             if (mpref != null) {
                 for (String fn : mpref.split("\n")) {
-                    loadMode(new File(fn));
+                    loadMode(fn);
                 }
             } else {
                 warnUser("Welcome to Apertium-viewer.\nIt seems this is first time you run this program."
@@ -104,7 +108,7 @@ public class ApertiumView extends FrameView {
                 if (!fal.isEmpty()) {
                     for (File f : fal) {
                         if (f.getName().endsWith(".mode")) {
-                            loadMode(f);
+                            loadMode(f.getPath());
                         }
                     }
                     editModesMenuItemActionPerformed(null);
@@ -114,9 +118,9 @@ public class ApertiumView extends FrameView {
             
             if (modes.isEmpty()) {
                 warnUser("No language pairs could be loaded. Making a 'fake' mode.\nPlease use the File menu to install others.");
-                Mode m = new Mode();
+                /*Mode m = new Mode();
                 modes.add(m);
-                modesComboBox.addItem(m);                
+                modesComboBox.addItem(m);*/
             }
 
             int idx = prefs.getInt("modesComboBox", -1);
@@ -144,6 +148,11 @@ public class ApertiumView extends FrameView {
             System.exit(1);
         }
         
+        Translator.setCacheEnabled(true);
+        if (!Boolean.parseBoolean(prefs.get("externalProcessing", "false")) && !isLttoolboxJavaInstalled()) {
+            prefs.put("externalProcessing", Boolean.toString(true));
+            warnUser("lttoolbox-java is not installed in your machine. External processing will be used instead.\nFor a better performance, install lttoolbox-java and disable external processing at View -> Options.");
+        }
         
         startingUp = false;
         
@@ -237,6 +246,16 @@ public class ApertiumView extends FrameView {
         }
     };
 
+  private boolean isLttoolboxJavaInstalled() {
+      String cps =  System.getProperty("lttoolbox.jar");
+      File cp = new File(cps!=null? cps : "lttoolbox.jar");
+      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
+      return cp.exists();
+  }
+    
   private void addStoredText(final String s) {
       String menT = s.length()<4000? s : s.substring(0,40)+"...";
       JMenuItem mi = new JMenuItem(menT,storedTextsMenu.getMenuComponentCount()+1);
@@ -334,14 +353,14 @@ public class ApertiumView extends FrameView {
             return;
         }        
 
-        if (m.commandChain.length+1 != textWidgets.size()) {
+        if (m.getPipelineLength()+1 != textWidgets.size()) {
             // Number of text widgets are different, dispose all and regenerate
             lastSplitPane = jSplitPane1;
             jSplitPane1.setBottomComponent(null);
 
             TextWidget lastTextWidget = textWidget1;
             //lastTextWidget.textEditor.setFocusAccelerator('1');
-            textWidget1.setCommand("");
+            //textWidget1.setCommand("");
             textWidget1.priority = 0;
 
             // should dispose old GUI components here...
@@ -358,7 +377,7 @@ public class ApertiumView extends FrameView {
             } catch (Exception e) { e.printStackTrace(); }
               else jSplitPane1.setDividerLocation(60);
 
-            for (int i = 0; i < m.commandChain.length; i++) {
+            for (int i = 0; i < m.getPipelineLength(); i++) {
                 TextWidget tw = new TextWidget();
                 tw.textEditor.addKeyListener(switchFocus);
                 textWidgets.add(tw);
@@ -368,7 +387,7 @@ public class ApertiumView extends FrameView {
                 //lastTextWidget.textEditor.setFocusAccelerator((char)('0'+i+2));
                 lastTextWidget.textEditor.addFocusListener(scrollToVisibleFocusListener);
 
-                if (i < m.commandChain.length - 1) {
+                if (i < m.getPipelineLength() - 1) {
                     JSplitPane sp = new JSplitPane();
                     sp.setBorder(BorderFactory.createEmptyBorder());
                     sp.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -395,56 +414,48 @@ public class ApertiumView extends FrameView {
 
         }
 
-        TextWidget firstWithChangedCommand = null;
         TextWidget lastTextWidget = textWidget1;
 
-        for (int i = 0; i < m.commandChain.length; i++) {
-            String cmd = m.commandChain[i];            
-            cmd = cmd.replaceAll("\\$1", markUnknownWordsCheckBox.isSelected()?"-g":"-n");
-            cmd = cmd.replaceAll("\\$2", ""); // What is this $2 ??!??
-            cmd = cmd.replaceAll("\\$3", ""); // What is this $3 ??!??
+        for (int i = 0; i < m.getPipelineLength(); i++) {
+            Program p = m.getProgramByIndex(i);
             TextWidget tw = textWidgets.get(i+1);
-
-            if (!cmd.equals(tw.getCommand()) && firstWithChangedCommand==null) {
-                //System.out.println("cmd="+cmd + "  ==? "+tw.getCommand());
-                firstWithChangedCommand = lastTextWidget;
-            }
-            tw.setCommand(cmd);
+            tw.setProgram(p);
             lastTextWidget = tw;
         }
 
+        Pipeline.getPipeline().externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
+        if (Pipeline.getPipeline().externalProcessing) {
+            // Set the working directory of the mode. This is necesary in case the mode contains relative paths
+            // to (development) files
+            String workingDir = prefs.get("workingDir", "").trim();
+            if (!workingDir.isEmpty()) {
+              Pipeline.getPipeline().execPath  = new File(workingDir);
+            } else {
+              File parentFile = new File(m.getFilename()).getParentFile();
+              if (parentFile.getName().equals("modes"))
+                Pipeline.getPipeline().execPath  = parentFile.getParentFile();
+              else
+                Pipeline.getPipeline().execPath  = parentFile;
+            }
+            System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
+            //new Exception().printStackTrace();
 
-        // Set the working directory of the mode. This is necesary in case the mode contains relative paths
-        // to (development) files
-        String workingDir = prefs.get("workingDir", "").trim();
-        if (!workingDir.isEmpty()) {
-          Pipeline.getPipeline().execPath  = new File(workingDir);
-        } else {
-          if (m.file.getParentFile().getName().equals("modes"))
-            Pipeline.getPipeline().execPath  = m.file.getParentFile().getParentFile();
-          else
-            Pipeline.getPipeline().execPath  = m.file.getParentFile();
+            String envVars = prefs.get("envVars", "").trim();
+            Pipeline.getPipeline().envp = envVars.isEmpty()?null: envVars.split("\n");
+            System.err.println("Pipeline.getPipeline().envp = " + envVars);
+
+            Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
         }
-        System.err.println("Pipeline.getPipeline().execPath = " + Pipeline.getPipeline().execPath);
-        //new Exception().printStackTrace();
+
+        Pipeline.getPipeline().markUnknownWords = markUnknownWordsCheckBox.isSelected();
         
-        String envVars = prefs.get("envVars", "").trim();
-        Pipeline.getPipeline().envp = envVars.isEmpty()?null: envVars.split("\n");
-        System.err.println("Pipeline.getPipeline().envp = " + envVars);
-
-
-        Pipeline.getPipeline().ignoreErrorMessages = Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false"));
-
         // Set title to mode - easens window tabbing
-        ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer ("+m.name+")");
+        ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer ("+m+")");
 
 
         if (startingUp) return;
 
-        if (firstWithChangedCommand != null) {
-            //System.out.println("firstWithChangedCommand="+firstWithChangedCommand.priority + "  ==? "+firstWithChangedCommand.getText());
-            firstWithChangedCommand.textChg(true);
-        }
+        textWidget1.textChg(true);
         
     }
     
@@ -709,16 +720,18 @@ private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN
   Mode mode = (Mode) modesComboBox.getSelectedItem();
   String tooltip = "[No mode selected]";
   if (mode != null) {
-    tooltip = mode.file.getPath();
+    tooltip = mode.getFilename();
   }
   modesComboBox.setToolTipText(tooltip);
-  if (!startingUp) 
+  if (!startingUp) {
+    Translator.clearCache();
     showMode(mode);
+  }
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
     String mpref = "";
-    for (Mode mo : modes) mpref = mpref + mo.file+"\n";
+    for (Mode mo : modes) mpref = mpref + mo.getFilename()+"\n";
     JTextArea ta = new JTextArea(mpref);
     // Fix for Jimmy: On my system, in the 'edit list of modes' part, the list of modes is
     // longer than can be displayed on screen. I know I'm not the typical
@@ -738,14 +751,14 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
         modesComboBox.removeAllItems();
         mpref = ta.getText();
         for (String fn : mpref.split("\n")) {
-            loadMode(new File(fn));
+            loadMode(fn);
         }
         prefs.put("modeFiles", mpref);    
     }
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
 private void markUnknownWordsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsCheckBoxActionPerformed
-    showMode((Mode) modesComboBox.getSelectedItem());   
+    showMode((Mode) modesComboBox.getSelectedItem());
 }//GEN-LAST:event_markUnknownWordsCheckBoxActionPerformed
 
 private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsCheckBoxActionPerformed
@@ -800,11 +813,16 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOptions
   OptionsPanel op = new OptionsPanel();
+  op.externalProcessing.setEnabled(isLttoolboxJavaInstalled());
+  boolean externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
+  op.externalProcessing.setSelected(externalProcessing);
+  op.setExternalProcessingOptionsEnabled(externalProcessing);
   op.workingDirTextField.setText(prefs.get("workingDir", ""));
   op.envVarsTextArea.setText(prefs.get("envVars", ""));
   op.ignoreErrorMessages.setSelected(Boolean.parseBoolean(prefs.get("ignoreErrorMessages", "false")));
   int ret = JOptionPane.showConfirmDialog(mainPanel, op,"Edit Options", JOptionPane.OK_CANCEL_OPTION);
   if (ret == JOptionPane.OK_OPTION) {
+    prefs.put("externalProcessing", Boolean.toString(op.externalProcessing.isSelected()));
     prefs.put("workingDir", op.workingDirTextField.getText());
     prefs.put("envVars", op.envVarsTextArea.getText());
     prefs.put("ignoreErrorMessages", Boolean.toString(op.ignoreErrorMessages.isSelected()));
@@ -939,10 +957,10 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
             File fs[] = modeFileChooser.getSelectedFiles();
             //System.out.println("txt=" + fs.length);
             for (File f : fs)  {
-                loadMode(f);
+                loadMode(f.getPath());
             }
             String mpref = "";
-            for (Mode mo : modes) mpref = mpref + mo.file+"\n";
+            for (Mode mo : modes) mpref = mpref + mo.getFilename()+"\n";
             prefs.put("modeFiles", mpref);
         }
     }
@@ -989,20 +1007,15 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 	return new String(cb.array());
     }
 
-    
-    private void loadMode(File f) {
+
+    private void loadMode(String filename) {
         try {
-            String txt = legu(f).trim();
-            Mode m = new Mode();
-            m.commandChain = txt.split("\n")[0].split("\\|");
-            m.name = f.getName();
-            m.file = f;
-            //System.out.println("txt=" + txt);
+            Mode m = new Mode(filename);
             modes.add(m);
-            modesComboBox.addItem(m);            
+            modesComboBox.addItem(m);
         } catch (IOException ex) {
             Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
-            warnUser("Loading of mode "+f+" failed:\n\n"+ex.toString()+"\n\nContinuing without this mode.");
+            warnUser("Loading of mode "+filename+" failed:\n\n"+ex.toString()+"\n\nContinuing without this mode.");
         }
     }
 
@@ -1039,7 +1052,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
         }
 
         Mode mode = (Mode) modesComboBox.getSelectedItem();
-        String sourceLanguage = mode.name.split("-")[0];
+        String sourceLanguage = mode.toString().split("-")[0];
         
         String tottxt = "";
         for (int i=0; i<firstTxt.length; i++) {

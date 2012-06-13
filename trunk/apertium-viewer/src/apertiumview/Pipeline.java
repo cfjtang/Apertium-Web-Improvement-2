@@ -15,9 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
+import org.apertium.pipeline.Dispatcher;
+import org.apertium.pipeline.Program;
+
 public class Pipeline {
     private static Pipeline instance = new Pipeline();
 
+    public boolean externalProcessing;
+    public boolean markUnknownWords;
     public File execPath=null;
     public String[] envp=null;
     public boolean ignoreErrorMessages;
@@ -55,8 +60,8 @@ public class Pipeline {
         //System.out.println("q"+priority+" "+sourceWidget.getText());
         if (nextTask != null && nextTask.priority<priority) return;  // too low priority, ignore new task
 
-        if (task != null && task.startTime<System.currentTimeMillis()-5000) {
-          String err = "task probably runned amok, destroying: "+nextTask.execstr;
+        if (externalProcessing && task != null && task.startTime<System.currentTimeMillis()-5000) {
+          String err = "task probably runned amok, destroying: "+nextTask.program;
           System.out.println(err);
           task.proces.destroy(); // task probably runned amok
           task.recieverWidget.setText(err);
@@ -66,11 +71,11 @@ public class Pipeline {
 
         PipelineTask t = new PipelineTask();
         t.priority = priority;
-        t.execstr = recieverWidget.getCommand();
-        t.input = input;
+        t.program = recieverWidget.getProgram();
+        t.input = sourceWidget.getProgram() != null ? input : input + '\f';
         //new Exception(input).printStackTrace();
         //System.out.println("q"+priority+" "+t.execstr+" "+t.input);
-        if (t.input.length() > 0 && t.execstr.length()> 0) {
+        if (t.input.length() > 0) {
             t.recieverWidget = recieverWidget;
             synchronized (processor) {
                 nextTask = t;
@@ -94,46 +99,67 @@ public class Pipeline {
 
 
     private class PipelineTask implements Runnable {
-        private String execstr;
+        private Program program;
         private String input;
+        private TextWidget recieverWidget;
+        public int priority = Integer.MAX_VALUE;
+        
+        //Variables for external processing
         private BufferedReader std;
         private BufferedReader err;
         private OutputStreamWriter osw;
         private Process proces;
-        private TextWidget recieverWidget;
         public long startTime = System.currentTimeMillis();
-        public int priority = Integer.MAX_VALUE;
 
         public void run() {
           try {
             PipelineTask t = this;
-            t.proces = Runtime.getRuntime().exec(t.execstr, envp, execPath);
-
-            // For mac users UTF-8 is needed.
-            t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream(),"UTF-8"));
-            t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream(),"UTF-8"));
-            t.osw = new OutputStreamWriter(t.proces.getOutputStream(),"UTF-8");            
-
-/*
-            t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream()));
-            t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream()));
-            t.osw = new OutputStreamWriter(t.proces.getOutputStream());            
- */
-            osw.write(input,0,input.length());
-            osw.write('\n');
-            osw.close();
-            final StringBuffer outputsb = new StringBuffer(input.length()*2);
-            String lin;
-            while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
-            while ( (lin=err.readLine())!=null) if (!ignoreErrorMessages) outputsb.append("ERR:"+lin).append('\n');
-            while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
             
-            final int retval = proces.waitFor();
-            if (retval != 0) outputsb.append("Return value: "+retval);
-            err.close();
-            std.close();
-            task = null;
-            final String output = outputsb.toString().trim();
+            String output_;
+            int retval_;
+            if (!externalProcessing) {
+                try {
+                    StringWriter sw = new StringWriter();
+                    Dispatcher.dispatch(program, new StringReader(input), sw, false, markUnknownWords);
+                    retval_ = 0;
+                    output_ = sw.toString();
+                } catch (Exception e) {
+                    retval_ = -1;
+                    output_ = e.getLocalizedMessage();
+                }
+            }
+            else {
+                String cmd = t.program.toString();
+                cmd = cmd.replaceAll("\\$1", markUnknownWords ? "-g" : "-n");
+                cmd = cmd.replaceAll("\\$2", ""); // What is this $2 ??!??
+                cmd = cmd.replaceAll("\\$3", ""); // What is this $3 ??!??
+                
+                t.proces = Runtime.getRuntime().exec(cmd, envp, execPath);
+
+                // For mac users UTF-8 is needed.
+                t.std = new BufferedReader(new InputStreamReader(t.proces.getInputStream(),"UTF-8"));
+                t.err = new BufferedReader(new InputStreamReader(t.proces.getErrorStream(),"UTF-8"));
+                t.osw = new OutputStreamWriter(t.proces.getOutputStream(),"UTF-8");            
+
+                osw.write(input,0,input.length());
+                osw.write('\n');
+                osw.close();
+                final StringBuffer outputsb = new StringBuffer(input.length()*2);
+                String lin;
+                while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
+                while ( (lin=err.readLine())!=null) if (!ignoreErrorMessages) outputsb.append("ERR:"+lin).append('\n');
+                while ( (lin=std.readLine())!=null) outputsb.append(lin).append('\n');
+
+                retval_ = proces.waitFor();
+                if (retval_ != 0) outputsb.append("Return value: "+retval_);
+                err.close();
+                std.close();
+                task = null;
+                output_ = outputsb.toString().trim();
+            }
+            
+            final String output = output_;
+            final int retval = retval_;
             
             Runnable runnable = new Runnable() {
                 public void run() {

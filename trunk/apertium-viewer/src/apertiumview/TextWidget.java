@@ -33,6 +33,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import org.apertium.pipeline.Program;
+
 /**
  *
  * @author  j
@@ -217,7 +219,7 @@ public class TextWidget extends javax.swing.JPanel {
     JDialog zoomDialog;
     private void zoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomButtonActionPerformed
         if (zoomDialog==null) {
-            zoomDialog = new JDialog((Window)null,getCommand());
+            zoomDialog = new JDialog((Window)null,getProgram().toString());
             JTextComponent te = new HighlightTextEditor();
             te.setDocument(textEditor.getDocument());
             zoomDialog.add(new JScrollPane(te));
@@ -291,13 +293,16 @@ public class TextWidget extends javax.swing.JPanel {
     }
 
     
-    
-    public String getCommand() {
-        return commandTextField.getText();
+    private Program program;
+
+    public Program getProgram() {
+        return program;
     }
 
-    public void setCommand(String command) {
-        commandTextField.setText(command);
+    public void setProgram(Program program) {
+        this.program = program;
+        commandTextField.setText(program.toString());
         commandTextField.setCaretPosition(0);
     }
+
 }
