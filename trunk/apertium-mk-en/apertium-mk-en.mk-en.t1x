@@ -99,9 +99,31 @@
       <cat-item tags="vbhaver.pres"/>
       <cat-item tags="vbhaver.pres.*"/>
     </def-cat>
+
+	<def-cat n="v_perf">
+      <cat-item tags="vblex.perf.*"/>
+    </def-cat>
+
     <def-cat n="vbmod">
       <cat-item tags="vbmod.*"/>
     </def-cat>
+
+    <def-cat n="vbser">
+      <cat-item tags="vbser.*"/>
+    </def-cat>
+
+ 	<def-cat n="vbhaver">
+      <cat-item tags="vbhaver.*"/>
+    </def-cat>	
+
+ 	<def-cat n="vbhaver_pres">
+      <cat-item tags="vbhaver.pres.*"/>
+    </def-cat>
+
+ 	<def-cat n="vbhaver_past">
+      <cat-item tags="vbhaver.past.*"/>
+    </def-cat>
+
     <def-cat n="v_cop_fin_pres">
       <cat-item tags="vbser.pres.*"/>
     </def-cat>
@@ -128,10 +150,19 @@
       <cat-item tags="adj"/>
       <cat-item tags="adj.*"/>
     </def-cat>
+
     <def-cat n="prn_ref_clt">
-      <cat-item tags="prn.ref.pers.*"/>
+      <cat-item tags="prn.ref.clt.*"/>
+    </def-cat>
+
+	<def-cat n="prn_pos_clt">
+      <cat-item tags="prn.pos.clt.*"/>
+    </def-cat>
+
+	<def-cat n="prn_pers_clt">
       <cat-item tags="prn.pers.clt.*"/>
     </def-cat>
+
     <def-cat n="prn_ref_pos">
       <cat-item tags="prn.ref.pos.*"/>
     </def-cat>
@@ -4377,6 +4408,448 @@
       </action>
     </rule>
 
+	<!-- CLITIC RUES -->
+
+	<!-- размислува да се обиде -> considers trying -->
+    <rule comment="REGLA: vblex inf prn_clitic vblex">
+      <pattern>
+        <pattern-item n="vblex"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="prn_clitic"/>
+        <pattern-item n="vblex"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <var n="cur_v_person"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+			<b pos="1"/>
+			<lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+			  <lit-tag v="ger"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+	<!-- ми	jа 	покажа
+		 me her showed / showed her to me -->
+	<rule comment="REGLA: prn_pos_clt prn_pers_clt vblex">
+      <pattern>
+        <pattern-item n="prn_pos_clt"/>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vblex"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="3"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+			  <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="2" side="tl" part="pers"/>
+			  <clip pos="2" side="tl" part="gen"/>
+			  <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="to"/>
+			  <lit-tag v="pr"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+	<!-- тој ми	jа 	покажа
+		 he  me her showed / he showed her to me -->
+	<rule comment="REGLA: prn_pos_clt prn_pers_clt vblex">
+      <pattern>
+		<pattern-item n="prn_pers"/>
+        <pattern-item n="prn_pos_clt"/>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vblex"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="4"/>
+        </call-macro>
+		<call-macro n="prn_conv1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+			<lu>
+			  <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_prn"/>
+              <clip pos="1" side="tl" part="pers"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+		    <b/>
+            <lu>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_verb"/>
+			  <clip pos="4" side="tl" part="temps"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="3" side="tl" part="pers"/>
+			  <clip pos="3" side="tl" part="gen"/>
+			  <clip pos="3" side="tl" part="nbr"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="to"/>
+			  <lit-tag v="pr"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="2" side="tl" part="pers"/>
+			  <clip pos="2" side="tl" part="gen"/>
+			  <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+	<!-- ја покажаа куќата -> they showed the house -->
+	<rule comment="REGLA: prn_pers_clt vblex nom">
+      <pattern>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vblex"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<call-macro n="np_set_defnes2">
+          <with-param pos="3"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+            <lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+			  <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+		  <chunk name="n" case="caseFirstWord">
+		    <tags>
+               <tag><lit-tag v="SN"/></tag>
+              <tag><var n="np_chunk_s"/></tag>
+              <tag><var n="defin"/></tag>
+              <tag><clip pos="3" side="tl" part="nbr"/></tag>
+            </tags>
+  		    <b/>
+			<lu>
+			  <var n="np_chunk_h"/>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_nom"/>
+              <clip pos="3" side="tl" part="gen"/>
+              <clip pos="3" side="tl" part="nbr" link-to="4"/>
+              <clip pos="3" side="tl" part="lemq"/>
+              <var n="np_chunk_q"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+
+	<!-- ми ја покажаа куќата -> showed me the house -->
+	<rule comment="REGLA: prn_pos_clt prn_pers_clt vblex nom">
+      <pattern>
+        <pattern-item n="prn_pos_clt"/>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vblex"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="3"/>
+        </call-macro>
+		<call-macro n="np_set_defnes2">
+          <with-param pos="4"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+			  <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+          </chunk>
+		  <chunk name="n" case="caseFirstWord">
+		    <tags>
+               <tag><lit-tag v="SN"/></tag>
+              <tag><var n="np_chunk_s"/></tag>
+              <tag><var n="defin"/></tag>
+              <tag><clip pos="4" side="tl" part="nbr"/></tag>
+            </tags>
+  		    <b/>
+			<lu>
+			  <var n="np_chunk_h"/>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="gen"/>
+              <clip pos="4" side="tl" part="nbr" link-to="4"/>
+              <clip pos="4" side="tl" part="lemq"/>
+              <var n="np_chunk_q"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+
+	<!-- PERFECT -->
+
+	<!--  сум видел -> have seen
+		  бев видел -> had seen -->
+	<rule comment="REGLA: vbser v_perf">
+      <pattern>
+        <pattern-item n="vbser"/>
+        <pattern-item n="v_perf"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>   
+		<out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+			<lu>
+			  <lit v="have"/>
+			  <lit-tag v="vbhaver"/>
+			  <clip pos="1" side="tl" part="temps"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+		    <b/>
+			<lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+			  <lit-tag v="pp"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+	
+	<!-- ja бев видел -> had seen her
+		 сум видел -> have seen-->
+
+	<rule comment="REGLA: prn_pers_clt vbser v_perf">
+      <pattern>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vbser"/>
+        <pattern-item n="v_perf"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="3"/>
+        </call-macro>      		
+		<call-macro n="prn_conv1">
+          <with-param pos="1"/>
+        </call-macro>       
+   
+		<out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+			<lu>
+			  <lit v="have"/>
+			  <lit-tag v="vbhaver"/>
+			  <clip pos="2" side="tl" part="temps"/>
+			  <clip pos="3" side="tl" part="pers"/>
+			  <clip pos="3" side="tl" part="nbr"/>
+            </lu>
+		    <b/>
+			<lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+			  <lit-tag v="pp"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+	
+	<rule comment="REGLA: vbhaver v_perf">
+      <pattern>
+        <pattern-item n="vbhaver"/>
+        <pattern-item n="v_perf"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>   
+		<out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+			<lu>
+			  <lit v="have"/>
+			  <lit-tag v="vbhaver"/>
+			  <clip pos="1" side="tl" part="temps"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+		    <b/>
+			<lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+			  <lit-tag v="pp"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+		
+	<!-- ја имам видено -> have seen her
+		 ја имав видено -> had seen her -->
+
+	<rule comment="REGLA: prn_pers_clt vbhaver v_perf">
+      <pattern>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vbhaver"/>
+        <pattern-item n="v_perf"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="3"/>
+        </call-macro>      		
+		<call-macro n="prn_conv1">
+          <with-param pos="1"/>
+        </call-macro>       
+   
+		<out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+			<lu>
+			  <lit v="have"/>
+			  <lit-tag v="vbhaver"/>
+			  <clip pos="2" side="tl" part="temps"/>
+			  <clip pos="2" side="tl" part="pers"/>
+			  <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+		    <b/>
+			<lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+			  <lit-tag v="pp"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+	
 
   </section-rules>
 </transfer>
