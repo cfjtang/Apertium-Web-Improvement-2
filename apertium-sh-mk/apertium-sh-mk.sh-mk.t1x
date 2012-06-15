@@ -1323,7 +1323,7 @@
 <section-rules>
 <!--Rules for verbs-->
 <rule comment="regla: verb adv infinitive">
-<pattern><!-- Trebam dati -> треба да дадам -->
+<pattern><!-- Trebam dati -> треба да дадам (TODO: This is not for "Trebam dati -> Treba da dadam")-->
       <pattern-item n="verb"/>
       <pattern-item n="adv"/>      
       <pattern-item n="vbinf"/>
@@ -1367,7 +1367,7 @@
 </action>
 </rule>
 
-<rule comment="regla: ftI prnrefpers infinitive">
+<rule comment="regla: ftI prnrefpers infinitive"><!--TODO: Cover future negative, this has but others not-->
 <pattern><!-- ću se gledati ==> ќе се гледам -->
        <pattern-item n="vbfutI"/>
        <pattern-item n="prn_ref_pers"/>       
@@ -1399,6 +1399,53 @@
            <lu>
              <clip pos="3" side="tl" part="whole"/>
            </lu>           
+        </chunk>
+    </out>
+</action>
+</rule>
+
+<rule comment="regla: negftI prnrefpers infinitive">
+<pattern><!-- neću se gledati ==> нема да се гледам -->
+       <pattern-item n="ne_part"/>
+       <pattern-item n="vbfutI"/>
+       <pattern-item n="prn_ref_pers"/>       
+       <pattern-item n="vbinf"/>
+</pattern>
+<action>
+    <call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+    <call-macro n="prn_adapter"><with-param pos="3"/></call-macro>    
+    <call-macro n="verb_adapter"><with-param pos="4"/></call-macro>
+
+    <let><clip pos="4" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
+    <let><clip pos="4" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>    
+    <out>
+        <chunk name="negfti_prnrefpers_verbinf" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SV"/></tag>
+             <tag><clip pos="2" side="tl" part="prs"/></tag>
+             <tag><clip pos="2" side="tl" part="nbr"/></tag>
+           </tags>
+	   <lu>
+	     <lit v="нема"/>
+	     <lit-tag v="vbhaver"/>
+	     <lit-tag v="pres"/>
+	     <lit-tag v="p3"/>
+	     <lit-tag v="sg"/>                                                    
+	   </lu>
+	   <b pos="1"/>
+	   <lu>                  
+	     <lit v="да"/>
+	     <lit-tag v="part"/>
+	   </lu>                  
+	   <b pos="2"/>
+           <lu>
+             <clip pos="3" side="tl" part="whole"/>
+           </lu>
+           <b/>
+           <lu>
+             <clip pos="4" side="tl" part="whole"/>
+           </lu>
+           <b pos="3"/>           
         </chunk>
     </out>
 </action>
@@ -1694,7 +1741,7 @@
 
 
 <rule comment="regla: ne+ftI infinitive ">
-    <pattern><!--nikada neću zaboraviti => никогаш нема да заборавам-->
+    <pattern><!-- neću gledati =>  нема да гледам-->
         <pattern-item n="ne_part"/>
         <pattern-item n="vbfutI"/>
         <pattern-item n="vbinf"/>        
