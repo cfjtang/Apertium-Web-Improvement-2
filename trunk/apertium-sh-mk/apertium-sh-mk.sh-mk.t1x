@@ -1415,7 +1415,7 @@
       <pattern><!-- neću se gledati ==> нема да се гледам -->
 	<pattern-item n="ne_part"/>
 	<pattern-item n="vbfutI"/>
-	<pattern-item n="prn_ref_pers"/>       
+	<pattern-item n="prn_clt"/>       
 	<pattern-item n="vbinf"/>
       </pattern>
       <action>
@@ -1453,6 +1453,58 @@
 	      <clip pos="4" side="tl" part="whole"/>
 	    </lu>
 	    <b pos="3"/>           
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="regla: negftI prnrefpers infinitive">
+      <pattern><!-- neću joj ga gledati ==> нема да и го гледам -->
+	<pattern-item n="ne_part"/>
+	<pattern-item n="vbfutI"/>
+	<pattern-item n="prn_clt"/>       
+	<pattern-item n="prn_clt"/>       
+	<pattern-item n="vbinf"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="prn_adapter"><with-param pos="3"/></call-macro>    
+	<call-macro n="prn_adapter"><with-param pos="4"/></call-macro> 
+	<call-macro n="verb_adapter"><with-param pos="5"/></call-macro>
+
+	<let><clip pos="5" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
+	<let><clip pos="5" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>    
+	<out>
+	  <chunk name="negfti_prnrefpers_verbinf" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SV"/></tag>
+	      <tag><clip pos="2" side="tl" part="prs"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="нема"/>
+	      <lit-tag v="vbhaver"/>
+	      <lit-tag v="pres"/>
+	      <lit-tag v="p3"/>
+	      <lit-tag v="sg"/>                                                    
+	    </lu>
+	    <b pos="1"/>
+	    <lu>                  
+	      <lit v="да"/>
+	      <lit-tag v="part"/>
+	    </lu>                  
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="3"/>           
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="4"/>           
+	    <lu>
+	      <clip pos="5" side="tl" part="whole"/>
+	    </lu>
 	  </chunk>
 	</out>
       </action>
