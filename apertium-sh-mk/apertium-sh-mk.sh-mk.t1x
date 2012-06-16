@@ -1329,7 +1329,7 @@
 
   <section-rules>
     <!--Rules for verbs-->
-    <rule comment="regla: verb adv infinitive">
+    <rule comment="regla: verb adv vbinf">
       <pattern>
 	<pattern-item n="verb"/>
 	<pattern-item n="adv"/>      
@@ -1374,7 +1374,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: ftI prnrefpers infinitive"><!--TODO: Cover future negative, this has but others not-->
+    <rule comment="regla: vbftI prn_ref_pers vbinf"><!--TODO: Cover future negative, this has but others not-->
       <pattern><!-- ću se gledati ==> ќе се гледам -->
 	<pattern-item n="vbfutI"/>
 	<pattern-item n="prn_ref_pers"/>       
@@ -1388,7 +1388,7 @@
 	<let><clip pos="3" side="tl" part="prs"/><clip pos="1" side="sl" part="prs"/></let>
 	<let><clip pos="3" side="tl" part="nbr"/><clip pos="1" side="sl" part="nbr"/></let>    
 	<out>
-	  <chunk name="fti_prnrefpers_verbinf" case="caseFirstWord">
+	  <chunk name="fti_prn_ref_pers_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -1411,7 +1411,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: negftI prnrefpers infinitive">
+    <rule comment="regla: ne_part vbfutI prn_clt vbinf">
       <pattern><!-- neću se gledati ==> нема да се гледам -->
 	<pattern-item n="ne_part"/>
 	<pattern-item n="vbfutI"/>
@@ -1426,7 +1426,7 @@
 	<let><clip pos="4" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
 	<let><clip pos="4" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>    
 	<out>
-	  <chunk name="negfti_prnrefpers_verbinf" case="caseFirstWord">
+	  <chunk name="ne_part_vbfutI_prn_clt_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -1458,7 +1458,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: negftI prnrefpers infinitive">
+    <rule comment="regla: ne_part vbfutI prn_clt prn_clt vbinf">
       <pattern><!-- neću joj ga gledati ==> нема да и го гледам -->
 	<pattern-item n="ne_part"/>
 	<pattern-item n="vbfutI"/>
@@ -1475,7 +1475,7 @@
 	<let><clip pos="5" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
 	<let><clip pos="5" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>    
 	<out>
-	  <chunk name="negfti_prnrefpers_verbinf" case="caseFirstWord">
+	  <chunk name="ne_part_vbfutI_prn_clt_prn_clt_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -1510,7 +1510,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: ftI+infinitive">
+    <rule comment="regla: vbfutI vbinf">
       <pattern><!-- ću gledati ==> ќе гледам -->
 	<pattern-item n="vbfutI"/>
 	<pattern-item n="vbinf"/>
@@ -1521,7 +1521,7 @@
 	<let><clip pos="2" side="tl" part="prs"/><clip pos="1" side="sl" part="prs"/></let>
 	<let><clip pos="2" side="tl" part="nbr"/><clip pos="1" side="sl" part="nbr"/></let>    
 	<out>
-	  <chunk name="fti_verbinf" case="caseFirstWord">
+	  <chunk name="vbftI_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -1540,7 +1540,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: infinitive+ftI prnrefpers">
+    <rule comment="regla: vbinf ftI prn_ref_pers">
       <pattern><!-- okrenut ću se ==> ќе се обрнам -->
 	<pattern-item n="vbinf"/>
 	<pattern-item n="vbfutI"/>
@@ -1554,7 +1554,7 @@
 	<let><clip pos="1" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
 	<let><clip pos="1" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>    
 	<out>
-	  <chunk name="verb_cltfutI" case="caseFirstWord">
+	  <chunk name="vbinf_ftI_prn_ref_pers" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1577,7 +1577,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: infinitive+ftI">
+    <rule comment="regla: vbinf vbfutI">
       <pattern><!-- gledat ću ==> ќе гледам -->
 	<pattern-item n="vbinf"/>
 	<pattern-item n="vbfutI"/>
@@ -1589,7 +1589,7 @@
 	<let><clip pos="1" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
 	<let><clip pos="1" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>    
 	<out>
-	  <chunk name="verb_cltfutI" case="caseFirstWord">
+	  <chunk name="vbinf_vbfutI" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1608,7 +1608,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vb_treba_mora infinitive">
+    <rule comment="regla: vb_treba_mora vbinf">
       <pattern><!-- morate tjerati -> мора да терате -->
 	<pattern-item n="vb_treba_mora"/>
 	<pattern-item n="vbinf"/>
@@ -1620,7 +1620,7 @@
 	<let><clip pos="1" side="tl" part="prs"/><lit-tag v="p3"/></let>
 	<let><clip pos="1" side="tl" part="nbr"/><lit-tag v="sg"/></let>    
 	<out>
-	  <chunk name="verb_prn_inf" case="caseFirstWord">
+	  <chunk name="vb_treba_mora_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1650,7 +1650,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vb_treba_mora prn infinitive">
+    <rule comment="regla: vb_treba_mora prn vbinf">
       <pattern><!-- morate ih tjerati -> мора да ги терате -->
 	<pattern-item n="vb_treba_mora"/>
 	<pattern-item n="prn"/>      
@@ -1664,7 +1664,7 @@
 	<let><clip pos="1" side="tl" part="prs"/><lit-tag v="p3"/></let>
 	<let><clip pos="1" side="tl" part="nbr"/><lit-tag v="sg"/></let>    
 	<out>
-	  <chunk name="verb_prn_inf" case="caseFirstWord">
+	  <chunk name="vb_treba_mora_prn_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1698,7 +1698,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vb_treba_mora prn_clt prn_clt infinitive">
+    <rule comment="regla: vb_treba_mora prn_clt prn_clt vbinf">
       <pattern><!-- morate mu ga dati tjerati -> мора да му го дадете -->
 	<pattern-item n="vb_treba_mora"/>
 	<pattern-item n="prn_clt"/>
@@ -1714,7 +1714,7 @@
 	<let><clip pos="1" side="tl" part="prs"/><lit-tag v="p3"/></let>
 	<let><clip pos="1" side="tl" part="nbr"/><lit-tag v="sg"/></let>    
 	<out>
-	  <chunk name="verb_prn_inf" case="caseFirstWord">
+	  <chunk name="vb_treba_mora prn_clt prn_clt vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1752,7 +1752,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: prnrefpers ne vbmod infinitive">
+    <rule comment="regla: prn_ref_pers ne_part vbmod vbinf">
       <pattern><!-- se ne može usporediti -> не може да се спореди -->
 	<pattern-item n="prn_ref_pers"/>
 	<pattern-item n="ne_part"/>      
@@ -1764,7 +1764,7 @@
 	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
 	<call-macro n="verb_adapter"><with-param pos="4"/></call-macro>    
 	<out>
-	  <chunk name="prnref_ne_vbmod_inf" case="caseFirstWord">
+	  <chunk name="prn_ref_pers_ne_part_vbmod_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1805,7 +1805,7 @@
     </rule>
 
 
-    <rule comment="regla: prnrefpers vbmod infinitive">
+    <rule comment="regla: prn_ref_pers vbmod vbinf">
       <pattern><!-- se može usporediti -> може да се спореди -->
 	<pattern-item n="prn_ref_pers"/>
 	<pattern-item n="vbmod"/>
@@ -1816,7 +1816,7 @@
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
 	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>    
 	<out>
-	  <chunk name="prnref_vbmod_inf" case="caseFirstWord">
+	  <chunk name="prn_ref_pers_vbmod_inf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
