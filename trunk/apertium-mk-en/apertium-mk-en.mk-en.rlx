@@ -18,6 +18,7 @@ LIST Pcle = (part) ;
 LIST Copula = (vbser) ;
 LIST L-part = (lp) ;
 LIST P-part = (pp) ;
+LIST exp = (exp) ;
 
 LIST Pers = (pers) ;
 LIST Dem = (dem) ;
@@ -77,6 +78,10 @@ SET STRICT-S-BOUNDARY  = ("\;") OR (":") OR ("\.") OR ("\!") OR ("\?");
 
 SECTION
 
+SELECT Prs IF (0 Prs) (0 Aor) (-1 exp) ;
+
+SELECT Aor IF (0 Prs) (0 Aor) ;
+
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
 	## Даниел, студент од Бања Лука, вели дека нема намера да ја напушти БиХ.
@@ -101,8 +106,6 @@ SELECT:r8 V-IND-FIN (0 V-IND-FIN) (0 Pron) (NOT -1* V-IND-FIN BARRIER S-BOUNDARY
 
 REMOVE:r9 Pron IF (0 Pron) (0 A + $$NUMBER) (1C N + $$NUMBER) ;
 	## На сите места добивав ист одговор Не.
-
-
 
 REMOVE:r4 Imprt IF (-1* REL-OR-ITG BARRIER S-BOUNDARY) ;
 
@@ -208,7 +211,6 @@ SELECT:r38 A IF (0 A + Neu) (0 Adv) (1C N + Neu);
 	
 SELECT:r40 Adv IF (0 A + Neu) (0 Adv) (-1C V) (NOT 1C N + Neu);
 	# тој пее убаво
-
 
 
 ###############################################################################
