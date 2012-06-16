@@ -1852,7 +1852,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vblex infinitive">
+    <rule comment="regla: verb vbinf">
       <pattern>
 	<pattern-item n="verb"/>
 	<pattern-item n="vbinf"/>
@@ -1862,7 +1862,7 @@
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>        
 
 	<out>
-	  <chunk name="verb_inf" case="caseFirstWord">
+	  <chunk name="verb_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1892,10 +1892,10 @@
       </action>
     </rule>
 
-    <rule comment="regla: vblex prn_clt infinitive">
+    <rule comment="regla: verb prn vbinf">
       <pattern><!--hoćemo ga gledati => сакаме да го гледаме-->
 	<pattern-item n="verb"/>
-	<pattern-item n="prn_clt"/>              
+	<pattern-item n="prn"/>              
 	<pattern-item n="vbinf"/>
       </pattern>
       <action>
@@ -1904,7 +1904,7 @@
 	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>        
 
 	<out>
-	  <chunk name="verb_inf" case="caseFirstWord">
+	  <chunk name="verb_prn_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1938,7 +1938,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vblex prn_clt prn_clt infinitive">
+    <rule comment="regla: vblex prn_clt prn_clt vbinf">
       <pattern><!--hoćemo mu ga dati => сакаме да му го дадеме-->
 	<pattern-item n="verb"/>
 	<pattern-item n="prn_clt"/>              
@@ -1951,7 +1951,7 @@
 	<call-macro n="prn_adapter"><with-param pos="3"/></call-macro>        
 	<call-macro n="verb_adapter"><with-param pos="4"/></call-macro>        
 	<out>
-	  <chunk name="verb_inf" case="caseFirstWord">
+	  <chunk name="verb_prn_clt_prn_clt_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -1991,7 +1991,7 @@
 
 
 
-    <rule comment="regla: ne+ftI infinitive ">
+    <rule comment="regla: ne_part vbfutI vbinf ">
       <pattern><!-- neću gledati =>  нема да гледам-->
         <pattern-item n="ne_part"/>
         <pattern-item n="vbfutI"/>
@@ -2004,7 +2004,7 @@
         <let><clip pos="3" side="tl" part="prs"/><clip pos="2" side="sl" part="prs"/></let>
         <let><clip pos="3" side="tl" part="nbr"/><clip pos="2" side="sl" part="nbr"/></let>        
         <out>
-	  <chunk name="neftI_inf" case="caseFirstWord">
+	  <chunk name="ne_part_vbfutI_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2031,7 +2031,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: ne+vbser_past lp infinitive">
+    <rule comment="regla: ne_part vbser_past vblex_lp vbinf">
       <pattern>
         <pattern-item n="ne_part"/>
         <pattern-item n="vbser_past"/>
@@ -2043,7 +2043,7 @@
         <call-macro n="verb_adapter"><with-param pos="3"/></call-macro>                
         <call-macro n="verb_adapter"><with-param pos="4"/></call-macro>            
         <out>
-	  <chunk name="nevbserpast_lp_inf" case="caseFirstWord">
+	  <chunk name="ne_part_vbser_past_vblex_lp_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2087,7 +2087,7 @@
       </action>
     </rule>
     
-    <rule comment="regla: vbser lp infinitive">
+    <rule comment="regla: vbser_past vblex_lp vbinf">
       <pattern>
         <pattern-item n="vbser_past"/>
         <pattern-item n="vblex_lp"/>
@@ -2098,7 +2098,7 @@
         <call-macro n="verb_adapter"><with-param pos="2"/></call-macro>    
         <call-macro n="verb_adapter"><with-param pos="3"/></call-macro>            
         <out>
-	  <chunk name="vbser_lp_inf" case="caseFirstWord">
+	  <chunk name="vbser_past_vblex_lp_vbinf" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -2136,7 +2136,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vbser_past li lp">
+    <rule comment="regla: vbser_past_emph li_part vb_lp">
       <pattern>
         <pattern-item n="vbser_past_emph"/>
         <pattern-item n="li_part"/>
@@ -2146,7 +2146,7 @@
         <call-macro n="verb_adapter"><with-param pos="1"/></call-macro>    
         <call-macro n="verb_adapter"><with-param pos="3"/></call-macro>            
         <out>
-	  <chunk name="vbser_li_lp" case="caseFirstWord">
+	  <chunk name="vbser_past_emph_li_part_vb_lp" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -2172,7 +2172,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vbser lp">
+    <rule comment="regla: vbser_past vblex_lp">
       <pattern>
         <pattern-item n="vbser_past"/>
         <pattern-item n="vblex_lp"/>
@@ -2181,7 +2181,7 @@
         <call-macro n="verb_adapter"><with-param pos="1"/></call-macro>    
         <call-macro n="verb_adapter"><with-param pos="2"/></call-macro>    
         <out>
-	  <chunk name="vbser_lp" case="caseFirstWord">
+	  <chunk name="vbser_past_vblex_lp" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -2203,7 +2203,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vbser n lp">
+    <rule comment="regla: vbser_past nom vblex_lp">
       <pattern>
         <pattern-item n="vbser_past"/>
         <pattern-item n="nom"/>
@@ -2214,7 +2214,7 @@
         <call-macro n="noun_adapter"><with-param pos="2"/></call-macro>        
         <call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
         <out>
-	  <chunk name="vbser_n_lp" case="caseFirstWord">
+	  <chunk name="vbser_past_nom_vblex_lp" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="prs"/></tag>
@@ -2245,7 +2245,7 @@
       </action>
     </rule>
     
-    <rule comment="regla: lp vbser">
+    <rule comment="regla: vblex_lp vbser_past">
       <pattern>
         <pattern-item n="vblex_lp"/>
         <pattern-item n="vbser_past"/>
@@ -2254,7 +2254,7 @@
 	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
         <out>
-	  <chunk name="lp_vbser" case="caseFirstWord">
+	  <chunk name="vblex_lp_vbser_past" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2275,8 +2275,8 @@
         </out>
       </action>
     </rule>
-
-    <rule comment="regla: lp cond">
+<!--TODO: names cleanup from here downwards-->
+    <rule comment="regla: vblex_lp vbser_cond">
       <pattern>
         <pattern-item n="vblex_lp"/>
         <pattern-item n="vbser_cond"/>
@@ -2285,7 +2285,7 @@
 	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
         <out>
-	  <chunk name="lp_cond" case="caseFirstWord">
+	  <chunk name="vblex_lp_vbser_cond" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2304,7 +2304,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: kako cond lp">
+    <rule comment="regla: kako_adv vbser_cond vb_lp">
       <pattern><!--Kako bi proslavili => За да прослават-->
         <pattern-item n="kako_adv"/>
         <pattern-item n="vbser_cond"/>
@@ -2328,7 +2328,7 @@
 	  </concat>
 	</let>
         <out>
-	  <chunk name="kako_cond_lp" case="caseFirstWord">
+	  <chunk name="kako_adv_vbser_cond_vb_lp" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2354,7 +2354,7 @@
     </rule>
 
 
-    <rule comment="regla: cond lp ">
+    <rule comment="regla: vbser_cond vblex_lp ">
       <pattern>
         <pattern-item n="vbser_cond"/>
         <pattern-item n="vblex_lp"/>
@@ -2363,7 +2363,7 @@
 	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
         <out>
-	  <chunk name="cond_lp" case="caseFirstWord">
+	  <chunk name="vbser_cond_vblex_lp" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2382,7 +2382,7 @@
       </action>
     </rule>
 
-    <rule comment="regla: vbser-lp vbser">
+    <rule comment="regla: vbser_lp vbser_past">
       <pattern>
         <pattern-item n="vbser_lp"/>
         <pattern-item n="vbser_past"/>
@@ -2391,7 +2391,7 @@
         <call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
         <call-macro n="verb_adapter"><with-param pos="2"/></call-macro>        
         <out>
-	  <chunk name="vbserlp_vbser" case="caseFirstWord">
+	  <chunk name="vbser_lp_vbser_past" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="2" side="tl" part="prs"/></tag>
@@ -2413,13 +2413,13 @@
       </action>
     </rule>
 
-    <rule comment="regla: ne">
+    <rule comment="regla: ne_part">
       <pattern>
 	<pattern-item n="ne_part"/>
       </pattern>
       <action>
 	<out>
-	  <chunk name="ne" case="caseFirstWord">        
+	  <chunk name="ne_part" case="caseFirstWord">        
 	    <tags>
 	      <tag><lit-tag v="Part"/></tag>
 	    </tags>
@@ -2438,7 +2438,7 @@
       <action>
 	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
 	<out>
-	  <chunk name="verbpp" case="caseFirstWord">
+	  <chunk name="vbpp" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
               <tag><clip pos="1" side="tl" part="tns"/></tag>
