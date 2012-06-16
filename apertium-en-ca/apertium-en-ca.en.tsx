@@ -870,6 +870,10 @@
       <label-item label="DETQNT_ORD"/>
     </label-sequence>
 
+    <label-sequence>
+      <label-item label="THATCNJ"/>
+      <label-item label="SENT"/>
+    </label-sequence>
 
 
  </forbid>
