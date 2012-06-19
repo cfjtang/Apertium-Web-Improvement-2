@@ -68,6 +68,7 @@
       <cat-item lemma="нема" tags="vbhaver.pres.*"/>
       <cat-item lemma="нема" tags="vbhaver.pii.*"/>
       <cat-item lemma="нема" tags="vbhaver.aor.*"/>
+      <cat-item lemma="нема" tags="vbhaver.lp.*"/>
     </def-cat>
     <def-cat n="imprt">
       <cat-item tags="vblex.*.*.imp.*"/>
@@ -258,10 +259,21 @@
       <cat-item lemma="да" tags="part"/>
       <cat-item lemma="да" tags="part.*"/>
     </def-cat>
+
     <def-cat n="exp">
       <cat-item lemma="ќе" tags="part.*"/>
     </def-cat>
-    <def-cat n="vblex">
+    
+	<def-cat n="at_age_of">
+      <cat-item lemma="на возраст од" tags="adv"/>
+      <cat-item lemma="на возраст од" tags="adv.*"/>
+    </def-cat>
+	
+	<def-cat n="year">
+      <cat-item lemma="година" tags="n.*"/>
+    </def-cat>
+
+	<def-cat n="vblex">
       <cat-item tags="vblex.*"/>
     </def-cat>
   </section-def-cats>
@@ -1077,6 +1089,34 @@
     <!-- Sintagmas nominales -->
 
 	
+	
+    <rule comment="REGLA: at_age_of num year">
+      <pattern>
+        <pattern-item n="at_age_of"/>
+        <pattern-item n="num"/>
+        <pattern-item n="year"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="d" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SA"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_adv"/>
+            </lu>        
+			<b/>
+			<lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_num"/>
+            </lu>        
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: prn_ref_pos">
       <pattern>
         <pattern-item n="prn_ref_pos"/>
@@ -2005,6 +2045,7 @@
         </call-macro>
       </action>
     </rule>
+
     <rule comment="REGLA: не-nom">
       <pattern>
         <pattern-item n="ne"/>
@@ -2858,7 +2899,7 @@
               <tag><lit-tag v="SN"/></tag>
               <tag><var n="np_chunk_s"/></tag>
               <tag><var n="defin"/></tag>
-              <tag><clip pos="2" side="tl" part="nbr"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
             <lu>
               <var n="np_chunk_h"/>
@@ -2872,6 +2913,7 @@
             <lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_nom"/>
+			  <clip pos="2" side="tl" part="gen"/>
               <clip pos="2" side="tl" part="nbr"/>
               <clip pos="2" side="tl" part="lemq"/>
             </lu>
@@ -3249,6 +3291,164 @@
         </out>
       </action>
     </rule>
+
+    <rule comment="REGLA: vbhaver_fin_neg да prn_pers_clt v_fin">
+      <pattern>
+        <pattern-item n="vbhaver_fin_neg"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="v_fin"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<out>
+		  <chunk name="v" case="caseFirstWord">
+          	<tags>
+            	<tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <lit v="will"/>
+              <lit-tag v="vaux.inf"/>
+            </lu>
+			<b/>
+			<lu>
+			  <lit v="not"/>
+			  <lit-tag v="adv"/>
+			</lu>
+          </chunk>
+		</out>
+		<choose>
+		  <when>
+			<test>
+			  <equal>
+				<clip pos="1" side="tl" part="temps"/>
+				<lit-tag v="past"/>
+			  </equal>
+			</test>
+			<out>
+			  <chunk name="v" case="caseFirstWord">
+           		<tags>
+              	  <tag><lit-tag v="SV"/></tag>
+                </tags>
+				<b/>
+                <lu>
+                  <lit v="have"/>
+                  <lit-tag v="vbhaver.inf"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="4" side="tl" part="lemh"/>
+                  <clip pos="4" side="tl" part="a_verb"/>
+                  <lit-tag v="pp"/>
+                  <clip pos="4" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+			</out>
+		  </when>
+		  <otherwise>
+			<out>
+			  <chunk name="v" case="caseFirstWord">
+           		<tags>
+                  <tag><lit-tag v="SV"/></tag>
+                </tags>
+				<b/>
+                <lu>
+                  <clip pos="4" side="tl" part="lemh"/>
+                  <clip pos="4" side="tl" part="a_verb"/>
+                  <lit-tag v="pres"/>
+                  <clip pos="4" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+		  </otherwise>
+		</choose>
+      </action>
+    </rule>
+
+	
+	<!-- TODO: deal with the clitic -->
+    <rule comment="REGLA: vbhaver_fin_neg да prn_pers_clt v_fin">
+      <pattern>
+        <pattern-item n="vbhaver_fin_neg"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="v_fin"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<out>
+		  <chunk name="v" case="caseFirstWord">
+          	<tags>
+            	<tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <lit v="will"/>
+              <lit-tag v="vaux.inf"/>
+            </lu>
+			<b/>
+			<lu>
+			  <lit v="not"/>
+			  <lit-tag v="adv"/>
+			</lu>
+          </chunk>
+		</out>
+		<choose>
+		  <when>
+			<test>
+			  <equal>
+				<clip pos="1" side="tl" part="temps"/>
+				<lit-tag v="past"/>
+			  </equal>
+			</test>
+			<out>
+			  <chunk name="v" case="caseFirstWord">
+           		<tags>
+              	  <tag><lit-tag v="SV"/></tag>
+                </tags>
+				<b/>
+                <lu>
+                  <lit v="have"/>
+                  <lit-tag v="vbhaver.inf"/>
+                </lu>
+                <b/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <lit-tag v="pp"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+			</out>
+		  </when>
+		  <otherwise>
+			<out>
+			  <chunk name="v" case="caseFirstWord">
+           		<tags>
+                  <tag><lit-tag v="SV"/></tag>
+                </tags>
+				<b/>
+                <lu>
+                  <clip pos="3" side="tl" part="lemh"/>
+                  <clip pos="3" side="tl" part="a_verb"/>
+                  <lit-tag v="pres"/>
+                  <clip pos="3" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+		  </otherwise>
+		</choose>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: vbmod">
       <pattern>
@@ -3856,8 +4056,8 @@
 		  <when>
 		    <test>	
 			  <equal>
-	            <clip pos="2" side="tl" part="temps"/> 
-				<lit v="pres"/>
+	            <clip pos="2" side="sl" part="temps"/> 
+				<lit-tag v="pres"/>
 			  </equal>
 			</test>
 		    <out>
@@ -3908,13 +4108,13 @@
 		            <clip pos="1" side="tl" part="lemh"/>
 		          </get-case-from>
 		          <clip pos="1" side="tl" part="a_adv"/>
-		          <clip pos="1" side="tl" part="lemq"/>
 		        </lu>
 				<b/>
 		        <lu>
 		          <lit v="have"/>
   		          <lit-tag v="vbhaver"/>
   		          <lit-tag v="pres"/>
+		          <clip pos="1" side="tl" part="lemq"/>
 		        </lu>
 		      </chunk>
 		    </out>
@@ -3934,12 +4134,56 @@
         <call-macro n="conv_verb_tense1">
           <with-param pos="2"/>
         </call-macro>
+		  <out>
+		    <chunk name="v" case="caseFirstWord">
+		      <tags>
+		        <tag><lit-tag v="SV"/></tag>
+		      </tags>
+		      <lu>
+		        <get-case-from pos="1">
+		          <clip pos="2" side="tl" part="lemh"/>
+		        </get-case-from>
+		        <clip pos="2" side="tl" part="a_verb"/>
+		        <clip pos="2" side="tl" part="temps"/>
+		        <clip pos="2" side="tl" part="pers"/>
+		        <clip pos="2" side="tl" part="nbr"/>
+		        <clip pos="2" side="tl" part="lemq"/>
+		      </lu>
+		      <b pos="1"/>
+		      <lu>
+		        <get-case-from pos="2">
+		          <clip pos="1" side="tl" part="lemh"/>
+		        </get-case-from>
+		        <clip pos="1" side="tl" part="a_adv"/>
+		        <clip pos="1" side="tl" part="lemq"/>
+		      </lu>
+		    </chunk>
+	    </out>
+      </action>
+    </rule>
+
+	
+	<rule comment="REGLA: не треба да prn_ref_pers">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="treba"/>
+        <pattern-item n="inf"/>
+        <pattern-item n="prn_ref_pers"/>
+        <pattern-item n="v_fin"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="5"/>
+        </call-macro>
 		<choose>
 		  <when>
 		    <test>	
 			  <equal>
-	            <clip pos="2" side="tl" part="temps"/> 
-				<lit v="pres"/>
+	            <clip pos="2" side="sl" part="temps"/> 
+				<lit-tag v="pres"/>
 			  </equal>
 			</test>
 		    <out>
@@ -3964,6 +4208,11 @@
 		          </get-case-from>
 		          <clip pos="1" side="tl" part="a_adv"/>
 		          <clip pos="1" side="tl" part="lemq"/>
+		        </lu>
+				<b/>
+				<lu>
+		          <lit v="be"/>
+  		          <lit-tag v="vbser.inf"/>
 		        </lu>
 		      </chunk>
 		    </out>
@@ -3990,61 +4239,39 @@
 		            <clip pos="1" side="tl" part="lemh"/>
 		          </get-case-from>
 		          <clip pos="1" side="tl" part="a_adv"/>
-		          <clip pos="1" side="tl" part="lemq"/>
 		        </lu>
 				<b/>
 		        <lu>
 		          <lit v="have"/>
   		          <lit-tag v="vbhaver"/>
   		          <lit-tag v="pres"/>
+		          <clip pos="1" side="tl" part="lemq"/>
+		        </lu>
+				<b/>
+				<lu>
+		          <lit v="be"/>
+  		          <lit-tag v="vbser.pp"/>
 		        </lu>
 		      </chunk>
 		    </out>
-
 		  </otherwise>
 		</choose>
-      </action>
-    </rule>
-
-    <rule comment="REGLA: не може да prn_clitic v_pres">
-      <pattern>
-        <pattern-item n="ne"/>
-        <pattern-item n="može"/>
-        <pattern-item n="inf"/>
-        <pattern-item n="prn_clitic"/>
-        <pattern-item n="v_pres"/>
-      </pattern>
-      <action>
-        <call-macro n="conv_verb_tense1">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="v" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SV"/></tag>
-            </tags>
-            <lu>
-              <get-case-from pos="1">
-                <lit v="can"/>
-              </get-case-from>
-              <lit-tag v="vaux.pres"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_adv"/>
-              <clip pos="1" side="tl" part="lemq"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
+		<out>
+		  <chunk name="v" case="caseFirstWord">
+		    <tags>
+		      <tag><lit-tag v="SV"/></tag>
+		    </tags>
+			<b/>
+			<lu>
               <clip pos="5" side="tl" part="lemh"/>
               <clip pos="5" side="tl" part="a_verb"/>
-              <lit-tag v="inf"/>
+              <lit-tag v="past"/>
               <clip pos="5" side="tl" part="lemq"/>
             </lu>
-          </chunk>
-        </out>
+		  </chunk>
+		</out>
       </action>
+
     </rule>
 
     <rule comment="REGLA: не би треба да v_pres">
@@ -4892,8 +5119,18 @@
       </action>
     </rule>
 
-	<!-- CLITIC RUES -->
+	<!-- preposition rules -->
+	
+	<!-- CLITIC RULES -->
 
+	<rule comment="REGLA: prn_ref_pers">
+      <pattern>
+        <pattern-item n="prn_ref_pers"/>
+      </pattern>
+      <action>
+        
+      </action>
+    </rule>
 	
 	<!-- VERB PATTERNS -->
 
