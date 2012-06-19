@@ -19,6 +19,7 @@ LIST Copula = (vbser) ;
 LIST L-part = (lp) ;
 LIST P-part = (pp) ;
 LIST exp = (exp) ;
+LIST ij = (ij) ;
 
 LIST Pers = (pers) ;
 LIST Dem = (dem) ;
@@ -72,13 +73,27 @@ SET REL-OR-ITG = (prn rel) OR (prn itg) ;
 SET N-OR-PROP = N OR Prop ;
 SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") OR CS OR ("\.") OR ("\!") OR ("\?");
 SET STRICT-S-BOUNDARY  = ("\;") OR (":") OR ("\.") OR ("\!") OR ("\?");
+
+LIST Day = ("понеделник") ("вторник") ("среда") ("четврток") ("петок") ("сабота") ("недела") ;
+
+
 ###############################################################################
 #  Morphological disambiguation
 #
 
 SECTION
 
+SELECT Prs IF (0 Prs) (0 Aor) (-1 ij) ;
+
 SELECT Prs IF (0 Prs) (0 Aor) (-1 exp) ;
+
+SELECT Prs IF (0 Prs) (0 Aor) (-2 ij) ;
+
+SELECT Prs IF (0 Prs) (0 Aor) (-2 exp) ;
+
+SELECT Prs IF (0 Prs) (0 Aor) (-3 ij) ;
+
+SELECT Prs IF (0 Prs) (0 Aor) (-3 exp) ;
 
 SELECT Aor IF (0 Prs) (0 Aor) ;
 
