@@ -47,7 +47,7 @@ contlex_bidix = {
 };
 
 def sym(s): #{
-	return s.replace('<b/>', '% ').replace('<g>', '#').replace('</g>','').replace('<s n="', '<').replace('"/>', '>');
+	return s.replace('<b/>', '% ').replace('<g>', '#').replace('</g>','').replace('<s n="', '<').replace('"/>', '>').replace('-', '%-');
 #}
 
 def lem(s): #{
@@ -120,6 +120,7 @@ def trim(ifile, stems, ofile): #{
 	#}
 	# Maybe put a 'blame' here. E.g. username who performed the trimming, date etc.
 	print('!', output, '/', total, file=sys.stderr);
+	of.close();
 #}	
 
 ### Main
@@ -139,7 +140,7 @@ lstems = {};
 rstems = {};
 
 for line in open(bidix).readlines(): #{
-	if line.count('<e') < 1: #{
+	if line.count('<e') < 1 or line.count('<!--<e') > 0: #{
 		continue;
 	#}
 	row = line.replace('<l>', '|').replace('</l>', '|').replace('<r>', '|').replace('</r>', '|').split('|');
