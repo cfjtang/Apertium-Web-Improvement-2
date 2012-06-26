@@ -29,6 +29,9 @@
     <def-cat n="top">
       <cat-item tags="np.top.*"/>
     </def-cat>
+	<def-cat n="org">
+      <cat-item tags="np.org.*"/>
+    </def-cat>
     <def-cat n="nom">
       <cat-item tags="n.*"/>
       <cat-item tags="np.*"/>
@@ -328,6 +331,7 @@
       <attr-item tags="n.acr"/>
       <attr-item tags="np"/>
       <attr-item tags="np.top"/>
+      <attr-item tags="np.org"/>
       <attr-item tags="np.al"/>
       <attr-item tags="np.cog"/>
       <attr-item tags="np.ant"/>
@@ -1440,6 +1444,31 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: org">
+      <pattern>
+        <pattern-item n="org"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="org" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><clip pos="1" side="tl" part="syn"/></tag>
+              <tag><lit-tag v="ORG"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+	
     <rule comment="REGLA: num">
       <pattern>
         <pattern-item n="num"/>
@@ -2169,8 +2198,6 @@
       </action>
     </rule>
 
-
-
     <rule comment="REGLA: num pref adj">
       <pattern>
         <pattern-item n="num"/>
@@ -2881,53 +2908,6 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: nom nom">
-      <pattern>
-        <pattern-item n="nom"/>
-        <pattern-item n="nom"/>
-      </pattern>
-      <action>
-   	    <call-macro n="np_set_defnes1">
-          <with-param pos="1"/>
-		</call-macro>
-		<call-macro n="np_set_defnes1">
-          <with-param pos="2"/>
-		</call-macro>
-        <out>
-          <chunk namefrom="np_chunk_n" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><var n="np_chunk_s"/></tag>
-              <tag><var n="defin"/></tag>
-              <tag><clip pos="1" side="tl" part="nbr"/></tag>
-            </tags>
-            <lu>
-              <var n="np_chunk_h"/>
-               <clip pos="1" side="tl" part="lemh"/>
-               <clip pos="1" side="tl" part="a_nom"/>
-			   <clip pos="1" side="tl" part="gen"/>
-               <clip pos="1" side="tl" part="nbr"/>
-               <clip pos="1" side="tl" part="lemq"/>
-            </lu>
-            <b pos="1"/>
-            <lu>
-              <clip pos="2" side="tl" part="lemh"/>
-              <clip pos="2" side="tl" part="a_nom"/>
-			  <clip pos="2" side="tl" part="gen"/>
-              <clip pos="2" side="tl" part="nbr"/>
-              <clip pos="2" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-		<call-macro n="np_cleanup1">
-          <with-param pos="1"/>
-        </call-macro>
-		<call-macro n="np_cleanup1">
-          <with-param pos="2"/>
-        </call-macro>
-      </action>
-    </rule>
- 
 
 
     <rule comment="REGLA: nom guio adj nom">
@@ -5249,6 +5229,30 @@
 	-->
 	
 	<!-- покажав - showed -->
+
+	 <rule comment="REGLA: не треба adv да prn_clitic v_pres">
+      <pattern>
+        <pattern-item n="vbhaver"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_verb"/>
+              <clip pos="1" side="tl" part="temps"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
 	<rule comment="REGLA: v_perf_aor">
       <pattern>
