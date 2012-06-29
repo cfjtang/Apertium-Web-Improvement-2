@@ -14,6 +14,7 @@ bidix_contlex = {
 	'<n><px3sg><loc>':'Nouns',
 	'<post>':'Postpositions',
 	'<np><top>':'ProperNouns',
+	'<np><org>':'ProperNouns',
 	'<np><al>':'ProperNouns',
 	'<np><ant><m>':'ProperNouns',
 	'<np><ant><f>':'ProperNouns',
