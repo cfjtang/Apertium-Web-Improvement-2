@@ -237,11 +237,6 @@ SELECT:Num-BOS-Nom-Viv Nom IF (0 Num)(-1 BOS OR Cm) (1* PassiveParticiple) ;
 SELECT:BOS-Passive=>Nom $$NUMBER + Nom (-1 BOS) (0 $$NUMBER) (1* PassiveParticiple BARRIER EOS) (1* VBSer + $$NUMBER BARRIER EOS) ;
     ## Tri žene su primljene...
 
-# For homographs "dan" == "day" or "given<m><sg>"
-# Select the noun reading if it's preceded by a beginning of a sentence or a modifier
-# TODO: to give "dati" usually goes with dative, so make a heuristic that will take appearances of dative around it into account
-SELECT:Modifier_dan→day ("<dan>"i) + N + $$GENDER + $$NUMBER + $$CASE IF ((-1 Modifier + $$GENDER + $$NUMBER + $$CASE) OR (-1 BOS))
-
 # Rules for passive:
 # Some simple rules:
 SELECT:numberFromLeft $$NUMBER (0 PassiveParticiple) (-1C VBSer + $$NUMBER)
@@ -262,6 +257,11 @@ SELECT:AtrrNum->NNum $$NUMBER IF (0 N OR A)(-1 Modifier + $$NUMBER) ;
 
 SELECT $$NUMBER + Nom IF (-1* NP-HEAD  + $$NUMBER BARRIER BOS) (-1 ("<kao>"i) ) ;    
     ## ona je... kao kadetkinja
+
+SELECT:prep_Noun Pr + $$CASE (0 Pr OR N OR V)(1 Pron + $$CASE);
+	## Radi mene vs. On radi u tvornici
+REMOVE:prep_Noun Pr + $$CASE (0 Pr OR N OR V)(NOT 1 Pron + $$CASE);
+	## Radi mene vs. On radi u tvornici
 
 SELECT:DaVBLex Particle (0 ("<da>"i) ) (1 VBLex);
 SELECT:relŠto  ("što"i) + Relative + $$CASE (0 ("<što>"i) ) (-1 Totalising + $$CASE);
@@ -318,6 +318,9 @@ SELECT Masculine IF (0 Cog + ("<Ružić>") ) ;
 SELECT Masculine IF (0 Cog + ("<Stanković>") ) ;
     ## NOTE: This is just a patch. Possibly the cognames are analysed in too great detail
 ###################################################
+
+# pas==dog pâs == waist
+SELECT Animate (0 ("pas"i) + Nom);
     
 # =========================================================================== #
 #   PP disambiguation                                                         #
@@ -354,10 +357,6 @@ SELECT:Modifier-Clt-Nom Nom IF (-1 Pron + Clt) (-2C Modifier + Nom);
 # Genitive inside numeral phrases
 SELECT Singular + Gen ((1* DualNum BARRIER (*) - Modifier) OR (-1* DualNum BARRIER (*) - Modifier))
 SELECT Plural + Gen ((1* PluralNum BARRIER (*) - Modifier) OR (-1* PluralNum BARRIER (*) - Modifier))
-
-# Preposition or something else:
-	# It's not a preposition if it's not followed by a nominal word
-REMOVE Pr IF (NOT 1 Nomen) # TODO: See if unk words mess this up
 
 # Preposition based case disambiguation:
 REMOVE Pr + $$CASE (1 Nomen - $$CASE)
@@ -436,6 +435,7 @@ SELECT:InsThenNom Nom (-1 Ins) (0C Nom Or Acc);
 SELECT:N-tiPut Nom (0 Num + Ord) (1C Nom OR Acc) ;
 
 SELECT:ćeSgPl $$NUMBER (0 (+htjeti) + Clt + $$NUMBER) (-1* N + Nom + $$NUMBER BARRIER BOS) ;
+
 
 # =========================================================================== #
 #   Verb chain disambiguation                                                 #
@@ -573,3 +573,7 @@ SETPARENT:N←A (@N←) + $$CASE (0C A) (-1*C N + $$CASE) TO (-1*C N + $$CASE)
 
 SETPARENT:Pr→N (@→N) (0C Pr) (1*C N) TO (1*C N)
 SETPARENT:Pr→N (@→A) (0C Pr) (1*C A) TO (1*C A)
+
+ # Added automatically, to be removed once the syntactic mappings are taken into account in transfer 
+SECTION
+UNMAP UNSAFE (*);
