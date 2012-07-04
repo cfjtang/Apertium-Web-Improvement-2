@@ -21,9 +21,13 @@ import org.jdesktop.application.*;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -49,6 +53,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apertium.Translator;
 import org.apertium.pipeline.Mode;
 import org.apertium.pipeline.Program;
+import org.apertium.utils.IOUtils;
 
 /*
  * See  http://wiki.apertium.org/wiki/Apertium-vju 
@@ -78,7 +83,11 @@ public class ApertiumView extends FrameView {
             if (value instanceof Mode) {
               Mode m = (Mode) value;
               renderer.setToolTipText(m.getFilename());
+            } else if (value instanceof String && !local) {
+              String mode = (String) value;
+              renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
             }
+            
             return renderer;
           }
         });
@@ -89,6 +98,7 @@ public class ApertiumView extends FrameView {
                 for (String fn : mpref.split("\n")) {
                     loadMode(fn);
                 }
+                sortModesComboBox();
             } else {
                 warnUser("Welcome to Apertium-viewer.\nIt seems this is first time you run this program."
                         +"\nI will therefore try to search install language pairs ('modes') from standart places."
@@ -111,16 +121,14 @@ public class ApertiumView extends FrameView {
                             loadMode(f.getPath());
                         }
                     }
+                    sortModesComboBox();
                     editModesMenuItemActionPerformed(null);
                 }
             }
 
             
             if (modes.isEmpty()) {
-                warnUser("No language pairs could be loaded. Making a 'fake' mode.\nPlease use the File menu to install others.");
-                /*Mode m = new Mode();
-                modes.add(m);
-                modesComboBox.addItem(m);*/
+                warnUser("No language pairs could be loaded.\nPlease use the File menu to install local modes or use online ones instead.");
             }
 
             int idx = prefs.getInt("modesComboBox", -1);
@@ -149,14 +157,10 @@ public class ApertiumView extends FrameView {
         }
         
         Translator.setCacheEnabled(true);
-        if (!Boolean.parseBoolean(prefs.get("externalProcessing", "false")) && !isLttoolboxJavaInstalled()) {
-            prefs.put("externalProcessing", Boolean.toString(true));
-            warnUser("lttoolbox-java is not installed in your machine. External processing will be used instead.\nFor a better performance, install lttoolbox-java and disable external processing at View -> Options.");
-        }
         
         startingUp = false;
         
-        showMode((Mode) modesComboBox.getSelectedItem());
+        showSelectedMode();
   
         String txt = prefs.get("inputText", textWidget1.getText());        
         System.err.println("startup txt = " + txt);
@@ -184,7 +188,7 @@ public class ApertiumView extends FrameView {
     
     public void shutdown() {
         prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
-        prefs.putInt("modesComboBox",modesComboBox.getSelectedIndex());
+        prefs.putInt("modesComboBox", local ? modesComboBox.getSelectedIndex() : savedIdx);
         String divLoc = "";
         for (JSplitPane p : splitPanes) divLoc += ","+p.getDividerLocation();
         prefs.put("dividerLocation", divLoc);
@@ -245,16 +249,6 @@ public class ApertiumView extends FrameView {
             }.start();
         }
     };
-
-  private boolean isLttoolboxJavaInstalled() {
-      String cps =  System.getProperty("lttoolbox.jar");
-      File cp = new File(cps!=null? cps : "lttoolbox.jar");
-      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
-      if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
-      if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
-      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
-      return cp.exists();
-  }
     
   private void addStoredText(final String s) {
       String menT = s.length()<4000? s : s.substring(0,40)+"...";
@@ -348,7 +342,23 @@ public class ApertiumView extends FrameView {
     }
   }
 
-    private void showMode(Mode m) {
+    private void showSelectedMode() {
+        Mode m = null;
+        Object item = modesComboBox.getSelectedItem();
+        
+        if (item instanceof Mode) {
+            IOUtils.setClassLoader(null);
+            m = (Mode) item;
+        } else if (item instanceof String) {
+            if (item.equals("SELECT A MODE")) return;
+            try {
+                IOUtils.setClassLoader(onlineModeToLoader.get((String)item));
+                m = new Mode(onlineModeToCode.get((String)item) + ".mode");
+            } catch (Exception e) {
+                warnUser("Unexpected error while trying to load online package: " + e);
+            }
+        } else return;
+        
         if (m==null) {
             return;
         }        
@@ -414,16 +424,13 @@ public class ApertiumView extends FrameView {
 
         }
 
-        TextWidget lastTextWidget = textWidget1;
-
         for (int i = 0; i < m.getPipelineLength(); i++) {
             Program p = m.getProgramByIndex(i);
             TextWidget tw = textWidgets.get(i+1);
             tw.setProgram(p);
-            lastTextWidget = tw;
         }
 
-        Pipeline.getPipeline().externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
+        Pipeline.getPipeline().externalProcessing = local && Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
         if (Pipeline.getPipeline().externalProcessing) {
             // Set the working directory of the mode. This is necesary in case the mode contains relative paths
             // to (development) files
@@ -475,257 +482,290 @@ public class ApertiumView extends FrameView {
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    mainPanel = new javax.swing.JPanel();
-    modesComboBox = new javax.swing.JComboBox();
-    fitToTextButton = new javax.swing.JButton();
-    jScrollPane1 = new javax.swing.JScrollPane();
-    textWidgetsPanel = new javax.swing.JPanel();
-    jSplitPane1 = new javax.swing.JSplitPane();
-    textWidget1 = new apertiumview.TextWidget();
-    copyTextButton = new javax.swing.JButton();
-    showCommandsCheckBox = new javax.swing.JCheckBox();
-    markUnknownWordsCheckBox = new javax.swing.JCheckBox();
-    storeTextButton = new javax.swing.JButton();
-    jLabel1 = new javax.swing.JLabel();
-    jButton1 = new javax.swing.JButton();
-    menuBar = new javax.swing.JMenuBar();
-    javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-    loadModeMenuItem = new javax.swing.JMenuItem();
-    editModesMenuItem = new javax.swing.JMenuItem();
-    jSeparator1 = new javax.swing.JSeparator();
-    javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
-    toolsMenu = new javax.swing.JMenu();
-    makeTestCaseMenuItem = new javax.swing.JMenuItem();
-    importTestCaseMenuItem = new javax.swing.JMenuItem();
-    storedTextsMenu = new javax.swing.JMenu();
-    javax.swing.JMenu helpMenu = new javax.swing.JMenu();
-    changeFontMenuItem = new javax.swing.JMenuItem();
-    optionsMenuItem = new javax.swing.JMenuItem();
-    helpMenuItem = new javax.swing.JMenuItem();
-    javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
+        mainPanel = new javax.swing.JPanel();
+        modesComboBox = new javax.swing.JComboBox();
+        fitToTextButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textWidgetsPanel = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        textWidget1 = new apertiumview.TextWidget();
+        copyTextButton = new javax.swing.JButton();
+        showCommandsCheckBox = new javax.swing.JCheckBox();
+        markUnknownWordsCheckBox = new javax.swing.JCheckBox();
+        storeTextButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        rdbtnLocal = new javax.swing.JRadioButton();
+        rdbtnOnline = new javax.swing.JRadioButton();
+        menuBar = new javax.swing.JMenuBar();
+        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        loadModeMenuItem = new javax.swing.JMenuItem();
+        editModesMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
+        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        toolsMenu = new javax.swing.JMenu();
+        makeTestCaseMenuItem = new javax.swing.JMenuItem();
+        importTestCaseMenuItem = new javax.swing.JMenuItem();
+        storedTextsMenu = new javax.swing.JMenu();
+        javax.swing.JMenu helpMenu = new javax.swing.JMenu();
+        changeFontMenuItem = new javax.swing.JMenuItem();
+        optionsMenuItem = new javax.swing.JMenuItem();
+        helpMenuItem = new javax.swing.JMenuItem();
+        javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
+        buttonGroup1 = new javax.swing.ButtonGroup();
 
-    mainPanel.setAutoscrolls(true);
+        mainPanel.setAutoscrolls(true);
 
-    modesComboBox.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        modesComboBoxActionPerformed(evt);
-      }
-    });
+        modesComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modesComboBoxActionPerformed(evt);
+            }
+        });
 
-    fitToTextButton.setMnemonic('I');
-    fitToTextButton.setText("Fit");
-    fitToTextButton.setToolTipText("Fits the text areas to the size of the contained text");
-    fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
-    fitToTextButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        fitToText(evt);
-      }
-    });
+        fitToTextButton.setMnemonic('I');
+        fitToTextButton.setText("Fit");
+        fitToTextButton.setToolTipText("Fits the text areas to the size of the contained text");
+        fitToTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        fitToTextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fitToText(evt);
+            }
+        });
 
-    textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
+        textWidgetsPanel.setPreferredSize(new java.awt.Dimension(200, 93));
 
-    jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-    jSplitPane1.setContinuousLayout(true);
-    jSplitPane1.setOneTouchExpandable(true);
-    jSplitPane1.setPreferredSize(new java.awt.Dimension(200, 93));
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setContinuousLayout(true);
+        jSplitPane1.setOneTouchExpandable(true);
+        jSplitPane1.setPreferredSize(new java.awt.Dimension(200, 93));
 
-    textWidget1.setPreferredSize(new java.awt.Dimension(200, 93));
-    jSplitPane1.setTopComponent(textWidget1);
+        textWidget1.setPreferredSize(new java.awt.Dimension(200, 93));
+        jSplitPane1.setTopComponent(textWidget1);
 
-    javax.swing.GroupLayout textWidgetsPanelLayout = new javax.swing.GroupLayout(textWidgetsPanel);
-    textWidgetsPanel.setLayout(textWidgetsPanelLayout);
-    textWidgetsPanelLayout.setHorizontalGroup(
-      textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 980, Short.MAX_VALUE)
-      .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE))
-    );
-    textWidgetsPanelLayout.setVerticalGroup(
-      textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 414, Short.MAX_VALUE)
-      .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
-    );
+        javax.swing.GroupLayout textWidgetsPanelLayout = new javax.swing.GroupLayout(textWidgetsPanel);
+        textWidgetsPanel.setLayout(textWidgetsPanelLayout);
+        textWidgetsPanelLayout.setHorizontalGroup(
+            textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 981, Short.MAX_VALUE)
+            .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 981, Short.MAX_VALUE))
+        );
+        textWidgetsPanelLayout.setVerticalGroup(
+            textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 411, Short.MAX_VALUE)
+            .addGroup(textWidgetsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE))
+        );
 
-    jScrollPane1.setViewportView(textWidgetsPanel);
+        jScrollPane1.setViewportView(textWidgetsPanel);
 
-    copyTextButton.setMnemonic('C');
-    copyTextButton.setText("Copy");
-    copyTextButton.setToolTipText("<html>Copy text from all stages to the clipboard.<br>Hidden stages and stages with no change are ignored.<br>Usefull for pasting into chat/email");
-    copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
-    copyTextButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        copyText(evt);
-      }
-    });
+        copyTextButton.setMnemonic('C');
+        copyTextButton.setText("Copy");
+        copyTextButton.setToolTipText("<html>Copy text from all stages to the clipboard.<br>Hidden stages and stages with no change are ignored.<br>Usefull for pasting into chat/email");
+        copyTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        copyTextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyText(evt);
+            }
+        });
 
-    showCommandsCheckBox.setMnemonic('H');
-    showCommandsCheckBox.setSelected(true);
-    showCommandsCheckBox.setText("Show commands");
-    showCommandsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        showCommandsCheckBoxActionPerformed(evt);
-      }
-    });
+        showCommandsCheckBox.setMnemonic('H');
+        showCommandsCheckBox.setSelected(true);
+        showCommandsCheckBox.setText("Show commands");
+        showCommandsCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showCommandsCheckBoxActionPerformed(evt);
+            }
+        });
 
-    markUnknownWordsCheckBox.setMnemonic('U');
-    markUnknownWordsCheckBox.setSelected(true);
-    markUnknownWordsCheckBox.setText("Mark unknown words");
-    markUnknownWordsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        markUnknownWordsCheckBoxActionPerformed(evt);
-      }
-    });
+        markUnknownWordsCheckBox.setMnemonic('U');
+        markUnknownWordsCheckBox.setSelected(true);
+        markUnknownWordsCheckBox.setText("Mark unknown words");
+        markUnknownWordsCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                markUnknownWordsCheckBoxActionPerformed(evt);
+            }
+        });
 
-    storeTextButton.setMnemonic('S');
-    storeTextButton.setText("Store");
-    storeTextButton.setToolTipText("Stores input text for later use");
-    storeTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
-    storeTextButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        storeTextButtonActionPerformed(evt);
-      }
-    });
+        storeTextButton.setMnemonic('S');
+        storeTextButton.setText("Store");
+        storeTextButton.setToolTipText("Stores input text for later use");
+        storeTextButton.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        storeTextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                storeTextButtonActionPerformed(evt);
+            }
+        });
 
-    jLabel1.setDisplayedMnemonic('M');
-    jLabel1.setLabelFor(modesComboBox);
-    jLabel1.setText("Mode");
-    jLabel1.setToolTipText("Change mode (language pair)");
+        jLabel1.setDisplayedMnemonic('M');
+        jLabel1.setLabelFor(modesComboBox);
+        jLabel1.setText("Mode");
+        jLabel1.setToolTipText("Change mode (language pair)");
 
-    jButton1.setMnemonic('D');
-    jButton1.setText("Hide intermediate");
-    jButton1.setToolTipText("Hides all but input and output");
-    jButton1.setMargin(new java.awt.Insets(0, 4, 0, 4));
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        hideIntermediate(evt);
-      }
-    });
+        jButton1.setMnemonic('D');
+        jButton1.setText("Hide intermediate");
+        jButton1.setToolTipText("Hides all but input and output");
+        jButton1.setMargin(new java.awt.Insets(0, 4, 0, 4));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hideIntermediate(evt);
+            }
+        });
 
-    javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-    mainPanel.setLayout(mainPanelLayout);
-    mainPanelLayout.setHorizontalGroup(
-      mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(mainPanelLayout.createSequentialGroup()
-        .addComponent(markUnknownWordsCheckBox)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(showCommandsCheckBox)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(fitToTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jButton1)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(copyTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(storeTextButton)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
-        .addComponent(jLabel1)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-      .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 982, Short.MAX_VALUE)
-    );
-    mainPanelLayout.setVerticalGroup(
-      mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(mainPanelLayout.createSequentialGroup()
-        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(markUnknownWordsCheckBox)
-          .addComponent(showCommandsCheckBox)
-          .addComponent(fitToTextButton)
-          .addComponent(copyTextButton)
-          .addComponent(storeTextButton)
-          .addComponent(jLabel1)
-          .addComponent(jButton1))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
-    );
+        buttonGroup1.add(rdbtnLocal);
+        rdbtnLocal.setSelected(true);
+        rdbtnLocal.setText("Local");
+        rdbtnLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbtnLocalActionPerformed(evt);
+            }
+        });
 
-    fileMenu.setMnemonic('F');
-    fileMenu.setText("File");
+        buttonGroup1.add(rdbtnOnline);
+        rdbtnOnline.setText("Online");
+        rdbtnOnline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbtnOnlineActionPerformed(evt);
+            }
+        });
 
-    javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
-    loadModeMenuItem.setAction(actionMap.get("loadMode")); // NOI18N
-    fileMenu.add(loadModeMenuItem);
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(markUnknownWordsCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showCommandsCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fitToTextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(copyTextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(storeTextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdbtnLocal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdbtnOnline)
+                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 983, Short.MAX_VALUE)
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(markUnknownWordsCheckBox)
+                    .addComponent(showCommandsCheckBox)
+                    .addComponent(fitToTextButton)
+                    .addComponent(copyTextButton)
+                    .addComponent(storeTextButton)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton1)
+                    .addComponent(rdbtnLocal)
+                    .addComponent(rdbtnOnline))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
+        );
 
-    editModesMenuItem.setText("Edit modes");
-    editModesMenuItem.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        editModesMenuItemActionPerformed(evt);
-      }
-    });
-    fileMenu.add(editModesMenuItem);
-    fileMenu.add(jSeparator1);
+        fileMenu.setMnemonic('F');
+        fileMenu.setText("File");
 
-    exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
-    fileMenu.add(exitMenuItem);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(apertiumview.ApertiumViewMain.class).getContext().getActionMap(ApertiumView.class, this);
+        loadModeMenuItem.setAction(actionMap.get("loadMode")); // NOI18N
+        fileMenu.add(loadModeMenuItem);
 
-    menuBar.add(fileMenu);
+        editModesMenuItem.setText("Edit modes");
+        editModesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editModesMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(editModesMenuItem);
+        fileMenu.add(jSeparator1);
 
-    toolsMenu.setMnemonic('T');
-    toolsMenu.setText("Tools");
+        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        fileMenu.add(exitMenuItem);
 
-    makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
-    toolsMenu.add(makeTestCaseMenuItem);
+        menuBar.add(fileMenu);
 
-    importTestCaseMenuItem.setText("Import Test Case...");
-    importTestCaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        importTestCase(evt);
-      }
-    });
-    toolsMenu.add(importTestCaseMenuItem);
+        toolsMenu.setMnemonic('T');
+        toolsMenu.setText("Tools");
 
-    storedTextsMenu.setMnemonic('S');
-    storedTextsMenu.setText("Stored texts");
-    toolsMenu.add(storedTextsMenu);
+        makeTestCaseMenuItem.setAction(actionMap.get("makeTestCase")); // NOI18N
+        toolsMenu.add(makeTestCaseMenuItem);
 
-    menuBar.add(toolsMenu);
+        importTestCaseMenuItem.setText("Import Test Case...");
+        importTestCaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importTestCase(evt);
+            }
+        });
+        toolsMenu.add(importTestCaseMenuItem);
 
-    helpMenu.setMnemonic('V');
-    helpMenu.setText("View");
+        storedTextsMenu.setMnemonic('S');
+        storedTextsMenu.setText("Stored texts");
+        toolsMenu.add(storedTextsMenu);
 
-    changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
-    helpMenu.add(changeFontMenuItem);
+        menuBar.add(toolsMenu);
 
-    optionsMenuItem.setMnemonic('O');
-    optionsMenuItem.setText("Options");
-    optionsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        editOptions(evt);
-      }
-    });
-    helpMenu.add(optionsMenuItem);
+        helpMenu.setMnemonic('V');
+        helpMenu.setText("View");
 
-    helpMenuItem.setText("Help...");
-    helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        helpMenuItemActionPerformed(evt);
-      }
-    });
-    helpMenu.add(helpMenuItem);
+        changeFontMenuItem.setAction(actionMap.get("changeFont")); // NOI18N
+        helpMenu.add(changeFontMenuItem);
 
-    aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
-    helpMenu.add(aboutMenuItem);
+        optionsMenuItem.setMnemonic('O');
+        optionsMenuItem.setText("Options");
+        optionsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editOptions(evt);
+            }
+        });
+        helpMenu.add(optionsMenuItem);
 
-    menuBar.add(helpMenu);
+        helpMenuItem.setText("Help...");
+        helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(helpMenuItem);
 
-    setComponent(mainPanel);
-    setMenuBar(menuBar);
-  }// </editor-fold>//GEN-END:initComponents
+        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        helpMenu.add(aboutMenuItem);
+
+        menuBar.add(helpMenu);
+
+        setComponent(mainPanel);
+        setMenuBar(menuBar);
+    }// </editor-fold>//GEN-END:initComponents
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-  Mode mode = (Mode) modesComboBox.getSelectedItem();
-  String tooltip = "[No mode selected]";
-  if (mode != null) {
-    tooltip = mode.getFilename();
+  if (local) {
+      Mode mode = (Mode) modesComboBox.getSelectedItem();
+      String tooltip = "[No mode selected]";
+      if (mode != null) {
+        tooltip = mode.getFilename();
+      }
+      modesComboBox.setToolTipText(tooltip);
+  } else {
+      String mode = (String) modesComboBox.getSelectedItem();
+      String tooltip = mode != null && mode.equals("SELECT A MODE") ? "[No mode selected]" : onlineModeToCode.get(mode) + ".mode";
+      modesComboBox.setToolTipText(tooltip);
   }
-  modesComboBox.setToolTipText(tooltip);
   if (!startingUp) {
-    Translator.clearCache();
-    showMode(mode);
+      Translator.clearCache();
+      showSelectedMode();
   }
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
@@ -753,12 +793,13 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
         for (String fn : mpref.split("\n")) {
             loadMode(fn);
         }
+        sortModesComboBox();
         prefs.put("modeFiles", mpref);    
     }
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
 private void markUnknownWordsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markUnknownWordsCheckBoxActionPerformed
-    showMode((Mode) modesComboBox.getSelectedItem());
+    showSelectedMode();
 }//GEN-LAST:event_markUnknownWordsCheckBoxActionPerformed
 
 private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCommandsCheckBoxActionPerformed
@@ -813,7 +854,6 @@ private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 private void editOptions(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOptions
   OptionsPanel op = new OptionsPanel();
-  op.externalProcessing.setEnabled(isLttoolboxJavaInstalled());
   boolean externalProcessing = Boolean.parseBoolean(prefs.get("externalProcessing", "false"));
   op.externalProcessing.setSelected(externalProcessing);
   op.setExternalProcessingOptionsEnabled(externalProcessing);
@@ -933,6 +973,36 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_fitToText
 
+    private int savedIdx;
+    private boolean local = true;
+
+    private void rdbtnLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnLocalActionPerformed
+        if (local) return;
+        local = true;
+        int idxToSave = modesComboBox.getSelectedIndex();
+        modesComboBox.removeAllItems();
+        for (Mode m : modes) modesComboBox.addItem(m);
+        modesComboBox.setSelectedIndex(savedIdx);
+        savedIdx = idxToSave;
+    }//GEN-LAST:event_rdbtnLocalActionPerformed
+
+    private void rdbtnOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnOnlineActionPerformed
+        if (!local) return;
+        local = false;
+        int idxToSave = modesComboBox.getSelectedIndex();
+        if (onlineModeToLoader == null)
+            try {
+                initOnlineModes();
+            } catch (IOException e) {
+                warnUser("Error loading online modes: " + e);
+            }
+        modesComboBox.removeAllItems();
+        modesComboBox.addItem("SELECT A MODE");
+        for (String s : onlineModes) modesComboBox.addItem(s);
+        modesComboBox.setSelectedIndex(savedIdx);
+        savedIdx = idxToSave;
+    }//GEN-LAST:event_rdbtnOnlineActionPerformed
+
     void fitToText() {
       fitToText(null);
     }
@@ -959,6 +1029,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
             for (File f : fs)  {
                 loadMode(f.getPath());
             }
+            sortModesComboBox();
             String mpref = "";
             for (Mode mo : modes) mpref = mpref + mo.getFilename()+"\n";
             prefs.put("modeFiles", mpref);
@@ -968,37 +1039,70 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
     
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  javax.swing.JMenuItem changeFontMenuItem;
-  javax.swing.JButton copyTextButton;
-  javax.swing.JMenuItem editModesMenuItem;
-  javax.swing.JButton fitToTextButton;
-  javax.swing.JMenuItem helpMenuItem;
-  javax.swing.JMenuItem importTestCaseMenuItem;
-  javax.swing.JButton jButton1;
-  javax.swing.JLabel jLabel1;
-  javax.swing.JScrollPane jScrollPane1;
-  javax.swing.JSeparator jSeparator1;
-  javax.swing.JSplitPane jSplitPane1;
-  javax.swing.JMenuItem loadModeMenuItem;
-  javax.swing.JPanel mainPanel;
-  javax.swing.JMenuItem makeTestCaseMenuItem;
-  javax.swing.JCheckBox markUnknownWordsCheckBox;
-  javax.swing.JMenuBar menuBar;
-  javax.swing.JComboBox modesComboBox;
-  javax.swing.JMenuItem optionsMenuItem;
-  javax.swing.JCheckBox showCommandsCheckBox;
-  javax.swing.JButton storeTextButton;
-  javax.swing.JMenu storedTextsMenu;
-  apertiumview.TextWidget textWidget1;
-  javax.swing.JPanel textWidgetsPanel;
-  javax.swing.JMenu toolsMenu;
-  // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.ButtonGroup buttonGroup1;
+    javax.swing.JMenuItem changeFontMenuItem;
+    javax.swing.JButton copyTextButton;
+    javax.swing.JMenuItem editModesMenuItem;
+    javax.swing.JButton fitToTextButton;
+    javax.swing.JMenuItem helpMenuItem;
+    javax.swing.JMenuItem importTestCaseMenuItem;
+    javax.swing.JButton jButton1;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JSeparator jSeparator1;
+    javax.swing.JSplitPane jSplitPane1;
+    javax.swing.JMenuItem loadModeMenuItem;
+    javax.swing.JPanel mainPanel;
+    javax.swing.JMenuItem makeTestCaseMenuItem;
+    javax.swing.JCheckBox markUnknownWordsCheckBox;
+    javax.swing.JMenuBar menuBar;
+    javax.swing.JComboBox modesComboBox;
+    javax.swing.JMenuItem optionsMenuItem;
+    javax.swing.JRadioButton rdbtnLocal;
+    javax.swing.JRadioButton rdbtnOnline;
+    javax.swing.JCheckBox showCommandsCheckBox;
+    javax.swing.JButton storeTextButton;
+    javax.swing.JMenu storedTextsMenu;
+    apertiumview.TextWidget textWidget1;
+    javax.swing.JPanel textWidgetsPanel;
+    javax.swing.JMenu toolsMenu;
+    // End of variables declaration//GEN-END:variables
 
     private JDialog aboutBox;
 
     ArrayList<Mode> modes = new ArrayList<Mode>();
-
+    ArrayList<String> onlineModes;
+    HashMap<String, URLClassLoader> onlineModeToLoader;
+    HashMap<String, String> onlineModeToCode;
+    
+    private void initOnlineModes() throws IOException {
+        final String BASE_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/branches/gsoc2012/artetxem/packages/jars/";
+        onlineModes = new ArrayList<String>();
+        onlineModeToLoader = new HashMap<String, URLClassLoader>();
+        onlineModeToCode = new HashMap<String, String>();
+        URL url = new URL(BASE_URL);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        String line;
+        String pattern = "<li><a href=\"|.jar\">|</a></li>";
+        while ((line = reader.readLine()) != null) {
+            String[] code = line.split(pattern);
+            if (code.length > 2) {
+                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(BASE_URL + code[1] + ".jar")});
+                String pairs[] = code[1].split(",");
+                for (int i = 0; i < pairs.length; i++) {
+                    String pair = pairs[i];
+                    if (!pair.contains("-")) continue;
+                    String title = Translator.getTitle(pair);
+                    onlineModes.add(title);
+                    onlineModeToCode.put(title, pair);
+                    onlineModeToLoader.put(title, cl);
+                }
+            }
+        }
+        Collections.sort(onlineModes);
+    }
+    
     public static String legu(File fil) throws IOException {
 	FileChannel fc = new FileInputStream(fil).getChannel();
 	MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fil.length());
@@ -1018,7 +1122,21 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
             warnUser("Loading of mode "+filename+" failed:\n\n"+ex.toString()+"\n\nContinuing without this mode.");
         }
     }
-
+    
+    
+    private void sortModesComboBox() {
+        //We always keep online modes sorted, so we don't need to do anything with them
+        if (!local) return;
+        
+        Collections.sort(modes, new Comparator<Mode>() {
+            @Override
+            public int compare(Mode m1, Mode m2) {
+                return m1.toString().compareTo(m2.toString());
+            }
+        });
+        modesComboBox.removeAllItems();
+        for (Mode m : modes) modesComboBox.addItem(m);
+    }
 
 	public void warnUser(String txt) {
 		System.out.println("warnUser("+txt);
