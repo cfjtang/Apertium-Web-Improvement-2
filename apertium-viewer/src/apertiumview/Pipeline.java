@@ -72,7 +72,7 @@ public class Pipeline {
         PipelineTask t = new PipelineTask();
         t.priority = priority;
         t.program = recieverWidget.getProgram();
-        t.input = sourceWidget.getProgram() != null ? input : input + '\f';
+        t.input = sourceWidget.getProgram() != null ? input : input + ' ';
         //new Exception(input).printStackTrace();
         //System.out.println("q"+priority+" "+t.execstr+" "+t.input);
         if (t.input.length() > 0) {
