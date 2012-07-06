@@ -353,7 +353,7 @@ public class ApertiumView extends FrameView {
             if (item.equals("SELECT A MODE")) return;
             try {
                 IOUtils.setClassLoader(onlineModeToLoader.get((String)item));
-                m = new Mode(onlineModeToCode.get((String)item) + ".mode");
+                m = new Mode("data/modes/" + onlineModeToCode.get((String)item) + ".mode");
             } catch (Exception e) {
                 warnUser("Unexpected error while trying to load online package: " + e);
             }
