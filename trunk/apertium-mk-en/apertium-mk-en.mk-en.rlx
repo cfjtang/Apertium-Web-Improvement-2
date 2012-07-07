@@ -83,19 +83,11 @@ LIST Day = ("понеделник") ("вторник") ("среда") ("четв
 
 SECTION
 
-SELECT Prs IF (0 Prs) (0 Aor) (-1 ij) ;
+SELECT Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
+SELECT Aor IF (0 Prs) (0 Aor) (NOT -1* (exp) OR (ij) BARRIER V) ;
 
-SELECT Prs IF (0 Prs) (0 Aor) (-1 exp) ;
+SELECT Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
 
-SELECT Prs IF (0 Prs) (0 Aor) (-2 ij) ;
-
-SELECT Prs IF (0 Prs) (0 Aor) (-2 exp) ;
-
-SELECT Prs IF (0 Prs) (0 Aor) (-3 ij) ;
-
-SELECT Prs IF (0 Prs) (0 Aor) (-3 exp) ;
-
-SELECT Aor IF (0 Prs) (0 Aor) ;
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
