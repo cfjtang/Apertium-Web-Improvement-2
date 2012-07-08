@@ -86,8 +86,7 @@ SECTION
 SELECT Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
 SELECT Aor IF (0 Prs) (0 Aor) (NOT -1* (exp) OR (ij) BARRIER V) ;
 
-SELECT Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
-
+SELECT CC IF (0 CC) (0 Pron) (NOT 1 V OR Pers)
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
@@ -146,9 +145,6 @@ REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP) (
 REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
 	# Do something better here 
 
-
-
-
 SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1 L-part OR A));
 	## Ако ми се јавите, би дошол.
 	## Да може бебето да прозборува, би ти рекло...
@@ -160,7 +156,6 @@ SELECT:r19 V-COP IF (0 V-COP) (0 V) (-1 V-COP + V-IND-FIN);
 
 SELECT:r25 V-COP IF (0 ("<се>")) (0 V-COP) (0 Pron) (1C A);
     ## нагласија дека претстојните избори во БиХ се клучни за иднината на земјата
-
 
 SELECT:r20 A IF (0 A) (0 N) (1C N-OR-PROP) ;
 	## Koсово се соочува со долг пат пред себе во спречуваoето на трговијата со дрога
