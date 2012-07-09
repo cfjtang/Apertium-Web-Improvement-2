@@ -6791,6 +6791,70 @@
     </rule>
 
 
+	<!-- ми	jа 	покажа куќата
+		 me her showed house / showed the house to me -->
+	<rule comment="REGLA: prn_pos_clt prn_pers_clt vblex">
+      <pattern>
+        <pattern-item n="prn_pos_clt"/>
+        <pattern-item n="prn_pers_clt"/>
+        <pattern-item n="vblex"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="3"/>
+        </call-macro>
+		<call-macro n="np_set_defnes1">
+          <with-param pos="4"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <clip pos="3" side="tl" part="lemh"/>
+              <clip pos="3" side="tl" part="a_verb"/>
+			  <clip pos="3" side="tl" part="temps"/>
+              <clip pos="3" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+          </chunk>
+		  <chunk namefrom="np_chunk_n" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="np_chunk_s"/></tag>
+              <tag><var n="defin"/></tag>
+              <tag><clip pos="4" side="tl" part="nbr"/></tag>
+            </tags>
+			<b/>
+			<lu>
+              <var n="np_chunk_h"/>
+              <clip pos="4" side="tl" part="lemh"/>
+              <clip pos="4" side="tl" part="a_nom"/>
+              <clip pos="4" side="tl" part="nbr"/>
+              <clip pos="4" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="to"/>
+			  <lit-tag v="pr"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+              <var n="np_chunk_q"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+
 	<!-- тој ми	jа 	покажа куќата
 		 he  me her showed house / he showed the house to me -->
 	<rule comment="REGLA: prn_pos_clt prn_pers_clt vblex">
@@ -6867,5 +6931,6 @@
         </out>
       </action>
     </rule>
+
   </section-rules>
 </transfer>

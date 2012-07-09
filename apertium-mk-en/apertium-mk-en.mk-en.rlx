@@ -1,7 +1,7 @@
 DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
  
 SETS
-
+LIST Comma = (cm) ;
 LIST N = (n) ;
 LIST Num = (num) ;
 LIST Prop = (np) ;
@@ -66,6 +66,11 @@ LIST Gen = (gen) ;
 LIST Dat = (dat) ;
 LIST Voc = (voc) ;
 
+LIST Ind = (ind) ;
+LIST Def = (def) ;
+LIST Prx = (prx) ;
+LIST Dst = (dst) ;
+
 LIST NUMBER = sg pl ;
 LIST GENDER = m f nt mfn ;
 LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
@@ -91,63 +96,72 @@ LIST Day = ("понеделник") ("вторник") ("среда") ("четв
 
 SECTION
 
-SELECT Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
-SELECT Aor IF (0 Prs) (0 Aor) (NOT -1* (exp) OR (ij) BARRIER V) ;
+SELECT:r66 A IF (0 A) (0 V) (NOT -1* Clt BARRIER V)
+# ги подобри водите vs. подобри води
+
+SELECT Ind IF (0 Ind) (0 Dst OR Prx Or Def)
+# ги подобри водите vs. подобри води
+
+SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
+SELECT:r51 Aor IF (0 Prs) (0 Aor) (NOT -1* (exp) OR (ij) BARRIER V) ;
 # Ќе најде <-> will find (present)
 # најде <-> found (aorist)
 
-SELECT CC IF (0 CC) (0 Poss) (NOT 1 Copula OR Vlex OR Pers) ;
+SELECT:r52 CC IF (0 CC) (0 Poss) (NOT 1 Copula OR Vlex OR Pers) ;
 # select (cnjcoo) if not followed by vblex | prn pers | vbmod
 
-SELECT Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NOT -1* V) ;
+SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NOT -1* V) ;
 # select (prn pos) if not verb was seen before
 
-SELECT $$GENDER IF (0 Pron) (1* N + $$GENDER)
+SELECT:r54 $$GENDER IF (0 Pers) (1* N + $$GENDER)
 # select the gender of the following noun
 
-SELECT Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
+SELECT:r55 Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
 # select adverb if followed by vbmod | vblex or the second word is a noun
 
-SELECT Itg IF (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
-SELECT Rel IF (0 Itg) (0 Rel) (NOT -1* Cog or Ant BARRIER N) ;
+SELECT:r56 Itg IF (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
+SELECT:r57 Rel IF (0 Itg) (0 Rel) (NOT -1* Cog or Ant BARRIER N) ;
 # use 'who' with people and 'that' with objects
 
-SELECT A IF (0 Nn) (0 A) (1 Nn) ;
+SELECT:r58 A IF (0 Nn) (0 A) (1 Nn) ;
 # select adjective in an A/N N pattern
 
-SELECT Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
-SELECT Nom IF (0 Nom) (0 Voc) (NOT 1 Imprt) ;
+SELECT:r59 Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
+SELECT:r60 Nom IF (0 Nom) (0 Voc) (NOT 1 Imprt) ;
 # select imprt if the following verb is in imprt
 
-SELECT Poss IF (0 ("<ми>")) ((1 Clt) OR (1 V)) ;
-SELECT Poss IF (0 ("<му>")) ((1 Clt) OR (1 V)) ;
+SELECT:r61 Poss IF (0 Pers) (0 Poss) ;
+# stick with possesives for now, but needs fixing
 
-SELECT $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
-SELECT V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
+SELECT:r63 $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
-SELECT $$GENDER IF (0 A) (1* N + $$GENDER) ;
+SELECT:r64 V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
-SELECT $$GENDER IF (0 Nom) (1* N + $$GENDER) ;
+SELECT:r65 $$GENDER IF (0 A) (1* N + $$GENDER BARRIER N) ;
 
-SELECT A IF (0 A) (0 V) (NOT -1* Copula BARRIER N) ;
+SELECT:r67 Pron + $$GENDER IF (0 Pron) (1* N + $$GENDER BARRIER N) ;
 
-SELECT P-part IF (0 P-part) (0 Prs) (NOT -1* (ij) OR (exp)) (-1* N BARRIER V) ;
+SELECT:r68 A IF (0 A) (0 V) (NOT -1* Copula BARRIER N) ;
 
-SELECT V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
+SELECT:r69 P-part IF (0 P-part) (0 Prs) (NOT -1* (ij) OR (exp)) (-1* N BARRIER V) ;
 
-SELECT TV IF (0 TV) (0 IV) (1* N BARRIER V)
-SELECT IV IF (0 TV) (0 IV) (NOT 1* N BARRIER V)
+SELECT:r70 V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
+
+SELECT:r71 TV IF (0 TV) (0 IV) (1* N BARRIER V)
+SELECT:r72 IV IF (0 TV) (0 IV) (NOT 1* N BARRIER V)
 # select transitive if there is a noun following the verb
+# not a very good rule
 
-SELECT Pron IF (0 Pron) (0 Copula) (1C IV)
+SELECT:r73 Pron IF (0 Pron) (0 Copula) (1C IV) ;
 
-REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NOT 1* V + $$NUMBER + $$PERSON BARRIER V)
+REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NOT 1* V + $$NUMBER OR (sp) + $$PERSON BARRIER V)
 # remove coupula if it doesn't match the number and person of the following verb
 
+REMOVE Interj IF (0 ("<да>")) (NOT 1 Comma) ;
+# Да as an interjection should be followed by a comma
 
-
-
+SELECT:r74 Pcle IF (0 ("<да>")) (1 V OR Copula OR Clt) ;
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
@@ -164,9 +178,10 @@ REMOVE:r5 TV IF (1C PREP) ;
 ##??
 
 SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUNDARY) ;
+##FP:?? 
 
-SELECT:r7 $$NUMBER IF (0 A) (1 N + $$NUMBER) ;
-##??
+SELECT:r7 $$NUMBER IF (0 A) (1* N + $$NUMBER) ;
+## adjectives and nouns agree in number
 
 SELECT:r8 V-IND-FIN (0 V-IND-FIN) (0 Pron) (NOT -1* V-IND-FIN BARRIER S-BOUNDARY) (NOT 1* V-IND-FIN BARRIER S-BOUNDARY) ;
 	## Ти си тука.
@@ -192,7 +207,6 @@ REMOVE:r13 Imprt IF (0 Imprt) (0 Prs + Sg3) (1 CS);
 REMOVE:r14 Imprt IF (NOT 1* ("!") BARRIER S-BOUNDARY);
 	# This is probably too loose, but we have to do something
 
-
 REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 	## Министерот за надворешни работи, Вук Драшковиќ, во Њујорк разговараше за актуелните проблеми во покраината со генералниот секретар на ОН.
 
@@ -203,7 +217,7 @@ REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP) (
 	## Тој даде својата книга.
 	## додаде дека оваа поддршка зависи од тоа дали Турција ќе се придржува на принципите на ЕУ
 
-REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
+# REMOVE:r17 Interj IF (0 ("да")) ((1 V OR Pron) OR (-1 V OR Pron)); 
 	# Do something better here 
 
 SELECT:r18 V-COP IF (0 V-COP) (0 V) ((1 L-part OR A OR P-part) OR (1 Pron LINK 1 L-part OR A));
