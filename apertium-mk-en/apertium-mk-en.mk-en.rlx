@@ -113,12 +113,41 @@ SELECT Rel IF (0 Itg) (0 Rel) (NOT -1* Cog or Ant BARRIER N) ;
 # use 'who' with people and 'that' with objects
 
 SELECT A IF (0 Nn) (0 A) (1 Nn) ;
+# select adjective in an A/N N pattern
 
-SELECT Voc IF (0 Nom) (0 Voc) (1 Imprt)
-SELECT Nom IF (0 Nom) (0 Voc) (NOT 1 Imprt)
+SELECT Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
+SELECT Nom IF (0 Nom) (0 Voc) (NOT 1 Imprt) ;
+# select imprt if the following verb is in imprt
+
+SELECT Poss IF (0 ("<ми>")) ((1 Clt) OR (1 V)) ;
+SELECT Poss IF (0 ("<му>")) ((1 Clt) OR (1 V)) ;
+
+SELECT $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
+
+SELECT V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
+
+SELECT $$GENDER IF (0 A) (1* N + $$GENDER) ;
+
+SELECT $$GENDER IF (0 Nom) (1* N + $$GENDER) ;
+
+SELECT A IF (0 A) (0 V) (NOT -1* Copula BARRIER N) ;
+
+SELECT P-part IF (0 P-part) (0 Prs) (NOT -1* (ij) OR (exp)) (-1* N BARRIER V) ;
+
+SELECT V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
+
+SELECT TV IF (0 TV) (0 IV) (1* N BARRIER V)
+SELECT IV IF (0 TV) (0 IV) (NOT 1* N BARRIER V)
+# select transitive if there is a noun following the verb
+
+SELECT Pron IF (0 Pron) (0 Copula) (1C IV)
+
+REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NOT 1* V + $$NUMBER + $$PERSON BARRIER V)
+# remove coupula if it doesn't match the number and person of the following verb
 
 
-SELECT Poss IF (0 ("<ми>")) ((1 Clt) OR (1 V))
+
+
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
