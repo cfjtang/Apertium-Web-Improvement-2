@@ -96,21 +96,21 @@ LIST Day = ("понеделник") ("вторник") ("среда") ("четв
 
 SECTION
 
-SELECT:r66 A IF (0 A) (0 V) (NOT -1* Clt BARRIER V)
+SELECT:r66 A IF (0 A) (0 V) (NEGATE -1* Clt BARRIER V)
 # ги подобри водите vs. подобри води
 
 SELECT Ind IF (0 Ind) (0 Dst OR Prx Or Def)
 # ги подобри водите vs. подобри води
 
 SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
-SELECT:r51 Aor IF (0 Prs) (0 Aor) (NOT -1* (exp) OR (ij) BARRIER V) ;
+SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) BARRIER V) ;
 # Ќе најде <-> will find (present)
 # најде <-> found (aorist)
 
-SELECT:r52 CC IF (0 CC) (0 Poss) (NOT 1 Copula OR Vlex OR Pers) ;
+SELECT:r52 CC IF (0 CC) (0 Poss) (NEGATE 1 Copula OR Vlex OR Pers) ;
 # select (cnjcoo) if not followed by vblex | prn pers | vbmod
 
-SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NOT -1* V) ;
+SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NEGATE -1* V) ;
 # select (prn pos) if not verb was seen before
 
 SELECT:r54 $$GENDER IF (0 Pers) (1* N + $$GENDER)
@@ -120,14 +120,14 @@ SELECT:r55 Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
 # select adverb if followed by vbmod | vblex or the second word is a noun
 
 SELECT:r56 Itg IF (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
-SELECT:r57 Rel IF (0 Itg) (0 Rel) (NOT -1* Cog or Ant BARRIER N) ;
+SELECT:r57 Rel IF (0 Itg) (0 Rel) (NEGATE -1* Cog or Ant BARRIER N) ;
 # use 'who' with people and 'that' with objects
 
 SELECT:r58 A IF (0 Nn) (0 A) (1 Nn) ;
 # select adjective in an A/N N pattern
 
 SELECT:r59 Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
-SELECT:r60 Nom IF (0 Nom) (0 Voc) (NOT 1 Imprt) ;
+SELECT:r60 Nom IF (0 Nom) (0 Voc) (NEGATE 1 Imprt) ;
 # select imprt if the following verb is in imprt
 
 SELECT:r61 Poss IF (0 Pers) (0 Poss) ;
@@ -141,24 +141,24 @@ SELECT:r65 $$GENDER IF (0 A) (1* N + $$GENDER BARRIER N) ;
 
 SELECT:r67 Pron + $$GENDER IF (0 Pron) (1* N + $$GENDER BARRIER N) ;
 
-SELECT:r68 A IF (0 A) (0 V) (NOT -1* Copula BARRIER N) ;
+SELECT:r68 A IF (0 A) (0 V) (NEGATE -1* Copula BARRIER N) ;
 
-SELECT:r69 P-part IF (0 P-part) (0 Prs) (NOT -1* (ij) OR (exp)) (-1* N BARRIER V) ;
+SELECT:r69 P-part IF (0 P-part) (0 Prs) (NEGATE -1* (ij) OR (exp)) (-1* N BARRIER V) ;
 
 SELECT:r70 V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
 
 SELECT:r71 TV IF (0 TV) (0 IV) (1* N BARRIER V)
-SELECT:r72 IV IF (0 TV) (0 IV) (NOT 1* N BARRIER V)
+SELECT:r72 IV IF (0 TV) (0 IV) (NEGATE 1* N BARRIER V)
 # select transitive if there is a noun following the verb
 # not a very good rule
 
 SELECT:r73 Pron IF (0 Pron) (0 Copula) (1C IV) ;
 
-REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NOT 1* V + $$NUMBER OR (sp) + $$PERSON BARRIER V)
+REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NEGATE 1* V + $$NUMBER OR (sp) + $$PERSON BARRIER V)
 # remove coupula if it doesn't match the number and person of the following verb
 
-REMOVE Interj IF (0 ("<да>")) (NOT 1 Comma) ;
-# Да as an interjection should be followed by a comma
+REMOVE Interj IF (0 ("<да>")) (NEGATE 1 Comma) ;
+# 'Да' as an interjection should be followed by a comma
 
 SELECT:r74 Pcle IF (0 ("<да>")) (1 V OR Copula OR Clt) ;
 
