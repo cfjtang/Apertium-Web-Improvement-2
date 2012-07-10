@@ -5401,6 +5401,94 @@
       </action>
     </rule>
 
+
+	<!-- и покажав -> showed her -->
+	<rule comment="REGLA: prn_pers_clt v_perf_aor">
+      <pattern>
+        <pattern-item n="prn_pos_clt"/>
+        <pattern-item n="v_perf_fin"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<call-macro n="prn_conv1">
+          <with-param pos="1"/>
+        </call-macro>       
+		<out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+			<lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+	
+	<!-- и покажував - was showing her -->
+	<rule comment="REGLA: prn_pers_clt v_perf_aor">
+      <pattern>
+        <pattern-item n="prn_pos_clt"/>
+        <pattern-item n="v_imperf_fin"/>
+      </pattern>
+      <action>
+		<call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<call-macro n="prn_conv1">
+          <with-param pos="1"/>
+        </call-macro>       
+		<call-macro n="conv_ser_pn1"/>
+		<out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+			<lu>
+			  <lit v="be"/>
+			  <lit-tag v="vbser"/>
+			  <clip pos="2" side="tl" part="temps"/>
+			  <var n="cur_v_person"/>
+			  <var n="cur_v_number"/>
+            </lu>
+			<b/>
+			<lu>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+			  <lit-tag v="ger"/>
+              <clip pos="2" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <lit v="prpers"/>
+			  <lit-tag v="prn"/>
+			  <lit-tag v="obj"/>
+			  <clip pos="1" side="tl" part="pers"/>
+			  <clip pos="1" side="tl" part="gen"/>
+			  <clip pos="1" side="tl" part="nbr"/>
+            </lu>
+		  </chunk>
+        </out>
+      </action>
+    </rule>
+
 	<!-- ја покажав куќата -> showed the house -->
 	<rule comment="REGLA: prn_pers_clt v_perf_aor nom">
       <pattern>

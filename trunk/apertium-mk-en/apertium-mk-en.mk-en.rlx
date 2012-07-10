@@ -113,7 +113,7 @@ SELECT:r52 CC IF (0 CC) (0 Poss) (NEGATE 1 Copula OR Vlex OR Pers) ;
 SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NEGATE -1* V) ;
 # select (prn pos) if not verb was seen before
 
-SELECT:r54 $$GENDER IF (0 Pers) (1* N + $$GENDER)
+SELECT:r54 $$GENDER IF (0 Clt) (1* N + $$GENDER)
 # select the gender of the following noun
 
 SELECT:r55 Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
@@ -130,8 +130,8 @@ SELECT:r59 Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
 SELECT:r60 Nom IF (0 Nom) (0 Voc) (NEGATE 1 Imprt) ;
 # select imprt if the following verb is in imprt
 
-SELECT:r61 Poss IF (0 Pers) (0 Poss) ;
-# stick with possesives for now, but needs fixing
+REMOVE:r61 Pers IF (0 Pers) (0 Poss);
+# stick with personal for now, but needs fixing
 
 SELECT:r63 $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
@@ -139,7 +139,7 @@ SELECT:r64 V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
 SELECT:r65 $$GENDER IF (0 A) (1* N + $$GENDER BARRIER N) ;
 
-SELECT:r67 Pron + $$GENDER IF (0 Pron) (1* N + $$GENDER BARRIER N) ;
+SELECT:r67 Clt + $$GENDER IF (0 Clt) (1* N + $$GENDER BARRIER N) ;
 
 SELECT:r68 A IF (0 A) (0 V) (NEGATE -1* Copula BARRIER N) ;
 
@@ -162,6 +162,20 @@ REMOVE Interj IF (0 ("<да>")) (NEGATE 1 Comma) ;
 
 SELECT:r74 Pcle IF (0 ("<да>")) (1 V OR Copula OR Clt) ;
 
+REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* N BARRIER V OR PREP)
+REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* CC BARRIER V OR PREP)
+# remove the personal clitic if followed by a verb + noun combo
+# remove the personal clitic if followed by a verb + conjunction combo
+## го најдоа и му го покажаа на него големото злато
+
+REMCOHORT:r81 Poss + Clt IF (NOT 0 CC) (0 Poss + Clt) (1* V) (2* Pers - Clt)
+# remove the possesive clitic if followed by a verb + pronoun without a clitic
+## го најдоа и му го покажаа на него големото злато
+
+SELECT:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
+# treat as passive if "се" is preceded by a noun, or the verb is followed by a noun
+# e.g. мостот се градеше, се гледаше градот
+
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
 	## Даниел, студент од Бања Лука, вели дека нема намера да ја напушти БиХ.
@@ -180,7 +194,13 @@ SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUND
 ##FP:?? 
 
 SELECT:r7 $$NUMBER IF (0 A) (1* N + $$NUMBER) ;
+## SELECT:r7 $$NUMBER IF (0 N) (-1* A + $$NUMBER) ;
 ## adjectives and nouns agree in number
+
+SELECT $$NUMBER IF (0 Num) (1* N + $$NUMBER) ;
+## numbers and nouns agree in number
+
+SELECT Prop IF (0 N) (0 Prop) (-1 Prop)
 
 SELECT:r8 V-IND-FIN (0 V-IND-FIN) (0 Pron) (NOT -1* V-IND-FIN BARRIER S-BOUNDARY) (NOT 1* V-IND-FIN BARRIER S-BOUNDARY) ;
 	## Ти си тука.
