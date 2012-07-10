@@ -1,4 +1,4 @@
-DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>";
+DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>" "<:>";
  
 SETS
 LIST Comma = (cm) ;
@@ -110,17 +110,17 @@ SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) BARRIER V) ;
 SELECT:r52 CC IF (0 CC) (0 Poss) (NEGATE 1 Copula OR Vlex OR Pers) ;
 # select (cnjcoo) if not followed by vblex | prn pers | vbmod
 
-SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NEGATE -1* V) ;
-# select (prn pos) if not verb was seen before
+SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NOT -1* V) ;
+# select (prn pos) if no verb was seen before
 
-SELECT:r54 $$GENDER IF (0 Clt) (1* N + $$GENDER)
+SELECT:r54 $$GENDER IF (0 Clt) (NOT 0 CC) (1* N + $$GENDER)
 # select the gender of the following noun
 
 SELECT:r55 Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
 # select adverb if followed by vbmod | vblex or the second word is a noun
 
-SELECT:r56 Itg IF (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
-SELECT:r57 Rel IF (0 Itg) (0 Rel) (NEGATE -1* Cog or Ant BARRIER N) ;
+SELECT:r56 Itg IF (0 ("кој")) (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
+SELECT:r57 Rel IF (0 ("кој")) (0 Itg) (0 Rel) (NEGATE -1* Cog or Ant BARRIER N) ;
 # use 'who' with people and 'that' with objects
 
 SELECT:r58 A IF (0 Nn) (0 A) (1 Nn) ;
@@ -139,7 +139,7 @@ SELECT:r64 V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
 SELECT:r65 $$GENDER IF (0 A) (1* N + $$GENDER BARRIER N) ;
 
-SELECT:r67 Clt + $$GENDER IF (0 Clt) (1* N + $$GENDER BARRIER N) ;
+SELECT:r67 Clt + $$GENDER IF (0 Clt) (NOT 0 CC) (1* N + $$GENDER BARRIER N) ;
 
 SELECT:r68 A IF (0 A) (0 V) (NEGATE -1* Copula BARRIER N) ;
 
@@ -162,19 +162,26 @@ REMOVE Interj IF (0 ("<да>")) (NEGATE 1 Comma) ;
 
 SELECT:r74 Pcle IF (0 ("<да>")) (1 V OR Copula OR Clt) ;
 
-REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* N BARRIER V OR PREP)
-REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* CC BARRIER V OR PREP)
+SELECT:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
+# remove copula if "се" is preceded by a noun, or the verb is followed by a noun
+# e.g. мостот се градеше, се гледаше градот
+
+REMOVE:r76 Pron IF (0 ("како")) (NEGATE 1* ("?")) ;
+SELECT:r76 Pron IF (0 ("како")) (1* ("?")) ;
+
+REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* N BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
 ## го најдоа и му го покажаа на него големото злато
 
-REMCOHORT:r81 Poss + Clt IF (NOT 0 CC) (0 Poss + Clt) (1* V) (2* Pers - Clt)
+REMCOHORT:r81 Poss + Clt IF (NOT 0 CC) (0 Poss + Clt) (1* V) (2* Pers - Clt BARRIER V)
 # remove the possesive clitic if followed by a verb + pronoun without a clitic
 ## го најдоа и му го покажаа на него големото злато
 
-SELECT:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
-# treat as passive if "се" is preceded by a noun, or the verb is followed by a noun
-# e.g. мостот се градеше, се гледаше градот
+
+SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
+# disambiguating between verbs and nouns
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
@@ -278,7 +285,7 @@ SELECT:r27 Dem IF (0 ("<тоа>")) (0 Dem) (0 Pers) (-1 V-COP) (1 ("<што>"));
 SELECT:r28 CS IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem) (NOT 1 V OR Clt);
 	##Лошата страна е тоа што Бугарите велат дека повеќе не можат да си дозволат да летуваат таму.
 
-SELECT:r29 Itg IF (0 Itg) (0 Rel) (-1 BOS);
+# SELECT:r29 Itg IF (0 Itg) (0 Rel) (-1 BOS);
 	## кој е твојот глас
 
 REMOVE:r30 PREP IF (-1C PREP) (0 PREP) (0 Adv);
@@ -406,3 +413,8 @@ MAP:r700 (@P←) TARGET N | Pron + Dem (-1 PREP);
 
 MAP:r800 (@X) TARGET (prn dem) ;
 MAP:r801 (@X) TARGET (prn pers) ;
+
+AFTER-SECTIONS
+
+SELECT V IF (0 V) (0 N) ;
+
