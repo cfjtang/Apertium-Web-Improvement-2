@@ -4,9 +4,17 @@ You can get more info in http://wiki.apertium.org/wiki/User:Dtr5
 
 install:
 
+	packages
+		apache2
+		php5
+		libapache2-mod-php5 
+		basex (available in Debian unstable and Ubuntu repositories,
+		download from http://basex.org/products/download/all-downloads/
+		otherwise)
+
 	Put apertium-simpledix on your web server folder.
 	
-	In php.ini (if you are using apache):
+	In php.ini:
 		Set upload-max-filesize to a value arround 50 Mb (a full 
 		Apertium pair)
 		Unset web server secure mode. Some actions might take more than
@@ -15,5 +23,10 @@ install:
 	apertium-simpledix/ouput and /tmp has to be writable by your web 
 	server. Either change its owner, or change its permissions.
 	
-	Install basex (available in Debian unstable and Ubuntu repositories)
-	and launch basexserver. 
+	Launch basexserver. 
+
+uses:
+
+    LGPL 	php login form tutorial    	http://www.html-form-guide.com/php-form/php-login-form.html
+			gen_validator             	http://www.javascript-coder.com/html-form/javascript-form-validation.phtml
+    LGPL 	password widget            	http://www.html-form-guide.com/
