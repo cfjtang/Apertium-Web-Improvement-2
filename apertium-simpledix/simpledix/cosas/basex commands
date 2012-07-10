@@ -1,0 +1,14 @@
+insert node <section n="basex"/> into /dictionary
+
+db setup:
+create database apertium-es-ca
+insert node <es/> into doc ("apertium-es-ca")
+insert node <ca/> into doc ("apertium-es-ca")
+insert node <es-ca/> into doc ("apertium-es-ca")
+
+insert node doc ("/path/to/apertium-es-ca.es.dix") into /es
+insert node doc ("/path/to/apertium-es-ca.ca.dix") into /ca
+insert node doc ("/path/to/apertium-es-ca.es-ca.dix") into /es-ca
+
+Exportar un diccionario:
+xquery declare option output:omit-xml-declaration "no"; declare option output:method "xml"; declare option output:version "1.0"; declare option output:encoding "UTF-8"; let $items := /es/* return file:write("xmlout/es.dix", $items)
