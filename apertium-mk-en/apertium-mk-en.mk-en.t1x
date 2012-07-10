@@ -1082,13 +1082,8 @@
       <pattern>
         <pattern-item n="prn_ref_clt"/>
       </pattern>
-      <action>
-        <out>
-        <b/>
-        </out>
-      </action>
+      <action/>
     </rule>
-
 
     <!-- Sintagmas nominales -->
 
@@ -1245,36 +1240,20 @@
       </action>
     </rule>
 
+
     <rule comment="REGLA: prn">
       <pattern>
         <pattern-item n="prn"/>
       </pattern>
       <action>
-        <choose>
-          <when>
-            <test>
-              <or>
-                <equal>
-                  <clip pos="1" side="tl" part="a_prn"/>
-                  <lit-tag v="det.qnt"/>
-                </equal>
-                <equal>
-                  <clip pos="1" side="tl" part="a_prn"/>
-                  <lit-tag v="det.ind"/>
-                </equal>
-              </or>
-            </test>
-            <let>
-              <clip pos="1" side="tl" part="gen"/>
-              <lit v=""/>
-            </let>
-          </when>
-        </choose>
+        <call-macro n="prn_conv1">
+          <with-param pos="1"/>
+        </call-macro>     
         <out>
           <chunk name="p" case="caseFirstWord">
             <tags>
               <tag><lit-tag v="PRN"/></tag>
-              <!--<tag><clip pos="1" side="sl" part="syn"/></tag>-->
+		      <tag><clip pos="1" side="sl" part="syn"/></tag>
               <tag><clip pos="1" side="tl" part="gen"/></tag>
               <tag><clip pos="1" side="tl" part="nbr"/></tag>
             </tags>
@@ -1289,6 +1268,7 @@
         </out>
       </action>
     </rule>
+
 
     <rule comment="REGLA: prn_rel">
       <pattern>
@@ -3454,14 +3434,15 @@
       </action>
     </rule>
 
-    <rule comment="REGLA: v_cop_fin">
+    <rule comment="REGLA: vbser">
       <pattern>
-        <pattern-item n="v_cop_fin"/>
+        <pattern-item n="vbser"/>
       </pattern>
       <action>
-        <call-macro n="conv_verb_tense1">
+		<call-macro n="conv_verb_tense1">
           <with-param pos="1"/>
         </call-macro>
+		<call-macro n="conv_ser_pn1"/>
         <out>
           <chunk name="v" case="caseFirstWord">
             <tags>
@@ -3470,11 +3451,12 @@
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps"/>
-              <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="nbr"/>
+			  <clip pos="1" side="tl" part="temps"/>
+			  <var n="cur_v_person"/>
+			  <var n="cur_v_number"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
+			<b/>
           </chunk>
         </out>
       </action>
@@ -7019,6 +7001,7 @@
         </out>
       </action>
     </rule>
+
 
   </section-rules>
 </transfer>

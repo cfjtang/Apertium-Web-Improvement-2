@@ -130,9 +130,6 @@ SELECT:r59 Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
 SELECT:r60 Nom IF (0 Nom) (0 Voc) (NEGATE 1 Imprt) ;
 # select imprt if the following verb is in imprt
 
-REMOVE:r61 Pers IF (0 Pers) (0 Poss);
-# stick with personal for now, but needs fixing
-
 SELECT:r63 $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
 SELECT:r64 V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
@@ -169,16 +166,17 @@ SELECT:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
 REMOVE:r76 Pron IF (0 ("како")) (NEGATE 1* ("?")) ;
 SELECT:r76 Pron IF (0 ("како")) (1* ("?")) ;
 
-REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* N BARRIER V OR PREP) ;
-REMCOHORT:r80 Pers + Clt IF (0 Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* N BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
 ## го најдоа и му го покажаа на него големото злато
 
-REMCOHORT:r81 Poss + Clt IF (NOT 0 CC) (0 Poss + Clt) (1* V) (2* Pers - Clt BARRIER V)
+REMCOHORT:r81 Poss + Clt IF (0C Poss + Clt) (1* V OR Copula) # (2* Pers - Clt BARRIER V)
 # remove the possesive clitic if followed by a verb + pronoun without a clitic
 ## го најдоа и му го покажаа на него големото злато
 
+SELECT:r81 Pers IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 
 SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
@@ -417,4 +415,12 @@ MAP:r801 (@X) TARGET (prn pers) ;
 AFTER-SECTIONS
 
 SELECT V IF (0 V) (0 N) ;
+# default behavior for V-N
+
+REMOVE:r62 Aor IF (0 Aor) (0 Pii);
+# stick with pii for now
+
+REMOVE:r61 Pers IF (0 Pers) (0 Poss);
+# stick with possesive for now, but needs fixing
+
 
