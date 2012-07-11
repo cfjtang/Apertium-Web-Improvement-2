@@ -33,6 +33,7 @@ LIST Itg = (prn itg) ;
 LIST Rel = (prn rel) ;
 LIST Poss = (prn pos) ;
 LIST Clt = (clt) ;
+LIST Det = (det) ;
 
 
 
@@ -149,7 +150,7 @@ SELECT:r72 IV IF (0 TV) (0 IV) (NEGATE 1* N BARRIER V)
 # select transitive if there is a noun following the verb
 # not a very good rule
 
-SELECT:r73 Pron IF (0 Pron) (0 Copula) (1C IV) ;
+# SELECT:r73 Pron IF (0 Pron) (0 Copula) (1C IV) ;
 
 REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NEGATE 1* V + $$NUMBER OR (sp) + $$PERSON BARRIER V)
 # remove coupula if it doesn't match the number and person of the following verb
@@ -176,10 +177,15 @@ REMCOHORT:r81 Poss + Clt IF (0C Poss + Clt) (1* V OR Copula) # (2* Pers - Clt BA
 # remove the possesive clitic if followed by a verb + pronoun without a clitic
 ## го најдоа и му го покажаа на него големото злато
 
-SELECT:r81 Pers IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
+SELECT:r81 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 
 SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
+
+SELECT Det IF (0 Det) (0 Pron) (1* N BARRIER V) ;
+SELECT Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
+# мојата земја е ...-> my country is ...
+# земјата е моја -> the country is mine
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
