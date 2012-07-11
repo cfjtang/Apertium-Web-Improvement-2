@@ -214,10 +214,13 @@
       <cat-item tags="adj.*"/>
     </def-cat>
 
+    <def-cat n="det_pos">
+      <cat-item tags="det.pos.*"/>
+    </def-cat>
+
     <def-cat n="prn_ref_clt">
       <cat-item tags="prn.ref.clt.*"/>
     </def-cat>
-
 	
     <def-cat n="prn_ref_pers">
       <cat-item tags="prn.ref.pers.*"/>
@@ -282,6 +285,10 @@
   </section-def-cats>
 
   <section-def-attrs>
+	<def-attr n="a_det">
+      <attr-item tags="det"/>
+    </def-attr>
+
     <def-attr n="a_abbr">
       <attr-item tags="abbr"/>
     </def-attr>
@@ -533,12 +540,14 @@
             <lit-tag v="prn.subj"/>
           </let>
         </when>
+<!--
         <otherwise>
           <let>
             <clip pos="1" side="tl" part="a_prn"/>
             <lit-tag v="prn.obj"/>
           </let>
         </otherwise>
+-->
       </choose>
 
       <choose>
@@ -1084,6 +1093,26 @@
       </pattern>
       <action/>
     </rule>
+
+ 	<rule comment="REGLA: det_pos">
+      <pattern>
+        <pattern-item n="det_pos"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk name="d" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SA"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="lem"/>
+			  <lit-tag v="det.pos.sp"/>
+            </lu>        
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
     <!-- Sintagmas nominales -->
 
