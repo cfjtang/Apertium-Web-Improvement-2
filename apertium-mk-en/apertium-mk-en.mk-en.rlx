@@ -124,6 +124,8 @@ SELECT:r56 Itg IF (0 ("кој")) (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
 SELECT:r57 Rel IF (0 ("кој")) (0 Itg) (0 Rel) (NEGATE -1* Cog or Ant BARRIER N) ;
 # use 'who' with people and 'that' with objects
 
+
+
 SELECT:r58 A IF (0 Nn) (0 A) (1 Nn) ;
 # select adjective in an A/N N pattern
 
@@ -160,14 +162,14 @@ REMOVE Interj IF (0 ("<да>")) (NEGATE 1 Comma) ;
 
 SELECT:r74 Pcle IF (0 ("<да>")) (1 V OR Copula OR Clt) ;
 
-SELECT:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
+REMOVE:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
 # remove copula if "се" is preceded by a noun, or the verb is followed by a noun
 # e.g. мостот се градеше, се гледаше градот
 
-REMOVE:r76 Pron IF (0 ("како")) (NEGATE 1* ("?")) ;
-SELECT:r76 Pron IF (0 ("како")) (1* ("?")) ;
+SELECT:r76 Itg IF (0 Itg) (0 Rel) (1* ("?")) ;
+SELECT:r77 Rel IF (0 Itg) (0 Rel) (NOT 1* ("?")) ;
 
-REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* N BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (1 V) (2* N + $$GENDER BARRIER V OR PREP) ;
 REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
@@ -186,6 +188,8 @@ SELECT Det IF (0 Det) (0 Pron) (1* N BARRIER V) ;
 SELECT Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
 # мојата земја е ...-> my country is ...
 # земјата е моја -> the country is mine
+
+SELECT $$GENDER (0 Num) (1* N)
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
