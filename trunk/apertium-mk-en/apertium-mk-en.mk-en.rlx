@@ -44,6 +44,7 @@ LIST Imprt = (imp) ;
 LIST Pii = (pii) ;
 LIST Aor = (aor) ;
 LIST Prs = (pres) ;
+LIST Inf = (inf) ;
 
 LIST Sg = (sg) ;
 LIST Pl = (pl) ;
@@ -103,8 +104,8 @@ SELECT:r66 A IF (0 A) (0 V) (NEGATE -1* Clt BARRIER V)
 SELECT Ind IF (0 Ind) (0 Dst OR Prx Or Def)
 # ги подобри водите vs. подобри води
 
-SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) BARRIER V) ;
-SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) BARRIER V) ;
+SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) OR ("не") BARRIER V) ;
+SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) OR ("не") BARRIER V) ;
 # Ќе најде <-> will find (present)
 # најде <-> found (aorist)
 
@@ -122,9 +123,7 @@ SELECT:r55 Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
 
 SELECT:r56 Itg IF (0 ("кој")) (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
 SELECT:r57 Rel IF (0 ("кој")) (0 Itg) (0 Rel) (NEGATE -1* Cog or Ant BARRIER N) ;
-# use 'who' with people and 'that' with objects
-
-
+# use 'who' with people and 'which' with objects
 
 SELECT:r58 A IF (0 Nn) (0 A) (1 Nn) ;
 # select adjective in an A/N N pattern
@@ -186,12 +185,19 @@ SELECT:r83 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
 
+SELECT A IF (0 A) (0 Adv) (1C* N BARRIER V) ;
+SELECT Adv IF (0 A) (0 Adv) (1C* V BARRIER N) ;
+# disambiguating between adverbs and adjectives
+
+
 SELECT Det IF (0 Det) (0 Pron) (1* N BARRIER V) ;
 SELECT Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
 # мојата земја е ...-> my country is ...
 # земјата е моја -> the country is mine
 
 SELECT $$GENDER (0 Num) (1* N)
+
+SELECT Prs IF (0 Copula + Prs) (0 Copula + Inf) (-1 ("не"))
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
