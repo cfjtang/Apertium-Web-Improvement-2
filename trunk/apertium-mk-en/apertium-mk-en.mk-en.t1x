@@ -763,7 +763,6 @@
                 <lit-tag v="vbser"/>
               </equal>
             </and>
-            
           </test>
           <let>
             <clip pos="1" side="tl" part="temps"/>
@@ -4076,7 +4075,6 @@
       </action>
     </rule>
 
-
     <rule comment="REGLA: не v_cop_fin">
       <pattern>
         <pattern-item n="ne"/>
@@ -4114,6 +4112,52 @@
         </out>
       </action>
     </rule>
+
+
+    <rule comment="REGLA: не vblex">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="vblex"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk name="v" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SV"/></tag>
+            </tags>
+            <lu>
+              <get-case-from pos="1">
+                <lit v="do"/>
+              </get-case-from>
+			  <lit-tag v="vbdo"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="pers"/>
+              <clip pos="2" side="tl" part="nbr"/>
+            </lu>
+			<b/>
+            <lu>
+              <get-case-from pos="1">
+                <clip pos="1" side="tl" part="lemh"/>
+              </get-case-from>
+              <clip pos="1" side="tl" part="a_adv"/>
+              <clip pos="1" side="tl" part="lemq"/>
+            </lu>
+			<b/>
+			<lu>
+              <get-case-from pos="1">
+                <clip pos="2" side="tl" part="lemh"/>
+              </get-case-from>
+              <clip pos="2" side="tl" part="a_verb"/>
+			  <lit-tag v="inf"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
 
     <rule comment="REGLA: не treba">
       <pattern>
@@ -5266,7 +5310,7 @@
       </action>
     </rule>
 
-	<rule comment="REGLA: v_perf_aor">
+	<rule comment="REGLA: v_perf_fin">
       <pattern>
         <pattern-item n="v_perf_fin"/>
       </pattern>

@@ -111,7 +111,7 @@ SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) BARRIER V) ;
 SELECT:r52 CC IF (0 CC) (0 Poss) (NEGATE 1 Copula OR Vlex OR Pers) ;
 # select (cnjcoo) if not followed by vblex | prn pers | vbmod
 
-SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NOT -1* V) ;
+SELECT:r53 Poss IF (0 CC) (0 Poss) (1 Copula Or Vlex or Pers) (NOT -1* V OR Copula) ;
 # select (prn pos) if no verb was seen before
 
 SELECT:r54 $$GENDER IF (0 Clt) (NOT 0 CC) (1* N + $$GENDER)
@@ -147,11 +147,6 @@ SELECT:r69 P-part IF (0 P-part) (0 Prs) (NEGATE -1* (ij) OR (exp)) (-1* N BARRIE
 
 SELECT:r70 V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
 
-SELECT:r71 TV IF (0 TV) (0 IV) (1* N BARRIER V)
-SELECT:r72 IV IF (0 TV) (0 IV) (NEGATE 1* N BARRIER V)
-# select transitive if there is a noun following the verb
-# not a very good rule
-
 # SELECT:r73 Pron IF (0 Pron) (0 Copula) (1C IV) ;
 
 REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NEGATE 1* V + $$NUMBER OR (sp) + $$PERSON BARRIER V)
@@ -166,10 +161,14 @@ REMOVE:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
 # remove copula if "се" is preceded by a noun, or the verb is followed by a noun
 # e.g. мостот се градеше, се гледаше градот
 
+SELECT:r76 PREP IF (0 Itg) (0 Rel) (0 PREP) (1 N OR A) ;
+
 SELECT:r76 Itg IF (0 Itg) (0 Rel) (1* ("?")) ;
 SELECT:r77 Rel IF (0 Itg) (0 Rel) (NOT 1* ("?")) ;
+# interogative if the sentence ends in "?", otherwise relative
 
-REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (1 V) (2* N + $$GENDER BARRIER V OR PREP) ;
+
+REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (1 V) (2* N + ($$GENDER OR mfn OR m) BARRIER V OR PREP) ;
 REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
@@ -179,7 +178,10 @@ REMCOHORT:r81 Poss + Clt IF (0C Poss + Clt) (1* V OR Copula) # (2* Pers - Clt BA
 # remove the possesive clitic if followed by a verb + pronoun without a clitic
 ## го најдоа и му го покажаа на него големото злато
 
-SELECT:r81 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
+REMCOHORT:r82 CC IF (0C CC) (-1 Adv);
+# test
+
+SELECT:r83 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 
 SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
@@ -246,8 +248,8 @@ REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 
 ## REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP) (NOT 1 CS);
 ## FP:
-SELECT Dem IF (0 ("тој")) (0 Dem) (1* N BARRIER V) ;
-SELECT Pers IF (0 ("тој")) (0 Dem) (NOT 1* N BARRIER V) ;
+SELECT Dem IF (0 ("тој")) (0 Dem) (1* N BARRIER V OR Copula) ;
+SELECT Pers IF (0 ("тој")) (0 Dem) (NOT 1* N BARRIER V OR Copula) ;
 	## Друга милитантна група ја презеде одговорноста за убиството на еден полицаец во Атина, единствениот смртоносен напад во Грција таа година.
 	## "Јас студирам и патувам," рече тој.
 	## Тој е тука.
@@ -433,4 +435,7 @@ REMOVE:r62 Aor IF (0 Aor) (0 Pii);
 REMOVE:r61 Pers IF (0 Pers) (0 Poss);
 # stick with possesive for now, but needs fixing
 
-
+SELECT:r71 TV IF (0 TV) (0 IV) (1* N BARRIER V)
+SELECT:r72 IV IF (0 TV) (0 IV) (NEGATE 1* N BARRIER V)
+# select transitive if there is a noun following the verb
+# not a very good rule
