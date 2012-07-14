@@ -269,6 +269,7 @@
       <cat-item tags="prn.ind.*"/>
       <cat-item tags="prn.tot.*"/>
       <cat-item tags="prn.pos.*"/>
+      <cat-item tags="prn.pers.*"/>
     </def-cat>
     <def-cat n="prn_dem">
       <cat-item tags="prn.dem.*"/>
@@ -555,6 +556,18 @@
             <lit-tag v="prn.subj"/>
           </let>
         </when>
+		<when>
+		  <test>
+			<equal>
+			  <clip pos="1" side="sl" part="a_prn"/>
+              <lit-tag v="prn.pers"/>
+			</equal>
+		  </test>
+		  <let>
+            <clip pos="1" side="tl" part="a_prn"/>
+            <lit-tag v="prn.obj"/>
+          </let>
+		</when>
 <!--
         <otherwise>
           <let>
@@ -564,7 +577,6 @@
         </otherwise>
 -->
       </choose>
-
       <choose>
         <when>
           <test>
@@ -1254,37 +1266,6 @@
         </out>
       </action>
     </rule>
-
-    <rule comment="REGLA: prn_pers">
-      <pattern>
-        <pattern-item n="prn_pers"/>
-      </pattern>
-      <action>
-        <call-macro n="prn_conv1">
-          <with-param pos="1"/>
-        </call-macro>
-        <out>
-          <chunk name="p" case="caseFirstWord">
-            <tags>
-              <tag><lit-tag v="SN"/></tag>
-              <tag><clip pos="1" side="sl" part="syn"/></tag>
-              <tag><clip pos="1" side="tl" part="pers"/></tag>
-              <tag><clip pos="1" side="tl" part="gen"/></tag>
-              <tag><clip pos="1" side="tl" part="nbr"/></tag>
-            </tags>
-            <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_prn"/>
-              <clip pos="1" side="tl" part="pers"/>
-              <clip pos="1" side="tl" part="gen"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
-            </lu>
-          </chunk>
-        </out>
-      </action>
-    </rule>
-
 
     <rule comment="REGLA: prn">
       <pattern>

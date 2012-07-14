@@ -121,7 +121,7 @@ SELECT:r54 $$GENDER IF (0 Clt) (NOT 0 CC) (1* N + $$GENDER)
 SELECT:r55 Adv IF (0 ("<не>")) ((1 Copula OR Vmod) OR (2 N))
 # select adverb if followed by vbmod | vblex or the second word is a noun
 
-SELECT:r56 Itg IF (0 ("кој")) (0 Itg) (0 Rel) (-1* Cog or Ant BARRIER N) ;
+SELECT:r56 Itg IF (0 ("кој")) (0 Itg) (0 Rel) ( (-1* Cog OR Ant BARRIER N) OR (1* ("?")) ) ;
 SELECT:r57 Rel IF (0 ("кој")) (0 Itg) (0 Rel) (NEGATE -1* Cog or Ant BARRIER N) ;
 # use 'who' with people and 'which' with objects
 
@@ -166,8 +166,10 @@ SELECT:r76 Itg IF (0 Itg) (0 Rel) (1* ("?")) ;
 SELECT:r77 Rel IF (0 Itg) (0 Rel) (NOT 1* ("?")) ;
 # interogative if the sentence ends in "?", otherwise relative
 
+SELECT Pron IF (0 Copula) (0 Pron) (1 Copula)
 
-REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (1 V) (2* N + ($$GENDER OR mfn OR m) BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (2* N + $$GENDER BARRIER V OR PREP) ;
+## TODO: fix this by taking into account mfn and mf 
 REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
@@ -182,6 +184,7 @@ REMCOHORT:r82 CC IF (0C CC) (-1 Adv);
 
 SELECT:r83 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 
+SELECT V IF (0 V) (0 N) ((-1 ("да")) OR (-2 ("да") LINK -1 Clt));
 SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
 
@@ -198,6 +201,8 @@ SELECT Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
 SELECT $$GENDER (0 Num) (1* N)
 
 SELECT Prs IF (0 Copula + Prs) (0 Copula + Inf) (-1 ("не"))
+
+## FP: Done up to here + the after-sections section
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
 	## Корисниците на бесплатен софтвер ќе мора да плаќаат.
