@@ -46,14 +46,14 @@ LIST Aor = (aor) ;
 LIST Prs = (pres) ;
 LIST Inf = (inf) ;
 
-LIST Sg = (sg) ;
-LIST Pl = (pl) ;
+LIST Sp = (sp) ;
+LIST Sg = (sg sp) ;
+LIST Pl = (pl sp) ;
 LIST Count = (ct) ;
 
-LIST Masc = (m) ;
-LIST Fem = (f) ;
-LIST Neu = (nt) ;
-
+LIST Masc = (m mfn mf) ;
+LIST Fem = (f mfn mf) ;
+LIST Neu = (nt mfn) ;
 
 LIST Sg1 = (p1 sg) ;
 LIST Sg2 = (p2 sg) ;
@@ -73,8 +73,8 @@ LIST Def = (def) ;
 LIST Prx = (prx) ;
 LIST Dst = (dst) ;
 
-LIST NUMBER = sg pl ;
-LIST GENDER = m f nt mfn ;
+LIST NUMBER = sg pl sp ;
+LIST GENDER = m f mf mfn nt ;
 LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
 LIST NAGDV = nom acc dat gen voc ;
 LIST LOWERCASE-WORD = ("[абвгдѓежзѕијклљмнњопрстќуфхцчџшЭѐѝю]+"ri);
@@ -104,8 +104,9 @@ SELECT:r66 A IF (0 A) (0 V) (NEGATE -1* Clt BARRIER V)
 SELECT Ind IF (0 Ind) (0 Dst OR Prx Or Def)
 # ги подобри водите vs. подобри води
 
-SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) OR ("не") BARRIER V) ;
-SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) OR ("не") BARRIER V) ;
+SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) OR ("не") BARRIER V OR Copula) ;
+SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (vbmod) BARRIER V OR Copula) ;
+
 # Ќе најде <-> will find (present)
 # најде <-> found (aorist)
 
@@ -148,29 +149,35 @@ SELECT:r70 V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
 
 # SELECT:r73 Pron IF (0 Pron) (0 Copula) (1C IV) ;
 
-REMOVE Copula + $$NUMBER + $$PERSON IF (0 Copula) (0 Pron) (NEGATE 1* V + $$NUMBER OR (sp) + $$PERSON BARRIER V)
-# remove coupula if it doesn't match the number and person of the following verb
-
 REMOVE Interj IF (0 ("<да>")) (NEGATE 1 Comma) ;
 # 'Да' as an interjection should be followed by a comma
 
 SELECT:r74 Pcle IF (0 ("<да>")) (1 V OR Copula OR Clt) ;
 
+SELECT Pron IF (0 Copula) (0 Pron) (1C Copula)
+SELECT Copula IF (0 Copula) (0 Pron) (1 N OR A)
+
+REMOVE:r75 Copula + $$NUMBER IF (0 Copula) (0 Pron) (1 V + $$NUMBER);
+REMOVE:r75 Copula + Sp IF (0 Copula) (0 Pron) (1 V);
+# remove coupula if it doesn't match the number of the following verb
+
 REMOVE:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
+
 # remove copula if "се" is preceded by a noun, or the verb is followed by a noun
 # e.g. мостот се градеше, се гледаше градот
 
 SELECT:r76 PREP IF (0 Itg) (0 Rel) (0 PREP) (1 N OR A) ;
-
 SELECT:r76 Itg IF (0 Itg) (0 Rel) (1* ("?")) ;
 SELECT:r77 Rel IF (0 Itg) (0 Rel) (NOT 1* ("?")) ;
 # interogative if the sentence ends in "?", otherwise relative
 
-SELECT Pron IF (0 Copula) (0 Pron) (1 Copula)
-
 REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (2* N + $$GENDER BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + (mfn) IF (0C Pers + Clt) (2* N BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + (mf) IF (0C Pers + Clt) (2* N BARRIER V OR PREP) ;
 ## TODO: fix this by taking into account mfn and mf 
 REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (-1 V + (pprs)) (1 N OR A) ;
+
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
 ## го најдоа и му го покажаа на него големото злато
@@ -184,23 +191,26 @@ REMCOHORT:r82 CC IF (0C CC) (-1 Adv);
 
 SELECT:r83 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 
-SELECT V IF (0 V) (0 N) ((-1 ("да")) OR (-2 ("да") LINK -1 Clt));
-SELECT N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
+SELECT:r85 V IF (0 V) (0 N) ((-1 ("да")) OR (-2 ("да") LINK -1 Clt));
+SELECT:r85 N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
 
-SELECT A IF (0 A) (0 Adv) (1C* N BARRIER V) ;
-SELECT Adv IF (0 A) (0 Adv) (1C* V BARRIER N) ;
+SELECT:r86 Adv IF (0 A) (0 Adv) (0 ("само")) ;
+# chosen by frequency
+
+SELECT:r87 A IF (0 A) (0 Adv) (1C* N BARRIER V) ;
+SELECT:r87 Adv IF (0 A) (0 Adv) (1C* V BARRIER N) ;
 # disambiguating between adverbs and adjectives
 
 
-SELECT Det IF (0 Det) (0 Pron) (1* N BARRIER V) ;
-SELECT Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
+SELECT:r88 Det IF (0 Det) (0 Pron) (1* N BARRIER V) ;
+SELECT:r88 Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
 # мојата земја е ...-> my country is ...
 # земјата е моја -> the country is mine
 
-SELECT $$GENDER (0 Num) (1* N)
+SELECT:r89 $$GENDER (0 Num) (1* N)
 
-SELECT Prs IF (0 Copula + Prs) (0 Copula + Inf) (-1 ("не"))
+SELECT:r90 Prs IF (0 Copula + Prs) (0 Copula + Inf) (-1 ("не"))
 
 ## FP: Done up to here + the after-sections section
 
@@ -259,8 +269,7 @@ REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 
 ## REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP) (NOT 1 CS);
 ## FP:
-SELECT Dem IF (0 ("тој")) (0 Dem) (1* N BARRIER V OR Copula) ;
-SELECT Pers IF (0 ("тој")) (0 Dem) (NOT 1* N BARRIER V OR Copula) ;
+SELECT:r16 Dem IF (0 Pers) (0 Dem) (1* N BARRIER V OR Copula) (NEGATE 1 PREP OR CC OR CS)  ;
 	## Друга милитантна група ја презеде одговорноста за убиството на еден полицаец во Атина, единствениот смртоносен напад во Грција таа година.
 	## "Јас студирам и патувам," рече тој.
 	## Тој е тука.
@@ -322,9 +331,9 @@ SELECT:r33 Rel IF (0 ("што")) (0 CS) (0 Itg) (0 Rel) (-1 Dem) (1 V OR Clt);
 	## тоа што ја одржува Македонија на агендата
 
 #for tenses
-SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER STRICT-S-BOUNDARY) OR (1* Prs BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
-SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER STRICT-S-BOUNDARY) OR (1* Aor BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
-SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER STRICT-S-BOUNDARY) OR (1* Pii BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+# SELECT:r34 Prs IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Prs BARRIER STRICT-S-BOUNDARY) OR (1* Prs BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+# SELECT:r35 Aor IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Aor BARRIER STRICT-S-BOUNDARY) OR (1* Aor BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
+# SELECT:r36 Pii IF (0C V-IND-FIN + SG2-OR-SG3) ((-1* Pii BARRIER STRICT-S-BOUNDARY) OR (1* Pii BARRIER STRICT-S-BOUNDARY)) (NOT -1 ("да") + Pcle);
 
 SELECT:r39 Prs IF (0 Prs) (0 Aor) (-1 ("да") + Pcle);
 	#тој сакаше да носи камења
@@ -436,6 +445,12 @@ MAP:r800 (@X) TARGET (prn dem) ;
 MAP:r801 (@X) TARGET (prn pers) ;
 
 AFTER-SECTIONS
+
+SELECT Pers IF (0 ("тој")) (0 Dem)
+
+SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) OR ("не") BARRIER V OR Copula) ;
+
+REMCOHORT ("како") IF (0 ("како")) (1C ("и"))
 
 SELECT V IF (0 V) (0 N) ;
 # default behavior for V-N
