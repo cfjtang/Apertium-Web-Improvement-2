@@ -4045,6 +4045,62 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: vbmod да">
+      <pattern>
+        <pattern-item n="vbmod"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="1"/>
+        </call-macro>
+		<choose>
+		  <when>
+			<test>
+			  <equal>
+                <clip pos="1" side="tl" part="temps"/>
+				<lit-tag v="past"/>
+			  </equal>
+			</test>
+			<out>
+		      <chunk name="v" case="caseFirstWord">
+		        <tags>
+		          <tag><lit-tag v="SV"/></tag>
+		        </tags>
+		        <lu>
+		          <get-case-from pos="1">
+		          <clip pos="1" side="tl" part="lemh"/>
+		          </get-case-from>
+		          <lit-tag v="vaux.past"/>
+		        </lu>
+		        <b/>
+		        <lu>
+		          <lit v="have"/>
+				  <lit-tag v="vbhaver.inf"/>
+		        </lu>	
+		      </chunk>
+		    </out>
+		  </when>
+		  <otherwise>
+			<out>
+		      <chunk name="v" case="caseFirstWord">
+		        <tags>
+		          <tag><lit-tag v="SV"/></tag>
+		        </tags>
+				<lu>
+		          <get-case-from pos="1">
+		          <clip pos="1" side="tl" part="lemh"/>
+		          </get-case-from>
+		          <lit-tag v="vaux.past"/>
+		        </lu>
+		      </chunk>
+		    </out>
+		  </otherwise>
+		</choose>
+      </action>
+    </rule>
+
+
     <rule comment="REGLA: ne vbmod да v_pres_or_ser">
       <pattern>
         <pattern-item n="ne"/>
@@ -4126,6 +4182,73 @@
       </action>
     </rule>
 
+
+
+    <rule comment="REGLA: ne vbmod да">
+      <pattern>
+        <pattern-item n="ne"/>
+        <pattern-item n="vbmod"/>
+        <pattern-item n="inf"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
+        </call-macro>
+		<choose>
+		  <when>
+			<test>
+			  <equal>
+                <clip pos="2" side="tl" part="temps"/>
+				<lit-tag v="past"/>
+			  </equal>
+			</test>
+			<out>
+		      <chunk name="v" case="caseFirstWord">
+		        <tags>
+		          <tag><lit-tag v="SV"/></tag>
+		        </tags>
+		        <lu>
+		          <get-case-from pos="1">
+		          <clip pos="2" side="tl" part="lemh"/>
+		          </get-case-from>
+		          <lit-tag v="vaux.past"/>
+		        </lu>
+				<b/>
+				<lu>
+				  <lit v="not"/>
+				  <lit-tag v="adv"/>
+				</lu>
+		        <b/>
+		        <lu>
+		          <lit v="have"/>
+				  <lit-tag v="vbhaver.inf"/>
+		        </lu>	
+		      </chunk>
+		    </out>
+		  </when>
+		  <otherwise>
+			<out>
+		      <chunk name="v" case="caseFirstWord">
+		        <tags>
+		          <tag><lit-tag v="SV"/></tag>
+		        </tags>
+				<lu>
+		          <get-case-from pos="1">
+		          <clip pos="2" side="tl" part="lemh"/>
+		          </get-case-from>
+		          <lit-tag v="vaux.past"/>
+		        </lu>
+				<b/>
+				<lu>
+				  <lit v="not"/>
+				  <lit-tag v="adv"/>
+				</lu>
+		      </chunk>
+		    </out>
+		  </otherwise>
+		</choose>
+      </action>
+    </rule>
 
     <rule comment="REGLA: vbmod да prn_clitic v_pres">
       <pattern>
@@ -4220,6 +4343,7 @@
 		</choose>
       </action>
     </rule>
+
 
     <rule comment="REGLA: не vbmod да prn_clitic v_pres">
       <pattern>
