@@ -98,6 +98,8 @@ LIST Day = ("понеделник") ("вторник") ("среда") ("четв
 
 SECTION
 
+REMCOHORT ("ќе") (0C exp) (1 ("<може>"))
+
 SELECT:r66 A IF (0 A) (0 V) (NEGATE -1* Clt BARRIER V)
 # ги подобри водите vs. подобри води
 
@@ -137,7 +139,7 @@ SELECT:r63 $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
 SELECT:r64 V IF (0 A) (0 V) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
-SELECT:r65 $$GENDER IF (0 A) (1* N + $$GENDER BARRIER N) ;
+SELECT:r65 $$GENDER IF (0C A) (1* N + $$GENDER BARRIER N) ;
 
 SELECT:r67 Clt + $$GENDER IF (0 Clt) (NOT 0 CC) (1* N + $$GENDER BARRIER N) ;
 
@@ -162,7 +164,6 @@ REMOVE:r75 Copula + Sp IF (0 Copula) (0 Pron) (1 V);
 # remove coupula if it doesn't match the number of the following verb
 
 REMOVE:r75 Copula IF (0 Copula) (0 Pron) (1 V) ((-1 N) OR (2 N));
-
 # remove copula if "се" is preceded by a noun, or the verb is followed by a noun
 # e.g. мостот се градеше, се гледаше градот
 
@@ -171,12 +172,17 @@ SELECT:r76 Itg IF (0 Itg) (0 Rel) (1* ("?")) ;
 SELECT:r77 Rel IF (0 Itg) (0 Rel) (NOT 1* ("?")) ;
 # interogative if the sentence ends in "?", otherwise relative
 
-REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (2* N + $$GENDER BARRIER V OR PREP) ;
-REMCOHORT:r80 Pers + Clt + (mfn) IF (0C Pers + Clt) (2* N BARRIER V OR PREP) ;
-REMCOHORT:r80 Pers + Clt + (mf) IF (0C Pers + Clt) (2* N BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + $$GENDER IF (0C Pers + Clt) (2* Pron Or N + $$GENDER BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + (mfn) IF (0C Pers + Clt) (2* N OR Pron BARRIER V OR PREP) ;
+REMCOHORT:r80 Pers + Clt + (mf) IF (0C Pers + Clt) (2* N OR Pron BARRIER V OR PREP) ;
+
 ## TODO: fix this by taking into account mfn and mf 
 REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (1 V) (2* CC BARRIER V OR PREP) ;
 REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (-1 V + (pprs)) (1 N OR A) ;
+
+
+REMCOHORT:r80 Pers + Clt IF (0C Pers + Clt) (-1 N) (1 V) ;
+# случајот го пријави
 
 # remove the personal clitic if followed by a verb + noun combo
 # remove the personal clitic if followed by a verb + conjunction combo
@@ -191,7 +197,8 @@ REMCOHORT:r82 CC IF (0C CC) (-1 Adv);
 
 SELECT:r83 Pers - Clt IF (0 Poss + Clt) (0 Pers) (1* V OR Copula BARRIER N)
 
-SELECT:r85 V IF (0 V) (0 N) ((-1 ("да")) OR (-2 ("да") LINK -1 Clt));
+SELECT:r85 V IF (0 V) (0 N) (-1 ("да"))
+SELECT:r85 V IF (0 V) (0 N) (-2 ("да")) (-1 Clt)
 SELECT:r85 N IF (0 V) (0 N) (-1* A OR Num OR V OR STRICT-S-BOUNDARY OR Abbr BARRIER N OR V) ;
 # disambiguating between verbs and nouns
 
@@ -212,6 +219,9 @@ SELECT:r89 $$GENDER (0 Num) (1* N)
 
 SELECT:r90 Prs IF (0 Copula + Prs) (0 Copula + Inf) (-1 ("не"))
 
+SELECT:r90 A IF (0 N) (0 A) (1 Num)
+# цели 12 години
+
 ## FP: Done up to here + the after-sections section
 
 REMOVE:r1 Interj IF ((1 V) OR (1 Pron LINK 1 V)) ;
@@ -231,7 +241,7 @@ REMOVE:r5 TV IF (1C PREP) ;
 SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUNDARY) ;
 ##FP:?? 
 
-SELECT:r7 $$NUMBER IF (0 A) (1* N + $$NUMBER) ;
+SELECT:r7 $$NUMBER IF (0C A) (1* N + $$NUMBER) ;
 ## SELECT:r7 $$NUMBER IF (0 N) (-1* A + $$NUMBER) ;
 ## adjectives and nouns agree in number
 
@@ -269,7 +279,7 @@ REMOVE:r15 V-IND-FIN (0 V-IND-FIN) (0 N + $$NUMBER) (-1C A + $$NUMBER) ;
 
 ## REMOVE:r16 Pron + Dem IF (0 ("тој")) (NOT 1 N) (NOT -1 PREP) (NOT -1 V-COP) (NOT 1 CS);
 ## FP:
-SELECT:r16 Dem IF (0 Pers) (0 Dem) (1* N BARRIER V OR Copula) (NEGATE 1 PREP OR CC OR CS)  ;
+SELECT:r16 Dem IF (0 Pers) (0 Dem) (1* N - (prx) - (dst) - (def)  BARRIER V OR Copula) (NEGATE 1 PREP OR CC OR CS)  ;
 	## Друга милитантна група ја презеде одговорноста за убиството на еден полицаец во Атина, единствениот смртоносен напад во Грција таа година.
 	## "Јас студирам и патувам," рече тој.
 	## Тој е тука.
@@ -348,7 +358,6 @@ SELECT:r38 A IF (0 A + Neu) (0 Adv) (1C N + Neu);
 SELECT:r40 Adv IF (0 A + Neu) (0 Adv) (-1C V) (NOT 1C N + Neu);
 	# тој пее убаво
 
-
 ###############################################################################
 #  Syntactic labelling and disambiguation
 #
@@ -401,6 +410,9 @@ MAP:r401 (@←SUBJ) TARGET Pers + $$PERSON + Nom IF (-1* V-IND-FIN + $$PERSON BA
 
 MAP:r402 (@SUBJ→) TARGET N + $$NUMBER IF (1 V-COP + $$NUMBER);
 	## мажот е убав. 
+
+MAP:r403 (@SUBJ→) TARGET Pers IF (0 Pers + (nom) );
+	# mark nominative personal pronouns as subjective (for now)
 
 #
 # Noun modifiers
@@ -465,3 +477,6 @@ SELECT:r71 TV IF (0 TV) (0 IV) (1* N BARRIER V)
 SELECT:r72 IV IF (0 TV) (0 IV) (NEGATE 1* N BARRIER V)
 # select transitive if there is a noun following the verb
 # not a very good rule
+
+## Anaphora resolution
+"prpers" ADDCOHORT:r700 (sg pl) BEFORE (0 V)
