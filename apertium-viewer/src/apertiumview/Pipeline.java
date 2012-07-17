@@ -117,7 +117,7 @@ public class Pipeline {
             
             String output_;
             int retval_;
-            if (!externalProcessing) {
+            if (!externalProcessing && program.getProgram() != Program.ProgEnum.UNKNOWN) {
                 try {
                     StringWriter sw = new StringWriter();
                     Dispatcher.dispatch(program, new StringReader(input), sw, false, markUnknownWords);
