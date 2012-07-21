@@ -58,9 +58,24 @@
   </mode>
 
 
+  <mode name="br-fr-pretransfer" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="br-fr.automorf.bin"/>
+      </program>
+      <program name="cg-proc">
+        <file name="br-fr.rlx.bin"/> 
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="br-fr.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
   <mode name="br-fr-tagger" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w">
         <file name="br-fr.automorf.bin"/>
       </program>
       <program name="cg-proc">
