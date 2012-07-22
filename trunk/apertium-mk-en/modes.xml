@@ -27,11 +27,56 @@
       <program name="cg-proc">
         <file name="mk-en.rlx.bin"/>
       </program>
+<!--
       <program name="cg-proc -w">
         <file name="mk-en.lex.bin"/>
       </program>
+-->
       <program name="apertium-tagger -p -g">
         <file name="mk-en.prob"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mk-en-pretransfer">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mk-en.automorf.bin"/>
+      </program>
+      <program name="cg-proc">
+        <file name="mk-en.rlx.bin"/>
+      </program>
+<!--
+      <program name="cg-proc -w">
+        <file name="mk-en.lex.bin"/>
+      </program>
+-->
+      <program name="apertium-tagger -g">
+        <file name="mk-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="mk-en-biltrans">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mk-en.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="mk-en.rlx.bin"/>
+      </program>
+<!--
+      <program name="cg-proc -w">
+        <file name="mk-en.lex.bin"/>
+      </program>
+-->
+      <program name="apertium-tagger -g">
+        <file name="mk-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="mk-en.autobil.bin"/>
       </program>
     </pipeline>
   </mode>
@@ -172,5 +217,19 @@
       </program>
     </pipeline>
   </mode>
+
+
+  <mode name="en-mk-pretransfer">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="en-mk.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g">
+        <file name="en-mk.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
 
 </modes>
