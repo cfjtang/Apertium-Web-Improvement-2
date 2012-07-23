@@ -1,98 +1,104 @@
-; dix.el -- minor mode for editing Apertium dictionary files
+;;; dix.el --- minor mode for editing Apertium XML dictionary files
 
-; See http://wiki.apertium.org/wiki/Emacs
+;; Copyright (C) 2009-2012 Kevin Brubeck Unhammer
+
+;; Author: Kevin Brubeck Unhammer <unhammer@fsfe.org>
+;; Version: 0.1.0
+;; Url: http://wiki.apertium.org/wiki/Emacs
+;; Keywords: languages
+
+;; This file is not part of GNU Emacs.
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2, or (at your option)
 ;; any later version.
-;; 
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;; 
+;;
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;; Author: Kevin Brubeck Unhammer <unhammer hos gmail punktum com>
+;;; Commentary:
 
-;;; Usage:
-;; (add-to-list 'load-path "/path/to/dix.el-folder") 
-;; (autoload 'dix-mode "dix" 
+;; Usage:
+;; (add-to-list 'load-path "/path/to/dix.el-folder")
+;; (autoload 'dix-mode "dix"
 ;;   "dix-mode is a minor mode for editing Apertium XML dictionary files."  t)
 ;; (add-hook 'nxml-mode-hook
 ;; 	  (lambda () (and buffer-file-name
 ;; 			  (string-match "\\.dix$" buffer-file-name)
 ;; 			  (dix-mode 1))))
-;;; 
-;;; `C-c L' creates an LR-restricted copy of the <e>-element at point,
-;;; `C-c R' an RL-restricted one. `C-TAB' cycles through the
-;;; restriction possibilities (LR, RL, none), while `M-n' and `M-p'
-;;; move to the next and previous "important bits" of <e>-elements
-;;; (just try it!). `C-c S' sorts a pardef, while `C-c G' moves point
-;;; to the pardef of the entry at point, leaving mark where you left
-;;; from. Inside a pardef, `C-c A' shows all usages of that pardef
-;;; within the dictionaries represented by the string `dix-dixfiles',
-;;; while `C-c D' gives you a list of all pardefs which use these
-;;; suffixes (where a suffix is the contents of an <l>-element).
-;;; 
-;;; `M-x dix-suffix-sort' is a general function, useful outside of dix
-;;; XML files too, that just reverses each line, sorts them, and
-;;; reverses them back. `C-c % %' is a convenience function for
-;;; regexp-replacing text within certain XML elements, eg. all <e>
-;;; elements; `C-c % r' and `C-c % l' are specifically for <r> and <l>
-;;; elements, respectively.
-;;; 
-;;; 
-;;; I like having the following set too:
+
+;; Useful functions:
+;; `C-c L' creates an LR-restricted copy of the <e>-element at point,
+;; `C-c R' an RL-restricted one. `C-TAB' cycles through the
+;; restriction possibilities (LR, RL, none), while `M-n' and `M-p'
+;; move to the next and previous "important bits" of <e>-elements
+;; (just try it!). `C-c S' sorts a pardef, while `C-c G' moves point
+;; to the pardef of the entry at point, leaving mark where you left
+;; from. Inside a pardef, `C-c A' shows all usages of that pardef
+;; within the dictionaries represented by the string `dix-dixfiles',
+;; while `C-c D' gives you a list of all pardefs which use these
+;; suffixes (where a suffix is the contents of an <l>-element).
+
+;; `M-x dix-suffix-sort' is a general function, useful outside of dix
+;; XML files too, that just reverses each line, sorts them, and
+;; reverses them back. `C-c % %' is a convenience function for
+;; regexp-replacing text within certain XML elements, eg. all <e>
+;; elements; `C-c % r' and `C-c % l' are specifically for <r> and <l>
+;; elements, respectively.
+
+;; I like having the following set too:
 ;; (setq nxml-sexp-element-flag t 		; treat <e>...</e> as a sexp
 ;;       nxml-completion-hook '(rng-complete t) ; C-RET completes based on DTD
 ;;       rng-nxml-auto-validate-flag nil)       ; 8MB of XML takes a while
-;;; You can always turn on validation again with C-c C-v. Validation
-;;; is necessary for the C-RET completion, which is really handy in
-;;; transfer files.
-;;; 
-;;; 
-;;; I haven't bothered with defining a real indentation function, but
-;;; if you like having all <i> elements aligned at eg. column 25, the
-;;; align rules defined here let you do M-x align on a region to
-;;; achieve that, and also aligns <p> and <r>. Set your favorite
-;;; column numbers with M-x customize-group RET dix.
-;;; 
-;;; 
-;;; Plan / long term todo: 
-;;; - Switch default keybindings so they follow Emacs Key Bindings
-;;;   conventions
-;;; - Yank into <i/l/r> or pardef n="" should replace spaces with either
-;;;   a <b/> or a _
-;;; - Functions shouldn't modify the kill-ring.
-;;; - Functions should be agnostic to formatting (ie. only use nxml
-;;;   movement functions, never forward-line).
-;;; - Real indentation function for one-entry-one-line format.
-;;; - `dix-LR-restriction-copy' should work on a region of <e>'s.
-;;; - `dix-expand-lemma-at-point' (either using `dix-goto-pardef' or
-;;;   `lt-expand')
-;;; - Some sort of interactive view of the translation process. When
-;;;   looking at a word in monodix, you should easily get confirmation on
-;;;   whether (and what) it is in the bidix or other monodix (possibly
-;;;   just using `apertium-transfer' and `lt-proc' on the expanded
-;;;   paradigm).
-;;; - Function for creating a prelimenary list of bidix entries from
-;;;   monodix entries, and preferably from two such lists which
-;;;   we "paste" side-by-side.
-;;; - `dix-LR-restriction-copy' (and the other copy functions) could
-;;;   add a="author"
-;;; - `dix-dixfiles' should be a list of strings instead (could also
-;;;   optionally auto-add all files from modes.xml?)
-;;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
-;;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
-;;;   do with spaces
-;;; - `dix-reverse' should be able to reverse on a regexp match, so
-;;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
+;; You can always turn on validation again with C-c C-v. Validation
+;; is necessary for the C-RET completion, which is really handy in
+;; transfer files.
 
-(defconst dix-version "2011-02-27") 
+;; I haven't bothered with defining a real indentation function, but
+;; if you like having all <i> elements aligned at eg. column 25, the
+;; align rules defined here let you do M-x align on a region to
+;; achieve that, and also aligns <p> and <r>. Set your favorite
+;; column numbers with M-x customize-group RET dix.
+
+;; Plan / long term todo:
+;; - Switch default keybindings so they follow Emacs Key Bindings
+;;   conventions
+;; - Yank into <i/l/r> or pardef n="" should replace spaces with either
+;;   a <b/> or a _
+;; - Functions shouldn't modify the kill-ring.
+;; - Functions should be agnostic to formatting (ie. only use nxml
+;;   movement functions, never forward-line).
+;; - Real indentation function for one-entry-one-line format.
+;; - `dix-LR-restriction-copy' should work on a region of <e>'s.
+;; - `dix-expand-lemma-at-point' (either using `dix-goto-pardef' or
+;;   `lt-expand')
+;; - Some sort of interactive view of the translation process. When
+;;   looking at a word in monodix, you should easily get confirmation on
+;;   whether (and what) it is in the bidix or other monodix (possibly
+;;   just using `apertium-transfer' and `lt-proc' on the expanded
+;;   paradigm).
+;; - Function for creating a prelimenary list of bidix entries from
+;;   monodix entries, and preferably from two such lists which
+;;   we "paste" side-by-side.
+;; - `dix-LR-restriction-copy' (and the other copy functions) could
+;;   add a="author"
+;; - `dix-dixfiles' should be a list of strings instead (could also
+;;   optionally auto-add all files from modes.xml?)
+;; - `dix-sort-e-by-r' doesn't work if there's an <re> element after
+;;   the <r>; and doesn't sort correctly by <l>-element, possibly to
+;;   do with spaces
+;; - `dix-reverse' should be able to reverse on a regexp match, so
+;;   that we can do `dix-suffix-sort' by eg. <l>-elements.
+
+;;; Code:
+
+(defconst dix-version "0.1.0")
 
 (require 'nxml-mode)
 (require 'cl)
@@ -112,7 +118,7 @@
   :group 'nxml)
 
 ;;;###autoload
-(define-minor-mode dix-mode 
+(define-minor-mode dix-mode
   "Toggle dix-mode.
 With arg, turn on dix-mode if and only if arg is positive.
 
@@ -136,7 +142,7 @@ Entering dix-mode calls the hook dix-mode-hook.
 ;;; Menu
 ;;;
 
-(easy-menu-define dix-mode-easy-menu dix-mode-map "dix-mode menu" 
+(easy-menu-define dix-mode-easy-menu dix-mode-map "dix-mode menu"
   '("dix"
     ["View pardef" dix-view-pardef
      :help "View the pardef in another window"]
@@ -397,7 +403,7 @@ which is also a member of `attributes' (in the format of
 		 interest)))
 
 (defun dix-next-one (&optional backward)
-  "Helper for `dix-next'. 
+  "Helper for `dix-next'.
 TODO: handle pardef entries too; make non-recursive."
 
   (defun move (spot)
@@ -405,7 +411,7 @@ TODO: handle pardef entries too; make non-recursive."
 	(goto-char spot)
       (progn (forward-char (if backward -1 1))
 	     (dix-next-one backward))))
-  
+
   (let* ((token-end (nxml-token-before))
 	 (token-next (if backward
 			 xmltok-start
@@ -425,11 +431,11 @@ TODO: handle pardef entries too; make non-recursive."
 
 	  (near-int			; interesting attribute
 	   (move near-int))		; to go to
-	  
+
 	  ((or interest	; interesting element but no next interesting attribute
 	       (member qname dix-skip-empty)) ; skip if empty
 	   (move token-next)
-	   (dix-next-one backward))	  
+	   (dix-next-one backward))
 
 	  ((memq xmltok-type '(space data end-tag))
 	   (and (goto-char token-next)
@@ -437,7 +443,7 @@ TODO: handle pardef entries too; make non-recursive."
 			  (nxml-token-before) ; before looping on:
 			  (member (xmltok-start-tag-qname) '("r" "l" "i"))))
 		(dix-next-one backward)))
-	  
+
 	  ;; TODO: should instead while-loop until the next member of
 	  ;; dix-interesting, or maybe the default should be to go to
 	  ;; the next _attribute_, whatever it is?
@@ -601,7 +607,7 @@ add an RL restriction to the copy."
 prefix argument `remove-lex' removes the contents of the lm
 attribute and <i> or <p> elements."
   (interactive "P")
-  ;; todo: find the first one of these: list-item, e, def-var, sdef, attr-item, cat-item, clip, pattern-item, 
+  ;; todo: find the first one of these: list-item, e, def-var, sdef, attr-item, cat-item, clip, pattern-item,
   (dix-up-to "e" "pardef")
   (let ((beg (or (re-search-backward "^[\t ]*" (line-beginning-position) 'noerror) (point)))
 	(end (1+ (save-excursion
@@ -781,7 +787,7 @@ it if it's not present)."
 	(when tr (aset str cpos tr)))
       (incf cpos)))
   str)
-      
+
 (defun dix-sort-e-by-l (reverse beg end &optional by-r)
   "Sort region alphabetically by contents of <l> element (or by
 <r> element if optional argument `by-r' is true); argument means
@@ -947,7 +953,7 @@ only within lm attributes, in bidix, searches only between > and
 for parts of words, otherwise you have to type the whole word in
 to get a (correct) hit.
 
-Todo: 
+Todo:
 - make some way of searching for prefixes or suffixes (ie. so
   that the .* is only put at the end or beginning)
 - on failing search, don't mark anything (currently, it marks
@@ -960,7 +966,7 @@ Todo:
   (interactive "P")
   (setq dix-search-substring substring)
   (isearch-mode
-   'forward 'regexp 
+   'forward 'regexp
    (lambda ()
      (let* ((bidix (string-match "\\...*-..*\\.dix" (buffer-file-name)))
 	    (l (if bidix ">" "lm=\""))
@@ -1040,7 +1046,7 @@ can go back with C-u \\[set-mark-command]."
     (if (save-excursion
 	  (let* ((pdname
 		  (replace-regexp-in-string
-		   "\\\\" 	; replace single \ (double-escaped) 
+		   "\\\\" 	; replace single \ (double-escaped)
 		   "\\\\\\\\"	; with \\ (double-escaped)
 		   (dix-nearest-pdname start) 'fixedcase)))
 	    (goto-char (point-min))
@@ -1068,7 +1074,7 @@ eg. collapse pardefs."
 	     (pardef (buffer-substring beg end)))
 	(save-selected-window
 	  (pop-to-buffer "*dix-view-pardef*")
-	  (insert pardef)    
+	  (insert pardef)
 	  (nxml-mode)
 	  (dix-mode 1)
 	  (goto-char (point-max))	; from `end-of-buffer'
@@ -1091,7 +1097,7 @@ argument)."
     (if found
 	(goto-char found)
       (message "Couldn't find rule number %d" num))))
-  
+
 (defun dix-rule-forward ()
   "Move point to the next transfer <rule>. Return point if we can
 find a non-commented <rule> before the end of the buffer,
@@ -1123,7 +1129,7 @@ otherwise nil"
 (make-variable-buffer-local 'dix-modes)
 
 (defun dix-analyse (&optional no-disambiguate)
-  "Very bare-bones at the moment. 
+  "Very bare-bones at the moment.
 
 Todo: read modes.xml instead of those using those dix-path*
 variables, and allow both directions (although should have some
@@ -1244,7 +1250,7 @@ ending in __n"
   "Like `dix-guess-pardef', but restricted to pardefs with names
 ending in __vblex_adj"
   (interactive)
-  (dix-guess-pardef "__vblex_adj")) 
+  (dix-guess-pardef "__vblex_adj"))
 
 (defun dix-point-after-> ()
   (equal (buffer-substring-no-properties (1- (point)) (point))
@@ -1267,7 +1273,7 @@ too much work for this."
 		       (goto-char xmltok-start))
 		     (xmltok-start-tag-qname))))
       (and eltname (member eltname names))))
-  
+
   (nxml-token-before)
   (cond ((and (or (eq xmltok-type 'data)
 		  (and (memq xmltok-type '(start-tag empty-element))
@@ -1284,7 +1290,7 @@ too much work for this."
 		      (throw 'in-attr t))))
 	      (in-elt '("par" "pardef")))
 	 "_")
-	(t 
+	(t
 	 " ")))
 
 (defun dix-insert-space ()
@@ -1418,7 +1424,7 @@ lahka:slags
 		 (goto-char (match-end 0))
 		 (save-excursion (search-forward "\"" (line-end-position))
 				 (match-beginning 0)))
-		(insert "%s"))	      
+		(insert "%s"))
 	      (buffer-substring-no-properties (point-min) (point-max))))
 	   (lmsuffix
 	    ;; regexp to remove from <i>'s if <i> is shorter than lm in the template:
@@ -1456,7 +1462,7 @@ lahka:slags
 			 (when (third lr) (error "More than one : in line: %s" line))
 			 (format (if (equal l r)
 				     template
-				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>…<r/>:
+				   ;; both <l> and <r> in input, perhaps change <i/> to <l/>...<r/>:
 				   (replace-regexp-in-string "<i>%s</i>"
 							     "<p><l>%s</l><r>%s</r></p>"
 							     template))
