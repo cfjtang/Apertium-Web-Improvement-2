@@ -38,7 +38,7 @@
     </pipeline>
   </mode>
 
-  <mode name="mk-en-pretransfer">
+  <mode name="mk-en-pretransfer" install="no">
     <pipeline>
       <program name="lt-proc -w">
         <file name="mk-en.automorf.bin"/>
@@ -58,7 +58,7 @@
     </pipeline>
   </mode>
 
-  <mode name="mk-en-biltrans">
+  <mode name="mk-en-biltrans" install="no">
     <pipeline>
       <program name="lt-proc -w">
         <file name="mk-en.automorf.bin"/>
@@ -81,20 +81,6 @@
     </pipeline>
   </mode>
 
-  <mode name="mk-en-lex">
-    <pipeline>
-      <program name="lt-proc -w">
-        <file name="mk-en.automorf.bin"/>
-      </program>
-      <program name="cg-proc">
-        <file name="mk-en.rlx.bin"/>
-      </program>
-      <program name="cg-proc -w">
-        <file name="mk-en.lex.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
   <mode name="mk-en-chunker">
     <pipeline>
       <program name="lt-proc -w">
@@ -103,17 +89,16 @@
       <program name="cg-proc">
         <file name="mk-en.rlx.bin"/>
       </program>
-      <program name="cg-proc -w">
-        <file name="mk-en.lex.bin"/>
-      </program>
       <program name="apertium-tagger -g">
         <file name="mk-en.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
+      <program name="lt-proc -b">
+        <file name="mk-en.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
         <file name="apertium-mk-en.mk-en.t1x"/>
         <file name="mk-en.t1x.bin"/>
-        <file name="mk-en.autobil.bin"/>
       </program>
     </pipeline>
   </mode>
@@ -126,17 +111,16 @@
       <program name="cg-proc">
         <file name="mk-en.rlx.bin"/>
       </program>
-      <program name="cg-proc -w">
-        <file name="mk-en.lex.bin"/>
-      </program>
       <program name="apertium-tagger -g">
         <file name="mk-en.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
+      <program name="lt-proc -b">
+        <file name="mk-en.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
         <file name="apertium-mk-en.mk-en.t1x"/>
         <file name="mk-en.t1x.bin"/>
-        <file name="mk-en.autobil.bin"/>
       </program>
       <program name="apertium-interchunk">
         <file name="apertium-mk-en.mk-en.t2x"/>
@@ -153,17 +137,16 @@
       <program name="cg-proc">
         <file name="mk-en.rlx.bin"/>
       </program>
-      <program name="cg-proc -w">
-        <file name="mk-en.lex.bin"/>
-      </program>
       <program name="apertium-tagger -g">
         <file name="mk-en.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
+      <program name="lt-proc -b">
+        <file name="mk-en.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
         <file name="apertium-mk-en.mk-en.t1x"/>
         <file name="mk-en.t1x.bin"/>
-        <file name="mk-en.autobil.bin"/>
       </program>
       <program name="apertium-interchunk">
         <file name="apertium-mk-en.mk-en.t2x"/>
@@ -184,17 +167,16 @@
       <program name="cg-proc">
         <file name="mk-en.rlx.bin"/>
       </program>
-      <program name="cg-proc -w">
-        <file name="mk-en.lex.bin"/>
-      </program>
       <program name="apertium-tagger -g">
         <file name="mk-en.prob"/>
       </program>
       <program name="apertium-pretransfer"/>
-      <program name="apertium-transfer">
+      <program name="lt-proc -b">
+        <file name="mk-en.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
         <file name="apertium-mk-en.mk-en.t1x"/>
         <file name="mk-en.t1x.bin"/>
-        <file name="mk-en.autobil.bin"/>
       </program>
       <program name="apertium-interchunk">
         <file name="apertium-mk-en.mk-en.t2x"/>
