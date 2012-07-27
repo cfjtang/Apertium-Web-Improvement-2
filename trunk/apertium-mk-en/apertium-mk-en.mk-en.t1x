@@ -5353,6 +5353,7 @@
       </action>
     </rule>
 
+	<!-- doesn't work -->
     <rule comment="REGLA: би може да v_pres">
       <pattern>
         <pattern-item n="hyp"/>
@@ -5362,7 +5363,7 @@
       </pattern>
       <action>
         <call-macro n="conv_verb_tense1">
-          <with-param pos="1"/>
+          <with-param pos="2"/>
         </call-macro>
         <out>
           <chunk name="v" case="caseFirstWord">
@@ -5375,7 +5376,7 @@
               </get-case-from>
               <lit-tag v="vaux.past"/>
             </lu>
-            <b pos="1"/>
+            <b/>
             <lu>
               <clip pos="4" side="tl" part="lemh"/>
               <clip pos="4" side="tl" part="a_verb"/>
