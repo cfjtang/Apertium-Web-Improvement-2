@@ -25,6 +25,7 @@
 #include <clocale>
 #include <vector>
 #include <deque>
+#include <map>
 
 #include "lmtable.h"
 #include "lmmacro.h"
@@ -110,7 +111,8 @@ double score(const string &frame, double &pp) {
   m_lmtb_ng->size = 0;
 
 
-	int count = 0;
+	//int count = 0;
+	int count = 1;
         while (ss >> buf) {
 		if(count == 1) {
                 	s_unigrams.push_back(trim(buf));
@@ -146,7 +148,7 @@ double score(const string &frame, double &pp) {
     delete m_lmtb_ng;
     
     sprob += prob;
-    cerr << "_" << m_nGramOrder << ": " << buffer_str << " " << prob << endl;    
+    //cerr << "_" << m_nGramOrder << ": " << buffer_str << " " << prob << endl;    
   }
 
   //Perplexity
@@ -177,15 +179,72 @@ int main(int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
     
+  int current_line = -1;
+  double current_max = -65534.0;
+  map<int, double> scores;
+  map<int, string> batch;
+  int subline = 0;
+  int maxline = 0;
+
   while (!cin.eof()) {
     string line;
     getline(cin, line);
     if (line.length()>0) {
-      double pp;
-      double log_prob = score("<s> " + line + " </s>", pp);
+      string lineno = line.substr(0, line.find(" "));
+      string linecon = line.substr(line.find("\t"), line.length());
+      int lno = atoi(lineno.c_str());
 
-       
-      cout<< log_prob<< "\t||\t" << line <<endl;
+      //cerr << current_line << " " << lno << " " << line << endl;
+
+      if(current_line == -1) 
+      {
+        current_line = lno;
+      }
+      if(current_line != -1 && current_line != lno) 
+      {
+        for(map<int, string>::iterator it = batch.begin(); it != batch.end(); it++) 
+        {
+          if(it->first == maxline) 
+          {
+            cout<< scores[it->first] << "\t|@|\t" << batch[it->first] <<endl;
+          }
+          else
+          {
+            cout<< scores[it->first] << "\t||\t" << batch[it->first] <<endl;
+          }
+        }
+        current_max = -65534.0;
+        maxline = 0;
+        subline = 0;
+        current_line = lno;
+        batch.clear();
+        scores.clear();
+      }
+      double pp;
+      double log_prob = score("<s> " + linecon + " </s>", pp);
+
+      if(log_prob > current_max)
+      {
+        current_max = log_prob;
+        maxline = subline;
+      }
+
+      batch[subline] = line;
+      scores[subline] = log_prob;
+      //cout<< log_prob<< "\t||\t" << line <<endl;
+      subline = subline + 1;
+    }
+  }
+
+  for(map<int, string>::iterator it = batch.begin(); it != batch.end(); it++) 
+  {
+    if(it->first == maxline) 
+    {
+      cout<< scores[it->first] << "\t|@|\t" << batch[it->first] <<endl;
+    }
+    else
+    {
+      cout<< scores[it->first] << "\t||\t" << batch[it->first] <<endl;
     }
   }
 

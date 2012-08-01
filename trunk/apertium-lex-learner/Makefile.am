@@ -9,6 +9,7 @@ bin_PROGRAMS = irstlm-ranker
 #endif
 
 irstlm_ranker_SOURCES = irstlm_ranker.cpp
+irstlm_ranker_max_SOURCES = irstlm_ranker_max.cpp
 
 randlm_ranker_SOURCES = randlm_ranker.cpp
 
