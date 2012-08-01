@@ -40,7 +40,7 @@ bidix_contlex = {
 contlex_bidix = {
 	'Nouns':['<n>', '<n><attr>', '<n><gen>', '<n><px3sg><loc>'],
 	'Postpositions':['<post>'],
-	'ProperNouns':['<np><top>', '<np><ant><m>', '<np><ant><f>', '<np><cog><m>', '<np><cog><f>', '<np><cog><mf>', '<np><org>', '<np><al>'],
+	'ProperNouns':['<np><top>', '<np><cog>', '<np><ant><m>', '<np><ant><f>', '<np><cog><m>', '<np><cog><f>', '<np><cog><mf>', '<np><org>', '<np><al>'],
 	'Adjectives':['<adj>', '<adj><advl>', '<adj><subst>'],
 	'Adverbs':['<adv>', '<adv><itg>'],
 	'Conjunctions':['<cnjcoo>','<cnjadv>','<cnjsub>'],
