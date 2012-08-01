@@ -190,11 +190,27 @@ int main(int argc, char **argv) {
     string line;
     getline(cin, line);
     if (line.length()>0) {
-      string lineno = line.substr(0, line.find(" "));
+      // .[][2 0].[]  	Les taches rouges encerclées avec espace Il est ces germes de galaxies . 
+      string lineno = "";
+      int bcc = 0;
+      int boc = 0;
+      // Yes, this is shitty.
+      for(string::iterator x = line.begin(); x != line.end(); x++) 
+      { 
+        //cerr << boc << " " << bcc << "; x: " << *x << " lineno:" << lineno << endl ; 
+        if(*x == '[') boc++; 
+        if(*x == ']') bcc++; 
+        if(*x == ' ') break;
+        if(boc==2 && bcc <2 && *x != '[')
+        {
+          lineno += *x; 
+        }
+      }
+      //string lineno = line.substr(line.find("]")+2, line.find(" ")-1);
       string linecon = line.substr(line.find("\t"), line.length());
       int lno = atoi(lineno.c_str());
 
-      //cerr << current_line << " " << lno << " " << line << endl;
+      //cerr << current_line << " :: " << lineno << " :: " << lno << " ::  " << line << endl << endl;
 
       if(current_line == -1) 
       {
@@ -204,6 +220,7 @@ int main(int argc, char **argv) {
       {
         for(map<int, string>::iterator it = batch.begin(); it != batch.end(); it++) 
         {
+          //cerr << it->first << " " << maxline << " " << scores[it->first] << " " << current_max << endl;
           if(it->first == maxline) 
           {
             cout<< scores[it->first] << "\t|@|\t" << batch[it->first] <<endl;
@@ -238,6 +255,7 @@ int main(int argc, char **argv) {
 
   for(map<int, string>::iterator it = batch.begin(); it != batch.end(); it++) 
   {
+    cerr << it->first << " " << maxline << " " << scores[it->first] << " " << current_max << endl;
     if(it->first == maxline) 
     {
       cout<< scores[it->first] << "\t|@|\t" << batch[it->first] <<endl;
