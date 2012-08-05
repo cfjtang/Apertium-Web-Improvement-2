@@ -1077,21 +1077,20 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     HashMap<String, String> onlineModeToCode;
     
     private void initOnlineModes() throws IOException {
-        final String BASE_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/branches/gsoc2012/artetxem/packages/jars/";
+        final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
         onlineModes = new ArrayList<String>();
         onlineModeToLoader = new HashMap<String, URLClassLoader>();
         onlineModeToCode = new HashMap<String, String>();
-        URL url = new URL(BASE_URL);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(REPO_URL).openStream()));
         String line;
-        String pattern = "<li><a href=\"|.jar\">|</a></li>";
         while ((line = reader.readLine()) != null) {
-            String[] code = line.split(pattern);
-            if (code.length > 2) {
-                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(BASE_URL + code[1] + ".jar")});
-                String pairs[] = code[1].split(",");
+            
+            String[] columns = line.split("\t");
+            if (columns.length > 3) {
+                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(columns[1])});
+                String pairs[] = columns[3].split(",");
                 for (int i = 0; i < pairs.length; i++) {
-                    String pair = pairs[i];
+                    final String pair = pairs[i].trim();
                     if (!pair.contains("-")) continue;
                     String title = Translator.getTitle(pair);
                     onlineModes.add(title);
