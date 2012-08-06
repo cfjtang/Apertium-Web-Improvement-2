@@ -939,25 +939,6 @@
       </choose>
     </def-macro>
 
-    <def-macro n="cv_prep" npar="1">
-      <choose alt="oc@aran">
-        <when>
-          <test>
-            <equal>
-              <clip pos="1" side="sl" part="lem"/>
-              <lit v="para"/>
-            </equal>
-          </test>
-          <let>
-            <clip pos="1" side="tl" part="lem"/>
-            <lit v="entà"/>
-          </let>
-        </when>
-      </choose>
-      <call-macro n="cv_prep2">
-        <with-param pos="1"/>
-      </call-macro>
-    </def-macro>
     <def-macro n="cv_prep2" npar="1">
       <choose>
         <when>
@@ -1143,6 +1124,25 @@
           </choose>
         </otherwise>
       </choose>
+    </def-macro>
+    <def-macro n="cv_prep" npar="1">
+      <choose alt="oc@aran">
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="lem"/>
+              <lit v="para"/>
+            </equal>
+          </test>
+          <let>
+            <clip pos="1" side="tl" part="lem"/>
+            <lit v="entà"/>
+          </let>
+        </when>
+      </choose>
+      <call-macro n="cv_prep2">
+        <with-param pos="1"/>
+      </call-macro>
     </def-macro>
 
     <def-macro n="tipus_nom" npar="1">
@@ -8963,8 +8963,8 @@
           </otherwise>
         </choose>
         <call-macro n="f_bcond">
+          <with-param pos="3"/>
           <with-param pos="4"/>
-          <with-param pos="5"/>
         </call-macro>
       </action>
     </rule>
@@ -9084,8 +9084,8 @@
           </otherwise>
         </choose>
         <call-macro n="f_bcond">
+          <with-param pos="2"/>
           <with-param pos="3"/>
-          <with-param pos="4"/>
         </call-macro>
         <call-macro n="posa_adv">
           <with-param pos="1"/>
@@ -9438,8 +9438,8 @@
           </otherwise>
         </choose>
         <call-macro n="f_bcond">
+          <with-param pos="4"/>
           <with-param pos="5"/>
-          <with-param pos="6"/>
         </call-macro>
         <let>
           <var n="elcual_prep"/>
@@ -9592,8 +9592,8 @@
         </choose>
 	
         <call-macro n="f_bcond">
+          <with-param pos="3"/>
           <with-param pos="4"/>
-          <with-param pos="5"/>
         </call-macro>
         <call-macro n="posa_adv">
           <with-param pos="1"/>
@@ -10886,7 +10886,7 @@
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="tipus_verb">
-          <with-param pos="2"/>
+          <with-param pos="1"/>
         </call-macro>
         <out>
           <chunk name="inf" case="caseFirstWord">
