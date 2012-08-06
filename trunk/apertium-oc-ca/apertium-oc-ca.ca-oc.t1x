@@ -1235,27 +1235,6 @@
 
 		</def-macro>
 
-		<def-macro n="cv_prep" npar="1">
-			<choose alt="oc@aran">
-				<when>
-					<test>
-						<equal>
-							<clip pos="1" side="sl" part="lem"/>
-							<lit v="per"/>
-						</equal>
-					</test>
-					<let>
-						<clip pos="1" side="tl" part="lem"/>
-						<lit v="entà"/>
-					</let>
-				</when>
-			</choose>
-			<call-macro n="cv_prep2">
-				<with-param pos="1"/>
-			</call-macro>
-
-		</def-macro>
-	
 		<def-macro n="cv_prep2" npar="1">
 			<choose> 
 				<when>
@@ -1463,6 +1442,28 @@
 				</otherwise>
 			</choose>
 		</def-macro>
+
+		<def-macro n="cv_prep" npar="1">
+			<choose alt="oc@aran">
+				<when>
+					<test>
+						<equal>
+							<clip pos="1" side="sl" part="lem"/>
+							<lit v="per"/>
+						</equal>
+					</test>
+					<let>
+						<clip pos="1" side="tl" part="lem"/>
+						<lit v="entà"/>
+					</let>
+				</when>
+			</choose>
+			<call-macro n="cv_prep2">
+				<with-param pos="1"/>
+			</call-macro>
+
+		</def-macro>
+	
 	
 		<def-macro n="tipus_nom" npar="1">
 			<choose>
@@ -9717,8 +9718,8 @@
 			</out>
 
 			<call-macro n="f_bcond">
+				<with-param pos="1"/>
 				<with-param pos="2"/>
-				<with-param pos="3"/>
 			</call-macro>
 			<call-macro n="posa_adv">
 				<with-param pos="1"/>
@@ -17448,7 +17449,6 @@
 						<chunk name="no" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-								<tag><clip pos="1" side="tl" part="neg"/></tag>		
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lem"/>
@@ -17462,7 +17462,6 @@
 						<chunk name="adv" case="caseFirstWord">
 							<tags>
 								<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-								<tag><clip pos="1" side="tl" part="neg"/></tag>		
 							</tags>
 							<lu>
 								<clip pos="1" side="tl" part="lem"/>
@@ -17495,7 +17494,6 @@
 				<chunk name="adv_adv" case="caseFirstWord">
 					<tags>
 						<tag><clip pos="1" side="tl" part="a_adv"/></tag>
-						<tag><clip pos="1" side="tl" part="neg"/></tag>		
 					</tags>
 					<lu>
 						<clip pos="1" side="tl" part="lem"/>

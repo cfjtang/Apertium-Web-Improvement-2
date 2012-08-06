@@ -349,6 +349,77 @@
 		</choose>
 	</def-macro>
 
+	<def-macro n="cv_prep" npar="2">
+		<choose> 
+			<when>
+				<test>
+					<and>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</equal>
+						<or>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="loc"/>
+							</equal>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="mes"/>
+							</equal>
+						</or>
+					</and>
+				</test>
+				<let>
+					<clip pos="1" part="lem"/>
+					<lit v="a"/>
+				</let>
+			</when>
+			<when alt="oc">
+				<test>
+					<or>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="dins"/>
+						</equal>
+						<equal caseless="yes">
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</equal>
+					</or>
+				</test>
+				<choose>
+					<when>
+						<test>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="loc"/>
+							</equal>
+						</test>
+					
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="a"/>
+						</let>
+					</when>
+					<when>
+						<test>
+							<equal>
+								<clip pos="2" part="tnom"/>
+								<lit-tag v="temporal"/>
+							</equal>
+						</test>
+					
+						<let>
+							<clip pos="1" part="lem"/>
+							<lit v="en"/>
+						</let>
+					</when>
+				</choose>
+			</when>
+		</choose>
+	</def-macro>
+
 	<def-macro n="canvis_amb_les_pr" npar="3">
 			<call-macro n="cv_prep">
 				<with-param pos="2"/>
@@ -518,27 +589,6 @@
 			</let>-->
 		</def-macro>
 
-	<def-macro n="dona_info" npar="1">
-		<let>
-			<var n="tipus_rel"/>
-			<lit v=""/>
-		</let>
-		<choose>
-			<when>
-				<test>
-					<equal>
-						<clip pos="1" part="tipusrel"/>
-						<lit-tag v="quan"/>
-					</equal>
-				</test>
-				<let>
-					<var n="tipus_rel"/>
-					<lit v="quan"/>
-				</let>
-			</when>
-		</choose>
-	</def-macro>
-
 	<def-macro n="modifica_sv" npar="1">
 		<choose>
 			<when>
@@ -588,6 +638,27 @@
 			<var n="cond"/>
 			<lit v=""/>
 		</let>
+	</def-macro>
+
+	<def-macro n="dona_info" npar="1">
+		<let>
+			<var n="tipus_rel"/>
+			<lit v=""/>
+		</let>
+		<choose>
+			<when>
+				<test>
+					<equal>
+						<clip pos="1" part="tipusrel"/>
+						<lit-tag v="quan"/>
+					</equal>
+				</test>
+				<let>
+					<var n="tipus_rel"/>
+					<lit v="quan"/>
+				</let>
+			</when>
+		</choose>
 	</def-macro>
 
 <def-macro n="assigna_gen_nbr" npar="1">
@@ -794,77 +865,6 @@
           </when>     	    
      	</choose>
      </def-macro>
-
-	<def-macro n="cv_prep" npar="2">
-		<choose> 
-			<when>
-				<test>
-					<and>
-						<equal caseless="yes">
-							<clip pos="1" part="lem"/>
-							<lit v="en"/>
-						</equal>
-						<or>
-							<equal>
-								<clip pos="2" part="tnom"/>
-								<lit-tag v="loc"/>
-							</equal>
-							<equal>
-								<clip pos="2" part="tnom"/>
-								<lit-tag v="mes"/>
-							</equal>
-						</or>
-					</and>
-				</test>
-				<let>
-					<clip pos="1" part="lem"/>
-					<lit v="a"/>
-				</let>
-			</when>
-			<when alt="oc">
-				<test>
-					<or>
-						<equal caseless="yes">
-							<clip pos="1" part="lem"/>
-							<lit v="dins"/>
-						</equal>
-						<equal caseless="yes">
-							<clip pos="1" part="lem"/>
-							<lit v="en"/>
-						</equal>
-					</or>
-				</test>
-				<choose>
-					<when>
-						<test>
-							<equal>
-								<clip pos="2" part="tnom"/>
-								<lit-tag v="loc"/>
-							</equal>
-						</test>
-					
-						<let>
-							<clip pos="1" part="lem"/>
-							<lit v="a"/>
-						</let>
-					</when>
-					<when>
-						<test>
-							<equal>
-								<clip pos="2" part="tnom"/>
-								<lit-tag v="temporal"/>
-							</equal>
-						</test>
-					
-						<let>
-							<clip pos="1" part="lem"/>
-							<lit v="en"/>
-						</let>
-					</when>
-				</choose>
-			</when>
-		</choose>
-	</def-macro>
 
 </section-def-macros>
 
