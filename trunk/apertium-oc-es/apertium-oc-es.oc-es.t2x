@@ -207,6 +207,57 @@
     </def-macro>
 
 
+    <def-macro n="modifica_sv" npar="1">
+      <choose>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <var n="tipus_rel"/>
+                <lit v="cuando"/>
+              </equal>
+              <equal>
+                <clip pos="1" part="temps"/>
+                <lit-tag v="fti"/>
+              </equal>
+            </and>
+          </test>
+          <let>
+            <clip pos="1" part="temps"/>
+            <lit-tag v="prs"/>
+          </let>
+        </when>
+      </choose>
+      <let>
+        <var n="tipus_rel"/>
+        <lit v=""/>
+      </let> 
+      <choose>
+        <when>
+          <test>
+            <and>
+              <equal>
+                <var n="cond"/>
+                <lit v="yes"/>
+              </equal>
+              <equal>
+                <clip pos="1" part="temps"/>
+                <lit-tag v="pii"/>
+              </equal>
+            </and>
+          </test>
+          <let>
+            <clip pos="1" part="temps"/>
+            <lit-tag v="pis"/>
+          </let>
+        </when>
+      </choose>
+      <let>
+        <var n="cond"/>
+        <lit v=""/>
+      </let>
+    </def-macro>
+
     
     <def-macro n="canvia_el_verb" npar="3">
       <call-macro n="modifica_sv">
@@ -490,57 +541,6 @@
           </let>
         </when>
       </choose>
-    </def-macro>
-
-    <def-macro n="modifica_sv" npar="1">
-      <choose>
-        <when>
-          <test>
-            <and>
-              <equal>
-                <var n="tipus_rel"/>
-                <lit v="cuando"/>
-              </equal>
-              <equal>
-                <clip pos="1" part="temps"/>
-                <lit-tag v="fti"/>
-              </equal>
-            </and>
-          </test>
-          <let>
-            <clip pos="1" part="temps"/>
-            <lit-tag v="prs"/>
-          </let>
-        </when>
-      </choose>
-      <let>
-        <var n="tipus_rel"/>
-        <lit v=""/>
-      </let> 
-      <choose>
-        <when>
-          <test>
-            <and>
-              <equal>
-                <var n="cond"/>
-                <lit v="yes"/>
-              </equal>
-              <equal>
-                <clip pos="1" part="temps"/>
-                <lit-tag v="pii"/>
-              </equal>
-            </and>
-          </test>
-          <let>
-            <clip pos="1" part="temps"/>
-            <lit-tag v="pis"/>
-          </let>
-        </when>
-      </choose>
-      <let>
-        <var n="cond"/>
-        <lit v=""/>
-      </let>
     </def-macro>
 
     <def-macro n="assigna_gen_nbr" npar="1">
@@ -1184,8 +1184,8 @@
 	      </chunk>
 	    </out>
 	    <call-macro n="f_bcond">
+	      <with-param pos="1"/>
 	      <with-param pos="2"/>
-	      <with-param pos="3"/>
 	    </call-macro>
 	  </when>
 	  <otherwise>
