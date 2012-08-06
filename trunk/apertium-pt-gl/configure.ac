@@ -4,10 +4,10 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_apertium_version], [0.9.0])
+m4_define([required_apertium_version], [0.9.1])
 
-AC_INIT([apertium-pt-gl], [0.9.0], [oscar@imaxin.com])
-AM_INIT_AUTOMAKE([apertium-pt-gl], [0.9.0], no-define)
+AC_INIT([apertium-pt-gl], [0.9.1], [oscar@imaxin.com])
+AM_INIT_AUTOMAKE([apertium-pt-gl], [0.9.1], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
