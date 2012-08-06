@@ -1084,10 +1084,9 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
         BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(REPO_URL).openStream()));
         String line;
         while ((line = reader.readLine()) != null) {
-            
             String[] columns = line.split("\t");
             if (columns.length > 3) {
-                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(columns[1])});
+                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(columns[1])}, this.getClass().getClassLoader());
                 String pairs[] = columns[3].split(",");
                 for (int i = 0; i < pairs.length; i++) {
                     final String pair = pairs[i].trim();
