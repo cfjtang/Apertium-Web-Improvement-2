@@ -348,84 +348,6 @@
       </choose>
     </def-macro>
 
-    <def-macro n="canvis_amb_les_pr" npar="3">
-      <choose alt="oc">
-        <when>
-          <test>
-            <and>
-              <equal>
-                <clip pos="1" part="lema_vb"/>
-                <lit-tag v="anar"/>
-              </equal>
-              <equal>
-                <clip pos="2" part="lem"/>
-                <lit v="a"/>
-              </equal>
-              <or>
-                <equal>
-                  <clip pos="3" part="lem"/>
-                  <lit v="inf"/>
-                </equal>
-                <equal>
-                  <clip pos="3" part="lem"/>
-                  <lit v="pro_inf"/>
-                </equal>
-                <equal>
-                  <clip pos="3" part="lem"/>
-                  <lit v="pro_pro_inf"/>
-                </equal>
-              </or>
-            </and>
-          </test>
-          <call-macro n="f_bcond">
-            <with-param pos="2"/>
-            <with-param pos="3"/>
-          </call-macro>
-        </when>
-        <otherwise>
-          <call-macro n="cv_prep">
-            <with-param pos="2"/>
-            <with-param pos="3"/>
-          </call-macro>
-          <out>
-            <chunk>
-              <clip pos="2" part="lem"/>
-              <clip pos="2" part="tags"/>
-              <clip pos="2" part="chcontent"/>
-            </chunk>
-            <b/>
-          </out>
-        </otherwise>
-      </choose>
-      <call-macro n="cv_prep" alt="oc@aran">
-        <with-param pos="2"/>
-        <with-param pos="3"/>
-      </call-macro>
-      <out alt="oc@aran">
-        <chunk>
-          <clip pos="2" part="lem"/>
-          <clip pos="2" part="tags"/>
-          <clip pos="2" part="chcontent"/>
-        </chunk>
-        <b/>
-      </out>
-      <choose>
-        <when>
-          <test>
-            <not>
-              <in caseless="yes">
-                <clip pos="2" part="lem"/>
-                <list n="prde"/>
-              </in>
-            </not>
-          </test>
-          <call-macro n="partitiu">
-            <with-param pos="3"/>
-          </call-macro>
-        </when>
-      </choose>
-    </def-macro>
-    
     <def-macro n="cv_prep" npar="2">
       <choose alt="oc@aran">
         <when>
@@ -583,7 +505,6 @@
       </choose>
     </def-macro>
     
-    
     <def-macro n="partitiu" npar="1">
       <choose alt="oc">
 	<when>
@@ -697,6 +618,85 @@
 
     </def-macro>
 
+    <def-macro n="canvis_amb_les_pr" npar="3">
+      <choose alt="oc">
+        <when>
+          <test>
+            <and>
+              <equal>
+                <clip pos="1" part="lema_vb"/>
+                <lit-tag v="anar"/>
+              </equal>
+              <equal>
+                <clip pos="2" part="lem"/>
+                <lit v="a"/>
+              </equal>
+              <or>
+                <equal>
+                  <clip pos="3" part="lem"/>
+                  <lit v="inf"/>
+                </equal>
+                <equal>
+                  <clip pos="3" part="lem"/>
+                  <lit v="pro_inf"/>
+                </equal>
+                <equal>
+                  <clip pos="3" part="lem"/>
+                  <lit v="pro_pro_inf"/>
+                </equal>
+              </or>
+            </and>
+          </test>
+          <call-macro n="f_bcond">
+            <with-param pos="2"/>
+            <with-param pos="3"/>
+          </call-macro>
+        </when>
+        <otherwise>
+          <call-macro n="cv_prep">
+            <with-param pos="2"/>
+            <with-param pos="3"/>
+          </call-macro>
+          <out>
+            <chunk>
+              <clip pos="2" part="lem"/>
+              <clip pos="2" part="tags"/>
+              <clip pos="2" part="chcontent"/>
+            </chunk>
+            <b/>
+          </out>
+        </otherwise>
+      </choose>
+      <call-macro n="cv_prep" alt="oc@aran">
+        <with-param pos="2"/>
+        <with-param pos="3"/>
+      </call-macro>
+      <out alt="oc@aran">
+        <chunk>
+          <clip pos="2" part="lem"/>
+          <clip pos="2" part="tags"/>
+          <clip pos="2" part="chcontent"/>
+        </chunk>
+        <b/>
+      </out>
+      <choose>
+        <when>
+          <test>
+            <not>
+              <in caseless="yes">
+                <clip pos="2" part="lem"/>
+                <list n="prde"/>
+              </in>
+            </not>
+          </test>
+          <call-macro n="partitiu">
+            <with-param pos="3"/>
+          </call-macro>
+        </when>
+      </choose>
+    </def-macro>
+    
+    
     <def-macro n="dona_info" npar="1">
       <let>
 	<var n="tipus_rel"/>
