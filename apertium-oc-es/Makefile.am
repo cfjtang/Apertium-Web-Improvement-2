@@ -1,4 +1,4 @@
-VERSION=1.0.5
+VERSION=1.0.6
 LANG1=oc
 LANG2=es
 LANG1b=oc@aran
