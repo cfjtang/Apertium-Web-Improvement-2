@@ -159,12 +159,12 @@
 	  
 	if ($_FILES["leftConf"]["error"] == 0)
 	{
-		copy($_FILES["leftConf"]["tmp_name"], "output/$tempName/config.$lang1.xml");
+		copy($_FILES["leftConf"]["tmp_name"], "output/$tempName/config.$lang1-$lang2.$lang1.xml");
 	}
   
 	if ($_FILES["rightConf"]["error"] == 0)
 	{
-		copy($_FILES["rightConf"]["tmp_name"], "output/$tempName/config.$lang2.xml");
+		copy($_FILES["rightConf"]["tmp_name"], "output/$tempName/config.$lang1-$lang2.$lang2.xml");
 	}
 	header("Location: index.php?user=$tempName");
 ?>

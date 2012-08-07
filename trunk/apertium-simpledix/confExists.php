@@ -5,8 +5,10 @@
 	require_once("include/simpledix.php");
 	
 	$lang = $_REQUEST['lang'];
+	$lang1 = $_REQUEST['lang1'];
+	$lang2 = $_REQUEST['lang2'];
 	
-	$entries = glob("simpledix/config.$lang.xml");
+	$entries = glob("simpledix/config.$lang1-$lang2.$lang.xml");
 
     echo json_encode(array("result" => count($entries)>0));
 ?>

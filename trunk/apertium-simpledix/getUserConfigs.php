@@ -6,8 +6,10 @@
 	
 	$name = $_REQUEST['name'];
 	$lang = $_REQUEST['lang'];
+	$lang1 = $_REQUEST['lang1'];
+	$lang2 = $_REQUEST['lang2'];
 	
-	$entries = glob("output/$name/config.$lang.xml");
+	$entries = glob("output/$name/config.$lang1-$lang2.$lang.xml");
 	
 	$ret = array();
 	
