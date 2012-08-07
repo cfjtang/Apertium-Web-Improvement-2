@@ -11,7 +11,7 @@
     $ret = array();
    
 
-	$output = shell_exec("LC_ALL=es_ES.UTF-8 xsltproc --stringparam lang $lang $ROOT/simpledix/getRightLang.xsl $ROOT/simpledix/installedPairs.xml");
+	$output = shell_exec("LC_ALL=es_ES.UTF-8 xsltproc --stringparam lang $lang $ROOT/simpledix/getRightLang.xsl $ROOT/simpledix/installedLangs.xml");
 
 	$first = true;
 

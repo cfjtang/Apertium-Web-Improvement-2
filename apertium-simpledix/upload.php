@@ -56,7 +56,7 @@
 			<div>
 				<div class = "leftUpload">
 					<div id = "lang1holder" class = "langHolder">
-						<?= T_gettext('Dictionary:')?> <select id = "lang1"  name = "lang1"></select>
+						<?= T_gettext('Dictionary:')?> <select id = "lang1"  name = "lang1" onchange = "searchPairs()"></select>
 					</div>
 					
 					<div class = "dictUpload">

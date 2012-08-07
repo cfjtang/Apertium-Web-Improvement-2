@@ -4,8 +4,8 @@ var installed = true;
 var name;
 var insertionsLeft = 0;
 var currentTimeout = false;
-var storage;
 
+var ALL ;
 var LIST_ERROR ;
 var FLEX_ERROR ;
 var WORD_ERROR ;
@@ -40,43 +40,6 @@ var SHOW_INSERT_QUERIES;
 var HIDE_INSERT_QUERIES;
 var FIRST_GENERATE;
 var DICTIONARY;
-var ACRONYM;
-var PRE_DETERMINER;
-var DETERMINER;
-var LOCATION;
-var ANTHROPONYM;
-var OTHER;
-var COGNOMEN;
-var ATONIC;
-var ENCLITIC;
-var PROCLITIC;
-var TONIC;
-var NOUN;
-var PROPER_NOUN;
-var ADJECTIVE;
-var ADVERB;
-var PREADVERB;
-var PREPOSITION;
-var PRONOUN;
-var RELATIVE;
-var INTERROGATIVE;
-var DETERMINER;
-var DEMONSTRATIVE;
-var DEFINITE;
-var COORDINATING_CONJUNCTION;
-var SUBORDINATING_CONJUNCTION;
-var ADVERBIAL_CONJUNCTION;
-var VERB;
-var MODAL_VERB;
-var ORDINAL;
-var QUANTIFIER;
-var NUMERAL;
-var PRONOMINAL;
-var INTERJECTION;
-var SEPARABLE_VERB;
-var COMPARATIVE;
-var AUXILIARY_VERB;
-var CURRENCY;
 var SAME_LANGUAGES;
 
 // append row to the HTML table
@@ -673,7 +636,7 @@ function checkInDictionary(tableID, lang1, lang2, currLang)
             rtable.className =  "greenTable";
             rtable.query = myJSON.result;
             
-            var tb = document.createElement("input");
+            var tb = document.createElement("textArea");
             var li = document.createElement("li");
             var span = document.createElement("div");
             var input = document.createElement("input");
@@ -681,7 +644,8 @@ function checkInDictionary(tableID, lang1, lang2, currLang)
             input.value = myJSON.node;
             span.innerHTML = currLang;
             tb.setAttribute('type', 'text');
-            tb.setAttribute('value', rtable.query);
+            tb.value = rtable.query;
+            tb.defaultValue = rtable.query;
             //~ document.getElementById("result").appendChild(tb);
             li.appendChild(span);
             li.appendChild(tb);
@@ -781,7 +745,7 @@ function checkHasTranslation(lang1, lang2)
 		{
 			for (i in myJSON.result)
 			{
-				tb = document.createElement("input");
+				tb = document.createElement("textarea");
 				li = document.createElement("li");
 				span = document.createElement("div");
 				span.innerHTML = myJSON.result[i].lang;
@@ -790,6 +754,10 @@ function checkHasTranslation(lang1, lang2)
 				input.value = myJSON.result[i].node;
 				tb.setAttribute('type', 'text');
 				tb.setAttribute('value', myJSON.result[i].query);
+				tb.setAttribute('defaultValue', myJSON.result[i].query);
+				tb.defaultValue = myJSON.result[i].query;
+				tb.value = myJSON.result[i].query;
+				tb.className = "redBorder";
 				//~ document.getElementById("result").appendChild(tb);
 				li.appendChild(span);
 				li.appendChild(tb);
@@ -809,6 +777,7 @@ function checkHasTranslation(lang1, lang2)
 				button.value = UNAVAILABLE;
 				button.style.cssText = "";
 			}
+			setClass("Mostrar", HIDE_INSERT_QUERIES, "extendedDivResult", "theResult");
 		}
     });
 
@@ -956,12 +925,9 @@ function getInstalledPairs()
 				opt.text = myJSON.result[i].value;
 				opt.value = myJSON.result[i].value;
 				cb.options.add(opt);
-				opt = document.createElement("option");
-				opt.text = myJSON.result[i].value;
-				opt.value = myJSON.result[i].value;
-				cb2.options.add(opt);
             }
         }
+        searchPairs();
     });
 
     request.fail(function(jqXHR, textStatus) {
@@ -998,7 +964,7 @@ function searchPairs()
 				cb.options.add(opt);
             }
         }
-        pairExists();
+        //pairExists();
 		
     });
 
@@ -1013,7 +979,9 @@ function searchPairs()
 		  type: "GET",
 		  data: {
 			  name : name,
-			  lang : lang1},
+			  lang : lang1,
+			  lang1: lang1,
+			  lang2: lang2},
 		  dataType: "html"
 		});
 
@@ -1035,13 +1003,13 @@ function searchPairs()
 			rbutton.type = "radio";
 			rbutton.name = "cFiles1Group";
 			rbutton.checked = "checked";
-			rbutton.value = "simpledix/config." + lang1 + ".xml";
+			rbutton.value = "simpledix/config." + lang1 + "-" + lang2 + "." + lang1 + ".xml";
 			td.appendChild(rbutton);
 			tr.appendChild(td);
 			
 			td = document.createElement("td");
 			aLink = document.createElement("a");
-			aLink.href = "simpledix/config." + lang1 + ".xml";
+			aLink.href = "simpledix/config." + lang1 + "-" + lang2 + "." + lang1 + ".xml";
 			aLink.innerHTML = "default";
 			aLink.target = "_blank";	
 			td.appendChild(aLink);
@@ -1134,7 +1102,9 @@ function pairExists()
       type: "GET",
       data: {
 		  name : name,
-		  lang : lang2},
+		  lang : lang2,
+		  lang1: lang1,
+		  lang2: lang2},
       dataType: "html"
     });
 
@@ -1394,6 +1364,19 @@ function toggleClass(button, visText, invisText, class1, class2, what)
 	}
 }
 
+function setClass(button, text, aClass, what)
+{
+	var elem = document.getElementById(what);
+
+	elem.className = aClass;
+	if (button.value)
+		button.value = text;
+	else
+		document.getElementById(button).value = text;
+
+
+}
+
 function check_file(elem, suffixs)
 {
     str=elem.value.toLowerCase();
@@ -1509,6 +1492,13 @@ function showInstalled()
 		hold2.appendChild(select);
 		
 		getInstalledPairs();
+		
+		document.getElementById("req1").className = "hidden";
+		document.getElementById("req2").className = "hidden";
+		document.getElementById("opt1").className = "";
+		document.getElementById("opt2").className = "";
+		document.getElementById("opt1").parentNode.className = "confUpload";
+		document.getElementById("opt2").parentNode.className = "confUpload";
 	}
 	else
 	{
@@ -1516,7 +1506,7 @@ function showInstalled()
 		tb.type = "text";
 		tb.id = "lang1";
 		tb.name = "lang1";
-		tb.setAttribute('onBlur', 'confExists(this)');
+		//tb.setAttribute('onBlur', 'confExists(this)');
 		
 		hold1.appendChild(tb);
 		
@@ -1524,19 +1514,17 @@ function showInstalled()
 		tb.type = "text";
 		tb.id = "lang2";
 		tb.name = "lang2";
-		tb.setAttribute('onBlur', 'confExists(this)');
+		//tb.setAttribute('onBlur', 'confExists(this)');
 		
 		hold2.appendChild(tb);
+		
+		document.getElementById("req1").className = "";
+		document.getElementById("req2").className = "";
+		document.getElementById("opt1").className = "hidden";
+		document.getElementById("opt2").className = "hidden";
+		document.getElementById("opt1").parentNode.className = "roundYellow";
+		document.getElementById("opt2").parentNode.className = "roundYellow";
 	}
-	
-	opt = document.getElementById("opt1");
-	req = document.getElementById("req1");
-	opt.className = "";
-	req.className = "hidden";
-	opt = document.getElementById("opt2");
-	req = document.getElementById("req2");
-	opt.className = "";
-	req.className = "hidden";
 }
 
 function confExists(elem)
@@ -1638,7 +1626,9 @@ function getConfFiles()
 	  type: "GET",
 	  data: {
 		  name : name,
-		  lang : lang1},
+		  lang : lang1,
+		  lang1: lang1,
+		  lang2: lang2},
 	  dataType: "html"
 	});
 
@@ -1660,13 +1650,13 @@ function getConfFiles()
 		rbutton.type = "radio";
 		rbutton.name = "cFiles1Group";
 		rbutton.checked = "checked";
-		rbutton.value = "simpledix/config." + lang1 + ".xml";
+		rbutton.value = "simpledix/config." + lang1 + "-" + lang2 + "." + lang1 +".xml";
 		td.appendChild(rbutton);
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
 		aLink = document.createElement("a");
-		aLink.href = "simpledix/config." + lang1 + ".xml";
+		aLink.href = "simpledix/config." + lang1 + "-" + lang2 + "." + lang1 + ".xml";
 		aLink.innerHTML = "default";
 		aLink.target = "_blank";	
 		td.appendChild(aLink);
@@ -1709,7 +1699,10 @@ function getConfFiles()
       type: "GET",
       data: {
 		  name : name,
-		  lang : lang2},
+		  lang : lang2,
+		  lang1 : lang1,
+		  lang2 : lang2
+		  },
       dataType: "html"
     });
     
@@ -1731,13 +1724,13 @@ function getConfFiles()
 		rbutton.type = "radio";
 		rbutton.name = "cFiles2Group";
 		rbutton.checked = "checked";
-		rbutton.value = "simpledix/config." + lang2 + ".xml";
+		rbutton.value = "simpledix/config." + lang1 + "-" + lang2 + "." + lang2 + ".xml";
 		td.appendChild(rbutton);
 		tr.appendChild(td);
 		
 		td = document.createElement("td");
 		aLink = document.createElement("a");
-		aLink.href = "simpledix/config." + lang2 + ".xml";
+		aLink.href = "simpledix/config." + lang1 + "-" + lang2 + "." + lang2 + ".xml";
 		aLink.innerHTML = "default";
 		aLink.target = "_blank";	
 		td.appendChild(aLink);
@@ -1827,7 +1820,7 @@ function getKinds()
         {
 			opt = document.createElement("option");
 			opt.value = myJSON.result[i].value;
-			opt.text = storage[myJSON.result[i].value];
+			opt.text = myJSON.result[i].value;
 			cb.options.add(opt);
 		}
 	});

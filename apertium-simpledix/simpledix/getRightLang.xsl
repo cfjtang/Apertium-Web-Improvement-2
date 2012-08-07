@@ -5,16 +5,16 @@
 
 <xsl:strip-space elements="*" />
 
-<xsl:template match = "/pairs">
-    <xsl:apply-templates select="pair[@id=$lang]"/>
-</xsl:template>
-
-<xsl:template match="pair">
-	<xsl:apply-templates select="lang"/>
+<xsl:template match = "/langs">
+    <xsl:apply-templates select="lang[@id=$lang]"/>
 </xsl:template>
 
 <xsl:template match="lang">
-	<xsl:value-of select="@n"/>
+	<xsl:apply-templates select="right"/>
+</xsl:template>
+
+<xsl:template match="right">
+	<xsl:value-of select="@id"/>
     <xsl:text>
 </xsl:text>
 </xsl:template>
