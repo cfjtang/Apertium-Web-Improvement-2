@@ -34,9 +34,11 @@
     </def-cat>
     <def-cat n="nom">
       <cat-item tags="n.*"/>
+    </def-cat>
+	<def-cat n="pnom">
       <cat-item tags="np.*"/>
     </def-cat>
-
+	
 	<def-cat n="abbr">
 	  <cat-item tags="abbr"/>
     </def-cat>
@@ -1657,6 +1659,39 @@
       </action>
     </rule>
 
+	<rule comment="REGLA: pnom">
+      <pattern>
+        <pattern-item n="pnom"/>
+      </pattern>
+      <action>
+        <call-macro n="np_set_defnes1">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk namefrom="np_chunk_n" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+              <tag><var n="np_chunk_s"/></tag>
+              <tag><var n="defin"/></tag>
+              <tag><clip pos="1" side="tl" part="nbr"/></tag>
+            </tags>
+            <lu>
+              <var n="np_chunk_h"/>
+              <clip pos="1" side="tl" part="lemh"/>
+              <clip pos="1" side="tl" part="a_nom"/>
+              <clip pos="1" side="tl" part="gen"/>
+              <clip pos="1" side="tl" part="nbr"/>
+              <clip pos="1" side="tl" part="lemq"/>
+              <var n="np_chunk_q"/>
+            </lu>
+          </chunk>
+        </out>
+        <call-macro n="np_cleanup1">
+          <with-param pos="1"/>
+        </call-macro>
+      </action>
+    </rule>
+
     <rule comment="REGLA: nom-nom">
       <pattern>
         <pattern-item n="nom"/>
@@ -2273,8 +2308,8 @@
               <var n="np_chunk_h"/>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_num"/>
-              <clip pos="1" side="tl" part="nbr"/>
-              <clip pos="1" side="tl" part="lemq"/>
+			  <var n="number"/>
+              <clip pos="1" side="tl" part="lemq"/>	
             </lu>
             <b pos="1"/>
             <lu>
@@ -2336,7 +2371,7 @@
               <var n="np_chunk_h"/>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_num"/>
-              <clip pos="1" side="tl" part="nbr"/>
+			  <var n="number"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -2392,7 +2427,7 @@
               <var n="np_chunk_h"/>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_num"/>
-              <clip pos="1" side="tl" part="nbr"/>
+			  <var n="number"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -2762,7 +2797,7 @@
               <var n="np_chunk_h"/>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_num"/>
-              <clip pos="1" side="tl" part="nbr"/>
+			  <var n="number"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
