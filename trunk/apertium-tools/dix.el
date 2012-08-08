@@ -30,7 +30,8 @@
 ;;   "dix-mode is a minor mode for editing Apertium XML dictionary files."  t)
 ;; (add-hook 'nxml-mode-hook
 ;; 	  (lambda () (and buffer-file-name
-;; 			  (string-match "\\.dix$" buffer-file-name)
+;; 			  (string-match "\\.\\(dix\\|metadix\\|t[0-9s]x\\)$"
+;;                                      buffer-file-name)
 ;; 			  (dix-mode 1))))
 
 ;; Useful functions:
@@ -348,12 +349,14 @@ list `attributes' of the same format as
     (when attrib (xmltok-attribute-value-start attrib))))
 
 (defvar dix-interesting
-  '(("clip" "pos" "side" "part")
+  '(;; dix:
+    ("clip" "pos" "side" "part")
     ("e" "lm" "slr" "srl" "r" "c")
     ("par" "n")
     ("section" "id" "type")
     ("pardef" "n")
     ("s" "n")
+    ;; transfer:
     ("sdef" "n")
     ("b" "pos")
     ("with-param" "pos")
@@ -370,15 +373,22 @@ list `attributes' of the same format as
     ("chunk" "name" "case" "namefrom")
     ("var" "n")
     ("lit" "v")
-    ("lit-tag" "v"))
+    ("lit-tag" "v")
+    ;; tsx:
+    ("def-label" "name" "closed")
+    ("def-mult" "name")
+    ("tags-item" "tags" "lemma")
+    ("label-item" "label")
+    ("tagger" "name"))
   "Association list of elements and which attributes are considered interesting,
 used by `dix-next'.")
 
 (defvar dix-skip-empty
-  '("dictionary" "alphabet" "sdefs" "pardefs" "lu" "p" "e" "tags" "chunk" "tag" "pattern" "rule" "action" "out" "b" "def-macro" "choose" "when" "test" "equal" "not" "otherwise" "let")
+  '("dictionary" "alphabet" "sdefs" "pardefs" "lu" "p" "e" "tags" "chunk" "tag" "pattern" "rule" "action" "out" "b" "def-macro" "choose" "when" "test" "equal" "not" "otherwise" "let" "forbid" "label-sequence" "tagset")
   "Skip past these elements when using `dix-next' (but not if
 they have interesting attributes as defined by
 `dix-interesting').")
+;;; TODO: skip <[lr]><g><b/> and go to nearest CDATA in e.g. <l><g><b/>for</g></l>
 
 (defun dix-nearest (pivot backward &rest args)
   "(dix-nearest 3 nil 1 2 3 4 5 6 7) => 4
@@ -1041,20 +1051,25 @@ also `dix-next'."
   "Call from an entry to go to its pardef. Mark is pushed so you
 can go back with C-u \\[set-mark-command]."
   (interactive)
-  (let ((start (point))
-	pos)
-    (if (save-excursion
-	  (let* ((pdname
-		  (replace-regexp-in-string
-		   "\\\\" 	; replace single \ (double-escaped)
-		   "\\\\\\\\"	; with \\ (double-escaped)
-		   (dix-nearest-pdname start) 'fixedcase)))
-	    (goto-char (point-min))
-	    (if (re-search-forward
-		 (concat "<pardef *n=\"" pdname "\"") nil t)
-		(setq pos (match-beginning 0)))))
-	(progn (push-mark)
-	       (goto-char pos)))))
+  (let* ((start (point))
+	 (pdname (dix-nearest-pdname start))
+	 (pos (save-excursion
+		(goto-char (point-min))
+		(when (re-search-forward
+		       (concat "<pardef *n=\"\\("
+			       (replace-regexp-in-string
+				"\\\\"     ; replace single \ (double-escaped)
+				"\\\\\\\\" ; with \\ (double-escaped)
+				pdname 'fixedcase)
+			       "\\)\"") nil t)
+		  (match-beginning 0)))))
+    (if pos
+	(progn
+	  (push-mark)
+	  (goto-char pos)
+	  (unless (equal (match-string 1) pdname)
+	    (message "WARNING: pardef-names don't quite match: \"%s\" and \"%s\"" pdname (match-string 1))))
+      (message "Couldn't find pardef %s" pdname))))
 
 (defun dix-view-pardef ()
   "Show pardef in other window. Unfortunately, I haven't found
