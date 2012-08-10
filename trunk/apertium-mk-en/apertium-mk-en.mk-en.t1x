@@ -265,6 +265,7 @@
       <cat-item lemma="clitic" tags="prn.*"/>
       <cat-item lemma="clitic" tags="prn.pos.clt.*"/>
     </def-cat>
+
     <def-cat n="prn">
       <cat-item tags="prn.itg.*"/>
       <cat-item tags="prn.neg.*"/>
@@ -417,11 +418,15 @@
       <attr-item tags="aor"/>
       <attr-item tags="inf"/>
     </def-attr>
+	<def-attr n="mood">
+      <attr-item tags="imp"/>
+    </def-attr>
     <def-attr n="syn">
       <attr-item tags="@X"/>
       <attr-item tags="@SUBJ→"/>
       <attr-item tags="@←SUBJ"/>
     </def-attr>
+	
   </section-def-attrs>
 
   <section-def-vars>
@@ -439,6 +444,7 @@
     <def-var n="np_chunk_q"/><!-- Queue -->
     <def-var n="cur_v_person"/>
     <def-var n="cur_v_number"/>
+    <def-var n="cur_v_temp"/>
   </section-def-vars>
 
   
@@ -1168,6 +1174,8 @@
 			<lu>
               <clip pos="2" side="tl" part="lemh"/>
               <clip pos="2" side="tl" part="a_num"/>
+              <clip pos="2" side="tl" part="nbr"/>
+              <clip pos="2" side="tl" part="lemq"/>
             </lu>        
           </chunk>
         </out>
@@ -2797,7 +2805,7 @@
               <var n="np_chunk_h"/>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_num"/>
-			  <var n="number"/>
+              <clip pos="1" side="tl" part="nbr"/>
               <clip pos="1" side="tl" part="lemq"/>
             </lu>
             <b pos="1"/>
@@ -3694,7 +3702,7 @@
       </pattern>
       <action>
 		 <call-macro n="conv_verb_tense1">
-          <with-param pos="3"/>
+          <with-param pos="4"/>
         </call-macro>
         <out>
           <chunk name="to_v" case="caseFirstWord">
@@ -4753,9 +4761,29 @@
         <pattern-item n="vblex"/>
       </pattern>
       <action>
-        <call-macro n="conv_verb_tense1">
+		<call-macro n="conv_verb_tense1">
           <with-param pos="2"/>
         </call-macro>
+		<choose>
+		  <when>
+			<test>
+			  <equal>
+				<clip pos="2" side="tl" part="mood"/>
+				<lit-tag v="imp"/>
+			  </equal>
+			</test>
+			<let>
+			  <var n="cur_v_temp"/>
+			  <lit-tag v="pres"/>
+			</let>
+		  </when>
+		  <otherwise>
+			<let>
+			  <var n="cur_v_temp"/>
+              <clip pos="2" side="tl" part="temps"/>
+			</let>
+		  </otherwise>
+		</choose>			
         <out>
           <chunk name="v" case="caseFirstWord">
             <tags>
@@ -4766,7 +4794,7 @@
                 <lit v="do"/>
               </get-case-from>
 			  <lit-tag v="vbdo"/>
-              <clip pos="2" side="tl" part="temps"/>
+			  <var n="cur_v_temp"/>
               <clip pos="2" side="tl" part="pers"/>
               <clip pos="2" side="tl" part="nbr"/>
             </lu>
