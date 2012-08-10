@@ -106,7 +106,7 @@ SELECT:r66 A IF (0 A) (0 V) (NEGATE -1* Clt BARRIER V)
 SELECT Ind IF (0 Ind) (0 Dst OR Prx Or Def)
 # ги подобри водите vs. подобри води
 
-SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) OR ("не") BARRIER V OR Copula) ;
+SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (exp) OR (ij) OR ("не") OR ("да") BARRIER V OR Copula) ;
 SELECT:r50 Prs IF (0 Prs) (0 Aor)  (-1* (vbmod) BARRIER V OR Copula) ;
 
 # Ќе најде <-> will find (present)
@@ -133,7 +133,7 @@ SELECT:r58 A IF (0 Nn) (0 A) (1 Nn) ;
 
 SELECT:r59 Voc IF (0 Nom) (0 Voc) (1 Imprt) ;
 SELECT:r60 Nom IF (0 Nom) (0 Voc) (NEGATE 1 Imprt) ;
-# select imprt if the following verb is in imprt
+# select VOC if the following verb is in imprt
 
 SELECT:r63 $$GENDER IF (0 A) (-1* Copula BARRIER N) (-1* N + $$GENDER) ;
 
@@ -145,7 +145,7 @@ SELECT:r67 Clt + $$GENDER IF (0 Clt) (NOT 0 CC) (1* N + $$GENDER BARRIER N) ;
 
 SELECT:r68 A IF (0 A) (0 V) (NEGATE -1* Copula BARRIER N) ;
 
-SELECT:r69 P-part IF (0 P-part) (0 Prs) (NEGATE -1* (ij) OR (exp)) (-1* N BARRIER V) ;
+SELECT:r69 P-part IF (0 P-part) (0 Prs) (NEGATE -1* (ij) OR (exp) OR ("не")) (-1* N BARRIER V) ;
 
 SELECT:r70 V IF (0 V) (-1 (V) OR (exp) OR (Clt) OR (ij) ) ;
 
@@ -238,7 +238,7 @@ REMOVE:r3 N IF (0 N) (0 V-IND-FIN) (-1C ("не") + Adv) ;
 REMOVE:r5 TV IF (1C PREP) ;
 ##??
 
-SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUNDARY) ;
+# SELECT:r6 Sg3 IF (0C V-IND-FIN + SG2-OR-SG3) (NOT -1* Pron + Sg2 BARRIER S-BOUNDARY) ;
 ##FP:?? 
 
 SELECT:r7 $$NUMBER IF (0C A) (1* N + $$NUMBER) ;
@@ -459,8 +459,6 @@ MAP:r801 (@X) TARGET (prn pers) ;
 AFTER-SECTIONS
 
 SELECT Pers IF (0 ("тој")) (0 Dem)
-
-SELECT:r51 Aor IF (0 Prs) (0 Aor) (NEGATE -1* (exp) OR (ij) OR ("не") BARRIER V OR Copula) ;
 
 REMCOHORT ("како") IF (0 ("како")) (1C ("и"))
 
