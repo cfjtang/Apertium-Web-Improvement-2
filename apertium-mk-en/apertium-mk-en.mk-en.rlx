@@ -205,10 +205,11 @@ SELECT:r85 V IF (0 V) (0 N) (-2 ("да")) (-1 Clt)
 SELECT:r86 Adv IF (0 A) (0 Adv) (0 ("само")) ;
 # chosen by frequency
 
-SELECT:r87 A IF (0 A) (0 Adv) (1C* N BARRIER V) ;
-SELECT:r87 Adv IF (0 A) (0 Adv) (1C* V BARRIER N) ;
+SELECT:r87 A IF (0 A) (0 Adv) (1C* N BARRIER V OR Copula) ;
+SELECT:r87 Adv IF (0 A) (0 Adv) (1C* V OR Copula BARRIER N) ;
 # disambiguating between adverbs and adjectives
 
+SELECT Adv IF (0 A) (0 Adv) (1 V-IND-FIN)
 
 SELECT:r88 Det IF (0 Det) (0 Pron) (1* N BARRIER V) ;
 SELECT:r88 Pron IF (0 Det) (0 Pron) (NEGATE 1* N BARRIER V) ;
