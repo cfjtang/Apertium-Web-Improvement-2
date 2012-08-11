@@ -106,6 +106,7 @@
     <def-cat n="v_imperf_aor">
       <cat-item tags="vblex.imperf.*.aor.*"/>
     </def-cat>
+		
 
     <def-cat n="v_fin">
       <cat-item tags="vblex.*.*.pres.*"/>
@@ -2837,7 +2838,6 @@
       </action>
     </rule>
 
-
     <rule comment="REGLA: adj nom">
       <pattern>
         <pattern-item n="adj"/>
@@ -3551,7 +3551,7 @@
             <lu>
               <clip pos="1" side="tl" part="lemh"/>
               <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps"/>
+			  <lit-tag v="past"/>
               <clip pos="1" side="tl" part="pers"/>
               <clip pos="1" side="tl" part="nbr"/>
               <clip pos="1" side="tl" part="lemq"/>
@@ -5873,13 +5873,17 @@
 	
 	<!-- покажав - showed -->
 
+
 	 <rule comment="REGLA: не треба adv да prn_clitic v_pres">
       <pattern>
         <pattern-item n="vbhaver"/>
       </pattern>
       <action>
         <call-macro n="conv_verb_tense1">
-          <with-param pos="1"/>
+          <with-param pos="2"/>
+        </call-macro>
+        <call-macro n="conv_verb_tense1">
+          <with-param pos="2"/>
         </call-macro>
         <out>
           <chunk name="v" case="caseFirstWord">
@@ -5887,10 +5891,10 @@
               <tag><lit-tag v="SV"/></tag>
             </tags>
             <lu>
-              <clip pos="1" side="tl" part="lemh"/>
-              <clip pos="1" side="tl" part="a_verb"/>
-              <clip pos="1" side="tl" part="temps"/>
-              <clip pos="1" side="tl" part="lemq"/>
+              <clip pos="2" side="tl" part="lemh"/>
+              <clip pos="2" side="tl" part="a_verb"/>
+              <clip pos="2" side="tl" part="temps"/>
+              <clip pos="2" side="tl" part="lemq"/>
             </lu>
           </chunk>
         </out>
