@@ -3,7 +3,7 @@
 ;; Copyright (C) 2009-2012 Kevin Brubeck Unhammer
 
 ;; Author: Kevin Brubeck Unhammer <unhammer@fsfe.org>
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Url: http://wiki.apertium.org/wiki/Emacs
 ;; Keywords: languages
 
@@ -99,7 +99,7 @@
 
 ;;; Code:
 
-(defconst dix-version "0.1.0")
+(defconst dix-version "0.1.1")
 
 (require 'nxml-mode)
 (require 'cl)
@@ -1214,21 +1214,52 @@ somewhere above, this function will turn the word into:
 Optional string argument `partype' lets you restrict the search
 to entries with pardef names ending in that string (e.g. \"__n\").
 
+You can also add mwe's like
+
+setje# fast
+
+and get them turned into
+
+<e lm=\"setje fast\">      <i>set</i><par n=\"set/je__vblex\"/><p><l><b/>fast</l><r><g><b/>fast</g></r></p></e>
+
+assuming there's a line like
+
+<e lm=\"setje\">      <i>set</i><par n=\"set/je__vblex\"/></e>
+
+somewhere above.
+
 TODO: ideally, instead of having to place the cursor at the
 compound border, it should try to get the longest possible match,
 the same as trying this function from first char, then from
 second, etc., but preferably using a more efficient method..."
   (interactive)
-  (let* ((rhs (buffer-substring-no-properties (point) (line-end-position)))
+  (let* ((queue-start (save-excursion (search-forward "#" (line-end-position) 'noerror)))
+	 (queue (when queue-start
+		  (replace-regexp-in-string
+		   "^#" ""
+		   (buffer-substring-no-properties queue-start (line-end-position)))))
+	 ;; rhs of point is the part we search for, the lhs and queue are particular to this word
+	 (rhs-end (if queue-start
+		      (1- queue-start)
+		    (line-end-position)))
+	 (rhs (buffer-substring-no-properties (point) rhs-end))
 	 (pos (save-excursion
 		(re-search-backward
 		 (concat "<e.* lm=\"[^\"]*" rhs "\".*" partype "\"") nil 'noerror 1))))
     (if pos
 	(let ((e (buffer-substring-no-properties pos (nxml-scan-element-forward pos)))
 	      (word (buffer-substring-no-properties (line-beginning-position)
-						    (line-end-position))))
+						    rhs-end)))
 	  (delete-region (line-beginning-position) (line-end-position))
 	  (insert e)
+	  (when queue
+	    (save-excursion
+	      (nxml-backward-down-element)
+	      (insert (concat "<p><l>"
+			      (replace-regexp-in-string " " "<b/>" queue)
+			      "</l><r><g>"
+			      (replace-regexp-in-string " " "<b/>" queue)
+			      "</g></r></p>"))))
 	  (nxml-backward-single-balanced-item)
 	  (dix-next)
 	  (let* ((lmbound (progn (nxml-token-after)
@@ -1245,7 +1276,7 @@ second, etc., but preferably using a more efficient method..."
 		 (oldlhs (dix-rstrip oldlm rhs))
 		 (lhs (dix-rstrip word rhs)))
 	    (delete-region (car lmbound) (cdr lmbound))
-	    (insert word)
+	    (insert (concat word queue))
 	    (dix-next)
 	    (dix-consume-i oldlhs)
 	    (unless (string= (xmltok-start-tag-qname) "i")
