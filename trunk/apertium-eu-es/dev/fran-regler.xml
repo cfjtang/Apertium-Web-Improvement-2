@@ -1,0 +1,766 @@
+<rules>
+<!--
+SET POST-N = det OR adj OR num OR ind ;
+SET PRE-N = gen ;
+SET RECEIVE-OBJECT = "baieztapen" "dei" "eskutitz" "gutun" "lore" "mezu" "opari" "pakete" ;  
+SET DRINK = "ardo" "ebaki" "garagardo" "hurrupa" "infusioa" "kafe" "kalimotxo" "kaña" "pote" "sagardo" "te" "trago" "tragoxka" "zurito" ;
+SET TOMAR-MWE = "erabakia" "jabetzea" "serio";
+SET NON-OBJECTS = "arnasa" "ekintza" "erantzun" "esaldi" "forma" "hitz" "idazkera" "itzulpen" "jarrera" "jarduera" "kostu" "postura" ;
+SET CORRECT-VERBS = "erantzun" "idatzi" "itzuli" "kalkulatu" ;
+SET CUMPLIR-N = "agindu" "amets" "arau" "asmo" "baldintza" ("esan" n) "eskubide" "helburu" "hitz" "irizpide" "lan" "lege" "obligazio" "proposamen" "erregelamendu";
+SET CUTABLE-FOOD = "fruta" "gazta" "haragi" "ogi" "sagar" "tarta" ;
+SET JEFE-MOD = "erredakzio" "gobernu" "polizia" "sukalde" "talde";
+SET DIRIGENTE-MOD =   "Batasuna" "Bildu" "EAJ" "Eusko Alkartasuna" "ertzaintza" "ETA" "Komunista" "PP" "udaltzaina" ;    
+SET MATH-LIMITE = Chandrasekharren "emisio" "isurtze"
+SET EMOTIONS = "ausadia" "erotasun" "inbidia" "irrazionalitatea" "maitasun" "zintzotasun" "zorotasun";
+SET CORRECTABLES = "bertsio" "huts" "testu" ;
+SET NOR = NR_HU OR NR_HK OR NR_NI OR NR_ZU OR NR_HI OR NR_ZK OR NR_HU OR NR_GU ;   
+-->
+
+  <rule>
+    <match lemma="helburu"/>
+    <match lemma="lortu"><select lemma="lograr"/></match>
+  </rule><!-- SELECT ("lograr" n) IF (-1 ("helburu"))(0 ("lortu" v)) ;-->
+
+  <rule>
+    <match lemma="baimena"/>
+    <match lemma="lortu"><select lemma="obtener"/></match>
+  </rule><!-- SELECT ("obtener" n) IF (-1 ("baimena"))(0 ("lortu" v)) ;-->
+
+<!--
+   ## Cómo conseguir que tus padres crean que eres ...
+   ## Lortu dugu gure gurasoek ez zeukaten gauza bat ...
+
+   # if there is a subclause it can only be conseguir
+   # but other than that the word is not really ambiguous because in most cases the equivalent is synomymous
+
+   ## Consiguió superar la depresión: depresioa gainditzea lortu zuen.
+   ## Al final consiguió el primer premio: azkenean lehenengo saria eskuratu zuen.
+
+   # nik ere zurito pare bat hartu dizkiat.
+   # lasai hartu
+   # Tilaren bat hartu kafia biarrian.
+   # kontuan hartu 
+   # Bi loreak hartu ditu
+   # nituen argazki batzuk hartu 
+   # partu hartu nahi duzu
+   # txartela hartu duzu
+   # serioak hartu behar ditugu
+--> 
+
+
+  <rule>
+    <or>
+      <match lemma="ardo"/>
+      <match lemma="ebaki"/>
+      <match lemma="garagardo"/>
+      <match lemma="hurrupa"/>
+      <match lemma="kalimotxo"/>
+      <match lemma="infusioa"/>
+      <match lemma="kafe"/>
+      <match lemma="kaña"/>
+      <match lemma="pote"/>
+      <match lemma="sagardo"/>
+      <match lemma="te"/>
+      <match lemma="trago"/>
+      <match lemma="tragoxka"/>
+      <match lemma="zurito"/>
+      <match lemma="erabakia"/>
+      <match lemma="jabetzea"/>
+      <match lemma="serio"/>
+    </or>
+    <match/>
+    <or>
+      <match tags="det.*"/>
+      <match tags="adj.*"/>
+      <match tags="num"/>
+      <match tags="adv"/>
+    </or>
+    <match lemma="hartu"><select lemma="tomar" tags="vblex.*"/></match>
+  </rule><!-- SELECT ("tomar" v) IF (0 ("hartu"))(-1 POST-N)(-3 DRINK OR TOMAR-MWE) ;-->
+
+  <rule>
+    <or>
+      <match lemma="ardo"/>
+      <match lemma="ebaki"/>
+      <match lemma="garagardo"/>
+      <match lemma="hurrupa"/>
+      <match lemma="kalimotxo"/>
+      <match lemma="infusioa"/>
+      <match lemma="kafe"/>
+      <match lemma="kaña"/>
+      <match lemma="pote"/>
+      <match lemma="sagardo"/>
+      <match lemma="te"/>
+      <match lemma="trago"/>
+      <match lemma="tragoxka"/>
+      <match lemma="zurito"/>
+      <match lemma="erabakia"/>
+      <match lemma="jabetzea"/>
+      <match lemma="serio"/>
+    </or>
+    <or>
+      <match tags="det.*"/>
+      <match tags="adj.*"/>
+      <match tags="num"/>
+      <match tags="adv"/>
+    </or>
+    <match lemma="hartu"><select lemma="tomar" tags="vblex.*"/></match>
+  </rule><!--SELECT ("tomar" v) IF (0 ("hartu"))(-1 POST-N)(-2 DRINK OR TOMAR-MWE) ;-->
+     
+  <rule>
+    <or>
+      <match lemma="ardo"/>
+      <match lemma="ebaki"/>
+      <match lemma="garagardo"/>
+      <match lemma="hurrupa"/>
+      <match lemma="kalimotxo"/>
+      <match lemma="infusioa"/>
+      <match lemma="kafe"/>
+      <match lemma="kaña"/>
+      <match lemma="pote"/>
+      <match lemma="sagardo"/>
+      <match lemma="te"/>
+      <match lemma="trago"/>
+      <match lemma="tragoxka"/>
+      <match lemma="zurito"/>
+      <match lemma="erabakia"/>
+      <match lemma="jabetzea"/>
+      <match lemma="serio"/>
+    </or>
+    <match lemma="hartu"><select lemma="tomar" tags="vblex.*"/></match>
+  </rule><!-- SELECT ("tomar" v) IF (0 ("hartu"))(-1 DRINK OR TOMAR-MWE) ;-->
+     
+  <rule>
+    <match lemma="argazki"/>
+    <or>
+      <match tags="det.*"/>
+      <match tags="adj.*"/>
+      <match tags="num"/>
+      <match tags="adv"/>
+    </or>
+    <match lemma="hartu"><select lemma="recibir" tags="vblex.*"/></match>
+  </rule> <!-- SELECT ("sacar" v) IF (0 ("hartu"))(-1 ("argazki") LINK 0 abs) ;-->
+
+  <rule>
+    <match lemma="argazki"/>
+    <match/>
+    <or>
+      <match tags="det.*"/>
+      <match tags="adj.*"/>
+      <match tags="num"/>
+      <match tags="adv"/>
+    </or>
+    <match lemma="hartu"><select lemma="recibir" tags="vblex.*"/></match>
+  </rule><!-- SELECT ("sacar" v) IF (0 ("hartu"))(-1 POST-N)(-2 ("argazki") LINK 0 abs) ;-->
+     
+  <rule>
+    <or>
+      <match lemma="baieztapen"/>
+      <match lemma="dei"/>
+      <match lemma="eskutitz"/>
+      <match lemma="gutun"/>
+      <match lemma="lore"/>
+      <match lemma="mezu"/>
+      <match lemma="opari"/>
+      <match lemma="pakete"/>
+    </or>
+    <match/>
+    <match lemma="hartu"><select lemma="recibir" tags="vblex.*"/></match>
+  </rule><!-- SELECT ("recibir" v) IF (0 ("hartu"))(-2 RECEIVE-OBJECTLINK 0 abs);    -->
+ 
+  <rule>
+    <or>
+      <match lemma="baieztapen"/>
+      <match lemma="dei"/>
+      <match lemma="eskutitz"/>
+      <match lemma="gutun"/>
+      <match lemma="lore"/>
+      <match lemma="mezu"/>
+      <match lemma="opari"/>
+      <match lemma="pakete"/>
+    </or>
+    <match lemma="hartu"><select lemma="recibir" tags="vblex.*"/></match>
+  </rule><!-- SELECT ("recibir" v) IF (0 ("hartu"))(-1 RECEIVE-OBJECT LINK 0 abs);-->
+
+  <rule>
+    <match lemma="zuzen"><select lemma="correcto"/></match>
+    <or>
+      <match lemma="erantzun"/>
+      <match lemma="idatzi"/>
+      <match lemma="itzuli"/>
+      <match lemma="kalkulatu"/>
+    </or>
+  </rule><!-- SELECT ("correcto" adv) IF (0 ("zuzen"))(1 CORRECT-VERBS) ;-->
+
+  <rule>
+    <or>
+      <match lemma="bide"/>
+      <match lemma="arnasa"/>
+      <match lemma="ekintza"/>
+      <match lemma="erantzun"/>
+      <match lemma="esaldi"/>
+      <match lemma="forma"/>
+      <match lemma="hitz"/>
+      <match lemma="idazkera"/>
+      <match lemma="itzulpen"/>
+      <match lemma="jarrera"/>
+      <match lemma="jarduera"/>
+      <match lemma="kostu"/>
+      <match lemma="ostura"/>
+      <match lemma="politikoki"/>
+    </or>
+    <match lemma="zuzen"><select lemma="correcto" tags="adj.*"/></match>
+  </rule><!-- SELECT ("correcto" adj) IF (0 ("zuzen"))(-1 NON-OBJECTS LINK 0 abs OR ("politikoki")) ;-->
+
+  <rule>
+    <or>
+      <match lemma="bide"/>
+      <match lemma="arnasa"/>
+      <match lemma="ekintza"/>
+      <match lemma="erantzun"/>
+      <match lemma="esaldi"/>
+      <match lemma="forma"/>
+      <match lemma="hitz"/>
+      <match lemma="idazkera"/>
+      <match lemma="itzulpen"/>
+      <match lemma="jarrera"/>
+      <match lemma="jarduera"/>
+      <match lemma="kostu"/>
+      <match lemma="ostura"/>
+    </or>
+    <match lemma="izan"/>
+    <match lemma="zuzen"><select lemma="correcto" tags="adj.*"/></match>
+  </rule><!-- SELECT ("correcto" adj) IF (0 ("zuzen"))(-1 ("izan")) (-2 NON-OBJECTS OR ("bide") LINK 0 abs) ;-->
+
+
+  <rule><!-- positive construction -->
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+  </rule><!-- SELECT ("cumplir" n) IF (-1 ("urte") OR CUMPLIR-N LINK 0 abs) ;-->
+
+  <rule>
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+    <or>
+      <match tags="det.*"/>
+      <match tags="adj.*"/>
+      <match tags="num"/>
+      <match tags="adv"/>
+    </or>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+  </rule><!-- SELECT ("cumplir" n) IF (-1 POST-N OR adv)(-2 ("urte") OR CUMPLIR-N LINK 0 abs) ;-->
+
+<!--
+    # ETBk ez du baldintza hori betetzen.
+    # Agian ez ditut nire promesak beti betetzen?
+    # Ez du betetzen ikastegiaren betebeharrak. 
+-->
+
+  <rule>
+    <match tags="ez"/>
+    <match tags="izan"/>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+    <match/>
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+  </rule><!--SELECT ("cumplir" n) IF (-2 ("ez"))(-1 ("izan"))(1 PRE-N)(2 ("urte") OR CUMPLIR-N LINK 0 abs) ; -->
+    
+  <rule>
+    <match tags="ez"/>
+    <match tags="izan"/>
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+  </rule><!-- SELECT ("cumplir" n) IF (-2 ("ez"))(-1 ("izan"))(1 ("urte") OR CUMPLIR-N LINK 0 abs) ;    -->
+    
+  <rule>
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+    <match/>
+    <match lemma="ez"/>
+    <match lemma="izan"/>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+  </rule><!-- SELECT ("cumplir" n) IF (-4 ("urte") OR CUMPLIR-N LINK 0 abs)(-3 POST-N)(-2 ("ez"))(-1 ("izan"));  -->
+
+<!--
+      ## baina agindu hori ez da betetzen
+-->
+
+  <rule>
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+    <match lemma="ez"/>
+    <match lemma="izan"/>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+  </rule><!--SELECT ("cumplir" n) IF (-3 ("urte") OR CUMPLIR-N LINK 0 abs)(-2 ("ez"))(-1 ("izan")); -->
+
+
+  <rule>
+    <or>
+      <match lemma="urte"/>
+      <match lemma="agindu"/>
+      <match lemma="amets"/>
+      <match lemma="arau"/>
+      <match lemma="asmo"/>
+      <match lemma="baldintza"/>
+      <match lemma="esan"/>
+      <match lemma="eskubide"/>
+      <match lemma="helburu"/>
+      <match lemma="hitz"/>
+      <match lemma="irizpide"/>
+      <match lemma="lan"/>
+      <match lemma="lege"/>
+      <match lemma="obligazio"/>
+      <match lemma="proposamen"/>
+      <match lemma="erregelamendu"/>
+    </or>
+    <match lemma="ez"/>
+    <match lemma="izan"/>
+    <match lemma="la"/>
+    <match lemma="bete"><select lemma="cumplir"/></match>
+  </rule><!-- SELECT ("cumplir" n) IF (-3 ("urte") OR CUMPLIR-N LINK 0 abs)(-2 ("ez"))(-1 ("izan") LINK 0 ela); -->
+
+<!--
+   # Marotoren gobernuak emandako hitza ez duela betetzen salatu dute
+
+   ## 
+   ## ¿Han cumplido las empresas su palabra de no subir los precios por ..
+   ## Objetivo Cumplido
+   ## El Parlamento Europeo ha cumplido una tarea esencial
+   ## han cumplido las metas del Milenio
+   ## Draghi: cumplir el mandato del BCE implica "medidas - Expansión
+   ## Eclesiastés 5 DHH - Hay que cumplir lo que se promete - Bible 
+   ##  Una Promesa que cumplir 
+   ## Marotoren gobernuak emandako hitza ez duela betetzen salatu dute
+   ##  
+   ## agindutakoa ez duzu bete
+   ## Espero que cumplas lo que me prometiste: agindutakoa betetzea espero dut. 
+   ## araua ez betetzea gure webguneko atalen batean.
+
+   ##     Me queda mucha tarea por hacer: oraindik lan asko dut egiteko.
+   ##     Es una tarea poco grata para mí: niretzat ez da zeregin atsegina.
+   ##     Tareas escolares: eskolako lanak (etxerako lanak).
+
+   ## La meta de todos nuestros trabajos es ayudar al ayuntamiento: gure lan guztien helburua udalari laguntzea da. 
+-->
+
+  <rule>
+    <match lemma="egun" tags="n"><select lemma="jornada"/></match> 
+    <match lemma="erdi" tags="n"/> 
+    <match lemma="z" tags="post"/> 
+  </rule><!--SELECT ("jornada" n) IF (0 ("egun" n)) (1 ("erdi" n)) (2 ("z" post)) ;    -->
+
+  <rule>
+    <or>
+      <match lemma="fruta"/>
+      <match lemma="gazta"/>
+      <match lemma="haragi"/>
+      <match lemma="ogi"/>
+      <match lemma="sagar"/>
+      <match lemma="tarta"/>
+    </or>
+    <match lemma="zati" tags="n"><select lemma="trozo" tags="n"/></match>
+  </rule><!-- SELECT ("trozo" n) IF (0 ("zati" n)) (-1 CUTABLE-FOOD) ;  -->
+ 
+  <rule>
+    <match lemma="zati" tags="n"><select lemma="trozo" tags="n"/></match>
+    <match lemma="ebaki"/>
+  </rule><!-- SELECT ("trozo" n) IF (0 ("zati" n)) (1 ("ebaki")) ;   -->
+    
+    
+<!--
+      ##      Familiaren burua: cabeza de familia.
+      ##  Elizaren burua: el jefe de la iglesia.
+      ##  Alderdi judizialeko burua: cabeza del partido judicial.
+        
+      ##  buru, buruzagi; [referido especialmente a los del PNV] burukide	
+
+      ## Los dirigentes del Partido Comunista: Alderdi Komunistako buruak.
+      ## Los dirigentes del PNV: EAJko burukideak.
+-->
+
+        
+  <rule>
+    <or>
+      <match lemma="Batasuna"/>
+      <match lemma="Bildu"/>
+      <match lemma="EAJ"/>
+      <match lemma="ETA"/>
+      <match lemma="PSOE"/>
+      <match lemma="PP"/>
+      <match lemma="Komunista"/>
+      <match lemma="ertzaintza"/>
+      <match lemma="udaltzaina"/>
+      <match lemma="Eusko Alkartasuna"/>
+    </or>
+    <match lemma="ko" tags="post"/>
+    <match lemma="buru" tags="n"><select lemma="dirigente" tags="n"/></match>
+  </rule><!-- SELECT ("dirigente" n) IF (-1 DIRIGENTE-MOD LINK 0 genloc OR ("kiroletako")) (0 ("buru" n)) ; -->
+
+  <rule>
+    <match lemma="kiroletako"/>
+    <match lemma="buru" tags="n"><select lemma="dirigente" tags="n"/></match>
+  </rule><!-- SELECT ("dirigente" n) IF (-1 DIRIGENTE-MOD LINK 0 genloc OR ("kiroletako")) (0 ("buru" n)) ; -->
+
+  <rule>
+    <match lemma="buru" tags="n"><select lemma="dirigente" tags="n"/></match>
+    <or>
+      <match lemma="militarra"/>
+      <match lemma="neonazi"/>
+    </or>
+  </rule><!-- SELECT ("dirigente" n) IF (1 ("militarra") OR ("neonazi")) (0 ("buru" n));-->
+
+<!--
+  ## Poloniako buruzagi militarrak   
+    
+    
+  ##   ingeniari burua sekuestratu ...
+  ##   Batzordeko Burua
+  ##   Lan eta Gizarte Segurantzako Ikuskaritza Probintzialeko Burua.
+  ##   Ez dut nire burua pertsona haundiustetza
+     
+  ##      Burua estali: cubrir la cabeza.
+  ##      Burua hautsi zion: le rompió la cabeza.
+  ##      Buru-larruazala: cuero cabelludo.
+-->
+
+  <rule>
+    <or>
+      <match lemma="erredakzio"/>
+      <match lemma="gobernu"/>
+      <match lemma="polizia"/>
+      <match lemma="sukalde"/>
+      <match lemma="talde"/>
+    </or>
+    <match/>
+    <or>
+      <match lemma="en" tags="post"/>
+      <match lemma="ko" tags="post"/>
+    </or>
+    <match lemma="buru" tags="n"><select lemma="jefe" tags="n"/></match>
+  </rule><!-- SELECT ("jefe" n) IF (-1 JEFE-MOD LINK 0 ("ko" post) OR ("en" post)) (0 ("buru" n)) ;-->
+
+  <rule>
+      <or>
+        <match lemma="Chandrasekharren"/>
+        <match lemma="emisio"/>
+        <match lemma="isurtze"/>
+        <match lemma="abiadura"/>
+      </or>
+      <match lemma="muga" tag="n"><select lemma="límite"/></match>
+  </rule><!-- SELECT ("límite" n) IF (-1 pron poss OR ("abiadura") OR MATH-LIMITE) (0 ("muga" n)) ;-->
+
+  <rule>
+      <match tags="prn.pers.*"/>
+      <match lemma="en" tags="post"/>
+      <match lemma="muga" tag="n"><select lemma="límite"/></match>
+  </rule><!-- SELECT ("límite" n) IF (-1 pron poss OR ("abiadura") OR MATH-LIMITE) (0 ("muga" n)) ;-->
+
+<!--
+    # gehiago galdu dut nire muga fisikoekin zerikusia duten arazoei aurre egiten
+    # Abiadura-muga: límite de velocidad.
+    # Eguneko emari maximoaren muga
+-->
+
+  <rule>
+      <match lemma="muga" tag="n"><select lemma="límite"/></match>
+      <or>
+        <match lemma="fisiko"/>
+        <match lemma="personala"/>
+      </or>
+  </rule><!--SELECT ("límite" n) IF (0 ("muga" n))(1 ("fisiko") OR ("pertsonala"));-->
+
+  <rule>
+      <or>
+        <match lemma="ausadia" tag="n"/>
+        <match lemma="erotasun" tag="n"/>
+        <match lemma="inbidia" tag="n"/>
+        <match lemma="irrazionalitatea" tag="n"/>
+        <match lemma="maitasun" tag="n"/>
+        <match lemma="zintzotasun" tag="n"/>
+        <match lemma="zorotasun" tag="n"/>
+      </or>
+      <match lemma="k" tags="post"/>
+      <match lemma="ez"/>
+      <match lemma="izan"/>
+      <match lemma="muga"><select lemma="límite"/></match>
+      <match lemma="ik" tags="post"/>
+  </rule><!--SELECT ("límite" n) IF (-3 EMOTIONS LINK 0 erg)(-2 ("ez"))(-1 ("izan"))(0 ("muga" n) LINK 0 rik);-->
+
+
+  <rule>
+      <or>
+        <match lemma="ausadia" tag="n"/>
+        <match lemma="erotasun" tag="n"/>
+        <match lemma="inbidia" tag="n"/>
+        <match lemma="irrazionalitatea" tag="n"/>
+        <match lemma="maitasun" tag="n"/>
+        <match lemma="zintzotasun" tag="n"/>
+        <match lemma="zorotasun" tag="n"/>
+      </or>
+      <match/>
+      <match lemma="k" tags="post"/>
+      <match lemma="ez"/>
+      <match lemma="izan"/>
+      <match lemma="muga"><select lemma="límite"/></match>
+      <match/>
+      <match lemma="ik" tags="post"/>
+  </rule><!--SELECT ("límite" n) IF (-3 EMOTIONS LINK 0 erg)(-2 ("ez"))(-1 ("izan"))(0 ("muga" n) LINK 0 rik);-->
+
+<!--
+    ## Haren ausardiak ez du mugarik: su osadía no tiene límite. 
+    ## maitasunak ez du mugarik
+    ## HUTSUNEAK EZ DU MUGARIK BERE SENIDEAK
+    ## erradioaktibitateak ez du mugarik 
+  
+    ## Baimendutako gehieneko abiadura %40an gainditzea, baldin eta muga hori gutxienez 50 km/orduko gainditzen bada.
+-->
+
+  <rule>
+      <match lemma="muga"><select lemma="límite"/></match>
+      <match/>
+      <match tags="adv"/>
+      <match tags="num"/>
+      <match lemma="ordu"/>
+      <match lemma="a"/>
+      <match lemma="ko" tags="post"/>
+  </rule><!--SELECT ("límite" n) IF (0 ("muga" n))(1 POST-N)(2 adv)(3 num)(4 "km/orduko");-->
+
+  <rule>
+      <match lemma="kilometro"/>
+      <match lemma="ko" tags="post"/>
+      <match lemma="muga"><select lemma="límite"/></match>
+  </rule><!-- SELECT ("límite" n) IF (-1 ("kilometro") LINK 0 ("ko" post))(0 ("muga" n));-->
+
+  <rule>
+      <match lemma="muga"><select lemma="límite"/></match>
+      <match/>
+      <match tags="num"/>
+      <match lemma="ordu"/>
+      <match lemma="a"/>
+      <match lemma="ko" tags="post"/>
+  </rule><!-- SELECT ("límite" n) IF (0 ("muga" n))(1 POST-N)(2 num)(3 "km/orduko");-->
+
+  <rule>
+      <match lemma="muga"><select lemma="límite"/></match>
+      <match tags="num"/>
+      <match lemma="ordu"/>
+      <match lemma="a"/>
+      <match lemma="ko" tags="post"/>
+  </rule><!-- SELECT ("límite" n) IF (0 ("muga" n))(1 num)(2 "km/orduko");-->
+
+<!--
+    ## Asteburuan buru belarri ari dira seinaleak egokitzen eta leku askotan ikusten da dagoeneko 110 kilometroko muga berria
+    
+    ## Errepidea doan herrialderako mugatik kilometro batera gaudela.
+    ## Multzo hauen mugak, beraz, ez daude itxita eta lanerako multzo desberdinak elkarren artean erlaziona ditzakegu.
+
+    ## Aurreko paragrafoan ezarritako mugaren barruan, honako hau geratzen da estalita:
+
+
+    ## Hemendik aurrera, nigana erdaraz zuzendu arren, euskaraz ez dakitela esaten ez didaten bitartean EUSKARAZ EGINGO DUT!!
+-->
+
+  <rule>
+    <or>
+      <match lemma="gana" tags="post"/>
+      <match lemma="ra" tags="post"/>
+      <match lemma="z" tags="post"/>
+    </or>
+    <match lemma="zuzendu" tags="vblex.*"><select lemma="dirigir"/></match>
+  </rule><!-- SELECT ("dirigir") IF (0 ("zuzendu"))(-1 "gana" post); -->
+         <!-- SELECT ("dirigir") IF (0 ("zuzendu"))(-1 "ra" post); -->
+         <!-- SELECT ("dirigir") IF (0 ("zuzendu"))(-1 "z" post); -->
+
+<!--
+    ## Supongamos que A es un punto en el espacio: demagun A espazioko puntu bat dela; jo dezagun A espazioko puntu bat dela.
+-->
+   
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(2 "ela") ; -->
+
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(3 "ela") ; -->
+
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match/>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(4 "ela") ; -->
+
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(5 "ela") ; -->
+
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(6 "ela") ; -->
+
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(7 "ela") ; -->
+
+  <rule>
+    <match lemma="eman" tags="vblex.*"><select lemma="suponer"/></match>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match/>
+    <match lemma="la" tags="cnjsub"/>
+  </rule><!-- SELECT ("suponer") IF (0 ("eman" v))(8 "ela") ; -->
+ 
+  <rule>
+    <match lemma="sortu" tags="vblex.*"><select lemma="originar"/></match>
+    <or>
+      <match tags="vbsint.*.NR_HU"/>
+      <match tags="vbsint.*.NR_HK"/>
+    </or>
+  </rule><!-- SELECT ("originar") IF (0 ("sortu" v))(1 NR_HU OR NR_HK) ; -->
+
+<!--
+   ## Se originó una disputa: iskanbila sortu zen.
+   ## Orain 25 urte sortu zen Idiazabal jatorri izendapena - Eitb 
+-->
+
+  <rule>
+    <match lemma="sartu" tags="vblex.*"><select lemma="entrar"/></match>
+    <or>
+      <match tags="vbsint.*.NR_NI"/>
+      <match tags="vbsint.*.NR_ZU"/>
+      <match tags="vbsint.*.NR_HU"/>
+      <match tags="vbsint.*.NR_HI"/>
+      <match tags="vbsint.*.NR_ZK"/>
+      <match tags="vbsint.*.NR_HK"/>
+      <match tags="vbsint.*.NR_GU"/>
+    </or>
+  </rule><!--SELECT ("entrar") IF (0 ("sartu" v))(1 NOR) ;-->
+
+</rules>
