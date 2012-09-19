@@ -162,14 +162,19 @@ Generated from SVN:
 	<rule><match lemma="каде" tags="adv"/><match lemma="сака" tags="vblex.*"><select lemma="want" tags="vblex.*"/></match></rule>
 
 	<rule><match tags="vblex.*"/><match lemma="единствен"><select lemma="single" tags="adj.*"/></match></rule>
-	<rule><match tags="vbser.*"/><match lemma="единствен"><select lemma="single" tags="adj.*"/></match></rule> <!-- also add EOS -->
+	<rule><match tags="vbser.*"/><match lemma="единствен"><select lemma="single" tags="adj.*"/></match><match lemma="."/></rule>
 	
 	<rule><match lemma="воен" tags="adj.*"><select lemma="military" tags="adj.*"/></match>
 	<or><match lemma="мисија" tags="n.*" />
 		<match lemma="училиште" />
 	</or></rule>
-	<rule><match lemma="воен" tags="adj.*"><select lemma="army" tags="adj.*"/></match><match lemma="хеликоптер" tags="n.*" /></rule> <!-- also add EOS -->
-<!-- сака -> change default to want, it's more common -->
+	<rule><match lemma="воен" tags="adj.*"><select lemma="army" tags="adj.*"/></match><match lemma="хеликоптер" tags="n.*" /></rule> 
+
+	<rule><match lemma="сака" tags="vblex.*"><select lemma="want" tags="vblex.*"/></match></rule> 
+	<rule><match lemma="област" tags="n.*"><select lemma="area" tags="n.*"/></match></rule> 
+	<rule><match lemma="бара" tags="vblex.*"><select lemma="require" tags="vblex.*"/></match></rule> 
+	<rule><match lemma="цел" tags="n.*"><select lemma="goal" tags="n.*"/></match></rule> 
+
 <!-- воен -> change default to military -->
 <!-- област -> change default to area -->
 <!-- бара == too difficult -->
