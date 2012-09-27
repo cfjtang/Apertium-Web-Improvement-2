@@ -215,6 +215,30 @@
     </pipeline>
   </mode>
 
+  <mode name="br-fr-multi" install="no">
+    <pipeline>
+      <program name="apertium-transfer -b">
+        <file name="apertium-br-fr.br-fr.t1x"/>
+        <file name="br-fr.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-br-fr.br-fr.t2x"/>
+        <file name="br-fr.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-br-fr.br-fr.t3x"/>
+        <file name="br-fr.t3x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="br-fr.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="br-fr.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
 
 
   <!-- not installed for now -->
