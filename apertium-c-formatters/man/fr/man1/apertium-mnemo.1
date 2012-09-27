@@ -1,0 +1,53 @@
+.TH apertium-mnemo 1 "27 septembre 2012" "Bernard Chardonneau" "Shell appelant Apertium"
+.SH NOM
+apertium-mnemo - Un shell écrit pour faciliter la traduction des fichiers
+d'interface multilingues basés sur des mnémoniques avec
+.B apertium 
+.SH SYNTAXE
+.B apertium-mnemo
+[-d datadir] [-u] <direction> [fichier_d'entrée [fichier_de_sortie]]
+.SH DESCRIPTION
+.TP
+.BR apertium-mnemo 
+est un shell appelant les différents outils utiles pour traduire les fichiers
+d'interface multilingues basés sur des mnémoniques avec apertium.
+
+Normalement le shell apertium supporte différents formats officiels. Pour
+les utiliser, vous devez juste appeler apertium avec l'option
+.B -f
+suivie du nom du format. Dans ce cas, le shell apertium appelle le bon
+déformateur suivi du traducteur (constitué de différents outils) suivi
+par un reformateur.
+
+Pour les formats non officiels, il est nécessaire d'appeler le déformateur
+et le reformateur en dehors d'apertium.
+
+C'est ce que
+.B apertium-mnemo
+fait.
+.SH OPTIONS
+.TP
+.B -d datadir
+option apertium : répertoire de données linguistiques
+.TP
+.B -u
+option apertium : ne pas afficher les '*' pour les mots inconnus
+.TP
+.B direction
+option apertium : typiquement, LANG1-LANG2, mais voir modes.xml dans les
+données de la paire de langues.
+.TP
+.B fichier_d'entrée
+Si aucun fichier d'entrée indiqué ici, ou - à cet endroit, stdin sera
+utilisé par défaut.
+.TP
+.B fichier_de_sortie
+Si aucun fichier de sortie indiqué ici, stdout sera utilisé par défaut.
+.SH EXEMPLES
+cat samples-mnemo/mess-libremail.fr-utf | apertium-mnemo fr-es
+
+apertium-mnemo fr-es samples-mnemo/mess-cyloop.fr-utf 
+.SH VOIR AUSSI
+desmnemo(1), remnemo(1), apertium-man (1), apertium (1).
+.SH AUTEUR
+Bernard Chardonneau  <bechapertium@free.fr>

@@ -1,0 +1,33 @@
+.TH remnemo 1 "September 27, 2012" "Bernard Chardonneau" "Apertium reformatter"
+.SH NAME
+remnemo - Reformatter for mnemonic interface files. This application
+is a tool for the
+.B apertium 
+translator.
+.SH SYNOPSIS
+.B retxt
+[ <input_file> [ <output_file> ] ]
+.SH DESCRIPTION
+.BR remnemo 
+is a format processor. It restores the original formatting the mnemonic
+interface files had (lines starting by a mnemonic, followed by spaces or
+tabs,followed by a string for printf) before being passed through the
+desmnemo deformatter.
+
+It is a generic reformatter. So, the same program works with the man pages
+deformatter
+.I desman
+and could also work for other text formats.
+.SH OPTIONS
+.TP
+.B \-
+can be used instead of an <input_file> when input comes from standard input
+(using a pipe), that is frequent, but ouput is written into a file.
+.SH EXAMPLES
+cat samples-mnemo/mess-libremail.en | desmnemo | apertium -f none en-es | remnemo
+
+desmnemo samples-mnemo/mess-cyloop.en | apertium -f none en-es | remnemo
+.SH SEE ALSO
+reman(1), desmnemo(1), apertium-mnemo(1), apertium(1).
+.SH AUTHOR
+Bernard Chardonneau  <bechapertium@free.fr>

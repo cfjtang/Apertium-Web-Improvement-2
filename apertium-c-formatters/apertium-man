@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# get the name of this shell
+cmd=`basename $0`
+
+# if no parameter or help asked
+if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]
+then
+    # display help
+    echo "Usage : $cmd [-d datadir] [-u] <direction> [input_file [output_file]]"
+    echo "-d datadir    directory of linguistic data"
+    echo "-u            don't display marks '*' for unknown words"
+    echo "direction     typically, LANG1-LANG2, but see modes.xml in language data"
+    echo "input_file    stdin by default or when - is used"
+    echo "output_file   stdout by default"
+    exit 0
+fi
+
+# initialize
+opt_apertium=
+
+# get apertium options
+while [ "`echo $1 | cut -c1`" = "-" ]
+do
+    case $1 in
+    "-d") opt_apertium="$opt_apertium $1 $2"
+          shift
+          shift
+          ;;
+    "-f") echo "option -f not compatible with $0 usage" >&2
+          shift
+          shift
+          ;;
+    *)    opt_apertium="$opt_apertium $1"
+          shift
+          ;;
+    esac
+done
+
+# language pair an direction
+opt_apertium="$opt_apertium $1"
+shift
+
+# executing deformatter + apertium + reformatter
+desman $1 | apertium -f none $opt_apertium | reman - $2

@@ -1,0 +1,51 @@
+.TH apertium-mnemo 1 "September 27, 2012" "Bernard Chardonneau" "Shell calling Apertium"
+.SH NAME
+apertium-mnemo - A shell written to make easy mnemonic interface files
+translations with
+.B apertium 
+.SH SYNOPSIS
+.B apertium-mnemo
+[-d datadir] [-u] <direction> [input_file [output_file]]
+.SH DESCRIPTION
+.TP
+.BR apertium-mnemo 
+is a shell calling the different usefull tools to translate mnemonic
+interface files with apertium.
+
+Normally the apertium shell support different official formats. To use
+them, you just have to call apertium with
+.B -f
+option followed by the format name. In that case, the apertium shell
+calls the good deformatter followed by the translator (made of different
+tools) followed by a reformatter.
+
+For non official formats, it is necessary to call the deformatter and the
+reformatter outside apertium.
+
+It is what
+.B apertium-mnemo
+do.
+.SH OPTIONS
+.TP
+.B -d datadir
+apertium option : directory of linguistic data
+.TP
+.B -u
+apertium option : don't display marks '*' for unknown words
+.TP
+.B direction
+apertium option : typically, LANG1-LANG2, but see modes.xml in language data
+.TP
+.B input_file
+if no input_file indicated here, or - at that place, stdin is used by default.
+.TP
+.B output_file
+if no output_file indicated here, stdout is used by default.
+.SH EXAMPLES
+cat apertium-mnemo.1 | apertium-mnemo en-es
+
+apertium-mnemo en-es apertium-mnemo.1 
+.SH SEE ALSO
+desmnemo(1), remnemo(1), apertium-man (1), apertium (1).
+.SH AUTHOR
+Bernard Chardonneau  <bechapertium@free.fr>
