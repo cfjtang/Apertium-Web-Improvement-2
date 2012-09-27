@@ -1,0 +1,34 @@
+.TH desman 1 "September 27, 2012" "Bernard Chardonneau" "Apertium deformatter"
+.SH NAME
+desman - Deformatter for man pages. This application is a tool for the
+.B apertium 
+translator.
+.SH SYNOPSIS
+.B desman
+[ <input_file> [ <output_file> ] ]
+
+.B desman
+\- <output_file>
+.SH DESCRIPTION
+.TP
+.BR desman 
+is a format processor for man pages. Data should be passed through this 
+processor before being piped to apertium (used with
+.I -f none
+option). After that,
+.I reman
+or any equivalent reformatter must be used to take of [ ] and \\ inserted
+by desman .
+.SH OPTIONS
+.TP
+.B \-
+can be used instead of an <input_file> when input comes from standard input
+(using a pipe), but ouput is written into a file.
+.SH EXAMPLES
+cat desman.1 | desman | apertium -f none en-es | reman
+
+desman desman.1 | apertium -f none en-es | reman
+.SH SEE ALSO
+desmnemo(1), reman(1), apertium-man(1), apertium(1).
+.SH AUTHOR
+Bernard Chardonneau  <bechapertium@free.fr>

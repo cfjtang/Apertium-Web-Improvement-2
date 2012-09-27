@@ -1,0 +1,50 @@
+.TH desmnemo 1 "27 septembre 2012" "Bernard Chardonneau" "Apertium déformateur"
+.SH NOM
+desmnemo - Déformateur pour les fichiers d'interface multilingues basés
+sur des mnémoniques. Cette application est un outil du traducteur
+.B apertium 
+.SH SYNTAXE
+.B desmnemo
+[ <fichier_d'entrée> [ <fichier_de_sortie> ] ]
+
+.B desmnemo
+\- <fichier_de_sortie>
+.SH DESCRIPTION
+.TP
+.BR desmnemo 
+est un outil de formatage pour les fichiers d'interface multilingues
+basés sur des mnémoniques.
+
+Les fichiers à utiliser sont constitués de lignes dans le format suivant :
+
+Mnémonique           "chaine_de_format_pour_printf"
+
+Le
+.B mnémonique
+commence à la première colonne et seule la
+.B chaine_de_format_pour_printf
+doit être traduite par Apertium.
+
+Les commentaires commençant par un # (ou n'importe quoi d'autre) en
+colonne 1 sont également autorisés.
+
+Les données doivent être passées à cet outil avant d'être "pipées" à
+apertium (utilisé avec l'option
+.I -f none
+Après ça,
+.I remnemo
+ou tout autre reformateur équivalent doit être utilisé pour supprimer les
+[ ] et \\ insérés par desmnemo .
+.SH OPTIONS
+.TP
+.B \-
+peut être utilisé à la place d'un <fichier_d'entrée> lorsque l'entrée standard
+est utilisée (via un pipe), alors que la sortie est écrite dans un fichier.
+.SH EXEMPLES
+cat samples-mnemo/mess-libremail.fr-utf | desmnemo | apertium -f none fr-es | remnemo
+
+desmnemo samples-mnemo/mess-cyloop.fr-utf | apertium -f none fr-es | remnemo
+.SH VOIR AUSSI
+desman(1), remnemo(1), apertium-mnemo(1), apertium(1).
+.SH AUTEUR
+Bernard Chardonneau  <bechapertium@free.fr>
