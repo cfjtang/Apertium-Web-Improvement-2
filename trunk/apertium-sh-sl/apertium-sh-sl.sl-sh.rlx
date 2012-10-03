@@ -1,0 +1,220 @@
+# Authors: Hrvoje Peradin, Aleš Horvat
+# email: hperadin@gmail.com
+
+# NOTE: Set definitions copied from the Serbo-Croatian CG, possibly some are left extra
+
+DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>" ;
+
+SOFT-DELIMITERS = "<,>" ;
+
+# =========================================================================== #
+
+SETS
+
+LIST BOS = (>>>) ;
+LIST EOS = (<<<) ;
+
+LIST N = n np;
+LIST Noun = N;
+LIST NProp = np;
+LIST NComm = n;
+LIST A = adj ; 
+LIST V = vblex vbser vbhaver vbmod ; 
+LIST VBSer = vbser ;
+LIST VBHaver = vbhaver ;
+LIST VBMod = vbmod ;
+LIST VBLex = vblex ;
+LIST Adv = adv ; 
+LIST Num = num ;
+LIST Ord = ord ; 
+LIST Det = det ; 
+LIST Prop = np ;
+LIST Pron = prn ; 
+LIST DemPron = (prn dem) ;
+LIST PersPron = (prn pers) ;
+LIST PosPron = (prn pos) ;
+LIST IndPron = (prn ind) ;
+LIST RefPron = (prn ref) ;
+SET MeTeSePron = ("<me>" prn pers acc) | ("<te>" prn pers acc) | ("<se>" prn pers ref);
+LIST Particle = part ;
+LIST Pr = pr ; 
+LIST CS = cnjsub ;
+LIST CC = cnjcoo ;
+LIST CNJ = cnjcoo cnjsub ;
+LIST Interr = itg ;
+LIST Interjection = ij ;
+LIST Cm = (",") (cm) ;
+
+# =========================================================================== #
+
+LIST Clt = clt "clitic"; 
+LIST Lp = lp ; 
+LIST FutureI = futI ; 
+LIST FutureII = futII ; 
+LIST Infinitive = inf ; 
+LIST PassiveParticiple = pp ;
+LIST PresParticiple = pprs ;
+LIST Participle = lp opt pprs pp ;
+LIST Aorist = aor ;
+LIST Optative = opt ; 
+LIST Imperative = imp ;
+LIST Intransitive = iv ;
+LIST Transitive = tv ;
+LIST Reflexive = ref ;
+LIST Relative = rel ;
+LIST Totalising = tot ;
+LIST Imperative = imp ;
+LIST Interrogative = itg ;
+LIST Definite = def ;
+LIST Indefinite = ind ;
+
+LIST Ordinal = ord;
+
+LIST Masculine = m ma mi ;
+LIST Feminine = f ; 
+LIST Neuter = nt ; 
+
+LIST MFN = mfn ; 
+
+LIST Singular = sg ;
+LIST Dual = du ;
+LIST Plural = pl ;
+
+LIST Ant = ant ; 
+LIST Cog = cog ; 
+LIST ProperNoun = np ;
+
+# Words that have gender, number and case:
+LIST Nomen = top al ant cog n np prn adj; 
+
+# Animacy
+LIST Animate = ma ; 
+LIST Inanimate = mi ; 
+
+# Cases:
+LIST Nom = nom ; 
+LIST Gen = gen ; 
+LIST Dat = dat ; 
+LIST Acc = acc ; 
+LIST Voc = voc ;
+LIST Loc = loc ; 
+LIST Ins = ins ;
+
+# =========================================================================== #
+
+LIST V-COP = "biti"i ; 
+
+# =========================================================================== #
+
+LIST GENDER = ma mi f nt mf mfn ;
+LIST NUMBER = sg pl sp du ;
+LIST CASE = nom gen dat acc loc ins ;
+LIST FIN-TEMPS = pres aor pii; 
+
+# =========================================================================== #
+
+SET PRON-CLT = Pron + Clt ; 
+SET V-FIN = FIN-TEMPS + V ;
+
+# Common ambiguities 
+SET A-OR-ADV = A | Adv ;
+SET Gen-OR-Nom = Gen | Nom ;
+SET DemPron-OR-PersPron = DemPron | PersPron ;  
+SET ANIM-OR-INANIM = Animate | Inanimate ; 
+SET Genitive-SingularOrPlural = Gen + Singular | Gen + Plural ; 
+SET Ind-OR-Def = Definite | Indefinite ; 
+SET Num-Ord = Num - Ord ;
+
+# All possible word categories
+SET WORD = N | V | A | Pr | Pron | Det | Adv | CC | CS | Interjection | Num | ("\?") ;
+
+# Skippable stuff
+LIST Skippable = ("clitic"i) clt adv cnjcoo cnjsub cm ;
+
+# Categories that can come before the head noun in an ProperNoun 
+SET PRE-N =  A | Det | Num | (n gen) | (prn gen) | CC | DemPron; 
+SET Modifier = A | Num | DemPron | PosPron | IndPron; # Words that agree in case, number, gender with the following word.
+    # (differs from PRE-N in that it always agrees with the headword)
+SET NOT-Modifier = WORD - Modifier ;
+
+SET MARK =  Cm | ("\\") | ("\;") ;
+
+SET WORDMARK = WORD | MARK ;
+
+# Categories which cannot be part of a noun phrase 
+SET NPNH = WORDMARK - PRE-N ;
+SET NPNHA = WORDMARK - PRE-N - Adv ;
+SET NOT-ADV = WORDMARK - Adv ;
+
+# Phrase member sets, and complements
+SET NP-MEMBER = PRE-N | N | Pron ;
+SET PP-MEMBER = NP-MEMBER | Pr ; 
+
+SET NOT-NP-MEMBER = WORDMARK - NP-MEMBER ; 
+SET NOT-PP-MEMBER = WORDMARK - PP-MEMBER ; 
+
+# Categories which can be the head of a noun phrase
+SET NP-HEAD = N | Pron | Prop ; 
+
+SET S-BOUNDARY = CS | Interr | (n voc) | EOS; 
+
+# =========================================================================== #
+
+SECTION
+
+# =========== #
+# Safe stuff  #
+# =========== #
+
+
+# Prepositions govern cases of their phrases
+REMOVE:PrepositionCase Pr + $$CASE IF (1 Nomen) (NOT 1 Nomen + $$CASE)
+REMOVE:PrepositionCase Nomen + $$CASE IF (-1 Pr) (NOT -1 Pr + $$CASE)
+
+# Preposition or noun
+REMOVE:PrORN KeepOrder N (0 Pr + $$CASE) (1 Nomen + $$CASE)
+
+# Adverb or stuff
+REMOVE:AdvORNomen KeepOrder Adv (0 Nomen + $$GENDER + $$NUMBER + $$CASE) 
+	( (-1 Pr + $$CASE) OR (-1 Nomen + $$GENDER + $$NUMBER + $$CASE) OR (1 Nomen + $$GENDER + $$NUMBER +  $$CASE) )
+
+# # Modifier gender/number/case cleaning from the modified word
+REMOVE:ModifierCase Modifier + $$CASE IF (1 Nomen) (NOT 1 Nomen + $$CASE) ;# rdeči.(f.loc)/(mi.nom) avto -> rdeči.mi.nom avto
+REMOVE:ModifierGender Modifier + $$GENDER IF (1 Nomen) (NOT 1 Nomen + $$GENDER) ;# rdeči.f/mi avto -> rdeči.mi avto
+REMOVE:ModifierNumber Modifier + $$NUMBER IF (1 Nomen) (NOT 1 Nomen + $$NUMBER) ;# rdeči.sg/pl avto -> rdeči.sg
+
+# Modified word gender/number/case cleaning from the modifier
+REMOVE:ModifiedCase Nomen + $$CASE IF (-1 Modifier) (NOT -1 Modifier + $$CASE) ;
+REMOVE:ModifiedGender Nomen + $$GENDER IF (-1 Modifier) (NOT -1 Modifier + $$GENDER) ;
+REMOVE:ModifiedNumber Nomen + $$NUMBER IF (-1 Modifier) (NOT -1 Modifier + $$NUMBER) ;
+
+# Verbs and the little valency of theirs we have (this is still possibly a heuristic)
+SELECT:vbTVAcc Nomen + Acc (-1 V + Transitive)
+
+# =========== #
+# Heuristics  #
+# =========== #
+
+# Rdeči.vblex/adj avto
+REMOVE:vblexORadj KeepOrder V IF (0 A + $$GENDER + $$NUMBER + $$CASE) (1 Nomen + $$GENDER + $$NUMBER + $$CASE)
+
+# No transitive verb - no accusative
+REMOVE:noTvVerb Acc IF (0 Nom OR Acc) (NEGATE 0* V + Transitive BARRIER EOS OR BOS)
+
+# Noun after noun is genitive
+SELECT:Noun_Noun<gen> N + Gen IF (-1 N)
+
+# Case skips over comma
+REMOVE:CaseCmCase KeepOrder Nomen + $$CASE (0C Nomen) (-1 Cm) (-2 Nomen) (NOT -2 Nomen + $$CASE)
+REMOVE:CaseCNJCase KeepOrder Nomen + $$CASE (0C Nomen) (-1 CNJ) (-2 Nomen) (NOT -2 Nomen + $$CASE)
+
+# Very heuristic, a noun that's not otherwise unambiguously dual is plural
+SELECT:isDual N + Plural (0 Dual OR Plural) (NOT -1 Num) (NOT 1 Num) (NOT -1C Modifier + Dual)
+
+# Proper noun / Adjective is Proper noun; TODO: To be expanded on corpus examples
+SELECT:NP NProp (0C NProp OR A)
+SELECT:NP NProp (0C NProp OR N) (NOT -1 BOS) (0 ("<[A-ZČĆŽŠĐŽ].*>"r))
+
+# Locative is never alone (prepositionless)
+REMOVE:notLocative Loc (NOT -1 Pr + Loc) (NOT -1 Modifier + Loc) 
+	(NOT -1 Cm LINK -1 Pr + Loc )(NOT -1 CNJ LINK -1 Modifier + Loc) 
