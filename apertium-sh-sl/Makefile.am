@@ -172,6 +172,7 @@ apertium_sh_sl_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	test -d $(DESTDIR)$(apertium_sh_slmodesdir) || mkdir $(DESTDIR)$(apertium_sh_slmodesdir)
 	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_sh_slmodesdir)
 	$(INSTALL_DATA) $(PREFIX2a).mode $(DESTDIR)$(apertium_sh_slmodesdir)
 	$(INSTALL_DATA) $(PREFIX2b).mode $(DESTDIR)$(apertium_sh_slmodesdir)

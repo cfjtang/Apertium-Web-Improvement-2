@@ -267,6 +267,7 @@ apertium_oc_es_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	test -d $(DESTDIR)$(apertium_oc_esmodesdir) || mkdir $(DESTDIR)$(apertium_oc_esmodesdir)
 	$(INSTALL_DATA) oc-es.mode $(DESTDIR)$(apertium_oc_esmodesdir)
 	$(INSTALL_DATA) es-oc.mode $(DESTDIR)$(apertium_oc_esmodesdir)
 	$(INSTALL_DATA) oc_aran-es.mode $(DESTDIR)$(apertium_oc_esmodesdir)

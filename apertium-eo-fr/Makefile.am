@@ -90,6 +90,7 @@ modes: modes.xml
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	test -d $(DESTDIR)$(apertium_eo_frmodesdir) || mkdir $(DESTDIR)$(apertium_eo_frmodesdir)
 	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_eo_frmodesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(PREFIX1).t1x.class $(DESTDIR)$(apertium_eo_frdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).antaux1_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).antaux3_t2x $(BASENAME).$(PREFIX1).antaux4_t2x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).post_t2x $(DESTDIR)$(apertium_eo_frdir)

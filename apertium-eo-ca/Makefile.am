@@ -129,6 +129,7 @@ modes: modes.xml
 
 install-data-local:
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	test -d $(DESTDIR)$(apertium_eo_camodesdir) || mkdir $(DESTDIR)$(apertium_eo_camodesdir)
 	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_eo_camodesdir)
 	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_eo_camodesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x  $(BASENAME).$(PREFIX1).antaux_t2x  $(BASENAME).$(PREFIX1).antaux2_t2x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_eo_cadir)

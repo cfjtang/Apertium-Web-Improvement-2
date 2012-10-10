@@ -111,6 +111,7 @@ apertium_ca_it_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 
 install-data-local: 
 	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_ca_modesdir)
+	test -d $(DESTDIR)$(apertium_ca_itdir) || mkdir $(DESTDIR)$(apertium_ca_itdir) 
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_ca_itdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_ca_itdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(DESTDIR)$(apertium_ca_itdir)
