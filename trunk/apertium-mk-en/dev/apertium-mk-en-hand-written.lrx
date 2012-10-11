@@ -196,7 +196,9 @@ Generated from SVN:
 	<rule><match lemma="силен" tags="adj.*"><select lemma="strong" tags="adj.*"/></match></rule>
 	<rule><match lemma="тежок" tags="adj.*"><select lemma="difficult" tags="adj.*"/></match></rule>  
 	<rule><match lemma="натпревар" tags="n.*"><select lemma="match" tags="n.*"/></match></rule>  
-	<rule><match lemma="средство" tags="n.*"><select lemma="funding" tags="n.*"/></match></rule>  
+        <!-- 'fundings' doesn't exist (although it seems that средства(pl) → funding(sg) is possible) -->
+	<rule><match lemma="средство" tags="n.*.sg.*"><select lemma="funding" tags="n.*"/></match></rule>  
+	<rule><match lemma="средство" tags="n.*.pl.*"><select lemma="fund" tags="n.*"/></match></rule>  
 	<rule><match lemma="финансиски" tags="adj.*"/><match lemma="средство" tags="n.*"><select lemma="asset" tags="n.*"/></match></rule>  
 	<rule><match lemma="енергетски" tags="adj.*"><select lemma="energy" tags="n.*"/></match></rule>  
 	<rule><match lemma="вистински" tags="adj.*"><select lemma="energy" tags="n.*"/></match><match lemma="луѓе" tags="n.*"/></rule>  
