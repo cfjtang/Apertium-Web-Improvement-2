@@ -1,0 +1,46 @@
+.TH desmnemo 1 "September 27, 2012" "Bernard Chardonneau" "Apertium deformatter"
+.SH NAME
+desmnemo - Deformatter for mnemonic interface files. This application is a
+tool for the
+.B apertium 
+translator.
+.SH SYNOPSIS
+.B desmnemo
+[ <input_file> [ <output_file> ] ]
+
+.B desmnemo
+\- <output_file>
+.SH DESCRIPTION
+.TP
+.BR desmnemo 
+is a format processor for mnemonic interface files.
+
+Files to be used are made of lines with the following format :
+
+Mnemonic             "printf_formated_string"
+
+The mnemonic starts at colomn 1 and only the printf_formated_string
+must be translated by Apertium.
+
+Comments starting by a # (on something else) at column 1 are also allowed.
+
+Data should be passed through this processor before being piped to apertium
+(used with
+.I -f none
+option). After that,
+.I remnemo
+or any equivalent reformatter must be used to take of [ ] and \\ inserted
+by desmnemo .
+.SH OPTIONS
+.TP
+.B \-
+can be used instead of an <input_file> when input comes from standard input
+(using a pipe), but ouput is written into a file.
+.SH EXAMPLES
+cat samples-mnemo/mess-libremail.en | desmnemo | apertium -f none en-es | remnemo
+
+desmnemo samples-mnemo/mess-cyloop.en | apertium -f none en-es | remnemo
+.SH SEE ALSO
+desman(1), remnemo(1), apertium-mnemo(1), apertium(1).
+.SH AUTHOR
+Bernard Chardonneau  <bechapertium@free.fr>
