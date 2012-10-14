@@ -1,0 +1,31 @@
+.TH reman 1 "September 27, 2012" "Bernard Chardonneau" "Apertium reformatter"
+.SH NAME
+reman - Reformatter for man pages. This application is a tool for the
+.B apertium 
+translator.
+.SH SYNOPSIS
+.B retxt
+[ <input_file> [ <output_file> ] ]
+.SH DESCRIPTION
+.BR reman 
+is a format processor. It restores the original formatting the man
+pages had (lines starting by .TH , .TP , .SH , .B , etc., newlines,
+tabs, etc.) before being passed through the desman deformatter.
+
+It is a generic reformatter. So, the same program works with the mnemonic
+interface files deformatter
+.I desmnemo
+and could also work for other text formats.
+.SH OPTIONS
+.TP
+.B \-
+can be used instead of an <input_file> when input comes from standard input
+(using a pipe), that is frequent, but ouput is written into a file.
+.SH EXAMPLES
+cat desman.1 | desman | apertium -f none en-es | reman
+
+desman desman.1 | apertium -f none en-es | reman
+.SH SEE ALSO
+remnemo(1), desman(1), apertium-mnemo(1), apertium(1).
+.SH AUTHOR
+Bernard Chardonneau  <bechapertium@free.fr>
