@@ -9,7 +9,7 @@ all:	$(binaries)
 
 install: $(binaries) $(shells)
 	cp -p  $(binaries) $(shells) $(install_dir)/bin
-	find man | cpio -pdmv $(install_dir)
+	find man | fgrep -v .svn | cpio -pdmv $(install_dir)/share
 
 
 desman:	desman.c
