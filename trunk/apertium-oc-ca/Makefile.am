@@ -7,7 +7,7 @@ PREFIX1=$(LANG1)-$(LANG2)
 PREFIX1b=$(LANG1b)-$(LANG2)
 PREFIX2=$(LANG2)-$(LANG1)
 PREFIX2b=$(LANG2)-$(LANG1b)
-INSTALL_MODES=oc-ca.mode ca-oc.mode oc_aran-ca.mode ca-oc_aran.mode
+
 
 BASENAME=apertium-$(PREFIX1)
 
@@ -18,7 +18,7 @@ TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1b).automorf.bin \
                  $(PREFIX1).autogen.bin $(PREFIX1b).autogen.bin \
                  $(PREFIX2).autogen.bin $(PREFIX2b).autogen.bin \
                  $(PREFIX1).autopgen.bin $(PREFIX1b).autopgen.bin \
-                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin modes
+                 $(PREFIX2).autopgen.bin $(PREFIX2b).autopgen.bin
 
 TARGETS = $(TARGETS_COMMON) $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
           $(PREFIX1b).t1x.bin $(PREFIX1b).t2x.bin $(PREFIX1b).t3x.bin \
@@ -235,13 +235,14 @@ EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x 
 
 
-modes: modes.xml Makefile.am
+modes/$(PREFIX1).mode: modes.xml 
+	apertium-validate-modes modes.xml
 	apertium-gen-modes modes.xml
-	@cp *.mode modes
+	cp *.mode modes/
 
-$(INSTALL_MODES): modes.xml Makefile.am
-	apertium-gen-modes modes.xml
-	@cp *.mode modes
+# All modes are created by the same goal, listing several will just give problems with make -j2
+noinst_DATA=modes/$(PREFIX1).mode
+
 
 apertium_oc_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
 apertium_oc_camodesdir=$(prefix)/share/apertium/modes/
@@ -262,11 +263,13 @@ apertium_oc_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).t1x $(PREFIX1).t2x $(PREFIX1).t3x \
                     $(PREFIX1b).t1x $(PREFIX1b).t2x $(PREFIX1b).t3x \
                     $(PREFIX2).t1x $(PREFIX2).t2x $(PREFIX2).t3x \
-                    $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x \
-                    $(INSTALL_MODES)
+                    $(PREFIX2b).t1x $(PREFIX2b).t2x $(PREFIX2b).t3x
 
 install-data-local:
+	mv modes modes.bak
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	rm -rf modes
+	mv modes.bak modes
 	test -d $(DESTDIR)$(apertium_oc_camodesdir) || mkdir $(DESTDIR)$(apertium_oc_camodesdir)
 	$(INSTALL_DATA) oc-ca.mode $(DESTDIR)$(apertium_oc_camodesdir)
 	$(INSTALL_DATA) ca-oc.mode $(DESTDIR)$(apertium_oc_camodesdir)
