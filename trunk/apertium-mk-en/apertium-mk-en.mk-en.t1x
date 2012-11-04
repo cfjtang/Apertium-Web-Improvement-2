@@ -419,6 +419,11 @@
       <attr-item tags="aor"/>
       <attr-item tags="inf"/>
     </def-attr>
+
+	<def-attr n="a_ij">
+      <attr-item tags="ij"/>
+    </def-attr>
+
 	<def-attr n="mood">
       <attr-item tags="imp"/>
     </def-attr>
@@ -3484,7 +3489,6 @@
       </action>
     </rule>
 
-
     <rule comment="REGLA: vbser">
       <pattern>
         <pattern-item n="vbser"/>
@@ -5874,14 +5878,11 @@
 	<!-- покажав - showed -->
 
 
-	 <rule comment="REGLA: не треба adv да prn_clitic v_pres">
+	 <rule comment="REGLA: vbhaver">
       <pattern>
         <pattern-item n="vbhaver"/>
       </pattern>
       <action>
-        <call-macro n="conv_verb_tense1">
-          <with-param pos="1"/>
-        </call-macro>
         <call-macro n="conv_verb_tense1">
           <with-param pos="1"/>
         </call-macro>
@@ -5909,7 +5910,6 @@
 		<call-macro n="conv_verb_tense1">
           <with-param pos="1"/>
         </call-macro>
-		
 		<out>
           <chunk name="v" case="caseFirstWord">
             <tags>
