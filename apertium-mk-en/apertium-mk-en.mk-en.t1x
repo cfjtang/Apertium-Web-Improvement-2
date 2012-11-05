@@ -1133,7 +1133,7 @@
   <section-rules>
 
 
-
+  <!-- There is no person, that should be fixed -->
   <rule comment="REGLA: sam-od-sebe">
       <pattern>
         <pattern-item n="sam-od-sebe"/>
@@ -1141,7 +1141,52 @@
       <action>
         <choose>
           <when>
-            <test><equal><clip pos="1" side="sl" part="gen"/><lit-tag v="m"/></equal></test>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="sg"/></equal>
+				<equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p1"/></equal>
+			</and></test>			
+            <out>
+              <chunk name="by-self" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="ADV"/></tag>
+                </tags>
+                <lu>
+                  <lit v="by"/><lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="myself"/>
+                  <lit-tag v="prn.ref.p1.sg"/>
+                </lu>        
+              </chunk>
+            </out>
+          </when> 
+          <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="sg"/></equal>
+				<equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p2"/></equal>
+			</and></test>			
+            <out>
+              <chunk name="by-self" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="ADV"/></tag>
+                </tags>
+                <lu>
+                  <lit v="by"/><lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="yourself"/>
+                  <lit-tag v="prn.ref.p2.sg"/>
+                </lu>        
+              </chunk>
+            </out>
+          </when> 
+          <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="sg"/></equal>
+				<equal><clip pos="1" side="sl" part="gen"/><lit-tag v="m"/></equal>
+			</and></test>			
             <out>
               <chunk name="by-self" case="caseFirstWord">
                 <tags>
@@ -1158,8 +1203,11 @@
               </chunk>
             </out>
           </when> 
-          <when>
-            <test><equal><clip pos="1" side="sl" part="gen"/><lit-tag v="f"/></equal></test>
+		  <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="sg"/></equal>
+				<equal><clip pos="1" side="sl" part="gen"/><lit-tag v="f"/></equal>
+			</and></test>			
             <out>
               <chunk name="by-self" case="caseFirstWord">
                 <tags>
@@ -1176,8 +1224,11 @@
               </chunk>
             </out>
           </when> 
-          <when>
-            <test><equal><clip pos="1" side="sl" part="gen"/><lit-tag v="nt"/></equal></test>
+		  <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="sg"/></equal>
+				<equal><clip pos="1" side="sl" part="gen"/><lit-tag v="nt"/></equal>
+			</and></test>			
             <out>
               <chunk name="by-self" case="caseFirstWord">
                 <tags>
@@ -1194,9 +1245,69 @@
               </chunk>
             </out>
           </when> 
-
-
-
+		  <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="pl"/></equal>
+				<equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p1"/></equal>
+			</and></test>			
+            <out>
+              <chunk name="by-self" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="ADV"/></tag>
+                </tags>
+                <lu>
+                  <lit v="by"/><lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="ourselves"/>
+                  <lit-tag v="prn.ref.p1.pl"/>
+                </lu>        
+              </chunk>
+            </out>
+          </when>
+		  <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="pl"/></equal>
+				<equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p2"/></equal>
+			</and></test>			
+            <out>
+              <chunk name="by-self" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="ADV"/></tag>
+                </tags>
+                <lu>
+                  <lit v="by"/><lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="ourselves"/>
+                  <lit-tag v="prn.ref.p2.pl"/>
+                </lu>        
+              </chunk>
+            </out>
+          </when>
+		  <when>
+            <test><and>
+				<equal><clip pos="1" side="sl" part="nbr"/><lit-tag v="pl"/></equal>
+				<equal><clip pos="1" side="sl" part="pers"/><lit-tag v="p3"/></equal>
+			</and></test>			
+            <out>
+              <chunk name="by-self" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="ADV"/></tag>
+                </tags>
+                <lu>
+                  <lit v="by"/><lit-tag v="pr"/>
+                </lu>
+                <b/>
+                <lu>
+                  <lit v="themselves"/>
+                  <lit-tag v="prn.ref.p3.pl"/>
+                </lu>        
+              </chunk>
+            </out>
+          </when>
         </choose>
       </action>
     </rule>
