@@ -24,6 +24,7 @@ obj = object form changed to the traditional acc = accusative
   <sdefs>
     <sdef n="unsint" 	c=""/> 
     <sdef n="imp" 	c=""/> 
+    <sdef n="pers" 	c="Personal"/> 
     <sdef n="pprs" 	c=""/> 
     <sdef n="sint" 	c=""/> 
     <sdef n="n" 	c="Noun"/> 
@@ -87,7 +88,7 @@ obj = object form changed to the traditional acc = accusative
     <sdef n="cm" 	c="Comma"/> 
     <sdef n="ND" 	c="Número por determinar"/> 
     <sdef n="GD" 	c="Género por determinar"/> 
-    <sdef n="nomi" 	c=""/> 
+    <sdef n="nom" 	c=""/> 
     <sdef n="gen" 	c=""/> 
   </sdefs>
   <pardefs>
@@ -104,7 +105,6 @@ apertium-dixtools autoconcord apertium-sv-da.sv-da.dix
 TODO write exact command
 -->
 
-
 <pardef n="_nt_nt" c="autoconcord:nt-nt">
   <e>       <p><l><s n="nt"/></l><r><s n="nt"/></r></p></e>
 </pardef>
@@ -120,7 +120,6 @@ TODO write exact command
 <pardef n="_ut_ut" c="autoconcord:ut-ut">
   <e>       <p><l><s n="ut"/></l><r><s n="ut"/></r></p></e>
 </pardef>
-
 
 <!-- Bruges når svensk har sg og pl, men på dansk er der sp. F.eks:
 jordgubbe  jordgubbar
@@ -145,6 +144,7 @@ jordbær  jordbær
   <e>       <p><l><s n="pl"/><s n="def"/></l><r><s n="pl"/><s n="def"/></r></p></e>
 </pardef>
 
+<!--
 <pardef n="_sgpl_sgpl" c="autoconcord:sgpl-sgpl/omit">
   <e>       <i></i></e>
 </pardef>
@@ -152,6 +152,7 @@ jordbær  jordbær
 <pardef n="_sp_sp" c="autoconcord:sp-sp/omit">
   <e>       <i></i></e>
 </pardef>
+-->
 
 
 <!-- Paradigms that are not autocorrected -->
@@ -611,41 +612,18 @@ jordbær  jordbær
 
     <!-- Pronouns -->
 
-<e>       <p><l>jag<s n="prn"/><s n="nom"/><s n="p1"/></l><r>jeg<s n="prn"/><s n="nom"/><s n="p1"/></r></p></e>
-<e>       <p><l>du<s n="prn"/><s n="nom"/><s n="p2"/></l><r>du<s n="prn"/><s n="nom"/><s n="p2"/></r></p></e>
-<e>       <p><l>han<s n="prn"/><s n="nom"/><s n="p3"/></l><r>han<s n="prn"/><s n="nom"/><s n="p3"/></r></p></e>
-<e>       <p><l>hon<s n="prn"/><s n="nom"/><s n="p3"/></l><r>hun<s n="prn"/><s n="nom"/><s n="p3"/></r></p></e>
-<e>       <p><l>den<s n="prn"/><s n="nom"/><s n="p3"/></l><r>den<s n="prn"/><s n="nom"/><s n="p3"/></r></p></e>
-<e>       <p><l>det<s n="prn"/><s n="nom"/><s n="p3"/></l><r>det<s n="prn"/><s n="nom"/><s n="p3"/></r></p></e>
+<e>       <p><l>jag<s n="prn"/><s n="pers"/><s n="p1"/></l><r>jeg<s n="prn"/><s n="pers"/><s n="p1"/></r></p></e>
+<e>       <p><l>du<s n="prn"/><s n="pers"/><s n="p2"/></l><r>du<s n="prn"/><s n="pers"/><s n="p2"/></r></p></e>
+<e>       <p><l>han<s n="prn"/><s n="pers"/><s n="p3"/></l><r>han<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
+<e>       <p><l>hon<s n="prn"/><s n="pers"/><s n="p3"/></l><r>hun<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
+<e>       <p><l>den<s n="prn"/><s n="pers"/><s n="p3"/></l><r>den<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
+<e>       <p><l>det<s n="prn"/><s n="pers"/><s n="p3"/></l><r>det<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
 
-<e>       <p><l>vi<s n="prn"/><s n="nom"/><s n="p1"/></l><r>vi<s n="prn"/><s n="nom"/><s n="p1"/></r></p></e>
-<e>       <p><l>ni<s n="prn"/><s n="nom"/><s n="p2"/></l><r>I<s n="prn"/><s n="nom"/><s n="p2"/></r></p></e>
-<e>       <p><l>de<s n="prn"/><s n="nom"/><s n="p3"/></l><r>de<s n="prn"/><s n="nom"/><s n="p3"/></r></p></e>
+<e>       <p><l>vi<s n="prn"/><s n="pers"/><s n="p1"/></l><r>vi<s n="prn"/><s n="pers"/><s n="p1"/></r></p></e>
+<e>       <p><l>ni<s n="prn"/><s n="pers"/><s n="p2"/></l><r>I<s n="prn"/><s n="pers"/><s n="p2"/></r></p></e>
+<e>       <p><l>de<s n="prn"/><s n="pers"/><s n="p3"/></l><r>de<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
 
-<e>       <p><l>man<s n="prn"/><s n="nom"/><s n="p3"/></l><r>man<s n="prn"/><s n="nom"/><s n="p3"/></r></p></e>
-
-
-<e>       <p><l>jag<s n="prn"/><s n="acc"/><s n="p1"/></l><r>jeg<s n="prn"/><s n="acc"/><s n="p1"/></r></p></e>
-<e>       <p><l>du<s n="prn"/><s n="acc"/><s n="p2"/></l><r>du<s n="prn"/><s n="acc"/><s n="p2"/></r></p></e>
-<e>       <p><l>han<s n="prn"/><s n="acc"/><s n="p3"/></l><r>han<s n="prn"/><s n="acc"/><s n="p3"/></r></p></e>
-<e>       <p><l>hon<s n="prn"/><s n="acc"/><s n="p3"/></l><r>hun<s n="prn"/><s n="acc"/><s n="p3"/></r></p></e>
-<e>       <p><l>den<s n="prn"/><s n="acc"/><s n="p3"/></l><r>den<s n="prn"/><s n="acc"/><s n="p3"/></r></p></e>
-<e>       <p><l>det<s n="prn"/><s n="acc"/><s n="p3"/></l><r>det<s n="prn"/><s n="acc"/><s n="p3"/></r></p></e>
-
-<e>       <p><l>vi<s n="prn"/><s n="acc"/><s n="p1"/></l><r>vi<s n="prn"/><s n="acc"/><s n="p1"/></r></p></e>
-<e>       <p><l>ni<s n="prn"/><s n="acc"/><s n="p2"/></l><r>I<s n="prn"/><s n="acc"/><s n="p2"/></r></p></e>
-<e>       <p><l>de<s n="prn"/><s n="acc"/><s n="p3"/></l><r>de<s n="prn"/><s n="acc"/><s n="p3"/></r></p></e>
-
-<e>       <p><l>man<s n="prn"/><s n="acc"/><s n="p3"/></l><r>man<s n="prn"/><s n="acc"/><s n="p3"/></r></p></e>
-
-
-<e>       <p><l>han<s n="prn"/><s n="pos"/><s n="p3"/></l><r>han<s n="prn"/><s n="pos"/><s n="p3"/></r></p></e>
-<e>       <p><l>hon<s n="prn"/><s n="pos"/><s n="p3"/></l><r>hun<s n="prn"/><s n="pos"/><s n="p3"/></r></p></e>
-<e>       <p><l>den<s n="prn"/><s n="pos"/><s n="p3"/></l><r>den<s n="prn"/><s n="pos"/><s n="p3"/></r></p></e>
-<e>       <p><l>det<s n="prn"/><s n="pos"/><s n="p3"/></l><r>det<s n="prn"/><s n="pos"/><s n="p3"/></r></p></e>
-<e>       <p><l>de<s n="prn"/><s n="pos"/><s n="p3"/></l><r>de<s n="prn"/><s n="pos"/><s n="p3"/></r></p></e>
-
-<e>       <p><l>man<s n="prn"/><s n="pos"/><s n="p3"/></l><r>man<s n="prn"/><s n="pos"/><s n="p3"/></r></p></e>
+<e>       <p><l>man<s n="prn"/><s n="pers"/><s n="p3"/></l><r>man<s n="prn"/><s n="pers"/><s n="p3"/></r></p></e>
 
 
 <e>       <p><l>själv<s n="prn"/><s n="ref"/></l>      <r>selv<s n="prn"/><s n="ref"/></r></p></e>
@@ -2553,9 +2531,10 @@ jordbær  jordbær
 -->
 
 
-<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>sort<s n="n"/><s n="ut"/></r></p><par n="sgpl_sgpl__n"/><p><l><s n="nomi"/></l><r><s n="nomi"/></r></p></e>
+<e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>sort<s n="n"/><s n="ut"/></r></p><par n="sgpl_sgpl__n"/><p><l><s n="nom"/></l><r><s n="nom"/></r></p></e>
 <!-- slags = slags !? ändra??-->
-<e r="RL" a="PT">       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>slags<s n="n"/><s n="ut"/></r></p><par n="sgpl_sp"/><p><l><s n="gen"/></l><r><s n="nomi"/></r></p></e>
+<e r="RL" a="PT">       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>slags<s n="n"/><s n="ut"/></r></p><par n="sgpl_sp"/><p><l><s n="gen"/></l><r><s n="nom"/></r></p></e>
+-->
 
 <!--
 <e>       <p><l>sort<s n="n"/><s n="ut"/></l>          <r>art<s n="n"/><s n="ut"/></r></p></e>
