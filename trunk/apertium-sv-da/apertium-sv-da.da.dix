@@ -95,6 +95,7 @@ obj = object form changed to the traditional acc = accusative
     <sdef n="cmp" 	c="Generation only: added by transfer to say we have a compound"/>
     <sdef n="cmp-split" 	c="Left part of a split compound"/>
   </sdefs>
+    <!-- Compounding -->
 
 <pardefs>
 
@@ -134,6 +135,13 @@ obj = object form changed to the traditional acc = accusative
    <e>       <p><l></l>          <r></r></p></e>
    <e>       <p><l>NON_ANALYSIS</l>          <r>DUE_TO_LT_PROC_HANG</r></p></e>
 </pardef>
+
+<pardef n="cp-L" c="cp-L, for forms that can only form parts of compounds">
+   <e r="LR"><p><l></l>          <r><s n="cmp"/><s n="compound-only-L"/></r></p></e>
+   <e r="RL"><p><l></l>          <r><s n="cmp"/></r></p></e>
+   <e>       <p><l>NON_ANALYSIS</l>          <r>DUE_TO_LT_PROC_HANG</r></p></e>
+</pardef>
+
 
 <pardef n="cp-L\Ø\S__case" c="cp-L, for forms that can start compounds or be words on their own">
    <e r="RL"><p><l></l>          <r><s n="cmp"/></r></p></e>
@@ -726,8 +734,9 @@ obj = object form changed to the traditional acc = accusative
     <!-- Proper nouns -->
 
 <pardef n="S__case"> <!-- Case endings for nouns not ending on s (mand / mands) -->
-  <e>       <p><l></l>          <r><s n="nom"/></r></p></e>
-  <e>       <p><l>s</l>         <r><s n="gen"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="nom"/></r></p><par n="cp-R"/></e>
+  <e>       <p><l></l>          <r></r></p><par n="cp-L"/></e>
+  <e>       <p><l>s</l>         <r><s n="gen"/></r></p><par n="cp-R"/></e>
 </pardef>
 
 <pardef n="apos__case"> <!-- Case endings for nouns ending on s (hus / hus' ) -->
