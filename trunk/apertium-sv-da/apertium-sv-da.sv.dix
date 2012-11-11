@@ -23,9 +23,6 @@ old = old-fashioned (vieilli/archaïque)
 dial = dialectal (dialectal)
 -->
 
-<!-- PT Changed terminology for nouns:
-nom for nominativ changed to nomi -->
-
 <!-- PT Changed terminology for pronouns:
 subj = subject form changed to the traditional nom = nominative
 obj = object form changed to the traditional acc = accusative
@@ -105,6 +102,8 @@ obj = object form changed to the traditional acc = accusative
   </sdefs>
   <pardefs>
 
+<!-- Compounding -->
+
           <!-- Compounding pardefs. -->
 <!-- The cmp tag may be added by transfer to sg.ind forms. Even nouns
      that can't be analysed in compounds, can be generated in
@@ -136,9 +135,18 @@ obj = object form changed to the traditional acc = accusative
      parts of compounds (if using lt-proc -e option). The
      cp-(only-)L... and cp-both... ones are used for sg.ind forms, and
      thus need to be able to generate the sg.ind.cmp form too -->
+
+
 <pardef n="cp-R" c="cp-R, for forms that can end compounds or be words on their own">
    <e r="LR"><p><l></l>          <r><s n="compound-R"/></r></p></e>
    <e>       <p><l></l>          <r></r></p></e>
+   <e>       <p><l>NON_ANALYSIS</l>          <r>DUE_TO_LT_PROC_HANG</r></p></e>
+</pardef>
+
+<!--  PT Changed according to Francis changes of the da monodix -->
+<pardef n="cp-L" c="cp-L, for forms that can only form parts of compounds">
+   <e r="LR"><p><l></l>          <r><s n="cmp"/><s n="compound-only-L"/></r></p></e>
+   <e r="RL"><p><l></l>          <r><s n="cmp"/></r></p></e>
    <e>       <p><l>NON_ANALYSIS</l>          <r>DUE_TO_LT_PROC_HANG</r></p></e>
 </pardef>
 
@@ -253,9 +261,17 @@ obj = object form changed to the traditional acc = accusative
 
     <!-- Suffixes -->
 
+<!-- PT replaced byt the paradigm below for compounding
 <pardef n="S__case">
   <e>       <p><l></l>          <r><s n="nom"/></r></p></e>
   <e>       <p><l>s</l>         <r><s n="gen"/></r></p></e>
+</pardef>
+                                                    -->
+
+<pardef n="S__case"> <!-- PT Changed for compounding -->
+  <e>       <p><l></l>          <r><s n="nom"/></r></p><par n="cp-R"/></e>
+  <e>       <p><l></l>          <r></r></p><par n="cp-L"/></e>
+  <e>       <p><l>s</l>         <r><s n="gen"/></r></p><par n="cp-R"/></e>
 </pardef>
 
     <!-- Determiners -->
@@ -804,6 +820,14 @@ obj = object form changed to the traditional acc = accusative
 
 <pardef n="bil__n" c="autoconcord:ut,sgpl"> <!-- Common; ~ / ~en / ~ar / ~arna -->
   <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
+  <e>       <p><l>ar</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e>       <p><l>arna</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
+</pardef>
+
+<pardef n="bil_cp__n" c="Test of compounds breaks autoconcord"> <!-- Common; ~ / ~en / ~ar / ~arna -->
+  <e a="PT">       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="no-cp\Ø\S__case"/></e>
+  <!-- <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e> -->
   <e>       <p><l>en</l>        <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
   <e>       <p><l>ar</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
   <e>       <p><l>arna</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
@@ -3432,7 +3456,10 @@ obj = object form changed to the traditional acc = accusative
 <e lm="tatuering">       <i>tatuering</i><par n="bil__n"/></e>
 <e lm="tidning">         <i>tidning</i><par n="bil__n"/></e>
 <e lm="tjur">            <i>tjur</i><par n="bil__n"/></e>
+
 <e lm="tjuv">            <i>tjuv</i><par n="bil__n"/></e>
+<!-- <e lm="tyv" a="PT"><i>tyv</i><par n="bil_cp__n"/></e> -->
+
 <e lm="tonåring">        <i>tonåring</i><par n="bil__n"/></e>
 <e lm="topp">            <i>topp</i><par n="bil__n"/></e>
 <e lm="torsk">           <i>torsk</i><par n="bil__n"/></e>
