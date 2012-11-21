@@ -84,7 +84,10 @@ apertium_sv_da_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 #$(PREFIX2).mode
 
 install-data-local:
+	mv modes modes.bak
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
+	rm -rf modes
+	mv modes.bak modes
 	test -d $(DESTDIR)$(apertium_sv_modesdir) || mkdir $(DESTDIR)$(apertium_sv_modesdir)
 	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_sv_modesdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(DESTDIR)$(apertium_sv_dadir)
