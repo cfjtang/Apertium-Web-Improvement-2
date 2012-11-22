@@ -196,6 +196,29 @@
       </program>
     </pipeline>
   </mode>
+
+  <mode name="sv-da-preserve-case">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="sv-da.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="sv-da.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="sv-da.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-sv-da.sv-da.t1x"/>
+        <file name="sv-da.t1x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="sv-da.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
   <mode name="sv-da" install="yes">
     <pipeline>
       <program name="lt-proc">
@@ -286,6 +309,28 @@
   <mode name="da-sv-cmpd" install="no">
     <pipeline>
       <program name="lt-proc -e">
+        <file name="da-sv.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="da-sv.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="da-sv.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-sv-da.da-sv.t1x"/>
+        <file name="da-sv.t1x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="da-sv.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="da-sv-preserve-case" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
         <file name="da-sv.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
