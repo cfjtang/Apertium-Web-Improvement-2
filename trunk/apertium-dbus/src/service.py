@@ -1,4 +1,4 @@
-import gobject
+import gi
 
 import dbus
 import dbus.service 
@@ -34,6 +34,6 @@ def run_as(name):
     global mainloop
     
     name = dbus.service.BusName(name, dbus.SessionBus())    
-    mainloop = gobject.MainLoop()
+    mainloop = gi._gobject.MainLoop()
     mainloop.run()
 
