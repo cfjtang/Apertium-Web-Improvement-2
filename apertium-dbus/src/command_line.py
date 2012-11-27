@@ -25,6 +25,6 @@ class OsCommand(object):
         self.cmd = cmd
 
     def communicate(self, _input):
-        print "calling", self.cmd
+        print(("calling", self.cmd))
         return call(self.cmd, _input)
 

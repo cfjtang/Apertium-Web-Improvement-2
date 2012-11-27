@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 usage = """Usage:
 python example-service.py &
@@ -95,9 +95,9 @@ def setup_logging():
                             datefmt='%a, %d %b %Y %H:%M:%S',
                             filename=logfile,
                             filemode='w')
-    except IOError, e:
-        print "IOError: %s" % e
-        print "Continuing without logging!"
+    except IOError as e:
+        print("IOError: %s" % e)
+        print("Continuing without logging!")
     
 if __name__ == "__main__":
     #setup_logging()
