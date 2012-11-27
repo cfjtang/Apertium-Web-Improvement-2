@@ -7,7 +7,7 @@ $(document).ready(function(){
 
 	jQuery("#inputBox").submit(function(){
 		try{
-				translate(curr_pair,$('#textAreaId').val());
+			translate(curr_pair,$('#textAreaId').val());
 			return false;
 		}catch(e){
 			alert(e.message);
@@ -24,6 +24,10 @@ $(document).ready(function(){
 		toText = $('#selectTo em').text();
 		$('#selectTo em').html(fromText);
 		$('#selectFrom em').html(toText);
+		
+		curr_pair.dstLang = fromText;
+		curr_pair.srcLang = toText;
+		
 		
 	});
 /*
@@ -87,8 +91,8 @@ $(document).click(function(){
 
 function translate(langPair, text){
 	
-	langpairer = langPair.srcLang +"|" + langPair.dstLang;
-		
+	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
+	
 	jQuery.ajax({
 			url:'http://api.apertium.org/json/translate',
 			type:"GET",
@@ -110,6 +114,7 @@ function smth(dt){
 	if(dt.responseStatus==200) {
 		jQuery('#translationTest').html(dt.responseData.translatedText);
 	} else {
+		alert(dt.responseStatus);
 		trad_ko();
     }
 }
@@ -129,7 +134,7 @@ function getPairs(){
 
 
 function trad_ko() {
-	jQuery('#translationTest').html("Translation not yet available!");
+	jQuery('#translationTest').html("Failure!");
 }
 
 function trad_ok(dt) {
