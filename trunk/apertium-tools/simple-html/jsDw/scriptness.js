@@ -134,7 +134,7 @@ function getPairs(){
 
 
 function trad_ko() {
-	jQuery('#translationTest').html("Failure!");
+	jQuery('#translationTest').html("Translation not yet available!");
 }
 
 function trad_ok(dt) {
@@ -160,7 +160,7 @@ function trad_ok(dt) {
 		populateTranslationList("#column-group-", srcLangs);
 		
 	}else {
-		alert(dt.responseStatus);
+		trad_ko();
 	}
 }
 
