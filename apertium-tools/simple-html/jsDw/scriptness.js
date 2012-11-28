@@ -3,6 +3,7 @@ var curr_pair = new Object();
 var srcLangs = new Array();
 var dstLangs = new Array();
 var grayedOuts = new Array();
+var isDetecting = false;
 
 var abbreviations = {
 	'Spanish':'es',
@@ -35,20 +36,27 @@ $(document).ready(function(){
 	
 	
 	$("#textAreaId").keyup(function(event) {
-		if(event.keyCode==32 || event.keyCode==190 || event.keyCode==191 || event.keyCode==49 || event.keyCode==59){
+		if(event.keyCode==32 || event.keyCode==190 || event.keyCode==191 || event.keyCode==49 || event.keyCode==59 || event.keyCode==13){
 			try{
-				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+				if(curr_pair.srcLang.indexOf("Detect") !=-1){		
+					isDetecting = true;
+			}
+			
+			if(isDetecting){
+			
+			
 					curr_pair.srcLang = detectLanguage($(this).val());
 			
 					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
 			
-					$('#selectFrom em').html(curr_pair.srcLang);
+					//$('#selectFrom em').html(curr_pair.srcLang);
 					
+			
 			}
 				
 			
 			}catch(e){
-			
+				console.log(e.message);
 			}
 			
 			
@@ -60,6 +68,7 @@ $(document).ready(function(){
 			
 			return false;
 		}
+		/*
 		if(event.keyCode==13){
 			
 			try{
@@ -74,7 +83,7 @@ $(document).ready(function(){
 				
 			
 			}catch(e){
-			
+				console.log(e.message);
 			}
 		
 			translate(curr_pair,$('#textAreaId').val());
@@ -83,7 +92,7 @@ $(document).ready(function(){
 			return false;
 		}
 		//alert(event.keyCode);
-		
+		*/
 	});
 
 
@@ -103,14 +112,14 @@ $(document).ready(function(){
 				
 			
 			}catch(e){
-			
+				console.log(e.message);
 			}
 		
 		
 			translate(curr_pair,$('#textAreaId').val());
 			return false;
 		}catch(e){
-			alert(e.message);
+			console.log(e.message);
 		}
 	});
     
@@ -208,7 +217,7 @@ function translate(langPair, text){
 
 		
 	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
-//	alert(langpairer);
+	//alert(langpairer);
 	
 	jQuery.ajax({
 			url:'http://api.apertium.org/json/translate',
@@ -375,7 +384,13 @@ function populateTranslationList(elementClass, langArr){
 		$('#dropDownSub a').removeClass('language-selected');
 		$(this).addClass('language-selected');
 		
-		if(FromOrTo=="from"){	
+		if(FromOrTo=="from"){
+
+			
+			if($(this).text()!=" Detect Language ")
+				isDetecting = false;
+		
+		
 			$('#selectFrom em').html($(this).text());
 			curr_pair.srcLang = $(this).text();
 			
@@ -405,7 +420,7 @@ function populateTranslationList(elementClass, langArr){
 				
 			
 			}catch(e){
-			
+				console.log(e.message);
 			}
 			
 			translate(curr_pair,$('#textAreaId').val());
