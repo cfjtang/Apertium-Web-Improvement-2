@@ -258,6 +258,8 @@ function populateTranslationList(elementClass, langArr){
 			$('#dropDownSub').css('margin-left',287);
 			
 			$('#dropDownSub').removeClass('selectFromSub');
+			//find_smth(curr_pair.srcLang);
+			//$('#dropDownSub a').addClass('language-selected');
 		}
 			
 			$('#dropDownSub').show();
