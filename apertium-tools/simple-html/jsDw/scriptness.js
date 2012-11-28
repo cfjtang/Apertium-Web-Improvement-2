@@ -36,18 +36,51 @@ $(document).ready(function(){
 	
 	$("#textAreaId").keyup(function(event) {
 		if(event.keyCode==32){
+			try{
+				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+					curr_pair.srcLang = detectLanguage($(this).val());
+			
+					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
+			
+					$('#selectFrom em').html(curr_pair.srcLang);
+					
+			}
+				
+			
+			}catch(e){
+			
+			}
+			
+			
 			translate(curr_pair,$('#textAreaId').val());
-			$(this).val($(this).val()+' ');
+			
+			//$(this).val($(this).val()+' ');
 			
 			//alert(detectLanguage($(this).val()));
 			
-		return false;
+			return false;
 		}
 		if(event.keyCode==13){
-			translate(curr_pair,$('#textAreaId').val());
-			$(this).val($(this).val()+'\n'); ;
 			
-		return false;
+			try{
+				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+					curr_pair.srcLang = detectLanguage($(this).val());
+					
+					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
+			
+					$('#selectFrom em').html(curr_pair.srcLang);
+					
+			}
+				
+			
+			}catch(e){
+			
+			}
+		
+			translate(curr_pair,$('#textAreaId').val());
+			//$(this).val($(this).val()+'\n'); ;
+			
+			return false;
 		}
 		
 	});
@@ -55,6 +88,24 @@ $(document).ready(function(){
 
 	jQuery("#inputBox").submit(function(){
 		try{
+			
+			try{
+				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+					curr_pair.srcLang = detectLanguage($(this).val());
+					
+					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
+			
+					$('#selectFrom em').html(curr_pair.srcLang);
+					
+			
+			}
+				
+			
+			}catch(e){
+			
+			}
+		
+		
 			translate(curr_pair,$('#textAreaId').val());
 			return false;
 		}catch(e){
@@ -153,21 +204,10 @@ $(document).click(function(){
 function translate(langPair, text){
 	
 	
-	//alert(langPair.srcLang);
-	try{
-		if(langPair.srcLang.indexOf("Detect") !=-1){
-			langPair.srcLang = detectLanguage(text);
-			$('#selectFrom em').html(langPair.srcLang);
-		}
-	}catch(e){
-	
-	}
-	
-	langPair.srcLang = abbreviations[langPair.srcLang];
-	//curr_pair.srcLang = abbreviations[langPair.srcLang];
+
 		
 	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
-	
+//	alert(langpairer);
 	
 	jQuery.ajax({
 			url:'http://api.apertium.org/json/translate',
@@ -351,6 +391,22 @@ function populateTranslationList(elementClass, langArr){
 		
 		
 		if(matchFound){
+		
+			try{
+				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+					curr_pair.srcLang = detectLanguage($(this).val());
+					
+					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
+			
+					$('#selectFrom em').html(curr_pair.srcLang);
+					
+			}
+				
+			
+			}catch(e){
+			
+			}
+			
 			translate(curr_pair,$('#textAreaId').val());
 		}
 		else jQuery('#translationTest').html("Translation not yet available!");
