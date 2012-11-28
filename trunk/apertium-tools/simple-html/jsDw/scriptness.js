@@ -4,14 +4,42 @@ var srcLangs = new Array();
 var dstLangs = new Array();
 var grayedOuts = new Array();
 
+var abbreviations = {
+	'Spanish':'es',
+	'Catalan':'ca',
+	'Catalan (Valencian)':'ca_valencia',
+	'Galician':'gl',
+	'Portuguese':'pt',
+	'Brazilian Portuguese':'pt_BR',
+	'Occitan':'oc',
+	'Aranese':'oc_aran',
+	'English':'en',
+	'French':'fr',
+	'Esperanto':'eo',
+	'Romanian':'ro',
+	'Welsh':'cy',
+	'Basque':'eu',
+	'Breton':'br',
+	'Norwegian Bokmål':'nb',
+	'Norwegian Nynorsk':'nn',
+	'Swedish':'sv',
+	'Danish':'da',
+	'Asturian':'ast',
+	'Icelandic':'is',
+	'Macedonian':'mk',
+	'Bulgarian':'bg',
+	'Italian':'it'
+}
 
 $(document).ready(function(){
 	
 	
-	$("#textAreaId").keydown(function(event) {
+	$("#textAreaId").keyup(function(event) {
 		if(event.keyCode==32){
 			translate(curr_pair,$('#textAreaId').val());
-			$(this).val($(this).val()+' '); 
+			$(this).val($(this).val()+' ');
+			
+			//alert(detectLanguage($(this).val()));
 			
 		return false;
 		}
@@ -124,7 +152,22 @@ $(document).click(function(){
 
 function translate(langPair, text){
 	
+	
+	//alert(langPair.srcLang);
+	try{
+		if(langPair.srcLang.indexOf("Detect") !=-1){
+			langPair.srcLang = detectLanguage(text);
+			$('#selectFrom em').html(langPair.srcLang);
+		}
+	}catch(e){
+	
+	}
+	
+	langPair.srcLang = abbreviations[langPair.srcLang];
+	//curr_pair.srcLang = abbreviations[langPair.srcLang];
+		
 	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
+	
 	
 	jQuery.ajax({
 			url:'http://api.apertium.org/json/translate',
@@ -230,7 +273,8 @@ function parsePair(pr){
 
 function populateTranslationList(elementClass, langArr){
 	
-		jQuery(".column-group").html("");
+	jQuery(".column-group").html("");
+	jQuery("#column-group-1").append("<span> <a href='#' class='language-selected' > Detect Language </a></span>");
 		
 	column_num=1;
 	for(it in langArr){
