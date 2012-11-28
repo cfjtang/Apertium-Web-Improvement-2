@@ -170,7 +170,7 @@ function trad_ok(dt) {
 				dstLangs[i] = all[i].targetLanguage;
 				dstLangs = jQuery.unique(dstLangs);
 				
-			jQuery('#translationTest').append(l+'\n');
+			//jQuery('#translationTest').append(l+'\n');
 		}
 		
 		populateTranslationList("#column-group-", srcLangs);
