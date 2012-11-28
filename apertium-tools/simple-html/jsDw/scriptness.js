@@ -2,8 +2,12 @@
 var curr_pair = new Object();
 var srcLangs = new Array();
 var dstLangs = new Array();
+var grayedOuts = new Array();
+
 
 $(document).ready(function(){
+	
+
 
 	jQuery("#inputBox").submit(function(){
 		try{
@@ -77,6 +81,19 @@ $(document).ready(function(){
 	});
 	*/
 	
+	
+	jQuery('#selectTo').click(function(){
+		
+		loler = curr_pair.srcLang + "|";
+		aaa=0;
+		for(it in window.pairs){
+		if(window.pairs[it].indexOf(loler) != -1){
+			grayedOuts[aaa] = window.pairs[it].substr(-2,2);
+			aaa++;
+		}	
+	}
+	});
+	
 	getPairs();
 
 	
@@ -114,7 +131,6 @@ function smth(dt){
 	if(dt.responseStatus==200) {
 		jQuery('#translationTest').html(dt.responseData.translatedText);
 	} else {
-		alert(dt.responseStatus);
 		trad_ko();
     }
 }
@@ -200,11 +216,10 @@ function populateTranslationList(elementClass, langArr){
 	
 		jQuery(".column-group").html("");
 		
-		
 	column_num=1;
 	for(it in langArr){
 		
-		jQuery(elementClass+column_num).append("<span> <a href='#'> " + langArr[it] + "</a></span>");
+		jQuery(elementClass+column_num).append("<span> <a href='#' class='language-selected' > " + langArr[it] + " </a></span>");
 		
 		
 		if(jQuery(elementClass+column_num).children().length>5){
@@ -213,13 +228,24 @@ function populateTranslationList(elementClass, langArr){
 		
 	}
 	
+		for(it in grayedOuts)
+			$("a:contains( " +grayedOuts[it]+" )").removeClass('language-selected');
+
+	
+	
+	
+	
 	$('.itemSelect').toggle(function(){
+		jQuery('.column-group').removeClass('language-selected');
+		
 		if($(this).attr("id")=="selectFrom"){
 			
-		populateTranslationList("#column-group-", srcLangs);
+			
+			populateTranslationList("#column-group-", srcLangs);
 		
 			FromOrTo="from";
 			$('#dropDownSub').hide();
+			$('#dropDownSub').addClass('selectFromSub');
 			$('#dropDownSub').css('margin-left',00);
 			
 			
@@ -230,6 +256,8 @@ function populateTranslationList(elementClass, langArr){
 			FromOrTo = "to";
 			$('#dropDownSub').hide();
 			$('#dropDownSub').css('margin-left',287);
+			
+			$('#dropDownSub').removeClass('selectFromSub');
 		}
 			
 			$('#dropDownSub').show();
@@ -268,10 +296,11 @@ function populateTranslationList(elementClass, langArr){
 		
 	});
 	
-	
 }
 
-
+function strcmp(a, b){   
+    return (a<b?-1:(a>b?1:0));  
+}
 	
 
 function parsePair_lol(pr){
@@ -285,8 +314,18 @@ function parsePair_lol(pr){
 	return parsedPair;
 }
 
-function test_pop(){
-	for(it in dstLangs){
-		alert(dstLangs[it]);
+function find_smth(lol){
+	aaa=0;
+	loler = "|" + lol;
+	
+	
+	for(it in window.pairs){
+		if(window.pairs[it].indexOf(loler) != -1){
+			aaa++;
+		}	
 	}
+	
+	
 }
+
+	
