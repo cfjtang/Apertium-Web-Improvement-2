@@ -7,6 +7,14 @@ var grayedOuts = new Array();
 
 $(document).ready(function(){
 	
+	
+	$("#textAreaId").keypress(function(event) {
+		if(event.keyCode==32){
+			translate(curr_pair,$('#textAreaId').val());
+			$(this).val($(this).val()+' '); ;
+			return false;
+		}
+	});
 
 
 	jQuery("#inputBox").submit(function(){
