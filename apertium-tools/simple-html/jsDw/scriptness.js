@@ -11,9 +11,17 @@ $(document).ready(function(){
 	$("#textAreaId").keydown(function(event) {
 		if(event.keyCode==32){
 			translate(curr_pair,$('#textAreaId').val());
-			$(this).val($(this).val()+' '); ;
-			return false;
+			$(this).val($(this).val()+' '); 
+			
+		return false;
 		}
+		if(event.keyCode==13){
+			translate(curr_pair,$('#textAreaId').val());
+			$(this).val($(this).val()+'\n'); ;
+			
+		return false;
+		}
+		
 	});
 
 
