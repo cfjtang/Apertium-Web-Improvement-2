@@ -33,7 +33,8 @@ var abbreviations = {
 }
 
 $(document).ready(function(){
-	
+	curr_pair.srcLang="";
+	curr_pair.dstLang="";
 	
 	$("#textAreaId").keyup(function(event) {
 		if(event.keyCode==32 || event.keyCode==190 || event.keyCode==191 || event.keyCode==49 || event.keyCode==59 || event.keyCode==13){
@@ -49,7 +50,7 @@ $(document).ready(function(){
 			
 					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
 			
-					//$('#selectFrom em').html(curr_pair.srcLang);
+					$('#selectFrom em').html(curr_pair.srcLang);
 					
 			
 			}
