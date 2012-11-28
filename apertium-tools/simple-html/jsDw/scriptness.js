@@ -35,7 +35,7 @@ $(document).ready(function(){
 	
 	
 	$("#textAreaId").keyup(function(event) {
-		if(event.keyCode==32){
+		if(event.keyCode==32 || event.keyCode==190){
 			try{
 				if(curr_pair.srcLang.indexOf("Detect") !=-1){
 					curr_pair.srcLang = detectLanguage($(this).val());
