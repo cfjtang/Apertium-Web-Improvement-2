@@ -1,270 +1,182 @@
-#!/usr/bin/python2.5
-# coding=utf-8
-# -*- encoding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-import sys, codecs, copy, Ft, os;
-from Ft.Xml.Domlette import NonvalidatingReader;
-from Ft.Xml.XPath import Evaluate;
+import sys, codecs, copy, os
+import xml.etree.ElementTree as ET
 
-#from xml.dom import minidom;
-#from xml import xpath;
+sys.setrecursionlimit(20000)
 
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
-sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+dictionary = sys.argv[1]
 
-sys.setrecursionlimit(20000);
-
-format = '';
-
-dictionary = sys.argv[1];
-if len(sys.argv) > 2: #{
-	if sys.argv[2] == '1line' or sys.argv[2] == '-1': #{
-		format = '1line';
-	#}	
-#}
+#I don't think this is necessary, but I'll keep it anyway
+##if dictionary == os.path.basename(dictionary): 
+##      dictionary = os.getcwd() + '/' + dictionary
 
 
-if dictionary == os.path.basename(dictionary): #{
-	dictionary = os.getcwd() + '/' + dictionary;
-#}
+doc = ET.parse(dictionary)
+root = doc.getroot()
 
-doc = NonvalidatingReader.parseUri('file:///' + dictionary);
-path = '/dictionary/pardefs/pardef';
+paradigms = {}
 
-paradigms = {};
+def return_symlist(symlist): 
+        if len(symlist) < 1: 
+                return ''
+        
+        if symlist[0] == '.': 
+                symlist = symlist[1:]
+        
+        symlist = symlist.replace(':', '.')
+        output = ''
 
-def return_symlist(symlist): #{
-	if len(symlist) < 1: #{
-		return '';
-	#}
-	if symlist[0] == '.': #{
-		symlist = symlist[1:];
-	#}
-	symlist = symlist.replace(':', '.');
-	output = '';
+        for symbol in symlist.split('.'): 
+                output = output + '<s n="' + symbol + '"/>'
+        
+        return output
 
-	for symbol in symlist.split('.'): #{
-		output = output + '<s n="' + symbol + '"/>';
-	#}
+def roll_right(name): 
+        bar_idx = name.find('/') + 1
+        udr_idx = name.find('_')
 
-	return output;
-#}
+        rstring = name[bar_idx:udr_idx]
 
-def roll_right(name): #{
-	bar_idx = name.find(u'/') + 1;
-	udr_idx = name.find(u'_');
+        if name.find('/') == -1: 
+                rstring = ''
+        
+        return rstring; 
 
-	rstring = name[bar_idx:udr_idx];
+def compare_paradigms(paradigm1, paradigm2): 
+        # paradigm,stem,symbols !! paradigm,stem,symbols        
+        common = 0
 
-	if name.find('/') == -1: #{
-		rstring = '';
-	#}
-	
-	return rstring;	
-#}
+        if len(paradigm1) != len(paradigm2): 
+                return False
 
-def compare_paradigms(paradigm1, paradigm2): #{
-	# paradigm,stem,symbols !! paradigm,stem,symbols	
-	common = 0;
+        for pair1 in paradigm1: 
+                for pair2 in paradigm2: 
+                        if pair1[0] == pair2[0] and pair1[1] == pair2[1]: 
+                                common = common + 1
 
-	if len(paradigm1) != len(paradigm2): #{
-		return 0;
-	#}
+        if common == len(paradigm1): 
+                return True
+                
+        return False
 
-	for pair1 in paradigm1: #{
-		for pair2 in paradigm2: #{
-			if pair1[0] == pair2[0] and pair1[1] == pair2[1]: #{
-				common = common + 1;
-			#}
-		#}
-	#}
+count = 0
 
-	if common == len(paradigm1): #{
-		return 1;
-	#}
-		
-	return 0;
-#}
+for pardefs in root.findall('pardefs'):
+        for node in pardefs.findall('pardef'):
+                pardef = node.get('n')
 
-def duplicate_exists(p1, p2, duplicates): #{
-	for potential in duplicates.keys(): #{
-		for potential2 in duplicates[potential]: #{
-			if p1 == potential or p1 == potential2: #{
-				return 1;
-			#}
-		#}
-	#} 
+                if pardef not in paradigms: 
+                        paradigms[pardef] = []
 
-	return 0;
-#}
+                count += 1
+                if count % 1000 == 0: 
+                        print(count , pardef, file=sys.stderr)
+                
+                for child in node.findall('e'): 
+                        for pair in child.findall('p'): 
+                                suffix = ''
+                                left = pair.find('l')
 
-def string_length_compare(a, b): #{
-	if len(a) == len(b): #{
-		return 0;
-	#}
-	if len(a) > len(b): #{
-		return 1;
-	#}
+                                if left is not None: 
+                                        suffix = left.text
+                                else: 
+                                        suffix = ''
+                                symbols = ''
+                                right =  pair.find('r')
+                                for sym in right.findall('s'): 
+                                        symbol = ''
+                                        if sym is not None: 
+                                                symbol = sym.get('n')
+                                        
+                                        symbols += '.' + symbol
+                                
+                                p = (suffix, symbols)
 
-	return -1;
-#}
+                                paradigms[pardef].append(p)
+                
+sorted_paradigms = sorted(paradigms, key=len)
 
-count = 0;
+duplicates = {}
 
-for node in Ft.Xml.XPath.Evaluate(path, contextNode=doc): #{
-        pardef = node.getAttributeNS(None, 'n');
+def strip_duplicates(paradigms, duplicates, current): 
+#       print 'paradigms: ' , len(paradigms)
+        
+        for paradigm1 in paradigms.copy(): 
+                if paradigm1 in paradigms and current in paradigms and current != paradigm1: 
+                        if current not in duplicates: 
+                                duplicates[current] = []
+                        
+                        if compare_paradigms(paradigms[paradigm1],
+        paradigms[current]) and\
+        roll_right(paradigm1) == roll_right(current): 
+#                               print paradigms[paradigm1] , '; ' , paradigms[current]
+                                duplicates[current].append(paradigm1)
+                                del paradigms[paradigm1]
+                                strip_duplicates(paradigms, duplicates, current)
 
-	if pardef not in paradigms: #{
-		paradigms[pardef] = [];
-	#}
-
-	count = count + 1;
-	if count % 1000 == 0: #{
-		print >> sys.stderr, count , pardef;
-	#}
-
-	for child in Ft.Xml.XPath.Evaluate('.//e', contextNode=node): #{
-		for pair in Ft.Xml.XPath.Evaluate('.//p', contextNode=child): #{
-			suffix = '';
-			left = Ft.Xml.XPath.Evaluate('.//l', contextNode=pair)[0].firstChild;
-
-			if type(left) != type(None): #{
-				suffix = left.nodeValue;
-			else: #{
-				suffix = ''
-			#}
-
-			symbols = '';
-			right =  Ft.Xml.XPath.Evaluate('.//r', contextNode=pair)[0];
-			for sym in Ft.Xml.XPath.Evaluate('.//s', contextNode=right): #{
-				symbol = '';
-				if type(sym) != type(None): #{
-					symbol = sym.getAttributeNS(None, 'n');
-				#}
-				symbols = symbols + '.' + symbol;
-			#}
-
-			p = (suffix, symbols);
-
-			paradigms[pardef].append(p);
-		#}
-	#}
-#}
-
-sorted_paradigms = [];
-
-for item in paradigms.keys(): #{
-	sorted_paradigms.append(item);
-#}
-
-sorted_paradigms.sort(string_length_compare);
-
-duplicates = {};
-
-def strip_duplicates(paradigms, duplicates, current): #{
-#	print 'paradigms: ' , len(paradigms);
-	
-	for paradigm1 in paradigms.keys(): #{
-		if paradigm1 in paradigms and current in paradigms and current != paradigm1: #{
-			if current not in duplicates: #{
-				duplicates[current] = [];
-			#}
-
-			if compare_paradigms(paradigms[paradigm1], paradigms[current]) == 1 and roll_right(paradigm1) == roll_right(current): #{
-#				print paradigms[paradigm1] , '; ' , paradigms[current];
-				duplicates[current].append(paradigm1);
-				del paradigms[paradigm1];
-				strip_duplicates(paradigms, duplicates, current);
-			#}
-		#}
-	#}
-	return;
-#}
-
-#z = copy.deepcopy(paradigms);
-for k in sorted_paradigms: #{
-	print >> sys.stderr, k;
-	strip_duplicates(paradigms, duplicates, k);
-#}
-
-print >> sys.stderr, 'Paradigms: ' , len(paradigms);
-
-print >> sys.stderr, '---';
-
-print '<dictionary>';
-print '  <pardefs>';
-for paradigm in paradigms.keys(): #{
-	bar_idx = paradigm.find(u'/') + 1;
-	udr_idx = paradigm.find(u'_');
-
-	print '    <pardef n="' + paradigm + '">';
-	if format == '1line': #{
-	
-		for pair in paradigms[paradigm]: #{
-			out = '';
-			out = out + '      <e><p>';
-			if pair[0] == type(None): #{
-				out = out + '<l/>';
-			else: #{
-				out = out + '          <l>%s</l>' % (pair[0]);
-			#}
-			rpost = paradigm[bar_idx:udr_idx];
-			if paradigm.find('/') == -1: #{
-				rpost = '';
-			#}
-			out = out + '<r>' + rpost + return_symlist(pair[1]) + '</r></p></e>';
-			print out;
-		#}	
-	else: #{
-
-		for pair in paradigms[paradigm]: #{
-			print '      <e>';
-			print '        <p>';
-			if pair[0] == type(None): #{
-				print '          <l/>';
-			else: #{
-				print('          <l>%s</l>' % (pair[0]));
-			#}
-			rpost = paradigm[bar_idx:udr_idx];
-			if paradigm.find('/') == -1: #{
-				rpost = '';
-			#}
-			print '          <r>' + rpost + return_symlist(pair[1]) + '</r>';
-			print '        </p>';
-			print '      </e>';
-		#}
-	#}
-	print '    </pardef>';
-#}
-print '  </pardefs>';
-print '  <section id="main" type="standard">';
-
-d = file(dictionary);
-
-output = '';
-for line in d.readlines(): #{
-        if line.count('<e lm="') > 0: #{
-		output = output + line;
-        #}
-
-#}
-
-total = 0;
-for paradigm in duplicates.keys(): #{
-	for p in duplicates[paradigm]: #{
-		print >> sys.stderr, '+ ' , p , u' → ' , paradigm;
-		output = output.replace('n="' + p + '"', 'n="' + paradigm + '"');
-	#}
-	total = total + len(duplicates[paradigm]) + 1;
-#}
-
-print output;
-
-print '  </section>';
-print '</dictionary>';
+#z = copy.deepcopy(paradigms)
+for k in sorted_paradigms: 
+        print(k, file=sys.stderr)
+        strip_duplicates(paradigms, duplicates, k)
 
 
-print >> sys.stderr, '---';
-print >> sys.stderr, 'duplicates: ' , len(duplicates) , '; total: ' , total;
-print >> sys.stderr, 'paradigms: ' , len(paradigms);
-#print >> sys.stderr, 'z: ' , len(z);
+print('Paradigms: ' , len(paradigms), file=sys.stderr)
+
+print('---', file=sys.stderr)
+
+print('<dictionary>')
+print('  <pardefs>')
+for paradigm in paradigms: 
+        bar_idx = paradigm.find('/') + 1
+        udr_idx = paradigm.find('_')
+
+        print('    <pardef n="' + paradigm + '">')
+
+        for pair in paradigms[paradigm]: 
+            out = ''
+            out = out + '      <e><p>'
+            if pair[0] is None or pair[0] == 'None': 
+                    out = out + '<l/>'
+            else: 
+                    out = out + '          <l>%s</l>' % (pair[0])
+            
+            rpost = paradigm[bar_idx:udr_idx]
+            if '/' not in paradigm: 
+                    rpost = ''
+            
+            out += '<r>' + rpost + return_symlist(pair[1]) + '</r></p></e>'
+            print (out)                
+        
+        print('    </pardef>')
+
+print('  </pardefs>')
+print('  <section id="main" type="standard">')
+
+d = open(dictionary, 'r')
+
+output = ''
+for line in d: 
+        if '<e lm="' in line: 
+                output += line
+
+total = 0
+
+for paradigm in duplicates:
+        for p in duplicates[paradigm]:
+                print('+ ' , p , ' → ' , paradigm, file=sys.stderr)
+                output = output.replace('n="' + p + '"', 'n="' + paradigm + '"')
+        
+        total += len(duplicates[paradigm]) + 1
+
+print(output)
+
+print('  </section>')
+print('</dictionary>')
+
+
+print('---', file=sys.stderr)
+print('duplicates: ' , len(duplicates) , '; total: ' , total, file=sys.stderr)
+print('paradigms: ' , len(paradigms), file=sys.stderr)
+#print >> sys.stderr, 'z: ' , len(z)
