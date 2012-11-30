@@ -46,7 +46,7 @@ tryToSetLocale()
   {
     return;
   }
- 
+
   cerr << "Warning: unsupported locale, fallback to \"C\"" << endl;
 
   setlocale(LC_ALL, "C");
@@ -60,7 +60,7 @@ tryToSetLocale()
 #endif
 }
 
-wstring 
+wstring
 readFullBlock(FILE *input, wchar_t const delim1, wchar_t const delim2)
 {
   wstring result = L"";
@@ -81,7 +81,7 @@ readFullBlock(FILE *input, wchar_t const delim1, wchar_t const delim2)
       c = static_cast<wchar_t>(fgetwc(input));
       result += c;
     }
-  }   
+  }
 
   if(c != delim2)
   {
@@ -96,16 +96,21 @@ main (int argc, char** argv)
 {
   wstring buf = L"";
   wstring blanktmp = L"";
+  bool keepblank = false;
 
   bool spaced = true;
   bool intoken = false;
 
   wchar_t ws = L' ';
 
-  if (argc == 2 && (strcmp(argv[1], "-n") == 0))
-  {
-    spaced = false;
-    ws = L'\n';
+  for(int i=1; i<argc; i++) {
+    if (strcmp(argv[i], "-n") == 0) {
+      spaced = false;
+      ws = L'\n';
+    }
+    else if (strcmp(argv[i], "-b") == 0) {
+      keepblank = true;
+    }
   }
 
   tryToSetLocale();
@@ -113,7 +118,7 @@ main (int argc, char** argv)
   wint_t c;
   while ((c = fgetwc(stdin)) != WEOF)
   {
-    if (c == (wint_t) '^') 
+    if (c == (wint_t) '^')
     {
       if (intoken)
       {
@@ -150,16 +155,19 @@ main (int argc, char** argv)
       buf += L'\\';
       buf += c;
     }
-    else if(c == (wint_t) '[')
+    else if(!intoken && c == (wint_t) '[')
     {
       fputwc_unlocked(ws, stdout);
       blanktmp = readFullBlock(stdin, L'[', L']');
+      if(keepblank) {
+        fputws_unlocked(blanktmp.c_str(), stdout);
+      }
       blanktmp = L"";
     }
     else
     {
       buf += c;
-    } 
+    }
   }
 
   // If not in space mode, make sure there's a final newline
