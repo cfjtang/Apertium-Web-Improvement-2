@@ -1,17 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys, codecs, copy, os
+import sys
 import xml.etree.ElementTree as ET
 
 sys.setrecursionlimit(20000)
 
 dictionary = sys.argv[1]
 
-#I don't think this is necessary, but I'll keep it anyway
-##if dictionary == os.path.basename(dictionary): 
-##      dictionary = os.getcwd() + '/' + dictionary
+if len(sys.argv) > 2:
+        freqList = sys.argv[2]
+else:
+        freqList = False
 
+if freqList:
+        try:
+                fList = open(freqList, 'r')
+        except:
+                print(freqList + " not found.", file=sys.stderr)
+                sys.exit(-1)
+wordFreqs = {}
+
+for wordPair in fList:
+        #print(wordPair, file=sys.stderr)
+        wordPairAsList = wordPair.split()
+        freq = wordPairAsList[0]
+        w = " ".join(wordPairAsList[1:])
+        wordFreqs[w] = int(freq)
+
+fList.close()
 
 doc = ET.parse(dictionary)
 root = doc.getroot()
@@ -95,8 +112,23 @@ for pardefs in root.findall('pardefs'):
                                 p = (suffix, symbols)
 
                                 paradigms[pardef].append(p)
+#Sort paradigms by usage according to the frequency list file, if it exists.
+#If the word is not in the frequency list, default to zero.
+#If there's no list, use the length of the word instead.
+
+def parSort(p):
+        if freqList:
+                uLoc = p.find("__")
+                p2 = p[:uLoc]
+                if p2 in wordFreqs:
+                        return wordFreqs[p2]
+                else:
+                        return 0 #default to 0 if word isn't in the list
+        else:
+                return -len(p)
+
                 
-sorted_paradigms = sorted(paradigms, key=len)
+sorted_paradigms = sorted(paradigms, key=parSort, reverse=True)
 
 duplicates = {}
 
