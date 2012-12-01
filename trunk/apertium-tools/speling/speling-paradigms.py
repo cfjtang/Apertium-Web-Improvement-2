@@ -88,7 +88,7 @@ def demangle_flexion_tags(a): #{
 #}
 
 def sort_flexions_by_key(a): #{
-	if len(a) > 0:
+	if len(a) > 1:
 		return mangle_flexion_tags(a[1])
 	else:
 		return ''
