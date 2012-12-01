@@ -19,16 +19,16 @@ if freqList:
         except:
                 print(freqList + " not found.", file=sys.stderr)
                 sys.exit(-1)
-wordFreqs = {}
+        wordFreqs = {}
 
-for wordPair in fList:
-        #print(wordPair, file=sys.stderr)
-        wordPairAsList = wordPair.split()
-        freq = wordPairAsList[0]
-        w = " ".join(wordPairAsList[1:])
-        wordFreqs[w] = int(freq)
+        for wordPair in fList:
+                #print(wordPair, file=sys.stderr)
+                wordPairAsList = wordPair.split()
+                freq = wordPairAsList[0]
+                w = " ".join(wordPairAsList[1:])
+                wordFreqs[w] = int(freq)
 
-fList.close()
+        fList.close()
 
 doc = ET.parse(dictionary)
 root = doc.getroot()
@@ -70,7 +70,7 @@ def compare_paradigms(paradigm1, paradigm2):
 
         for pair1 in paradigm1: 
                 for pair2 in paradigm2: 
-                        if pair1[0] == pair2[0] and pair1[1] == pair2[1]: 
+                        if pair1 == pair2: 
                                 common = common + 1
 
         if common == len(paradigm1): 
@@ -91,7 +91,8 @@ for pardefs in root.findall('pardefs'):
                 if count % 1000 == 0: 
                         print(count , pardef, file=sys.stderr)
                 
-                for child in node.findall('e'): 
+                for child in node.findall('e'):
+                        direc = child.get('r')
                         for pair in child.findall('p'): 
                                 suffix = ''
                                 left = pair.find('l')
@@ -109,7 +110,7 @@ for pardefs in root.findall('pardefs'):
                                         
                                         symbols += '.' + symbol
                                 
-                                p = (suffix, symbols)
+                                p = (suffix, symbols, direc)
 
                                 paradigms[pardef].append(p)
 #Sort paradigms by usage according to the frequency list file, if it exists.
@@ -166,9 +167,13 @@ for paradigm in paradigms:
 
         print('    <pardef n="' + paradigm + '">')
 
+        #pair is a bit of a misnomer-it's actually a triple now
         for pair in paradigms[paradigm]: 
             out = ''
-            out = out + '      <e><p>'
+            if pair[2] is None:
+                    out += '      <e><p>'
+            else:
+                    out += '      <e r="%s"><p>' % pair[2]
             if pair[0] is None or pair[0] == 'None': 
                     out = out + '<l/>'
             else: 
