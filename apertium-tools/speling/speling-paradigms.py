@@ -1,12 +1,7 @@
-#!/usr/bin/python2.4
-# coding=utf-8
-# -*- encoding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-import sys, string, codecs;
-
-sys.stdin = codecs.getreader('utf-8')(sys.stdin);
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
-sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+import sys;
 
 def mangle_flexion_tags(a): #{
 	a = a.replace('actv', 'v0');
@@ -92,16 +87,11 @@ def demangle_flexion_tags(a): #{
 	return a;
 #}
 
-def sort_flexions(a, b): #{
-	if(mangle_flexion_tags(a[1]) > mangle_flexion_tags(b[1])): #{
-		return 1;
-	#}
-
-	if(mangle_flexion_tags(a[1]) == mangle_flexion_tags(b[1])): #{
-		return 0;
-	#}
-
-	return -1;
+def sort_flexions_by_key(a): #{
+	if len(a) > 0:
+		return mangle_flexion_tags(a[1])
+	else:
+		return ''
 #}
 
 
@@ -109,38 +99,39 @@ def sort_flexions(a, b): #{
 # uttanbíggjamaður;  uttanbíggjamenninir;  definite, plural, nominative;  noun, masculine
 
 def find_longest_common_substring(lemma, flexion): #{
-        candidate = '';
-        length = len(lemma.decode('utf-8'));
-        for char in lemma.decode('utf-8'): #{
-                candidate = candidate + char;
+	candidate = '';
+	length = len(lemma);
+	for char in lemma: #{
+		candidate = candidate + char;
 		#print >> sys.stderr , 'cand: ' , candidate , '; flexion:', flexion;
-                if flexion.find(candidate.encode('utf-8')) == -1: #{
-                        return candidate[0:len(candidate)-1];
-                #}
-        #}
+		if candidate not in flexion: #{
+			return candidate[:-1];
+		#}
+	#}
 	#print >> sys.stderr , 'cand: ' , candidate
-        return candidate;
+	return candidate;
 #}
 
 # returns the shortest string from a given list
 def return_shortest(ilist): #{
 
-        if len(ilist) == 0: #{
-                return -1;
-        #}
+	#if ilist is empty
+	if not ilist: #{
+		return -1;
+	#}
 
-        return sorted(ilist, key=len)[0]
+	return sorted(ilist, key=sort_flexions_by_key)[0]
 #}
 
 def return_symlist(symlist): #{
-        symlist = symlist.replace(':', '.');
-        output = '';
+	symlist = symlist.replace(':', '.');
+	output = '';
 
-        for symbol in symlist.split('.'): #{
-                output = output + '<s n="' + symbol + '"/>';
-        #}
+	for symbol in symlist.split('.'): #{
+		output = output + '<s n="' + symbol + '"/>';
+	#}
 
-        return output;
+	return output;
 #}
 
 
@@ -148,16 +139,13 @@ def return_symlist(symlist): #{
 #       MAIN
 #
 
-v_1line = False;
 
 if len(sys.argv) < 2: #{
-        print 'python speling.py <filename>';
-if len(sys.argv) == 3: #{
-	v_1line = True;	
-#}
+	print('python speling-paradigms.py <filename>');
+	sys.exit(-1)
 
-flist = file(sys.argv[1]);
-list = flist.readlines();
+flist = open(sys.argv[1], 'r');
+llist = flist.readlines();
 
 current_lemma = '';
 
@@ -165,39 +153,39 @@ lemmata = {};
 category = {};
 flexions = {};
 
-for line in list: #{
+for line in llist: #{
 
-        if len(line) < 2: #{
-                continue;
-        #}
-        row = line.split(';');
-        lemma = row[0].strip();
+	if len(line) < 2: #{
+		continue;
+	#}
+	row = line.split(';');
+	lemma = row[0].strip();
 
-        current_lemma = lemma;
-        if current_lemma not in lemmata: #{
-                lemmata[current_lemma] = {};
-        #}
-        if current_lemma not in flexions: #{
-                flexions[current_lemma] = {};
-        #}
+	current_lemma = lemma;
+	if current_lemma not in lemmata: #{
+		lemmata[current_lemma] = {};
+	#}
+	if current_lemma not in flexions: #{
+		flexions[current_lemma] = {};
+	#}
 	if current_lemma not in category: #{
 		category[current_lemma] = {};
 	#}
 
-        inflection = row[1].strip();
-	if lemma.decode('utf-8').islower(): #{
-		inflection = inflection.decode('utf-8').lower().encode('utf-8');	
+	inflection = row[1].strip();
+	if lemma.islower(): #{
+		inflection = inflection.lower();	
 	#}
 	#print lemma , ' / ' , inflection;
-        full = inflection;
-        stem = find_longest_common_substring(lemma, inflection);
-        pos = row[3].strip();
-        syms = row[2].strip();
-        symlist = pos + ':' + syms;
+	full = inflection;
+	stem = find_longest_common_substring(lemma, inflection);
+	pos = row[3].strip();
+	syms = row[2].strip();
+	symlist = pos + ':' + syms;
 
-        #print lemma , '; ' , stem , '; -' + inflection , '; ' , full , '; ' + pos + '; ' + syms;
+	#print lemma , '; ' , stem , '; -' + inflection , '; ' , full , '; ' + pos + '; ' + syms;
 
-        form = (inflection, symlist);
+	form = (inflection, symlist);
 
 	if pos not in lemmata[current_lemma]: #{
 		lemmata[current_lemma][pos] = [];
@@ -210,7 +198,7 @@ for line in list: #{
 	#}
 
 	if form not in flexions[current_lemma][pos]: #{
-        	lemmata[current_lemma][pos].append(stem);
+		lemmata[current_lemma][pos].append(stem);
 		flexions[current_lemma][pos].append(form);
 		#category[current_lemma][pos] = pos.split('.')[0];
 		category[current_lemma][pos] = pos.replace('.', '_');
@@ -218,78 +206,69 @@ for line in list: #{
 
 #}
 
-print '<dictionary>';
-print '  <pardefs>';
+print('<dictionary>');
+print('  <pardefs>');
 
-for lemma in lemmata.keys(): #{
-	for pos in lemmata[lemma].keys(): #{
-	        stem = return_shortest(lemmata[lemma][pos]);
-	        print '  <!-- ' + lemma + '; ' + stem + '; ' + str(len(flexions[lemma][pos])) + ' -->';
-	        end = lemma.replace(stem, '', 1);
-	        slash = '/';
+for lemma in lemmata: #{
+	for pos in lemmata[lemma]: #{
+		stem = return_shortest(lemmata[lemma][pos]);
+		print('  <!-- ' + lemma + '; ' +
+		      stem + '; ' + str(len(flexions[lemma][pos])) + ' -->');
+		end = lemma.replace(stem, '', 1);
+		slash = '/';
 
-	        if end == '': #{
-	                slash = '';
-	        #}
-
-	        print '    <pardef n="' + stem + slash + end + '__' + category[lemma][pos] + '">';
-		
-		flexions[lemma][pos].sort(sort_flexions);
-
-		if v_1line == True: #{
-			for pair in flexions[lemma][pos]: #{
-				out = '';
-		                if len(pair[0]) > 1: #{
-					out = out + '      <e>       <p><l>' + pair[0].replace(stem, '', 1).replace(' ', '<b/>') + '</l>';
-		                #}
-		                if len(pair[0]) == 1: #{
-					out = out + '      <e>       <p><l>' + pair[0].replace(' ', '<b/>') + '</l>';
-		                #}
-		                if len(pair[0]) < 1: #{
-					out = out + '      <e>       <p><l/>';
-		                #}
-				out = out + '<r>' + end + return_symlist(pair[1]) + '</r></p></e>';
-				print out;
-			#}
-		else: #{
-		        for pair in flexions[lemma][pos]: #{
-		                print '      <e>';
-		                print '        <p>';
-		                if len(pair[0]) > 1: #{
-		                        print '          <l>' + pair[0].replace(stem, '', 1).replace(' ', '<b/>') + '</l>';
-		                #}
-		                if len(pair[0]) == 1: #{
-		                        print '          <l>' + pair[0].replace(' ', '<b/>') + '</l>';
-		                #}
-		                if len(pair[0]) < 1: #{
-		                        print '          <l/>';
-		                #}
-		                print '          <r>' + end + return_symlist(pair[1]) + '</r>';
-		                print '        </p>';
-		                print '      </e>';
-		        #}
+		if end == '': #{
+			slash = '';
 		#}
-		print '    </pardef>';
-		print '';
+
+		print('    <pardef n="' + stem + slash + end +
+		      '__' + category[lemma][pos] + '">');
+		
+		flexions[lemma][pos].sort(key=sort_flexions_by_key);
+
+		for pair in flexions[lemma][pos]: #{
+			out = '';
+			if len(pair[0]) > 1: #{
+				out += ('      <e>       <p><l>' +
+				pair[0].replace(stem, '',
+				1).replace(' ', '<b/>') + '</l>');
+			#}
+			if len(pair[0]) == 1: #{
+				out += ('      <e>       <p><l>' +
+				pair[0].replace(' ', '<b/>') + '</l>');
+			#}
+			if len(pair[0]) < 1: #{
+				out += '      <e>       <p><l/>';
+			#}
+			out += ('<r>' + end +
+			return_symlist(pair[1]) + '</r></p></e>');
+			print(out);
+		#}
+		
+		#}
+		print('    </pardef>');
+		print('');
 	#}
 #}
-print '  </pardefs>';
-print '  <section id="main" type="standard">';
+print('  </pardefs>');
+print('  <section id="main" type="standard">');
 
-for lemma in lemmata.keys(): #{
-	for pos in lemmata[lemma].keys(): #{
-	        stem = return_shortest(lemmata[lemma][pos]);
-	        end = lemma.replace(stem, '',1);
-	        slash = '/';
+for lemma in lemmata: #{
+	for pos in lemmata[lemma]: #{
+		stem = return_shortest(lemmata[lemma][pos]);
+		end = lemma.replace(stem, '',1);
+		slash = '/';
 
-	        if end == '': #{
-	                slash = '';
-	        #}
+		if end == '': #{
+			slash = '';
+		#}
 
 
-	        print '    <e lm="' + lemma + '"><i>' + stem + '</i><par n="' +  stem + slash + end + '__' + category[lemma][pos] + '"/></e>';
+		print('    <e lm="' + lemma + '"><i>' + stem +
+		      '</i><par n="' +  stem + slash + end + '__' +
+		      category[lemma][pos] + '"/></e>');
 	#}
 #}
 
-print '  </section>';
-print '</dictionary>';
+print('  </section>');
+print('</dictionary>');
