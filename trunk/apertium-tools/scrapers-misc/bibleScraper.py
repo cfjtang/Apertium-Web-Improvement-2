@@ -17,7 +17,7 @@
 # GNU General Public License for more details.
 
 from bs4 import BeautifulSoup
-import urllib.request, re, time, argparse, sys
+import urllib.request, re, time, argparse, sys, os
 import romanclass as roman
 
 if sys.version_info < (3, 3, 0): fileError = IOError
@@ -46,7 +46,8 @@ def firstPage(url):
     books = [(option['value'], option.text) for option in selbook.find_all('option')]
         
     with open(filename, 'w', encoding = 'utf-8') as outfile:
-        
+        if not os.path.isdir('.cache'): os.mkdir('.cache')
+            
         for urlB, fullB in books:
             
             firstUrl = prefix + '&l=' + urlB
@@ -64,13 +65,15 @@ def firstPage(url):
 
 def allPages(url, bible):
     urlparts = url.split('?')
+    
+    filepath = os.path.join(os.path.curdir, '.cache', urlparts[1]+'.html') 
     try:
-        with open('.\\bible\\' + urlparts[1] + '.html', encoding = 'utf-8') as infile:
+        with open(filepath, encoding = 'utf-8') as infile:
             text = infile.read()
     except fileError:
         text = urllib.request.urlopen(url).read().decode('utf-8')
         #print("Downloaded")
-        with open('.\\bible\\' + urlparts[1] + '.html', 'w', encoding = 'utf-8') as outfile:
+        with open(filepath, 'w', encoding = 'utf-8') as outfile:
             outfile.write(text)
         time.sleep(0.5)
     soup = BeautifulSoup(text)
