@@ -17,9 +17,12 @@
 # GNU General Public License for more details.
 
 from bs4 import BeautifulSoup
-import urllib.request, re, time, argparse
+import urllib.request, re, time, argparse, sys
 import romanclass as roman
 
+if sys.version_info < (3, 3, 0): fileError = IOError
+else: fileError = FileNotFoundError
+    
 parser = argparse.ArgumentParser(description = 'Scrape ibt.org')
 parser.add_argument('codes', action = 'store', nargs = '+')
 args = parser.parse_args()
@@ -62,7 +65,7 @@ def allPages(url, bible):
     try:
         with open('.\\bible\\' + urlparts[1] + '.html', encoding = 'utf-8') as infile:
             text = infile.read()
-    except FileNotFoundError:
+    except fileError:
         text = urllib.request.urlopen(url).read().decode('utf-8')
         print("Downloaded")
         with open('.\\bible\\' + urlparts[1] + '.html', 'w', encoding = 'utf-8') as outfile:
