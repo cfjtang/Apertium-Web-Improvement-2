@@ -26,6 +26,7 @@ else: fileError = FileNotFoundError
 parser = argparse.ArgumentParser(description = 'Scrape ibt.org')
 parser.add_argument('-l', action = 'store', nargs = '*', help = 'Scrape the bibles with these codes')
 parser.add_argument('-a', action = 'store_const', const = 2, help = 'List all the valid language codes')
+parser.add_argument('-s', action = 'store_const', const = 2, help = 'Parse titles within each chapter')
 args = parser.parse_args()
 urls = args.l
 
@@ -81,7 +82,15 @@ def allPages(url, bible):
             verse.sup.clear()
         #print verse['id']
         #print verse.text.encode('utf-8')
-        s += str(i)+ '.' + verse.text.strip().strip() + '\n'
+        if verse.previous_sibling != None:
+            try:
+                if verse.previous_sibling.name == 'div' and args.s == 2:
+                    s += verse.previous_sibling.text.strip() + '\n'
+            except AttributeError:
+                # Was a string/skip
+                pass
+            
+        s += str(i)+ '. ' + verse.text.strip().strip() + '\n'
         i += 1
     return s
 
