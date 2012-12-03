@@ -68,7 +68,7 @@ def allPages(url, bible):
             text = infile.read()
     except fileError:
         text = urllib.request.urlopen(url).read().decode('utf-8')
-        print("Downloaded")
+        #print("Downloaded")
         with open('.\\bible\\' + urlparts[1] + '.html', 'w', encoding = 'utf-8') as outfile:
             outfile.write(text)
         time.sleep(0.5)
