@@ -24,10 +24,12 @@ if sys.version_info < (3, 3, 0): fileError = IOError
 else: fileError = FileNotFoundError
     
 parser = argparse.ArgumentParser(description = 'Scrape ibt.org')
-parser.add_argument('codes', action = 'store', nargs = '+')
+parser.add_argument('-l', action = 'store', nargs = '*', help = 'Scrape the bibles with these codes')
+parser.add_argument('-a', action = 'store_const', const = 2, help = 'List all the valid language codes')
 args = parser.parse_args()
-urls = args.codes
-print(urls)
+urls = args.l
+
+
 def firstPage(url):
     
     results = re.search('m=(.*)', url)
@@ -45,16 +47,15 @@ def firstPage(url):
     with open(filename, 'w', encoding = 'utf-8') as outfile:
         
         for urlB, fullB in books:
-            outfile.write(fullB + '\n')
             
             firstUrl = prefix + '&l=' + urlB
-            print(firstUrl)
+            #print(firstUrl)
             soup = BeautifulSoup(urllib.request.urlopen(firstUrl).read())
             selchap = soup.find('select', {'id':'selchap'})
             chap = [(option['value'], option.text) for option in selchap.find_all('option')]
-            print(chap)
+            #print(chap)
             for urlC, fullC in chap:
-                outfile.write(str(roman.Roman(urlC)) + '\n')
+                outfile.write(fullB + ' ' + str(roman.Roman(urlC)) + '\n')
                 
                 u = 'http://ibt.org.ru/en/text.htm?m=' + results.group(1) + '&l=' + urlB + '.' + str(urlC) + '&g=0'
                 s = allPages(u, results.group(1))
@@ -83,6 +84,47 @@ def allPages(url, bible):
         s += str(i)+ '.' + verse.text.strip().strip() + '\n'
         i += 1
     return s
-    
-for url in urls:
-    firstPage('http://ibt.org.ru/en/text.htm?m=' + url)
+
+
+CODES = {   'ADG'   :   'Adygei',
+            'AGL'   :   'Agul',
+            'AVR'   :   'Avar',
+            'CHV'   :   'Chuvash',
+            'CTT'   :   'Crimean Tatar',
+            'KHK'   :   'Khakas',
+            'KJV'   :   'English',
+            'WEB'   :   'English',
+            'KUMYK' :   'Kumyk',
+            'KYLSC' :   'Kyrgyz',
+            'KYROHC':   'Kyrgyz',
+            'KYLSA' :   'Kyrgyz Arabic',
+            'KYROHA':   'Kyrgyz Arabic',
+            'OSS'   :   'Ossetic',
+            'TTR'   :   'Tatar',
+            'TKL'   :   'Turkmen',
+            'TKLI'  :   'Turkmen',
+            'TKCI'  :   'Turkmen Cyrillic',
+            'RSP'   :   'Russian',
+            'UZVL'  :   'Uzbek',
+            'UZIBTL':   'Uzbek',
+            'UZV'   :   'Uzbek Cyrillic',
+            'UZIBT' :   'Uzbek Cyrillic',
+            'LXX'   :   'Greek',
+            'TR'    :   'Greek',
+            'OSMHB' :   'Hebrew'
+}
+if __name__ == '__main__':
+    if args.a == 2:
+        for x in sorted(CODES):
+            print(x, '\t', CODES[x])
+    elif urls != None:
+        for url in urls:
+            url = url.upper()
+            if url not in CODES:
+                print(url, 'is not a valid code. It will be skipped.')
+            else:
+                print('Will begin scraping', url)
+                firstPage('http://ibt.org.ru/en/text.htm?m=' + url)
+    else:
+        parser.parse_args(['-h'])
+        print('No argument selected.')
