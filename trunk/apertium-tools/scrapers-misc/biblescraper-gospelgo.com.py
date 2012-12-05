@@ -28,6 +28,7 @@ import os.path
 import sys
 import codecs
 from os.path import exists
+import sys
 
 dfname=""
 outputfile=""
@@ -60,13 +61,18 @@ if args['output_loc'] is not None:
         loc=loc+"/"
 
 #checks input
-if "http://" in args['input']: #if url
-    urll=args['input']
-    ins = [urll]       
-else: #if file
-    ins = open( args['input'], "r" )
-    isFile=True
 
+if os.path.exists(args['input']):
+    if "http://" in args['input'] : #if url
+        urll=args['input']
+        ins = [urll]       
+    else: #if file
+        ins = open( args['input'], "r" )
+        isFile=True
+else:
+    print("Input file not found, exit and do nothing")
+    sys.exit(0)
+    
 #output file
 #file name: no output not file
 if args['output'] == None and isFile==False:
@@ -104,7 +110,8 @@ for urll in ins: #loop for every url
 
         #begin for loop
         print("Scraping " + urll.strip()) 
-        if not os.path.exists(loc):
+        print(loc + "hhhhhhh")
+        if not os.path.exists(loc) and loc:
             os.makedirs(loc)
 
     if not skip and os.path.exists(os.path.join(loc,outputfile)):
