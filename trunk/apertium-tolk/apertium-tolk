@@ -1,18 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
-import os        
-import new
+from __future__ import print_function
+import os
 import sys
-from Queue import Queue # A queue type to communicate between threads
-import thread # A simple thread launcher
-from ConfigParser import ConfigParser
+from queue import Queue # A queue type to communicate between threads
+import threading # A simple thread launcher
+from configparser import ConfigParser
 # The ConfigParser is used to store preferences of the program
 
 # GTK related imports
-import gobject
-import gtk
-import gtk.gdk
-import pygtk
+from gi.repository import GObject
+from gi.repository import Gtk
+##import Gtk.gdk
+import gi
 
 import dbus # Used to connect to the Apertium D-Bus service
 
@@ -23,8 +23,8 @@ class MainWindow:
         """Set the combo box up to display simple a list of text and
         add everything in 'modes' to the list.
         """
-        combo.set_model(gtk.ListStore(gobject.TYPE_STRING))
-        cell = gtk.CellRendererText() # Tell the combobox we're just rendering text
+        combo.set_model(Gtk.ListStore(GObject.TYPE_STRING))
+        cell = Gtk.CellRendererText() # Tell the combobox we're just rendering text
         combo.pack_start(cell, True) # Add the text renderer to the combo box
         combo.add_attribute(cell, "text", 0) # Tell the combobox that we just want to show text
 
@@ -48,7 +48,7 @@ class MainWindow:
         and then user config data from '~/.apertium-tolk.cfg'. Tell the
         glade object to update stored widget properties based on the config data.
         """
-	self.glade.load_gtk_state_default(self.config)
+        self.glade.load_gtk_state_default(self.config)
         self.config.read([os.path.expanduser('~/.apertium-tolk.cfg')])
         self.glade.load_gtk_state(self.config)
 
@@ -66,24 +66,26 @@ class MainWindow:
         # Create a proxy object to the D-Bus object org.apertium.info/ using the interface org.apertium.Info
         self.info = dbus.Interface(self.bus.get_object("org.apertium.info", "/"), "org.apertium.Info")
         self.input_queue = Queue()  # Thread communication queue
-        self.glade = tolk.GladeXML(path) # Instantiate our custom Glade class which extends the gtk.glade.GladeXML class
+        self.glade = tolk.GladeXML() # Instantiate our custom Glade class which extends the Gtk.glade.GladeXML class
+        self.glade.add_from_file(path)
         self.glade.connect(self);   # Try to connect the signals defined in the glade file to methods defined in self
 
         # Get handles objects of interest in the glade file
-        self.buffer         = self.glade.get_widget("txtInput").get_buffer()
-        self.output_buffer  = self.glade.get_widget("txtOutput").get_buffer()
-        self.wndMain        = self.glade.get_widget("wndMain")
-        self.dlgAbout       = self.glade.get_widget("dlgAbout")
-        self.chkMarkUnknown = self.glade.get_widget("chkMarkUnknown")
-        self.comboPair      = self.setup_combo(self.info.modes(), self.glade.get_widget("comboPair"))
+        self.buffer         = self.glade.get_object("txtInput").get_buffer()
+        self.output_buffer  = self.glade.get_object("txtOutput").get_buffer()
+        self.wndMain        = self.glade.get_object("wndMain")
+        self.dlgAbout       = self.glade.get_object("dlgAbout")
+        self.chkMarkUnknown = self.glade.get_object("chkMarkUnknown")
+        self.comboPair      = self.setup_combo(self.info.modes(), self.glade.get_object("comboPair"))
 
         self.buffer.connect("changed", self.on_buffer_changed)
 
-        # Start the thread which will handle 
-        thread.start_new_thread(self.translator_loop, ())
+        # Start the thread which will handle
+        thread = threading.Thread(target=self.translator_loop)
+        thread.start()
 
         self.load_config()
-        self.wndMain.show()
+        self.wndMain.show_all()
 
         
     def translator_loop(self):
@@ -114,25 +116,25 @@ class MainWindow:
                     self.output_buffer.set_text(result)
                     return False
 
-                # We probably should call gtk.gdk.thread_enter here...
-                gobject.idle_add(update_text) # Post the function into the GTK main loop
+                # We probably should call Gdk.thread_enter here...
+                GObject.idle_add(update_text) # Post the function into the GTK main loop
 
-            except Exception, e:
-                print e # We should probably do exit(1) here
+            except Exception as e:
+                print(e, file=sys.stderr) # We should probably do exit(1) here
 
 
     def on_buffer_changed(self, w):
-        self.input_queue.put([self.options(), w.get_text(w.get_start_iter(), w.get_end_iter())])
+        self.input_queue.put([self.options(), w.get_text(w.get_start_iter(), w.get_end_iter(), False)])
 
     ###########################################################
     # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
         self.save_config()
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def on_wndMain_destroy(self, widget):
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def on_wndMain_delete_event(self, widget, event):
         self.save_config()
@@ -165,15 +167,15 @@ class MainWindow:
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        print 'apertium-tolk 0.2'
-	print 'Copyright (C) 2006 Wynand Winterbach'
-        print 'This is free software.  You may redistribute copies of it under the terms of'
-        print 'the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.'
-        print 'There is NO WARRANTY, to the extent permitted by law.'
+        print('apertium-tolk 0.2')
+        print('Copyright (C) 2006 Wynand Winterbach')
+        print('This is free software.  You may redistribute copies of it under the terms of')
+        print('the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.')
+        print('There is NO WARRANTY, to the extent permitted by law.')
 
-	sys.exit(0)
+        sys.exit(0)
     
-    gtk.gdk.threads_init()
-    wnd = MainWindow(tolk.datadir + "/apertium-tolk/glade/" + "tolk.glade")
-    gtk.main();
+    #Gtk.gdk.threads_init()
+    wnd = MainWindow(tolk.datadir + "/apertium-tolk/glade/" + "tolk.ui")
+    Gtk.main();
 
