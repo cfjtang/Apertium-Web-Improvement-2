@@ -61,17 +61,16 @@ if args['output_loc'] is not None:
         loc=loc+"/"
 
 #checks input
-
-if os.path.exists(args['input']):
-    if "http://" in args['input'] : #if url
-        urll=args['input']
-        ins = [urll]       
-    else: #if file
+if "http://" in args['input'] : #if url
+    urll=args['input']
+    ins = [urll]       
+else: #if file
+    if os.path.exists(args['input']):
         ins = open( args['input'], "r" )
         isFile=True
-else:
-    print("Input file not found, exit and do nothing")
-    sys.exit(0)
+    else:
+        print("Input file not found, exit and do nothing")
+        sys.exit(0)
     
 #output file
 #file name: no output not file
