@@ -1,6 +1,7 @@
-import StringIO
-import gtk.glade
-from ConfigParser import DuplicateSectionError, NoSectionError
+from io import StringIO
+##import Gtk.glade
+from gi.repository import Gtk
+from configparser import DuplicateSectionError, NoSectionError
 from widget_state import dump_state, load_state
 
 default_config = '''
@@ -14,7 +15,7 @@ y_pos = 26
 position = 112
 '''
 
-class GladeXML(gtk.glade.XML):
+class GladeXML(Gtk.Builder):
     def get_widgets(self):
         """Return an iterator which produces (widget_name, widget) pairs.
 
@@ -22,7 +23,7 @@ class GladeXML(gtk.glade.XML):
         supplied string; so if we call get_widget_prefix(''), we get all the widgets
         in the loaded glade file!
         """
-        return ((gtk.glade.get_widget_name(w), w) for w in  self.get_widget_prefix(''))
+        return ((Gtk.Widget.get_name(w), w) for w in  self.get_objects())
 
     
     def dump_gtk_state(self, cfg):
@@ -35,23 +36,23 @@ class GladeXML(gtk.glade.XML):
         for widget_name, widget in self.get_widgets():
             try:
                 cfg.add_section(widget_name)
-            except DuplicateSectionError, e:
+            except DuplicateSectionError as e:
                 pass
 
-            for key, val in dump_state(widget).iteritems():
+            for key, val in dump_state(widget).items():
                 cfg.set(widget_name, key, str(val))
 
 
     def load_gtk_state_default(self, cfg):
-	cfg_buf = StringIO.StringIO(default_config)
-	cfg.read(cfg_buf)
+        cfg_buf = StringIO(default_config)
+        cfg.read(cfg_buf)
 
         for widget_name, widget in self.get_widgets():
             try:
                 load_state(widget, dict(cfg.items(widget_name)))
-            except KeyError, e:
+            except KeyError as e:
                 pass
-            except NoSectionError, e:
+            except NoSectionError as e:
                 pass
 
 
@@ -59,9 +60,9 @@ class GladeXML(gtk.glade.XML):
         for widget_name, widget in self.get_widgets():
             try:
                 load_state(widget, dict(cfg.items(widget_name)))
-            except KeyError, e:
+            except KeyError as e:
                 pass
-            except NoSectionError, e:
+            except NoSectionError as e:
                 pass
 
 
@@ -74,4 +75,4 @@ class GladeXML(gtk.glade.XML):
         signal_autoconnect, which will bind the signals defined in the glade file to our
         methods."""
         handlers = dict((name, getattr(context, name)) for name in context.__class__.__dict__)
-        self.signal_autoconnect(handlers)
+        self.connect_signals(handlers)

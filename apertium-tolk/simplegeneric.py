@@ -1,8 +1,5 @@
 __all__ = ["generic"]
 
-from types import ClassType, InstanceType
-classtypes = type, ClassType
-
 def generic(func):
     """Create a simple generic function"""
 
@@ -17,12 +14,13 @@ def generic(func):
         else:
             return func(*args, **kw)
 
-    _by_type = {object: func, InstanceType: _by_class}
+    _by_type = {object: func, type: _by_class}
     _gbt = _by_type.get
 
     def when_type(t):
         """Decorator to add a method that will be called for type `t`"""
-        if not isinstance(t, classtypes):
+        # isinstance(t, type) == isinstance(t, ClassType)
+        if not isinstance(t, type):
             raise TypeError(
                 "%r is not a type or class" % (t,)
             )
