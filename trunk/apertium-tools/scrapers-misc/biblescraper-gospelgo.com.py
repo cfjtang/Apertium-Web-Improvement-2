@@ -104,14 +104,17 @@ for urll in ins: #loop for every url
 
         #begin for loop
         print("Scraping " + urll.strip()) 
-    if not skip and os.path.exists(loc+outputfile):
+        if not os.path.exists(loc):
+            os.makedirs(loc)
+
+    if not skip and os.path.exists(os.path.join(loc,outputfile)):
         print(outputfile+" already exists, do nothing")
         skip=True
     elif not skip and str(outputfile).strip() is not "":
         if has_loc is True:
-            file = open(str(loc+outputfile), "w")
+            file = open(str(os.path.join(loc,outputfile)), "w")
         else:
-            file = open(str(loc+outputfile), "w") #creates new data file
+            file = open(str(os.path.join(loc,outputfile)), "w") #creates new data file
         source = urllib.request.urlopen(urll)
         
         done=0 #checks to see if loop is done
