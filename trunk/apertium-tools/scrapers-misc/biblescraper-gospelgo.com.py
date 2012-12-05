@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 # biblescraper.py
 # Copyright 2012 Daniel Huang <danielhonline dot com>
@@ -44,7 +44,6 @@ has_loc=False
 loc = ""
 
 print(sys.version_info)
-
 #argparser
 parser = argparse.ArgumentParser(description='This script scrapes Bible translations into a txt file')
 parser.add_argument('-i','--input', help='enter name of url file', required=True)
@@ -110,7 +109,6 @@ for urll in ins: #loop for every url
 
         #begin for loop
         print("Scraping " + urll.strip()) 
-        print(loc + "hhhhhhh")
         if not os.path.exists(loc) and loc:
             os.makedirs(loc)
 
@@ -136,34 +134,34 @@ for urll in ins: #loop for every url
                 line=(str(line2,encoding='utf-8')).strip()  
              
             #replace special char:            
-            if "?" in line :
-                mytest=""
-                cur=0
-                for n in re.finditer(r"?", line):
-                   if n.start()==0:
+           # if "?" in line :
+           #     mytest=""
+           #     cur=0
+           #     for n in re.finditer(r"?", line):
+           #        if n.start()==0:
 
-                       mytest="\"" + line[n.start()+1:n.end()] #+ mytest[n.end():len(mytest)]
-                       cur=n.end()
+           #            mytest="\"" + line[n.start()+1:n.end()] #+ mytest[n.end():len(mytest)]
+           #            cur=n.end()
 
-                   else:
-                       mytest= mytest+line[cur:n.start()-1] +"\""#+mytest[n.start()-1:n.end()-1]
-                       cur=n.end()
+            #       else:
+            #           mytest= mytest+line[cur:n.start()-1] +"\""#+mytest[n.start()-1:n.end()-1]
+            #           cur=n.end()
           
-                line=mytest+line[cur:len(line)]
-            if "?" in line :
-                mytest=""
-                cur=0
-                for n in re.finditer(r"?", line):
-                   if n.start()==0:
+             #   line=mytest+line[cur:len(line)]
+           # if "?" in line :
+           #     mytest=""
+           #     cur=0
+           #     for n in re.finditer(r"?", line):
+           #        if n.start()==0:
                         
-                       mytest="\"" + line[n.start()+1:n.end()] #+ mytest[n.end():len(mytest)]
-                       cur=n.end()
+          #             mytest="\"" + line[n.start()+1:n.end()] #+ mytest[n.end():len(mytest)]
+          #             cur=n.end()
                 
-                   else:
-                       mytest= mytest+line[cur:n.start()-1] +"\""#+mytest[n.start()-1:n.end()-1]
-                       cur=n.end()
+          #         else:
+          #             mytest= mytest+line[cur:n.start()-1] +"\""#+mytest[n.start()-1:n.end()-1]
+          #             cur=n.end()
           
-                line=mytest+line[cur:len(line)]
+         #       line=mytest+line[cur:len(line)]
 
             if done==1: #break out of multiple levels
                 enterbody=0
