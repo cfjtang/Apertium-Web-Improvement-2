@@ -16,7 +16,7 @@ apertiumtolkdir	= $(pythondir)/tolk
 apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py __init__.py prefix.py
 
 gladedir	= $(datadir)/apertium-tolk/glade
-glade_DATA	= tolk.glade emblem-web.svg
+glade_DATA	= tolk.ui emblem-web.svg
 
 prefix.py: prefix.py.in Makefile
 	sed \
