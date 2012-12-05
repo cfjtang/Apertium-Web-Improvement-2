@@ -27,7 +27,7 @@ import argparse
 import os.path
 import sys
 import codecs
-
+from os.path import exists
 
 dfname=""
 outputfile=""
@@ -39,13 +39,25 @@ enterbody=0
 tofile=""
 skip=False
 withfirsttitle=0
+has_loc=False
+loc = ""
 
 
 #argparser
 parser = argparse.ArgumentParser(description='This script scrapes Bible translations into a txt file')
 parser.add_argument('-i','--input', help='enter name of url file', required=True)
 parser.add_argument('-o','--output', help='enter name of datafile(s)', required=False)
+parser.add_argument('-d','--output_loc', help="enter directory to put output file in", required=False)
+
 args = vars(parser.parse_args())
+
+#checks if -d is empty
+if args['output_loc'] is not None:
+    has_loc=True
+
+    loc = str(args['output_loc'])
+    if not loc.endswith("/"):
+        loc=loc+"/"
 
 #checks input
 if "http://" in args['input']: #if url
@@ -67,6 +79,10 @@ if args['output'] != None and isFile==False:
 
 for urll in ins: #loop for every url
 
+    #check if line starts with #
+    if str(urll).strip().startswith("#"):
+        skip=True
+
     if str(urll).strip() is "\n" or str(urll).strip() is "" :
  
         skip = True
@@ -84,15 +100,18 @@ for urll in ins: #loop for every url
     
         outputfile = re.sub("\n",'',outputfile)
         outputfile = re.sub(" ",'',outputfile)
+        outputfile = re.sub(" ",'',outputfile)
 
         #begin for loop
         print("Scraping " + urll.strip()) 
-    if not skip and os.path.exists(outputfile):
+    if not skip and os.path.exists(loc+outputfile):
         print(outputfile+" already exists, do nothing")
         skip=True
     elif not skip and str(outputfile).strip() is not "":
-         
-        file = open(str(outputfile), "w") #creates new data file
+        if has_loc is True:
+            file = open(str(loc+outputfile), "w")
+        else:
+            file = open(str(loc+outputfile), "w") #creates new data file
         source = urllib.request.urlopen(urll)
         
         done=0 #checks to see if loop is done
