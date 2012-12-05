@@ -43,6 +43,7 @@ withfirsttitle=0
 has_loc=False
 loc = ""
 
+print(sys.version_info)
 
 #argparser
 parser = argparse.ArgumentParser(description='This script scrapes Bible translations into a txt file')
