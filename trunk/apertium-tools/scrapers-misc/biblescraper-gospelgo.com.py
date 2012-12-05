@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # biblescraper.py
 # Copyright 2012 Daniel Huang <danielhonline dot com>
