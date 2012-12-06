@@ -7,17 +7,70 @@
 
     <rule>
       <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
-      <match lemma="unan eus an" tags="adj.*"/>
-    </rule>
+      <match lemma="unan" tags="num.*"/>
+      <match lemma="eus" tags="pr"/>
+      <match lemma="an" tags="det.def.*"/>
+	  </rule>
 
     <rule>
       <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
-      <match lemma="poblad" tags="adj.*"/>
+      <match lemma="kentañ" tags="num.*"/>
+<!-- Aqui se puede seleccionar o homme (cuando se habla de prehistoria/los primeros hombres) o personne (si se habla de las primeras personas que acaban de llegar en alguna parte) pero no se puede seleccionar gens antes de kentañ -->
+	  </rule>	  
+	  
+    <rule>
+      <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
+      <match lemma="poblad" tags="n.*"/>
     </rule>
-  </rules>
+
+  
+     <rule>
+      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+      <match lemma="all" tags="adj.*"/>
+	  </rule> 
+  
+     <rule>
+      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+      <match lemma="istorel" tags="adj.*"/>
+	  </rule> 
+  
+      <rule>
+      <match lemma="rummad" tags="n.*"/>
+      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+	  </rule>  
+	  
+	  <rule>
+      <match lemma="kumuniezh" tags="n.*"/>
+      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+	  </rule>   
+
+      <rule>
+      <match lemma="CUALQUIER NUMERO" tags="num.*"/>
+      <match lemma="a" tags="pr.*"/>
+      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+	  </rule>
+
+     <rule>
+      <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
+      <match lemma="meur" tags="adj.*"/>
+	  </rule> 
+
+	  <rule>
+      <match lemma="dremm" tags="n.*"/>
+      <match lemma="an" tags="det.*"/>
+      <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
+	  </rule>   	  
+
+     <rule>
+      <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
+      <match lemma="difeiz" tags="adj.*"/>
+	  </rule> 
+	  
+	  
 </lrx>
 
-<!--0017	Kanevedenn gwelet e Trebeur­den (d'ar 25 a Ebrel 2005).
+<!--
+0017	Kanevedenn gwelet e Trebeur­den (d'ar 25 a Ebrel 2005).
 0017	kanevedenn gwelet direct @@@*Trebeur/*Trebeur$­^den@@@ (^da an 25 a Ebrel 2005 
 0017	Arc-en-ciel le voir *Trebeur­personne (le 25 avril 2005)..
 este es un error, la palabra es Trebeurden, un toponimo 
@@ -26,6 +79,11 @@ este es un error, la palabra es Trebeurden, un toponimo
 0018	dekmiliad a gorilh an plaenenn bezañ ivez e koad kreiz Afrika en~arvar e bezañ lakaat gant obererezh @@@mab@@@ e-touez indirect *korvoerezh an koad 
 0018	Dizaines de milliers aux gorilles des plans Elle est aussi dans les bois du centre d'Afrique. En danger elles sont mis avec les activités de fils­personne, parmi eux *korvoerezh les bois..
 no entiendo, mab-den figura como entrada en si. No deveria salir asi
+
+0049	A-orin eus ar vro e oa o zud, pe neuze int deuet da vezañ Bretoned a-galon.
+0049	a eus an bro e bezañ o @@@den@@@ pe neuze prpers dont#~da~vezañ Breton a 
+0049	À-origine du pays était leurs gens, ou alors ils devenus Bretons à-coeur..
+aqui hace falta una regla, depus de un posesivo (ma, da, e...) el plural de den (tud) se traduce con parents (padres), y el singular por mari (esposo). ma zud = mes parents/mis padres; ma den = mon mari/mi esposo
 
 -->
 
