@@ -138,8 +138,21 @@ def processdata(url):
 
                         format1 =re.match('\(\d+:\d+-\d+\)', stripedline) 
                         format2=re.match('\(\d+:\d+\)', stripedline)
-                        #format3 =re.match('\d+:\d+', stripedline)       
+                        format3 =re.match('\d+:\d+', stripedline)       
                         format4 =re.match('\(\d+:\d+-\d+:\d+\)', stripedline)
+
+                        if format3 and  "uzbek" in urll:
+
+                            index= stripedline.index(":")
+                            first= stripedline[0:index]
+                            second=stripedline[index+1:index+2]
+             
+                            tofile= tofile+  " "+ first
+               
+                            stripedline= second + " " +stripedline[index+3:len(stripedline)]
+           
+                       
+
 	
                         if format1 or format2 or format4:
 
@@ -249,8 +262,8 @@ for urll in lines: #loop for every url
             outputfile = re.sub(" ",'',outputfile)
             outputfile = re.sub(" ",'',outputfile)
            
-            if os.path.exists(outputfile):      
-               print("Scraping " + urll.strip()) 
+            #if os.path.exists(outputfile):      
+            print("Scraping " + urll.strip()) 
             if not os.path.exists(loc) and loc:
                 os.makedirs(loc) 
 
