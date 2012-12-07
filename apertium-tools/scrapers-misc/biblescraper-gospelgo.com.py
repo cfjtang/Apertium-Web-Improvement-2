@@ -48,67 +48,78 @@ lines1=""
 
 
 def processdata(url):
+    count=0
     enterbody=0
     start=0
     linenum=0
     global tofile
-    #tofile=""
-    withfirsttitle=0
-    source = urllib.request.urlopen(url)
 
+    withfirsttitle=0
+
+    source = urllib.request.urlopen(str(url))  
+    
     done=0 #checks to see if loop is done
     output ="" #output to file
     start = 0 #checks to see if started
     #check encoding
     if "uzbek" in urll:
         encoding='latin-1'
+    elif "tuvnt." in urll:
+        encoding='windows-1251'
     else:
         encoding='utf-8'
-         
 
     for line2 in source: #for every verse
         line=(str(line2, encoding)).strip()
-
         if done==1: #break out of multiple levels
             enterbody=0
             break;
 
+
+
         if "<body>" in line.lower(): #enter body
              enterbody=1
-        elif "<p><a>" in line: #if title                
+        elif "<p><a>" in line : #if title                
               title = (line[line.rfind("<a>")+3:line.rfind("</a>")]).strip()
-               
-              if start ==0:                               
+             
+              if start ==0:  
+                                                
                    tofile =tofile+ title.strip() 
               else:                                              
                    tofile =tofile+ "\n\n" + title.strip()
-                    
+                   
                    linenum = 0
-                   withfirsttitle=1   
-              start=1            
+                   withfirsttitle=1
+              start=1
                  
-        elif ("<p class" in line and start ==1) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only                 
+        elif (encoding=="windows-1251"  and "<b>" in line or "</b><p>" in line) or ("<p class" in line and start ==1) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only             
+   
                 title = re.compile(r'<[^<]*?/?>').sub('', line)  
-                if withfirsttitle:                                      
+                if withfirsttitle:                                   
                     tofile =tofile+ "\n" + title.strip()
                 else:
                     if start ==0:
                         tofile =tofile+"\n"+  title.strip()
-                    else: 
-                        tofile =tofile+ "\n\n" + title.strip()
-                        linenum = 0
-                    start=1    
+                    else:
                         
+                        if  "(" in title:
+                            tofile =tofile+ "\n" + title.strip()
+                        else :
+                            tofile =tofile+ "\n\n" + title.strip()
+                        linenum = 0  
+                    start=1   
+           
             
-        elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or "<!--" in line: #if line = <p>, end the bible scraping loop
+        elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible): #if line = <p>, end the bible scraping loop
                  done = 1
                  startbody=0            
                  linenum = 0
 
         else: #verse
-   
+
                    format5 =re.match('\d+:\d+', line)
                    if start==1 and "<b>" in line and linenum ==0 and format5 :  # for num:num in the begining of the verse case, first line of the verse
+
                        tmpline=re.compile(r'<b>(.*?)</b>').search(line)  #get text between <b></b>
       
                        length= len(str(tmpline.group(1)))
@@ -120,26 +131,29 @@ def processdata(url):
                          stripedline = re.compile(r'<[^<]*?/?>').sub('', remainline) #rest part of string need parsed                  
                          tofile=tofile+"\n" + str(tmpline.group(1)) + re.sub(r'(\d+)', '\n\\1', stripedline)                      
                          linenum = 1  #first line of the verse
-  
                    elif start ==1 and "<p><a name" not in line: #if started and not an html a link, print the verse
+
                         linenum = 2
                         stripedline = re.compile(r'<[^<]*?/?>').sub('', line)
 
                         format1 =re.match('\(\d+:\d+-\d+\)', stripedline) 
                         format2=re.match('\(\d+:\d+\)', stripedline)
-
+                        #format3 =re.match('\d+:\d+', stripedline)       
                         format4 =re.match('\(\d+:\d+-\d+:\d+\)', stripedline)
 	
                         if format1 or format2 or format4:
+
                             tofile =tofile+ "\n" + stripedline +" "
                                                                           
-                        else:  # handle sentense has numbers        
+                        else:  # handle sentense has numbers
+  
                              curr=0
                              tmpline2 =""                         
                              needappend =0
                              numb=0
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
+
                                  if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-2:m.start()-1] ==":":  
                                      if needappend: 
                                          tofile= tofile+stripedline[curr:m.start()-1]     
@@ -158,6 +172,7 @@ def processdata(url):
                                      needappend=1
                              tmpline2=tmpline2+stripedline[curr:len(stripedline)]
                              tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2)    
+     
 
 
 #print(sys.version_info)
@@ -179,9 +194,11 @@ if args['output_loc'] is not None:
 
 #checks input
 if "http://" in args['input'] : #if url
-    urll=args['input']   
+    urll=args['input']
+    #URL case need to check if link including other links for books
+   
     lines = [urll]
-         
+    #read url contents first to check if url contains bible links
        
 else: #if file
     if os.path.exists(args['input']):
@@ -189,7 +206,6 @@ else: #if file
         lines=ins.readlines()
         isFile=True
     else:
-        print("Input file not found, exit and do nothing")
         sys.exit(0)
     
 
@@ -197,16 +213,19 @@ else: #if file
 #file name: no output not file
 if (args['output'] == None and isFile==False): #and not islinkbible:
     outputfile=urll[urll.rfind('/')+1:urll.__len__()]+".txt"
+
 # file name yes output not file
 if args['output'] != None and isFile==False:  # and not islinkible:
     outputfile=args['output']
+
           
                      
 for urll in lines: #loop for every url
         skip = 0
-        if "/bible" or "tuvnt." in urll :
+
+        if "/bible" in urll or "tuvnt." in urll:
             islinkbible=True
-        
+
         #check if line starts with #
         if str(urll).strip().startswith("#") :
             skip=True
@@ -215,6 +234,7 @@ for urll in lines: #loop for every url
             skip = True
         #generate url if file
         if not skip and isFile==True and urll is not "" or (islinkbible is True and i==0 and isFile==True and not skip):
+            
             dfname=urll[urll.rfind('/')+1:urll.__len__()]
             outputfile=dfname+".txt"
             #remove special chars from name
@@ -228,73 +248,84 @@ for urll in lines: #loop for every url
             outputfile = re.sub("\n",'',outputfile)
             outputfile = re.sub(" ",'',outputfile)
             outputfile = re.sub(" ",'',outputfile)
-            #if os.path.exists(outputfile):      
-            print("Scraping " + urll.strip()) 
+           
+            if os.path.exists(outputfile):      
+               print("Scraping " + urll.strip()) 
             if not os.path.exists(loc) and loc:
                 os.makedirs(loc) 
 
-           
         if not skip and os.path.exists(os.path.join(loc,outputfile)) and islinkbible is False :
-            print(outputfile+" already exists, do nothing" + loc)
+            print(outputfile+" already exists, do nothing." + loc)
             skip=True
-        #print("okokokok",    str(skip),   islinkbible)
+       
         
         elif not skip and str(outputfile).strip() is not "" and islinkbible is False:
             if has_loc is True:
+
                 file = open(str(os.path.join(loc,outputfile)), "w")
             else:
+
                 file = open(str(os.path.join(loc,outputfile)), "w") #creates new data file
  
         elif islinkbible:
+
             if i==0 and os.path.exists(os.path.join(loc,outputfile)):
-                print(outputfile+" already exists, do nothing")
+                print(outputfile+" already exists, do nothing.")
                 skip=True
                 break;               
             elif i==0:
                 file = open(str(os.path.join(loc,outputfile)), "a")
         
         if not skip:
+  
             if not islinkbible:
                 processdata(urll)
           
             else:
-                if "uzbek" in urll:
+                if "uzbek" or "tuvnt." in urll:
                        encoding='latin-1'
-
+ 
                 else:
                        encoding='utf-8' 
-                
+  
                 source1 = urllib.request.urlopen(urll)
-                
-            
-                for line2 in source1:
-                   line3=(str(line2,encoding)).strip()
-                   #print(line3 + "mmmmmmmmmmmmmmmmmm")
-       
-                   if "http" in line3 and "htm" in line3 and "statcounter" not in line3:
-                          line4 = re.findall('.*?\<a href="(.*?)\>.*?', line3)                  
+                html = source1.read()
+                line3=(str(html, "latin-1"))
+               
+                line4 = re.findall('.*?\<a href="(.*?)\>.*?', line3)    
+
+                if 1:               
                           line4 = re.sub(r'\[', '', str(line4))
                           line4 = re.sub(r'\]', '', str(line4))
                           line4 = re.sub(r'\"', '', str(line4))
-                          line4 = re.sub(r'\'', '', str(line4))
-                          #print(line4 + " nnnnnnnnnnnnnnn")
-                          islinkbible= True
-                          list2=[]
-                          list2.append(str(line4))
+                          line4 = re.sub(r'\'', '', str(line4))  
+                          a = line4.split(",")
+      
 
-                          for line in list2 :
-                                processdata(line)
-                                i=i+1
-                                       
-        if not skip and not islinkbible:
+                          islinkbible= True
+
+                          for myline in a :
+                                if "http" in myline and "htm" in myline and "statcounter" not in myline:
+                                    processdata(myline)
+                                    i=i+1
+
+
+        if (islinkbible and not skip) or (islinkbible and tofile !=""):
+
+            file.write(tofile)  	
+            file.close()
+            islinkbible=False
+            tofile=""
+            i=0
+                     
+        elif not skip and not islinkbible and tofile !="":
+
             file.write(tofile)
             file.close()
             tofile=""
             startbody=0
             start=0
-  
-        
-            i=i+1
+
         elif islinkbible:
                startbody=0
                start=0
@@ -302,8 +333,4 @@ for urll in lines: #loop for every url
         if islinkbible is False:
             skip=False
 
-if (islinkbible and not skip) or tofile !="":
 
-    file.write(tofile)  	
-    file.close()    
-    tofile=""
