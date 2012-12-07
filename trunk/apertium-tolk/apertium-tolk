@@ -3,7 +3,7 @@
 from __future__ import print_function
 import os
 import sys
-from queue import Queue # A queue type to communicate between threads
+from queue import LifoQueue, Queue # A queue type to communicate between threads
 import threading # A simple thread launcher
 from configparser import ConfigParser
 # The ConfigParser is used to store preferences of the program
@@ -16,7 +16,9 @@ import gi
 
 import dbus # Used to connect to the Apertium D-Bus service
 
-import tolk 
+import tolk
+
+print(dir(tolk), file=sys.stderr)
 
 class MainWindow:
     def setup_combo(self, modes, combo):
@@ -68,6 +70,7 @@ class MainWindow:
         self.input_queue = Queue()  # Thread communication queue
         self.glade = tolk.GladeXML() # Instantiate our custom Glade class which extends the Gtk.glade.GladeXML class
         self.glade.add_from_file(path)
+##        self.glade.set_translation_domain(tolk.APP)
         self.glade.connect(self);   # Try to connect the signals defined in the glade file to methods defined in self
 
         # Get handles objects of interest in the glade file
@@ -83,6 +86,7 @@ class MainWindow:
         # Start the thread which will handle
         thread = threading.Thread(target=self.translator_loop)
         thread.start()
+        self.wndMain.connect("delete-event", Gtk.main_quit)
 
         self.load_config()
         self.wndMain.show_all()
@@ -118,18 +122,20 @@ class MainWindow:
 
                 # We probably should call Gdk.thread_enter here...
                 GObject.idle_add(update_text) # Post the function into the GTK main loop
-
             except Exception as e:
                 print(e, file=sys.stderr) # We should probably do exit(1) here
 
 
     def on_buffer_changed(self, w):
-        self.input_queue.put([self.options(), w.get_text(w.get_start_iter(), w.get_end_iter(), False)])
+        nex = [self.options(), w.get_text(w.get_start_iter(),
+                                         w.get_end_iter(), False)]
+        self.input_queue.put(nex)
 
     ###########################################################
     # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
+        print("Quit button clicked", file=sys.stderr)
         self.save_config()
         Gtk.main_quit()
 
@@ -175,7 +181,7 @@ if __name__ == "__main__":
 
         sys.exit(0)
     
-    #Gtk.gdk.threads_init()
+    GObject.threads_init()
     wnd = MainWindow(tolk.datadir + "/apertium-tolk/glade/" + "tolk.ui")
     Gtk.main();
 
