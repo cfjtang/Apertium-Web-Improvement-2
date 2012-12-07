@@ -154,7 +154,7 @@ def processdata(url):
                         format4 =re.match('\(\d+:\d+-\d+:\d+\)', stripedline)
 
 
-                        if format3 and  "uzbek" in urll:
+                        if format3 and  ("uzbek" in urll or "turkmen" in urll) :
                       
                             tt= stripedline.index(":")
                           
@@ -291,7 +291,7 @@ for urll in lines: #loop for every url
                 os.makedirs(loc) 
 
         if not skip and os.path.exists(os.path.join(loc,outputfile)) and islinkbible is False :
-            print(outputfile+" already exists, do nothing." + loc)
+            print(outputfile+" already exists, do nothing.")
             skip=True
        
         
@@ -308,7 +308,8 @@ for urll in lines: #loop for every url
             if i==0 and os.path.exists(os.path.join(loc,outputfile)):
                 print(outputfile+" already exists, do nothing.")
                 skip=True
-                break;               
+                islinkbible = False
+               # break;               
             elif i==0:
                 file = open(str(os.path.join(loc,outputfile)), "a")
         
