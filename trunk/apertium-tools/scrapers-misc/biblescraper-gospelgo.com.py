@@ -52,6 +52,7 @@ def processdata(url):
     enterbody=0
     start=0
     linenum=0
+    enterbody=0
     global tofile
 
     withfirsttitle=0
@@ -75,7 +76,18 @@ def processdata(url):
             enterbody=0
             break;
 
-
+        if ("uzbek" in urll or "turkmen" in urll)  and "HTML><HEAD><TITLE>" in line and enterbody ==0:
+               chapter= line[0:30]
+               chapter = re.compile(r'<[^<]*?/?>').sub('', line) 
+  
+               match = re.finditer('-', chapter)
+               for m in match:
+                  chapter= chapter[m.start()+2: len(chapter)]
+                  if tofile =="":
+                      tofile=tofile+ chapter+ "\n"
+                  else: 
+                      tofile=tofile+"\n\n"+ chapter+ "\n"
+                  enterbody=1
 
         if "<body>" in line.lower(): #enter body
              enterbody=1
@@ -110,7 +122,7 @@ def processdata(url):
                     start=1   
            
             
-        elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible): #if line = <p>, end the bible scraping loop
+        elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible) or ("<script type=" in line and ("uzbek" in urll or "turkmen" in urll )): #if line = <p>, end the bible scraping loop
                  done = 1
                  startbody=0            
                  linenum = 0
@@ -141,17 +153,15 @@ def processdata(url):
                         format3 =re.match('\d+:\d+', stripedline)       
                         format4 =re.match('\(\d+:\d+-\d+:\d+\)', stripedline)
 
-                        if format3 and  "uzbek" in urll:
 
-                            index= stripedline.index(":")
-                            first= stripedline[0:index]
-                            second=stripedline[index+1:index+2]
-             
-                            tofile= tofile+  " "+ first
-               
-                            stripedline= second + " " +stripedline[index+3:len(stripedline)]
-           
-                       
+                        if format3 and  "uzbek" in urll:
+                      
+                            tt= stripedline.index(":")
+                          
+                            first= stripedline[0:tt]
+                            second=stripedline[tt+1:tt+2]                         
+                            tofile= tofile+  " "+ first             
+                            stripedline= second + " " +stripedline[tt+3:len(stripedline)]
 
 	
                         if format1 or format2 or format4:
@@ -219,13 +229,20 @@ else: #if file
         lines=ins.readlines()
         isFile=True
     else:
+        print("Input file not found, exit and do nothing")
         sys.exit(0)
     
 
 #output file
 #file name: no output not file
 if (args['output'] == None and isFile==False): #and not islinkbible:
-    outputfile=urll[urll.rfind('/')+1:urll.__len__()]+".txt"
+    if "uzbek" in urll or "turkmen" in urll:
+           filename = urll[22:len(urll)]
+           match = re.finditer('/', filename)
+           for m in match:
+              outputfile=filename[0:m.start()]+".txt"
+    else:
+        outputfile=urll[urll.rfind('/')+1:urll.__len__()]+".txt"
 
 # file name yes output not file
 if args['output'] != None and isFile==False:  # and not islinkible:
@@ -247,12 +264,18 @@ for urll in lines: #loop for every url
             skip = True
         #generate url if file
         if not skip and isFile==True and urll is not "" or (islinkbible is True and i==0 and isFile==True and not skip):
-            
-            dfname=urll[urll.rfind('/')+1:urll.__len__()]
-            outputfile=dfname+".txt"
+             if "uzbek" in urll or "turkmen" in urll:
+                  filename = urll[22:len(urll)]
+          
+                  match = re.finditer('/', filename)
+                  for m in match:
+                      outputfile=filename[0:m.start()]+".txt"
+             else:
+                   dfname=urll[urll.rfind('/')+1:urll.__len__()]
+                   outputfile=dfname+".txt"
             #remove special chars from name
         #generate outputfile name
-        if not skip or (not skip and islinkbible is True and i==0):
+        if (not skip or (not skip and islinkbible is True and i==0)) and ("uzbek" not in urll or "turkmen" not in urll):
             outputfile1=outputfile.replace("%","")
              
             tempname = re.sub(r'.htm', '', outputfile1)
