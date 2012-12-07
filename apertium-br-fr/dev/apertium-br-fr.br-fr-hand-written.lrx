@@ -5,6 +5,8 @@
       <match lemma="sevenadurel" tags="adj.*"/>
     </rule>
 
+	
+	
     <rule>
       <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
       <match lemma="unan" tags="num.*"/>
@@ -12,59 +14,51 @@
       <match lemma="an" tags="det.def.*"/>
 	  </rule>
 
-    <rule>
+     <rule>
+      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+      <match lemma="all" tags="adj.*"/>
+	  </rule> 
+
+	  <rule>
       <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
       <match lemma="kentañ" tags="num.*"/>
 <!-- Aqui se puede seleccionar o homme (cuando se habla de prehistoria/los primeros hombres) o personne (si se habla de las primeras personas que acaban de llegar en alguna parte) pero no se puede seleccionar gens antes de kentañ -->
 	  </rule>	  
 	  
-    <rule>
-      <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
-      <match lemma="poblad" tags="n.*"/>
-    </rule>
-
-  
-     <rule>
-      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
-      <match lemma="all" tags="adj.*"/>
-	  </rule> 
-  
-     <rule>
-      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
-      <match lemma="istorel" tags="adj.*"/>
-	  </rule> 
-  
-      <rule>
-      <match lemma="rummad" tags="n.*"/>
-      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
-	  </rule>  
-	  
-	  <rule>
-      <match lemma="kumuniezh" tags="n.*"/>
-      <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
-	  </rule>   
-
-      <rule>
+   <rule>
       <match lemma="CUALQUIER NUMERO" tags="num.*"/>
       <match lemma="a" tags="pr.*"/>
       <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
-	  </rule>
+   </rule>
 
-     <rule>
-      <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
-      <match lemma="meur" tags="adj.*"/>
-	  </rule> 
-
-	  <rule>
+    <rule>
       <match lemma="dremm" tags="n.*"/>
       <match lemma="an" tags="det.*"/>
       <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
-	  </rule>   	  
+   </rule>   
+   
+  <rule>
+    <match lemma="poblad" tags="n.*"/>
+	<match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
+    </rule>
 
-     <rule>
+ <rule>
       <match lemma="den" tags="n.*"><select lemma="homme" tags="n.*"/></match>
-      <match lemma="difeiz" tags="adj.*"/>
-	  </rule> 
+    <or>
+     <match lemma="difeiz" tags="adj.*"/>
+     <match lemma="istorel" tags="adj.*"/>
+     <match lemma="meur" tags="adj.*"/>
+	 </or>
+  </rule>   
+
+ <rule>
+   <or>
+     <match lemma="kumuniezh" tags="n.*"/>
+     <match lemma="rummad" tags="n.*"/>
+   </or>
+   <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
+  </rule>   
+
 	  
 	  
 </lrx>
