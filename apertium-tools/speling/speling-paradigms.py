@@ -120,7 +120,7 @@ def return_shortest(ilist): #{
 		return -1;
 	#}
 
-	return sorted(ilist, key=sort_flexions_by_key)[0]
+	return sorted(ilist, key=len)[0]
 #}
 
 def return_symlist(symlist): #{
@@ -212,6 +212,7 @@ print('  <pardefs>');
 for lemma in lemmata: #{
 	for pos in lemmata[lemma]: #{
 		stem = return_shortest(lemmata[lemma][pos]);
+		print(stem, file=sys.stderr)
 		print('  <!-- ' + lemma + '; ' +
 		      stem + '; ' + str(len(flexions[lemma][pos])) + ' -->');
 		end = lemma.replace(stem, '', 1);
