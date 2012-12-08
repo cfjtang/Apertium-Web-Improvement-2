@@ -80,8 +80,6 @@ class MainWindow:
         # Start the thread which will handle
         thread = threading.Thread(target=self.translator_loop)
         thread.start()
-##        self.wndMain.connect("delete-event", Gtk.main_quit)
-##        self.wndMain.connect("destroy", Gtk.main_quit)
 
         self.load_config()
         self.wndMain.show_all()
@@ -131,7 +129,6 @@ class MainWindow:
     # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
-        print("closing", file=sys.stderr)
         self.input_queue.put([None, None])
         self.save_config()
         Gtk.main_quit()

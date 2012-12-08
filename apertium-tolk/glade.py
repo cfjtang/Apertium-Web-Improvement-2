@@ -2,7 +2,7 @@ from io import StringIO
 ##import Gtk.glade
 from gi.repository import Gtk
 from configparser import DuplicateSectionError, NoSectionError
-from widget_state import dump_state, load_state
+from tolk.widget_state import dump_state, load_state
 
 default_config = '''
 [wndMain]

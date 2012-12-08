@@ -1,3 +1,3 @@
-from i18n import _
-from glade import GladeXML
-from prefix import *
+from tolk.i18n import _
+from tolk.glade import GladeXML
+from tolk.prefix import *

@@ -1,6 +1,6 @@
 import gettext
 import locale
-import prefix
+import tolk.prefix as prefix
 
 APP='apertium-tolk'
 DIR=prefix.localedir
