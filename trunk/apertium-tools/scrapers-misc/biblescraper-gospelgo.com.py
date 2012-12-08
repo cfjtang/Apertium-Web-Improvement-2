@@ -54,7 +54,7 @@ def processdata(url):
     linenum=0
     enterbody=0
     global tofile
-
+    ischapter=0
     withfirsttitle=0
 
     source = urllib.request.urlopen(str(url))  
@@ -79,15 +79,11 @@ def processdata(url):
         if ("uzbek" in urll or "turkmen" in urll)  and "HTML><HEAD><TITLE>" in line and enterbody ==0:
                chapter= line[0:30]
                chapter = re.compile(r'<[^<]*?/?>').sub('', line) 
-  
                match = re.finditer('-', chapter)
                for m in match:
-                  chapter= chapter[m.start()+2: len(chapter)]
-                  if tofile =="":
-                      tofile=tofile+ chapter+ "\n"
-                  else: 
-                      tofile=tofile+"\n\n"+ chapter+ "\n"
+                  chapter= chapter[m.start()+2: len(chapter)]              
                   enterbody=1
+                  ischapter=1
 
         if "<body>" in line.lower(): #enter body
              enterbody=1
@@ -106,7 +102,8 @@ def processdata(url):
                  
         elif (encoding=="windows-1251"  and "<b>" in line or "</b><p>" in line) or ("<p class" in line and start ==1) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only             
    
-                title = re.compile(r'<[^<]*?/?>').sub('', line)  
+            title = re.compile(r'<[^<]*?/?>').sub('', line)  
+            if ischapter == 0:   
                 if withfirsttitle:                                   
                     tofile =tofile+ "\n" + title.strip()
                 else:
@@ -120,7 +117,9 @@ def processdata(url):
                             tofile =tofile+ "\n\n" + title.strip()
                         linenum = 0  
                     start=1   
-           
+            else:
+                titlep= title.strip()
+                start=1
             
         elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible) or ("<script type=" in line and ("uzbek" in urll or "turkmen" in urll )): #if line = <p>, end the bible scraping loop
                  done = 1
@@ -160,9 +159,19 @@ def processdata(url):
                           
                             first= stripedline[0:tt]
                             second=stripedline[tt+1:tt+2]                         
-                            tofile= tofile+  " "+ first             
-                            stripedline= second + " " +stripedline[tt+3:len(stripedline)]
-
+                            if ischapter==1:
+                                
+                                if tofile=="":        
+                                    tofile= tofile + chapter + " " +first  
+                                else:
+                                    tofile= tofile + "\n\n" + chapter + " " +first            
+                                tofile = tofile + "\n" + titlep
+                                
+                                stripedline= second + " " +stripedline[tt+3:len(stripedline)]
+                                ischapter=0
+                            else:
+                                tofile= tofile+  " "+ first             
+                                stripedline= second + " " +stripedline[tt+3:len(stripedline)]
 	
                         if format1 or format2 or format4:
 
@@ -286,7 +295,7 @@ for urll in lines: #loop for every url
             outputfile = re.sub(" ",'',outputfile)
            
             #if os.path.exists(outputfile):      
-            print("Scraping " + urll.strip()) 
+            print("Scraping " + urll.strip() + " to " + outputfile) 
             if not os.path.exists(loc) and loc:
                 os.makedirs(loc) 
 
