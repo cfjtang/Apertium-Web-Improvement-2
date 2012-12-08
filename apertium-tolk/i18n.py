@@ -1,6 +1,4 @@
 import gettext
-##from gi.repository import Gtk
-#import Gtk.glade
 import locale
 import prefix
 
@@ -12,9 +10,6 @@ locale.bindtextdomain(APP, DIR)
 locale.textdomain(APP)
 gettext.bindtextdomain(APP, DIR)
 gettext.textdomain(APP)
-
-##Gtk.bindtextdomain(APP, DIR)
-##Gtk.textdomain(APP)
 
 _ = gettext.gettext # the i18n function :)
 
