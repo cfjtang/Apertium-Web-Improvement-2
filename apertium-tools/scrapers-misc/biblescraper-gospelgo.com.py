@@ -181,22 +181,27 @@ def processdata(url):
                             tofile =tofile+ "\n" + stripedline +" "
                                                                           
                         else:  # handle sentense has numbers
-  
+                             
                              curr=0
                              tmpline2 =""                         
                              needappend =0
                              numb=0
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
-
+                            
                                  if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] ==".":  
                                      if needappend: 
-                                         tofile= tofile+stripedline[curr:m.start()-1]     
+                                       
+                                         tofile= tofile+stripedline[curr:m.start()-1] 
+                                       
                                          needappend=0
-                                         tmpline2= stripedline[m.start():m.end()]
+                                         tmpline2= stripedline[m.start():m.end()] +" " 
+                                        
                                          curr= m.end()+1
                                      else:
-                                         tmpline2 =tmpline2+ stripedline[curr:m.end()]      
+                                         
+                                         tmpline2 = tmpline2 + stripedline[curr:m.end()]
+                                      
                                          curr=m.end()
    
                                  else:
