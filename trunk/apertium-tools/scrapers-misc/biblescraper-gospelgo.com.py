@@ -100,9 +100,26 @@ def processdata(url):
                    linenum = 0
                    withfirsttitle=1
               start=1
-                 
+        elif "<p><b>" in line: # if title for some files like uz psalms
+              title = (line[line.rfind("<b>")+3:line.rfind("</b>")]).strip()
+             
+              if start ==0:  
+                                                
+                   tofile =tofile+ title.strip() 
+              else:                                              
+                   tofile =tofile+ "\n\n" + title.strip()
+                   
+                   linenum = 0
+                   withfirsttitle=1
+              start=1
         elif (encoding=="windows-1251"  and "<b>" in line or "</b><p>" in line) or ("<p class" in line and start ==1) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only             
    
+            if "<p class=\"blue\">" in line:
+                desctitle=line.replace("<p class=\"blue\">","")
+                desctitle=desctitle.replace("</p><p>","")
+                tofile=tofile+"\n" + desctitle.strip()
+                
+
             title = re.compile(r'<[^<]*?/?>').sub('', line)  
             if "uzbek" not in urll and "turkmen" not in urll:
                 if withfirsttitle:                                   
@@ -114,6 +131,8 @@ def processdata(url):
                         
                         if  "(" in title:
                             tofile =tofile+ "\n" + title.strip()
+                        #elif "<p class=\"blue\">" in title:
+                            #tofile=tofile+"\n" + title.strip()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                         else :
                             tofile =tofile+ "\n\n" + title.strip()
                         linenum = 0  
@@ -178,7 +197,7 @@ def processdata(url):
 	
                         if format1 or format2 or format4:
 
-                            tofile =tofile+ "\n" + stripedline +" "
+                            tofile =tofile+ "\n" + stripedline
                                                                           
                         else:  # handle sentense has numbers
                              
@@ -211,7 +230,7 @@ def processdata(url):
                                      tmpline2 =""  # clear line
                                      needappend=1
                              tmpline2=tmpline2+stripedline[curr:len(stripedline)]
-                             tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2)    
+                             tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2) + " "   
      
 
 
@@ -345,7 +364,8 @@ for urll in lines: #loop for every url
                 source1 = urllib.request.urlopen(urll)
                 html = source1.read()
                 line3=(str(html, "latin-1"))
-               
+                
+
                 line4 = re.findall('.*?\<a href="(.*?)\>.*?', line3)    
 
                 if 1:               
