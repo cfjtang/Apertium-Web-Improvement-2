@@ -80,8 +80,8 @@ class MainWindow:
         # Start the thread which will handle
         thread = threading.Thread(target=self.translator_loop)
         thread.start()
-        self.wndMain.connect("delete-event", Gtk.main_quit)
-        self.wndMain.connect("destroy", Gtk.main_quit)
+##        self.wndMain.connect("delete-event", Gtk.main_quit)
+##        self.wndMain.connect("destroy", Gtk.main_quit)
 
         self.load_config()
         self.wndMain.show_all()
@@ -106,7 +106,8 @@ class MainWindow:
             options, _input = self.input_queue.get() # Block waiting for something to translate
             while not self.input_queue.empty():          # We're only interested in the latest item in the queue...
                 options, _input = self.input_queue.get() # ...so we discard items until we have the latest item
-
+            if (options, _input) == (None, None): #We send (None, None) to the queue to tell it to stop the thread
+                break
             try:
                 result = self.translator.translate(options, _input) # Invoke the Apertium D-Bus translation service
 
@@ -131,10 +132,12 @@ class MainWindow:
 
     def on_btnQuit_clicked(self, widget):
         print("closing", file=sys.stderr)
+        self.input_queue.put([None, None])
         self.save_config()
         Gtk.main_quit()
 
     def on_wndMain_destroy(self, widget):
+        self.input_queue.put([None, None])
         Gtk.main_quit()
 
     def on_wndMain_delete_event(self, widget, event):
