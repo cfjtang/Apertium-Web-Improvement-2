@@ -55,6 +55,7 @@ def processdata(url):
     enterbody=0
     global tofile
     ischapter=0
+    titlep=""   ##okok
     withfirsttitle=0
 
     source = urllib.request.urlopen(str(url))  
@@ -103,7 +104,7 @@ def processdata(url):
         elif (encoding=="windows-1251"  and "<b>" in line or "</b><p>" in line) or ("<p class" in line and start ==1) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only             
    
             title = re.compile(r'<[^<]*?/?>').sub('', line)  
-            if ischapter == 0:   
+            if "uzbek" not in urll and "turkmen" not in urll:
                 if withfirsttitle:                                   
                     tofile =tofile+ "\n" + title.strip()
                 else:
@@ -159,19 +160,21 @@ def processdata(url):
                           
                             first= stripedline[0:tt]
                             second=stripedline[tt+1:tt+2]                         
-                            if ischapter==1:
-                                
-                                if tofile=="":        
-                                    tofile= tofile + chapter + " " +first  
-                                else:
-                                    tofile= tofile + "\n\n" + chapter + " " +first            
-                                tofile = tofile + "\n" + titlep
-                                
-                                stripedline= second + " " +stripedline[tt+3:len(stripedline)]
-                                ischapter=0
+                           # if ischapter==1:
+                            if tofile=="": 
+        
+                                tofile= tofile + chapter + " " +first  
                             else:
-                                tofile= tofile+  " "+ first             
-                                stripedline= second + " " +stripedline[tt+3:len(stripedline)]
+                  
+                                tofile= tofile + "\n"+"\n" + chapter + " " +first 
+                            
+                            if titlep=="":
+                                     tofile = tofile  + "\n"  
+                            else:
+                                    tofile = tofile  + "\n" + titlep
+                     
+                                
+                            stripedline= second + " " +stripedline[tt+3:len(stripedline)]
 	
                         if format1 or format2 or format4:
 
@@ -186,7 +189,7 @@ def processdata(url):
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
 
-                                 if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-2:m.start()-1] ==":":  
+                                 if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":":  
                                      if needappend: 
                                          tofile= tofile+stripedline[curr:m.start()-1]     
                                          needappend=0
