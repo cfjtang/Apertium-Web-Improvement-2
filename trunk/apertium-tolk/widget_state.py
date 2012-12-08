@@ -1,5 +1,5 @@
 from gi.repository import Gtk
-from simplegeneric import generic
+from tolk.simplegeneric import generic
 
     
 @generic
