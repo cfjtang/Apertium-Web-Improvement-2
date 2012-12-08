@@ -3,7 +3,7 @@
 from __future__ import print_function
 import os
 import sys
-from queue import LifoQueue, Queue # A queue type to communicate between threads
+from queue import Queue # A queue type to communicate between threads
 import threading # A simple thread launcher
 from configparser import ConfigParser
 # The ConfigParser is used to store preferences of the program
@@ -11,25 +11,17 @@ from configparser import ConfigParser
 # GTK related imports
 from gi.repository import GObject
 from gi.repository import Gtk
-##import Gtk.gdk
 import gi
 
 import dbus # Used to connect to the Apertium D-Bus service
 
 import tolk
 
-print(dir(tolk), file=sys.stderr)
-
 class MainWindow:
     def setup_combo(self, modes, combo):
         """Set the combo box up to display simple a list of text and
         add everything in 'modes' to the list.
         """
-        combo.set_model(Gtk.ListStore(GObject.TYPE_STRING))
-        cell = Gtk.CellRendererText() # Tell the combobox we're just rendering text
-        combo.pack_start(cell, True) # Add the text renderer to the combo box
-        combo.add_attribute(cell, "text", 0) # Tell the combobox that we just want to show text
-
         for mode in modes: # Add everything in 'modes' to the combobox
             combo.append_text(mode)
 
@@ -60,7 +52,9 @@ class MainWindow:
         object self.config.
         """
         self.glade.dump_gtk_state(self.config)
-        self.config.write(open(os.path.expanduser('~/.apertium-tolk.cfg'), 'w'))
+        f = open(os.path.expanduser('~/.apertium-tolk.cfg'), 'w')
+        self.config.write(f)
+        f.close()
     
     def __init__(self, path):
         self.config = ConfigParser() # An object which loads/stores preferences
@@ -70,8 +64,7 @@ class MainWindow:
         self.input_queue = Queue()  # Thread communication queue
         self.glade = tolk.GladeXML() # Instantiate our custom Glade class which extends the Gtk.glade.GladeXML class
         self.glade.add_from_file(path)
-##        self.glade.set_translation_domain(tolk.APP)
-        self.glade.connect(self);   # Try to connect the signals defined in the glade file to methods defined in self
+        self.glade.connect_signals(self);   # Try to connect the signals defined in the glade file to methods defined in self
 
         # Get handles objects of interest in the glade file
         self.buffer         = self.glade.get_object("txtInput").get_buffer()
@@ -79,7 +72,8 @@ class MainWindow:
         self.wndMain        = self.glade.get_object("wndMain")
         self.dlgAbout       = self.glade.get_object("dlgAbout")
         self.chkMarkUnknown = self.glade.get_object("chkMarkUnknown")
-        self.comboPair      = self.setup_combo(self.info.modes(), self.glade.get_object("comboPair"))
+        self.comboPair      = self.setup_combo(self.info.modes(),
+                                self.glade.get_object("comboPair"))
 
         self.buffer.connect("changed", self.on_buffer_changed)
 
@@ -87,6 +81,7 @@ class MainWindow:
         thread = threading.Thread(target=self.translator_loop)
         thread.start()
         self.wndMain.connect("delete-event", Gtk.main_quit)
+        self.wndMain.connect("destroy", Gtk.main_quit)
 
         self.load_config()
         self.wndMain.show_all()
@@ -135,7 +130,7 @@ class MainWindow:
     # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
-        print("Quit button clicked", file=sys.stderr)
+        print("closing", file=sys.stderr)
         self.save_config()
         Gtk.main_quit()
 

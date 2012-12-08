@@ -66,13 +66,3 @@ class GladeXML(Gtk.Builder):
                 pass
 
 
-    def connect(self, context):
-        """Enumerate the methods in the object 'context''s class. For each method, create a
-        (name, function) pair, with the function name and a bound method (binding is done to
-        the object 'context' via getattr(context, name)).
-
-        Now, create a dictionary out of these pairs. Fincally pass the dictionary to
-        signal_autoconnect, which will bind the signals defined in the glade file to our
-        methods."""
-        handlers = dict((name, getattr(context, name)) for name in context.__class__.__dict__)
-        self.connect_signals(handlers)
