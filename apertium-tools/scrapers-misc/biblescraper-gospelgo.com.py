@@ -81,13 +81,18 @@ def processdata(url):
         if ("uzbek" in urll or "turkmen" in urll)  and "HTML><HEAD><TITLE>" in line and enterbody ==0:
                chapter= line[0:30]
                chapter = re.compile(r'<[^<]*?/?>').sub('', line) 
-              
-               match = re.finditer('-', chapter)
-               for m in match:
-                  chapter= chapter[m.start()+2: len(chapter)]    
-                     
-                  enterbody=1
-                  ischapter=1
+               if "-" in chapter:
+                  match = re.finditer('-', chapter)
+                  for m in match:
+                     chapter= chapter[m.start()+2: len(chapter)]  
+                     enterbody=1
+                     ischapter=1
+               elif ":" in chapter:
+                  match = re.finditer(':', chapter)
+                  for m in match:
+                     chapter= chapter[m.start()+2: len(chapter)]  
+                     enterbody=1
+                     ischapter=1
 
         if "<body>" in line.lower(): #enter body
              enterbody=1
@@ -105,14 +110,14 @@ def processdata(url):
               start=1
         elif "<p><b>" in line and "uzbek" in urll: # if title for some files like uz psalms
               title = (line[line.rfind("<b>")+3:line.rfind("</b>")]).strip()
-              print(" tttttt222" + title)
+            
               if start ==0:  
-                            
+                         
                    tofile =tofile+"\n\n" + title.strip()
                    
               else:                                              
                    tofile =tofile+ "\n\n" + title.strip()
-                   print("ttttt11" + title)
+                   
                    linenum = 0
                    withfirsttitle=1
               start=1
@@ -139,7 +144,8 @@ def processdata(url):
                         linenum = 0  
                     start=1   
             else:
-                titlep= title.strip()
+                titlep= title.strip()  
+                
  
                   
                 start=1
@@ -197,15 +203,19 @@ def processdata(url):
                                  if "uzbek" in url:
                                      tofile = tofile 
                                  else:
+
                                      tofile=tofile
                             elif tofile!="" and   newchapter==1:
                           
                                 tofile= tofile +"\n" + titlep.strip() 
+                                
                                 titlep = ""
                                 
                                 newchapter=0  
                             else:
+
                                     tofile = tofile  + "\n" + titlep
+                                    
                                     titlep = ""
        
                      
@@ -215,8 +225,10 @@ def processdata(url):
                         elif format3 is None and titlep !="" and ("uzbek" in urll or "turkmen" in urll) :
                             if "uzbek" in urll:
                                tofile = tofile  + "\n" + titlep
+
                             else:
-                               tofile = tofile  + "\n\n" + titlep
+                               tofile = tofile  + "\n" + titlep
+                               
                             titlep = ""
        
 
@@ -234,8 +246,8 @@ def processdata(url):
                              numb=0
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
-                    
-                                 if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] ==".":  
+                                 
+                                 if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll):  
                                      if needappend: 
                                        
                                          tofile= tofile+stripedline[curr:m.start()-1] 
