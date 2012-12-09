@@ -81,9 +81,11 @@ def processdata(url):
         if ("uzbek" in urll or "turkmen" in urll)  and "HTML><HEAD><TITLE>" in line and enterbody ==0:
                chapter= line[0:30]
                chapter = re.compile(r'<[^<]*?/?>').sub('', line) 
+              
                match = re.finditer('-', chapter)
                for m in match:
-                  chapter= chapter[m.start()+2: len(chapter)]              
+                  chapter= chapter[m.start()+2: len(chapter)]    
+                     
                   enterbody=1
                   ischapter=1
 
@@ -91,7 +93,7 @@ def processdata(url):
              enterbody=1
         elif "<p><a>" in line : #if title                
               title = (line[line.rfind("<a>")+3:line.rfind("</a>")]).strip()
-             
+            
               if start ==0:  
                                                 
                    tofile =tofile+ title.strip() 
@@ -101,16 +103,16 @@ def processdata(url):
                    linenum = 0
                    withfirsttitle=1
               start=1
-        elif "<p><b>" in line and "uzbek" in line: # if title for some files like uz psalms
+        elif "<p><b>" in line and "uzbek" in urll: # if title for some files like uz psalms
               title = (line[line.rfind("<b>")+3:line.rfind("</b>")]).strip()
-    
+              print(" tttttt222" + title)
               if start ==0:  
-                                              
+                            
                    tofile =tofile+"\n\n" + title.strip()
-               
+                   
               else:                                              
                    tofile =tofile+ "\n\n" + title.strip()
-                   
+                   print("ttttt11" + title)
                    linenum = 0
                    withfirsttitle=1
               start=1
@@ -119,6 +121,8 @@ def processdata(url):
          
 
             title = re.compile(r'<[^<]*?/?>').sub('', line)  
+    
+            
             if "uzbek" not in urll and "turkmen" not in urll:
                 if withfirsttitle:                                   
                     tofile =tofile+ "\n" + title.strip()
@@ -136,8 +140,8 @@ def processdata(url):
                     start=1   
             else:
                 titlep= title.strip()
-                
-         
+ 
+                  
                 start=1
             
         elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible) or ("<script type=" in line and ("uzbek" in urll or "turkmen" in urll )): #if line = <p>, end the bible scraping loop
@@ -148,6 +152,7 @@ def processdata(url):
         else: #verse
            
                    format5 =re.match('\d+:\d+', line)
+                 
                    if start==1 and "<b>" in line and linenum ==0 and format5 :  # for num:num in the begining of the verse case, first line of the verse
 
                        tmpline=re.compile(r'<b>(.*?)</b>').search(line)  #get text between <b></b>
@@ -189,7 +194,10 @@ def processdata(url):
                                 tofile= tofile + "\n"+"\n" + chapter.strip() + " " +first 
                             
                             if titlep=="":
-                                     tofile = tofile  
+                                 if "uzbek" in url:
+                                     tofile = tofile 
+                                 else:
+                                     tofile=tofile
                             elif tofile!="" and   newchapter==1:
                           
                                 tofile= tofile +"\n" + titlep.strip() 
@@ -205,7 +213,10 @@ def processdata(url):
                             stripedline= second + " " +stripedline[tt+3:len(stripedline)]
                         
                         elif format3 is None and titlep !="" and ("uzbek" in urll or "turkmen" in urll) :
-                            tofile = tofile  + "\n\n" + titlep
+                            if "uzbek" in urll:
+                               tofile = tofile  + "\n" + titlep
+                            else:
+                               tofile = tofile  + "\n\n" + titlep
                             titlep = ""
        
 
