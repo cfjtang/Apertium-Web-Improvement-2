@@ -244,7 +244,7 @@ def processdata(url):
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
                                  
-                                 if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll):  
+                                 if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll)or stripedline[m.start()-2:m.start()-1] =="»":  
                                      if needappend: 
                                        
                                          tofile= tofile+stripedline[curr:m.start()-1] 
@@ -312,7 +312,7 @@ else: #if file
 #output file
 #file name: no output not file
 if (args['output'] == None and isFile==False): #and not islinkbible:
-    if "uzbek" in urll or "turkmen" in urll:
+    if ("uzbek" in urll or "turkmen" in urll) and "bible" in urll:
            filename = urll[22:len(urll)]
            match = re.finditer('/', filename)
            for m in match:
@@ -340,7 +340,7 @@ for urll in lines: #loop for every url
             skip = True
         #generate url if file
         if not skip and isFile==True and urll is not "" or (islinkbible is True and i==0 and isFile==True and not skip):
-             if "uzbek" in urll or "turkmen" in urll:
+             if ("uzbek" in urll or "turkmen" in urll) and "bible" in urll:
                   filename = urll[22:len(urll)]
           
                   match = re.finditer('/', filename)
