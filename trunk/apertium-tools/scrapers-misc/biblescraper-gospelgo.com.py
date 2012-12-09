@@ -126,7 +126,7 @@ def processdata(url):
          
 
             title = re.compile(r'<[^<]*?/?>').sub('', line)  
-    
+         
             
             if "uzbek" not in urll and "turkmen" not in urll:
                 if withfirsttitle:                                   
@@ -145,7 +145,7 @@ def processdata(url):
                     start=1   
             else:
                 titlep= title.strip()  
-                
+               
  
                   
                 start=1
@@ -162,7 +162,7 @@ def processdata(url):
                    if start==1 and "<b>" in line and linenum ==0 and format5 :  # for num:num in the begining of the verse case, first line of the verse
 
                        tmpline=re.compile(r'<b>(.*?)</b>').search(line)  #get text between <b></b>
-                       
+                      
                        length= len(str(tmpline.group(1)))
                        if "<p>" in line:
                             remainline = line[length+6: int(len(line))].strip()
@@ -177,15 +177,15 @@ def processdata(url):
 
                         linenum = 2
                         stripedline = re.compile(r'<[^<]*?/?>').sub('', line)
-                  
+                       
                         format1 =re.match('\(\d+:\d+-\d+\)', stripedline) 
                         format2=re.match('\(\d+:\d+\)', stripedline)
                         format3 =re.match('\d+:\d+', stripedline)       
                         format4 =re.match('\(\d+:\d+-\d+:\d+\)', stripedline)
 
 
-                        if format3 and  ("uzbek" in urll or "turkmen" in urll) :
-                     
+                        if format3 and  ("uzbek" in urll or "turkmen" in urll) or  ("16:1" in stripedline and "turkmen" in urll):
+                           
                             tt= stripedline.index(":")
                           
                             first= stripedline[0:tt]
@@ -214,11 +214,8 @@ def processdata(url):
                                 newchapter=0  
                             else:
 
-                                    tofile = tofile  + "\n" + titlep
-                                    
+                                    tofile = tofile  + "\n" + titlep                                    
                                     titlep = ""
-       
-                     
                                 
                             stripedline= second + " " +stripedline[tt+3:len(stripedline)]
                         
@@ -254,21 +251,25 @@ def processdata(url):
                                        
                                          needappend=0
                                          tmpline2= stripedline[m.start():m.end()] +" " 
+                                         
                                         
                                          curr= m.end()+1
                                      else:
                                          
+                                             
                                          tmpline2 = tmpline2 + stripedline[curr:m.end()]
-                                      
+
                                          curr=m.end()
+
+
    
                                  else:
                                      tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2)            
-                                     tofile= tofile + stripedline[ curr:m.end() ]      
+                                     tofile= tofile + stripedline[ curr:m.end() ].strip()     
                                      curr=m.end()
                                      tmpline2 =""  # clear line
                                      needappend=1
-                             tmpline2=tmpline2+stripedline[curr:len(stripedline)]
+                             tmpline2=tmpline2+stripedline[curr:len(stripedline)]  ##
                              tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2) + " "   
      
 
