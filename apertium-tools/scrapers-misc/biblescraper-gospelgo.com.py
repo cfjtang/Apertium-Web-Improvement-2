@@ -57,6 +57,7 @@ def processdata(url):
     ischapter=0
     titlep=""   ##okok
     withfirsttitle=0
+    newchapter=1
 
     source = urllib.request.urlopen(str(url))  
     
@@ -100,12 +101,13 @@ def processdata(url):
                    linenum = 0
                    withfirsttitle=1
               start=1
-        elif "<p><b>" in line: # if title for some files like uz psalms
+        elif "<p><b>" in line and "uzbek" in line: # if title for some files like uz psalms
               title = (line[line.rfind("<b>")+3:line.rfind("</b>")]).strip()
-             
+    
               if start ==0:  
-                                                
-                   tofile =tofile+ title.strip() 
+                                              
+                   tofile =tofile+"\n\n" + title.strip()
+               
               else:                                              
                    tofile =tofile+ "\n\n" + title.strip()
                    
@@ -113,12 +115,8 @@ def processdata(url):
                    withfirsttitle=1
               start=1
         elif (encoding=="windows-1251"  and "<b>" in line or "</b><p>" in line) or ("<p class" in line and start ==1) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only             
-   
-            if "<p class=\"blue\">" in line:
-                desctitle=line.replace("<p class=\"blue\">","")
-                desctitle=desctitle.replace("</p><p>","")
-                tofile=tofile+"\n" + desctitle.strip()
-                
+    
+         
 
             title = re.compile(r'<[^<]*?/?>').sub('', line)  
             if "uzbek" not in urll and "turkmen" not in urll:
@@ -131,14 +129,15 @@ def processdata(url):
                         
                         if  "(" in title:
                             tofile =tofile+ "\n" + title.strip()
-                        #elif "<p class=\"blue\">" in title:
-                            #tofile=tofile+"\n" + title.strip()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+             
                         else :
                             tofile =tofile+ "\n\n" + title.strip()
                         linenum = 0  
                     start=1   
             else:
                 titlep= title.strip()
+                
+         
                 start=1
             
         elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible) or ("<script type=" in line and ("uzbek" in urll or "turkmen" in urll )): #if line = <p>, end the bible scraping loop
@@ -147,26 +146,27 @@ def processdata(url):
                  linenum = 0
 
         else: #verse
-
+           
                    format5 =re.match('\d+:\d+', line)
                    if start==1 and "<b>" in line and linenum ==0 and format5 :  # for num:num in the begining of the verse case, first line of the verse
 
                        tmpline=re.compile(r'<b>(.*?)</b>').search(line)  #get text between <b></b>
-      
+                       
                        length= len(str(tmpline.group(1)))
                        if "<p>" in line:
                             remainline = line[length+6: int(len(line))].strip()
                        else:
                          remainline = line[length+3: int(len(line))].strip()
  
-                         stripedline = re.compile(r'<[^<]*?/?>').sub('', remainline) #rest part of string need parsed                  
+                         stripedline = re.compile(r'<[^<]*?/?>').sub('', remainline) #rest part of string need parsed  
+                              
                          tofile=tofile+"\n" + str(tmpline.group(1)) + re.sub(r'(\d+)', '\n\\1', stripedline)                      
                          linenum = 1  #first line of the verse
                    elif start ==1 and "<p><a name" not in line: #if started and not an html a link, print the verse
 
                         linenum = 2
                         stripedline = re.compile(r'<[^<]*?/?>').sub('', line)
-
+                  
                         format1 =re.match('\(\d+:\d+-\d+\)', stripedline) 
                         format2=re.match('\(\d+:\d+\)', stripedline)
                         format3 =re.match('\d+:\d+', stripedline)       
@@ -174,32 +174,48 @@ def processdata(url):
 
 
                         if format3 and  ("uzbek" in urll or "turkmen" in urll) :
-                      
+                     
                             tt= stripedline.index(":")
                           
                             first= stripedline[0:tt]
                             second=stripedline[tt+1:tt+2]                         
                            # if ischapter==1:
                             if tofile=="": 
-        
-                                tofile= tofile + chapter + " " +first  
+                                tofile= tofile + chapter.strip() + " " +first
+                   
+                   
                             else:
-                  
-                                tofile= tofile + "\n"+"\n" + chapter + " " +first 
+  
+                                tofile= tofile + "\n"+"\n" + chapter.strip() + " " +first 
                             
                             if titlep=="":
-                                     tofile = tofile  + "\n"  
+                                     tofile = tofile  
+                            elif tofile!="" and   newchapter==1:
+                          
+                                tofile= tofile +"\n" + titlep.strip() 
+                                titlep = ""
+                                
+                                newchapter=0  
                             else:
                                     tofile = tofile  + "\n" + titlep
+                                    titlep = ""
+       
                      
                                 
                             stripedline= second + " " +stripedline[tt+3:len(stripedline)]
+                        
+                        elif format3 is None and titlep !="" and ("uzbek" in urll or "turkmen" in urll) :
+                            tofile = tofile  + "\n\n" + titlep
+                            titlep = ""
+       
+
+                         
 	
                         if format1 or format2 or format4:
-
+                            stripedline=re.sub('/“','"',stripedline) #sub unknown chars
                             tofile =tofile+ "\n" + stripedline
                                                                           
-                        else:  # handle sentense has numbers
+                        else:  # handle sentence has numbers
                              
                              curr=0
                              tmpline2 =""                         
@@ -207,7 +223,7 @@ def processdata(url):
                              numb=0
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
-                            
+                    
                                  if m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or stripedline[m.start()-2:m.start()-1] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] ==".":  
                                      if needappend: 
                                        
@@ -356,7 +372,7 @@ for urll in lines: #loop for every url
           
             else:
                 if "uzbek" or "tuvnt." in urll:
-                       encoding='latin-1'
+                       encoding='utf-8'
  
                 else:
                        encoding='utf-8' 
