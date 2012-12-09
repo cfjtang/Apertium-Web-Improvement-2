@@ -13,15 +13,44 @@ from gi.repository import GObject
 from gi.repository import Gtk
 import gi
 
-import dbus # Used to connect to the Apertium D-Bus service
+#If you want to test out the program without using Dbus, set usingDbus to False
+usingDbus = True
+try:
+    import dbus # Used to connect to the Apertium D-Bus service
+except:
+    usingDbus = False
 
 import tolk
+apertium_dir = tolk.prefix
 
 class MainWindow:
-    def setup_combo(self, modes, combo):
+    def get_modes(self):
+        """Get the translation-pairs (modes) available on the system without dbus.
+        """
+        modes = []
+        mode_directory = os.path.join(apertium_dir, "share", "apertium", "modes")
+
+        for dirent in os.listdir(mode_directory):
+            fname, ext = os.path.fname, ext = os.path.splitext(dirent)
+            if ext == ".mode":
+                modes.append(fname)
+
+        return modes
+        
+    
+    def setup_combo(self, combo):
         """Set the combo box up to display simple a list of text and
         add everything in 'modes' to the list.
         """
+        global usingDbus
+        if usingDbus:
+            try:
+                modes = self.info.modes()
+            except:
+                usingDbus = False
+        else:
+            modes = self.get_modes()
+        
         for mode in modes: # Add everything in 'modes' to the combobox
             combo.append_text(mode)
 
@@ -57,10 +86,14 @@ class MainWindow:
         f.close()
     
     def __init__(self, path):
+        global usingDbus
         self.config = ConfigParser() # An object which loads/stores preferences
-        self.bus = dbus.SessionBus()
-        # Create a proxy object to the D-Bus object org.apertium.info/ using the interface org.apertium.Info
-        self.info = dbus.Interface(self.bus.get_object("org.apertium.info", "/"), "org.apertium.Info")
+        try:
+            self.bus = dbus.SessionBus()
+            # Create a proxy object to the D-Bus object org.apertium.info/ using the interface org.apertium.Info
+            self.info = dbus.Interface(self.bus.get_object("org.apertium.info", "/"), "org.apertium.Info")
+        except:
+            usingDbus = False
         self.input_queue = Queue()  # Thread communication queue
         self.glade = tolk.GladeXML() # Instantiate our custom Glade class which extends the Gtk.glade.GladeXML class
         self.glade.add_from_file(path)
@@ -72,7 +105,7 @@ class MainWindow:
         self.wndMain        = self.glade.get_object("wndMain")
         self.dlgAbout       = self.glade.get_object("dlgAbout")
         self.chkMarkUnknown = self.glade.get_object("chkMarkUnknown")
-        self.comboPair      = self.setup_combo(self.info.modes(),
+        self.comboPair      = self.setup_combo(
                                 self.glade.get_object("comboPair"))
 
         self.buffer.connect("changed", self.on_buffer_changed)
@@ -87,6 +120,7 @@ class MainWindow:
         
     def translator_loop(self):
         """This runs as a thread which invokes Apertium D-Bus methods.
+        If Apertium-Dbus is not on the system, call apertium ourself.
 
         We run this in a thread, since it takes a perceptible amount
         of time to execute an Apertium call.
@@ -100,25 +134,53 @@ class MainWindow:
         latest item added to the queue, so we discard everything up to that
         point.
         """
+        global usingDbus
         while True:
             options, _input = self.input_queue.get() # Block waiting for something to translate
             while not self.input_queue.empty():          # We're only interested in the latest item in the queue...
                 options, _input = self.input_queue.get() # ...so we discard items until we have the latest item
             if (options, _input) == (None, None): #We send (None, None) to the queue to tell it to stop the thread
                 break
-            try:
-                result = self.translator.translate(options, _input) # Invoke the Apertium D-Bus translation service
+            result = ''
+            
+            def update_text():
+                """Take the output from the translation and update the output buffer"""
+                self.output_buffer.set_text(result)
+                return False
+            if usingDbus:
+                try:
+                    result = self.translator.translate(options, _input) # Invoke the Apertium D-Bus translation service
+                except Exception as e:
+                    usingDbus = False
+                    print(e, file=sys.stderr) # We should probably do exit(1) here
 
-                def update_text():
-                    """Take the output from the translation and update the output buffer"""
-                    self.output_buffer.set_text(result)
-                    return False
+            else: # we will have to call apertium ourselves
+                from subprocess import Popen, PIPE
 
-                # We probably should call Gdk.thread_enter here...
-                GObject.idle_add(update_text) # Post the function into the GTK main loop
-            except Exception as e:
-                print(e, file=sys.stderr) # We should probably do exit(1) here
+                if options['mark_unknown'] == 'true': #careful: this is actually a string
+                    m_unknown = True
+                else:
+                    m_unknown = False
+                
+                #this is the command we will send:
+                cmd = "apertium " + self.lang_pair
+                if not m_unknown:
+                    cmd += ' -u' #this is tricky: -u indicates _not_ to mark
 
+                #calling on apertium
+                p = Popen(cmd, shell=True,stdin=PIPE, stdout=PIPE, stderr=PIPE,
+                    close_fds=True)
+                (child_in, child_out, child_err) = (p.stdin, p.stdout, p.stderr)
+                child_in.write(bytes(_input, 'UTF-8'))
+                child_in.close() # You MUST close the child's stdin to get output from some programs
+
+                result = child_out.read().decode('UTF-8')
+                child_out.close()
+                err = child_err.read()
+                child_err.close()
+                
+            GObject.idle_add(update_text) # Post the function into the GTK main loop
+                
 
     def on_buffer_changed(self, w):
         nex = [self.options(), w.get_text(w.get_start_iter(),
@@ -129,12 +191,12 @@ class MainWindow:
     # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
-        self.input_queue.put([None, None])
+        self.input_queue.put([None, None]) #tell our translation thread to close
         self.save_config()
         Gtk.main_quit()
 
     def on_wndMain_destroy(self, widget):
-        self.input_queue.put([None, None])
+        self.input_queue.put([None, None]) #tell our translation thread to end
         Gtk.main_quit()
 
     def on_wndMain_delete_event(self, widget, event):
@@ -154,8 +216,15 @@ class MainWindow:
 
         Now, create a proxy object to the Apertium D-Bus translator object for
         the language pair and assign the object to self.translator."""
-        dbus_pair_name = "/" + "_".join(pair_name.split("-"))
-        self.translator = dbus.Interface(self.bus.get_object("org.apertium.mode", dbus_pair_name), "org.apertium.Mode")
+        global usingDbus
+        if usingDbus:
+            dbus_pair_name = "/" + "_".join(pair_name.split("-"))
+            try:
+                self.translator = dbus.Interface(self.bus.get_object("org.apertium.mode", dbus_pair_name), "org.apertium.Mode")
+            except:
+                usingDbus = False
+        else:
+            self.lang_pair = pair_name
 
     def on_comboPair_changed(self, widget):
         pair_name = widget.get_model().get_value(widget.get_active_iter(), 0)
@@ -170,6 +239,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         print('apertium-tolk 0.2')
         print('Copyright (C) 2006 Wynand Winterbach')
+        print('Copyright (C) 2012 Eric Ye')
         print('This is free software.  You may redistribute copies of it under the terms of')
         print('the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.')
         print('There is NO WARRANTY, to the extent permitted by law.')
