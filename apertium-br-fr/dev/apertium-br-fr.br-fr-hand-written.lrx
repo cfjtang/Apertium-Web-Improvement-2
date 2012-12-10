@@ -213,17 +213,30 @@
 	<match lemma="kazetenn" tags="n.*"/>
     </rule>	
 
-	
   <rule>
 	<match lemma="embann" tags="v.*"><select lemma="exprimer" tags="v.*"/></match>
-	<match lemma="un" tags="det.*"/>
-	<match lemma="c'hoant" tags="n.*"/>
-    </rule>	
-
-  <rule>
-	<match lemma="embann" tags="v.*"><select lemma="exprimer" tags="v.*"/></match>
+    <or>
 	<match lemma="an" tags="det.*"/>
+	<match lemma="un" tags="det.*"/>
+	<match lemma="ma" tags="pos.*"/>
+	<match lemma="da" tags="pos.*"/>
+	<match lemma="e" tags="pos.*"/>
+	<match lemma="he" tags="pos.*"/>
+	<match lemma="hon" tags="pos.*"/>
+	<match lemma="hor" tags="pos.*"/>	
+	<match lemma="hol" tags="pos.*"/>
+	<match lemma="ho" tags="pos.*"/>
+	<match lemma="o" tags="pos.*"/>
+	</or>
+    <or>
+	<match lemma="atiz" tags="n.*"/>
+	<match lemma="c'hoant" tags="n.*"/>
+	<match lemma="nec'hamant" tags="n.*"/>
+	<match lemma="santimant" tags="n.*"/>
+	<match lemma="soñj" tags="n.*"/>
 	<match lemma="youl" tags="n.*"/>
+	</or>
+<!-- esta regla es para tener frases como "embann e c'hoant : expresar su deseo" ; hay que prever la conjugacion del verbo en caso asi : "embann a ra e c'hoant" (expresa su deseao) o "embannet en deus e c'hoant" (ha expresado su deseo) -->
     </rule>	
 
   <rule>
@@ -242,36 +255,77 @@
     <match lemma="saozneg" tags="n.*"/>
 	<match lemma="spagnoleg" tags="n.*"/>
 	</or>
-<!-- aqui se puede echar todos lon nombres de lenguas (palabras que acaben en -eg)
+<!-- aqui se puede echar todos lon nombres de lenguas (palabras que acaben en -eg) -->
     </rule>		
 	
-	
   <rule>
-	<match lemma="embann" tags="v.*"><select lemma="exprimer" tags="v.*"/></match>
-    <or>
-	<match lemma="ma" tags="pos.*"/>
-	<match lemma="da" tags="pos.*"/>
-	<match lemma="e" tags="pos.*"/>
-	<match lemma="he" tags="pos.*"/>
-	<match lemma="hon" tags="pos.*"/>
-	<match lemma="hor" tags="pos.*"/>	
-	<match lemma="hol" tags="pos.*"/>
-	<match lemma="ho" tags="pos.*"/>
-	<match lemma="o" tags="pos.*"/>
-	</or>
-    <or>
-	<match lemma="c'hoant" tags="n.*"/>
-	<match lemma="soñj" tags="n.*"/>
-	<match lemma="youl" tags="n.*"/>
-	</or>
+	<match lemma="embann" tags="v.*"><select lemma="déclarer" tags="v.*"/></match>
+	<match lemma="bezañ" tags="v.*"/>
+<!-- seguido ademas de un participio : embann bezañ dedennet : declarar estar interesado -->
     </rule>	
 
-  <rule>
+
+	<rule>
 	<match lemma="embann" tags="v.*"><select lemma="proclamer" tags="v.*"/></match>
 	<match lemma="bezañ" tags="v.*"/>
     <or>
 	<match lemma="bro" tags="n.*"/>
 	<match lemma="lec'h" tags="n.*"/>	
+	</or>
+    </rule>	
+
+  <rule>
+	<match lemma="framm" tags="n.*"><select lemma="structure" tags="n.*"/></match>
+    <or>
+	<match lemma="arbennikaat" tags="v.*"/>
+	<match lemma="etrekumunel" tags="adj.*"/>
+	<match lemma="kumunel" tags="adj.*"/>
+	<match lemma="melestradurel" tags="adj.*"/>
+	<match lemma="sokial" tags="adj.*"/>
+	</or>
+    </rule>	
+
+  <rule>
+	<match lemma="framm" tags="n.*"><select lemma="organisme" tags="n.*"/></match>
+	<match lemma="war" tags="prep.*"/>
+	<match lemma="ar" tags="det.*"/>
+	<match lemma="renk" tags="n*"/>
+    </rule>	
+	
+  <rule>
+	<match lemma="framm" tags="n.*"><select lemma="organisme" tags="n.*"/></match>	
+	<match lemma="a" tags="vpart.*"/>
+    <or>
+	<match lemma="fellout" tags="v.*"/>
+	<match lemma="kinnig" tags="v.*"/>
+	</or>
+    </rule>		
+
+	
+	
+  <rule>
+	<match lemma="framm" tags="n.*"><select lemma="charpente" tags="n.*"/></match>
+    <or>
+	<match lemma="an" tags="det.*"/>
+	<match lemma="un" tags="det.*"/>	
+	</or>
+    <or>
+	<match lemma="korbellek" tags="adj.*"/>	
+	<match lemma="toenn" tags="n.*"/>	
+	</or>
+    </rule>	
+	
+  <rule>
+	<match lemma="framm" tags="n.*"><select lemma="structure" tags="n.*"/></match>
+    <or>
+	<match lemma="an" tags="det.*"/>
+	<match lemma="un" tags="det.*"/>	
+	</or>
+    <or>
+	<match lemma="bag" tags="n.*"/>	
+	<match lemma="lestr" tags="n.*"/>	
+	<match lemma="ti" tags="n.*"/>
+	<match lemma="tiriad" tags="n.*"/>	
 	</or>
     </rule>	
 
@@ -294,7 +348,6 @@ no entiendo, mab-den figura como entrada en si. No deveria salir asi
 0049	À-origine du pays était leurs gens, ou alors ils devenus Bretons à-coeur..
 aqui hace falta una regla, depus de un posesivo (ma, da, e...) el plural de den (tud) se traduce con parents (padres), y el singular por mari (esposo). ma zud = mes parents/mis padres; ma den = mon mari/mi esposo
 
-
 0124	En dalenn ziwezhañ emañ an iliz-veur a dalvez da boentadur evit an dremmwel hag a sikour an den d’en em lec'hiañ.
 0124	e *dalenn diwezhañ bezañ an iliz#-m#eur a talvout da poentadur evit an dremmwel ha a sikour an @@@den@@@ da en~em lec’hiañ 
 0124	Dans le *dalenn dernier est la cathédrale Tu vaux à ponctuation pour l'horizon et à aider la personne à situer..
@@ -310,20 +363,10 @@ pensaba que habiamos puesto una regla para traducir "e" por "en" en vez de "dans
 0163	Emprunté son était d’avec usuriers et surtout d’avec les gens de la famille..
 porque ya no reconoce la particula verbal "e" delante de un verbo ?
 
-
 0211	War-dro 1845 e voe drastet ar gounezadoù avaloù-douar gant ar mildiou, ar pezh a lakaas tud Iwerzhon da gouezhañ en dienez vras ur wech ouzhpenn.
 0211	war-dro 1845 e bezañ drastañ an *gounezadoù aval#-douar gant an *mildiou ar~pezh~a lakaat @@@den@@@ Iwerzhon da kouezhañ e *dienez bras un gwech ouzhpenn 
 0211	Environ 1845 elle fut endommagé le *gounezadoù pommes de terre avec les *mildiou, ce que mit les gens de l'Irlande à tomber dans les *dienez grandes une fois en plus..
 ah, aqui es otra regla : cuando tud (plural de den) es seguido de un toponimo entonce se debe traducir por el sustantivo francés que da el gentilicio. Por ej : tud Iwerzhon = les Irlandais/los Irlandeses
-
-0238	Bep bloaz, e Frañs, ez eus un hanter-kant den bennak o veuziñ e poulloù-neuial prevez.
-0238	bep~bloaz e Frañs bezañ un hanter-kant @@@den@@@ bennak o beuziñ e poull prevez 
-0238	Tous les ans, en France, quelques cinquante personnes quelconques sont en train de noyer dans mares-nager privées..
-no entiendo porque no reconoce la palabra poull-neuial/piscina aqui. 
-0244	N’eo ket bet pell an dud hep ti nag aoz zo boas da gantren e karter ar porzh-houarn o welet e oa an traoù o cheñch.
-0244	ne bezañ ket bezañ pell an @@@den@@@ hep ti na aoz bezañ#~boas~da kantren e karter an porzh o gwelet e bezañ an tra o cheñch 
-0244	Elle n'a pas été loin les gens sans maison ni condition a l’habitude d’/a l’habitude de vagabonder dans le quartier du port-fer il était en train de voir les choses en train de changer..
-lo mismo aqui, ya no reconoce porzh-houarn/estacion de tren, parece que hay un problema con la palabras compuestas
 
 0031	Lezenn an 22 a viz Genver 2007 a denn da Gorsika a embann : « ar c’horseg zo anezhañ un danvez a vez kelennet en eurvezhioù reizh er skolioù-mamm hag er skolioù kentañ derez ».
 0031	lezenn an 22 a miz~Genver 2007 a tennañ#~da Korsika a @@@embann@@@ : «~^an *c’horseg bezañ direct un danvez a bezañ kelenn e eurvezh reizh e an skol#-m#amm ha e an skol kentañ derez »^. 
