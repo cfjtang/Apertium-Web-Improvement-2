@@ -62,8 +62,9 @@ class MainWindow:
         add everything in 'modes' to the list.
         """
         
-        for froLang in self.fro: # Add everything in 'fro' to the combobox
+        for froLang in sorted(self.fro): # Add everything in 'fro' to the combobox
             combo.append_text(froLang)
+        combo.set_wrap_width(int(len(self.fro) / 6) + 1)
 
         combo.set_active(0) # Set the combobox to the first entry
 
@@ -263,8 +264,9 @@ class MainWindow:
     def update_comboTo(self, froLang):
         toBox = self.glade.get_object("comboTo")
         toBox.remove_all()
-        for toLang in self.to[froLang]:
+        for toLang in sorted(self.to[froLang]):
             toBox.append_text(toLang)
+        toBox.set_wrap_width(int(len(self.to[froLang]) / 6) + 1)
         toBox.set_active(0) # Set the combobox to the first entry
         
     def on_comboTo_changed(self, widget):
