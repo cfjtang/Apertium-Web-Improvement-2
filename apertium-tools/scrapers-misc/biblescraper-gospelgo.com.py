@@ -55,9 +55,10 @@ def processdata(url):
     enterbody=0
     global tofile
     ischapter=0
-    titlep=""   ##okok
+    titlep=""  
     withfirsttitle=0
     newchapter=1
+    num8=1
 
     source = urllib.request.urlopen(str(url))  
     
@@ -98,19 +99,19 @@ def processdata(url):
              enterbody=1
         elif "<p><a>" in line : #if title             
               title = (line[line.rfind("<a>")+3:line.rfind("</a>")]).strip()
-              print("tttt" , title)
+            
               if start ==0:  
                                                 
                    tofile =tofile+ title.strip() 
+             
               else:                                              
                    tofile =tofile+ "\n\n" + title.strip()
                    
                    linenum = 0
-                   withfirsttitle=1
+              withfirsttitle=1    
               start=1
         elif "<p><b>" in line and "uzbek" in urll: # if title for some files like uz psalms
               title = (line[line.rfind("<b>")+3:line.rfind("</b>")]).strip()
-              print("ssssss"  + title)
               if start ==0:  
                          
                    tofile =tofile+"" + title.strip()
@@ -125,7 +126,6 @@ def processdata(url):
         elif (encoding=="windows-1251"  and "<b>" in line or "</b><p>" in line) or ("<p class" in line and start ==1 and "turkmen" not in urll) or (enterbody ==1 and start !=1 and "blue" in line) : #i : #if subtitle follow title or subtitle only                           
 
             title = re.compile(r'<[^<]*?/?>').sub('', line)  
-            print("tile  " +  title)
             
             if "uzbek" not in urll and "turkmen" not in urll:
                 if withfirsttitle:                                   
@@ -139,13 +139,13 @@ def processdata(url):
                             tofile =tofile+ "\n" + title.strip()
              
                         else :
-                            tofile =tofile+ "\n\n" + title.strip()
+                            tofile =tofile+ "\n\n"+ title.strip()
+ 
                         linenum = 0  
                     start=1   
             else:
                 titlep= title.strip() 
-                print("tile  -----" +  title) 
-  
+
                 start=1
             
         elif "<p>" is line and "<a" not in line and line.__len__()<5 and start == 1 or ("<!--" in line and not islinkbible) or ("<script type=" in line and ("uzbek" in urll or "turkmen" in urll )): #if line = <p>, end the bible scraping loop
@@ -154,7 +154,7 @@ def processdata(url):
                  linenum = 0
 
         else: #verse
-           
+    
                    format5 =re.match('\d+:\d+', line)
                    if start==1 and "<b>" in line and linenum ==0 and format5 :  # for num:num in the begining of the verse case, first line of the verse
 
@@ -184,7 +184,7 @@ def processdata(url):
                             tt= stripedline.index(":")                          
                             first= stripedline[0:tt]
                             second=stripedline[tt+1:tt+2]                         
-                           # if ischapter==1:
+            
                             if tofile=="": 
                                 tofile= tofile + chapter.strip() + " " +first
 
@@ -223,74 +223,70 @@ def processdata(url):
                             titlep = ""
        
 
-                         
 	
                         if format1 or format2 or format4:
                             stripedline=re.sub('/“','"',stripedline) #sub unknown chars
                             tofile =tofile+ "\n" + stripedline
                                                                           
                         else:  # handle sentence has numbers
- 
                              curr=0
                              tmpline2 =""                         
                              needappend =0
-                             num8=1
-                             ok=False
-    
-                              
 
                              #handling numbers in paragraphs
                              for m in re.finditer(r"\d+", stripedline):
-             
+                                 ok=False 
+ 
                                  num1=stripedline[m.start():m.end()]
-             
-                                 if str(num8) != '' and str(num8) != ' ':
-                                     
-                                     if str(num1) == str(int(num8)+1):
-                 
+
+          
+                                 if str(num1) == str(int(num8)+1):
+
                                        num8= num1
+      
                                        ok= True
+
+                                       
                      
-                                 if (  m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or (stripedline[m.start()-2:m.start()-1] =="," and "kirghiz" not in urll) or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll)or stripedline[m.start()-2:m.start()-1] =="»" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[0:1] ==" " or stripedline[m.start()-2:m.start()-1] =="\"" or stripedline[m.start()-2:m.start()-1] ==";" or stripedline[m.start()-2:m.start()-1] == "—"  or stripedline[m.start()-2:m.start()-1] == "«" or stripedline[m.start()-1:m.start()-0] == "." or stripedline[m.start()-2:m.start()-1] == "'" or stripedline[m.start()-3:m.start()-2] =="?" or stripedline[m.start()-1:m.start()-0] =="?" or  stripedline[m.start()-1:m.start()-0] =="," or stripedline[m.start()-1:m.start()-0] == "—" or stripedline[m.start()-1:m.start()-0] == "«" or stripedline[m.start()-3:m.start()-2] == "!" or (ok == True and "uzbek" not in urll) ):
+                                 if (  m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or (stripedline[m.start()-2:m.start()-1] =="," and "kirghiz" not in urll) or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll)or stripedline[m.start()-2:m.start()-1] =="»" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[0:1] ==" " or stripedline[m.start()-2:m.start()-1] =="\"" or stripedline[m.start()-2:m.start()-1] ==";" or stripedline[m.start()-2:m.start()-1] == "—"  or stripedline[m.start()-2:m.start()-1] == "«" or stripedline[m.start()-1:m.start()-0] == "." or (stripedline[m.start()-2:m.start()-1] == "'" and "gen" not in urll)  or stripedline[m.start()-3:m.start()-2] =="?" or stripedline[m.start()-1:m.start()-0] =="?" or  stripedline[m.start()-1:m.start()-0] =="," or stripedline[m.start()-1:m.start()-0] == "—" or stripedline[m.start()-1:m.start()-0] == "«" or stripedline[m.start()-3:m.start()-2] == "!" or (ok == True and "uzbek/bible" not in urll)  ) or (ok == True and "uzbek/gen" not in urll)  :  #  ok=true and uzbek not in urll ???????
                          
-                                     num8=  num1
-                  
-                                     head=1
+                                    
+                                     head=1  
+                                     
                                      if ( stripedline.startswith("-")  ):
                    
                                         stripedline= stripedline[1:len(stripedline)]
                                      if needappend: 
-                                       
+                                         
                                          tofile= tofile+stripedline[curr:m.start()-1] 
-                                       
+        
                                          needappend=0
-                                         tmpline2= stripedline[m.start():m.end()] +"  " 
-                                        
+                                         tmpline2= stripedline[m.start():m.end()] +" "  #?????
+     
                                          curr= m.end()+1
                                      else:
-                                         
 
                                          if (stripedline[m.end():m.end()+1]) ==":":
                                             tmpline2 = tmpline2 + stripedline[curr:m.end()-3]
                                             tofile= tofile+stripedline[m.end()-2:m.end()+3]
-           
-                              
+
                                             curr= m.end()+3
                                          else:
-                                            tmpline2 = tmpline2 + stripedline[curr:m.end()]
-                     
+                                            tmpline2 = tmpline2 + stripedline[curr:m.end() +1]   
+                               
+                                            curr=m.end()+1
 
-                                            curr=m.end()
-
-
-   
                                  else:
-                                     tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2)            
-                                     tofile= tofile + stripedline[ curr:m.end() ].strip()     
+
+                                     tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2.strip() + " ")                          
+              
+                                     tofile= tofile  + stripedline[ curr:m.end() ].strip()  # added "
+     
                                      curr=m.end()
                                      tmpline2 =""  # clear line
                                      needappend=1
                              tmpline2=tmpline2+stripedline[curr:len(stripedline)]  ##
+
                              tofile=tofile+ re.sub(r'(\d+)', '\n\\1', tmpline2) + " "   
      
 
