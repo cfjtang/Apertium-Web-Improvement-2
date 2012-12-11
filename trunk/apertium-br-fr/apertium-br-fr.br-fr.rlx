@@ -47,7 +47,7 @@ LIST DetInd           = (det ind);
 LIST DetPos           = (det pos);
 
 # Prepositions
-LIST Prep             = (pr);
+LIST Prep             = pr;
 
 
 # Verbal particles 
@@ -165,6 +165,8 @@ SET S-BOUNDARY = CS | (sent) ;
 #
 
 SECTION
+
+SELECT VpartIDO IF (1C ("<vez>"));
 
 REMOVE DetPos IF (0 DetPos) (0 Prep) (1C Toponim);
 
@@ -342,8 +344,10 @@ REMOVE VerbFin IF (0 Det) (1 NC);
 #Meur a bal zo gant an dud a fell dezho deskiÃ± ar yezh
 REMOVE Adj IF (-1 ("a")) (0 VerbFin) (0 Adj) (1C (prn obj));
 
-# REGLA (B0010): "Ar stad zo unan eus stummoù aozadur politikel ur vro."
-REMOVE:Rem_Vfin VerbFin IF (*-1C VerbFin BARRIER S-BOUNDARY);
+# REGLA (B0010): 
+REMOVE:Rem_Vfin VerbFin IF (*-1C VerbFin BARRIER S-BOUNDARY) (NOT -1* CC LINK -1* VerbFin);
+    ## Er mod m'eo savet an ti, gant ur savadur kreiz hag div gazel a-skouer a bep tu, e c'hell bout tri lec'h da labourat.
+    ## Ar stad zo unan eus stummoù aozadur politikel ur vro.
 
 # REGLA (C0002): "zeu da Gwengamp" "Prezidant Radio France a oa e Kemper d'ar 6 a viz Here"
 REMOVE PrnDObj IF (1 Toponim);
@@ -665,9 +669,9 @@ REMOVE NC IF (-1 Vpart) (0 NC) (0 VerbFin) (1 Adj) (1 SoftMutCons) (NOT 1 SoftMu
 # ran vihan : ranita
 SELECT VerbFin IF (0 ("<ran>")) (NOT -1 DetInd) (NOT 1 Adj) (NOT 1 SoftMutCons) (NOT 1 SoftMut);
 
-#dre ret ½ bost war ar buheziñ politikel 
-#ar mod ma c'hall an implijidi bezañ galvet 
-REMOVE VerbFin IF (NOT -1C Vpart) (NOT -1 (".*ma"r)) (NOT -1 ("pa"i cnjsub));
+REMOVE VerbFin IF (NOT -1 Vpart) (NOT -1 (".*ma"r)) (NOT -1 ("pa"i cnjsub));
+    ## dre ret ½ bost war ar buheziñ politikel 
+    ## ar mod ma c'hall an implijidi bezañ galvet 
 
 #met bevañ a ra e Gwipedel
 SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
@@ -699,6 +703,14 @@ SELECT Prep IF (0 Prep) (0 NC) (1C Toponim);
 # e c’hallimp kas warc’hoazh dezho.
 SELECT VerbInf IF (-1C ("gallout" vblex));
 
+REMOVE DetPos IF (0 ("<e>"i)) (1 MixedMut) (NOT 1 SoftMut) ;
+REMOVE Prep IF (0 ("<e>"i)) (1 MixedMut) ;
+REMOVE NC IF (0 ("<e>"i)) (1 VerbFin) ; 
+    ## Evit talañ ouzh an diaezamant-se hag evit diorren an embann e tle ar Rannvro pe ur framm a zo fiziet ennañ ar yalc’hadoù termenañ palioù da dizhout evit an niver a ditloù embannet ha dre rummad.
+
+REMOVE ("pal" n f) IF (0C ("<pal>")) (NOT 1 SoftMut) ;
+    ## Kas ar galled war-raok a chom pal pennan ar framm-se. 
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
@@ -714,7 +726,8 @@ SELECT SoftMut IF (-1C SoftMutTrigger) (0 SoftMutCons) (0 SoftMut) (NOT -1 ("da"
 REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
 
 # REGLA (A0006): ""
-SELECT SoftMutTrigger IF (1C SoftMut) (1C SoftMutCons) ;
+SELECT SoftMutTrigger IF (1C SoftMut) (1C SoftMutCons) (NOT 1 ("<vez>"i)) (NOT 0 ("<e>"i)) ;
+    ## Perc'hennet eo an tour gant an ti-kêr abaoe 1975 ; digor e vez da an den evit gweladenn bleinañ.
 
 # REGLA (A0005): "ez ti"
 SELECT HardMut IF (-1 HardMutTrigger);
@@ -753,7 +766,7 @@ SELECT Fut IF (-1 ("ken"i)) (0 ("vi"i)) (1 VerbPP);
 SELECT PreAdv IF (-1C NC) (0 ("ken"i)) (1 Adj);
 
 # e zivaskell 
-SELECT DetPos IF (0 ("<e>")) (1 SoftMut) (1 SoftMutCons);
+SELECT DetPos IF (0 ("<e>")) (1 SoftMut) (1 SoftMutCons) (1 NC);
 
 # pa oan bihan
 SELECT VerbFin (-1 ("pa"i cnjsub)) (0 VerbFin) (0 NC);
@@ -843,27 +856,27 @@ SELECT VerbFin IF (-1 ("ma"i)) (0 MixedMut);
 SECTION
 
 REMOVE DetPos (0 ("e"ri pr)) ((1 Num) OR (1 Language));
-SUBSTITUTE ("e") ("e:1") ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
-
-SUBSTITUTE ("den") ("den:1") ("den"ri n m pl) (-1C DetPos);
-
-SUBSTITUTE ("gwaz") ("gwaz:1") ("gwaz"ri n m) (-1C DetPos);
+#SUBSTITUTE ("e") ("e:1") ("e"ri pr) (0 Prep) ((1 Num) OR (1 Language));
+#
+#SUBSTITUTE ("den") ("den:1") ("den"ri n m pl) (-1C DetPos);
+#
+#SUBSTITUTE ("gwaz") ("gwaz:1") ("gwaz"ri n m) (-1C DetPos);
 
 # KSB / OAB 
 SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
 
 # treiñ + e + idioma = traduire + en + idioma 
-SUBSTITUTE ("treiñ") ("treiñ:1") ("treiñ" vblex) (1 ("e")) (2 Language);
+#SUBSTITUTE ("treiñ") ("treiñ:1") ("treiñ" vblex) (1 ("e")) (2 Language);
 
 # cuando se usa con el verbo paeañ (pagar) es mejor escoger a alquiler (loyer)
-SUBSTITUTE ("feurm") ("feurm:1") ("feurm" n m) (-1C* ("paeañ" vblex) BARRIER S-BOUNDARY) ;
-SUBSTITUTE ("feurm") ("feurm:1") ("feurm" n m) (1C* ("paeañ" vblex) BARRIER S-BOUNDARY) ;
+#SUBSTITUTE ("feurm") ("feurm:1") ("feurm" n m) (-1C* ("paeañ" vblex) BARRIER S-BOUNDARY) ;
+#SUBSTITUTE ("feurm") ("feurm:1") ("feurm" n m) (1C* ("paeañ" vblex) BARRIER S-BOUNDARY) ;
 
 # un tamm dic'hortoz : un poco inhabitual/un peu inattendu.
-SUBSTITUTE ("tamm") ("tamm:1") ("tamm" n) (-1 DetInd) (1 Adj);
+#SUBSTITUTE ("tamm") ("tamm:1") ("tamm" n) (-1 DetInd) (1 Adj);
 
 # Herve a gavo da evañ  
-SUBSTITUTE ("kavout# da") ("kavout# da:1") ("kavout# da" vblex) (0 ("kavout# da")) (1C VerbInf);
+#SUBSTITUTE ("kavout# da") ("kavout# da:1") ("kavout# da" vblex) (0 ("kavout# da")) (1C VerbInf);
 
 ##
 ## TRANSITIVE / INTRANSITIVE VERBS
