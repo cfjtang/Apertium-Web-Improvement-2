@@ -238,19 +238,38 @@ def processdata(url):
                                  ok=False 
  
                                  num1=stripedline[m.start():m.end()]
-
-          
-                                 if str(num1) == str(int(num8)+1):
-
-                                       num8= num1
-      
-                                       ok= True
-
-                                       
                      
-                                 if (  m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or (stripedline[m.start()-2:m.start()-1] =="," and "kirghiz" not in urll) or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll)or stripedline[m.start()-2:m.start()-1] =="»" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[0:1] ==" " or stripedline[m.start()-2:m.start()-1] =="\"" or stripedline[m.start()-2:m.start()-1] ==";" or stripedline[m.start()-2:m.start()-1] == "—"  or stripedline[m.start()-2:m.start()-1] == "«" or stripedline[m.start()-1:m.start()-0] == "." or (stripedline[m.start()-2:m.start()-1] == "'" and "gen" not in urll)  or stripedline[m.start()-3:m.start()-2] =="?" or stripedline[m.start()-1:m.start()-0] =="?" or  stripedline[m.start()-1:m.start()-0] =="," or stripedline[m.start()-1:m.start()-0] == "—" or stripedline[m.start()-1:m.start()-0] == "«" or stripedline[m.start()-3:m.start()-2] == "!" or (ok == True and "uzbek/bible" not in urll)  ) or (ok == True and "uzbek/gen" not in urll)  :  #  ok=true and uzbek not in urll ???????
-                         
-                                    
+                            
+                                 if (stripedline[m.end():m.end()+1] == ":" or stripedline[m.end():m.end()+1] == "-" ) and "kirghiz_nt" in urll : 
+                                     
+                                         ok= False
+                                 elif ( "kirghiz_nt" in urll and str(num1) == str(int(num8)+2) and (int(num1) == 4 and stripedline[m.start()-1:m.start()] != "-" and "kirghiz_nt" in urll)):
+                                       
+                                         ok= True
+                                 elif (stripedline[m.end():m.end()+1] == ":" or stripedline[m.end():m.end()+1] == "-") and "kirghiz_nt" in urll:   #special
+                                      
+                                         ok= False
+                                 
+                                 elif str(num8) != '' and str(num8) != ' ' :
+                                   if str(num1) == str(int(num8)+1):
+
+                                       if stripedline[m.start()-1:m.start()] == "-" and "kirghiz_nt" in urll:
+                                     
+                                          ok= False
+                                       elif int(num1) ==47 and stripedline[m.end()+1:m.end()+2] == "," and "kirghiz_nt" in urll:
+                                        
+                                          ok= False
+
+                                       else:
+                                   
+                                                                     
+                                         ok= True
+                                       num8= num1       
+                          
+                               
+                                 if ( (str(num1)!="601")  and (( m.start() is 0 or stripedline[m.start()-2:m.start()-1]  == "." or stripedline[m.start()-4:m.start()-3] =="." or stripedline[m.start()-2:m.start()-1] =="?" or stripedline[m.start()-2:m.start()-1] == "!" or (stripedline[m.start()-2:m.start()-1] =="," and "kirghiz" not in urll) or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-4:m.start()-3] =="!" or stripedline[m.start()-4:m.start()-3] ==":" or stripedline[m.start()-4:m.start()-3] =="?" or stripedline[m.start()-4:m.start()-3] =="," or stripedline[m.start()-2:m.start()-1] ==":" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[m.start()-4:m.start()-3] =="." or (stripedline[1:2] =="9" and "turkmen" in urll)or stripedline[m.start()-2:m.start()-1] =="»" or stripedline[m.start()-3:m.start()-2] =="." or stripedline[0:1] ==" " or stripedline[m.start()-2:m.start()-1] =="\"" or stripedline[m.start()-2:m.start()-1] ==";" or stripedline[m.start()-2:m.start()-1] == "—"  or stripedline[m.start()-2:m.start()-1] == "«" or stripedline[m.start()-1:m.start()-0] == "." or (stripedline[m.start()-2:m.start()-1] == "'" and "gen" not in urll)  or stripedline[m.start()-3:m.start()-2] =="?" or stripedline[m.start()-1:m.start()-0] =="?" or  stripedline[m.start()-1:m.start()-0] =="," or stripedline[m.start()-1:m.start()-0] == "—" or stripedline[m.start()-1:m.start()-0] == "«" or stripedline[m.start()-3:m.start()-2] == "!" or (ok == True and "uzbek/bible" not in urll)  ) or (ok == True and "uzbek/gen" not in urll)))  :  #  ok=true and uzbek not in urll ???????
+                                  
+                                     num8= num1
                                      head=1  
                                      
                                      if ( stripedline.startswith("-")  ):
