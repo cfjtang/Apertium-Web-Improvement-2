@@ -22,24 +22,50 @@ except:
 
 import tolk
 apertium_dir = tolk.prefix
+lang_names = tolk.lang_names
 
 def split_pair_into_from_and_to(modes):
     """Return a list of from-languages and a dictionary of to-languages.
     The dictionary maps from-languages to all of their to-languages.
+
+    We also want to store it in a Gtk ListStore to make things easier for ourselves.
     """
     to = {}
-    fro = set()
-    for mode in modes:
+    fro = Gtk.ListStore(str, str)
+    froSet = set() #Let's keep a running set of the from-languages we've used
+                    #so we don't reuse them.
+    for mode in sorted(modes):
         if mode.count("-") > 1:
-            continue #some modes like val-en-ca or en-ca-multi
+            continue #some modes like val-en-ca or en-ca-multi should be ignored
         locSplit = mode.find("-")
+
+        #Find the from language
         froLang = mode[:locSplit]
-        fro.add(froLang)
-        toLang = mode[locSplit + 1:]
-        if froLang in to:
-            to[froLang].append(toLang)
+        if froLang in lang_names:
+            froLangFriendlyName = tolk.lang_names[froLang]
         else:
-            to[froLang] = [toLang]
+            froLangFriendlyName = froLang
+        if froLang not in froSet: #check if we've already added it
+            fro.append([froLang, froLangFriendlyName])
+            froSet.add(froLang)
+        print(froLang, froLangFriendlyName, file=sys.stderr)
+
+        #Find the to language
+        toLang = mode[locSplit + 1:]
+        if toLang in lang_names:
+            toLangFriendlyName = lang_names[toLang]
+        else:
+            toLangFriendlyName = toLang
+
+        #Add the to language to our dictionary of list models
+        if froLang in to:
+            to[froLang].append([toLang, toLangFriendlyName])
+            print(toLang, toLangFriendlyName, file=sys.stderr)
+        else:
+            to[froLang] = Gtk.ListStore(str, str)
+            to[froLang].append([toLang, toLangFriendlyName])
+            to[froLang].set_sort_column_id(1, Gtk.SortType.ASCENDING)
+        fro.set_sort_column_id(1, Gtk.SortType.ASCENDING)
     return fro, to
 
 class MainWindow:
@@ -62,8 +88,7 @@ class MainWindow:
         add everything in 'modes' to the list.
         """
         
-        for froLang in sorted(self.fro): # Add everything in 'fro' to the combobox
-            combo.append_text(froLang)
+        combo.set_model(self.fro)
         combo.set_wrap_width(int(len(self.fro) / 6) + 1)
 
         combo.set_active(0) # Set the combobox to the first entry
@@ -257,23 +282,30 @@ class MainWindow:
             self.lang_pair = pair_name
 
     def on_comboPair_changed(self, widget):
-        froLang = widget.get_active_text()
-        self.update_comboTo(froLang)
+        froLang = widget.get_active_iter()
+        self.froLangCode = widget.get_model().get_value(froLang, 0)
+        self.update_comboTo(self.froLangCode)
         self.buffer.emit("changed")
 
     def update_comboTo(self, froLang):
         toBox = self.glade.get_object("comboTo")
         toBox.remove_all()
-        for toLang in sorted(self.to[froLang]):
-            toBox.append_text(toLang)
+        toBox.set_model(self.to[froLang])
         toBox.set_wrap_width(int(len(self.to[froLang]) / 6) + 1)
         toBox.set_active(0) # Set the combobox to the first entry
         
     def on_comboTo_changed(self, widget):
-        toLang = widget.get_active_text()
-        froLang = self.glade.get_object("comboPair")
-        chosenFroLang = froLang.get_active_text()
-        pair_name = chosenFroLang + "-" + toLang        
+        toLangIter = widget.get_active_iter()
+        if toLangIter is None:
+            return
+        
+        self.toLangCode = widget.get_model().get_value(toLangIter, 0)
+        toLang = self.toLangCode
+        froLang = self.froLangCode
+        if toLang is None or froLang is None:
+            return #Don't do anything if either language list hasn't been
+                    #populated yet
+        pair_name = froLang + "-" + toLang        
         self.update_translation_object(pair_name)
         self.buffer.emit("changed")
     

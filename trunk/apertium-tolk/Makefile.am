@@ -13,7 +13,7 @@ man_MANS	= apertium-tolk.1
 
 bin_SCRIPTS	= apertium-tolk 
 apertiumtolkdir	= $(pythondir)/tolk
-apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py __init__.py prefix.py
+apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py __init__.py prefix.py lang_names.py
 
 gladedir	= $(datadir)/apertium-tolk/glade
 glade_DATA	= tolk.ui emblem-web.svg
