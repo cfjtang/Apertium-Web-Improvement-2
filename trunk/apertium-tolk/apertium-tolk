@@ -24,6 +24,8 @@ import tolk
 apertium_dir = tolk.prefix
 lang_names = tolk.lang_names
 
+_ = tolk._
+
 def split_pair_into_from_and_to(modes):
     """Return a list of from-languages and a dictionary of to-languages.
     The dictionary maps from-languages to all of their to-languages.
@@ -42,7 +44,7 @@ def split_pair_into_from_and_to(modes):
         #Find the from language
         froLang = mode[:locSplit]
         if froLang in lang_names:
-            froLangFriendlyName = tolk.lang_names[froLang]
+            froLangFriendlyName = _(tolk.lang_names[froLang])
         else:
             froLangFriendlyName = froLang
         if froLang not in froSet: #check if we've already added it
@@ -53,7 +55,7 @@ def split_pair_into_from_and_to(modes):
         #Find the to language
         toLang = mode[locSplit + 1:]
         if toLang in lang_names:
-            toLangFriendlyName = lang_names[toLang]
+            toLangFriendlyName = _(lang_names[toLang])
         else:
             toLangFriendlyName = toLang
 
