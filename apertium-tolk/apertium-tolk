@@ -50,7 +50,6 @@ def split_pair_into_from_and_to(modes):
         if froLang not in froSet: #check if we've already added it
             fro.append([froLang, froLangFriendlyName])
             froSet.add(froLang)
-        print(froLang, froLangFriendlyName, file=sys.stderr)
 
         #Find the to language
         toLang = mode[locSplit + 1:]
@@ -62,7 +61,6 @@ def split_pair_into_from_and_to(modes):
         #Add the to language to our dictionary of list models
         if froLang in to:
             to[froLang].append([toLang, toLangFriendlyName])
-            print(toLang, toLangFriendlyName, file=sys.stderr)
         else:
             to[froLang] = Gtk.ListStore(str, str)
             to[froLang].append([toLang, toLangFriendlyName])
