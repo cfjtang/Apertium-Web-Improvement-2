@@ -431,6 +431,22 @@
     </pipeline>
   </mode>
 
+  <mode name="ca-en-biltrans">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ca-en.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="ca-en.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="ca-en.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="ca-en-chunker">
     <pipeline>
       <program name="lt-proc">
