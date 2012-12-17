@@ -6,6 +6,9 @@
       <cat-item lemma="to" tags="pr"/>
     </def-cat>
 
+    <def-cat n="interj">
+      <cat-item tags="ij"/>
+    </def-cat>
     <def-cat n="on">
       <cat-item lemma="on" tags="pr"/>
       <cat-item lemma="on" tags="adv"/>
@@ -25685,6 +25688,29 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 	</out>
       </action>
     </rule>
+
+
+ <rule comment="IJ">
+      <pattern>
+	<pattern-item n="interj"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord">
+	  <with-param pos="1"/>
+	</call-macro>	
+	<out>
+	  <chunk name="interj" case="caseFirstWord">
+	    <tags>
+	      <tag><clip pos="1" side="tl" part="tags"/></tag>		
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
 
 
  <rule comment="CNJ">
