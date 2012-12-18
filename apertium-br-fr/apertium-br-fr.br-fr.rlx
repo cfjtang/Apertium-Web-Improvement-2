@@ -669,9 +669,10 @@ REMOVE NC IF (-1 Vpart) (0 NC) (0 VerbFin) (1 Adj) (1 SoftMutCons) (NOT 1 SoftMu
 # ran vihan : ranita
 SELECT VerbFin IF (0 ("<ran>")) (NOT -1 DetInd) (NOT 1 Adj) (NOT 1 SoftMutCons) (NOT 1 SoftMut);
 
-REMOVE VerbFin IF (NOT -1 Vpart) (NOT -1 (".*ma"r)) (NOT -1 ("pa"i cnjsub));
+REMOVE VerbFin IF (NOT -1 Vpart) (NOT -1 (".*ma"r)) (NOT -1 ("pa"i cnjsub)) (NOT -1 (prn rel));
     ## dre ret ½ bost war ar buheziñ politikel 
     ## ar mod ma c'hall an implijidi bezañ galvet 
+    ## Ar pezh a vank evit kas al labour da benn war dachenn an teknologiezhioù nevez eo frammoù a-vicher.
 
 #met bevañ a ra e Gwipedel
 SELECT VerbInf IF (0 (adj sup)) (0 VerbInf) (1 ("a")) (2 ("ober"));
@@ -710,6 +711,22 @@ REMOVE NC IF (0 ("<e>"i)) (1 VerbFin) ;
 
 REMOVE ("pal" n f) IF (0C ("<pal>")) (NOT 1 SoftMut) ;
     ## Kas ar galled war-raok a chom pal pennan ar framm-se. 
+
+SELECT Vpart IF (0 ("<ez>"i)) (1 ("a"i)) ; 
+    ## Goude bezañ kendrec'het e dad ez a da Bariz da studiañ an arz ha degemeret eo en demiezh Jullian : eno e vo skoliad da Alfred Roll hag Emmanuel Damoye.
+
+SELECT VerbFin IF (-1C ("ar pezh a"i)); 
+    ## Ar pezh a vank evit kas al labour da benn war dachenn an teknologiezhioù nevez eo frammoù a-vicher.
+
+REMOVE VerbFin IF (0C NC OR VerbFin) (-1 ("o"i vpart)) (NOT -1 (prn obj)); 
+    ## Ezhomm zo da vont pelloc’h c’hoazh ganti evit kinnig abadennoù lies o danvez ha dedennus en o framm.
+
+REMOVE Det IF (0 ("<en>"i)) (1 DetPos);
+    ## Ezhomm zo da vont pelloc’h c’hoazh ganti evit kinnig abadennoù lies o danvez ha dedennus en o framm.
+    ## En o levr e vo kavet elfennoù sintetek hag a c'haller fiziout enno evit anavezout gwelloc'h hon endro, evit ijinañ gwelloc'h dazont Breizh.
+
+SELECT VerbFin IF (-1 ("a"i)) (0 NC OR VerbFin) (1 Prep OR PrnIObj) ;
+    ## « Tiez kozh e Roazhon », « Plasenn Koc'hu an Edeier, » taolennet e 1929 gant Camille Godet, a ro dimp da anavezout un neuz eus kêr Roazhon aet da get, e-lec'h m'emañ Plasenn Honoré Kommereg hiziv an deiz.
 
 SECTION
 
@@ -803,8 +820,10 @@ REMOVE (+an) IF (1 DetPos) (0 ("<en>"ri));
 # raktres sindikad bro Dinan
 REMOVE VerbFin IF (NOT (-1 Vpart) LINK (-1 Conj)) ;
 
-#D'ar mare ma oan o tigeriñ an nor
-SELECT VerbFin IF (-1C* Conj) (NOT 1C* VerbFin);
+SELECT VerbFin IF (-1C* CS) (NOT 1C* VerbFin);
+    ## D'ar mare ma oan o tigeriñ an nor.
+    ## Ezhomm zo da vont pelloc’h c’hoazh ganti evit kinnig abadennoù lies o danvez ha dedennus en o framm.
+
 
 SELECT (pr) IF (-1 Num) (1 NC);
 
