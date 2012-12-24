@@ -38,13 +38,47 @@ class Translate(service.Service):
         super(Translate, self).__init__("/")
         self.cmd = cmd
         self.modes = modes
+        self.buffer = bytes()
 
-    @service.method("org.apertium.Translate", in_signature='sa{ss}s', out_signature='s')
+    @service.method("org.apertium.Translate", in_signature='sa{ss}ay', out_signature='ay')
     def translate(self, pair, options, text):
         if pair not in self.modes:
             raise Exception("Invalid language pair")
             
-        out, err = call(add_options([self.cmd, pair], options), text)
+        # out, err = call(add_options([self.cmd, pair], options), text)
+                
+        text = self.buffer + bytes(text)
+        text, a, self.buffer = text.decode().rpartition("\0")
+        text = text.encode()
+        self.buffer = self.buffer.encode()
+
+        out = text
+        err = bytearray()
+
+        try:
+            info = service.make_proxy("org.apertium.info/", "org.apertium.Info")
+
+        except:
+            raise Exception("Could not connect to the Apertium information service") 
+        
+        for cmd in info.get_pipeline(pair):
+            try:
+                argOneIndex = cmd.index("$1")
+                if 'mark_unknown' in options.keys() and options['mark_unknown'] == False:
+                    cmd[argOneIndex] = "-n"
+                else:
+                    cmd[argOneIndex] = "-g"
+            except ValueError:
+                pass
+            
+            try:
+                argTwoIndex = cmd.index("$2")
+                cmd[argTwoIndex] = "-m"
+            except ValueError:
+                pass
+            
+            out, err = call(cmd, out)
+
         return out
         
 

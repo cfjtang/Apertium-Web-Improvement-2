@@ -39,7 +39,11 @@ class Info(service.Service):
         import re
         
         mode_content = open(path.join(self.mode_directory(), mode + '.mode')).read()
-        return [re.split('[ \t\n]*', command.strip()) for command in mode_content.split('|')]
+        
+        commands = mode_content.split('|')
+        #return [(lambda x:x[0:1] + ["-z"] + x[1:])(re.split('[ \t\n]*', command.strip())) for command in commands]
+        return [re.split('[ \t\n]*', command.strip()) + ["-z"] for command in commands]
+        #return [re.split('[ \t\n]*', command.strip()) for command in mode_content.split('|')]
 
 
     pipeline_filters = {'txt' : ('apertium-destxt', 'apertium-retxt')}
