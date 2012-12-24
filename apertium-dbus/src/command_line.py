@@ -19,7 +19,7 @@ def call(cmdline, _in):
 
     #p.communicate(input=_in)
     #(out, err) = p.communicate()
-    child_in.write(bytes(_in, 'UTF-8'))
+    child_in.write(bytes(_in))
     child_in.close() # You MUST close the child's stdin to get output from some programs
 
     out = child_out.read()
