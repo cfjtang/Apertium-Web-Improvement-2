@@ -8,10 +8,26 @@ import threading # A simple thread launcher
 from configparser import ConfigParser
 # The ConfigParser is used to store preferences of the program
 
+# So we know what language the user prefers so we can automatically select it
+# for them, if possible.
+import locale
+
 # GTK related imports
 from gi.repository import GObject
 from gi.repository import Gtk
 import gi
+
+# If we want to use guess-language to guess our language:
+# https://bitbucket.org/spirit/guess_language/overview
+try:
+    import guess_language as glang
+    using_guess_language = True
+except:
+    using_guess_language = False
+    print(  """If you want language-guessing, please install guess_lang
+            from here:
+            https://bitbucket.org/spirit/guess_language/overview""",
+                file=sys.stderr)
 
 #If you want to test out the program without using Dbus, set usingDbus to False
 usingDbus = True
@@ -34,8 +50,11 @@ def split_pair_into_from_and_to(modes):
     """
     to = {}
     fro = Gtk.ListStore(str, str)
-    froSet = set() #Let's keep a running set of the from-languages we've used
+    froList = [] #Let's keep a running list of the from-languages we've used
                     #so we don't reuse them.
+    langCount = 0 #this is so we know which language is in the fro box so we
+                    #don't have to search for the language when we update
+                    #the glang button.
     for mode in sorted(modes):
         if mode.count("-") > 1:
             continue #some modes like val-en-ca or en-ca-multi should be ignored
@@ -47,9 +66,10 @@ def split_pair_into_from_and_to(modes):
             froLangFriendlyName = _(tolk.lang_names[froLang])
         else:
             froLangFriendlyName = froLang
-        if froLang not in froSet: #check if we've already added it
+        if froLang not in froList: #check if we've already added it
             fro.append([froLang, froLangFriendlyName])
-            froSet.add(froLang)
+            froList.append(froLang)
+            langCount += 1
 
         #Find the to language
         toLang = mode[locSplit + 1:]
@@ -65,8 +85,7 @@ def split_pair_into_from_and_to(modes):
             to[froLang] = Gtk.ListStore(str, str)
             to[froLang].append([toLang, toLangFriendlyName])
             to[froLang].set_sort_column_id(1, Gtk.SortType.ASCENDING)
-        fro.set_sort_column_id(1, Gtk.SortType.ASCENDING)
-    return fro, to
+    return fro, to, froList
 
 class MainWindow:
     def get_modes(self):
@@ -152,7 +171,8 @@ class MainWindow:
         else:
             modes = self.get_modes()
 
-        self.fro, self.to = split_pair_into_from_and_to(modes)
+        self.fro, self.to, self.froList = split_pair_into_from_and_to(modes)
+        self.froSet = set(self.froList)
         
         self.comboPair      = self.setup_combo(
                                 self.glade.get_object("comboPair"))
@@ -163,9 +183,71 @@ class MainWindow:
         thread = threading.Thread(target=self.translator_loop)
         thread.start()
 
+        # Start the thread which will handle the guess languages, if there is one
+        if using_guess_language:
+            self.guess_lang_queue = Queue()
+            guess_thread = threading.Thread(target=self.guess_language_loop)
+            guess_thread.start()
+        else:
+            self.guess_lang_queue = dummy_queue()
+        
         self.load_config()
+
+        # If we're using guess_language, let's set up the UI for that.
+        if using_guess_language:
+
+            guess_language_button = self.glade.get_object("guess_lang_button")
+
+            guess_language_button.connect("clicked", self.on_btnChangeLangToGuessed_clicked)
+            self.has_lang_to_change_to = False
+            guess_language_button.set_label('') #let's start with an empty string
+            
         self.wndMain.show_all()
 
+
+    def guess_language_loop(self):
+        """This runs as a thread which calls on guess_language things.
+
+
+        It's a different thread from the translation thread because both
+        guess_language and apertium are very expensive and should be made
+        asynchronously.
+
+        We only start this thread if the global variable using_guess_language
+        is true."""
+
+        while True:
+            _input = self.guess_lang_queue.get()
+            while not self.guess_lang_queue.empty():
+                _input = self.guess_lang_queue.get()
+            if _input is None:
+                break
+
+            guessed_lang = glang.guess_language(_input)
+            if guessed_lang in self.froSet:
+                guessed_lang_index = self.froList.index(guessed_lang)
+                friendly_name_lang = _(lang_names[guessed_lang])
+                self.change_guess_lang_button(True, guessed_lang_index,
+                                              friendly_name_lang)
+            else:
+                self.change_guess_lang_button(False, None, None)
+    
+    def change_guess_lang_button(self, has_lang, lang_index, lang_name):
+        button = self.glade.get_object("guess_lang_button")
+        assert (button is not None) #because of https://bugzilla.gnome.org/show_bug.cgi?id=591085
+        
+        if has_lang:
+            detected_str = _("Detected: ") + lang_name
+            button.set_label(detected_str)
+            self.guessed_lang_index = lang_index #this is to be used by
+                    #on_btnChangeLangToGuessed_clicked so it knows
+                    #what language to change to when the user
+                    #clicks the button
+            self.has_lang_to_change_to = True
+        else:
+            self.has_lang_to_change_to = False
+            button.set_label('')
+            
         
     def translator_loop(self):
         """This runs as a thread which invokes Apertium D-Bus methods.
@@ -202,7 +284,6 @@ class MainWindow:
                 except Exception as e:
                     usingDbus = False
                     print(e, file=sys.stderr) # We should probably do exit(1) here
-
             else: # we will have to call apertium ourselves
                 from subprocess import Popen, PIPE
 
@@ -237,20 +318,23 @@ class MainWindow:
                 
 
     def on_buffer_changed(self, w):
-        nex = [self.options(), w.get_text(w.get_start_iter(),
-                                         w.get_end_iter(), False)]
+        text = w.get_text(w.get_start_iter(), w.get_end_iter(), False)
+        nex = [self.options(), text]
         self.input_queue.put(nex)
+        self.guess_lang_queue.put(text)
 
     ###########################################################
     # Implementations of GTK signals defined in the Glade file
 
     def on_btnQuit_clicked(self, widget):
         self.input_queue.put([None, None]) #tell our translation thread to close
+        self.guess_lang_queue.put(None)
         self.save_config()
         Gtk.main_quit()
-
+        
     def on_wndMain_destroy(self, widget):
         self.input_queue.put([None, None]) #tell our translation thread to end
+        self.guess_lang_queue.put(None)
         Gtk.main_quit()
 
     def on_wndMain_delete_event(self, widget, event):
@@ -263,6 +347,14 @@ class MainWindow:
     def on_dlgAbout_response(self, widget, response):
         self.dlgAbout.hide()
 
+    def on_btnChangeLangToGuessed_clicked(self, widget):
+        if self.has_lang_to_change_to:
+            combobox = self.glade.get_object("comboPair")
+            combobox.set_active(self.guessed_lang_index)
+            #do something here
+        else:
+            pass #make it a dummy button if there's nothing to change to
+        
     def update_translation_object(self, pair_name):
         """Given a language pair name like ab-cd, change - to _ so that
         one gets ab_cd. We must do this, because a D-Bus object name cannot
@@ -289,10 +381,25 @@ class MainWindow:
 
     def update_comboTo(self, froLang):
         toBox = self.glade.get_object("comboTo")
-        toBox.remove_all()
-        toBox.set_model(self.to[froLang])
+        model = self.to[froLang]
+        toBox.set_model(model)
         toBox.set_wrap_width(int(len(self.to[froLang]) / 6) + 1)
-        toBox.set_active(0) # Set the combobox to the first entry
+
+        #Let's find what the system locale is for the user and set the 'to'
+        #language to that if possible.
+
+        # output is something like 'en_US'
+        preferred_language_user = locale.getlocale()[0]
+        location_of_underscore = preferred_language_user.find('_')
+        if location_of_underscore > 0:
+            #cut it off to just 'en'
+            preferred_language_user = preferred_language_user[:location_of_underscore]
+        preferred_language_in_box = 0
+        for lang in range(len(model)):
+            if model[lang][0] == preferred_language_user:
+                preferred_language_in_box = lang
+        
+        toBox.set_active(preferred_language_in_box)
         
     def on_comboTo_changed(self, widget):
         toLangIter = widget.get_active_iter()
@@ -311,6 +418,12 @@ class MainWindow:
     
     def on_chkMarkUnknown_toggled(self, widget):
         self.buffer.emit("changed")
+
+#Let's make a dummy queue object so we don't have as many ifs in our code
+class dummy_queue(object):
+
+    def put(self, that):
+        pass
 
 
 if __name__ == "__main__":
