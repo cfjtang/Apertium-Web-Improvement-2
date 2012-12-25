@@ -17,6 +17,8 @@ from gi.repository import GObject
 from gi.repository import Gtk
 import gi
 
+##import random
+
 # If we want to use guess-language to guess our language:
 # https://bitbucket.org/spirit/guess_language/overview
 try:
@@ -49,7 +51,7 @@ def split_pair_into_from_and_to(modes):
     We also want to store it in a Gtk ListStore to make things easier for ourselves.
     """
     to = {}
-    fro = Gtk.ListStore(str, str)
+    fro = Gtk.ListStore(str, str, str)
     froList = [] #Let's keep a running list of the from-languages we've used
                     #so we don't reuse them.
     langCount = 0 #this is so we know which language is in the fro box so we
@@ -67,7 +69,7 @@ def split_pair_into_from_and_to(modes):
         else:
             froLangFriendlyName = froLang
         if froLang not in froList: #check if we've already added it
-            fro.append([froLang, froLangFriendlyName])
+            fro.append([froLang, froLangFriendlyName, "#FFFFFF"]) #default color is white
             froList.append(froLang)
             langCount += 1
 
@@ -86,6 +88,21 @@ def split_pair_into_from_and_to(modes):
             to[froLang].append([toLang, toLangFriendlyName])
             to[froLang].set_sort_column_id(1, Gtk.SortType.ASCENDING)
     return fro, to, froList
+
+def color_from_distance(distance):
+    '''Generate a hex color string based on distance.
+    Distance is expected to be given in the range [0, 1].
+
+    0 is very close and should be green (#00FF00).
+    1 is very far and should be red (#FF0000).
+    '''
+    amount_green = 1 - distance
+    amount_red = distance
+    g = int(255 * amount_green)
+    r = int(255 * amount_red)
+    g = hex(g)[2:].zfill(2).upper()
+    r = hex(r)[2:].zfill(2).upper()
+    return '#' + str(r) + str(g) + '00'
 
 class MainWindow:
     def get_modes(self):
@@ -106,7 +123,9 @@ class MainWindow:
         """Set the combo box up to display simple a list of text and
         add everything in 'modes' to the list.
         """
-        
+        cell = Gtk.CellRendererText()
+        combo.pack_start(cell, True)
+        combo.add_attribute(cell, "background", 2)
         combo.set_model(self.fro)
         combo.set_wrap_width(int(len(self.fro) / 6) + 1)
 
@@ -227,10 +246,20 @@ class MainWindow:
             if guessed_lang in self.froSet:
                 guessed_lang_index = self.froList.index(guessed_lang)
                 friendly_name_lang = _(lang_names[guessed_lang])
-                self.change_guess_lang_button(True, guessed_lang_index,
-                                              friendly_name_lang)
+                #let's quickly make a zero-argument function
+                #so we can have idle_add run it
+                f = lambda : self.change_guess_lang_button(True,
+                                    guessed_lang_index, friendly_name_lang)
             else:
-                self.change_guess_lang_button(False, None, None)
+                f = lambda : self.change_guess_lang_button(False, None, None)
+            GObject.idle_add(f)
+
+            #TODO: implement the coloring based on likely languages rather than
+            #randomly
+##            for lang in range(len(self.froList)):
+##                self.fro[lang][2] = color_from_distance(
+##                    random.random())
+
     
     def change_guess_lang_button(self, has_lang, lang_index, lang_name):
         button = self.glade.get_object("guess_lang_button")
@@ -284,6 +313,7 @@ class MainWindow:
                 except Exception as e:
                     usingDbus = False
                     print(e, file=sys.stderr) # We should probably do exit(1) here
+                    result = str(e) #this doesn't work yet...why doesn't this work?
             else: # we will have to call apertium ourselves
                 from subprocess import Popen, PIPE
 
@@ -310,7 +340,6 @@ class MainWindow:
                 child_err.close()
 
                 #If there's an error, display it:
-                #TODO: make it red.
                 if err:
                     result = err
                 
