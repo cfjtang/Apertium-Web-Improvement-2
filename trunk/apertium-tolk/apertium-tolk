@@ -17,10 +17,8 @@ from gi.repository import GObject
 from gi.repository import Gtk
 import gi
 
-##import random
-
 # If we want to use guess-language to guess our language:
-# https://bitbucket.org/spirit/guess_language/overview
+# https://bitbucket.org/ericye16/guess_language/overview
 try:
     import guess_language as glang
     using_guess_language = True
@@ -28,7 +26,7 @@ except:
     using_guess_language = False
     print(  """If you want language-guessing, please install guess_lang
             from here:
-            https://bitbucket.org/spirit/guess_language/overview""",
+            https://bitbucket.org/ericye16/guess_language/overview""",
                 file=sys.stderr)
 
 #If you want to test out the program without using Dbus, set usingDbus to False
@@ -242,31 +240,42 @@ class MainWindow:
             if _input is None:
                 break
 
-            guessed_lang = glang.guess_language(_input)
-            if guessed_lang in self.froSet:
-                guessed_lang_index = self.froList.index(guessed_lang)
-                friendly_name_lang = _(lang_names[guessed_lang])
-                #let's quickly make a zero-argument function
-                #so we can have idle_add run it
-                f = lambda : self.change_guess_lang_button(True,
-                                    guessed_lang_index, friendly_name_lang)
-            else:
-                f = lambda : self.change_guess_lang_button(False, None, None)
+            #get the probability for each of the languages we have
+            scores_and_langs = glang.check_with_models_scores(
+                _input.split(), self.froList)
+            if scores_and_langs == 'UNKNOWN':
+                continue
+            #get the range of our distances
+            s_max = max(x[0] for x in scores_and_langs if type(x[0]) == int)
+            s_min_all = min(x for x in scores_and_langs if type(x[0]) == int)
+            s_min = s_min_all[0]
+            s_range = s_max - s_min
+
+            #for each score, give the language in the combobox the appropriate color
+            for score in range(len(scores_and_langs)):
+                color = scores_and_langs[score][0]
+                if color == 'UNKNOWN':
+                    #make things grey if guess_lang doesn't support the language
+                    normalized_color = '#7f7f7f'
+                else:
+                    normalized_color = color_from_distance(
+                        (color - s_min) / s_range)
+                self.fro[score][2] = normalized_color
+
+            #get the name and index number of our closest language for the button
+            closest_lang = s_min_all[1]
+            guessed_lang_index = self.froList.index(closest_lang)
+            friendly_closest_lang = _(lang_names[closest_lang])
+            f = lambda : self.change_guess_lang_button(True,
+                                guessed_lang_index, friendly_closest_lang)
             GObject.idle_add(f)
-
-            #TODO: implement the coloring based on likely languages rather than
-            #randomly
-##            for lang in range(len(self.froList)):
-##                self.fro[lang][2] = color_from_distance(
-##                    random.random())
-
-    
+         
     def change_guess_lang_button(self, has_lang, lang_index, lang_name):
         button = self.glade.get_object("guess_lang_button")
         assert (button is not None) #because of https://bugzilla.gnome.org/show_bug.cgi?id=591085
         
         if has_lang:
-            detected_str = _("Detected: ") + lang_name
+            detected_str = _("Closest detected: ") + lang_name
             button.set_label(detected_str)
             self.guessed_lang_index = lang_index #this is to be used by
                     #on_btnChangeLangToGuessed_clicked so it knows
