@@ -32,7 +32,7 @@
 #   You should have received a copy of the GNU Lesser General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import functools, re, unicodedata, warnings, os
+import functools, re, unicodedata, warnings, os, sys, importlib
 
 from collections import defaultdict
 
@@ -49,6 +49,7 @@ MIN_LENGTH = 20
 MAX_GRAMS = 300
 WORD_RE = re.compile(r"(?:[^\W\d_]|['’])+", re.U)
 MODEL_ROOT = __name__ + ".data.models."
+import tolk.guess_language.data.models.en as biff
 
 BASIC_LATIN = {
     "en", "ceb", "ha", "so", "tlh", "id", "haw", "la", "sw", "eu",
@@ -281,17 +282,6 @@ IANA_MAP = {
 models = {}
 
 try:
-    from importlib import import_module
-except ImportError:
-    import sys
-
-    def import_module(name):
-        """Import a module.
-        """
-        __import__(name)
-        return sys.modules[name]
-
-try:
     from collections import namedtuple
 
     LanguageInfo = namedtuple("LanguageInfo", ["tag", "id", "name"])
@@ -469,11 +459,11 @@ def check_with_models_scores(words, langs):
 
         try:
             known_model = models[lkey]
-        except KeyError:
-            try:
-                known_model = import_module(MODEL_ROOT + lkey).model
-            except ImportError:
-                known_model = None
+        except KeyError:   
+            known_model = getattr(__import__(MODEL_ROOT + lkey), 'model')
+##            except Exception:
+##                known_model = None
+##                print("cannot import %s" % lkey, file=sys.stderr)
             models[lkey] = known_model
 
         if known_model:
