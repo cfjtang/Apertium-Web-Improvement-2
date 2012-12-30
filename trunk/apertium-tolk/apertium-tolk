@@ -17,8 +17,17 @@ from gi.repository import GObject
 from gi.repository import Gtk
 import gi
 
-import tolk.guess_language as glang
-using_guess_language = True
+# If we want to use guess-language to guess our language:
+# https://bitbucket.org/ericye16/guess_language/overview
+try:
+    import guess_language as glang
+    using_guess_language = True
+except:
+    using_guess_language = False
+    print(  """If you want language-guessing, please install guess_lang
+            from here:
+            https://bitbucket.org/ericye16/guess_language/overview""",
+                file=sys.stderr)
 
 #If you want to test out the program without using Dbus, set usingDbus to False
 usingDbus = True
@@ -234,23 +243,18 @@ class MainWindow:
             #get the probability for each of the languages we have
             scores_and_langs = glang.check_with_models_scores(
                 _input.split(), self.froList)
-            print(scores_and_langs)
             if scores_and_langs == 'UNKNOWN':
                 continue
-            #get the range of our distances
-            langs_with_nums = [x[0] for x in scores_and_langs
-                               if type(x[0]) == int]
-            if len(langs_with_nums) < 1:
+            langs_with_scores = [x[0] for x in scores_and_langs
+                                 if type(x[0]) == int]
+            if len(langs_with_scores) < 1:
                 continue
-            s_max = max(langs_with_nums)
-            s_min_all = min([x for x in scores_and_langs if type(x[0]) == int])
+            #get the range of our distances
+            s_max = max(langs_with_scores)
+            s_min_all = min(x for x in scores_and_langs if type(x[0]) == int)
             s_min = s_min_all[0]
             s_range = s_max - s_min
-            print(glang.check_with_models_scores(
-                ['some', 'text', 'here', 'might',
-                 'help', 'and', 'is', 'awesome'], ['en', 'fr']))
 
-            #protect against division by zero
             if s_range == 0:
                 s_range = 1
 
