@@ -30,7 +30,11 @@ def get_data_from_svn(url):
 
 		#Finally, directionality:
 		if not no_modes_file:
-			svn_data = str(subprocess.check_output("svn cat "+url+"apertium-"+lang_pair[0]+"-"+lang_pair[1]+"/modes.xml", stderr=subprocess.STDOUT, shell=True), 'utf-8')
+			try:
+				svn_data = str(subprocess.check_output("svn cat "+url+"apertium-"+lang_pair[0]+"-"+lang_pair[1]+"/modes.xml", stderr=subprocess.STDOUT, shell=True), 'utf-8')
+			except:
+				#hmm strange error....
+				no_modes_file = True
 
 		directionality = ""
 		if no_modes_file:
@@ -44,7 +48,7 @@ def get_data_from_svn(url):
 
 		lang_pair_data = [lang_pair[0], lang_pair[1], lang_pair[2], re_return2[0], directionality, url.split("/")[-2]]
 		return_me.append(dict(zip(keys_list, lang_pair_data)))
-		print(return_me[-1])
+#		print(return_me[-1])
 
 
 	return return_me
@@ -52,12 +56,13 @@ def get_data_from_svn(url):
 
 
 def main():
-	lang_pairs = get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/")
-	lang_pairs = lang_pairs.extend(get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/staging/"))
-	lang_pairs = lang_pairs.extend(get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/nursery/"))
-	lang_pairs = lang_pairs.extend(get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/incubator/"))
+	lang_pairs = []
+	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/")
+	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/staging/")
+	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/nursery/")
+	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/incubator/")
 
-	print(lang_pairs)
+	print("\n".join(lang_pairs))
 
 
 if __name__ == '__main__':
