@@ -57,10 +57,8 @@ def get_data_from_svn(url):
 
 def main():
 	lang_pairs = []
-	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/trunk/")
-	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/staging/")
-	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/nursery/")
-	lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/incubator/")
+	for where in ('trunk', 'staging', 'nursery', 'incubator'):
+		lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/%s/" % where )
 
 	print("\n".join(lang_pairs))
 
