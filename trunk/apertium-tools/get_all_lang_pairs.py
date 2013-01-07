@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import subprocess, re
+from get_stems import get_stems
 
 def get_data_from_svn(url):
 	svn_data = str(subprocess.check_output("svn list --xml "+url, stderr=subprocess.STDOUT, shell=True), 'utf-8')
@@ -7,7 +8,7 @@ def get_data_from_svn(url):
 	#Find lang pairs and date last updated
 	re_return = re.findall('<name>apertium-(\w{2,3})-(\w{2,3})</name>.*?<date>(\d{4}-\d{2}-\d{2})', svn_data, re.DOTALL)
 
-	keys_list = ["lg1", "lg2", "last_updated", "created", "direction", "repo"]
+	keys_list = ["lg1", "lg2", "last_updated", "created", "direction", "repo", "stems"]
 	return_me = []
 
 	for lang_pair in re_return:
@@ -46,7 +47,7 @@ def get_data_from_svn(url):
 				directionality = "<"+directionality
 
 
-		lang_pair_data = [lang_pair[0], lang_pair[1], lang_pair[2], re_return2[0], directionality, url.split("/")[-2]]
+		lang_pair_data = [lang_pair[0], lang_pair[1], lang_pair[2], re_return2[0], directionality, url.split("/")[-2], get_stems(url+"apertium-"+lang_pair[0]+"-"+lang_pair[1]+"/apertium-"+lang[0]+"-"+lang[1]+"."+lang[0]+"-"+lang[1]+".dix"]
 		return_me.append(dict(zip(keys_list, lang_pair_data)))
 #		print(return_me[-1])
 
