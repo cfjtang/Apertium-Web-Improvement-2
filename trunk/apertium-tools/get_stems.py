@@ -4,9 +4,12 @@
 '''
 import sys, urllib.request, re, itertools
 
-def main():
-	url = sys.argv[1]
-	bidict = ((urllib.request.urlopen(url)).read()).decode('utf-8')
+def get_stems(uri):
+	bidict = ""
+	if "http" in uri:
+		bidict = ((urllib.request.urlopen(uri)).read()).decode('utf-8')
+	else:
+		bidict = (open(uri, 'r')).read()
 
 	bidict_list = [i.strip() for i in bidict.split("\n")]
 	bidict_list = [i for i in bidict_list if ("<e>" in i and "<l>" in i and "<s" in i)]
@@ -19,4 +22,5 @@ def main():
 
 
 if __name__ == "__main__":
-	main()
+	uri = sys.argv[1]
+	get_stems(uri)
