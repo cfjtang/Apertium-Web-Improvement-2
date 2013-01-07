@@ -18,9 +18,9 @@ def get_stems(uri):
 	#Get rid of duplicates:
 	words_list.sort()
 	unique_words_list = list(i for i,_ in itertools.groupby(words_list))
-	print(len(unique_words_list))
+	return(len(unique_words_list))
 
 
 if __name__ == "__main__":
 	uri = sys.argv[1]
-	get_stems(uri)
+	print(get_stems(uri))
