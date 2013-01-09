@@ -63,8 +63,9 @@ def main():
 	for where in ('trunk', 'staging', 'nursery', 'incubator'):
 		lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/%s/" % where )
 
-	print(lang_pairs)
+		yield lang_pairs
 
 
 if __name__ == '__main__':
-	main()
+	for pair in main():
+		print(pair)
