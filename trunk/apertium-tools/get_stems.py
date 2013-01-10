@@ -2,9 +2,10 @@
 '''Usage: python3 <name>.py bidict_url
    Output: prints number of stems in that bidict.
 
-   Issues: If page encoding is not convertable to utf-8, returns -1
+   Issues: If bidict encoding is not convertable to utf-8, returns -1
 '''
-import sys, urllib.request, re, itertools
+import sys, urllib.request
+import xml.etree.ElementTree as xml
 
 def get_stems(uri):
 	bidict = ""
@@ -17,11 +18,12 @@ def get_stems(uri):
 	else:
 		bidict = (open(uri, 'r')).read()
 
+	tree = xml.fromstring(bidict)
 	words_list = []
-	temp = re.findall('<l>(.*?)<s', bidict, re.DOTALL|re.MULTILINE)
-	for i in temp:
-		if i not in words_list:
-			words_list.append(i)
+	for child in tree.findall("*[@id='main']/e//l"):
+		current_word = child.text
+		if current_word not in words_list:
+			words_list.append(current_word)
 
 	return(len(words_list))
 
