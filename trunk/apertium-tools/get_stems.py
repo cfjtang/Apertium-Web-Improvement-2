@@ -19,13 +19,7 @@ def get_stems(uri):
 		bidict = (open(uri, 'r')).read()
 
 	tree = xml.fromstring(bidict)
-	words_list = []
-	for child in tree.findall("*[@id='main']/e//l"):
-		current_word = child.text
-		if current_word not in words_list:
-			words_list.append(current_word)
-
-	return(len(words_list))
+	return(len(tree.findall("*[@id='main']/e//l")))
 
 
 if __name__ == "__main__":
