@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Apertium Language Pairs</title>
+    <!--
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.29.1"></script>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.js?1.29.1"></script>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?1.29.1"></script>
+    -->
+    
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <!--
+    <script type="text/javascript" src="../d3/d3.geom.js?1.29.1"></script>
+    <script type="text/javascript" src="../d3/d3.layout.js?1.29.1"></script>
+-->
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css" rel="stylesheet" />
+    <style type="text/css">
+    /* <![CDATA[ */
+
+       /*
+        marker#ltrunk, marker#rtrunk {
+            fill: red;
+        }
+
+        marker#lstaging, marker#staging {
+            fill: #f60;
+        }
+
+        marker#lnursery, marker#rursery {
+            fill: #fc0;
+        }
+
+        marker#lincubator,marker#lincubator {
+            fill: #ccc;
+        }
+        */
+        marker {
+            fill: black;
+            stroke: white;
+            stroke-width: 0.5px;
+        }
+
+
+        path.link {
+          fill: none;
+          stroke: #666;
+          stroke-width: 5px;
+        }
+        
+
+        path.trunk {
+            stroke: #1f77b4;
+        }
+        
+        path.staging {
+            stroke: #ff7f0e;
+        }
+        
+        path.nursery {
+            stroke: #2ca02c;
+        }
+        
+        path.incubator {
+            stroke: #d62728;
+        }
+
+        circle {
+          fill: #ccc;
+          stroke: #333;
+          stroke-width: 1.5px;
+        }
+
+        text {
+          font: 12px sans-serif;
+          pointer-events: none;
+          text-anchor: middle;
+        }
+
+        text.shadow {
+          stroke: #fff;
+          stroke-width: 1.5px;
+          stroke-opacity: .8;
+        }
+        
+        #legend {
+            display: fixed;
+        }
+        
+        #legend text {
+            text-anchor: start;
+        }
+        
+        #legendTitle {
+            font-weight: bold;
+        }
+        
+        
+        #info text {
+            font: 14px sans-serif;
+            pointer-events: none;
+            text-anchor: start;
+        }
+        
+        #infobox {
+            fill: #ccf;
+            fill-opacity: 0.8;
+            stroke: #333;
+            stroke-width: 5px;
+        }
+        
+        #filterBox {
+            display: fixed;
+            bottom: 0;
+        }
+
+        #last_updated_to, #last_updated_from, #created_to, #created_from {
+        }
+    /* ]]> */
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+    //<!--
+
+    /* Configurable variables */
+    // SVG canvas size
+    var w = 1024,
+    h = 960,
+    padding = 120;
+    
+    // Node radius
+    var r = 14;
+    
+    // Arrow head height
+    var ahh = 3;    
+    
+    // Magic number for setting the distance of the arrow point from the centre of a node... doesn't work too well
+    var distanceConstant = Math.log(r)*1/ahh;
+    
+    //Coordinates of the <text> in the <g> containing the <circle>
+    var textx = function(d) { r/d.name.length};
+    var texty = function(d) { r/d.name.length};
+
+    // Maximum number of stems supported by the slider
+    var maxStems = 100000;
+
+    /* Configurable variables end */
+                
+    // Create a border between the svg canvas and the elements so that the mouseover does not get cut off
+    var svg = d3.select("body").append("svg:svg")
+    .attr("width", w + padding * 2)
+    .attr("height", h + padding * 2);
+    
+    var topg = svg.append("svg:g")
+    .attr("x", padding)
+    .attr("y", padding)
+    .attr("width", w )
+    .attr("height", h );
+    
+    // Create a legend in the top left
+    svg.append("svg:g")
+    .attr("id", "legend")
+    .append("svg:text")
+    .attr("id","legendTitle")
+    .text("Legend")
+    .attr("y", 20);
+    
+    var legend = svg.select("#legend").selectAll("g")
+    .data(["trunk","staging","nursery","incubator"])
+    .enter().append("svg:g");
+    
+    legend.append("svg:path")
+    .attr("d", function(d,i) { return "m5," + (45+i*40) + "l5,5" })
+    .attr("class", function(d) { return d + " link";} );
+    
+    legend.append("svg:text")
+    .text(function(d) { return d})
+    .attr("x", 30)
+    .attr("y", function (d,i) { return 50 + i*40});
+    
+    // Filter box
+    var filterBox = d3.select("body").append("div")
+    .attr("id", "filterBox");
+    
+    // Repo selector checkboxes
+    var repoCheckboxes = filterBox
+    .append("fieldset")
+    .append("ul")
+    .selectAll("li")
+    .data(["trunk","staging","nursery","incubator"])
+    .enter()
+    .append("li");
+    
+    repoCheckboxes
+    .append("label")    
+    .attr("for", function(d) { return "yes_" + d;})
+    .text(function(d) { return "Show " + d  + " pairs";});
+    
+    repoCheckboxes
+    .append("input")
+    .attr("id", function(d) { return "yes_" + d;})
+    .attr("type", "checkbox");
+    
+    //Direction selector checkboxes
+    var directnCheckboxes = filterBox
+    .append("fieldset")
+    .append("ul")
+    .selectAll("li")
+    .data(["unidirectional","bidirectional"])
+    .enter()
+    .append("li");
+    
+    directnCheckboxes
+    .append("label")    
+    .attr("for", function(d) { return "yes_" + d;})
+    .text(function(d) { return "Show " + d  + " pairs";});
+    
+    directnCheckboxes
+    .append("input")
+    .attr("id", function(d) { return "yes_" + d;})
+    .attr("type", "checkbox");   
+
+    // Check all of the boxes by default
+    d3.selectAll("input[type=checkbox]").attr("checked","checked");
+
+    // Last updated date range selection 
+    var lastUpdatedFields = filterBox
+    .append("fieldset");
+
+    lastUpdatedFields.append("text").text("Last updated after (yyyy-mm-dd)");
+
+    lastUpdatedFields.append("input")
+    .attr("id", "last_updated_from")
+    jQuery("#last_updated_from")
+    .datepicker({ defaultDate: new Date(2004,1,1) })
+    .datepicker("option", "dateFormat", "yy-mm-dd")
+    .datepicker("setDate", new Date(2004, 1, 1));
+    
+
+    lastUpdatedFields.append("text").text(" and before or on ");
+
+    lastUpdatedFields.append("input")
+    .attr("id", "last_updated_to");
+    // Date() is today.
+    jQuery("#last_updated_to")
+    .datepicker({ defaultDate: new Date()})
+    .datepicker("option", "dateFormat", "yy-mm-dd")
+    .datepicker("setDate",new Date());
+
+    // Created date range
+    var createdFields = filterBox.append("fieldset");
+
+    createdFields.append("text").text("Created after (yyyy-mm-dd)");
+
+    createdFields.append("input")
+    .attr("id", "created_from")
+    jQuery("#created_from")
+    .datepicker({ defaultDate: new Date(2004, 1, 1)})
+    .datepicker("option", "dateFormat", "yy-mm-dd")
+    .datepicker("setDate",new Date(2004, 1, 1));
+
+    createdFields.append("text").text(" and before or on ");
+
+    createdFields.append("input")
+    .attr("id", "created_to");
+    // Date() is today.
+    jQuery("#created_to")
+    .datepicker({ defaultDate: new Date()})
+    .datepicker("option", "dateFormat", "yy-mm-dd")
+    .datepicker("setDate",new Date()); 
+    
+    // Stems slider
+    var sliderFields = filterBox.append("fieldset");
+    sliderFields.append("text").text("Has at least this many stems (maximum " + maxStems + "):");
+
+    sliderFields.append("input")
+    .attr("id","sliderDisplay")
+    sliderFields.append("div")
+    .attr("id","slider");
+
+    sliderFields.select("input")
+    .on("change", function() { 
+        jQuery("#slider").slider("value", parseInt(jQuery("#sliderDisplay").val()) ); 
+    });
+
+    jQuery("#slider")
+    .slider({ min:0, max:maxStems, 
+        change:function(e, ui) {
+            jQuery("#sliderDisplay").val(ui.value.toString());
+        }
+    })
+    .slider("value",0);
+    
+    // Missing data checkbox
+    var missingCheckbox = filterBox.append("fieldset");
+    
+    missingCheckbox
+    .append("label")    
+    .attr("for", function(d) { return "showMissing" + d;})
+    .text(function(d) { return "Show pairs that are missing data";});
+
+    missingCheckbox.append("input")
+    .attr("id","showMissing")
+    .attr("type","checkbox");
+
+    //Refresh button
+    var submit = filterBox
+    .append("input")
+    .attr("type", "submit")
+    .on("click", function() {
+        
+        createGraph( function(a) {
+            // Convert <,>,<>,? into left,right,bidirectional,unknown
+            function arrowToLetter(value) {
+                return ["unidirectional","unidirectional","bidirectional"][["<",">","<>"].indexOf(value)];
+            }
+
+            //d3.select("body").append("p").text(a.lg1 +" " +a.lg2 + "#yes_" + a.repo);
+            var repoVisible = (d3.select("#yes_" + a.repo).property("checked") );
+            //alert(repoVisible);
+
+            //d3.select("body").append("p").text("#yes_" + arrowToLetter(a.direction));
+            var directnVisible;
+            try {
+                directnVisible = (d3.select("#yes_" + arrowToLetter(a.direction)).property("checked") );
+            } catch (e) {
+                //alert("missing dir");
+                directnVisible = d3.select("#showMissing").property("checked");
+            }
+            //alert(directnVisible);
+
+            var lastUpdatedInRange;
+            if (new Date(a.last_updated).toString() == "Invalid Date") { 
+                lastUpdatedInRange = d3.select("#showMissing").property("checked");
+            }
+            else {
+                lastUpdatedInRange = (new Date(a.last_updated) >= jQuery("#last_updated_from").datepicker("getDate"))
+                    &&  (new Date(a.last_updated) <= jQuery("#last_updated_to").datepicker("getDate"));
+            } 
+            //alert(lastUpdatedInRange);
+            
+            var createdInRange;
+            if (new Date(a.created).toString() == "Invalid Date") {
+                createdInRange = d3.select("#showMissing").property("checked");   
+            }
+            else {
+                createdInRange = (new Date(a.created) >= jQuery("#created_from").datepicker("getDate"))
+                    && (new Date(a.created) <= jQuery("#created_to").datepicker("getDate"));
+            } 
+            //alert(createdInRange);
+
+            var stemsInRange;
+            if (a.stems < 0) {
+                stemsInRange = true;
+                //alert("missing stems  " + a.stems);
+            }
+            else {
+                stemsInRange = (a.stems >= jQuery("#slider").slider("value"));
+            }
+            //alert(stemsInRange);
+
+            return repoVisible && directnVisible && createdInRange && lastUpdatedInRange && stemsInRange;
+        });
+    });
+
+    
+    
+
+    function createGraph(filterFunc) {
+        if (filterFunc === undefined) {
+            var filterFunc = function(a){ return true;};
+        }
+    
+        topg.selectAll("*").remove();
+        
+        d3.json("pairs.json", function (tree) {
+            var links = tree.filter(filterFunc);
+
+
+            // Filter links by only keeping the one with the highest repo (trunk > staging > incubator > nursery)
+            var n = {};
+            function repoToPower(repo) {
+                return ["nursery","incubator","staging","trunk"].indexOf(repo);
+            }
+            links.forEach(function(link, i) {
+                //n: array [lg1 + lg2] => the index of the link with the highest repo
+                //If the current node has higher repo than the one in n[lg1+lg2] then replace it
+
+                if (n[link.lg1 + link.lg2] === undefined) {
+                    n[link.lg1 + link.lg2] = i;
+                }
+                else if (repoToPower(links[n[link.lg1 + link.lg2]].repo) < (links[i])) {
+                    n[link.lg1 + link.lg2] = i;
+                }
+            });
+            links = links.filter(function(a, i) {  
+                return n[a.lg1 + a.lg2] !== undefined && n[a.lg1 + a.lg2] == i;
+            });
+
+            var nodes = {};
+
+            // Compute the distinct nodes from the links.
+            links.forEach(function(link) {
+                link.source = nodes[link.lg1] || (nodes[link.lg1] = {name: link.lg1});
+                link.target = nodes[link.lg2] || (nodes[link.lg2] = {name: link.lg2});
+            });
+            
+            var force = d3.layout.force()
+            .nodes(d3.values(nodes))
+            .links(links)
+            .size([w, h])
+            .linkDistance(200)
+            .charge(-200)
+            .on("tick", tick)
+            .start();
+ 
+            
+            // Source-to-target arrowheads
+            topg.append("svg:defs").selectAll("marker")
+            .data(["rtrunk","rstaging","rnursery","rincubator"])
+            .enter().append("svg:marker")
+            .attr("id", String)
+            .attr("viewBox", "0 " + -r/2 + " " + r + " " + r)
+            .attr("refX", 2*r * distanceConstant )
+            .attr("refY", 0)
+            .attr("markerWidth", ahh)
+            .attr("markerHeight", ahh)
+            .attr("orient", "auto")
+            .append("svg:path")
+            .attr("d", "M0," + -r/2 + "L" + r + ",0L0," + r/2);
+            
+            // Target-to-source arrowheads
+            topg.append("svg:defs").selectAll("marker")
+            .data(["ltrunk","lstaging","lnursery","lincubator"])
+            .enter().append("svg:marker")
+            .attr("id", String)
+            .attr("viewBox", "0 " + -r/2 + " " + r + " " + r)
+            .attr("refX", -r * distanceConstant)
+            .attr("refY", 0)
+            .attr("markerWidth", ahh)
+            .attr("markerHeight", ahh)
+            .attr("orient", "auto")
+            .append("svg:path")
+            .attr("d", "M" + r + "," + r/2 + "L0,0L" + r + "," + -r/2);
+
+    
+            // Arrows
+            var path = topg.append("svg:g").selectAll("path")
+            .data(force.links())
+            .enter().append("svg:path")
+            .attr("class", function(d) { return "link " + d.repo; })
+            .attr("marker-end", function(d) { 
+                return (d.direction.indexOf(">") != -1) ? "url(#r" + d.repo + ")" : ""; 
+            })
+            .attr("marker-start", function(d) {
+                return (d.direction.indexOf("<") != -1) ? "url(#l" + d.repo + ")" : ""; 
+            })
+            .on("mouseover", function (d) { 
+                topg.select("#info").selectAll("*").attr("visibility", "visible"); 
+                topg.select("#info_created").text("Created: " + d.created);
+                topg.select("#info_last_updated").text("Last updated: " + d.last_updated);
+                topg.select("#info_repo").text("Repository: " + d.repo);
+                topg.select("#info_stems").text("Number of stems: " + ((d.stems == -1) ? "?" : d.stems) );
+            })
+            .on("mouseout", function(d) {topg.select("#info").selectAll("*").attr("visibility", "hidden"); });
+            
+            var circle = topg.append("svg:g").selectAll("circle")
+            .data(force.nodes())
+            .enter().append("svg:circle")
+            .attr("r", r)
+            .call(force.drag);
+
+            var text = topg.append("svg:g").selectAll("g")
+            .data(force.nodes())
+            .enter().append("svg:g");
+
+            // A copy of the text with a thick white stroke for legibility.
+            text.append("svg:text")
+            .attr("x", textx)
+            .attr("y", texty)
+            .attr("class", "shadow")
+            .text(function(d) { return d.name; });
+
+            text.append("svg:text")
+            .attr("x", textx)
+            .attr("y", texty)
+            .text(function(d) { return d.name; });
+
+            // Use elliptical arc path segments to doubly-encode directionality.
+            function tick() {
+                path.attr("d", function(d) {
+                    var dx = d.target.x - d.source.x;
+                    var dy = d.target.y - d.source.y;
+                    var dr = Math.sqrt(dx * dx + dy * dy);
+                    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+                });
+
+                circle.attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
+
+                text.attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
+            }
+            
+                        
+            //Info box
+            var info = topg.append("svg:g").attr("id","info");
+            
+            var infobox = info.append("svg:rect")
+            .attr("id","infobox")
+            .attr("width", "14em")
+            .attr("height", "8em");
+            
+            info.selectAll("text")
+            .data(["created","last_updated","repo","stems"])
+            .enter().append("svg:text")
+            .attr("id", function(d) { return "info_" + d; } )
+            .text(function(d,i) { return i + "齊齊整整。"; });
+  
+            topg.on("mousemove", function() { 
+                infobox.attr("x", d3.mouse(this)[0] + 20); 
+                infobox.attr("y", d3.mouse(this)[1]); 
+                info.selectAll("text")
+                .attr("x", function(d, i) { return parseInt(infobox.attr("x")) + 5; })            
+                .attr("y", function(d, i) { return parseInt(infobox.attr("y")) + (i+1) * 20; });
+            });
+            
+            info.selectAll("*").attr("visibility", "hidden");        
+
+        });
+
+    }
+    
+    //Make a graph. 
+    d3.select("input[type=submit]").on("click")();
+    //-->
+    </script>
+
+  </body>
+</html>
