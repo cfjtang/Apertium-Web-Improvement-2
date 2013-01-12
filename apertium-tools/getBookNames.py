@@ -4,7 +4,7 @@ import sys
 #import pprint
 
 
-langs = ["xal", "chv", "tat", "kaz", "kaz2"]   #languages, kaz2 is a second kaz translation of the Bible
+langs = ["xal", "chv", "tat", "kaz", "kaz2", "alt", "bua", "kir", "tgk", "tyv", "kaa"]   #languages, kaz2 is a second kaz translation of the Bible
 
 langData = {}   #this is a dictionary
 
