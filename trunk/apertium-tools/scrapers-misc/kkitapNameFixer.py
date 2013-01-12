@@ -17,6 +17,7 @@ for line in fileinput.input(files, inplace=True):
     line=line.strip()
     if "Патшалықтар 1" in line or "Патшалықтар 2" in line:
         #line="1 Самуил 1"
+        
         if i<26:
             line=line.replace("Патшалықтар 1","Самуил 1").strip()
             line=line.replace("Патшалықтар 2","Самуил 2").strip()
