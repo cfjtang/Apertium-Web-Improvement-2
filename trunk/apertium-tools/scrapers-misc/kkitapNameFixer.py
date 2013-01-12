@@ -2,7 +2,14 @@
 
 import sys
 import fileinput
-for line in fileinput.input(inplace=True):
+import sys
+
+if len(sys.argv) < 2:
+    files="kaz.bible.kkitap.txt"
+else:
+    files=sys.argv[1]
+
+for line in fileinput.input(files, inplace=True):
    # for line in lines:
     #print(lines)
     i=0
