@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import fileinput
 for line in fileinput.input(inplace=True):
