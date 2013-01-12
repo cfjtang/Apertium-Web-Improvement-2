@@ -4,7 +4,7 @@ import sys
 #import pprint
 
 
-langs = ["xal", "chv"]   #languages
+langs = ["xal", "chv", "tat", "kaz"]   #languages
 
 langData = {}   #this is a dictionary
 
