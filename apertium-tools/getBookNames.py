@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import os
 import sys
-#import pprint
+import pprint
+import argparse
 
 #!/usr/bin/env python
 
@@ -16,4 +17,20 @@ def todict(langs):
                if line.strip(): 
                    (english, target) = line.split(',')
                    langData[lang][english] = target.strip()
+    
     return langData
+
+def main():
+    if __name__ == '__main__':
+        parser = argparse.ArgumentParser(description='This script generates a dictionary from a .dat file in trunk/apertium-tools')
+        parser.add_argument('datfile', metavar='i', help='Languages (3 letter iso code) separated by a comma, make sure the corresponding .dat files exist')
+        args = vars(parser.parse_args())
+        if "," in args['datfile']:
+            langs=args['datfile'].split(",")
+        else:
+            langs=[args['datfile']]       
+        langDict=todict(langs)
+        pprint.pprint(langDict)
+
+        
+main()
