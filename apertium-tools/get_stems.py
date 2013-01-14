@@ -18,7 +18,10 @@ def get_stems(uri):
 	else:
 		bidict = (open(uri, 'r')).read()
 
-	tree = xml.fromstring(bidict)
+	try:
+		tree = xml.fromstring(bidict)
+	except:
+		return -1
 	return(len(tree.findall("*[@id='main']/e//l")))
 
 
