@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 import re
 import codecs
@@ -61,14 +62,25 @@ def getallcontents(url):
                             text=''.join(c for c in text if not c in badTokens)               
                             text=text.replace('].','].\n').replace(". ",".\n").replace('Уйғурчә тәрҗимиси','')                                                 
                             sentences=re.split('(?<=\].)[\s]',text)
-                            output=output+'\n'.join(i.strip() for i in sentences)
+                            for sentence in sentences:
+                                num=sentence[sentence.rfind('[')+1:sentence.rfind(']')]
+                                
+                                
+                                sentence=sentence[0:sentence.rfind('[')]+'.'
+                                print(sentence[len(sentence)-2:len(sentence)-1])
+                                if sentence[len(sentence)-2:len(sentence)-1]==" ":
+                                    sentence=sentence[0:len(sentence)-2]
+                                if sentence[len(sentence)-1:len(sentence)]!=".":
+                                    sentence=sentence+"."
+                                if sentence.strip()!="." and "(." not in sentence.strip():
+                                    output=output+num+ '. ' + sentence.strip()+'\n'
 
     #output file
-    OUTPUT_FILE = codecs.open(filename, "w", "utf-8")       
-    OUTPUT_FILE.write(output)
+        OUTPUT_FILE = codecs.open(filename, "w", "utf-8")       
+        OUTPUT_FILE.write(output)
     OUTPUT_FILE.close()
 
 def main():    
    getallcontents(url)
 
-main()  
+main()
