@@ -13,7 +13,7 @@ urltemplate="http://www.eastturkistan.net/uygurche/islam/%s"
 url = "http://www.eastturkistan.net/uygurche/islam/quran.htm"
 
 #argparser
-parser = argparse.ArgumentParser(description='This task scrapes the Quran from http://www.eastturkistan.net/uygurche/islam/quran.htm')
+parser = argparse.ArgumentParser(description='This script scrapes the Quran from http://www.eastturkistan.net/uygurche/islam/quran.htm')
 parser.add_argument('filename', metavar='o', help='Name of file to scrape to (output file)', nargs='?')
 
 args = vars(parser.parse_args())
