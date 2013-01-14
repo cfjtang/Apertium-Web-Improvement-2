@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 import re
 import codecs
@@ -67,7 +66,7 @@ def getallcontents(url):
                                 
                                 
                                 sentence=sentence[0:sentence.rfind('[')]+'.'
-                                print(sentence[len(sentence)-2:len(sentence)-1])
+
                                 if sentence[len(sentence)-2:len(sentence)-1]==" ":
                                     sentence=sentence[0:len(sentence)-2]
                                 if sentence[len(sentence)-1:len(sentence)]!=".":
