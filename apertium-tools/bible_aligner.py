@@ -2,6 +2,53 @@
 import os, sys, re, argparse
 import getBookNames
 
+#Gets common verses between both bibles
+def get_common_verses(book, bible1, bible2): #return 2d list, list[x][0] = lang1 verse, list[x][1] = lang2 verse
+	#First read off all the book:
+	book1 = []
+	flag = False
+
+	for verse in bible1:
+		if verse == "\n":
+			flag = False
+		if flag:
+			book1.append(verse)
+		if book in verse:
+			flag = True
+
+	book2 = []
+	flag = False
+	for verse in bible2:
+		if verse == "\n":
+			flag = False
+		if flag:
+			book2.append(verse)
+		if book in verse:
+			flag = True
+
+	#Now just get the numbered ones
+	numbered_verses1 = []
+	for i in book1:
+		if re.findall('^\d', i) != []:
+			numbered_verses1.append(i)
+	numbered_verses2 = []
+	for i in book2:
+		if re.findall('^\d', i) != []:
+			numbered_verses2.append(i)
+
+	#Finally, get all with the _same_ numbers
+	return_me = []
+	for line1 in numbered_verses1:
+		line1s_number = re.findall('^(\d+)', line1)[0]
+		for line2 in numbered_verses2:
+			line2s_number = re.findall('^(\d+)', line2)[0]
+			if line1s_number == line2s_number:
+				return_me.append([line1, line2])
+				break
+	return(return_me)
+
+
+
 #XML header
 header = '''<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
@@ -62,6 +109,7 @@ for lang2_book_names in book_names[lang2].items(): #[0] == eng, [1] == lang2
 	for i in range(0, len(input_file_2)):
 		input_file_2[i] = input_file_2[i].replace(lang2_book_names[1], lang2_book_names[0])
 
+
 #Get which books are common to both langs:
 common_books = []
 for book in book_names[lang1].keys():
@@ -75,37 +123,11 @@ print(header)
 
 #main entries
 for book in common_books:
-	#Get all the data between that books beginning and the next line break
-	file1_data = []
-	file2_data = []
-	flag = False
+	#Get common verses in a list
+	common_verses = get_common_verses(book, input_file_1, input_file_2)
 
-	#for file1
-	for line in input_file_1:
-		if line == "\n":
-			flag = False
-
-		if flag:
-			if re.findall('^\d', line) != []: #regex to check if first char is digit. messy....
-				file1_data.append(line)
-		if book in line:
-			flag = True
-
-	#RESET FLAG!
-	flag = False
-	#for file2
-	for line in input_file_2:
-		if line == "\n":
-			flag = False
-
-		if flag:
-			if re.findall('^\d', line) != []: #regex to check if first char is digit. messy....
-				file2_data.append(line)
-		if book in line:
-			flag = True
-
-	#Finally, output a new entry
-	for i in range(0, len(file1_data)):
-		print(entry % (lang1, file1_data[i], lang2, file2_data[i]))
+	#Output a new entry
+	for i in range(0, len(common_verses)):
+		print(entry % (lang1, common_verses[i][0], lang2, common_verses[i][1]))
 #footer
 print(footer)
