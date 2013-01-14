@@ -4,6 +4,7 @@
 # Copyright 2013 Daniel Huang <admin at danielhonline dot com>
 # Copyright 2013 Jonathan North Washington [jnw dot name]
 # http://www.eastturkistan.net/uygurche/islam/quran.htm Quran scraper
+# Uyghur translation of the Quran by Муһәммәд Салиһ
 #
 # WARNING
 # ONLY USE THIS SCRIPT WITH PERMISSION FROM www.eastturkistan.net ADMINISTRATORS
