@@ -1,4 +1,26 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+
+# quran-eastturkistan.py
+# Copyright 2013 Daniel Huang <admin at danielhonline dot com>
+# Copyright 2013 Jonathan North Washington [jnw dot name]
+# http://www.eastturkistan.net/uygurche/islam/quran.htm Quran scraper
+#
+# WARNING
+# ONLY USE THIS SCRIPT WITH PERMISSION FROM www.eastturkistan.net ADMINISTRATORS
+# UNAUTHORIZED ACCESS OF www.eastturkistan.net IS ILLEGAL IN MOST COUNTRIES!!!
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
 import re
 import codecs
 import http.client
@@ -20,7 +42,7 @@ args = vars(parser.parse_args())
 if args['filename'] is not None:
     filename=args['filename']
 else:
-    filename="eastturkistan.net-quran.txt"
+    filename="uig.quran.eastturkistan.txt"
 
 print("Scraping to "+filename)
 
