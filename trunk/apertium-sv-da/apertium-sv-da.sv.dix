@@ -48,9 +48,9 @@ obj = object form changed to the traditional acc = accusative
     <sdef n="pers" 	c="Personal pronoun"/> 
     <sdef n="prn" 	c="Pronoun"/> 
     <sdef n="num" 	c="Numeral"/> 
-    <sdef n="vaux" 	c="Auxiliary verb"/> 
+    <sdef n="vaux" 	c="Auxiliary verb (hjälpverb)"/> 
     <sdef n="vblex" 	c="Lexical (normal) verb"/> 
-    <sdef n="vbmod" 	c="Modal verb"/> 
+    <sdef n="vbmod" 	c="Modal verb (modala hälpverb)"/> 
     <sdef n="vbser" /> 
     <sdef n="vbhaver" /> 
     <sdef n="cnjcoo" 	c="Co-ordinating conjunction"/> 
@@ -919,6 +919,13 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l>en</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
 </pardef>
 
+<pardef n="hy__n" c="autoconcord:ut,sgpl"> <!-- Common; ~ / ~en | (~n) / ~er / ~erna -->
+  <e>       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e>       <p><l>n</l>         <r><s n="n"/><s n="ut"/><s n="sg"/><s n="def"/></r></p><par n="S__case"/></e>
+  <e>       <p><l>er</l>        <r><s n="n"/><s n="ut"/><s n="pl"/><s n="ind"/></r></p><par n="S__case"/></e>
+  <e>       <p><l>erna</l>      <r><s n="n"/><s n="ut"/><s n="pl"/><s n="def"/></r></p><par n="S__case"/></e>
+</pardef>
+
 <pardef n="herr__n" c="autoconcord:ut,sgpl"> <!-- Common; ~ / ~en / ~ar / ~arna -->
   <e a="PT">       <p><l></l>          <r><s n="n"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
 </pardef>
@@ -1673,15 +1680,34 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l>s</l>         <r><s n="pasv"/></r></p></e>
 </pardef>
 
+    <!-- Auxiliary verbs: vbser, vbhaver, vbmod and others PT 
+	     ==================================================== -->
+
+    <!-- Auxiliary verbs verbs forming passive: passivbildande PT -->
+	
 <pardef n="/vara__vbser">
   <e>       <p><l>vara</l>      <r>vara<s n="vbser"/><s n="inf"/><s n="actv"/></r></p></e>
   <e>       <p><l>är</l>        <r>vara<s n="vbser"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e r="LR" a="PT">       <p><l>varar</l>        <r>vara<s n="vbser"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l>var</l>       <r>vara<s n="vbser"/><s n="past"/><s n="actv"/></r></p></e>
   <e>       <p><l>varit</l>     <r>vara<s n="vbser"/><s n="supn"/><s n="actv"/></r></p></e>
   <e>       <p><l>vara</l>      <r>vara<s n="vbser"/><s n="imp"/></r></p></e>
   <e>       <p><l>varande</l>   <r>vara<s n="vbser"/><s n="pprs"/></r></p></e>
 </pardef>
 
+<pardef n="bl/i__vblex">
+  <e>       <p><l>i</l>         <r>i<s n="vblex"/><s n="inf"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ir</l>        <r>i<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ev</l>        <r>i<s n="vblex"/><s n="past"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ivit</l>      <r>i<s n="vblex"/><s n="supn"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ivande</l>    <r>i<s n="vblex"/><s n="pprs"/></r></p></e>
+  <e>       <p><l>iven</l>      <r>i<s n="vblex"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
+  <e>       <p><l>ivet</l>      <r>i<s n="vblex"/><s n="pp"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p></e>
+  <e>       <p><l>ivna</l>      <r>i<s n="vblex"/><s n="pp"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
+</pardef>
+
+    <!-- Auxiliary verbs forming tens: temporala hjälpverb PT -->
+	
 <pardef n="ha__vbhaver">
   <e>       <p><l></l>          <r><s n="vbhaver"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>r</l>         <r><s n="vbhaver"/><s n="pres"/><s n="actv"/></r></p></e>
@@ -1691,28 +1717,10 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l></l>          <r><s n="vbhaver"/><s n="imp"/></r></p></e>
   <e>       <p><l>vande</l>     <r><s n="vbhaver"/><s n="pprs"/></r></p></e>
   <e>       <p><l>vd</l>        <r><s n="vbhaver"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
-  <e>       <p><l>vt</l>        <r><s n="vbhaver"/><s n="pp"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p></e>
+  <e a="PT">       <p><l>ft</l>        <r><s n="vbhaver"/><s n="pp"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p></e>
   <e>       <p><l>vda</l>       <r><s n="vbhaver"/><s n="pp"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
 </pardef>
-
-<pardef n="k/unna__vbmod">
-  <e>       <p><l>unna</l>      <r>unna<s n="vbmod"/><s n="inf"/><s n="actv"/></r></p></e>
-  <e>       <p><l>an</l>        <r>unna<s n="vbmod"/><s n="pres"/><s n="actv"/></r></p></e>
-  <e>       <p><l>unde</l>      <r>unna<s n="vbmod"/><s n="past"/><s n="actv"/></r></p></e>
-  <e>       <p><l>unnat</l>     <r>unna<s n="vbmod"/><s n="supn"/><s n="actv"/></r></p></e>
-  <e>       <p><l>unnande</l>   <r>unna<s n="vbmod"/><s n="pprs"/></r></p></e>
-</pardef>
-
-<pardef n="v/ilja__vaux">
-  <e>       <p><l>ilja</l>      <r>ilja<s n="vaux"/><s n="inf"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ill</l>       <r>ilja<s n="vaux"/><s n="pres"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ille</l>      <r>ilja<s n="vaux"/><s n="past"/><s n="actv"/></r></p></e>
-  <e>       <p><l>elat</l>      <r>ilja<s n="vaux"/><s n="supn"/><s n="actv"/></r></p></e>
-<!--
-  <e>       <p><l>ill</l>       <r>ilja<s n="vaux"/><s n="imp"/></r></p></e>
--->
-</pardef>
-
+	
 <pardef n="ha__vblex">
   <e>       <p><l></l>          <r><s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>r</l>         <r><s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
@@ -1733,12 +1741,41 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l>vda</l>       <r><s n="vblex"/><s n="pp"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
 </pardef>
 
-<pardef n="sk/ola__vbmod">
+<pardef n="sk/ola__vbmod"> <!-- modal AND tens: modalt och tempusbildande! PT --
   <e>       <p><l>ola</l>       <r>ola<s n="vbmod"/><s n="inf"/></r></p></e>
-  <e>       <p><l>all</l>       <r>ola<s n="vbmod"/><s n="pres"/></r></p></e>
-  <e r="LR"><p><l>a</l>         <r>ola<s n="vbmod"/><s n="pres"/></r></p></e>
+  <e r="LR" c="style:old" a="PT">       <p><l>all</l>       <r>ola<s n="vbmod"/><s n="pres"/></r></p></e>
+  <e a="PT"><p><l>a</l>         <r>ola<s n="vbmod"/><s n="pres"/></r></p></e>
   <e>       <p><l>ulle</l>      <r>ola<s n="vbmod"/><s n="past"/></r></p></e>
 </pardef>
+
+    <!-- Modal verbs PT -->
+
+<pardef n="b/öra__vblex"> <!-- Check this, is it a modal? Yes, it is! PT -->
+  <e>       <p><l>öra</l>       <r>öra<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
+  <e>       <p><l>ör</l>        <r>öra<s n="vblex"/><s n="pres"/></r></p><par n="S__voice"/></e>
+  <e>       <p><l>orde</l>      <r>öra<s n="vblex"/><s n="past"/></r></p><par n="S__voice"/></e>
+  <e>       <p><l>ort</l>       <r>öra<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
+</pardef>
+
+<pardef n="f/å__vblex">
+  <e>       <p><l>å</l>         <r>å<s n="vblex"/><s n="inf"/><s n="actv"/></r></p></e>
+  <e>       <p><l>år</l>        <r>å<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ick</l>       <r>å<s n="vblex"/><s n="past"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ått</l>       <r>å<s n="vblex"/><s n="supn"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ående</l>     <r>å<s n="vblex"/><s n="pprs"/></r></p></e>
+</pardef>
+	
+<pardef n="k/unna__vbmod">
+  <e>       <p><l>unna</l>      <r>unna<s n="vbmod"/><s n="inf"/><s n="actv"/></r></p></e>
+  <e>       <p><l>an</l>        <r>unna<s n="vbmod"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e>       <p><l>unde</l>      <r>unna<s n="vbmod"/><s n="past"/><s n="actv"/></r></p></e>
+  <e>       <p><l>unnat</l>     <r>unna<s n="vbmod"/><s n="supn"/><s n="actv"/></r></p></e>
+  <e>       <p><l>unnande</l>   <r>unna<s n="vbmod"/><s n="pprs"/></r></p></e>
+</pardef>
+
+<!-- Låta! i ena betydelsen (tillåta) jfr låta = ljuda -->
+
+<!-- Lära! i ena betydelsen (återger rykte) jfr lära = lära in/ut -->
 
 <pardef n="måst/a__vaux">
   <e>       <p><l>a</l>         <r>a<s n="vaux"/><s n="inf"/><s n="actv"/></r></p></e>
@@ -1747,17 +1784,21 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l></l>          <r>a<s n="vaux"/><s n="supn"/><s n="actv"/></r></p></e>
 </pardef>
 
-<pardef n="bl/i__vblex">
-  <e>       <p><l>i</l>         <r>i<s n="vblex"/><s n="inf"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ir</l>        <r>i<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ev</l>        <r>i<s n="vblex"/><s n="past"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ivit</l>      <r>i<s n="vblex"/><s n="supn"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ivande</l>    <r>i<s n="vblex"/><s n="pprs"/></r></p></e>
-  <e>       <p><l>iven</l>      <r>i<s n="vblex"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
-  <e>       <p><l>ivet</l>      <r>i<s n="vblex"/><s n="pp"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p></e>
-  <e>       <p><l>ivna</l>      <r>i<s n="vblex"/><s n="pp"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
+<!-- Torde! i ena betydelsen (återger rykte) jfr törs = våga -->
+
+<pardef n="v/ilja__vaux">
+  <e>       <p><l>ilja</l>      <r>ilja<s n="vaux"/><s n="inf"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ill</l>       <r>ilja<s n="vaux"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e>       <p><l>ille</l>      <r>ilja<s n="vaux"/><s n="past"/><s n="actv"/></r></p></e>
+  <e>       <p><l>elat</l>      <r>ilja<s n="vaux"/><s n="supn"/><s n="actv"/></r></p></e>
+<!--
+  <e>       <p><l>ill</l>       <r>ilja<s n="vaux"/><s n="imp"/></r></p></e>
+-->
 </pardef>
 
+      <!-- Ordinary verbs: vanliga verb PT 
+	       =============================== -->
+	  
 <pardef n="delt/a__vblex">
   <e>       <p><l>a</l>         <r>a<s n="vblex"/><s n="inf"/><s n="actv"/></r></p></e>
   <e>       <p><l>ar</l>        <r>a<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
@@ -1778,14 +1819,6 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l>agen</l>      <r>å<s n="vblex"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
   <e>       <p><l>aget</l>      <r>å<s n="vblex"/><s n="pp"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p></e>
   <e>       <p><l>agna</l>      <r>å<s n="vblex"/><s n="pp"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
-</pardef>
-
-<pardef n="f/å__vblex">
-  <e>       <p><l>å</l>         <r>å<s n="vblex"/><s n="inf"/><s n="actv"/></r></p></e>
-  <e>       <p><l>år</l>        <r>å<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ick</l>       <r>å<s n="vblex"/><s n="past"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ått</l>       <r>å<s n="vblex"/><s n="supn"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ående</l>     <r>å<s n="vblex"/><s n="pprs"/></r></p></e>
 </pardef>
 
 <pardef n="f/inna__vblex">
@@ -1897,13 +1930,6 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l>dda</l>       <r><s n="vblex"/><s n="pp"/><s n="un"/><s n="sp"/><s n="def"/></r></p></e>
 </pardef>
 
-<pardef n="b/öra__vblex"> <!-- Check this, is it a modal? -->
-  <e>       <p><l>öra</l>       <r>öra<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
-  <e>       <p><l>ör</l>        <r>öra<s n="vblex"/><s n="pres"/></r></p><par n="S__voice"/></e>
-  <e>       <p><l>orde</l>      <r>öra<s n="vblex"/><s n="past"/></r></p><par n="S__voice"/></e>
-  <e>       <p><l>ort</l>       <r>öra<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
-</pardef>
-
 <pardef n="ant/a__vblex">
   <e>       <p><l>a</l>         <r>a<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>ar</l>        <r>a<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
@@ -1972,9 +1998,8 @@ obj = object form changed to the traditional acc = accusative
 </pardef>
 
 <pardef n="gäll/a__vblex">
-  <e>       <p><l>a</l>         <r>a<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
+  <e a="PT">       <p><l>a</l>         <r>a<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>er</l>        <r>a<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
-  <e>       <p><l>es</l>        <r>a<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l>de</l>        <r>a<s n="vblex"/><s n="past"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>t</l>         <r>a<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
   <e>       <p><l></l>          <r>a<s n="vblex"/><s n="imp"/></r></p></e>
@@ -2055,10 +2080,13 @@ obj = object form changed to the traditional acc = accusative
 
 <pardef n="medg/e__vblex">
   <e>       <p><l>e</l>         <r>e<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
+  <e c="style:sol" a="PT">       <p><l>iva</l>         <r>e<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>er</l>        <r>e<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e c="style:sol" a="PT">     <p><l>iver</l>        <r>e<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l>es</l>        <r>e<s n="vblex"/><s n="pres"/><s n="pasv"/></r></p></e>
   <e>       <p><l>av</l>        <r>e<s n="vblex"/><s n="past"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>ett</l>       <r>e<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
+  <e c="style:sol" a="PT">       <p><l>ivit</l>       <r>e<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>e</l>         <r>e<s n="vblex"/><s n="imp"/></r></p></e>
   <e>       <p><l>ivande</l>    <r>e<s n="vblex"/><s n="pprs"/></r></p></e>
   <e>       <p><l>iven</l>      <r>e<s n="vblex"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
@@ -2096,11 +2124,10 @@ obj = object form changed to the traditional acc = accusative
 </pardef>
 
 <pardef n="s/äga__vblex">
-  <e>       <p><l>äga</l>       <r>äga<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
+  <e a="PT">       <p><l>äga</l>       <r>äga<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>äger</l>      <r>äga<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l>ägs</l>       <r>äga<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l>a</l>         <r>äga<s n="vblex"/><s n="past"/></r></p><par n="S__voice"/></e>
-  <e>       <p><l>agat</l>      <r>äga<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>äg</l>        <r>äga<s n="vblex"/><s n="imp"/></r></p></e>
   <e>       <p><l>ägande</l>    <r>äga<s n="vblex"/><s n="pprs"/></r></p></e>
   <e>       <p><l>agd</l>       <r>äga<s n="vblex"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
@@ -2225,7 +2252,8 @@ obj = object form changed to the traditional acc = accusative
 <pardef n="beskr/iva__vblex">
   <e>       <p><l>iva</l>       <r>iva<s n="vblex"/><s n="inf"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>iver</l>      <r>iva<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
-  <e>       <p><l>ives</l>      <r>iva<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e a="PT">       <p><l>ivs</l>      <r>iva<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
+  <e c="style:old" a="PT">       <p><l>ives</l>      <r>iva<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l>ev</l>        <r>iva<s n="vblex"/><s n="past"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>ivit</l>      <r>iva<s n="vblex"/><s n="supn"/></r></p><par n="S__voice"/></e>
   <e>       <p><l>iv</l>        <r>iva<s n="vblex"/><s n="imp"/></r></p></e>
@@ -2240,7 +2268,7 @@ obj = object form changed to the traditional acc = accusative
   <e>       <p><l>mer</l>       <r>ma<s n="vblex"/><s n="pres"/><s n="actv"/></r></p></e>
   <e>       <p><l></l>          <r>ma<s n="vblex"/><s n="past"/><s n="actv"/></r></p></e>
   <e>       <p><l>mit</l>       <r>ma<s n="vblex"/><s n="supn"/><s n="actv"/></r></p></e>
-  <e>       <p><l>m</l>         <r>ma<s n="vblex"/><s n="imp"/></r></p></e>
+  <e a="PT">       <p><l></l>         <r>ma<s n="vblex"/><s n="imp"/></r></p></e>
   <e>       <p><l>mande</l>     <r>ma<s n="vblex"/><s n="pprs"/></r></p></e>
   <e>       <p><l>men</l>       <r>ma<s n="vblex"/><s n="pp"/><s n="ut"/><s n="sg"/><s n="ind"/></r></p></e>
   <e>       <p><l>met</l>       <r>ma<s n="vblex"/><s n="pp"/><s n="nt"/><s n="sg"/><s n="ind"/></r></p></e>
@@ -6148,7 +6176,7 @@ obj = object form changed to the traditional acc = accusative
 <e lm="undertryck">      <i>undertryck</i><par n="ackord__n"/></e>
 <e lm="fritidshus">      <i>fritidshus</i><par n="badhus__n"/></e>
 
-    <!-- / to check-->
+ 
 
 <e lm="abborre">         <i>abborr</i><par n="abborr/e__n"/></e>
 <e lm="accent">          <i>accent</i><par n="accent__n"/></e>
@@ -6180,11 +6208,15 @@ obj = object form changed to the traditional acc = accusative
 <e lm="tjocka">          <i>tjocka</i><par n="adel__n"/></e>
 <e lm="kolsyra">         <i>kolsyra</i><par n="adel__n"/></e>
 <e lm="snö">             <i>snö</i><par n="adel__n"/></e>
+
+
 <e lm="cancer">          <i>cancer</i><par n="adel__n"/></e>
 <e lm="salpetersyra">    <i>salpetersyra</i><par n="adel__n"/></e>
 <e lm="bokhandel">       <i>bokhandel</i><par n="adel__n"/></e>
 <e lm="kosmologi">       <i>kosmologi</i><par n="adel__n"/></e>
-<e lm="hy">              <i>hy</i><par n="adel__n"/></e>
+<e lm="hy" a="PT">              <i>hy</i><par n="hy__n"/></e>
+
+ 
 <e lm="avsky">           <i>avsky</i><par n="adel__n"/></e>
 <e lm="ekonomi">         <i>ekonomi</i><par n="adel__n"/></e>
 <e lm="anemi">           <i>anemi</i><par n="adel__n"/></e>
@@ -6196,7 +6228,8 @@ obj = object form changed to the traditional acc = accusative
 <e lm="kolera">          <i>kolera</i><par n="adel__n"/></e>
 <e lm="platina">         <i>platina</i><par n="adel__n"/></e>
 
-
+  <!-- / to check-->
+  <!-- / to check--  ends here? or continues to the end??>
 
 <e lm="adress">          <i>adress</i><par n="adress__n"/></e>
 <e lm="adverb">          <i>adverb</i><par n="ackord__n"/></e>
@@ -8016,7 +8049,7 @@ obj = object form changed to the traditional acc = accusative
 <e lm="tänka">           <i>tänk</i><par n="tänk/a__vblex"/></e>
 <e lm="betänka">         <i>betänk</i><par n="tänk/a__vblex"/></e>
 <e lm="köpa">            <i>köp</i><par n="tänk/a__vblex"/></e>
-<e lm="lycka">           <i>lyck</i><par n="lyck/a__vblex"/></e>
+<e lm="lycka" c="style:old" a="PT">           <i>lyck</i><par n="lyck/a__vblex"/></e>
 <e lm="åka">             <i>åk</i><par n="lyck/a__vblex"/></e>
 <e lm="finna">           <i>f</i><par n="f/inna__vblex"/></e>
 <e lm="få">              <i>f</i><par n="f/å__vblex"/></e>
