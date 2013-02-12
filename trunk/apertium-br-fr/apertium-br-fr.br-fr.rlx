@@ -71,7 +71,7 @@ LIST VerbInf          = (vblex inf);
 LIST VerbImpers       = (vblex impers);
 
 LIST Fut              = (vblex fti) (vbser fti) (vbhaver fti);
-LIST TempsFin         = (pri) (pii) (past) (fti) (cni) (prh) (cip);  
+LIST TempsFin         = (pri) (pii) (past) (fti) (cni) (prh) (cip) (pih);  
 LIST Cond             = (cni) (cip);
 
 LIST VerbAux          = ("bezañ"ri vblex) ("kaout"ri vblex);
@@ -474,7 +474,7 @@ REMOVE (+da) IF (1 DetDef);
 # REGLA (B    ): "Gwelet em eus ar c’hi en ur dreuziñ an hent"
 SELECT VerbInf (-1 VpartPPres);
 
-SELECT VerbPP IF (1 ("bezañ"ri vblex)) (1 VerbFin);
+SELECT VerbPP IF (1C ("bezañ"ri vblex)) (1 VerbFin);
 
 
 # REGLA (B    ): "N'ez an ket da c'hoari "
@@ -728,6 +728,12 @@ REMOVE Det IF (0 ("<en>"i)) (1 DetPos);
 SELECT VerbFin IF (-1 ("a"i)) (0 NC OR VerbFin) (1 Prep OR PrnIObj) ;
     ## « Tiez kozh e Roazhon », « Plasenn Koc'hu an Edeier, » taolennet e 1929 gant Camille Godet, a ro dimp da anavezout un neuz eus kêr Roazhon aet da get, e-lec'h m'emañ Plasenn Honoré Kommereg hiziv an deiz.
 
+SELECT Vpart IF (0 ("<e>"i)) (1C VerbFin);
+    ## Lakaet e veze sevel truajoù koulz gant an duged ha gant ar roueed, pe gant ar c’hêrioù o-unan.
+
+SELECT Adj IF (-1 NC) (0 Adj OR VerbPP) (1 Prep);
+    ## Daremprediñ Sant-Briag, kêr vrudet eus an arvor d'ar c'houlz-se, a rae ar c'hizeller d'an ampoent eo bet savet an delwenn-mañ.
+
 SECTION
 
 # REGLA (A0002): "hi a oar"
@@ -745,6 +751,9 @@ REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
 # REGLA (A0006): ""
 SELECT SoftMutTrigger IF (1C SoftMut) (1C SoftMutCons) (NOT 1 ("<vez>"i)) (NOT 0 ("<e>"i)) ;
     ## Perc'hennet eo an tour gant an ti-kêr abaoe 1975 ; digor e vez da an den evit gweladenn bleinañ.
+
+SELECT NC IF (0 NC OR Adj) (-1 DetPos)
+    ## Ar groaz savet a vez flastret tamm-ha-tamm ma echu ho tres gant ur vegenn.
 
 # REGLA (A0005): "ez ti"
 SELECT HardMut IF (-1 HardMutTrigger);
@@ -902,6 +911,8 @@ SELECT (n acr m sg) IF (0 (n acr m sg)) (0 (n acr sg));
 ##
 
 SUBSTITUTE (vblex) (vblex tv) ("pediñ"i vblex) ((1C* PRE-N BARRIER S-BOUNDARY) OR (1C* PrnDObj BARRIER S-BOUNDARY));
+
+SUBSTITUTE (vblex) (vblex tv) ("gouzañv"i vblex) ((1C* PRE-N BARRIER S-BOUNDARY) OR (1C* PrnDObj BARRIER S-BOUNDARY));
 
 SUBSTITUTE (vblex) (vblex tv) ("toullañ"i vblex) ((1C* PRE-N BARRIER S-BOUNDARY) OR (1C* PrnDObj BARRIER S-BOUNDARY));
 
