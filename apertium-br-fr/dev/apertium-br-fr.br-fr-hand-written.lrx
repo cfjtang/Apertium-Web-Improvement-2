@@ -5,7 +5,44 @@
       <match lemma="sevenadurel" tags="adj.*"/>
     </rule>
 
-	
+  <rules>
+    <rule>
+    <or>
+	<match lemma="pase" tags="pr.*"/>	
+	<match lemma="tremen" tags="pr.*"/>	
+	</or>
+	  <match lemma="poent" tags="n.*"><select lemma="temps" tags="n.*"/></match>
+      <match lemma="bezañ" tags="v.*"/>
+	  </rule>	
+
+  <rules>
+    <rule>
+    <match lemma="bezañ" tags="v.*"/>
+    <or>
+	<match lemma="pase" tags="pr.*"/>	
+	<match lemma="tremen" tags="pr.*"/>	
+	</or>
+	<match lemma="poent" tags="n.*"><select lemma="temps" tags="n.*"/></match>
+    </rule>	
+	  
+
+  <rules>
+    <rule>
+      <match lemma="poent" tags="n.*"><select lemma="temps" tags="n.*"/></match>
+    <or>
+      <match lemma="bras" tags="adj.*"/>	
+	</or>
+      <match lemma="bezañ" tags="v.*"/>
+	  </rule>
+
+  <rules>
+    <rule>
+    <match lemma="bezañ" tags="v.*"/>
+	<match lemma="poent" tags="n.*"><select lemma="temps" tags="n.*"/></match>
+    <or>
+      <match lemma="bras" tags="adj.*"/>	
+	</or>
+    </rule>	
 	
     <rule>
       <match lemma="den" tags="n.*"><select lemma="personne" tags="n.*"/></match>
@@ -734,6 +771,8 @@
    <match lemma="abadenn" tags="n.*"/>
    <match lemma="atlas" tags="n.*"/>
    <match lemma="diagnostik" tags="n.*"/>
+   <match lemma="diskouezadeg" tags="n.*"/>
+   <match lemma="diskouezadeg-pad" tags="n.*"/>
    <match lemma="kartenn" tags="n.*"/>
    <match lemma="kinkladur" tags="n.*"/>
    <match lemma="koulzad" tags="n.*"/>
@@ -763,6 +802,8 @@
    <match lemma="abadenn" tags="n.*"/>
    <match lemma="atlas" tags="n.*"/>
    <match lemma="diagnostik" tags="n.*"/>
+   <match lemma="diskouezadeg" tags="n.*"/>
+   <match lemma="diskouezadeg-pad" tags="n.*"/>
    <match lemma="kartenn" tags="n.*"/>
    <match lemma="kinkladur" tags="n.*"/>
    <match lemma="koulzad" tags="n.*"/>
@@ -788,12 +829,14 @@
   <match tags="det.pos.*"/>	
    </or>
    <match lemma="delwenn" tags="n.*"/>
+   <match lemma="emouestl" tags="n.*"/>
    <match lemma="mouezh" tags="n.*"/>
    </rule>
    
     <rule>      
    <match lemma="sevel" tags="n.*"><select lemma="élever" tags="v.*"/></match>
    <match lemma="delwenn" tags="n.*"/>
+   <match lemma="emouestl" tags="n.*"/>
    <match lemma="mouezh" tags="n.*"/>
    </rule>   
    
@@ -958,6 +1001,7 @@
    <or>
    <match lemma="aerborzh" tags="n.*"/>
    <match lemma="bag" tags="n.*"/>
+   <match lemma="dazont" tags="n.*"/>
    <match lemma="dourbont" tags="n.*"/>
    <match lemma="lestr" tags="n.*"/>
    <match lemma="pont" tags="n.*"/>
@@ -970,6 +1014,7 @@
    <or>
    <match lemma="aerborzh" tags="n.*"/>
    <match lemma="bag" tags="n.*"/>
+   <match lemma="dazont" tags="n.*"/>
    <match lemma="dourbont" tags="n.*"/>
    <match lemma="lestr" tags="n.*"/>
    <match lemma="pont" tags="n.*"/>
@@ -1038,7 +1083,22 @@
    </or>
    </rule>   
 
-
+    <rule>      
+   <match lemma="sevel" tags="n.*"><select lemma="créer" tags="v.*"/></match>
+   <or>
+  <match tags="det.def.*"/>	
+  <match tags="det.undef.*"/>	
+  <match tags="det.pos.*"/>	
+   </or>
+   <match lemma="chadenn" tags="n.*"/>
+   <match lemma="skinwel" tags="n.*"/>
+   </rule>   
+   
+    <rule>      
+   <match lemma="sevel" tags="n.*"><select lemma="créer" tags="v.*"/></match>
+   <match lemma="chadenn" tags="n.*"/>
+   <match lemma="skinwel" tags="n.*"/>
+   </rule>    
  
     <rule>      
    <match lemma="sevel" tags="n.*"><select lemma="lever" tags="v.*"/></match>
@@ -1066,6 +1126,7 @@
    <match lemma="ostilh" tags="n.*"/>
    <match lemma="rannvro" tags="n.*"/>
    <match lemma="rouedad" tags="n.*"/>
+   <match lemma="servij" tags="n.*"/>
    <match lemma="strollad" tags="n.*"/>
    <match lemma="strollegezh" tags="n.*"/>
    </or>
@@ -1094,6 +1155,7 @@
    <match lemma="ostilh" tags="n.*"/>
    <match lemma="rannvro" tags="n.*"/>
    <match lemma="rouedad" tags="n.*"/>
+   <match lemma="servij" tags="n.*"/>
    <match lemma="strollad" tags="n.*"/>
    <match lemma="strollegezh" tags="n.*"/>
    </or>
@@ -1106,6 +1168,7 @@
    <match lemma="diri" tags="n.*"/>
    <match lemma="krec’henn" tags="n.*"/>
    <match lemma="skeul" tags="n.*"/>
+   <match lemma="teuliad" tags="n.*"/>
    </or>
    </rule>   
    
@@ -1120,6 +1183,7 @@
    <match lemma="diri" tags="n.*"/>
    <match lemma="krec’henn" tags="n.*"/>
    <match lemma="skeul" tags="n.*"/>
+   <match lemma="teuliad" tags="n.*"/>
    </or>
    </rule>  
 
@@ -1155,8 +1219,8 @@
   <match tags="det.undef.*"/>	
    </or>
    <or>
-   <match lemma="lezenn" tags="n.*"/>
    <match lemma="reolenn" tags="n.*"/>
+   <match lemma="lezenn" tags="n.*"/>
    </or>
    </rule>   
 
@@ -1180,8 +1244,11 @@
    <or>
    <match lemma="bodad" tags="n.*"/>
    <match lemma="brastres" tags="n.*"/>
+   <match lemma="emglev" tags="n.*"/>
+   <match lemma="kenemglev" tags="n.*"/>
    <match lemma="listenn" tags="n.*"/>
    <match lemma="roll" tags="n.*"/>
+   <match lemma="steuñv" tags="n.*"/>
    </or>
    </rule>   
 
@@ -1190,8 +1257,11 @@
    <or>
    <match lemma="bodad" tags="n.*"/>
    <match lemma="brastres" tags="n.*"/>
+   <match lemma="emglev" tags="n.*"/>
+   <match lemma="kenemglev" tags="n.*"/>
    <match lemma="listenn" tags="n.*"/>
    <match lemma="roll" tags="n.*"/>
+   <match lemma="steuñv" tags="n.*"/>
    </or>
    </rule>    
 
