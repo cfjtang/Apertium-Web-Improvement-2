@@ -669,7 +669,7 @@ REMOVE NC IF (-1 Vpart) (0 NC) (0 VerbFin) (1 Adj) (1 SoftMutCons) (NOT 1 SoftMu
 # ran vihan : ranita
 SELECT VerbFin IF (0 ("<ran>")) (NOT -1 DetInd) (NOT 1 Adj) (NOT 1 SoftMutCons) (NOT 1 SoftMut);
 
-REMOVE VerbFin IF (NOT -1 Vpart) (NOT -1 (".*ma"r)) (NOT -1 ("pa"i cnjsub)) (NOT -1 (prn rel));
+REMOVE VerbFin IF (NOT -1 Vpart) (NOT -1 (".*ma"ri)) (NOT -1 ("pa"i cnjsub)) (NOT -1 (prn rel));
     ## dre ret ½ bost war ar buheziñ politikel 
     ## ar mod ma c'hall an implijidi bezañ galvet 
     ## Ar pezh a vank evit kas al labour da benn war dachenn an teknologiezhioù nevez eo frammoù a-vicher.
@@ -876,6 +876,8 @@ SELECT (apos) IF (0 (apos)) (0 Vpart);
 
 # ma vez roet.
 SELECT VerbFin IF (-1 ("ma"i)) (0 MixedMut);
+
+SELECT VerbFin IF (-1 ("ma"i) OR ("tra ma"i) OR ("mar")) (0 VerbFin);
 
 
 ###############################################################################
