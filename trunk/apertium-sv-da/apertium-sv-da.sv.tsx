@@ -15,7 +15,6 @@
     <tags-item tags="prn.pers.p3.ut.sg.acc"/>
   </def-label>
 
-  </def-label>
   <def-label name="PRNPOS" closed="true">
     <tags-item tags="prn.pos.*"/>
   </def-label>
