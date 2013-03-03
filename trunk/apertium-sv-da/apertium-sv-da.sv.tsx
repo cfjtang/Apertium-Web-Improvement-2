@@ -7,13 +7,7 @@
   <def-label name="PRNTONIC" closed="true">
     <tags-item tags="prn.tn.*"/>
   </def-label>
-  
-<!--  <def-label name="PRNSUBJ" closed="true">
-    <tags-item tags="prn.subj.*"/>
-  </def-label>
-  <def-label name="PRNOBJ" closed="true">
-    <tags-item tags="prn.obj.*"/>-->
-	
+
   <def-label name="PRNSUBJ" closed="true">
     <tags-item tags="prn.pers.p3.ut.sg.nom"/>
   </def-label>
