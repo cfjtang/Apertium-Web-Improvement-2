@@ -101,6 +101,12 @@
       <cat-item tags="vbser.inf"/>
       <cat-item tags="vbser.inf.*"/>
     </def-cat>
+    <def-cat n="vbpres">
+      <cat-item tags="vblex.*.*.pres"/>
+      <cat-item tags="vblex.*.*.pres.*"/>
+      <cat-item tags="vbser.pres"/>
+      <cat-item tags="vbser.pres.*"/>
+    </def-cat>
     <def-cat n="vbsupn">
       <cat-item tags="vbser.*.*.supn"/>
       <cat-item tags="vblex.*.*.supn"/>
@@ -250,6 +256,10 @@
       <cat-item lemma="moći" tags="vbser.*"/>
       <cat-item lemma="moći" tags="vblex.*"/>
       <cat-item lemma="moći" tags="vbmod.*"/>
+    </def-cat>
+    <def-cat n="lahko">
+      <cat-item lemma="lahko" tags="adv.sint"/>
+      <cat-item lemma="lahek" tags="adj.*"/>
     </def-cat>
     <def-cat n="cm">
       <cat-item lemma="," tags="cm"/>
@@ -1597,6 +1607,39 @@
 	    <b/>
 	    <lu>
 	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="lahko+vb.pres"><!-- Pred Kristom -> Prije Krista -->
+      <pattern><!--TODO: See on a corpus if this applies to all, most, or less cases-->
+	<pattern-item n="lahko"/>
+	<pattern-item n="vbpres"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<out>
+	  <chunk name="lahko_vbpres" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="pres"/>
+	      <clip pos="2" side="tl" part="prs"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_vrb"/>
+	      <clip pos="2" side="tl" part="asp"/>
+	      <clip pos="2" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="2" side="tl" part="lemq"/>
 	    </lu>
 	  </chunk>
 	</out>
