@@ -16,7 +16,7 @@ Example:\n
 DOWEGREP=1
 
 # Parse command line options.
-while getopts egh OPT; do
+while getopts fgh OPT; do
   case "$OPT" in
     h)
       echo $USAGE
@@ -24,7 +24,7 @@ while getopts egh OPT; do
       ;;
     g) DOWEGREP=1
 	  ;;
-    e) DOWEGREP=0
+    f) DOWEGREP=0
 	  ;;
     \?)
       # getopts issues an error message
@@ -51,10 +51,10 @@ lt-expand apertium-sh-sl.sl.dix | grep $1 |
 	apertium-pretransfer |
 	lt-proc -b sl-sh.autobil.bin | 
 	apertium-transfer -b apertium-sh-sl.sl-sh.t1x sl-sh.t1x.bin |
-	apertium-interchunk apertium-sh-sl.sl-sh.t2x sl-sh.t2x.bin |
-	apertium-postchunk apertium-sh-sl.sl-sh.t3x sl-sh.t3x.bin |
-	lt-proc -d sl-sh.autogen.bin 
-else 
+	apertium-interchunk apertium-sh-sl.sl-sh.t2x sl-sh.t2x.bin  |
+	apertium-postchunk apertium-sh-sl.sl-sh.t3x sl-sh.t3x.bin   |
+	lt-proc -d sl-sh_HR.autogen.bin 
+else
 lt-expand apertium-sh-sl.sl.dix | grep $1 |
 	sed 's|.*:||' |
 	sed -e 's|^|\^|' -e 's|$|\$|' |
@@ -63,5 +63,5 @@ lt-expand apertium-sh-sl.sl.dix | grep $1 |
 	apertium-transfer -b apertium-sh-sl.sl-sh.t1x sl-sh.t1x.bin |
 	apertium-interchunk apertium-sh-sl.sl-sh.t2x sl-sh.t2x.bin |
 	apertium-postchunk apertium-sh-sl.sl-sh.t3x sl-sh.t3x.bin |
-	lt-proc -d sl-sh.autogen.bin | grep '\\'
+	lt-proc -d sl-sh_HR.autogen.bin | grep '\\'
 fi
