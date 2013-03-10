@@ -3,7 +3,7 @@ USAGE="\n
 A script for testing generation of individual tag groups (direction sl->sh).\n
 The script works like a LHS testvoc, grepping *pattern* in the lt-expand output\n
 
-Usage: `basename $0` [-hge] pattern \n
+Usage: `basename ./$0` [-hge] pattern \n
 \n
 \t-h\tthis help message\n
 \t-g\tgrep out generation errors (default)\n

@@ -16,7 +16,7 @@ Example:\n
 DOWEGREP=1
 
 # Parse command line options.
-while getopts egh OPT; do
+while getopts fgh OPT; do
     case "$OPT" in
         h)
             echo $USAGE
@@ -24,7 +24,7 @@ while getopts egh OPT; do
             ;;
         g) DOWEGREP=1
 	    ;;
-        e) DOWEGREP=0
+        f) DOWEGREP=0
 	    ;;
         \?)
             # getopts issues an error message
