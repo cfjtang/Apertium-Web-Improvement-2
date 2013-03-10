@@ -1699,6 +1699,8 @@
 	<pattern-item n="vblp"/>
       </pattern>
       <action>
+	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="2"/></call-macro>
 	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
 	<out>
 	  <chunk name="vbcond_lahko_vblp" case="caseFirstWord">
@@ -1729,6 +1731,53 @@
 	</out>
       </action>
     </rule>
+
+    <rule comment="bi+lahko+adv+vb.lp">
+    <pattern>
+	<pattern-item n="vbcond"/>
+	<pattern-item n="lahko"/>
+	<pattern-item n="adv"/>
+	<pattern-item n="vblp"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="4"/></call-macro>
+	<out>
+	  <chunk name="vbcond_lahko_vblp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="lp"/>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="4" side="tl" part="lemh"/>
+	      <clip pos="4" side="tl" part="a_vrb"/>
+	      <clip pos="4" side="tl" part="asp"/>
+	      <clip pos="4" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
 
     <!--/Lahko => može-->
   </section-rules>
