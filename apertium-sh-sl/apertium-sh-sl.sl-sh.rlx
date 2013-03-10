@@ -175,6 +175,7 @@ REMOVE:PrepositionCase Nomen + $$CASE IF (-1 Pr) (NOT -1 Pr + $$CASE)
 REMOVE:PrORN KeepOrder N (0 Pr + $$CASE) (1 Nomen + $$CASE)
 
 # Adverb or stuff
+SELECT:AdvORAdj KeepOrder Adv (0 Adv OR A) (1C V)
 REMOVE:AdvORNomen KeepOrder Adv (0 Nomen + $$GENDER + $$NUMBER + $$CASE) 
 	( (-1 Pr + $$CASE) OR (-1 Nomen + $$GENDER + $$NUMBER + $$CASE) OR (1 Nomen + $$GENDER + $$NUMBER +  $$CASE) )
 
@@ -217,4 +218,8 @@ SELECT:NP NProp (0C NProp OR N) (NOT -1 BOS) (0 ("<[A-ZČĆŽŠĐŽ].*>"r))
 
 # Locative is never alone (prepositionless)
 REMOVE:notLocative Loc (NOT -1 Pr + Loc) (NOT -1 Modifier + Loc) 
-	(NOT -1 Cm LINK -1 Pr + Loc )(NOT -1 CNJ LINK -1 Modifier + Loc) 
+	(NOT -1 Cm LINK -1 Pr + Loc )(NOT -1 CNJ LINK -1 Modifier + Loc)
+
+# Lahko is an adverb most of the time: (TODO: Add more cases)
+"<lahko>" SELECT:LahkoAdv Adv (1 V)
+"<lahko>" SELECT:LahkoAdv Adv (1 Adv) (2 V)

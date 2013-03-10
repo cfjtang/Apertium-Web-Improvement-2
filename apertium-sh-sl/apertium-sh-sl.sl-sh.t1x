@@ -262,7 +262,7 @@
     </def-cat>
     <def-cat n="lahko">
       <cat-item lemma="lahko" tags="adv.sint"/>
-      <cat-item lemma="lahek" tags="adj.*"/>
+      <cat-item lemma="lahek" tags="adj.*"/><!--TODO: Remove this after disambiguation works!!!-->
     </def-cat>
     <def-cat n="cm">
       <cat-item lemma="," tags="cm"/>
@@ -1651,6 +1651,47 @@
       </action>
     </rule>
 
+    <rule comment="lahko+adv+vb.pres">
+      <pattern>
+	<pattern-item n="lahko"/>
+	<pattern-item n="adv"/>
+	<pattern-item n="vbpres"/>
+      </pattern>
+      <action>
+	<call-macro n="adv_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
+	<out>
+	  <chunk name="lahko_vbpres" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="pres"/>
+	      <clip pos="3" side="tl" part="prs"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/>
+	      <clip pos="3" side="tl" part="a_vrb"/>
+	      <clip pos="3" side="tl" part="asp"/>
+	      <clip pos="3" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <!--Conditional constructions-->
     <rule comment="bi+lahko+vb.lp">
     <pattern>
 	<pattern-item n="vbcond"/>
