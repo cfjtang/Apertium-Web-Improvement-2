@@ -3,11 +3,15 @@ include("header.php");
 require("../config/apertium-config.php");
 include_once("./logging.php");
 
-$dir = $_GET["dir"];
-$mark = $_GET["mark"];
-if ($mark=="")
-   $mark = $_POST["mark"];	
-$inurl = $_GET["inurl"];
+$dir = escapeshellarg($_GET["dir"]);
+$mark = $_GET["mark"];          /* set to 1 or "" below instead of escaping */
+if ($mark=="") {
+   $mark = $_POST["mark"];
+}
+if ($mark != 1) {
+  $mark="";
+}
+$inurl = $_GET["inurl"];        /* escaped in build_translation_cmd, unescaped elsewhere */
 
 $log = new Logging();
 $log->lwrite( $dir . ' url ' . $_SERVER [ 'REMOTE_ADDR' ] );
@@ -142,13 +146,15 @@ function build_translation_cmd($dir, $inurl, $mark, $tempfile, $encoding) {
    $dirbase = "http://".getenv("SERVER_NAME")."$puerto/$WWW_ROOT_DIR/common/browser.php?mark=$mark&dir=$dir&inurl=";
    $markunk = "-u";
    if ($mark==1 ) {
-         $markunk = "";
-      }
+     $markunk = "";
+   }
+
+   $inurl = escapeshellarg($inurl);
    if($dir == "ro-es") {
-         $ejecutable = "LC_ALL=es_ES.UTF-8 $APERTIUM_TRANSLATOR $markunk -f html $dir $tempfile | $TURL_PATH \"$dirbase\" \"$inurl\"";
-      } else {
-         $ejecutable = "LC_ALL=es_ES.$encoding $APERTIUM_TRANSLATOR $markunk -f html $dir $tempfile | $TURL_PATH \"$dirbase\" \"$inurl\"";      
-      }
+     $ejecutable = "LC_ALL=es_ES.UTF-8 $APERTIUM_TRANSLATOR $markunk -f html $dir $tempfile | $TURL_PATH \"$dirbase\" $inurl";
+   } else {
+     $ejecutable = "LC_ALL=es_ES.$encoding $APERTIUM_TRANSLATOR $markunk -f html $dir $tempfile | $TURL_PATH \"$dirbase\" $inurl";      
+   }
    return $ejecutable;
 }
 
