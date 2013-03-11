@@ -11,9 +11,9 @@
 	**************************
 */
 function process_form() {
-  $dir = $_POST["direction"];
-  $mark = $_POST["mark"];
-  $doctype = $_POST["doctype"];
+  $dir = escapeshellarg($_POST["direction"]);
+  $mark = $_POST["mark"];       /* we only check if it's 1, no escaping needed */
+  $doctype = escapeshellarg($_POST["doctype"]);
 	translate($doctype, $dir, $mark);
 }
 

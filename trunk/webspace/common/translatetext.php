@@ -24,9 +24,9 @@ if (array_key_exists('textbox',$_POST)) {
 	**************************
 */
 function process_form() {
-	$text = $_POST['textbox'];
-	$dir = $_POST['direction'];
-	$mark = $_POST['mark'];
+	$text = $_POST['textbox'];    /* written to file, no escaping needed */
+	$dir = escapeshellarg($_POST['direction']);
+	$mark = $_POST['mark'];       /* we only check if it's 1, no escaping needed */
 
 	if($mark == 1) {
 		$markUnknown = "";
