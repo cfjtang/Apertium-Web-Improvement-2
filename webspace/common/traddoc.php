@@ -13,7 +13,7 @@
 function process_form() {
   $dir = escapeshellarg($_POST["direction"]);
   $mark = $_POST["mark"];       /* we only check if it's 1, no escaping needed */
-  $doctype = escapeshellarg($_POST["doctype"]);
+  $doctype = $_POST["doctype"]; /* escape right before use in translate() */
 	translate($doctype, $dir, $mark);
 }
 
@@ -52,7 +52,8 @@ function translate($doctype, $dir, $markUnknown) {
     $doctype = $doctype." -u ";
   }
 
-  	$cmd = "PATH=$APERTIUM_PATH:\$PATH " . $encoding .' '. $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
+  $doctype = escapeshellarg($doctype);
+  $cmd = "PATH=$APERTIUM_PATH:\$PATH " . $encoding .' '. $APERTIUM_TRANSLATOR . " -f $doctype $dir " . $_FILES['userfile']['tmp_name'] . " $tempfile";
   
   
   $str = shell_exec($cmd);
