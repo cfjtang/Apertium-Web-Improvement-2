@@ -1062,7 +1062,7 @@
       </choose>
     </def-macro>
 
-    <def-macro n="adverb_adapter" npar="1">
+    <def-macro n="adverb_adapter" npar="1"><!--TODO: This outputs entire chunks, so it's difficult to use it as an adapter-->
       <choose>
 	<when>
 	  <test>    
@@ -3313,7 +3313,41 @@ prn vblex vbser - prn vbser vblex
 
     <!-- može => lahko -->
     <!--TODO: The 'inverse' of this section in sh-sl.t1x -->
+
     <rule comment="moći+vb.inf=>lahko+vb">
+      <pattern>
+	<pattern-item n="moći"/>
+	<pattern-item n="vbinf"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<!-- <call-macro n="adv_adapter"><with-param pos="2"/></call-macro> -->
+	<out>
+	  <chunk name="lahko_verb" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="lahko"/>
+	      <lit-tag v="adv.sint"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lem"/>
+	      <clip pos="2" side="tl" part="a_vrb"/>
+	      <clip pos="2" side="tl" part="asp"/>
+	      <clip pos="2" side="tl" part="trn"/>
+	      <clip pos="1" side="tl" part="tns"/>
+	      <clip pos="1" side="tl" part="prs"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="moći+adv+vb.inf=>lahko+adv+vb">
       <pattern>
 	<pattern-item n="moći"/>
 	<pattern-item n="adv"/>
@@ -3350,6 +3384,8 @@ prn vblex vbser - prn vbser vblex
 	</out>
       </action>
     </rule>
+
+
     
     <!--/može=>lahko-->
 
