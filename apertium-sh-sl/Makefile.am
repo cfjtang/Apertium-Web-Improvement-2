@@ -18,6 +18,9 @@ TARGETS_COMMON = $(BASENAME).$(LANG1a).dix  $(BASENAME).$(LANG1b).dix $(BASENAME
 	$(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
 	$(BASENAME).$(LANG1).dix $(PREFIX1).rlx.bin $(PREFIX1).lex.bin \
 	$(PREFIX2).rlx.bin \
+	$(PREFIX2a).autolex.bin \
+	$(PREFIX2b).autolex.bin \
+	$(PREFIX2c).autolex.bin \
 	$(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
 	$(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
 	$(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
@@ -47,6 +50,18 @@ $(PREFIX2c).autogen.bin: $(BASENAME).$(LANG1c).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1c).dix
 	lt-comp rl $(BASENAME).$(LANG1c).dix $@
 
+
+$(PREFIX2a).autolex.bin: $(BASENAME).$(PREFIX2a).lrx
+	lrx-comp $(BASENAME).$(PREFIX2a).lrx $@
+
+$(PREFIX2b).autolex.bin: $(BASENAME).$(PREFIX2b).lrx
+	lrx-comp $(BASENAME).$(PREFIX2b).lrx $@
+
+$(PREFIX2c).autolex.bin: $(BASENAME).$(PREFIX2c).lrx
+	lrx-comp $(BASENAME).$(PREFIX2c).lrx $@
+
+
+
 $(BASENAME).$(LANG1).dix: $(BASENAME).$(LANG1).metadix
 	xsltproc --stringparam alt $(LANG1) --stringparam var $(VAR1) alt.xsl $(BASENAME).$(LANG1).metadix >$@ 
 
@@ -70,8 +85,6 @@ $(PREFIX1).lex.bin: $(BASENAME).$(PREFIX1).lex
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
 	lt-comp lr $(BASENAME).post-$(LANG2).dix $@ 
-
-$(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
@@ -157,6 +170,9 @@ apertium_sh_sl_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autogen.bin \
                     $(PREFIX1).rlx.bin \
                     $(PREFIX2).rlx.bin \
+                    $(PREFIX2a).autolex.bin \
+                    $(PREFIX2b).autolex.bin \
+                    $(PREFIX2c).autolex.bin \
                     $(PREFIX1).lex.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \

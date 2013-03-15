@@ -2,10 +2,15 @@
 <transfer default="chunk">
 
   <section-def-cats>
+    <def-cat n="ki">
+      <cat-item lemma="ki" tags="cnjsub"/>
+    </def-cat>
+
     <def-cat n="nom">
       <cat-item tags="n.*"/>
       <cat-item tags="np.*"/>
     </def-cat>
+
     <def-cat n="nom_gen">
       <cat-item tags="n.*.*.gen"/>
       <cat-item tags="n.*.*.gen.*"/>
@@ -151,6 +156,9 @@
     <def-cat n="prn_tot">
       <cat-item tags="prn.tot"/>
       <cat-item tags="prn.tot.*"/>
+    </def-cat>
+    <def-cat n="prn_emph">
+      <cat-item tags="prn.emph.*"/>
     </def-cat>
     <def-cat n="prn_dem">
       <cat-item tags="prn.dem.*"/>
@@ -1505,6 +1513,45 @@
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <!--
+
+
+[zocky] spectei, the really bad one is "ki jih"
+[zocky] i.e. "ki + personal pronoun"
+[zocky] that needs to be "koji" in the correct gender/number/case
+ 
+      -->
+
+    <rule comment="ki prn_emph">
+      <pattern>
+	<pattern-item n="ki"/>
+	<pattern-item n="prn_emph"/>
+      </pattern>
+      <action>
+	<call-macro n="prn_adapter"><with-param pos="2"/></call-macro>
+        <choose>
+          <when><test><equal><clip pos="2" side="sl" part="gen"/><lit-tag v="mfn"/></equal></test>
+            <let><clip pos="2" side="tl" part="gen"/><lit-tag v="mi"/></let> </when>
+        </choose>
+	<out>
+	  <chunk name="prn" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="Prn"/></tag>
+	    </tags>
+	    <lu>
+              <get-case-from pos="1">
+              <lit v="koji"/>
+              </get-case-from>
+              <lit-tag v="prn.rel"/>
+	      <clip pos="2" side="tl" part="gen"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	      <clip pos="2" side="tl" part="cas"/>
 	    </lu>
 	  </chunk>
 	</out>

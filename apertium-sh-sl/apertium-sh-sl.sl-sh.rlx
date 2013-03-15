@@ -35,6 +35,7 @@ LIST PersPron = (prn pers) ;
 LIST PosPron = (prn pos) ;
 LIST IndPron = (prn ind) ;
 LIST RefPron = (prn ref) ;
+LIST EmphPron = (prn emph) ;
 SET MeTeSePron = ("<me>" prn pers acc) | ("<te>" prn pers acc) | ("<se>" prn pers ref);
 LIST Particle = part ;
 LIST Pr = pr ; 
@@ -231,3 +232,6 @@ REMOVE:notGenitive Nomen + Gen (0 Nomen + Loc) (0 Nomen + Gen) (-1 Pr + Loc) (-1
 "<Praviloma>" SELECT:PravilomaAdv Adv
 
 
+REMOVE Gen IF (0 EmphPron) (0 Gen OR Acc) (-1 ("ki"i)) (1* Transitive BARRIER S-BOUNDARY)
+
+    ## Večinoma smo šli tudi sami skozi enak proces, s kakršnim se zdaj soočajo države zahodnega Balkana, in imamo dragocen izkušnje, ki jih lahko delimo z njimi.
