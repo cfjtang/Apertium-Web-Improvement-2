@@ -5,6 +5,7 @@
     <def-cat n="nom">
       <cat-item tags="n.*"/>
       <cat-item tags="np.*"/>
+      <cat-item tags="abbr.*"/>
     </def-cat>
     <def-cat n="nom_gen">
       <cat-item tags="n.*.*.gen"/>
@@ -470,7 +471,7 @@
       </choose>
     </def-macro>
 
-    <def-macro n="adj_adapter" npar="1">
+    <def-macro n="chunk_adj_adapter" npar="1">
       <choose>
 	<when>
 	  <test>
@@ -654,7 +655,7 @@
     </def-macro>
 
 
-    <def-macro n="vbserBiti_adapter" npar="1">
+    <def-macro n="chunk_vbserBiti_adapter" npar="1">
       <choose>
 	<when>
 	  <test>
@@ -821,7 +822,7 @@
 
 
     <!--
-	Like with adv-adapter, this is an alternative that
+	Like with adv_adapter, this is an alternative that
 	does not output chunks
     -->
     <def-macro n="verb_adapter" npar="1">
@@ -1207,7 +1208,7 @@
       </choose>
     </def-macro>
 
-    <def-macro n="adverb_adapter" npar="1"><!--TODO: This outputs entire chunks, so it's difficult to use it as an adapter-->
+    <def-macro n="chunk_adverb_adapter" npar="1"><!--TODO: This outputs entire chunks, so it's difficult to use it as an adapter-->
       <choose>
 	<when>
 	  <test>    
@@ -1601,7 +1602,7 @@
       <action>
 	<call-macro n="firstWord"><with-param pos="2"/></call-macro>
 	<!-- outputs-->
-	<call-macro n="vbserBiti_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="2"/></call-macro>
 	<out><b/></out>
 	<call-macro n="chunk_verb_adapter"><with-param pos="1"/></call-macro>
       </action>
@@ -1686,7 +1687,7 @@
 	    </out>
 	  </when>
 	  <otherwise>
-	    <call-macro n="vbserBiti_adapter"><with-param pos="1"/></call-macro>
+	    <call-macro n="chunk_vbserBiti_adapter"><with-param pos="1"/></call-macro>
 	  </otherwise>
 	</choose>
       </action>
@@ -1703,9 +1704,9 @@
 	<call-macro n="firstWord"><with-param pos="2"/></call-macro>
 	<call-macro n="nom_adapter"><with-param pos="3"/></call-macro>
 	<!-- outputs-->
-	<call-macro n="vbserBiti_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="2"/></call-macro>
 	<out><b/></out>
-	<call-macro n="adj_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="chunk_adj_adapter"><with-param pos="1"/></call-macro>
 	<out>
 	  <chunk name="AdjVbserNoun" case="caseFirstWord">
 	    <tags>
@@ -1744,7 +1745,7 @@
 	</out>
 	<!-- outputs-->
 	<out><b/></out>
-	<call-macro n="vbserBiti_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="3"/></call-macro>
 	<out>
 	  <b/>
 	  <lu>
@@ -1777,9 +1778,9 @@
 	</out>
 	<!-- outputs-->
 	<out><b/></out>
-	<call-macro n="vbserBiti_adapter"><with-param pos="4"/></call-macro>
+	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="4"/></call-macro>
 	<out><b/></out>
-	<call-macro n="adj_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="chunk_adj_adapter"><with-param pos="2"/></call-macro>
 	<out>
 	  <b/>
 	  <lu>
@@ -1813,11 +1814,11 @@
 	</out>
 	<!-- outputs-->
 	<out><b/></out>
-	<call-macro n="vbserBiti_adapter"><with-param pos="5"/></call-macro>
+	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="5"/></call-macro>
 	<out><b/></out>
-	<call-macro n="adj_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="chunk_adj_adapter"><with-param pos="2"/></call-macro>
 	<out><b/></out>
-	<call-macro n="adj_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="chunk_adj_adapter"><with-param pos="3"/></call-macro>
 	<out>
 	  <b/>
 	  <lu>
@@ -1848,7 +1849,7 @@
 	</out>
 	<!-- outputs-->
 	<out><b/></out>
-	<call-macro n="vbserBiti_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="3"/></call-macro>
 	<out><b/></out>
 	<call-macro n="chunk_verb_adapter"><with-param pos="2"/></call-macro>
       </action>
@@ -2498,7 +2499,7 @@ prn vblex vbser - prn vbser vblex
 	    </out>
 	  </when>
 	  <otherwise>
-	    <call-macro n="adj_adapter"><with-param pos="1"/></call-macro>
+	    <call-macro n="chunk_adj_adapter"><with-param pos="1"/></call-macro>
 	  </otherwise>
 	</choose>
       </action>
@@ -2547,7 +2548,7 @@ prn vblex vbser - prn vbser vblex
       </pattern>
       <action>
 	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
-	<call-macro n="adj_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="chunk_adj_adapter"><with-param pos="1"/></call-macro>
       </action>
     </rule>
 
@@ -3129,7 +3130,7 @@ prn vblex vbser - prn vbser vblex
       </pattern>
       <action>
 	<call-macro n="nom_adapter"><with-param pos="1"/></call-macro>
-	<call-macro n="adj_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="chunk_adj_adapter"><with-param pos="2"/></call-macro>
 	<out>
 	  <chunk name="np_adj" case="caseFirstWord">
 	    <tags>
@@ -3561,7 +3562,7 @@ prn vblex vbser - prn vbser vblex
 	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
 	<call-macro n="mima_to_m"><with-param pos="2"/></call-macro>
 	<call-macro n="voc_adapter"><with-param pos="2"/></call-macro>
-	<call-macro n="adverb_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="chunk_adverb_adapter"><with-param pos="3"/></call-macro>
 	<out>
 	  <chunk name="liAdjAdv-AdvAdj" case="caseFirstWord">
 	    <tags>
