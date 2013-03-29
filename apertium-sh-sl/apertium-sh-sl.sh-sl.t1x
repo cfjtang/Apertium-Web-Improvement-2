@@ -72,6 +72,12 @@
       <cat-item tags="vbmod.*"/>
       <cat-item tags="vbhaver.*"/>
     </def-cat>
+    <def-cat n="verb_lp">
+      <cat-item tags="vblex.*.*.lp"/>
+      <cat-item tags="vbser.lp.*"/>
+      <cat-item tags="vbmod.lp.*"/>
+      <cat-item tags="vbhaver.*.*.lp.*"/>
+    </def-cat>
     <def-cat n="vbmod">
       <cat-item tags="vbmod.*"/>
     </def-cat>
@@ -222,6 +228,12 @@
     </def-cat>
     <def-cat n="biti">
       <cat-item lemma="biti" tags="vbser.*"/>
+    </def-cat>
+    <def-cat n="biti_aor">
+      <cat-item lemma="biti" tags="vbser.clt.aor.*"/>
+    </def-cat>
+    <def-cat n="biti_imperfect">
+      <cat-item lemma="biti" tags="vbser.pii.*"/>
     </def-cat>
     <def-cat n="biti_vbser">
       <cat-item lemma="biti" tags="vbser.*"/>
@@ -2511,13 +2523,13 @@ prn vblex vbser - prn vbser vblex
       <pattern>
 	<pattern-item n="ne_part"/>
 	<pattern-item n="vbser_past"/>
-	<pattern-item n="verb"/>
+	<pattern-item n="verb_lp"/>
       </pattern>
       <action>
 	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
 	<!--><call-macro n="chunk_verb_adapter"><with-param pos="2"/></call-macro>-->
 	<out>
-	  <chunk name="verb" case="caseFirstWord">
+	  <chunk name="verbek" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="VB"/></tag>
 	      <tag><clip pos="2" side="tl" part="a_vrb"/></tag>
@@ -2535,7 +2547,8 @@ prn vblex vbser - prn vbser vblex
 	      <clip pos="3" side="tl" part="lemh"/>
 	      <clip pos="3" side="tl" part="a_vrb"/>
 	      <clip pos="3" side="tl" part="asp"/>
-	      <lit-tag v="tv.past"/>
+	      <clip pos="3" side="tl" part="trn"/>
+	      <lit-tag v="past"/>
 	      <clip pos="3" side="tl" part="gen"/>
 	      <clip pos="3" side="tl" part="nbr"/>
 	    </lu>	
@@ -3453,6 +3466,62 @@ prn vblex vbser - prn vbser vblex
       </action>
     </rule>
 
+    <rule comment="ne + bijah => nisem bil (vbser)"> <!-- Defaults to <m> -->
+      <pattern>
+	<pattern-item n="ne_part"/>
+	<pattern-item n="biti_imperfect"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+	<out>
+	  <chunk name="neg_imperfect" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="biti"/>
+	      <lit-tag v="vbser.pres.neg"/>
+	      <clip pos="2" side="tl" part="prs"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="biti"/>
+	      <lit-tag v="vbser.past.m"/>
+	      <clip pos="2" side="tl" part="nbr"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="ne + biti => biti.neg (vbser)">
+      <pattern>
+	<pattern-item n="ne_part"/>
+	<pattern-item n="biti_aor"/>
+      </pattern>
+      <action>
+	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
+	<out>
+	  <chunk name="neg_aor" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="ne"/>
+	      <lit-tag v="part"/>
+	    </lu>
+	    <b/>
+	    <lu>	      
+	      <lit v="biti"/>
+	      <lit-tag v="vbser.cni"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
     <rule comment="ne + biti => biti.neg (vbser)">
       <pattern>
 	<pattern-item n="ne_part"/>
@@ -3461,7 +3530,7 @@ prn vblex vbser - prn vbser vblex
       <action>
 	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
 	<out>
-	  <chunk name="neBiti-BitiNeg" case="caseFirstWord">
+	  <chunk name="neg_vbser" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="VB"/></tag>
 	    </tags>
