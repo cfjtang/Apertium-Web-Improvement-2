@@ -1054,7 +1054,19 @@
 	  </concat>
 	</let>
       </when>
-      <when> <!-- For the adverb->verbal adverb-->
+      <when> <!--for hoteći<vblex><pprs><adv>:hoteč<adv><sint>-->
+	<test>
+	    <equal><clip pos="1" side="sl" part="lemh"/><lit v="hoteč"/></equal>
+	</test>
+	<let>
+	  <clip pos="1" side="tl" part="whole"/>
+	  <concat>
+	    <clip pos="1" side="tl" part="lemh"/>
+	    <lit-tag v="vbmod.pprs.adv"/>
+	  </concat>
+	</let>	
+      </when>
+      <when> <!-- For the adverb->verbal adverb--><!--hoteći:hoteč is not covered here, as it's doing fine with just the bidix-->
 	<test>
 	  <or>
 	    <equal><clip pos="1" side="tl" part="a_vrb"/><lit-tag v="vblex.adv"/></equal>
