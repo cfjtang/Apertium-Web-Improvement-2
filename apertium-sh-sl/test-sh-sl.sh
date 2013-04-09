@@ -50,9 +50,9 @@ lt-expand apertium-sh-sl.sh.dix | grep $1 |
 	sed  -e 's|^|\^|' -e 's|$|\$|' |
 	apertium-pretransfer |
 	lt-proc -b sh-sl.autobil.bin | 
-	apertium-transfer -b apertium-sh-sl.sh-sl.t1x  sh-sl.t1x.bin |
-	apertium-interchunk apertium-sh-sl.sh-sl.t2x  sh-sl.t2x.bin |
-    apertium-postchunk apertium-sh-sl.sh-sl.t3x  sh-sl.t3x.bin  |
+	apertium-transfer -b apertium-sh-sl.sh-sl.t1x  sh-sl.t1x.bin # |
+	# apertium-interchunk apertium-sh-sl.sh-sl.t2x  sh-sl.t2x.bin |
+        # apertium-postchunk apertium-sh-sl.sh-sl.t3x  sh-sl.t3x.bin  |
 	lt-proc -d sh-sl.autogen.bin 
 else 
 lt-expand apertium-sh-sl.sh.dix | grep $1 |
