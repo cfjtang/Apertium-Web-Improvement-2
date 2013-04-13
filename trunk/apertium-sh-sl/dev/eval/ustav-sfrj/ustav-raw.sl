@@ -56,7 +56,7 @@ Družbenoekonomski in politični sistem izhaja iz takega položaja človeka in j
 
 Nasprotna družbenoekonomskemu in političnemu sistemu, ki ga določa ta ustava, je vsaka oblika upravljanja proizvodnje in drugih družbenih dejavnosti ter vsaka oblika delitve, ki bi - kot birokratska samovolja, tehnokratska uzurpacija in privilegiji, temelječi na monopolnem upravljanju produkcijskih sredstev, ali kot prilaščanje družbenih sredstev na skupinskolastninski podlagi in v drugih oblikah privatizacije teh sredstev ali kot zasebnolastniška ali partikularistična sebičnost - pačila družbene odnose, ki temeljijo na takem človekovem položaju, kakor tudi vsaka druga oblika, ki bi delavski razred omejevala pri uresničevanju njegove zgodovinske vloge v družbenoekonomskih in političnih odnosih ter pri organiziranju oblasti zanj in za vse delovne ljudi.
 
-==III==
+====III====
 
 Družbena lastnina kot izraz socialističnih družbenoekonomskih odnosov med
 ljudmi je osnova svobodnega združenega dela in vladajočega položaja delavskega razreda v proizvodnji in v družbeni reprodukciji v celoti, kot tudi osnova z lastnim delom pridobljene osebne lastnine ki je namenjena za zadovoljevanje človekovih potreb in interesov.
