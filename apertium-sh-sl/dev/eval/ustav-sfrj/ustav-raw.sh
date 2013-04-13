@@ -1,12 +1,3 @@
-{{Kakvoća teksta|25%}}
-{{zaglavlje
-| prethodni=
-| sljedeći=
-| naslov= Ustav Socijalističke Federativne Republike Jugoslavije
-| odjeljak=
-| bez_autora= 
-| bilješke=''Ustav Socijalističke Federativne Republike Jugoslavije'' donesen je 21. veljače 1974. godine. [Pozor: Dolje prikazani tekst je nepotpuno pročišćeni tekst sa srpskog na hrvatski jezik.]}}
-<div style="text-align:justify;width:95%;">
 Polazeći od povijesne činjenice da su radnici  i seljaci  i napredni ljudi svih naroda  i narodnosti Jugoslavije,  ujedinjeni u Narodnooslobodilačkom frontu s Komunističkom partijom na čelu,  svojom borbom  u narodnooslobodilačkom ratu  i socijalističkoj revoluciji srušili stari klasni poredak  zasnovan na eksploataciji,  političkom ugnjetavanju  i nacionalnoj neravnopravnosti  i otpočeli stvaranje društva  u kome će ljudski rad  i čovjek biti oslobođeni od iskorišćavanja  i samovolje,  a svaki narod  i narodnost  i svi oni zajedno naći uvjete za slobodan  i svestran razvitak,  
 
 imajući u vidu  da su razvitkom materijalne osnove zemlje  i socijalističkih društvenih odnosa,  kao  i daljim izgrađivanjem odnosa zasnovanih na samoupravljanju  i nacionalnoj ravnopravnosti,  ostvarene bitne promjene u društvenim  i političkim odnosima,  koje zahtjevaju odgovarajuće promjene Ustava Socijalističke Federativne Republike Jugoslavije od 1963.  godine,  i da su odredbe tog ustava u pojedinim oblastima već izmenjene ustavnim amandmanima od 1967,  1968.  i 1971.  godine,  
@@ -16,18 +7,26 @@ u težnji da se učvrste  i dalje razviju postignute revolucionarne tekovine,  d
 polazeći  i od potrebe  da se novim ustavom Socijalističke Federativne Republike Jugoslavije,  koji,  pored promjena koje se njime vrše,  obuhvata  i sa njima usklađene odredbe Ustava Socijalističke Federativne Republike Jugoslavije od 1963.  godine  i ustavnih amandmana  I do XLII,  učvrsti ustavni sustav na jedinstvenim socijalističkim samoupravnim osnovama,  
 
 Savezna skupština,  u suglasnosti sa skupštinama republika  i skupštinama autonomnih pokrajina,  
-<center>DONOSI</center><br>
-<center><big>'''USTАV''' </big></center>
-<center><big>'''SOCIJАLISTIČKE FEDERАTIVNE''' </big></center>
-<center><big>'''REPUBLIKE JUGOSLАVIJE''' </big></center>
-
 
 ==UVODNI DIO ==
+
 ===OSNOVNА NАČELА ===
 
 ====I====
-Narodi Jugoslavije,  polazeći od prava svakog naroda  na samoopredeljenje,  uključujući  i pravo na otcepljenje,  na osnovu svoje slobodno izražene volje u zajedničkoj borbi svih naroda  i narodnosti  u narodnooslobodilačkom ratu  i socijalističkoj revoluciji,  a u skladu sa svojim povijesnim težnjama,  svjesni da je dalje učvršćivanje  njihovog bratstva  i jedinstva  u zajedničkom interesu,  zajedno sa narodnostima sa kojima žive,  ujedinili su se u saveznu republiku  slobodnih  i ravnopravnih naroda  i narodnosti  i stvorili socijalističku federativnu zajednicu  radnih ljudi  — Socijalističku Federativnu Republiku Jugoslaviju,  u kojoj,  u interesu svakog naroda  i narodnosti  posebno  i svih njih zajedno,  ostvaruju  i obezbeđuju socijalističke društvene odnose  zasnovane  na samoupravljanju radnih ljudi  i zaštitu socijalističkog samoupravnog sustava,  nacionalnu slobodu  i nezavisnost,  bratstvo  i jedinstvo  naroda  i narodnosti,  jedinstvene interese radničke klase  i solidarnost radnika  i svih radnih ljudi,  mogućnosti  i slobode  za svestrani razvitak ljudske ličnosti  i za zbližavanje ljudi  i naroda  i narodnosti,  u skladu sa njihovim interesima  i težnjama  na putu stvaranja sve bogatije kulture  i civilizacije socijalističkog društva,  ujedinjavanje  i usklađivanje napora na razvijanju materijalne osnove socijalističkog društva  i blagostanja ljudi,  sustav društveno-ekonomskih odnosa  i jedinstvene osnove političkog sustava,  kojima se obezbeđuju zajednički interesi radničke klase  i svih radnih ljudi  i ravnopravnost naroda  i narodnosti,  udruživanje sopstvenih stremljenja  s naprednim težnjama čovječanstva.  
-Radni ljudi  i narodi  i narodnosti ostvaruju svoja suvjerena prava u socijalističkim republikama,  i u socijalističkim autonomnim pokrajinama  u skladu sa njihovim ustavnim pravima,  a u Socijalističkoj Federativnoj Republici Jugoslaviji — kad je to,  u zajedničkom interesu,  ovim ustavom utvrđeno.  Radni ljudi,  narodi  i narodnosti  odlučuju u federaciji na načelima sporazumijevanja republika  i autonomnih pokrajina,  solidarnosti  i uzajamnosti,  ravnopravnog učešća  republika  i autonomnih pokrajina  u organima federacije,  u skladu sa ovim ustavom,  kao  i na načelu odgovornosti  republika  i autonomnih pokrajina za sopstveni razvoj  i za razvoj socijalističke zajednice kao cjeline.  
+
+Narodi Jugoslavije,  polazeći od prava svakog naroda  na samoopredeljenje,  uključujući  i pravo na otcepljenje,  na osnovu svoje slobodno izražene volje u zajedničkoj borbi svih naroda  i narodnosti  u narodnooslobodilačkom ratu  i socijalističkoj revoluciji,  a u skladu sa svojim povijesnim težnjama,  svjesni da je dalje učvršćivanje  njihovog bratstva  i jedinstva  u zajedničkom interesu,  zajedno sa narodnostima sa kojima žive,  ujedinili su se u saveznu republiku  slobodnih  i ravnopravnih naroda  i narodnosti  i stvorili socijalističku federativnu zajednicu  radnih ljudi  — Socijalističku Federativnu Republiku Jugoslaviju,  u kojoj,  u interesu svakog naroda  i narodnosti  posebno  i svih njih zajedno,  ostvaruju  i obezbeđuju 
+
+* socijalističke društvene odnose  zasnovane  na samoupravljanju radnih ljudi  i zaštitu socijalističkog samoupravnog sustava,  
+* nacionalnu slobodu  i nezavisnost,  
+* bratstvo  i jedinstvo  naroda  i narodnosti,  jedinstvene interese radničke klase  i solidarnost radnika  i svih radnih ljudi,  
+* mogućnosti  i slobode  za svestrani razvitak ljudske ličnosti  i za zbližavanje ljudi  i naroda  i narodnosti,  u skladu sa njihovim interesima  i težnjama  na putu stvaranja sve bogatije kulture  i civilizacije socijalističkog društva,  
+* ujedinjavanje  i usklađivanje napora na razvijanju materijalne osnove socijalističkog društva  i blagostanja ljudi,  
+* sustav društveno-ekonomskih odnosa  i jedinstvene osnove političkog sustava,  kojima se obezbeđuju zajednički interesi radničke klase  i svih radnih ljudi  i ravnopravnost naroda  i narodnosti,  
+* udruživanje sopstvenih stremljenja  s naprednim težnjama čovječanstva.  
+
+Radni ljudi  i narodi  i narodnosti ostvaruju svoja suvjerena prava u socijalističkim republikama,  i u socijalističkim autonomnim pokrajinama  u skladu sa njihovim ustavnim pravima,  a u Socijalističkoj Federativnoj Republici Jugoslaviji — kad je to,  u zajedničkom interesu,  ovim ustavom utvrđeno.  
+
+Radni ljudi,  narodi  i narodnosti  odlučuju u federaciji na načelima sporazumijevanja republika  i autonomnih pokrajina,  solidarnosti  i uzajamnosti,  ravnopravnog učešća  republika  i autonomnih pokrajina  u organima federacije,  u skladu sa ovim ustavom,  kao  i na načelu odgovornosti  republika  i autonomnih pokrajina za sopstveni razvoj  i za razvoj socijalističke zajednice kao cjeline.  
 
 ====II====
 Socijalističko društveno uređenje Socijalističke Federativne Republike Jugoslavije zasniva se  na vlasti radničke klase  i svih radnih ljudi  i na odnosima među ljudima  kao slobodnim  i ravnopravnim proizvođačima  i stvaraocima,  čiji rad služi isključivo zadovoljavanju njihovih ličnih  i zajedničkih potreba.  Osnovu ovih odnosa čini društveno-ekonomski položaj radnog čovjeka  koji mu obezbeđuje,  radeći sredstvima  u društvenoj svojini  i odlučujući neposredno  i ravnopravno  s drugim radnim ljudima  u udruženom radu  o svim poslovima društvene reprodukcije  u uvjetima  i odnosima  međusobne zavisnosti,  odgovornosti  i solidarnosti,  ostvarivati svoj lični materijalni  i moralni interes  i pravo koristiti se rezultatima svog tekućeg  i minulog rada  i tekovinama  općeg materijalnog  i društvenog napretka,  na toj osnovi što potpunije zadovoljavati svoje lične  i društvene potrebe  i da razvija svoje radne  i druge stvaralačke sposobnosti.  
