@@ -1,62 +1,34 @@
-{{Ustava SFRJ 1974}}
-{{wikipedija}}
-[[Kategorija:Ustava SFRJ]]
+Izhajajoč iz zgodovinskega dejstva, da so delavci in kmetje ter napredni ljudje vseh narodov in narodnosti Jugoslavije, združeni v Narodnoosvobodilno fronto s Komunistično partijo na čelu, s svojim bojem v narodnoosvobodilni vojni in socialistični revoluciji zrušili stari razredni red, ki je temeljil na izkoriščanju, političnem zatiranju in nacionalni neenakopravnosti, in začeli ustvarjati družbo, v kateri bosta človek in njegovo delo osvobojena izkoriščanja in samovolje, vsak narod in vsaka narodnost posebej in vsi skupaj pa našli možnosti za svoboden in vsestranski razvoj; 
 
-Izhajajoč iz zgodovinskega dejstva, da so delavci in kmetje ter napredni ljudje vseh narodov in narodnosti [[:w:sl:Jugoslavija|Jugoslavije]], združeni v Narodnoosvobodilno fronto s Komunistično partijo na čelu, s svojim bojem v [[:w:sl:narodnoosvobodilna vojna|narodnoosvobodilni vojni]] in [[:w:sl:socializem|socialistični]] [[:w:sl:revolucija|revoluciji]] zrušili stari razredni red, ki je temeljil na izkoriščanju, političnem zatiranju in nacionalni neenakopravnosti, in začeli ustvarjati družbo, v kateri bosta človek in njegovo delo osvobojena izkoriščanja in samovolje, vsak narod in vsaka narodnost posebej in vsi skupaj pa našli možnosti za svoboden in vsestranski razvoj; 
+upoštevajoč, da so z razvojem materialne osnove države in socialističnih družbenih odnosov ter z nadaljnjo graditvijo odnosov, temelječih na samoupravljanju in nacionalni enakopravnosti, nastale bistvene spremembe v družbenih in političnih odnosih, ki zahtevajo ustrezne spremembe ustave Socialistične federativne republike Jugoslavije iz leta 1963, in da so bile določene te ustave na posameznih področjih že spremenjene z ustavnimi amandmaji v letih 1967, 1968 in 1971;
 
-upoštevajoč, da so z razvojem materialne osnove države in socialističnih družbenih odnosov ter z nadaljnjo graditvijo odnosov, temelječih na samoupravljanju in nacionalni enakopravnosti, nastale bistvene spremembe v družbenih in političnih odnosih, ki zahtevajo ustrezne spremembe ustave [[:w:sl:Socialistična federativna republika Jugoslavija|Socialistične federativne republike Jugoslavije]] iz leta 1963, in da so bile določene te ustave na posameznih področjih že spremenjene z ustavnimi amandmaji v letih 1967, 1968 in 1971;
+v težnji, da se učvrstijo in še naprej razvijejo dosežene revolucionarne pridobitve, da se utrdita pravica in odgovornost socialističnih republik in socialističnih avtonomnih pokrajin za lasten razvoj in za razvoj jugoslovanske skupnosti kot celote in da se zagotovi nadaljnji razvoj socialističnih samoupravnih demokratičnih odnosov na poti k osvoboditvi dela in zgraditvi komunistične družbe;
 
-v težnji, da se učvrstijo in še naprej razvijejo dosežene revolucionarne pridobitve, da se utrdita pravica in odgovornost socialističnih republik in socialističnih avtonomnih pokrajin za lasten razvoj in za razvoj jugoslovanske skupnosti kot celote in da se zagotovi nadaljnji razvoj socialističnih samoupravnih [[:w:sl:demokracija|demokratičnih]] odnosov na poti k osvoboditvi dela in zgraditvi [[:w:sl:komunizem|komunistične]] družbe;
-
-izhajajoč tudi iz potrebe, da se z novo [[:w:sl:ustava|ustavo]] Socialistične federativne republike Jugoslavije, ki poleg novih sprememb obsega tudi z njimi usklajene določbe ustave Socialistične federativne republike Jugoslavije iz leta 1963 in ustavnih amandmajev I do XLII, utrdi ustavni sistem na enotnih socialističnih samoupravnih temeljih -
+izhajajoč tudi iz potrebe, da se z novo ustavo Socialistične federativne republike Jugoslavije, ki poleg novih sprememb obsega tudi z njimi usklajene določbe ustave Socialistične federativne republike Jugoslavije iz leta 1963 in ustavnih amandmajev I do XLII, utrdi ustavni sistem na enotnih socialističnih samoupravnih temeljih -
 
 Zvezna skupščina v soglasju s skupščinami republik in skupščinama avtonomnih pokrajin
 
-{{Ustava SFRJ 1974}}
+==UVODNI DEL==
 
-<center><big>'''UVODNI DEL</big></center>
+===TEMELJNA NAČELA===
 
-<center><big>'''TEMELJNA NAČELA'''</big></center>
+====I====
 
-==I==
-
-Izhajajoč iz pravice vsakega naroda do samoodločbe, ki vključuje tudi
-pravico do odcepitve, so se narodi Jugoslavije na podlagi svobodno izražene
-volje v skupnem boju vseh narodov in narodnosti v narodnoosvobodilni vojni in
-socialistični revoluciji v skladu s svojimi zgodovinskimi težnjami, zavedajoč
-se, da je nadaljnja krepitev bratstva in enotnosti skupni interes, skupaj z
-narodnostmi, s katerimi živijo, združili v zvezno republiko svobodnih in
-enakopravnih narodov in narodnosti in ustvarili socialistično zvezno skupnost
-delovnih ljudi - Socialistično federativno republiko Jugoslavijo, v kateri v
-interesu vsakega naroda in vsake narodnosti posebej in vseh skupaj
-uresničujejo in zagotavljajo:
+Izhajajoč iz pravice vsakega naroda do samoodločbe, ki vključuje tudi pravico do odcepitve, so se narodi Jugoslavije na podlagi svobodno izražene volje v skupnem boju vseh narodov in narodnosti v narodnoosvobodilni vojni in socialistični revoluciji v skladu s svojimi zgodovinskimi težnjami, zavedajoč se, da je nadaljnja krepitev bratstva in enotnosti skupni interes, skupaj z narodnostmi, s katerimi živijo, združili v zvezno republiko svobodnih in enakopravnih narodov in narodnosti in ustvarili socialistično zvezno skupnost delovnih ljudi — Socialistično federativno republiko Jugoslavijo, v kateri v interesu vsakega naroda in vsake narodnosti posebej in vseh skupaj uresničujejo in zagotavljajo:
 
 * socialistične družbene odnose, ki temeljijo na samoupravljanju delovnih ljudi, in varstvo socialističnega samoupravnega sistema;
-
 * nacionalno svobodo in neodvisnost;
-
 * bratstvo in enotnost narodov in narodnosti; enotne interese delavskega razreda in solidarnosti delavcev in vseh delovnih ljudi;
-
 * svoboščine in možnosti za vsestranski razvoj človekove osebnosti in za zbliževanje ljudi ter narodov in narodnosti, v skladu z njihovimi interesi in težnjami pri ustvarjanju čedalje bogatejše kulture in civilizacije socialistične družbe;
-
 * združevanje in usklajevanje prizadevanj za razvoj materialne osnove socialistične družbe in blaginje ljudi;
-
 * sistem družbenoekonomskih odnosov in enotne temelje političnega sistema, s katerimi se zagotavljajo skupni interesi delavskega razreda in vseh delovnih ljudi ter enakopravnost narodov in narodnosti;
-
 * združevanje lastnih hotenj z naprednimi težnjami človeštva.
 
-Delovni ljudje ter narodi in narodnosti uresničujejo svoje suverene pravice
-v socialističnih republikah in v socialističnih avtonomnih pokrajinah v skladu
-z njihovimi ustavnimi pravicami in - kadar to v skupnem interesu določa ta
-ustava - v Socialistični federativni republiki Jugoslaviji.
+Delovni ljudje ter narodi in narodnosti uresničujejo svoje suverene pravice v socialističnih republikah in v socialističnih avtonomnih pokrajinah v skladu z njihovimi ustavnimi pravicami in - kadar to v skupnem interesu določa ta ustava - v Socialistični federativni republiki Jugoslaviji.
 
-Delovni ljudje, narodi in narodnosti odločajo v federaciji po načelih
-sporazumevanja republik in avtonomnih pokrajin, solidarnosti in vzajemnosti,
-enakopravne udeležbe republik in avtonomnih pokrajin v organih federacije
-skladno s to ustavo ter po načelu odgovornosti republik in avtonomnih pokrajin
-za lasten razvoj in za razvoj socialistične skupnosti kot celote.
+Delovni ljudje, narodi in narodnosti odločajo v federaciji po načelih sporazumevanja republik in avtonomnih pokrajin, solidarnosti in vzajemnosti, enakopravne udeležbe republik in avtonomnih pokrajin v organih federacije skladno s to ustavo ter po načelu odgovornosti republik in avtonomnih pokrajin za lasten razvoj in za razvoj socialistične skupnosti kot celote.
 
-==II==
+====II====
 
 Socialistična družbena ureditev Socialistične federativne republike Jugoslavije temelji na oblasti delavskega razreda in vseh delovnih ljudi in na odnosih med ljudmi kot svobodnimi in enakopravnima proizvajalci in ustvarjalci, ki jim delo služi izključno za zadovoljevanje njihovih osebnih in skupnih potreb.
 
