@@ -250,54 +250,71 @@ U tom cilju organi samoupravljanja, državni organi, samoupravne organizacije i 
 
 * proširivati i jačati materijalnu osnovu društva i života pojedinaca razvijanjem proizvodnih snaga, podizanjem proizvodnosti rada i stalnim unapređivanjem socijalističkih samoupravnih odnosa, 
 
-* stvarati uvjete u kojima će se prevazilaziti društveno-ekonomske razlike između umnog i fizičkog rada i u kojima će ljudski rad postajati sve potpunije ispoljavanje stvaralaštva i ljudske ličnosti,  proširivati i razvijati sve oblike samoupravljanja i socijalističkog samoupravnog demokratizma, a naročito u oblastima u kojima preovlađuju funkcije političke vlasti, ograničavati prinudu i stvarati uvjete za njeno otklanjanje i izgrađivati među ljudima odnose zasnovane na svijesti o zajedničkim interesima, na socijalističkoj etici i na slobodnom stvaralaštvu čovjeka,  
+* stvarati uvjete u kojima će se prevazilaziti društveno-ekonomske razlike između umnog i fizičkog rada i u kojima će ljudski rad postajati sve potpunije ispoljavanje stvaralaštva i ljudske ličnosti,  
 
-* doprinositi ostvarivanju ljudskih sloboda i prava, humanizovanju društvene sredine i ljudske ličnosti, jačanju solidarnosti i čovečnosti među ljudima i poštovanju ljudskog dostojanstva,  razvijati svestranu suradnju i zbližavanje sa svim narodima, u skladu sa progresivnim težnjama čovječanstva za stvaranjem slobodne zajednice svih naroda svijeta. 
+* proširivati i razvijati sve oblike samoupravljanja i socijalističkog samoupravnog demokratizma, a naročito u oblastima u kojima preovlađuju funkcije političke vlasti, ograničavati prinudu i stvarati uvjete za njeno otklanjanje i izgrađivati među ljudima odnose zasnovane na svijesti o zajedničkim interesima, na socijalističkoj etici i na slobodnom stvaralaštvu čovjeka,  
+
+* doprinositi ostvarivanju ljudskih sloboda i prava, humanizovanju društvene sredine i ljudske ličnosti, jačanju solidarnosti i čovečnosti među ljudima i poštovanju ljudskog dostojanstva,  
+
+* razvijati svestranu suradnju i zbližavanje sa svim narodima, u skladu sa progresivnim težnjama čovječanstva za stvaranjem slobodne zajednice svih naroda svijeta. 
 
 ====X====
+
 Izražavajući osnovna načela socijalističkog samoupravnog društva i njegovog napretka, ovaj dio ustava je osnova i pravac za tumačenje ustava i zakona, kao i za djelovanje svih i svakoga. 
 
-
 ==DIO PRVI ==
+
 ===SOCIJАLISTIČKА FEDERАTIVNА REPUBLIKА JUGOSLАVIJА ===
 
+====Član 1.====
 
-<center>'''Član 1.''' </center>
 Socijalistička Federativna Republika Jugoslavija je savezna država kao državna zajednica dobrovoljno ujedinjenih naroda i njihovih socijalističkih republika, kao i socijalističkih autonomnih pokrajina Vojvodine i Kosova koje su u sastavu Socijalističke Republike Srbije, zasnovana na vlasti i samoupravljanju radničke klase i svih radnih ljudi, i socijalistička samoupravna demokratska zajednica radnih ljudi i građana i ravnopravnih naroda i narodnosti. 
 
-<center>'''Član 2.''' </center>
-Socijalističku Federativnu Republiku Jugoslaviju sačinjavaju Socijalistička Republika Bosna i Hercegovina, Socijalistička Republika Makedonija, Socijalistička Republika Slovenija, Socijalistička Republika Srbija, kao i Socijalistička Аutonomna Pokrajina Vojvodina i Socijalistička Аutonomna Pokrajina Kosovo koje su u sastavu Socijalističke Republike Srbije, Socijalistička Republika Hrvatska i Socijalistička Republika Crna Gora. 
+====Član 2.====
 
-<center>'''Član 3.''' </center>
+Socijalističku Federativnu Republiku Jugoslaviju sačinjavaju: Socijalistička Republika Bosna i Hercegovina, Socijalistička Republika Makedonija, Socijalistička Republika Slovenija, Socijalistička Republika Srbija, kao i Socijalistička Аutonomna Pokrajina Vojvodina i Socijalistička Аutonomna Pokrajina Kosovo koje su u sastavu Socijalističke Republike Srbije, Socijalistička Republika Hrvatska i Socijalistička Republika Crna Gora. 
+
+====Član 3.====
+
 Socijalistička republika je država zasnovana na suverenosti naroda i na vlasti i samoupravljanju radničke klase i svih radnih ljudi, i socijalistička samoupravna demokratska zajednica radnih ljudi i građana i ravnopravnih naroda i narodnosti. 
 
-<center>'''Član 4.''' </center>
+====Član 4.====
+
 Socijalistička autonomna pokrajina je autonomna socijalistička samoupravna demokratska društveno-politička zajednica zasnovana na vlasti i samoupravljanju radničke klase i svih radnih ljudi, u kojoj radni ljudi i građani, narodi i narodnosti ostvaruju svoja suvjerena prava, a kad je to u zajedničkom interesu radnih ljudi i građana, naroda i narodnosti Republike kao cjeline Ustavom Socijalističke Republike Srbije utvrđeno — i u Republici. 
 
-<center>'''Član 5.'''</center> 
-Teritorija Socijalističke Federativne Republike Jugoslavije je jedinstvena i sačinjavaju je teritorije socijalističkih republika. Teritorija republike ne može se mjenjati bez pristanka republike, a teritorija autonomne pokrajine — ni bez pristanka autonomne pokrajine. Granica Socijalističke Federativne Republike Jugoslavije ne može se mjenjati bez suglasnosti svih republika i autonomnih pokrajina. Granica između republika može se mjenjati samo na osnovu njihovog sporazuma, a ako se radi o granici autonomne pokrajine — i na osnovu njene suglasnosti. 
+====Član 5.====
 
-<center>'''Član 6.'''</center> 
+Teritorija Socijalističke Federativne Republike Jugoslavije je jedinstvena i sačinjavaju je teritorije socijalističkih republika. 
+
+Teritorija republike ne može se mjenjati bez pristanka republike, a teritorija autonomne pokrajine — ni bez pristanka autonomne pokrajine. 
+
+Granica Socijalističke Federativne Republike Jugoslavije ne može se mjenjati bez suglasnosti svih republika i autonomnih pokrajina. 
+
+Granica između republika može se mjenjati samo na osnovu njihovog sporazuma, a ako se radi o granici autonomne pokrajine — i na osnovu njene suglasnosti. 
+
+====Član 6.====
+
 Grb Socijalističke Federativne Republike Jugoslavije predstavlja polje okruženo žitnim klasjem. Klasje je dolje povezano trakom plave boje na kojoj je ispisan datum 29 XI 1943. Između vrhova klasja je crvena petokraka zvezda. Usred polja nalazi se šest koso položenih buktinja čiji se plamenovi spajaju u jedan plamen. 
 
-<center>'''Član 7.'''</center> 
+====Član 7.====
+
 Zastava Socijalističke Federativne Republike Jugoslavije sastoji se iz tri boje, plave, bele i crvene, sa crvenom petokrakom zvezdom u sredini. Odnos širine i dužine zastave je jedan prema dva. Boje zastave su položene vodoravno, i to ovim redom odozgo, plava, bela i crvena. Svaka boja zauzima jednu trećinu širine zastave. Zvezda ima pravilan petokraki oblik i zlatnu (žutu) ivicu. Središna tačka zvezde poklapa se s tačkom u kojoj se seku dijagonale zastave. Gornji krak zvezde ulazi do polovine plave boje zastave, tako da donji kraci zvezde dobijaju odgovarajuće mesto u crvenoj boji zastave. 
 
-<center>'''Član 8.'''</center> 
+====Član 8.====
+
 Socijalistička Federativna Republika Jugoslavija ima himnu. 
 
-<center>'''Član 9.'''</center> 
+====Član 9.====
+
 Glavni grad Socijalističke Federativne Republike Jugoslavije je Beograd. 
 
-
 ==DIO DRUGI ==
+
 === DRUŠTVENO UREĐENJE ===
 
 ====Glava I DRUŠTVENO-EKONOMSKO UREĐENJE ====
 
-
 =====1 Položaj čovjeka u udruženom radu i društvena svojina =====
-
 
 <center>'''Član 10.'''</center>  
 Socijalističko društveno-ekonomsko uređenje Socijalističke Federativne Republike Jugoslavije zasniva se na slobodnom udruženom radu sredstvima za proizvodnju u društvenoj svojini i na samoupravljanju radnika u proizvodnji i raspodjeli društvenog proizvoda u osnovnim i drugim organizacijama udruženog rada i u društvenoj reprodukciji u cjelini. 

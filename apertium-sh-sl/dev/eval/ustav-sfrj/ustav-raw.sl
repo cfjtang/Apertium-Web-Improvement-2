@@ -260,24 +260,19 @@ V ta namen so organi samoupravljanja, državni organi, samoupravne organizacije 
 
 ====X====
 
-Ta del ustave izraža temeljna načela socialistične samoupravne družbe in
-njenega napredka ter je podlaga in smer za razlago ustave in zakonov kakor
-tudi za delovanje vseh in vsakogar.
+Ta del ustave izraža temeljna načela socialistične samoupravne družbe in njenega napredka ter je podlaga in smer za razlago ustave in zakonov kakor tudi za delovanje vseh in vsakogar.
 
+==PRVI DEL==
 
-{{Ustava SFRJ 1974}}
-
-<center><big>'''PRVI DEL'''</big></center>
-
-<center><big>'''SOCIALISTIČNA FEDERATIVNA REPUBLIKA JUGOSLAVIJA'''</big></center>
+===SOCIALISTIČNA FEDERATIVNA REPUBLIKA JUGOSLAVIJA===
 
 ====1. člen====
 
-[[:w:sl:Socialistična federativna republika Jugoslavija|Socialistična federativna republika Jugoslavija]] je zvezna [[:w:sl:država|država]] kot državna skupnost prostovoljno združenih [[:w:sl:narod|narodov]] in njihovih socialističnih republik ter socialističnih avtonomnih pokrajin Kosova in Vojvodine v sestavi Socialistične republike Srbije, ki temelji na oblasti in samoupravljanju delavskega razreda in vseh delovnih ljudi, ter [[:w:sl:socializem|socialistična]] samoupravna [[:w:sl:demokracija|demokratična]] skupnost delovnih ljudi in občanov ter enakopravnih narodov in [[:w:sl:narodnost|narodnosti]].
+Socialistična federativna republika Jugoslavija je zvezna država kot državna skupnost prostovoljno združenih narodov in njihovih socialističnih republik ter socialističnih avtonomnih pokrajin Kosova in Vojvodine v sestavi Socialistične republike Srbije, ki temelji na oblasti in samoupravljanju delavskega razreda in vseh delovnih ljudi, ter socialistična samoupravna demokratična skupnost delovnih ljudi in občanov ter enakopravnih narodov in narodnosti.
 
 ====2. člen====
-[[Slika:SFRYugoslaviaNumbered.png|thumb|200px|right|Republike in pokrajini SFRJ]]
-Socialistično federativno republiko Jugoslavijo sestavljajo: Socialistična republika [[:w:sl:Bosna in Hercegovina|Bosna in Hercegovina]] (1), Socialistična republika [[:w:sl:Črna gora|Črna gora]] (4), Socialistična republika [[:w:sl:Hrvaška|Hrvatska]] (2), Socialistična republika [[:w:sl:Makedonija|Makedonija]] (3), [[:w:sl:Socialistična republika Slovenija|Socialistična republika Slovenija]] (6) in Socialistična republika [[:w:sl:Srbija|Srbija]] (5), kot tudi Socialistična avtonomna pokrajina [[:w:sl:Kosovo|Kosovo]] (5a) in Socialistična avtonomna pokrajina [[:w:sl:Vojvodina|Vojvodina]] (5b), ki sta v sestavi Socialistične republike Srbije.
+
+Socialistično federativno republiko Jugoslavijo sestavljajo: Socialistična republika Bosna in Hercegovina, Socialistična republika Črna gora, Socialistična republika Hrvatska, Socialistična republika Makedonija, Socialistična republika Slovenija in Socialistična republika Srbija, kot tudi Socialistična avtonomna pokrajina Kosovo in Socialistična avtonomna pokrajina Vojvodina, ki sta v sestavi Socialistične republike Srbije.
 
 ====3. člen====
 
@@ -285,7 +280,7 @@ Socialistična republika je država, ki temelji na suverenosti naroda ter na obl
 
 ====4. člen====
 
-Socialistična avtonomna pokrajina je avtonomna socialistična samoupravna demokratična družbenopolitična skupnost, ki temelji na oblasti in samoupravljanju delavskega razreda in vseh delovnih ljudi, v kateri delovni ljudje in občani, narodi in narodnosti uresničujejo svoje suverene pravice; kadar v skupnem interesu delovnih ljudi in občanov narodov in narodnosti republike kot celote tako določa ustava Socialistične republike [[:w:sl:Srbija|Srbije]], pa tudi v tej republiki.
+Socialistična avtonomna pokrajina je avtonomna socialistična samoupravna demokratična družbenopolitična skupnost, ki temelji na oblasti in samoupravljanju delavskega razreda in vseh delovnih ljudi, v kateri delovni ljudje in občani, narodi in narodnosti uresničujejo svoje suverene pravice; kadar v skupnem interesu delovnih ljudi in občanov narodov in narodnosti republike kot celote tako določa ustava Socialistične republike Srbije, pa tudi v tej republiki.
 
 ====5. člen====
 
@@ -299,27 +294,23 @@ Meja med republikama se sme spremeniti samo po njunem sporazumu; če gre za mejo
 
 ====6. člen====
 
-[[Slika:Emblem_of_SFR_Yugoslavia.svg|125px|right|Grb SFRJ]]
-[[:w:sl:Grb Socialistične federativne republike Jugoslavije|Grb Socialistične federativne republike Jugoslavije]] je polje, obdano z žitnim klasjem. Klasje je spodaj povezano z modrim trakom, na katerem je datum [[:w:sl:AVNOJ|29. XI. 1943]]. Med vrhovi klasja je rdeča peterokraka zvezda. V sredini polja je šest poševno položenih plamenic, katerih plameni se zlivajo v en plamen.
+Grb Socialistične federativne republike Jugoslavije je polje, obdano z žitnim klasjem. Klasje je spodaj povezano z modrim trakom, na katerem je datum 29. XI. 1943. Med vrhovi klasja je rdeča peterokraka zvezda. V sredini polja je šest poševno položenih plamenic, katerih plameni se zlivajo v en plamen.
 
 ====7. člen====
 
-[[Slika:Flag of SFR Yugoslavia.svg|125px|right|Zastava SFRJ]]
-[[:w:Zastava Socialistične federativne republike Jugoslavije|Zastava Socialistične federativne republike Jugoslavije]] je sestavljena iz treh barv: modre, bele in rdeče; z rdečo peterokrako zvezdo na sredi. Razmerje med širino in dolžino zastave je ena proti dve. Barve zastave se vrste vodoravno od zgoraj navzdol po temle redu: modra, bela in rdeča. Vsaka barva zavzema po širini tretjino zastave. Zvezda ima pravilno peterokrako obliko in zlat (rumen) rob. Središče zvezde se krije s točko, v kateri se sekata diagonali zastave. Gornji krak zvezde sega do polovice v modro barvo zastave, tako da imata dolnja kraka zvezde ustrezno mesto na rdeči barvi zastave.
+Zastava Socialistične federativne republike Jugoslavije je sestavljena iz treh barv: modre, bele in rdeče; z rdečo peterokrako zvezdo na sredi. Razmerje med širino in dolžino zastave je ena proti dve. Barve zastave se vrste vodoravno od zgoraj navzdol po temle redu: modra, bela in rdeča. Vsaka barva zavzema po širini tretjino zastave. Zvezda ima pravilno peterokrako obliko in zlat (rumen) rob. Središče zvezde se krije s točko, v kateri se sekata diagonali zastave. Gornji krak zvezde sega do polovice v modro barvo zastave, tako da imata dolnja kraka zvezde ustrezno mesto na rdeči barvi zastave.
 
 ====8. člen====
 
-Socialistična federativna republika Jugoslavija ima [[:w:sl:Hej Slovani|himno]].
+Socialistična federativna republika Jugoslavija ima himno.
 
 ====9. člen====
 
-Glavno mesto Socialistične federativne republike Jugoslavije je [[:w:sl:Beograd|Beograd]].
+Glavno mesto Socialistične federativne republike Jugoslavije je Beograd.
 
-{{Ustava SFRJ 1974}}
+==DIO DRUGI==
 
-<center><big>'''DRUGI DEL'''</big></center>
-
-<center><big>'''DRUŽBENA UREDITEV'''</big></center>
+=== DRUŽBENA UREDITEV ===
 
 ==I. poglavje - Družbenoekonomska ureditev==
 
