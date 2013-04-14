@@ -152,53 +152,45 @@ Družbenopolitične organizacije so kot oblika svobodnega političnega organizir
 
 ====V====
 
-Svoboščine, pravice in dolžnosti človeka in občana, ki jih določa ta ustava,
-so neločljiv del in izraz socialističnih samoupravnih demokratičnih odnosov, v
-katerih se človek osvobaja vsakršnega izkoriščanja in samovolje ter s svojim
-delom ustvarja možnosti za vsestranski razvoj in svobodno izražanje ter varstvo svoje osebnosti in za spoštovanje človekovega dostojanstva, Svoboščine in pravice človeka in občana so omejene samo z enakimi svoboščinami in pravicami drugih in z interesi socialistične družbe. Socialistična družba zagotavlja pogoje za kar najpopolnejše uresničevanje in varstvo svoboščin in pravic, ki jih določa ta ustava. Vsakršna dejavnost, ki bi kratila te svoboščine in pravice človeka in občana, bi bila v nasprotju z interesi socialistične družbe.
+Svoboščine, pravice in dolžnosti človeka in občana, ki jih določa ta ustava, so neločljiv del in izraz socialističnih samoupravnih demokratičnih odnosov, v katerih se človek osvobaja vsakršnega izkoriščanja in samovolje ter s svojim delom ustvarja možnosti za vsestranski razvoj in svobodno izražanje ter varstvo svoje osebnosti in za spoštovanje človekovega dostojanstva. 
 
-Izobraževanje, znanost in kultura so bistven dejavnik razvoja socialistične družbe, večje produktivnosti dela, razvoja ustvarjalnih sil ljudi in vsestranskega razvoja osebnosti, humaniziranja socialističnih samoupravnih
-odnosov in splošnega napredka družbe; zato socialistična skupnost zagotavlja
-svobodo ustvarjanja in ustvarja možnosti za razvoj in napredek izobraževanja
-ter znanstvenega, kulturnega in umetniškega ustvarjanja, da bi se kar najuspešneje razvijale ustvarjalne sposobnosti delovnih ljudi, socialistični
-družbeni odnosi in svobodna in humana osebnost.
+Svoboščine in pravice človeka in občana so omejene samo z enakimi svoboščinami in pravicami drugih in z interesi socialistične družbe. 
 
-Vzgoja in izobraževanje temeljita na dosežkih sodobne znanosti in zlasti na
-marksizmu, kot osnovah znanstvenega socializma, in naj usposabljata delovne
-ljudi za delo in samoupravljanje ter jih vzgajata v duhu pridobitev socialistične revolucije, socialistične etike, samoupravnega demokratizma,
-socialističnega patriotizma, bratstva in enotnosti; enakopravnosti narodov in
-narodnosti in socialističnega internacionalizma.
+Socialistična družba zagotavlja pogoje za kar najpopolnejše uresničevanje in varstvo svoboščin in pravic, ki jih določa ta ustava. Vsakršna dejavnost, ki bi kratila te svoboščine in pravice človeka in občana, bi bila v nasprotju z interesi socialistične družbe.
 
-Delovni ljudje v organizacijah združenega dela in drugih samoupravnih organizacijah in skupnostih si na temeljih solidarnosti in vzajemnosti ter socialističnega humanizma zagotavljajo ekonomsko in socialno varnost in ustvarjajo čedalje ugodnejše možnosti za življenje in delo in za razvoj
-vsestranske osebnosu delovnega človeka. Ti cilji socialne politike se uresničujejo z nenehnim zboljševanjem in izenačevanjem življenjskih razmer in
-delovnih pogojev, s tem, da se na temeljih solidarnosti in vzajemnosti premagujejo razlike, ki izvirajo iz materialne nerazvitosti in drugih neenakih možnosti za življenje in delo, izenačujejo možnosti za izobraževanje in delo ter onemogočajo In odpravljajo socialne razlike, ki ne izvirajo iz uporabe načela delitve po delu.
+Izobraževanje, znanost in kultura so bistven dejavnik razvoja socialistične družbe, večje produktivnosti dela, razvoja ustvarjalnih sil ljudi in vsestranskega razvoja osebnosti, humaniziranja socialističnih samoupravnih odnosov in splošnega napredka družbe; zato socialistična skupnost zagotavlja svobodo ustvarjanja in ustvarja možnosti za razvoj in napredek izobraževanja ter znanstvenega, kulturnega in umetniškega ustvarjanja, da bi se kar najuspešneje razvijale ustvarjalne sposobnosti delovnih ljudi, socialistični družbeni odnosi in svobodna in humana osebnost.
 
-Socialistična družbena skupnost zagotavlja materialne in druge pogoje za uresničevanje pravic borcev, vojaških invalidov in družin padlih borcev, ki se
-jim zagotavlja socialna varnost.
+Vzgoja in izobraževanje temeljita na dosežkih sodobne znanosti in zlasti na marksizmu, kot osnovah znanstvenega socializma, in naj usposabljata delovne ljudi za delo in samoupravljanje ter jih vzgajata v duhu pridobitev socialistične revolucije, socialistične etike, samoupravnega demokratizma, socialističnega patriotizma, bratstva in enotnosti; enakopravnosti narodov in narodnosti in socialističnega internacionalizma.
 
-Za varstvo in zboljševanje človekovega okolja zagotavljajo delovni ljudje in
-občani, organizacije združenega dela, druge samoupravne organizacije in skupnosti in socialistična družba možnosti za ohranitev razvoj naravnih in drugih vrednot človekovega okolja, ki so pomembne za zdravo, varno in ustvarjalno življenje in delo sedanjega in prihodnjih rodov.
+Delovni ljudje v organizacijah združenega dela in drugih samoupravnih organizacijah in skupnostih si na temeljih solidarnosti in vzajemnosti ter socialističnega humanizma zagotavljajo ekonomsko in socialno varnost in ustvarjajo čedalje ugodnejše možnosti za življenje in delo in za razvoj vsestranske osebnosu delovnega človeka. Ti cilji socialne politike se uresničujejo z nenehnim zboljševanjem in izenačevanjem življenjskih razmer in delovnih pogojev, s tem, da se na temeljih solidarnosti in vzajemnosti premagujejo razlike, ki izvirajo iz materialne nerazvitosti in drugih neenakih možnosti za življenje in delo, izenačujejo možnosti za izobraževanje in delo ter onemogočajo In odpravljajo socialne razlike, ki ne izvirajo iz uporabe načela delitve po delu.
 
-==VI==
+Socialistična družbena skupnost zagotavlja materialne in druge pogoje za uresničevanje pravic borcev, vojaških invalidov in družin padlih borcev, ki se jim zagotavlja socialna varnost.
 
-Delovni ljudje in občani ter narodi in narodnosti Jugoslavije so odločeni, da
-vse svoje sile usmerijo v ustvarjalno delo v miru in v graditev svoje samoupravne socialistične skupnosti. Zato si dosledno prizadevajo za politiko miru in so proti agresiji, vojni in agresivnim pritiskom katerekoli vrste. Da bi si zagotovili miren razvoj in socialistično graditev, so pripravljeni z vsemi silami in sredstvi, ki so jim na razpolago, z oboroženim bojem in z drugimi oblikami splošnega ljudskega odpora varovati in braniti svojo svobodo,  neodvisnost, suverenost, teritorialno neokrnjenost in socialistični samoupravni red Socialistične federativne republike Jugoslavije. V ta namen organizirajo in razvijalo splošno ljudsko obrambo kot neločljiv del socialistične samoupravne družbene ureditve, zavedajoč se, da sta obrambna sposobnost družbe in pripravljenost države za obrambo večji, možnost agresije pa manjša, kolikor bolj razvita je splošna ljudska obramba kot oblika in vsebina obrambne organiziranosti družbene skupnosti. Krepitev obrambne sposobnosti države je sestavni del politike miru in enakopravnega mednarodnega sodelovanja.
+Za varstvo in zboljševanje človekovega okolja zagotavljajo delovni ljudje in občani, organizacije združenega dela, druge samoupravne organizacije in skupnosti in socialistična družba možnosti za ohranitev razvoj naravnih in drugih vrednot človekovega okolja, ki so pomembne za zdravo, varno in ustvarjalno življenje in delo sedanjega in prihodnjih rodov.
 
-Splošna ljudska obramba v Socialistični federativni republiki Jugoslaviji je
-enoten sistem organiziranja, pripravljanja in udeležbe federacije, republik
-avtonomnih pokrajin, občin organizacij združenega dela, krajevnih skupnosti.
-samoupravnih interesnih skupnosti in drugih samoupravnih organizacij in
-skupnosti, družbenopolitičnih in drugih družbenih organizacij delovnih ljudi in
-občanov v oboroženem boju in v vseh drugih oblikah odpora ter pri izvrševanju
-drugih nalog, ki so pomembne za obrambo države. V splošni ljudski obrambi je
-oboroženi boj odločilna oblika upiranja agresiji. Oborožene sile Socialistične
-federativne republike Jugoslavije so nosilec oboroženega boja in tvorijo
-enotno celoto. Vrhovno vodstvo in poveljevanje oboroženim silam zagotavljata
-enotnost in nedeljivost oboroženega boja.
+====VI====
 
-==VII==
+Delovni ljudje in občani ter narodi in narodnosti Jugoslavije so odločeni, da vse svoje sile usmerijo v ustvarjalno delo v miru in v graditev svoje samoupravne socialistične skupnosti. Zato si dosledno prizadevajo za politiko miru in so proti agresiji, vojni in agresivnim pritiskom katerekoli vrste. 
 
-V prepričanju, da sta miroljubna koeksistenca in aktivno sodelovanje enakopravnih držav in narodov; ne glede na razlike v njihovi družbeni ureditvi neogiben pogoj za mir in družbeni napredek v svetu, opira Socialistična federativna republika Jugoslavija svoje mednarodne odnose na načela spoštovanja nacionalne suverenosti in enakopravnosti, nevmešavanja v notranje zadeve drugih držav, socialističnega internacionalizma in reševanja mednarodnih sporov po mirni poti: V svojih mednasodnih odnosih se Socialistična federativna republika Jugoslavija ravna po načelih ustanovne listine Združenih narodov, izpolnjuje svoje mednarodne obveznosti in aktivno sodeluje v mednarodnih organizacijah, ki jim pripada.
+Da bi si zagotovili miren razvoj in socialistično graditev, so pripravljeni z vsemi silami in sredstvi, ki so jim na razpolago, z oboroženim bojem in z drugimi oblikami splošnega ljudskega odpora varovati in braniti svojo svobodo,  neodvisnost, suverenost, teritorialno neokrnjenost in socialistični samoupravni red Socialistične federativne republike Jugoslavije. 
+
+V ta namen organizirajo in razvijalo splošno ljudsko obrambo kot neločljiv del socialistične samoupravne družbene ureditve, zavedajoč se, da sta obrambna sposobnost družbe in pripravljenost države za obrambo večji, možnost agresije pa manjša, kolikor bolj razvita je splošna ljudska obramba kot oblika in vsebina obrambne organiziranosti družbene skupnosti. 
+
+Krepitev obrambne sposobnosti države je sestavni del politike miru in enakopravnega mednarodnega sodelovanja.
+
+Splošna ljudska obramba v Socialistični federativni republiki Jugoslaviji je enoten sistem organiziranja, pripravljanja in udeležbe federacije, republik avtonomnih pokrajin, občin organizacij združenega dela, krajevnih skupnosti, samoupravnih interesnih skupnosti in drugih samoupravnih organizacij in skupnosti, družbenopolitičnih in drugih družbenih organizacij delovnih ljudi in občanov v oboroženem boju in v vseh drugih oblikah odpora ter pri izvrševanju drugih nalog, ki so pomembne za obrambo države. 
+
+V splošni ljudski obrambi je oboroženi boj odločilna oblika upiranja agresiji. 
+
+Oborožene sile Socialistične federativne republike Jugoslavije so nosilec oboroženega boja in tvorijo enotno celoto. 
+
+Vrhovno vodstvo in poveljevanje oboroženim silam zagotavljata enotnost in nedeljivost oboroženega boja.
+
+====VII====
+
+V prepričanju, da sta miroljubna koeksistenca in aktivno sodelovanje enakopravnih držav in narodov; ne glede na razlike v njihovi družbeni ureditvi neogiben pogoj za mir in družbeni napredek v svetu, opira Socialistična federativna republika Jugoslavija svoje mednarodne odnose na načela spoštovanja nacionalne suverenosti in enakopravnosti, nevmešavanja v notranje zadeve drugih držav, socialističnega internacionalizma in reševanja mednarodnih sporov po mirni poti: 
+
+V svojih mednasodnih odnosih se Socialistična federativna republika Jugoslavija ravna po načelih ustanovne listine Združenih narodov, izpolnjuje svoje mednarodne obveznosti in aktivno sodeluje v mednarodnih organizacijah, ki jim pripada.
 
 Pri uresničevanju teh načel se Socialistična federativna republika Jugoslavija zavzema:
 
@@ -216,48 +208,21 @@ Pri uresničevanju teh načel se Socialistična federativna republika Jugoslavij
 
 * za spoštovanje splošno priznanih norm mednarodnega prava.
 
-Ko se Socialistična federativna republika Jugoslavija zavzema za vsestransko
-politično, ekonomsko, znanstveno in kulturno sodelovanje z drugimi narodi
-in državami, zastopa kot socialistična skupnost narodov stališče, da mora to
-sodelovanje prispevati k ustvarjanju tistih demokratičnih oblik povezovanja
-držav narodov in ljudi ki ustrezajo interesom ljudstva in družbenemu napredku,
-in je v tem pogledu odprta skupnost.
+Ko se Socialistična federativna republika Jugoslavija zavzema za vsestransko politično, ekonomsko, znanstveno in kulturno sodelovanje z drugimi narodi in državami, zastopa kot socialistična skupnost narodov stališče, da mora to sodelovanje prispevati k ustvarjanju tistih demokratičnih oblik povezovanja držav narodov in ljudi ki ustrezajo interesom ljudstva in družbenemu napredku, in je v tem pogledu odprta skupnost.
 
-Vsi organi, organizacije in posamezniki se morajo v mednarodnih ekonomskih.
-političnih, kulturnih in drugih odnosih ter v svojih odnosih z organi in
-organizacijami v tujini ravnati po teh načelih zunanje politike in mednarodne
-dejavnosti Socialistične federativne republike Jugoslavije ter se zavzemati
-za njihovo uresničevanje.
+Vsi organi, organizacije in posamezniki se morajo v mednarodnih ekonomskih, političnih, kulturnih in drugih odnosih ter v svojih odnosih z organi in organizacijami v tujini ravnati po teh načelih zunanje politike in mednarodne dejavnosti Socialistične federativne republike Jugoslavije ter se zavzemati za njihovo uresničevanje.
 
-==VIII==
+====VIII====
 
-Zveza komunistov Jugoslavije, pobudnik in organizator narodnoosvobodilnega boja
-in socialistične revolucije in zavestni nosilec teženj in interesov delavskega
-razreda, je po zakonitosti zgodovinskega razvoja postala organizirana vodilna
-idejna in politična sila delavskega razreda in vseh delovnih ljudi pri
-graditvi socializma in pri uresničevanju solidarnosti delovnih ljudi ter
-bratstva in enotnosti narodov in narodnosti Jugoslavije.
+Zveza komunistov Jugoslavije, pobudnik in organizator narodnoosvobodilnega boja in socialistične revolucije in zavestni nosilec teženj in interesov delavskega razreda, je po zakonitosti zgodovinskega razvoja postala organizirana vodilna idejna in politična sila delavskega razreda in vseh delovnih ljudi pri graditvi socializma in pri uresničevanju solidarnosti delovnih ljudi ter bratstva in enotnosti narodov in narodnosti Jugoslavije.
 
-Zveza komunistov Jugoslavije je s svojim usmerjevalnim idejnim in političnim
-delom v sistemu socialistične demokracije in družbenega samoupravljanja glavni
-pobudnik in nosilec politične dejavnosti za varstvo in za nadaljnji razvoj
-socialistične revolucije in socialističnih samoupravnih družbenih odnosov.
-posebno pa za krepitev socialistične družbene in demokratične zavesti in je
-za to odgovorna.
+Zveza komunistov Jugoslavije je s svojim usmerjevalnim idejnim in političnim delom v sistemu socialistične demokracije in družbenega samoupravljanja glavni pobudnik in nosilec politične dejavnosti za varstvo in za nadaljnji razvoj socialistične revolucije in socialističnih samoupravnih družbenih odnosov, posebno pa za krepitev socialistične družbene in demokratične zavesti in je za to odgovorna.
 
-Socialistična zveza delovnega ljudstva Jugoslavije, ki je nastala v
-narodnoosvobodilni vojni in socialistični revoluciji kot prostovoljna in
-demokratična fronta delovnih ljudi in občanov ter vseh organiziranih
-socialističnih sil s komunistično partijo na čelu in se dalje gradila v
-razvijajoči se socialistični samoupravni družbi, je najširši temelj njihove
-družbenopolitične dejavnosti v socialističnem samoupravnem sistemu.
+Socialistična zveza delovnega ljudstva Jugoslavije, ki je nastala v narodnoosvobodilni vojni in socialistični revoluciji kot prostovoljna in demokratična fronta delovnih ljudi in občanov ter vseh organiziranih socialističnih sil s komunistično partijo na čelu in se dalje gradila v razvijajoči se socialistični samoupravni družbi, je najširši temelj njihove družbenopolitične dejavnosti v socialističnem samoupravnem sistemu.
 
-V Socialistični zvezi delovnega ljudstva Jugoslavije uresničujejo delovni
-ljudje in občani. Zveza komunistov Jugoslavije kot vodilna idejna in politična
-sila, druge družbenopolitične organizacije in vse organizirane socialistične
-sile politično in akcijsko enotnost socialističnih sil, usmerjajo družbeni
-razvoj na temeljih oblasti in samoupravljanja delavskega razreda in vseh
-delovnih ljudi ter v ta namen:
+V Socialistični zvezi delovnega ljudstva Jugoslavije uresničujejo delovni ljudje in občani. 
+
+Zveza komunistov Jugoslavije kot vodilna idejna in politična sila, druge družbenopolitične organizacije in vse organizirane socialistične sile politično in akcijsko enotnost socialističnih sil, usmerjajo družbeni razvoj na temeljih oblasti in samoupravljanja delavskega razreda in vseh delovnih ljudi ter v ta namen:
 
 * obravnavajo družbena vprašanja in dajejo politične pobude na vseh področjih družbenega življenja, usklajujejo mnenja, zavzemajo politična stališča glede reševanja teh vprašanj, usmerjanja družbenega razvoja, uresničevanja pravic in interesov delovnih ljudi in občanov, uresničevanja enakopravnosti narodov in narodnosti ter razvoja socialističnih samoupravnih demokratičnih odnosov, predlagajo rešitve družbenih vprašanj in dajejo smernice svojim delegatom v skupščinah družbenopolitičnih skupnosti:
 
@@ -271,36 +236,13 @@ delovnih ljudi ter v ta namen:
 
 * se borijo za humane odnose med ljudmi, za razvijanje socialistične demokratične zavesti ter pravil socialističnega načina življenja kot tudi za odpravljanje pojavov, ki ovirajo razvoj socialističnih samoupravnih demokratičnih družbenih odnosov ali jim kakorkoli drugače škodujejo.
 
-Družbenopolitične skupnosti so dolžne v mejah svojih pravic in dolžnosti
-zagotavljati Socialistični zvezi delovnega ljudstva Jugostavije materialne in
-druge možnosti za uresničevanje njenih funkcij, določenih z ustavo.
+Družbenopolitične skupnosti so dolžne v mejah svojih pravic in dolžnosti zagotavljati Socialistični zvezi delovnega ljudstva Jugostavije materialne in druge možnosti za uresničevanje njenih funkcij, določenih z ustavo.
 
-Delavci, prostovoljno organizirani v sindikat kot najširšo organizacijo
-delavskega razreda, se borijo: za tak položaj delavskega razreda, kot ga
-določa ustava; za uresničevanje socialističnih samoupravnih odnosov in
-odločilno vlogo delavcev pri upravljanju družbene reprodukcije; za
-uresničevanje interesov in samoupravnih in drugih pravic delavcev na vseh
-področjih dela in življenja, za zagotavljanje enakopravnosti delavcev pri
-združevanju dela in sredstev, pridobivanju in delitvi dohodka in pri določanju
-skupnih meril za delitev po rezultatih dela; za samoupravno povezovanje in
-združevanje različnih področij družbenega dela; za razvijanje proizvajalnih
-sil družbe in večjo produktivnost dela, za samoupravno usklajevanje
-posamičnih, skupnih in splošnih družbenih interesov; za višjo izobrazbo in
-usposabljanje delavcev za opravljanje samoupravnih in drugih družbenih
-funkcij; za demokratično predlaganje in določanje kandidatov za delegate v
-organe upravljanja organizacij združenega dela ter drugih samoupravnih
-organizacij in skupnosti in kandidatov za delegacije v teh organizacijah in
-skupnostih in delegate v skupščine družbenopolitičnih skupnosti; za kar
-najširšo udeležbo delavcev pri izvrševanju funkcij oblasti in upravljanja
-drugih družbenih zadev; za uresničevanje interesov delavskega razreda v
-kadrovski politiki, za varstvo pravic delavcev; za zagotavljanje socialne
-varnosti in razvoj življenjskega standarda delavcev kot tudi za razvijanje in
-krepitev solidarnosti in za večjo razredno zavest in odgovornost
-samoupravljavcev.
+Delavci, prostovoljno organizirani v sindikat kot najširšo organizacijo delavskega razreda, se borijo: za tak položaj delavskega razreda, kot ga določa ustava; za uresničevanje socialističnih samoupravnih odnosov in odločilno vlogo delavcev pri upravljanju družbene reprodukcije; za uresničevanje interesov in samoupravnih in drugih pravic delavcev na vseh področjih dela in življenja, za zagotavljanje enakopravnosti delavcev pri združevanju dela in sredstev, pridobivanju in delitvi dohodka in pri določanju skupnih meril za delitev po rezultatih dela; za samoupravno povezovanje in združevanje različnih področij družbenega dela; za razvijanje proizvajalnih sil družbe in večjo produktivnost dela, za samoupravno usklajevanje posamičnih, skupnih in splošnih družbenih interesov; za višjo izobrazbo in usposabljanje delavcev za opravljanje samoupravnih in drugih družbenih funkcij; za demokratično predlaganje in določanje kandidatov za delegate v organe upravljanja organizacij združenega dela ter drugih samoupravnih organizacij in skupnosti in kandidatov za delegacije v teh organizacijah in skupnostih in delegate v skupščine družbenopolitičnih skupnosti; za kar najširšo udeležbo delavcev pri izvrševanju funkcij oblasti in upravljanja drugih družbenih zadev; za uresničevanje interesov delavskega razreda v kadrovski politiki, za varstvo pravic delavcev; za zagotavljanje socialne varnosti in razvoj življenjskega standarda delavcev kot tudi za razvijanje in krepitev solidarnosti in za večjo razredno zavest in odgovornost samoupravljavcev.
 
 Sindikat daje pobudo za samoupravno sporazumevanje in družbeno dogovarjanje, neposredno sodeluje pri tem sporazumevanju in dogovarjanju in daje organom upravljanja samoupravnih organizacij in skupnosti, skupščinam družbenopolitičnih skupnosti ter drugim državnim in družbenim organom predloge za urejanje vprašanj, ki se nanašajo na materialni in družbeni položaj delavskega razreda.
 
-==IX==
+====IX====
 
 Družbenoekonomski in politični sistem in drugi odnosi, ki jih določa ta ustava, so usmerjeni v razširjanje pogojev za nadaljnji razvoj socialistične družbe, za premagovanje protislovij v njej in za tak družbeni napredek, ki bo na podlagi vsestranske razvitosti proizvajalnih sil, visoke produktivnosti dela, obilja proizvodov in vsestranskega razvoja človeka kot svobodne osebnosti omogočil razvoj takih družbenih odnosov, v katerih se bo uresničevalo načelo komunizma: »Vsak po svojih sposobnostih - vsakemu po njegovih potrebah«.
 
@@ -316,7 +258,7 @@ V ta namen so organi samoupravljanja, državni organi, samoupravne organizacije 
 
 * razvijajo v skladu z naprednimi težnjami človeštva vsestransko sodelovanje in zbliževanje z vsemi narodi, da se ustvari svobodna skupnost vseh narodov na svetu.
 
-==X==
+====X====
 
 Ta del ustave izraža temeljna načela socialistične samoupravne družbe in
 njenega napredka ter je podlaga in smer za razlago ustave in zakonov kakor
