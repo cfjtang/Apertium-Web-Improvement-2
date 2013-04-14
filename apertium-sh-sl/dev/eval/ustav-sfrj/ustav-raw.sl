@@ -58,98 +58,59 @@ Nasprotna družbenoekonomskemu in političnemu sistemu, ki ga določa ta ustava,
 
 ====III====
 
-Družbena lastnina kot izraz socialističnih družbenoekonomskih odnosov med
-ljudmi je osnova svobodnega združenega dela in vladajočega položaja delavskega razreda v proizvodnji in v družbeni reprodukciji v celoti, kot tudi osnova z lastnim delom pridobljene osebne lastnine ki je namenjena za zadovoljevanje človekovih potreb in interesov.
+Družbena lastnina kot izraz socialističnih družbenoekonomskih odnosov med ljudmi je osnova svobodnega združenega dela in vladajočega položaja delavskega razreda v proizvodnji in v družbeni reprodukciji v celoti, kot tudi osnova z lastnim delom pridobljene osebne lastnine ki je namenjena za zadovoljevanje človekovih potreb in interesov.
 
-Produkcijska sredstva v družbeni lastnini kot skupna neodtujljiva osnova
-družbenega dela in družbene reprodukcije so namenjena izključno delu za
-zadovoljevanje osebnih in skupnih potreb in interesov delovnih ljudi ter
-razvijanju materialne osnove socialistične družbe in socialističnih
-samoupravnih odnosov. Produkcijska sredstva v družbeni lastnini, s sredstvi za
-razširjeno reprodukcijo vred, neposredno upravljajo združeni delavci, ki z njimi delajo, v lastnem interesa in v interesu delavskega razreda ter socialistične družbe. Pri uresničevanju te družbene funkcije so združeni delavci odgovorni drug drugemu in socialistični skupnosti kot celoti.
+Produkcijska sredstva v družbeni lastnini kot skupna neodtujljiva osnova družbenega dela in družbene reprodukcije so namenjena izključno delu za zadovoljevanje osebnih in skupnih potreb in interesov delovnih ljudi ter razvijanju materialne osnove socialistične družbe in socialističnih samoupravnih odnosov. 
 
-Z družbeno lastnino produkcijskih sredstev in drugih delovnih-sredstev je
-vsakomur zagotovljeno, da se pod enakimi pogoji vključi v združeno delo z
-družbenimi sredstvi in da si pri uresničevanju pravice dela z družbenimi
-sredstvi s svojim delom pridobiva dohodek za zadovoljevanje osebnih in skupnih
-potreb.
+Produkcijska sredstva v družbeni lastnini, s sredstvi za razširjeno reprodukcijo vred, neposredno upravljajo združeni delavci, ki z njimi delajo, v lastnem interesa in v interesu delavskega razreda ter socialistične družbe. 
+
+Pri uresničevanju te družbene funkcije so združeni delavci odgovorni drug drugemu in socialistični skupnosti kot celoti.
+
+Z družbeno lastnino produkcijskih sredstev in drugih delovnih-sredstev je vsakomur zagotovljeno, da se pod enakimi pogoji vključi v združeno delo z družbenimi sredstvi in da si pri uresničevanju pravice dela z družbenimi sredstvi s svojim delom pridobiva dohodek za zadovoljevanje osebnih in skupnih potreb.
 
 Izhajajoč iz tega, da nihče nima lastninske pravice na družbenih produkcijskih sredstvih, si ne more nihče - ne družbenopolitična skupnost ne organizacija združenega dela ne skupina občanov ne posameznik - na nikakršni lastninskopravni podlagi prilaščati proizvoda družbenega dela, niti ne more upravljati družbenih produkcijskih in delovnih sredstev in ne razpolagati z njimi in tudi samovoljno določati pogojev za delitev
 
-Človekovo delo je edina podlaga za prilaščanje proizvoda družbenega dela in
-za upravljanje družbenih sredstev.
+Človekovo delo je edina podlaga za prilaščanje proizvoda družbenega dela in za upravljanje družbenih sredstev.
 
-O delitvi dohodka na del, ki je namenjen za razširjanje materialne osnove
-družbenega dela, in na del, ki je namenjen za zadovoljevanje osebnih in
-skupnih potreb delovnih ljudi, v skladu z načelom delitve po delu odločajo
-delovni ljudje, ki ta dohodek ustvarjajo, v skladu z medsebojno odgovornostjo
-in solidarnostjo ter v skladu z družbeno določenimi osnovami in merili za
-pridobivanje in delitev dohodka.
+O delitvi dohodka na del, ki je namenjen za razširjanje materialne osnove družbenega dela, in na del, ki je namenjen za zadovoljevanje osebnih in skupnih potreb delovnih ljudi, v skladu z načelom delitve po delu odločajo delovni ljudje, ki ta dohodek ustvarjajo, v skladu z medsebojno odgovornostjo in solidarnostjo ter v skladu z družbeno določenimi osnovami in merili za pridobivanje in delitev dohodka.
 
-Sredstva, namenjena za obnavljanje in razširjanje materialne osnove družbenega dela, so skupna osnova za ohranjanje in razvoj družbe - za družbeno reprodukcijo, ki jo na podlagi samoupravljanja uresničujejo delovni ljudje v
-vseh oblikah združevanja dela in sredstev ter v medsebojnem sodelovanju
-organizacij združenega dela.
+Sredstva, namenjena za obnavljanje in razširjanje materialne osnove družbenega dela, so skupna osnova za ohranjanje in razvoj družbe - za družbeno reprodukcijo, ki jo na podlagi samoupravljanja uresničujejo delovni ljudje v vseh oblikah združevanja dela in sredstev ter v medsebojnem sodelovanju organizacij združenega dela.
 
-Osnova vseh oblik združevanja dela in sredstev družbene reprodukcije ter
-samoupravne integracije združenega dela je temeljna organizacija združenega
-dela kot osnovna oblika združenega dela, v kateri uresničujejo delavci
-neodtujljivo pravico, da pri delu z družbenimi sredstvi odločajo o svojem delu,
-pogojih za delo in o rezultatih svojega dela.
+Osnova vseh oblik združevanja dela in sredstev družbene reprodukcije ter samoupravne integracije združenega dela je temeljna organizacija združenega dela kot osnovna oblika združenega dela, v kateri uresničujejo delavci neodtujljivo pravico, da pri delu z družbenimi sredstvi odločajo o svojem delu, pogojih za delo in o rezultatih svojega dela.
 
-Ko dosegajo rezultate skupnega dela kot vrednost na trgu v pogojih
-socialistične blagovne proizvodnje, delavci z neposrednimi povezovanjem, s
-samoupravnim sporazumevanjem in z družbenim dogovarjanjem svojih organizacij
-združenega dela ter drugih samoupravnih organizacij in skupnosti in s
-planiranjem dela in razvoja integrirajo družbeno delo, izpopolnjujejo celotni
-sistem socialističnih družbenoekonomskih odnosov in obvladujejo stihijsko
-delovanje trga.
+Ko dosegajo rezultate skupnega dela kot vrednost na trgu v pogojih socialistične blagovne proizvodnje, delavci z neposrednimi povezovanjem, s samoupravnim sporazumevanjem in z družbenim dogovarjanjem svojih organizacij združenega dela ter drugih samoupravnih organizacij in skupnosti in s planiranjem dela in razvoja integrirajo družbeno delo, izpopolnjujejo celotni sistem socialističnih družbenoekonomskih odnosov in obvladujejo stihijsko delovanje trga.
 
-Denarni in kreditni sistem sta sestavni del odnosov v družbeni reprodukciji
-ki temeljijo na samoupravljanju delavcev v združenem delu z družbenimi
-sredstvi; ves dohodek, dosežen v teh odnosih je neodtujljiv del dohodka
-temeljnih organizacij združenega dela.
+Denarni in kreditni sistem sta sestavni del odnosov v družbeni reprodukciji ki temeljijo na samoupravljanju delavcev v združenem delu z družbenimi sredstvi; ves dohodek, dosežen v teh odnosih je neodtujljiv del dohodka temeljnih organizacij združenega dela.
 
-Zaradi medsebojne odvisnosti proizvodnega; prometnega in finančnega
-področja združenega dela kot delov enotnega sistema družbene reprodukcije
-urejajo delavci v organizacijah združenega dela svoje medsebojne odnose v
-družbeni reprodukciji in sodelujejo tako da je delavcem v proizvodnji
-zagotovljeno: da odločajo o rezultatih lastnega živega in minulega dela v
-celoti teh odnosov.
+Zaradi medsebojne odvisnosti proizvodnega; prometnega in finančnega področja združenega dela kot delov enotnega sistema družbene reprodukcije urejajo delavci v organizacijah združenega dela svoje medsebojne odnose v družbeni reprodukciji in sodelujejo tako da je delavcem v proizvodnji zagotovljeno: da odločajo o rezultatih lastnega živega in minulega dela v celoti teh odnosov.
 
-Delovni ljudje zagotavljajo zadovoljevanje svojih osebnih in skupnih potreb
-in interesov na področju izobraževanja, znanosti kulture, zdravstva in drugih
-družbenih dejavnosti kot delov enotnega procesa družbenega dela tako da
-svobodno menjavajo in združujejo svoje delo z delom delavcev v organizacijah združenega dela na teh področjih. Svobodno menjavo dela uresničujejo delovni ljudje neposredno, prek organizacij združenega dela in v okviru samoupravnih interesnih skupnosti ali prek njih. S takimi odnosi se delavcem v teh dejavnostih zagotavlja enak,družbenoekonomski položaj; kot ga imajo drugi delavci v združenem delu.
+Delovni ljudje zagotavljajo zadovoljevanje svojih osebnih in skupnih potreb in interesov na področju izobraževanja, znanosti kulture, zdravstva in drugih družbenih dejavnosti kot delov enotnega procesa družbenega dela tako da svobodno menjavajo in združujejo svoje delo z delom delavcev v organizacijah združenega dela na teh področjih. 
 
-Za popolnejše, smotrnejše in organizirano zadovoljevanje svojih osebnih in
-skupnih potreb in interesov v družbenih dejavnostih in v določenih dejavnostih materialne proizvodnje ustanavljajo delovni ljudje skupaj z delavci v organizacijah združenega dela teh dejavnosti- samoupravne interesne skupnosti, V katerih svobodno menjavajo delo in neposredno urejajo odnose skupnega pomena. Delavci in delovni ljudje ustanavljajo samoupravne interesne skupnosti tudi za zadovoljevanje določenih svojih osebnih in skupnih potreb in interesov z združevanjem sredstev po načelih vzajemnosti in solidarnosti.
+Svobodno menjavo dela uresničujejo delovni ljudje neposredno, prek organizacij združenega dela in v okviru samoupravnih interesnih skupnosti ali prek njih. 
 
-Delovni ljudje, ki samostojna opravljajo dejavnost z osebnim delom s sredstvi, ki so lastnina občanov, imajo na podlagi svojega dela v načelu enak družbenoekonomski položaj in v osnovi enake pravice in obveznosti kot delavci
-v organizacijah združenega dela.
+S takimi odnosi se delavcem v teh dejavnostih zagotavlja enak, družbenoekonomski položaj; kot ga imajo drugi delavci v združenem delu.
 
-Kmetje, ki uživajo s to ustavo določeno lastninsko pravico na obdelovalnem
-zemljišču, imajo pravico in dolžnost izkoriščati to zemljišče za pospeševanje
-kmetijske proizvodnje v lastnem interesu in v interesu socialistične
-skupnosti. Sodalistična skupnost podpira kmete pri večanju produktivnosti
-njihovega dela -in pri svobodnem združevanju v zadruge in druge oblike
-združevanja zaradi zboljševanja njihovih delovnih pogojev in življenjskih
-razmer.
+Za popolnejše, smotrnejše in organizirano zadovoljevanje svojih osebnih in skupnih potreb in interesov v družbenih dejavnostih in v določenih dejavnostih materialne proizvodnje ustanavljajo delovni ljudje skupaj z delavci v organizacijah združenega dela teh dejavnosti- samoupravne interesne skupnosti, V katerih svobodno menjavajo delo in neposredno urejajo odnose skupnega pomena. 
 
-Za organizirano vključevanje kmetov v socialistične samoupravne družbenoekonomske odnose in za pospeševanje kmetijske proizvodnje se
-zagotavljajo pogoji za njen razvoj na podlagi dražbenih sredstev in družbenega
-dela; pa tudi pogoji za združevanje kmetov in za njihovo sodelovanje z
-organizacijami združenega dela po načelih prostovoljnosti in enakopravnosti:
+Delavci in delovni ljudje ustanavljajo samoupravne interesne skupnosti tudi za zadovoljevanje določenih svojih osebnih in skupnih potreb in interesov z združevanjem sredstev po načelih vzajemnosti in solidarnosti.
+
+Delovni ljudje, ki samostojna opravljajo dejavnost z osebnim delom s sredstvi, ki so lastnina občanov, imajo na podlagi svojega dela v načelu enak družbenoekonomski položaj in v osnovi enake pravice in obveznosti kot delavci v organizacijah združenega dela.
+
+Kmetje, ki uživajo s to ustavo določeno lastninsko pravico na obdelovalnem zemljišču, imajo pravico in dolžnost izkoriščati to zemljišče za pospeševanje kmetijske proizvodnje v lastnem interesu in v interesu socialistične skupnosti. 
+
+Sodalistična skupnost podpira kmete pri večanju produktivnosti njihovega dela -in pri svobodnem združevanju v zadruge in druge oblike združevanja zaradi zboljševanja njihovih delovnih pogojev in življenjskih razmer.
+
+Za organizirano vključevanje kmetov v socialistične samoupravne družbenoekonomske odnose in za pospeševanje kmetijske proizvodnje se zagotavljajo pogoji za njen razvoj na podlagi dražbenih sredstev in družbenega dela; pa tudi pogoji za združevanje kmetov in za njihovo sodelovanje z organizacijami združenega dela po načelih prostovoljnosti in enakopravnosti:
 
 Da bi se ustvarjala materialna osnova za enakopravnost narodov in narodnosti Jugoslavije; izenačevali materialni pogoji za družbeno življenje in dela delovnih ljudi in kar najbolj skladno razvijalo gospodarstvo kot celota, se v Socialistični federativni republiki Jugoslaviji v splošnem interesu posveča posebna pozornost hitrejšem razvoju proizvajalnih sil v gospodarsko manj razvitih republikah in avtonomnih pokrajinah ter v ta namen zagotavljajo potrebna sredstva in sprejemajo drugi ukrepi.
 
 Da bi zboljševali svoje delovne pogoje in življenjske razmere, ustvarjali podlago za njihovo stabilnost in kar najpopolneje izrabljali možnosti za razvoj proizvajalnih sil družbe in za povečanje produktivnosti svojega in celotnega družbenega dela, da bi na tej podlagi razvijali socialistične samoupravne odnose ter obvladovali stihijsko delovanje trga, delavci v temeljnih in drugih organizacijah združenega dela ter delovni ljudje v samoupravnih interesnih skupnostih in drugih samoupravnih organizacijah in skupnostih kot tudi v družbenopolitičnih skupnostih na podlagi znanstvenih spoznanj in nanje oprtih ocen razvojnih možnosti, usklajujejo s planiranjem svojega dela in razvoja odnose v družbeni reprodukciji in usmerjajo razvoj družbene proizvodnje in drugih družbenih dejavnosti s svojimi, na samoupravni osnovi določenimi skupnimi interesi in cilji.
 
-==IV==
+====IV====
 
 V Socialistični federativni republiki Jugoslaviji pripada vsa oblast delavskemu razredu skupaj z vsemi delovnimi ljudmi mesta in vasi.
 
-Za zgraditev družbe kot svobodne skupnosti proizvajalcev razvijajo delavski razred in vsi delovni ljudje socialistično samoupravno demokracijo kot posebno
-obliko diktature proletariata, in to zagotavljajo:
+Za zgraditev družbe kot svobodne skupnosti proizvajalcev razvijajo delavski razred in vsi delovni ljudje socialistično samoupravno demokracijo kot posebno obliko diktature proletariata, in to zagotavljajo:
 
 * z revolucionarnim odpravljanjem in z ustavno prepovedjo sleherne oblike družbenoekonomskih in političnih odnosov in organizacij, ki bi temeljili na razrednem izkoriščanju in lastninskem monopolu, in vsakršnega političnega delovanja za vzpostavitev takih odnosov;
 
@@ -173,64 +134,23 @@ obliko diktature proletariata, in to zagotavljajo:
 
 * s svobodnimi in vsestranskimi dejavnostmi ljudi. Samoupravljanje delovnih ljudi v temeljnih organizacijah združenega dela, krajevnih skupnostih, samoupravnih interesnih skupnostih ha v drugih temeljnih samoupravnih organizacijah in skupnostih je osnova enotnega sistema samoupravljanja in oblasti delavskega razreda in vseh delovnih ljudi.
 
-Da bi si zagotovili pogoje za življenje in delo ter družben razvoj in da bi
-ustvarili socialistično skupnost, uresničujejo delovni ljudje skupne interese,
-izvršujejo oblast in upravljajo druge družbene zadeve v občini kot samoupravni
-in temeljni družbenopolitični skupnosti in v drugih družbenopolitičnih
-skupnostih s povezovanjem svojih organizacij združenega dela tez drugih
-samoupravnih organizacij in skupnosti, z delovanjem družbenopolitičnih
-organizacij, s samoupravnim sporazumevanjem, z družbenim dogovarjanjem in
-delovanjem skupščin kot skupnih organov vseh ljudi, njihovih organizacij in
-skupnosti.
+Da bi si zagotovili pogoje za življenje in delo ter družben razvoj in da bi ustvarili socialistično skupnost, uresničujejo delovni ljudje skupne interese, izvršujejo oblast in upravljajo druge družbene zadeve v občini kot samoupravni in temeljni družbenopolitični skupnosti in v drugih družbenopolitičnih skupnostih s povezovanjem svojih organizacij združenega dela tez drugih samoupravnih organizacij in skupnosti, z delovanjem družbenopolitičnih organizacij, s samoupravnim sporazumevanjem, z družbenim dogovarjanjem in delovanjem skupščin kot skupnih organov vseh ljudi, njihovih organizacij in skupnosti.
 
-Z ustavo določene funkcije oblasti in upravljanja drugih družbenih zadev
-izvršujejo v družbenopolitičnih skupnostih skupščine družbenopolitičnih
-skupnosti kot izvoljene in zamenljive delegacije delovnih ljudi v samoupravnih
-organizacijah in skupnost h ter družbenopolitičnih organizacijah in drugi
-skupščinam odgovorni organi.
+Z ustavo določene funkcije oblasti in upravljanja drugih družbenih zadev izvršujejo v družbenopolitičnih skupnostih skupščine družbenopolitičnih skupnosti kot izvoljene in zamenljive delegacije delovnih ljudi v samoupravnih organizacijah in skupnost h ter družbenopolitičnih organizacijah in drugi skupščinam odgovorni organi.
 
-Da bi bili delovni ljudje in vse organizirane socialistične sile kar najbolj
-udeleženi pri uresničevanju oblasti in pri upravljanju drugih družbenih zadev
-in da bi se usklajevali njihovi skupni in splošni družbeni interesi,
-obravnavajo organi družbenopolitičnih skupnosti pobude, mnenja in predloge
-družbenopolitičnih organizacij, zavzemajo do njih stališča in sodelujejo z
-družbenopolitičnimi organizacijami.
+Da bi bili delovni ljudje in vse organizirane socialistične sile kar najbolj udeleženi pri uresničevanju oblasti in pri upravljanju drugih družbenih zadev in da bi se usklajevali njihovi skupni in splošni družbeni interesi, obravnavajo organi družbenopolitičnih skupnosti pobude, mnenja in predloge družbenopolitičnih organizacij, zavzemajo do njih stališča in sodelujejo z družbenopolitičnimi organizacijami.
 
-Delavski razred in vsi delovni ljudje zagotavljajo tudi po državni oblasti s
-splošno obveznimi normami socialistične družbene odnose, razvoj družbe in
-upravljanje družbenih zadev na samoupravnih temeljih; varujejo svoboščine in
-pravice človeka in občana, socialistične samoupravne odnose in samoupravne
-pravice delovnih ljudi, rešujejo družbene konflikte in varujejo z ustavo
-določeni red.
+Delavski razred in vsi delovni ljudje zagotavljajo tudi po državni oblasti s splošno obveznimi normami socialistične družbene odnose, razvoj družbe in upravljanje družbenih zadev na samoupravnih temeljih; varujejo svoboščine in pravice človeka in občana, socialistične samoupravne odnose in samoupravne pravice delovnih ljudi, rešujejo družbene konflikte in varujejo z ustavo določeni red.
 
-Samoupravni položaj in pravice delovnega človeka v temeljnih in drugih
-organizacijah združenega dela, krajevnih skupnostih, samoupravnih interesnih
-skupnostih in v drugih samoupravnih organizacijah in skupnostih, samoupravni
-položaj delovnih ljudi v občini, svobodno samoupravno združevanje, dejavnost,
-in ustvarjalnost delovnih ljudi, enakopravnost narodov in narodnosti ter
-svoboščine, pravice in dolžnosti človeka in občana, določene s to ustavo, so
-temelj, meja in smer uresničevanja pravic in dolžnosti družbenopolitičnih
-skupnosti pri izvrševanju funkcije oblasti:
+Samoupravni položaj in pravice delovnega človeka v temeljnih in drugih organizacijah združenega dela, krajevnih skupnostih, samoupravnih interesnih skupnostih in v drugih samoupravnih organizacijah in skupnostih, samoupravni položaj delovnih ljudi v občini, svobodno samoupravno združevanje, dejavnost, in ustvarjalnost delovnih ljudi, enakopravnost narodov in narodnosti ter svoboščine, pravice in dolžnosti človeka in občana, določene s to ustavo, so temelj, meja in smer uresničevanja pravic in dolžnosti družbenopolitičnih skupnosti pri izvrševanju funkcije oblasti:
 
-Delovni ljudje, občani, organizacije združenega dela in druge samoupravne
-organizacije in skupnosti, družbenopolitične in druge organizacije ter
-družbenopolitične skupnosti s svojimi dejavnostmi uresničujejo družbeno
-samozaščito kot funkcijo samoupravne družbe zato: da varujejo ustavno
-ureditev, samoupravne Pravice delovnih ljudi ter druge pravice in svoboščine
-človeka in občana, varujejo družbeno premoženje in zagotavljajo osebno in
-premoženjska varnost delovnih ljudi in občanov ter svoboden družbeni razvoj.
+Delovni ljudje, občani, organizacije združenega dela in druge samoupravne organizacije in skupnosti, družbenopolitične in druge organizacije ter družbenopolitične skupnosti s svojimi dejavnostmi uresničujejo družbeno samozaščito kot funkcijo samoupravne družbe zato: da varujejo ustavno ureditev, samoupravne Pravice delovnih ljudi ter druge pravice in svoboščine človeka in občana, varujejo družbeno premoženje in zagotavljajo osebno in premoženjska varnost delovnih ljudi in občanov ter svoboden družbeni razvoj.
 
-Za uresničevanje in usklajevanje svojih interesov in samoupravnih pravic v
-skladu s splošnimi interesi socialistične družbe ter za opravljanje določenih
-družbenih zadev in za razvijanje raznovrstnih dejavnosti se delovni ljudje in
-občani svobodno združujejo v družbenopolitične in druge družbene organizacije
-in društva kot sestavni del socialističnega samoupravnega sistema.
+Za uresničevanje in usklajevanje svojih interesov in samoupravnih pravic v skladu s splošnimi interesi socialistične družbe ter za opravljanje določenih družbenih zadev in za razvijanje raznovrstnih dejavnosti se delovni ljudje in občani svobodno združujejo v družbenopolitične in druge družbene organizacije in društva kot sestavni del socialističnega samoupravnega sistema.
 
-Družbenopolitične organizacije so kot oblika svobodnega političnega
-organiziranja delovnih ljudi na razrednih socialističnih temeljih dejavnik
-razvoja in varstva socialistične samoupravne družbe.
+Družbenopolitične organizacije so kot oblika svobodnega političnega organiziranja delovnih ljudi na razrednih socialističnih temeljih dejavnik razvoja in varstva socialistične samoupravne družbe.
 
-==V==
+====V====
 
 Svoboščine, pravice in dolžnosti človeka in občana, ki jih določa ta ustava,
 so neločljiv del in izraz socialističnih samoupravnih demokratičnih odnosov, v
