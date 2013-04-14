@@ -1150,6 +1150,15 @@
       <call-macro n="ela2sup"><with-param pos="1"/></call-macro>
       <call-macro n="guess_definiteness"><with-param pos="1"/></call-macro>      
       <choose>
+	<when>
+	  <test>
+	    <equal>
+	      <clip pos="1" side="tl" part="a_prn"/>
+	      <lit-tag v="prn"/>
+	    </equal>
+	  </test>
+	  <call-macro n="prn_adapter"><with-param pos="1"/></call-macro>
+	</when>
 	<when> <!-- For the analytic declining adjectives --><!-- For comparative and superlative-->
 	  <test>
 	    <and>
