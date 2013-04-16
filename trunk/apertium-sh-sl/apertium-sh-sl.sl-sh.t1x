@@ -121,6 +121,16 @@
     <def-cat n="future">
       <cat-item lemma="biti" tags="vbser.fut.*"/>
     </def-cat>
+    <def-cat n="clitic">
+      <cat-item tags="prn.ref.enc.*"/>
+      <cat-item tags="prn.emph.*"/>
+    </def-cat>
+    <def-cat n="se_enc">
+      <cat-item lemma="sebe" tags="prn.ref.enc.mfn.sp.loc"/>
+      <cat-item lemma="sebe" tags="prn.ref.enc.mfn.sp.ins"/>
+      <cat-item lemma="sebe" tags="prn.ref.enc.mfn.sp.gen"/>
+      <cat-item lemma="sebe" tags="prn.ref.enc.mfn.sp.acc"/>
+    </def-cat>
     <def-cat n="je_vbser">
       <cat-item lemma="biti" tags="vbser.pres.p3.sg"/>
     </def-cat>
@@ -244,6 +254,9 @@
       <cat-item lemma="od nekoga" tags="prn.ind"/>
       <cat-item lemma="od nobenega" tags="prn.neg"/>
     </def-cat>
+    <def-cat n="cnjsub">
+      <cat-item tags="cnjsub"/>
+    </def-cat>
     <def-cat n="ne_part">
       <cat-item lemma ="ne" tags="part"/>
       <cat-item lemma ="ne" tags="cnjcoo"/>
@@ -267,7 +280,7 @@
       <cat-item tags="vbhaver.*.*.lp.*"/>
       <cat-item tags="vbmod.lp.*"/>
     </def-cat>
-    <def-cat n="clitic">
+    <def-cat n="clitic_prn"><!--Not sure why this is here, but wont move so that i dont break anything-->
       <cat-item lemma="clitic" tags="prn.*"/>
     </def-cat>
     <def-cat n="biti">
@@ -1968,6 +1981,98 @@
       </action>
     </rule>
 
+    <rule comment="clitic je treba -> treba clitic">
+    <pattern>
+	<pattern-item n="clitic"/>
+	<pattern-item n="je_vbser"/>
+	<pattern-item n="treba"/>
+      </pattern>
+      <action>
+
+	<call-macro n="prn_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<out>
+	  <chunk name="treba_je" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="clitic ni treba -> ne treba clitic">
+    <pattern>
+	<pattern-item n="clitic"/>
+	<pattern-item n="ni_vbser"/>
+	<pattern-item n="treba"/>
+      </pattern>
+      <action>
+	<call-macro n="prn_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<out>
+	  <chunk name="ni_treba" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="ne"/>
+	      <lit-tag v="part.neg"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="cnjsub je bilo treba -> cnjsub je trebalo">
+    <pattern>
+	<pattern-item n="cnjsub"/>
+	<pattern-item n="je_vbser"/>
+	<pattern-item n="bilo_vbser"/>
+	<pattern-item n="treba"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="4"/></call-macro>
+	<out>
+	  <chunk name="da_je_bilo_treba" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <lit v="trebati"/>
+	      <lit-tag v="vbmod.lp.nt.sg"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
     <rule comment="ni bilo treba -> nije trebalo">
     <pattern>
 	<pattern-item n="ni_vbser"/>
@@ -2018,6 +2123,39 @@
 	    <b/>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="cnjsub bi bilo treba -> cnjsub bi trebalo">
+    <pattern>
+	<pattern-item n="cnjsub"/>
+	<pattern-item n="vbcond"/>
+	<pattern-item n="bilo_vbser"/>
+	<pattern-item n="treba"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="4"/></call-macro>
+	<out>
+	  <chunk name="bi_bilo_treba" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <lit v="trebati"/>
+	      <lit-tag v="vbmod.lp.nt.sg"/>
 	    </lu>
 	  </chunk>
 	</out>
@@ -2083,7 +2221,39 @@
       </action>
     </rule>
 
-    <rule comment="bo bo treba -> neće trebati">
+    <rule comment="cnjsub bo treba -> cnjsub će trebati">
+      <pattern>
+	<pattern-item n="cnjsub"/>
+	<pattern-item n="future"/>
+	<pattern-item n="treba"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<out>
+	  <chunk name="da_bo_treba" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="htjeti"/>
+	      <lit-tag v="vbmod.clt.futI.p3.sg"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <lit v="trebati"/>
+	      <lit-tag v="vbmod.inf"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="ne bo treba -> neće trebati">
     <pattern>
 	<pattern-item n="ne_part"/>
 	<pattern-item n="future"/>
@@ -2322,6 +2492,27 @@
     </rule>
     <!-- /treba - trebati -->
 
+    <!-- clitics -->
+    <rule comment="se je -> se">
+    <pattern>
+	<pattern-item n="se_enc"/>
+	<pattern-item n="je_vbser"/>
+      </pattern>
+      <action>
+	<call-macro n="prn_adapter"><with-param pos="1"/></call-macro>
+	<out>
+	  <chunk name="bo_treba" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+    <!-- /clitics -->
  </section-rules>
 
 </transfer>
