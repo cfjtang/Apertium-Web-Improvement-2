@@ -65,129 +65,11 @@
 
 \todo{Credit where credit is due...}
 
-\section{Introduction}
+\input{introduction}
 
-\todo{On Slovene}
+\input{design}
 
-\todo{On Serbo-Croatian}
-
-\begin{figure}
-
-\todo{Venn diagram of Serbo-Croatian, Serbian, Croatian, Bosnian, Montenegrin, 
-Neo-Štokavian, Čakavian, Kajkavian, Torlakian
-Ekavian, Ijekavian, Ikavian}
-
-\end{figure}
-
-\todo{On their relationship}
-
-\section{Design}
-
-\subsection{The Apertium platform}
-\nocite{forcada2011apertium}
-The Apertium\footnote{\url{http://wiki.apertium.org/}} platform is a
-modular machine translation system. The typical core layout consists
-of a letter transducer morphological lexicon\footnote{A list of
-ordered pairs of word surface forms and their lemmatised
-analyses.}. The transducer produces cohorts\footnote{A cohort 
-consists of a surface form and one or more readings containing the lemma of the 
-word and the morphological analysis.} which are then subjected to a
-morphological disambiguation process.
-%
-Disambiguated readings are then run through a second letter transducer
-containing bilingual dictionary information, and through a two-level
-syntactic transfer system that performs word reordering, deletions,
-insertions, and basic syntactic chunking.
-%
-The final module is yet another letter transducer which generates
-surface forms in the target language from the bilingual transfer
-output cohorts.
-
-\subsection{Constraint Grammar}
-This language pair uses a Constraint Grammar (CG)
-module\footnote{Implemented in the CG3 formalism, using the
-  \texttt{vislcg3} compiler, available under GNU GPL. For a detailed
-  reference see: \url{http://beta.visl.sdu.dk/cg3.html}} for
-disambiguation. The CG formalism consists of hand-written rules that
-are applied to a stream of tokens. Depending on the morphosyntactic
-context of a given token the rules select or exclude readings of a
-given surface form, or assign additional tags.
-
-\section{Development}
-
-\subsection{Resources}
-This language pair was developed with the
-aid of on-line resources containing word definitions and flective
-paradigms, such as \emph{Hrvatski jezični
-  portal}\footnote{\url{http://hjp.srce.hr}} for the BCMS side. For
-the Slovene side we used a similar online resource \emph{Slovar
-  slovenskega knjižnega
-  jezika},\footnote{\url{http://bos.zrc-sazu.si/sskj.html}}, and the
-\emph{Amebis Besana} flective
-lexicon.\footnote{\url{http://besana.amebis.si/pregibanje/}}
-
-The bilingual dictionary for the language pair was developed from scratch,
-using the \emph{EUDict}\footnote{\url{http://eudict.com/}} online
-dictionary and \emph{Google
-  Translate}\footnote{\url{http://translate.google.com/}}.
-
-\subsection{Morphological analysis and generation}
-The basis for this language pair are the morphological
-lexicons for BCMS (from
-the language pair BCMS-Macedonian, {\small{\tt apertium-bhs-mk}}) and Slovene (from the
-language pair Slovene-Spanish, {\small{\tt apertium-sl-es}}). Both
-lexicons are written in the XML formalism of
-\emph{lttoolbox}\footnote{\url{http://wiki.apertium.org/wiki/Lttoolbox}}
-(\citealp{rojas2005construccion}), and were developed as parts of
-their respective language pairs, during the Google Summer of Code
-2011.\footnote{\url{http://code.google.com/soc/}}. Since the lexicons
-had been developed using different frequency lists, and slightly
-different tagsets, they have been further trimmed and updated to
-synchronise their coverage.
-
-%wiktionaries and Wikipedia, as well as an SETimes corpus\footnote{\url{http://opus.lingfil.uu.se/SETIMES.php}} (\citealp{tyers2010south}) and a%corpus composed from the Serbian, Bosnian, Croatian and Serbo-Croatian Wikipedias.
-
-%% Other resources for morphological analysis of Serbian and Croatian exist
-%% (\citealp{vitas2004intex}, \citealp{vitas2003processing}, \citealp{agic2008improving}, \citealp{snajder08automatic}), 
-%% to our knowledge there are none freely available for either Serbian, Bosnian or
-%% Croatian. 
-
-\subsection{Disambiguation}
-Though for both languages there exists a number of tools for
-morphological taggin and disambiguation (\todo{reference some}), there
-are none freely available. Likewise, the adequatly tagged corpora are
-mostly non-free (\todo{reference some non-free corpora, like
-  1984.,...}). \todo{See on the taggers/corpora for Slovene}\todo{See
-  on the taggers/corpora for BCMS}.
-Since both BCMS Slovene are highly flective languages, the
-automatically trained tagger would be inefficient blabla, we chose to omit the
-statistical tagger canonically used in Apertium language pairs, and
-use solely Constraint Gramar (CG) for disambiguation. The CG module
-does not provide complete disambiguation, so in the case of any
-remaining ambiguity the system picks the first output analysis.
-
-\todo{Disambiguation examples}
-
-\subsection{Lexical transfer}
-The lexical transfer was done with an \emph{lttoolbox} letter
-transducer composed of bilingual dictionary entries. Additional
-paradigms were added to the transducer to compensate for the tagset
-notational differences.
-
-\subsection{Lexical selection}
-\todo{Lexical selection examples}
-
-\todo{use some sh\_HR and sh\_SR examples perhaps 'univerza' $\rightarrow$ \{univerzitet,sveučilište\}}
-
-
-\subsection{Transfer}
-\todo{describe apertium transfer}
-The BCMS and Slovene languages are very closely related, and their
-morphologies are extremely similar. Most of non-technical transfer
-rules are thus written only for rare syntactic differences. These are
-mostly about clitic ordering, and different noun case usage.
-
-\todo{Transfer examples, esp. the differences}
+\input{development}
 
 \begin{table}
 
@@ -217,16 +99,10 @@ Transfer &                   &  \\
  \caption{Statistics on the number of rules in each direction}
 \end{table}
 
-\section{Evaluation}
-
-\subsection{Lexical coverage}
-
-\subsection{Quantitative}
-
-\subsection{Qualitative}
+\input{evaluation}
 
 
-\section{Conclusions}
+\input{conclusions}
 
 
 \section*{Acknowledgements}
