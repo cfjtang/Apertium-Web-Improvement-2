@@ -22,7 +22,7 @@ def generate(line):
 	proc.stdin.write(bytes(line, "utf-8"));
 	proc.stdin.write(bytes('\0', "utf-8"));
 	proc.stdin.write(bytes('\0', "utf-8"));
-	proc.stdout.flush();
+	proc.stdin.flush();
 	d = proc.stdout.read(1);
 	d = proc.stdout.read(1);
 	buf = b'';
