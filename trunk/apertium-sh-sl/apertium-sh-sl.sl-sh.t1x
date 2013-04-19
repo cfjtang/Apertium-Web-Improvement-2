@@ -1489,7 +1489,7 @@
       </action>
     </rule>
 
-    <rule comment="verb">
+    <rule comment="bom gledal -> ću gledati">
       <pattern>
 	<pattern-item n="future"/>
 	<pattern-item n="vblp"/>
@@ -1508,6 +1508,30 @@
 	    </lu>
 	    <b/>
 	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="gledal bom -> gledat ću">
+      <pattern>
+	<pattern-item n="vblp"/>
+	<pattern-item n="future"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="to_infinitive"><with-param pos="1"/></call-macro>
+	<out>
+	  <chunk name="verb" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	      <lit v="+"/>
 	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
