@@ -14,18 +14,50 @@ ambiguity the system picks the first output analysis.
 
 Due to the similarities between the languages, we were able to
 reuse much of the rules developed earlier for BCMS. Following are
-examples of disambiguation rules:
+some examples of disambiguation rules:
 
 \begin{itemize}
 \item Preposition based case disambiguation
 
 \sentenceexample{
-Za mojo mater. $\leftrightarrow$ Za moju majku.
+Za našo ljubo staro mater. $\leftrightarrow$ Za našu dragu staru majku.
 
-[For{\sc.pr.acc}] [my{\sc.prn.acc}] [mother{\sc.n.acc}]
+[For{\sc.pr.acc}] [our{\sc.prn.acc}] [dear{\sc.prn.acc}] [old{\sc.prn.acc}] [mother{\sc.n.acc}]
 
-(For my mother.)
+(For our dear old mother.)
 }
+
+Noun phrases in both languages typically generate a great number of
+ambiguities. For this phrase the morphological analyser gives:
+
+{\small
+\begin{Verbatim}
+    "<Za>"
+         "za" pr acc 
+    ;    "za" pr gen
+    ;    "za" pr ins
+    "<našo>"
+         "naš" prn pos p1 f sg acc 
+    ;    "naš" prn pos p1 f sg ins
+    "<ljubo>"
+         "ljub" adj f sg acc ind 
+    ;    "ljubo" adv sint
+    ;    "ljub" adj nt sg nom ind
+    ;    "ljub" adj nt sg acc ind
+    ;    "ljub" adj f sg ins ind
+    "<staro>"
+         "star" adj f sg acc ind 
+    ;    "staro" adv sint
+    ;    "star" adj f sg ins ind
+    ;    "star" adj nt sg nom ind
+    ;    "star" adj nt sg acc ind
+"<mater>"
+         "mati" n f sg acc 
+    ;    "mati" n f du gen
+    ;    "mati" n f pl gen
+\end{Verbatim} 
+}
+
 
 \end{itemize}
 
