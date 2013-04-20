@@ -121,6 +121,9 @@
     <def-cat n="future">
       <cat-item lemma="biti" tags="vbser.fut.*"/>
     </def-cat>
+    <def-cat n="prn_nom">
+      <cat-item tags="prn.*.*.*.*.nom"/>
+    </def-cat>
     <def-cat n="clitic">
       <cat-item tags="prn.ref.enc.*"/>
       <cat-item tags="prn.emph.*"/>
@@ -1863,6 +1866,110 @@
       </action>
     </rule>
 
+    <rule comment="prn.nom+bi+lahko+vb.lp=>prn.nom+bi+moći.lp+vb.inf">
+    <pattern>
+	<pattern-item n="prn_nom"/>
+	<pattern-item n="vbcond"/>
+	<pattern-item n="lahko"/>
+	<pattern-item n="vblp"/>
+      </pattern>
+      <action>
+	<call-macro n="prn_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="4"/></call-macro>
+	<out>
+	  <chunk name="vbcond_lahko_vblp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="biti"/>
+	      <lit-tag v="vbser.clt.aor"/>
+	      <clip pos="1" side="tl" part="prs"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="lp"/>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="3"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="lemh"/>
+	      <clip pos="4" side="tl" part="a_vrb"/>
+	      <clip pos="4" side="tl" part="asp"/>
+	      <clip pos="4" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="prn.nom+bi+lahko+adv+vb.lp=>prn.nom+bi+moći.lp+adv+vb.inf">
+    <pattern>
+	<pattern-item n="prn_nom"/>
+	<pattern-item n="vbcond"/>
+	<pattern-item n="lahko"/>
+	<pattern-item n="adv"/>
+	<pattern-item n="vblp"/>
+      </pattern>
+      <action>
+	<call-macro n="prn_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="4"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="5"/></call-macro>
+	<out>
+	  <chunk name="prn_vbcond_lahko_adv_vblp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="biti"/>
+	      <lit-tag v="vbser.clt.aor"/>
+	      <clip pos="1" side="tl" part="prs"/>
+	      <clip pos="1" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="lp"/>
+	      <clip pos="5" side="tl" part="gen"/>
+	      <clip pos="5" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="3"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="4"/>
+	    <lu>
+	      <clip pos="5" side="tl" part="lemh"/>
+	      <clip pos="5" side="tl" part="a_vrb"/>
+	      <clip pos="5" side="tl" part="asp"/>
+	      <clip pos="5" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="5" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
     <rule comment="bi+lahko+adv+vb.lp">
     <pattern>
 	<pattern-item n="vbcond"/>
@@ -1890,6 +1997,92 @@
 	      <lit-tag v="lp"/>
 	      <clip pos="4" side="tl" part="gen"/>
 	      <clip pos="4" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <clip pos="4" side="tl" part="lemh"/>
+	      <clip pos="4" side="tl" part="a_vrb"/>
+	      <clip pos="4" side="tl" part="asp"/>
+	      <clip pos="4" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="4" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="lahko+bi+vb.lp=>moći.lp+bi+vb.inf">
+    <pattern>
+	<pattern-item n="lahko"/>
+	<pattern-item n="vbcond"/>
+	<pattern-item n="vblp"/>
+      </pattern>
+      <action>
+	<call-macro n="adv_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="3"/></call-macro>
+	<out>
+	  <chunk name="vbcond_lahko_vblp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="lp"/>
+	      <clip pos="3" side="tl" part="gen"/>
+	      <clip pos="3" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="lemh"/>
+	      <clip pos="3" side="tl" part="a_vrb"/>
+	      <clip pos="3" side="tl" part="asp"/>
+	      <clip pos="3" side="tl" part="trn"/>
+	      <lit-tag v="inf"/>
+	      <clip pos="3" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="lahko+bi+adv+vb.lp->mogli+bi+adv+vb.inf">
+    <pattern>
+	<pattern-item n="lahko"/>
+	<pattern-item n="vbcond"/>
+	<pattern-item n="adv"/>
+	<pattern-item n="vblp"/>
+      </pattern>
+      <action>
+	<call-macro n="adv_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
+	<call-macro n="adv_adapter"><with-param pos="3"/></call-macro>
+	<call-macro n="verb_adapter"><with-param pos="4"/></call-macro>
+	<out>
+	  <chunk name="vbcond_lahko_vblp" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <lit v="moći"/>
+	      <lit-tag v="vbmod"/>
+	      <lit-tag v="lp"/>
+	      <clip pos="4" side="tl" part="gen"/>
+	      <clip pos="4" side="tl" part="nbr"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
 	    </lu>
 	    <b pos="2"/>
 	    <lu>
