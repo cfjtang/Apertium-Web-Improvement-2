@@ -8,10 +8,36 @@ Since there was no adequate and free Slovene -- Serbo-Croatian parallel corpus,
 we chose to do the lexical selection relying only on Apertium's lexical selection module.
 For cases not covered by our hand-written rules, the system would choose the lexical 
 default from the bilingual dictionary.
+We provide examples of such lexical selection rules.
 
-The following are examples of lexical selection rules.
+Phonetics based lexical selection: many words from the Croatian and Serbian dialects differ in a single phoneme.
+An example are the words \emph{točno} in Croatian and \emph{tačno} in Serbian (engl. \emph{accurate}).
+Such differences were solved through the lexical selection module using rules like:
 
-Phonetics based lexical selection:
+{\small
+\begin{Verbatim}
+<rule>
+    <match lemma="točno" tags="adv.*">
+	<select lemma="točno" tags="adv.*"/>
+    </match>
+</rule>
+\end{Verbatim}
+}
+for Croatian, and
+{\small
+\begin{Verbatim}
+<rule>
+    <match lemma="točno" tags="adv.*">
+	<select lemma="tačno" tags="adv.*"/>
+    </match>
+</rule>
+\end{Verbatim}
+}
+for Serbian and Bosnian.
+
+Similarly, the Croatian language has the form \emph{burza} (meaning stock exchange in English), while Serbian and Bosnian have \emph{berza}. 
+For those forms the following rules were written:
+
 {\small
 \begin{Verbatim}
 <rule>
@@ -21,41 +47,65 @@ Phonetics based lexical selection:
 </rule>
 \end{Verbatim}
 }
-
 for Croatian, and 
- <rule><match lemma="borza" tags="n.*"><select lemma="berza" tags="n.*"/></match></rule>
-for Serbian.
+{\small
+\begin{Verbatim}
+<rule>
+    <match lemma="borza" tags="n.*">
+	<select lemma="berza" tags="n.*"/>
+    </match>
+</rule>
 
-Namely, the Serbian word for "stock exchange" is berza, while in the Croatian language the "burza" is used.
-Similar rules were written for the forms for porcelain (procelan in Serbian and porculan in Croatian), 
-salt (so and sol) etc.
+\end{Verbatim}
+
+for Serbian and Bosnian.
+
+Another example of a phonetical difference are words which have h in Croatian and Bosnian, but v in Serbian.
+Such words include \emph{kuha} and \emph{duhan} in Croatian and Bosnian, but \emph{kuva} and \emph{duvan} in Serbian.
+Similar rules were written for the forms for \emph{porcelain} (procelan in Serbian and porculan in Croatian), 
+\emph{salt} (so and sol) etc.
 
 While the Serbian dialect accepts the Ekavian and Ikavian reflexes, 
 the Croatian dialect uses only the Ijekavian reflex.
 Since the selection for the different reflexes of the yat vowel is done in the generation process,
 no rules were needed in the lexical selection module.
 
-Other than the yat reflex, examples of morhology based rules include:
- <rule><match lemma="točno" tags="adv.*"><select lemma="točno" tags="adv.*"/></match></rule>
-for Croatian, and
- <rule><match lemma="točno" tags="adv.*"><select lemma="tačno" tags="adv.*"/></match></rule>
-for Serbian.
-
-
 Internationalisms have been introduced to Croatian and Bosnian mainly through the Italian and German language
 whereas they have entered Serbian through French and Russian. 
 As a result, the three dialects have developed different phonetic patterns for internatonal words.
 
 Examples of rules for covering such varieties include:
- <rule><match lemma="Betlehem" tags="np.*"><select lemma="Betlehem" tags="np.*"/></match></rule>
-for Croatian, and
- <rule><match lemma="Betlehem" tags="np.*"><select lemma="Vitlejem" tags="np.*"/></match></rule>
+{\small
+\begin{Verbatim}
+<rule>
+    <match lemma="Betlehem" tags="np.*">
+	<select lemma="Betlehem" tags="np.*"/>
+    </match>
+</rule>
+\end{Verbatim}
+}
+for Croatian and Bosnian, and
+{\small
+\begin{Verbatim}
+<rule>
+    <match lemma="Betlehem" tags="np.*">
+	<select lemma="Vitlejem" tags="np.*"/>
+    </match>
+</rule>
+\end{Verbatim}
+}
 for Serbian.
 
 Finally, the Croatian months used for the Gregorian calendar have Slavic-derived names and differ from the original Latin names.
-For example, the Croatian language has the word siječanj for January, and 
-the Serbian language has the word Januar.
-These differences were also covered by the lexical selection module
+For example, the Croatian language has the word \emph{siječanj} for \emph{January}, and 
+the Serbian language has the word \emph{Januar}.
+These differences were also covered by the lexical selection module.
+
+Besides the yat reflex, several other cases were not covered in the lexical selection module. These include the pronoun "what" which has the form "što" in Croatian and the forms "što" and "šta" in Serbian and Bosnian, depending on whether the context is interrogative or relative. This ambiguity was left out of the lexical selection module and was dealth with during generation.
+
+In Croatian with modal verbs the infinitive is prescribed while in Serbian the construct da + present is usually used.
+For example the Croatian translation of the sentence "I want to eat" is "Želim \emph{jesti}", while the Serbian translation is "Želim \emph{da jedem}". This difference was not covered in the lexical selection module.
+
 
 
 
