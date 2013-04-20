@@ -3,3 +3,49 @@ The lexical transfer was done with an \emph{lttoolbox} letter
 transducer composed of bilingual dictionary entries. Additional
 paradigms were added to the transducer to compensate for the tagset
 notational differences.
+
+Since there was no adequate and free Slovene -- Serbo-Croatian parallel corpus, 
+we chose to do the lexical selection relying only on Apertium's lexical selection module.
+For cases not covered by our hand-written rules, the system would choose the lexical 
+default from the bilingual dictionary.
+
+The following are examples of lexical selection rules.
+
+Phonetics based lexical selection:
+ <rule><match lemma="borza" tags="n.*"><select lemma="burza" tags="n.*"/></match></rule>
+for Croatian, and 
+ <rule><match lemma="borza" tags="n.*"><select lemma="berza" tags="n.*"/></match></rule>
+for Serbian.
+Namely, the Serbian word for "stock exchange" is berza, while in the Croatian language the "burza" is used.
+Similar rules were written for the forms for porcelain (procelan in Serbian and porculan in Croatian), 
+salt (so and sol) etc.
+
+While the Serbian dialect accepts the Ekavian and Ikavian reflexes, 
+the Croatian dialect uses only the Ijekavian reflex.
+Since the selection for the different reflexes of the yat vowel is done in the generation process,
+no rules were needed in the lexical selection module.
+
+Other than the yat reflex, examples of morhology based rules include:
+ <rule><match lemma="točno" tags="adv.*"><select lemma="točno" tags="adv.*"/></match></rule>
+for Croatian, and
+ <rule><match lemma="točno" tags="adv.*"><select lemma="tačno" tags="adv.*"/></match></rule>
+for Serbian.
+
+
+Internationalisms have been introduced to Croatian and Bosnian mainly through the Italian and German language
+whereas they have entered Serbian through French and Russian. 
+As a result, the three dialects have developed different phonetic patterns for internatonal words.
+
+Examples of rules for covering such varieties include:
+ <rule><match lemma="Betlehem" tags="np.*"><select lemma="Betlehem" tags="np.*"/></match></rule>
+for Croatian, and
+ <rule><match lemma="Betlehem" tags="np.*"><select lemma="Vitlejem" tags="np.*"/></match></rule>
+for Serbian.
+
+Finally, the Croatian months used for the Gregorian calendar have Slavic-derived names and differ from the original Latin names.
+For example, the Croatian language has the word siječanj for January, and 
+the Serbian language has the word Januar.
+These differences were also covered by the lexical selection module
+
+
+
