@@ -1765,11 +1765,16 @@
 	<!-- outputs-->
 	<out><b/></out>
 	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="3"/></call-macro>
+	<out><b/></out>
 	<out>
-	  <b/>
+  	  <chunk name="unneccesarry_chunk" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
 	  <lu>
 	    <clip pos="2" side="tl" part="whole"/>
 	  </lu>
+	  </chunk>
 	</out>
       </action>
     </rule>
@@ -1800,14 +1805,20 @@
 	<call-macro n="chunk_vbserBiti_adapter"><with-param pos="4"/></call-macro>
 	<out><b/></out>
 	<call-macro n="chunk_adj_adapter"><with-param pos="2"/></call-macro>
+	<out><b/></out>
 	<out>
-	  <b/>
-	  <lu>
-	    <clip pos="3" side="tl" part="whole"/>
-	  </lu>
+	  <chunk name="a_chunk">
+	    <tags>
+	      <tag><lit-tag v="wtf"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
 	</out>
       </action>
     </rule>
+
     
     <rule comment="nom adj adj nom vbser -->  nom vbser adj adj nom">
       <pattern>
