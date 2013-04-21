@@ -1473,6 +1473,31 @@
     </rule>
 
     <!-- Added by Hrvoje -->
+
+    <rule comment="bom -> će biti">
+      <pattern>
+	<pattern-item n="future"/>
+      </pattern>
+      <action>
+	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
+	<out>
+	  <chunk name="bom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b/>
+	    <lu>
+	      <lit v="biti"/>
+	      <lit-tag v="vbser.inf"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
     <rule comment="verb">
       <pattern>
 	<pattern-item n="verb"/>
@@ -1502,7 +1527,7 @@
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
 	<call-macro n="to_infinitive"><with-param pos="2"/></call-macro>
 	<out>
-	  <chunk name="verb" case="caseFirstWord">
+	  <chunk name="bom_verb" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="VB"/></tag>
 	    </tags>
@@ -1528,7 +1553,7 @@
 	<call-macro n="verb_adapter"><with-param pos="2"/></call-macro>
 	<call-macro n="to_infinitive"><with-param pos="1"/></call-macro>
 	<out>
-	  <chunk name="verb" case="caseFirstWord">
+	  <chunk name="verb_bom" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="VB"/></tag>
 	    </tags>
