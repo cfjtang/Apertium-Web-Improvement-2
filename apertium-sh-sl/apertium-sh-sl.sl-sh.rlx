@@ -201,7 +201,7 @@ SELECT:vbTVAcc Nomen + Acc (-1 V + Transitive)
 REMOVE:vblexORadj KeepOrder V IF (0 A + $$GENDER + $$NUMBER + $$CASE) (1 Nomen + $$GENDER + $$NUMBER + $$CASE)
 
 # No transitive verb - no accusative
-REMOVE:noTvVerb Nomen + Acc IF (0 Nom OR Acc) (NEGATE 0* V + Transitive BARRIER EOS OR BOS)
+REMOVE:noTvVerb Nomen + Acc IF (0 Nom OR Acc) (NEGATE 0* V + Transitive BARRIER EOS OR BOS) (NOT -1 Pr + Acc) (NOT -1 Modifier + Acc)
 
 # Noun after noun is genitive
 SELECT:Noun_Noun<gen> N + Gen IF (-1 N)
@@ -222,6 +222,9 @@ REMOVE:notLocative Nomen + Loc (NOT -1 Pr + Loc) (NOT -1 Modifier + Loc) (NEGATE
 
 # Genitive/Locative plural ambiguity. It's mostly Locative, unless determined by a noun
 REMOVE:notGenitive Nomen + Gen (0 Nomen + Loc) (0 Nomen + Gen) (-1 Pr + Loc) (-1 Pr + Gen) (NOT 1 Nomen + Gen)
+
+# Conjunction or adverb; Never a conjunction if it governs a nominal word
+REMOVE:CnjORAdv KeepOrder CNJ (0 CNJ OR Adv + $$CASE) (1 Nomen + $$CASE)
 
 # Lahko is an adverb most of the time: (TODO: Add more cases)
 "<lahko>" SELECT:LahkoAdv Adv (1 V)
