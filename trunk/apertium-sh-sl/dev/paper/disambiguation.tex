@@ -1,3 +1,4 @@
+e
 \subsection{Disambiguation}
 Though for both languages there exists a number of tools for
 morphological taggin and disambiguation (\todo{reference some}), there
@@ -14,9 +15,7 @@ ambiguity the system picks the first output analysis.
 
 Due to the similarities between the languages, we were able to
 reuse much of the rules developed earlier for BCMS. Following are
-some examples of disambiguation rules:
-
-\todo{napomenut u zaključku da su pravila uglavnom rudimentarna}
+a few disambiguation rules examples:
 
 \begin{itemize}
 
@@ -24,8 +23,6 @@ some examples of disambiguation rules:
 
 \sentenceexample{
 Ja često jedem ribu. $\leftrightarrow$ Jaz pogosto jedem ribo.
-
-[I{\sc.prn.nom}] [often{\sc.adv}] [eat{\sc.verb}] [fish{\sc.n.acc}]
 
 (I eat fish often.)
 }
@@ -69,8 +66,6 @@ word following is unambiguously a verb.
 
 \sentenceexample{
 Za našo ljubo staro mater. $\leftrightarrow$ Za našu dragu staru majku.
-
-[For{\sc.pr.acc}] [our{\sc.prn.acc}] [dear{\sc.prn.acc}] [old{\sc.prn.acc}] [mother{\sc.n.acc}]
 
 (For our dear old mother.)
 }
@@ -126,9 +121,46 @@ adjective, noun or a pronoun in the same case, and then the rule
 \end{Verbatim}
 }
 
+in several passes removes the incorrect cases from the nouns and
+modifiers in the phrase.
+
 \item Noun heuristics:
 
-This simple heuristic selects a genitive reading of a noun after a noun.
+\sentenceexample{
+...izvršavanje dužnosti predstavnice...
+
+(...doing the duty of a representative...)
+}
+
+Frequently in both languages if there is a sequence of nouns, the
+second noun is in genitive.
+
+{\small
+\begin{Verbatim}
+    "<izvršavanje>"
+        "izvršavanje" n nt sg nom 
+    ;   "izvršavanje" n nt sg voc
+    ;   "izvršavanje" n nt sg acc
+    "<dužnosti>"
+        "dužnost" n f sg gen
+    ;   "dužnost" n f sg voc
+    ;   "dužnost" n f pl voc
+    ;   "dužnost" n f sg loc
+    ;   "dužnost" n f sg dat
+    ;   "dužnost" n f pl acc
+    ;   "dužnost" n f sg ins
+    ;   "dužnost" n f pl nom
+    ;   "dužnost" n f pl gen
+    "<predstavnice>"
+        "predstavnica" n f sg gen
+    ;   "predstavnica" n f sg voc
+    ;   "predstavnica" n f pl voc
+    ;   "predstavnica" n f pl nom
+    ;   "predstavnica" n f pl acc
+\end{Verbatim}
+}
+
+This simple heuristic selects a genitive reading of a noun after a noun:
 
 {\small
 \begin{Verbatim}
