@@ -14,6 +14,8 @@
 \setlength\titlebox{6.5cm}    % Expanding the titlebox
 %%% YOUR PACKAGES BELOW THIS LINE %%%
 \usepackage[utf8]{inputenc}
+\usepackage{multirow} 
+\usepackage[small,bf]{caption} 
 
 \newcommand{\confname}{Machine Translation Summit XIV}
 \newcommand{\website}{\protect\url{http://www.mtsummit2013.info/}}
@@ -37,6 +39,8 @@
 \usepackage{fancyvrb} 
 \DefineVerbatimEnvironment{outputExample}{Verbatim}{fontsize=\small}
 \DefineVerbatimEnvironment{goldExample}{BVerbatim}{fontsize=\tiny}
+
+\bibdata{mtsxivslsh}
 
 \newcommand{\sentenceexample}[1]{{\small\enumsentence{#1}}}
 
@@ -65,53 +69,65 @@
 \begin{abstract}
   This paper describes the development of a bidirectional machine
   translation system for the western branch of South-Slavic languages
-  (comprised of Bosnian, Serbian, Croatian and Slovene). Details of
+  --- Serbo-Croatian and Slovene. Details of
   resources and development methods used are given, as well as an
-  evaluation, and general directives for future work.
+  evaluation, and general directions for future work.
 \end{abstract}
 
-\section{Credits}
+%\section{Credits}
+%\todo{Credit where credit is due...}
 
-\todo{Credit where credit is due...}
-
+% INTRODUCTION
 \input{introduction}
 
+% DESIGN 
 \input{design}
 
+% DEVELOPMENT
 \input{development}
 
 \begin{table}
 
-\begin{tabular}{lrrr}
+\begin{center}
+\begin{tabular}{|l|rrr|}
+\hline
 \textbf{Dictionary} & \textbf{Paradigms} & \textbf{Entries} & \textbf{Forms} \\
 \hline
-Serbo-Croatian &  1033 & 13206 & 233878 \\
-Slovenian &  1909 & 13383 & 147580 \\
+Serbo-Croatian &  1,033 & 13,206 & 233,878 \\
+Slovenian &  1,909 & 13,383 & 147,580 \\
 \hline
-Bilingual &  69 &  16434 & 70787 \\
+Bilingual &  69 &  16,434 & 70,787 \\
 \hline
 \end{tabular}
-\caption{ Dict statistics sh, sl, sh-sl}
+\caption{Statistics on number of lexicon entries for each of the dictionaries in the 
+   system.}
+\end{center}
 
 \end{table}
 
 \begin{table}
-
-\begin{tabular}{lrr}
-               & sh$\rightarrow$sl & sl$\rightarrow$sh \\
+\begin{center}
+\begin{tabular}{|l|rr|}
 \hline
-Disambiguation &     194              &     28 \\
-Lexical selection &     -            &  126\\
-Transfer &               45 &  62 \\
+ \textbf{Type}      & \texttt{hbs}$\rightarrow$\texttt{slv} & \texttt{slv}$\rightarrow$\texttt{hbs}\\
+\hline
+Disambiguation      &     194              &     28 \\
+Lexical selection   &     --            &  42 \\
+Transfer            &                45 &  62 \\
+\hline
 
 \end{tabular}
- \caption{Statistics on the number of rules in each direction}
+ \caption{Statistics on the number of rules in each direction. For the lexical selection rules, 
+   the number indicates that there are 42 rules for each of the three standard varieties currently
+   supported.}
+\end{center}
 \end{table}
 
+% EVALUATION 
 \input{evaluation}
 
 
-
+% CONCLUSIONS AND FUTURE WORK
 \input{conclusions}
 
 
@@ -120,8 +136,10 @@ Transfer &               45 &  62 \\
 Jernej, Ale\v{s}, Google Summer of Code, Apertium
 
 %\nocite{*}
-\bibliographystyle{mtsxiv}
+%\bibliographystyle{mtsxiv}
+\bibliographystyle{apalike}
 \bibliography{mtsxivslsh}
+
 \end{document}
 
 %% \begin{thebibliography}{}

@@ -10,9 +10,14 @@ consists of a surface form and one or more readings containing the lemma of the
 word and the morphological analysis.} which are then subjected to a
 morphological disambiguation process.
 %
-Disambiguated readings are then run through a second letter transducer
-containing bilingual dictionary information, and through a
-syntactic transfer system that performs word reordering, deletions,
+Disambiguated readings are then looked up in the bilingual dictionary,
+which gives the possible translations for each reading. These
+are then passed through a lexical-selection module \citep{tyers12a}, 
+which applies rules which select the most appropriate translation
+for a given source-language context.
+After lexical selection, the readings, which are now pairs of source
+and target language lexical forms are passed through a 
+syntactic transfer module that performs word reordering, deletions,
 insertions, and basic syntactic chunking.
 %
 The final module is yet another letter transducer which generates
