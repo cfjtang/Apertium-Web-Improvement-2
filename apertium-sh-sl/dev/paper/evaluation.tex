@@ -1,8 +1,65 @@
 \section{Evaluation}
+\input{coveragetable}
+This sections covers the evaluation of the developed system. 
+The system was tested by measuring the lexical coverage, and by performing
+a qualitative and a quantitative evaluation. 
+
+Lexical coverage tested using existing free corpora, 
+while the quantitative evaluation was performed on 100 postedited sentences from the Slovenian news portal 
+Delo \footnote{\url{http://www.delo.si/}}.
+
 
 \subsection{Lexical coverage}
 
+Coverage for the BCSM - SL language pair was measured using both the SETimes and Europarl corpora. 
+We measured coverage naively, meaning that we assume a word is in our 
+dictionaries if at least one of its surface forms is found in the corpus. 
+We are aware of the shortcomings of such an evaluation framework, 
+however we decided to use it because of its simplicity.
+
+The BCSM $\rightarrow$ SL side was evaluated using the SETimes and Europarl corpora. On the other hand,
+since SETimes does not cover the Slovenian language
+the SL $\rightarrow$ BCSM side was evaluated only on the Europarl corpus. The results are shown in table \ref{table:coverage}.
+
 \subsection{Quantitative}
+
+The quantitative evaluation was performed by 5 articles
+from the slovenian news portal Delo.
+The articles were translated from slovenian using Apertium, and were later corrected by a human post-editor in order to get a correct translationn.
+Both the word error rate (WER) and position-independent error rate (PER) were calculated
+by counting the number of insertions, substitutions and deletions between the post-edited articles
+and the original translation. We used the freely available apertium-eval-translator for calculating the WER and PER.
+We also reported the percentage of out of vocabulary words (OOV), and the total number of words per article.
+The results are given in tables \ref{table:quantitative1} and \ref{table:quantitative2}
+
+We also calculated both metrics for the output of Google Translate\footnote{\url{http://translate.google.com/}} 
+and the results are presented in the same tables. 
+
+Given all the assumptions the WER and PER matrics make, the results show that our system is comparable to Google Translate
+with regards to translation quality. The SL $\rightarrow$ BHS translation seems to be better than the BHS $\rightarrow$ SL one
+which is due to the fact that more effort was put into developing the former direction.
+
 \input{quantitativeevaluationtable}
 
 \subsection{Qualitative}
+The biggest problems are currently caused by the incompleteness of our dictionaries.
+The issues caused by OOV words are twofold.
+The less important issue is the fact that the system is unable to provide a translation for the unknown words. 
+However, the more important issue is that OOV words cause problems with disambiguation and transfer, since they
+break long chains of words into smaller ones and drastically reduce context information. 
+
+Next, we have seen that the number of disambiguation rules for Slovenian is not sufficient for high quality disambiguation. 
+The constraint grammar for the Slovenian side was written based on the constraint grammar for the BHS side,
+and it needs further work.
+
+We have also noticed difficulties in the transfer because of the loose grammar of both sides.
+Adding additional rules does not significantly improve the performance of the system 
+and OOV words make long transfer rules irrelevant.
+
+Finally, beacause of the small timeframe, we were not able to work much on lexical selection.
+Our lexical selection module is the least developed part of our system. 
+We have not done any work on the Slovenian side and the number of rules for the BHS side is small.
+This is due to the fact that no reliable parallel corpus exists for this language pair.
+
+
+
