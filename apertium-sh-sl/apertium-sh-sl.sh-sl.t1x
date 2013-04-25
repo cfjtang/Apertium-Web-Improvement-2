@@ -262,8 +262,9 @@
     <def-cat n="vblex_imperf_adv">
       <cat-item tags="vblex.imperf.*.pprs.adv"/>
     </def-cat>
-    <def-cat n="vblex_perf_adv">
+    <def-cat n="vblex_perf_adv"><!--TODO: refactor name to something more general, since now encompasses vbmod as well-->
       <cat-item tags="vblex.perf.*.pprs.adv"/>
+      <cat-item tags="vbmod.pprs.adv"/>
     </def-cat>
 
   </section-def-cats>
@@ -1503,15 +1504,35 @@
   <section-rules>
     
     
-    <rule comment="Vblex.imperf.*.pprs.adv -> vblex.pp">
-      <pattern>
-	<pattern-item n="vblex_imperf_adv"/>
-      </pattern>
-      <action>
-	<call-macro n="firstWord"><with-param pos="1"/></call-macro>
-	<!--><call-macro n="chunk_verb_adapter"><with-param pos="1"/></call-macro>-->
+<rule comment="Vblex.imperf.*.pprs.adv -> vblex.pp">
+  <pattern>
+    <pattern-item n="vblex_imperf_adv"/>
+  </pattern>
+  <action>
+    <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+    <!--><call-macro n="chunk_verb_adapter"><with-param pos="1"/></call-macro>-->
+    <choose>
+      <when>
+	<test>
+	  <equal>
+	    <clip pos="1" side="tl" part="lemh"/>		
+	    <lit v="hoteč"/>
+	  </equal>
+	</test>
 	<out>
 	  <chunk name="verbImerfPprsAdv_to_VblexPP" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="VB"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>		
+	    </lu>
+	  </chunk>
+	</out>
+      </when>
+      <otherwise>
+	<out>
+	  <chunk name="verbImperfPprsAdv_to_VblexPP" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="VB"/></tag>
 	    </tags>
@@ -1524,8 +1545,10 @@
 	    </lu>
 	  </chunk>
 	</out>
-      </action>
-    </rule>
+      </otherwise>
+    </choose>
+  </action>
+</rule>
     
     <rule comment="vblex.perf.*.pprs.adv -> (ko je) + verb.past">
       <pattern>
@@ -1538,9 +1561,26 @@
 	  <when>
 	    <test>
 	      <equal>
-		<clip pos="1" side="tl" part="trn"/>
-		<lit-tag v="ref"/>
+		<clip pos="1" side="tl" part="lem"/><lit v="hoteč"/>
 	      </equal>
+	    </test>
+	    <out>
+	      <chunk name="verbPerfPprsAdv_to_VblexRefPast" case="caseFirstWord">
+		<tags>
+		  <tag><lit-tag v="VB"/></tag>
+		</tags>	   
+		<lu>
+		  <clip pos="1" side="tl" part="whole"/>
+		</lu>
+	      </chunk>
+	    </out>
+	  </when>
+	  <when>
+	    <test>	      
+		<equal>
+		  <clip pos="1" side="tl" part="trn"/>
+		  <lit-tag v="ref"/>
+		</equal>	      
 	    </test>	
 	    <out>
 	      <chunk name="verbPerfPprsAdv_to_VblexRefPast" case="caseFirstWord">

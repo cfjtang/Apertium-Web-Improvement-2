@@ -865,7 +865,7 @@
 	  <let>
 	    <clip pos="1" side="tl" part="whole"/>
 	    <concat>
-	      <clip pos="1" side="tl" part="lem"/>
+	      <clip pos="1" side="tl" part="lemh"/>
 	      <clip pos="1" side="tl" part="a_num"/>
 	    </concat>
 	  </let>	  
@@ -1072,6 +1072,18 @@
     <def-macro n="adv_adapter" npar="1">
       <call-macro n="ela2sup"><with-param pos="1"/></call-macro>
       <choose>
+	<when>
+	  <test>
+	      <equal><clip pos="1" side="tl" part="lemh"/><lit v="bivajoč&lt;b/&gt;treba"/></equal>
+	  </test>
+	  <let>
+	    <clip pos="1" side="tl" part="whole"/>
+	    <concat>
+	      <lit v="trebati"/>
+	      <lit-tag v="vbmod.pprs.adv"/>
+	    </concat>
+	  </let>
+	</when>
 	<when>
 	  <test>
 	    <equal><clip pos="1" side="sl" part="lemh"/><lit v="treba"/></equal>
@@ -1735,7 +1747,7 @@
       <action>
 	<call-macro n="num_adapter"><with-param pos="1"/></call-macro>
 	<out>
-	  <chunk name="num" case="caseFirstWord">
+	  <chunk name="num">
 	    <tags>
 	      <tag><lit-tag v="Num"/></tag>
 	    </tags>
