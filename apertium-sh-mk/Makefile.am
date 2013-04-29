@@ -16,12 +16,13 @@ BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = $(BASENAME).$(LANG1a).dix  $(BASENAME).$(LANG1b).dix $(BASENAME).$(LANG1c).dix \
 	$(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
-	$(BASENAME).$(LANG1).dix $(PREFIX1).rlx.bin $(PREFIX2).rlx.bin $(PREFIX1).lex.bin \
+	$(BASENAME).$(LANG1).dix $(PREFIX1).rlx.bin $(PREFIX2).rlx.bin \
 	$(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
 	$(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
+	$(PREFIX1).autolex.bin $(PREFIX2).autolex.bin \
 	$(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 	$(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
-	$(PREFIX1).autopgen.bin 
+	$(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin
 
 #    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin 
 
@@ -55,9 +56,8 @@ $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 
 $(PREFIX1).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc lexchoicebil.xsl $(BASENAME).$(PREFIX1).dix > .deps/$(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary .deps/$(BASENAME).$(PREFIX1).dix
-	lt-comp lr .deps/$(BASENAME).$(PREFIX1).dix $@
+	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+	lt-comp lr $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
@@ -69,9 +69,11 @@ $(PREFIX1).rlx.bin: $(BASENAME).$(PREFIX1).rlx
 $(PREFIX2).rlx.bin: $(BASENAME).$(PREFIX2).rlx
 	cg-comp $(BASENAME).$(PREFIX2).rlx $@
 
+$(PREFIX1).autolex.bin: $(BASENAME).$(PREFIX1).lrx
+	lrx-comp $(BASENAME).$(PREFIX1).lrx $@
 
-$(PREFIX1).lex.bin: $(BASENAME).$(PREFIX1).lex
-	cg-comp $(BASENAME).$(PREFIX1).lex $@
+$(PREFIX2).autolex.bin: $(BASENAME).$(PREFIX2).lrx
+	lrx-comp $(BASENAME).$(PREFIX2).lrx $@
 
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
@@ -93,9 +95,8 @@ $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 
 $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc lexchoicebil.xsl $(BASENAME).$(PREFIX1).dix > .deps/$(BASENAME).$(PREFIX1).dix
-	apertium-validate-dictionary .deps/$(BASENAME).$(PREFIX1).dix
-	lt-comp rl .deps/$(BASENAME).$(PREFIX1).dix $@
+	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
+	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
 
 #$(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
 #	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
@@ -162,13 +163,15 @@ apertium_sh_mk_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX1).autogen.bin \
                     $(PREFIX1).rlx.bin \
                     $(PREFIX2).rlx.bin \
-                    $(PREFIX1).lex.bin \
+                    $(PREFIX1).autolex.bin \
+                    $(PREFIX2).autolex.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
 		    $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX1).t3x\
 		    $(BASENAME).$(PREFIX2).t1x $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x\
 		    $(PREFIX1).autopgen.bin \
+		    $(PREFIX2).autopgen.bin \
 		    $(PREFIX1).translit.bin $(PREFIX2).translit.bin
 
 #                    $(PREFIX1).autopgen.bin 

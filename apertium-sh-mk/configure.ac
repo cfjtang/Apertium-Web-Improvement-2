@@ -4,8 +4,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-sh-mk], [0.1], [ftyers@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-sh-mk], [0.1], no-define)
+AC_INIT([apertium-sh-mk], [0.1.0], [ftyers@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-sh-mk], [0.1.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
@@ -74,6 +74,27 @@ if test x$ac_cv_path_CGPROC = xno
 then
   AC_MSG_ERROR([You don't have cg-proc installed.])
 fi
+
+AC_PATH_PROG(LRXCOMP, lrx-comp, no)
+if test x$ac_cv_path_LRXCOMP = x
+then
+  AC_MSG_ERROR([You don't have lrx-comp installed.])
+fi
+if test x$ac_cv_path_LRXCOMP = xno
+then
+  AC_MSG_ERROR([You don't have lrx-comp installed.])
+fi
+
+AC_PATH_PROG(LRXPROC, lrx-proc, no)
+if test x$ac_cv_path_LRXPROC = x
+then
+  AC_MSG_ERROR([You don't have lrx-proc installed.])
+fi
+if test x$ac_cv_path_LRXPROC = xno
+then
+  AC_MSG_ERROR([You don't have lrx-proc installed.])
+fi
+
 
 
 
