@@ -1,4 +1,4 @@
-VERSION=0.1.0
+VERSION=0.5.0
 LANG1=hbs
 LANG1a=hbs_BS
 LANG1b=hbs_HR
@@ -16,7 +16,7 @@ BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = $(BASENAME).$(LANG1a).dix  $(BASENAME).$(LANG1b).dix $(BASENAME).$(LANG1c).dix \
 	$(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
-	$(BASENAME).$(LANG1).dix $(PREFIX1).rlx.bin $(PREFIX1).lex.bin \
+	$(BASENAME).$(LANG1).dix $(PREFIX1).rlx.bin $(PREFIX1).autolex.bin \
 	$(PREFIX2).rlx.bin \
 	$(PREFIX2a).autolex.bin \
 	$(PREFIX2b).autolex.bin \
@@ -79,8 +79,8 @@ $(PREFIX1).rlx.bin: $(BASENAME).$(PREFIX1).rlx
 $(PREFIX2).rlx.bin: $(BASENAME).$(PREFIX2).rlx
 	cg-comp $(BASENAME).$(PREFIX2).rlx $@
 
-$(PREFIX1).lex.bin: $(BASENAME).$(PREFIX1).lex
-	cg-comp $(BASENAME).$(PREFIX1).lex $@
+$(PREFIX1).autolex.bin: $(BASENAME).$(PREFIX1).lrx
+	lrx-comp $(BASENAME).$(PREFIX1).lrx $@
 
 $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG2).dix
@@ -132,13 +132,19 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 	apertium-preprocess-transfer $(BASENAME).$(PREFIX2).t3x $@
 
 
-EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
+EXTRA_DIST=$(BASENAME).$(LANG1).metadix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
            $(BASENAME).$(LANG2).tsx  \
+           $(BASENAME).$(LANG1).acx \
+           $(BASENAME).$(LANG2).acx \
+           $(BASENAME).post-$(LANG2).dix $(BASENAME).post-$(LANG1).dix \
            $(PREFIX1).prob $(PREFIX2).prob \
+           $(BASENAME).$(PREFIX1).lrx $(BASENAME).$(PREFIX2a).lrx $(BASENAME).$(PREFIX2b).lrx $(BASENAME).$(PREFIX2c).lrx \
+           $(BASENAME).$(PREFIX1).rlx $(BASENAME).$(PREFIX2).rlx \
            $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x \
            $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x \
+           alt.xsl \
            modes.xml
 
 #           $(LANG1)-tagger-data/README $(LANG2)-tagger-data/README 
@@ -173,7 +179,7 @@ apertium_hbs_slv_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
                     $(PREFIX2a).autolex.bin \
                     $(PREFIX2b).autolex.bin \
                     $(PREFIX2c).autolex.bin \
-                    $(PREFIX1).lex.bin \
+                    $(PREFIX1).autolex.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
 		    $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
