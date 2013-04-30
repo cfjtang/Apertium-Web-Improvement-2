@@ -1,9 +1,9 @@
 VERSION=0.1.0
-LANG1=sh
-LANG1a=sh_BS
-LANG1b=sh_HR
-LANG1c=sh_SR
-LANG2=sl
+LANG1=hbs
+LANG1a=hbs_BS
+LANG1b=hbs_HR
+LANG1c=hbs_SR
+LANG2=slv
 VAR1=ijek
 VAR2=ek
 PREFIX1=$(LANG1)-$(LANG2)
@@ -162,9 +162,9 @@ $(PREFIX2c).mode: modes.xml
 
 modes: $(PREFIX1).mode
 
-apertium_sh_slmodesdir=$(prefix)/share/apertium/modes/
-apertium_sh_sldir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
-apertium_sh_sl_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
+apertium_hbs_slvmodesdir=$(prefix)/share/apertium/modes/
+apertium_hbs_slvdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
+apertium_hbs_slv_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX2a).autogen.bin $(PREFIX2b).autogen.bin $(PREFIX2c).autogen.bin \
                     $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).autogen.bin \
@@ -189,13 +189,13 @@ apertium_sh_sl_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 
 install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	test -d $(DESTDIR)$(apertium_sh_slmodesdir) || mkdir $(DESTDIR)$(apertium_sh_slmodesdir)
-	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_sh_slmodesdir)
-	$(INSTALL_DATA) $(PREFIX2a).mode $(DESTDIR)$(apertium_sh_slmodesdir)
-	$(INSTALL_DATA) $(PREFIX2b).mode $(DESTDIR)$(apertium_sh_slmodesdir)
-	$(INSTALL_DATA) $(PREFIX2c).mode $(DESTDIR)$(apertium_sh_slmodesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_sh_sldir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX2).t2x $(DESTDIR)$(apertium_sh_sldir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x $(DESTDIR)$(apertium_sh_sldir)
+	test -d $(DESTDIR)$(apertium_hbs_slvmodesdir) || mkdir $(DESTDIR)$(apertium_hbs_slvmodesdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_hbs_slvmodesdir)
+	$(INSTALL_DATA) $(PREFIX2a).mode $(DESTDIR)$(apertium_hbs_slvmodesdir)
+	$(INSTALL_DATA) $(PREFIX2b).mode $(DESTDIR)$(apertium_hbs_slvmodesdir)
+	$(INSTALL_DATA) $(PREFIX2c).mode $(DESTDIR)$(apertium_hbs_slvmodesdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_hbs_slvdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX2).t2x $(DESTDIR)$(apertium_hbs_slvdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x $(DESTDIR)$(apertium_hbs_slvdir)
 
 CLEANFILES = -r $(TARGETS_COMMON) 
