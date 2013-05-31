@@ -4,10 +4,8 @@
 
 AC_PREREQ(2.52)
 
-m4_define([required_apertium_version], [3.1.0])
-
-AC_INIT([apertium-sv-da], [0.5.0], [sortiz@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-sv-da], [0.5.0], no-define)
+AC_INIT([apertium-sv-da], [0.5.1], [spectre360@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-sv-da], [0.5.1], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
