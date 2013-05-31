@@ -4,8 +4,8 @@
 
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-en-gl], [0.5.1], [oscar@imaxin.com])
-AM_INIT_AUTOMAKE([apertium-en-gl], [0.5.1], no-define)
+AC_INIT([apertium-en-gl], [0.5.2], [oscar@imaxin.com])
+AM_INIT_AUTOMAKE([apertium-en-gl], [0.5.2], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
