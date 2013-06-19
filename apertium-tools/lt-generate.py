@@ -81,13 +81,13 @@ while c != '': #{
 
 	if c == '/' and not escaped: #{
 		if first == True: #{
-			#print('1 buf:',buf);
+			print('1 buf:',buf, file=sys.stderr);
 			first = False;
 			surface_form = buf;
 		else: #{
 			newsf = generate('^' + buf + '$').strip(' \u0000');
-			#print('. buf:',buf);
-			#print('. newsf:',newsf);
+			print('. buf:',buf, file=sys.stderr);
+			print('. newsf:',newsf, file=sys.stderr);
 			lexical_forms.add(buf);
 			generated_forms.add(newsf);
 		#}
@@ -98,9 +98,17 @@ while c != '': #{
 	#}
 
 	if c == '$' and not escaped: #{
+		if buf != '':
+			newsf = generate('^' + buf + '$').strip(' \u0000');
+			print('. buf:',buf, file=sys.stderr);
+			print('. newsf:',newsf, file=sys.stderr);
+			lexical_forms.add(buf);
+			generated_forms.add(newsf);
+			buf = '';
+
 		inside = False;
 
-		print(generated_forms, lexical_forms, file=sys.stdout);
+		print(generated_forms, lexical_forms, file=sys.stderr);
 
 		generated_forms = list(generated_forms);
 		lexical_forms = list(lexical_forms);
