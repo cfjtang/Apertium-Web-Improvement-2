@@ -204,16 +204,17 @@ SELECT:PrnNumberFromVerb $$NUMBER (0C Pron) ((1C* V + $$NUMBER BARRIER EOS) OR (
     ## Ona, međutim, priznaje...
 
 # This is a heuristic:
-SELECT:vbserORvblex VBLex IF (0 VBSer OR VBLex) (1* Nomen + Acc BARRIER V - Clt)
-REMOVE:vbserORvblex VBLex IF (0 VBSer OR VBLex) (NEGATE -1* Nomen + Acc LINK 1 VBSer + Clt BARRIER V-FIN OR BOS) (NEGATE 1* Nomen + Acc LINK 1 VBSer + Clt BARRIER V-FIN OR EOS)
+SELECT:vbserORvblex VBLex IF (0 VBSer OR VBLex) 
+	(1* Nomen + Acc BARRIER V - Clt)
+REMOVE:vbserORvblex VBLex IF (0 VBSer OR VBLex) (NEGATE -1* (Nomen + Acc LINK 1 VBSer + Clt) BARRIER V-FIN OR BOS) (NEGATE 1* (Nomen + Acc LINK 1 VBSer + Clt) BARRIER V-FIN OR EOS)
 
 SELECT VBSer IF (-1* Lp );
 SELECT VBSer IF (1* Lp BARRIER V - Lp - PresParticiple );
 
 SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (-1* VBSer BARRIER BOS) ;
 SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (1* VBSer BARRIER EOS) ;
-SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (-1 MeTeSePron BARRIER BOS) ;
-SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (1 MeTeSePron BARRIER EOS) ;    
+SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (-1 MeTeSePron) ;
+SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (1 MeTeSePron) ;    
     ## These are all ways how perfect can be made    
 
 SELECT:l-participleNumber $$NUMBER (0C Lp OR Optative) ( (-1* VBSer + $$NUMBER BARRIER BOS) OR  (1* VBSer + $$NUMBER BARRIER EOS) );
@@ -230,7 +231,7 @@ REMOVE:NotAdverbNotAdjective Adv (Not 0 A) (NOT -1 V) (Not 1 V) ;
 
 SELECT:Nom+Perfect NP-HEAD + $$NUMBER + $$GENDER + Nom IF
                          (0 NP-HEAD + $$NUMBER + $$GENDER)
-                         (1* V-COP + $$NUMBER LINK 1 Lp + $$NUMBER + $$GENDER BARRIER S-BOUNDARY) ;
+                         (1* (V-COP + $$NUMBER LINK 1 Lp + $$NUMBER + $$GENDER) BARRIER S-BOUNDARY) ;
     ## Radovanović je ušla u povijest kao prva žena-pilot u Srbiji.                         
 
 SELECT:BOS-Nom-Viv $$NUMBER + Nom IF (-1 BOS OR Cm) (1* V-FIN + Intransitive + $$NUMBER BARRIER Cm) ;
@@ -464,7 +465,7 @@ SELECT:TransitiveBCauseAccusative Transitive IF (1* Acc BARRIER V);
 SELECT $$NUMBER (O PassiveParticiple) (-1* VBSer LINK -1* Particle + Interrogative LINK -1 V + $$NUMBER) ;
     ## "hoću li biti primljena"
 
-REMOVE:notParticiple Participle (-1 VBMod) (NOT 1 V BARRIER EOS) ;
+REMOVE:notParticiple Participle (-1 VBMod) (NOT 1 V) ;
 
 REMOVE:IsNotAdverb Adv (NOT -1* VBLex BARRIER BOS OR CS OR CC) (NOT 1* VBLex BARRIER EOS OR CS OR CC);
     ## Bilo je teško,...
@@ -543,7 +544,7 @@ MAP:PrModA ( @→A ) TARGET Pr (1*C A BARRIER WORD - N - A ) ;
 MAP:Adverb→Verb (@V→) TARGET Adv (1C V)
 MAP:Verb←Adverb (@V←) TARGET Adv (-1C V)
 MAP:Verb←...←Adverb (@V←) TARGET Adv (-1*C V BARRIER BOS OR Cm) (1C Cm OR EOS)
-MAP:Adverb→...→Verb (@V←) TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V BARRIER EOS)
+MAP:Adverb→...→Verb (@V←) TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V)
 ## Participles and such Note: Looks like a copy paste, but was thought through :) Could perhaps be made more universal though
 ### l-participle
 MAP:Lp→VBSer (@V→) TARGET Lp (1C VBSer + Clt)
