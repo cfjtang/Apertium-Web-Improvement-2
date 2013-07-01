@@ -1,0 +1,43 @@
+%% \ifjobname
+
+\usepackage {boolean}
+
+\edef \@jobname {\jobname}
+
+%% Simple equality
+\def \job@eattwo #1#2{}
+\def \ifjobname #1{%
+   \edef \job@tmp {\expandafter \string \csname x#1\endcsname}%
+   \edef \job@name {\expandafter \job@eattwo \job@tmp}%
+   \ifxbool{\@jobname}{\job@name}%
+}
+
+%% 
+
+\newtoks \job@temptoken
+
+\def \ifjob@iffix #1#2{%
+   \edef \@tmp {\expandafter \string \csname x#2\endcsname}%
+   \edef \job@name {\expandafter \job@eattwo \@tmp}%
+   \job@temptoken{\def \@match ##1}%
+   \@temptokena={##2\relax ##3\relax
+           {\def \tmp@prefix {##1}\def \tmp@suffix {##2}\def \tmp@left
+           {##3}}}% 
+   \let \arg@one \job@name%
+   \edef \@tmp{\the \job@temptoken\job@name\the \@temptokena}\@tmp
+   \edef \@tmp{\noexpand\@match \@jobname \relax \job@name \relax \relax}\@tmp
+   #1}
+
+\def \job@infix {\ifxbool{\tmp@left}{\arg@one}}
+\def \job@suffix
+     {\AND{\ifxbool{\tmp@left}{\arg@one}}{\ifxbool{\empty}{\tmp@suffix}}} 
+\def \job@prefix
+     {\AND{\ifxbool{\tmp@left}{\arg@one}}{\ifxbool{\empty}{\tmp@prefix}}} 
+
+
+\newcommand {\ifjobinfix} {\ifjob@iffix {\job@infix}}
+\newcommand {\ifjobsuffix}{\ifjob@iffix {\job@suffix}}
+\newcommand {\ifjobprefix}{\ifjob@iffix {\job@prefix}}
+
+
+
