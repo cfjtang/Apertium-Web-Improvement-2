@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modes>
+  <mode name="kaz-tat" install="yes">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="kaz-tat.autobil.bin"/>
+      </program>
+      <program name="lrx-proc">
+        <file name="kaz-tat.lrx.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.kaz-tat.t1x"/>
+        <file name="kaz-tat.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-kaz-tat.kaz-tat.t2x"/>
+        <file name="kaz-tat.t2x.bin"/>
+      </program>
+      <program name="hfst-proc $1">
+        <file name="kaz-tat.autogen.hfst"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="kaz-tat.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="kaz-tat-debug" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="kaz-tat.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.kaz-tat.t1x"/>
+        <file name="kaz-tat.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-kaz-tat.kaz-tat.t2x"/>
+        <file name="kaz-tat.t2x.bin"/>
+      </program>
+      <program name="hfst-proc -d">
+        <file name="kaz-tat.autogen.hfst"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="kaz-tat.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+ 
+  
+  <mode name="kaz-tat-morph" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="kaz-tat-tagger" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="kaz-tat-biltrans" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="kaz-tat.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="kaz-tat-lex" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="kaz-tat.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -t">
+        <file name="kaz-tat.lrx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="kaz-tat-transfer" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="kaz-tat.autobil.bin"/>
+      </program>
+      <program name="lrx-proc">
+        <file name="kaz-tat.lrx.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.kaz-tat.t1x"/>
+        <file name="kaz-tat.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="kaz-tat-transfer2" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="kaz-tat.automorf.hfst"/>
+      </program>
+      <program name="cg-proc -n -w -1">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="kaz-tat.autobil.bin"/>
+      </program>
+      <program name="lrx-proc">
+        <file name="kaz-tat.lrx.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.kaz-tat.t1x"/>
+        <file name="kaz-tat.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-kaz-tat.kaz-tat.t2x"/>
+        <file name="kaz-tat.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  
+  <mode name="tat-kaz" install="yes">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="tat-kaz.autobil.bin"/>
+      </program>
+      <program name="lrx-proc">
+        <file name="tat-kaz.lrx.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.tat-kaz.t1x"/>
+        <file name="tat-kaz.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-kaz-tat.tat-kaz.t2x"/>
+        <file name="tat-kaz.t2x.bin"/>
+      </program>
+      <program name="hfst-proc $1">
+        <file name="tat-kaz.autogen.hfst"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="tat-kaz.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="tat-kaz-debug" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="tat-kaz.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.tat-kaz.t1x"/>
+        <file name="tat-kaz.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-kaz-tat.tat-kaz.t2x"/>
+        <file name="tat-kaz.t2x.bin"/>
+      </program>
+      <program name="hfst-proc -d">
+        <file name="tat-kaz.autogen.hfst"/>
+      </program>
+    </pipeline>
+  </mode>
+ 
+  
+  <mode name="tat-kaz-morph" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="tat-kaz-tagger" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="tat-kaz-biltrans" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="tat-kaz.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="tat-kaz-lex" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc  -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="tat-kaz.autobil.bin"/>
+      </program>
+      <program name="lrx-proc -t">
+        <file name="tat-kaz.lrx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="tat-kaz-transfer" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="tat-kaz.autobil.bin"/>
+      </program>
+      <program name="lrx-proc">
+        <file name="tat-kaz.lrx.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.tat-kaz.t1x"/>
+        <file name="tat-kaz.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="tat-kaz-transfer2" install="no">
+    <pipeline>
+      <program name="hfst-proc -w">
+        <file name="tat-kaz.automorf.hfst"/>
+      </program>
+      <program name="cg-proc -n -w -1">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="tat-kaz.autobil.bin"/>
+      </program>
+      <program name="lrx-proc">
+        <file name="tat-kaz.lrx.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-kaz-tat.tat-kaz.t1x"/>
+        <file name="tat-kaz.t1x.bin"/>
+      </program>
+      <program name="apertium-transfer -n">
+        <file name="apertium-kaz-tat.tat-kaz.t2x"/>
+        <file name="tat-kaz.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+</modes>
+
+

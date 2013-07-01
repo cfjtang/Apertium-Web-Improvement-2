@@ -1,0 +1,27 @@
+* corpus.kaz.txt
+	All stories and texts I have been working so far.
+
+* corpus.kaz-tat.postedit.txt
+	The name explains what it is.
+
+* origina_traduko.txt
+	Translation of corpus.kaz.txt with the second to last revision of apertium-kaz-tat.
+
+* nova_traduko.txt
+	Translation of corpus.kaz.txt with the last revision of apertium-kaz-tat.
+
+
+------
+
+Basic workflow is like the following (IS talking to himself):
+	1) run diff on origina_traduko.txt and corpus.kaz-tat.postedit.txt,
+	2) see what is to fix/to improve,
+	3) fix them,
+	4) run testcorpus.sh to see whether you really fixed them,
+	5) commit,
+	6) mv nova_traduko.txt origina_traduko.txt
+	
+	repeat the cycle
+
+testcorpus.sh script in apertium-kaz-tat/ gives a coloured diff of "origina" and
+"nova" translations. 
