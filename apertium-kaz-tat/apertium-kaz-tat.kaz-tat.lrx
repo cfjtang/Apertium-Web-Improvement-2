@@ -1,0 +1,239 @@
+<rules>
+
+  <rule c="құрама">
+<!-- 61. Германия құрамасы Еуропа чемпионатын үш рет ұтып алған.
+     61. Германия җыелмасы Аурупа чемпионатын өч тапкыр откан. -->
+    <match tags="np.top.*"/>
+    <match lemma="құрама" tags="n.*"><select lemma="җыелма"/></match>
+  </rule>
+
+
+  <rule c="жаса">
+    <match lemma="карта" tags="n.*"/>
+    <match lemma="жаса" tags="v.*"><select lemma="яса" tags="v.*"/></match>
+  </rule>
+
+
+  <rule c="аудан">
+    <match lemma="аудан" tags="n.*"><select lemma="мәйдан" tags="n.*"/></match>
+    <match lemma="жақ" tags="n.px3sp.abl"/>
+  </rule>
+
+
+  <rule c="кез">
+    <match lemma="қазір" tags="adv.attr"/>
+    <match lemma="кез" tags="n.*"><select lemma="заман" tags="n.*"/></match>
+  </rule>
+
+
+  <rule c="кез">
+    <match lemma="кез" tags="n.px3sp.loc"><select lemma="вакыт" tags="n.*"/></match>
+  </rule>
+
+
+  <rule c="кез">
+    <match lemma="бала" tags="n.attr"/>
+    <match lemma="кез" tags="n.*"><select lemma="чак" tags="n.*"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="тұңғыш" tags="adj"/>
+    <match lemma="рет" tags="n.*"><select lemma="тапкыр" tags="n.*"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="әлем" tags="n.*"><select lemma="дөнья" tags="n.*"/></match>
+    <match lemma="чемпионат" tags="n.*"/>
+  </rule>
+
+
+  <rule>
+    <match lemma="»" tags="rquot"/>
+    <match lemma="топ" tags="n.*"><select lemma="группа" tags="n.*"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="жыл" tags="n.*"/>
+    <match lemma="бұрын" tags="adv"><select lemma="элек"/></match>
+  </rule>
+
+
+  <rule>
+<!-- 61. Германия құрамасы Еуропа чемпионатын үш рет ұтып алған.
+     61. Германия җыелмасы Аурупа чемпионатын өч тапкыр откан. -->
+    <match tags="num"/>
+    <match lemma="рет" tags="n.*"><select lemma="тапкыр"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="рухани" tags="adj"/>
+    <match lemma="өмір" tags="n.*"><select lemma="тормыш"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="мәдени" tags="adj"/>
+    <match lemma="өмір" tags="n.*"><select lemma="тормыш"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="музей" tags="n.*"/>
+    <match lemma="қоры" tags="n.*"><select lemma="фонд"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="рет" tags="n.px3sp.loc*"><select lemma="сыйфат"/></match>
+    <match lemma="қабылда" tags="v.*"/>
+  </rule>
+
+
+  <rule>
+    <match lemma="мұражайлық" tags="adj"/>
+    <match lemma="маңыз" tags="n.*"><select lemma="әһәмият"/></match>
+  </rule>
+
+
+  <rule>
+<!-- 176. Орталықта Түркістанның төл тарихына арналған музейлік экспозиция жасақталған.
+     176. Үзәктә Төркестанның үзенчәлекле тарихына багышланган музей экспозициясе оештырылган. -->
+    <match lemma="тарих" tags="n.px3sp.dat"/>
+    <match lemma="арна" tags="v.*"><select lemma="багышла"/></match>
+  </rule>
+
+  <rule c="Not currently working">
+    <match tags="np.*"/>
+    <match lemma="ат" tags="n.*"><select lemma="исем" tags="n.*"/></match>
+  </rule>
+
+
+  <rule c="Fix after sentence get's better disambiguated">
+<!-- 178. ...мұражайда _жүргізілетін_ оқу сапарын бірге дайындау...
+     178. ...музейда _үткәрелә торган_ уку сәфәрен бергә әзерләү... -->
+    <match lemma="жүргіз" tags="v.tv.pass.*"><select lemma="үткәр"/></match>
+    <match lemma="оқы" tags="v.*.*"/>
+    <match lemma="сапар" tags="n.*"/>
+  </rule>
+
+
+  <rule c=""> <!-- FIXME: Not working, nfi why-->
+    <match lemma="рет" tags="n.px3sp.loc"><select lemma="сыйфат"/></match>
+    <match lemma="пайдалан" tags="v.*"/>
+  </rule>
+
+
+  <rule>
+    <match lemma="тәрбиелік" tags="adj"/>
+    <match lemma="мән" tags="n.*"><select lemma="әһәмият"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="метр" tags="n.*"/>
+    <match lemma="қамты" tags="v.*"><select lemma="билә"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="қалың" tags="adj.*"><select lemma="куе"/></match>
+    <match lemma="орман" tags="n.*"/>
+  </rule>
+
+
+  <rule>
+    <match lemma="атты" tags="adj"><select lemma="исемле"/></match>
+    <match lemma="экспозиция" tags="n.*"/>
+  </rule>
+
+
+  <rule>
+    <match lemma="мемлекеттік" tags="adj"><select lemma="дәүләт" tags="n.attr"/></match>
+    <match lemma="орган" tags="n.*"/>
+  </rule>
+
+
+<!-- Жеке және заңды тұлғалар
+     Физик һәм юридик затлар -->
+
+  <rule> <!-- FIXME lower-case-->
+    <match lemma="Жеке" tags="adj"><select lemma="Физик" tags="adj"/></match>
+    <match lemma="тұлға" tags="n.*"/>
+  </rule>
+
+  <rule> <!-- FIXME lower-case-->
+    <match lemma="Жеке" tags="adj"><select lemma="Физик" tags="adj"/></match>
+    <match/>
+    <match/>
+    <match lemma="тұлға" tags="n.*"/>
+  </rule>
+
+  <rule>
+    <or>
+      <match lemma="жеке" tags="adj"/>
+      <match lemma="заңды" tags="adj"/>
+    </or>
+    <match lemma="тұлға" tags="n.*"><select lemma="зат" tags="n.*"/></match>
+  </rule>
+
+
+  <rule c="құрал">
+    <match lemma="ақпарат" tags="n.attr"/>
+    <match lemma="құрал" tags="n.*.px3sp.*"><select lemma="чара"/></match>
+  </rule>
+
+
+  <rule c="құрал">
+    <match lemma="көрнекі" tags="adj"/>
+    <match lemma="құрал" tags="n.*"><select lemma="әсбап"/></match>
+  </rule>
+
+
+  <rule>
+    <match lemma="қылмыстық" tags="adj"><select lemma="җинаять" tags="n.attr"/></match>
+    <match lemma="іс" tags="n.*"/>
+  </rule>
+
+
+ <rule>
+    <match lemma="түр" tags="n.loc"><select lemma="рәвеш" tags="n.loc"/></match>
+  </rule>
+
+
+  <rule>
+<!-- Маған сөздік түзіген ұнайды.
+     Мин сүзлек төзергә яратам. -->
+    <match tags="v.*.inf"/>
+    <match lemma="ұна" tags="v.*"><select lemma="ярат"/></match>
+  </rule>
+
+<!-- =========================================================== -->
+
+
+<!-- FIXME rules below don't work -->
+
+  <rule>
+    <match lemma="ғасырлық" tags="adj"><select lemma="гасырлык" tags="adj"/></match>
+    <match lemma="тарих" tags="n.*"/>
+  </rule>
+
+  <rule>
+    <match lemma="ғасырлық" tags="adj"><select lemma="гасыр" tags="n.attr"/></match>
+    <match lemma="әдебиет" tags="n.*"/>
+  </rule>
+
+  <rule c="FIXME leave only tags for a toponym">
+    <match lemma="ғасырлық" tags="adj"><select lemma="гасыр" tags="n.loc.attr"/></match>
+    <match lemma="Түркістан" tags="np.top.*"/>
+  </rule>
+
+  <rule>
+    <match lemma="қылмыс" tags="n.*"/>
+    <match lemma="жаса" tags="v.*"><select lemma="кыл"/></match>
+  </rule>
+
+</rules>

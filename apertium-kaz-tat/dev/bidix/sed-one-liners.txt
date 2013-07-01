@@ -1,0 +1,113 @@
+=============   SOME UGLY SED ONE-LINERS   ===============================================================================================================
+
+1. Creates lexc entry templates from lexc entries of another language.
+INPUT:   он% бір Numinfl ; ! "eleven"
+OUTPUT:  !Numinfl ; ! "он% бір" "eleven"
+
+cat numerals | sed 's_\([[:upper:]]*[[:lower:]]*%* *[[:lower:]]*\) \(.*!\)_!\2 "\1"_'
+
+==========================================================================================================================================================
+2. Creates bidix entries from lexc entries.
+INPUT:   он% бір Numinfl ; ! "eleven"
+OUTPUT:  <e><p><l>он<b/>бір<s n="num"/></l><r><s n="num"/></r></p></e> <!-- "eleven" -->
+
+cat numerals | sed 's_\([[:upper:]]*[[:lower:]]*%* *[[:lower:]]*\) \(.*;\)_    <e><p><l>\1<s n="num"/></l><r><s n="num"/></r></p></e>_' | sed 's_% _<b/>_g'
+
+INPUT:   алға:алға ADV ; ! "forward"
+OUTPUT:  <e><p><l>алға<s n="adv"/></l><r><s n="adv"/></r></p></e> <!-- "forward" -->
+         <e r="RL"><p><l>алға<s n="adv"/></l><r><s n="adv"/></r></p></e> <!-- "forward" -->
+
+sed 's_\([[:upper:]]*[[:lower:]]*%* *[[:lower:]]*\).*\(!.*\)_<e>       <p><l>\1<s n="adv"/></l><r><s n="adv"/></r></p></e> \2_g' | sed 's_% _<b/>_g;s_!_<!--_g;s_$_ -->_g'
+sed 's_\([[:upper:]]*[[:lower:]]*%* *[[:lower:]]*\).*\(!.*\)_<e>       <p><l>\1<s n="adj"/></l><r><s n="adj"/></r></p></e> \2_g' | sed 's_% _<b/>_g;s_!_<!--_g;s_$_ -->_g'
+
+sed 's_\([[:upper:]]*[[:lower:]]*%* *-*[[:lower:]]*\).*\([IT][VD]\).*\(!.*\)_<e>       <p><l>\1<s n="v"/><s n="\2"/></l><r><s n="v"/><s n="\2"/></r></p></e> \3_g' | sed 's_% _<b/>_g;s_%-_-_g;s_!_<!--_g;s_$_ -->_g'
+
+==========================================================================================================================================================
+3. Creates lexc entries for verbs from bidix entries, given that they have an "ir"/"ar" comment in the beginning of the entry
+
+INPUT:   <e c="ar"><p><l>җәлеп<b/>ит<s n="v"/><s n="tv"/></l><r>йәлеп<b/>ит<s n="v"/><s n="tv"/></r></p></e>
+OUTPUT:  йәлеп% ит:йәлеп% ит V-TV-LEX ; ! ""
+
+cat verbs | sed 's_.*\(<r>[[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*\([it]v\).*_\1:\1 V-\3-LEX ; ! ""_' | sed 's_<b/>_% _g;s_<r>__g;s_tv_TV_;s_iv_IV_'
+
+sed 's_.*\(<l>[[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*\([it]v\).*</l>.*\(<!--.*-->\)_\1:\1 V-\3 ; ! "\4"_' | sed 's_<b/>_% _g;s_<l>__g;s_tv_TV_g;s_iv_IV_g;s_<!-- *"__g;s_" *-->__g'
+sed 's_.*<r>\([[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*\([it]v\).*</r>.*\(<!--.*-->\)_\1:\1 V-\3-?R-LEX ; ! "\4"_' | sed 's_<b/>_% _g;s_<r>__g;s_tv_TV_g;s_iv_IV_g;s_<!-- *"__g;s_" *-->__g'
+
+==========================================================================================================================================================
+4. Takes two words (kazakh and tatar), separated by a colon, and creates a bidix entry with them
+   (this can be done easily with "C-c x" in Emacs if you have dix mode installed)
+
+INPUT:   қарындас:сеңел
+example OUTPUT:  <e><p><l>қарындас<s n="n"/></l><r>сеңел<s n="n"/></r></p></e>
+
+==========================================================================================================================================================
+5. Extracts the left side or the right side of a bidix entry (and keeps comments)
+
+INPUT:     <e><p><l>Ауғанстан<s n="np"/><s n="top"/></l><r>Әфганстан<s n="np"/><s n="top"/></r></p></e> <!-- "Afghanistan" -->
+OUTPUT: Әфганстан:Әфганстан NPTOPLEX ; ! "Afghanistan"
+
+sed 's_.*\(<r>[[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*\(<!--.*-->\)_\1:\1 NPTOPLEX ; ! "\3"_' | sed 's_<b/>_% _g;s_<r>__g;s_<!-- *"__g;s_" *-->__g'
+
+sed 's_.*\(<l>[[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*\(<!--.*-->\)_\1:\1 A1 ; ! "\3"_' | sed 's_<b/>_% _g;s_<l>__g;s_<!-- *"__g;s_" *-->__g'
+sed 's_.*\(<r>[[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*\(<!--.*-->\)_\1:\1 A1 ; ! "\3"_' | sed 's_<b/>_% _g;s_<r>__g;s_<!-- *"__g;s_" *-->__g'
+
+sed 's_.*\(<l>[[:upper:]]*[[:lower:]]*\(<b/>\)*[[:lower:]]*\).*_\1:\1 NPTOPLEX ; ! ""_' | sed 's_<b/>_% _g;s_<l>__g;s_<!-- *"__g;s_" *-->__g'
+
+== For extracting verbs ==
+
+sed 's_.*\(<l>[[:upper:]]*[[:lower:]]*\(<b/>\)*-*[[:lower:]]*\).*\([it]v\).*\(<!--.*-->\)_\1:\1 V-\3 ; ! \4_' | sed 's_<b/>_% _g;s_<l>__g;s_<!-- *__g;s_ *-->__g;s_-iv_-IV_g;s_-tv_-TV_g'
+
+sed 's_.*\(<r>[[:upper:]]*[[:lower:]]*\(<b/>\)*-*[[:lower:]]*\).*\([it]v\).*\(<!--.*-->\)_\1:\1 V-\3-IR-LEX ; ! \4_' | sed 's_<b/>_% _g;s_<r>__g;s_<!-- *__g;s_ *-->__g;s_-iv-_-IV-_g;s_-tv-_-TV-_g'
+
+sed 's_.*"\([ia]r\)".*<r>\([[:upper:]]*[[:lower:]]*\(<b/>\)*-*[[:lower:]]*\).*\([it]v\).*\(<!--.*-->\)_\2:\2 V-\4-\1-LEX ; ! \5_' | sed 's_<b/>_% _g;s_<r>__g;s_<!-- *__g;s_ *-->__g;s_-iv-_-IV-_g;s_-tv-_-TV-_g'
+
+==========================================================================================================================================================
+6. Sorting bidix entries
+
+Something like this should work:
+
+sed 's/<l>/%/g' | LC_ALL=kk_KZ.utf8 sort -t "%" -k 2 | sed 's/%/<l>/g'
+
+==========================================================================================================================================================
+7. Before adding stems from bidix into lexc files, check whether they already are present there:
+
+grep -o '<l>[[:alpha:]]\+' | sed 's/<l>//g' | hfst-proc ~/src/apertium/incubator/apertium-kaz/kaz.automorf.hfst
+grep -o '<l>.*</l>' | sed 's/<l>//g;s/<.*//g' | sed 's/<b\/>/ /g' | hfst-proc ~/src/apertium/incubator/apertium-kaz/kaz.automorf.hfst
+
+grep -o '<r>[[:alpha:]]\+' | sed 's/<r>//g' | hfst-proc ~/src/apertium/incubator/apertium-tat/tat.automorf.hfst
+grep -o '<r>.*</r>' | sed 's/<r>//g;s/<.*//g' | sed 's/<b\/>/ /g' | hfst-proc ~/src/apertium/incubator/apertium-tat/tat.automorf.hfst
+
+===========================================================================================================================================================
+8. For extracting data from the spreadsheet:
+
+sed 's/X/:/g;s/[\t ]*//g'
+
+sed 's_\(.*\)#\(.*\)#\(.*\)#\(.*\)_<e>       <p><l>\1<s n="np"\/></l><r>\2<s n="np"\/><\/r><\/p><\/e> <!-- "\3" \4 -->_g'
+
+sed 's_\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)_<e\1><p><l>\2<s n="n"\/></l><r>\3<s n="n"\/><\/r><\/p><\/e> <!-- "\4" \5 -->_g'
+
+sed 's_\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)_<e\1><p><l>\2<s n="n"\/></l><r>\4<s n="n"\/><\/r><\/p><\/e> <!-- "\6" \7-->_g'
+
+sed 's_\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)_<e\1><p><l>\2<s n="\3"\/></l><r>\4<s n="\5"\/><\/r><\/p><\/e> <!-- "\6" \7-->_g'
+
+sed 's_\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)_<e r="\1" c="\6"><p><l>\2<s n="v"\/><s n="\3"\/></l><r>\4<s n="v"\/><s n="\5"\/><\/r><\/p><\/e> <!--"\7" \8 -->_g'
+
+===========================================================================================================================================================
+9. Look up lexc stems in bidix and output ones which get @ mark
+
+sed 's_\([[:upper:]]*[[:lower:]]*%*[- ]*[[:lower:]]*\).*\(!.*\)_\1_g;s_%__g' | apertium -d ~/src/apertium/incubator/apertium-kaz-tat kaz-tat | grep '*' > /tmp/pending.txt
+
+sed 's_\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)#\(.*\)_<e\1><p><l>\2<s n="\3"\/></l><r>\4<s n="\5"\/><\/r><\/p><\/e> <!-- "\6" \7-->_g'
+
+===========================================================================================================================================================
+10. Sorting entries:
+
+sed 's/<l>/%/g' | LC_ALL=kk_KZ.utf8 sort -t "%" -k 2 | sed 's/%/<l>/g'
+
+===========================================================================================================================================================
+11. Checks whether the stem is in lexc already, if not, extracts it from bidix with all glosses and comments
+
+===========================================================================================================================================================
+12. Put stems from a lexc file into a spreadsheet (csv)
+
+sed 's_\([[:upper:]]*[[:lower:]]*%* *-*[[:lower:]]*\).*\([IT][VD]\).*\(! ".*"\)\(.*\)_,\1,\2,,,,\3,\4_g' | sed 's_% _<b/>_g;s_%-_-_g;s_! __g;s_"__g'
