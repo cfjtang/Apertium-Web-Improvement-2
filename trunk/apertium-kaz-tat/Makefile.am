@@ -2,7 +2,7 @@
 ## Makefile for Kazakh--Tatar
 ###############################################################################
 
-VERSION=0.1.0
+VERSION=0.2.0
 LANG1=kaz
 LANG2=tat
 PREFIX1=$(LANG1)-$(LANG2)
@@ -187,6 +187,17 @@ modes/$(PREFIX2).mode: modes.xml
 debug: .deps/$(LANG1).LR-debug.hfst .deps/$(LANG2).LR-debug.hfst
 
 EXTRA_DIST=$(PREFIX1).prob $(PREFIX2).prob \
+           $(BASENAME).$(PREFIX1).rlx \
+           $(BASENAME).$(PREFIX1).lrx \
+           $(BASENAME).$(PREFIX1).dix \
+           $(BASENAME).$(LANG1).lexc \
+           $(BASENAME).$(LANG1).twol \
+           $(BASENAME).post-$(LANG1).dix \
+           $(BASENAME).$(PREFIX2).rlx \
+           $(BASENAME).$(PREFIX2).lrx \
+           $(BASENAME).$(LANG2).lexc \
+           $(BASENAME).$(LANG2).twol \
+           $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(PREFIX1).t1x \
            $(BASENAME).$(PREFIX1).t2x \
            $(BASENAME).$(PREFIX2).t1x \

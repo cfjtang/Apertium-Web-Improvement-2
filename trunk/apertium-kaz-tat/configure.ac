@@ -1,7 +1,7 @@
 AC_PREREQ(2.52)
 
-AC_INIT([apertium-kaz-tat], [0.1.0], [spectre360@users.sourceforge.net])
-AM_INIT_AUTOMAKE([apertium-kaz-tat], [0.1.0], no-define)
+AC_INIT([apertium-kaz-tat], [0.2.0], [spectre360@users.sourceforge.net])
+AM_INIT_AUTOMAKE([apertium-kaz-tat], [0.2.0], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 
