@@ -26,15 +26,16 @@
 #include <vector>
 #include <deque>
 
-#include "lmtable.h"
+#include "lmContainer.h"
 #include "lmmacro.h"
+#include "lmtable.h"
 
 class lmtable;  // irst lm table
 class lmmacro;  // irst lm for macro tags
 
 using namespace std;
 
-lmtable        *m_lmtb;
+lmContainer        *m_lmtb;
 
 int            m_unknownId;
 int            m_lmtb_size;          // max ngram stored in the table
@@ -54,28 +55,18 @@ inline string trim(const string& o)
 }
 
 
-
 bool load(const string &filePath, float weight) {
   m_weight  = weight;
 
   m_filePath = filePath;
 
   // Open the input file (possibly gzipped)
-  std::streambuf *m_streambuf;
-  std::filebuf* fb = new std::filebuf();
-  fb->open(filePath.c_str(), std::ios::in);
-  m_streambuf = fb;
-  std::istream inp(m_streambuf);
+  std::string inp(m_filePath);
 
   // case (standard) LMfile only: create an object of lmtable
-
-  m_lmtb  = (lmtable *)new lmtable;
-  if (m_filePath.compare(m_filePath.size()-3,3,".mm")==0) {
-    m_lmtb->load(inp, m_filePath.c_str(), NULL, 1);
-  } else {
-    m_lmtb->load(inp, m_filePath.c_str(), NULL, 0);
-  }
-
+  m_lmtb = new lmtable;
+  m_lmtb->load(inp);
+  cerr << "asdasds" << endl;
   m_lmtb_size = m_lmtb->maxlevel();       
   m_nGramOrder = m_lmtb->maxlevel();       
 
@@ -86,9 +77,9 @@ bool load(const string &filePath, float weight) {
   cerr<<"IRST: m_unknownId="<<m_unknownId<<endl;
 
   //install caches
-  m_lmtb->init_probcache();
-  m_lmtb->init_statecache();
-  m_lmtb->init_lmtcaches(m_lmtb->maxlevel() > 2 ? (m_lmtb->maxlevel() - 1) : 2);
+//  m_lmtb->init_probcache();
+//  m_lmtb->init_statecache();
+//  m_lmtb->init_lmtcaches(m_lmtb->maxlevel() > 2 ? (m_lmtb->maxlevel() - 1) : 2);
  
   if (m_lmtb_dub >0) m_lmtb->setlogOOVpenalty(m_lmtb_dub);
     
