@@ -35,7 +35,7 @@ class lmmacro;  // irst lm for macro tags
 
 using namespace std;
 
-lmtable        *m_lmtb;
+lmContainer        *m_lmtb;
 
 int            m_unknownId;
 int            m_lmtb_size;          // max ngram stored in the table
@@ -69,13 +69,15 @@ bool load(const string &filePath, float weight) {
   std::istream inp(m_streambuf);
 
   // case (standard) LMfile only: create an object of lmtable
+  std::string infile(filePath);
+  m_lmtb=NULL;
+  m_lmtb = m_lmtb->CreateLanguageModel(infile, 0, 0); 
 
-  m_lmtb  = (lmtable *)new lmtable;
-  if (m_filePath.compare(m_filePath.size()-3,3,".mm")==0) {
-    m_lmtb->load(inp, m_filePath.c_str(), NULL, 1);
-  } else {
-    m_lmtb->load(inp, m_filePath.c_str(), NULL, 0);
-  }
+  m_lmtb->load(infile);
+
+  m_lmtb_size = m_lmtb->maxlevel();       
+  m_nGramOrder = m_lmtb->maxlevel();
+
 
   m_lmtb_size = m_lmtb->maxlevel();       
   m_nGramOrder = m_lmtb->maxlevel();       
@@ -87,9 +89,9 @@ bool load(const string &filePath, float weight) {
   cerr<<"IRST: m_unknownId="<<m_unknownId<<endl;
 
   //install caches
-  m_lmtb->init_probcache();
-  m_lmtb->init_statecache();
-  m_lmtb->init_lmtcaches(m_lmtb->maxlevel() > 2 ? (m_lmtb->maxlevel() - 1) : 2);
+//  m_lmtb->init_probcache();
+//  m_lmtb->init_statecache();
+//  m_lmtb->init_lmtcaches(m_lmtb->maxlevel() > 2 ? (m_lmtb->maxlevel() - 1) : 2);
  
   if (m_lmtb_dub >0) m_lmtb->setlogOOVpenalty(m_lmtb_dub);
     
