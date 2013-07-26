@@ -9,14 +9,13 @@ VAR1=std
 VAR2=eco
 PREFVAR1=#dejar en blanco
 PREFVAR2=eco-
+PREFVAR2x=eco
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
      $(PREFIX1).autopgen.bin $(PREFIX2).automorf.bin $(PREFIX2).autobil.bin \
      $(PREFIX2).autogen.bin $(PREFIX2).autopgen.bin \
+     $(PREFIX2).autolex.bin \
      $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
      $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin modes
-
-TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
-          trules-$(PREFIX1).xml trules-$(PREFIX2).xml
 
 $(PREFVAR1)$(LANG1).dix: $(BASENAME).$(LANG1).dix
 	xsltproc --stringparam alt $(VAR1) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}' >$@
@@ -39,7 +38,6 @@ $(PREFVAR1)$(PREFIX1).dix: common-$(PREFIX1).dix
 $(PREFVAR2)$(PREFIX1).dix: common-$(PREFIX1).dix
 	xsltproc --stringparam alt $(VAR2) alt.xsl $< | gawk '{gsub("&", "&amp;"); print;}'>$@
 
-
 $(PREFVAR1)$(PREFIX1).automorf.bin:$(PREFVAR1)$(LANG1).dix
 	apertium-validate-dictionary $(PREFVAR1)$(LANG1).dix
 	lt-comp lr $(PREFVAR1)$(LANG1).dix $@ $(BASENAME).$(LANG1).acx
@@ -47,6 +45,9 @@ $(PREFVAR1)$(PREFIX1).automorf.bin:$(PREFVAR1)$(LANG1).dix
 $(PREFVAR1)$(PREFIX1).autobil.bin: $(PREFVAR1)$(PREFIX1).dix
 	apertium-validate-dictionary $(PREFVAR1)$(PREFIX1).dix
 	lt-comp lr $(PREFVAR1)$(PREFIX1).dix $@
+
+$(PREFIX1).autolex.bin: $(BASENAME).$(PREFIX1).lrx
+	lrx-comp $< $@
 
 $(PREFVAR1)$(PREFIX1).autogen.bin: $(PREFVAR1)$(LANG2).dix
 	apertium-validate-dictionary $(PREFVAR1)$(LANG2).dix 
@@ -64,6 +65,9 @@ $(PREFVAR2)$(PREFIX1).autobil.bin: $(PREFVAR2)$(PREFIX1).dix
 	apertium-validate-dictionary $(PREFVAR2)$(PREFIX1).dix
 	lt-comp lr $(PREFVAR2)$(PREFIX1).dix $@
 
+$(PREFIX1).$(PREFVAR2x).autolex.bin: $(BASENAME).$(PREFIX1).$(PREFVAR2x).lrx
+	lrx-comp $< $@
+
 $(PREFVAR2)$(PREFIX1).autogen.bin: $(PREFVAR2)$(LANG2).dix
 	apertium-validate-dictionary $(PREFVAR2)$(LANG2).dix
 	lt-comp rl $(PREFVAR2)$(LANG2).dix $@ $(BASENAME).$(LANG1).acx
@@ -80,6 +84,9 @@ $(PREFVAR1)$(PREFIX2).autobil.bin: $(PREFVAR1)$(PREFIX1).dix
 	apertium-validate-dictionary $(PREFVAR1)$(PREFIX1).dix
 	lt-comp rl $(PREFVAR1)$(PREFIX1).dix $@
 
+$(PREFIX2).autolex.bin: $(BASENAME).$(PREFIX2).lrx
+	lrx-comp $< $@
+
 $(PREFVAR1)$(PREFIX2).autogen.bin: $(PREFVAR1)$(LANG1).dix
 	apertium-validate-dictionary $(PREFVAR1)$(LANG1).dix
 	lt-comp rl $(PREFVAR1)$(LANG1).dix $@ $(BASENAME).$(LANG2).acx
@@ -95,6 +102,9 @@ $(PREFVAR2)$(PREFIX2).automorf.bin: $(PREFVAR2)$(LANG2).dix
 $(PREFVAR2)$(PREFIX2).autobil.bin: $(PREFVAR2)$(PREFIX1).dix
 	apertium-validate-dictionary $(PREFVAR2)$(PREFIX1).dix
 	lt-comp rl $(PREFVAR2)$(PREFIX1).dix $@
+
+$(PREFIX2).$(PREFVAR2x).autolex.bin: $(BASENAME).$(PREFIX2).$(PREFVAR2x).lrx
+	lrx-comp $< $@
 
 $(PREFVAR2)$(PREFIX2).autogen.bin: $(PREFVAR2)$(LANG1).dix
 	apertium-validate-dictionary $(PREFVAR2)$(LANG1).dix
@@ -184,9 +194,11 @@ $(PREFIX1).mode: modes.xml
 
 apertium_fr_es_DATA=$(PREFVAR1)$(PREFIX1).automorf.bin $(PREFVAR1)$(PREFIX2).automorf.bin \
 	$(PREFVAR1)$(PREFIX1).autobil.bin $(PREFVAR1)$(PREFIX2).autobil.bin \
+	$(PREFVAR1)$(PREFIX1).autolex.bin $(PREFVAR1)$(PREFIX2).autolex.bin \
 	$(PREFVAR1)$(PREFIX1).autogen.bin $(PREFVAR1)$(PREFIX2).autogen.bin \
 	$(PREFVAR2)$(PREFIX1).automorf.bin $(PREFVAR2)$(PREFIX2).automorf.bin \
 	$(PREFVAR2)$(PREFIX1).autobil.bin $(PREFVAR2)$(PREFIX2).autobil.bin \
+	$(PREFIX1).$(PREFVAR2x).autolex.bin $(PREFIX2).$(PREFVAR2x).autolex.bin \
 	$(PREFVAR2)$(PREFIX1).autogen.bin $(PREFVAR2)$(PREFIX2).autogen.bin \
 	$(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
 	$(PREFIX1).prob $(PREFIX2).prob \
