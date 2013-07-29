@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf8"?>
 <tagger name="spanish">
 <tagset>
 <!--  <def-label name="PARAPR" closed="true">
@@ -26,15 +26,15 @@
     <tags-item lemma="comer" tags="vblex.pri.p1.sg"/>
   </def-label>
   <def-label name="MASADV" closed="true">
-    <tags-item lemma="más" tags="adv"/>
+    <tags-item lemma="mÃ¡s" tags="adv"/>
     <tags-item lemma="menos" tags="adv"/>
   </def-label>
   <def-label name="MASADJ" closed="true">
-    <tags-item lemma="más" tags="adj.*"/>
+    <tags-item lemma="mÃ¡s" tags="adj.*"/>
     <tags-item lemma="menos" tags="adj.*"/>
   </def-label>
   <def-label name="MASNP" closed="true">
-    <tags-item lemma="Más" tags="np.ant"/>
+    <tags-item lemma="MÃ¡s" tags="np.ant"/>
   </def-label>
   <def-label name="ALGOADV" closed="true">
     <tags-item lemma="algo" tags="adv"/>
@@ -100,6 +100,7 @@
     <tags-item tags="np.ant"/>
   </def-label>
   <def-label name="TOPONIM">
+    <tags-item tags="np.loc.*"/>
     <tags-item tags="np.loc"/>
   </def-label>
   <def-label name="NPALTRES">
@@ -111,6 +112,9 @@
   </def-label>
   <def-label name="WEB" closed="true">
     <tags-item tags="web"/>
+  </def-label>
+  <def-label name="APOS" closed="true">
+    <tags-item tags="apos"/>
   </def-label>
   <def-label name="PREDETNT" closed="true">
     <tags-item tags="predet.nt.*"/>
@@ -2068,7 +2072,7 @@
       <label-item label="ADJINT"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="VLEXIPI"/><!-- nació menudo-->
+      <label-item label="VLEXIPI"/><!-- naciÃ³ menudo-->
       <label-item label="ADJINT"/>
     </label-sequence>
     <label-sequence>
