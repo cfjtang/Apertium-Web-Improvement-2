@@ -12,7 +12,13 @@ bidix_contlex = {
 	'<n><attr>':'Nouns',
 	'<n><gen>':'Nouns',
 	'<n><px3sg><loc>':'Nouns',
+	'<n><PXD><loc>':'Nouns',
 	'<post>':'Postpositions',
+	'<post><Rnom>':'Postpositions',
+	'<post><Rabl>':'Postpositions',
+	'<post><Rdat>':'Postpositions',
+	'<post><Rins>':'Postpositions',
+	'<postadv>':'Postadvervbs',
 	'<np><top>':'ProperNouns',
 	'<np><org>':'ProperNouns',
 	'<np><al>':'ProperNouns',
@@ -35,17 +41,20 @@ bidix_contlex = {
 	'<v><iv>':'Verbs',
 	'<v><TD>':'Verbs',
 	'<v>':'Verbs',
-	'<vaux>':'Verbs'
+	'<vaux>':'Verbs',
+	'<ij>':'Interjections'
 };
 
 contlex_bidix = {
-	'Nouns':['<n>', '<n><attr>', '<n><gen>', '<n><px3sg><loc>'],
-	'Postpositions':['<post>'],
+	'Nouns':['<n>', '<n><attr>', '<n><gen>', '<n><px3sg><loc>', '<n><PXD><loc>'],
+	'Postpositions':['<post>', '<post><Rnom>', '<post><Rabl>', '<post><Rdat>', '<post><Rins>'],
 	'ProperNouns':['<np><top>', '<np><cog>', '<np><ant><m>', '<np><ant><f>', '<np><pat>', '<np><cog><m>', '<np><cog><f>', '<np><cog><mf>', '<np><org>', '<np><al>'],
 	'Adjectives':['<adj>', '<adj><advl>', '<adj><subst>'],
 	'Adverbs':['<adv>', '<adv><itg>'],
 	'Conjunctions':['<cnjcoo>','<cnjadv>','<cnjsub>'],
-	'Verbs':['<v>', '<v><tv>', '<v><iv>', '<v><TD>', '<v><tv><pass>', '<vaux>']
+	'Verbs':['<v>', '<v><tv>', '<v><iv>', '<v><TD>', '<v><tv><pass>', '<vaux>'],
+	'Postadverbs':['<postadv>'],
+	'Interjections':['<ij>']
 };
 
 def sym(s): #{
