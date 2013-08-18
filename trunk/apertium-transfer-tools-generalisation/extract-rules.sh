@@ -73,8 +73,10 @@ BILEXTRACTIONDIR=$TMPDIR/bilingualphrases
 if [ ! -e $BILEXTRACTIONDIR ]; then
 
 mkdir -p $BILEXTRACTIONDIR
+BILEXTRACTIONDIRFULL=`readlink -f $BILEXTRACTIONDIR`
+
 pushd $CURDIR/phrase-extraction/transfer-tools-scripts
-bash linkToWorkDir.sh $BILEXTRACTIONDIR
+bash linkToWorkDir.sh $BILEXTRACTIONDIRFULL
 popd
 
 #get corpus
