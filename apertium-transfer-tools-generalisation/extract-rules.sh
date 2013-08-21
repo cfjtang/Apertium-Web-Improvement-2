@@ -66,9 +66,16 @@ TEST_CORPUS=${FLAGS_test_corpus}
 DEV_CORPUS=${FLAGS_dev_corpus}
 
 echo "Temporary directory: $TMPDIR" 1>&2
+echo "Checking whether 'lt-proc' is in the PATH: " 1>&2
+which lt-proc
+if [ "$?" != "0" ]; then
+  echo "ERROR: not found" 1>&2
+else
+  echo "OK" 1>&2
+fi
+
 
 BILEXTRACTIONDIR=$TMPDIR/bilingualphrases
-
 
 if [ ! -e $BILEXTRACTIONDIR ]; then
 

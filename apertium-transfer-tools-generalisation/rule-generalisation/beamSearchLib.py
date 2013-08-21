@@ -118,7 +118,7 @@ class RuleApplicationHypothesis(object):
         return self.score
     
     def get_score_with_num_rules(self):
-        return self.score*10000+ 0.1*(1 - (len(self.appliedRules)*1.0/RuleApplicationHypothesis.totalNumRules))
+        return self.score*10000+ 0.1*(1 - (len(self.discardedRules)*1.0/RuleApplicationHypothesis.totalNumRules))
     
     def get_processed_sl_words(self):
         return self.processedSlWords
@@ -395,6 +395,10 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
         
         #debug("Keys in boxesDic: "+str(boxesDic.keys()))
         
+        if boxesCoverage:
+            RuleApplicationHypothesis.set_num_total_rules(len(boxesDic))
+        else:
+            RuleApplicationHypothesis.set_num_total_rules(len(ruleList))
         
         boxesInverseDic=dict()
         for key in boxesDic.keys():
