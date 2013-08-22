@@ -204,4 +204,4 @@ install-data-local:
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(BASENAME).$(PREFIX2).t2x $(DESTDIR)$(apertium_hbs_slvdir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t3x $(DESTDIR)$(apertium_hbs_slvdir)
 
-CLEANFILES = -r $(TARGETS_COMMON) 
+CLEANFILES = -r $(TARGETS_COMMON) *.mode 
