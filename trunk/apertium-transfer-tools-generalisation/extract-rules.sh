@@ -74,6 +74,22 @@ else
   echo "OK" 1>&2
 fi
 
+echo "Checking whether 'apertium-symmetrize-alignments' is in the PATH: " 1>&2
+which apertium-symmetrize-alignments
+if [ "$?" != "0" ]; then
+  echo "ERROR: not found" 1>&2
+else
+  echo "OK" 1>&2
+fi
+
+echo "Checking whether needed GIZA++ executables are found in GIZA++ dir: " 1>&2
+for myfile in plain2snt.out snt2plain.out "../mkcls-v2/mkcls" GIZA++ ; do
+  if [ -e "$GIZADIR/$myfile" ]; then
+    echo "$myfile OK" 1>&2
+  else
+    echo "ERROR: $myfile not found" 1>&2
+  fi
+done
 
 BILEXTRACTIONDIR=$TMPDIR/bilingualphrases
 
