@@ -276,14 +276,14 @@ $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt: $(TRAINGIZA_
 
 $(GIZA_ALIGNMENTS_L1_L2_LR): $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt
 	@echo "Performing GIZA++ training ("$(L1)"-"$(L2)") from left to right ..."
-	cd $(TRAINGIZA_L1_L2) &&  $(GIZADIR)/trainGIZA++.sh $(L1).$(L1)-$(L2).pos.vcb  $(L2).$(L1)-$(L2).pos.vcb $(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt &&\
+	cd $(TRAINGIZA_L1_L2) &&  bash ../trainGIZA++.sh $(L1).$(L1)-$(L2).pos.vcb  $(L2).$(L1)-$(L2).pos.vcb $(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt "$(GIZADIR)" &&\
 	mkdir -p LR &&\
 	mv GIZA++.* mkcls1.log mkcls2.log LR
 	@echo ""
 
 $(GIZA_ALIGNMENTS_L1_L2_RL): $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt
 	@echo "Performing GIZA++ training ("$(L1)"-"$(L2)") from right to left ..."
-	cd $(TRAINGIZA_L1_L2) &&  $(GIZADIR)/trainGIZA++.sh $(L2).$(L1)-$(L2).pos.vcb  $(L1).$(L1)-$(L2).pos.vcb $(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt &&\
+	cd $(TRAINGIZA_L1_L2) &&  bash ../trainGIZA++.sh $(L2).$(L1)-$(L2).pos.vcb  $(L1).$(L1)-$(L2).pos.vcb $(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt "$(GIZADIR)" &&\
 	mkdir -p RL &&\
 	mv GIZA++.* mkcls1.log mkcls2.log RL
 	@echo ""
@@ -291,14 +291,14 @@ $(GIZA_ALIGNMENTS_L1_L2_RL): $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1
 
 $(GIZA_ALIGNMENTS_L2_L1_LR): $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt
 	@echo "Performing GIZA++ training ("$(L2)"-"$(L1)") from left to right ..."
-	cd $(TRAINGIZA_L2_L1) &&  $(GIZADIR)/trainGIZA++.sh $(L2).$(L2)-$(L1).pos.vcb  $(L1).$(L2)-$(L1).pos.vcb $(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt &&\
+	cd $(TRAINGIZA_L2_L1) &&  bash ../trainGIZA++.sh $(L2).$(L2)-$(L1).pos.vcb  $(L1).$(L2)-$(L1).pos.vcb $(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt  "$(GIZADIR)" &&\
 	mkdir -p LR &&\
 	mv GIZA++.*  mkcls1.log mkcls2.log LR
 	@echo ""
 
 $(GIZA_ALIGNMENTS_L2_L1_RL): $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt
 	@echo "Performing GIZA++ training ("$(L2)"-"$(L1)") from right to left ..."
-	cd $(TRAINGIZA_L2_L1) &&  $(GIZADIR)/trainGIZA++.sh $(L1).$(L2)-$(L1).pos.vcb  $(L2).$(L2)-$(L1).pos.vcb $(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt &&\
+	cd $(TRAINGIZA_L2_L1) &&  bash ../trainGIZA++.sh $(L1).$(L2)-$(L1).pos.vcb  $(L2).$(L2)-$(L1).pos.vcb $(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt "$(GIZADIR)"  &&\
 	mkdir -p RL &&\
 	mv GIZA++.* mkcls1.log mkcls2.log RL
 	@echo ""
