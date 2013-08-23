@@ -70,6 +70,19 @@
     </pipeline>
   </mode>
 
+  <mode name="kaz-tat-disam" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="kaz-tat.automorf.bin"/>
+      </program>
+      <program name="cg-conv -a"/>
+      <program name="vislcg3 --trace --grammar">
+        <file name="kaz-tat.rlx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="kaz-tat-tagger" install="no">
     <pipeline>
       <program name="lt-proc -w">
@@ -131,7 +144,7 @@
       <program name="lrx-proc">
         <file name="kaz-tat.lrx.bin"/>
       </program>
-      <program name="apertium-transfer -b">
+      <program name="apertium-transfer -t -b">
         <file name="apertium-kaz-tat.kaz-tat.t1x"/>
         <file name="kaz-tat.t1x.bin"/>
       </program>
@@ -232,6 +245,19 @@
     </pipeline>
   </mode>
 
+  <mode name="tat-kaz-disam" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="tat-kaz.automorf.bin"/>
+      </program>
+      <program name="cg-conv -a "/>
+      <program name="vislcg3 --trace --grammar">
+        <file name="tat-kaz.rlx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="tat-kaz-tagger" install="no">
     <pipeline>
       <program name="lt-proc -w">
@@ -293,7 +319,7 @@
       <program name="lrx-proc">
         <file name="tat-kaz.lrx.bin"/>
       </program>
-      <program name="apertium-transfer -b">
+      <program name="apertium-transfer -t -b">
         <file name="apertium-kaz-tat.tat-kaz.t1x"/>
         <file name="tat-kaz.t1x.bin"/>
       </program>
