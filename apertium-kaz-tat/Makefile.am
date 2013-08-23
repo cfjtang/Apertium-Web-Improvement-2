@@ -11,8 +11,8 @@ PREFIX2=$(LANG2)-$(LANG1)
 BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
-	$(PREFIX1).automorf.hfst $(PREFIX1).autopgen.bin $(PREFIX1).autogen.hfst $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin \
-	$(PREFIX2).automorf.hfst $(PREFIX2).autopgen.bin $(PREFIX2).autogen.hfst $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin \
+	$(PREFIX1).automorf.bin $(PREFIX1).autopgen.bin $(PREFIX1).autogen.hfst $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin \
+	$(PREFIX2).automorf.bin $(PREFIX2).autopgen.bin $(PREFIX2).autogen.hfst $(PREFIX2).t1x.bin $(PREFIX2).t2x.bin \
         $(PREFIX1).rlx.bin $(PREFIX2).rlx.bin \
         $(PREFIX1).lrx.bin $(PREFIX2).lrx.bin \
 	$(PREFIX1).mode $(PREFIX2).mode modes 
@@ -21,85 +21,43 @@ TARGETS_COMMON = $(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
 ## Kazakh transducer
 ###############################################################################
 
-.deps/$(LANG1).twol.hfst: $(BASENAME).$(LANG1).twol
+.deps/$(PREFIX1).autobil.prefixes: $(PREFIX1).autobil.bin
 	if [ ! -d .deps ]; then mkdir .deps; fi
-	hfst-twolc --format foma $< -o $@
- 
-.deps/$(LANG1).RL.lexc: $(BASENAME).$(LANG1).lexc
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	cat $< | grep -v 'Dir/LR' > $@
- 
-.deps/$(LANG1).LR.lexc: $(BASENAME).$(LANG1).lexc
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	cat $< | grep -v 'Dir/RL' > $@
+	lt-print $(PREFIX1).autobil.bin | sed 's/ /@_SPACE_@/g' > .deps/$(PREFIX1).autobil.att
+	hfst-txt2fst -e ε <  .deps/$(PREFIX1).autobil.att > .deps/$(PREFIX1).autobil.hfst
+	hfst-project -p upper .deps/$(PREFIX1).autobil.hfst > .deps/$(PREFIX1).autobil.upper
+	echo " ?* " | hfst-regexp2fst > .deps/any-symbol.hfst
+	hfst-concatenate -1 .deps/$(PREFIX1).autobil.upper -2 .deps/any-symbol.hfst -o .deps/$(PREFIX1).autobil.prefixes
 
-.deps/$(LANG1).RL.lexc.hfst: .deps/$(LANG1).RL.lexc
-	hfst-lexc --format foma $< -o $@
+$(PREFIX1).automorf.bin: $(BASENAME).$(PREFIX1).LR.att.gz .deps/$(PREFIX1).autobil.prefixes
+	$(ZCAT) $< | hfst-txt2fst > .deps/$(LANG1).automorf.hfst
+	hfst-compose-intersect -1 .deps/$(LANG1).automorf.hfst -2 .deps/$(PREFIX1).autobil.prefixes -o .deps/$(PREFIX1).automorf.trimmed
+	hfst-fst2txt -i .deps/$(PREFIX1).automorf.trimmed -o .deps/$(PREFIX1).automorf.trimmed.att
+	lt-comp lr .deps/$(PREFIX1).automorf.trimmed.att $@
 
-.deps/$(LANG1).LR.lexc.hfst: .deps/$(LANG1).LR.lexc
-	hfst-lexc --format foma $< -o $@
-
-.deps/$(LANG1).RL.hfst: .deps/$(LANG1).RL.lexc.hfst .deps/$(LANG1).twol.hfst
-	hfst-compose-intersect -1 .deps/$(LANG1).RL.lexc.hfst -2 .deps/$(LANG1).twol.hfst -o $@
-
-.deps/$(LANG1).LR.hfst: .deps/$(LANG1).LR.lexc.hfst .deps/$(LANG1).twol.hfst
-	hfst-compose-intersect -1 .deps/$(LANG1).LR.lexc.hfst -2 .deps/$(LANG1).twol.hfst -o $@
-
-$(PREFIX2).autogen.hfst: .deps/$(LANG1).RL.hfst
-	hfst-fst2fst -O $< -o $@
-
-$(PREFIX1).automorf.hfst: .deps/$(LANG1).LR.hfst
-	hfst-invert $< | hfst-fst2fst -O -o $@
+$(PREFIX1).autogen.hfst: $(BASENAME).$(PREFIX1).RL.att.gz
+	$(ZCAT) $< | hfst-txt2fst | hfst-fst2fst -O -o $@
 
 ###############################################################################
 ## Tatar transducer
 ###############################################################################
 
-.deps/$(LANG2).twol.hfst: $(BASENAME).$(LANG2).twol
+.deps/$(PREFIX2).autobil.prefixes: $(PREFIX2).autobil.bin
 	if [ ! -d .deps ]; then mkdir .deps; fi
-	hfst-twolc --format foma $< -o $@
- 
-.deps/$(LANG2).RL.lexc: $(BASENAME).$(LANG2).lexc
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	cat $< | grep -v 'Dir/LR' > $@
- 
-.deps/$(LANG2).LR.lexc: $(BASENAME).$(LANG2).lexc
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	cat $< | grep -v 'Dir/RL' > $@
+	lt-print $(PREFIX2).autobil.bin | sed 's/ /@_SPACE_@/g' > .deps/$(PREFIX2).autobil.att
+	hfst-txt2fst -e ε <  .deps/$(PREFIX2).autobil.att > .deps/$(PREFIX2).autobil.hfst
+	hfst-project -p upper .deps/$(PREFIX2).autobil.hfst > .deps/$(PREFIX2).autobil.upper
+	echo " ?* " | hfst-regexp2fst > .deps/any-symbol.hfst
+	hfst-concatenate -1 .deps/$(PREFIX2).autobil.upper -2 .deps/any-symbol.hfst -o .deps/$(PREFIX2).autobil.prefixes
 
-.deps/$(LANG2).RL.lexc.hfst: .deps/$(LANG2).RL.lexc
-	hfst-lexc --format foma $< -o $@
+$(PREFIX2).automorf.bin: $(BASENAME).$(PREFIX2).LR.att.gz .deps/$(PREFIX2).autobil.prefixes
+	$(ZCAT) $< | hfst-txt2fst > .deps/$(LANG1).automorf.hfst
+	hfst-compose-intersect -1 .deps/$(LANG1).automorf.hfst -2 .deps/$(PREFIX2).autobil.prefixes -o .deps/$(PREFIX2).automorf.trimmed
+	hfst-fst2txt -i .deps/$(PREFIX2).automorf.trimmed -o .deps/$(PREFIX2).automorf.trimmed.att
+	lt-comp lr .deps/$(PREFIX2).automorf.trimmed.att $@
 
-.deps/$(LANG2).LR.lexc.hfst: .deps/$(LANG2).LR.lexc
-	hfst-lexc --format foma $< -o $@
-
-.deps/$(LANG2).RL.hfst: .deps/$(LANG2).RL.lexc.hfst .deps/$(LANG2).twol.hfst
-	hfst-compose-intersect -1 .deps/$(LANG2).RL.lexc.hfst -2 .deps/$(LANG2).twol.hfst -o $@
-
-.deps/$(LANG2).LR.hfst: .deps/$(LANG2).LR.lexc.hfst .deps/$(LANG2).twol.hfst
-	hfst-compose-intersect -1 .deps/$(LANG2).LR.lexc.hfst -2 .deps/$(LANG2).twol.hfst -o $@
-
-$(PREFIX1).autogen.hfst: .deps/$(LANG2).RL.hfst
-	hfst-fst2fst -O $< -o $@
-
-$(PREFIX2).automorf.hfst: .deps/$(LANG2).LR.hfst
-	hfst-invert $< | hfst-fst2fst -O -o $@
-
-###############################################################################
-## Debugging transducers (for testvoc)
-###############################################################################
-
-.deps/kaz.LR-debug.hfst: $(BASENAME).$(LANG1).lexc
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	cat $< | grep -v 'Dir/RL' | grep -v 'Use/Circ' > .deps/$(LANG1).LR-debug.lexc
-	hfst-lexc --format foma .deps/$(LANG1).LR-debug.lexc -o .deps/$(LANG1).LR-debug.lexc.hfst
-	hfst-compose-intersect -1 .deps/$(LANG1).LR-debug.lexc.hfst -2 .deps/$(LANG1).twol.hfst -o $@
-
-.deps/tat.LR-debug.hfst: $(BASENAME).$(LANG2).lexc
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	cat $< | grep -v 'Dir/RL' | grep -v 'Use/Circ' > .deps/$(LANG2).LR-debug.lexc
-	hfst-lexc --format foma .deps/$(LANG2).LR-debug.lexc -o .deps/$(LANG2).LR-debug.lexc.hfst
-	hfst-compose-intersect -1 .deps/$(LANG2).LR-debug.lexc.hfst -2 .deps/$(LANG2).twol.hfst -o $@
+$(PREFIX2).autogen.hfst: $(BASENAME).$(PREFIX2).RL.att.gz
+	$(ZCAT) $< | hfst-txt2fst | hfst-fst2fst -O -o $@
 
 ###############################################################################
 ## Bilingual dictionaries
@@ -180,23 +138,17 @@ modes/$(PREFIX2).mode: modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
-###############################################################################
-## Installation stuff
-###############################################################################
-
-debug: .deps/$(LANG1).LR-debug.hfst .deps/$(LANG2).LR-debug.hfst
-
 EXTRA_DIST=$(PREFIX1).prob $(PREFIX2).prob \
            $(BASENAME).$(PREFIX1).rlx \
            $(BASENAME).$(PREFIX1).lrx \
+           $(BASENAME).$(PREFIX1).LR.att.gz \
+           $(BASENAME).$(PREFIX1).RL.att.gz \
+           $(BASENAME).$(PREFIX2).LR.att.gz \
+           $(BASENAME).$(PREFIX2).RL.att.gz \
            $(BASENAME).$(PREFIX1).dix \
-           $(BASENAME).$(LANG1).lexc \
-           $(BASENAME).$(LANG1).twol \
            $(BASENAME).post-$(LANG1).dix \
            $(BASENAME).$(PREFIX2).rlx \
            $(BASENAME).$(PREFIX2).lrx \
-           $(BASENAME).$(LANG2).lexc \
-           $(BASENAME).$(LANG2).twol \
            $(BASENAME).post-$(LANG2).dix \
            $(BASENAME).$(PREFIX1).t1x \
            $(BASENAME).$(PREFIX1).t2x \
@@ -204,13 +156,13 @@ EXTRA_DIST=$(PREFIX1).prob $(PREFIX2).prob \
            $(BASENAME).$(PREFIX2).t2x \
            modes.xml
 
-apertium_tt_bamodesdir=$(prefix)/share/apertium/modes/
-apertium_tt_badir=$(prefix)/share/apertium/$(BASENAME)/
+apertium_kaz_tatmodesdir=$(prefix)/share/apertium/modes/
+apertium_kaz_tatdir=$(prefix)/share/apertium/$(BASENAME)/
 
-apertium_tt_ba_DATA=$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
+apertium_kaz_tat_DATA=$(PREFIX1).autobil.bin $(PREFIX2).autobil.bin \
                     $(PREFIX1).prob $(PREFIX2).prob \
 		    $(PREFIX1).autogen.hfst $(PREFIX2).autogen.hfst \
-		    $(PREFIX1).automorf.hfst $(PREFIX2).automorf.hfst \
+		    $(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX2).t1x.bin \
 		    $(PREFIX1).t2x.bin $(PREFIX2).t2x.bin \
@@ -228,13 +180,13 @@ install-data-local:
 	$(prefix)/bin/apertium-gen-modes modes.xml $(BASENAME)
 	rm -rf modes
 	mv modes~ modes
-	test -d $(DESTDIR)$(apertium_tt_bamodesdir) || mkdir $(DESTDIR)$(apertium_tt_bamodesdir)
-	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_tt_bamodesdir)
+	test -d $(DESTDIR)$(apertium_kaz_tatmodesdir) || mkdir $(DESTDIR)$(apertium_kaz_tatmodesdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_kaz_tatmodesdir)
 	rm $(PREFIX1).mode
 	rm $(PREFIX2).mode
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(DESTDIR)$(apertium_tt_badir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_tt_badir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_tt_badir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(DESTDIR)$(apertium_tt_badir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(DESTDIR)$(apertium_kaz_tatdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_kaz_tatdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_kaz_tatdir)
+	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(DESTDIR)$(apertium_kaz_tatdir)
 
 CLEANFILES = -r $(TARGETS_COMMON) .deps/
