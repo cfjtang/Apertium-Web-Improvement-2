@@ -50,8 +50,13 @@ if __name__=="__main__":
             at.parsed_restrictions.append(restriction)
             tllemmasFromDic.append(ruleLearningLib.get_lemma(word)) 
         
+        atOK=True
+        if len(at.parsed_restrictions) != len(at.parsed_sl_lexforms):
+            print >> sys.stderr, "Discarding line due to different length of restrictions and SL lexical forms: "+line.encode('utf-8')
+            atOK=False
+        
         #check that aligned words of open categories match dictionary translation
-        if at.aligned_words_of_open_categories_match_dictionary_translation(closedCategoriesSet,tllemmasFromDic):
+        if atOK and at.aligned_words_of_open_categories_match_dictionary_translation(closedCategoriesSet,tllemmasFromDic):
             if not args.ends_must_be_aligned or at.is_ends_aligned() or allowedStructuresSet.is_at_allowed(at):
                 sl_lemmas,tl_lemmas=at.extract_lemmas()
                 
