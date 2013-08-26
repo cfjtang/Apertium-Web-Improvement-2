@@ -25,7 +25,7 @@ STRUCTPARAMETER=""
 if [ "$SAMESTRUCTURE" != "" ]; then
   zcat $INPUTFILE.cleanuniq.gz | paste -d '|' - $INPUTFILE.cleanuniq.bildic | python $RULELEARNINGDIR/processBilphrases.py --extract_structures --closed_categories ./markers $ENDSALIGNEDFLAG | LC_ALL=C sort | uniq | gzip > $INPUTFILE.structures.gz
   STRUCTPARAMETER="--allowed_structures $INPUTFILE.structures.gz"
-  zcat $INPUTFILE.clean.gz  | paste -d '|' - $INPUTFILE.clean.bildic | python $RULELEARNINGDIR/processBilphrases.py --closed_categories ./markers $ENDSALIGNEDFLAG $STRUCTPARAMETER | python $RULELEARNINGDIR/removeBilphraseConflictsWithWordId.py |  sed 's:^[^|]*| ::' | LC_ALL=C sort | uniq -c | sed 's:^ *::' | sed 's:<:| <:' | gzip
+  zcat $INPUTFILE.clean.gz  | paste -d '|' - $INPUTFILE.clean.bildic | python $RULELEARNINGDIR/processBilphrases.py --closed_categories ./markers  $STRUCTPARAMETER | python $RULELEARNINGDIR/removeBilphraseConflictsWithWordId.py |  sed 's:^[^|]*| ::' | LC_ALL=C sort | uniq -c | sed 's:^ *::' | sed 's:<:| <:' | gzip
 else
   zcat $INPUTFILE.cleanuniq.gz  | paste -d '|' - $INPUTFILE.cleanuniq.bildic | python $RULELEARNINGDIR/processBilphrases.py --closed_categories ./markers $ENDSALIGNEDFLAG $STRUCTPARAMETER | gzip
 fi
