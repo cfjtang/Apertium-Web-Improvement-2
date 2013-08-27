@@ -53,9 +53,9 @@ $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 #	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp lr $(BASENAME).$(LANG2).dix $@
 
-$(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
+$(PREFIX2).autobil.bin: $(PREFIX1).dix
 #	apertium-validate-dictionary $(BASENAME).$(PREFIX1).dix
-	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
+	lt-comp rl $(PREFIX1).dix $@
 
 $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
