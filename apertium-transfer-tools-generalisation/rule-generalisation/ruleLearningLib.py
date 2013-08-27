@@ -2245,10 +2245,13 @@ class AlignmentTemplate(object):
 				self.alignments.append((int(parts[0]),int(parts[1])))
 			
 			myrestrictions=fields[3].strip().split(u" ")
-			for res in myrestrictions:
-				#if len(res.strip()) > 0:
+			for resi,res in enumerate(myrestrictions):
 				resobj =AT_Restriction()
-				resobj.parse(res)
+				if res == u"EMPTY":
+					resobj.set_pos(self.parsed_sl_lexforms[resi].get_pos())
+				else:
+					#if len(res.strip()) > 0:
+					resobj.parse(res)
 				self.parsed_restrictions.append(resobj)
 				
 				#this code should be removed at some point
