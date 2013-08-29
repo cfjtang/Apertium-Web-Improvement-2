@@ -233,11 +233,11 @@ if [ "$GET_RESULT" == "yes" ]; then
 			  # subchorizo
 			  #sort boxes
 			  for box in `cat $DIR/tuning-$TUNING_ID/subrules/sortedboxesindex`; do
-			    zcat $INPUTDIR/maximise-score-$FILTERING_NAME/rulesid-f-${treshold}.gz | grep "^$box\$" >>  $DIR/tuning-$TUNING_ID/subrules/sortedboxesindex-$treshold
+			    zcat $INPUTDIR/maximise-score-$FILTERING_OPTION/rulesid-f-${treshold}.gz | grep "^$box\$" >>  $DIR/tuning-$TUNING_ID/subrules/sortedboxesindex-$treshold
 			  done			  
 			  NUMBERS=`cat $DIR/tuning-$TUNING_ID/subrules/sortedboxesindex-$treshold`
 		  else
-			  NUMBERS=`zcat $INPUTDIR/maximise-score-$FILTERING_NAME/rulesid-f-${treshold}.gz`
+			  NUMBERS=`zcat $INPUTDIR/maximise-score-$FILTERING_OPTION/rulesid-f-${treshold}.gz`
 		  fi
 		
 		fi
@@ -288,7 +288,7 @@ if [ "$GET_RESULT" == "yes" ]; then
 
 	if [ "$SUBRULES" == "yes" ]; then
 		BILDICTIONARY=$APERTIUM_SOURCES/apertium-$PAIR/${SL}-$TL.autobil${SHORT_RESTRICTIONS_INFIX}.bin
-		parallel $PARALLELONLYONE -i bash -c "if [ ! -f $DIR/tuning-$TUNING_ID/result-f-{}.gz ]; then mkdir -p $DIR/tuning-$TUNING_ID/subrules/{}; zcat $DIR/tuning-$TUNING_ID/subrules/result-f-{}.gz > $DIR/tuning-$TUNING_ID/subrules/{}/initialrules; ln -s  ../`basename $DIR/tuning-$TUNING_ID/subrules/boxes-f-{}` $DIR/tuning-$TUNING_ID/subrules/{}/boxes; bash $CURDIR/removeRedundantRules.sh $DIR/tuning-$TUNING_ID/subrules/{}/initialrules $DIR/tuning-$TUNING_ID/subrules/{}/boxes \"$CURDIR\" \"$SL\" \"$TL\" \"$APERTIUM_PREFIX\" \"$TAGSEQUENCESANDGROUPSSUFFIX\" \"$INPUTDIR/filtering-$FILTERING_OPTION/debug\" \"-f-{}.result.debug.gz\" \"$BILDICTIONARY\" \"$PYTHONHOME\" \"$RICHATSFLAG\" \"$APERTIUM_SOURCES\" \"$ORIGINAL_TRAINING_CORPUS\" 2>&1 > $DIR/tuning-$TUNING_ID/subrules/{}-debug ; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.debug.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.debug.gz ; rm -Rf $DIR/tuning-$TUNING_ID/subrules/{} ; fi" -- `LC_ALL=C seq $START_T $STEP_T $END_T`
+		parallel $PARALLELONLYONE -i bash -c "if [ ! -f $DIR/tuning-$TUNING_ID/result-f-{}.gz ]; then mkdir -p $DIR/tuning-$TUNING_ID/subrules/{}; zcat $DIR/tuning-$TUNING_ID/subrules/result-f-{}.gz > $DIR/tuning-$TUNING_ID/subrules/{}/initialrules; ln -s  ../`basename $DIR/tuning-$TUNING_ID/subrules/boxes-f-{}` $DIR/tuning-$TUNING_ID/subrules/{}/boxes; bash $CURDIR/removeRedundantRules.sh $DIR/tuning-$TUNING_ID/subrules/{}/initialrules $DIR/tuning-$TUNING_ID/subrules/{}/boxes \"$CURDIR\" \"$SL\" \"$TL\" \"$APERTIUM_PREFIX\" \"$TAGSEQUENCESANDGROUPSSUFFIX\" \"$INPUTDIR/filtering-$FILTERING_OPTION/debug\" \"-f-{}.result.debug.gz\" \"$BILDICTIONARY\" \"$PYTHONHOME\" \"$RICHATSFLAG\" \"$APERTIUM_SOURCES\" \"$ORIGINAL_TRAINING_CORPUS\" \"keep\" 2>&1 > $DIR/tuning-$TUNING_ID/subrules/{}-debug ; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.debug.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.debug.gz ; rm -Rf $DIR/tuning-$TUNING_ID/subrules/{} ;  fi" -- `LC_ALL=C seq $START_T $STEP_T $END_T` 
 	fi
 
 fi
@@ -311,13 +311,18 @@ if [ "$DEVELOPMENT_CORPUS" != "" ]; then
     
     #choose best threshold
     BEST_TRESHOLD=`cat $TUNING_FILE | sort -r  -k2,2 | head -n 1 | cut -f 1`
+    echo "Best threshold afer tuning: $BEST_TRESHOLD"
 else
     BEST_TRESHOLD=$START_T
+    echo "No dev corpus defined. Using threshold: $BEST_TRESHOLD"
 fi
 
 echo "translating test corpus with the best threshold"
 #evaluate
-bash $CURDIR/evaluate-experiment-linear-v5.sh $LFLAG -x "$TAGSEQUENCESANDGROUPSSUFFIX" -s $SL -t $TL $INVERSE_PAIR -f $DIR/tuning-$TUNING_ID/result-f-${BEST_TRESHOLD}.gz -z -d $DIR/tuning-$TUNING_ID -q test-f-${BEST_TRESHOLD} -e $TEST_CORPUS $APERTIUM_SOURCES_FLAG $APERTIUM_PREFIX_FLAG $PYTHONHOME_FLAG $RICHATSFLAG 2> $DIR/tuning-$TUNING_ID/debug/debug-eval-test-f-${BEST_TRESHOLD}
+bash $CURDIR/evaluate-experiment-linear-v5.sh -y $LFLAG -x "$TAGSEQUENCESANDGROUPSSUFFIX" -s $SL -t $TL $INVERSE_PAIR -f $DIR/tuning-$TUNING_ID/result-f-${BEST_TRESHOLD}.gz -z -d $DIR/tuning-$TUNING_ID -q test-f-${BEST_TRESHOLD} -e "$TEST_CORPUS" $APERTIUM_SOURCES_FLAG $APERTIUM_PREFIX_FLAG $PYTHONHOME_FLAG $RICHATSFLAG 2> $DIR/tuning-$TUNING_ID/debug/debug-eval-test-f-${BEST_TRESHOLD}
+
+if [ "$TEST_CORPUS" != "" ]; then
+
 tail -n 1 $DIR/tuning-$TUNING_ID/queries/test-f-${BEST_TRESHOLD}/experiment/evaluation/evaluation_learnedrules > $DIR/tuning-$TUNING_ID/evaluation
 
 #Create summary: BLEU, TER, BEST THRESHOLD and NUM RULES
@@ -326,7 +331,12 @@ tail -n 1 $DIR/tuning-$TUNING_ID/queries/test-f-${BEST_TRESHOLD}/experiment/eval
 echo "$BEST_TRESHOLD" >> $DIR/tuning-$TUNING_ID/summary
 zcat $DIR/tuning-$TUNING_ID/result-f-${BEST_TRESHOLD}.gz | wc -l >> $DIR/tuning-$TUNING_ID/summary
 #tail -n 1 $DIR/tuning-$TUNING_ID/queries/test-f-${BEST_TRESHOLD}/experiment/evaluation/numrulesx >> $DIR/tuning-$TUNING_ID/summary
+fi
+
+if [ "$DEVELOPMENT_CORPUS" != "" ]; then
 
 #Create plot for tuning data
 cd $DIR/tuning-$TUNING_ID/
 gnuplot -e "set term post eps; set output 'plot.tuningdata.eps'; plot 'tuning_data' with linespoints"
+
+fi
