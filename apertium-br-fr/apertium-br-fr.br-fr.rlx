@@ -411,7 +411,7 @@ REMOVE Vpart IF ((1C VerbInf) OR (1C VerbImp)) (NOT 0 ("<en ur>"));
 REMOVE PrnDObj IF (-1 VerbInf);
 
 # REGLA (B0020): "Ni a ro al laezh"
-SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj)
+SELECT VerbFin IF (-1 VpartSDO) (-2 PrnSubj) ; 
 
 
 # REGLA (B    ): "Ne implij ket"
@@ -752,7 +752,7 @@ REMOVE SoftMut IF (NOT -1 SoftMutTrigger);
 SELECT SoftMutTrigger IF (1C SoftMut) (1C SoftMutCons) (NOT 1 ("<vez>"i)) (NOT 0 ("<e>"i)) ;
     ## Perc'hennet eo an tour gant an ti-kêr abaoe 1975 ; digor e vez da an den evit gweladenn bleinañ.
 
-SELECT NC IF (0 NC OR Adj) (-1 DetPos)
+SELECT NC IF (0 NC OR Adj) (-1 DetPos);
     ## Ar groaz savet a vez flastret tamm-ha-tamm ma echu ho tres gant ur vegenn.
 
 # REGLA (A0005): "ez ti"
