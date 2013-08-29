@@ -13,13 +13,15 @@ TAGSEQUENCESANDGROUPSSUFFIX=""
 
 PYTHONHOME=""
 
-APERTIUM_PREFIX="$HOME/local"
+APERTIUM_PREFIX=""
 APERTIUM_SOURCES="$HOME/sources"
 
 RICHATSFLAG=""
 
 CURDIR=`dirname $0`
 FULLCURDIR=`readlink -f $CURDIR`
+
+COPYRULES=false
 
 usage()
 {
@@ -31,7 +33,7 @@ EOF
 
 USE_SHORT_RESTRICTIONS_INFIX=".shortrestrictions"
 
-while getopts “s:t:d:f:q:e:izx:h:p:u:cl” OPTION
+while getopts “s:t:d:f:q:e:izx:h:p:u:cly” OPTION
 do
      case $OPTION in
          s)
@@ -76,6 +78,9 @@ do
         c)
 		RICHATSFLAG="--emptyrestrictionsmatcheverything"
 		;;
+        y)
+		COPYRULES=true
+		;;
          ?)
              usage
              exit
@@ -117,7 +122,7 @@ done < $GENFILE  > $DIR/queries/$QUERY_DIR/experiment/alignmentTemplatesGenerali
 EXPQUERIESDIR=$DIR/queries/$QUERY_DIR/experiment/
 TAGGROUPS=$CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX 
 
-if [ "$APERTIUM_PREFIX" != ""]; then
+if [ "$APERTIUM_PREFIX" != "" ]; then
   TRANSFERTOOLSPATH="LD_LIBRARY_PATH=$APERTIUM_PREFIX/lib $APERTIUM_PREFIX/bin/"
   APERTIUMPATH="$APERTIUM_PREFIX/bin/"
 else
@@ -136,9 +141,6 @@ mkdir -p $EXPQUERIESDIR/evaluation/paired_bootstrap
 mkdir -p $EXPQUERIESDIR/rules
 mkdir -p $EXPQUERIESDIR/modes
 
-cp $EVALUATION_CORPUS.$SL $EXPQUERIESDIR/evaluation/source
-cp $EVALUATION_CORPUS.$TL $EXPQUERIESDIR/evaluation/reference
-
 #sort ATs to be processed by the module which encodes them as Apertium rules
 cat $EXPQUERIESDIR/alignmentTemplatesGeneralised.txt | ${PYTHONHOME}python $CURDIR/addGeneralisedLeftSide.py | LC_ALL=C sort -r | ${PYTHONHOME}python $CURDIR/uniqSum.py | awk -F"|" '{print $2"|"$1"|"$3"|"$4"|"$5"|"$6}' | sed 's_^ __' | sed 's_|\([0-9]\)_| \1_' |  LC_ALL=C sort -r | ${PYTHONHOME}python $CURDIR/removeExplicitEmptuTagsFromPatternTLandRest.py $RICHATSFLAG | awk -F"|" '{print $2"|"$3"|"$4"|"$5"|"$6}' | sed 's_^ __' > $EXPQUERIESDIR/rules/alignmentTemplates.txt
 cat $EXPQUERIESDIR/rules/alignmentTemplates.txt | cut -f 1 -d '|' | uniq > $EXPQUERIESDIR/rules/alignmentTemplates.txt.patterns
@@ -147,8 +149,21 @@ cat $EXPQUERIESDIR/rules/alignmentTemplates.txt | cut -f 1 -d '|' | uniq > $EXPQ
 echo "${TRANSFERTOOLSPATH}apertium-gen-transfer-from-aligment-templates --input $EXPQUERIESDIR/rules/alignmentTemplates.txt --attributes $TAGGROUPS --generalise --nodoublecheckrestrictions --usediscardrule $RICHATSFLAG | ${PYTHONHOME}python $CURDIR/addDebugInfoToTransferRules.py > $EXPQUERIESDIR/rules/rules.xml" > $TMPFILE1
 bash $TMPFILE1
 
+rm -f $TMPFILE1
+
 #compile rules
 ${APERTIUMPATH}apertium-preprocess-transfer $EXPQUERIESDIR/rules/rules.xml $EXPQUERIESDIR/rules/rules.bin
+
+if [ $COPYRULES ]; then
+  cp $EXPQUERIESDIR/rules/rules.xml $DIR/rules.result.xml
+fi
+
+if [ "$EVALUATION_CORPUS" == "" ]; then
+  echo "No evaluation corpus provided. Rules will not be evaluated"
+else
+
+cp $EVALUATION_CORPUS.$SL $EXPQUERIESDIR/evaluation/source
+cp $EVALUATION_CORPUS.$TL $EXPQUERIESDIR/evaluation/reference
 
 #evaluate word for word
 ${APERTIUMPATH}apertium-preprocess-transfer $CURDIR/empty-rules-for-translating.t1x $EXPQUERIESDIR/rules/empty-rules-for-translating.t1x.bin
@@ -210,4 +225,6 @@ cat $EXPQUERIESDIR/evaluation/report_rules_words | bash $CURDIR/createHTMLTableF
 cat $EXPQUERIESDIR/evaluation/debug-extradebug | grep -v "^LOCALE"  | tr  '\n' '|' | tr -d ']' | tr -d ']' | sed 's_TARGET:\([^|]*\)|SOURCE:\([^|]*\)_[\2|\1]_g' | sed 's_SINGLETARGET:\([^|]*\)|SINGLESOURCE:\([^|]*\)_[\2|\1]_g'  | sed 's_\^.<sent>\$\]_^.<sent>$]\n_g' | sed -r 's_(^|\|)([0-9]+)\|\[_[\2|_g' > $EXPQUERIESDIR/evaluation/debug-segmented
 
 
-rm -f $TMPFILE1 $TMPFILE2
+rm -f $TMPFILE2
+
+fi

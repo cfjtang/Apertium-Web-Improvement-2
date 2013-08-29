@@ -26,7 +26,7 @@ ANALYSED_PARALLEL_CORPUS="${14}"
 USE_CORPUS=false
 
 KEEPTMPDIRS=false
-if [ "${15}" != "keep" ]; then
+if [ "${15}" == "keep" ]; then
 	KEEPTMPDIRS=true
 fi
 
@@ -178,7 +178,9 @@ do
 			  zcat $MYDIR/bilingualPhrases.${ITERATION}.gz | cut -f 1,3 -d '|' | sed 's_^_[_' | sed 's_ | _] _' | sed 's:_: :g'  > $MYDIR/translations_${ITERATION}/test.reference
 			  
 			  #translate
-			  cat  $MYDIR/translations_${ITERATION}/test.source | sed 's_$_^.<sent>$_' | PATH=$PATH:$APERTIUMPATH bash $CURDIR/translate_apertium.sh "" $LEXICALMODE join "none" "$MYDIR/queries/$ITERATIONVAR/experiment" | ${APERTIUMPATH}apertium-pretransfer | sed 's_\^\*executedtule[0-9]*\$__g' | sed 's_\^\*isolatedword\$__g' | sed 's_\^.<sent>\$ *$__' > $MYDIR/translations_${ITERATION}/test.translation
+			  cat  $MYDIR/translations_${ITERATION}/test.source | sed 's_$_^.<sent>$_' | PATH=$PATH:$APERTIUMPATH bash $CURDIR/translate_apertium.sh "" $LEXICALMODE join "none" "$MYDIR/queries/$ITERATIONVAR/experiment" | ${APERTIUMPATH}apertium-pretransfer  > $MYDIR/translations_${ITERATION}/test.translation.raw
+			  cat $MYDIR/translations_${ITERATION}/test.translation.raw | sed 's_\^\*executedtule[0-9]*\$__g' | sed 's_\^\*isolatedword\$__g' | sed 's_\^.<sent>\$ *$__' > $MYDIR/translations_${ITERATION}/test.translation
+			  cat $MYDIR/translations_${ITERATION}/test.translation.raw | sed 's:$:VMSANCHEZNEWLINEMARK:'  |  grep -Eo 'VMSANCHEZNEWLINEMARK|\^\*executedtule[0-9]*\$|\^\*isolatedword\$' | sed 's:\^\*isolatedword\$:-1:g' | sed 's:\^\*executedtule\([0-9]*\)\$:\1:g'  | tr '\n' ' ' | sed 's:VMSANCHEZNEWLINEMARK:\n:g' > $MYDIR/translations_${ITERATION}/test.translation.appliedrules
 			  
 			  #Evaluate	
 			  echo "Running diff"
@@ -227,7 +229,25 @@ do
 		  echo "$PROPINCORRECT | $AT" >> $MYDIR/summary.inverse
 		  cat $MYDIR/translations_${ITERATION}/test.diff >> $MYDIR/summary.debug.inverse
 		  echo "Wrongly translated: " >> $MYDIR/summary.debug.inverse
-		  paste -d '|' $MYDIR/translations_${ITERATION}/test.source $MYDIR/translations_${ITERATION}/test.reference >> $MYDIR/summary.debug.inverse
+		  #paste -d '|' $MYDIR/translations_${ITERATION}/test.source $MYDIR/translations_${ITERATION}/test.reference >> $MYDIR/summary.debug.inverse
+		  paste -d '|' $MYDIR/translations_${ITERATION}/test.source $MYDIR/translations_${ITERATION}/test.reference $MYDIR/translations_${ITERATION}/test.translation.appliedrules | while read myline ; do
+		    rm -f $MYDIR/translations_${ITERATION}/rulesApplied
+		    FIRSTFIELD=`echo "$myline" | cut -f 1 -d '|'`
+		    if [ "$FIRSTFIELD" != "" ]; then
+		      RULESID=`echo "$myline" | cut -f3 -d '|'`
+		      index=0
+		      for RULEID in $RULESID ; do
+			  if [ "$RULEID" != "-1" ]; then
+			    cat $MYDIR/queries/$ITERATIONVAR/experiment/rules/alignmentTemplates.txt | head -n $RULEID | tail -n 1 | sed 's:^:\t:' >> $MYDIR/translations_${ITERATION}/rulesApplied
+			  else
+			    echo  "	WORDFORWORD" >> $MYDIR/translations_${ITERATION}/rulesApplied
+			  fi
+		      done
+		      cat $MYDIR/translations_${ITERATION}/rulesApplied | tac >> $MYDIR/summary.debug.inverse
+		      echo "$myline" | cut -f1,2 -d '|' >> $MYDIR/summary.debug.inverse
+		    fi
+		  done
+		  
 		  echo "BILPHRASES FOR AT: $AT" >> $MYDIR/summary.debug.inverse
 	  fi    
       

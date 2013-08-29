@@ -144,7 +144,7 @@ INVERSE_PAIR_TUNING_FLAG="-i"
 fi
 
 if [ ! -e $TMPDIR/tuning-proportion_correct_bilphrases_thresholdrelaxabove2-${THRESHOLD_START}-${THRESHOLD_STEP}-${THRESHOLD_END}-subrules/summary ]; then
-bash $CURDIR/rule-generalisation/tune-experiment-linear-incremental-parallel-v8.sh -f $SOURCESDIR -s $SL -t $TL  -d $TMPDIR -c $DEV_CORPUS -e $TEST_CORPUS -r $THRESHOLD_START -a $THRESHOLD_STEP -b $THRESHOLD_END -o proportion_correct_bilphrases_thresholdrelaxabove2 -x "_$PAIR" -z $INVERSE_PAIR_TUNING_FLAG -l
+bash $CURDIR/rule-generalisation/tune-experiment-linear-incremental-parallel-v8.sh -f $SOURCESDIR -s $SL -t $TL  -d $TMPDIR -c "$DEV_CORPUS" -e "$TEST_CORPUS" -r $THRESHOLD_START -a $THRESHOLD_STEP -b $THRESHOLD_END -o proportion_correct_bilphrases_thresholdrelaxabove2 -x "_$PAIR" -z $INVERSE_PAIR_TUNING_FLAG -l
 else
 echo "Rule redundancy removal, tuning and testing directory already exists. Omitting rule redundancy removal, tuning and testing." 1>&2
 fi
