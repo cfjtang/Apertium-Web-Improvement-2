@@ -366,10 +366,10 @@
 
   <section-def-macros>
 
-    <def-macro n="case1" npar="1">
+    <def-macro n="translate-ins-with-nom-and-post" npar="1">
       <let><var n="case"/><lit v=""/></let>
       <let><var n="postposition"/><lit v=""/></let>
-      <choose> <!-- Converts instrumental case to nominative+белән<post> -->
+      <choose>
         <when>
           <test>
             <equal><clip pos="1" side="sl" part="a_case"/><lit-tag v="ins"/></equal>
@@ -522,7 +522,7 @@
         <pattern-item n="nominal"/>
       </pattern>
       <action>
-        <call-macro n="case1">   <!-- translate kaz. <inst> with <nom>+белән -->
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">   <!-- take care of loc.subst thing -->
@@ -572,7 +572,7 @@
         <pattern-item n="pron-dem-sim"/>
       </pattern>
       <action>
-        <call-macro n="case1">   <!-- translate kaz. <inst> with <nom>+белән -->
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">   <!-- take care of loc.subst thing -->
@@ -597,7 +597,7 @@
         <pattern-item n="pron-pers-ins"/>
       </pattern>
       <action>
-        <call-macro n="case1">   <!-- translate kaz. <inst> with <nom>+белән -->
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <out>
@@ -623,7 +623,7 @@
         <pattern-item n="pron-pers_ref"/>
       </pattern>
       <action>
-        <call-macro n="case1">   <!-- translate kaz. <inst> with <nom>+белән -->
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">   <!-- take care of loc.subst thing -->
@@ -650,7 +650,7 @@
         <pattern-item n="pron"/>
       </pattern>
       <action>
-        <call-macro n="case1">   <!-- translate kaz. <inst> with <nom>+белән -->
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">   <!-- take care of loc.subst thing -->
@@ -679,7 +679,7 @@
         <call-macro n="nonfin1">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="case1">
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">
@@ -712,7 +712,7 @@
         <call-macro n="nonfin1">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="case1">
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">
@@ -893,7 +893,7 @@
         <call-macro n="numtype1">
           <with-param pos="1"/>
         </call-macro>
-        <call-macro n="case1">   <!-- translate kaz. <inst> with <nom>+белән -->
+        <call-macro n="translate-ins-with-nom-and-post">
           <with-param pos="1"/>
         </call-macro>
         <call-macro n="case2">   <!-- take care of loc.subst thing -->
