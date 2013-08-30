@@ -15,8 +15,9 @@ LIST BOS = (>>>) ;
 LIST EOS = (<<<) ;
 
 LIST N = n np;
-LIST Noun = N;
+LIST Noun = n ;
 LIST NProp = np;
+LIST Prep = pr;
 LIST NComm = n;
 LIST A = adj ; 
 LIST V = vblex vbser vbhaver vbmod ; 
@@ -30,6 +31,8 @@ LIST Ord = ord ;
 LIST Det = det ; 
 LIST Prop = np ;
 LIST Pron = prn ; 
+LIST Pres = pres ; 
+LIST Past = past ; 
 LIST DemPron = (prn dem) ;
 LIST PersPron = (prn pers) ;
 LIST PosPron = (prn pos) ;
@@ -163,6 +166,12 @@ SET S-BOUNDARY = CS | Interr | (n voc) | EOS;
 
 SECTION
 
+# Preferences
+
+SELECT Acc IF (0 ("za" pr));
+
+SECTION
+
 # =========== #
 # Safe stuff  #
 # =========== #
@@ -211,7 +220,7 @@ REMOVE:CaseCmCase KeepOrder Nomen + $$CASE (0C Nomen) (-1 Cm) (-2 Nomen) (NOT -2
 REMOVE:CaseCNJCase KeepOrder Nomen + $$CASE (0C Nomen) (-1 CNJ) (-2 Nomen) (NOT -2 Nomen + $$CASE)
 
 # Very heuristic, a noun that's not otherwise unambiguously dual is plural
-SELECT:isDual N + Plural (0 Dual OR Plural) (NOT -1 Num) (NOT 1 Num) (NOT -1C Modifier + Dual)
+SELECT:isDual N + Plural (0C Dual OR Plural) (NOT -1 Num) (NOT 1 Num) (NOT -1C Modifier + Dual)
 
 # Proper noun / Adjective is Proper noun; TODO: To be expanded on corpus examples
 SELECT:NP NProp (0C NProp OR A)
@@ -238,3 +247,12 @@ REMOVE:CnjORAdv KeepOrder CNJ (0 CNJ OR Adv + $$CASE) (1 Nomen + $$CASE)
 REMOVE Gen IF (0 EmphPron) (0 Gen OR Acc) (-1 ("ki"i)) (1* Transitive BARRIER S-BOUNDARY)
 
     ## Večinoma smo šli tudi sami skozi enak proces, s kakršnim se zdaj soočajo države zahodnega Balkana, in imamo dragocen izkušnje, ki jih lahko delimo z njimi.
+
+REMOVE Loc IF (NOT 0 Prep) (NOT -1* Prep BARRIER S-BOUNDARY);
+    ## Podpis aktov, sprejetih v postopku soodločanja: glej zapisnik
+
+SELECT VBSer + Pres IF (1 Past); 
+    ## Tudi Italija je bila letos hudo prizadeta.
+
+REMOVE $$NUMBER IF (-1C VBSer) (NOT -1 $$NUMBER) (0 $$NUMBER);
+    ## Tudi Italija je bila letos hudo prizadeta.
