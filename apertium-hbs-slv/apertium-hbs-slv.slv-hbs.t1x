@@ -56,6 +56,9 @@
       <cat-item tags="vbhaver.*.*.lp.*"/>
       <cat-item tags="vbmod.lp.*"/>
     </def-cat>
+    <def-cat n="in">
+      <cat-item lemma="in" tags="cnjcoo"/>
+    </def-cat>
     <def-cat n="vbser_lp">
       <cat-item tags="vbser.lp.*"/>
     </def-cat>
@@ -283,8 +286,8 @@
     <def-cat n="cnjcoo">
       <cat-item tags="cnjcoo"/>
     </def-cat>
-    <def-cat n="i_cnjcoo">
-      <cat-item lemma ="i" tags="cnjcoo"/>
+    <def-cat n="in_cnjcoo">
+      <cat-item lemma="in" tags="cnjcoo"/>
     </def-cat>
     <def-cat n="kako_adv">
       <cat-item lemma="kako" tags="adv"/>
@@ -1416,6 +1419,52 @@
 
     <!-- Sintagmas nominales -->
 
+    <rule comment="adj nom">
+      <pattern>
+	<pattern-item n="adj"/>
+	<pattern-item n="nom"/>
+      </pattern>
+      <action>
+	<call-macro n="adj_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="nom_adapter"><with-param pos="2"/></call-macro>
+        <let><clip pos="1" side="tl" part="gen"/><clip pos="2" side="tl" part="gen"/></let> 
+        <let><clip pos="1" side="tl" part="nbr"/><clip pos="2" side="tl" part="nbr"/></let> 
+        <let><clip pos="1" side="tl" part="cas"/><clip pos="2" side="tl" part="cas"/></let> 
+        <!-- Adjectives in Serbo-Croatian are always definite (most of the time) (Nikola dixit) -->
+        <let><clip pos="1" side="tl" part="def"/><lit-tag v="def"/></let> 
+	<out>
+	  <chunk name="adj-nom" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="SN"/></tag>
+	      <tag><clip pos="2" side="tl" part="gen"/></tag>
+	      <tag><clip pos="2" side="tl" part="nbr"/></tag>
+	      <tag><clip pos="2" side="tl" part="cas"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="lemh"/>
+	      <clip pos="1" side="tl" part="a_adj"/>
+	      <clip pos="1" side="tl" part="deg"/>
+	      <clip pos="1" side="tl" part="gen" link-to="2"/>
+	      <clip pos="1" side="tl" part="nbr" link-to="3"/>
+	      <clip pos="1" side="tl" part="cas" link-to="4"/>
+	      <clip pos="1" side="tl" part="def"/>
+	      <clip pos="1" side="tl" part="lemq"/>
+	    </lu>
+            <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="lemh"/>
+	      <clip pos="2" side="tl" part="a_nom"/>
+	      <clip pos="2" side="tl" part="gen" link-to="2"/>
+	      <clip pos="2" side="tl" part="nbr" link-to="3"/>
+	      <clip pos="2" side="tl" part="cas" link-to="4"/>
+	      <clip pos="2" side="tl" part="lemq"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+
     <rule comment="nom">
       <pattern>
 	<pattern-item n="nom"/>
@@ -1428,7 +1477,7 @@
 	      <tag><lit-tag v="SN"/></tag>
 	      <tag><clip pos="1" side="tl" part="gen"/></tag>
 	      <tag><clip pos="1" side="tl" part="nbr"/></tag>
-	      <tag><lit-tag v="nom"/></tag>
+	      <tag><clip pos="1" side="tl" part="case"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -1448,6 +1497,7 @@
 	  <chunk name="prep" case="caseFirstWord">
 	    <tags>
 	      <tag><lit-tag v="SP"/></tag>
+	      <tag><clip pos="1" side="tl" part="cas"/></tag>
 	    </tags>
 	    <lu>
 	      <clip pos="1" side="tl" part="whole"/>
@@ -1528,6 +1578,8 @@
       </pattern>
       <action>
 	<call-macro n="verb_adapter"><with-param pos="1"/></call-macro>
+        <!-- Adjectives in Serbo-Croatian are always definite (most of the time) (Nikola dixit) -->
+        <let><clip pos="1" side="tl" part="def"/><lit-tag v="def"/></let> 
 	<out>
 	  <chunk name="verb" case="caseFirstWord">
 	    <tags>
@@ -1793,6 +1845,45 @@
 	    <b/>
 	    <lu>
 	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	  </chunk>
+	</out>
+      </action>
+    </rule>
+
+    <rule comment="pred.ins+nom.ins+in+nom.ins"><!-- Pred Kristom -> Prije Krista -->
+      <pattern><!--TODO: See on a corpus if this applies to all, most, or less cases-->
+	<pattern-item n="pr_pred_ins"/>
+	<pattern-item n="nom_ins"/>
+	<pattern-item n="in_cnjcoo"/>
+	<pattern-item n="nom_ins"/>
+      </pattern>
+      <action>
+	<call-macro n="pr_adapter"><with-param pos="1"/></call-macro>
+	<call-macro n="nom_adapter"><with-param pos="2"/></call-macro>
+	<let><clip pos="1" side="tl" part="lem"/><lit v="prije"/></let>
+	<let><clip pos="1" side="tl" part="cas"/><lit-tag v="gen"/></let>
+	<let><clip pos="2" side="tl" part="cas"/><lit-tag v="gen"/></let>
+	<let><clip pos="4" side="tl" part="cas"/><lit-tag v="gen"/></let>
+	<out>
+	  <chunk name="num" case="caseFirstWord">
+	    <tags>
+	      <tag><lit-tag v="Num"/></tag>
+	    </tags>
+	    <lu>
+	      <clip pos="1" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="1"/>
+	    <lu>
+	      <clip pos="2" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="2"/>
+	    <lu>
+	      <clip pos="3" side="tl" part="whole"/>
+	    </lu>
+	    <b pos="3"/>
+	    <lu>
+	      <clip pos="4" side="tl" part="whole"/>
 	    </lu>
 	  </chunk>
 	</out>
