@@ -17,7 +17,7 @@ DEFINE_string 'data_dir' '' 'Directory where the compiled Apertium dictionaries 
 ######################
 DEFINE_string 'tmp_dir' '' 'temporary directory' 'm'
 DEFINE_boolean 'segment_by_marker' 'false' 'Segment SL corpus according to marker hypothesis' 'y'
-DEFINE_string 'filtering_thresholds' '0.45 0.05 1' 'Thresholds for filtering alignment templates. Format is start step end, as in the seq command. A single threshold can also be defined' 'f'
+DEFINE_string 'filtering_thresholds' '0 0.05 1' 'Thresholds for filtering alignment templates. Format is start step end, as in the seq command. A single threshold can also be defined' 'f'
 DEFINE_string 'test_corpus' '' 'evaluation corpus prefix (suffixes are .SL and .TL)'
 DEFINE_string 'dev_corpus' '' 'development corpus prefix (suffixes are .SL and .TL). It is used to choose the most appropriate threshold'
 
