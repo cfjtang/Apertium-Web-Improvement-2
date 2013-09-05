@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- From Nepali -->
+
+
+<interchunk>
+
+  <section-def-cats>
+    <def-cat n="SN">
+      <cat-item tags="SN"/>
+      <cat-item tags="SN.*"/>
+    </def-cat>
+    <def-cat n="SV">
+      <cat-item tags="SV"/>
+      <cat-item tags="SV.*"/>
+      <cat-item tags="V_IMP.*"/>
+      <cat-item tags="VERB_PP.*"/>
+      <cat-item tags="V_PPRS.*"/>
+      <cat-item tags="VERB_PASS_INF.*"/>
+      <cat-item tags="VERB_PASS_SUPN.*"/>
+      <cat-item tags="VERB_PASS_PRES.*"/>
+      <cat-item tags="VERB_PASS_PAST.*"/>
+      <cat-item tags="V_INF.*"/>
+      <cat-item tags="V_SUPN.*"/>
+      <cat-item tags="IS.FIN.*"/>
+    </def-cat>
+    <def-cat n="PREPGEN">
+      <cat-item tags="PREPGEN"/>
+      <cat-item tags="PREPGEN.*"/>
+    </def-cat>
+    <def-cat n="PREPDAT">
+      <cat-item tags="PREPDAT"/>
+      <cat-item tags="PREPDAT.*"/>
+    </def-cat>
+    <def-cat n="PREPACC">
+      <cat-item tags="PREPACC"/>
+      <cat-item tags="PREPACC.*"/>
+    </def-cat>
+    <def-cat n="ADJ_UNSINT_COMP">
+      <cat-item tags="SA.adj.unsint.comp.*"/>
+    </def-cat>
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="a_chunk">
+      <attr-item tags="SV"/>
+      <attr-item tags="SN"/>
+      <attr-item tags="PREPGEN"/>
+      <attr-item tags="CS"/>
+      <attr-item tags="CC"/>
+      <attr-item tags="ADV"/>
+      <attr-item tags="SADV"/>
+      <attr-item tags="NEG"/>
+    </def-attr>
+    <def-attr n="pers">
+      <attr-item tags="p1"/>
+      <attr-item tags="p2"/>
+      <attr-item tags="p3"/>
+      <attr-item tags="PD"/>
+    </def-attr>
+    <def-attr n="temps">
+      <attr-item tags="pp"/>
+      <attr-item tags="pres"/>
+      <attr-item tags="past"/>
+      <attr-item tags="ger"/>
+      <attr-item tags="inf"/>
+    </def-attr>
+    <def-attr n="gen">
+      <attr-item tags="f"/>
+      <attr-item tags="m"/>
+      <attr-item tags="nt"/>
+      <attr-item tags="GD"/>
+    </def-attr>
+    <def-attr n="nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+      <attr-item tags="ND"/>
+    </def-attr>
+    <def-attr n="cas">
+      <attr-item tags="nom"/>
+      <attr-item tags="acc"/>
+      <attr-item tags="dat"/>
+      <attr-item tags="gen"/>
+    </def-attr>
+    <def-attr n="a_adj"> 							<!--ADJECTIVE-->
+      <attr-item tags="adj"/>
+     <attr-item tags="adj.ord"/>
+     <attr-item tags="adj.sint"/>
+     <attr-item tags="adj.unsint"/> 
+    </def-attr>
+    <def-attr n="grau"> 							<!--COMPARISON-->
+      <attr-item tags="pst"/>
+      <attr-item tags="comp"/>
+      <attr-item tags="sup"/>
+    </def-attr>
+
+
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="nombre"/>
+    <def-var n="genere"/>
+  </section-def-vars>
+
+
+<section-def-macros>
+
+  <def-macro n="conv_case_to_gen" npar="1" > 		<!-- MACRO: convert nom to gen-->	
+    <choose>
+      <when>
+        <test>
+            <equal><clip pos="1" part="cas"/><lit-tag v="nom"/></equal>
+        </test>
+        <let>
+          <clip pos="1" part="cas"/>
+          <lit-tag v="gen"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
+
+  <def-macro n="conv_case_to_dat" npar="1" > 		<!-- MACRO: convert nom to dat-->	
+    <choose>
+      <when>
+        <test>
+            <equal><clip pos="1" part="cas"/><lit-tag v="nom"/></equal>
+        </test>
+        <let>
+          <clip pos="1" part="cas"/>
+          <lit-tag v="dat"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
+
+  <def-macro n="conv_case_to_acc" npar="1" > 		<!-- MACRO: convert nom to acc-->	
+    <choose>
+      <when>
+        <test>
+            <equal><clip pos="1" part="cas"/><lit-tag v="nom"/></equal>
+        </test>
+        <let>
+          <clip pos="1" part="cas"/>
+          <lit-tag v="acc"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
+
+
+  <def-macro n="conv_grau_to_pst" npar="1" > 		<!-- MACRO: convert comp to pst-->	
+    <choose>
+      <when>
+        <test>
+			<or>
+            	<equal><clip pos="1" part="grau"/><lit-tag v="comp"/></equal>
+            	<equal><clip pos="1" part="grau"/><lit-tag v="sup"/></equal>
+			</or>
+        </test>
+        <let>
+          <clip pos="1" part="grau"/>
+          <lit-tag v="pst"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
+
+  <def-macro n="conv_unsint_to_adj" npar="1" > 		<!-- MACRO: remove unsint-->	
+    <choose>
+      <when>
+        <test>
+            	<equal><clip pos="1" part="a_adj"/><lit-tag v="adj.unsint"/></equal>
+        </test>
+        <let>
+          <clip pos="1" part="a_adj"/>
+          <lit-tag v="adj"/>
+        </let>
+      </when>
+    </choose>
+  </def-macro>
+
+
+</section-def-macros>
+
+<section-rules>
+
+    <rule comment="REGLA: SN">
+      <pattern>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: PREPGEN SN">
+      <pattern>
+        <pattern-item n="PREPGEN"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_case_to_gen">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: PREPDAT SN">
+      <pattern>
+        <pattern-item n="PREPDAT"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_case_to_dat">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: PREPACC SN">
+      <pattern>
+        <pattern-item n="PREPACC"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_case_to_acc">
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: SV SN">
+      <pattern>
+        <pattern-item n="SV"/>
+        <pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_case_to_acc">  <!-- by default, should be implemented for verbs that govern acc and gen -->
+          <with-param pos="2"/>
+        </call-macro>
+        <out>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="2" part="lem"/>
+            <clip pos="2" part="tags"/>
+            <clip pos="2" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+
+<!-- should this be done here?
+
+    <rule comment="REGLA: ADJ_UNSINT_COMP">  
+      <pattern>
+        <pattern-item n="ADJ_UNSINT_COMP"/>
+      </pattern>
+      <action>
+        <call-macro n="conv_grau_to_pst">
+          <with-param pos="1"/>
+        </call-macro>
+        <call-macro n="conv_unsint_to_adj">
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <chunk>
+              <lit v="meira"/>
+              <lit-tag v="adv"/>
+          </chunk>
+          <b pos="1"/>
+          <chunk>
+            <clip pos="1" part="lem"/>
+            <clip pos="1" part="tags"/>
+            <clip pos="1" part="chcontent"/>
+          </chunk>
+        </out>
+      </action>
+    </rule>   -->
+
+
+</section-rules>
+</interchunk>
