@@ -126,6 +126,10 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
             for incorrectId in incorrectIds:
                 incorrectBilphrases.add(bilingualPhrases.get_by_id(incorrectId))
             
+            reproducedBilphrases=AlignmentTemplateSet()
+            for idOK in idsOk:
+                reproducedBilphrases.add(bilingualPhrases.get_by_id(idOK))
+            
             debug("Processing AT to add restrictions: "+str(at))
             debug("Matching bilphrases ("+str(len(idMatching))+"):") 
             if ruleLearningLib.DEBUG:
@@ -196,38 +200,44 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
                 idsOk,idMatching,numOk,numMatching=incorrectBilphrases.get_ids_of_matching_and_compatible_phrases(newAT)
                 incorrectIdsNotMatching=frozenset(incorrectIds - idMatching)
                 
-                if ruleLearningLib.DEBUG:
-                    debug("Incorrect bilphrases which now don't match ("+str(len(incorrectIdsNotMatching))+"):")
-                    for bid in incorrectIdsNotMatching:
-                        debug("\t"+str(bilingualPhrases.get_by_id(bid)))
+                idsOKFromReproducible,idsMatchingFromReproducible,numOkFromRepr,numMatchingFromRepr= reproducedBilphrases.get_ids_of_matching_and_compatible_phrases(newAT)
+                totalReproduciblePhrases=len(reproducedBilphrases.get_all_ids())
+                numReproduciblePhrasesNowNOtMatching=totalReproduciblePhrases-len(idsOKFromReproducible)
+                debug("Reproducible phrases which now don't match: "+str(numReproduciblePhrasesNowNOtMatching))
                 
-                if len(incorrectIdsNotMatching) > 0:
-                    validAT=True
-                    if incorrectIdsNotMatching in incorrectIdsNotMatchingDict:
-                        debug("The same set of bilingual phrases was removed by other sets of restrictions...")
-                        for pastoption in incorrectIdsNotMatchingDict[incorrectIdsNotMatching]:
-                            if pastoption <= opt:
-                                debug("... and there is a subset of this one: "+str(pastoption))                                
-                                validAT=False
-                                break
+                if numReproduciblePhrasesNowNOtMatching==0 or not generalisationOptions.is_triggeringNoGoodDiscarded():
+                    if ruleLearningLib.DEBUG:
+                        debug("Incorrect bilphrases which now don't match ("+str(len(incorrectIdsNotMatching))+"):")
+                        for bid in incorrectIdsNotMatching:
+                            debug("\t"+str(bilingualPhrases.get_by_id(bid)))
+                    
+                    if len(incorrectIdsNotMatching) > 0:
+                        validAT=True
+                        if incorrectIdsNotMatching in incorrectIdsNotMatchingDict:
+                            debug("The same set of bilingual phrases was removed by other sets of restrictions...")
+                            for pastoption in incorrectIdsNotMatchingDict[incorrectIdsNotMatching]:
+                                if pastoption <= opt:
+                                    debug("... and there is a subset of this one: "+str(pastoption))                                
+                                    validAT=False
+                                    break
+                            if validAT:
+                                debug("... but no set is a subset of this one")
+                        else:
+                            debug("The same set of bilingual phrases was NOT removed by other sets of restrictions.")
+                            incorrectIdsNotMatchingDict[incorrectIdsNotMatching]=set()
+                            incorrectIdsNotMatchingDict[incorrectIdsNotMatching].add(opt)
                         if validAT:
-                            debug("... but no set is a subset of this one")
-                    else:
-                        debug("The same set of bilingual phrases was NOT removed by other sets of restrictions.")
-                        incorrectIdsNotMatchingDict[incorrectIdsNotMatching]=set()
-                        incorrectIdsNotMatchingDict[incorrectIdsNotMatching].add(opt)
-                    if validAT:
-                        idAt+=1
-                        newAT.id=idAt
-                        finalAlignmentTemplatesAfterwardsRestrictions.add(newAT)
-                if len(idMatching) == 0:
-                    debug("This AT does not match any incorrect bilingual phrase. Removing all its supersets")
-                    #restrictionsSetsMatchingZero.add(opt)
-                    sortedOptionsCopy=list()
-                    for sopt in sortedOptions:
-                        if not opt <= sopt:
-                            sortedOptionsCopy.append(sopt)
-                    sortedOptions=sortedOptionsCopy
+                            idAt+=1
+                            newAT.id=idAt
+                            finalAlignmentTemplatesAfterwardsRestrictions.add(newAT)
+                    if len(idMatching) == 0:
+                        debug("This AT does not match any incorrect bilingual phrase. Removing all its supersets")
+                        #restrictionsSetsMatchingZero.add(opt)
+                        sortedOptionsCopy=list()
+                        for sopt in sortedOptions:
+                            if not opt <= sopt:
+                                sortedOptionsCopy.append(sopt)
+                        sortedOptions=sortedOptionsCopy
                     
             timeAfterwardsRestrictions+=(time()-starttime)
     
@@ -273,6 +283,7 @@ if __name__=="__main__":
         parser.add_argument('--only_to_be_determined_and_change_in_restriction',action='store_true')
         parser.add_argument('--only_tags_triggering_diference_in_restriction',action='store_true')
         parser.add_argument('--triggering_limited_length',action='store_true')
+        parser.add_argument('--triggering_no_good_discarded',action='store_true')
         parser.add_argument('--only_lexical',action='store_true')
         parser.add_argument('--ats_with_allowed_lemmas_file')
         
@@ -320,6 +331,7 @@ if __name__=="__main__":
             generalisationOptions.set_possibleValuesForRestrictions(ruleLearningLib.AT_GeneralisationOptions.VALUE_FOR_RESTRICTION_TRIGGERINGCHANGE)
         generalisationOptions.set_generalise(not args.only_lexical)
         generalisationOptions.set_triggeringLimitedLength(args.triggering_limited_length)
+        generalisationOptions.set_triggeringNoGoodDiscarded(args.triggering_no_good_discarded)
         
         generationMethod=AlignmentTemplateGenerationMethod.FIRST_APPROACH
         if args.rich_ats:

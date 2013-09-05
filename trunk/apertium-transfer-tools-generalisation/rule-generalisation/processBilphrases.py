@@ -32,9 +32,12 @@ if __name__=="__main__":
         structfile.close()
     
     for line in sys.stdin:
-        line=line.decode('utf-8').strip()
+        line=line.decode('utf-8')
         pieces=line.split(u'|')
         freqstr=pieces[0]
+        
+        for i in range(4):
+            pieces[i]=pieces[i].strip()
         
         atstr=u'|'.join(pieces[1:4])+" | "
         at = ruleLearningLib.AlignmentTemplate()
@@ -42,7 +45,7 @@ if __name__=="__main__":
         
         #add restrictions
         tllemmasFromDic=list()
-        wordsFromBiling=pieces[4].strip().split(u"\t")
+        wordsFromBiling= [ w.strip() for w in pieces[4].split(u"\t") ]
         at.parsed_restrictions=[]
         for word in wordsFromBiling:
             restriction=ruleLearningLib.AT_Restriction()
@@ -65,5 +68,8 @@ if __name__=="__main__":
                     at.remove_all_lemmas()
                     print at
                 else:
-                    print freqstr.strip().encode('utf-8')+" | "+at.__repr__()+" | "+u"\t".join(sl_lemmas).encode('utf-8')+" | "+u"\t".join(tl_lemmas).encode('utf-8')+" | "+u"\t".join(tllemmasFromDic).encode('utf-8') 
+                    extensionMarker=""
+                    #if not at.is_ends_aligned() and allowedStructuresSet.is_at_allowed(at):
+                    #    extensionMarker=" | extension"
+                    print freqstr.strip().encode('utf-8')+" | "+at.__repr__()+" | "+u"\t".join(sl_lemmas).encode('utf-8')+" | "+u"\t".join(tl_lemmas).encode('utf-8')+" | "+u"\t".join(tllemmasFromDic).encode('utf-8')+extensionMarker 
             

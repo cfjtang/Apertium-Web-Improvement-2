@@ -89,7 +89,7 @@ ifdef PAR_GIZADIR
 GIZADIR:=$(PAR_GIZADIR)
 endif
 
-RULELEARNINGLIBDIR=/work/vmsanchez/rules/ruleLearning
+RULELEARNINGLIBDIR=/work/vmsanchez/rules/apertium-transfer-tools-generalisation/rule-generalisation
 ifdef PAR_RULELEARNINGLIBDIR
 RULELEARNINGLIBDIR:=$(PAR_RULELEARNINGLIBDIR)
 endif
@@ -177,7 +177,8 @@ CLEANFILES=alignments.$(L1)-$(L2).LR.gz alignments.$(L1)-$(L2).RL.gz \
            alignmentTemplatesPlusLemmas.withalllemmas.onlyslpos.filtered-1-count.$(L2)-$(L1).gz \
            alignmentTemplatesPlusLemmas.withalllemmas.onlyslpos.filtered-1-count.$(L1)-$(L2).gz \
            alignment-templates.withalllemmas.togeneralise.uniq.onlyslpos.filtered-1-count.$(L2)-$(L1).tllemmasfrombiling \
-           alignment-templates.withalllemmas.togeneralise.uniq.onlyslpos.filtered-1-count.$(L1)-$(L2).tllemmasfrombiling
+           alignment-templates.withalllemmas.togeneralise.uniq.onlyslpos.filtered-1-count.$(L1)-$(L2).tllemmasfrombiling \
+           alignments.$(L1)-$(L2).gz.toBeam.gz alignments.$(L2)-$(L1).gz.toBeam.gz
            
 
 .PHONY: all step4 onlyalignments
@@ -192,7 +193,8 @@ all: evaluation.$(L1)-$(L2) evaluation.$(L2)-$(L1) \
 else
 
 all: $(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).gz \
-     $(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz
+     $(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz \
+      alignments.$(L1)-$(L2).gz.toBeam.gz alignments.$(L2)-$(L1).gz.toBeam.gz
      
 endif
 
@@ -254,24 +256,14 @@ endif
 	./preprocess_$(L1)_$(L2)-$(L1).sh > $@
 	@echo ""
 
-$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt: $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt
+$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt: $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt
 	@echo "Preparing corpora to train ("$(L1)"-"$(L2)") with GIZA++ ..."
-	$(GIZADIR)/plain2snt.out $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt 2> $(TRAINGIZA_L1_L2)/log.plain2snt
+	$(GIZADIR)/plain2snt.out $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt 2> $(TRAINGIZA_L1_L2)/log.plain2snt1
 	@echo ""
 
-$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt: $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt
-	@echo "Preparing corpora to train ("$(L1)"-"$(L2)") with GIZA++ ..."
-	$(GIZADIR)/plain2snt.out $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt 2> $(TRAINGIZA_L1_L2)/log.plain2snt
-	@echo ""
-
-$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt: $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt
+$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt: $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt
 	@echo "Preparing corpora to train ("$(L2)"-"$(L1)") with GIZA++ ..."
-	$(GIZADIR)/plain2snt.out $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt 2> $(TRAINGIZA_L2_L1)/log.plain2snt
-	@echo ""
-
-$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt: $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt
-	@echo "Preparing corpora to train ("$(L2)"-"$(L1)") with GIZA++ ..."
-	$(GIZADIR)/plain2snt.out $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt 2> $(TRAINGIZA_L2_L1)/log.plain2snt
+	$(GIZADIR)/plain2snt.out $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt 2> $(TRAINGIZA_L2_L1)/log.plain2snt1
 	@echo ""
 
 $(GIZA_ALIGNMENTS_L1_L2_LR): $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt
@@ -343,6 +335,14 @@ alignments.$(L2)-$(L1).gz: $(L21DEPENDENCIES)
 	@echo "Symmetrizing alignment ("$(L2)"-"$(L1)") by "$(SIMMETRIZATION_METHOD)
 	apertium-symmetrize-alignments -i alignments.$(L2)-$(L1).LR.gz -j alignments.$(L2)-$(L1).RL.gz -o $@ -p $(SIMMETRIZATION_METHOD) -z 2> log.symm.$(L2)-$(L1)
 
+alignments.$(L1)-$(L2).gz.toBeam.gz: alignments.$(L1)-$(L2).gz
+	@echo "Generating sentences with beam searchn format $(L1)-$(L2)"
+	bash alignmentsToBeamSearchInput.sh alignments.$(L1)-$(L2).gz $(BIL_L1_L2)
+
+alignments.$(L2)-$(L1).gz.toBeam.gz: alignments.$(L2)-$(L1).gz
+	@echo "Generating sentences with beam searchn format $(L2)-$(L1)"
+	bash alignmentsToBeamSearchInput.sh alignments.$(L2)-$(L1).gz $(BIL_L2_L1)
+	
 ifdef PAR_PROVIDED_BILPHRASES
 $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz: 
 else

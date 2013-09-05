@@ -11,15 +11,20 @@ DEFINE_string 'ats_suffix' '' 'at file suffix' 'x'
 DEFINE_string 'dir' '' 'directory where the new files and dirs will be created' 'd'
 DEFINE_string 'python_home' '' 'dir of python interpreter' 'p'
 DEFINE_string 'beam' '' 'do beam search instead of lin. prog' 'b'
+DEFINE_string 'final_boxes_index' '' 'bxoes index' 'f'
 
 FLAGS "$@" || exit $?
 eval set -- "${FLAGS_ARGV}"
 
 echo "ATS suffix: ${FLAGS_ats_suffix}" 1>&2
 
-BEAM_FLAG=""
+BEAM_FLAG="--only_n_first 1000"
 if [ "${FLAGS_beam}" != "" ]; then
-	BEAM_FLAG="--beam --only_hyps_with_maximum_local --discard_sentences_all_maximum"
+	#BEAM_FLAG="--beam --only_hyps_with_maximum_local --discard_sentences_all_maximum"
+	BEAM_FLAG="--select_boxes_minimum"
+	if [ "${FLAGS_final_boxes_index}" != "" ]; then
+	  BEAM_FLAG="$BEAM_FLAG --final_boxes_index ${FLAGS_final_boxes_index}"
+	fi
 fi
 
 mkdir -p ${FLAGS_dir}
@@ -37,7 +42,7 @@ for number in $NUMBERS; do
 done
 gzip ${SCORES_FILE%.gz}
 
-zcat ${SCORES_FILE%.gz} | ${FLAGS_python_home}python $CURDIR/maximiseScore.py --only_n_first 1000 $BEAM_FLAG  2> ${RESULT_FILE}-debug | gzip > $RULESID_FILE
+zcat ${SCORES_FILE%.gz} | ${FLAGS_python_home}python $CURDIR/maximiseScore.py $BEAM_FLAG --debug  2> ${RESULT_FILE}-debug | gzip > $RULESID_FILE
 #SED_EXPR=`zcat $RULESID_FILE | sed 's:$:p:' | tr '\n' ';' | sed 's:;$::'`
 
 #zcat $ALL_ATS_FILE | sed -n "$SED_EXPR" | gzip > $RESULT_FILE

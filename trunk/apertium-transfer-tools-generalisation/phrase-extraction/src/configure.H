@@ -74,16 +74,16 @@
 /* #undef HAVE__BOOL */
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "fsanchez@dlsi.ua.es"
+#define PACKAGE_BUGREPORT "vmsanchez@dlsi.ua.es"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "apertium-transfer-tools"
+#define PACKAGE_NAME "apertium-transfer-tools-generalisation"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "apertium-transfer-tools 1.0.0"
+#define PACKAGE_STRING "apertium-transfer-tools-generalisation 1.0.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "apertium-transfer-tools"
+#define PACKAGE_TARNAME "apertium-transfer-tools-generalisation"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""

@@ -43,7 +43,7 @@ Bla bla bla
 EOF
 }
 
-while getopts “f:d:i:p:x:e:h:t:m:yqcanrglvsubj” OPTION
+while getopts “f:d:i:p:x:e:h:t:m:yqcanrglvsubjk” OPTION
 do
      case $OPTION in
         f)
@@ -104,6 +104,9 @@ do
 		;;
 	j)
 		DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length"
+		;;
+	k)
+	       DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length --triggering_no_good_discarded"
 		;;
 	v)
 	       DIFFERENTRESTRICTIONSFLAG="--add_restrictions_to_every_tag $DIFFERENTRESTRICTIONSFLAG"
