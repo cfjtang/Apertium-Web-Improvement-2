@@ -61,20 +61,26 @@ while [ "`find $RESULTS_DIR -name "*.filter.${FLAGS_filtering_method}.finished" 
 done
 fi
 
-if [ "${FLAGS_step}" == "8"  ]; then
+
+if [ "${FLAGS_step}" == "8" -o "${FLAGS_step}" == "" -o "${FLAGS_step}" == "8-9-4" ]; then
 
 ONLYONETHRESHOLDFLAG=""
 if [ "${FLAGS_beam_search}" != "" ]; then
   ONLYONETHRESHOLDFLAG="--only_one_threshold ${FLAGS_beam_search}"
 fi
 
+if [ "${FLAGS_step}" != "8" ]; then
+  BEAMSEARCHPARTS=`expr $PARTS \* 3`
+else
+  BEAMSEARCHPARTS="$PARTS"
+fi
 #optional step: beam search
-for p in `seq $PARTS` ; do
-	qsub $CURDIR/myExperiment-cluster-v5.sh --size "${FLAGS_size}" --filtering_method "${FLAGS_filtering_method}" --source_language "${FLAGS_source_language}" --target_language "${FLAGS_target_language}" --inverse_pair "${FLAGS_inverse_pair}" --dev_corpus "${FLAGS_dev_corpus}" --test_corpus "${FLAGS_test_corpus}" --bilingual_phrases_id "${FLAGS_bilingual_phrases_id}" --step "8" --touch_when_finished "$RESULTS_DIR/$p.beamsearch.${FLAGS_filtering_method}.finished" --part "${p}-${PARTS}" --alg_version ${FLAGS_alg_version} $ONLYONETHRESHOLDFLAG
+for p in `seq $BEAMSEARCHPARTS` ; do
+	qsub $CURDIR/myExperiment-cluster-v5.sh --size "${FLAGS_size}" --filtering_method "${FLAGS_filtering_method}" --source_language "${FLAGS_source_language}" --target_language "${FLAGS_target_language}" --inverse_pair "${FLAGS_inverse_pair}" --dev_corpus "${FLAGS_dev_corpus}" --test_corpus "${FLAGS_test_corpus}" --bilingual_phrases_id "${FLAGS_bilingual_phrases_id}" --step "8" --touch_when_finished "$RESULTS_DIR/$p.beamsearch.${FLAGS_filtering_method}.finished" --part "${p}-${BEAMSEARCHPARTS}" --alg_version ${FLAGS_alg_version} $ONLYONETHRESHOLDFLAG
 done
 
 
-while [ "`find $RESULTS_DIR -name "*.beamsearch.${FLAGS_filtering_method}.finished" | wc -l`" != "$PARTS" ] ; do 
+while [ "`find $RESULTS_DIR -name "*.beamsearch.${FLAGS_filtering_method}.finished" | wc -l`" != "$BEAMSEARCHPARTS" ] ; do 
 	sleep 30; 
 done
 fi
@@ -83,7 +89,7 @@ fi
 
 PARTS_TUNING=18
 
-if [ "${FLAGS_step}" == "9" -o "${FLAGS_step}" == "9-4"  ]; then
+if [ "${FLAGS_step}" == "9" -o "${FLAGS_step}" == "9-4" -o "${FLAGS_step}" == "" -o "${FLAGS_step}" == "8-9-4" ]; then
 #optional step: maximisation after beam search
 for p in `seq $PARTS_TUNING` ; do
 	qsub $CURDIR/myExperiment-cluster-v5.sh --size "${FLAGS_size}" --filtering_method "${FLAGS_filtering_method}" --source_language "${FLAGS_source_language}" --target_language "${FLAGS_target_language}" --inverse_pair "${FLAGS_inverse_pair}" --dev_corpus "${FLAGS_dev_corpus}" --test_corpus "${FLAGS_test_corpus}" --bilingual_phrases_id "${FLAGS_bilingual_phrases_id}" --step "9" --touch_when_finished "$RESULTS_DIR/$p.maximisation.${FLAGS_filtering_method}.finished" --alg_version ${FLAGS_alg_version}  --part "${p}"
@@ -94,10 +100,12 @@ while [ "`find $RESULTS_DIR -name "*.maximisation.${FLAGS_filtering_method}.fini
 done
 fi
 
+NODESWITHCG="cn01.iuii.ua.local|cn02.iuii.ua.local|cn04.iuii.ua.local|cn05.iuii.ua.local|cn06.iuii.ua.local|cn07.iuii.ua.local|cn08.iuii.ua.local|cn09.iuii.ua.local|cn10.iuii.ua.local|cn11.iuii.ua.local|cn12.iuii.ua.local|cn13.iuii.ua.local|cn14.iuii.ua.local|cn15.iuii.ua.local|cn16.iuii.ua.local|cn17.iuii.ua.local|cn18.iuii.ua.local|cn19.iuii.ua.local"
+
 #create generalisation-fortuning gz!!
 #Only needed for box threshold. safe to ignore
 
-if [ "${FLAGS_step}" == "" -o "${FLAGS_step}" == "4" -o "${FLAGS_step}" == "3-4" -o "${FLAGS_step}" == "9-4" ]; then
+if [ "${FLAGS_step}" == "" -o "${FLAGS_step}" == "4" -o "${FLAGS_step}" == "3-4" -o "${FLAGS_step}" == "9-4" -o "${FLAGS_step}" == "8-9-4" ]; then
 
 if [ "${FLAGS_beam_search}" != "" ]; then
 	qsub $CURDIR/myExperiment-cluster-v5.sh --size "${FLAGS_size}" --filtering_method "${FLAGS_filtering_method}" --source_language "${FLAGS_source_language}" --target_language "${FLAGS_target_language}" --inverse_pair "${FLAGS_inverse_pair}" --dev_corpus "${FLAGS_dev_corpus}" --test_corpus "${FLAGS_test_corpus}" --bilingual_phrases_id "${FLAGS_bilingual_phrases_id}" --step "3" --touch_when_finished $RESULTS_DIR/1.tuningfrombeam.${FLAGS_filtering_method}.finished --part "0-box" --only_one_threshold ${FLAGS_beam_search} --alg_version ${FLAGS_alg_version}
@@ -109,7 +117,7 @@ else
 
 	#third step: tuning with subrules
 	for p in `seq $PARTS_TUNING` ; do
-		qsub $CURDIR/myExperiment-cluster-v5.sh --size "${FLAGS_size}" --filtering_method "${FLAGS_filtering_method}" --source_language "${FLAGS_source_language}" --target_language "${FLAGS_target_language}" --inverse_pair "${FLAGS_inverse_pair}" --dev_corpus "${FLAGS_dev_corpus}" --test_corpus "${FLAGS_test_corpus}" --bilingual_phrases_id "${FLAGS_bilingual_phrases_id}" --step "3" --touch_when_finished $RESULTS_DIR/$p.tuning.${FLAGS_filtering_method}.finished --part "${p}-subrules" --alg_version ${FLAGS_alg_version}
+		qsub -l h="$NODESWITHCG" $CURDIR/myExperiment-cluster-v5.sh --size "${FLAGS_size}" --filtering_method "${FLAGS_filtering_method}" --source_language "${FLAGS_source_language}" --target_language "${FLAGS_target_language}" --inverse_pair "${FLAGS_inverse_pair}" --dev_corpus "${FLAGS_dev_corpus}" --test_corpus "${FLAGS_test_corpus}" --bilingual_phrases_id "${FLAGS_bilingual_phrases_id}" --step "3" --touch_when_finished $RESULTS_DIR/$p.tuning.${FLAGS_filtering_method}.finished --part "${p}-subrules" --alg_version ${FLAGS_alg_version}
 	done
 
 	while [ "`find $RESULTS_DIR -name "*.tuning.${FLAGS_filtering_method}.finished" | wc -l`" != "$PARTS_TUNING" ] ; do 

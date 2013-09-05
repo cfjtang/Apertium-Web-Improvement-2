@@ -2599,14 +2599,13 @@ class AlignmentTemplate(object):
 					if compare_lowercase_first_letter(dictionaryTranslations[i],self.parsed_tl_lexforms[j].get_lemma()) and self.parsed_sl_lexforms[i].get_pos() == self.parsed_tl_lexforms[j].get_pos():
 						atLeastOneMatches=True
 				if not atLeastOneMatches:
-					#atLeastOneMatchesContrary=False
-					#for k in self.get_tl_words_aligned_with(i):
-					#	for m in self.get_sl_words_aligned_with(k):
-					#		if dictionaryTranslations[m]==self.parsed_tl_lexforms[k].get_lemma() and self.parsed_sl_lexforms[m].get_pos() == self.parsed_tl_lexforms[k].get_pos():
-					#			atLeastOneMatchesContrary=True
-					#if not atLeastOneMatchesContrary:
-					#	return False
-					return False
+					atLeastOneMatchesContrary=False
+					for k in self.get_tl_words_aligned_with(i):
+						for m in self.get_sl_words_aligned_with(k):
+							if dictionaryTranslations[m]==self.parsed_tl_lexforms[k].get_lemma() and self.parsed_sl_lexforms[m].get_pos() == self.parsed_tl_lexforms[k].get_pos():
+								atLeastOneMatchesContrary=True
+					if not atLeastOneMatchesContrary or len(self.get_tl_words_aligned_with(i)) > 1:
+						return False
 		
 		for j in range(len(self.parsed_tl_lexforms)):
 			if self.parsed_tl_lexforms[j].get_pos() not in closedCategoriesSet:
@@ -2615,14 +2614,13 @@ class AlignmentTemplate(object):
 					if compare_lowercase_first_letter(dictionaryTranslations[i],self.parsed_tl_lexforms[j].get_lemma()) and self.parsed_sl_lexforms[i].get_pos() == self.parsed_tl_lexforms[j].get_pos():
 						atLeastOneMatches=True
 				if not atLeastOneMatches:
-					#atLeastOneMatchesContrary=False
-					#for k in self.get_sl_words_aligned_with(j):
-					#	for m in self.get_tl_words_aligned_with(k):
-					#		if dictionaryTranslations[k]==self.parsed_tl_lexforms[m].get_lemma() and self.parsed_sl_lexforms[k].get_pos() == self.parsed_tl_lexforms[m].get_pos():
-					#			atLeastOneMatchesContrary=True
-					#if not atLeastOneMatchesContrary:
-					#	return False
-					return False
+					atLeastOneMatchesContrary=False
+					for k in self.get_sl_words_aligned_with(j):
+						for m in self.get_tl_words_aligned_with(k):
+							if dictionaryTranslations[k]==self.parsed_tl_lexforms[m].get_lemma() and self.parsed_sl_lexforms[k].get_pos() == self.parsed_tl_lexforms[m].get_pos():
+								atLeastOneMatchesContrary=True
+					if not atLeastOneMatchesContrary or len(self.get_sl_words_aligned_with(j)) > 1:
+						return False
 		return True
 
 	def get_specificity_level(self):
@@ -2687,6 +2685,7 @@ class AT_GeneralisationOptions(object):
 		self.possibleValuesForRestrictions=AT_GeneralisationOptions.VALUE_FOR_RESTRICTION_ALL
 		self.generalise=True
 		self.triggeringLimitedLength=False
+		self.triggeringNoGoodDiscarded=False
 	
 	def set_genWhenEmptySLCats(self,p_genWhenEmptySLCats ):
 		self.genWhenEmptySLCats=p_genWhenEmptySLCats
@@ -2715,6 +2714,9 @@ class AT_GeneralisationOptions(object):
 	def set_triggeringLimitedLength(self,p_lml):
 		self.triggeringLimitedLength=p_lml
 	
+	def set_triggeringNoGoodDiscarded(self,p_ngd):
+		self.triggeringNoGoodDiscarded=p_ngd
+	
 	def get_genWhenEmptySLCats(self):
 		return self.genWhenEmptySLCats
 	
@@ -2742,8 +2744,9 @@ class AT_GeneralisationOptions(object):
 	def is_triggeringLimitedLength(self):
 		return self.triggeringLimitedLength
 	
-
-
+	def is_triggeringNoGoodDiscarded(self):
+		return self.triggeringNoGoodDiscarded
+	
 class AT_AbstractClassPosAndTags(object):
 	def __init__(self):
 		self.pos=u""
@@ -3750,7 +3753,7 @@ def read_tag_groups(inputfile):
 			tags=parts[1].split(u",")
 			pos=None
 			if len(parts)==3:
-				pos=parts[2]
+				pos=parts[2].split(u",")
 			tag_groups[groupname]=(tags,pos)
 	return tag_groups
 	
@@ -3793,7 +3796,7 @@ def get_tag_group_from_tag(tag,taggroups,pos,usingEmptyTags=True):
 		else:
 			numGroupsFound=0
 			for groupIndex in taggroups.keys():
-				if tag in taggroups[groupIndex][0] and (pos==taggroups[groupIndex][1] or None==taggroups[groupIndex][1]):
+				if tag in taggroups[groupIndex][0] and (pos in taggroups[groupIndex][1] or len(taggroups[groupIndex][1])==0):
 					numGroupsFound+=1
 					groupFound=groupIndex
 			if numGroupsFound!=1:

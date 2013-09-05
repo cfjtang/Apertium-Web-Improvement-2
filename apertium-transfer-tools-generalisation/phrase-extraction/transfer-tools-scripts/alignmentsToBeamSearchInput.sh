@@ -4,7 +4,7 @@ INPUTFILE=$1
 BILDICTIONARY=$2
 WDIR=`dirname $1`
 
-zcat $INPUTFILE | sed 's:^[^|]*| ::'  | sed 's:\^:| ^:'   |  sed 's:| *\^:| ':g | sed 's:\$ *|: |:g' | sed 's:\$ *\^: :g' | sed 's:^| ::' | gzip > $INPUTFILE.toBeam.step1.gz
+zcat $INPUTFILE | sed 's:\^\$:^*unknown$:g' | sed 's:^[^|]*| ::'  | sed 's:\^:| ^:'   |  sed 's:| *\^:| ':g | sed 's:\$ *|: |:g' | sed 's:\$ *\^: :g' | sed 's:^| ::' | gzip > $INPUTFILE.toBeam.step1.gz
 
 zcat $INPUTFILE.toBeam.step1.gz | cut -f 1 -d '|'  | sed  's:^ *::' | sed  's_ *$__' | sed -r 's_ _\t_g' | sed -r 's:_: :g'  | apertium-apply-biling --biling $BILDICTIONARY | gzip > $INPUTFILE.toBeam.bildic.gz
 

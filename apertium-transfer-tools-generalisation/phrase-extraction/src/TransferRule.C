@@ -1046,8 +1046,8 @@ wstring
 TransferRule::category_name(const wstring& lemma, const wstring& tags) {
   wstring catname=L"";
 
-  if (lemma.length()>0)
-    catname+=StringUtils::substitute(lemma,L"#",L"_")+L"_";
+  if (lemma.length()>0)//TODO: codificar bien el caracter extraño
+    catname+=StringUtils::substitute(StringUtils::substitute(lemma,L"#",L"_"),L"\u2019",L"_")+L"_";
 
   catname+=StringUtils::substitute(StringUtils::substitute(tags,L".",L""),L"*",L"_");
 

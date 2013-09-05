@@ -14,6 +14,7 @@ import os
 import ruleLearningLib
 import subprocess
 import sys
+from collections import defaultdict
 
 class RuleList(object):
     
@@ -75,8 +76,12 @@ class RuleApplicationHypothesis(object):
     
     config_tl="ca"
     apertium_data_dir=None
+    minimumCoverdedWords=False
+    boxesInvDict=dict()
     
-    def __init__(self):
+    WORDFORWORDRULEID=-1
+    
+    def __init__(self,p_lengthOfSentence=1):
         self.appliedRules=set()
         self.discardedRules=set()
         self.source=list()
@@ -84,6 +89,8 @@ class RuleApplicationHypothesis(object):
         self.reference=list()
         self.score=0.0
         self.processedSlWords=0
+        self.lengthOfSentence=p_lengthOfSentence
+        self.rulesList=list()
     
     def is_empty(self):
         return len(self.appliedRules) == 0 and len(self.discardedRules) == 0
@@ -118,8 +125,11 @@ class RuleApplicationHypothesis(object):
         return self.score
     
     def get_score_with_num_rules(self):
-        return self.score*10000+ 0.1*(1 - (len(self.discardedRules)*1.0/RuleApplicationHypothesis.totalNumRules))
-    
+        if RuleApplicationHypothesis.minimumCoverdedWords:
+            return self.score*10000+ 0.1*(1 - (sum( len(ruleApp[1]) for ruleApp in self.rulesList if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID  )*1.0/self.lengthOfSentence))
+        else:
+            return self.score*10000+ 0.1*(1 - (len(self.discardedRules)*1.0/RuleApplicationHypothesis.totalNumRules))
+
     def get_processed_sl_words(self):
         return self.processedSlWords
     def set_processed_sl_words(self,p_numpslwords):
@@ -128,13 +138,18 @@ class RuleApplicationHypothesis(object):
     def can_be_combined_with(self,otherhyp):
         return len(self.appliedRules & otherhyp.discardedRules) == 0 and len(otherhyp.appliedRules & self.discardedRules)==0 
     
+    def add_to_rules_list(self,ruleid,posSequence):
+        self.rulesList.append((ruleid,posSequence))
+    
     #Concatenate two hypothesis
     def create_new_combined_with(self,otherhyp):
-        combined=RuleApplicationHypothesis()
+        combined=RuleApplicationHypothesis(self.lengthOfSentence)
         combined.appliedRules=self.appliedRules | otherhyp.appliedRules
         combined.discardedRules=self.discardedRules | otherhyp.discardedRules
         combined.translation=self.translation + otherhyp.translation
         combined.processedSlWords=self.processedSlWords+otherhyp.processedSlWords
+        combined.rulesList.extend(self.rulesList)
+        combined.rulesList.extend(otherhyp.rulesList)
         return combined
     
     def to_str_for_scoring(self):
@@ -144,16 +159,17 @@ class RuleApplicationHypothesis(object):
         return u"|".join([source,test,ref]).encode('utf-8')
         
     def __repr__(self):
-        return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+u" ".join([ lf.unparse() for lf in self.translation])
+        return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+unicode(self.rulesList)+u" | "+u" ".join([ lf.unparse() for lf in self.translation])
     
     def to_str_for_debug(self):
-        return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+ u" ".join([ lf.unparse() for lf in self.source]) +" | " + u" ".join([ lf.unparse() for lf in self.translation])+" |ref: "+u" ".join([ lf.unparse() for lf in self.reference])
+        return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+unicode(self.rulesList)+u" | "+ u" ".join([ lf.unparse() for lf in self.source]) +" | " + u" ".join([ lf.unparse() for lf in self.translation])+" |ref: "+u" ".join([ lf.unparse() for lf in self.reference])
     def parse(self,rawstr):
         parts=rawstr.split(u"|")
-        if len(parts) >=3:
+        if len(parts) >=4:
             self.score=float(parts[0].strip())
             self.appliedRules=eval(parts[1].strip())
             self.discardedRules=eval(parts[2].strip())
+            self.rulesList=eval(parts[3].strip())
         else:
             raise Exception()
     
@@ -175,6 +191,14 @@ class RuleApplicationHypothesis(object):
     def set_apertium_data_dir(cls,p_datadir):
         if p_datadir != "":
             cls.apertium_data_dir=p_datadir
+    
+    @classmethod
+    def set_minimum_covered_words(cls,p_isminimum):
+        cls.minimumCoverdedWords=p_isminimum
+    
+    @classmethod
+    def set_inv_boxes_dict(cls,p_boxesdict):
+        cls.boxesInvDict=p_boxesdict
     
     @classmethod
     def score_hypotheses(cls,hypothesisList):
@@ -282,13 +306,143 @@ class RuleApplicationHypothesis(object):
             return status,None
     
     @classmethod
+    def select_rules_maximize_score_boxes_applied(cls,ll_hypothesis,boxesInvDict):
+        
+        #TODO: change
+        MAX_LENGTH=5
+        
+        boxesDict=dict()
+        for key in boxesInvDict:
+            boxesDict[boxesInvDict[key]]=key
+        
+        countsApplied=defaultdict(int)
+        countsBanned=defaultdict(int)
+        rulesMinimumAtLeastOneTime=set()
+        
+        for numSentence,hypothesesOfSentence in enumerate(ll_hypothesis):
+            bestHyp=hypothesesOfSentence[0]
+            #for ruleid in bestHyp.get_applied_rules():
+            #    countsApplied[ruleid]+=1
+            ruleList=bestHyp.rulesList
+            
+            optimalRuleApplicationsSet=set()
+            for otherHyp in hypothesesOfSentence[1:]:
+                currentPosition=0
+                for ruleApp in otherHyp.rulesList:
+                    if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID:
+                        optimalRuleApplicationsSet.add((currentPosition,len(ruleApp[1]),ruleApp[0]))
+                    currentPosition+=len(ruleApp[1])
+            
+            #build list of lexical categories
+            bannedStartPositions=set()
+            bannedEndPositions=set()
+            listOfPos=list()
+            positionsWhereRuleStartAndLength=list()
+            currentPosition=0
+            for ruleApp in ruleList:
+                listOfPos.extend(ruleApp[1])
+                if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID:
+                    countsApplied[ruleApp[0]]+=1
+                    rulesMinimumAtLeastOneTime.add(ruleApp[0])
+                    positionsWhereRuleStartAndLength.append((currentPosition,len(ruleApp[1])))
+                    
+                    for l in range(len(ruleApp[1])-1):
+                        bannedEndPositions.add(currentPosition+l)
+                        bannedStartPositions.add(currentPosition+l+1)
+                    
+                currentPosition+=len(ruleApp[1])
+            
+            debug("List of lexical categories of sentence "+str(numSentence+1)+": "+" ".join(listOfPos))
+            debug("positionsWhereRuleStartAndLength: "+str(positionsWhereRuleStartAndLength))
+            
+            debug("Supersets added:")
+            #increase also frequency of supersegments of minimum set
+            for pos,length,ruleid in optimalRuleApplicationsSet:
+                if length > 1 and pos not in bannedStartPositions and pos+length-1 not in bannedEndPositions:
+                    #it must be a superset of an existing sequence
+                    isSuperset=False
+                    for minStartPosition,minLength in positionsWhereRuleStartAndLength:
+                        if pos<=minStartPosition and pos+length >= minStartPosition+minLength:
+                            isSuperset=True
+                    if isSuperset:
+                        countsApplied[ruleid]+=1
+                        debug("\t" +str(pos)+": "+"__".join(listOfPos[pos:pos+length]))
+            
+            #for each applied rule, compute 
+            #rules left-intersecting with it 
+            #rulesLeftIntersecting=set()
+            for startPosition,length in positionsWhereRuleStartAndLength:
+                debug("Discarded rules for ("+str(startPosition)+") "+"__".join(listOfPos[startPosition:startPosition+length]))
+                for endingPositionOffset in range(length-1):
+                    endingPositionIncluded=startPosition+endingPositionOffset
+                    for lengthOfLeftIntersectinRule in range(2,MAX_LENGTH+1):
+                        startingPositinoOfIntersecting=endingPositionIncluded-lengthOfLeftIntersectinRule +1
+                        if startingPositinoOfIntersecting >= 0 and startingPositinoOfIntersecting < startPosition:
+                            seqOfPosOfIntersecting=listOfPos[startingPositinoOfIntersecting:endingPositionIncluded+1]
+                            strForm="__".join(seqOfPosOfIntersecting)
+                            debug("\t"+strForm)
+                            if strForm in boxesDict:
+                                ruleid=boxesDict[strForm]
+                                #rulesLeftIntersecting.add(ruleid)
+                                countsBanned[ruleid]+=1
+            #for ruleid in rulesLeftIntersecting:
+                #countsBanned[ruleid]+=1
+                    
+        if ruleLearningLib.DEBUG:
+            debug("Frequencies of applied pos sequences:")
+            for key in countsApplied.keys():
+                posSeq=""
+                if key in boxesInvDict:
+                    posSeq=boxesInvDict[key]
+                isMininimumStr=""
+                if key in rulesMinimumAtLeastOneTime:
+                    isMininimumStr="m "
+                debug(isMininimumStr+"id="+str(key)+" "+posSeq+" : "+str(countsApplied[key])+" - "+str(countsBanned[key])+" = "+str(countsApplied[key]-countsBanned[key]))
+
+        return [ key for key in countsApplied.keys() if countsApplied[key] > countsBanned[key] and key in rulesMinimumAtLeastOneTime ]
+        
+    @classmethod
+    def select_rules_maximize_score_with_super_heuristic(cls,ll_hypothesis):
+        #hypothesis are already sorted by score and num. of discarded rules
+        
+        #create set of frozensets of rules to be removed to obtain the maximum score
+        countsApplied=defaultdict(int)
+        countsDiscarded=defaultdict(int)
+        totalRules=set()
+        setsOfRulesToDiscard=set()
+        for hypothesesOfSentence in ll_hypothesis:
+            for hyp in hypothesesOfSentence:
+                totalRules.update(set(hyp.get_applied_rules()))
+            bestHyp=hypothesesOfSentence[0]
+            for ruleid in bestHyp.get_applied_rules():
+                countsApplied[ruleid]+=1
+            for ruleid in bestHyp.get_discarded_rules():
+                countsDiscarded[ruleid]+=1
+        
+        finalDiscardedRules=set()
+        for discardedRule in countsDiscarded.keys():
+            if countsDiscarded[discardedRule] > countsApplied[discardedRule]:
+                finalDiscardedRules.add(discardedRule) 
+        
+        debug("Final discarded rules: "+str(finalDiscardedRules))
+        
+        return totalRules - finalDiscardedRules
+        
+    @classmethod
     def select_rules_maximize_score_with_beam_search(cls,ll_hypothesis,beamSize=10000, isDiff=True):
         
-        maxExecutedRules=max( max(len(hyp.get_applied_rules()) for hyp in hypothesesOfSentence ) for hypothesesOfSentence in ll_hypothesis)
-        numSentences=len(ll_hypothesis)
-        PartitionSelectionHypothesis.set_parameters_for_minimised_num_rules(numSentences, maxExecutedRules)
+        totalRules=set()
+        for hypothesesOfSentence in ll_hypothesis:
+            for hyp in hypothesesOfSentence:
+                totalRules.update(set(hyp.get_discarded_rules()))
+
+        #numSentences=len(ll_hypothesis)
+        #PartitionSelectionHypothesis.set_parameters_for_minimised_num_rules(numSentences, maxExecutedRules)
+        RuleApplicationHypothesis.set_num_total_rules(len(totalRules))
         
-        debug("Max executed rules per hypothesis: "+str(maxExecutedRules))
+        
+        #debug("Max executed rules per hypothesis: "+str(maxExecutedRules))
+        debug("Total rules: "+str(len(totalRules)))
         
         hypothesisList=set()
         hypothesisList.add(PartitionSelectionHypothesis())
@@ -355,6 +509,7 @@ class PartitionSelectionHypothesis(object):
     def __init__(self):
         self.ruleAppliccationHyps=list()
         self.totalScore=0.0
+        self.totalScoreWithoutNum=0.0
         self.totalAppliedRules=frozenset()
         self.totalDiscardedRules=frozenset()
     
@@ -364,10 +519,15 @@ class PartitionSelectionHypothesis(object):
     def create_new_combined_with(self,ruleApplicationHypothesis):
         partitionSelectionHypothesis= PartitionSelectionHypothesis()
         partitionSelectionHypothesis.ruleAppliccationHyps = self.ruleAppliccationHyps +  [ruleApplicationHypothesis]
-        partitionSelectionHypothesis.totalScore = self.totalScore+ (ruleApplicationHypothesis.get_score()*10000 + (1.0*PartitionSelectionHypothesis.maxExecutedRules-len(ruleApplicationHypothesis.get_applied_rules()))/(PartitionSelectionHypothesis.numSentences*PartitionSelectionHypothesis.maxExecutedRules+1))
+        partitionSelectionHypothesis.totalScoreWithoutNum= self.totalScoreWithoutNum +ruleApplicationHypothesis.get_score()
+        #partitionSelectionHypothesis.totalScore = self.totalScore+ (ruleApplicationHypothesis.get_score()*10000 + (1.0*PartitionSelectionHypothesis.maxExecutedRules-len(ruleApplicationHypothesis.get_applied_rules()))/(PartitionSelectionHypothesis.numSentences*PartitionSelectionHypothesis.maxExecutedRules+1))
         partitionSelectionHypothesis.totalAppliedRules = frozenset(self.totalAppliedRules | ruleApplicationHypothesis.get_applied_rules())
         partitionSelectionHypothesis.totalDiscardedRules = frozenset(self.totalDiscardedRules | ruleApplicationHypothesis.get_discarded_rules())
+        partitionSelectionHypothesis.compute_score_with_num_rules()
         return partitionSelectionHypothesis
+    
+    def compute_score_with_num_rules(self):
+        self.totalScore=self.totalScoreWithoutNum+  0.1*(RuleApplicationHypothesis.totalNumRules-len(self.totalDiscardedRules))/RuleApplicationHypothesis.totalNumRules
     
     def get_total_score(self):
         return self.totalScore
@@ -391,7 +551,7 @@ class PartitionSelectionHypothesis(object):
         return cmp(self.__hash__(),obj.__hash__())
     
 class ParallelSentence(ruleLearningLib.AlignmentTemplate):
-    def compute_coverages_and_bleu(self,ruleList,beamSize,boxesCoverage=False,boxesDic=dict()):
+    def compute_coverages_and_bleu(self,ruleList,beamSize,boxesCoverage=False,boxesDic=dict(),allowIncompatibleRules=False):
         
         #debug("Keys in boxesDic: "+str(boxesDic.keys()))
         
@@ -403,7 +563,7 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
         boxesInverseDic=dict()
         for key in boxesDic.keys():
             boxesInverseDic[boxesDic[key]]=key
-         
+        RuleApplicationHypothesis.set_inv_boxes_dict(boxesInverseDic) 
         
         #Compute rightmost TL word aligned with any SL word for each SL prefix
         tlprefixes=list()
@@ -418,7 +578,7 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
         ruleApplicationPools=list()
         for i in range(len(self.parsed_sl_lexforms)+1):
             ruleApplicationPools.append([])
-        ruleApplicationPools[0].append(RuleApplicationHypothesis())
+        ruleApplicationPools[0].append(RuleApplicationHypothesis(len(self.parsed_sl_lexforms)))
 
         #Beam search
         for i in range(len(self.parsed_sl_lexforms)):
@@ -460,11 +620,12 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
                 if boxesCoverage:
                     boxid=boxesDic[at.get_pos_list_str()]
                     if not boxid in prevAppliedBoxes:
-                        hyp=RuleApplicationHypothesis()
+                        hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
                         hyp.appliedRules.add(boxid)
                         for prevBox in prevAppliedBoxes:
                             hyp.discardedRules.add(prevBox)
                         hyp.set_processed_sl_words(len(at.parsed_sl_lexforms))
+                        hyp.add_to_rules_list(boxid, at.get_pos_list_str().split("__"))
                         
                         #apply at to matching segment
                         tlsegment=at.apply(self.parsed_sl_lexforms[i:],self.tl_lemmas_from_dictionary[i:],self.parsed_restrictions[i:])
@@ -473,7 +634,7 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
                         
                         prevAppliedBoxes.add(boxid)
                 else:
-                    hyp=RuleApplicationHypothesis()
+                    hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
                     hyp.appliedRules.add(at.id)
                     for discAt in ruleMatchingList[:j]:
                         hyp.discardedRules.add(discAt.id)
@@ -486,13 +647,14 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
                     newPartialHypotheses.append(hyp)
 
             #take into account also the case in which no rule is applied
-            hyp=RuleApplicationHypothesis()
+            hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
             if boxesCoverage:
                 for boxid in prevAppliedBoxes:
                     hyp.discardedRules.add(boxid)
             else:
                 for at in ruleMatchingList:
                     hyp.discardedRules.add(at.id)
+            hyp.add_to_rules_list(RuleApplicationHypothesis.WORDFORWORDRULEID, [ self.parsed_sl_lexforms[i].get_pos() ])
             tlsegment=list()
             if self.parsed_sl_lexforms[i].is_unknown():
                 bilDicTranslation=self.parsed_sl_lexforms[i]
@@ -514,7 +676,7 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
             #combine previous hypothesis
             for hyp in ruleApplicationPools[i]:
                 for hyp2 in newPartialHypotheses:
-                    if hyp.can_be_combined_with(hyp2):
+                    if allowIncompatibleRules or hyp.can_be_combined_with(hyp2):
                         newhyp=hyp.create_new_combined_with(hyp2)
                         newhyp.set_source(self.parsed_sl_lexforms[:newhyp.get_processed_sl_words()])
                         newhyp.set_reference(tlprefixes[newhyp.get_processed_sl_words()-1])
@@ -529,7 +691,12 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
         debug(str(len(ruleApplicationPools[-1]))+" hypothesis from previous steps before pruning")
         #score previous hypothesis and remove
         RuleApplicationHypothesis.score_hypotheses(ruleApplicationPools[-1])
-        ruleApplicationPools[i]=sorted(ruleApplicationPools[-1],key=lambda h: h.get_score(),reverse=True)[:beamSize]
+        ruleApplicationPools[-1]=sorted(ruleApplicationPools[-1],key=lambda h: h.get_score_with_num_rules(),reverse=True)[:beamSize]
         debug(str(len(ruleApplicationPools[-1]))+" hypothesis from previous steps after pruning")
-            
+        
+        if ruleLearningLib.DEBUG:
+            debug("Final result with score with num. rules")
+            for ryp in ruleApplicationPools[-1]:
+                debug(str(ryp.get_score_with_num_rules())+" -> "+unicode(ryp).encode('utf-8'))
+        
         return ruleApplicationPools[-1]

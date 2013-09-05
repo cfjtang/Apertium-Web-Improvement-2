@@ -23,6 +23,8 @@ if __name__ == "__main__":
     parser.add_argument('--final_boxes_index')
     parser.add_argument('--beam_size',default='1000')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--minimum_covered_words', action='store_true')
+    parser.add_argument('--allow_incompatible_rules', action='store_true')
     args = parser.parse_args(sys.argv[1:])
     
     if args.debug:
@@ -35,6 +37,7 @@ if __name__ == "__main__":
     
     RuleApplicationHypothesis.set_target_language(args.target_language)
     RuleApplicationHypothesis.set_apertium_data_dir(args.apertium_data_dir)
+    RuleApplicationHypothesis.set_minimum_covered_words(args.minimum_covered_words)
     
     #load alignment templates
     gfile=gzip.open(args.alignment_templates)
@@ -58,6 +61,6 @@ if __name__ == "__main__":
         parallelSentence=ParallelSentence()
         parallelSentence.parse(line, parseTlLemmasFromDic=True)
         parallelSentence.add_explicit_empty_tags()
-        finalHypotheses=parallelSentence.compute_coverages_and_bleu(ruleList,int(args.beam_size),boxesCoverage,boxesDic)
+        finalHypotheses=parallelSentence.compute_coverages_and_bleu(ruleList,int(args.beam_size),boxesCoverage,boxesDic,args.allow_incompatible_rules)
         print u"|||".join([unicode(h) for h in finalHypotheses]).encode('utf-8')
             

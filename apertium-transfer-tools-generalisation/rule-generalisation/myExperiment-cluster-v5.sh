@@ -56,6 +56,7 @@ DEFINE_string 'touch_when_finished' '' 'File to be created when job finised' 'u'
 DEFINE_string 'alg_version' 'NORMAL' '' 'o'
 DEFINE_string 'only_one_threshold' '' 'Threshold for beam search' 'n'
 
+BEAMSEARCH_ALLOWINCOMP="allowincomp"
 
 FLAGS "$@" || exit $?
 eval set -- "${FLAGS_ARGV}"
@@ -92,6 +93,9 @@ elif [  "$VERSION" == "REFTOBILINGEXPLICITMULTIPLERESTRIGGER" ]; then
 	TRANSFERMODEFLAG=""
 elif [  "$VERSION" == "REFTOBILINGEXPLICITMULTIPLERESTRIGGERFAST" ]; then
 	NEWGENERATIONALGORITHMFLAG="-j -v"
+	TRANSFERMODEFLAG=""
+elif [  "$VERSION" == "REFTOBILINGEXPLICITMULTIPLERESTRIGGERFASTNOGOODR" ]; then
+	NEWGENERATIONALGORITHMFLAG="-k -v"
 	TRANSFERMODEFLAG=""
 elif [  "$VERSION" == "REFTOBILINGFIRSTLEMMASEXPLICITMULTIPLERESDETMF" ]; then
 	NEWGENERATIONALGORITHMFLAG="-l -v -u"
@@ -159,9 +163,9 @@ echo "Copying sources to node $SIZE"
 mkdir -p $TARGET_SOURCES
 mkdir -p $TARGET_LOCAL
 
-cp  $HOME/sources/ruleLearning.tar.gz $TARGET_SOURCES
+cp  $HOME/sources/apertium-transfer-tools-generalisation.tar.gz $TARGET_SOURCES
 cd $TARGET_SOURCES
-tar xzf ruleLearning.tar.gz
+tar xzf apertium-transfer-tools-generalisation.tar.gz
 
 cp  $HOME/local.tar.gz $TARGET_LOCAL/..
 cd $TARGET_LOCAL/..
@@ -173,13 +177,13 @@ cp  $HOME/.pythonbrew/pythons/Python-2.6.7.tar.gz $TARGET_SOURCES
 cd $TARGET_SOURCES
 tar xzf Python-2.6.7.tar.gz
 
-mkdir -p $TARGET_SOURCES/apertium-transfer-tools-v2/transfer-tools-scripts
-cp $HOME/sources/apertium-transfer-tools-v2/transfer-tools-scripts/apertium-${PAIR}.posttransfer.ptx  $TARGET_SOURCES/apertium-transfer-tools-v2/transfer-tools-scripts
+#mkdir -p $TARGET_SOURCES/apertium-transfer-tools-v2/transfer-tools-scripts
+#cp $HOME/sources/apertium-transfer-tools-v2/transfer-tools-scripts/apertium-${PAIR}.posttransfer.ptx  $TARGET_SOURCES/apertium-transfer-tools-v2/transfer-tools-scripts
 
 #create mode for beam search
-bash $TARGET_SOURCES/ruleLearning/createModeForBeamSearchEvaluation.sh $TARGET_LOCAL/share/apertium/modes/${SL}-${TL}.mode "" $TARGET_SOURCES/apertium-transfer-tools-v2/transfer-tools-scripts/apertium-${PAIR}.posttransfer.ptx > $TARGET_LOCAL/share/apertium/modes/${TL}_lex_from_beam-${TL}.mode
+bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/createModeForBeamSearchEvaluation.sh $TARGET_LOCAL/share/apertium/modes/${SL}-${TL}.mode "" $TARGET_SOURCES/apertium-transfer-tools-generalisation/phrase-extraction/transfer-tools-scripts/apertium-${PAIR}.posttransfer.ptx > $TARGET_LOCAL/share/apertium/modes/${TL}_lex_from_beam-${TL}.mode
 
-
+ln -s $TARGET_LOCAL/share/apertium/modes $TARGET_SOURCES/modes 
 mkdir -p $TARGET_SOURCES/apertium-$APERTIUM_PAIR
 cp $HOME/sources/apertium-${APERTIUM_PAIR}/${PAIR}.autobil.shortrestrictions.bin $TARGET_SOURCES/apertium-$APERTIUM_PAIR
 
@@ -214,7 +218,7 @@ CORPORA_DIR=$TARGET_SOURCES/evaluation-corpora
 if [ "$STEP" == "test" ]; then
 	mkdir -p $EXPERIMENT_DIR/beamevaluationtest
 	echo '^el<det><def><m><sg>$ ^ordenador<n><m><sg>$ | ^el<det><def><m><sg>$ ^ordinador<n><m><sg>$ | ^el<det><def><m><sg>$ ^ordinador<n><m><sg>$' > $EXPERIMENT_DIR/beamevaluationtest/hypothesis
-	bash $TARGET_SOURCES/ruleLearning/evaluateBeamSearchHypothesis.sh --input_file $EXPERIMENT_DIR/beamevaluationtest/hypothesis --target_language ca --use_tmp_dir $EXPERIMENT_DIR/beamevaluationtest --apertium_data_dir $TARGET_LOCAL/share/apertium > $EXPERIMENT_DIR/beamevaluationtest/testresult
+	bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/evaluateBeamSearchHypothesis.sh --input_file $EXPERIMENT_DIR/beamevaluationtest/hypothesis --target_language ca --use_tmp_dir $EXPERIMENT_DIR/beamevaluationtest --apertium_data_dir $TARGET_LOCAL/share/apertium > $EXPERIMENT_DIR/beamevaluationtest/testresult
 	cp -r $EXPERIMENT_DIR/beamevaluationtest $HOME
 fi
 
@@ -226,8 +230,8 @@ fi
 if [ "$STEP" == "0" -o  "$STEP" == "" ]; then
 
 echo "Pre-Generalising $SIZE"
-cd $TARGET_SOURCES/ruleLearning
-bash $TARGET_SOURCES/ruleLearning/run-experiment-linear-incremental-parallel-v8.sh $NEWGENERATIONALGORITHMFLAG -q -d $EXPERIMENT_DIR  -f $TARGET_SOURCES/shuf${SIZE}l5.alignmentTemplatesPlusLemmas.withalllemmas.onlyslpos.filtered-1-count.${PAIR}.gz -i shuf$SIZE -h $TARGET_SOURCES/Python-2.6.7/bin/ -t 1 -x "_$PAIR"
+cd $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation
+bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/run-experiment-linear-incremental-parallel-v8.sh $NEWGENERATIONALGORITHMFLAG -q -d $EXPERIMENT_DIR  -f $TARGET_SOURCES/shuf${SIZE}l5.alignmentTemplatesPlusLemmas.withalllemmas.onlyslpos.filtered-1-count.${PAIR}.gz -i shuf$SIZE -h $TARGET_SOURCES/Python-2.6.7/bin/ -t 1 -x "_$PAIR"
 
 #copy results to HOME
 mkdir -p $HOME/results/experiments-linear-l5-$PAIR/$BILPHRASES_ID/shuf$SIZE
@@ -253,7 +257,7 @@ fi
 
 echo "Generalising $SIZE $PART"
 
-bash $TARGET_SOURCES/ruleLearning/run-experiment-linear-incremental-parallel-v8.sh $NEWGENERATIONALGORITHMFLAG -q -d $EXPERIMENT_DIR  -i shuf$SIZE -h $TARGET_SOURCES/Python-2.6.7/bin/ -y -t 2 $PART_GENERALISATION_ARGUMENT -x "_$PAIR"
+bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/run-experiment-linear-incremental-parallel-v8.sh $NEWGENERATIONALGORITHMFLAG -q -d $EXPERIMENT_DIR  -i shuf$SIZE -h $TARGET_SOURCES/Python-2.6.7/bin/ -y -t 2 $PART_GENERALISATION_ARGUMENT -x "_$PAIR"
 
 #copy results to HOME
 mkdir -p $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/generalisation
@@ -316,8 +320,8 @@ if [ "$STEP" == "2" -o  "$STEP" == "" -o  "$STEP" == "1+" -o "$STEP" == "1-2" ];
 
 	if [ "$FILTERING_METHOD" == "" -o "$FILTERING_METHOD" == "$FILTERING_NAME" ]; then
 		echo "Filtering $FILTERING_NAME $SIZE $PART"
-		cd $TARGET_SOURCES/ruleLearning
-		bash $TARGET_SOURCES/ruleLearning/filter-and-linear-prog-incremental-parallel-v6.sh -q -d $EXPERIMENT_DIR -i shuf$SIZE  -h $TARGET_SOURCES/Python-2.6.7/bin/ -s $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" $FILTERING_ADDPARAMETER
+		cd $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation
+		bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/filter-and-linear-prog-incremental-parallel-v6.sh -q -d $EXPERIMENT_DIR -i shuf$SIZE  -h $TARGET_SOURCES/Python-2.6.7/bin/ -s $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" $FILTERING_ADDPARAMETER
 
 		#copy results to HOME
 		cd $EXPERIMENT_DIR/shuf$SIZE
@@ -385,14 +389,14 @@ if [ "$STEP" == "8" ]; then
 			#do beam search
 			for THRESHOLD in `LC_ALL=C seq $SEQ_START $SEQ_STEP $SEQ_END`; do
 				if [ "${FLAGS_only_one_threshold}" == "" -o  "${FLAGS_only_one_threshold}" == "$THRESHOLD" ]; then
-					bash $TARGET_SOURCES/ruleLearning/beamSearch.sh --target_language $TL --tag_groups_seqs_suffix "_$PAIR" --ats_filtering_dir $EXPERIMENT_DIR/shuf$SIZE/filtering-$FILTERING_NAME/ats/  --dir $EXPERIMENT_DIR/shuf$SIZE/beamsearch-$FILTERING_NAME/ --sentences $SENTENCES_ARGUMENT  --ats_suffix "-f-$THRESHOLD.result.gz" $PART_ARGUMENT --python_home $TARGET_SOURCES/Python-2.6.7/bin/ --apertium_data_dir $TARGET_LOCAL/share/apertium --final_boxes_index  $EXPERIMENT_DIR/shuf$SIZE/generalisation/finalboxesindex
+					bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/beamSearch.sh --target_language $TL --tag_groups_seqs_suffix "_$PAIR" --ats_filtering_dir $EXPERIMENT_DIR/shuf$SIZE/filtering-$FILTERING_NAME/ats/  --dir $EXPERIMENT_DIR/shuf$SIZE/beamsearch-$FILTERING_NAME/ --sentences $SENTENCES_ARGUMENT  --ats_suffix "-f-$THRESHOLD.result.gz" $PART_ARGUMENT --python_home $TARGET_SOURCES/Python-2.6.7/bin/ --apertium_data_dir $TARGET_LOCAL/share/apertium --final_boxes_index  $EXPERIMENT_DIR/shuf$SIZE/generalisation/finalboxesindex
 				fi
 			done
 			
 			#copy result to home
 			cd $EXPERIMENT_DIR/shuf$SIZE
-			tar czf beamsearch-$FILTERING_NAME$PART_SUFFIX.tar.gz beamsearch-$FILTERING_NAME
-			cp beamsearch-$FILTERING_NAME$PART_SUFFIX.tar.gz $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE
+			tar czf beamsearch${BEAMSEARCH_ALLOWINCOMP}-$FILTERING_NAME$PART_SUFFIX.tar.gz beamsearch-$FILTERING_NAME
+			cp beamsearch${BEAMSEARCH_ALLOWINCOMP}-$FILTERING_NAME$PART_SUFFIX.tar.gz $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE
 		fi
 	done
 	
@@ -402,8 +406,9 @@ fi
 if [ "$STEP" == "9" ]; then
 	echo "Maximising score $FILTERING_NAME after beam search"
 	
-	mkdir -p $EXPERIMENT_DIR/shuf$SIZE
+	mkdir -p $EXPERIMENT_DIR/shuf$SIZE/generalisation
 	
+	cp $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/generalisation/finalboxesindex $EXPERIMENT_DIR/shuf$SIZE/generalisation
 	for FILTERING_DATA in $ALL_FILTERING_METHODS ; do
 		FILTERING_NAME=`echo $FILTERING_DATA | cut -f 1 -d ':'`
 		if [ "$FILTERING_METHOD" == "" -o "$FILTERING_METHOD" == "$FILTERING_NAME" ]; then
@@ -432,7 +437,7 @@ if [ "$STEP" == "9" ]; then
 			
 			#get beam search results
 			cd $EXPERIMENT_DIR/shuf$SIZE
-			for file in `ls $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/beamsearch-${FILTERING_NAME}-[0-9]*-[0-9]*.tar.gz` ; do
+			for file in `ls $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/beamsearch${BEAMSEARCH_ALLOWINCOMP}-${FILTERING_NAME}-[0-9]*-[0-9]*.tar.gz` ; do
 				cp "$file" ./
 				tar xzf `basename $file`
 			done
@@ -451,12 +456,12 @@ if [ "$STEP" == "9" ]; then
 				   
 				  
 				
-			           bash $TARGET_SOURCES/ruleLearning/selectRulesMaximiseScore.sh  --beam_search_dir $EXPERIMENT_DIR/shuf$SIZE/beamsearch-$FILTERING_NAME  --dir $EXPERIMENT_DIR/shuf$SIZE/maximise-score-$FILTERING_NAME --ats_suffix "-f-$THRESHOLD.result.gz" --python_home $TARGET_SOURCES/Python-2.6.7/bin/ --beam "yes"
+			           bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/selectRulesMaximiseScore.sh  --beam_search_dir $EXPERIMENT_DIR/shuf$SIZE/beamsearch-$FILTERING_NAME  --dir $EXPERIMENT_DIR/shuf$SIZE/maximise-score-$FILTERING_NAME --ats_suffix "-f-$THRESHOLD.result.gz" --python_home $TARGET_SOURCES/Python-2.6.7/bin/ --beam "yes" --final_boxes_index $EXPERIMENT_DIR/shuf$SIZE/generalisation/finalboxesindex
 					
 				   #copy results to home
 				   cd $EXPERIMENT_DIR/shuf$SIZE
-				   tar czf maximise-score-${FILTERING_NAME}-$THRESHOLD.tar.gz maximise-score-$FILTERING_NAME
-				   cp maximise-score-${FILTERING_NAME}-$THRESHOLD.tar.gz $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE
+				   tar czf maximise-score${BEAMSEARCH_ALLOWINCOMP}-${FILTERING_NAME}-$THRESHOLD.tar.gz maximise-score-$FILTERING_NAME
+				   cp maximise-score${BEAMSEARCH_ALLOWINCOMP}-${FILTERING_NAME}-$THRESHOLD.tar.gz $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE
 				   rm -R $EXPERIMENT_DIR/shuf$SIZE/maximise-score-$FILTERING_NAME
 				fi
 				
@@ -544,17 +549,19 @@ if [ "$STEP" == "3" -o  "$STEP" == "" -o  "$STEP" == "1+" ]; then
 			FILTERING_NAME=`echo $FILTERING_DATA | cut -f 1 -d ':'`
 			if [ "$FILTERING_METHOD" == "" -o "$FILTERING_METHOD" == "$FILTERING_NAME" ]; then
 				
-				MAXIMISE_SCORE_FILES=`find $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/ -name "maximise-score-${FILTERING_NAME}-*.tar.gz"`
+				MAXIMISE_SCORE_FILES=`find $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/ -maxdepth 1 -name "maximise-score${BEAMSEARCH_ALLOWINCOMP}-${FILTERING_NAME}-*.tar.gz"`
 				NUM_MAXIMISE_SCORE_FILES=`echo "$MAXIMISE_SCORE_FILES" | wc -l`
 				
-				if [ -e "$HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/filtering-$FILTERING_NAME.tar.gz" ] ; then
-					cp  $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/filtering-$FILTERING_NAME.tar.gz ./
-					tar xzf filtering-$FILTERING_NAME.tar.gz
-				elif [ "$MAXIMISE_SCORE_FILES" != "0" ] ; then
+				if [ "$NUM_MAXIMISE_SCORE_FILES" != "0" ] ; then
 					for msfile in $MAXIMISE_SCORE_FILES ; do
 					  cp $msfile ./
 					  tar xzf `basename $msfile`
 					done
+				fi
+				
+				if [ -e "$HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/filtering-$FILTERING_NAME.tar.gz" ] ; then
+					cp  $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/filtering-$FILTERING_NAME.tar.gz ./
+					tar xzf filtering-$FILTERING_NAME.tar.gz
 				else
 					for file in `ls $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/filtering-${FILTERING_NAME}-[0-9]*-[0-9]*.tar.gz` ; do
 						cp "$file" ./
@@ -591,15 +598,15 @@ if [ "$STEP" == "3" -o  "$STEP" == "" -o  "$STEP" == "1+" ]; then
 			
 			TUNING_FROM_BEAMSEARCH_FLAG=""
 			#if [ -e "$EXPERIMENT_DIR/shuf$SIZE/maximise-score-$FILTERING_NAME.tar.gz" ]; then
-			NUM_LOC_MAXIMISE_SCORE_FILES=`find $EXPERIMENT_DIR/shuf$SIZE -name "maximise-score-${FILTERING_NAME}-*.tar.gz" | wc -l`
+			NUM_LOC_MAXIMISE_SCORE_FILES=`find $EXPERIMENT_DIR/shuf$SIZE -maxdepth 1 -name "maximise-score${BEAMSEARCH_ALLOWINCOMP}-${FILTERING_NAME}-*.tar.gz" | wc -l`
 			if [ "$NUM_LOC_MAXIMISE_SCORE_FILES" != "0" ]; then
 					TUNING_FROM_BEAMSEARCH_FLAG="-v"
 			fi
 			
 			
 			echo "Tuning $FILTERING_NAME $SIZE $PART with different box thresholds"
-			cd $TARGET_SOURCES/ruleLearning
-			parallel -j 1 -i bash -c "bash $TARGET_SOURCES/ruleLearning/tune-experiment-linear-incremental-parallel-v8.sh $INVERSE_PAIR_TUNING_FLAG $TRANSFERMODEFLAG $TUNING_FROM_BEAMSEARCH_FLAG -q -j -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS  -s $SL -t $TL -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -m {} > $EXPERIMENT_DIR/shuf$SIZE/debug-tuning-$FILTERING_NAME-box{}" -- `LC_ALL=C seq $SEQ_BOX_START $SEQ_BOX_STEP $SEQ_BOX_END`
+			cd $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation
+			parallel -j 1 -i bash -c "bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/tune-experiment-linear-incremental-parallel-v8.sh $INVERSE_PAIR_TUNING_FLAG $TRANSFERMODEFLAG $TUNING_FROM_BEAMSEARCH_FLAG -q -j -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS  -s $SL -t $TL -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -m {} > $EXPERIMENT_DIR/shuf$SIZE/debug-tuning-$FILTERING_NAME-box{}" -- `LC_ALL=C seq $SEQ_BOX_START $SEQ_BOX_STEP $SEQ_BOX_END`
 			
 			cd $EXPERIMENT_DIR/shuf$SIZE
 			for boxthres in `LC_ALL=C seq $SEQ_BOX_START $SEQ_BOX_STEP $SEQ_BOX_END`; do
@@ -626,12 +633,15 @@ if [ "$STEP" == "3" -o  "$STEP" == "" -o  "$STEP" == "1+" ]; then
 			if [ "$PART_MODE" != "box" -a "$PART_MODE" != "optwer" ]; then
 			
 				echo "Tuning $FILTERING_NAME $SIZE $PART subrules"
+				echo "$TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/tune-experiment-linear-incremental-parallel-v8.sh $TRANSFERMODEFLAG $TUNING_FROM_BEAMSEARCH_FLAG -q  -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -s $SL -t $TL  -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -z $INVERSE_PAIR_TUNING_FLAG"
+				LENGTH=`zcat $EXPERIMENT_DIR/shuf$SIZE/maximise-score-${FILTERING_NAME}/rulesid-f-${SEQ_START}.gz | wc -l`
+				echo "Length of maximisation result: $LENGTH"
 				
-				cd $TARGET_SOURCES/ruleLearning
-				bash $TARGET_SOURCES/ruleLearning/tune-experiment-linear-incremental-parallel-v8.sh $TRANSFERMODEFLAG $TUNING_FROM_BEAMSEARCH_FLAG -q  -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -s $SL -t $TL  -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -z $INVERSE_PAIR_TUNING_FLAG > $EXPERIMENT_DIR/shuf$SIZE/debug-tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules
+				cd $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation
+				bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/tune-experiment-linear-incremental-parallel-v8.sh $TRANSFERMODEFLAG $TUNING_FROM_BEAMSEARCH_FLAG -q  -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -s $SL -t $TL  -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -z $INVERSE_PAIR_TUNING_FLAG 2>&1 > $EXPERIMENT_DIR/shuf$SIZE/debug-tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules
 				cd $EXPERIMENT_DIR/shuf$SIZE
 				
-				 tar czf tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules.tar.gz tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules
+				tar czf tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules.tar.gz tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules
 				if [ "$TUNING_FROM_BEAMSEARCH_FLAG" != "" ]; then
 					mkdir -p $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/beamresult
 					cp tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-subrules.tar.gz $HOME/results/experiments-linear-l5-${PAIR}/$BILPHRASES_ID/shuf$SIZE/beamresult
@@ -647,8 +657,8 @@ if [ "$STEP" == "3" -o  "$STEP" == "" -o  "$STEP" == "1+" ]; then
 			
 				echo "Tuning $FILTERING_NAME $SIZE $PART optwer"
 				
-				cd $TARGET_SOURCES/ruleLearning
-				bash $TARGET_SOURCES/ruleLearning/tune-experiment-linear-incremental-parallel-v8.sh $TRANSFERMODEFLAG -q  -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -s $SL -t $TL  -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -k $TARGET_SOURCES/shuf${SIZE}corpus-$PAIR $INVERSE_PAIR_TUNING_FLAG > $EXPERIMENT_DIR/shuf$SIZE/debug-tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-optwer
+				cd $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation
+				bash $TARGET_SOURCES/apertium-transfer-tools-generalisation/rule-generalisation/tune-experiment-linear-incremental-parallel-v8.sh $TRANSFERMODEFLAG -q  -p $APERTIUM_PREFIX -f $APERTIUM_SOURCES -s $SL -t $TL  -d $EXPERIMENT_DIR/shuf$SIZE/ -c $CORPORA_DIR/$DEV_CORPUS -e $CORPORA_DIR/$TEST_CORPUS -r $SEQ_START -a $SEQ_STEP -b $SEQ_END -o $FILTERING_NAME -x "_$PAIR" -h $TARGET_SOURCES/Python-2.6.7/bin/ -k $TARGET_SOURCES/shuf${SIZE}corpus-$PAIR $INVERSE_PAIR_TUNING_FLAG > $EXPERIMENT_DIR/shuf$SIZE/debug-tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-optwer
 				cd $EXPERIMENT_DIR/shuf$SIZE
 				
 				tar czf tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-optwer.tar.gz tuning-$FILTERING_NAME-${SEQ_START}-${SEQ_STEP}-${SEQ_END}-optwer

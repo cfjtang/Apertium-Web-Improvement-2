@@ -17,12 +17,22 @@ if __name__ == "__main__":
     parser.add_argument('--discard_sentences_all_maximum',action='store_true')
     parser.add_argument('--beam',action='store_true')
     parser.add_argument('--beam_size',default='10000')
+    parser.add_argument('--super_heuristic',action='store_true')
+    parser.add_argument('--select_boxes_minimum',action='store_true')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--final_boxes_index')
     args = parser.parse_args(sys.argv[1:])
     
     if args.debug:
         DEBUG=True
         ruleLearningLib.DEBUG=True
+    
+    
+    boxesInvDic=dict()
+    if args.final_boxes_index:
+        for line in open(args.final_boxes_index):
+            parts=line.split("\t")
+            boxesInvDic[int(parts[0])]=parts[1].strip()
     
     nfirst=None
     if args.only_n_first:
@@ -35,9 +45,12 @@ if __name__ == "__main__":
         if nfirst != None:
             parts=parts[:nfirst]
         ll_hypothesis.append([ RuleApplicationHypothesis.create_and_parse(part) for part in parts])
-
-    if args.only_hyps_with_maximum_local:
+    
+    print >> sys.stderr, "Maximising score of "+str(len(ll_hypothesis))+" sentences"
+    
+    if args.only_hyps_with_maximum_local or args.super_heuristic or args.select_boxes_minimum:
         
+        #remove all non-maximum hypotheses
         for numSentence,l_hypothesis in enumerate(ll_hypothesis):
             firstNotMaximumIndex=len(l_hypothesis)
             maximumScore=l_hypothesis[0].get_score()
@@ -51,7 +64,21 @@ if __name__ == "__main__":
                 l_hypothesis[:]=l_hypothesis[:firstNotMaximumIndex]
             debug("Sentence "+str(numSentence)+": "+str(firstNotMaximumIndex)+" hypothesses with maximum BLEU")
         
-    if not args.beam:
+        
+    if args.beam:
+        appliedRules,valueOfSolution=RuleApplicationHypothesis.select_rules_maximize_score_with_beam_search(ll_hypothesis, beamSize=int(args.beam_size), isDiff=True)
+        for ruleid in sorted(appliedRules):
+            print str(ruleid)
+        print >> sys.stderr, "Value: "+str(valueOfSolution)
+    elif args.super_heuristic:
+        appliedRules=RuleApplicationHypothesis.select_rules_maximize_score_with_super_heuristic(ll_hypothesis)
+        for ruleid in sorted(appliedRules):
+            print str(ruleid)
+    elif args.select_boxes_minimum:
+        appliedRules=RuleApplicationHypothesis.select_rules_maximize_score_boxes_applied(ll_hypothesis,boxesInvDic)
+        for ruleid in sorted(appliedRules):
+            print str(ruleid)
+    else:
         status,solution,valueOfSolution=RuleApplicationHypothesis.select_rules_maximize_score(ll_hypothesis)
         if status == LpStatusOptimal:
             #print ids of rules
@@ -64,8 +91,3 @@ if __name__ == "__main__":
             print >> sys.stderr, "Value: "+str(valueOfSolution)
         else:
             print >> sys.stderr, "Wrong Status: "+str(LpStatus[status])
-    else:
-        appliedRules,valueOfSolution=RuleApplicationHypothesis.select_rules_maximize_score_with_beam_search(ll_hypothesis, beamSize=int(args.beam_size), isDiff=True)
-        for ruleid in sorted(appliedRules):
-            print str(ruleid)
-        print >> sys.stderr, "Value: "+str(valueOfSolution)

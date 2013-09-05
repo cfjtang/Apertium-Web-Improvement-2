@@ -48,7 +48,7 @@ fi
 
 BOXESFLAG=""
 if [ "${FLAGS_final_boxes_index}" != "NONE" ] ; then
-  BOXESFLAG="--final_boxes_index ${FLAGS_final_boxes_index}"
+  BOXESFLAG="--final_boxes_index ${FLAGS_final_boxes_index} --minimum_covered_words --allow_incompatible_rules"
 fi
 
 
@@ -56,6 +56,6 @@ fi
 #change to source code dir to allow python to find script
 pushd $CURDIR
 
-zcat ${FLAGS_sentences} | ${FLAGS_python_home}python $CURDIR/beamSearch.py --alignment_templates $ATS_FILE --tag_groups_file_name $CURDIR/taggroups${FLAGS_tag_groups_seqs_suffix} --tag_sequences_file_name $CURDIR/tagsequences${FLAGS_tag_groups_seqs_suffix} --apertium_data_dir "${FLAGS_apertium_data_dir}" $BOXESFLAG 2> ${FLAGS_dir}/scores${FLAGS_result_infix}${FLAGS_ats_suffix}-debug | gzip > ${FLAGS_dir}/scores${FLAGS_result_infix}${FLAGS_ats_suffix}
+zcat ${FLAGS_sentences} | ${FLAGS_python_home}python $CURDIR/beamSearch.py --target_language ${FLAGS_target_language} --alignment_templates $ATS_FILE --tag_groups_file_name $CURDIR/taggroups${FLAGS_tag_groups_seqs_suffix} --tag_sequences_file_name $CURDIR/tagsequences${FLAGS_tag_groups_seqs_suffix} --apertium_data_dir "${FLAGS_apertium_data_dir}" $BOXESFLAG 2> ${FLAGS_dir}/scores${FLAGS_result_infix}${FLAGS_ats_suffix}-debug | gzip > ${FLAGS_dir}/scores${FLAGS_result_infix}${FLAGS_ats_suffix}
 
 popd
