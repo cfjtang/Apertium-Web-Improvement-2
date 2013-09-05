@@ -1,0 +1,227 @@
+DELIMITERS = "<.>" "<!>" "<?>" "<...>" "<¶>" "<:>" ;
+ 
+SETS
+
+LIST N = (n) ;  #noun
+LIST A = (adj) ; 
+LIST Num = (num) ;
+LIST Prop = (np) ;   #proper noun
+LIST CS = (cnjsub) ;
+LIST CC = (cnjcoo) ;
+LIST Adv = (adv) ;
+LIST Det = (det) ;    #determiner
+LIST V = (vblex) (vbser) (vbmod) ;    #verb
+LIST Pr = (pr) ;  			#Preposition
+LIST Interj = (ij) ;
+LIST Pron = (prn) ;
+LIST Pcle = (part) ;
+LIST Copula = (vbser);
+LIST Infm = (infm);
+LIST VHafa = (vbhaver) ;
+LIST VVera = (vbser) ;
+LIST Supn = (supn) ;
+
+LIST Pers = (pers) ;
+LIST Itg = (itg) ;
+
+LIST Cog = (cog) ;		#surname
+LIST Ant = (ant) ;		#first name
+
+
+
+LIST Pri = (pri) ;
+LIST Past = (past) ;
+LIST Prs = (prs) ;
+LIST Pss = (pss) ;
+LIST Inf = (inf) ;
+LIST Supin = (supn) ;
+
+LIST Sg = (sg) ;
+LIST Pl = (pl) ;
+LIST Count = (ct) ;
+
+LIST Sg1 = (p1 sg) ;
+LIST Sg2 = (p2 sg) ;
+LIST Sg3 = (p3 sg) ;
+LIST Pl1 = (p1 pl) ;
+LIST Pl2 = (p2 pl) ;
+LIST Pl3 = (p3 pl) ;
+
+LIST Nom = (nom) ;
+LIST Acc = (acc) ;
+LIST Gen = (gen) ;
+LIST Dat = (dat) ;
+LIST Voc = (voc) ;		#vocative case
+
+LIST Fem = (f) ;
+LIST Msc = (m) ;
+LIST Neu = (nt) ;
+
+LIST Ind = (ind) ;
+LIST Def = (def) ;
+
+
+LIST NUMBER = sg pl ;
+LIST GENDER = m f nt mfn ;
+LIST PERSON = (p1 sg) (p2 sg) (p3 sg) (p1 pl) (p2 pl) (p3 pl) ;
+LIST NAGD = nom acc dat gen ;
+
+SET V-IND-FIN = Pri OR Past OR Prs OR Pss ;
+SET V-PRESENT-3PLURAL = V + Prs + Pl3 ;
+SET V-COP = Copula ;
+SET SG2-OR-SG3 = Sg2 OR Sg3 ;
+SET REL-OR-ITG = (prn rel) OR (prn itg) ;
+SET EOS  = ("\.") OR ("?") OR ("!") OR ("¶") ;
+
+SET S-BOUNDARY  = (prn itg) OR (prn rel) OR ("\;") OR (":") OR ("-") OR ("–") OR CS OR EOS ;
+SET QUESTION  = ("?");
+
+LIST POSPRN = (prn pos) ;
+LIST DEMPRN = (prn dem) ;
+
+SET NounMscFem = (n m) OR (n f) OR (n mfn) ;
+SET NounMscNeu = (n m) OR (n nt) OR (n mfn) ;
+SET NounFemNeu = (n f) OR (n nt) OR (n mfn) ;
+
+
+# Boundary sets 
+
+
+SET WORD = N | V | A | Pr | Pron | Det | Adv | CC | CS | Interj | Num | ("\?") ;
+
+SET PRE-N =  A | Det | Num | (n gen) | (prn gen) | CC ; # Det???
+
+LIST COMMA = (",") (cm) ;
+
+SET MARK =  COMMA | ("\\") | ("\;") ; 
+
+SET WORDMARK = WORD | MARK ;
+
+SET NPNH = WORDMARK - PRE-N ;
+SET NPNHA = WORDMARK - PRE-N - Adv ;
+SET NOT-ADV = WORDMARK - Adv ;
+
+SET NP-MEMBER = PRE-N | N | Pron ;
+
+SET NP-HEAD = N | Pron | Prop ;
+
+
+###############################################################################
+#  Morphological disambiguation
+#
+
+SECTION
+
+REMOVE A + Fem IF (0  $$NAGD) (*1 NounMscNeu + $$NAGD BARRIER NPNHA LINK NOT 0 Fem);
+REMOVE A + Msc IF (0  $$NAGD) (*1 NounFemNeu + $$NAGD BARRIER NPNHA LINK NOT 0 Msc);
+REMOVE A + Neu IF (0  $$NAGD) (*1 NounMscFem + $$NAGD BARRIER NPNHA LINK NOT 0 Neu);
+
+
+###############################--------from ICENLP--------#########################################
+
+
+###---PROPER NOUNS---
+SELECT:r1 Gen IF (0 Prop + Cog) (0 Gen) (-1C N) ; #hús Láru 
+	#Anna Guðmundsdóttir, Guðrún Guðmundsdóttir
+SELECT:r2 Gen IF (0 Prop + Cog) (0 Gen OR Acc OR Dat) (0 (".+dóttur"r)) (-1 Prop) (-1C Gen) ;#ask Fran if regex works here
+SELECT:r3 Dat IF (0 Prop + Cog) (0 Gen OR Acc OR Dat) (0 (".+dóttur"r)) (-1 Prop) (-1C Dat) ;
+SELECT:r4 Acc IF (0 Prop + Cog) (0 Gen OR Acc OR Dat) (0 (".+dóttur"r)) (-1 Prop) (-1C Acc) ;
+REMOVE:r9 Nom IF (O Prop + Ant + Fem) (0 Nom) (1 Cog) (1 (".+dóttur"r));
+SELECT:r10 Nom IF (O Prop + Ant + Fem) (0 Nom) (1 Cog) (1 (".+dóttir"r));
+	#
+SELECT:r4 Acc IF (0 Cog) (0 (".+son"r)) (-1 Ant) (-1C Acc) ;
+SELECT:r5 Nom IF (0 Cog) (0 (".+son"r)) (-1 Ant) (-1C Nom);
+SELECT:r6 Dat IF (0 Ant) (0 Msc) (1 Cog) (1 (".+syni"r));
+SELECT:r7 Gen IF (0 Ant) (0 Msc) (1 Cog) (1 (".+sonar"r));
+ 
+###---NOUNS---
+REMOVE:r N IF (0 N) (0 V) (-1C Prop) ; #IceNLP line 26
+REMOVE:r N IF (0 N) (NOT 0 Gen) (-1C N) (NOT -1 Gen) ;#IceNLP line 28
+SELECT:r POSPRN IF (0 ("sinn")) (-1C N) ;#IceNLP line 31
+SELECT:r N IF (0 ("sinn")) (-1 ("<fyrsta>") OR ("<annað>") OR ("<þetta>")) ;#Textasafn
+SELECT:r N IF (0 ("sinn")) (NOT -1 N) (NOT 1 N);#sinn as a pronoun needs a noun before or after
+REMOVE:r N IF (0 ("á")) (-1C Adv); #IceNLP line 32
+REMOVE:r N IF (0 V + Supin) (0 N) (-1C VHafa) ;#IceNLP line 36
+REMOVE:r N IF (0 V) (0 N) (NOT 0 Nom) (-1C VVera) ;#IceNLP line 43
+REMOVE:r N IF (O A) (O N) (-1C VVera) (-2C Pron) ;#IceNLP line 45 Hann er lasinn
+
+REMOVE:r N IF (O A) (O N) (1C N) (0C Nom) (1C Nom) ;#IceNLP line 61
+REMOVE:r N IF (O A) (O N) (1C N) (0C Acc) (1C Acc) ;#IceNLP line 61
+REMOVE:r N IF (O A) (O N) (1C N) (0C Dat) (1C Dat) ;#IceNLP line 61
+REMOVE:r N IF (O A) (O N) (1C N) (0C Gen) (1C Gen) ;#IceNLP line 61
+
+REMOVE:r Nom IF (0 ("<árið>")) (1 Num) (1 ("[0-9]+"r)); #IceNLP line 64
+REMOVE:r N IF (0 ("<á>")) (1C N OR A); #IceNLP line 65
+REMOVE:r N IF (0 N) (O Prop) (1 Prop); #IceNLP line 67
+REMOVE:r N IF (0 N) (0 V) (1C Pron) (1C Nom OR Acc) ;#IceNLP line 69
+
+
+###---VIÐ---
+SELECT:r Pr IF (0 ("<við>")) (0 Pr) ((1C N) OR (1C Pron)) ;#select preposition if followed by noun or pronoun??  (could fail in case of inverted word order)
+SELECT:r Pron IF (0 ("<við>")) (0 Pron) (-1 ("að")) ;#select pronoun if preceded by "að"
+SELECT:r Pron IF (0 ("<við>")) (0 Pron) (1C V) ;#select pronoun if followed by verb?? (could fail in case of inverted word order)
+
+###---AÐ---
+SELECT:r Infm IF (0 ("að")) (1 Inf);
+REMOVE:r Infm IF (0 ("að")) (NOT 1 Inf);
+REMOVE:r Pr IF (0 ("að")) (NOT 1 Dat);
+SELECT:r Pr IF (0 ("að")) (1C Dat);
+SELECT:r Inf IF (0 Inf) (-1 ("að"));
+
+###---prepositions
+SELECT:r Pr IF (0 ("eftir")) (0 Adv) (0 Pr) (NOT 1 S-BOUNDARY)   ;
+SELECT:r Pr IF (0 ("við")) (1 N) (1 A) ;
+SELECT:r Pr IF (0 ("<á>")) (1C Dat) ;
+SELECT:r N IF (0 ("<á>")) (-1 Pr) ;
+SELECT:r V IF (0 ("<á>")) ((-1 Pers) OR (-1 Itg + Nom) OR (-1C Nom)) ;
+
+SELECT:r Dat IF ((0 N) OR (0 Pron) OR (0 A)) (0 Dat) (-1 ("af"))   ;
+SELECT:r Dat IF ((0 N) OR (0 Pron) OR (0 A)) (0 Dat) (-1 ("hjá"));
+SELECT:r Dat IF ((0 N) OR (0 Pron) OR (0 A)) (0 Dat) (-1 ("úr"));
+SELECT:r Dat IF ((0 N) OR (0 Pron) OR (0 A)) (0 Dat) (-1 ("handa"));
+SELECT:r Dat IF ((0 N) OR (0 Pron) OR (0 A)) (0 Dat) (-1 ("frá"));
+
+SELECT:r Gen IF ((0 N) OR (0 Pron) OR (0 A)) (0 Gen) (-1 ("án"));
+SELECT:r Gen IF ((0 N) OR (0 Pron) OR (0 A)) (0 Gen) (-1 ("auk"));
+SELECT:r Gen IF ((0 N) OR (0 Pron) OR (0 A)) (0 Gen) (-1 ("innan"));
+SELECT:r Gen IF ((0 N) OR (0 Pron) OR (0 A)) (0 Gen) (-1 ("milli"));
+SELECT:r Gen IF ((0 N) OR (0 Pron) OR (0 A)) (0 Gen) (-1 ("til"));
+SELECT:r Gen IF ((0 N) OR (0 Pron) OR (0 A)) (0 Gen) (-1 ("vegna"));
+
+SELECT:r Acc IF ((0 N) OR (0 Pron)) (0 Acc) (-1 ("um"));
+
+REMOVE:r V IF (0 V) (-1C Pr) 	;		#do not allow verbs after a preposition (t.d. "beina")
+
+
+
+###---VERBS---
+SELECT:r V-PRESENT-3PLURAL IF (0 V-PRESENT-3PLURAL) (0 Inf) (-1 Pron + Pl3 OR N + Pl3) ; #3p pl verb VS. infinitive
+SELECT:r CS IF (0 ("sem")) (NOT -1 ("<ég>")) ;#for sem choose conjunction unless the preceding word is ég
+REMOVE:r V IF (0 V) (0 N) (-1C A) ; 
+SELECT:r VHafa IF (0 ("hafa")) (0 ("hefja")) (1 Supn) ; 
+SELECT:r Supn IF (-1 ("hafa")) ; 
+SELECT:r VVera IF ((NOT -1 Sg1) OR (NOT -1 Sg1) OR (NOT -3 Sg1)) ; #sé
+
+###---ADJECTIVES---
+REMOVE:r A IF (0 A) (0 V) (-1C N OR Pron) ; #IceNLP line 80
+REMOVE:r A IF (0 A) (0 V) (-1 ("að")) (NOT 0 Dat) ; #IceNLP line 84
+REMOVE:r A IF (0 A) (0 N) (-1C Pr) (NOT 1 N) ; #IceNLP line 86
+REMOVE:r A IF (0 A) (0 N) (-1C DEMPRN) ; #IceNLP line 91
+REMOVE:r A IF (0 A) (0 V) (-1C N) (1C Pr) ; #IceNLP line 94
+REMOVE:r A IF (0 A) (0 Adv) (1C A) ; #IceNLP 105
+REMOVE:r A IF (0 ("<fyrst>")) (1C N OR Prop OR Pron) (2C V-IND-FIN); #IceNLP 111
+SELECT:r Adv IF (0 (".+lega"r)) (0 A) (0 Adv) (1C A OR Adv) ;
+SELECT:r Adv IF (0 (".+lega"r)) (0 A) (0 Adv) (-1C V) (NOT 1 A OR Adv OR N) ;
+REMOVE:r A IF (0 (".+lega"r)) (0 A) (0 Adv) (NOT 1 N) (NOT 1 A) ;#IceNLP 116
+REMOVE:r A IF (0 ("<eins>")) (1 ("og")) ; #IceNLP 119, although "eins og" exists as a seperate entry in is.dix
+REMOVE:r A IF (0 Num) (0 A) (1 ("ár")); #IceNLP 123
+SELECT:r A + Fem + Def IF (0 Nom) (1 N + Fem + Nom + Def);
+
+###---ADVERBS---
+SELECT:r Adv IF (0 ("<þá>")) (NOT 1 Acc) ; #Þá can be a form of a dem prn or per prn in the accusative only
+
+###---PRONOUNS---
+SELECT:r Itg IF (0 ("hver")) (1 V) ;
+SELECT:r POSPRN IF (0 Pers) (-1 N) ; #mín, þín, hans
+#SELECT:r Itg IF ((1 QUESTION) OR (2 QUESTION) OR (3 QUESTION) OR (4 QUESTION) OR (5 QUESTION) OR (6 QUESTION) OR (7 QUESTION) OR (8 QUESTION) OR (9 QUESTION) OR (10 QUESTION) OR (11 QUESTION) OR (12 QUESTION) OR (13 QUESTION) OR (14 QUESTION) OR (15 QUESTION) OR (16 QUESTION) OR (17 QUESTION)) ; #this doesn't work I think.
+
