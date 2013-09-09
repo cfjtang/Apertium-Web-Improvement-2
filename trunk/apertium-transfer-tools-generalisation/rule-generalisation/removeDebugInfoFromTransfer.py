@@ -14,6 +14,7 @@ START_SOURCE_TOKEN=u"__SL__START__"
 END_SOURCE_TOKEN=u"__SL__END__"
 
 MOREDEBUG=False
+SILENT=False
 global_prevpos=0
 
 #def replacement_function(matchobj):
@@ -32,37 +33,50 @@ def replacement_function(matchobj):
 	global global_prevpos
 	
 	if matchobj.group(1)==u"*isolatedword":
-		print >> sys.stderr, "0"
+		if not SILENT:
+			print >> sys.stderr, "0"
 		if MOREDEBUG:
-			print >> sys.stderr, "SINGLETARGET: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
+			if not SILENT:
+				print >> sys.stderr, "SINGLETARGET: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
 			global_prevpos=matchobj.end()
 			return START_SOURCE_TOKEN
 	elif matchobj.group(1)==u"*endisolatedword":
 		if MOREDEBUG:
-			print >> sys.stderr, "SINGLESOURCE: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
+			if not SILENT:
+				print >> sys.stderr, "SINGLESOURCE: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
 			global_prevpos=matchobj.end()
 			return END_SOURCE_TOKEN
 			
 	elif matchobj.group(1)==u"*wordforword":
-		print >> sys.stderr, "ww"+matchobj.group(2).encode('utf-8')
+		if not SILENT:
+			print >> sys.stderr, "ww"+matchobj.group(2).encode('utf-8')
 		global_prevpos=matchobj.end()
 	elif matchobj.group(1)==u"*endexecutedtule":
 		if MOREDEBUG:
-			print >> sys.stderr, "SOURCE: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
+			if not SILENT:
+				print >> sys.stderr, "SOURCE: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
 			global_prevpos=matchobj.end()
 			return END_SOURCE_TOKEN
 	else:
-		print >> sys.stderr, matchobj.group(2).encode('utf-8')
+		if not SILENT:
+			print >> sys.stderr, matchobj.group(2).encode('utf-8')
 		if MOREDEBUG:
-			print >> sys.stderr, "TARGET: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
+			if not SILENT:
+				print >> sys.stderr, "TARGET: "+matchobj.string[global_prevpos:matchobj.start()].encode('utf-8')
 			global_prevpos=matchobj.end()
 			return START_SOURCE_TOKEN
 	
 	return ""
 
+
 if len(sys.argv) > 1:
 	if sys.argv[1]=="moredebug":
 		MOREDEBUG=True
+
+if len(sys.argv) > 2:
+	if sys.argv[1]=="silent" or sys.argv[2]=="silent":
+		SILENT=True
+
 
 pattern=re.compile(DEBUG_LU_REGEXP)
 #pattern2=re.compile(DEBUG_LU_REGEXP_2)
