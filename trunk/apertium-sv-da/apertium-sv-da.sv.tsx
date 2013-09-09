@@ -9,14 +9,20 @@
   </def-label>
 
   <def-label name="PRNSUBJ" closed="true">
-    <tags-item tags="prn.pers.p3.ut.sg.nom"/>
+	<tags-item tags="prn.pers.p1.un.sg.nom"/>
+	<tags-item tags="prn.pers.p2.un.sg.nom"/>
+	<tags-item tags="prn.pers.p3.ut.sg.nom"/>
   </def-label>
+  
   <def-label name="PRNOBJ" closed="true">
-    <tags-item tags="prn.pers.p3.ut.sg.acc"/>
+    <tags-item tags="prn.pers.p1.un.sg.acc"/>
+	<tags-item tags="prn.pers.p2.un.sg.acc"/>
+	<tags-item tags="prn.pers.p3.ut.sg.acc"/>
   </def-label>
 
   <def-label name="PRNPOS" closed="true">
     <tags-item tags="prn.pos.*"/>
+	<tags-item tags="det.pos.*"/>
   </def-label>
   <def-label name="PRNREF" closed="true">
     <tags-item tags="prn.ref.*"/>
