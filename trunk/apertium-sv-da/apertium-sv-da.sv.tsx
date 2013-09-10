@@ -23,6 +23,9 @@
   <def-label name="PRNPOS" closed="true">
     <tags-item tags="prn.pos.*"/>
 	<tags-item tags="det.pos.*"/>
+	<tags-item tags="prn.pers.p3.ut.sg.gen"/>
+	<tags-item tags="prn.pers.p3.ut.pl.gen"/>
+	
   </def-label>
   <def-label name="PRNREF" closed="true">
     <tags-item tags="prn.ref.*"/>
