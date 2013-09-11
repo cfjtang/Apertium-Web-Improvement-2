@@ -200,6 +200,29 @@
     </pipeline>
   </mode>
 
+  <mode name="mk-en-multi" install="no">
+    <pipeline>
+      <program name="apertium-transfer -b">
+        <file name="apertium-mk-en.mk-en.t1x"/>
+        <file name="mk-en.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-mk-en.mk-en.t2x"/>
+        <file name="mk-en.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-mk-en.mk-en.t3x"/>
+        <file name="mk-en.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="mk-en.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="mk-en.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
 <mode name="mk-en-biltrans-to-end">
     <pipeline>
       <program name="apertium-transfer -b">
