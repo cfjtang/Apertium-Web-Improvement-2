@@ -1,16 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
 # Convert a file tagged with the apertium-tagger -p -g to the factored
 # format required by Moses
 
-# Copyright (c) 2009 Francis Tyers, released under the GNU GPL.
-import sys, codecs, copy, commands;
-
-sys.stdin  = codecs.getreader('utf-8')(sys.stdin);
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout);
-sys.stderr = codecs.getwriter('utf-8')(sys.stderr);
+# Copyright (c) 2009-2013 Francis Tyers, released under the GNU GPL.
+import sys;
 
 n_tags = -1;
 
@@ -18,12 +14,12 @@ if len(sys.argv) == 2: #{
 	try: #{
 		n_tags = int(sys.argv[1]);
 	except: #{
-		print 'tagger-to-factored.py NUMTAGS';
-		print 'Values for NUMTAGS:';
-		print '  0: No tags, just lemmatisation (2 factors)';
-		print '  1: Only first (POS) tag (3 factors)';
-		print ' >1: First (POS) tag and NUMTAGS morphological tags (4 factors)';
-		print 'Default is to print out all tags';
+		print('tagger-to-factored.py NUMTAGS');
+		print('Values for NUMTAGS:');
+		print('  0: No tags, just lemmatisation (2 factors)');
+		print('  1: Only first (POS) tag (3 factors)');
+		print(' >1: First (POS) tag and NUMTAGS morphological tags (4 factors)');
+		print('Default is to print out all tags');
 		
 		sys.exit(-1);
 	#}
@@ -50,6 +46,8 @@ def processWord(c, _tags): #{
 		c = sys.stdin.read(1);
 	#}
 
+	superficial = superficial.replace(' ', '~');
+
 	c = sys.stdin.read(1);
 	while c != '<': #{
 		if c == '*': #{
@@ -60,6 +58,8 @@ def processWord(c, _tags): #{
 		lemma = lemma + c;
 		c = sys.stdin.read(1);
 	#}
+
+	lemma = lemma.replace(' ', '~');
 
 	if unknown == True: #{
 		if _tags == 0: #{
