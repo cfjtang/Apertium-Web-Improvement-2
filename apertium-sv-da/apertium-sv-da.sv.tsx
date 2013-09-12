@@ -8,31 +8,37 @@
     <tags-item tags="prn.tn.*"/>
   </def-label>
 
+<!-- PT: Subject form -->
   <def-label name="PRNSUBJ" closed="true">
 	<tags-item tags="prn.pers.p1.un.sg.nom"/>
 	<tags-item tags="prn.pers.p2.un.sg.nom"/>
 	<tags-item tags="prn.pers.p3.ut.sg.nom"/>
   </def-label>
-  
+
+<!-- PT: Object form -->  
   <def-label name="PRNOBJ" closed="true">
     <tags-item tags="prn.pers.p1.un.sg.acc"/>
 	<tags-item tags="prn.pers.p2.un.sg.acc"/>
 	<tags-item tags="prn.pers.p3.ut.sg.acc"/>
   </def-label>
 
+<!-- PT: Possessive prounouns and determiners -->
   <def-label name="PRNPOS" closed="true">
-    <tags-item tags="prn.pos.*"/>
+    <!-- PT: not used anywhere <tags-item tags="prn.pos.*"/> -->
 	<tags-item tags="det.pos.*"/>
 	<tags-item tags="prn.pers.p3.ut.sg.gen"/>
-	<tags-item tags="prn.pers.p3.ut.pl.gen"/>
-	
+	<tags-item tags="prn.pers.p3.ut.pl.gen"/>	
   </def-label>
+ 
+<!-- PT: Reflexive/reciprocal pronoun --> 
   <def-label name="PRNREF" closed="true">
     <tags-item tags="prn.ref.*"/>
   </def-label>
+  
   <def-label name="PRN" closed="true">
     <tags-item tags="prn.*"/>
   </def-label>
+  
   <def-label name="ONLYPRN" closed="true">
     <tags-item tags="prn"/>
   </def-label>
@@ -45,15 +51,22 @@
   <def-label name="DETDEM" closed="true">
     <tags-item tags="det.dem.*"/>
   </def-label>
+  
+<!-- PT: Useful to prevent definite form to follow -->
   <def-label name="DETIND" closed="true">
     <tags-item tags="det.ind.*"/>
   </def-label>
+  
   <def-label name="DETDEF" closed="true">
     <tags-item tags="det.def.*"/>
   </def-label>
+
+<!-- PT: PRONPOS istället
   <def-label name="DETPOS" closed="true">
     <tags-item tags="det.pos.*"/>
   </def-label>
+-->
+	
   <def-label name="DETORD" closed="true">
     <tags-item tags="det.ord.*"/>
   </def-label>
@@ -66,6 +79,12 @@
   <def-label name="REL" closed="true">
     <tags-item tags="rel.*"/>
   </def-label>
+  
+<!-- PT: NEW Useful to prevent definite form to follow indefinite article --> 
+  <def-label name="NOMSDEF" closed="true">
+    <tags-item tags="n.*.*.def"/>
+  </def-label>
+  
   <def-label name="NOMSPROPIS">
     <tags-item tags="np.*"/>
   </def-label>
@@ -251,6 +270,13 @@
 </tagset>
 
   <forbid>
+  
+<!-- PT: NEW Useful to prevent definite form to follow indefinite article --> 
+    <label-sequence>
+      <label-item label="DETIND"/> <!-- PT: indefinite article -->
+      <label-item label="NOMSDEF"/> <!-- PT: definite noun -->
+    </label-sequence>
+
     <label-sequence>
       <label-item label="DETIND"/>
       <label-item label="PRNSUBJ"/>
@@ -281,11 +307,13 @@
     </label-sequence>
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
-      <label-item label="DETPOS"/>
+      <!-- PT <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="NOMUTRE"/>
-      <label-item label="DETPOS"/>
+      <!-- PT <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="NOMUTRE"/>
@@ -313,7 +341,8 @@
     </label-sequence>
     <label-sequence>
       <label-item label="PRNTONIC"/>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="PRNTONIC"/>
@@ -369,7 +398,8 @@
     </label-sequence>
     <label-sequence>
       <label-item label="ADJ"/>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="ADJ"/>
@@ -546,7 +576,8 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETDEF"/>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETDEF"/>
@@ -658,7 +689,8 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETDEM"/>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETDEM"/>
@@ -714,7 +746,8 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETIND"/>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VBAUX"/>
@@ -979,43 +1012,53 @@
 
 
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="PR"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="ADV"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="PRNTN"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="VBLEX"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="VBER"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="VBHAR"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="VBAUX"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="VBMOD"/>
     </label-sequence>
     <label-sequence>
-      <label-item label="DETPOS"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
       <label-item label="VBS"/>
     </label-sequence>
 
