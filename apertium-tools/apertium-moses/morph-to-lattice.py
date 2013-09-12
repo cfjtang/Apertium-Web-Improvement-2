@@ -9,7 +9,7 @@ import sys;
 #  - Deal properly with blanks and escaped characters.
 
 # style is 0 for PLF (Moses), 1 for PLF multiline and 2 for graphviz
-style = 0;
+style = 2;
 
 buf = '';              # the current lexical unit
 lattice = {};          # data structure for the lattice lattice[position] = set((word, weight, nodein, nodeout), (word2, weight, nodein, nodeout))
@@ -33,7 +33,7 @@ while c != '': #{
 		decomps = list(set(buf.split('/')));
 		max_split = 1;
 		for decomp in decomps: #{
-			splits = len(decomp.split('>'));
+			splits = len(decomp.replace('#','>').split('>'));
 			if splits > max_split: #{
 				max_split = splits;
 			#}
@@ -53,9 +53,9 @@ while c != '': #{
 			else: #{
 				weight = 0.5;
 			#}
-			if decomp.count('>') > 0: #{
+			if decomp.count('>') or decomp.count('#') > 0: #{
 				localpos = 0;
-				for part in decomp.replace('>', ' >').split(' '): #{	
+				for part in decomp.replace('#', ' ').replace('>', ' >').split(' '): #{	
 					print('\t' , pos+localpos, pos+localpos+1, part, file=sys.stderr);
 					if localpos == 0: #{
 						lattice[pos+localpos].add((part, weight, pos+localpos, pos+localpos+1));
