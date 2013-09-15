@@ -13,13 +13,17 @@ PRNPOS
 -->
 
 <tagset>
+
 <!-- PT: Prepositions -->
    <def-label name="PREP" closed="true">
     <tags-item tags="pr"/>
   </def-label>
+  
+<!-- PT: Not applicable  
   <def-label name="PRNTONIC" closed="true">
     <tags-item tags="prn.tn.*"/>
   </def-label>
+ -->
 
 <!-- PT: Subject form -->
   <def-label name="PRNSUBJ" closed="true">
@@ -52,11 +56,13 @@ PRNPOS
   <def-label name="PRN" closed="true">
     <tags-item tags="prn.*"/>
   </def-label>
-  
+
+<!-- PT: Not applicable  
   <def-label name="ONLYPRN" closed="true">
     <tags-item tags="prn"/>
   </def-label>
-  
+-->
+ 
 <!-- PT: Co-ordinating conjunction --> 
     <def-label name="CNJCOO" closed="true">
     <tags-item tags="cnjcoo"/>
@@ -66,39 +72,51 @@ PRNPOS
   <def-label name="CNJSUB" closed="true">
     <tags-item tags="cnjsub"/>
   </def-label>
-  
+
+<!-- PT: Demonstrative pronoun -->    
   <def-label name="DETDEM" closed="true">
     <tags-item tags="det.dem.*"/>
   </def-label>
-  
+
+<!-- PT: Indefinite determiner -->  
 <!-- PT: Useful to prevent definite form to follow -->
   <def-label name="DETIND" closed="true">
     <tags-item tags="det.ind.*"/>
   </def-label>
-  
+
+<!-- PT: Definite determiner -->   
   <def-label name="DETDEF" closed="true">
     <tags-item tags="det.def.*"/>
   </def-label>
 
-<!-- PT: PRONPOS istället
+<!-- PT: PRONPOS instead
   <def-label name="DETPOS" closed="true">
     <tags-item tags="det.pos.*"/>
   </def-label>
 -->
-	
+
+<!-- PT: Ordinal number -->	
   <def-label name="DETORD" closed="true">
     <tags-item tags="det.ord.*"/>
   </def-label>
+
+<!-- PT: Quantifier -->	 
   <def-label name="DETQNT" closed="true">
     <tags-item tags="det.qnt.*"/>
   </def-label>
+
+<!-- PT: Interjections -->  
   <def-label name="INTERJECCIONS" closed="true">
     <tags-item tags="ij"/>
   </def-label>
+
+<!-- PT: not applicable 
   <def-label name="REL" closed="true">
     <tags-item tags="rel.*"/>
   </def-label>
-  
+ --> 
+
+ <!-- PT: Definite noun --> 
 <!-- PT: NEW Useful to prevent definite form to follow indefinite article --> 
   <def-label name="NOMSDEF" closed="true">
     <tags-item tags="n.*.*.def"/>
@@ -1121,6 +1139,17 @@ PRNPOS
      </enforce-after>
 
     </enforce-rules>
+    -->
+	
+    <!-- PT: How to use!? Example!?
+    <preferences>
+      <prefer label="DETDEF">
+        <label-set>
+        <label-item label="ADVHÄR"/>
+      </label-set>
+     </prefer>
+
+    </preferences>
     -->
 
 </tagger>

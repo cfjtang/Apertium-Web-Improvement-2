@@ -10,5 +10,16 @@ ONLYPRN *** not applicable ***
 CNJCOO Co-ordinating conjunction
 CNJSUB Sub-ordinating conjunction
 *** label for <sdef n="cnjadv" 	c="Adverbial conjunction"/> is missing ***
+DETDEM Demonstrative pronoun
+DETIND Indefinite determiner
+DETDEF Definite determiner
+DETPOS *** not in use: PRONPOS instead ***
+DETORD Ordinal determiner (ordinal number)
+DETQNT Quantifier
+INTERJECCIONS Interjections
+REL *** not applicable ***
+NOMSDEF Definite noun
+
+
 
 -->
