@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tagger name="swedish">
+
+
+<!-- List of labels:
+PREP
+PRNTONIC
+PRNSUBJ
+PRNOBJ
+PRNOBJ
+PRNPOS
+
+-->
+
 <tagset>
+<!-- PT: Prepositions -->
    <def-label name="PREP" closed="true">
     <tags-item tags="pr"/>
   </def-label>
@@ -22,7 +35,7 @@
 	<tags-item tags="prn.pers.p3.ut.sg.acc"/>
   </def-label>
 
-<!-- PT: Possessive prounouns and determiners -->
+<!-- PT: Possessive prounouns and determiners, incl. genitive -->
   <def-label name="PRNPOS" closed="true">
     <!-- PT: not used anywhere <tags-item tags="prn.pos.*"/> -->
 	<tags-item tags="det.pos.*"/>
@@ -30,11 +43,12 @@
 	<tags-item tags="prn.pers.p3.ut.pl.gen"/>	
   </def-label>
  
-<!-- PT: Reflexive/reciprocal pronoun --> 
+<!-- PT: Reflexive/reciprocal pronouns --> 
   <def-label name="PRNREF" closed="true">
     <tags-item tags="prn.ref.*"/>
   </def-label>
   
+<!-- PT: Any pronoun --> 
   <def-label name="PRN" closed="true">
     <tags-item tags="prn.*"/>
   </def-label>
@@ -42,12 +56,17 @@
   <def-label name="ONLYPRN" closed="true">
     <tags-item tags="prn"/>
   </def-label>
+  
+<!-- PT: Co-ordinating conjunction --> 
     <def-label name="CNJCOO" closed="true">
     <tags-item tags="cnjcoo"/>
   </def-label>
+
+<!-- PT: Sub-ordinating conjunction -->   
   <def-label name="CNJSUB" closed="true">
     <tags-item tags="cnjsub"/>
   </def-label>
+  
   <def-label name="DETDEM" closed="true">
     <tags-item tags="det.dem.*"/>
   </def-label>

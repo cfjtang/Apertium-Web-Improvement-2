@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tagger name="swedish">
+<tagger name="danish">
+
+<!-- List of labels:
+PREP
+PRNTONIC
+PRNSUBJ
+PRNOBJ
+PRNPOS
+
+-->
+
 <tagset>
    <def-label name="PREP" closed="true">
     <tags-item tags="pr"/>
