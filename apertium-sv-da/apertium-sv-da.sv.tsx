@@ -116,10 +116,16 @@ PRNPOS
   </def-label>
  --> 
 
- <!-- PT: Definite noun --> 
+<!-- PT: Definite noun --> 
 <!-- PT: NEW Useful to prevent definite form to follow indefinite article --> 
   <def-label name="NOMSDEF" closed="true">
     <tags-item tags="n.*.*.def"/>
+  </def-label>
+  
+<!-- PT: noun in singular--> 
+<!-- PT: NEW Useful to prevent singular noun to follow plural adjective --> 
+  <def-label name="NOMSSING" closed="true">
+    <tags-item tags="n.*.sg.*"/>
   </def-label>
   
   <def-label name="NOMSPROPIS">
@@ -149,9 +155,17 @@ PRNPOS
   <def-label name="CONJADV">
     <tags-item tags="cnjadv"/>
   </def-label>
+
+ <!-- PT: Adjective in plural --> 
+<!-- PT: NEW Useful to prevent noun in singular to follow adjective in plural --> 
+  <def-label name="ADJPLUR"  closed="true">
+    <tags-item tags="adj.*.*.pl.*"/>
+  </def-label>
+  
   <def-label name="ADJ">
     <tags-item tags="adj.*"/>
   </def-label>
+  
   <def-label name="NUM">
     <tags-item tags="num"/>
   </def-label>
@@ -312,6 +326,12 @@ PRNPOS
     <label-sequence>
       <label-item label="DETIND"/> <!-- PT: indefinite article -->
       <label-item label="NOMSDEF"/> <!-- PT: definite noun -->
+    </label-sequence>
+
+<!-- PT: NEW Useful to prevent singular form to follow plural adjective --> 
+    <label-sequence>
+      <label-item label="ADJPLUR"/> <!-- PT: indefinite article -->
+      <label-item label="NOMSSING"/> <!-- PT: noun in singular -->
     </label-sequence>
 
     <label-sequence>
