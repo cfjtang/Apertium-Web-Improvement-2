@@ -240,6 +240,29 @@
     </pipeline>
   </mode>
 
+  <mode name="eu-es-multi">
+    <pipeline>
+      <program name="apertium-transfer -b">
+        <file name="apertium-eu-es.eu-es.t1x"/>
+        <file name="eu-es.t1x.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-eu-es.eu-es.t2x"/>
+        <file name="eu-es.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-eu-es.eu-es.t3x"/>
+        <file name="eu-es.t3x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="eu-es.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="eu-es.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
   <mode name="test-eu-es-anmor">
     <pipeline>
       <program name="lt-proc">
