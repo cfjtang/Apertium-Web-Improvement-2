@@ -57,7 +57,6 @@ xx=$(langcode $1)
 yy=$(langcode $2)
 dir="$xx-$yy"
 base="apertium-$dir"
-url="http://apertium.svn.sourceforge.net/viewvc/apertium"
 
 # only create the directory if:
 # 1) the user isn't running from it
@@ -131,18 +130,18 @@ fi
 grabmorph(){
 #hashes are nice. *sigh*
 case $1 in
-	en) echo "$url/trunk/apertium-en-es/apertium-en-es.en.metadix" ;;
+	en) echo "trunk/apertium-en-es/apertium-en-es.en.metadix" ;;
 	# es-ca's is better developed, but this uses prpers
-	es) echo "$url/trunk/apertium-en-es/apertium-en-es.es.dix" ;;
-	bg) echo "$url/trunk/apertium-mk-bg/apertium-mk-bg.bg.dix" ;;
-	fr) echo "$url/trunk/apertium-fr-es/apertium-fr-es.fr.metadix" ;;
-	pt) echo "$url/trunk/apertium-es-pt/apertium-es-pt.pt.dix" ;;
-	da) echo "$url/trunk/apertium-sv-da/apertium-sv-da.da.dix" ;;
-	sv) echo "$url/trunk/apertium-sv-da/apertium-sv-da.sv.dix" ;;
-	nl) echo "$url/staging/apertium-af-nl/apertium-af-nl.nl.dix" ;;
-	ro) echo "$url/trunk/apertium-es-ro/apertium-es-ro.ro.dix" ;;
-	cs) echo "$url/staging/apertium-pl-cs/apertium-pl-cs.cs.dix" ;;
-	pl) echo "$url/staging/apertium-pl-cs/apertium-pl-cs.pl.dix" ;;
+	es) echo "trunk/apertium-en-es/apertium-en-es.es.dix" ;;
+	bg) echo "trunk/apertium-mk-bg/apertium-mk-bg.bg.dix" ;;
+	fr) echo "trunk/apertium-fr-es/apertium-fr-es.fr.metadix" ;;
+	pt) echo "trunk/apertium-es-pt/apertium-es-pt.pt.dix" ;;
+	da) echo "trunk/apertium-sv-da/apertium-sv-da.da.dix" ;;
+	sv) echo "trunk/apertium-sv-da/apertium-sv-da.sv.dix" ;;
+	nl) echo "staging/apertium-af-nl/apertium-af-nl.nl.dix" ;;
+	ro) echo "trunk/apertium-es-ro/apertium-es-ro.ro.dix" ;;
+	cs) echo "staging/apertium-pl-cs/apertium-pl-cs.cs.dix" ;;
+	pl) echo "staging/apertium-pl-cs/apertium-pl-cs.pl.dix" ;;
 	*) echo "" ;; #everything else is a little too experimental
 esac
 }
@@ -292,11 +291,11 @@ return 1
 download(){
 if checkprog wget
 then
-	wget --no-check-certificate "$1" -O "$2"
+	wget --no-check-certificate "http://sourceforge.net/p/apertium/svn/HEAD/tree/$1?format=raw" -O "$2"
 else 
 	if checkprog curl
 	then
-		curl "$1" -o "$2"
+		curl "http://sourceforge.net/p/apertium/svn/HEAD/tree/$1?format=raw" -o "$2"
 	fi
 fi
 }
@@ -319,7 +318,7 @@ else
 	else 
 		ext=$(echo $dixurl|awk -F'.' '{print $NF}')
 		download "$dixurl" "$WD/$base.$1.$ext"
-		download "$url/trunk/apertium-en-es/COPYING" "$WD/COPYING"
+		download "trunk/apertium-en-es/COPYING" "$WD/COPYING"
 		if [ "$?" -eq "1" ]
 		then
 			stubmorph $1
@@ -341,15 +340,15 @@ if [ "$ext" = "metadix" ]
 then 
 	if [ ! \( -e "$WD/buscaPar.xsl" \) ]
 	then
-		download "$url/trunk/apertium-en-es/buscaPar.xsl" "$WD/buscaPar.xsl"
+		download "trunk/apertium-en-es/buscaPar.xsl" "$WD/buscaPar.xsl"
 	fi
 	if [ ! \( -e "$WD/principal.xsl" \) ]
 	then
-		download "$url/trunk/apertium-en-es/principal.xsl" "$WD/principal.xsl"
+		download "trunk/apertium-en-es/principal.xsl" "$WD/principal.xsl"
 	fi
 	if [ ! \( -e "$WD/alt.xsl" \) ]
 	then
-		download "$url/trunk/apertium-en-es/alt.xsl" "$WD/alt.xsl"
+		download "trunk/apertium-en-es/alt.xsl" "$WD/alt.xsl"
 	fi
 	if [ "$1" = "en" ]
 	then
@@ -410,7 +409,7 @@ if [ "$1" = "pt" ]
 then
 	if [ ! \( -e "$WD/filter.xsl" \) ]
 	then
-		download "$url/trunk/apertium-es-pt/filter.xsl" "$WD/filter.xsl"
+		download "trunk/apertium-es-pt/filter.xsl" "$WD/filter.xsl"
 	fi
 fi
 }
@@ -854,46 +853,46 @@ fi
 
 posturl(){
 case $1 in
-	en) echo "$url/trunk/apertium-en-es/apertium-en-es.post-en.dix" ;;
-	es) echo "$url/trunk/apertium-en-es/apertium-en-es.post-es.dix" ;;
-	fr) echo "$url/trunk/apertium-fr-es/apertium-fr-es.post-fr.dix" ;;
-	pt) echo "$url/trunk/apertium-es-pt/apertium-es-pt.post-pt.dix" ;;
-	da) echo "$url/trunk/apertium-sv-da/apertium-sv-da.post-da.dix" ;;
-	sv) echo "$url/trunk/apertium-sv-da/apertium-sv-da.post-sv.dix" ;;
-	nl) echo "$url/staging/apertium-af-nl/apertium-af-nl.post-nl.dix" ;;
-	ro) echo "$url/trunk/apertium-es-ro/apertium-es-ro.post-ro.dix" ;;
-	cs) echo "$url/staging/apertium-pl-cs/apertium-pl-cs.post-cs.dix" ;;
-	pl) echo "$url/staging/apertium-pl-cs/apertium-pl-cs.post-pl.dix" ;;
+	en) echo "trunk/apertium-en-es/apertium-en-es.post-en.dix" ;;
+	es) echo "trunk/apertium-en-es/apertium-en-es.post-es.dix" ;;
+	fr) echo "trunk/apertium-fr-es/apertium-fr-es.post-fr.dix" ;;
+	pt) echo "trunk/apertium-es-pt/apertium-es-pt.post-pt.dix" ;;
+	da) echo "trunk/apertium-sv-da/apertium-sv-da.post-da.dix" ;;
+	sv) echo "trunk/apertium-sv-da/apertium-sv-da.post-sv.dix" ;;
+	nl) echo "staging/apertium-af-nl/apertium-af-nl.post-nl.dix" ;;
+	ro) echo "trunk/apertium-es-ro/apertium-es-ro.post-ro.dix" ;;
+	cs) echo "staging/apertium-pl-cs/apertium-pl-cs.post-cs.dix" ;;
+	pl) echo "staging/apertium-pl-cs/apertium-pl-cs.post-pl.dix" ;;
 	*) echo "" ;; #everything else is a little too experimental
 esac
 }
 
 proburl(){
 case $1 in
-	en) echo "$url/trunk/apertium-en-es/en-es.prob" ;;
-	bg) echo "$url/trunk/apertium-mk-bg/bg-mk.prob" ;;
-	es) echo "$url/trunk/apertium-en-es/es-en.prob" ;;
-	fr) echo "$url/trunk/apertium-fr-es/fr-es.prob" ;;
-	pt) echo "$url/trunk/apertium-es-pt/pt-es.prob" ;;
-	da) echo "$url/trunk/apertium-sv-da/da-sv.prob" ;;
-	sv) echo "$url/trunk/apertium-sv-da/sv-da.prob" ;;
-	nl) echo "$url/staging/apertium-af-nl/nl-af.prob" ;;
-	ro) echo "$url/trunk/apertium-es-ro/ro-es.prob" ;;
+	en) echo "trunk/apertium-en-es/en-es.prob" ;;
+	bg) echo "trunk/apertium-mk-bg/bg-mk.prob" ;;
+	es) echo "trunk/apertium-en-es/es-en.prob" ;;
+	fr) echo "trunk/apertium-fr-es/fr-es.prob" ;;
+	pt) echo "trunk/apertium-es-pt/pt-es.prob" ;;
+	da) echo "trunk/apertium-sv-da/da-sv.prob" ;;
+	sv) echo "trunk/apertium-sv-da/sv-da.prob" ;;
+	nl) echo "staging/apertium-af-nl/nl-af.prob" ;;
+	ro) echo "trunk/apertium-es-ro/ro-es.prob" ;;
 	*) echo "" ;; #everything else is a little too experimental
 esac
 }
 
 tsxurl(){
 case $1 in
-	en) echo "$url/trunk/apertium-en-es/apertium-en-es.en.tsx" ;;
-	es) echo "$url/trunk/apertium-en-es/apertium-en-es.es.tsx" ;;
-	fr) echo "$url/trunk/apertium-fr-es/apertium-fr-es.fr.tsx" ;;
-	bg) echo "$url/trunk/apertium-mk-bg/apertium-mk-bg.bg.tsx" ;;
-	pt) echo "$url/trunk/apertium-es-pt/apertium-es-pt.pt.tsx" ;;
-	da) echo "$url/trunk/apertium-sv-da/apertium-sv-da.da.tsx" ;;
-	sv) echo "$url/trunk/apertium-sv-da/apertium-sv-da.sv.tsx" ;;
-	nl) echo "$url/staging/apertium-af-nl/apertium-af-nl.nl.tsx" ;;
-	ro) echo "$url/trunk/apertium-es-ro/apertium-es-ro.ro.tsx" ;;
+	en) echo "trunk/apertium-en-es/apertium-en-es.en.tsx" ;;
+	es) echo "trunk/apertium-en-es/apertium-en-es.es.tsx" ;;
+	fr) echo "trunk/apertium-fr-es/apertium-fr-es.fr.tsx" ;;
+	bg) echo "trunk/apertium-mk-bg/apertium-mk-bg.bg.tsx" ;;
+	pt) echo "trunk/apertium-es-pt/apertium-es-pt.pt.tsx" ;;
+	da) echo "trunk/apertium-sv-da/apertium-sv-da.da.tsx" ;;
+	sv) echo "trunk/apertium-sv-da/apertium-sv-da.sv.tsx" ;;
+	nl) echo "staging/apertium-af-nl/apertium-af-nl.nl.tsx" ;;
+	ro) echo "trunk/apertium-es-ro/apertium-es-ro.ro.tsx" ;;
 	*) echo "" ;; #everything else is a little too experimental
 esac
 }
