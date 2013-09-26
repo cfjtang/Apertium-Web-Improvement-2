@@ -354,11 +354,10 @@ then
 	if [ "$1" = "en" ]
 	then
 		cat <<__ENMAKE__ >>"$WD/Makefile.am"
-.deps/\$(LANG$sidenum).metadix: \$(BASENAME).\$(LANG$sidenum).metadix
-	if [ ! -d .deps ]; then mkdir .deps; fi
+.deps/\$(LANG$sidenum).metadix: \$(BASENAME).\$(LANG$sidenum).metadix .deps/.d
 	xsltproc --stringparam alt en_GB alt.xsl \$(BASENAME).\$(LANG$sidenum).metadix >\$@
 
-.deps/\$(LANG$sidenum).dix: .deps/\$(LANG$sidenum).metadix
+.deps/\$(LANG$sidenum).dix: .deps/\$(LANG$sidenum).metadix .deps/.d
 	xsltproc buscaPar.xsl .deps/\$(LANG$sidenum).metadix | uniq >\$\$\$\$tmp1 && \\
 	xsltproc \$\$\$\$tmp1 .deps/\$(LANG$sidenum).metadix > \$@ && rm \$\$\$\$tmp1
 
@@ -376,11 +375,10 @@ __ENMAKE__
 	if [ "$1" = "fr" ]
 	then
 		cat <<__FRMAKE__ >>"$WD/Makefile.am"
-.deps/\$(LANG$sidenum).metadix: \$(BASENAME).\$(LANG$sidenum).metadix
-	if [ ! -d .deps ]; then mkdir .deps; fi
+.deps/\$(LANG$sidenum).metadix: \$(BASENAME).\$(LANG$sidenum).metadix .deps/.d
 	xsltproc --stringparam alt std alt.xsl \$(BASENAME).\$(LANG$sidenum).metadix >\$@
 
-.deps/\$(LANG$sidenum).dix: .deps/\$(LANG$sidenum).metadix
+.deps/\$(LANG$sidenum).dix: .deps/\$(LANG$sidenum).metadix .deps/.d
 	xsltproc buscaPar.xsl .deps/\$(LANG$sidenum).metadix | uniq >\$\$\$\$tmp1 && \\
 	xsltproc \$\$\$\$tmp1 .deps/\$(LANG$sidenum).metadix > \$@ && rm \$\$\$\$tmp1
 
@@ -1012,10 +1010,17 @@ TARGETS_COMMON = \$(PREFIX1).automorf.bin \$(PREFIX2).automorf.bin \\
 	\$(PREFIX1).autogen.bin \$(PREFIX2).autogen.bin \\
 	\$(PREFIX1).t1x.bin \$(PREFIX2).t1x.bin \\
 	\$(PREFIX1).t2x.bin \$(PREFIX2).t2x.bin \\
-	\$(PREFIX1).t3x.bin \$(PREFIX2).t3x.bin \\
-	modes
+	\$(PREFIX1).t3x.bin \$(PREFIX2).t3x.bin
 
 TARGETS = \$(TARGETS_COMMON)
+
+# Use this goal for creating .deps, otherwise make -j2 will give problems:
+.deps/.d:
+	if [ ! -d .deps ]; then mkdir .deps; fi
+	touch \$@
+
+# Prevent the .d file from being removed automatically:
+.PRECIOUS: .deps/.d
 
 __MAKEHEAD__
 
@@ -1099,37 +1104,38 @@ cat<<__MAKETAIL__>>"$WD/Makefile.am"
 clean-dicts:
 	if [ -d .deps ]; then rm .deps/*; fi
 
-apertium_${xx}_${yy}_DATA=\$(PREFIX1).automorf.bin \$(PREFIX2).automorf.bin \\
-		\$(PREFIX1).autobil.bin \$(PREFIX2).autobil.bin \\
-		\$(PREFIX1).autogen.bin \$(PREFIX2).autogen.bin \\
-		\$(PREFIX1).autopgen.bin \$(PREFIX2).autopgen.bin \\
+apertium_${xx}_${yy}_DATA=\$(TARGETS_COMMON) \\
 		\$(PREFIX1).prob \$(PREFIX2).prob \\
-		\$(PREFIX1).t1x.bin \$(PREFIX2).t1x.bin \\
-		\$(PREFIX1).t2x.bin \$(PREFIX2).t2x.bin \\
-		\$(PREFIX1).t3x.bin \$(PREFIX2).t3x.bin \\
-		\$(PREFIX1).mode \$(PREFIX2).mode 
+		modes.xml
 
 ${ibase}dir=\$(prefix)/share/apertium/apertium-\$(PREFIX1)/
 ${ibase}_modesdir=\$(prefix)/share/apertium/modes/
 
-\$(PREFIX1).mode: modes.xml
+modes/\$(PREFIX1).mode: modes.xml
+	apertium-validate-modes modes.xml
 	apertium-gen-modes modes.xml
+	cp *.mode modes/
 
-\$(PREFIX2).mode: modes.xml
-	apertium-gen-modes modes.xml
+# All modes are created by the same goal, listing several will just give problems with make -j2
+noinst_DATA=modes/\$(PREFIX1).mode
 
-modes: modes.xml
-	apertium-gen-modes modes.xml
-
+# mv+rm+mv dance to avoid root owned modes
 install-data-local:
-	apertium-gen-modes modes.xml apertium-\$(PREFIX1)
-	\$(INSTALL_DATA) \$(PREFIX1).mode \$(${ibase}_modesdir)
-	\$(INSTALL_DATA) \$(PREFIX2).mode \$(${ibase}_modesdir)
-	\$(INSTALL_DATA) \$(BASENAME).\$(PREFIX1).t1x \$(BASENAME).\$(PREFIX1).t2x \$(${ibase}dir)
-	\$(INSTALL_DATA) \$(BASENAME).\$(PREFIX1).t3x \$(BASENAME).\$(PREFIX2).t1x \$(${ibase}dir)
-	\$(INSTALL_DATA) \$(BASENAME).\$(PREFIX2).t2x \$(BASENAME).\$(PREFIX2).t3x \$(${ibase}dir)
+	mv modes modes.bak
+	apertium-gen-modes modes.xml \$(BASENAME)
+	rm -rf modes
+	mv modes.bak modes
+	test -d \$(DESTDIR)\$(${ibase}_modesdir) || mkdir \$(DESTDIR)\$(${ibase}_modesdir)
+	\$(INSTALL_DATA) \$(PREFIX1).mode \$(DESTDIR)\$(${ibase}_modesdir)
+	\$(INSTALL_DATA) \$(PREFIX2).mode \$(DESTDIR)\$(${ibase}_modesdir)
+	rm \$(PREFIX1).mode \$(PREFIX2).mode
+	\$(INSTALL_DATA) \$(BASENAME).\$(PREFIX1).t1x \$(BASENAME).\$(PREFIX1).t2x \$(DESTDIR)\$(${ibase}dir)
+	\$(INSTALL_DATA) \$(BASENAME).\$(PREFIX1).t3x \$(BASENAME).\$(PREFIX2).t1x \$(DESTDIR)\$(${ibase}dir)
+	\$(INSTALL_DATA) \$(BASENAME).\$(PREFIX2).t2x \$(BASENAME).\$(PREFIX2).t3x \$(DESTDIR)\$(${ibase}dir)
 
-CLEANFILES = -rf \$(TARGETS) modes
+CLEANFILES = \$(TARGETS_COMMON)
+clean-local: 
+	-rm -rf .deps modes
 
 __MAKETAIL__
 
