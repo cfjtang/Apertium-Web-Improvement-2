@@ -57,6 +57,13 @@
       <cat-item lemma="тұр" tags="vaux.*"/>
     </def-cat>
 
+    <def-cat n="FourAuxiliaries.gpr_past">
+      <cat-item lemma="жат" tags="vaux.gpr_past"/>
+      <cat-item lemma="жүр" tags="vaux.gpr_past"/>
+      <cat-item lemma="отыр" tags="vaux.gpr_past"/>
+      <cat-item lemma="тұр" tags="vaux.gpr_past"/>
+    </def-cat>
+
     <def-cat n="gerund">
       <cat-item tags="v.*.*.ger.*"/>
       <cat-item tags="v.*.*.ger_past.*"/>
@@ -101,6 +108,10 @@
 
     <def-cat n="керек">
       <cat-item lemma="керек" tags="adj"/>
+    </def-cat>
+
+    <def-cat n="жоқ.adj">
+      <cat-item lemma="жоқ" tags="adj"/>
     </def-cat>
 
     <def-cat n="ImperfectOrPerfectParticiple">
@@ -753,6 +764,29 @@
       </action>
     </rule>
 
+    <rule comment="REGLA: Translate negative present continious with negative present">
+      <pattern>
+        <pattern-item n="ImperfectOrPerfectParticiple"/>
+        <pattern-item n="FourAuxiliaries.gpr_past"/>
+        <pattern-item n="жоқ.adj"/>
+        <pattern-item n="v"/> <!-- copula -->
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lem"/>
+            <clip pos="1" side="tl" part="a_verb"/>
+            <clip pos="1" side="tl" part="a_trans"/>
+            <clip pos="1" side="tl" part="a_deriv"/>
+            <lit-tag v="neg"/>
+            <lit-tag v="pres"/>
+            <clip pos="4" side="tl" part="a_pers"/>
+            <clip pos="4" side="tl" part="a_nbr"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+          
 
     <rule comment="REGLA: Translate present continious with present">
       <!-- 16 . Азамат ескі үлкен бір ағашқа қарай қатты жүгіріп бара жатыр,
