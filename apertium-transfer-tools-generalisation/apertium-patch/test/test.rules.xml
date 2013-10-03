@@ -5,6 +5,14 @@
 <def-cat n="CAT__n">
 	<cat-item tags="n.*"/>
 </def-cat>
+<def-cat n="CAT__num">
+	<cat-item tags="num"/>
+	<cat-item tags="num.*"/>
+</def-cat>
+<def-cat n="CAT__adv">
+	<cat-item tags="adv"/>
+	<cat-item tags="adv.*"/>
+</def-cat>
 <def-cat n="CAT__adj">
 	<cat-item tags="adj.*"/>
 </def-cat>
@@ -326,6 +334,41 @@ If no format information is present it is removed. -->
         </out>
   </action>
 </rule>
+
+<rule>
+  <pattern>
+    <pattern-item n="CAT__num"/>
+  </pattern>
+  <action>
+        <reject-current-rule shifting="no"/>
+  </action>
+</rule>
+<!--
+<rule>
+  <pattern>
+    <pattern-item n="CAT__num"/>
+    <pattern-item n="CAT__adv"/>
+  </pattern>
+  <action>
+        <reject-current-rule shifting="no"/>
+  </action>
+</rule>
+-->
+<rule>
+  <pattern>
+    <pattern-item n="CAT__adv"/>
+  </pattern>
+  <action>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+          </lu>
+        </out>
+  </action>
+</rule>
+
+
+
 </section-rules>
 </transfer>
 
