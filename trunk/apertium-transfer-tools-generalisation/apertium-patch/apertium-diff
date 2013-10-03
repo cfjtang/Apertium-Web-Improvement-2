@@ -1,43 +1,8 @@
-Index: apertium/transfer.h
-===================================================================
---- apertium/transfer.h	(revisión: 40714)
-+++ apertium/transfer.h	(copia de trabajo)
-@@ -95,6 +95,7 @@
- 
-   void processLet(xmlNode *localroot);
-   void processAppend(xmlNode *localroot);
-+  int processRejectCurrentRule(xmlNode *localroot);
-   void processOut(xmlNode *localroot);
-   void processCallMacro(xmlNode *localroot);
-   void processModifyCase(xmlNode *localroot);
-@@ -110,10 +111,10 @@
-   bool processContainsSubstring(xmlNode *localroot);
-   bool processNot(xmlNode *localroot);
-   bool processIn(xmlNode *localroot);
--  void processRule(xmlNode *localroot);
-+  int processRule(xmlNode *localroot);
-   string evalString(xmlNode *localroot);
--  void processInstruction(xmlNode *localroot);
--  void processChoose(xmlNode *localroot);
-+  int processInstruction(xmlNode *localroot);
-+  int processChoose(xmlNode *localroot);
-   string processChunk(xmlNode *localroot);
-   string processTags(xmlNode *localroot);
- 
-@@ -125,7 +126,7 @@
-   wstring readBlank(FILE *in);
-   wstring readUntil(FILE *in, int const symbol) const;
-   void applyWord(wstring const &word_str);
--  void applyRule();
-+  int applyRule();
-   TransferToken & readToken(FILE *in);
-   bool checkIndex(xmlNode *element, int index, int limit);
-   void transfer_wrapper_null_flush(FILE *in, FILE *out);
 Index: apertium/transfer.dtd
 ===================================================================
---- apertium/transfer.dtd	(revisión: 40714)
+--- apertium/transfer.dtd	(revisión: 46476)
 +++ apertium/transfer.dtd	(copia de trabajo)
-@@ -8,7 +8,7 @@
+@@ -25,7 +25,7 @@
  
  <!ENTITY % condition "(and|or|not|equal|begins-with|begins-with-list|ends-with|ends-with-list|contains-substring|in)">
  <!ENTITY % container "(var|clip)">
@@ -46,7 +11,7 @@ Index: apertium/transfer.dtd
  <!ENTITY % value "(b|clip|lit|lit-tag|var|get-case-from|case-of|concat|lu|mlu|chunk)">
  <!ENTITY % stringvalue "(clip|lit|var|get-case-from|case-of)">
  
-@@ -434,6 +434,16 @@
+@@ -451,6 +451,16 @@
  <!ELEMENT lu (%value;)+>
  <!-- Encloses a word inside an 'out' element. -->
  
@@ -65,9 +30,9 @@ Index: apertium/transfer.dtd
                  namefrom CDATA #IMPLIED
 Index: apertium/transfer.cc
 ===================================================================
---- apertium/transfer.cc	(revisión: 40714)
+--- apertium/transfer.cc	(revisión: 46476)
 +++ apertium/transfer.cc	(copia de trabajo)
-@@ -835,12 +835,13 @@
+@@ -836,12 +836,13 @@
    return result;
  }
  
@@ -83,7 +48,7 @@ Index: apertium/transfer.cc
    }
    else if(!xmlStrcmp(localroot->name, (const xmlChar *) "let"))
    {
-@@ -862,8 +863,33 @@
+@@ -863,8 +864,33 @@
    {
      processModifyCase(localroot);
    }
@@ -117,7 +82,7 @@ Index: apertium/transfer.cc
  void
  Transfer::processLet(xmlNode *localroot)
  {
-@@ -1125,9 +1151,10 @@
+@@ -1127,9 +1153,10 @@
    }
  }
  
@@ -129,7 +94,7 @@ Index: apertium/transfer.cc
    for(xmlNode *i = localroot->children; i != NULL; i = i->next)
    {
      if(i->type == XML_ELEMENT_NODE)
-@@ -1153,13 +1180,16 @@
+@@ -1155,13 +1182,16 @@
  	    }
  	    else
  	    {
@@ -148,7 +113,7 @@ Index: apertium/transfer.cc
          }	
        }
        else if(!xmlStrcmp(i->name, (const xmlChar *) "otherwise"))
-@@ -1168,12 +1198,15 @@
+@@ -1170,12 +1200,15 @@
  	{
  	  if(j->type == XML_ELEMENT_NODE)
  	  {
@@ -165,7 +130,7 @@ Index: apertium/transfer.cc
  }
  
  bool
-@@ -1720,17 +1753,26 @@
+@@ -1722,17 +1755,26 @@
    return result;
  }
  
@@ -194,7 +159,7 @@ Index: apertium/transfer.cc
  }
  
  TransferToken &
-@@ -1838,19 +1880,53 @@
+@@ -1840,24 +1882,101 @@
      transfer_wrapper_null_flush(in, out);
    }
    
@@ -209,8 +174,37 @@ Index: apertium/transfer.cc
    while(true)
 -  {
 +  {  
++    
++    //vmsanchez:debug
++    if(trace)
++    {
++       cerr << "Loop start " << endl;
++       cerr << "ms.size: " << ms.size() << endl;
++       
++       cerr << "tmpword.size(): " << tmpword.size() << endl;
++        for (unsigned int ind = 0; ind < tmpword.size(); ind++)
++        {
++          if (ind != 0)
++          {
++            wcerr << L" ";
++          }
++          wcerr << *tmpword[ind];
++        }
++        wcerr << endl;
 +	
-+	    
++       cerr << "tmpblank.size(): " << tmpblank.size() << endl;
++        for (unsigned int ind = 0; ind < tmpblank.size(); ind++)
++        {
++          wcerr << L"'";
++          wcerr << *tmpblank[ind];
++	  wcerr << L"' ";
++        }
++        wcerr << endl;
++	
++	cerr << "last: " << last << endl;
++	cerr << "prev_last: " << prev_last << endl << endl;
++    }
++    
      if(ms.size() == 0)
      {
        if(lastrule != NULL)
@@ -218,6 +212,12 @@ Index: apertium/transfer.cc
 -	applyRule();
 -	input_buffer.setPos(last);
 +	int num_words_to_consume=applyRule();
++	
++	//vmsanchez:debug
++	if(trace)
++	{
++	  cerr << "num_words_to_consume: " << num_words_to_consume << endl;
++	}
 +	
 +	//Consume all the words from the input which matched the rule. 
 +	//This piece of code is executed unless the rule contains a "reject-current-rule" instruction
@@ -245,14 +245,27 @@ Index: apertium/transfer.cc
 +	{
 +		//Add rule to banned rules
 +		banned_rules.insert(lastrule_id);
-+		input_buffer.setPos((prev_last+1)%input_buffer.getSize());
-+	    
++		//input_buffer.setPos((prev_last+1)%input_buffer.getSize());   
++		input_buffer.setPos(prev_last);   
++		input_buffer.next();
++		last=input_buffer.getPos();
 +	}
 +	lastrule_id=-1;
        }
        else
        {
-@@ -1932,9 +2008,11 @@
+ 	if(tmpword.size() != 0)
+ 	{
++	  //vmsanchez:debug
++	  if(trace)
++	  {
++	    cerr << "printing tmpword[0]" <<endl;
++	  }
++	  
+ 	  pair<wstring, int> tr;
+ 	  if(useBilingual && preBilingual == false)
+ 	  {
+@@ -1950,25 +2069,34 @@
  	      fputws_unlocked(L"$}$", output);
              }
  	  }
@@ -265,8 +278,13 @@ Index: apertium/transfer.cc
  	  last = input_buffer.getPos();
  	  ms.init(me->getInitial());
  	}
-@@ -1942,15 +2020,19 @@
+ 	else if(tmpblank.size() != 0)
  	{
++	  //vmsanchez:debug
++	  if(trace)
++	  {
++	    cerr << "printing tmpblank[0]" <<endl;
++	  }
  	  fputws_unlocked(tmpblank[0]->c_str(), output);
  	  tmpblank.clear();
 +	  prev_last=last;
@@ -282,12 +300,10 @@ Index: apertium/transfer.cc
 -      lastrule = rule_map[val-1];      
 +      lastrule = rule_map[val-1];
 +      lastrule_id=val;
-+      if(ms.size()==0)
-+		prev_last=last;   
        last = input_buffer.getPos();
  
        if(trace)
-@@ -2002,9 +2084,10 @@
+@@ -2020,9 +2148,10 @@
    }
  }
  
@@ -299,7 +315,7 @@ Index: apertium/transfer.cc
    unsigned int limit = tmpword.size();
    //wcerr << L"applyRule: " << tmpword.size() << endl;
    
-@@ -2073,7 +2156,7 @@
+@@ -2108,7 +2237,7 @@
  			       UtfConverter::toUtf8(tr.first), tr.second);
    }
  
@@ -308,7 +324,7 @@ Index: apertium/transfer.cc
    lastrule = NULL;
  
    if(word)
-@@ -2097,6 +2180,7 @@
+@@ -2132,6 +2261,7 @@
    tmpword.clear();
    tmpblank.clear();
    ms.init(me->getInitial());
@@ -316,3 +332,38 @@ Index: apertium/transfer.cc
  }
  
  /* HERE */
+Index: apertium/transfer.h
+===================================================================
+--- apertium/transfer.h	(revisión: 46476)
++++ apertium/transfer.h	(copia de trabajo)
+@@ -96,6 +96,7 @@
+ 
+   void processLet(xmlNode *localroot);
+   void processAppend(xmlNode *localroot);
++  int processRejectCurrentRule(xmlNode *localroot);
+   void processOut(xmlNode *localroot);
+   void processCallMacro(xmlNode *localroot);
+   void processModifyCase(xmlNode *localroot);
+@@ -111,10 +112,10 @@
+   bool processContainsSubstring(xmlNode *localroot);
+   bool processNot(xmlNode *localroot);
+   bool processIn(xmlNode *localroot);
+-  void processRule(xmlNode *localroot);
++  int processRule(xmlNode *localroot);
+   string evalString(xmlNode *localroot);
+-  void processInstruction(xmlNode *localroot);
+-  void processChoose(xmlNode *localroot);
++  int processInstruction(xmlNode *localroot);
++  int processChoose(xmlNode *localroot);
+   string processChunk(xmlNode *localroot);
+   string processTags(xmlNode *localroot);
+ 
+@@ -126,7 +127,7 @@
+   wstring readBlank(FILE *in);
+   wstring readUntil(FILE *in, int const symbol) const;
+   void applyWord(wstring const &word_str);
+-  void applyRule();
++  int applyRule();
+   TransferToken & readToken(FILE *in);
+   bool checkIndex(xmlNode *element, int index, int limit);
+   void transfer_wrapper_null_flush(FILE *in, FILE *out);
