@@ -25,7 +25,7 @@ else: fileError = FileNotFoundError
     
 parser = argparse.ArgumentParser(description = 'Scrape ibt.org')
 parser.add_argument('-l', action = 'store', nargs = '*', help = 'Scrape the bibles with these codes')
-parser.add_argument('-x', action = 'store', nargs = '*', help = 'Skip scraping certain book(s)')
+parser.add_argument('-x', action = 'store', nargs = '*', help = 'Skip scraping certain book(s); OT to get just New Testament')
 parser.add_argument('-a', action = 'store_const', const = 2, help = 'List all the valid language codes')
 parser.add_argument('-s', action = 'store_const', const = 2, help = 'Parse titles within each chapter')
 parser.add_argument('-q', action = 'store_false', help = 'Suppress progress messages')
@@ -33,7 +33,9 @@ parser.add_argument('-u', action = 'store_true', help = 'Add to file, don\'t ove
 args = parser.parse_args()
 urls = args.l
 toSkip = args.x if args.x else []
-
+OT = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zechariah', 'Zephaniah', 'Haggai', 'Malachi']
+if "OT" in args.x:
+    toSkip = OT
 
 def firstPage(url):
     
