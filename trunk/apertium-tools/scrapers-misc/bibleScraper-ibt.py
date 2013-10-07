@@ -25,10 +25,14 @@ else: fileError = FileNotFoundError
     
 parser = argparse.ArgumentParser(description = 'Scrape ibt.org')
 parser.add_argument('-l', action = 'store', nargs = '*', help = 'Scrape the bibles with these codes')
+parser.add_argument('-x', action = 'store', nargs = '*', help = 'Skip scraping certain book(s)')
 parser.add_argument('-a', action = 'store_const', const = 2, help = 'List all the valid language codes')
 parser.add_argument('-s', action = 'store_const', const = 2, help = 'Parse titles within each chapter')
+parser.add_argument('-q', action = 'store_false', help = 'Suppress progress messages')
+parser.add_argument('-u', action = 'store_true', help = 'Add to file, don\'t overwrite')
 args = parser.parse_args()
 urls = args.l
+toSkip = args.x
 
 
 def firstPage(url):
@@ -44,24 +48,38 @@ def firstPage(url):
     
     selbook = soup.find('select', {'id':'selbook'})
     books = [(option['value'], option.text) for option in selbook.find_all('option')]
-        
-    with open(filename, 'w', encoding = 'utf-8') as outfile:
+
+    if args.u:
+        mode = 'a'
+    else:
+        mode = 'w'
+    with open(filename, mode, encoding = 'utf-8') as outfile:
         if not os.path.isdir('.cache'): os.mkdir('.cache')
             
         for urlB, fullB in books:
-            
-            firstUrl = prefix + '&l=' + urlB
-            #print(firstUrl)
-            soup = BeautifulSoup(urllib.request.urlopen(firstUrl).read())
-            selchap = soup.find('select', {'id':'selchap'})
-            chap = [(option['value'], option.text) for option in selchap.find_all('option')]
-            #print(chap)
-            for urlC, fullC in chap:
-                outfile.write(fullB + ' ' + str(roman.Roman(urlC)) + '\n')
-                
-                u = 'http://ibt.org.ru/en/text.htm?m=' + results.group(1) + '&l=' + urlB + '.' + str(urlC) + '&g=0'
-                s = allPages(u, results.group(1))
-                outfile.write(s + '\n')
+            print(fullB, end='')
+            if fullB in toSkip:
+                print(" [skipping]")
+            else:
+                sys.stdout.flush()
+                firstUrl = prefix + '&l=' + urlB
+                #print(firstUrl)
+                soup = BeautifulSoup(urllib.request.urlopen(firstUrl).read())
+                selchap = soup.find('select', {'id':'selchap'})
+                chap = [(option['value'], option.text) for option in selchap.find_all('option')]
+                print(": ", end='')
+                for urlC, fullC in chap:
+                    outfile.write(fullB + ' ' + str(roman.Roman(urlC)) + '\n')
+                    print(fullC, end='')
+                    sys.stdout.flush()
+                    u = 'http://ibt.org.ru/en/text.htm?m=' + results.group(1) + '&l=' + urlB + '.' + str(urlC) + '&g=0'
+                    s = allPages(u, results.group(1))
+                    print(".", end='')
+                    sys.stdout.flush()
+                    outfile.write(s + '\n')
+                    print(" ", end='')
+                    sys.stdout.flush()
+                print()
 
 def allPages(url, bible):
     urlparts = url.split('?')
