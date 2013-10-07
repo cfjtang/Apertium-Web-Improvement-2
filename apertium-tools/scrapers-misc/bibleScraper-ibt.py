@@ -32,7 +32,7 @@ parser.add_argument('-q', action = 'store_false', help = 'Suppress progress mess
 parser.add_argument('-u', action = 'store_true', help = 'Add to file, don\'t overwrite')
 args = parser.parse_args()
 urls = args.l
-toSkip = args.x
+toSkip = args.x if args.x else []
 
 
 def firstPage(url):
