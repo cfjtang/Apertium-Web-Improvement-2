@@ -78,6 +78,7 @@ int main(int argc, char* argv[]) {
   bool usediscardrule=false;
   bool explicitemptytags=false;
   bool emptyrestrictionsmatcheverything=false;
+  bool generateChunks=false;
 
   cerr<<"Command line: ";
   for(int i=0; i<argc; i++)
@@ -103,6 +104,7 @@ int main(int argc, char* argv[]) {
 	{"onepatternperrule",            no_argument,  0, 'o'},
 	{"usediscardrule",            no_argument,  0, 's'},
 	{"emptyrestrictionsmatcheverything",            no_argument,  0, 'y'},
+	{"generatechunks",            no_argument,  0, 'k'},
 	{"gzip",            no_argument,  0, 'z'},
 	{"debug",           no_argument,  0, 'd'},
 	{"help",            no_argument,  0, 'h'},
@@ -110,7 +112,7 @@ int main(int argc, char* argv[]) {
 	{0, 0, 0, 0}
       };
 
-    c=getopt_long(argc, argv, "a:x:i:m:c:egpnroszdhv",long_options, &option_index);
+    c=getopt_long(argc, argv, "a:x:i:m:c:egpnroszdhvk",long_options, &option_index);
     if (c==-1)
       break;
       
@@ -159,6 +161,9 @@ int main(int argc, char* argv[]) {
 	  break;
     case 'd':
       debug=true;
+      break;
+    case 'k':
+      generateChunks=true;
       break;
     case 'h': 
       help(argv[0]);
@@ -222,6 +227,7 @@ int main(int argc, char* argv[]) {
   TransferRule::set_no_double_check_restrictions(nodoublecheckrestrictions);
   TransferRule::set_use_discard_rule(usediscardrule);
   TransferRule::set_empty_restrictions_match_everything(emptyrestrictionsmatcheverything);
+  TransferRule::set_generate_chunks(generateChunks);
   
   istream *fin;
   if (use_zlib) {

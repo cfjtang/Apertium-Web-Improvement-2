@@ -13,7 +13,7 @@ from tempfile import mkstemp, NamedTemporaryFile
 import os
 import ruleLearningLib
 import subprocess
-import sys
+import sys,numpy
 from collections import defaultdict
 
 class RuleList(object):
@@ -41,13 +41,16 @@ class RuleList(object):
         self.maxLength=max(self.maxLength,len(at.parsed_sl_lexforms))
         self.ruleList.append(at)
     
+    def get_max_length(self):
+        return self.maxLength
+    
     def get_by_id(self,id):
         if id <=0 or id >= len(self.ruleList):
             raise RuntimeError("ID not in range")
         return self.ruleList[id]
     
     #returns the rules matching the segment, sorted in decreasing priority order
-    def get_rules_matching_segment(self,segment,restrictions):
+    def get_rules_matching_segment(self,segment,restrictions,exactMatch=False):
         rulesMatching=list()
         
         if len(segment) > 0 and not segment[0].is_unknown():
@@ -60,7 +63,13 @@ class RuleList(object):
                 else:
                     listOfCats.append(sllex.get_pos())
             
-            for i in reversed(range(len(segment))):
+            
+            if exactMatch:
+                prefixes=[len(segment)-1]
+            else:
+                prefixes=reversed(range(len(segment)))
+            
+            for i in prefixes:
                 prefixCatsStr=str(listOfCats[:i+1])
                 prefixSegment=segment[:i+1]
                 prefixRestriction=restrictions[:i+1]
@@ -70,10 +79,12 @@ class RuleList(object):
                             rulesMatching.append(at)
         return rulesMatching
     
+    
 class RuleApplicationHypothesis(object):
     
     totalNumRules=1
     
+    maxLength=1
     config_tl="ca"
     apertium_data_dir=None
     minimumCoverdedWords=False
@@ -126,7 +137,18 @@ class RuleApplicationHypothesis(object):
     
     def get_score_with_num_rules(self):
         if RuleApplicationHypothesis.minimumCoverdedWords:
-            return self.score*10000+ 0.1*(1 - (sum( len(ruleApp[1]) for ruleApp in self.rulesList if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID  )*1.0/self.lengthOfSentence))
+            #assuming a maximum of 
+            #100 words per sentence,
+            #the minimum difference between two rule applications
+            #of the proportion of words covered would be:
+            # 1/100 = 0.01
+            #So we only need 2 digits to represent it. Anyway, we will use 3
+            #just in case there is a sentence longer than 100 words
+            ruleApps=[ruleApp[1] for ruleApp in self.rulesList if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID] 
+            mean=0
+            if len(ruleApps) > 0:
+                mean =numpy.mean( [ len(ruleApp) for ruleApp in ruleApps ] )
+            return self.score*10000+ 0.1*(1 - (sum( len(ruleApp) for ruleApp in ruleApps )*1.0/self.lengthOfSentence)) + 0.0001*( 1 - (mean*1.0/RuleApplicationHypothesis.maxLength ))
         else:
             return self.score*10000+ 0.1*(1 - (len(self.discardedRules)*1.0/RuleApplicationHypothesis.totalNumRules))
 
@@ -159,24 +181,31 @@ class RuleApplicationHypothesis(object):
         return u"|".join([source,test,ref]).encode('utf-8')
         
     def __repr__(self):
-        return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+unicode(self.rulesList)+u" | "+u" ".join([ lf.unparse() for lf in self.translation])
+        return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+unicode(self.rulesList)+u" | "+u"\t".join([ lf.unparse() for lf in self.translation])
     
     def to_str_for_debug(self):
         return unicode(self.score)+u" | "+unicode(self.appliedRules)+u" | "+unicode(self.discardedRules)+u" | "+unicode(self.rulesList)+u" | "+ u" ".join([ lf.unparse() for lf in self.source]) +" | " + u" ".join([ lf.unparse() for lf in self.translation])+" |ref: "+u" ".join([ lf.unparse() for lf in self.reference])
-    def parse(self,rawstr):
+    def parse(self,rawstr,parseTranslation=False):
         parts=rawstr.split(u"|")
         if len(parts) >=4:
             self.score=float(parts[0].strip())
             self.appliedRules=eval(parts[1].strip())
             self.discardedRules=eval(parts[2].strip())
             self.rulesList=eval(parts[3].strip())
+            if parseTranslation and len(parts) >= 5:
+                lexicalFormsStr=parts[4].strip().split(u"\t")
+                for lxStr in lexicalFormsStr:
+                    lf =ruleLearningLib.AT_LexicalForm()
+                    lf.parse(lxStr)
+                    self.translation.append(lf)
+                
         else:
             raise Exception()
     
     @classmethod
-    def create_and_parse(cls,rawstr):
+    def create_and_parse(cls,rawstr,parseTranslation=False):
         hyp=RuleApplicationHypothesis()
-        hyp.parse(rawstr)
+        hyp.parse(rawstr,parseTranslation)
         return hyp
 
     @classmethod
@@ -197,6 +226,10 @@ class RuleApplicationHypothesis(object):
         cls.minimumCoverdedWords=p_isminimum
     
     @classmethod
+    def set_max_length(cls,p_maxLength):
+        cls.maxLength=p_maxLength
+    
+    @classmethod
     def set_inv_boxes_dict(cls,p_boxesdict):
         cls.boxesInvDict=p_boxesdict
     
@@ -213,7 +246,6 @@ class RuleApplicationHypothesis(object):
             fileobj.write(strhyp+"\n")
         fileobj.close()
         
-        #TODO: change TL parameter
         command="bash "+os.getcwdu()+"/evaluateBeamSearchHypothesis.sh -f "+fileobj.name+" -t "+cls.config_tl
         if cls.apertium_data_dir:
             command+=" -d "
@@ -225,9 +257,11 @@ class RuleApplicationHypothesis(object):
         
         lines=output.strip().split("\n")
         if len(lines) != len(listOfstrHyps):
-            print >> sys.stderr, "ERROR. NUmber of lines does not match hypothesis list"
+            print >> sys.stderr, "ERROR. NUmber of lines ("+str(len(lines))+") does not match hypothesis list ("+str(len(listOfstrHyps))+")"
             print >> sys.stderr, "Dump:"
             print >> sys.stderr, output
+            print >> sys.stderr, "Error output:"
+            print >> sys.stderr, error
             exit()
         
         resultsDictionary=dict()
@@ -306,11 +340,25 @@ class RuleApplicationHypothesis(object):
             return status,None
     
     @classmethod
-    def select_rules_maximize_score_boxes_applied(cls,ll_hypothesis,boxesInvDict):
+    def select_rules_maximize_score_boxes_applied(cls,ll_hypothesis,boxesInvDict,allruleList,sentences,supersegmentsWithMaxScore):
         
-        #TODO: change
-        MAX_LENGTH=5
+        if len(ll_hypothesis) != len(sentences):
+            print >> sys.stderr, "ERROR: different length of sentences and hypothesis"
+            return []
         
+        usePrecomputedSupersegments=False
+        if len(supersegmentsWithMaxScore) > 0:
+            usePrecomputedSupersegments=True
+            if len(ll_hypothesis) != len(supersegmentsWithMaxScore):
+                print >> sys.stderr, "ERROR: different length of supersegments and hypothesis"
+                return []
+        
+        if allruleList.get_max_length() > 1:
+            MAX_LENGTH=allruleList.get_max_length()
+        else:
+            #if the alignment template parameter was not provided
+            MAX_LENGTH=5
+            
         boxesDict=dict()
         for key in boxesInvDict:
             boxesDict[boxesInvDict[key]]=key
@@ -321,12 +369,18 @@ class RuleApplicationHypothesis(object):
         
         for numSentence,hypothesesOfSentence in enumerate(ll_hypothesis):
             bestHyp=hypothesesOfSentence[0]
+            currentSentence=sentences[numSentence]
             #for ruleid in bestHyp.get_applied_rules():
             #    countsApplied[ruleid]+=1
             ruleList=bestHyp.rulesList
             
             optimalRuleApplicationsSet=set()
-            for otherHyp in hypothesesOfSentence[1:]:
+            if usePrecomputedSupersegments:
+                hypsWithSupersegments=supersegmentsWithMaxScore[numSentence]
+            else:
+                hypsWithSupersegments=hypothesesOfSentence[1:]
+            
+            for otherHyp in hypsWithSupersegments:
                 currentPosition=0
                 for ruleApp in otherHyp.rulesList:
                     if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID:
@@ -371,6 +425,7 @@ class RuleApplicationHypothesis(object):
             #for each applied rule, compute 
             #rules left-intersecting with it 
             #rulesLeftIntersecting=set()
+            #TODO: Check that they match!!!!!!!!!!!!!!!!!!!!!!!!!
             for startPosition,length in positionsWhereRuleStartAndLength:
                 debug("Discarded rules for ("+str(startPosition)+") "+"__".join(listOfPos[startPosition:startPosition+length]))
                 for endingPositionOffset in range(length-1):
@@ -379,12 +434,17 @@ class RuleApplicationHypothesis(object):
                         startingPositinoOfIntersecting=endingPositionIncluded-lengthOfLeftIntersectinRule +1
                         if startingPositinoOfIntersecting >= 0 and startingPositinoOfIntersecting < startPosition:
                             seqOfPosOfIntersecting=listOfPos[startingPositinoOfIntersecting:endingPositionIncluded+1]
-                            strForm="__".join(seqOfPosOfIntersecting)
-                            debug("\t"+strForm)
-                            if strForm in boxesDict:
-                                ruleid=boxesDict[strForm]
-                                #rulesLeftIntersecting.add(ruleid)
-                                countsBanned[ruleid]+=1
+                            
+                            #check whether the intersecting segment matches any AT
+                            ruleMatchingList=allruleList.get_rules_matching_segment(currentSentence.parsed_sl_lexforms[startingPositinoOfIntersecting:endingPositionIncluded+1],currentSentence.parsed_restrictions[startingPositinoOfIntersecting:endingPositionIncluded+1])
+                            
+                            if len(ruleMatchingList) > 0:
+                                strForm="__".join(seqOfPosOfIntersecting)
+                                debug("\t"+strForm)
+                                if strForm in boxesDict:
+                                    ruleid=boxesDict[strForm]
+                                    #rulesLeftIntersecting.add(ruleid)
+                                    countsBanned[ruleid]+=1
             #for ruleid in rulesLeftIntersecting:
                 #countsBanned[ruleid]+=1
                     
@@ -499,7 +559,179 @@ class RuleApplicationHypothesis(object):
         for numSentence,rahyp in enumerate(winner.ruleAppliccationHyps):
             print >> sys.stderr, "Sentence "+str(numSentence)+": "+unicode(rahyp).encode('utf-8')
         return winner.get_total_applied_rules(),winner.get_total_score()
-       
+    
+    @classmethod
+    def create_by_translating_segments(cls,ruleList,parsed_sl_lexforms,parsed_restrictions,listOfChunks,parsed_tl_lexforms,tllemmas_from_dictionary,boxesDic):
+        
+        newHyp=RuleApplicationHypothesis()
+        foundEmptyMatchingRule=False
+        
+        #sort chunks by starting position
+        sortedChunks= sorted(listOfChunks,key= lambda c: c[0])
+        
+        #obtain target lexical forms
+        target_lexforms=list()
+        nextChunk=sortedChunks[0]
+        sortedChunks=sortedChunks[1:]
+        index=0
+        while index < len(parsed_sl_lexforms):
+            debug("Index: "+str(index))
+            debug("next chunk"+str(nextChunk))
+            debug("list of chunks"+str(sortedChunks))
+            if nextChunk != None:
+                if index==nextChunk[0]:
+                    length=nextChunk[1]
+                    
+                    #go to next chunk
+                    if len(sortedChunks) > 0:
+                        nextChunk=sortedChunks[0]
+                        sortedChunks=sortedChunks[1:]
+                    else:
+                        nextChunk=None
+                    
+                    while nextChunk!=None and nextChunk[0]==index:
+                        if nextChunk[1] > length:
+                            length=nextChunk[1]    
+                        #go to next chunk
+                        if len(sortedChunks) > 0:
+                            nextChunk=sortedChunks[0]
+                            sortedChunks=sortedChunks[1:]
+                        else:
+                            nextChunk=None
+                        
+                    
+                    matchingRules=ruleList.get_rules_matching_segment(parsed_sl_lexforms[index:index+length],parsed_restrictions[index:index+length],exactMatch=True)
+                    if len(matchingRules) == 0:
+                        foundEmptyMatchingRule=True
+                        break
+                    at=matchingRules[0]
+                    tlsegment=at.apply(parsed_sl_lexforms[index:index+length],tllemmas_from_dictionary[index:index+length],parsed_restrictions[index:index+length])
+                    target_lexforms.extend(tlsegment)
+                    
+                    boxid=boxid=boxesDic[at.get_pos_list_str()]
+                    newHyp.appliedRules.add(boxid)
+                    newHyp.add_to_rules_list(boxid, at.get_pos_list_str().split("__"))
+                    
+                    index+=length
+                    continue
+            
+            #translate word for word
+            if parsed_sl_lexforms[index].is_unknown():
+                bilDicTranslation=parsed_sl_lexforms[index]
+            else:
+                bilDicTranslation=AT_LexicalForm()
+                bilDicTranslation.set_lemma(tllemmas_from_dictionary[index])
+                bilDicTranslation.set_pos(parsed_sl_lexforms[index].get_pos())
+                bilDicTags=list()
+                bilDicTags.extend(parsed_restrictions[index].get_tags())
+                bilDicTags.extend(parsed_sl_lexforms[index].get_tags()[len(bilDicTags):])
+                bilDicTranslation.set_tags(bilDicTags)
+            target_lexforms.append(bilDicTranslation)
+            newHyp.add_to_rules_list(RuleApplicationHypothesis.WORDFORWORDRULEID, [ parsed_sl_lexforms[index].get_pos() ])
+            index+=1
+        
+        if not foundEmptyMatchingRule:
+            newHyp.set_source(parsed_sl_lexforms)
+            newHyp.set_translation(target_lexforms)
+            newHyp.set_reference(parsed_tl_lexforms)
+        else:
+            newHyp.appliedRules=set()
+        return newHyp
+    
+    def compute_supersets_with_maximum_score(self,sentence,ruleList,boxesDic):
+        
+        maxLength=ruleList.get_max_length()
+        
+        newRuleApplicationHypotheses=list()
+        
+        if ruleLearningLib.DEBUG:
+            debug("Computing supersets for hypothesis: "+unicode(self).encode('utf-8'))
+        
+        #obtain more information about key segments
+        keysegments=list()
+        currentPosition=0
+        for ruleApp in self.rulesList:
+            if ruleApp[0] != RuleApplicationHypothesis.WORDFORWORDRULEID:
+                #keysegment= ( position, length, ruleid )
+                keysegments.append((currentPosition,len(ruleApp[1]),ruleApp[0]))
+            currentPosition+=len(ruleApp[1])
+        
+        #compute supersets of each key segment
+        #each position of the list: list of supersets which keep the maximum score
+        
+        #first, compute all supersets
+        allSuperSetsOfKeySegments=list()
+        for ksPos,ksLen,ksId in keysegments:
+            supersetsOfThisKey=list()
+            maxLengthToAdd=maxLength-ksLen
+            for lengthToAdd in range(1,maxLengthToAdd+1):
+                for leftSideLength in range(lengthToAdd+1):
+                    #rightSideLengh=lengthToAdd-leftSideLength
+                    startingPos=ksPos-leftSideLength
+                    if startingPos >= 0 and  startingPos+ksLen+lengthToAdd <= len(sentence.parsed_sl_lexforms):
+                        supersetsOfThisKey.append((startingPos,ksLen+lengthToAdd))
+            allSuperSetsOfKeySegments.append(supersetsOfThisKey)       
+        
+        #remove supersets intersecting with other key segments.
+        #no problem if they totally enclose other key segments
+        notIntersectingSuperSetsOfKeySegments=list()
+        for keySegmentIndex,allSupersets in enumerate(allSuperSetsOfKeySegments):
+            notIntersectingOfThisKey=list()
+            for startingPos,length in allSupersets:
+                valid=True
+                for otherKeySegmentIndex,keySegmentData in enumerate(keysegments):
+                    if otherKeySegmentIndex != keySegmentIndex:
+                        ksPos=keySegmentData[0]
+                        ksLen=keySegmentData[1]
+                        if ksPos < startingPos and startingPos < ksPos+ksLen :
+                            valid=False
+                            break
+                        if ksPos < startingPos+length and ksPos +ksLen > startingPos+length:
+                            valid=False
+                            break
+                if valid:
+                    notIntersectingOfThisKey.append((startingPos,length))
+            notIntersectingSuperSetsOfKeySegments.append(notIntersectingOfThisKey)
+        
+        if ruleLearningLib.DEBUG:
+            debug("Supersets not intersecting: ")
+            for keyindex,supersets in enumerate(notIntersectingSuperSetsOfKeySegments):
+                debug("For ks "+str(keyindex)+": "+str(supersets))
+            
+        
+        #check whether, when translating the SL sentence with a supersegment
+        #and the remaining key segments, the same score is obtained
+        for keySegmentIndex,allSupersets in enumerate(notIntersectingSuperSetsOfKeySegments):
+            otherKeySegments=list()
+            for otherKeySegmentIndex,keySegment in enumerate(keysegments):
+                if otherKeySegmentIndex != keySegmentIndex:
+                    otherKeySegments.append((keySegment[0],keySegment[1]))
+                                            
+            for keySegmentSuperset in allSupersets:
+                listOfChunks=list()
+                listOfChunks.append(keySegmentSuperset)
+                listOfChunks.extend(otherKeySegments)
+                
+                debug("Creating hypothesis with these segments: "+str(listOfChunks))
+                
+                ruleAppWithSuperset=RuleApplicationHypothesis.create_by_translating_segments(ruleList,sentence.parsed_sl_lexforms,sentence.parsed_restrictions,listOfChunks,sentence.parsed_tl_lexforms,sentence.tl_lemmas_from_dictionary,boxesDic)
+                if not ruleAppWithSuperset.is_empty():
+                    debug(unicode(ruleAppWithSuperset).encode('utf-8'))
+                    newRuleApplicationHypotheses.append(ruleAppWithSuperset)
+                else:
+                    debug("RULES NOT MATCHING")
+        
+        #it is not necessary to combine the different supersegments for 
+        #each key segment. see how this result is used by the maximiseScore.py program
+        
+        if ruleLearningLib.DEBUG and False:
+            debug("Rule application hypotheses to be scored:")
+            for index,hyp in enumerate(newRuleApplicationHypotheses):
+                debug("hyp "+str(index)+": "+unicode(hyp).encode('utf-8'))
+            debug("")
+        RuleApplicationHypothesis.score_hypotheses([self]+newRuleApplicationHypotheses)
+        
+        return [hyp for hyp in newRuleApplicationHypotheses if hyp.get_score() >= self.get_score()]
 
 class PartitionSelectionHypothesis(object):
     
@@ -559,6 +791,7 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
             RuleApplicationHypothesis.set_num_total_rules(len(boxesDic))
         else:
             RuleApplicationHypothesis.set_num_total_rules(len(ruleList))
+        RuleApplicationHypothesis.set_max_length(ruleList.get_max_length())
         
         boxesInverseDic=dict()
         for key in boxesDic.keys():

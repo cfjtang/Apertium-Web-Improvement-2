@@ -9,17 +9,24 @@ if __name__=="__main__":
     DEBUG=False
     parser = argparse.ArgumentParser(description='Selects bilingual phrases.')
     parser.add_argument('--extract_structures',action='store_true')
-    parser.add_argument('--closed_categories',required=True)
+    parser.add_argument('--closed_categories')
     parser.add_argument('--ends_must_be_aligned',action='store_true')
     parser.add_argument('--allowed_structures')
+    parser.add_argument('--allow_all_alignments',action='store_true')
     #value = dir in which bilphrases will be written
     #ATs = std output
     args = parser.parse_args(sys.argv[1:])
     
+    closedCategoriesSet=set()
+    if (not args.closed_categories or args.closed_categories == ""):
+        if not args.allow_all_alignments:
+            print >> sys.stderr, "ERROR: Closed categories set not provided"
+            exit()
+    else:
+        closedCategoriesSet=set( [ rawcat.decode('utf-8').strip()[1:-1] for rawcat in open(args.closed_categories)] )
+        print >> sys.stderr, str(closedCategoriesSet)
     
-    closedCategoriesSet=set( [ rawcat.decode('utf-8').strip()[1:-1] for rawcat in open(args.closed_categories)] )
-    print >> sys.stderr, str(closedCategoriesSet)
-    
+    allKindsOfAlignmentsAreAllowed=args.allow_all_alignments
     
     allowedStructuresSet=AllowedStructuresSet()
     if args.allowed_structures:
@@ -45,7 +52,8 @@ if __name__=="__main__":
         
         #add restrictions
         tllemmasFromDic=list()
-        wordsFromBiling= [ w.strip() for w in pieces[4].split(u"\t") ]
+        #split(u"/") makes the system work with bildics with multiple entries
+        wordsFromBiling= [ w.strip().split(u"/")[0] for w in pieces[4].split(u"\t") ]
         at.parsed_restrictions=[]
         for word in wordsFromBiling:
             restriction=ruleLearningLib.AT_Restriction()
@@ -59,7 +67,7 @@ if __name__=="__main__":
             atOK=False
         
         #check that aligned words of open categories match dictionary translation
-        if atOK and at.aligned_words_of_open_categories_match_dictionary_translation(closedCategoriesSet,tllemmasFromDic):
+        if atOK and (allKindsOfAlignmentsAreAllowed or at.aligned_words_of_open_categories_match_dictionary_translation(closedCategoriesSet,tllemmasFromDic)):
             if not args.ends_must_be_aligned or at.is_ends_aligned() or allowedStructuresSet.is_at_allowed(at):
                 sl_lemmas,tl_lemmas=at.extract_lemmas()
                 

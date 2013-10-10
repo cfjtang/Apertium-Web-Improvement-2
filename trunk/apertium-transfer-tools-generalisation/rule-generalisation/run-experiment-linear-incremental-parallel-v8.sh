@@ -31,7 +31,8 @@ RICHATS="yes"
 RICHATSFLAG="--rich_ats --ref_to_biling"
 POWERSETFEATURESFLAG="--generalise_from_right_to_left"
 RICHATSFLAGONLYGEN=""
-DIFFERENTRESTRICTIONSFLAG=""
+DIFFERENTRESTRICTIONSFLAGP1=""
+DIFFERENTRESTRICTIONSFLAGP2=""
 
 FIRSTMINIMISELEMMAS=""
 
@@ -43,7 +44,7 @@ Bla bla bla
 EOF
 }
 
-while getopts “f:d:i:p:x:e:h:t:m:yqcanrglvsubjk” OPTION
+while getopts “f:d:i:p:x:e:h:t:m:yqcanrglvsubjko” OPTION
 do
      case $OPTION in
         f)
@@ -88,28 +89,31 @@ do
 		RICHATSFLAGONLYGEN="--rich_ats"
 		;;
 	r)
-	        DIFFERENTRESTRICTIONSFLAG="--different_restriction_options"
+	        DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options"
 	        ;;
 	g)
-	        DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_to_be_determined_in_restriction"
+	        DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_to_be_determined_in_restriction"
 	        ;;
 	l)
-	        DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_to_be_determined_and_mf_in_restriction"
+	        DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_to_be_determined_and_mf_in_restriction"
 	        ;;
 	s)
-		DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_to_be_determined_and_change_in_restriction"
+		DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_to_be_determined_and_change_in_restriction"
 	        ;;
 	b)
-		DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_tags_triggering_diference_in_restriction"
+		DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_tags_triggering_diference_in_restriction"
 		;;
 	j)
-		DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length"
+		DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length"
 		;;
 	k)
-	       DIFFERENTRESTRICTIONSFLAG="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length --triggering_no_good_discarded"
+	       DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length --triggering_no_good_discarded"
 		;;
+	o)
+	       DIFFERENTRESTRICTIONSFLAGP1="--different_restriction_options --only_tags_triggering_diference_in_restriction --triggering_limited_length --discard_restrictions_not_improving"
+	       ;;
 	v)
-	       DIFFERENTRESTRICTIONSFLAG="--add_restrictions_to_every_tag $DIFFERENTRESTRICTIONSFLAG"
+	       DIFFERENTRESTRICTIONSFLAGP2="--add_restrictions_to_every_tag"
 	       ;;
 	u)
 	      FIRSTMINIMISELEMMAS="yes"
@@ -120,6 +124,8 @@ do
              ;;
      esac
 done
+
+DIFFERENTRESTRICTIONSFLAG="$DIFFERENTRESTRICTIONSFLAGP2 $DIFFERENTRESTRICTIONSFLAGP1"
 
 if [ "COPY_EMPTY_TAGS" == "yes" ]; then
 	TAGGROUPSGENEMPTYSL=`cat $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX | cut -f 1 -d ':' | tr '\n' ','`

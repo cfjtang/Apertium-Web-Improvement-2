@@ -189,7 +189,7 @@ fi
 
 FILTERING_IN_LINEAR_FLAG_PREFIX=""
 if [ "$FILTERING_IN_LINEAR" == "yes" ]; then
-	FILTERING_IN_LINEAR_FLAG_PREFIX=`echo "$FILTERING_OPTION" | sed -r 's:(extendedrange)?(relax)?(nocontra)?(symmdiff)?(above[0-9]+)?$::'`
+	FILTERING_IN_LINEAR_FLAG_PREFIX=`echo "$FILTERING_OPTION" | sed -r 's:(extendedrange)?(relax)?(nocontra)?(symmdiff)?(firstrestrictions)?(above[0-9]+)?$::'`
     FILTERING_IN_LINEAR_FLAG_PREFIX="--$FILTERING_IN_LINEAR_FLAG_PREFIX "
 fi
 
@@ -244,8 +244,14 @@ for treshold in `LC_ALL=C seq $START_T $STEP_T $END_T`; do
 		SYMDIFFLAG="--symmetric_difference"
 	fi
 	
+	RESTRICTIONMINIMISATIONFLAG=""
+	if [[ $FILTERING_OPTION == *firstrestrictions* ]]; then
+		RESTRICTIONMINIMISATIONFLAG="--first_select_restrictions"
+	fi
+	
+	
 	for file in $TRUEWORKDIR/filtering-$FILTERING_OPTION/boxesforfiltering.split* ; do
-		parallel $PARALLELONLYONE -i  bash -c " rm -f \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug.gz\"; FILTERING_IN_LINEAR_FLAG=\"\"; if [ \"$FILTERING_IN_LINEAR_FLAG_PREFIX\" != \"\" ]; then FILTERING_IN_LINEAR_FLAG=\"$FILTERING_IN_LINEAR_FLAG_PREFIX $tresholdForLinear\"; fi; ${PYTHONHOME}python $CURDIR/chooseATs.py --tag_groups_file $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX --gzip \$FILTERING_IN_LINEAR_FLAG $CONTRADICTORYORRELAX --read_generalised_bilphrases_from_dir \"$TRUEINPUTWORKDIR/generalisation/newbilphrases\"  $THRESHOLD_PROPORTION_FLAG_ARGUMENT --read_generalised_ats_from_file \"$ATS_DIR/{}$ATS_SUFFIX\" --remove_third_restriction $SYMDIFFLAG 2> \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug\"  |  grep  \"<[^>]*>\" | gzip > \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/ats/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.gz\"; cat \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug\" | grep -F \"Status:\" | sed 's_^_{}_' >> \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/statuses-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME\" ; gzip -f \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug\" " -- `cat $file`		
+		parallel $PARALLELONLYONE -i  bash -c " rm -f \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug.gz\"; FILTERING_IN_LINEAR_FLAG=\"\"; if [ \"$FILTERING_IN_LINEAR_FLAG_PREFIX\" != \"\" ]; then FILTERING_IN_LINEAR_FLAG=\"$FILTERING_IN_LINEAR_FLAG_PREFIX $tresholdForLinear\"; fi; ${PYTHONHOME}python $CURDIR/chooseATs.py --tag_groups_file $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX --gzip \$FILTERING_IN_LINEAR_FLAG $CONTRADICTORYORRELAX --read_generalised_bilphrases_from_dir \"$TRUEINPUTWORKDIR/generalisation/newbilphrases\"  $THRESHOLD_PROPORTION_FLAG_ARGUMENT --read_generalised_ats_from_file \"$ATS_DIR/{}$ATS_SUFFIX\" --remove_third_restriction $SYMDIFFLAG $RESTRICTIONMINIMISATIONFLAG 2> \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug\"  |  grep  \"<[^>]*>\" | gzip > \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/ats/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.gz\"; cat \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug\" | grep -F \"Status:\" | sed 's_^_{}_' >> \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/statuses-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME\" ; gzip -f \"$TRUEWORKDIR/filtering-$FILTERING_OPTION/debug/{}-f-${treshold}$THRESHOLD_PROPORTION_FLAG_FILENAME.result.debug\" " -- `cat $file`		
 	done
 done
 

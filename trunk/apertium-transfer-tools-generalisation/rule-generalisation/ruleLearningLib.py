@@ -4,6 +4,7 @@
 import sys, re, os.path, copy,traceback, tsort, traceback
 from time import time
 from pulp import *
+from collections import defaultdict
 
 DEBUG=False
 
@@ -115,6 +116,7 @@ class AlignmentTemplateSet(object):
 		self.MAX_EXCEPTIONS_RETURNED=10
 		self.id_map=dict()
 		self.id_map_by_pos=dict()
+		self.left_side_map=defaultdict(set)
 	
 	def get_l2_maps(self):
 		return self.pos_map.items()
@@ -163,6 +165,9 @@ class AlignmentTemplateSet(object):
 	def get_all_ids(self):
 		return self.id_map.keys()
 	
+	def get_total_freq(self):
+		return sum( b.freq for b in self.get_all_ats_list() )
+	
 	def get_all_ats_list(self):
 		allats=list()
 		for myid in self.get_all_ids():
@@ -175,6 +180,12 @@ class AlignmentTemplateSet(object):
 	
 	def get_all_ids_from_l2map(self,key):
 		return self.id_map_by_pos[key]
+	
+	def get_all_ids_grouped_by_left_side(self):
+		returnList=list()
+		for leftside,ids in self.left_side_map.iteritems():
+			returnList.append(ids)
+		return returnList
 	
 	def get_ats_with_sllex_and_restrictions(self,key1, key2):
 		if key1 in self.pos_map:
@@ -195,6 +206,7 @@ class AlignmentTemplateSet(object):
 		if at.id != None and isNew:
 			self.id_map[at.id]=at
 			self.id_map_by_pos[at.get_pos_list_str()].add(at.id)
+			self.left_side_map[at.get_left_side_str()].add(at.id)
 	
 	def is_in_set(self,at,returnAt=False):
 		l2map=self.find_l2_map(at)
@@ -208,6 +220,15 @@ class AlignmentTemplateSet(object):
 					else:
 						return True
 		return False
+	
+	def get_ats_with_same_sllex_and_restrictions(self,at):
+		l2map=self.find_l2_map(at)
+		if not l2map:
+			return []
+		l3atlist=self.find_l3_atlist(at, l2map)
+		if not l3atlist:
+			return []
+		return l3atlist
 	
 	def find_l3_atlist(self,at,l2map,create=False):
 		sllexandresstr=at.get_sllex_and_restrictions_str()
@@ -253,6 +274,10 @@ class AlignmentTemplateSet(object):
 			listOfAts[:]=atsToKeep
 		else:
 			del l2map[sllexandrestrictions]
+		self.left_side_map[at.get_left_side_str()].discard(id)
+		if len(self.left_side_map[at.get_left_side_str()]) == 0:
+			del self.left_side_map[at.get_left_side_str()]
+		
 	
 	def remove_contradictory_ats(self, takeIntoAccountMoreParticular=True):
 		#subsetGraph: arc from subset to superset
@@ -670,7 +695,7 @@ def AlignmentTemplate_generate_all_structural_generalisations(at,generalisationO
 def AlignmentTemplate_generate_all_lexical_generalisations(at,lemmassl,lemmastl,tllemmas_from_dic):
 	lexicalisedATs=list()
 	
-	#take this into acount in the future: and not lemmassl[i].startswith(u"_")
+	#take this into account in the future: and not lemmassl[i].startswith(u"_")
 	indexesOfUnLexicalisableWords=list()
 	unlexicalisableTLforUnlexicalisableWords=list()
 	for i in range(len(at.parsed_sl_lexforms)):	
@@ -1333,6 +1358,12 @@ def AlignmentTemplate_generate_all_generalisations_and_add_them(at,lemmassl,lemm
 	
 	return idAt
 
+class AT_ParsingError(Exception):
+	def __init__(self, value):
+		self.value = value
+	def __str__(self):
+		return repr(self.value)
+
 class AlignmentTemplate(object):
 	def __init__(self):
 		self.sl_lexforms=list()
@@ -1507,6 +1538,9 @@ class AlignmentTemplate(object):
 				posList.append(pword.pos)
 		return u"__".join(posList)
 	
+	def get_left_side_str(self):
+		return u"__".join([lf.unparse() for lf in self.parsed_sl_lexforms])
+	
 	def get_num_lemmas_of_aligned_words(self):
 		num=0
 		for numlexform in range(len(self.parsed_sl_lexforms)):
@@ -1639,6 +1673,15 @@ class AlignmentTemplate(object):
 				self.parsed_tl_lexforms[i].set_lemma(lemmas[i])
 			else:
 				self.parsed_tl_lexforms[i].remove_lemma()
+	
+	def lexicalise_from_categories(self,categories,sl_lemmas,tl_lemmas):
+		for i in range(len(self.parsed_sl_lexforms)):
+			if self.parsed_sl_lexforms[i].get_pos() in categories:
+				self.parsed_sl_lexforms[i].set_lemma(sl_lemmas[i])
+		
+		for i in range(len(self.parsed_tl_lexforms)):
+			if self.parsed_tl_lexforms[i].get_pos() in categories:
+				self.parsed_tl_lexforms[i].set_lemma(tl_lemmas[i])
 		
 
 	def lexicalise_tl(self,tlindexes,tllemmas):
@@ -2259,7 +2302,8 @@ class AlignmentTemplate(object):
 			
 			if parseTlLemmasFromDic and len(fields) >= 5:
 				self.tl_lemmas_from_dictionary=list()
-				mytldic=fields[4].strip().split(u" ")
+				#mytldic=fields[4].strip().split(u" ")
+				mytldic=fields[4].split(u" ")
 				for tllemma in mytldic:
 					self.tl_lemmas_from_dictionary.append(tllemma.replace(u"_",u" "))
 	
@@ -2355,6 +2399,15 @@ class AlignmentTemplate(object):
 				return False
 		return True
 	
+	def is_restriction_of_generalised_tags_empty(self):
+		for i,sllex in enumerate(self.parsed_sl_lexforms):
+			generalisedFeatureNames=sllex.get_generalised_feature_names()
+			restDict=self.parsed_restrictions[i].get_tags_with_feature_names_as_dict()
+			for featureName in generalisedFeatureNames:
+				if featureName in restDict.keys():
+					return False
+		return True
+	
 
 	def matches_bilphrase(self,bilphrase,checkRestrictions=True, flexibleRestrictions=True):
 		return self.is_subset_of_this(bilphrase, checkRestrictions, flexibleRestrictions, checkingBilphrase=True)
@@ -2418,7 +2471,7 @@ class AlignmentTemplate(object):
 									restrictionCheckResult=False
 					else:
 						restrictionCheckResult=self.parsed_restrictions[i].get_tags()==otherat.parsed_restrictions[i].get_tags()
-			if not ( ( not self.parsed_sl_lexforms[i].has_lemma() and restrictionCheckResult==True ) or self.parsed_sl_lexforms[i].get_lemma() == otherat.parsed_sl_lexforms[i].get_lemma() ):
+			if not ( ( not self.parsed_sl_lexforms[i].has_lemma() and restrictionCheckResult==True ) or (self.parsed_sl_lexforms[i].has_lemma() and self.parsed_sl_lexforms[i].get_lemma() == otherat.parsed_sl_lexforms[i].get_lemma()) ):
 				return False
 			
 			#must have same pos
@@ -2591,6 +2644,7 @@ class AlignmentTemplate(object):
 		
 		return True	
 	
+	#TODO: cambiaaaar por lo que he puesto en el paper!!!
 	def aligned_words_of_open_categories_match_dictionary_translation(self,closedCategoriesSet,dictionaryTranslations):
 		for i in range(len(self.parsed_sl_lexforms)):
 			if self.parsed_sl_lexforms[i].get_pos() not in closedCategoriesSet:
@@ -2686,6 +2740,7 @@ class AT_GeneralisationOptions(object):
 		self.generalise=True
 		self.triggeringLimitedLength=False
 		self.triggeringNoGoodDiscarded=False
+		self.discardRestrictionsNotImproving=False
 	
 	def set_genWhenEmptySLCats(self,p_genWhenEmptySLCats ):
 		self.genWhenEmptySLCats=p_genWhenEmptySLCats
@@ -2717,6 +2772,9 @@ class AT_GeneralisationOptions(object):
 	def set_triggeringNoGoodDiscarded(self,p_ngd):
 		self.triggeringNoGoodDiscarded=p_ngd
 	
+	def set_discardRestrictionsNotImproving(self,p_drni):
+		self.discardRestrictionsNotImproving=p_drni
+	
 	def get_genWhenEmptySLCats(self):
 		return self.genWhenEmptySLCats
 	
@@ -2747,6 +2805,9 @@ class AT_GeneralisationOptions(object):
 	def is_triggeringNoGoodDiscarded(self):
 		return self.triggeringNoGoodDiscarded
 	
+	def is_discardRestrictionsNotImproving(self):
+		return self.discardRestrictionsNotImproving
+	
 class AT_AbstractClassPosAndTags(object):
 	def __init__(self):
 		self.pos=u""
@@ -2773,6 +2834,10 @@ class AT_AbstractClassPosAndTags(object):
 	def get_num_generalised_tags(self):
 		generalisedTags=[ tag for tag in self.tags if parse_special_tag(tag)[0] != AT_SpecialTagType.NO_SPECIAL ]
 		return len(generalisedTags)
+	
+	def get_generalised_feature_names(self):
+		cdict=self.get_tags_with_feature_names_as_dict()
+		return [ category for category in cdict.keys() if parse_special_tag(cdict[category])[0] != AT_SpecialTagType.NO_SPECIAL ]
 	
 	def get_tags_with_feature_names(self):
 		outputlist=list()
@@ -2891,6 +2956,9 @@ class AT_LexicalForm(AT_AbstractClassPosAndTags):
 	
 	
 	def parse(self,lexformstr,removeUnderscoreFromLemma=False):
+		
+		#debug("parsing: "+lexformstr.encode('utf-8'))
+		
 		if lexformstr.startswith("*"):
 			self.unknown=True
 			self.lemma=lexformstr[1:]
@@ -3210,13 +3278,16 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 		subsetSets=list()
 		supersetSets=list()
 		
+		debug("Computing subsets. Valuelist:")
 		for i in range(len(valuelist)):
 		#for i in []:
+			debug(str(i)+": "+str(valuelist[i][0]))
 			subsetMatrix.append(list())
 			subsetSets.append(set())
 			supersetSets.append(set())
 			for j in range(len(valuelist)):
 				subsetMatrix[i].append(SUBSET_NOT_COMPUTED)
+		
 		
 		for i in range(len(valuelist)):
 		#for i in []:
@@ -3226,6 +3297,7 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 					comparablej=valuelist[j][0]
 					isSubset=comparablei.is_subset_of_this(comparablej)
 					if isSubset:
+						debug("\t"+str(comparablej)+" is subset of "+str(comparablei))
 						#j is subset of i
 						subsetMatrix[i][j]=SUBSET_YES
 						subsetSets[i].add(j)
@@ -3237,6 +3309,7 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 							subsetSets[i].add(subsetIndex)
 							supersetSets[subsetIndex].add(i)
 					else:
+						debug("\t"+str(comparablej)+" is NOT subset of "+str(comparablei))
 						subsetMatrix[i][j]=SUBSET_NO
 
 						#all the supersets of j are not subsets of i
@@ -3344,7 +3417,7 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 		
 		for i in range(len(at_list)):
 			at=at_list[i]
-			for bil_id in at.incorrect_bilphrases:
+			for bil_id in (at.incorrect_bilphrases & globalReproducibleBilphrases):
 				#create expression
 				listOfVars=list()
 				atsMoreParticularOK=list()
@@ -3796,13 +3869,13 @@ def get_tag_group_from_tag(tag,taggroups,pos,usingEmptyTags=True):
 		else:
 			numGroupsFound=0
 			for groupIndex in taggroups.keys():
-				if tag in taggroups[groupIndex][0] and (pos in taggroups[groupIndex][1] or len(taggroups[groupIndex][1])==0):
+				if tag in taggroups[groupIndex][0] and (taggroups[groupIndex][1]==None or pos in taggroups[groupIndex][1]):
 					numGroupsFound+=1
 					groupFound=groupIndex
 			if numGroupsFound!=1:
-				print >> sys.stderr, "ERROR: tag '"+str(tag)+"' found in "+str(numGroupsFound)+" groups != 1"
-				traceback.print_stack()
-				exit()
+				#print >> sys.stderr, "ERROR: tag '"+str(tag)+"' found in "+str(numGroupsFound)+" groups != 1"
+				#traceback.print_stack()
+				raise AT_ParsingError("ERROR: tag '"+str(tag)+"' found in "+str(numGroupsFound)+" groups != 1") 
 	
 	return groupFound
 

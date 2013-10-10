@@ -44,9 +44,11 @@ private:
   //To store the attributes of the categories used by the
   //automatically generated rules. It is update when the
   //add_alignment_template method is called
-  static map<wstring,pair<set<wstring>, wstring> > attributes;
+  static map<wstring,pair<set<wstring>, set<wstring> > > attributes;
 
   static wstring category_name(const wstring& lemma, const wstring& tags);
+  
+  static wstring escape_attr(const wstring attrstr);
   
   static wstring attribute_pos_group_name(const wstring& pos);
 
@@ -63,6 +65,8 @@ private:
   static bool no_double_check_restrictions;
   
   static bool use_discard_rule;
+  
+  static bool generate_chunks;
   
   static bool empty_restrictions_match_everything;
 
@@ -108,6 +112,8 @@ public:
   static void set_novarsdetermined(bool f);
   
   static void set_onepatternperrule(bool f);
+  
+  static void set_generate_chunks(bool f);
   
   static void set_no_double_check_restrictions(bool f);
   

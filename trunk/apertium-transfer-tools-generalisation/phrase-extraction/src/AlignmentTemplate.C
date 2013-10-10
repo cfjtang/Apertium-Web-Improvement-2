@@ -533,6 +533,16 @@ AlignmentTemplate::get_open_source_word_pos(int target_pos) {
 }
 
 int 
+AlignmentTemplate::get_first_open_source_word_pos(int target_pos) {
+  for (unsigned i=0; i<source.size(); i++) {
+    if (((source[i][0]==L'<')||(source[i]==L"__UNKNOWN__")) && (alignment[i][target_pos]))
+      return i;
+  }
+
+  return get_source_word_pos(target_pos) ;
+}
+
+int 
 AlignmentTemplate::get_source_word_pos(int target_pos) {
   for (unsigned i=0; i<source.size(); i++) {
     if (alignment[i][target_pos])

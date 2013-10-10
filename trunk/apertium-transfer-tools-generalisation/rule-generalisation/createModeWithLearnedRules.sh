@@ -33,8 +33,10 @@ fi
 TOPRETRANSFER=`cat $ORIGINAL_MODE | awk -F"apertium-pretransfer" '{ print $1 }' | tr -d '\n' | sed 's_ *$__'`
 FROMPRETRANSFER=`cat $ORIGINAL_MODE | awk -F"apertium-pretransfer" '{ print $2 }' | tr -d '\n'`
 
-FROMSECONDLTPROC=`echo $FROMPRETRANSFER |  grep -o 'lt-proc.*$'  | tr -d '\n'` #awk -F"lt-proc" '{ print $2 }' | tr -d '\n'
+FROMTRANSFER=`cat $ORIGINAL_MODE | awk -F"apertium-transfer" '{ print $2 }' | tr -d '\n'`
+
+FROMSECONDLTPROC=`echo $FROMTRANSFER |  grep -o 'lt-proc.*$'  | tr -d '\n'` #awk -F"lt-proc" '{ print $2 }' | tr -d '\n'
 APERTIUM_PATH=`echo $TOPRETRANSFER | awk -F"lt-proc" '{ print $1 }' | tr -d '\n'`
 
-echo "${TOPRETRANSFER}apertium-pretransfer | $ADDITIONAL_TRANSFER_OPERATIONS_BEFORE | ${APERTIUM_PATH}apertium-transfer ${LEARNED_RULES}.xml ${LEARNED_RULES}.bin $BIN_BIDICTIONARY | sed 's_\^\([^#$]*\)#\([^<$]*\)\(<[^\$]*\)\\\$_^\\1\\3#\\2\$_g' | $ADDITIONAL_TRANSFER_OPERATIONS | ${TRANSFER_TOOLS_PATH}${SLASHTRANSFERTOOLS}apertium-posttransfer -x  ${POSTRANSFER_FILE} | ${APERTIUM_PATH}${FROMSECONDLTPROC}"
+echo "${TOPRETRANSFER}apertium-pretransfer |  lt-proc -b $BIN_BIDICTIONARY | $ADDITIONAL_TRANSFER_OPERATIONS_BEFORE | ${APERTIUM_PATH}apertium-transfer -b ${LEARNED_RULES}.xml ${LEARNED_RULES}.bin | sed 's_\^\([^#$]*\)#\([^<$]*\)\(<[^\$]*\)\\\$_^\\1\\3#\\2\$_g' | $ADDITIONAL_TRANSFER_OPERATIONS | ${TRANSFER_TOOLS_PATH}${SLASHTRANSFERTOOLS}apertium-posttransfer -x  ${POSTRANSFER_FILE} | ${APERTIUM_PATH}${FROMSECONDLTPROC}"
 

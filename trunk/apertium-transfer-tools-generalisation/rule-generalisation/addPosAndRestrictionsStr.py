@@ -3,6 +3,7 @@
 # -*- encoding: utf-8 -*-
 
 import sys,re,argparse, ruleLearningLib
+from ruleLearningLib import AT_ParsingError
 
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('--tag_groups_file_name',required=True)
@@ -23,7 +24,12 @@ for line in sys.stdin:
 	atstr=u'|'.join(pieces[1:5])
 	
 	at = ruleLearningLib.AlignmentTemplate()
-	at.parse(atstr)
-	at.add_explicit_empty_tags()
 	
-	print at.get_pos_list_str(include_restrictions).encode('utf-8')+" | "+line.encode('utf-8')
+	try:
+		at.parse(atstr)
+		at.add_explicit_empty_tags()
+		print at.get_pos_list_str(include_restrictions).encode('utf-8')+" | "+line.encode('utf-8')
+	except AT_ParsingError as detail:
+		print >> sys.stderr, "Error parsing AT from line: "+line.encode('utf-8')
+		print >> sys.stderr, "Detail: "+str(detail)
+	
