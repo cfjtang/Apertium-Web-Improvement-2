@@ -35,6 +35,20 @@ cat $INPUT | cut -f 1 -d '|' | tr '<' '.' | tr '>' '.' > $TMPDIR/source
 cat $INPUT | cut -f 2 -d '|' | apertium $DATADIRFLAG -f none ${TL}_lex_from_beam-${TL}  > $TMPDIR/test
 cat $INPUT | cut -f 3 -d '|' | apertium $DATADIRFLAG -f none ${TL}_lex_from_beam-${TL}  > $TMPDIR/reference
 
+echo "Input file: " 1>&2
+cat $INPUT 1>&2
+echo "Source: " 1>&2
+cat $TMPDIR/source 1>&2
+echo "Obtained output lex: " 1>&2
+cat $INPUT | cut -f 2 -d '|' 1>&2
+echo "Obtained output: " 1>&2
+cat $TMPDIR/test 1>&2
+echo "Reference lex: " 1>&2
+cat $INPUT | cut -f 3 -d '|'  1>&2
+echo "Reference: " 1>&2
+cat $TMPDIR/reference 1>&2
+
+
 bash $CURDIR/mteval-v13-nosgm-segments.sh $TMPDIR/source $TMPDIR/reference $TMPDIR/test | grep "^  BLEU" | cut -f 8 -d ' '
 
 if [ "${FLAGS_use_tmp_dir}" == "" ]; then

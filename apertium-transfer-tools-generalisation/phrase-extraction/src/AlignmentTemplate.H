@@ -96,6 +96,8 @@ public:
    */
   int get_open_source_word_pos(int target_pos);
   
+  int get_first_open_source_word_pos(int target_pos);
+  
   int get_source_word_pos(int target_pos);
 
   /** This method returns the position of the open target word that is

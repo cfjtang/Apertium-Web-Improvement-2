@@ -27,7 +27,7 @@
 #include <utility>
 
 set<pair<wstring, wstring> > TransferRule::categories;
-map<wstring,pair<set<wstring>, wstring> > TransferRule::attributes;
+map<wstring,pair< set<wstring>, set<wstring> > > TransferRule::attributes;
 int TransferRule::rule_counter=0;
 
 //Alignment templates contain explicit empty tags:
@@ -55,6 +55,8 @@ bool TransferRule::use_discard_rule=false;
 
 bool TransferRule::empty_restrictions_match_everything=false;
 
+bool TransferRule::generate_chunks=false;
+
 TransferRule::TransferRule() {
   source=L"";
   rule_id=rule_counter;
@@ -73,6 +75,12 @@ void
 TransferRule::set_using_explicit_empty_tags(bool f)
 {
 	using_explicit_empty_tags=f;
+}
+
+void
+TransferRule::set_generate_chunks(bool f)
+{
+    generate_chunks=f;
 }
 
 void
@@ -216,6 +224,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 
   //The pattern to detect is the same for all AT within this transfer rule
   rule+=L"  <pattern>\n";
+  wstring chunkName=L"";
   
   vector<wstring> generalpattern=StringUtils::split_wstring(source,L" ");
   
@@ -227,14 +236,17 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
     wstring tagsnogen=tags;
     remove_generalised_tags(tagsnogen);   
     
+    chunkName+=L"__";
     if(sm_generalise)
     {
 		wstring tmpstr=Utils::get_first_tag(Utils::get_tags(generalpattern[i])).substr(1);
 		rule+=L"    <pattern-item n=\"CAT__"+category_name(L"",tmpstr.substr(0,tmpstr.size()-1)+L".*")+L"\"/>\n";
+		chunkName+=category_name(L"",tmpstr.substr(0,tmpstr.size()-1)+L".*");
 	}
 	else
 	{
 		rule+=L"    <pattern-item n=\"CAT__"+category_name(lemma,tagsnogen)+L"\"/>\n";
+		chunkName+=category_name(lemma,tagsnogen);
 	}
     
   }
@@ -275,7 +287,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	    teststr+=L"           <and>\n";	
 	    teststr+=L"            <begins-with>\n";
 	    teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"tags\" queue=\"no\"/>\n";
-	    teststr+=L"              <lit-tag v=\""+StringUtils::split_wstring(Utils::tags2transferformat(ats[i].restrictions[j]),L".")[0]+L"\"/>\n";
+	    teststr+=L"              <lit-tag v=\""+escape_attr(StringUtils::split_wstring(Utils::tags2transferformat(ats[i].restrictions[j]),L".")[0])+L"\"/>\n";
 	    teststr+=L"            </begins-with>\n";
 	    
 	    vector<wstring> resTags=StringUtils::split_wstring(Utils::tags2transferformat(ats[i].restrictions[j]),L".");
@@ -306,7 +318,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 		  if(tag.size() >= 10 && tag.substr(0,10)==L"empty_tag_" )
 			teststr+=L"                 <lit v=\"\"/>\n";
 		  else
-			teststr+=L"                 <lit-tag v=\""+tag+L"\"/>\n";
+			teststr+=L"                 <lit-tag v=\""+escape_attr(tag)+L"\"/>\n";
 			
 		  teststr+=L"               </equal>\n";
 		  //A restriction with the same value that the sl tag may also mean that the tag dissappears (e.g., genders in es-en)
@@ -326,7 +338,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	{
 	teststr+=L"            <equal>\n";
 	teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"tags\" queue=\"no\"/>\n";
-	teststr+=L"              <lit-tag v=\""+Utils::tags2transferformat(ats[i].restrictions[j])+L"\"/>\n";
+	teststr+=L"              <lit-tag v=\""+escape_attr(Utils::tags2transferformat(ats[i].restrictions[j]))+L"\"/>\n";
 	teststr+=L"            </equal>\n";
 	}
 
@@ -354,7 +366,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 		{
 			teststr+=L"            <equal>\n";
 			teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"tags\" queue=\"yes\"/>\n";
-			teststr+=L"              <lit-tag v=\""+target_transfer_format+L"\"/>\n";
+			teststr+=L"              <lit-tag v=\""+escape_attr(target_transfer_format)+L"\"/>\n";
 			teststr+=L"            </equal>\n";
 		}
 	}
@@ -378,11 +390,11 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			
 			if(attributes.find(attribute_pos_group_name(partofspeech))==attributes.end())
 			{
-				pair<wstring,pair<set<wstring>, wstring> > newelement;
+				pair<wstring,pair<set<wstring>, set<wstring> > > newelement;
 				newelement.first=attribute_pos_group_name(partofspeech);
 				pair<set<wstring>, wstring> newelementvalue;
 				newelementvalue.first.insert(partofspeech);
-				newelementvalue.second=L"";
+				//newelementvalue.second=L"";
 				attributes.insert(newelement);
 			}
 			
@@ -394,7 +406,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			for(int vcounter=0; vcounter < tltags.size(); vcounter++){
 				teststr+=L"               <equal>\n";
 				teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+tlattrs[vcounter]+L"\"/>\n";
-				teststr+=L"                 <lit-tag v=\""+tltags[vcounter]+L"\"/>\n";
+				teststr+=L"                 <lit-tag v=\""+escape_attr(tltags[vcounter])+L"\"/>\n";
 				teststr+=L"               </equal>\n";
 			}
 			if(tltags.size() > 0)
@@ -452,7 +464,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			if(nongenTags[tagi].size() >= 10 && nongenTags[tagi].substr(0,10)==L"empty_tag_" )
 				teststr+=L"              <lit v=\"\"/>\n";
 			else
-				teststr+=L"              <lit-tag v=\""+nongenTags[tagi]+L"\"/>\n";
+				teststr+=L"              <lit-tag v=\""+escape_attr(nongenTags[tagi])+L"\"/>\n";
 			teststr+=L"            </equal>\n";
 			}
 		  }
@@ -506,7 +518,19 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
       rule+=L"          <lu><lit v=\"(rid:"+Utils::itoa(rule_id)+L" at:"+s+L")\"/></lu>\n";
       rule+=L"        </out>\n";
     }
-
+    
+    wstring letvarStrs=L"";
+    rule+=L"       <out>\n";
+    
+    if (generate_chunks)
+    {
+       rule+=L"       <chunk name=\""+chunkName+L"\" case=\"caseFirstWord\">";
+       rule+=L"       <tags>";
+       rule+=L"             <tag><lit-tag v=\"LRN\"/></tag>";
+       rule+=L"       </tags>";
+    }
+    
+    
     int blank_pos=0;
     for(unsigned j=0; j<ats[i].target.size(); j++) {      
       if (ats[i].target[j][0]!='<') { //It's a lexicalized word, we copy it as is
@@ -521,15 +545,15 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
     int pos=-1;
     
     //Some tags come from bilingual dictionary. Get correct gender and number in case of GD/ND
-    if(attributeNames.size() > 0)
-	{
-		pos=ats[i].get_source_word_pos(j);
-		rule+=L"        <call-macro n=\"f_set_genre_num\">\n";
-		rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
-		rule+=L"        </call-macro>\n";
-	}
+    //if(attributeNames.size() > 0)
+//	{
+// 		pos=ats[i].get_source_word_pos(j);
+// 		rule+=L"        <call-macro n=\"f_set_genre_num\">\n";
+// 		rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
+// 		rule+=L"        </call-macro>\n";
+// 	}
     
-	rule+=L"        <out>\n";
+// 	rule+=L"        <out>\n";
 	rule+=L"          <lu>\n";
 	rule+=L"            <lit v=\""+StringUtils::substitute(Utils::get_lemma_without_queue(ats[i].target[j]),L"_",L" ")+L"\"/>\n";
 	//rule+=L"            <lit-tag v=\""+tagstoprint+L"\"/>\n";
@@ -549,7 +573,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"sl\" part=\""+(*it).substr(4)+L"\"/>\n";
 		}
 		else
-			rule+=L"            <lit-tag v=\""+(*it)+L"\"/>\n";
+			rule+=L"            <lit-tag v=\""+escape_attr((*it))+L"\"/>\n";
 		}
 	//if(attributeNames.size() > 0)
 	//{
@@ -560,23 +584,23 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	//rule+=L"            <lit-tag v=\""+target_tags+L"\"/>\n";
 	rule+=L"            <lit v=\""+StringUtils::substitute(Utils::get_queue(ats[i].target[j]),L"_",L" ")+L"\"/>\n";
 	rule+=L"          </lu>\n";
-	rule+=L"        </out>\n";
+// 	rule+=L"        </out>\n";
 
 	//Some tags come from bilingual dictionary. Copy gender/number to global variables
-	if(attributeNames.size() > 0)
-	{
-		rule+=L"        <call-macro n=\"f_genre_num\">\n";
-        rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
-        rule+=L"        </call-macro>\n";
-	}
+// 	if(attributeNames.size() > 0)
+// 	{
+// 		rule+=L"        <call-macro n=\"f_genre_num\">\n";
+//         rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
+//         rule+=L"        </call-macro>\n";
+// 	}
 	
 	//Copy gender/number to global variables in case that they come directly from AT
 	wstring genre=Utils::get_tag_value(tagstoprint,L"m|f");
 	if(genre.length()>0)
-	  rule+=L"        <let><var n=\"genre\"/><lit-tag v=\""+genre+L"\"/></let>\n";
+	  letvarStrs+=L"        <let><var n=\"genre\"/><lit-tag v=\""+genre+L"\"/></let>\n";
 	wstring number=Utils::get_tag_value(tagstoprint,L"sg|pl");
 	if(number.length()>0)
-	  rule+=L"        <let><var n=\"number\"/><lit-tag v=\""+number+L"\"/></let>\n";
+	  letvarStrs+=L"        <let><var n=\"number\"/><lit-tag v=\""+number+L"\"/></let>\n";
 
       } else {
 
@@ -586,18 +610,18 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	
 	//remove_generalised_tags(tagstoprint);
 	//remove_final_asterisk(tagstoprint);
-	int pos=ats[i].get_open_source_word_pos(j);
+	int pos=ats[i].get_first_open_source_word_pos(j);
 	
 	//Some tags come from bilingual dictionary. Get correct gender and number in case of GD/ND
-    if(attributeNames.size() > 0)
-	{
-		pos=ats[i].get_source_word_pos(j);
-		rule+=L"        <call-macro n=\"f_set_genre_num\">\n";
-		rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
-		rule+=L"        </call-macro>\n";
-	}
+//     if(attributeNames.size() > 0)
+// 	{
+// 		int pos=ats[i].get_source_word_pos(j);
+// 		rule+=L"        <call-macro n=\"f_set_genre_num\">\n";
+// 		rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
+// 		rule+=L"        </call-macro>\n";
+// 	}
 	
-	rule+=L"        <out>\n";
+// 	rule+=L"        <out>\n";
 	rule+=L"          <lu>\n";
 	rule+=L"            <clip pos=\""+Utils::itoa(pos+1)+L"\" side=\"tl\" part=\"lemh\"/>\n";
 	
@@ -616,7 +640,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"sl\" part=\""+(*it).substr(4)+L"\"/>\n";
 		}
 		else
-			rule+=L"            <lit-tag v=\""+(*it)+L"\"/>\n";
+			rule+=L"            <lit-tag v=\""+escape_attr((*it))+L"\"/>\n";
 	}
 	
 	//rule+=L"            <lit-tag v=\""+tagstoprint+L"\"/>\n";
@@ -627,46 +651,52 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	
 	rule+=L"            <clip pos=\""+Utils::itoa(pos+1)+L"\" side=\"tl\" part=\"lemq\"/>\n";
 	rule+=L"          </lu>\n";
-	rule+=L"        </out>\n";
+// 	rule+=L"        </out>\n";
 
         
         //Some tags come from bilingual dictionary. Copy gender/number to global variables
-	if(attributeNames.size() > 0)
-	{
-        rule+=L"        <call-macro n=\"f_genre_num\">\n";
-        rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
-        rule+=L"        </call-macro>\n";
-     }
+// 	if(attributeNames.size() > 0)
+// 	{
+//         rule+=L"        <call-macro n=\"f_genre_num\">\n";
+//         rule+=L"          <with-param pos=\""+Utils::itoa(pos+1)+L"\"/>\n";
+//         rule+=L"        </call-macro>\n";
+//      }
         
 	//Copy gender/number to global variables in case that they come directly from AT
 	wstring genre=Utils::get_tag_value(tagstoprint,L"m|f");
 	if(genre.length()>0)
-	  rule+=L"        <let><var n=\"genre\"/><lit-tag v=\""+genre+L"\"/></let>\n";
+	  letvarStrs+=L"        <let><var n=\"genre\"/><lit-tag v=\""+genre+L"\"/></let>\n";
 	wstring number=Utils::get_tag_value(tagstoprint,L"sg|pl");
 	if(number.length()>0)
-	  rule+=L"        <let><var n=\"number\"/><lit-tag v=\""+number+L"\"/></let>\n";
+	  letvarStrs+=L"        <let><var n=\"number\"/><lit-tag v=\""+number+L"\"/></let>\n";
         
       }
 
       if (blank_pos<(int)(ats[i].source.size()-1)) {
-	rule+=L"        <out>\n";
+// 	rule+=L"        <out>\n";
 	rule+=L"          <b pos=\""+Utils::itoa(blank_pos+1)+L"\"/>\n";
-	rule+=L"        </out>\n";
+// 	rule+=L"        </out>\n";
 	blank_pos++;
       } else if (j<(ats[i].target.size()-1)) {
 	//TL output string has more words than the SL pattern detected
-	rule+=L"        <out>\n";
+// 	rule+=L"        <out>\n";
 	rule+=L"          <b/>\n";
-	rule+=L"        </out>\n";
+// 	rule+=L"        </out>\n";
       }
     }
 
-    if (debug) {
+     if (generate_chunks)
+     {
+       rule+=L"      </chunk>\n";
+     }
+    rule+=L"      </out>\n";
+    
+     if (debug) {
       rule+=L"        <out>\n";
       rule+=L"          <lu><lit v=\"(END)\"/></lu>\n";
       rule+=L"        </out>\n";
     }
-
+    
     //If there are remaining blanks we print them out if they have
     //format information inside. This is caused by a SL input string
     //longer than the TL output one
@@ -676,7 +706,8 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
       rule+=L"          <with-param pos=\""+Utils::itoa(j+1)+L"\"/>\n";
       rule+=L"        </call-macro>\n";
     }
-
+    
+    rule+=letvarStrs;
     rule+=L"      </when>\n";
 
     if(!include_otherwise) {
@@ -692,16 +723,18 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
   //word-for-word translation
   if(include_otherwise) {
     rule+=L"      <otherwise><!--Word-for-word translation-->\n";
-    
-    
-	  if(use_discard_rule)
-		rule+=L"        <reject-current-rule shifting=\"no\" />\n";
-    
-    if (debug) {
+     if (debug) {
       rule+=L"        <out>\n";
       rule+=L"          <lu><lit v=\"(rid:"+Utils::itoa(rule_id)+L" at:word-for-word)\"/></lu>\n";
       rule+=L"        </out>\n";
     }
+    
+	  if(use_discard_rule)
+	  {
+		rule+=L"        <reject-current-rule shifting=\"no\" />\n";
+	  }
+	  else
+	  {
 
     for(unsigned i=0; i<ats[0].source.size(); i++) {
       rule+=L"        <call-macro n=\"f_genre_num\">\n";
@@ -730,6 +763,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
       rule+=L"          <lu><lit v=\"(END)\"/></lu>\n";
       rule+=L"        </out>\n";
     }
+  }
 
     rule+=L"      </otherwise>\n";
   }
@@ -748,6 +782,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   wstring head=L"";
 
   head+=L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  head+=L"<!-- -*- nxml -*- -->\n";
   head+=L"<transfer>\n";
 
   head+=L"<section-def-cats>\n";
@@ -757,18 +792,18 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
     head+=L"  <def-cat n=\"CAT__"+category_name(it->first,it->second)+L"\">\n";
     if (it->first.length()>0) //There is a lemma
     {
-      head+=L"    <cat-item lemma=\""+StringUtils::substitute(it->first,L"_",L" ")+L"\" tags=\""+it->second+L"\"/>\n";
+      head+=L"    <cat-item lemma=\""+StringUtils::substitute(it->first,L"_",L" ")+L"\" tags=\""+escape_attr(it->second)+L"\"/>\n";
       
       //Lemma in upper case too
       head+=L"    <cat-item lemma=\"";
       head+=toupper<wchar_t>(StringUtils::substitute(it->first,L"_",L" ")[0],loc);
-      head+=StringUtils::substitute(it->first,L"_",L" ").substr(1)+L"\" tags=\""+it->second+L"\"/>\n";
+      head+=StringUtils::substitute(it->first,L"_",L" ").substr(1)+L"\" tags=\""+escape_attr(it->second)+L"\"/>\n";
     }
     else
     {
-      head+=L"    <cat-item tags=\""+it->second+L"\"/>\n";
+      head+=L"    <cat-item tags=\""+escape_attr(it->second)+L"\"/>\n";
       if(sm_generalise ||  it->second[it->second.size()-1]==L'*'  )
-		head+=L"    <cat-item tags=\""+(it->second).substr(0,it->second.size()-2)+L"\"/>\n";
+	head+=L"    <cat-item tags=\""+escape_attr((it->second).substr(0,it->second.size()-2))+L"\"/>\n";
     }
     head+=L"  </def-cat>\n";
   }
@@ -805,23 +840,23 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   //}
   
   
-  map<wstring,pair<set<wstring>, wstring> >::iterator it2;
+  map<wstring,pair< set<wstring>, set<wstring> > >::iterator it2;
   for(it2=attributes.begin(); it2!=attributes.end(); it2++) {
-    head+=L"  <def-attr n=\""+(*it2).first+L"\">\n";
+    head+=L"  <def-attr n=\"learned_"+(*it2).first+L"\">\n";
     set<wstring> tagsfromattr=(*it2).second.first;
     for(set<wstring>::iterator it3= tagsfromattr.begin(); it3!=tagsfromattr.end(); ++it3)
-		head+=L"    <attr-item tags=\""+(*it3)+L"\"/>\n";
+		head+=L"    <attr-item tags=\""+StringUtils::substitute((*it3),L"+",L"\\+")+L"\"/>\n";
     head+=L"  </def-attr>\n";
   }
 
-  head+=L"  <def-attr n=\"gen\">\n";
+  head+=L"  <def-attr n=\"learned_gen\">\n";
   head+=L"    <attr-item tags=\"m\"/>\n";
   head+=L"    <attr-item tags=\"f\"/>\n";
   head+=L"    <attr-item tags=\"mf\"/>\n";
   head+=L"    <attr-item tags=\"GD\"/>\n";
   head+=L"  </def-attr>\n";
 
-  head+=L"  <def-attr n=\"num\">\n";
+  head+=L"  <def-attr n=\"learned_num\">\n";
   head+=L"    <attr-item tags=\"sg\"/>\n";
   head+=L"    <attr-item tags=\"pl\"/>\n";
   head+=L"    <attr-item tags=\"sp\"/>\n";
@@ -867,7 +902,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   head+=L"    <when>\n";
   head+=L"      <test>\n";
   head+=L"        <equal>\n";
-  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"gen\"/>\n";
+  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_gen\"/>\n";
   head+=L"          <lit-tag v=\"m\"/>\n";
   head+=L"        </equal>\n";
   head+=L"      </test>\n";
@@ -876,7 +911,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   head+=L"    <when>\n";
   head+=L"      <test>\n";
   head+=L"        <equal>\n";
-  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"gen\"/>\n";
+  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_gen\"/>\n";
   head+=L"          <lit-tag v=\"f\"/>\n";
   head+=L"        </equal>\n";
   head+=L"      </test>\n";
@@ -887,7 +922,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   head+=L"    <when>\n";
   head+=L"      <test>\n";
   head+=L"        <equal>\n";
-  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"num\"/>\n";
+  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_num\"/>\n";
   head+=L"          <lit-tag v=\"sg\"/>\n";
   head+=L"        </equal>\n";
   head+=L"      </test>\n";
@@ -896,7 +931,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
   head+=L"    <when>\n";
   head+=L"      <test>\n";
   head+=L"        <equal>\n";
-  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"num\"/>\n";
+  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_num\"/>\n";
   head+=L"          <lit-tag v=\"pl\"/>\n";
   head+=L"        </equal>\n";
   head+=L"      </test>\n";
@@ -916,7 +951,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 	  head+=L"    <when>\n";
 	  head+=L"      <test>\n";
 	  head+=L"        <equal>\n";
-	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"gen\"/>\n";
+	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_gen\"/>\n";
 	  head+=L"          <lit-tag v=\"GD\"/>\n";
 	  head+=L"        </equal>\n";
 	  head+=L"      </test>\n";
@@ -927,7 +962,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 	  head+=L"    <when>\n";
 	  head+=L"      <test>\n";
 	  head+=L"        <equal>\n";
-	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"num\"/>\n";
+	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_num\"/>\n";
 	  head+=L"          <lit-tag v=\"ND\"/>\n";
 	  head+=L"        </equal>\n";
 	  head+=L"      </test>\n";
@@ -941,7 +976,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 	  head+=L"    <when>\n";
 	  head+=L"      <test>\n";
 	  head+=L"        <equal>\n";
-	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"gen\"/>\n";
+	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_gen\"/>\n";
 	  head+=L"          <lit-tag v=\"GD\"/>\n";
 	  head+=L"        </equal>\n";
 	  head+=L"      </test>\n";
@@ -953,10 +988,10 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 	  head+=L"              <lit-tag v=\"f\"/>\n";
 	  head+=L"            </equal>\n";
 	  head+=L"          </test>\n";
-	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"gen\"/><lit-tag v=\"f\"/></let>\n";
+	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"learned_gen\"/><lit-tag v=\"f\"/></let>\n";
 	  head+=L"        </when>\n";
 	  head+=L"        <otherwise>\n";
-	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"gen\"/><lit-tag v=\"m\"/></let>\n";
+	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"learned_gen\"/><lit-tag v=\"m\"/></let>\n";
 	  head+=L"        </otherwise>\n";
 	  head+=L"      </choose>\n";
 	  head+=L"    </when>\n";
@@ -965,7 +1000,7 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 	  head+=L"    <when>\n";
 	  head+=L"      <test>\n";
 	  head+=L"        <equal>\n";
-	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"num\"/>\n";
+	  head+=L"          <clip pos=\"1\" side=\"tl\" part=\"learned_num\"/>\n";
 	  head+=L"          <lit-tag v=\"ND\"/>\n";
 	  head+=L"        </equal>\n";
 	  head+=L"      </test>\n";
@@ -977,10 +1012,10 @@ TransferRule::gen_apertium_transfer_head(bool debug) {
 	  head+=L"              <lit-tag v=\"pl\"/>\n";
 	  head+=L"            </equal>\n";
 	  head+=L"          </test>\n";
-	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"num\"/><lit-tag v=\"pl\"/></let>\n";
+	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"learned_num\"/><lit-tag v=\"pl\"/></let>\n";
 	  head+=L"        </when>\n";
 	  head+=L"        <otherwise>\n";
-	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"num\"/><lit-tag v=\"sg\"/></let>\n";
+	  head+=L"          <let><clip pos=\"1\" side=\"tl\" part=\"learned_num\"/><lit-tag v=\"sg\"/></let>\n";
 	  head+=L"        </otherwise>\n";
 	  head+=L"      </choose>\n";
 	  head+=L"    </when>\n";
@@ -1049,11 +1084,15 @@ TransferRule::category_name(const wstring& lemma, const wstring& tags) {
   if (lemma.length()>0)//TODO: codificar bien el caracter extraño
     catname+=StringUtils::substitute(StringUtils::substitute(lemma,L"#",L"_"),L"\u2019",L"_")+L"_";
 
-  catname+=StringUtils::substitute(StringUtils::substitute(tags,L".",L""),L"*",L"_");
+  catname+=StringUtils::substitute(StringUtils::substitute(StringUtils::substitute(StringUtils::substitute(tags,L".",L""),L"*",L"_"),L"+",L"plus"),L"@",L"arroba");
 
   return catname;
 }
 
+ wstring 
+ TransferRule::escape_attr(const wstring attrstr){
+  return  StringUtils::substitute(attrstr,L"+",L"\\+");
+ }
 
 wstring 
 TransferRule::attribute_pos_group_name(const wstring& pos)
@@ -1062,6 +1101,8 @@ TransferRule::attribute_pos_group_name(const wstring& pos)
 	
 	return attrname;
 }
+
+
 
 int
 TransferRule::load_attributes(istream* fin) {
@@ -1074,11 +1115,15 @@ TransferRule::load_attributes(istream* fin) {
 		if (parts.size()>=2){
 			vector<wstring> tags=StringUtils::split_wstring(parts[1],L",");
 			set<wstring> tagset(tags.begin(),tags.end());
-			pair< set<wstring>,wstring > content;
+			pair< set<wstring>,set<wstring> > content;
 			content.first=tagset;
-			content.second=L"";
+			//content.second=L"";
 			if (parts.size() >= 3)
-				content.second=parts[2];
+			{
+			   vector<wstring> postags=StringUtils::split_wstring(parts[2],L",");
+			   set<wstring> postagsset(postags.begin(),postags.end());
+			   content.second=postagsset;
+			}
 			attributes[parts[0]]=content;
 		}
 	}
@@ -1091,10 +1136,10 @@ TransferRule::get_attribute_for_tag(wstring &tag, wstring &pos) {
 		attrname=tag.substr(10);
 	else
 	{
-		for ( map<wstring, pair< set<wstring>, wstring> >::iterator  it=  attributes.begin() ; it != attributes.end(); it++ ){
+		for ( map<wstring, pair< set<wstring>, set<wstring> > >::iterator  it=  attributes.begin() ; it != attributes.end(); it++ ){
 			//wcerr<<L"looking for '"+tag+L"' in '"+(*it).first+L"'"<<endl;
-			if ((*it).second.first.find(tag)!=(*it).second.first.end() && ((*it).second.second ==L"" || (*it).second.second==pos ) )
-				attrname=(*it).first;
+			if ((*it).second.first.find(tag)!=(*it).second.first.end() && ((*it).second.second.size() ==0 || (*it).second.second.find(pos) != (*it).second.second.end() ) )
+				attrname=L"learned_"+(*it).first;
 		}
 	}
 	return attrname;
@@ -1133,7 +1178,7 @@ TransferRule::extract_attribute_names(wstring &tags)
 	vector<wstring> pieces=StringUtils::split_wstring(tags,L".");
 	for(int i=0; i< pieces.size(); i++){
 		if (pieces[i][0]==L'*')
-			output.push_back(pieces[i].substr(1));
+			output.push_back(L"learned_"+pieces[i].substr(1));
 	}
 	return output;	
 }

@@ -2,7 +2,7 @@
 # coding=utf-8
 # -*- encoding: utf-8 -*-
 
-import ruleLearningLib,unittest,generaliseATs, sys, copy
+import ruleLearningLib,unittest, sys, copy
 from ruleLearningLib import AT_GeneralisationOptions, AlignmentTemplateSet
 
 class TestAlignmentTemplates(unittest.TestCase):
@@ -31,6 +31,9 @@ class TestAlignmentTemplates(unittest.TestCase):
 		
 		self.at19= ruleLearningLib.AlignmentTemplate()
 		self.bil19= ruleLearningLib.AlignmentTemplate()
+		
+		self.at20= ruleLearningLib.AlignmentTemplate()
+		self.bil20= ruleLearningLib.AlignmentTemplate()
 
 		self.at1.parse(u"<det><ind><m><sg> <n><m><sg> | <det><ind><f><pl> <n><f><pl> | 0:0 1:1 | <det> <n><f><pl>")
 		self.at2.parse(u"<det><def><m><sg> dinero<n><m><sg> | <det><def><m><pl> diner<n><m><pl> | 0:0 1:1 | <det><def> <n><m><pl>")
@@ -60,6 +63,10 @@ class TestAlignmentTemplates(unittest.TestCase):
 		self.at19.parse(u"el<det><def><*gender><*numberat> <n><empty_tag_ntype><*gender><*numberat> | <n><empty_tag_ntype><)001gender><)000numberat> | 0:0 1:0 | <det> <n>")
 		self.bil19.parse(u"el<det><def><f><sg> casa<n><empty_tag_ntype><f><sg> | casa<n><empty_tag_ntype><f><sg> | 0:0 1:0 | <det> <n>")
 		self.bil19.tl_lemmas_from_dictionary=[u"el",u"casa"]
+		
+		self.at20.parse(u"<n><empty_tag_ntype><f><*numberat> <adj><empty_tag_adjtype><f><*numberat> | <n><empty_tag_ntype><f><)000numberat> <adj><empty_tag_adjtype><f><)001numberat> | 0:0 1:1 | <n><empty_tag_ntype><f> <adj><empty_tag_adjtype><f>")
+		self.bil20.parse(u"companyia<n><empty_tag_ntype><f><pl> elèctric<adj><empty_tag_adjtype><f><pl> | compañía<n><empty_tag_ntype><f><pl> eléctrico<adj><empty_tag_adjtype><f><pl> | 0:0 1:1 | <n> <adj>")
+		self.bil20.tl_lemmas_from_dictionary=[u"compañía",u"eléctrico"]
 		
 		self.atlist=[self.at1,self.at2,self.at3,self.at4,self.at5]
 		
@@ -250,6 +257,7 @@ class TestAlignmentTemplates(unittest.TestCase):
 	
 	def test_reproducible(self):
 		self.assertTrue(self.at18.is_bilphrase_reproducible(self.bil18))
+		self.assertTrue(self.at20.is_bilphrase_reproducible(self.bil20))
 	
 	def test_unalignment_options(self):
 		unoptions=self.at19.get_unalignment_options_for_multiple_aligned_unlexicalised_tl_words(self.bil19)

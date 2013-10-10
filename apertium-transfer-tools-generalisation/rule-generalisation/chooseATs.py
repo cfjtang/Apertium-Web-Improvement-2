@@ -20,11 +20,12 @@ if __name__=="__main__":
 	parser.add_argument('--debug',action='store_true')
 	parser.add_argument('--remove_contradictory_ats',action='store_true')
 	parser.add_argument('--relax_restrictions',action='store_true')
-	parser.add_argument('--relax_weight',default='len(at_list)+1')
+	parser.add_argument('--relax_weight',default='len(at_list)+2')
 	parser.add_argument('--proportion_correct_bilphrases_threshold',default='0.00')
 	parser.add_argument('--lambda_for_combining',default='0.00')
 	parser.add_argument('--remove_third_restriction',action='store_true')
 	parser.add_argument('--symmetric_difference',action='store_true')
+	parser.add_argument('--first_select_restrictions',action='store_true')
 	#value = dir in which bilphrases will be written
 	#ATs = std output
 	parser.add_argument('--only_filter')
@@ -111,7 +112,7 @@ if __name__=="__main__":
 		at.parse(u"|".join(parts[1:5]),True)
 		sllemmas=parts[5].strip().split(u"\t")
 		tllemmas=parts[6].strip().split(u"\t")
-		tllemasfromdictionary=parts[7].strip().split(u"\t")
+		tllemasfromdictionary=[ p.strip() for p in parts[7].split(u"\t")]
 		if DEBUG:
 			print >> sys.stderr, "setting Lemmas to: "+str(at)
 			print >> sys.stderr, "SL: "+str(sllemmas)
@@ -159,11 +160,38 @@ if __name__=="__main__":
 		
 		for at in myAts.get_all_ats_list():
 			print str(at.num_correct_bilphrases)+" "+str(at.num_matching_bilphrases)+" "+str(at.num_correct_bilphrases*1.0/at.num_matching_bilphrases)+" | "+at.to_string()
-		
+
 	#linear programming
 	else:
-		result,timeinside=ruleLearningLib.minimise_linear_programming(myAts,reproducibleBilphrasesIds,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference)
+		totaltimeinside=0.0
+		if args.first_select_restrictions:
+			selectedAts=ruleLearningLib.AlignmentTemplateSet()
+			atgroups=myAts.get_all_ids_grouped_by_left_side()
+			print >> sys.stderr, str(atgroups)
+			for idsOfAtsWithSameLeftSide in atgroups:
+				if len(idsOfAtsWithSameLeftSide)==1:
+					for id in idsOfAtsWithSameLeftSide:
+						selectedAts.add(myAts.get_by_id(id))
+				else:
+					localAts=ruleLearningLib.AlignmentTemplateSet()
+					localBilphrases=set()
+					for id in idsOfAtsWithSameLeftSide:
+						locAt=myAts.get_by_id(id)
+						localAts.add(locAt)
+						localBilphrases.update(locAt.correct_bilphrases)
+						if locAt.is_restriction_of_generalised_tags_empty():
+							selectedAts.add(locAt)
+						
+					restrictionsResult,ltimeinside=ruleLearningLib.minimise_linear_programming(localAts,localBilphrases,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference)
+					totaltimeinside+=ltimeinside
+					for restAt in restrictionsResult:
+						selectedAts.add(restAt)
+		else:
+			selectedAts=myAts
+		
+		result,ltimeinside=ruleLearningLib.minimise_linear_programming(selectedAts,reproducibleBilphrasesIds,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference)
+		totaltimeinside+=ltimeinside
 		print >> sys.stderr, "Time spent computing correct and incorrect bilphrases: "+str(time_correct_incorrect)
-		print >> sys.stderr, "Total time: "+str(timeinside+time_correct_incorrect)
+		print >> sys.stderr, "Total time: "+str(totaltimeinside+time_correct_incorrect)
 		for at in result:
 			print at

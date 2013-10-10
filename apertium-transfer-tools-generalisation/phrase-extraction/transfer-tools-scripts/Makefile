@@ -136,6 +136,21 @@ PROB_L2=$(DATADIR)/$(L2)-$(L1).prob
 MORF_L1=$(DATADIR)/$(L1)-$(L2).automorf.bin
 MORF_L2=$(DATADIR)/$(L2)-$(L1).automorf.bin
 
+CONSTRAINTGRAMMAR_L1=$(DATADIR)/$(L1)-$(L2).rlx.bin
+CONSTRAINTGRAMMAR_L2=$(DATADIR)/$(L2)-$(L1).rlx.bin
+
+ifeq ($(wildcard $(CONSTRAINTGRAMMAR_L1)),) 
+    CONSTRAINTGRAMMAR_L1_CMD = cat -
+else 
+    CONSTRAINTGRAMMAR_L1_CMD = cg-proc $(CONSTRAINTGRAMMAR_L1)
+endif
+
+ifeq ($(wildcard $(CONSTRAINTGRAMMAR_L2)),) 
+    CONSTRAINTGRAMMAR_L2_CMD = cat -
+else 
+    CONSTRAINTGRAMMAR_L2_CMD = cg-proc $(CONSTRAINTGRAMMAR_L2)
+endif
+
 ifdef PAR_NO_SHORT_RESTRICTIONS
 BIL_L1_L2=$(DATADIR)/$(L1)-$(L2).autobil.bin
 BIL_L2_L1=$(DATADIR)/$(L2)-$(L1).autobil.bin
@@ -211,7 +226,7 @@ endif
 	@echo "Analysing "$(L1)".txt.gz to train '"$(L1)"-"$(L2)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L1_L2)
 	zcat $(L1).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L1) | \
-	apertium-tagger -g $(PROB_L1) | apertium-pretransfer | apertium-retxt | \
+	$(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | apertium-retxt | \
 	sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L1)_$(L1)-$(L2).sh > $@
 	@echo ""
@@ -224,7 +239,7 @@ endif
 	@echo "Analysing "$(L2)".txt.gz to train '"$(L1)"-"$(L2)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L1_L2)
 	zcat $(L2).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L2) |\
-	apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
+	$(CONSTRAINTGRAMMAR_L2_CMD) | apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
 	sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L2)_$(L1)-$(L2).sh > $@
 	@echo ""
@@ -237,7 +252,7 @@ endif
 	@echo "Analysing "$(L2)".txt.gz to train '"$(L2)"-"$(L1)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L2_L1)
 	zcat $(L2).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L2) |\
-        apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
+        $(CONSTRAINTGRAMMAR_L2_CMD) \| apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
         sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L2)_$(L2)-$(L1).sh > $@
 	@echo ""
@@ -251,7 +266,7 @@ endif
 	@echo "Analysing "$(L1)".txt.gz to train '"$(L2)"-"$(L1)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L2_L1)
 	zcat $(L1).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L1) |\
-        apertium-tagger -g $(PROB_L1) | apertium-pretransfer | apertium-retxt |\
+        $(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | apertium-retxt |\
         sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L1)_$(L2)-$(L1).sh > $@
 	@echo ""

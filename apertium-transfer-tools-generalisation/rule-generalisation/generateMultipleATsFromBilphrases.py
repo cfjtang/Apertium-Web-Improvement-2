@@ -104,6 +104,20 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
         debug("All the bilingual phrases:")
         for bilphrase in bilingualPhrases.get_all_ats_list():
             debug("\t"+str(bilphrase))
+            tllemmaslocal=u" ".join([ "'"+lem+"'" for lem in bilphrase.tl_lemmas_from_dictionary  ])
+            debug("TL lemmas: "+tllemmaslocal.encode('utf-8'))
+    
+    
+    matchingBilphrasesDict=dict()
+    for at in finalAlignmentTemplates.get_all_ats_list():
+        starttime=time()
+        idsOk,idMatching,numOk,numMatching=bilingualPhrases.get_ids_of_matching_and_compatible_phrases(at)
+        timeCorrectAndIncorrect+=(time()-starttime)
+        matchingBilphrasesDict[at]=(idsOk,idMatching,numOk,numMatching)
+        at.freq=numOk
+        debug("precomputing matching and OK bilingual phrases for at: "+str(at))
+        debug("numOK: "+str(numOk)+" numMatching: "+str(numMatching))
+        
     
     
     debug("Final ATs:")
@@ -111,15 +125,25 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
         if generalisationOptions.is_refToBiling() and not generalisationOptions.is_differentRestrictionOptions() and generalisationOptions.is_generalise() and not generalisationOptions.is_addRestrictionsForEveryTag():
             at.shorten_restrictions()
         
-        starttime=time()
-        idsOk,idMatching,numOk,numMatching=bilingualPhrases.get_ids_of_matching_and_compatible_phrases(at)
-        timeCorrectAndIncorrect+=(time()-starttime)
-        
-        at.freq=numOk
+        idsOk,idMatching,numOk,numMatching=matchingBilphrasesDict[at]
         debug(str(at))
+        debug("with numOK = "+str(numOk)+" and freq = "+str(at.freq))
         
         if generalisationOptions.get_possibleValuesForRestrictions() == AT_GeneralisationOptions.VALUE_FOR_RESTRICTION_TRIGGERINGCHANGE:
             starttime=time()
+            
+            atsSharingLeftSide=list()
+            for atSharing in finalAlignmentTemplates.get_ats_with_same_sllex_and_restrictions(at):
+                if atSharing != at:
+                    reproducedBilphrasesOfSharing=AlignmentTemplateSet()
+                    incorrectBilphrasesOfSharing=AlignmentTemplateSet()
+                    idsOkS,idMatchingS,numOkS,numMatchingS=matchingBilphrasesDict[atSharing]
+                    incorrectIds=set(idMatchingS) - set(idsOkS)
+                    for incorrectId in incorrectIds:
+                        incorrectBilphrasesOfSharing.add(bilingualPhrases.get_by_id(incorrectId))
+                    for idOK in idsOkS:
+                        reproducedBilphrasesOfSharing.add(bilingualPhrases.get_by_id(idOK))
+                    atsSharingLeftSide.append((atSharing,reproducedBilphrasesOfSharing,incorrectBilphrasesOfSharing,numOkS))
             
             incorrectBilphrases=AlignmentTemplateSet()
             incorrectIds=set(idMatching) - set(idsOk)
@@ -195,7 +219,7 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
                 #    break
                 
                 newAT=at.fast_clone()
-                newAT.add_restrictions_from_tuples(opt)
+                newAT.add_restrictions_from_tuples(opt)    
                 
                 idsOk,idMatching,numOk,numMatching=incorrectBilphrases.get_ids_of_matching_and_compatible_phrases(newAT)
                 incorrectIdsNotMatching=frozenset(incorrectIds - idMatching)
@@ -205,7 +229,39 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
                 numReproduciblePhrasesNowNOtMatching=totalReproduciblePhrases-len(idsOKFromReproducible)
                 debug("Reproducible phrases which now don't match: "+str(numReproduciblePhrasesNowNOtMatching))
                 
-                if numReproduciblePhrasesNowNOtMatching==0 or not generalisationOptions.is_triggeringNoGoodDiscarded():
+                atLeastOneValid=False
+                if generalisationOptions.is_discardRestrictionsNotImproving():
+                    for atSharing,reproducedSharing,incorrectSharing,numOkofSharing in atsSharingLeftSide:
+                        idsOkS,idMatchingS,numOkS,numMatchingS=incorrectSharing.get_ids_of_matching_and_compatible_phrases(newAT)
+                        idsOKFromReproducibleS,idsMatchingFromReproducibleS,numOkFromReprS,numMatchingFromReprS= reproducedSharing.get_ids_of_matching_and_compatible_phrases(newAT)
+                        if ruleLearningLib.DEBUG:
+                            debug("\tAT sharing left side: "+str(atSharing))
+                            debug("\t New AT matches "+str(numMatchingS)+" bilphrases out of "+str(incorrectSharing.get_total_freq())+" incorrect bilphrases" )
+                            debug("\t  reproduces "+str(numOkS)+"/"+str(numMatchingS) ) 
+                            debug("\t New AT matches "+str(numMatchingFromReprS)+" bilphrases out of "+str(reproducedSharing.get_total_freq())+" reproduced bilphrases" )
+                            debug("\t  reproduces "+str(numOkFromReprS)+"/"+str(numMatchingFromReprS) )
+                        phrasesCorrectlyReproducedByCombo=set()
+                        
+                        #first, the bilingual phrases correctly reproduced by atSharing minus the bilingual phrases matched by newAT
+                        phrasesCorrectlyReproducedByCombo.update(reproducedSharing.get_all_ids())
+                        phrasesCorrectlyReproducedByCombo.difference_update(idMatchingS)
+                        phrasesCorrectlyReproducedByCombo.difference_update(idsMatchingFromReproducibleS)
+                        
+                        #in addition, the bilingual phrases correctly reproduced by 'newAT' which were matched by AtSharing
+                        phrasesCorrectlyReproducedByCombo.update(idsOkS)
+                        phrasesCorrectlyReproducedByCombo.update(idsOKFromReproducibleS)
+                        
+                        totalFreqOfPhrasesReproducedByCombo=sum( bilingualPhrases.get_by_id(bid).freq for bid in phrasesCorrectlyReproducedByCombo )
+                        totalFreqOfPhrasesReproducedBySharingAT=numOkofSharing
+                        debug("\t"+str(totalFreqOfPhrasesReproducedByCombo)+" phrases reproduced by combo vs. "+str(totalFreqOfPhrasesReproducedBySharingAT)+"phrases reproduced by AT sharing left side")
+                        debug("\t"+str(numOkFromRepr)+" phrases reproduced by newAT vs. "+str(totalFreqOfPhrasesReproducedBySharingAT)+"phrases reproduced by AT sharing left side")
+                        if numOkFromRepr < totalFreqOfPhrasesReproducedBySharingAT and totalFreqOfPhrasesReproducedByCombo > totalFreqOfPhrasesReproducedBySharingAT and numOkS > numMatchingS/2:
+                            debug("\tRestriction VALID for this shared AT")
+                            atLeastOneValid=True
+                        else:
+                            debug("\tRestriction NOT valid for this shared AT")
+
+                if (numReproduciblePhrasesNowNOtMatching==0 or not generalisationOptions.is_triggeringNoGoodDiscarded()) and (not generalisationOptions.is_discardRestrictionsNotImproving() or atLeastOneValid or optlen==0):
                     if ruleLearningLib.DEBUG:
                         debug("Incorrect bilphrases which now don't match ("+str(len(incorrectIdsNotMatching))+"):")
                         for bid in incorrectIdsNotMatching:
@@ -227,6 +283,7 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
                             incorrectIdsNotMatchingDict[incorrectIdsNotMatching]=set()
                             incorrectIdsNotMatchingDict[incorrectIdsNotMatching].add(opt)
                         if validAT:
+                            debug("SET OF RESTRICTIONS OK")
                             idAt+=1
                             newAT.id=idAt
                             finalAlignmentTemplatesAfterwardsRestrictions.add(newAT)
@@ -238,7 +295,10 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
                             if not opt <= sopt:
                                 sortedOptionsCopy.append(sopt)
                         sortedOptions=sortedOptionsCopy
-                    
+                else:
+                    debug("Set of restrictions not generated")
+                debug("")
+                        
             timeAfterwardsRestrictions+=(time()-starttime)
     
     
@@ -284,6 +344,7 @@ if __name__=="__main__":
         parser.add_argument('--only_tags_triggering_diference_in_restriction',action='store_true')
         parser.add_argument('--triggering_limited_length',action='store_true')
         parser.add_argument('--triggering_no_good_discarded',action='store_true')
+        parser.add_argument('--discard_restrictions_not_improving',action='store_true')
         parser.add_argument('--only_lexical',action='store_true')
         parser.add_argument('--ats_with_allowed_lemmas_file')
         
@@ -332,6 +393,7 @@ if __name__=="__main__":
         generalisationOptions.set_generalise(not args.only_lexical)
         generalisationOptions.set_triggeringLimitedLength(args.triggering_limited_length)
         generalisationOptions.set_triggeringNoGoodDiscarded(args.triggering_no_good_discarded)
+        generalisationOptions.set_discardRestrictionsNotImproving(args.discard_restrictions_not_improving)
         
         generationMethod=AlignmentTemplateGenerationMethod.FIRST_APPROACH
         if args.rich_ats:
@@ -380,14 +442,14 @@ if __name__=="__main__":
             at.parse(textat)
             at.add_explicit_empty_tags()
             at.freq=int(freq)
-            tl_lemmas_from_dictionary_text=piecesOfline[7].strip()
-            tl_lemmas_from_dictionary_list=tl_lemmas_from_dictionary_text.split(u'\t')
+            tl_lemmas_from_dictionary_text=piecesOfline[7]
+            tl_lemmas_from_dictionary_list=[ l.strip() for l in tl_lemmas_from_dictionary_text.split(u'\t')]
 
             originalATList.append((at,sllemmas,tllemmas,tl_lemmas_from_dictionary_list))
             
             bilphrase=copy.deepcopy(at)
             bilphrase.set_lemmas(sllemmas,tllemmas)
-            bilphrase.tl_lemmas_from_dictionary=tl_lemmas_from_dictionary_text.split(u'\t')
+            bilphrase.tl_lemmas_from_dictionary=tl_lemmas_from_dictionary_list
             bilid+=1
             bilphrase.id=bilid
             bilingualPhrases.add(bilphrase)
