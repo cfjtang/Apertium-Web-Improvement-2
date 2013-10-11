@@ -62,7 +62,7 @@ if __name__=="__main__":
                 unalignmentCorrectATs.append(unat)
         
         if len(unalignmentCorrectATs) == 0:
-            print >> sys.stderr, "Cannot generate correct AT from: "+line.decode('utf-8')
+            print >> sys.stderr, "Cannot generate correct AT from: "+line.encode('utf-8')
         else:
             sortedList=sorted(unalignmentCorrectATs,key= lambda a: len(a.alignments))
             print "1 | "+sortedList[0].to_string()
