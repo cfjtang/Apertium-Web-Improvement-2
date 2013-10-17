@@ -202,30 +202,35 @@ $(document).click(function(){
 	$('#dropDownSub').hide();
 });
 
-function translate(langPair, text){
-	
-	
+function getLangByCode(code) {
+	language = code
+	//FIXME: currently not able to parse abbreviations
+	for (abbv in abbreviations) {
+		if (abbv==code) {
+			language = abbreviations[abbv];
+		}
+	}
+	return language;
+}
 
-		
+function translate(langPair, text){
+
 	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
 	//alert(langpairer);
-	
-	jQuery.ajax({
-			url:'http://localhost:2737/translate',
-			type:"GET",
-			data:{
-			
-                    'langpair':langpairer,
-                    'q':text,
-			
-			},
-			success : smth,
-			dataType: 'jsonp',
-			failure : trad_ko
-		});
-        
 
-	}
+	jQuery.ajax({
+		url:'http://localhost:2737/translate',
+		type:"GET",
+		data:{
+			'langpair':langpairer,
+			'q':text,
+		},
+		success : smth,
+		dataType: 'jsonp',
+		failure : trad_ko
+	});
+        
+}
 
 function smth(dt){
 	if(dt.responseStatus==200) {
@@ -321,7 +326,7 @@ function populateTranslationList(elementClass, langArr){
 	//console.log(langArr);
 	for(it in langArr){
 		
-		jQuery(elementClass+column_num).append("<span> <a href='#' class='language-selected' > " + langArr[it] + " </a></span>");
+		jQuery(elementClass+column_num).append("<span> <a href='#' class='language-selected' > " + getLangByCode(langArr[it]) + " </a></span>");
 		
 		
 		if(jQuery(elementClass+column_num).children().length>5){
@@ -391,7 +396,8 @@ function populateTranslationList(elementClass, langArr){
 			curr_pair.dstLang = $(this).text();
 		}
 		matchFound= false;
-		
+	
+		//FIXME: if (curr_pair in window.pairs) ??
 		for(var it in window.pairs){	
 			if(parsePair_lol(curr_pair)==window.pairs[it])
 				matchFound=true;
@@ -434,7 +440,7 @@ function parsePair_lol(pr){
 	parsedPair = null;	
 	pr.srcLang = jQuery.trim(pr.srcLang);
 	pr.dstLang = jQuery.trim(pr.dstLang);
-	
+
 	parsedPair = pr.srcLang;
 	parsedPair +="|" +pr.dstLang;
 	return parsedPair;
