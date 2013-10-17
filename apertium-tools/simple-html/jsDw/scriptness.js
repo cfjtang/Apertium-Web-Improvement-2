@@ -29,7 +29,9 @@ var abbreviations = {
 	'Icelandic':'is',
 	'Macedonian':'mk',
 	'Bulgarian':'bg',
-	'Italian':'it'
+	'Italian':'it',
+	'Tatar':'tat',
+	'Kazakh':'kaz'
 }
 
 $(document).ready(function(){
@@ -44,15 +46,9 @@ $(document).ready(function(){
 			}
 			
 			if(isDetecting){
-			
-			
-					curr_pair.srcLang = detectLanguage($(this).val());
-			
-					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
-			
-					$('#selectFrom em').html(curr_pair.srcLang);
-					
-			
+				curr_pair.srcLang = detectLanguage($(this).val());
+				curr_pair.srcLang = abbreviations[curr_pair.srcLang];
+				$('#selectFrom em').html(curr_pair.srcLang);
 			}
 				
 			
@@ -99,23 +95,15 @@ $(document).ready(function(){
 
 	jQuery("#inputBox").submit(function(){
 		try{
-			
 			try{
 				if(curr_pair.srcLang.indexOf("Detect") !=-1){
 					curr_pair.srcLang = detectLanguage($(this).val());
-					
 					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
-			
 					$('#selectFrom em').html(curr_pair.srcLang);
-					
-			
-			}
-				
-			
+				}	
 			}catch(e){
 				console.log(e.message);
 			}
-		
 		
 			translate(curr_pair,$('#textAreaId').val());
 			return false;
@@ -189,15 +177,17 @@ $(document).ready(function(){
 	
 	
 	jQuery('#selectTo').click(function(){
-		
 		loler = curr_pair.srcLang + "|";
 		aaa=0;
 		for(it in window.pairs){
-		if(window.pairs[it].indexOf(loler) != -1){
-			grayedOuts[aaa] = window.pairs[it].substr(-2,2);
-			aaa++;
-		}	
-	}
+			//console.log(window.pairs, window.pairs[it], loler, window.pairs[it].indexOf(loler));
+			if(window.pairs[it].indexOf(loler) != -1){
+				//grayedOuts[aaa] = window.pairs[it].substr(-3,3);
+				grayedOuts[aaa] = window.pairs[it].split('|')[1];
+				//console.log(grayedOuts[aaa]);
+				aaa++;
+			}	
+		}
 	});
 	
 	getPairs();
@@ -221,7 +211,7 @@ function translate(langPair, text){
 	//alert(langpairer);
 	
 	jQuery.ajax({
-			url:'http://api.apertium.org/json/translate',
+			url:'http://localhost:2737/translate',
 			type:"GET",
 			data:{
 			
@@ -249,7 +239,7 @@ function getPairs(){
 	
 	
 	jQuery.ajax({
-			url:'http://api.apertium.org/json/listPairs',
+			url:'http://localhost:2737/listPairs',
 			type:"GET",
 			success : trad_ok,
 			dataType: 'jsonp',
@@ -328,6 +318,7 @@ function populateTranslationList(elementClass, langArr){
 	jQuery("#column-group-1").append("<span> <a href='#' class='language-selected' > Detect Language </a></span>");
 		
 	column_num=1;
+	//console.log(langArr);
 	for(it in langArr){
 		
 		jQuery(elementClass+column_num).append("<span> <a href='#' class='language-selected' > " + langArr[it] + " </a></span>");
