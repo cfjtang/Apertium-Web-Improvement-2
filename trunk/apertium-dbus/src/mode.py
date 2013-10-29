@@ -3,7 +3,7 @@
 usage = """Usage:
 python example-service.py &
 """
-    
+
 import os.path as path
 import os
 import logging
@@ -40,14 +40,20 @@ class Translate(service.Service):
         self.modes = modes
         self.buffer = bytes()
 
-    @service.method("org.apertium.Translate", in_signature='sa{ss}ay', out_signature='ay')
+    @service.method("org.apertium.Translate", in_signature='sa{ss}s', out_signature='s')
     def translate(self, pair, options, text):
         if pair not in self.modes:
             raise Exception("Invalid language pair")
-            
-        # out, err = call(add_options([self.cmd, pair], options), text)
-                
-        text = self.buffer + bytes(text)
+
+        out, err = call(add_options([self.cmd, pair], options), text.encode())
+        return out
+
+    @service.method("org.apertium.Translate", in_signature='sa{ss}ay', out_signature='ay')
+    def translateNUL(self, pair, options, text):
+        if pair not in self.modes:
+            raise Exception("Invalid language pair")
+
+        text = self.buffer + bytes(text, 'utf-8')
         text, a, self.buffer = text.decode().rpartition("\0")
         text = text.encode()
         self.buffer = self.buffer.encode()
@@ -59,8 +65,8 @@ class Translate(service.Service):
             info = service.make_proxy("org.apertium.info/", "org.apertium.Info")
 
         except:
-            raise Exception("Could not connect to the Apertium information service") 
-        
+            raise Exception("Could not connect to the Apertium information service")
+
         for cmd in info.get_pipeline(pair):
             try:
                 argOneIndex = cmd.index("$1")
@@ -70,17 +76,17 @@ class Translate(service.Service):
                     cmd[argOneIndex] = "-g"
             except ValueError:
                 pass
-            
+
             try:
                 argTwoIndex = cmd.index("$2")
                 cmd[argTwoIndex] = "-m"
             except ValueError:
                 pass
-            
+
             out, err = call(cmd, out)
 
         return out
-        
+
 
 def convert_to_dbus_name(name):
     import re
@@ -98,9 +104,9 @@ class TranslatePair(service.Service):
 
 def create_translation_objects():
     global translate
-    
+
     objs = []
-    
+
     try:
         info = service.make_proxy("org.apertium.info/", "org.apertium.Info")
 
@@ -114,7 +120,7 @@ def create_translation_objects():
         objs.append(TranslatePair(mode))
 
     return objs
-        
+
 
 def quit_handler(*args):
     service.quit()
@@ -132,7 +138,7 @@ def setup_logging():
     except IOError as e:
         print("IOError: %s" % e)
         print("Continuing without logging!")
-    
+
 if __name__ == "__main__":
     #setup_logging()
     objs = create_translation_objects()
