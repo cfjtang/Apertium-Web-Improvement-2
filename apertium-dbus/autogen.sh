@@ -1,5 +1,3 @@
-#!/bin/sh
+#! /bin/sh
 
-aclocal
-automake -a
-autoconf
+autoreconf -fi && ./configure "$@"

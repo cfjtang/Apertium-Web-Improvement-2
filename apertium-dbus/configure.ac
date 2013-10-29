@@ -25,9 +25,9 @@ AC_DEFUN([PKG_CHECK_APERTIUM], [
 ])
 PKG_CHECK_APERTIUM
 
-PKG_CHECK_MODULES(DBUS,  dbus-1 >= 0.34, DBUS="yes", AC_MSG_ERROR([*** unable to locate dbus library! Run: apt-get install dbus libdbus-1-dev  ***]))
+PKG_CHECK_MODULES(DBUS,  dbus-1 >= 0.34, DBUS="yes", AC_MSG_ERROR([*** unable to locate dbus library! If on Debian/Ubuntu run: apt-get install dbus libdbus-1-dev  ***]))
 
-PKG_CHECK_MODULES(PYDBUS, dbus-python >= 0.82, PYDBUS="yes", AC_MSG_ERROR([*** unable to locate python-dbus library! Run: apt-get install python-dbus ***]))
+PKG_CHECK_MODULES(PYDBUS, dbus-python >= 0.82, PYDBUS="yes", AC_MSG_ERROR([*** unable to locate python-dbus library! If on Debian/Ubuntu run: apt-get install python-dbus ***]))
 
 AC_SUBST(PYDBUS_CFLAGS)
 AC_SUBST(PYDBUS_LIBS)
