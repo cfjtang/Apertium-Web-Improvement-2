@@ -1145,45 +1145,17 @@ cat<<__CONFIGAC__>"$WD/configure.ac"
 
 AC_PREREQ(2.52)
 
+m4_define([required_apertium_version], [3.2.0])
+m4_define([required_lttolbox_version], [3.1.2])
+
 AC_INIT([$base], [0.0.1], [apertium-stuff@lists.sourceforge.net])
 AM_INIT_AUTOMAKE([$base], [0.0.1], no-define)
 AC_PROG_LN_S
 AC_PROG_AWK
 AC_CONFIG_HEADER([config])
 
-AC_DEFUN([PKG_CHECK_APERTIUM], [
-  APERTIUM_VER=0
-  PKG_CHECK_MODULES(APERTIUM, apertium-1.0 >= 1.0.0,
-  [
-      APERTIUM_VER=10
-  ],
-  [
-      PKG_CHECK_MODULES(APERTIUM, apertium-2.0 >= 2.0.0,
-      [
-          APERTIUM_VER=20
-      ],
-      [
-          PKG_CHECK_MODULES(APERTIUM, apertium-3.0 >= 3.0.0,
-          [
-              APERTIUM_VER=30
-          ],
-          [
-              PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0,
-              [
-              	APERTIUM_VER=31
-              ],
-              [
-                  PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0)
-                  APERTIUM_VER=32
-              ])
-          ])
-      ])
-  ])
-  AC_SUBST(APERTIUM_VER)
-])
-                          
-PKG_CHECK_APERTIUM
-
+PKG_CHECK_MODULES(APERTIUM,   apertium >= required_apertium_version, [], [PKG_CHECK_MODULES(APERTIUM,   apertium-3.2 >= required_apertium_version)])
+PKG_CHECK_MODULES(LTTOOLBOX, lttoolbox >= required_lttolbox_version, [], [PKG_CHECK_MODULES(LTTOOLBOX, lttoolbox-3.2 >= required_lttolbox_version)])
 
 AC_OUTPUT([Makefile])
 __CONFIGAC__
@@ -1191,52 +1163,10 @@ __CONFIGAC__
 cat <<__AUTOGENSH__ >"$WD/autogen.sh"
 #! /bin/sh
 
-# Copyright (c) 2002  Daniel Elstner  <daniel.elstner@gmx.net>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License VERSION 2 as
-# published by the Free Software Foundation.  You are not allowed to
-# use any other version of the license; unless you got the explicit
-# permission from the author to do so.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
-dir=\`echo "\$0" | sed 's,[^/]*\$,,'\`
-test "x\${dir}" = "x" && dir='.'
-
-if test "x\`cd "\${dir}" 2>/dev/null && pwd\`" != "x\`pwd\`"
-then
-    echo "This script must be executed directly from the source directory."
-    exit 1
-fi
-
-rm -f config.cache acconfig.h
-
-echo "- aclocal."		&& \\
-aclocal				&& \\
-echo "- autoconf."		&& \\
-autoconf			&& \\
-echo "- autoheader."		&& \\
-autoheader			&& \\
-echo "- automake."		&& \\
-automake --add-missing --gnu	&& \\
-echo				&& \\
-./configure "\$@"		&& exit 0
-
-exit 1
+autoreconf -fi && ./configure "\$@"
 __AUTOGENSH__
 
-#bash doesn't seem to allow chmod from a script
-#probably a good thing.
-#chmod a+x "$WD/autogen.sh"
+chmod a+x "$WD/autogen.sh"
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > "$WD/modes.xml"
 echo "<modes>" >> "$WD/modes.xml"
@@ -1259,8 +1189,7 @@ echo "Finished."
 echo "You can finish setting up your new translator by running:"
 if [ "$WD" = "." ]
 then
-	echo "sh autogen.sh"
+	echo "./autogen.sh"
 else
-	echo "cd $WD && sh autogen.sh"
+	echo "cd $WD && ./autogen.sh"
 fi
-
