@@ -31,8 +31,8 @@ fi
 
 rm -f config.cache acconfig.h
 
-echo "- autoreconf -i"		&& \
-autoreconf -i			&& \
+echo "- autoreconf -fi"		&& \
+autoreconf -fi			&& \
 echo "- ./configure $@"		&& \
 ./configure "$@"		&& exit 0
 
