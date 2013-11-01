@@ -21,6 +21,9 @@
 
 AC_PREREQ([2.61])
 
+m4_define([required_lttoolbox_version], [3.1.0])
+m4_define([required_apertium_version], [3.1.0])
+
 AC_INIT([apertium-service], [0.2.0+svn], [p.minervini@gmail.com])
 AM_INIT_AUTOMAKE([foreign])
 
@@ -194,29 +197,11 @@ PKG_CHECK_MODULES(XMLPP, libxml++-2.6 >= 2.8.1)
 AC_SUBST(XMLPP_CFLAGS)
 AC_SUBST(XMLPP_LIBS)
 
-# PKG_CHECK_MODULES(LTTOOLBOX, lttoolbox-3.1 >= 3.1.0)
-
-PKG_CHECK_MODULES(LTTOOLBOX, lttoolbox-3.2 >= 3.2.0,
-[
-        LTTOOLBOX_VER=32
-],
-[
-        PKG_CHECK_MODULES(LTTOOLBOX, lttoolbox-3.1 >= 3.1.0)
-        LTTOOLBOX_VER=31
-])
-
+PKG_CHECK_MODULES(LTTOOLBOX,   lttoolbox >= required_lttoolbox_version, [], [PKG_CHECK_MODULES(LTTOOLBOX,   lttoolbox-3.2 >= required_lttoolbox_version)])
 AC_SUBST(LTTOOLBOX_CFLAGS)
 AC_SUBST(LTTOOLBOX_LIBS)
 
-PKG_CHECK_MODULES(APERTIUM, apertium-3.2 >= 3.2.0,
-[
-	APERTIUM_VER=32
-],
-[
-	PKG_CHECK_MODULES(APERTIUM, apertium-3.1 >= 3.1.0)           
-	APERTIUM_VER=31
-])
-
+PKG_CHECK_MODULES(APERTIUM,   apertium >= required_apertium_version, [], [PKG_CHECK_MODULES(APERTIUM,   apertium-3.2 >= required_apertium_version)])
 AC_SUBST(APERTIUM_CFLAGS)
 AC_SUBST(APERTIUM_LIBS)
 
