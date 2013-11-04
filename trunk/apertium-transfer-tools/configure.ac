@@ -150,10 +150,10 @@ PKG_CHECK_MODULES(LIBXML2, [dnl
   libxml-2.0 >= required_libxml_version])
 
 PKG_CHECK_MODULES(LTTOOLBOX, [dnl
-  lttoolbox-3.2 >= required_lttoolbox_version])
+  lttoolbox >= required_lttoolbox_version])
   
 PKG_CHECK_MODULES(APERTIUM, [dnl
-  apertium-3.2 >= required_apertium_version])
+  apertium >= required_apertium_version])
 
 AC_PATH_PROG(XMLLINT, xmllint, no)
 

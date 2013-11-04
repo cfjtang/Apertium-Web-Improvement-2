@@ -74,12 +74,12 @@ then
 fi
 
 
-PKG_CHECK_MODULES([APERTIUM], [apertium-3.2 >= required_apertium_version])
+PKG_CHECK_MODULES([APERTIUM], [apertium >= required_apertium_version])
 
 AC_SUBST(APERTIUM_CFLAGS)
 AC_SUBST(APERTIUM_LIBS)
 
-PKG_CHECK_MODULES([LTTOOLBOX], [apertium-3.2 >= required_lttoolbox_version])
+PKG_CHECK_MODULES([LTTOOLBOX], [lttoolbox >= required_lttoolbox_version])
 
 AC_SUBST(LTTOOLBOX_CFLAGS)
 AC_SUBST(LTTOOLBOX_LIBS)
