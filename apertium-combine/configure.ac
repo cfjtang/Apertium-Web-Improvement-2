@@ -130,8 +130,8 @@ then
   AC_MSG_ERROR([You don't have pkg-config installed.])
 fi
 
-PKG_CHECK_MODULES(LTTOOLBOX, [lttoolbox-3.2 >= required_lttoolbox_version], CPPFLAGS="$CPPFLAGS $LTTOOLBOX_CFLAGS"; LIBS="$LIBS $LTTOOLBOX_LIBS")
-PKG_CHECK_MODULES(APERTIUM, [apertium-3.2 >= required_apertium_version], CPPFLAGS="$CPPFLAGS $APERTIUM_CFLAGS"; LIBS="$LIBS $APERTIUM_LIBS")
+PKG_CHECK_MODULES(LTTOOLBOX, [lttoolbox >= required_lttoolbox_version], CPPFLAGS="$CPPFLAGS $LTTOOLBOX_CFLAGS"; LIBS="$LIBS $LTTOOLBOX_LIBS")
+PKG_CHECK_MODULES(APERTIUM, [apertium >= required_apertium_version], CPPFLAGS="$CPPFLAGS $APERTIUM_CFLAGS"; LIBS="$LIBS $APERTIUM_LIBS")
 
 AC_PATH_PROG(APERTIUM_DESTXT, apertium-destxt, no)
 
