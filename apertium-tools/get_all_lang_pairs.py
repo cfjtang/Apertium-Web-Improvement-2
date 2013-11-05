@@ -47,7 +47,7 @@ def get_data_from_svn(url):
 				directionality = "<"+directionality
 
 
-		print(lang_pair)
+		#print(lang_pair)
 		stems = get_stems(url+"apertium-"+lang_pair[0]+"-"+lang_pair[1]+"/apertium-"+lang_pair[0]+"-"+lang_pair[1]+"."+lang_pair[0]+"-"+lang_pair[1]+".dix")
 		repo = url.split("/")[-2]
 		lang_pair_data = [lang_pair[0], lang_pair[1], lang_pair[2], re_return2[0], directionality, repo, stems]
@@ -64,12 +64,12 @@ def main():
 	lang_pairs = []
 	for where in ('trunk', 'staging', 'nursery', 'incubator'):
 		#lang_pairs = lang_pairs + get_data_from_svn("http://apertium.svn.sourceforge.net/svnroot/apertium/%s/" % where )
-		print(where)
+		#print(where)
 		for lang_pairs in get_data_from_svn("https://svn.code.sf.net/p/apertium/svn/%s/" % where ):
 			yield lang_pairs
 
 
 if __name__ == '__main__':
-	print("foo")
+	#print("foo")
 	for pair in main():
 		print(pair)
