@@ -129,4 +129,18 @@ for line in langsf.readlines(): #{
 	#}
 #}
 
+for task in tasks: #{
+	if tasks[task].multi == 'No': #{
+		out = '';
+		out = out + '"' + tasks[task].title + '",';
+		out = out + '"' + tasks[task].description + '",';
+		out = out + '"' + str(tasks[task].time) + '",';
+		out = out + '"' + tasks[task].mentors + '",';
+		out = out + '"' + tasks[task].ttype + '",';
+		out = out + '"' + tasks[task].tags + '"';
+
+		print(out);
+	#}
+#}
+
 print(counter);
