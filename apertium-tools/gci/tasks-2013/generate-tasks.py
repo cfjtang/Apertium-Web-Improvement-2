@@ -58,7 +58,7 @@ for line in tasksf.readlines(): #{
 
 	task = Task(tid, title, multi, time, mentors, ttype, tags);	
 
-	tasks[counter] = task;	
+	tasks[tid] = task;	
 
 	counter = counter + 1;
 #}
@@ -109,7 +109,7 @@ for line in langsf.readlines(): #{
 			title = title + ' (' + aaa + ')';
 			description = description.replace('AAA', aaa);
 		#}
-		if description == '': #{
+		if description.strip() == '': #{
 			print('Missing description for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
@@ -131,6 +131,10 @@ for line in langsf.readlines(): #{
 
 for task in tasks: #{
 	if tasks[task].multi == 'No': #{
+		if tasks[task].description.strip() == '': #{
+			print('Missing description for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
 		out = '';
 		out = out + '"' + tasks[task].title + '",';
 		out = out + '"' + tasks[task].description + '",';
