@@ -43,15 +43,15 @@ class Task: #{
 			self.ttype = '';
 			for t in ttype.split(','): #{
 				t = t.strip();
-				if ttype == 'code': #{
+				if t == 'code': #{
 					self.ttype = self.ttype + 'Code,';
-				elif ttype == 'research': #{
+				elif t == 'research': #{
 					self.ttype = self.ttype + 'Outreach/Research,';
-				elif ttype == 'interface': #{
+				elif t == 'interface': #{
 					self.ttype = self.ttype + 'User Interface,';
-				elif ttype == 'documentation': #{
+				elif t == 'documentation': #{
 					self.ttype = self.ttype + 'Documentation/Training,';	
-				elif ttype == 'quality': #{
+				elif t == 'quality': #{
 					self.ttype = self.ttype + 'Quality Assurance,';
 				#}
 			#}
@@ -116,6 +116,7 @@ for line in descsf.readlines(): #{
 	#}
 #}
 
+total = 0;
 for line in langsf.readlines(): #{
 
 	row = line.strip('\n').split('\t');
@@ -128,6 +129,7 @@ for line in langsf.readlines(): #{
 	aaa = row[0];
 	bbb = row[1];
 	quantity = int(row[4]);	
+	xmentors = row[5];
 
 	if tid in tasks: #{
 		task = tasks[tid];
@@ -137,21 +139,21 @@ for line in langsf.readlines(): #{
 		mentors = task.mentors;
 		tags = task.tags;
 		ttype = task.ttype;
-
+		mentors = mentors + xmentors;
 		if description.strip() == '': #{
-			print('Missing description for task #' + str(tid), file=sys.stderr);
+			print('[Yes] Missing description for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		if ttype.strip() == '': #{
-			print('Missing type for task #' + str(tid), file=sys.stderr);
+			print('[Yes] Missing type for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		if tags.strip() == '': #{
-			print('Missing tags for task #' + str(tid), file=sys.stderr);
+			print('[Yes] Missing tags for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		if mentors.strip() == '': #{
-			print('Missing mentors for task #' + str(tid), file=sys.stderr);
+			print('[Yes] Missing mentors for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 
@@ -177,6 +179,7 @@ for line in langsf.readlines(): #{
 			out = out + '"' + tags.lower() + '"';
 
 			print(out);
+			total = total + 1;
 		#}
 
 	#}
@@ -185,19 +188,19 @@ for line in langsf.readlines(): #{
 for task in tasks: #{
 	if tasks[task].multi == 'No': #{
 		if tasks[task].description.strip() == '': #{
-			print('Missing description for task #' + str(tid), file=sys.stderr);
+			print('[No]  Missing description for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		if tasks[task].ttype.strip() == '': #{
-			print('Missing type for task #' + str(tid), file=sys.stderr);
+			print('[No]  Missing type for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		if tasks[task].tags.strip() == '': #{
-			print('Missing tags for task #' + str(tid), file=sys.stderr);
+			print('[No]  Missing tags for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		if tasks[task].mentors.strip() == '': #{
-			print('Missing mentors for task #' + str(tid), file=sys.stderr);
+			print('[No]  Missing mentors for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		out = '';
@@ -209,7 +212,8 @@ for task in tasks: #{
 		out = out + '"' + tasks[task].tags + '"';
 
 		print(out);
+		total = total + 1;
 	#}
 #}
 
-print(counter);
+print(counter, total, file=sys.stderr);
