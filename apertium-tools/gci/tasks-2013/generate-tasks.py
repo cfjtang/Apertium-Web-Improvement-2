@@ -17,6 +17,7 @@ tasksf = open('tasks.txt');
 descsf = open('descriptions.txt');
 langsf = open('languages.txt');
 
+
 class Task: #{
 	tid = -1;
 	title = '';
@@ -33,8 +34,42 @@ class Task: #{
 		self.multi = multi;
 		self.time = time;
 		self.mentors = mentors;
-		self.ttype = ttype;
 		self.tags = tags;
+
+		# Task types, one or more of the allowed types (Code, 
+		# Documentation/Training, Outreach/Research, Quality Assurance, User Interface), comma separated.
+		if ttype.count(',') > 0: #{
+			self.ttype = '';
+			for t in ttype.split(','): #{
+				t = t.strip();
+				if ttype == 'code': #{
+					self.ttype = self.ttype + 'Code,';
+				elif ttype == 'research': #{
+					self.ttype = self.ttype + 'Outreach/Research,';
+				elif ttype == 'interface': #{
+					self.ttype = self.ttype + 'User Interface,';
+				elif ttype == 'documentation': #{
+					self.ttype = self.ttype + 'Documentation/Training,';	
+				elif ttype == 'quality': #{
+					self.ttype = self.ttype + 'Quality Assurance,';
+				#}
+			#}
+		
+			self.ttype = self.ttype.strip(',');
+
+		else: #{
+			if ttype == 'code': #{
+				self.ttype = 'Code';
+			elif ttype == 'research': #{
+				self.ttype = 'Outreach/Research';
+			elif ttype == 'interface': #{
+				self.ttype = 'User Interface';
+			elif ttype == 'documentation': #{
+				self.ttype = 'Documentation/Training';	
+			elif ttype == 'quality': #{
+				self.ttype = 'Quality Assurance';
+			#}
+		#}
 	#}
 #}
 
@@ -101,18 +136,35 @@ for line in langsf.readlines(): #{
 		mentors = task.mentors;
 		tags = task.tags;
 		ttype = task.ttype;
-		if aaa != '' and bbb != '': #{
-			title = title + ' (' + aaa + ' and ' + bbb + ')';	
-			description = description.replace('AAA', aaa);
-			description = description.replace('BBB', bbb);
-		elif aaa != '' and bbb == '': #{
-			title = title + ' (' + aaa + ')';
-			description = description.replace('AAA', aaa);
-		#}
+
 		if description.strip() == '': #{
 			print('Missing description for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
+		if ttype.strip() == '': #{
+			print('Missing type for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
+		if tags.strip() == '': #{
+			print('Missing tags for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
+		if mentors.strip() == '': #{
+			print('Missing mentors for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
+
+		if aaa != '' and bbb != '': #{
+			title = title + ' (' + aaa + ' and ' + bbb + ')';	
+			description = description.replace('AAA', aaa);
+			description = description.replace('BBB', bbb);
+			tags = tags + ',' + aaa.lower() + ',' + bbb.lower();
+		elif aaa != '' and bbb == '': #{
+			title = title + ' (' + aaa + ')';
+			description = description.replace('AAA', aaa);
+			tags = tags + ',' + aaa.lower();
+		#}
+		tags = tags.strip(',');
 		for i in range(0, quantity): #{
 			out = '';
 			ltitle = title + ' [' + str(i) + ']';
@@ -121,7 +173,7 @@ for line in langsf.readlines(): #{
 			out = out + '"' + str(time) + '",';
 			out = out + '"' + mentors + '",';
 			out = out + '"' + ttype + '",';
-			out = out + '"' + tags + '"';
+			out = out + '"' + tags.lower() + '"';
 
 			print(out);
 		#}
@@ -133,6 +185,18 @@ for task in tasks: #{
 	if tasks[task].multi == 'No': #{
 		if tasks[task].description.strip() == '': #{
 			print('Missing description for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
+		if tasks[task].ttype.strip() == '': #{
+			print('Missing type for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
+		if tasks[task].tags.strip() == '': #{
+			print('Missing tags for task #' + str(tid), file=sys.stderr);
+			continue;
+		#}
+		if tasks[task].mentors.strip() == '': #{
+			print('Missing mentors for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
 		out = '';
