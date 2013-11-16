@@ -17,7 +17,7 @@ tasksf = open('tasks.txt');
 descsf = open('descriptions.txt');
 langsf = open('languages.txt');
 
-mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille'];
+reg_mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille', 'nvohra'];
 
 class Task: #{
 	tid = -1;
@@ -34,8 +34,9 @@ class Task: #{
 		self.title = title;
 		self.multi = multi;
 		self.time = time;
-		self.mentors = mentors;
 		self.tags = tags;
+
+		self.mentors = mentors;
 
 		# Task types, one or more of the allowed types (Code, 
 		# Documentation/Training, Outreach/Research, Quality Assurance, User Interface), comma separated.
@@ -103,7 +104,7 @@ for line in descsf.readlines(): #{
 
 	row = line.strip('\n').split('\t');
 
-	if row[0] == '' or row[0] == 'ID': #{
+	if row[0] == '' or row[0] == 'ID' or row[0] == '."': #{
 		continue;
 	#}
 
@@ -136,10 +137,10 @@ for line in langsf.readlines(): #{
 		title = task.title;
 		description = task.description;
 		time = task.time;
-		mentors = task.mentors;
+		mentors = task.mentors.strip();
 		tags = task.tags;
 		ttype = task.ttype;
-		mentors = mentors + xmentors;
+		mentors = mentors + ',' + xmentors;
 		if description.strip() == '': #{
 			print('[Yes] Missing description for task #' + str(tid), file=sys.stderr);
 			continue;
@@ -152,11 +153,33 @@ for line in langsf.readlines(): #{
 			print('[Yes] Missing tags for task #' + str(tid), file=sys.stderr);
 			continue;
 		#}
+
+		newmentors = '';
+		if mentors.count(',') > 0 and mentors.strip() != '': #{
+			for m in mentors.split(','): #{
+				m = m.strip();
+				if m in reg_mentors and m != '': #{
+					newmentors = newmentors + m + ',';
+				elif m != '': #{
+					print('[Yes] Mentors %s for task #%s not registered' % (m, str(tid)), file=sys.stderr);
+				#}
+			#}
+		elif mentors.strip() != '': #{
+			if mentors not in reg_mentors: #{
+				print('[Yes] Mentors %s for task #%s not registered' % (mentors, str(tid)), file=sys.stderr);
+			else: #{
+				newmentors = mentors;
+			#}
+		#}
+		if newmentors != '': #{
+			mentors = newmentors;
+		#}
 		if mentors.strip() == '': #{
-			print('[Yes] Missing mentors for task #' + str(tid), file=sys.stderr);
+			print('[Yes] Missing mentors for task #%s: %s' % (str(tid), mentors), file=sys.stderr);
 			continue;
 		#}
 
+		
 		if aaa != '' and bbb != '': #{
 			title = title + ' (' + aaa + ' and ' + bbb + ')';	
 			description = description.replace('AAA', aaa);
