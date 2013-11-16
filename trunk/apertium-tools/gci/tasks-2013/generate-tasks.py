@@ -17,6 +17,7 @@ tasksf = open('tasks.txt');
 descsf = open('descriptions.txt');
 langsf = open('languages.txt');
 
+mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille'];
 
 class Task: #{
 	tid = -1;
