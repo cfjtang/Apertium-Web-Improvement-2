@@ -112,7 +112,7 @@ for line in descsf.readlines(): #{
 
 	tid = int(row[0]);
 	title = row[1];
-	descr = row[2];
+	descr = row[2].replace('"', '\\"');
 
 	if tid in tasks: #{
 		tasks[tid].description = descr;
