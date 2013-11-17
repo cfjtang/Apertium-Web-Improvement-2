@@ -19,6 +19,8 @@ langsf = open('languages.txt');
 
 reg_mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille', 'nvohra', 'selimcan', 'youssef_oualmakran', 'zx48'];
 
+each = int(sys.argv[1]);
+
 class Task: #{
 	tid = -1;
 	title = '';
@@ -197,14 +199,16 @@ for line in langsf.readlines(): #{
 			out = out + '"' + ltitle + '",';
 			out = out + '"' + description + '",';
 			out = out + '"' + str(time) + '",';
-			out = out + '"' + mentors + '",';
+			out = out + '"' + mentors.strip(',') + '",';
 			out = out + '"' + ttype + '",';
 			out = out + '"' + tags.lower() + '"';
 
 			print(out);
 			total = total + 1;
+			if total % each == 0: #{
+				print('------------------------------------------------');
+			#}
 		#}
-
 	#}
 #}
 
@@ -231,12 +235,15 @@ for task in tasks: #{
 		out = out + '"' + tasks[task].title + '",';
 		out = out + '"' + tasks[task].description + '",';
 		out = out + '"' + str(tasks[task].time) + '",';
-		out = out + '"' + tasks[task].mentors + '",';
+		out = out + '"' + tasks[task].mentors.strip(',') + '",';
 		out = out + '"' + tasks[task].ttype + '",';
 		out = out + '"' + tasks[task].tags + '"';
 
 		print(out);
 		total = total + 1;
+		if total % each == 0: #{
+			print('------------------------------------------------');
+		#}
 	#}
 #}
 
