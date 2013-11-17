@@ -17,7 +17,7 @@ tasksf = open('tasks.txt');
 descsf = open('descriptions.txt');
 langsf = open('languages.txt');
 
-reg_mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille', 'nvohra', 'selimcan'];
+reg_mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille', 'nvohra', 'selimcan', 'youssef_oualmakran', 'zx48'];
 
 class Task: #{
 	tid = -1;
@@ -210,6 +210,7 @@ for line in langsf.readlines(): #{
 
 for task in tasks: #{
 	if tasks[task].multi == 'No': #{
+		tid = tasks[task].tid;
 		if tasks[task].description.strip() == '': #{
 			print('[No]  Missing description for task #' + str(tid), file=sys.stderr);
 			continue;
