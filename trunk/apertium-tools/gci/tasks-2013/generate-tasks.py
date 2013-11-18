@@ -17,7 +17,7 @@ tasksf = open('tasks.txt');
 descsf = open('descriptions.txt');
 langsf = open('languages.txt');
 
-reg_mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille', 'nvohra', 'selimcan', 'youssef_oualmakran', 'zx48'];
+reg_mentors = ['jnw', 'unhammer', 'ftyers', 'mlforcada', 'fpetkovski', 'hperadin', 'jimregan', 'quirille', 'nvohra', 'selimcan', 'youssef_oualmakran', 'zx48', 'tapirine'];
 
 each = int(sys.argv[1]);
 
