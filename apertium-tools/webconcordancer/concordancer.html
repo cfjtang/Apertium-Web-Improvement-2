@@ -3,6 +3,9 @@
 	<title>Concordancer</title>
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
 	<link href="./spinner.css" rel="stylesheet">
+    <style>
+        .left-part { text-align: right; }
+    </style>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 </head>
@@ -13,9 +16,9 @@
         
         <form class="form-horizontal" style="padding-top: 2em;" action="none">
             <div class="form-group">
-                <label for="corpus" class="col-sm-2 control-label">Corpus</label>
+                <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Name of corpus to search">
+                    <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Path to corpus to search">
                 </div>
             </div>
             
@@ -44,8 +47,10 @@
         </form>
 
         <h2>Result</h2>
-        <code id="output" style="font-family: Courier New, Courier, monospace;"></code>
-        <div id="loading" style="display: none; position: absolute; top: 50%;">
+        <table class="table table-condensed table-hover" id="output" style="font-family: Courier New, Courier, monospace;">
+            
+        </table>
+        <div id="loading" style="display: none; position: absolute; top: 50%; left: 50%;">
             <div id="floatingCirclesG">
                 <div class="f_circleG" id="frotateG_01"></div>
                 <div class="f_circleG" id="frotateG_02"></div>
@@ -74,10 +79,24 @@
                 $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val()}, function(data) {
                     $("#output").css({ opacity: 1 });
                     $('#loading').hide();
-                    $('#output').html(data ? data : '<h3 style="color: red;">NO OUTPUT</h3>');
+                    if(!data) console.log('NO OUTPUT');
+                    else {
+                        $("#output tr").remove();
+                        data = JSON.parse(data);
+                        for(var i = 0; i < data.length; i++) {
+                            var tr = $('<tr></tr>');
+                            tr.append($('<td class="type"></td>').html(data[i][0]));
+                            tr.append($('<td class="left-part"></td>').html(data[i][1]));
+                            tr.append($('<td class="right-part"></td>').html(data[i][2]));
+                            $('#output').append(tr);
+                        }
+                    }
+                    
+                    //$('#output').html(data ? data : '<h3 style="color: red;">NO OUTPUT</h3>');
                 }).fail(function() {
                     $('#loading').hide();
-                    $('#output').html('<h3 style="color: red;">FAIL</h3>');
+                    console.log('FAIL');
+                    //$('#output').html('<h3 style="color: red;">FAIL</h3>');
                 });
             }
             
