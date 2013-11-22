@@ -30,6 +30,13 @@
             </div>
             
             <div class="form-group">
+                <label for="word" class="col-sm-2 control-label">Search Window</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" name="window" id="window" value="50" placeholder="Size of search window (characters)">
+                </div>
+            </div>
+            
+            <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <div class="checkbox">
                         <label>
@@ -46,7 +53,7 @@
             </div>
         </form>
 
-        <h2>Result</h2>
+        <h2>Results: <span id="resultHelp"></span></h2>
         <table class="table table-condensed table-hover" id="output" style="font-family: Courier New, Courier, monospace;">
             
         </table>
@@ -68,6 +75,7 @@
         $(document).ready(function() {
             $('#corpus').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#string').keydown(function() {if($('#instant').is(':checked')) search(); });
+            $('#window').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#search').click(function(ev) {
                 ev.preventDefault();
                 search();
@@ -76,13 +84,15 @@
             function search() {
                 $("#output").css({ opacity: 0.5 });
                 $('#loading').show();
-                $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val()}, function(data) {
+                $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
                     $("#output").css({ opacity: 1 });
                     $('#loading').hide();
-                    if(!data) console.log('NO OUTPUT');
+                    if(!data)
+                        $('#resultHelp').html('<h3 style="color: red;">NO OUTPUT</h3>');
                     else {
                         $("#output tr").remove();
                         data = JSON.parse(data);
+                        $('#resultHelp').html(data.length + ' results');
                         for(var i = 0; i < data.length; i++) {
                             var tr = $('<tr></tr>');
                             tr.append($('<td class="type"></td>').html(data[i][0]));
@@ -91,12 +101,9 @@
                             $('#output').append(tr);
                         }
                     }
-                    
-                    //$('#output').html(data ? data : '<h3 style="color: red;">NO OUTPUT</h3>');
-                }).fail(function() {
+                }).fail(function(data) {
                     $('#loading').hide();
-                    console.log('FAIL');
-                    //$('#output').html('<h3 style="color: red;">FAIL</h3>');
+                    $('#resultHelp').html('<h3 style="color: red;">NO OUTPUT</h3>');
                 });
             }
             

@@ -16,7 +16,7 @@ def getResults():
         abort(404, 'File not found :' + str(request.forms.get('corpus')))
     findstring = request.forms.getunicode('string') #getunicode required
 
-    WINDOW = 50
+    WINDOW = int(request.forms.get('window'))
     output = []
 
     for line in infile.readlines():
