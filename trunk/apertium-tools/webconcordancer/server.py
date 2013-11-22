@@ -10,15 +10,16 @@ def server_static(file):
 @route('/getResults', method='POST')
 def getResults():
     try:
-        infile = open(request.forms.get('corpus'))
+        infile = open(request.forms.get('corpus'), encoding='utf-8') #PYTHON 3
+        #infile = open(request.forms.get('corpus')) #PYTHON 2
     except:
         abort(404, 'File not found :' + str(request.forms.get('corpus')))
-    findstring = request.forms.get('string')
+    findstring = request.forms.getunicode('string') #getunicode required
 
     WINDOW = 50
     output = []
 
-    for line in infile.read().split('\n'):
+    for line in infile.readlines():
         loc = line.find(findstring)
         if loc <= 0:
             continue
@@ -32,9 +33,6 @@ def getResults():
 
         if start < 0 and end > lgt:
             diff = WINDOW - loc
-            #pad = ''
-            #for x in range(diff):
-            #   pad = pad + '&nbsp;'
             output.append(('%', line[0:loc], line[loc:end]))
             
         elif start > 0 and end > lgt:
@@ -42,16 +40,10 @@ def getResults():
             
         elif start < 0 and end < lgt:
             diff = WINDOW - loc
-            #pad = '';
-            #for x in range(diff):
-            #    pad = pad + '&nbsp;'
             output.append(('-', line[0:loc], line[loc:end]))
             
         else:
             diff = WINDOW - loc
-            #pad = ''
-            #for x in range(diff):
-            #    pad = pad + '&nbsp;'
             output.append(('_', line[start:loc], line[loc:end]))
             
     return json.dumps(output, ensure_ascii=False)
