@@ -1,0 +1,97 @@
+<html>
+<head>
+	<title>Concordancer</title>
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./spinner.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Concodancer Web Interface</h1>
+        <h4>Created by spectie in C and ported to Python by a very intelligent program</h4>
+        
+        <form class="form-horizontal" style="padding-top: 2em;" action="none">
+            <div class="form-group">
+                <label for="corpus" class="col-sm-2 control-label">Corpus</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Name of corpus to search">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="word" class="col-sm-2 control-label">Search String</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="string" id="string" placeholder="String to search corpus with">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="instant" checked> Instant Search
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group" id="searchButton" style="display: none;">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" value="Search" id="search">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <h2>Result</h2>
+        <code id="output" style="font-family: Courier New, Courier, monospace;"></code>
+        <div id="loading" style="display: none; position: absolute; top: 50%;">
+            <div id="floatingCirclesG">
+                <div class="f_circleG" id="frotateG_01"></div>
+                <div class="f_circleG" id="frotateG_02"></div>
+                <div class="f_circleG" id="frotateG_03"></div>
+                <div class="f_circleG" id="frotateG_04"></div>
+                <div class="f_circleG" id="frotateG_05"></div>
+                <div class="f_circleG" id="frotateG_06"></div>
+                <div class="f_circleG" id="frotateG_07"></div>
+                <div class="f_circleG" id="frotateG_08"></div>
+            </div>
+        </div>
+    </div>
+	
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $('#corpus').keydown(function() {if($('#instant').is(':checked')) search(); });
+            $('#string').keydown(function() {if($('#instant').is(':checked')) search(); });
+            $('#search').click(function(ev) {
+                ev.preventDefault();
+                search();
+            });
+            
+            function search() {
+                $("#output").css({ opacity: 0.5 });
+                $('#loading').show();
+                $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val()}, function(data) {
+                    $("#output").css({ opacity: 1 });
+                    $('#loading').hide();
+                    $('#output').html(data ? data : '<h3 style="color: red;">NO OUTPUT</h3>');
+                }).fail(function() {
+                    $('#loading').hide();
+                    $('#output').html('<h3 style="color: red;">FAIL</h3>');
+                });
+            }
+            
+            $('#instant').click(function() {
+                if($('#instant').is(':checked'))
+                    $('#searchButton').fadeOut();
+                else
+                    $('#searchButton').fadeIn();
+            });
+            
+            $('form').submit(function() {
+                return false;
+            });
+        });
+	</script>
+</body>
+</html>
