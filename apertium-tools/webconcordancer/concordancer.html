@@ -14,7 +14,7 @@
         <h1>Concodancer Web Interface</h1>
         <h4>Created by spectie in C and ported to Python by a very intelligent program</h4>
         
-        <form class="form-horizontal" style="padding-top: 2em;" action="none">
+        <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">
             <div class="form-group">
                 <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
                 <div class="col-sm-10">
@@ -53,7 +53,7 @@
             </div>
         </form>
 
-        <h2>Results: <span id="resultHelp"></span></h2>
+        <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
         <table class="table table-condensed table-hover" id="output" style="font-family: Courier New, Courier, monospace;">
             
         </table>
@@ -87,23 +87,19 @@
                 $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
                     $("#output").css({ opacity: 1 });
                     $('#loading').hide();
-                    if(!data)
-                        $('#resultHelp').html('<h3 style="color: red;">NO OUTPUT</h3>');
-                    else {
-                        $("#output tr").remove();
-                        data = JSON.parse(data);
-                        $('#resultHelp').html(data.length + ' results');
-                        for(var i = 0; i < data.length; i++) {
-                            var tr = $('<tr></tr>');
-                            tr.append($('<td class="type"></td>').html(data[i][0]));
-                            tr.append($('<td class="left-part"></td>').html(data[i][1]));
-                            tr.append($('<td class="right-part"></td>').html(data[i][2]));
-                            $('#output').append(tr);
-                        }
-                    }
-                }).fail(function(data) {
+					$("#output tr").remove();
+					data = JSON.parse(data);
+					$('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
+					for(var i = 0; i < data.length; i++) {
+						var tr = $('<tr></tr>');
+						tr.append($('<td class="type"></td>').html(data[i][0]));
+						tr.append($('<td class="left-part"></td>').html(data[i][1]));
+						tr.append($('<td class="right-part"></td>').html(data[i][2]));
+						$('#output').append(tr);
+					}
+                }).fail(function(xhr, textStatus, error) {
                     $('#loading').hide();
-                    $('#resultHelp').html('<h3 style="color: red;">NO OUTPUT</h3>');
+                    $('#resultHelp').html('<h3 style="color: red; font-weight: bold;">FAIL: ' + error + '</h3>');
                 });
             }
             
