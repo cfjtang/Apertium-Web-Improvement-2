@@ -2,7 +2,6 @@
 <head>
 	<title>Concordancer</title>
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-	<link href="./spinner.css" rel="stylesheet">
     <style>
         .left-part { text-align: right; padding-right: 0px !important;}
         .right-part { padding-left: 0px !important; }
@@ -50,18 +49,8 @@
         <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
         <table class="table table-condensed table-hover small" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
         </table>
-        <div id="loading" style="display: none; position: absolute; top: 50%; left: 50%;">
-            <div id="floatingCirclesG">
-                <div class="f_circleG" id="frotateG_01"></div>
-                <div class="f_circleG" id="frotateG_02"></div>
-                <div class="f_circleG" id="frotateG_03"></div>
-                <div class="f_circleG" id="frotateG_04"></div>
-                <div class="f_circleG" id="frotateG_05"></div>
-                <div class="f_circleG" id="frotateG_06"></div>
-                <div class="f_circleG" id="frotateG_07"></div>
-                <div class="f_circleG" id="frotateG_08"></div>
-            </div>
-        </div>
+        
+        <img src="/spinner.gif" id="loading" style="display: none; position: absolute; top: 50%; left: 50%;">
     </div>
 	
 	<script type="text/javascript">
@@ -76,11 +65,10 @@
             });
             
             function search() {
-                $("#output").css({ opacity: 0.5 });
                 $('#loading').show();
+                $("#output").css({ opacity: 0.5 });
                 $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
                     $("#output").css({ opacity: 1 });
-                    $('#loading').hide();
 					$("#output tr").remove();
 					data = JSON.parse(data);
 					$('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
@@ -94,6 +82,7 @@
 						tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
 						$('#output').append(tr);
 					}
+                    $('#loading').hide();
                 }).fail(function(xhr, textStatus, error) {
                     $('#loading').hide();
                     $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
