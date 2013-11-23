@@ -4,7 +4,8 @@
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
 	<link href="./spinner.css" rel="stylesheet">
     <style>
-        .left-part { text-align: right; }
+        .left-part { text-align: right; padding-right: 0px !important;}
+        .right-part { padding-left: 0px !important; }
     </style>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
@@ -24,14 +25,12 @@
             
             <div class="form-group">
                 <label for="word" class="col-sm-2 control-label">Search String</label>
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     <input class="form-control" type="text" name="string" id="string" placeholder="String to search corpus with">
                 </div>
-            </div>
-            
-            <div class="form-group">
+                
                 <label for="word" class="col-sm-2 control-label">Search Window</label>
-                <div class="col-sm-10">
+                <div class="col-sm-3">
                     <input class="form-control" type="number" name="window" id="window" value="50" placeholder="Size of search window (characters)">
                 </div>
             </div>
@@ -54,8 +53,7 @@
         </form>
 
         <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
-        <table class="table table-condensed table-hover" id="output" style="font-family: Courier New, Courier, monospace;">
-            
+        <table class="table table-condensed table-hover" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
         </table>
         <div id="loading" style="display: none; position: absolute; top: 50%; left: 50%;">
             <div id="floatingCirclesG">
@@ -92,9 +90,12 @@
 					$('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
 					for(var i = 0; i < data.length; i++) {
 						var tr = $('<tr></tr>');
-						tr.append($('<td class="type"></td>').html(data[i][0]));
-						tr.append($('<td class="left-part"></td>').html(data[i][1]));
-						tr.append($('<td class="right-part"></td>').html(data[i][2]));
+						//tr.append($('<td class="type"></td>').html(data[i][0]));
+                        var strong = $('<strong></strong>');
+                        var len = $('#string').val().length;
+                        var left = data[i][1].trim(), right = data[i][2].trim();
+						tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][data[i][1].length - 1] === ' ' || data[i][2][0] === '') ? '&nbsp;' : '')));
+						tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
 						$('#output').append(tr);
 					}
                 }).fail(function(xhr, textStatus, error) {
