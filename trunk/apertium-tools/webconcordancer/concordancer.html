@@ -36,24 +36,19 @@
             </div>
             
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-2 col-sm-2">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" id="instant" checked> Instant Search
                         </label>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-group" id="searchButton" style="display: none;">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-default" value="Search" id="search">Search</button>
-                </div>
+                <button class="btn btn-default" value="Search" id="search">Search</button>
             </div>
         </form>
 
         <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
-        <table class="table table-condensed table-hover" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
+        <table class="table table-condensed table-hover small" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
         </table>
         <div id="loading" style="display: none; position: absolute; top: 50%; left: 50%;">
             <div id="floatingCirclesG">
@@ -71,6 +66,7 @@
 	
 	<script type="text/javascript">
         $(document).ready(function() {
+            $('#search').css({visibility: 'hidden'});
             $('#corpus').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#string').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#window').keydown(function() {if($('#instant').is(':checked')) search(); });
@@ -91,7 +87,7 @@
 					for(var i = 0; i < data.length; i++) {
 						var tr = $('<tr></tr>');
 						//tr.append($('<td class="type"></td>').html(data[i][0]));
-                        var strong = $('<strong></strong>');
+                        var strong = $('<strong style="color: darkred;"></strong>');
                         var len = $('#string').val().length;
                         var left = data[i][1].trim(), right = data[i][2].trim();
 						tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][data[i][1].length - 1] === ' ' || data[i][2][0] === '') ? '&nbsp;' : '')));
@@ -100,15 +96,15 @@
 					}
                 }).fail(function(xhr, textStatus, error) {
                     $('#loading').hide();
-                    $('#resultHelp').html('<h3 style="color: red; font-weight: bold;">FAIL: ' + error + '</h3>');
+                    $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
                 });
             }
             
             $('#instant').click(function() {
                 if($('#instant').is(':checked'))
-                    $('#searchButton').fadeOut();
+                    $('#search').css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
                 else
-                    $('#searchButton').fadeIn();
+                    $('#search').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 200);
             });
             
             $('form').submit(function() {
