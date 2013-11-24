@@ -131,9 +131,13 @@ PRNPOS
   <def-label name="NOMSPROPIS">
     <tags-item tags="np.*"/>
   </def-label>
+  
+<!-- PT: not applicable   
   <def-label name="NOMSNEUTREUTRE">
     <tags-item tags="n.un.*"/>
   </def-label>
+ --> 
+ 
   <def-label name="NOMSNEUTRE">
     <tags-item tags="n.nt.*"/>
   </def-label>
@@ -143,18 +147,21 @@ PRNPOS
   <def-label name="ADV">
     <tags-item tags="adv"/>
   </def-label>
+  
+<!-- PT: not applicable  
   <def-label name="PREADV">
     <tags-item tags="preadv"/>
-  </def-label>
+  </def-label> 
   <def-label name="ADVS">
     <tags-item tags="adv.*"/>
   </def-label>
   <def-label name="ADVPOS">
     <tags-item tags="adv.pos"/>
-  </def-label>
+  </def-label>  
   <def-label name="CONJADV">
     <tags-item tags="cnjadv"/>
   </def-label>
+ -->
 
  <!-- PT: Adjective in plural --> 
 <!-- PT: NEW Useful to prevent noun in singular to follow adjective in plural --> 
@@ -169,15 +176,25 @@ PRNPOS
   <def-label name="NUM">
     <tags-item tags="num"/>
   </def-label>
+
+<!-- PT: not applicable    
   <def-label name="NUMS">
     <tags-item tags="num.*"/>
   </def-label>
+ -->
+
+<!-- PT: not applicable  
   <def-label name="VBMODDA" closed="true">
     <tags-item tags="vbmod.da"/>
   </def-label>
+ --> 
+
+<!-- PT: not applicable   
   <def-label name="VBMODPRET" closed="true">
     <tags-item tags="vbmod.part"/>
   </def-label>
+ -->  
+  
   <def-label name="VBMODINF" closed="true">
     <tags-item tags="vbmod.inf"/>
   </def-label>
@@ -202,6 +219,14 @@ PRNPOS
   <def-label name="VBMODPPRES" closed="true">
     <tags-item tags="vbmod.pprs"/>
   </def-label>
+
+<!-- PT: NEW   
+  <def-label name="VBMODIMP" closed="true">
+    <tags-item tags="vbmod.imp"/>
+  </def-label>
+-->
+
+<!-- PT: not applicable   
    <def-label name="VBAUXPRS" closed="true">
     <tags-item tags="vbaux.prs"/>
   </def-label>
@@ -214,6 +239,9 @@ PRNPOS
   <def-label name="VBAUXPRET" closed="true">
     <tags-item tags="vbaux.part"/>
   </def-label>
+--> 
+
+<!-- PT: not applicable  
    <def-label name="VBSPRS" closed="true">
     <tags-item tags="vbs.prs"/>
   </def-label>
@@ -226,6 +254,8 @@ PRNPOS
   <def-label name="VBSINF" closed="true">
     <tags-item tags="vbs.inf"/>
   </def-label>
+--> 
+
    <def-label name="VBLEXPRS" closed="true">
     <tags-item tags="vblex.pres.*"/>
   </def-label>
@@ -247,6 +277,7 @@ PRNPOS
   <def-label name="VBLEXSUPNS" closed="true">
     <tags-item tags="vblex.supn.*"/>
   </def-label>
+  
   <def-label name="VBSERINF" closed="true">
     <tags-item tags="vbser.inf.*"/>
   </def-label>
@@ -265,6 +296,13 @@ PRNPOS
   <def-label name="VBSERPPRESS" closed="true">
     <tags-item tags="vbser.pprs.*"/>
   </def-label>
+
+<!-- PT: NEW
+  <def-label name="VBSERIMP" closed="true">
+    <tags-item tags="vbser.imp"/>
+  </def-label>
+--> 
+  
   <def-label name="VBHAVERPRES" closed="true">
     <tags-item tags="vbhaver.pres.*"/>
   </def-label>
@@ -288,6 +326,7 @@ PRNPOS
   <def-label name="VBHAVERPP" closed="true">
     <tags-item tags="vbhaver.pp.*"/>
   </def-label>
+  
   <def-label name="VAUXINF" closed="true">
     <tags-item tags="vaux.inf.*"/>
   </def-label>
