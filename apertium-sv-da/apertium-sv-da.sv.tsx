@@ -220,11 +220,11 @@ PRNPOS
     <tags-item tags="vbmod.pprs"/>
   </def-label>
 
-<!-- PT: NEW   
+<!-- PT: NEW   Modal verb: Imperfekt -->
   <def-label name="VBMODIMP" closed="true">
     <tags-item tags="vbmod.imp"/>
   </def-label>
--->
+
 
 <!-- PT: not applicable   
    <def-label name="VBAUXPRS" closed="true">
@@ -293,15 +293,18 @@ PRNPOS
   <def-label name="VBSERPPRES" closed="true">
     <tags-item tags="vbser.pprs"/>
   </def-label>
+  
+<!-- PT: Not applicable
   <def-label name="VBSERPPRESS" closed="true">
     <tags-item tags="vbser.pprs.*"/>
   </def-label>
+ --> 
 
-<!-- PT: NEW
+<!-- PT: NEW vbser (to be): imperfect --> 
   <def-label name="VBSERIMP" closed="true">
     <tags-item tags="vbser.imp"/>
   </def-label>
---> 
+
   
   <def-label name="VBHAVERPRES" closed="true">
     <tags-item tags="vbhaver.pres.*"/>
