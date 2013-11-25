@@ -5,7 +5,7 @@
     <style>
         .left-part { text-align: right; padding-right: 0px !important;}
         .right-part { padding-left: 0px !important; }
-        #analysisSearchMode { display: none; }
+        #analysisSearch { display: none; }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
@@ -28,32 +28,45 @@
                 </div>
             </div>
             
-            <div class="form-group" id="analysisSearchMode">
-                <label for="corpus" class="col-sm-2 control-label">Search Mode</label>
-                <div class="col-sm-9">
-                    <label class="radio-inline">
-                      <input type="radio" id="tagSearch" name="searchMode" value="tag" checked> Tag Search
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" id="lemmaSearch" name="searchMode" value="lemma"> Lemma Search
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" id="surfaceFormSearch" name="searchMode" value="surface"> Surface Form Search
-                    </label>
+            <div id="analysisSearch">
+                <div class="form-group">
+                    <label for="searchMode" class="col-sm-2 control-label">Search Mode</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                          <input type="radio" id="tagSearch" name="searchMode" value="tag" checked> Tag Search
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" id="lemmaSearch" name="searchMode" value="lemma"> Lemma Search
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" id="surfaceFormSearch" name="searchMode" value="surface"> Surface Form Search
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="module" class="col-sm-2 control-label">Language Module</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="module" id="module" placeholder="Absolute path to language module to use for analysis">
+					</div>
+					<label for="pair" class="col-sm-2 control-label">Language Pair</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis">
+                    </div>
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Path to corpus to search">
+                    <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Absolute path of corpus to search">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="word" class="col-sm-2 control-label">Search String</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="text" name="string" id="string" placeholder="String to search corpus with">
+                    <input class="form-control" type="text" name="string" id="string" placeholder="String to search corpus/analysis with">
                 </div>
                 
                 <label for="word" class="col-sm-2 control-label">Search Window</label>
@@ -88,6 +101,8 @@
             $('#corpus').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#string').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#window').keydown(function() {if($('#instant').is(':checked')) search(); });
+            $('#module').keydown(function() {if($('#instant').is(':checked')) search(); });
+            $('#pair').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('input[name=searchMode]').on("click",  function() { if($('#instant').is(':checked')) search(); });
             $('#search').click(function(ev) {
                 ev.preventDefault();
@@ -96,9 +111,9 @@
             
             $('input[name=concordancerMode]').on("click",  function() {
                 if($('input[name=concordancerMode]:checked').val() === 'raw')
-                    $('#analysisSearchMode').fadeOut();
+                    $('#analysisSearch').fadeOut();
                 else
-                    $('#analysisSearchMode').fadeIn();
+                    $('#analysisSearch').fadeIn();
                 if($('#instant').is(':checked')) 
                     search();
             });
@@ -107,7 +122,12 @@
                 if($('input[name=concordancerMode]:checked').val() === 'raw') {
                     $('#loading').show();
                     $("#output").css({ opacity: 0.5 });
-                    $.post("/rawCorpusSearch", {corpus: $('#corpus').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
+                    $.post("/rawCorpusSearch", {
+                        corpus: $('#corpus').val(),
+                        string: $('#string').val(),
+                        window: $('#window').val()
+                    }, 
+                    function(data) {
                         $("#output").css({ opacity: 1 });
                         $("#output tr").remove();
                         data = JSON.parse(data);
@@ -131,7 +151,15 @@
                 else {
                     $('#loading').show();
                     $("#output").css({ opacity: 0.5 });
-                    $.post("/apertiumSearch", {corpus: $('#corpus').val(), mode: $('input[name=searchMode]:checked').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
+                    $.post("/apertiumSearch", {
+                        corpus: $('#corpus').val(),
+                        mode: $('input[name=searchMode]:checked').val(),
+                        string: $('#string').val(),
+                        window: $('#window').val(),
+                        module: $('#module').val(),
+                        pair: $('#pair').val()
+                    },
+                    function(data) {
                         $("#output").css({ opacity: 1 });
                         $("#output tr").remove();
                         data = JSON.parse(data);
