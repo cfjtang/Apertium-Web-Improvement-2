@@ -183,6 +183,8 @@ PRNPOS
   </def-label>
  -->
 
+<!-- Modal verbs -->
+
 <!-- PT: not applicable  
   <def-label name="VBMODDA" closed="true">
     <tags-item tags="vbmod.da"/>
@@ -225,6 +227,7 @@ PRNPOS
     <tags-item tags="vbmod.imp"/>
   </def-label>
 
+<!-- Auxilary verbs -->
 
 <!-- PT: not applicable   
    <def-label name="VBAUXPRS" closed="true">
@@ -256,6 +259,8 @@ PRNPOS
   </def-label>
 --> 
 
+<!-- Lexikal verbs -->
+
    <def-label name="VBLEXPRS" closed="true">
     <tags-item tags="vblex.pres.*"/>
   </def-label>
@@ -277,7 +282,9 @@ PRNPOS
   <def-label name="VBLEXSUPNS" closed="true">
     <tags-item tags="vblex.supn.*"/>
   </def-label>
-  
+
+<!-- verb ser: "To be"  -->
+
   <def-label name="VBSERINF" closed="true">
     <tags-item tags="vbser.inf.*"/>
   </def-label>
@@ -305,7 +312,8 @@ PRNPOS
     <tags-item tags="vbser.imp"/>
   </def-label>
 
-  
+<!-- Verb haver: "To have" -->  
+
   <def-label name="VBHAVERPRES" closed="true">
     <tags-item tags="vbhaver.pres.*"/>
   </def-label>
@@ -315,11 +323,15 @@ PRNPOS
   <def-label name="VBHAVERPPRES" closed="true">
     <tags-item tags="vbhaver.pprs"/>
   </def-label>
+  
+<!-- PT: Introduced different tags for different kinds of verbs above -->
+<!-- PT: Keep those if useful, otherwise keep the one below. -->
   <def-label name="IMP">
     <tags-item tags="vblex.imp"/>
     <tags-item tags="vbser.imp"/>
     <tags-item tags="vbhaver.imp"/>
   </def-label>
+
   <def-label name="VBHAVERINF" closed="true">
     <tags-item tags="vbhaver.inf.*"/>
   </def-label>
