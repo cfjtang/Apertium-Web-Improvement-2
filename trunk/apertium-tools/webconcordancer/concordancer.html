@@ -1,27 +1,55 @@
 <html>
 <head>
-	<title>Concordancer</title>
-	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Concordancer</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .left-part { text-align: right; padding-right: 0px !important;}
         .right-part { padding-left: 0px !important; }
+        #analysisSearchMode { display: none; }
     </style>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Concodancer Web Interface</h1>
+        <h1>Concordancer Web Interface</h1>
         <h4>Created by spectie in C and ported to Python by a very intelligent program</h4>
         
         <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">
+            <div class="form-group">
+                <label for="corpus" class="col-sm-2 control-label">Mode</label>
+                <div class="col-sm-9">
+                    <label class="radio-inline">
+                      <input type="radio" id="rawMode" name="concordancerMode" value="raw" checked> Raw Corpus Search
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" id="analysisMode" name="concordancerMode" value="analysis"> Morphological Analysis Search
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group" id="analysisSearchMode">
+                <label for="corpus" class="col-sm-2 control-label">Search Mode</label>
+                <div class="col-sm-9">
+                    <label class="radio-inline">
+                      <input type="radio" id="tagSearch" name="searchMode" value="tag" checked> Tag Search
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" id="lemmaSearch" name="searchMode" value="lemma"> Lemma Search
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" id="surfaceFormSearch" name="searchMode" value="surface"> Surface Form Search
+                    </label>
+                </div>
+            </div>
+            
             <div class="form-group">
                 <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Path to corpus to search">
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="word" class="col-sm-2 control-label">Search String</label>
                 <div class="col-sm-5">
@@ -37,13 +65,14 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-9">
                     <div class="checkbox">
-                        <label>
+                        <label for="instant">
                             <input type="checkbox" id="instant" checked> Instant Search
                         </label>
                     </div>
                 </div>
                 <button class="btn btn-default" value="Search" id="search">Search</button>
             </div>
+            
         </form>
 
         <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
@@ -59,34 +88,71 @@
             $('#corpus').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#string').keydown(function() {if($('#instant').is(':checked')) search(); });
             $('#window').keydown(function() {if($('#instant').is(':checked')) search(); });
+            $('input[name=searchMode]').on("click",  function() { if($('#instant').is(':checked')) search(); });
             $('#search').click(function(ev) {
                 ev.preventDefault();
                 search();
             });
             
+            $('input[name=concordancerMode]').on("click",  function() {
+                if($('input[name=concordancerMode]:checked').val() === 'raw')
+                    $('#analysisSearchMode').fadeOut();
+                else
+                    $('#analysisSearchMode').fadeIn();
+                if($('#instant').is(':checked')) 
+                    search();
+            });
+            
             function search() {
-                $('#loading').show();
-                $("#output").css({ opacity: 0.5 });
-                $.post("/getResults", {corpus: $('#corpus').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
-                    $("#output").css({ opacity: 1 });
-					$("#output tr").remove();
-					data = JSON.parse(data);
-					$('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
-					for(var i = 0; i < data.length; i++) {
-						var tr = $('<tr></tr>');
-						//tr.append($('<td class="type"></td>').html(data[i][0]));
-                        var strong = $('<strong style="color: darkred;"></strong>');
-                        var len = $('#string').val().length;
-                        var left = data[i][1].trim(), right = data[i][2].trim();
-						tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][data[i][1].length - 1] === ' ' || data[i][2][0] === '') ? '&nbsp;' : '')));
-						tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
-						$('#output').append(tr);
-					}
-                    $('#loading').hide();
-                }).fail(function(xhr, textStatus, error) {
-                    $('#loading').hide();
-                    $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
-                });
+                if($('input[name=concordancerMode]:checked').val() === 'raw') {
+                    $('#loading').show();
+                    $("#output").css({ opacity: 0.5 });
+                    $.post("/rawCorpusSearch", {corpus: $('#corpus').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
+                        $("#output").css({ opacity: 1 });
+                        $("#output tr").remove();
+                        data = JSON.parse(data);
+                        $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
+                        for(var i = 0; i < data.length; i++) {
+                            var tr = $('<tr></tr>');
+                            //tr.append($('<td class="type"></td>').html(data[i][0]));
+                            var strong = $('<strong style="color: darkred;"></strong>');
+                            var len = $('#string').val().length;
+                            var left = data[i][1].trim(), right = data[i][2].trim();
+                            tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][data[i][1].length - 1] === ' ' || data[i][2][0] === '') ? '&nbsp;' : '')));
+                            tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
+                            $('#output').append(tr);
+                        }
+                        $('#loading').hide();
+                    }).fail(function(xhr, textStatus, error) {
+                        $('#loading').hide();
+                        $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
+                    });
+                }
+                else {
+                    $('#loading').show();
+                    $("#output").css({ opacity: 0.5 });
+                    $.post("/apertiumSearch", {corpus: $('#corpus').val(), mode: $('input[name=searchMode]:checked').val(), string: $('#string').val(), window: $('#window').val()}, function(data) {
+                        $("#output").css({ opacity: 1 });
+                        $("#output tr").remove();
+                        data = JSON.parse(data);
+                        $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
+                         for(var i = 0; i < data.length; i++) {
+                           var tr = $('<tr></tr>');
+                            tr.append($('<td class="type"></td>').text(data[i][0][0]));
+                            var strong = $('<strong style="color: darkred;"></strong>');
+                            var len = data[i][0][0].substring(0, data[i][0][0].indexOf('/')).length;
+                            var left = data[i][1][0].trim(), right = data[i][1][1].trim();
+                            tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][0][data[i][1][0].length - 1] === ' ' || data[i][1][1][0] === '') ? '&nbsp;' : '')));
+                            tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
+                            $('#output').append(tr);
+                            
+                        }
+                        $('#loading').hide();
+                    }).fail(function(xhr, textStatus, error) {
+                        $('#loading').hide();
+                        $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
+                    });
+                }
             }
             
             $('#instant').click(function() {
@@ -100,6 +166,6 @@
                 return false;
             });
         });
-	</script>
+    </script>
 </body>
 </html>
