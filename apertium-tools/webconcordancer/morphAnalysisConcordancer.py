@@ -1,5 +1,4 @@
-import re, pprint
-import subprocess
+import re, pprint, subprocess
 
 def analyze(fileName, moduleDir, strPair):
     p1 = subprocess.Popen(["cat", fileName], stdout=subprocess.PIPE)
@@ -73,18 +72,20 @@ def getContext(lexicalUnits, index, window=15):
         output = (''.join([getSurfaceForm(lexicalUnit) + getSeperator(lexicalUnit) for lexicalUnit in lexicalUnits[start:index]]),
                   ''.join([getSurfaceForm(lexicalUnit) + getSeperator(lexicalUnit) for lexicalUnit in lexicalUnits[index:end]]))
     return (output[0].replace('\r\n', ' ').replace('\n', ' '), output[1].replace('\r\n', ' ').replace('\n', ' '))
-    
-analysis = analyze('3_sentences', '/home/apertium/Desktop/apertium-en-es', 'en-es-anmor')
-lexicalUnitsStrings = getLexicalUnitsStrings(analysis)
-lexicalUnits = parseLexicalUnitsString(lexicalUnitsStrings)
+   
 
-testIndex = 8
-print(lexicalUnits[testIndex])
-print(getTags(lexicalUnits[testIndex]))
-print(getSurfaceForm(lexicalUnits[testIndex]))
-print(getLemmas(lexicalUnits[testIndex]))
-print(getContext(lexicalUnits, testIndex))
+if __name__ == '__main__':    
+    analysis = analyze('3_sentences', '/home/apertium/Desktop/apertium-en-es', 'en-es-anmor')
+    lexicalUnitsStrings = getLexicalUnitsStrings(analysis)
+    lexicalUnits = parseLexicalUnitsString(lexicalUnitsStrings)
 
-pprint.pprint(tagSearch(lexicalUnits, '<p3>'))
-pprint.pprint(surfaceFormSearch(lexicalUnits, 'previous'))
-pprint.pprint(lemmaSearch(lexicalUnits, 'council'))
+    testIndex = 8
+    print(lexicalUnits[testIndex])
+    print(getTags(lexicalUnits[testIndex]))
+    print(getSurfaceForm(lexicalUnits[testIndex]))
+    print(getLemmas(lexicalUnits[testIndex]))
+    print(getContext(lexicalUnits, testIndex))
+
+    pprint.pprint(tagSearch(lexicalUnits, '<p3>'))
+    pprint.pprint(surfaceFormSearch(lexicalUnits, 'previous'))
+    pprint.pprint(lemmaSearch(lexicalUnits, 'council'))
