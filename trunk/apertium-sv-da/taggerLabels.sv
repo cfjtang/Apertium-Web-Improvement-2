@@ -80,9 +80,9 @@ VBSERPAST vbser (to be): past
 VBSERPRES vbser (to be): present
 VBSERSUPN vbser (to be): Supine
 VBSERPPRES vbser (to be): Present participle
+VBSERPPRESS *** not applicable ***
 VBSERIMP vbser (to be): imperfect NEW
 
-VBSERPPRESS *** not applicable ***
 
 
 
