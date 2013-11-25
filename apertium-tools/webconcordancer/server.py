@@ -51,7 +51,10 @@ def apertiumSearch():
     if not os.path.isfile(filename):
         abort(404, 'File not found : %s' % filename)
     else:
-        analysis = analyze(filename, '/home/apertium/Desktop/apertium-en-es', 'en-es-anmor')
+        try:
+            analysis = analyze(filename, request.forms.get('module'), request.forms.get('pair'))
+        except:
+            abort(400, 'Analysis Failed: %s %s' % (request.forms.get('module'), request.forms.get('pair')))
         lexicalUnitsStrings = getLexicalUnitsStrings(analysis)
         lexicalUnits = parseLexicalUnitsString(lexicalUnitsStrings)
         
