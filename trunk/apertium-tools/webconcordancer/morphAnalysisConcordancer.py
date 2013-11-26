@@ -39,13 +39,14 @@ def getLemmas(lexicalUnit):
     return [ambiguousForm[0] for ambiguousForm in lexicalUnit[0][1]]
 
 def getTags(lexicalUnit):
-    return sum([ambiguousForm[1] for ambiguousForm in lexicalUnit[0][1]], [])
+    return set(sum([ambiguousForm[1] for ambiguousForm in lexicalUnit[0][1]], []))
 
 def stringSearch(lexicalUnitsStrings, searchTerm):
     return [(index, lexicalUnitString) for (index, lexicalUnitString) in enumerate(lexicalUnitsStrings) if searchTerm in lexicalUnitString[0]]
 
-def tagSearch(lexicalUnits, searchTag):
-    return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTag in getTags(lexicalUnit)]
+def tagSearch(lexicalUnits, searchTags):
+    searchTags = set(re.findall('<[^>]*>', searchTags))
+    return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if getTags(lexicalUnit).issuperset(searchTags)]
 
 def surfaceFormSearch(lexicalUnits, searchTerm):
     return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTerm in getSurfaceForm(lexicalUnit)]
@@ -86,6 +87,6 @@ if __name__ == '__main__':
     print(getLemmas(lexicalUnits[testIndex]))
     print(getContext(lexicalUnits, testIndex))
 
-    pprint.pprint(tagSearch(lexicalUnits, '<p3>'))
+    pprint.pprint(tagSearch(lexicalUnits, '<n><sg>'))
     pprint.pprint(surfaceFormSearch(lexicalUnits, 'previous'))
     pprint.pprint(lemmaSearch(lexicalUnits, 'council'))
