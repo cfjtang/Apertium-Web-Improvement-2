@@ -5,7 +5,6 @@
     <style>
         .left-part { text-align: right; padding-right: 0px !important;}
         .right-part { padding-left: 0px !important; }
-        #analysisSearch { display: none; }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
@@ -33,7 +32,7 @@
                     <label for="searchMode" class="col-sm-2 control-label">Search Mode</label>
                     <div class="col-sm-9">
                         <label class="radio-inline">
-                          <input type="radio" id="tagSearch" name="searchMode" value="tag" checked> Tag Search
+                          <input type="radio" id="tagSearch" name="searchMode" value="tag"> Tag Search
                         </label>
                         <label class="radio-inline">
                           <input type="radio" id="lemmaSearch" name="searchMode" value="lemma"> Lemma Search
@@ -79,7 +78,7 @@
                 <div class="col-sm-offset-2 col-sm-9">
                     <div class="checkbox">
                         <label for="instant">
-                            <input type="checkbox" id="instant" checked> Instant Search
+                            <input type="checkbox" id="instant"> Instant Search
                         </label>
                     </div>
                 </div>
@@ -98,18 +97,58 @@
 	<script type="text/javascript">
         $(document).ready(function() {
             $('#search').css({visibility: 'hidden'});
-            $('#corpus').keydown(function() {if($('#instant').is(':checked')) search(); });
-            $('#string').keydown(function() {if($('#instant').is(':checked')) search(); });
-            $('#window').keydown(function() {if($('#instant').is(':checked')) search(); });
-            $('#module').keydown(function() {if($('#instant').is(':checked')) search(); });
-            $('#pair').keydown(function() {if($('#instant').is(':checked')) search(); });
-            $('input[name=searchMode]').on("click",  function() { if($('#instant').is(':checked')) search(); });
+            $('#corpus').change(function() {if($('#instant').is(':checked')) search(); });
+            $('#string').change(function() {if($('#instant').is(':checked')) search(); });
+            $('#window').change(function() {if($('#instant').is(':checked')) search(); });
+            $('#module').change(function() {if($('#instant').is(':checked')) search(); });
+            $('#pair').change(function() {if($('#instant').is(':checked')) search(); });
+            $('input[name=searchMode]').on('click',  function() { if($('#instant').is(':checked')) search(); });
             $('#search').click(function(ev) {
                 ev.preventDefault();
                 search();
             });
+
+            if(localStorage) {
+                if(localStorage.concordancerMode)
+                    $('input[name=concordancerMode][value=' + localStorage.concordancerMode +']').prop('checked', true);
+                if(localStorage.searchMode)
+                    $('input[name=searchMode][value=' + localStorage.searchMode +']').prop('checked', true);
+                if(localStorage.pair)
+                    $('#pair').val(localStorage.pair);
+                if(localStorage.module)
+                    $('#module').val(localStorage.module);
+                if(localStorage.corpus)
+                    $('#corpus').val(localStorage.corpus);
+                if(localStorage.string)
+                    $('#string').val(localStorage.string);
+                if(localStorage.window)
+                    $('#window').val(localStorage.window);
+                $('#instant').prop('checked', localStorage.instant === 'true');
+            }
             
-            $('input[name=concordancerMode]').on("click",  function() {
+            $('input[type=text],input[type=number]').change(function() {
+                localStorage[$(this).attr('id')] = $(this).val();
+            });
+
+            $('input[type=checkbox]').change(function(){
+                localStorage[$(this).attr("id")] = $(this).prop("checked");
+            });
+
+            $('input[type=radio]').change(function(){
+                localStorage[$(this).attr("name")] =  $(this).filter(':checked').val();
+            });
+            
+            if($('input[name=concordancerMode]:checked').val() === 'raw')
+                $('#analysisSearch').fadeOut();
+            else
+                $('#analysisSearch').fadeIn();
+
+             if($('#instant').is(':checked'))
+                $('#search').css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
+            else
+                $('#search').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 200);
+
+            $('input[name=concordancerMode]').on('click',  function() {
                 if($('input[name=concordancerMode]:checked').val() === 'raw')
                     $('#analysisSearch').fadeOut();
                 else
@@ -117,7 +156,18 @@
                 if($('#instant').is(':checked')) 
                     search();
             });
+
+            $('#instant').click(function() {
+                if($('#instant').is(':checked'))
+                    $('#search').css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
+                else
+                    $('#search').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 200);
+            });
             
+            $('form').submit(function() {
+                return false;
+            });
+
             function search() {
                 if($('input[name=concordancerMode]:checked').val() === 'raw') {
                     $('#loading').show();
@@ -164,35 +214,26 @@
                         $("#output tr").remove();
                         data = JSON.parse(data);
                         $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
-                         for(var i = 0; i < data.length; i++) {
-                           var tr = $('<tr></tr>');
-                            tr.append($('<td class="type"></td>').text(data[i][0][0]));
+                        for(var i = 0; i < data.length; i++) {
+                            var tr = $('<tr data-toggle="tooltip" data-placement="right"></tr>');
+                            //tr.data('toggle', 'tooltip');
+                            tr.prop('title', data[i][0][0]);
+                            //tr.append($('<td class="type"></td>').text(data[i][0][0]));
                             var strong = $('<strong style="color: darkred;"></strong>');
                             var len = data[i][0][0].substring(0, data[i][0][0].indexOf('/')).length;
                             var left = data[i][1][0].trim(), right = data[i][1][1].trim();
                             tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][0][data[i][1][0].length - 1] === ' ' || data[i][1][1][0] === '') ? '&nbsp;' : '')));
                             tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
                             $('#output').append(tr);
-                            
                         }
                         $('#loading').hide();
+                        $('tr').tooltip()
                     }).fail(function(xhr, textStatus, error) {
                         $('#loading').hide();
                         $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
                     });
                 }
             }
-            
-            $('#instant').click(function() {
-                if($('#instant').is(':checked'))
-                    $('#search').css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
-                else
-                    $('#search').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 200);
-            });
-            
-            $('form').submit(function() {
-                return false;
-            });
         });
     </script>
 </body>
