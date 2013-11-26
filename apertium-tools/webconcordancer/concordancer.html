@@ -5,6 +5,7 @@
     <style>
         .left-part { text-align: right; padding-right: 0px !important;}
         .right-part { padding-left: 0px !important; }
+        .tooltip-inner { text-align:left !important; }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
@@ -215,10 +216,12 @@
                         data = JSON.parse(data);
                         $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
                         for(var i = 0; i < data.length; i++) {
-                            var tr = $('<tr data-toggle="tooltip" data-placement="right"></tr>');
-                            //tr.data('toggle', 'tooltip');
-                            tr.prop('title', data[i][0][0]);
-                            //tr.append($('<td class="type"></td>').text(data[i][0][0]));
+                            var tr = $('<tr data-toggle="tooltip" data-placement="bottom" data-html="true"></tr>');
+                            var splitUnit = data[i][0][0].split('/');
+                            var title = '<b>' + splitUnit[0] + '</b><br>';
+                            for(var j = 1; j < splitUnit.length; j++)
+                                title += htmlEntities(splitUnit[j]) + '<br>';
+                            tr.prop('title', title);
                             var strong = $('<strong style="color: darkred;"></strong>');
                             var len = data[i][0][0].substring(0, data[i][0][0].indexOf('/')).length;
                             var left = data[i][1][0].trim(), right = data[i][1][1].trim();
@@ -235,6 +238,10 @@
                 }
             }
         });
+
+        function htmlEntities(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import re, pprint, subprocess
+import re, pprint, subprocess, argparse
 
 def analyze(fileName, moduleDir, strPair):
     p1 = subprocess.Popen(["cat", fileName], stdout=subprocess.PIPE)
@@ -73,9 +73,29 @@ def getContext(lexicalUnits, index, window=15):
         output = (''.join([getSurfaceForm(lexicalUnit) + getSeperator(lexicalUnit) for lexicalUnit in lexicalUnits[start:index]]),
                   ''.join([getSurfaceForm(lexicalUnit) + getSeperator(lexicalUnit) for lexicalUnit in lexicalUnits[index:end]]))
     return (output[0].replace('\r\n', ' ').replace('\n', ' '), output[1].replace('\r\n', ' ').replace('\n', ' '))
-   
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Search the morphological analysis of a corpus.')
+    parser.add_argument('corpus', help='Path to corpus')
+    parser.add_argument('module', help='Path to language module')
+    parser.add_argument('pair', help='Name of language pair')
+    parser.add_argument('string', help='Search string')
+    parser.add_argument('searchType', help='Type of search to perform', choices=['tag', 'surfaceForm', 'lemma'])
+    parser.add_argument('-w', '--window', help='Search window', type=int, default=10)
+    args = parser.parse_args()
+
+    analysis = analyze(args.corpus, args.module, args.pair)
+    lexicalUnitsStrings = getLexicalUnitsStrings(analysis)
+    lexicalUnits = parseLexicalUnitsString(lexicalUnitsStrings)
+    
+    searchMethods = {'tag': tagSearch, 'surfaceForm': surfaceFormSearch, 'lemma': lemmaSearch }
+    searchResults = searchMethods[args.searchType](lexicalUnits, args.string)
+    for (index, lexicalUnit) in searchResults:
+        print(''.join(getContext(lexicalUnits, index, window=args.window)))
+        print(lexicalUnitsStrings[index][0])
+        print()
+
+'''if __name__ == '__main__':
     analysis = analyze('3_sentences', '/home/apertium/Desktop/apertium-en-es', 'en-es-anmor')
     lexicalUnitsStrings = getLexicalUnitsStrings(analysis)
     lexicalUnits = parseLexicalUnitsString(lexicalUnitsStrings)
@@ -89,4 +109,4 @@ if __name__ == '__main__':
 
     pprint.pprint(tagSearch(lexicalUnits, '<n><sg>'))
     pprint.pprint(surfaceFormSearch(lexicalUnits, 'previous'))
-    pprint.pprint(lemmaSearch(lexicalUnits, 'council'))
+    pprint.pprint(lemmaSearch(lexicalUnits, 'council'))'''
