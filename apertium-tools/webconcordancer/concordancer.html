@@ -185,9 +185,8 @@
                         $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
                         for(var i = 0; i < data.length; i++) {
                             var tr = $('<tr></tr>');
-                            //tr.append($('<td class="type"></td>').html(data[i][0]));
                             var strong = $('<strong style="color: darkred;"></strong>');
-                            var len = $('#string').val().length;
+                            var len = parseInt(data[i][0]);
                             var left = data[i][1].trim(), right = data[i][2].trim();
                             tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][data[i][1].length - 1] === ' ' || data[i][2][0] === '') ? '&nbsp;' : '')));
                             tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys, codecs, copy, json, os
+import sys, codecs, copy, json, os, re
 from bottle.bottle import route, run, template, static_file, request, abort
 from morphAnalysisConcordancer import analyze, getLexicalUnitsStrings, parseLexicalUnitsString, tagSearch, lemmaSearch, surfaceFormSearch, getContext
 
@@ -21,22 +21,22 @@ def rawCorpusSearch():
     output = []
 
     for line in infile.readlines():
-        loc = line.find(findstring)
-        if loc <= 0:
-            continue
+        locs = [m.span() for m in re.finditer(findstring, line)]
+        for (termStart, termEnd) in locs:
+            lgt = len(line)
+            loc = termStart
+            termLength = termEnd - termStart
+            start = loc - window
+            end = loc + window
 
-        lgt = len(line)
-        start = loc - window
-        end = loc + window
-
-        if start < 0 and end > lgt:
-            output.append(('%', line[0:loc], line[loc:end]))
-        elif start > 0 and end > lgt:
-            output.append(('+', line[start:loc], line[loc:end]))
-        elif start < 0 and end < lgt:
-            output.append(('-', line[0:loc], line[loc:end]))
-        else:
-            output.append(('_', line[start:loc], line[loc:end]))
+            if start < 0 and end > lgt:
+                output.append((termLength, line[0:loc], line[loc:end]))
+            elif start > 0 and end > lgt:
+                output.append((termLength, line[start:loc], line[loc:end]))
+            elif start < 0 and end < lgt:
+                output.append((termLength, line[0:loc], line[loc:end]))
+            else:
+                output.append((termLength, line[start:loc], line[loc:end]))
             
     return json.dumps(output, ensure_ascii=False)
 
