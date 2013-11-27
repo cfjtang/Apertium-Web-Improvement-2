@@ -17,33 +17,24 @@
         
         <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">
             <div class="form-group">
-                <label for="corpus" class="col-sm-2 control-label">Mode</label>
+                <label for="searchMode" class="col-sm-2 control-label">Search Mode</label>
                 <div class="col-sm-9">
                     <label class="radio-inline">
-                      <input type="radio" id="rawMode" name="concordancerMode" value="raw" checked> Raw Corpus Search
+                      <input type="radio" id="tagSearch" name="searchMode" value="tag"> Tag Search
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" id="analysisMode" name="concordancerMode" value="analysis"> Morphological Analysis Search
+                      <input type="radio" id="lemmaSearch" name="searchMode" value="lemma"> Lemma Search
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" id="surfaceFormSearch" name="searchMode" value="surface"> Surface Form Search
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" id="rawSearch" name="searchMode" value="raw"> Raw Corpus Search
                     </label>
                 </div>
             </div>
-            
-            <div id="analysisSearch">
-                <div class="form-group">
-                    <label for="searchMode" class="col-sm-2 control-label">Search Mode</label>
-                    <div class="col-sm-9">
-                        <label class="radio-inline">
-                          <input type="radio" id="tagSearch" name="searchMode" value="tag"> Tag Search
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" id="lemmaSearch" name="searchMode" value="lemma"> Lemma Search
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" id="surfaceFormSearch" name="searchMode" value="surface"> Surface Form Search
-                        </label>
-                    </div>
-                </div>
 
+            <div id="analysisSearch">
                 <div class="form-group">
                     <label for="module" class="col-sm-2 control-label">Language Module</label>
                     <div class="col-sm-4">
@@ -71,7 +62,7 @@
                 
                 <label for="word" class="col-sm-2 control-label">Search Window</label>
                 <div class="col-sm-3">
-                    <input class="form-control" type="number" name="window" id="window" value="50" placeholder="Size of search window (characters)">
+                    <input class="form-control" type="number" name="window" id="window" value="15" placeholder="Size of search window">
                 </div>
             </div>
             
@@ -92,7 +83,7 @@
         <table class="table table-condensed table-hover small" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
         </table>
         
-        <img src="/spinner.gif" id="loading" style="display: none; position: absolute; top: 50%; left: 50%;">
+        <img src="/spinner.gif" id="loading" style="display: none; position: absolute; top: 30%; left: 50%;">
     </div>
 	
 	<script type="text/javascript">
@@ -110,8 +101,6 @@
             });
 
             if(localStorage) {
-                if(localStorage.concordancerMode)
-                    $('input[name=concordancerMode][value=' + localStorage.concordancerMode +']').prop('checked', true);
                 if(localStorage.searchMode)
                     $('input[name=searchMode][value=' + localStorage.searchMode +']').prop('checked', true);
                 if(localStorage.pair)
@@ -139,7 +128,7 @@
                 localStorage[$(this).attr("name")] =  $(this).filter(':checked').val();
             });
             
-            if($('input[name=concordancerMode]:checked').val() === 'raw')
+            if($('input[name=searchMode]:checked').val() === 'raw')
                 $('#analysisSearch').fadeOut();
             else
                 $('#analysisSearch').fadeIn();
@@ -149,11 +138,15 @@
             else
                 $('#search').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 200);
 
-            $('input[name=concordancerMode]').on('click',  function() {
-                if($('input[name=concordancerMode]:checked').val() === 'raw')
+            $('input[name=searchMode]').on('click',  function() {
+                if($('input[name=searchMode]:checked').val() === 'raw') {
                     $('#analysisSearch').fadeOut();
-                else
+                    $('#window').val(50);
+                }
+                else {
                     $('#analysisSearch').fadeIn();
+                    $('#window').val(10);
+                }
                 if($('#instant').is(':checked')) 
                     search();
             });
@@ -170,7 +163,7 @@
             });
 
             function search() {
-                if($('input[name=concordancerMode]:checked').val() === 'raw') {
+                if($('input[name=searchMode]:checked').val() === 'raw') {
                     $('#loading').show();
                     $("#output").css({ opacity: 0.5 });
                     $.post("/rawCorpusSearch", {
