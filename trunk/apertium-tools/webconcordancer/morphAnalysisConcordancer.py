@@ -44,15 +44,24 @@ def getTags(lexicalUnit):
 def stringSearch(lexicalUnitsStrings, searchTerm):
     return [(index, lexicalUnitString) for (index, lexicalUnitString) in enumerate(lexicalUnitsStrings) if searchTerm in lexicalUnitString[0]]
 
-def tagSearch(lexicalUnits, searchTags):
+def tagSearch(lexicalUnits, searchTags, regex=True):
     searchTags = set(re.findall('<[^>]*>', searchTags))
-    return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if getTags(lexicalUnit).issuperset(searchTags)]
+    if regex:
+        return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if all([any([re.match(searchTag + '$', tag) for tag in getTags(lexicalUnit)]) for searchTag in searchTags])]
+    else:    
+        return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if getTags(lexicalUnit).issuperset(searchTags)]
 
-def surfaceFormSearch(lexicalUnits, searchTerm):
-    return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTerm in getSurfaceForm(lexicalUnit)]
+def surfaceFormSearch(lexicalUnits, searchTerm, regex=True):
+    if regex:
+        return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if re.match(searchTerm + '$', getSurfaceForm(lexicalUnit))]
+    else:
+        return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTerm in getSurfaceForm(lexicalUnit)]
 
-def lemmaSearch(lexicalUnits, searchTerm):
-    return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTerm in getLemmas(lexicalUnit)]
+def lemmaSearch(lexicalUnits, searchTerm, regex=True):
+    if regex:
+        return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if any([re.match(searchTerm + '$', lemma) for lemma in getLemmas(lexicalUnit)])]
+    else:
+        return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTerm in getLemmas(lexicalUnit)]
     
 def getContext(lexicalUnits, index, window=15):
     surfaceForm = lexicalUnits[index][0]
