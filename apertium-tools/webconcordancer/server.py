@@ -46,6 +46,7 @@ def apertiumSearch():
     findstring = request.forms.getunicode('string') #getunicode required
     window = int(request.forms.get('window'))
     searchType = request.forms.get('mode')
+    regex = request.forms.get('regex') == 'true'
     output = []
     
     if not os.path.isfile(filename):
@@ -59,13 +60,13 @@ def apertiumSearch():
         lexicalUnits = parseLexicalUnitsString(lexicalUnitsStrings)
         
         if searchType == 'tag':
-            for (index, lexicalUnit) in tagSearch(lexicalUnits, findstring):
+            for (index, lexicalUnit) in tagSearch(lexicalUnits, findstring, regex=regex):
                 output.append((lexicalUnitsStrings[index], getContext(lexicalUnits, index, window=window)))
         elif searchType == 'lemma':
-            for (index, lexicalUnit) in lemmaSearch(lexicalUnits, findstring):
+            for (index, lexicalUnit) in lemmaSearch(lexicalUnits, findstring, regex=regex):
                 output.append((lexicalUnitsStrings[index], getContext(lexicalUnits, index, window=window)))
         elif searchType == 'surface':
-            for (index, lexicalUnit) in surfaceFormSearch(lexicalUnits, findstring):
+            for (index, lexicalUnit) in surfaceFormSearch(lexicalUnits, findstring, regex=regex):
                 output.append((lexicalUnitsStrings[index], getContext(lexicalUnits, index, window=window)))
         
         return json.dumps(output, ensure_ascii=False)

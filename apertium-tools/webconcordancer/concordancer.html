@@ -137,14 +137,10 @@
                 localStorage[$(this).attr("name")] =  $(this).filter(':checked').val();
             });
             
-            if($('input[name=searchMode]:checked').val() === 'raw') {
+            if($('input[name=searchMode]:checked').val() === 'raw')
                 $('#analysisSearch').hide();
-                $('#regexCheckbox').show();
-            }
-            else {
+            else
                 $('#analysisSearch').show();
-                $('#regexCheckbox').hide();
-            }
 
              if($('#instant').is(':checked'))
                 $('#search').css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
@@ -154,12 +150,10 @@
             $('input[name=searchMode]').on('click',  function() {
                 if($('input[name=searchMode]:checked').val() === 'raw') {
                     $('#analysisSearch').fadeOut();
-                    $('#regexCheckbox').fadeIn();
                     $('#window').val(50);
                 }
                 else {
                     $('#analysisSearch').fadeIn();
-                    $('#regexCheckbox').fadeOut();
                     $('#window').val(10);
                 }
                 if($('#instant').is(':checked')) 
@@ -178,6 +172,7 @@
             });
 
             function search() {
+                $('tr').tooltip('destroy') 
                 if($('input[name=searchMode]:checked').val() === 'raw') {
                     $('#loading').show();
                     $("#output").css({ opacity: 0.5 });
@@ -216,6 +211,7 @@
                         string: $('#string').val(),
                         window: $('#window').val(),
                         module: $('#module').val(),
+                        regex: $('#regex').prop('checked'),
                         pair: $('#pair').val()
                     },
                     function(data) {
