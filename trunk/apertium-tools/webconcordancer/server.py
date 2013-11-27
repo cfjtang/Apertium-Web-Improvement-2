@@ -21,7 +21,7 @@ def rawCorpusSearch():
     output = []
 
     for line in infile.readlines():
-        locs = [m.span() for m in re.finditer(findstring, line)]
+        locs = [m.span() for m in re.finditer(re.escape(findstring) if not request.forms.get('regex') == 'true' else findstring, line)]
         for (termStart, termEnd) in locs:
             lgt = len(line)
             loc = termStart

@@ -60,8 +60,16 @@
                     <input class="form-control" type="text" name="string" id="string" placeholder="String to search corpus/analysis with">
                 </div>
                 
+                <div class="col-sm-1">
+                    <div class="checkbox" id="regexCheckbox">
+                        <label for="regex">
+                            <input type="checkbox" id="regex" checked> Regex
+                        </label>
+                    </div>
+                </div>
+                
                 <label for="word" class="col-sm-2 control-label">Search Window</label>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <input class="form-control" type="number" name="window" id="window" value="15" placeholder="Size of search window">
                 </div>
             </div>
@@ -114,6 +122,7 @@
                 if(localStorage.window)
                     $('#window').val(localStorage.window);
                 $('#instant').prop('checked', localStorage.instant === 'true');
+                $('#regex').prop('checked', localStorage.regex === 'true');
             }
             
             $('input[type=text],input[type=number]').change(function() {
@@ -128,10 +137,14 @@
                 localStorage[$(this).attr("name")] =  $(this).filter(':checked').val();
             });
             
-            if($('input[name=searchMode]:checked').val() === 'raw')
-                $('#analysisSearch').fadeOut();
-            else
-                $('#analysisSearch').fadeIn();
+            if($('input[name=searchMode]:checked').val() === 'raw') {
+                $('#analysisSearch').hide();
+                $('#regexCheckbox').show();
+            }
+            else {
+                $('#analysisSearch').show();
+                $('#regexCheckbox').hide();
+            }
 
              if($('#instant').is(':checked'))
                 $('#search').css({opacity: 1.0, visibility: "visible"}).animate({opacity: 0}, 200);
@@ -141,10 +154,12 @@
             $('input[name=searchMode]').on('click',  function() {
                 if($('input[name=searchMode]:checked').val() === 'raw') {
                     $('#analysisSearch').fadeOut();
+                    $('#regexCheckbox').fadeIn();
                     $('#window').val(50);
                 }
                 else {
                     $('#analysisSearch').fadeIn();
+                    $('#regexCheckbox').fadeOut();
                     $('#window').val(10);
                 }
                 if($('#instant').is(':checked')) 
@@ -169,6 +184,7 @@
                     $.post("/rawCorpusSearch", {
                         corpus: $('#corpus').val(),
                         string: $('#string').val(),
+                        regex: $('#regex').prop('checked'),
                         window: $('#window').val()
                     }, 
                     function(data) {
