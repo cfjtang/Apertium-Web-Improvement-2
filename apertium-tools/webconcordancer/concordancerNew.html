@@ -1,0 +1,309 @@
+<html>
+<head>
+    <title>Concordancer</title>
+	<meta name="author" content="Sushain Cherivirala">
+	<meta charset="utf-8">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .left-part { text-align: right; padding-right: 0px !important;}
+        .right-part { padding-left: 0px !important; }
+        .tooltip-inner { text-align:left !important; }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Concordancer Web Interface <a href="http://wiki.apertium.org/w/index.php?title=Concordancer#Web_Concordancer" target="_blank"><span class="glyphicon glyphicon-question-sign"></span></a></h1>
+        <h4>Created by spectie in C and ported to Python by a very intelligent program</h4>
+        <div class="row">
+            <div class="col-md-12">
+                 <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">   
+                     <div class="form-group">
+                        <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Absolute path of corpus to search">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="module" class="col-sm-2 control-label">Language Module</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" name="module" id="module" placeholder="Absolute path to language module for analysis">
+			            </div>
+			            <label for="pair" class="col-sm-2 control-label">Language Pair</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis">
+                        </div>
+                    </div>
+                        
+                    <div class="form-group">
+                        <label for="word" class="col-sm-2 control-label">Search Window</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="number" name="window" id="window" value="15" placeholder="Size of search window">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Add Filter</h2>
+                <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">
+                    <div class="form-group">
+                        <label for="word" class="col-sm-2 control-label">Surface Form</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="surfaceFormString" id="Surface" placeholder="String to match analysis surface forms with">
+                        </div>
+                        
+                        <div class="col-sm-1">
+                            <div class="checkbox" id="regexCheckbox">
+                                <label for="regex">
+                                    <input type="checkbox" id="SurfaceRegex" checked> Regex
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="word" class="col-sm-2 control-label">Lemma</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="lemmaString" id="Lemma" placeholder="String to match analysis lemmas with">
+                        </div>
+                        
+                        <div class="col-sm-1">
+                            <div class="checkbox" id="regexCheckbox">
+                                <label for="regex">
+                                    <input type="checkbox" id="LemmaRegex" checked> Regex
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="word" class="col-sm-2 control-label">Tag</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="tagString" id="Tag" placeholder="String to match analysis tags with">
+                        </div>
+                        
+                        <div class="col-sm-1">
+                            <div class="checkbox" id="regexCheckbox">
+                                <label for="regex">
+                                    <input type="checkbox" id="TagRegex" checked> Regex
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="word" class="col-sm-2 control-label">Raw Text</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="rawString" id="Raw" placeholder="String to search corpus text with">
+                        </div>
+                        
+                        <div class="col-sm-1">
+                            <div class="checkbox" id="regexCheckbox">
+                                <label for="regex">
+                                    <input type="checkbox" id="RawRegex" checked> Regex
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-default btn-primary pull-right" value="addFilter" id="addFilter">Add Filter</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3 col-md-offset-1">
+                <h2>Active Filters <button type="button" class="btn btn-danger btn-xs pull-right" id="clearAll">Delete all</button></h2>
+				<div id="activeFilters">
+				</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
+                <table class="table table-condensed table-hover small" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
+                </table>
+        
+                <img src="/spinner.gif" id="loading" style="display: none; position: absolute; top: 30%; left: 50%;">
+            </div>
+        </div>
+    </div>
+	
+	<script type="text/javascript">
+        var filters = [];		
+
+        $(document).ready(function() {
+            if(localStorage) {
+                if(localStorage.pair)
+                    $('#pair').val(localStorage.pair);
+                if(localStorage.module)
+                    $('#module').val(localStorage.module);
+                if(localStorage.corpus)
+                    $('#corpus').val(localStorage.corpus);
+                if(localStorage.window)
+                    $('#window').val(localStorage.window);
+				if(localStorage.filters) {
+					filters = JSON.parse(localStorage.filters);
+					refreshFilterList();
+				}
+            }
+            
+            $('input[type=text],input[type=number]').change(function() {
+                localStorage[$(this).attr('id')] = $(this).val();
+            });
+
+            $('input[type=checkbox]').change(function(){
+                localStorage[$(this).attr("id")] = $(this).prop("checked");
+            });
+            
+            $('form').submit(function() {
+                return false;
+            });
+
+			$('#addFilter').click(function() {
+				var termIds = ['Surface', 'Lemma', 'Tag', 'Raw'], newFilter = {}, add = false;
+				for(var i = 0; i < termIds.length; i++)
+					if($('#' + termIds[i]).val() != '') {
+						newFilter[termIds[i]] = {term: $('#' + termIds[i]).val(), regex: $('#' + termIds[i] + 'Regex').is(':checked')};
+						add |= true;
+					}
+				if(add) {
+					filters.push(newFilter);
+					refreshFilterList();
+				}
+			});
+
+			function refreshFilterList() {
+				$('#activeFilters .list-group').remove();
+				for(var i = 0; i < filters.length; i++) {
+					var filterList = $('<ul class="list-group"></ul>');
+					for(var filter in filters[i]) {
+						if(filters[i].hasOwnProperty(filter)) {
+							var filterListElement = $('<li class="list-group-item"></li>');
+							filterListElement.append($('<span class="pull-right"><button type="button" class="close">&times;</button></span>'));
+							filterListElement.append($('<strong></strong>').text(filter));
+							filterListElement.append($('<span class="text-primary" style="padding-left:10px;"></span>').text(filters[i][filter].term));
+							if(filters[i][filter].regex)
+								filterListElement.append('<small class="text-warning" style="padding-left:10px;">regex</small>');
+							filterList.append(filterListElement);
+						}
+					}
+					$('#activeFilters').append(filterList);
+				}
+				localStorage.filters = JSON.stringify(filters);
+				search();
+			}
+
+			$('#activeFilters').on('click', '.close', function() {
+				var type = $(this).parent().siblings('strong').text();
+				var index = $(this).parents('ul').index();
+				delete filters[index][type];
+				if(Object.keys(filters[index]).length === 0)
+                    filters.splice(index, 1);
+				refreshFilterList();		
+			});		
+
+			$('#clearAll').click(function() {
+				filters = [];
+				refreshFilterList();
+			});	
+
+            function search() {
+                $('tr').tooltip('destroy') 
+                $('#loading').show();
+                $("#output").css({ opacity: 0.5 });
+                $.post("/search", {
+                    corpus: $('#corpus').val(),
+                    window: $('#window').val(),
+                    module: $('#module').val(),
+                    pair: $('#pair').val(),
+                    query: JSON.stringify(filters)
+                },
+                function(data) {
+                    $("#output tr").remove();
+                    data = JSON.parse(data);
+                    //Process Data
+                    $("#output").css({ opacity: 1 });
+                    $('#loading').hide();
+                });
+			}
+                  
+                /* if($('input[name=searchMode]:checked').val() === 'raw') {
+                    $('#loading').show();
+                    $("#output").css({ opacity: 0.5 });
+                    $.post("/rawCorpusSearch", {
+                        corpus: $('#corpus').val(),
+                        string: $('#string').val(),
+                        regex: $('#regex').prop('checked'),
+                        window: $('#window').val()
+                    }, 
+                    function(data) {
+                        $("#output").css({ opacity: 1 });
+                        $("#output tr").remove();
+                        data = JSON.parse(data);
+                        $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
+                        for(var i = 0; i < data.length; i++) {
+                            var tr = $('<tr></tr>');
+                            var strong = $('<strong style="color: darkred;"></strong>');
+                            var len = parseInt(data[i][0]);
+                            var left = data[i][1].trim(), right = data[i][2].trim();
+                            tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][data[i][1].length - 1] === ' ' || data[i][2][0] === '') ? '&nbsp;' : '')));
+                            tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
+                            $('#output').append(tr);
+                        }
+                        $('#loading').hide();
+                    }).fail(function(xhr, textStatus, error) {
+                        $('#loading').hide();
+                        $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
+                    });
+                }
+                else {
+                    $('#loading').show();
+                    $("#output").css({ opacity: 0.5 });
+                    $.post("/apertiumSearch", {
+                        corpus: $('#corpus').val(),
+                        mode: $('input[name=searchMode]:checked').val(),
+                        string: $('#string').val(),
+                        window: $('#window').val(),
+                        module: $('#module').val(),
+                        regex: $('#regex').prop('checked'),
+                        pair: $('#pair').val()
+                    },
+                    function(data) {
+                        $("#output").css({ opacity: 1 });
+                        $("#output tr").remove();
+                        data = JSON.parse(data);
+                        $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
+                        for(var i = 0; i < data.length; i++) {
+                            var tr = $('<tr data-toggle="tooltip" data-placement="bottom" data-html="true"></tr>');
+                            var splitUnit = data[i][0][0].split('/');
+                            var title = '<b>' + splitUnit[0] + '</b><br>';
+                            for(var j = 1; j < splitUnit.length; j++)
+                                title += htmlEntities(splitUnit[j]) + '<br>';
+                            tr.prop('title', title);
+                            var strong = $('<strong style="color: darkred;"></strong>');
+                            var len = data[i][0][0].substring(0, data[i][0][0].indexOf('/')).length;
+                            var left = data[i][1][0].trim(), right = data[i][1][1].trim();
+                            tr.append($('<td class="left-part"></td>').append(left + ((data[i][1][0][data[i][1][0].length - 1] === ' ' || data[i][1][1][0] === '') ? '&nbsp;' : '')));
+                            tr.append($('<td class="right-part"></td>').append(strong.html(right.substring(0, len))).append(right.substring(len)));
+                            $('#output').append(tr);
+                        }
+                        $('#loading').hide();
+                        $('tr').tooltip()
+                    }).fail(function(xhr, textStatus, error) {
+                        $('#loading').hide();
+                        $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
+                    });
+                }
+            } */
+        });
+
+        function htmlEntities(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
