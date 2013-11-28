@@ -2,7 +2,7 @@
 
 import sys, codecs, copy, json, os, re
 from bottle.bottle import route, run, template, static_file, request, abort
-from morphAnalysisConcordancer import analyze, getLexicalUnitsStrings, parseLexicalUnitsString, tagSearch, lemmaSearch, surfaceFormSearch, rawTextSearch, searchLines, getContext
+from morphAnalysisConcordancer import analyze, getLexicalUnitsStrings, parseLexicalUnitsString, tagSearch, lemmaSearch, surfaceFormSearch, rawTextSearch, searchLines, getContext, getTextFromUnits, getTextFromUnit, getLexicalUnitString
 
 @route('/:file')
 def server_static(file):
@@ -96,7 +96,12 @@ def search():
 				searchFilterGroup.append((searchFunctions[filterName], (filterArgs['term'], filterArgs['regex'])))
 			searchFilterGroups.append(searchFilterGroup)
 
-		return json.dumps(searchLines(lexicalUnits, searchFilterGroups), ensure_ascii=False)
+		lines = searchLines(lexicalUnits, searchFilterGroups)
+		output = []
+		for line in lines:
+			output.append([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit)) for lexicalUnit in line])
+		return json.dumps(output, ensure_ascii=False)
+		#return json.dumps([([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit)) for lexicalUnit in line] for line in lines], ensure_ascii=False)
 	
 print(sys.version)
 run(host='localhost', port=8080, debug=True)

@@ -41,11 +41,20 @@ def getSeperator(lexicalUnit):
 def getSurfaceForm(lexicalUnit):
 	return lexicalUnit[0][0]
 
-def getText(lexicalUnit):
+def getTextFromUnit(lexicalUnit):
 	return getSurfaceForm(lexicalUnit) + getSeperator(lexicalUnit)
+
+def getTextFromUnits(lexicalUnits):
+	return ''.join([getTextFromUnit(lexicalUnit) for lexicalUnit in lexicalUnits])
 
 def getLemmas(lexicalUnit):
 	return [ambiguousForm[0] for ambiguousForm in lexicalUnit[0][1]]
+
+def getAmbiguousForms(lexicalUnit):
+	return [ambiguousForm for ambiguousForm in lexicalUnit[0][1]]
+
+def getLexicalUnitString(lexicalUnit):
+	return getSurfaceForm(lexicalUnit) + '/' +  '/'.join([ambiguousForm[0] + ''.join(ambiguousForm[1]) for ambiguousForm in getAmbiguousForms(lexicalUnit)])
 
 def getTags(lexicalUnit):
 	return set(sum([ambiguousForm[1] for ambiguousForm in lexicalUnit[0][1]], []))
@@ -73,7 +82,7 @@ def lemmaSearch(lexicalUnits, searchTerm, regex=True):
 		return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if searchTerm in getLemmas(lexicalUnit)]
 
 def rawTextSearch(lexicalUnits, searchTerm, regex=True):
-	return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if re.match(re.escape(searchTerm) if not regex else searchTerm, getText(lexicalUnit))]
+	return [(index, lexicalUnit) for (index, lexicalUnit) in enumerate(lexicalUnits) if re.match(re.escape(searchTerm) if not regex else searchTerm, getTextFromUnit(lexicalUnit))]
 	
 def getContext(lexicalUnits, index, window=15):
 	surfaceForm = lexicalUnits[index][0]
@@ -82,24 +91,17 @@ def getContext(lexicalUnits, index, window=15):
 	length = len(lexicalUnits)
 
 	if start < 0 and end > length:
-		output = (''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[0:index]]),
-				  ''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[index:end]]))
+		output = (getTextFromUnits(lexicalUnits[0:index]), getTextFromUnits(lexicalUnits[index:end]))
 	elif start > 0 and end > length:
-		output = (''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[start:index]]),
-				  ''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[index:end]]))
+		output = (getTextFromUnits(lexicalUnits[start:index]), getTextFromUnits(lexicalUnits[index:end]))
 	elif start < 0 and end < length:
-		output = (''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[0:index]]),
-				  ''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[index:end]]))
+		output = (getTextFromUnits(lexicalUnits[0:index]), getTextFromUnits(lexicalUnits[index:end]))
 	else:
-		output = (''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[start:index]]),
-				  ''.join([getText(lexicalUnit) for lexicalUnit in lexicalUnits[index:end]]))
+		output = (getTextFromUnits(lexicalUnits[start:index]), getTextFromUnits(lexicalUnits[index:end]))
 	return (output[0].replace('\r\n', ' ').replace('\n', ' '), output[1].replace('\r\n', ' ').replace('\n', ' '))
 
-def getRawLine(lines, index):
-	return ''.join([getText(lexicalUnit) for lexicalUnit in lines[index]])
-
 def searchLines(lines, searchFilterGroups):
-	return [getRawLine(lines, index) for (index, lexicalUnits) in enumerate(lines) if all([any([all([len(searchFunction([lexicalUnit], args[0], regex=args[1])) > 0 for (searchFunction, args) in searchFiltersGroup]) for lexicalUnit in lexicalUnits]) for searchFiltersGroup in searchFilterGroups])]	
+	return [lexicalUnits for lexicalUnits in lines if all([any([all([len(searchFunction([lexicalUnit], args[0], regex=args[1])) > 0 for (searchFunction, args) in searchFiltersGroup]) for lexicalUnit in lexicalUnits]) for searchFiltersGroup in searchFilterGroups])]	
 	'''
 	for those who which to retain their sanity:
 		output0 = []

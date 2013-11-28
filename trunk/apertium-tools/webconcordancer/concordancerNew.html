@@ -226,14 +226,26 @@
                     data = JSON.parse(data);
                     $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
 					for(var i = 0; i < data.length; i++) {
-	   					var tr = $('<tr style="text-align: center"></tr>');
-	 					$('#output').append(tr.append($('<td></td>').text(data[i])));
+						var tr = $('<tr style="text-align: center"></tr>');
+						var td = $('<td></td>');
+						for(var j = 0; j < data[i].length; j++) {
+							var span = $('<span data-toggle="tooltip" data-placement="bottom" data-html="true"></span>');
+                            var splitUnit = data[i][j][1].split('/');
+                            var title = '<b>' + splitUnit[0] + '</b><br>';
+                            for(var k = 1; k < splitUnit.length; k++)
+                                title += htmlEntities(splitUnit[k]) + '<br>';
+                            span.prop('title', title);
+							span.text(data[i][j][0]);
+							td.append(span);
+						}
+						$('#output').append(tr.append(td));
                     }
                     $("#output").css({ opacity: 1 });
                     $('#loading').hide();
+					$('span').tooltip();
                 }).fail(function(xhr, textStatus, error) {
-                        $('#loading').hide();
-                        $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
+                     $('#loading').hide();
+                     $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
                 });
 			}
                   
