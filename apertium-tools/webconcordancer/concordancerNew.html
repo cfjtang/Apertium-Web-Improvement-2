@@ -30,8 +30,8 @@
                         <label for="module" class="col-sm-2 control-label">Language Module</label>
                         <div class="col-sm-4">
                             <input class="form-control" type="text" name="module" id="module" placeholder="Absolute path to language module for analysis">
-			            </div>
-			            <label for="pair" class="col-sm-2 control-label">Language Pair</label>
+						</div>
+						<label for="pair" class="col-sm-2 control-label">Language Pair</label>
                         <div class="col-sm-4">
                             <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis">
                         </div>
@@ -124,7 +124,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
-                <table class="table table-condensed table-hover small" id="output" style='font-family: Monaco,Menlo,Consolas,"Courier New",monospace'>
+                <table class="table table-hover table-condensed small" id="output">
                 </table>
         
                 <img src="/spinner.gif" id="loading" style="display: none; position: absolute; top: 30%; left: 50%;">
@@ -212,7 +212,6 @@
 			});	
 
             function search() {
-                $('tr').tooltip('destroy') 
                 $('#loading').show();
                 $("#output").css({ opacity: 0.5 });
                 $.post("/search", {
@@ -223,11 +222,18 @@
                     query: JSON.stringify(filters)
                 },
                 function(data) {
-                    $("#output tr").remove();
+                    $("tr").remove();
                     data = JSON.parse(data);
-                    //Process Data
+                    $('#resultHelp').html(data.length + ' result' + (data.length != 1 ? 's' : ''));
+					for(var i = 0; i < data.length; i++) {
+	   					var tr = $('<tr style="text-align: center"></tr>');
+	 					$('#output').append(tr.append($('<td></td>').text(data[i])));
+                    }
                     $("#output").css({ opacity: 1 });
                     $('#loading').hide();
+                }).fail(function(xhr, textStatus, error) {
+                        $('#loading').hide();
+                        $('#resultHelp').html('<h3 style="color: darkred; font-weight: bold;">FAIL: ' + error + '</h3>');
                 });
 			}
                   
