@@ -70,6 +70,10 @@ def apertiumSearch():
                 output.append((lexicalUnitsStrings[index], getContext(lexicalUnits, index, window=window)))
         
         return json.dumps(output, ensure_ascii=False)
+        
+@route('/search', method='POST')
+def search():
+    return []
     
 print(sys.version)
 run(host='localhost', port=8080, debug=True)
