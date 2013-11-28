@@ -96,10 +96,9 @@ def search():
 				searchFilterGroup.append((searchFunctions[filterName], (filterArgs['term'], filterArgs['regex'])))
 			searchFilterGroups.append(searchFilterGroup)
 
-		lines = searchLines(lexicalUnits, searchFilterGroups)
 		output = []
-		for line in lines:
-			output.append([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit)) for lexicalUnit in line])
+		for (line, highlight) in searchLines(lexicalUnits, searchFilterGroups):
+			output.append([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit), highlight) for lexicalUnit in line])
 		return json.dumps(output, ensure_ascii=False)
 		#return json.dumps([([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit)) for lexicalUnit in line] for line in lines], ensure_ascii=False)
 	
