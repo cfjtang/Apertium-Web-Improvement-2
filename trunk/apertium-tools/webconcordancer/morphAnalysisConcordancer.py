@@ -101,21 +101,27 @@ def getContext(lexicalUnits, index, window=15):
 	return (output[0].replace('\r\n', ' ').replace('\n', ' '), output[1].replace('\r\n', ' ').replace('\n', ' '))
 
 def searchLines(lines, searchFilterGroups):
-	return [lexicalUnits for lexicalUnits in lines if all([any([all([len(searchFunction([lexicalUnit], args[0], regex=args[1])) > 0 for (searchFunction, args) in searchFiltersGroup]) for lexicalUnit in lexicalUnits]) for searchFiltersGroup in searchFilterGroups])]	
-	'''
-	for those who which to retain their sanity:
-		output0 = []
-		for (index, lexicalUnits) in enumerate(lines):
-			output1 = []
-			for searchFiltersGroup in searchFilterGroups:
-				output2 = []
-				for lexicalUnit in lexicalUnits:
-					output2.append(all([len(searchFunction([lexicalUnit], args[0], regex=args[1])) > 0 for (searchFunction, args) in searchFiltersGroup]))
-				output1.append(any(output2))
-			if(all(output1)):
-				output0.append(getRawLine(lines, index))
-		return output0
-	'''
+	#return [lexicalUnits for lexicalUnits in lines if all([any([all([len(searchFunction([lexicalUnit], args[0], regex=args[1])) > 0 for (searchFunction, args) in searchFiltersGroup]) for lexicalUnit in lexicalUnits]) for searchFiltersGroup in searchFilterGroups])]	
+	
+	#for those who which to retain their sanity:
+	output0 = []
+	for lexicalUnits in lines:
+		output1 = []
+		highlight = []
+		for searchFiltersGroup in searchFilterGroups:
+			output2 = []
+			for (index, lexicalUnit) in enumerate(lexicalUnits):
+				output3 = []
+				for (searchFunction, args) in searchFiltersGroup:
+					output3.append(len(searchFunction([lexicalUnit], args[0], regex=args[1])) > 0)
+				if(all(output3)):
+					highlight.append(index)
+				output2.append(all(output3))
+			output1.append(any(output2))
+		if(all(output1)):
+			output0.append((lexicalUnits, highlight))
+	return output0
+				
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Search the morphological analysis of a corpus.')
