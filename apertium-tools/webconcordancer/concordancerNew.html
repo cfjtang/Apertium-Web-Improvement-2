@@ -47,12 +47,6 @@
                                             <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis" />
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="word" class="col-sm-2 control-label">Search Window</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control" type="number" name="window" id="window" value="15" placeholder="Size of search window" />
-                                        </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -161,8 +155,6 @@
                     $('#module').val(localStorage.module);
                 if(localStorage.corpus)
                     $('#corpus').val(localStorage.corpus);
-                if(localStorage.window)
-                    $('#window').val(localStorage.window);
                 if(localStorage.filters) {
                     filters = JSON.parse(localStorage.filters);
                     refreshFilterList();
@@ -203,7 +195,7 @@
                     var tr = $('<tr style="text-align: center"></tr>');
                     var td = $('<td></td>');
                     for(var j = 0; j < data[i][0].length; j++) {
-                        var span = $('<span data-toggle="tooltip" data-placement="bottom" data-html="true"></span>');
+                        var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
                         if($.inArray(j, data[i][1]) != -1)
                             span.addClass('highlight');	
 
@@ -245,9 +237,9 @@
                 for(var i = 0; i < data.length; i++) {
                     var tr = $('<tr></tr>');
                     var leftTD = $('<td class="left-part"></td>'), rightTD = $('<td class="right-part"></td>');
-                    var focusToken = data[i][1][focus] < data[i][0].length - 1 ? data[i][1][focus] : data[i][1][0];
+                    var focusToken = data[i][1][focus] < data[i][0].length - 1 ? data[i][1][focus] : data[i][1].slice(-1)[0];
                     for(var j = 0; j < focusToken; j++) {
-                        var span = $('<span data-toggle="tooltip" data-placement="bottom" data-html="true"></span>');
+                        var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
                         if($.inArray(j, data[i][1]) != -1)
                             span.addClass('highlight');
 
@@ -261,7 +253,7 @@
                         leftTD.append(span);
                     }
                     for(var j = focusToken; j < data[i][0].length; j++) {
-                        var span = $('<span data-toggle="tooltip" data-placement="bottom" data-html="true"></span>');
+                        var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
                         if($.inArray(j, data[i][1]) != -1)
                             span.addClass('highlight');
 
@@ -331,7 +323,6 @@
              $("#output").css({ opacity: 0.5 });
              $.post("/search", {
                 corpus: $('#corpus').val(),
-                window: $('#window').val(),
                 module: $('#module').val(),
                 pair: $('#pair').val(),
                 query: JSON.stringify(filters)
@@ -346,7 +337,7 @@
                     var tr = $('<tr style="text-align: center"></tr>');
                     var td = $('<td></td>');
                     for(var j = 0; j < data[i][0].length; j++) {
-                        var span = $('<span data-toggle="tooltip" data-placement="bottom" data-html="true"></span>');
+                        var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
                         if($.inArray(j, data[i][1]) != -1)
                             span.addClass('highlight');	
 

@@ -122,7 +122,6 @@ def searchLines(lines, searchFilterGroups):
 			output0.append((lexicalUnits, highlight))
 	return output0
 				
-
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Search the morphological analysis of a corpus.')
 	parser.add_argument('corpus', help='Path to corpus')
