@@ -75,7 +75,6 @@ def apertiumSearch():
 def search():
 	filename = request.forms.get('corpus')
 	query = json.loads(request.forms.getunicode('query')) #getunicode required
-	window = int(request.forms.get('window'))
 	
 	if not os.path.isfile(filename):
 		abort(404, 'File not found : %s' % filename)
