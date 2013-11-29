@@ -17,111 +17,132 @@
     <div class="container">
         <h1>Concordancer Web Interface <a href="http://wiki.apertium.org/w/index.php?title=Concordancer#Web_Concordancer" target="_blank"><span class="glyphicon glyphicon-question-sign"></span></a></h1>
         <h4>Created by spectie in C and ported to Python by a very intelligent program</h4>
-        <div class="row">
-            <div class="col-md-12">
-                 <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">   
-                     <div class="form-group">
-                        <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Absolute path of corpus to search">
-                        </div>
-                    </div>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><a data-toggle="collapse" data-target="#generalSettingsPanel" href="#">Corpus & Analyzer Settings</a></h2>
+                </div>
+                <div id="generalSettingsPanel" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                 <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">   
+                                     <div class="form-group">
+                                        <label for="corpus" class="col-sm-2 control-label">Corpus Path</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" name="corpus" id="corpus" placeholder="Absolute path of corpus to search">
+                                        </div>
+                                    </div>
 
-                    <div class="form-group">
-                        <label for="module" class="col-sm-2 control-label">Language Module</label>
-                        <div class="col-sm-4">
-                            <input class="form-control" type="text" name="module" id="module" placeholder="Absolute path to language module for analysis">
-						</div>
-						<label for="pair" class="col-sm-2 control-label">Language Pair</label>
-                        <div class="col-sm-4">
-                            <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis">
+                                    <div class="form-group">
+                                        <label for="module" class="col-sm-2 control-label">Language Module</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" name="module" id="module" placeholder="Absolute path to language module for analysis">
+                                        </div>
+                                        <label for="pair" class="col-sm-2 control-label">Language Pair</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis">
+                                        </div>
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <label for="word" class="col-sm-2 control-label">Search Window</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control" type="number" name="window" id="window" value="15" placeholder="Size of search window">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                        
-                    <div class="form-group">
-                        <label for="word" class="col-sm-2 control-label">Search Window</label>
-                        <div class="col-sm-2">
-                            <input class="form-control" type="number" name="window" id="window" value="15" placeholder="Size of search window">
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                <h2>Add Filter</h2>
-                <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">
-                    <div class="form-group">
-                        <label for="word" class="col-sm-2 control-label">Surface Form</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="surfaceFormString" id="Surface" placeholder="String to match analysis surface forms with">
-                        </div>
-                        
-                        <div class="col-sm-1">
-                            <div class="checkbox" id="regexCheckbox">
-                                <label for="regex">
-                                    <input type="checkbox" id="SurfaceRegex" checked> Regex
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="form-group">
-                        <label for="word" class="col-sm-2 control-label">Lemma</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="lemmaString" id="Lemma" placeholder="String to match analysis lemmas with">
-                        </div>
-                        
-                        <div class="col-sm-1">
-                            <div class="checkbox" id="regexCheckbox">
-                                <label for="regex">
-                                    <input type="checkbox" id="LemmaRegex" checked> Regex
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="word" class="col-sm-2 control-label">Tag</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="tagString" id="Tag" placeholder="String to match analysis tags with">
-                        </div>
-                        
-                        <div class="col-sm-1">
-                            <div class="checkbox" id="regexCheckbox">
-                                <label for="regex">
-                                    <input type="checkbox" id="TagRegex" checked> Regex
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="word" class="col-sm-2 control-label">Raw Text</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="rawString" id="Raw" placeholder="String to search corpus text with">
-                        </div>
-                        
-                        <div class="col-sm-1">
-                            <div class="checkbox" id="regexCheckbox">
-                                <label for="regex">
-                                    <input type="checkbox" id="RawRegex" checked> Regex
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><a data-toggle="collapse" data-target="#filterSettingsPanel" href="#">Filter Settings</a></h2>
+                </div>
+                <div id="filterSettingsPanel" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2>Add Filter</h2>
+                                <form class="form-horizontal" style="padding-top: 2em;" action="none" autocomplete="on">
+                                    <div class="form-group">
+                                        <label for="word" class="col-sm-2 control-label">Surface Form</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="surfaceFormString" id="Surface" placeholder="String to match analysis surface forms with">
+                                        </div>
+                                        
+                                        <div class="col-sm-1">
+                                            <div class="checkbox" id="regexCheckbox">
+                                                <label for="regex">
+                                                    <input type="checkbox" id="SurfaceRegex" checked> Regex
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                     
-                    <div class="form-group">
-                        <button class="btn btn-default btn-primary pull-right" value="addFilter" id="addFilter">Add Filter</button>
+                                    <div class="form-group">
+                                        <label for="word" class="col-sm-2 control-label">Lemma</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="lemmaString" id="Lemma" placeholder="String to match analysis lemmas with">
+                                        </div>
+                                        
+                                        <div class="col-sm-1">
+                                            <div class="checkbox" id="regexCheckbox">
+                                                <label for="regex">
+                                                    <input type="checkbox" id="LemmaRegex" checked> Regex
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="word" class="col-sm-2 control-label">Tag</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="tagString" id="Tag" placeholder="String to match analysis tags with">
+                                        </div>
+                                        
+                                        <div class="col-sm-1">
+                                            <div class="checkbox" id="regexCheckbox">
+                                                <label for="regex">
+                                                    <input type="checkbox" id="TagRegex" checked> Regex
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="word" class="col-sm-2 control-label">Raw Text</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" name="rawString" id="Raw" placeholder="String to search corpus text with">
+                                        </div>
+                                        
+                                        <div class="col-sm-1">
+                                            <div class="checkbox" id="regexCheckbox">
+                                                <label for="regex">
+                                                    <input type="checkbox" id="RawRegex" checked> Regex
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <button class="btn btn-default btn-primary pull-right" value="addFilter" id="addFilter">Add Filter</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-3 col-md-offset-1">
+                                <h2>Active Filters <button type="button" class="btn btn-danger btn-xs pull-right" id="clearAll">Delete all</button></h2>
+                                <div id="activeFilters">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
-            <div class="col-md-3 col-md-offset-1">
-                <h2>Active Filters <button type="button" class="btn btn-danger btn-xs pull-right" id="clearAll">Delete all</button></h2>
-				<div id="activeFilters">
-				</div>
+                </div>
             </div>
         </div>
+        
         <div class="row">
             <div class="col-md-12">
                 <h2>Results: <span id="resultHelp" class="pull-right"></span></h2>
