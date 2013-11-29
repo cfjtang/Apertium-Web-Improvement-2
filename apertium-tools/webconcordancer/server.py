@@ -98,7 +98,7 @@ def search():
 
 		output = []
 		for (line, highlight) in searchLines(lexicalUnits, searchFilterGroups):
-			output.append([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit), highlight) for lexicalUnit in line])
+			output.append(([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit)) for lexicalUnit in line], highlight))
 		return json.dumps(output, ensure_ascii=False)
 		#return json.dumps([([(getTextFromUnit(lexicalUnit), getLexicalUnitString(lexicalUnit)) for lexicalUnit in line] for line in lines], ensure_ascii=False)
 	
