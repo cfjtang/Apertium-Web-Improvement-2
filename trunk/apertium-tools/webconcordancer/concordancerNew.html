@@ -290,7 +290,7 @@
                             var filterListElement = $('<li class="list-group-item"></li>');
                             filterListElement.append($('<span class="pull-right"><button type="button" class="close">&times;</button></span>'));
                             filterListElement.append($('<strong></strong>').text(filter));
-                            filterListElement.append($('<span class="text-primary" style="padding-left:10px;"></span>').text(filters[i][filter].term));
+                            filterListElement.append($('<span class="text-primary filterTerm" style="padding-left:10px;" contenteditable></span>').text(filters[i][filter].term));
                             if(filters[i][filter].regex)
                                 filterListElement.append('<small class="text-warning" style="padding-left:10px;">regex</small>');
                             filterList.append(filterListElement);
@@ -307,9 +307,19 @@
                 var index = $(this).parents('ul').index();
                 delete filters[index][type];
                 if(Object.keys(filters[index]).length === 0)
-                filters.splice(index, 1);
-                refreshFilterList();		
-            });		
+                    filters.splice(index, 1);
+                refreshFilterList();
+            });	
+            
+            $('#activeFilters').on('input', '.filterTerm', function() {
+                var type = $(this).siblings('strong').text();
+                var index = $(this).parents('ul').index();
+                filters[index][type]['term'] = $(this).text();
+            });
+            
+            $('#activeFilters').on('blur', '.filterTerm', function() {
+                refreshFilterList();
+            });
 
             $('#clearAll').click(function() {
                 filters = [];
