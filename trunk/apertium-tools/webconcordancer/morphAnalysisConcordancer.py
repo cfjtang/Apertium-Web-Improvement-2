@@ -26,9 +26,10 @@ def parseLexicalUnitsString(lexicalUnitsStrings, splitByLines=False):
 			for ambiguousUnit in ambiguousUnitsString:
 				if not ambiguousUnitsString[0][0] == '*':
 					splitUnit = re.findall(r'([^<]*)<([^>]*)>', ambiguousUnit)
-					lemma = splitUnit[0][0]
-					tags = ['<%s>' % tagGroup[1] for tagGroup in splitUnit]
-					ambiguousUnits.append((lemma, tags))
+					if len(splitUnit):
+					    lemma = splitUnit[0][0]
+					    tags = ['<%s>' % tagGroup[1] for tagGroup in splitUnit]
+					    ambiguousUnits.append((lemma, tags))
 			lexicalUnits.append(((surfaceForm, ambiguousUnits), seperator))
 		return lexicalUnits
 	
