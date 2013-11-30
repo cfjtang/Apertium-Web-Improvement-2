@@ -47,6 +47,12 @@
                                             <input class="form-control" type="text" name="pair" id="pair" placeholder="Language pair to use for analysis" />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="word" class="col-sm-2 control-label">Search Window</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control" type="number" name="window" id="window" value="10" placeholder="Size of alignment window">
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -159,6 +165,8 @@
                     filters = JSON.parse(localStorage.filters);
                     refreshFilterList();
                 }
+                if(localStorage.window)
+                    $('#window').val(localStorage.window);
             }
 
             $('input[type=text],input[type=number]').change(function() {
@@ -238,7 +246,8 @@
                     var tr = $('<tr></tr>');
                     var leftTD = $('<td class="left-part"></td>'), rightTD = $('<td class="right-part"></td>');
                     var focusToken = data[i][1][focus] < data[i][0].length - 1 ? data[i][1][focus] : data[i][1].slice(-1)[0];
-                    for(var j = 0; j < focusToken; j++) {
+                    var window = parseInt($('#window').val());
+                    for(var j = (focusToken > window ? focusToken - window : 0); j < focusToken; j++) {
                         var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
                         if($.inArray(j, data[i][1]) != -1)
                             span.addClass('highlight');
@@ -252,7 +261,7 @@
                         span.text(data[i][0][j][0]);
                         leftTD.append(span);
                     }
-                    for(var j = focusToken; j < data[i][0].length; j++) {
+                    for(var j = focusToken; j < (data[i][0].length - focusToken > window ? (focusToken + window) : data[i][0].length); j++) {
                         var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
                         if($.inArray(j, data[i][1]) != -1)
                             span.addClass('highlight');
