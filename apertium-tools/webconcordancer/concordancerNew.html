@@ -151,7 +151,7 @@
 
     <script type="text/javascript">
         var filters = [], searchData;
-        var focus = -1;
+        var focus = 0;
 
         $(document).ready(function() {
             if(localStorage) {
@@ -360,6 +360,8 @@
                         td.append(span);
                     }
                     $('#output').append(tr.append(td));
+                    focus = 0;
+                    reFocus();
                 }
                 $("#output").css({ opacity: 1 });
                 $('#loading').hide();
