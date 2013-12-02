@@ -423,26 +423,61 @@ function analyze() {
             'q': $('#morphAnalyzerInput').val()
         },
         success: function (data) {
+            var regex = /([^<]*)((<[^>]+>)*)/g;
             $('#morphAnalyzerOutput').empty();
             for(var i = 0; i < data.length; i++) {
-                var span = $('<span data-toggle="tooltip" data-placement="auto" data-html="true"></span>');
-                span.text(data[i][0]);
-                
-                var splitUnit = data[i][1].split('/');
-                var title = '<b>' + splitUnit[0] + '</b><br>';
-                for(var j = 1; j < splitUnit.length; j++)
-                    title += htmlEntities(splitUnit[j]) + '<br>';
-                span.prop('title', title);
-                
-                $('#morphAnalyzerOutput').append(span);
+                var div = $('<div class="analysis" data-toggle="tooltip" data-placement="auto" data-html="true"></div>');
+                var strong = $('<strong></strong>').text(data[i][1].trim());
+                var splitUnit = data[i][0].split('/');
+                var arrow = $('<span></span>').html('&nbsp;&nbsp;&#8620;&nbsp;&nbsp;');
+                var span = $('<span></span>').html(formatUnit(splitUnit[1]));
+                div.append(strong).append(arrow).append(span);
+                $('#morphAnalyzerOutput').append(div);
+                joinedMorphemes = {}
+                unitsWithMorphemes = []
+                for(var j = 2; j < splitUnit.length; j++) {
+                    var unit = splitUnit[j];
+                    if(unit.match(regex).length > 2) {
+                        var matches = unit.match(regex);
+                        for(var k = 1; k < matches.length - 1; k++) {
+                            if(joinedMorphemes[matches[k]])
+                                joinedMorphemes[matches[k]].push(unit);
+                            else
+                                joinedMorphemes[matches[k]] = [unit];
+                        }
+                    }
+                    else {
+                        var unitDiv = $('<div style="margin-left:' + (span.offset()['left'] - $('.container').offset()['left'] - 15) + 'px;"></div>').html(formatUnit(unit));
+                        span.append(unitDiv);
+                    }
+                }
+                $.each(joinedMorphemes, function(joinedMorpheme, units) {
+                    var morphemeDiv = $('<div style="margin-left:' + (span.offset()['left'] - $('.container').offset()['left'] - 15) + 'px;"></div>').html(formatUnit(joinedMorpheme));
+                    span.append(morphemeDiv);
+                    for(var j = 0; j < units.length; j++) {
+                        var unitDiv = $('<div style="margin-left:' + (morphemeDiv.offset()['left'] - $('.container').offset()['left'] + 30) + 'px;"></div>').html(formatUnit(units[j].match(regex)[0]));
+                        span.append(unitDiv);
+                    }
+                });
             }
-            $('span').tooltip();
         },
         dataType: 'jsonp',
         failure: function (xhr, textStatus, error) {
             $('#morphGenOutput').text(error);
         }
     });
+}
+
+function formatUnit(unit) {
+    var tagRegex = /<([^>]+)>/g;
+    var tags = [];
+    var tagMatch = tagRegex.exec(unit);
+    while(tagMatch != null) {
+        tags.push(tagMatch[1]);
+        tagMatch = tagRegex.exec(unit);
+    }
+    var tagStartLoc = unit.indexOf('<');
+    return unit.substring(0, tagStartLoc != -1 ? tagStartLoc : unit.length) + (tags.length > 0 ? '&nbsp;&nbsp;&#8612;&nbsp;&nbsp;' + tags.join(' &#8901; ') : '');
 }
 
 function generate() {
@@ -456,12 +491,12 @@ function generate() {
         success: function (data) {
             $('#morphGenOutput').empty();
             for(var i = 0; i < data.length; i++) {
-                var span = $('<span data-toggle="tooltip" data-placement="auto"></span>');
-                span.text(data[i][0]);
-                span.prop('title', data[i][1]);
-                $('#morphGenOutput').append(span);
+                var div = $('<div class="generation" data-toggle="tooltip" data-placement="auto" data-html="true"></div>');
+                var strong = $('<strong></strong>').text(data[i][1].trim());
+                var span = $('<span></span>').html('&nbsp;&nbsp;&#8620;&nbsp;&nbsp;' + data[i][0]);
+                div.append(strong).append(span);
+                $('#morphGenOutput').append(div);
             }
-            $('span').tooltip();
         },
         dataType: 'jsonp',
         failure: function (xhr, textStatus, error) {
