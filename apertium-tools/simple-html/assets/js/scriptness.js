@@ -388,7 +388,6 @@ function strcmp(a, b) {
 }
 
 function parsePair_lol(pr) {
-
     parsedPair = null;
     pr.srcLang = $.trim(pr.srcLang);
     pr.dstLang = $.trim(pr.dstLang);
@@ -495,18 +494,16 @@ function analyze () {
                 
                 var rightTD = $('<td class="right-part"></td>');
                 var splitUnit = data[i][0].split('/');
-                var span = $('<span></span>').html(formatUnit(splitUnit[1]));
-                rightTD.append(span);
-                
-                if(data[i][0][0] === '*')
-                    span.css({color: 'darkred'})
+
+                if(splitUnit[1][0] === '*')
+                    rightTD.css({color: 'darkred'})
                 
                 var tr = $('<tr></tr>').append(leftTD).append(rightTD);
                 $('#morphAnalyzerOutput').append(tr);
                 
                 joinedMorphemes = {}
                 unitsWithMorphemes = []
-                for(var j = 2; j < splitUnit.length; j++) {
+                for(var j = 1; j < splitUnit.length; j++) {
                     var unit = splitUnit[j];
                     if(unit.match(regex).length > 2) {
                         var matches = unit.match(regex);
@@ -519,15 +516,15 @@ function analyze () {
                     }
                     else {
                         var unitDiv = $('<div></div>').html(formatUnit(unit));
-                        span.append(unitDiv);
+                        rightTD.append(unitDiv);
                     }
                 }
                 $.each(joinedMorphemes, function (joinedMorpheme, units) {
                     var morphemeDiv = $('<div></div>').html(formatUnit(joinedMorpheme));
-                    span.append(morphemeDiv);
+                    rightTD.append(morphemeDiv);
                     for(var j = 0; j < units.length; j++) {
                         var unitDiv = $('<div style="margin-left: 30px;"></div>').html(formatUnit(units[j].match(regex)[0]));
-                        span.append(unitDiv);
+                        rightTD.append(unitDiv);
                     }
                 });
                 $("#morphAnalyzerOutput").animate({ opacity: 1 });
