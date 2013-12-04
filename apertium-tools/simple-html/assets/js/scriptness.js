@@ -433,8 +433,9 @@ $(document).ready(function() {
         url: 'http://localhost:2737/listAnalyzers',
         type: 'GET',
         success: function (data) {
-            for(var val in data)
-                $('#analyzerMode').append($('<option></option').val(val).text(val));
+            data = formatModes(data);
+            for(var i = 0; i < data.length; i++)
+                $('#analyzerMode').append($('<option></option').val(data[i][0]).text(data[i][1]));
         },
         dataType: 'jsonp',
         beforeSend: ajaxSend,
@@ -445,14 +446,34 @@ $(document).ready(function() {
         url: 'http://localhost:2737/listGenerators',
         type: 'GET',
         success: function (data) {
-            for(var val in data)
-                $('#generatorMode').append($('<option></option').val(val).text(val));
+            data = formatModes(data);
+            for(var i = 0; i < data.length; i++)
+                $('#generatorMode').append($('<option></option').val(data[i][0]).text(data[i][1]));
         },
         dataType: 'jsonp',
         beforeSend: ajaxSend,
         complete: ajaxComplete
     });
 });
+
+
+function formatModes(modes) {
+    var modesArr = [], toReturn = []
+    for(var val in modes)
+        modesArr.push(val);
+    for(var val in modes) {
+        if(val.indexOf('-') === -1)
+            toReturn.push([val, val]);
+        else {
+            var mode = val.split('-')[0];
+            if(modesArr.indexOf(mode) === -1)
+                toReturn.push([val, mode]);
+            else
+                toReturn.push([val, mode + ' (' + val + ')']);
+        }   
+    }
+    return toReturn;    
+}
 
 function analyze () {
     $("#morphAnalyzerOutput").animate({ opacity: 0.5 });
