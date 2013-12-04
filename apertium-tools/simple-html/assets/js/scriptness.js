@@ -421,6 +421,20 @@ $(document).ready(function() {
         return false;
     });
 
+    $("#morphAnalyzerInput").keydown(function (e){
+        if(e.keyCode == 13 && !e.shiftKey) {
+            e.preventDefault();
+            analyze();
+        }
+    });
+
+    $("#morphGeneratorInput").keydown(function (e){
+        if(e.keyCode == 13 && !e.shiftKey) {
+            e.preventDefault();
+            generate();
+        }
+    });
+
     $('.nav a').click(function () {
         $('.nav li').removeClass('active');
         $(this).parent('li').addClass('active');
