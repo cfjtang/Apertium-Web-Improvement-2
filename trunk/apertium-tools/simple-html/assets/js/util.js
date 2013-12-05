@@ -39,11 +39,17 @@ $(document).ajaxSend(ajaxSend);
 $(document).ajaxComplete(ajaxComplete);
 
 $(document).ready(function() {
+    if(!parent.location.hash || !$(parent.location.hash + 'Container'))
+        parent.location.hash = '#translation';
+    $('.modeContainer' + parent.location.hash + 'Container').show();
+    $('.nav li > a[data-mode=' +  parent.location.hash.substring(1) + ']').parent().addClass('active');
+
     $('.nav a').click(function () {
+        var mode = $(this).data('mode');
         $('.nav li').removeClass('active');
         $(this).parent('li').addClass('active');
-        $('.modeContainer:not(#' + $(this).prop('id') + 'Container)').hide({ queue: false });
-        $('#' + $(this).prop('id') + 'Container').show({ queue: false }); 
+        $('.modeContainer:not(#' + mode + 'Container)').hide({ queue: false });
+        $('#' + mode + 'Container').show({ queue: false }); 
     });
 });
 
