@@ -24,6 +24,8 @@
           $inurl = $_GET["inurl"];
   }
 
+  $dir = trim($dir, "'");
+
   $inurl = urldecode($inurl);
 
   for($i = 0; $i < sizeof($banlist); $i++) {
