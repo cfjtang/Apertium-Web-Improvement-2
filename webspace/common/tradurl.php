@@ -4,6 +4,8 @@ require("../config/apertium-config.php");
 include_once("./logging.php");
 
 $dir = escapeshellarg($_GET["dir"]);
+  $dir = trim($dir, "'");
+
 $mark = $_GET["mark"];          /* set to 1 or "" below instead of escaping */
 if ($mark=="") {
    $mark = $_POST["mark"];
