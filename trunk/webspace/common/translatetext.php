@@ -13,7 +13,7 @@ if (array_key_exists('textbox',$_POST)) {
 	if ($dir == "") {
 		$dir = getPair($lang);
 	}
-	show_form("", $dir);
+	show_form("", $dir, $mark);
 }
 ?>
 
@@ -34,7 +34,7 @@ function process_form() {
 		$markUnknown = "-u";
 	}
 
-	show_form($text, $dir);
+	show_form($text, $dir, $mark);
 
 	// Logging class initialization  
 	$log = new Logging();  
@@ -53,7 +53,7 @@ function process_form() {
 	   SHOW FORM
 	**************************
 */
-function show_form($textbox, $dir) {
+function show_form($textbox, $dir, $mark) {
 	print '<form name="translationform" class="translation" action="' . $_SERVER['PHP_SELF'] . '?id=translatetext" method="post">';
 	print '<fieldset name="fset"><legend></legend><label for="direction">';
 	print _("Direction:");
@@ -67,10 +67,12 @@ function show_form($textbox, $dir) {
 	$text = stripslashes($textbox);
 	print $text;
 
+print $mark;
+
 	//print '</textarea></label><br/><label for="mark">';
 	print '</textarea><br/><label for="mark">';
 	print _("Mark unknown words") . " ";
-	print '<input id="mark" value="1" name="mark" type="checkbox" title="Check the box to mark unknown words"/></label>';
+	print '<input id="mark" value="1" name="mark" type="checkbox" title="Check the box to mark unknown words"' . (($mark == 1) ? 'checked' : '') . '/></label>';
 	print '<div><input type="submit" value="' . _("Translate") . '" class="submit" title="' . _("Press button to translate") . '"/>';
 	print '<input type="reset" value="' . _("Reset") . '" class="reset" title="Press button to reset form"/>';
 	print '</div></fieldset></form>';
