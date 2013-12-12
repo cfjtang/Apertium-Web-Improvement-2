@@ -1,4 +1,3 @@
-VERSION=1.1.0
 LANG1=es
 LANG2=pt
 LANG2b=pt_BR
