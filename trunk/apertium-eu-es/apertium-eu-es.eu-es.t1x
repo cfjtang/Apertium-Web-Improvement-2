@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- nxml -*- -->
+<?xml version="1.0" encoding="utf-8"?> <!-- -*- nxml -*- -->
 <transfer default="chunk">
   <section-def-cats>
 
@@ -38,6 +38,7 @@
     <def-cat n="adjizl">
       <cat-item tags="adj.izl"/>
       <cat-item tags="adj.izl.rom"/>
+      <cat-item tags="adj.izl.ord"/>
       <cat-item tags="num.ord"/>
     </def-cat>
 
@@ -216,7 +217,7 @@
       <cat-item lemma="ezan" tags="vbsint.imp.*"/>
  </def-cat>
 
-    <def-cat n="prnpers"><!--aquests pronoms es poden transformar en possessius en castellà -->
+    <def-cat n="prnpers"><!--aquests pronoms es poden transformar en possessius en castellÃ  -->
       <cat-item tags="prn.pers.*"/>
       <cat-item lemma="hura" tags="det.dem.*"/>
     </def-cat>
@@ -268,7 +269,7 @@
       <cat-item lemma="nean" tags="cnjadv"/>
     </def-cat>
 
-    <def-cat n="lako"><!--ampliar-ho a més cnjadv per a fer regles unitàries -->
+    <def-cat n="lako"><!--ampliar-ho a mÃ©s cnjadv per a fer regles unitÃ ries -->
       <cat-item lemma="lako" tags="cnjadv"/>
     </def-cat>
 
@@ -288,7 +289,7 @@
     <def-cat n="reladj">
       <cat-item lemma="n" tags="rel"/>
     </def-cat>
-    <def-cat n="quesubj"><!-- particules subordinants que apareixen després d'una forma subjuntiva-->
+    <def-cat n="quesubj"><!-- particules subordinants que apareixen desprÃ©s d'una forma subjuntiva-->
       <cat-item lemma="n" tags="cnjsub"/>
       <cat-item lemma="la" tags="cnjsub"/>
     </def-cat>
@@ -624,7 +625,7 @@
   <section-def-macros>
 
 
-    <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits. -->
+    <def-macro n="f_bcond" npar="2"><!--Per mirar si el blanc contÃ© o no format. Cal posar aquesta funciÃ³ en les regles en quÃ¨ desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si contÃ© format cal conservar-la, si no en contÃ© cal eliminar-la perquÃ¨ no apareguin dos espais seguits. -->
       <choose>
 	<when>
 	  <test>
@@ -696,7 +697,7 @@
 
     <def-macro n="concord_n2" npar="2"><!--par 1= nombre; par 2= det/adj/pp -->
 
-      <choose><!-- si adj és participio, pónle GD y ND-->
+      <choose><!-- si adj Ã©s participio, pÃ³nle GD y ND-->
 	<when>
 	  <test>
 	    <or>
@@ -727,7 +728,7 @@
 	  </let>
 	</when>
       </choose>
-      <choose><!-- si nombre és un participio (ex.: atxilotu), pónle GD y ND-->
+      <choose><!-- si nombre Ã©s un participio (ex.: atxilotu), pÃ³nle GD y ND-->
 	<when>
 	  <test>
 	    <or>
@@ -854,7 +855,7 @@
 		      <list n="nombrescol"/>
 		    </in>
 		  </test>
-		  <let><!--más dinero -->
+		  <let><!--mÃ¡s dinero -->
 		    <clip pos="1" side="tl" part="nbr"/> 
 		    <lit-tag v="sg"/> 
 		  </let>
@@ -873,7 +874,7 @@
 		    </when>
 		  </choose>
 		</when>
-		<otherwise> <!-- más coches: si determinante es sp (indefinidos/cuantitativos, se pone pos 1 en plural)-->
+		<otherwise> <!-- mÃ¡s coches: si determinante es sp (indefinidos/cuantitativos, se pone pos 1 en plural)-->
 		  <let>
 		    <clip pos="1" side="tl" part="nbr"/> 
 		    <lit-tag v="pl"/> 
@@ -911,7 +912,7 @@
 	    <clip pos="1" side="tl" part="nbr"/> 
 	  </let>
 	</when>
-	<when><!--si ha habido cambio de número de sl a tl, el nombre manda y asigna número al det/adj (oporraldia = las vacaciones) -->
+	<when><!--si ha habido cambio de nÃºmero de sl a tl, el nombre manda y asigna nÃºmero al det/adj (oporraldia = las vacaciones) -->
 	  <test>
 	    <or>
 	      <and>
@@ -942,7 +943,7 @@
 	  </let>
 	</when> 
       </choose>
-      <!--determinem gènere i nombre del chunk -->
+      <!--determinem gÃ¨nere i nombre del chunk -->
 
       <choose>
 	<when>
@@ -1033,7 +1034,7 @@
 	</when>
       </choose>
 
-      <choose><!-- si 1 és GD se queda como GD hasta el t2x, sólo será posible determinar gen en 2 o 3-->
+      <choose><!-- si 1 Ã©s GD se queda como GD hasta el t2x, sÃ³lo serÃ¡ posible determinar gen en 2 o 3-->
 	<when>
 	  <test>
 	    <equal>
@@ -1105,7 +1106,7 @@
 	  </test>
 	  <choose>	      
 	    <when>
-	      <test><!--cuando 2 tiene número sg o pl -->
+	      <test><!--cuando 2 tiene nÃºmero sg o pl -->
 		<not>
 		  <or>
 		    <equal>		    
@@ -1388,7 +1389,7 @@
 	      </choose>
 	    </when>
 	  </choose>
-	  <choose><!--otros casos: cuando 3 tiene número i 2 es ND (etxe ederra) i 1 es ND -->
+	  <choose><!--otros casos: cuando 3 tiene nÃºmero i 2 es ND (etxe ederra) i 1 es ND -->
 	    <when>
 	      <test>
 		<equal>
@@ -1407,7 +1408,7 @@
 	    </when>
 	  </choose>
 	</when>
-	<otherwise><!-- quan 1 no és ND (oporraldi)-->
+	<otherwise><!-- quan 1 no Ã©s ND (oporraldi)-->
 	  <choose>
 	    <when>
 	      <test>
@@ -1440,7 +1441,7 @@
 
       </choose>
       <choose>
-	<when><!--si ha habido cambio de número de sl a tl, el nombre manda y asigna número al det o adj (oporraldi ederra = las vacaciones bellas) -->
+	<when><!--si ha habido cambio de nÃºmero de sl a tl, el nombre manda y asigna nÃºmero al det o adj (oporraldi ederra = las vacaciones bellas) -->
 	  <test>
 	    <or>
 	      <and>
@@ -1472,7 +1473,7 @@
 	</when>
       </choose>
       <choose>
-	<when><!--si ha habido cambio de número de sl a tl, el nombre manda y asigna número al det o adj (oporraldi ederra = las vacaciones bellas) -->
+	<when><!--si ha habido cambio de nÃºmero de sl a tl, el nombre manda y asigna nÃºmero al det o adj (oporraldi ederra = las vacaciones bellas) -->
 	  <test>
 	    <or>
 	      <and>
@@ -1503,9 +1504,9 @@
 	  </let>
 	</when>
       </choose>
-      <!--i quan 3 es ND i origen no és sp? es pot donar el cas?? -->
+      <!--i quan 3 es ND i origen no Ã©s sp? es pot donar el cas?? -->
 
-      <!--determinem gènere i nombre del chunk -->
+      <!--determinem gÃ¨nere i nombre del chunk -->
       <choose>
 	<when>
 	  <test>
@@ -1739,7 +1740,7 @@
 	  </test>
 	  <choose>
 	    <when>
-	      <test><!--cuando 3 tiene número sg o pl -->
+	      <test><!--cuando 3 tiene nÃºmero sg o pl -->
 		<not>
 		  <or>
 		    <equal>		    
@@ -1948,7 +1949,7 @@
 	      </choose>
 	    </when>
 	  </choose>
-	  <choose><!--otros casos: cuando 4 tiene número i 3 es ND (etxe ederra) -->
+	  <choose><!--otros casos: cuando 4 tiene nÃºmero i 3 es ND (etxe ederra) -->
 	    <when>
 	      <test>
 		<equal>
@@ -1966,7 +1967,7 @@
 	      </let>
 	    </when>
 	  </choose>
-	  <choose><!--y finalmente, si el 2 es ND, a estas alturas de la regla el nombre ya tiene número, que se asignará a 2 -->
+	  <choose><!--y finalmente, si el 2 es ND, a estas alturas de la regla el nombre ya tiene nÃºmero, que se asignarÃ¡ a 2 -->
 	    <when>
 	      <test>
 		<equal>
@@ -1982,7 +1983,7 @@
 	  </choose>
 	</when>
       </choose>
-      <choose><!--comprobación final: si ha habido cambio de número de sl a tl, el nombre manda y asigna número a det y adj (oporraldi ederra = las vacaciones bellas -->
+      <choose><!--comprobaciÃ³n final: si ha habido cambio de nÃºmero de sl a tl, el nombre manda y asigna nÃºmero a det y adj (oporraldi ederra = las vacaciones bellas -->
 	<when>
 	  <test>
 	    <or>
@@ -2015,7 +2016,7 @@
 	</when>
       </choose>
       <choose>
-	<when><!--si ha habido cambio de número de sl a tl, el nombre manda y asigna número a det y adj (oporraldi ederra = las vacaciones bellas) -->
+	<when><!--si ha habido cambio de nÃºmero de sl a tl, el nombre manda y asigna nÃºmero a det y adj (oporraldi ederra = las vacaciones bellas) -->
 	  <test>
 	    <or>
 	      <and>
@@ -2047,7 +2048,7 @@
 	</when>
       </choose>
       <choose>
-	<when><!--si ha habido cambio de número de sl a tl, el nombre manda y asigna número a det y adj (oporraldi ederra = las vacaciones bellas) -->
+	<when><!--si ha habido cambio de nÃºmero de sl a tl, el nombre manda y asigna nÃºmero a det y adj (oporraldi ederra = las vacaciones bellas) -->
 	  <test>
 	    <or>
 	      <and>
@@ -2079,7 +2080,7 @@
 	</when>
       </choose>
 
-      <!--determinem gènere i nombre del chunk -->
+      <!--determinem gÃ¨nere i nombre del chunk -->
       <choose>
 	<when>
 	  <test>
@@ -2221,7 +2222,7 @@
 	    </otherwise>
 	  </choose>
 	</when>
-	<otherwise><!--si el 2 no és GD, el 1 pot ser GD o mf o m o f. Aquest serà el gen del chunk perquè el 2 ja no en depèn. -->
+	<otherwise><!--si el 2 no Ã©s GD, el 1 pot ser GD o mf o m o f. Aquest serÃ  el gen del chunk perquÃ¨ el 2 ja no en depÃ¨n. -->
 	  <let>
 	    <var n="gen_chunk"/> 
 	    <clip pos="1" side="tl" part="gen"/>
@@ -2262,10 +2263,10 @@
 	    </otherwise>
 	  </choose>
 	</when>
-	<otherwise><!--si el 2 no és ND -->
+	<otherwise><!--si el 2 no Ã©s ND -->
 	  <choose>
 	    <when>
-	      <test><!--quan el 2 és plural -->
+	      <test><!--quan el 2 Ã©s plural -->
 		<equal>
 		  <clip pos="2" side="tl" part="nbr"/>
 		  <lit-tag v="pl"/>
@@ -2290,7 +2291,7 @@
 		</when>
 	      </choose>
 	    </when>
-	    <otherwise><!--quan el 2 no és ni ND ni plural -->	
+	    <otherwise><!--quan el 2 no Ã©s ni ND ni plural -->	
 	      <let>
 		<var n="nbr_chunk"/> 
 		<clip pos="1" side="tl" part="nbr"/>
@@ -2304,7 +2305,7 @@
     </def-macro>
 
     <def-macro n="gen_n" npar="2"><!--par 1= nombre; par 2= det/adj
-				      Si el nombre en español es mf, se asigna <m> al determinante. Solución provisional, considerar si sería posible determinar el género de ciertos nombres (el/la profesor/a) -->
+				      Si el nombre en espaÃ±ol es mf, se asigna <m> al determinante. SoluciÃ³n provisional, considerar si serÃ­a posible determinar el gÃ©nero de ciertos nombres (el/la profesor/a) -->
       <choose>
 	<when>
 	  <test>
@@ -2339,7 +2340,7 @@
     </def-macro>
 
 
-    <def-macro n="gen_prn" npar="1"><!-- vosotros/vosotras - solució provisional -->
+    <def-macro n="gen_prn" npar="1"><!-- vosotros/vosotras - soluciÃ³ provisional -->
       <choose>
 	<when>
 	  <test>
@@ -2374,7 +2375,7 @@
     </def-macro>
 
 
-    <def-macro n="posesivo" npar="2"><!--Parámetro 1 = pronombre/demostrativo. Parámetro 2 = nombre -->
+    <def-macro n="posesivo" npar="2"><!--ParÃ¡metro 1 = pronombre/demostrativo. ParÃ¡metro 2 = nombre -->
       <let>	    
 	<clip pos="1" side="tl" part="det_pos"/> 
 	<lit-tag v="det.pos"/>
@@ -2502,7 +2503,7 @@
     </def-macro>
 
 
-    <def-macro n="posesivo_det" npar="2"><!--Parámetro 1 = pronombre/demostrativo. Parámetro 2 = determinante -->
+    <def-macro n="posesivo_det" npar="2"><!--ParÃ¡metro 1 = pronombre/demostrativo. ParÃ¡metro 2 = determinante -->
       <let>	    
 	<clip pos="1" side="tl" part="det_pos"/> 
 	<lit-tag v="adj.pos"/>
@@ -2557,7 +2558,7 @@
 	  </test>
 	  <let>	      
 	    <clip pos="1" side="tl" part="lem"/> 
-	    <lit v="mío"/>
+	    <lit v="mÃ­o"/>
 	  </let>
 	</when>
 	<when>
@@ -2626,7 +2627,7 @@
     </def-macro>
 
 
-    <def-macro n="SPgenitivo" npar="1"><!--si la postposición és ko/en, el nombre del chunk serà SPGEN para que el t2x realice las operaciones necesarias. Nota: hay reglas que detectan ya chunks con CN dentro ('aitaren etxea'), la marca de genitivo es para los chunks que escapan a estas reglas, para que el t2x pueda tratarlos. -->
+    <def-macro n="SPgenitivo" npar="1"><!--si la postposiciÃ³n Ã©s ko/en, el nombre del chunk serÃ  SPGEN para que el t2x realice las operaciones necesarias. Nota: hay reglas que detectan ya chunks con CN dentro ('aitaren etxea'), la marca de genitivo es para los chunks que escapan a estas reglas, para que el t2x pueda tratarlos. -->
 
       <choose>
 	<when>
@@ -2676,7 +2677,7 @@
 	  </let>
 	</otherwise>
       </choose>
-      <choose><!-- si la postposición es 'k', como la traducción es vacía, se elimina el blanco. El blanco después de la postposición hay que enviarlo con la variable 'blanco'-->
+      <choose><!-- si la postposiciÃ³n es 'k', como la traducciÃ³n es vacÃ­a, se elimina el blanco. El blanco despuÃ©s de la postposiciÃ³n hay que enviarlo con la variable 'blanco'-->
 	<when>
 	  <test>
 	    <or>
@@ -2835,9 +2836,9 @@
 
 
 
-    <def-macro n="verbal_flex" npar="1"><!--Determina la persona del verbo y la presencia de pronombres proclíticos, y envía los pronombres si es necesario 
-					    IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la macro puede enviar pronombres y éstos tiene que ir justo antes del verbo.
-Además, en 2-febr-2009 se ha añadido la función de enviar 'quizá' si el verbo es de prob1 o prob2 (antiguos A2 y B3), probabilidad presente y pasado respectivamente 
+    <def-macro n="verbal_flex" npar="1"><!--Determina la persona del verbo y la presencia de pronombres proclÃ­ticos, y envÃ­a los pronombres si es necesario 
+					    IMPORTANTE: hay que colocar esta macro justo antes de enviar el verbo, porque la macro puede enviar pronombres y Ã©stos tiene que ir justo antes del verbo.
+AdemÃ¡s, en 2-febr-2009 se ha aÃ±adido la funciÃ³n de enviar 'quizÃ¡' si el verbo es de prob1 o prob2 (antiguos A2 y B3), probabilidad presente y pasado respectivamente 
 					-->
       <choose>
 	<when>
@@ -2886,7 +2887,7 @@ Además, en 2-febr-2009 se ha añadido la función de enviar 'quizá' si el verbo es
 		<tag><lit-tag v="adv"/></tag>
 	      </tags>
 	      <lu>
-		<lit v="quizá"/>
+		<lit v="quizÃ¡"/>
 		<lit-tag v="adv"/>
 	      </lu>
 	    </chunk>
@@ -2900,7 +2901,7 @@ Además, en 2-febr-2009 se ha añadido la función de enviar 'quizá' si el verbo es
       </choose>
       <choose>
 	<when>
-	  <test><!--si es verbo NOR-NORI o NOR-NORI-NORK, envía pronombre de NORI. -->
+	  <test><!--si es verbo NOR-NORI o NOR-NORI-NORK, envÃ­a pronombre de NORI. -->
 	    <not>
 	      <equal>
 		<clip pos="1" side="sl" part="nori"/>
@@ -3030,7 +3031,7 @@ Además, en 2-febr-2009 se ha añadido la función de enviar 'quizá' si el verbo es
 	  </let>
 	</when>
 	<when>
-	  <test><!--Si se trata de un verbo NOR-NORK cuyo NOR no sea 3a sg o 3a pl, envía proclítico con valor de NOR -->
+	  <test><!--Si se trata de un verbo NOR-NORK cuyo NOR no sea 3a sg o 3a pl, envÃ­a proclÃ­tico con valor de NOR -->
 	    <and>
 	      <not>
 		<equal>
@@ -3371,9 +3372,9 @@ Además, en 2-febr-2009 se ha añadido la función de enviar 'quizá' si el verbo es
       
     </def-macro>
 
-    <def-macro n="ser_tener" npar="2"><!--ser o tener, esta es la cuestión :-)
-                Esta macro mira si el auxiliar es transitivo y si el verbo principal es 'izan' (que se traduce por 'ser' al castellano). En caso afirmativo, cambia la traducción de 'ser' a 'tener' (izango duzue - seréis - tendréis.)
-Podría ampliarse a otros casos, para tratar las diferencias en la traducción de los verbos según si el auxiliar es transitivo o intransitivo.
+    <def-macro n="ser_tener" npar="2"><!--ser o tener, esta es la cuestiÃ³n :-)
+                Esta macro mira si el auxiliar es transitivo y si el verbo principal es 'izan' (que se traduce por 'ser' al castellano). En caso afirmativo, cambia la traducciÃ³n de 'ser' a 'tener' (izango duzue - serÃ©is - tendrÃ©is.)
+PodrÃ­a ampliarse a otros casos, para tratar las diferencias en la traducciÃ³n de los verbos segÃºn si el auxiliar es transitivo o intransitivo.
 
  -->
 	<choose>
@@ -3414,7 +3415,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <!--********************************* REGLES DE SN   **************************************************** -->
 
 
-    <rule comment="REGLA: NOM ( per a col·locar la cua en les multiparaules amb g i traduir noms sense determinant">
+    <rule comment="REGLA: NOM ( per a colÂ·locar la cua en les multiparaules amb g i traduir noms sense determinant">
       <pattern>
 	<pattern-item n="nom_np"/>
       </pattern>
@@ -3621,7 +3622,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -3705,7 +3706,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4109,7 +4110,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4376,7 +4377,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4453,7 +4454,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4470,7 +4471,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="3"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4558,7 +4559,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4640,7 +4641,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="tipo_det">
 	  <with-param pos="5"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4742,7 +4743,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="4"/>
 	</call-macro>
-	<choose><!--porque no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -4959,7 +4960,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <rule comment="REGLA: PRONOMBREpers ( para asignar género a 'nosotros' y 'vosotros'. Por ahora será 'm' por defecto) ">
+    <rule comment="REGLA: PRONOMBREpers ( para asignar gÃ©nero a 'nosotros' y 'vosotros'. Por ahora serÃ¡ 'm' por defecto) ">
       <pattern>
 	<pattern-item n="prnpers"/>
       </pattern>
@@ -4980,7 +4981,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/> 
-	      <lit v="él"/>
+	      <lit v="Ã©l"/>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="det_prn"/> 
@@ -5028,7 +5029,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    </test>
 	    <let>
 	      <clip pos="1" side="tl" part="lem"/> 
-	      <lit v="él"/>
+	      <lit v="Ã©l"/>
 	    </let>
 	    <let>
 	      <clip pos="1" side="tl" part="det_prn"/> 
@@ -5054,7 +5055,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <rule comment="REGLA: PRONOMBREpers + POST(gurekin, norekin - con nosotros, con quién) ">
+    <rule comment="REGLA: PRONOMBREpers + POST(gurekin, norekin - con nosotros, con quiÃ©n) ">
       <pattern>
 	<pattern-item n="prnpers"/>
 	<pattern-item n="post"/>
@@ -5141,7 +5142,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 		</test>
 		<let>
 		  <clip pos="1" side="tl" part="lem"/>
-		  <lit v="mí"/>
+		  <lit v="mÃ­"/>
 		</let>
 	      </when>
 	      <when>
@@ -5215,7 +5216,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: PRONOMBRE recíproco (elkar) ">
+    <rule comment="REGLA: PRONOMBRE recÃ­proco (elkar) ">
       <pattern>
 	<pattern-item n="prnrec"/>
       </pattern>
@@ -5238,7 +5239,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
     
 
-    <rule comment="REGLA: PRONOMBRE recíproco + POST (elkarri) ">
+    <rule comment="REGLA: PRONOMBRE recÃ­proco + POST (elkarri) ">
       <pattern>
 	<pattern-item n="prnrec"/>
 	<pattern-item n="post"/>
@@ -5595,7 +5596,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: ADJ + NOM + NOM + DET (azken lege proiektua - el último proyecto de ley)">
+    <rule comment="REGLA: ADJ + NOM + NOM + DET (azken lege proiektua - el Ãºltimo proyecto de ley)">
       <pattern>
 	<pattern-item n="adjizl"/>
 	<pattern-item n="nom"/>
@@ -5617,7 +5618,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -5762,7 +5763,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: ADJ + NOM + NOM + POST (azken osasun zentrotatik - de último centro de salud)">
+    <rule comment="REGLA: ADJ + NOM + NOM + POST (azken osasun zentrotatik - de Ãºltimo centro de salud)">
       <pattern>
 	<pattern-item n="adjizl"/>
 	<pattern-item n="nom"/>
@@ -5783,7 +5784,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -5916,7 +5917,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: ADJ + NOM + NOM + DET + POST (azken lege proiektuaren - del último proyecto de ley)">
+    <rule comment="REGLA: ADJ + NOM + NOM + DET + POST (azken lege proiektuaren - del Ãºltimo proyecto de ley)">
       <pattern>
 	<pattern-item n="adjizl"/>
 	<pattern-item n="nom"/>
@@ -5942,7 +5943,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -6666,7 +6667,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -6749,7 +6750,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -6836,11 +6837,11 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<call-macro n="concord_n2"><!--en último lugar la concord de las palabras que determinan gen_chunk y nbr_chunk -->
+	<call-macro n="concord_n2"><!--en Ãºltimo lugar la concord de las palabras que determinan gen_chunk y nbr_chunk -->
 	  <with-param pos="4"/>
 	  <with-param pos="5"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -6964,12 +6965,12 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="concord_n2">
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
-	</call-macro><!--en último lugar la concord de las palabras que determinan gen_chunk y nbr_chunk -->
+	</call-macro><!--en Ãºltimo lugar la concord de las palabras que determinan gen_chunk y nbr_chunk -->
 	<call-macro n="concord_n2">
 	  <with-param pos="4"/>
 	  <with-param pos="5"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -7105,7 +7106,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk --> 
 	  <when>
 	    <test>
 	      <equal>
@@ -7276,7 +7277,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="5"/>
 	  <with-param pos="6"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -7492,7 +7493,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="5"/>
 	  <with-param pos="6"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -7716,7 +7717,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="3"/>
 	  <with-param pos="8"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -7893,7 +7894,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="3"/>
 	  <with-param pos="4"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -7956,7 +7957,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk --> 
 	  <when>
 	    <test>
 	      <equal>
@@ -8055,7 +8056,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="3"/>
 	  <with-param pos="4"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -8118,7 +8119,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="1"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk --> 
 	  <when>
 	    <test>
 	      <equal>
@@ -8225,7 +8226,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -8285,7 +8286,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="4"/>
 	  <with-param pos="5"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -8435,7 +8436,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -8495,7 +8496,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="4"/>
 	  <with-param pos="5"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -9302,7 +9303,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
- <rule comment="REGLA: NUM + NOM (31 eta 50 urte [bitarteko] - [entre] 31 y 50 años))">
+ <rule comment="REGLA: NUM + NOM (31 eta 50 urte [bitarteko] - [entre] 31 y 50 aÃ±os))">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="conj"/>
@@ -9412,7 +9413,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: NOM + BI (kide bi - dos miembros (porque el 'bi' a veces va detrás))">
+    <rule comment="REGLA: NOM + BI (kide bi - dos miembros (porque el 'bi' a veces va detrÃ¡s))">
       <pattern>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="bi"/>
@@ -9623,7 +9624,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    <b/>
 	    <lu>
 	      <clip pos="1" side="tl" part="lem"/>
-	      <lit-tag v="prn.tn"/><!--para que traduzca 'uno'(prn tn) y no 'un' (det), que es la opción del diccionario -->
+	      <lit-tag v="prn.tn"/><!--para que traduzca 'uno'(prn tn) y no 'un' (det), que es la opciÃ³n del diccionario -->
 	      <clip pos="1" side="tl" part="GD" link-to="3"/>
 	      <clip pos="1" side="tl" part="nbr"/>
 	    </lu>
@@ -9760,7 +9761,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -10349,7 +10350,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
     <rule comment="REGLA: NUM + NOM + DET + POST (bi emakumeak - las dos mujeres (pl) (cuando tagger se equivoca y elige ergativo en vez de determinante plural)
-		   bost urtean - en () cinco años">
+		   bost urtean - en () cinco aÃ±os">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="nom_np"/>
@@ -11963,7 +11964,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: NUM + DET (zortziak - las ocho. Se pone en femenino porque casi siempre es indicación horaria)">
+    <rule comment="REGLA: NUM + DET (zortziak - las ocho. Se pone en femenino porque casi siempre es indicaciÃ³n horaria)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="det"/>
@@ -12001,7 +12002,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: NUM + DET + POST (19etatik - desde las 19. Se pone en femenino porque casi siempre es indicación horaria)">
+    <rule comment="REGLA: NUM + DET + POST (19etatik - desde las 19. Se pone en femenino porque casi siempre es indicaciÃ³n horaria)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="det"/>
@@ -12142,7 +12143,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: NOM + DET + ko/en NUM + DET (goizeko zortziak - las ocho de la mañana. Se pone en femenino porque casi siempre es indicación horaria)">
+    <rule comment="REGLA: NOM + DET + ko/en NUM + DET (goizeko zortziak - las ocho de la maÃ±ana. Se pone en femenino porque casi siempre es indicaciÃ³n horaria)">
       <pattern>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
@@ -12158,7 +12159,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -12258,7 +12259,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <rule comment="REGLA: NOM + DET + ko/en NUM + DET + POST (goizeko bederatzietan - a las nueve de la mañana. Se pone en femenino porque casi siempre es indicación horaria)">
+    <rule comment="REGLA: NOM + DET + ko/en NUM + DET + POST (goizeko bederatzietan - a las nueve de la maÃ±ana. Se pone en femenino porque casi siempre es indicaciÃ³n horaria)">
       <pattern>
 	<pattern-item n="nom_np"/>
 	<pattern-item n="det"/>
@@ -12275,7 +12276,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -12597,7 +12598,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: NUM + ADJ (bi gazteek - los dos jóvenes)">
+    <rule comment="REGLA: NUM + ADJ (bi gazteek - los dos jÃ³venes)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="adjnopp"/>
@@ -12782,7 +12783,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: NUM + ADJ (bi gazteek - los dos jóvenes)">
+    <rule comment="REGLA: NUM + ADJ (bi gazteek - los dos jÃ³venes)">
       <pattern>
 	<pattern-item n="num"/>
 	<pattern-item n="num"/>
@@ -13038,7 +13039,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     <!-- POSESIVOS -->
 
 
-    <rule comment="REGLA: PRON + en + NOM + DET (nirea - mío)">
+    <rule comment="REGLA: PRON + en + NOM + DET (nirea - mÃ­o)">
       <pattern>
 	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
@@ -13090,7 +13091,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="posesivo"><!--MG adequar funció a concord_n2 -->
+	<call-macro n="posesivo"><!--MG adequar funciÃ³ a concord_n2 -->
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
@@ -13141,7 +13142,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="firstWord">
 	  <with-param pos="1"/>
 	</call-macro>
-	<call-macro n="posesivo"><!--MG adequar funció a concord_n2 -->
+	<call-macro n="posesivo"><!--MG adequar funciÃ³ a concord_n2 -->
 	  <with-param pos="1"/>
 	  <with-param pos="3"/>
 	</call-macro>
@@ -13440,7 +13441,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: PRON + en + NOM + ADJ + DET (bere hurrengo opera - su próxima opera)">
+    <rule comment="REGLA: PRON + en + NOM + ADJ + DET (bere hurrengo opera - su prÃ³xima opera)">
       <pattern>
 	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
@@ -13558,7 +13559,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: PRON + en + NOM + ADJ + DET (bere hurrengo opera - su próxima opera)">
+    <rule comment="REGLA: PRON + en + NOM + ADJ + DET (bere hurrengo opera - su prÃ³xima opera)">
       <pattern>
 	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
@@ -13692,7 +13693,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: PRON + en + NOM + ko/en+ NOM + DET (nire aitaren etxea - la casa de mi padre) (em sembla que no es dóna mai posesiu + nom mugagabe, treure?">
+    <rule comment="REGLA: PRON + en + NOM + ko/en+ NOM + DET (nire aitaren etxea - la casa de mi padre) (em sembla que no es dÃ³na mai posesiu + nom mugagabe, treure?">
       <pattern>
 	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
@@ -13712,7 +13713,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="nbr_n1">
 	  <with-param pos="3"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk --> 
 	  <when>
 	    <test>
 	      <equal>
@@ -13804,7 +13805,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="6"/>
 	  <with-param pos="7"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -13894,7 +13895,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: PRON + en + NOM + ko/en+ NOM + DET (nire aitaren etxean - en la casa de mi padre) (em sembla que no es dóna mai posesiu + nom mugagabe, treure?">
+    <rule comment="REGLA: PRON + en + NOM + ko/en+ NOM + DET (nire aitaren etxean - en la casa de mi padre) (em sembla que no es dÃ³na mai posesiu + nom mugagabe, treure?">
       <pattern>
 	<pattern-item n="prnpers"/>
 	<pattern-item n="en"/>
@@ -13918,7 +13919,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="SPgenitivo">
 	  <with-param pos="7"/>
 	</call-macro>	
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk --> 
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk --> 
 	  <when>
 	    <test>
 	      <equal>
@@ -14019,7 +14020,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="SPgenitivo">
 	  <with-param pos="8"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -14117,7 +14118,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: N + ADJ + GRADO + DET (etxe handiagoa - una casa más grande, gauza txarrena - la cosa más mala)">
+    <rule comment="REGLA: N + ADJ + GRADO + DET (etxe handiagoa - una casa mÃ¡s grande, gauza txarrena - la cosa mÃ¡s mala)">
       <pattern>
 	<pattern-item n="nom"/>
 	<pattern-item n="adj"/>
@@ -14143,7 +14144,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 		<clip pos="3" side="sl" part="lem"/>
 		<lit v="en"/>
 	      </equal>
-	    </test><!--en este caso se envía determinante 'def' i no 'art' ('la casa más roja') -->
+	    </test><!--en este caso se envÃ­a determinante 'def' i no 'art' ('la casa mÃ¡s roja') -->
 	    <let>
 	      <var n="tipusdet"/>
 	      <lit-tag v="def"/>
@@ -14357,7 +14358,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <with-param pos="1"/>
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -14613,7 +14614,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  <clip pos="1" side="tl" part="temps"/>
 	  <lit-tag v="pp"/>
 	</let>
-	<!--	<choose><!-*-porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -*->
+	<!--	<choose><!-*-porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -*->
 	    <when>
 	    <test>
 	    <equal>
@@ -14766,7 +14767,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <!--******************* REGLAS CON NÚMEROS (PARA FECHAS) ***************************** -->
+    <!--******************* REGLAS CON NÃšMEROS (PARA FECHAS) ***************************** -->
 
 
 
@@ -14825,7 +14826,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="tipo_det">
 	  <with-param pos="2"/>
 	</call-macro>
-	<choose><!--porque para palabras con función de CN no se puede dejar GD i ND para el t2x, ya que no están enlazados con chunk -->
+	<choose><!--porque para palabras con funciÃ³n de CN no se puede dejar GD i ND para el t2x, ya que no estÃ¡n enlazados con chunk -->
 	  <when>
 	    <test>
 	      <equal>
@@ -14878,7 +14879,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
     <!--********************************* REGLES DE SA ***************************************************** -->
 
-    <rule comment="REGLA: ADJ (gorri) Para los adjetivos que quedan solos (en teoría todos deberían formar parte de un SA)">
+    <rule comment="REGLA: ADJ (gorri) Para los adjetivos que quedan solos (en teorÃ­a todos deberÃ­an formar parte de un SA)">
       <pattern>
 	<pattern-item n="adjnopp"/>
       </pattern>
@@ -14974,7 +14975,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	<call-macro n="tipo_det">
 	  <with-param pos="2"/>
 	</call-macro>
-	<!--	<call-macro n="concord_adj_det"> La macro concord_n passa el nom/adj a plural si determinant és quantitatiu-->
+	<!--	<call-macro n="concord_adj_det"> La macro concord_n passa el nom/adj a plural si determinant Ã©s quantitatiu-->
 
 	<call-macro n="concord_n2">
 	  <with-param pos="1"/>
@@ -15222,7 +15223,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 		<clip pos="2" side="sl" part="lem"/>
 		<lit v="en"/>
 	      </equal>
-	    </test><!--en este caso se envía determinante 'def' i no 'art' ('el más rojo') -->
+	    </test><!--en este caso se envÃ­a determinante 'def' i no 'art' ('el mÃ¡s rojo') -->
 	    <let>
 	      <var n="tipusdet"/>
 	      <lit-tag v="def"/>
@@ -15330,7 +15331,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
     <!--********************************* REGLES DE SV ***************************************************** -->
 
-<rule comment="REGLA:  VERBO SINT potencial (para cuando va después de desconocida - daiteke - puede)">
+<rule comment="REGLA:  VERBO SINT potencial (para cuando va despuÃ©s de desconocida - daiteke - puede)">
       <pattern>
 	<pattern-item n="aux_potencial"/>
       </pattern>
@@ -15413,7 +15414,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <rule comment="REGLA: VERBO SINTÉTICO (dut, nabil)">
+    <rule comment="REGLA: VERBO SINTÃ‰TICO (dut, nabil)">
       <pattern>
 	<pattern-item n="vbsint"/>
       </pattern>
@@ -15475,7 +15476,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	    <tags>
 	      <tag><lit-tag v="SV"/></tag>
 	      <tag><clip pos="1" side="tl" part="a_verb"/></tag>
-	      <tag><clip pos="1" side="tl" part="temps"/></tag><!--en aquesta regla només posem el temps, per a tractar formes compostes separades en el t2x ('ez dutela galdeketa eman') -->
+	      <tag><clip pos="1" side="tl" part="temps"/></tag><!--en aquesta regla nomÃ©s posem el temps, per a tractar formes compostes separades en el t2x ('ez dutela galdeketa eman') -->
 	      <tag><clip pos="1" side="tl" part="persnbr"/></tag>
 	      <tag><clip pos="1" side="sl" part="nor"/></tag>
 	      <tag><clip pos="1" side="sl" part="nori"/></tag>
@@ -15496,7 +15497,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: VERBO PERIFRÁSTICO (nahi dut)">
+    <rule comment="REGLA: VERBO PERIFRÃSTICO (nahi dut)">
       <pattern>
 	<pattern-item n="vbper"/>
       </pattern>
@@ -16184,7 +16185,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: INF (para colocar cola en Testvoc, no sirve para nada más)">
+    <rule comment="REGLA: INF (para colocar cola en Testvoc, no sirve para nada mÃ¡s)">
       <pattern>
 	<pattern-item n="inf"/>
       </pattern>
@@ -16366,7 +16367,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <rule comment="ADITZ IZENA + ART (izatea = ser) (el artículo desaparece por ahora) ">
+    <rule comment="ADITZ IZENA + ART (izatea = ser) (el artÃ­culo desaparece por ahora) ">
       <pattern>
 	<pattern-item n="vbizen"/>
 	<pattern-item n="detart"/>	
@@ -16675,9 +16676,9 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <!-- Negación de verbos 
-	 Falta para verbos sintéticos: ponerlo en el diccionario monolingüe mejor, no? 'ez naiz bizi'
-	 Falta negación de 'prestatzen ari gara'
+    <!-- NegaciÃ³n de verbos 
+	 Falta para verbos sintÃ©ticos: ponerlo en el diccionario monolingÃ¼e mejor, no? 'ez naiz bizi'
+	 Falta negaciÃ³n de 'prestatzen ari gara'
     -->
     
 
@@ -16716,7 +16717,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>	
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
@@ -16826,7 +16827,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -16913,7 +16914,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -16984,7 +16985,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
       </action>
     </rule>
 
-    <!--negación de verbos con partícula subordinante -(e)la intercalada (ez zietela eman) -->
+    <!--negaciÃ³n de verbos con partÃ­cula subordinante -(e)la intercalada (ez zietela eman) -->
 
     <rule comment="REGLA: EZ + VERBO SINT + (e)la + PP (ez duela ikusi)">
       <pattern>
@@ -17021,7 +17022,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>	
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
@@ -17146,7 +17147,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -17246,7 +17247,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -17367,7 +17368,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>	
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
@@ -17477,7 +17478,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -17564,7 +17565,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="1"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -17671,7 +17672,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="2"/>
 	</out>	
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>
@@ -17788,7 +17789,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="2"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -17881,7 +17882,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 	  </chunk>
 	  <b pos="2"/>
 	</out>
-	<let><!--porque los proclíticos dentro de la macro verbal_flex se envían con caseFirstWord-->	  
+	<let><!--porque los proclÃ­ticos dentro de la macro verbal_flex se envÃ­an con caseFirstWord-->	  
 	  <var n="caseFirstWord"/>
 	  <lit v="aa"/>
 	</let>	
@@ -17951,7 +17952,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
     <!--
-	MG: no sé com es fa el negatiu de 'prestatzen ari garelako: falta fer la forma negativa canviant la regla següent
+	MG: no sÃ© com es fa el negatiu de 'prestatzen ari garelako: falta fer la forma negativa canviant la regla segÃ¼ent
 
 
 <rule comment="REGLA: GER + ARI IZAN (prestatzen ari gara - estamos preparando) + lako">
@@ -18016,7 +18017,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
-    <rule comment="REGLA: BA-+VERBO SINTÉTICO (badut, banabil)">
+    <rule comment="REGLA: BA-+VERBO SINTÃ‰TICO (badut, banabil)">
       <pattern>
 	<pattern-item n="ba"/>
 	<pattern-item n="vbsint"/>
@@ -18092,7 +18093,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-  <rule comment="REGLA: BA-+VERBO SINTÉTICO (ez badut)">
+  <rule comment="REGLA: BA-+VERBO SINTÃ‰TICO (ez badut)">
       <pattern>
 	<pattern-item n="ez"/>
 	<pattern-item n="ba"/>
@@ -18867,7 +18868,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
- <rule comment="REGLA: PFUT + ez + ba-VERBO SINT(baldintza) (ez balu egingo) - si no hiciera - La gramática dice que esta forma de negación no es la correcta, pero me la he encontrado en textos (p. ej. en el Berria)">
+ <rule comment="REGLA: PFUT + ez + ba-VERBO SINT(baldintza) (ez balu egingo) - si no hiciera - La gramÃ¡tica dice que esta forma de negaciÃ³n no es la correcta, pero me la he encontrado en textos (p. ej. en el Berria)">
       <pattern>
 	<pattern-item n="ez"/>
 	<pattern-item n="ba"/>
@@ -18969,7 +18970,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 <!-- modo potencial -->
 
- <rule comment="REGLA: INF (forma lexemática) + VERBO SINT potencial (etor daiteke - puede venir)">
+ <rule comment="REGLA: INF (forma lexemÃ¡tica) + VERBO SINT potencial (etor daiteke - puede venir)">
       <pattern>
 	<pattern-item n="inf"/>
 	<pattern-item n="aux_potencial"/>
@@ -19066,7 +19067,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 <!-- modo subjuntivo -->
 
 
- <rule comment="REGLA: INF (forma lexemática) + VERBO SINT subjuntivo (ikus dezagun - que veamos)">
+ <rule comment="REGLA: INF (forma lexemÃ¡tica) + VERBO SINT subjuntivo (ikus dezagun - que veamos)">
       <pattern>
 	<pattern-item n="inf"/>
 	<pattern-item n="aux_subjuntivo"/>
@@ -19133,7 +19134,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
 
 
 
- <rule comment="REGLA: INF (forma lexemática) + VERBO SINT subjuntivo (baledi - si fuera)">
+ <rule comment="REGLA: INF (forma lexemÃ¡tica) + VERBO SINT subjuntivo (baledi - si fuera)">
       <pattern>
 	<pattern-item n="inf"/>
 	<pattern-item n="ba"/>
@@ -19198,7 +19199,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule> 
 
 
-<rule comment="REGLA: INF (forma lexemática) + VERBO SINT imperativo (etor zaitezte - venid)">
+<rule comment="REGLA: INF (forma lexemÃ¡tica) + VERBO SINT imperativo (etor zaitezte - venid)">
       <pattern>
 	<pattern-item n="inf"/>
 	<pattern-item n="aux_imperativo"/>
@@ -19396,7 +19397,7 @@ Podría ampliarse a otros casos, para tratar las diferencias en la traducción de 
     </rule>
 
 
-    <rule comment="REGLA: SPOST (posposición separable, p. ex. 'arabera'">
+    <rule comment="REGLA: SPOST (posposiciÃ³n separable, p. ex. 'arabera'">
       <pattern>
 	<pattern-item n="spost"/>
       </pattern>
