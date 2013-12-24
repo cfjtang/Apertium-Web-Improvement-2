@@ -7,34 +7,30 @@
 import sys, urllib.request
 import xml.etree.ElementTree as xml
 
-def get_stems(uri):
-        dictX = ""
-        if "http" in uri:
-                try:
-                        dictX = str((urllib.request.urlopen(uri)).read(), 'utf-8')
-                except:
-                        return -1
-
-        else:
-                dictX = (open(uri, 'r')).read()
-
+def print_info(uri):
+    dictX = ""
+    if "http" in uri:
         try:
-                tree = xml.fromstring(dictX)
+            dictX = str((urllib.request.urlopen(uri)).read(), 'utf-8')
         except:
-                return -1
-        
-        bi = -1
-        if(len(tree.findall("pardefs")) > 0):
-                bi = False
-        else:
-                bi = True #bilingual dicts don't have pardefs section
-                
-        if(bi):
-            return(len(tree.findall("*[@id='main']/e//l")))
-        else:
-            return(len(tree.findall("*[@id='main']/*[@lm]")))
+            return print(-1)
 
+    else:
+        dictX = (open(uri, 'r')).read()
+    try:
+        tree = xml.fromstring(dictX)
+    except:
+        return print(-1)
+    
+    bi = len(tree.findall("pardefs")) == 0 #bilingual dicts don't have pardefs section -- not necessarily true? check /trunk/apertium-en-es/apertium-en-es.en-es.dix
+            
+    if(bi):
+        print('Stems: %s ' % len(tree.findall("*[@id='main']/e//l")))
+    else:
+        print('Stems: %s' % len(tree.findall("*[@id='main']/*[@lm]")))
+        if tree.find('pardefs'):
+            print('Paradigms: %s' % len(tree.find('pardefs').findall("pardef")))
 
 if __name__ == "__main__":
-        uri = sys.argv[1]
-        print(get_stems(uri))
+    uri = sys.argv[1]
+    print_info(uri)
