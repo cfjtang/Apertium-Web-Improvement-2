@@ -38,80 +38,65 @@ var abbreviations = {
 	'Kazakh':'kaz'
 }
 
+// something better needs to be developed
+// that actually works across browsers
+// preferably an external library
+var keyCodes = {
+	"space": 32,
+	".": 190,
+	"/": 191,
+	"1": 49,
+	"enter": 13,
+	";": 59, // applicable only to FF and Opera, IE, Safari and Chrome use 186.
+}
+
 $(document).ready(function(){
 	curr_pair.srcLang="";
 	curr_pair.dstLang="";
 	
 	$("#textAreaId").keyup(function(event) {
-		if(event.keyCode==32 || event.keyCode==190 || event.keyCode==191 || event.keyCode==49 || event.keyCode==59 || event.keyCode==13){
-			try{
-				if(curr_pair.srcLang.indexOf("Detect") !=-1){		
+		if (event.keyCode == keyCodes["space"] ||
+			event.keyCode == keyCodes["."] ||
+			event.keyCode == keyCodes["/"] ||
+			event.keyCode == keyCodes["1"] ||
+			event.keyCode == keycodes[";"] ||
+			event.keyCode == keyCodes["enter"] ) {
+			// automatically translate
+			// when one of these keys are pressed
+
+			try {
+				if (curr_pair.srcLang.indexOf("Detect") != -1) {		
 					isDetecting = true;
-			}
+				}
 			
-			if(isDetecting){
-				curr_pair.srcLang = detectLanguage($(this).val());
-				curr_pair.srcLang = abbreviations[curr_pair.srcLang];
-				$('#selectFrom em').html(curr_pair.srcLang);
-			}
-				
-			
-			}catch(e){
-				console.log(e.message);
-			}
-			
-			
-			translate(curr_pair,$('#textAreaId').val());
-			
-			//$(this).val($(this).val()+' ');
-			
-			//alert(detectLanguage($(this).val()));
-			
-			return false;
-		}
-		/*
-		if(event.keyCode==13){
-			
-			try{
-				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+				if (isDetecting) {
 					curr_pair.srcLang = detectLanguage($(this).val());
-					
-					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
-			
 					$('#selectFrom em').html(curr_pair.srcLang);
-					
-			}
-				
-			
-			}catch(e){
+				}
+			} catch(e) {
 				console.log(e.message);
 			}
-		
-			translate(curr_pair,$('#textAreaId').val());
-			//$(this).val($(this).val()+'\n'); ;
 			
+			translate(curr_pair,$('#textAreaId').val());
 			return false;
 		}
-		//alert(event.keyCode);
-		*/
 	});
 
 
 	jQuery("#inputBox").submit(function(){
-		try{
-			try{
-				if(curr_pair.srcLang.indexOf("Detect") !=-1){
+		try {
+			try {
+				if (curr_pair.srcLang.indexOf("Detect") != -1) {
 					curr_pair.srcLang = detectLanguage($(this).val());
-					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
 					$('#selectFrom em').html(curr_pair.srcLang);
 				}	
-			}catch(e){
+			} catch(e) {
 				console.log(e.message);
 			}
 		
-			translate(curr_pair,$('#textAreaId').val());
+			translate(curr_pair, $('#textAreaId').val());
 			return false;
-		}catch(e){
+		} catch(e) {
 			console.log(e.message);
 		}
 	});
@@ -136,53 +121,6 @@ $(document).ready(function(){
 		fromLangCode = langHolder;
 		
 	});
-/*
-	$('.itemSelect').toggle(function(){
-		if($(this).attr("id")=="selectFrom"){
-			FromOrTo="from";
-			$('#dropDownSub').hide();
-			$('#dropDownSub').css('margin-left',00);
-			
-		} else {
-			FromOrTo = "to";
-			$('#dropDownSub').hide();
-			$('#dropDownSub').css('margin-left',287);
-		}
-			$('#dropDownSub').show();
-		
-	}, function(){
-		$('#dropDownSub').hide()	
-	});
-*/	
-	/*
-	$('#dropDownSub a').click(function(){
-		
-		
-		$('#dropDownSub a').removeClass('language-selected');
-		$(this).addClass('language-selected');
-		
-		if(FromOrTo=="from"){	
-			$('#selectFrom em').html($(this).text());
-			curr_pair.srcLang = $(this).text();
-			
-		} else {
-			$('#selectTo em').html($(this).text());
-			curr_pair.dstLang = $(this).text();
-		}
-		matchFound= false
-			
-		for(var it in window.pairs){	
-			if(parsePair(curr_pair)==window.pairs[it])
-				matchFound=true;
-		}
-		if(matchFound)
-			jQuery('#translationTest').html("Translation will be displayed here!");
-		else jQuery('#translationTest').html("Translation not yet available!");
-		
-	
-	});
-	*/
-	
 	
 	jQuery('#selectTo').click(function(){
 		loler = curr_pair.srcLang + "|";
@@ -199,12 +137,7 @@ $(document).ready(function(){
 	});
 	
 	getPairs();
-
-	
 });
-
-
-
 
 $(document).click(function(){
 	$('#dropDownSub').hide();
@@ -249,8 +182,6 @@ function smth(dt){
 }
 
 function getPairs(){
-	
-	
 	jQuery.ajax({
 			url:'http://api.apertium.org/json/listPairs',
 			type:"GET",
@@ -258,9 +189,7 @@ function getPairs(){
 			dataType: 'jsonp',
 			failure : trad_ko
 		});
-        
 }
-
 
 function trad_ko() {
 	jQuery('#translationTest').html("Translation not yet available!");
@@ -298,31 +227,9 @@ function parsePair(pr){
 	parsedPair = null;	
 	pr.srcLang = jQuery.trim(pr.srcLang);
 	pr.dstLang = jQuery.trim(pr.dstLang);
-		
-		if(pr.srcLang=="English")
-			parsedPair = "en";
-		else if(pr.srcLang=="Spanish")
-			parsedPair = "es";
-		else if(pr.srcLang=="Portuguese")
-			parsedPair = "pt";
-		else if(pr.srcLang=="Catalan")
-			parsedPair = "ca";
-		else if(pr.srcLang=="French")
-			parsedPair = "fr";
-		
-		if(pr.dstLang=="Catalan")
-			parsedPair += "|ca";
-		else if(pr.dstLang=="English")
-			parsedPair += "|en";
-		else if(pr.dstLang=="Spanish")
-			parsedPair += "|es";
-		else if(pr.dstLang=="French")
-			parsedPair += "|fr";
-		else if(pr.dstLang=="Portuguese")
-			parsedPair += "|pt";
-		
+	
+	parsedPair = abbreviations[pr.srcLang] + "|" + abbreviations[pr.dstLang];
 	return parsedPair;
-		
 }
 
 function populateTranslationList(elementClass, langArr){
@@ -462,8 +369,6 @@ function populateTranslationList(elementClass, langArr){
 			try{
 				if(curr_pair.srcLang.indexOf("Detect") !=-1){
 					curr_pair.srcLang = detectLanguage($(this).val());
-					
-					curr_pair.srcLang = abbreviations[curr_pair.srcLang];
 			
 					$('#selectFrom em').html(curr_pair.srcLang);
 					
@@ -484,7 +389,7 @@ function populateTranslationList(elementClass, langArr){
 }
 
 function strcmp(a, b){   
-    return (a<b?-1:(a>b?1:0));  
+    return (a<b?-1:(a>b?1:0));
 }
 	
 
@@ -509,8 +414,18 @@ function find_smth(lol){
 			aaa++;
 		}	
 	}
-	
-	
 }
 
-	
+function detectLanguage(text) {
+	jQuery.get("//localhost:2737/identifyLang", {q: text}, function(data) {
+		topLang = "";
+		topProbability = -1.0;
+		for (var lang in data) {
+			if (data[lang] > topProbability) {
+				topLang = lang;
+				topProbability = data[lang];
+			}
+		}
+		return topLang;
+	}, "json");
+}
