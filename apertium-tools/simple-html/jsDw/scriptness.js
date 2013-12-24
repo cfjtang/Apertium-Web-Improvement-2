@@ -261,10 +261,6 @@ function populateTranslationList(elementClass, langArr){
 	
 		for(it in grayedOuts)
 			$("a:contains( " +grayedOuts[it]+" )").removeClass('language-selected');
-
-	
-	
-	
 	
 	$('.itemSelect').toggle(function(){
 		if( navigator.userAgent.match(/Android/i)
@@ -407,7 +403,6 @@ function parsePair_lol(pr){
 function find_smth(lol){
 	aaa=0;
 	loler = "|" + lol;
-	
 	
 	for(it in window.pairs){
 		if(window.pairs[it].indexOf(loler) != -1){
