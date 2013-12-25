@@ -160,7 +160,7 @@ function translate(langPair, text){
 	//alert(langpairer);
 
 	jQuery.ajax({
-		url:'http://api.apertium.org/json/translate',
+		url:'http://localhost:2737/translate',
 		type:"GET",
 		data:{
 			'langpair':langpairer,
@@ -183,7 +183,7 @@ function smth(dt){
 
 function getPairs(){
 	jQuery.ajax({
-			url:'http://api.apertium.org/json/listPairs',
+			url:'http://localhost:2737/listPairs',
 			type:"GET",
 			success : trad_ok,
 			dataType: 'jsonp',
@@ -412,7 +412,7 @@ function find_smth(lol){
 }
 
 function detectLanguage(text) {
-	jQuery.get("//localhost:2737/identifyLang", {q: text}, function(data) {
+	jQuery.get("http://localhost:2737/identifyLang", {q: text}, function(data) {
 		topLang = "";
 		topProbability = -1.0;
 		for (var lang in data) {
