@@ -57,18 +57,15 @@ $(document).ready(function(){
 	$("#textAreaId").keyup(function(event) {
 		if (event.keyCode == keyCodes["space"] ||
 			event.keyCode == keyCodes["."] ||
-			event.keyCode == keyCodes["/"] ||
-			event.keyCode == keyCodes["1"] ||
-			event.keyCode == keyCodes[";"] ||
-			event.keyCode == keyCodes["enter"] ) {
+			event.keyCode == keyCodes["/"] || // shift + / -> ?
+			event.keyCode == keyCodes["1"] || // shift + 1 -> !
+			event.keyCode == keyCodes[";"] || // shift + : -> :
+			event.keyCode == keyCodes["enter"]) {
 			// automatically translate
 			// when one of these keys are pressed
 
 			try {
-				if (curr_pair.srcLang.indexOf("Detect") != -1) {		
-					isDetecting = true;
-				}
-			
+				isDetecting = curr_pair.srcLang.indexOf("Detect") != -1
 				if (isDetecting) {
 					curr_pair.srcLang = detectLanguage($(this).val());
 					$('#selectFrom em').html(curr_pair.srcLang);
@@ -155,9 +152,7 @@ function getLangByCode(code) {
 }
 
 function translate(langPair, text){
-
 	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
-	//alert(langpairer);
 
 	jQuery.ajax({
 		url:'http://localhost:2737/translate',
@@ -174,7 +169,7 @@ function translate(langPair, text){
 }
 
 function smth(dt){
-	if(dt.responseStatus==200) {
+	if (dt.responseStatus == 200) {
 		jQuery('#translationTest').html(dt.responseData.translatedText);
 	} else {
 		trad_ko();
@@ -211,8 +206,6 @@ function trad_ok(dt) {
 				
 				dstLangs[i] = all[i].targetLanguage;
 				dstLangs = jQuery.unique(dstLangs);
-				
-			//jQuery('#translationTest').append(l+'\n');
 		}
 		
 		populateTranslationList("#column-group-", srcLangs);
@@ -423,4 +416,5 @@ function detectLanguage(text) {
 		}
 		return topLang;
 	}, "json");
+	return "Detect language"; // unable to obtain query from identifyLang
 }
