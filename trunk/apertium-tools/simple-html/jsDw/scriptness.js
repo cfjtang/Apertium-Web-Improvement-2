@@ -59,7 +59,7 @@ $(document).ready(function(){
 			event.keyCode == keyCodes["."] ||
 			event.keyCode == keyCodes["/"] ||
 			event.keyCode == keyCodes["1"] ||
-			event.keyCode == keycodes[";"] ||
+			event.keyCode == keyCodes[";"] ||
 			event.keyCode == keyCodes["enter"] ) {
 			// automatically translate
 			// when one of these keys are pressed
