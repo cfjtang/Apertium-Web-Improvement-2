@@ -649,6 +649,7 @@ function detect_lang_interface() {
 // test query:
 //{"en": 0.99843828, "ca": 0.234241, "fr": 0.323123, "zh": 0.0}
 function detectLanguage(text) {
+	console.log(text);
 	jQuery.ajax({
 		url: "http://localhost:2737/identifyLang",
 		type: "GET",
