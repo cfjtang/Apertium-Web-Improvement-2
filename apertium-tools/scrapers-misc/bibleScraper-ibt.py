@@ -32,10 +32,11 @@ parser.add_argument('-q', action = 'store_false', help = 'Suppress progress mess
 parser.add_argument('-u', action = 'store_true', help = 'Add to file, don\'t overwrite')
 args = parser.parse_args()
 urls = args.l
-toSkip = args.x if args.x else []
-OT = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zechariah', 'Zephaniah', 'Haggai', 'Malachi']
-if "OT" in args.x:
-    toSkip = OT
+if args.x:
+    toSkip = args.x
+    OT = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Songs', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zechariah', 'Zephaniah', 'Haggai', 'Malachi']
+    if "OT" in args.x:
+        toSkip = OT
 
 def firstPage(url):
     
