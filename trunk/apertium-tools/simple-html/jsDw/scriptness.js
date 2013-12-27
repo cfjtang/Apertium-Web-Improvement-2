@@ -91,7 +91,9 @@ $(document).ready(function(){
 				console.log(e.message);
 			}
 			
-			translate(curr_pair,$('#textAreaId').val());
+			if (curr_pair.srcLang.indexOf("Detect") == -1) {
+				translate(curr_pair,$('#textAreaId').val());
+			}
 			return false;
 		}
 	});
@@ -107,7 +109,9 @@ $(document).ready(function(){
 				console.log(e.message);
 			}
 		
-			translate(curr_pair, $('#textAreaId').val());
+			if (curr_pair.srcLang.indexOf("Detect") == -1) {
+				translate(curr_pair,$('#textAreaId').val());
+			}
 			return false;
 		} catch(e) {
 			console.log(e.message);
@@ -293,7 +297,9 @@ $(document).ready(function(){
 					console.log(e.message);
 				}
 				
-				translate(curr_pair,$('#textAreaId').val());
+				if (curr_pair.srcLang.indexOf("Detect") == -1) {
+					translate(curr_pair,$('#textAreaId').val());
+				}
 			}
 			else jQuery('#translationTest').html("Translation not yet available!");
 			
@@ -320,14 +326,14 @@ function getLangByCode(code) {
 }
 
 function translate(langPair, text){
-	langpairer = $.trim(langPair.srcLang) +"|" + $.trim(langPair.dstLang);
+	langpairer = $.trim(langPair.srcLang) + "|" + $.trim(langPair.dstLang);
 
 	jQuery.ajax({
 		url:'http://localhost:2737/translate',
 		type:"GET",
 		data:{
-			'langpair':langpairer,
-			'q':text,
+			'langpair': langpairer,
+			'q': text,
 		},
 		success : smth,
 		dataType: 'jsonp',
@@ -544,7 +550,9 @@ function populateTranslationList(elementClass, langArr){
 				console.log(e.message);
 			}
 			
-			translate(curr_pair,$('#textAreaId').val());
+			if (curr_pair.srcLang.indexOf("Detect") == -1) {
+				translate(curr_pair,$('#textAreaId').val());
+			}
 		}
 		else jQuery('#translationTest').html("Translation not yet available!");
 		
@@ -642,16 +650,17 @@ function detect_lang_interface() {
 //{"en": 0.99843828, "ca": 0.234241, "fr": 0.323123, "zh": 0.0}
 function detectLanguage(text) {
 	jQuery.ajax({
-		url:'http://localhost:2737/identifyLang',
-		type:"GET",
-		data:{
+		url: "http://localhost:2737/identifyLang",
+		type: "GET",
+		data: {
 			'q': text,
 		},
 		success : function(data) {
 			return data;
 		},
-		dataType: 'jsonp'
+		dataType: "jsonp"
 	});
+	return undefined;
 }
 
 function findHighest(probabilities) {
