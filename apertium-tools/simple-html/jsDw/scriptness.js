@@ -590,7 +590,7 @@ function find_smth(lol){
 
 function detect_lang_interface() {
 	isDetecting = true;
-	probabilities = detectLanguage($('#textAreaId').val()));
+	probabilities = detectLanguage($('#textAreaId').val());
 	if (!probabilities) {
 		return;
 	}
