@@ -652,7 +652,6 @@ function detectLanguage(text) {
 		},
 		dataType: 'jsonp'
 	});
-	return {"en": 0.99843828, "ca": 0.234241, "fr": 0.323123, "zh": 0.0};
 }
 
 function findHighest(probabilities) {
