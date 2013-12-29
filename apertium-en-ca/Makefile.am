@@ -282,38 +282,31 @@ apertium_en_ca_DATA=$(PREFIX1).automorf.bin $(PREFIX2).automorf.bin \
 		    modes.xml
 
 apertium_en_cadir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
-apertium_en_modesdir=$(prefix)/share/apertium/modes/
+apertium_modesdir=$(prefix)/share/apertium/modes/
 
 modes/$(PREFIX1).mode: modes.xml
 	apertium-validate-modes modes.xml
 	apertium-gen-modes modes.xml
 	cp *.mode modes/
 
-modes/$(PREFIX2).mode: modes/$(PREFIX1).mode
-modes/$(PREFVAR2)$(PREFIX1).mode: modes/$(PREFIX1).mode
-modes/$(PREFIX2b).mode: modes/$(PREFIX1).mode
-modes/$(PREFIX1)-multi.mode: modes/$(PREFIX1).mode
-modes/$(PREFIX2)-multi.mode: modes/$(PREFIX1).mode
-
-noinst_DATA=modes/$(PREFIX1).mode modes/$(PREFIX2).mode modes/$(PREFVAR2)$(PREFIX1).mode modes/$(PREFIX2b).mode modes/$(PREFIX1)-multi.mode modes/$(PREFIX2)-multi.mode
+# All modes are created by the same goal, listing several will just give problems with make -j2
+noinst_DATA=modes/$(PREFIX1).mode
 
 install-data-local:
 	mv modes modes.bak
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
 	rm -rf modes
 	mv modes.bak modes
-	test -d $(DESTDIR)$(apertium_en_modesdir) || mkdir $(DESTDIR)$(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFIX2).mode $(DESTDIR)$(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFIX2b).mode $(DESTDIR)$(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFVAR2)$(PREFIX1).mode $(DESTDIR)$(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFIX1)-multi.mode $(DESTDIR)$(apertium_en_modesdir)
-	$(INSTALL_DATA) $(PREFIX2)-multi.mode $(DESTDIR)$(apertium_en_modesdir)
+	test -d $(DESTDIR)$(apertium_modesdir) || mkdir $(DESTDIR)$(apertium_modesdir)
+	modes=`xmllint --xpath '//mode[@install="yes"]/@name' modes.xml | sed 's/ *name="\([^"]*\)"/\1.mode /g'`; \
+		$(INSTALL_DATA) $$modes $(DESTDIR)$(apertium_modesdir); \
+		rm $$modes
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).genitive.t1x $(DESTDIR)$(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(BASENAME).$(PREFIX2).t1x $(DESTDIR)$(apertium_en_cadir)
 	$(INSTALL_DATA) $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x $(DESTDIR)$(apertium_en_cadir)
 
 
-CLEANFILES = -rf $(TARGETS) modes .deps
-
+CLEANFILES = $(TARGETS)
+clean-local: 
+	-rm -rf .deps modes
