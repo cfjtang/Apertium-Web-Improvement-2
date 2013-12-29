@@ -56,44 +56,28 @@ var abbreviations = {
 	'Kazakh':'kaz'
 }
 
-// something better needs to be developed
-// that actually works across browsers
-// preferably an external library
-var keyCodes = {
-	"space": 32,
-	".": 190,
-	"/": 191,
-	"1": 49,
-	"enter": 13,
-	";": 59, // applicable only to FF and Opera, IE, Safari and Chrome use 186.
-}
-
+var prevmsg = "", msg = "";
 $(document).ready(function(){
 	curr_pair.srcLang="";
 	curr_pair.dstLang="";
 	
 	$("#textAreaId").keyup(function(event) {
-		if (event.keyCode == keyCodes["space"] ||
-			event.keyCode == keyCodes["."] ||
-			event.keyCode == keyCodes["/"] || // shift + / -> ?
-			event.keyCode == keyCodes["1"] || // shift + 1 -> !
-			event.keyCode == keyCodes[";"] || // shift + : -> :
-			event.keyCode == keyCodes["enter"]) {
-			// automatically translate
-			// when one of these keys are pressed
+		msg = $.trim($(this).val());
+		if (msg != prevmsg) {
+			prevmsg = msg;
 
 			try {
 				if (curr_pair.srcLang.indexOf("Detect") != -1) {
-					curr_pair.srcLang = findHighest(detectLanguage($(this).val()));
+					curr_pair.srcLang = findHighest(detectLanguage(msg));
 					$('#selectFrom em').html(curr_pair.srcLang);
 
-					detect_lang_interface($(this).val());
+					detect_lang_interface(msg);
 				}
 			} catch(e) {
 				console.log(e.message);
 			}
 			
-			if (curr_pair.srcLang.indexOf("Detect") == -1) {
+			if (curr_pair.srcLang && curr_pair.dstLang && curr_pair.srcLang.indexOf("Detect") == -1) {
 				translate(curr_pair,$('#textAreaId').val());
 			}
 			return false;
@@ -113,7 +97,7 @@ $(document).ready(function(){
 				console.log(e.message);
 			}
 		
-			if (curr_pair.srcLang.indexOf("Detect") == -1) {
+			if (curr_pair.srcLang && curr_pair.dstLang && curr_pair.srcLang.indexOf("Detect") == -1) {
 				translate(curr_pair,$('#textAreaId').val());
 			}
 			return false;
@@ -649,7 +633,6 @@ function detect_lang_interface(text) {
 // test query:
 //{"en": 0.99843828, "ca": 0.234241, "fr": 0.323123, "zh": 0.0}
 function detectLanguage(text) {
-	console.log(text);
 	jQuery.ajax({
 		url: "http://localhost:2737/identifyLang",
 		type: "GET",
