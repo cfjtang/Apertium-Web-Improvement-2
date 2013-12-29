@@ -27,8 +27,8 @@ def print_info(uri):
     if(bi):
         print('Stems: %s ' % len(tree.findall("*[@id='main']/e//l")))
     else:
-        print('Stems: %s' % len(tree.findall("*[@id='main']/*[@lm]")))
-        if tree.find('pardefs'):
+        print('Stems: %s' % len(tree.findall("section/*[@lm]")))  # there can be sections other than id="main"
+        if tree.find('pardefs') is not None:
             print('Paradigms: %s' % len(tree.find('pardefs').findall("pardef")))
 
 if __name__ == "__main__":
