@@ -116,10 +116,10 @@ $(document).ready(function(){
 
 		try {
 			if (curr_pair.srcLang.indexOf("Detect") != -1) {
-				curr_pair.srcLang = findHighest(detectLanguage(msg));
+				data = detectLanguage(msg);
+				curr_pair.srcLang = findHighest(data);
 				$('#selectFrom em').html(curr_pair.srcLang);
-
-				detect_lang_interface(msg);
+				detect_lang_interface(msg, data);
 			}
 		} catch(e) {
 			console.log(e.message);
@@ -134,10 +134,10 @@ $(document).ready(function(){
 	jQuery("#inputBox").submit(function(){
 		try {
 			if (curr_pair.srcLang.indexOf("Detect") != -1) {
-				curr_pair.srcLang = findHighest(detectLanguage($(this).val()));
+				data = detectLanguage(msg);
+				curr_pair.srcLang = findHighest(data);
 				$('#selectFrom em').html(curr_pair.srcLang);
-
-				detect_lang_interface($(this).val());
+				detect_lang_interface(msg, data);
 			}	
 		} catch(e) {
 			console.log(e.message);
@@ -614,13 +614,7 @@ function find_smth(lol){
 	}
 }
 
-function detect_lang_interface(text) {
-	isDetecting = true;
-	probabilities = detectLanguage(text);
-	if (!probabilities) {
-		return;
-	}
-
+function detect_lang_interface(probabilities) {
 	highest = 0;
 	scd_highest = 0;
 	thr_highest = 0;
