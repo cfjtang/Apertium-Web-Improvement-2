@@ -62,48 +62,91 @@ $(document).ready(function(){
 	curr_pair.dstLang="";
 	
 	$("#textAreaId").keyup(function(event) {
-		msg = $.trim($(this).val());
-		if (msg != prevmsg) {
-			prevmsg = msg;
-
-			try {
-				if (curr_pair.srcLang.indexOf("Detect") != -1) {
-					curr_pair.srcLang = findHighest(detectLanguage(msg));
-					$('#selectFrom em').html(curr_pair.srcLang);
-
-					detect_lang_interface(msg);
-				}
-			} catch(e) {
-				console.log(e.message);
-			}
-			
-			if (curr_pair.srcLang && curr_pair.dstLang && curr_pair.srcLang.indexOf("Detect") == -1) {
-				translate(curr_pair,$('#textAreaId').val());
-			}
-			return false;
+		msg = $(this).val();
+		if (msg == prevmsg) {
+			return;
 		}
+
+		// finds the position of the last equal character
+		length = (prevmsg.length < msg.length) ? prevmsg.length : msg.length;
+		last_equal = -1;
+		for (var i = 0; i <= length; i++) {
+			if (i == length) {
+				last_equal = i-1;
+				break;
+			}
+			if (msg[i] != prevmsg[i]) {
+				last_equal = i-1;
+				break;
+			}
+		}
+
+		if (last_equal != -1) {
+			var found = false;
+			var autoCharRegex = XRegExp("[\\p{P}\\s]");
+			if (prevmsg.length < msg.length) {
+				// char added
+				for (var i = last_equal+1; i < msg.length; i++) {
+					if (autoCharRegex.test(msg[i])) {
+						found = true;
+						break;
+					}
+				}
+			}
+			else {
+				// char deleted
+				for (var i = last_equal+1; i < prevmsg.length; i++) {
+					if (autoCharRegex.test(prevmsg[i])) {
+						found = true;
+						break;
+					}
+				}
+			}
+
+			if (!found) {
+				return;
+			}
+		}
+
+		console.log(msg);
+		console.log(prevmsg);
+		prevmsg = msg;
+
+		msg = $.trim(msg);
+
+		try {
+			if (curr_pair.srcLang.indexOf("Detect") != -1) {
+				curr_pair.srcLang = findHighest(detectLanguage(msg));
+				$('#selectFrom em').html(curr_pair.srcLang);
+
+				detect_lang_interface(msg);
+			}
+		} catch(e) {
+			console.log(e.message);
+		}
+		
+		if (curr_pair.srcLang && curr_pair.dstLang && curr_pair.srcLang.indexOf("Detect") == -1) {
+			translate(curr_pair, msg);
+		}
+		return false;
 	});
 
 	jQuery("#inputBox").submit(function(){
 		try {
-			try {
-				if (curr_pair.srcLang.indexOf("Detect") != -1) {
-					curr_pair.srcLang = findHighest(detectLanguage($(this).val()));
-					$('#selectFrom em').html(curr_pair.srcLang);
+			if (curr_pair.srcLang.indexOf("Detect") != -1) {
+				curr_pair.srcLang = findHighest(detectLanguage($(this).val()));
+				$('#selectFrom em').html(curr_pair.srcLang);
 
-					detect_lang_interface($(this).val());
-				}	
-			} catch(e) {
-				console.log(e.message);
-			}
-		
-			if (curr_pair.srcLang && curr_pair.dstLang && curr_pair.srcLang.indexOf("Detect") == -1) {
-				translate(curr_pair,$('#textAreaId').val());
-			}
-			return false;
+				detect_lang_interface($(this).val());
+			}	
 		} catch(e) {
 			console.log(e.message);
 		}
+	
+		if (curr_pair.srcLang && curr_pair.dstLang && curr_pair.srcLang.indexOf("Detect") == -1) {
+			translate(curr_pair,$('#textAreaId').val());
+		}
+		return false;
 	});
 
 	$('#dropDownSub').hide();
@@ -323,7 +366,6 @@ function translate(langPair, text){
 		dataType: 'jsonp',
 		failure : trad_ko
 	});
-        
 }
 
 function smth(dt){
