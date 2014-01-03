@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, urllib.request, lxml, random, os
+import argparse, urllib.request, lxml, random, os, sys
 from lxml import etree
 from datetime import datetime
 
@@ -104,3 +104,4 @@ if __name__ == '__main__':
 
     with open(args.file, 'wb') as f:
         f.write(etree.tostring(tmx, pretty_print=True, xml_declaration=True, encoding='UTF-8'))
+        print('Output saved to %s' % args.file)
