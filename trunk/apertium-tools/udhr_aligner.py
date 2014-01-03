@@ -43,28 +43,37 @@ if __name__ == '__main__':
     body = etree.SubElement(tmx, 'body')
 
     preambleParaXPATH = 'descendant-or-self::preamble/descendant::para'
-    tu = etree.SubElement(body, 'tu')
-    tu.set('tuid', 'preamble')
-    prop = etree.SubElement(tu, 'prop')
-    prop.set('type', 'section')
-    prop.set('{%s}lang' % XMLNameSpace, 'eng')
-    prop.text = 'preamble'
 
     if len(sourceTree.xpath(preambleParaXPATH)) == len(targetTree.xpath(preambleParaXPATH)):
-        for sourcePara, targetPara in zip(sourceTree.xpath(preambleParaXPATH), targetTree.xpath(preambleParaXPATH)):
+        for paraNum, (sourcePara, targetPara) in enumerate(zip(sourceTree.xpath(preambleParaXPATH), targetTree.xpath(preambleParaXPATH))):
+            tu = etree.SubElement(body, 'tu')
+            tu.set('tuid', 'preamble%s' % (paraNum + 1))
             tu.set('segtype', 'paragraph')
+            sectionProp = etree.SubElement(tu, 'prop')
+            sectionProp.set('type', 'section')
+            sectionProp.set('{%s}lang' % XMLNameSpace, 'eng')
+            sectionProp.text = 'preamble'
+            numProp = etree.SubElement(tu, 'prop')
+            numProp.set('type', 'preambleParaNum')
+            numProp.text = str(paraNum + 1)
 
             sourceTuv = etree.SubElement(tu, 'tuv')
+            sourceTuv.set('{%s}lang' % XMLNameSpace, args.sourceLang)
             sourceSeg = etree.SubElement(sourceTuv, 'seg')
-            sourceSeg.set('{%s}lang' % XMLNameSpace, args.sourceLang)
             sourceSeg.text = sourcePara.text
 
             targetTuv = etree.SubElement(tu, 'tuv')
+            targetTuv.set('{%s}lang' % XMLNameSpace, args.targetLang)
             targetSeg = etree.SubElement(targetTuv, 'seg')
-            targetSeg.set('{%s}lang' % XMLNameSpace, args.targetLang)
             targetSeg.text = targetPara.text
     else:
+        tu = etree.SubElement(body, 'tu')
+        tu.set('tuid', 'preamble')
         tu.set('segtype', 'block')
+        prop = etree.SubElement(tu, 'prop')
+        prop.set('type', 'section')
+        prop.set('{%s}lang' % XMLNameSpace, 'eng')
+        prop.text = 'preamble'
 
         sourceTuv = etree.SubElement(tu, 'tuv')
         sourceTuv.set('{%s}lang' % XMLNameSpace, args.sourceLang)
@@ -81,13 +90,14 @@ if __name__ == '__main__':
         paraXPATH = 'descendant-or-self::para'
         for sourcePara, targetPara in zip(sourceArticle.xpath(paraXPATH), targetArticle.xpath(paraXPATH)):
             tu = etree.SubElement(body, 'tu')
+            tu.set('tuid', 'article%s' % (articleNum + 1))
             sectionProp = etree.SubElement(tu, 'prop')
             sectionProp.set('type', 'section')
             sectionProp.set('{%s}lang' % XMLNameSpace, 'eng')
             sectionProp.text = 'article'
             numProp = etree.SubElement(tu, 'prop')
             numProp.set('type', 'articleNum')
-            numProp.text = str(articleNum + 11)
+            numProp.text = str(articleNum + 1)
 
             sourceTuv = etree.SubElement(tu, 'tuv')
             sourceTuv.set('{%s}lang' % XMLNameSpace, args.sourceLang)
