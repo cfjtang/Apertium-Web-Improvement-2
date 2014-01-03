@@ -109,9 +109,9 @@ if __name__ == '__main__':
             targetSeg = etree.SubElement(targetTuv, 'seg')
             targetSeg.text = targetPara.text
 
-    if args.file is None:
-        args.file = 'UDHRAligned.%s-%s.tmx' % (args.sourceLang, args.targetLang)
+    if args.outFile is None:
+        args.outFile = 'UDHRAligned.%s-%s.tmx' % (args.sourceLang, args.targetLang)
 
-    with open(args.file, 'wb') as f:
+    with open(args.outFile, 'wb') as f:
         f.write(etree.tostring(tmx, pretty_print=True, xml_declaration=True, encoding='UTF-8'))
-        print('Output saved to %s' % args.file)
+        print('Output saved to %s' % args.outFile)
