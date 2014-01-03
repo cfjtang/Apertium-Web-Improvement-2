@@ -22,7 +22,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="UDHR Sentence Aligner (outputs TMX files)")
     parser.add_argument('sourceLang', help='source language')
     parser.add_argument('targetLang', help='target language')
-    parser.add_argument('-f','--file', help='path to save output TMX file (default = e.g. UDHRAligned.eng-spa.tmx)', default=None)
+    parser.add_argument('-o','--outFile', help='file path to save output TMX file (default = e.g. UDHRAligned.eng-spa.tmx)', default=None)
     args = parser.parse_args()
 
     XMLNameSpace = 'http://www.w3.org/XML/1998/namespace'
