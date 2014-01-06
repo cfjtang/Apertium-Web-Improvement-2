@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse, re, sys, urllib.request, logging
 
 def countStems(dictionary):
@@ -49,9 +51,13 @@ def countStems(dictionary):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Count stems in a HFST morphological dictionary (lexc)")
     parser.add_argument('uri', help="uri to lexc file")
+    parser.add_argument('-v', '--verbose', help="show progress through dictionary (verbose)", action='store_true', default=False)
     args = parser.parse_args()
     
-    logging.basicConfig(level=logging.INFO)
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.WARNING)
     
     if 'http' in args.uri:
         try:
