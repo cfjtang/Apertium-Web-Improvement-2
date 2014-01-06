@@ -17,7 +17,7 @@ def countStems(dictionary):
         if line.startswith('LEXICON'):
             logger.info('Switching lexicon from %s (%s unique entries, %s pointers) to %s' % (currentLexicon, len(lexicons[currentLexicon][1]), len(lexicons[currentLexicon][0]), line.split()[1]))
             currentLexicon = line.split()[1]
-        elif not line.startswith('!') and line:
+        elif not line.startswith('!') and line and currentLexicon:
             try:
                 if len(re.findall(r'\s+', line)) >= 2:
                     if ':' in line:
@@ -27,23 +27,24 @@ def countStems(dictionary):
                             lemma = split[0].strip()
                             continuationLexicon = split[1].strip().split()[-1].split('-')
                             lexicons[currentLexicon][1].add((lemma, frozenset(continuationLexicon)))
-                            #logger.info('Parsed L%s (%s) as lemma: %s and tags: %s' % (lineNo + 1, line, lemma, tags))
-                    elif '-' in line:
+                            logger.debug('Parsed L%s (%s) as lemma: %s and continuations: %s' % (lineNo + 1, line, lemma, continuationLexicon))
+                    else:
                         split = line.split(';')[0].strip().split()
                         lemma = split[0]
                         continuationLexicon = split[1].strip().split('-')
                         lexicons[currentLexicon][1].add((lemma, frozenset(continuationLexicon)))
-                        #logger.info('Parsed L%s (%s) as lemma: %s and tags: %s' % (lineNo + 1, line, lemma, tags))
+                        logger.debug('Parsed L%s (%s) as lemma: %s and continuations: %s' % (lineNo + 1, line, lemma, continuationLexicon))
                 elif len(re.findall(r'\s+', line)) == 1:
                     lexiconPointer = line.split(';')[0].strip()
                     if ' ' in lexiconPointer:
                         logger.warning('Failed to parse L%s: %s' % (lineNo + 1, line))
                     else:
                         lexicons[currentLexicon][0].append(lexiconPointer)
-                elif currentLexicon:
+                else:
                     logger.warning('Failed to parse L%s: %s' % (lineNo + 1, line))
             except Exception as e:
                 logger.warning('Failed to parse L%s: %s' % (lineNo + 1, line))
+    logger.info('Switching lexicon from %s (%s unique entries, %s pointers) to %s' % (currentLexicon, len(lexicons[currentLexicon][1]), len(lexicons[currentLexicon][0]), 'END'))
 
     if 'Root' in lexicons:
         addedLexicons = lexicons['Root'][0]
@@ -66,9 +67,12 @@ if __name__ == '__main__':
     parser.add_argument('uri', help="uri to lexc file")
     parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
     parser.add_argument('-vv', '--doubleVerbose', help="show progress through dictionary (verbose×2)", action='store_true', default=False)
+    parser.add_argument('-vvv', '--tripleVerbose', help="show detailed progress through dictionary (verbose×3)", action='store_true', default=False)
     args = parser.parse_args()
     
-    if args.doubleVerbose:
+    if args.tripleVerbose:
+        logging.basicConfig(level=logging.DEBUG)
+    elif args.doubleVerbose:
         logging.basicConfig(level=logging.INFO)
     elif args.verbose:
         logging.basicConfig(level=logging.WARNING)
