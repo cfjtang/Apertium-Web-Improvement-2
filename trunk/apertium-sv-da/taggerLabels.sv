@@ -61,8 +61,9 @@ VBMODIMP Modal verb: Imperfekt NEW
 
 VBAUXPRS *** not applicable ***
 VBAUXDA *** not applicable ***
-VBAUXINF *** not applicable ***
 VBAUXPRET *** not applicable ***
+VBAUXINF *** not applicable *** see VAUXINF etc!
+
 VBSPRS *** not applicable ***
 VBSDA *** not applicable ***
 VBSPRET *** not applicable ***
@@ -82,6 +83,29 @@ VBSERSUPN vbser (to be): Supine
 VBSERPPRES vbser (to be): Present participle
 VBSERPPRESS *** not applicable ***
 VBSERIMP vbser (to be): imperfect NEW
+
+VBHAVERPRES vbhaver (to have): present
+VBHAVERPAST vbhaver (to have): past
+VBHAVERPPRES vbhaver (to have): Present participle
+VBHAVERINF vbhaver (to have): Infinitive
+VBHAVERSUPN vbhaver (to have): Supine
+VBHAVERPP vbhaver (to have): Past participl
+
+VAUXINF auxilary verb: Infinitive
+VAUXPRES auxilary verb: Present
+VAUXPAST auxilary verb: Past
+VAUXPASTS auxilary verb: *** Not used ***
+VAUXSUPN auxilary verb: Supine
+VAUXSUPNS auxilary verb: *** Not used ***
+
+ADVHÄR lemma 'här':  *** Not used ***
+
+VBCLOSED all other vbser and vbhaver
+
+VB all other lexical verbs (open)
+
+-->
+
 
 
 
