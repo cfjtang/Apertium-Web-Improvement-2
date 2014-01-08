@@ -17,6 +17,7 @@ ONLYPRN *** not applicable ***
 
 CNJCOO Co-ordinating conjunction
 CNJSUB Sub-ordinating conjunction
+CNJADV Adverbial conjunction
 
 *** label for <sdef n="cnjadv" 	c="Adverbial conjunction"/> is missing ***
 
@@ -28,7 +29,7 @@ DETPOS *** not in use: PRONPOS instead ***
 
 DETORD Ordinal determiner (ordinal number)
 DETQNT Quantifier
-INTERJECCIONS Interjections
+IJ Interjections
 
 REL *** not applicable ***
 
@@ -38,6 +39,7 @@ NOMSPROPIS Proper noun
 NOMSNEUTREUTRE Common gender or neuter *** not applicable ***
 NOMSNEUTRE Noun, Neuter
 NOMSUTRE Noun, Common gender (Utrum)
+
 ADV Adverb
 
 PREADV *** not applicable ***
@@ -80,6 +82,8 @@ VBLEXPPRES Lexical (normal) verb: Present participle
 VBLEXINF Lexical (normal) verb: Infinitive
 VBLEXSUPN Lexical (normal) verb: Supine (Supinum)
 VBLEXSUPNS Lexical (normal) verb: Supine + eg. active voice
+VBLEXPRET *** not defined ***
+
 VBSERINF vbser (to be): infinitive
 VBSERPAST vbser (to be): past
 VBSERPRES vbser (to be): present
@@ -107,6 +111,8 @@ ADVHÄR lemma 'här':  *** Not used ***
 VBCLOSED all other vbser and vbhaver
 
 VB all other lexical verbs (open)
+
+PT: Klart tom rad 1028.
 
 -->
 

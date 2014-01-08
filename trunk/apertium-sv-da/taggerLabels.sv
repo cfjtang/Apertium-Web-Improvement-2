@@ -108,14 +108,15 @@ VBCLOSED all other vbser and vbhaver
 
 VB all other lexical verbs (open)
 
--->
-
-
-
-
-
-
-
-
+PT: Klart tom rad 1028.
 
 -->
+
+
+
+
+
+
+
+
+
