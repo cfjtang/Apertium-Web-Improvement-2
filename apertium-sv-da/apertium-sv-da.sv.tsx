@@ -705,7 +705,7 @@ VB all other lexical verbs (open)
       <label-item label="DETDEM"/>
     </label-sequence>
 	
-!-- PT: NEW -->
+<!-- PT: NEW -->
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="DETDEM"/>
@@ -715,59 +715,158 @@ VB all other lexical verbs (open)
       <label-item label="ADJ"/>
       <label-item label="DETIND"/>
     </label-sequence>
+
+<!-- PT: NEW -->	
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="DETIND"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="DETDEF"/>
     </label-sequence>
+
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="DETDEF"/>
+    </label-sequence>	
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <!-- <label-item label="DETPOS"/> -->
 	  <label-item label="PRONPOS"/>
     </label-sequence>
+
+<!-- PT: NEW -->	
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <!-- <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="REL"/>
     </label-sequence>
+
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="REL"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBLEXPRS"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBLEXPRS"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBLEXDA"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBLEXDA"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBLEXPRET"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBLEXPRET"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBMODPRS"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBMODPRS"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBMODDA"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBMODDA"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBMODPRET"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBMODPRET"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBAUXPRS"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBAUXPRS"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBAUXDA"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBAUXDA"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBAUXPRET"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBAUXPRET"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBERPRS"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="VBERPRS"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBERDA"/>
@@ -801,6 +900,8 @@ VB all other lexical verbs (open)
       <label-item label="VBSPRET"/>
     </label-sequence>
     <label-sequence>
+	
+	
       <label-item label="ADV"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
