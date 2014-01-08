@@ -503,48 +503,125 @@ VB all other lexical verbs (open)
       <label-item label="DETIND"/>
       <label-item label="PRNSUBJ"/>
     </label-sequence>
+
+
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
+      <label-item label="NOMNEUTRE"/>	  
+    <label-sequence>
+	
+<!-- PT: NEW -->		
+      <label-item label="NOMNEUTRE"/>
+      <label-item label="NOMSSING"/>
+    </label-sequence>
+	
+<!-- PT: NEW -->		
+      <label-item label="NOMSSING"/>
       <label-item label="NOMNEUTRE"/>
     </label-sequence>
+	
+<!-- PT: NEW -->		
+      <label-item label="NOMSSING"/>
+      <label-item label="NOMSSING"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="NOMUTRE"/>
     </label-sequence>
+	
+<!-- PT: NEW -->	
+    <label-sequence>
+      <label-item label="NOMSSING"/>
+      <label-item label="NOMUTRE"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="NOMUTRE"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="NOMNEUTRE"/>
     </label-sequence>
+
+<!-- PT: NEW -->	
+    <label-sequence>
+      <label-item label="NOMUTRE"/>
+      <label-item label="NOMSSING"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
+	
+<!-- PT: NEW -->	
+    <label-sequence>
+      <label-item label="NOMSSING"/>
+      <label-item label="PRNOBJ"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <!-- PT <label-item label="DETPOS"/> -->
 	  <label-item label="PRONPOS"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="NOMSSING"/>
+      <!-- PT <label-item label="DETPOS"/> -->
+	  <label-item label="PRONPOS"/>
+    </label-sequence>	
+	
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <!-- PT <label-item label="DETPOS"/> -->
 	  <label-item label="PRONPOS"/>
     </label-sequence>
+		
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="ADJ"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="NOMSSING"/>
+      <label-item label="ADJ"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="ADJ"/>
     </label-sequence>
+	
+<!-- PT: NEW begin -->
+
+    <label-sequence>
+      <label-item label="NOMUTRE"/>
+      <label-item label="ADJPLUR"/>
+    </label-sequence>
+	
+    <label-sequence>
+      <label-item label="NOMSSING"/>
+      <label-item label="ADJPLUR"/>
+    </label-sequence>
+	
+    <label-sequence>
+      <label-item label="NOMNEUTRE"/>
+      <label-item label="ADJPLUR"/>
+    </label-sequence>
+
+<!-- PT: NEW end -->
+
     <label-sequence>
       <label-item label="PRNTONIC"/>
       <label-item label="NOMNEUTRE"/>
