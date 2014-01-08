@@ -1308,10 +1308,12 @@ VB all other lexical verbs (open)
       <label-item label="IMP"/>
     </label-sequence>
 
+	<!--
     <label-sequence>
   <label-item label="PRNSUBJ"/>
   <label-item label="ADVHÄR"/>
     </label-sequence>
+	-->
 
     </forbid>
 
