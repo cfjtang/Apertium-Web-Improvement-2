@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, re, urllib.request
+import argparse, re, urllib.request, sys
 from lxml import etree, html
 from collections import defaultdict
 

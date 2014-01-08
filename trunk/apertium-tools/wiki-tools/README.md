@@ -13,7 +13,7 @@ The scripts in this folder are designed to perform menial tasks for the [Apertiu
       ==Samples==
       Article 1 of the Universal Declaration of Human Rights:
 
-    ''All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.''
+      ''All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.''
 
 - `langTable.py` creates language vulnerability tables by taking the input language codes (ISO639-2/3, **not** macrolanguage) and looking up the languages in a [UNESCO language vulnerability database](http://unesco.org/culture/languages-atlas/index.php) (Download datasets on the left navigation bar → Download limited dataset) and [Ethnologue](http://www.ethnologue.com/). The output includes a table of the form located [here](http://wiki.apertium.org/wiki/Turkic_languages#Vulnerability). Conventionally, the following text accompanies each table:
 
