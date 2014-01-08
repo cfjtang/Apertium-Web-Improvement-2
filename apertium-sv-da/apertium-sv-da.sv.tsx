@@ -622,6 +622,7 @@ VB all other lexical verbs (open)
 
 <!-- PT: NEW end -->
 
+<!-- PT: Not applicable
     <label-sequence>
       <label-item label="PRNTONIC"/>
       <label-item label="NOMNEUTRE"/>
@@ -675,18 +676,41 @@ VB all other lexical verbs (open)
       <label-item label="PRNTONIC"/>
       <label-item label="ADJ"/>
     </label-sequence>
+-->	
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
+	
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="PRNOBJ"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="CNJSUB"/>
     </label-sequence>
+
+<!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="CNJSUB"/>
+    </label-sequence>	
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="DETDEM"/>
     </label-sequence>
+	
+!-- PT: NEW -->
+    <label-sequence>
+      <label-item label="ADJPLUR"/>
+      <label-item label="DETDEM"/>
+    </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="DETIND"/>
