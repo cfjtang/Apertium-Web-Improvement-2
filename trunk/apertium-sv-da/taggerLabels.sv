@@ -76,6 +76,8 @@ VBLEXPPRES Lexical (normal) verb: Present participle
 VBLEXINF Lexical (normal) verb: Infinitive
 VBLEXSUPN Lexical (normal) verb: Supine (Supinum)
 VBLEXSUPNS Lexical (normal) verb: Supine + eg. active voice
+VBLEXPRET *** not defined ***
+
 VBSERINF vbser (to be): infinitive
 VBSERPAST vbser (to be): past
 VBSERPRES vbser (to be): present

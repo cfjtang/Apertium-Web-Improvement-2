@@ -778,17 +778,13 @@ VB all other lexical verbs (open)
       <label-item label="ADJPLUR"/>
       <label-item label="VBLEXDA"/>
     </label-sequence>
-	
+
+<!-- PT: not defined	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBLEXPRET"/>
     </label-sequence>
-	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
-      <label-item label="VBLEXPRET"/>
-    </label-sequence>
+-->	
 	
     <label-sequence>
       <label-item label="ADJ"/>
@@ -800,15 +796,10 @@ VB all other lexical verbs (open)
       <label-item label="ADJPLUR"/>
       <label-item label="VBMODPRS"/>
     </label-sequence>
-	
+
+<!-- PT: *** not applicable ***	
     <label-sequence>
       <label-item label="ADJ"/>
-      <label-item label="VBMODDA"/>
-    </label-sequence>
-	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
       <label-item label="VBMODDA"/>
     </label-sequence>
 	
@@ -817,20 +808,8 @@ VB all other lexical verbs (open)
       <label-item label="VBMODPRET"/>
     </label-sequence>
 	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
-      <label-item label="VBMODPRET"/>
-    </label-sequence>
-	
     <label-sequence>
       <label-item label="ADJ"/>
-      <label-item label="VBAUXPRS"/>
-    </label-sequence>
-	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
       <label-item label="VBAUXPRS"/>
     </label-sequence>
 	
@@ -838,32 +817,14 @@ VB all other lexical verbs (open)
       <label-item label="ADJ"/>
       <label-item label="VBAUXDA"/>
     </label-sequence>
-	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
-      <label-item label="VBAUXDA"/>
-    </label-sequence>
-	
+
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBAUXPRET"/>
     </label-sequence>
 	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
-      <label-item label="VBAUXPRET"/>
-    </label-sequence>
-	
     <label-sequence>
       <label-item label="ADJ"/>
-      <label-item label="VBERPRS"/>
-    </label-sequence>
-	
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
       <label-item label="VBERPRS"/>
     </label-sequence>
 	
@@ -871,26 +832,32 @@ VB all other lexical verbs (open)
       <label-item label="ADJ"/>
       <label-item label="VBERDA"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBERPRET"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBHARPRS"/>
-    </label-sequence>
+    </label-sequence>	
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBHARDA"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBHARPRET"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBSPRS"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBSDA"/>
@@ -900,7 +867,7 @@ VB all other lexical verbs (open)
       <label-item label="VBSPRET"/>
     </label-sequence>
     <label-sequence>
-	
+-->	
 	
       <label-item label="ADV"/>
       <label-item label="PRNOBJ"/>
@@ -1193,9 +1160,13 @@ VB all other lexical verbs (open)
       <label-item label="VBAUX"/>
       <label-item label="VBMODPRET"/>
     </label-sequence>
+
+<!--	
     <label-sequence>
       <label-item label="VBAUX"/>
       <label-item label="VBAUXPRS"/>
+-->
+	  
     </label-sequence>
     <label-sequence>
       <label-item label="VBAUX"/>
@@ -1257,10 +1228,13 @@ VB all other lexical verbs (open)
       <label-item label="VBLEX"/>
       <label-item label="VBMODPRET"/>
     </label-sequence>
-     <label-sequence>
+<!--	
+     <label-sequence>	 
       <label-item label="VBLEX"/>
       <label-item label="VBAUXPRS"/>
     </label-sequence>
+-->
+	
     <label-sequence>
       <label-item label="VBLEX"/>
       <label-item label="VBAUXDA"/>
@@ -1365,10 +1339,14 @@ VB all other lexical verbs (open)
       <label-item label="VBHAR"/>
       <label-item label="VBHARDA"/>
     </label-sequence>
+	
+<!--	
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBAUXPRS"/>
     </label-sequence>
+-->
+
     <label-sequence>
       <label-item label="VBHAR"/>
       <label-item label="VBAUXDA"/>
@@ -1401,10 +1379,14 @@ VB all other lexical verbs (open)
       <label-item label="VBER"/>
       <label-item label="VBHARDA"/>
     </label-sequence>
+
+<!--	
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBAUXPRS"/>
     </label-sequence>
+-->
+	
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBAUXDA"/>
