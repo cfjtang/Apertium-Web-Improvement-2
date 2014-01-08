@@ -170,6 +170,11 @@ VB all other lexical verbs (open)
   <def-label name="CNJSUB" closed="true">
     <tags-item tags="cnjsub"/>
   </def-label>
+  
+<!-- PT: Adverbial conjunctionn -->   
+  <def-label name="CNJADV" closed="true">
+    <tags-item tags="cnjadv"/>
+  </def-label>
 
 <!-- PT: Demonstrative pronoun -->    
   <def-label name="DETDEM" closed="true">
@@ -204,7 +209,7 @@ VB all other lexical verbs (open)
   </def-label>
 
 <!-- PT: Interjections -->  
-  <def-label name="INTERJECCIONS" closed="true">
+  <def-label name="IJ" closed="true">
     <tags-item tags="ij"/>
   </def-label>
 
@@ -644,6 +649,7 @@ VB all other lexical verbs (open)
       <!-- <label-item label="DETPOS"/> -->
 	  <label-item label="PRONPOS"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNTONIC"/>
       <label-item label="REL"/>
@@ -745,17 +751,13 @@ VB all other lexical verbs (open)
       <!-- <label-item label="DETPOS"/> -->
 	  <label-item label="PRONPOS"/>
     </label-sequence>
-	
+
+<!--	
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="REL"/>
     </label-sequence>
-
-<!-- PT: NEW -->
-    <label-sequence>
-      <label-item label="ADJPLUR"/>
-      <label-item label="REL"/>
-    </label-sequence>
+-->
 	
     <label-sequence>
       <label-item label="ADJ"/>
@@ -881,10 +883,12 @@ VB all other lexical verbs (open)
       <label-item label="PRNREF"/>
     </label-sequence>
 
+<!-- PT: not defined
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="PRNTN"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="CNJCOO"/>
@@ -893,38 +897,54 @@ VB all other lexical verbs (open)
       <label-item label="PR"/>
       <label-item label="IJ"/>
     </label-sequence>
+-->
+
+<!--	
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="VBAUX"/>
     </label-sequence>
+
+	
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="VBS"/>
     </label-sequence>
+-->
+	
+<!--	
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="VBER"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="VBHAR"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="VBLEX"/>
     </label-sequence>
+
+<!--	
     <label-sequence>
       <label-item label="PR"/>
       <label-item label="VBMOD"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="NP"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="PR"/>
     </label-sequence>
+-->	
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="ADV"/>
@@ -957,10 +977,14 @@ VB all other lexical verbs (open)
       <label-item label="DETDEF"/>
       <label-item label="CNJSUB"/>
     </label-sequence>
+
+<!--	
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="REL"/>
     </label-sequence>
+-->
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="IJ"/>
@@ -978,22 +1002,31 @@ VB all other lexical verbs (open)
       <label-item label="DETDEF"/>
       <label-item label="DETDEM"/>
     </label-sequence>
+
+<!--	
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBAUX"/>
     </label-sequence>
+	
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBS"/>
     </label-sequence>
+-->
+	
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBMOD"/>
     </label-sequence>
+
+<!--	
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBER"/>
     </label-sequence>
+-->
+	
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBHAR"/>

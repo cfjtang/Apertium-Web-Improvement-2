@@ -13,6 +13,7 @@ ONLYPRN *** not applicable ***
 
 CNJCOO Co-ordinating conjunction
 CNJSUB Sub-ordinating conjunction
+CNJADV Adverbial conjunction
 
 *** label for <sdef n="cnjadv" 	c="Adverbial conjunction"/> is missing ***
 
@@ -24,7 +25,7 @@ DETPOS *** not in use: PRONPOS instead ***
 
 DETORD Ordinal determiner (ordinal number)
 DETQNT Quantifier
-INTERJECCIONS Interjections
+IJ Interjections
 
 REL *** not applicable ***
 
@@ -34,6 +35,7 @@ NOMSPROPIS Proper noun
 NOMSNEUTREUTRE Common gender or neuter *** not applicable ***
 NOMSNEUTRE Noun, Neuter
 NOMSUTRE Noun, Common gender (Utrum)
+
 ADV Adverb
 
 PREADV *** not applicable ***
