@@ -466,9 +466,9 @@ PT: Klart tom rad 1028.
   <!-- PT: not used
   <def-label name="VAUXPASTS" closed="true">
     <tags-item tags="vaux.past.*"/>
+  </def-label>
   -->
   
-  </def-label>
   <def-label name="VAUXSUPN" closed="true">
     <tags-item tags="vaux.supn"/>
   </def-label>
@@ -519,19 +519,22 @@ PT: Klart tom rad 1028.
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="NOMNEUTRE"/>	  
+    </label-sequence>
+	
+<!-- PT: NEW -->		
     <label-sequence>
-	
-<!-- PT: NEW -->		
       <label-item label="NOMNEUTRE"/>
       <label-item label="NOMSSING"/>
     </label-sequence>
 	
 <!-- PT: NEW -->		
+    <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="NOMNEUTRE"/>
     </label-sequence>
 	
 <!-- PT: NEW -->		
+    <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="NOMSSING"/>
     </label-sequence>
@@ -652,7 +655,7 @@ PT: Klart tom rad 1028.
     </label-sequence>
     <label-sequence>
       <label-item label="PRNTONIC"/>
-      <!-- <label-item label="DETPOS"/> -->
+      <label-item label="DETPOS"/> 
 	  <label-item label="PRONPOS"/>
     </label-sequence>
 
@@ -874,9 +877,9 @@ PT: Klart tom rad 1028.
       <label-item label="ADJ"/>
       <label-item label="VBSPRET"/>
     </label-sequence>
-    <label-sequence>
 -->	
 	
+    <label-sequence>
       <label-item label="ADV"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
@@ -933,7 +936,7 @@ PT: Klart tom rad 1028.
       <label-item label="PR"/>
       <label-item label="VBLEX"/>
     </label-sequence>
-
+-->
 <!--	
     <label-sequence>
       <label-item label="PR"/>
@@ -1204,9 +1207,9 @@ PT: Klart tom rad 1028.
     <label-sequence>
       <label-item label="VBAUX"/>
       <label-item label="VBAUXPRS"/>
+    </label-sequence>
 -->
 	  
-    </label-sequence>
     <label-sequence>
       <label-item label="VBAUX"/>
       <label-item label="VBAUXDA"/>
