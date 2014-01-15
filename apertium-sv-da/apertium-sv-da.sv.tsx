@@ -100,7 +100,7 @@
   </def-label>
   
   <def-label name="NUM">
-    <tags-item tags="num"/>
+    <tags-item tags="num.*"/>
   </def-label>
   
   <def-label name="VBMODINF" closed="true">
