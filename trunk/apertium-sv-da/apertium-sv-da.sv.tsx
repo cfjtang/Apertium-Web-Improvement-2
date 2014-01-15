@@ -8,21 +8,21 @@
   </def-label>
   
   <def-label name="PRNSUBJ" closed="true">
-	<tags-item tags="prn.pers.p1.un.sg.nom"/>
-	<tags-item tags="prn.pers.p2.un.sg.nom"/>
-	<tags-item tags="prn.pers.p3.ut.sg.nom"/>
+    <tags-item tags="prn.pers.p1.un.sg.nom"/>
+    <tags-item tags="prn.pers.p2.un.sg.nom"/>
+    <tags-item tags="prn.pers.p3.ut.sg.nom"/>
   </def-label>
 
   <def-label name="PRNOBJ" closed="true">
     <tags-item tags="prn.pers.p1.un.sg.acc"/>
-	<tags-item tags="prn.pers.p2.un.sg.acc"/>
-	<tags-item tags="prn.pers.p3.ut.sg.acc"/>
+    <tags-item tags="prn.pers.p2.un.sg.acc"/>
+    <tags-item tags="prn.pers.p3.ut.sg.acc"/>
   </def-label>
 
   <def-label name="PRNPOS" closed="true">
-	<tags-item tags="det.pos.*"/>
-	<tags-item tags="prn.pers.p3.ut.sg.gen"/>
-	<tags-item tags="prn.pers.p3.ut.pl.gen"/>	
+    <tags-item tags="det.pos.*"/>
+    <tags-item tags="prn.pers.p3.ut.sg.gen"/>
+    <tags-item tags="prn.pers.p3.ut.pl.gen"/>    
   </def-label>
  
   <def-label name="PRNREF" closed="true">
@@ -235,39 +235,39 @@
 
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
-      <label-item label="NOMNEUTRE"/>	  
+      <label-item label="NOMNEUTRE"/>      
     </label-sequence>
-		
+        
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="NOMSSING"/>
     </label-sequence>
-		
+        
     <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="NOMNEUTRE"/>
     </label-sequence>
-		
+        
     <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="NOMSSING"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="NOMUTRE"/>
     </label-sequence>
-		
+        
     <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="NOMUTRE"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="NOMUTRE"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="NOMNEUTRE"/>
@@ -277,47 +277,47 @@
       <label-item label="NOMUTRE"/>
       <label-item label="NOMSSING"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMSSING"/>
-	  <label-item label="PRONPOS"/>
-    </label-sequence>	
-	
+      <label-item label="PRONPOS"/>
+    </label-sequence>    
+    
     <label-sequence>
       <label-item label="NOMUTRE"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
-		
+        
     <label-sequence>
       <label-item label="NOMUTRE"/>
       <label-item label="ADJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="ADJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="ADJ"/>
@@ -327,27 +327,27 @@
       <label-item label="NOMUTRE"/>
       <label-item label="ADJPLUR"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMSSING"/>
       <label-item label="ADJPLUR"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="NOMNEUTRE"/>
       <label-item label="ADJPLUR"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="CNJSUB"/>
@@ -356,18 +356,18 @@
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="CNJSUB"/>
-    </label-sequence>	
-	
+    </label-sequence>    
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="DETDEM"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="DETDEM"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="DETIND"/>
@@ -377,7 +377,7 @@
       <label-item label="ADJPLUR"/>
       <label-item label="DETIND"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="DETDEF"/>
@@ -386,56 +386,58 @@
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="DETDEF"/>
-    </label-sequence>	
-	
+    </label-sequence>    
+    
     <label-sequence>
       <label-item label="ADJ"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
 
     <label-sequence>
       <label-item label="ADJPLUR"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBLEXPRS"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="VBLEXPRS"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBLEXDA"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="VBLEXDA"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJ"/>
       <label-item label="VBMODPRS"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADJPLUR"/>
       <label-item label="VBMODPRS"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="ADV"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="ADV"/>
       <label-item label="IJ"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="ADV"/>
       <label-item label="PRNREF"/>
@@ -445,30 +447,37 @@
       <label-item label="DETDEF"/>
       <label-item label="ADV"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="DETDEF"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="PRNREF"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="PRN"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="CNJCOO"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="CNJADV"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="CNJSUB"/>
@@ -478,60 +487,72 @@
       <label-item label="DETDEF"/>
       <label-item label="IJ"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="DETIND"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEF"/>
       <label-item label="DETDEM"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBMOD"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBHAR"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNOBJ"/>
       <label-item label="VBLEX"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="ADJ"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="VBAUX"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="VBS"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="VBMOD"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="VBER"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="VBHAR"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="PRNREF"/>
       <label-item label="VBLEX"/>
     </label-sequence>
+
     <label-sequence>
       <label-item label="DETDEM"/>
       <label-item label="NP"/>
@@ -582,7 +603,7 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETDEM"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="DETDEM"/>
@@ -638,7 +659,7 @@
     </label-sequence>
     <label-sequence>
       <label-item label="DETIND"/>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
     </label-sequence>
     <label-sequence>
       <label-item label="VBAUX"/>
@@ -660,7 +681,7 @@
       <label-item label="VBAUX"/>
       <label-item label="VBMODPRET"/>
     </label-sequence>
-	  
+      
     <label-sequence>
       <label-item label="VBAUX"/>
       <label-item label="VBAUXDA"/>
@@ -859,7 +880,7 @@
       <label-item label="VBER"/>
       <label-item label="VBHARDA"/>
     </label-sequence>
-	
+    
     <label-sequence>
       <label-item label="VBER"/>
       <label-item label="VBAUXDA"/>
@@ -891,41 +912,47 @@
 
 
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="PR"/>
     </label-sequence>
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="ADV"/>
     </label-sequence>
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="PRNTN"/>
     </label-sequence>
+
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="PRNOBJ"/>
     </label-sequence>
-	  <label-item label="PRONPOS"/>
+    <label-sequence>
+      <label-item label="PRONPOS"/>
       <label-item label="VBLEX"/>
     </label-sequence>
+
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="VBER"/>
     </label-sequence>
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="VBHAR"/>
     </label-sequence>
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="VBAUX"/>
     </label-sequence>
-	  <label-item label="PRONPOS"/>
+
+    <label-sequence>
+      <label-item label="PRONPOS"/>
       <label-item label="VBMOD"/>
     </label-sequence>
+
     <label-sequence>
-	  <label-item label="PRONPOS"/>
+      <label-item label="PRONPOS"/>
       <label-item label="VBS"/>
     </label-sequence>
 
