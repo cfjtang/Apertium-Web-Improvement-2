@@ -2,6 +2,9 @@
 <tagger name="swedish">
 
 <tagset>
+   <def-label name="ABBR">
+    <tags-item tags="abbr"/>
+  </def-label>
 
    <def-label name="PREP" closed="true">
     <tags-item tags="pr"/>
@@ -87,8 +90,12 @@
   <def-label name="NOMSUTRE">
     <tags-item tags="n.ut.*"/>
   </def-label>
+  <def-label name="NOMSUN">
+    <tags-item tags="n.un.*"/>
+  </def-label>
   <def-label name="ADV">
     <tags-item tags="adv"/>
+    <tags-item tags="adv.*"/>
   </def-label>
   
   <def-label name="ADJPLUR"  closed="true">
@@ -100,6 +107,7 @@
   </def-label>
   
   <def-label name="NUM">
+    <tags-item tags="num.*"/>
     <tags-item tags="num.*"/>
   </def-label>
   
@@ -117,6 +125,11 @@
   </def-label>
   <def-label name="VBMODPAST" closed="true">
     <tags-item tags="vbmod.past"/>
+    <tags-item tags="vbmod.past.*"/>
+  </def-label>
+  <def-label name="VAUXPAST" closed="true">
+    <tags-item tags="vaux.past"/>
+    <tags-item tags="vaux.past.*"/>
   </def-label>
   <def-label name="VBMODPASTS" closed="true">
     <tags-item tags="vbmod.past.*"/>
@@ -124,6 +137,12 @@
   <def-label name="VBMODSUPN" closed="true">
     <tags-item tags="vbmod.supn.*"/>
   </def-label>
+  <def-label name="VAUXSUPN" closed="true">
+    <tags-item tags="vaux.supn"/>
+    <tags-item tags="vaux.supn.*"/>
+  </def-label>
+
+
   <def-label name="VBMODPPRES" closed="true">
     <tags-item tags="vbmod.pprs"/>
   </def-label>
@@ -196,13 +215,7 @@
   <def-label name="VAUXPRES" closed="true">
     <tags-item tags="vaux.pres.*"/>
   </def-label>
-  <def-label name="VAUXPAST" closed="true">
-    <tags-item tags="vaux.past"/>
-  </def-label>
   
-  <def-label name="VAUXSUPN" closed="true">
-    <tags-item tags="vaux.supn"/>
-  </def-label>
  
   <def-label name="VBCLOSED" closed="true">
     <tags-item tags="vbser.*"/>
