@@ -1,7 +1,7 @@
 SUBDIRS = po
 
 EXTRA_DIST = intltool-extract.in intltool-merge.in intltool-update.in \
-	     apertium-tolk apertium-tolk.desktop.in.in tolk.glade prefix.py.in \
+	     apertium-tolk apertium-tolk.desktop.in.in tolk.glade tolk/prefix.py.in \
 	     $(man_MANS) py-compile emblem-web.svg
 
 desktopdir		= $(datadir)/applications
@@ -13,19 +13,21 @@ man_MANS	= apertium-tolk.1
 
 bin_SCRIPTS	= apertium-tolk 
 apertiumtolkdir	= $(pythondir)/tolk
-apertiumtolk_PYTHON = glade.py i18n.py simplegeneric.py widget_state.py __init__.py prefix.py lang_names.py
+apertiumtolk_PYTHON = tolk/glade.py tolk/i18n.py tolk/simplegeneric.py tolk/widget_state.py tolk/__init__.py tolk/lang_names.py
+nodist_apertiumtolk_PYTHON = tolk/prefix.py
+BUILT_SOURCES = tolk/prefix.py
 
 gladedir	= $(datadir)/apertium-tolk/glade
 glade_DATA	= tolk.ui emblem-web.svg
 
-prefix.py: prefix.py.in Makefile
+tolk/prefix.py: tolk/prefix.py.in Makefile
 	sed \
 	-e 's|@pkgpythondir[@]|$(pkgpythondir)|g' \
 	-e 's|@pkgdatadir[@]|$(pkgdatadir)|g' \
 	-e 's|@localedir[@]|$(localedir)|g' \
 	-e 's|@datadir[@]|$(datadir)|g' \
 	-e 's|@prefix[@]|$(prefix)|g' \
-	prefix.py.in > $@
+	$< > $@
 
 apertium-tolk.desktop.in: apertium-tolk.desktop.in.in
 	intltool-merge -d po/ apertium-tolk.desktop.in.in apertium-tolk.desktop.in	
