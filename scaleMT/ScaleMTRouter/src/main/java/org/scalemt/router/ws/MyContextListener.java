@@ -66,7 +66,7 @@ public class MyContextListener implements ServletContextListener {
             //start RMI registry
             Registry registry = null;
             try {
-                registry = LocateRegistry.getRegistry(Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
+                registry = LocateRegistry.getRegistry(Util.readConfigurationProperty("requestrouter_rmi_host"),Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
                 registry.list();
                 logger.info("RMI Registry already running on port " + Integer.parseInt(Util.readConfigurationProperty("rmi_registry_port")));
             } catch (Exception e) {
