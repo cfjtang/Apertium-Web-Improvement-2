@@ -158,6 +158,10 @@
       <cat-item lemma="күн" tags="n.px3sp.nom"/>
     </def-cat>
 
+    <def-cat n="cop">
+      <cat-item tags="cop.*"/>
+    </def-cat>
+
   </section-def-cats>
 
   <section-def-attrs>
@@ -764,12 +768,23 @@
       </action>
     </rule>
 
+
+<!-- ===================== Analytic verbal forms =========================== -->
+
+
+<!-- 
+INPUT:  көріп тұрған жоқпын
+        ^көр<v><tv><prc_perf>/күр<v><tv><prc_perf>$ ^тұр<vaux><gpr_past>/тор<vaux><gpr_past>$
+        ^жоқ<adj>/юк<adj>$ ^е<cop><p1><sg>/и<cop><p1><sg>$
+OUTPUT: күрмим
+        ^күр<v><tv><neg><pres><p1><sg>$
+-->
     <rule comment="REGLA: Translate negative present continious with negative present">
       <pattern>
         <pattern-item n="ImperfectOrPerfectParticiple"/>
         <pattern-item n="FourAuxiliaries.gpr_past"/>
         <pattern-item n="жоқ.adj"/>
-        <pattern-item n="v"/> <!-- copula -->
+        <pattern-item n="cop"/>
       </pattern>
       <action>
         <out>
@@ -786,7 +801,7 @@
         </out>
       </action>
     </rule>
-          
+
 
     <rule comment="REGLA: Translate present continious with present">
       <!-- 16 . Азамат ескі үлкен бір ағашқа қарай қатты жүгіріп бара жатыр,
@@ -794,7 +809,6 @@
            ол сол ағаштың артына Айгүлден жасырынып жатыр.
            ул шул агачның артына Айгөлдән яшеренә. -->
       <!-- FIXME:
-           * Patterns like /көріп тұрған жоқ/ doesn't work yet;
            * /Тәрәзәдән карап тора/, /Яңгыр явып тора/ and similar are possible in Tatar too,
            but making it work requires some further inverstigation and probably dealing with list of lemmas
            to decide whether making use of an auxiliary is possible/better. -->
