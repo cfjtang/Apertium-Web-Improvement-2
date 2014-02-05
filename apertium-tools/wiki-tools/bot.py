@@ -21,6 +21,8 @@ def getCounts(uri, dixFormat):
         elif dixFormat == 'bidix':
             return {'stems': len(dixTree.findall("*[@id='main']/e//l"))}
         elif dixFormat == 'lexc':
+            logger = logging.getLogger("countStems")
+            logger.setLevel(logging.ERROR)
             return {'stems': countStems(dixString)}
         else:
             raise ValueError('Invalid format: %s' % dixFormat)
@@ -162,8 +164,7 @@ if __name__ == '__main__':
                 counts = getCounts('{}{}/{}'.format(svnURL, pair, lexcName), 'lexc')
                 for countType, count in counts.items():
                     dixCounts[countType] = count
-            logging.debug('Acquired dictionary counts %s' % dixCounts)
-            print(dixCounts)
+            logging.info('Acquired dictionary counts %s' % dixCounts)
             
             pageContents = getPage(pageTitle)
             if pageContents:

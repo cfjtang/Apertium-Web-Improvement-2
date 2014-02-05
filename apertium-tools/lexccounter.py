@@ -7,7 +7,7 @@ def cleanLine(line):
     return re.sub(r'!.*$', '', re.sub(r'%(.)', r'\1', line.strip())).strip()
 
 def countStems(dictionary):
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger("countStems")
     currentLexicon = None
     validLexicons = set()
     lexicons = defaultdict(lambda: ([], set()))
@@ -51,7 +51,7 @@ def countStems(dictionary):
         validLexicons.update(addedLexicons)
         for addedLexicon in addedLexicons:
             validLexicons.update(lexicons[addedLexicon][0])
-        logging.info('Searching lexicons %s' % validLexicons)
+        logger.info('Searching lexicons %s' % validLexicons)
     else:
         logger.critical('No Root lexicon found')
         sys.exit(-1)
@@ -61,6 +61,7 @@ def countStems(dictionary):
         entries.update(lexicons[validLexicon][1])
 
     print('Unique entries: %s' % len(entries))
+    return len(entries)
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Count stems in a HFST morphological dictionary (lexc)")
