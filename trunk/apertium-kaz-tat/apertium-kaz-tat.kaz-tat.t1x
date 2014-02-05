@@ -781,7 +781,7 @@ OUTPUT: күрмим
 -->
     <rule comment="REGLA: Translate negative present continious with negative present">
       <pattern>
-        <pattern-item n="ImperfectOrPerfectParticiple"/>
+        <pattern-item n="ImperfectOrPerfectParticiple"/> <!-- ImperfectParticiple bcs of бару, келу, апару, әкелу-->
         <pattern-item n="FourAuxiliaries.gpr_past"/>
         <pattern-item n="жоқ.adj"/>
         <pattern-item n="cop"/>
@@ -803,23 +803,29 @@ OUTPUT: күрмим
     </rule>
 
 
-    <rule comment="REGLA: Translate present continious with present">
-      <!-- 16 . Азамат ескі үлкен бір ағашқа қарай қатты жүгіріп бара жатыр,
-           16 . Азамат иске зур бер агачка таба каты йөгереп бара,
-           ол сол ағаштың артына Айгүлден жасырынып жатыр.
-           ул шул агачның артына Айгөлдән яшеренә. -->
+<!--
+INPUT:  жүгіріп бара жатыр
+        ^жүгір<v><iv><prc_perf>/йөгер<v><iv><prc_perf>$ ^бар<v><iv><prc_impf>/бар<v><iv><prc_impf>$
+        ^жат<vaux><pres><p3><sg>/ят<vaux><pres><p3><sg>$
+OUTPUT: йөгереп бара
+        ^йөгер<v><iv><prc_perf>$ ^бар<v><iv><pres><p3><sg>$
+-->
+    <rule comment="REGLA:">
       <!-- FIXME:
            * /Тәрәзәдән карап тора/, /Яңгыр явып тора/ and similar are possible in Tatar too,
            but making it work requires some further inverstigation and probably dealing with list of lemmas
            to decide whether making use of an auxiliary is possible/better. -->
       <pattern>
-        <pattern-item n="ImperfectOrPerfectParticiple"/>
+        <pattern-item n="ImperfectOrPerfectParticiple"/> <!-- ImperfectParticiple bcs of бару, келу, апару, әкелу-->
         <pattern-item n="FourAuxiliaries"/>
       </pattern>
       <action>
         <call-macro n="tense1">
           <with-param pos="2"/>
         </call-macro>
+        <call-macro n="nonfin1">
+          <with-param pos="2"/>
+        </call-macro>   
         <out>
           <lu>
             <clip pos="1" side="tl" part="lem"/>
@@ -827,9 +833,11 @@ OUTPUT: күрмим
             <clip pos="1" side="tl" part="a_trans"/>
             <clip pos="1" side="tl" part="a_deriv"/>
             <clip pos="1" side="tl" part="a_neg"/>
-            <clip pos="2" side="tl" part="a_tense"/>
+                     <!-- FINITE FORM -->                    <!-- NON-FINITE FORM -->
+            <clip pos="2" side="tl" part="a_tense"/> <clip pos="2" side="tl" part="a_nonfin"/>
             <clip pos="2" side="tl" part="a_pers"/>
-            <clip pos="2" side="tl" part="a_nbr"/>
+            <clip pos="2" side="tl" part="a_nbr"/>   <clip pos="2" side="tl" part="a_poss"/>
+                                                     <clip pos="2" side="tl" part="a_case"/>
           </lu>
         </out>
       </action>
