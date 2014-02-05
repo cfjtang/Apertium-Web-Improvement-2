@@ -22,8 +22,9 @@
       <cat-item tags="prn.itg.sim.*.*.*"/>
     </def-cat>
 
-    <def-cat n="pron-pers-ins">
+    <def-cat n="pron.pers-dem.ins">
       <cat-item tags="prn.pers.*.*.ins"/>
+      <cat-item tags="prn.dem.ins"/>
     </def-cat>
 
     <def-cat n="pron-pers_ref">
@@ -64,7 +65,7 @@
       <cat-item lemma="тұр" tags="vaux.gpr_past"/>
     </def-cat>
 
-    <def-cat n="gerund">
+    <def-cat n="Gerund">
       <cat-item tags="v.*.*.ger.*"/>
       <cat-item tags="v.*.*.ger_past.*"/>
       <cat-item tags="v.*.*.ger_perf.*"/>
@@ -603,10 +604,13 @@
       </action>
     </rule>
 
+<!--
+INPUT:  сенімен,     сонымен
+OUTPUT: синең белән, шуның белән
+-->
     <rule comment="">
-      <!-- Сенімен >> Синең белән -->
       <pattern>
-        <pattern-item n="pron-pers-ins"/>
+        <pattern-item n="pron.pers-dem.ins"/>
       </pattern>
       <action>
         <call-macro n="translate-ins-with-nom-and-post">
@@ -615,7 +619,7 @@
         <out>
           <lu>
             <clip pos="1" side="tl" part="lem"/>
-            <clip pos="1" side="tl" part="a_pron-pers_ref"/>
+            <clip pos="1" side="tl" part="a_pron"/>
             <clip pos="1" side="tl" part="a_pers"/>
             <clip pos="1" side="tl" part="a_nbr"/>
             <clip pos="1" side="tl" part="a_frm"/>
@@ -685,7 +689,7 @@
 
     <rule comment="REGLA: Gerunds">
       <pattern>
-        <pattern-item n="gerund"/>
+        <pattern-item n="Gerund"/>
       </pattern>
       <action>
         <call-macro n="nonfin1">
