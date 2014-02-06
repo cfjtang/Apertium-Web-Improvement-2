@@ -25,10 +25,10 @@ the Slovenian $\rightarrow$ Serbo-Croatian side was evaluated only on the EuroPa
 
 The quantitative evaluation was performed by 5 articles
 from the Slovenian news portal Delo.
-The articles were translated from slovenian using Apertium, and were later corrected by a human post-editor in order to get a correct translationn.
-The word error rate (WER) was calculated
+The articles were translated from Slovenian using Apertium, and were later corrected by a human post-editor in order to get a correct translation.
+The Word Error Rate (WER) was calculated
 by counting the number of insertions, substitutions and deletions between the post-edited articles
-and the original translation. We used the freely available apertium-eval-translator for calculating the WER 
+and the original translation. We used the freely available \texttt{apertium-eval-translator} for calculating the WER 
 and for bootstrap resampling \cite{koehn04}.
 We also reported the percentage of out of vocabulary words (OOV), and the total number of words per article.
 The results are given in table \ref{table:quantitative1}.
@@ -36,16 +36,20 @@ The results are given in table \ref{table:quantitative1}.
 We also calculated both metrics for the output of Google Translate\footnote{\url{http://translate.google.com/}} 
 and the results are presented in the same tables. 
 
-Given all the assumptions the WER and PER matrics make, the results show that our system is comparable to Google Translate
+Given all the assumptions the WER and PER metrics make, the results show that our system is comparable to Google Translate
 with regards to translation quality. The Slovenian $\rightarrow$ Serbo-Croatian translation seems to be better than the Serbo-Croatian $\rightarrow$ Slovenian one
 which is due to the fact that more effort was put into developing the former direction.
+
+% what assumptions ???
 
 \input{quantitativeevaluationtable}
 
 \subsection{Qualitative}
 The biggest problems are currently caused by the incompleteness of our dictionaries.
 The issues caused by OOV words are twofold.
-The less important issue is the fact that the system is unable to provide a translation for the unknown words. 
+The less important issue is the fact that the system is unable to provide a translation for the unknown words ---
+although in many cases, such as with proper names, these may result in \emph{free rides}, that is word
+is the same in both languages.
 However, the more important issue is that OOV words cause problems with disambiguation and transfer, since they
 break long chains of words into smaller ones and drastically reduce context information. 
 
