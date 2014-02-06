@@ -808,14 +808,18 @@ OUTPUT: күрмим
 
 
 <!--
-INPUT:  жүгіріп бара жатыр
-        ^жүгір<v><iv><prc_perf>/йөгер<v><iv><prc_perf>$ ^бар<v><iv><prc_impf>/бар<v><iv><prc_impf>$
-        ^жат<vaux><pres><p3><sg>/ят<vaux><pres><p3><sg>$
-OUTPUT: йөгереп бара
-        ^йөгер<v><iv><prc_perf>$ ^бар<v><iv><pres><p3><sg>$
+INPUT:  мектепке бара жатырмын
+        ^мектеп<n><dat>/мәктәп<n><dat>$ ^бар<v><iv><prc_impf>/бар<v><iv><prc_impf>$
+        ^жат<vaux><pres><p3><sg>/ят<vaux><pres><p1><sg>$
+OUTPUT: мәктәпкә барам
+        ^мәктәпкә<n><dat>$ ^бар<v><iv><pres><p1><sg>$
 -->
     <rule comment="REGLA:">
-      <!-- FIXME:
+      <!-- TODO:
+           * This rule is too general (much more general than the test case) and captures non-finite forms of four
+           auxiliaries and perfect participle of the main verb. This is ok in most of the cases, but sometimes
+           better translations are available. Document the cases when better translations are available on the 'pending
+           tests' page and write new rules for them.
            * /Тәрәзәдән карап тора/, /Яңгыр явып тора/ and similar are possible in Tatar too,
            but making it work requires some further inverstigation and probably dealing with list of lemmas
            to decide whether making use of an auxiliary is possible/better. -->
