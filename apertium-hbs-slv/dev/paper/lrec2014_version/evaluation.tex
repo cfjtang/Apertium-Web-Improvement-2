@@ -1,0 +1,74 @@
+\section{Evaluation}
+\input{coveragetable}
+This sections covers the evaluation of the developed system. 
+The system was tested by measuring the lexical coverage, and by performing
+a qualitative and a quantitative evaluation. 
+
+Lexical coverage was tested using existing free corpora, 
+while the quantitative evaluation was performed on 100 postedited sentences (with 1,055 words in
+total) from the Slovenian news portal 
+Delo \footnote{\url{http://www.delo.si/}}.
+
+\subsection{Lexical coverage}
+
+Coverage for the Serbo-Croatian--Slovenian language pair was measured using both the SETimes \cite{tyers2010south} and Europarl \cite{koehn05a} corpora. 
+We measured coverage naively, meaning that we assume a word is in our 
+dictionaries if at least one of its surface forms is found in the corpus. 
+We are aware of the shortcomings of such an evaluation framework, 
+however we decided to use it because of its simplicity.
+
+The Serbo-Croatian $\rightarrow$ Slovenian side was evaluated using the SETimes corpus.
+As SETimes does not cover Slovenian
+the Slovenian $\rightarrow$ Serbo-Croatian side was evaluated only on the EuroParl corpus. The results are shown in table \ref{table:coverage}.
+
+\subsection{Quantitative}
+
+The quantitative evaluation was performed by 5 articles
+from the Slovenian news portal Delo.
+The articles were translated from Slovenian using Apertium, and were later corrected by a human post-editor in order to get a correct translation.
+The Word Error Rate (WER) was calculated
+by counting the number of insertions, substitutions and deletions between the post-edited articles
+and the original translation. We used the freely available \texttt{apertium-eval-translator} for calculating the WER 
+and for bootstrap resampling \cite{koehn04}.
+We also reported the percentage of out of vocabulary words (OOV), and the total number of words per article.
+The results are given in table \ref{table:quantitative1}.
+
+We also calculated both metrics for the output of Google Translate\footnote{\url{http://translate.google.com/}} 
+and the results are presented in the same tables. 
+
+The post-editting evaluation shows comparable results for our system
+and Google Translate according to WER and PER metrics.  The Slovenian
+$\rightarrow$ Serbo-Croatian translation seems to be better than the
+Serbo-Croatian $\rightarrow$ Slovenian one which is due to the fact
+that more effort was put into developing the former direction.
+
+\input{quantitativeevaluationtable}
+
+\subsection{Qualitative}
+The biggest problems are currently caused by the incompleteness of our dictionaries.
+The issues caused by OOV words are twofold.
+The less important issue is the fact that the system is unable to provide a translation for the unknown words ---
+although in many cases, such as with proper names, these may result in \emph{free rides}, that is word
+is the same in both languages.
+However, the more important issue is that OOV words cause problems with disambiguation and transfer, since they
+break long chains of words into smaller ones and drastically reduce context information. 
+
+Next, we have seen that the number of disambiguation rules for Slovenian is not sufficient for high-quality disambiguation. 
+The constraint grammar for the Slovenian side was written based on the constraint grammar for the Serbo-Croatian side,
+and it needs further work.
+
+We have also noticed difficulties in the transfer because of the loose
+grammar of both sides. Variations created by the free word order, and
+long distance relationships between sentence constituents make it
+difficult to write translation rules that cover a wide variety of
+language constructs. Adding additional rules does not significantly
+improve the performance of the system and OOV words make long transfer
+rules irrelevant.
+
+Finally, because of the short timeframe, and due to the fact no
+reliable parallel corpus exists for this language pair,\footnote{There
+is e.g. \url{http://opus.lingfil.uu.se/}, but it consists mostly of
+texts from OpenSubtitles} we were unable to do much work much on lexical selection.
+Our lexical-selection module is the least developed part of our
+system. We have not done any work on the Slovenian side and the number
+of rules for the Serbo-Croatian side is small.

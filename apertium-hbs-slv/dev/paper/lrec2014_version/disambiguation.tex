@@ -1,0 +1,169 @@
+\subsection{Disambiguation}
+Though for both languages there exists a number of tools for
+morphological tagging and disambiguation \cite{vitas2004intex,agic2008improving,snajder08automatic}, there
+are none freely available. Likewise, the adequately tagged corpora are
+mostly non-free \cite{erjavec2004multext,tadic2002building}.  Since both Serbo-Croatian and Slovenian are
+highly inflected languages, the automatically trained statistical
+tagger canonically used in Apertium language pairs would not give
+satisfactory results. For this reason we chose to use solely
+Constraint Grammar (CG) for disambiguation. The CG module does not
+provide complete disambiguation, so in the case of any remaining
+ambiguity the system picks the first output analysis.
+Due to the similarities between the languages, we were able to
+reuse some of the rules developed earlier for Serbo-Croatian.
+
+% [Hrvoje: commented out for SALTMIL]
+%%Following are a few disambiguation rules examples:
+%%
+%%\begin{itemize}
+%%
+%%\item Simple adverb vs. adjective rule:
+%%
+%%\sentenceexample{
+%%Ja često jedem ribu. $\leftrightarrow$ Jaz pogosto jedem ribo.
+%%
+%%(I eat fish often.)
+%%}
+%%
+%%For this phrase the morphological analyser gives:
+%%
+%%{\small
+%%\begin{Verbatim}
+%%"<Ja>"
+%%    "free" prn pers p1 mfn sg nom 
+%%"<često>"
+%%    "često" adv
+%%;   "čest" adj pst nt sg nom ind
+%%;   "čest" adj pst nt sg nom def
+%%;   "čest" adj pst nt sg voc ind
+%%;   "čest" adj pst nt sg voc def
+%;   "čest" adj pst nt sg acc ind
+%% ;   "čest" adj pst nt sg acc def
+%% "<jedem>"
+%%     "jesti" vb imperf tv pres p1 sg
+%% ;   "jesti" vb imperf ref pres p1 sg
+%% ;   "jesti" vb imperf iv pres p1 sg
+%% "<ribu>"
+%%      "riba" n f sg acc 
+%% \end{Verbatim}
+%% }
+
+%% The rule used to disambiguate the adverb \emph{često} in this phrase
+
+%% {\small\begin{verbatim}
+%%     SELECT Adv IF 
+%%         (0 Adv OR A) 
+%%         (1C V)
+%% \end{verbatim}
+%% }
+
+%% selects the adverb reading in an adverb/adjective ambiguity if the
+%% word following is unambiguously a verb.
+
+%% \item Preposition based case disambiguation:
+
+%% \sentenceexample{
+%% Za našo ljubo staro mater. $\leftrightarrow$ Za našu dragu staru majku.
+
+%% (For our dear old mother.)
+%% }
+
+%% Noun phrases in both languages typically generate a great number of
+%% ambiguities.
+
+%% {\small
+%% \begin{Verbatim}
+%%     "<Za>"
+%%          "za" pr acc 
+%%     ;    "za" pr gen
+%%     ;    "za" pr ins
+%%     "<našo>"
+%%          "naš" prn pos p1 f sg acc 
+%%     ;    "naš" prn pos p1 f sg ins
+%%     "<ljubo>"
+%%          "ljub" adj f sg acc ind 
+%%     ;    "ljubo" adv sint
+%%     ;    "ljub" adj nt sg nom ind
+%%     ;    "ljub" adj nt sg acc ind
+%%     ;    "ljub" adj f sg ins ind
+%%     "<staro>"
+%%          "star" adj f sg acc ind 
+%%     ;    "staro" adv sint
+%%     ;    "star" adj f sg ins ind
+%%     ;    "star" adj nt sg nom ind
+%%     ;    "star" adj nt sg acc ind
+%%     "<mater>"
+%%          "mati" n f sg acc 
+%%     ;    "mati" n f du gen
+%%     ;    "mati" n f pl gen
+%% \end{Verbatim} 
+%% }
+
+%% First the rule
+
+%% {\small
+%% \begin{Verbatim}
+%%     REMOVE Pr + $$Case IF 
+%%         (1 Nominal - $$Case)
+%% \end{Verbatim}
+%% }
+
+%% removes a case reading from a preposition if it is not followed by an
+%% adjective, noun or a pronoun in the same case, and then the rule
+
+%% {\small
+%% \begin{Verbatim}
+%%     REMOVE Nominal + $$Case IF
+%%         (NOT -1 Prep + $$Case) 
+%%         (NOT -1 Modifier + $$Case)
+%% \end{Verbatim}
+%% }
+
+%% in several passes removes the incorrect cases from the nouns and
+%% modifiers in the phrase.
+
+%% \item Noun heuristics:
+
+%% \sentenceexample{
+%% ...izvršavanje dužnosti predstavnice...
+
+%% (...doing the duty of a representative...)
+%% }
+
+%% Frequently in both languages if there is a sequence of nouns, the
+%% second noun is in genitive.
+
+%% {\small
+%% \begin{Verbatim}
+%%     "<izvršavanje>"
+%%         "izvršavanje" n nt sg nom 
+%%     ;   "izvršavanje" n nt sg voc
+%%     ;   "izvršavanje" n nt sg acc
+%%     "<dužnosti>"
+%%         "dužnost" n f sg gen
+%%     ;   "dužnost" n f sg voc
+%%     ;   "dužnost" n f pl voc
+%%     ;   "dužnost" n f sg loc
+%%     ;   "dužnost" n f sg dat
+%%     ;   "dužnost" n f pl acc
+%%     ;   "dužnost" n f sg ins
+%%     ;   "dužnost" n f pl nom
+%%     ;   "dužnost" n f pl gen
+%%     "<predstavnice>"
+%%         "predstavnica" n f sg gen
+%%     ;   "predstavnica" n f sg voc
+%%     ;   "predstavnica" n f pl voc
+%%     ;   "predstavnica" n f pl nom
+%%     ;   "predstavnica" n f pl acc
+%% \end{Verbatim}
+%% }
+
+%% This simple heuristic selects a genitive reading of a noun after a noun:
+
+%% {\small
+%% \begin{Verbatim}
+%%     SELECT: N + Gen IF (-1 N)
+%% \end{Verbatim}
+%% }
+%% \end{itemize}
+

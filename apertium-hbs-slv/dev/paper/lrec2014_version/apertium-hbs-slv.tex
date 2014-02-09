@@ -1,0 +1,129 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage{lrec2006}
+\usepackage{graphicx}
+
+\usepackage{url}
+
+\usepackage[utf8]{inputenc}
+\usepackage{multirow} 
+\usepackage[small,bf]{caption} 
+
+%% \usepackage{multibib}
+%%\usepackage[comma]{natbib}
+%% \usepackage{chapterbib}
+
+\usepackage{lingmacros}
+\usepackage{threeparttable}
+
+\usepackage{fancyvrb} 
+\DefineVerbatimEnvironment{outputExample}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{goldExample}{BVerbatim}{fontsize=\tiny}
+
+\bibdata{apertium-hbs-slv}
+
+\newcommand{\sentenceexample}[1]{{\small\enumsentence{#1}}}
+
+\title{Shallow-transfer rule-based machine translation for the Western group of South Slavic languages}
+
+\name{Hrvoje Peradin, Filip Petkovsky, Francis M. Tyers}
+
+\address{University of Zagreb, University of Zagreb, Institut for språkvitskap \\
+               Faculty of Science, Faculty of Electrical Engineering, Det humanistiske fakultet \\
+               Dept. of Mathematics, and Computer Science, N-9037 Universitetet i Tromsø\\
+               hperadin@gmail.com, filip.petkovski@fer.hr, ftyers@prompsit.com\\}
+
+
+\abstract{
+The South Slavic languages, spoken mostly in the Balkans, make up one
+of the three Slavic branches. The South Slavic branch is in turn
+comprised of two subgroups, the Eastern subgroup containing Macedonian
+and Bulgarian, and the western subgroup containing Serbo-Croatian
+and Slovenian. This paper describes the development of a
+bidirectional machine translation system for the western branch of
+South-Slavic languages — Serbo-Croatian and Slovenian. Both
+languages have a free word order, are highly inflected, and share a
+great degree of mutual inteligibility. We give details on resources and
+development methods used, as well as an evaluation, and
+general directions for future work.
+ \\ \newline %\Keywords{keyword A, keyword B, keyword C}
+}
+
+\begin{document}
+
+\maketitleabstract
+
+\input{introduction}
+
+\input{design}
+
+% Development; also contains disambiguation, lexical transfer, and structural transfer
+\input{development}
+
+\input{disambiguation}
+
+\input{lexicaltransfer}
+
+\input{transfer}
+
+% Tables:
+
+\begin{table}
+
+\begin{center}
+\begin{tabular}{|l|rrr|}
+\hline
+\textbf{Dictionary} & \textbf{Paradigms} & \textbf{Entries} & \textbf{Forms} \\
+\hline
+Serbo-Croatian &  1,033 & 13,206 & 233,878 \\
+Slovenian &  1,909 & 13,383 & 147,580 \\
+\hline
+Bilingual &  69 &  16,434 & 70,787 \\
+\hline
+\end{tabular}
+\caption{Statistics on number of lexicon entries for each of the dictionaries in the 
+   system.}
+\end{center}
+
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|rr|}
+\hline
+ \textbf{Type}      & \texttt{hbs}$\rightarrow$\texttt{slv} & \texttt{slv}$\rightarrow$\texttt{hbs}\\
+\hline
+Disambiguation      &     194              &     28 \\
+Lexical selection   &     --            &  42 \\
+Transfer            &                47 &  98 \\
+\hline
+
+\end{tabular}
+ \caption{Statistics on the number of rules in each direction. For the lexical selection rules, 
+   the number indicates that there are 42 rules for each of the three standard varieties currently
+   supported.}
+\end{center}
+\end{table}
+
+% EVALUATION 
+\input{evaluation}
+
+
+% CONCLUSIONS AND FUTURE WORK
+\input{conclusions}
+
+\section*{Acknowledgements}
+
+The development of this language pair was funded as a part of the
+Google Summer of Code.\footnote{\url{http://code.google.com/soc/}}
+Many thanks to the language pair co-author Ale\v{s} Horvat and his
+mentor Jernej Vičič, and other Apertium contributors for their
+invaluable help and support.
+
+
+%\nocite{*}
+
+\bibliographystyle{lrec2006}
+\bibliography{apertium-hbs-slv}
+
+\end{document}
+
