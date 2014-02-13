@@ -72,10 +72,10 @@ sed 's/<l>/%/g' | LC_ALL=kk_KZ.utf8 sort -t "%" -k 2 | sed 's/%/<l>/g'
 7. Before adding stems from bidix into lexc files, check whether they already are present there:
 
 grep -o '<l>[[:alpha:]]\+' | sed 's/<l>//g' | hfst-proc ~/src/apertium/incubator/apertium-kaz/kaz.automorf.hfst
-grep -o '<l>.*</l>' | sed 's/<l>//g;s/<.*//g' | sed 's/<b\/>/ /g' | hfst-proc ~/src/apertium/incubator/apertium-kaz/kaz.automorf.hfst
+grep -o '<l>.*</l>' | sed 's/<l>//g;s/<.*//g' | sed 's/<b\/>/ /g' | lt-proc ~/src/apertium/languages/apertium-kaz/kaz.automorf.bin
 
 grep -o '<r>[[:alpha:]]\+' | sed 's/<r>//g' | hfst-proc ~/src/apertium/incubator/apertium-tat/tat.automorf.hfst
-grep -o '<r>.*</r>' | sed 's/<r>//g;s/<.*//g' | sed 's/<b\/>/ /g' | hfst-proc ~/src/apertium/incubator/apertium-tat/tat.automorf.hfst
+grep -o '<r>.*</r>' | sed 's/<r>//g;s/<.*//g' | sed 's/<b\/>/ /g' | lt-proc ~/src/apertium/languges/apertium-tat/tat.automorf.bin
 
 ===========================================================================================================================================================
 8. For extracting data from the spreadsheet:
