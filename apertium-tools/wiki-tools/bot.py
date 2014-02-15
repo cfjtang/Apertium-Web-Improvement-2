@@ -11,6 +11,7 @@ baseURL = 'http://wiki.apertium.org/w/api.php'
 svnURL = 'https://svn.code.sf.net/p/apertium/svn/'
 
 def getCounts(uri, dixFormat):
+    logger = logging.getLogger("countStems")
     try:
         dixString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
         if 'dix' in dixFormat:
@@ -30,13 +31,17 @@ def getCounts(uri, dixFormat):
         logger.error('Unable to parse counts from %s: %s' % (uri, str(e)))
         return {}
 
-def getDixNames(uri, dixFormat):
-    try:
-        svnData = str(subprocess.check_output('svn list --xml %s' % uri, stderr=subprocess.STDOUT, shell=True), 'utf-8')
-        return re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?%s)</name>' % dixFormat, svnData, re.DOTALL)
-    except subprocess.CalledProcessError:
-        logging.error('No dix found for %s' % uri)
-        return []
+def getDixLocs(pair, dixFormat):
+    locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
+    for location in locations:
+        try:
+            URL = svnURL + location + '/apertium-' + pair
+            svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
+            return [URL + '/' + dixName for dixName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?%s)</name>' % dixFormat, svnData, re.DOTALL)]
+        except subprocess.CalledProcessError:
+            pass
+    logging.error('No dix found for %s' % pair)
+    return []
 
 def getRevision(uri):
     try:
@@ -64,12 +69,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Apertium Wiki Bot")
     parser.add_argument('loginName', help="bot login name")
     parser.add_argument('password', help="bot password")
-    parser.add_argument('pairs', nargs='+', help="Apertium language pairs in the format e.g. incubator/apertium-bg-ru")
+    parser.add_argument('pairs', nargs='+', help="Apertium language pairs in the format e.g. bg-ru or rus")
+    parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
 
     args = parser.parse_args()
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
     s = requests.Session()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     try:
         payload = {'action': 'login', 'format': 'json', 'lgname': args.loginName, 'lgpassword': args.password}
@@ -108,90 +117,95 @@ if __name__ == '__main__':
 
     for pair in args.pairs:
         try:
-            langs = pair.split('/')[1].split('-')[1:]
+            langs = pair.split('-')
             pageTitle = 'Apertium-' + '-'.join(langs) + '/stats'
         except:
             logging.error('Failed to parse language module name: %s' % pair)
             break
 
         if len(langs) == 2:
-            dixNames = getDixNames(svnURL + pair, 'dix')
-            dixCounts = {}
-            for dixName in dixNames:
-                dixPair = dixName.split('.')[1].split('-')
-                counts = getCounts('{}{}/{}'.format(svnURL, pair, dixName), 'bidix' if set(langs) == set(dixPair) else 'monodix')
-                for countType, count in counts.items():
-                    dixCounts['-'.join(dixPair + [countType])] = count
-            logging.debug('Acquired dictionary counts %s' % dixCounts)
+            dixLocs = getDixLocs(pair, 'dix')
+            logging.debug('Acquired dictionary locations %s' % dixLocs)
 
-            pageContents = getPage(pageTitle)
-            if pageContents:
-                matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                replacements = {}
-                for matchAttempt in matchAttempts:
-                    countName = matchAttempt.group(2).strip()
-                    if countName in dixCounts:
-                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
-                        replacements[(matchAttempt.group(1))] = replacement
-                for old, new in replacements.items():
-                    pageContents = pageContents.replace(old, new)
+            if len(dixLocs) > 0:
+                dixCounts = {}
+                for dixLoc in dixLocs:
+                    dixPair = dixLoc.split('/')[-1].split('.')[1].split('-')
+                    counts = getCounts(dixLoc, 'bidix' if set(langs) == set(dixPair) else 'monodix')
+                    for countType, count in counts.items():
+                        dixCounts['-'.join(dixPair + [countType])] = count
+                logging.debug('Acquired dictionary counts %s' % dixCounts)
 
-                editResult = editPage(pageTitle, pageContents, editToken)
-                if editResult['edit']['result'] == 'Success':
-                    logging.info('Update of page %s succeeded' % pageTitle)
+                pageContents = getPage(pageTitle)
+                if pageContents:
+                    matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                    replacements = {}
+                    for matchAttempt in matchAttempts:
+                        countName = matchAttempt.group(2).strip()
+                        if countName in dixCounts:
+                            replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                            replacements[(matchAttempt.group(1))] = replacement
+                    for old, new in replacements.items():
+                        pageContents = pageContents.replace(old, new)
+
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Update of page %s succeeded' % pageTitle)
+                    else:
+                        logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                 else:
-                    logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
-            else:
-                pageContents = '==Over-all stats=='
-                for dixName, dixCount in dixCounts.items():
-                    pageContents += "\n*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
+                    pageContents = '==Over-all stats=='
+                    for dixName, dixCount in dixCounts.items():
+                        pageContents += "\n*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
 
-                editResult = editPage(pageTitle, pageContents, editToken)
-                if editResult['edit']['result'] == 'Success':
-                    logging.info('Creation of page %s succeeded' % pageTitle)
-                else:
-                    logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Creation of page %s succeeded' % pageTitle)
+                    else:
+                        logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
         elif len(langs) == 1:
-            dixNames = getDixNames(svnURL + pair, 'dix')
-            lexcNames = getDixNames(svnURL + pair, 'lexc')
+            dixLocs = getDixLocs(pair, 'dix')
+            lexcLocs = getDixLocs(pair, 'lexc')
+            logging.debug('Acquired dictionary locations %s, %s' % (dixLocs, lexcLocs))
 
-            dixCounts = {}
-            for dixName in dixNames:
-                counts = getCounts('{}{}/{}'.format(svnURL, pair, dixName), 'monodix')
-                for countType, count in counts.items():
-                    dixCounts[countType] = count
-            for lexcName in lexcNames:
-                counts = getCounts('{}{}/{}'.format(svnURL, pair, lexcName), 'lexc')
-                for countType, count in counts.items():
-                    dixCounts[countType] = count
-            logging.info('Acquired dictionary counts %s' % dixCounts)
-            
-            pageContents = getPage(pageTitle)
-            if pageContents:
-                matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                replacements = {}
-                for matchAttempt in matchAttempts:
-                    countName = matchAttempt.group(2).strip()
-                    if countName in dixCounts:
-                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
-                        replacements[(matchAttempt.group(1))] = replacement
-                for old, new in replacements.items():
-                    pageContents = pageContents.replace(old, new)
+            if len(dixLocs) > 0 or len(lexcLocs) > 0:
+                dixCounts = {}
+                for dixLoc in dixLocs:
+                    counts = getCounts(dixLoc, 'monodix')
+                    for countType, count in counts.items():
+                        dixCounts[countType] = count
+                for lexcLoc in lexcLocs:
+                    counts = getCounts(lexcLoc, 'lexc')
+                    for countType, count in counts.items():
+                        dixCounts[countType] = count
+                logging.info('Acquired dictionary counts %s' % dixCounts)
+                
+                pageContents = getPage(pageTitle)
+                if pageContents:
+                    matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                    replacements = {}
+                    for matchAttempt in matchAttempts:
+                        countName = matchAttempt.group(2).strip()
+                        if countName in dixCounts:
+                            replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                            replacements[(matchAttempt.group(1))] = replacement
+                    for old, new in replacements.items():
+                        pageContents = pageContents.replace(old, new)
 
-                editResult = editPage(pageTitle, pageContents, editToken)
-                if editResult['edit']['result'] == 'Success':
-                    logging.info('Update of page %s succeeded' % pageTitle)
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Update of page %s succeeded' % pageTitle)
+                    else:
+                        logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                 else:
-                    logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
-            else:
-                pageContents = '==Over-all stats=='
-                for dixName, dixCount in dixCounts.items():
-                    pageContents += "\n*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
-                    
-                editResult = editPage(pageTitle, pageContents, editToken)
-                if editResult['edit']['result'] == 'Success':
-                    logging.info('Creation of page %s succeeded' % pageTitle)
-                else:
-                    logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+                    pageContents = '==Over-all stats=='
+                    for dixName, dixCount in dixCounts.items():
+                        pageContents += "\n*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
+                        
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Creation of page %s succeeded' % pageTitle)
+                    else:
+                        logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
         else:
-            raise NotImplementedError
+            logging.error('Invalid language module name: %s' % pair)
