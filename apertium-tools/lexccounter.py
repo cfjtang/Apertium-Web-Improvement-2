@@ -51,13 +51,14 @@ def countStems(dictionary):
         validLexicons.update(addedLexicons)
         for addedLexicon in addedLexicons:
             validLexicons.update(lexicons[addedLexicon][0])
-        logger.info('Searching lexicons %s' % validLexicons)
+        logger.info('Counting from lexicons %s' % validLexicons)
     else:
         logger.critical('No Root lexicon found')
         sys.exit(-1)
 
     entries = set()
     for validLexicon in validLexicons:
+        logging.info('In lexicon %s referenced from ROOT, found %s entries.' % (validLexicon, len(lexicons[validLexicon][1])))
         entries.update(lexicons[validLexicon][1])
 
     print('Unique entries: %s' % len(entries))
