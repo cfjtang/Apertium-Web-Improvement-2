@@ -1,5 +1,5 @@
-./apertium-eval-translator.pl -test sonce.slv-hbs -ref sunce.bhs.original.txt > sunce.WER.PER.txt
-./apertium-eval-translator.pl -test mercator.slv-hbs -ref mercator.bhs.original.txt > mercator.WER.PER.txt
-./apertium-eval-translator.pl -test jame.slv-hbs -ref jame.bhs.original.txt > jame.WER.PER.txt
-./apertium-eval-translator.pl -test maraton.slv-hbs -ref maraton.bhs.original.txt > maraton.WER.PER.txt
-./apertium-eval-translator.pl -test volitve.slv-hbs -ref volitve.bhs.original.txt > volitve.WER.PER.txt
+perl ~/source/apertium/trunk/apertium-eval-translator/bootstrap_resampling-standalone.pl -s ../sonce.slv-hbs.src -t sonce.slv-hbs -r sunce.slv-hbs.ref -n 1000 -e ~/source/apertium/trunk/apertium-eval-translator/wer.sh > sunce.WER.PER.txt
+perl ~/source/apertium/trunk/apertium-eval-translator/bootstrap_resampling-standalone.pl -s ../mercator.slv-hbs.src -t mercator.slv-hbs -r mercator.slv-hbs.ref -n 1000 -e ~/source/apertium/trunk/apertium-eval-translator/wer.sh > mercator.WER.PER.txt
+perl ~/source/apertium/trunk/apertium-eval-translator/bootstrap_resampling-standalone.pl -s ../jame.slv-hbs.src -t jame.slv-hbs -r jame.slv-hbs.ref -n 1000 -e ~/source/apertium/trunk/apertium-eval-translator/wer.sh > jame.WER.PER.txt
+perl ~/source/apertium/trunk/apertium-eval-translator/bootstrap_resampling-standalone.pl -s ../maraton.slv-hbs.src -t maraton.slv-hbs -r maraton.slv-hbs.ref -n 1000 -e ~/source/apertium/trunk/apertium-eval-translator/wer.sh > maraton.WER.PER.txt
+perl ~/source/apertium/trunk/apertium-eval-translator/bootstrap_resampling-standalone.pl -s ../volitve.slv-hbs.src -t volitve.slv-hbs -r volitve.slv-hbs.ref -n 1000 -e ~/source/apertium/trunk/apertium-eval-translator/wer.sh > volitve.WER.PER.txt
