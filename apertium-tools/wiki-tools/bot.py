@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 
 import argparse, requests, json, logging, sys, re, subprocess, urllib.request
 import xml.etree.ElementTree as etree
