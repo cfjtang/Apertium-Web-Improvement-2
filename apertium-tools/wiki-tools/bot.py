@@ -49,6 +49,15 @@ def getRevision(uri):
         return re.findall(r'revision="([0-9]+)"', svnData, re.DOTALL)[0]
     except:
         return None
+
+def createStatsSection(dixCounts, SVNRevision):
+    statsSection = '==Over-all stats=='
+    for dixName, dixCount in dixCounts.items():
+        statsSection += '\n' + createStatSection(dixName, dixCount, SVNRevision)
+    return statsSection
+
+def createStatSection(dixName, dixCount, SVNRevision):
+    return "*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
         
 def getPage(pageTitle):
     payload = {'action': 'query', 'format': 'json', 'titles': pageTitle, 'prop': 'revisions', 'rvprop': 'content'}
@@ -138,15 +147,32 @@ if __name__ == '__main__':
 
                 pageContents = getPage(pageTitle)
                 if pageContents:
-                    matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                    replacements = {}
-                    for matchAttempt in matchAttempts:
-                        countName = matchAttempt.group(2).strip()
-                        if countName in dixCounts:
-                            replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
-                            replacements[(matchAttempt.group(1))] = replacement
-                    for old, new in replacements.items():
-                        pageContents = pageContents.replace(old, new)
+                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                    if statsSection:
+                        matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                        replacements = {}
+                        for matchAttempt in matchAttempts:
+                            countName = matchAttempt.group(2).strip()
+                            if countName in dixCounts:
+                                replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                                replacements[(matchAttempt.group(1))] = replacement
+                                del dixCounts[countName]
+                                logging.debug('Replaced count %s' % repr(countName))
+                        for old, new in replacements.items():
+                            pageContents = pageContents.replace(old, new)
+
+                        newStats = ''
+                        for dixName, dixCount in dixCounts.items():
+                            newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
+                            logging.debug('Adding new count %s' % repr(dixName))
+                        newStats += '\n'
+
+                        contentBeforeIndex = statsSection.start()
+                        contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+                        pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                    else:
+                        pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
+                        logging.debug('Adding new stats section')
 
                     editResult = editPage(pageTitle, pageContents, editToken)
                     if editResult['edit']['result'] == 'Success':
@@ -154,9 +180,7 @@ if __name__ == '__main__':
                     else:
                         logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                 else:
-                    pageContents = '==Over-all stats=='
-                    for dixName, dixCount in dixCounts.items():
-                        pageContents += "\n*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
+                    pageContents = createStatsSection(dixCounts, SVNRevision)
 
                     editResult = editPage(pageTitle, pageContents, editToken)
                     if editResult['edit']['result'] == 'Success':
@@ -182,15 +206,32 @@ if __name__ == '__main__':
                 
                 pageContents = getPage(pageTitle)
                 if pageContents:
-                    matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                    replacements = {}
-                    for matchAttempt in matchAttempts:
-                        countName = matchAttempt.group(2).strip()
-                        if countName in dixCounts:
-                            replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
-                            replacements[(matchAttempt.group(1))] = replacement
-                    for old, new in replacements.items():
-                        pageContents = pageContents.replace(old, new)
+                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                    if statsSection:
+                        matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                        replacements = {}
+                        for matchAttempt in matchAttempts:
+                            countName = matchAttempt.group(2).strip()
+                            if countName in dixCounts:
+                                replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                                replacements[(matchAttempt.group(1))] = replacement
+                                del dixCounts[countName]
+                                logging.debug('Replaced count %s' % repr(countName))
+                        for old, new in replacements.items():
+                            pageContents = pageContents.replace(old, new)
+
+                        newStats = ''
+                        for dixName, dixCount in dixCounts.items():
+                            newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
+                            logging.debug('Adding new count %s' % repr(dixName))
+                        newStats += '\n'
+
+                        contentBeforeIndex = statsSection.start()
+                        contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+                        pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                    else:
+                        pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
+                        logging.debug('Adding new stats section')
 
                     editResult = editPage(pageTitle, pageContents, editToken)
                     if editResult['edit']['result'] == 'Success':
@@ -198,9 +239,7 @@ if __name__ == '__main__':
                     else:
                         logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                 else:
-                    pageContents = '==Over-all stats=='
-                    for dixName, dixCount in dixCounts.items():
-                        pageContents += "\n*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
+                    pageContents = createStatsSection(dixCounts, SVNRevision)
                         
                     editResult = editPage(pageTitle, pageContents, editToken)
                     if editResult['edit']['result'] == 'Success':
