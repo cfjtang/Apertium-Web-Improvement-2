@@ -44,6 +44,22 @@
   </mode>
 
 
+  <mode name="ro-es-biltrans">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ro-es.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="ro-es.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="ro-es.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
   <mode name="ro-es-transfer">
     <pipeline>
       <program name="lt-proc">
