@@ -20,10 +20,16 @@ grep -c '[*@#]' corpa/tat-kaz-origina.txt
 echo '[*@#] errors tat-kaz after:'
 grep -c '[*@#]' corpa/tat-kaz-nova.txt
 
+echo 'WER kaz-tat before:'
+perl ../apertium-eval-translator/apertium-eval-translator.pl -test corpa/kaz-tat-origina.txt -ref corpa/corpus.tat.txt > /tmp/kaz-tat-wer-origina.txt
+grep '(WER)' /tmp/kaz-tat-wer-origina.txt
+echo 'WER kaz-tat after:'
+perl ../apertium-eval-translator/apertium-eval-translator.pl -test corpa/kaz-tat-nova.txt -ref corpa/corpus.tat.txt > /tmp/kaz-tat-wer-nova.txt
+grep '(WER)' /tmp/kaz-tat-wer-nova.txt
+
 echo 'WER tat-kaz before:'
 perl ../apertium-eval-translator/apertium-eval-translator.pl -test corpa/tat-kaz-origina.txt -ref corpa/corpus.kaz.txt > /tmp/tat-kaz-wer-origina.txt
 grep '(WER)' /tmp/tat-kaz-wer-origina.txt
 echo 'WER tat-kaz after:'
 perl ../apertium-eval-translator/apertium-eval-translator.pl -test corpa/tat-kaz-nova.txt -ref corpa/corpus.kaz.txt > /tmp/tat-kaz-wer-nova.txt
 grep '(WER)' /tmp/tat-kaz-wer-nova.txt
-
