@@ -1,12 +1,21 @@
 \subsection{Lexical transfer}
 The lexical transfer was done with an \emph{lttoolbox} letter
-transducer composed of bilingual dictionary entries. Additional
-paradigms were added to the transducer to compensate for the tagset
-notational differences, mostly in regard to terminology, and tagging
-conventions (e.g. the adjective form that is \emph{absolute
-  superlative} in Serbo-Croatian is called \emph{elative} in Slovene,
-the Slovene analyser omits tags for categories like definiteness and
-animacy where the Serbo-Croatian explicitly states them, etc.)
+transducer composed of bilingual dictionary entries.
+
+In addition to standard word-by-word pairing of translations,
+additional paradigms were added to the transducer to handle
+less general tagset mismatches, that were deemed more convenient to
+be resolved directly.
+However, to minimize manual correction of tag mismatches, most of the
+tagset differences were handled with macros in the structural transfer
+module.
+
+The bilingual dictionary was also used to introduce tags for
+tricky cases such as when the adjective comparison is synthetic on one
+side, and analytic on the other (e.g. \emph{zdravije} vs. \emph{bolj zdravo})
+This difference is arbitrary, and unfortunately every such occurence
+needed to be marked by hand. These tags were expanded to the correct
+form later in structural transfer.
 
 \subsection{Lexical selection}
 
@@ -78,7 +87,7 @@ the Croatian dialect uses only the Ijekavian reflex.
 Since the selection for the different reflexes of the \emph{yat} vowel is done in the generation process,
 no rules were needed in the lexical selection module.
 
-Internationalisms have been introduced to Croatian and Bosnian mainly through the Italian and German language
+Internationalisms have been introduced to Croatian and Bosnian mainly through the Italian and German languages
 whereas they have entered Serbian through French and Russian. 
 As a result, the three dialects have developed different phonetic patterns for international words.
 
