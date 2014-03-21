@@ -1,11 +1,15 @@
 \subsection{Disambiguation}
 Though for both languages there exists a number of tools for
-morphological tagging and disambiguation \cite{vitas2004intex,agic2008improving,snajder08automatic}, there
+morphological tagging and disambiguation \cite{vitas2004intex,agic2008improving,snajder08automatic,peradin2012towards}, there
 are none freely available. Likewise, the adequately tagged corpora are
-mostly non-free \cite{erjavec2004multext,tadic2002building}.  Since both Serbo-Croatian and Slovenian are
-highly inflected languages, the automatically trained statistical
-tagger canonically used in Apertium language pairs would not give
-satisfactory results. For this reason we chose to use solely
+mostly non-free \cite{erjavec2004multext,tadic2002building}.
+
+Due to the high degree of morphological variation the two languages
+exhibit, given the lack of a tagged corpus, and the relatively small
+lexicon size of our analysers, we were unable to obtain satisfactory
+results with the statistical tagger canonically used in Apertium
+language pairs.
+For this reason we chose to use solely
 Constraint Grammar (CG) for disambiguation. The CG module does not
 provide complete disambiguation, so in the case of any remaining
 ambiguity the system picks the first output analysis.
