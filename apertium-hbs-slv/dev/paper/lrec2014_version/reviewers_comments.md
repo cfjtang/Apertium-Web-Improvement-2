@@ -166,12 +166,12 @@ disambiguation, however from the reading of the section it seems to be used
 solely for choosing the correct word according to the variant of the dialect
 used in the output (Serbian, Croatian or Bosnian). Please clarify.
 
-* Lexical selection has an abundance of examples and code snippets which makes
-  it seem like a central focus of the article, yet it is merely hand-written
-  rules and available in open source repository so no need to have multiple
-code
-  snippets that all look the same. However final evaluation says not much work
-  has been done with lexical selection.
+* Lexical selection has an abundance of examples and code snippets
+  which makes it seem like a central focus of the article, yet it is
+  merely hand-written rules and available in open source repository so
+  no need to have multiple code snippets that all look the
+  same. However final evaluation says not much work has been done with
+  lexical selection.
 
 * If the lexical selection is based on minor phonological or orthographical
   variances it should be simple to automate.
