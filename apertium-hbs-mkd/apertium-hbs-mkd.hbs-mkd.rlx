@@ -47,6 +47,9 @@ LIST CNJ = cnjcoo cnjsub ;
 LIST Interr = itg ;
 LIST Interjection = ij ;
 LIST Cm = (",") (cm) ;
+LIST LPar = lpar ;
+LIST RPar = rpar ;
+LIST Sent = sent ;
 
 # =========================================================================== #
 
@@ -85,9 +88,11 @@ LIST Plural = pl ;
 LIST Ant = ant ; 
 LIST Cog = cog ; 
 LIST ProperNoun = np ;
+LIST Toponim = top ; 
+LIST Places = "grad" ;
 
 # Words that have gender, number and case:
-LIST Nomen = top al ant cog n np prn adj; 
+LIST Nomen = top al ant cog n np prn adj num; 
 
 # Animacy
 LIST Animate = ma ; 
@@ -141,6 +146,9 @@ SET Num-Ord = Num - Ord ;
 # All possible word categories
 SET WORD = N | V | A | Pr | Pron | Det | Adv | CC | CS | Interjection | Num | ("\?") ;
 
+# Skippable stuff
+LIST Skippable = ("clitic"i) clt adv cnjcoo cnjsub cm ord ;
+
 # Categories that can come before the head noun in an ProperNoun 
 SET PRE-N =  A | Det | Num | (n gen) | (prn gen) | CC | DemPron; 
 SET Modifier = A | Num | DemPron | PosPron | IndPron; # Words that agree in case, number, gender with the following word.
@@ -165,6 +173,8 @@ SET NOT-PP-MEMBER = WORDMARK - PP-MEMBER ;
 
 # Categories which can be the head of a noun phrase
 SET NP-HEAD = N | Pron | Prop ; 
+
+SET NOT-NP-HEAD-OR-CM-OR-CC = WORDMARK - NP-HEAD | Cm | CC  ; 
 
 SET S-BOUNDARY = CS | Interr | (n voc) | EOS; 
 
@@ -201,15 +211,17 @@ SELECT:PrnNumberFromVerb $$NUMBER (0C Pron) ((1C* V + $$NUMBER BARRIER EOS) OR (
     ## Ona, međutim, priznaje...
 
 # This is a heuristic:
-REMOVE:vbserORvblex ("biti"i vblex) IF (NOT -1* Nomen + Acc LINK 1 VBSer + Clt BARRIER V-FIN OR BOS) (NOT 1* Nomen + Acc LINK 1 VBSer + Clt BARRIER V-FIN OR EOS)
+SELECT:vbserORvblex VBLex IF (0 VBSer OR VBLex) 
+	(1* Nomen + Acc BARRIER V - Clt)
+REMOVE:vbserORvblex VBLex IF (0 VBSer OR VBLex) (NEGATE -1* (Nomen + Acc LINK 1 VBSer + Clt) BARRIER V-FIN OR BOS) (NEGATE 1* (Nomen + Acc LINK 1 VBSer + Clt) BARRIER V-FIN OR EOS)
 
 SELECT VBSer IF (-1* Lp );
 SELECT VBSer IF (1* Lp BARRIER V - Lp - PresParticiple );
 
 SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (-1* VBSer BARRIER BOS) ;
 SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (1* VBSer BARRIER EOS) ;
-SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (-1 MeTeSePron BARRIER BOS) ;
-SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (1 MeTeSePron BARRIER EOS) ;    
+SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (-1 MeTeSePron) ;
+SELECT:PerfectNotOptative Lp (0C Lp OR Optative) (1 MeTeSePron) ;    
     ## These are all ways how perfect can be made    
 
 SELECT:l-participleNumber $$NUMBER (0C Lp OR Optative) ( (-1* VBSer + $$NUMBER BARRIER BOS) OR  (1* VBSer + $$NUMBER BARRIER EOS) );
@@ -226,7 +238,7 @@ REMOVE:NotAdverbNotAdjective Adv (Not 0 A) (NOT -1 V) (Not 1 V) ;
 
 SELECT:Nom+Perfect NP-HEAD + $$NUMBER + $$GENDER + Nom IF
                          (0 NP-HEAD + $$NUMBER + $$GENDER)
-                         (1* V-COP + $$NUMBER LINK 1 Lp + $$NUMBER + $$GENDER BARRIER S-BOUNDARY) ;
+                         (1* (V-COP + $$NUMBER LINK 1 Lp + $$NUMBER + $$GENDER) BARRIER S-BOUNDARY) ;
     ## Radovanović je ušla u povijest kao prva žena-pilot u Srbiji.                         
 
 SELECT:BOS-Nom-Viv $$NUMBER + Nom IF (-1 BOS OR Cm) (1* V-FIN + Intransitive + $$NUMBER BARRIER Cm) ;
@@ -258,9 +270,9 @@ SELECT:AtrrNum->NNum $$NUMBER IF (0 N OR A)(-1 Modifier + $$NUMBER) ;
 SELECT $$NUMBER + Nom IF (-1* NP-HEAD  + $$NUMBER BARRIER BOS) (-1 ("<kao>"i) ) ;    
     ## ona je... kao kadetkinja
 
-SELECT:prep_Noun Pr + $$CASE (0 Pr OR N OR V)(1 Pron + $$CASE);
+#SELECT:prep_Noun Pr + $$CASE (0 Pr OR N OR V)(1 Pron + $$CASE);
 	## Radi mene vs. On radi u tvornici
-REMOVE:prep_Noun Pr + $$CASE (0 Pr OR N OR V)(NOT 1 Pron + $$CASE);
+#REMOVE:prep_Noun Pr + $$CASE (0 Pr OR N OR V)(NOT 1 Pron + $$CASE);
 	## Radi mene vs. On radi u tvornici
 
 SELECT:DaVBLex Particle (0 ("<da>"i) ) (1 VBLex);
@@ -326,7 +338,7 @@ SELECT Animate (0 ("pas"i) + Nom);
 #   PP disambiguation                                                         #
 # =========================================================================== #
 
-REMOVE NOT-ACC-LOC IF (-1C* ACC-OR-LOC-PREP BARRIER NOT-PP-MEMBER) ;
+#REMOVE NOT-ACC-LOC IF (-1C* ACC-OR-LOC-PREP BARRIER NOT-PP-MEMBER) ;
     ## Šumski požar na hrvatskom otoku Kornati odnio još jedan ljudski život.
 
 
@@ -336,6 +348,19 @@ REMOVE NOT-ACC-LOC IF (-1C* ACC-OR-LOC-PREP BARRIER NOT-PP-MEMBER) ;
 # Partitive vs. possesive disambiguation
 # The easiest one, if it comes' after an adverb it's partitive:
 SELECT:AdvB4Partitive Adv (1 (@PAR) ) ;
+
+# Preposition based case disambiguation:
+REMOVE:PrepositionCase Pr + $$CASE (1 Nomen - $$CASE)
+REMOVE:PrepositionCase Pr + $$CASE (2 Nomen - $$CASE) (1 Skippable)
+REMOVE:PrepositionCase Nomen + $$CASE (-1 Pr - $$CASE)
+REMOVE:PrepositionCase Nomen + $$CASE (-2 Pr - $$CASE) (-1 Skippable)
+
+REMOVE:ModifierCase Nomen + $$CASE (-1 Modifier - $$CASE)
+REMOVE:ModifierCase Nomen + $$CASE (-2 Modifier - $$CASE) (-1 Skippable)
+
+REMOVE:ModifierCase Modifier + $$CASE (2 Nomen - $$CASE - Clt) (1 Skippable)
+REMOVE:ModifierCase Modifier + $$CASE (1 Nomen - $$CASE - Clt)
+
 
 SELECT Ins IF (0 Num) (-1C ("<s>"i) + Pr);
 SELECT Gen IF (0 Num) (-1C ("<prije>"i) + Pr);
@@ -347,6 +372,8 @@ SELECT:NumberChainIns Loc (0 Num) (-1* LOC-PREP BARRIER WORD - Modifier) ;
 SELECT:NumberChainIns Ins (0 Num) (-1* INS-PREP BARRIER WORD - Modifier) ;
     ## TODO: Expand this for all cases, currently they don't appear
 
+
+
 SELECT:Modifier-Nom Nom IF (-1C Modifier + Nom);
 SELECT:Modifier-Clt-Nom Nom IF (-1 Pron + Clt) (-2C Modifier + Nom);
 
@@ -356,37 +383,34 @@ SELECT:Modifier-Clt-Nom Nom IF (-1 Pron + Clt) (-2C Modifier + Nom);
 
 # Genitive inside numeral phrases
 SELECT Singular + Gen ((1* DualNum BARRIER (*) - Modifier) OR (-1* DualNum BARRIER (*) - Modifier))
-SELECT Plural + Gen ((1* PluralNum BARRIER (*) - Modifier) OR (-1* PluralNum BARRIER (*) - Modifier))
+SELECT Plural + Gen ((1C* PluralNum BARRIER (*) - Modifier) OR (-1C* PluralNum BARRIER (*) - Modifier))
 
-# Preposition based case disambiguation:
-REMOVE Pr + $$CASE (1 Nomen - $$CASE)
-REMOVE Nomen + $$CASE (-1 Pr - $$CASE)
-REMOVE Nomen + $$CASE (-1 Modifier - $$CASE)
+
 	
-SELECT:Pr-Acc-chain Acc IF (-1C ACC-PREP OR Modifier + Acc);
-SELECT:Pr-Acc-chain Acc IF (-2C Nomen + Acc) (-1C CNJ);
-SELECT:Pr-Acc-chain Acc IF (-2*C Nomen + Acc BARRIER WORD - Adv - CNJ) (-1C CNJ);
-SELECT:Pr-Acc-Clt-chain Acc IF (-1 Pron + Clt OR Num)(-2C ACC-PREP OR Modifier + Acc);
+#SELECT:Pr-Acc-chain Acc IF (-1C ACC-PREP OR Modifier + Acc);
+#SELECT:Pr-Acc-chain Acc IF (-2C Nomen + Acc) (-1C CNJ);
+#SELECT:Pr-Acc-chain Acc IF (-2*C Nomen + Acc BARRIER WORD - Adv - CNJ) (-1C CNJ);
+#SELECT:Pr-Acc-Clt-chain Acc IF (-1 Pron + Clt OR Num)(-2C ACC-PREP OR Modifier + Acc);
 
-SELECT:Pr-Gen-chain Gen IF (-1C GEN-PREP OR Modifier + Gen);
-SELECT:Pr-Gen-chain Gen IF (-2C Nomen + Gen) (-1C CNJ);
-SELECT:Pr-Gen-chain Gen IF (-2*C Nomen + Gen BARRIER WORD - Adv - CNJ) (-1C CNJ);
-SELECT:Pr-Gen-Clt-chain Gen IF (-1 Pron + Clt OR Num)(-2C GEN-PREP OR Modifier + Gen);
+#SELECT:Pr-Gen-chain Gen IF (-1C GEN-PREP OR Modifier + Gen);
+#SELECT:Pr-Gen-chain Gen IF (-2C Nomen + Gen) (-1C CNJ);
+#SELECT:Pr-Gen-chain Gen IF (-2*C Nomen + Gen BARRIER WORD - Adv - CNJ) (-1C CNJ);
+#SELECT:Pr-Gen-Clt-chain Gen IF (-1 Pron + Clt OR Num)(-2C GEN-PREP OR Modifier + Gen);
 
-SELECT:Pr-Dat-chain Dat IF (-1C DAT-PREP OR Modifier + Dat);
-SELECT:Pr-Dat-chain Dat IF (-2C Nomen + Dat)(-1C CNJ);
-SELECT:Pr-Dat-chain Dat IF (-2*C Nomen + Dat BARRIER WORD - Adv - CNJ) (-1C CNJ);
-SELECT:Pr-Dat-Clt-chain Dat IF (-1 Pron + Clt OR Num)(-2C DAT-PREP OR Modifier + Dat);
+#SELECT:Pr-Dat-chain Dat IF (-1C DAT-PREP OR Modifier + Dat);
+#SELECT:Pr-Dat-chain Dat IF (-2C Nomen + Dat)(-1C CNJ);
+#SELECT:Pr-Dat-chain Dat IF (-2*C Nomen + Dat BARRIER WORD - Adv - CNJ) (-1C CNJ);
+#SELECT:Pr-Dat-Clt-chain Dat IF (-1 Pron + Clt OR Num)(-2C DAT-PREP OR Modifier + Dat);
 
-SELECT:Pr-Loc-chain Loc IF (-1C LOC-PREP OR Modifier + Loc);
-SELECT:Pr-Loc-chain Loc IF (-2C Nomen + Loc)(-1C CNJ);
-SELECT:Pr-Loc-chain Loc IF (-2*C Nomen + Loc BARRIER WORD - Adv - CNJ) (-1C CNJ);
-SELECT:Pr-Loc-Clt-chain Loc IF (-1 Pron + Clt OR Num)(-2C LOC-PREP OR Modifier + Loc);
+#SELECT:Pr-Loc-chain Loc IF (-1C LOC-PREP OR Modifier + Loc);
+#SELECT:Pr-Loc-chain Loc IF (-2C Nomen + Loc)(-1C CNJ);
+#SELECT:Pr-Loc-chain Loc IF (-2*C Nomen + Loc BARRIER WORD - Adv - CNJ) (-1C CNJ);
+#SELECT:Pr-Loc-Clt-chain Loc IF (-1 Pron + Clt OR Num)(-2C LOC-PREP OR Modifier + Loc);
 
-SELECT:Pr-Ins-chain Ins IF (-1C INS-PREP OR Modifier + Ins);
-SELECT:Pr-Ins-chain Ins IF (-2C Nomen + Ins)(-1C CNJ);
-SELECT:Pr-Ins-chain Ins IF (-2*C Nomen + Ins BARRIER WORD - Adv - CNJ) (-1C CNJ); # Note and possibly TODO: Adv is here only because of 'kao<adv> i<cnjcoo>', but probably it should be a compound conjunction
-SELECT:Pr-Ins-Clt-chain Ins IF (-1 Pron + Clt OR Num)(-2C INS-PREP OR Modifier + Ins);
+#SELECT:Pr-Ins-chain Ins IF (-1C INS-PREP OR Modifier + Ins);
+#SELECT:Pr-Ins-chain Ins IF (-2C Nomen + Ins)(-1C CNJ);
+#SELECT:Pr-Ins-chain Ins IF (-2*C Nomen + Ins BARRIER WORD - Adv - CNJ) (-1C CNJ); # Note and possibly TODO: Adv is here only because of 'kao<adv> i<cnjcoo>', but probably it should be a compound conjunction
+#SELECT:Pr-Ins-Clt-chain Ins IF (-1 Pron + Clt OR Num)(-2C INS-PREP OR Modifier + Ins);
 
 SELECT:Ant+Cog $$NUMBER + $$GENDER + $$CASE IF (-1 Ant + $$NUMBER + $$GENDER + $$CASE ) (0 Cog + $$NUMBER + $$GENDER + $$CASE ) ;
 SELECT:Cog+Ant $$NUMBER + $$GENDER + $$CASE IF (1 Ant + $$NUMBER + $$GENDER + $$CASE ) (0 Cog + $$NUMBER + $$GENDER + $$CASE ) ;
@@ -395,17 +419,33 @@ SELECT:Cog+Ant $$NUMBER + $$GENDER + $$CASE IF (1 Ant + $$NUMBER + $$GENDER + $$
 REMOVE:Ant=>noPlural Plural IF (0 Ant + Plural) (NOT -1 Modifier + Plural);
 REMOVE:Cog=>noPlural Plural IF (0 Cog + Plural + Feminine ) (NOT -1 Modifier + Plural);
     ## A proper name is rarely in plural, if so probably there would be an adjective or a pronoun in plural before it
-SELECT:FeminineCognameAloneIsNominative Nom IF 
+SELECT:FeminineCognameAloneIsNominative Nom IF # This rule is really analyser specific
     (0 Cog + Feminine) 
     (NOT -1 Ant + ($$CASE - Nom))
     (NOT 1 Ant + ($$CASE - Nom));
     ## Indeed, if it's already not Accusative and Vocative etc
 
-SELECT:DativeIfAlone Dat IF (NOT 0 Num) (0C Dat OR Loc) (NOT -1C Pr ) (NOT -1C Modifier + Loc);
-REMOVE:NotLocative Loc IF (0 Dat OR Loc) (NOT -1C LOC-PREP) (NOT -1C Modifier + Loc);
+SELECT:DativeIfAlone Dat IF (NOT 0 Num) 
+                            (0C Dat OR Loc) 
+                            (NOT -1C Pr)
+                            (NOT -1C Modifier + Loc) 
+                            (NOT -1 CC LINK -1 Loc)
+                            (NOT -1 Cm LINK -1 Loc) ;
+    ## Spomenik je otkriven u Zagrebu, Rijeci, Puli, Splitu i Ljubljani.
+
+REMOVE:NotLocative Loc IF (0 Dat OR Loc) 
+                          (NOT -1C LOC-PREP) 
+                          (NOT -1C Modifier + Loc) 
+                          (NOT -1 CC LINK -1 Loc) 
+                          (NOT -1 Cm LINK -1 Loc) ;
     ## If dative stands alone, it's never locative
 
+SELECT:TeCnjAfterComa CC IF (-1 Cm) ;
+SELECT:TeCnjAfterComa CC IF (-1 BOS) (1 Cm);
+    ### Višegodišnjim beskompromisnim djelovanjem sastav se uspio nametnuti kao trademark grada Rijeke, cijele jedne regije, te na koncu poklonika nadahnute različitosti u više država.
+
 SELECT:NomenAfterNounIsGenitive Gen (-1 N) (NOT 0 ProperNoun + (al) ) (NOT 0 (rel) );
+SELECT:NomenAfterNounIsGenitive Gen (-2 N) (-1 Skippable) (NOT 0 ProperNoun + (al) ) (NOT 0 (rel) );
 
 SELECT:kandidatPl Plural (0 ("kandidat"i) + Gen);
 
@@ -424,7 +464,6 @@ SELECT:NumberesDistantGender $$GENDER (0 Num) (1* Nomen + $$GENDER BARRIER EOS) 
 
 SELECT:AdjectivePluralDefaultGender Animate + Plural (NOT -1* N BARRIER BOS) (NOT 1* N BARRIER EOS) ;
 
-SELECT:DativeIfAlone Dat IF (NOT 0 Num) (0C Dat OR Loc) (NOT -1C Pr ) (NOT -1C Modifier + Loc);
 
 REMOVE:notCliticHeuristic Clt (0 Pron + Clt OR Pron + ("free"i) ) (-1 Pr) ;
 
@@ -457,7 +496,7 @@ SELECT:TransitiveBCauseAccusative Transitive IF (1* Acc BARRIER V);
 SELECT $$NUMBER (O PassiveParticiple) (-1* VBSer LINK -1* Particle + Interrogative LINK -1 V + $$NUMBER) ;
     ## "hoću li biti primljena"
 
-REMOVE:notParticiple Participle (-1 VBMod) (NOT 1 V BARRIER EOS) ;
+REMOVE:notParticiple Participle (-1 VBMod) (NOT 1 V) ;
 
 REMOVE:IsNotAdverb Adv (NOT -1* VBLex BARRIER BOS OR CS OR CC) (NOT 1* VBLex BARRIER EOS OR CS OR CC);
     ## Bilo je teško,...
@@ -481,8 +520,6 @@ SELECT:TotPronNt Neuter + Nom (0 Pron + Totalising) (1 VBSer) (2 A) ;
 
 SELECT CS IF (0 ("<Dok>"i)) (-1 BOS);
 
-SELECT CC (-1 Cm) ;
-
 SELECT:ParticleDa Particle IF (0 ("<da>"i) ) (1 V);
 SELECT:ParticleDa Particle IF (0 ("<da>"i) ) (-1 BOS) (1 Cm);
 
@@ -501,6 +538,24 @@ SELECT:IsThereASubject? Lp + $$GENDER + $$NUMBER IF
 
 # If it's not already disambiguated for plural via adjectives, it's most likely singular
 #REMOVE:PropNounSingular Prop + Plural;
+
+# Roman numeral or not
+SELECT:RomanOrNot Num IF (0 CC OR Num) (1 Sent OR RPar);
+REMOVE:RomanOrNot Num IF (0 CC OR ("i")) (NOT -1 BOS) (NOT 1 RPar) (NOT 1 Sent);
+REMOVE:RomanOrNot Num IF (-2 BOS) (-1 Ant + Nom) (0 CC OR Num) (1 Ant + Nom) (2 V-FIN + Plural);
+    ## Marica i Ivica su u vrtu.
+
+SELECT Toponim IF (0 Toponim OR N) (0 $$CASE) (-1C Places + $$CASE) ;
+    ## Višegodišnjim beskompromisnim djelovanjem sastav se uspio nametnuti kao trademark grada Rijeke
+
+SELECT Toponim + $$CASE IF (0C Toponim OR N) (-1 Cm LINK -1 Toponim + $$CASE) (1 Cm LINK 1 Toponim + $$CASE) ;
+    ## Spomenik je otkriven u Zagrebu, Rijeci, Puli, Splitu i Ljubljani.
+
+SELECT Toponim + $$CASE IF (0C Toponim) (-1 Cm LINK -1 Toponim + $$CASE) (1 CC LINK 1 Toponim + $$CASE) ;
+    ## Spomenik je otkriven u Zagrebu, Rijeci, Puli, Splitu i Ljubljani.
+
+SELECT Toponim + $$CASE IF (0C Toponim) (-1 CC LINK -1 Toponim + $$CASE) (-3 Cm LINK 1 Toponim + $$CASE) ;
+    ## Spomenik je otkriven u Zagrebu, Rijeci, Puli, Splitu i Ljubljani.
 
 SECTION
 # =========================================================================== #
@@ -536,7 +591,7 @@ MAP:PrModA ( @→A ) TARGET Pr (1*C A BARRIER WORD - N - A ) ;
 MAP:Adverb→Verb (@V→) TARGET Adv (1C V)
 MAP:Verb←Adverb (@V←) TARGET Adv (-1C V)
 MAP:Verb←...←Adverb (@V←) TARGET Adv (-1*C V BARRIER BOS OR Cm) (1C Cm OR EOS)
-MAP:Adverb→...→Verb (@V←) TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V BARRIER EOS)
+MAP:Adverb→...→Verb (@V←) TARGET Adv (NOT -1*C V BARRIER BOS OR Cm) (1C V)
 ## Participles and such Note: Looks like a copy paste, but was thought through :) Could perhaps be made more universal though
 ### l-participle
 MAP:Lp→VBSer (@V→) TARGET Lp (1C VBSer + Clt)
