@@ -1,5 +1,5 @@
 echo "==Serbo-Croatian->Macedonian===========================";
-bash inconsistency.sh sh-mk > /tmp/sh-mk.testvoc; bash inconsistency-summary.sh /tmp/sh-mk.testvoc sh-mk
+bash inconsistency.sh hbs-mkd > /tmp/hbs-mkd.testvoc; bash inconsistency-summary.sh /tmp/hbs-mkd.testvoc hbs-mkd
 echo ""
 echo "==Macedonian->Serbo-Croatian===========================";
-bash inconsistency.sh mk-sh > /tmp/mk-sh.testvoc; bash inconsistency-summary.sh /tmp/mk-sh.testvoc mk-sh
+bash inconsistency.sh mkd-hbs > /tmp/mkd-hbs.testvoc; bash inconsistency-summary.sh /tmp/mkd-hbs.testvoc mkd-hbs
