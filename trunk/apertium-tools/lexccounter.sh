@@ -9,6 +9,7 @@ for line in $allcounts; do
         numbr=`echo $line | sed -r 's/(.*)\.\.\.([0-9]*),?/\2/'`;
         if [[ "$thing" == "Root" ]]; then
                 rootsize=$numbr;
+					 echo $rootsize
                 root=`grep -A$rootsize Root $LEXC | grep -v Root`;
         fi;
 done;
