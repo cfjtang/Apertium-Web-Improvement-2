@@ -138,7 +138,7 @@ do
 			  mkdir -p $MODEDIR
 			  
 			  #create mode with learned rules
-			  bash $CURDIR/createModeWithLearnedRules.sh  $APERTIUM_SOURCES/modes/${SL}-${TL}.mode  "$TRANSFERTOOLSPATH" "$MYDIR/queries/$ITERATIONVAR/experiment/rules/rules" blabla $BILDICTIONARY  "" "" > $MODEDIR/${SL}-${TL}_nonworking.mode
+			  bash $CURDIR/createModeWithLearnedRules.sh  $APERTIUM_PREFIX/share/apertium/modes/${SL}-${TL}.mode  "$TRANSFERTOOLSPATH" "$MYDIR/queries/$ITERATIONVAR/experiment/rules/rules" blabla $BILDICTIONARY  "" "" > $MODEDIR/${SL}-${TL}_nonworking.mode
 			  
 			  MODEFILE="${SL}-${TL}_nonworking.mode"
 			  MODEFILELONG="$MODEDIR/$MODEFILE"
@@ -152,7 +152,7 @@ do
 			
 			
 			if [ "$ITERATIONVAR" == "1-ref" -o "$ITERATIONVARCONTAINSREF" == "0" ] ; then
-						
+			
 			 #translate bilingual corpus
 			 mkdir -p $MYDIR/translations_${ITERATION}
 			 zcat  $ANALYSED_PARALLEL_CORPUS.${SL}.gz | sed 's_$_^.<sent>$_' | sed 's:_: :g' | PATH=$PATH:$APERTIUMPATH bash $CURDIR/translate_apertium.sh "" $LEXICALMODE join "none" "$MYDIR/queries/$ITERATIONVAR/experiment" | ${APERTIUMPATH}apertium-pretransfer | sed 's_\^\*executedtule[0-9]*\$__g' | sed 's_\^\*isolatedword\$__g' | sed 's_\^.<sent>\$ *$__' |  sed -r 's_^ *\^_^_' | sed -r 's_\$ *\^_$^_g' | sed -r 's_ *$__' | sed 's: :_:' | sed 's_$^_$ ^_g'  > $MYDIR/translations_${ITERATION}/translation.${ITERATIONVAR}	 
@@ -170,7 +170,7 @@ do
 		  else
 		  
 			  #Get bilphrases
-			  zcat $BILPHRASES_DIR/$BOXNUMBER$DEBUGINFOFILESUFFIX | sed -n '/BILINGUAL_PHRASES/,/END_BILINGUAL_PHRASES/p' | head -n -1 | tail -n +2  | ${PYTHONHOME}python $CURDIR/filterBilphrasesMatchingAT.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --alignment_template "$AT" $RICHATSFLAG | cut -f 1,2,3,4 -d '|' | sed 's:<empty_tag_[^>]*>::g' | sed -r 's_> ([^|])_>$ ^\1_g' |  sed -r 's_> [|]_>$ |_g' | sed -r 's_[|] ([^^])_| ^\1_' |  sed -r 's_[|] ([^^])_| ^\1_' | gzip > $MYDIR/bilingualPhrases.${ITERATION}.gz
+			  zcat $BILPHRASES_DIR/$BOXNUMBER$DEBUGINFOFILESUFFIX | tac | sed -e '/^BILINGUAL_PHRASES$/,$d' | tac | sed -e '/^END_BILINGUAL_PHRASES$/,$d' | ${PYTHONHOME}python $CURDIR/filterBilphrasesMatchingAT.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --alignment_template "$AT" $RICHATSFLAG | cut -f 1,2,3,4 -d '|' | sed 's:<empty_tag_[^>]*>::g' | sed -r 's_> ([^|])_>$ ^\1_g' |  sed -r 's_> [|]_>$ |_g' | sed -r 's_[|] ([^^])_| ^\1_' |  sed -r 's_[|] ([^^])_| ^\1_' | gzip > $MYDIR/bilingualPhrases.${ITERATION}.gz
 			  
 			  #Translate bilphrases and check..
 			  mkdir -p $MYDIR/translations_${ITERATION}

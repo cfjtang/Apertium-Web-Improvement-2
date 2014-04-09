@@ -30,7 +30,8 @@ zcat  $INPUTFILE.clean.gz | cut -f 2 -d '|'  | sed  's:^ *::' | sed  's_ *$__' |
 
 zcat $INPUTFILE.clean.gz  | paste -d '|' - $INPUTFILE.clean.bildic | python $RULELEARNINGDIR/processBilphrases.py --allow_all_alignments | gzip > $INPUTFILE.goodformat.gz
 
-zcat $INPUTFILE.goodformat.gz | python $RULELEARNINGDIR/generateOneATFromBilphrases.py --tag_groups_file_name $RULELEARNINGDIR/taggroups_$PAIR --tag_sequences_file_name $RULELEARNINGDIR/tagsequences_$PAIR --closed_categories $CURDIR/phrase-extraction/transfer-tools-scripts/markers | gzip >  $INPUTFILE.ats.gz
+zcat $INPUTFILE.goodformat.gz | python $RULELEARNINGDIR/generateOneATFromBilphrases.py --tag_groups_file_name $RULELEARNINGDIR/taggroups_$PAIR --tag_sequences_file_name $RULELEARNINGDIR/tagsequences_$PAIR --closed_categories $CURDIR/phrase-extraction/transfer-tools-scripts/markers 2> $INPUTFILE.ats.errors | gzip >  $INPUTFILE.ats.gz
+gzip $INPUTFILE.ats.errors
 
 zcat $INPUTFILE.ats.gz | python $RULELEARNINGDIR/addGeneralisedLeftSide.py | LC_ALL=C sort -r | python $RULELEARNINGDIR/uniqSum.py | awk -F"|" '{print $2"|"$1"|"$3"|"$4"|"$5"|"$6}' | sed 's_^ __' | sed 's_|\([0-9]\)_| \1_' |  LC_ALL=C sort -r | ${PYTHONHOME}python $RULELEARNINGDIR/removeExplicitEmptuTagsFromPatternTLandRest.py --emptyrestrictionsmatcheverything | awk -F"|" '{print $2"|"$3"|"$4"|"$5"|"$6}' | sed 's_^ __' > $INPUTFILE.ats.prepared
 

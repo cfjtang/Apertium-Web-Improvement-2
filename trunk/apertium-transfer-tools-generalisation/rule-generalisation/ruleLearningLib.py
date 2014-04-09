@@ -280,7 +280,8 @@ class AlignmentTemplateSet(object):
 		
 	
 	def remove_contradictory_ats(self, takeIntoAccountMoreParticular=True):
-		#subsetGraph: arc from subset to superset
+		
+		#currently ignores parameter and return empty set
 		
 		# No tengo muy claro todavía qué hace la opción de takeIntoAccountMoreParticular=True
 		# Es mejor ejecutarlo con False. En ese caso, elimina contradicciones entre ATs
@@ -289,38 +290,36 @@ class AlignmentTemplateSet(object):
 		
 		bilphrasesToDelete=set()
 		
-		addedinlastIteration=True
-		while addedinlastIteration:
-			bilphrasesToAdd=set()
-			for l2map in self.get_l2_maps():
-				for listOfAts in l2map[1].values():
-					sortedList=sorted(listOfAts, key=lambda at: at.freq, reverse=True)
-					discardedAts=sortedList[1:]
-					keptAt=sortedList[0]
-					listOfAts[:]=[ keptAt ]
-					for at in discardedAts:
-						self.id_map.pop(at.id)
-						self.id_map_by_pos[at.get_pos_list_str()].remove(at.id)
-						sllexandrestrictions=at.get_sllex_and_restrictions_str()
-						
-						for bil_id in at.correct_bilphrases:
-							explainedByAMoreParticular=False
-							for listOfAts2 in l2map[1].values():
-								for at2 in listOfAts2:
-									#AT2 es más particular y traduce bien bil_id
-									if bil_id in at2.correct_bilphrases and (( not takeIntoAccountMoreParticular) or ( takeIntoAccountMoreParticular and at.is_subset_of_this(at2) and not at2.is_subset_of_this(at) ) ): 
-										explainedByAMoreParticular=True
-										break
-								if explainedByAMoreParticular:
-									break
-							if not explainedByAMoreParticular:
-								bilphrasesToAdd.add(bil_id)
-			bilphrasesToDelete.update(bilphrasesToAdd)
-			if len(bilphrasesToAdd) > 0:
-				addedinlastIteration=True
-			else:
-				addedinlastIteration=False
-			bilphrasesToAdd=set()
+		#addedinlastIteration=True
+		#while addedinlastIteration:
+			#bilphrasesToAdd=set()
+		for l2map in self.get_l2_maps():
+			for listOfAts in l2map[1].values():
+				sortedList=sorted(listOfAts, key=lambda at: at.freq, reverse=True)
+				discardedAts=sortedList[1:]
+				keptAt=sortedList[0]
+				listOfAts[:]=[ keptAt ]
+				for at in discardedAts:
+					self.remove(at.id)
+						#sllexandrestrictions=at.get_sllex_and_restrictions_str()
+						#for bil_id in at.correct_bilphrases:
+							#explainedByAMoreParticular=False
+							#for listOfAts2 in l2map[1].values():
+							#	for at2 in listOfAts2:
+							#		#AT2 es más particular y traduce bien bil_id
+							#		if bil_id in at2.correct_bilphrases and (( not takeIntoAccountMoreParticular) or ( takeIntoAccountMoreParticular and at.is_subset_of_this(at2) and not at2.is_subset_of_this(at) ) ): 
+							#			explainedByAMoreParticular=True
+							#			break
+							#	if explainedByAMoreParticular:
+							#		break
+							#if not explainedByAMoreParticular:
+							#	bilphrasesToAdd.add(bil_id)
+			#bilphrasesToDelete.update(bilphrasesToAdd)
+			#if len(bilphrasesToAdd) > 0:
+			#	addedinlastIteration=True
+			#else:
+			#	addedinlastIteration=False
+			#bilphrasesToAdd=set()
 					
 		return bilphrasesToDelete
 
@@ -400,8 +399,10 @@ def AlignmentTemplate_generate_all_structural_generalisations(at,generalisationO
 	
 	# compute generalisation stuff!
 	attribute_names=set()
+	sl_attribute_names=set()
 	for lexform in at.parsed_sl_lexforms:
 		attribute_names.update(lexform.get_tags_with_feature_names_as_dict().keys())
+		sl_attribute_names.update(lexform.get_tags_with_feature_names_as_dict().keys())
 	for lexform in at.parsed_tl_lexforms:
 		attribute_names.update(lexform.get_tags_with_feature_names_as_dict().keys())
 	
@@ -457,6 +458,10 @@ def AlignmentTemplate_generate_all_structural_generalisations(at,generalisationO
 									indexesOfRestrictionsReferenced.add(slindex)
 								elif at.parsed_sl_lexforms[slindex].get_tags_with_feature_names_as_dict().get(featureName)==featureValue:
 									valuesForThisLexform.append(get_representation_of_tl_generalised_tag_from_sl_word(featureName,slindex))
+						
+						#if not, and option is enabled, mantain value
+						if len(valuesForThisLexform) == 0 and generalisationOptions.is_generaliseNonMatchingToo():
+							valuesForThisLexform.append(featureValue)
 				else:
 					#First check whether value is shared with any aligned SL word
 					for slindex in slindexes:
@@ -549,52 +554,125 @@ def AlignmentTemplate_generate_all_structural_generalisations(at,generalisationO
 		debug("Possible values for TL "+featureName+": "+str(valuesTL))
 		debug("Possible values for Restrictions "+featureName+": "+str(valuesRestrictions))
 	
+	#check whether the value of each sl attribute can be obtained in all TL words (or is empty)
+	slAttributesNotGeneralisableOrEmpty=set()
+	if not generalisationOptions.is_dontGeneraliseAllInstancesTogether():
+		for featureName in sl_attribute_names:
+			canBeObtainedInALlNonEmptyValues=True
+			tlvalueLists=newValuesForFeatures[featureName][1]
+			for mytlindex in range(len(at.parsed_tl_lexforms)):
+				if featureName in at.parsed_tl_lexforms[mytlindex].get_tags_with_feature_names_as_dict():
+					myvalue=at.parsed_tl_lexforms[mytlindex].get_tags_with_feature_names_as_dict()[featureName]
+					if not is_empty_tag(myvalue):
+						if len(tlvalueLists[mytlindex]) == 0:
+							canBeObtainedInALlNonEmptyValues=False
+							break
+			if not canBeObtainedInALlNonEmptyValues:
+				slAttributesNotGeneralisableOrEmpty.add(featureName)
+	
+	if generalisationOptions.is_calculateGeneralisableAttributesLikeInPaper():
+		sl_attribute_names-=slAttributesNotGeneralisableOrEmpty
+		attribute_names-=slAttributesNotGeneralisableOrEmpty
+	
+	debug("slAttributesNotGeneralisableOrEmpty:"+unicode(slAttributesNotGeneralisableOrEmpty).encode('utf-8'))
+	debug("sl_attribute_names: "+unicode(sl_attribute_names).encode('utf-8'))
+		
 	#compute sets of attributes to be generalised
 	if generalisationOptions.is_fromRightToLeft():
+		#OUTDATED: We no longer use TSORT (see below)
 		#use tsort to obtain an ordered list of attributes compatible with the
 		#tags
-		arcs=list()
-		for lexform in at.parsed_sl_lexforms:
-			listOfFeatureNames= [ pair.feature_name for pair in lexform.get_tags_with_feature_names() if pair.feature_name in attribute_names ]
-			prev=U"__END__"
-			for featureName in reversed(listOfFeatureNames):
-				arcs.append((prev,featureName))
-				prev=featureName
-			arcs.append((prev,u"__START__"))
-		orderedFeatureNames=tsort.tsort(arcs)[1:-1]
+		#arcs=list()
+		#for lexform in at.parsed_sl_lexforms:
+		#	listOfFeatureNames= [ pair.feature_name for pair in lexform.get_tags_with_feature_names() if pair.feature_name in attribute_names ]
+		#	prev=U"__END__"
+		#	for featureName in reversed(listOfFeatureNames):
+		#		arcs.append((prev,featureName))
+		#		prev=featureName
+		#	arcs.append((prev,u"__START__"))
+		#orderedFeatureNames=tsort.tsort(arcs)[1:-1]
+		
 		combinationsOfFeatureNames=list()
-		for i in range(len(orderedFeatureNames)+1):
-			
-			featureNamesToGeneralise=orderedFeatureNames[:i]
+		
+		candidateCombinations=powerset(list(sl_attribute_names))
+		for candidate in candidateCombinations:
+			attributesNotGeneralised=sl_attribute_names - set(candidate)
 			
 			#check whether exist any word with the form n.*.f.*
 			existBannedWord=False
 			for lexform in at.parsed_sl_lexforms:
 				firstGeneralisedMatched=False
 				for tagFeatureAndValue in lexform.get_tags_with_feature_names():
-					if firstGeneralisedMatched and not tagFeatureAndValue.feature_name in featureNamesToGeneralise:
+					if firstGeneralisedMatched and  tagFeatureAndValue.feature_name in attributesNotGeneralised:
 						existBannedWord=True
 						break
-					if tagFeatureAndValue.feature_name in featureNamesToGeneralise:
+					if tagFeatureAndValue.feature_name in candidate:
 						firstGeneralisedMatched=True
 			
-			if existBannedWord:
-				break
+			if not existBannedWord:
+				#if len(set(candidate) & slAttributesNotGeneralisableOrEmpty) == 0:
+				if all(att not in slAttributesNotGeneralisableOrEmpty for att in candidate):
+					combinationsOfFeatureNames.append(candidate)
+				
+		#combinationsOfFeatureNames=list()
+		#for i in range(len(orderedFeatureNames)+1):
+		#	featureNamesToGeneralise=orderedFeatureNames[:i]
+		#	check whether exist any word with the form n.*.f.*
+		#	existBannedWord=False
+		#	for lexform in at.parsed_sl_lexforms:
+		#		firstGeneralisedMatched=False
+		#		for tagFeatureAndValue in lexform.get_tags_with_feature_names():
+		#			if firstGeneralisedMatched and not tagFeatureAndValue.feature_name in featureNamesToGeneralise:
+		#				existBannedWord=True
+		#				break
+		#			if tagFeatureAndValue.feature_name in featureNamesToGeneralise:
+		#				firstGeneralisedMatched=True
+		#	if existBannedWord:
+		#		break
 			
-			#check whether the feature name can be generalised in every TL word
-			if i > 0:
-				tlvalueLists=newValuesForFeatures[orderedFeatureNames[i-1]][1]
-				tlwordswithnovalue=[ l for l in tlvalueLists if len(l)==0 ]
-				if len(tlwordswithnovalue) > 0:
-					break
-				#TODO: esto tiene mala pinta
-				#if len(l) == 0:
-				#	break
-			combinationsOfFeatureNames.append(orderedFeatureNames[:i])
+			#check whether the feature name can be generalised in every/any TL word
+			#if i > 0:
+			#	tlvalueLists=newValuesForFeatures[orderedFeatureNames[i-1]][1]
+			#	tlwordswithnovalue=[ l for l in tlvalueLists if len(l)==0 ]
+			#	tlwordswithvalue=[ l for l in tlvalueLists if len(l)>0 ]
+			#	if generalisationOptions.is_dontGeneraliseAllInstancesTogether():
+			#		if len(tlwordswithvalue) == 0:
+			#			break
+			#	else:
+			#		if len(tlwordswithnovalue) > 0:
+			#			break
+			#	#TODO: esto tiene mala pinta
+			#	#if len(l) == 0:
+			#	#	break
+			#combinationsOfFeatureNames.append(orderedFeatureNames[:i])
 	else:
-		combinationsOfFeatureNames=powerset(list(attribute_names))
+		candidateCombinations=powerset(list(sl_attribute_names))
+		combinationsOfFeatureNames=list()
+		for candidate in candidateCombinations:
+			attributesNotGeneralised=sl_attribute_names - set(candidate)
+			lexcats=set()
+			for lexform in at.parsed_sl_lexforms:
+				if lexform.get_pos() in generalisationOptions.get_count_attribute_changes():
+					lexcats.add(lexform.get_pos())
+			
+			validCandidate=True
+			
+			for lexcat in lexcats:
+				#check all pairs
+				for generalisedAttr in candidate:
+					if not validCandidate:
+						break
+					for nonGeneralisedAttr in attributesNotGeneralised:
+						if generalisationOptions.get_count_attribute_changes()[lexcat][generalisedAttr] > generalisationOptions.get_count_attribute_changes()[lexcat][nonGeneralisedAttr]:
+							validCandidate=False
+							break
+
+			if validCandidate:
+				combinationsOfFeatureNames.append(candidate)
 
 	previousGeneralisedLists=list()
+	
+	debug("Valid feature combinations: "+str(combinationsOfFeatureNames))
 	
 	#Generalising attribute
 	#generalise the feature values
@@ -692,7 +770,7 @@ def AlignmentTemplate_generate_all_structural_generalisations(at,generalisationO
 	return atsAfterGeneralisingAttributes
 
 
-def AlignmentTemplate_generate_all_lexical_generalisations(at,lemmassl,lemmastl,tllemmas_from_dic):
+def AlignmentTemplate_generate_all_lexical_generalisations(at,lemmassl,lemmastl,tllemmas_from_dic,unlexicaliseSLunaligned=False):
 	lexicalisedATs=list()
 	
 	#take this into account in the future: and not lemmassl[i].startswith(u"_")
@@ -702,7 +780,7 @@ def AlignmentTemplate_generate_all_lexical_generalisations(at,lemmassl,lemmastl,
 		#check if any aligned TL word matches dictionary translation
 		alignedTLWords=[ al[1] for al in at.alignments if al[0] == i]
 		matchingDictionaryTranslations=[ tli for tli in alignedTLWords if lowercase_first_letter(lemmastl[tli]) == lowercase_first_letter(tllemmas_from_dic[i])  ]
-		if len(matchingDictionaryTranslations) > 0:
+		if len(matchingDictionaryTranslations) > 0 or (len(alignedTLWords)==0 and unlexicaliseSLunaligned):
 			indexesOfUnLexicalisableWords.append(i)
 			unlexicalisableTLforUnlexicalisableWords.append(matchingDictionaryTranslations)
 	optionsToCombine=list()
@@ -799,6 +877,7 @@ def AlignmentTemplate_generate_all_lexical_generalisations_and_add_them(at,origi
 			finalAlignmentTemplates.add(finalGeneralisedAT)
 	return idAt
 
+#THIS METHOD IS NEVER USED
 def AlignmentTemplate_generate_all_rich_generalisations_and_add_them(at,lemmassl,lemmastl,tllemmas_from_dic, finalAlignmentTemplates,idAt, generalisationOptions):
 	if DEBUG:
 		print >> sys.stderr, "Starting from id: "+str(idAt)
@@ -1358,6 +1437,163 @@ def AlignmentTemplate_generate_all_generalisations_and_add_them(at,lemmassl,lemm
 	
 	return idAt
 
+
+			
+
+class BilingualSequenceLexTags(object):
+	
+	WILDCARD=u"*"
+	
+	UNALIGNED_SIDE_BOTH=0
+	UNALIGNED_SIDE_LEFT=1
+	UNALIGNED_SIDE_RIGHT=2
+	
+	
+	def __init__(self):
+		self.slseq=[]
+		self.tlseq=[]
+	
+	def load_from_at(self,at,unalignedEdgesBecomeWildcards=False,side=None):
+		if side==None:
+			side=BilingualSequenceLexTags.UNALIGNED_SIDE_BOTH
+		if not unalignedEdgesBecomeWildcards:
+			for l in at.parsed_sl_lexforms:
+				self.slseq.append(unicode(AT_LexicalForm.create_without_lemma(l)))
+			for l in at.parsed_tl_lexforms:
+				self.tlseq.append(unicode(AT_LexicalForm.create_without_lemma(l)))
+		else:
+			for i in range(at.get_first_aligned_sl_word()):
+				if side==BilingualSequenceLexTags.UNALIGNED_SIDE_BOTH or side==BilingualSequenceLexTags.UNALIGNED_SIDE_LEFT: 
+					self.slseq.append(BilingualSequenceLexTags.WILDCARD)
+				else:
+					self.slseq.append(unicode(AT_LexicalForm.create_without_lemma(at.parsed_sl_lexforms[i])))
+			for i in range(at.get_first_aligned_sl_word(),at.get_last_aligned_sl_word()+1):
+				self.slseq.append(unicode(AT_LexicalForm.create_without_lemma(at.parsed_sl_lexforms[i])))
+			for i in range(at.get_last_aligned_sl_word()+1,len(at.parsed_sl_lexforms)):
+				if side==BilingualSequenceLexTags.UNALIGNED_SIDE_BOTH or side==BilingualSequenceLexTags.UNALIGNED_SIDE_RIGHT:
+					self.slseq.append(BilingualSequenceLexTags.WILDCARD)
+				else:
+					self.slseq.append(unicode(AT_LexicalForm.create_without_lemma(at.parsed_sl_lexforms[i])))
+			
+			for i in range(at.get_first_aligned_tl_word()):
+				if side==BilingualSequenceLexTags.UNALIGNED_SIDE_BOTH or side==BilingualSequenceLexTags.UNALIGNED_SIDE_LEFT:
+					self.tlseq.append(BilingualSequenceLexTags.WILDCARD)
+				else:
+					self.tlseq.append(unicode(AT_LexicalForm.create_without_lemma(at.parsed_tl_lexforms[i])))
+			for i in range(at.get_first_aligned_tl_word(),at.get_last_aligned_tl_word()+1):
+				self.tlseq.append(unicode(AT_LexicalForm.create_without_lemma(at.parsed_tl_lexforms[i])))
+			for i in range(at.get_last_aligned_tl_word()+1,len(at.parsed_tl_lexforms)):
+				if side==BilingualSequenceLexTags.UNALIGNED_SIDE_BOTH or side==BilingualSequenceLexTags.UNALIGNED_SIDE_RIGHT:
+					self.tlseq.append(BilingualSequenceLexTags.WILDCARD)
+				else:
+					self.tlseq.append(unicode(AT_LexicalForm.create_without_lemma(at.parsed_tl_lexforms[i])))
+	
+	def sub(self,slStart,sllen,tlStart,tllen):
+		bsltret=BilingualSequenceLexTags()
+		for i in xrange(slStart,slStart+sllen):
+			bsltret.slseq.append(self.slseq[i])
+		for i in xrange(tlStart,tlStart+tllen):
+			bsltret.tlseq.append(self.tlseq[i])
+		return bsltret
+	
+	def attach_lexform_sl_left(self,lexform):
+		self.slseq.insert(0, unicode(AT_LexicalForm.create_without_lemma(lexform)) )
+	def attach_lexform_tl_left(self,lexform):
+		self.tlseq.insert(0, unicode(AT_LexicalForm.create_without_lemma(lexform)) )
+	def attach_lexform_sl_right(self,lexform):
+		self.slseq.append( unicode(AT_LexicalForm.create_without_lemma(lexform)) )
+	def attach_lexform_tl_right(self,lexform):
+		self.tlseq.append( unicode(AT_LexicalForm.create_without_lemma(lexform)) )
+				
+	def __repr__(self):
+		return (" ".join([ l.encode('utf-8') for l in self.slseq])+" | "+" ".join([ l.encode('utf-8') for l in self.tlseq]))
+	
+	def copy(self):
+		returned=BilingualSequenceLexTags()
+		returned.slseq.extend(self.slseq)
+		returned.tlseq.extend(self.tlseq)
+
+		return returned
+	
+	def parse(self,strin):
+		parts=strin.split(u" | ")
+		self.slseq=parts[0].split(u" ")
+		self.tlseq=parts[1].split(u" ")
+	
+	def matches_wildcards(self,wilcarded_bslx):
+		if len(self.slseq) != len(wilcarded_bslx.slseq) or len(self.tlseq) != len(wilcarded_bslx.tlseq):
+			return False
+		for i in  xrange(len(wilcarded_bslx.slseq)):
+			if wilcarded_bslx.slseq[i] != "*":
+				if wilcarded_bslx.slseq[i] != self.slseq[i]:
+					return False
+		for i in  xrange(len(wilcarded_bslx.tlseq)):
+			if wilcarded_bslx.tlseq[i] != "*":
+				if wilcarded_bslx.tlseq[i] != self.tlseq[i]:
+					return False
+		return True 
+	
+	def __hash__(self):
+		return hash(self.__repr__())
+	def __eq__(self,other):
+		return self.__repr__() == other.__repr__()
+
+class BilingualSequenceLexSet(object):
+	def __init__(self):
+		self.freqmap=dict()
+		self.keyslengthmap=dict()
+		self.wildcardsCache=dict()
+	
+	def add_from_bilphrase(self,bilphrase,freq=1):
+		bslta=BilingualSequenceLexTags()
+		bslta.load_from_at(bilphrase)
+		self.add(bslta,freq)
+	
+	def add(self,bslx,freq=1):
+		if bslx in self.freqmap:
+			self.freqmap[bslx]+=freq
+		else:
+			self.freqmap[bslx]=freq
+		if not (len(bslx.slseq),len(bslx.tlseq)) in self.keyslengthmap:
+			self.keyslengthmap[(len(bslx.slseq),len(bslx.tlseq))]=set()
+		self.keyslengthmap[(len(bslx.slseq),len(bslx.tlseq))].add(bslx)
+	def __str__(self):
+		outputmap=dict()
+		for key in self.freqmap.iterkeys():
+			outputmap[str(key)]=self.freqmap[key]
+		return str(outputmap)
+	
+	def get_freq(self,bslx):
+		if bslx in self.freqmap:
+			return self.freqmap[bslx]
+		else:
+			return 0
+	
+	def parse(self,strin):
+		tmpMap=eval(strin)
+		for key in tmpMap:
+			bslx=BilingualSequenceLexTags()
+			bslx.parse(key)
+			self.add(bslx, tmpMap[key])
+	
+	def sum_freqs_of_compatible_seqs(self,bslx):
+		mysum=0
+		lengsthsTuple=(len(bslx.slseq),len(bslx.tlseq))
+		if lengsthsTuple in self.keyslengthmap:
+			if bslx in self.wildcardsCache:
+				return self.wildcardsCache[bslx]
+			
+			candidatesSet=self.keyslengthmap[lengsthsTuple]
+			
+			#ugly and slow loop
+			for bslc in candidatesSet:
+				if bslc.matches_wildcards(bslx):
+					#print >> sys.stderr, "candidate:\t"+str(bslc)
+					mysum+=self.freqmap[bslc]
+		self.wildcardsCache[bslx]=mysum
+		return mysum
+
+
 class AT_ParsingError(Exception):
 	def __init__(self, value):
 		self.value = value
@@ -1365,6 +1601,11 @@ class AT_ParsingError(Exception):
 		return repr(self.value)
 
 class AlignmentTemplate(object):
+	
+	SIDE_LEFT=1
+	SIDE_RIGHT=2
+	SIDE_NONE=-1 
+	
 	def __init__(self):
 		self.sl_lexforms=list()
 		self.tl_lexforms=list()
@@ -1399,10 +1640,29 @@ class AlignmentTemplate(object):
 		self.parent=None
 		
 		self.afterwards_restrictions=list()
+		
+		self.bslt=None
+		
+		self.sl_position_in_sentence=0
+		self.tl_position_in_sentence=0
+		
+		self.atsmatchingthisbilphrase=set()
+		self.atsreproducingthisbilphrase=set()
+		#an antiphrase is a tuple 
+		#tuple[0]-> sorted list of contiguous sl indexes
+		#tuple[1]-> sorted list of contiguous tl indexes
+		self.antiphrases=list()
 	def __repr__(self):
 		return self.to_string()
-		
-	def to_string(self,removeRestrictionsFromLexicalised=True, printDictionaryTranslations=False):
+	
+	def clean_subsets(self):
+		self.atswhicharesubset.clear()
+		self.atssymmetricdifferencenotempty.clear()
+		self.atswhicharesubsetpointers.clear()
+		self.parent=None
+	
+	#def to_string(self,removeRestrictionsFromLexicalised=True, printDictionaryTranslations=False):
+	def to_string(self,removeRestrictionsFromLexicalised=False, printDictionaryTranslations=False, useSecondEmptyRepresentation=False):
 		
 		if len(self.parsed_restrictions) != len(self.parsed_sl_lexforms):
 			print >> sys.stderr, "Different length of sl words and restrictions"
@@ -1432,15 +1692,52 @@ class AlignmentTemplate(object):
 			if self.parsed_sl_lexforms[i].has_lemma()  and removeRestrictionsFromLexicalised:
 				mod_restrictions.append(u"__CLOSEWORD__")
 			else:
-				mod_restrictions.append(self.parsed_restrictions[i].unparse())
+				mod_restrictions.append(self.parsed_restrictions[i].unparse(useSecondEmptyRepresentation))
 		
 		if printDictionaryTranslations:
 			mod_dictionary_translations=list()
 			for tllemmadic in self.tl_lemmas_from_dictionary:
 				mod_dictionary_translations.append(tllemmadic.replace(u" ",u"_"))
-			return "%s | %s | %s | %s | %s" % (u" ".join(mod_sllexlist).encode('utf-8'), u" ".join(mod_tllexlist).encode('utf-8'), alignStr.encode('utf-8') ,u" ".join(mod_restrictions).encode('utf-8'),u" ".join(mod_dictionary_translations).encode('utf-8'))
+			return "%s | %s | %s | %s |%s" % (u" ".join(mod_sllexlist).encode('utf-8'), u" ".join(mod_tllexlist).encode('utf-8'), alignStr.encode('utf-8') ,u" ".join(mod_restrictions).encode('utf-8'),u" ".join(mod_dictionary_translations).encode('utf-8'))
 		else:
 			return "%s | %s | %s | %s" % (u" ".join(mod_sllexlist).encode('utf-8'), u" ".join(mod_tllexlist).encode('utf-8'), alignStr.encode('utf-8') ,u" ".join(mod_restrictions).encode('utf-8'))
+	
+	def draw_dot(self):
+		myid=str(id(self))
+		dotlines=list()
+		dotlines.append("subgraph \"clusterat"+myid+"\" {")
+		
+		dotlines.append("DUMMY_clusterat"+myid+" [shape=point style=invis];")
+		
+		slfields=list()
+		for i,l in enumerate(self.parsed_sl_lexforms):
+			antiphraseIndexes=[ ai for ai in range(len(self.antiphrases)) if i in self.antiphrases[ai][0] ]
+			antiphraseStr=",".join([str(api) for api in antiphraseIndexes])	
+			if len(antiphraseIndexes) > 0:
+				colorStr="grey"
+			else:
+				colorStr="white"
+			slfields.append("<td port=\"f"+str(i)+"\" border=\"1\" bgcolor=\""+colorStr+"\">"+antiphraseStr+" "+str(l)+"</td>")
+		jointfields="<table border=\"0\" cellspacing=\"0\"><tr>"+"".join(slfields)+"</tr></table>"
+		dotlines.append(" sl"+myid+" [shape=none,label=<"+jointfields+">];")
+		
+		tlfields=list()
+		for i,l in enumerate(self.parsed_tl_lexforms):
+			antiphraseIndexes=[ ai for ai in range(len(self.antiphrases)) if i in self.antiphrases[ai][1] ]
+			antiphraseStr=",".join([str(api) for api in antiphraseIndexes])	
+			if len(antiphraseIndexes) > 0:
+				colorStr="grey"
+			else:
+				colorStr="white"
+			tlfields.append("<td port=\"f"+str(i)+"\" border=\"1\" bgcolor=\""+colorStr+"\">"+antiphraseStr+" "+str(l)+"</td>")
+		jointfields="<table border=\"0\" cellspacing=\"0\"><tr>"+"".join(tlfields)+"</tr></table>"
+		dotlines.append(" tl"+myid+" [shape=none,label=<"+jointfields+">];")
+		
+		for al in self.alignments:
+			dotlines.append("sl"+myid+":f"+str(al[0])+" -> tl"+myid+":f"+str(al[1])+";")
+		
+		dotlines.append("}")
+		return "\n".join(dotlines),"clusterat"+myid
 	
 	def __hash__(self):
 		return hash(self.__repr__())
@@ -1463,6 +1760,166 @@ class AlignmentTemplate(object):
 		
 		return myclone
 	
+	def extract_lex_and_context_from_antiphrase(self,antiphrase):
+		self.extract_bslt()
+		
+		sllex=list()
+		tllex=list()
+		
+		#loop over sl positions
+		for i in antiphrase[0]:
+			sllex.append(self.bslt.slseq[i])
+		#loop over tl positions
+		for i in antiphrase[1]:
+			tllex.append(self.bslt.tlseq[i])
+		
+		slPrev=self.bslt.slseq[antiphrase[0][0]-1] if len(antiphrase[0]) > 0 else self.bslt.slseq[antiphrase[2][0]]
+		tlPrev=self.bslt.tlseq[antiphrase[1][0]-1] if len(antiphrase[1]) > 0 else self.bslt.tlseq[antiphrase[2][0]]
+		
+		slPost=self.bslt.slseq[antiphrase[0][-1]+1] if len(antiphrase[0]) > 0 else self.bslt.slseq[antiphrase[2][1]]
+		tlPost=self.bslt.tlseq[antiphrase[1][-1]+1] if len(antiphrase[1]) > 0 else self.bslt.tlseq[antiphrase[2][1]]
+		
+		return slPrev,tlPrev, sllex,tllex, slPost,tlPost
+		
+	
+	def contains_unk_or_punct(self):
+		return any(lexform.is_unk_or_punct() for lexform in self.parsed_sl_lexforms) or any(lexform.is_unk_or_punct() for lexform in self.parsed_tl_lexforms) 
+	
+	def add_special_start_end_words(self):
+		
+		startSLMark=AT_LexicalForm()
+		startSLMark.set_pos(u"sentencestart")
+		startTLMark=AT_LexicalForm()
+		startTLMark.set_pos(u"sentencestart")
+		startResMark=AT_Restriction()
+		startResMark.set_pos(u"sentencestart")
+		self.parsed_sl_lexforms.insert(0, startSLMark)
+		self.parsed_tl_lexforms.insert(0, startTLMark)
+		self.parsed_restrictions.insert(0,startResMark)
+		
+		endSLMark=AT_LexicalForm()
+		endSLMark.set_pos(u"sentenceend")
+		endTLMark=AT_LexicalForm()
+		endTLMark.set_pos(u"sentenceend")
+		endResMark=AT_Restriction()
+		endResMark.set_pos(u"sentenceend")
+		self.parsed_sl_lexforms.append(endSLMark)
+		self.parsed_tl_lexforms.append(endTLMark)
+		self.parsed_restrictions.append(endResMark)
+		
+		oldalignments=self.alignments
+		self.alignments=list()
+		#start marks
+		self.alignments.append((0,0))
+		#original alignments
+		for oldal in oldalignments:
+			self.alignments.append((oldal[0]+1,oldal[1]+1))
+		#end marks
+		self.alignments.append((len(self.parsed_sl_lexforms)-1,len(self.parsed_tl_lexforms)-1))
+		
+		#update tl lemams form dictionary too
+		if len(self.tl_lemmas_from_dictionary) > 0:
+			self.tl_lemmas_from_dictionary.insert(0, u"dummylemma")
+			self.tl_lemmas_from_dictionary.append(u"dummylemma")
+	
+	#an antiphrase is a tuple 
+	#tuple[0]-> sorted list of contiguous sl indexes
+	#tuple[1]-> sorted list of contiguous tl indexes
+	#tuple[2]-> if tuple[0] or tuple[1] are empty, (righmostLeft,leftmostRight)
+	def extract_antiphrases(self):
+		self.antiphrases=list()
+		
+		localAntiphrases=list()
+		
+		#detect sequences of unaligned SL words
+		seqsOfUnalignedSL=list()
+		currentSeq=list()
+		for i in xrange(len(self.parsed_sl_lexforms)):
+			if len(self.get_tl_words_aligned_with(i))==0:
+				if len(currentSeq) > 0 and currentSeq[-1] < i-1 :
+					seqsOfUnalignedSL.append(currentSeq)
+					currentSeq=list()
+				currentSeq.append(i)
+		if len(currentSeq) > 0:
+			seqsOfUnalignedSL.append(currentSeq)
+			
+		#for each sequence, build TL side of antiphrase
+		for seqOfUnalignedSl in seqsOfUnalignedSL:
+			#rightmost TL word aligned with an SL word at the left of seq
+			tlwordsalleft=set()
+			for i in xrange(seqOfUnalignedSl[0]):
+				tlwordsalleft.update(self.get_tl_words_aligned_with(i))
+			if len(tlwordsalleft) > 0:				
+				righmostLeft=max(tlwordsalleft)
+			else:
+				righmostLeft=-1
+			#old	
+			#righmostLeft=max( max( self.get_tl_words_aligned_with(i) ) for i in xrange(seqOfUnalignedSl[0]) )
+			
+			#leftmost TL word aligned with an SL word at the right of seq
+			tlwordsalright=set()
+			for i in xrange(seqOfUnalignedSl[-1]+1,len(self.parsed_sl_lexforms)):
+				tlwordsalright.update(self.get_tl_words_aligned_with(i))
+			if len(tlwordsalright) > 0:
+				leftmostRight=min(tlwordsalright)
+			else:
+				leftmostRight=len(self.parsed_tl_lexforms)
+			#OLD
+			#leftmostRight=min( min(self.get_tl_words_aligned_with(i)) for i in xrange(seqOfUnalignedSl[-1]+1,len(self.parsed_sl_lexforms)) )
+			
+			#if lefmost and rightmost do not intersect...
+			if righmostLeft < leftmostRight:
+				#...and all the TL words between them are unaligned...
+				# Note that all([]) == True
+				if all( len(self.get_sl_words_aligned_with(i))==0 for i in xrange(righmostLeft+1,leftmostRight)):
+					#... the antiphrase is OK
+					localAntiphrases.append((seqOfUnalignedSl,range(righmostLeft+1,leftmostRight),(righmostLeft,leftmostRight) if leftmostRight-righmostLeft==1 else [] ))
+						
+		#detect sequences of unaligned TL words
+		seqsOfUnalignedTL=list()
+		currentSeq=list()
+		for i in xrange(len(self.parsed_tl_lexforms)):
+			if len(self.get_sl_words_aligned_with(i))==0:
+				if len(currentSeq) > 0 and currentSeq[-1] < i-1 :
+					seqsOfUnalignedTL.append(currentSeq)
+					currentSeq=list()
+				currentSeq.append(i)
+		if len(currentSeq) > 0:
+			seqsOfUnalignedTL.append(currentSeq)
+		
+		#for each sequence, build SL side of antiphrase
+		for seqOfUnalignedTl in seqsOfUnalignedTL:
+			#rightmost SL word aligned with a TL word at the left of seq
+			slwordsalleft=set()
+			for i in xrange(seqOfUnalignedTl[0]):
+				slwordsalleft.update(self.get_sl_words_aligned_with(i))
+			if len(slwordsalleft) > 0:				
+				righmostLeft=max(slwordsalleft)
+			else:
+				righmostLeft=-1
+			
+			#leftmost SL word aligned with a TL word at the right of seq
+			slwordsalright=set()
+			for i in xrange(seqOfUnalignedTl[-1]+1,len(self.parsed_tl_lexforms)):
+				slwordsalright.update(self.get_sl_words_aligned_with(i))
+			if len(slwordsalright) > 0:
+				leftmostRight=min(slwordsalright)
+			else:
+				leftmostRight=len(self.parsed_sl_lexforms)
+			
+			#if lefmost and rightmost do not intersect...
+			if righmostLeft < leftmostRight:
+				#...and all the SL words between them are unaligned...
+				# Note that all([]) == True
+				if all( len(self.get_tl_words_aligned_with(i))==0 for i in xrange(righmostLeft+1,leftmostRight)):
+					#... the antiphrase is OK
+					localAntiphrases.append((range(righmostLeft+1,leftmostRight),seqOfUnalignedTl,(righmostLeft,leftmostRight) if leftmostRight-righmostLeft==1 else []))
+		#remove duplicates from localAntiphrases
+		#TODO: make it faster
+		for locAntiphrase in localAntiphrases:
+			if not locAntiphrase in self.antiphrases:
+				self.antiphrases.append(locAntiphrase)
+		
 	def increase_freq(self,pfreq):
 		self.freq+=pfreq
 	
@@ -1480,15 +1937,74 @@ class AlignmentTemplate(object):
 		for lex in self.parsed_restrictions:
 			lex.remove_all_inflection_tags()
 	
+	def get_sequences_of_lextags(self):
+		slseq=[]
+		tlseq=[]
+		for l in self.parsed_sl_lexforms:
+			slseq.append(AT_LexicalForm.create_without_lemma(l))
+		for l in self.parsed_tl_lexforms:
+			tlseq.append(AT_LexicalForm.create_without_lemma(l))
+		return slseq,tlseq
+	
+	def get_first_aligned_sl_word(self):
+		alignedSlWords=[ a[0] for a in self.alignments ]
+		if len(alignedSlWords) > 0:
+			return sorted(alignedSlWords)[0]
+		else:
+			return None
+	
+	def get_last_aligned_sl_word(self):
+		alignedSlWords=[ a[0] for a in self.alignments ]
+		if len(alignedSlWords) > 0:
+			return sorted(alignedSlWords,reverse=True)[0]
+		else:
+			return None
+	
+	def get_first_aligned_tl_word(self):
+		alignedTlWords=[ a[1] for a in self.alignments ]
+		if len(alignedTlWords) > 0:
+			return sorted(alignedTlWords)[0]
+		else:
+			return None
+	
+	def get_last_aligned_tl_word(self):
+		alignedTlWords=[ a[1] for a in self.alignments ]
+		if len(alignedTlWords) > 0:
+			return sorted(alignedTlWords,reverse=True)[0]
+		else:
+			return None
+	
+	def extract_bslt(self):
+		if self.bslt == None:
+			bslt=BilingualSequenceLexTags()
+			bslt.load_from_at(self)
+			self.bslt=bslt
+	
+	def get_sequences_of_lextags_ends_aligned(self):
+		self.extract_bslt()
+		
+		slseq=[]
+		tlseq=[]
+		
+		for i in range(self.get_first_aligned_sl_word(),self.get_last_aligned_sl_word()+1):
+			slseq.append(self.bslt.slseq[i])
+		for i in range(self.get_first_aligned_tl_word(),self.get_last_aligned_tl_word()+1):
+			tlseq.append(self.bslt.tlseq[i])
+		return slseq,tlseq
+	
 	def set_afterwards_restrictions_from(self,otherat):
 		self.afterwards_restrictions=list()
 		for i in range(len(self.parsed_sl_lexforms)):
 			sllexValues=self.parsed_sl_lexforms[i].get_tags_with_feature_names_as_dict()
 			resValues=otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict()
 			myDict=dict()
-			for featureName in sllexValues.keys():
-				if parse_special_tag(sllexValues[featureName])[0] == AT_SpecialTagType.FOLLOW_ALIGNMENT:
-					myDict[featureName]=resValues[featureName] 
+			#for featureName in sllexValues.keys():
+			for featureName in resValues:
+				if featureName in sllexValues:
+					if parse_special_tag(sllexValues[featureName])[0] == AT_SpecialTagType.FOLLOW_ALIGNMENT:
+						myDict[featureName]=resValues[featureName]
+				else:
+					 myDict[featureName]=resValues[featureName]
 			self.afterwards_restrictions.append(myDict)
 	
 	def add_restrictions_from_tuples(self,tuples):
@@ -1818,7 +2334,65 @@ class AlignmentTemplate(object):
 			output_list.append(output_option)
 		
 		return output_list
-			
+	
+	def is_contiguous_to_antiphrase(self,antiphrases,antiphraseResults):
+		slleft=self.sl_position_in_sentence-1
+		tlleft=self.tl_position_in_sentence-1
+		
+		slright=self.sl_position_in_sentence+len(self.parsed_sl_lexforms)
+		tlright=self.tl_position_in_sentence+len(self.parsed_tl_lexforms)
+		
+		slleftAntiphraseIndexes=[ i for i in range(len(antiphrases)) if slleft in antiphrases[i][0] ]
+		tlleftAntiphraseIndexes=[ i for i in range(len(antiphrases)) if tlleft in antiphrases[i][1] ]
+		slrightAntiphrasesIndexes=[ i for i in range(len(antiphrases)) if slright in antiphrases[i][0] ]
+		tlrightAntiphrasesIndexes=[ i for i in range(len(antiphrases)) if tlright in antiphrases[i][1] ]
+		
+		if any( antiphraseResults[i]==AlignmentTemplate.SIDE_RIGHT for i in slleftAntiphraseIndexes ):
+			return True
+		if any( antiphraseResults[i]==AlignmentTemplate.SIDE_RIGHT for i in tlleftAntiphraseIndexes ):
+			return True
+		if any( antiphraseResults[i]==AlignmentTemplate.SIDE_LEFT for i in slrightAntiphrasesIndexes ):
+			return True
+		if any( antiphraseResults[i]==AlignmentTemplate.SIDE_LEFT for i in tlrightAntiphrasesIndexes ):
+			return True
+		return False
+	
+	def unaligned_edges_match_antiphrase(self,antiphrases,antiphraseResults):
+		fsl=self.get_first_aligned_sl_word()
+		ftl=self.get_first_aligned_tl_word()
+		
+		lsl=self.get_last_aligned_sl_word()
+		ltl=self.get_last_aligned_tl_word()
+		
+		leftAntiphraseSLLen=fsl
+		leftAntiphraseTLLen=ftl
+		
+		rightAntiphraseSLLen=len(self.parsed_sl_lexforms)-1-lsl
+		rightAntiphraseTLLen=len(self.parsed_tl_lexforms)-1-ltl
+		
+		leftAntiphrase=(range(self.sl_position_in_sentence,self.sl_position_in_sentence+leftAntiphraseSLLen),range(self.tl_position_in_sentence,self.tl_position_in_sentence+leftAntiphraseTLLen))
+		rightAntiphrase=(range(self.sl_position_in_sentence+len(self.parsed_sl_lexforms)-rightAntiphraseSLLen,self.sl_position_in_sentence+len(self.parsed_sl_lexforms)),range(self.tl_position_in_sentence+len(self.parsed_tl_lexforms)-rightAntiphraseTLLen,self.tl_position_in_sentence+len(self.parsed_tl_lexforms)))
+		
+		#check left antiphrase
+		if leftAntiphraseSLLen>0 or leftAntiphraseTLLen>0:
+			foundInAntiphraseList=False
+			for antiphraseIndex,antiphrase in enumerate(antiphrases):
+				if antiphrase[0:2] == leftAntiphrase and antiphraseResults[antiphraseIndex]==AlignmentTemplate.SIDE_RIGHT:
+					foundInAntiphraseList=True
+			if not foundInAntiphraseList:
+				return False
+		
+		#check right antiphrase
+		if rightAntiphraseSLLen>0 or rightAntiphraseTLLen>0:
+			foundInAntiphraseList=False
+			for antiphraseIndex,antiphrase in enumerate(antiphrases):
+				if antiphrase[0:2] == rightAntiphrase and antiphraseResults[antiphraseIndex]==AlignmentTemplate.SIDE_LEFT:
+					foundInAntiphraseList=True
+			if not foundInAntiphraseList:
+				return False
+		
+		return True
+	
 	def is_ends_aligned(self):
 		firstSL=0
 		lastSL=len(self.parsed_sl_lexforms)-1
@@ -2436,43 +3010,54 @@ class AlignmentTemplate(object):
 		for i in range(len(self.parsed_sl_lexforms)):
 			#Check lemmas
 			restrictionCheckResult=True
-			if checkRestrictions and not self.parsed_sl_lexforms[i].has_lemma():
-				if not otherat.parsed_sl_lexforms[i].has_lemma() or checkingBilphrase:
-					if flexibleRestrictions:
-						otherAtResDict=otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict()
-						selfResDict=self.parsed_restrictions[i].get_tags_with_feature_names_as_dict()
-						for featureName in selfResDict.keys():
-							valueOfRes=selfResDict[featureName]
-							tagType,feat,number =parse_special_tag(valueOfRes)
-							
-							if tagType == AT_SpecialTagType.RESTRICTION_CHANGING or tagType == AT_SpecialTagType.RESTRICTION_CONSTANT:
-								restrictionConstant=True
-								slvalue=otherat.parsed_sl_lexforms[i].get_tags_with_feature_names_as_dict()[featureName]
-								if featureName in otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict():
-									tlvalue=otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict()[featureName]
-								else:
-									tlvalue=slvalue
-								if slvalue != tlvalue:
-									restrictionConstant=False
-								if tagType == AT_SpecialTagType.RESTRICTION_CHANGING and restrictionConstant:
-									restrictionCheckResult=False
-								if tagType == AT_SpecialTagType.RESTRICTION_CONSTANT and not restrictionConstant:
-									restrictionCheckResult=False
+			#if checkRestrictions and not self.parsed_sl_lexforms[i].has_lemma():
+			if checkRestrictions:
+				#if not otherat.parsed_sl_lexforms[i].has_lemma() or checkingBilphrase:
+				if flexibleRestrictions:
+					otherAtResDict=otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict()
+					otherAtSlDict=otherat.parsed_sl_lexforms[i].get_tags_with_feature_names_as_dict()
+					selfResDict=self.parsed_restrictions[i].get_tags_with_feature_names_as_dict()
+					for featureName in selfResDict.keys():
+						valueOfRes=selfResDict[featureName]
+						tagType,feat,number =parse_special_tag(valueOfRes)
+						
+						if tagType == AT_SpecialTagType.RESTRICTION_CHANGING or tagType == AT_SpecialTagType.RESTRICTION_CONSTANT:
+							restrictionConstant=True
+							slvalue=otherat.parsed_sl_lexforms[i].get_tags_with_feature_names_as_dict()[featureName]
+							if featureName in otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict():
+								tlvalue=otherat.parsed_restrictions[i].get_tags_with_feature_names_as_dict()[featureName]
 							else:
-								if not featureName in otherAtResDict:
-									if checkingBilphrase:									
-										#if bilphrase does not have that feature name
-										#in its restrictions, it means that it doesn't change between SL and TL
-										if otherat.parsed_sl_lexforms[i].get_tags_with_feature_names_as_dict()[featureName] != valueOfRes:
-											restrictionCheckResult=False
-									else:
+								tlvalue=slvalue
+							if slvalue != tlvalue:
+								restrictionConstant=False
+							if tagType == AT_SpecialTagType.RESTRICTION_CHANGING and restrictionConstant:
+								restrictionCheckResult=False
+							if tagType == AT_SpecialTagType.RESTRICTION_CONSTANT and not restrictionConstant:
+								restrictionCheckResult=False
+						else:
+							if not featureName in otherAtResDict:
+								if checkingBilphrase:									
+									#if bilphrase does not have that feature name
+									#in its restrictions, it means that it doesn't change between SL and TL
+									if featureName not in otherAtSlDict:
 										restrictionCheckResult=False
-								elif otherAtResDict[featureName]!=selfResDict[featureName]:
+									elif otherat.parsed_sl_lexforms[i].get_tags_with_feature_names_as_dict()[featureName] != valueOfRes:
+										restrictionCheckResult=False
+								else:
 									restrictionCheckResult=False
-					else:
-						restrictionCheckResult=self.parsed_restrictions[i].get_tags()==otherat.parsed_restrictions[i].get_tags()
-			if not ( ( not self.parsed_sl_lexforms[i].has_lemma() and restrictionCheckResult==True ) or (self.parsed_sl_lexforms[i].has_lemma() and self.parsed_sl_lexforms[i].get_lemma() == otherat.parsed_sl_lexforms[i].get_lemma()) ):
+							elif otherAtResDict[featureName]!=selfResDict[featureName]:
+								restrictionCheckResult=False
+				else:
+					restrictionCheckResult=self.parsed_restrictions[i].get_tags()==otherat.parsed_restrictions[i].get_tags()
+			
+			if not restrictionCheckResult:
 				return False
+			
+			if not (  not self.parsed_sl_lexforms[i].has_lemma() or (self.parsed_sl_lexforms[i].has_lemma() and self.parsed_sl_lexforms[i].get_lemma() == otherat.parsed_sl_lexforms[i].get_lemma()) ):
+				return False
+
+			#if not ( ( not self.parsed_sl_lexforms[i].has_lemma() and restrictionCheckResult==True ) or (self.parsed_sl_lexforms[i].has_lemma() and self.parsed_sl_lexforms[i].get_lemma() == otherat.parsed_sl_lexforms[i].get_lemma()) ):
+			#	return False
 			
 			#must have same pos
 			if self.parsed_sl_lexforms[i].get_pos() != otherat.parsed_sl_lexforms[i].get_pos():
@@ -2574,7 +3159,10 @@ class AlignmentTemplate(object):
 							if resselfDict[featName] != resSegmentDict[featName]:
 								return False
 						else:
-							if resselfDict[featName] != tagsotherDict[featName]:
+							if featName in tagsotherDict:
+								if resselfDict[featName] != tagsotherDict[featName]:
+									return False
+							else:
 								return False
 			
 		return True
@@ -2644,37 +3232,47 @@ class AlignmentTemplate(object):
 		
 		return True	
 	
-	#TODO: cambiaaaar por lo que he puesto en el paper!!!
-	def aligned_words_of_open_categories_match_dictionary_translation(self,closedCategoriesSet,dictionaryTranslations):
+	def aligned_words_of_open_categories_match_dictionary_translation(self,closedCategoriesSet,dictionaryTranslations,singleAlignedtoConsiderContrary=True,openMustBeAlignedWithOpen=False):
 		for i in range(len(self.parsed_sl_lexforms)):
 			if self.parsed_sl_lexforms[i].get_pos() not in closedCategoriesSet:
+				atLeastAlignedWithOneOpen=False
 				atLeastOneMatches=False
 				for j in self.get_tl_words_aligned_with(i):
-					if compare_lowercase_first_letter(dictionaryTranslations[i],self.parsed_tl_lexforms[j].get_lemma()) and self.parsed_sl_lexforms[i].get_pos() == self.parsed_tl_lexforms[j].get_pos():
-						atLeastOneMatches=True
-				if not atLeastOneMatches:
+					if self.parsed_tl_lexforms[j].get_pos() not in closedCategoriesSet:
+						atLeastAlignedWithOneOpen=True
+						if compare_lowercase_first_letter(dictionaryTranslations[i],self.parsed_tl_lexforms[j].get_lemma()) and self.parsed_restrictions[i].get_pos() == self.parsed_tl_lexforms[j].get_pos():
+							atLeastOneMatches=True
+				if not atLeastOneMatches and atLeastAlignedWithOneOpen:
 					atLeastOneMatchesContrary=False
 					for k in self.get_tl_words_aligned_with(i):
 						for m in self.get_sl_words_aligned_with(k):
-							if dictionaryTranslations[m]==self.parsed_tl_lexforms[k].get_lemma() and self.parsed_sl_lexforms[m].get_pos() == self.parsed_tl_lexforms[k].get_pos():
+							if dictionaryTranslations[m]==self.parsed_tl_lexforms[k].get_lemma() and self.parsed_restrictions[m].get_pos() == self.parsed_tl_lexforms[k].get_pos():
 								atLeastOneMatchesContrary=True
-					if not atLeastOneMatchesContrary or len(self.get_tl_words_aligned_with(i)) > 1:
+					if not atLeastOneMatchesContrary or (len(self.get_tl_words_aligned_with(i)) > 1 and singleAlignedtoConsiderContrary):
 						return False
+				elif not atLeastOneMatches and not atLeastAlignedWithOneOpen and openMustBeAlignedWithOpen:
+					return False
+					
 		
 		for j in range(len(self.parsed_tl_lexforms)):
 			if self.parsed_tl_lexforms[j].get_pos() not in closedCategoriesSet:
+				atLeastAlignedWithOneOpen=False
 				atLeastOneMatches=False
 				for i in self.get_sl_words_aligned_with(j):
-					if compare_lowercase_first_letter(dictionaryTranslations[i],self.parsed_tl_lexforms[j].get_lemma()) and self.parsed_sl_lexforms[i].get_pos() == self.parsed_tl_lexforms[j].get_pos():
-						atLeastOneMatches=True
-				if not atLeastOneMatches:
+					atLeastAlignedWithOneOpen=True
+					if self.parsed_sl_lexforms[i].get_pos() not in closedCategoriesSet:
+						if compare_lowercase_first_letter(dictionaryTranslations[i],self.parsed_tl_lexforms[j].get_lemma()) and self.parsed_restrictions[i].get_pos() == self.parsed_tl_lexforms[j].get_pos():
+							atLeastOneMatches=True
+				if not atLeastOneMatches and atLeastAlignedWithOneOpen:
 					atLeastOneMatchesContrary=False
 					for k in self.get_sl_words_aligned_with(j):
 						for m in self.get_tl_words_aligned_with(k):
-							if dictionaryTranslations[k]==self.parsed_tl_lexforms[m].get_lemma() and self.parsed_sl_lexforms[k].get_pos() == self.parsed_tl_lexforms[m].get_pos():
+							if dictionaryTranslations[k]==self.parsed_tl_lexforms[m].get_lemma() and self.parsed_restrictions[k].get_pos() == self.parsed_tl_lexforms[m].get_pos():
 								atLeastOneMatchesContrary=True
-					if not atLeastOneMatchesContrary or len(self.get_sl_words_aligned_with(j)) > 1:
+					if not atLeastOneMatchesContrary or (len(self.get_sl_words_aligned_with(j)) > 1 and singleAlignedtoConsiderContrary):
 						return False
+				elif not atLeastOneMatches and not atLeastAlignedWithOneOpen and openMustBeAlignedWithOpen:
+					return False
 		return True
 
 	def get_specificity_level(self):
@@ -2692,7 +3290,7 @@ class AlignmentTemplate(object):
 					level+=1
 			maxtags+=2*len(sllexform.get_tags())
 		
-		return lexicalisedwords*maxtags+level
+		return lexicalisedwords*(maxtags+1)+level
 		
 		
 	
@@ -2741,6 +3339,14 @@ class AT_GeneralisationOptions(object):
 		self.triggeringLimitedLength=False
 		self.triggeringNoGoodDiscarded=False
 		self.discardRestrictionsNotImproving=False
+		self.generaliseNonMatchingToo=False
+		self.unlexicaliseUnalignedSL=False
+		self.countAtributeChanges=dict()
+		self.dontGeneraliseAllInstancesTogether=False
+		self.calculateGeneralisableAttributesLikeInPaper=False
+	
+	def set_calculateGeneralisableAttributesLikeInPaper(self,p_calcgen):
+		self.calculateGeneralisableAttributesLikeInPaper=p_calcgen
 	
 	def set_genWhenEmptySLCats(self,p_genWhenEmptySLCats ):
 		self.genWhenEmptySLCats=p_genWhenEmptySLCats
@@ -2775,11 +3381,34 @@ class AT_GeneralisationOptions(object):
 	def set_discardRestrictionsNotImproving(self,p_drni):
 		self.discardRestrictionsNotImproving=p_drni
 	
+	def set_generaliseNonMatchingToo(self,p_gnmt):
+		self.generaliseNonMatchingToo=p_gnmt
+	
+	def set_unlexicaliseUnalignedSL(self,p_uusl):
+		self.unlexicaliseUnalignedSL=p_uusl
+	
 	def get_genWhenEmptySLCats(self):
 		return self.genWhenEmptySLCats
 	
+	def set_count_attribute_changes(self,filed):
+		for line in filed:
+			line=line.strip()
+			parts=line.split("\t")
+			lexCategory=parts[0]
+			counts=eval(parts[1].replace("<type 'int'>","int"))
+			self.countAtributeChanges[lexCategory]=counts
+	
+	def set_dontGeneraliseAllInstancesTogether(self,p_dgai):
+		self.dontGeneraliseAllInstancesTogether=p_dgai
+	
+	def get_count_attribute_changes(self):
+		return self.countAtributeChanges
+	
 	def get_genWhenEmptyTLCats(self):
 		return self.genWhenEmptyTLCats
+	
+	def is_calculateGeneralisableAttributesLikeInPaper(self):
+		return self.calculateGeneralisableAttributesLikeInPaper
 	
 	def is_fromRightToLeft(self):
 		return self.fromRightToLeft
@@ -2807,6 +3436,15 @@ class AT_GeneralisationOptions(object):
 	
 	def is_discardRestrictionsNotImproving(self):
 		return self.discardRestrictionsNotImproving
+	
+	def is_generaliseNonMatchingToo(self):
+		return self.generaliseNonMatchingToo
+	
+	def is_unlexicaliseUnalignedSL(self):
+		return self.unlexicaliseUnalignedSL
+	
+	def is_dontGeneraliseAllInstancesTogether(self):
+		return self.dontGeneraliseAllInstancesTogether
 	
 class AT_AbstractClassPosAndTags(object):
 	def __init__(self):
@@ -2913,9 +3551,12 @@ class AT_Restriction(AT_AbstractClassPosAndTags):
 	def is_special(self):
 		return len(self.special) > 0
 	
-	def unparse(self):
+	def unparse(self,useSecondEmptyRepresentation=False):
 		if self.is_special():
-			return self.special
+			if self.special==u"__EMPTYRESTRICTION__" and useSecondEmptyRepresentation:
+				return u"EMPTY"
+			else:
+				return self.special
 		else:
 			return unparse_tags([self.pos]+self.tags)
 	
@@ -2940,7 +3581,12 @@ class AT_Restriction(AT_AbstractClassPosAndTags):
 		return not self.__eq__(other)	
 	
 	def __repr__(self):
-		return (u".".join([self.pos]+self.tags)).encode('utf-8')
+		output=(u".".join([self.pos]+self.tags)).encode('utf-8')
+		return output
+		#if len(output) > 0:
+		#	return output
+		#else:
+		#	return "__EMPTYRESTRICTION__" 
 	
 
 class AT_LexicalForm(AT_AbstractClassPosAndTags):
@@ -2979,9 +3625,9 @@ class AT_LexicalForm(AT_AbstractClassPosAndTags):
 			return u"*"+self.lemma
 		else:
 			if replaceSpacesWithUnderscore:
-				return self.lemma.replace(u" ",u"_")+unparse_tags([self.pos]+cleantags)
+				return escape_lemma(self.lemma.replace(u" ",u"_"))+unparse_tags([self.pos]+cleantags)
 			else:
-				return self.lemma+unparse_tags([self.pos]+cleantags)
+				return escape_lemma(self.lemma)+unparse_tags([self.pos]+cleantags)
 	
 	def is_unknown(self):
 		return self.unknown
@@ -2999,6 +3645,8 @@ class AT_LexicalForm(AT_AbstractClassPosAndTags):
 	def set_lemma(self, lemmaval):
 		self.lemma=lemmaval
 	
+	def is_unk_or_punct(self):
+		return self.is_unknown() or self.get_pos() in [u"sent",u"guio",u"cm",u"rpar",u"lpar",u"lquest",u"rquest"]
 	
 	def __eq__(self, other):
 		if not isinstance(other, AT_LexicalForm):
@@ -3012,7 +3660,16 @@ class AT_LexicalForm(AT_AbstractClassPosAndTags):
 		return not self.__eq__(other)
 	
 	def __repr__(self):
-		return (self.lemma+u"-"+u".".join([self.pos]+self.tags)).encode('utf-8')
+		return self.__unicode__().encode('utf-8')
+	def __unicode__(self):
+		return (self.lemma+u"-"+u".".join([self.pos]+self.tags))
+	
+	@classmethod
+	def create_without_lemma(cls,otherlex):
+		lf=AT_LexicalForm()
+		lf.set_pos(otherlex.pos)
+		lf.set_tags(otherlex.tags)
+		return lf 
 	
 		
 class AT_LexicalTagsProcessor(object):
@@ -3053,13 +3710,14 @@ class AT_LexicalTagsProcessor(object):
 					newtagslist.append(tag)
 				else:
 					newtagslist.append(u"empty_tag_"+groupid)
-					
-			if weAreProcessingRestrictions:
-				lastindexofnotemptytag=-1
-				for i in range(len(newtagslist)):
-					if not newtagslist[i].startswith(u"empty_tag_"):
-						lastindexofnotemptytag=i	
-				newtagslist=newtagslist[:lastindexofnotemptytag+1]
+			
+			#NO longer needed
+			#if weAreProcessingRestrictions:
+			#	lastindexofnotemptytag=-1
+			#	for i in range(len(newtagslist)):
+			#		if not newtagslist[i].startswith(u"empty_tag_"):
+			#			lastindexofnotemptytag=i	
+			#	newtagslist=newtagslist[:lastindexofnotemptytag+1]
 			return newtagslist
 		else:
 			return oldtagslist
@@ -3178,9 +3836,13 @@ def filter_pre_minimisation(bilphrases, finalAlignmentTemplates, subsetsGraph,re
 		
 		if myAt.num_correct_bilphrases*1.0/myAt.num_matching_bilphrases >= proportionCorrectBilphrasesThreshold:
 			globalReproducibleBilphrases.update(reproducible_phrases)
+			for matchingPhraseId in matching_phrases:
+				bilphrases.get_by_id(matchingPhraseId).atsmatchingthisbilphrase.add(myAt.id)
+			for reproducedPhraseId in reproducible_phrases:
+				bilphrases.get_by_id(reproducedPhraseId).atsreproducingthisbilphrase.add(myAt.id)
 		else:
 			atsToRemoveBecauseThreshold.append(myAt.id)
-		
+			
 	
 	t_start_computingcorrectincorrect=time()
 	finalAlignmentTemplates.apply_to_all(computeCorrectAndIncorrectBilphrases)
@@ -3230,12 +3892,12 @@ def filter_pre_minimisation(bilphrases, finalAlignmentTemplates, subsetsGraph,re
 				print >> sys.stderr, finalAlignmentTemplates.get_by_id(id)
 		
 		print >>sys.stderr, "Removing contradictory bilingual phrases. Taking into account more particular ATs: "+str(takeIntoAccountLowerLevelsInContradictions)
-		bilphrasesToDelete=finalAlignmentTemplates.remove_contradictory_ats()
-		globalReproducibleBilphrases-=bilphrasesToDelete
-		def removeBilphrasesToDeleteFromAts(myAt):
-			myAt.correct_bilphrases-=bilphrasesToDelete
-			myAt.incorrect_bilphrases-=bilphrasesToDelete
-		finalAlignmentTemplates.apply_to_all(removeBilphrasesToDeleteFromAts)
+		finalAlignmentTemplates.remove_contradictory_ats()
+		#globalReproducibleBilphrases-=bilphrasesToDelete
+		#def removeBilphrasesToDeleteFromAts(myAt):
+		#	myAt.correct_bilphrases-=bilphrasesToDelete
+		#	myAt.incorrect_bilphrases-=bilphrasesToDelete
+		#finalAlignmentTemplates.apply_to_all(removeBilphrasesToDeleteFromAts)
 		
 		if DEBUG:
 			print >> sys.stderr, "ATs after removing contradictory ones:"
@@ -3244,8 +3906,62 @@ def filter_pre_minimisation(bilphrases, finalAlignmentTemplates, subsetsGraph,re
 	
 	return finalAlignmentTemplates,globalReproducibleBilphrases,t_computingcorrectincorrect
 
+def group_bilphrases_behaving_equal(selectedAts,reproducibleBilphrasesIds,bilphrases):
+	tmpmappings=dict()
+	mappings=dict()
+	inversemappings=dict()
+	syntheticBilphraseSet=AlignmentTemplateSet()
+	
+	for bid in reproducibleBilphrasesIds:
+		bilphrase=bilphrases.get_by_id(bid)
+		
+		#freeze sets so that they can be used as keys
+		bilphrase.atsmatchingthisbilphrase=frozenset(bilphrase.atsmatchingthisbilphrase)
+		bilphrase.atsreproducingthisbilphrase=frozenset(bilphrase.atsreproducingthisbilphrase)
+		key=(bilphrase.atsmatchingthisbilphrase,bilphrase.atsreproducingthisbilphrase)
+		
+		if not key in tmpmappings:
+			tmpmappings[key]=set()
+		tmpmappings[key].add(bid)
+	
+	newbilphrasesid=0
+	for key in tmpmappings:
+		newbilphrasesid+=1
+		mappings[newbilphrasesid]=tmpmappings[key]
+		syntheticBilphrase=None
+		for oldbilid in mappings[newbilphrasesid]:
+			oldbil=bilphrases.get_by_id(oldbilid)
+			if syntheticBilphrase == None:
+				syntheticBilphrase=oldbil.fast_clone()
+				syntheticBilphrase.freq=0
+				syntheticBilphrase.id=newbilphrasesid
+			syntheticBilphrase.freq+=oldbil.freq
+			inversemappings[oldbilid]=newbilphrasesid
+		syntheticBilphraseSet.add(syntheticBilphrase)
+	
+	if DEBUG:
+		for newbild in mappings.iterkeys():
+			newbilphrase=syntheticBilphraseSet.get_by_id(newbild)
+			debug("Group with id="+str(newbild)+" represented by "+str(newbilphrase))
+			for oldid in mappings[newbild]:
+				oldbilphrase=bilphrases.get_by_id(oldid)
+				debug("\t"+str(oldbilphrase))
+	
+	#update bilphrase ids in selected ats
+	for atid in selectedAts.get_all_ids():
+		at=selectedAts.get_by_id(atid)
+		newcorrectbilphrases=set()
+		newincorrectbilphrases=set()
+		for bilid in at.correct_bilphrases:
+			newcorrectbilphrases.add(inversemappings[bilid])
+		for bilid in at.incorrect_bilphrases:
+			newincorrectbilphrases.add(inversemappings[bilid])
+		at.correct_bilphrases=newcorrectbilphrases
+		at.incorrect_bilphrases=newincorrectbilphrases
+	
+	return mappings,inversemappings,syntheticBilphraseSet
 
-def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphrases,bilphrases,printNumCorrectUnfilteredBilphrases=False,lambdaForCombining=0.00,relaxRestrictions=False,relaxWeight="len(at_list)+1",useNewScoring=False,restrictionSymmetricDifference=False):
+def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphrases,bilphrases,printNumCorrectUnfilteredBilphrases=False,lambdaForCombining=0.00,relaxRestrictions=False,relaxWeight="len(at_list)+1",useNewScoring=False,restrictionSymmetricDifference=False, moreSpecificRequiresLessFrequent=False,mappingsFromSyntheticBilphrases=None,originalBilphraseSet=None):
 	
 	globalSolution=list()
 	
@@ -3253,7 +3969,7 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 	ts_preparing=list()
 	ts_solving=list()
 	
-	# Este bucle es como el apéndice o las muelas del juicio, totalmente inútil
+	# Este bucle es  totalmente inútil
 	# actualmente, para cada llamada a la funcion solo hay un valor en finalAlignmentTemplates.get_l2_maps()
 	# Para todos ellos se usa el mismo globalReproducibleBilphrases
 	for l2mapPair in finalAlignmentTemplates.get_l2_maps():
@@ -3269,6 +3985,7 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 				idAt+=1
 				at.id=idAt
 				at_dict[at.id]=at
+				at.clean_subsets()
 		t_start_preferences=time()
 		
 		SUBSET_NOT_COMPUTED=0
@@ -3293,49 +4010,65 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 		#for i in []:
 			comparablei=valuelist[i][0]
 			for j in range(len(valuelist)):
-				if subsetMatrix[i][j]==SUBSET_NOT_COMPUTED:
-					comparablej=valuelist[j][0]
-					isSubset=comparablei.is_subset_of_this(comparablej)
-					if isSubset:
-						debug("\t"+str(comparablej)+" is subset of "+str(comparablei))
-						#j is subset of i
-						subsetMatrix[i][j]=SUBSET_YES
-						subsetSets[i].add(j)
-						supersetSets[j].add(i)
-						
-						#all the subsets of j are subsets of i
-						for subsetIndex in subsetSets[j]:
-							subsetMatrix[i][subsetIndex]=SUBSET_YES
-							subsetSets[i].add(subsetIndex)
-							supersetSets[subsetIndex].add(i)
-					else:
-						debug("\t"+str(comparablej)+" is NOT subset of "+str(comparablei))
-						subsetMatrix[i][j]=SUBSET_NO
+				if i!=j:
+					if subsetMatrix[i][j]==SUBSET_NOT_COMPUTED:
+						comparablej=valuelist[j][0]
+						isSubset=comparablei.is_subset_of_this(comparablej)
+						if isSubset:
+							debug("\t"+str(comparablej)+" is subset of "+str(comparablei))
+							#j is subset of i
+							subsetMatrix[i][j]=SUBSET_YES
+							subsetSets[i].add(j)
+							supersetSets[j].add(i)
+							
+							#all the subsets of j are subsets of i
+							for subsetIndex in subsetSets[j]:
+								subsetMatrix[i][subsetIndex]=SUBSET_YES
+								subsetSets[i].add(subsetIndex)
+								supersetSets[subsetIndex].add(i)
+								if DEBUG:
+									debug("\t\t"+str(valuelist[subsetIndex][0])+" is subset of "+str(valuelist[i][0])+" because:")
+									debug("\t\t\t"+str(valuelist[subsetIndex][0])+" is subset of "+str(valuelist[j][0]))
+									debug("\t\t\t"+str(valuelist[j][0])+" is subset of "+str(valuelist[i][0]))
+						else:
+							debug("\t"+str(comparablej)+" is NOT subset of "+str(comparablei))
+							subsetMatrix[i][j]=SUBSET_NO
 
-						#all the supersets of j are not subsets of i
-						for superIndex in supersetSets[j]:
-							subsetMatrix[i][superIndex]=SUBSET_NO
+							#all the supersets of j are not subsets of i
+							for superIndex in supersetSets[j]:
+								subsetMatrix[i][superIndex]=SUBSET_NO
 			
 		for i in range(len(valuelist)):
 			comparablei=valuelist[i][0]
+			
+			if DEBUG:
+				debug("Valuelist["+str(i)+"]")
+				for at in valuelist[i]:
+					debug("\t"+str(at))
+			
 			for j in range(len(valuelist)):
-				comparablej=valuelist[j][0]
-				#if comparablei.is_subset_of_this(comparablej) and not comparablej.is_subset_of_this(comparablei):
-				if subsetMatrix[i][j] == SUBSET_YES and subsetMatrix[j][i] == SUBSET_NO:
-					for at in valuelist[i]:
-						for atsub in valuelist[j]:
-							at.atswhicharesubset.add(atsub.id)
-				if restrictionSymmetricDifference:
-					if not comparablei.is_symmetric_difference_empty(comparablej):
+				if i!=j:
+					comparablej=valuelist[j][0]
+					#if comparablei.is_subset_of_this(comparablej) and not comparablej.is_subset_of_this(comparablei):
+					if subsetMatrix[i][j] == SUBSET_YES and subsetMatrix[j][i] == SUBSET_NO:
 						for at in valuelist[i]:
 							for atsub in valuelist[j]:
-								at.atssymmetricdifferencenotempty.add(atsub.id)
-			if DEBUG:
+								at.atswhicharesubset.add(atsub.id)
+								if DEBUG:
+									debug("("+str(atsub.id)+") "+str(atsub)+" is subset of ("+str(at.id)+") "+str(at))
+									debug("\tbecause ("+str(valuelist[j][0].id)+") "+str(valuelist[j][0])+" is subset of ("+str(valuelist[i][0].id)+") "+str(valuelist[i][0])+" and not the other way round")
+					if restrictionSymmetricDifference:
+						if not comparablei.is_symmetric_difference_empty(comparablej):
+							for at in valuelist[i]:
+								for atsub in valuelist[j]:
+									at.atssymmetricdifferencenotempty.add(atsub.id)
+			if DEBUG:				
 				for at in valuelist[i]:
-					print >> sys.stderr, "Subsets of: "+str(at)
+					print >> sys.stderr, "Subsets of: ("+str(at.id)+") "+str(at)
 					for id in at.atswhicharesubset:
-						print >> sys.stderr, at_dict[id]
+						print >> sys.stderr, "("+str(id)+") "+str(at_dict[id])
 					print >> sys.stderr, ""
+				debug("")
 			
 		ts_preferences.append(time()-t_start_preferences)
 		
@@ -3422,7 +4155,7 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 				listOfVars=list()
 				atsMoreParticularOK=list()
 				for j in range(len(at_list)):
-					if j!=i and bil_id in at_list[j].correct_bilphrases and at_list[j].id in at.atswhicharesubset:
+					if j!=i and bil_id in at_list[j].correct_bilphrases and at_list[j].id in at.atswhicharesubset and ( not moreSpecificRequiresLessFrequent or (at_list[j].num_correct_bilphrases < at.num_correct_bilphrases ) ):
 						#add to expression
 						listOfVars.append((lp_variables[at_list[j].id],1))
 						atsMoreParticularOK.append(at_list[j].id)
@@ -3540,7 +4273,11 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 				#If not relax restrictions, simply print bilingual phrases
 			else:
 				for bil_id in globalReproducibleBilphrases:
-					globalSolution.append(bilphrases.get_by_id(bil_id))
+					if mappingsFromSyntheticBilphrases != None:
+						for trueBilId in mappingsFromSyntheticBilphrases[bil_id]:
+							globalSolution.append(originalBilphraseSet.get_by_id(trueBilId))
+					else:
+						globalSolution.append(bilphrases.get_by_id(bil_id))
 			
 				if printNumCorrectUnfilteredBilphrases:
 					print >> sys.stderr, "ATS_AFTER_LINEAR_PROG"
@@ -3646,8 +4383,8 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 						relaxedBilphraseId=int(relaxationVar.name[1:])
 						globalReproducibleBilphrases.remove(relaxedBilphraseId)
 						relaxedBilphrase=bilphrases.get_by_id(relaxedBilphraseId)
-						totalScore+=freq*unityWeight
-						totalFreq+=freq
+						totalScore+=relaxedBilphrase.freq*unityWeight
+						totalFreq+=relaxedBilphrase.freq
 						totalBil+=1
 						debug("score= "+str(freq*unityWeight)+" | "+str(relaxedBilphrase))
 						print >> sys.stderr, str(relaxedBilphrase.id)+": "+str(relaxedBilphrase.freq)+"  "+str(relaxedBilphrase)
@@ -3669,6 +4406,21 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 				
 				debug("Total score (chosen ATs + discarded bilphrases): "+str(totalScore))
 				
+				#detect loops before applying tsort (debug)
+				if DEBUG:
+					for index1,at1 in enumerate(solution):
+						for index2,at2 in enumerate(solution):
+							if index1 != index2:
+								if at1.id in at2.atswhicharesubset and at2.id in at1.atswhicharesubset:
+									debug("WARNING: Found pair of ATs which are mutual subset. tsort will crash. Ats are:")
+									debug(str(at1.id)+": "+str(at1))
+									debug(str(at2.id)+": "+str(at2))
+									debug("")
+									debug("checking result of method is_subset_of..")
+									debug("at1.is_subset_of_this(at2):"+str(at1.is_subset_of_this(at2)))
+									debug("at2.is_subset_of_this(at1):"+str(at2.is_subset_of_this(at1)))
+									debug("")
+
 				atidsInSolution=set()
 				for at in solution:
 					atidsInSolution.add(at.id)
@@ -3695,8 +4447,13 @@ def minimise_linear_programming(finalAlignmentTemplates,globalReproducibleBilphr
 	#write resulting bilingual phrases. They will be used by "subrule" approach
 	print >> sys.stderr, "BILINGUAL_PHRASES"
 	for bil_id in globalReproducibleBilphrases:
-		bilphrase=bilphrases.get_by_id(bil_id)
-		print >> sys.stderr, str(bilphrase.freq)+" | "+bilphrase.to_string(removeRestrictionsFromLexicalised=False)
+		if mappingsFromSyntheticBilphrases != None:
+			for trueBilId in mappingsFromSyntheticBilphrases[bil_id]:
+				bilphrase=originalBilphraseSet.get_by_id(trueBilId)
+				print >> sys.stderr, str(bilphrase.freq)+" | "+bilphrase.to_string(removeRestrictionsFromLexicalised=False)
+		else:
+			bilphrase=bilphrases.get_by_id(bil_id)
+			print >> sys.stderr, str(bilphrase.freq)+" | "+bilphrase.to_string(removeRestrictionsFromLexicalised=False)
 	print >> sys.stderr, "END_BILINGUAL_PHRASES"
 			
 	#print times
@@ -4047,6 +4804,13 @@ def unparse_lex_form(lemma,tags,replaceSpacesWithUnderscore=False):
 
 def unparse_tags(tagsstr):
 	return u"<"+u"><".join(tagsstr)+u">"
+
+def escape_lemma(lemmastr):
+	if lemmastr == u"[":
+		return u"\\["
+	if lemmastr == u"]":
+		return u"\\]"
+	return lemmastr
 
 def parse_tags(tagsstr):
 	parsedTags=list()

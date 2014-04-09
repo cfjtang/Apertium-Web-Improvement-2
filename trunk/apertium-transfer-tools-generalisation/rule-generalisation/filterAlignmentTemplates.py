@@ -17,7 +17,7 @@ mincount=float(args.min_count)
 criterion=args.criterion
 
 for line in sys.stdin:
-	line=line.strip().decode('utf-8')
+	line=line.rstrip('\n').decode('utf-8')
 	parts=line.split('|')
 	if len(parts)>1:
 		freq=float(parts[0].strip())

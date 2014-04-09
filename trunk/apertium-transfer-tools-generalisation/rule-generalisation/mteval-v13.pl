@@ -167,6 +167,7 @@ my $brevity_penalty = 'closest';
 my $international_tokenization;
 my $metricsMATR_output = '';
 my $no_smoothing = '';
+my $plus_one_smooth_bp = '' ;
 our $opt_x = '';
 our $opt_b = '';
 our $opt_n = '';
@@ -184,7 +185,8 @@ GetOptions(
 	'brevity-penalty:s' => \$brevity_penalty,
 	'international-tokenization' => \$international_tokenization,
 	'metricsMATR-output' => \$metricsMATR_output,
-	'no-smoothing' => \$no_smoothing
+	'no-smoothing' => \$no_smoothing,
+	'plus-one-bp-smooth' => \$plus_one_smooth_bp
 );
 die $usage if $help;
 
@@ -209,6 +211,7 @@ $TOKENIZATION = \&tokenization_international if ( $international_tokenization );
 
 my $BLEU_SCORE = \&bleu_score;
 $BLEU_SCORE = \&bleu_score_nosmoothing if ( $no_smoothing );
+$BLEU_SCORE = \&bleu_plus_one_bp_smoothed_score if ( $plus_one_smooth_bp );
 
 my $max_Ngram = 9;
 
@@ -824,6 +827,33 @@ sub bleu_score_nosmoothing
 	return $SCOREmt->{ 4 }{ $sys }{ cum };
 }
 
+sub bleu_plus_one_bp_smoothed_score
+{
+	my ($ref_length, $matching_ngrams, $tst_ngrams, $sys, $SCOREmt) = @_;
+	my $score = 0;
+	my $iscore = 0;
+	my $len_score = min (0, 1-($ref_length +1)/$tst_ngrams->[1]);
+
+	for ( my $j = 1; $j <= $max_Ngram; ++$j )
+	{
+		if ($matching_ngrams->[ $j ] == 0)
+		{
+			$SCOREmt->{ $j }{ $sys }{ cum }=0;
+		}
+		else
+		{
+			# Cumulative N-Gram score
+			$score += log( ($matching_ngrams->[ $j ] + 1) / ($tst_ngrams->[ $j ] + 1) );
+			$SCOREmt->{ $j }{ $sys }{ cum } = exp( $score / $j + $len_score );
+			# Individual N-Gram score
+			$iscore = log( ($matching_ngrams->[ $j ] + 1) / ($tst_ngrams->[ $j ] +1) );
+			$SCOREmt->{ $j }{ $sys }{ ind } = exp( $iscore );
+		}
+	}
+	return $SCOREmt->{ 4 }{ $sys }{ cum };
+}
+
+
 ###############################################################################################################################
 # Default method used to compute the BLEU score, using smoothing.
 # Note that the method used can be overridden using the '--no-smoothing' command-line argument
@@ -866,6 +896,7 @@ sub bleu_score
 	}
 	return $SCOREmt->{ 4 }{ $sys }{ cum };
 }
+
 
 #################################
 

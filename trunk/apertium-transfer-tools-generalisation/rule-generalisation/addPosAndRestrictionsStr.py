@@ -17,7 +17,7 @@ include_restrictions= not args.rich_ats
 ruleLearningLib.AT_LexicalTagsProcessor.initialize(args.tag_groups_file_name,args.tag_sequences_file_name)
 
 for line in sys.stdin:
-	line=line.decode('utf-8').strip()
+	line=line.rstrip('\n').decode('utf-8')
 	
 	pieces=line.split(u' | ')
 	freqstr=pieces[0]

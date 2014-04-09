@@ -60,7 +60,7 @@ def process_bilingual_phrases(atListWithLemmasList,bilingualPhrases, generalisat
             #lexicalisations
             if not lemmasposandalignments in lexicalVariationsDictionary:
                 starttime=time()
-                lexicalVariationsAtsF=ruleLearningLib.AlignmentTemplate_generate_all_lexical_generalisations(cleanAT,sllemmas,tllemmas,tllemmasfromdictionary)
+                lexicalVariationsAtsF=ruleLearningLib.AlignmentTemplate_generate_all_lexical_generalisations(cleanAT,sllemmas,tllemmas,tllemmasfromdictionary,generalisationOptions.is_unlexicaliseUnalignedSL())
                 if allowedSLLemmas:
                     lexicalVariationsAts=[myat for myat in lexicalVariationsAtsF if tuple(myat.get_sl_lemmas()) in allowedSLLemmas]
                 else:
@@ -347,6 +347,13 @@ if __name__=="__main__":
         parser.add_argument('--discard_restrictions_not_improving',action='store_true')
         parser.add_argument('--only_lexical',action='store_true')
         parser.add_argument('--ats_with_allowed_lemmas_file')
+        parser.add_argument('--generalise_non_matching_too',action='store_true')
+        parser.add_argument('--unlexicalise_unaligned_sl',action='store_true')
+        
+        parser.add_argument('--dont_generalise_all_instances_together',action='store_true')
+        parser.add_argument('--generalisable_attributes_like_in_paper',action='store_true')
+        
+        parser.add_argument('--times_attributes_change')
         
         parser.add_argument('--debug',action='store_true')
         args = parser.parse_args(sys.argv[1:])
@@ -381,6 +388,7 @@ if __name__=="__main__":
         generalisationOptions.set_fromRightToLeft(args.generalise_from_right_to_left)
         generalisationOptions.set_refToBiling(args.ref_to_biling)
         generalisationOptions.set_addRestrictionsForEveryTag(args.add_restrictions_to_every_tag)
+        generalisationOptions.set_generaliseNonMatchingToo(args.generalise_non_matching_too)
         generalisationOptions.set_differentRestrictionOptions(args.different_restriction_options)
         if args.only_to_be_determined_in_restriction:
             generalisationOptions.set_possibleValuesForRestrictions(ruleLearningLib.AT_GeneralisationOptions.VALUE_FOR_RESTRICTION_TBDETERMINED)
@@ -394,10 +402,17 @@ if __name__=="__main__":
         generalisationOptions.set_triggeringLimitedLength(args.triggering_limited_length)
         generalisationOptions.set_triggeringNoGoodDiscarded(args.triggering_no_good_discarded)
         generalisationOptions.set_discardRestrictionsNotImproving(args.discard_restrictions_not_improving)
+        generalisationOptions.set_unlexicaliseUnalignedSL(args.unlexicalise_unaligned_sl)
+        generalisationOptions.set_dontGeneraliseAllInstancesTogether(args.dont_generalise_all_instances_together)
+        generalisationOptions.set_calculateGeneralisableAttributesLikeInPaper(args.generalisable_attributes_like_in_paper)
         
         generationMethod=AlignmentTemplateGenerationMethod.FIRST_APPROACH
         if args.rich_ats:
             generationMethod=AlignmentTemplateGenerationMethod.TL_VARIABLES
+        
+        if args.times_attributes_change:
+            generalisationOptions.set_count_attribute_changes(open(args.times_attributes_change))
+        
         
         allowedSLLemmas=None
         if args.ats_with_allowed_lemmas_file:
@@ -426,7 +441,7 @@ if __name__=="__main__":
         bilid=0
         for line in inputFile:
             
-            line=line.decode('utf-8').strip()
+            line=line.decode('utf-8')
             at = ruleLearningLib.AlignmentTemplate()
             bilphrase=ruleLearningLib.AlignmentTemplate()
             

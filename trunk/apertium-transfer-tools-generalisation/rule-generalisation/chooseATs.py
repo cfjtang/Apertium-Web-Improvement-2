@@ -26,6 +26,10 @@ if __name__=="__main__":
 	parser.add_argument('--remove_third_restriction',action='store_true')
 	parser.add_argument('--symmetric_difference',action='store_true')
 	parser.add_argument('--first_select_restrictions',action='store_true')
+	parser.add_argument('--dont_add_znorest',action='store_true')
+	parser.add_argument('--more_specific_less_frequent',action='store_true')
+	parser.add_argument('--dont_group_bilphrases',action='store_true')
+	parser.add_argument('--dynamic_theta')
 	#value = dir in which bilphrases will be written
 	#ATs = std output
 	parser.add_argument('--only_filter')
@@ -86,6 +90,9 @@ if __name__=="__main__":
 	else:
 		file=open(atsFileName,'r')
 	id=0
+	
+	atsByFreq=dict()
+	
 	for line in file:
 		line=line.strip().decode('utf-8')
 		parts = line.split(u" | ")
@@ -94,8 +101,34 @@ if __name__=="__main__":
 		at.freq=int(parts[0])
 		id+=1
 		at.id=id
-		finalAlignmentTemplates.add(at)
+		if args.dynamic_theta:
+			if at.freq not in atsByFreq:
+				atsByFreq[at.freq]=list()
+			atsByFreq[at.freq].append(at)
+		else:
+			finalAlignmentTemplates.add(at)
+		
 	file.close()
+	
+	#dynamically determine theta
+	if args.dynamic_theta:
+		limit=int(args.dynamic_theta)
+		#sort by freq
+		sortedFreqs=sorted(atsByFreq.keys(),reverse=True)
+		
+		numGroupsAccepted=0
+		numAtsAccepted=0
+		for freq in sortedFreqs:
+			if numAtsAccepted+len(atsByFreq[freq]) <= limit:
+				numAtsAccepted+=len(atsByFreq[freq])
+				numGroupsAccepted+=1
+			else:
+				break
+		print >> sys.stderr, "For limit="+str(limit)+", theta="+str(sortedFreqs[numGroupsAccepted-1] if numGroupsAccepted > 0 else -1 )
+		for groupIndex in range(numGroupsAccepted):
+			freqOfGroup=sortedFreqs[groupIndex]
+			for at in atsByFreq[freqOfGroup]:
+				finalAlignmentTemplates.add(at)
 	
 	#Read bilingual phrases
 	bilphrases=ruleLearningLib.AlignmentTemplateSet()
@@ -106,7 +139,7 @@ if __name__=="__main__":
 		file=open(bilphrasesFileName,'r')
 	id=0
 	for line in file:
-		line=line.strip().decode('utf-8')
+		line=line.rstrip('\n').decode('utf-8')
 		parts = line.split(u"|")
 		at = ruleLearningLib.AlignmentTemplate()
 		at.parse(u"|".join(parts[1:5]),True)
@@ -179,17 +212,22 @@ if __name__=="__main__":
 						locAt=myAts.get_by_id(id)
 						localAts.add(locAt)
 						localBilphrases.update(locAt.correct_bilphrases)
-						if locAt.is_restriction_of_generalised_tags_empty():
+						if locAt.is_restriction_of_generalised_tags_empty() and not args.dont_add_znorest :
 							selectedAts.add(locAt)
 						
-					restrictionsResult,ltimeinside=ruleLearningLib.minimise_linear_programming(localAts,localBilphrases,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference)
+					restrictionsResult,ltimeinside=ruleLearningLib.minimise_linear_programming(localAts,localBilphrases,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference,args.more_specific_less_frequent)
 					totaltimeinside+=ltimeinside
 					for restAt in restrictionsResult:
 						selectedAts.add(restAt)
 		else:
 			selectedAts=myAts
 		
-		result,ltimeinside=ruleLearningLib.minimise_linear_programming(selectedAts,reproducibleBilphrasesIds,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference)
+		if args.dont_group_bilphrases:
+			result,ltimeinside=ruleLearningLib.minimise_linear_programming(selectedAts,reproducibleBilphrasesIds,bilphrases,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference,args.more_specific_less_frequent)
+		else:
+		  	groupedBilphrasesMapping,groupedBilphrasesInverseMapping,syntheticBilphraseSet=ruleLearningLib.group_bilphrases_behaving_equal(selectedAts,reproducibleBilphrasesIds,bilphrases)
+			print >> sys.stderr, "From "+str(len(reproducibleBilphrasesIds))+" to "+str(len(groupedBilphrasesMapping))+" bilphrases with grouping"
+			result,ltimeinside=ruleLearningLib.minimise_linear_programming(selectedAts,set(groupedBilphrasesMapping.keys()),syntheticBilphraseSet,printNumCorrectUnfilteredBilphrases,lambdaForCombining,relaxRestrictions,relaxWeight,args.remove_third_restriction, args.symmetric_difference,args.more_specific_less_frequent,groupedBilphrasesMapping,bilphrases)
 		totaltimeinside+=ltimeinside
 		print >> sys.stderr, "Time spent computing correct and incorrect bilphrases: "+str(time_correct_incorrect)
 		print >> sys.stderr, "Total time: "+str(totaltimeinside+time_correct_incorrect)

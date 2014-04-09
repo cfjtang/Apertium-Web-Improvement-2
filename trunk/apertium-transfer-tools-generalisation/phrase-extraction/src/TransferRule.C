@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2007 Felipe Sánchez-Martínez
+ * Copyright (C) 2006-2007 Felipe SÃ¡nchez-MartÃ­nez
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -286,7 +286,7 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	    
 	    teststr+=L"           <and>\n";	
 	    teststr+=L"            <begins-with>\n";
-	    teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"tags\" queue=\"no\"/>\n";
+	    teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"tags\" />\n";
 	    teststr+=L"              <lit-tag v=\""+escape_attr(StringUtils::split_wstring(Utils::tags2transferformat(ats[i].restrictions[j]),L".")[0])+L"\"/>\n";
 	    teststr+=L"            </begins-with>\n";
 	    
@@ -299,20 +299,20 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 		if(tag[0]==L'['){
 		  wstring attr=tag.substr(1);
 		  teststr+=L"               <equal>\n";
-		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+attr+L"\"/>\n";
-		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"sl\" part=\""+attr+L"\"/>\n";
+		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"learned_"+attr+L"\"/>\n";
+		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"sl\" part=\"learned_"+attr+L"\"/>\n";
 		  teststr+=L"               </equal>\n";
 		}
 		else if(tag[0]==L']'){
 		  wstring attr=tag.substr(1);
 		  teststr+=L"               <not><equal>\n";
-		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+attr+L"\"/>\n";
-		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"sl\" part=\""+attr+L"\"/>\n";
+		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"learned_"+attr+L"\"/>\n";
+		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"sl\" part=\"learned_"+attr+L"\"/>\n";
 		  teststr+=L"               </equal></not>\n";
 		}
 		else{
 		  wstring attr=get_attribute_for_tag(tag,partofspeech);
-		  teststr+=L"               <or>\n";
+		  //teststr+=L"               <or>\n";
 		  teststr+=L"               <equal>\n";
 		  teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+attr+L"\"/>\n";
 		  if(tag.size() >= 10 && tag.substr(0,10)==L"empty_tag_" )
@@ -321,14 +321,15 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			teststr+=L"                 <lit-tag v=\""+escape_attr(tag)+L"\"/>\n";
 			
 		  teststr+=L"               </equal>\n";
+		  //Not necessary anymore
 		  //A restriction with the same value that the sl tag may also mean that the tag dissappears (e.g., genders in es-en)
-		  if(std::find(nongenTags.begin(), nongenTags.end(), tag) != nongenTags.end()) {
-		    teststr+=L"               <equal>\n";
-		    teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+attr+L"\"/>\n";
-		    teststr+=L"                 <lit v=\"\"/>\n";
-		    teststr+=L"               </equal>\n";
-		  }  
-		  teststr+=L"               </or>\n";
+		  //if(std::find(nongenTags.begin(), nongenTags.end(), tag) != nongenTags.end()) {
+		    //teststr+=L"               <equal>\n";
+		    //teststr+=L"                 <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+attr+L"\"/>\n";
+		    //teststr+=L"                 <lit v=\"\"/>\n";
+		    //teststr+=L"               </equal>\n";
+		  //}  
+		  //teststr+=L"               </or>\n";
 		}
 	    }
 	    
@@ -478,8 +479,8 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 			    {
 				  nconditions++;
 			      teststr+=L"            <equal>\n";
-				  teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"sl\" part=\""+tag.substr(1)+L"\" />\n";
-				  teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\""+tag.substr(1)+L"\" />\n";
+				  teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"sl\" part=\"learned_"+tag.substr(1)+L"\" />\n";
+				  teststr+=L"              <clip pos=\""+Utils::itoa(j+1)+L"\" side=\"tl\" part=\"learned_"+tag.substr(1)+L"\" />\n";
 				  teststr+=L"            </equal>\n";
 				  
 			    }
@@ -561,16 +562,16 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	//Some tags come from bilingual dictionary.
 	for(vector<wstring>::iterator it=tagvector.begin(); it!=tagvector.end(); ++it){
 		if( (*it).substr(0,1)==L"*" )
-			rule+=L"            <clip pos=\""+Utils::itoa(pos+1)+L"\" side=\"sl\" part=\""+(*it).substr(1)+L"\"/>\n";
+			rule+=L"            <clip pos=\""+Utils::itoa(pos+1)+L"\" side=\"sl\" part=\"learned_"+(*it).substr(1)+L"\"/>\n";
 		else if ( (*it).substr(0,1)==L")" )
 		{
 			long locpos=Utils::wtol((*it).substr(1,4));
-			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"tl\" part=\""+(*it).substr(4)+L"\"/>\n";
+			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"tl\" part=\"learned_"+(*it).substr(4)+L"\"/>\n";
 		}
 		else if ( (*it).substr(0,1)==L"(" )
 		{
 			long locpos=Utils::wtol((*it).substr(1,4));
-			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"sl\" part=\""+(*it).substr(4)+L"\"/>\n";
+			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"sl\" part=\"learned_"+(*it).substr(4)+L"\"/>\n";
 		}
 		else
 			rule+=L"            <lit-tag v=\""+escape_attr((*it))+L"\"/>\n";
@@ -628,16 +629,16 @@ TransferRule::gen_apertium_transfer_rule(bool debug) {
 	
 	for(vector<wstring>::iterator it=tagvector.begin(); it!=tagvector.end(); ++it){
 		if( (*it).substr(0,1)==L"*" )
-			rule+=L"            <clip pos=\""+Utils::itoa(pos+1)+L"\" side=\"sl\" part=\""+(*it).substr(1)+L"\"/>\n";
+			rule+=L"            <clip pos=\""+Utils::itoa(pos+1)+L"\" side=\"sl\" part=\"learned_"+(*it).substr(1)+L"\"/>\n";
 		else if ( (*it).substr(0,1)==L")" )
 		{
 			long locpos=Utils::wtol((*it).substr(1,4));
-			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"tl\" part=\""+(*it).substr(4)+L"\"/>\n";
+			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"tl\" part=\"learned_"+(*it).substr(4)+L"\"/>\n";
 		}
 		else if ( (*it).substr(0,1)==L"(" )
 		{
 			long locpos=Utils::wtol((*it).substr(1,4));
-			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"sl\" part=\""+(*it).substr(4)+L"\"/>\n";
+			rule+=L"            <clip pos=\""+Utils::itoa((int) (locpos+1))+L"\" side=\"sl\" part=\"learned_"+(*it).substr(4)+L"\"/>\n";
 		}
 		else
 			rule+=L"            <lit-tag v=\""+escape_attr((*it))+L"\"/>\n";
@@ -1081,8 +1082,8 @@ wstring
 TransferRule::category_name(const wstring& lemma, const wstring& tags) {
   wstring catname=L"";
 
-  if (lemma.length()>0)//TODO: codificar bien el caracter extraño
-    catname+=StringUtils::substitute(StringUtils::substitute(lemma,L"#",L"_"),L"\u2019",L"_")+L"_";
+  if (lemma.length()>0)//TODO: codificar bien el caracter extraÃ±o
+    catname+=StringUtils::substitute(StringUtils::substitute(StringUtils::substitute(lemma,L"#",L"_"),L"\u2019",L"_"),L"'",L"QUOT")+L"_";
 
   catname+=StringUtils::substitute(StringUtils::substitute(StringUtils::substitute(StringUtils::substitute(tags,L".",L""),L"*",L"_"),L"+",L"plus"),L"@",L"arroba");
 
@@ -1133,7 +1134,7 @@ wstring
 TransferRule::get_attribute_for_tag(wstring &tag, wstring &pos) {
 	wstring attrname=L"";
 	if(tag.size() >= 10 && tag.substr(0,10)==L"empty_tag_")
-		attrname=tag.substr(10);
+		attrname=L"learned_"+tag.substr(10);
 	else
 	{
 		for ( map<wstring, pair< set<wstring>, set<wstring> > >::iterator  it=  attributes.begin() ; it != attributes.end(); it++ ){

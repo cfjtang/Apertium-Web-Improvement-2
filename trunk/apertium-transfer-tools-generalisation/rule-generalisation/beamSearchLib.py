@@ -49,6 +49,11 @@ class RuleList(object):
             raise RuntimeError("ID not in range")
         return self.ruleList[id]
     
+    def add_rules_with_seq_of_cats(self,originalRuleList,seqCatsStr):
+        seqCatsIndex=str(seqCatsStr.split(u"__"))
+        for at in originalRuleList.catSequenceDict[seqCatsIndex]:
+            self.add(at)
+    
     #returns the rules matching the segment, sorted in decreasing priority order
     def get_rules_matching_segment(self,segment,restrictions,exactMatch=False):
         rulesMatching=list()
@@ -109,6 +114,9 @@ class RuleApplicationHypothesis(object):
     def get_applied_rules(self):
         return self.appliedRules
     
+    def get_rules_list(self):
+        return self.rulesList
+    
     def get_discarded_rules(self):
         return self.discardedRules
     
@@ -160,8 +168,14 @@ class RuleApplicationHypothesis(object):
     def can_be_combined_with(self,otherhyp):
         return len(self.appliedRules & otherhyp.discardedRules) == 0 and len(otherhyp.appliedRules & self.discardedRules)==0 
     
-    def add_to_rules_list(self,ruleid,posSequence):
-        self.rulesList.append((ruleid,posSequence))
+    def get_rules_list(self):
+        return self.rulesList
+    
+    def add_to_rules_list(self,ruleid,posSequence,setOfAtsId=[]):
+        self.rulesList.append((ruleid,posSequence,setOfAtsId))
+    
+    def add_to_applied_rules(self,ruleid,setOfAtsId=[0]):
+        self.appliedRules.add(RuleApplicationIdentifier(ruleid,setOfAtsId))
     
     #Concatenate two hypothesis
     def create_new_combined_with(self,otherhyp):
@@ -189,7 +203,13 @@ class RuleApplicationHypothesis(object):
         parts=rawstr.split(u"|")
         if len(parts) >=4:
             self.score=float(parts[0].strip())
-            self.appliedRules=eval(parts[1].strip())
+            setOfTuplesAppliedRules=eval(parts[1].strip())
+            self.appliedRules=set()
+            for tup in setOfTuplesAppliedRules:
+                identifier=RuleApplicationIdentifier()
+                identifier.create_from_tuple(tup)
+                self.appliedRules.add(identifier)
+            
             self.discardedRules=eval(parts[2].strip())
             self.rulesList=eval(parts[3].strip())
             if parseTranslation and len(parts) >= 5:
@@ -234,11 +254,14 @@ class RuleApplicationHypothesis(object):
         cls.boxesInvDict=p_boxesdict
     
     @classmethod
-    def score_hypotheses(cls,hypothesisList):
+    def score_hypotheses(cls,hypothesisList,sentenceLevelScores=True):
         #create tmp file
         fileobj=NamedTemporaryFile(delete=False)
         
-        listOfstrHyps=list(set([hyp.to_str_for_scoring() for hyp in hypothesisList]))
+        if sentenceLevelScores:
+            listOfstrHyps=list(set([hyp.to_str_for_scoring() for hyp in hypothesisList]))
+        else:
+            listOfstrHyps=[hyp.to_str_for_scoring() for hyp in hypothesisList]
         
         debug("\nScoring hypotheses")
         
@@ -246,7 +269,10 @@ class RuleApplicationHypothesis(object):
             fileobj.write(strhyp+"\n")
         fileobj.close()
         
-        command="bash "+os.getcwdu()+"/evaluateBeamSearchHypothesis.sh -f "+fileobj.name+" -t "+cls.config_tl
+        corpusLevelScoreFlag=""
+        if sentenceLevelScores == False:
+            corpusLevelScoreFlag="-c"
+        command="bash "+os.getcwdu()+"/evaluateBeamSearchHypothesis.sh -f "+fileobj.name+" -t "+cls.config_tl+" "+corpusLevelScoreFlag
         if cls.apertium_data_dir:
             command+=" -d "
             command+=cls.apertium_data_dir
@@ -256,26 +282,74 @@ class RuleApplicationHypothesis(object):
         os.remove(fileobj.name)
         
         lines=output.strip().split("\n")
-        if len(lines) != len(listOfstrHyps):
-            print >> sys.stderr, "ERROR. NUmber of lines ("+str(len(lines))+") does not match hypothesis list ("+str(len(listOfstrHyps))+")"
-            print >> sys.stderr, "Dump:"
-            print >> sys.stderr, output
-            print >> sys.stderr, "Error output:"
-            print >> sys.stderr, error
-            exit()
         
-        resultsDictionary=dict()
-        for i in range(len(lines)):
-            if len(lines[i]) == 0:
-                print >> sys.stderr, "Line with length 0"
-                print >> sys.stderr, "command output"
+        if ruleLearningLib.DEBUG:
+            debug("BLEU debug info:")
+            debug(error)
+        
+        if sentenceLevelScores:  
+            if len(lines) != len(listOfstrHyps):
+                print >> sys.stderr, "ERROR. NUmber of lines ("+str(len(lines))+") does not match hypothesis list ("+str(len(listOfstrHyps))+")"
+                print >> sys.stderr, "Dump:"
+                print >> sys.stderr, output
+                print >> sys.stderr, "Error output:"
                 print >> sys.stderr, error
                 exit()
-            resultsDictionary[listOfstrHyps[i]]=float(lines[i])
-            debug(str(float(lines[i]))+" | "+listOfstrHyps[i])
+            
+            resultsDictionary=dict()
+            for i in range(len(lines)):
+                if len(lines[i]) == 0:
+                    print >> sys.stderr, "Line with length 0"
+                    print >> sys.stderr, "command output"
+                    print >> sys.stderr, error
+                    exit()
+                resultsDictionary[listOfstrHyps[i]]=float(lines[i])
+                debug(str(float(lines[i]))+" | "+listOfstrHyps[i])
+            
+            for hyp in hypothesisList:
+                hyp.set_score(resultsDictionary[hyp.to_str_for_scoring()])
+        else:
+            if len(lines) != 1:
+                print >> sys.stderr, "ERROR. NUmber of lines ("+str(len(lines))+") does not match hypothesis list ("+str(len(listOfstrHyps))+")"
+                print >> sys.stderr, "Dump:"
+                print >> sys.stderr, output
+                print >> sys.stderr, "Error output:"
+                print >> sys.stderr, error
+                exit()
+            return float(lines[0])
+    
+    @classmethod
+    def select_boxes_from_alternative_at_sets(cls,l_best_hypothesis):
         
-        for hyp in hypothesisList:
-            hyp.set_score(resultsDictionary[hyp.to_str_for_scoring()])
+        ##########################################
+        ## boxid -> countsForBoxMap             ##
+        ##                                      ##
+        ## countsForBoxMap: altAtSetId -> count ##
+        ##                                      ##
+        countsMap=dict()
+        
+        for hyp in l_best_hypothesis:
+            for ruleAppIdObj in hyp.get_applied_rules():
+                boxid=ruleAppIdObj.get_box_id()
+                altAtSetsUsed=ruleAppIdObj.get_alt_at_sets()
+                if not boxid in countsMap:
+                    countsMap[boxid]=defaultdict(int)
+                for altAtSetId in altAtSetsUsed:
+                    countsMap[boxid][altAtSetId]+=1
+        
+        result=list()
+        for boxid in countsMap.keys():
+            countsForBoxid=countsMap[boxid]
+            debug("box "+str(boxid)+": "+str(countsForBoxid))
+            sortedItems=sorted(countsForBoxid.items(),key=lambda item: item[1],reverse=True)
+            bestItem=sortedItems[0]
+            itemsWithMaxCount=[item for item in sortedItems if item[1]==bestItem[1]]
+            #from the items with max count, select the lower 
+            #altAtSetId
+            winner=sorted(itemsWithMaxCount,key=lambda item: item[0])[0]
+            result.append((boxid,winner[0]))
+        
+        return result
     
     @classmethod
     def select_rules_maximize_score(cls,ll_hypothesis):
@@ -340,7 +414,12 @@ class RuleApplicationHypothesis(object):
             return status,None
     
     @classmethod
-    def select_rules_maximize_score_boxes_applied(cls,ll_hypothesis,boxesInvDict,allruleList,sentences,supersegmentsWithMaxScore):
+    def select_rules_maximize_score_boxes_applied(cls,ll_hypothesis,boxesInvDict,allruleList,sentences,supersegmentsWithMaxScore,outputProbBreakingKey):
+        
+        oldDebugvalue=ruleLearningLib.DEBUG
+        ruleLearningLib.DEBUG=True
+        
+        probMap=dict()
         
         if len(ll_hypothesis) != len(sentences):
             print >> sys.stderr, "ERROR: different length of sentences and hypothesis"
@@ -368,6 +447,8 @@ class RuleApplicationHypothesis(object):
         rulesMinimumAtLeastOneTime=set()
         
         for numSentence,hypothesesOfSentence in enumerate(ll_hypothesis):
+            if len(hypothesesOfSentence) == 0:
+                continue
             bestHyp=hypothesesOfSentence[0]
             currentSentence=sentences[numSentence]
             #for ruleid in bestHyp.get_applied_rules():
@@ -400,9 +481,10 @@ class RuleApplicationHypothesis(object):
                     rulesMinimumAtLeastOneTime.add(ruleApp[0])
                     positionsWhereRuleStartAndLength.append((currentPosition,len(ruleApp[1])))
                     
-                    for l in range(len(ruleApp[1])-1):
-                        bannedEndPositions.add(currentPosition+l)
-                        bannedStartPositions.add(currentPosition+l+1)
+                    #Not explained in the paper = not implemented
+                    #for l in range(len(ruleApp[1])-1):
+                    #    bannedEndPositions.add(currentPosition+l)
+                    #    bannedStartPositions.add(currentPosition+l+1)
                     
                 currentPosition+=len(ruleApp[1])
             
@@ -425,7 +507,7 @@ class RuleApplicationHypothesis(object):
             #for each applied rule, compute 
             #rules left-intersecting with it 
             #rulesLeftIntersecting=set()
-            #TODO: Check that they match!!!!!!!!!!!!!!!!!!!!!!!!!
+            
             for startPosition,length in positionsWhereRuleStartAndLength:
                 debug("Discarded rules for ("+str(startPosition)+") "+"__".join(listOfPos[startPosition:startPosition+length]))
                 for endingPositionOffset in range(length-1):
@@ -445,6 +527,37 @@ class RuleApplicationHypothesis(object):
                                     ruleid=boxesDict[strForm]
                                     #rulesLeftIntersecting.add(ruleid)
                                     countsBanned[ruleid]+=1
+
+                #discard also longer rules starting in the same position
+                #not belonging to K_BLEU
+                for otherRuleLength in range(length+1,MAX_LENGTH+1):
+                    seqOfPosOfIntersecting=listOfPos[startPosition:startPosition+otherRuleLength+1]
+                    strForm="__".join(seqOfPosOfIntersecting)
+                    if strForm in boxesDict:
+                        ruleid=boxesDict[strForm]
+                        if not (startPosition,otherRuleLength,ruleid) in optimalRuleApplicationsSet:
+                            ruleMatchingList=allruleList.get_rules_matching_segment(currentSentence.parsed_sl_lexforms[startPosition:startPosition+otherRuleLength+1],currentSentence.parsed_restrictions[startPosition:startPosition+otherRuleLength+1])
+                            if len(ruleMatchingList) > 0:
+                                debug("\t"+strForm)
+                                countsBanned[ruleid]+=1
+                                
+                #discard also rules starting before and ending in the same position
+                #or after, not belonging to K_BLEU
+                for startingPositionOffset in range(1,MAX_LENGTH-length+1):
+                    startOfRuleEvaluated=startPosition-startingPositionOffset
+                    for endingPosition in range(startPosition+length+1,startPosition-startingPositionOffset+MAX_LENGTH+1):
+                        seqOfPosOfIntersecting=listOfPos[startOfRuleEvaluated:endingPosition]
+                        if len(seqOfPosOfIntersecting) > MAX_LENGTH:
+                            print >> sys.stderr, "ERROR: seq of categories too long. Error in algorithm"
+                            exit()
+                        if strForm in boxesDict:
+                            ruleid=boxesDict[strForm]
+                            if not (startOfRuleEvaluated,len(seqOfPosOfIntersecting),ruleid) in optimalRuleApplicationsSet:
+                                ruleMatchingList=allruleList.get_rules_matching_segment(currentSentence.parsed_sl_lexforms[startOfRuleEvaluated:endingPosition],currentSentence.parsed_restrictions[startOfRuleEvaluated:endingPosition])
+                                if len(ruleMatchingList) > 0:
+                                    debug("\t"+strForm)
+                                    countsBanned[ruleid]+=1
+                        
             #for ruleid in rulesLeftIntersecting:
                 #countsBanned[ruleid]+=1
                     
@@ -458,8 +571,13 @@ class RuleApplicationHypothesis(object):
                 if key in rulesMinimumAtLeastOneTime:
                     isMininimumStr="m "
                 debug(isMininimumStr+"id="+str(key)+" "+posSeq+" : "+str(countsApplied[key])+" - "+str(countsBanned[key])+" = "+str(countsApplied[key]-countsBanned[key]))
-
-        return [ key for key in countsApplied.keys() if countsApplied[key] > countsBanned[key] and key in rulesMinimumAtLeastOneTime ]
+        
+        ruleLearningLib.DEBUG=oldDebugvalue
+        
+        if outputProbBreakingKey:
+            return [ (key, countsBanned[key]*1.0/(countsApplied[key]+countsBanned[key])) for key in rulesMinimumAtLeastOneTime]
+        else:
+            return [ key for key in countsApplied.keys() if countsApplied[key] > countsBanned[key] and key in rulesMinimumAtLeastOneTime ]
         
     @classmethod
     def select_rules_maximize_score_with_super_heuristic(cls,ll_hypothesis):
@@ -608,8 +726,8 @@ class RuleApplicationHypothesis(object):
                     tlsegment=at.apply(parsed_sl_lexforms[index:index+length],tllemmas_from_dictionary[index:index+length],parsed_restrictions[index:index+length])
                     target_lexforms.extend(tlsegment)
                     
-                    boxid=boxid=boxesDic[at.get_pos_list_str()]
-                    newHyp.appliedRules.add(boxid)
+                    boxid=boxesDic[at.get_pos_list_str()]
+                    newHyp.add_to_applied_rules(boxid)
                     newHyp.add_to_rules_list(boxid, at.get_pos_list_str().split("__"))
                     
                     index+=length
@@ -781,9 +899,251 @@ class PartitionSelectionHypothesis(object):
     
     def __cmp__(self,obj):
         return cmp(self.__hash__(),obj.__hash__())
+
+class RuleApplicationIdentifier():
+    def __init__(self,p_boxId=-10,p_listOfAtSets=[]):
+        tupleSets=tuple(sorted(p_listOfAtSets))
+        self.create_from_tuple((p_boxId,tupleSets))
     
+    def create_from_tuple(self,tuple):
+        self.boxId=tuple[0]
+        self.atSets=set()
+        for atSet in tuple[1]:
+            self.atSets.add(atSet)
+        self.hashValue=tuple
+    
+    def get_box_id(self):
+        return self.boxId
+    
+    def get_alt_at_sets(self):
+        return self.atSets
+
+    def __hash__(self):
+        return hash(self.hashValue)
+    
+    def __cmp__(self,obj):
+        return cmp(self.hashValue,obj.hashValue)
+    
+    def __repr__(self):
+        return unicode(self.hashValue)
+
+
 class ParallelSentence(ruleLearningLib.AlignmentTemplate):
-    def compute_coverages_and_bleu(self,ruleList,beamSize,boxesCoverage=False,boxesDic=dict(),allowIncompatibleRules=False):
+    
+    def count_all_bsls(self,bslSet,maxLen=sys.maxint):
+        for bilphrase in self.extract_all_biphrases(maxLen):
+            bslSet.add_from_bilphrase(bilphrase)
+    
+    def count_bsls(self,bslNumerator,bslDenominator,allowUnknownAndPunctSide):
+        
+        countNumerator=0
+        countDenominator=0
+        
+        offsetLeftForCheckingPunct=0
+        offsetRightForCheckingPunct=0
+        if allowUnknownAndPunctSide==ParallelSentence.SIDE_LEFT:
+            offsetLeftForCheckingPunct+=1
+        elif allowUnknownAndPunctSide==ParallelSentence.SIDE_RIGHT:
+            offsetRightForCheckingPunct+=1
+        
+        bslOfSentence=ruleLearningLib.BilingualSequenceLexTags()
+        bslOfSentence.load_from_at(self)
+        
+        for i in xrange(len(self.parsed_sl_lexforms)-len(bslDenominator.slseq)+1):
+            #check that SL sequence does not contain punctuation or 
+            if not any( lex.is_unk_or_punct() for lex in self.parsed_sl_lexforms[i+offsetLeftForCheckingPunct:i+len(bslDenominator.slseq)-offsetRightForCheckingPunct] ):
+                #check whether sequence of SL classes matches
+                matches=True
+                for off in xrange(len(bslDenominator.slseq)):
+                     if bslDenominator.slseq[off] != u"*":
+                         if bslDenominator.slseq[off] != bslOfSentence.slseq[i+off]:
+                             matches=False
+                             break
+                if matches:
+                    #select TL sequences compatible with the alignments
+                    for j in xrange(len(self.parsed_tl_lexforms)-len(bslDenominator.tlseq)+1):
+                        if self.is_bilphrase_compatible_with_alignments(i, len(bslDenominator.slseq), j, len(bslDenominator.tlseq)):
+                            #check not punctuation or unknown
+                            if not any( lex.is_unk_or_punct() for lex in self.parsed_tl_lexforms[j+offsetLeftForCheckingPunct:j+len(bslDenominator.tlseq)-offsetRightForCheckingPunct] ):
+                                #if the TL sequence is compatible with the alignments and punct, check if it matches bsl
+                                matches=True
+                                for off in xrange(len(bslDenominator.tlseq)):
+                                    if bslDenominator.tlseq[off] != u"*":
+                                         if bslDenominator.tlseq[off] != bslOfSentence.tlseq[j+off]:
+                                             matches=False
+                                             break
+                                if matches:
+                                    #increase count of denominator 
+                                    countDenominator+=1
+                                    
+                                    #check whether numerator matches
+                                    matchesSL=True
+                                    for off in xrange(len(bslDenominator.slseq)):
+                                        if bslNumerator.slseq[off] != u"*":
+                                            if bslNumerator.slseq[off] != bslOfSentence.slseq[i+off]:
+                                                matchesSL=False
+                                                break
+                                    matchesTL=True
+                                    for off in xrange(len(bslDenominator.tlseq)):
+                                        if bslNumerator.tlseq[off] != u"*":
+                                            if bslNumerator.tlseq[off] != bslOfSentence.tlseq[j+off]:
+                                                matchesTL=False
+                                                break
+                                    if matchesSL and matchesTL:
+                                        countNumerator+=1
+                        
+        return countNumerator,countDenominator                     
+    
+    def is_bilphrase_compatible_with_alignments(self,slStart,sllen,tlStart,tllen):
+        
+        if slStart < 0 or slStart+sllen > len(self.parsed_sl_lexforms) or tlStart < 0 or tlStart+tllen > len(self.parsed_tl_lexforms):
+            return False
+        
+        wordsAlignedWithSL=set()
+        for i in xrange(slStart,slStart+sllen):
+            wordsAlignedWithSL.update(self.get_tl_words_aligned_with(i))
+        
+        for j in wordsAlignedWithSL:
+            if j < tlStart or j >= tlStart+tllen:
+                return False
+        
+        wordsAlignedWithTL=set()
+        for j in xrange(tlStart,tlStart+tllen):
+            wordsAlignedWithTL.update(self.get_sl_words_aligned_with(j))
+        
+        for i in wordsAlignedWithTL:
+            if i < slStart or i >= slStart+sllen:
+                return False
+        return True
+    
+    def extract_all_biphrases(self,maxLen=5):
+        
+        bilphrases=list()
+        
+        #koehn(2003) algorithm
+        for sl_start in xrange(len(self.parsed_sl_lexforms)):
+            for sl_end in xrange(sl_start+1,len(self.parsed_sl_lexforms)):
+                #slstart is the first SL word of the phrase
+                #slend is the the word after the last SL word of the phrase
+                #the length of the phrase is slend-slstart
+                if sl_end -sl_start <= maxLen:
+                    tlwordsaligned=set()
+                    for sli in xrange(sl_start,sl_end):
+                        tlwordsaligned.update(self.get_tl_words_aligned_with(sli))
+                    
+                    if len(tlwordsaligned) > 0:
+                        #find leftmost TL word aligned with a SL from the phrase
+                        leftmost=min(tlwordsaligned)
+                        #find rightmost TL word aligned with a SL from the phrase
+                        rightmost=max(tlwordsaligned)
+                        
+                        #check whether phrase is compatible with the alignments
+                        if self.is_bilphrase_compatible_with_alignments(sl_start, sl_end-sl_start, leftmost, rightmost-leftmost+1):
+                            #extract bilphrases including unaliged tl edges
+                            #check lenth
+                            numUnalignedLeft=0
+                            while leftmost-numUnalignedLeft-1 >= 0 and len(self.get_sl_words_aligned_with(leftmost-numUnalignedLeft-1)) == 0:
+                                numUnalignedLeft+=1
+                            numUnalignedRight=0
+                            while rightmost+numUnalignedRight+1 <= len(self.parsed_tl_lexforms) and len(self.get_sl_words_aligned_with(rightmost+numUnalignedRight+1)) == 0:
+                                numUnalignedRight+=1
+                            
+                            for offleft in xrange(numUnalignedLeft+1):
+                                for offright in xrange(numUnalignedRight+1):
+                                    tl_start=leftmost-offleft
+                                    tl_end=rightmost+1+offright
+                                    #check length before extracting bilphrase
+                                    if tl_end -tl_start <= maxLen:
+                                        #extract actual bilphrase
+                                        bilphrases.append(self.extract_bilphrase(sl_start, sl_end-sl_start, tl_start, tl_end-tl_start))
+        return bilphrases                                                        
+                            
+                        
+    
+    def extract_bilphrase(self,slStart,sllen,tlStart,tllen):
+        self.extract_bslt()
+        bilphrase=ruleLearningLib.AlignmentTemplate()
+        for i in xrange(slStart,slStart+sllen):
+            newlexform=ruleLearningLib.AT_LexicalForm()
+            newlexform.parse(self.parsed_sl_lexforms[i].unparse())
+            newrestriction=ruleLearningLib.AT_Restriction()
+            newrestriction.parse(self.parsed_restrictions[i].unparse())
+            
+            bilphrase.parsed_sl_lexforms.append(newlexform)
+            bilphrase.parsed_restrictions.append(newrestriction)
+        
+        for j in xrange(tlStart,tlStart+tllen):
+            newlexform=ruleLearningLib.AT_LexicalForm()
+            newlexform.parse(self.parsed_tl_lexforms[j].unparse())
+            bilphrase.parsed_tl_lexforms.append(newlexform)
+        
+        for a in self.alignments:
+            if a[0] >= slStart and a[0] < slStart+sllen and a[1] >=tlStart and a[1] < tlStart+tllen:
+                bilphrase.alignments.append((a[0]-slStart,a[1]-tlStart))
+        
+        bilphrase.sl_position_in_sentence=slStart
+        bilphrase.tl_position_in_sentence=tlStart
+        
+        bilphrase.bslt=self.bslt.sub(slStart,sllen,tlStart,tllen)    
+        
+        if len(self.tl_lemmas_from_dictionary) > 0:
+            bilphrase.tl_lemmas_from_dictionary.extend(self.tl_lemmas_from_dictionary[slStart:slStart+sllen])
+        
+        return bilphrase
+    
+    def extract_bilphrases_containing_antiphrase(self,antiphrase,side,maxLength=5):
+        
+        bilphrases=[]
+        
+        positionsAntiSL,positionsAntiTL,leftMostAndRightMost=antiphrase
+        maxlenSL=maxLength-len(positionsAntiSL)
+        maxlenTL=maxLength-len(positionsAntiTL)
+        
+        if side == ParallelSentence.SIDE_LEFT:
+            if len(positionsAntiSL) > 0:
+                positionStartAntiSL=positionsAntiSL[0]
+            else:
+                positionStartAntiSL=leftMostAndRightMost[1]
+            
+            if len(positionsAntiTL) > 0:
+                positionStartAntiTL=positionsAntiTL[0]
+            else:
+                positionStartAntiTL=leftMostAndRightMost[1]
+            
+            for sllen in xrange(1,maxlenSL+1):
+                for tllen in xrange(1,maxlenTL+1):
+                    startSLsegment=positionStartAntiSL-sllen
+                    startTLsegment=positionStartAntiTL-tllen
+                    if self.is_bilphrase_compatible_with_alignments(startSLsegment,sllen+len(positionsAntiSL),startTLsegment,tllen+len(positionsAntiTL)):
+                        bilphrases.append(self.extract_bilphrase(startSLsegment,sllen+len(positionsAntiSL),startTLsegment,tllen+len(positionsAntiTL)))
+                    
+        elif side == ParallelSentence.SIDE_RIGHT:
+            if len(positionsAntiSL) > 0:
+                positionStartAntiSL=positionsAntiSL[0]
+                positionEndAntiSL=positionsAntiSL[-1]+1
+            else:
+                positionStartAntiSL=leftMostAndRightMost[1]
+                positionEndAntiSL=leftMostAndRightMost[1]
+            
+            if len(positionsAntiTL) > 0:
+                positionStartAntiTL=positionsAntiTL[0]
+                positionEndAntiTL=positionsAntiTL[-1]+1
+            else:
+                positionStartAntiTL=leftMostAndRightMost[1]
+                positionEndAntiTL=leftMostAndRightMost[1]
+            
+            for sllen in xrange(1,maxlenSL+1):
+                for tllen in xrange(1,maxlenTL+1):
+                    endSLsegment=positionEndAntiSL+sllen
+                    endTLsegment=positionEndAntiTL+tllen
+                    if self.is_bilphrase_compatible_with_alignments(positionStartAntiSL,sllen+len(positionsAntiSL),positionStartAntiTL,tllen+len(positionsAntiTL)):
+                        bilphrases.append(self.extract_bilphrase(positionStartAntiSL,sllen+len(positionsAntiSL),positionStartAntiTL,tllen+len(positionsAntiTL)))
+        else:
+            print >> sys.stderr, "WARNING: Incorrect side parameter"
+        
+        return bilphrases
+    
+    def compute_coverages_and_bleu(self,ruleLists,beamSize,boxesCoverage=False,boxesDic=dict(),allowIncompatibleRules=False):
         
         #debug("Keys in boxesDic: "+str(boxesDic.keys()))
         
@@ -791,7 +1151,7 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
             RuleApplicationHypothesis.set_num_total_rules(len(boxesDic))
         else:
             RuleApplicationHypothesis.set_num_total_rules(len(ruleList))
-        RuleApplicationHypothesis.set_max_length(ruleList.get_max_length())
+        RuleApplicationHypothesis.set_max_length( max(ruleList.get_max_length() for ruleList in ruleLists))
         
         boxesInverseDic=dict()
         for key in boxesDic.keys():
@@ -841,47 +1201,77 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
             ##### DEBUG ####            
             
             #compute rules which match
-            ruleMatchingList=ruleList.get_rules_matching_segment(self.parsed_sl_lexforms[i:],self.parsed_restrictions[i:])
-            debug(str(len(ruleMatchingList))+" new rules/boxes can be applied")
+            
+            rulesMatchingListForEachATSset=list()
+            for index,ruleList in enumerate(ruleLists):
+                ruleMatchingList=ruleList.get_rules_matching_segment(self.parsed_sl_lexforms[i:],self.parsed_restrictions[i:])
+                debug("AT set "+str(index)+" :"+str(len(ruleMatchingList))+" new rules/boxes can be applied")
+                rulesMatchingListForEachATSset.append(ruleMatchingList)
             
             newPartialHypotheses=list()
             #for each rule, compute ats to be added to applied rules, ats to be discarded and resulting segment
             
-            prevAppliedBoxes=set()
-            for j in range(len(ruleMatchingList)):
-                at=ruleMatchingList[j]
-                if boxesCoverage:
-                    boxid=boxesDic[at.get_pos_list_str()]
-                    if not boxid in prevAppliedBoxes:
+            newHypothesesByTLSegment=defaultdict(list)
+            for ruleListIndex,ruleMatchingList in enumerate(rulesMatchingListForEachATSset):
+                prevAppliedBoxes=set()
+                for j in range(len(ruleMatchingList)):
+                    at=ruleMatchingList[j]
+                    if boxesCoverage:
+                        boxid=boxesDic[at.get_pos_list_str()]
+                        if not boxid in prevAppliedBoxes:
+                            hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
+                            hyp.add_to_applied_rules(boxid,[ruleListIndex])
+                            for prevBox in prevAppliedBoxes:
+                                hyp.discardedRules.add(prevBox)
+                            hyp.set_processed_sl_words(len(at.parsed_sl_lexforms))
+                            hyp.add_to_rules_list(boxid, at.get_pos_list_str().split("__"),[ruleListIndex])
+                            
+                            #apply at to matching segment
+                            tlsegment=at.apply(self.parsed_sl_lexforms[i:],self.tl_lemmas_from_dictionary[i:],self.parsed_restrictions[i:])
+                            hyp.set_translation(tlsegment)
+                            
+                            newHypothesesByTLSegment[str(tlsegment)].append(hyp)
+                            #newPartialHypotheses.append(hyp)
+                            
+                            prevAppliedBoxes.add(boxid)
+                    else:
+                        #TODO: adapt to multiple lists of Ats
                         hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
-                        hyp.appliedRules.add(boxid)
-                        for prevBox in prevAppliedBoxes:
-                            hyp.discardedRules.add(prevBox)
+                        hyp.add_to_applied_rules(at.id)
+                        for discAt in ruleMatchingList[:j]:
+                            hyp.discardedRules.add(discAt.id)
                         hyp.set_processed_sl_words(len(at.parsed_sl_lexforms))
-                        hyp.add_to_rules_list(boxid, at.get_pos_list_str().split("__"))
                         
                         #apply at to matching segment
                         tlsegment=at.apply(self.parsed_sl_lexforms[i:],self.tl_lemmas_from_dictionary[i:],self.parsed_restrictions[i:])
                         hyp.set_translation(tlsegment)
-                        newPartialHypotheses.append(hyp)
                         
-                        prevAppliedBoxes.add(boxid)
-                else:
-                    hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
-                    hyp.appliedRules.add(at.id)
-                    for discAt in ruleMatchingList[:j]:
-                        hyp.discardedRules.add(discAt.id)
-                    hyp.set_processed_sl_words(len(at.parsed_sl_lexforms))
-                    
-                    #apply at to matching segment
-                    tlsegment=at.apply(self.parsed_sl_lexforms[i:],self.tl_lemmas_from_dictionary[i:],self.parsed_restrictions[i:])
-                    hyp.set_translation(tlsegment)
-                    
-                    newPartialHypotheses.append(hyp)
-
+                        newPartialHypotheses.append(hyp)
+            
+            if boxesCoverage:
+                #join translations with same boxid and tl segment
+                for listOfHyps in newHypothesesByTLSegment.values():
+                    hypsByBoxId=defaultdict(list)
+                    for hyp in listOfHyps:
+                        hypsByBoxId[hyp.get_rules_list()[0][0]].append(hyp)
+                    for lisfOfHypsWithSameBoxId in hypsByBoxId.values():
+                        #never empty
+                        appliedATIndexes=set()
+                        firsthyp=lisfOfHypsWithSameBoxId[0]
+                        appliedATIndexes.update(firsthyp.get_rules_list()[0][2])
+                        for althyp in lisfOfHypsWithSameBoxId[1:]:
+                            firsthyp.get_rules_list()[0][2].append(althyp.get_rules_list()[0][2][0])
+                            appliedATIndexes.update(althyp.get_rules_list()[0][2])
+                        firsthyp.get_applied_rules().clear()
+                        firsthyp.add_to_applied_rules(firsthyp.get_rules_list()[0][0],appliedATIndexes)
+                        newPartialHypotheses.append(firsthyp)
+            
             #take into account also the case in which no rule is applied
             hyp=RuleApplicationHypothesis(len(self.parsed_sl_lexforms))
             if boxesCoverage:
+                #TODO: fix this. Empty discarded boxes.
+                #No problem as I am not using discerded boxes right now
+                #but it's ugly
                 for boxid in prevAppliedBoxes:
                     hyp.discardedRules.add(boxid)
             else:
@@ -894,10 +1284,10 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
             else:
                 bilDicTranslation=AT_LexicalForm()
                 bilDicTranslation.set_lemma(self.tl_lemmas_from_dictionary[i])
-                bilDicTranslation.set_pos(self.parsed_sl_lexforms[i].get_pos())
+                bilDicTranslation.set_pos(self.parsed_restrictions[i].get_pos() if not self.parsed_restrictions[i].is_special() else self.parsed_sl_lexforms[i].get_pos())
                 bilDicTags=list()
                 bilDicTags.extend(self.parsed_restrictions[i].get_tags())
-                bilDicTags.extend(self.parsed_sl_lexforms[i].get_tags()[len(bilDicTags):])
+                #bilDicTags.extend(self.parsed_sl_lexforms[i].get_tags()[len(bilDicTags):])
                 bilDicTranslation.set_tags(bilDicTags)
             tlsegment.append(bilDicTranslation)
             hyp.set_translation(tlsegment)
@@ -933,3 +1323,69 @@ class ParallelSentence(ruleLearningLib.AlignmentTemplate):
                 debug(str(ryp.get_score_with_num_rules())+" -> "+unicode(ryp).encode('utf-8'))
         
         return ruleApplicationPools[-1]
+    
+    @classmethod
+    def optimize_boxes_applied_rescoring_bleu(cls,sentences,ruleList,boxesAndProbs,boxesInvIndex):
+        #sort boxes by increasing logprob of breaking key segments 
+        sortedBoxesAndProbs=sorted(boxesAndProbs,key= lambda entry: entry[1])
+        
+        increasingRuleList=RuleList()
+        results=[]
+        
+        index=0
+        while index < len(sortedBoxesAndProbs):
+            box=sortedBoxesAndProbs[index][0]
+            increasingRuleList.add_rules_with_seq_of_cats(ruleList, boxesInvIndex[box])
+            if index == len(sortedBoxesAndProbs)-1 or sortedBoxesAndProbs[index][1] < sortedBoxesAndProbs[index+1][1]:
+                #translate all the sentences
+                translationHyps=[]
+                for parallelSentence in sentences:
+                    wordIndex=0
+                    translation=[]
+                    while wordIndex < len(parallelSentence.parsed_sl_lexforms):
+                        slwords=parallelSentence.parsed_sl_lexforms[wordIndex:]
+                        restrictions=parallelSentence.parsed_restrictions[wordIndex:]
+                        lemmasFromBil=parallelSentence.tl_lemmas_from_dictionary[wordIndex:]
+                        rulesMatching=increasingRuleList.get_rules_matching_segment(slwords, restrictions, exactMatch=False)
+                        if len(rulesMatching) > 0:
+                            ruleLength=len(rulesMatching[0].parsed_sl_lexforms)
+                            translation.extend(rulesMatching[0].apply(slwords[:ruleLength],lemmasFromBil[:ruleLength],restrictions[:ruleLength]))
+                            wordIndex+=ruleLength
+                        else:
+                            if slwords[0].is_unknown():
+                                bilDicTranslation=slwords[0]
+                            else:
+                                bilDicTranslation=ruleLearningLib.AT_LexicalForm()
+                                bilDicTranslation.set_lemma(lemmasFromBil[0])
+                                bilDicTranslation.set_pos(restrictions[0].get_pos())
+                                bilDicTags=list()
+                                bilDicTags.extend(restrictions[0].get_tags())
+                                bilDicTranslation.set_tags(bilDicTags)
+                            translation.append(bilDicTranslation)
+                            wordIndex+=1
+                    translationHypothesis=RuleApplicationHypothesis()
+                    translationHypothesis.set_source(parallelSentence.parsed_sl_lexforms)
+                    translationHypothesis.set_translation(translation)
+                    translationHypothesis.set_reference(parallelSentence.parsed_tl_lexforms)
+                    translationHyps.append(translationHypothesis)
+                #score translations
+                score=RuleApplicationHypothesis.score_hypotheses(translationHyps,sentenceLevelScores=False)
+                results.append((index,score))
+            index+=1
+        # loop finished
+        
+        #print some information about BLEU scores
+        print >> sys.stderr, "Scores of different thresholds"
+        for index,BLEU in results:
+            print >> sys.stderr, "threshold="+str(sortedBoxesAndProbs[index][1])+", BLEU="+str(BLEU)+", "+str([e[0] for e in sortedBoxesAndProbs[:index+1]])
+        
+        #return set of boxes with maximum BLEU
+        sortedResults=sorted(results,key=lambda r: r[1],reverse=True)
+        if len(sortedResults) > 0:
+            bestIndex,bestBLEU=sortedResults[0]
+            print >> sys.stderr, "BEST THRESHOLD: p(break key segment) <= "+str(sortedBoxesAndProbs[bestIndex][1])+", BLEU="+str(bestBLEU)
+            return [ e[0] for e in sortedBoxesAndProbs[:bestIndex+1] ]
+        else:
+            return []
+           
+            
