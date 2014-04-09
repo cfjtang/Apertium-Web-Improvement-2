@@ -116,14 +116,15 @@ flags:
   -t,--target_language:  target language (default: 'ca')
   -c,--corpus:  prefix of files containing parallel corpus (suffixes are .SL and .TL) (COMPULSORY)
   -g,--giza_dir:  Giza++ directory (default: '~/giza-pp/GIZA++-v2')
-  -d,--data_dir:  Directory where the compiled Apertium dictionaries can be found (default: /usr/local/share/apertium/apertium-SL-TL/)
+  -d,--data_dir:  Directory where the sources of the Apertium dictionaries can be found (default: /usr/local/share/apertium/apertium-SL-TL/)
+  -u,--apertium_prefix:  Prefix where Apertium was installed (usually, /usr/local/)
   -m,--tmp_dir:  Directory where the results will be stored (If this parameter is not set, a new directory under /tmp/ will be created)
   -y,--[no]segment_by_marker: Segment SL corpus according to marker hypothesis (default: false)
   -f,--filtering_thresholds:  Thresholds for filtering alignment templates. Format is start step end, as in the seq command. A single threshold can also be defined
                               (default: '0.45 0.05 1')
   --test_corpus:  evaluation corpus prefix (suffixes are .SL and .TL) (If it is not set, the learned rules will not be evaluated)
   --dev_corpus:  development corpus prefix (suffixes are .SL and .TL). It is used to choose the most appropriate threshold
-                 (If it is not set, the first specified threshold with the parameter --filtering_thresholds will be used.)
+                 (If it is not set, a fith part of the trainign corpus can be used by enabling the option --discard_a_fifth_of_corpus )
 
 Result, in alignment template (AT) format, can be found in $DIR/tuning-proportion_correct_bilphrases_thresholdabove2-$THRESHOLD-subrules/result-f-$THRESHOLD.gz
 In a nutshell, the extended alignment template formalism used by this approach works as follows. Let the AT in the following line
