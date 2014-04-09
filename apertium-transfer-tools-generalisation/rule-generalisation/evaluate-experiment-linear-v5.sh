@@ -145,7 +145,8 @@ else
   APERTIUMPATH=""
 fi
 
-ORIGINALAPERTIUMMODE=$APERTIUM_SOURCES/modes/${SL}-$TL.mode
+#ORIGINALAPERTIUMMODE=$APERTIUM_SOURCES/modes/${SL}-$TL.mode
+ORIGINALAPERTIUMMODE=$APERTIUM_PREFIX/share/apertium/modes/${SL}-$TL.mode
 POSTTRANSFERRULES=$FULLCURDIR/../phrase-extraction/transfer-tools-scripts/apertium-${SL}-$TL.posttransfer.ptx
 
 BINBIDICTIONARY=$APERTIUM_SOURCES/apertium-$PAIR/${SL}-$TL.autobil${USE_SHORT_RESTRICTIONS_INFIX}.bin

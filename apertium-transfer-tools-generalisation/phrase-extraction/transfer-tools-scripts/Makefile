@@ -1,8 +1,21 @@
-# author Felipe Sánchez Martínez
+# author Felipe Sánchez Martínez / Víctor M. Sánchez-Cartagena
 
-#PAR_MY_EXTRACTING
 #PAR_ENDS_ALIGNED
 #PAR_SAME_STRUCTURE
+
+#PAR_ONLY_STANDARD
+
+#PAR_EXTRACTION_ZENS
+
+#PAR_GIZA_LEMMA
+
+#PAR_EXTREMES_VARIANT
+
+XTRACT_COMMAND=bash ./apertium-xtract-bilingual-phrases-wrapper.sh
+ifdef PAR_EXTRACTION_ZENS
+XTRACT_COMMAND=apertium-xtract-bilingual-phrases
+endif
+
 
 L1=es
 L2=ca
@@ -51,6 +64,12 @@ endif
 #ignorar el de arriba.
 #El bueno es: PAR_DONT_REMOVE_CONFLICTS
 
+ifdef PAR_ALIGNMENTS_HEAD
+ALIGNMENTS_HEAD_COMMAND:=head -n $(PAR_ALIGNMENTS_HEAD)
+else
+ALIGNMENTS_HEAD_COMMAND:=cat -
+endif
+
 THRESHOLD_IN_BILPHRASE_CONTRADICTIONS=
 ifdef PAR_THRESHOLD_IN_BILPHRASE_CONTRADICTIONS
 THRESHOLD_IN_BILPHRASE_CONTRADICTIONS:=--remove_all_biphrases_if_freq_best_is_lower_than $(PAR_THRESHOLD_IN_BILPHRASE_CONTRADICTIONS) --print_all_passing_threshold
@@ -94,6 +113,10 @@ ifdef PAR_RULELEARNINGLIBDIR
 RULELEARNINGLIBDIR:=$(PAR_RULELEARNINGLIBDIR)
 endif
 
+USE_OLD_APERTIUM_MODE=
+ifdef PAR_ONLY_STANDARD
+USE_OLD_APERTIUM_MODE:=old
+endif
 
 ORIGINAL_APERTIUM_MODES_DIR=/home/vmsanchez/rulesinteractive/local/share/apertium/modes/
 
@@ -139,6 +162,9 @@ MORF_L2=$(DATADIR)/$(L2)-$(L1).automorf.bin
 CONSTRAINTGRAMMAR_L1=$(DATADIR)/$(L1)-$(L2).rlx.bin
 CONSTRAINTGRAMMAR_L2=$(DATADIR)/$(L2)-$(L1).rlx.bin
 
+LEXICALSELECTIONRULES_L1=$(DATADIR)/$(L1)-$(L2).autolex.bin
+LEXICALSELECTIONRULES_L2=$(DATADIR)/$(L2)-$(L1).autolex.bin
+
 ifeq ($(wildcard $(CONSTRAINTGRAMMAR_L1)),) 
     CONSTRAINTGRAMMAR_L1_CMD = cat -
 else 
@@ -151,9 +177,33 @@ else
     CONSTRAINTGRAMMAR_L2_CMD = cg-proc $(CONSTRAINTGRAMMAR_L2)
 endif
 
+ifeq ($(L1),br)
+	UGLY_BR_FIX=sed 's:\^ ::g' 
+else
+	UGLY_BR_FIX=cat -
+endif
+
+ifeq ($(wildcard $(LEXICALSELECTIONRULES_L1)),) 
+    BILDICRESULTDEP_L1=
+else 
+    BILDICRESULTDEP_L1=sentencesThroughBildic.$(L1)-$(L2).gz
+endif
+
+ifeq ($(wildcard $(LEXICALSELECTIONRULES_L2)),) 
+    BILDICRESULTDEP_L2=
+else 
+    BILDICRESULTDEP_L2=sentencesThroughBildic.$(L2)-$(L1).gz
+endif
+
 ifdef PAR_NO_SHORT_RESTRICTIONS
-BIL_L1_L2=$(DATADIR)/$(L1)-$(L2).autobil.bin
-BIL_L2_L1=$(DATADIR)/$(L2)-$(L1).autobil.bin
+ 
+ ifdef PAR_FIXED_DICT
+ BIL_L1_L2=$(DATADIR)/$(L1)-$(L2).autobil.fixed.bin
+ BIL_L2_L1=$(DATADIR)/$(L2)-$(L1).autobil.fixed.bin
+ else
+ BIL_L1_L2=$(DATADIR)/$(L1)-$(L2).autobil.bin
+ BIL_L2_L1=$(DATADIR)/$(L2)-$(L1).autobil.bin
+ endif
 else
 BIL_L1_L2=$(DATADIR)/$(L1)-$(L2).autobil.shortrestrictions.bin
 BIL_L2_L1=$(DATADIR)/$(L2)-$(L1).autobil.shortrestrictions.bin
@@ -209,7 +259,8 @@ else
 
 all: $(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).gz \
      $(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz \
-      alignments.$(L1)-$(L2).gz.toBeam.gz alignments.$(L2)-$(L1).gz.toBeam.gz
+      alignments.$(L1)-$(L2).gz.toBeam.gz alignments.$(L2)-$(L1).gz.toBeam.gz \
+      attributesChange.$(L1)-$(L2) attributesChange.$(L2)-$(L1)
      
 endif
 
@@ -218,23 +269,50 @@ step4: bilphrases.$(L1)-$(L2).gz bilphrases.$(L2)-$(L1).gz
 
 onlyalignments: alignments.$(L1)-$(L2).gz alignments.$(L2)-$(L1).gz
 
+#corpus from bilingual dictionary
+ifdef PAR_BILDIXFORALIGN
+corpusfrombildic.$(L1)-$(L2).sl: 
+	bash generateCorpusFromBildic.sh $(BIL_L1_L2) $(PAR_MONODIXL1) corpusfrombildic.$(L1)-$(L2)
+
+corpusfrombildic.$(L2)-$(L1).sl: 
+	bash generateCorpusFromBildic.sh $(BIL_L2_L1) $(PAR_MONODIXL2) corpusfrombildic.$(L2)-$(L1)
+endif
+
+attributesChange.$(L1)-$(L2): $(PAR_BILDIX)
+	bash countTimesAttributeChanges.sh $(PAR_BILDIX) $(PAR_RULELEARNINGLIBDIR) "" $(L1)-$(L2)  > attributesChange.$(L1)-$(L2)
+
+attributesChange.$(L2)-$(L1): $(PAR_BILDIX)
+	bash countTimesAttributeChanges.sh $(PAR_BILDIX) $(PAR_RULELEARNINGLIBDIR) INVERSE  $(L2)-$(L1) > attributesChange.$(L2)-$(L1)
+
+
 ifdef PAR_PROVIDED_ANALYSED_CORPUS
 $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt:
 else
+ifdef PAR_BILDIXFORALIGN
+$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt: $(L1).txt.gz $(MORF_L1) $(PROB_L1) preprocess_$(L1)_$(L1)-$(L2).sh corpusfrombildic.$(L1)-$(L2).sl
+else
 $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt: $(L1).txt.gz $(MORF_L1) $(PROB_L1) preprocess_$(L1)_$(L1)-$(L2).sh
+endif
 endif
 	@echo "Analysing "$(L1)".txt.gz to train '"$(L1)"-"$(L2)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L1_L2)
 	zcat $(L1).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L1) | \
-	$(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | apertium-retxt | \
+	$(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | $(UGLY_BR_FIX)  | apertium-retxt | \
 	sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L1)_$(L1)-$(L2).sh > $@
+ifdef PAR_BILDIXFORALIGN
+	cat corpusfrombildic.$(L1)-$(L2).sl >> $@
+endif
 	@echo ""
 
 ifdef PAR_PROVIDED_ANALYSED_CORPUS
 $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt:
 else
+ifdef PAR_BILDIXFORALIGN
+$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt: $(L2).txt.gz $(MORF_L2) $(PROB_L2) preprocess_$(L2)_$(L1)-$(L2).sh corpusfrombildic.$(L1)-$(L2).sl
+else
 $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt: $(L2).txt.gz $(MORF_L2) $(PROB_L2) preprocess_$(L2)_$(L1)-$(L2).sh 
+endif
 endif
 	@echo "Analysing "$(L2)".txt.gz to train '"$(L1)"-"$(L2)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L1_L2)
@@ -242,33 +320,53 @@ endif
 	$(CONSTRAINTGRAMMAR_L2_CMD) | apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
 	sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L2)_$(L1)-$(L2).sh > $@
+	cat $@ | wc -l > corpuslength
+ifdef PAR_BILDIXFORALIGN
+	cat corpusfrombildic.$(L1)-$(L2).tl >> $@
+endif
 	@echo ""
 
 ifdef PAR_PROVIDED_ANALYSED_CORPUS
 $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt:
 else
+ifdef PAR_BILDIXFORALIGN
+$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt: $(L2).txt.gz $(MORF_L2) $(PROB_L2) preprocess_$(L2)_$(L2)-$(L1).sh corpusfrombildic.$(L2)-$(L1).sl
+else
 $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt: $(L2).txt.gz $(MORF_L2) $(PROB_L2) preprocess_$(L2)_$(L2)-$(L1).sh
+endif
 endif
 	@echo "Analysing "$(L2)".txt.gz to train '"$(L2)"-"$(L1)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L2_L1)
 	zcat $(L2).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L2) |\
-        $(CONSTRAINTGRAMMAR_L2_CMD) \| apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
+        $(CONSTRAINTGRAMMAR_L2_CMD) | apertium-tagger -g $(PROB_L2) | apertium-pretransfer | apertium-retxt |\
         sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L2)_$(L2)-$(L1).sh > $@
+ifdef PAR_BILDIXFORALIGN
+	cat corpusfrombildic.$(L2)-$(L1).sl >> $@
+endif
 	@echo ""
 
 ifdef PAR_PROVIDED_ANALYSED_CORPUS
 $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt:
 else
+
+ifdef PAR_BILDIXFORALIGN
+$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt: $(L1).txt.gz $(MORF_L1) $(PROB_L1) preprocess_$(L1)_$(L2)-$(L1).sh corpusfrombildic.$(L2)-$(L1).sl
+else
 $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt: $(L1).txt.gz $(MORF_L1) $(PROB_L1) preprocess_$(L1)_$(L2)-$(L1).sh
+endif
 endif
 
 	@echo "Analysing "$(L1)".txt.gz to train '"$(L2)"-"$(L1)"' alignments ... "
 	mkdir -p $(TRAINGIZA_L2_L1)
 	zcat $(L1).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L1) |\
-        $(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | apertium-retxt |\
+        $(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | $(UGLY_BR_FIX) | apertium-retxt |\
         sed -re "s/ \^[.]<sent>\\$$\$$//g"  | apertium-preprocess-corpus-transfer-at |\
 	./preprocess_$(L1)_$(L2)-$(L1).sh > $@
+	cat $@ | wc -l > corpuslength
+ifdef PAR_BILDIXFORALIGN
+	cat corpusfrombildic.$(L2)-$(L1).tl >> $@
+endif
 	@echo ""
 
 $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt: $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt
@@ -333,30 +431,170 @@ alignments.$(L2)-$(L1).RL.gz: $(GIZA_ALIGNMENTS_L2_L1_RL)
 ifdef PAR_PROVIDED_ALIGNMENTS
 L12DEPENDENCIES:=
 else
-L12DEPENDENCIES:=alignments.$(L1)-$(L2).LR.gz alignments.$(L1)-$(L2).RL.gz
+ ifdef PAR_GIZA_LEMMA
+  L12DEPENDENCIES:=onlylemmas-alignments.$(L1)-$(L2).gz $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt
+ else
+  L12DEPENDENCIES:=alignments.$(L1)-$(L2).LR.gz alignments.$(L1)-$(L2).RL.gz
+ endif
 endif
 
 alignments.$(L1)-$(L2).gz: $(L12DEPENDENCIES)
+ifdef PAR_GIZA_LEMMA
+	@echo "Restoring  lexical forms to lemmatized alignments "$(L2)"-"$(L1)
+	zcat onlylemmas-alignments.$(L1)-$(L2).gz | cut -f 4 -d '|' > onlylemmas-alignments.$(L1)-$(L2).gz.onlyalignments
+	paste -d '|' $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt onlylemmas-alignments.$(L1)-$(L2).gz.onlyalignments | sed 's:^:0|:' | sed 's:|: | :g' | gzip >$@.full.plusbildic
+	zcat $@.full.plusbildic | $(ALIGNMENTS_HEAD_COMMAND) | gzip > $@
+	zcat $@.full.plusbildic | head -n `cat corpuslength` | gzip > $@.full
+else
 	@echo "Symmetrizing alignment ("$(L1)"-"$(L1)") by "$(SIMMETRIZATION_METHOD)
-	apertium-symmetrize-alignments -i alignments.$(L1)-$(L2).LR.gz -j alignments.$(L1)-$(L2).RL.gz -o $@ -p $(SIMMETRIZATION_METHOD) -z 2> log.symm.$(L1)-$(L2)
-
+	apertium-symmetrize-alignments -i alignments.$(L1)-$(L2).LR.gz -j alignments.$(L1)-$(L2).RL.gz -o $@.full.plusbildic -p $(SIMMETRIZATION_METHOD) -z 2> log.symm.$(L1)-$(L2)
+	zcat $@.full.plusbildic | $(ALIGNMENTS_HEAD_COMMAND) | gzip > $@
+	zcat $@.full.plusbildic | head -n `cat corpuslength` | gzip > $@.full
+endif
+	
 ifdef PAR_PROVIDED_ALIGNMENTS
 L21DEPENDENCIES:=
 else
-L21DEPENDENCIES:=alignments.$(L2)-$(L1).LR.gz alignments.$(L2)-$(L1).RL.gz
+ ifdef PAR_GIZA_LEMMA
+  L21DEPENDENCIES:=onlylemmas-alignments.$(L2)-$(L1).gz $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt
+ else
+ L21DEPENDENCIES:=alignments.$(L2)-$(L1).LR.gz alignments.$(L2)-$(L1).RL.gz 
+ endif
 endif
 
 alignments.$(L2)-$(L1).gz: $(L21DEPENDENCIES)
+ifdef PAR_GIZA_LEMMA
+	@echo "Restoring  lexical forms to lemmatized alignments "$(L2)"-"$(L1)
+	zcat onlylemmas-alignments.$(L2)-$(L1).gz | cut -f 4 -d '|' > onlylemmas-alignments.$(L2)-$(L1).gz.onlyalignments
+	paste -d '|' $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt onlylemmas-alignments.$(L2)-$(L1).gz.onlyalignments | sed 's:^:0|:' | sed 's:|: | :g' | gzip > $@.full.plusbildic
+	zcat $@.full.plusbildic | $(ALIGNMENTS_HEAD_COMMAND) | gzip > $@
+	zcat $@.full.plusbildic | head -n `cat corpuslength` | gzip > $@.full
+else
 	@echo "Symmetrizing alignment ("$(L2)"-"$(L1)") by "$(SIMMETRIZATION_METHOD)
-	apertium-symmetrize-alignments -i alignments.$(L2)-$(L1).LR.gz -j alignments.$(L2)-$(L1).RL.gz -o $@ -p $(SIMMETRIZATION_METHOD) -z 2> log.symm.$(L2)-$(L1)
+	apertium-symmetrize-alignments -i alignments.$(L2)-$(L1).LR.gz -j alignments.$(L2)-$(L1).RL.gz -o $@.full.plusbildic -p $(SIMMETRIZATION_METHOD) -z 2> log.symm.$(L2)-$(L1)
+	zcat $@.full.plusbildic | $(ALIGNMENTS_HEAD_COMMAND) | gzip > $@
+	zcat $@.full.plusbildic | head -n `cat corpuslength` | gzip > $@.full
+endif
 
-alignments.$(L1)-$(L2).gz.toBeam.gz: alignments.$(L1)-$(L2).gz
+
+sentencesThroughBildic.$(L1)-$(L2).gz: $(BIL_L1_L2) $(L1).txt.gz $(MORF_L1) $(PROB_L1) 
+	zcat $(L1).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L1) | \
+	$(CONSTRAINTGRAMMAR_L1_CMD) | apertium-tagger -g $(PROB_L1) | apertium-pretransfer | lt-proc -b $(BIL_L1_L2) | lrx-proc $(LEXICALSELECTIONRULES_L1) | sed 's:\^[^/]*/:^:g'  | apertium-retxt |  \
+	sed -re "s/ \^[.]<sent>\\$$\$$//g" | sed 's:[.] *$$::' |  apertium-preprocess-corpus-transfer-at |\
+	sed 's:^ *::' | sed  's_ *$$__' | sed 's:\^\$$:^*unknown$$:g' | sed 's:^\^::' | sed 's:\$$$$::' | sed 's:\$$ *\^: :g' |sed -r 's_ _\t_g'| sed 's:/[^\t]*::g' | gzip > $@
+
+sentencesThroughBildic.$(L2)-$(L1).gz: $(BIL_L2_L1) $(L2).txt.gz $(MORF_L2) $(PROB_L2) 
+	zcat $(L2).txt.gz | awk '{print $$0 " ."}' | apertium-destxt | lt-proc -a $(MORF_L2) | \
+	$(CONSTRAINTGRAMMAR_L2_CMD) | apertium-tagger -g $(PROB_L2) | apertium-pretransfer | lt-proc -b $(BIL_L2_L1) | lrx-proc $(LEXICALSELECTIONRULES_L2) | sed 's:\^[^/]*/:^:g'  | apertium-retxt |  \
+	sed -re "s/ \^[.]<sent>\\$$\$$//g" | sed 's:[.] *$$::' |  apertium-preprocess-corpus-transfer-at |\
+	sed 's:^ *::' | sed  's_ *$$__' | sed 's:\^\$$:^*unknown$$:g' | sed 's:^\^::' | sed 's:\$$$$::' | sed 's:\$$ *\^: :g' |sed -r 's_ _\t_g'| sed 's:/[^\t]*::g' |gzip > $@
+
+alignments.$(L1)-$(L2).gz.toBeam.gz: alignments.$(L1)-$(L2).gz $(BILDICRESULTDEP_L1)
 	@echo "Generating sentences with beam searchn format $(L1)-$(L2)"
-	bash alignmentsToBeamSearchInput.sh alignments.$(L1)-$(L2).gz $(BIL_L1_L2)
+	bash alignmentsToBeamSearchInput.sh alignments.$(L1)-$(L2).gz.full $(BIL_L1_L2) alignments.$(L1)-$(L2).gz.toBeam.gz $(BILDICRESULTDEP_L1)
 
-alignments.$(L2)-$(L1).gz.toBeam.gz: alignments.$(L2)-$(L1).gz
+alignments.$(L1)-$(L2).gz.toBilphrase.gz: alignments.$(L1)-$(L2).gz $(BILDICRESULTDEP_L1)
+	@echo "Generating sentences with beam searchn format $(L1)-$(L2)"
+	bash alignmentsToBeamSearchInput.sh alignments.$(L1)-$(L2).gz $(BIL_L1_L2) alignments.$(L1)-$(L2).gz.toBilphrase.gz $(BILDICRESULTDEP_L1)
+
+alignments.$(L2)-$(L1).gz.toBeam.gz: alignments.$(L2)-$(L1).gz $(BILDICRESULTDEP_L1)
 	@echo "Generating sentences with beam searchn format $(L2)-$(L1)"
-	bash alignmentsToBeamSearchInput.sh alignments.$(L2)-$(L1).gz $(BIL_L2_L1)
+	bash alignmentsToBeamSearchInput.sh alignments.$(L2)-$(L1).gz.full $(BIL_L2_L1) alignments.$(L2)-$(L1).gz.toBeam.gz $(BILDICRESULTDEP_L1)
+
+alignments.$(L2)-$(L1).gz.toBilphrase.gz: alignments.$(L2)-$(L1).gz $(BILDICRESULTDEP_L1)
+	@echo "Generating sentences with beam searchn format $(L2)-$(L1)"
+	bash alignmentsToBeamSearchInput.sh alignments.$(L2)-$(L1).gz $(BIL_L2_L1) alignments.$(L2)-$(L1).gz.toBilphrase.gz $(BILDICRESULTDEP_L1)
+
+############################
+#alignments only with lemmas
+############################
+
+onlylemmas-$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt: $(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt
+	mkdir -p onlylemmas-$(TRAINGIZA_L1_L2)
+	cat $? | bash ./lemmatizeCorpus.sh > $@
+
+onlylemmas-$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt: $(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt
+	mkdir -p onlylemmas-$(TRAINGIZA_L1_L2)
+	cat $? | bash ./lemmatizeCorpus.sh > $@
+
+onlylemmas-$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt: $(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt
+	mkdir -p onlylemmas-$(TRAINGIZA_L2_L1)
+	cat $? | bash ./lemmatizeCorpus.sh > $@
+	
+onlylemmas-$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt: $(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt
+	mkdir -p onlylemmas-$(TRAINGIZA_L2_L1)
+	cat $? | bash ./lemmatizeCorpus.sh > $@
+
+onlylemmas-$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt onlylemmas-$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt: onlylemmas-$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  onlylemmas-$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt
+	@echo "Preparing corpora to train ("$(L1)"-"$(L2)") with GIZA++ ..."
+	$(GIZADIR)/plain2snt.out onlylemmas-$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos.txt  onlylemmas-$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos.txt 2> onlylemmas-$(TRAINGIZA_L1_L2)/log.plain2snt1
+	@echo ""
+
+onlylemmas-$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt onlylemmas-$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt: onlylemmas-$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  onlylemmas-$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt
+	@echo "Preparing corpora to train ("$(L2)"-"$(L1)") with GIZA++ ..."
+	$(GIZADIR)/plain2snt.out onlylemmas-$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos.txt  onlylemmas-$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos.txt 2> onlylemmas-$(TRAINGIZA_L2_L1)/log.plain2snt1
+	@echo ""
+
+onlylemmas-$(GIZA_ALIGNMENTS_L1_L2_LR): onlylemmas-$(TRAINGIZA_L1_L2)/$(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt
+	@echo "Performing GIZA++ training ("$(L1)"-"$(L2)") from left to right ..."
+	cd onlylemmas-$(TRAINGIZA_L1_L2) &&  bash ../trainGIZA++.sh $(L1).$(L1)-$(L2).pos.vcb  $(L2).$(L1)-$(L2).pos.vcb $(L1).$(L1)-$(L2).pos_$(L2).$(L1)-$(L2).pos.snt "$(GIZADIR)" &&\
+	mkdir -p LR &&\
+	mv GIZA++.* mkcls1.log mkcls2.log LR
+	@echo ""
+
+onlylemmas-$(GIZA_ALIGNMENTS_L1_L2_RL): onlylemmas-$(TRAINGIZA_L1_L2)/$(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt
+	@echo "Performing GIZA++ training ("$(L1)"-"$(L2)") from right to left ..."
+	cd onlylemmas-$(TRAINGIZA_L1_L2) &&  bash ../trainGIZA++.sh $(L2).$(L1)-$(L2).pos.vcb  $(L1).$(L1)-$(L2).pos.vcb $(L2).$(L1)-$(L2).pos_$(L1).$(L1)-$(L2).pos.snt "$(GIZADIR)" &&\
+	mkdir -p RL &&\
+	mv GIZA++.* mkcls1.log mkcls2.log RL
+	@echo ""
+#*.vcb.classes.cats *.vcb.classes
+
+onlylemmas-$(GIZA_ALIGNMENTS_L2_L1_LR): onlylemmas-$(TRAINGIZA_L2_L1)/$(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt
+	@echo "Performing GIZA++ training ("$(L2)"-"$(L1)") from left to right ..."
+	cd onlylemmas-$(TRAINGIZA_L2_L1) &&  bash ../trainGIZA++.sh $(L2).$(L2)-$(L1).pos.vcb  $(L1).$(L2)-$(L1).pos.vcb $(L2).$(L2)-$(L1).pos_$(L1).$(L2)-$(L1).pos.snt  "$(GIZADIR)" &&\
+	mkdir -p LR &&\
+	mv GIZA++.*  mkcls1.log mkcls2.log LR
+	@echo ""
+
+onlylemmas-$(GIZA_ALIGNMENTS_L2_L1_RL): onlylemmas-$(TRAINGIZA_L2_L1)/$(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt
+	@echo "Performing GIZA++ training ("$(L2)"-"$(L1)") from right to left ..."
+	cd onlylemmas-$(TRAINGIZA_L2_L1) &&  bash ../trainGIZA++.sh $(L1).$(L2)-$(L1).pos.vcb  $(L2).$(L2)-$(L1).pos.vcb $(L1).$(L2)-$(L1).pos_$(L2).$(L2)-$(L1).pos.snt "$(GIZADIR)"  &&\
+	mkdir -p RL &&\
+	mv GIZA++.* mkcls1.log mkcls2.log RL
+	@echo ""
+
+onlylemmas-alignments.$(L1)-$(L2).LR.gz: onlylemmas-$(GIZA_ALIGNMENTS_L1_L2_LR) 
+	@echo "Converting GIZA++ LR alignments into apertium format ("$(L1)"-"$(L2)") ..."
+	cat onlylemmas-$(GIZA_ALIGNMENTS_L1_L2_LR) | giza++A3-to-apertium | gzip > $@
+	@echo ""
+
+onlylemmas-alignments.$(L1)-$(L2).RL.gz: onlylemmas-$(GIZA_ALIGNMENTS_L1_L2_RL) 
+	@echo "Converting GIZA++ RL alignments into apertium format ("$(L1)"-"$(L2)") ..."
+	cat onlylemmas-$(GIZA_ALIGNMENTS_L1_L2_RL) | giza++A3-to-apertium | apertium-switch-alignments | gzip > $@
+	@echo ""
+
+onlylemmas-alignments.$(L1)-$(L2).gz: onlylemmas-alignments.$(L1)-$(L2).LR.gz onlylemmas-alignments.$(L1)-$(L2).RL.gz
+	@echo "Symmetrizing alignment ("$(L1)"-"$(L2)") by "$(SIMMETRIZATION_METHOD)
+	apertium-symmetrize-alignments -i onlylemmas-alignments.$(L1)-$(L2).LR.gz -j onlylemmas-alignments.$(L1)-$(L2).RL.gz -o $@ -p $(SIMMETRIZATION_METHOD) -z 2> onlylemmas-log.symm.$(L1)-$(L2)
+	
+onlylemmas-alignments.$(L2)-$(L1).LR.gz: onlylemmas-$(GIZA_ALIGNMENTS_L2_L1_LR) 
+	@echo "Converting GIZA++ LR alignments into apertium format ("$(L2)"-"$(L1)") ..."
+	cat onlylemmas-$(GIZA_ALIGNMENTS_L2_L1_LR) | giza++A3-to-apertium | gzip > $@
+	@echo ""
+
+onlylemmas-alignments.$(L2)-$(L1).RL.gz: onlylemmas-$(GIZA_ALIGNMENTS_L2_L1_RL) 
+	@echo "Converting GIZA++ RL alignments into apertium format ("$(L2)"-"$(L1)") ..."
+	cat onlylemmas-$(GIZA_ALIGNMENTS_L2_L1_RL) | giza++A3-to-apertium | apertium-switch-alignments | gzip > $@
+	@echo ""
+
+onlylemmas-alignments.$(L2)-$(L1).gz: onlylemmas-alignments.$(L2)-$(L1).LR.gz onlylemmas-alignments.$(L2)-$(L1).RL.gz
+	@echo "Symmetrizing alignment ("$(L2)"-"$(L1)") by "$(SIMMETRIZATION_METHOD)
+	apertium-symmetrize-alignments -i onlylemmas-alignments.$(L2)-$(L1).LR.gz -j onlylemmas-alignments.$(L2)-$(L1).RL.gz -o $@ -p $(SIMMETRIZATION_METHOD) -z 2> onlylemmas-log.symm.$(L2)-$(L1)
+
+###################################
+# end alignments only with lemmas #
+###################################
 	
 ifdef PAR_PROVIDED_BILPHRASES
 $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz: 
@@ -364,7 +602,7 @@ else
 $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz: $(SHUFFLE_PREFIX)alignments.$(L1)-$(L2).gz
 endif
 	@echo "Extracting bilingual phrases from alignments."$(L1)"-"$(L2)".gz ..."
-	apertium-xtract-bilingual-phrases -i $(SHUFFLE_PREFIX)alignments.$(L1)-$(L2).gz -o $@ -n $(MIN) -m $(MAX) $(MARKER_PARAMETER) -z 2> log.$(SHUFFLE_PREFIX)bilph.$(L1)-$(L2)
+	$(XTRACT_COMMAND) -i $(SHUFFLE_PREFIX)alignments.$(L1)-$(L2).gz -o $@ -n $(MIN) -m $(MAX) $(MARKER_PARAMETER) -z 2> log.$(SHUFFLE_PREFIX)bilph.$(L1)-$(L2)
 	gzip log.$(SHUFFLE_PREFIX)bilph.$(L1)-$(L2)
 	@echo ""
 
@@ -374,10 +612,11 @@ else
 $(SHUFFLE_PREFIX)bilphrases.$(L2)-$(L1).gz: $(SHUFFLE_PREFIX)alignments.$(L2)-$(L1).gz
 endif
 	@echo "Extracting bilingual phrases from alignments."$(L2)"-"$(L1)".gz ..."
-	apertium-xtract-bilingual-phrases -i $(SHUFFLE_PREFIX)alignments.$(L2)-$(L1).gz -o $@ -n $(MIN) -m $(MAX) $(MARKER_PARAMETER) -z 2> log.$(SHUFFLE_PREFIX)bilph.$(L2)-$(L1)
+	$(XTRACT_COMMAND) -i $(SHUFFLE_PREFIX)alignments.$(L2)-$(L1).gz -o $@ -n $(MIN) -m $(MAX) $(MARKER_PARAMETER) -z 2> log.$(SHUFFLE_PREFIX)bilph.$(L2)-$(L1)
 	gzip log.$(SHUFFLE_PREFIX)bilph.$(L2)-$(L1)
 	@echo ""
 
+	
 $(SHUFFLE_PREFIX)alignment-templates.$(L1)-$(L2).gz: $(ATXFILE_L1_L2) $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz $(BIL_L1_L2)
 	@echo "Extracing alignment templates from bilphrases."$(L1)"-"$(L2)".gz ..."
 	apertium-validate-transfer-at $(ATXFILE_L1_L2)
@@ -392,41 +631,6 @@ $(SHUFFLE_PREFIX)alignment-templates.$(L2)-$(L1).gz: $(ATXFILE_L2_L1) $(SHUFFLE_
 	gzip log.$(SHUFFLE_PREFIX)aligtem.$(L2)-$(L1)
 	@echo ""
 
-$(SHUFFLE_PREFIX)alignment-templates.togeneralise.$(L1)-$(L2).gz: $(ATXFILE_L1_L2) $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz $(BIL_L1_L2)
-	@echo "Extracing alignment templates from bilphrases."$(L1)"-"$(L2)".gz ..."
-	apertium-validate-transfer-at $(ATXFILE_L1_L2)
-	apertium-xtract-alignment-templates -k -x $(ATXFILE_L1_L2) -b $(BIL_L1_L2) -i $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz -o $@ -z -e 2> log.$(SHUFFLE_PREFIX)aligtem.togeneralise.$(L1)-$(L2)
-	gzip log.$(SHUFFLE_PREFIX)aligtem.togeneralise.$(L1)-$(L2)
-	@echo ""
-
-$(SHUFFLE_PREFIX)alignment-templates.togeneralise.$(L2)-$(L1).gz: $(ATXFILE_L2_L1) $(SHUFFLE_PREFIX)bilphrases.$(L2)-$(L1).gz $(BIL_L2_L1)
-	@echo "Extracing alignment templates from bilphrases."$(L2)"-"$(L1)".gz ..."
-	apertium-validate-transfer-at $(ATXFILE_L2_L1)
-	apertium-xtract-alignment-templates -k -x $(ATXFILE_L2_L1) -b $(BIL_L2_L1) -i $(SHUFFLE_PREFIX)bilphrases.$(L2)-$(L1).gz -o $@ -z -e 2> log.$(SHUFFLE_PREFIX)aligtem.togeneralise.$(L2)-$(L1)
-	gzip log.$(SHUFFLE_PREFIX)aligtem.togeneralise.$(L2)-$(L1)
-	@echo ""
-
-#conclicts are removed later
-$(SHUFFLE_PREFIX)bilphrases.noconflicts.$(L1)-$(L2).gz: $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz
-	ln -s $(SHUFFLE_PREFIX)bilphrases.$(L1)-$(L2).gz $@
-
-$(SHUFFLE_PREFIX)bilphrases.noconflicts.$(L2)-$(L1).gz: $(SHUFFLE_PREFIX)bilphrases.$(L2)-$(L1).gz
-	ln -s $(SHUFFLE_PREFIX)bilphrases.$(L2)-$(L1).gz $@
-
-
-$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.$(L1)-$(L2).gz: $(ATXFILE_L1_L2) $(SHUFFLE_PREFIX)bilphrases.noconflicts.$(L1)-$(L2).gz $(BIL_L1_L2)
-	@echo "Extracing alignment templates with all the lemmas from bilphrases."$(L1)"-"$(L2)".gz ..."
-	apertium-validate-transfer-at $(ATXFILE_L1_L2)
-	apertium-xtract-alignment-templates -k -l -u -x $(ATXFILE_L1_L2) -b $(BIL_L1_L2) -i $(SHUFFLE_PREFIX)bilphrases.noconflicts.$(L1)-$(L2).gz -o $@ -z -e 2> log.$(SHUFFLE_PREFIX)aligtem.withalllemmas.togeneralise.$(L1)-$(L2)
-	gzip log.$(SHUFFLE_PREFIX)aligtem.withalllemmas.togeneralise.$(L1)-$(L2)
-	@echo ""
-
-$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.$(L2)-$(L1).gz: $(ATXFILE_L2_L1) $(SHUFFLE_PREFIX)bilphrases.noconflicts.$(L2)-$(L1).gz $(BIL_L2_L1)
-	@echo "Extracing alignment templates with all the lemmas from bilphrases."$(L2)"-"$(L1)".gz ..."
-	apertium-validate-transfer-at $(ATXFILE_L2_L1)
-	apertium-xtract-alignment-templates -k -l -u -x $(ATXFILE_L2_L1) -b $(BIL_L2_L1) -i $(SHUFFLE_PREFIX)bilphrases.noconflicts.$(L2)-$(L1).gz -o $@ -z -e 2> log.$(SHUFFLE_PREFIX)aligtem.withalllemmas.togeneralise.$(L2)-$(L1)
-	gzip log.$(SHUFFLE_PREFIX)aligtem.withalllemmas.togeneralise.$(L2)-$(L1)
-	@echo ""
 
 $(SHUFFLE_PREFIX)alignment-templates.uniq.$(L1)-$(L2).gz: $(SHUFFLE_PREFIX)alignment-templates.$(L1)-$(L2).gz
 	@echo "Unifying alignment templates from file alignment-templates."$(L1)"-"$(L2)".gz ..."
@@ -439,57 +643,19 @@ $(SHUFFLE_PREFIX)alignment-templates.uniq.$(L2)-$(L1).gz: $(SHUFFLE_PREFIX)align
 	zcat $(SHUFFLE_PREFIX)alignment-templates.$(L2)-$(L1).gz | ./filter_alignment_templates.awk |\
 	cut -d' ' -f1 --complement | sort | uniq -c | sed -re "s/^[ ]+//g" | sort -t '|' -k 2,2 | gzip > $@
 	@echo ""
-	
-$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L1)-$(L2).gz: $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.$(L1)-$(L2).gz
-	@echo "Unifying alignment templates from file alignment-templates.togeneralise."$(L1)"-"$(L2)".gz ..."
-	zcat $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.$(L1)-$(L2).gz | ./filter_alignment_templates.awk |\
-	cut -d' ' -f1 --complement | sort | uniq -c | sed -re "s/^[ ]+//g" | sort -t '|' -k 2,2 | gzip > $@
-	@echo ""
-	
-$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L2)-$(L1).gz: $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.$(L2)-$(L1).gz
-	@echo "Unifying alignment templates from file alignment-templates.togeneralise."$(L2)"-"$(L1)".gz ..."
-	zcat $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.$(L2)-$(L1).gz | ./filter_alignment_templates.awk |\
-	cut -d' ' -f1 --complement | sort | uniq -c | sed -re "s/^[ ]+//g" | sort -t '|' -k 2,2 |  gzip > $@
-	@echo ""
 
-$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.noconflicts.$(L1)-$(L2).gz: $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L1)-$(L2).gz
-ifdef PAR_DONT_REMOVE_CONFLICTS
-	ln -s $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L1)-$(L2).gz $@
-else
-	zcat $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L1)-$(L2).gz | LC_ALL=C sort -k 2 -t '|' | python $(RULELEARNINGLIBDIR)/removeBilphraseConflicts.py --first_field_is_actual_freq $(THRESHOLD_IN_BILPHRASE_CONTRADICTIONS) 2> discardedBilphrases.$(L1)-$(L2) | gzip > $@
-endif
 
-$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.noconflicts.$(L2)-$(L1).gz: $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L2)-$(L1).gz
-ifdef PAR_DONT_REMOVE_CONFLICTS
-	ln -s $(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L2)-$(L1).gz $@
-else
-	zcat$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.$(L2)-$(L1).gz | LC_ALL=C sort -k 2 -t '|' | python $(RULELEARNINGLIBDIR)/removeBilphraseConflicts.py --first_field_is_actual_freq $(THRESHOLD_IN_BILPHRASE_CONTRADICTIONS) 2> discardedBilphrases.$(L2)-$(L1) | gzip > $@
-endif
+#$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).gz: bilphrases.$(L1)-$(L2).gz
+#	bash processBilphrases.sh bilphrases.$(L1)-$(L2).gz $(BIL_L1_L2) $(RULELEARNINGLIBDIR) "$(PAR_ENDS_ALIGNED)" "$(PAR_SAME_STRUCTURE)" "$(PAR_VARIANT)" 2>  processBilphrases.$(L1)-$(L2).log > $@
+$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).gz: alignments.$(L1)-$(L2).gz.toBilphrase.gz
+	bash extract-phrases-v3.sh "alignments.$(L1)-$(L2).gz.toBilphrase.gz" $(BIL_L1_L2) $(RULELEARNINGLIBDIR) "$(PAR_ENDS_ALIGNED)" "$(PAR_SAME_STRUCTURE)" "$(PAR_VARIANT)" "$(PAR_EXTREMES_VARIANT)" 2> extractBilphrases.$(L1)-$(L2).log | gzip > $@
 
-FILTERING_START:=$(SHUFFLE_PREFIX)alignment-templates.withalllemmas.togeneralise.uniq.noconflicts
 
-$(FILTERING_START).$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).tllemmasfrombiling: $(FILTERING_START).$(L1)-$(L2).gz
-	zcat $? | cut -f 2 -d '|'  | sed -r 's_^[ ]*__' | sed -r 's_[ ]*$$__' | sed -r 's_ _\t_g' | sed -r 's:_: :g' | apertium-apply-biling --biling $(BIL_L1_L2) --withqueue --explicitempty | sed -r 's_<[^>]*>__g' > $@
+#$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz: bilphrases.$(L2)-$(L1).gz
+#	bash processBilphrases.sh bilphrases.$(L2)-$(L1).gz $(BIL_L2_L1) $(RULELEARNINGLIBDIR) "$(PAR_ENDS_ALIGNED)" "$(PAR_SAME_STRUCTURE)" "$(PAR_VARIANT)" 2>  processBilphrases.$(L2)-$(L1).log > $@
 
-$(FILTERING_START).$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).tllemmasfrombiling: $(FILTERING_START).$(L2)-$(L1).gz
-	zcat $? | cut -f 2 -d '|'  | sed -r 's_^[ ]*__' | sed -r 's_[ ]*$$__' | sed -r 's_ _\t_g' | sed -r 's:_: :g' | apertium-apply-biling --biling $(BIL_L2_L1) --withqueue --explicitempty | sed -r 's_<[^>]*>__g' > $@
-
-ifdef PAR_MY_EXTRACTING
-$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).gz: bilphrases.$(L1)-$(L2).gz
-	bash processBilphrases.sh bilphrases.$(L1)-$(L2).gz $(BIL_L1_L2) $(RULELEARNINGLIBDIR) "$(PAR_ENDS_ALIGNED)" "$(PAR_SAME_STRUCTURE)" 2>  processBilphrases.$(L1)-$(L2).log > $@
-else
-$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).gz: $(FILTERING_START).$(L1)-$(L2).gz $(FILTERING_START).$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).tllemmasfrombiling
-	zcat $(FILTERING_START).$(L1)-$(L2).gz | python $(RULELEARNINGLIBDIR)/generateATplusLemmasFromTransferTools.py | paste -d '|' - $(FILTERING_START).$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L1)-$(L2).tllemmasfrombiling | grep -v -F "__INCORRECT_ALIGNMENT_TEMPLATE__" | gzip > $@
-endif
-
-ifdef PAR_MY_EXTRACTING
-$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz: bilphrases.$(L2)-$(L1).gz
-	bash processBilphrases.sh bilphrases.$(L2)-$(L1).gz $(BIL_L2_L1) $(RULELEARNINGLIBDIR) "$(PAR_ENDS_ALIGNED)" "$(PAR_SAME_STRUCTURE)" 2>  processBilphrases.$(L2)-$(L1).log > $@
-else
-$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz: $(FILTERING_START).$(L2)-$(L1).gz $(FILTERING_START).$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).tllemmasfrombiling
-	zcat $(FILTERING_START).$(L2)-$(L1).gz | python $(RULELEARNINGLIBDIR)/generateATplusLemmasFromTransferTools.py | paste -d '|' - $(FILTERING_START).$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).tllemmasfrombiling | grep -v -F "__INCORRECT_ALIGNMENT_TEMPLATE__" | gzip > $@
-endif
-
+$(SHUFFLE_PREFIX)alignmentTemplatesPlusLemmas.withalllemmas.$(FILTERING_OPTION).filtered$(FILTERING_REMOVE_CONFLICTS)-$(FILTERING_TH_COUNT)-$(FILTERING_CRITERION).$(L2)-$(L1).gz: alignments.$(L2)-$(L1).gz.toBilphrase.gz
+	bash extract-phrases-v3.sh "alignments.$(L2)-$(L1).gz.toBilphrase.gz" $(BIL_L2_L1) $(RULELEARNINGLIBDIR) "$(PAR_ENDS_ALIGNED)" "$(PAR_SAME_STRUCTURE)" "$(PAR_VARIANT)" "$(PAR_EXTREMES_VARIANT)" 2>  extractBilphrases.$(L2)-$(L1).log | gzip > $@
 	
 #alignmentTemplatesPlusLemmas.withalllemmas.$(L1)-$(L2).txt
 #	@echo "formatting them to be generalised"
@@ -553,20 +719,20 @@ trules.$(L1)-$(L2).debug.bin: trules.$(L1)-$(L2).debug.xml
 ./modes/$(L1)-$(L2)-debug.mode: trules.$(L1)-$(L2).debug.xml trules.$(L1)-$(L2).debug.bin  $(BIL_L1_L2)
 	@echo "Creating apertium mode $(L1)-$(L2)"
 	mkdir -p ./modes/
-	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L1)-$(L2).mode ""  trules.$(L1)-$(L2).debug  apertium-$(L1)-$(L2).posttransfer.ptx  $(BIL_L1_L2) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" > $@
+	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L1)-$(L2).mode ""  trules.$(L1)-$(L2).debug  apertium-$(L1)-$(L2).posttransfer.ptx  $(BIL_L1_L2) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" "$(USE_OLD_APERTIUM_MODE)" > $@
 	@echo ""
 	
 ./modes/$(L1)-$(L2).mode: trules.$(L1)-$(L2).xml trules.$(L1)-$(L2).bin  $(BIL_L1_L2)
 	@echo "Creating apertium mode $(L1)-$(L2)"
 	mkdir -p ./modes/
-	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L1)-$(L2).mode ""  trules.$(L1)-$(L2)  apertium-$(L1)-$(L2).posttransfer.ptx  $(BIL_L1_L2) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" > $@
+	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L1)-$(L2).mode ""  trules.$(L1)-$(L2)  apertium-$(L1)-$(L2).posttransfer.ptx  $(BIL_L1_L2) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" "$(USE_OLD_APERTIUM_MODE)" > $@
 	@echo ""
 	
 ./modes/$(L1)-$(L2)-norules.mode: empty-rules-for-translating.t1x  $(BIL_L1_L2)
 	@echo "Creating apertium mode $(L1)-$(L2) word-for-word"
 	mkdir -p ./modes/
 	apertium-preprocess-transfer empty-rules-for-translating.t1x empty-rules-for-translating.bin
-	bash $(RULELEARNINGLIBDIR)/createModeNoRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L1)-$(L2).mode  "" empty-rules-for-translating.t1x empty-rules-for-translating.bin apertium-$(L1)-$(L2).posttransfer.ptx   $(BIL_L1_L2) > $@
+	bash $(RULELEARNINGLIBDIR)/createModeNoRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L1)-$(L2).mode  "" empty-rules-for-translating.t1x empty-rules-for-translating.bin apertium-$(L1)-$(L2).posttransfer.ptx   $(BIL_L1_L2) "" "$(USE_OLD_APERTIUM_MODE)" > $@
 	@echo ""
 	
 test.$(L1)-$(L2).source: $(TESTCORPUS).$(L1)
@@ -627,21 +793,21 @@ trules.$(L2)-$(L1).debug.bin: trules.$(L2)-$(L1).debug.xml
 ./modes/$(L2)-$(L1)-debug.mode: trules.$(L2)-$(L1).debug.xml trules.$(L2)-$(L1).debug.bin  $(BIL_L2_L1)
 	@echo "Creating apertium debug mode $(L2)-$(L1)"
 	mkdir -p ./modes/
-	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L2)-$(L1).mode ""  trules.$(L2)-$(L1).debug  apertium-$(L2)-$(L1).posttransfer.ptx  $(BIL_L2_L1) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" > $@
+	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L2)-$(L1).mode ""  trules.$(L2)-$(L1).debug  apertium-$(L2)-$(L1).posttransfer.ptx  $(BIL_L2_L1) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" "$(USE_OLD_APERTIUM_MODE)" > $@
 	@echo ""
 
 
 ./modes/$(L2)-$(L1).mode: trules.$(L2)-$(L1).xml trules.$(L2)-$(L1).bin $(BIL_L2_L1)
 	@echo "Creating apertium mode $(L2)-$(L1)"
 	mkdir -p ./modes/
-	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L2)-$(L1).mode ""  trules.$(L2)-$(L1)  apertium-$(L2)-$(L1).posttransfer.ptx  $(BIL_L2_L1) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" > $@
+	bash $(RULELEARNINGLIBDIR)/createModeWithLearnedRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L2)-$(L1).mode ""  trules.$(L2)-$(L1)  apertium-$(L2)-$(L1).posttransfer.ptx  $(BIL_L2_L1) "python $(RULELEARNINGLIBDIR)/removeDebugInfoFromTransfer.py" "" "$(USE_OLD_APERTIUM_MODE)" > $@
 	@echo ""
 
 ./modes/$(L2)-$(L1)-norules.mode: empty-rules-for-translating.t1x $(BIL_L2_L1)
 	@echo "Creating apertium mode $(L2)-$(L1) word-for-word"
 	mkdir -p ./modes/
 	apertium-preprocess-transfer empty-rules-for-translating.t1x empty-rules-for-translating.bin
-	bash $(RULELEARNINGLIBDIR)/createModeNoRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L2)-$(L1).mode  "" empty-rules-for-translating.t1x empty-rules-for-translating.bin apertium-$(L2)-$(L1).posttransfer.ptx  $(BIL_L2_L1) > $@
+	bash $(RULELEARNINGLIBDIR)/createModeNoRules.sh $(ORIGINAL_APERTIUM_MODES_DIR)/$(L2)-$(L1).mode  "" empty-rules-for-translating.t1x empty-rules-for-translating.bin apertium-$(L2)-$(L1).posttransfer.ptx  $(BIL_L2_L1) "" "$(USE_OLD_APERTIUM_MODE)" > $@
 	@echo ""
 
 test.$(L2)-$(L1).source: $(TESTCORPUS).$(L2)

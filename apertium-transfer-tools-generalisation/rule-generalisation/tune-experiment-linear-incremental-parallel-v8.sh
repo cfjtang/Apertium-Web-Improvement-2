@@ -41,6 +41,8 @@ GET_RESULT_FROM_BEAMSEARCH="no"
 
 GENERALISATION_DIR_SUFFIX=""
 
+FILTERING_DIR_PREFIX=""
+
 ORIGINAL_TRAINING_CORPUS=""
 
 PARALLELONLYONE=""
@@ -137,7 +139,7 @@ do
                 BOX_THRESHOLD=$OPTARG
                 ;;
         j)
-                GENERALISATION_DIR_SUFFIX="-fortuning"
+                FILTERING_DIR_PREFIX="joined-"
                 ;;
         k)
                ORIGINAL_TRAINING_CORPUS=$OPTARG
@@ -216,7 +218,7 @@ if [ "$GET_RESULT" == "yes" ]; then
 		NUMBERS=`cat $DIR/tuning-$TUNING_ID/subrules/sortedboxesindex`
 	else
 		OUTPUT_DIR=$DIR/tuning-$TUNING_ID/		
-		NUMBERS=`ls $INPUTDIR/filtering-$FILTERING_OPTION/ats | awk -F"-" '{print $1}' | awk -F"." '{print $1}'  | LC_ALL=C sort | uniq`
+		NUMBERS=`ls $INPUTDIR/${FILTERING_DIR_PREFIX}filtering-$FILTERING_OPTION/ats | awk -F"-" '{print $1}' | awk -F"." '{print $1}'  | LC_ALL=C sort | uniq`
 	fi
 	
 	
@@ -248,6 +250,7 @@ if [ "$GET_RESULT" == "yes" ]; then
 		rm -f $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold.gz
 		
 		BOXESWITHOUTSOLUTION=0
+		BOXESWITHERROR=0
 		
 		for number in $NUMBERS; do
 			VALIDNUMBER="yes"
@@ -259,9 +262,17 @@ if [ "$GET_RESULT" == "yes" ]; then
 			fi
 			
 			#get information about minimisation problem
-			PENALTYRESULT=`zcat $INPUTDIR/filtering-$FILTERING_OPTION/debug/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.debug.gz | sed -n '/Penalty =/,/BILINGUAL_PHRASES/p'`
+			#PENALTYRESULT=`zcat $INPUTDIR/filtering-$FILTERING_OPTION/debug/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.debug.gz | sed -n '/Penalty =/,/BILINGUAL_PHRASES/p'`
+			PENALTYRESULT=`zcat $INPUTDIR/${FILTERING_DIR_PREFIX}filtering-$FILTERING_OPTION/debug/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.debug.gz | tac | sed -e '/^Relaxed bilingual phrases:$/,$d' | tac | sed -e '/^BILINGUAL_PHRASES$/,$d'`
+			PYTHONERRORRESULTLEN=`zcat $INPUTDIR/${FILTERING_DIR_PREFIX}filtering-$FILTERING_OPTION/debug/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.debug.gz | grep "^Traceback" | wc -l`
+			
 			LENGTHRESULT=`echo "$PENALTYRESULT" | wc -l`
-			if [ $LENGTHRESULT -gt 3 ]; then
+			
+			if [ $PYTHONERRORRESULTLEN -gt 0 ]; then
+			  BOXESWITHERROR=`expr $BOXESWITHERROR + 1`
+			  echo "$number : " >> $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
+			  zcat $INPUTDIR/${FILTERING_DIR_PREFIX}filtering-$FILTERING_OPTION/debug/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.debug.gz >> $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
+			elif [ $LENGTHRESULT -gt 3 ]; then
 			    BOXESWITHOUTSOLUTION=`expr $BOXESWITHOUTSOLUTION + 1`
 			    echo "$number : " >> $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
 			    echo "$PENALTYRESULT" | head -n -1 | tail -n +2 >> $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
@@ -269,7 +280,7 @@ if [ "$GET_RESULT" == "yes" ]; then
 			
 			
 			if [ "$VALIDNUMBER" == "yes" ]; then
-				zcat "$INPUTDIR/filtering-$FILTERING_OPTION/ats/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.gz" | exec $REMOVE_WW_COMMAND | tee $OUTPUT_DIR/result-f-${treshold}-$number  >> $OUTPUT_DIR/result-f-${treshold}; 
+				zcat "$INPUTDIR/${FILTERING_DIR_PREFIX}filtering-$FILTERING_OPTION/ats/${number}-f-${treshold}$THRESHOLD_PROPORTION_FLAG.result.gz" | exec $REMOVE_WW_COMMAND | tee $OUTPUT_DIR/result-f-${treshold}-$number  >> $OUTPUT_DIR/result-f-${treshold}; 
 				cat $OUTPUT_DIR/result-f-${treshold}-$number | sed "s:.*:$number:" >> $OUTPUT_DIR/boxes-f-${treshold}
 				NUMRULESBOX=`cat $OUTPUT_DIR/result-f-${treshold}-$number | wc -l`
 				echo "$number	$NUMRULESBOX" >> $OUTPUT_DIR/numrules-${treshold}
@@ -278,6 +289,7 @@ if [ "$GET_RESULT" == "yes" ]; then
 		done
 		
 		echo "Summary: infeasible problems: $BOXESWITHOUTSOLUTION / $TOTALNUMBERS" >> $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
+		echo "Summary: error problems: $BOXESWITHERROR / $TOTALNUMBERS" >> $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
 		
 		gzip $DIR/tuning-$TUNING_ID/minimisationsummary-$treshold
 		gzip $OUTPUT_DIR/result-f-${treshold}
@@ -288,7 +300,7 @@ if [ "$GET_RESULT" == "yes" ]; then
 
 	if [ "$SUBRULES" == "yes" ]; then
 		BILDICTIONARY=$APERTIUM_SOURCES/apertium-$PAIR/${SL}-$TL.autobil${SHORT_RESTRICTIONS_INFIX}.bin
-		parallel $PARALLELONLYONE -i bash -c "if [ ! -f $DIR/tuning-$TUNING_ID/result-f-{}.gz ]; then mkdir -p $DIR/tuning-$TUNING_ID/subrules/{}; zcat $DIR/tuning-$TUNING_ID/subrules/result-f-{}.gz > $DIR/tuning-$TUNING_ID/subrules/{}/initialrules; ln -s  ../`basename $DIR/tuning-$TUNING_ID/subrules/boxes-f-{}` $DIR/tuning-$TUNING_ID/subrules/{}/boxes; bash $CURDIR/removeRedundantRules.sh $DIR/tuning-$TUNING_ID/subrules/{}/initialrules $DIR/tuning-$TUNING_ID/subrules/{}/boxes \"$CURDIR\" \"$SL\" \"$TL\" \"$APERTIUM_PREFIX\" \"$TAGSEQUENCESANDGROUPSSUFFIX\" \"$INPUTDIR/filtering-$FILTERING_OPTION/debug\" \"-f-{}.result.debug.gz\" \"$BILDICTIONARY\" \"$PYTHONHOME\" \"$RICHATSFLAG\" \"$APERTIUM_SOURCES\" \"$ORIGINAL_TRAINING_CORPUS\" \"keep\" 2>&1 > $DIR/tuning-$TUNING_ID/subrules/{}-debug ; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.debug.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.debug.gz ; rm -Rf $DIR/tuning-$TUNING_ID/subrules/{} ;  fi" -- `LC_ALL=C seq $START_T $STEP_T $END_T` 
+		parallel $PARALLELONLYONE -i bash -c "if [ ! -f $DIR/tuning-$TUNING_ID/result-f-{}.gz ]; then mkdir -p $DIR/tuning-$TUNING_ID/subrules/{}; zcat $DIR/tuning-$TUNING_ID/subrules/result-f-{}.gz > $DIR/tuning-$TUNING_ID/subrules/{}/initialrules; ln -s  ../`basename $DIR/tuning-$TUNING_ID/subrules/boxes-f-{}` $DIR/tuning-$TUNING_ID/subrules/{}/boxes; bash $CURDIR/removeRedundantRules.sh $DIR/tuning-$TUNING_ID/subrules/{}/initialrules $DIR/tuning-$TUNING_ID/subrules/{}/boxes \"$CURDIR\" \"$SL\" \"$TL\" \"$APERTIUM_PREFIX\" \"$TAGSEQUENCESANDGROUPSSUFFIX\" \"$INPUTDIR/${FILTERING_DIR_PREFIX}filtering-$FILTERING_OPTION/debug\" \"-f-{}.result.debug.gz\" \"$BILDICTIONARY\" \"$PYTHONHOME\" \"$RICHATSFLAG\" \"$APERTIUM_SOURCES\" \"$ORIGINAL_TRAINING_CORPUS\" \"keep\" 2>&1 > $DIR/tuning-$TUNING_ID/subrules/{}-debug ; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/initialrules.reduced.gz $DIR/tuning-$TUNING_ID/result-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.gz; cp $DIR/tuning-$TUNING_ID/subrules/{}/summary.debug.gz $DIR/tuning-$TUNING_ID/subrules/summary-f-{}.debug.gz ; rm -Rf $DIR/tuning-$TUNING_ID/subrules/{} ;  fi" -- `LC_ALL=C seq $START_T $STEP_T $END_T` 
 	fi
 
 fi
@@ -313,7 +325,7 @@ if [ "$DEVELOPMENT_CORPUS" != "" ]; then
     BEST_TRESHOLD=`cat $TUNING_FILE | sort -r  -k2,2 | head -n 1 | cut -f 1`
     echo "Best threshold afer tuning: $BEST_TRESHOLD"
 else
-    BEST_TRESHOLD=$START_T
+    BEST_TRESHOLD=`LC_ALL=C seq $START_T $STEP_T $END_T | head -n 1`
     echo "No dev corpus defined. Using threshold: $BEST_TRESHOLD"
 fi
 

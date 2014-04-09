@@ -34,7 +34,17 @@ RICHATSFLAGONLYGEN=""
 DIFFERENTRESTRICTIONSFLAGP1=""
 DIFFERENTRESTRICTIONSFLAGP2=""
 
+GENATTRIBUTEINSTANCESTOGETHER=""
+
+GENATTRIBUTESLIKEINPAPER=""
+
 FIRSTMINIMISELEMMAS=""
+
+UNLEXICALISEUNALIGNEDSLFLAG=""
+
+ALT_INPUTFILE=""
+
+ONLYLEXICALGENFLAG=""
 
 usage()
 {
@@ -44,12 +54,15 @@ Bla bla bla
 EOF
 }
 
-while getopts “f:d:i:p:x:e:h:t:m:yqcanrglvsubjko” OPTION
+while getopts “f:d:i:p:x:e:h:t:m:yqca:nrglvsubjkowz:567” OPTION
 do
      case $OPTION in
         f)
              INPUTFILE=$OPTARG
              ;;
+        z)
+	     ALT_INPUTFILE=$OPTARG
+	     ;;
         d)
              WORKDIR=$OPTARG
              ;;
@@ -83,7 +96,7 @@ do
                RICHATSFLAG=""
                ;;
         a)
-                POWERSETFEATURESFLAG="" #generate all combinations of features to generalise
+                POWERSETFEATURESFLAG="--times_attributes_change $OPTARG" #generate all combinations of features to generalise
                 ;;
         n)
 		RICHATSFLAGONLYGEN="--rich_ats"
@@ -118,6 +131,18 @@ do
 	u)
 	      FIRSTMINIMISELEMMAS="yes"
 	      ;;
+	w)
+	     UNLEXICALISEUNALIGNEDSLFLAG="--unlexicalise_unaligned_sl"
+	     ;;
+	5)
+	     GENATTRIBUTEINSTANCESTOGETHER="--dont_generalise_all_instances_together"
+	     ;;
+	6)
+	     GENATTRIBUTESLIKEINPAPER="--generalisable_attributes_like_in_paper"
+	     ;;
+	7)
+	     ONLYLEXICALGENFLAG="--only_lexical"
+	     ;;
         ?)
              usage
              exit
@@ -138,6 +163,7 @@ TRUEWORKDIR="$WORKDIR/$ID"
 mkdir -p $TRUEWORKDIR
 
 mkdir -p $TRUEWORKDIR/generalisation/newbilphrases
+mkdir -p $TRUEWORKDIR/generalisation-alt1/newbilphrases
 
 #if [ ! -f $TRUEWORKDIR/alignmentTemplatesPLusLemmas.gz ]; then
 
@@ -145,19 +171,25 @@ BOXESINDEX="$TRUEWORKDIR/generalisation/boxesindex"
 
 if [ "$STEP" == "1" -o  "$STEP" == "" ]; then
 
-rm -f $BOXESINDEX
+	rm -f $BOXESINDEX
 
-CURRENTID=1
+	CURRENTID=1
 
-echo "Sorting input file" >&2
+	echo "Sorting input file" >&2
 
-RICHATSFLAGFORADD=""
-if [ "$RICHATS" == "yes" ]; then
-	RICHATSFLAGFORADD="--rich_ats"
-fi
+	RICHATSFLAGFORADD=""
+	if [ "$RICHATS" == "yes" ]; then
+		RICHATSFLAGFORADD="--rich_ats"
+	fi
 
-#sort input by sl tags and restrictions
-zcat $INPUTFILE  | ${PYTHONHOME}python $CURDIR/addPosAndRestrictionsStr.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAGFORADD | sed 's_ |_|_' | LC_ALL=C sort | ${PYTHONHOME}python $CURDIR/spreadBilphrases.py  --dir $TRUEWORKDIR/generalisation > $BOXESINDEX
+	#sort input by sl tags and restrictions
+	zcat $INPUTFILE $ALT_INPUTFILE  | ${PYTHONHOME}python $CURDIR/addPosAndRestrictionsStr.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAGFORADD | sed 's_ |_|_' | LC_ALL=C sort | ${PYTHONHOME}python $CURDIR/spreadBilphrases.py  > $BOXESINDEX
+
+	zcat $INPUTFILE | ${PYTHONHOME}python $CURDIR/addPosAndRestrictionsStr.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAGFORADD | sed 's_ |_|_' | LC_ALL=C sort | ${PYTHONHOME}python $CURDIR/spreadBilphrases.py --dir $TRUEWORKDIR/generalisation --dict $BOXESINDEX
+
+	if [ "$ALT_INPUTFILE" != "" ]; then
+		zcat  $ALT_INPUTFILE  | ${PYTHONHOME}python $CURDIR/addPosAndRestrictionsStr.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAGFORADD | sed 's_ |_|_' | LC_ALL=C sort | ${PYTHONHOME}python $CURDIR/spreadBilphrases.py --dir $TRUEWORKDIR/generalisation-alt1 --dict $BOXESINDEX
+	fi
 
 fi
 
@@ -171,6 +203,9 @@ echo "Computing generalisations" >&2
 #compute all generalisations
 mkdir -p $TRUEWORKDIR/generalisation/ats
 mkdir -p $TRUEWORKDIR/generalisation/debug
+
+mkdir -p $TRUEWORKDIR/generalisation-alt1/ats
+mkdir -p $TRUEWORKDIR/generalisation-alt1/debug
 
 #rm -f $TRUEWORKDIR/generalisation/boxesofnewdata
 #for file in `ls $TRUEWORKDIR/generalisation/newbilphrases`; do
@@ -189,28 +224,37 @@ split -l 10000 $TRUEWORKDIR/generalisation/boxesofnewdata.sorted.bylength $TRUEW
 cat $BOXESINDEX > $TRUEWORKDIR/generalisation/finalboxesindex
 
 if [ "$FIRSTMINIMISELEMMAS" == "" ]; then
-
+  
   #[ \"\`expr \$INDEX \% $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ]
   for file in $TRUEWORKDIR/generalisation/boxesofnewdata.sorted.bylength.split* ; do 
-	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\"\`;  if [ \"\`expr \$INDEX % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then  zcat \"$TRUEWORKDIR/generalisation/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAG $RICHATSFLAGONLYGEN $POWERSETFEATURESFLAG $DIFFERENTRESTRICTIONSFLAG 2> \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX\" | gzip > $TRUEWORKDIR/generalisation/ats/\$INDEX.ats.gz; gzip \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX\"; fi;" -- `cat $file`
+	  GENERALISATION_DIR=$TRUEWORKDIR/generalisation
+	  #parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\" | cut -f 2\`; NUMLINE=\`echo \"{}\" | cut -f 1\`;  if [ \"\`expr \$NUMLINE % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then  zcat \"$GENERALISATION_DIR/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAG $RICHATSFLAGONLYGEN $POWERSETFEATURESFLAG $DIFFERENTRESTRICTIONSFLAG $UNLEXICALISEUNALIGNEDSLFLAG $GENATTRIBUTESLIKEINPAPER $ONLYLEXICALGENFLAG 2> \"$GENERALISATION_DIR/debug/debug-generalisation-\$INDEX\" | gzip > $GENERALISATION_DIR/ats/\$INDEX.ats.gz; gzip \"$GENERALISATION_DIR/debug/debug-generalisation-\$INDEX\"; fi;" -- `cat $file | awk '{printf "%d\t%s\n", NR, $0}'`
+	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\"\`;  if [ \"\`expr \$INDEX % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then  zcat \"$GENERALISATION_DIR/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAG $RICHATSFLAGONLYGEN $POWERSETFEATURESFLAG $DIFFERENTRESTRICTIONSFLAG $UNLEXICALISEUNALIGNEDSLFLAG $GENATTRIBUTESLIKEINPAPER $ONLYLEXICALGENFLAG 2> \"$GENERALISATION_DIR/debug/debug-generalisation-\$INDEX\" | gzip > $GENERALISATION_DIR/ats/\$INDEX.ats.gz; gzip \"$GENERALISATION_DIR/debug/debug-generalisation-\$INDEX\"; fi;" -- `cat $file`
+	  
+	  if [ "$ALT_INPUTFILE" != "" ]; then
+		GENERALISATION_DIR=$TRUEWORKDIR/generalisation-alt1
+		parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\" | cut -f 2\`; NUMLINE=\`echo \"{}\" | cut -f 1\`;  if [ \"\`expr \$NUMLINE % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then  zcat \"$GENERALISATION_DIR/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAG $RICHATSFLAGONLYGEN $POWERSETFEATURESFLAG $DIFFERENTRESTRICTIONSFLAG $UNLEXICALISEUNALIGNEDSLFLAG $GENATTRIBUTESLIKEINPAPER $ONLYLEXICALGENFLAG 2> \"$GENERALISATION_DIR/debug/debug-generalisation-\$INDEX\" | gzip > $GENERALISATION_DIR/ats/\$INDEX.ats.gz; gzip \"$GENERALISATION_DIR/debug/debug-generalisation-\$INDEX\"; fi;" -- `cat $file | awk '{printf "%d\t%s\n", NR, $0}'`
+	  fi
   done
 
 else
-
+ 
+  #TODO: make this work with alternative input files
+ 
   mkdir -p $TRUEWORKDIR/generalisation/onlylexicalats
   #Generate ATs changing lemmas
   for file in $TRUEWORKDIR/generalisation/boxesofnewdata.sorted.bylength.split* ; do 
-	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\"\`;  if [ \"\`expr \$INDEX % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then rm \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.gz\" ; zcat \"$TRUEWORKDIR/generalisation/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX --rich_ats --ref_to_biling --add_restrictions_to_every_tag --only_lexical 2> \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX\" | gzip > $TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX.ats.gz; gzip \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX\"; fi;" -- `cat $file`
+	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\" | cut -f 2\`; NUMLINE=\`echo \"{}\" | cut -f 1\`;  if [ \"\`expr \$NUMLINEX % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then rm \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.gz\" ; zcat \"$TRUEWORKDIR/generalisation/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX --rich_ats --ref_to_biling --add_restrictions_to_every_tag --only_lexical $UNLEXICALISEUNALIGNEDSLFLAG $GENATTRIBUTESLIKEINPAPER 2> \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX\" | gzip > $TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX.ats.gz; gzip \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX\"; fi;" -- `cat $file | awk '{printf "%d\t%s\n", NR, $0}'`
   done
 
   #Minimise
   for file in $TRUEWORKDIR/generalisation/boxesofnewdata.sorted.bylength.split* ; do 
-	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\"\`;  if [ \"\`expr \$INDEX % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then rm \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.result.gz\" ; ${PYTHONHOME}python $CURDIR/chooseATs.py --tag_groups_file $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX --gzip $CONTRADICTORYORRELAX --read_generalised_bilphrases_from_dir \"$TRUEWORKDIR/generalisation/newbilphrases\"  --read_generalised_ats_from_file \"$TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX\" --remove_third_restriction --relax_restrictions 2> \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.result\" | gzip > \"$TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX.ats.result.gz\"; gzip \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.result\" ; fi;" -- `cat $file`
+	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\" | cut -f 2\`; NUMLINE=\`echo \"{}\" | cut -f 1\`;  if [ \"\`expr \$NUMLINE % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then rm \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.result.gz\" ; ${PYTHONHOME}python $CURDIR/chooseATs.py --tag_groups_file $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX --gzip $CONTRADICTORYORRELAX --read_generalised_bilphrases_from_dir \"$TRUEWORKDIR/generalisation/newbilphrases\"  --read_generalised_ats_from_file \"$TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX\" --remove_third_restriction --relax_restrictions $GENATTRIBUTESLIKEINPAPER 2> \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.result\" $GENATTRIBUTESLIKEINPAPER| gzip > \"$TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX.ats.result.gz\"; gzip \"$TRUEWORKDIR/generalisation/debug/debug-onlylexical-\$INDEX.result\" ; fi;" -- `cat $file | awk '{printf "%d\t%s\n", NR, $0}'`
   done
 
   #Generate ATs with structural changes
   for file in $TRUEWORKDIR/generalisation/boxesofnewdata.sorted.bylength.split* ; do 
-	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\"\`;  if [ \"\`expr \$INDEX % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then  rm \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX.gz\"; zcat \"$TRUEWORKDIR/generalisation/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAG $RICHATSFLAGONLYGEN $POWERSETFEATURESFLAG $DIFFERENTRESTRICTIONSFLAG --ats_with_allowed_lemmas_file \"$TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX.ats.result.gz\"  2> \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX\" | gzip > $TRUEWORKDIR/generalisation/ats/\$INDEX.ats.gz; gzip \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX\"; fi;" -- `cat $file`
+	  parallel $PARALLELONLYONE -i  bash -c "INDEX=\`echo \"{}\" | cut -f 2\`; NUMLINE=\`echo \"{}\" | cut -f 1\`;  if [ \"\`expr \$NUMLINE % $NUM_PARTS\`\" == \"$CHOSEN_PART_MINUS_ONE\" ] ; then  rm \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX.gz\"; zcat \"$TRUEWORKDIR/generalisation/newbilphrases/\$INDEX.bilphrases.gz\" | ${PYTHONHOME}python $CURDIR/generateMultipleATsFromBilphrases.py --tag_groups_file_name $CURDIR/taggroups$TAGSEQUENCESANDGROUPSSUFFIX --tag_sequences_file_name $CURDIR/tagsequences$TAGSEQUENCESANDGROUPSSUFFIX $RICHATSFLAG $RICHATSFLAGONLYGEN $POWERSETFEATURESFLAG $DIFFERENTRESTRICTIONSFLAG $UNLEXICALISEUNALIGNEDSLFLAG $GENATTRIBUTESLIKEINPAPER --ats_with_allowed_lemmas_file \"$TRUEWORKDIR/generalisation/onlylexicalats/\$INDEX.ats.result.gz\"  2> \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX\" | gzip > $TRUEWORKDIR/generalisation/ats/\$INDEX.ats.gz; gzip \"$TRUEWORKDIR/generalisation/debug/debug-generalisation-\$INDEX\"; fi;" -- `cat $file | awk '{printf "%d\t%s\n", NR, $0}'`
   done
 
 fi

@@ -16,6 +16,7 @@ import sys
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='compute possible coverages of rules and associated 1-BLEU score')
     parser.add_argument('--alignment_templates',required=True)
+    parser.add_argument('--alternative_alignment_templates')
     parser.add_argument('--tag_groups_file_name',required=True)
     parser.add_argument('--tag_sequences_file_name',required=True)
     parser.add_argument('--target_language',default='ca')
@@ -47,6 +48,18 @@ if __name__ == "__main__":
         at.parse(line)
         ruleList.add(at)
     gfile.close()
+    ruleLists=[ruleList]
+    
+    if args.alternative_alignment_templates:
+        altRuleList=RuleList()
+        gfile=gzip.open(args.alternative_alignment_templates)
+        for line in gfile:
+            line=line.strip().decode('utf-8')
+            at=AlignmentTemplate()
+            at.parse(line)
+            altRuleList.add(at)
+        gfile.close()
+        ruleLists=[ruleList,altRuleList]
     
     boxesCoverage=False
     boxesDic=dict()
@@ -57,10 +70,15 @@ if __name__ == "__main__":
         boxesCoverage=True
     
     for line in sys.stdin:
-        line=line.strip().decode('utf-8')
-        parallelSentence=ParallelSentence()
-        parallelSentence.parse(line, parseTlLemmasFromDic=True)
-        parallelSentence.add_explicit_empty_tags()
-        finalHypotheses=parallelSentence.compute_coverages_and_bleu(ruleList,int(args.beam_size),boxesCoverage,boxesDic,args.allow_incompatible_rules)
-        print u"|||".join([unicode(h) for h in finalHypotheses]).encode('utf-8')
+        line=line.rstrip('\n').decode('utf-8')
+        parts=line.split('|')
+        if len(parts) > 5:
+            #wrong sentence
+            print ""
+        else:
+            parallelSentence=ParallelSentence()
+            parallelSentence.parse(line, parseTlLemmasFromDic=True)
+            parallelSentence.add_explicit_empty_tags()
+            finalHypotheses=parallelSentence.compute_coverages_and_bleu(ruleLists,int(args.beam_size),boxesCoverage,boxesDic,args.allow_incompatible_rules)
+            print u"|||".join([unicode(h) for h in finalHypotheses]).encode('utf-8')
             
