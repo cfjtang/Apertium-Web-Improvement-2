@@ -16,7 +16,8 @@ def performReplacements(data):
         'Nogai': 'Nogay',
         'Azerbaijani, South': 'Azerbaijani, Southern',
         'Azerbaijani, North': 'Azerbaijani, Northern',
-        'Karagas': 'Tofa'
+        'Karagas': 'Tofa',
+        'The former Yugoslav Republic of Macedonia': 'Macedonia'
     }
     for key, value in data.items():
         if isinstance(value, str):
