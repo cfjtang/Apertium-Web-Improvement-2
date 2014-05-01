@@ -41,10 +41,10 @@ $(PREFIX2).autobil.bin: $(BASENAME).$(PREFIX1).dix
 	lt-comp rl $(BASENAME).$(PREFIX1).dix $@
 
 $(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).dix
-	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang cat --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - > $(BASENAME).$(LANG1).dixtmp1
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dixtmp1
-	lt-comp rl $(BASENAME).$(LANG1).dixtmp1 $@
-	rm $(BASENAME).$(LANG1).dixtmp1
+	xsltproc translate-to-default-equivalent.xsl $< | xsltproc --stringparam lang cat --stringparam side left filter.xsl - | xsltproc --stringparam alt std alt.xsl - > $(BASENAME).$(LANG1).dixtmp2
+	apertium-validate-dictionary $(BASENAME).$(LANG1).dixtmp2
+	lt-comp rl $(BASENAME).$(LANG1).dixtmp2 $@
+	rm $(BASENAME).$(LANG1).dixtmp2
 
 $(PREFIX2).autopgen.bin: $(BASENAME).post-$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).post-$(LANG1).dix
