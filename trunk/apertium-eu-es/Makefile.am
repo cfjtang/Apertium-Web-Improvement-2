@@ -1,4 +1,4 @@
-VERSION=0.3.1
+VERSION=0.3.3
 LANG1=eu
 LANG2=es
 PREFIX1=$(LANG1)-$(LANG2)
@@ -8,15 +8,14 @@ BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = $(PREFIX1).automorf.bin $(PREFIX1).autobil.bin $(PREFIX1).autogen.bin \
 	$(PREFIX1).autopgen.bin $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-	$(PREFIX1).ordinals.t1x.bin modes $(PREFIX2).automorf.bin
-#$(PREFIX1).rlx.bin modes
-     
-TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
-          trules-$(PREFIX1).xml trules-$(PREFIX2).xml 
-          # $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
-	  # $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix 
+	$(PREFIX1).ordinals.t1x.bin $(PREFIX2).automorf.bin
 
-	   
+TARGETS = $(TARGETS_COMMON) trules-$(PREFIX1).bin trules-$(PREFIX2).bin \
+          trules-$(PREFIX1).xml trules-$(PREFIX2).xml
+          # $(BASENAME).$(LANG1)-lextor.dix $(BASENAME).$(LANG2)-lextor.dix \
+	  # $(BASENAME).$(PREFIX1)-lextor.dix $(BASENAME).$(PREFIX2)-lextor.dix
+
+
 $(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
 	lt-comp lr $(BASENAME).$(LANG1).dix $@
@@ -53,7 +52,7 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 ##	rm tmp$(PREFIX2).autobil.dix
 
 ##$(PREFIX2).autogen.bin: $(BASENAME).$(LANG1).metadix
-##	@xsltproc buscaPar.xsl apertium-en-ca.en.metadix | uniq > tmp2gen.xsl 	 
+##	@xsltproc buscaPar.xsl apertium-en-ca.en.metadix | uniq > tmp2gen.xsl
 ##	@xsltproc tmp2gen.xsl apertium-en-ca.en.metadix >$(BASENAME).$(LANG1).dixtmp2
 ##	@rm tmp2gen.xsl
 ##	apertium-validate-dictionary $(BASENAME).$(LANG1).dixtmp2
@@ -68,7 +67,7 @@ $(PREFIX1).autopgen.bin: $(BASENAME).post-$(LANG2).dix
 ##	apertium-validate-transfer $(BASENAME).trules-$(PREFIX1).xml
 ##	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX1).xml \
 ##	                             trules-$(PREFIX1).bin
-	                             
+
 ##trules-$(PREFIX2).bin: $(BASENAME).trules-$(PREFIX2).xml
 ##	apertium-validate-transfer $(BASENAME).trules-$(PREFIX2).xml
 ##	apertium-preprocess-transfer $(BASENAME).trules-$(PREFIX2).xml \
@@ -152,23 +151,19 @@ EXTRA_DIST=$(BASENAME).$(LANG1).dix $(BASENAME).$(PREFIX1).dix \
            $(BASENAME).$(PREFIX1).t3x \
            modes.xml
 
-#           buscaPar.xsl principal.xsl 
-#           $(BASENAME).post-$(LANG1).dix 
-#	    $(BASENAME).$(PREFIX2).t1x 
-#	    $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x 
-#	    $(BASENAME).$(LANG2).tsx 
+#           buscaPar.xsl principal.xsl
+#           $(BASENAME).post-$(LANG1).dix
+#	    $(BASENAME).$(PREFIX2).t1x
+#	    $(BASENAME).$(PREFIX2).t2x $(BASENAME).$(PREFIX2).t3x
+#	    $(BASENAME).$(LANG2).tsx
 
-modes: modes.xml
+modes/$(PREFIX1).mode: modes.xml
+	apertium-validate-modes modes.xml
 	apertium-gen-modes modes.xml
-
-
-$(PREFIX1).mode: modes.xml
-	apertium-gen-modes modes.xml
-	mkdir -p modes/
-	cp $(PREFIX1).mode modes/
+	cp *.mode modes/
 
 apertium_eu_esdir=$(prefix)/share/apertium/apertium-$(PREFIX1)/
-apertium_eu_modesdir=$(prefix)/share/apertium/modes/
+apertium_modesdir=$(prefix)/share/apertium/modes/
 
 apertium_eu_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX2).automorf.bin \
@@ -177,14 +172,21 @@ apertium_eu_es_DATA=$(PREFIX1).automorf.bin \
                     $(PREFIX1).autopgen.bin \
                     $(PREFIX1).prob $(PREFIX1).ordinals.t1x.bin \
 		    $(PREFIX1).t1x.bin $(PREFIX1).t2x.bin $(PREFIX1).t3x.bin \
-		    $(PREFIX1).mode	  
+		    $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x \
+		    $(BASENAME).$(PREFIX1).t3x \
+		    $(BASENAME).ordinals.t1x
+
+noinst_DATA=modes/$(PREFIX1).mode
 
 install-data-local:
+	mv modes modes.bak
 	apertium-gen-modes modes.xml apertium-$(PREFIX1)
-	test -d $(DESTDIR)$(apertium_eu_modesdir) || mkdir $(DESTDIR)$(apertium_eu_modesdir)
-	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_eu_modesdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t1x $(BASENAME).$(PREFIX1).t2x $(DESTDIR)$(apertium_eu_esdir)
-	$(INSTALL_DATA) $(BASENAME).$(PREFIX1).t3x $(DESTDIR)$(apertium_eu_esdir)
-	$(INSTALL_DATA) $(BASENAME).ordinals.t1x $(DESTDIR)$(apertium_eu_esdir)
+	rm -rf modes
+	mv modes.bak modes
+	test -d $(DESTDIR)$(apertium_modesdir) || mkdir $(DESTDIR)$(apertium_modesdir)
+	$(INSTALL_DATA) $(PREFIX1).mode $(apertium_modesdir)
+	rm -f $(PREFIX1).mode
 
-CLEANFILES = -r $(TARGETS) 
+CLEANFILES = $(TARGETS)
+clean-local:
+	-rm -rf modes
