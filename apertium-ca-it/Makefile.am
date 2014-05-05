@@ -1,4 +1,4 @@
-VERSION=0.1.0
+VERSION=0.1.1
 LANG1=ca
 LANG2=it
 PREFIX1=$(LANG1)-$(LANG2)
@@ -124,4 +124,6 @@ install-data-local:
 
 #	$(INSTALL_DATA) $(PREFIX1).mode $(DESTDIR)$(apertium_ca_modesdir)
 
-CLEANFILES = -rf $(TARGETS_COMMON) modes
+CLEANFILES = $(TARGETS_COMMON)
+clean-local: 
+	-rm -rf modes

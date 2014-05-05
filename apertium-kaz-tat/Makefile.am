@@ -2,7 +2,7 @@
 ## Makefile for Kazakh--Tatar
 ###############################################################################
 
-VERSION=0.2.0
+VERSION=0.2.1
 LANG1=kaz
 LANG2=tat
 PREFIX1=$(LANG1)-$(LANG2)
