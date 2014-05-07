@@ -78,6 +78,8 @@ def processWord(c, _tags): #{
 
 	if unknown == True: #{
 		c = sys.stdin.read(1);
+		if c == "\n":
+			sys.stdout.write(c)
 		return;
 	#}
 
