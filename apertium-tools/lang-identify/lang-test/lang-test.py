@@ -78,7 +78,7 @@ for lang in config['langs']:
 			print("\t%s" % line.strip())
 
 	with open(args.config, 'w') as yaml_file:
-	    dump = yaml.dump(config, allow_unicode=True)
+	    dump = yaml.dump(config, default_flow_style=False)
 	    yaml_file.write(dump)
 
 print("All languages have been tested.")
