@@ -1,0 +1,34 @@
+
+% cp /path/to//apertium//trunk/apertium-eval-translator/WER.pl /path/to/bin
+% perl apertium//trunk/apertium-eval-translator/bootstrap_resampling.pl -n 1000 -e /path/to//apertium//trunk/apertium-eval-translator/wer.sh -s SOURCE_FILE -t TEST_FILE -r REF_FILE
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|r|rr||rr|}
+   \hline
+  \multirow{2}{*}{\textbf{Article}}  & \multirow{2}{*}{\textbf{Words}} & \multicolumn{2}{|c||}{\textbf{\%~OOV}} & \multicolumn{2}{c|}{\textbf{WER}}\\\cline{3-6}
+                    &                & Apertium & Google &  Apertium & Google \\
+   \hline
+   \hline
+  \texttt{maraton}  & 243            & 16.8     & --     & \textbf{[42.85, 47.92]} & [64.39, 74.56] \\
+  \texttt{sonce}    & 169            & 17.7     & --     & \textbf{[32.65, 45.33]}    & [47.27, 58.62] \\
+  \texttt{merkator} & 414            & 16.9     & --     & \textbf{[38.78, 48.14]}     & [56.13, 70.30] \\
+  \texttt{volitve}  & 229            & 13.9     & --     & [37.81, 53.36]      & [46.66, 62.67] \\
+%  \texttt{jame}     & 994            & 14.9     & --     & ??      & [57.28, 67.65] \\
+                                                           % 49.57	
+  \hline
+  \hline
+  \texttt{maraton}  & 245            & 37.7     & --     & [52.78, 56.25]           & [45.58, 63.87]\\
+  \texttt{sonce}    & 171            & 17.5     & --     & [47.50, 62.79]    & [32.10, 58.49] \\
+  \texttt{merkator} & 424            & 12.9     & --     & [45.78, 56.56]    & [48.46, 64.15] \\
+  \texttt{volitve}  & 226            & 16.8     & --     & [47.00, 58.44]    & [38.09, 58.10]\\
+%  \texttt{jame}     & 1,005          & 15.9     & --     & [??, ??]              & [??,??]\\
+
+  \hline
+\end{tabular}
+ \caption{Results for Word Error Rate (WER) in the Slovenian$\rightarrow$Serbo-Croatian direction (top) and Serbo-Croatian$\rightarrow$Slovenian (bottom). Scores in bold show a statistically significant improvement over the other system according to bootstrap resampling at $p = 0.95$.}
+\label{table:quantitative1}
+\end{center}
+\end{table}
+
+
