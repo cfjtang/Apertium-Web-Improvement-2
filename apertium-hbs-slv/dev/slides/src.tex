@@ -2,6 +2,8 @@
 
 \documentclass{beamer}
 \usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tabularx}  
 \renewcommand{\vec}[1]{\mathbf{#1}}
 \graphicspath{./images/}
 \usetheme{Copenhagen}
@@ -41,7 +43,7 @@
 \end{frame}
 
 
-% --------------------------- Slide 2 -------------------------- %
+% --------------------------- Slide 4 -------------------------- %
 \begin{frame}{Introduction}
 
 \begin{center}
@@ -54,7 +56,7 @@ Montenegrin, and Serbian) are based on the shtokavian dialect.}
 \end{center}
 \end{frame}
 
-% --------------------------- Slide 3 -------------------------- %
+% --------------------------- Slide 5 -------------------------- %
 \begin{frame}{The Apertium platform}
 
 The Apertium platform is a modular machine translation system.
@@ -68,7 +70,7 @@ The core setup consists of:
 \end{itemize}
 \end{frame}
 
-% --------------------------- Slide 4 -------------------------- %
+% --------------------------- Slide 6 -------------------------- %
 \begin{frame}{Resources}
 Several resources were used extensively throughout the development process:
 \begin{itemize}
@@ -80,7 +82,7 @@ Several resources were used extensively throughout the development process:
 \end{frame}
 
 
-% --------------------------- Slide 5 -------------------------- %
+% --------------------------- Slide 7 -------------------------- %
 \begin{frame}{Morphological analysis and generation}
 \begin{itemize}
 
@@ -92,7 +94,7 @@ Several resources were used extensively throughout the development process:
 \end{itemize}
 \end{frame}
 
-% --------------------------- Slide 6 -------------------------- %
+% --------------------------- Slide 8 -------------------------- %
 \begin{frame}{Disambiguation}
 \begin{itemize}
 
@@ -104,7 +106,7 @@ Several resources were used extensively throughout the development process:
 \end{itemize}
 \end{frame}
 
-% --------------------------- Slide 6 -------------------------- %
+% --------------------------- Slide 9 -------------------------- %
 \begin{frame}{Lexical transfer}
 \begin{itemize}
 
@@ -116,7 +118,7 @@ Several resources were used extensively throughout the development process:
 \end{itemize}
 \end{frame}
 
-% --------------------------- Slide 7 -------------------------- %
+% --------------------------- Slide 10 -------------------------- %
 \begin{frame}{Lexical selection}
 \begin{itemize}
 \item Due to a lack of a parallel corpus, Lexical selection was done based on hand-written rules
@@ -130,7 +132,7 @@ Several resources were used extensively throughout the development process:
 \end{frame}
 
 
-% --------------------------- Slide 7 -------------------------- %
+% --------------------------- Slide 11 -------------------------- %
 \begin{frame}{Syntactic transfer}
 \begin{itemize}
 \item Most transfer rules were written to:
@@ -141,12 +143,78 @@ Several resources were used extensively throughout the development process:
 \end{itemize}
 \end{frame}
 
+% --------------------------- Slide 12 -------------------------- %
+
 \begin{frame}{Evaluation}
 \begin{itemize}
-\item Lexical coverage, qualitative and quantitative analysis
+\item Lexical coverage, qualitative and quantitative analysis was performed
 \item Lexical coverage tested using existing free corpora
 \item Quantitative evaluation performed on 100 postedited sentences from the Slovenian news portal Delo
 
 \end{itemize}
 \end{frame}
+
+% --------------------------- Slide 13 -------------------------- %
+
+\begin{frame}{Evaluation | Lexical Coverage}
+\begin{itemize}
+\item Lexical coverage was measured using SETimes and Europarl
+\item Naive coverage measurement
+\end{itemize}
+\input{coveragetable}
+\end{frame}
+
+% --------------------------- Slide 14 -------------------------- %
+
+\begin{frame}{Evaluation | Quantitative }
+\begin{itemize}
+\item Performed on 5 news articles from Delo
+\item WER was calculated on post edited translations
+\item Apertium's results were compared to Google Translate's ones
+\end{itemize}
+\input{quantitativeevaluationtable}
+\end{frame}
+
+% --------------------------- Slide 15 -------------------------- %
+
+\begin{frame}{Evaluation | Qualitative }
+\begin{itemize}
+\item Big problems caused by incompleteness of dictionaries
+\item OOV words cause problems with disambiguation and transfer, breaking context
+\item Low number of disambiguation rules for Slovenian since it was based on the Serbo-Croatian instance
+\item Loose grammar on both sides causes difficulties writing transfer rules
+\item The lexical selection module is the least developed one
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Evaluation | Future Work }
+\begin{itemize}
+\item Improve coverage of dictionaries
+\item Develop the Slovenian constraint grammar
+\item Work on other Slavic language pairs (Serbo-Croatian -- Russian) and improve existing ones (Serbo-Croatian -- Macedonian)
+\item Add Montenegrin language to the \emph{hbs} group once the standard is agreed on
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{ Conclusion }
+\begin{itemize}
+\item Conclude
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{ The end }
+\begin{center}
+Thank you for your attention! \\
+Tack för uppmärksamheten! \\
+Hvala na pozornosti! \\
+!`Gracias por su atención! 
+\end{center}
+
+\end{frame}
+
+
 \end{document}
