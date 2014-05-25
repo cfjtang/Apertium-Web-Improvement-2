@@ -48,10 +48,13 @@ if __name__ == '__main__':
 
     p1 = subprocess.Popen([catCommands[fileType], corpusPath], stdout=subprocess.PIPE)
     p2 = subprocess.Popen(['apertium-destxt'], stdin=p1.stdout, stdout=subprocess.PIPE)
+    del p1
     p3 = subprocess.Popen(['lt-proc', '-w', args.automorfPath], stdin=p2.stdout, stdout=subprocess.PIPE)
+    del p2
     p4 = subprocess.Popen(['apertium-retxt'], stdin=p3.stdout, stdout=subprocess.PIPE)
+    del p3
     subprocess.Popen(['sed', r's/\$\W*\^/$\n^/g'], stdin=p4.stdout, stdout=tempFile).communicate()
-    del p1, p2, p3, p4
+    del p4
 
     tempFile.seek(0)
     total = int(subprocess.check_output(['wc', '-l'], stdin=tempFile))
