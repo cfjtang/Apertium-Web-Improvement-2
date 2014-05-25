@@ -45,11 +45,13 @@ if __name__ == '__main__':
     fileType = getFileType(corpusPath)
     logger.info('Treating corpus as %s' % fileType)
     tempFile = tempfile.TemporaryFile()
+
     p1 = subprocess.Popen([catCommands[fileType], corpusPath], stdout=subprocess.PIPE)
     p2 = subprocess.Popen(['apertium-destxt'], stdin=p1.stdout, stdout=subprocess.PIPE)
     p3 = subprocess.Popen(['lt-proc', '-w', args.automorfPath], stdin=p2.stdout, stdout=subprocess.PIPE)
     p4 = subprocess.Popen(['apertium-retxt'], stdin=p3.stdout, stdout=subprocess.PIPE)
-    p5 = subprocess.Popen(['sed', r's/\$\W*\^/$\n^/g'], stdin=p4.stdout, stdout=tempFile).communicate()
+    subprocess.Popen(['sed', r's/\$\W*\^/$\n^/g'], stdin=p4.stdout, stdout=tempFile).communicate()
+    del p1, p2, p3, p4
 
     tempFile.seek(0)
     total = int(subprocess.check_output(['wc', '-l'], stdin=tempFile))
@@ -62,5 +64,4 @@ if __name__ == '__main__':
 
     print('Coverage: %.10f%%' % float(known / total * 100.0))
 
-
-
+    tempFile.close()
