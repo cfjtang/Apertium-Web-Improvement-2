@@ -32,6 +32,9 @@ for lang in langs:
 	bad_lines = []
 	filename = config['langs'][lang]
 
+	if not filename[-5:] == ".norm":
+		print("WARNING: Corpus for language %s has not been normalized." % lang)
+
 	# generate a list of random numbers
 	num_lines = 0
 	with open(filename) as f:
