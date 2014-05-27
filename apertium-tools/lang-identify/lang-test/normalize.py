@@ -30,6 +30,9 @@ p.add_argument('-c', '--config', required=True, help='config file')
 args = p.parse_args()
 config = yaml.load(open(args.config))
 
+if 'coverage' not in config:
+	config['coverage'] = {}
+
 langs = [lang for lang in config['langs']]
 langs.sort() # i like sorted languages
 # they make life easier
