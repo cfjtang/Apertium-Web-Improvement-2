@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 
-import argparse, requests, json, logging, sys, re, subprocess, urllib.request
+baseURL = 'http://wiki.apertium.org/w/api.php'
+svnURL = 'https://svn.code.sf.net/p/apertium/svn/'
+lexccounterURL = svnURL + 'trunk/apertium-tools/lexccounter.py'
+
+import argparse, requests, json, logging, sys, re, os, subprocess, shutil, importlib, urllib.request
 import xml.etree.ElementTree as etree
 try:
     from lexccounter import countStems
 except ImportError:
-    logging.error('Unable to import LEXC Stem Counter, proceeding without it.')
-
-baseURL = 'http://wiki.apertium.org/w/api.php'
-svnURL = 'https://svn.code.sf.net/p/apertium/svn/'
+    fullpath, _ = urllib.request.urlretrieve(lexccounterURL)
+    path, filename = os.path.split(fullpath)
+    filename, ext = os.path.splitext(filename)
+    shutil.copyfile(fullpath, os.path.join(path, os.path.join(filename + '.py')))
+    sys.path.append(path)
+    lexccounter = importlib.import_module(filename)
+    countStems = vars(lexccounter)['countStems']
 
 def getCounts(uri, dixFormat):
     logger = logging.getLogger("countStems")
@@ -58,20 +65,20 @@ def createStatsSection(dixCounts, SVNRevision):
 
 def createStatSection(dixName, dixCount, SVNRevision):
     return "*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
-        
+
 def getPage(pageTitle):
     payload = {'action': 'query', 'format': 'json', 'titles': pageTitle, 'prop': 'revisions', 'rvprop': 'content'}
     viewResult = s.get(baseURL, params=payload)
     jsonResult = json.loads(viewResult.text)
-    
+
     if not 'missing' in list(jsonResult['query']['pages'].values())[0]:
         return list(jsonResult['query']['pages'].values())[0]['revisions'][0]['*']
-        
+
 def editPage(pageTitle, pageContents, editToken):
     payload = {'action': 'edit', 'format': 'json', 'title': pageTitle, 'text': pageContents, 'bot': 'True', 'contentmodel': 'wikitext', 'token': editToken}
     editResult = s.post(baseURL, params=payload)
     jsonResult = json.loads(editResult.text)
-    
+
     return jsonResult
 
 if __name__ == '__main__':
@@ -203,7 +210,7 @@ if __name__ == '__main__':
                     for countType, count in counts.items():
                         dixCounts[countType] = count
                 logging.info('Acquired dictionary counts %s' % dixCounts)
-                
+
                 pageContents = getPage(pageTitle)
                 if pageContents:
                     statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
@@ -240,7 +247,7 @@ if __name__ == '__main__':
                         logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                 else:
                     pageContents = createStatsSection(dixCounts, SVNRevision)
-                        
+
                     editResult = editPage(pageTitle, pageContents, editToken)
                     if editResult['edit']['result'] == 'Success':
                         logging.info('Creation of page %s succeeded' % pageTitle)
@@ -248,3 +255,4 @@ if __name__ == '__main__':
                         logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
         else:
             logging.error('Invalid language module name: %s' % pair)
+
