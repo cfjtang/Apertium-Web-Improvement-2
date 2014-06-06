@@ -2,20 +2,13 @@
 
 import argparse, subprocess, logging, urllib.request, tempfile
 
-magicNumbers = {
-    '\x1f\x8b\x08': 'gz',
-    '\x42\x5a\x68': 'bz2',
-    '\x50\x4b\x03\x04': 'zip'
-}
-
-catCommands = {
-    'txt': 'cat',
-    'gz': 'zcat',
-    'bz2': 'bzcat',
-    'zip': 'unzip -p'
-}
-
 def getFileType(filePath):
+    magicNumbers = {
+        '\x1f\x8b\x08': 'gz',
+        '\x42\x5a\x68': 'bz2',
+        '\x50\x4b\x03\x04': 'zip'
+    }
+
     with open(filePath, 'rb') as f:
         fileStart = f.read(max(map(lambda x: len(x), magicNumbers.values())))
     for magicNumber, fileType in magicNumbers.items():
@@ -24,26 +17,26 @@ def getFileType(filePath):
 
     return 'txt'
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Determine coverage of a transducer on a corpus')
-    parser.add_argument('automorfPath', help='path to automorf binary')
-    parser.add_argument('corpusUri', help='corpus uri')
-    args = parser.parse_args()
-
-    logger = logging.getLogger("coverage")
-    logging.basicConfig(level=logging.INFO)
-
-    if 'http' in args.corpusUri:
+def getFile(corpusUri):
+    if 'http' in corpusUri:
         try:
             corpusPath, _ = urllib.request.urlretrieve(args.corpusUri)
         except urllib.error.HTTPError:
             logger.critical('Corpus %s not found' % args.corpusUri)
             sys.exit(-1)
     else:
-        corpusPath = args.corpusUri
+        corpusPath = corpusUri
 
-    fileType = getFileType(corpusPath)
-    logger.info('Treating corpus as %s' % fileType)
+    return corpusPath
+
+def getCoverage(fileType, corpusPath):
+    catCommands = {
+        'txt': 'cat',
+        'gz': 'zcat',
+        'bz2': 'bzcat',
+        'zip': 'unzip -p'
+    }
+
     tempFile = tempfile.TemporaryFile()
 
     p1 = subprocess.Popen([catCommands[fileType], corpusPath], stdout=subprocess.PIPE)
@@ -58,13 +51,30 @@ if __name__ == '__main__':
 
     tempFile.seek(0)
     total = int(subprocess.check_output(['wc', '-l'], stdin=tempFile))
-    print('Total: %s' % total)
 
     tempFile.seek(0)
     p1 = subprocess.Popen(['grep', '-v', '*'], stdout=subprocess.PIPE, stdin=tempFile)
     known = int(subprocess.check_output(['wc', '-l'], stdin=p1.stdout))
-    print('Known: %s' % known)
-
-    print('Coverage: %.10f%%' % float(known / total * 100.0))
 
     tempFile.close()
+
+    return known, total
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Determine coverage of a transducer on a corpus')
+    parser.add_argument('automorfPath', help='path to automorf binary')
+    parser.add_argument('corpusUri', help='corpus uri')
+    args = parser.parse_args()
+
+    logger = logging.getLogger("coverage")
+    logging.basicConfig(level=logging.INFO)
+
+    corpusPath = getFile(args.corpusUri)
+    fileType = getFileType(corpusPath)
+    logger.info('Treating corpus as %s' % fileType)
+    known, total = getCoverage(fileType, corpusPath)
+
+    print('Total: %s' % total)
+    print('Known: %s' % known)
+    print('Coverage: %.10f%%' % float(known / total * 100.0))
+
