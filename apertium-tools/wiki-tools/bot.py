@@ -81,23 +81,9 @@ def editPage(pageTitle, pageContents, editToken):
 
     return jsonResult
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Apertium Wiki Bot")
-    parser.add_argument('loginName', help="bot login name")
-    parser.add_argument('password', help="bot password")
-    parser.add_argument('pairs', nargs='+', help="Apertium language pairs in the format e.g. bg-ru or rus")
-    parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
-
-    args = parser.parse_args()
-    s = requests.Session()
-
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
-
+def login(loginName, password):
     try:
-        payload = {'action': 'login', 'format': 'json', 'lgname': args.loginName, 'lgpassword': args.password}
+        payload = {'action': 'login', 'format': 'json', 'lgname': loginName, 'lgpassword': password}
         authResult = s.post(baseURL, params=payload)
         authToken = json.loads(authResult.text)['login']['token']
         logging.debug('Auth token: %s' % authToken)
@@ -106,153 +92,183 @@ if __name__ == '__main__':
         authResult = s.post(baseURL, params=payload)
         if not json.loads(authResult.text)['login']['result'] == 'Success':
             logging.critical('Failed to login as %s: %s' % (args.loginName, json.loads(authResult.text)['login']['result']))
-            sys.exit(-1)
         else:
             logging.info('Login as %s succeeded' % args.loginName)
+            return authToken
     except Exception as e:
         logging.critical('Failed to login: %s' % e)
-        sys.exit(-1)
-    try:
-        payload = {'action': 'query', 'format': 'json', 'prop': 'info', 'intoken': 'move', 'titles':'Main Page'}
-        moveTokenResult = s.get(baseURL, params=payload)
-        moveToken = json.loads(moveTokenResult.text)['query']['pages']['1']['movetoken']
-        logging.debug('Move token: %s' % moveToken)
-    except Exception as e:
-        logging.error('Failed to obtain move token: %s' % e)
 
+def getToken(tokenType, props):
     try:
-        payload = {'action': 'query', 'format': 'json', 'prop': 'info|revisions', 'intoken': 'edit', 'titles':'Main Page'}
-        editTokenResult = s.get(baseURL, params=payload)
-        editToken = json.loads(editTokenResult.text)['query']['pages']['1']['edittoken']
-        logging.debug('Edit token: %s' % editToken)
+        payload = {'action': 'query', 'format': 'json', 'prop': props, 'intoken': tokenType, 'titles':'Main Page'}
+        tokenResult = s.get(baseURL, params=payload)
+        token = json.loads(tokenResult.text)['query']['pages']['1']['%stoken' % tokenType]
+        logging.debug('%s token: %s' % (tokenType, token))
+        return token
     except Exception as e:
-        logging.error('Failed to obtain edit token: %s' % e)
+        logging.error('Failed to obtain %s token: %s' % (tokenType, e))
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Apertium Wiki Bot")
+    parser.add_argument('loginName', help="bot login name")
+    parser.add_argument('password', help="bot password")
+    parser.add_argument('action', help="action for bot to perform", choices=['dict', 'coverage'])
+    parser.add_argument('-p', '--pairs', nargs='+', help="Apertium language pairs in the format e.g. bg-ru or rus")
+    parser.add_argument('-a', '--analyzers', nargs='+', help="Apertium analyzers (.automorf.bin files)")
+    parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
+
+    args = parser.parse_args()
+    if args.action == 'dict' and not args.pairs:
+        parser.error('action "dict" requires pairs (-p, --pairs) argument')
+    if args.action == 'coverage':
+        if not args.pairs:
+            parser.error('action "coverage" requires pairs (-p, --pairs) argument')
+        elif not args.analyzers:
+            parser.error('action "coverage" requires analyzers (-a, --analyzers) argument')
+        elif not len(args.pairs) == len(args.analyzers):
+            parser.error('action "coverage" requires --analyzers and --pairs to be the same length')
+
+    s = requests.Session()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    authToken = login(args.loginName, args.password)
+    moveToken = getToken('move', 'info')
+    editToken = getToken('edit', 'info|revisions')
+    if not all([authToken, moveToken, editToken]):
+        logging.critical('Failed to obtain required token')
+        sys.exit(-1)
 
     SVNRevision = getRevision(svnURL)
     logging.info('On SVN revision %s' % SVNRevision)
 
-    for pair in args.pairs:
-        try:
-            langs = pair.split('-')
-            pageTitle = 'Apertium-' + '-'.join(langs) + '/stats'
-        except:
-            logging.error('Failed to parse language module name: %s' % pair)
-            break
+    if args.action == 'dict':
+        for pair in args.pairs:
+            try:
+                langs = pair.split('-')
+                pageTitle = 'Apertium-' + '-'.join(langs) + '/stats'
+            except:
+                logging.error('Failed to parse language module name: %s' % pair)
+                break
 
-        if len(langs) == 2:
-            dixLocs = getDixLocs(pair, 'dix')
-            logging.debug('Acquired dictionary locations %s' % dixLocs)
+            if len(langs) == 2:
+                dixLocs = getDixLocs(pair, 'dix')
+                logging.debug('Acquired dictionary locations %s' % dixLocs)
 
-            if len(dixLocs) > 0:
-                dixCounts = {}
-                for dixLoc in dixLocs:
-                    dixPair = dixLoc.split('/')[-1].split('.')[1].split('-')
-                    counts = getCounts(dixLoc, 'bidix' if set(langs) == set(dixPair) else 'monodix')
-                    for countType, count in counts.items():
-                        dixCounts['-'.join(dixPair + [countType])] = count
-                logging.debug('Acquired dictionary counts %s' % dixCounts)
+                if len(dixLocs) > 0:
+                    dixCounts = {}
+                    for dixLoc in dixLocs:
+                        dixPair = dixLoc.split('/')[-1].split('.')[1].split('-')
+                        counts = getCounts(dixLoc, 'bidix' if set(langs) == set(dixPair) else 'monodix')
+                        for countType, count in counts.items():
+                            dixCounts['-'.join(dixPair + [countType])] = count
+                    logging.debug('Acquired dictionary counts %s' % dixCounts)
 
-                pageContents = getPage(pageTitle)
-                if pageContents:
-                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
-                    if statsSection:
-                        matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                        replacements = {}
-                        for matchAttempt in matchAttempts:
-                            countName = matchAttempt.group(2).strip()
-                            if countName in dixCounts:
-                                replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
-                                replacements[(matchAttempt.group(1))] = replacement
-                                del dixCounts[countName]
-                                logging.debug('Replaced count %s' % repr(countName))
-                        for old, new in replacements.items():
-                            pageContents = pageContents.replace(old, new)
+                    pageContents = getPage(pageTitle)
+                    if pageContents:
+                        statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                        if statsSection:
+                            matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                            replacements = {}
+                            for matchAttempt in matchAttempts:
+                                countName = matchAttempt.group(2).strip()
+                                if countName in dixCounts:
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                                    replacements[(matchAttempt.group(1))] = replacement
+                                    del dixCounts[countName]
+                                    logging.debug('Replaced count %s' % repr(countName))
+                            for old, new in replacements.items():
+                                pageContents = pageContents.replace(old, new)
 
-                        newStats = ''
-                        for dixName, dixCount in dixCounts.items():
-                            newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
-                            logging.debug('Adding new count %s' % repr(dixName))
-                        newStats += '\n'
+                            newStats = ''
+                            for dixName, dixCount in dixCounts.items():
+                                newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
+                                logging.debug('Adding new count %s' % repr(dixName))
+                            newStats += '\n'
 
-                        contentBeforeIndex = statsSection.start()
-                        contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
-                        pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                            contentBeforeIndex = statsSection.start()
+                            contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+                            pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                        else:
+                            pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
+                            logging.debug('Adding new stats section')
+
+                        editResult = editPage(pageTitle, pageContents, editToken)
+                        if editResult['edit']['result'] == 'Success':
+                            logging.info('Update of page %s succeeded' % pageTitle)
+                        else:
+                            logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
-                        logging.debug('Adding new stats section')
+                        pageContents = createStatsSection(dixCounts, SVNRevision)
 
-                    editResult = editPage(pageTitle, pageContents, editToken)
-                    if editResult['edit']['result'] == 'Success':
-                        logging.info('Update of page %s succeeded' % pageTitle)
+                        editResult = editPage(pageTitle, pageContents, editToken)
+                        if editResult['edit']['result'] == 'Success':
+                            logging.info('Creation of page %s succeeded' % pageTitle)
+                        else:
+                            logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+            elif len(langs) == 1:
+                dixLocs = getDixLocs(pair, 'dix')
+                lexcLocs = getDixLocs(pair, 'lexc')
+                logging.debug('Acquired dictionary locations %s, %s' % (dixLocs, lexcLocs))
+
+                if len(dixLocs) > 0 or len(lexcLocs) > 0:
+                    dixCounts = {}
+                    for dixLoc in dixLocs:
+                        counts = getCounts(dixLoc, 'monodix')
+                        for countType, count in counts.items():
+                            dixCounts[countType] = count
+                    for lexcLoc in lexcLocs:
+                        counts = getCounts(lexcLoc, 'lexc')
+                        for countType, count in counts.items():
+                            dixCounts[countType] = count
+                    logging.info('Acquired dictionary counts %s' % dixCounts)
+
+                    pageContents = getPage(pageTitle)
+                    if pageContents:
+                        statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                        if statsSection:
+                            matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                            replacements = {}
+                            for matchAttempt in matchAttempts:
+                                countName = matchAttempt.group(2).strip()
+                                if countName in dixCounts:
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                                    replacements[(matchAttempt.group(1))] = replacement
+                                    del dixCounts[countName]
+                                    logging.debug('Replaced count %s' % repr(countName))
+                            for old, new in replacements.items():
+                                pageContents = pageContents.replace(old, new)
+
+                            newStats = ''
+                            for dixName, dixCount in dixCounts.items():
+                                newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
+                                logging.debug('Adding new count %s' % repr(dixName))
+                            newStats += '\n'
+
+                            contentBeforeIndex = statsSection.start()
+                            contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+                            pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                        else:
+                            pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
+                            logging.debug('Adding new stats section')
+
+                        editResult = editPage(pageTitle, pageContents, editToken)
+                        if editResult['edit']['result'] == 'Success':
+                            logging.info('Update of page %s succeeded' % pageTitle)
+                        else:
+                            logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
-                else:
-                    pageContents = createStatsSection(dixCounts, SVNRevision)
+                        pageContents = createStatsSection(dixCounts, SVNRevision)
 
-                    editResult = editPage(pageTitle, pageContents, editToken)
-                    if editResult['edit']['result'] == 'Success':
-                        logging.info('Creation of page %s succeeded' % pageTitle)
-                    else:
-                        logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
-        elif len(langs) == 1:
-            dixLocs = getDixLocs(pair, 'dix')
-            lexcLocs = getDixLocs(pair, 'lexc')
-            logging.debug('Acquired dictionary locations %s, %s' % (dixLocs, lexcLocs))
-
-            if len(dixLocs) > 0 or len(lexcLocs) > 0:
-                dixCounts = {}
-                for dixLoc in dixLocs:
-                    counts = getCounts(dixLoc, 'monodix')
-                    for countType, count in counts.items():
-                        dixCounts[countType] = count
-                for lexcLoc in lexcLocs:
-                    counts = getCounts(lexcLoc, 'lexc')
-                    for countType, count in counts.items():
-                        dixCounts[countType] = count
-                logging.info('Acquired dictionary counts %s' % dixCounts)
-
-                pageContents = getPage(pageTitle)
-                if pageContents:
-                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
-                    if statsSection:
-                        matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                        replacements = {}
-                        for matchAttempt in matchAttempts:
-                            countName = matchAttempt.group(2).strip()
-                            if countName in dixCounts:
-                                replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
-                                replacements[(matchAttempt.group(1))] = replacement
-                                del dixCounts[countName]
-                                logging.debug('Replaced count %s' % repr(countName))
-                        for old, new in replacements.items():
-                            pageContents = pageContents.replace(old, new)
-
-                        newStats = ''
-                        for dixName, dixCount in dixCounts.items():
-                            newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
-                            logging.debug('Adding new count %s' % repr(dixName))
-                        newStats += '\n'
-
-                        contentBeforeIndex = statsSection.start()
-                        contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
-                        pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
-                    else:
-                        pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
-                        logging.debug('Adding new stats section')
-
-                    editResult = editPage(pageTitle, pageContents, editToken)
-                    if editResult['edit']['result'] == 'Success':
-                        logging.info('Update of page %s succeeded' % pageTitle)
-                    else:
-                        logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
-                else:
-                    pageContents = createStatsSection(dixCounts, SVNRevision)
-
-                    editResult = editPage(pageTitle, pageContents, editToken)
-                    if editResult['edit']['result'] == 'Success':
-                        logging.info('Creation of page %s succeeded' % pageTitle)
-                    else:
-                        logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
-        else:
-            logging.error('Invalid language module name: %s' % pair)
-
+                        editResult = editPage(pageTitle, pageContents, editToken)
+                        if editResult['edit']['result'] == 'Success':
+                            logging.info('Creation of page %s succeeded' % pageTitle)
+                        else:
+                            logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+            else:
+                logging.error('Invalid language module name: %s' % pair)
+    elif args.action == 'coverage':
+       raise NotImplementedError
