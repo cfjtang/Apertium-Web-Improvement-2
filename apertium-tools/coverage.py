@@ -29,7 +29,10 @@ def getFile(corpusUri):
 
     return corpusPath
 
-def getCoverage(fileType, corpusPath):
+def tokenize(corpusPath):
+    corpusType = getFileType(corpusPath)
+    logger.info('Treating corpus as %s' % corpusType)
+
     catCommands = {
         'txt': 'cat',
         'gz': 'zcat',
@@ -37,44 +40,75 @@ def getCoverage(fileType, corpusPath):
         'zip': 'unzip -p'
     }
 
-    tempFile = tempfile.TemporaryFile()
+    tokenizedCorpus = tempfile.TemporaryFile()
 
-    p1 = subprocess.Popen([catCommands[fileType], corpusPath], stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(['apertium-destxt'], stdin=p1.stdout, stdout=subprocess.PIPE)
-    del p1
-    p3 = subprocess.Popen(['lt-proc', '-w', args.automorfPath], stdin=p2.stdout, stdout=subprocess.PIPE)
-    del p2
-    p4 = subprocess.Popen(['apertium-retxt'], stdin=p3.stdout, stdout=subprocess.PIPE)
-    del p3
-    subprocess.Popen(['sed', r's/\$\W*\^/$\n^/g'], stdin=p4.stdout, stdout=tempFile).communicate()
-    del p4
+    pipeline([
+        [catCommands[corpusType], corpusPath],
+        ['apertium-destxt'],
+        ['lt-proc', '-w', args.automorfPath],
+        ['apertium-retxt'],
+        ['sed', r's/\$\W*\^/$\n^/g']
+    ], tokenizedCorpus)
 
-    tempFile.seek(0)
-    total = int(subprocess.check_output(['wc', '-l'], stdin=tempFile))
+    return tokenizedCorpus
 
-    tempFile.seek(0)
-    p1 = subprocess.Popen(['grep', '-v', '*'], stdout=subprocess.PIPE, stdin=tempFile)
-    known = int(subprocess.check_output(['wc', '-l'], stdin=p1.stdout))
+def getTotal(tokenizedCorpus):
+    tokenizedCorpus.seek(0)
+    return int(subprocess.check_output(['wc', '-l'], stdin=tokenizedCorpus))
 
-    tempFile.close()
+def getKnown(tokenizedCorpus):
+    tokenizedCorpus.seek(0)
+    p1 = subprocess.Popen(['grep', '-v', '*'], stdout=subprocess.PIPE, stdin=tokenizedCorpus)
+    return int(subprocess.check_output(['wc', '-l'], stdin=p1.stdout))
 
-    return known, total
+def getTopUnknown(tokenizedCorpus, numUnknown):
+    tokenizedCorpus.seek(0) 
+    unknownTokens = pipeline([
+        ['grep', '*'],
+        ['sort', '-f'],
+        ['uniq', '-c'],
+        ['sort', '-gr'],
+        ['head', '-%s' % numUnknown]
+    ], subprocess.PIPE, procIn=tokenizedCorpus)[0]
+
+    return list(map(lambda x: x.decode('utf-8', errors='ignore').strip(), unknownTokens.splitlines()))
+
+
+def getStats(corpusPath, numUnknown):
+    tokenizedCorpus = tokenize(corpusPath)
+    known, total, unknownTokens = getKnown(tokenizedCorpus), getTotal(tokenizedCorpus), getTopUnknown(tokenizedCorpus, numUnknown)
+    tokenizedCorpus.close()
+    return known, total, unknownTokens
+
+def pipeline(commands, procOut, procIn=None):
+    proc = None
+    for n, command in enumerate(commands):
+        lastCommand = n == len(commands) - 1
+        stdin = proc.stdout if proc is not None else procIn
+        stdout = subprocess.PIPE if not lastCommand else procOut
+        logging.debug('Running %s with stdin=%s, stdout=%s' % (command, stdin, stdout))
+        proc = subprocess.Popen(command, stdin=stdin, stdout=stdout)
+        if lastCommand:
+            return proc.communicate()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Determine coverage of a transducer on a corpus')
     parser.add_argument('automorfPath', help='path to automorf binary')
     parser.add_argument('corpusUri', help='corpus uri')
+    parser.add_argument('-n', '--numUnknown', default=10, type=int, help='number of top unknown tokens to show')
+    parser.add_argument('-v', '--verbose', action='store_true', default=False, help='verbose mode')
     args = parser.parse_args()
 
     logger = logging.getLogger("coverage")
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=(logging.DEBUG if args.verbose else logging.INFO))
 
     corpusPath = getFile(args.corpusUri)
-    fileType = getFileType(corpusPath)
-    logger.info('Treating corpus as %s' % fileType)
-    known, total = getCoverage(fileType, corpusPath)
+    known, total, unknownTokens = getStats(corpusPath, args.numUnknown)
 
     print('Total: %s' % total)
     print('Known: %s' % known)
     print('Coverage: %.10f%%' % float(known / total * 100.0))
+    print('Top %s unknown tokens:' % args.numUnknown)
+    for token in unknownTokens:
+        print('\t%s' % token)
 
