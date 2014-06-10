@@ -69,18 +69,22 @@ for lang in langs:
 			else:
 				bad_lines.append(line)
 
-			print("%s: %d/%d\r" % (lang, count, len(select_lines))),
-
 		coverage = float(count)/len(select_lines)
 		config['coverage'][lang] = coverage
 
 		print("%s: %d/%d %f" % (lang, count, len(select_lines), coverage))
-		if count == 0:
-			print("\tCLD2 does not support %s." % lang)
-		else:
+		if len(bad_lines) > 0 and not count == 0:
 			lines = random.sample(bad_lines, 20)
 			for line in lines:
 				print("\t%s" % line.strip())
+		if coverage > 0.8:
+			print("** HIGH ACCURACY")
+		elif coverage > 0.5:
+			print("** MEDIUM ACCURACY")
+		elif coverage == 0.0:
+			print("** NOT SUPPORTED")
+		else:
+			print("** LOW ACCURACY")
 		print("")
 
 		with open(args.config, 'w') as yaml_file:
