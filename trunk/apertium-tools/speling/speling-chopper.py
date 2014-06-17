@@ -1,6 +1,26 @@
 import sys, re;
 
+#
+# The general algorithm is:
+#   
+# For each set of contiguous lines in the input where the lemma is the same:
+#     Make a new paradigm, and then linearise that paradigm 
+#     If the linearised paradigm does not exist in the hash:
+#       Add the linearised paradigm to the hash
+#     Add the lemma to the paradigm in the hash
+#         
+# For each of the paradigms in the hash: 
+#     Print out the paradigm
+# 
+# For each of the paradigms in the hash:
+#     For each of the entries attached to that paradigm:
+#         Print out the entry with its corresponding paradigm
+#
+
+
 def find_longest_common_substring(lemma, flexion): #{
+# IN: 'wolf', 'wolves'
+
 	candidate = '';
 	length = len(lemma);
 	for char in lemma: #{
@@ -12,21 +32,26 @@ def find_longest_common_substring(lemma, flexion): #{
 	#}
 	#print >> sys.stderr , 'cand: ' , candidate
 	return candidate;
+
+# OUT: 'wol'
 #}
 
 def linearise_paradigm(p): #{
 # IN: [('pl.dat': 'ам'), ('pl.ins': 'ами'), ('pl.acc', 'а'), ('pl.gen', 'ов'), ('pl.nom', 'а'), ('pl.prp', 'ах')]
+
 	out = '';
 	for e in p: #{
 
 		out = out + e[0] + '=' + e[1] + ':'
 	#}
 	return out.strip(':');
+
 # OUT:  pl.acc=а:pl.dat=ам:pl.gen=ов:pl.ins=ами:pl.nom=а:pl.prp=ах
 #}
 
 def delinearise_paradigm(p): #{
 # IN:  pl.acc=а:pl.dat=ам:pl.gen=ов:pl.ins=ами:pl.nom=а:pl.prp=ах
+
 	out = {};
 	for e in p.split(':'): #{
 		row = e.split('=');
@@ -37,12 +62,12 @@ def delinearise_paradigm(p): #{
 		out[row[0]].append(row[1]);
 	#}	
 	return out;
+
 # OUT: {'pl.dat': ['ам'], 'pl.ins': ['ами'], 'pl.acc': ['а'], 'pl.gen': ['ов'], 'pl.nom': ['а'], 'pl.prp': ['ах']}
 #}
 
 firstLine = True;
 paradigms = {}; # keyed on contents
-lexicon = {}; # keyed on paradigm
 forms = {}; # temporary
 
 lema = '';
@@ -117,13 +142,22 @@ for line in sys.stdin.readlines(): #{
 	sys.stderr.flush();
 #}
 
+# This defines the order that you want the entries to be printed in. It will
+# be dependent on the part-of-speech class you are making the paradigms + entries for. 
+# It should be exhaustive, if a form is not found it is not printed out. 
+
 order = ['sg.nom', 'sg.gen', 'sg.dat', 'sg.acc', 'sg.ins', 'sg.ins.fac', 'sg.prp', 'sg.loc', 'sg.loc2', 'sg.par', 
 	'pl.nom', 'pl.gen', 'pl.dat', 'pl.acc', 'pl.ins', 'pl.prp', 'pl.loc', 'pl.loc2', 'pl.par'];
 
-names = {};
+names = {}; # Maps paradigm signatures to the names we have chosen
 
-count_paradigms = 0;
-count_entries = 0;
+count_paradigms = 0; # Counter for number of paradigms 
+count_entries = 0; # Counter for number of entries
+
+print('<dictionary>');
+print('<alphabet></alphabet>');
+
+print('<pardefs>');
 
 for pardef in paradigms: #{
 
