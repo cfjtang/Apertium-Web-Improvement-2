@@ -13,6 +13,15 @@
       <cat-item tags="post.subst.*"/>
     </def-cat>
 
+    <def-cat n="prn">
+      <cat-item tags="prn.*"/>
+    </def-cat>
+
+    <def-cat n="pron.pers-ref">
+      <cat-item tags="prn.pers.*"/>
+      <cat-item tags="prn.ref.*"/>
+    </def-cat>
+
     <def-cat n="attribute">
       <cat-item tags="adj"/>
       <cat-item tags="n.attr"/>
@@ -52,6 +61,27 @@
       <attr-item tags="post.subst"/>
     </def-attr>
 
+    <def-attr n="a_pron">
+      <attr-item tags="prn.pers"/>
+      <attr-item tags="prn.ref"/>
+      <attr-item tags="prn.recip"/>
+      <attr-item tags="prn.dem"/>
+      <attr-item tags="prn.dem.qnt"/>   <!-- e.g. "мұнша". No inflection, no other tags -->
+      <attr-item tags="prn.dem.reas.abl"/>   <!-- "сондықтан" and "осындықтан". No inflection, no further tags -->
+      <attr-item tags="prn.ind"/>
+      <attr-item tags="prn.itg"/>
+      <!-- қашан(prn.itg) is translated with неше(num.itg.subst). The former is
+      matched by rule 4, so we need num.itg.subst tag here -->
+      <attr-item tags="num.itg.subst"/>
+      <attr-item tags="prn.qnt"/>
+      <attr-item tags="prn.neg"/>
+    </def-attr>
+
+    <def-attr n="a_pron-pers_ref">
+      <attr-item tags="prn.pers"/>
+      <attr-item tags="prn.ref"/>
+    </def-attr>
+
     <def-attr n="a_attribute">
       <attr-item tags="adj"/>
       <attr-item tags="n.attr"/>
@@ -61,6 +91,10 @@
       <attr-item tags="v"/>
       <attr-item tags="vaux"/>
       <attr-item tags="cop"/>
+    </def-attr>
+
+    <def-attr n="a_adv">
+      <attr-item tags="adv"/>
     </def-attr>
 
     <def-attr n="a_gen">
@@ -159,6 +193,10 @@
       <attr-item tags="p2"/>
       <attr-item tags="p3"/>
       <attr-item tags="p2.frm"/>
+    </def-attr>
+
+    <def-attr n="a_frm">
+      <attr-item tags="frm"/>
     </def-attr>
 
     <def-attr n="a_numtype">
@@ -330,7 +368,6 @@
 
   <section-rules>
 
-
     <rule comment="REGLA: n.attr is translated with an adjective">
       <pattern>
         <pattern-item n="attribute"/>
@@ -344,7 +381,6 @@
         </out>
       </action>
     </rule>
-
       
     <rule comment="REGLA: ; nouns and quasi-nouns">
       <pattern>
@@ -361,10 +397,63 @@
             <clip pos="1" side="tl" part="a_gen"/>
             <clip pos="1" side="tl" part="a_nbr"/>
             <clip pos="1" side="tl" part="a_poss"/>
+            <clip pos="1" side="tl" part="a_frm"/>
             <clip pos="1" side="tl" part="a_genposs"/>
             <var n="case"/>
             <clip pos="1" side="tl" part="lemq"/>
           </lu>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: personal and reflexive pronouns">
+      <!-- They have frm tag after person and number tags, and they don't take
+      possessive suffixes and e.g. px2pl.frm tag. Handled with a separate rule
+      because having them in REGLA:pronouns leads to incorrect sequences like:
+      prn.itg.frm.px2sg.frm /IS/ -->
+      <pattern>
+        <pattern-item n="pron.pers-ref"/>
+      </pattern>
+      <action>
+        <call-macro n="case2">   <!-- take care of loc.subst thing -->
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lem"/>
+            <clip pos="1" side="tl" part="a_pron-pers_ref"/>
+            <clip pos="1" side="tl" part="a_pers"/>
+            <clip pos="1" side="tl" part="a_nbr"/>
+            <clip pos="1" side="tl" part="a_frm"/>
+            <clip pos="1" side="tl" part="a_adv"/>
+            <clip pos="1" side="tl" part="a_genposs"/>
+            <var n="case"/>
+          </lu>
+          <var n="postposition"/>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: PRN">
+      <pattern>
+        <pattern-item n="prn"/>
+      </pattern>
+      <action>
+        <call-macro n="case2">   <!-- take care of loc.subst thing -->
+          <with-param pos="1"/>
+        </call-macro>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="lem"/>
+            <clip pos="1" side="tl" part="a_pron"/>
+            <clip pos="1" side="tl" part="a_nbr"/>
+            <clip pos="1" side="tl" part="a_adv"/>
+            <clip pos="1" side="tl" part="a_poss"/>
+            <clip pos="1" side="tl" part="a_frm"/>
+            <clip pos="1" side="tl" part="a_genposs"/>
+            <var n="case"/>
+          </lu>
+          <var n="postposition"/>
         </out>
       </action>
     </rule>
