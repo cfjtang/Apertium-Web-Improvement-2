@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, subprocess, logging, urllib.request, tempfile
+import argparse, subprocess, logging, urllib.request, tempfile, collections, sys
 
 def getFileType(filePath):
     magicNumbers = {
@@ -62,17 +62,9 @@ def getKnown(tokenizedCorpus):
     return int(subprocess.check_output(['wc', '-l'], stdin=p1.stdout))
 
 def getTopUnknown(tokenizedCorpus, numUnknown):
-    tokenizedCorpus.seek(0) 
-    unknownTokens = pipeline([
-        ['grep', '*'],
-        ['sort', '-f'],
-        ['uniq', '-c'],
-        ['sort', '-gr'],
-        ['head', '-%s' % numUnknown]
-    ], subprocess.PIPE, procIn=tokenizedCorpus)[0]
-
-    return list(map(lambda x: x.decode('utf-8', errors='ignore').strip(), unknownTokens.splitlines()))
-
+    tokenizedCorpus.seek(0)
+    unknownTokens = collections.Counter(filter(lambda x: b'*' in x, tokenizedCorpus))
+    return unknownTokens.most_common(numUnknown)
 
 def getStats(corpusPath, numUnknown):
     tokenizedCorpus = tokenize(corpusPath)
@@ -109,6 +101,5 @@ if __name__ == '__main__':
     print('Known: %s' % known)
     print('Coverage: %.10f%%' % float(known / total * 100.0))
     print('Top %s unknown tokens:' % args.numUnknown)
-    for token in unknownTokens:
-        print('\t%s' % token)
-
+    for token, count in unknownTokens:
+        print('%s\t%s' % (count, token.decode('utf-8', errors='ignore').strip()))
