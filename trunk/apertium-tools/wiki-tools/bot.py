@@ -4,7 +4,7 @@ baseURL = 'http://wiki.apertium.org/w/api.php'
 svnURL = 'https://svn.code.sf.net/p/apertium/svn/'
 lexccounterURL = svnURL + 'trunk/apertium-tools/lexccounter.py'
 
-import argparse, requests, json, logging, sys, re, os, subprocess, shutil, importlib, urllib.request
+import argparse, requests, json, logging, sys, re, os, subprocess, shutil, importlib, urllib.request, collections
 import xml.etree.ElementTree as etree
 try:
     from lexccounter import countStems
@@ -44,7 +44,7 @@ def getDixLocs(pair, dixFormat):
         try:
             URL = svnURL + location + '/apertium-' + pair
             svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
-            return [URL + '/' + dixName for dixName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?%s)</name>' % dixFormat, svnData, re.DOTALL)]
+            return [URL + '/' + dixName for dixName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % dixFormat, svnData, re.DOTALL)]
         except subprocess.CalledProcessError:
             pass
     logging.error('No dix found for %s' % pair)
@@ -210,17 +210,18 @@ if __name__ == '__main__':
                         else:
                             logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
             elif len(langs) == 1:
-                dixLocs = getDixLocs(pair, 'dix')
-                lexcLocs = getDixLocs(pair, 'lexc')
-                logging.debug('Acquired dictionary locations %s, %s' % (dixLocs, lexcLocs))
+                dixLoc = next(iter(sorted(sorted(getDixLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
+                lexcLoc = next(iter(getDixLocs(pair, 'lexc')), None)
 
-                if len(dixLocs) > 0 or len(lexcLocs) > 0:
+                if dixLoc or lexcLoc:
+                    logging.debug('Acquired dictionary locations %s, %s' % (dixLoc, lexcLoc))
+
                     dixCounts = {}
-                    for dixLoc in dixLocs:
+                    if dixLoc and not lexcLoc:
                         counts = getCounts(dixLoc, 'monodix')
                         for countType, count in counts.items():
                             dixCounts[countType] = count
-                    for lexcLoc in lexcLocs:
+                    if lexcLoc:
                         counts = getCounts(lexcLoc, 'lexc')
                         for countType, count in counts.items():
                             dixCounts[countType] = count
