@@ -213,14 +213,14 @@ Entering dix-mode calls the hook dix-mode-hook.
 ;;;
 
 (defmacro dix-with-sexp (&rest body)
-  "Execute `body' with `nxml-sexp-element-flag' set to true."
+  "Execute `BODY' with `nxml-sexp-element-flag' set to true."
   `(let ((old-sexp-element-flag nxml-sexp-element-flag))
      (setq nxml-sexp-element-flag t)
      (let ((ret ,@body))
        (setq nxml-sexp-element-flag old-sexp-element-flag)
        ret)))
 (defmacro dix-with-no-case-fold (&rest body)
-  "Execute `body' with `case-fold-search' set to nil."
+  "Execute `BODY' with `case-fold-search' set to nil."
   `(let ((old-case-fold-search case-fold-search))
      (setq case-fold-search nil)
      ,@body
@@ -235,8 +235,7 @@ huge). Decrease the number if operations ending in \"No parent
 element\" take too long.")
 
 (defun dix-backward-up-element (&optional arg bound)
-  "Modified from `nxml-backward-up-element' to include optional
-arg `bound'"
+  "Modified from `nxml-backward-up-element' to include optional argument `BOUND'."
   (interactive "p")
   (or arg (setq arg 1))
   (if (< arg 0)
@@ -267,8 +266,8 @@ arg `bound'"
        (apply 'error (cddr err))))))
 
 (defun dix-up-to (eltname &optional barrier)
-  "Move point to start of element `eltname' (a string, eg. \"e\")
-which we're looking at. Optional `barrier' is the outer element,
+  "Move point to start of element `ELTNAME' (a string, eg. \"e\")
+which we're looking at. Optional `BARRIER' is the outer element,
 so we don't go all the way through the file looking for our
 element (ultimately constrained by the variable
 `dix-parse-bound').  Ideally `dix-backward-up-element' should
@@ -291,6 +290,8 @@ stop on finding another `eltname' element."
 	(error "Didn't find %s" eltname))))
 
 (defun dix-pardef-at-point (&optional clean)
+  "Give the name of the pardef we're in.
+Optional argument CLEAN removes trailing __n and such."
   (save-excursion
     (dix-up-to "pardef" "pardefs")
     (re-search-forward "n=\"" nil t)
@@ -332,8 +333,8 @@ wrong roots)."
 		(match-string-no-properties 1)))))))
 
 (defun dix-get-attrib (attributes name)
-  "Find attribute with attribute name `name' (a string) in the
-list `attributes' of the same format as
+  "Find attribute with attribute name `NAME' (a string) in the
+list `ATTRIBUTES' of the same format as
 `xmltok-attributes'. Return nil if no such attribute is found."
   (if attributes
       (if (equal name (buffer-substring-no-properties
@@ -343,8 +344,8 @@ list `attributes' of the same format as
 	(dix-get-attrib (cdr attributes) name))))
 
 (defun dix-attrib-start (attributes name)
-  "Return start position of attribute by `name' only if it exists.
-`attributes' is of the format of `xmltok-attributes'."
+  "Return start position of attribute by `NAME' only if it exists.
+`ATTRIBUTES' is of the format of `xmltok-attributes'."
   (let ((attrib (dix-get-attrib attributes name)))
     (when attrib (xmltok-attribute-value-start attrib))))
 
@@ -657,6 +658,8 @@ into the beginning of the lm and <i>."
   (yank))
 
 (defun dix-increase-sense (&optional dir)
+  "Increase the number in the (deprecated) slr attribute.
+If given, optional argument `DIR' increases srl instead."
   (interactive)
   (let ((dir (or dir "slr")))
     (save-excursion
@@ -694,8 +697,8 @@ into the beginning of the lm and <i>."
     (cons (point) (nxml-scan-element-forward (point)))))
 
 (defun dix-sense-swap ()
-  "Swap this translation with the above. If this <e> has an slr,
-swap the <r>'s, if this <e> has an srl, swap the <l>'s.
+  "Swap this translation with the above.
+If this <e> has an slr, swap the <r>'s, if this <e> has an srl, swap the <l>'s.
 
 When using, make sure point is at an entry marked slr/srl, and
 the above <e> is part of the same sense group."
@@ -1645,7 +1648,7 @@ on a previously narrowed buffer (the default behaviour for
       (insert region)))
   (re-search-forward "\\S "))
 
-(defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'"
+(defcustom dix-dixfiles "*.dix dev/*dix" "String of dictionary files to grep with `dix-grep-all'."
   :type 'string
   :group 'dix)
 
@@ -1656,23 +1659,23 @@ by the (customizable) string `dix-dixfiles'"
   (grep (concat "grep -nH -e 'par n=\"" (dix-pardef-at-point) "\"' " dix-dixfiles)))
 
 ;;; Alignment ----------------------------------------------------------------
-(defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'"
+(defcustom dix-rp-align-column 28 "Column to align pardef <r> elements to with `align'."
   :type 'integer
   :group 'dix)
-(defcustom dix-rb-align-column 44 "Column to align bidix <r> elements to with `align'"
+(defcustom dix-rb-align-column 44 "Column to align bidix <r> elements to with `align'."
   :type 'integer
   :group 'dix)
-(defcustom dix-i-align-column 25 "Column to align <i> elements to with `align'"
+(defcustom dix-i-align-column 25 "Column to align <i> elements to with `align'."
   :type 'integer
   :group 'dix)
 (defcustom dix-ep-align-column 2 "Column to align pardef <e> elements to with `align'.
 Not yet implemented, only used by `dix-LR-restriction-copy'."
   :type 'integer
   :group 'dix)
-(defcustom dix-pp-align-column 12 "Column to align pardef <p> elements to with `align'"
+(defcustom dix-pp-align-column 12 "Column to align pardef <p> elements to with `align'."
   :type 'integer
   :group 'dix)
-(defcustom dix-pb-align-column 10 "Column to align bidix <p> elements to with `align'"
+(defcustom dix-pb-align-column 10 "Column to align bidix <p> elements to with `align'."
   :type 'integer
   :group 'dix)
 
