@@ -620,19 +620,17 @@ attribute and <i> or <p> elements."
   ;; todo: find the first one of these: list-item, e, def-var, sdef, attr-item, cat-item, clip, pattern-item,
   (dix-up-to "e" "pardef")
   (let ((beg (or (re-search-backward "^[\t ]*" (line-beginning-position) 'noerror) (point)))
-	(end (1+ (save-excursion
-		   (goto-char (nxml-scan-element-forward (point)))
-		   (or (re-search-forward "[\t ]*$" (line-end-position) 'noerror) (point))))))
-    (goto-char end)
-    (insert (buffer-substring-no-properties beg end))
+	(origend (1+ (save-excursion
+		       (goto-char (nxml-scan-element-forward (point)))
+		       (or (re-search-forward "[\t ]*$" (line-end-position) 'noerror) (point))))))
+    (goto-char origend)
+    (insert (buffer-substring-no-properties beg origend))
     (let ((copyend (point)))
-      (goto-char end)
-      (when (save-excursion (search-forward "</pardef>" nil 'noerror 1))
-	(indent-to dix-ep-align-column))
       (when remove-lex
 	(save-excursion
+	  (goto-char origend)
 	  (save-restriction
-	    (narrow-to-region end copyend)
+	    (narrow-to-region origend copyend)
 	    (while (re-search-forward "lm=\\\"[^\\\"]*\\\"" nil 'noerror 1)
 	      (replace-match "lm=\"\""))
 	    (goto-char (point-min))
@@ -640,7 +638,11 @@ attribute and <i> or <p> elements."
 	      (replace-match "<i></i>"))
 	    (goto-char (point-min))
 	    (while (re-search-forward "<p>.*</p>" nil 'noerror 1)
-	      (replace-match "<p><l></l><r></r></p>"))))))))
+	      (replace-match "<p><l></l><r></r></p>")))))
+      ;; Put point at next useful spot, but don't move past this element:
+      (goto-char origend)
+      (dix-next)
+      (if (> (point) copyend) (goto-char origend)))))
 
 
 
