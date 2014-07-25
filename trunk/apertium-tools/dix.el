@@ -1,9 +1,9 @@
 ;;; dix.el --- minor mode for editing Apertium XML dictionary files
 
-;; Copyright (C) 2009-2012 Kevin Brubeck Unhammer
+;; Copyright (C) 2009-2014 Kevin Brubeck Unhammer
 
 ;; Author: Kevin Brubeck Unhammer <unhammer@fsfe.org>
-;; Version: 0.1.1
+;; Version: 0.1.2
 ;; Url: http://wiki.apertium.org/wiki/Emacs
 ;; Keywords: languages
 
@@ -99,7 +99,7 @@
 
 ;;; Code:
 
-(defconst dix-version "0.1.1")
+(defconst dix-version "0.1.2")
 
 (require 'nxml-mode)
 (require 'cl)
@@ -135,7 +135,19 @@ Entering dix-mode calls the hook dix-mode-hook.
   :lighter    " dix"
   :keymap     dix-mode-map
   :require    nxml-mode
-  )
+
+  (dix-maybe-yas-activate))
+
+(defun dix-maybe-yas-activate ()
+  (when (fboundp 'yas-activate-extra-mode)
+    (yas-activate-extra-mode 'dix-mode)))
+
+;;; In case yasnippet is lazy-loaded after dix-mode, ensure dix-mode
+;;; snippets are used:
+(eval-after-load 'yasnippet
+  '(mapc (lambda (buf)
+	   (when dix-mode (dix-maybe-yas-activate)))
+	 (buffer-list)))
 
 
 ;;;============================================================================
@@ -234,6 +246,11 @@ through in dix xml operations (since dix tend to get
 huge). Decrease the number if operations ending in \"No parent
 element\" take too long.")
 
+(put 'dix-bound-error 'error-conditions '(error dix-parse-error dix-bound-error))
+(put 'dix-bound-error 'error-message "Hit `dix-parse-bound' when parsing")
+(put 'dix-barrier-error 'error-conditions '(error dix-parse-error dix-barrier-error))
+(put 'dix-barrier-error 'error-message "Hit barrier when parsing")
+
 (defun dix-backward-up-element (&optional arg bound)
   "Modified from `nxml-backward-up-element' to include optional argument `BOUND'."
   (interactive "p")
@@ -259,7 +276,7 @@ element\" take too long.")
 			       t
 			       bound)
 			      xmltok-start)
-			     (t (error "No parent element")))))
+			     (t (signal 'dix-bound-error "No parent element")))))
 	  (setq arg (1- arg)))
       (nxml-scan-error
        (goto-char (cadr err))
@@ -271,7 +288,7 @@ which we're looking at. Optional `BARRIER' is the outer element,
 so we don't go all the way through the file looking for our
 element (ultimately constrained by the variable
 `dix-parse-bound').  Ideally `dix-backward-up-element' should
-stop on finding another `eltname' element."
+stop on finding another `ELTNAME' element."
   (nxml-token-after)
   (when (eq xmltok-type 'space)
     (goto-char (1+ (nxml-token-after)))
@@ -287,7 +304,36 @@ stop on finding another `eltname' element."
       (nxml-token-after)
       (setq tok (xmltok-start-tag-qname)))
     (if (equal tok barrier)
-	(error "Didn't find %s" eltname))))
+	(signal 'dix-barrier-error (format "Didn't find %s" eltname)))))
+
+(defun dix-enclosing-is-mono-section ()
+  "Heuristically answer if first enclosing element is <section>.
+A `dix-enclosing-elt' from outside an <e> in a <section> will
+often hit `dix-parse-bound', in which case we just search back
+for some hints."
+  (let ((elt (dix-enclosing-elt 'noerror)))
+    (or (and elt (equal elt "section"))
+	(save-excursion
+	  (and (re-search-backward " lm=\"\\|<pardef\\|</section>" nil 'noerror)
+	       (equal " lm=\"" (match-string 0)))))))
+
+(defun dix-enclosing-elt-helper (bound)
+  (dix-backward-up-element 2 bound)
+  (nxml-token-after)
+  (xmltok-start-tag-qname))
+
+(defun dix-enclosing-elt (&optional noerror)
+  "Return name of element surrounding the one we're in.
+Optional argument `NOERROR' will make parse bound errors return
+nil."
+  (let ((bound (max (point-min)
+		    (- (point) dix-parse-bound))))
+    (save-excursion
+      (if noerror
+	  (condition-case nil
+	      (dix-enclosing-elt-helper bound)
+	    (dix-bound-error nil))
+	(dix-enclosing-elt-helper bound)))))
 
 (defun dix-pardef-at-point (&optional clean)
   "Give the name of the pardef we're in.
@@ -307,15 +353,43 @@ Optional argument CLEAN removes trailing __n and such."
       (word-at-point) ;; bidix
     (save-excursion   ;; monodix
       (dix-up-to "e" "section")
-      (re-search-forward "lm=\"" nil t)
-      (word-at-point))))
+      (re-search-forward "lm=\"\\([^\"]*\\)" nil t)
+      (match-string-no-properties 1))))
 
-(defun dix-pardef-type-of-e ()
+(defun dix-yas-prev-lemma ()
+  (let ((default "lemma"))
+    (condition-case nil
+	(save-excursion
+	  (dix-up-to "e" "section")
+	  (dix-with-sexp (backward-sexp))
+	  (let ((lm (dix-lemma-at-point)))
+	    (if (member lm '("" "${1:}"))
+		default
+	      lm)))
+      (dix-bound-error default))))
+
+(defun dix-yas-prev-par ()
+  (let ((default "lemma"))
+    (condition-case nil
+	(save-excursion
+	  (dix-up-to "e" "section")
+	  (dix-with-sexp (backward-sexp))
+	  (let ((lm (dix-par-at-point)))
+	    (if (member lm '("" "${0:}"))
+		default
+	      lm)))
+      (dix-bound-error default))))
+
+(defun dix-par-at-point ()
   (save-excursion
     (dix-up-to "e" "section")
-    (nxml-down-element 1)
-    (re-search-forward "n=[^_]*__\\([^\"]*\\)" nil t)
+    (re-search-forward "<par[^/>]*n=\"\\([^\"]*\\)" nil t)
     (match-string-no-properties 1)))
+
+(defun dix-pardef-type-of-e ()
+  (let ((par (dix-par-at-point)))
+    (when (string-match "[^_]*__\\([^\"]*\\)" par)
+      (match-string-no-properties 1 par))))
 
 (defun dix-split-root-suffix ()
   "Return a pair of the contents of <i> and the letters following
@@ -502,7 +576,7 @@ and `dix-get-pardefs'."
     (let (sufflist)
       (condition-case nil
 	  (progn (dix-up-to "pardef" "pardefs"))
-	(error (dix-goto-pardef)))
+	(dix-parse-error (dix-goto-pardef)))
       ;; find all suffixes within this pardef:
       (let ((end (save-excursion (dix-with-sexp (forward-sexp))
 				 (point))))
@@ -541,7 +615,7 @@ Returns the list of pardef names."
 	  (save-excursion
 	    (condition-case nil
 		(progn (dix-up-to "pardef" "pardefs"))
-	      (error (dix-goto-pardef)))
+	      (dix-parse-error (dix-goto-pardef)))
 	    (re-search-forward
 	     (concat "pardef[^n>]*n=\"[^\"]*__\\([^\"]*\\)" ) nil 'noerror)
 	    (match-string-no-properties 1)))
