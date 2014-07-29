@@ -138,17 +138,6 @@ Entering dix-mode calls the hook dix-mode-hook.
 
   (dix-maybe-yas-activate))
 
-(defun dix-maybe-yas-activate ()
-  (when (fboundp 'yas-activate-extra-mode)
-    (yas-activate-extra-mode 'dix-mode)))
-
-;;; In case yasnippet is lazy-loaded after dix-mode, ensure dix-mode
-;;; snippets are used:
-(eval-after-load 'yasnippet
-  '(mapc (lambda (buf)
-	   (when dix-mode (dix-maybe-yas-activate)))
-	 (buffer-list)))
-
 
 ;;;============================================================================
 ;;;
@@ -240,7 +229,7 @@ Entering dix-mode calls the hook dix-mode-hook.
 (put 'dix-with-sexp 'lisp-indent-function 0)
 (put 'dix-with-no-case-fold 'lisp-indent-function 0)
 
-(defvar dix-parse-bound 5000
+(defvar dix-parse-bound 10000
   "Relative bound; maximum amount of chars (not lines) to parse
 through in dix xml operations (since dix tend to get
 huge). Decrease the number if operations ending in \"No parent
@@ -307,7 +296,7 @@ stop on finding another `ELTNAME' element."
 	(signal 'dix-barrier-error (format "Didn't find %s" eltname)))))
 
 (defun dix-enclosing-is-mono-section ()
-  "Heuristically answer if first enclosing element is <section>.
+  "Heuristically answer if the element we're inside is (monolingual) <section>.
 A `dix-enclosing-elt' from outside an <e> in a <section> will
 often hit `dix-parse-bound', in which case we just search back
 for some hints."
@@ -318,12 +307,12 @@ for some hints."
 	       (equal " lm=\"" (match-string 0)))))))
 
 (defun dix-enclosing-elt-helper (bound)
-  (dix-backward-up-element 2 bound)
+  (dix-backward-up-element 1 bound)
   (nxml-token-after)
   (xmltok-start-tag-qname))
 
 (defun dix-enclosing-elt (&optional noerror)
-  "Return name of element surrounding the one we're in.
+  "Return name of element we're in.
 Optional argument `NOERROR' will make parse bound errors return
 nil."
   (let ((bound (max (point-min)
@@ -334,6 +323,7 @@ nil."
 	      (dix-enclosing-elt-helper bound)
 	    (dix-bound-error nil))
 	(dix-enclosing-elt-helper bound)))))
+
 
 (defun dix-pardef-at-point (&optional clean)
   "Give the name of the pardef we're in.
@@ -356,35 +346,56 @@ Optional argument CLEAN removes trailing __n and such."
       (re-search-forward "lm=\"\\([^\"]*\\)" nil t)
       (match-string-no-properties 1))))
 
-(defun dix-yas-prev-lemma ()
-  (let ((default "lemma"))
-    (condition-case nil
-	(save-excursion
-	  (dix-up-to "e" "section")
-	  (dix-with-sexp (backward-sexp))
-	  (let ((lm (dix-lemma-at-point)))
-	    (if (member lm '("" "${1:}"))
-		default
-	      lm)))
-      (dix-bound-error default))))
-
-(defun dix-yas-prev-par ()
-  (let ((default "lemma"))
-    (condition-case nil
-	(save-excursion
-	  (dix-up-to "e" "section")
-	  (dix-with-sexp (backward-sexp))
-	  (let ((lm (dix-par-at-point)))
-	    (if (member lm '("" "${0:}"))
-		default
-	      lm)))
-      (dix-bound-error default))))
-
 (defun dix-par-at-point ()
   (save-excursion
     (dix-up-to "e" "section")
     (re-search-forward "<par[^/>]*n=\"\\([^\"]*\\)" nil t)
     (match-string-no-properties 1)))
+
+
+(defun dix-pardef-suggest-at-point ()
+  "Return a list of pardef names for suggestions. 
+
+First we look in the context around point (up to
+`dix-parse-bound' in both directions), then append the full list
+from <pardefs>. Tries to be fast, so no actual XML parsing,
+meaning commented out pardefs may be suggested as well."
+  (save-restriction
+    (widen)
+    (let* ((par-rex "<par [^>]*n=['\"]\\([^'\"> ]+\\)")
+	   (pardef-rex "<pardef [^>]*n=['\"]\\([^'\"> ]+\\)")
+	   (pardefs-end (or (save-excursion
+			      (re-search-backward "</pardefs>" nil 'noerror))
+			    (point-min)))
+	   (bound-above (max pardefs-end
+			     (- (point) dix-parse-bound)))
+	   (bound-below (min (+ (point) dix-parse-bound)
+			     (point-max)))
+	   pdnames)
+      (save-excursion
+	(while (re-search-backward par-rex bound-above 'noerror)
+	  (add-to-list 'pdnames (match-string-no-properties 1))))
+      (save-excursion
+	(while (re-search-forward par-rex bound-below 'noerror)
+	  (add-to-list 'pdnames (match-string-no-properties 1))))
+      (save-excursion
+	(goto-char pardefs-end)
+	(while (re-search-backward pardef-rex nil 'noerror)
+	  (add-to-list 'pdnames (match-string-no-properties 1))))
+      (nreverse pdnames))))
+
+(defun dix-pardef-suggest-for (lemma)
+  "Return a list of pardef names to suggest for `LEMMA'.
+
+Names used near point are prioritised, and names marked for
+lemma-suffixes that don't match the suffix of the lemma (e.g.
+pardef \"foo/er__verb\" when the lemma is \"fooable\") are
+filtered out."
+  (cl-remove-if-not (lambda (par)
+			  (if (string-match "/\\([^_]+\\)_" par)
+			      (string-match (concat (match-string 1 par) "$") lemma)
+			    'no-slash-so-match-all))
+       (dix-pardef-suggest-at-point)))
 
 (defun dix-pardef-type-of-e ()
   (let ((par (dix-par-at-point)))
@@ -591,6 +602,105 @@ and `dix-get-pardefs'."
 	  (assoc-delete-all key (cdr alist))
 	(cons (car alist)
 	      (assoc-delete-all key (cdr alist))))))
+
+
+
+;;;============================================================================
+;;;
+;;; Yasnippet helpers
+;;;
+
+
+;;; Note, due to
+;;; https://github.com/AndreaCrotti/yasnippet-snippets/issues/41 you
+;;; should do (remhash 'nxml-mode yas--tables) after (yas-reload-all)
+
+(defun dix-maybe-yas-activate ()
+  (when (fboundp 'yas-activate-extra-mode)
+    (yas-activate-extra-mode 'dix-mode)))
+
+;;; In case yasnippet is lazy-loaded after dix-mode, ensure dix-mode
+;;; snippets are used:
+(eval-after-load 'yasnippet
+  '(mapc (lambda (buf)
+	   (when dix-mode (dix-maybe-yas-activate)))
+	 (buffer-list)))
+
+
+
+(defvar-local dix-yas-key-rex ""
+  "Used by `dix-yas-update-key-rex' for caching the regex-opt of
+  possible snippet keys.")
+(defvar-local dix-yas-key-rex-tables nil
+  "Used by `dix-yas-update-key-rex' for checking if we need to
+  update `dix-yas-key-rex'.")
+
+(defun dix-yas-update-key-rex ()
+  "Update `dix-yas-key-rex', used by `dix-yas-skip-backwards-to-key'."
+  (let ((tables (yas--get-snippet-tables)))
+    (unless (equal tables dix-yas-key-rex-tables)
+      ;; Only update key-rex if tables changed (but is this equal test slow?):
+      (setq dix-yas-key-rex-tables tables)
+      (setq dix-yas-key-rex
+	    (let (keys) (mapc
+			 (lambda (table) 
+			   (let* ((keyhash (yas--table-hash table)))
+			     (when keyhash
+			       (maphash (lambda (k v) (push k keys)) keyhash))))
+			 dix-yas-key-rex-tables)
+		 (concat (regexp-opt keys) "$"))))))
+
+(defun dix-yas-skip-backwards-to-key ()
+  "Skip backwards to the first possible yasnippet key. 
+
+This is meant to be used in `yas-key-syntaxes', since the
+defaults don't let you expand e.g. \"<s>\" without having
+whitespace before it. To use this function, put the following in
+your init file:
+
+    (eval-after-load 'yasnippet
+      '(add-to-list 'yas-key-syntaxes 'dix-yas-skip-backwards-to-key))
+
+Only has an effect in `dix-mode' so the above shouldn't change
+how yasnippet expansion works in other modes."
+  (when dix-mode
+    (dix-yas-update-key-rex)
+    (let* ((haystack (buffer-substring-no-properties (line-beginning-position) (point))))
+      (when (string-match dix-yas-key-rex haystack)
+	(goto-char (+ (line-beginning-position) (match-beginning 0)))))))
+
+
+
+(defun dix-yas-prev-lemma ()
+  (dix-yas-prev-thing "lemma" 'dix-lm-at-point))
+
+(defun dix-yas-prev-par ()
+  (dix-yas-prev-thing "lemma__POS" 'dix-par-at-point))
+
+(defun dix-yas-prev-thing (default thing-at-point-fn)
+  (condition-case nil
+      (save-excursion
+	(dix-up-to "e" "section")
+	(condition-case nil
+	    (progn
+	      (dix-with-sexp (backward-sexp))
+	      (let ((thing (funcall thing-at-point-fn)))
+		(if (string-match "^$\\|^\\$" thing)
+		    default
+		  thing)))
+	  (error default)))
+    (dix-parse-error default)))
+
+(defun dix-yas-message-pardef (pdname)
+  "Just show the full pardef of `PDNAME' at point in *Messages* buffer."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (dix-goto-pardef pdname)
+      (let* ((beg (point))
+	     (end (1+ (nxml-scan-element-forward beg))))
+	(message (buffer-substring-no-properties beg end)))))
+  pdname)
 
 ;;;============================================================================
 ;;;
@@ -1126,12 +1236,11 @@ also `dix-next'."
 	(setq pdname (match-string-no-properties 1)))
       pdname)))
 
-(defun dix-goto-pardef ()
+(defun dix-goto-pardef (&optional pdname)
   "Call from an entry to go to its pardef. Mark is pushed so you
 can go back with C-u \\[set-mark-command]."
   (interactive)
-  (let* ((start (point))
-	 (pdname (dix-nearest-pdname start))
+  (let* ((pdname (or pdname (dix-nearest-pdname (point))))
 	 (pos (save-excursion
 		(goto-char (point-min))
 		(when (re-search-forward
@@ -1151,13 +1260,14 @@ can go back with C-u \\[set-mark-command]."
       (message "Couldn't find pardef %s" pdname))))
 
 (defun dix-view-pardef ()
-  "Show pardef in other window. Unfortunately, I haven't found
-out how to have two different buffer restrictions going at once,
-the pardef is just inserted into a new buffer where you can
-eg. edit at will and then paste back. The nice thing is that for
-each call of this function, the pardef is added to the
-*dix-view-pardef* buffer, so you get a temp buffer where you can
-eg. collapse pardefs."
+  "Show pardef in other window. The pardef is just inserted into
+a new buffer where you can e.g. edit at will and then paste back.
+The nice thing is that for each call of this function, the pardef
+is added to the *dix-view-pardef* buffer, so you get a temp
+buffer where you can eg. collapse pardefs."
+  ;; TODO: would it be better to `clone-indirect-buffer-other-window'
+  ;; with a buffer restriction, so we could edit the pardef without
+  ;; having to copy-paste it back?
   (interactive)
   (save-excursion
     (save-restriction
