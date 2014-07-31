@@ -665,7 +665,7 @@ Only has an effect in `dix-mode' so the above shouldn't change
 how yasnippet expansion works in other modes."
   (when dix-mode
     (dix-yas-update-key-rex)
-    (let* ((haystack (buffer-substring-no-properties (line-beginning-position) (point))))
+    (let ((haystack (buffer-substring-no-properties (line-beginning-position) (point))))
       (when (string-match dix-yas-key-rex haystack)
 	(goto-char (+ (line-beginning-position) (match-beginning 0)))))))
 
@@ -701,6 +701,16 @@ how yasnippet expansion works in other modes."
 	     (end (1+ (nxml-scan-element-forward beg))))
 	(message (buffer-substring-no-properties beg end)))))
   pdname)
+
+(defun dix-yas-pdname-to-pos (string)
+  (if (numberp (string-match "__\\([^_]+\\)$" string))
+      (format "<s n=\"%s\"/>" (match-string 1 string))
+    ""))
+
+(defun dix-yas-pdname-to-suffix (string)
+  (if (numberp (string-match "/\\([^_]+\\)" string))
+      (match-string 1 string)
+    ""))
 
 ;;;============================================================================
 ;;;
