@@ -709,8 +709,24 @@ how yasnippet expansion works in other modes."
 
 (defun dix-yas-pdname-to-suffix (string)
   (if (numberp (string-match "/\\([^_]+\\)" string))
-      (match-string 1 string)
+      (match-string-no-properties 1 string)
     ""))
+
+(defun dix-yas-fix-suffix-w/pdname ()
+  (let* ((suffix (dix-yas-pdname-to-suffix yas-text))
+	 (suffix/i-rex (concat (regexp-quote suffix) "</i>")))
+    (when (re-search-backward suffix/i-rex (line-beginning-position) 'noerror)
+      (replace-match "</i>" 'fixedcase 'literal))))
+
+(defun dix-yas-choose-pdname ()
+  (when yas-moving-away-p
+    (dix-yas-fix-suffix-w/pdname))
+  (dix-yas-message-pardef
+   (yas-choose-value
+    (dix-pardef-suggest-for (dix-lemma-at-point)))))
+
+(defun dix-yas-lm-to-i ()
+  (replace-regexp-in-string " " "<b/>" yas-text))
 
 ;;;============================================================================
 ;;;
