@@ -672,7 +672,7 @@ how yasnippet expansion works in other modes."
 
 
 (defun dix-yas-prev-lemma ()
-  (dix-yas-prev-thing "lemma" 'dix-lm-at-point))
+  (dix-yas-prev-thing "lemma" 'dix-lemma-at-point))
 
 (defun dix-yas-prev-par ()
   (dix-yas-prev-thing "lemma__POS" 'dix-par-at-point))
