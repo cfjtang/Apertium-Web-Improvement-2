@@ -1,11 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -*- nxml -*- -->
+
 <rules>
+
+<!--
+SECTION: DEFAULT TRANSLATIONS
+=============================
+-->
+
   <rule>
-    <match lemma="эт"><select lemma="эт"/></match>
+    <!--
+    INPUT:  ^алып кит<v><tv><inf>/алып кет<v><tv><inf>/әкет<v><tv><inf>$
+    OUTPUT: ^алып кит<v><tv><inf>/алып кет<v><tv><inf>$
+    -->
+    <match lemma="алып кит" tags="v.*"><select lemma="алып кет"/></match>
   </rule>
+
   <rule>
     <match lemma="яхшы" tags="adj"><select lemma="жақсы"/></match>
   </rule>
+
   <rule>
     <match lemma="шул"><select lemma="сол"/></match>
   </rule>
+
 </rules>
