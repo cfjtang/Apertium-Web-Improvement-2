@@ -9,8 +9,12 @@ def preprocess(sentence):
 def assertion(condition, statement):
 	"""Checks condition and exits with NZ exit if it's not True."""
 	if not condition:
-		sys.stderr.write(statement+"\nexiting...")
+		sys.stderr.write(statement+"\n")
 		exit(1)
+
+def warning(condition, statement):
+	if not condition:
+		sys.stderr.write(statement+"\n")
 
 def is_subsegment(segment, sentence):
 	"""Checks for subsegments."""
@@ -23,7 +27,7 @@ def get_subsegment_locs(segment, sentence):
 	"""Returns locations of segment in sentence."""
 	seg, sen = segment.lower().split(), sentence.lower().split()
 	locs, a, b = [], 0, 0
-	while a < len(sen):
+	while a < len(sen) and b < len(seg):
 		if sen[a] == seg[b]:
 			b += 1
 		else:
@@ -33,6 +37,29 @@ def get_subsegment_locs(segment, sentence):
 			b = 0
 		a += 1
 	return locs
+
+def print_patch(patch, cover_all, verbose, show_traces):
+	"""prints patch based upon multiple parameters passed."""
+	if not patch:
+		return False
+	(patch, features, _, _, _, cam, traces) = patch
+	if cover_all and cam:
+		print(patch)
+		if verbose:
+			print(features)
+		if show_traces:
+			for trace in traces:
+				print("(s='"+trace[0]+"', t='"+trace[1]+"', s'='"+trace[2]+"')")
+		return True
+	elif not cover_all:
+		print(patch)
+		if verbose:
+			print(features)
+		if show_traces:
+			for trace in traces:
+				print("(s='"+trace[0]+"', t='"+trace[1]+"', s'='"+trace[2]+"')")
+		return True
+	return False
 
 def patch(t_app, tau, tau1, covered_pos):
 	print(t_app, tau, tau1)

@@ -6,7 +6,7 @@ from lib.patcher import Patcher
 from lib.utilities import assertion
 from lib.features import get_features
 from lib.phrase_extractor import PhraseExtractor
-from lib.utilities import preprocess, assertion, get_subsegment_locs, patch
+from lib.utilities import preprocess, assertion, get_subsegment_locs, patch, warning
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -16,9 +16,11 @@ parser.add_argument('out', help='Output file generated from test.py')
 
 parser.add_argument('LP', help='Language Pair (sl-tl)')
 
-parser.add_argument('-d', help='Specify the lanuguage-pair installation directory')
+parser.add_argument('-d', help='Specify the language-pair installation directory')
+parser.add_argument('-c', help='Specify the sqlite3 db to be used for caching', default='')
 parser.add_argument('-v', help='Verbose Mode', action='store_true')
 parser.add_argument('--mode', help="Modes('all', 'cam', 'compare')", default='all')
+parser.add_argument('--go', help='To patch only grounded mismatches', action='store_true')
 parser.add_argument('--min-fms', help='Minimum value of fuzzy match score of S and S1.', default='0.8')
 parser.add_argument('--min-len', help='Minimum length of sub-string allowed.', default='2')
 parser.add_argument('--max-len', help='Maximum length of sub-string allowed.', default='5')
@@ -35,16 +37,24 @@ assertion(os.path.isfile(args.out), args.out+" doesn't exist")
 #TODO:Check lines are equal in SLFs and TLFs.
 
 #Command line params
+cache = args.c
 lp_dir = args.d
 verbose = args.v
 mode = args.mode.lower()
 
 assertion(mode in ['all', 'cam', 'compare'], "Mode couldn't be identified.")
-
+grounded = args.go
 min_fms = float(args.min_fms)
 min_len = int(args.min_len)
 max_len = int(args.max_len) 
 
+warning(min_len > 1 & grounded, "min_len should be greater than 1")
+
+cache_db_file = None
+if cache != '':
+	cache_db_file = cache
+
+use_caching = True if cache_db_file else False
 
 apertium = Apertium(lps[0], lps[1])
 (out, err) = apertium.check_installations(lp_dir)
@@ -67,10 +77,10 @@ if mode == 'compare':
 count = 1
 
 while True:
-	s = file1.readline()
-	t = file1.readline()
-	s1 = file1.readline()
-	t1 = file1.readline()
+	s = file1.readline().rstrip()
+	t = file1.readline().rstrip()
+	s1 = file1.readline().rstrip()
+	t1 = file1.readline().rstrip()
 
 	if not (s and s1 and t and t1):
 		break
@@ -83,13 +93,23 @@ while True:
 
 	tgt_sentences = t1.lower()
 	
-	patches = Patcher(apertium, s, s1, t).patch(min_len, max_len)
+	patcher = Patcher(apertium, s, s1, t, use_caching, cache_db_file)
+	patches = patcher.patch(min_len, max_len, grounded, lp_dir)
+	best_patch = patcher.get_best_patch()
+	if best_patch:
+		patches.append(best_patch)
 
-	unpatched = patches[0]
+	all_patches = patches[:]
+	if not grounded:
+		unpatched = patches[0]
+		all_patches.pop(0)
+	else:
+		unpatched = (t1,)
+
 	up_wer = 1.0 - FMS(unpatched[0].lower(), tgt_sentences).calculate_using_wanger_fischer()
 	gl_up_wer.append(up_wer)
 
-	for (patch, features, _, _, _, cam, traces) in patches[0:]:
+	for (patch, features, _, _, _, cam, traces) in all_patches:
 		if mode == 'all':
 			fms = FMS(patch.lower(), tgt_sentences).calculate_using_wanger_fischer()
 			wer.append(1.0-fms)
@@ -136,15 +156,23 @@ if mode == 'compare':
 	print("Global Statistics(all):")
 else:
 	print("Global Statistics:")
-print("Average best patched WER: {0}".format(sum(best_wer) / (len(best_wer)*1.0)))
-print("Average WER: {0}".format(sum(gl_wer) / len(gl_wer)))
-print("Average unpatched WER: {0}".format(sum(gl_up_wer)/len(gl_up_wer)))
-print("Number of patched sentences: {0}".format(int(gl_no_of_patches)))
+warning(best_wer != [], "No suitable patched candidate could be obtained")
+if best_wer != []:
+	print("Average best patched WER: %.02f%%" %(sum(best_wer) / len(best_wer) * 100))
+	print("Average WER: %.02f%%" %(sum(gl_wer) / len(gl_wer) * 100))
+print("Average unpatched WER: %.02f%%" %(sum(gl_up_wer) / len(gl_up_wer) * 100))
+print("Number of patched sentences: %d" %(int(gl_no_of_patches)))
+if best_wer != []:
+	print("Average number of patches per sentences: %.02f" %(gl_no_of_patches / len(best_wer)))
 
 if mode == 'compare':
 	print("Global Statistics (covering all mismatches):")
-	print("Average best patched WER: {0}".format(sum(best_wer2) / (len(best_wer2)*1.0)))
-	print("Average WER: {0}".format(sum(gl_wer2) / len(gl_wer2)))
-	print("Average unpatched WER: {0}".format(sum(gl_up_wer)/len(gl_up_wer)))
-	print("Number of patched sentences: {0}".format(int(gl_no_of_patches2)))
+	if best_wer != []:
+		print("Average best patched WER: %.02f%%" %(sum(best_wer2) / (len(best_wer2) * 100)))
+		print("Average WER: %.02f%%" %(sum(gl_wer2) / len(gl_wer2) * 100))
+	print("Average unpatched WER: %.02f%%" %(sum(gl_up_wer) / len(gl_up_wer) * 100))
+	print("Number of patched sentences: %d" %(int(gl_no_of_patches2)))
+	if best_wer != []:
+		print("Average number of patches per sentences: %.02f" %(gl_no_of_patches2 / len(best_wer2)))
 
+print("Number of unpatched pairs: %d" %(len(gl_up_wer) - len(best_wer)))
