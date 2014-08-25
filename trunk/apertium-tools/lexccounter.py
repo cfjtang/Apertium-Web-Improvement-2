@@ -9,7 +9,6 @@ def cleanLine(line):
 def countStems(dictionary, uniqueOn='lemma+continuationLexicon'):
     logger = logging.getLogger("countStems")
     currentLexicon = None
-    validLexicons = set()
     lexicons = defaultdict(lambda: ([], set()))
 
     if uniqueOn not in {'lemma+continuationLexicon', 'lemma+gloss', 'lemma+comment'}:
@@ -45,8 +44,8 @@ def countStems(dictionary, uniqueOn='lemma+continuationLexicon'):
                         if uniqueOn == 'lemma+continuationLexicon':
                             lexicons[currentLexicon][1].add((lemma, frozenset(continuationLexicon)))
                         elif uniqueOn == 'lemma+gloss' or uniqueOn == 'lemma+comment':
-                            lexicons[currentLexicon][1].add((lemma, frozenset(continuationLexicon)))     
-                        
+                            lexicons[currentLexicon][1].add((lemma, frozenset(continuationLexicon)))
+
                         logger.debug('Parsed L%s (%s) as lemma: %s, continuations: %s, and gloss: %s' % (lineNo + 1, line, repr(lemma), repr(continuationLexicon), repr(gloss)))
                 elif len(re.findall(r'\s+', line)) == 1:
                     lexiconPointer = line.split(';')[0].strip()
@@ -60,11 +59,11 @@ def countStems(dictionary, uniqueOn='lemma+continuationLexicon'):
                 logger.warning('Failed to parse L%s: %s' % (lineNo + 1, line))
     logger.info('Switching lexicon from %s (%s unique entries, %s pointers) to %s' % (currentLexicon, len(lexicons[currentLexicon][1]), len(lexicons[currentLexicon][0]), 'END'))
 
+    def getAllLexicons(rootLexicon):
+        return lexicons[rootLexicon][0] + sum(map(getAllLexicons, lexicons[rootLexicon][0]), [])
+
     if 'Root' in lexicons:
-        addedLexicons = lexicons['Root'][0]
-        validLexicons.update(addedLexicons)
-        for addedLexicon in addedLexicons:
-            validLexicons.update(lexicons[addedLexicon][0])
+        validLexicons = set(getAllLexicons('Root'))
         logger.info('Counting from lexicons %s' % validLexicons)
     else:
         logger.critical('No Root lexicon found')
@@ -77,7 +76,7 @@ def countStems(dictionary, uniqueOn='lemma+continuationLexicon'):
 
     print('Unique entries: %s' % len(entries))
     return len(entries)
-    
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Count unique stems (on lemma and continuation lexicon) in a HFST morphological dictionary (lexc)")
     parser.add_argument('uri', help="uri to lexc file")
@@ -86,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('-vv', '--doubleVerbose', help="show progress through dictionary (verbose×2)", action='store_true', default=False)
     parser.add_argument('-vvv', '--tripleVerbose', help="show detailed progress through dictionary (verbose×3)", action='store_true', default=False)
     args = parser.parse_args()
-    
+
     if args.tripleVerbose:
         logging.basicConfig(level=logging.DEBUG)
     elif args.doubleVerbose:
@@ -95,7 +94,7 @@ if __name__ == '__main__':
         logging.basicConfig(level=logging.WARNING)
     else:
         logging.basicConfig(level=logging.ERROR)
-    
+
     if 'http' in args.uri:
         try:
             dictionary = str((urllib.request.urlopen(args.uri)).read(), 'utf-8')
