@@ -54,26 +54,15 @@ TARGETS_COMMON = \
 ###############################################################################
 
 
-$(BASENAME).$(LANG1a).dix: $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix
-	xsltproc --stringparam alt $(LANG1a) --stringparam var $(VAR1) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix >$@
+$(PREFIX2a).autogen.bin: $(AP_SRC1)/$(LANG1a).autogen.bin
+	cp $< $@
 
-$(PREFIX2a).autogen.bin: $(BASENAME).$(LANG1a).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1a).dix
-	lt-comp rl $(BASENAME).$(LANG1a).dix $@
+$(PREFIX2b).autogen.bin: $(AP_SRC1)/$(LANG1b).autogen.bin
+	cp $< $@
 
-$(BASENAME).$(LANG1b).dix: $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix
-	xsltproc --stringparam alt $(LANG1b) --stringparam var $(VAR1) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix >$@
+$(PREFIX2c).autogen.bin: $(AP_SRC1)/$(LANG1c).autogen.bin
+	cp $< $@
 
-$(PREFIX2b).autogen.bin: $(BASENAME).$(LANG1b).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1b).dix
-	lt-comp rl $(BASENAME).$(LANG1b).dix $@
-
-$(BASENAME).$(LANG1c).dix: $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix
-	xsltproc --stringparam alt $(LANG1c) --stringparam var $(VAR2) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix >$@
-
-$(PREFIX2c).autogen.bin: $(BASENAME).$(LANG1c).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1c).dix
-	lt-comp rl $(BASENAME).$(LANG1c).dix $@
 
 $(PREFIX2a).autolex.bin: $(BASENAME).$(PREFIX2a).lrx
 	lrx-comp $(BASENAME).$(PREFIX2a).lrx $@
@@ -84,23 +73,21 @@ $(PREFIX2b).autolex.bin: $(BASENAME).$(PREFIX2b).lrx
 $(PREFIX2c).autolex.bin: $(BASENAME).$(PREFIX2c).lrx
 	lrx-comp $(BASENAME).$(PREFIX2c).lrx $@
 
-$(BASENAME).$(LANG1).dix: $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix
-	xsltproc --stringparam alt $(LANG1) --stringparam var $(VAR1) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix >$@ 
 
 cyr-lat.autopmor.bin: $(AP_SRC1)/apertium-$(LANG1).cyr-lat.dix
 	apertium-validate-dictionary $(AP_SRC1)/apertium-$(LANG1).cyr-lat.dix
 	lt-comp lr $^ $@
 
-$(PREFIX1).automorf.bin: $(BASENAME).$(LANG1).dix
-	apertium-validate-dictionary $(BASENAME).$(LANG1).dix
-	lt-comp lr $(BASENAME).$(LANG1).dix $@ $(AP_SRC1)/apertium-$(LANG1).$(LANG1).acx
+
+$(PREFIX1).automorf.bin: $(AP_SRC1)/$(LANG1).automorf.bin $(PREFIX1).autobil.bin
+	lt-trim $< $(PREFIX1).autobil.bin $@
 
 $(PREFIX1).autogen.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
 	lt-comp rl $(BASENAME).$(LANG2).dix $@
 
-$(PREFIX1).rlx.bin: $(AP_SRC1)/apertium-$(LANG1).$(LANG1).rlx
-	cg-comp $(AP_SRC1)/apertium-$(LANG1).$(LANG1).rlx $@
+$(PREFIX1).rlx.bin: $(AP_SRC1)/$(LANG1).rlx.bin
+	cp $< $@
 
 $(PREFIX2).rlx.bin: $(BASENAME).$(PREFIX2).rlx
 	cg-comp $(BASENAME).$(PREFIX2).rlx $@
@@ -108,20 +95,14 @@ $(PREFIX2).rlx.bin: $(BASENAME).$(PREFIX2).rlx
 $(PREFIX1).autolex.bin: $(BASENAME).$(PREFIX1).lrx
 	lrx-comp $(BASENAME).$(PREFIX1).lrx $@
 
-$(PREFIX2a).autopgen.bin: $(AP_SRC1)/apertium-$(LANG1).post-$(LANG1).dix .deps/.d
-	xsltproc --stringparam alt $(LANG1a) --stringparam var $(VAR1) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).post-$(LANG1).dix >.deps/post-$(LANG1a).dix
-	apertium-validate-dictionary .deps/post-$(LANG1a).dix
-	lt-comp lr .deps/post-$(LANG1a).dix $@ 
+$(PREFIX2a).autopgen.bin: $(AP_SRC1)/$(LANG1c).autopgen.bin
+	cp $< $@
 
-$(PREFIX2b).autopgen.bin: $(AP_SRC1)/apertium-$(LANG1).post-$(LANG1).dix .deps/.d
-	xsltproc --stringparam alt $(LANG1b) --stringparam var $(VAR1) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).post-$(LANG1).dix >.deps/post-$(LANG1b).dix
-	apertium-validate-dictionary .deps/post-$(LANG1b).dix
-	lt-comp lr .deps/post-$(LANG1b).dix $@ 
+$(PREFIX2b).autopgen.bin: $(AP_SRC1)/$(LANG1c).autopgen.bin
+	cp $< $@
 
-$(PREFIX2c).autopgen.bin: $(AP_SRC1)/apertium-$(LANG1).post-$(LANG1).dix .deps/.d
-	xsltproc --stringparam alt $(LANG1c) --stringparam var $(VAR1) $(AP_SRC1)/alt.xsl $(AP_SRC1)/apertium-$(LANG1).post-$(LANG1).dix >.deps/post-$(LANG1c).dix
-	apertium-validate-dictionary .deps/post-$(LANG1c).dix
-	lt-comp lr .deps/post-$(LANG1c).dix $@ 
+$(PREFIX2c).autopgen.bin: $(AP_SRC1)/$(LANG1c).autopgen.bin
+	cp $< $@
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
@@ -195,6 +176,7 @@ apertium_hbs_engdir=$(prefix)/share/apertium/$(BASENAME)/
 
 # Files which should be installed to $(prefix)/share/apertium/$(BASENAME)/:
 apertium_hbs_eng_DATA=$(TARGETS_COMMON) \
+	$(PREFIX1).prob $(PREFIX2).prob \
 	$(BASENAME).$(PREFIX1).t1x \
 	$(BASENAME).$(PREFIX1).t2x \
 	$(BASENAME).$(PREFIX1).t3x \
