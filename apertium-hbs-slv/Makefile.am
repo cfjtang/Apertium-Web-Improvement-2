@@ -27,7 +27,14 @@ TARGETS_COMMON = $(BASENAME).$(LANG1a).dix  $(BASENAME).$(LANG1b).dix $(BASENAME
 	$(PREFIX2).t1x.bin $(PREFIX2).t2x.bin $(PREFIX2).t3x.bin \
 	$(PREFIX1).autopgen.bin $(PREFIX2a).autopgen.bin $(PREFIX2b).autopgen.bin $(PREFIX2c).autopgen.bin
 
-#    $(PREFIX1).autopgen.bin $(PREFIX2).autopgen.bin 
+
+# Use this goal for creating .deps, otherwise make -j2 will give problems:
+.deps/.d:
+	if [ ! -d .deps ]; then mkdir .deps; fi
+	touch $@
+
+# Prevent the .d file from being removed automatically:
+.PRECIOUS: .deps/.d
 
 
 $(BASENAME).$(LANG1a).dix: $(AP_SRC1)/apertium-$(LANG1).$(LANG1).metadix
@@ -81,23 +88,14 @@ $(PREFIX2).rlx.bin: $(BASENAME).$(PREFIX2).rlx
 $(PREFIX1).autolex.bin: $(BASENAME).$(PREFIX1).lrx
 	lrx-comp $(BASENAME).$(PREFIX1).lrx $@
 
-$(PREFIX2a).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc --stringparam alt $(LANG1a) --stringparam var $(VAR1) alt.xsl $(BASENAME).post-$(LANG1).dix >.deps/post-$(LANG1a).dix
-	apertium-validate-dictionary .deps/post-$(LANG1a).dix
-	lt-comp lr .deps/post-$(LANG1a).dix $@ 
+$(PREFIX2a).autopgen.bin: $(BASENAME).post-$(LANG1).dix .deps/.d
+	lt-comp lr --alt $(LANG1a) --var $(--VAR1) $< $@ 
 
-$(PREFIX2b).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc --stringparam alt $(LANG1b) --stringparam var $(VAR1) alt.xsl $(BASENAME).post-$(LANG1).dix >.deps/post-$(LANG1b).dix
-	apertium-validate-dictionary .deps/post-$(LANG1b).dix
-	lt-comp lr .deps/post-$(LANG1b).dix $@ 
+$(PREFIX2b).autopgen.bin: $(BASENAME).post-$(LANG1).dix .deps/.d
+	lt-comp lr --alt $(LANG1b) --var $(--VAR1) $< $@ 
 
-$(PREFIX2c).autopgen.bin: $(BASENAME).post-$(LANG1).dix
-	if [ ! -d .deps ]; then mkdir .deps; fi
-	xsltproc --stringparam alt $(LANG1c) --stringparam var $(VAR1) alt.xsl $(BASENAME).post-$(LANG1).dix >.deps/post-$(LANG1c).dix
-	apertium-validate-dictionary .deps/post-$(LANG1c).dix
-	lt-comp lr .deps/post-$(LANG1c).dix $@ 
+$(PREFIX2c).autopgen.bin: $(BASENAME).post-$(LANG1).dix .deps/.d
+	lt-comp lr --alt $(LANG1c) --var $(VAR1) $< $@ 
 
 $(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
