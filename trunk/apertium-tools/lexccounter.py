@@ -6,7 +6,7 @@ from collections import defaultdict
 def cleanLine(line):
     return re.sub(r'!.*$', '', re.sub(r'%(.)', r'\1', line.strip())).strip()
 
-def countStems(dictionary, uniqueOn='lemma+continuationLexicon'):
+def countStems(dictionary, uniqueOn='lemma+continuationLexicon', vanilla=False):
     logger = logging.getLogger("countStems")
     currentLexicon = None
     lexicons = defaultdict(lambda: ([], set()))
@@ -19,7 +19,7 @@ def countStems(dictionary, uniqueOn='lemma+continuationLexicon'):
         if line.startswith('LEXICON'):
             logger.info('Switching lexicon from %s (%s unique entries, %s pointers) to %s' % (currentLexicon, len(lexicons[currentLexicon][1]), len(lexicons[currentLexicon][0]), line.split()[1]))
             currentLexicon = line.split()[1]
-        elif not line.startswith('!') and line and currentLexicon:
+        elif not line.startswith('!') and line and currentLexicon and not (line.find('Use/MT') and vanilla):
             try:
                 if len(re.findall(r'\s+', line)) >= 2:
                     if ':' in line:
@@ -81,6 +81,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Count unique stems (on lemma and continuation lexicon) in a HFST morphological dictionary (lexc)")
     parser.add_argument('uri', help="uri to lexc file")
     parser.add_argument('-l', '--uniqLemmaGloss', help="count stems unique on lemma and gloss (comment)", action='store_true', default=False)
+    parser.add_argument('-V', '--vanilla', help="count vanilla stems only", action='store_true', default=False)
     parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
     parser.add_argument('-vv', '--doubleVerbose', help="show progress through dictionary (verbose×2)", action='store_true', default=False)
     parser.add_argument('-vvv', '--tripleVerbose', help="show detailed progress through dictionary (verbose×3)", action='store_true', default=False)
@@ -103,16 +104,16 @@ if __name__ == '__main__':
             sys.exit(-1)
 
         if args.uniqLemmaGloss:
-            countStems(dictionary, uniqueOn='lemma+gloss')
+            countStems(dictionary, uniqueOn='lemma+gloss', vanilla=args.vanilla)
         else:
-            countStems(dictionary)
+            countStems(dictionary, vanilla=args.vanilla)
     else:
         try:
             with open(args.uri) as dictionary:
                 if args.uniqLemmaGloss:
-                    countStems(dictionary.read(), uniqueOn='lemma+gloss')
+                    countStems(dictionary.read(), uniqueOn='lemma+gloss', vanilla=args.vanilla)
                 else:
-                    countStems(dictionary.read())
+                    countStems(dictionary.read(), vanilla=args.vanilla)
         except FileNotFoundError:
             logging.critical('Dictionary %s not found' % args.uri)
             sys.exit(-1)
