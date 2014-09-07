@@ -31,7 +31,7 @@ def getCounts(uri, dixFormat):
         elif dixFormat == 'lexc':
             logger = logging.getLogger("countStems")
             logger.setLevel(logging.ERROR)
-            return {'stems': countStems(dixString)}
+            return {'stems': countStems(dixString), 'vanilla stems': countStems(dixString, vanilla=True)}
         else:
             raise ValueError('Invalid format: %s' % dixFormat)
     except Exception as e:
