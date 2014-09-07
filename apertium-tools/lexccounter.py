@@ -15,11 +15,11 @@ def countStems(dictionary, uniqueOn='lemma+continuationLexicon', vanilla=False):
         raise ValueError('invalid unique criteria: ' + uniqueOn)
 
     for lineNo, line in enumerate(dictionary.splitlines()):
-        line = cleanLine(line)
+        origLine, line = line, cleanLine(line)
         if line.startswith('LEXICON'):
             logger.info('Switching lexicon from %s (%s unique entries, %s pointers) to %s' % (currentLexicon, len(lexicons[currentLexicon][1]), len(lexicons[currentLexicon][0]), line.split()[1]))
             currentLexicon = line.split()[1]
-        elif not line.startswith('!') and line and currentLexicon and not (line.find('Use/MT') and vanilla):
+        elif not line.startswith('!') and line and currentLexicon and not (origLine.find("Use/MT")+1 and vanilla):
             try:
                 if len(re.findall(r'\s+', line)) >= 2:
                     if ':' in line:
