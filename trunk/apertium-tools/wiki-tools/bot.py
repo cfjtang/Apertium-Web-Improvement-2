@@ -53,7 +53,7 @@ def getDixLocs(pair, dixFormat):
 def getRevision(uri):
     try:
         svnData = str(subprocess.check_output('svn info -r HEAD %s --xml' % uri, stderr=subprocess.STDOUT, shell=True), 'utf-8')
-        return re.findall(r'revision="([0-9]+)"', svnData, re.DOTALL)[0]
+        return re.findall(r'revision="([0-9]+)"', svnData, re.DOTALL)[1]
     except:
         return None
 
