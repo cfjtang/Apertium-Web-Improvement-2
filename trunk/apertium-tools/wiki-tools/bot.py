@@ -146,8 +146,8 @@ if __name__ == '__main__':
         logging.critical('Failed to obtain required token')
         sys.exit(-1)
 
-    SVNRevision = getRevision(svnURL)
-    logging.info('On SVN revision %s' % SVNRevision)
+    #SVNRevision = getRevision(svnURL)
+    #logging.info('On SVN revision %s' % SVNRevision)
 
     if args.action == 'dict':
         for pair in args.pairs:
@@ -161,6 +161,10 @@ if __name__ == '__main__':
             if len(langs) == 2:
                 dixLocs = getDixLocs(pair, 'dix')
                 logging.debug('Acquired dictionary locations %s' % dixLocs)
+
+                dixURL = dixLocs[0]
+                SVNRevision = getRevision(dixURL)
+                logging.info('On SVN revision %s' % SVNRevision)
 
                 if len(dixLocs) > 0:
                     dixCounts = {}
@@ -216,6 +220,10 @@ if __name__ == '__main__':
             elif len(langs) == 1:
                 dixLoc = next(iter(sorted(sorted(getDixLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
                 lexcLoc = next(iter(getDixLocs(pair, 'lexc')), None)
+
+                SVNRevision = getRevision(dixURL)
+                logging.info('On SVN revision %s' % SVNRevision)
+
 
                 if dixLoc or lexcLoc:
                     logging.debug('Acquired dictionary locations %s, %s' % (dixLoc, lexcLoc))
