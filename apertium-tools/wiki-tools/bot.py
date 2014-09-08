@@ -76,7 +76,7 @@ def getPage(pageTitle):
 
 def editPage(pageTitle, pageContents, editToken):
     if pageContents.find('[[Category:Datastats]]') < 0:
-        pageContents += "\n[[Category:Datastats]]"
+        pageContents += "\n\n[[Category:Datastats]]"
         logging.debug('Putting page in Category:Datastats')
 
     payload = {'action': 'edit', 'format': 'json', 'title': pageTitle, 'text': pageContents, 'bot': 'True', 'contentmodel': 'wikitext', 'token': editToken}
