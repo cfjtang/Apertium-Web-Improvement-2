@@ -221,10 +221,6 @@ if __name__ == '__main__':
                 dixLoc = next(iter(sorted(sorted(getDixLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
                 lexcLoc = next(iter(getDixLocs(pair, 'lexc')), None)
 
-                SVNRevision = getRevision(dixURL)
-                logging.info('On SVN revision %s' % SVNRevision)
-
-
                 if dixLoc or lexcLoc:
                     logging.debug('Acquired dictionary locations %s, %s' % (dixLoc, lexcLoc))
 
@@ -233,11 +229,17 @@ if __name__ == '__main__':
                         counts = getCounts(dixLoc, 'monodix')
                         for countType, count in counts.items():
                             dixCounts[countType] = count
+                        dixURL = dixLoc
                     if lexcLoc:
                         counts = getCounts(lexcLoc, 'lexc')
                         for countType, count in counts.items():
                             dixCounts[countType] = count
+                        dixURL = lexcLoc
                     logging.info('Acquired dictionary counts %s' % dixCounts)
+
+                    SVNRevision = getRevision(dixURL)
+                    logging.info('On SVN revision %s' % SVNRevision)
+
 
                     pageContents = getPage(pageTitle)
                     if pageContents:
