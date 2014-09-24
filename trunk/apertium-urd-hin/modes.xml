@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modes>
+  <mode name="urd-hin" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="urd-hin.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="urd-hin.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-urd-hin.urd-hin.t1x"/>
+        <file name="urd-hin.t1x.bin"/>
+        <file name="urd-hin.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="urd-hin.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="urd-hin-morph" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="urd-hin.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="urd-hin-tagger" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="urd-hin.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="urd-hin.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="urd-hin-biltrans" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="urd-hin.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="urd-hin.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="urd-hin.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+
+  <mode name="urd-hin-transfer" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="urd-hin.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="urd-hin.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="urd-hin.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-urd-hin.urd-hin.t1x"/>
+        <file name="urd-hin.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="hin-urd-biltrans" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="hin-urd.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="hin-urd.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="hin-urd.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  <mode name="hin-urd" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="hin-urd.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="hin-urd.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-urd-hin.hin-urd.t1x"/>
+        <file name="hin-urd.t1x.bin"/>
+        <file name="hin-urd.autobil.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="hin-urd.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="hin-urd-morph" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="hin-urd.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="hin-urd-tagger" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="hin-urd.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="hin-urd.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="hin-urd-transfer" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="hin-urd.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="hin-urd.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-urd-hin.hin-urd.t1x"/>
+        <file name="hin-urd.t1x.bin"/>
+        <file name="hin-urd.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+ 
+</modes>
