@@ -266,13 +266,14 @@ install-data-local:
 	$(INSTALL_DATA) $(PREFVAR1)$(PREFIX2).mode $(DESTDIR)$(apertium_modesdir)
 	$(INSTALL_DATA) $(PREFVAR2)$(PREFIX1).mode $(DESTDIR)$(apertium_modesdir)
 	$(INSTALL_DATA) $(PREFVAR2)$(PREFIX2).mode $(DESTDIR)$(apertium_modesdir)
+	rm $(PREFVAR1)$(PREFIX1).mode $(PREFVAR1)$(PREFIX2).mode $(PREFVAR2)$(PREFIX1).mode $(PREFVAR2)$(PREFIX2).mode 
 
 
 ###############################################################################
 ## Cleanup
 ###############################################################################
 
-CLEANFILES = $(TARGETS_COMMON) *.mode
+CLEANFILES = $(TARGETS_COMMON)
 clean-local: 
 	-rm -rf .deps modes
 
