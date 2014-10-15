@@ -19,7 +19,7 @@ PREFIX2c=$(LANG2)-$(LANG1c)
 BASENAME=apertium-$(PREFIX1)
 
 TARGETS_COMMON = \
-	cyr-lat.autopmor.bin \
+	Cyrl-Latn.autopmor.bin \
 	$(PREFIX1).autobil.bin \
 	$(PREFIX1).autogen.bin \
 	$(PREFIX1).autolex.bin \
@@ -74,8 +74,8 @@ $(PREFIX2c).autolex.bin: $(BASENAME).$(PREFIX2c).lrx
 	lrx-comp $(BASENAME).$(PREFIX2c).lrx $@
 
 
-cyr-lat.autopmor.bin: $(AP_SRC1)/apertium-$(LANG1).cyr-lat.dix
-	apertium-validate-dictionary $(AP_SRC1)/apertium-$(LANG1).cyr-lat.dix
+Cyrl-Latn.autopmor.bin: $(AP_SRC1)/apertium-$(LANG1).Cyrl-Latn.dix
+	apertium-validate-dictionary $(AP_SRC1)/apertium-$(LANG1).Cyrl-Latn.dix
 	lt-comp lr $^ $@
 
 
