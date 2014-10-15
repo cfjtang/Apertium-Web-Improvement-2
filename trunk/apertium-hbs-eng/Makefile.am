@@ -155,8 +155,7 @@ $(PREFIX2).t3x.bin: $(BASENAME).$(PREFIX2).t3x
 ###############################################################################
 
 EXTRA_DIST=$(BASENAME).$(PREFIX1).dix \
-           $(BASENAME).$(LANG2).dix $(BASENAME).$(LANG1).tsx \
-           $(BASENAME).$(LANG2).tsx  \
+           $(BASENAME).$(LANG2).dix \
            $(BASENAME).$(LANG2).acx \
            $(BASENAME).post-$(LANG2).dix \
            $(PREFIX1).prob $(PREFIX2).prob \
