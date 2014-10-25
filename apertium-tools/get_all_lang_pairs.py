@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import subprocess, re
-from get_stems import get_stems
+#from get_stems import get_stems
+from dixcounter import get_info as get_stems
 
 def get_data_from_svn(url):
 	svn_data = str(subprocess.check_output("svn list --xml "+url, stderr=subprocess.STDOUT, shell=True), 'utf-8')
