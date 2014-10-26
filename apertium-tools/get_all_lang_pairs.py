@@ -49,7 +49,12 @@ def get_data_from_svn(url):
 
 
 		#print(lang_pair)
-		stems = get_stems(url+"apertium-"+lang_pair[0]+"-"+lang_pair[1]+"/apertium-"+lang_pair[0]+"-"+lang_pair[1]+"."+lang_pair[0]+"-"+lang_pair[1]+".dix")
+		info = get_stems(url+"apertium-"+lang_pair[0]+"-"+lang_pair[1]+"/apertium-"+lang_pair[0]+"-"+lang_pair[1]+"."+lang_pair[0]+"-"+lang_pair[1]+".dix")
+		if type(info)==dict:
+			if "stems" in info:
+				stems = info['stems']
+		elif type(info)==int:
+			stems = info
 		repo = url.split("/")[-2]
 		lang_pair_data = [lang_pair[0], lang_pair[1], lang_pair[2], re_return2[0], directionality, repo, stems]
 		#return_me.append(dict(zip(keys_list, lang_pair_data)))
