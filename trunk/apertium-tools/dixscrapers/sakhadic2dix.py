@@ -178,8 +178,23 @@ def preprocess(lines):
             new_lines.append(line)
     return new_lines
 
+SAKHA_ALPHABET = "".join("""Аа Бб Вв Гг Ҕҕ Дд ДЬдь Ее Ёё Жж Зз Ии Йй Кк
+Лл Мм Нн Ҥҥ НЬнь Оо Өө Пп Рр Сс Һһ Тт Уу Үү
+Фф Хх Цц Чч Шш Щщ Ъъ Ыы Ьь Ээ Юю Яя""".split())
+ENGLISH_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+SYMBOLS = [tag for _, tags in ABBRVS.items() for tag in tags]
+
 def main():
     dictionary = ET.Element("dictionary")
+
+    alphabet = ET.SubElement(dictionary, "alphabet")
+    alphabet.text = SAKHA_ALPHABET + ENGLISH_ALPHABET
+
+    sdefs = ET.SubElement(dictionary, "sdefs")
+    for symbol in SYMBOLS:
+        sdef = ET.SubElement(sdefs, "sdef")
+        sdef.set("n", symbol)
+
     section = ET.SubElement(dictionary, "section")
     section.set("id", "main")
     section.set("type", "standard")
