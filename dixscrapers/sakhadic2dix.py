@@ -33,63 +33,6 @@ ABBRVS = {
     'v.': ['v', 'TD']
 }
 
-class Entry(object):
-    def __split(self, line):
-        return SPLIT_RE.split(line)
-
-    def __init__(self, line):
-        tags = line.split()
-
-        self.words = []
-        self.abbrvs = []
-        self.meanings = []
-
-        found_abbrv = False
-        found_conv = False
-        for tag in tags:
-            if tag in ABBRVS.keys(): # abbreviations
-                found_abbrv = True
-                self.abbrvs.extend(ABBRVS[tag])
-                continue
-            elif tag == "conv.":
-                found_abbrv = True
-                found_conv = True
-                self.abbrvs.append("vaux")
-                continue
-
-            if not found_abbrv: # entrys
-                self.words.append(tag)
-            else: # translated
-                self.meanings.append(tag)
-
-        # if there's "cf" in a word, we trim off everything else
-        for i, word in enumerate(self.words):
-            if word == "cf":
-                self.words = self.words[:i]
-
-        # if there's a converb, just look at the last word
-        if found_conv:
-            self.words = self.words[-1]
-        else:
-            self.words = " ".join(self.words)
-        self.meanings = " ".join(self.meanings)
-
-        self.words = strip_brackets(self.words)
-        self.meanings = strip_brackets(self.meanings)
-
-        if not self.abbrvs:
-            self.words = None
-            self.abbrvs = None
-            self.meanings = None
-            return
-
-        # preprocessing meanings
-        self.meanings = self.meanings.replace("to", "")
-
-        # split up meanings and entrys
-        self.words = [x.strip() for x in self.__split(self.words)]
-        self.meanings = [x.strip() for x in self.__split(self.meanings)]
-
 def insert_blanks(element, line):
     words = line.split()
     if not words:
@@ -121,6 +64,60 @@ def is_cyrillic(word):
         else:
             num_non_cyrillic += 1
     return num_cyrillic > num_non_cyrillic
+
+class Entry(object):
+    def __split(self, line):
+        return SPLIT_RE.split(line)
+
+    def __init__(self, line):
+        tags = line.split()
+
+        self.words = []
+        self.abbrvs = []
+        self.meanings = []
+
+        found_abbrv = False
+        found_conv = False
+        for tag in tags:
+            if tag in ABBRVS.keys(): # abbreviations
+                found_abbrv = True
+                self.abbrvs.extend(ABBRVS[tag])
+                continue
+            elif tag == "conv.":
+                found_abbrv = True
+                found_conv = True
+                self.abbrvs.append("vaux")
+                continue
+
+            if is_cyrillic(tag): # entrys
+                self.words.append(tag)
+            else: # translated
+                self.meanings.append(tag)
+
+        # if there's "cf" in a word, we trim off everything else
+        for i, word in enumerate(self.words):
+            if word == "cf":
+                self.words = self.words[:i]
+
+        # if there's a converb, just look at the last word
+        if found_conv:
+            self.words = self.words[-1]
+        else:
+            self.words = " ".join(self.words)
+        self.meanings = " ".join(self.meanings)
+
+        self.words = strip_brackets(self.words)
+        self.meanings = strip_brackets(self.meanings)
+
+        # preprocessing meanings
+        self.meanings = self.meanings.replace("to", "")
+
+        # split up meanings and entrys
+        self.words = [x.strip() for x in self.__split(self.words)]
+        self.meanings = [x.strip() for x in self.__split(self.meanings)]
+
+        if not self.abbrvs:
+            self.abbrvs = ['XX']
 
 def preprocess(lines):
     def preprocess_line(line):
