@@ -182,16 +182,18 @@ SAKHA_ALPHABET = "".join("""Аа Бб Вв Гг Ҕҕ Дд ДЬдь Ее Ёё Ж�
 Лл Мм Нн Ҥҥ НЬнь Оо Өө Пп Рр Сс Һһ Тт Уу Үү
 Фф Хх Цц Чч Шш Щщ Ъъ Ыы Ьь Ээ Юю Яя""".split())
 ENGLISH_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-SYMBOLS = [tag for _, tags in ABBRVS.items() for tag in tags]
+SYMBOLS = set(tag for _, tags in ABBRVS.items() for tag in tags)
 
 def main():
     dictionary = ET.Element("dictionary")
+    comment = ET.Comment(text="CHECK generated dictionary")
+    dictionary.append(comment)
 
     alphabet = ET.SubElement(dictionary, "alphabet")
     alphabet.text = SAKHA_ALPHABET + ENGLISH_ALPHABET
 
     sdefs = ET.SubElement(dictionary, "sdefs")
-    for symbol in SYMBOLS:
+    for symbol in sorted(SYMBOLS):
         sdef = ET.SubElement(sdefs, "sdef")
         sdef.set("n", symbol)
 
