@@ -8,7 +8,7 @@ import xml.etree.cElementTree as ET
 
 BRACKETS_RE = re.compile(r'(\(.+?\)|\[.+?\])')
 PAGENUMBER_RE = re.compile(r'^\d+$')
-SPLIT_RE = re.compile(r'[;,]\s+')
+SPLIT_RE = re.compile(r'[;,/]\s*')
 
 ABBRVS = {
     'a.': ['adj'],
@@ -65,10 +65,13 @@ def is_cyrillic(word):
             num_non_cyrillic += 1
     return num_cyrillic > num_non_cyrillic
 
-class Entry(object):
-    def __split(self, line):
-        return SPLIT_RE.split(line)
+def is_capital(word):
+    return word[0].isupper()
 
+def split(line):
+    return SPLIT_RE.split(line)
+
+class Entry(object):
     def __init__(self, line):
         tags = line.split()
 
@@ -76,22 +79,24 @@ class Entry(object):
         self.abbrvs = []
         self.meanings = []
 
-        found_abbrv = False
+        found_cf = False
         found_conv = False
         for tag in tags:
             if tag in ABBRVS.keys(): # abbreviations
-                found_abbrv = True
                 self.abbrvs.extend(ABBRVS[tag])
                 continue
             elif tag == "conv.":
-                found_abbrv = True
                 found_conv = True
                 self.abbrvs.append("vaux")
                 continue
 
-            if is_cyrillic(tag): # entrys
+            if tag == "cf":
+                found_cf = True
+                continue
+
+            if is_cyrillic(tag) and not found_cf: # entrys
                 self.words.append(tag)
-            else: # translated
+            elif not is_cyrillic(tag): # translated
                 self.meanings.append(tag)
 
         # if there's "cf" in a word, we trim off everything else
@@ -110,11 +115,14 @@ class Entry(object):
         self.meanings = strip_brackets(self.meanings)
 
         # preprocessing meanings
+        if "n" in self.abbrvs and is_capital(self.words[0]):
+            self.abbrvs = [abbrv for abbrv in self.abbrvs if not abbrv == "n"]
+            self.abbrvs.extend(["np", "XX"])
         self.meanings = self.meanings.replace("to", "")
 
         # split up meanings and entrys
-        self.words = [x.strip() for x in self.__split(self.words)]
-        self.meanings = [x.strip() for x in self.__split(self.meanings)]
+        self.words = [x.strip() for x in split(self.words) if x.strip()]
+        self.meanings = [x.strip() for x in split(self.meanings) if x.strip()]
 
         if not self.abbrvs:
             self.abbrvs = ['XX']
