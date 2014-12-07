@@ -220,9 +220,6 @@ def main():
         for word, meaning in itertools.product(entry.words, entry.meanings):
             e = ET.SubElement(section, "e")
 
-            comment = ET.Comment(text=line)
-            e.append(comment)
-
             p = ET.SubElement(e, 'p')
 
             # add word and meaning
@@ -238,6 +235,10 @@ def main():
                 s.set('n', abbrv)
                 left.append(s)
                 right.append(s)
+
+            comment = ET.Comment(text=line)
+            e.append(comment)
+
     ET.dump(dictionary)
 
 main()
