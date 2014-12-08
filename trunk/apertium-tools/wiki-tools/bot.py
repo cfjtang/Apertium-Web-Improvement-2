@@ -57,9 +57,9 @@ def getRevision(uri):
     except:
         return None
 
-def createStatsSection(dixCounts, SVNRevision):
+def createStatsSection(dixCounts):
     statsSection = '==Over-all stats=='
-    for dixName, dixCount in dixCounts.items():
+    for (dixName, SVNRevision), dixCount in dixCounts.items():
         statsSection += '\n' + createStatSection(dixName, dixCount, SVNRevision)
     return statsSection
 
@@ -162,9 +162,9 @@ if __name__ == '__main__':
                 dixLocs = getDixLocs(pair, 'dix')
                 logging.debug('Acquired dictionary locations %s' % dixLocs)
 
-                dixURL = dixLocs[0]
-                SVNRevision = getRevision(dixURL)
-                logging.info('On SVN revision %s' % SVNRevision)
+                #dixURL = dixLocs[0]
+                #SVNRevision = getRevision(dixURL)
+                #logging.info('On SVN revision %s' % SVNRevision)
 
                 if len(dixLocs) > 0:
                     dixCounts = {}
@@ -172,7 +172,7 @@ if __name__ == '__main__':
                         dixPair = dixLoc.split('/')[-1].split('.')[1].split('-')
                         counts = getCounts(dixLoc, 'bidix' if set(langs) == set(dixPair) else 'monodix')
                         for countType, count in counts.items():
-                            dixCounts['-'.join(dixPair + [countType])] = count
+                            dixCounts[('-'.join(dixPair + [countType]), getRevision(dixLoc))] = count
                     logging.debug('Acquired dictionary counts %s' % dixCounts)
 
                     pageContents = getPage(pageTitle)
@@ -183,16 +183,18 @@ if __name__ == '__main__':
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
-                                if countName in dixCounts:
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                                countKeys = list(filter(lambda x: x[0] == countName, dixCounts.keys()))
+                                if countKeys:
+                                    countKey = countKeys[0]
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countKey], countKey[1])
                                     replacements[(matchAttempt.group(1))] = replacement
-                                    del dixCounts[countName]
+                                    del dixCounts[countKey]
                                     logging.debug('Replaced count %s' % repr(countName))
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for dixName, dixCount in dixCounts.items():
+                            for (dixName, SVNRevision), dixCount in dixCounts.items():
                                 newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
                                 logging.debug('Adding new count %s' % repr(dixName))
                             newStats += '\n'
@@ -201,7 +203,7 @@ if __name__ == '__main__':
                             contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
                             pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
                         else:
-                            pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
+                            pageContents += '\n' + createStatsSection(dixCounts)
                             logging.debug('Adding new stats section')
 
                         editResult = editPage(pageTitle, pageContents, editToken)
@@ -210,7 +212,7 @@ if __name__ == '__main__':
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents = createStatsSection(dixCounts, SVNRevision)
+                        pageContents = createStatsSection(dixCounts)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
@@ -228,18 +230,17 @@ if __name__ == '__main__':
                     if dixLoc and not lexcLoc:
                         counts = getCounts(dixLoc, 'monodix')
                         for countType, count in counts.items():
-                            dixCounts[countType] = count
+                            dixCounts[(countType, getRevision(dixLoc))] = count
                         dixURL = dixLoc
                     if lexcLoc:
                         counts = getCounts(lexcLoc, 'lexc')
                         for countType, count in counts.items():
-                            dixCounts[countType] = count
+                            dixCounts[(countType, getRevision(dixLoc))] = count
                         dixURL = lexcLoc
                     logging.info('Acquired dictionary counts %s' % dixCounts)
 
-                    SVNRevision = getRevision(dixURL)
-                    logging.info('On SVN revision %s' % SVNRevision)
-
+                    #SVNRevision = getRevision(dixURL)
+                    #logging.info('On SVN revision %s' % SVNRevision)
 
                     pageContents = getPage(pageTitle)
                     if pageContents:
@@ -249,16 +250,18 @@ if __name__ == '__main__':
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
-                                if countName in dixCounts:
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countName], SVNRevision)
+                                countKeys = list(filter(lambda x: x[0] == countName, dixCounts.keys()))
+                                if countKeys:
+                                    countKey = countKeys[0]
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countKey], countKey[1])
                                     replacements[(matchAttempt.group(1))] = replacement
-                                    del dixCounts[countName]
+                                    del dixCounts[countKey]
                                     logging.debug('Replaced count %s' % repr(countName))
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for dixName, dixCount in dixCounts.items():
+                            for (dixName, SVNRevision), dixCount in dixCounts.items():
                                 newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
                                 logging.debug('Adding new count %s' % repr(dixName))
                             newStats += '\n'
@@ -267,7 +270,7 @@ if __name__ == '__main__':
                             contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
                             pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
                         else:
-                            pageContents += '\n' + createStatsSection(dixCounts, SVNRevision)
+                            pageContents += '\n' + createStatsSection(dixCounts)
                             logging.debug('Adding new stats section')
 
                         editResult = editPage(pageTitle, pageContents, editToken)
@@ -276,7 +279,7 @@ if __name__ == '__main__':
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents = createStatsSection(dixCounts, SVNRevision)
+                        pageContents = createStatsSection(dixCounts)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
