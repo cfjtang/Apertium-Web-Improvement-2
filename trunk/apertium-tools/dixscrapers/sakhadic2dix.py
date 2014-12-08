@@ -21,14 +21,14 @@ ABBRVS = {
     'det.': ['det'],
     'Evk.': [],
     'exc.': ['ij'],
-    'int.': ['itg'],
+    'int.': ['XX', 'itg'],
     'Mongo.': [],
     'n.': ['n'],
     'num.': ['det', 'qnt'],
     'ono.': [],
     'pl.': ['pl'],
     'pp.': ['post'],
-    'pro.': ['prn'],
+    'pro.': ['prn', 'XX'],
     'Russ.': [],
     'v.': ['v', 'TD']
 }
@@ -73,6 +73,8 @@ def split(line):
 
 class Entry(object):
     def __init__(self, line):
+        self.line = line
+
         tags = line.split()
 
         self.words = []
@@ -126,6 +128,20 @@ class Entry(object):
 
         if not self.abbrvs:
             self.abbrvs = ['XX']
+
+        # make immutable
+
+        self.words = tuple(self.words)
+        self.meanings = tuple(self.meanings)
+        self.abbrvs = tuple(self.abbrvs)
+
+    def __eq__(self, other):
+        return (self.words == other.words
+            and self.meanings == other.meanings
+            and self.abbrvs == other.abbrvs)
+
+    def __hash__(self):
+        return hash((self.words, self.meanings, self.abbrvs))
 
 def preprocess(lines):
     def preprocess_line(line):
@@ -212,14 +228,16 @@ def main():
     lines = list(fileinput.input())
     new_lines = preprocess(lines)
 
+    entries = set()
     for line in new_lines:
         entry = Entry(line)
         if not (entry.words and entry.abbrvs and entry.meanings):
             continue
+        entries.add(entry)
 
+    for entry in entries:
         for word, meaning in itertools.product(entry.words, entry.meanings):
             e = ET.SubElement(section, "e")
-
             p = ET.SubElement(e, 'p')
 
             # add word and meaning
@@ -236,7 +254,7 @@ def main():
                 left.append(s)
                 right.append(s)
 
-            comment = ET.Comment(text=line)
+            comment = ET.Comment(text=entry.line)
             e.append(comment)
 
     ET.dump(dictionary)
