@@ -120,7 +120,10 @@ class Entry(object):
         if "n" in self.abbrvs and is_capital(self.words[0]):
             self.abbrvs = [abbrv for abbrv in self.abbrvs if not abbrv == "n"]
             self.abbrvs.extend(["np", "XX"])
-        self.meanings = self.meanings.replace("to ", "")
+
+        # remove to
+        if self.meanings.startswith("to"):
+            self.meanings = self.meanings[2:]
 
         # split up meanings and entrys
         self.words = [x.strip() for x in split(self.words) if x.strip()]
@@ -130,7 +133,6 @@ class Entry(object):
             self.abbrvs = ['XX']
 
         # make immutable
-
         self.words = tuple(self.words)
         self.meanings = tuple(self.meanings)
         self.abbrvs = tuple(self.abbrvs)
