@@ -120,7 +120,7 @@ class Entry(object):
         if "n" in self.abbrvs and is_capital(self.words[0]):
             self.abbrvs = [abbrv for abbrv in self.abbrvs if not abbrv == "n"]
             self.abbrvs.extend(["np", "XX"])
-        self.meanings = self.meanings.replace("to", "")
+        self.meanings = self.meanings.replace("to ", "")
 
         # split up meanings and entrys
         self.words = [x.strip() for x in split(self.words) if x.strip()]
