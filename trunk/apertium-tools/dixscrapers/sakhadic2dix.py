@@ -152,6 +152,7 @@ def preprocess(lines):
         line = line.strip()
         line = line.replace("•", "")
         line = line.replace("=", "")
+        line = line.replace(";", "; ")
         line = line.replace("cf.", "cf")
         line = strip_brackets(line)
         if not line or is_page_num(line):
@@ -174,30 +175,36 @@ def preprocess(lines):
                     lines[i+1] = line + " " + next_line
                     continue
 
+        abbrv_found = False
         orig_word = ""
+        meaning_found = False
         for j, word in enumerate(words):
             if j+1 >= len(words):
                 continue
             next_word = words[j+1]
 
             if word.endswith("."):
-                orig_word = " ".join(words[:j])
+                # if we find multiple sections
+                if meaning_found:
+                    line = " ".join(words[:j])
+                    next_line = orig_word + " " + " ".join(words[j:])
+                    lines.insert(i+1, preprocess_line(next_line))
+                    break
+                else:
+                    orig_word = " ".join(words[:j])
+                    abbrv_found = True
             
             if word.endswith(";"):
                 # if semicolon seperates dictionary entries
                 if is_cyrillic(next_word):
-                    words[j] = word.replace(";", "")
                     line = " ".join(words[:j+1])
                     next_line = " ".join(words[j+1:])
                     lines.insert(i+1, next_line)
                     break
-                # if semicolon seperates abbreviations
-                elif next_word.endswith("."):
-                    words[j] = word.replace(";", "")
-                    line = " ".join(words[:j+1])
-                    next_line = orig_word + " " + " ".join(words[j+1:])
-                    lines.insert(i+1, next_line)
-                    break
+                words[j] = word.replace(";", "")
+
+            if abbrv_found and not word.endswith("."):
+                meaning_found = True
 
         line = line.strip()
         if line:
