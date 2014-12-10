@@ -121,16 +121,20 @@ class Entry(object):
             self.abbrvs = [abbrv for abbrv in self.abbrvs if not abbrv == "n"]
             self.abbrvs.extend(["np", "XX"])
 
-        # remove to
-        if self.meanings.startswith("to "):
-            self.meanings = self.meanings[3:]
-
         # split up meanings and entrys
         self.words = [x.strip() for x in split(self.words) if x.strip()]
         self.meanings = [x.strip() for x in split(self.meanings) if x.strip()]
 
         if not self.abbrvs:
             self.abbrvs = ['XX']
+
+        # remove to
+        for i, meaning in enumerate(self.meanings):
+            if meaning.startswith("to "):
+                self.meanings[i] = meaning[3:]
+            if meaning == "no translation":
+                self.meanings[i] = None
+        self.meanings = [x for x in self.meanings if x]
 
         # make immutable
         self.words = tuple(self.words)
