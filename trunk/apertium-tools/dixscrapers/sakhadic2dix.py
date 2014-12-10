@@ -122,8 +122,8 @@ class Entry(object):
             self.abbrvs.extend(["np", "XX"])
 
         # remove to
-        if self.meanings.startswith("to"):
-            self.meanings = self.meanings[2:]
+        if self.meanings.startswith("to "):
+            self.meanings = self.meanings[3:]
 
         # split up meanings and entrys
         self.words = [x.strip() for x in split(self.words) if x.strip()]
