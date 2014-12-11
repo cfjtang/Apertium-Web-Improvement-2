@@ -56,6 +56,7 @@ def getFileLocs(pair, fileFormat):
     for location in locations:
         try:
             URL = svnURL + location + '/apertium-' + pair
+            logging.debug('Finding %s files in %s' % (fileFormat, location))
             svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
             return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
         except subprocess.CalledProcessError:
@@ -63,21 +64,23 @@ def getFileLocs(pair, fileFormat):
     logging.error('No files found for %s' % pair)
     return []
 
-def getRevision(uri):
+def getRevisionInfo(uri):
     try:
         svnData = str(subprocess.check_output('svn info -r HEAD %s --xml' % uri, stderr=subprocess.STDOUT, shell=True), 'utf-8')
-        return re.findall(r'revision="([0-9]+)"', svnData, re.DOTALL)[1]
+        revisionNumber = re.findall(r'revision="([0-9]+)"', svnData, re.DOTALL)[1]
+        revisionAuthor = re.findall(r'<author>(.*)</author>', svnData, re.DOTALL)[0]
+        return (revisionNumber, revisionAuthor)
     except:
         return None
 
 def createStatsSection(fileCounts):
     statsSection = '==Over-all stats=='
-    for (fileName, SVNRevision), fileCount in fileCounts.items():
-        statsSection += '\n' + createStatSection(fileName, fileCount, SVNRevision)
+    for fileName, (fileCount, revisionInfo, fileUrl) in fileCounts.items():
+        statsSection += '\n' + createStatSection(fileName, fileCount, revisionInfo)
     return statsSection
 
-def createStatSection(fileName, fileCount, SVNRevision):
-    return "*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(fileName, fileCount, SVNRevision)
+def createStatSection(fileName, fileCount, revisionInfo, fileUrl):
+    return "*'''[{4}, {0}]''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(fileName, fileCount, revisionInfo[0], revisionInfo[1], fileUrl)
 
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
@@ -87,7 +90,7 @@ def countRlxRules(url):
             compilationOutput = str(subprocess.check_output('cg-comp %s %s' % (f.name, '/dev/null'), stderr=subprocess.STDOUT, shell=True), 'utf-8')
             return int(re.search(r'Rules: (\d+)', compilationOutput).group(1))
         except subprocess.CalledProcessError as e:
-            if e.output:
+            if e.output.decode('utf-8'):
                 return int(re.search(r'Rules: (\d+)', e.output.decode('utf-8')).group(1))
             else:
                 logging.error('Unable to count rules from %s: %s' % (url, str(e)))
@@ -194,7 +197,7 @@ if __name__ == '__main__':
                         fileFormat = 'rlx' if fileLoc.endswith('.rlx') else ('bidix' if set(langs) == set(filePair) else 'monodix')
                         counts = getCounts(fileLoc, fileFormat)
                         for countType, count in counts.items():
-                            fileCounts[('-'.join(filePair + [countType]), getRevision(fileLoc))] = count
+                            fileCounts['-'.join(filePair + [countType])] = (count, getRevisionInfo(fileLoc), fileLoc)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
                     pageContents = getPage(pageTitle)
@@ -205,19 +208,18 @@ if __name__ == '__main__':
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
-                                countKeys = list(filter(lambda x: x[0] == countName, fileCounts.keys()))
-                                if countKeys:
-                                    countKey = countKeys[0]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, fileCounts[countKey], countKey[1])
+                                if countName in fileCounts:
+                                    fileCount, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName, fileCount, revisionNumber, revisionAuthor)
                                     replacements[(matchAttempt.group(1))] = replacement
-                                    del fileCounts[countKey]
+                                    del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for (fileName, SVNRevision), fileCount in fileCounts.items():
-                                newStats += '\n' + createStatSection(fileName, fileCount, SVNRevision)
+                            for fileName, (fileCount, revisionInfo, fileUrl) in fileCounts.items():
+                                newStats += '\n' + createStatSection(fileName, fileCount, revisionInfo, fileUrl)
                                 logging.debug('Adding new count %s' % repr(fileName))
                             newStats += '\n'
 
@@ -253,15 +255,15 @@ if __name__ == '__main__':
                     if dixLoc and not lexcLoc:
                         counts = getCounts(dixLoc, 'monodix')
                         for countType, count in counts.items():
-                            fileCounts[(countType, getRevision(dixLoc))] = count
+                            fileCounts[countType] = (count, getRevisionInfo(dixLoc), dixLoc)
                     if lexcLoc:
                         counts = getCounts(lexcLoc, 'lexc')
                         for countType, count in counts.items():
-                            fileCounts[(countType, getRevision(lexcLoc))] = count
+                            fileCounts[countType] = (count, getRevisionInfo(lexcLoc), lexcLoc)
                     if rlxLoc:
                         counts = getCounts(rlxLoc, 'rlx')
                         for countType, count in counts.items():
-                            fileCounts[(countType, getRevision(rlxLoc))] = count
+                            fileCounts[countType] = (count, getRevisionInfo(rlxLoc), rlxLoc)
 
                     logging.info('Acquired file counts %s' % fileCounts)
 
@@ -273,20 +275,19 @@ if __name__ == '__main__':
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
-                                countKeys = list(filter(lambda x: x[0] == countName, fileCounts.keys()))
-                                if countKeys:
-                                    countKey = countKeys[0]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, fileCounts[countKey], countKey[1])
+                                if countName in fileCounts:
+                                    fileCount, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName, fileCount, revisionNumber, revisionAuthor)
                                     replacements[(matchAttempt.group(1))] = replacement
-                                    del fileCounts[countKey]
+                                    del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for (dixName, SVNRevision), dixCount in fileCounts.items():
-                                newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
-                                logging.debug('Adding new count %s' % repr(dixName))
+                            for fileName, (fileCount, revisionInfo, fileUrl) in fileCounts.items():
+                                newStats += '\n' + createStatSection(fileName, fileCount, revisionInfo, fileUrl)
+                                logging.debug('Adding new count %s' % repr(fileName))
                             newStats += '\n'
 
                             contentBeforeIndex = statsSection.start()
@@ -313,3 +314,4 @@ if __name__ == '__main__':
                 logging.error('Invalid language module name: %s' % pair)
     elif args.action == 'coverage':
        raise NotImplementedError
+
