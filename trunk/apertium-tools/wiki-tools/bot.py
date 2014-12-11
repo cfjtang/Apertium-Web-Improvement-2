@@ -4,7 +4,7 @@ baseURL = 'http://wiki.apertium.org/w/api.php'
 svnURL = 'https://svn.code.sf.net/p/apertium/svn/'
 lexccounterURL = svnURL + 'trunk/apertium-tools/lexccounter.py'
 
-import argparse, requests, json, logging, sys, re, os, subprocess, shutil, importlib, urllib.request, collections
+import argparse, requests, json, logging, sys, re, os, subprocess, shutil, importlib, urllib.request, collections, tempfile
 import xml.etree.ElementTree as etree
 try:
     from lexccounter import countStems
@@ -17,37 +17,50 @@ except ImportError:
     lexccounter = importlib.import_module(filename)
     countStems = vars(lexccounter)['countStems']
 
-def getCounts(uri, dixFormat):
+def getCounts(uri, fileFormat):
     logger = logging.getLogger("countStems")
     try:
-        dixString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
-        if 'dix' in dixFormat:
-            dixTree = etree.fromstring(dixString)
-
-        if dixFormat == 'monodix':
-            return {'stems': len(dixTree.findall("section/*[@lm]")), 'paradigms': len(dixTree.find('pardefs').findall("pardef")) }
-        elif dixFormat == 'bidix':
-            return {'stems': len(dixTree.findall("*[@id='main']/e//l"))}
-        elif dixFormat == 'lexc':
+        if fileFormat == 'monodix':
+            fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
+            dixTree = etree.fromstring(fileString)
+            return {
+                'stems': len(dixTree.findall("section/*[@lm]")),
+                'paradigms': len(dixTree.find('pardefs').findall("pardef"))
+            }
+        elif fileFormat == 'bidix':
+            fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
+            dixTree = etree.fromstring(fileString)
+            return {
+                'stems': len(dixTree.findall("*[@id='main']/e//l"))
+            }
+        elif fileFormat == 'lexc':
             logger = logging.getLogger("countStems")
             logger.setLevel(logging.ERROR)
-            return {'stems': countStems(dixString), 'vanilla stems': countStems(dixString, vanilla=True)}
+            fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
+            return {
+                'stems': countStems(fileString),
+                'vanilla stems': countStems(fileString, vanilla=True)
+            }
+        elif fileFormat == 'rlx':
+            return {
+                'rules': countRlxRules(uri)
+            }
         else:
-            raise ValueError('Invalid format: %s' % dixFormat)
+            raise ValueError('Invalid format: %s' % fileFormat)
     except Exception as e:
         logger.error('Unable to parse counts from %s: %s' % (uri, str(e)))
         return {}
 
-def getDixLocs(pair, dixFormat):
+def getFileLocs(pair, fileFormat):
     locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
     for location in locations:
         try:
             URL = svnURL + location + '/apertium-' + pair
             svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
-            return [URL + '/' + dixName for dixName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % dixFormat, svnData, re.DOTALL)]
+            return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
         except subprocess.CalledProcessError:
             pass
-    logging.error('No dix found for %s' % pair)
+    logging.error('No files found for %s' % pair)
     return []
 
 def getRevision(uri):
@@ -57,14 +70,23 @@ def getRevision(uri):
     except:
         return None
 
-def createStatsSection(dixCounts):
+def createStatsSection(fileCounts):
     statsSection = '==Over-all stats=='
-    for (dixName, SVNRevision), dixCount in dixCounts.items():
-        statsSection += '\n' + createStatSection(dixName, dixCount, SVNRevision)
+    for (fileName, SVNRevision), fileCount in fileCounts.items():
+        statsSection += '\n' + createStatSection(fileName, fileCount, SVNRevision)
     return statsSection
 
-def createStatSection(dixName, dixCount, SVNRevision):
-    return "*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(dixName, dixCount, SVNRevision)
+def createStatSection(fileName, fileCount, SVNRevision):
+    return "*'''{0}''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(fileName, fileCount, SVNRevision)
+
+def countRlxRules(url):
+    f = tempfile.NamedTemporaryFile()
+    urllib.request.urlretrieve(url, f.name)
+    try:
+        compilationOutput = str(subprocess.check_output('cg-comp %s %s' % (f.name, '/dev/null'), stderr=subprocess.STDOUT, shell=True), 'utf-8')
+        return int(re.search(r'Rules: (\d+)', compilationOutput).group(1))
+    except Exception as e:
+        logging.error('Unable to get rules from %s: %s' % (url, str(e)))
 
 def getPage(pageTitle):
     payload = {'action': 'query', 'format': 'json', 'titles': pageTitle, 'prop': 'revisions', 'rvprop': 'content'}
@@ -146,9 +168,6 @@ if __name__ == '__main__':
         logging.critical('Failed to obtain required token')
         sys.exit(-1)
 
-    #SVNRevision = getRevision(svnURL)
-    #logging.info('On SVN revision %s' % SVNRevision)
-
     if args.action == 'dict':
         for pair in args.pairs:
             try:
@@ -159,21 +178,18 @@ if __name__ == '__main__':
                 break
 
             if len(langs) == 2:
-                dixLocs = getDixLocs(pair, 'dix')
-                logging.debug('Acquired dictionary locations %s' % dixLocs)
+                fileLocs = getFileLocs(pair, 'dix') + getFileLocs(pair, 'rlx')
+                logging.debug('Acquired file locations %s' % fileLocs)
 
-                #dixURL = dixLocs[0]
-                #SVNRevision = getRevision(dixURL)
-                #logging.info('On SVN revision %s' % SVNRevision)
-
-                if len(dixLocs) > 0:
-                    dixCounts = {}
-                    for dixLoc in dixLocs:
-                        dixPair = dixLoc.split('/')[-1].split('.')[1].split('-')
-                        counts = getCounts(dixLoc, 'bidix' if set(langs) == set(dixPair) else 'monodix')
+                if len(fileLocs) > 0:
+                    fileCounts = {}
+                    for fileLoc in fileLocs:
+                        filePair = fileLoc.split('/')[-1].split('.')[1].split('-')
+                        fileFormat = 'rlx' if fileLoc.endswith('.rlx') else ('bidix' if set(langs) == set(filePair) else 'monodix')
+                        counts = getCounts(fileLoc, fileFormat)
                         for countType, count in counts.items():
-                            dixCounts[('-'.join(dixPair + [countType]), getRevision(dixLoc))] = count
-                    logging.debug('Acquired dictionary counts %s' % dixCounts)
+                            fileCounts[('-'.join(filePair + [countType]), getRevision(fileLoc))] = count
+                    logging.debug('Acquired file counts %s' % fileCounts)
 
                     pageContents = getPage(pageTitle)
                     if pageContents:
@@ -183,27 +199,27 @@ if __name__ == '__main__':
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
-                                countKeys = list(filter(lambda x: x[0] == countName, dixCounts.keys()))
+                                countKeys = list(filter(lambda x: x[0] == countName, fileCounts.keys()))
                                 if countKeys:
                                     countKey = countKeys[0]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countKey], countKey[1])
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, fileCounts[countKey], countKey[1])
                                     replacements[(matchAttempt.group(1))] = replacement
-                                    del dixCounts[countKey]
+                                    del fileCounts[countKey]
                                     logging.debug('Replaced count %s' % repr(countName))
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for (dixName, SVNRevision), dixCount in dixCounts.items():
-                                newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
-                                logging.debug('Adding new count %s' % repr(dixName))
+                            for (fileName, SVNRevision), fileCount in fileCounts.items():
+                                newStats += '\n' + createStatSection(fileName, fileCount, SVNRevision)
+                                logging.debug('Adding new count %s' % repr(fileName))
                             newStats += '\n'
 
                             contentBeforeIndex = statsSection.start()
                             contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
                             pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
                         else:
-                            pageContents += '\n' + createStatsSection(dixCounts)
+                            pageContents += '\n' + createStatsSection(fileCounts)
                             logging.debug('Adding new stats section')
 
                         editResult = editPage(pageTitle, pageContents, editToken)
@@ -212,7 +228,7 @@ if __name__ == '__main__':
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents = createStatsSection(dixCounts)
+                        pageContents = createStatsSection(fileCounts)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
@@ -220,27 +236,28 @@ if __name__ == '__main__':
                         else:
                             logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
             elif len(langs) == 1:
-                dixLoc = next(iter(sorted(sorted(getDixLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
-                lexcLoc = next(iter(getDixLocs(pair, 'lexc')), None)
+                dixLoc = next(iter(sorted(sorted(getFileLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
+                lexcLoc = next(iter(getFileLocs(pair, 'lexc')), None)
+                rlxLoc = next(iter(getFileLocs(pair, 'rlx')), None)
 
-                if dixLoc or lexcLoc:
-                    logging.debug('Acquired dictionary locations %s, %s' % (dixLoc, lexcLoc))
+                if dixLoc or lexcLoc or rlxLoc:
+                    logging.debug('Acquired file locations %s, %s, %s' % (dixLoc, lexcLoc, rlxLoc))
 
-                    dixCounts = {}
+                    fileCounts = {}
                     if dixLoc and not lexcLoc:
                         counts = getCounts(dixLoc, 'monodix')
                         for countType, count in counts.items():
-                            dixCounts[(countType, getRevision(dixLoc))] = count
-                        dixURL = dixLoc
+                            fileCounts[(countType, getRevision(dixLoc))] = count
                     if lexcLoc:
                         counts = getCounts(lexcLoc, 'lexc')
                         for countType, count in counts.items():
-                            dixCounts[(countType, getRevision(dixLoc))] = count
-                        dixURL = lexcLoc
-                    logging.info('Acquired dictionary counts %s' % dixCounts)
+                            fileCounts[(countType, getRevision(lexcLoc))] = count
+                    if rlxLoc:
+                        counts = getCounts(rlxLoc, 'rlx')
+                        for countType, count in counts.items():
+                            fileCounts[(countType, getRevision(rlxLoc))] = count
 
-                    #SVNRevision = getRevision(dixURL)
-                    #logging.info('On SVN revision %s' % SVNRevision)
+                    logging.info('Acquired file counts %s' % fileCounts)
 
                     pageContents = getPage(pageTitle)
                     if pageContents:
@@ -250,18 +267,18 @@ if __name__ == '__main__':
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
-                                countKeys = list(filter(lambda x: x[0] == countName, dixCounts.keys()))
+                                countKeys = list(filter(lambda x: x[0] == countName, fileCounts.keys()))
                                 if countKeys:
                                     countKey = countKeys[0]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, dixCounts[countKey], countKey[1])
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} ~ ~~~~".format(countName, fileCounts[countKey], countKey[1])
                                     replacements[(matchAttempt.group(1))] = replacement
-                                    del dixCounts[countKey]
+                                    del fileCounts[countKey]
                                     logging.debug('Replaced count %s' % repr(countName))
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for (dixName, SVNRevision), dixCount in dixCounts.items():
+                            for (dixName, SVNRevision), dixCount in fileCounts.items():
                                 newStats += '\n' + createStatSection(dixName, dixCount, SVNRevision)
                                 logging.debug('Adding new count %s' % repr(dixName))
                             newStats += '\n'
@@ -270,7 +287,7 @@ if __name__ == '__main__':
                             contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
                             pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
                         else:
-                            pageContents += '\n' + createStatsSection(dixCounts)
+                            pageContents += '\n' + createStatsSection(fileCounts)
                             logging.debug('Adding new stats section')
 
                         editResult = editPage(pageTitle, pageContents, editToken)
@@ -279,7 +296,7 @@ if __name__ == '__main__':
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents = createStatsSection(dixCounts)
+                        pageContents = createStatsSection(fileCounts)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
