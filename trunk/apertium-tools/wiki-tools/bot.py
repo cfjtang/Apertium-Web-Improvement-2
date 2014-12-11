@@ -88,7 +88,7 @@ def countRlxRules(url):
             return int(re.search(r'Rules: (\d+)', compilationOutput).group(1))
         except subprocess.CalledProcessError as e:
             if e.output:
-                return int(re.search(r'Rules: (\d+)', e.output).group(1))
+                return int(re.search(r'Rules: (\d+)', e.output.decode('utf-8')).group(1))
             else:
                 logging.error('Unable to count rules from %s: %s' % (url, str(e)))
     except Exception as e:
