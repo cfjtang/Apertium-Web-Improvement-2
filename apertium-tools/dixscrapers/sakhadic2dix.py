@@ -128,12 +128,18 @@ class Entry(object):
         if not self.abbrvs:
             self.abbrvs = ['XX']
 
-        # remove to
         for i, meaning in enumerate(self.meanings):
             if meaning.startswith("to "):
-                self.meanings[i] = meaning[3:]
+                meaning = meaning[3:]
             if meaning == "no translation":
-                self.meanings[i] = None
+                meaning = None
+            if "v" in self.abbrvs or "n" in self.abbrvs:
+                words = meaning.split(" ")
+                if len(words) > 1:
+                    words.insert(1, "<g>")
+                    words[-1] += "</g>"
+                    meaning = " ".join(words)
+            self.meanings[i] = meaning
         self.meanings = [x for x in self.meanings if x]
 
         # make immutable
@@ -158,6 +164,7 @@ def preprocess(lines):
         line = line.replace("=", "")
         line = line.replace(";", "; ")
         line = line.replace("cf.", "cf")
+        line = line.replace("very very", "very")
         line = strip_brackets(line)
         if not line or is_page_num(line):
             return None
