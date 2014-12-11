@@ -25,7 +25,7 @@ ABBRVS = {
     'Mongo.': [],
     'n.': ['n'],
     'num.': ['det', 'qnt'],
-    'ono.': [],
+    'ono.': ['ij'],
     'pl.': ['pl'],
     'pp.': ['post'],
     'pro.': ['prn', 'XX'],
