@@ -83,10 +83,16 @@ def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
     urllib.request.urlretrieve(url, f.name)
     try:
-        compilationOutput = str(subprocess.check_output('cg-comp %s %s' % (f.name, '/dev/null'), stderr=subprocess.STDOUT, shell=True), 'utf-8')
-        return int(re.search(r'Rules: (\d+)', compilationOutput).group(1))
+        try:
+            compilationOutput = str(subprocess.check_output('cg-comp %s %s' % (f.name, '/dev/null'), stderr=subprocess.STDOUT, shell=True), 'utf-8')
+            return int(re.search(r'Rules: (\d+)', compilationOutput).group(1))
+        except subprocess.CalledProcessError as e:
+            if e.output:
+                return int(re.search(r'Rules: (\d+)', e.output).group(1))
+            else:
+                logging.error('Unable to count rules from %s: %s' % (url, str(e)))
     except Exception as e:
-        logging.error('Unable to get rules from %s: %s' % (url, str(e)))
+        logging.error('Unable to count rules from %s: %s' % (url, str(e)))
 
 def getPage(pageTitle):
     payload = {'action': 'query', 'format': 'json', 'titles': pageTitle, 'prop': 'revisions', 'rvprop': 'content'}
