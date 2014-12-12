@@ -51,13 +51,22 @@ def getCounts(uri, fileFormat):
         logger.error('Unable to parse counts from %s: %s' % (uri, str(e)))
         return {}
 
+svnDataCache = {}
+
 def getFileLocs(pair, fileFormat):
+    global svnDataCache
+
     locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
     for location in locations:
         try:
             URL = svnURL + location + '/apertium-' + pair
-            logging.debug('Finding %s files in %s' % (fileFormat, location))
-            svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
+            if URL in svnDataCache:
+                svnData = svnDataCache[URL]
+                logging.debug('Using SVN data cache for %s files in %s' % (fileFormat, location))
+            else:
+                logging.debug('Finding %s files in %s' % (fileFormat, location))
+                svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
+                svnDataCache[URL] = svnData
             return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
         except subprocess.CalledProcessError:
             pass
