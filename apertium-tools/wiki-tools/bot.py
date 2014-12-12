@@ -61,7 +61,7 @@ def getFileLocs(pair, fileFormat):
             return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
         except subprocess.CalledProcessError:
             pass
-    logging.error('No files found for %s' % pair)
+    logging.error('No %s files found for %s' % (fileFormat, pair))
     return []
 
 def getRevisionInfo(uri):
@@ -77,7 +77,7 @@ def createStatsSection(fileCounts):
     statsSection = '==Over-all stats=='
     for countName in sorted(fileCounts.keys()):
         count, revisionInfo, fileUrl = fileCounts[countName]
-        statsSection += '\n' + createStatSection(countName, count, revisionInfo)
+        statsSection += '\n' + createStatSection(countName, count, revisionInfo, fileUrl)
     return statsSection
 
 def createStatSection(countName, count, revisionInfo, fileUrl):
@@ -97,6 +97,14 @@ def countRlxRules(url):
                 logging.error('Unable to count rules from %s: %s' % (url, str(e)))
     except Exception as e:
         logging.error('Unable to count rules from %s: %s' % (url, str(e)))
+
+def addCategory(pageContents):
+    categoryMarker = '[[Category:Datastats]]'
+    if categoryMarker in pageContents:
+        return pageContents
+    else:
+        logging.debug('Adding category marker (%s)' % categoryMarker)
+        return pageContents + '\n' * 3 + categoryMarker 
 
 def getPage(pageTitle):
     payload = {'action': 'query', 'format': 'json', 'titles': pageTitle, 'prop': 'revisions', 'rvprop': 'content'}
@@ -231,6 +239,7 @@ if __name__ == '__main__':
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts)
                             logging.debug('Adding new stats section')
+                            pageContents = addCategory(pageContents)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
@@ -239,6 +248,7 @@ if __name__ == '__main__':
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
                         pageContents = createStatsSection(fileCounts)
+                        pageContents = addCategory(pageContents)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
@@ -299,6 +309,7 @@ if __name__ == '__main__':
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts)
                             logging.debug('Adding new stats section')
+                            pageContents = addCategory(pageContents)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
@@ -307,6 +318,7 @@ if __name__ == '__main__':
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
                         pageContents = createStatsSection(fileCounts)
+                        pageContents = addCategory(pageContents)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
