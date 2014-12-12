@@ -75,12 +75,12 @@ def getRevisionInfo(uri):
 
 def createStatsSection(fileCounts):
     statsSection = '==Over-all stats=='
-    for fileName, (fileCount, revisionInfo, fileUrl) in fileCounts.items():
-        statsSection += '\n' + createStatSection(fileName, fileCount, revisionInfo)
+    for countName, (count, revisionInfo, fileUrl) in fileCounts.items():
+        statsSection += '\n' + createStatSection(countName, count, revisionInfo)
     return statsSection
 
-def createStatSection(fileName, fileCount, revisionInfo, fileUrl):
-    return "*'''[{4} {0}]''': <section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(fileName, fileCount, revisionInfo[0], revisionInfo[1], fileUrl)
+def createStatSection(countName, count, revisionInfo, fileUrl):
+    return "*'''[{5} {0}]''': <section begin={1} />{1:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
 
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
@@ -209,8 +209,8 @@ if __name__ == '__main__':
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
                                 if countName in fileCounts:
-                                    fileCount, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName, fileCount, revisionNumber, revisionAuthor)
+                                    count, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
@@ -218,9 +218,9 @@ if __name__ == '__main__':
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for fileName, (fileCount, revisionInfo, fileUrl) in fileCounts.items():
-                                newStats += '\n' + createStatSection(fileName, fileCount, revisionInfo, fileUrl)
-                                logging.debug('Adding new count %s' % repr(fileName))
+                            for countName, (count, revisionInfo, fileUrl) in fileCounts.items():
+                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl)
+                                logging.debug('Adding new count %s' % repr(countName))
                             newStats += '\n'
 
                             contentBeforeIndex = statsSection.start()
@@ -276,8 +276,8 @@ if __name__ == '__main__':
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
                                 if countName in fileCounts:
-                                    fileCount, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName, fileCount, revisionNumber, revisionAuthor)
+                                    count, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
+                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
@@ -285,9 +285,9 @@ if __name__ == '__main__':
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for fileName, (fileCount, revisionInfo, fileUrl) in fileCounts.items():
-                                newStats += '\n' + createStatSection(fileName, fileCount, revisionInfo, fileUrl)
-                                logging.debug('Adding new count %s' % repr(fileName))
+                            for countName, (count, revisionInfo, fileUrl) in fileCounts.items():
+                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl)
+                                logging.debug('Adding new count %s' % repr(countName))
                             newStats += '\n'
 
                             contentBeforeIndex = statsSection.start()
