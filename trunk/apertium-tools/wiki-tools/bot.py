@@ -80,7 +80,7 @@ def createStatsSection(fileCounts):
     return statsSection
 
 def createStatSection(countName, count, revisionInfo, fileUrl):
-    return "*'''[{5} {0}]''': <section begin={1} />{1:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
+    return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
 
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
