@@ -43,7 +43,7 @@ def getCounts(uri, fileFormat):
             }
         elif fileFormat == 'rlx':
             return {
-                'rules': countRlxRules(uri)
+                'rlx-rules': countRlxRules(uri)
             }
         else:
             raise ValueError('Invalid format: %s' % fileFormat)
