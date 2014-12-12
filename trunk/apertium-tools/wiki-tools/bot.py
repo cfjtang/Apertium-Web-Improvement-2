@@ -34,7 +34,7 @@ def getCounts(uri, fileFormat):
                 'stems': len(dixTree.findall("*[@id='main']/e//l"))
             }
         elif fileFormat == 'lexc':
-            logger = logging.getLogger("countStems")
+            logger = logging.getLogger('countStems')
             logger.setLevel(logging.ERROR)
             fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
             return {
@@ -44,6 +44,13 @@ def getCounts(uri, fileFormat):
         elif fileFormat == 'rlx':
             return {
                 'rlx-rules': countRlxRules(uri)
+            }
+        elif re.match(r't\dx', fileFormat):
+            fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
+            dixTree = etree.fromstring(fileString)
+            return {
+                fileFormat + '-rules': len(dixTree.findall('.//rule')),
+                fileFormat + '-macros': len(dixTree.findall('.//macro'))
             }
         else:
             raise ValueError('Invalid format: %s' % fileFormat)
@@ -205,14 +212,17 @@ if __name__ == '__main__':
                 break
 
             if len(langs) == 2:
-                fileLocs = getFileLocs(pair, 'dix') + getFileLocs(pair, 'rlx')
+                fileLocs = getFileLocs(pair, 'dix') + getFileLocs(pair, 'rlx') + getFileLocs(pair, 't\dx')
                 logging.debug('Acquired file locations %s' % fileLocs)
 
                 if len(fileLocs) > 0:
                     fileCounts = {}
                     for fileLoc in fileLocs:
                         filePair = fileLoc.split('/')[-1].split('.')[1].split('-')
-                        fileFormat = 'rlx' if fileLoc.endswith('.rlx') else ('bidix' if set(langs) == set(filePair) else 'monodix')
+                        if fileLoc.endswith('.dix'):
+                            fileFormat = 'bidix' if set(langs) == set(filePair) else 'monodix'
+                        else:
+                            fileFormat = fileLoc.split('.')[-1]
                         counts = getCounts(fileLoc, fileFormat)
                         for countType, count in counts.items():
                             fileCounts['-'.join(filePair + [countType])] = (count, getRevisionInfo(fileLoc), fileLoc)
