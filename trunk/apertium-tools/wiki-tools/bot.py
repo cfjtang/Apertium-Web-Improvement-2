@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-baseURL = 'http://wiki.apertium.org/w/api.php'
+wikiURL = 'http://wiki.apertium.org/wiki/'
+apiURL = 'http://wiki.apertium.org/w/api.php'
 svnURL = 'https://svn.code.sf.net/p/apertium/svn/'
 lexccounterURL = svnURL + 'trunk/apertium-tools/lexccounter.py'
 
@@ -127,7 +128,7 @@ def addCategory(pageContents):
 
 def getPage(pageTitle):
     payload = {'action': 'query', 'format': 'json', 'titles': pageTitle, 'prop': 'revisions', 'rvprop': 'content'}
-    viewResult = s.get(baseURL, params=payload)
+    viewResult = s.get(apiURL, params=payload)
     jsonResult = json.loads(viewResult.text)
 
     if not 'missing' in list(jsonResult['query']['pages'].values())[0]:
@@ -139,19 +140,19 @@ def editPage(pageTitle, pageContents, editToken):
         logging.debug('Putting page in Category:Datastats')
 
     payload = {'action': 'edit', 'format': 'json', 'title': pageTitle, 'text': pageContents, 'bot': 'True', 'contentmodel': 'wikitext', 'token': editToken}
-    editResult = s.post(baseURL, data=payload)
+    editResult = s.post(apiURL, data=payload)
     jsonResult = json.loads(editResult.text)
     return jsonResult
 
 def login(loginName, password):
     try:
         payload = {'action': 'login', 'format': 'json', 'lgname': loginName, 'lgpassword': password}
-        authResult = s.post(baseURL, params=payload)
+        authResult = s.post(apiURL, params=payload)
         authToken = json.loads(authResult.text)['login']['token']
         logging.debug('Auth token: %s' % authToken)
 
         payload = {'action': 'login', 'format': 'json', 'lgname': args.loginName, 'lgpassword': args.password, 'lgtoken': authToken}
-        authResult = s.post(baseURL, params=payload)
+        authResult = s.post(apiURL, params=payload)
         if not json.loads(authResult.text)['login']['result'] == 'Success':
             logging.critical('Failed to login as %s: %s' % (args.loginName, json.loads(authResult.text)['login']['result']))
         else:
@@ -163,7 +164,7 @@ def login(loginName, password):
 def getToken(tokenType, props):
     try:
         payload = {'action': 'query', 'format': 'json', 'prop': props, 'intoken': tokenType, 'titles':'Main Page'}
-        tokenResult = s.get(baseURL, params=payload)
+        tokenResult = s.get(apiURL, params=payload)
         token = json.loads(tokenResult.text)['query']['pages']['1']['%stoken' % tokenType]
         logging.debug('%s token: %s' % (tokenType, token))
         return token
@@ -268,7 +269,7 @@ if __name__ == '__main__':
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
-                            logging.info('Update of page %s succeeded' % pageTitle)
+                            logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
@@ -277,7 +278,7 @@ if __name__ == '__main__':
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
-                            logging.info('Creation of page %s succeeded' % pageTitle)
+                            logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
                         else:
                             logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
             elif len(langs) == 1:
@@ -341,7 +342,7 @@ if __name__ == '__main__':
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
-                            logging.info('Update of page %s succeeded' % pageTitle)
+                            logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
@@ -350,11 +351,10 @@ if __name__ == '__main__':
 
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
-                            logging.info('Creation of page %s succeeded' % pageTitle)
+                            logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
                         else:
                             logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
             else:
                 logging.error('Invalid language module name: %s' % pair)
     elif args.action == 'coverage':
        raise NotImplementedError
-
