@@ -89,15 +89,18 @@ def getRevisionInfo(uri):
     except:
         return None
 
-def createStatsSection(fileCounts):
+def createStatsSection(fileCounts, requester=None):
     statsSection = '==Over-all stats=='
     for countName in sorted(fileCounts.keys()):
         count, revisionInfo, fileUrl = fileCounts[countName]
-        statsSection += '\n' + createStatSection(countName, count, revisionInfo, fileUrl)
+        statsSection += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
     return statsSection
 
-def createStatSection(countName, count, revisionInfo, fileUrl):
-    return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
+def createStatSection(countName, count, revisionInfo, fileUrl, requester=None):
+    if requester:
+        return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
+    else:
+        return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~, run by {5}".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl, requester)
 
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
@@ -176,6 +179,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--pairs', nargs='+', help="Apertium language pairs in the format e.g. bg-ru or rus")
     parser.add_argument('-a', '--analyzers', nargs='+', help="Apertium analyzers (.automorf.bin files)")
     parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
+    parser.add_argument('-r', '--requester', help="user who requests update", default=None)
 
     args = parser.parse_args()
     if args.action == 'dict' and not args.pairs:
@@ -238,7 +242,10 @@ if __name__ == '__main__':
                                 countName = matchAttempt.group(2).strip()
                                 if countName in fileCounts:
                                     count, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
+                                    if args.requester:
+                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~, run by {4}".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor, args.requester)
+                                    else:
+                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
@@ -248,7 +255,7 @@ if __name__ == '__main__':
                             newStats = ''
                             for countName in sorted(fileCounts.keys()):
                                 count, revisionInfo, fileUrl = fileCounts[countName]
-                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl)
+                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                 logging.debug('Adding new count %s' % repr(countName))
                             newStats += '\n'
 
@@ -256,7 +263,7 @@ if __name__ == '__main__':
                             contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
                             pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
                         else:
-                            pageContents += '\n' + createStatsSection(fileCounts)
+                            pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
                             pageContents = addCategory(pageContents)
 
@@ -266,7 +273,7 @@ if __name__ == '__main__':
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents = createStatsSection(fileCounts)
+                        pageContents = createStatsSection(fileCounts, requester=args.requester)
                         pageContents = addCategory(pageContents)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
@@ -308,7 +315,10 @@ if __name__ == '__main__':
                                 countName = matchAttempt.group(2).strip()
                                 if countName in fileCounts:
                                     count, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
-                                    replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
+                                    if args.requester:
+                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~, run by {4}".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor, args.requester)
+                                    else:
+                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
@@ -318,7 +328,7 @@ if __name__ == '__main__':
                             newStats = ''
                             for countName in sorted(fileCounts.keys()):
                                 count, revisionInfo, fileUrl = fileCounts[countName]
-                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl)
+                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                 logging.debug('Adding new count %s' % repr(countName))
                             newStats += '\n'
 
@@ -326,7 +336,7 @@ if __name__ == '__main__':
                             contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
                             pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
                         else:
-                            pageContents += '\n' + createStatsSection(fileCounts)
+                            pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
                             pageContents = addCategory(pageContents)
 
@@ -336,7 +346,7 @@ if __name__ == '__main__':
                         else:
                             logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                     else:
-                        pageContents = createStatsSection(fileCounts)
+                        pageContents = createStatsSection(fileCounts, requester=args.requester)
                         pageContents = addCategory(pageContents)
 
                         editResult = editPage(pageTitle, pageContents, editToken)
