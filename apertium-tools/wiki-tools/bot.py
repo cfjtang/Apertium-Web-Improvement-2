@@ -61,7 +61,7 @@ def getCounts(uri, fileFormat):
 
 svnDataCache = {}
 
-def getFileLocs(pair, fileFormat):
+def getFileLocs(pair, fileFormat, includePost=False):
     global svnDataCache
 
     locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
@@ -75,7 +75,11 @@ def getFileLocs(pair, fileFormat):
                 logging.debug('Finding %s files in %s' % (fileFormat, location))
                 svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
                 svnDataCache[URL] = svnData
-            return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
+            
+            if includePost:
+                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
+            else:
+                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL) if not fileName.split('.')[1].startswith('post')]
         except subprocess.CalledProcessError:
             pass
     logging.error('No %s files found for %s' % (fileFormat, pair))
@@ -99,9 +103,9 @@ def createStatsSection(fileCounts, requester=None):
 
 def createStatSection(countName, count, revisionInfo, fileUrl, requester=None):
     if requester:
-        return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
-    else:
         return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~, run by {6}".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl, requester)
+    else:
+        return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
 
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
