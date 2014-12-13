@@ -139,9 +139,8 @@ def editPage(pageTitle, pageContents, editToken):
         logging.debug('Putting page in Category:Datastats')
 
     payload = {'action': 'edit', 'format': 'json', 'title': pageTitle, 'text': pageContents, 'bot': 'True', 'contentmodel': 'wikitext', 'token': editToken}
-    editResult = s.post(baseURL, params=payload)
+    editResult = s.post(baseURL, data=payload)
     jsonResult = json.loads(editResult.text)
-
     return jsonResult
 
 def login(loginName, password):
