@@ -271,7 +271,10 @@ if __name__ == '__main__':
                                     logging.debug('Replaced count %s' % repr(countName))
                                 else:
                                     langPairEndIndex = countName.find('-', countName.find('-') + 1)
-                                    if langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts:
+                                    oldLangPairEntry = langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts
+                                    oldLangEntry = countName.count('-') == 1 and countName.replace('-', ' ') in fileCounts
+                                    postEntry = countName.startswith('post')
+                                    if oldLangEntry or oldLangPairEntry or postEntry:
                                         replacements[(matchAttempt.group(1))] = ''
                                         logging.debug('Deleting old style count %s' % repr(countName))
 
