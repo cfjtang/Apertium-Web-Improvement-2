@@ -44,7 +44,7 @@ def getCounts(uri, fileFormat):
             }
         elif fileFormat == 'rlx':
             return {
-                'rlx-rules': countRlxRules(uri)
+                'rlx rules': countRlxRules(uri)
             }
         elif re.match(r't\dx', fileFormat):
             fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
