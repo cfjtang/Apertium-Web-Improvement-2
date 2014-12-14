@@ -96,7 +96,7 @@ def getRevisionInfo(uri):
 
 def createStatsSection(fileCounts, requester=None):
     statsSection = '==Over-all stats=='
-    for countName in sorted(fileCounts.keys()):
+    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
         count, revisionInfo, fileUrl = fileCounts[countName]
         statsSection += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
     return statsSection
@@ -257,7 +257,7 @@ if __name__ == '__main__':
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for countName in sorted(fileCounts.keys()):
+                            for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
                                 count, revisionInfo, fileUrl = fileCounts[countName]
                                 newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                 logging.debug('Adding new count %s' % repr(countName))
@@ -330,7 +330,7 @@ if __name__ == '__main__':
                                 pageContents = pageContents.replace(old, new)
 
                             newStats = ''
-                            for countName in sorted(fileCounts.keys()):
+                            for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
                                 count, revisionInfo, fileUrl = fileCounts[countName]
                                 newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                 logging.debug('Adding new count %s' % repr(countName))
