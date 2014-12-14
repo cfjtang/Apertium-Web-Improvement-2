@@ -138,7 +138,7 @@ if __name__ == '__main__':
                         pairInfo = pairs[possiblePair]
                         
                         if args.links:
-                            strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}-stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
+                            strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
                         else:
                             numStems = primaryStemCounts[possiblePair]
                             strStems = '{:,}'.format(numStems) if isinstance(numStems, int) else numStems
