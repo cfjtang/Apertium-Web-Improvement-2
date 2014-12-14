@@ -167,6 +167,10 @@
 
   <section-def-attrs>
 
+    <def-attr n="a_pos">
+      <attr-item tags="cop"/>
+    </def-attr>
+
     <def-attr n="a_nom">
       <attr-item tags="n"/>
       <attr-item tags="n.attr"/>
@@ -455,11 +459,18 @@
     </def-macro>
 
     <def-macro n="tense1" npar="1">
+      <!--
+      GIVEN:  ^ойна<v><tv><aor><p3><sg>/уйна<v><tv><aor><p3><sg>$
+      EXPECT: ^уйна<v><tv><pres><p3><sg>$
+      GIVEN:  ^е<cop><aor><evid><p3><sg>/и<cop><aor><evid><p3><sg>$
+      EXPECT: ^и<cop><aor><evid><p3><sg>$
+      -->
       <choose>
         <when>
-          <test>
-              <equal><clip pos="1" side="sl" part="a_tense"/><lit-tag v="aor"/></equal>
-          </test>
+          <test><and>
+            <equal><clip pos="1" side="sl" part="a_tense"/><lit-tag v="aor"/></equal>
+	    <not><equal><clip pos="1" side="sl" part="a_pos"/><lit-tag v="cop"/></equal></not>
+	  </and></test>
           <let><clip pos="1" side="tl" part="a_tense"/><lit-tag v="pres"/></let>
         </when>
         <when>
