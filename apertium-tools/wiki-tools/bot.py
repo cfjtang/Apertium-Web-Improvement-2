@@ -248,16 +248,17 @@ if __name__ == '__main__':
                     if pageContents:
                         statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
                         if statsSection:
-                            matchAttempts = re.finditer(r'(^.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                            matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
                             replacements = {}
                             for matchAttempt in matchAttempts:
-                                countName = matchAttempt.group(2).strip()
+                                countName = matchAttempt.group(2).strip().replace('_', ' ')
                                 if countName in fileCounts:
                                     count, revisionInfo, fileUrl = fileCounts[countName]
                                     replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
+
                             for old, new in replacements.items():
                                 pageContents = pageContents.replace(old, new)
 
@@ -318,10 +319,10 @@ if __name__ == '__main__':
                     if pageContents:
                         statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
                         if statsSection:
-                            matchAttempts = re.finditer(r'(^.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                            matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
                             replacements = {}
                             for matchAttempt in matchAttempts:
-                                countName = matchAttempt.group(2).strip()
+                                countName = matchAttempt.group(2).strip().replace('_', ' ')
                                 if countName in fileCounts:
                                     count, revisionInfo, fileUrl = fileCounts[countName]
                                     replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
