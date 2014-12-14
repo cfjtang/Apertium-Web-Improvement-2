@@ -239,11 +239,11 @@ if __name__ == '__main__':
                 if len(fileLocs) > 0:
                     fileCounts = {}
                     for fileLoc in fileLocs:
-                        filePair = fileLoc.split('/')[-1].split('.')[1].split('-')
+                        fileLangs = fileLoc.split('/')[-1].split('.')[1].split('-')
                         if fileLoc.endswith('.dix'):
-                            fileFormat = 'bidix' if set(langs) == set(filePair) else 'monodix'
+                            fileFormat = 'bidix' if set(langs) == set(fileLangs) else 'monodix'
                         elif fileLoc.endswith('.metadix'):
-                            fileFormat = 'metabidix' if set(langs) == set(filePair) else 'metamonodix'
+                            fileFormat = 'metabidix' if set(langs) == set(fileLangs) else 'metamonodix'
                         else:
                             fileFormat = fileLoc.split('.')[-1]
 
@@ -252,7 +252,7 @@ if __name__ == '__main__':
                             if fileLoc.endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.metadix', '.dix'), fileLocs)):
                                 countType = countType.replace('meta ', '')
                                 logging.debug('Assuming metadix %s as dix' % fileLoc)
-                            fileCounts['-'.join(filePair) + ' ' + countType] = (count, getRevisionInfo(fileLoc), fileLoc)
+                            fileCounts['-'.join(fileLangs) + ' ' + countType] = (count, getRevisionInfo(fileLoc), fileLoc)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
                     pageContents = getPage(pageTitle)
@@ -281,6 +281,7 @@ if __name__ == '__main__':
                             for old, new in replacements.items():
                                 if new == '':
                                     pageContents = pageContents.replace(old + '\n', new)
+                                    pageContents = pageContents.replace(old, new)
                                 else:
                                     pageContents = pageContents.replace(old, new)
 
