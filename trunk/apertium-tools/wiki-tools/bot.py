@@ -50,8 +50,8 @@ def getCounts(uri, fileFormat):
             fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
             dixTree = etree.fromstring(fileString)
             return {
-                fileFormat + '-rules': len(dixTree.findall('.//rule')),
-                fileFormat + '-macros': len(dixTree.findall('.//macro'))
+                fileFormat + ' rules': len(dixTree.findall('.//rule')),
+                fileFormat + ' macros': len(dixTree.findall('.//macro'))
             }
         else:
             raise ValueError('Invalid format: %s' % fileFormat)
@@ -241,7 +241,7 @@ if __name__ == '__main__':
                             fileFormat = fileLoc.split('.')[-1]
                         counts = getCounts(fileLoc, fileFormat)
                         for countType, count in counts.items():
-                            fileCounts['-'.join(filePair + [countType])] = (count, getRevisionInfo(fileLoc), fileLoc)
+                            fileCounts['-'.join(filePair) + ' ' + countType] = (count, getRevisionInfo(fileLoc), fileLoc)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
                     pageContents = getPage(pageTitle)
