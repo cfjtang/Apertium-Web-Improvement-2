@@ -233,7 +233,7 @@ if __name__ == '__main__':
                 break
 
             if len(langs) == 2:
-                fileLocs = getFileLocs(pair, 'dix') + getFileLocs(pair, 'metadix') + getFileLocs(pair, 'rlx') + getFileLocs(pair, 't\dx')
+                fileLocs = sum(map(lambda x: getFileLocs(pair, x), ['dix', 'metadix', 'lexc', 'rlx', 't\dx']), [])
                 logging.debug('Acquired file locations %s' % fileLocs)
 
                 if len(fileLocs) > 0:
