@@ -258,9 +258,17 @@ if __name__ == '__main__':
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
+                                else:
+                                    langPairEndIndex = countName.find('-', countName.find('-') + 1)
+                                    if langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts:
+                                        replacements[(matchAttempt.group(1))] = ''
+                                        logging.debug('Deleting old style count %s' % repr(countName))
 
                             for old, new in replacements.items():
-                                pageContents = pageContents.replace(old, new)
+                                if new == '':
+                                    pageContents = pageContents.replace(old + '\n', new)
+                                else:
+                                    pageContents = pageContents.replace(old, new)
 
                             newStats = ''
                             for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
