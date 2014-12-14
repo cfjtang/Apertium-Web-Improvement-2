@@ -21,18 +21,27 @@ except ImportError:
 def getCounts(uri, fileFormat):
     logger = logging.getLogger("countStems")
     try:
-        if fileFormat == 'monodix':
+        if fileFormat.endswith('dix'):
             fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
             dixTree = etree.fromstring(fileString)
+
+        if fileFormat == 'monodix':
             return {
                 'stems': len(dixTree.findall("section/*[@lm]")),
                 'paradigms': len(dixTree.find('pardefs').findall("pardef"))
             }
+        elif fileFormat == 'metamonodix':
+            return {
+                'meta stems': len(dixTree.findall("section/*[@lm]")),
+                'meta paradigms': len(dixTree.find('pardefs').findall("pardef"))
+            }
         elif fileFormat == 'bidix':
-            fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
-            dixTree = etree.fromstring(fileString)
             return {
                 'stems': len(dixTree.findall("*[@id='main']/e//l"))
+            }
+        elif fileFormat == 'metabidix':
+            return {
+                'meta stems': len(dixTree.findall("*[@id='main']/e//l"))
             }
         elif fileFormat == 'lexc':
             logger = logging.getLogger('countStems')
@@ -228,7 +237,7 @@ if __name__ == '__main__':
                 break
 
             if len(langs) == 2:
-                fileLocs = getFileLocs(pair, 'dix') + getFileLocs(pair, 'rlx') + getFileLocs(pair, 't\dx')
+                fileLocs = getFileLocs(pair, 'dix') + getFileLocs(pair, 'metadix') + getFileLocs(pair, 'rlx') + getFileLocs(pair, 't\dx')
                 logging.debug('Acquired file locations %s' % fileLocs)
 
                 if len(fileLocs) > 0:
@@ -237,10 +246,16 @@ if __name__ == '__main__':
                         filePair = fileLoc.split('/')[-1].split('.')[1].split('-')
                         if fileLoc.endswith('.dix'):
                             fileFormat = 'bidix' if set(langs) == set(filePair) else 'monodix'
+                        elif fileLoc.endswith('.metadix'):
+                            fileFormat = 'metabidix' if set(langs) == set(filePair) else 'metamonodix'
                         else:
                             fileFormat = fileLoc.split('.')[-1]
+
                         counts = getCounts(fileLoc, fileFormat)
                         for countType, count in counts.items():
+                            if fileLoc.endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.metadix', '.dix'), fileLocs)):
+                                countType = countType.replace('meta ', '')
+                                logging.debug('Assuming metadix %s as dix' % fileLoc)
                             fileCounts['-'.join(filePair) + ' ' + countType] = (count, getRevisionInfo(fileLoc), fileLoc)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
