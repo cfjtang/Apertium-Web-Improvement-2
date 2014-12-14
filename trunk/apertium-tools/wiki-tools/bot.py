@@ -102,10 +102,18 @@ def createStatsSection(fileCounts, requester=None):
     return statsSection
 
 def createStatSection(countName, count, revisionInfo, fileUrl, requester=None):
-    if requester:
-        return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~, run by {6}".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl, requester)
+    if count is 0:
+        statSection = "*<span style='opacity: .6'>'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
     else:
-        return "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
+        statSection = "*'''[{5} {0}]''': <section begin={1} />{2:,d}<section end={1} /> as of r{3} by {4} ~ ~~~~".format(countName, countName.replace(' ', '_'), count, revisionInfo[0], revisionInfo[1], fileUrl)
+
+    if requester:
+        statSection += ', run by %s' % requester
+    
+    if count is 0:
+        statSection += '</span>'
+
+    return statSection
 
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
@@ -240,16 +248,13 @@ if __name__ == '__main__':
                     if pageContents:
                         statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
                         if statsSection:
-                            matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                            matchAttempts = re.finditer(r'(^.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
                                 if countName in fileCounts:
-                                    count, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
-                                    if args.requester:
-                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~, run by {4}".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor, args.requester)
-                                    else:
-                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
+                                    count, revisionInfo, fileUrl = fileCounts[countName]
+                                    replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
@@ -313,16 +318,13 @@ if __name__ == '__main__':
                     if pageContents:
                         statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
                         if statsSection:
-                            matchAttempts = re.finditer(r'^\*[^<]+(<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                            matchAttempts = re.finditer(r'(^.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
                             replacements = {}
                             for matchAttempt in matchAttempts:
                                 countName = matchAttempt.group(2).strip()
                                 if countName in fileCounts:
-                                    count, (revisionNumber, revisionAuthor), fileUrl = fileCounts[countName]
-                                    if args.requester:
-                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~, run by {4}".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor, args.requester)
-                                    else:
-                                        replacement = "<section begin={0} />{1:,d}<section end={0} /> as of r{2} by {3} ~ ~~~~".format(countName.replace(' ', '_'), count, revisionNumber, revisionAuthor)
+                                    count, revisionInfo, fileUrl = fileCounts[countName]
+                                    replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
                                     replacements[(matchAttempt.group(1))] = replacement
                                     del fileCounts[countName]
                                     logging.debug('Replaced count %s' % repr(countName))
