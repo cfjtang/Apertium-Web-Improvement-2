@@ -156,10 +156,6 @@ def getPage(pageTitle):
         return list(jsonResult['query']['pages'].values())[0]['revisions'][0]['*']
 
 def editPage(pageTitle, pageContents, editToken):
-    if pageContents.find('[[Category:Datastats]]') < 0:
-        pageContents += "\n\n[[Category:Datastats]]"
-        logging.debug('Putting page in Category:Datastats')
-
     payload = {'action': 'edit', 'format': 'json', 'title': pageTitle, 'text': pageContents, 'bot': 'True', 'contentmodel': 'wikitext', 'token': editToken}
     editResult = s.post(apiURL, data=payload)
     jsonResult = json.loads(editResult.text)
@@ -298,8 +294,8 @@ if __name__ == '__main__':
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
-                            pageContents = addCategory(pageContents)
-
+                        
+                        pageContents = addCategory(pageContents)
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
                             logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
@@ -368,8 +364,8 @@ if __name__ == '__main__':
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
-                            pageContents = addCategory(pageContents)
-
+                        
+                        pageContents = addCategory(pageContents)
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
                             logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
