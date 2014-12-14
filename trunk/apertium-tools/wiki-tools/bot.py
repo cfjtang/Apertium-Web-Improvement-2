@@ -64,7 +64,7 @@ def getCounts(uri, fileFormat):
             }
         else:
             raise ValueError('Invalid format: %s' % fileFormat)
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         logger.error('Unable to parse counts from %s: %s' % (uri, str(e)))
         return {}
 
