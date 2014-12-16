@@ -100,7 +100,8 @@ def getRevisionInfo(uri):
         revisionNumber = re.findall(r'revision="([0-9]+)"', svnData, re.DOTALL)[1]
         revisionAuthor = re.findall(r'<author>(.*)</author>', svnData, re.DOTALL)[0]
         return (revisionNumber, revisionAuthor)
-    except:
+    except Exception as e:
+        logging.error('Unable to get revision info for %s: %s' % (uri, e))
         return None
 
 def createStatsSection(fileCounts, requester=None):
@@ -268,7 +269,10 @@ if __name__ == '__main__':
                             if fileLoc.endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.metadix', '.dix'), fileLocs)):
                                 countType = countType.replace('meta ', '')
                                 logging.debug('Assuming metadix %s as dix' % fileLoc)
-                            fileCounts['-'.join(fileLangs) + ' ' + countType] = (count, getRevisionInfo(fileLoc), fileLoc)
+
+                            revisionInfo = getRevisionInfo(fileLoc)
+                            if revisionInfo:
+                                fileCounts['-'.join(fileLangs) + ' ' + countType] = (count, revisionInfo, fileLoc)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
                     pageContents = getPage(pageTitle)
@@ -342,15 +346,21 @@ if __name__ == '__main__':
                     if dixLoc and not lexcLoc:
                         counts = getCounts(dixLoc, 'monodix')
                         for countType, count in counts.items():
-                            fileCounts[countType] = (count, getRevisionInfo(dixLoc), dixLoc)
+                            revisionInfo = getRevisionInfo(dixLoc)
+                            if revisionInfo:
+                                fileCounts[countType] = (count, revisionInfo, dixLoc)
                     if lexcLoc:
                         counts = getCounts(lexcLoc, 'lexc')
                         for countType, count in counts.items():
-                            fileCounts[countType] = (count, getRevisionInfo(lexcLoc), lexcLoc)
+                            revisionInfo = getRevisionInfo(lexcLoc)
+                            if revisionInfo:
+                                fileCounts[countType] = (count, revisionInfo, lexcLoc)
                     if rlxLoc:
                         counts = getCounts(rlxLoc, 'rlx')
                         for countType, count in counts.items():
-                            fileCounts[countType] = (count, getRevisionInfo(rlxLoc), rlxLoc)
+                            revisionInfo = getRevisionInfo(rlxLoc)
+                            if revisionInfo:
+                                fileCounts[countType] = (count, revisionInfo, rlxLoc)
 
                     logging.info('Acquired file counts %s' % fileCounts)
 
