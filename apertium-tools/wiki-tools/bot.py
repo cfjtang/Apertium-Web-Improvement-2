@@ -126,6 +126,56 @@ def getFileLocs(pair, fileFormat, includePost=False):
 
     return [] + incubatorRootMatches
 
+def getPairCounts(fileLocs):
+    fileCounts = {}
+    for fileLoc in fileLocs:
+        fileLangs = fileLoc.split('/')[-1].split('.')[1].split('-')
+        if fileLoc.endswith('.dix'):
+            fileFormat = 'bidix' if set(map(toAlpha3Code, langs)) == set(map(toAlpha3Code, fileLangs)) else 'monodix'
+        elif fileLoc.endswith('.metadix'):
+            fileFormat = 'metabidix' if set(map(toAlpha3Code, langs)) == set(map(toAlpha3Code, fileLangs)) else 'metamonodix'
+        else:
+            fileFormat = fileLoc.split('.')[-1]
+
+        counts = getCounts(fileLoc, fileFormat)
+        for countType, count in counts.items():
+            if fileLoc.endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.metadix', '.dix'), fileLocs)):
+                countType = countType.replace('meta ', '')
+                logging.debug('Assuming metadix %s as dix' % fileLoc)
+
+            revisionInfo = getRevisionInfo(fileLoc)
+            if revisionInfo:
+                fileCounts['-'.join(fileLangs) + ' ' + countType] = (count, revisionInfo, fileLoc)
+
+    return fileCounts
+
+def getMonoLangCounts(dixLoc, lexcLoc, rlxLoc):
+    fileCounts = {}
+
+    if dixLoc or lexcLoc or rlxLoc:
+        logging.debug('Acquired file locations %s, %s, %s' % (dixLoc, lexcLoc, rlxLoc))
+
+        if dixLoc and not lexcLoc:
+            counts = getCounts(dixLoc, 'monodix')
+            for countType, count in counts.items():
+                revisionInfo = getRevisionInfo(dixLoc)
+                if revisionInfo:
+                    fileCounts[countType] = (count, revisionInfo, dixLoc)
+        if lexcLoc:
+            counts = getCounts(lexcLoc, 'lexc')
+            for countType, count in counts.items():
+                revisionInfo = getRevisionInfo(lexcLoc)
+                if revisionInfo:
+                    fileCounts[countType] = (count, revisionInfo, lexcLoc)
+        if rlxLoc:
+            counts = getCounts(rlxLoc, 'rlx')
+            for countType, count in counts.items():
+                revisionInfo = getRevisionInfo(rlxLoc)
+                if revisionInfo:
+                    fileCounts[countType] = (count, revisionInfo, rlxLoc)
+    
+    return fileCounts
+
 def getRevisionInfo(uri):
     try:
         svnData = str(subprocess.check_output('svn info -r HEAD %s --xml' % uri, stderr=subprocess.STDOUT, shell=True), 'utf-8')
@@ -242,7 +292,7 @@ if __name__ == '__main__':
     parser.add_argument('loginName', help="bot login name")
     parser.add_argument('password', help="bot password")
     parser.add_argument('action', help="action for bot to perform", choices=['dict', 'coverage'])
-    parser.add_argument('-p', '--pairs', nargs='+', help="Apertium language pairs in the format e.g. bg-ru or rus")
+    parser.add_argument('-p', '--pairs', nargs='+', help="Apertium language pairs/monolingual packages in the format e.g. bg-ru or rus")
     parser.add_argument('-a', '--analyzers', nargs='+', help="Apertium analyzers (.automorf.bin files)")
     parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
     parser.add_argument('-r', '--requester', help="user who requests update", default=None)
@@ -284,116 +334,82 @@ if __name__ == '__main__':
                 logging.debug('Acquired file locations %s' % fileLocs)
 
                 if len(fileLocs) > 0:
-                    fileCounts = {}
-                    for fileLoc in fileLocs:
-                        fileLangs = fileLoc.split('/')[-1].split('.')[1].split('-')
-                        if fileLoc.endswith('.dix'):
-                            fileFormat = 'bidix' if set(map(toAlpha3Code, langs)) == set(map(toAlpha3Code, fileLangs)) else 'monodix'
-                        elif fileLoc.endswith('.metadix'):
-                            fileFormat = 'metabidix' if set(map(toAlpha3Code, langs)) == set(map(toAlpha3Code, fileLangs)) else 'metamonodix'
-                        else:
-                            fileFormat = fileLoc.split('.')[-1]
-
-                        counts = getCounts(fileLoc, fileFormat)
-                        for countType, count in counts.items():
-                            if fileLoc.endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.metadix', '.dix'), fileLocs)):
-                                countType = countType.replace('meta ', '')
-                                logging.debug('Assuming metadix %s as dix' % fileLoc)
-
-                            revisionInfo = getRevisionInfo(fileLoc)
-                            if revisionInfo:
-                                fileCounts['-'.join(fileLangs) + ' ' + countType] = (count, revisionInfo, fileLoc)
+                    fileCounts = getPairCounts(fileLocs)
                     logging.debug('Acquired file counts %s' % fileCounts)
+                    
+                    if len(fileCounts) > 0:
+                        pageContents = getPage(pageTitle)
+                        if pageContents:
+                            statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                            if statsSection:
+                                matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+                                replacements = {}
+                                for matchAttempt in matchAttempts:
+                                    countName = matchAttempt.group(2).strip().replace('_', ' ')
+                                    if countName in fileCounts:
+                                        count, revisionInfo, fileUrl = fileCounts[countName]
+                                        replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
+                                        replacements[(matchAttempt.group(1))] = replacement
+                                        del fileCounts[countName]
+                                        logging.debug('Replaced count %s' % repr(countName))
+                                    else:
+                                        langPairEndIndex = countName.find('-', countName.find('-') + 1)
+                                        oldLangPairEntry = langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts
+                                        oldLangEntry = countName.count('-') == 1 and countName.replace('-', ' ') in fileCounts
+                                        postEntry = countName.startswith('post')
+                                        if oldLangEntry or oldLangPairEntry or postEntry:
+                                            replacements[(matchAttempt.group(1))] = ''
+                                            logging.debug('Deleting old style count %s' % repr(countName))
 
-                    pageContents = getPage(pageTitle)
-                    if pageContents:
-                        statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
-                        if statsSection:
-                            matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                            replacements = {}
-                            for matchAttempt in matchAttempts:
-                                countName = matchAttempt.group(2).strip().replace('_', ' ')
-                                if countName in fileCounts:
+                                for old, new in replacements.items():
+                                    if new == '':
+                                        pageContents = pageContents.replace(old + '\n', new)
+                                        pageContents = pageContents.replace(old, new)
+                                    else:
+                                        pageContents = pageContents.replace(old, new)
+
+                                newStats = ''
+                                for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
                                     count, revisionInfo, fileUrl = fileCounts[countName]
-                                    replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
-                                    replacements[(matchAttempt.group(1))] = replacement
-                                    del fileCounts[countName]
-                                    logging.debug('Replaced count %s' % repr(countName))
-                                else:
-                                    langPairEndIndex = countName.find('-', countName.find('-') + 1)
-                                    oldLangPairEntry = langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts
-                                    oldLangEntry = countName.count('-') == 1 and countName.replace('-', ' ') in fileCounts
-                                    postEntry = countName.startswith('post')
-                                    if oldLangEntry or oldLangPairEntry or postEntry:
-                                        replacements[(matchAttempt.group(1))] = ''
-                                        logging.debug('Deleting old style count %s' % repr(countName))
+                                    newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
+                                    logging.debug('Adding new count %s' % repr(countName))
+                                newStats += '\n'
 
-                            for old, new in replacements.items():
-                                if new == '':
-                                    pageContents = pageContents.replace(old + '\n', new)
-                                    pageContents = pageContents.replace(old, new)
-                                else:
-                                    pageContents = pageContents.replace(old, new)
+                                contentBeforeIndex = statsSection.start()
+                                contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+                                pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                            else:
+                                pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
+                                logging.debug('Adding new stats section')
 
-                            newStats = ''
-                            for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
-                                count, revisionInfo, fileUrl = fileCounts[countName]
-                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
-                                logging.debug('Adding new count %s' % repr(countName))
-                            newStats += '\n'
-
-                            contentBeforeIndex = statsSection.start()
-                            contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
-                            pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                            pageContents = addCategory(pageContents)
+                            editResult = editPage(pageTitle, pageContents, editToken)
+                            if editResult['edit']['result'] == 'Success':
+                                logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
+                            else:
+                                logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                         else:
-                            pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
-                            logging.debug('Adding new stats section')
+                            pageContents = createStatsSection(fileCounts, requester=args.requester)
+                            pageContents = addCategory(pageContents)
 
-                        pageContents = addCategory(pageContents)
-                        editResult = editPage(pageTitle, pageContents, editToken)
-                        if editResult['edit']['result'] == 'Success':
-                            logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
-                        else:
-                            logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
+                            editResult = editPage(pageTitle, pageContents, editToken)
+                            if editResult['edit']['result'] == 'Success':
+                                logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
+                            else:
+                                logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
                     else:
-                        pageContents = createStatsSection(fileCounts, requester=args.requester)
-                        pageContents = addCategory(pageContents)
-
-                        editResult = editPage(pageTitle, pageContents, editToken)
-                        if editResult['edit']['result'] == 'Success':
-                            logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
-                        else:
-                            logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+                        logging.error('No file counts available for %s, skipping.' % repr(langs))
+                else:
+                    logging.error('No files found for %s, skipping.' % repr(langs))
             elif len(langs) == 1:
                 dixLoc = next(iter(sorted(sorted(getFileLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
                 lexcLoc = next(iter(getFileLocs(pair, 'lexc')), None)
                 rlxLoc = next(iter(getFileLocs(pair, 'rlx')), None)
 
-                if dixLoc or lexcLoc or rlxLoc:
-                    logging.debug('Acquired file locations %s, %s, %s' % (dixLoc, lexcLoc, rlxLoc))
-
-                    fileCounts = {}
-                    if dixLoc and not lexcLoc:
-                        counts = getCounts(dixLoc, 'monodix')
-                        for countType, count in counts.items():
-                            revisionInfo = getRevisionInfo(dixLoc)
-                            if revisionInfo:
-                                fileCounts[countType] = (count, revisionInfo, dixLoc)
-                    if lexcLoc:
-                        counts = getCounts(lexcLoc, 'lexc')
-                        for countType, count in counts.items():
-                            revisionInfo = getRevisionInfo(lexcLoc)
-                            if revisionInfo:
-                                fileCounts[countType] = (count, revisionInfo, lexcLoc)
-                    if rlxLoc:
-                        counts = getCounts(rlxLoc, 'rlx')
-                        for countType, count in counts.items():
-                            revisionInfo = getRevisionInfo(rlxLoc)
-                            if revisionInfo:
-                                fileCounts[countType] = (count, revisionInfo, rlxLoc)
-
-                    logging.info('Acquired file counts %s' % fileCounts)
-
+                fileCounts = getMonoLangCounts(dixLoc, lexcLoc, rlxLoc)
+                logging.info('Acquired file counts %s' % fileCounts)
+                
+                if fileCounts:
                     pageContents = getPage(pageTitle)
                     if pageContents:
                         statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
@@ -440,6 +456,8 @@ if __name__ == '__main__':
                             logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
                         else:
                             logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+                else:
+                    logging.error('No file counts available for %s, skipping.' % repr(langs))
             else:
                 logging.error('Invalid language module name: %s' % pair)
     elif args.action == 'coverage':
