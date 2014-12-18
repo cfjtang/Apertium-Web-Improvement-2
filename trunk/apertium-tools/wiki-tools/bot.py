@@ -73,6 +73,25 @@ svnDataCache = {}
 def getFileLocs(pair, fileFormat, includePost=False):
     global svnDataCache
 
+    try:
+        incubatorURL = svnURL + 'incubator'
+        if incubatorURL in svnDataCache:
+            incubatorData = svnDataCache[incubatorURL]
+            logging.debug('Using SVN data cache for incubator root list')
+        else:
+            incubatorData = str(subprocess.check_output('svn list --xml %s' % incubatorURL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
+            svnDataCache[incubatorURL] = incubatorData
+    except subprocess.CalledProcessError as e:
+        logging.error('Unable to retrieve incubator root list: %s' % e)
+        incubatorData = ''
+
+    if '-' in pair:
+        pairParts = pair.split('-')
+        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.(?:{1}-{2}|{1}|{2})\.{4}{3})</name>'.format(pair, pairParts[0], pairParts[1], fileFormat, '(?:post)?' if includePost else ''), incubatorData, re.DOTALL)
+    else:
+        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{0}\.{2}{1})</name>'.format(pair, fileFormat, '(?:post)?' if includePost else ''), incubatorData, re.DOTALL)
+    incubatorRootMatches = list(map(lambda x: incubatorURL + '/' + x, incubatorRootMatches))
+
     locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
     for location in locations:
         try:
@@ -81,18 +100,23 @@ def getFileLocs(pair, fileFormat, includePost=False):
                 svnData = svnDataCache[URL]
                 logging.debug('Using SVN data cache for %s files in %s' % (fileFormat, location))
             else:
-                logging.debug('Finding %s files in %s' % (fileFormat, location))
+                logging.debug('Finding %s files for %s in %s' % (fileFormat, pair, location))
                 svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
                 svnDataCache[URL] = svnData
-            
+
             if includePost:
-                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)]
+                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.%s)</name>' % fileFormat, svnData, re.DOTALL)] + incubatorRootMatches
             else:
-                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:meta)?(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL) if not fileName.split('.')[1].startswith('post')]
+                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)] + incubatorRootMatches
         except subprocess.CalledProcessError:
             pass
-    logging.error('No %s files found for %s' % (fileFormat, pair))
-    return []
+
+    if not incubatorRootMatches:
+        logging.error('No %s files found for %s' % (fileFormat, pair))
+    else:
+        logging.info('Found %s files for %s in incubator root' % (fileFormat, pair))
+
+    return [] + incubatorRootMatches
 
 def getRevisionInfo(uri):
     try:
@@ -119,7 +143,7 @@ def createStatSection(countName, count, revisionInfo, fileUrl, requester=None):
 
     if requester:
         statSection += ', run by %s' % requester
-    
+
     if count is 0:
         statSection += '</span>'
 
@@ -318,7 +342,7 @@ if __name__ == '__main__':
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
-                        
+
                         pageContents = addCategory(pageContents)
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
@@ -394,7 +418,7 @@ if __name__ == '__main__':
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
-                        
+
                         pageContents = addCategory(pageContents)
                         editResult = editPage(pageTitle, pageContents, editToken)
                         if editResult['edit']['result'] == 'Success':
