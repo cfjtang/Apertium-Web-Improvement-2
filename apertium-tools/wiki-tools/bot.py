@@ -125,7 +125,7 @@ def getFileLocs(pair, fileFormat, includePost=False, locations=['incubator', 'tr
 
     return [] + incubatorRootMatches
 
-def getPairCounts(fileLocs):
+def getPairCounts(langs, fileLocs):
     fileCounts = {}
     for fileLoc in fileLocs:
         fileLangs = fileLoc.split('/')[-1].split('.')[1].split('-')
@@ -398,7 +398,7 @@ if __name__ == '__main__':
                 logging.debug('Acquired file locations %s' % fileLocs)
 
                 if len(fileLocs) > 0:
-                    fileCounts = getPairCounts(fileLocs)
+                    fileCounts = getPairCounts(langs, fileLocs)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
                     if len(fileCounts) > 0:
