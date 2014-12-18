@@ -18,6 +18,8 @@ except ImportError:
     lexccounter = importlib.import_module(filename)
     countStems = vars(lexccounter)['countStems']
 
+s = requests.Session()
+
 def getCounts(uri, fileFormat):
     oldLoggingLevel = logging.getLogger().getEffectiveLevel()
     logging.getLogger().setLevel(logging.ERROR)
@@ -218,12 +220,12 @@ def login(loginName, password):
         authToken = json.loads(authResult.text)['login']['token']
         logging.debug('Auth token: %s' % authToken)
 
-        payload = {'action': 'login', 'format': 'json', 'lgname': args.loginName, 'lgpassword': args.password, 'lgtoken': authToken}
+        payload = {'action': 'login', 'format': 'json', 'lgname': loginName, 'lgpassword': password, 'lgtoken': authToken}
         authResult = s.post(apiURL, params=payload)
         if not json.loads(authResult.text)['login']['result'] == 'Success':
-            logging.critical('Failed to login as %s: %s' % (args.loginName, json.loads(authResult.text)['login']['result']))
+            logging.critical('Failed to login as %s: %s' % (loginName, json.loads(authResult.text)['login']['result']))
         else:
-            logging.info('Login as %s succeeded' % args.loginName)
+            logging.info('Login as %s succeeded' % loginName)
             return authToken
     except Exception as e:
         logging.critical('Failed to login: %s' % e)
@@ -258,8 +260,6 @@ if __name__ == '__main__':
             parser.error('action "coverage" requires analyzers (-a, --analyzers) argument')
         elif not len(args.pairs) == len(args.analyzers):
             parser.error('action "coverage" requires --analyzers and --pairs to be the same length')
-
-    s = requests.Session()
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
