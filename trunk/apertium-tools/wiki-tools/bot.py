@@ -81,7 +81,7 @@ def getCounts(uri, fileFormat):
 
 svnDataCache = {}
 
-def getFileLocs(pair, fileFormat, includePost=False):
+def getFileLocs(pair, fileFormat, includePost=False, locations=['incubator', 'trunk', 'languages', 'nursery', 'staging']):
     global svnDataCache
 
     try:
@@ -103,7 +103,6 @@ def getFileLocs(pair, fileFormat, includePost=False):
         incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{2}{0}\.{1})</name>'.format(pair, fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
     incubatorRootMatches = list(map(lambda x: incubatorURL + '/' + x, incubatorRootMatches))
 
-    locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
     for location in locations:
         try:
             URL = svnURL + location + '/apertium-' + pair
@@ -359,7 +358,7 @@ if __name__ == '__main__':
     parser.add_argument('action', help="action for bot to perform", choices=['dict', 'coverage'])
     parser.add_argument('-p', '--pairs', nargs='+', help="Apertium language pairs/monolingual packages in the format e.g. bg-ru or rus")
     parser.add_argument('-a', '--analyzers', nargs='+', help="Apertium analyzers (.automorf.bin files)")
-    parser.add_argument('-v', '--verbose', help="show errors dictionary (verbose)", action='store_true', default=False)
+    parser.add_argument('-v', '--verbose', help="verbose mode (debug)", action='store_true', default=False)
     parser.add_argument('-r', '--requester', help="user who requests update", default=None)
 
     args = parser.parse_args()
