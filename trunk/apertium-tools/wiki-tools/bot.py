@@ -207,6 +207,71 @@ def createStatSection(countName, count, revisionInfo, fileUrl, requester=None):
 
     return statSection
 
+def updatePairStatsSection(statsSection, pageContents, fileCounts, requester=None):
+    matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+    replacements = {}
+    for matchAttempt in matchAttempts:
+        countName = matchAttempt.group(2).strip().replace('_', ' ')
+        if countName in fileCounts:
+            count, revisionInfo, fileUrl = fileCounts[countName]
+            replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
+            replacements[(matchAttempt.group(1))] = replacement
+            del fileCounts[countName]
+            logging.debug('Replaced count %s' % repr(countName))
+        else:
+            langPairEndIndex = countName.find('-', countName.find('-') + 1)
+            oldLangPairEntry = langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts
+            oldLangEntry = countName.count('-') == 1 and countName.replace('-', ' ') in fileCounts
+            postEntry = countName.startswith('post')
+            if oldLangEntry or oldLangPairEntry or postEntry:
+                replacements[(matchAttempt.group(1))] = ''
+                logging.debug('Deleting old style count %s' % repr(countName))
+
+    for old, new in replacements.items():
+        if new == '':
+            pageContents = pageContents.replace(old + '\n', new)
+        pageContents = pageContents.replace(old, new)
+
+    newStats = ''
+    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
+        count, revisionInfo, fileUrl = fileCounts[countName]
+        newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
+        logging.debug('Adding new count %s' % repr(countName))
+    newStats += '\n'
+
+    contentBeforeIndex = statsSection.start()
+    contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+    pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+
+    return pageContents
+
+def updateMonoLangStatsSection(statsSection, pageContents, fileCounts, requester=None):
+    matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
+    replacements = {}
+    for matchAttempt in matchAttempts:
+        countName = matchAttempt.group(2).strip().replace('_', ' ')
+        if countName in fileCounts:
+            count, revisionInfo, fileUrl = fileCounts[countName]
+            replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
+            replacements[(matchAttempt.group(1))] = replacement
+            del fileCounts[countName]
+            logging.debug('Replaced count %s' % repr(countName))
+    for old, new in replacements.items():
+        pageContents = pageContents.replace(old, new)
+
+    newStats = ''
+    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
+        count, revisionInfo, fileUrl = fileCounts[countName]
+        newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
+        logging.debug('Adding new count %s' % repr(countName))
+    newStats += '\n'
+
+    contentBeforeIndex = statsSection.start()
+    contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
+    pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+
+    return pageContents
+
 def countRlxRules(url):
     f = tempfile.NamedTemporaryFile()
     urllib.request.urlretrieve(url, f.name)
@@ -342,42 +407,7 @@ if __name__ == '__main__':
                         if pageContents:
                             statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
                             if statsSection:
-                                matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                                replacements = {}
-                                for matchAttempt in matchAttempts:
-                                    countName = matchAttempt.group(2).strip().replace('_', ' ')
-                                    if countName in fileCounts:
-                                        count, revisionInfo, fileUrl = fileCounts[countName]
-                                        replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
-                                        replacements[(matchAttempt.group(1))] = replacement
-                                        del fileCounts[countName]
-                                        logging.debug('Replaced count %s' % repr(countName))
-                                    else:
-                                        langPairEndIndex = countName.find('-', countName.find('-') + 1)
-                                        oldLangPairEntry = langPairEndIndex != -1 and countName[:langPairEndIndex] + countName[langPairEndIndex:].replace('-', ' ') in fileCounts
-                                        oldLangEntry = countName.count('-') == 1 and countName.replace('-', ' ') in fileCounts
-                                        postEntry = countName.startswith('post')
-                                        if oldLangEntry or oldLangPairEntry or postEntry:
-                                            replacements[(matchAttempt.group(1))] = ''
-                                            logging.debug('Deleting old style count %s' % repr(countName))
-
-                                for old, new in replacements.items():
-                                    if new == '':
-                                        pageContents = pageContents.replace(old + '\n', new)
-                                        pageContents = pageContents.replace(old, new)
-                                    else:
-                                        pageContents = pageContents.replace(old, new)
-
-                                newStats = ''
-                                for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
-                                    count, revisionInfo, fileUrl = fileCounts[countName]
-                                    newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
-                                    logging.debug('Adding new count %s' % repr(countName))
-                                newStats += '\n'
-
-                                contentBeforeIndex = statsSection.start()
-                                contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
-                                pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                                pageContents = updatePairStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
                             else:
                                 pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                                 logging.debug('Adding new stats section')
@@ -414,29 +444,7 @@ if __name__ == '__main__':
                     if pageContents:
                         statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
                         if statsSection:
-                            matchAttempts = re.finditer(r'(^\*.*?<section begin=([^/]+)/>.*?$)', pageContents, re.MULTILINE)
-                            replacements = {}
-                            for matchAttempt in matchAttempts:
-                                countName = matchAttempt.group(2).strip().replace('_', ' ')
-                                if countName in fileCounts:
-                                    count, revisionInfo, fileUrl = fileCounts[countName]
-                                    replacement = createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
-                                    replacements[(matchAttempt.group(1))] = replacement
-                                    del fileCounts[countName]
-                                    logging.debug('Replaced count %s' % repr(countName))
-                            for old, new in replacements.items():
-                                pageContents = pageContents.replace(old, new)
-
-                            newStats = ''
-                            for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
-                                count, revisionInfo, fileUrl = fileCounts[countName]
-                                newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
-                                logging.debug('Adding new count %s' % repr(countName))
-                            newStats += '\n'
-
-                            contentBeforeIndex = statsSection.start()
-                            contentAfterIndex = pageContents.find('==', statsSection.end() + 1) if pageContents.find('==', statsSection.end() + 1) != -1 else len(pageContents)
-                            pageContents = pageContents[:contentBeforeIndex] + pageContents[contentBeforeIndex:contentAfterIndex].rstrip() + newStats + '\n' + pageContents[contentAfterIndex:]
+                            pageContents = updateMonoLangStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
                         else:
                             pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
                             logging.debug('Adding new stats section')
