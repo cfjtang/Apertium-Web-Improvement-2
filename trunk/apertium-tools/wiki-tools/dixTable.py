@@ -27,13 +27,98 @@ def comprehensiveList(langs):
             newLangs.append(iso639Codes[lang])
     return set(langs + newLangs)
 
+def updateOrCreateStatsPage(location, pairName, updateStats, editToken):
+    pageTitle = pairName.capitalize() + '/stats'
+
+    if not updateStats:
+        page = getPage(pageTitle)
+
+        lang1, lang2 = pairName.split('-')[1:]
+        possiblePairs = list(itertools.product(iso639Code(lang1), iso639Code(lang2))) + list(itertools.product(iso639Code(lang2), iso639Code(lang1)))
+
+        if page:
+            stemEntryPresent = False
+            for possiblePair in possiblePairs:
+                if updateStats:
+                    break
+                else:
+                    stemEntryPresent |= '<section begin={0}-{1}_stems'.format(*possiblePair) in page
+
+            if not stemEntryPresent:
+                updateStats = True
+                logging.info('Bidix stem entry missing on %s stats page' % pairName)
+        else:
+            updateStats = True
+            logging.info('Unable to find %s stats page' % pairName)
+
+    if updateStats:
+        logging.info('Updating %s stats page' % pairName)
+        fileLocs = sum(map(lambda x: getFileLocs('-'.join(pairName.split('-')[1:]), x, locations=[location]), ['dix', 'metadix', 'lexc', 'rlx', 't\dx']), [])
+        logging.debug('Acquired file locations %s' % fileLocs)
+
+        if len(fileLocs) > 0:
+            fileCounts = getPairCounts(pairName.split('-')[1:], fileLocs)
+            logging.debug('Acquired file counts %s' % fileCounts)
+
+            if len(fileCounts) > 0:
+                pageContents = getPage(pageTitle)
+                if pageContents:
+                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                    if statsSection:
+                        pageContents = updatePairStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
+                    else:
+                        pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
+                        logging.debug('Adding new stats section')
+
+                    pageContents = addCategory(pageContents)
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, 'http://wiki.apertium.org/wiki/'))
+                    else:
+                        logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
+                else:
+                    pageContents = createStatsSection(fileCounts, requester=args.requester)
+                    pageContents = addCategory(pageContents)
+
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, 'http://wiki.apertium.org/wiki/'))
+                    else:
+                        logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+            else:
+                logging.error('No file counts available for %s, skipping.' % repr(langs))
+        else:
+            logging.error('No files found for %s, skipping.' % repr(langs))
+    else:
+        logging.info('Not updating %s stats page' % pairName)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Create dix tables for the Apertium wiki")
     parser.add_argument('languages', nargs='+', help='list of primary languages')
     parser.add_argument('-c','--createStatsPages', help='create any missing stats pages on the Wiki', action='store_true', default=False)
+    parser.add_argument('-u', '--updateStatsPages', help='update stats pages even if present on the Wiki', action='store_true', default=False)
+    parser.add_argument('-l', '--loginName', help='bot login name (required if --createStatsPages present)')
+    parser.add_argument('-p', '--password', help='bot password (required if --createStatsPages present)')
+    parser.add_argument('-r', '--requester', help="user who requests update", default=None)
+    parser.add_argument('-v', '--verbose', help="verbose mode (debug)", action='store_true', default=False)
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO)
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+    if args.createStatsPages and not (args.loginName and args.password):
+        parser.error('--login and --password required with --createStatsPages')
+
+    if args.createStatsPages or args.updateStatsPages:
+        from bot import login, getPage, editPage, getToken, updatePairStatsSection, getPairCounts, addCategory, createStatsSection, getFileLocs
+        authToken = login(args.loginName, args.password)
+        moveToken = getToken('move', 'info')
+        editToken = getToken('edit', 'info|revisions')
+        if not all([authToken, moveToken, editToken]):
+            logging.critical('Failed to obtain required token')
+            sys.exit(-1)
 
     primaryPairs, secondaryPairs = {}, {}
     languages = set(comprehensiveList(args.languages))
@@ -91,8 +176,8 @@ if __name__ == '__main__':
                     if possiblePair in primaryPairs and not pairExists:
                         pairInfo = primaryPairs[possiblePair]
 
-                        if args.createStatsPages:
-                            pass # TODO: CALL THE BOT
+                        if args.createStatsPages or args.updateStatsPages:
+                            updateOrCreateStatsPage(pairInfo[0], pairInfo[1], args.updateStatsPages, editToken)
 
                         strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
                         formatting = pairFormatting[pairInfo[0]]
@@ -125,8 +210,8 @@ if __name__ == '__main__':
                 if possiblePair in secondaryPairs and not pairExists:
                     pairInfo = secondaryPairs[possiblePair]
 
-                    if args.createStatsPages:
-                        pass # TODO: CALL THE BOT
+                    if args.createStatsPages or args.updateStatsPages:
+                        updateOrCreateStatsPage(pairInfo[0], pairInfo[1], args.updateStatsPages, editToken)
 
                     strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
                     formatting = pairFormatting[pairInfo[0]]
