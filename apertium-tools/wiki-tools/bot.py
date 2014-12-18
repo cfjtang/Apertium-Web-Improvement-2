@@ -19,7 +19,12 @@ except ImportError:
     countStems = vars(lexccounter)['countStems']
 
 def getCounts(uri, fileFormat):
-    logger = logging.getLogger("countStems")
+    oldLoggingLevel = logging.getLogger().getEffectiveLevel()
+    logging.getLogger().setLevel(logging.ERROR)
+
+    oldStdout = sys.stdout
+    sys.stdout = open(os.devnull, 'w')
+
     try:
         if fileFormat.endswith('dix'):
             fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
@@ -44,8 +49,7 @@ def getCounts(uri, fileFormat):
                 'meta stems': len(dixTree.findall("*[@id='main']/e//l"))
             }
         elif fileFormat == 'lexc':
-            logger = logging.getLogger('countStems')
-            logger.setLevel(logging.ERROR)
+            logging.getLogger('countStems').setLevel(logging.ERROR)
             fileString = str((urllib.request.urlopen(uri)).read(), 'utf-8')
             return {
                 'stems': countStems(fileString),
@@ -65,8 +69,13 @@ def getCounts(uri, fileFormat):
         else:
             raise ValueError('Invalid format: %s' % fileFormat)
     except (Exception, SystemExit) as e:
-        logger.error('Unable to parse counts from %s: %s' % (uri, str(e)))
+        logging.getLogger().setLevel(oldLoggingLevel)
+        logging.error('Unable to parse counts from %s: %s' % (uri, str(e)))
         return {}
+    finally:
+        logging.getLogger().setLevel(oldLoggingLevel)
+        sys.stdout.close()
+        sys.stdout = oldStdout
 
 svnDataCache = {}
 
