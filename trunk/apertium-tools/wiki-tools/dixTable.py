@@ -27,37 +27,6 @@ def comprehensiveList(langs):
             newLangs.append(iso639Codes[lang])
     return set(langs + newLangs)
 
-def getStemCount(uri):
-    try:
-        dixTree = etree.fromstring(str((urllib.request.urlopen(uri)).read(), 'utf-8'))
-        numStems = len(dixTree.findall("*[@id='main']/e//l"))
-        return numStems
-    except Exception as e:
-        logging.error('Failed to get stem count of %s: %s' (uri, e))
-        return None
-
-def stemCount(pairs):
-    stemCounts = {}
-    for pairInfo, pairLink in pairs:
-        svnData = str(subprocess.check_output('svn list --xml %s' % pairLink, stderr=subprocess.STDOUT, shell=True), 'utf-8')
-        dixFound = False
-        for dixFileName in re.findall(r'<name>([^\.]+\.[^\.]+\.dix)</name>', svnData, re.DOTALL):
-            possiblePairs = list(itertools.product(*list(map(iso639Code, pairInfo[1:]))))
-            dixPair = tuple(dixFileName.split('.')[1].split('-'))
-            if dixPair in possiblePairs:
-                numStems = getStemCount('{}/{}'.format(pairLink, dixFileName))
-                if numStems is not None:
-                    stemCounts[frozenset(pairInfo[1:])] = numStems
-                    dixFound = True
-                    logging.info('Using {}/{} for {}'.format(pairLink, dixFileName, str(pairInfo[1:])))
-                    break
-                else:
-                    stemCounts[frozenset(pairInfo[1:])] = '?'
-        if not dixFound:
-            stemCounts[frozenset(pairInfo[1:])] = '?'
-            logging.error('Failed to locate dix for {}'.format(str(pairInfo[1:])))
-    return stemCounts
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Create dix tables for the Apertium wiki")
     parser.add_argument('languages', nargs='+', help='list of primary languages')
@@ -66,61 +35,44 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
 
-    primaryPairs, secondaryPairs = [], []
+    primaryPairs, secondaryPairs = {}, {}
     languages = set(comprehensiveList(args.languages))
     logging.info('Using languages {}'.format(languages))
-    pairs = {}
 
     dirs = [
-        ('incubator', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'), 
-        ('nursery', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'), 
-        ('staging', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'), 
-        ('trunk', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'), 
+        ('incubator', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'),
+        ('nursery', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'),
+        ('staging', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'),
+        ('trunk', r'<name>(apertium-(\w{2,3})-(\w{2,3}))</name>'),
     ]
 
     for (dirPath, dirRegex) in dirs:
         svnData = str(subprocess.check_output('svn list --xml https://svn.code.sf.net/p/apertium/svn/%s/' % dirPath, stderr=subprocess.STDOUT, shell=True), 'utf-8')
         for langDir in re.findall(dirRegex, svnData, re.DOTALL):
             if set(langDir[1:]) <= languages:
-                primaryPairs.append((langDir, 'https://svn.code.sf.net/p/apertium/svn/%s/%s' % (dirPath, langDir[0])))
-                pairs[frozenset({langDir[1], langDir[2]})] = (dirPath, langDir[0])
+                primaryPairs[frozenset({langDir[1], langDir[2]})] = (dirPath, langDir[0])
             elif langDir[1] in languages or langDir[2] in languages:
-                secondaryPairs.append((langDir, 'https://svn.code.sf.net/p/apertium/svn/%s/%s' % (dirPath, langDir[0])))
-                pairs[frozenset({langDir[1], langDir[2]})] = (dirPath, langDir[0])
+                secondaryPairs[frozenset({langDir[1], langDir[2]})] = (dirPath, langDir[0])
 
-    primaryStemCounts, secondaryStemCounts = stemCount(primaryPairs), stemCount(secondaryPairs)
-    
     svnData = str(subprocess.check_output('svn list --xml https://svn.code.sf.net/p/apertium/svn/incubator/', stderr=subprocess.STDOUT, shell=True), 'utf-8')
-    for dixFileName in re.findall(r'<name>([^\.]+\.[^\.]+\.dix)</name>', svnData, re.DOTALL):
-        try:
-            pair = dixFileName.split('.')[1].split('-')
-            dixLink = 'https://svn.code.sf.net/p/apertium/svn/incubator/%s' % dixFileName
-            if len(pair) > 1 and pair[0] in languages or pair[1] in languages:
-                if frozenset(pair) not in pairs:
-                    pairs[frozenset(pair)] = ('incubator', dixFileName.split('.')[0])
-                    numStems = getStemCount(dixLink)
-                    if numStems is not None:
-                        logging.info('Using {} for {}'.format(dixLink, str(pair)))
+    for dixFileElem in etree.fromstring(svnData).findall('.//name'):
+        dixFileName = dixFileElem.text
+        if re.match(r'apertium-[^\.]+\.[^\.]+\.dix', dixFileName):
+            try:
+                pair = dixFileName.split('.')[1].split('-')
+                dixLink = 'https://svn.code.sf.net/p/apertium/svn/incubator/%s' % dixFileName
+                if len(pair) > 1 and pair[0] in languages or pair[1] in languages:
+                    if frozenset(pair) not in primaryPairs and frozenset(pair) not in secondaryPairs:
                         if pair[0] in languages and pair[1] in languages:
-                            primaryStemCounts[frozenset(pair)] = numStems
+                            primaryPairs[frozenset(pair)] = ('incubator', dixFileName.split('.')[0])
                         else:
-                            secondaryStemCounts[frozenset(pair)] = numStems
+                            secondaryPairs[frozenset(pair)] = ('incubator', dixFileName.split('.')[0])
                     else:
-                        secondaryStemCounts[frozenset(pair)] = '?'
-                else:
-                    logging.error('%s already recorded! Skipping!' % str(pair))
-        except IndexError:
-            pass
-    
-    #print(primaryPairs, secondaryPairs)
-    #print(primaryStemCounts, secondaryStemCounts)
+                        logging.error('%s already recorded! Skipping!' % str(pair))
+            except IndexError:
+                pass
 
-    '''
-    primaryStemCounts = {frozenset({'kaz', 'tat'}): 9174}
-    secondaryStemCounts = {frozenset({'tat', 'bak'}): 2941, frozenset({'tt', 'ky'}): 10, frozenset({'kaz', 'kaa'}): 1576, frozenset({'kaz', 'kir'}): 7556, frozenset({'tt', 'ru'}): 83}
-    primaryPairs = [(('apertium-kaz-tat', 'kaz', 'tat'), 'https://svn.code.sf.net/p/apertium/svn/trunk/apertium-kaz-tat')]
-    secondaryPairs = [(('apertium-kaz-kaa', 'kaz', 'kaa'), 'https://svn.code.sf.net/p/apertium/svn/incubator/apertium-kaz-kaa'), (('apertium-kaz-kir', 'kaz', 'kir'), 'https://svn.code.sf.net/p/apertium/svn/incubator/apertium-kaz-kir'), (('apertium-tt-ky', 'tt', 'ky'), 'https://svn.code.sf.net/p/apertium/svn/incubator/apertium-tt-ky'), (('apertium-tt-ru', 'tt', 'ru'), 'https://svn.code.sf.net/p/apertium/svn/incubator/apertium-tt-ru'), (('apertium-tat-bak', 'tat', 'bak'), 'https://svn.code.sf.net/p/apertium/svn/nursery/apertium-tat-bak')]
-    '''
+    #print(primaryPairs, secondaryPairs)
 
     pairFormatting = {'trunk': "'''", 'incubator': "''", 'nursery': "", 'staging': "'''''"}
 
@@ -136,23 +88,21 @@ if __name__ == '__main__':
                 possiblePairs = list(map(frozenset, itertools.product(iso639Code(lang1), iso639Code(lang2))))
                 pairExists = False
                 for possiblePair in possiblePairs:
-                    if possiblePair in primaryStemCounts and not pairExists:
-                        pairInfo = pairs[possiblePair]
-                        
-                        if args.links:
-                            strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
-                        else:
-                            numStems = primaryStemCounts[possiblePair]
-                            strStems = '{:,}'.format(numStems) if isinstance(numStems, int) else numStems
+                    if possiblePair in primaryPairs and not pairExists:
+                        pairInfo = primaryPairs[possiblePair]
 
+                        if args.createStatsPages:
+                            pass # TODO: CALL THE BOT
+
+                        strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
                         formatting = pairFormatting[pairInfo[0]]
                         strPair = formatting + '[[Apertium-{0}-{1}|{0}-{1}]]'.format(*tuple(pairInfo[1].split('-')[1:])) + formatting
-                        strStems = formatting + strStems + formatting if pairInfo[0] == 'trunk' else strStems 
+                        strStems = formatting + strStems + formatting if pairInfo[0] == 'trunk' else strStems
                         dixTableCells.append(strPair + '<br>' + strStems)
                         pairExists = True
                 if not pairExists:
                     dixTableCells.append('')
-                        
+
         dixTableRow += ' || '.join(dixTableCells)
         dixTable += dixTableRow
 
@@ -160,11 +110,11 @@ if __name__ == '__main__':
 
     secondaryLangs = set()
     for secondaryPair in secondaryPairs:
-        if secondaryPair[0][1] not in languages:
-            secondaryLangs.add(iso639_3Code(secondaryPair[0][1]))
-        if secondaryPair[0][2] not in languages:
-            secondaryLangs.add(iso639_3Code(secondaryPair[0][2]))
-    
+        if sorted(list(secondaryPair))[0] not in languages:
+            secondaryLangs.add(iso639_3Code(sorted(list(secondaryPair))[0]))
+        if sorted(list(secondaryPair))[1] not in languages:
+            secondaryLangs.add(iso639_3Code(sorted(list(secondaryPair))[1]))
+
     for secondaryLang in sorted(secondaryLangs):
         dixTableRow = "\n|-\n| '''%s''' || " % iso639_3Code(secondaryLang)
         dixTableCells = []
@@ -172,15 +122,13 @@ if __name__ == '__main__':
             possiblePairs = list(map(frozenset, itertools.product(iso639Code(primaryLang), iso639Code(secondaryLang))))
             pairExists = False
             for possiblePair in possiblePairs:
-                if possiblePair in secondaryStemCounts and not pairExists:
-                    pairInfo = pairs[possiblePair]
+                if possiblePair in secondaryPairs and not pairExists:
+                    pairInfo = secondaryPairs[possiblePair]
 
-                    if args.links:
-                        strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
-                    else:
-                        numStems = secondaryStemCounts[possiblePair]
-                        strStems = '{:,}'.format(numStems) if isinstance(numStems, int) else numStems
-                    
+                    if args.createStatsPages:
+                        pass # TODO: CALL THE BOT
+
+                    strStems = '{{{{#lst:Apertium-{0}-{1}/stats|{0}-{1}_stems}}}}'.format(*tuple(pairInfo[1].split('-')[1:]))
                     formatting = pairFormatting[pairInfo[0]]
                     strPair = formatting + '[[Apertium-{0}-{1}|{0}-{1}]]'.format(*tuple(pairInfo[1].split('-')[1:])) + formatting
                     strStems = formatting + strStems + formatting if pairInfo[0] == 'trunk' else strStems
@@ -188,7 +136,6 @@ if __name__ == '__main__':
                     pairExists = True
             if not pairExists:
                 dixTableCells.append('')
-            
 
         dixTableRow += ' || '.join(dixTableCells)
         dixTable += dixTableRow
