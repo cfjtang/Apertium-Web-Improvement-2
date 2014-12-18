@@ -88,7 +88,7 @@ def getFileLocs(pair, fileFormat, includePost=False):
         incubatorURL = svnURL + 'incubator'
         if incubatorURL in svnDataCache:
             incubatorData = svnDataCache[incubatorURL]
-            logging.debug('Using SVN data cache for incubator root list')
+            logging.debug('Using SVN data cache for incubator root list to find %s %s files' % (fileFormat, pair))
         else:
             incubatorData = str(subprocess.check_output('svn list --xml %s' % incubatorURL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
             svnDataCache[incubatorURL] = incubatorData
@@ -98,9 +98,9 @@ def getFileLocs(pair, fileFormat, includePost=False):
 
     if '-' in pair:
         pairParts = pair.split('-')
-        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.(?:{1}-{2}|{1}|{2})\.{4}{3})</name>'.format(pair, pairParts[0], pairParts[1], fileFormat, '(?:post)?' if includePost else ''), incubatorData, re.DOTALL)
+        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{4}(?:{1}-{2}|{1}|{2})\.{3})</name>'.format(pair, pairParts[0], pairParts[1], fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
     else:
-        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{0}\.{2}{1})</name>'.format(pair, fileFormat, '(?:post)?' if includePost else ''), incubatorData, re.DOTALL)
+        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{2}{0}\.{1})</name>'.format(pair, fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
     incubatorRootMatches = list(map(lambda x: incubatorURL + '/' + x, incubatorRootMatches))
 
     locations = ['incubator', 'trunk', 'languages', 'nursery', 'staging']
@@ -109,16 +109,13 @@ def getFileLocs(pair, fileFormat, includePost=False):
             URL = svnURL + location + '/apertium-' + pair
             if URL in svnDataCache:
                 svnData = svnDataCache[URL]
-                logging.debug('Using SVN data cache for %s files in %s' % (fileFormat, location))
+                logging.debug('Using SVN data cache for %s %s files in %s' % (fileFormat, pair, location))
             else:
                 logging.debug('Finding %s files for %s in %s' % (fileFormat, pair, location))
                 svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
                 svnDataCache[URL] = svnData
 
-            if includePost:
-                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.%s)</name>' % fileFormat, svnData, re.DOTALL)] + incubatorRootMatches
-            else:
-                return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.(?:post)?%s)</name>' % fileFormat, svnData, re.DOTALL)] + incubatorRootMatches
+            return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.%s)</name>' % fileFormat, svnData, re.DOTALL) if includePost or not fileName.split('.')[1].startswith('post')] + incubatorRootMatches
         except subprocess.CalledProcessError:
             pass
 
