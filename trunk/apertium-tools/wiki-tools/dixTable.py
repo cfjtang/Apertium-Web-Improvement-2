@@ -186,7 +186,7 @@ if __name__ == '__main__':
 
     pairFormatting = {'trunk': "'''", 'incubator': "''", 'nursery': "", 'staging': "'''''"}
 
-    dixTable = '''{| style="text-align: center;" class="wikitable"\n|- style="background: #ececec"\n! '''
+    dixTable = '''{| style="text-align: center;" class="wikitable dixtable"\n|- style="background: #ececec"\n! '''
     dixTable += ' '.join(['!! %s' % iso639_3Code(lang) for lang in args.languages])
     for lang1 in args.languages:
         dixTableRow = "\n|-\n| '''%s''' || " % iso639_3Code(lang1)
