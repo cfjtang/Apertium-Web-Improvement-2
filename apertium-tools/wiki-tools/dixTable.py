@@ -107,59 +107,62 @@ def updateOrCreatePages(location, pairName, updateStats, editToken):
     if not statusPage:
         if not statsPage:
             statsPage = getPage(statsPageTitle)
+        
+        if statsPage:
+            possibleLang1, possibleLang2 = iso639Code(lang1), iso639Code(lang2)
+            possiblePairs = list(itertools.product(possibleLang1, possibleLang2)) + list(itertools.product(possibleLang2, possibleLang1))
+            stemEntryPair = (lang1, lang2)
+            for possiblePair in possiblePairs:
+                if '<section begin={0}-{1}_stems'.format(*possiblePair) in statsPage:
+                    stemEntryPair = possiblePair
 
-        possibleLang1, possibleLang2 = iso639Code(lang1), iso639Code(lang2)
-        possiblePairs = list(itertools.product(possibleLang1, possibleLang2)) + list(itertools.product(possibleLang2, possibleLang1))
-        stemEntryPair = (lang1, lang2)
-        for possiblePair in possiblePairs:
-            if '<section begin={0}-{1}_stems'.format(*possiblePair) in statsPage:
-                stemEntryPair = possiblePair
+            pageContents = """
+            {{{{TOCD}}}}
+            This is a language pair translating between [[{0}]] and [[{1}]]. The pair is currently located in [https://svn.code.sf.net/p/apertium/svn/{2}/{3} {2}].
 
-        pageContents = """
-        {{{{TOCD}}}}
-        This is a language pair translating between [[{0}]] and [[{1}]]. The pair is currently located in [https://svn.code.sf.net/p/apertium/svn/{2}/{3} {2}].
+            == General information ==
+            * The {0}-{1} transducer contains {{{{#lst:{4}|{5}-{6}_stems}}}} stems in its bidictionary.""".format(getLangName(lang1), getLangName(lang2), location, pairName, statsPageTitle, stemEntryPair[0], stemEntryPair[1])
+            pageContents = textwrap.dedent(pageContents)
 
-        == General information ==
-        * The {0}-{1} transducer contains {{{{#lst:{4}|{5}-{6}_stems}}}} stems in its bidictionary.""".format(getLangName(lang1), getLangName(lang2), location, pairName, statsPageTitle, stemEntryPair[0], stemEntryPair[1])
-        pageContents = textwrap.dedent(pageContents)
+            lang1Added, lang2Added = False, False
 
-        lang1Added, lang2Added = False, False
-
-        for possibleLang in possibleLang1:
-            if '<section begin=%s_stems' % possibleLang in statsPage:
-                pageContents += "\n* The {0} transducer contains {{{{#lst:{2}|{1}_stems}}}} stems in its dictionary.".format(getLangName(lang1), possibleLang, statsPageTitle)
-                lang1Added = True
-                break
-
-        for possibleLang in possibleLang2:
-            if '<section begin=%s_stems' % possibleLang in statsPage:
-                pageContents += "\n* The {0} transducer contains {{{{#lst:{2}|{1}_stems}}}} stems in its dictionary.".format(getLangName(lang2), possibleLang, statsPageTitle)
-                lang2Added = True
-                break
-
-        if not lang1Added:
-            lang1StatsPagePossibleTitles = map(lambda x: 'Apertium-%s/stats' % x, possibleLang1)
-            for possibleLang1StatsPageTitle in lang1StatsPagePossibleTitles:
-                lang1StatsPage = getPage(possibleLang1StatsPageTitle)
-                if lang1StatsPage:
-                    pageContents += "\n* The {0} transducer contains {{{{#lst:{1}|stems}}}} stems in its dictionary.".format(getLangName(lang1), possibleLang1StatsPageTitle)
+            for possibleLang in possibleLang1:
+                if '<section begin=%s_stems' % possibleLang in statsPage:
+                    pageContents += "\n* The {0} transducer contains {{{{#lst:{2}|{1}_stems}}}} stems in its dictionary.".format(getLangName(lang1), possibleLang, statsPageTitle)
+                    lang1Added = True
                     break
 
-        if not lang2Added:
-            lang2StatsPagePossibleTitles = map(lambda x: 'Apertium-%s/stats' % x, possibleLang2)
-            for possibleLang2StatsPageTitle in lang2StatsPagePossibleTitles:
-                lang2StatsPage = getPage(possibleLang2StatsPageTitle)
-                if lang2StatsPage:
-                    pageContents += "\n* The {0} transducer contains {{{{#lst:{1}|stems}}}} stems in its dictionary.".format(getLangName(lang2), possibleLang2StatsPageTitle)
+            for possibleLang in possibleLang2:
+                if '<section begin=%s_stems' % possibleLang in statsPage:
+                    pageContents += "\n* The {0} transducer contains {{{{#lst:{2}|{1}_stems}}}} stems in its dictionary.".format(getLangName(lang2), possibleLang, statsPageTitle)
+                    lang2Added = True
                     break
 
-        pageContents = pageContents.strip()
+            if not lang1Added:
+                lang1StatsPagePossibleTitles = map(lambda x: 'Apertium-%s/stats' % x, possibleLang1)
+                for possibleLang1StatsPageTitle in lang1StatsPagePossibleTitles:
+                    lang1StatsPage = getPage(possibleLang1StatsPageTitle)
+                    if lang1StatsPage:
+                        pageContents += "\n* The {0} transducer contains {{{{#lst:{1}|stems}}}} stems in its dictionary.".format(getLangName(lang1), possibleLang1StatsPageTitle)
+                        break
 
-        editResult = editPage(statusPageTitle, pageContents, editToken)
-        if editResult['edit']['result'] == 'Success':
-            logging.info('Creation of page {0} succeeded ({1}{0})'.format(statusPageTitle, 'http://wiki.apertium.org/wiki/'))
+            if not lang2Added:
+                lang2StatsPagePossibleTitles = map(lambda x: 'Apertium-%s/stats' % x, possibleLang2)
+                for possibleLang2StatsPageTitle in lang2StatsPagePossibleTitles:
+                    lang2StatsPage = getPage(possibleLang2StatsPageTitle)
+                    if lang2StatsPage:
+                        pageContents += "\n* The {0} transducer contains {{{{#lst:{1}|stems}}}} stems in its dictionary.".format(getLangName(lang2), possibleLang2StatsPageTitle)
+                        break
+
+            pageContents = pageContents.strip()
+
+            editResult = editPage(statusPageTitle, pageContents, editToken)
+            if editResult['edit']['result'] == 'Success':
+                logging.info('Creation of page {0} succeeded ({1}{0})'.format(statusPageTitle, 'http://wiki.apertium.org/wiki/'))
+            else:
+                logging.error('Creation of page %s failed: %s' % (statusPageTitle, editResult.text))
         else:
-            logging.error('Creation of page %s failed: %s' % (statusPageTitle, editResult.text))
+            logging.error('Unable to fetch stats page for %s, skipping' % pairName)
     else:
         logging.info('Not creating %s status page, already exists' % pairName)
 
