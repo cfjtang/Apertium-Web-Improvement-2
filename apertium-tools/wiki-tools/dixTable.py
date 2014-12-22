@@ -168,6 +168,7 @@ if __name__ == '__main__':
     parser.add_argument('languages', nargs='+', help='list of primary languages')
     parser.add_argument('-c','--createMissingPages', help='create any missing stats/status pages on the Wiki', action='store_true', default=False)
     parser.add_argument('-u', '--updateStatsPages', help='update stats pages even if present on the Wiki', action='store_true', default=False)
+    parser.add_argument('-U', '--updateLanguagePage', help='update table on language page with given name')
     parser.add_argument('-l', '--loginName', help='bot login name (required if --createStatsPages present)')
     parser.add_argument('-p', '--password', help='bot password (required if --createStatsPages present)')
     parser.add_argument('-r', '--requester', help="user who requests update", default=None)
@@ -179,10 +180,10 @@ if __name__ == '__main__':
     else:
         logging.basicConfig(level=logging.INFO)
 
-    if (args.createMissingPages or args.updateStatsPages) and not (args.loginName and args.password):
-        parser.error('--login and --password required with --createMissingPages and --updateStatsPages')
+    if (args.createMissingPages or args.updateStatsPages or args.updateLanguagePage) and not (args.loginName and args.password):
+        parser.error('--login and --password required with --createMissingPages, --updateStatsPages and --updateLanguagePage')
 
-    if args.createMissingPages or args.updateStatsPages:
+    if args.createMissingPages or args.updateStatsPages or args.updateLanguagePage:
         from bot import login, getPage, editPage, getToken, updatePairStatsSection, getPairCounts, addCategory, createStatsSection, getFileLocs
         authToken = login(args.loginName, args.password)
         moveToken = getToken('move', 'info')
@@ -193,8 +194,9 @@ if __name__ == '__main__':
 
     primaryPairs, secondaryPairs = {}, {}
 
-    inputLangs = list(filter(lambda x: len(x) <=3, args.languages))
+    languages = list(filter(lambda x: len(x) <=3, args.languages))
     inputPages = list(filter(lambda x: len(x) > 3, args.languages))
+    args.languages = list(filter(lambda x: len(x) <=3, args.languages))
 
     for inputPage in inputPages:
         from bot import getPage
@@ -207,7 +209,7 @@ if __name__ == '__main__':
                 headersStart = pageContent.index('!!', dixTable.start())
                 headersEnd = pageContent.index('\n', headersStart)
                 langs = list(filter(lambda x: len(x) > 0, list(map(str.strip, pageContent[headersStart:headersEnd].split('!!')))))
-                inputLangs += langs
+                languages += langs
                 args.languages += langs
                 logging.info('Found %s at %s page' % (langs, repr(inputPage)))
             else:
@@ -215,9 +217,8 @@ if __name__ == '__main__':
         else:
             logging.error('Page %s does not exist, proceeding without it' % inputPage)
 
-    languages = set(comprehensiveList(inputLangs))
-    inputLangs = list(collections.OrderedDict.fromkeys(inputLangs))
     args.languages = list(collections.OrderedDict.fromkeys(args.languages))
+    languages = set(comprehensiveList(languages))
     logging.info('Using languages {}'.format(languages))
 
     dirs = [
@@ -322,4 +323,22 @@ if __name__ == '__main__':
         dixTable += dixTableRow
 
     dixTable += '\n|}'
-    print(dixTable)
+
+    if args.updateLanguagePage:
+        languagePageTitle = args.updateLanguagePage
+        languagePage = getPage(languagePageTitle)
+        if languagePage:
+            languagePageDixTable = re.search(r'\{\|.*?class="[^"]*dixtable[^"]*"', languagePage)
+            if languagePageDixTable:
+                languagePage = languagePage[:languagePageDixTable.start()] + dixTable + languagePage[languagePage.index('|}', languagePageDixTable.start()) + 2:]
+                editResult = editPage(languagePageTitle, languagePage, editToken)
+                if editResult['edit']['result'] == 'Success':
+                    logging.info('Update of page {0} succeeded ({1}{0})'.format(languagePageTitle, 'http://wiki.apertium.org/wiki/'))
+                else:
+                    logging.error('Update of page %s failed: %s' % (repr(languagePageTitle), editResult))
+            else:
+                logging.error('Unable to find table with class "dixtable" on language page %s' % repr(languagePageTitle))
+        else:
+            logging.error('Unable to find language page %s' % repr(languagePageTitle))
+    else:
+        print(dixTable)
