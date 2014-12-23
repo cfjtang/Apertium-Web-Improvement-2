@@ -187,9 +187,14 @@ def getRevisionInfo(uri):
 
 def createStatsSection(fileCounts, requester=None):
     statsSection = '==Over-all stats=='
-    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
-        count, revisionInfo, fileUrl = fileCounts[countName]
-        statsSection += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
+    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName] and fileCounts[countName][0] is 0, countName)):
+        if fileCounts[countName]:
+            count, revisionInfo, fileUrl = fileCounts[countName]
+            statsSection += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
+        else:
+            statsSection += "\n*'''{0}''': <section begin={1} />?<section end={1} /> ~ ~~~~".format(countName, countName.replace(' ', '_'))
+            if requester:
+                statsSection += ', run by %s' % requester
     return statsSection
 
 def createStatSection(countName, count, revisionInfo, fileUrl, requester=None):
@@ -232,9 +237,14 @@ def updatePairStatsSection(statsSection, pageContents, fileCounts, requester=Non
         pageContents = pageContents.replace(old, new)
 
     newStats = ''
-    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
-        count, revisionInfo, fileUrl = fileCounts[countName]
-        newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
+    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName] and fileCounts[countName][0] is 0, countName)):
+        if fileCounts[countName]:
+            count, revisionInfo, fileUrl = fileCounts[countName]
+            newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=requester)
+        else:
+            newStats += "\n*'''{0}''': <section begin={1} />?<section end={1} /> ~ ~~~~".format(countName, countName.replace(' ', '_'))
+            if requester:
+                newStats += ', run by %s' % requester
         logging.debug('Adding new count %s' % repr(countName))
     newStats += '\n'
 
@@ -259,7 +269,7 @@ def updateMonoLangStatsSection(statsSection, pageContents, fileCounts, requester
         pageContents = pageContents.replace(old, new)
 
     newStats = ''
-    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName][0] is 0, countName)):
+    for countName in sorted(fileCounts.keys(), key=lambda countName: (fileCounts[countName] and fileCounts[countName][0] is 0, countName)):
         count, revisionInfo, fileUrl = fileCounts[countName]
         newStats += '\n' + createStatSection(countName, count, revisionInfo, fileUrl, requester=args.requester)
         logging.debug('Adding new count %s' % repr(countName))
@@ -397,39 +407,42 @@ if __name__ == '__main__':
                 fileLocs = sum(map(lambda x: getFileLocs(pair, x), ['dix', 'metadix', 'lexc', 'rlx', 't\dx']), [])
                 logging.debug('Acquired file locations %s' % fileLocs)
 
-                if len(fileLocs) > 0:
+                if len(fileLocs) is 0:
+                    logging.error('No files found for %s, adding placeholder bidix stems entry.' % repr(langs))
+                    fileCounts = {'%s-%s stems' % tuple(langs): None}
+                else:
                     fileCounts = getPairCounts(langs, fileLocs)
                     logging.debug('Acquired file counts %s' % fileCounts)
 
-                    if len(fileCounts) > 0:
-                        pageContents = getPage(pageTitle)
-                        if pageContents:
-                            statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
-                            if statsSection:
-                                pageContents = updatePairStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
-                            else:
-                                pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
-                                logging.debug('Adding new stats section')
+                    if len(fileCounts) is 0:
+                        logging.error('No file counts available for %s, adding placeholder bidix stems entry.' % repr(langs))
+                        fileCounts = {'%s-%s stems' % tuple(langs): None}
 
-                            pageContents = addCategory(pageContents)
-                            editResult = editPage(pageTitle, pageContents, editToken)
-                            if editResult['edit']['result'] == 'Success':
-                                logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
-                            else:
-                                logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
-                        else:
-                            pageContents = createStatsSection(fileCounts, requester=args.requester)
-                            pageContents = addCategory(pageContents)
-
-                            editResult = editPage(pageTitle, pageContents, editToken)
-                            if editResult['edit']['result'] == 'Success':
-                                logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
-                            else:
-                                logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+                pageContents = getPage(pageTitle)
+                if pageContents:
+                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+                    if statsSection:
+                        pageContents = updatePairStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
                     else:
-                        logging.error('No file counts available for %s, skipping.' % repr(langs))
+                        pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
+                        logging.debug('Adding new stats section')
+
+                    pageContents = addCategory(pageContents)
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Update of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
+                    else:
+                        logging.error('Update of page %s failed: %s' % (pageTitle, editResult))
                 else:
-                    logging.error('No files found for %s, skipping.' % repr(langs))
+                    pageContents = createStatsSection(fileCounts, requester=args.requester)
+                    pageContents = addCategory(pageContents)
+
+                    editResult = editPage(pageTitle, pageContents, editToken)
+                    if editResult['edit']['result'] == 'Success':
+                        logging.info('Creation of page {0} succeeded ({1}{0})'.format(pageTitle, wikiURL))
+                    else:
+                        logging.error('Creation of page %s failed: %s' % (pageTitle, editResult.text))
+
             elif len(langs) == 1:
                 dixLoc = next(iter(sorted(sorted(getFileLocs(pair, 'dix'), key=lambda x: collections.defaultdict(lambda _: -1, {'.postdix': 0, '.dix': 1, '.metadix': 2})[x[x.rfind('.'):]])[::-1], key=len)), None)
                 lexcLoc = next(iter(getFileLocs(pair, 'lexc')), None)
