@@ -98,9 +98,9 @@ def getFileLocs(pair, fileFormat, includePost=False, locations=['incubator', 'tr
 
     if '-' in pair:
         pairParts = pair.split('-')
-        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{4}(?:{1}-{2}|{1}|{2})\.{3})</name>'.format(pair, pairParts[0], pairParts[1], fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
+        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{4}(?:{1}-{2}|{1}|{2})\.{3}(?:\.xml)?)</name>'.format(pair, pairParts[0], pairParts[1], fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
     else:
-        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{2}{0}\.{1})</name>'.format(pair, fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
+        incubatorRootMatches = re.findall(r'<name>(apertium-{0}\.{2}{0}\.{1}(?:\.xml)?)</name>'.format(pair, fileFormat, '(?:post-)?' if includePost else ''), incubatorData, re.DOTALL)
     incubatorRootMatches = list(map(lambda x: incubatorURL + '/' + x, incubatorRootMatches))
 
     for location in locations:
@@ -114,7 +114,7 @@ def getFileLocs(pair, fileFormat, includePost=False, locations=['incubator', 'tr
                 svnData = str(subprocess.check_output('svn list --xml %s' % URL, stderr=subprocess.STDOUT, shell=True), 'utf-8')
                 svnDataCache[URL] = svnData
 
-            return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.%s)</name>' % fileFormat, svnData, re.DOTALL) if includePost or not fileName.split('.')[1].startswith('post')] + incubatorRootMatches
+            return [URL + '/' + fileName for fileName in re.findall(r'<name>([^\.]+\.[^\.]+\.%s(?:\.xml)?)</name>' % fileFormat, svnData, re.DOTALL) if includePost or not fileName.split('.')[1].startswith('post')] + incubatorRootMatches
         except subprocess.CalledProcessError:
             pass
 
@@ -129,16 +129,16 @@ def getPairCounts(langs, fileLocs):
     fileCounts = {}
     for fileLoc in fileLocs:
         fileLangs = fileLoc.split('/')[-1].split('.')[1].split('-')
-        if fileLoc.endswith('.dix'):
+        if fileLoc.replace('.xml', '').endswith('.dix'):
             fileFormat = 'bidix' if set(map(toAlpha3Code, langs)) == set(map(toAlpha3Code, fileLangs)) else 'monodix'
-        elif fileLoc.endswith('.metadix'):
+        elif fileLoc.replace('.xml', '').endswith('.metadix'):
             fileFormat = 'metabidix' if set(map(toAlpha3Code, langs)) == set(map(toAlpha3Code, fileLangs)) else 'metamonodix'
         else:
             fileFormat = fileLoc.split('.')[-1]
 
         counts = getCounts(fileLoc, fileFormat)
         for countType, count in counts.items():
-            if fileLoc.endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.metadix', '.dix'), fileLocs)):
+            if fileLoc.replace('.xml', '').endswith('metadix') and not list(filter(lambda x: x == fileLoc.replace('.xml', '').replace('.metadix', '.dix'), fileLocs)):
                 countType = countType.replace('meta ', '')
                 logging.debug('Assuming metadix %s as dix' % fileLoc)
 
