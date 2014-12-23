@@ -199,32 +199,34 @@ if __name__ == '__main__':
             sys.exit(-1)
 
     primaryPairs, secondaryPairs = {}, {}
+    allLangs = []
 
-    languages = list(filter(lambda x: len(x) <=3, args.languages))
-    inputPages = list(filter(lambda x: len(x) > 3, args.languages))
-    args.languages = list(filter(lambda x: len(x) <=3, args.languages))
+    for inputLangOrPage in args.languages:
+        if len(inputLangOrPage) > 3:
+            inputPage = inputLangOrPage
+            from bot import getPage
+            logging.info('Getting wiki page %s' % inputPage)
+            pageContent = getPage(inputPage)
 
-    for inputPage in inputPages:
-        from bot import getPage
-        logging.info('Getting wiki page %s' % inputPage)
-        pageContent = getPage(inputPage)
-
-        if pageContent:
-            dixTable = re.search(r'class="[^"]*dixtable[^"]*"', pageContent)
-            if dixTable:
-                headersStart = pageContent.index('!!', dixTable.start())
-                headersEnd = pageContent.index('\n', headersStart)
-                langs = list(filter(lambda x: len(x) > 0, list(map(str.strip, pageContent[headersStart:headersEnd].split('!!')))))
-                languages += langs
-                args.languages += langs
-                logging.info('Found %s at %s page' % (langs, repr(inputPage)))
+            if pageContent:
+                dixTable = re.search(r'class="[^"]*dixtable[^"]*"', pageContent)
+                if dixTable:
+                    headersStart = pageContent.index('!!', dixTable.start())
+                    headersEnd = pageContent.index('\n', headersStart)
+                    langs = list(filter(lambda x: len(x) > 0, list(map(str.strip, pageContent[headersStart:headersEnd].split('!!')))))
+                    allLangs += langs
+                    logging.info('Found %s at %s page' % (langs, repr(inputPage)))
+                else:
+                    logging.error('Unable to find dix table (labeled with class "dixtable") in %s page' % inputPage)
             else:
-                logging.error('Unable to find dix table (labeled with class "dixtable") in %s page' % inputPage)
+                logging.error('Page %s does not exist, proceeding without it' % inputPage)
         else:
-            logging.error('Page %s does not exist, proceeding without it' % inputPage)
+            allLangs.append(inputLangOrPage)
 
+
+    args.languages = allLangs
     args.languages = list(collections.OrderedDict.fromkeys(args.languages))
-    languages = set(comprehensiveList(languages))
+    languages = set(comprehensiveList(args.languages))
     logging.info('Using languages {}'.format(languages))
 
     dirs = [
