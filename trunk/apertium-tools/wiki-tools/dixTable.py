@@ -40,6 +40,7 @@ def updateOrCreatePages(location, pairName, updateStats, editToken):
     statsPageTitle = pairName.capitalize() + '/stats'
     statsPage = None
     lang1, lang2 = pairName.split('-')[1:]
+    langs = (lang1, lang2)
 
     if not updateStats:
         statsPage = getPage(statsPageTitle)
@@ -67,38 +68,40 @@ def updateOrCreatePages(location, pairName, updateStats, editToken):
         logging.debug('Acquired file locations %s' % fileLocs)
 
         if len(fileLocs) > 0:
-            fileCounts = getPairCounts(pairName.split('-')[1:], fileLocs)
+            logging.error('No files found for %s, adding placeholder bidix stems entry.' % repr(langs))
+            fileCounts = {'%s-%s stems' % langs: None}
+        else:
+            fileCounts = getPairCounts(langs, fileLocs)
             logging.debug('Acquired file counts %s' % fileCounts)
 
             if len(fileCounts) > 0:
-                pageContents = getPage(statsPageTitle)
-                if pageContents:
-                    statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
-                    if statsSection:
-                        pageContents = updatePairStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
-                    else:
-                        pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
-                        logging.debug('Adding new stats section')
+                logging.error('No file counts available for %s, adding placeholder bidix stems entry.' % repr(langs))
+                fileCounts = {'%s-%s stems' % langs: None}
 
-                    pageContents = addCategory(pageContents)
-                    editResult = editPage(statsPageTitle, pageContents, editToken)
-                    if editResult['edit']['result'] == 'Success':
-                        logging.info('Update of page {0} succeeded ({1}{0})'.format(statsPageTitle, 'http://wiki.apertium.org/wiki/'))
-                    else:
-                        logging.error('Update of page %s failed: %s' % (statsPageTitle, editResult))
-                else:
-                    pageContents = createStatsSection(fileCounts, requester=args.requester)
-                    pageContents = addCategory(pageContents)
-
-                    editResult = editPage(statsPageTitle, pageContents, editToken)
-                    if editResult['edit']['result'] == 'Success':
-                        logging.info('Creation of page {0} succeeded ({1}{0})'.format(statsPageTitle, 'http://wiki.apertium.org/wiki/'))
-                    else:
-                        logging.error('Creation of page %s failed: %s' % (statsPageTitle, editResult.text))
+        pageContents = getPage(statsPageTitle)
+        if pageContents:
+            statsSection = re.search(r'==\s*Over-all stats\s*==', pageContents, re.IGNORECASE)
+            if statsSection:
+                pageContents = updatePairStatsSection(statsSection, pageContents, fileCounts, requester=args.requester)
             else:
-                logging.error('No file counts available for %s, skipping.' % repr(langs))
+                pageContents += '\n' + createStatsSection(fileCounts, requester=args.requester)
+                logging.debug('Adding new stats section')
+
+            pageContents = addCategory(pageContents)
+            editResult = editPage(statsPageTitle, pageContents, editToken)
+            if editResult['edit']['result'] == 'Success':
+                logging.info('Update of page {0} succeeded ({1}{0})'.format(statsPageTitle, 'http://wiki.apertium.org/wiki/'))
+            else:
+                logging.error('Update of page %s failed: %s' % (statsPageTitle, editResult))
         else:
-            logging.error('No files found for %s, skipping.' % repr(langs))
+            pageContents = createStatsSection(fileCounts, requester=args.requester)
+            pageContents = addCategory(pageContents)
+
+            editResult = editPage(statsPageTitle, pageContents, editToken)
+            if editResult['edit']['result'] == 'Success':
+                logging.info('Creation of page {0} succeeded ({1}{0})'.format(statsPageTitle, 'http://wiki.apertium.org/wiki/'))
+            else:
+                logging.error('Creation of page %s failed: %s' % (statsPageTitle, editResult.text))
     else:
         logging.info('Not creating/updating %s stats page, already exists' % pairName)
 
@@ -107,7 +110,7 @@ def updateOrCreatePages(location, pairName, updateStats, editToken):
     if not statusPage:
         if not statsPage:
             statsPage = getPage(statsPageTitle)
-        
+
         if statsPage:
             possibleLang1, possibleLang2 = iso639Code(lang1), iso639Code(lang2)
             possiblePairs = list(itertools.product(possibleLang1, possibleLang2)) + list(itertools.product(possibleLang2, possibleLang1))
