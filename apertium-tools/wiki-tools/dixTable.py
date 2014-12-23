@@ -242,7 +242,7 @@ if __name__ == '__main__':
     svnData = str(subprocess.check_output('svn list --xml https://svn.code.sf.net/p/apertium/svn/incubator/', stderr=subprocess.STDOUT, shell=True), 'utf-8')
     for dixFileElem in etree.fromstring(svnData).findall('.//name'):
         dixFileName = dixFileElem.text
-        if re.match(r'apertium-[^\.]+\.[^\.]+\.dix', dixFileName):
+        if re.match(r'apertium-[^\.]+\.[^\.]+\.dix(?:\.xml)?', dixFileName):
             try:
                 pair = dixFileName.split('.')[1].split('-')
                 dixLink = 'https://svn.code.sf.net/p/apertium/svn/incubator/%s' % dixFileName
