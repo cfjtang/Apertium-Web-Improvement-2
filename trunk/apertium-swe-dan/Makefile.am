@@ -57,9 +57,10 @@ $(PREFIX2).autogen.bin: $(AP_SRC1)/$(LANG1).autogen.bin
 # Danish analysis:
 # -------------------
 # TODO: not merged with languages/apertium-dan yet
-$(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix
+$(PREFIX2).automorf.bin: $(BASENAME).$(LANG2).dix .deps/.d
 	apertium-validate-dictionary $(BASENAME).$(LANG2).dix
-	lt-comp lr $(BASENAME).$(LANG2).dix $@
+	lt-comp lr $(BASENAME).$(LANG2).dix .deps/$@
+	lt-trim .deps/$@ $(PREFIX2).autobil.bin $@
 
 # -------------------
 # Danish generation:
