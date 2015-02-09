@@ -114,14 +114,6 @@
 
   <mode name="swe-dan-morph" install="no">
     <pipeline>
-      <program name="lt-proc">
-        <file name="swe-dan.automorf.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="swe-dan-morph-cmpd" install="no">
-    <pipeline>
       <program name="lt-proc -w -e">
         <file name="swe-dan.automorf.bin"/>
       </program>
@@ -131,7 +123,7 @@
 
   <mode name="swe-dan-tagger" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
@@ -143,7 +135,7 @@
 
   <mode name="swe-dan-biltrans" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
@@ -157,25 +149,6 @@
   </mode>
 
   <mode name="swe-dan-transfer" install="no">
-    <pipeline>
-      <program name="lt-proc">
-        <file name="swe-dan.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="swe-dan.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="lt-proc -b">
-        <file name="swe-dan.autobil.bin"/>
-      </program>
-      <program name="apertium-transfer -b">
-        <file name="apertium-swe-dan.swe-dan.t1x"/>
-        <file name="swe-dan.t1x.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="swe-dan-cmpd">
     <pipeline>
       <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
@@ -191,37 +164,12 @@
         <file name="apertium-swe-dan.swe-dan.t1x"/>
         <file name="swe-dan.t1x.bin"/>
       </program>
-      <program name="lt-proc $1">
-        <file name="swe-dan.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="swe-dan-preserve-case">
-    <pipeline>
-      <program name="lt-proc -w">
-        <file name="swe-dan.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="swe-dan.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="lt-proc -b">
-        <file name="swe-dan.autobil.bin"/>
-      </program>
-      <program name="apertium-transfer -b">
-        <file name="apertium-swe-dan.swe-dan.t1x"/>
-        <file name="swe-dan.t1x.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="swe-dan.autogen.bin"/>
-      </program>
     </pipeline>
   </mode>
 
   <mode name="swe-dan" install="yes">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -e">
         <file name="swe-dan.automorf.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
@@ -246,14 +194,6 @@
 
   <mode name="dan-swe-morph" install="no">
     <pipeline>
-      <program name="lt-proc">
-        <file name="dan-swe.automorf.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="dan-swe-morph-cmpd" install="no">
-    <pipeline>
       <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
       </program>
@@ -262,8 +202,11 @@
 
   <mode name="dan-swe-tagger" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="dan-swe.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="dan-swe.prob"/>
@@ -274,8 +217,11 @@
 
   <mode name="dan-swe-biltrans" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="dan-swe.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="dan-swe.prob"/>
@@ -289,8 +235,11 @@
 
   <mode name="dan-swe-transfer" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w -e ">
         <file name="dan-swe.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="dan-swe.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="dan-swe.prob"/>
@@ -302,58 +251,17 @@
       <program name="apertium-transfer -b">
         <file name="apertium-swe-dan.dan-swe.t1x"/>
         <file name="dan-swe.t1x.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="dan-swe-cmpd" install="no">
-    <pipeline>
-      <program name="lt-proc -e">
-        <file name="dan-swe.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="dan-swe.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="lt-proc -b">
-        <file name="dan-swe.autobil.bin"/>
-      </program>
-      <program name="apertium-transfer -b">
-        <file name="apertium-swe-dan.dan-swe.t1x"/>
-        <file name="dan-swe.t1x.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="dan-swe.autogen.bin"/>
-      </program>
-    </pipeline>
-  </mode>
-
-  <mode name="dan-swe-preserve-case" install="no">
-    <pipeline>
-      <program name="lt-proc -w">
-        <file name="dan-swe.automorf.bin"/>
-      </program>
-      <program name="apertium-tagger -g $2">
-        <file name="dan-swe.prob"/>
-      </program>
-      <program name="apertium-pretransfer"/>
-      <program name="lt-proc -b">
-        <file name="dan-swe.autobil.bin"/>
-      </program>
-      <program name="apertium-transfer -b">
-        <file name="apertium-swe-dan.dan-swe.t1x"/>
-        <file name="dan-swe.t1x.bin"/>
-      </program>
-      <program name="lt-proc $1">
-        <file name="dan-swe.autogen.bin"/>
       </program>
     </pipeline>
   </mode>
 
   <mode name="dan-swe" install="no">
     <pipeline>
-      <program name="lt-proc">
+      <program name="lt-proc -w -e">
         <file name="dan-swe.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+        <file name="dan-swe.rlx.bin"/>
       </program>
       <program name="apertium-tagger -g $2">
         <file name="dan-swe.prob"/>
