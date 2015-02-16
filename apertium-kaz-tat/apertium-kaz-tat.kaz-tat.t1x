@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- -*- nxml -*- -->
+
+<!-- Tests are run by './qa.sh kaz-tat-t1x' command.
+     INPUT is the output of lexical selection,
+     OUTPUT is the expected output of this transfer module.
+
+     Also make sure to run './qa.sh' (with no arguments)
+     before committing to svn. -->
 
 <transfer>
   <section-def-cats>
@@ -789,17 +797,13 @@ OUTPUT: синең белән, шуның белән
 
 <!-- ===================== Analytic verbal forms =========================== -->
 
-
-<!-- 
-INPUT:  көріп тұрған жоқпын
-        ^көр<v><tv><prc_perf>/күр<v><tv><prc_perf>$ ^тұр<vaux><gpr_past>/тор<vaux><gpr_past>$
-        ^жоқ<adj>/юк<adj>$ ^е<cop><p1><sg>/и<cop><p1><sg>$
-OUTPUT: күрмим
-        ^күр<v><tv><neg><pres><p1><sg>$
--->
-    <rule comment="REGLA: Translate negative present continious with negative present">
+    <rule comment="REGLA: V VAUX ADJ COP -> V">
+      <!-- 
+      INPUT:  ^көр<v><tv><prc_perf>/күр<v><tv><prc_perf>$ ^тұр<vaux><gpr_past>/тор<vaux><gpr_past>$ ^жоқ<adj>/юк<adj>$ ^е<cop><p1><sg>/и<cop><p1><sg>$
+      OUTPUT: ^күр<v><tv><neg><pres><p1><sg>$
+      -->
       <pattern>
-        <pattern-item n="ImperfectOrPerfectParticiple"/> <!-- ImperfectParticiple bcs of бару, келу, апару, әкелу-->
+        <pattern-item n="ImperfectOrPerfectParticiple"/>
         <pattern-item n="FourAuxiliaries.gpr_past"/>
         <pattern-item n="жоқ.adj"/>
         <pattern-item n="cop"/>
