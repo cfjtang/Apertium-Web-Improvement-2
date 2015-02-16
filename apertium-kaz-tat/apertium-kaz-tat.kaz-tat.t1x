@@ -66,6 +66,13 @@
       <cat-item lemma="тұр" tags="vaux.*"/>
     </def-cat>
 
+    <def-cat n="FourAuxiliaries.neg.ifi">
+      <cat-item lemma="жат" tags="vaux.neg.ifi.*"/>
+      <cat-item lemma="жүр" tags="vaux.neg.ifi.*"/>
+      <cat-item lemma="отыр" tags="vaux.neg.ifi.*"/>
+      <cat-item lemma="тұр" tags="vaux.neg.ifi.*"/>
+    </def-cat>
+
     <def-cat n="FourAuxiliaries.gpr_past">
       <cat-item lemma="жат" tags="vaux.gpr_past"/>
       <cat-item lemma="жүр" tags="vaux.gpr_past"/>
@@ -797,16 +804,14 @@ OUTPUT: синең белән, шуның белән
 
 <!-- ===================== Analytic verbal forms =========================== -->
 
-    <rule comment="REGLA: V VAUX ADJ COP -> V">
+    <rule comment="REGLA: V VAUX -> V">
       <!-- 
-      INPUT:  ^көр<v><tv><prc_perf>/күр<v><tv><prc_perf>$ ^тұр<vaux><gpr_past>/тор<vaux><gpr_past>$ ^жоқ<adj>/юк<adj>$ ^е<cop><p1><sg>/и<cop><p1><sg>$
-      OUTPUT: ^күр<v><tv><neg><pres><p1><sg>$
+      INPUT:  ^оқы<v><tv><prc_perf>/укы<v><tv><prc_perf>$ ^жүр<vaux><neg><ifi><p1><sg>/йөр<vaux><neg><ifi><p1><sg>$
+      OUTPUT: ^укы<v><tv><neg><pres><p1><sg>$
       -->
       <pattern>
         <pattern-item n="ImperfectOrPerfectParticiple"/>
-        <pattern-item n="FourAuxiliaries.gpr_past"/>
-        <pattern-item n="жоқ.adj"/>
-        <pattern-item n="cop"/>
+        <pattern-item n="FourAuxiliaries.neg.ifi"/>
       </pattern>
       <action>
         <out>
@@ -815,10 +820,10 @@ OUTPUT: синең белән, шуның белән
             <clip pos="1" side="tl" part="a_verb"/>
             <clip pos="1" side="tl" part="a_trans"/>
             <clip pos="1" side="tl" part="a_deriv"/>
-            <lit-tag v="neg"/>
+            <clip pos="2" side="tl" part="a_neg"/>
             <lit-tag v="pres"/>
-            <clip pos="4" side="tl" part="a_pers"/>
-            <clip pos="4" side="tl" part="a_nbr"/>
+            <clip pos="2" side="tl" part="a_pers"/>
+            <clip pos="2" side="tl" part="a_nbr"/>
           </lu>
         </out>
       </action>
