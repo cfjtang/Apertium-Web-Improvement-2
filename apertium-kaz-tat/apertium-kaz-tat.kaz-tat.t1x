@@ -802,7 +802,7 @@ OUTPUT: синең белән, шуның белән
     </rule>
 
 
-<!-- ===================== Analytic verbal forms =========================== -->
+<!-- SECTION: Analytic verbal forms -->
 
     <rule comment="REGLA: V VAUX -> V">
       <!-- 
@@ -829,15 +829,11 @@ OUTPUT: синең белән, шуның белән
       </action>
     </rule>
 
-
-<!--
-INPUT:  мектепке бара жатырмын
-        ^мектеп<n><dat>/мәктәп<n><dat>$ ^бар<v><iv><prc_impf>/бар<v><iv><prc_impf>$
-        ^жат<vaux><pres><p3><sg>/ят<vaux><pres><p1><sg>$
-OUTPUT: мәктәпкә барам
-        ^мәктәпкә<n><dat>$ ^бар<v><iv><pres><p1><sg>$
--->
-    <rule comment="REGLA:">
+    <rule comment="REGLA: V VAUX -> V">
+      <!--
+      INPUT:  ^бар<v><iv><prc_impf>/бар<v><iv><prc_impf>$ ^жат<vaux><pres><p1><sg>/ят<vaux><pres><p1><sg>$
+      OUTPUT: ^бар<v><iv><pres><p1><sg>$
+      -->
       <!-- TODO:
            * This rule is too general (much more general than the test case) and captures non-finite forms of four
            auxiliaries and perfect participle of the main verb. This is ok in most of the cases, but sometimes
@@ -847,7 +843,7 @@ OUTPUT: мәктәпкә барам
            but making it work requires some further inverstigation and probably dealing with list of lemmas
            to decide whether making use of an auxiliary is possible/better. -->
       <pattern>
-        <pattern-item n="ImperfectOrPerfectParticiple"/> <!-- ImperfectParticiple bcs of бару, келу, апару, әкелу-->
+        <pattern-item n="ImperfectOrPerfectParticiple"/>
         <pattern-item n="FourAuxiliaries"/>
       </pattern>
       <action>
@@ -874,10 +870,11 @@ OUTPUT: мәктәпкә барам
       </action>
     </rule>
 
-
-    <rule>
-      <!--Айгүл оны табуға әрекет жасап жүр.
-          Айгөл аны табарга тырыша.-->
+    <rule comment="REGLA: V VAUX -> V">
+      <!--
+      INPUT:  ^тап<v><tv><ger><dat>/тап<v><tv><ger><dat>$ ^әрекет жаса<v><iv><prc_perf>/тырыш<v><iv><prc_perf>$ ^жүр<vaux><pres><p3><sg>/йөр<vaux><pres><p3><sg>$
+      OUTPUT: ^тап<v><tv><inf>$ ^тырыш<v><iv><pres><p3><sg>$
+      -->
       <pattern>
         <pattern-item n="DefaultGerund_SingularDative"/>
         <pattern-item n="ImperfectOrPerfectParticiple"/>
@@ -910,7 +907,6 @@ OUTPUT: мәктәпкә барам
         </out>
       </action>
     </rule>
-
 
     <rule>
       <!--Мен үйге қайтуым керек.
