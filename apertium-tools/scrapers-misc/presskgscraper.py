@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import re, requests, sys
 from bs4 import BeautifulSoup
 
@@ -101,13 +103,17 @@ tocRaw = """Эски Осуят
 chapterNames = re.findall(r'\d+\.\t(.*)', tocRaw)
 chapterNames = dict(zip(range(1, len(chapterNames) + 1), chapterNames))
 
+output = ""
 for i, chapterName in chapterNames.items():
     page = requests.get('http://www.presskg.com/bible/bible_kg/%02d.htm' % i).text
     for e in BeautifulSoup(page).select("td[bgcolor=white]")[3].select("font")[0].findAll():
         if e.name == 'h2':
             if i != 0:
-                print()
-            print('%s %s' % (chapterName.strip(), re.findall(r'^(\d+)', e.text.strip())[0].strip()))
+                output += "\n"
+            output += '%s %s' % (chapterName.strip(), re.findall(r'^(\d+)', e.text.strip())[0].strip())
         elif e.name == 'p' or e.name == 'h3':
             if e.text.strip():
-                print(e.text.strip())
+                output += e.text.strip()
+
+with open("kir.bible.presskg.txt", 'w') as bibfile:
+    bibfile.write(output)
