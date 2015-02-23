@@ -117,10 +117,14 @@ for i, chapterName in chapterNames.items():
             elif e.name == 'p' or e.name == 'h3':
                 if e.text.strip():
                     text = e.text.strip()+"\n"
-                    if(re.search("\r", text)): print("%s : %s — %s" % (sectName.strip('\n'), text[0:10], len(text)))
+                    if(len(re.findall(r"\r", text))>0):
+                        if len(re.findall(r"\r", text))>1:
+                            text = re.sub(r"\r\n.*", "", text)
+                            print("%s : %s — %s" % (sectName.strip('\n'), text[0:10], len(text)))
+                        else: text = re.sub("\r", "   ", text)
                     output += text
     except Exception as e:
-        print('Skipping chapter #%s: %s (%s)' % (i, chapterName, e))
+        print('Skipping book #%s: %s (%s)' % (i, chapterName, e))
 
 with open("kir.bible.presskg.txt", 'w') as bibfile:
     bibfile.write(output)
