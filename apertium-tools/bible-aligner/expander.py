@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# takes input like
+#    "Genesis 50": "Башталыш 50",
+# (as many lines as you'd like)
+# and outputs all 50 versions
+
 # to use:
 # - run script
 # - paste input
