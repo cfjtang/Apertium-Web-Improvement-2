@@ -59,6 +59,12 @@
       <cat-item tags="cop.*"/>
     </def-cat>
 
+    <def-cat n="v.neg.ifi">
+      <cat-item tags="v.neg.ifi.*"/>
+      <cat-item tags="vaux.neg.ifi.*"/>
+      <cat-item tags="cop.neg.ifi.*"/>
+    </def-cat>
+
     <def-cat n="FourAuxiliaries">
       <cat-item lemma="жат" tags="vaux.*"/>
       <cat-item lemma="жүр" tags="vaux.*"/>
@@ -825,6 +831,29 @@ OUTPUT: синең белән, шуның белән
             <clip pos="2" side="tl" part="a_pers"/>
             <clip pos="2" side="tl" part="a_nbr"/>
           </lu>
+        </out>
+      </action>
+    </rule>
+
+    <rule comment="REGLA: V -> V">
+      <!-- 
+      INPUT:  ^айт<v><tv><prc_vol><p3><sg>/әйт<v><tv><prc_vol><p3><sg>$ ^кел<vaux><neg><ifi><p3><sg>/кил<vaux><neg><ifi><p3><sg>$
+      OUTPUT: ^әйт<v><tv><prc_vol><p3><sg>$ ^кил<vaux><neg><pres><p3><sg>$
+      -->
+      <pattern>
+        <pattern-item n="v"/>
+        <pattern-item n="v.neg.ifi"/>
+      </pattern>
+      <action>
+        <let><clip pos="2" side="tl" part="a_tense"/><lit-tag v="pres"/></let>
+        <out>
+          <lu>
+            <clip pos="1" side="tl" part="whole"/>
+	  </lu>
+	  <b/>
+          <lu>
+            <clip pos="2" side="tl" part="whole"/>
+	  </lu>
         </out>
       </action>
     </rule>
