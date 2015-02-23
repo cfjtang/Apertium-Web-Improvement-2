@@ -111,10 +111,14 @@ for i, chapterName in chapterNames.items():
             if e.name == 'h2':
                 if i != 0:
                     output += "\n"
-                output += '%s %s' % (chapterName.strip(), re.findall(r'^(\d+)', e.text.strip())[0].strip())
+                sectName = '%s %s' % (chapterName.strip(), re.findall(r'^(\d+)', e.text.strip())[0].strip())+"\n"
+                #print('\n', sectName.strip('\n'))
+                output += sectName
             elif e.name == 'p' or e.name == 'h3':
                 if e.text.strip():
-                    output += e.text.strip()
+                    text = e.text.strip()+"\n"
+                    if(re.search("\r", text)): print("%s : %s — %s" % (sectName.strip('\n'), text[0:10], len(text)))
+                    output += text
     except Exception as e:
         print('Skipping chapter #%s: %s (%s)' % (i, chapterName, e))
 
