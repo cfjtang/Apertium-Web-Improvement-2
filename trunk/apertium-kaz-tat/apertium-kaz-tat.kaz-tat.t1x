@@ -9,6 +9,7 @@
      before committing to svn. -->
 
 <transfer>
+
   <section-def-cats>
 
     <def-cat n="n">
@@ -59,34 +60,27 @@
       <cat-item tags="cop.*"/>
     </def-cat>
 
-    <def-cat n="v.neg.ifi">
+    <def-cat n="v-neg-ifi">
       <cat-item tags="v.neg.ifi.*"/>
       <cat-item tags="vaux.neg.ifi.*"/>
       <cat-item tags="cop.neg.ifi.*"/>
     </def-cat>
 
-    <def-cat n="FourAuxiliaries">
+    <def-cat n="fourAuxiliaries">
       <cat-item lemma="жат" tags="vaux.*"/>
       <cat-item lemma="жүр" tags="vaux.*"/>
       <cat-item lemma="отыр" tags="vaux.*"/>
       <cat-item lemma="тұр" tags="vaux.*"/>
     </def-cat>
 
-    <def-cat n="FourAuxiliaries.neg.ifi">
+    <def-cat n="fourAuxiliaries-neg-ifi">
       <cat-item lemma="жат" tags="vaux.neg.ifi.*"/>
       <cat-item lemma="жүр" tags="vaux.neg.ifi.*"/>
       <cat-item lemma="отыр" tags="vaux.neg.ifi.*"/>
       <cat-item lemma="тұр" tags="vaux.neg.ifi.*"/>
     </def-cat>
 
-    <def-cat n="FourAuxiliaries.gpr_past">
-      <cat-item lemma="жат" tags="vaux.gpr_past"/>
-      <cat-item lemma="жүр" tags="vaux.gpr_past"/>
-      <cat-item lemma="отыр" tags="vaux.gpr_past"/>
-      <cat-item lemma="тұр" tags="vaux.gpr_past"/>
-    </def-cat>
-
-    <def-cat n="Gerund">
+    <def-cat n="gerund">
       <cat-item tags="v.*.*.ger.*"/>
       <cat-item tags="v.*.*.ger_past.*"/>
       <cat-item tags="v.*.*.ger_perf.*"/>
@@ -112,7 +106,7 @@
       <cat-item tags="cop.ger_perf.*"/>
     </def-cat>
 
-    <def-cat n="DefaultGerund.WithPossessives.Nominative">
+    <def-cat n="defaultGerund-possessives-nom">
       <cat-item tags="v.*.ger.px1sg.nom"/>
       <cat-item tags="v.*.ger.px2sg.nom"/>
       <cat-item tags="v.*.ger.px3sp.nom"/>
@@ -120,11 +114,11 @@
       <cat-item tags="v.*.ger.px2pl.nom"/>
     </def-cat>
 
-    <def-cat n="DefaultGerund.WithoutPossessives.Nominative">
+    <def-cat n="defaultGerund-withoutPossessives-nom">
       <cat-item tags="v.*.ger.nom"/>
     </def-cat>
 
-    <def-cat n="DefaultGerund_SingularDative">
+    <def-cat n="defaultGerund-sg-dat">
       <cat-item tags="v.*.*.*.ger.dat"/>
     </def-cat>
 
@@ -132,11 +126,7 @@
       <cat-item lemma="керек" tags="adj"/>
     </def-cat>
 
-    <def-cat n="жоқ.adj">
-      <cat-item lemma="жоқ" tags="adj"/>
-    </def-cat>
-
-    <def-cat n="ImperfectOrPerfectParticiple">
+    <def-cat n="prc-impf-or-perf">
       <cat-item tags="v.*.prc_perf"/>
       <cat-item tags="v.*.prc_impf"/>
     </def-cat>
@@ -165,7 +155,7 @@
       <cat-item tags="vaux.neg.gpr_fut3.subst.*"/>
     </def-cat>
 
-    <def-cat n="day-or-year">
+    <def-cat n="day-or-year-px3sp">
       <cat-item lemma="күн" tags="n.px3sp.nom"/>
       <cat-item lemma="жыл" tags="n.px3sp.nom"/>
       <cat-item lemma="жыл" tags="n.pl.px3sp.nom"/>
@@ -215,7 +205,7 @@
       <attr-item tags="prn.itg.sim"/>
     </def-attr>
 
-    <def-attr n="a_pron-pers_ref">
+    <def-attr n="a_pron-pers-or-ref">
       <attr-item tags="prn.pers"/>
       <attr-item tags="prn.ref"/>
     </def-attr>
@@ -295,11 +285,11 @@
       <attr-item tags="sim"/>
     </def-attr>
 
-    <def-attr n="a_genposs-plural">
+    <def-attr n="a_genposs-pl">
       <attr-item tags="loc.subst.pl"/>
     </def-attr>
 
-    <def-attr n="a_case_noloc">
+    <def-attr n="a_case-noloc">
       <attr-item tags="nom"/>
       <attr-item tags="acc"/>
       <attr-item tags="dat"/>
@@ -425,7 +415,7 @@
           <test>
             <and>
               <equal><clip pos="1" side="tl" part="a_genposs"/><lit-tag v="loc.subst"/></equal>
-              <equal><clip pos="1" side="tl" part="a_case_noloc"/><lit-tag v="nom"/></equal>
+              <equal><clip pos="1" side="tl" part="a_case-noloc"/><lit-tag v="nom"/></equal>
             </and>
           </test>
           <let><var n="case"/><lit-tag v="nom"/></let>
@@ -434,7 +424,7 @@
           <test>
             <and>
               <equal><clip pos="1" side="tl" part="a_genposs"/><lit-tag v="loc.subst"/></equal>
-              <equal><clip pos="1" side="tl" part="a_case_noloc"/><lit-tag v="gen"/></equal>
+              <equal><clip pos="1" side="tl" part="a_case-noloc"/><lit-tag v="gen"/></equal>
             </and>
           </test>
           <let><var n="case"/><lit-tag v="gen"/></let>
@@ -443,7 +433,7 @@
           <test>
             <and>
               <equal><clip pos="1" side="tl" part="a_genposs"/><lit-tag v="loc.subst"/></equal>
-              <equal><clip pos="1" side="tl" part="a_case_noloc"/><lit-tag v="dat"/></equal>
+              <equal><clip pos="1" side="tl" part="a_case-noloc"/><lit-tag v="dat"/></equal>
             </and>
           </test>
           <let><var n="case"/><lit-tag v="dat"/></let>
@@ -452,7 +442,7 @@
           <test>
             <and>
               <equal><clip pos="1" side="tl" part="a_genposs"/><lit-tag v="loc.subst"/></equal>
-              <equal><clip pos="1" side="tl" part="a_case_noloc"/><lit-tag v="acc"/></equal>
+              <equal><clip pos="1" side="tl" part="a_case-noloc"/><lit-tag v="acc"/></equal>
             </and>
           </test>
           <let><var n="case"/><lit-tag v="acc"/></let>
@@ -461,7 +451,7 @@
           <test>
             <and>
               <equal><clip pos="1" side="tl" part="a_genposs"/><lit-tag v="loc.subst"/></equal>
-              <equal><clip pos="1" side="tl" part="a_case_noloc"/><lit-tag v="abl"/></equal>
+              <equal><clip pos="1" side="tl" part="a_case-noloc"/><lit-tag v="abl"/></equal>
             </and>
           </test>
           <let><var n="case"/><lit-tag v="abl"/></let>
@@ -470,7 +460,7 @@
           <test>
             <and>
               <equal><clip pos="1" side="tl" part="a_genposs"/><lit-tag v="loc.subst"/></equal>
-              <equal><clip pos="1" side="tl" part="a_case_noloc"/><lit-tag v="ins"/></equal>
+              <equal><clip pos="1" side="tl" part="a_case-noloc"/><lit-tag v="ins"/></equal>
             </and>
           </test>
           <let><var n="postposition"/><concat><lit v=" ^белән"/><lit-tag v="post"/><lit v="$"/></concat></let>
@@ -576,7 +566,7 @@
         <choose>
           <when>
             <test>
-              <equal><clip pos="1" side="tl" part="a_genposs-plural"/><lit-tag v="loc.subst.pl"/></equal>
+              <equal><clip pos="1" side="tl" part="a_genposs-pl"/><lit-tag v="loc.subst.pl"/></equal>
             </test>
             <out>
               <lu>
@@ -682,7 +672,7 @@ OUTPUT: синең белән, шуның белән
         <out>
           <lu>
             <clip pos="1" side="tl" part="lem"/>
-            <clip pos="1" side="tl" part="a_pron-pers_ref"/>
+            <clip pos="1" side="tl" part="a_pron-pers-or-ref"/>
             <clip pos="1" side="tl" part="a_pers"/>
             <clip pos="1" side="tl" part="a_nbr"/>
             <clip pos="1" side="tl" part="a_frm"/>
@@ -724,7 +714,7 @@ OUTPUT: синең белән, шуның белән
 
     <rule comment="REGLA: Gerunds">
       <pattern>
-        <pattern-item n="Gerund"/>
+        <pattern-item n="gerund"/>
       </pattern>
       <action>
         <call-macro n="nonfin1">
@@ -816,8 +806,8 @@ OUTPUT: синең белән, шуның белән
       OUTPUT: ^укы<v><tv><neg><pres><p1><sg>$
       -->
       <pattern>
-        <pattern-item n="ImperfectOrPerfectParticiple"/>
-        <pattern-item n="FourAuxiliaries.neg.ifi"/>
+        <pattern-item n="prc-impf-or-perf"/>
+        <pattern-item n="fourAuxiliaries-neg-ifi"/>
       </pattern>
       <action>
         <out>
@@ -842,7 +832,7 @@ OUTPUT: синең белән, шуның белән
       -->
       <pattern>
         <pattern-item n="v"/>
-        <pattern-item n="v.neg.ifi"/>
+        <pattern-item n="v-neg-ifi"/>
       </pattern>
       <action>
         <let><clip pos="2" side="tl" part="a_tense"/><lit-tag v="pres"/></let>
@@ -872,8 +862,8 @@ OUTPUT: синең белән, шуның белән
            but making it work requires some further inverstigation and probably dealing with list of lemmas
            to decide whether making use of an auxiliary is possible/better. -->
       <pattern>
-        <pattern-item n="ImperfectOrPerfectParticiple"/>
-        <pattern-item n="FourAuxiliaries"/>
+        <pattern-item n="prc-impf-or-perf"/>
+        <pattern-item n="fourAuxiliaries"/>
       </pattern>
       <action>
         <call-macro n="tense1">
@@ -905,9 +895,9 @@ OUTPUT: синең белән, шуның белән
       OUTPUT: ^тап<v><tv><inf>$ ^тырыш<v><iv><pres><p3><sg>$
       -->
       <pattern>
-        <pattern-item n="DefaultGerund_SingularDative"/>
-        <pattern-item n="ImperfectOrPerfectParticiple"/>
-        <pattern-item n="FourAuxiliaries"/>
+        <pattern-item n="defaultGerund-sg-dat"/>
+        <pattern-item n="prc-impf-or-perf"/>
+        <pattern-item n="fourAuxiliaries"/>
       </pattern>
       <action>
         <call-macro n="tense1">
@@ -941,7 +931,7 @@ OUTPUT: синең белән, шуның белән
       <!--Мен үйге қайтуым керек.
           Миңа өйгә кайтырга кирәк.-->
       <pattern>
-        <pattern-item n="DefaultGerund.WithPossessives.Nominative"/>
+        <pattern-item n="defaultGerund-possessives-nom"/>
         <pattern-item n="керек"/>
       </pattern>
       <action>
@@ -967,7 +957,7 @@ OUTPUT: синең белән, шуның белән
       <!--Бұл Азамат болу керек.
           Бу Азамат булырга тиеш.-->
       <pattern>
-        <pattern-item n="DefaultGerund.WithoutPossessives.Nominative"/>
+        <pattern-item n="defaultGerund-withoutPossessives-nom"/>
         <pattern-item n="керек"/>
       </pattern>
       <action>
@@ -1029,7 +1019,7 @@ OUTPUT: синең белән, шуның белән
                      <!--NUM елны/елларны/көнне-->
       <pattern>
         <pattern-item n="num"/>
-        <pattern-item n="day-or-year"/>
+        <pattern-item n="day-or-year-px3sp"/>
       </pattern>
       <action>
         <let><clip pos="2" side="tl" part="a_case"/><lit-tag v="acc"/></let>
