@@ -11,7 +11,7 @@
 <transfer>
   <section-def-cats>
 
-    <def-cat n="noun-or-subst">
+    <def-cat n="n">
       <cat-item tags="n"/>
       <cat-item tags="n.*"/>
       <cat-item tags="np.*"/>
@@ -20,22 +20,22 @@
       <cat-item tags="post.subst.*.*"/>
     </def-cat>
 
-    <def-cat n="noun_nominative">
+    <def-cat n="noun-nom">
       <cat-item tags="n.nom"/>
       <cat-item tags="n.pl.nom"/>
     </def-cat>
 
-    <def-cat n="pron-dem-sim">
+    <def-cat n="pron-sim">
       <cat-item tags="prn.dem.sim.*.*.*"/>
       <cat-item tags="prn.itg.sim.*.*.*"/>
     </def-cat>
 
-    <def-cat n="pron.pers-dem.ins">
+    <def-cat n="pron-pers-or-dem-ins">
       <cat-item tags="prn.pers.*.*.ins"/>
       <cat-item tags="prn.dem.ins"/>
     </def-cat>
 
-    <def-cat n="pron.pers-ref">
+    <def-cat n="pron-pers-or-ref">
       <cat-item tags="prn.pers.*"/>
       <cat-item tags="prn.ref.*"/>
     </def-cat>
@@ -210,7 +210,7 @@
       <attr-item tags="v.tv.ger"/>
     </def-attr>
 
-    <def-attr n="a_pron-dem-sim">
+    <def-attr n="a_pron-sim">
       <attr-item tags="prn.dem.sim"/>
       <attr-item tags="prn.itg.sim"/>
     </def-attr>
@@ -564,7 +564,7 @@
 
     <rule comment="">
       <pattern>
-        <pattern-item n="noun-or-subst"/>
+        <pattern-item n="n"/>
       </pattern>
       <action>
         <call-macro n="translate-ins-with-nom-and-post">
@@ -616,7 +616,7 @@
       possessives *after* genposs-etc thing (=sim) and with intentinon to
       keep things simple /IS/ -->
       <pattern>
-        <pattern-item n="pron-dem-sim"/>
+        <pattern-item n="pron-sim"/>
       </pattern>
       <action>
         <call-macro n="translate-ins-with-nom-and-post">
@@ -628,7 +628,7 @@
         <out>
           <lu>
             <clip pos="1" side="tl" part="lem"/>
-            <clip pos="1" side="tl" part="a_pron-dem-sim"/>
+            <clip pos="1" side="tl" part="a_pron-sim"/>
             <clip pos="1" side="tl" part="a_nbr"/>
             <clip pos="1" side="tl" part="a_poss"/>
             <var n="case"/>
@@ -644,7 +644,7 @@ OUTPUT: синең белән, шуның белән
 -->
     <rule comment="">
       <pattern>
-        <pattern-item n="pron.pers-dem.ins"/>
+        <pattern-item n="pron-pers-or-dem-ins"/>
       </pattern>
       <action>
         <call-macro n="translate-ins-with-nom-and-post">
@@ -670,7 +670,7 @@ OUTPUT: синең белән, шуның белән
       because having them in REGLA:pronouns leads to incorrect sequences like:
       prn.itg.frm.px2sg.frm /IS/ -->
       <pattern>
-        <pattern-item n="pron.pers-ref"/>
+        <pattern-item n="pron-pers-or-ref"/>
       </pattern>
       <action>
         <call-macro n="translate-ins-with-nom-and-post">
@@ -1081,7 +1081,7 @@ OUTPUT: синең белән, шуның белән
     <rule comment="REGLA: when [adj(A4 mostly)+noun] is translated with an AttributiveNoun+noun">
       <pattern>
         <pattern-item n="adj"/>
-        <pattern-item n="noun_nominative"/>
+        <pattern-item n="noun-nom"/>
       </pattern>
       <action>
         <choose>
