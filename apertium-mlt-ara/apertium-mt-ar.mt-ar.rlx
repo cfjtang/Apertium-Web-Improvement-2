@@ -1,0 +1,220 @@
+DELIMITERS = "<.>" "<:>" "<;>" "<!>" "<?>" "<|>" "<$.>" "<$:>" "<;>" "<$!>" "<$?>" "<$|>" sent;
+
+LIST NOUN = n;
+LIST VERB = vblex;
+LIST DET = det;
+LIST PRN = prn;
+LIST PREP = pr;
+LIST ADV = adv;
+LIST ADJ = adj;
+LIST DETDEF = (det def);
+
+LIST VRBPART = (pprs) (pp);
+LIST PAST = (past);
+LIST PRES = (pres);
+LIST IMP = (imp);
+
+LIST CNJSUB = cnjsub;
+LIST CNJADV = cnjadv;
+LIST REL = rel;
+LIST ITG = itg;
+
+LIST SG = sg;
+LIST PL = pl;
+
+LIST NOUNSG = (n sg);
+LIST NOUNPL = (n pl);
+
+LIST NOUNPX = (n px1sg) (n px2sg) (n px3sg_m) (n px3sg_f) (n px1pl) (n px2pl) (n px3pl);
+
+LIST VRBSG = (vblex sg) (vaux sg);
+LIST VRBPL = (vblex pl) (vaux pl);
+
+
+LIST BOS = (>>>) ;
+LIST EOS = (<<<) ;
+
+
+LIST TAPREP = ("ta'" pr);
+LIST POSTDET = ("ieħor" det);
+
+
+SET SENTBOUNDARY = CNJSUB | REL | ITG | EOS;
+
+
+# Hey, that's crucial :)
+SUBREADINGS = LTR ;
+
+SECTION
+
+# Silly rules, yes, but "I'll think about that tomorrow"
+
+SELECT:r1 DET IF
+        (0  DET)
+        (0 PRN)
+        (1 NOUN) ;
+
+SELECT:r2 VRBPL IF
+        (-1 VRBPL)
+        (0 VRBPL)
+        (0 VRBSG) ;
+
+# li
+SELECT:r3 CNJSUB IF
+        (-1 VERB)
+        (0 CNJSUB)
+        (0 REL) ;
+
+SELECT:r4 REL IF
+        (-1 NOUN)
+        (0 CNJSUB)
+        (0 REL) ;
+# oops.. 'fis-sens _li_ l-Misilmin jaħsbu li hu miktub direttament minn Alla'
+# so, should be somehow refined
+
+
+SELECT:r5 CNJSUB IF
+        (-1 ADV)
+        (0 CNJSUB)
+        (0 REL) ;
+
+SELECT:r6 NOUN IF
+        (-1 PREP) # -1 PREP, -1/1 DETDEF
+        (0 NOUN)
+        (0 ADJ) ;
+# fil-Malti ; hm, apparently there are constructions like l-veru Koran :(
+
+SELECT:r7 NOUN IF
+        (-2 CNJSUB)
+        (-1 DETDEF)
+        (0 NOUN)
+        (0 ADJ)
+        (1 VERB) ;
+# kienu jaħsbu li l-Malti ġej mill-Puniku
+
+SELECT:r8 NOUN IF
+        (-1 DETDEF)
+        (0 NOUN)
+        (0 VERB) ;
+# l-influwenza tal-Għarbi
+
+
+SELECT:r9 NOUN IF
+        (NOT *-2 NOUN)
+        (-1 DETDEF)
+        (0 NOUN)
+        (0 ADJ)
+        (1 PRN) ;
+# u l-kollettiv huwa
+
+SELECT:r10 VRBPL IF
+        (-1 NOUNPL)
+        (0 VRBPL)
+        (0 VRBSG) ;
+
+# ħafna
+SELECT:r11 ADV IF
+        (-1 ADJ)
+        (0 ADV)
+        (0 DET)
+        (0 PRN) ;
+
+SELECT:r12 ADV IF
+        (-1 VERB)
+        (0 ADV)
+        (0 DET)
+        (0 PRN) ;
+
+SELECT:r13 VRBPL IF
+        (NOT *-1 NOUN BARRIER SENTBOUNDARY)
+        (0 VRBPL)
+        (0 VRBSG)
+        (1 DETDEF)
+        (2 NOUNPL);
+
+SELECT:r14 ADJ IF
+        (0 ADJ)
+        (0 VRBPART);
+
+SELECT:r15 PAST IF
+        (-1 PRN)
+        (0 PAST)
+        (0 IMP) ;
+
+SELECT:r16 PREP IF
+        (0 PREP)
+        (0 NOUN)
+        (1 DETDEF) 
+        (2 NOUN) ;
+# iżda _skont_ l-Misilmin, il-ħabib tal-Profeta Abu Bakr, fost oħrajn, kien jikteb it-testi
+
+SELECT:r17 NOUN IF
+        (NOT -2 NOUN)
+        (-1 DETDEF)
+        (0 NOUN)
+        (0 ADJ)
+        (NOT 1 NOUN)
+
+SELECT:r18 DET IF
+        (0  DET)
+        (0 PRN)
+        (1 DETDEF)
+        (2 NOUN) ;
+
+SELECT:r19 ADV IF
+        (0 ADV)
+        (0 PREP)
+        (1 PREP);
+
+SELECT:r20 DET IF
+        (0 DET)
+        (0 PRN)
+        (1 DETDEF);
+
+SELECT:r21 DET IF
+        (0 DET)
+        (0 PRN)
+        (1 NOUN);
+
+SELECT:r22 DET IF
+        (0 DET)
+        (0 PRN)
+        (1 ADJ);
+
+REMOVE:r23 NOUNPX IF
+	(-1 DETDEF)
+
+SELECT:r24 VRBPL IF
+        (0 VRBPL)
+        (0 VRBSG) 
+        (1 VRBPL);
+
+SELECT:r25 VRBPL IF
+        (0 VRBPL)
+        (0 VRBSG LINK 0/1 PRN) 
+        (1 CNJSUB);
+# typical sg+prn.3.m.sg vs pl problem
+
+# this sucks, but what boundary should be used?
+# - not (NOT *-1 NOUN BARRIER SENTBOUNDARY)
+SELECT:r26 NOUN IF
+        (0 NOUN)
+        (0 ADJ) 
+        (1 ADJ)
+        (2 TAPREP);
+
+SELECT:r27 POSTDET IF
+        (0 PRN)
+        (0 POSTDET) 
+        (-1 NOUN);
+
+SELECT:r27 NOUNPL IF
+        (0 NOUNPL)
+        (0 NOUNPX); 
+# OYKOYN! any better idea for "u b’hekk insibu l-ewwel għamliet ta’ flawti." ?
+
+SELECT:r27 ADV IF
+        (0 ADV)
+        (0 CNJADV)
+	(NOT -1 BOS); 
+# "biss": "only" vs "however"
