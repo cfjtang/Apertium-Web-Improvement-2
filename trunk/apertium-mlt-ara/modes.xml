@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modes>
+  <mode name="mt-ar" install="yes">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-mt-ar.mt-ar.t1x"/>
+        <file name="mt-ar.t1x.bin"/>
+        <file name="mt-ar.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-mt-ar.mt-ar.t2x"/>
+        <file name="mt-ar.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-mt-ar.mt-ar.t3x"/>
+        <file name="mt-ar.t3x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="mt-ar.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="mt-ar.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="mt-ar-morph" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-cg" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-tagger" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-bidix" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="mt-ar.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-transfer" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-mt-ar.mt-ar.t1x"/>
+        <file name="mt-ar.t1x.bin"/>
+        <file name="mt-ar.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-interchunk" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-mt-ar.mt-ar.t1x"/>
+        <file name="mt-ar.t1x.bin"/>
+        <file name="mt-ar.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-mt-ar.mt-ar.t2x"/>
+        <file name="mt-ar.t2x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-postchunk" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-mt-ar.mt-ar.t1x"/>
+        <file name="mt-ar.t1x.bin"/>
+        <file name="mt-ar.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-mt-ar.mt-ar.t2x"/>
+        <file name="mt-ar.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-mt-ar.mt-ar.t3x"/>
+        <file name="mt-ar.t3x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="mt-ar-dgen" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="mt-ar.automorf.bin"/>
+      </program>
+      <program name="cg-proc -w">
+	<file name="mt-ar.rlx.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="apertium-transfer">
+        <file name="apertium-mt-ar.mt-ar.t1x"/>
+        <file name="mt-ar.t1x.bin"/>
+        <file name="mt-ar.autobil.bin"/>
+      </program>
+      <program name="apertium-interchunk">
+        <file name="apertium-mt-ar.mt-ar.t2x"/>
+        <file name="mt-ar.t2x.bin"/>
+      </program>
+      <program name="apertium-postchunk">
+        <file name="apertium-mt-ar.mt-ar.t3x"/>
+        <file name="mt-ar.t3x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="mt-ar.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ar-mt" install="yes">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ar-mt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="ar-mt.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-mt-ar.ar-mt.t1x"/>
+        <file name="ar-mt.t1x.bin"/>
+      </program>
+      <program name="lt-proc $1">
+        <file name="ar-mt.autogen.bin"/>
+      </program>
+      <program name="lt-proc -p">
+        <file name="ar-mt.autopgen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+  
+  <mode name="ar-mt-morph" install="no">
+    <pipeline>
+      <program name="lt-proc -w">
+        <file name="ar-mt.automorf.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ar-mt-tagger" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ar-mt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+    </pipeline>
+  </mode>
+
+  <mode name="ar-mt-biltrans" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ar-mt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="ar-mt.autobil.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ar-mt-transfer" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ar-mt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="ar-mt.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b">
+        <file name="apertium-mt-ar.ar-mt.t1x"/>
+        <file name="ar-mt.t1x.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+  <mode name="ar-mt-debug" install="no">
+    <pipeline>
+      <program name="lt-proc">
+        <file name="ar-mt.automorf.bin"/>
+      </program>
+      <program name="apertium-tagger -g $2">
+        <file name="mt-ar.prob"/>
+      </program>
+      <program name="apertium-pretransfer"/>
+      <program name="lt-proc -b">
+        <file name="ar-mt.autobil.bin"/>
+      </program>
+      <program name="apertium-transfer -b"> 
+        <file name="apertium-mt-ar.ar-mt.t1x"/>
+        <file name="ar-mt.t1x.bin"/>
+      </program>
+      <program name="lt-proc -d">
+        <file name="ar-mt.autogen.bin"/>
+      </program>
+    </pipeline>
+  </mode>
+
+</modes>

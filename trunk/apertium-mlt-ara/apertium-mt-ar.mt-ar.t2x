@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -*- nxml -*- -->
+<interchunk>
+  <section-def-cats>
+
+    <def-cat n="SN">
+      <cat-item tags="SN"/>
+      <cat-item tags="SN.*"/>
+    </def-cat>
+
+    <def-cat n="SV">
+      <cat-item tags="SV"/>
+      <cat-item tags="SV.*"/>
+    </def-cat>
+
+    <def-cat n="kana">   <!-- كان وأخواتها: 'kana and her sisters', intransitive, but used with acc -->
+      <cat-item tags="SV" lemma="kana"/>
+      <cat-item tags="SV.*" lemma="kana"/>
+    </def-cat>
+
+    <def-cat n="SP">
+      <cat-item tags="SP"/>
+      <cat-item tags="SP.*"/>
+    </def-cat>
+
+    <def-cat n="p3freeprn">
+      <cat-item tags="SN.p3.*.*" lemma="freeprn"/>
+    </def-cat>
+
+    <def-cat n="rel">
+      <cat-item tags="rel.*"/>
+    </def-cat>
+
+    <def-cat n="cnjsub_acc">
+      <cat-item tags="cnjsub_acc"/>
+    </def-cat>
+
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="a_adj">
+      <attr-item tags="adj"/>
+    </def-attr>
+    <def-attr n="a_nom">
+      <attr-item tags="n"/>
+      <attr-item tags="n.acr"/>
+      <attr-item tags="n.unc"/>
+      <attr-item tags="np.top"/>
+      <attr-item tags="np.al"/>
+      <attr-item tags="np.org"/>
+      <attr-item tags="np.ant"/>
+    </def-attr>
+    <def-attr n="gen">
+      <attr-item tags="m"/>
+      <attr-item tags="f"/>
+      <attr-item tags="mf"/>
+      <attr-item tags="nt"/>
+      <attr-item tags="GD"/>
+    </def-attr>
+    <def-attr n="nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+      <attr-item tags="ND"/>
+    </def-attr>
+    <def-attr n="case">
+      <attr-item tags="nom"/>
+      <attr-item tags="gen"/>
+      <attr-item tags="acc"/>
+      <attr-item tags="CD"/>
+    </def-attr>
+    <def-attr n="a_anim">
+      <attr-item tags="aa"/>
+      <attr-item tags="nn"/>
+    </def-attr>
+    <def-attr n="defnes">
+      <attr-item tags="ind"/>
+      <attr-item tags="def"/>
+    </def-attr>
+    <def-attr n="pers">
+      <attr-item tags="p1"/>
+      <attr-item tags="p2"/>
+      <attr-item tags="p3"/>
+    </def-attr>
+    <def-attr n="a_voice">
+       <attr-item tags="actv"/>
+       <attr-item tags="pasv"/>
+    </def-attr>
+    <def-attr n="temps">
+      <attr-item tags="pres"/>
+      <attr-item tags="fut"/>
+      <attr-item tags="past"/>
+      <attr-item tags="imp"/>
+    </def-attr>
+    <def-attr n="a_sintagma">
+      <attr-item tags="SN"/>
+      <attr-item tags="SP"/>
+      <attr-item tags="SV"/>
+      <attr-item tags="SA"/>
+    </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="sbj_gen"/>
+    <def-var n="sbj_nbr"/>
+    <def-var n="last_gen"/>
+    <def-var n="last_nbr"/>
+  </section-def-vars>
+
+
+  <section-def-macros>
+
+    <def-macro n="set_last_n" npar="1">
+      <choose>
+	<when> 
+	  <test><equal><clip pos="1" part="nbr"/><lit-tag v="sg"/></equal></test>
+	  <let><var n="last_gen"/><clip pos="1" part="gen"/></let> 
+	  <let><var n="last_nbr"/><clip pos="1" part="nbr"/></let>
+	</when>
+	<otherwise>
+	  <choose>
+	    <when>
+	      <test><equal><clip pos="1" part="a_anim"/><lit-tag v="aa"/></equal></test>
+  	      <let><var n="last_gen"/><clip pos="1" part="gen"/></let> 
+	      <let><var n="last_nbr"/><lit-tag v="pl"/></let>
+	    </when>
+	    <otherwise> 
+  	      <let><var n="last_gen"/><lit-tag v="f"/></let> 
+	      <let><var n="last_nbr"/><lit-tag v="sg"/></let>
+	    </otherwise>
+	  </choose>
+	</otherwise>
+      </choose>    
+    </def-macro>
+
+
+    <def-macro n="set_sbj" npar="1">
+      <choose>
+	<when> 
+	  <test><equal><clip pos="1" part="nbr"/><lit-tag v="sg"/></equal></test>
+	  <let><var n="sbj_gen"/><clip pos="1" part="gen"/></let> 
+	  <let><var n="sbj_nbr"/><clip pos="1" part="nbr"/></let>
+	</when>
+	<otherwise>
+	  <choose>
+	    <when>
+	      <test><equal><clip pos="1" part="a_anim"/><lit-tag v="aa"/></equal></test>
+  	      <let><var n="sbj_gen"/><clip pos="1" part="gen"/></let> 
+	      <let><var n="sbj_nbr"/><lit-tag v="pl"/></let>
+	    </when>
+	    <otherwise> 
+  	      <let><var n="sbj_gen"/><lit-tag v="f"/></let> 
+	      <let><var n="sbj_nbr"/><lit-tag v="sg"/></let>
+	    </otherwise>
+	  </choose>
+	</otherwise>
+      </choose>    
+    </def-macro>
+
+    <def-macro n="verb_agreement" npar="2">
+      <choose>
+ 	<when>
+ 	  <test><and>   <!-- that's what happens when verb goes first -->
+	    <!-- well, not quite: add nn.pl fix -->
+ 	    <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
+ 	    <equal><clip pos="1" part="nbr"/><clip pos="2" part="nbr"/></equal> 
+ 	    <equal><clip pos="2" part="defnes"/><lit-tag v="def"/></equal>
+ 	  </and></test>
+	  <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let>
+	  <let><clip pos="1" part="gen"/><clip pos="2" part="gen"/></let>
+	</when>
+      </choose>
+    </def-macro>
+
+  </section-def-macros>
+
+
+
+  <section-rules>
+
+    <rule comment="REGLA: SP SN">
+      <pattern>
+ 	<pattern-item n="SP"/>
+ 	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+        <call-macro n="set_last_n"><with-param pos="2"/></call-macro>
+	<let><clip pos="2" part="case"/><lit-tag v="gen"/></let>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+ 	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+ 	  </chunk>
+ 	  <b/>
+	  <chunk>
+	    <clip pos="2" part="lem"/>
+ 	    <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+ 	  </chunk>
+        </out>
+      </action>
+    </rule>
+
+
+
+    <!-- 'verbal clause' in Arabic: it means that the verb goes first :) -->
+    <!-- Needs refinement, probably -->
+    <rule comment="REGLA: SV SN">
+      <pattern>
+ 	<pattern-item n="SV"/>
+ 	<pattern-item n="SN"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test><and>
+	      <not><equal><clip pos="2" part="gen"/><lit-tag v="mf"/></equal></not>
+	      <not><equal><clip pos="2" part="gen"/><lit-tag v="GD"/></equal></not>
+	      <equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal>
+	    </and></test>
+            <call-macro n="set_last_n"><with-param pos="2"/></call-macro>
+            <call-macro n="verb_agreement"><with-param pos="1"/><with-param pos="2"/></call-macro>
+	  </when>
+	</choose>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+ 	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+ 	  </chunk>
+ 	  <b/>
+	  <chunk>
+	    <clip pos="2" part="lem"/>
+ 	    <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+ 	  </chunk>
+ 	 </out>
+      </action>
+    </rule>
+
+
+    <!-- nominal clauses -->
+
+    <rule comment="REGLA: SN p3freeprn">
+      <pattern>
+ 	<pattern-item n="SN"/>
+ 	<pattern-item n="p3freeprn"/>
+      </pattern>
+      <action>
+        <call-macro n="set_last_n"><with-param pos="1"/></call-macro>
+        <call-macro n="set_sbj"><with-param pos="1"/></call-macro>
+	<let><clip pos="2" part="gen"/><var n="last_gen"/></let>
+	<let><clip pos="2" part="nbr"/><var n="last_nbr"/></let>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+ 	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+ 	  </chunk>
+ 	  <b/>
+	  <chunk>
+	    <clip pos="2" part="lem"/>
+ 	    <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+ 	  </chunk>
+ 	 </out>
+      </action>
+    </rule>
+
+
+   <!-- OYKOYN! cognomina are mf! -->
+
+    <rule comment="REGLA: SN SV">
+      <pattern>
+ 	<pattern-item n="SN"/>
+ 	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+	<choose>
+	  <when>
+	    <test><and>
+	      <not><equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal></not>
+	      <not><equal><clip pos="1" part="gen"/><lit-tag v="GD"/></equal></not>
+	      <equal><clip pos="2" part="pers"/><lit-tag v="p3"/></equal>
+	    </and></test>
+            <call-macro n="set_last_n"><with-param pos="1"/></call-macro>
+	    <let><clip pos="2" part="gen"/><var n="last_gen"/></let>
+	    <let><clip pos="2" part="nbr"/><var n="last_nbr"/></let>
+	  </when>
+	</choose>
+        <out>
+	  <chunk>
+	    <clip pos="1" part="lem"/>
+ 	    <clip pos="1" part="tags"/>
+	    <clip pos="1" part="chcontent"/>
+ 	  </chunk>
+ 	  <b/>
+	  <chunk>
+	    <clip pos="2" part="lem"/>
+ 	    <clip pos="2" part="tags"/>
+	    <clip pos="2" part="chcontent"/>
+ 	  </chunk>
+ 	 </out>
+      </action>
+    </rule>
+
+
+    <rule comment="REGLA: SV">
+      <pattern>
+ 	<pattern-item n="SV"/>
+      </pattern>
+      <action>
+ <!--       <choose>
+  	  <when> 
+	    <test><equal><clip pos="1" part="pers"/><lit-tag v="p3"/></equal></test>
+	    <let><clip pos="1" part="gen"/><var n="sbj_gen"/></let> 
+	    <let><clip pos="1" part="nbr"/><var n="sbj_nbr"/></let>
+	  </when>
+	</choose>  -->
+       <choose>
+	 <when> 
+	   <test><equal><clip pos="1" part="gen"/><lit-tag v="GD"/></equal></test>
+	   <let><clip pos="1" part="gen"/><lit-tag v="m"/></let> 
+	 </when>
+       </choose>
+       <choose>
+  	 <when> 
+	   <test><equal><clip pos="1" part="nbr"/><lit-tag v="ND"/></equal></test>
+	   <let><clip pos="1" part="nbr"/><lit-tag v="sg"/></let> 
+	 </when>
+       </choose>
+       <out>
+	 <chunk>
+	   <clip pos="1" part="lem"/>
+ 	   <clip pos="1" part="tags"/>
+	   <clip pos="1" part="chcontent"/>
+ 	 </chunk>
+       </out>
+     </action>
+   </rule>
+
+
+   <rule comment="REGLA: SN rel"> 
+     <pattern>
+       <pattern-item n="SN"/>
+       <pattern-item n="rel"/>
+     </pattern>
+     <action>
+       <out>
+	 <chunk>
+	   <clip pos="1" part="lem"/>
+ 	   <clip pos="1" part="tags"/>
+	   <clip pos="1" part="chcontent"/>
+ 	 </chunk>
+       </out>
+       <choose>
+	 <when>
+	   <test><equal><clip pos="1" part="defnes"/><lit-tag v="def"/></equal></test>
+	   <choose>
+	     <when>
+	       <test><and>
+	         <not><equal><clip pos="1" part="gen"/><lit-tag v="mf"/></equal></not> 
+	         <not><equal><clip pos="1" part="gen"/><lit-tag v="GD"/></equal></not>
+	       </and></test>
+               <call-macro n="set_last_n"><with-param pos="1"/></call-macro>
+	       <let><clip pos="2" part="gen"/><var n="last_gen"/></let>
+	       <let><clip pos="2" part="nbr"/><var n="last_nbr"/></let>
+	     </when>
+	   </choose>
+           <out>
+	     <b/>
+	     <chunk>
+	       <clip pos="2" part="lem"/>
+ 	       <clip pos="2" part="tags"/>
+	       <clip pos="2" part="chcontent"/>
+ 	     </chunk>
+           </out>
+	 </when>
+       </choose>
+     </action>
+   </rule>
+
+
+   <rule comment="REGLA: rel"> 
+     <pattern>
+       <pattern-item n="rel"/>
+     </pattern>
+     <action>
+     </action>
+   </rule>
+
+
+  </section-rules>
+
+</interchunk>
+
