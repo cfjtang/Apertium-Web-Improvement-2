@@ -36,9 +36,8 @@
       <cat-item tags="prn.dem.ins"/>
     </def-cat>
 
-    <def-cat n="pron-pers-or-ref">
+    <def-cat n="pron-pers">
       <cat-item tags="prn.pers.*"/>
-      <cat-item tags="prn.ref.*"/>
     </def-cat>
 
     <def-cat n="pron">
@@ -205,9 +204,8 @@
       <attr-item tags="prn.itg.sim"/>
     </def-attr>
 
-    <def-attr n="a_pron-pers-or-ref">
+    <def-attr n="a_pron-pers">
       <attr-item tags="prn.pers"/>
-      <attr-item tags="prn.ref"/>
     </def-attr>
 
     <def-attr n="a_pron">
@@ -277,6 +275,7 @@
       <attr-item tags="px3sp"/>
       <attr-item tags="px1pl"/>
       <attr-item tags="px2pl"/>
+      <attr-item tags="px3pl"/>
     </def-attr>
 
     <def-attr n="a_genposs">
@@ -660,7 +659,7 @@ OUTPUT: синең белән, шуның белән
       because having them in REGLA:pronouns leads to incorrect sequences like:
       prn.itg.frm.px2sg.frm /IS/ -->
       <pattern>
-        <pattern-item n="pron-pers-or-ref"/>
+        <pattern-item n="pron-pers"/>
       </pattern>
       <action>
         <call-macro n="translate-ins-with-nom-and-post">
@@ -672,7 +671,7 @@ OUTPUT: синең белән, шуның белән
         <out>
           <lu>
             <clip pos="1" side="tl" part="lem"/>
-            <clip pos="1" side="tl" part="a_pron-pers-or-ref"/>
+            <clip pos="1" side="tl" part="a_pron-pers"/>
             <clip pos="1" side="tl" part="a_pers"/>
             <clip pos="1" side="tl" part="a_nbr"/>
             <clip pos="1" side="tl" part="a_frm"/>
