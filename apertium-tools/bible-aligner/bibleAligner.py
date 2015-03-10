@@ -35,6 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('-l2', '--language2', help='Language of second bible', default=None)
     parser.add_argument('-o', '--outputFile', help='Output location for TMX file', default='aligned.tmx')
     parser.add_argument('-a', '--adminLang', help='Language of notes and properties in TMX', default='en_US')
+    parser.add_argument('-A', '--appendExtraText', help='Append text following line break to previous verse', action='store_true', default=False)
     parser.add_argument('-m', '--minify', help='Minify output TMX file', action='store_true', default=False)
     args = parser.parse_args()
 
@@ -118,10 +119,14 @@ if __name__ == '__main__':
                     elif justStartedSection:
                         justStartedSection = False
                     else:
-                        logging.error('Unable to understand line #%s: %s.' % (i + 1, repr(line)))
+                        if args.appendExtraText and lastSeenVerseNum > 0:
+                            logging.info('Appending extra text %s to previous verse %s' % (repr(line), repr(bible[section][lastSeenVerseNum])))
+                            bible[section][lastSeenVerseNum] += ' ' + line
+                        else:
+                            logging.error('Unable to understand line #%s: %s.' % (i + 1, repr(line)))
                 else:
                     section = line
-                    lastVerseNum = 0
+                    lastSeenVerseNum = 0
                     justStartedSection = True # Allows one extra line after each section
 
         for section, verses in bible.items():
