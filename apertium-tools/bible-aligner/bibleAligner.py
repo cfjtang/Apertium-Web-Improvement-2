@@ -107,7 +107,12 @@ if __name__ == '__main__':
                                 else:
                                     logging.error('Unable to find verse #%s of section %s.' % (verseNum, section))
                             if firstExtractedNum:
-                                bible[section][lastSeenVerseNum] = re.findall(r'(.*?)\s+%s' % firstExtractedNum, line)[0]
+                                beforeFirstExtractedVerse = re.findall(r'(.*?)\s+%s' % firstExtractedNum, line)
+                                if beforeFirstExtractedVerse:
+                                    bible[section][lastSeenVerseNum] = beforeFirstExtractedVerse[0]
+                                else:
+                                    logging.error('Unable to find verse #%s of section %s due to it being completely extracted.' % (verseNum, section))
+                                    del bible[section][lastSeenVerseNum]
                         lastSeenVerseNum = currentVerseNum
                         justStartedSection = False
                     elif justStartedSection:
