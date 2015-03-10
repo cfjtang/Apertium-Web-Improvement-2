@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, os, lxml.etree, lxml.builder, re, collections, mimetypes, bz2, logging, json
+import argparse, os, lxml.etree, lxml.builder, re, collections, mimetypes, bz2, logging, json, sys
 
 def validFile(fname):
     if not os.path.isfile(fname):
@@ -90,7 +90,7 @@ if __name__ == '__main__':
                         currentVerseNum = int(matches.group(1))
                         bible[section][currentVerseNum] = matches.group(2)
 
-                        if currentVerseNum > lastSeenVerseNum + 1:
+                        if currentVerseNum > lastSeenVerseNum + 1 and lastSeenVerseNum > 0:
                             firstExtractedNum = None
                             for verseNum in range(lastSeenVerseNum + 1, currentVerseNum):
                                 verseMatches = None
