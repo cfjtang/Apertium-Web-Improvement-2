@@ -17,6 +17,7 @@ import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.PopupMenuEvent;
 import org.jdesktop.application.*;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -44,10 +45,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apertium.Translator;
@@ -56,7 +60,7 @@ import org.apertium.pipeline.Program;
 import org.apertium.utils.IOUtils;
 
 /*
- * See  http://wiki.apertium.org/wiki/Apertium-vju 
+ * See  http://wiki.apertium.org/wiki/Apertium-vju
  */
 
 /**
@@ -67,11 +71,12 @@ public class ApertiumView extends FrameView {
     ArrayList<TextWidget> textWidgets = new ArrayList<TextWidget>();
     ArrayList<JSplitPane> splitPanes = new ArrayList<JSplitPane>();
 
+    private boolean popupMenuVisible;
 
     JSplitPane lastSplitPane;
 
     boolean startingUp = true;
-    
+
     public ApertiumView(SingleFrameApplication app) {
         super(app);
         initComponents();
@@ -80,17 +85,52 @@ public class ApertiumView extends FrameView {
               boolean isSelected, boolean cellHasFocus) {
             JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            if (value instanceof Mode) {
+						if (value instanceof Mode) {
               Mode m = (Mode) value;
+              if (!popupMenuVisible) {
+                renderer.setText(m.toString());
+              } else {
+                File f = new File(m.getFilename());
+                renderer.setText("<html>"+m.toString()+"<small><br/>"+f.getParent()+File.separator+"<br/>"+f.getName());
+		            setHScrollFor(list);
+								renderer.setBorder(new EmptyBorder(5, 0, 5, 0) );
+              }
               renderer.setToolTipText(m.getFilename());
             } else if (value instanceof String && !local) {
               String mode = (String) value;
               renderer.setToolTipText(mode != null && mode.equals("SELECT A MODE") ? "[Select a mode]" : onlineModeToCode.get(mode) + ".mode");
             }
-            
+
             return renderer;
           }
+
+
+          // Source: https://community.oracle.com/thread/1775495?tstart=0
+          private void setHScrollFor(JList list) {
+            JScrollPane scrollPane =
+                    (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, list);
+            if (scrollPane.getHorizontalScrollBar() == null
+                    || scrollPane.getHorizontalScrollBarPolicy()
+                    != JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED) {
+              scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL));
+              scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            }
+          }
         });
+			modesComboBox.addPopupMenuListener(new PopupMenuListener() {
+				@Override
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+					popupMenuVisible = true;
+				}
+				@Override
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+					popupMenuVisible = false;
+				}
+				@Override
+				public void popupMenuCanceled(PopupMenuEvent e) {
+					popupMenuVisible = false;
+				}
+			});
 
         try {
             String mpref = prefs.get("modeFiles", null);
@@ -114,7 +154,7 @@ public class ApertiumView extends FrameView {
                 try {
                     fal.addAll(Arrays.asList(new File(".").listFiles()));
                 } catch (Exception e) { }
-                
+
                 if (!fal.isEmpty()) {
                     for (File f : fal) {
                         if (f.getName().endsWith(".mode")) {
@@ -126,7 +166,7 @@ public class ApertiumView extends FrameView {
                 }
             }
 
-            
+
             if (modes.isEmpty()) {
                 warnUser("No language pairs could be loaded.\nPlease use the File menu to install local modes or use online ones instead.");
             }
@@ -137,14 +177,14 @@ public class ApertiumView extends FrameView {
             }
             showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
             showCommandsCheckBoxActionPerformed(null); // is this necesary?
-            
+
             for (int i=0; i<10; i++) {
               final String s = prefs.get("storedTexts."+i,"");
               if (s!=null && s.length()>0) {
                 addStoredText(s);
               }
             }
-            
+
         } catch (Exception e) {
            e.printStackTrace();
             warnUser("An error occured during startup:\n\n"+e);
@@ -155,14 +195,14 @@ public class ApertiumView extends FrameView {
             }
             System.exit(1);
         }
-        
+
         Translator.setCacheEnabled(true);
-        
+
         startingUp = false;
-        
+
         showSelectedMode();
-  
-        String txt = prefs.get("inputText", textWidget1.getText());        
+
+        String txt = prefs.get("inputText", textWidget1.getText());
         System.err.println("startup txt = " + txt);
         try {
           textWidget1.setText(txt);
@@ -170,22 +210,22 @@ public class ApertiumView extends FrameView {
            e.printStackTrace();
             warnUser("An error occured during startup:\n\n"+e);
         }
-        
+
         textWidget1.commandTextField.requestFocusInWindow();
         textWidget1.textEditor.addFocusListener(scrollToVisibleFocusListener); // done here to avoid multiple adds
         textWidget1.textEditor.addKeyListener(switchFocus);
 
         menuBar.addKeyListener(switchFocus);
         markUnknownWordsCheckBox.addKeyListener(switchFocus);
-        showCommandsCheckBox.addKeyListener(switchFocus);        
+        showCommandsCheckBox.addKeyListener(switchFocus);
         storeTextButton.addKeyListener(switchFocus);
         copyTextButton.addKeyListener(switchFocus);
         fitToTextButton.addKeyListener(switchFocus);
-        
+
         //app.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
-    
+
+
     public void shutdown() {
         prefs.putBoolean("showCommands", showCommandsCheckBox.isSelected());
         prefs.putInt("modesComboBox", local ? modesComboBox.getSelectedIndex() : savedIdx);
@@ -195,8 +235,8 @@ public class ApertiumView extends FrameView {
         prefs.put("inputText", textWidget1.getText());
         Pipeline.getPipeline().shutdown();
     }
-    
-    
+
+
     FocusListener scrollToVisibleFocusListener = new FocusAdapter() {
         @Override
         public void focusGained(FocusEvent e) {
@@ -212,7 +252,7 @@ public class ApertiumView extends FrameView {
             b.y += b2.y;
             tw.scrollRectToVisible(b);
 
-            
+
             // Make it blink for a short while
             Graphics2D g = (Graphics2D) tw.getGraphics();
             g.setColor(Color.RED);
@@ -227,7 +267,7 @@ public class ApertiumView extends FrameView {
             g.setColor(Color.RED);
             g.drawRect(b.x+1, b.y+1, b.width-2, b.height-2);
 
-            
+
             b = comp.getBounds(b);
             comp = (JComponent) (comp.getParent().getParent());
             g = (Graphics2D) comp.getGraphics();
@@ -249,7 +289,7 @@ public class ApertiumView extends FrameView {
             }.start();
         }
     };
-    
+
   private void addStoredText(final String s) {
       String menT = s.length()<4000? s : s.substring(0,40)+"...";
       JMenuItem mi = new JMenuItem(menT,storedTextsMenu.getMenuComponentCount()+1);
@@ -258,7 +298,7 @@ public class ApertiumView extends FrameView {
       public void actionPerformed(ActionEvent e) {
         textWidget1.setText(s);
       }
-        
+
       });
       storedTextsMenu.add(mi);
   }
@@ -345,7 +385,7 @@ public class ApertiumView extends FrameView {
     private void showSelectedMode() {
         Mode m = null;
         Object item = modesComboBox.getSelectedItem();
-        
+
         if (item instanceof Mode) {
             IOUtils.setClassLoader(null);
             m = (Mode) item;
@@ -358,10 +398,10 @@ public class ApertiumView extends FrameView {
                 warnUser("Unexpected error while trying to load online package: " + e);
             }
         } else return;
-        
+
         if (m==null) {
             return;
-        }        
+        }
 
         if (m.getPipelineLength()+1 != textWidgets.size()) {
             // Number of text widgets are different, dispose all and regenerate
@@ -380,7 +420,7 @@ public class ApertiumView extends FrameView {
 
             textWidgets.add(textWidget1);
             splitPanes.add(jSplitPane1);
-            
+
             String[] divLocs = prefs.get("dividerLocation", "").split(",");
             if (divLocs.length>1) try {
                 jSplitPane1.setDividerLocation(Integer.parseInt(divLocs[1]));
@@ -418,7 +458,7 @@ public class ApertiumView extends FrameView {
             }
 
             if (textWidgetFont != null) for (TextWidget t : textWidgets) {
-                t.textEditor.setFont(textWidgetFont);        
+                t.textEditor.setFont(textWidgetFont);
             }
 
 
@@ -455,7 +495,7 @@ public class ApertiumView extends FrameView {
         }
 
         Pipeline.getPipeline().markUnknownWords = markUnknownWordsCheckBox.isSelected();
-        
+
         // Set title to mode - easens window tabbing
         ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer ("+m+")");
 
@@ -463,9 +503,9 @@ public class ApertiumView extends FrameView {
         if (startingUp) return;
 
         textWidget1.textChg(true);
-        
+
     }
-    
+
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -794,7 +834,7 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
             loadMode(fn);
         }
         sortModesComboBox();
-        prefs.put("modeFiles", mpref);    
+        prefs.put("modeFiles", mpref);
     }
 }//GEN-LAST:event_editModesMenuItemActionPerformed
 
@@ -808,13 +848,13 @@ private void showCommandsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)
     //System.out.println("show = " + show);
     for (TextWidget w : textWidgets) {
         w.commandTextField.setVisible(show);
-        w.zoomButton.setVisible(show);   
-        w.freezeCheckBox.setVisible(show);   
+        w.zoomButton.setVisible(show);
+        w.freezeCheckBox.setVisible(show);
         w.setSize(w.getSize());
     }
     textWidget1.commandTextField.setVisible(false);
-    textWidget1.zoomButton.setVisible(false);            
-    textWidget1.freezeCheckBox.setVisible(false);   
+    textWidget1.zoomButton.setVisible(false);
+    textWidget1.freezeCheckBox.setVisible(false);
     mainPanel.validate();
 }//GEN-LAST:event_showCommandsCheckBoxActionPerformed
 
@@ -830,7 +870,7 @@ private void storeTextButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     if (n>=0) {
        s = ((JMenuItem) storedTextsMenu.getMenuComponent(n)).getText();
     }
-    
+
     prefs.put("storedTexts."+i,s);
   }
     warnUser("Your text is stored for future use. \nRetrieve it in the menu View | Stored text.\nNote: On restart only the last 10 stored texts will be remenbered.");
@@ -1010,7 +1050,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 
 
     JFileChooser modeFileChooser;
-    
+
     @Action
     public void loadMode() {
         if (modeFileChooser == null) {
@@ -1035,9 +1075,9 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
             prefs.put("modeFiles", mpref);
         }
     }
-    
+
     public final static Preferences prefs = Preferences.userNodeForPackage(ApertiumView.class);
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.ButtonGroup buttonGroup1;
@@ -1075,7 +1115,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
     ArrayList<String> onlineModes;
     HashMap<String, URLClassLoader> onlineModeToLoader;
     HashMap<String, String> onlineModeToCode;
-    
+
     private void initOnlineModes() throws IOException {
         final String REPO_URL = "https://apertium.svn.sourceforge.net/svnroot/apertium/builds/language-pairs";
         onlineModes = new ArrayList<String>();
@@ -1100,7 +1140,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
         }
         Collections.sort(onlineModes);
     }
-    
+
     public static String legu(File fil) throws IOException {
 	FileChannel fc = new FileInputStream(fil).getChannel();
 	MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fil.length());
@@ -1120,18 +1160,20 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
             warnUser("Loading of mode "+filename+" failed:\n\n"+ex.toString()+"\n\nContinuing without this mode.");
         }
     }
-    
-    
+
+
     private void sortModesComboBox() {
         //We always keep online modes sorted, so we don't need to do anything with them
         if (!local) return;
-        
+
+        /* don't sort; its confusing
         Collections.sort(modes, new Comparator<Mode>() {
             @Override
             public int compare(Mode m1, Mode m2) {
                 return m1.toString().compareTo(m2.toString());
             }
         });
+        */
         modesComboBox.removeAllItems();
         for (Mode m : modes) modesComboBox.addItem(m);
     }
@@ -1143,7 +1185,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 	}
 
     Font textWidgetFont = null;
-    
+
     @Action
     public void changeFont() {
 
@@ -1152,7 +1194,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
         fd.setVisible(true);
         textWidgetFont = fd.getFont();
         for (TextWidget t : textWidgets) {
-            t.textEditor.setFont(textWidgetFont);        
+            t.textEditor.setFont(textWidgetFont);
         }
         System.out.println("f = " + textWidgetFont);
     }
@@ -1169,12 +1211,12 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 
         Mode mode = (Mode) modesComboBox.getSelectedItem();
         String sourceLanguage = mode.toString().split("-")[0];
-        
+
         String tottxt = "";
         for (int i=0; i<firstTxt.length; i++) {
           tottxt = tottxt + "* ("+sourceLanguage+") ''" + firstTxt[i] + "'' → " + lastTxt[i] + "\n";
-        }          
-  
+        }
+
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(tottxt.trim()), null);
     		JOptionPane.showMessageDialog(mainPanel,new JTextArea(tottxt.trim()),"Paste into a Wiki test page", JOptionPane.INFORMATION_MESSAGE);
   }
