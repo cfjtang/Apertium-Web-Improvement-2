@@ -72,7 +72,7 @@ public class ApertiumView extends FrameView {
 
 	JSplitPane lastSplitPane;
 
-	boolean startingUp = true;
+	boolean ignoreEvents = true;
 
 	public ApertiumView(SingleFrameApplication app) {
 		super(app);
@@ -140,7 +140,7 @@ public class ApertiumView extends FrameView {
 				for (String fn : mpref.split("\n")) {
 					loadMode(fn);
 				}
-				sortModesComboBox();
+				updateModesComboBox();
 			} else {
 				LinkedHashSet<File> fal = new LinkedHashSet<File>();
 				try {
@@ -159,7 +159,7 @@ public class ApertiumView extends FrameView {
 							loadMode(f.getPath());
 						}
 					}
-					sortModesComboBox();
+					updateModesComboBox();
 					warnUser("Welcome to Apertium-viewer.\nIt seems this is the first time you run this program."
 							+ "\nI have searched in standard places for 'modes' (language translation pairs)"
 							+ "\nI will let you revise the list now (you can always re-edit the list by choosing File | Edit modes)");
@@ -180,15 +180,10 @@ public class ApertiumView extends FrameView {
 			}
 
 			if (prefs.getBoolean("local", true)) {
-				local = false; // to trigger the button
 				rdbtnLocalActionPerformed(null);
 			} else {
 				rdbtnOnline.setSelected(true);
 				rdbtnOnlineActionPerformed(null);
-			}
-			int idx = prefs.getInt("modesComboBox", -1);
-			if (idx >= 0 && idx < modes.size()) {
-				modesComboBox.setSelectedIndex(idx);
 			}
 			showCommandsCheckBox.setSelected(prefs.getBoolean("showCommands", true));
 			showCommandsCheckBoxActionPerformed(null); // is this necesary?
@@ -214,7 +209,7 @@ public class ApertiumView extends FrameView {
 
 		Translator.setCacheEnabled(true);
 
-		startingUp = false;
+		ignoreEvents = false;
 
 		showSelectedMode();
 
@@ -509,7 +504,7 @@ public class ApertiumView extends FrameView {
 		// Set title to mode - easens window tabbing
 		ApertiumViewMain.getApplication().getMainFrame().setTitle("Apertium-viewer (" + m + ")");
 
-		if (startingUp) return;
+		if (ignoreEvents) return;
 
 		textWidget1.textChg(true);
 
@@ -800,7 +795,11 @@ public class ApertiumView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
 private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
+	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedIndex() + local+ignoreEvents);
+	System.out.println("modesComboBox.getSelectedIndex()="+modesComboBox.getSelectedItem());
+	if (ignoreEvents) return;
 	if (local) {
+		prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());
 		Mode mode = (Mode) modesComboBox.getSelectedItem();
 		String tooltip = "[No mode selected]";
 		if (mode != null) {
@@ -808,14 +807,13 @@ private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		}
 		modesComboBox.setToolTipText(tooltip);
 	} else {
+		prefs.putInt("modesComboBoxOnline", modesComboBox.getSelectedIndex());
 		String mode = (String) modesComboBox.getSelectedItem();
 		String tooltip = mode != null && mode.equals("SELECT A MODE") ? "[No mode selected]" : onlineModeToCode.get(mode) + ".mode";
 		modesComboBox.setToolTipText(tooltip);
 	}
-	if (!startingUp) {
-		Translator.clearCache();
-		showSelectedMode();
-	}
+	Translator.clearCache();
+	showSelectedMode();
 }//GEN-LAST:event_modesComboBoxActionPerformed
 
 private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editModesMenuItemActionPerformed
@@ -837,12 +835,11 @@ private void editModesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {/
 			"Edit the list of modes", JOptionPane.OK_CANCEL_OPTION);
 	if (ret == JOptionPane.OK_OPTION) {
 		modes.clear();
-		modesComboBox.removeAllItems();
 		mpref = ta.getText();
 		for (String fn : mpref.split("\n")) {
 			loadMode(fn);
 		}
-		sortModesComboBox();
+		updateModesComboBox();
 		prefs.put("modeFiles", mpref);
 	}
 }//GEN-LAST:event_editModesMenuItemActionPerformed
@@ -1020,30 +1017,33 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 	ajustSplitPaneHeights(toth);
 }//GEN-LAST:event_fitToText
 
-	private void setSelectedIndex(JComboBox modesComboBox, int index) {
+	private void updateModesComboBox() {
+		ignoreEvents = true;
+		modesComboBox.removeAllItems();
+		int index;
+		if (local) {
+			for (Mode m : modes) modesComboBox.addItem(m);
+			index = prefs.getInt("modesComboBoxLocal", -1);
+		} else {
+			modesComboBox.addItem("SELECT A MODE");
+			for (String s : onlineModes) modesComboBox.addItem(s);
+			index = prefs.getInt("modesComboBoxOnline", -1);
+		}
+		ignoreEvents = false;
 		modesComboBox.setSelectedIndex(index < modesComboBox.getModel().getSize() ? index : -1);
 	}
 
 	private boolean local = true;
 
     private void rdbtnLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnLocalActionPerformed
-			if (local) return;
 			local = true;
-			prefs.putInt("modesComboBoxOnline", modesComboBox.getSelectedIndex());
-			modesComboBox.removeAllItems();
-			for (Mode m : modes) modesComboBox.addItem(m);
-			setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxLocal", 0));
+			updateModesComboBox();
     }//GEN-LAST:event_rdbtnLocalActionPerformed
 
     private void rdbtnOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbtnOnlineActionPerformed
-			if (!local) return;
 			local = false;
-			prefs.putInt("modesComboBoxLocal", modesComboBox.getSelectedIndex());
 			if (onlineModeToLoader != null) {
-				modesComboBox.removeAllItems();
-				modesComboBox.addItem("SELECT A MODE");
-				for (String s : onlineModes) modesComboBox.addItem(s);
-				setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
+				updateModesComboBox();
 			} else {
 				final JDialog dialog = new JDialog(getFrame(), "Downloading, please wait...", false);
 				dialog.setContentPane(new JOptionPane("Please wait while downloading the list of pairs",
@@ -1057,10 +1057,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 					public void run() {
 						try {
 							initOnlineModes();
-							modesComboBox.removeAllItems();
-							modesComboBox.addItem("SELECT A MODE");
-							for (String s : onlineModes) modesComboBox.addItem(s);
-							setSelectedIndex(modesComboBox, prefs.getInt("modesComboBoxOnline", 0));
+							updateModesComboBox();
 							jSplitPane1.setBottomComponent(new JLabel("Please select a mode"));
 							modesComboBox.showPopup();
 						} catch (Exception e) {
@@ -1098,7 +1095,7 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			for (File f : fs) {
 				loadMode(f.getPath());
 			}
-			sortModesComboBox();
+			updateModesComboBox();
 			String mpref = "";
 			for (Mode mo : modes) mpref = mpref + mo.getFilename() + "\n";
 			prefs.put("modeFiles", mpref);
@@ -1187,22 +1184,6 @@ private void fitToText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fitToT
 			Logger.getLogger(ApertiumView.class.getName()).log(Level.INFO, null, ex);
 			warnUser("Loading of mode " + filename + " failed:\n\n" + ex.toString() + "\n\nContinuing without this mode.");
 		}
-	}
-
-	private void sortModesComboBox() {
-		//We always keep online modes sorted, so we don't need to do anything with them
-		if (!local) return;
-
-		/* don't sort; its confusing
-		 Collections.sort(modes, new Comparator<Mode>() {
-		 @Override
-		 public int compare(Mode m1, Mode m2) {
-		 return m1.toString().compareTo(m2.toString());
-		 }
-		 });
-		 */
-		modesComboBox.removeAllItems();
-		for (Mode m : modes) modesComboBox.addItem(m);
 	}
 
 	public void warnUser(String txt) {
